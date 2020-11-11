@@ -1,14 +1,10 @@
 import React from 'react';
 
-import {Container} from "react-bootstrap";
-
-import Routes from "./navigation/Routes";
+import MainContainer from "./components/MainContainer";
 
 function App() {
     return (
-        <Container className="App" fluid>
-            <Routes/>
-        </Container>
+        <MainContainer/>
     );
 }
 

@@ -1,13 +1,13 @@
 import React from "react";
 import {Container, Row, Col} from "react-bootstrap";
 
-function Dashboard() {
+function UserOpenActions() {
 
     return (
         <Container fluid>
             <Row>
                 <Col xs={12}>
-                    <h3>Dashboard</h3>
+                    <h3>My Open Actions</h3>
                 </Col>
             </Row>
         </Container>
@@ -15,5 +15,5 @@ function Dashboard() {
     );
 }
 
-export default Dashboard;
+export default UserOpenActions;
 
