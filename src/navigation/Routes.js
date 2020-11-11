@@ -1,12 +1,14 @@
-import React, {Component} from "react";
+import React from "react";
 import {Route, Switch, withRouter} from "react-router-dom";
 
-import App from "src/App"
+import Dashboard from "../pages/Dashboard"
 
-export default function Routes() {
+function Routes() {
     return (
         <Switch>
-            {/*<Route exact path='/' component={App}/>*/}
+            <Route exact path='/' component={Dashboard}/>
         </Switch>
     );
 }
+
+export default Routes;
