@@ -1,19 +1,26 @@
 import React from "react";
 import {Route, Switch, withRouter} from "react-router-dom";
 
-import Dashboard from "pages/Dashboard"
+import StartPage from "pages/StartPage"
+import StartConfigurations from "pages/StartConfigurations"
 
-import UserOpenActions from "pages/UserOpenActions"
-import QGovernance from "pages/QGovernance"
-import Executive from "pages/Executive"
+//Root user
+import RootUserPages from "pages/RootUserPages"
+
+//Just user
+import UserPages from "pages/UserPages"
 
 function Routes() {
     return (
         <Switch>
-            <Route exact path='/' component={Dashboard}/>
-            <Route path="/my-open-actions" component={UserOpenActions}/>
-            <Route path="/q-governance" component={QGovernance}/>
-            <Route path="/executive" component={Executive}/>
+            <Route exact path='/' component={StartPage}/>
+            <Route exact path='/start-configurations' component={StartConfigurations}/>
+
+            <Route exact path='/dashboard' component={RootUserPages}/>
+
+            <Route path="/my-open-actions" component={UserPages}/>
+            <Route path="/q-governance" component={UserPages}/>
+            <Route path="/executive" component={UserPages}/>
         </Switch>
     );
 }

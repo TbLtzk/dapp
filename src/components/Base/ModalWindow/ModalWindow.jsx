@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {Modal} from "react-bootstrap";
 
 import Button from "components/Base/Button";
-import LinkCustom from "components/Base/LinkCustom";
+import ButtonLink from "components/Base/ButtonLink";
 
 import {Header, Body, Footer} from "./styles";
 
@@ -27,7 +27,7 @@ function ModalWindow(props) {
                 {content}
             </Body>
             <Footer>
-                <LinkCustom
+                <ButtonLink
                     title="Back"
                     handleButton={onHide}
                 />

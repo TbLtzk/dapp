@@ -5,6 +5,7 @@ export const colors = {
 };
 
 export const indents = {
+    10: '10px',
     20: '20px',
     30: '30px',
     40: '40px',

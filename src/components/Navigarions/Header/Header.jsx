@@ -4,9 +4,9 @@ import {Link} from "react-router-dom";
 import {Container, Navbar, Nav} from "react-bootstrap";
 
 import Button from "components/Base/Button"
+import LogoImg from "components/Base/LogoImg"
 
 import {navItems} from "./constants";
-import logo from "assets/img/logo.png";
 
 import {NavbarContainer, ListContainer, WrapBtn} from "./styles";
 
@@ -17,11 +17,7 @@ function Header() {
             <NavbarContainer bg="light" expand="lg">
                 <Container fluid>
                     <Link to={'/'} className="navbar-brand">
-                        <img
-                            alt="logo"
-                            src={logo}
-                            className="d-inline-block align-top"
-                        />
+                       <LogoImg/>
                     </Link>
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                     <ListContainer id="basic-navbar-nav">
@@ -39,7 +35,8 @@ function Header() {
                                 <Button
                                     title="Connect Wallet"
                                     handleButton={() => {
-                                        console.log('click')
+                                        console.log('click');
+                                        window.ethereum.request({ method: 'eth_requestAccounts' });
                                     }}
                                 />
                             </WrapBtn>

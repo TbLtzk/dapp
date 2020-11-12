@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import {ButtonCustom} from "./styles";
 
 function Button(props) {
-    const {title, handleButton} = props;
+    const {title, type, handleButton} = props;
 
     return (
         <ButtonCustom
+            type={type}
             variant="primary"
             onClick={handleButton}
         >
@@ -18,7 +19,13 @@ function Button(props) {
 
 Button.propTypes = {
     title: PropTypes.string,
+    type: PropTypes.string,
     handleButton: PropTypes.func,
+};
+
+
+Button.defaultProps = {
+    type: 'main',
 };
 
 export default Button;

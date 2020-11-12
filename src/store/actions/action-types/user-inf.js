@@ -1,0 +1,3 @@
+export const GET_USER_INF = "GET_USER_INF";
+export const GET_USER_INF_SUCCESS = "GET_USER_INF_SUCCESS";
+export const GET_USER_INF_ERROR = "GET_USER_INF_ERROR";

@@ -1,10 +1,11 @@
-const initialState = {};
+import { combineReducers } from 'redux'
 
-export default function rootReducer(state = initialState, action) {
+import UserAuth from './userAuth';
+import userInf from './userInf';
 
-    switch (action.type) {
+const RootReducer = combineReducers({
+    userAuth: UserAuth,
+    userInf: userInf,
+});
 
-        default:
-            return state;
-    }
-}
+export default RootReducer

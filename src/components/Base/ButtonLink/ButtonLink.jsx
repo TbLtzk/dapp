@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import {Link} from "./styles";
 
-function LinkCustom(props) {
+function ButtonLink(props) {
     const {title, handleLink} = props;
 
     return (
@@ -16,10 +16,10 @@ function LinkCustom(props) {
     );
 }
 
-LinkCustom.propTypes = {
+ButtonLink.propTypes = {
     title: PropTypes.string,
     handleLink: PropTypes.func,
 };
 
-export default LinkCustom;
+export default ButtonLink;
 
