@@ -3,12 +3,12 @@ import React from "react";
 import firefox from "assets/img/firefox.png";
 import chrome from "assets/img/chrome.png";
 
-import {WrapImgs, Image} from "./styles"
+import {WrapContainer, WrapImgs, Image} from "./styles"
 
 function InstructionMetamask() {
 
     return (
-        <div>
+        <WrapContainer>
             <p>
                 MetaMask is a browser plugin that allows users to make Ethereum transactions through regular websites.
             </p>
@@ -55,7 +55,7 @@ function InstructionMetamask() {
 
             </p>
 
-        </div>
+        </WrapContainer>
     );
 }
 

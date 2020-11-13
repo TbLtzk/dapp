@@ -8,6 +8,9 @@ export const WrapContainer = styled(Container)`
   background: ${colors.main};
   padding: ${indents["30"]};
   height: ${props => props.seeView ? "100vh" : "100%"};
+  h3{
+   color: ${colors.white};
+  }
 `;
 
 export const WrapRow = styled(Row)`

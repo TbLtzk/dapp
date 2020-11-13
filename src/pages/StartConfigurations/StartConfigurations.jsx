@@ -7,7 +7,7 @@ import {provider, loadingCheckProvider, errorM} from "store/selectors/user-auth"
 
 import {Col} from "react-bootstrap";
 import LoadingSpinner from "components/Base/LoadingSpinner";
-import InstructionMetamask from "components/InstructionMetamask";
+import InstructionMetamask from "components/Custom/InstructionMetamask";
 
 import {WrapContainer, WrapRow, WrapBlock} from "./styles"
 
