@@ -19,6 +19,7 @@ function Routes() {
             <Route exact path='/start-configurations' component={StartConfigurations}/>
 
             <Route exact path='/dashboard' component={AuthProtect(RootUserPages)}/>
+            <Route exact path='/welcome' component={AuthProtect(RootUserPages)}/>
 
             <Route path="/my-open-actions" component={AuthProtect(UserPages)}/>
             <Route path="/q-governance" component={AuthProtect(UserPages)}/>

@@ -10,6 +10,7 @@ import LoadingSpinner from "components/Base/LoadingSpinner";
 import InstructionMetamask from "components/Custom/InstructionMetamask";
 
 import {WrapContainer, WrapRow, WrapBlock} from "./styles"
+import LoadingDrizzle from "components/Custom/LoadingDrizzle";
 
 function StartConfigurations() {
 
@@ -18,7 +19,6 @@ function StartConfigurations() {
     // const [address, setAddress] = useState('');
 
     // const ethereum = window.ethereum;
-    //
     // if (ethereum) {
     //     ethereum.on('accountsChanged', function (accounts) {
     //         console.log('accountsChanged', accounts[0]);
@@ -38,34 +38,36 @@ function StartConfigurations() {
     }, []);
 
     return (
-        <WrapContainer fluid seeView={!errorMessage}>
-            <WrapRow seeView={!errorMessage}>
-                <Col xs={12}>
-                    <WrapBlock seeView={!errorMessage}>
-                        {
-                            loading ? <LoadingSpinner/> :
-                                errorMessage
-                                    ? <div>
-                                        <h3>{errorMessage}</h3>
-                                        <InstructionMetamask/>
-                                    </div>
-                                    : history.push("/my-open-actions")
-                        }
+        <LoadingDrizzle>
+            <WrapContainer fluid seeview={!errorMessage}>
+                <WrapRow seeview={!errorMessage}>
+                    <Col xs={12}>
+                        <WrapBlock seeview={!errorMessage}>
+                            {
+                                loading ? <LoadingSpinner/> :
+                                    errorMessage
+                                        ? <div>
+                                            <h3>{errorMessage}</h3>
+                                            <InstructionMetamask/>
+                                        </div>
+                                        : history.push("/welcome")
+                            }
 
 
-                        {/*<LinkLikeBtn*/}
-                        {/*    type="white"*/}
-                        {/*    title="Connect with Metamask"*/}
-                        {/*    path="#"*/}
-                        {/*    // handleButton={() => {*/}
-                        {/*    //     console.log('click');*/}
-                        {/*    //     window.ethereum.request({method: 'eth_requestAccounts'});*/}
-                        {/*    // }}*/}
-                        {/*/>*/}
-                    </WrapBlock>
-                </Col>
-            </WrapRow>
-        </WrapContainer>
+                            {/*<LinkLikeBtn*/}
+                            {/*    type="white"*/}
+                            {/*    title="Connect with Metamask"*/}
+                            {/*    path="#"*/}
+                            {/*    // handleButton={() => {*/}
+                            {/*    //     console.log('click');*/}
+                            {/*    //     window.ethereum.request({method: 'eth_requestAccounts'});*/}
+                            {/*    // }}*/}
+                            {/*/>*/}
+                        </WrapBlock>
+                    </Col>
+                </WrapRow>
+            </WrapContainer>
+        </LoadingDrizzle>
     );
 }
 

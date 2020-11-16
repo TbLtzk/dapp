@@ -1,6 +1,7 @@
 import React from "react";
 
 import Dashboard from "./Dashboard";
+import WelcomePage from "./WelcomePage";
 import Header from "components/Navigarions/Header";
 
 import {WrapContainer} from "./styles"
@@ -12,6 +13,8 @@ function RootUserPages(props) {
         switch (location.pathname) {
             case '/dashboard':
                 return <Dashboard/>;
+            case '/welcome':
+                return <WelcomePage/>;
             default:
                 return <Dashboard/>;
         }
