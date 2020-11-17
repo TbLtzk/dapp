@@ -18,15 +18,15 @@ export default function userAuth(state = initialState, action) {
         case actionTypes.DETECT_ETHEREUM_PROVIDER_SUCCESS:
             return {
                 ...state,
-                provider: action.payload,
-                // accountId: action.payload.account,
+                provider: action.payload.provider,
+                accountId: action.payload.account,
                 loadingCheckProvider: false
             };
         case actionTypes.DETECT_ETHEREUM_PROVIDER_ERROR:
             return {
                 ...state,
                 provider: null,
-                // accountId: null,
+                accountId: null,
                 loadingCheckProvider: false,
                 errorM: action.payload
             };

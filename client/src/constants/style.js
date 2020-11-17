@@ -2,6 +2,7 @@ export const colors = {
     main: '#2C2B9C',
     background: '#F3F7FC',
     white: '#FFF',
+    error: '#d6606b',
 };
 
 export const indents = {

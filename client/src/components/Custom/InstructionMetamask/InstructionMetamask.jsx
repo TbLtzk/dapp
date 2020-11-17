@@ -4,6 +4,7 @@ import firefox from "assets/img/firefox.png";
 import chrome from "assets/img/chrome.png";
 
 import {WrapContainer, WrapImgs, Image} from "./styles"
+import ConnectMetaMaskButton from "components/Custom/ConnectMetaMaskButton";
 
 function InstructionMetamask() {
 
@@ -54,7 +55,9 @@ function InstructionMetamask() {
                 wallet’s address to clipboard or export your wallet’s private key.
 
             </p>
-
+            <ConnectMetaMaskButton
+                title="Connect to MetaMask"
+            />
         </WrapContainer>
     );
 }

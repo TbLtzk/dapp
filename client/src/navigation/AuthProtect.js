@@ -7,37 +7,26 @@ import {loadingCheckProvider, provider} from "store/selectors/user-auth";
 
 export function AuthProtect(ProtectComponent) {
     function ProtectRoute(props) {
-        const {history} = props;
         const ethereum = window.ethereum;
         const dispatch = useDispatch();
-
-        useEffect(() => {
-            dispatch(detectEthereumProvider())
-        }, []);
 
         const providerObj = useSelector(provider);
         const loading = useSelector(loadingCheckProvider);
 
-        console.log('ethereum', ethereum);
-        if (ethereum){
-            ethereum.on('accountsChanged', function (accounts) {
-                console.log('accountsChanged !!!!!', accounts[0]);
-                if (accounts[0]){
+        useEffect(() => {
+
+            if (ethereum) {
+                ethereum.on('accountsChanged', function (accounts) {
                     dispatch(detectEthereumProvider());
-                    return <ProtectComponent {...props} />
-                }else {
-                    console.log('accountsChanged EXIT!!!!!', accounts[0]);
-                    // dispatch(detectEthereumProvider());
-                    // history.push("/start-configurations");
-                    return <Redirect to="/start-configurations"/>
-                }
+                    // history.push("/dashboard");
+                    if (providerObj){
+                        window.location.reload();
+                    }
+                });
+            }
+        }, [ethereum]);
 
-                // setAddress(accounts[0])
-            });
-            return <ProtectComponent {...props} />
-        }
-
-        if (!providerObj) {
+        if (!providerObj && !ethereum) {
             return <Redirect to="/start-configurations"/>;
         } else {
             return providerObj ? (

@@ -30,19 +30,23 @@ function StartConfigurations() {
     const loading = useSelector(loadingCheckProvider);
     const errorMessage = useSelector(errorM);
 
-    console.log('providerObj', providerObj);
+    console.log('providerObj CONFIGURATIONS', providerObj);
+    console.log('loading CONFIGURATIONS', loading);
+    console.log('errorMessage CONFIGURATIONS', errorMessage);
 
     const dispatch = useDispatch();
+
     useEffect(() => {
-        dispatch(detectEthereumProvider())
+        if (!providerObj){
+            dispatch(detectEthereumProvider())
+        }
     }, []);
 
     return (
-        <LoadingDrizzle>
-            <WrapContainer fluid seeview={!errorMessage}>
-                <WrapRow seeview={!errorMessage}>
+            <WrapContainer fluid>
+                <WrapRow>
                     <Col xs={12}>
-                        <WrapBlock seeview={!errorMessage}>
+                        <WrapBlock block={!errorMessage}>
                             {
                                 loading ? <LoadingSpinner/> :
                                     errorMessage
@@ -67,7 +71,6 @@ function StartConfigurations() {
                     </Col>
                 </WrapRow>
             </WrapContainer>
-        </LoadingDrizzle>
     );
 }
 

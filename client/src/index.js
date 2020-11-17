@@ -18,31 +18,19 @@ import './index.css';
 
 const drizzle = new Drizzle(drizzleOptions);
 const {DrizzleProvider} = drizzleReactHooks;
+console.log('drizzle', drizzle);
 
 ReactDOM.render(
     <DrizzleProvider drizzle={drizzle}>
         <Provider store={store}>
-            {/*<LoadingDrizzle>*/}
+            <LoadingDrizzle>
                 <BrowserRouter>
                     <App/>
                 </BrowserRouter>
-            {/*</LoadingDrizzle>*/}
+            </LoadingDrizzle>
         </Provider>
     </DrizzleProvider>,
 
     document.getElementById('root')
 );
 
-// ReactDOM.render(
-//     <DrizzleProvider drizzle={drizzle}>
-//         <LoadingDrizzle children={"Testing"}/>
-//         <UserData />
-//         {/*<Provider store={store}>*/}
-//         {/*    <BrowserRouter>*/}
-//         {/*        <App/>*/}
-//         {/*    </BrowserRouter>*/}
-//         {/*</Provider>*/}
-//     </DrizzleProvider>,
-//
-//     document.getElementById('root')
-// );
