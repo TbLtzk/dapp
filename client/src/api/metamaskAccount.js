@@ -9,7 +9,7 @@ export async function detectMetamask() {
         if (provider) {
             const accounts = await provider.request({method: 'eth_requestAccounts'});
             const account = accounts[0];
-            console.log('ACCOUNT', account);
+            // console.log('ACCOUNT', account);
             // const balance = await provider.getBalance(account);
             // console.log('BALANCE', balance);
 

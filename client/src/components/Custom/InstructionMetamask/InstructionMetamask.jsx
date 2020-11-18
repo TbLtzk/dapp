@@ -51,10 +51,22 @@ function InstructionMetamask() {
                 “I’ve copied it somewhere safe”.
             </p>
             <p> Congratulations! You have successfully created an account in MetaMask with a new wallet address!
-                Now you can view your address on Etherscan (Ethereum blockchain explorer), check the QR code, copy your
-                wallet’s address to clipboard or export your wallet’s private key.
-
             </p>
+            <h4>How to connect to Q network in MetaMask?</h4>
+            <p>
+                1. In network dropdown menu you need to choose "Custom RPC"
+            </p>
+            <p>
+                2. Enter the custom RPC details:
+                <ul>
+                    <li>Network Name: custom name</li>
+                    <li>New RPC URL: http://54.187.245.252:8545</li>
+                    <li>ChainID: 35442</li>
+                    <li>Symbol: Q</li>
+                </ul>
+            </p>
+            <p>3. Click Save</p>
+            <p>4. Select the custom option from the list.</p>
             <ConnectMetaMaskButton
                 title="Connect to MetaMask"
             />

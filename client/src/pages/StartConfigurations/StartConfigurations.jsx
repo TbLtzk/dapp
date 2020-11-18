@@ -30,9 +30,9 @@ function StartConfigurations() {
     const loading = useSelector(loadingCheckProvider);
     const errorMessage = useSelector(errorM);
 
-    console.log('providerObj CONFIGURATIONS', providerObj);
-    console.log('loading CONFIGURATIONS', loading);
-    console.log('errorMessage CONFIGURATIONS', errorMessage);
+    // console.log('providerObj CONFIGURATIONS', providerObj);
+    // console.log('loading CONFIGURATIONS', loading);
+    // console.log('errorMessage CONFIGURATIONS', errorMessage);
 
     const dispatch = useDispatch();
 

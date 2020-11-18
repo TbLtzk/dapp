@@ -15,18 +15,17 @@ function LoadingDrizzle({children}) {
     // console.log('drizzleState', drizzleState);
     // console.log('drizzle', drizzle);
     const ethereum = window.ethereum;
-    console.log('ethereum', ethereum);
+    // console.log('ethereum', ethereum);
 
     if (drizzleStatus.initialized === false && ethereum) {
-        console.log('drizzleStatus.initialized === false && ethereum');
+        // console.log('drizzleStatus.initialized === false && ethereum');
         return (
             <WrapContainer>
-                {/*<p>test</p>*/}
                 <LoadingSpinner/>
             </WrapContainer>
         )
     } else if (!ethereum){
-        console.log("install metamask loading");
+        // console.log("install metamask loading");
         return children;
     }
 
