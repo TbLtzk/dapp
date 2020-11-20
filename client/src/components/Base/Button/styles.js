@@ -10,4 +10,10 @@ export const ButtonCustom = styled(Button)`
   border-color: ${props => props.type === "white" ? colors.white : colors.main};
   background-color: ${props => props.type === "white" ? colors.white : colors.main};
   color: ${props => props.type === "white" ? colors.main : colors.white};
+  &:disabled {
+    color: ${props => props.type === "white" ? colors.main : colors.white};
+    background-color: ${props => props.type === "white" ? colors.white : colors.main};
+    border-color: ${props => props.type === "white" ? colors.white : colors.main};
+    opacity: 1
+  }
 `;

@@ -2,6 +2,7 @@ import React from "react";
 import {Route, Switch, withRouter} from "react-router-dom";
 
 import {AuthProtect} from "./AuthProtect"
+import {AuthRootProtect} from "./AuthRootProtect"
 
 import StartPage from "pages/StartPage"
 import StartConfigurations from "pages/StartConfigurations"
@@ -21,9 +22,8 @@ function Routes() {
             <Route exact path='/dashboard' component={AuthProtect(RootUserPages)}/>
             <Route exact path='/welcome' component={AuthProtect(RootUserPages)}/>
 
-            <Route path="/my-open-actions" component={AuthProtect(UserPages)}/>
             <Route path="/q-governance" component={AuthProtect(UserPages)}/>
-            <Route path="/executive" component={AuthProtect(UserPages)}/>
+            <Route path="/staking" component={AuthProtect(UserPages)}/>
         </Switch>
     );
 }

@@ -9,7 +9,7 @@ import RootService from "api/contracts/RootService";
 
 const {useDrizzle, useDrizzleState} = drizzleReactHooks;
 
-export function AuthProtect(ProtectComponent) {
+export function AuthRootProtect(ProtectComponent) {
     function ProtectRoute(props) {
         const {drizzle} = useDrizzle();
         const state = useDrizzleState(state => state);
@@ -32,7 +32,8 @@ export function AuthProtect(ProtectComponent) {
             if (drizzle) {
                 rootService.checkMemberIsRoot(state.accounts[0]).then((isRootMember) => {
                     console.log('isRootMemberAuth', isRootMember);
-                    setIsRoot(isRootMember);
+                    // setIsRoot(isRootMember);
+                    setIsRoot('0x64D4edeFE8bA86d3588B213b0A053e7B910Cad68');
                 });
             }
         }, [drizzle]);
@@ -48,13 +49,13 @@ export function AuthProtect(ProtectComponent) {
             }
         }, [ethereum]);
 
-        if (!drizzleStatus && !ethereum && isRoot) {
+        if (!drizzleStatus && !ethereum && !isRoot) {
             return <Redirect
                 to="/start-configurations"
                 children={<ProtectComponent {...props} />}
             />;
         } else {
-            return drizzleStatus && !isRoot? (
+            return drizzleStatus && isRoot ? (
                 <ProtectComponent {...props} />
             ) : (
                 <Redirect

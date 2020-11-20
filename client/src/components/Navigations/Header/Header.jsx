@@ -1,5 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import {drizzleReactHooks} from "@drizzle/react-plugin";
 
 import {Container, Navbar, Nav} from "react-bootstrap";
 
@@ -10,7 +11,11 @@ import {navItems} from "./constants";
 
 import {NavbarContainer, ListContainer, WrapBtn} from "./styles";
 
+const {useDrizzle, useDrizzleState} = drizzleReactHooks;
+
 function Header() {
+    const {drizzle} = useDrizzle();
+    const state = useDrizzleState(state => state);
 
     return (
         <header>
@@ -33,7 +38,8 @@ function Header() {
                             }
                             <WrapBtn>
                                 <Button
-                                    title="Connect Wallet"
+                                    title={state.accounts[0] || "Connect Wallet"}
+                                    disabled={state?.accounts[0]}
                                     handleButton={() => {
                                         console.log('click');
                                         window.ethereum.request({ method: 'eth_requestAccounts' });

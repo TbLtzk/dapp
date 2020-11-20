@@ -2,7 +2,7 @@ import React from "react";
 
 import Dashboard from "./Dashboard";
 import WelcomePage from "./WelcomePage";
-import Header from "components/Navigarions/Header";
+import Header from "components/Navigations/Header";
 
 import {WrapContainer} from "./styles"
 

@@ -58,13 +58,13 @@ function InstructionMetamask() {
             </p>
             <p>
                 2. Enter the custom RPC details:
-                <ul>
-                    <li>Network Name: custom name</li>
-                    <li>New RPC URL: http://54.187.245.252:8545</li>
-                    <li>ChainID: 35442</li>
-                    <li>Symbol: Q</li>
-                </ul>
             </p>
+            <ul>
+                <li>Network Name: custom name</li>
+                <li>New RPC URL: http://54.187.245.252:8545</li>
+                <li>ChainID: 35442</li>
+                <li>Symbol: Q</li>
+            </ul>
             <p>3. Click Save</p>
             <p>4. Select the custom option from the list.</p>
             <ConnectMetaMaskButton

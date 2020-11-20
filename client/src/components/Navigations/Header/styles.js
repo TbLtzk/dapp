@@ -6,6 +6,8 @@ import {colors, indents} from "constants/style";
 export const NavbarContainer = styled(Navbar)`
   background-color: ${colors.white}!important;
   padding: ${indents["20"]};
+  -webkit-box-shadow: 0px -1px 13px -4px rgba(0,0,0,0.6);
+  box-shadow: 0px -1px 13px -4px rgba(0,0,0,0.6);
 `;
 
 export const ListContainer = styled(Navbar.Collapse)`

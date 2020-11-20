@@ -7,13 +7,13 @@ export async function detectMetamask() {
             throw new Error('Please install MetaMask!');
         }
         if (provider) {
-            const accounts = await provider.request({method: 'eth_requestAccounts'});
-            const account = accounts[0];
+            // const accounts = await provider.request({method: 'eth_requestAccounts'});
+            // const account = accounts[0];
             // console.log('ACCOUNT', account);
             // const balance = await provider.getBalance(account);
             // console.log('BALANCE', balance);
 
-            return {provider, account};
+            return provider;
         }
     } catch (e) {
         console.log('e', e);
@@ -21,14 +21,3 @@ export async function detectMetamask() {
     }
 }
 
-export async function getAccountData() {
-    try {
-        const provider = await detectEthereumProvider();
-
-        const accounts = await provider.request({method: 'eth_requestAccounts'});
-        const account = accounts[0];
-        return {id: account};
-    } catch (e) {
-        throw new Error('Please install MetaMask!');
-    }
-}

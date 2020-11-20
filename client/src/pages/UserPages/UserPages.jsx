@@ -1,9 +1,8 @@
 import React from "react";
 
-import UserOpenActions from "./UserOpenActions";
 import QGovernance from "./QGovernance";
-import Executive from "./Executive";
-import Header from "components/Navigarions/Header";
+import Staking from "./Staking";
+import Header from "components/Navigations/Header";
 
 import {WrapContainer} from "./styles"
 
@@ -12,14 +11,12 @@ function UserPages(props) {
 
     const componentSwitcher = () => {
         switch (location.pathname) {
-            case '/my-open-actions':
-                return <UserOpenActions/>;
             case '/q-governance':
                 return <QGovernance/>;
-            case '/executive':
-                return <Executive/>;
+            case '/staking':
+                return <Staking/>;
             default:
-                return <UserOpenActions/>;
+                return <QGovernance/>;
         }
     };
 

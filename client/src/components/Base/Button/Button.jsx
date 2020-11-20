@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import {ButtonCustom} from "./styles";
 
 function Button(props) {
-    const {title, type, handleButton} = props;
+    const {title, type, disabled, handleButton} = props;
 
     return (
         <ButtonCustom
+            disabled={disabled}
             type={type}
             variant="primary"
             onClick={handleButton}
