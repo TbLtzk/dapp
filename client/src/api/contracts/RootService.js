@@ -54,4 +54,55 @@ export default class RootService {
             console.log(e);
         }
     }
+
+    /**
+     * get root node stake
+     * @return array
+     */
+    async getRootNodeAllData() {
+        try {
+            const rootMembers = [];
+            const rootStakes = [];
+            return this.getRootMembers().then((members) => {
+
+                console.log('getRootMembersIn', members);
+                if (members) {
+                    members.map((member, i) => {
+                        this.getRootNodeStake(member).then((nodeStake) => {
+                            // rootStakes.push(nodeStake);
+                            rootStakes.push((i + 1) * 4);
+                        });
+                    });
+
+                }
+                // let result = rootStakes.reduce((sum, current) =>{
+                //     console.log('current', current);
+                //     return sum + current
+                // }, 0);
+                // console.log('rootStakesIN', rootStakes);
+                // console.log('stakeSumIN', result);
+                return rootStakes;
+
+            });
+
+            // return await this.Root.methods.getRootNodeStake(node).call();
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async getRootCalc() {
+        try {
+            const result = await this.getRootNodeAllData();
+            console.log('getRootCalc', result);
+            let res = result.reduce((sum, current) => {
+                console.log('current', current);
+                return sum + current
+            }, 0);
+            console.log('stakeSumIn', res);
+
+        } catch (e) {
+
+        }
+    }
 }

@@ -8,5 +8,6 @@ export const WrapContainer = styled(Container)`
   background: ${colors.background};
   height: 100vh;
   padding-top: ${indents["30"]};
- 
+  padding-left: ${indents["30"]};
+  padding-right: ${indents["30"]};
 `;

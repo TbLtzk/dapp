@@ -1,5 +1,7 @@
 import styled from 'styled-components'
+
 import {Navbar} from "react-bootstrap";
+import {Link} from "react-router-dom";
 
 import {colors, indents} from "constants/style";
 
@@ -19,4 +21,8 @@ export const WrapBtn = styled.div`
   @media (max-width: 991px) {
     margin-left: 0;
   }
+`;
+
+export const LinkStyle = styled(Link)`
+  color: ${props => props.highlight === '1' ? colors.black : colors.main}!important;
 `;

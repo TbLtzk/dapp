@@ -24,7 +24,6 @@ function UserPages(props) {
         <>
             <Header/>
             <WrapContainer fluid>
-                <h3>User pages</h3>
                 {componentSwitcher()}
             </WrapContainer>
         </>
