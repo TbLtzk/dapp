@@ -56,53 +56,123 @@ export default class RootService {
     }
 
     /**
-     * get root node stake
+     * get root node data
      * @return array
      */
     async getRootNodeAllData() {
         try {
-            const rootMembers = [];
             const rootStakes = [];
+            let promiseRes;
             return this.getRootMembers().then((members) => {
-
-                console.log('getRootMembersIn', members);
                 if (members) {
+                    console.log("members", members);
                     members.map((member, i) => {
-                        this.getRootNodeStake(member).then((nodeStake) => {
+                        promiseRes = this.getRootNodeStake(member).then((nodeStake) => {
+                            //TODO: custom data because from back get 0 value of stake
                             // rootStakes.push(nodeStake);
-                            rootStakes.push((i + 1) * 4);
+                            rootStakes.push(
+                                {
+                                    address: member,
+                                    stakeAmount: (i + 1) * 450,
+                                }
+                            );
+                            return {
+                                address: member,
+                                stakeAmount: (i + 1) * 450,
+                            }
                         });
+
                     });
-
                 }
-                // let result = rootStakes.reduce((sum, current) =>{
-                //     console.log('current', current);
-                //     return sum + current
-                // }, 0);
-                // console.log('rootStakesIN', rootStakes);
-                // console.log('stakeSumIN', result);
-                return rootStakes;
-
+                return promiseRes.then((el) => {
+                    return rootStakes;
+                });
             });
-
-            // return await this.Root.methods.getRootNodeStake(node).call();
         } catch (e) {
             console.log(e);
         }
     }
 
+    /**
+     * get root node data with calculation of share percents
+     * @return array
+     */
     async getRootCalc() {
         try {
-            const result = await this.getRootNodeAllData();
-            console.log('getRootCalc', result);
-            let res = result.reduce((sum, current) => {
-                console.log('current', current);
-                return sum + current
-            }, 0);
-            console.log('stakeSumIn', res);
-
+            let rootNodeData;
+            let totalStakes;
+            return await this.getRootNodeAllData().then((data) => {
+                // console.log('getRootCalcData', data);
+                // console.log('getRootCalcData', data.length);
+                if (data.length) {
+                    totalStakes = data.reduce((sum, current) => {
+                        return sum + current.stakeAmount
+                    }, 0);
+                    rootNodeData = data.map((member, i) => {
+                        return {
+                            ...member,
+                            share: Math.round(member.stakeAmount * 100 / totalStakes)
+                        }
+                    });
+                    console.log('rootNodeData', rootNodeData);
+                    return {rootNodeData, totalStakes};
+                }
+            });
         } catch (e) {
 
         }
     }
+
+
+    /**
+     * commit stake
+     * @return number
+     */
+    async stakeToPanel() {
+        try {
+            const result = await this.Root.methods.commitStake().call(function (result) {
+                console.log('stakeToPanel result', result);
+            });
+
+            return result;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    /**
+     * announce withdrawal
+     * @param amount
+     * @return number
+     */
+    async announceWithdrawal(amount) {
+        try {
+            const result = await this.Root.methods.announceWithdrawal(amount).call(function (result) {
+                console.log('announceWithdrawal result', result);
+            });
+
+            return result;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    /**
+     * announce withdrawal
+     * @param amount
+     * @param payTo
+     * @return number
+     */
+    async withdraw(amount, payTo) {
+        try {
+            const result = await this.Root.methods.withdraw(amount, payTo).call(function (result) {
+                console.log('withdraw result', result);
+            });
+
+            return result;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
 }

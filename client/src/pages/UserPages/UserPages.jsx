@@ -1,6 +1,7 @@
 import React from "react";
 
 import QGovernance from "./QGovernance";
+import PiggyBank from "./PiggyBank";
 import Staking from "./Staking";
 import Header from "components/Navigations/Header";
 
@@ -13,6 +14,8 @@ function UserPages(props) {
         switch (location.pathname) {
             case '/q-governance':
                 return <QGovernance/>;
+            case '/piggy-bank':
+                return <PiggyBank/>;
             case '/staking':
                 return <Staking/>;
             default:

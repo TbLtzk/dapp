@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useMemo, useState} from "react";
 import {Row, Col} from "react-bootstrap";
 
 import TabsView from "components/Base/TabsView";
@@ -8,13 +8,33 @@ import RootNodePanel from "components/Custom/RootNodePanel";
 
 function QGovernance() {
     // const [modalShow, setModalShow] = useState(false);
+    const tabsItems = useMemo(() => {
+        return (
+            [
+                {
+                    label: "dashboard",
+                    title: "Dashboard",
+                    content: (
+                        <Col xs={6}>
+                            <RootNodePanel/>
+                        </Col>
+
+                    )
+                },
+                {
+                    label: "manage",
+                    title: "Manage",
+                    content: <p>Manage content</p>
+                },
+            ]
+        )
+    }, []);
 
     return (
         <Row>
             <Col xs={12}>
                 <TabsView
-                    dashboardContent={<RootNodePanel />}
-
+                    tabsItems={tabsItems}
                 />
                 {/*<Button*/}
                 {/*    title="Launch"*/}

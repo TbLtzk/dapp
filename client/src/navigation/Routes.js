@@ -23,6 +23,7 @@ function Routes() {
             <Route exact path='/welcome' component={AuthProtect(RootUserPages)}/>
 
             <Route path="/q-governance" component={AuthProtect(UserPages)}/>
+            <Route path="/piggy-bank" component={AuthProtect(UserPages)}/>
             <Route path="/staking" component={AuthProtect(UserPages)}/>
         </Switch>
     );

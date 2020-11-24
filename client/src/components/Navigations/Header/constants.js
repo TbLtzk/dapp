@@ -4,6 +4,10 @@ export const navItems = [
         location: "q-governance"
     },
     {
+        label: "PiggyBank",
+        location: "piggy-bank"
+    },
+    {
         label: "Staking",
         location: "staking"
     }

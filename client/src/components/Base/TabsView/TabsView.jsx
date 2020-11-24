@@ -1,13 +1,11 @@
 import React, {useState} from "react";
 import PropTypes from 'prop-types';
 
-import {Tabs, Tab} from "react-bootstrap";
-
 import {TabsStyle, TabStyle} from "./styles";
 
 function TabsView(props) {
-    const {show, onClose, content, type, header, dashboardContent} = props;
-    const [key, setKey] = useState('dashboard');
+    const {tabsItems} = props;
+    const [key, setKey] = useState(tabsItems[0]?.label);
 
     return (
         <TabsStyle
@@ -15,22 +13,23 @@ function TabsView(props) {
             activeKey={key}
             onSelect={(k) => setKey(k)}
         >
-            <TabStyle eventKey="dashboard" title="Dashboard">
-                {dashboardContent}
-            </TabStyle>
-            <TabStyle eventKey="manage" title="Manage">
-                <p>Manage content</p>
-            </TabStyle>
+            {
+                !tabsItems ? null :
+                    tabsItems.map((el, i) => {
+                        return (
+                            <TabStyle key={i} eventKey={el.label} title={el.title}>
+                                {el.content}
+                            </TabStyle>
+                        )
+
+                    })
+            }
         </TabsStyle>
     );
 }
 
 TabsView.propTypes = {
-    type: PropTypes.string,
-    show: PropTypes.bool,
-    content: PropTypes.string,
-    header: PropTypes.string,
-    onClose: PropTypes.func,
+    tabsItems: PropTypes.array,
 };
 
 export default TabsView;

@@ -1,5 +1,3 @@
-import {colors} from "constants/style";
-
 export const tableHeader = [
     'Root Node Address',
     "Staked \n Amount",

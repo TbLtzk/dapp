@@ -1,34 +1,84 @@
-import React from "react";
-import {PieChart} from 'react-minimal-pie-chart';
+import React, {useState, useEffect} from "react";
+import {useSelector} from "react-redux";
+import {rootMembersData} from "store/selectors/root-contract"
 
+import {PieChart, Pie, Cell} from 'recharts';
+
+import {circles} from "components/Custom/RootNodePanel/constants"
+
+import {colors} from "constants/style"
 import {WrapChart} from "./styles"
 
-function PieChartCustom() {
+const RADIAN = Math.PI / 180;
+
+const renderCustomizedLabel = ({cx, cy, midAngle, innerRadius, outerRadius, percent, index,}) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+        <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+            {`${(percent * 100).toFixed(0)}%`}
+        </text>
+    );
+};
+
+function PieChartCustom(props) {
+    const rootMembersArray = useSelector(rootMembersData);
+    // const {data} = props;
+    const [transformData, setTransformData] = useState(null);
+    const [maxValue, setMaxValue] = useState(null);
+
+    const arrayMax = (arr) => {
+        return arr.reduce(function (p, v) {
+            return (p > v?.share ? p : v?.share);
+        }, 0);
+    };
+
+    useEffect(() => {
+        if (rootMembersArray) {
+            setTransformData(rootMembersArray.map((member, i) => {
+                return {
+                    name: i,
+                    value: member?.share
+                };
+            }));
+            const resMax = arrayMax(rootMembersArray);
+            setMaxValue(resMax);
+        }
+    }, [rootMembersArray]);
+
     return (
         <WrapChart>
-            <PieChart
-                data={[
-                    {title: 'One', value: 10, color: '#283FFF', style: {strokeWidth: 9}},
-                    {title: 'Two', value: 15, color: '#FFA000', style: {strokeWidth: 10}},
-                    {title: 'Three', value: 20, color: '#FF5A3A', style: {strokeWidth: 12}},
-                    {title: 'Four', value: 20, color: '#00C3F8', style: {strokeWidth: 8}},
-                ]}
-                segmentsStyle={{position: "relative"}}
-                startAngle={320}
-                lengthAngle={360}
-                paddingAngle={0}
-                animation
-                animationDuration={500}
-                animationEasing="ease-out"
-                center={[50, 50]}
-                lineWidth={50}
-                viewBoxSize={[100, 100]}
-                // label={({ dataEntry }) => dataEntry.value}
-                // radius={PieChart.defaultProps.radius - 6}
-                // segmentsStyle={{ transition: 'stroke .3s', cursor: 'pointer' }}
-            >
-                <p style={{position: "absolute", top: 0, right: 0, bottom: 0, left: 0}}>64%</p>
-            </PieChart>
+            {
+                !transformData ? null :
+                    <PieChart width={200} height={200}>
+                        <text x={108} y={102} dy={8} textAnchor="middle"
+                              fill={colors.darkBlue}
+                              fontSize="24"
+                              fontWeight="bold"
+                        >
+                            {maxValue + '%'}
+                        </text>
+                        <Pie
+                            data={transformData}
+                            cx={100}
+                            cy={100}
+                            labelLine={false}
+                            // label={renderCustomizedLabel}
+                            innerRadius={50}
+                            fill="#8884d8"
+                            dataKey="value"
+                        >
+                            {rootMembersArray.map((entry, index) =>
+                                <Cell
+                                    key={`cell-${index}`}
+                                    fill={circles[index % circles.length]}
+                                />
+                            )}
+                        </Pie>
+                    </PieChart>
+            }
         </WrapChart>
     );
 }

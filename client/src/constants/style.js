@@ -24,5 +24,4 @@ export const indents = {
 export const h5Text = styled.h5`
   font-size: ${indents["20"]};
   color: ${colors.black};
-
 `;
