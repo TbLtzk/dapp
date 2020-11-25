@@ -66,3 +66,37 @@ export const withdrawError = (result) => ({
     type: actionTypes.WITHDRAW_ERROR,
     result,
 });
+
+/* check is user root node */
+export const checkIsUserRootNode = (contract, address) => ({
+    type: actionTypes.CHECK_IS_USER_ROOT_NODE,
+    contract,
+    address,
+});
+
+export const checkIsUserRootNodeSuccess = (result) => ({
+    type: actionTypes.CHECK_IS_USER_ROOT_NODE_SUCCESS,
+    result,
+});
+
+export const checkIsUserRootNodeError = (result) => ({
+    type: actionTypes.CHECK_IS_USER_ROOT_NODE_ERROR,
+    result,
+});
+
+/* check is user root node */
+export const getRootNodeStakes = (contract, address) => ({
+    type: actionTypes.GET_ROOT_NODE_STAKES,
+    contract,
+    address,
+});
+
+export const getRootNodeStakesSuccess = (result) => ({
+    type: actionTypes.GET_ROOT_NODE_STAKES_SUCCESS,
+    result,
+});
+
+export const getRootNodeStakesError = (result) => ({
+    type: actionTypes.GET_ROOT_NODE_STAKES_ERROR,
+    result,
+});

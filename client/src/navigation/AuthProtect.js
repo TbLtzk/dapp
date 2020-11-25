@@ -3,39 +3,31 @@ import {useDispatch, useSelector} from "react-redux";
 import {Redirect} from "react-router";
 import {drizzleReactHooks} from "@drizzle/react-plugin";
 
-import {detectEthereumProvider} from "store/actions/action-creaters/user-auth";
-import {loadingCheckProvider, provider} from "store/selectors/user-auth";
 import RootService from "api/contracts/RootService";
+import {detectEthereumProvider} from "store/actions/action-creaters/user-auth";
+import {checkIsUserRootNode} from "store/actions/action-creaters/root-contract";
+import {userAddressMetamask} from "store/selectors/user-inf";
 
 const {useDrizzle, useDrizzleState} = drizzleReactHooks;
 
 export function AuthProtect(ProtectComponent) {
     function ProtectRoute(props) {
         const {drizzle} = useDrizzle();
-        const state = useDrizzleState(state => state);
-        const drizzleState = useDrizzleState(state => state);
         const drizzleStatus = useDrizzleState(state => state.drizzleStatus);
         const rootService = new RootService(drizzle);
-        const [isRoot, setIsRoot] = useState(false);
-
-        // console.log('AuthProtect drizzle', drizzle);
-        // console.log('AuthProtect drizzleState', drizzleState);
-        // console.log('AuthProtect drizzleStatus', drizzleStatus);
 
         const ethereum = window.ethereum;
         const dispatch = useDispatch();
 
-        // const providerObj = useSelector(provider);
-        // const loading = useSelector(loadingCheckProvider);
+        const userAddress = useSelector(userAddressMetamask);
+        console.log("userAddress", userAddress);
 
         useEffect(() => {
-            if (drizzle) {
-                rootService.checkMemberIsRoot(state.accounts[0]).then((isRootMember) => {
-                    console.log('isRootMemberAuth', isRootMember);
-                    setIsRoot(isRootMember);
-                });
+            if (userAddress) {
+                dispatch(checkIsUserRootNode(rootService, "0x64D4edeFE8bA86d3588B213b0A053e7B910Cad68"))
+                // dispatch(checkIsUserRootNode(rootService, userAddress))
             }
-        }, [drizzle]);
+        }, [userAddress, dispatch]);
 
         useEffect(() => {
             if (ethereum) {
@@ -48,13 +40,13 @@ export function AuthProtect(ProtectComponent) {
             }
         }, [ethereum]);
 
-        if (!drizzleStatus && !ethereum && isRoot) {
+        if (!drizzleStatus && !ethereum) {
             return <Redirect
                 to="/start-configurations"
                 children={<ProtectComponent {...props} />}
             />;
         } else {
-            return drizzleStatus && !isRoot? (
+            return drizzleStatus ? (
                 <ProtectComponent {...props} />
             ) : (
                 <Redirect

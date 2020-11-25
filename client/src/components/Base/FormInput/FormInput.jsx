@@ -1,11 +1,16 @@
 import React, {forwardRef} from "react";
 import {Form} from "react-bootstrap";
+
 import ErrorInputMessage from "components/Base/ErrorInputMessage";
+import {InputWrapper} from "./styles"
 
 const FormInput = forwardRef((props, ref) => {
-    const {name, type, placeholder, valid, onChange} = props;
+    const {name, type, placeholder, valid, align, onChange} = props;
     return (
-        <Form.Group controlId="formBasicEmail">
+        <InputWrapper
+            controlId="formBasicEmail"
+            align={align}
+        >
             <Form.Control
                 type={type}
                 placeholder={placeholder}
@@ -14,7 +19,7 @@ const FormInput = forwardRef((props, ref) => {
                 onChange={onChange}
             />
             <ErrorInputMessage message={valid}/>
-        </Form.Group>
+        </InputWrapper>
     );
 });
 

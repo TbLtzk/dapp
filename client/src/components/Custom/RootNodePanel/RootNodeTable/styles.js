@@ -25,3 +25,7 @@ export const Circle = styled.div`
   margin-right: 7px;
 `;
 
+export const MemberAddress = styled.span`
+  color: ${props => props.color === "highlight" ? colors.green : colors.darkBlue};
+`;
+

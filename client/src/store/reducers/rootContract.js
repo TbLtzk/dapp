@@ -5,6 +5,9 @@ const initialState = {
     rootMembersAmountStakes: null,
     loadingRootMembers: true,
     errorM: null,
+    isUserRootNode: false,
+    loadingCheckingRootNode: true,
+    rootNodeStake: 0,
 };
 
 export default function rootContract(state = initialState, action) {
@@ -28,6 +31,24 @@ export default function rootContract(state = initialState, action) {
                 rootMembersData: [],
                 loadingRootMembers: false,
                 errorM: action.result
+            };
+
+        case actionTypes.CHECK_IS_USER_ROOT_NODE_SUCCESS:
+            return {
+                ...state,
+                isUserRootNode: action.result,
+                loadingCheckingRootNode: false,
+            };
+        case actionTypes.CHECK_IS_USER_ROOT_NODE_ERROR:
+            return {
+                ...state,
+                isUserRootNode: false,
+                loadingCheckingRootNode: false,
+            };
+        case actionTypes.GET_ROOT_NODE_STAKES_SUCCESS:
+            return {
+                ...state,
+                rootNodeStake: action.result,
             };
         default:
             return state;

@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from "react";
 import {Row, Col} from "react-bootstrap";
 
-import TabsView from "components/Base/TabsView";
+import TabsView from "components/Base/Tabs/TabsView";
 import ModalWindow from "components/Base/ModalWindow";
 import Button from "components/Base/Button";
 import RootNodePanel from "components/Custom/RootNodePanel";

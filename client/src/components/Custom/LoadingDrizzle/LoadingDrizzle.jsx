@@ -1,6 +1,8 @@
 import React, {useEffect, useState, useCallback} from "react";
 import Web3 from 'web3';
 import {drizzleReactHooks} from "@drizzle/react-plugin";
+import {useDispatch} from "react-redux";
+import {setUserAddress, setUserBalance} from "store/actions/action-creaters/user-inf";
 
 import LoadingSpinner from "components/Base/LoadingSpinner";
 import StartConfigurations from "pages/StartConfigurations";
@@ -14,8 +16,11 @@ function LoadingDrizzle({children}) {
     const [isMetaMask, setIsMetaMask] = useState('loading');
     const ethereum = window.ethereum;
     const {drizzle} = useDrizzle();
+    const state = useDrizzleState(state => state);
     const drizzleStatus = useDrizzleState(state => state.drizzleStatus);
     console.log('drizzle drizzle Loading', drizzle);
+
+    const dispatch = useDispatch();
 
     useEffect(async () => {
         if (drizzleStatus.initialized) {
@@ -76,6 +81,16 @@ function LoadingDrizzle({children}) {
     const accountHandler = useCallback(() => {
         switch (isMetaMask) {
             case 'logged':
+                const addressId = "0x64D4edeFE8bA86d3588B213b0A053e7B910Cad68";
+                // const addressId = state.accounts[0];
+                dispatch(setUserAddress(addressId));
+                // dispatch(setUserAddress(state.accounts[0]));
+                const balance = state.accountBalances[addressId];
+                // const balance = state.accountBalances[state.accounts[0]];
+                if (balance){
+                    const convertBalance = drizzle.web3.utils.fromWei(balance, 'ether');
+                    dispatch(setUserBalance(convertBalance));
+                }
                 return children;
             case 'not-logged':
                 return <StartConfigurations error={'Waiting for login in MetaMask!'}/>;

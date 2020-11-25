@@ -2,7 +2,6 @@ import React from "react";
 import {Route, Switch, withRouter} from "react-router-dom";
 
 import {AuthProtect} from "./AuthProtect"
-import {AuthRootProtect} from "./AuthRootProtect"
 
 import StartPage from "pages/StartPage"
 import StartConfigurations from "pages/StartConfigurations"

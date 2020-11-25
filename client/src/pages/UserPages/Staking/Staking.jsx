@@ -2,7 +2,8 @@ import React, {useMemo} from "react";
 import {Row, Col} from "react-bootstrap";
 
 import StakingContent from "./StakingContent";
-import TabsView from "components/Base/TabsView";
+import ButtonTabs from "components/Base/Tabs/ButtonTabs";
+// import BigTabsView from "components/Base/Tabs/BigTabsView";
 
 function Staking() {
 
@@ -26,7 +27,7 @@ function Staking() {
     return (
         <Row>
             <Col xs={12}>
-                <TabsView
+                <ButtonTabs
                     tabsItems={tabsItems}
                 />
             </Col>

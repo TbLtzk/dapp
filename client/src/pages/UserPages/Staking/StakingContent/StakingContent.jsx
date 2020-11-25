@@ -1,4 +1,5 @@
 import React from "react";
+
 import {Row, Col} from "react-bootstrap";
 
 import RootNodePanel from "components/Custom/RootNodePanel";
@@ -14,7 +15,10 @@ function StakingContent() {
                 <FormStaking/>
             </Col>
             <Col xs={6}>
-                <RootNodePanel type="with-total"/>
+                <RootNodePanel
+                    type="with-total"
+                    bottom={true}
+                />
             </Col>
         </WrapContainer>
 

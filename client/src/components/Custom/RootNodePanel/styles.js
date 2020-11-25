@@ -20,3 +20,11 @@ export const TotalWrap = styled.div`
   font-weight: 600;
   font-size: 14px;
 `;
+
+export const BottomText = styled.p`
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 22px;
+  color: ${colors.lightGrey};
+`;

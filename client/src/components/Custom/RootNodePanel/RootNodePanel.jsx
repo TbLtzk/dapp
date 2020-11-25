@@ -5,23 +5,31 @@ import {newContextComponents} from "@drizzle/react-components";
 
 import {useDispatch, useSelector} from "react-redux";
 import {getRootMembersData} from "store/actions/action-creaters/root-contract"
-import {rootMembersData, rootMembersAmountStakes, loadingRootMembers, errorM} from "store/selectors/root-contract"
+import {
+    rootMembersData, rootMembersAmountStakes, loadingRootMembers, errorM,
+    isUserRootNode, loadingCheckingRootNode
+} from "store/selectors/root-contract"
 
 import {Container, Row, Col} from "react-bootstrap";
 
 import ContractRegistryService from "api/contracts/ContractRegistryService"
 import RootService from "api/contracts/RootService"
 import PieChartCustom from "components/Base/PieChartCustom"
+import ButtonLink from "components/Base/ButtonLink"
 import RootNodeTable from "./RootNodeTable"
 import LoadingSpinner from "components/Base/LoadingSpinner";
 
-import {H5Headline, ContainerWrap, HeadlineWrap, TotalWrap} from "./styles"
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRight} from '@fortawesome/free-solid-svg-icons'
+import {H5Headline, ContainerWrap, HeadlineWrap, TotalWrap,
+    BottomText} from "./styles"
+
 
 const {useDrizzle, useDrizzleState} = drizzleReactHooks;
 const {AccountData} = newContextComponents;
 
 function RootNodePanel(props) {
-    const {type} = props;
+    const {type, bottom} = props;
     const {drizzle} = useDrizzle();
     const state = useDrizzleState(state => state);
     const contractRegistry = new ContractRegistryService(drizzle);
@@ -61,6 +69,9 @@ function RootNodePanel(props) {
     const loading = useSelector(loadingRootMembers);
     const errorMessage = useSelector(errorM);
     const rootAmountStakes = useSelector(rootMembersAmountStakes);
+
+    const isUserRoot = useSelector(isUserRootNode);
+    const loadingCheckingRoot = useSelector(loadingCheckingRootNode);
     console.log('rootMembersArray', rootMembersArray);
     console.log('rootAmountStakes', rootAmountStakes);
     console.log('drizzle', drizzle);
@@ -87,14 +98,33 @@ function RootNodePanel(props) {
                                             {type !== "with-total" ? null :
                                                 <TotalWrap>Total Stake: {rootAmountStakes + "Q"}</TotalWrap>}
                                         </HeadlineWrap>
-
                                     </Col>
                                     <Col xs={5}>
                                         <PieChartCustom/>
                                     </Col>
                                     <Col xs={7}>
                                         <RootNodeTable/>
+                                        {
+                                            !bottom ? null :
+                                                <Row>
+                                                    <Col xs={7}>
+                                                        <BottomText>Create a proposal to enter
+                                                            or leave the Root Node Panel</BottomText>
+                                                    </Col>
+                                                    <Col xs={5}>
+                                                        <ButtonLink
+                                                            title={
+                                                                <>
+                                                                    <span>Go to Governance</span>
+                                                                    <FontAwesomeIcon icon={faArrowRight}/>
+                                                                </>
+                                                            }
+                                                        />
+                                                    </Col>
+                                                </Row>
+                                        }
                                     </Col>
+
                                 </>
                     }
                 </Row>

@@ -1,29 +1,23 @@
 import * as actionTypes from "../actions/action-types/user-inf";
 
 const initialState = {
+    userAddress: null,
+    balance: null,
 };
 
 export default function userAuth(state = initialState, action) {
 
     switch (action.type) {
-    //     case actionTypes.GET_USER_INF:
-    //         return {
-    //             ...state,
-    //             loadingUserInf: true
-    //         };
-    //     case actionTypes.GET_USER_INF_SUCCESS:
-    //         return {
-    //             ...state,
-    //             user: action.payload,
-    //             loadingUserInf: false
-    //         };
-    //     case actionTypes.GET_USER_INF_ERROR:
-    //         return {
-    //             ...state,
-    //             user: null,
-    //             loadingUserInf: false,
-    //             errorM: action.payload
-    //         };
+        case actionTypes.SET_USER_ADDRESS:
+            return {
+                ...state,
+                userAddress: action.address
+            };
+            case actionTypes.SET_USER_BALANCE:
+            return {
+                ...state,
+                balance: action.balance
+            };
         default:
             return state;
     }

@@ -1,19 +1,23 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useCallback} from "react";
 import {drizzleReactHooks} from "@drizzle/react-plugin";
 import {newContextComponents} from "@drizzle/react-components";
-import {useDispatch} from "react-redux";
-import {stakeToPanel, announceWithdrawal, withdraw} from "store/actions/action-creaters/root-contract";
+import {useDispatch, useSelector} from "react-redux";
+import {stakeToPanel, announceWithdrawal, withdraw,
+    getRootNodeStakes} from "store/actions/action-creaters/root-contract";
+import {isUserRootNode, loadingCheckingRootNode, rootNodeStake} from "store/selectors/root-contract"
+import {balanceMetamask, userAddressMetamask} from "store/selectors/user-inf"
 
 import {useForm} from "react-hook-form";
 
 import {Row, Col, Form} from "react-bootstrap";
 
+import CustomBlock from "components/Base/CustomBlock"
 import FormInput from "components/Base/FormInput"
 import Button from "components/Base/Button";
 import RootService from "api/contracts/RootService";
 
 import {
-    WrapContainer, Headline, List, TextWrapBlack,
+    Headline, List, TextWrapBlack,
     TextWrapGrey, TotalText, WrapInput
 } from "./styles"
 
@@ -26,12 +30,40 @@ function FormStaking() {
     const dispatch = useDispatch();
     const rootService = new RootService(drizzle);
 
+    const isUserRoot = useSelector(isUserRootNode);
+    const loadingCheckingRoot = useSelector(loadingCheckingRootNode);
+    const userBalance = useSelector(balanceMetamask);
+    console.log("isUserRoot", isUserRoot);
+    const userAddress = useSelector(userAddressMetamask);
+    const amountNodeStake = useSelector(rootNodeStake);
+    console.log("amountNodeStake", amountNodeStake);
+
+    useEffect(() => {
+        if (userAddress && isUserRoot) {
+            dispatch(getRootNodeStakes(rootService, userAddress))
+        }
+    }, [userAddress, isUserRoot, dispatch]);
+
+    const onWithdrawFromPanel = useCallback((data) => {
+        console.log('Withdraw', data);
+        dispatch(withdraw(rootService, parseInt(data.amount), userAddress))
+    }, [dispatch]);
+
+    const onAccounce = useCallback((data) => {
+        console.log('announceWithdrawal', data);
+        dispatch(announceWithdrawal(rootService, parseInt(data.amount)))
+    }, [dispatch]);
+
+
     return (
-        <WrapContainer>
+        <CustomBlock>
             <Headline>Your account status</Headline>
             <List>
-                <li>Member of Root Node Panel</li>
-                <li>Or Not a Member of Root Node Panel</li>
+                {loadingCheckingRoot ? null :
+                    isUserRoot
+                        ? <li>Member of Root Node Panel</li>
+                        : <li>Not a Member of Root Node Panel</li>
+                }
             </List>
             <Row>
                 <TextWrapGrey md={6}>
@@ -41,7 +73,12 @@ function FormStaking() {
                 </TextWrapGrey>
                 <TextWrapBlack md={6}>
                     <p>
-                        0Q
+                        {
+
+                            !isUserRoot ? "0Q" : amountNodeStake + "Q"
+
+                        }
+
                     </p>
                 </TextWrapBlack>
                 <TextWrapGrey md={6}>
@@ -51,19 +88,20 @@ function FormStaking() {
                 </TextWrapGrey>
                 <TextWrapBlack md={6}>
                     <p>
-                        180000Q
+                        {userBalance ? userBalance : 0}Q
                     </p>
                 </TextWrapBlack>
-                <TotalText md={6}>
+                <TotalText md={7}>
                     <p>
                         Amount (Q):
                     </p>
                 </TotalText>
-                <WrapInput md={6}>
+                <WrapInput md={5}>
                     <FormInput
                         name="amount"
-                        type="number"
-                        placeholder={"135 000"}
+                        type="text"
+                        align="right"
+                        // placeholder={"135 000"}
                         ref={register({required: "Field is required!"})}
                         valid={errors?.amount?.message}
                         onChange={() => {
@@ -86,26 +124,18 @@ function FormStaking() {
                     <Button
                         type="full-width"
                         title="Withdraw from Panel"
-                        handleButton={() => {
-                            console.log('Withdraw');
-                            dispatch(withdraw(rootService, 20, "0x4a14D788D86D021670EBcecE1196631d66595984"))
-                        }}
+                        handleButton={handleSubmit(onWithdrawFromPanel)}
                     />
                 </Col>
                 <Col md={4}>
                     <Button
                         type="full-width"
                         title="Accounce"
-                        handleButton={() => {
-                            console.log('Accounce');
-                            dispatch(announceWithdrawal(rootService, 30))
-                        }}
+                        handleButton={handleSubmit(onAccounce)}
                     />
                 </Col>
             </Row>
-
-
-        </WrapContainer>
+        </CustomBlock>
     );
 }
 
