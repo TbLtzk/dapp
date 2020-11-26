@@ -1,10 +1,10 @@
 import React from 'react';
 
-import MainContainer from './components/MainContainer';
+import Routes from "navigation/Routes";
 
 function App(){
     return (
-        <MainContainer/>
+        <Routes/>
     );
 }
 

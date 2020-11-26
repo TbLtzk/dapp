@@ -8,6 +8,8 @@ const initialState = {
     isUserRootNode: false,
     loadingCheckingRootNode: true,
     rootNodeStake: 0,
+
+    stakeToPanelTransId: null
 };
 
 export default function rootContract(state = initialState, action) {
@@ -49,6 +51,16 @@ export default function rootContract(state = initialState, action) {
             return {
                 ...state,
                 rootNodeStake: action.result,
+            };
+        case actionTypes.STAKE_TO_PANEL_SUCCESS:
+            return {
+                ...state,
+                stakeToPanelTransId: action.result,
+            };
+        case actionTypes.STAKE_TO_PANEL_ERROR:
+            return {
+                ...state,
+                stakeToPanelTransId: null,
             };
         default:
             return state;

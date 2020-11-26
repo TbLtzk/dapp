@@ -3,7 +3,7 @@ import React from "react";
 import {Row, Col} from "react-bootstrap";
 
 import RootNodePanel from "components/Custom/RootNodePanel";
-import FormStaking from "components/Custom/FormStaking";
+import FormStaking from "pages/UserPages/Staking/FormStaking";
 
 import {WrapContainer} from "./styles"
 

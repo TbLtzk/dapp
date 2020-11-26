@@ -17,9 +17,10 @@ export const getRootMembersDataError = (result) => ({
 });
 
 /* stakeToPanel */
-export const stakeToPanel = (contract) => ({
+export const stakeToPanel = (contract, data) => ({
     type: actionTypes.STAKE_TO_PANEL,
-    contract
+    contract,
+    data
 });
 
 export const stakeToPanelSuccess = (result) => ({

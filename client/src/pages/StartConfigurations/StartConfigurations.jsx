@@ -8,7 +8,7 @@ import {drizzleReactHooks} from "@drizzle/react-plugin";
 
 import {Col} from "react-bootstrap";
 import LoadingSpinner from "components/Base/LoadingSpinner";
-import InstructionMetamask from "components/Custom/InstructionMetamask";
+import InstructionMetamask from "pages/StartConfigurations/InstructionMetamask";
 
 import {WrapContainer, WrapRow, WrapBlock} from "./styles"
 
@@ -57,11 +57,12 @@ function StartConfigurations(props) {
         }
     };
 
+
     return (
         <WrapContainer fluid>
             <WrapRow>
                 <Col xs={12}>
-                    <WrapBlock block={!errorMessage}>
+                    <WrapBlock block={!error || !errorMessage}>
                         {checkMetaMask()}
                     </WrapBlock>
                 </Col>

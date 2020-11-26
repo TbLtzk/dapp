@@ -22,12 +22,12 @@ function* getRootMembersData({contract}) {
     }
 }
 
-function* stakeToPanel({contract}) {
+function* stakeToPanel({contract, data}) {
     try {
-        const data = yield contract.stakeToPanel();
-        console.log("stakeToPanel", data);
+        const res = yield contract.stakeToPanel(data);
+        console.log("stakeToPanel", res);
 
-        yield put(stakeToPanelSuccess(data));
+        yield put(stakeToPanelSuccess(res));
     } catch (err) {
         console.log('err',err);
         yield put(stakeToPanelError(err.message));

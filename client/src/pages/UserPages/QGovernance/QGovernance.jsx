@@ -5,6 +5,7 @@ import TabsView from "components/Base/Tabs/TabsView";
 import ModalWindow from "components/Base/ModalWindow";
 import Button from "components/Base/Button";
 import RootNodePanel from "components/Custom/RootNodePanel";
+import QManage from "./QManage";
 
 function QGovernance() {
     // const [modalShow, setModalShow] = useState(false);
@@ -24,7 +25,7 @@ function QGovernance() {
                 {
                     label: "manage",
                     title: "Manage",
-                    content: <p>Manage content</p>
+                    content: <QManage/>
                 },
             ]
         )

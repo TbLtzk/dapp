@@ -18,7 +18,7 @@ export const WrapRow = styled(Row)`
 `;
 
 export const WrapBlock = styled.div`
-  height: ${props => props.block ? "100vh" : "100%"};
+  height: ${props => props.block ? "100%" : "100vh"};
   display: flex;
   flex-direction: column;
   align-items: center;

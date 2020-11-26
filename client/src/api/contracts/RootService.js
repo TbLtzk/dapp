@@ -128,13 +128,9 @@ export default class RootService {
      * commit stake
      * @return number
      */
-    async stakeToPanel() {
+    async stakeToPanel(data) {
         try {
-            const result = await this.Root.methods.commitStake().call(function (result) {
-                console.log('stakeToPanel result', result);
-            });
-
-            return result;
+            return await this.Root.methods.commitStake.cacheSend(data);
         } catch (e) {
             console.log(e);
         }

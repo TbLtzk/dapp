@@ -21,8 +21,11 @@ import LoadingSpinner from "components/Base/LoadingSpinner";
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faArrowRight} from '@fortawesome/free-solid-svg-icons'
-import {H5Headline, ContainerWrap, HeadlineWrap, TotalWrap,
-    BottomText} from "./styles"
+import {
+    H5Headline, ContainerWrap, HeadlineWrap, TotalWrap,
+    BottomText
+} from "./styles"
+import {useHistory} from "react-router-dom";
 
 
 const {useDrizzle, useDrizzleState} = drizzleReactHooks;
@@ -34,7 +37,7 @@ function RootNodePanel(props) {
     const state = useDrizzleState(state => state);
     const contractRegistry = new ContractRegistryService(drizzle);
     const rootService = new RootService(drizzle);
-
+    const history = useHistory();
     // const [rootMembers, setRootMembers] = useState(null);
     // const [rootMembersAllData, setRootMembersAllData] = useState([]);
 
@@ -72,9 +75,9 @@ function RootNodePanel(props) {
 
     const isUserRoot = useSelector(isUserRootNode);
     const loadingCheckingRoot = useSelector(loadingCheckingRootNode);
-    console.log('rootMembersArray', rootMembersArray);
-    console.log('rootAmountStakes', rootAmountStakes);
-    console.log('drizzle', drizzle);
+    // console.log('rootMembersArray', rootMembersArray);
+    // console.log('rootAmountStakes', rootAmountStakes);
+    // console.log('drizzle', drizzle);
 
     const dispatch = useDispatch();
 
@@ -119,6 +122,7 @@ function RootNodePanel(props) {
                                                                     <FontAwesomeIcon icon={faArrowRight}/>
                                                                 </>
                                                             }
+                                                            handleLink={() => history.push("/q-governance")}
                                                         />
                                                     </Col>
                                                 </Row>

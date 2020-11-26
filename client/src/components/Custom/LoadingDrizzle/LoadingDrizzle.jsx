@@ -2,7 +2,7 @@ import React, {useEffect, useState, useCallback} from "react";
 import Web3 from 'web3';
 import {drizzleReactHooks} from "@drizzle/react-plugin";
 import {useDispatch} from "react-redux";
-import {setUserAddress, setUserBalance} from "store/actions/action-creaters/user-inf";
+import {setUserAddress} from "store/actions/action-creaters/user-inf";
 
 import LoadingSpinner from "components/Base/LoadingSpinner";
 import StartConfigurations from "pages/StartConfigurations";
@@ -18,7 +18,6 @@ function LoadingDrizzle({children}) {
     const {drizzle} = useDrizzle();
     const state = useDrizzleState(state => state);
     const drizzleStatus = useDrizzleState(state => state.drizzleStatus);
-    console.log('drizzle drizzle Loading', drizzle);
 
     const dispatch = useDispatch();
 
@@ -48,49 +47,21 @@ function LoadingDrizzle({children}) {
                     const promise = await new Promise(function (resolve, reject) {
                         window.ethereum.enable();
                     });
-                    console.log('promise!', promise);
-                    // Request account access if needed
-                    // promise
-                    //     .then(
-                    //         result => {
-                    //             // первая функция-обработчик - запустится при вызове resolve
-                    //             alert("Fulfilled: " + result); // result - аргумент resolve
-                    //         },
-                    //         error => {
-                    //             // вторая функция - запустится при вызове reject
-                    //             alert("Rejected: " + error); // error - аргумент reject
-                    //         }
-                    //     );
-
-                    // Acccounts now exposed
-                    // resolve(web3);
-                    // console.log('resolve')
                 } catch (error) {
-                    // console.log('reject')
-                    // reject(error);
+                    console.log('error', error)
                 }
-                // setIsMetaMask('not-logged')
             } else {
                 setIsMetaMask('loading')
             }
         }
     }, [web3, drizzleStatus, ethereum]);
 
-    console.log('isMetaMask', isMetaMask);
-
     const accountHandler = useCallback(() => {
         switch (isMetaMask) {
             case 'logged':
-                const addressId = "0x64D4edeFE8bA86d3588B213b0A053e7B910Cad68";
-                // const addressId = state.accounts[0];
+                // const addressId = "0x64D4edeFE8bA86d3588B213b0A053e7B910Cad68";
+                const addressId = state.accounts[0];
                 dispatch(setUserAddress(addressId));
-                // dispatch(setUserAddress(state.accounts[0]));
-                const balance = state.accountBalances[addressId];
-                // const balance = state.accountBalances[state.accounts[0]];
-                if (balance){
-                    const convertBalance = drizzle.web3.utils.fromWei(balance, 'ether');
-                    dispatch(setUserBalance(convertBalance));
-                }
                 return children;
             case 'not-logged':
                 return <StartConfigurations error={'Waiting for login in MetaMask!'}/>;

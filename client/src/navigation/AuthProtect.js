@@ -24,8 +24,8 @@ export function AuthProtect(ProtectComponent) {
 
         useEffect(() => {
             if (userAddress) {
-                dispatch(checkIsUserRootNode(rootService, "0x64D4edeFE8bA86d3588B213b0A053e7B910Cad68"))
-                // dispatch(checkIsUserRootNode(rootService, userAddress))
+                // dispatch(checkIsUserRootNode(rootService, "0x64D4edeFE8bA86d3588B213b0A053e7B910Cad68"))
+                dispatch(checkIsUserRootNode(rootService, userAddress))
             }
         }, [userAddress, dispatch]);
 

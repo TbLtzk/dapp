@@ -1,19 +1,17 @@
-import React, {useEffect, useCallback} from "react";
+import React, {useEffect, useState, useMemo} from "react";
 import {drizzleReactHooks} from "@drizzle/react-plugin";
-import {newContextComponents} from "@drizzle/react-components";
 import {useDispatch, useSelector} from "react-redux";
-import {stakeToPanel, announceWithdrawal, withdraw,
-    getRootNodeStakes} from "store/actions/action-creaters/root-contract";
+import {getRootNodeStakes} from "store/actions/action-creaters/root-contract";
 import {isUserRootNode, loadingCheckingRootNode, rootNodeStake} from "store/selectors/root-contract"
-import {balanceMetamask, userAddressMetamask} from "store/selectors/user-inf"
+import {userAddressMetamask} from "store/selectors/user-inf"
 
 import {useForm} from "react-hook-form";
 
-import {Row, Col, Form} from "react-bootstrap";
+import {Row} from "react-bootstrap";
 
 import CustomBlock from "components/Base/CustomBlock"
 import FormInput from "components/Base/FormInput"
-import Button from "components/Base/Button";
+import ActionButtons from "pages/UserPages/Staking/FormStaking/ActionButtons";
 import RootService from "api/contracts/RootService";
 
 import {
@@ -22,17 +20,17 @@ import {
 } from "./styles"
 
 const {useDrizzle, useDrizzleState} = drizzleReactHooks;
-const {AccountData} = newContextComponents;
 
 function FormStaking() {
     const {register, errors, handleSubmit} = useForm();
     const {drizzle} = useDrizzle();
     const dispatch = useDispatch();
+    const state = useDrizzleState(state => state);
     const rootService = new RootService(drizzle);
+    const [userBalance, setUserBalance] = useState(null);
 
     const isUserRoot = useSelector(isUserRootNode);
     const loadingCheckingRoot = useSelector(loadingCheckingRootNode);
-    const userBalance = useSelector(balanceMetamask);
     console.log("isUserRoot", isUserRoot);
     const userAddress = useSelector(userAddressMetamask);
     const amountNodeStake = useSelector(rootNodeStake);
@@ -44,16 +42,20 @@ function FormStaking() {
         }
     }, [userAddress, isUserRoot, dispatch]);
 
-    const onWithdrawFromPanel = useCallback((data) => {
-        console.log('Withdraw', data);
-        dispatch(withdraw(rootService, parseInt(data.amount), userAddress))
-    }, [dispatch]);
+    useEffect(() => {
+        if (drizzle){
+            drizzle.web3.eth.getBalance(userAddress, (err, balance) => {
+                const userBalance = drizzle.web3.utils.fromWei(balance, "ether");
+                setUserBalance(userBalance);
+                console.log("BALANCE2", userBalance);
+                console.log("BALANCE2", drizzle.web3.utils.toDecimal(balance))
+            });
+        }
+    }, [state]);
 
-    const onAccounce = useCallback((data) => {
-        console.log('announceWithdrawal', data);
-        dispatch(announceWithdrawal(rootService, parseInt(data.amount)))
-    }, [dispatch]);
-
+    const handleBtn = useMemo(()=> {return handleSubmit},[handleSubmit]);
+    // console.log('BALANCE', drizzle.web3.utils.fromWei(state.accountBalances[userAddress], 'ether'))
+    // console.log('BALANCE2', drizzle.web3.eth.getBalance(userAddress));
 
     return (
         <CustomBlock>
@@ -67,39 +69,24 @@ function FormStaking() {
             </List>
             <Row>
                 <TextWrapGrey md={6}>
-                    <p>
-                        Stake in Panel (Q)
-                    </p>
+                    <p>Stake in Panel (Q)</p>
                 </TextWrapGrey>
                 <TextWrapBlack md={6}>
-                    <p>
-                        {
-
-                            !isUserRoot ? "0Q" : amountNodeStake + "Q"
-
-                        }
-
-                    </p>
+                    <p>{!isUserRoot ? "0Q" : amountNodeStake + "Q"}</p>
                 </TextWrapBlack>
                 <TextWrapGrey md={6}>
-                    <p>
-                        Personal Balance (Q)
-                    </p>
+                    <p>Personal Balance (Q)</p>
                 </TextWrapGrey>
                 <TextWrapBlack md={6}>
-                    <p>
-                        {userBalance ? userBalance : 0}Q
-                    </p>
+                    <p>{userBalance ? userBalance : 0}Q</p>
                 </TextWrapBlack>
                 <TotalText md={7}>
-                    <p>
-                        Amount (Q):
-                    </p>
+                    <p>Amount (Q):</p>
                 </TotalText>
                 <WrapInput md={5}>
                     <FormInput
                         name="amount"
-                        type="text"
+                        type="number"
                         align="right"
                         // placeholder={"135 000"}
                         ref={register({required: "Field is required!"})}
@@ -109,32 +96,7 @@ function FormStaking() {
                     />
                 </WrapInput>
             </Row>
-            <Row>
-                <Col md={4}>
-                    <Button
-                        type="full-width"
-                        title="Stake to Panel"
-                        handleButton={() => {
-                            console.log('Stake to Panel');
-                            dispatch(stakeToPanel(rootService))
-                        }}
-                    />
-                </Col>
-                <Col md={4}>
-                    <Button
-                        type="full-width"
-                        title="Withdraw from Panel"
-                        handleButton={handleSubmit(onWithdrawFromPanel)}
-                    />
-                </Col>
-                <Col md={4}>
-                    <Button
-                        type="full-width"
-                        title="Accounce"
-                        handleButton={handleSubmit(onAccounce)}
-                    />
-                </Col>
-            </Row>
+            <ActionButtons handleSubmit={handleBtn}/>
         </CustomBlock>
     );
 }

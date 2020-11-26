@@ -20,10 +20,6 @@ function StartPage() {
                             type="white"
                             title="Connect with Metamask"
                             path="start-configurations"
-                            // handleButton={() => {
-                            //     console.log('click');
-                            //     window.ethereum.request({method: 'eth_requestAccounts'});
-                            // }}
                         />
                     </WrapBlock>
                 </Col>

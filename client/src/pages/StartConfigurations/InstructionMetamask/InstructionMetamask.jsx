@@ -3,7 +3,7 @@ import React from "react";
 import firefox from "assets/img/firefox.png";
 import chrome from "assets/img/chrome.png";
 
-import {WrapContainer, WrapImgs, Image} from "./styles"
+import {WrapContainer, WrapImgs, Image} from "pages/StartConfigurations/InstructionMetamask/styles"
 import ConnectMetaMaskButton from "components/Custom/ConnectMetaMaskButton";
 
 function InstructionMetamask() {

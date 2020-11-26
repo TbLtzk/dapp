@@ -17,7 +17,8 @@ function ButtonLink(props) {
 }
 
 ButtonLink.propTypes = {
-    title: PropTypes.string,
+    //TODO: can be string or object
+    // title: PropTypes.string,
     handleLink: PropTypes.func,
 };
 
