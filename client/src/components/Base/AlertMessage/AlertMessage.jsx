@@ -5,7 +5,7 @@ import {Alert} from "react-bootstrap";
 
 import {AlertStyle} from "./styles";
 
-function AlertMessage(props) {
+function AlertWindow(props) {
     const {show, onClose, content, type, header} = props;
 
     return (
@@ -23,7 +23,7 @@ function AlertMessage(props) {
     );
 }
 
-AlertMessage.propTypes = {
+AlertWindow.propTypes = {
     type: PropTypes.string,
     show: PropTypes.bool,
     content: PropTypes.string,
@@ -31,5 +31,5 @@ AlertMessage.propTypes = {
     onClose: PropTypes.func,
 };
 
-export default AlertMessage;
+export default AlertWindow;
 
