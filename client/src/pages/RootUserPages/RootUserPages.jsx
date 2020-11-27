@@ -24,7 +24,6 @@ function RootUserPages(props) {
         <>
             <Header/>
             <WrapContainer fluid>
-                <h3>Root user pages</h3>
                 {componentSwitcher()}
             </WrapContainer>
         </>

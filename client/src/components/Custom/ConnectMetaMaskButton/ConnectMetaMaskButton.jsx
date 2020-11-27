@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import PropTypes from 'prop-types';
 
 import Button from "components/Base/Button";
-import AlertWindow from "components/Base/AlertWindow";
+import AlertMessage from "components/Base/AlertMessage";
 
 function ConnectMetaMaskButton(props) {
     const {title} = props;
@@ -26,7 +26,7 @@ function ConnectMetaMaskButton(props) {
                 title={title}
                 handleButton={requestConnect}
             />
-            <AlertWindow
+            <AlertMessage
                 type="danger"
                 header="Error"
                 content="Install MetaMask"

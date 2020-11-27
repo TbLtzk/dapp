@@ -9,7 +9,9 @@ const initialState = {
     loadingCheckingRootNode: true,
     rootNodeStake: 0,
 
-    stakeToPanelTransId: null
+    stakeToPanelTransId: null,
+    announceWithdrawTransId: null,
+    withdrawTransId: null,
 };
 
 export default function rootContract(state = initialState, action) {
@@ -61,6 +63,27 @@ export default function rootContract(state = initialState, action) {
             return {
                 ...state,
                 stakeToPanelTransId: null,
+            };
+        case actionTypes.ANNOUNCE_WITHDRAWAL_SUCCESS:
+            return {
+                ...state,
+                announceWithdrawTransId: action.result,
+            };
+        case actionTypes.ANNOUNCE_WITHDRAWAL_ERROR:
+            return {
+                ...state,
+                announceWithdrawTransId: null,
+            };
+
+        case actionTypes.WITHDRAW_SUCCESS:
+            return {
+                ...state,
+                withdrawTransId: action.result,
+            };
+        case actionTypes.WITHDRAW_ERROR:
+            return {
+                ...state,
+                withdrawTransId: null,
             };
         default:
             return state;

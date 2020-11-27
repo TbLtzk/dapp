@@ -6,7 +6,9 @@ import {
     getRootMembersDataSuccess, getRootMembersDataError,
     stakeToPanelSuccess, stakeToPanelError,
     checkIsUserRootNodeSuccess, checkIsUserRootNodeError,
-    getRootNodeStakesSuccess, getRootNodeStakesError
+    getRootNodeStakesSuccess, getRootNodeStakesError,
+    announceWithdrawalSuccess, announceWithdrawalError,
+    withdrawSuccess, withdrawError
 } from "store/actions/action-creaters/root-contract";
 import RootService from "api/contracts/RootService";
 
@@ -25,7 +27,7 @@ function* getRootMembersData({contract}) {
 function* stakeToPanel({contract, data}) {
     try {
         const res = yield contract.stakeToPanel(data);
-        console.log("stakeToPanel", res);
+        console.log("stakeToPanel id", res);
 
         yield put(stakeToPanelSuccess(res));
     } catch (err) {
@@ -34,27 +36,27 @@ function* stakeToPanel({contract, data}) {
     }
 }
 
-function* announceWithdrawal({contract, amount}) {
+function* announceWithdrawal({contract, amount, paymentInf}) {
     try {
-        const data = yield contract.announceWithdrawal(amount);
-        console.log("announceWithdrawal", data);
+        const data = yield contract.announceWithdrawal(amount, paymentInf);
+        console.log("announceWithdrawal id", data);
 
-        yield put(stakeToPanelSuccess(data));
+        yield put(announceWithdrawalSuccess(data));
     } catch (err) {
         console.log('err',err);
-        yield put(stakeToPanelError(err.message));
+        yield put(announceWithdrawalError(err.message));
     }
 }
 
-function* withdraw({contract, amount, payTo}) {
+function* withdraw({contract, amount, payTo, paymentInf}) {
     try {
-        const data = yield contract.withdraw(amount, payTo);
-        console.log("withdraw", data);
+        const data = yield contract.withdraw(amount, payTo, paymentInf);
+        console.log("withdraw id", data);
 
-        yield put(stakeToPanelSuccess(data));
+        yield put(withdrawSuccess(data));
     } catch (err) {
         console.log('err',err);
-        yield put(stakeToPanelError(err.message));
+        yield put(withdrawError(err.message));
     }
 }
 

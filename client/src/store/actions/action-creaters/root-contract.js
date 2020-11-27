@@ -34,10 +34,11 @@ export const stakeToPanelError = (result) => ({
 });
 
 /* announceWithdrawal */
-export const announceWithdrawal = (contract, amount) => ({
+export const announceWithdrawal = (contract, amount, paymentInf) => ({
     type: actionTypes.ANNOUNCE_WITHDRAWAL,
     contract,
-    amount
+    amount,
+    paymentInf
 });
 
 export const announceWithdrawalSuccess = (result) => ({
@@ -51,11 +52,12 @@ export const announceWithdrawalError = (result) => ({
 });
 
 /* WITHDRAW */
-export const withdraw = (contract, amount, payTo) => ({
+export const withdraw = (contract, amount, payTo, paymentInf) => ({
     type: actionTypes.WITHDRAW,
     contract,
     amount,
-    payTo
+    payTo,
+    paymentInf
 });
 
 export const withdrawSuccess = (result) => ({

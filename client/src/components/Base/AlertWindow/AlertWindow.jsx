@@ -1,35 +1,19 @@
 import React from "react";
-import PropTypes from 'prop-types';
 
-import {Alert} from "react-bootstrap";
+import AlertMessage from "components/Base/AlertMessage"
 
-import {AlertStyle} from "./styles";
 
-function AlertMessage(props) {
-    const {show, onClose, content, type, header} = props;
+
+function AlertWindow(props) {
 
     return (
-        <AlertStyle
-            variant={type}
-            show={show}
-            onClose={onClose}
-            dismissible
-        >
-            <Alert.Heading>{header}</Alert.Heading>
-            <p>
-                {content}
-            </p>
-        </AlertStyle>
+       <div>
+           <AlertMessage
+               {...props}
+           />
+       </div>
     );
 }
 
-AlertMessage.propTypes = {
-    type: PropTypes.string,
-    show: PropTypes.bool,
-    content: PropTypes.string,
-    header: PropTypes.string,
-    onClose: PropTypes.func,
-};
-
-export default AlertMessage;
+export default AlertWindow;
 

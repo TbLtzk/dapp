@@ -1,1 +1,1 @@
-export {default} from './AlertMessage';
+export {default} from './AlertWindow';

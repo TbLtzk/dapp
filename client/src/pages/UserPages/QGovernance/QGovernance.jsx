@@ -4,8 +4,8 @@ import {Row, Col} from "react-bootstrap";
 import TabsView from "components/Base/Tabs/TabsView";
 import ModalWindow from "components/Base/ModalWindow";
 import Button from "components/Base/Button";
-import RootNodePanel from "components/Custom/RootNodePanel";
 import QManage from "./QManage";
+import QDashboard from "./QDashboard";
 
 function QGovernance() {
     // const [modalShow, setModalShow] = useState(false);
@@ -15,12 +15,7 @@ function QGovernance() {
                 {
                     label: "dashboard",
                     title: "Dashboard",
-                    content: (
-                        <Col xs={6}>
-                            <RootNodePanel/>
-                        </Col>
-
-                    )
+                    content: <QDashboard/>
                 },
                 {
                     label: "manage",

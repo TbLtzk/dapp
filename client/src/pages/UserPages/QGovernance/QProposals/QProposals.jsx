@@ -3,6 +3,8 @@ import {Row, Col} from "react-bootstrap";
 
 import BigTabsView from "components/Base/Tabs/BigTabsView";
 
+import {WrapDescr} from "./styles"
+
 function QProposals() {
 
     const tabsItems = useMemo(() => {
@@ -13,7 +15,7 @@ function QProposals() {
                     title: (
                         <>
                             <p>Active Proposals</p>
-                            <p>11 POLLS - POSTED OCT 19, 2020, 16:00 UTC</p>
+                            <WrapDescr>11 POLLS - POSTED OCT 19, 2020, 16:00 UTC</WrapDescr>
                         </>
                     ),
                     content: (
@@ -25,7 +27,7 @@ function QProposals() {
                     title: (
                         <>
                             <p>Only votable</p>
-                            <p>2 POLLS - POSTED OCT 19, 2020, 16:00 UTC</p>
+                            <WrapDescr>2 POLLS - POSTED OCT 19, 2020, 16:00 UTC</WrapDescr>
                         </>
                     ),
                     content: (

@@ -1,8 +1,12 @@
-import Storage from './contracts/SimpleStorage'
-import {contractRegistryConfig, rootConfig} from "api/contracts/contants"
+import {contractRegistryConfig, rootConfig, constitutionVotingConfig, RootsVotingConfig,
+  EPQFI_MembershipVotingConfig, EPDR_MembershipVotingConfig, EPQFI_ParametersVotingConfig,
+  EPDR_ParametersVotingConfig, ValidatorsSlashingVotingConfig, RootNodesSlashingVotingConfig
+} from "api/contracts/contants"
 
 const options = {
-  contracts: [contractRegistryConfig, rootConfig],
+  contracts: [contractRegistryConfig, rootConfig, constitutionVotingConfig, RootsVotingConfig,
+    EPQFI_MembershipVotingConfig, EPDR_MembershipVotingConfig, EPQFI_ParametersVotingConfig,
+    EPDR_ParametersVotingConfig, ValidatorsSlashingVotingConfig, RootNodesSlashingVotingConfig],
   web3: {
     fallback: {
       type: "ws",

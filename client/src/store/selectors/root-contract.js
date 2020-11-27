@@ -9,3 +9,5 @@ export const loadingCheckingRootNode = state => state.rootContract.loadingChecki
 export const rootNodeStake = state => state.rootContract.rootNodeStake;
 
 export const stakeToPanelTransId = state => state.rootContract.stakeToPanelTransId;
+export const announceWithdrawTransId = state => state.rootContract.announceWithdrawTransId;
+export const withdrawTransId = state => state.rootContract.withdrawTransId;

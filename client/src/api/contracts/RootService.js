@@ -141,13 +141,13 @@ export default class RootService {
      * @param amount
      * @return number
      */
-    async announceWithdrawal(amount) {
+    async announceWithdrawal(amount, paymentInf) {
         try {
-            const result = await this.Root.methods.announceWithdrawal(amount).call(function (result) {
-                console.log('announceWithdrawal result', result);
-            });
+            return await this.Root.methods.announceWithdrawal.cacheSend(amount, paymentInf);
+            // const result = await this.Root.methods.announceWithdrawal(amount).call(function (result) {
+            //     console.log('announceWithdrawal result', result);
+            // });
 
-            return result;
         } catch (e) {
             console.log(e);
         }
@@ -157,15 +157,15 @@ export default class RootService {
      * announce withdrawal
      * @param amount
      * @param payTo
+     * @param paymentInf
      * @return number
      */
-    async withdraw(amount, payTo) {
+    async withdraw(amount, payTo, paymentInf) {
         try {
-            const result = await this.Root.methods.withdraw(amount, payTo).call(function (result) {
-                console.log('withdraw result', result);
-            });
-
-            return result;
+            // const result = await this.Root.methods.withdraw(amount, payTo).call(function (result) {
+            //     console.log('withdraw result', result);
+            // });
+            return await this.Root.methods.withdraw.cacheSend(amount, payTo, paymentInf);
         } catch (e) {
             console.log(e);
         }

@@ -9,6 +9,7 @@ import {useForm} from "react-hook-form";
 
 import {Row} from "react-bootstrap";
 
+import {roundBalance} from "func/useful"
 import CustomBlock from "components/Base/CustomBlock"
 import FormInput from "components/Base/FormInput"
 import ActionButtons from "pages/UserPages/Staking/FormStaking/ActionButtons";
@@ -31,31 +32,32 @@ function FormStaking() {
 
     const isUserRoot = useSelector(isUserRootNode);
     const loadingCheckingRoot = useSelector(loadingCheckingRootNode);
-    console.log("isUserRoot", isUserRoot);
+    // console.log("isUserRoot", isUserRoot);
     const userAddress = useSelector(userAddressMetamask);
     const amountNodeStake = useSelector(rootNodeStake);
-    console.log("amountNodeStake", amountNodeStake);
+    // console.log("amountNodeStake", amountNodeStake);
 
     useEffect(() => {
-        if (userAddress && isUserRoot) {
+        if (userAddress) {
+            // if (userAddress && isUserRoot) {
             dispatch(getRootNodeStakes(rootService, userAddress))
         }
     }, [userAddress, isUserRoot, dispatch]);
 
     useEffect(() => {
-        if (drizzle){
+        if (drizzle) {
             drizzle.web3.eth.getBalance(userAddress, (err, balance) => {
                 const userBalance = drizzle.web3.utils.fromWei(balance, "ether");
-                setUserBalance(userBalance);
-                console.log("BALANCE2", userBalance);
-                console.log("BALANCE2", drizzle.web3.utils.toDecimal(balance))
+                setUserBalance(roundBalance(userBalance));
             });
         }
     }, [state]);
 
-    const handleBtn = useMemo(()=> {return handleSubmit},[handleSubmit]);
-    // console.log('BALANCE', drizzle.web3.utils.fromWei(state.accountBalances[userAddress], 'ether'))
-    // console.log('BALANCE2', drizzle.web3.eth.getBalance(userAddress));
+    const handleBtn = useMemo(() => {
+        return handleSubmit
+    }, [handleSubmit]);
+
+    console.log("State", state);
 
     return (
         <CustomBlock>
@@ -72,7 +74,8 @@ function FormStaking() {
                     <p>Stake in Panel (Q)</p>
                 </TextWrapGrey>
                 <TextWrapBlack md={6}>
-                    <p>{!isUserRoot ? "0Q" : amountNodeStake + "Q"}</p>
+                    <p>{amountNodeStake + "Q"}</p>
+                    {/*<p>{!isUserRoot ? "0Q" : amountNodeStake + "Q"}</p>*/}
                 </TextWrapBlack>
                 <TextWrapGrey md={6}>
                     <p>Personal Balance (Q)</p>
@@ -91,12 +94,13 @@ function FormStaking() {
                         // placeholder={"135 000"}
                         ref={register({required: "Field is required!"})}
                         valid={errors?.amount?.message}
-                        onChange={() => {
-                        }}
+                        onChange={() => {}}
                     />
                 </WrapInput>
             </Row>
-            <ActionButtons handleSubmit={handleBtn}/>
+            <ActionButtons
+                handleSubmit={handleBtn}
+            />
         </CustomBlock>
     );
 }

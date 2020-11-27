@@ -19,7 +19,7 @@ function Button(props) {
 }
 
 Button.propTypes = {
-    title: PropTypes.string,
+    // title: PropTypes.string,
     type: PropTypes.string,
     handleButton: PropTypes.func,
 };
