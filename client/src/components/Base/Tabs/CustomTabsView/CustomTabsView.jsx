@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 import {TabsStyle, TabStyle} from "./styles";
 
-function TabsView(props) {
+function CustomTabsView(props) {
     const {tabsItems} = props;
     //TODO: key need to be tabsItems[0]?.label, added this for comf testing
-    const [key, setKey] = useState(tabsItems[1]?.label);
+    const [key, setKey] = useState(tabsItems[0]?.label);
 
     return (
         <TabsStyle
@@ -29,9 +29,9 @@ function TabsView(props) {
     );
 }
 
-TabsView.propTypes = {
+CustomTabsView.propTypes = {
     tabsItems: PropTypes.array,
 };
 
-export default TabsView;
+export default CustomTabsView;
 

@@ -1,11 +1,25 @@
-import React, {useMemo} from "react";
+import React, {useEffect, useMemo} from "react";
 import {Row, Col} from "react-bootstrap";
 
-import BigTabsView from "components/Base/Tabs/BigTabsView";
+import BigTabsView from "components/Base/Tabs/BigTabsView/";
+import ActiveQProposal from "./ActiveQProposal";
 
-import {WrapDescr} from "./styles"
+import {WrapDescr, WrapTabs} from "./styles"
+import ContractRegistryService from "api/contracts/ContractRegistryService";
+import {drizzleReactHooks} from "@drizzle/react-plugin";
+
+const {useDrizzle, useDrizzleState} = drizzleReactHooks;
 
 function QProposals() {
+    const {drizzle} = useDrizzle();
+    const state = useDrizzleState(state => state);
+    const contractRegistry = new ContractRegistryService(drizzle);
+
+    // useEffect(async() => {
+    //     contractRegistry.getAddress().then((address) => {
+    //         console.log('ConstitutionParametersVoting address', address);
+    //     });
+    // });
 
     const tabsItems = useMemo(() => {
         return (
@@ -19,7 +33,7 @@ function QProposals() {
                         </>
                     ),
                     content: (
-                        <p>Active Proposals</p>
+                        <ActiveQProposal/>
                     )
                 },
                 {
@@ -39,13 +53,13 @@ function QProposals() {
     }, []);
 
     return (
-        <Row>
+        <WrapTabs>
             <Col xs={12}>
                 <BigTabsView
                     tabsItems={tabsItems}
                 />
             </Col>
-        </Row>
+        </WrapTabs>
 
     );
 }

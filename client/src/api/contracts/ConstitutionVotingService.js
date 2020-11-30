@@ -2,7 +2,7 @@ export default class ConstitutionVotingService {
 
     constructor(drizzle) {
         this.drizzle = drizzle;
-        this.Root = drizzle.contracts.Root;
+        this.ConstitutionVoting = drizzle.contracts.ConstitutionVoting;
     }
 
     /**
@@ -11,7 +11,7 @@ export default class ConstitutionVotingService {
      */
     async getRootMembers() {
         try {
-            return await this.Root.methods.getMembers().call();
+            return await this.ConstitutionVoting.methods.getMembers().call();
         } catch (e) {
             console.log(e);
         }

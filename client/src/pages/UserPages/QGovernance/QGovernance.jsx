@@ -4,8 +4,8 @@ import {Row, Col} from "react-bootstrap";
 import TabsView from "components/Base/Tabs/TabsView";
 import ModalWindow from "components/Base/ModalWindow";
 import Button from "components/Base/Button";
-import QManage from "./QManage";
-import QDashboard from "./QDashboard";
+import QManage from "./QMainTabs/QManage";
+import QDashboard from "./QMainTabs/QDashboard";
 
 function QGovernance() {
     // const [modalShow, setModalShow] = useState(false);

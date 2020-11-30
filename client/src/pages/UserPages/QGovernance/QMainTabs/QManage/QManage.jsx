@@ -1,8 +1,11 @@
 import React, {useMemo} from "react";
 import {Row, Col} from "react-bootstrap";
 
-import QProposals from "../QProposals";
+import QProposals from "./QProposals";
+import VotingStats from "./VotingStats";
 import ButtonTabs from "components/Base/Tabs/ButtonTabs";
+
+import CreateQProposalBtn from "./CreateQProposalBtn";
 
 function QManage() {
 
@@ -42,10 +45,14 @@ function QManage() {
 
     return (
         <Row>
-            <Col xs={12}>
+            <Col md={8}>
                 <ButtonTabs
                     tabsItems={tabsItems}
                 />
+            </Col>
+            <Col md={4}>
+                <CreateQProposalBtn/>
+                <VotingStats/>
             </Col>
         </Row>
 

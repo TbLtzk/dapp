@@ -5,7 +5,7 @@ import {Row, Col} from "react-bootstrap";
 import RootNodePanel from "components/Custom/RootNodePanel";
 import UserData from "components/Custom/UserData";
 
-import {WrapContainer} from "./styles"
+import {WrapContainer} from "pages/UserPages/QGovernance/QMainTabs/QDashboard/styles"
 import {drizzleReactHooks} from "@drizzle/react-plugin";
 import {roundBalance} from "func/useful";
 
