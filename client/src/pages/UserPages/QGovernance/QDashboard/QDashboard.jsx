@@ -33,7 +33,7 @@ function QDashboard() {
         <Row>
             <Col xs={6}>
                 <div>
-                    <p>Current block height: {state?.currentBlock?.number}</p>
+                    <p>Q current Block Height: {state?.currentBlock?.number}</p>
                     <UserData/>
                 </div>
             </Col>
