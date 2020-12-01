@@ -6,12 +6,15 @@ export default class ConstitutionVotingService {
     }
 
     /**
-     * get root members
+     * get created proposals
      * @return array
      */
-    async getRootMembers() {
+    async getCreatedProposals() {
         try {
-            return await this.ConstitutionVoting.methods.getMembers().call();
+            const proposalEvents = await this.ConstitutionVoting.getPastEvents('ProposalCreated', { fromBlock: 0, toBlock: 'latest' }).call();
+            console.log("proposalEvents", proposalEvents);
+
+            // return await this.ConstitutionVoting.methods.getMembers().call();
         } catch (e) {
             console.log(e);
         }
