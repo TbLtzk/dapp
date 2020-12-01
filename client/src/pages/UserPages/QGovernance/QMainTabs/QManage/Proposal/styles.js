@@ -39,6 +39,7 @@ export const CardBody = styled(Card.Body)`
 `;
 export const CollapsedBody = styled(Card.Body)`
    //width: 77%;
+   margin-top: 20px;
 `;
 
 export const MainText = styled.p`

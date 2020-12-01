@@ -49,7 +49,10 @@ export default class RootService {
      */
     async getRootNodeStake(node) {
         try {
-            return await this.Root.methods.getRootNodeStake(node).call();
+
+            const balance =  await this.Root.methods.getRootNodeStake(node).call();
+            return this.drizzle.web3.utils.fromWei(balance, "ether");
+
         } catch (e) {
             console.log(e);
         }

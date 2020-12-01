@@ -4,6 +4,7 @@ import Proposal from "../../Proposal"
 
 function ActiveQProposal() {
 
+
     return (
         <div>
             <Proposal/>

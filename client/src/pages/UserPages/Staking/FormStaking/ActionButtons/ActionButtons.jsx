@@ -33,17 +33,6 @@ function ActionButtons(props) {
     const [transWithdrawStatus, setTransWithdrawStatus] = useState(null);
     const [transAccounceWithdrawStatus, setTransAccounceWithdrawStatus] = useState(null);
 
-
-    // useEffect(() => {
-    //     console.log("state.transactionStack", state.transactionStack);
-        // if (state.transactionStack.length !== 0){
-        // transTempsArray.push(state.transactionStack)
-        // }
-
-    // }, [state.transactionStack]);
-    // transTempsArray.push(state.transactionStack);
-    // console.log('transTempsArray', transTempsArray);
-
     useEffect(() => {
         if (state.transactionStack[stakeToPanelTransactionId]) {
             const txHash = state.transactionStack[stakeToPanelTransactionId];
@@ -63,19 +52,19 @@ function ActionButtons(props) {
 
 
     console.log("state", state);
-    console.log("transStakeToPanelStatus", transStakeToPanelStatus);
-    console.log("transAccounceWithdrawStatus", transAccounceWithdrawStatus);
-    console.log("transWithdrawStatus", transWithdrawStatus);
+    // console.log("transStakeToPanelStatus", transStakeToPanelStatus);
+    // console.log("transAccounceWithdrawStatus", transAccounceWithdrawStatus);
+    // console.log("transWithdrawStatus", transWithdrawStatus);
 
     const convertToGWei = (amount) => {
-        return drizzle.web3.utils.toWei(amount, 'gwei');
+        return drizzle.web3.utils.toWei(amount, 'ether');
     };
 
     const onStakeToPanel = useCallback(async (data) => {
         dispatch(stakeToPanel(rootService,
             {
-                gasPrice: convertToGWei(data?.amount),
-                from: userAddress
+                from: userAddress,
+                value: parseInt(convertToGWei(data?.amount)),
             }
         ));
     }, [drizzle]);
@@ -83,7 +72,7 @@ function ActionButtons(props) {
     const onWithdrawFromPanel = useCallback(async (data) => {
         dispatch(withdraw(rootService, data.amount, userAddress,
             {
-                gasPrice: convertToGWei(data?.amount),
+                // gasPrice: convertToGWei(data?.amount),
                 from: userAddress
             }))
     }, [dispatch]);
@@ -91,7 +80,7 @@ function ActionButtons(props) {
     const onAnnounce = useCallback(async (data) => {
         dispatch(announceWithdrawal(rootService, data.amount,
             {
-                gasPrice: convertToGWei(data?.amount),
+                // gasPrice: convertToGWei(data?.amount),
                 from: userAddress
             }))
     }, [dispatch]);

@@ -32,17 +32,15 @@ function FormStaking() {
 
     const isUserRoot = useSelector(isUserRootNode);
     const loadingCheckingRoot = useSelector(loadingCheckingRootNode);
-    // console.log("isUserRoot", isUserRoot);
     const userAddress = useSelector(userAddressMetamask);
     const amountNodeStake = useSelector(rootNodeStake);
-    // console.log("amountNodeStake", amountNodeStake);
 
     useEffect(() => {
         if (userAddress) {
             // if (userAddress && isUserRoot) {
             dispatch(getRootNodeStakes(rootService, userAddress))
         }
-    }, [userAddress, isUserRoot, dispatch]);
+    }, [userAddress, isUserRoot, dispatch, state]);
 
     useEffect(() => {
         if (drizzle) {
@@ -56,8 +54,6 @@ function FormStaking() {
     const handleBtn = useMemo(() => {
         return handleSubmit
     }, [handleSubmit]);
-
-    console.log("State", state);
 
     return (
         <CustomBlock>
