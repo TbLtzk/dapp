@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 
 import {drizzleReactHooks} from "@drizzle/react-plugin";
-import {newContextComponents} from "@drizzle/react-components";
 
 import {useDispatch, useSelector} from "react-redux";
 import {getRootMembersData} from "store/actions/action-creaters/root-contract"
@@ -15,21 +14,16 @@ import {Container, Row, Col} from "react-bootstrap";
 import ContractRegistryService from "api/contracts/ContractRegistryService"
 import RootService from "api/contracts/RootService"
 import PieChartCustom from "components/Base/PieChartCustom"
-import ButtonLink from "components/Base/ButtonLink"
+import ButtonLinkArrow from "components/Base/ButtonLinkArrow";
 import RootNodeTable from "./RootNodeTable"
 import LoadingSpinner from "components/Base/LoadingSpinner";
 
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faArrowRight} from '@fortawesome/free-solid-svg-icons'
 import {
     H5Headline, ContainerWrap, HeadlineWrap, TotalWrap,
     BottomText
 } from "./styles"
-import {useHistory} from "react-router-dom";
-
 
 const {useDrizzle, useDrizzleState} = drizzleReactHooks;
-const {AccountData} = newContextComponents;
 
 function RootNodePanel(props) {
     const {type, bottom} = props;
@@ -37,7 +31,6 @@ function RootNodePanel(props) {
     const state = useDrizzleState(state => state);
     const contractRegistry = new ContractRegistryService(drizzle);
     const rootService = new RootService(drizzle);
-    const history = useHistory();
     // const [rootMembers, setRootMembers] = useState(null);
     // const [rootMembersAllData, setRootMembersAllData] = useState([]);
 
@@ -115,14 +108,9 @@ function RootNodePanel(props) {
                                                             or leave the Root Node Panel</BottomText>
                                                     </Col>
                                                     <Col xs={5}>
-                                                        <ButtonLink
-                                                            title={
-                                                                <>
-                                                                    <span>Go to Governance</span>
-                                                                    <FontAwesomeIcon icon={faArrowRight}/>
-                                                                </>
-                                                            }
-                                                            handleLink={() => history.push("/q-governance")}
+                                                        <ButtonLinkArrow
+                                                            title="Go to Governance"
+                                                            path="/q-governance"
                                                         />
                                                     </Col>
                                                 </Row>

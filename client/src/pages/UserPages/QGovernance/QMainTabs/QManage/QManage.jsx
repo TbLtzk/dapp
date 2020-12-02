@@ -1,11 +1,15 @@
 import React, {useMemo} from "react";
 import {Row, Col} from "react-bootstrap";
 
-import QProposals from "./QProposals";
-import VotingStats from "./VotingStats";
-import ButtonTabs from "components/Base/Tabs/ButtonTabs";
+import QProposals from "./MainTabs/QProposals";
+import QRootNodePanel from "./MainTabs/QRootNodePanel";
 
-import CreateQProposalBtn from "./CreateQProposalBtn";
+import ButtonTabs from "components/Base/Tabs/ButtonTabs";
+import VotingStats from "./components/VotingStats";
+import References from "./components/References";
+import CreateQProposalBtn from "./components/CreateQProposalBtn";
+
+import {WrapTabs} from "./styles"
 
 function QManage() {
 
@@ -15,13 +19,19 @@ function QManage() {
                 {
                     label: "q-proposals",
                     title: "Q Proposals",
-                    content: <QProposals/>
+                    content: (
+                        <WrapTabs>
+                            <QProposals/>
+                        </WrapTabs>
+                    )
                 },
                 {
                     label: "q-root-node-panel",
                     title: "Q Root Node Panel",
                     content: (
-                        <p>Q Root Node Panel</p>
+                        <WrapTabs>
+                            <QRootNodePanel/>
+                        </WrapTabs>
                     )
                 },
                 {
@@ -29,7 +39,6 @@ function QManage() {
                     title: "Q Expert Proposals",
                     content: (
                         <p>Q Expert Proposals</p>
-
                     )
                 },
                 {
@@ -53,6 +62,7 @@ function QManage() {
             <Col md={4}>
                 <CreateQProposalBtn/>
                 <VotingStats/>
+                <References/>
             </Col>
         </Row>
 
