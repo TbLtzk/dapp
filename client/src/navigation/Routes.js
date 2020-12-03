@@ -3,7 +3,7 @@ import {Route, Switch, withRouter} from "react-router-dom";
 
 import {AuthProtect} from "./AuthProtect"
 
-import StartPage from "pages/StartPage"
+import Start from "pages/UserPages/Start"
 import StartConfigurations from "pages/StartConfigurations"
 
 //Root user
@@ -15,7 +15,7 @@ import UserPages from "pages/UserPages"
 function Routes() {
     return (
         <Switch>
-            <Route exact path='/' component={StartPage}/>
+            <Route exact path='/' component={Start}/>
             <Route exact path='/start-configurations' component={StartConfigurations}/>
 
             <Route exact path='/dashboard' component={AuthProtect(RootUserPages)}/>

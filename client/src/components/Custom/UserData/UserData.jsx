@@ -65,7 +65,7 @@ function UserData() {
 
     return (
         <div>
-            <p>Account: {state.accounts[0]}</p>
+            <p>Account: {userAddress}</p>
             <p>Account balance: {userBalance}Q</p>
             {/*<p>Account balance: {convertedBalance} Q</p>*/}
         </div>

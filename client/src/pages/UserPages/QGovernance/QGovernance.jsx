@@ -1,26 +1,52 @@
 import React, {useMemo, useState} from "react";
 import {Row, Col} from "react-bootstrap";
 
-import TabsView from "components/Base/Tabs/TabsView";
-import ModalWindow from "components/Base/ModalWindow";
-import Button from "components/Base/Button";
-import QManage from "./QMainTabs/QManage";
-import QDashboard from "./QMainTabs/QDashboard";
+import ButtonTabs from "components/Base/Tabs/ButtonTabs";
+import QProposals from "./MainTabs/QProposals";
+import QRootNodePanel from "./MainTabs/QRootNodePanel";
+
+import CreateQProposalBtn from "./components/CreateQProposalBtn";
+import VotingStats from "./components/VotingStats";
+import References from "./components/References";
+
+import {WrapTabs} from "./styles";
 
 function QGovernance() {
-    // const [modalShow, setModalShow] = useState(false);
+
     const tabsItems = useMemo(() => {
         return (
             [
                 {
-                    label: "dashboard",
-                    title: "Dashboard",
-                    content: <QDashboard/>
+                    label: "q-proposals",
+                    title: "Q Proposals",
+                    content: (
+                        <WrapTabs>
+                            <QProposals/>
+                        </WrapTabs>
+                    )
                 },
                 {
-                    label: "manage",
-                    title: "Manage",
-                    content: <QManage/>
+                    label: "q-root-node-panel",
+                    title: "Q Root Node Panel",
+                    content: (
+                        <WrapTabs>
+                            <QRootNodePanel/>
+                        </WrapTabs>
+                    )
+                },
+                {
+                    label: "q-expert-proposals",
+                    title: "Q Expert Proposals",
+                    content: (
+                        <p>Q Expert Proposals</p>
+                    )
+                },
+                {
+                    label: "slashing-proposals",
+                    title: "Slashing Proposals",
+                    content: (
+                        <p>Slashing Proposals</p>
+                    )
                 },
             ]
         )
@@ -28,30 +54,15 @@ function QGovernance() {
 
     return (
         <Row>
-            <Col xs={12}>
-                <TabsView
+            <Col md={8}>
+                <ButtonTabs
                     tabsItems={tabsItems}
                 />
-                {/*<Button*/}
-                {/*    title="Launch"*/}
-                {/*    handleButton={() => setModalShow(true)}*/}
-                {/*/>*/}
-                {/*<ModalWindow*/}
-                {/*    show={modalShow}*/}
-                {/*    onHide={() => setModalShow(false)}*/}
-                {/*    continueBtnTitle={"Confirm"}*/}
-                {/*    content={*/}
-                {/*        <>*/}
-                {/*            <h4>Modal</h4>*/}
-                {/*            <p>*/}
-                {/*                Cras mattis consectetur purus sit amet fermentum. Cras justo odio,*/}
-                {/*                dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac*/}
-                {/*                consectetur ac, vestibulum at eros.*/}
-                {/*            </p>*/}
-
-                {/*        </>*/}
-                {/*    }*/}
-                {/*/>*/}
+            </Col>
+            <Col md={4}>
+                <CreateQProposalBtn/>
+                <VotingStats/>
+                <References/>
             </Col>
         </Row>
     );

@@ -7,6 +7,7 @@ import RootService from "api/contracts/RootService";
 import {detectEthereumProvider} from "store/actions/action-creaters/user-auth";
 import {checkIsUserRootNode} from "store/actions/action-creaters/root-contract";
 import {userAddressMetamask} from "store/selectors/user-inf";
+import ContractRegistryService from "api/contracts/ContractRegistryService";
 
 const {useDrizzle, useDrizzleState} = drizzleReactHooks;
 
@@ -16,6 +17,8 @@ export function AuthProtect(ProtectComponent) {
         const drizzleStatus = useDrizzleState(state => state.drizzleStatus);
         const rootService = new RootService(drizzle);
 
+        const contractRegistry = new ContractRegistryService(drizzle);
+
         const ethereum = window.ethereum;
         const dispatch = useDispatch();
 
@@ -23,8 +26,11 @@ export function AuthProtect(ProtectComponent) {
         console.log("userAddress", userAddress);
 
         useEffect(() => {
+            // contractRegistry.getAddress().then((address) => {
+            //     console.log('QRootNodePanel address', address);
+            // });
             if (userAddress) {
-                // dispatch(checkIsUserRootNode(rootService, "0x64D4edeFE8bA86d3588B213b0A053e7B910Cad68"))
+                // dispatch(checkIsUserRootNode(rootService, "0x66316FfA38490d4d072F34EF7D7BA64Ce6b4478e"))
                 dispatch(checkIsUserRootNode(rootService, userAddress))
             }
         }, [userAddress, dispatch]);

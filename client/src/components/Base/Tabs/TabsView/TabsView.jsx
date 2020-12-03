@@ -5,8 +5,7 @@ import {TabsStyle, TabStyle} from "./styles";
 
 function TabsView(props) {
     const {tabsItems} = props;
-    //TODO: key need to be tabsItems[0]?.label, added this for comf testing
-    const [key, setKey] = useState(tabsItems[1]?.label);
+    const [key, setKey] = useState(tabsItems[0]?.label);
 
     return (
         <TabsStyle
