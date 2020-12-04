@@ -16,11 +16,11 @@ function RootNodeTable() {
     return (
         <RootNodePanelWrap>
             {
-                rootMembersArray.length === 0 ? <p>No roots data</p> :
+                rootMembersArray?.length === 0 ? <p>No roots data</p> :
                     <TableView
                         header={tableHeader}
                         body={
-                            rootMembersArray.length === 0 ? null :
+                            rootMembersArray?.length === 0 ? null :
                                 // rootMembersAllData.length === 0 ? null :
                                 //     rootMembersAllData.map((member, i) => {
                                 rootMembersArray.map((member, i) => {

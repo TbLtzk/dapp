@@ -3,7 +3,7 @@ import {Row, Col} from "react-bootstrap";
 
 import BigTabsView from "components/Base/Tabs/BigTabsView";
 
-import {WrapDescr} from "pages/UserPages/QGovernance/components/QTypeProposalsTabs/styles"
+import {WrapDescr} from "./styles"
 
 function QTypeProposalsTabs(props) {
     const {activeDescr, votableDesc, activeContent, votableContent} = props;
@@ -33,7 +33,7 @@ function QTypeProposalsTabs(props) {
                 },
             ]
         )
-    }, []);
+    }, [activeContent, votableContent]);
 
     return (
         <Row>

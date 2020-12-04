@@ -8,6 +8,29 @@ export const getPastEvents = async (drizzle, contractName, event) => {
         toBlock: 'latest'
     };
     const result = await contractWeb3.getPastEvents(event, eventOptions);
-    console.log("resultRootsVoting", result);
+    console.log("ProposalCreated roots voting ", result);
     return result;
+};
+
+export const getPastProposalsIds = (proposalArr) => {
+   return proposalArr?.map(evt => evt.returnValues._id);
+};
+
+export const getStatusTransformation = (statusId) => {
+    switch (Number(statusId)) {
+        case 0:
+            return "none";
+        case 1:
+            return "executed";
+        case 2:
+            return "pending";
+        case 3:
+            return "rejected";
+        case 4:
+            return "accepted";
+        case 5:
+            return "passed";
+        default:
+            return "none";
+    }
 };

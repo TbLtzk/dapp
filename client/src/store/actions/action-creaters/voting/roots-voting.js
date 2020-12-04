@@ -16,3 +16,18 @@ export const getRootsVotingProposalsError = (result) => ({
     result,
 });
 
+/* create proposal */
+export const createProposal = (contract, remark, userAddress, anyAddress) => ({
+    type: actionTypes.CREATE_ROOT_VOTING_PROPOSAL,
+    contract, remark, userAddress, anyAddress
+});
+
+export const createProposalSuccess = (result) => ({
+    type: actionTypes.CREATE_ROOT_VOTING_PROPOSAL_SUCCESS,
+    result,
+});
+
+export const createProposalError = (result) => ({
+    type: actionTypes.CREATE_ROOT_VOTING_PROPOSAL_ERROR,
+    result,
+});

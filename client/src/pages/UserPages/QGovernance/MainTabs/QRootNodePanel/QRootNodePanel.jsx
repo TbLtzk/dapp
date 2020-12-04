@@ -32,6 +32,7 @@ function QRootNodePanel() {
     const errorMessage = useSelector(errorM);
     const proposals = useSelector(proposalsArr);
 
+
     useEffect(() => {
         dispatch(getRootsVotingProposals(rootsVotingService))
     }, [dispatch]);
@@ -50,23 +51,20 @@ function QRootNodePanel() {
         //     console.log('QRootNodePanel address', address);
         // });
         //
-        // const proposalEvents = await getPastEvents(drizzle,'RootsVoting', 'ProposalCreated');
-        // console.log("proposalEvents rootnode", proposalEvents);
-        // const proposalIds = proposalEvents.map(evt => evt.returnValues._id);
-        // console.log("proposalIds", proposalIds);
-        // const result = await drizzle.contracts.RootsVoting.methods.getProposal(proposalIds[0]).call();
-        // const calls = proposalIds.map(id => drizzle.contracts.RootsVoting.methods.getProposal(id).call());
-        // const result = await Promise.all(calls);
-        // console.log("result", result);
-
-
     }, []);
 
     return (
         <Col xs={12}>
             <QTypeProposalsTabs
                 activeDescr="11 POLLS - POSTED OCT 19, 2020, 16:00 UTC"
-                activeContent={<ProposalsList data={"data"}/>}
+                activeContent={<ProposalsList
+                    proposals={proposals}
+                    loading={loading}
+                    errorMessage={errorMessage}
+                />}
+                // proposals={proposals}
+                // loading={loading}
+                // errorMessage={errorMessage}
                 votableDesc="2 POLLS - POSTED OCT 19, 2020, 16:00 UTC"
                 votableContent={<p>Only votable</p>}
             />

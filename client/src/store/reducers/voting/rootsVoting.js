@@ -5,6 +5,9 @@ const initialState = {
     loading: true,
     loadingProposals: true,
     errorM: null,
+    createProposalLoading: true,
+    createProposalResult: null,
+
 };
 
 export default function rootsVoting(state = initialState, action) {
@@ -27,6 +30,24 @@ export default function rootsVoting(state = initialState, action) {
                 proposalsArr: [],
                 loadingProposals: false,
                 errorM: action.result
+            };
+
+        case actionTypes.CREATE_ROOT_VOTING_PROPOSAL:
+            return {
+                ...state,
+                createProposalLoading: true
+            };
+        case actionTypes.CREATE_ROOT_VOTING_PROPOSAL_SUCCESS:
+            return {
+                ...state,
+                createProposalLoading: false,
+                createProposalResult: true,
+            };
+        case actionTypes.CREATE_ROOT_VOTING_PROPOSAL_ERROR:
+            return {
+                ...state,
+                createProposalLoading: false,
+                createProposalResult: action.result,
             };
         default:
             return state;

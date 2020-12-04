@@ -1,4 +1,5 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
+import {Col} from "react-bootstrap";
 
 export const colors = {
     main: '#2C2B9C',
@@ -28,4 +29,8 @@ export const h5Text = styled.h5`
   font-size: ${indents["20"]};
   color: ${colors.black};
   font-style: normal;
+`;
+
+export const LoadingWrap = styled(Col)`
+  text-align: center;
 `;
