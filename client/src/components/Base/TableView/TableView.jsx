@@ -8,13 +8,15 @@ function TableView(props) {
 
     return (
         <TableStyle responsive>
-            <thead>
-            <tr>
-                {header.map((elem, i) => {
-                    return <th key={i}>{elem}</th>
-                })}
-            </tr>
-            </thead>
+            {!header ? null :
+                <thead>
+                <tr>
+                    {header.map((elem, i) => {
+                        return <th key={i}>{elem}</th>
+                    })}
+                </tr>
+                </thead>
+            }
             <tbody>
                 {body}
             </tbody>
@@ -24,7 +26,7 @@ function TableView(props) {
 
 TableView.propTypes = {
     header: PropTypes.array,
-    body: PropTypes.array,
+    // body: PropTypes.array,
 };
 
 export default TableView;

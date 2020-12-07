@@ -12,6 +12,7 @@ export const ButtonCustom = styled(Button)`
   background-color: ${props => props.type === "white" ? colors.white : colors.main};
   color: ${props => props.type === "white" ? colors.main : colors.white};
   box-shadow: 0 4px 4px rgba(81, 126, 255, 0.25);
+  border-radius: 8px;
   &:disabled {
     color: ${props => props.type === "white" ? colors.main : colors.white};
     background-color: ${props => props.type === "white" ? colors.white : colors.main};

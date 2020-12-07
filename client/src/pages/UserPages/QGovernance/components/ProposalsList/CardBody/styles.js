@@ -26,6 +26,9 @@ export const Details = styled(Col)`
     span{
       margin-left: 8px
     }
+    p{
+      display: inline-block;
+    }
 `;
 
 export const MainText = styled.p`

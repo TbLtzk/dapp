@@ -1,4 +1,9 @@
-import {getPastEvents, getStatusTransformation, getPastProposalsIds} from "api/contracts/Voting/commonFunc";
+import {
+    getPastEvents,
+    getStatusTransformation,
+    getPastProposalsIds,
+    convertNumVotes
+} from "api/contracts/Voting/commonFunc";
 
 export default class RootsVotingService {
 
@@ -20,6 +25,22 @@ export default class RootsVotingService {
     }
 
     /**
+     * check proposal type depends on candidate and replaceDest addresses
+     * @param candidateAddress
+     * @param replaceDestAddress
+     * @return string
+     */
+    checkProposalTitle(candidateAddress, replaceDestAddress) {
+        if (candidateAddress && replaceDestAddress) {
+            return "Rode Node Swapping Proposal"
+        } else if (candidateAddress && !replaceDestAddress) {
+            return "Root Node Adding Proposal"
+        } else if (!candidateAddress && replaceDestAddress) {
+            return "Root Node Removing proposal"
+        }
+    }
+
+    /**
      * get proposals
      * @return array
      */
@@ -37,27 +58,40 @@ export default class RootsVotingService {
                     if (promiseRes) {
                         objRes.id = id;
                         objRes.remark = promiseRes.base.remark;
-                        objRes.candidate = promiseRes.candidate;
-                        objRes.replaceDest = promiseRes.replaceDest;
+                        const candidateAddress = promiseRes.candidate;
+                        objRes.candidate = candidateAddress;
+                        const replaceDestAddress = promiseRes.replaceDest;
+                        objRes.replaceDest = replaceDestAddress;
                         objRes.votesCount = promiseRes.votesCount;
                         objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
                         objRes.votesFor = promiseRes.base.counters.weightFor;
                         objRes.requiredMajority = promiseRes.base.params.requiredMajority;
                         objRes.requiredQuorum = promiseRes.base.params.requiredQuorum;
+                        //the ending is given by: vetoEndTime.
                         objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
                         objRes.vetoThreshold = promiseRes.base.params.vetoThreshold;
+                        //the time until when users can vote
                         objRes.votingEndTime = promiseRes.base.params.votingEndTime;
-                        objRes.votingStartTime = promiseRes.base.params.votingStartTime;
                         let promiseStatus = await this.getProposalStatus(id);
+                        objRes.title = this.checkProposalTitle(candidateAddress, replaceDestAddress);
                         // let getVotesAddress = await this.isUserVote(id, "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7");
                         // let getVotesFor = await this.getVotesFor(id);
                         // let getVotesAgainst = await this.getVotesAgainst(id);
-                        // let getProposalStats = await this.getProposalStats(id);
-                        // let getVetoesNumber = await this.getVetoesNumber(id);
-                        // let getVetoesPercentage = await this.getVetoesPercentage(id);
+                        let getVetoesNumber = await this.getVetoesNumber(id);
+                        let getVetoesPercentage = await this.getVetoesPercentage(id);
+                        objRes.vetoesNumber = getVetoesNumber;
+                        objRes.vetoesPercentage = getVetoesPercentage;
+                        let proposalStats = await this.getProposalStats(id);
+                        objRes.status = getStatusTransformation(promiseStatus);
+                        console.log("getProposalStats", proposalStats);
                         // let voteFor = await this.voteFor(id);
                         // let voteAgainst = await this.voteAgainst(id);
-                        objRes.status = getStatusTransformation(promiseStatus);
+                        objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
+                        objRes.currentQuorum = convertNumVotes(proposalStats.currentQuorum);
+                        objRes.currentVetoPercentage = convertNumVotes(proposalStats.currentVetoPercentage);
+                        objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
+                        objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
+                        objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
                     }
                     proposals.push(objRes);
                 }
@@ -214,7 +248,7 @@ export default class RootsVotingService {
      */
     async voteAgainst(id) {
         try {
-            const result = await this.RootsVoting.methods.voteAgainst(id).call();
+            const result = await this.RootsVoting.methods.voteAgainst(id, true).call();
             console.log("voteAgainst", result);
             return result;
         } catch (e) {
@@ -229,7 +263,8 @@ export default class RootsVotingService {
      */
     async voteFor(id) {
         try {
-            const result = await this.RootsVoting.methods.voteFor(id).call();
+            const result = await this.RootsVoting.methods.voteFor.cacheSend(
+               id, true, {from: "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7"});
             console.log("voteFor", result);
             return result;
         } catch (e) {

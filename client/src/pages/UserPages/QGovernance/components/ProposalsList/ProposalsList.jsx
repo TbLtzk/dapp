@@ -9,8 +9,9 @@ import {CardBlock, LoadingW} from "./styles";
 
 function ProposalsList(props) {
     const {proposals, loading, errorMessage} = props;
+
     const onProposalVote = (id) => {
-        console.log("Vote")
+        console.log("Vote", id)
     };
 
     return (
@@ -23,56 +24,30 @@ function ProposalsList(props) {
                             return (
                                 <CardBlock key={proposal.id}>
                                     <CardHeader
-                                        title={"Community Greenlight Poll - cUSDC (Compound USDC cToken)"}
+                                        title={proposal.title}
+                                        status={proposal.status}
                                         handleVote={() => {
                                             onProposalVote(proposal.id)
                                         }}
                                     />
                                     <CardBody
-                                        id={"0"}
-                                        mainText={"Text"}
-                                        date={"October 19, 2020"}
-                                        time={"7d 0h remaining"}
+                                        id={proposal.id}
+                                        // mainText={"Text"}
+                                        // date={convertToMonthDayYear(proposal.vetoEndTime)}
+                                        vetoTime={proposal.vetoEndTime}
+                                        // vetoTime={remainDate(proposal.vetoEndTime)}
+                                        votingTime={proposal.votingEndTime}
+                                        // votingTime={remainDate(proposal.votingEndTime)}
+                                        // time={remainDate("7d 0h remaining")}
                                         proposalID={proposal.id}
-                                        pollDetail={"pollDetail"}
-                                        voteBreakdown={"VoteBreakdown"}
+                                        pollDetail={proposal}
+                                        voteBreakdown={proposal}
                                     />
                                 </CardBlock>
                             )
                         })
 
             }
-            {/*<CardBlock>*/}
-            {/*    <CardHeader*/}
-            {/*        title={"Community Greenlight Poll - cUSDC (Compound USDC cToken)"}*/}
-            {/*        handleVote={onProposalVote}*/}
-            {/*    />*/}
-            {/*    <CardBody*/}
-            {/*        id={"0"}*/}
-            {/*        mainText={"Text"}*/}
-            {/*        date={"October 19, 2020"}*/}
-            {/*        time={"7d 0h remaining"}*/}
-            {/*        proposalID={"434"}*/}
-            {/*        pollDetail={"pollDetail"}*/}
-            {/*        voteBreakdown={"VoteBreakdown"}*/}
-            {/*    />*/}
-            {/*</CardBlock>*/}
-
-            {/*<CardBlock>*/}
-            {/*    <CardHeader*/}
-            {/*        title={"Community Greenlight Poll - cUSDC (Compound USDC cToken)"}*/}
-            {/*        handleVote={onProposalVote}*/}
-            {/*    />*/}
-            {/*    <CardBody*/}
-            {/*        id={"1"}*/}
-            {/*        mainText={"Text"}*/}
-            {/*        date={"October 19, 2020"}*/}
-            {/*        time={"7d 0h remaining"}*/}
-            {/*        proposalID={"434"}*/}
-            {/*        pollDetail={"pollDetail"}*/}
-            {/*        voteBreakdown={"VoteBreakdown"}*/}
-            {/*    />*/}
-            {/*</CardBlock>*/}
         </Accordion>
     );
 }

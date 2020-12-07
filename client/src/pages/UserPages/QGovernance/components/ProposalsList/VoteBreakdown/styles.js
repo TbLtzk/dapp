@@ -1,16 +1,56 @@
 import styled from 'styled-components'
 
-import {colors, indents, h5Text} from "constants/style";
+import {Row} from "react-bootstrap";
+import {colors, indents, h5Text, UsualText, Circle} from "constants/style";
 
+export const WrapResult = styled(Row)`
+  margin-bottom: 26px;
+`;
 export const Title = styled(h5Text)`
   margin-bottom: 11px;
 `;
 
-export const Text = styled.p`
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 150%;
-    color: ${colors.lightGrey};
+export const SubTitle = styled(h5Text)`
+  font-weight: 600;
+  margin-bottom: 10px;
+`;
+
+export const Text = styled(UsualText)`
+  color: ${colors.lightGrey};
+    
+`;
+export const Descr = styled(UsualText)`
+`;
+export const WrapBlock = styled.div`
+  display: flex;
+  margin-top: 30px;
+`;
+
+export const WrapColorDescr = styled.div`
+  display: inline-block;
+  margin-top: 21px;
+`;
+
+
+export const ColorTitle = styled.p`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  color: ${colors.grey};
+  margin-bottom: 5px;
+`;
+
+export const CircleColor = styled(Circle)`
+ 
+`;
+
+export const CircleDescrData = styled.p`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 150%;
+  color: ${colors.lightGrey};
+  margin-bottom: 4px;
 `;
 

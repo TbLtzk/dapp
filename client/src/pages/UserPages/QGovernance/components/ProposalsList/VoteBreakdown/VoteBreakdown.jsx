@@ -1,35 +1,116 @@
 import React from "react";
 
 import {Container, Row, Col} from "react-bootstrap";
+import TableView from "components/Base/TableView";
+import PieChartTwoItem from "./PieChartTwoItem";
 
-import {Text, Title} from "pages/UserPages/QGovernance/components/ProposalsList/VoteBreakdown/styles";
+import {Text, Title, SubTitle, Descr, WrapBlock, ColorTitle, WrapColorDescr, CircleColor,
+    CircleDescrData, WrapResult} from "./styles";
+import {colors} from "constants/style";
 
-function VoteBreakdown() {
+
+function VoteBreakdown(props) {
+    const {voteBreakdown} = props;
 
     return (
         <div>
             <Title>Result</Title>
-            <Row>
+            <WrapResult>
                 <Col md={4}>
-                    <p>Vote Results</p>
-                    <p>Majority Requirement; 50%</p>
+                    <SubTitle>Vote Results</SubTitle>
+                    <Descr>Majority Requirement; {voteBreakdown.requiredMajority * 100}%</Descr>
+                    <WrapBlock>
+                            <PieChartTwoItem
+                                data={[{
+                                        name: "For",
+                                        value: 70
+                                    },
+                                    {
+                                        name: "Against",
+                                        value: 30
+                                    },]}
+                            />
+                            <WrapColorDescr>
+                                <ColorTitle><CircleColor color={colors.main}/>For</ColorTitle>
+                                <ColorTitle><CircleColor color={colors.circleWhite}/>Against</ColorTitle>
+                            </WrapColorDescr>
 
+                    </WrapBlock>
+                    <CircleDescrData>- For: 6,5Q</CircleDescrData>
+                    <CircleDescrData>- Against: 25Q</CircleDescrData>
                 </Col>
                 <Col md={4}>
-                    <p>Constitution Check</p>
-                    <p>Objection Requirement: 50%</p>
-
+                    <SubTitle>Constitution Check</SubTitle>
+                    <Descr>Objection Requirement: {voteBreakdown.requiredQuorum * 100}%</Descr>
+                    <WrapBlock>
+                        <PieChartTwoItem
+                            data={[{
+                                name: "For",
+                                value: 10
+                            },
+                                {
+                                    name: "Against",
+                                    value: 90
+                                },]}
+                        />
+                        <WrapColorDescr>
+                            <ColorTitle><CircleColor color={colors.main}/>Objection</ColorTitle>
+                            <ColorTitle><CircleColor color={colors.circleWhite}/>No Vote</ColorTitle>
+                        </WrapColorDescr>
+                    </WrapBlock>
+                    <CircleDescrData>- Root Nodes Objections 0/101</CircleDescrData>
                 </Col>
                 <Col md={4}>
-                    <p>Q Community Veto</p>
-                    <p>Veto Requirement: 20,6%</p>
-
+                    <SubTitle>Q Community Veto</SubTitle>
+                    <Descr>Veto Requirement: {voteBreakdown.vetoThreshold * 100}%</Descr>
+                    <WrapBlock>
+                        <PieChartTwoItem
+                            data={[{
+                                name: "For",
+                                value: 25
+                            },
+                                {
+                                    name: "Against",
+                                    value: 75
+                                },]}
+                        />
+                        <WrapColorDescr>
+                            <ColorTitle><CircleColor color={colors.main}/>For</ColorTitle>
+                            <ColorTitle><CircleColor color={colors.circleWhite}/>Against</ColorTitle>
+                        </WrapColorDescr>
+                    </WrapBlock>
+                    <CircleDescrData>- For: 183</CircleDescrData>
+                    <CircleDescrData>- Against: 2795</CircleDescrData>
                 </Col>
-            </Row>
+            </WrapResult>
             <Title>Vote Requirements</Title>
-            <Text>
-                https://www.reddit.com/r/Bitcoin/comments/jkmnjj/i_bought_a_used_truck_for_215_bitcoin/
-            </Text>
+            <Row>
+                <Col md={6}>
+                    <TableView
+                        body={
+                            <>
+                                <tr>
+                                    <td><Text>Quorum: {voteBreakdown.requiredQuorum * 100}%</Text></td>
+                                    <td><Text>Current Quorum: {voteBreakdown.currentQuorum * 100}%</Text></td>
+                                </tr>
+                                <tr>
+                                    <td><Text>Root Node Objection
+                                        Requirement: 50%</Text>
+                                    </td>
+                                    <td><Text>Current Root Node
+                                        Objection: 0%</Text>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><Text>Veto Requirement: {voteBreakdown.vetoThreshold * 100}%</Text></td>
+                                    <td><Text>Current Veto Share: {voteBreakdown.currentVetoPercentage}%</Text></td>
+                                </tr>
+                            </>
+                        }
+                    />
+                </Col>
+
+            </Row>
         </div>
     );
 }

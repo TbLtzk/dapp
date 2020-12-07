@@ -3,18 +3,19 @@ import React from "react";
 import {Row} from "react-bootstrap";
 import Button from "components/Base/Button";
 
-import {Header, CardTitle, WrapBtnHeader} from "pages/UserPages/QGovernance/components/ProposalsList/CardHeader/styles";
+import {Header, CardTitle, WrapBtnHeader, LabelStatus} from "./styles";
 
 function CardHeader(props) {
-    const {title, handleVote} = props;
+    const {title, status, handleVote} = props;
 
     return (
         <Header>
             <Row>
-                <CardTitle md={10}>
+                <CardTitle md={8}>
                     <p>{title}</p>
                 </CardTitle>
-                <WrapBtnHeader md={2}>
+                <WrapBtnHeader md={4}>
+                    <LabelStatus>{status}</LabelStatus>
                     <Button
                         title="Vote"
                         type="white"

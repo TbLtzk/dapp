@@ -8,10 +8,13 @@ import CustomTabsView from "components/Base/Tabs/CustomTabsView";
 import PollDetail from "pages/UserPages/QGovernance/components/ProposalsList/PollDetail";
 import VoteBreakdown from "pages/UserPages/QGovernance/components/ProposalsList/VoteBreakdown";
 
-import {BlockBody, CollapsedBody, Details, MainText, WrapToggleBlock, ToggleBtn} from "pages/UserPages/QGovernance/components/ProposalsList/CardBody/styles";
+import {convertToMonthDayYear, remainDate} from "func/convertDate";
+
+import {BlockBody, CollapsedBody, Details, MainText, WrapToggleBlock, ToggleBtn} from "./styles";
 
 function CustomToggle({eventKey}) {
-    const decoratedOnClick = useAccordionToggle(eventKey, () =>{});
+    const decoratedOnClick = useAccordionToggle(eventKey, () => {
+    });
 
     return (
         <ToggleBtn
@@ -26,8 +29,7 @@ function CustomToggle({eventKey}) {
 }
 
 function CardBody(props) {
-    const {id, mainText, date, time, proposalID, pollDetail, voteBreakdown} = props;
-
+    const {id, vetoTime, votingTime, proposalID, pollDetail, voteBreakdown} = props;
 
     const tabsItems = useMemo(() => {
         return (
@@ -53,38 +55,52 @@ function CardBody(props) {
     return (
         <BlockBody>
             <Container fluid>
+                {/*<MainText>{mainText}</MainText>*/}
                 <Row>
                     <Col md={10}>
-                        <MainText>{mainText}</MainText>
                         <Row>
                             <Details md={4}>
-                                <FontAwesomeIcon icon={faCalendarAlt}/>
-                                <span>{date}</span>
+                                <div>
+                                    <FontAwesomeIcon icon={faCalendarAlt}/>
+                                    <span>Voting until: {convertToMonthDayYear(votingTime)}</span>
+                                </div>
+                                <div>
+                                    <FontAwesomeIcon icon={faCalendarAlt}/>
+                                    <span>Veto Start: {convertToMonthDayYear(votingTime)}</span>
+                                </div>
+                                <div>
+                                    <FontAwesomeIcon icon={faCalendarAlt}/>
+                                    <span>Veto After {convertToMonthDayYear(votingTime)} until {convertToMonthDayYear(vetoTime)}</span>
+                                </div>
+
                             </Details>
                             <Details md={4}>
-                                <FontAwesomeIcon icon={faClock}/>
-                                <span>{time}</span>
+                                <div>
+                                    <FontAwesomeIcon icon={faClock}/>
+                                    <span>Remaining Time for Voting: {remainDate(votingTime)}</span>
+                                </div>
+                                <div>
+                                    <FontAwesomeIcon icon={faClock}/>
+                                    <span>Remining Time for Veto: {remainDate(vetoTime)}</span>
+                                </div>
                             </Details>
                             <Details md={4}>
                                 <span>Proposal ID: {proposalID}</span>
                             </Details>
-                            <Col md={10}>
-                                <Accordion.Collapse eventKey={id}>
-                                    <CollapsedBody>
-
-                                        <CustomTabsView
-                                            tabsItems={tabsItems}
-                                        />
-
-                                    </CollapsedBody>
-                                </Accordion.Collapse>
-                            </Col>
-
                         </Row>
                     </Col>
                     <WrapToggleBlock md={2}>
                         <CustomToggle eventKey={id}/>
                     </WrapToggleBlock>
+                    <Col md={12}>
+                        <Accordion.Collapse eventKey={id}>
+                            <CollapsedBody>
+                                <CustomTabsView
+                                    tabsItems={tabsItems}
+                                />
+                            </CollapsedBody>
+                        </Accordion.Collapse>
+                    </Col>
                 </Row>
             </Container>
 
