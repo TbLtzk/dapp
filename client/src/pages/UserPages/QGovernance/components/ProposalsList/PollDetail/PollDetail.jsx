@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Title, Text} from "./styles"
+import {Title, Text, Link} from "./styles"
 
 function PollDetail(props) {
     const {pollDetail} = props;
@@ -19,9 +19,7 @@ function PollDetail(props) {
                 </Text>
             }
             <Title>External Reference</Title>
-            <Text>
-                {pollDetail.remark}
-            </Text>
+            <Link href={pollDetail.remark} target="_blank">{pollDetail.remark}</Link>
         </div>
     );
 }

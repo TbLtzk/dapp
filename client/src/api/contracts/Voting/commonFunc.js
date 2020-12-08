@@ -8,7 +8,7 @@ export const getPastEvents = async (drizzle, contractName, event) => {
         toBlock: 'latest'
     };
     const result = await contractWeb3.getPastEvents(event, eventOptions);
-    console.log("ProposalCreated roots voting ", result);
+    // console.log("ProposalCreated roots voting ", result);
     return result;
 };
 

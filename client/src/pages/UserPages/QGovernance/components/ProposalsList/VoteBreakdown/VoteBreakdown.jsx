@@ -4,8 +4,10 @@ import {Container, Row, Col} from "react-bootstrap";
 import TableView from "components/Base/TableView";
 import PieChartTwoItem from "./PieChartTwoItem";
 
-import {Text, Title, SubTitle, Descr, WrapBlock, ColorTitle, WrapColorDescr, CircleColor,
-    CircleDescrData, WrapResult} from "./styles";
+import {
+    Text, Title, SubTitle, Descr, WrapBlock, ColorTitle, WrapColorDescr, CircleColor,
+    CircleDescrData, WrapResult
+} from "./styles";
 import {colors} from "constants/style";
 
 
@@ -20,28 +22,29 @@ function VoteBreakdown(props) {
                     <SubTitle>Vote Results</SubTitle>
                     <Descr>Majority Requirement; {voteBreakdown.requiredMajority * 100}%</Descr>
                     <WrapBlock>
-                            <PieChartTwoItem
-                                data={[{
-                                        name: "For",
-                                        value: 70
-                                    },
-                                    {
-                                        name: "Against",
-                                        value: 30
-                                    },]}
-                            />
-                            <WrapColorDescr>
-                                <ColorTitle><CircleColor color={colors.main}/>For</ColorTitle>
-                                <ColorTitle><CircleColor color={colors.circleWhite}/>Against</ColorTitle>
-                            </WrapColorDescr>
+                        <PieChartTwoItem
+                            data={[{
+                                name: "For",
+                                value: 70
+                            },
+                                {
+                                    name: "Against",
+                                    value: 30
+                                },]}
+                        />
+                        <WrapColorDescr>
+                            <ColorTitle><CircleColor color={colors.main}/>For</ColorTitle>
+                            <ColorTitle><CircleColor color={colors.circleWhite}/>Against</ColorTitle>
+                        </WrapColorDescr>
 
                     </WrapBlock>
-                    <CircleDescrData>- For: 6,5Q</CircleDescrData>
-                    <CircleDescrData>- Against: 25Q</CircleDescrData>
+                    <CircleDescrData>- For: {voteBreakdown.currentMajority * 100}%</CircleDescrData>
+                    <CircleDescrData>- Against: {(voteBreakdown.requiredMajority * 100) - (voteBreakdown.currentMajority * 100)}%
+                    </CircleDescrData>
                 </Col>
                 <Col md={4}>
                     <SubTitle>Constitution Check</SubTitle>
-                    <Descr>Objection Requirement: {voteBreakdown.requiredQuorum * 100}%</Descr>
+                    <Descr>Objection Requirement: {voteBreakdown.vetoThreshold * 100}%</Descr>
                     <WrapBlock>
                         <PieChartTwoItem
                             data={[{
@@ -58,11 +61,11 @@ function VoteBreakdown(props) {
                             <ColorTitle><CircleColor color={colors.circleWhite}/>No Vote</ColorTitle>
                         </WrapColorDescr>
                     </WrapBlock>
-                    <CircleDescrData>- Root Nodes Objections 0/101</CircleDescrData>
+                    <CircleDescrData>- Root Nodes Objections {voteBreakdown.currentVetoPercentage * 100}</CircleDescrData>
                 </Col>
                 <Col md={4}>
                     <SubTitle>Q Community Veto</SubTitle>
-                    <Descr>Veto Requirement: {voteBreakdown.vetoThreshold * 100}%</Descr>
+                    <Descr>Veto Requirement: 0%</Descr>
                     <WrapBlock>
                         <PieChartTwoItem
                             data={[{
@@ -79,8 +82,8 @@ function VoteBreakdown(props) {
                             <ColorTitle><CircleColor color={colors.circleWhite}/>Against</ColorTitle>
                         </WrapColorDescr>
                     </WrapBlock>
-                    <CircleDescrData>- For: 183</CircleDescrData>
-                    <CircleDescrData>- Against: 2795</CircleDescrData>
+                    <CircleDescrData>- For: 0</CircleDescrData>
+                    <CircleDescrData>- Against: 0</CircleDescrData>
                 </Col>
             </WrapResult>
             <Title>Vote Requirements</Title>
@@ -95,15 +98,15 @@ function VoteBreakdown(props) {
                                 </tr>
                                 <tr>
                                     <td><Text>Root Node Objection
-                                        Requirement: 50%</Text>
+                                        Requirement: {voteBreakdown.vetoThreshold * 100}%</Text>
                                     </td>
                                     <td><Text>Current Root Node
-                                        Objection: 0%</Text>
+                                        Objection: {voteBreakdown.currentVetoPercentage * 100}%</Text>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><Text>Veto Requirement: {voteBreakdown.vetoThreshold * 100}%</Text></td>
-                                    <td><Text>Current Veto Share: {voteBreakdown.currentVetoPercentage}%</Text></td>
+                                    <td><Text>Veto Requirement: 0%</Text></td>
+                                    <td><Text>Current Veto Share: 0%</Text></td>
                                 </tr>
                             </>
                         }

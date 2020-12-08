@@ -6,9 +6,8 @@ export const convertToMonthDayYear = (unixTimestamp) => {
 };
 
 export const remainDate = (unixTimestamp) => {
-    //TODO: change places vetoDate and currentDate
-    const vetoDate = new Date();
-    const currentDate = new Date(unixTimestamp * 1000);
+    const currentDate = new Date();
+    const vetoDate = new Date(unixTimestamp * 1000);
     if (currentDate > vetoDate) {
         return 0
     } else {

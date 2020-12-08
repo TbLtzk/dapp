@@ -56,6 +56,7 @@ export default class RootsVotingService {
                     let promiseRes = await this.proposalIteratorResult(id);
                     // objRes = [...promiseRes];
                     if (promiseRes) {
+                        // console.log("promiseRes",promiseRes);
                         objRes.id = id;
                         objRes.remark = promiseRes.base.remark;
                         const candidateAddress = promiseRes.candidate;
@@ -83,7 +84,7 @@ export default class RootsVotingService {
                         objRes.vetoesPercentage = getVetoesPercentage;
                         let proposalStats = await this.getProposalStats(id);
                         objRes.status = getStatusTransformation(promiseStatus);
-                        console.log("getProposalStats", proposalStats);
+                        // console.log("getProposalStats", proposalStats);
                         // let voteFor = await this.voteFor(id);
                         // let voteAgainst = await this.voteAgainst(id);
                         objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
@@ -96,7 +97,7 @@ export default class RootsVotingService {
                     proposals.push(objRes);
                 }
             }
-            console.log("proposals", proposals);
+            // console.log("proposals", proposals);
             return proposals;
         } catch (e) {
             console.log(e);
@@ -112,7 +113,7 @@ export default class RootsVotingService {
         try {
             const result = await this.RootsVoting.methods.proposals(id).call();
             // const result = await this.RootsVoting.methods.getProposal(id).call();
-            console.log("result", result);
+            // console.log("result", result);
             return result;
         } catch (e) {
             console.log(e);
@@ -174,7 +175,7 @@ export default class RootsVotingService {
     async getVotesFor(id) {
         try {
             const result = await this.RootsVoting.methods.getVotesFor(id).call();
-            console.log("getVotesFor", result);
+            // console.log("getVotesFor", result);
             return result;
         } catch (e) {
             console.log(e);
@@ -189,7 +190,7 @@ export default class RootsVotingService {
     async getVotesAgainst(id) {
         try {
             const result = await this.RootsVoting.methods.getVotesAgainst(id).call();
-            console.log("getVotesAgainst", result);
+            // console.log("getVotesAgainst", result);
             return result;
         } catch (e) {
             console.log(e);
@@ -204,7 +205,7 @@ export default class RootsVotingService {
     async getProposalStats(id) {
         try {
             const result = await this.RootsVoting.methods.getProposalStats(id).call();
-            console.log("getProposalStats", result);
+            // console.log("getProposalStats", result);
             return result;
         } catch (e) {
             console.log(e);
@@ -219,7 +220,7 @@ export default class RootsVotingService {
     async getVetoesNumber(id) {
         try {
             const result = await this.RootsVoting.methods.getVetosNumber(id).call();
-            console.log("getVetoesNumber", result);
+            // console.log("getVetoesNumber", result);
             return result;
         } catch (e) {
             console.log(e);
@@ -234,7 +235,7 @@ export default class RootsVotingService {
     async getVetoesPercentage(id) {
         try {
             const result = await this.RootsVoting.methods.getVetosPercentage(id).call();
-            console.log("getVetoesPercentage", result);
+            // console.log("getVetoesPercentage", result);
             return result;
         } catch (e) {
             console.log(e);
@@ -249,7 +250,7 @@ export default class RootsVotingService {
     async voteAgainst(id) {
         try {
             const result = await this.RootsVoting.methods.voteAgainst(id, true).call();
-            console.log("voteAgainst", result);
+            // console.log("voteAgainst", result);
             return result;
         } catch (e) {
             console.log(e);
@@ -265,7 +266,7 @@ export default class RootsVotingService {
         try {
             const result = await this.RootsVoting.methods.voteFor.cacheSend(
                id, true, {from: "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7"});
-            console.log("voteFor", result);
+            // console.log("voteFor", result);
             return result;
         } catch (e) {
             console.log(e);
@@ -283,7 +284,7 @@ export default class RootsVotingService {
         try {
             const result = await this.RootsVoting.methods.createProposal.cacheSend(
                 remark, userAddress, anyAddress, {from: userAddress});
-            console.log("createProposal", result);
+            // console.log("createProposal", result);
             return result;
         } catch (e) {
             console.log(e);

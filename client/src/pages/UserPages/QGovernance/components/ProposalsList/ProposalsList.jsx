@@ -32,6 +32,7 @@ function ProposalsList(props) {
                                     />
                                     <CardBody
                                         id={proposal.id}
+                                        proposalType={proposal?.type}
                                         // mainText={"Text"}
                                         // date={convertToMonthDayYear(proposal.vetoEndTime)}
                                         vetoTime={proposal.vetoEndTime}

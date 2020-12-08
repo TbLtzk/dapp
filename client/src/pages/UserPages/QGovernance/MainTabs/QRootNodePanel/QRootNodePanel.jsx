@@ -56,16 +56,18 @@ function QRootNodePanel() {
     return (
         <Col xs={12}>
             <QTypeProposalsTabs
-                activeDescr="11 POLLS - POSTED OCT 19, 2020, 16:00 UTC"
-                activeContent={<ProposalsList
-                    proposals={proposals}
-                    loading={loading}
-                    errorMessage={errorMessage}
-                />}
+                activeDescr={proposals?.length + " POLLS"}
+                activeContent={
+                    <ProposalsList
+                        proposals={proposals}
+                        loading={loading}
+                        errorMessage={errorMessage}
+                    />
+                }
                 // proposals={proposals}
                 // loading={loading}
                 // errorMessage={errorMessage}
-                votableDesc="2 POLLS - POSTED OCT 19, 2020, 16:00 UTC"
+                votableDesc="0 POLLS"
                 votableContent={<p>Only votable</p>}
             />
         </Col>

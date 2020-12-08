@@ -5,12 +5,14 @@ import userInf from './userInf';
 import rootContract from './rootContract';
 
 import rootsVoting from './voting/rootsVoting';
+import constitutionVoting from './voting/constitutionVoting';
 
 const RootReducer = combineReducers({
     userAuth: UserAuth,
     userInf: userInf,
     rootContract: rootContract,
     rootsVoting: rootsVoting,
+    constitutionVoting: constitutionVoting,
 });
 
 export default RootReducer

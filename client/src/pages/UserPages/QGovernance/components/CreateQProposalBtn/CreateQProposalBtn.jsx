@@ -21,12 +21,20 @@ function CreateQProposalBtn() {
     const userAddress = useSelector(userAddressMetamask);
 
     const onCreateProposal = async () => {
-            // dispatch(getRootsVotingProposals(rootsVotingService))
+        const NEW_CONSTITUTION_HASH = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
+
+        // dispatch(getRootsVotingProposals(rootsVotingService))
         try {
-            const createProposal = await drizzle.contracts.RootsVoting.methods.createProposal.cacheSend(
-                "new1", userAddress, "0x66316FfA38490d4d072F34EF7D7BA64Ce6b4478e",{from: userAddress});
-            console.log("createProposal", createProposal)
-        }catch (e) {
+            //RootsVoting
+            // const createProposal = await drizzle.contracts.RootsVoting.methods.createProposal.cacheSend(
+            //     "new1", userAddress, "0x66316FfA38490d4d072F34EF7D7BA64Ce6b4478e",{from: userAddress});
+            // console.log("createProposal", createProposal);
+
+            //ConstitutionVoting
+            const createProposal = await drizzle.contracts.ConstitutionVoting.methods.createProposal.cacheSend(
+                "https://example1.com", 0, NEW_CONSTITUTION_HASH, {from: userAddress});
+            console.log("createProposal", createProposal);
+        } catch (e) {
             console.log(`Root node proposal failed: ${e}`)
         }
 

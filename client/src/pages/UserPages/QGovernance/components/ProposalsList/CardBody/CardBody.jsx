@@ -29,7 +29,7 @@ function CustomToggle({eventKey}) {
 }
 
 function CardBody(props) {
-    const {id, vetoTime, votingTime, proposalID, pollDetail, voteBreakdown} = props;
+    const {id, vetoTime, votingTime, proposalType, proposalID, pollDetail, voteBreakdown} = props;
 
     const tabsItems = useMemo(() => {
         return (
@@ -70,7 +70,7 @@ function CardBody(props) {
                                 </div>
                                 <div>
                                     <FontAwesomeIcon icon={faCalendarAlt}/>
-                                    <span>Veto After {convertToMonthDayYear(votingTime)} until {convertToMonthDayYear(vetoTime)}</span>
+                                    <span>Veto until {convertToMonthDayYear(vetoTime)}</span>
                                 </div>
 
                             </Details>
@@ -85,7 +85,8 @@ function CardBody(props) {
                                 </div>
                             </Details>
                             <Details md={4}>
-                                <span>Proposal ID: {proposalID}</span>
+                                <p>Proposal ID: {proposalID}</p>
+                                {proposalType && <p>Proposal Type: {proposalType}</p>}
                             </Details>
                         </Row>
                     </Col>

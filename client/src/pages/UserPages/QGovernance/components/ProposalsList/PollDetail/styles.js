@@ -14,3 +14,10 @@ export const Text = styled.p`
     color: ${colors.lightGrey};
 `;
 
+export const Link = styled.a`
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 150%;
+    color: ${colors.lightGrey};
+`;

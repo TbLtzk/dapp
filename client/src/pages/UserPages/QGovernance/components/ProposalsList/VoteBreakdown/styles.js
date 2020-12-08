@@ -32,7 +32,7 @@ export const WrapColorDescr = styled.div`
 `;
 
 
-export const ColorTitle = styled.p`
+export const ColorTitle = styled.div`
   font-style: normal;
   font-weight: 500;
   font-size: 14px;

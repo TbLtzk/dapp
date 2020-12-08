@@ -28,6 +28,7 @@ export const Details = styled(Col)`
     }
     p{
       display: inline-block;
+      margin-bottom: 0;
     }
 `;
 
