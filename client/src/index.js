@@ -17,7 +17,7 @@ import './index.css';
 const drizzle = new Drizzle(drizzleOptions);
 const {DrizzleProvider} = drizzleReactHooks;
 
-console.log('drizzle', drizzle);
+// console.log('drizzle', drizzle);
 
 ReactDOM.render(
     <DrizzleProvider drizzle={drizzle}>

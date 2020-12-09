@@ -1,0 +1,36 @@
+export const contractsToContractsRegistryKey = {
+    ConstitutionParameters: 'governance.constitution.parameters',
+    ConstitutionParametersVoting: 'governance.constitution.parametersVoting',
+    GeneralUpdateVoting: 'governance.generalUpdateVoting',
+    EmergencyUpdateVoting: 'governance.emergencyUpdateVoting',
+    RootNodes: 'governance.rootNodes',
+    RootNodesMembershipVoting: 'governance.rootNodes.membershipVoting',
+    RootNodesSlashingVoting: 'governance.rootNodes.slashingVoting',
+    Validators: 'governance.validators',
+
+    EPDR_Membership: 'governance.experts.EPDR.membership',
+    EPDR_MembershipVoting: 'governance.experts.EPDR.membershipVoting',
+    EPDR_Parameters: 'governance.experts.EPDR.parameters',
+    EPDR_ParametersVoting: 'governance.experts.EPDR.parametersVoting',
+    EPQFI_Membership: 'governance.experts.EPQFI.membership',
+    EPQFI_MembershipVoting: 'governance.experts.EPQFI.membershipVoting',
+    EPQFI_Parameters: 'governance.experts.EPQFI.parameters',
+    EPQFI_ParametersVoting: 'governance.experts.EPQFI.parametersVoting',
+
+    DefaultAllocationProxy: 'tokeneconomics.defaultAllocationProxy',
+    RootNodeRewardProxy: 'tokeneconomics.rootNodeRewardProxy',
+    ValidationRewardProxy: 'tokeneconomics.validationRewardProxy',
+    QHolderRewardProxy: 'tokeneconomics.qHolderRewardProxy',
+    QHolderRewardPool: 'tokeneconomics.qHolderRewardPool',
+    ValidationRewardPools: 'tokeneconomics.validationRewardPools',
+    QPiggyBank: 'tokeneconomics.qPiggyBank',
+    SystemReserve: 'tokeneconomics.systemReserve',
+
+    WrappedQ: 'defi.wrappedQ',
+    StableCoin: 'defi.<STC>.coin',
+    Saving: 'defi.<STC>.borrowing',
+    SystemBalance: 'defi.<STC>.saving',
+    LiquidationAuction: 'defi.<STC>.systemBalance',
+    SystemSurplusAuction: 'defi.<STC>.liquidationAuction',
+    SystemDebtAuction: 'defi.<STC>.systemDebtAuction'
+}

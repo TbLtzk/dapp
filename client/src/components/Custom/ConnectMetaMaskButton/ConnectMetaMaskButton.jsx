@@ -10,7 +10,7 @@ function ConnectMetaMaskButton(props) {
     const ethereum = window.ethereum;
 
     const requestConnect = () => {
-        console.log('ethereum', ethereum);
+        // console.log('ethereum', ethereum);
         setAlertShow(false);
         if (ethereum) {
             ethereum.request({method: 'eth_requestAccounts'})
