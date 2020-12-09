@@ -4,25 +4,26 @@ import {
     getPastProposalsIds,
     convertNumVotes
 } from "api/contracts/Voting/commonFunc";
+import VotingService from "api/contracts/Voting/VotingService";
 
-export default class RootsVotingService {
+export default class RootsVotingService extends VotingService {
 
-    constructor(drizzle) {
-        this.drizzle = drizzle;
-        this.RootsVoting = drizzle.contracts.RootsVoting;
-    }
+    // constructor(drizzle) {
+    //     this.drizzle = drizzle;
+    //     this.RootsVoting = drizzle.contracts.RootsVoting;
+    // }
 
     /**
      * get proposal event
      * @return array
      */
-    async getProposalsEvent() {
-        try {
-            return await getPastEvents(this.drizzle, 'RootsVoting', 'ProposalCreated');
-        } catch (e) {
-            console.log(e);
-        }
-    }
+    // async getProposalsEvent() {
+    //     try {
+    //         return await getPastEvents(this.drizzle, 'RootsVoting', 'ProposalCreated');
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
 
     /**
      * check proposal type depends on candidate and replaceDest addresses
@@ -109,47 +110,47 @@ export default class RootsVotingService {
      * @param id
      * @return array
      */
-    async getProposal(id) {
-        try {
-            const result = await this.RootsVoting.methods.proposals(id).call();
-            // const result = await this.RootsVoting.methods.getProposal(id).call();
-            // console.log("result", result);
-            return result;
-        } catch (e) {
-            console.log(e);
-        }
-    }
+    // async getProposal(id) {
+    //     try {
+    //         const result = await this.RootsVoting.methods.proposals(id).call();
+    //         // const result = await this.RootsVoting.methods.getProposal(id).call();
+    //         // console.log("result", result);
+    //         return result;
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
 
     /**
      * get proposal status
      * @param id
      * @return string
      */
-    async getProposalStatus(id) {
-        try {
-            const result = await this.RootsVoting.methods.getStatus(id).call();
-            // console.log("getStatus", result);
-            return result;
-        } catch (e) {
-            console.log(e);
-        }
-    }
+    // async getProposalStatus(id) {
+    //     try {
+    //         const result = await this.RootsVoting.methods.getStatus(id).call();
+    //         // console.log("getStatus", result);
+    //         return result;
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
 
     /**
      * get proposal id in iteration
      * @param id
      * @return array
      */
-    async proposalIteratorResult(id) {
-        try {
-            return await this.getProposal(id).then((proposal, error) => {
-                // console.log("proposal", proposal);
-                return proposal;
-            });
-        } catch (e) {
-            console.log(e);
-        }
-    }
+    // async proposalIteratorResult(id) {
+    //     try {
+    //         return await this.getProposal(id).then((proposal, error) => {
+    //             // console.log("proposal", proposal);
+    //             return proposal;
+    //         });
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
 
     /**
      * check is user vote
@@ -202,76 +203,76 @@ export default class RootsVotingService {
      * @param id
      * @return array
      */
-    async getProposalStats(id) {
-        try {
-            const result = await this.RootsVoting.methods.getProposalStats(id).call();
-            // console.log("getProposalStats", result);
-            return result;
-        } catch (e) {
-            console.log(e);
-        }
-    }
+    // async getProposalStats(id) {
+    //     try {
+    //         const result = await this.RootsVoting.methods.getProposalStats(id).call();
+    //         // console.log("getProposalStats", result);
+    //         return result;
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
 
     /**
      * get vetoes number
      * @param id
      * @return array
      */
-    async getVetoesNumber(id) {
-        try {
-            const result = await this.RootsVoting.methods.getVetosNumber(id).call();
-            // console.log("getVetoesNumber", result);
-            return result;
-        } catch (e) {
-            console.log(e);
-        }
-    }
+    // async getVetoesNumber(id) {
+    //     try {
+    //         const result = await this.RootsVoting.methods.getVetosNumber(id).call();
+    //         // console.log("getVetoesNumber", result);
+    //         return result;
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
 
     /**
      * get vetoes percentage
      * @param id
      * @return array
      */
-    async getVetoesPercentage(id) {
-        try {
-            const result = await this.RootsVoting.methods.getVetosPercentage(id).call();
-            // console.log("getVetoesPercentage", result);
-            return result;
-        } catch (e) {
-            console.log(e);
-        }
-    }
+    // async getVetoesPercentage(id) {
+    //     try {
+    //         const result = await this.RootsVoting.methods.getVetosPercentage(id).call();
+    //         // console.log("getVetoesPercentage", result);
+    //         return result;
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
 
-    /**
-     * vote against proposal
-     * @param id
-     * @return array
-     */
-    async voteAgainst(id) {
-        try {
-            const result = await this.RootsVoting.methods.voteAgainst(id, true).call();
-            // console.log("voteAgainst", result);
-            return result;
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    /**
-     * vote for proposal
-     * @param id
-     * @return array
-     */
-    async voteFor(id) {
-        try {
-            const result = await this.RootsVoting.methods.voteFor.cacheSend(
-               id, true, {from: "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7"});
-            // console.log("voteFor", result);
-            return result;
-        } catch (e) {
-            console.log(e);
-        }
-    }
+    // /**
+    //  * vote against proposal
+    //  * @param id
+    //  * @return array
+    //  */
+    // async voteAgainst(id) {
+    //     try {
+    //         const result = await this.RootsVoting.methods.voteAgainst(id, true).call();
+    //         // console.log("voteAgainst", result);
+    //         return result;
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
+    //
+    // /**
+    //  * vote for proposal
+    //  * @param id
+    //  * @return array
+    //  */
+    // async voteFor(id) {
+    //     try {
+    //         const result = await this.RootsVoting.methods.voteFor.cacheSend(
+    //            id, true, {from: "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7"});
+    //         // console.log("voteFor", result);
+    //         return result;
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
 
     /**
      * vote for proposal

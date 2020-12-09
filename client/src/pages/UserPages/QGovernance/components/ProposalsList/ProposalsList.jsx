@@ -8,7 +8,7 @@ import CardBody from "pages/UserPages/QGovernance/components/ProposalsList/CardB
 import {CardBlock, LoadingW} from "./styles";
 
 function ProposalsList(props) {
-    const {proposals, loading, errorMessage} = props;
+    const {proposals, proposalsKind, loading, errorMessage} = props;
 
     const onProposalVote = (id) => {
         console.log("Vote", id)
@@ -42,6 +42,7 @@ function ProposalsList(props) {
                                         // time={remainDate("7d 0h remaining")}
                                         proposalID={proposal.id}
                                         pollDetail={proposal}
+                                        proposalsKind={proposalsKind}
                                         voteBreakdown={proposal}
                                     />
                                 </CardBlock>

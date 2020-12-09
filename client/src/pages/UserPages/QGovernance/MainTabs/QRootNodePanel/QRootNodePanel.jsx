@@ -15,18 +15,15 @@ import RootsVotingService from "api/contracts/Voting/RootsVotingService";
 import {drizzleReactHooks} from "@drizzle/react-plugin";
 import {useDispatch, useSelector} from "react-redux";
 import {userAddressMetamask} from "store/selectors/user-inf";
-import {getPastEvents} from "api/contracts/Voting/commonFunc";
 
-const {useDrizzle, useDrizzleState} = drizzleReactHooks;
+const {useDrizzle} = drizzleReactHooks;
 
 function QRootNodePanel() {
     const {drizzle} = useDrizzle();
-    const state = useDrizzleState(state => state);
     const dispatch = useDispatch();
 
     const contractRegistry = new ContractRegistryService(drizzle);
-    const rootsVotingService = new RootsVotingService(drizzle);
-    const userAddress = useSelector(userAddressMetamask);
+    const rootsVotingService = new RootsVotingService(drizzle, "RootsVoting");
 
     const loading = useSelector(loadingProposals);
     const errorMessage = useSelector(errorM);
@@ -37,20 +34,11 @@ function QRootNodePanel() {
         dispatch(getRootsVotingProposals(rootsVotingService))
     }, [dispatch]);
 
-    // const getPastEvents = async (contractName, event, options) => {
-    //     const web3 = drizzle.web3;
-    //     const contract = drizzle.contracts[contractName];
-    //     const contractWeb3 = new web3.eth.Contract(contract.abi, contract.address);
-    //     const result = await contractWeb3.getPastEvents(event, options);
-    //     console.log("resultRootsVoting", result);
-    //     return result;
-    // };
-
     useEffect(async () => {
         // contractRegistry.getAddress().then((address) => {
-        //     console.log('QRootNodePanel address', address);
+        //     console.log('RootNodesSlashingVoting address', address);
         // });
-        //
+
     }, []);
 
     return (
@@ -62,11 +50,9 @@ function QRootNodePanel() {
                         proposals={proposals}
                         loading={loading}
                         errorMessage={errorMessage}
+                        proposalsKind="QRootNodePanel"
                     />
                 }
-                // proposals={proposals}
-                // loading={loading}
-                // errorMessage={errorMessage}
                 votableDesc="0 POLLS"
                 votableContent={<p>Only votable</p>}
             />

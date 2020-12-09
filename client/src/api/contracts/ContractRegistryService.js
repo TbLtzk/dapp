@@ -14,7 +14,12 @@ export default class ContractRegistryService {
             //root contract address
             // const res = await this.contractRegistry.methods.getAddress("governance.rootNodes").call();
             //ConstitutionParametersVoting
-            const res = await this.contractRegistry.methods.getAddress("governance.rootNodes.membershipVoting").call();
+            // const res = await this.contractRegistry.methods.getAddress("governance.rootNodes.membershipVoting").call();
+            //ValidatorsSlashingVoting
+            // const res = await this.contractRegistry.methods.getAddress("governance.validators.slashingVoting").call();
+            //RootNodesSlashingVoting
+            const res = await this.contractRegistry.methods.getAddress("governance.rootNodes.slashingVoting").call();
+            //ConstitutionVoting
             // const res = await this.contractRegistry.methods.getAddress("governance.constitution.parametersVoting").call();
             // const res = await (this.contractRegistry.methods.getAddress("governance.rootNodes").call(async function (err, address) {
             //     console.log('get address from registry err: ' + err);

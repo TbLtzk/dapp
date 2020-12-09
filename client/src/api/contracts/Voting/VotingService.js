@@ -3,10 +3,9 @@ import {convertNumVotes, getPastEvents, getPastProposalsIds, getStatusTransforma
 export default class VotingService {
 
     constructor(drizzle, contractName) {
-        console.log("drizzle", drizzle);
-        console.log("contractName", contractName);
         this.drizzle = drizzle;
         this.contract = drizzle.contracts[contractName];
+        this.contractName = contractName;
     }
 
     /**
@@ -15,7 +14,7 @@ export default class VotingService {
      */
     async getProposalsEvent() {
         try {
-            return await getPastEvents(this.drizzle, this.contract, 'ProposalCreated');
+            return await getPastEvents(this.drizzle, this.contractName, 'ProposalCreated');
         } catch (e) {
             console.log(e);
         }
@@ -75,7 +74,7 @@ export default class VotingService {
     async getProposalStats(id) {
         try {
             const result = await this.contract.methods.getProposalStats(id).call();
-            console.log("getProposalStats", result);
+            // console.log("getProposalStats", result);
             return result;
         } catch (e) {
             console.log(e);
@@ -106,6 +105,37 @@ export default class VotingService {
         try {
             const result = await this.contract.methods.getVetosPercentage(id).call();
             // console.log("getVetoesPercentage", result);
+            return result;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    /**
+     * vote against proposal
+     * @param id
+     * @return array
+     */
+    async voteAgainst(id) {
+        try {
+            const result = await this.contract.methods.voteAgainst(id, true).call();
+            // console.log("voteAgainst", result);
+            return result;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    /**
+     * vote for proposal
+     * @param id
+     * @return array
+     */
+    async voteFor(id) {
+        try {
+            const result = await this.contract.methods.voteFor.cacheSend(
+                id, true, {from: "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7"});
+            // console.log("voteFor", result);
             return result;
         } catch (e) {
             console.log(e);

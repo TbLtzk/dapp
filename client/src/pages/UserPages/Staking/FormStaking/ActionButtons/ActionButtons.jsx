@@ -70,7 +70,7 @@ function ActionButtons(props) {
     }, [drizzle]);
 
     const onWithdrawFromPanel = useCallback(async (data) => {
-        dispatch(withdraw(rootService, data.amount, userAddress,
+        dispatch(withdraw(rootService, convertToGWei(data.amount), userAddress,
             {
                 // gasPrice: convertToGWei(data?.amount),
                 from: userAddress
@@ -78,7 +78,7 @@ function ActionButtons(props) {
     }, [dispatch]);
 
     const onAnnounce = useCallback(async (data) => {
-        dispatch(announceWithdrawal(rootService, data.amount,
+        dispatch(announceWithdrawal(rootService, convertToGWei(data.amount),
             {
                 // gasPrice: convertToGWei(data?.amount),
                 from: userAddress

@@ -29,7 +29,7 @@ function CustomToggle({eventKey}) {
 }
 
 function CardBody(props) {
-    const {id, vetoTime, votingTime, proposalType, proposalID, pollDetail, voteBreakdown} = props;
+    const {id, vetoTime, votingTime, proposalType, proposalID, pollDetail, voteBreakdown, proposalsKind } = props;
 
     const tabsItems = useMemo(() => {
         return (
@@ -38,7 +38,7 @@ function CardBody(props) {
                     label: "poll-detail",
                     title: "Poll Detail",
                     content: (
-                        <PollDetail pollDetail={pollDetail}/>
+                        <PollDetail pollDetail={pollDetail} proposalsKind={proposalsKind}/>
                     )
                 },
                 {

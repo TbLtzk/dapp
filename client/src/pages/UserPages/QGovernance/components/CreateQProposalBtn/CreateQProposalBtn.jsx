@@ -3,6 +3,7 @@ import Web3 from 'web3';
 import {drizzleReactHooks} from "@drizzle/react-plugin";
 import {useSelector} from "react-redux";
 import {userAddressMetamask} from "store/selectors/user-inf";
+import {BigNumber} from "bignumber.js";
 
 
 import {Row, Col} from "react-bootstrap";
@@ -20,9 +21,20 @@ function CreateQProposalBtn() {
     const state = useDrizzleState(state => state);
     const userAddress = useSelector(userAddressMetamask);
 
+    const getPercentageFormat = (number) => {
+        return bn(1e+27).multipliedBy(number).dividedBy(100);
+    };
+
+    function bn(number) {
+        return new BigNumber(number);
+    }
+
+
     const onCreateProposal = async () => {
         const NEW_CONSTITUTION_HASH = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
-
+        const percentage = getPercentageFormat(60);
+        console.log("percentage", percentage);
+        console.log("userAddress", typeof userAddress);
         // dispatch(getRootsVotingProposals(rootsVotingService))
         try {
             //RootsVoting
@@ -31,13 +43,18 @@ function CreateQProposalBtn() {
             // console.log("createProposal", createProposal);
 
             //ConstitutionVoting
-            const createProposal = await drizzle.contracts.ConstitutionVoting.methods.createProposal.cacheSend(
-                "https://example1.com", 0, NEW_CONSTITUTION_HASH, {from: userAddress});
+            // const createProposal = await drizzle.contracts.ConstitutionVoting.methods.createProposal.cacheSend(
+            //     "https://example1.com", 0, NEW_CONSTITUTION_HASH, {from: userAddress});
+            // console.log("createProposal", createProposal);
+
+            //ValidatorsSlashingVoting
+            //address validator governance.validators
+            const createProposal = await drizzle.contracts.ValidatorsSlashingVoting.methods.createProposal.cacheSend(
+                'https://ethereum.org', "0x6a39b688d591ea00c9ea69658438794204b5cc62", percentage, {from: userAddress});
             console.log("createProposal", createProposal);
         } catch (e) {
             console.log(`Root node proposal failed: ${e}`)
         }
-
 
         // const dummyHash = '0819';
         // const zeroAddress = '0x00';

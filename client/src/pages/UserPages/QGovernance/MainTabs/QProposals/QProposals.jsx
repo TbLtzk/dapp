@@ -3,7 +3,6 @@ import {drizzleReactHooks} from "@drizzle/react-plugin";
 import {useDispatch, useSelector} from "react-redux";
 import {getConstitutionVotingProposals} from "store/actions/action-creaters/voting/constitution-voting";
 import {errorM, loadingProposals, proposalsArr} from "store/selectors/voting/constitution-voting";
-import ContractRegistryService from "api/contracts/ContractRegistryService";
 import ConstitutionVotingService from "api/contracts/Voting/ConstitutionVotingService";
 
 import {Col} from "react-bootstrap";
@@ -17,7 +16,6 @@ function QProposals() {
     const {drizzle} = useDrizzle();
     const state = useDrizzleState(state => state);
     const dispatch = useDispatch();
-    // const contractRegistry = new ContractRegistryService(drizzle);
     const constitutionVoting = new ConstitutionVotingService(drizzle, "ConstitutionVoting");
 
     useEffect(() => {
@@ -34,9 +32,11 @@ function QProposals() {
                 activeDescr={proposals?.length + " POLLS"}
                 activeContent={
                     <ProposalsList
+                        typeList={"QProposals"}
                         proposals={proposals}
                         loading={loading}
                         errorMessage={errorMessage}
+                        proposalsKind="QProposals"
                     />
                 }
                 votableDesc="0 POLLS"
