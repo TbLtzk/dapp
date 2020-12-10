@@ -4,6 +4,8 @@ import {Row, Col} from "react-bootstrap";
 import ButtonTabs from "components/Base/Tabs/ButtonTabs";
 import QProposals from "./MainTabs/QProposals";
 import QRootNodePanel from "./MainTabs/QRootNodePanel";
+import SlashingProposals from "./MainTabs/SlashingProposals";
+import QExpertProposals from "./MainTabs/QExpertProposals";
 
 import CreateQProposalBtn from "./components/CreateQProposalBtn";
 import VotingStats from "./components/VotingStats";
@@ -38,14 +40,18 @@ function QGovernance() {
                     label: "q-expert-proposals",
                     title: "Q Expert Proposals",
                     content: (
-                        <p>Q Expert Proposals</p>
+                        <WrapTabs>
+                            <QExpertProposals/>
+                        </WrapTabs>
                     )
                 },
                 {
                     label: "slashing-proposals",
                     title: "Slashing Proposals",
                     content: (
-                        <p>Slashing Proposals</p>
+                        <WrapTabs>
+                            <SlashingProposals/>
+                        </WrapTabs>
                     )
                 },
             ]

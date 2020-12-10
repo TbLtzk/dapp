@@ -1,1 +1,1 @@
-export {default} from 'pages/UserPages/QGovernance/MainTabs/QProposals/QProposals';
+export {default} from './QProposals';

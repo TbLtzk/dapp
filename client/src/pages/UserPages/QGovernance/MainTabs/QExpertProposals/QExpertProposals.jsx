@@ -1,29 +1,65 @@
 import React, {useEffect} from "react";
+
+import {proposalsQExpert, loadingQExpert, errorQExpert} from "store/selectors/voting/qproposals"
+import {getQExpertProposals} from "store/actions/action-creaters/voting/qproposals"
+
 import {Col} from "react-bootstrap";
 
 import QTypeProposalsTabs from "pages/UserPages/QGovernance/components/QTypeProposalsTabs";
 import ProposalsList from "pages/UserPages/QGovernance/components/ProposalsList";
 
 import ContractRegistryService from "api/contracts/ContractRegistryService";
-import ConstitutionVotingService from "api/contracts/Voting/ConstitutionVotingService";
+import EPQFI_MembershipVotingService from "api/contracts/Voting/EPQFI_MembershipVotingService";
+import EPDR_MembershipVotingService from "api/contracts/Voting/EPDR_MembershipVotingService";
+import EPQFI_ParametersVotingService from "api/contracts/Voting/EPQFI_ParametersVotingService";
+import EPDR_ParametersVotingService from "api/contracts/Voting/EPDR_ParametersVotingService";
+
 import {drizzleReactHooks} from "@drizzle/react-plugin";
+import {useDispatch, useSelector} from "react-redux";
 
-const {useDrizzle, useDrizzleState} = drizzleReactHooks;
+const {useDrizzle} = drizzleReactHooks;
 
-function QExpertProposals() {
+function SlashingProposals() {
     const {drizzle} = useDrizzle();
-    const state = useDrizzleState(state => state);
+    const dispatch = useDispatch();
+
     const contractRegistry = new ContractRegistryService(drizzle);
 
-    // useEffect(async () => {
-    // }, [state]);
+    const EPQFIMembershipVotingService = new EPQFI_MembershipVotingService(drizzle, "EPQFI_MembershipVoting");
+    const EPDRMembershipVotingService = new EPDR_MembershipVotingService(drizzle, "EPDR_MembershipVoting");
+    const EPQFIParametersVotingService = new EPQFI_ParametersVotingService(drizzle, "EPQFI_ParametersVoting");
+    const EPDRParametersVotingService = new EPDR_ParametersVotingService(drizzle, "EPDR_ParametersVoting");
+
+    const loading = useSelector(loadingQExpert);
+    const error = useSelector(errorQExpert);
+    const proposals = useSelector(proposalsQExpert);
+
+
+    useEffect(() => {
+        dispatch(getQExpertProposals([EPQFIMembershipVotingService, EPDRMembershipVotingService,
+            EPQFIParametersVotingService, EPDRParametersVotingService]));
+    }, [dispatch]);
+
+    useEffect(async () => {
+        // contractRegistry.getAddress().then((address) => {
+        //     console.log('EPDR_ParametersVoting address', address);
+        // });
+
+    }, []);
 
     return (
         <Col xs={12}>
             <QTypeProposalsTabs
-                activeDescr="11 POLLS - POSTED OCT 19, 2020, 16:00 UTC"
-                activeContent={<ProposalsList data={"data"}/>}
-                votableDesc="2 POLLS - POSTED OCT 19, 2020, 16:00 UTC"
+                activeDescr={proposals?.length + " POLLS"}
+                activeContent={
+                    <ProposalsList
+                        proposals={proposals}
+                        loading={loading}
+                        errorMessage={error}
+                        proposalsKind="QExpertProposals"
+                    />
+                }
+                votableDesc="0 POLLS"
                 votableContent={<p>Only votable</p>}
             />
         </Col>
@@ -31,5 +67,5 @@ function QExpertProposals() {
     );
 }
 
-export default QExpertProposals;
+export default SlashingProposals;
 

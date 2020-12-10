@@ -49,9 +49,33 @@ function CreateQProposalBtn() {
 
             //ValidatorsSlashingVoting
             //address validator governance.validators
-            const createProposal = await drizzle.contracts.ValidatorsSlashingVoting.methods.createProposal.cacheSend(
-                'https://ethereum.org', "0x6a39b688d591ea00c9ea69658438794204b5cc62", percentage, {from: userAddress});
+            // const createProposal = await drizzle.contracts.ValidatorsSlashingVoting.methods.createProposal.cacheSend(
+            //     'https://ethereum1.org', "0x6a39b688d591ea00c9ea69658438794204b5cc62", percentage, {from: userAddress});
+            // console.log("createProposal", createProposal);
+
+            //RootNodesSlashingVoting
+            //address validator governance.validators
+            // const createProposal = await drizzle.contracts.RootNodesSlashingVoting.methods.createProposal.cacheSend(
+            //     'https://ethereum1.org', "0x66316FfA38490d4d072F34EF7D7BA64Ce6b4478e", percentage, {from: userAddress});
+            // console.log("createProposal", createProposal);
+
+            //EPQFI_MembershipVoting
+            // const createProposal = await drizzle.contracts.EPQFI_MembershipVoting.methods.createAddExpertProposal.cacheSend(
+            //     'https://ethereum.org', "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7",  {from: userAddress});
+            // console.log("createProposal", createProposal);
+            //EPDR_MembershipVoting
+            // const createProposal = await drizzle.contracts.EPDR_MembershipVoting.methods.createAddExpertProposal.cacheSend(
+            //     'https://ethereum1.org', "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7",  {from: userAddress});
+            // console.log("createProposal", createProposal);
+            //EPQFI_ParametersVoting
+            // const createProposal = await drizzle.contracts.EPQFI_ParametersVoting.methods.createAddrProposal.cacheSend(
+            //     'https://ethereum.org', "test2", userAddress, {from: userAddress});
+            // console.log("createProposal", createProposal);
+            //EPDR_ParametersVoting
+            const createProposal = await drizzle.contracts.EPDR_ParametersVoting.methods.createAddrProposal.cacheSend(
+                'https://ethereum.org', "test5", userAddress, {from: userAddress});
             console.log("createProposal", createProposal);
+
         } catch (e) {
             console.log(`Root node proposal failed: ${e}`)
         }

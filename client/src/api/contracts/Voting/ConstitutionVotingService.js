@@ -3,24 +3,6 @@ import VotingService from "api/contracts/Voting/VotingService";
 
 export default class ConstitutionVotingService extends VotingService{
 
-    // constructor(drizzle) {
-    //     // super();
-    //     this.drizzle = drizzle;
-    //     this.ConstitutionVoting = drizzle.contracts.ConstitutionVoting;
-    // }
-
-    /**
-     * get proposal event
-     * @return array
-     */
-    // async getProposalsEvent() {
-    //     try {
-    //         return await getPastEvents(this.drizzle, 'ConstitutionVoting', 'ProposalCreated');
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-    // }
-
     /**
      * get proposal sting type
      * @param type
@@ -53,7 +35,6 @@ export default class ConstitutionVotingService extends VotingService{
                     let objRes = {};
                     let promiseRes = await this.proposalIteratorResult(id);
                     if (promiseRes) {
-                        console.log("ConstitutionVoting promiseRes", promiseRes);
                         objRes.id = id;
                         objRes.remark = promiseRes.base.remark;
                         const proposalType = this.getProposalStringType(promiseRes.classification);
@@ -87,97 +68,5 @@ export default class ConstitutionVotingService extends VotingService{
 
         }
     }
-
-    /**
-     * get proposal
-     * @param id
-     * @return array
-     */
-    // async getProposal(id) {
-    //     try {
-    //         const result = await this.ConstitutionVoting.methods.proposals(id).call();
-    //         // const result = await this.RootsVoting.methods.getProposal(id).call();
-    //         // console.log("result", result);
-    //         return result;
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-    // }
-
-    /**
-     * get proposal id in iteration
-     * @param id
-     * @return array
-     */
-    // async proposalIteratorResult(id) {
-    //     try {
-    //         return await this.getProposal(id).then((proposal, error) => {
-    //             // console.log("proposal", proposal);
-    //             return proposal;
-    //         });
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-    // }
-
-    /**
-     * get proposal status
-     * @param id
-     * @return string
-     */
-    // async getProposalStatus(id) {
-    //     try {
-    //         const result = await this.ConstitutionVoting.methods.getStatus(id).call();
-    //         // console.log("getStatus", result);
-    //         return result;
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-    // }
-
-    /**
-     * proposal status
-     * @param id
-     * @return array
-     */
-    // async getProposalStats(id) {
-    //     try {
-    //         const result = await this.ConstitutionVoting.methods.getProposalStats(id).call();
-    //         console.log("getProposalStats", result);
-    //         return result;
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-    // }
-
-    /**
-     * get vetoes number
-     * @param id
-     * @return array
-     */
-    // async getVetoesNumber(id) {
-    //     try {
-    //         const result = await this.ConstitutionVoting.methods.getVetosNumber(id).call();
-    //         // console.log("getVetoesNumber", result);
-    //         return result;
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-    // }
-
-    /**
-     * get vetoes percentage
-     * @param id
-     * @return array
-     */
-    // async getVetoesPercentage(id) {
-    //     try {
-    //         const result = await this.ConstitutionVoting.methods.getVetosPercentage(id).call();
-    //         // console.log("getVetoesPercentage", result);
-    //         return result;
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-    // }
 
 }
