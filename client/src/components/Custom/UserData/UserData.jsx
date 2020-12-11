@@ -7,7 +7,7 @@ import {userAddressMetamask} from "store/selectors/user-inf";
 import ContractRegistryService from "api/contracts/ContractRegistryService"
 import RootService from "api/contracts/RootService"
 
-import {roundBalance} from "func/useful";
+import {roundBalance} from "func/balance";
 
 const {useDrizzle, useDrizzleState} = drizzleReactHooks;
 

@@ -26,7 +26,7 @@ export default class RootService {
         try {
             return await this.Root.methods.isMember(userAddress).call();
         } catch (e) {
-            console.log(e);
+            // console.log(e);
         }
     }
 

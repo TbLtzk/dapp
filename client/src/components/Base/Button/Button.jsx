@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import {ButtonCustom} from "./styles";
 
 function Button(props) {
-    const {title, type, disabled, handleButton} = props;
+    const {title, type, width, disabled, handleButton} = props;
 
     return (
         <ButtonCustom
             disabled={disabled}
             type={type}
+            width={width}
             variant="primary"
             onClick={handleButton}
         >
@@ -21,6 +22,7 @@ function Button(props) {
 Button.propTypes = {
     // title: PropTypes.string,
     type: PropTypes.string,
+    width: PropTypes.string,
     handleButton: PropTypes.func,
 };
 

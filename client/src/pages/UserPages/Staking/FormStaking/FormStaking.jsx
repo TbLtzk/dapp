@@ -9,7 +9,7 @@ import {useForm} from "react-hook-form";
 
 import {Row} from "react-bootstrap";
 
-import {roundBalance} from "func/useful"
+import {roundBalance} from "func/balance"
 import CustomBlock from "components/Base/CustomBlock"
 import FormInput from "components/Base/FormInput"
 import ActionButtons from "pages/UserPages/Staking/FormStaking/ActionButtons";
