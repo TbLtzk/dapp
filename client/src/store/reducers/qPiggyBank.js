@@ -7,6 +7,7 @@ const initialState = {
     userBalance: 0,
     votingWeight: 0,
     votingLockingEnd: 0,
+    deposit: 0,
 };
 
 export default function qPiggyBank(state = initialState, action) {
@@ -31,10 +32,16 @@ export default function qPiggyBank(state = initialState, action) {
                 error: '',
             };
             switch (action.type) {
-                case actionTypes.SET_PB_USER_BALANCE_SUCCESS:
+                case actionTypes.SET_PB_USER_BALANCE:
                     return {
                         ...newState,
                         userBalance: action.payload,
+                    };
+                case actionTypes.SET_PB_LOCKED_ASSETS:
+                    return {
+                        ...newState,
+                        votingWeight: action.votingWeight,
+                        votingLockingEnd: action.votingLockingEnd,
                     };
                 default:
                     return state;

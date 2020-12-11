@@ -5,7 +5,7 @@ import {Row, Col} from "react-bootstrap";
 
 import RootNodePanel from "components/Custom/RootNodePanel";
 import UserData from "components/Custom/UserData";
-import {roundBalance} from "func/useful";
+import {roundBalance} from "func/balance";
 
 import {WrapContainer} from "./styles"
 

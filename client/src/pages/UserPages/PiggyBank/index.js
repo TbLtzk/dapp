@@ -1,1 +1,1 @@
-export {default} from './PiggyBank';
+export { default } from './PiggyBank';

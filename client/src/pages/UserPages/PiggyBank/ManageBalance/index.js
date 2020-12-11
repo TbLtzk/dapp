@@ -1,1 +1,1 @@
-export {default} from './ManageBalance';
+export { default } from './ManageBalance';

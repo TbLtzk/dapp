@@ -1,9 +1,9 @@
 import styled from 'styled-components';
+
+import { Col } from 'react-bootstrap';
+
+import { colors } from 'constants/style';
 import { Block } from '../../../components/Base/CustomBlock/styles';
-
-import {Col} from "react-bootstrap";
-
-import {colors} from "constants/style";
 
 export const Headline = styled.p`
   color: ${colors.black};
@@ -11,13 +11,11 @@ export const Headline = styled.p`
   font-size: 18px;
 `;
 
-export const TextWrap = styled(Col)`
+export const TextWrapGrey = styled.p`
   font-weight: 400;
   font-size: 14px;
   margin-bottom: 1rem;
-`;
-
-export const TextWrapGrey = styled(TextWrap)`
+  width: 100%;
   color: ${colors.lightGrey};
   display: flex;
   justify-content: space-between;
@@ -32,23 +30,31 @@ export const TextWrapGrey = styled(TextWrap)`
     font-weight: 400;
     font-style: normal;
   }
+  
+  &.go-governance {
+    font-weight: 600;
+    display: flex;
+    height: 100%;
+    justify-content: flex-end;
+    color: ${colors.blue};
+  }
 `;
 
 export const TextPanel = styled.div`
   font-weight: 600;
   color: ${colors.black};
-  ${props => {
-      switch(props.type) {
-          case 'parentNode':
-              return `
+  ${(props) => {
+    switch (props.type) {
+      case 'parentNode':
+        return `
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-              `
-          default:
-              return ``
-      }
-}}
+              `;
+      default:
+        return '';
+    }
+  }}
 `;
 
 export const TextPanelSmall = styled(TextPanel)`
@@ -70,5 +76,3 @@ export const CustomBlockPanel = styled(Block)`
   align-item: center;
   margin-bottom: 30px;
 `;
-
-

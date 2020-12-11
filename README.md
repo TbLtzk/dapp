@@ -16,3 +16,6 @@ In the same directory run the command:
 
 Runs the app in the development mode.
 Open http://localhost:3000 to view it in the browser.
+
+## Code quality
+`eslint [src/ ...] [--fix]` - run eslint checker for directory or file
