@@ -34,6 +34,24 @@ export const getStatusTransformation = (statusId) => {
             return "None";
     }
 };
+export const getParameterTypeTransformation = (statusId) => {
+    switch (Number(statusId)) {
+        case 0:
+            return "None";
+        case 1:
+            return "Address";
+        case 2:
+            return "Uint";
+        case 3:
+            return "String";
+        case 4:
+            return "Byte32";
+        case 5:
+            return "Bool";
+        default:
+            return "None";
+    }
+};
 
 export const convertNumVotes = (number) => {
     if (number.length === 1) {
@@ -47,6 +65,9 @@ export const convertNumVotes = (number) => {
         const res = number.slice(0, 1);
         return res * 0.01;
 
+    }else{
+        const res = number.slice(0, 2);
+        return res * 0.001;
     }
 };
 

@@ -22,7 +22,7 @@ function ProposalsList(props) {
                         ? <Col xs={12}><p>No proposals</p></Col>
                         : proposals.map((proposal, i) => {
                             return (
-                                <CardBlock key={proposal.id}>
+                                <CardBlock key={proposal.id + proposal?.type}>
                                     <CardHeader
                                         title={proposal.title}
                                         status={proposal.status}
@@ -31,7 +31,7 @@ function ProposalsList(props) {
                                         }}
                                     />
                                     <CardBody
-                                        id={proposal.id}
+                                        id={proposal.id + proposal?.type}
                                         proposalType={proposal?.type}
                                         // mainText={"Text"}
                                         // date={convertToMonthDayYear(proposal.vetoEndTime)}

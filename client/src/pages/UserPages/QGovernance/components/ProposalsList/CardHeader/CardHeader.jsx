@@ -15,7 +15,9 @@ function CardHeader(props) {
                     <p>{title}</p>
                 </CardTitle>
                 <WrapBtnHeader md={4}>
-                    <LabelStatus>{status}</LabelStatus>
+                    {!status ? null :
+                        <LabelStatus>{status}</LabelStatus>
+                    }
                     <Button
                         title="Vote"
                         type="white"

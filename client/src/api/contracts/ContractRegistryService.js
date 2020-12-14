@@ -10,7 +10,7 @@ export default class ContractRegistryService {
      * @return string
      */
     async getAddress() {
-        try{
+        try {
             //root contract address
             // const res = await this.contractRegistry.methods.getAddress("governance.rootNodes").call();
             //ConstitutionParametersVoting
@@ -18,7 +18,15 @@ export default class ContractRegistryService {
             //ValidatorsSlashingVoting
             // const res = await this.contractRegistry.methods.getAddress("governance.validators.slashingVoting").call();
             //RootNodesSlashingVoting
-            const res = await this.contractRegistry.methods.getAddress("governance.rootNodes.slashingVoting").call();
+            // const res = await this.contractRegistry.methods.getAddress("governance.rootNodes.slashingVoting").call();
+            //EPQFI_MembershipVoting
+            // const res = await this.contractRegistry.methods.getAddress("governance.experts.EPQFI.membershipVoting").call();
+            //EPDR_MembershipVoting
+            // const res = await this.contractRegistry.methods.getAddress("governance.experts.EPDR.membershipVoting").call();
+            //EPQFI_ParametersVoting
+            //  const res = await this.contractRegistry.methods.getAddress("governance.experts.EPQFI.parametersVoting").call();
+            //EPDR_ParametersVoting
+            const res = await this.contractRegistry.methods.getAddress("governance.experts.EPDR.parametersVoting").call();
             //ConstitutionVoting
             // const res = await this.contractRegistry.methods.getAddress("governance.constitution.parametersVoting").call();
             // const res = await (this.contractRegistry.methods.getAddress("governance.rootNodes").call(async function (err, address) {
@@ -31,7 +39,7 @@ export default class ContractRegistryService {
             // }));
             return res;
         } catch (e) {
-           console.log(e);
+            console.log(e);
         }
     }
 }
