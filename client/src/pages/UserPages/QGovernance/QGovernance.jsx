@@ -57,16 +57,21 @@ function QGovernance() {
             ]
         )
     }, []);
+    const [activeTab, setActiveTab] = useState(tabsItems[0]?.label);
 
     return (
         <Row>
             <Col md={8}>
                 <ButtonTabs
                     tabsItems={tabsItems}
+                    tabsHandler={(key)=>{
+                        console.log('key', key);
+                        setActiveTab(key)
+                    }}
                 />
             </Col>
             <Col md={4}>
-                <CreateQProposalBtn/>
+                <CreateQProposalBtn activeTab={activeTab}/>
                 <VotingStats/>
                 <References/>
             </Col>

@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import {TabsStyle, TabStyle} from "./styles";
 
 function ButtonTabs(props) {
-    const {tabsItems} = props;
+    const {tabsItems, tabsHandler} = props;
     const [key, setKey] = useState(tabsItems[0]?.label);
-
+    console.log("key", key);
     return (
         <TabsStyle
             id="controlled-tab-example"
             activeKey={key}
-            onSelect={(k) => setKey(k)}
+            onSelect={(k) => {setKey(k); tabsHandler(k)}}
         >
             {
                 !tabsItems ? null :

@@ -6,18 +6,18 @@ import {Modal} from "react-bootstrap";
 import Button from "components/Base/Button";
 import ButtonLink from "components/Base/ButtonLink";
 
-import {Header, Body, Footer} from "./styles";
+import {Header, Body, Footer, ModalW} from "./styles";
 
 function ModalWindow(props) {
     const {show, onHide, continueBtnTitle, content} = props;
 
     return (
-        <Modal
+        <ModalW
             show={show}
             onHide={onHide}
-            size="lg"
+            size="md"
             aria-labelledby="contained-modal-title-vcenter"
-            centered
+            // centered
         >
             <Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
@@ -36,7 +36,7 @@ function ModalWindow(props) {
                     handleButton={onHide}
                 />
             </Footer>
-        </Modal>
+        </ModalW>
     );
 }
 

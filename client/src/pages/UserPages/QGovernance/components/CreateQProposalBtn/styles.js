@@ -23,6 +23,7 @@ export const ButtonCustom = styled(Button)`
 `;
 
 export const BtnLabel = styled.p`
+  text-transform: capitalize;
   display: inline-block;
   padding-left: 16px;
   font-weight: 600;

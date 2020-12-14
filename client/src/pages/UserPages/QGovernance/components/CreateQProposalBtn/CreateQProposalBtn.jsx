@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import Web3 from 'web3';
 import {drizzleReactHooks} from "@drizzle/react-plugin";
 import {useSelector} from "react-redux";
@@ -7,18 +7,28 @@ import {BigNumber} from "bignumber.js";
 
 
 import {Row, Col} from "react-bootstrap";
+import ModalWindow from "components/Base/ModalWindow";
+import ModalContent from "./ModalContent";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faPlus} from "@fortawesome/free-solid-svg-icons"
 
-import {WrapBtnBlock, ButtonCustom, BtnLabel} from "pages/UserPages/QGovernance/components/CreateQProposalBtn/styles";
+import {WrapBtnBlock, ButtonCustom, BtnLabel} from "./styles";
 import {getRootsVotingProposals} from "store/actions/action-creaters/voting/roots-voting";
 
 const {useDrizzle, useDrizzleState} = drizzleReactHooks;
 
-function CreateQProposalBtn() {
+function CreateQProposalBtn(props) {
+    const {activeTab} = props;
     const {drizzle} = useDrizzle();
     const state = useDrizzleState(state => state);
     const userAddress = useSelector(userAddressMetamask);
+    const [modalShow, setModalShow] = useState(false);
+
+    const activeTabTitle = useMemo(() => {
+        console.log("activeTab", activeTab);
+        return activeTab.replace(/-/g, " ")
+    }, [activeTab]);
+
 
     const getPercentageFormat = (number) => {
         return bn(1e+27).multipliedBy(number).dividedBy(100);
@@ -30,10 +40,11 @@ function CreateQProposalBtn() {
 
 
     const onCreateProposal = async () => {
+        setModalShow(true);
         const NEW_CONSTITUTION_HASH = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
         const percentage = getPercentageFormat(60);
-        console.log("percentage", percentage);
-        console.log("userAddress", typeof userAddress);
+        // console.log("percentage", percentage);
+        // console.log("userAddress", typeof userAddress);
         // dispatch(getRootsVotingProposals(rootsVotingService))
         try {
             //RootsVoting
@@ -71,9 +82,9 @@ function CreateQProposalBtn() {
             //     'https://ethereum.org', "test2", userAddress, {from: userAddress});
             // console.log("createProposal", createProposal);
             //EPDR_ParametersVoting
-            const createProposal = await drizzle.contracts.EPDR_ParametersVoting.methods.createAddrProposal.cacheSend(
-                'https://ethereum.org', "test5", userAddress, {from: userAddress});
-            console.log("createProposal", createProposal);
+            // const createProposal = await drizzle.contracts.EPDR_ParametersVoting.methods.createAddrProposal.cacheSend(
+            //     'https://ethereum.org', "test5", userAddress, {from: userAddress});
+            // console.log("createProposal", createProposal);
 
         } catch (e) {
             console.log(`Root node proposal failed: ${e}`)
@@ -89,15 +100,23 @@ function CreateQProposalBtn() {
     };
 
     return (
-        <WrapBtnBlock>
-            <ButtonCustom
-                variant="primary"
-                onClick={onCreateProposal}
-            >
-                <FontAwesomeIcon icon={faPlus}/>
-            </ButtonCustom>
-            <BtnLabel>Create Q Proposal</BtnLabel>
-        </WrapBtnBlock>
+        <>
+            <WrapBtnBlock>
+                <ButtonCustom
+                    variant="primary"
+                    onClick={onCreateProposal}
+                >
+                    <FontAwesomeIcon icon={faPlus}/>
+                </ButtonCustom>
+                <BtnLabel>Create {activeTabTitle}</BtnLabel>
+            </WrapBtnBlock>
+            <ModalWindow
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                continueBtnTitle={"Confirm"}
+                content={<ModalContent type={activeTab} title={activeTabTitle}/>}
+            />
+        </>
 
     );
 }
