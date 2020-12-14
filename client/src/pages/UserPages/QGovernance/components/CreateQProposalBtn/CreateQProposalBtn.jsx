@@ -11,7 +11,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faPlus} from "@fortawesome/free-solid-svg-icons"
 
 import {WrapBtnBlock, ButtonCustom, BtnLabel} from "pages/UserPages/QGovernance/components/CreateQProposalBtn/styles";
-import getWeb3 from "getWeb3";
 import {getRootsVotingProposals} from "store/actions/action-creaters/voting/roots-voting";
 
 const {useDrizzle, useDrizzleState} = drizzleReactHooks;

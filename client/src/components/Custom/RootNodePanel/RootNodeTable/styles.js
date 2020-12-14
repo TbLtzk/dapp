@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import {colors, indents} from "constants/style";
+import {indents} from "constants/style";
 
 export const RootNodePanelWrap = styled.div`
   .table{
@@ -11,7 +11,7 @@ export const RootNodePanelWrap = styled.div`
     display: flex;
   }
   .table td:nth-child(2){
-    color: ${colors.darkBlue};
+    color: ${props => props.theme.colors.darkBlue};
     width: 29%;
   }
 `;
@@ -26,6 +26,6 @@ export const Circle = styled.div`
 `;
 
 export const MemberAddress = styled.span`
-  color: ${props => props.color === "highlight" ? colors.green : colors.darkBlue};
+  color: ${props => props.color === "highlight" ? props => props.theme.colors.green : props => props.theme.colors.darkBlue};
 `;
 

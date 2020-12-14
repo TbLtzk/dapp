@@ -2,11 +2,10 @@ import styled from 'styled-components';
 
 import { Col } from 'react-bootstrap';
 
-import { colors } from 'constants/style';
 import { Block } from '../../../components/Base/CustomBlock/styles';
 
 export const Headline = styled.p`
-  color: ${colors.black};
+  color: ${props => props.theme.colors.black};
   font-weight: 600;
   font-size: 18px;
 `;
@@ -16,7 +15,7 @@ export const TextWrapGrey = styled.p`
   font-size: 14px;
   margin-bottom: 1rem;
   width: 100%;
-  color: ${colors.lightGrey};
+  color: ${props => props.theme.colors.lightGrey};
   display: flex;
   justify-content: space-between;
   span {
@@ -25,7 +24,7 @@ export const TextWrapGrey = styled.p`
     align-items: center;
   }
   span:last-child {
-    color: ${colors.black};
+    color: ${props => props.theme.colors.black};
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -36,13 +35,13 @@ export const TextWrapGrey = styled.p`
     display: flex;
     height: 100%;
     justify-content: flex-end;
-    color: ${colors.blue};
+    color: ${props => props.theme.colors.blue};
   }
 `;
 
 export const TextPanel = styled.div`
   font-weight: 600;
-  color: ${colors.black};
+  color: ${props => props.theme.colors.black};
   ${(props) => {
     switch (props.type) {
       case 'parentNode':
@@ -63,11 +62,11 @@ export const TextPanelSmall = styled(TextPanel)`
 `;
 
 export const TextPanelSmallGrey = styled(TextPanelSmall)`
-  color: ${colors.grey};
+  color: ${props => props.theme.colors.grey};
 `;
 
 export const TextPanelSmallBlack = styled(TextPanelSmall)`
-  color: ${colors.black};
+  color: ${props => props.theme.colors.black};
 `;
 
 export const CustomBlockPanel = styled(Block)`

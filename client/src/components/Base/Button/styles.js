@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import {Button} from "react-bootstrap";
 
-import {colors, indents} from "constants/style";
+import {indents} from "constants/style";
 
 export const ButtonCustom = styled(Button)`
   width: ${props => 'undefined' === props.width ? 'auto' : props.width};
@@ -11,41 +11,41 @@ export const ButtonCustom = styled(Button)`
   border-color: ${props => {
     switch (props.type) {
         case 'white':
-            return colors.white;
+            return props => props.theme.colors.white;
         case 'outline':
-            return colors.main;
+            return props => props.theme.colors.main;
         default:
-            return colors.main;
+            return props => props.theme.colors.main;
     }
 }};
   background-color: ${props => {
     switch (props.type) {
         case 'white':
-            return colors.white;
+            return props => props.theme.colors.white;
         case 'outline':
-            return colors.white;
+            return props => props.theme.colors.white;
         default:
-            return colors.main;
+            return props => props.theme.colors.main;
     }
 }};
   color: ${props => {
     switch (props.type) {
         case 'white':
-            return colors.main;
+            return props => props.theme.colors.main;
         case 'outline':
-            return colors.main;
+            return props => props.theme.colors.main;
         default:
-            return colors.white;
+            return props => props.theme.colors.white;
     }
 }};
   box-shadow: 0 4px 4px rgba(81, 126, 255, 0.25);
   border-radius: 8px;
   &:disabled {
-    color: ${props => props.type === "white" ? colors.main : colors.white};
-    background-color: ${props => props.type === "white" ? colors.white : colors.main};
-    border-color: ${props => props.type === "white" ? colors.white : colors.main};
+    color: ${props => props.type === "white" ? props => props.theme.colors.main :props => props.theme.colors.white};
+    background-color: ${props => props.type === "white" ? props => props.theme.colors.white : props => props.theme.colors.main};
+    border-color: ${props => props.type === "white" ? props => props.theme.colors.white : props => props.theme.colors.main};
     opacity: 1
   }
   border-radius: 8px;
-  height: 42px;
+  //height: 42px;
 `;

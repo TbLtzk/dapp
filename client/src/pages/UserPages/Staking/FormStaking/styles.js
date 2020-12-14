@@ -2,10 +2,10 @@ import styled from 'styled-components'
 
 import {Col} from "react-bootstrap";
 
-import {colors, indents} from "constants/style";
+import {indents} from "constants/style";
 
 export const Headline = styled.p`
-  color: ${colors.black};
+  color: ${props => props.theme.colors.black};
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
@@ -18,7 +18,7 @@ export const List = styled.ul`
       font-weight: 600;
       font-size: 14px;
       line-height: 18px;
-      color: ${colors.lightGrey};
+      color: ${props => props.theme.colors.lightGrey};
   }
 `;
 export const TextWrap = styled(Col)`
@@ -30,17 +30,17 @@ export const TextWrap = styled(Col)`
 
 export const TextWrapBlack = styled(TextWrap)`
   text-align: right;
-  color: ${colors.black};
+  color: ${props => props.theme.colors.black};
 `;
 
 export const TextWrapGrey = styled(TextWrap)`
-  color: ${colors.lightGrey};
+  color: ${props => props.theme.colors.lightGrey};
 `;
 
 export const TotalText = styled(TextWrap)`
   display: flex;
   align-items: center;
-  color: ${colors.black};
+  color: ${props => props.theme.colors.black};
   p{
     margin-bottom: 0;
   }

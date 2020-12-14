@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import {Card} from "react-bootstrap";
 
-import {colors, indents, LoadingWrap} from "constants/style";
+import {indents, LoadingWrap} from "constants/style";
 
 export const CardBlock = styled(Card)`
   border:0;

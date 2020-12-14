@@ -2,20 +2,20 @@ import styled from 'styled-components'
 
 import {Tabs, Tab} from "react-bootstrap";
 
-import {colors, indents} from "constants/style";
+import {indents} from "constants/style";
 
 
 export const TabsStyle = styled(Tabs)`
   border-bottom: 0;
   .nav-link.active{
-    color: ${colors.black};
+    color: ${props => props.theme.colors.black};
     background-color: transparent;
     border-color: transparent;
   }
   .nav-link{
     padding-left: 0;
     padding-right: 30px;
-    color: ${colors.main};
+    color: ${props => props.theme.colors.main};
     font-style: normal;
     font-weight: 600;
     font-size: 24px;

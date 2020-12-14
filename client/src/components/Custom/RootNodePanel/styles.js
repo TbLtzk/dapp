@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import {colors, indents, h5Text} from "constants/style";
+import { indents, h5Text} from "constants/style";
 
 export const H5Headline = styled(h5Text)`
 `;
@@ -26,5 +26,5 @@ export const BottomText = styled.p`
   font-weight: 600;
   font-size: 14px;
   line-height: 22px;
-  color: ${colors.lightGrey};
+  color: ${props => props.theme.colors.lightGrey};
 `;

@@ -6,7 +6,7 @@ import {PieChart, Pie, Cell} from 'recharts';
 
 import {circles} from "components/Custom/RootNodePanel/constants"
 
-import {colors} from "constants/style"
+import colors from "constants/colors"
 import {WrapChart} from "./styles"
 
 const RADIAN = Math.PI / 180;

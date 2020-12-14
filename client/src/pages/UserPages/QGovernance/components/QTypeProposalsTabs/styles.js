@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import {colors, indents} from "constants/style";
+import {indents} from "constants/style";
 
 export const WrapDescr = styled.p`
   font-style: normal;
@@ -8,5 +8,5 @@ export const WrapDescr = styled.p`
   font-size: 14px;
   line-height: 18px;
   text-transform: lowercase;
-  color: ${colors.lightGrey};
+  color: ${props => props.theme.colors.lightGrey};
 `;

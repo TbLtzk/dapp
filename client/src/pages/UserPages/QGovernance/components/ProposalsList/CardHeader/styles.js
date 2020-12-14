@@ -2,10 +2,10 @@ import styled from 'styled-components'
 
 import {Button, Card, Col, Container} from "react-bootstrap";
 
-import {colors, indents} from "constants/style";
+import {indents} from "constants/style";
 
 export const Header = styled(Card.Header)`
-  background: ${colors.main};
+  background: ${props => props.theme.colors.main};
   border-radius: 8px 8px 0 0!important;
 `;
 
@@ -17,7 +17,7 @@ export const CardTitle = styled(Col)`
         font-weight: 600;
         font-size: 18px;
         line-height: 150%;
-        color: ${colors.white};
+        color: ${props => props.theme.colors.white};
         margin-bottom: 0;
     }
 `;
@@ -31,9 +31,9 @@ export const LabelStatus = styled.div`
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
-  color: ${colors.opacityWhite};
+  color: ${props => props.theme.colors.opacityWhite};
   opacity: 0.5;
-  border: 1px solid ${colors.white};
+  border: 1px solid ${props => props.theme.colors.white};
   box-sizing: border-box;
   border-radius: 8px;
   padding: 11px 20px;

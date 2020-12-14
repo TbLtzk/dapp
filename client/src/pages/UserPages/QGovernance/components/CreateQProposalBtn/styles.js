@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import {Button, Container} from "react-bootstrap";
 
-import {colors, indents} from "constants/style";
+import {indents} from "constants/style";
 
 export const WrapBtnBlock = styled.div`
     text-align: right;
@@ -15,10 +15,10 @@ export const ButtonCustom = styled(Button)`
   width: 37px;
   height: 37px;
   padding: 0;
-  border-color: ${colors.main};
+  border-color: ${props => props.theme.colors.main};
   border-radius: 50%;
-  background-color: ${colors.main};
-  color: ${colors.white};
+  background-color: ${props => props.theme.colors.main};
+  color: ${props => props.theme.colors.white};
   box-shadow: 0 0 10px rgba(0, 34, 133, 0.25);
 `;
 
@@ -28,5 +28,5 @@ export const BtnLabel = styled.p`
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
-  color: ${colors.main};
+  color: ${props => props.theme.colors.main};
 `;

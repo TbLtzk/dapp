@@ -8,7 +8,7 @@ import {
     Text, Title, SubTitle, Descr, WrapBlock, ColorTitle, WrapColorDescr, CircleColor,
     CircleDescrData, WrapResult
 } from "./styles";
-import {colors} from "constants/style";
+import colors from "constants/colors";
 
 
 function VoteBreakdown(props) {

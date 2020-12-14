@@ -2,11 +2,11 @@ import styled from 'styled-components'
 
 import {Container} from "react-bootstrap";
 
-import {colors, indents} from "constants/style";
+import {indents} from "constants/style";
 
 export const WrapContainer = styled.div`
   p, h4{
-    color: ${colors.white};
+    color: ${props => props.theme.colors.white};
   }
 `;
 

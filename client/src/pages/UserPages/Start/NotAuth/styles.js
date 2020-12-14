@@ -2,10 +2,10 @@ import styled from 'styled-components'
 
 import {Container, Row} from "react-bootstrap";
 
-import {colors, indents} from "constants/style";
+import {indents} from "constants/style";
 
 export const WrapContainer = styled(Container)`
-  background: ${colors.main};
+  background: ${props => props.theme.colors.main};
   height: 100vh;
 `;
 

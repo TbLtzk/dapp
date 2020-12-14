@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import {Table} from "react-bootstrap";
 
-import {colors, indents} from "constants/style";
+import {indents} from "constants/style";
 
 export const TableStyle = styled(Table)`
   thead th, td {
@@ -12,12 +12,12 @@ export const TableStyle = styled(Table)`
     font-size: 14px;
   }
   thead th{
-    color: ${colors.lightGrey};
+    color: ${props => props.theme.colors.lightGrey};
     font-weight: 600;
     //text-align: center;
   }
   td{
-    color: ${colors.darkGrey};
+    color: ${props => props.theme.colors.darkGrey};
     font-weight: 500;
   }
 `;

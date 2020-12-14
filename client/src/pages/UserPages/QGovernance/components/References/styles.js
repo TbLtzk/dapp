@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import {Row, Col} from "react-bootstrap";
 
-import {colors, indents, h5Text} from "constants/style";
+import {indents, h5Text} from "constants/style";
 
 
 export const WrapTitleBlock = styled(Row)`

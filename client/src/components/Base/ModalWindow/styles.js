@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import {Button, Modal} from "react-bootstrap";
 
-import {colors, indents} from "constants/style";
+import {indents} from "constants/style";
 
 export const Header = styled(Modal.Header)`
   border-bottom: 0;

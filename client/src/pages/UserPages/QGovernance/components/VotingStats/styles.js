@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import {Row, Col} from "react-bootstrap";
 
-import {colors, indents, h5Text} from "constants/style";
+import {indents, h5Text} from "constants/style";
 
 
 export const WrapTitleBlock = styled(Row)`
@@ -26,7 +26,7 @@ export const WrapDescrTitle = styled(Col)`
   font-weight: normal;
   font-size: 14px;
   line-height: 150%;
-  color: ${colors.lightGrey}
+  color: ${props => props.theme.colors.lightGrey}
 `;
 export const WrapDescr = styled(Col)`
   text-align: right;
@@ -34,5 +34,5 @@ export const WrapDescr = styled(Col)`
   font-weight: normal;
   font-size: 14px;
   line-height: 150%;
-  color: ${colors.black}
+  color: ${props => props.theme.colors.black}
 `;

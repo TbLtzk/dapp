@@ -2,13 +2,13 @@ import styled from 'styled-components'
 
 import {Form} from "react-bootstrap";
 
-import {colors, indents} from "constants/style";
+import {indents} from "constants/style";
 
 export const InputWrapper = styled(Form.Group)`
   margin-bottom: 25px;
   input{
-      background: ${colors.darkWhite};
-      border: 1px solid ${colors.whiteGrey};
+      background: ${props => props.theme.colors.darkWhite};
+      border: 1px solid ${props => props.theme.colors.whiteGrey};
       box-sizing: border-box;
       border-radius: 8px;
       height: 42px;

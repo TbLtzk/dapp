@@ -1,23 +1,8 @@
 import styled from 'styled-components';
 import {Col} from "react-bootstrap";
-
-export const colors = {
-    main: '#2C2B9C',
-    circleWhite: '#F1F2FD',
-    blue: '#2B295C',
-    darkBlue: '#151552',
-    background: '#F3F7FC',
-    grey: '#9595A5',
-    lightGrey: '#A7AAB9',
-    whiteGrey: '#AFB2CD',
-    darkGrey: '#9A9A9A',
-    black: '#2C2727',
-    white: '#FFF',
-    opacityWhite: 'rgba(255, 255, 255, 0.5)',
-    darkWhite: '#F9F9F9',
-    error: '#d6606b',
-    green: '#34a853',
-};
+import fontStyles from "./fontStyles";
+import fonts from "./fonts";
+import colors from 'constants/colors.js';
 
 export const indents = {
     10: '10px',
@@ -54,3 +39,29 @@ export const Circle = styled.div`
   border-radius: 50%;
   margin-right: 7px;
 `;
+
+const theme = {
+    fonts,
+    fontSizes: ['12px', '16px', '18px', '20px', '24px', '32px', '36px', '40px', '48px'],
+    fontStyles,
+    spaces: [
+        '4px',
+        '8px',
+        '12px',
+        '16px',
+        '20px',
+        '24px',
+        '32px',
+        '40px',
+        '48px',
+        '56px',
+        '64px',
+        '72px',
+        '80px',
+    ],
+    borderRadius: '8px',
+    colors: {
+        ...colors,
+    },
+};
+export default theme;

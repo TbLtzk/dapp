@@ -6,7 +6,7 @@ import {colors, indents} from "constants/style";
 
 export const WrapContainer = styled.div`
   p, h4, ul{
-    color: ${colors.white};
+    color: ${props => props.theme.colors.white};
   }
 `;
 

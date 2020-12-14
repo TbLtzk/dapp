@@ -2,11 +2,11 @@ import styled from 'styled-components'
 
 import {Button, Card, Col, Container} from "react-bootstrap";
 
-import {colors, indents} from "constants/style";
+import {indents} from "constants/style";
 
 export const BlockBody = styled(Card.Body)`
-    background-color: ${colors.white};
-    border: 1px solid ${colors.lightGrey};
+    background-color: ${props => props.theme.colors.white};
+    border: 1px solid ${props => props.theme.colors.lightGrey};
     box-sizing: border-box;
     border-radius: 0 0 8px 8px;
     padding: 15px 0 20px;
@@ -22,7 +22,7 @@ export const Details = styled(Col)`
     font-weight: normal;
     font-size: 14px;
     line-height: 150%;
-    color: ${colors.whiteGrey};
+    color: ${props => props.theme.colors.whiteGrey};
     span{
       margin-left: 8px
     }
@@ -37,7 +37,7 @@ export const MainText = styled.p`
   font-weight: normal;
   font-size: 14px;
   line-height: 150%;
-  color: ${colors.lightGrey};
+  color: ${props => props.theme.colors.lightGrey};
 `;
 
 export const WrapToggleBlock = styled(Col)`
@@ -49,7 +49,7 @@ export const ToggleBtn = styled.button`
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
-  color: ${colors.main};
+  color: ${props => props.theme.colors.main};
   background: transparent;
   border: 0;
   outline: 0!important;
