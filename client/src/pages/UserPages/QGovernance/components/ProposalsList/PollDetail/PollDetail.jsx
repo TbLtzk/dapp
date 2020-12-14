@@ -70,7 +70,7 @@ function PollDetail(props) {
                         }
                         {!pollDetail.amountToSlash ? null :
                             <Text>
-                                amountToSlash: {drizzle.web3.utils.fromWei(pollDetail.amountToSlash, "ether")}Q
+                                amountToSlash: {pollDetail.amountToSlash * 100}%
                             </Text>
                         }
                     </>

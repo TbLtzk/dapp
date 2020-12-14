@@ -68,5 +68,4 @@ export default class ConstitutionVotingService extends VotingService{
 
         }
     }
-
 }

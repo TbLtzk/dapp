@@ -23,7 +23,7 @@ export default class RootNodesSlashingVotingService extends VotingService {
                         objRes.id = id;
                         objRes.remark = promiseRes.base.remark;
                         objRes.candidate = promiseRes.candidate;
-                        objRes.amountToSlash = promiseRes.amountToSlash;
+                        objRes.amountToSlash = convertNumVotes(promiseRes.amountToSlash);
                         objRes.vetosCount = promiseRes.base.counters.vetosCount;
                         objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
                         objRes.votesFor = promiseRes.base.counters.weightFor;

@@ -65,6 +65,9 @@ export const convertNumVotes = (number) => {
         const res = number.slice(0, 1);
         return res * 0.01;
 
+    }else{
+        const res = number.slice(0, 2);
+        return res * 0.001;
     }
 };
 
