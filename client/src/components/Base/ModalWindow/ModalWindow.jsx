@@ -1,15 +1,15 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
-import {Modal} from "react-bootstrap";
+import {Modal, Row, Col, Container} from "react-bootstrap";
 
-import Button from "components/Base/Button";
-import ButtonLink from "components/Base/ButtonLink";
+import Button from "components/Base/Buttons/Button";
+import ButtonLink from "components/Base/Buttons/ButtonLink";
 
 import {Header, Body, Footer, ModalW} from "./styles";
 
 function ModalWindow(props) {
-    const {show, onHide, continueBtnTitle, content} = props;
+    const {disabled, show, onHide, backBtnTitle, backBtnHandler, continueBtnTitle, continueBtnHandler, content} = props;
 
     return (
         <ModalW
@@ -17,7 +17,7 @@ function ModalWindow(props) {
             onHide={onHide}
             size="md"
             aria-labelledby="contained-modal-title-vcenter"
-            // centered
+            centered
         >
             <Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
@@ -27,14 +27,28 @@ function ModalWindow(props) {
                 {content}
             </Body>
             <Footer>
-                <ButtonLink
-                    title="Back"
-                    handleButton={onHide}
-                />
-                <Button
-                    title={continueBtnTitle}
-                    handleButton={onHide}
-                />
+                <Container>
+                    <Row>
+                        <Col md={6}>
+                            {!backBtnTitle ? null :
+                                <Button
+                                    width="100%"
+                                    title={backBtnTitle}
+                                    handleButton={backBtnHandler}
+                                />
+                            }
+                        </Col>
+                        <Col md={6}>
+                            <Button
+                                width="100%"
+                                disabled={disabled}
+                                title={continueBtnTitle}
+                                handleButton={continueBtnHandler}
+                            />
+                        </Col>
+                    </Row>
+                </Container>
+
             </Footer>
         </ModalW>
     );

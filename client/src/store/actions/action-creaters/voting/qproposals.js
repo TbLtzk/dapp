@@ -16,3 +16,9 @@ export const getQExpertProposalsError = (result) => ({
     result,
 });
 
+/* setCreateProposalObj */
+export const setCreateProposalObj = (result) => ({
+    type: actionTypes.SET_CREATED_PROPOSAL_OBJECT,
+    result
+});
+

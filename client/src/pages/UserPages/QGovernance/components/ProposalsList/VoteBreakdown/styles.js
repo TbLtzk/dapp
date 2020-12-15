@@ -6,8 +6,10 @@ import {indents, h5Text, UsualText, Circle} from "constants/style";
 export const WrapResult = styled(Row)`
   margin-bottom: 26px;
 `;
-export const Title = styled(h5Text)`
+export const Title = styled.h5`
+  ${props => props.theme.fontStyles.h5};
   margin-bottom: 11px;
+  
 `;
 
 export const SubTitle = styled(h5Text)`

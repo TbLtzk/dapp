@@ -1,7 +1,7 @@
 import React from "react";
 import {Col} from "react-bootstrap";
 
-import LinkLikeBtn from "components/Base/LinkLikeBtn";
+import LinkLikeBtn from "components/Base/Buttons/LinkLikeBtn";
 import LogoImg from "components/Base/LogoImg";
 
 import {WrapContainer, WrapRow, WrapBlock, WrapLogo} from "./styles"

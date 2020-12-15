@@ -20,8 +20,9 @@ export const Footer = styled(Modal.Footer)`
 
 export const ModalW = styled(Modal)`
   .modal-dialog{
-    position: absolute;
-    right: 0;
-    margin-top: 0;
+    //min-height: 948px;
+    //position: absolute;
+    //right: 0;
+    //margin-top: 0;
   }
 `;

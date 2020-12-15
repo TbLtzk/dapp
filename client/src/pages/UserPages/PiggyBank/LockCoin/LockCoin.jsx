@@ -2,15 +2,15 @@ import React, {useState} from "react";
 import {Row, Col} from "react-bootstrap";
 import CustomBlock from "components/Base/CustomBlock";
 import {Headline, TextWrapGrey} from "../styles";
-import FormInput from "components/Base/FormInput";
+import FormInput from "components/Base/Form/FormInput";
 import {useForm} from "react-hook-form";
-import Button from "components/Base/Button";
+import Button from "components/Base/Buttons/Button";
 import {useDispatch, useSelector} from "react-redux";
 import {setLockAmount, setNewExpiration, setUnlockAmount} from "store/actions/action-creaters/q-piggy-bank";
 import {userAddressMetamask} from "store/selectors/user-inf";
 import DatePicker from "react-datepicker";
 import {DatePickerContainer} from "./styles";
-import {InputWrapper} from "components/Base/FormInput/styles";
+import {InputWrapper} from "components/Base/Form/FormInput/styles";
 
 import "react-datepicker/dist/react-datepicker.css";
 

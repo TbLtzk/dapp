@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import PropTypes from 'prop-types';
 
-import Button from "components/Base/Button";
+import Button from "components/Base/Buttons/Button";
 import AlertMessage from "components/Base/AlertMessage";
 
 function ConnectMetaMaskButton(props) {

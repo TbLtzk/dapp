@@ -1,14 +1,13 @@
-import React from "react";
+import React, {forwardRef} from "react";
 import {Form} from "react-bootstrap";
 
-import './styles.scss';
-
-
-function InputCheckbox({label, name, value, checked, handleChange}) {
+const InputCheckbox = forwardRef((props, ref) => {
+    const {label, name, value, checked, handleChange} = props;
     return (
         <Form.Group controlId="formBasicCheckbox">
             <Form.Check
                 type="checkbox"
+                ref={ref}
                 label={label}
                 name={name}
                 value={value}
@@ -17,7 +16,7 @@ function InputCheckbox({label, name, value, checked, handleChange}) {
             />
         </Form.Group>
     );
-};
+});
 
 export default InputCheckbox;
 

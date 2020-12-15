@@ -1,7 +1,7 @@
 import React from "react";
 
 import {Row} from "react-bootstrap";
-import Button from "components/Base/Button";
+import Button from "components/Base/Buttons/Button";
 
 import {Header, CardTitle, WrapBtnHeader, LabelStatus} from "./styles";
 

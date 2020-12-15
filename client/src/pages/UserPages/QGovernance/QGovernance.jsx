@@ -57,6 +57,7 @@ function QGovernance() {
             ]
         )
     }, []);
+
     const [activeTab, setActiveTab] = useState(tabsItems[0]?.label);
 
     return (
@@ -65,7 +66,6 @@ function QGovernance() {
                 <ButtonTabs
                     tabsItems={tabsItems}
                     tabsHandler={(key)=>{
-                        console.log('key', key);
                         setActiveTab(key)
                     }}
                 />

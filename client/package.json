@@ -16,6 +16,7 @@
     "big-number": "^2.0.0",
     "bignumber.js": "^9.0.1",
     "bootstrap": "^4.5.3",
+    "file-loader": "^6.2.0",
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",

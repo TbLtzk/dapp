@@ -3,8 +3,8 @@ import {Row, Col} from "react-bootstrap";
 import {useHistory} from "react-router-dom";
 
 import CustomBlock from "components/Base/CustomBlock";
-import ButtonLinkArrow from "components/Base/ButtonLinkArrow";
-import ButtonLink from "components/Base/ButtonLink";
+import ButtonLinkArrow from "components/Base/Buttons/ButtonLinkArrow";
+import ButtonLink from "components/Base/Buttons/ButtonLink";
 
 import {arrayLinks} from "pages/UserPages/QGovernance/components/References/constants"
 

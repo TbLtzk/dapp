@@ -122,4 +122,7 @@ export default createGlobalStyle`
         font-weight: 900;
         font-style: italic;
     }
+     body{
+      font-family: "Mulish", "Montserrat", sans-serif !important;
+    }
 `;

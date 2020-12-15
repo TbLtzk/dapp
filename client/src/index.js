@@ -1,3 +1,4 @@
+import GlobalFonts from 'assets/fonts/fonts';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
@@ -13,7 +14,7 @@ import drizzleOptions from './drizzleOption';
 import {store} from './store/index';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import GlobalFonts from 'assets/fonts/fonts';
+
 
 const drizzle = new Drizzle(drizzleOptions);
 const {DrizzleProvider} = drizzleReactHooks;

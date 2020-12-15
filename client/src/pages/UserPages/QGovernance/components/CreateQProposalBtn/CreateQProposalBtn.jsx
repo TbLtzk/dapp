@@ -6,12 +6,11 @@ import {userAddressMetamask} from "store/selectors/user-inf";
 import {BigNumber} from "bignumber.js";
 
 
-import {Row, Col} from "react-bootstrap";
-import ModalWindow from "components/Base/ModalWindow";
-import ModalContent from "./ModalContent";
+import Modal from "./Modal";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faPlus} from "@fortawesome/free-solid-svg-icons"
 
+import {QExpert, QProposal, QRootNode, QSlashing} from "./constants";
 import {WrapBtnBlock, ButtonCustom, BtnLabel} from "./styles";
 import {getRootsVotingProposals} from "store/actions/action-creaters/voting/roots-voting";
 
@@ -25,8 +24,19 @@ function CreateQProposalBtn(props) {
     const [modalShow, setModalShow] = useState(false);
 
     const activeTabTitle = useMemo(() => {
-        console.log("activeTab", activeTab);
-        return activeTab.replace(/-/g, " ")
+        // return activeTab.replace(/-/g, " ")
+        switch (activeTab) {
+            case "q-proposals":
+                return QProposal;
+            case "q-root-node-panel":
+                return QRootNode;
+            case "q-expert-proposals":
+                return QExpert;
+            case "slashing-proposals":
+                return QSlashing;
+            default:
+                return QProposal;
+        }
     }, [activeTab]);
 
 
@@ -110,11 +120,12 @@ function CreateQProposalBtn(props) {
                 </ButtonCustom>
                 <BtnLabel>Create {activeTabTitle}</BtnLabel>
             </WrapBtnBlock>
-            <ModalWindow
-                show={modalShow}
+
+            <Modal
+                activeTab={activeTab}
+                activeTabTitle={activeTabTitle}
+                modalShow={modalShow}
                 onHide={() => setModalShow(false)}
-                continueBtnTitle={"Confirm"}
-                content={<ModalContent type={activeTab} title={activeTabTitle}/>}
             />
         </>
 

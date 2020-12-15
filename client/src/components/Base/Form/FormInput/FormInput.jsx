@@ -2,7 +2,7 @@ import React, {forwardRef} from "react";
 import {Form} from "react-bootstrap";
 
 import ErrorInputMessage from "components/Base/ErrorInputMessage";
-import {InputWrapper} from "./styles"
+import {InputWrapper} from "components/Base/Form/FormInput/styles"
 
 const FormInput = forwardRef((props, ref) => {
     const {name, type, placeholder, valid, align, onChange} = props;

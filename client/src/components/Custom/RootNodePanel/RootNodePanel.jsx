@@ -14,7 +14,7 @@ import {Container, Row, Col} from "react-bootstrap";
 import ContractRegistryService from "api/contracts/ContractRegistryService"
 import RootService from "api/contracts/RootService"
 import PieChartCustom from "components/Base/PieChartCustom"
-import ButtonLinkArrow from "components/Base/ButtonLinkArrow";
+import ButtonLinkArrow from "components/Base/Buttons/ButtonLinkArrow";
 import RootNodeTable from "./RootNodeTable"
 import LoadingSpinner from "components/Base/LoadingSpinner";
 

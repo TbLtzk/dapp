@@ -2,7 +2,7 @@ import React from "react";
 import {Row, Col} from "react-bootstrap";
 
 import CustomBlock from "components/Base/CustomBlock";
-import ButtonLinkArrow from "components/Base/ButtonLinkArrow";
+import ButtonLinkArrow from "components/Base/Buttons/ButtonLinkArrow";
 
 import {
     WrapTitleBlock, Title, WrapTitle, BlockWrap, WrapBtnView, WrapDescr,

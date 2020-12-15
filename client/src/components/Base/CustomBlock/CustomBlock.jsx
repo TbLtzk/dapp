@@ -2,7 +2,7 @@ import React from "react";
 
 import {Block} from "./styles"
 import PropTypes from "prop-types";
-import Button from "../Button";
+import Button from "../Buttons/Button";
 
 function CustomBlock(props) {
     const {children, style} = props;

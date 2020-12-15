@@ -8,7 +8,7 @@ import {userAddressMetamask} from "store/selectors/user-inf";
 
 import {Container, Navbar, Nav} from "react-bootstrap";
 
-import Button from "components/Base/Button"
+import Button from "components/Base/Buttons/Button"
 import LogoImg from "components/Base/LogoImg"
 
 import {navItems} from "./constants";

@@ -3,7 +3,7 @@ import {Row, Col} from "react-bootstrap";
 
 import TabsView from "components/Base/Tabs/TabsView";
 import ModalWindow from "components/Base/ModalWindow";
-import Button from "components/Base/Button";
+import Button from "components/Base/Buttons/Button";
 import Manage from "./MainTabs/Manage";
 import Dashboard from "./MainTabs/Dashboard";
 
@@ -42,7 +42,7 @@ function TabsAuth() {
                 {/*    continueBtnTitle={"Confirm"}*/}
                 {/*    content={*/}
                 {/*        <>*/}
-                {/*            <h4>Modal</h4>*/}
+                {/*            <h4>QProposalS2</h4>*/}
                 {/*            <p>*/}
                 {/*                Cras mattis consectetur purus sit amet fermentum. Cras justo odio,*/}
                 {/*                dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac*/}

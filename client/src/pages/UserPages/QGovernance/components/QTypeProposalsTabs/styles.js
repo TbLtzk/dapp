@@ -2,11 +2,11 @@ import styled from 'styled-components'
 
 import {indents} from "constants/style";
 
+export const Title = styled.p`
+ ${props => props.theme.fontStyles.title.big};
+`;
+
 export const WrapDescr = styled.p`
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 18px;
+  ${props => props.theme.fontStyles.description.small};
   text-transform: lowercase;
-  color: ${props => props.theme.colors.lightGrey};
 `;

@@ -11,7 +11,7 @@ import RootService from "api/contracts/RootService";
 import LoadingSpinner from "components/Base/LoadingSpinner";
 
 import {Col, Row} from "react-bootstrap";
-import Button from "components/Base/Button";
+import Button from "components/Base/Buttons/Button";
 
 import {TransResult} from "./styles"
 

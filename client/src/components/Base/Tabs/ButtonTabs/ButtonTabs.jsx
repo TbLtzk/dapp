@@ -6,7 +6,7 @@ import {TabsStyle, TabStyle} from "./styles";
 function ButtonTabs(props) {
     const {tabsItems, tabsHandler} = props;
     const [key, setKey] = useState(tabsItems[0]?.label);
-    console.log("key", key);
+
     return (
         <TabsStyle
             id="controlled-tab-example"

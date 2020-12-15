@@ -3,7 +3,7 @@ import {Row, Col} from "react-bootstrap";
 
 import BigTabsView from "components/Base/Tabs/BigTabsView";
 
-import {WrapDescr} from "./styles"
+import {Title, WrapDescr} from "./styles"
 
 function QTypeProposalsTabs(props) {
     const {activeDescr, votableDesc, activeContent, votableContent} = props;
@@ -15,7 +15,7 @@ function QTypeProposalsTabs(props) {
                     label: "active-proposals",
                     title: (
                         <>
-                            <p>Active Proposals</p>
+                            <Title>Active Proposals</Title>
                             <WrapDescr>{activeDescr}</WrapDescr>
                         </>
                     ),
@@ -25,7 +25,7 @@ function QTypeProposalsTabs(props) {
                     label: "only-votable",
                     title: (
                         <>
-                            <p>Only votable</p>
+                            <Title>Only votable</Title>
                             <WrapDescr>{votableDesc}</WrapDescr>
                         </>
                     ),

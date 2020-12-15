@@ -7,7 +7,7 @@ const initialState = {
     errorM: null,
     createProposalLoading: true,
     createProposalResult: null,
-
+    formObjectCreateProposal: {}
 };
 
 export default function qProposals(state = initialState, action) {
@@ -30,6 +30,11 @@ export default function qProposals(state = initialState, action) {
                 proposalsArr: [],
                 loadingProposals: false,
                 errorM: action.result
+            };
+        case actionTypes.SET_CREATED_PROPOSAL_OBJECT:
+            return {
+                ...state,
+                formObjectCreateProposal: action.result
             };
         default:
             return state;

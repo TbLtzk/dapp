@@ -14,9 +14,7 @@ export const CardTitle = styled(Col)`
         display: flex;
         align-items: center;
         height: 100%;
-        font-weight: 600;
-        font-size: 18px;
-        line-height: 150%;
+        ${props => props.theme.fontStyles.title.subtitle};
         color: ${props => props.theme.colors.white};
         margin-bottom: 0;
     }
