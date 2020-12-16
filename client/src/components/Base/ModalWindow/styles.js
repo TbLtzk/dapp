@@ -12,6 +12,7 @@ export const Body = styled(Modal.Body)`
   padding-left: ${indents["40"]};
   padding-right: ${indents["40"]};
   padding-top: 0;
+  min-height: 326px;
 `;
 
 export const Footer = styled(Modal.Footer)`

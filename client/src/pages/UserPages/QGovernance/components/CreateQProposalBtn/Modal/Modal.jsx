@@ -1,30 +1,59 @@
 import React, {useMemo, useState} from "react";
 
 import {useDispatch, useSelector} from "react-redux";
-import {setCreateProposalObj} from "store/actions/action-creaters/voting/qproposals";
-import {formObject} from "store/selectors/voting/qproposals";
+import {
+    setCreatedStepsLimit,
+    setCreateProposalObj,
+    setStepCounter,
+    setDisabledCreatedProposalBtn
+} from "store/actions/action-creaters/voting/qproposals";
+import {formObject, createdStepsLimit, stepCounterModal, disabledContinueProposalBtn} from "store/selectors/voting/qproposals";
 import {useForm} from "react-hook-form";
 
 import ModalWindow from "components/Base/ModalWindow";
 import CreateStep1 from "./CreateStep1";
 import CreateStep2 from "./CreateStep2";
+import CreateStep3 from "./CreateStep3";
+
+import {arrExpert, arrQProposal, arrQRootNode, arrSlashing} from "./constants";
 
 import {Title, Descr} from "./styles"
 
-
 function Modal(props) {
     const {modalShow, onHide, activeTab, activeTabTitle} = props;
-    const [stepCounter, setStepCounter] = useState(1);
-    const [stepLimit, setStepLimit] = useState(3);
-    const [disabledContinueBtn, setDisabledContinueBtn] = useState(true);
+    // const [stepCounter, setStepCounter] = useState(1);
+    // const [stepLimit, setStepLimit] = useState(3);
+    // const [disabledContinueBtn, setDisabledContinueBtn] = useState(true);
     // const [dataObj, setData] = useState({});
     const {register, errors, handleSubmit} = useForm();
     const dispatch = useDispatch();
 
     const formData = useSelector(formObject);
+    const stepLimit = useSelector(createdStepsLimit);
+    const stepCounter = useSelector(stepCounterModal);
+    const disabledContinueBtn = useSelector(disabledContinueProposalBtn);
+
+    // console.log("stepLimit", stepLimit);
+
+    const radioArrFirstStep = useMemo(() => {
+        switch (activeTab) {
+            case "q-proposals":
+                return arrQProposal;
+            case "q-root-node-panel":
+                return arrQRootNode;
+            case "q-expert-proposals":
+                return arrExpert;
+            case "slashing-proposals":
+                return arrSlashing;
+            default:
+                return [];
+        }
+
+    }, [activeTab]);
+
 
     const switchProposalContentDependsOnType = useMemo(() => {
-        console.log("stepCounter", stepCounter);
+        // console.log("stepCounter", stepCounter);
         console.log("formData", formData);
         switch (stepCounter) {
             case 1:
@@ -35,10 +64,7 @@ function Modal(props) {
                         activeTabTitle={activeTabTitle}
                         register={register}
                         errors={errors}
-                        onDataChanged={(value) => {
-                            console.log("value", value.target.value);
-                            setDisabledContinueBtn(false)
-                        }}
+                        radioArr={radioArrFirstStep}
                     />
                 );
             case 2:
@@ -51,22 +77,33 @@ function Modal(props) {
                         errors={errors}
                     />
                 );
+            case 3:
+                return (
+                    <CreateStep3
+                        formData={formData}
+                        activeTab={activeTab}
+                        activeTabTitle={activeTabTitle}
+                        register={register}
+                        errors={errors}
+                    />
+                );
             default:
                 return null;
         }
 
-    }, [activeTab, stepCounter]);
-
+    }, [activeTab, stepCounter, register, errors, stepLimit]);
 
     const onNext = (data) => {
+        console.log("data", data);
         dispatch(setCreateProposalObj({...formData, ...data}));
         // setCreateProposalObj
         // setData({...dataObj, ...data});
         // setData({[stepCounter]: {...dataObj, ...data}});
-        console.log("data", data);
-        stepCounter < stepLimit ? setStepCounter(step => step + 1) : setDisabledContinueBtn(true)
+        // console.log("data", data);
+        stepCounter < stepLimit ? dispatch(setStepCounter(stepCounter + 1)) : dispatch(setDisabledCreatedProposalBtn(true))
+        // stepCounter < stepLimit ? setStepCounter(step => step + 1) : setDisabledContinueBtn(true)
     };
-
+    console.log("formData", formData);
 
     return (
         <ModalWindow
@@ -76,8 +113,9 @@ function Modal(props) {
                 stepCounter !== 1 ? "Back" : null
             }
             backBtnHandler={() => {
-                setStepCounter(step => step - 1);
-                setDisabledContinueBtn(false)
+                dispatch(setStepCounter(stepCounter - 1));
+                dispatch(setDisabledCreatedProposalBtn(false));
+                // setDisabledContinueBtn(false)
             }}
             continueBtnTitle={
                 stepLimit !== stepCounter ? "Next" : "Confirm"
@@ -87,7 +125,7 @@ function Modal(props) {
             content={
                 <>
                     <Title style={{textTransform: "capitalize"}}>{activeTabTitle}</Title>
-                    <Descr>Step {stepCounter} of 3</Descr>
+                    <Descr>Step {stepCounter} of {stepLimit}</Descr>
                     <form>
                         {switchProposalContentDependsOnType}
                     </form>

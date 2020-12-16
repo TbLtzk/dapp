@@ -10,8 +10,9 @@ export const InputWrapper = styled(Form.Group)`
       background: ${props => props.theme.colors.darkWhite};
       border: 1px solid ${props => props.theme.colors.whiteGrey};
       box-sizing: border-box;
-      border-radius: 8px;
-      height: 42px;
+      border-radius: ${props => props.theme.borderRadius[1]};
+      min-height: 42px;
       text-align: ${props => props.align ? props.align : "left"};
+      ${props => props.theme.fontStyles.text.middle};
   }
 `;

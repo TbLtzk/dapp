@@ -90,6 +90,7 @@ function ActionButtons(props) {
         <Row>
             <Col md={4}>
                 <Button
+                    width="100%"
                     type="full-width"
                     title={transStakeToPanelStatus === "pending"
                         ? <LoadingSpinner/>
@@ -103,6 +104,7 @@ function ActionButtons(props) {
             </Col>
             <Col md={4}>
                 <Button
+                    width="100%"
                     type="full-width"
                     title={transAccounceWithdrawStatus === "pending"
                         ? <LoadingSpinner/>
@@ -115,6 +117,7 @@ function ActionButtons(props) {
             </Col>
             <Col md={4}>
                 <Button
+                    width="100%"
                     type="full-width"
                     title={transWithdrawStatus === "pending"
                         ? <LoadingSpinner/>

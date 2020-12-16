@@ -16,7 +16,7 @@ import ActionButtons from "pages/UserPages/Staking/FormStaking/ActionButtons";
 import RootService from "api/contracts/RootService";
 
 import {
-    Headline, List, TextWrapBlack,
+    Headline, List, TextWrapBlack, Subtitle,
     TextWrapGrey, TotalText, WrapInput
 } from "./styles"
 
@@ -66,9 +66,9 @@ function FormStaking() {
                 }
             </List>
             <Row>
-                <TextWrapGrey md={6}>
+                <Subtitle md={6}>
                     <p>Stake in Panel (Q)</p>
-                </TextWrapGrey>
+                </Subtitle>
                 <TextWrapBlack md={6}>
                     <p>{amountNodeStake + "Q"}</p>
                     {/*<p>{!isUserRoot ? "0Q" : amountNodeStake + "Q"}</p>*/}

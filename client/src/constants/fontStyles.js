@@ -29,7 +29,7 @@ export default {
             lineHeight: '30px',
             color: colors.black,
         },
-        subtitle:{
+        subtitle: {
             fontFamily: fonts.primary,
             fontStyle: 'normal',
             fontWeight: 600,
@@ -39,13 +39,21 @@ export default {
         }
     },
     text: {
-      big:{
-          fontFamily: fonts.primary,
-          fontStyle: 'normal',
-          fontWeight: 600,
-          fontSize: '16px',
-          lineHeight: '150%',
-          color: colors.lightGrey,
-      }
+        big: {
+            fontFamily: fonts.primary,
+            fontStyle: 'normal',
+            fontWeight: 600,
+            fontSize: '16px',
+            lineHeight: '150%',
+            color: colors.lightGrey,
+        },
+        middle: {
+            fontFamily: fonts.primary,
+            fontStyle: 'normal',
+            fontWeight: 600,
+            fontSize: '14px',
+            lineHeight: '150%',
+            color: colors.lightGrey,
+        }
     }
 };

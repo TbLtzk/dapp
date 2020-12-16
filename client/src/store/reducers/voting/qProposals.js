@@ -7,7 +7,11 @@ const initialState = {
     errorM: null,
     createProposalLoading: true,
     createProposalResult: null,
-    formObjectCreateProposal: {}
+
+    formObjectCreateProposal: {},
+    createdStepsLimit: 3,
+    stepCounter: 1,
+    disabledContinueBtn: true,
 };
 
 export default function qProposals(state = initialState, action) {
@@ -35,6 +39,21 @@ export default function qProposals(state = initialState, action) {
             return {
                 ...state,
                 formObjectCreateProposal: action.result
+            };
+        case actionTypes.SET_CREATED_STEPS_LIMIT:
+            return {
+                ...state,
+                createdStepsLimit: action.result
+            };
+        case actionTypes.SET_STEP_COUNTER:
+            return {
+                ...state,
+                stepCounter: action.result
+            };
+        case actionTypes.SET_DISABLED_CREATED_PROPOSAL_BTN:
+            return {
+                ...state,
+                disabledContinueBtn: action.result
             };
         default:
             return state;

@@ -1,4 +1,3 @@
-import GlobalFonts from 'assets/fonts/fonts';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
@@ -25,7 +24,6 @@ import 'assets/fonts/fonts.css'
 ReactDOM.render(
     <DrizzleProvider drizzle={drizzle}>
         <Provider store={store}>
-            <GlobalFonts/>
             <StyleLayout>
                 <LoadingDrizzle>
                     <BrowserRouter>

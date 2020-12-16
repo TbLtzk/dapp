@@ -31,15 +31,16 @@ function ModalWindow(props) {
                     <Row>
                         <Col md={6}>
                             {!backBtnTitle ? null :
-                                <Button
+                                <ButtonLink
                                     width="100%"
                                     title={backBtnTitle}
-                                    handleButton={backBtnHandler}
+                                    handleLink={backBtnHandler}
                                 />
                             }
                         </Col>
                         <Col md={6}>
                             <Button
+                                type="usual"
                                 width="100%"
                                 disabled={disabled}
                                 title={continueBtnTitle}

@@ -37,6 +37,10 @@ export const TextWrapGrey = styled(TextWrap)`
   color: ${props => props.theme.colors.lightGrey};
 `;
 
+export const Subtitle = styled(TextWrapGrey)`
+  ${props => props.theme.fontStyles.text.middle};
+`;
+
 export const TotalText = styled(TextWrap)`
   display: flex;
   align-items: center;

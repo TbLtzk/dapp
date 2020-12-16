@@ -59,7 +59,7 @@ const theme = {
         '72px',
         '80px',
     ],
-    borderRadius: '8px',
+    borderRadius: ['8px', '12px'],
     colors: {
         ...colors,
     },

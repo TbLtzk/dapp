@@ -16,9 +16,24 @@ export const getQExpertProposalsError = (result) => ({
     result,
 });
 
-/* setCreateProposalObj */
+/* create proposal staff */
 export const setCreateProposalObj = (result) => ({
     type: actionTypes.SET_CREATED_PROPOSAL_OBJECT,
+    result
+});
+
+export const setCreatedStepsLimit = (result) => ({
+    type: actionTypes.SET_CREATED_STEPS_LIMIT,
+    result
+});
+
+export const setStepCounter = (result) => ({
+    type: actionTypes.SET_STEP_COUNTER,
+    result
+});
+
+export const setDisabledCreatedProposalBtn = (result) => ({
+    type: actionTypes.SET_DISABLED_CREATED_PROPOSAL_BTN,
     result
 });
 

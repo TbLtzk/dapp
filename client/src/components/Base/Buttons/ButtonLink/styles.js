@@ -5,6 +5,8 @@ import {Button} from "react-bootstrap";
 import {indents} from "constants/style";
 
 export const Link = styled(Button)`
+  ${props => props.theme.fontStyles.text.middle};
+  width: ${props => 'undefined' === props.width ? 'auto' : props.width};
   padding-left: ${indents["20"]};
   padding-right: ${indents["20"]};
   color: ${props => props.theme.colors.main};

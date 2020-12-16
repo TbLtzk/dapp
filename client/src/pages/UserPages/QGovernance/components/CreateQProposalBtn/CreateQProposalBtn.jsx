@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from "react";
 import Web3 from 'web3';
 import {drizzleReactHooks} from "@drizzle/react-plugin";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {userAddressMetamask} from "store/selectors/user-inf";
 import {BigNumber} from "bignumber.js";
 
@@ -13,6 +13,11 @@ import {faPlus} from "@fortawesome/free-solid-svg-icons"
 import {QExpert, QProposal, QRootNode, QSlashing} from "./constants";
 import {WrapBtnBlock, ButtonCustom, BtnLabel} from "./styles";
 import {getRootsVotingProposals} from "store/actions/action-creaters/voting/roots-voting";
+import {
+    setCreatedStepsLimit,
+    setCreateProposalObj,
+    setStepCounter
+} from "store/actions/action-creaters/voting/qproposals";
 
 const {useDrizzle, useDrizzleState} = drizzleReactHooks;
 
@@ -22,6 +27,7 @@ function CreateQProposalBtn(props) {
     const state = useDrizzleState(state => state);
     const userAddress = useSelector(userAddressMetamask);
     const [modalShow, setModalShow] = useState(false);
+    const dispatch = useDispatch();
 
     const activeTabTitle = useMemo(() => {
         // return activeTab.replace(/-/g, " ")
@@ -50,7 +56,24 @@ function CreateQProposalBtn(props) {
 
 
     const onCreateProposal = async () => {
+        dispatch(setStepCounter(1));
         setModalShow(true);
+        switch (activeTab) {
+            case "q-proposals":
+                dispatch(setCreatedStepsLimit(3));
+                break;
+            case "q-root-node-panel":
+                dispatch(setCreatedStepsLimit(2));
+                break;
+            case "q-expert-proposals":
+                dispatch(setCreatedStepsLimit(2));
+                break;
+            case "slashing-proposals":
+                dispatch(setCreatedStepsLimit(2));
+                break;
+            default:
+                return QProposal;
+        }
         const NEW_CONSTITUTION_HASH = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
         const percentage = getPercentageFormat(60);
         // console.log("percentage", percentage);
@@ -125,7 +148,10 @@ function CreateQProposalBtn(props) {
                 activeTab={activeTab}
                 activeTabTitle={activeTabTitle}
                 modalShow={modalShow}
-                onHide={() => setModalShow(false)}
+                onHide={() => {
+                    setModalShow(false);
+                    dispatch(setCreateProposalObj({}));
+                }}
             />
         </>
 

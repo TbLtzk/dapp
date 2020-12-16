@@ -1,61 +1,45 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import {useSelector} from "react-redux";
 import {formObject} from "store/selectors/voting/qproposals";
-import InputRadio from "components/Base/Form/InputRadio";
 
-import {arrQProposal, arrQRootNode, arrSlashing, arrExpert} from "./constants";
+import InputRadio from "components/Base/Form/InputRadio";
+import ErrorInputMessage from "components/Base/ErrorInputMessage";
 
 import {Wrap} from "./styles";
 
 function RadioBtnGroup(props) {
-    const {activeTab, handleChange, register, errors} = props;
+    const {nameArr, handleChange, register, errors, radioArr} = props;
     const [activeRadioBtn, setActiveRadioBtn] = useState('');
 
     const formData = useSelector(formObject);
 
     useEffect(() => {
-        setActiveRadioBtn(formData?.typeProposal);
+        setActiveRadioBtn(formData[nameArr]);
     },[formData]);
-
-    const checkboxArr = useMemo(() => {
-        switch (activeTab) {
-            case "q-proposals":
-                return arrQProposal;
-            case "q-root-node-panel":
-                return arrQRootNode;
-            case "q-expert-proposals":
-                return arrExpert;
-            case "slashing-proposals":
-                return arrSlashing;
-            default:
-                return [];
-        }
-
-    }, [activeTab]);
 
     return (
         <Wrap>
-            {checkboxArr?.map((value, i) => {
-                const nameField = value.replace(/ /g, "-").toLowerCase();
+            {radioArr?.map((value, i) => {
+                const valueField = value.replace(/ /g, "-").toLowerCase();
+                const name = nameArr + "[]";
                 return (
                     <InputRadio
                         key={i}
-                        name="typeProposal[]"
-                        active={activeRadioBtn === nameField}
-                        // name={nameField}
-                        checked={activeRadioBtn === nameField}
+                        name={name}
+                        active={activeRadioBtn === valueField}
+                        checked={activeRadioBtn === valueField}
                         handleChange={(value) => {
                             setActiveRadioBtn(value.target.value);
                             handleChange(value);
                         }}
                         label={value}
-                        value={nameField}
-                        ref={register}
-                        valid={errors[nameField]?.message}
+                        value={valueField}
+                        ref={register({required: "Choose one option!"})}
                     />
                 )
             })}
+            <ErrorInputMessage message={errors[nameArr]?.message}/>
         </Wrap>
     );
 }

@@ -5,7 +5,7 @@ import ErrorInputMessage from "components/Base/ErrorInputMessage";
 import {InputWrapper} from "components/Base/Form/FormInput/styles"
 
 const FormInput = forwardRef((props, ref) => {
-    const {name, type, placeholder, valid, align, onChange} = props;
+    const {name, type, placeholder, valid, align, onChange, value} = props;
     return (
         <InputWrapper
             controlId="formBasicEmail"
@@ -17,6 +17,7 @@ const FormInput = forwardRef((props, ref) => {
                 name={name}
                 ref={ref}
                 onChange={onChange}
+                value={value}
             />
             <ErrorInputMessage message={valid}/>
         </InputWrapper>
