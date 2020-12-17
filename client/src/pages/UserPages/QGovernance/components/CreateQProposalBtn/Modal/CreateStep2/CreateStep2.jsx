@@ -4,6 +4,8 @@ import {formObject} from "store/selectors/voting/qproposals";
 
 import QProposalS2 from "./QProposalS2";
 import QRootNodeS2 from "./QRootNodeS2";
+import QExpertS2 from "./QExpertS2";
+import SlashingS2 from "./SlashingS2";
 
 function CreateStep2(props) {
     const {activeTab, activeTabTitle, register, errors} = props;
@@ -16,9 +18,9 @@ function CreateStep2(props) {
             case "q-root-node-panel":
                 return <QRootNodeS2 register={register} errors={errors}/>;
             case "q-expert-proposals":
-            // return arrExpert;
+                return <QExpertS2 register={register} errors={errors}/>;
             case "slashing-proposals":
-            // return arrSlashing;
+                return <SlashingS2 register={register} errors={errors}/>;
             default:
                 return null;
         }

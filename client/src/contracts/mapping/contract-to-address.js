@@ -4,7 +4,7 @@ const contractsToAddressesBase = {
 
 const contractsToAddressesDynamic = {
   ConstitutionParameters: '0xc01fe3d30bd6D866023608293Fa18A918D51152F',
-  ConstitutionParametersVoting: '0x3bcBADF9d2d6eF7f48503140B84da05e8394185f',
+  ConstitutionVoting: '0x3bcBADF9d2d6eF7f48503140B84da05e8394185f',
   ContractRegistry: '0xc3E589056Ece16BCB88c6f9318e9a7343b663522',
   DefaultAllocationProxy: '0xc4D32b94f039991703b869AA8AcB1A354c32AFd1',
   EPDR_Membership: '0x5C1AbA2d435BC839842818fe3b15BE30d0F07a0c',

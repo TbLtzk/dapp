@@ -7,7 +7,7 @@ import {setCreatedStepsLimit} from "store/actions/action-creaters/voting/qpropos
 import RadioBtnGroup from "../../../RadioBtnGroup";
 import InputGroup from "../../../InputGroup";
 
-import {addNewExpert, removeRootNode} from "./constants";
+import {addNewExpert, removeExpert, parameterVote} from "./constants";
 
 import {SubTitle, SubTitleBold, Descr} from "../../styles";
 
@@ -55,17 +55,69 @@ function QExpertS2(props) {
             case "remove-a-current-expert":
                 return (
                     <>
-                        <SubTitle>{removeRootNode.subtitle}</SubTitle>
+                        <SubTitle>{removeExpert.subtitle}</SubTitle>
+                        <Descr>{removeExpert.radioDescr}</Descr>
+                        <RadioBtnGroup
+                            radioArr={removeExpert.radioBtn}
+                            register={register}
+                            errors={errors}
+                            nameArr={removeExpert.radioBtnName}
+                            handleChange={(value) => {
+                                // value.target.value === "no"
+                                //     ? dispatch(setCreatedStepsLimit(2))
+                                //     : dispatch(setCreatedStepsLimit(3)) ;
+                            }}
+                        />
+                        <SubTitle>{removeExpert.subtitleInputUp}</SubTitle>
                         <InputGroup
-                            labelsArr={removeRootNode.inputTitleDescr}
-                            inputArr={removeRootNode.inputs}
-                            inputsObj={removeRootNode.inputsObj}
+                            inputArr={removeExpert.inputUp}
+                            inputsObj={removeExpert.inputUpObj}
                             register={register}
                             errors={errors}
                         />
+                        <SubTitle>{removeExpert.subtitleInputDown}</SubTitle>
+                        <InputGroup
+                            inputArr={removeExpert.inputDown}
+                            inputsObj={removeExpert.inputDownObj}
+                            register={register}
+                            errors={errors}
+                        />
+
                     </>
                 );
-                // parameter-vote
+            case "parameter-vote":
+                return (
+                    <>
+                        <SubTitle>{parameterVote.subtitle}</SubTitle>
+                        <Descr>{parameterVote.radioDescr}</Descr>
+                        <RadioBtnGroup
+                            radioArr={parameterVote.radioBtn}
+                            register={register}
+                            errors={errors}
+                            nameArr={parameterVote.radioBtnName}
+                            handleChange={(value) => {
+                                // value.target.value === "no"
+                                //     ? dispatch(setCreatedStepsLimit(2))
+                                //     : dispatch(setCreatedStepsLimit(3)) ;
+                            }}
+                        />
+                        <SubTitle>{parameterVote.subtitleInputUp}</SubTitle>
+                        <InputGroup
+                            inputArr={parameterVote.inputUp}
+                            inputsObj={parameterVote.inputUpObj}
+                            register={register}
+                            errors={errors}
+                        />
+                        <SubTitle>{parameterVote.subtitleInputDown}</SubTitle>
+                        <InputGroup
+                            inputArr={parameterVote.inputDown}
+                            inputsObj={parameterVote.inputDownObj}
+                            register={register}
+                            errors={errors}
+                        />
+
+                    </>
+                );
             default:
                 return null;
         }

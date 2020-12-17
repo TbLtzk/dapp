@@ -5,7 +5,8 @@ import {
     setCreatedStepsLimit,
     setCreateProposalObj,
     setStepCounter,
-    setDisabledCreatedProposalBtn
+    setDisabledCreatedProposalBtn,
+    createProposal
 } from "store/actions/action-creaters/voting/qproposals";
 import {formObject, createdStepsLimit, stepCounterModal, disabledContinueProposalBtn} from "store/selectors/voting/qproposals";
 import {useForm} from "react-hook-form";
@@ -18,6 +19,7 @@ import CreateStep3 from "./CreateStep3";
 import {arrExpert, arrQProposal, arrQRootNode, arrSlashing} from "./constants";
 
 import {Title, Descr} from "./styles"
+import {drizzle} from "contracts/config/drizzle-config";
 
 function Modal(props) {
     const {modalShow, onHide, activeTab, activeTabTitle} = props;
@@ -100,7 +102,10 @@ function Modal(props) {
         // setData({...dataObj, ...data});
         // setData({[stepCounter]: {...dataObj, ...data}});
         // console.log("data", data);
-        stepCounter < stepLimit ? dispatch(setStepCounter(stepCounter + 1)) : dispatch(setDisabledCreatedProposalBtn(true))
+        stepCounter < stepLimit ? dispatch(setStepCounter(stepCounter + 1)) :
+            dispatch(createProposal(drizzle, {...formData, ...data}));
+            console.log("Limit");
+            // dispatch(setDisabledCreatedProposalBtn(true))
         // stepCounter < stepLimit ? setStepCounter(step => step + 1) : setDisabledContinueBtn(true)
     };
     console.log("formData", formData);

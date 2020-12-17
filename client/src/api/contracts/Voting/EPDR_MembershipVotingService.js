@@ -55,7 +55,7 @@ export default class EPDR_MembershipVotingService extends VotingService {
     }
 
     /**
-     * vote for proposal
+     * create proposal
      * @param remark
      * @param userAddress
      * @param anyAddress, that you want to delete (my, root)

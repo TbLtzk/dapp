@@ -1,6 +1,6 @@
 export const contractsToContractsRegistryKey = {
   ConstitutionParameters: 'governance.constitution.parameters',
-  ConstitutionParametersVoting: 'governance.constitution.parametersVoting',
+  ConstitutionVoting: 'governance.constitution.parametersVoting',
   GeneralUpdateVoting: 'governance.generalUpdateVoting',
   EmergencyUpdateVoting: 'governance.emergencyUpdateVoting',
   RootNodes: 'governance.rootNodes',

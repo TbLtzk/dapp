@@ -37,3 +37,14 @@ export const setDisabledCreatedProposalBtn = (result) => ({
     result
 });
 
+export const createProposal = (drizzle, data) => ({
+    type: actionTypes.CREATE_PROPOSAL,
+    drizzle,
+    data
+});
+
+export const createProposalSuccess = (result) => ({
+    type: actionTypes.CREATE_PROPOSAL_SUCCESS,
+    result
+});
+

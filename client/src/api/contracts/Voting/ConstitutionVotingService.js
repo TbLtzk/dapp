@@ -1,7 +1,7 @@
 import {convertNumVotes, getPastEvents, getPastProposalsIds, getStatusTransformation} from "./commonFunc";
 import VotingService from "api/contracts/Voting/VotingService";
 
-export default class ConstitutionVotingService extends VotingService{
+export default class ConstitutionVotingService extends VotingService {
 
     /**
      * get proposal sting type
@@ -67,5 +67,74 @@ export default class ConstitutionVotingService extends VotingService{
         } catch (e) {
 
         }
+    }
+
+    /**
+     * get proposal number type
+     * @param type
+     * @return number
+     */
+    getProposalNumberType(type) {
+        switch (type) {
+            case "basic-part":
+                return 0;
+            case "fundamental-part":
+                return 1;
+            case "detailed-part":
+                return 2;
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * create proposal
+     * @param data
+     * @param userAddress
+     * @return string
+     */
+    async createProposal(data, userAddress) {
+        console.log("data", data);
+        console.log("classification", data.classification);
+        console.log("classification number", this.getProposalNumberType(data?.classification));
+        let result = null;
+        const classification = this.getProposalNumberType(data?.classification);
+        const hash = data.hash;
+        const link = data["external-link"];
+        console.log("hash", data.hash);
+        console.log("external-link", data["external-link"]);
+        console.log("change_constitution_parameter", data["change-constitution-parameter"]);
+        if (data["type-proposal"]) {
+            console.log("type_proposal", data["type-proposal"]);
+            console.log("parameter-key", data["parameter-key"]);
+            console.log("value", data.value);
+            switch (data["type-proposal"]) {
+                case "address":
+                    result = await this.contract.methods.createProposal(link, classification, hash).send({from: userAddress});
+                    console.log("type-proposal address");
+                    break;
+                case "string":
+                    console.log("type-proposal string");
+                    break;
+                case "boolean":
+                    console.log("type-proposal boolean");
+                    break;
+                case "uint":
+                    console.log("type-proposal uint");
+                    break;
+
+            }
+        } else {
+            console.log("NO TYPE PROPOSAL");
+            result = await this.contract.methods.createProposal.cacheSend(
+                link, classification, hash, {from: userAddress});
+        }
+        // console.log("Create constitution voting", data, userAddress);
+        return result;
+        // const result = await this.contract.methods.createProposal.cacheSend(
+        //     remark, userAddress, anyAddress, {from: userAddress});
+        // // console.log("createProposal", result);
+        // return result;
+
     }
 }

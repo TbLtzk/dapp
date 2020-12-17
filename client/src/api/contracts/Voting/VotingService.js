@@ -142,4 +142,24 @@ export default class VotingService {
         }
     }
 
+    /**
+     * create proposal
+     * @param remark
+     * @param userAddress
+     * @param anyAddress, that you want to delete (my, root)
+     * @return array
+     */
+    async createProposal(remark, userAddress, anyAddress) {
+        try {
+            // console.log("Create propodal class", remark, userAddress, anyAddress);
+            // return "created successfully"
+            // const result = await this.contract.methods.createProposal.cacheSend(
+            //     remark, userAddress, anyAddress, {from: userAddress});
+            // // console.log("createProposal", result);
+            // return result;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
 }

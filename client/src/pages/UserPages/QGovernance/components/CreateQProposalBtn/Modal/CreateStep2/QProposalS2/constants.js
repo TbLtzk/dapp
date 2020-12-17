@@ -6,7 +6,7 @@ export const constUpdate = {
     inputs: ["Hash", "External Link"],
     inputsObj: {"hash": '', "external-link": ''},
     radioBtnDownTitle: "Does Your Proposal include a Change of a Constitution Parameter?",
-    radioBtnDownName: "change_constitution_parameter",
+    radioBtnDownName: "change-constitution-parameter",
     radioBtnDown: ["No", "Yes"],
 };
 export const generalUpdate = {

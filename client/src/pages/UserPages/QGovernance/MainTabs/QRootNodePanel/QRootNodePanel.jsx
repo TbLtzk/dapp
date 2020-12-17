@@ -34,12 +34,12 @@ function QRootNodePanel() {
         dispatch(getRootsVotingProposals(rootsVotingService))
     }, [dispatch]);
 
-    useEffect(async () => {
-        // contractRegistry.getAddress().then((address) => {
-        //     console.log('RootNodesSlashingVoting address', address);
-        // });
-
-    }, []);
+    // useEffect(async () => {
+    //     contractRegistry.getAddress().then((address) => {
+    //         console.log('Constitution address', address);
+    //     });
+    //
+    // }, []);
 
     return (
         <Col xs={12}>

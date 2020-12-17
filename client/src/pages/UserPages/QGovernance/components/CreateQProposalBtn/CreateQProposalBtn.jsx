@@ -29,6 +29,8 @@ function CreateQProposalBtn(props) {
     const [modalShow, setModalShow] = useState(false);
     const dispatch = useDispatch();
 
+    console.log("drizzle", drizzle);
+
     const activeTabTitle = useMemo(() => {
         // return activeTab.replace(/-/g, " ")
         switch (activeTab) {
@@ -89,6 +91,9 @@ function CreateQProposalBtn(props) {
             // const createProposal = await drizzle.contracts.ConstitutionVoting.methods.createProposal.cacheSend(
             //     "https://example1.com", 0, NEW_CONSTITUTION_HASH, {from: userAddress});
             // console.log("createProposal", createProposal);
+            const createProposal = await drizzle.contracts.ConstitutionVoting.methods.createProposal(
+                "https://example1.com", 0, NEW_CONSTITUTION_HASH).send({from: userAddress});
+            console.log("createProposal", createProposal);
 
             //ValidatorsSlashingVoting
             //address validator governance.validators

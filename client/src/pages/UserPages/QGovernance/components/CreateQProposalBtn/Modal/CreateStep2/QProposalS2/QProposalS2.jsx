@@ -28,7 +28,7 @@ function QProposalS2(props) {
                             radioArr={constUpdate.radioBtnUp}
                             register={register}
                             errors={errors}
-                            nameArr="second"
+                            nameArr="classification"
                             handleChange={()=>{}}
                         />
                         <SubTitle>{constUpdate.inputTitle}</SubTitle>
