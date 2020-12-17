@@ -29,7 +29,7 @@ function CreateQProposalBtn(props) {
     const [modalShow, setModalShow] = useState(false);
     const dispatch = useDispatch();
 
-    console.log("drizzle", drizzle);
+    console.log("state", state);
 
     const activeTabTitle = useMemo(() => {
         // return activeTab.replace(/-/g, " ")
@@ -82,18 +82,26 @@ function CreateQProposalBtn(props) {
         // console.log("userAddress", typeof userAddress);
         // dispatch(getRootsVotingProposals(rootsVotingService))
         try {
+            // drizzle.web3.eth.handleRevert = true;
             //RootsVoting
             // const createProposal = await drizzle.contracts.RootsVoting.methods.createProposal.cacheSend(
             //     "new1", userAddress, "0x66316FfA38490d4d072F34EF7D7BA64Ce6b4478e",{from: userAddress});
             // console.log("createProposal", createProposal);
 
             //ConstitutionVoting
-            // const createProposal = await drizzle.contracts.ConstitutionVoting.methods.createProposal.cacheSend(
-            //     "https://example1.com", 0, NEW_CONSTITUTION_HASH, {from: userAddress});
-            // console.log("createProposal", createProposal);
-            const createProposal = await drizzle.contracts.ConstitutionVoting.methods.createProposal(
-                "https://example1.com", 0, NEW_CONSTITUTION_HASH).send({from: userAddress});
+            const createProposal = await drizzle.contracts.ConstitutionVoting.methods.createProposal.cacheSend(
+                "https://example1.com", 0, NEW_CONSTITUTION_HASH, {from: userAddress});
             console.log("createProposal", createProposal);
+            // const createProposal = await drizzle.contracts.ConstitutionVoting.methods.createProposal(
+            //     "https://example1.com", 0, NEW_CONSTITUTION_HASH).send({from: userAddress})
+            //     .once('transactionHash', txHash => console.log('txHash', txHash))
+            //     .catch((err) => {
+            //         if(err.message) console.log('failing message: ' + err.message);
+            //         if(err.reason) console.log('revert reason: ' + err.reason);
+            //         throw err
+            //     });
+
+            // console.log("createProposal", createProposal);
 
             //ValidatorsSlashingVoting
             //address validator governance.validators

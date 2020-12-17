@@ -1,7 +1,7 @@
 import {convertNumVotes, getPastEvents, getPastProposalsIds, getStatusTransformation} from "./commonFunc";
 import VotingService from "api/contracts/Voting/VotingService";
 
-export default class EmergencyUpdateVotingService extends VotingService{
+export default class EmergencyUpdateVotingService extends VotingService {
 
     /**
      * get proposal sting type
@@ -67,5 +67,21 @@ export default class EmergencyUpdateVotingService extends VotingService{
         } catch (e) {
 
         }
+    }
+
+    /**
+     * create proposal
+     * @param data
+     * @param userAddress
+     * @return string
+     */
+    async createProposal(data, userAddress) {
+        console.log("data", data);
+        const link = data["external-link"];
+        console.log("external-link", data["external-link"]);
+        const result = await this.contract.methods.createProposal.cacheSend(
+            link, {from: userAddress});
+        return result;
+
     }
 }

@@ -5,6 +5,8 @@ import {
     getQExpertProposalsSuccess, getQExpertProposalsError, createProposalSuccess
 } from "store/actions/action-creaters/voting/qproposals";
 import ConstitutionVotingService from "api/contracts/Voting/ConstitutionVotingService";
+import EmergencyUpdateVotingService from "api/contracts/Voting/EmergencyUpdateVotingService";
+import GeneralUpdateVotingService from "api/contracts/Voting/GeneralUpdateVotingService";
 
 function* getQExpertProposals({contracts}) {
     try {
@@ -34,12 +36,16 @@ function* createProposal({drizzle, data}) {
                 case "constitution-update":
                     const constitutionVoting = new ConstitutionVotingService(drizzle, "ConstitutionVoting");
                     result = yield constitutionVoting.createProposal(data, userAddress);
-                    console.log("SWITCH, constitution-update", result);
+                    console.log("SWITCH, constitution-update result", result);
                     break;
                 case "general-q-update":
+                    const  generalUpdateVoting = new GeneralUpdateVotingService(drizzle, "GeneralUpdateVoting");
+                    result = yield generalUpdateVoting.createProposal(data, userAddress);
                     console.log("SWITCH, general-q-update");
                     break;
                 case "emergency-update":
+                    const emergencyUpdateVoting = new EmergencyUpdateVotingService(drizzle, "EmergencyUpdateVoting");
+                    result = yield emergencyUpdateVoting.createProposal(data, userAddress);
                     console.log("SWITCH, emergency-update");
                     break;
                 default:

@@ -68,4 +68,20 @@ export default class GeneralUpdateVotingService extends VotingService{
 
         }
     }
+
+    /**
+     * create proposal
+     * @param data
+     * @param userAddress
+     * @return string
+     */
+    async createProposal(data, userAddress) {
+        console.log("data", data);
+        const link = data["external-link"];
+        console.log("external-link", data["external-link"]);
+        const result = await this.contract.methods.createProposal.cacheSend(
+            link, {from: userAddress});
+        return result;
+
+    }
 }

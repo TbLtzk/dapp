@@ -19,7 +19,7 @@ const drizzle = new Drizzle(drizzleOptions);
 const {DrizzleProvider} = drizzleReactHooks;
 
 import 'assets/fonts/fonts.css'
-// console.log('store', store.getState());
+console.log('drizzle', drizzle);
 
 ReactDOM.render(
     <DrizzleProvider drizzle={drizzle}>
