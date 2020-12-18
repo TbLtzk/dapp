@@ -89,9 +89,9 @@ function CreateQProposalBtn(props) {
             // console.log("createProposal", createProposal);
 
             //ConstitutionVoting
-            const createProposal = await drizzle.contracts.ConstitutionVoting.methods.createProposal.cacheSend(
-                "https://example1.com", 0, NEW_CONSTITUTION_HASH, {from: userAddress});
-            console.log("createProposal", createProposal);
+            // const createProposal = await drizzle.contracts.ConstitutionVoting.methods.createProposal.cacheSend(
+            //     "https://example1.com", 0, NEW_CONSTITUTION_HASH, {from: userAddress});
+            // console.log("createProposal", createProposal);
             // const createProposal = await drizzle.contracts.ConstitutionVoting.methods.createProposal(
             //     "https://example1.com", 0, NEW_CONSTITUTION_HASH).send({from: userAddress})
             //     .once('transactionHash', txHash => console.log('txHash', txHash))

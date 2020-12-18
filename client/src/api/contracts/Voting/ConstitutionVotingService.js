@@ -93,66 +93,45 @@ export default class ConstitutionVotingService extends VotingService {
      * @param userAddress
      * @return string
      */
-    async createProposal1(data, userAddress) {
-        console.log("data", data);
-        console.log("classification", data.classification);
-        console.log("classification number", this.getProposalNumberType(data?.classification));
+    async createProposal(data, userAddress) {
         let result = null;
         const classification = this.getProposalNumberType(data?.classification);
-        const hash = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
-        // const hash = data.hash;
+        // const hash = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
+        const hash = data.hash.toLowerCase();
         const link = data["external-link"];
-        console.log("hash", data.hash);
-        console.log("external-link", data["external-link"]);
-        console.log("change_constitution_parameter", data["change-constitution-parameter"]);
-        if (data["type-proposal"]) {
-            const type = data["type-proposal"];
-            const parameterKey = "test";
-            // const parameterKey = data["parameter-key"];
-            // const value = data.value;
-            const value = 123;
-            console.log("type_proposal", data["type-proposal"]);
-            console.log("parameter-key", data["parameter-key"]);
-            console.log("value", data.value);
+        const type = data["type-proposal"];
+        if (type) {
+            const parameterKey = data["parameter-key"];
+            let valueInput = data.value;
             switch (type) {
                 case "address":
-                    result = await this.contract.methods.createAddrProposal(link, classification, hash, parameterKey, value).send({from: userAddress});
-                    console.log("type-proposal address");
+                    valueInput = "0xcca19442F5b3e5Fa71aaE69C092aC280e81Fd39f";
+                    result = await this.contract.methods.createAddrProposal(link, classification, hash,
+                        parameterKey, valueInput).send({from: userAddress});
                     break;
                 case "string":
-                    result = await this.contract.methods.createStrProposal(link, classification, hash, parameterKey, 'abcd').send({from: userAddress});
-                    console.log("type-proposal string");
+                    valueInput = "abcd";
+                    result = await this.contract.methods.createStrProposal(link, classification, hash,
+                        parameterKey, valueInput).send({from: userAddress});
                     break;
                 case "boolean":
-                    result = await this.contract.methods.createBoolProposal(link, classification, hash, parameterKey, true).send({from: userAddress});
-                    console.log("type-proposal boolean");
+                    valueInput = (valueInput === 'true');
+                    console.log("valueInput", valueInput);
+                    result = await this.contract.methods.createBoolProposal(link, classification, hash,
+                        parameterKey, valueInput).send({from: userAddress});
                     break;
                 case "uint":
-                    result = await this.contract.methods.createUintProposal(link, classification, hash, parameterKey, 123).send({from: userAddress});
-                    console.log("type-proposal uint");
+                    valueInput = Number(valueInput);
+                    result = await this.contract.methods.createUintProposal(link, classification, hash,
+                        parameterKey, valueInput).send({from: userAddress});
                     break;
 
             }
         } else {
-            console.log("NO TYPE PROPOSAL");
-            console.log("link",link);
-            console.log("classification",classification);
-            console.log("hash",hash);
-            console.log("this.contract",this.contract);
-            console.log("userAddress",userAddress);
-            const NEW_CONSTITUTION_HASH = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
-
-            // result = await this.contract.methods.createProposal.cacheSend(
-            //     link, classification, hash, {from: userAddress});
-            const createProposal = await this.contract.methods.createProposal.cacheSend(
-                "https://example1.com", 0, NEW_CONSTITUTION_HASH, {from: userAddress});
+            result = await this.contract.methods.createProposal(link, classification, hash).send(
+                {from: userAddress});
         }
-        // console.log("Create constitution voting", data, userAddress);
-        return result;
-        // const result = await this.contract.methods.createProposal.cacheSend(
-        //     remark, userAddress, anyAddress, {from: userAddress});
-        // // console.log("createProposal", result);
-        // return result;
 
+        return result;
     }
 }

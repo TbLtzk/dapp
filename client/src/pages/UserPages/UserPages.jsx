@@ -3,7 +3,9 @@ import React from "react";
 import QGovernance from "./QGovernance";
 import PiggyBank from "./PiggyBank";
 import Staking from "./Staking";
+
 import Header from "components/Navigations/Header";
+import LoadingTransaction from "components/Custom/LoadingTransaction";
 
 import {WrapContainer} from "./styles"
 
@@ -29,6 +31,7 @@ function UserPages(props) {
             <WrapContainer fluid>
                 {componentSwitcher()}
             </WrapContainer>
+            <LoadingTransaction />
         </>
     );
 }

@@ -12,6 +12,8 @@ import EPQFIMembershipVoting from './voting/EPQFIMembershipVoting';
 import EPDRMembershipVoting from './voting/EPDRMembershipVoting';
 import qProposals from 'store/reducers/voting/qProposals';
 
+import transactionHandler from 'store/reducers/transactionHandler';
+
 const RootReducer = combineReducers({
     userAuth: UserAuth,
     userInf: userInf,
@@ -28,6 +30,7 @@ const RootReducer = combineReducers({
     EPDRMembershipVoting: EPDRMembershipVoting,
 
     qProposals: qProposals,
+    transactionHandler: transactionHandler,
 });
 
 export default RootReducer

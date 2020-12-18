@@ -8,7 +8,12 @@ import {
     setDisabledCreatedProposalBtn,
     createProposal
 } from "store/actions/action-creaters/voting/qproposals";
-import {formObject, createdStepsLimit, stepCounterModal, disabledContinueProposalBtn} from "store/selectors/voting/qproposals";
+import {
+    formObject,
+    createdStepsLimit,
+    stepCounterModal,
+    disabledContinueProposalBtn
+} from "store/selectors/voting/qproposals";
 import {useForm} from "react-hook-form";
 
 import ModalWindow from "components/Base/ModalWindow";
@@ -19,7 +24,10 @@ import CreateStep3 from "./CreateStep3";
 import {arrExpert, arrQProposal, arrQRootNode, arrSlashing} from "./constants";
 
 import {Title, Descr} from "./styles"
-import {drizzle} from "contracts/config/drizzle-config";
+import {userAddressMetamask} from "store/selectors/user-inf";
+import {drizzleReactHooks} from "@drizzle/react-plugin";
+
+const {useDrizzle, useDrizzleState} = drizzleReactHooks;
 
 function Modal(props) {
     const {modalShow, onHide, activeTab, activeTabTitle} = props;
@@ -27,6 +35,7 @@ function Modal(props) {
     // const [stepLimit, setStepLimit] = useState(3);
     // const [disabledContinueBtn, setDisabledContinueBtn] = useState(true);
     // const [dataObj, setData] = useState({});
+    const {drizzle} = useDrizzle();
     const {register, errors, handleSubmit} = useForm();
     const dispatch = useDispatch();
 
@@ -34,6 +43,8 @@ function Modal(props) {
     const stepLimit = useSelector(createdStepsLimit);
     const stepCounter = useSelector(stepCounterModal);
     const disabledContinueBtn = useSelector(disabledContinueProposalBtn);
+
+    const userAddress = useSelector(userAddressMetamask);
 
     // console.log("stepLimit", stepLimit);
 
@@ -98,17 +109,35 @@ function Modal(props) {
     const onNext = (data) => {
         console.log("data", data);
         dispatch(setCreateProposalObj({...formData, ...data}));
-        // setCreateProposalObj
-        // setData({...dataObj, ...data});
-        // setData({[stepCounter]: {...dataObj, ...data}});
-        // console.log("data", data);
-        stepCounter < stepLimit ? dispatch(setStepCounter(stepCounter + 1)) :
+        if (stepCounter < stepLimit) {
+            dispatch(setStepCounter(stepCounter + 1))
+        } else {
             dispatch(createProposal(drizzle, {...formData, ...data}));
-            console.log("Limit");
-            // dispatch(setDisabledCreatedProposalBtn(true))
+            // createProposalTest();
+            onHide();
+        }
+        // stepCounter < stepLimit ? dispatch(setStepCounter(stepCounter + 1)) :
+        //     dispatch(createProposal(drizzle, {...formData, ...data}));
+        // onHide();
+        // createProposalTest();
+
+        console.log("Limit");
+        // dispatch(setDisabledCreatedProposalBtn(true))
         // stepCounter < stepLimit ? setStepCounter(step => step + 1) : setDisabledContinueBtn(true)
     };
-    console.log("formData", formData);
+    // console.log("formData", formData);
+
+    const createProposalTest = async () => {
+        // const NEW_CONSTITUTION_HASH = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
+        // const createProposal = await drizzle.contracts.ConstitutionVoting.methods.createProposal.cacheSend(
+        //     "https://example1.com", 0, NEW_CONSTITUTION_HASH, {from: userAddress});
+        // const result = await drizzle.contracts.GeneralUpdateVoting.methods.createProposal("https://example1.com").send(
+        //     {from: userAddress});
+        // const result = await drizzle.contracts.EmergencyUpdateVoting.methods.createProposal("https://example1.com").send(
+        //     {from: userAddress});
+
+        console.log("createProposal", result);
+    };
 
     return (
         <ModalWindow

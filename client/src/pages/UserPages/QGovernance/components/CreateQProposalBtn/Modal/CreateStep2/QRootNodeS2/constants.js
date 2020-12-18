@@ -4,7 +4,7 @@ export const addRootNode = {
     inputs: ["Hash", "External Link"],
     inputsObj: {"hash": '', "external-link": ''},
     radioBtnTitle: "Do you want to remove a current Root Node",
-    radioBtnDownName: "remove_current",
+    radioBtnDownName: "remove-current",
     radioBtnDown: ["No", "Yes"],
     inputTitleDown: "Root Node to Remove",
     inputDown: ["Address"],
