@@ -14,7 +14,6 @@ import ContractRegistryService from "api/contracts/ContractRegistryService";
 import RootsVotingService from "api/contracts/Voting/RootsVotingService";
 import {drizzleReactHooks} from "@drizzle/react-plugin";
 import {useDispatch, useSelector} from "react-redux";
-import {userAddressMetamask} from "store/selectors/user-inf";
 
 const {useDrizzle} = drizzleReactHooks;
 

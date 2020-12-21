@@ -1,4 +1,4 @@
-import {convertNumVotes, getPastEvents, getPastProposalsIds, getStatusTransformation} from "./commonFunc";
+import {convertNumVotes, getPastEvents, getPastProposalsIds, getStatusTransformation} from "api/contracts/Voting/handler/commonFunc";
 
 export default class VotingService {
 

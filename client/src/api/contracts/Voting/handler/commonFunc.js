@@ -1,14 +1,15 @@
+import {BigNumber} from "bignumber.js";
+
 export const getPastEvents = async (drizzle, contractName, event) => {
     const web3 = drizzle.web3;
     const contract = drizzle.contracts[contractName];
     const contractWeb3 = new web3.eth.Contract(contract.abi, contract.address);
     const eventOptions = {
-        topics: [],
+        // topics: [],
         fromBlock: 0,
         toBlock: 'latest'
     };
     const result = await contractWeb3.getPastEvents(event, eventOptions);
-    // console.log("ProposalCreated roots voting ", result);
     return result;
 };
 
@@ -17,22 +18,8 @@ export const getPastProposalsIds = (proposalArr) => {
 };
 
 export const getStatusTransformation = (statusId) => {
-    switch (Number(statusId)) {
-        case 0:
-            return "None";
-        case 1:
-            return "Executed";
-        case 2:
-            return "Pending";
-        case 3:
-            return "Rejected";
-        case 4:
-            return "Accepted";
-        case 5:
-            return "Passed";
-        default:
-            return "None";
-    }
+    const status = ["None", "Pending", "Rejected", "Accepted", "Passed", "Executed", "Obsolete", "Expired"];
+    return status[Number(statusId)];
 };
 export const getParameterTypeTransformation = (statusId) => {
     switch (Number(statusId)) {
@@ -65,7 +52,7 @@ export const convertNumVotes = (number) => {
         const res = number.slice(0, 1);
         return res * 0.01;
 
-    }else{
+    } else {
         const res = number.slice(0, 2);
         return res * 0.001;
     }
@@ -89,3 +76,15 @@ function toFixed(x) {
     console.log("toFixed", x);
     return x;
 }
+
+export const getPercentageFormat = (number) => {
+    return bn(1e+27).multipliedBy(number).dividedBy(100);
+};
+
+export const bn = (number) => {
+    return new BigNumber(number);
+};
+
+export const calculatePercentage = (part, amount) => {
+    return bn(((10 ** 27) * part) / amount);
+};

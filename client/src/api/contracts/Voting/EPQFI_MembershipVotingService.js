@@ -1,8 +1,8 @@
 import {
     getStatusTransformation,
     getPastProposalsIds,
-    convertNumVotes
-} from "api/contracts/Voting/commonFunc";
+    convertNumVotes, getPercentageFormat
+} from "api/contracts/Voting/handler/commonFunc";
 import VotingService from "api/contracts/Voting/VotingService";
 
 export default class EPQFI_MembershipVotingService extends VotingService {
@@ -56,20 +56,29 @@ export default class EPQFI_MembershipVotingService extends VotingService {
     }
 
     /**
-     * vote for proposal
-     * @param remark
+     * create proposal
+     * @param data
      * @param userAddress
-     * @param anyAddress, that you want to delete (my, root)
-     * @return array
+     * @return string
      */
-    async createProposal(remark, userAddress, anyAddress) {
-        try {
-            const result = await this.RootsVoting.methods.createProposal.cacheSend(
-                remark, userAddress, anyAddress, {from: userAddress});
-            // console.log("createProposal", result);
-            return result;
-        } catch (e) {
-            console.log(e);
+    async createProposal(data, userAddress) {
+        console.log("DATA EPQFI_MembershipVotingService", data);
+        let result = null;
+        const link = data["external-link"];
+        let candidate = data["address"];
+        console.log("candidate", candidate);
+        candidate = "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7"; //usual account 1
+        //TODO: createChangeExpertProposal
+        if (data?.first === "add-a-new-expert") {
+            result = await this.contract.methods.createAddExpertProposal(link, candidate).send(
+                {from: userAddress});
+        } else if (data?.first === "remove-a-current-expert") {
+            candidate = "0x66316FfA38490d4d072F34EF7D7BA64Ce6b4478e"; //usual account 2
+            result = await this.contract.methods.createRemoveExpertProposal(link, candidate).send(
+                {from: userAddress});
+
         }
+
+        return result;
     }
 }

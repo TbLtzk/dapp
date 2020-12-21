@@ -2,7 +2,7 @@ import {
     getStatusTransformation,
     getPastProposalsIds,
     convertNumVotes
-} from "api/contracts/Voting/commonFunc";
+} from "api/contracts/Voting/handler/commonFunc";
 import VotingService from "api/contracts/Voting/VotingService";
 
 export default class EPDR_MembershipVotingService extends VotingService {

@@ -31,10 +31,6 @@ const {useDrizzle, useDrizzleState} = drizzleReactHooks;
 
 function Modal(props) {
     const {modalShow, onHide, activeTab, activeTabTitle} = props;
-    // const [stepCounter, setStepCounter] = useState(1);
-    // const [stepLimit, setStepLimit] = useState(3);
-    // const [disabledContinueBtn, setDisabledContinueBtn] = useState(true);
-    // const [dataObj, setData] = useState({});
     const {drizzle} = useDrizzle();
     const {register, errors, handleSubmit} = useForm();
     const dispatch = useDispatch();
@@ -45,8 +41,6 @@ function Modal(props) {
     const disabledContinueBtn = useSelector(disabledContinueProposalBtn);
 
     const userAddress = useSelector(userAddressMetamask);
-
-    // console.log("stepLimit", stepLimit);
 
     const radioArrFirstStep = useMemo(() => {
         switch (activeTab) {

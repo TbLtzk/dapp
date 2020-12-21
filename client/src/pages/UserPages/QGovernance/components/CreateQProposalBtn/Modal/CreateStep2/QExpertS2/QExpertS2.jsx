@@ -102,6 +102,18 @@ function QExpertS2(props) {
                             }}
                         />
                         <SubTitle>{parameterVote.subtitleInputUp}</SubTitle>
+                        <SubTitle>{parameterVote.radioBtnTitleDown}</SubTitle>
+                        <RadioBtnGroup
+                            radioArr={parameterVote.radioBtnDown}
+                            register={register}
+                            errors={errors}
+                            nameArr={parameterVote.radioBtnNameDown}
+                            handleChange={(value) => {
+                                // value.target.value === "no"
+                                //     ? dispatch(setCreatedStepsLimit(2))
+                                //     : dispatch(setCreatedStepsLimit(3)) ;
+                            }}
+                        />
                         <InputGroup
                             inputArr={parameterVote.inputUp}
                             inputsObj={parameterVote.inputUpObj}

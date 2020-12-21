@@ -3,7 +3,7 @@ import {
     getPastProposalsIds,
     convertNumVotes,
     getParameterTypeTransformation
-} from "api/contracts/Voting/commonFunc";
+} from "api/contracts/Voting/handler/commonFunc";
 import VotingService from "api/contracts/Voting/VotingService";
 
 export default class EPQFI_ParametersVotingService extends VotingService {

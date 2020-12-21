@@ -13,6 +13,16 @@ import EmergencyUpdateVotingService from "api/contracts/Voting/EmergencyUpdateVo
 import GeneralUpdateVotingService from "api/contracts/Voting/GeneralUpdateVotingService";
 import RootsVotingService from "api/contracts/Voting/RootsVotingService";
 import RootNodesSlashingVotingService from "api/contracts/Voting/RootNodesSlashingVotingService";
+import ValidatorSlashingVotingService from "api/contracts/Voting/ValidatorsSlashingVotingService";
+import EPQFI_MembershipVotingService from "api/contracts/Voting/EPQFI_MembershipVotingService";
+import EPDR_MembershipVotingService from "api/contracts/Voting/EPDR_MembershipVotingService";
+import MembershipVoting from "api/contracts/Voting/MembershipVoting";
+
+import {chooseExpertContractDependsOnType} from "api/contracts/Voting/handler/QExpertVotingHandler"
+import {getRootsVotingProposals} from "store/actions/action-creaters/voting/roots-voting";
+import {getConstitutionVotingProposals} from "store/actions/action-creaters/voting/constitution-voting";
+import {getValidatorsSlashingVotingProposals} from "store/actions/action-creaters/voting/validators-slashing-voting";
+import {getRootNodesSlashingVotingProposals} from "store/actions/action-creaters/voting/rootnodes-slashing-voting";
 
 function* getQExpertProposals({contracts}) {
     try {
@@ -34,9 +44,6 @@ function* createProposal({drizzle, data}) {
     try {
         yield put(setTransactionLoading());
         const {userAddress} = yield select(state => state.userInf);
-        console.log("createProposal drizzle", drizzle);
-        console.log("createProposal data", data);
-        console.log("createProposal userAddress", userAddress);
 
         let result = null;
         if (data && drizzle) {
@@ -44,27 +51,45 @@ function* createProposal({drizzle, data}) {
                 case "constitution-update":
                     const constitutionVoting = new ConstitutionVotingService(drizzle, "ConstitutionVoting");
                     result = yield constitutionVoting.createProposal(data, userAddress);
+                    yield put(getConstitutionVotingProposals(constitutionVoting));
                     console.log("RESULT, constitution-update", result);
                     break;
                 case "general-q-update":
                     const generalUpdateVoting = new GeneralUpdateVotingService(drizzle, "GeneralUpdateVoting");
                     result = yield generalUpdateVoting.createProposal(data, userAddress);
-                    console.log("RESULT, general-q-update");
+                    console.log("RESULT, general-q-update", result);
                     break;
                 case "emergency-update":
                     const emergencyUpdateVoting = new EmergencyUpdateVotingService(drizzle, "EmergencyUpdateVoting");
                     result = yield emergencyUpdateVoting.createProposal(data, userAddress);
-                    console.log("RESULT, emergency-update");
+                    console.log("RESULT, emergency-update", result);
                     break;
                 case "add-a-new-root-node":
                 case "remove-a-current-root-node":
                     const rootsVoting = new RootsVotingService(drizzle, "RootsVoting");
                     result = yield rootsVoting.createProposal(data, userAddress);
+                    yield put(getRootsVotingProposals(rootsVoting));
+
                     break;
                 case "root-node-slashing":
-                case "validator-node-slashing":
                     const rootNodesSlashingVoting = new RootNodesSlashingVotingService(drizzle, "RootNodesSlashingVoting");
                     result = yield rootNodesSlashingVoting.createProposal(data, userAddress);
+                    yield put(getRootNodesSlashingVotingProposals(rootNodesSlashingVoting));
+                    break;
+                case "validator-node-slashing":
+                    const validatorsSlashingVoting = new ValidatorSlashingVotingService(drizzle, "ValidatorsSlashingVoting");
+                    result = yield validatorsSlashingVoting.createProposal(data, userAddress);
+                    yield put(getValidatorsSlashingVotingProposals(validatorsSlashingVoting));
+                    break;
+                case "add-a-new-expert":
+                case "remove-a-current-expert":
+                case "parameter-vote":
+                    const typeContract = data.first !== "parameter-vote" ? "member" : "parameters";
+                    console.log("typeContract", typeContract);
+                    const contract = chooseExpertContractDependsOnType(drizzle, typeContract, data["type-proposal"]);
+                    console.log("contract", contract);
+                    result = yield contract.createProposal(data, userAddress);
+
                     break;
                 default:
                     return null;
@@ -72,6 +97,7 @@ function* createProposal({drizzle, data}) {
         }
         yield put(createProposalSuccess(result));
         yield put(setTransactionLoadingSuccess());
+
     } catch (err) {
         console.log('err', err.message);
         yield put(setTransactionLoadingError(err.message));

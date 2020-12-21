@@ -1,21 +1,20 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useState} from "react";
 
-import {useDispatch, useSelector} from "react-redux";
-import {createdStepsLimit, formObject} from "store/selectors/voting/qproposals";
-import {setCreatedStepsLimit} from "store/actions/action-creaters/voting/qproposals";
+import {useSelector} from "react-redux";
+import {formObject} from "store/selectors/voting/qproposals";
 
 import RadioBtnGroup from "../../../RadioBtnGroup";
 import InputGroup from "../../../InputGroup";
 
 import {addRootNode, removeRootNode} from "./constants";
 
-import {SubTitle, SubTitleBold, Descr} from "../../styles";
+import {SubTitle} from "../../styles";
 
 function QRootNodeS2(props) {
     const {activeTab, register, errors} = props;
     const formData = useSelector(formObject);
 
-    const dispatch = useDispatch();
+    const [showAddress, setShowAddress] = useState(true);
 
     const switchContentOnTypeProposal = useCallback(() => {
         switch (formData?.first) {
@@ -37,18 +36,22 @@ function QRootNodeS2(props) {
                             errors={errors}
                             nameArr={addRootNode.radioBtnDownName}
                             handleChange={(value) => {
-                                // value.target.value === "no"
-                                //     ? dispatch(setCreatedStepsLimit(2))
-                                //     : dispatch(setCreatedStepsLimit(3)) ;
+                                value.target.value === "no"
+                                    ? setShowAddress(false)
+                                    : setShowAddress(true)
                             }}
                         />
-                        <SubTitle>{addRootNode.inputTitleDown}</SubTitle>
-                        <InputGroup
-                            inputArr={addRootNode.inputDown}
-                            inputsObj={addRootNode.inputDownObj}
-                            register={register}
-                            errors={errors}
-                        />
+                        {!showAddress ? null :
+                            <>
+                                <SubTitle>{addRootNode.inputTitleDown}</SubTitle>
+                                <InputGroup
+                                    inputArr={addRootNode.inputDown}
+                                    inputsObj={addRootNode.inputDownObj}
+                                    register={register}
+                                    errors={errors}
+                                />
+                            </>
+                        }
                     </>
                 );
             case "remove-a-current-root-node":
@@ -68,7 +71,7 @@ function QRootNodeS2(props) {
                 return null;
         }
 
-    }, [activeTab, register, errors]);
+    }, [activeTab, register, errors, showAddress]);
 
     return (
         <div>

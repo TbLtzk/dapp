@@ -6,7 +6,7 @@ import {
 } from "api/contracts/Voting/handler/commonFunc";
 import VotingService from "api/contracts/Voting/VotingService";
 
-export default class ValidatorSlashingVotingService extends VotingService {
+export default class SlashingVoting extends VotingService {
     /**
      * get proposals
      * @return array

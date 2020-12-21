@@ -1,6 +1,4 @@
-import React, {useCallback, useState} from "react";
-import {useSelector} from "react-redux";
-import {formObject} from "store/selectors/voting/qproposals";
+import React, {useCallback} from "react";
 
 import QProposalS2 from "./QProposalS2";
 import QRootNodeS2 from "./QRootNodeS2";
@@ -8,8 +6,7 @@ import QExpertS2 from "./QExpertS2";
 import SlashingS2 from "./SlashingS2";
 
 function CreateStep2(props) {
-    const {activeTab, activeTabTitle, register, errors} = props;
-    const formData = useSelector(formObject);
+    const {activeTab, register, errors} = props;
 
     const contentSwitcher = useCallback(() => {
         switch (activeTab) {

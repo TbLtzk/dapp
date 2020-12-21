@@ -1,8 +1,9 @@
 import {
     getStatusTransformation,
     getPastProposalsIds,
-    convertNumVotes
-} from "api/contracts/Voting/commonFunc";
+    convertNumVotes,
+    getPercentageFormat
+} from "api/contracts/Voting/handler/commonFunc";
 import VotingService from "api/contracts/Voting/VotingService";
 
 export default class RootNodesSlashingVotingService extends VotingService {
@@ -46,7 +47,7 @@ export default class RootNodesSlashingVotingService extends VotingService {
                     proposals.push(objRes);
                 }
             }
-            console.log("proposals slashing", proposals);
+            // console.log("proposals slashing", proposals);
             return proposals;
         } catch (e) {
             console.log(e);
@@ -61,40 +62,16 @@ export default class RootNodesSlashingVotingService extends VotingService {
      */
     async createProposal(data, userAddress) {
         console.log("DATA", data);
-        let result = null;
-        // const hash = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
         const link = data["external-link"];
-        let addressToRemove = data.address;
-
-        const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
-        if (data.first === "root-node-slashing") {
-            const removeCurrent = data["remove-current"];
-            const hash = data.hash.toLowerCase();
-            console.log("hash", hash);
-            console.log("removeCurrent", removeCurrent);
-            if (removeCurrent === "no") {
-                console.log("removeCurrent if", removeCurrent);
-                console.log("removeCurrent if", this.contract);
-                result = await this.contract.methods.createProposal(link, userAddress, EMPTY_ADDR).send(
-                    {from: userAddress});
-                // result = await this.contract.methods.createProposal(link, hash, userAddress, EMPTY_ADDR).send(
-                //     {from: userAddress});
-            } else {
-                console.log("removeCurrent if yes", removeCurrent);
-                addressToRemove = "0x64D4edeFE8bA86d3588B213b0A053e7B910Cad68"; //remove root
-                result = await this.contract.methods.createProposal(link, userAddress, addressToRemove).send(
-                    {from: userAddress});
-
-                // result = await this.contract.methods.createProposal(link, hash, userAddress, addressToRemove).send(
-                //     {from: userAddress});
-            }
-        } else if (data.first === "validator-node-slashing") {
-            //TODO: error for empty_addr
-            result = await this.contract.methods.createProposal(link, EMPTY_ADDR, userAddress).send(
-                {from: userAddress});
-        }
-
-
+        //percentage of stake to slash
+        let percentageStake = data["%-value"];
+        percentageStake = getPercentageFormat(percentageStake);
+        let candidate = data["address"];
+        console.log("candidate", candidate);
+        console.log("percentageStake", percentageStake);
+        candidate = "0x64D4edeFE8bA86d3588B213b0A053e7B910Cad68"; //root member
+        const result = await this.contract.methods.createProposal(link, candidate, percentageStake).send(
+            {from: userAddress});
         return result;
     }
 }
