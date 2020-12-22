@@ -21,35 +21,37 @@ export default class EPQFI_ParametersVotingService extends VotingService {
                     let objRes = {};
                     let promiseRes = await this.proposalIteratorResult(id);
                     if (promiseRes) {
-                        objRes.id = id;
-                        objRes.remark = promiseRes.base.remark;
-                        objRes.parameterKey = promiseRes.parameterKey;
-                        objRes.parameterType = getParameterTypeTransformation(promiseRes.parameterType);
-                        objRes.addrValue = promiseRes.parameterValue.addrValue;
-                        objRes.boolValue = promiseRes.parameterValue.boolValue;
-                        objRes.bytes32Value = promiseRes.parameterValue.bytes32Value;
-                        objRes.strValue = promiseRes.parameterValue.strValue;
-                        objRes.uintValue = promiseRes.parameterValue.uintValue;
+                        // if (promiseStatus === "1") {
+                            objRes.id = id;
+                            objRes.remark = promiseRes.base.remark;
+                            objRes.parameterKey = promiseRes.parameterKey;
+                            objRes.parameterType = getParameterTypeTransformation(promiseRes.parameterType);
+                            objRes.addrValue = promiseRes.parameterValue.addrValue;
+                            objRes.boolValue = promiseRes.parameterValue.boolValue;
+                            objRes.bytes32Value = promiseRes.parameterValue.bytes32Value;
+                            objRes.strValue = promiseRes.parameterValue.strValue;
+                            objRes.uintValue = promiseRes.parameterValue.uintValue;
 
-                        objRes.vetosCount = promiseRes.base.counters.vetosCount;
-                        objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
-                        objRes.votesFor = promiseRes.base.counters.weightFor;
-                        //the ending is given by: vetoEndTime.
-                        objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
-                        //the time until when users can vote
-                        objRes.votingEndTime = promiseRes.base.params.votingEndTime;
-                        // let promiseStatus = await this.getProposalStatus(id);
-                        // objRes.status = getStatusTransformation(promiseStatus);
-                        objRes.title = "Fees & Incentives Experts parameter voting proposals";
-                        objRes.type = "Fees & Incentives Experts Parameters Proposals";
-                        objRes.kindVoting = "parameters";
-                        // let proposalStats = await this.getProposalStats(id);
-                        // objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
-                        // objRes.currentQuorum = convertNumVotes(proposalStats.currentQuorum);
-                        // objRes.currentVetoPercentage = convertNumVotes(proposalStats.currentVetoPercentage);
-                        // objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
-                        // objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
-                        // objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
+                            objRes.vetosCount = promiseRes.base.counters.vetosCount;
+                            objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
+                            objRes.votesFor = promiseRes.base.counters.weightFor;
+                            //the ending is given by: vetoEndTime.
+                            objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
+                            //the time until when users can vote
+                            objRes.votingEndTime = promiseRes.base.params.votingEndTime;
+                            // let promiseStatus = await this.getProposalStatus(id);
+                            // objRes.status = getStatusTransformation(promiseStatus);
+                            objRes.title = "Fees & Incentives Experts parameter voting proposals";
+                            objRes.type = "Fees & Incentives Experts Parameters Proposals";
+                            objRes.kindVoting = "parameters";
+                            // let proposalStats = await this.getProposalStats(id);
+                            // objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
+                            // objRes.currentQuorum = convertNumVotes(proposalStats.currentQuorum);
+                            // objRes.currentVetoPercentage = convertNumVotes(proposalStats.currentVetoPercentage);
+                            // objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
+                            // objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
+                            // objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
+                        // }
                     }
                     proposals.push(objRes);
                 }

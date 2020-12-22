@@ -26,7 +26,7 @@ function CreateStep1(props) {
             case "q-proposals":
                 switch (radioVal) {
                     case "constitution-update":
-                        dispatch(setCreatedStepsLimit(3));
+                        dispatch(setCreatedStepsLimit(4));
                         break;
                     case "general-q-update":
                         dispatch(setCreatedStepsLimit(2));

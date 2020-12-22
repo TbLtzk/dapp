@@ -3,7 +3,7 @@ import React from "react";
 import {Row} from "react-bootstrap";
 import Button from "components/Base/Buttons/Button";
 
-import {Header, CardTitle, WrapBtnHeader, LabelStatus} from "./styles";
+import {Header, CardTitle, WrapBtnHeader, LabelStatus, WrapVoteBtn} from "./styles";
 
 function CardHeader(props) {
     const {title, status, handleVote} = props;
@@ -18,12 +18,15 @@ function CardHeader(props) {
                     {!status ? null :
                         <LabelStatus>{status}</LabelStatus>
                     }
-                    <Button
-                        title="Vote"
-                        type="white"
-                        handleButton={handleVote}
-                    />
-
+                    { status !== "Pending" ? null :
+                        <WrapVoteBtn>
+                            <Button
+                                title="Vote"
+                                type="white"
+                                handleButton={handleVote}
+                            />
+                        </WrapVoteBtn>
+                    }
                 </WrapBtnHeader>
             </Row>
 

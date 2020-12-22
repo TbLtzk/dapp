@@ -43,11 +43,11 @@ export default class ParametersVoting extends VotingService {
                 result = await this.contract.methods.createUintProposal(link, key, valueInput).send(
                     {from: userAddress});
                 break;
-            case "asset-uint":
-                valueInput = Number(valueInput);
-                result = await this.contract.methods.createAssetUintProposal(link, key, valueInput, 'QBTC:QUSD').send(
-                    {from: userAddress});
-                break;
+            // case "asset-uint":
+            //     valueInput = Number(valueInput);
+            //     result = await this.contract.methods.createAssetUintProposal(link, key, valueInput, 'QBTC:QUSD').send(
+            //         {from: userAddress});
+            //     break;
             default:
                 return null;
         }

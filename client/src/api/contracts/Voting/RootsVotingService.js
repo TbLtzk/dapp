@@ -162,7 +162,7 @@ export default class RootsVotingService extends VotingService {
         // console.log("DATA", data);
         let result = null;
         // const hash = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
-        const hash = data.hash.toLowerCase();
+        // const hash = data.hash.toLowerCase();
         const link = data["external-link"];
         let addressToRemove = data.address;
         // const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';

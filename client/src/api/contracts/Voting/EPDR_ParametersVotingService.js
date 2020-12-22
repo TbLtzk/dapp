@@ -22,6 +22,7 @@ export default class EEPDR_ParametersVotingService extends VotingService {
                     let promiseRes = await this.proposalIteratorResult(id);
                     // console.log("promiseres", promiseRes);
                     if (promiseRes) {
+
                         objRes.id = id;
                         objRes.remark = promiseRes.base.remark;
                         objRes.parameterKey = promiseRes.parameterKey;

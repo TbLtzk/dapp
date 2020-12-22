@@ -20,10 +20,12 @@ export default class MembershipVoting extends VotingService {
         if (data?.first === "add-a-new-expert") {
             result = await this.contract.methods.createAddExpertProposal(link, candidate).send(
                 {from: userAddress});
+            console.log("result", result);
         } else if (data?.first === "remove-a-current-expert") {
             candidate = "0x66316FfA38490d4d072F34EF7D7BA64Ce6b4478e"; //expert account
             result = await this.contract.methods.createRemoveExpertProposal(link, candidate).send(
                 {from: userAddress});
+            console.log("result", result);
         }
         return result;
     }
