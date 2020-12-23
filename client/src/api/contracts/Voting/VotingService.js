@@ -3,7 +3,9 @@ import {convertNumVotes, getPastEvents, getPastProposalsIds, getStatusTransforma
 export default class VotingService {
 
     constructor(drizzle, contractName) {
+
         this.drizzle = drizzle;
+
         this.contract = drizzle.contracts[contractName];
         this.contractName = contractName;
     }
@@ -43,7 +45,6 @@ export default class VotingService {
     async proposalIteratorResult(id) {
         try {
             return await this.getProposal(id).then((proposal, error) => {
-                // console.log("proposal", proposal);
                 return proposal;
             });
         } catch (e) {

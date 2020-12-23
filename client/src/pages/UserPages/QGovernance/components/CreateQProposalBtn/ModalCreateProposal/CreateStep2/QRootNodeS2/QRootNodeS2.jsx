@@ -14,7 +14,8 @@ function QRootNodeS2(props) {
     const {activeTab, register, errors} = props;
     const formData = useSelector(formObject);
 
-    const [showAddress, setShowAddress] = useState(true);
+    const [showAddress, setShowAddress] =
+        useState(formData["remove-current"] === "yes");
 
     const switchContentOnTypeProposal = useCallback(() => {
         switch (formData?.first) {

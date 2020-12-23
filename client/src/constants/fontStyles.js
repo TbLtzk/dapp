@@ -54,6 +54,14 @@ export default {
             fontSize: '14px',
             lineHeight: '150%',
             color: colors.lightGrey,
+        },
+        little: {
+            fontFamily: fonts.primary,
+            fontStyle: 'normal',
+            fontWeight: 700,
+            fontSize: '12px',
+            lineHeight: '150%',
+            color: colors.black,
         }
     }
 };

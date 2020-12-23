@@ -53,6 +53,7 @@ function SlashingProposals() {
                 activeDescr={proposals?.length + " POLLS"}
                 activeContent={
                     <ProposalsList
+                        activeTab="expert"
                         proposals={proposals}
                         loading={loading}
                         errorMessage={error}

@@ -1,35 +1,30 @@
-import React, {useEffect, useMemo, useState} from "react";
-import Web3 from 'web3';
-import {drizzleReactHooks} from "@drizzle/react-plugin";
-import {useDispatch, useSelector} from "react-redux";
-import {userAddressMetamask} from "store/selectors/user-inf";
+import React, {useMemo, useState} from "react";
 import {BigNumber} from "bignumber.js";
-
-
-import Modal from "./Modal";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faPlus} from "@fortawesome/free-solid-svg-icons"
 
-import {QExpert, QProposal, QRootNode, QSlashing} from "./constants";
-import {WrapBtnBlock, ButtonCustom, BtnLabel} from "./styles";
-import {getRootsVotingProposals} from "store/actions/action-creaters/voting/roots-voting";
+import {drizzleReactHooks} from "@drizzle/react-plugin";
+import {useDispatch, useSelector} from "react-redux";
+import {userAddressMetamask} from "store/selectors/user-inf";
 import {
     setCreatedStepsLimit,
     setCreateProposalObj,
     setStepCounter
 } from "store/actions/action-creaters/voting/qproposals";
 
-const {useDrizzle, useDrizzleState} = drizzleReactHooks;
+import ModalCreateProposal from "./ModalCreateProposal";
+
+import {QExpert, QProposal, QRootNode, QSlashing} from "./constants";
+import {WrapBtnBlock, ButtonCustom, BtnLabel} from "./styles";
+
+const {useDrizzle} = drizzleReactHooks;
 
 function CreateQProposalBtn(props) {
     const {activeTab} = props;
     const {drizzle} = useDrizzle();
-    const state = useDrizzleState(state => state);
     const userAddress = useSelector(userAddressMetamask);
     const [modalShow, setModalShow] = useState(false);
     const dispatch = useDispatch();
-
-    console.log("state", state);
 
     const activeTabTitle = useMemo(() => {
         // return activeTab.replace(/-/g, " ")
@@ -56,22 +51,21 @@ function CreateQProposalBtn(props) {
         return new BigNumber(number);
     }
 
-
     const onCreateProposal = async () => {
         dispatch(setStepCounter(1));
         setModalShow(true);
         switch (activeTab) {
             case "q-proposals":
-                dispatch(setCreatedStepsLimit(3));
+                dispatch(setCreatedStepsLimit(4));
                 break;
             case "q-root-node-panel":
-                dispatch(setCreatedStepsLimit(2));
+                dispatch(setCreatedStepsLimit(3));
                 break;
             case "q-expert-proposals":
-                dispatch(setCreatedStepsLimit(2));
+                dispatch(setCreatedStepsLimit(3));
                 break;
             case "slashing-proposals":
-                dispatch(setCreatedStepsLimit(2));
+                dispatch(setCreatedStepsLimit(3));
                 break;
             default:
                 return QProposal;
@@ -157,7 +151,7 @@ function CreateQProposalBtn(props) {
                 <BtnLabel>Create {activeTabTitle}</BtnLabel>
             </WrapBtnBlock>
 
-            <Modal
+            <ModalCreateProposal
                 activeTab={activeTab}
                 activeTabTitle={activeTabTitle}
                 modalShow={modalShow}

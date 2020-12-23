@@ -12,8 +12,8 @@ import ConstitutionVotingService from "api/contracts/Voting/ConstitutionVotingSe
 import EmergencyUpdateVotingService from "api/contracts/Voting/EmergencyUpdateVotingService";
 import GeneralUpdateVotingService from "api/contracts/Voting/GeneralUpdateVotingService";
 import RootsVotingService from "api/contracts/Voting/RootsVotingService";
+import SlashingVoting from "api/contracts/Voting/SlashingVoting";
 import RootNodesSlashingVotingService from "api/contracts/Voting/RootNodesSlashingVotingService";
-import ValidatorSlashingVotingService from "api/contracts/Voting/ValidatorsSlashingVotingService";
 import EPQFI_MembershipVotingService from "api/contracts/Voting/EPQFI_MembershipVotingService";
 import EPDR_MembershipVotingService from "api/contracts/Voting/EPDR_MembershipVotingService";
 import MembershipVoting from "api/contracts/Voting/MembershipVoting";
@@ -23,6 +23,7 @@ import {getRootsVotingProposals} from "store/actions/action-creaters/voting/root
 import {getConstitutionVotingProposals} from "store/actions/action-creaters/voting/constitution-voting";
 import {getValidatorsSlashingVotingProposals} from "store/actions/action-creaters/voting/validators-slashing-voting";
 import {getRootNodesSlashingVotingProposals} from "store/actions/action-creaters/voting/rootnodes-slashing-voting";
+import ValidatorsSlashingVotingService from "api/contracts/Voting/ValidatorsSlashingVotingService";
 
 function* getQExpertProposals({contracts}) {
     try {
@@ -77,7 +78,7 @@ function* createProposal({drizzle, data}) {
                     yield put(getRootNodesSlashingVotingProposals(rootNodesSlashingVoting));
                     break;
                 case "validator-node-slashing":
-                    const validatorsSlashingVoting = new ValidatorSlashingVotingService(drizzle, "ValidatorsSlashingVoting");
+                    const validatorsSlashingVoting = new ValidatorsSlashingVotingService(drizzle, "ValidatorsSlashingVoting");
                     result = yield validatorsSlashingVoting.createProposal(data, userAddress);
                     yield put(getValidatorsSlashingVotingProposals(validatorsSlashingVoting));
                     break;

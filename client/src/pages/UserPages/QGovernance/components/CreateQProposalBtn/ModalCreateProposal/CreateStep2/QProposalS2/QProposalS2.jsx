@@ -1,7 +1,7 @@
 import React, {useCallback} from "react";
 
 import {useDispatch, useSelector} from "react-redux";
-import {createdStepsLimit, formObject} from "store/selectors/voting/qproposals";
+import {formObject} from "store/selectors/voting/qproposals";
 import {setCreatedStepsLimit} from "store/actions/action-creaters/voting/qproposals";
 
 import RadioBtnGroup from "../../../RadioBtnGroup";
@@ -46,8 +46,8 @@ function QProposalS2(props) {
                             nameArr={constUpdate.radioBtnDownName}
                             handleChange={(value) => {
                                 value.target.value === "no"
-                                    ? dispatch(setCreatedStepsLimit(2))
-                                    : dispatch(setCreatedStepsLimit(3)) ;
+                                    ? dispatch(setCreatedStepsLimit(3))
+                                    : dispatch(setCreatedStepsLimit(4)) ;
                             }}
                         />
                     </>

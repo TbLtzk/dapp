@@ -11,6 +11,7 @@ import QTypeProposalsTabs from "pages/UserPages/QGovernance/components/QTypeProp
 import ProposalsList from "pages/UserPages/QGovernance/components/ProposalsList";
 
 import ContractRegistryService from "api/contracts/ContractRegistryService";
+import SlashingVoting from "api/contracts/Voting/SlashingVoting";
 import ValidatorsSlashingVotingService from "api/contracts/Voting/ValidatorsSlashingVotingService";
 import RootNodesSlashingVotingService from "api/contracts/Voting/RootNodesSlashingVotingService";
 import {drizzleReactHooks} from "@drizzle/react-plugin";
@@ -53,6 +54,7 @@ function SlashingProposals() {
                 activeDescr={(proposalsValidator?.length + proposalsRootNodes?.length ) + " POLLS"}
                 activeContent={
                     <ProposalsList
+                        activeTab="slashing"
                         proposals={[...proposalsValidator, ...proposalsRootNodes]}
                         loading={loadingValidator && loadingRootNodes}
                         errorMessage={errorMessageValidator || errorMessageRootNodes}

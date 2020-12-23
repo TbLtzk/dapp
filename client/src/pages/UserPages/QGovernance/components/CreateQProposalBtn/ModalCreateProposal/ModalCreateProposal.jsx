@@ -1,8 +1,8 @@
 import React, {useMemo, useState} from "react";
 
+import {drizzleReactHooks} from "@drizzle/react-plugin";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    setCreatedStepsLimit,
     setCreateProposalObj,
     setStepCounter,
     setDisabledCreatedProposalBtn,
@@ -14,22 +14,21 @@ import {
     stepCounterModal,
     disabledContinueProposalBtn
 } from "store/selectors/voting/qproposals";
+
 import {useForm} from "react-hook-form";
 
 import ModalWindow from "components/Base/ModalWindow";
 import CreateStep1 from "./CreateStep1";
 import CreateStep2 from "./CreateStep2";
 import CreateStep3 from "./CreateStep3";
+import CreateStep4 from "./CreateStep4";
 
 import {arrExpert, arrQProposal, arrQRootNode, arrSlashing} from "./constants";
-
 import {Title, Descr} from "./styles"
-import {userAddressMetamask} from "store/selectors/user-inf";
-import {drizzleReactHooks} from "@drizzle/react-plugin";
 
-const {useDrizzle, useDrizzleState} = drizzleReactHooks;
+const {useDrizzle} = drizzleReactHooks;
 
-function Modal(props) {
+function ModalCreateProposal(props) {
     const {modalShow, onHide, activeTab, activeTabTitle} = props;
     const {drizzle} = useDrizzle();
     const {register, errors, handleSubmit} = useForm();
@@ -39,8 +38,6 @@ function Modal(props) {
     const stepLimit = useSelector(createdStepsLimit);
     const stepCounter = useSelector(stepCounterModal);
     const disabledContinueBtn = useSelector(disabledContinueProposalBtn);
-
-    const userAddress = useSelector(userAddressMetamask);
 
     const radioArrFirstStep = useMemo(() => {
         switch (activeTab) {
@@ -58,9 +55,7 @@ function Modal(props) {
 
     }, [activeTab]);
 
-
     const switchProposalContentDependsOnType = useMemo(() => {
-        // console.log("stepCounter", stepCounter);
         console.log("formData", formData);
         switch (stepCounter) {
             case 1:
@@ -94,6 +89,13 @@ function Modal(props) {
                         errors={errors}
                     />
                 );
+            case 4:
+                return (
+                    <CreateStep4
+                        formData={formData}
+                        activeTab={activeTab}
+                    />
+                );
             default:
                 return null;
         }
@@ -107,30 +109,10 @@ function Modal(props) {
             dispatch(setStepCounter(stepCounter + 1))
         } else {
             dispatch(createProposal(drizzle, {...formData, ...data}));
-            // createProposalTest();
             onHide();
         }
-        // stepCounter < stepLimit ? dispatch(setStepCounter(stepCounter + 1)) :
-        //     dispatch(createProposal(drizzle, {...formData, ...data}));
-        // onHide();
-        // createProposalTest();
 
-        console.log("Limit");
-        // dispatch(setDisabledCreatedProposalBtn(true))
-        // stepCounter < stepLimit ? setStepCounter(step => step + 1) : setDisabledContinueBtn(true)
-    };
-    // console.log("formData", formData);
-
-    const createProposalTest = async () => {
-        // const NEW_CONSTITUTION_HASH = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
-        // const createProposal = await drizzle.contracts.ConstitutionVoting.methods.createProposal.cacheSend(
-        //     "https://example1.com", 0, NEW_CONSTITUTION_HASH, {from: userAddress});
-        // const result = await drizzle.contracts.GeneralUpdateVoting.methods.createProposal("https://example1.com").send(
-        //     {from: userAddress});
-        // const result = await drizzle.contracts.EmergencyUpdateVoting.methods.createProposal("https://example1.com").send(
-        //     {from: userAddress});
-
-        console.log("createProposal", result);
+        console.log("Transaction Sent");
     };
 
     return (
@@ -143,7 +125,6 @@ function Modal(props) {
             backBtnHandler={() => {
                 dispatch(setStepCounter(stepCounter - 1));
                 dispatch(setDisabledCreatedProposalBtn(false));
-                // setDisabledContinueBtn(false)
             }}
             continueBtnTitle={
                 stepLimit !== stepCounter ? "Next" : "Confirm"
@@ -163,5 +144,5 @@ function Modal(props) {
     );
 }
 
-export default Modal;
+export default ModalCreateProposal;
 

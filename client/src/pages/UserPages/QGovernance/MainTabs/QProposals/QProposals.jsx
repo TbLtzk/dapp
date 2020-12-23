@@ -32,6 +32,7 @@ function QProposals() {
                 activeDescr={proposals?.length + " POLLS"}
                 activeContent={
                     <ProposalsList
+                        activeTab="q-proposals"
                         typeList={"QProposals"}
                         proposals={proposals}
                         loading={loading}

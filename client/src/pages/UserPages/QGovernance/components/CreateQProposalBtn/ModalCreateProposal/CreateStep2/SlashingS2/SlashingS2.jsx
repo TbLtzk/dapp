@@ -1,21 +1,17 @@
 import React, {useCallback} from "react";
 
-import {useDispatch, useSelector} from "react-redux";
-import {createdStepsLimit, formObject} from "store/selectors/voting/qproposals";
-import {setCreatedStepsLimit} from "store/actions/action-creaters/voting/qproposals";
+import {useSelector} from "react-redux";
+import {formObject} from "store/selectors/voting/qproposals";
 
-import RadioBtnGroup from "../../../RadioBtnGroup";
 import InputGroup from "../../../InputGroup";
 
 import {rootSlashing, validatorSlashing} from "./constants";
 
-import {SubTitle, SubTitleBold, Descr} from "../../styles";
+import {SubTitle} from "../../styles";
 
 function SlashingS2(props) {
     const {activeTab, register, errors} = props;
     const formData = useSelector(formObject);
-
-    const dispatch = useDispatch();
 
     const switchContentOnTypeProposal = useCallback(() => {
         switch (formData?.first) {

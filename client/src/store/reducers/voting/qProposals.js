@@ -9,9 +9,12 @@ const initialState = {
     createProposalResult: null,
 
     formObjectCreateProposal: {},
-    createdStepsLimit: 3,
+    createdStepsLimit: 4,
     stepCounter: 1,
     disabledContinueBtn: true,
+
+    formObjectVoteProposal: {},
+    stepVoteCounter: 1,
 };
 
 export default function qProposals(state = initialState, action) {
@@ -54,6 +57,16 @@ export default function qProposals(state = initialState, action) {
             return {
                 ...state,
                 disabledContinueBtn: action.result
+            };
+        case actionTypes.SET_VOTE_PROPOSAL_OBJECT:
+            return {
+                ...state,
+                formObjectVoteProposal: action.result
+            };
+        case actionTypes.SET_STEP_VOTE_COUNTER:
+            return {
+                ...state,
+                stepVoteCounter: action.result
             };
         default:
             return state;

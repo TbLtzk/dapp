@@ -7,6 +7,7 @@ import {
 } from "store/actions/action-creaters/voting/validators-slashing-voting";
 
 function* getValidatorsSlashingVotingProposals({contract}) {
+    console.log("getValidatorsSlashingVotingProposals",contract);
     try {
         const data = yield contract.getProposals();
         console.log("GET_VALIDATORS_SLASHING_VOTING_PROPOSALS", data);

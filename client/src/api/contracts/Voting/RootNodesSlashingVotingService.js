@@ -19,32 +19,37 @@ export default class RootNodesSlashingVotingService extends VotingService {
             if (proposalIds) {
                 for (let id of proposalIds) {
                     let objRes = {};
-                    let promiseRes = await this.proposalIteratorResult(id);
-                    if (promiseRes) {
-                        objRes.id = id;
-                        objRes.remark = promiseRes.base.remark;
-                        objRes.candidate = promiseRes.candidate;
-                        objRes.amountToSlash = convertNumVotes(promiseRes.amountToSlash);
-                        objRes.vetosCount = promiseRes.base.counters.vetosCount;
-                        objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
-                        objRes.votesFor = promiseRes.base.counters.weightFor;
-                        //the ending is given by: vetoEndTime.
-                        objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
-                        //the time until when users can vote
-                        objRes.votingEndTime = promiseRes.base.params.votingEndTime;
-                        let promiseStatus = await this.getProposalStatus(id);
-                        objRes.status = getStatusTransformation(promiseStatus);
-                        objRes.title = "Root Nodes slashing proposals";
-                        objRes.type = "root nodes slashing";
-                        let proposalStats = await this.getProposalStats(id);
-                        objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
-                        objRes.currentQuorum = convertNumVotes(proposalStats.currentQuorum);
-                        objRes.currentVetoPercentage = convertNumVotes(proposalStats.currentVetoPercentage);
-                        objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
-                        objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
-                        objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
+                    let promiseStatus = await this.getProposalStatus(id);
+                    if (promiseStatus === "1") {
+                        let promiseRes = await this.proposalIteratorResult(id);
+                        if (promiseRes) {
+
+                            objRes.id = id;
+                            objRes.remark = promiseRes.base.remark;
+                            objRes.candidate = promiseRes.candidate;
+                            objRes.amountToSlash = convertNumVotes(promiseRes.amountToSlash);
+                            objRes.vetosCount = promiseRes.base.counters.vetosCount;
+                            objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
+                            objRes.votesFor = promiseRes.base.counters.weightFor;
+                            //the ending is given by: vetoEndTime.
+                            objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
+                            //the time until when users can vote
+                            objRes.votingEndTime = promiseRes.base.params.votingEndTime;
+                            objRes.status = getStatusTransformation(promiseStatus);
+                            objRes.title = "Root Nodes slashing proposals";
+                            objRes.type = "root nodes slashing";
+                            let proposalStats = await this.getProposalStats(id);
+                            objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
+                            objRes.currentQuorum = convertNumVotes(proposalStats.currentQuorum);
+                            objRes.currentVetoPercentage = convertNumVotes(proposalStats.currentVetoPercentage);
+                            objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
+                            objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
+                            objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
+                            objRes.contract = this.contractName;
+                            proposals.push(objRes);
+                        }
                     }
-                    proposals.push(objRes);
+
                 }
             }
             // console.log("proposals slashing", proposals);

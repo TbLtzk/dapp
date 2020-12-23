@@ -8,3 +8,6 @@ export const createdStepsLimit = state => state.qProposals.createdStepsLimit;
 export const stepCounterModal = state => state.qProposals.stepCounter;
 export const disabledContinueProposalBtn = state => state.qProposals.disabledContinueBtn;
 
+/*vote proposal staff*/
+export const formVoteObject = state => state.qProposals.formObjectVoteProposal;
+export const stepVoteCounterModal = state => state.qProposals.stepVoteCounter;

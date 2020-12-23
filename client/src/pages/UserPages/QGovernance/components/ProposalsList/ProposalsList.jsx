@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Accordion, Col} from "react-bootstrap";
 
 import LoadingSpinner from "components/Base/LoadingSpinner";
@@ -10,63 +10,84 @@ import {CardBlock, LoadingW} from "./styles";
 import {useDispatch, useSelector} from "react-redux";
 import {userAddressMetamask} from "store/selectors/user-inf";
 import {drizzleReactHooks} from "@drizzle/react-plugin";
+import {setVoteProposalObj, setStepVoteCounter} from "store/actions/action-creaters/voting/qproposals";
+import ModalVote from "pages/UserPages/QGovernance/components/CreateQProposalBtn/ModalVote";
 
 const {useDrizzle, useDrizzleState} = drizzleReactHooks;
 
 function ProposalsList(props) {
-    const {proposals, proposalsKind, loading, errorMessage} = props;
+    const {proposals, proposalsKind, loading, errorMessage, activeTab} = props;
     const {drizzle} = useDrizzle();
     const dispatch = useDispatch();
     const userAddress = useSelector(userAddressMetamask);
+    const [modalShow, setModalShow] = useState(false);
+    const [proposalId, setProposalId] = useState(null);
+
 
     const onProposalVote = async (id) => {
         console.log("Vote", id);
-        const proposalVote = await drizzle.contracts.ConstitutionVoting.methods.voteFor.cacheSend(
-            id, true, {from: userAddress});
+        // const proposalVote = await drizzle.contracts.ConstitutionVoting.methods.voteFor.cacheSend(
+        //     id, true, {from: userAddress});
         // const proposalVote = await drizzle.contracts.ConstitutionVoting.methods.veto.cacheSend(
         //     id, {from: userAddress});
-        console.log("proposalVote", proposalVote);
+        // console.log("proposalVote", proposalVote);
+        setProposalId(id);
+        setModalShow(true);
+
     };
 
     return (
-        <Accordion defaultActiveKey="0">
-            {loading ? <LoadingW xs={12}><LoadingSpinner/></LoadingW> :
-                errorMessage ? <Col xs={12}><p>No proposals</p></Col> :
-                    proposals.length === 0
-                        ? <Col xs={12}><p>No proposals</p></Col>
-                        : proposals.map((proposal, i) => {
-                            return (
-                                <CardBlock key={proposal.id + proposal?.type}>
-                                    <CardHeader
-                                        title={proposal.title}
-                                        status={proposal.status}
-                                        handleVote={() => {
-                                            onProposalVote(proposal.id)
-                                        }}
-                                    />
-                                    <CardBody
-                                        id={proposal.id + proposal?.type}
-                                        proposalType={proposal?.type}
-                                        // mainText={"Text"}
-                                        // date={convertToMonthDayYear(proposal.vetoEndTime)}
-                                        vetoTime={proposal.vetoEndTime}
-                                        // vetoTime={remainDate(proposal.vetoEndTime)}
-                                        votingTime={proposal.votingEndTime}
-                                        // votingTime={remainDate(proposal.votingEndTime)}
-                                        // time={remainDate("7d 0h remaining")}
-                                        proposalID={proposal.id}
-                                        pollDetail={proposal}
-                                        proposalsKind={proposalsKind}
-                                        voteBreakdown={proposal}
-                                    />
-                                </CardBlock>
-                            )
-                        })
+        <>
+            <Accordion defaultActiveKey="0">
+                {loading ? <LoadingW xs={12}><LoadingSpinner/></LoadingW> :
+                    errorMessage ? <p>No proposals</p> :
+                        proposals.length === 0
+                            ? <p>No proposals</p>
+                            : proposals.map((proposal, i) => {
+                                return (
+                                    <CardBlock key={proposal.id + proposal?.type}>
+                                        <CardHeader
+                                            title={proposal.title}
+                                            status={proposal.status}
+                                            handleVote={() => {
+                                                onProposalVote(proposal.id)
+                                            }}
+                                        />
+                                        <CardBody
+                                            id={proposal.id + proposal?.type}
+                                            proposalType={proposal?.type}
+                                            // mainText={"Text"}
+                                            // date={convertToMonthDayYear(proposal.vetoEndTime)}
+                                            vetoTime={proposal.vetoEndTime}
+                                            // vetoTime={remainDate(proposal.vetoEndTime)}
+                                            votingTime={proposal.votingEndTime}
+                                            // votingTime={remainDate(proposal.votingEndTime)}
+                                            // time={remainDate("7d 0h remaining")}
+                                            proposalID={proposal.id}
+                                            pollDetail={proposal}
+                                            proposalsKind={proposalsKind}
+                                            voteBreakdown={proposal}
+                                        />
+                                    </CardBlock>
+                                )
+                            })
+                }
+            </Accordion>
+            <ModalVote
+                step={1}
+                proposalId={proposalId}
+                activeTab={activeTab}
+                modalShow={modalShow}
+                onHide={() => {
+                    setModalShow(false);
+                    dispatch(setVoteProposalObj({}));
+                    dispatch(setStepVoteCounter(1));
 
-            }
-        </Accordion>
+                }}
+            />
+        </>
     );
 }
-
+    ``
 export default ProposalsList;
 

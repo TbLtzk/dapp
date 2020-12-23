@@ -1,21 +1,18 @@
 import React, {useCallback} from "react";
 
-import {useDispatch, useSelector} from "react-redux";
-import {createdStepsLimit, formObject} from "store/selectors/voting/qproposals";
-import {setCreatedStepsLimit} from "store/actions/action-creaters/voting/qproposals";
+import {useSelector} from "react-redux";
+import {formObject} from "store/selectors/voting/qproposals";
 
 import RadioBtnGroup from "../../../RadioBtnGroup";
 import InputGroup from "../../../InputGroup";
 
 import {addNewExpert, removeExpert, parameterVote} from "./constants";
 
-import {SubTitle, SubTitleBold, Descr} from "../../styles";
+import {SubTitle, Descr} from "../../styles";
 
 function QExpertS2(props) {
     const {activeTab, register, errors} = props;
     const formData = useSelector(formObject);
-
-    const dispatch = useDispatch();
 
     const switchContentOnTypeProposal = useCallback(() => {
         switch (formData?.first) {
@@ -30,9 +27,6 @@ function QExpertS2(props) {
                             errors={errors}
                             nameArr={addNewExpert.radioBtnName}
                             handleChange={(value) => {
-                                // value.target.value === "no"
-                                //     ? dispatch(setCreatedStepsLimit(2))
-                                //     : dispatch(setCreatedStepsLimit(3)) ;
                             }}
                         />
                         <SubTitle>{addNewExpert.subtitleInputUp}</SubTitle>
@@ -63,9 +57,6 @@ function QExpertS2(props) {
                             errors={errors}
                             nameArr={removeExpert.radioBtnName}
                             handleChange={(value) => {
-                                // value.target.value === "no"
-                                //     ? dispatch(setCreatedStepsLimit(2))
-                                //     : dispatch(setCreatedStepsLimit(3)) ;
                             }}
                         />
                         <SubTitle>{removeExpert.subtitleInputUp}</SubTitle>
@@ -96,9 +87,6 @@ function QExpertS2(props) {
                             errors={errors}
                             nameArr={parameterVote.radioBtnName}
                             handleChange={(value) => {
-                                // value.target.value === "no"
-                                //     ? dispatch(setCreatedStepsLimit(2))
-                                //     : dispatch(setCreatedStepsLimit(3)) ;
                             }}
                         />
                         <SubTitle>{parameterVote.subtitleInputUp}</SubTitle>
@@ -109,9 +97,6 @@ function QExpertS2(props) {
                             errors={errors}
                             nameArr={parameterVote.radioBtnNameDown}
                             handleChange={(value) => {
-                                // value.target.value === "no"
-                                //     ? dispatch(setCreatedStepsLimit(2))
-                                //     : dispatch(setCreatedStepsLimit(3)) ;
                             }}
                         />
                         <InputGroup

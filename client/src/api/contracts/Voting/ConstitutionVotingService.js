@@ -1,4 +1,9 @@
-import {convertNumVotes, getPastEvents, getPastProposalsIds, getStatusTransformation} from "api/contracts/Voting/handler/commonFunc";
+import {
+    convertNumVotes,
+    getPastEvents,
+    getPastProposalsIds,
+    getStatusTransformation
+} from "api/contracts/Voting/handler/commonFunc";
 import VotingService from "api/contracts/Voting/VotingService";
 
 export default class ConstitutionVotingService extends VotingService {
@@ -33,11 +38,10 @@ export default class ConstitutionVotingService extends VotingService {
             if (proposalIds) {
                 for (let id of proposalIds) {
                     let objRes = {};
-                    let promiseRes = await this.proposalIteratorResult(id);
-                    if (promiseRes) {
-                        let promiseStatus = await this.getProposalStatus(id);
-                        if (promiseStatus === "1"){
-                            console.log("promiseRes", promiseRes);
+                    let promiseStatus = await this.getProposalStatus(id);
+                    if (promiseStatus === "1") {
+                        let promiseRes = await this.proposalIteratorResult(id);
+                        if (promiseRes) {
                             objRes.id = id;
                             objRes.remark = promiseRes.base.remark;
                             const proposalType = this.getProposalStringType(promiseRes.classification);
@@ -67,6 +71,7 @@ export default class ConstitutionVotingService extends VotingService {
                             objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
                             objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
                             objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
+                            objRes.contract = this.contractName;
                             proposals.push(objRes);
                         }
                     }

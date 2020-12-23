@@ -48,3 +48,19 @@ export const createProposalSuccess = (result) => ({
     result
 });
 
+/*vote proposal staff*/
+export const setVoteProposalObj = (result) => ({
+    type: actionTypes.SET_VOTE_PROPOSAL_OBJECT,
+    result
+});
+
+export const setStepVoteCounter = (result) => ({
+    type: actionTypes.SET_STEP_VOTE_COUNTER,
+    result
+});
+
+export const voteForProposal = (drizzle, data) => ({
+    type: actionTypes.VOTE_FOR_PROPOSAL,
+    drizzle,
+    data
+});

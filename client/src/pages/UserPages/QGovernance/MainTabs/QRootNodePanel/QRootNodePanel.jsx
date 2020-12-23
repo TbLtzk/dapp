@@ -46,6 +46,7 @@ function QRootNodePanel() {
                 activeDescr={proposals?.length + " POLLS"}
                 activeContent={
                     <ProposalsList
+                        activeTab="root-node"
                         proposals={proposals}
                         loading={loading}
                         errorMessage={errorMessage}

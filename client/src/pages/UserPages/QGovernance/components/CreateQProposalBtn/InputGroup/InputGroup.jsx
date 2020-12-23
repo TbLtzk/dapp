@@ -6,7 +6,7 @@ import {formObject} from "store/selectors/voting/qproposals";
 import FormInput from "components/Base/Form/FormInput";
 
 import {Wrap} from "./styles";
-import {Descr} from "../Modal/styles";
+import {Descr} from "../ModalCreateProposal/styles";
 
 function InputGroup(props) {
     const {register, errors, inputArr, inputsObj, labelsArr} = props;
