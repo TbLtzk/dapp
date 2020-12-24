@@ -12,6 +12,7 @@ export default class EPDR_MembershipVotingService extends VotingService {
      */
     async getProposals() {
         try {
+            //TODO: for createRemoveExpertProposal use RemoveProposalCreated event
             const proposalEvents = await this.getProposalsEvent();
             const proposalIds = getPastProposalsIds(proposalEvents);
             console.log("EPDR_MembershipVotingService", proposalIds);
@@ -19,10 +20,11 @@ export default class EPDR_MembershipVotingService extends VotingService {
             if (proposalIds) {
                 for (let id of proposalIds) {
                     let objRes = {};
-                    let promiseRes = await this.proposalIteratorResult(id);
-                    if (promiseRes) {
-                        let promiseStatus = await this.getProposalStatus(id);
-                        // if (promiseStatus === "1"){
+                    let promiseStatus = await this.getProposalStatus(id);
+                    if (promiseStatus === "1") {
+                        let promiseRes = await this.proposalIteratorResult(id);
+                        if (promiseRes) {
+                            // if (promiseStatus === "1"){
                             objRes.id = id;
                             objRes.remark = promiseRes.base.remark;
                             objRes.addressToAdd = promiseRes.proposalDetails.addressToAdd;
@@ -38,15 +40,16 @@ export default class EPDR_MembershipVotingService extends VotingService {
                             objRes.title = "DeFi Risk Expert membership proposals";
                             objRes.type = "DeFi Risk Expert membership";
                             objRes.kindVoting = "membership";
-                            // let proposalStats = await this.getProposalStats(id);
-                            // objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
-                            // objRes.currentQuorum = convertNumVotes(proposalStats.currentQuorum);
-                            // objRes.currentVetoPercentage = convertNumVotes(proposalStats.currentVetoPercentage);
-                            // objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
-                            // objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
-                            // objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
+                            objRes.contract = this.contractName;
+                            let proposalStats = await this.getProposalStats(id);
+                            objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
+                            objRes.currentQuorum = convertNumVotes(proposalStats.currentQuorum);
+                            objRes.currentVetoPercentage = convertNumVotes(proposalStats.currentVetoPercentage);
+                            objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
+                            objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
+                            objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
                             proposals.push(objRes);
-                        // }
+                        }
                     }
 
                 }

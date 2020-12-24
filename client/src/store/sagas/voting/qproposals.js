@@ -6,7 +6,7 @@ import {
 } from "store/actions/action-creaters/transaction-handler";
 
 import {
-    getQExpertProposalsSuccess, getQExpertProposalsError, createProposalSuccess
+    getQExpertProposalsSuccess, getQExpertProposalsError, createProposalSuccess, voteForProposalSuccess
 } from "store/actions/action-creaters/voting/qproposals";
 import ConstitutionVotingService from "api/contracts/Voting/ConstitutionVotingService";
 import EmergencyUpdateVotingService from "api/contracts/Voting/EmergencyUpdateVotingService";
@@ -105,7 +105,49 @@ function* createProposal({drizzle, data}) {
     }
 }
 
+
+function* voteForProposal({drizzle, data}) {
+    try {
+        yield put(setTransactionLoading());
+        const {userAddress} = yield select(state => state.userInf);
+
+        let result = null;
+        if (data && drizzle) {
+            const contract = new ConstitutionVotingService(drizzle, data?.contract);
+            console.log("VOTING contract", contract);
+            if (data?.first === "basic-vote-on-proposal") {
+                if (data["vote-proposal"] === "yes") {
+                    result = yield contract.voteFor(data?.idProposal, userAddress);
+                    // const execute = yield contract.execute(data?.idProposal, userAddress);
+                    console.log("RESULT VOTING voteFor", result);
+                    // console.log("RESULT VOTING execute", execute);
+                } else if (data["vote-proposal"] === "no") {
+                    result = yield contract.voteAgainst(data?.idProposal, userAddress);
+                    // const execute = yield contract.execute(data?.idProposal, userAddress);
+                    console.log("RESULT VOTING voteAgainst", result);
+                    // console.log("RESULT VOTING execute", execute);
+                }
+            } else if (data?.first === "constitution-check") {
+                //TODO: when backenders do it
+
+            } else if (data?.first === "q-community-veto") {
+                result = yield contract.veto(data?.idProposal, userAddress);
+                console.log("RESULT VETO", result);
+            }
+        }
+
+        yield put(voteForProposalSuccess(result));
+        yield put(setTransactionLoadingSuccess());
+
+    } catch (err) {
+        console.log('err', err.message);
+        yield put(setTransactionLoadingError(err.message));
+    }
+}
+
 export default [
     takeEvery(actionTypes.GET_QEXPERT_PROPOSALS, getQExpertProposals),
     takeEvery(actionTypes.CREATE_PROPOSAL, createProposal),
+
+    takeEvery(actionTypes.VOTE_FOR_PROPOSAL, voteForProposal),
 ]

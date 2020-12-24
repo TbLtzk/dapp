@@ -19,9 +19,10 @@ export default class EPQFI_ParametersVotingService extends VotingService {
             if (proposalIds) {
                 for (let id of proposalIds) {
                     let objRes = {};
-                    let promiseRes = await this.proposalIteratorResult(id);
-                    if (promiseRes) {
-                        // if (promiseStatus === "1") {
+                    let promiseStatus = await this.getProposalStatus(id);
+                    if (promiseStatus === "1") {
+                        let promiseRes = await this.proposalIteratorResult(id);
+                        if (promiseRes) {
                             objRes.id = id;
                             objRes.remark = promiseRes.base.remark;
                             objRes.parameterKey = promiseRes.parameterKey;
@@ -39,21 +40,22 @@ export default class EPQFI_ParametersVotingService extends VotingService {
                             objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
                             //the time until when users can vote
                             objRes.votingEndTime = promiseRes.base.params.votingEndTime;
-                            // let promiseStatus = await this.getProposalStatus(id);
-                            // objRes.status = getStatusTransformation(promiseStatus);
+                            objRes.status = getStatusTransformation(promiseStatus);
                             objRes.title = "Fees & Incentives Experts parameter voting proposals";
                             objRes.type = "Fees & Incentives Experts Parameters Proposals";
                             objRes.kindVoting = "parameters";
-                            // let proposalStats = await this.getProposalStats(id);
-                            // objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
-                            // objRes.currentQuorum = convertNumVotes(proposalStats.currentQuorum);
-                            // objRes.currentVetoPercentage = convertNumVotes(proposalStats.currentVetoPercentage);
-                            // objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
-                            // objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
-                            // objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
-                        // }
+                            objRes.contract = this.contractName;
+                            let proposalStats = await this.getProposalStats(id);
+                            objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
+                            objRes.currentQuorum = convertNumVotes(proposalStats.currentQuorum);
+                            objRes.currentVetoPercentage = convertNumVotes(proposalStats.currentVetoPercentage);
+                            objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
+                            objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
+                            objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
+                            proposals.push(objRes);
+                        }
+
                     }
-                    proposals.push(objRes);
                 }
             }
             // console.log("proposals", proposals);

@@ -27,7 +27,7 @@ import {Title, Descr} from "./styles"
 const {useDrizzle} = drizzleReactHooks;
 
 function ModalVote(props) {
-    const {modalShow, onHide, activeTab, proposalId, step} = props;
+    const {modalShow, onHide, activeTab, proposalId, proposalContract} = props;
     const {drizzle} = useDrizzle();
     const {register, errors, handleSubmit} = useForm();
     const dispatch = useDispatch();
@@ -81,8 +81,10 @@ function ModalVote(props) {
         if (stepCounter < stepLimit) {
             dispatch(setStepVoteCounter(stepCounter + 1))
         } else {
-            console.log("result data", {...formData, ...data, idProposal: proposalId, typeProposal: activeTab});
-            dispatch(voteForProposal(drizzle, {...formData, ...data, idProposal: proposalId, typeProposal: activeTab}));
+            if (formData?.veto !== "no"){
+                dispatch(voteForProposal(drizzle, {...formData, ...data, idProposal: proposalId, contract: proposalContract}));
+            }
+            console.log("result data", {...formData, ...data, idProposal: proposalId, contract: proposalContract});
             onHide();
         }
 

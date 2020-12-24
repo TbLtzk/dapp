@@ -8,10 +8,15 @@ import {
 
 function* getConstitutionVotingProposals({contract}) {
     try {
-        const data = yield contract.getProposals();
-        console.log("GET_CONSTITUTION_VOTING_PROPOSALS", data);
+        let result = [];
+        for (let contractName of contract) {
+            const data = yield contractName.getProposals();
+            result = [...result, ...data];
+        }
+        // const data = yield contract.getProposals();
+        console.log("GET_CONSTITUTION_VOTING_PROPOSALS", result);
 
-        yield put(getConstitutionVotingProposalsSuccess(data));
+        yield put(getConstitutionVotingProposalsSuccess(result));
     } catch (err) {
         console.log('err',err);
         yield put(getConstitutionVotingProposalsError(err.message));

@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getConstitutionVotingProposals} from "store/actions/action-creaters/voting/constitution-voting";
 import {errorM, loadingProposals, proposalsArr} from "store/selectors/voting/constitution-voting";
 import ConstitutionVotingService from "api/contracts/Voting/ConstitutionVotingService";
+import EmergencyUpdateVotingService from "api/contracts/Voting/EmergencyUpdateVotingService";
 
 import {Col} from "react-bootstrap";
 
@@ -17,9 +18,11 @@ function QProposals() {
     const state = useDrizzleState(state => state);
     const dispatch = useDispatch();
     const constitutionVoting = new ConstitutionVotingService(drizzle, "ConstitutionVoting");
+    const emergencyUpdateVoting = new EmergencyUpdateVotingService(drizzle, "EmergencyUpdateVoting");
 
     useEffect(() => {
-        dispatch(getConstitutionVotingProposals(constitutionVoting))
+        dispatch(getConstitutionVotingProposals([constitutionVoting, emergencyUpdateVoting]))
+
     }, []);
 
     const loading = useSelector(loadingProposals);

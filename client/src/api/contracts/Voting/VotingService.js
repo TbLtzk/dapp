@@ -1,4 +1,9 @@
-import {convertNumVotes, getPastEvents, getPastProposalsIds, getStatusTransformation} from "api/contracts/Voting/handler/commonFunc";
+import {
+    convertNumVotes,
+    getPastEvents,
+    getPastProposalsIds,
+    getStatusTransformation
+} from "api/contracts/Voting/handler/commonFunc";
 
 export default class VotingService {
 
@@ -115,12 +120,22 @@ export default class VotingService {
     /**
      * vote against proposal
      * @param id
+     * @param userAddress
      * @return array
      */
-    async voteAgainst(id) {
+    async voteAgainst(id, userAddress) {
         try {
-            const result = await this.contract.methods.voteAgainst(id, true).call();
-            // console.log("voteAgainst", result);
+            let result = null;
+            if (this.contractName === "RootNodesSlashingVoting" || this.contractName === "ValidatorsSlashingVoting"
+                || this.contractName === "EPDR_ParametersVoting" || this.contractName === "EPQFI_ParametersVoting"
+                || this.contractName === "EmergencyUpdateVoting") {
+                result = await this.contract.methods.voteAgainst(id).send(
+                    {from: userAddress});
+            } else {
+                result = await this.contract.methods.voteAgainst(id, true).send(
+                    {from: userAddress});
+            }
+            console.log("voteAgainst", result);
             return result;
         } catch (e) {
             console.log(e);
@@ -130,17 +145,60 @@ export default class VotingService {
     /**
      * vote for proposal
      * @param id
+     * @param userAddress
      * @return array
      */
-    async voteFor(id) {
-        try {
-            const result = await this.contract.methods.voteFor.cacheSend(
-                id, true, {from: "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7"});
-            // console.log("voteFor", result);
-            return result;
-        } catch (e) {
-            console.log(e);
+    async voteFor(id, userAddress) {
+        let result = null;
+        if (this.contractName === "RootNodesSlashingVoting" || this.contractName === "ValidatorsSlashingVoting"
+            || this.contractName === "EPDR_ParametersVoting" || this.contractName === "EPQFI_ParametersVoting"
+            || this.contractName === "EmergencyUpdateVoting") {
+            result = await this.contract.methods.voteFor(id).send(
+                {from: userAddress});
+        } else {
+            result = await this.contract.methods.voteFor(id, true).send(
+                {from: userAddress});
         }
+
+        console.log("voteFor", result);
+        return result;
     }
+
+    /**
+     * veto for proposal
+     * @param id
+     * @param userAddress
+     * @return array
+     */
+    async veto(id, userAddress) {
+        console.log("veto id", id);
+        console.log("veto userAddress", userAddress);
+        const result = await this.contract.methods.veto(id).send(
+            {from: userAddress});
+        console.log("veto", result);
+        return result;
+    }
+
+    /**
+     * applies changes for specified proposal after voting
+     * @param id
+     * @param userAddress
+     * @return array
+     */
+    async execute(id, userAddress) {
+        // 4 === passed
+        console.log("execute id", id);
+        console.log("execute userAddress", userAddress);
+        let promiseStatus = await this.getProposalStatus(id);
+        console.log("execute promiseStatus", promiseStatus);
+        let result = null;
+        if (promiseStatus === "4") {
+            result = await this.contract.methods.execute(id).send(
+                {from: userAddress});
+            console.log("execute", result);
+        }
+        return result;
+    }
+
 
 }

@@ -12,17 +12,17 @@ export default class EPQFI_MembershipVotingService extends VotingService {
      */
     async getProposals() {
         try {
+            //TODO: for createRemoveExpertProposal use RemoveProposalCreated event
             const proposalEvents = await this.getProposalsEvent();
             const proposalIds = getPastProposalsIds(proposalEvents);
             let proposals = [];
             if (proposalIds) {
                 for (let id of proposalIds) {
                     let objRes = {};
-                    let promiseRes = await this.proposalIteratorResult(id);
-                    // console.log("EPQFI_MembershipVotingService", promiseRes);
-                    if (promiseRes) {
-                        let promiseStatus = await this.getProposalStatus(id);
-                        if (promiseStatus === "1") {
+                    let promiseStatus = await this.getProposalStatus(id);
+                    if (promiseStatus === "1") {
+                        let promiseRes = await this.proposalIteratorResult(id);
+                        if (promiseRes) {
                             objRes.id = id;
                             objRes.remark = promiseRes.base.remark;
                             objRes.addressToAdd = promiseRes.proposalDetails.addressToAdd;
@@ -34,18 +34,18 @@ export default class EPQFI_MembershipVotingService extends VotingService {
                             objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
                             //the time until when users can vote
                             objRes.votingEndTime = promiseRes.base.params.votingEndTime;
-
                             objRes.status = getStatusTransformation(promiseStatus);
                             objRes.title = "Fees & Incentives Experts membership proposals";
                             objRes.type = "Fees & Incentives Experts membership";
                             objRes.kindVoting = "membership";
-                            // let proposalStats = await this.getProposalStats(id);
-                            // objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
-                            // objRes.currentQuorum = convertNumVotes(proposalStats.currentQuorum);
-                            // objRes.currentVetoPercentage = convertNumVotes(proposalStats.currentVetoPercentage);
-                            // objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
-                            // objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
-                            // objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
+                            objRes.contract = this.contractName;
+                            let proposalStats = await this.getProposalStats(id);
+                            objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
+                            objRes.currentQuorum = convertNumVotes(proposalStats.currentQuorum);
+                            objRes.currentVetoPercentage = convertNumVotes(proposalStats.currentVetoPercentage);
+                            objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
+                            objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
+                            objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
                             proposals.push(objRes);
                         }
                     }

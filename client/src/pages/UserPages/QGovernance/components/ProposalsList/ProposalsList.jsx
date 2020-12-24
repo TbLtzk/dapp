@@ -22,16 +22,24 @@ function ProposalsList(props) {
     const userAddress = useSelector(userAddressMetamask);
     const [modalShow, setModalShow] = useState(false);
     const [proposalId, setProposalId] = useState(null);
+    const [proposalContract, setProposalContract] = useState(null);
 
 
-    const onProposalVote = async (id) => {
+    const onProposalVote = async (id, contract) => {
         console.log("Vote", id);
-        // const proposalVote = await drizzle.contracts.ConstitutionVoting.methods.voteFor.cacheSend(
-        //     id, true, {from: userAddress});
+        // try{
+        //     const proposalVote = await drizzle.contracts.ConstitutionVoting.methods.voteFor(id, true).send(
+        //         {from: userAddress});
+        //     console.log("proposalVote", proposalVote);
+        // }catch (e) {
+        //     console.log("e", e);
+        // }
+
         // const proposalVote = await drizzle.contracts.ConstitutionVoting.methods.veto.cacheSend(
         //     id, {from: userAddress});
-        // console.log("proposalVote", proposalVote);
+
         setProposalId(id);
+        setProposalContract(contract);
         setModalShow(true);
 
     };
@@ -50,7 +58,7 @@ function ProposalsList(props) {
                                             title={proposal.title}
                                             status={proposal.status}
                                             handleVote={() => {
-                                                onProposalVote(proposal.id)
+                                                onProposalVote(proposal.id, proposal.contract)
                                             }}
                                         />
                                         <CardBody
@@ -74,7 +82,7 @@ function ProposalsList(props) {
                 }
             </Accordion>
             <ModalVote
-                step={1}
+                proposalContract={proposalContract}
                 proposalId={proposalId}
                 activeTab={activeTab}
                 modalShow={modalShow}

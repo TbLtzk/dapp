@@ -64,3 +64,7 @@ export const voteForProposal = (drizzle, data) => ({
     drizzle,
     data
 });
+export const voteForProposalSuccess = (result) => ({
+    type: actionTypes.VOTE_FOR_PROPOSAL_SUCCESS,
+    result
+});
