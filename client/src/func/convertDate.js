@@ -26,6 +26,11 @@ export const remainDate = (unixTimestamp) => {
         const numdays = Math.floor(m3 / 1440);
         const numhours = Math.floor((m3 % 1440) / 60);
         const numminutes = Math.floor((m3 % 1440) % 60);
-        return numdays + " day(s) " + numhours + " hours " + numminutes + " minutes";
+
+        if (numdays === 0 && numhours === 0 && numminutes === 0){
+            return 0
+        }else {
+            return numdays + " day(s) " + numhours + " hours " + numminutes + " minutes";
+        }
     }
 };

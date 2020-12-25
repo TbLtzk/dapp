@@ -5,12 +5,11 @@ import userInf from './userInf';
 import rootContract from './rootContract';
 import qPiggyBank from './qPiggyBank'
 import rootsVoting from './voting/rootsVoting';
-import constitutionVoting from './voting/constitutionVoting';
-import validatorsSlashingVoting from './voting/validatorsSlashingVoting';
-import rootnodesSlashingVoting from './voting/rootnodesSlashingVoting';
+import qProposals from 'store/reducers/voting/qproposals';
+import slashingVoting from './voting/slashingVoting';
 import EPQFIMembershipVoting from './voting/EPQFIMembershipVoting';
 import EPDRMembershipVoting from './voting/EPDRMembershipVoting';
-import qProposals from 'store/reducers/voting/qProposals';
+import proposals from 'store/reducers/voting/proposals';
 
 import transactionHandler from 'store/reducers/transactionHandler';
 
@@ -21,15 +20,14 @@ const RootReducer = combineReducers({
     qPiggyBank: qPiggyBank,
 
     rootsVoting: rootsVoting,
-    constitutionVoting: constitutionVoting,
+    qProposals: qProposals,
 
-    validatorsSlashingVoting: validatorsSlashingVoting,
-    rootnodesSlashingVoting: rootnodesSlashingVoting,
+    slashingVoting: slashingVoting,
 
     EPQFIMembershipVoting: EPQFIMembershipVoting,
     EPDRMembershipVoting: EPDRMembershipVoting,
 
-    qProposals: qProposals,
+    proposals: proposals,
     transactionHandler: transactionHandler,
 });
 

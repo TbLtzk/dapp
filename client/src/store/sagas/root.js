@@ -5,18 +5,17 @@ import userInf from "./user-inf";
 import rootContract from "./root-contract";
 import qPiggyBank from "./q-piggy-bank";
 import rootsVoting from "./voting/roots-voting";
-import constitutionVoting from "./voting/constitution-voting";
+import qproposals from "store/sagas/voting/qproposals";
 
-import validatorsSlashingVoting from "./voting/validators-slashing-voting";
-import rootNodesSlashingVoting from "./voting/rootnodes-slashing-voting";
+import slashingVoting from "./voting/slashing-voting";
 
 import EPQFIMembershipVoting from "./voting/EPQFI-membership-voting";
 import EPDRMembershipVoting from "./voting/EPDR-membership-voting";
 
-import qproposals from "./voting/qproposals";
+import proposals from "store/sagas/voting/proposals";
 
 export default function* rootSaga() {
     yield all([...userAuth, ...userInf, ...rootContract, ...rootsVoting, ...qPiggyBank,
-        ...constitutionVoting, ...validatorsSlashingVoting, ...rootNodesSlashingVoting,
-        ...EPQFIMembershipVoting, ...EPDRMembershipVoting, ...qproposals])
+        ...qproposals, ...slashingVoting,
+        ...EPQFIMembershipVoting, ...EPDRMembershipVoting, ...proposals])
 }

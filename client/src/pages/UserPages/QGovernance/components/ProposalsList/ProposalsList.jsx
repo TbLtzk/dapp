@@ -10,8 +10,9 @@ import {CardBlock, LoadingW} from "./styles";
 import {useDispatch, useSelector} from "react-redux";
 import {userAddressMetamask} from "store/selectors/user-inf";
 import {drizzleReactHooks} from "@drizzle/react-plugin";
-import {setVoteProposalObj, setStepVoteCounter} from "store/actions/action-creaters/voting/qproposals";
+import {setVoteProposalObj, setStepVoteCounter} from "store/actions/action-creaters/voting/proposals";
 import ModalVote from "pages/UserPages/QGovernance/components/CreateQProposalBtn/ModalVote";
+import {remainDate} from "func/convertDate";
 
 const {useDrizzle, useDrizzleState} = drizzleReactHooks;
 
@@ -52,32 +53,33 @@ function ProposalsList(props) {
                         proposals.length === 0
                             ? <p>No proposals</p>
                             : proposals.map((proposal, i) => {
-                                return (
-                                    <CardBlock key={proposal.id + proposal?.type}>
-                                        <CardHeader
-                                            title={proposal.title}
-                                            status={proposal.status}
-                                            handleVote={() => {
-                                                onProposalVote(proposal.id, proposal.contract)
-                                            }}
-                                        />
-                                        <CardBody
-                                            id={proposal.id + proposal?.type}
-                                            proposalType={proposal?.type}
-                                            // mainText={"Text"}
-                                            // date={convertToMonthDayYear(proposal.vetoEndTime)}
-                                            vetoTime={proposal.vetoEndTime}
-                                            // vetoTime={remainDate(proposal.vetoEndTime)}
-                                            votingTime={proposal.votingEndTime}
-                                            // votingTime={remainDate(proposal.votingEndTime)}
-                                            // time={remainDate("7d 0h remaining")}
-                                            proposalID={proposal.id}
-                                            pollDetail={proposal}
-                                            proposalsKind={proposalsKind}
-                                            voteBreakdown={proposal}
-                                        />
-                                    </CardBlock>
-                                )
+                                //TODO: don`t show proposal if veto time === 0
+                                // return remainDate(proposal.vetoEndTime) !== 0 ?
+                                return <CardBlock key={proposal.id + proposal?.type}>
+                                    <CardHeader
+                                        title={proposal.title}
+                                        status={proposal.status}
+                                        handleVote={() => {
+                                            onProposalVote(proposal.id, proposal.contract)
+                                        }}
+                                    />
+                                    <CardBody
+                                        id={proposal.id + proposal?.type}
+                                        proposalType={proposal?.type}
+                                        // mainText={"Text"}
+                                        // date={convertToMonthDayYear(proposal.vetoEndTime)}
+                                        vetoTime={proposal.vetoEndTime}
+                                        // vetoTime={remainDate(proposal.vetoEndTime)}
+                                        votingTime={proposal.votingEndTime}
+                                        // votingTime={remainDate(proposal.votingEndTime)}
+                                        // time={remainDate("7d 0h remaining")}
+                                        proposalID={proposal.id}
+                                        pollDetail={proposal}
+                                        proposalsKind={proposalsKind}
+                                        voteBreakdown={proposal}
+                                    />
+                                </CardBlock>
+                                // : null
                             })
                 }
             </Accordion>
@@ -96,6 +98,6 @@ function ProposalsList(props) {
         </>
     );
 }
-    ``
+
 export default ProposalsList;
 

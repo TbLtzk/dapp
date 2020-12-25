@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from "react";
 
 import {useSelector} from "react-redux";
-import {formObject} from "store/selectors/voting/qproposals";
+import {formObject} from "store/selectors/voting/proposals";
 
 import RadioBtnGroup from "../../../RadioBtnGroup";
 import InputGroup from "../../../InputGroup";

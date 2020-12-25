@@ -26,61 +26,52 @@ export default class ConstitutionVotingService extends VotingService {
         }
     }
 
+
     /**
-     * get proposals
+     * get proposal data
+     * @param promiseRes
+     * @param id
+     * @param promiseStatus
      * @return array
      */
-    async getProposals() {
+    async getProposalData(promiseRes, id, promiseStatus) {
+        let objRes = {};
         try {
-            const proposalEvents = await this.getProposalsEvent();
-            const proposalIds = getPastProposalsIds(proposalEvents);
-            let proposals = [];
-            if (proposalIds) {
-                for (let id of proposalIds) {
-                    let objRes = {};
-                    let promiseStatus = await this.getProposalStatus(id);
-                    if (promiseStatus === "1") {
-                        let promiseRes = await this.proposalIteratorResult(id);
-                        if (promiseRes) {
-                            objRes.id = id;
-                            objRes.remark = promiseRes.base.remark;
-                            const proposalType = this.getProposalStringType(promiseRes.classification);
-                            objRes.type = proposalType;
-                            objRes.constitutionHash = promiseRes.constitutionHash;
-                            objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
-                            objRes.votesFor = promiseRes.base.counters.weightFor;
-                            objRes.vetosCount = promiseRes.base.counters.vetosCount;
-                            objRes.requiredMajority = convertNumVotes(promiseRes.base.params.requiredMajority);
-                            objRes.requiredQuorum = convertNumVotes(promiseRes.base.params.requiredQuorum);
-                            objRes.votingEndTime = promiseRes.base.params.votingEndTime;
-                            objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
-                            objRes.addrValue = promiseRes.parameterValue.addrValue;
-                            objRes.boolValue = promiseRes.parameterValue.boolValue;
-                            objRes.bytes32Value = promiseRes.parameterValue.bytes32Value;
-                            objRes.strValue = promiseRes.parameterValue.strValue;
-                            objRes.uintValue = promiseRes.parameterValue.uintValue;
-                            objRes.vetoThreshold = convertNumVotes(promiseRes.base.params.vetoThreshold);
-                            objRes.status = getStatusTransformation(promiseStatus);
-                            objRes.vetoesNumber = await this.getVetoesNumber(id);
-                            objRes.vetoesPercentage = await this.getVetoesPercentage(id);
-                            objRes.title = `${proposalType} constitution proposal`;
-                            let proposalStats = await this.getProposalStats(id);
-                            objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
-                            objRes.currentQuorum = convertNumVotes(proposalStats.currentQuorum);
-                            objRes.currentVetoPercentage = convertNumVotes(proposalStats.currentVetoPercentage);
-                            objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
-                            objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
-                            objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
-                            objRes.contract = this.contractName;
-                            proposals.push(objRes);
-                        }
-                    }
+            objRes.id = id;
+            objRes.remark = promiseRes.base.remark;
+            const proposalType = this.getProposalStringType(promiseRes.classification);
+            objRes.type = proposalType;
+            objRes.newConstitutionHash = promiseRes.newConstitutionHash;
+            objRes.currentConstitutionHash = promiseRes.currentConstitutionHash;
+            objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
+            objRes.votesFor = promiseRes.base.counters.weightFor;
+            objRes.vetosCount = promiseRes.base.counters.vetosCount;
+            objRes.requiredMajority = convertNumVotes(promiseRes.base.params.requiredMajority);
+            objRes.requiredQuorum = convertNumVotes(promiseRes.base.params.requiredQuorum);
+            objRes.votingEndTime = promiseRes.base.params.votingEndTime;
+            objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
+            objRes.addrValue = promiseRes.parameterValue.addrValue;
+            objRes.boolValue = promiseRes.parameterValue.boolValue;
+            objRes.bytes32Value = promiseRes.parameterValue.bytes32Value;
+            objRes.strValue = promiseRes.parameterValue.strValue;
+            objRes.uintValue = promiseRes.parameterValue.uintValue;
+            objRes.vetoThreshold = convertNumVotes(promiseRes.base.params.vetoThreshold);
+            objRes.status = getStatusTransformation(promiseStatus);
+            // objRes.vetoesNumber = await this.getVetoesNumber(id);
+            // objRes.vetoesPercentage = await this.getVetoesPercentage(id);
+            objRes.title = `${proposalType} constitution proposal`;
+            let proposalStats = await this.getProposalStats(id);
+            objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
+            objRes.currentQuorum = convertNumVotes(proposalStats.currentQuorum);
+            objRes.currentVetoPercentage = convertNumVotes(proposalStats.currentVetoPercentage);
+            objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
+            objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
+            objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
+            objRes.contract = this.contractName;
 
-                }
-            }
-            return proposals;
+            return objRes;
         } catch (e) {
-
+            console.log("e", e);
         }
     }
 

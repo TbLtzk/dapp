@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 
-import {proposalsQExpert, loadingQExpert, errorQExpert} from "store/selectors/voting/qproposals"
-import {getQExpertProposals} from "store/actions/action-creaters/voting/qproposals"
+import {proposalsQExpert, loadingQExpert, errorQExpert} from "store/selectors/voting/proposals"
+import {getQExpertProposals} from "store/actions/action-creaters/voting/proposals"
 
 import {Col} from "react-bootstrap";
 

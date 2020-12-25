@@ -5,7 +5,7 @@ import {
     setCreatedStepsLimit,
     setCreateProposalObj,
     setDisabledCreatedProposalBtn
-} from "store/actions/action-creaters/voting/qproposals";
+} from "store/actions/action-creaters/voting/proposals";
 
 import RadioBtnGroup from "../../RadioBtnGroup";
 

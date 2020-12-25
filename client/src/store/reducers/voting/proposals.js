@@ -1,4 +1,4 @@
-import * as actionTypes from "../../actions/action-types/voting/qproposals";
+import * as actionTypes from "store/actions/action-types/voting/proposals";
 
 const initialState = {
     proposalsArr: [],
@@ -17,7 +17,7 @@ const initialState = {
     stepVoteCounter: 1,
 };
 
-export default function qProposals(state = initialState, action) {
+export default function proposals(state = initialState, action) {
 
     switch (action.type) {
         case actionTypes.GET_QEXPERT_PROPOSALS:

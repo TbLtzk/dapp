@@ -1,22 +1,18 @@
 import React, {useEffect} from "react";
 
-import {proposalsValidatorSlashing, loadingValidatorSlashing, errorMValidatorSlashing,} from "store/selectors/voting/validators-shashing-voting";
-import {errorMRootNodesSlashing, loadingProposalsRootNodesSlashing, proposalsRootNodesSlashing,} from "store/selectors/voting/rootnodes-shashing-voting"
-import {getValidatorsSlashingVotingProposals} from "store/actions/action-creaters/voting/validators-slashing-voting"
-import {getRootNodesSlashingVotingProposals} from "store/actions/action-creaters/voting/rootnodes-slashing-voting"
+import {getSlashingVotingProposals} from "store/actions/action-creaters/voting/slashing-voting";
+import {proposalsSlashing, loadingProposalsSlashing, errorMSlashing,} from "store/selectors/voting/shashing-voting";
+
+import ContractRegistryService from "api/contracts/ContractRegistryService";
+import SlashingVoting from "api/contracts/Voting/SlashingVoting";
 
 import {Col} from "react-bootstrap";
 
 import QTypeProposalsTabs from "pages/UserPages/QGovernance/components/QTypeProposalsTabs";
 import ProposalsList from "pages/UserPages/QGovernance/components/ProposalsList";
 
-import ContractRegistryService from "api/contracts/ContractRegistryService";
-import SlashingVoting from "api/contracts/Voting/SlashingVoting";
-import ValidatorsSlashingVotingService from "api/contracts/Voting/ValidatorsSlashingVotingService";
-import RootNodesSlashingVotingService from "api/contracts/Voting/RootNodesSlashingVotingService";
 import {drizzleReactHooks} from "@drizzle/react-plugin";
 import {useDispatch, useSelector} from "react-redux";
-import {userAddressMetamask} from "store/selectors/user-inf";
 
 const {useDrizzle} = drizzleReactHooks;
 
@@ -26,19 +22,15 @@ function SlashingProposals() {
 
     const contractRegistry = new ContractRegistryService(drizzle);
 
-    const validatorsSlashingVoting = new ValidatorsSlashingVotingService(drizzle, "ValidatorsSlashingVoting");
-    const rootNodesSlashingVoting = new RootNodesSlashingVotingService(drizzle, "RootNodesSlashingVoting");
+    const validatorsSlashingVoting = new SlashingVoting(drizzle, "ValidatorsSlashingVoting");
+    const rootNodesSlashingVoting = new SlashingVoting(drizzle, "RootNodesSlashingVoting");
 
-    const loadingValidator = useSelector(loadingValidatorSlashing);
-    const errorMessageValidator = useSelector(errorMValidatorSlashing);
-    const proposalsValidator = useSelector(proposalsValidatorSlashing);
-    const loadingRootNodes = useSelector(loadingProposalsRootNodesSlashing);
-    const errorMessageRootNodes = useSelector(errorMRootNodesSlashing);
-    const proposalsRootNodes = useSelector(proposalsRootNodesSlashing);
+    const loading = useSelector(loadingProposalsSlashing);
+    const errorMessage = useSelector(errorMSlashing);
+    const proposals = useSelector(proposalsSlashing);
 
     useEffect(() => {
-        dispatch(getValidatorsSlashingVotingProposals(validatorsSlashingVoting));
-        dispatch(getRootNodesSlashingVotingProposals(rootNodesSlashingVoting));
+        dispatch(getSlashingVotingProposals([validatorsSlashingVoting, rootNodesSlashingVoting]))
     }, [dispatch]);
 
     useEffect(async () => {
@@ -51,13 +43,13 @@ function SlashingProposals() {
     return (
         <Col xs={12}>
             <QTypeProposalsTabs
-                activeDescr={(proposalsValidator?.length + proposalsRootNodes?.length ) + " POLLS"}
+                activeDescr={proposals?.length + " POLLS"}
                 activeContent={
                     <ProposalsList
                         activeTab="slashing"
-                        proposals={[...proposalsValidator, ...proposalsRootNodes]}
-                        loading={loadingValidator && loadingRootNodes}
-                        errorMessage={errorMessageValidator || errorMessageRootNodes}
+                        proposals={proposals}
+                        loading={loading}
+                        errorMessage={errorMessage}
                         proposalsKind="SlashingProposals"
                     />
                 }

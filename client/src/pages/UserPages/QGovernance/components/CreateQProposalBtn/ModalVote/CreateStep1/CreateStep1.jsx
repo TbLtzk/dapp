@@ -4,13 +4,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     setVoteProposalObj,
     setDisabledCreatedProposalBtn
-} from "store/actions/action-creaters/voting/qproposals";
+} from "store/actions/action-creaters/voting/proposals";
 
 import RadioBtnGroup from "../../RadioBtnGroup";
 
 import {SubTitle, SubTitleHighlightProposal} from "../styles";
 import {arrRadioBtn} from "../constants";
-import {formVoteObject} from "store/selectors/voting/qproposals";
+import {formVoteObject} from "store/selectors/voting/proposals";
 
 function CreateStep1(props) {
     const {register, errors} = props;

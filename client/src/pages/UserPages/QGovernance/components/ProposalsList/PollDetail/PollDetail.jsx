@@ -28,9 +28,14 @@ function PollDetail(props) {
             case "QProposals":
                 return (
                     <>
-                        {!pollDetail.constitutionHash ? null :
+                        {!pollDetail.currentConstitutionHash ? null :
                             <Text>
-                                Constitution hash: {pollDetail.constitutionHash}
+                                Current constitution hash: {pollDetail.currentConstitutionHash}
+                            </Text>
+                        }
+                        {!pollDetail.currentConstitutionHash ? null :
+                            <Text>
+                                New constitution hash: {pollDetail.newConstitutionHash}
                             </Text>
                         }
                         {!pollDetail.addrValue ? null :

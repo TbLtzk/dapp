@@ -7,13 +7,13 @@ import {
     setStepCounter,
     setDisabledCreatedProposalBtn,
     createProposal
-} from "store/actions/action-creaters/voting/qproposals";
+} from "store/actions/action-creaters/voting/proposals";
 import {
     formObject,
     createdStepsLimit,
     stepCounterModal,
     disabledContinueProposalBtn
-} from "store/selectors/voting/qproposals";
+} from "store/selectors/voting/proposals";
 
 import {useForm} from "react-hook-form";
 

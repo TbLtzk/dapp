@@ -45,7 +45,6 @@ export default class RootsVotingService extends VotingService {
                         // objRes = [...promiseRes];
                         if (promiseRes) {
                             // console.log("promiseRes",promiseRes);
-
                             objRes.id = id;
                             objRes.remark = promiseRes.base.remark;
                             const candidateAddress = promiseRes.candidate;

@@ -1,7 +1,7 @@
 import React, {useCallback} from "react";
 
 import {useSelector} from "react-redux";
-import {formObject} from "store/selectors/voting/qproposals";
+import {formObject} from "store/selectors/voting/proposals";
 
 import InputGroup from "../../InputGroup";
 import RadioBtnGroup from "pages/UserPages/QGovernance/components/CreateQProposalBtn/RadioBtnGroup";

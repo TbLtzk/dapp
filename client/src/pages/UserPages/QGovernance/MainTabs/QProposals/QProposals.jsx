@@ -1,8 +1,8 @@
 import React, {useEffect} from "react";
 import {drizzleReactHooks} from "@drizzle/react-plugin";
 import {useDispatch, useSelector} from "react-redux";
-import {getConstitutionVotingProposals} from "store/actions/action-creaters/voting/constitution-voting";
-import {errorM, loadingProposals, proposalsArr} from "store/selectors/voting/constitution-voting";
+import {getQProposals} from "store/actions/action-creaters/voting/qproposals";
+import {errorM, loadingProposals, proposalsArr} from "store/selectors/voting/qproposals";
 import ConstitutionVotingService from "api/contracts/Voting/ConstitutionVotingService";
 import EmergencyUpdateVotingService from "api/contracts/Voting/EmergencyUpdateVotingService";
 
@@ -21,7 +21,7 @@ function QProposals() {
     const emergencyUpdateVoting = new EmergencyUpdateVotingService(drizzle, "EmergencyUpdateVoting");
 
     useEffect(() => {
-        dispatch(getConstitutionVotingProposals([constitutionVoting, emergencyUpdateVoting]))
+        dispatch(getQProposals([constitutionVoting, emergencyUpdateVoting]))
 
     }, []);
 

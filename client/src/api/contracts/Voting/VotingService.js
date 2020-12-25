@@ -35,7 +35,6 @@ export default class VotingService {
     async getProposal(id) {
         try {
             const result = await this.contract.methods.proposals(id).call();
-            // console.log("result", result);
             return result;
         } catch (e) {
             console.log(e);
@@ -49,6 +48,7 @@ export default class VotingService {
      */
     async proposalIteratorResult(id) {
         try {
+
             return await this.getProposal(id).then((proposal, error) => {
                 return proposal;
             });
@@ -200,5 +200,68 @@ export default class VotingService {
         return result;
     }
 
+    /**
+     * get one proposal
+     * @param id
+     * @return array
+     */
+    async getOneProposal(id) {
+        try {
+            if (id){
+                let objRes = {};
+                let promiseStatus = await this.getProposalStatus(id);
+                if (promiseStatus === "1") {
+                    let promiseRes = await this.proposalIteratorResult(id);
+                    if (promiseRes) {
+                        objRes = await this.getProposalData(promiseRes, id, promiseStatus);
+                        console.log("objRes", objRes);
+                    }
+                }
+                return [objRes];
+            }
+        } catch (e) {
+            console.log("e", e);
+        }
+    }
+
+    /**
+     * get proposal data
+     * @param promiseRes
+     * @param id
+     * @param promiseStatus
+     * @return array
+     */
+    async getProposalData(promiseRes, id, promiseStatus) {
+
+    }
+
+    /**
+     * get proposals
+     * @return array
+     */
+    async getProposals() {
+        try {
+            const proposalEvents = await this.getProposalsEvent();
+            const proposalIds = getPastProposalsIds(proposalEvents);
+            let proposals = [];
+            if (proposalIds) {
+                for (let id of proposalIds) {
+                    let objRes = {};
+                    let promiseStatus = await this.getProposalStatus(id);
+                    if (promiseStatus === "1") {
+                        let promiseRes = await this.proposalIteratorResult(id);
+                        if (promiseRes) {
+                            objRes = await this.getProposalData(promiseRes, id, promiseStatus);
+                            proposals.push(objRes);
+                        }
+                    }
+
+                }
+            }
+            return proposals;
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
 }

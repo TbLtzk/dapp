@@ -1,8 +1,8 @@
 import React, {useCallback} from "react";
 
 import {useDispatch, useSelector} from "react-redux";
-import {formObject} from "store/selectors/voting/qproposals";
-import {setCreatedStepsLimit} from "store/actions/action-creaters/voting/qproposals";
+import {formObject} from "store/selectors/voting/proposals";
+import {setCreatedStepsLimit} from "store/actions/action-creaters/voting/proposals";
 
 import RadioBtnGroup from "../../../RadioBtnGroup";
 import InputGroup from "../../../InputGroup";

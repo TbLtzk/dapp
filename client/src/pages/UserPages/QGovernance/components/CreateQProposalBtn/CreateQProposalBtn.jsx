@@ -10,7 +10,7 @@ import {
     setCreatedStepsLimit,
     setCreateProposalObj,
     setStepCounter
-} from "store/actions/action-creaters/voting/qproposals";
+} from "store/actions/action-creaters/voting/proposals";
 
 import ModalCreateProposal from "./ModalCreateProposal";
 

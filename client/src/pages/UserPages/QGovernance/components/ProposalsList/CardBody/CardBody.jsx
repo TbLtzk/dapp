@@ -104,7 +104,6 @@ function CardBody(props) {
                     </Col>
                 </Row>
             </Container>
-
         </BlockBody>
     );
 }

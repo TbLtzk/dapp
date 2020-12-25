@@ -8,12 +8,12 @@ import {
     createProposal,
     setStepVoteCounter,
     voteForProposal
-} from "store/actions/action-creaters/voting/qproposals";
+} from "store/actions/action-creaters/voting/proposals";
 import {
     stepVoteCounterModal,
     formVoteObject,
     disabledContinueProposalBtn
-} from "store/selectors/voting/qproposals";
+} from "store/selectors/voting/proposals";
 
 import {useForm} from "react-hook-form";
 
