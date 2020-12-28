@@ -32,6 +32,7 @@ function CreateStep1(props) {
             </SubTitle>
 
             <RadioBtnGroup
+                formData={formData}
                 register={register}
                 errors={errors}
                 nameArr="first"

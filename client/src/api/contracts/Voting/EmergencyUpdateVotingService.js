@@ -1,7 +1,5 @@
 import {
     convertNumVotes,
-    getPastEvents,
-    getPastProposalsIds,
     getStatusTransformation
 } from "api/contracts/Voting/handler/commonFunc";
 import VotingService from "api/contracts/Voting/VotingService";

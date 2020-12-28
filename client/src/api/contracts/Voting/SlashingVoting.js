@@ -1,6 +1,5 @@
 import {
     getStatusTransformation,
-    getPastProposalsIds,
     convertNumVotes,
     getPercentageFormat
 } from "api/contracts/Voting/handler/commonFunc";
@@ -10,7 +9,7 @@ import VotingService from "api/contracts/Voting/VotingService";
 export default class SlashingVoting extends VotingService {
 
     /**
-     * get proposal
+     * get proposal data
      * @param promiseRes
      * @param id
      * @param promiseStatus

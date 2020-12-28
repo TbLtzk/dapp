@@ -1,6 +1,64 @@
 import VotingService from "api/contracts/Voting/VotingService";
+import {
+    convertNumVotes,
+    getParameterTypeTransformation,
+    getStatusTransformation
+} from "api/contracts/Voting/handler/commonFunc";
 
+/*EPQFI_ParametersVoting, EPDR_ParametersVoting*/
 export default class ParametersVoting extends VotingService {
+
+    /**
+     * get proposal data
+     * @param promiseRes
+     * @param id
+     * @param promiseStatus
+     * @return array
+     */
+    async getProposalData(promiseRes, id, promiseStatus) {
+        let objRes = {};
+        try {
+            objRes.id = id;
+            objRes.remark = promiseRes.base.remark;
+            objRes.parameterKey = promiseRes.parameterKey;
+            objRes.parameterType = getParameterTypeTransformation(promiseRes.parameterType);
+            objRes.addrValue = promiseRes.parameterValue.addrValue;
+            objRes.boolValue = promiseRes.parameterValue.boolValue;
+            objRes.bytes32Value = promiseRes.parameterValue.bytes32Value;
+            objRes.strValue = promiseRes.parameterValue.strValue;
+            objRes.uintValue = promiseRes.parameterValue.uintValue;
+
+            objRes.vetosCount = promiseRes.base.counters.vetosCount;
+            objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
+            objRes.votesFor = promiseRes.base.counters.weightFor;
+            //the ending is given by: vetoEndTime.
+            objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
+            //the time until when users can vote
+            objRes.votingEndTime = promiseRes.base.params.votingEndTime;
+
+            objRes.status = getStatusTransformation(promiseStatus);
+            objRes.title = this.contractName === "EPDR_ParametersVoting"
+                ? "DeFi Risk Expert parameter voting proposals"
+                : "Fees & Incentives Experts parameter voting proposals";
+            objRes.type = this.contractName === "EPDR_ParametersVoting"
+                ? "DeFi Risk Expert Parameters Proposals"
+                : "Fees & Incentives Experts Parameters Proposals";
+            objRes.kindVoting = "parameters";
+            let proposalStats = await this.getProposalStats(id);
+            objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
+            objRes.currentQuorum = convertNumVotes(proposalStats.currentQuorum);
+            objRes.currentVetoPercentage = convertNumVotes(proposalStats.currentVetoPercentage);
+            objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
+            objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
+            objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
+            console.log("contractName", this.contractName);
+            objRes.contract = this.contractName;
+
+            return objRes;
+        } catch (e) {
+            console.log("e", e);
+        }
+    }
 
     /**
      * create proposal

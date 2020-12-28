@@ -22,6 +22,7 @@ function QExpertS2(props) {
                         <SubTitle>{addNewExpert.subtitle}</SubTitle>
                         <Descr>{addNewExpert.radioDescr}</Descr>
                         <RadioBtnGroup
+                            formData={formData}
                             radioArr={addNewExpert.radioBtn}
                             register={register}
                             errors={errors}
@@ -31,6 +32,7 @@ function QExpertS2(props) {
                         />
                         <SubTitle>{addNewExpert.subtitleInputUp}</SubTitle>
                         <InputGroup
+                            formData={formData}
                             inputArr={addNewExpert.inputUp}
                             inputsObj={addNewExpert.inputUpObj}
                             register={register}
@@ -38,6 +40,7 @@ function QExpertS2(props) {
                         />
                         <SubTitle>{addNewExpert.subtitleInputDown}</SubTitle>
                         <InputGroup
+                            formData={formData}
                             inputArr={addNewExpert.inputDown}
                             inputsObj={addNewExpert.inputDownObj}
                             register={register}

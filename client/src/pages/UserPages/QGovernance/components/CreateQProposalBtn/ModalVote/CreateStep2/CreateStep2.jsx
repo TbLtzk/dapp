@@ -18,6 +18,7 @@ function CreateStep2(props) {
                         <SubTitle>{basicVote.subtitle}</SubTitle>
                         <Descr>{basicVote.radioBtnDescr}</Descr>
                         <RadioBtnGroup
+                            formData={formData}
                             radioArr={basicVote.radioBtn}
                             register={register}
                             errors={errors}
@@ -33,6 +34,7 @@ function CreateStep2(props) {
                         <SubTitle>{constitutionCheck.subtitle}</SubTitle>
                         <Descr>{constitutionCheck.radioBtnDescr}</Descr>
                         <RadioBtnGroup
+                            formData={formData}
                             radioArr={constitutionCheck.radioBtn}
                             register={register}
                             errors={errors}
@@ -48,6 +50,7 @@ function CreateStep2(props) {
                         <SubTitle>{communityVeto.subtitle}</SubTitle>
                         <Descr>{communityVeto.radioBtnDescr}</Descr>
                         <RadioBtnGroup
+                            formData={formData}
                             radioArr={communityVeto.radioBtn}
                             register={register}
                             errors={errors}

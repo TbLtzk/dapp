@@ -25,6 +25,7 @@ function QProposalS2(props) {
                         <SubTitleBold>{constUpdate.subtitle}</SubTitleBold>
                         <SubTitle>{constUpdate.radioBtnUpTitle}</SubTitle>
                         <RadioBtnGroup
+                            formData={formData}
                             radioArr={constUpdate.radioBtnUp}
                             register={register}
                             errors={errors}
@@ -33,6 +34,7 @@ function QProposalS2(props) {
                         />
                         <SubTitle>{constUpdate.inputTitle}</SubTitle>
                         <InputGroup
+                            formData={formData}
                             inputArr={constUpdate.inputs}
                             inputsObj={constUpdate.inputsObj}
                             register={register}
@@ -40,6 +42,7 @@ function QProposalS2(props) {
                         />
                         <SubTitle>{constUpdate.radioBtnDownTitle}</SubTitle>
                         <RadioBtnGroup
+                            formData={formData}
                             radioArr={constUpdate.radioBtnDown}
                             register={register}
                             errors={errors}
@@ -65,6 +68,7 @@ function QProposalS2(props) {
                         <SubTitle style={{marginBottom: "5px"}}>{generalUpdate.inputTitle}</SubTitle>
                         <Descr>{generalUpdate.inputTitleDescr}</Descr>
                         <InputGroup
+                            formData={formData}
                             inputArr={generalUpdate.inputs}
                             inputsObj={generalUpdate.inputsObj}
                             register={register}

@@ -9,13 +9,11 @@ import qproposals from "store/sagas/voting/qproposals";
 
 import slashingVoting from "./voting/slashing-voting";
 
-import EPQFIMembershipVoting from "./voting/EPQFI-membership-voting";
-import EPDRMembershipVoting from "./voting/EPDR-membership-voting";
+import expertVoting from "./voting/expert-voting";
 
 import proposals from "store/sagas/voting/proposals";
 
 export default function* rootSaga() {
     yield all([...userAuth, ...userInf, ...rootContract, ...rootsVoting, ...qPiggyBank,
-        ...qproposals, ...slashingVoting,
-        ...EPQFIMembershipVoting, ...EPDRMembershipVoting, ...proposals])
+        ...qproposals, ...slashingVoting, ...expertVoting, ...proposals])
 }

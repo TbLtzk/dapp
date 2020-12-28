@@ -1,7 +1,3 @@
-export const proposalsQExpert = state => state.proposals.proposalsArr;
-export const errorQExpert = state => state.proposals.errorM;
-export const loadingQExpert = state => state.proposals.loadingProposals;
-
 /*create proposal staff*/
 export const formObject = state => state.proposals.formObjectCreateProposal;
 export const createdStepsLimit = state => state.proposals.createdStepsLimit;

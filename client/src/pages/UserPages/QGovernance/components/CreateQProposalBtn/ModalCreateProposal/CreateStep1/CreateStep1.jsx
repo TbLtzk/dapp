@@ -1,6 +1,6 @@
 import React, {useCallback} from "react";
 
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
     setCreatedStepsLimit,
     setCreateProposalObj,
@@ -10,10 +10,13 @@ import {
 import RadioBtnGroup from "../../RadioBtnGroup";
 
 import {SubTitle, SubTitleHighlightProposal} from "../styles";
+import {formObject} from "store/selectors/voting/proposals";
 
 function CreateStep1(props) {
     const {activeTab, activeTabTitle, register, errors, radioArr} = props;
     const dispatch = useDispatch();
+
+    const formData = useSelector(formObject);
 
     const onChooseProposal = useCallback((value) => {
         console.log("clean object");
@@ -47,6 +50,7 @@ function CreateStep1(props) {
             </SubTitle>
 
             <RadioBtnGroup
+                formData={formData}
                 register={register}
                 errors={errors}
                 nameArr="first"

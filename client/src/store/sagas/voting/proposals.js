@@ -5,39 +5,19 @@ import {
     setTransactionLoading, setTransactionLoadingError, setTransactionLoadingSuccess
 } from "store/actions/action-creaters/transaction-handler";
 
-import {
-    getQExpertProposalsSuccess, getQExpertProposalsError, createProposalSuccess, voteForProposalSuccess
-} from "store/actions/action-creaters/voting/proposals";
-
+import {createProposalSuccess, voteForProposalSuccess} from "store/actions/action-creaters/voting/proposals";
 import {getQProposal} from "store/actions/action-creaters/voting/qproposals";
+import {getRootsVotingProposal} from "store/actions/action-creaters/voting/roots-voting";
+import {getQExpertProposal} from "store/actions/action-creaters/voting/expert-voting";
 import {getSlashingVotingProposal} from "store/actions/action-creaters/voting/slashing-voting";
+
 import ConstitutionVotingService from "api/contracts/Voting/ConstitutionVotingService";
 import EmergencyUpdateVotingService from "api/contracts/Voting/EmergencyUpdateVotingService";
 import GeneralUpdateVotingService from "api/contracts/Voting/GeneralUpdateVotingService";
 import RootsVotingService from "api/contracts/Voting/RootsVotingService";
-import EPQFI_MembershipVotingService from "api/contracts/Voting/EPQFI_MembershipVotingService";
-import EPDR_MembershipVotingService from "api/contracts/Voting/EPDR_MembershipVotingService";
-import MembershipVoting from "api/contracts/Voting/MembershipVoting";
 
 import {chooseExpertContractDependsOnType} from "api/contracts/Voting/handler/QExpertVotingHandler"
 import {chooseSlashingContractDependsOnType} from "api/contracts/Voting/handler/SlashingVotingHandler"
-import {getRootsVotingProposals} from "store/actions/action-creaters/voting/roots-voting";
-
-function* getQExpertProposals({contracts}) {
-    try {
-        let result = [];
-        for (let contract of contracts) {
-            const data = yield contract.getProposals();
-            result = [...result, ...data];
-        }
-        console.log("GET_QEXPERT_PROPOSALS", result);
-        yield put(getQExpertProposalsSuccess(result));
-
-    } catch (err) {
-        console.log('err', err);
-        yield put(getQExpertProposalsError(err.message));
-    }
-}
 
 function* createProposal({drizzle, data}) {
     try {
@@ -67,7 +47,7 @@ function* createProposal({drizzle, data}) {
                 case "remove-a-current-root-node":
                     const rootsVoting = new RootsVotingService(drizzle, "RootsVoting");
                     result = yield rootsVoting.createProposal(data, userAddress);
-                    yield put(getRootsVotingProposals(rootsVoting));
+                    yield put(getRootsVotingProposal(rootsVoting, result?.events?.ProposalCreated?.returnValues?._id));
                     break;
                 case "root-node-slashing":
                 case "validator-node-slashing":
@@ -79,11 +59,14 @@ function* createProposal({drizzle, data}) {
                 case "remove-a-current-expert":
                 case "parameter-vote":
                     const typeContract = data.first !== "parameter-vote" ? "member" : "parameters";
-                    console.log("typeContract", typeContract);
                     const contract = chooseExpertContractDependsOnType(drizzle, typeContract, data["type-proposal"]);
-                    console.log("contract", contract);
                     result = yield contract.createProposal(data, userAddress);
-
+                    if (data?.first === "remove-a-current-expert"){
+                        //TODO: for createRemoveExpertProposal use RemoveProposalCreated event
+                        yield put(getQExpertProposal(contract, result?.events?.RemoveProposalCreated?.returnValues?._id));
+                    }else {
+                        yield put(getQExpertProposal(contract, result?.events?.ProposalCreated?.returnValues?._id));
+                    }
                     break;
                 default:
                     return null;
@@ -109,8 +92,8 @@ function* voteForProposal({drizzle, data}) {
             console.log("VOTING contract", contract);
             if (data?.first === "basic-vote-on-proposal") {
                 if (data["vote-proposal"] === "yes") {
-                    result = yield contract.voteFor(data?.idProposal, userAddress);
-                    // const execute = yield contract.execute(data?.idProposal, userAddress);
+                    // result = yield contract.voteFor(data?.idProposal, userAddress);
+                    const execute = yield contract.execute(data?.idProposal, userAddress);
                     console.log("RESULT VOTING voteFor", result);
                     // console.log("RESULT VOTING execute", execute);
                 } else if (data["vote-proposal"] === "no") {
@@ -138,8 +121,6 @@ function* voteForProposal({drizzle, data}) {
 }
 
 export default [
-    takeEvery(actionTypes.GET_QEXPERT_PROPOSALS, getQExpertProposals),
     takeEvery(actionTypes.CREATE_PROPOSAL, createProposal),
-
     takeEvery(actionTypes.VOTE_FOR_PROPOSAL, voteForProposal),
 ]

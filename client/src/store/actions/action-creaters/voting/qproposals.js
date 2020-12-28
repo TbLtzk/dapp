@@ -1,8 +1,8 @@
 import * as actionTypes from 'store/actions/action-types/voting/qproposals';
 
-export const getQProposals = (contract) => ({
+export const getQProposals = (drizzle) => ({
     type: actionTypes.GET_Q_PROPOSALS,
-    contract
+    drizzle
 });
 
 export const getQProposalsSuccess = (result) => ({

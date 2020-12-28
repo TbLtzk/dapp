@@ -9,10 +9,10 @@ import {Wrap} from "./styles";
 import {Descr} from "../ModalCreateProposal/styles";
 
 function InputGroup(props) {
-    const {register, errors, inputArr, inputsObj, labelsArr} = props;
-    const formData = useSelector(formObject);
+    const {register, errors, inputArr, inputsObj, labelsArr, formData} = props;
+    // const formData = useSelector(formObject);
     const [valueInput, changeValueInput] = useState(() => {
-        return formData.hasOwnProperty(inputArr[0]?.replace(/ /g, "-").toLowerCase())
+        return formData?.hasOwnProperty(inputArr[0]?.replace(/ /g, "-").toLowerCase())
             ? formData
             : {...formData, ...inputsObj};
     });

@@ -2,7 +2,6 @@ import {
     convertNumVotes,
     getPastEvents,
     getPastProposalsIds,
-    getStatusTransformation
 } from "api/contracts/Voting/handler/commonFunc";
 
 export default class VotingService {
@@ -186,7 +185,7 @@ export default class VotingService {
      * @return array
      */
     async execute(id, userAddress) {
-        // 4 === passed
+        // 4 === passed status
         console.log("execute id", id);
         console.log("execute userAddress", userAddress);
         let promiseStatus = await this.getProposalStatus(id);
@@ -207,7 +206,8 @@ export default class VotingService {
      */
     async getOneProposal(id) {
         try {
-            if (id){
+            console.log("id", id);
+            if (id) {
                 let objRes = {};
                 let promiseStatus = await this.getProposalStatus(id);
                 if (promiseStatus === "1") {
@@ -231,9 +231,7 @@ export default class VotingService {
      * @param promiseStatus
      * @return array
      */
-    async getProposalData(promiseRes, id, promiseStatus) {
-
-    }
+    async getProposalData(promiseRes, id, promiseStatus) {}
 
     /**
      * get proposals

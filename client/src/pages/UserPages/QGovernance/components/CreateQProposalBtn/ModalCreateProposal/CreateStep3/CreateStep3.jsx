@@ -51,6 +51,7 @@ function CreateStep3(props) {
                                 <SubTitle>{constUpdate.inputTitle}</SubTitle>
                                 <SubTitle>{constUpdate.radioBtnTitle}</SubTitle>
                                 <RadioBtnGroup
+                                    formData={formData}
                                     radioArr={constUpdate.radioBtn}
                                     register={register}
                                     errors={errors}
@@ -59,6 +60,7 @@ function CreateStep3(props) {
                                     }}
                                 />
                                 <InputGroup
+                                    formData={formData}
                                     inputArr={constUpdate.inputs}
                                     inputsObj={constUpdate.inputsObj}
                                     register={register}

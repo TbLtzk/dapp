@@ -6,15 +6,19 @@ import {
     getQProposalSuccess,
     getQProposalError
 } from "store/actions/action-creaters/voting/qproposals";
+import ConstitutionVotingService from "api/contracts/Voting/ConstitutionVotingService";
+import EmergencyUpdateVotingService from "api/contracts/Voting/EmergencyUpdateVotingService";
 
-function* getConstitutionVotingProposals({contract}) {
+function* getConstitutionVotingProposals({drizzle}) {
     try {
+        const constitutionVoting = new ConstitutionVotingService(drizzle, "ConstitutionVoting");
+        const emergencyUpdateVoting = new EmergencyUpdateVotingService(drizzle, "EmergencyUpdateVoting");
+        const contracts = [constitutionVoting, emergencyUpdateVoting];
         let result = [];
-        for (let contractName of contract) {
+        for (let contractName of contracts) {
             const data = yield contractName.getProposals();
             result = [...result, ...data];
         }
-        // const data = yield contract.getProposals();
         console.log("GET_CONSTITUTION_VOTING_PROPOSALS", result);
 
         yield put(getQProposalsSuccess(result));

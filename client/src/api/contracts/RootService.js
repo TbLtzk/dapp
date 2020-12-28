@@ -50,7 +50,7 @@ export default class RootService {
     async getRootNodeStake(node) {
         try {
 
-            const balance =  await this.Root.methods.getRootNodeStake(node).call();
+            const balance = await this.Root.methods.getRootNodeStake(node).call();
             return this.drizzle.web3.utils.fromWei(balance, "ether");
 
         } catch (e) {
@@ -66,31 +66,25 @@ export default class RootService {
         try {
             const rootStakes = [];
             let promiseRes;
-            return this.getRootMembers().then((members) => {
-                if (members) {
-                    console.log("members", members);
-                    members.map((member, i) => {
-                        promiseRes = this.getRootNodeStake(member).then((nodeStake) => {
-                            //TODO: custom data because from back get 0 value of stake
-                            // rootStakes.push(nodeStake);
-                            rootStakes.push(
-                                {
-                                    address: member,
-                                    stakeAmount: (i + 1) * 450,
-                                }
-                            );
-                            return {
+            const members = await this.getRootMembers();
+            if (members) {
+                console.log("members", members);
+                let i = 0;
+                for (let member of members) {
+                    promiseRes = await this.getRootNodeStake(member).then((nodeStake) => {
+                        //TODO: custom data because from back get 0 value of stake
+                        rootStakes.push(
+                            {
                                 address: member,
                                 stakeAmount: (i + 1) * 450,
+                                // stakeAmount: nodeStake,
                             }
-                        });
-
+                        );
                     });
+                    i++;
                 }
-                return promiseRes.then((el) => {
-                    return rootStakes;
-                });
-            });
+            }
+            return rootStakes;
         } catch (e) {
             console.log(e);
         }

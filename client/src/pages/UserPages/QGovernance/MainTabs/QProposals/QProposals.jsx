@@ -3,26 +3,20 @@ import {drizzleReactHooks} from "@drizzle/react-plugin";
 import {useDispatch, useSelector} from "react-redux";
 import {getQProposals} from "store/actions/action-creaters/voting/qproposals";
 import {errorM, loadingProposals, proposalsArr} from "store/selectors/voting/qproposals";
-import ConstitutionVotingService from "api/contracts/Voting/ConstitutionVotingService";
-import EmergencyUpdateVotingService from "api/contracts/Voting/EmergencyUpdateVotingService";
 
 import {Col} from "react-bootstrap";
 
 import QTypeProposalsTabs from "pages/UserPages/QGovernance/components/QTypeProposalsTabs";
 import ProposalsList from "pages/UserPages/QGovernance/components/ProposalsList";
 
-const {useDrizzle, useDrizzleState} = drizzleReactHooks;
+const {useDrizzle} = drizzleReactHooks;
 
 function QProposals() {
     const {drizzle} = useDrizzle();
-    const state = useDrizzleState(state => state);
     const dispatch = useDispatch();
-    const constitutionVoting = new ConstitutionVotingService(drizzle, "ConstitutionVoting");
-    const emergencyUpdateVoting = new EmergencyUpdateVotingService(drizzle, "EmergencyUpdateVoting");
 
     useEffect(() => {
-        dispatch(getQProposals([constitutionVoting, emergencyUpdateVoting]))
-
+        dispatch(getQProposals(drizzle))
     }, []);
 
     const loading = useSelector(loadingProposals);

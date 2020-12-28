@@ -42,7 +42,6 @@ function ProposalsList(props) {
         setProposalId(id);
         setProposalContract(contract);
         setModalShow(true);
-
     };
 
     return (

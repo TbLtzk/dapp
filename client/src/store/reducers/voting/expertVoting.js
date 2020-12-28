@@ -1,4 +1,4 @@
-import * as actionTypes from "../../actions/action-types/voting/roots-voting";
+import * as actionTypes from "../../actions/action-types/voting/expert-voting";
 
 const initialState = {
     proposalsArr: [],
@@ -7,39 +7,39 @@ const initialState = {
     errorM: null,
 };
 
-export default function rootsVoting(state = initialState, action) {
+export default function expertVoting(state = initialState, action) {
 
     switch (action.type) {
-        case actionTypes.GET_ROOT_VOTING_PROPOSALS:
+        case actionTypes.GET_QEXPERT_PROPOSALS:
             return {
                 ...state,
                 loadingProposals: true
             };
-        case actionTypes.GET_ROOT_VOTING_PROPOSALS_SUCCESS:
+        case actionTypes.GET_QEXPERT_PROPOSALS_SUCCESS:
             return {
                 ...state,
                 proposalsArr: action.result,
                 loadingProposals: false
             };
-        case actionTypes.GET_ROOT_VOTING_PROPOSALS_ERROR:
+        case actionTypes.GET_QEXPERT_PROPOSALS_ERROR:
             return {
                 ...state,
                 proposalsArr: [],
                 loadingProposals: false,
                 errorM: action.result
             };
-        case actionTypes.GET_ROOT_VOTING_PROPOSAL:
+        case actionTypes.GET_QEXPERT_PROPOSAL:
             return {
                 ...state,
                 loadingProposals: true
             };
-        case actionTypes.GET_ROOT_VOTING_PROPOSAL_SUCCESS:
+        case actionTypes.GET_QEXPERT_PROPOSAL_SUCCESS:
             return {
                 ...state,
                 proposalsArr: [...state.proposalsArr, ...action.result],
                 loadingProposals: false
             };
-        case actionTypes.GET_ROOT_VOTING_PROPOSAL_ERROR:
+        case actionTypes.GET_QEXPERT_PROPOSAL_ERROR:
             return {
                 ...state,
                 proposalsArr: [...state.proposalsArr],

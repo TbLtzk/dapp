@@ -3,12 +3,14 @@ import {call, put, takeEvery, all} from "redux-saga/effects";
 import * as actionTypes from "store/actions/action-types/voting/roots-voting";
 import {
     getRootsVotingProposalsSuccess, getRootsVotingProposalsError,
-    createProposalSuccess, createProposalError
+    getRootsVotingProposalSuccess, getRootsVotingProposalError
 } from "store/actions/action-creaters/voting/roots-voting";
+import RootsVotingService from "api/contracts/Voting/RootsVotingService";
 
-function* getRootVotingProposals({contract}) {
+function* getRootVotingProposals({drizzle}) {
     try {
-        const data = yield contract.getProposals();
+        const rootsVotingService = new RootsVotingService(drizzle, "RootsVoting");
+        const data = yield rootsVotingService.getProposals();
         console.log("GET_ROOT_VOTING_PROPOSALS", data);
 
         yield put(getRootsVotingProposalsSuccess(data));
@@ -18,20 +20,19 @@ function* getRootVotingProposals({contract}) {
     }
 }
 
-function* createProposal({contract, remark, userAddress, anyAddress}) {
+function* getProposal({contract, id}) {
     try {
-        const data = yield contract.createProposal(remark, userAddress, anyAddress);
-        console.log("CREATE_ROOT_VOTING_PROPOSAL", data);
+        const data = yield contract.getOneProposal(id);
+        console.log("GET_ROOT_VOTING_PROPOSAL", data);
 
-        yield put(createProposalSuccess(data));
+        yield put(getRootsVotingProposalSuccess(data));
     } catch (err) {
-        console.log('err',err);
-        yield put(createProposalError(err.message));
+        console.log('err', err);
+        yield put(getRootsVotingProposalError(err.message));
     }
 }
 
 export default [
     takeEvery(actionTypes.GET_ROOT_VOTING_PROPOSALS, getRootVotingProposals),
-
-    takeEvery(actionTypes.CREATE_ROOT_VOTING_PROPOSAL, createProposal),
+    takeEvery(actionTypes.GET_ROOT_VOTING_PROPOSAL, getProposal),
 ]

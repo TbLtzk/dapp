@@ -5,12 +5,15 @@ import {
     getSlashingVotingProposalsSuccess, getSlashingVotingProposalsError,
     getSlashingVotingProposalSuccess, getSlashingVotingProposalError
 } from "store/actions/action-creaters/voting/slashing-voting";
-import {getQProposalError, getQProposalSuccess} from "store/actions/action-creaters/voting/qproposals";
+import SlashingVoting from "api/contracts/Voting/SlashingVoting";
 
-function* getSlashingVotingProposals({contract}) {
+function* getSlashingVotingProposals({drizzle}) {
     try {
+        const validatorsSlashingVoting = new SlashingVoting(drizzle, "ValidatorsSlashingVoting");
+        const rootNodesSlashingVoting = new SlashingVoting(drizzle, "RootNodesSlashingVoting");
+        const contracts = [validatorsSlashingVoting, rootNodesSlashingVoting];
         let result = [];
-        for (let contractName of contract) {
+        for (let contractName of contracts) {
             const data = yield contractName.getProposals();
             result = [...result, ...data];
         }
@@ -22,7 +25,6 @@ function* getSlashingVotingProposals({contract}) {
         yield put(getSlashingVotingProposalsError(err.message));
     }
 }
-
 
 function* getProposal({contract, id}) {
     try {

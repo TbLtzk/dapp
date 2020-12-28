@@ -1,8 +1,8 @@
 import * as actionTypes from 'store/actions/action-types/voting/slashing-voting';
 
-export const getSlashingVotingProposals = (contract) => ({
+export const getSlashingVotingProposals = (drizzle) => ({
     type: actionTypes.GET_SLASHING_VOTING_PROPOSALS,
-    contract
+    drizzle
 });
 
 export const getSlashingVotingProposalsSuccess = (result) => ({

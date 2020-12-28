@@ -24,6 +24,7 @@ function QRootNodeS2(props) {
                     <>
                         <SubTitle>{addRootNode.subtitle}</SubTitle>
                         <InputGroup
+                            formData={formData}
                             labelsArr={addRootNode.inputTitleDescr}
                             inputArr={addRootNode.inputs}
                             inputsObj={addRootNode.inputsObj}
@@ -32,6 +33,7 @@ function QRootNodeS2(props) {
                         />
                         <SubTitle>{addRootNode.radioBtnTitle}</SubTitle>
                         <RadioBtnGroup
+                            formData={formData}
                             radioArr={addRootNode.radioBtnDown}
                             register={register}
                             errors={errors}
@@ -46,6 +48,7 @@ function QRootNodeS2(props) {
                             <>
                                 <SubTitle>{addRootNode.inputTitleDown}</SubTitle>
                                 <InputGroup
+                                    formData={formData}
                                     inputArr={addRootNode.inputDown}
                                     inputsObj={addRootNode.inputDownObj}
                                     register={register}
@@ -60,6 +63,7 @@ function QRootNodeS2(props) {
                     <>
                         <SubTitle>{removeRootNode.subtitle}</SubTitle>
                         <InputGroup
+                            formData={formData}
                             labelsArr={removeRootNode.inputTitleDescr}
                             inputArr={removeRootNode.inputs}
                             inputsObj={removeRootNode.inputsObj}

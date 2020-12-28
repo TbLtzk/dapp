@@ -9,10 +9,10 @@ import ErrorInputMessage from "components/Base/ErrorInputMessage";
 import {Wrap} from "./styles";
 
 function RadioBtnGroup(props) {
-    const {nameArr, handleChange, register, errors, radioArr} = props;
+    const {nameArr, handleChange, register, errors, radioArr, formData} = props;
     const [activeRadioBtn, setActiveRadioBtn] = useState('');
 
-    const formData = useSelector(formObject);
+    // const formData = useSelector(formObject);
 
     useEffect(() => {
         setActiveRadioBtn(formData[nameArr]);

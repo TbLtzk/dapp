@@ -1,9 +1,8 @@
 import * as actionTypes from 'store/actions/action-types/voting/roots-voting';
 
-/* getRootsVotingProposals */
-export const getRootsVotingProposals = (contract) => ({
+export const getRootsVotingProposals = (drizzle) => ({
     type: actionTypes.GET_ROOT_VOTING_PROPOSALS,
-    contract
+    drizzle
 });
 
 export const getRootsVotingProposalsSuccess = (result) => ({
@@ -16,18 +15,18 @@ export const getRootsVotingProposalsError = (result) => ({
     result,
 });
 
-/* create proposal */
-export const createProposal = (contract, remark, userAddress, anyAddress) => ({
-    type: actionTypes.CREATE_ROOT_VOTING_PROPOSAL,
-    contract, remark, userAddress, anyAddress
+export const getRootsVotingProposal = (contract, id) => ({
+    type: actionTypes.GET_ROOT_VOTING_PROPOSAL,
+    contract,
+    id
 });
 
-export const createProposalSuccess = (result) => ({
-    type: actionTypes.CREATE_ROOT_VOTING_PROPOSAL_SUCCESS,
+export const getRootsVotingProposalSuccess = (result) => ({
+    type: actionTypes.GET_ROOT_VOTING_PROPOSAL_SUCCESS,
     result,
 });
 
-export const createProposalError = (result) => ({
-    type: actionTypes.CREATE_ROOT_VOTING_PROPOSAL_ERROR,
+export const getRootsVotingProposalError = (result) => ({
+    type: actionTypes.GET_ROOT_VOTING_PROPOSAL_ERROR,
     result,
 });
