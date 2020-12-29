@@ -8,18 +8,16 @@ import {
 
 import RadioBtnGroup from "../../RadioBtnGroup";
 
-import {SubTitle, SubTitleHighlightProposal} from "../styles";
-import {arrRadioBtn} from "../constants";
+import {SubTitle} from "../styles";
+import {arrRadioBtn} from "./constants";
 import {formVoteObject} from "store/selectors/voting/proposals";
 
 function CreateStep1(props) {
     const {register, errors} = props;
     const dispatch = useDispatch();
     const formData = useSelector(formVoteObject);
-    console.log("formData", formData);
 
     const onChooseProposal = useCallback((value) => {
-        console.log("clean object");
         const radioVal = value.target.value;
         dispatch(setVoteProposalObj({first: radioVal}));
         dispatch(setDisabledCreatedProposalBtn(false));

@@ -10,7 +10,11 @@ import {CardBlock, LoadingW} from "./styles";
 import {useDispatch, useSelector} from "react-redux";
 import {userAddressMetamask} from "store/selectors/user-inf";
 import {drizzleReactHooks} from "@drizzle/react-plugin";
-import {setVoteProposalObj, setStepVoteCounter} from "store/actions/action-creaters/voting/proposals";
+import {
+    setVoteProposalObj,
+    setStepVoteCounter,
+    setDisabledCreatedProposalBtn
+} from "store/actions/action-creaters/voting/proposals";
 import ModalVote from "pages/UserPages/QGovernance/components/CreateQProposalBtn/ModalVote";
 import {remainDate} from "func/convertDate";
 
@@ -23,10 +27,11 @@ function ProposalsList(props) {
     const userAddress = useSelector(userAddressMetamask);
     const [modalShow, setModalShow] = useState(false);
     const [proposalId, setProposalId] = useState(null);
+    const [vetoEndTime, setVetoEndTime] = useState(null);
     const [proposalContract, setProposalContract] = useState(null);
 
 
-    const onProposalVote = async (id, contract) => {
+    const onProposalVote = async (id, contract, vetoEndTime) => {
         console.log("Vote", id);
         // try{
         //     const proposalVote = await drizzle.contracts.ConstitutionVoting.methods.voteFor(id, true).send(
@@ -38,8 +43,9 @@ function ProposalsList(props) {
 
         // const proposalVote = await drizzle.contracts.ConstitutionVoting.methods.veto.cacheSend(
         //     id, {from: userAddress});
-
+        dispatch(setDisabledCreatedProposalBtn(true));
         setProposalId(id);
+        setVetoEndTime(vetoEndTime);
         setProposalContract(contract);
         setModalShow(true);
     };
@@ -59,7 +65,7 @@ function ProposalsList(props) {
                                         title={proposal.title}
                                         status={proposal.status}
                                         handleVote={() => {
-                                            onProposalVote(proposal.id, proposal.contract)
+                                            onProposalVote(proposal.id, proposal.contract, proposal.vetoEndTime)
                                         }}
                                     />
                                     <CardBody
@@ -85,12 +91,14 @@ function ProposalsList(props) {
             <ModalVote
                 proposalContract={proposalContract}
                 proposalId={proposalId}
+                vetoEndTime={vetoEndTime}
                 activeTab={activeTab}
                 modalShow={modalShow}
                 onHide={() => {
                     setModalShow(false);
                     dispatch(setVoteProposalObj({}));
                     dispatch(setStepVoteCounter(1));
+                    dispatch(setDisabledCreatedProposalBtn(true));
 
                 }}
             />

@@ -261,5 +261,33 @@ export default class VotingService {
             console.log(e);
         }
     }
+    /**
+     * get ended proposals
+     * @return array
+     */
+    async getEndedProposals() {
+        try {
+            const proposalEvents = await this.getProposalsEvent();
+            const proposalIds = getPastProposalsIds(proposalEvents);
+            let proposals = [];
+            if (proposalIds) {
+                for (let id of proposalIds) {
+                    let objRes = {};
+                    let promiseStatus = await this.getProposalStatus(id);
+                    if (promiseStatus !== "1") {
+                        let promiseRes = await this.proposalIteratorResult(id);
+                        if (promiseRes) {
+                            objRes = await this.getProposalData(promiseRes, id, promiseStatus);
+                            proposals.push(objRes);
+                        }
+                    }
+
+                }
+            }
+            return proposals;
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
 }

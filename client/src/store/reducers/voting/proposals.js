@@ -15,6 +15,10 @@ const initialState = {
 
     formObjectVoteProposal: {},
     stepVoteCounter: 1,
+
+    endedProposals: [],
+    loadingEndedProposals: true,
+    errorEnded: null,
 };
 
 export default function proposals(state = initialState, action) {
@@ -49,6 +53,24 @@ export default function proposals(state = initialState, action) {
             return {
                 ...state,
                 stepVoteCounter: action.result
+            };
+        case actionTypes.GET_ENDED_PROPOSALS:
+            return {
+                ...state,
+                loadingEndedProposals: true,
+            };
+        case actionTypes.GET_ENDED_PROPOSALS_SUCCESS:
+            return {
+                ...state,
+                endedProposals: action.result,
+                loadingEndedProposals: false,
+            };
+        case actionTypes.GET_ENDED_PROPOSALS_ERROR:
+            return {
+                ...state,
+                endedProposals: [],
+                loadingEndedProposals: false,
+                errorEnded: action.result,
             };
         default:
             return state;

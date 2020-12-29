@@ -9,7 +9,7 @@ import {
 import ConstitutionVotingService from "api/contracts/Voting/ConstitutionVotingService";
 import EmergencyUpdateVotingService from "api/contracts/Voting/EmergencyUpdateVotingService";
 
-function* getConstitutionVotingProposals({drizzle}) {
+function* getQProposals({drizzle}) {
     try {
         const constitutionVoting = new ConstitutionVotingService(drizzle, "ConstitutionVoting");
         const emergencyUpdateVoting = new EmergencyUpdateVotingService(drizzle, "EmergencyUpdateVoting");
@@ -41,6 +41,6 @@ function* getProposal({contract, id}) {
 }
 
 export default [
-    takeEvery(actionTypes.GET_Q_PROPOSALS, getConstitutionVotingProposals),
+    takeEvery(actionTypes.GET_Q_PROPOSALS, getQProposals),
     takeEvery(actionTypes.GET_Q_PROPOSAL, getProposal),
 ]

@@ -51,7 +51,6 @@ export default class ParametersVoting extends VotingService {
             objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
             objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
             objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
-            console.log("contractName", this.contractName);
             objRes.contract = this.contractName;
 
             return objRes;

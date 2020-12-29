@@ -30,7 +30,6 @@ function QProposals() {
                 activeContent={
                     <ProposalsList
                         activeTab="q-proposals"
-                        typeList={"QProposals"}
                         proposals={proposals}
                         loading={loading}
                         errorMessage={errorMessage}

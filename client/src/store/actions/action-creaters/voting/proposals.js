@@ -52,3 +52,18 @@ export const voteForProposalSuccess = (result) => ({
     type: actionTypes.VOTE_FOR_PROPOSAL_SUCCESS,
     result
 });
+
+
+export const getEndedProposals = (drizzle, activeTab) => ({
+    type: actionTypes.GET_ENDED_PROPOSALS,
+    drizzle,
+    activeTab
+});
+export const getEndedProposalsSuccess = (result) => ({
+    type: actionTypes.GET_ENDED_PROPOSALS_SUCCESS,
+    result
+});
+export const getEndedProposalsError = (result) => ({
+    type: actionTypes.GET_ENDED_PROPOSALS_ERROR,
+    result
+});

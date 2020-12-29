@@ -7,7 +7,7 @@ import {
 } from "store/actions/action-creaters/voting/expert-voting";
 import {chooseExpertContractDependsOnType} from "api/contracts/Voting/handler/QExpertVotingHandler";
 
-const arrContracts = [
+export const arrContracts = [
     {
         // EPQFI_MembershipVoting
         typeContract: "member",

@@ -34,3 +34,4 @@ export const SummarTextType = styled.span`
   text-transform: capitalize
 `;
 
+

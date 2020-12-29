@@ -11,9 +11,12 @@ import CreateQProposalBtn from "./components/CreateQProposalBtn";
 import VotingStats from "./components/VotingStats";
 import References from "./components/References";
 
-import {WrapTabs} from "./styles";
+import {WrapTabs, WrapBtn} from "./styles";
+import Button from "components/Base/Buttons/Button";
+import {useHistory} from "react-router-dom";
 
 function QGovernance() {
+    const history = useHistory();
 
     const tabsItems = useMemo(() => {
         return (
@@ -65,10 +68,23 @@ function QGovernance() {
             <Col md={8}>
                 <ButtonTabs
                     tabsItems={tabsItems}
-                    tabsHandler={(key)=>{
+                    tabsHandler={(key) => {
                         setActiveTab(key)
                     }}
                 />
+                <WrapBtn>
+                    <Button
+                        title="View ended proposals"
+                        type="white"
+                        width="100%"
+                        handleButton={() => {
+                            history.push({
+                                pathname: '/ended-proposals',
+                                state: {activeTab: activeTab}
+                            })
+                        }}
+                    />
+                </WrapBtn>
             </Col>
             <Col md={4}>
                 <CreateQProposalBtn activeTab={activeTab}/>

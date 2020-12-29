@@ -1,18 +1,35 @@
 import React, {useCallback} from "react";
 
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {formVoteObject} from "store/selectors/voting/proposals";
 import {basicVote, constitutionCheck, communityVeto} from "./constants";
-import {SubTitle, Descr} from "pages/UserPages/QGovernance/components/CreateQProposalBtn/ModalVote/styles";
+import {SubTitle, Descr,Warning} from "pages/UserPages/QGovernance/components/CreateQProposalBtn/ModalVote/styles";
 import RadioBtnGroup from "../../RadioBtnGroup";
+import {getLockedAssets} from "store/actions/action-creaters/q-piggy-bank";
+import {userAddressMetamask} from "store/selectors/user-inf";
+import {fromSolDateFormattingT1} from "func/date";
+import {votingLockingEnd} from "store/selectors/q-piggy-bank";
 
 function CreateStep2(props) {
-    const {activeTab, register, errors} = props;
+    const {activeTab, register, errors, proposalContract, vetoEndTime} = props;
     const formData = useSelector(formVoteObject);
+    const userLockingEnd = (useSelector(votingLockingEnd));
+    const dispatch = useDispatch();
 
     const contentSwitcher = useCallback(() => {
         switch (formData?.first) {
             case "basic-vote-on-proposal":
+                const userAddressL = useSelector(userAddressMetamask);
+                dispatch(getLockedAssets(userAddressL));
+                let warning = null;
+                if (proposalContract === "ConstitutionVoting" || proposalContract === "GeneralUpdateVoting"
+                    || proposalContract === "RootsVoting" || activeTab === "expert") {
+                    if (vetoEndTime >= userLockingEnd) {
+                        warning = `You can\`t vote because Voting Locking End 
+                        - ${fromSolDateFormattingT1(userLockingEnd)} is less than 
+                        Veto End Time - ${fromSolDateFormattingT1(vetoEndTime)}`;
+                    }
+                }
                 return (
                     <>
                         <SubTitle>{basicVote.subtitle}</SubTitle>
@@ -26,6 +43,7 @@ function CreateStep2(props) {
                             handleChange={(value) => {
                             }}
                         />
+                        {warning ? <Warning>{warning}</Warning> : null}
                     </>
                 );
             case "constitution-check":
@@ -64,7 +82,7 @@ function CreateStep2(props) {
                 return null;
         }
 
-    }, [activeTab, register, errors]);
+    }, [activeTab, register, errors, userLockingEnd]);
 
     return (
         <>

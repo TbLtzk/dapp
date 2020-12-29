@@ -34,3 +34,7 @@ export const SummarTextType = styled.span`
   text-transform: capitalize
 `;
 
+export const Warning = styled(SummarText)`
+  ${props => props.theme.fontStyles.text.little};
+  color: ${props => props.theme.colors.error};
+`;

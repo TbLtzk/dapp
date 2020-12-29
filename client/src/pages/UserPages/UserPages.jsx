@@ -1,6 +1,7 @@
 import React from "react";
 
 import QGovernance from "./QGovernance";
+import EndedProposals from "./QGovernance/EndedProposals";
 import PiggyBank from "./PiggyBank";
 import Staking from "./Staking";
 
@@ -20,6 +21,8 @@ function UserPages(props) {
                 return <PiggyBank/>;
             case '/staking':
                 return <Staking/>;
+            case '/ended-proposals':
+                return <EndedProposals/>;
             default:
                 return <QGovernance/>;
         }
@@ -31,7 +34,7 @@ function UserPages(props) {
             <WrapContainer fluid>
                 {componentSwitcher()}
             </WrapContainer>
-            <LoadingTransaction />
+            <LoadingTransaction/>
         </>
     );
 }

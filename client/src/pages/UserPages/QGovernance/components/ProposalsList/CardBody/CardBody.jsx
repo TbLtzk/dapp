@@ -81,7 +81,7 @@ function CardBody(props) {
                                 </div>
                                 <div>
                                     <FontAwesomeIcon icon={faClock}/>
-                                    <span>Remining Time for Veto: {remainDate(vetoTime)}</span>
+                                    <span>Remaining Time for Veto: {remainDate(vetoTime)}</span>
                                 </div>
                             </Details>
                             <Details md={4}>

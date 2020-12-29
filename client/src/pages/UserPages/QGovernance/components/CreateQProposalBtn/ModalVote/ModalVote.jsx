@@ -14,6 +14,7 @@ import {
     formVoteObject,
     disabledContinueProposalBtn
 } from "store/selectors/voting/proposals";
+import {votingLockingEnd} from "store/selectors/q-piggy-bank";
 
 import {useForm} from "react-hook-form";
 
@@ -27,7 +28,7 @@ import {Title, Descr} from "./styles"
 const {useDrizzle} = drizzleReactHooks;
 
 function ModalVote(props) {
-    const {modalShow, onHide, activeTab, proposalId, proposalContract} = props;
+    const {modalShow, onHide, activeTab, proposalId, proposalContract, vetoEndTime} = props;
     const {drizzle} = useDrizzle();
     const {register, errors, handleSubmit} = useForm();
     const dispatch = useDispatch();
@@ -35,12 +36,10 @@ function ModalVote(props) {
     const formData = useSelector(formVoteObject);
     const stepCounter = useSelector(stepVoteCounterModal);
     const stepLimit = 3;
-    // const [stepCounter, setStepCounter] = useState(step);
     const disabledContinueBtn = useSelector(disabledContinueProposalBtn);
-
+    const userLockingEnd = useSelector(votingLockingEnd);
 
     const switchProposalContentDependsOnType = useCallback(() => {
-        // console.log("formData", formData);
         switch (stepCounter) {
             case 1:
                 return (
@@ -54,6 +53,8 @@ function ModalVote(props) {
             case 2:
                 return (
                     <CreateStep2
+                        proposalContract={proposalContract}
+                        vetoEndTime={vetoEndTime}
                         formData={formData}
                         activeTab={activeTab}
                         register={register}
@@ -73,22 +74,31 @@ function ModalVote(props) {
                 return null;
         }
 
-    }, [activeTab, stepCounter, register, errors, stepLimit]);
+    }, [activeTab, stepCounter, register, errors, stepLimit, dispatch]);
 
     const onNext = (data) => {
-
+        if (formData?.first === "basic-vote-on-proposal") {
+            if (proposalContract === "ConstitutionVoting" || proposalContract === "GeneralUpdateVoting"
+                || proposalContract === "RootsVoting" || activeTab === "expert") {
+                if (vetoEndTime >= userLockingEnd) {
+                    dispatch(setDisabledCreatedProposalBtn(true));
+                }
+            }
+        }
         dispatch(setVoteProposalObj({...formData, ...data}));
         if (stepCounter < stepLimit) {
             dispatch(setStepVoteCounter(stepCounter + 1))
         } else {
-            if (formData?.veto !== "no"){
-                dispatch(voteForProposal(drizzle, {...formData, ...data, idProposal: proposalId, contract: proposalContract}));
+            if (formData?.veto !== "no") {
+                dispatch(voteForProposal(drizzle, {
+                    ...formData, ...data,
+                    idProposal: proposalId,
+                    contract: proposalContract
+                }));
             }
             console.log("result data", {...formData, ...data, idProposal: proposalId, contract: proposalContract});
             onHide();
         }
-
-        console.log("Transaction Sent");
     };
 
     return (
@@ -105,7 +115,7 @@ function ModalVote(props) {
             continueBtnTitle={
                 stepLimit !== stepCounter ? "Next" : "Confirm"
             }
-            // disabled={disabledContinueBtn}
+            disabled={disabledContinueBtn}
             continueBtnHandler={handleSubmit(onNext)}
             content={
                 <>
