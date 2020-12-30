@@ -23,7 +23,7 @@ import RootsVotingService from "api/contracts/Voting/RootsVotingService";
 import {chooseExpertContractDependsOnType} from "api/contracts/Voting/handler/QExpertVotingHandler"
 import {chooseSlashingContractDependsOnType} from "api/contracts/Voting/handler/SlashingVotingHandler"
 import VotingService from "api/contracts/Voting/VotingService";
-import SlashingVoting from "api/contracts/Voting/SlashingVoting";
+import SlashingVotingService from "api/contracts/Voting/SlashingVotingService";
 
 function* createProposal({drizzle, data}) {
   try {
@@ -136,7 +136,8 @@ function* getEndedProposals({drizzle, activeTab}) {
         case "q-proposals":
           const constitutionVoting = new ConstitutionVotingService(drizzle, "ConstitutionVoting");
           const emergencyUpdateVoting = new EmergencyUpdateVotingService(drizzle, "EmergencyUpdateVoting");
-          const contracts = [constitutionVoting, emergencyUpdateVoting];
+          const generalUpdateVoting = new GeneralUpdateVotingService(drizzle, "GeneralUpdateVoting");
+          const contracts = [constitutionVoting, emergencyUpdateVoting, generalUpdateVoting];
           for (let contractName of contracts) {
             const data = yield contractName.getEndedProposals();
             result = [...result, ...data];
@@ -160,8 +161,8 @@ function* getEndedProposals({drizzle, activeTab}) {
           console.log("GET_QEXPERT_PROPOSALS_ENDED", result);
           break;
         case "slashing-proposals":
-          const validatorsSlashingVoting = new SlashingVoting(drizzle, "ValidatorsSlashingVoting");
-          const rootNodesSlashingVoting = new SlashingVoting(drizzle, "RootNodesSlashingVoting");
+          const validatorsSlashingVoting = new SlashingVotingService(drizzle, "ValidatorsSlashingVoting");
+          const rootNodesSlashingVoting = new SlashingVotingService(drizzle, "RootNodesSlashingVoting");
           const contractsLists = [validatorsSlashingVoting, rootNodesSlashingVoting];
           for (let contractName of contractsLists) {
             const data = yield contractName.getEndedProposals();

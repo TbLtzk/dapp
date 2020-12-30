@@ -1,5 +1,5 @@
-import MembershipVoting from 'api/contracts/Voting/MembershipVoting';
-import ParametersVoting from 'api/contracts/Voting/ParametersVoting';
+import MembershipVotingService from 'api/contracts/Voting/MembershipVotingService';
+import ParametersVotingService from 'api/contracts/Voting/ParametersVotingService';
 
 export const chooseExpertContractDependsOnType = (drizzle, typeContract, type) => {
   let contract = null;
@@ -7,18 +7,18 @@ export const chooseExpertContractDependsOnType = (drizzle, typeContract, type) =
   if (type === 'q-fees-&-incentives-expert-panel') {
     if (typeContract === 'member') {
       contractName = 'EPQFI_MembershipVoting';
-      contract = new MembershipVoting(drizzle, contractName);
+      contract = new MembershipVotingService(drizzle, contractName);
     } else if (typeContract === 'parameters') {
       contractName = 'EPQFI_ParametersVoting';
-      contract = new ParametersVoting(drizzle, contractName);
+      contract = new ParametersVotingService(drizzle, contractName);
     }
   } else if (type === 'q-defi-(decentralized-finance)-expert-panel') {
     if (typeContract === 'member') {
       contractName = 'EPDR_MembershipVoting';
-      contract = new MembershipVoting(drizzle, contractName);
+      contract = new MembershipVotingService(drizzle, contractName);
     } else if (typeContract === 'parameters') {
       contractName = 'EPDR_ParametersVoting';
-      contract = new ParametersVoting(drizzle, contractName);
+      contract = new ParametersVotingService(drizzle, contractName);
     }
   }
 

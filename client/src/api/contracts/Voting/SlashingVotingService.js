@@ -6,7 +6,7 @@ import {
 import VotingService from "api/contracts/Voting/VotingService";
 
 /*contacts: RootNodesSlashingVoting, ValidatorsSlashingVoting*/
-export default class SlashingVoting extends VotingService {
+export default class SlashingVotingService extends VotingService {
 
     /**
      * get proposal data

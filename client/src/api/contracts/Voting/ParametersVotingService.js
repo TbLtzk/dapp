@@ -6,7 +6,7 @@ import {
 } from "api/contracts/Voting/handler/commonFunc";
 
 /*EPQFI_ParametersVoting, EPDR_ParametersVoting*/
-export default class ParametersVoting extends VotingService {
+export default class ParametersVotingService extends VotingService {
 
     /**
      * get proposal data
@@ -66,7 +66,7 @@ export default class ParametersVoting extends VotingService {
      * @return string
      */
     async createProposal(data, userAddress) {
-        console.log("DATA ParametersVoting", data);
+        console.log("DATA ParametersVotingService", data);
         let result = null;
         const link = data["external-link"];
         const typeValueProposal = data["type-value-proposal"];

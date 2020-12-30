@@ -25,7 +25,7 @@ function EndedProposals() {
 
   useEffect(() => {
     dispatch(getEndedProposals(drizzle, location?.state?.activeTab));
-  }, []);
+  }, [dispatch]);
 
   const proposalKind = useMemo(() => {
     switch (location?.state?.activeTab) {
@@ -44,7 +44,7 @@ function EndedProposals() {
   return (
       <Row>
         <Col xs={8}>
-          <Title>Ended {location?.state?.activeTab?.replace(/-/g, " ")}</Title>
+          <Title>{`Ended ${location?.state?.activeTab?.replace(/-/g, " ")} (${endedArr.length}`})</Title>
           <ProposalsList
               activeTab={location?.state?.activeTab}
               proposals={endedArr}
@@ -53,9 +53,7 @@ function EndedProposals() {
               proposalsKind={proposalKind}
           />
         </Col>
-
       </Row>
-
   );
 }
 

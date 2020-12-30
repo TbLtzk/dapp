@@ -32,7 +32,7 @@ function ProposalsList(props) {
 
 
     const onProposalVote = async (id, contract, vetoEndTime) => {
-        console.log("Vote", id);
+        // console.log("Vote", id);
         // try{
         //     const proposalVote = await drizzle.contracts.ConstitutionVoting.methods.voteFor(id, true).send(
         //         {from: userAddress});

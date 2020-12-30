@@ -8,12 +8,14 @@ import {
 } from "store/actions/action-creaters/voting/qproposals";
 import ConstitutionVotingService from "api/contracts/Voting/ConstitutionVotingService";
 import EmergencyUpdateVotingService from "api/contracts/Voting/EmergencyUpdateVotingService";
+import GeneralUpdateVotingService from "api/contracts/Voting/GeneralUpdateVotingService";
 
 function* getQProposals({drizzle}) {
     try {
         const constitutionVoting = new ConstitutionVotingService(drizzle, "ConstitutionVoting");
         const emergencyUpdateVoting = new EmergencyUpdateVotingService(drizzle, "EmergencyUpdateVoting");
-        const contracts = [constitutionVoting, emergencyUpdateVoting];
+        const generalUpdateVoting = new GeneralUpdateVotingService(drizzle, "GeneralUpdateVoting");
+        const contracts = [constitutionVoting, emergencyUpdateVoting, generalUpdateVoting];
         let result = [];
         for (let contractName of contracts) {
             const data = yield contractName.getProposals();

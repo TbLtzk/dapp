@@ -23,7 +23,7 @@ export default class GeneralUpdateVotingService extends VotingService {
             objRes.vetoEndTime = promiseRes.params.vetoEndTime;
             objRes.proposalExecutionP = promiseRes.params.proposalExecutionP;
             objRes.status = getStatusTransformation(promiseStatus);
-            objRes.title = "Emergency update proposal";
+            objRes.title = "General update proposal";
             let proposalStats = await this.getProposalStats(id);
             objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
             objRes.currentQuorum = convertNumVotes(proposalStats.currentQuorum);

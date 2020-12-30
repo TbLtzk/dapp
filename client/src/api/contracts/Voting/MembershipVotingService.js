@@ -7,7 +7,7 @@ import {
 } from "api/contracts/Voting/handler/commonFunc";
 
 /*EPDR_MembershipVoting, EPQFI_MembershipVoting*/
-export default class MembershipVoting extends VotingService {
+export default class MembershipVotingService extends VotingService {
 
   /**
    * get proposal data
@@ -122,7 +122,7 @@ export default class MembershipVoting extends VotingService {
    * @return string
    */
   async createProposal(data, userAddress) {
-    console.log("DATA MembershipVoting", data);
+    console.log("DATA MembershipVotingService", data);
     let result = null;
     const link = data["external-link"];
     let candidate = data["address"];

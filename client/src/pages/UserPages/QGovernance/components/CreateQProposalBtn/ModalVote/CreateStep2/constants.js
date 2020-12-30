@@ -13,8 +13,8 @@ export const constitutionCheck = {
 };
 
 export const communityVeto = {
-    subtitle: "QID Holders can initiate a veto against the proposal.",
-    radioBtnDescr: "Do you want to support a veto against this proposal?",
+    subtitle: "Only QID Holder Eligible.",
+    radioBtnDescr: "Do you want to initiate a Veto against this proposal?",
     radioBtnName: "veto",
     radioBtn: ["No", "Yes"],
 };
