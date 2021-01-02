@@ -34,19 +34,19 @@ export default class QPiggyBank {
   }
 
   async unlock(address, amountQ) {
-     return await this.methods.unlock(String(QToWei(amountQ))).send({
+    return await this.methods.unlock(String(QToWei(amountQ))).send({
       from: address,
     });
   }
 
   async extendExpiration(address, expiration) {
-     return await this.methods.extendExpiration(expiration).send({
+    return await this.methods.extendExpiration(expiration).send({
       from: address,
     });
   }
 
   async claimQHolderReward(address, abandonClaims = true) {
-     return await this.methods.claimQHolderReward(abandonClaims).send({
+    return await this.methods.claimQHolderReward(abandonClaims).send({
       from: address,
     });
   }
