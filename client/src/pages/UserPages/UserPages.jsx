@@ -7,7 +7,7 @@ import PiggyBank from './PiggyBank';
 import Staking from './Staking';
 import ManageStakerRewardPool from './ManageStakerRewardPool';
 import SavingAndBorrowing from './SavingAndBorrowing';
-import EndedProposals from "./QGovernance/EndedProposals";
+import EndedProposals from './QGovernance/EndedProposals';
 
 import { WrapContainer } from './styles';
 
