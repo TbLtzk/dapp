@@ -1,9 +1,9 @@
-import React from "react";
-import {Row, Col} from "react-bootstrap";
+import React from 'react';
+import { Row, Col } from 'react-bootstrap';
 
-import ManageBalance from "./ManageBalance";
-import LockCoin from "./LockCoin";
-import Panel from "./Panel/Panel";
+import ManageBalance from './ManageBalance';
+import LockCoin from './LockCoin';
+import Panel from './Panel/Panel';
 
 function PiggyBank() {
   return (
@@ -12,7 +12,7 @@ function PiggyBank() {
         <Panel />
       </Col>
       <Col xs={12}>
-        <h3 style={{marginBottom: '24px'}}>PiggyBank</h3>
+        <h3 style={{ marginBottom: '24px' }}>PiggyBank</h3>
       </Col>
       <Col xs={6}>
         <ManageBalance />

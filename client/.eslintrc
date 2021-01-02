@@ -10,6 +10,7 @@
     "jsx-a11y",
     "import"
   ],
+  "parser": "babel-eslint",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -30,7 +31,16 @@
     "react/jsx-uses-vars": "error",
     "object-curly-spacing": ["error", "always"],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "no-console": ["error", { "allow": ["warn", "error", "log"] }],
-    "max-len": ["error", { "code": 140 }]
+    "no-console": "off",
+    "import/prefer-default-export": "off",
+    "max-len": ["error", { "code": 120 }],
+    "react/jsx-boolean-value": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "react/forbid-prop-types": "off",
+    "object-curly-newline": "off",
+    "no-return-await": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "no-await-in-loop": "off",
+    "react/no-array-index-key": "off"
   }
 }
