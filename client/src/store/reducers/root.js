@@ -1,33 +1,35 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux';
 
+import validators from 'store/reducers/validators';
 import UserAuth from './userAuth';
 import userInf from './userInf';
 import rootContract from './rootContract';
-import qPiggyBank from './qPiggyBank'
+import qPiggyBank from './qPiggyBank';
 import rootsVoting from './voting/rootsVoting';
-import constitutionVoting from './voting/constitutionVoting';
-import validatorsSlashingVoting from './voting/validatorsSlashingVoting';
-import rootnodesSlashingVoting from './voting/rootnodesSlashingVoting';
-import EPQFIMembershipVoting from './voting/EPQFIMembershipVoting';
-import EPDRMembershipVoting from './voting/EPDRMembershipVoting';
-import qProposals from 'store/reducers/voting/qProposals';
+import qProposals from 'store/reducers/voting/qproposals';
+import slashingVoting from './voting/slashingVoting';
+import expertVoting from './voting/expertVoting';
+import proposals from 'store/reducers/voting/proposals';
+import validationRewardPools from './validationRewardPools';
+
+import transactionHandler from 'store/reducers/transactionHandler';
 
 const RootReducer = combineReducers({
-    userAuth: UserAuth,
-    userInf: userInf,
-    rootContract: rootContract,
-    qPiggyBank: qPiggyBank,
+  userAuth: UserAuth,
+  userInf,
+  rootContract,
+  qPiggyBank,
 
-    rootsVoting: rootsVoting,
-    constitutionVoting: constitutionVoting,
+  rootsVoting,
+  qProposals,
+  slashingVoting,
+  expertVoting,
+  proposals,
 
-    validatorsSlashingVoting: validatorsSlashingVoting,
-    rootnodesSlashingVoting: rootnodesSlashingVoting,
+  transactionHandler,
 
-    EPQFIMembershipVoting: EPQFIMembershipVoting,
-    EPDRMembershipVoting: EPDRMembershipVoting,
-
-    qProposals: qProposals,
+  validators,
+  validationRewardPools,
 });
 
-export default RootReducer
+export default RootReducer;

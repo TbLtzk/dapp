@@ -1,15 +1,11 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-import {Button} from "react-bootstrap";
-
-import {indents} from "constants/style";
+import { Button } from 'react-bootstrap';
 
 export const Link = styled(Button)`
-  ${props => props.theme.fontStyles.text.middle};
-  width: ${props => 'undefined' === props.width ? 'auto' : props.width};
-  padding-left: ${indents["20"]};
-  padding-right: ${indents["20"]};
-  color: ${props => props.theme.colors.main};
+  ${(props) => props.theme.fontStyles.text.middle};
+  width: ${(props) => (props.width === 'undefined' ? 'auto' : props.width)};
+  color: ${(props) => props.theme.colors.main};
   font-weight: 600;
   font-size: 14px;
 `;

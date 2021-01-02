@@ -1,6 +1,7 @@
 import Web3 from 'web3';
 
 const web3 = new Web3(Web3.givenProvider);
+web3.eth.handleRevert = true;
 // console.log("getId", web3.eth.net.getId());
 // console.log("getNetworkType", web3.eth.net.getNetworkType());
 
@@ -33,6 +34,7 @@ export const addressConstitutionVoting = '0x5F5C8942056BcfCDdC711397b7cC60f74521
 export const constitutionVotingConfig = {
     contractName: 'ConstitutionVoting',
     web3Contract: new web3.eth.Contract(constitutionVotingABI, addressConstitutionVoting)
+    // web3Contract: new web3.eth.Contract(constitutionVotingABI, addressConstitutionVoting, {handleRevert: true})
 };
 
 // RootsVoting

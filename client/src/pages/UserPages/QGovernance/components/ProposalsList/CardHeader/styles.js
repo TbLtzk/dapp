@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 
-import {Button, Card, Col, Container} from "react-bootstrap";
-
-import {indents} from "constants/style";
+import {Card, Col} from "react-bootstrap";
 
 export const Header = styled(Card.Header)`
   background: ${props => props.theme.colors.main};
@@ -35,5 +33,9 @@ export const LabelStatus = styled.div`
   box-sizing: border-box;
   border-radius: 8px;
   padding: 11px 20px;
-  margin-right: 15px;
+`;
+
+export const WrapVoteBtn = styled.div`
+  margin-left: 15px;
+  display: inline-block;
 `;

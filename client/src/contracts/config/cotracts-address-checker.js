@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax, guard-for-in, max-len */
 import { contractsToContractsRegistryKey as contToKey } from '../mapping/contract-to-contractRegistryKey';
 import { contractsToAddresses } from '../mapping/contract-to-address';
 
@@ -10,13 +11,12 @@ export default async function validateContractsAddress() {
   const contractsAddressLoc = {};
 
   for (const contractName in contToKey) {
-    // eslint-disable-next-line no-await-in-loop
     address = await drizzleRegistry
       .contracts.ContractRegistry.methods.getAddress(contToKey[contractName]).call();
     console.log('.');
     contractsAddressLoc[contractName] = address;
   }
-  // console.log(contractsAddressLoc);
+  console.log(contractsAddressLoc);
 
   console.log('Upload complete. Contract address up to date check.');
 

@@ -1,25 +1,22 @@
 import React, {useEffect} from "react";
 import {drizzleReactHooks} from "@drizzle/react-plugin";
 import {useDispatch, useSelector} from "react-redux";
-import {getConstitutionVotingProposals} from "store/actions/action-creaters/voting/constitution-voting";
-import {errorM, loadingProposals, proposalsArr} from "store/selectors/voting/constitution-voting";
-import ConstitutionVotingService from "api/contracts/Voting/ConstitutionVotingService";
+import {getQProposals} from "store/actions/action-creaters/voting/qproposals";
+import {errorM, loadingProposals, proposalsArr} from "store/selectors/voting/qproposals";
 
 import {Col} from "react-bootstrap";
 
 import QTypeProposalsTabs from "pages/UserPages/QGovernance/components/QTypeProposalsTabs";
 import ProposalsList from "pages/UserPages/QGovernance/components/ProposalsList";
 
-const {useDrizzle, useDrizzleState} = drizzleReactHooks;
+const {useDrizzle} = drizzleReactHooks;
 
 function QProposals() {
     const {drizzle} = useDrizzle();
-    const state = useDrizzleState(state => state);
     const dispatch = useDispatch();
-    const constitutionVoting = new ConstitutionVotingService(drizzle, "ConstitutionVoting");
 
     useEffect(() => {
-        dispatch(getConstitutionVotingProposals(constitutionVoting))
+        dispatch(getQProposals(drizzle))
     }, []);
 
     const loading = useSelector(loadingProposals);
@@ -32,7 +29,7 @@ function QProposals() {
                 activeDescr={proposals?.length + " POLLS"}
                 activeContent={
                     <ProposalsList
-                        typeList={"QProposals"}
+                        activeTab="q-proposals"
                         proposals={proposals}
                         loading={loading}
                         errorMessage={errorMessage}

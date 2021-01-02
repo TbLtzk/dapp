@@ -1,50 +1,33 @@
 import * as actionTypes from 'store/actions/action-types/voting/qproposals';
 
-/* getQExpertProposals */
-export const getQExpertProposals = (contracts) => ({
-    type: actionTypes.GET_QEXPERT_PROPOSALS,
-    contracts
+export const getQProposals = (drizzle) => ({
+    type: actionTypes.GET_Q_PROPOSALS,
+    drizzle
 });
 
-export const getQExpertProposalsSuccess = (result) => ({
-    type: actionTypes.GET_QEXPERT_PROPOSALS_SUCCESS,
+export const getQProposalsSuccess = (result) => ({
+    type: actionTypes.GET_Q_PROPOSALS_SUCCESS,
     result,
 });
 
-export const getQExpertProposalsError = (result) => ({
-    type: actionTypes.GET_QEXPERT_PROPOSALS_ERROR,
+export const getQProposalsError = (result) => ({
+    type: actionTypes.GET_Q_PROPOSALS_ERROR,
     result,
 });
 
-/* create proposal staff */
-export const setCreateProposalObj = (result) => ({
-    type: actionTypes.SET_CREATED_PROPOSAL_OBJECT,
-    result
+
+export const getQProposal = (contract, id) => ({
+    type: actionTypes.GET_Q_PROPOSAL,
+    contract,
+    id
 });
 
-export const setCreatedStepsLimit = (result) => ({
-    type: actionTypes.SET_CREATED_STEPS_LIMIT,
-    result
+export const getQProposalSuccess = (result) => ({
+    type: actionTypes.GET_Q_PROPOSAL_SUCCESS,
+    result,
 });
 
-export const setStepCounter = (result) => ({
-    type: actionTypes.SET_STEP_COUNTER,
-    result
+export const getQProposalError = (result) => ({
+    type: actionTypes.GET_Q_PROPOSAL_ERROR,
+    result,
 });
-
-export const setDisabledCreatedProposalBtn = (result) => ({
-    type: actionTypes.SET_DISABLED_CREATED_PROPOSAL_BTN,
-    result
-});
-
-export const createProposal = (drizzle, data) => ({
-    type: actionTypes.CREATE_PROPOSAL,
-    drizzle,
-    data
-});
-
-export const createProposalSuccess = (result) => ({
-    type: actionTypes.CREATE_PROPOSAL_SUCCESS,
-    result
-});
-

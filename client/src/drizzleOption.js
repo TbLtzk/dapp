@@ -12,8 +12,9 @@ const options = {
   web3: {
     fallback: {
       type: "ws",
-      url: "ws://54.187.245.252:8545",
+      url: "ws://18.158.7.68:8545",
     },
+
   },
 };
 

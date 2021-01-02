@@ -11,10 +11,8 @@ import QTypeProposalsTabs from "pages/UserPages/QGovernance/components/QTypeProp
 import ProposalsList from "pages/UserPages/QGovernance/components/ProposalsList";
 
 import ContractRegistryService from "api/contracts/ContractRegistryService";
-import RootsVotingService from "api/contracts/Voting/RootsVotingService";
 import {drizzleReactHooks} from "@drizzle/react-plugin";
 import {useDispatch, useSelector} from "react-redux";
-import {userAddressMetamask} from "store/selectors/user-inf";
 
 const {useDrizzle} = drizzleReactHooks;
 
@@ -23,7 +21,6 @@ function QRootNodePanel() {
     const dispatch = useDispatch();
 
     const contractRegistry = new ContractRegistryService(drizzle);
-    const rootsVotingService = new RootsVotingService(drizzle, "RootsVoting");
 
     const loading = useSelector(loadingProposals);
     const errorMessage = useSelector(errorM);
@@ -31,7 +28,7 @@ function QRootNodePanel() {
 
 
     useEffect(() => {
-        dispatch(getRootsVotingProposals(rootsVotingService))
+        dispatch(getRootsVotingProposals(drizzle))
     }, [dispatch]);
 
     // useEffect(async () => {
@@ -47,6 +44,7 @@ function QRootNodePanel() {
                 activeDescr={proposals?.length + " POLLS"}
                 activeContent={
                     <ProposalsList
+                        activeTab="root-node"
                         proposals={proposals}
                         loading={loading}
                         errorMessage={errorMessage}
