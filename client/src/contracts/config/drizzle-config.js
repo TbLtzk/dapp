@@ -4,14 +4,14 @@ import { Drizzle } from '@drizzle/store';
 import { contractsToAbi } from '../mapping/contract-to-abi';
 import { contractsToAddresses } from '../mapping/contract-to-address';
 
-const web3 = new Web3(Web3.givenProvider);
+export const web3 = new Web3(Web3.givenProvider);
 web3.eth.handleRevert = true;
 
 const optionsDrizzleBase = {
   web3: {
     fallback: {
       type: 'ws',
-      url: 'ws://54.187.245.252:8545',
+      url: 'ws://18.158.7.68:8545',
     },
   },
 };
@@ -28,6 +28,7 @@ const optionsDrizzleRegistry = {
 
 const optionsDrizzle = () => {
   const contracts = [];
+  // eslint-disable-next-line no-restricted-syntax
   for (const contractName in contractsToAddresses) {
     if (contractName in contractsToAddresses && contractName in contractsToAbi) {
       contracts.push({

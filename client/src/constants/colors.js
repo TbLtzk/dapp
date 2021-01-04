@@ -1,7 +1,7 @@
 const colors = {
   main: '#2C2B9C',
   circleWhite: '#F1F2FD',
-  blue: '#2B295C',
+  blue: '#2C2B9C',
   darkBlue: '#151552',
   background: '#F3F7FC',
   grey: '#9595A5',
