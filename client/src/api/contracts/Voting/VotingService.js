@@ -1,8 +1,8 @@
 import {
-    convertNumVotes,
-    getPastEvents,
-    getPastProposalsIds,
-} from "api/contracts/Voting/handler/commonFunc";
+  convertNumVotes,
+  getPastEvents,
+  getPastProposalsIds, transformToPercentage,
+} from 'api/contracts/Voting/handler/commonFunc';
 
 export default class VotingService {
 
@@ -72,7 +72,7 @@ export default class VotingService {
     }
 
     /**
-     * proposal status
+     * proposal stats
      * @param id
      * @return array
      */
@@ -206,7 +206,6 @@ export default class VotingService {
      */
     async getOneProposal(id) {
         try {
-            console.log("id", id);
             if (id) {
                 let objRes = {};
                 let promiseStatus = await this.getProposalStatus(id);
@@ -214,7 +213,7 @@ export default class VotingService {
                     let promiseRes = await this.proposalIteratorResult(id);
                     if (promiseRes) {
                         objRes = await this.getProposalData(promiseRes, id, promiseStatus);
-                        console.log("objRes", objRes);
+                        // console.log("objRes", objRes);
                     }
                 }
                 return [objRes];
@@ -289,5 +288,26 @@ export default class VotingService {
             console.log(e);
         }
     }
+
+  /**
+   * proposal stats data
+   * @param id
+   * @return array
+   */
+  async getProposalStatsData(id) {
+    try {
+      let objRes = {};
+      let proposalStats = await this.getProposalStats(id);
+      objRes.currentMajority = transformToPercentage(proposalStats.currentMajority);
+      objRes.currentQuorum = transformToPercentage(proposalStats.currentQuorum);
+      objRes.currentVetoPercentage = transformToPercentage(proposalStats.currentVetoPercentage);
+      objRes.requiredMajority = transformToPercentage(proposalStats.requiredMajority);
+      objRes.requiredQuorum = transformToPercentage(proposalStats.requiredQuorum);
+      objRes.vetoThreshold = transformToPercentage(proposalStats.vetoThreshold);
+      return objRes;
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
 }

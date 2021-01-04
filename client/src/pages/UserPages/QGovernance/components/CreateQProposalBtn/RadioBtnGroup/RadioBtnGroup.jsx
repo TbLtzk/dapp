@@ -13,10 +13,11 @@ function RadioBtnGroup(props) {
   const [activeRadioBtn, setActiveRadioBtn] = useState('');
 
   // const formData = useSelector(formObject);
-
   useEffect(() => {
-    setActiveRadioBtn(formData[nameArr]);
-  }, [formData]);
+    if (formData){
+      setActiveRadioBtn(formData[nameArr]);
+    }
+  }, [formData, nameArr]);
 
   return (
       <Wrap>

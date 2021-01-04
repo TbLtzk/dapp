@@ -1,6 +1,6 @@
 import {
   convertNumVotes,
-  getStatusTransformation,
+  getStatusTransformation, transformToPercentage,
 } from 'api/contracts/Voting/handler/commonFunc';
 import VotingService from 'api/contracts/Voting/VotingService';
 
@@ -27,12 +27,12 @@ export default class EmergencyUpdateVotingService extends VotingService {
       objRes.status = getStatusTransformation(promiseStatus);
       objRes.title = "Emergency update proposal";
       let proposalStats = await this.getProposalStats(id);
-      objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
-      objRes.currentQuorum = convertNumVotes(proposalStats.currentQuorum);
-      objRes.currentVetoPercentage = convertNumVotes(proposalStats.currentVetoPercentage);
-      objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
-      objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
-      objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
+      objRes.currentMajority = transformToPercentage(proposalStats.currentMajority);
+      objRes.currentQuorum = transformToPercentage(proposalStats.currentQuorum);
+      objRes.currentVetoPercentage = transformToPercentage(proposalStats.currentVetoPercentage);
+      objRes.requiredMajority = transformToPercentage(proposalStats.requiredMajority);
+      objRes.requiredQuorum = transformToPercentage(proposalStats.requiredQuorum);
+      objRes.vetoThreshold = transformToPercentage(proposalStats.vetoThreshold);
       objRes.contract = this.contractName;
 
       return objRes;
