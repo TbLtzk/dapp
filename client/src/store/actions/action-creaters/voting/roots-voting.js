@@ -15,10 +15,11 @@ export const getRootsVotingProposalsError = (result) => ({
     result,
 });
 
-export const getRootsVotingProposal = (contract, id) => ({
+export const getRootsVotingProposal = (contractName, id, drizzle) => ({
     type: actionTypes.GET_ROOT_VOTING_PROPOSAL,
-    contract,
-    id
+    contractName,
+    id,
+    drizzle
 });
 
 export const getRootsVotingProposalSuccess = (result) => ({

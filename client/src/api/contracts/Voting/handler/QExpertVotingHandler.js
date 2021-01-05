@@ -24,3 +24,21 @@ export const chooseExpertContractDependsOnType = (drizzle, typeContract, type) =
 
   return contract;
 };
+export const chooseExpertContractNameDependsOnType = (drizzle, typeContract, type) => {
+  let contractName = null;
+  if (type === 'q-fees-&-incentives-expert-panel') {
+    if (typeContract === 'member') {
+      contractName = 'EPQFI_MembershipVoting';
+    } else if (typeContract === 'parameters') {
+      contractName = 'EPQFI_ParametersVoting';
+    }
+  } else if (type === 'q-defi-(decentralized-finance)-expert-panel') {
+    if (typeContract === 'member') {
+      contractName = 'EPDR_MembershipVoting';
+    } else if (typeContract === 'parameters') {
+      contractName = 'EPDR_ParametersVoting';
+    }
+  }
+
+  return contractName;
+};

@@ -6,8 +6,8 @@ export const basicVote = {
 };
 
 export const constitutionCheck = {
-    subtitle: "Root Nodes check if the proposal is according to the Q constitution and provide an objection otherwise.",
-    radioBtnDescr: "Do you consider this proposal breaches the Q constitution?",
+    subtitle: "Only Root Node Eligible.",
+    radioBtnDescr: "Do you consider this proposal breaches constitution?",
     radioBtnName: "constitution-check",
     radioBtn: ["No", "Yes"],
 };
