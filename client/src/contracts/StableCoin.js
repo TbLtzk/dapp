@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { drizzle, web3 } from './config/drizzle-config';
+import { contractsToAddresses } from './mapping/contract-to-address';
 
 export class StableCoin {
   constructor() {
@@ -10,15 +11,36 @@ export class StableCoin {
     return await this.methods.balanceOf(address).call();
   }
 
-  async approve(spender, amount) {
-    return await this.methods.approve(spender, web3.utils.toWei(new web3.utils.BN(amount))).send({ from: spender });
+  async decimals() {
+    return await this.methods.decimals().call();
+  }
+
+  async approve(spender, amount, address) {
+    // const amountL = new web3.utils.BN(web3.utils.toWei(amount));
+    return await this.methods.approve(spender, amount).send({ from: address });
+  }
+
+  async mint(address, recepient, amount) {
+    return await this.methods.mint(recepient, new web3.utils.BN(web3.utils.toWei(amount))).send({ from: address });
   }
 }
 export class StableCoinQUSD extends StableCoin {
+  constructor() {
+    super();
+    this.address = contractsToAddresses[this.constructor.name];
+  }
 }
 
 export class GovernedEpdrQethAddress extends StableCoin {
+  constructor() {
+    super();
+    this.address = contractsToAddresses[this.constructor.name];
+  }
 }
 
 export class GovernedEpdrQbtcAddress extends StableCoin {
+  constructor() {
+    super();
+    this.address = contractsToAddresses[this.constructor.name];
+  }
 }

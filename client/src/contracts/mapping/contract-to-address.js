@@ -42,7 +42,7 @@ const contractsToAddressesCustom = {
   GovernedEpdrQethQusdOracle: '0x62BD936432C97cD2A2908Bf1973e3ec3a68F81B5',
   GovernedEpdrQbtcQusdOracle: '0x3C7343037645530a65f4FeC5a6A596f9C91eAf3e',
   GovernedEpdrQethAddress: '0x62BD936432C97cD2A2908Bf1973e3ec3a68F81B5',
-  GovernedEpdrQbtcAddress: '0xC85048B7F7Dfcd9C134e329Bb63C0D8554274983',
+  GovernedEpdrQbtcAddress: '0x10A2298bc68e41700520F1dCb9E9E2B14E15d2E5',
 };
 
 export const contractsToAddresses = {

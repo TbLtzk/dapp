@@ -2,92 +2,105 @@ import React, { useEffect, useState } from 'react';
 import { Col } from 'react-bootstrap';
 import ButtonSlide from 'components/Base/Buttons/ButtonSlide';
 import PropTypes from 'prop-types';
-import { GovernedEpdrQbtcQusdOracle, GovernedEpdrQethQusdOracle } from 'contracts/FxPriceFeed';
-import { web3 } from 'contracts/config/drizzle-config';
-import { roundNumber } from 'func/useful';
-import EPDRParameters from 'contracts/EPDRParameters';
-import { GovernedEpdrQbtcAddress, GovernedEpdrQethAddress } from 'contracts/StableCoin';
 import { useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import { BorrowingCoreQUSD } from 'contracts/BorrowingCore';
+import Handler from './handler';
 
 import { CardDetail } from '../styles';
+import { GovernedEpdrQbtcAddress } from '../../../../contracts/StableCoin';
+import { roundNumber, uintPercentToNumber } from '../../../../func/useful';
+import { GovernedEpdrQbtcQusdOracle, GovernedEpdrQethQusdOracle } from '../../../../contracts/FxPriceFeed';
+import { fromBtcBlockchain } from '../../../../func/balance';
 
 export default function BorrowBlock(props) {
   const { actCardData } = props;
 
-  const [stableCoinContract, setStableCoinContract] = useState(undefined)
+  const [lockedCol, setLockedCol] = useState(0);
+  const [exchangeRate, setExchangeRate] = useState(0);
+  const [avToWithdraw, setAvToWithdraw] = useState(0);
+  const [avToDeposit, setAvToDeposit] = useState(0);
+  const [borLimit, setBorLimit] = useState(0);
+  const [avToBorrow, setAvToBorrow] = useState(0);
+  const [colValue, setColValue] = useState(0);
+  const [liqLimit, setLiqLimit] = useState(0);
+  const [liqPrice, setLiqPrice] = useState(0);
 
-  const [exchangeRate, setExchangeRate] = useState(0)
-  const [avToDeposit, setAvToDeposit] = useState(0)
-  const [borLimit, setBorLimit] = useState(0)
-  const [avToBorrow, setAvToBorrow] = useState(0)
-  const [colValue, setColValue] = useState(0)
-  const [liqLimit, setLiqLimit] = useState(0)
+  const [colRatio, setColRatio] = useState(0);
+  const [liqRatio, setLiqRatio] = useState(0);
 
   const address = useSelector(userAddressMetamask);
+  const handler = new Handler(address, actCardData?.vault?.colKey);
   const borrowingContract = new BorrowingCoreQUSD();
 
   useEffect(async () => {
     if (actCardData.type !== 'borrow') return;
 
-    // Setup contracts
-    let oracleContractL, stableCoinContractL;
-    if (actCardData.vault.colKey === 'QETH') oracleContractL = new GovernedEpdrQethQusdOracle();
-    else if (actCardData.vault.colKey === 'QBTC') oracleContractL = new GovernedEpdrQbtcQusdOracle();
-    if (actCardData.vault.colKey === 'QETH') stableCoinContractL = new GovernedEpdrQethAddress();
-    else if (actCardData.vault.colKey === 'QBTC') stableCoinContractL = new GovernedEpdrQbtcAddress();
-
-    setStableCoinContract(stableCoinContractL);
-
-    // Setup exchange rate
-    let exchangeRateL = await oracleContractL.exchangeRate().catch(() => {});
-    exchangeRateL = roundNumber(web3.utils.fromWei(new web3.utils.BN(exchangeRateL)), 4);
-    setExchangeRate(exchangeRateL);
-
-    // Setup available to deposit limit
-    let avToDepositL = await stableCoinContractL.balanceOf(address).catch(() => {});
-    avToDepositL = avToDepositL === undefined ? 0 : avToDepositL;
-    setAvToDeposit(avToDepositL);
-
-    // Setup collateral value
-    let colValueL = actCardData.vault.colAsset * exchangeRate;
-    setColValue(colValueL)
-
-    // Setup borrowing limit
-    const parametersContract = new EPDRParameters();
-    let colRatioClear = await  parametersContract.getUint(`governed.EPDR.${actCardData.collateral}_QUSD_collateralizationRatio`).catch(() => {});
-    let colRatio = web3.utils.fromWei(new web3.utils.BN(colRatioClear))
-    let borLimitL = avToDepositL/colRatio;
-    setBorLimit(borLimitL);
-
-    // Setup available to borrow
-    setAvToBorrow(borLimitL - actCardData.vault.debtBalance)
-
-    // Setup liquidation limit
-    let liqRatioClear = await  parametersContract.getUint(`governed.EPDR.${actCardData.collateral}_QUSD_liquidationRatio`).catch(() => {});
-    let liqLimitL = Number(liqRatioClear) !== 0 ? colRatioClear / liqRatioClear : 0;
-    setLiqLimit(liqLimitL);
-
+    handler.setExchangeRate(setExchangeRate);
+    handler.setAvailableToDeposit(setAvToDeposit);
+    handler.setCollateralRatio(actCardData.collateral, setColRatio);
+    handler.setLiquidationRatio(actCardData.collateral, setLiqRatio);
   }, [actCardData]);
 
+  useEffect(() => {
+    if (actCardData.type !== 'borrow') return;
+
+    // Setup locked collateral
+    let lockedColL = 0;
+    if (actCardData?.vault?.colKey === 'QETH') {
+      lockedColL = actCardData.vault.colAsset;
+    } else if (actCardData?.vault?.colKey === 'QBTC') {
+      lockedColL = fromBtcBlockchain(actCardData.vault.colAsset);
+    }
+    setLockedCol(lockedColL);
+
+    // Setup collateral value
+    const colValueL = lockedColL * exchangeRate;
+    setColValue(colValueL);
+
+    // Setup available to borrow
+    const avToBorrowL = borLimit - actCardData.vault.debtBalance;
+    setAvToBorrow(avToBorrowL);
+
+    // Setup liquidation price
+    if (colRatio !== 0 && Number(lockedColL) !== 0) {
+      const liqPriceL = roundNumber((actCardData.vault.debtBalance * liqRatio) / lockedColL, 4);
+      setLiqPrice(liqPriceL);
+    }
+
+    // Setup borrow limit
+    if (colRatio !== 0) {
+      const borLimitL = roundNumber(colValueL / colRatio, 4);
+      setBorLimit(borLimitL);
+    }
+
+    // Setup liquidation limit
+    if (liqRatio !== 0) {
+      const liqLimitL = roundNumber(colValueL / liqRatio, 4);
+      setLiqLimit(liqLimitL);
+    }
+
+    // Setup liquidation limit
+    if (exchangeRate !== 0) {
+      const avToWithdrawL = roundNumber((avToBorrow / exchangeRate) * colRatio, 4);
+      setAvToWithdraw(avToWithdrawL);
+    }
+  });
+
   const borrow = (formData) => {
-    borrowingContract.generateStc(address, actCardData.vault.vaultNum, formData.field).catch((e) => {console.log(e)})
+    handler.borrow(formData.field, actCardData.vault.vaultNum);
   };
   const repay = (formData) => {
-    borrowingContract.payBackSTC(address, actCardData.vault.vaultNum, formData.field).catch((e) => {console.log(e)})
+    handler.repay(formData.field, actCardData.vault.vaultNum);
   };
   const addDeposit = async (formData) => {
-    borrowingContract.depositCol(address, actCardData.vault.vaultNum, formData.field).catch((e) => {console.log(e)})
-    // let approve = await  stableCoinContract.approve(address, formData.field);
-    // if (approve.status === true) {
-    //   borrowingContract.depositCol(address, actCardData.vault.vaultNum, formData.field)
-    // }
+    handler.addDeposit(formData.field, actCardData.vault.vaultNum);
   };
-
   const withdraw = (formData) => {
-    console.log('withdraw', formData);
-    borrowingContract.withdrawCol(address, actCardData.vault.vaultNum, formData.field).catch((e) => {console.log(e)})
+    handler.withdraw(formData.field, actCardData.vault.vaultNum);
+  };
+  const mint = (formData) => {
+    handler.mint(formData.field);
   };
 
   return (
@@ -101,7 +114,7 @@ export default function BorrowBlock(props) {
         </div>
         <div className="txt">
           <span>Locked collateral</span>
-          <span>{actCardData.vault?.colAsset}</span>
+          <span>{lockedCol}</span>
         </div>
         <div className="txt">
           <span>Asset price</span>
@@ -109,15 +122,15 @@ export default function BorrowBlock(props) {
         </div>
         <div className="txt">
           <span>Available to deposit</span>
-          <span>{avToDeposit ? avToDeposit : 0}</span>
+          <span>{avToDeposit || 0}</span>
         </div>
         <div className="txt">
           <span>Available to withdraw</span>
-          <span>-</span>
+          <span>{avToWithdraw}</span>
         </div>
         <div className="txt">
           <span>Liquidation Price</span>
-          <span>-</span>
+          <span>{liqPrice}</span>
         </div>
 
         <p className="title-2">Borrowing</p>
@@ -156,7 +169,7 @@ export default function BorrowBlock(props) {
             btnShortTxt="Borrow"
             onclick={borrow}
             inpType="number"
-            inpPlaceholder="Amount (Q)"
+            inpPlaceholder="Amount (QUSD)"
             inpRules={{ required: true }}
           />
           <ButtonSlide
@@ -164,7 +177,7 @@ export default function BorrowBlock(props) {
             btnShortTxt="Repay"
             onclick={repay}
             inpType="number"
-            inpPlaceholder="Amount (Q)"
+            inpPlaceholder="Amount (QUSD)"
             inpRules={{ required: true }}
           />
           <ButtonSlide
@@ -181,6 +194,14 @@ export default function BorrowBlock(props) {
             onclick={withdraw}
             inpType="number"
             inpPlaceholder="Amount (Q)"
+            inpRules={{ required: true }}
+          />
+          <ButtonSlide
+            btnTxt="Mint"
+            btnShortTxt="Mint"
+            onclick={mint}
+            inpType="text"
+            inpPlaceholder="Amount to mint"
             inpRules={{ required: true }}
           />
         </div>

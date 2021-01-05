@@ -14,10 +14,18 @@ import {
   ownStakeSelector,
   totalStakeSelector,
 } from 'store/selectors/validators';
+import { Col, Row } from 'react-bootstrap';
+import { useForm } from 'react-hook-form';
 import { CustomBlockVP } from './styles';
+import FormInput from '../../Base/Form/FormInput';
+import { errorHandler } from '../../../func/useful';
+import Button from '../../Base/Buttons/Button';
+import Validators from '../../../contracts/Validators';
 
 export default function ValidatorPool(props) {
   const { showTitle } = props;
+
+  const { register: reg3, handleSubmit: submit3, errors: err3 } = useForm();
 
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
@@ -32,6 +40,11 @@ export default function ValidatorPool(props) {
     dispatch(getDelegatedStake(address));
     dispatch(getAccTotalStake(address));
   }, []);
+
+  const setTotalStake = (formData) => {
+    const validatorsCont = new Validators();
+    validatorsCont.commitCollateral(address, formData.amount).then((res) => console.log(res));
+  };
 
   return (
     <CustomBlockVP>
@@ -69,6 +82,24 @@ export default function ValidatorPool(props) {
           {accTotalStake}
           Q
         </span>
+      </div>
+      <div className="form-container" style={{ flexDirection: 'column' }}>
+        <span>Set Total stake</span>
+        <div>
+          <FormInput
+            name="amount"
+            type="number"
+            placeholder="1Q"
+            ref={reg3({ required: true })}
+            valid={errorHandler(err3, 'amount')}
+          />
+          <Button
+            type="outline"
+            title="Set"
+            width="auto"
+            handleButton={submit3(setTotalStake)}
+          />
+        </div>
       </div>
     </CustomBlockVP>
   );

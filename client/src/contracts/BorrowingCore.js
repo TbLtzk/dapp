@@ -1,9 +1,11 @@
 /* eslint-disable max-classes-per-file */
-import { drizzle } from './config/drizzle-config';
+import { drizzle, web3 } from './config/drizzle-config';
+import { contractsToAddresses } from './mapping/contract-to-address';
 
 class BorrowingCore {
   constructor() {
     this.methods = drizzle.contracts[this.constructor.name].methods;
+    this.address = contractsToAddresses[this.constructor.name];
   }
 
   async userVaultsCount(address) {
@@ -23,15 +25,17 @@ class BorrowingCore {
   }
 
   async generateStc(address, vaultId, amount) {
-    return await this.methods.generateStc(vaultId, amount).send({ from: address });
+    const amountL = new web3.utils.BN(amount);
+    return await this.methods.generateStc(vaultId, amountL).send({ from: address });
+  }
+
+  async payBackSTC(address, vaultId, amount) {
+    const amountL = new web3.utils.BN(amount);
+    return await this.methods.payBackSTC(vaultId, amountL).send({ from: address });
   }
 
   async withdrawCol(address, vaultId, amount) {
     return await this.methods.withdrawCol(vaultId, amount).send({ from: address });
-  }
-
-  async payBackSTC(address, vaultId, amount) {
-    return await this.methods.payBackSTC(vaultId, amount).send({ from: address });
   }
 
   async balanceOf(address) {

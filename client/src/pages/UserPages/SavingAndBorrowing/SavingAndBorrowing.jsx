@@ -42,18 +42,26 @@ export default function SavingAndBorrowing() {
           <Row>
             <BorrowCard setActCardData={setActCardData} />
           </Row>
-          <Button
-            type="outline"
-            title="Create QETH vault"
-            width="auto"
-            handleButton={() => createVault('QETH')}
-          />
-          <Button
-            type="outline"
-            title="Create QBTC vault"
-            width="auto"
-            handleButton={() => createVault('QBTC')}
-          />
+          <Row style={{ marginTop: '20px' }}>
+            <Col xs={6}> </Col>
+            <Col xs={3}>
+              <Button
+                type="outline"
+                title="Create QETH vault"
+                width="100%"
+                handleButton={() => createVault('QETH')}
+              />
+            </Col>
+            <Col xs={3}>
+              <Button
+                type="outline"
+                title="Create QBTC vault"
+                width="100%"
+                handleButton={() => createVault('QBTC')}
+              />
+            </Col>
+
+          </Row>
         </Col>
         <Col xs={4} className="col-info-container saving">
           <SavingBlock actCardData={actCardData} />

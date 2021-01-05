@@ -22,3 +22,13 @@ export const WeiToQ = (Wei) => {
   if (Wei === 0) return 0;
   return Wei / 1000000000000000000;
 };
+
+export const fromBtcBlockchain = (btc) => {
+  if (btc.isNaN === true) return 0;
+  return btc / 1e+8;
+};
+
+export const toBtcBlockchain = (num) => {
+  if (num.isNaN === true) return 0;
+  return num * 1e+8;
+};

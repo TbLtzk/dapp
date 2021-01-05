@@ -5,6 +5,7 @@ import {
   setDelegatedStake, setAccTotalStake, setInterestRate, getInterestRate,
 } from 'store/actions/action-creaters/validators';
 import Validators from '../../contracts/Validators';
+import { web3 } from '../../contracts/config/drizzle-config';
 
 let contractInstance = null;
 
@@ -35,7 +36,8 @@ function* getTotalStakeGenerator({ address }) {
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADING });
 
     const contract = getContractInstance();
-    const data = yield contract.getValidatorTotalStake(address);
+    let data = yield contract.getValidatorTotalStake(address);
+    data = web3.utils.fromWei(data);
 
     yield put(setTotalStake(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
@@ -50,7 +52,8 @@ function* getOwnStakeGenerator({ address }) {
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADING });
 
     const contract = getContractInstance();
-    const data = yield contract.getValidatorsOwnStake(address);
+    let data = yield contract.getValidatorsOwnStake(address);
+    data = web3.utils.fromWei(data);
 
     yield put(setOwnStake(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
@@ -80,7 +83,8 @@ function* getAccTotalStakeGenerator({ address }) {
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADING });
 
     const contract = getContractInstance();
-    const data = yield contract.getAccountableTotalStake(address);
+    let data = yield contract.getAccountableTotalStake(address);
+    data = web3.utils.fromWei(data);
 
     yield put(setAccTotalStake(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
@@ -96,6 +100,7 @@ function* getInterestRateGenerator({ address }) {
 
     const contract = getContractInstance();
     const data = yield contract.getInterestRate(address);
+    console.log(data);
 
     yield put(setInterestRate(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });

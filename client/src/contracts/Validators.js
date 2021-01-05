@@ -1,13 +1,14 @@
-import { drizzle, web3 } from './config/drizzle-config';
+import { web3, contracts } from './config/drizzle-config';
 
 export default class Validators {
   constructor() {
-    this.methods = drizzle.contracts[this.constructor.name].methods;
+    this.methods = contracts[this.constructor.name].methods;
   }
 
   async getValidatorTotalStake(address) {
     return await this.methods.getValidatorTotalStake(address).call();
   }
+
 
   async getValidatorsOwnStake(address) {
     return await this.methods.getValidatorsOwnStake(address).call();
@@ -30,11 +31,19 @@ export default class Validators {
   }
 
   async setDelegatorsShare(address, uintPercent) {
-    console.log(uintPercent);
-    return await this.methods.setDelegatorsShare(new web3.utils.BN(uintPercent)).send({ from: address });
+    return await this.methods.setDelegatorsShare(uintPercent).send({ from: address });
   }
 
   async setInterestRate(address, uintPercent) {
-    return await this.methods.setInterestRate(new web3.utils.BN(uintPercent)).send({ from: address });
+    return await this.methods.setInterestRate(uintPercent).send({ from: address });
+  }
+
+  async commitCollateral(address, value) {
+    const valueL = new web3.utils.BN(web3.utils.toWei(value));
+    return await this.methods.commitCollateral().send({ from: address, value: valueL });
+  }
+
+  async enterShortList(address) {
+    return await this.methods.enterShortList().send({ from: address });
   }
 }

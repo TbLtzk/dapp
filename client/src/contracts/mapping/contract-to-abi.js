@@ -2,6 +2,7 @@ import ContractRegistryABI from '../abi/ContractRegistryABI';
 import QPiggyBankABI from '../abi/QPiggyBankABI';
 import ValidatorsABI from '../abi/ValidatorsABI';
 import ValidationRewardPoolsABI from '../abi/ValidationRewardPoolsABI';
+import ValidationRewardProxyABI from '../abi/ValidationRewardProxyABI';
 import SavingABI from '../abi/SavingABI';
 import BorrowingCoreABI from '../abi/BorrowingCoreABI';
 import StableCoinABI from '../abi/StableCoinABI';
@@ -14,6 +15,7 @@ export const contractsToAbi = {
   QPiggyBank: QPiggyBankABI,
   Validators: ValidatorsABI,
   ValidationRewardPools: ValidationRewardPoolsABI,
+  ValidationRewardProxy: ValidationRewardProxyABI,
   SavingQUSD: SavingABI,
   BorrowingCoreQUSD: BorrowingCoreABI,
   StableCoinQUSD: StableCoinABI,

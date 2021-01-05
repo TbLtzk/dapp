@@ -1,46 +1,48 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { Block } from 'constants/style';
 import { useForm } from 'react-hook-form';
 import FormInput from 'components/Base/Form/FormInput';
 import Button from 'components/Base/Buttons/Button';
-import { errorHandler, numberToUintPercent, uintPercentToNumber } from 'func/useful';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  getDelegatorsShare,
-  setDelegatorsShareSend,
-  setInterestRateSend,
-} from 'store/actions/action-creaters/validators';
+import { errorHandler } from 'func/useful';
+import { useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import { delegatorsShareSelector, interestRateSelector } from 'store/selectors/validators';
-import { getBalance } from 'store/actions/action-creaters/validation-reward-pools';
-import { balanceSelector } from 'store/selectors/validation-reward-pools';
+import ValidationRewardProxy from '../../../../contracts/ValidationRewardProxy';
+import Handler from './handler';
+import Validators from '../../../../contracts/Validators';
 
 export default function RewardStats() {
   const { register: reg1, handleSubmit: submit1, errors: err1 } = useForm();
   const { register: reg2, handleSubmit: submit2, errors: err2 } = useForm();
 
-  const address = useSelector(userAddressMetamask);
-  const delegatorsShare = uintPercentToNumber(useSelector(delegatorsShareSelector));
-  const interestRate = useSelector(interestRateSelector);
-  const balance = useSelector(balanceSelector);
+  const [amountRP, setAmountRP] = useState(0);
+  const [delShare, setDelShare] = useState(0);
+  const [intRate, setIntRate] = useState(0);
 
-  const dispatch = useDispatch();
+  const address = useSelector(userAddressMetamask);
+  const handler = new Handler(address);
 
   useEffect(() => {
-    dispatch(getBalance(address));
-    dispatch(getDelegatorsShare(address));
+    handler.getAmountOfRewardPool(setAmountRP);
+    handler.getDelegatorShare(setDelShare);
+    handler.getInterestRate(setIntRate);
   }, []);
 
   const setInterestRate = (formData) => {
-    // const rootNodes = new RootNodes();
-    // rootNodes.getMembers().then((data) => console.log(data));
-    // rootNodes.addMember(address).then((data) => console.log(data));
-    dispatch(setInterestRateSend(address, numberToUintPercent(formData.amount)));
+    handler.setInterestRate(formData, setIntRate);
   };
 
   const setValidatorShare = (formData) => {
-    dispatch(setDelegatorsShareSend(address, numberToUintPercent(formData.amount)));
+    handler.setValidatorShare(formData, setDelShare);
+  };
+
+  const updateAmountRP = async () => {
+    const vrpCont = new ValidationRewardProxy();
+    const res1 = await vrpCont.allocate(address);
+    if (res1.status === true) {
+      // const validatorsCont = new Validators();
+      // validatorsCont.enterShortList(address).then((res) => console.log(res));
+    }
   };
 
   return (
@@ -49,28 +51,28 @@ export default function RewardStats() {
       <div>
         <span>Amount of Pool Rewards:</span>
         <span>
-          {balance}
+          {amountRP}
           Q
         </span>
       </div>
       <div>
         <span>Validator Share:</span>
         <span>
-          {delegatorsShare === 0 ? 0 : 100 - delegatorsShare}
+          {delShare === 0 ? 0 : 100 - delShare}
           %
         </span>
       </div>
       <div>
         <span>Delegators Share:</span>
         <span>
-          {delegatorsShare}
+          {delShare}
           %
         </span>
       </div>
       <div>
         <span>Payout Interest:</span>
         <span>
-          {interestRate}
+          {intRate}
           %
         </span>
       </div>
@@ -110,6 +112,17 @@ export default function RewardStats() {
               title="Set"
               width="94px"
               handleButton={submit2(setInterestRate)}
+            />
+          </div>
+        </Col>
+        <Col xs={12} className="form-container">
+          <span>Set Total stake</span>
+          <div>
+            <Button
+              type="outline"
+              title="Set"
+              width="100%"
+              handleButton={updateAmountRP}
             />
           </div>
         </Col>
