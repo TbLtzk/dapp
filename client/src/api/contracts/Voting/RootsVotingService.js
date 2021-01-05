@@ -35,6 +35,7 @@ export default class RootsVotingService extends VotingService {
     let objRes = {};
     let objStats = {};
     try {
+      console.log('promiseRes', promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.base.remark;
       const candidateAddress = promiseRes.candidate;
@@ -42,8 +43,13 @@ export default class RootsVotingService extends VotingService {
       const replaceDestAddress = promiseRes.replaceDest;
       objRes.replaceDest = replaceDestAddress;
       objRes.votesCount = promiseRes.votesCount;
-      objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
-      objRes.votesFor = promiseRes.base.counters.weightFor;
+      // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
+      // objRes.votesFor = promiseRes.base.counters.weightFor;
+      const weightAgainst = promiseRes.base.counters.weightAgainst;
+      objRes.votesAgainst = this.drizzle.web3.utils.fromWei(weightAgainst, 'ether');
+
+      const weightFor = promiseRes.base.counters.weightFor;
+      objRes.votesFor = this.drizzle.web3.utils.fromWei(weightFor, 'ether');
       objRes.requiredMajority = promiseRes.base.params.requiredMajority;
       objRes.requiredQuorum = promiseRes.base.params.requiredQuorum;
       //the ending is given by: vetoEndTime.

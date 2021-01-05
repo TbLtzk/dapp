@@ -6,6 +6,9 @@ import {
     getSlashingVotingProposalSuccess, getSlashingVotingProposalError
 } from "store/actions/action-creaters/voting/slashing-voting";
 import SlashingVotingService from "api/contracts/Voting/SlashingVotingService";
+import ConstitutionVotingService from '../../../api/contracts/Voting/ConstitutionVotingService';
+import EmergencyUpdateVotingService from '../../../api/contracts/Voting/EmergencyUpdateVotingService';
+import GeneralUpdateVotingService from '../../../api/contracts/Voting/GeneralUpdateVotingService';
 
 function* getSlashingVotingProposals({drizzle}) {
     try {
@@ -26,12 +29,16 @@ function* getSlashingVotingProposals({drizzle}) {
     }
 }
 
-function* getProposal({contract, id}) {
+function* getProposal({contractName, id, drizzle}) {
     try {
+      const contract = new SlashingVotingService(drizzle, contractName);
+      if (contract) {
         const data = yield contract.getOneProposal(id);
         console.log("GET_SLASHING_PROPOSAL", data);
 
         yield put(getSlashingVotingProposalSuccess(data));
+      }
+
     } catch (err) {
         console.log('err', err);
         yield put(getSlashingVotingProposalError(err.message));

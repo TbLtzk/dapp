@@ -40,8 +40,10 @@ function VoteBreakdown(props) {
             </WrapColorDescr>
 
           </WrapBlock>
-          <CircleDescrData>- For: {voteBreakdown.currentMajority}%</CircleDescrData>
-          <CircleDescrData>- Against: {(voteBreakdown.requiredMajority) - (voteBreakdown.currentMajority)}%
+          <CircleDescrData>- For: {voteBreakdown.votesFor}Q</CircleDescrData>
+          {/*<CircleDescrData>- For: {voteBreakdown.currentMajority}%</CircleDescrData>*/}
+          <CircleDescrData>- Against: {(voteBreakdown.votesAgainst)}Q
+            {/*<CircleDescrData>- Against: {(voteBreakdown.requiredMajority) - (voteBreakdown.currentMajority)}%*/}
           </CircleDescrData>
         </Col>
         <Col md={4}>
