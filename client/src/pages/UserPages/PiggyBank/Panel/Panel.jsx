@@ -60,7 +60,6 @@ export default function Panel() {
         <TextPanelSmallBlack style={{ margin: '0 16px 0 8px' }}>
           {userLockingEnd}
           {' '}
-          UTC
         </TextPanelSmallBlack>
         <TextPanelSmallGrey>Voting Status:</TextPanelSmallGrey>
         <TextPanelSmallBlack style={{ marginLeft: '8px' }}>Root Node</TextPanelSmallBlack>

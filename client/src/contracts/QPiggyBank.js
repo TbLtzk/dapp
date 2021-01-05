@@ -1,5 +1,4 @@
-import { QToWei } from 'func/balance';
-import { drizzle } from './config/drizzle-config';
+import { drizzle, web3 } from './config/drizzle-config';
 
 export default class QPiggyBank {
   constructor() {
@@ -14,27 +13,31 @@ export default class QPiggyBank {
     return await this.methods.getLockedAssets(address).call();
   }
 
-  async deposit(address, amountQ, abandonClaims = true) {
+  async deposit(address, amount, abandonClaims = true) {
+    const amountL = new web3.utils.BN(web3.utils.toWei(amount));
     return await this.methods.deposit(abandonClaims).send({
       from: address,
-      value: String(QToWei(amountQ)),
+      value: amountL,
     });
   }
 
-  async withdraw(address, amountQ, abandonClaims = true) {
-    return await this.methods.withdraw(String(QToWei(amountQ)), abandonClaims).send({
+  async withdraw(address, amount, abandonClaims = true) {
+    const amountL = new web3.utils.BN(web3.utils.toWei(amount));
+    return await this.methods.withdraw(amountL, abandonClaims).send({
       from: address,
     });
   }
 
-  async lock(address, amountQ, expiration) {
-    return await this.methods.lock(String(QToWei(amountQ)), expiration).send({
+  async lock(address, amount, expiration) {
+    const amountL = new web3.utils.BN(web3.utils.toWei(amount));
+    return await this.methods.lock(amountL, expiration).send({
       from: address,
     });
   }
 
-  async unlock(address, amountQ) {
-    return await this.methods.unlock(String(QToWei(amountQ))).send({
+  async unlock(address, amount) {
+    const amountL = new web3.utils.BN(web3.utils.toWei(amount));
+    return await this.methods.unlock(amountL).send({
       from: address,
     });
   }
