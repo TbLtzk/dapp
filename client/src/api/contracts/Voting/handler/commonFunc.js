@@ -58,7 +58,7 @@ export const convertNumVotes = (number) => {
   }
 };
 
-function toFixed(x) {
+export function toFixed(x) {
   if (Math.abs(x) < 1.0) {
     var e = parseInt(x.toString().split('e-')[1]);
     if (e) {
@@ -81,10 +81,22 @@ export const getPercentageFormat = (number) => {
   return bn(1e+27).multipliedBy(number).dividedBy(100);
 };
 
+export const transformToPercentage = (number) => {
+  const amount = "10000000000000000000000000";
+  let convertedNumber = bn(number).dividedBy(amount);
+  if (convertedNumber?.e < 0) {
+    convertedNumber = ((convertedNumber)).toFixed(10)
+  } else {
+    convertedNumber = convertedNumber?.c[0]
+  }
+  return convertedNumber;
+};
+
 export const bn = (number) => {
   return new BigNumber(number);
 };
 
 export const calculatePercentage = (part, amount) => {
   return bn(((10 ** 27) * part) / amount);
+
 };

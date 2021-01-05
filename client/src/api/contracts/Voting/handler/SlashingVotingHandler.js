@@ -1,4 +1,4 @@
-import SlashingVoting from 'api/contracts/Voting/SlashingVoting';
+import SlashingVotingService from 'api/contracts/Voting/SlashingVotingService';
 
 export const chooseSlashingContractDependsOnType = (drizzle, type) => {
   let contractName = null;
@@ -7,7 +7,7 @@ export const chooseSlashingContractDependsOnType = (drizzle, type) => {
   } else if (type === 'validator-node-slashing') {
     contractName = 'ValidatorsSlashingVoting';
   }
-  const contract = new SlashingVoting(drizzle, contractName);
+  const contract = new SlashingVotingService(drizzle, contractName);
 
   return contract;
 };

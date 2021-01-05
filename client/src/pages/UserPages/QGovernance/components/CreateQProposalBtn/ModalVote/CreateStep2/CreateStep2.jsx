@@ -9,18 +9,19 @@ import {getLockedAssets} from "store/actions/action-creaters/q-piggy-bank";
 import {userAddressMetamask} from "store/selectors/user-inf";
 import {fromSolDateFormattingT1} from "func/date";
 import {votingLockingEnd} from "store/selectors/q-piggy-bank";
+import {setDisabledCreatedProposalBtn} from "store/actions/action-creaters/voting/proposals";
 
 function CreateStep2(props) {
     const {activeTab, register, errors, proposalContract, vetoEndTime} = props;
     const formData = useSelector(formVoteObject);
-    const userLockingEnd = (useSelector(votingLockingEnd));
+    const userLockingEnd = useSelector(votingLockingEnd);
     const dispatch = useDispatch();
 
     const contentSwitcher = useCallback(() => {
         switch (formData?.first) {
             case "basic-vote-on-proposal":
-                const userAddressL = useSelector(userAddressMetamask);
-                dispatch(getLockedAssets(userAddressL));
+                // const userAddressL = useSelector(userAddressMetamask);
+                // dispatch(getLockedAssets(userAddressL));
                 let warning = null;
                 if (proposalContract === "ConstitutionVoting" || proposalContract === "GeneralUpdateVoting"
                     || proposalContract === "RootsVoting" || activeTab === "expert") {
@@ -82,7 +83,7 @@ function CreateStep2(props) {
                 return null;
         }
 
-    }, [activeTab, register, errors, userLockingEnd]);
+    }, [activeTab, register, errors, userLockingEnd, dispatch]);
 
     return (
         <>

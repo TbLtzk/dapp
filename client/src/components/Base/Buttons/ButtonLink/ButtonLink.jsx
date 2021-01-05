@@ -17,7 +17,7 @@ export default function ButtonLink(props) {
 }
 
 ButtonLink.propTypes = {
-  title: PropTypes.object.isRequired,
+  // title: PropTypes.object.isRequired,
   width: PropTypes.string,
   handleLink: PropTypes.func.isRequired,
 };

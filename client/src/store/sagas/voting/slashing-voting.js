@@ -5,12 +5,12 @@ import {
     getSlashingVotingProposalsSuccess, getSlashingVotingProposalsError,
     getSlashingVotingProposalSuccess, getSlashingVotingProposalError
 } from "store/actions/action-creaters/voting/slashing-voting";
-import SlashingVoting from "api/contracts/Voting/SlashingVoting";
+import SlashingVotingService from "api/contracts/Voting/SlashingVotingService";
 
 function* getSlashingVotingProposals({drizzle}) {
     try {
-        const validatorsSlashingVoting = new SlashingVoting(drizzle, "ValidatorsSlashingVoting");
-        const rootNodesSlashingVoting = new SlashingVoting(drizzle, "RootNodesSlashingVoting");
+        const validatorsSlashingVoting = new SlashingVotingService(drizzle, "ValidatorsSlashingVoting");
+        const rootNodesSlashingVoting = new SlashingVotingService(drizzle, "RootNodesSlashingVoting");
         const contracts = [validatorsSlashingVoting, rootNodesSlashingVoting];
         let result = [];
         for (let contractName of contracts) {

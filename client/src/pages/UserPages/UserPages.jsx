@@ -8,6 +8,7 @@ import Staking from './Staking';
 import ManageStakerRewardPool from './ManageStakerRewardPool';
 import SavingAndBorrowing from './SavingAndBorrowing';
 import EndedProposals from './QGovernance/EndedProposals';
+import LoadingTransaction from "components/Custom/LoadingTransaction";
 
 import { WrapContainer } from './styles';
 
@@ -39,6 +40,7 @@ export default function UserPages(props) {
       <WrapContainer fluid>
         {componentSwitcher()}
       </WrapContainer>
+      <LoadingTransaction/>
     </>
   );
 }

@@ -3,11 +3,11 @@ import {
   convertNumVotes,
   getPastEvents,
   getPastProposalsIds,
-  getStatusTransformation
-} from "api/contracts/Voting/handler/commonFunc";
+  getStatusTransformation, transformToPercentage
+} from 'api/contracts/Voting/handler/commonFunc';
 
 /*EPDR_MembershipVoting, EPQFI_MembershipVoting*/
-export default class MembershipVoting extends VotingService {
+export default class MembershipVotingService extends VotingService {
 
   /**
    * get proposal data
@@ -18,6 +18,7 @@ export default class MembershipVoting extends VotingService {
    */
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
+    let objStats = {};
     try {
       objRes.id = id;
       objRes.remark = promiseRes.base.remark;
@@ -38,16 +39,17 @@ export default class MembershipVoting extends VotingService {
           ? "DeFi Risk Expert membership"
           : "Fees & Incentives Experts membership";
       objRes.kindVoting = "membership";
+      // objStats = await this.getProposalStatsData(id);
       let proposalStats = await this.getProposalStats(id);
-      objRes.currentMajority = convertNumVotes(proposalStats.currentMajority);
-      objRes.currentQuorum = convertNumVotes(proposalStats.currentQuorum);
-      objRes.currentVetoPercentage = convertNumVotes(proposalStats.currentVetoPercentage);
-      objRes.requiredMajority = convertNumVotes(proposalStats.requiredMajority);
-      objRes.requiredQuorum = convertNumVotes(proposalStats.requiredQuorum);
-      objRes.vetoThreshold = convertNumVotes(proposalStats.vetoThreshold);
+      objRes.currentMajority = transformToPercentage(proposalStats.currentMajority);
+      objRes.currentQuorum = transformToPercentage(proposalStats.currentQuorum);
+      objRes.currentVetoPercentage = transformToPercentage(proposalStats.currentVetoPercentage);
+      objRes.requiredMajority = transformToPercentage(proposalStats.requiredMajority);
+      objRes.requiredQuorum = transformToPercentage(proposalStats.requiredQuorum);
+      objRes.vetoThreshold = transformToPercentage(proposalStats.vetoThreshold);
       objRes.contract = this.contractName;
 
-      return objRes;
+      return { ...objRes, ...objStats };
     } catch (e) {
       console.log("e", e);
     }
@@ -122,7 +124,7 @@ export default class MembershipVoting extends VotingService {
    * @return string
    */
   async createProposal(data, userAddress) {
-    console.log("DATA MembershipVoting", data);
+    console.log("DATA MembershipVotingService", data);
     let result = null;
     const link = data["external-link"];
     let candidate = data["address"];

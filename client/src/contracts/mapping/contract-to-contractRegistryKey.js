@@ -3,10 +3,11 @@ export const contractsToContractsRegistryKey = {
   ConstitutionVoting: 'governance.constitution.parametersVoting',
   GeneralUpdateVoting: 'governance.generalUpdateVoting',
   EmergencyUpdateVoting: 'governance.emergencyUpdateVoting',
-  RootNodes: 'governance.rootNodes',
-  RootNodesMembershipVoting: 'governance.rootNodes.membershipVoting',
+  Root: 'governance.rootNodes',
+  RootsVoting: 'governance.rootNodes.membershipVoting',
   RootNodesSlashingVoting: 'governance.rootNodes.slashingVoting',
   Validators: 'governance.validators',
+  ValidatorsSlashingVoting: 'governance.validators.slashingVoting',
 
   EPDRMembership: 'governance.experts.EPDR.membership',
   EPDRMembershipVoting: 'governance.experts.EPDR.membershipVoting',

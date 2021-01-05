@@ -18,9 +18,9 @@ export const SubTitle = styled(h5Text)`
 `;
 
 export const Text = styled(UsualText)`
-  color: ${props => props.theme.colors.lightGrey};
-    
+  color: ${props => props.highlight ? props.theme.colors.green : props.theme.colors.lightGrey};
 `;
+
 export const Descr = styled(UsualText)`
 `;
 export const WrapBlock = styled.div`
