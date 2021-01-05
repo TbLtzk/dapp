@@ -39,6 +39,5 @@ deploy:
     - chmod 600 ~/.ssh/id_rsa ~/.ssh/id_rsa.pub
   script:
     - ssh $DEPLOY_USER@$DEPLOY_HOST "mkdir -p $DEPLOY_DIR"
-    - scp production.yml $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_DIR/docker-compose.yml
-    - scp $DEPLOY_ENV $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_DIR/.env
+    - scp client/production.yml $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_DIR/docker-compose.yml
     - ssh $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_DIR && IMAGE=$IMAGE docker-compose up -d"
