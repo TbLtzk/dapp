@@ -36,6 +36,11 @@ function PollDetail(props) {
                 New constitution hash: {pollDetail.newConstitutionHash}
               </Text>
             }
+            {!pollDetail.parameterKey ? null :
+              <Text>
+                Parameter key: {pollDetail.parameterKey}
+              </Text>
+            }
             {!pollDetail.addrValue ? null :
               <Text>
                 addrValue: {pollDetail.addrValue}

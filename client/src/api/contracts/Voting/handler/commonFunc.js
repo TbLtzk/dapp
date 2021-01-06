@@ -21,6 +21,10 @@ export const getStatusTransformation = (statusId) => {
   const status = ["None", "Pending", "Rejected", "Accepted", "Passed", "Executed", "Obsolete", "Expired"];
   return status[Number(statusId)];
 };
+export const getTypeParameter = (id) => {
+  const status = ["None", "Pending", "Rejected", "Accepted", "Passed", "Boolean", "Obsolete"];
+  return status[Number(id)];
+};
 export const getParameterTypeTransformation = (statusId) => {
   switch (Number(statusId)) {
     case 0:
