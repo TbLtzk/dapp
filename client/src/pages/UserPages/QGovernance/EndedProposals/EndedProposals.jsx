@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from "react";
+import React, { useEffect, useMemo, useState } from 'react';
 
 import {getEndedProposals} from "store/actions/action-creaters/voting/proposals";
 import {endedProposals, loadingEndedProposals, errorEnded} from "store/selectors/voting/proposals";
@@ -18,6 +18,7 @@ function EndedProposals() {
   const location = useLocation();
   const {drizzle} = useDrizzle();
   const dispatch = useDispatch();
+  const [numberOfProposals, setNumberOfProposals] = useState(location?.state?.numberOfProposals);
 
   const endedArr = useSelector(endedProposals);
   const loading = useSelector(loadingEndedProposals);
@@ -37,9 +38,12 @@ function EndedProposals() {
         return "QExpertProposals";
       case "slashing-proposals":
         return "SlashingProposals";
+      default:
+        return "QProposals";
     }
 
-  }, [location?.state?.activeTab]);
+
+  }, [location?.state?.activeTab, location?.state?.numberOfProposals]);
 
   return (
       <Row>

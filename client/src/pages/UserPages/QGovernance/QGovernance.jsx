@@ -80,7 +80,7 @@ function QGovernance() {
                         handleButton={() => {
                             history.push({
                                 pathname: '/ended-proposals',
-                                state: {activeTab: activeTab}
+                                state: {activeTab: activeTab, numberOfProposals: 0}
                             })
                         }}
                     />

@@ -67,7 +67,7 @@ export default class ConstitutionVotingService extends VotingService {
       objRes.uintValue = promiseRes.parameterValue.uintValue;
       objRes.parameterKey = promiseRes.parameterKey;
       //TODO parameterType
-      objRes.parameterType = promiseRes.parameterType;
+      // objRes.parameterType = promiseRes.parameterType;
       objRes.vetoThreshold = transformToPercentage(promiseRes.base.params.vetoThreshold);
       objRes.status = getStatusTransformation(promiseStatus);
       // objRes.vetoesNumber = await this.getVetoesNumber(id);
