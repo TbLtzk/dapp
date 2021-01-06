@@ -2,7 +2,7 @@ FROM node:lts-alpine AS builder
 
 WORKDIR /app
 
-COPY jsconfig.json package.json yarn.lock ./
+COPY .eslintrc jsconfig.json package.json yarn.lock ./
 RUN yarn install
 
 COPY public/ public/
