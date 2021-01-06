@@ -5,12 +5,14 @@ import { web3 } from '../../../../contracts/config/drizzle-config';
 import EPDRParameters from '../../../../contracts/EPDRParameters';
 import { BorrowingCoreQUSD } from '../../../../contracts/BorrowingCore';
 import { fromBtcBlockchain, toBtcBlockchain } from '../../../../func/balance';
+import { setTransactionCounter } from '../../../../store/actions/action-creaters/transaction-handler';
 
 export default class Handler {
-  constructor(address, collateralKey) {
+  constructor(address, collateralKey, dispatch) {
     this.address = address;
     this.contractEPDRParameters = new EPDRParameters();
     this.borrowingContract = new BorrowingCoreQUSD();
+    this.dispatch = dispatch;
 
     if (collateralKey === 'QETH') {
       this.oracleContract = new GovernedEpdrQethQusdOracle();
@@ -26,16 +28,22 @@ export default class Handler {
   }
 
   setExchangeRate(stateSetter) {
+    this.dispatch(setTransactionCounter(1));
+
     this.oracleContract.exchangeRate().then((res) => {
       const resL = roundNumber(web3.utils.fromWei(new web3.utils.BN(res)), 4);
       stateSetter(resL);
     }).catch((e) => {
       stateSetter(0);
       console.log(e);
+    }).finally(() => {
+      this.dispatch(setTransactionCounter(-1));
     });
   }
 
   setAvailableToDeposit(stateSetter) {
+    this.dispatch(setTransactionCounter(1));
+
     this.stableCoinContract.balanceOf(this.address).then((res) => {
       console.log(res);
       const resL = res === undefined ? 0 : fromBtcBlockchain(res);
@@ -43,10 +51,14 @@ export default class Handler {
     }).catch((e) => {
       stateSetter(0);
       console.log(e);
+    }).finally(() => {
+      this.dispatch(setTransactionCounter(-1));
     });
   }
 
   setCollateralRatio(collateral, stateSetter) {
+    this.dispatch(setTransactionCounter(1));
+
     const key = `governed.EPDR.${collateral}_QUSD_collateralizationRatio`;
     this.contractEPDRParameters.getUint(key).then((res) => {
       const resL = (uintPercentToNumber(res) / 100) + 1;
@@ -54,63 +66,86 @@ export default class Handler {
     }).catch((e) => {
       stateSetter(0);
       console.log(e);
+    }).finally(() => {
+      this.dispatch(setTransactionCounter(-1));
     });
   }
 
   setLiquidationRatio(collateral, stateSetter) {
+    this.dispatch(setTransactionCounter(1));
+
     const key = `governed.EPDR.${collateral}_QUSD_liquidationRatio`;
     this.contractEPDRParameters.getUint(key).then((res) => {
       const resL = (uintPercentToNumber(Number(res)) / 100) + 1;
       stateSetter(resL);
-    }).catch((e) => { console.log(e); });
+    }).catch((e) => {
+      console.log(e);
+    }).finally(() => {
+      this.dispatch(setTransactionCounter(-1));
+    });
   }
 
-  async addDeposit(amount, vaultNum) {
+  async addDeposit(amount, vaultNum, lockedCol, setLockedCol, setAvToDeposit) {
+    this.dispatch(setTransactionCounter(1));
+
     const amountL = new web3.utils.BN(toBtcBlockchain(amount));
     const approve = await this.stableCoinContract.approve(this.borrowingContract.address, amountL, this.address);
     if (approve.status === true) {
-      this.borrowingContract.depositCol(this.address, vaultNum, amountL).then((res) => {
-        console.log(res);
+      this.borrowingContract.depositCol(this.address, vaultNum, amountL).then(() => {
+        setLockedCol(Number(lockedCol) + Number(amount));
+        this.setAvailableToDeposit(setAvToDeposit);
       }).catch((e) => {
         // stateSetter(0);
         console.log(e);
+      }).finally(() => {
+        this.dispatch(setTransactionCounter(-1));
       });
     }
   }
 
-  async withdraw(amount, vaultNum) {
+  async withdraw(amount, vaultNum, lockedCol, setLockedCol, setAvToDeposit) {
+    this.dispatch(setTransactionCounter(1));
+
     const amountL = new web3.utils.BN(toBtcBlockchain(amount));
-    this.borrowingContract.withdrawCol(this.address, vaultNum, amountL).then((res) => {
-      console.log(res);
+    this.borrowingContract.withdrawCol(this.address, vaultNum, amountL).then(() => {
+      setLockedCol(Number(lockedCol) + Number(amount));
+      this.setAvailableToDeposit(setAvToDeposit);
     }).catch((e) => {
       console.log(e);
+    }).finally(() => {
+      this.dispatch(setTransactionCounter(-1));
     });
   }
 
   async borrow(amount, vaultNum) {
+    this.dispatch(setTransactionCounter(1));
+
     this.borrowingContract.generateStc(this.address, vaultNum, amount).then((res) => {
       console.log(res);
     }).catch((e) => {
       console.log(e);
+    }).finally(() => {
+      this.dispatch(setTransactionCounter(-1));
     });
   }
 
   async repay(amount, vaultNum) {
+    this.dispatch(setTransactionCounter(1));
+
     this.borrowingContract.payBackSTC(this.address, vaultNum, amount).then((res) => {
       console.log(res);
     }).catch((e) => {
       console.log(e);
+    }).finally(() => {
+      this.dispatch(setTransactionCounter(-1));
     });
   }
 
   mint(amount) {
+    this.dispatch(setTransactionCounter(1));
+
     this.stableCoinContract.mint(this.address, this.address, amount).then((res) => {
       console.log(res);
     });
-    //
-    // const key = `governed.EPDR.QBTC_address`;
-    // this.contractEPDRParameters.getAddr(key).then((res) => {
-    //   console.log(res);
-    // })
   }
 }

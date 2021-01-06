@@ -14,7 +14,6 @@ import {
   ownStakeSelector,
   totalStakeSelector,
 } from 'store/selectors/validators';
-import { Col, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { CustomBlockVP } from './styles';
 import FormInput from '../../Base/Form/FormInput';
@@ -84,7 +83,7 @@ export default function ValidatorPool(props) {
         </span>
       </div>
       <div className="form-container" style={{ flexDirection: 'column' }}>
-        <span>Set Total stake</span>
+        <span style={{ marginBottom: '10px' }}><b>Set Total stake (Test only)</b></span>
         <div>
           <FormInput
             name="amount"

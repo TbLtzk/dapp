@@ -29,14 +29,6 @@ export const TextWrapGrey = styled.p`
     font-weight: 400;
     font-style: normal;
   }
-  
-  &.go-governance {
-    font-weight: 600;
-    display: flex;
-    height: 100%;
-    justify-content: flex-end;
-    color: ${props => props.theme.colors.blue};
-  }
 `;
 
 export const TextPanel = styled.div`

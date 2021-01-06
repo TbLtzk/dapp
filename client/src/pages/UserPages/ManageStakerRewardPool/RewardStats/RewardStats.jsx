@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import FormInput from 'components/Base/Form/FormInput';
 import Button from 'components/Base/Buttons/Button';
 import { errorHandler } from 'func/useful';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import ValidationRewardProxy from '../../../../contracts/ValidationRewardProxy';
 import Handler from './handler';
@@ -20,7 +20,7 @@ export default function RewardStats() {
   const [intRate, setIntRate] = useState(0);
 
   const address = useSelector(userAddressMetamask);
-  const handler = new Handler(address);
+  const handler = new Handler(address, useDispatch());
 
   useEffect(() => {
     handler.getAmountOfRewardPool(setAmountRP);
@@ -116,7 +116,7 @@ export default function RewardStats() {
           </div>
         </Col>
         <Col xs={12} className="form-container">
-          <span>Set Total stake</span>
+          <span>Calculate amount of reward pool (Test only, enterShortList() -> allocate())</span>
           <div>
             <Button
               type="outline"

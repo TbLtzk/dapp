@@ -13,6 +13,7 @@ import { DatePickerContainer } from './styles';
 import { Headline, TextWrapGrey } from '../styles';
 
 import 'react-datepicker/dist/react-datepicker.css';
+import ButtonLinkArrow from '../../../../components/Base/Buttons/ButtonLinkArrow/ButtonLinkArrow';
 
 export default function LockCoin() {
   const { register: reg1, handleSubmit: submit1, errors: err1 } = useForm();
@@ -167,7 +168,12 @@ export default function LockCoin() {
           </TextWrapGrey>
         </Col>
         <Col xs={4}>
-          <TextWrapGrey className="go-governance">Go to Governance</TextWrapGrey>
+          <div className="go-governance">
+            <ButtonLinkArrow
+              title="Go to Governance"
+              path="/q-governance"
+            />
+          </div>
         </Col>
 
       </Row>

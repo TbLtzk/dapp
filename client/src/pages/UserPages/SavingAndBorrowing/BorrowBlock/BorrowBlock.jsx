@@ -2,15 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Col } from 'react-bootstrap';
 import ButtonSlide from 'components/Base/Buttons/ButtonSlide';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import { BorrowingCoreQUSD } from 'contracts/BorrowingCore';
 import Handler from './handler';
 
 import { CardDetail } from '../styles';
-import { GovernedEpdrQbtcAddress } from '../../../../contracts/StableCoin';
-import { roundNumber, uintPercentToNumber } from '../../../../func/useful';
-import { GovernedEpdrQbtcQusdOracle, GovernedEpdrQethQusdOracle } from '../../../../contracts/FxPriceFeed';
+import { roundNumber } from '../../../../func/useful';
 import { fromBtcBlockchain } from '../../../../func/balance';
 
 export default function BorrowBlock(props) {
@@ -30,8 +27,7 @@ export default function BorrowBlock(props) {
   const [liqRatio, setLiqRatio] = useState(0);
 
   const address = useSelector(userAddressMetamask);
-  const handler = new Handler(address, actCardData?.vault?.colKey);
-  const borrowingContract = new BorrowingCoreQUSD();
+  const handler = new Handler(address, actCardData?.vault?.colKey, useDispatch());
 
   useEffect(async () => {
     if (actCardData.type !== 'borrow') return;
@@ -45,8 +41,10 @@ export default function BorrowBlock(props) {
   useEffect(() => {
     if (actCardData.type !== 'borrow') return;
 
+    console.log(lockedCol);
+
     // Setup locked collateral
-    let lockedColL = 0;
+    let lockedColL = lockedCol;
     if (actCardData?.vault?.colKey === 'QETH') {
       lockedColL = actCardData.vault.colAsset;
     } else if (actCardData?.vault?.colKey === 'QBTC') {
@@ -55,7 +53,7 @@ export default function BorrowBlock(props) {
     setLockedCol(lockedColL);
 
     // Setup collateral value
-    const colValueL = lockedColL * exchangeRate;
+    const colValueL = roundNumber(lockedColL * exchangeRate, 4);
     setColValue(colValueL);
 
     // Setup available to borrow
@@ -94,14 +92,14 @@ export default function BorrowBlock(props) {
     handler.repay(formData.field, actCardData.vault.vaultNum);
   };
   const addDeposit = async (formData) => {
-    handler.addDeposit(formData.field, actCardData.vault.vaultNum);
+    handler.addDeposit(formData.field, actCardData.vault.vaultNum, lockedCol, setLockedCol, setAvToDeposit);
   };
   const withdraw = (formData) => {
-    handler.withdraw(formData.field, actCardData.vault.vaultNum);
+    handler.withdraw(formData.field, actCardData.vault.vaultNum, lockedCol, setLockedCol, setAvToDeposit);
   };
-  const mint = (formData) => {
-    handler.mint(formData.field);
-  };
+  // const mint = (formData) => {
+  //   handler.mint(formData.field);
+  // };
 
   return (
     <Col xs={12}>
@@ -185,7 +183,7 @@ export default function BorrowBlock(props) {
             btnShortTxt="Add"
             onclick={addDeposit}
             inpType="number"
-            inpPlaceholder="Amount (Q)"
+            inpPlaceholder={`Amount (${actCardData?.vault?.colKey})`}
             inpRules={{ required: true }}
           />
           <ButtonSlide
@@ -193,17 +191,17 @@ export default function BorrowBlock(props) {
             btnShortTxt="Withdraw"
             onclick={withdraw}
             inpType="number"
-            inpPlaceholder="Amount (Q)"
+            inpPlaceholder={`Amount (${actCardData?.vault?.colKey})`}
             inpRules={{ required: true }}
           />
-          <ButtonSlide
-            btnTxt="Mint"
-            btnShortTxt="Mint"
-            onclick={mint}
-            inpType="text"
-            inpPlaceholder="Amount to mint"
-            inpRules={{ required: true }}
-          />
+          {/*<ButtonSlide*/}
+          {/*  btnTxt="Mint"*/}
+          {/*  btnShortTxt="Mint"*/}
+          {/*  onclick={mint}*/}
+          {/*  inpType="text"*/}
+          {/*  inpPlaceholder="Amount to mint"*/}
+          {/*  inpRules={{ required: true }}*/}
+          {/*/>*/}
         </div>
       </CardDetail>
     </Col>

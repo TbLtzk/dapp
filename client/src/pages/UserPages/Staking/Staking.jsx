@@ -9,12 +9,12 @@ function Staking() {
     [
       {
         label: 'root-node-staking',
-        title: 'Root Node EndedProposals',
+        title: 'Root Node Staking',
         content: <StakingContent />,
       },
       {
         label: 'validator-staking',
-        title: 'Validator EndedProposals',
+        title: 'Validator Staking',
         content: <p>Validator Staking</p>,
       },
     ]

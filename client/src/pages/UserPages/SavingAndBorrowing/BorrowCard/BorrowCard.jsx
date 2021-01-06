@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import { BorrowingCoreQUSD } from 'contracts/BorrowingCore';
 import EPDRParameters from 'contracts/EPDRParameters';
@@ -9,6 +9,7 @@ import { uintPerSecondToPerYearNumber } from 'func/useful';
 import BlockCardItem from '../BlockCardItem';
 
 import { BlockCard } from '../styles';
+import { setTransactionCounter } from '../../../../store/actions/action-creaters/transaction-handler';
 
 export default function BorrowCard(props) {
   const { setActCardData } = props;
@@ -17,15 +18,20 @@ export default function BorrowCard(props) {
 
   const contract = new BorrowingCoreQUSD();
   const address = useSelector(userAddressMetamask);
+  const dispatch = useDispatch();
 
   // Get vault count for address
   useEffect(async () => {
+    dispatch(setTransactionCounter(1));
     const data = await contract.userVaultsCount(address).catch(() => {});
     setVaultsCount(data);
+    dispatch(setTransactionCounter(-1));
   }, []);
 
   // Get vaults for address by count
   useEffect(async () => {
+    dispatch(setTransactionCounter(1));
+
     const contractEPDR = new EPDRParameters();
     const vaultsLoc = [];
     for (let i = 0; i < vaultsCount; i += 1) {
@@ -37,6 +43,7 @@ export default function BorrowCard(props) {
       vaultsLoc.push(vaultInfo);
     }
     setVaults(vaultsLoc);
+    dispatch(setTransactionCounter(-1));
   }, [vaultsCount]);
 
   function renderVaults() {
@@ -55,14 +62,21 @@ export default function BorrowCard(props) {
     ));
   }
 
-  return (
-    <Col xs={12}>
-      <BlockCard className="card-item-container borrow">
-        <p>Borrow Crypto Assets</p>
-        {renderVaults()}
-      </BlockCard>
-    </Col>
-  );
+  function render() {
+    if (vaults.length > 0) {
+      return (
+        <Col xs={12}>
+          <BlockCard className="card-item-container borrow">
+            <p>Borrow Crypto Assets</p>
+            {renderVaults()}
+          </BlockCard>
+        </Col>
+      );
+    }
+    return '';
+  }
+
+  return render();
 }
 
 BorrowCard.propTypes = {

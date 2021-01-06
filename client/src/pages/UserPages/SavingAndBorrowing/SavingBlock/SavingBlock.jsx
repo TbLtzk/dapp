@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ButtonSlide from 'components/Base/Buttons/ButtonSlide';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import { SavingQUSD } from 'contracts/Saving';
 import { roundNumber } from 'func/useful';
-import { web3 } from 'contracts/config/drizzle-config';
-import { GovernedEpdrQbtcAddress, GovernedEpdrQethAddress, StableCoinQUSD } from 'contracts/StableCoin';
 
 import { CardDetail } from '../styles';
 import Handler from './handler';
@@ -20,7 +17,7 @@ export default function SavingBlock(props) {
   const [estInterest, setEstInterest] = useState(0);
 
   const address = useSelector(userAddressMetamask);
-  const handler = new Handler(address, actCardData?.vault?.colKey);
+  const handler = new Handler(address, useDispatch());
 
   useEffect(async () => {
     if (actCardData.type !== 'saving') return;
@@ -46,6 +43,10 @@ export default function SavingBlock(props) {
 
   const mint = (formData) => {
     handler.mint(formData.field, setAvToDeposit);
+  };
+
+  const claim = () => {
+    handler.claim();
   };
 
   return (
@@ -79,6 +80,14 @@ export default function SavingBlock(props) {
           <span>{actCardData.intRate === undefined ? '-' : `${actCardData.intRate}%`}</span>
         </div>
         <div className="btn-group">
+          <ButtonSlide
+            btnTxt="Claim reward"
+            btnShortTxt="Apply"
+            onclick={claim}
+            inpType="number"
+            inpPlaceholder="Amount (Q)"
+            inpRules={{ required: false }}
+          />
           <ButtonSlide
             btnTxt="Deposit Saving Asset"
             btnShortTxt="Deposit"

@@ -30,4 +30,9 @@ export const CustomBlockVP = styled(Block)`
       font-size: 20px;
       margin-bottom: 20px;
     }
+
+  .form-group {
+    width: 100%;
+    margin-right: 15px;
+  }
 `;
