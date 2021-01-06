@@ -15,6 +15,7 @@ const currentQuorum = 50;
 
 function VoteBreakdown(props) {
   const { voteBreakdown } = props;
+  console.log('voteBreakdown', voteBreakdown);
 
   return (
     <div>
@@ -40,9 +41,16 @@ function VoteBreakdown(props) {
             </WrapColorDescr>
 
           </WrapBlock>
-          <CircleDescrData>- For: {voteBreakdown.votesFor}Q</CircleDescrData>
+          <CircleDescrData>- For: {voteBreakdown.votesFor}
+            {voteBreakdown.contract === 'EPQFI_ParametersVoting' || voteBreakdown.contract === 'EPDR_ParametersVoting' ||
+            voteBreakdown.contract === 'RootNodesSlashingVoting' || voteBreakdown.contract === 'ValidatorsSlashingVoting' ||
+            voteBreakdown.contract === 'EmergencyUpdateVoting' ? null : 'Q'}
+          </CircleDescrData>
           {/*<CircleDescrData>- For: {voteBreakdown.currentMajority}%</CircleDescrData>*/}
-          <CircleDescrData>- Against: {(voteBreakdown.votesAgainst)}Q
+          <CircleDescrData>- Against: {voteBreakdown.votesAgainst}
+            {voteBreakdown.contract === 'EPQFI_ParametersVoting' || voteBreakdown.contract === 'EPDR_ParametersVoting' ||
+            voteBreakdown.contract === 'RootNodesSlashingVoting' || voteBreakdown.contract === 'ValidatorsSlashingVoting' ||
+            voteBreakdown.contract === 'EmergencyUpdateVoting' ? null : 'Q'}
             {/*<CircleDescrData>- Against: {(voteBreakdown.requiredMajority) - (voteBreakdown.currentMajority)}%*/}
           </CircleDescrData>
         </Col>

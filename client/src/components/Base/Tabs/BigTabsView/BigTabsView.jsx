@@ -6,6 +6,7 @@ import {TabsStyle, TabStyle} from "./styles";
 function BigTabsView(props) {
     const {tabsItems} = props;
     const [key, setKey] = useState(tabsItems[0]?.label);
+    console.log("key", key);
 
     return (
         <TabsStyle

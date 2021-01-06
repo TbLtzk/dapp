@@ -1,4 +1,4 @@
-import {BigNumber} from "bignumber.js";
+import { BigNumber } from 'bignumber.js';
 
 export const getPastEvents = async (drizzle, contractName, event) => {
   const web3 = drizzle.web3;
@@ -18,35 +18,35 @@ export const getPastProposalsIds = (proposalArr) => {
 };
 
 export const getStatusTransformation = (statusId) => {
-  const status = ["None", "Pending", "Rejected", "Accepted", "Passed", "Executed", "Obsolete", "Expired"];
+  const status = ['None', 'Pending', 'Rejected', 'Accepted', 'Passed', 'Executed', 'Obsolete', 'Expired'];
   return status[Number(statusId)];
 };
 export const getTypeParameter = (id) => {
-  const status = ["None", "Pending", "Rejected", "Accepted", "Passed", "Boolean", "Obsolete"];
+  const status = ['None', 'Pending', 'Rejected', 'Accepted', 'Passed', 'Boolean', 'Obsolete'];
   return status[Number(id)];
 };
 export const getParameterTypeTransformation = (statusId) => {
   switch (Number(statusId)) {
     case 0:
-      return "None";
+      return 'None';
     case 1:
-      return "Address";
+      return 'Address';
     case 2:
-      return "Uint";
+      return 'Uint';
     case 3:
-      return "String";
+      return 'String';
     case 4:
-      return "Byte32";
+      return 'Byte32';
     case 5:
-      return "Bool";
+      return 'Bool';
     default:
-      return "None";
+      return 'None';
   }
 };
 
 export const convertNumVotes = (number) => {
   if (number.length === 1) {
-    return Number(number)
+    return Number(number);
   } else if (number.length === 27) {
     // const result = toFixed(number);
     const res = number.slice(0, 2);
@@ -64,34 +64,40 @@ export const convertNumVotes = (number) => {
 
 export function toFixed(x) {
   if (Math.abs(x) < 1.0) {
-    var e = parseInt(x.toString().split('e-')[1]);
+    var e = parseInt(x.toString()
+      .split('e-')[1]);
     if (e) {
       x *= Math.pow(10, e - 1);
-      x = '0.' + (new Array(e)).join('0') + x.toString().substring(2);
+      x = '0.' + (new Array(e)).join('0') + x.toString()
+        .substring(2);
     }
   } else {
-    var e = parseInt(x.toString().split('+')[1]);
+    var e = parseInt(x.toString()
+      .split('+')[1]);
     if (e > 20) {
       e -= 20;
       x /= Math.pow(10, e);
       x += (new Array(e + 1)).join('0');
     }
   }
-  console.log("toFixed", x);
+  console.log('toFixed', x);
   return x;
 }
 
 export const getPercentageFormat = (number) => {
-  return bn(1e+27).multipliedBy(number).dividedBy(100);
+  return bn(1e+27)
+    .multipliedBy(number)
+    .dividedBy(100);
 };
 
 export const transformToPercentage = (number) => {
-  const amount = "10000000000000000000000000";
-  let convertedNumber = bn(number).dividedBy(amount);
+  const amount = '10000000000000000000000000';
+  let convertedNumber = bn(number)
+    .dividedBy(amount);
   if (convertedNumber?.e < 0) {
-    convertedNumber = ((convertedNumber)).toFixed(10)
+    convertedNumber = ((convertedNumber)).toFixed(10);
   } else {
-    convertedNumber = convertedNumber?.c[0]
+    convertedNumber = Math.round(convertedNumber?.c[0]);
   }
   return convertedNumber;
 };

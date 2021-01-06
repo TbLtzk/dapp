@@ -86,8 +86,10 @@ function ModalVote(props) {
   const onNext = (data) => {
     console.log('dataVote', { ...formData, ...data });
     if (formData?.first === 'basic-vote-on-proposal') {
+      console.log('proposalContract', proposalContract);
       if (proposalContract === 'ConstitutionVoting' || proposalContract === 'GeneralUpdateVoting'
-        || proposalContract === 'RootsVoting' || activeTab === 'expert') {
+        || proposalContract === 'RootsVoting' || proposalContract === 'EPDR_MembershipVoting'
+        || proposalContract === 'EPQFI_MembershipVoting') {
         if (vetoEndTime >= userLockingEnd) {
           dispatch(setDisabledCreatedProposalBtn(true));
         }
@@ -97,7 +99,7 @@ function ModalVote(props) {
     if (stepCounter < stepLimit) {
       dispatch(setStepVoteCounter(stepCounter + 1));
     } else {
-      console.log("formData check", formData);
+      console.log('formData check', formData);
       if (formData['constitution-check'] !== 'no') {
         dispatch(voteForProposal(drizzle, {
           ...formData, ...data,

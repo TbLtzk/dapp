@@ -19,17 +19,20 @@ export default class SlashingVotingService extends VotingService {
     let objRes = {};
     let objStats = {};
     try {
+      console.log("promiseRes", promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.base.remark;
       objRes.candidate = promiseRes.candidate;
-      objRes.amountToSlash = transformToPercentage(promiseRes.amountToSlash);
+      objRes.amountToSlash = this.drizzle.web3.utils.fromWei(promiseRes.amountToSlash, 'ether');
       objRes.vetosCount = promiseRes.base.counters.vetosCount;
       // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
       // objRes.votesFor = promiseRes.base.counters.weightFor;
+      //number of voting people against
       const weightAgainst = promiseRes.base.counters.weightAgainst;
-      objRes.votesAgainst = this.drizzle.web3.utils.fromWei(weightAgainst, "ether");
+      objRes.votesAgainst = weightAgainst;
+      //number of voting people for
       const weightFor = promiseRes.base.counters.weightFor;
-      objRes.votesFor =  this.drizzle.web3.utils.fromWei(weightFor, "ether");
+      objRes.votesFor =  weightFor;
       //the ending is given by: vetoEndTime.
       objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
       //the time until when users can vote

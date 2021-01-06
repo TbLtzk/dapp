@@ -17,14 +17,15 @@ export default class GeneralUpdateVotingService extends VotingService {
     let objRes = {};
     let objStats = {};
     try {
+      console.log('promiseRes', promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.remark;
       // objRes.votesAgainst = promiseRes.counters.weightAgainst;
       // objRes.votesFor = promiseRes.counters.weightFor;
       const weightAgainst = promiseRes.counters.weightAgainst;
-      objRes.votesAgainst = this.drizzle.web3.utils.fromWei(weightAgainst, "ether");
+      objRes.votesAgainst = this.drizzle.web3.utils.fromWei(weightAgainst, 'ether');
       const weightFor = promiseRes.counters.weightFor;
-      objRes.votesFor =  this.drizzle.web3.utils.fromWei(weightFor, "ether");
+      objRes.votesFor = this.drizzle.web3.utils.fromWei(weightFor, 'ether');
 
       objRes.vetosCount = promiseRes.counters.vetosCount;
       objRes.votingEndTime = promiseRes.params.votingEndTime;

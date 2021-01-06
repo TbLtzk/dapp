@@ -20,6 +20,7 @@ export default class MembershipVotingService extends VotingService {
     let objRes = {};
     let objStats = {};
     try {
+      console.log('promiseRes', promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.base.remark;
       objRes.addressToAdd = promiseRes.proposalDetails.addressToAdd;

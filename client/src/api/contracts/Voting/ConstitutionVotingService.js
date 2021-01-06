@@ -55,9 +55,9 @@ export default class ConstitutionVotingService extends VotingService {
       objRes.votesFor = this.drizzle.web3.utils.fromWei(weightFor, 'ether');
       objRes.vetosCount = promiseRes.base.counters.vetosCount;
 
-      const votesCount = await bn(weightFor)
-        .plus(weightAgainst);
-      objRes.votesCount = votesCount?.c;
+      // const votesCount = await bn(weightFor)
+      //   .plus(weightAgainst);
+      // objRes.votesCount = votesCount?.c;
       objRes.votingEndTime = promiseRes.base.params.votingEndTime;
       objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
       objRes.addrValue = promiseRes.parameterValue.addrValue;
@@ -130,7 +130,7 @@ export default class ConstitutionVotingService extends VotingService {
             .send({ from: userAddress });
           break;
         case 'boolean':
-          valueInput = (valueInput === 'true');
+          valueInput = (valueInput.toLowerCase() === 'true');
           console.log('valueInput', valueInput);
           result = await this.contract.methods.createBoolProposal(link, classification, hash,
             parameterKey, valueInput)

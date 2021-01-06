@@ -78,7 +78,7 @@ function PollDetail(props) {
             }
             {!pollDetail.amountToSlash ? null :
               <Text>
-                amountToSlash: {pollDetail.amountToSlash * 100}%
+                amountToSlash: {pollDetail.amountToSlash}Q
               </Text>
             }
           </>
