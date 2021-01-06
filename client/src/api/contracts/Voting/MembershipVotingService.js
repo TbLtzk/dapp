@@ -25,8 +25,13 @@ export default class MembershipVotingService extends VotingService {
       objRes.addressToAdd = promiseRes.proposalDetails.addressToAdd;
       objRes.addressToRemove = promiseRes.proposalDetails.addressToRemove;
       objRes.vetosCount = promiseRes.base.counters.vetosCount;
-      objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
-      objRes.votesFor = promiseRes.base.counters.weightFor;
+      // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
+      // objRes.votesFor = promiseRes.base.counters.weightFor;
+      const weightAgainst = promiseRes.base.counters.weightAgainst;
+      objRes.votesAgainst = this.drizzle.web3.utils.fromWei(weightAgainst, "ether");
+      const weightFor = promiseRes.base.counters.weightFor;
+      objRes.votesFor =  this.drizzle.web3.utils.fromWei(weightFor, "ether");
+
       //the ending is given by: vetoEndTime.
       objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
       //the time until when users can vote

@@ -9,6 +9,7 @@ import {
   getStatusTransformation
 } from 'api/contracts/Voting/handler/commonFunc';
 import VotingService from 'api/contracts/Voting/VotingService';
+import { roundBalance } from '../../../func/balance';
 
 export default class ConstitutionVotingService extends VotingService {
 
@@ -49,9 +50,9 @@ export default class ConstitutionVotingService extends VotingService {
       objRes.newConstitutionHash = promiseRes.newConstitutionHash;
       objRes.currentConstitutionHash = promiseRes.currentConstitutionHash;
       const weightAgainst = promiseRes.base.counters.weightAgainst;
-      objRes.votesAgainst = weightAgainst;
+      objRes.votesAgainst = this.drizzle.web3.utils.fromWei(weightAgainst, 'ether');
       const weightFor = promiseRes.base.counters.weightFor;
-      objRes.votesFor = weightFor;
+      objRes.votesFor = this.drizzle.web3.utils.fromWei(weightFor, 'ether');
       objRes.vetosCount = promiseRes.base.counters.vetosCount;
 
       const votesCount = await bn(weightFor)
@@ -70,6 +71,7 @@ export default class ConstitutionVotingService extends VotingService {
       // objRes.vetoesPercentage = await this.getVetoesPercentage(id);
       objRes.title = `${proposalType} constitution proposal`;
       objStats = await this.getProposalStatsData(id);
+      // console.log('UserVoted', await this.getProposalVotes(id));
       objRes.contract = this.contractName;
       return { ...objRes, ...objStats };
     } catch (e) {

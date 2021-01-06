@@ -20,7 +20,10 @@ import EmergencyUpdateVotingService from 'api/contracts/Voting/EmergencyUpdateVo
 import GeneralUpdateVotingService from 'api/contracts/Voting/GeneralUpdateVotingService';
 import RootsVotingService from 'api/contracts/Voting/RootsVotingService';
 
-import { chooseExpertContractDependsOnType, chooseExpertContractNameDependsOnType } from 'api/contracts/Voting/handler/QExpertVotingHandler';
+import {
+  chooseExpertContractDependsOnType,
+  chooseExpertContractNameDependsOnType
+} from 'api/contracts/Voting/handler/QExpertVotingHandler';
 import { chooseSlashingContractDependsOnType } from 'api/contracts/Voting/handler/SlashingVotingHandler';
 import VotingService from 'api/contracts/Voting/VotingService';
 import SlashingVotingService from 'api/contracts/Voting/SlashingVotingService';
@@ -40,22 +43,18 @@ function* createProposal({ drizzle, data }) {
           result = yield constitutionVoting.createProposal(data, userAddress);
           contractName = 'ConstitutionVoting';
           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
-          // yield put(getQProposal(constitutionVoting, result?.events?.ProposalCreated?.returnValues?._id));
           break;
         case 'general-q-update':
           const generalUpdateVoting = new GeneralUpdateVotingService(drizzle, 'GeneralUpdateVoting');
           result = yield generalUpdateVoting.createProposal(data, userAddress);
           contractName = 'GeneralUpdateVoting';
           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
-          // yield put(getQProposal(generalUpdateVoting, result?.events?.ProposalCreated?.returnValues?._id));
-          console.log('RESULT, general-q-update', result);
           break;
         case 'emergency-update':
           const emergencyUpdateVoting = new EmergencyUpdateVotingService(drizzle, 'EmergencyUpdateVoting');
           result = yield emergencyUpdateVoting.createProposal(data, userAddress);
           contractName = 'EmergencyUpdateVoting';
           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
-          // yield put(getQProposal(emergencyUpdateVoting, result?.events?.ProposalCreated?.returnValues?._id));
           break;
         case 'add-a-new-root-node':
         case 'remove-a-current-root-node':
@@ -63,7 +62,6 @@ function* createProposal({ drizzle, data }) {
           result = yield rootsVoting.createProposal(data, userAddress);
           contractName = 'RootsVoting';
           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
-          // yield put(getRootsVotingProposal(rootsVoting, result?.events?.ProposalCreated?.returnValues?._id));
           break;
         case 'root-node-slashing':
         case 'validator-node-slashing':
@@ -71,11 +69,10 @@ function* createProposal({ drizzle, data }) {
           result = yield chosenContract.createProposal(data, userAddress);
           if (data?.first === 'root-node-slashing') {
             contractName = 'RootNodesSlashingVoting';
-          } else if (type === 'validator-node-slashing') {
+          } else if (data?.first === 'validator-node-slashing') {
             contractName = 'ValidatorsSlashingVoting';
           }
           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
-          // yield put(getSlashingVotingProposal(chosenContract, result?.events?.ProposalCreated?.returnValues?._id));
           break;
         case 'add-a-new-expert':
         case 'remove-a-current-expert':
@@ -87,11 +84,8 @@ function* createProposal({ drizzle, data }) {
           if (data?.first === 'remove-a-current-expert') {
             //TODO: for createRemoveExpertProposal use RemoveProposalCreated event
             idProposal = result?.events?.RemoveProposalCreated?.returnValues?._id;
-
-            // yield put(getQExpertProposal(contract, result?.events?.RemoveProposalCreated?.returnValues?._id));
           } else {
             idProposal = result?.events?.ProposalCreated?.returnValues?._id;
-            // yield put(getQExpertProposal(contract, result?.events?.ProposalCreated?.returnValues?._id));
           }
           break;
         default:
@@ -148,10 +142,6 @@ function* voteForProposal({ drizzle, data }) {
 }
 
 function* getProposalDependsOnType(contractName, drizzle, data, id,) {
-  console.log('getProposalDependsOnType', drizzle);
-  console.log('getProposalDependsOnType', data);
-  console.log('getProposalDependsOnType', id);
-  console.log('getProposalDependsOnType', contractName);
   try {
     switch (contractName) {
       case 'ConstitutionVoting':
@@ -162,17 +152,15 @@ function* getProposalDependsOnType(contractName, drizzle, data, id,) {
       case 'RootsVoting':
         yield put(getRootsVotingProposal(contractName, id, drizzle));
         break;
-      case 'root-node-slashing':
-      case 'validator-node-slashing':
-        const chosenContract = chooseSlashingContractDependsOnType(drizzle, data?.first);
-        yield put(getSlashingVotingProposal(chosenContract, id));
+      case 'RootNodesSlashingVoting':
+      case 'ValidatorsSlashingVoting':
+        yield put(getSlashingVotingProposal(contractName, id, drizzle));
         break;
-      case 'add-a-new-expert':
-      case 'remove-a-current-expert':
-      case 'parameter-vote':
-        const typeContract = data.first !== 'parameter-vote' ? 'member' : 'parameters';
-        const contract = chooseExpertContractDependsOnType(drizzle, typeContract, data['type-proposal']);
-        yield put(getQExpertProposal(contract, id));
+      case 'EPQFI_MembershipVoting':
+      case 'EPDR_MembershipVoting':
+      case 'EPQFI_ParametersVoting':
+      case 'EPDR_ParametersVoting':
+        yield put(getQExpertProposal(contractName, id, drizzle));
         break;
       default:
         return null;

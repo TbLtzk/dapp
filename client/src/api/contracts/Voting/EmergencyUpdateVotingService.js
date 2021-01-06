@@ -1,6 +1,5 @@
 import {
-  convertNumVotes,
-  getStatusTransformation, transformToPercentage,
+  getStatusTransformation,
 } from 'api/contracts/Voting/handler/commonFunc';
 import VotingService from 'api/contracts/Voting/VotingService';
 
@@ -15,27 +14,27 @@ export default class EmergencyUpdateVotingService extends VotingService {
    */
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
+    let objStats = {};
     try {
       objRes.id = id;
       objRes.remark = promiseRes.remark;
-      objRes.votesAgainst = promiseRes.counters.weightAgainst;
-      objRes.votesFor = promiseRes.counters.weightFor;
+      // objRes.votesAgainst = promiseRes.counters.weightAgainst;
+      // objRes.votesFor = promiseRes.counters.weightFor;
+      const weightAgainst = promiseRes.counters.weightAgainst;
+      objRes.votesAgainst = this.drizzle.web3.utils.fromWei(weightAgainst, "ether");
+      const weightFor = promiseRes.counters.weightFor;
+      objRes.votesFor =  this.drizzle.web3.utils.fromWei(weightFor, "ether");
+
       objRes.vetosCount = promiseRes.counters.vetosCount;
       objRes.votingEndTime = promiseRes.params.votingEndTime;
       objRes.vetoEndTime = promiseRes.params.vetoEndTime;
       objRes.proposalExecutionP = promiseRes.params.proposalExecutionP;
       objRes.status = getStatusTransformation(promiseStatus);
       objRes.title = "Emergency update proposal";
-      let proposalStats = await this.getProposalStats(id);
-      objRes.currentMajority = transformToPercentage(proposalStats.currentMajority);
-      objRes.currentQuorum = transformToPercentage(proposalStats.currentQuorum);
-      objRes.currentVetoPercentage = transformToPercentage(proposalStats.currentVetoPercentage);
-      objRes.requiredMajority = transformToPercentage(proposalStats.requiredMajority);
-      objRes.requiredQuorum = transformToPercentage(proposalStats.requiredQuorum);
-      objRes.vetoThreshold = transformToPercentage(proposalStats.vetoThreshold);
       objRes.contract = this.contractName;
+      objStats = await this.getProposalStatsData(id);
 
-      return objRes;
+      return { ...objRes, ...objStats };
     } catch (e) {
       console.log("e", e);
     }

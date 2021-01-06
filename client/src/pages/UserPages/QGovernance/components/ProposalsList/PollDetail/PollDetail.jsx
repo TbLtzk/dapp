@@ -41,7 +41,7 @@ function PollDetail(props) {
                 addrValue: {pollDetail.addrValue}
               </Text>
             }
-            {!String(pollDetail.boolValue) ? null :
+            {!String(pollDetail.boolValue) || !pollDetail?.boolValue ? null :
               <Text>
                 boolValue: {String(pollDetail.boolValue)}
               </Text>
