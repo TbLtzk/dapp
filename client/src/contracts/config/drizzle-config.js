@@ -36,7 +36,7 @@ const optionsDrizzle = () => {
         web3Contract: new web3.eth.Contract(contractsToAbi[contractName], contractsToAddresses[contractName]),
       });
     } else {
-      console.warn(`${contractName} missing in mapping when creating drizzle config!`);
+      // console.warn(`${contractName} missing in mapping when creating drizzle config!`);
     }
   }
   return { contracts, ...optionsDrizzleBase };
@@ -49,12 +49,11 @@ const getContracts = () => {
     if (contractName in contractsToAddresses && contractName in contractsToAbi) {
       contracts[contractName] = new web3.eth.Contract(contractsToAbi[contractName], contractsToAddresses[contractName]);
     } else {
-      console.warn(`${contractName} missing in mapping when creating drizzle config!`);
+      // console.warn(`${contractName} missing in mapping when creating drizzle config!`);
     }
   }
   return contracts;
 };
 
 export const drizzleRegistry = new Drizzle(optionsDrizzleRegistry);
-export const drizzle = new Drizzle(optionsDrizzle());
 export const contracts = getContracts();

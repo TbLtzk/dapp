@@ -2,7 +2,7 @@ import { contracts } from './config/drizzle-config';
 
 export default class EPDRParameters {
   constructor() {
-    this.methods = contracts[this.constructor.name].methods;
+    this.methods = contracts['EPDRParameters'].methods;
   }
 
   async getAddrKeys() {

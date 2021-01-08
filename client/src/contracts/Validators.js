@@ -1,8 +1,10 @@
 import { web3, contracts } from './config/drizzle-config';
 
+const contractName = 'Validators';
+
 export default class Validators {
   constructor() {
-    this.methods = contracts[this.constructor.name].methods;
+    this.methods = contracts['Validators'].methods;
   }
 
   async getValidatorTotalStake(address) {

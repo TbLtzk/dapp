@@ -1,10 +1,11 @@
 /* eslint-disable max-classes-per-file */
-import { drizzle, web3 } from './config/drizzle-config';
+import { contracts, web3 } from './config/drizzle-config';
 import { contractsToAddresses } from './mapping/contract-to-address';
 
 export class StableCoin {
   constructor() {
-    this.methods = drizzle.contracts[this.constructor.name].methods;
+    this.methods = {};
+    this.address = '';
   }
 
   async balanceOf(address) {
@@ -27,20 +28,23 @@ export class StableCoin {
 export class StableCoinQUSD extends StableCoin {
   constructor() {
     super();
-    this.address = contractsToAddresses[this.constructor.name];
+    this.methods = contracts['StableCoinQUSD'].methods;
+    this.address = contractsToAddresses['StableCoinQUSD'];
   }
 }
 
 export class GovernedEpdrQethAddress extends StableCoin {
   constructor() {
     super();
-    this.address = contractsToAddresses[this.constructor.name];
+    this.methods = contracts['GovernedEpdrQethAddress'].methods;
+    this.address = contractsToAddresses['GovernedEpdrQethAddress'];
   }
 }
 
 export class GovernedEpdrQbtcAddress extends StableCoin {
   constructor() {
     super();
-    this.address = contractsToAddresses[this.constructor.name];
+    this.methods = contracts['GovernedEpdrQbtcAddress'].methods;
+    this.address = contractsToAddresses['GovernedEpdrQbtcAddress'];
   }
 }

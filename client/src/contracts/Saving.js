@@ -1,11 +1,11 @@
 /* eslint-disable max-classes-per-file */
-import { drizzle, web3 } from './config/drizzle-config';
+import { contracts, web3 } from './config/drizzle-config';
 import { contractsToAddresses } from './mapping/contract-to-address';
 
 class Saving {
   constructor() {
-    this.methods = drizzle.contracts[this.constructor.name].methods;
-    this.address = contractsToAddresses[this.constructor.name];
+    this.methods = {};
+    this.address = '';
   }
 
   async usersSavings(address) {
@@ -28,4 +28,9 @@ class Saving {
 }
 
 export class SavingQUSD extends Saving {
+  constructor() {
+    super();
+    this.methods = contracts['SavingQUSD'].methods;
+    this.address = contractsToAddresses['SavingQUSD'];
+  }
 }

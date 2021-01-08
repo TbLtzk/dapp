@@ -1,8 +1,8 @@
-import { drizzle, web3 } from './config/drizzle-config';
+import { contracts, web3 } from './config/drizzle-config';
 
 export default class QPiggyBank {
   constructor() {
-    this.methods = drizzle.contracts[this.constructor.name].methods;
+    this.methods = contracts['QPiggyBank'].methods;
   }
 
   async getUserBalance(address) {

@@ -1,9 +1,9 @@
 /* eslint-disable max-classes-per-file */
-import { drizzle } from './config/drizzle-config';
+import { contracts } from './config/drizzle-config';
 
 class FxPriceFeed {
   constructor() {
-    this.methods = drizzle.contracts[this.constructor.name].methods;
+    this.methods = '';
   }
 
   async exchangeRate() {
@@ -12,7 +12,15 @@ class FxPriceFeed {
 }
 
 export class GovernedEpdrQethQusdOracle extends FxPriceFeed {
+  constructor() {
+    super();
+    this.methods = contracts['GovernedEpdrQethQusdOracle'].methods;
+  }
 }
 
 export class GovernedEpdrQbtcQusdOracle extends FxPriceFeed {
+  constructor() {
+    super();
+    this.methods = contracts['GovernedEpdrQbtcQusdOracle'].methods;
+  }
 }
