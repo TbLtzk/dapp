@@ -18,7 +18,7 @@ function CardHeader(props) {
                     {!status ? null :
                         <LabelStatus>{status}</LabelStatus>
                     }
-                    { status !== "Pending" ? null :
+                    { status !== "Pending" || status !== "Accepted"? null :
                         <WrapVoteBtn>
                             <Button
                                 title="Vote"

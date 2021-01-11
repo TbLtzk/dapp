@@ -78,7 +78,7 @@ export default class ParametersVotingService extends VotingService {
       // candidate = "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7"; //usual account 1
       switch (typeValueProposal) {
         case 'address':
-          valueInput = '0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7';
+          // valueInput = '0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7';
           result = await this.contract.methods.createAddrProposal(link, key, valueInput)
             .send(
               { from: userAddress });

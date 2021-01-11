@@ -97,6 +97,7 @@ export default class RootsVotingService extends VotingService {
    * @return string
    */
   async createProposal(data, userAddress) {
+    console.log("data", data);
     // console.log("DATA", data);
     let result = null;
     // const hash = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
@@ -112,13 +113,13 @@ export default class RootsVotingService extends VotingService {
           .send(
             { from: userAddress });
       } else {
-        addressToRemove = '0x6A39B688d591Ea00C9EA69658438794204B5cC62'; //remove root address
+        // addressToRemove = '0x6A39B688d591Ea00C9EA69658438794204B5cC62'; //remove root address
         result = await this.contract.methods.createProposal(link, userAddress, addressToRemove)
           .send(
             { from: userAddress });
       }
     } else if (data.first === 'remove-a-current-root-node') {
-      addressToRemove = '0x6A39B688d591Ea00C9EA69658438794204B5cC62'; //remove root address
+      // addressToRemove = '0x6A39B688d591Ea00C9EA69658438794204B5cC62'; //remove root address
       result = await this.contract.methods.createProposal(link, EMPTY_ADDR, addressToRemove)
         .send(
           { from: userAddress });

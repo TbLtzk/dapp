@@ -68,9 +68,9 @@ export default class SlashingVotingService extends VotingService {
     // console.log("candidate", candidate);
     // console.log("percentageStake", percentageStake);
     // candidate = "0x6a39b688d591ea00c9ea69658438794204b5cc62";
-    candidate = this.contractName === 'ValidatorsSlashingVoting' //validator member
-      ? '0x6a39b688d591ea00c9ea69658438794204b5cc62'
-      : '0x4a14D788D86D021670EBcecE1196631d66595984'; //root member
+    // candidate = this.contractName === 'ValidatorsSlashingVoting' //validator member
+    //   ? '0x6a39b688d591ea00c9ea69658438794204b5cc62'
+    //   : '0x4a14D788D86D021670EBcecE1196631d66595984'; //root member
     const result = await this.contract.methods.createProposal(link, candidate, percentageStake)
       .send(
         { from: userAddress });
