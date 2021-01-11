@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { indents } from 'constants/style';
-
 export const RootNodePanelWrap = styled.div`
   .table{
     //width: 26%;

@@ -3,7 +3,7 @@ import React, {useCallback} from "react";
 import {useSelector} from "react-redux";
 import {formObject} from "store/selectors/voting/proposals";
 
-import {SubTitle, SummarText, SummarTextType} from "../styles";
+import {SubTitle, SummarText, SummarTextLink, SummarTextType} from "../styles";
 
 function CreateStep4(props) {
     const {activeTab} = props;
@@ -18,7 +18,8 @@ function CreateStep4(props) {
                             <SubTitle>Chosen data:</SubTitle>
                             <SummarText>Type: <SummarTextType>{formData?.first?.replace(/-/g, " ")}</SummarTextType></SummarText>
                             <SummarText>Classification: <SummarTextType>{formData?.classification?.replace(/-/g, " ")}</SummarTextType></SummarText>
-                            <SummarText>External link: {formData["external-link"]}</SummarText>
+                            <SummarText>External link:</SummarText>
+                            <SummarTextLink>{formData["external-link"]}</SummarTextLink>
                             <SummarText style={{marginBottom: 0}}>Hash:</SummarText>
                             <SummarText>{formData.hash}</SummarText>
                             <SummarText>Change Constitution Parameter: {formData["change-constitution-parameter"]}</SummarText>
