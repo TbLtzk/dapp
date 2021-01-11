@@ -23,7 +23,6 @@ import {
   BottomText, WrapBtn
 } from './styles';
 
-
 const { useDrizzle } = drizzleReactHooks;
 
 function ValidatorsPanel(props) {

@@ -30,7 +30,6 @@ function Staking() {
         />
       </Col>
     </Row>
-
   );
 }
 

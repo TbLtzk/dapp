@@ -8,20 +8,21 @@ export const RootNodePanelWrap = styled.div`
   }
   .table th:nth-child(1),
   .table th:nth-child(3){
-    display: flex;
+    //display: flex;
   }
   .table td:nth-child(1){
     color: ${props => props.theme.colors.black};
   }
   .table td:nth-child(2){
     color: ${props => props.theme.colors.darkBlue};
-    width: 29%;
+    //width: 29%;
   }
   .table td:nth-child(3){
     color: ${props => props.theme.colors.darkBlue};
+    width: 15%;
   }
   .pagination{
-    justify-content: flex-end;
+    justify-content: center;
   }
 `;
 

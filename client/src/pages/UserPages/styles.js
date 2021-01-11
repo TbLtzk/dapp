@@ -10,4 +10,5 @@ export const WrapContainer = styled(Container)`
   padding-top: ${indents["30"]};
   padding-left: ${indents["30"]};
   padding-right: ${indents["30"]};
+  padding-bottom: 50px;
 `;

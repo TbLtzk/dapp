@@ -16,7 +16,6 @@ function* getRootMembersData({contract}) {
     try {
         const data = yield contract.getRootCalc();
         console.log("data", data);
-
         yield put(getRootMembersDataSuccess(data));
     } catch (err) {
         console.log('err',err);
