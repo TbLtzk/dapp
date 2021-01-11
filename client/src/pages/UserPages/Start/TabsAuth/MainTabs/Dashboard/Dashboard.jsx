@@ -29,13 +29,13 @@ function Dashboard() {
           <RootNodePanel/>
         </Col>
       </Row>
-      <Row>
-        <Col xs={6}>
-        </Col>
-        <Col xs={6}>
-          <ValidatorsPanel/>
-        </Col>
-      </Row>
+      {/*<Row>*/}
+      {/*  <Col xs={6}>*/}
+      {/*  </Col>*/}
+      {/*  <Col xs={6}>*/}
+      {/*    <ValidatorsPanel/>*/}
+      {/*  </Col>*/}
+      {/*</Row>*/}
 
     </>
 
