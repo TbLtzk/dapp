@@ -26,7 +26,7 @@ function QProposals() {
   return (
     <Col xs={12}>
       <QTypeProposalsTabs
-        activeDescr={proposals?.length + ' POLLS'}
+        activeDescr={proposals?.length + ' Proposals'}
         activeContent={
           <ProposalsList
             activeTab="q-proposals"
@@ -36,7 +36,7 @@ function QProposals() {
             proposalsKind="QProposals"
           />
         }
-        votableDesc="0 POLLS"
+        votableDesc="0 Proposals"
         votableContent={<p>Only votable</p>}
       />
     </Col>

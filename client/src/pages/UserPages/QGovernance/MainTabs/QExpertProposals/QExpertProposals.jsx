@@ -39,7 +39,7 @@ function QExpertProposals() {
     return (
         <Col xs={12}>
             <QTypeProposalsTabs
-                activeDescr={proposals?.length + " POLLS"}
+                activeDescr={proposals?.length + " Proposals"}
                 activeContent={
                     <ProposalsList
                         activeTab="expert"
@@ -49,7 +49,7 @@ function QExpertProposals() {
                         proposalsKind="QExpertProposals"
                     />
                 }
-                votableDesc="0 POLLS"
+                votableDesc="0 Proposals"
                 votableContent={<p>Only votable</p>}
             />
         </Col>

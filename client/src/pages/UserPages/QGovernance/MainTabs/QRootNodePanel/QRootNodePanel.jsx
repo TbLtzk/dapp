@@ -41,7 +41,7 @@ function QRootNodePanel() {
     return (
         <Col xs={12}>
             <QTypeProposalsTabs
-                activeDescr={proposals?.length + " POLLS"}
+                activeDescr={proposals?.length + " Proposals"}
                 activeContent={
                     <ProposalsList
                         activeTab="root-node"
@@ -51,7 +51,7 @@ function QRootNodePanel() {
                         proposalsKind="QRootNodePanel"
                     />
                 }
-                votableDesc="0 POLLS"
+                votableDesc="0 Proposals"
                 votableContent={<p>Only votable</p>}
             />
         </Col>
