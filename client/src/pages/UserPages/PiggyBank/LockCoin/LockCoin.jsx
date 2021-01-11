@@ -50,10 +50,10 @@ export default function LockCoin() {
       <Headline>Lock Your Coins for Voting</Headline>
       <Row>
         <Col xs={3}>
-          <TextWrapGrey>Lock Amount</TextWrapGrey>
+          <TextWrapGrey>Increase Weight</TextWrapGrey>
         </Col>
         <Col xs={9}>
-          <TextWrapGrey>Until</TextWrapGrey>
+          <TextWrapGrey>Lock Weight Until</TextWrapGrey>
         </Col>
 
         <Col xs={3}>
@@ -92,7 +92,7 @@ export default function LockCoin() {
         <Col>
           <Button
             type="outline"
-            title="Lock"
+            title="Increase"
             width="100%"
             handleButton={submit1(lockCoinL)}
           />
@@ -101,7 +101,7 @@ export default function LockCoin() {
 
       <Row>
         <Col xs={12}>
-          <TextWrapGrey>Extend currently locked balance until</TextWrapGrey>
+          <TextWrapGrey>Extend current Voting Weight until</TextWrapGrey>
         </Col>
         <DatePickerContainer xs={8}>
           <InputWrapper>
@@ -139,7 +139,7 @@ export default function LockCoin() {
 
       <Row>
         <Col xs={12}>
-          <TextWrapGrey>Unlock Amount</TextWrapGrey>
+          <TextWrapGrey>Reduce Weight by</TextWrapGrey>
         </Col>
         <Col xs={8}>
           <FormInput
@@ -153,7 +153,7 @@ export default function LockCoin() {
         <Col>
           <Button
             type="outline"
-            title="Unlock"
+            title="Reduce"
             width="100%"
             handleButton={submit3(unlockCoinL)}
           />

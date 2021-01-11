@@ -3,6 +3,7 @@ import * as actionTypes from 'store/actions/action-types/validators';
 import {
   setError, setDelegatorsShare, getDelegatorsShare, setTotalStake, setOwnStake,
   setDelegatedStake, setAccTotalStake, setInterestRate, getInterestRate,
+  getValidatorMembersSuccess, getValidatorMembersError
 } from 'store/actions/action-creaters/validators';
 import Validators from '../../contracts/Validators';
 import { web3 } from '../../contracts/config/drizzle-config';
@@ -140,6 +141,18 @@ function* setInterestRateGenerator({ address, uintPercent }) {
   }
 }
 
+function* getValidatorsMembers() {
+  try {
+    const contract = getContractInstance();
+    const data = yield contract.getPositiveValidatorStake();
+    // console.log("data", data.slice().reverse());
+   yield put(getValidatorMembersSuccess(data));
+  } catch (err) {
+    console.error('ValidatorsMember.Error', err);
+    yield put(getValidatorMembersError(err.message));
+  }
+}
+
 export default [
   takeEvery(actionTypes.GET_VAL_DELEGATORS_SHARE, getDelegatorsShareGenerator),
   takeEvery(actionTypes.GET_VAL_TOTAL_STAKE, getTotalStakeGenerator),
@@ -150,4 +163,6 @@ export default [
 
   takeEvery(actionTypes.SET_VAL_DELEGATORS_SHARE_SEND, setDelegatorsShareGenerator),
   takeEvery(actionTypes.SET_VAL_INTEREST_RATE_SEND, setInterestRateGenerator),
+
+  takeEvery(actionTypes.GET_VALIDATORS_MEMBERS, getValidatorsMembers),
 ];

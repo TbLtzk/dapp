@@ -48,4 +48,8 @@ export default class Validators {
   async enterShortList(address) {
     return await this.methods.enterShortList().send({ from: address });
   }
+
+  async getPositiveValidatorStake() {
+    return await this.methods.getPositiveValidatorStake().call();
+  }
 }

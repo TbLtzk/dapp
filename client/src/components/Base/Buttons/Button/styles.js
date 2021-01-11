@@ -82,5 +82,4 @@ export const ButtonCustom = styled(Button)`
     box-shadow: none;
   }
   border-radius: 8px;
-  height: 42px;
 `;

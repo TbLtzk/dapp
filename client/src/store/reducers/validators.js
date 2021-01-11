@@ -11,6 +11,10 @@ const initialState = {
   delegatedStake: 0,
   accTotalStake: 0,
   interestRate: 0,
+
+  validatorMembers: [],
+  loadingMembers: true,
+  errorMembers: null,
 };
 
 export default function index(state = initialState, action) {
@@ -62,6 +66,25 @@ export default function index(state = initialState, action) {
       return {
         ...state,
         interestRate: action.payload,
+      };
+    case actionTypes.GET_VALIDATORS_MEMBERS:
+      return {
+        ...state,
+        loadingMembers: true,
+      };
+    case actionTypes.GET_VALIDATORS_MEMBERS_SUCCESS:
+      return {
+        ...state,
+        loadingMembers: false,
+        validatorMembers: action.data,
+        errorMembers: null,
+      };
+    case actionTypes.GET_VALIDATORS_MEMBERS_ERROR:
+      return {
+        ...state,
+        loadingMembers: false,
+        validatorMembers: [],
+        errorMembers:  action.error,
       };
     default:
       return {
