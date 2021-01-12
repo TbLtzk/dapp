@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col } from 'react-bootstrap';
 
-import ValidatorsPanel from 'components/Custom/ValidatorsPanel';
+import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
 
 import { WrapContainer } from './styles';
 

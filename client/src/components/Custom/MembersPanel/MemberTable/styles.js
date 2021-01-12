@@ -1,23 +1,19 @@
 import styled from 'styled-components';
 
-export const RootNodePanelWrap = styled.div`
-  .table{
-    //width: 26%;
-  }
-  .table th:nth-child(1),
-  .table th:nth-child(3){
-    //display: flex;
+export const MemberPanelWrap = styled.div`
+  .table th{
+    vertical-align: baseline;
   }
   .table td:nth-child(1){
     color: ${props => props.theme.colors.black};
   }
   .table td:nth-child(2){
     color: ${props => props.theme.colors.darkBlue};
-    //width: 29%;
+    width: ${(props) => (props.type === 'validators' ? 'auto' : '29%')};
   }
   .table td:nth-child(3){
-    color: ${props => props.theme.colors.darkBlue};
-    width: 15%;
+    color: ${props => props.type === 'validators' ? props.theme.colors.darkBlue : props.theme.colors.darkGrey};
+    width: ${(props) => (props.type === 'validators' ? '15%' : 'auto')};
   }
   .pagination{
     justify-content: center;

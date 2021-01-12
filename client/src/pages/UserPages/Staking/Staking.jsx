@@ -16,8 +16,8 @@ function Staking() {
       {
         label: 'validator-staking',
         title: 'Validator Staking',
-        content: <p>Validator Staking</p>,
-        // content: <ValidatorStaking/>,
+        // content: <p>Validator Staking</p>,
+        content: <ValidatorStaking/>,
       },
     ]
   ), []);

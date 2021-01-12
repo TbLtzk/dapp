@@ -9,6 +9,7 @@ const colors = {
   whiteGrey: '#AFB2CD',
   darkGrey: '#9A9A9A',
   black: '#2C2727',
+  totalBlack: '#000000',
   white: '#FFF',
   opacityWhite: 'rgba(255, 255, 255, 0.5)',
   darkWhite: '#F9F9F9',

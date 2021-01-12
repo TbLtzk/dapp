@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col } from 'react-bootstrap';
 
-import RootNodePanel from 'components/Custom/RootNodePanel';
+import RootNodePanel from 'components/Custom/MembersPanel/RootNodePanel';
 import FormStaking from 'pages/UserPages/Staking/FormStaking';
 import ValidatorPool from 'components/Custom/ValidatorPool';
 import ButtonLinkArrow from 'components/Base/Buttons/ButtonLinkArrow';

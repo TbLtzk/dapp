@@ -9,16 +9,20 @@ export const ContainerWrap = styled.div`
   //width: 50%;
 `;
 
+export const LoadingWrap = styled(Col)`
+  text-align: center;
+`;
+
 export const HeadlineWrap = styled.div`
-  display: flex;
+  //display: flex;
   justify-content: space-between;
   align-items: baseline;
 `;
 
 export const TotalWrap = styled.div`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
+  ${(props) => props.theme.fontStyles.text.middle};
+  line-height: 18px;
+  color: ${props => props.theme.colors.totalBlack};
 `;
 
 export const BottomText = styled.p`

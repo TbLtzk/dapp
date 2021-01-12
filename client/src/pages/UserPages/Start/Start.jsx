@@ -1,73 +1,72 @@
-import React, {useEffect} from "react";
-import {drizzleReactHooks} from "@drizzle/react-plugin";
+import React, { useEffect } from 'react';
+import { drizzleReactHooks } from '@drizzle/react-plugin';
 
-import Header from "components/Navigations/Header";
-import TabsAuth from "pages/UserPages/Start/TabsAuth";
-import NotAuth from "pages/UserPages/Start/NotAuth";
+import Header from 'components/Navigations/Header';
+import TabsAuth from 'pages/UserPages/Start/TabsAuth';
+import NotAuth from 'pages/UserPages/Start/NotAuth';
 
-import {WrapContainer} from "pages/UserPages/styles";
-import {useDispatch, useSelector} from "react-redux";
-import {userAddressMetamask} from "store/selectors/user-inf";
-import {checkIsUserRootNode} from "store/actions/action-creaters/root-contract";
-import {detectEthereumProvider} from "store/actions/action-creaters/user-auth";
-import RootService from "api/contracts/RootService";
-import {Redirect} from "react-router";
+import { WrapContainer } from 'pages/UserPages/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { userAddressMetamask } from 'store/selectors/user-inf';
+import { checkIsUserRootNode } from 'store/actions/action-creaters/root-contract';
+import { detectEthereumProvider } from 'store/actions/action-creaters/user-auth';
+import RootService from 'api/contracts/RootService';
+import { Redirect } from 'react-router';
 
-
-const {useDrizzle, useDrizzleState} = drizzleReactHooks;
+const { useDrizzle, useDrizzleState } = drizzleReactHooks;
 
 function Start() {
-    const {drizzle} = useDrizzle();
-    const drizzleStatus = useDrizzleState(state => state.drizzleStatus);
-    const rootService = new RootService(drizzle);
+  const { drizzle } = useDrizzle();
+  const drizzleStatus = useDrizzleState(state => state.drizzleStatus);
+  const rootService = new RootService(drizzle);
 
-    const ethereum = window.ethereum;
-    const dispatch = useDispatch();
+  const ethereum = window.ethereum;
+  const dispatch = useDispatch();
 
-    const userAddress = useSelector(userAddressMetamask);
+  const userAddress = useSelector(userAddressMetamask);
 
-    useEffect(() => {
-        // contractRegistry.getAddress().then((address) => {
-        //     console.log('QRootNodePanel address', address);
-        // });
-        if (userAddress) {
-            // dispatch(checkIsUserRootNode(rootService, "0x66316FfA38490d4d072F34EF7D7BA64Ce6b4478e"))
-            dispatch(checkIsUserRootNode(rootService, userAddress))
-        }
-    }, [userAddress, dispatch]);
-
-    useEffect(() => {
-        if (ethereum) {
-            ethereum.on('accountsChanged', function (accounts) {
-                dispatch(detectEthereumProvider());
-                if (drizzle) {
-                    window.location.reload();
-                }
-            });
-        }
-    }, [ethereum]);
-
-    if (!drizzleStatus && !ethereum) {
-        return <NotAuth />;
-    } else {
-        return (
-            <>
-                <Header/>
-                <WrapContainer fluid>
-                    <TabsAuth/>
-                </WrapContainer>
-            </>
-        );
+  useEffect(() => {
+    // contractRegistry.getAddress().then((address) => {
+    //     console.log('QRootNodePanel address', address);
+    // });
+    if (userAddress) {
+      // dispatch(checkIsUserRootNode(rootService, "0x66316FfA38490d4d072F34EF7D7BA64Ce6b4478e"))
+      dispatch(checkIsUserRootNode(rootService, userAddress));
     }
+  }, [userAddress, dispatch]);
 
-    // return (
-    //     <>
-    //         <Header/>
-    //         <WrapContainer fluid>
-    //             <TabsAuth/>
-    //         </WrapContainer>
-    //     </>
-    // );
+  useEffect(() => {
+    if (ethereum) {
+      ethereum.on('accountsChanged', function (accounts) {
+        dispatch(detectEthereumProvider());
+        if (drizzle) {
+          window.location.reload();
+        }
+      });
+    }
+  }, [ethereum]);
+
+  if (!drizzleStatus && !ethereum) {
+    return <NotAuth/>;
+  } else {
+    return (
+      <>
+        <Header/>
+        <WrapContainer fluid>
+          <TabsAuth/>
+        </WrapContainer>
+      </>
+    );
+  }
+
+  // return (
+  //     <>
+  //         <Header/>
+  //         <WrapContainer fluid>
+  //             <TabsAuth/>
+  //         </WrapContainer>
+  //     </>
+  // );
 }
 
 export default Start;

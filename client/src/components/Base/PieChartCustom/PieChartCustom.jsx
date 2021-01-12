@@ -4,7 +4,7 @@ import {rootMembersData} from "store/selectors/root-contract"
 
 import {PieChart, Pie, Cell} from 'recharts';
 
-import {circles} from "components/Custom/RootNodePanel/constants"
+import {circles} from "components/Custom/MembersPanel/RootNodePanel/constants"
 
 import colors from "constants/colors"
 import {WrapChart} from "./styles"
@@ -53,7 +53,9 @@ function PieChartCustom(props) {
             {
                 !transformData ? null :
                     <PieChart width={200} height={200}>
-                        <text x={108} y={102} dy={8} textAnchor="middle"
+                      {/*<text x={108} y={102} dy={8} textAnchor="middle"*/}
+                        <text x={"40%"} y={"50%"} dy={8} textAnchor="middle"
+
                               fill={colors.darkBlue}
                               fontSize="24"
                               fontWeight="bold"
@@ -62,11 +64,13 @@ function PieChartCustom(props) {
                         </text>
                         <Pie
                             data={transformData}
-                            cx={100}
-                            cy={100}
+                            cx={"37%"}
+                            // cx={100}
+                            cy={"50%"}
+                            // cy={100}
                             labelLine={false}
                             // label={renderCustomizedLabel}
-                            innerRadius={50}
+                            innerRadius={47}
                             fill="#8884d8"
                             dataKey="value"
                         >

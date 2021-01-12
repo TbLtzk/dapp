@@ -3,8 +3,8 @@ import { drizzleReactHooks } from '@drizzle/react-plugin';
 
 import { Row, Col } from 'react-bootstrap';
 
-import RootNodePanel from 'components/Custom/RootNodePanel';
-import ValidatorsPanel from 'components/Custom/ValidatorsPanel';
+import RootNodePanel from 'components/Custom/MembersPanel/RootNodePanel';
+import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
 import UserData from 'components/Custom/UserData';
 import { roundBalance } from 'func/balance';
 
@@ -19,24 +19,26 @@ function Dashboard() {
   return (
     <>
       <Row>
-        <Col xs={6}>
+        <Col md={6}>
           <div>
             <p>Q current Block Height: {state?.currentBlock?.number}</p>
             <UserData/>
           </div>
         </Col>
-        <Col xs={6}>
+        <Col md={6}>
           <RootNodePanel/>
         </Col>
       </Row>
-      {/*<Row>*/}
-      {/*  <Col xs={6}>*/}
-      {/*  </Col>*/}
-      {/*  <Col xs={6}>*/}
-      {/*    <ValidatorsPanel/>*/}
-      {/*  </Col>*/}
-      {/*</Row>*/}
+      <Row>
+        <Col md={6}>
 
+        </Col>
+        <Col md={6}>
+          <WrapContainer>
+            <ValidatorsPanel/>
+          </WrapContainer>
+        </Col>
+      </Row>
     </>
 
   );
