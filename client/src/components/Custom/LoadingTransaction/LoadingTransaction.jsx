@@ -20,10 +20,10 @@ function LoadingTransaction() {
           <WrapLoading>
             <WrapText>
               <Text>Loading</Text>
-              <LoadingSpinner type="light" />
+              <LoadingSpinner type="light"/>
             </WrapText>
           </WrapLoading>
-          <Shadow />
+          <Shadow/>
         </Wrap>
       );
     }

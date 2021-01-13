@@ -9,7 +9,7 @@ export const setTransactionLoadingSuccess = () => ({
 });
 
 export const setTransactionLoadingError = (errorMessage) => ({
-  type: actionTypes.SET_TRANSACTION_LOADING_SUCCESS,
+  type: actionTypes.SET_TRANSACTION_LOADING_ERROR,
   errorMessage,
 });
 

@@ -7,7 +7,8 @@ import {
 
 import {
   createProposalSuccess, voteForProposalSuccess,
-  getEndedProposalsSuccess, getEndedProposalsError
+  getEndedProposalsSuccess, getEndedProposalsError,
+  executeProposalSuccess, executeProposalError
 } from 'store/actions/action-creaters/voting/proposals';
 import { getQProposal } from 'store/actions/action-creaters/voting/qproposals';
 import { getRootsVotingProposal } from 'store/actions/action-creaters/voting/roots-voting';
@@ -141,6 +142,27 @@ function* voteForProposal({ drizzle, data }) {
   }
 }
 
+function* executeProposal({ drizzle, data }) {
+  try {
+    // yield put(setTransactionLoading());
+    const { userAddress } = yield select(state => state.userInf);
+
+    let result = null;
+    if (data && drizzle) {
+      const contract = new VotingService(drizzle, data?.contract);
+      console.log('contract', contract);
+      const execute = yield contract.execute(data?.idProposal, userAddress);
+      console.log('RESULT execute', execute);
+    }
+    yield call(getProposalDependsOnType, data?.contract, drizzle, data, data?.idProposal);
+    yield put(executeProposalSuccess(result));
+    // yield put(setTransactionLoadingSuccess());
+  } catch (err) {
+    console.log('err', err.message);
+    yield put(executeProposalError(err.message));
+  }
+}
+
 function* getProposalDependsOnType(contractName, drizzle, data, id,) {
   try {
     switch (contractName) {
@@ -229,6 +251,7 @@ function* getEndedProposals({ drizzle, activeTab }) {
 export default [
   takeEvery(actionTypes.CREATE_PROPOSAL, createProposal),
   takeEvery(actionTypes.VOTE_FOR_PROPOSAL, voteForProposal),
+  takeEvery(actionTypes.EXECUTE_PROPOSAL, executeProposal),
 
   takeEvery(actionTypes.GET_ENDED_PROPOSALS, getEndedProposals),
 ];

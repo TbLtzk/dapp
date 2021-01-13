@@ -8,8 +8,8 @@ import SlashingProposals from "./MainTabs/SlashingProposals";
 import QExpertProposals from "./MainTabs/QExpertProposals";
 
 import CreateQProposalBtn from "./components/CreateQProposalBtn";
-import VotingStats from "./components/VotingStats";
-import References from "./components/References";
+import Stats from "components/Custom/PageLists/Stats";
+import References from "components/Custom/PageLists/References";
 
 import {WrapTabs, WrapBtn} from "./styles";
 import Button from "components/Base/Buttons/Button";
@@ -17,6 +17,25 @@ import {useHistory} from "react-router-dom";
 
 function QGovernance() {
     const history = useHistory();
+
+  const statsData = useMemo(() => {
+    return (
+      [
+        {
+          title: 'PiggyBank Voting Weight (Q)',
+          value: '4563Q',
+        },
+        {
+          title: 'Voting Locking End',
+          value: '3rd December 2026 15:51 UTC',
+        },
+        {
+          title: 'Voting Status',
+          value: 'Root Node',
+        },
+      ]
+    );
+  }, []);
 
     const tabsItems = useMemo(() => {
         return (
@@ -88,8 +107,8 @@ function QGovernance() {
             </Col>
             <Col md={4}>
                 <CreateQProposalBtn activeTab={activeTab}/>
-                <VotingStats/>
-                <References/>
+                <Stats statsData={statsData} type="Voting"/>
+                <References type="voting"/>
             </Col>
         </Row>
     );

@@ -8,9 +8,11 @@ import Staking from './Staking';
 import ManageStakerRewardPool from './ManageStakerRewardPool';
 import SavingAndBorrowing from './SavingAndBorrowing';
 import EndedProposals from './QGovernance/EndedProposals';
-import LoadingTransaction from "components/Custom/LoadingTransaction";
+import EndedAuctions from './SavingAndBorrowing/DecentralizedAuctions/EndedAuctions';
+import LoadingTransaction from 'components/Custom/LoadingTransaction';
 
 import { WrapContainer } from './styles';
+import DecentralizedAuctions from './SavingAndBorrowing/DecentralizedAuctions';
 
 export default function UserPages(props) {
   const { location } = props;
@@ -18,25 +20,29 @@ export default function UserPages(props) {
   const componentSwitcher = () => {
     switch (location.pathname) {
       case '/q-governance':
-        return <QGovernance />;
+        return <QGovernance/>;
       case '/piggy-bank':
-        return <PiggyBank />;
+        return <PiggyBank/>;
       case '/staking':
-        return <Staking />;
+        return <Staking/>;
       case '/manage-staker-reward-pool':
-        return <ManageStakerRewardPool />;
+        return <ManageStakerRewardPool/>;
       case '/saving-and-borrowing':
-        return <SavingAndBorrowing />;
+        return <SavingAndBorrowing/>;
       case '/ended-proposals':
-        return <EndedProposals />;
+        return <EndedProposals/>;
+      case '/ended-auctions':
+        return <EndedAuctions/>;
+      case '/decentralized-auctions':
+        return <DecentralizedAuctions/>;
       default:
-        return <QGovernance />;
+        return <QGovernance/>;
     }
   };
 
   return (
     <>
-      <Header />
+      <Header/>
       <WrapContainer fluid>
         {componentSwitcher()}
       </WrapContainer>

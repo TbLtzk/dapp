@@ -10,12 +10,8 @@ export default class RootService {
    * @return array
    */
   async getRootMembers() {
-    try {
-      return await this.Root.methods.getMembers()
-        .call();
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.Root.methods.getMembers()
+      .call();
   }
 
   /**
@@ -24,12 +20,8 @@ export default class RootService {
    * @return boolean
    */
   async checkMemberIsRoot(userAddress) {
-    try {
-      return await this.Root.methods.isMember(userAddress)
-        .call();
-    } catch (e) {
-      // console.log(e);
-    }
+    return await this.Root.methods.isMember(userAddress)
+      .call();
   }
 
   /**
@@ -37,12 +29,8 @@ export default class RootService {
    * @return number
    */
   async getMemberCount() {
-    try {
-      return await this.Root.methods.getCount()
-        .call();
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.Root.methods.getCount()
+      .call();
   }
 
   /**
@@ -51,15 +39,9 @@ export default class RootService {
    * @return number
    */
   async getRootNodeStake(node) {
-    try {
-
-      const balance = await this.Root.methods.getRootNodeStake(node)
-        .call();
-      return this.drizzle.web3.utils.fromWei(balance, 'ether');
-
-    } catch (e) {
-      console.log(e);
-    }
+    const balance = await this.Root.methods.getRootNodeStake(node)
+      .call();
+    return this.drizzle.web3.utils.fromWei(balance, 'ether');
   }
 
   /**
@@ -67,32 +49,28 @@ export default class RootService {
    * @return array
    */
   async getRootNodeAllData() {
-    try {
-      const rootStakes = [];
-      let promiseRes;
-      const members = await this.getRootMembers();
-      if (members) {
-        console.log('members', members);
-        let i = 0;
-        for (let member of members) {
-          promiseRes = await this.getRootNodeStake(member)
-            .then((nodeStake) => {
-              rootStakes.push(
-                {
-                  address: member,
-                  // stakeAmount: (i + 1) * 450,
-                  stakeAmount: Number(nodeStake),
-                }
-              );
-            });
-          i++;
-        }
+    const rootStakes = [];
+    let promiseRes;
+    const members = await this.getRootMembers();
+    if (members) {
+      console.log('members', members);
+      let i = 0;
+      for (let member of members) {
+        promiseRes = await this.getRootNodeStake(member)
+          .then((nodeStake) => {
+            rootStakes.push(
+              {
+                address: member,
+                // stakeAmount: (i + 1) * 450,
+                stakeAmount: Number(nodeStake),
+              }
+            );
+          });
+        i++;
       }
-      console.log("rootStakes",rootStakes);
-      return rootStakes;
-    } catch (e) {
-      console.log(e);
     }
+    console.log('rootStakes', rootStakes);
+    return rootStakes;
   }
 
   /**
@@ -100,33 +78,30 @@ export default class RootService {
    * @return array
    */
   async getRootCalc() {
-    try {
-      let rootNodeData;
-      let totalStakes;
-      return await this.getRootNodeAllData()
-        .then((data) => {
-          // console.log('getRootCalcData', data);
-          // console.log('getRootCalcData', data.length);
-          if (data.length) {
-            totalStakes = data.reduce((sum, current) => {
-              return sum + current.stakeAmount;
-            }, 0);
-            rootNodeData = data.map((member, i) => {
-              return {
-                ...member,
-                share: Math.round(member.stakeAmount * 100 / totalStakes)
-              };
-            });
-            console.log('rootNodeData', rootNodeData);
+    let rootNodeData;
+    let totalStakes;
+    return await this.getRootNodeAllData()
+      .then((data) => {
+        // console.log('getRootCalcData', data);
+        // console.log('getRootCalcData', data.length);
+        if (data.length) {
+          totalStakes = data.reduce((sum, current) => {
+            return sum + current.stakeAmount;
+          }, 0);
+          rootNodeData = data.map((member, i) => {
             return {
-              rootNodeData,
-              totalStakes
+              ...member,
+              share: Math.round(member.stakeAmount * 100 / totalStakes)
             };
-          }
-        });
-    } catch (e) {
+          });
+          console.log('rootNodeData', rootNodeData);
+          return {
+            rootNodeData,
+            totalStakes
+          };
+        }
+      });
 
-    }
   }
 
   /**

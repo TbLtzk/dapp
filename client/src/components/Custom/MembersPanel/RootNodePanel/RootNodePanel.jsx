@@ -42,6 +42,8 @@ function RootNodePanel(props) {
     dispatch(getRootMembersData(rootService));
   }, [dispatch]);
 
+  console.log('errorMessage', errorMessage);
+
   return (
     <CustomBlock>
       <ContainerWrap>

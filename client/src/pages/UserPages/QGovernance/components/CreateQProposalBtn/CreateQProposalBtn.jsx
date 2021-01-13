@@ -1,168 +1,97 @@
-import React, {useMemo, useState} from "react";
-import {BigNumber} from "bignumber.js";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faPlus} from "@fortawesome/free-solid-svg-icons"
+import React, { useMemo, useState } from 'react';
+import { BigNumber } from 'bignumber.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
-import {drizzleReactHooks} from "@drizzle/react-plugin";
-import {useDispatch, useSelector} from "react-redux";
-import {userAddressMetamask} from "store/selectors/user-inf";
+import { drizzleReactHooks } from '@drizzle/react-plugin';
+import { useDispatch, useSelector } from 'react-redux';
+import { userAddressMetamask } from 'store/selectors/user-inf';
 import {
-    setCreatedStepsLimit,
-    setCreateProposalObj,
-    setStepCounter
-} from "store/actions/action-creaters/voting/proposals";
+  setCreatedStepsLimit,
+  setCreateProposalObj,
+  setStepCounter
+} from 'store/actions/action-creaters/voting/proposals';
 
-import ModalCreateProposal from "./ModalCreateProposal";
+import ModalCreateProposal from './ModalCreateProposal';
+import CreateQBtn from 'components/Custom/PageLists/CreateQBtn';
 
-import {QExpert, QProposal, QRootNode, QSlashing} from "./constants";
-import {WrapBtnBlock, ButtonCustom, BtnLabel} from "./styles";
+import { QExpert, QProposal, QRootNode, QSlashing } from './constants';
+import { WrapBtnBlock, ButtonCustom, BtnLabel } from './styles';
 
-const {useDrizzle} = drizzleReactHooks;
+const { useDrizzle } = drizzleReactHooks;
 
 function CreateQProposalBtn(props) {
-    const {activeTab} = props;
-    const {drizzle} = useDrizzle();
-    const userAddress = useSelector(userAddressMetamask);
-    const [modalShow, setModalShow] = useState(false);
-    const dispatch = useDispatch();
+  const { activeTab } = props;
+  const { drizzle } = useDrizzle();
+  const userAddress = useSelector(userAddressMetamask);
+  const [modalShow, setModalShow] = useState(false);
+  const dispatch = useDispatch();
 
-    const activeTabTitle = useMemo(() => {
-        // return activeTab.replace(/-/g, " ")
-        switch (activeTab) {
-            case "q-proposals":
-                return QProposal;
-            case "q-root-node-panel":
-                return QRootNode;
-            case "q-expert-proposals":
-                return QExpert;
-            case "slashing-proposals":
-                return QSlashing;
-            default:
-                return QProposal;
-        }
-    }, [activeTab]);
-
-
-    const getPercentageFormat = (number) => {
-        return bn(1e+27).multipliedBy(number).dividedBy(100);
-    };
-
-    function bn(number) {
-        return new BigNumber(number);
+  const activeTabTitle = useMemo(() => {
+    // return activeTab.replace(/-/g, " ")
+    switch (activeTab) {
+      case 'q-proposals':
+        return QProposal;
+      case 'q-root-node-panel':
+        return QRootNode;
+      case 'q-expert-proposals':
+        return QExpert;
+      case 'slashing-proposals':
+        return QSlashing;
+      default:
+        return QProposal;
     }
+  }, [activeTab]);
 
-    const onCreateProposal = async () => {
-        dispatch(setStepCounter(1));
-        setModalShow(true);
-        switch (activeTab) {
-            case "q-proposals":
-                dispatch(setCreatedStepsLimit(4));
-                break;
-            case "q-root-node-panel":
-                dispatch(setCreatedStepsLimit(3));
-                break;
-            case "q-expert-proposals":
-                dispatch(setCreatedStepsLimit(3));
-                break;
-            case "slashing-proposals":
-                dispatch(setCreatedStepsLimit(3));
-                break;
-            default:
-                return QProposal;
-        }
-        const NEW_CONSTITUTION_HASH = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
-        const percentage = getPercentageFormat(60);
-        // console.log("percentage", percentage);
-        // console.log("userAddress", typeof userAddress);
-        // dispatch(getRootsVotingProposals(rootsVotingService))
-        try {
-            // drizzle.web3.eth.handleRevert = true;
-            //RootsVoting
-            // const createProposal = await drizzle.contracts.RootsVoting.methods.createProposal.cacheSend(
-            //     "new1", userAddress, "0x66316FfA38490d4d072F34EF7D7BA64Ce6b4478e",{from: userAddress});
-            // console.log("createProposal", createProposal);
+  const onCreateProposal = async () => {
+    dispatch(setStepCounter(1));
+    setModalShow(true);
+    switch (activeTab) {
+      case 'q-proposals':
+        dispatch(setCreatedStepsLimit(4));
+        break;
+      case 'q-root-node-panel':
+        dispatch(setCreatedStepsLimit(3));
+        break;
+      case 'q-expert-proposals':
+        dispatch(setCreatedStepsLimit(3));
+        break;
+      case 'slashing-proposals':
+        dispatch(setCreatedStepsLimit(3));
+        break;
+      default:
+        return QProposal;
+    }
+  };
 
-            //ConstitutionVoting
-            // const createProposal = await drizzle.contracts.ConstitutionVoting.methods.createProposal.cacheSend(
-            //     "https://example1.com", 0, NEW_CONSTITUTION_HASH, {from: userAddress});
-            // console.log("createProposal", createProposal);
-            // const createProposal = await drizzle.contracts.ConstitutionVoting.methods.createProposal(
-            //     "https://example1.com", 0, NEW_CONSTITUTION_HASH).send({from: userAddress})
-            //     .once('transactionHash', txHash => console.log('txHash', txHash))
-            //     .catch((err) => {
-            //         if(err.message) console.log('failing message: ' + err.message);
-            //         if(err.reason) console.log('revert reason: ' + err.reason);
-            //         throw err
-            //     });
+  return (
+    <>
+      <CreateQBtn
+        onCreate={onCreateProposal}
+        activeTabTitle={activeTabTitle}
+      />
+      {/*<WrapBtnBlock>*/}
+      {/*  <ButtonCustom*/}
+      {/*    variant="primary"*/}
+      {/*    onClick={onCreateProposal}*/}
+      {/*  >*/}
+      {/*    <FontAwesomeIcon icon={faPlus}/>*/}
+      {/*  </ButtonCustom>*/}
+      {/*  <BtnLabel>Create {activeTabTitle}</BtnLabel>*/}
+      {/*</WrapBtnBlock>*/}
 
-            // console.log("createProposal", createProposal);
+      <ModalCreateProposal
+        activeTab={activeTab}
+        activeTabTitle={activeTabTitle}
+        modalShow={modalShow}
+        onHide={() => {
+          setModalShow(false);
+          dispatch(setCreateProposalObj({}));
+        }}
+      />
+    </>
 
-            //ValidatorsSlashingVoting
-            //address validator governance.validators
-            // const createProposal = await drizzle.contracts.ValidatorsSlashingVoting.methods.createProposal.cacheSend(
-            //     'https://ethereum1.org', "0x6a39b688d591ea00c9ea69658438794204b5cc62", percentage, {from: userAddress});
-            // console.log("createProposal", createProposal);
-
-            //RootNodesSlashingVoting
-            //address validator governance.validators
-            // const createProposal = await drizzle.contracts.RootNodesSlashingVoting.methods.createProposal.cacheSend(
-            //     'https://ethereum1.org', "0x66316FfA38490d4d072F34EF7D7BA64Ce6b4478e", percentage, {from: userAddress});
-            // console.log("createProposal", createProposal);
-
-            //EPQFI_MembershipVoting
-            // const createProposal = await drizzle.contracts.EPQFI_MembershipVoting.methods.createAddExpertProposal.cacheSend(
-            //     'https://ethereum.org', "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7",  {from: userAddress});
-            // console.log("createProposal", createProposal);
-            //EPDR_MembershipVoting
-            // const createProposal = await drizzle.contracts.EPDR_MembershipVoting.methods.createAddExpertProposal.cacheSend(
-            //     'https://ethereum1.org', "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7",  {from: userAddress});
-            // console.log("createProposal", createProposal);
-            //EPQFI_ParametersVoting
-            // const createProposal = await drizzle.contracts.EPQFI_ParametersVoting.methods.createAddrProposal.cacheSend(
-            //     'https://ethereum.org', "test2", userAddress, {from: userAddress});
-            // console.log("createProposal", createProposal);
-            //EPDR_ParametersVoting
-            // const createProposal = await drizzle.contracts.EPDR_ParametersVoting.methods.createAddrProposal.cacheSend(
-            //     'https://ethereum.org', "test5", userAddress, {from: userAddress});
-            // console.log("createProposal", createProposal);
-
-        } catch (e) {
-            console.log(`Root node proposal failed: ${e}`)
-        }
-
-        // const dummyHash = '0819';
-        // const zeroAddress = '0x00';
-        //
-        // const createProposal = await drizzle.contracts.ConstitutionVoting.methods.createProposal.cacheSend(
-        //     dummyHash, userAddress, `www.q.org/addRoot-${userAddress.substr(2, 4)}`, {from: userAddress})
-        // ;
-
-    };
-
-    return (
-        <>
-            <WrapBtnBlock>
-                <ButtonCustom
-                    variant="primary"
-                    onClick={onCreateProposal}
-                >
-                    <FontAwesomeIcon icon={faPlus}/>
-                </ButtonCustom>
-                <BtnLabel>Create {activeTabTitle}</BtnLabel>
-            </WrapBtnBlock>
-
-            <ModalCreateProposal
-                activeTab={activeTab}
-                activeTabTitle={activeTabTitle}
-                modalShow={modalShow}
-                onHide={() => {
-                    setModalShow(false);
-                    dispatch(setCreateProposalObj({}));
-                }}
-            />
-        </>
-
-    );
+  );
 }
 
 export default CreateQProposalBtn;

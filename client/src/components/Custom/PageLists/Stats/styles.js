@@ -1,9 +1,8 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-import {Row, Col} from "react-bootstrap";
+import { Row, Col } from 'react-bootstrap';
 
-import {indents, h5Text} from "constants/style";
-
+import { h5Text } from 'constants/style';
 
 export const WrapTitleBlock = styled(Row)`
   padding-bottom: 20px;
@@ -35,4 +34,7 @@ export const WrapDescr = styled(Col)`
   font-size: 14px;
   line-height: 150%;
   color: ${props => props.theme.colors.black}
+`;
+export const WrapBtn = styled(Col)`
+  padding-top: 30px;
 `;
