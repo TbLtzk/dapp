@@ -1,13 +1,14 @@
-import VotingService from "api/contracts/Voting/VotingService";
+import { web3, contracts } from '../../config/drizzle-config';
+import VotingService from "./VotingService";
 import {
   convertNumVotes,
   getPastEvents,
   getPastProposalsIds,
   getStatusTransformation, transformToPercentage
-} from 'api/contracts/Voting/handler/commonFunc';
+} from '../../handler/VotingHandler';
 
 /*EPDR_MembershipVoting, EPQFI_MembershipVoting*/
-export default class MembershipVotingService extends VotingService {
+export default class MembershipVoting extends VotingService {
 
   /**
    * get proposal data
@@ -29,9 +30,9 @@ export default class MembershipVotingService extends VotingService {
       // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
       // objRes.votesFor = promiseRes.base.counters.weightFor;
       const weightAgainst = promiseRes.base.counters.weightAgainst;
-      objRes.votesAgainst = this.drizzle.web3.utils.fromWei(weightAgainst, "ether");
+      objRes.votesAgainst = web3.utils.fromWei(weightAgainst, "ether");
       const weightFor = promiseRes.base.counters.weightFor;
-      objRes.votesFor =  this.drizzle.web3.utils.fromWei(weightFor, "ether");
+      objRes.votesFor =  web3.utils.fromWei(weightFor, "ether");
 
       //the ending is given by: vetoEndTime.
       objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
@@ -69,7 +70,7 @@ export default class MembershipVotingService extends VotingService {
     try {
       //TODO: for createRemoveExpertProposal use RemoveProposalCreated event
       const proposalEvents = await this.getProposalsEvent();
-      const proposalRemoveEvents = await getPastEvents(this.drizzle, this.contractName, 'RemoveProposalCreated');
+      const proposalRemoveEvents = await getPastEvents(web3, this.contract, 'RemoveProposalCreated');
       const proposalIds = getPastProposalsIds([...proposalEvents, ...proposalRemoveEvents]);
       let proposals = [];
       if (proposalIds) {
@@ -100,7 +101,7 @@ export default class MembershipVotingService extends VotingService {
     try {
       //TODO: for createRemoveExpertProposal use RemoveProposalCreated event
       const proposalEvents = await this.getProposalsEvent();
-      const proposalRemoveEvents = await getPastEvents(this.drizzle, this.contractName, 'RemoveProposalCreated');
+      const proposalRemoveEvents = await getPastEvents(web3, this.contract, 'RemoveProposalCreated');
       const proposalIds = getPastProposalsIds([...proposalEvents, ...proposalRemoveEvents]);
       let proposals = [];
       if (proposalIds) {

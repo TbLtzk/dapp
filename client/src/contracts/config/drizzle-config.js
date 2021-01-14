@@ -57,3 +57,4 @@ const getContracts = () => {
 
 export const drizzleRegistry = new Drizzle(optionsDrizzleRegistry);
 export const contracts = getContracts();
+console.log("contracts", contracts);

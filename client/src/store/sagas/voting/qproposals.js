@@ -47,7 +47,9 @@ function* getProposal({ contractName, id, drizzle }) {
     if (contract) {
       const data = yield contract.getOneProposal(id);
       console.log('GET_Q_PROPOSAL', data);
-      yield put(getQProposalSuccess(data));
+      if (data) {
+        yield put(getQProposalSuccess(data));
+      }
     }
   } catch (err) {
     console.log('err', err);

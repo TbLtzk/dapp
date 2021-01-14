@@ -7,7 +7,7 @@ import {drizzleReactHooks} from "@drizzle/react-plugin";
 
 import {useLocation} from "react-router-dom";
 
-import ProposalsList from "pages/UserPages/QGovernance/components/ProposalsList";
+import ProposalsList from "../components/ProposalsList";
 
 import {Row, Col} from "react-bootstrap";
 import {Title} from "./styles";

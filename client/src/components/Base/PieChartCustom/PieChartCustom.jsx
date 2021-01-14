@@ -77,7 +77,8 @@ function PieChartCustom(props) {
                             {rootMembersArray.map((entry, index) =>
                                 <Cell
                                     key={`cell-${index}`}
-                                    fill={circles[index % circles.length]}
+                                    fill={'#' + entry?.address?.slice(2, 8)}
+                                    // fill={circles[index % circles.length]}
                                 />
                             )}
                         </Pie>

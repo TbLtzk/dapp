@@ -3,7 +3,7 @@ import { Accordion, Col } from 'react-bootstrap';
 
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import CardHeader from './CardHeader';
-import CardBody from 'pages/UserPages/QGovernance/components/ProposalsList/CardBody';
+import CardBody from './CardBody';
 
 import { CardBlock, LoadingW } from './styles';
 

@@ -12,7 +12,14 @@ export default class ContractRegistryService {
     async getAddress() {
         try {
             //GeneralUpdateVoting
-            const res = await this.contractRegistry.methods.getAddress("governance.generalUpdateVoting").call();
+            // const res = await this.contractRegistry.methods.getAddress("governance.generalUpdateVoting").call();
+            //LiquidationAuction
+            // const res = await this.contractRegistry.methods.getAddress("defi.QUSD.liquidationAuction").call();
+            //SystemDebtAuction
+            // const res = await this.contractRegistry.methods.getAddress("defi.QUSD.systemDebtAuction").call();
+            //SystemSurplusAuction
+            const res = await this.contractRegistry.methods.getAddress("defi.QUSD.systemSurplusAuction").call();
+
             //EmergencyUpdateVoting
             // const res = await this.contractRegistry.methods.getAddress("governance.emergencyUpdateVoting").call();
             //root contract address

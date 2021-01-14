@@ -4,7 +4,7 @@ export const arrayLinksAuctions = [
     path: "/#",
   },
   {
-    title: "Q DeFi Auction Manual",
+    title: "Q DeFi auction Manual",
     path: "/#",
   },
 ];

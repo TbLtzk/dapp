@@ -31,7 +31,7 @@ function ProposalsList(props) {
   const [vetoEndTime, setVetoEndTime] = useState(null);
   const [proposalContract, setProposalContract] = useState(null);
 
-  const onProposalVote = async (id, contract, vetoEndTime) => {
+  const onProposalVote = (id, contract, vetoEndTime) => {
     // console.log("Vote", id);
     // try{
     //     const proposalVote = await drizzle.contracts.ConstitutionVoting.methods.voteFor(id, true).send(
@@ -50,7 +50,7 @@ function ProposalsList(props) {
     setModalShow(true);
   };
 
-  const onProposalExecute = async (id, contract) => {
+  const onProposalExecute = (id, contract) => {
     dispatch(executeProposal(drizzle, {
       idProposal: id,
       contract

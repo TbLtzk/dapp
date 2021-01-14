@@ -25,18 +25,18 @@ function QRootNodePanel() {
     const loading = useSelector(loadingProposals);
     const errorMessage = useSelector(errorM);
     const proposals = useSelector(proposalsArr);
-
+    // console.log("drizzle", drizzle);
 
     useEffect(() => {
         dispatch(getRootsVotingProposals(drizzle))
     }, [dispatch]);
 
-    // useEffect(async () => {
-    //     contractRegistry.getAddress().then((address) => {
-    //         console.log('Constitution address', address);
-    //     });
-    //
-    // }, []);
+    useEffect(async () => {
+      // contractRegistry.getAddress().then((address) => {
+      //     console.log('defi.QUSD.systemDebtAuction address', address);
+      // });
+
+    }, []);
 
     return (
         <Col xs={12}>

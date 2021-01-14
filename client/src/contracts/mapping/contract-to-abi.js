@@ -9,6 +9,9 @@ import StableCoinABI from '../abi/StableCoinABI';
 import EPDRParametersABI from '../abi/EPDRParametersABI';
 import FxPriceFeedABI from '../abi/FxPriceFeedABI';
 import RootNodesABI from '../abi/RootNodesABI';
+import LiquidationAuctionABI from '../abi/LiquidationAuctionABI';
+import SystemSurplusAuctionABI from '../abi/SystemSurplusAuctionABI';
+import SystemDebtAuctionABI from '../abi/SystemDebtAuctionABI';
 
 export const contractsToAbi = {
   ContractRegistry: ContractRegistryABI,
@@ -25,4 +28,7 @@ export const contractsToAbi = {
   GovernedEpdrQethAddress: StableCoinABI,
   GovernedEpdrQbtcAddress: StableCoinABI,
   RootNodes: RootNodesABI,
+  LiquidationAuction: LiquidationAuctionABI,
+  SystemSurplusAuction: SystemSurplusAuctionABI,
+  SystemDebtAuction: SystemDebtAuctionABI,
 };

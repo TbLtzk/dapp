@@ -12,6 +12,7 @@ import {
 import CreateQBtn from 'components/Custom/PageLists/CreateQBtn';
 
 import { liquidation, systemDebt, systemSurplus } from './constants';
+import { bn } from '../../../../../../api/contracts/Voting/handler/commonFunc';
 
 const { useDrizzle } = drizzleReactHooks;
 
@@ -21,6 +22,7 @@ function CreateAuctionBtn(props) {
   const userAddress = useSelector(userAddressMetamask);
   const [modalShow, setModalShow] = useState(false);
   const dispatch = useDispatch();
+
 
   const activeTabTitle = useMemo(() => {
     switch (activeTab) {
@@ -36,19 +38,28 @@ function CreateAuctionBtn(props) {
   }, [activeTab]);
 
   const onCreateAuction = async () => {
-    dispatch(setStepCounter(1));
-    setModalShow(true);
-    switch (activeTab) {
-      case 'liquidation':
-        dispatch(setCreatedStepsLimit(4));
-        break;
-      case 'system-debt':
-        dispatch(setCreatedStepsLimit(3));
-        break;
-      case 'system-surplus':
-        dispatch(setCreatedStepsLimit(3));
-        break;
-    }
+    // dispatch(setStepCounter(1));
+    // setModalShow(true);
+    // switch (activeTab) {
+    //   case 'liquidation':
+    //     dispatch(setCreatedStepsLimit(4));
+    //     break;
+    //   case 'system-debt':
+    //     dispatch(setCreatedStepsLimit(3));
+    //     break;
+    //   case 'system-surplus':
+    //     dispatch(setCreatedStepsLimit(3));
+    //     break;
+    // }
+    // const result = await getPastEvents(drizzle, 'LiquidationAuction', 'AuctionStarted');
+    // const result = await drizzle.contracts.LiquidationAuction.methods.auctions().call();
+    const vaultId = 0;
+    const bid = bn(100);
+    // const bid = bn(100);
+    const result = await drizzle.contracts.LiquidationAuction.methods.startAuction(
+      userAddress, vaultId, bid)
+      .send({ from: userAddress });
+    // console.log('LiquidationAuction', result);
   };
 
   return (

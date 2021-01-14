@@ -1,3 +1,5 @@
+import { web3 } from '../../contracts/config/drizzle-config';
+
 export default class RootService {
 
   constructor(drizzle) {
@@ -110,6 +112,8 @@ export default class RootService {
    */
   async stakeToPanel(data) {
     try {
+      // new web3.utils.BN(web3.utils.toWei
+      // console.log(data);
       return await this.Root.methods.commitStake.cacheSend(data);
     } catch (e) {
       console.log(e);

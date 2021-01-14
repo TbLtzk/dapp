@@ -1,12 +1,13 @@
-import VotingService from 'api/contracts/Voting/VotingService';
+import { web3, contracts } from '../../config/drizzle-config';
+import VotingService from './VotingService';
 import {
   convertNumVotes,
   getParameterTypeTransformation,
   getStatusTransformation, transformToPercentage
-} from 'api/contracts/Voting/handler/commonFunc';
+} from '../../handler/VotingHandler';
 
 /*EPQFI_ParametersVoting, EPDR_ParametersVoting*/
-export default class ParametersVotingService extends VotingService {
+export default class ParametersVoting extends VotingService {
 
   /**
    * get proposal data
@@ -97,7 +98,7 @@ export default class ParametersVotingService extends VotingService {
               { from: userAddress });
           break;
         case 'bytes':
-          valueInput = this.drizzle.web3.utils.fromAscii(valueInput);
+          valueInput = web3.utils.fromAscii(valueInput);
           console.log('bytes', valueInput);
           result = await this.contract.methods.createBytesProposal(link, key, valueInput)
             .send(

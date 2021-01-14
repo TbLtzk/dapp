@@ -33,7 +33,8 @@ export const contractsToContractsRegistryKey = {
 
   WrappedQ: 'defi.wrappedQ',
   SystemBalance: 'defi.<STC>.saving',
-  LiquidationAuction: 'defi.<STC>.systemBalance',
-  SystemSurplusAuction: 'defi.<STC>.liquidationAuction',
-  SystemDebtAuction: 'defi.<STC>.systemDebtAuction',
+  LiquidationAuction: 'defi.QUSD.liquidationAuction',
+  SystemSurplusAuction: 'defi.QUSD.systemSurplusAuction',
+  SystemDebtAuction: 'defi.QUSD.systemDebtAuction',
 };
+

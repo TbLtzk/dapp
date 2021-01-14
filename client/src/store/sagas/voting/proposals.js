@@ -144,9 +144,10 @@ function* voteForProposal({ drizzle, data }) {
 
 function* executeProposal({ drizzle, data }) {
   try {
-    // yield put(setTransactionLoading());
+    yield put(setTransactionLoading());
     const { userAddress } = yield select(state => state.userInf);
-
+    console.log('executeProposal', drizzle);
+    console.log('executeProposal', data);
     let result = null;
     if (data && drizzle) {
       const contract = new VotingService(drizzle, data?.contract);
@@ -156,10 +157,11 @@ function* executeProposal({ drizzle, data }) {
     }
     yield call(getProposalDependsOnType, data?.contract, drizzle, data, data?.idProposal);
     yield put(executeProposalSuccess(result));
-    // yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess());
   } catch (err) {
     console.log('err', err.message);
     yield put(executeProposalError(err.message));
+    yield put(setTransactionLoadingError(err.message));
   }
 }
 

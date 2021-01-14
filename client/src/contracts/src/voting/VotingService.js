@@ -1,16 +1,14 @@
+import { web3, contracts } from '../../config/drizzle-config';
 import {
   convertNumVotes,
   getPastEvents,
   getPastProposalsIds, transformToPercentage,
-} from 'api/contracts/Voting/handler/commonFunc';
+} from '../../handler/VotingHandler';
 
 export default class VotingService {
 
-  constructor(drizzle, contractName) {
-
-    this.drizzle = drizzle;
-
-    this.contract = drizzle.contracts[contractName];
+  constructor(contractName) {
+    this.contract = contracts[contractName];
     this.contractName = contractName;
   }
 
@@ -20,7 +18,7 @@ export default class VotingService {
    */
   async getProposalsEvent() {
     try {
-      return await getPastEvents(this.drizzle, this.contractName, 'ProposalCreated');
+      return await getPastEvents(web3, this.contract, 'ProposalCreated');
     } catch (e) {
       console.log(e);
     }
@@ -217,20 +215,22 @@ export default class VotingService {
    * @return array
    */
   async getOneProposal(id) {
-    if (id) {
-      let objRes = {};
-      let promiseStatus = await this.getProposalStatus(id);
-      if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4'
-      || promiseStatus === '5') {
-        let promiseRes = await this.proposalIteratorResult(id);
-        if (promiseRes) {
-          objRes = await this.getProposalData(promiseRes, id, promiseStatus);
-          // console.log("objRes", objRes);
+    try {
+      if (id) {
+        let objRes = {};
+        let promiseStatus = await this.getProposalStatus(id);
+        if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
+          let promiseRes = await this.proposalIteratorResult(id);
+          if (promiseRes) {
+            objRes = await this.getProposalData(promiseRes, id, promiseStatus);
+            // console.log("objRes", objRes);
+          }
         }
+        return [objRes];
       }
-      return [objRes];
+    } catch (e) {
+      console.log('e', e);
     }
-    return null
   }
 
   /**
@@ -331,7 +331,7 @@ export default class VotingService {
   async getProposalVotes(id) {
 
     try {
-      const votesArrAll = await getPastEvents(this.drizzle, this.contractName, 'UserVoted');
+      const votesArrAll = await getPastEvents(web3, this.contract, 'UserVoted');
       const votesArrById = votesArrAll?.filter((elem) => {
         if (elem.returnValues._id === id) {
           console.log('elem', elem);

@@ -38,6 +38,7 @@ export default function BorrowCard(props) {
       const vaultInfo = await contract.userVaults(address, i).catch(() => {});
       let fee = await contractEPDR.getUint(`governed.EPDR.${vaultInfo.colKey}_QUSD_interestRate`).catch(() => {});
       fee = uintPerSecondToPerYearNumber(fee);
+      console.log("vaultInfo",vaultInfo);
       vaultInfo.borrowingFee = fee;
       vaultInfo.vaultNum = i;
       vaultsLoc.push(vaultInfo);
