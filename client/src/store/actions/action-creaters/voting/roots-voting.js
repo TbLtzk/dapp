@@ -31,3 +31,8 @@ export const getRootsVotingProposalError = (result) => ({
     type: actionTypes.GET_ROOT_VOTING_PROPOSAL_ERROR,
     result,
 });
+
+export const getEmptyRootsVotingProposalSuccess = (result) => ({
+    type: actionTypes.GET_EMPTY_ROOT_VOTING_PROPOSAL_SUCCESS,
+    result,
+});

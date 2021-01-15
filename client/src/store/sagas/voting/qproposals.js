@@ -4,7 +4,7 @@ import * as actionTypes from 'store/actions/action-types/voting/qproposals';
 import {
   getQProposalsSuccess, getQProposalsError,
   getQProposalSuccess,
-  getQProposalError
+  getQProposalError, getQEmptyProposalSuccess
 } from 'store/actions/action-creaters/voting/qproposals';
 import ConstitutionVotingService from 'api/contracts/Voting/ConstitutionVotingService';
 import EmergencyUpdateVotingService from 'api/contracts/Voting/EmergencyUpdateVotingService';
@@ -46,14 +46,18 @@ function* getProposal({ contractName, id, drizzle }) {
     }
     if (contract) {
       const data = yield contract.getOneProposal(id);
+      // const data = null;
+
       console.log('GET_Q_PROPOSAL', data);
       if (data) {
         yield put(getQProposalSuccess(data));
+      }else {
+        yield put(getQEmptyProposalSuccess(id));
       }
     }
   } catch (err) {
     console.log('err', err);
-    yield put(getQProposalError(err.message));
+    yield put(getQProposalError(id));
   }
 }
 

@@ -12,7 +12,7 @@ function ListCardHeader(props) {
     <Header>
       <Row>
         <CardTitle md={8}>
-          <p>{title}</p>
+          <div>{title}</div>
         </CardTitle>
         <WrapBtnHeader md={4}>
           {data}

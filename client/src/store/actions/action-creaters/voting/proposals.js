@@ -80,3 +80,20 @@ export const executeProposalError = (result) => ({
   type: actionTypes.EXECUTE_PROPOSAL_ERROR,
   result
 });
+
+
+export const updateProposal = (drizzle, data) => ({
+  type: actionTypes.UPDATE_PROPOSAL,
+  drizzle,
+  data
+});
+
+export const updateProposalSuccess = (result) => ({
+  type: actionTypes.UPDATE_PROPOSAL_SUCCESS,
+  result
+});
+
+export const updateProposalError = (result) => ({
+  type: actionTypes.UPDATE_PROPOSAL_ERROR,
+  result
+});

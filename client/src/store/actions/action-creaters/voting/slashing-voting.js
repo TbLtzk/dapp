@@ -32,3 +32,9 @@ export const getSlashingVotingProposalError = (result) => ({
   result,
 });
 
+
+export const getEmptySlashingVotingProposalSuccess = (result) => ({
+  type: actionTypes.GET_EMPTY_SLASHING_VOTING_PROPOSAL_SUCCESS,
+  result,
+});
+

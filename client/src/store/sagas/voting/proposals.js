@@ -8,7 +8,8 @@ import {
 import {
   createProposalSuccess, voteForProposalSuccess,
   getEndedProposalsSuccess, getEndedProposalsError,
-  executeProposalSuccess, executeProposalError
+  executeProposalSuccess, executeProposalError,
+  updateProposalSuccess, updateProposalError
 } from 'store/actions/action-creaters/voting/proposals';
 import { getQProposal } from 'store/actions/action-creaters/voting/qproposals';
 import { getRootsVotingProposal } from 'store/actions/action-creaters/voting/roots-voting';
@@ -165,6 +166,17 @@ function* executeProposal({ drizzle, data }) {
   }
 }
 
+function* updateProposal({ drizzle, data }) {
+  try {
+    console.log('updateProposal', data);
+    yield call(getProposalDependsOnType, data?.contract, drizzle, data, data?.idProposal);
+    yield put(updateProposalSuccess("success"));
+  } catch (err) {
+    console.log('err', err.message);
+    yield put(updateProposalError(err.message));
+  }
+}
+
 function* getProposalDependsOnType(contractName, drizzle, data, id,) {
   try {
     switch (contractName) {
@@ -254,6 +266,7 @@ export default [
   takeEvery(actionTypes.CREATE_PROPOSAL, createProposal),
   takeEvery(actionTypes.VOTE_FOR_PROPOSAL, voteForProposal),
   takeEvery(actionTypes.EXECUTE_PROPOSAL, executeProposal),
+  takeEvery(actionTypes.UPDATE_PROPOSAL, updateProposal),
 
   takeEvery(actionTypes.GET_ENDED_PROPOSALS, getEndedProposals),
 ];

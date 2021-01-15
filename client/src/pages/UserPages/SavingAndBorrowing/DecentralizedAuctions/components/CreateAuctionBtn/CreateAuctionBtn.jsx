@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-
+import { web3 } from 'contracts/config/drizzle-config';
 import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
@@ -22,7 +22,6 @@ function CreateAuctionBtn(props) {
   const userAddress = useSelector(userAddressMetamask);
   const [modalShow, setModalShow] = useState(false);
   const dispatch = useDispatch();
-
 
   const activeTabTitle = useMemo(() => {
     switch (activeTab) {
@@ -54,12 +53,23 @@ function CreateAuctionBtn(props) {
     // const result = await getPastEvents(drizzle, 'LiquidationAuction', 'AuctionStarted');
     // const result = await drizzle.contracts.LiquidationAuction.methods.auctions().call();
     const vaultId = 0;
-    const bid = bn(100);
+    // const bid = 10;
+
+    // const bid = web3.utils.BN((web3.utils.toWei("10")));
+    // console.log('bid', bid);
     // const bid = bn(100);
-    const result = await drizzle.contracts.LiquidationAuction.methods.startAuction(
-      userAddress, vaultId, bid)
-      .send({ from: userAddress });
+    // const bid = bn(10000000000000000000); //10
+    const bid = bn(1000000000000000000000); //100
+    // const bid = bn(1000000000000000000000); //100
+    // const result = await drizzle.contracts.LiquidationAuction.methods.startAuction(
+    //   '0xd10a97806b8FdFC8E4CC83a49f35CCF513F0a1f3', vaultId, bid)
+    //   .send({ from: userAddress });
     // console.log('LiquidationAuction', result);
+    const result = await drizzle.contracts.SystemSurplusAuction.methods.startAuction()
+      .send({
+        from: userAddress,
+        value: bid
+      });
   };
 
   return (

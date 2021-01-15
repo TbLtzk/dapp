@@ -37,7 +37,11 @@ function QGovernance() {
     );
   }, []);
 
-    const tabsItems = useMemo(() => {
+  const currentDate = new Date();
+  console.log('Date', currentDate);
+
+
+  const tabsItems = useMemo(() => {
         return (
             [
                 {
@@ -45,7 +49,7 @@ function QGovernance() {
                     title: "Q Proposals",
                     content: (
                         <WrapTabs>
-                            <QProposals/>
+                            <QProposals currentDate={currentDate}/>
                         </WrapTabs>
                     )
                 },
@@ -78,7 +82,7 @@ function QGovernance() {
                 },
             ]
         )
-    }, []);
+    }, [currentDate]);
 
     const [activeTab, setActiveTab] = useState(tabsItems[0]?.label);
 

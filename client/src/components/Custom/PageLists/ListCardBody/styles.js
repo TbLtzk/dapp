@@ -1,8 +1,8 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-import {Button, Card, Col, Container} from "react-bootstrap";
+import { Button, Card, Col, Container } from 'react-bootstrap';
 
-import {indents} from "constants/style";
+import { indents } from 'constants/style';
 
 export const BlockBody = styled(Card.Body)`
     background-color: ${props => props.theme.colors.white};
@@ -18,15 +18,18 @@ export const CollapsedBody = styled(Card.Body)`
 `;
 
 export const Details = styled(Col)`
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 150%;
-    color: ${props => props.theme.colors.whiteGrey};
+  ${props => props.theme.fontStyles.text.middle};
+  font-weight: 500;
+  color: ${props => props.theme.colors.whiteGrey};
     span{
-      margin-left: 8px
+      margin-left: 8px;
+      ${props => props.theme.fontStyles.text.middle};
+      font-weight: 500;
     }
     p{
+      ${props => props.theme.fontStyles.text.middle};
+      font-weight: 500;
+      color: ${props => props.theme.colors.whiteGrey};
       display: inline-block;
       margin-bottom: 0;
     }
@@ -45,7 +48,7 @@ export const WrapToggleBlock = styled(Col)`
 `;
 
 export const ToggleBtn = styled.button`
-  font-style: normal;
+  ${props => props.theme.fontStyles.text.little};
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
@@ -55,5 +58,11 @@ export const ToggleBtn = styled.button`
   outline: 0!important;
   span{
     margin-right: 8px;
+  }
+`;
+
+export const BtnShare = styled(ToggleBtn)`
+  font-size: 15px;
+  span{
   }
 `;

@@ -14,7 +14,7 @@ import {
   setVoteProposalObj,
   setStepVoteCounter,
   setDisabledCreatedProposalBtn,
-  executeProposal
+  executeProposal, updateProposal
 } from 'store/actions/action-creaters/voting/proposals';
 import ModalVote from 'pages/UserPages/QGovernance/components/CreateQProposalBtn/ModalVote';
 import { remainDate } from 'func/convertDate';
@@ -30,6 +30,8 @@ function ProposalsList(props) {
   const [proposalId, setProposalId] = useState(null);
   const [vetoEndTime, setVetoEndTime] = useState(null);
   const [proposalContract, setProposalContract] = useState(null);
+
+
 
   const onProposalVote = (id, contract, vetoEndTime) => {
     // console.log("Vote", id);
@@ -56,6 +58,12 @@ function ProposalsList(props) {
       contract
     }));
   };
+  const onProposalUpdate = (id, contract) => {
+    dispatch(updateProposal(drizzle, {
+      idProposal: id,
+      contract
+    }));
+  };
 
   return (
     <>
@@ -77,6 +85,9 @@ function ProposalsList(props) {
                     handleExecute={() => {
                       onProposalExecute(proposal.id, proposal.contract);
                     }}
+                    handleUpdate={() => {
+                      onProposalUpdate(proposal.id, proposal.contract);
+                    }}
                   />
                   <CardBody
                     id={proposal.id + proposal?.type}
@@ -92,6 +103,7 @@ function ProposalsList(props) {
                     pollDetail={proposal}
                     proposalsKind={proposalsKind}
                     voteBreakdown={proposal}
+                    contract={proposal.contract}
                   />
                 </CardBlock>;
                 // : null

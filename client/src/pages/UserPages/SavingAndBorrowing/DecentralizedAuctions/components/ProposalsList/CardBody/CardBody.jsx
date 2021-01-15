@@ -15,43 +15,40 @@ function CardBody(props) {
   return (
     <ListCardBody
       id={id}
-      bodyMainContent={
-        <>
-          <Details md={4}>
-            <div>
-              <FontAwesomeIcon icon={faCalendarAlt}/>
-              <span>Voting until: {convertToMonthDayYear(votingTime)}</span>
-            </div>
-            <div>
-              <FontAwesomeIcon icon={faCalendarAlt}/>
-              <span>Veto Start: {convertToMonthDayYear(votingTime)}</span>
-            </div>
-            <div>
-              <FontAwesomeIcon icon={faCalendarAlt}/>
-              <span>Veto until {convertToMonthDayYear(vetoTime)}</span>
-            </div>
-
-          </Details>
-          <Details md={4}>
-            <div>
-              <FontAwesomeIcon icon={faClock}/>
-              <span>Remaining Time for Voting: {remainDate(votingTime)}</span>
-            </div>
-            <div>
-              <FontAwesomeIcon icon={faClock}/>
-              <span>Remaining Time for Veto: {remainDate(vetoTime)}</span>
-            </div>
-          </Details>
-          <Details md={4}>
-            <p>Proposal ID: {proposalID}</p>
-            {proposalType && <p>Proposal Type: {proposalType}</p>}
-          </Details>
-        </>
-      }
       collapsedContent={
         <p>Content</p>
       }
-    />
+    >
+      <Details md={4}>
+        <div>
+          <FontAwesomeIcon icon={faCalendarAlt}/>
+          <span>Voting until: {convertToMonthDayYear(votingTime)}</span>
+        </div>
+        <div>
+          <FontAwesomeIcon icon={faCalendarAlt}/>
+          <span>Veto Start: {convertToMonthDayYear(votingTime)}</span>
+        </div>
+        <div>
+          <FontAwesomeIcon icon={faCalendarAlt}/>
+          <span>Veto until {convertToMonthDayYear(vetoTime)}</span>
+        </div>
+
+      </Details>
+      <Details md={4}>
+        <div>
+          <FontAwesomeIcon icon={faClock}/>
+          <span>Remaining Time for Voting: {remainDate(votingTime)}</span>
+        </div>
+        <div>
+          <FontAwesomeIcon icon={faClock}/>
+          <span>Remaining Time for Veto: {remainDate(vetoTime)}</span>
+        </div>
+      </Details>
+      <Details md={4}>
+        <p>Proposal ID: {proposalID}</p>
+        {proposalType && <p>Proposal Type: {proposalType}</p>}
+      </Details>
+    </ListCardBody>
   );
 }
 

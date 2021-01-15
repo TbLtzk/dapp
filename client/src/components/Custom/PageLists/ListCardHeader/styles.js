@@ -8,7 +8,7 @@ export const Header = styled(Card.Header)`
 `;
 
 export const CardTitle = styled(Col)`
-    p{
+    div{
         display: flex;
         align-items: center;
         height: 100%;

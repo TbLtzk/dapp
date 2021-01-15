@@ -3,12 +3,10 @@ import { call, put, takeEvery, all } from 'redux-saga/effects';
 import * as actionTypes from 'store/actions/action-types/voting/expert-voting';
 import {
   getQExpertProposalsError, getQExpertProposalsSuccess,
-  getQExpertProposalSuccess, getQExpertProposalError
+  getQExpertProposalSuccess, getQExpertProposalError,
+  getEmptyQExpertProposalSuccess
 } from 'store/actions/action-creaters/voting/expert-voting';
 import { chooseExpertContractDependsOnType } from 'api/contracts/Voting/handler/QExpertVotingHandler';
-import ConstitutionVotingService from '../../../api/contracts/Voting/ConstitutionVotingService';
-import EmergencyUpdateVotingService from '../../../api/contracts/Voting/EmergencyUpdateVotingService';
-import GeneralUpdateVotingService from '../../../api/contracts/Voting/GeneralUpdateVotingService';
 import MembershipVotingService from '../../../api/contracts/Voting/MembershipVotingService';
 import ParametersVotingService from '../../../api/contracts/Voting/ParametersVotingService';
 
@@ -71,8 +69,11 @@ function* getProposal({ contractName, id, drizzle }) {
     if (contract) {
       const data = yield contract.getOneProposal(id);
       console.log('GET_QEXPERT_PROPOSAL', data);
-
-      yield put(getQExpertProposalSuccess(data));
+      if (data){
+        yield put(getQExpertProposalSuccess(data));
+      }else {
+        yield put(getEmptyQExpertProposalSuccess(id));
+      }
     }
   } catch (err) {
     console.log('err', err);

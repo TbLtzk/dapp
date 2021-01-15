@@ -26,6 +26,10 @@ export const getQProposalSuccess = (result) => ({
   type: actionTypes.GET_Q_PROPOSAL_SUCCESS,
   result,
 });
+export const getQEmptyProposalSuccess = (result) => ({
+  type: actionTypes.GET_Q_EMPTY_PROPOSAL_SUCCESS,
+  result,
+});
 
 export const getQProposalError = (result) => ({
   type: actionTypes.GET_Q_PROPOSAL_ERROR,

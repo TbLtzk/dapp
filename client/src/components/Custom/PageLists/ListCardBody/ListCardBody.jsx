@@ -2,11 +2,12 @@ import React, { useMemo } from 'react';
 
 import { Accordion, Col, Container, Row, useAccordionToggle } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarAlt, faChevronDown, faClock } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faShare } from '@fortawesome/free-solid-svg-icons';
 
-import { BlockBody, CollapsedBody, Details, MainText, WrapToggleBlock, ToggleBtn } from './styles';
+import { BlockBody, CollapsedBody, Details, WrapToggleBlock, ToggleBtn, BtnShare } from './styles';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-function CustomToggle({ eventKey }) {
+export function CustomToggle({ eventKey }) {
   const decoratedOnClick = useAccordionToggle(eventKey, () => {
   });
 
@@ -23,19 +24,27 @@ function CustomToggle({ eventKey }) {
 }
 
 function ListCardBody(props) {
-  const { id, bodyMainContent, collapsedContent } = props;
+  const { id, bodyMainContent, collapsedContent, children, onShareBtn, shareText } = props;
 
   return (
     <BlockBody>
       <Container fluid>
-        {/*<MainText>{mainText}</MainText>*/}
         <Row>
           <Col md={10}>
             <Row>
-              {bodyMainContent}
+              {children}
             </Row>
           </Col>
           <WrapToggleBlock md={2}>
+            <CopyToClipboard text={shareText}>
+              <BtnShare
+                type="button"
+                onClick={onShareBtn}
+              >
+                <span>Share</span>
+                <FontAwesomeIcon icon={faShare}/>
+              </BtnShare>
+            </CopyToClipboard>
             <CustomToggle eventKey={id}/>
           </WrapToggleBlock>
           <Col md={12}>

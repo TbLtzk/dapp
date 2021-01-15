@@ -62,6 +62,23 @@ export default function qProposals(state = initialState, action) {
         proposalsArr: [...state.proposalsArr],
         loadingProposals: false,
       };
+    case actionTypes.GET_Q_EMPTY_PROPOSAL_SUCCESS:
+      return {
+        ...state,
+        proposalsArr: (() => {
+          const findElem = state.proposalsArr?.find((element => {
+            return element.id === action.result;
+          }));
+          if (findElem) {
+            return state.proposalsArr?.filter((element) => {
+              if (element.id !== action.result) {
+                return { ...element };
+              }
+            });
+          }
+        })(),
+        loadingProposals: false,
+      };
     default:
       return state;
   }

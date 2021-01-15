@@ -1,6 +1,6 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-import {Card, Col} from "react-bootstrap";
+import { Card, Col } from 'react-bootstrap';
 
 export const LabelStatus = styled.div`
   display: inline-block;
@@ -19,4 +19,12 @@ export const LabelStatus = styled.div`
 export const WrapVoteBtn = styled.div`
   margin-left: 15px;
   display: inline-block;
+`;
+export const WrapRefreshBtn = styled.div`
+  button{
+    box-shadow: none;
+    padding-left: 0;
+    padding-right: 0;
+    margin-right: 8px;
+  }
 `;

@@ -5,6 +5,7 @@ import Start from 'pages/UserPages/Start';
 import StartConfigurations from 'pages/StartConfigurations';
 
 import UserPages from 'pages/UserPages';
+import OneProposalPage from 'pages/UserPages/QGovernance/OneProposalPage';
 import { AuthProtect } from './AuthProtect';
 
 function Routes() {
@@ -13,7 +14,7 @@ function Routes() {
       <Route exact path="/" component={Start}/>
       <Route exact path="/start-configurations" component={StartConfigurations}/>
 
-      <Route path="/q-governance" component={AuthProtect(UserPages)}/>
+      <Route exact path="/q-governance" component={AuthProtect(UserPages)}/>
       <Route path="/piggy-bank" component={AuthProtect(UserPages)}/>
       <Route path="/staking" component={AuthProtect(UserPages)}/>
       <Route path="/manage-staker-reward-pool" component={AuthProtect(UserPages)}/>
@@ -21,6 +22,7 @@ function Routes() {
       <Route path="/ended-proposals" component={AuthProtect(UserPages)}/>
       <Route path="/decentralized-auctions" component={AuthProtect(UserPages)}/>
       <Route path="/ended-auctions" component={AuthProtect(UserPages)}/>
+      <Route path="/q-governance/proposal/:id?/:contract?" component={AuthProtect(UserPages)}/>
     </Switch>
   );
 }

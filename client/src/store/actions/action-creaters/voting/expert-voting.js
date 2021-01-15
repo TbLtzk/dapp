@@ -32,3 +32,8 @@ export const getQExpertProposalError = (result) => ({
   result,
 });
 
+export const getEmptyQExpertProposalSuccess = (result) => ({
+  type: actionTypes.GET_EMPTY_QEXPERT_PROPOSAL_SUCCESS,
+  result,
+});
+

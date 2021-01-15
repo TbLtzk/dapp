@@ -1,17 +1,29 @@
 import React from 'react';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRedo } from '@fortawesome/free-solid-svg-icons';
+
 import Button from 'components/Base/Buttons/Button';
 import ListCardHeader from 'components/Custom/PageLists/ListCardHeader';
 
-import { LabelStatus, WrapVoteBtn } from 'components/Custom/PageLists/styles';
+import { LabelStatus, WrapVoteBtn, WrapRefreshBtn } from 'components/Custom/PageLists/styles';
 
 function CardHeader(props) {
-  const { title, status, handleVote, handleExecute } = props;
+  const { title, status, handleVote, handleExecute, handleUpdate } = props;
 
   return (
     <>
       <ListCardHeader
-        title={title}
+        title={
+          <WrapRefreshBtn>
+            <Button
+              title={<FontAwesomeIcon icon={faRedo}/>}
+              type="transparent"
+              handleButton={handleUpdate}
+            />
+            <span>{title}</span>
+          </WrapRefreshBtn>
+        }
         data={
           <>
             {!status ? null :

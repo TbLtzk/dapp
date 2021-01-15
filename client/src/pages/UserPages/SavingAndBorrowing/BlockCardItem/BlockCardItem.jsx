@@ -5,7 +5,6 @@ import { ContainerBCI } from './styles';
 
 export default function BlockCardItem(props) {
   const { txt1, val1, txt2, val2, txt3, val3, setActCardData, vault } = props;
-  console.log("vault", vault);
 
   const clickItem = (e) => {
     const elementAct = document.querySelector('div.active');
