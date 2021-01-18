@@ -88,12 +88,47 @@ export const updateProposal = (drizzle, data) => ({
   data
 });
 
-export const updateProposalSuccess = (result) => ({
-  type: actionTypes.UPDATE_PROPOSAL_SUCCESS,
+export const getOneProposal = (drizzle, data) => ({
+  type: actionTypes.GET_ONE_PROPOSAL,
+  drizzle,
+  data
+});
+
+export const getProposalsList = (drizzle, activeTab) => ({
+  type: actionTypes.GET_PROPOSALS_LIST,
+  drizzle,
+  activeTab
+});
+
+export const getProposalsListSuccess = (result) => ({
+  type: actionTypes.GET_PROPOSALS_LIST_SUCCESS,
   result
 });
 
-export const updateProposalError = (result) => ({
-  type: actionTypes.UPDATE_PROPOSAL_ERROR,
+export const getProposalsListError = (result) => ({
+  type: actionTypes.GET_PROPOSALS_LIST_ERROR,
   result
+});
+
+export const getProposalVote = (contractName, id, drizzle, activeTab, activeProposal) => ({
+  type: actionTypes.GET_PROPOSAL,
+  contractName,
+  id,
+  drizzle,
+  activeTab,
+  activeProposal
+});
+
+export const getProposalSuccess = (result) => ({
+  type: actionTypes.GET_PROPOSAL_SUCCESS,
+  result,
+});
+export const getEmptyProposalSuccess = (result) => ({
+  type: actionTypes.GET_EMPTY_PROPOSAL_SUCCESS,
+  result,
+});
+
+export const getProposalError = (result) => ({
+  type: actionTypes.GET_PROPOSAL_ERROR,
+  result,
 });

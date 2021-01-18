@@ -1,4 +1,4 @@
-import { web3, contracts } from '../../config/drizzle-config';
+import { drizzleRegistry, contracts } from '../../config/drizzle-config';
 import {
   getStatusTransformation,
 } from '../../handler/VotingHandler';
@@ -24,9 +24,9 @@ export default class GeneralUpdateVoting extends VotingService {
       // objRes.votesAgainst = promiseRes.counters.weightAgainst;
       // objRes.votesFor = promiseRes.counters.weightFor;
       const weightAgainst = promiseRes.counters.weightAgainst;
-      objRes.votesAgainst = web3.utils.fromWei(weightAgainst, 'ether');
+      objRes.votesAgainst = drizzleRegistry.web3.utils.fromWei(weightAgainst, 'ether');
       const weightFor = promiseRes.counters.weightFor;
-      objRes.votesFor = web3.utils.fromWei(weightFor, 'ether');
+      objRes.votesFor = drizzleRegistry.web3.utils.fromWei(weightFor, 'ether');
 
       objRes.vetosCount = promiseRes.counters.vetosCount;
       objRes.votingEndTime = promiseRes.params.votingEndTime;

@@ -10,13 +10,13 @@ export const contractsToContractsRegistryKey = {
   ValidatorsSlashingVoting: 'governance.validators.slashingVoting',
 
   EPDRMembership: 'governance.experts.EPDR.membership',
-  EPDRMembershipVoting: 'governance.experts.EPDR.membershipVoting',
+  EPDR_MembershipVoting: 'governance.experts.EPDR.membershipVoting',
   EPDRParameters: 'governance.experts.EPDR.parameters',
-  EPDRParametersVoting: 'governance.experts.EPDR.parametersVoting',
+  EPDR_ParametersVoting: 'governance.experts.EPDR.parametersVoting',
   EPQFIMembership: 'governance.experts.EPQFI.membership',
-  EPQFIMembershipVoting: 'governance.experts.EPQFI.membershipVoting',
+  EPQFI_MembershipVoting: 'governance.experts.EPQFI.membershipVoting',
   EPQFIParameters: 'governance.experts.EPQFI.parameters',
-  EPQFIParametersVoting: 'governance.experts.EPQFI.parametersVoting',
+  EPQFI_ParametersVoting: 'governance.experts.EPQFI.parametersVoting',
 
   DefaultAllocationProxy: 'tokeneconomics.defaultAllocationProxy',
   RootNodeRewardProxy: 'tokeneconomics.rootNodeRewardProxy',

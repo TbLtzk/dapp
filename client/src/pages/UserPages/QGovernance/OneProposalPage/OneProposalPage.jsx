@@ -1,29 +1,53 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { getEndedProposals } from 'store/actions/action-creaters/voting/proposals';
-import { endedProposals, loadingEndedProposals, errorEnded } from 'store/selectors/voting/proposals';
+import { getOneProposal } from 'store/actions/action-creaters/voting/proposals';
+import { errorM, loadingProposals, proposalsArr } from 'store/selectors/voting/proposals';
 import { useDispatch, useSelector } from 'react-redux';
 import { drizzleReactHooks } from '@drizzle/react-plugin';
 
-import { useLocation } from 'react-router-dom';
+import { Row, Col } from 'react-bootstrap';
 
 import ProposalsList from 'pages/UserPages/QGovernance/components/ProposalsList';
-
-import { Row, Col } from 'react-bootstrap';
-import { Title } from './styles';
+import { checkCurrentTab, checkActiveTabByContract } from '../components/constants';
+import { Title } from '../styles';
 
 const { useDrizzle } = drizzleReactHooks;
 
 function OneProposalPage(props) {
-  const {params} = props;
+  const { params } = props;
   const { drizzle } = useDrizzle();
   const dispatch = useDispatch();
-  console.log('props.match.params', params);
+
+  const proposal = useSelector(proposalsArr);
+  const loading = useSelector(loadingProposals);
+  const error = useSelector(errorM);
+
+  useEffect(() => {
+    dispatch(getOneProposal(drizzle, {
+      id: params?.id,
+      contract: params?.contract
+    }));
+  }, [dispatch]);
+
+  const activeTab = useMemo(() => {
+    return checkActiveTabByContract(proposal[0]?.contract);
+  }, [proposal]);
+
+  const proposalKind = useMemo(() => {
+    return checkCurrentTab(activeTab);
+  }, [activeTab]);
 
   return (
     <Row>
       <Col xs={8}>
-        one proposal
+        <Title>{activeTab ? `${activeTab?.replace(/-/g, ' ')}`: null}</Title>
+        <ProposalsList
+          activeTab={activeTab}
+          proposals={proposal}
+          loading={loading}
+          errorMessage={error}
+          proposalsKind={proposalKind}
+        />
       </Col>
     </Row>
   );

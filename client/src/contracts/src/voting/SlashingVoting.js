@@ -1,4 +1,4 @@
-import { web3, contracts } from '../../config/drizzle-config';
+import { drizzleRegistry, contracts } from '../../config/drizzle-config';
 import {
   getStatusTransformation,
   convertNumVotes,
@@ -24,7 +24,7 @@ export default class SlashingVoting extends VotingService {
       objRes.id = id;
       objRes.remark = promiseRes.base.remark;
       objRes.candidate = promiseRes.candidate;
-      objRes.amountToSlash = web3.utils.fromWei(promiseRes.amountToSlash, 'ether');
+      objRes.amountToSlash = drizzleRegistry.web3.utils.fromWei(promiseRes.amountToSlash, 'ether');
       objRes.vetosCount = promiseRes.base.counters.vetosCount;
       // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
       // objRes.votesFor = promiseRes.base.counters.weightFor;

@@ -1,78 +1,148 @@
-import * as actionTypes from "store/actions/action-types/voting/proposals";
+import * as actionTypes from 'store/actions/action-types/voting/proposals';
 
 const initialState = {
-    proposalsArr: [],
-    loading: true,
-    loadingProposals: true,
-    errorM: null,
-    createProposalLoading: true,
-    createProposalResult: null,
+  proposalsArr: [],
+  loading: true,
+  loadingProposals: true,
+  errorM: null,
+  createProposalLoading: true,
+  createProposalResult: null,
 
-    formObjectCreateProposal: {},
-    createdStepsLimit: 4,
-    stepCounter: 1,
-    disabledContinueBtn: true,
+  formObjectCreateProposal: {},
+  createdStepsLimit: 4,
+  stepCounter: 1,
+  disabledContinueBtn: true,
 
-    formObjectVoteProposal: {},
-    stepVoteCounter: 1,
+  formObjectVoteProposal: {},
+  stepVoteCounter: 1,
 
-    endedProposals: [],
-    loadingEndedProposals: true,
-    errorEnded: null,
+  endedProposals: [],
+  loadingEndedProposals: true,
+  errorEnded: null,
+
 };
 
 export default function proposals(state = initialState, action) {
 
-    switch (action.type) {
-        case actionTypes.SET_CREATED_PROPOSAL_OBJECT:
-            return {
-                ...state,
-                formObjectCreateProposal: action.result
-            };
-        case actionTypes.SET_CREATED_STEPS_LIMIT:
-            return {
-                ...state,
-                createdStepsLimit: action.result
-            };
-        case actionTypes.SET_STEP_COUNTER:
-            return {
-                ...state,
-                stepCounter: action.result
-            };
-        case actionTypes.SET_DISABLED_CREATED_PROPOSAL_BTN:
-            return {
-                ...state,
-                disabledContinueBtn: action.result
-            };
-        case actionTypes.SET_VOTE_PROPOSAL_OBJECT:
-            return {
-                ...state,
-                formObjectVoteProposal: action.result
-            };
-        case actionTypes.SET_STEP_VOTE_COUNTER:
-            return {
-                ...state,
-                stepVoteCounter: action.result
-            };
-        case actionTypes.GET_ENDED_PROPOSALS:
-            return {
-                ...state,
-                loadingEndedProposals: true,
-            };
-        case actionTypes.GET_ENDED_PROPOSALS_SUCCESS:
-            return {
-                ...state,
-                endedProposals: action.result,
-                loadingEndedProposals: false,
-            };
-        case actionTypes.GET_ENDED_PROPOSALS_ERROR:
-            return {
-                ...state,
-                endedProposals: [],
-                loadingEndedProposals: false,
-                errorEnded: action.result,
-            };
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case actionTypes.SET_CREATED_PROPOSAL_OBJECT:
+      return {
+        ...state,
+        formObjectCreateProposal: action.result
+      };
+    case actionTypes.SET_CREATED_STEPS_LIMIT:
+      return {
+        ...state,
+        createdStepsLimit: action.result
+      };
+    case actionTypes.SET_STEP_COUNTER:
+      return {
+        ...state,
+        stepCounter: action.result
+      };
+    case actionTypes.SET_DISABLED_CREATED_PROPOSAL_BTN:
+      return {
+        ...state,
+        disabledContinueBtn: action.result
+      };
+    case actionTypes.SET_VOTE_PROPOSAL_OBJECT:
+      return {
+        ...state,
+        formObjectVoteProposal: action.result
+      };
+    case actionTypes.SET_STEP_VOTE_COUNTER:
+      return {
+        ...state,
+        stepVoteCounter: action.result
+      };
+    case actionTypes.GET_ENDED_PROPOSALS:
+      return {
+        ...state,
+        loadingEndedProposals: true,
+      };
+    case actionTypes.GET_ENDED_PROPOSALS_SUCCESS:
+      return {
+        ...state,
+        endedProposals: action.result,
+        loadingEndedProposals: false,
+      };
+    case actionTypes.GET_ENDED_PROPOSALS_ERROR:
+      return {
+        ...state,
+        endedProposals: [],
+        loadingEndedProposals: false,
+        errorEnded: action.result,
+      };
+    case actionTypes.GET_PROPOSALS_LIST:
+      return {
+        ...state,
+        loadingProposals: true,
+      };
+    case actionTypes.GET_PROPOSALS_LIST_SUCCESS:
+      return {
+        ...state,
+        proposalsArr: action.result,
+        loadingProposals: false,
+        errorM: null,
+      };
+    case actionTypes.GET_PROPOSALS_LIST_ERROR:
+      return {
+        ...state,
+        proposalsArr: [],
+        loadingProposals: false,
+        errorM: action.result,
+      };
+    case actionTypes.GET_PROPOSAL:
+      return {
+        ...state,
+        loadingProposals: true
+      };
+    case actionTypes.GET_PROPOSAL_SUCCESS:
+      return {
+        ...state,
+        proposalsArr: (() => {
+          const findElem = state.proposalsArr?.find((element => {
+            return element.id === action.result[0].id;
+          }));
+          if (findElem) {
+            return state.proposalsArr?.map((element) => {
+              if (element.id === action.result[0].id) {
+                return { ...action.result[0] };
+              } else {
+                return { ...element };
+              }
+            });
+          } else {
+            return [...state.proposalsArr, ...action.result];
+          }
+        })(),
+        // proposalsArr: [...state.proposalsArr, ...action.result],
+        loadingProposals: false
+      };
+    case actionTypes.GET_PROPOSAL_ERROR:
+      return {
+        ...state,
+        proposalsArr: [...state.proposalsArr],
+        loadingProposals: false,
+      };
+    case actionTypes.GET_EMPTY_PROPOSAL_SUCCESS:
+      return {
+        ...state,
+        proposalsArr: (() => {
+          const findElem = state.proposalsArr?.find((element => {
+            return element.id === action.result;
+          }));
+          if (findElem) {
+            return state.proposalsArr?.filter((element) => {
+              if (element.id !== action.result) {
+                return { ...element };
+              }
+            });
+          }
+        })(),
+        loadingProposals: false,
+      };
+    default:
+      return state;
+  }
 }

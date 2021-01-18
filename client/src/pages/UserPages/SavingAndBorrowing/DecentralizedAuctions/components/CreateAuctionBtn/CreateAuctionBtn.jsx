@@ -58,8 +58,8 @@ function CreateAuctionBtn(props) {
     // const bid = web3.utils.BN((web3.utils.toWei("10")));
     // console.log('bid', bid);
     // const bid = bn(100);
-    // const bid = bn(10000000000000000000); //10
-    const bid = bn(1000000000000000000000); //100
+    const bid = bn(10000000000000000000); //10
+    // const bid = bn(1000000000000000000000); //100
     // const bid = bn(1000000000000000000000); //100
     // const result = await drizzle.contracts.LiquidationAuction.methods.startAuction(
     //   '0xd10a97806b8FdFC8E4CC83a49f35CCF513F0a1f3', vaultId, bid)

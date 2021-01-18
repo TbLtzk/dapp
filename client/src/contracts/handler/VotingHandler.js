@@ -1,7 +1,10 @@
 import { BigNumber } from 'bignumber.js';
 
-export const getPastEvents = async (web3, contract, event) => {
-  const contractWeb3 = new web3.eth.Contract(contract.abi, contract.address);
+export const getPastEvents = async (drizzle, contract, event) => {
+  const web3 = drizzle.web3;
+  // const contract = drizzle.contracts[contractName];
+  const contractWeb3 = contract;
+  // const contractWeb3 = new web3.eth.Contract(contract.abi, contract.address);
   const eventOptions = {
     // topics: [],
     fromBlock: 0,

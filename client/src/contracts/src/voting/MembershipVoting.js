@@ -1,4 +1,4 @@
-import { web3, contracts } from '../../config/drizzle-config';
+import { drizzleRegistry, contracts } from '../../config/drizzle-config';
 import VotingService from "./VotingService";
 import {
   convertNumVotes,
@@ -30,9 +30,9 @@ export default class MembershipVoting extends VotingService {
       // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
       // objRes.votesFor = promiseRes.base.counters.weightFor;
       const weightAgainst = promiseRes.base.counters.weightAgainst;
-      objRes.votesAgainst = web3.utils.fromWei(weightAgainst, "ether");
+      objRes.votesAgainst = drizzleRegistry.web3.utils.fromWei(weightAgainst, "ether");
       const weightFor = promiseRes.base.counters.weightFor;
-      objRes.votesFor =  web3.utils.fromWei(weightFor, "ether");
+      objRes.votesFor =  drizzleRegistry.web3.utils.fromWei(weightFor, "ether");
 
       //the ending is given by: vetoEndTime.
       objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;

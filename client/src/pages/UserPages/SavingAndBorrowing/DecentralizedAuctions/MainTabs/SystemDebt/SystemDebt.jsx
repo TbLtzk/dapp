@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { useDispatch, useSelector } from 'react-redux';
-import { getQProposals } from 'store/actions/action-creaters/voting/qproposals';
-import { errorM, loadingProposals, proposalsArr } from 'store/selectors/voting/qproposals';
+import { errorM, loadingProposals, proposalsArr } from 'store/selectors/voting/proposals';
 
 import { Col } from 'react-bootstrap';
 
@@ -17,7 +16,7 @@ function SystemDebt() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getQProposals(drizzle));
+    // dispatch(getQProposals(drizzle));
   }, []);
 
   const loading = useSelector(loadingProposals);

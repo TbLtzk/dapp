@@ -1,23 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { useDispatch, useSelector } from 'react-redux';
-import { getQProposals } from 'store/actions/action-creaters/voting/qproposals';
-import { errorM, loadingProposals, proposalsArr } from 'store/selectors/voting/qproposals';
+import { getProposalsList } from 'store/actions/action-creaters/voting/proposals';
+import { errorM, loadingProposals, proposalsArr } from 'store/selectors/voting/proposals';
 
 import { Col } from 'react-bootstrap';
 
 import QTypeProposalsTabs from 'pages/UserPages/QGovernance/components/QTypeProposalsTabs';
 import ProposalsList from 'pages/UserPages/QGovernance/components/ProposalsList';
+import { checkCurrentTab } from '../constants';
 
 const { useDrizzle } = drizzleReactHooks;
 
-function QProposals() {
+function TabContent(props) {
+  const { activeTab } = props;
   const { drizzle } = useDrizzle();
   const dispatch = useDispatch();
 
+  console.log('activeTab', activeTab);
+
+  const proposalKind = useMemo(() => {
+    return checkCurrentTab(activeTab);
+  }, [activeTab]);
+  console.log("proposalKind", proposalKind);
+
   useEffect(() => {
-    dispatch(getQProposals(drizzle));
-  }, []);
+    dispatch(getProposalsList(drizzle, activeTab));
+  }, [activeTab]);
 
   const loading = useSelector(loadingProposals);
   const errorMessage = useSelector(errorM);
@@ -29,11 +38,11 @@ function QProposals() {
         activeDescr={proposals?.length + ' Proposals'}
         activeContent={
           <ProposalsList
-            activeTab="q-proposals"
+            activeTab={activeTab}
             proposals={proposals}
             loading={loading}
             errorMessage={errorMessage}
-            proposalsKind="QProposals"
+            proposalsKind={proposalKind}
           />
         }
         votableDesc="0 Proposals"
@@ -44,5 +53,5 @@ function QProposals() {
   );
 }
 
-export default QProposals;
+export default TabContent;
 

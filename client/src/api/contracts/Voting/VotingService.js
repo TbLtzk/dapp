@@ -7,7 +7,6 @@ import {
 export default class VotingService {
 
   constructor(drizzle, contractName) {
-
     this.drizzle = drizzle;
 
     this.contract = drizzle.contracts[contractName];
@@ -36,23 +35,6 @@ export default class VotingService {
       const result = await this.contract.methods.proposals(id)
         .call();
       return result;
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  /**
-   * get proposal id in iteration
-   * @param id
-   * @return array
-   */
-  async proposalIteratorResult(id) {
-    try {
-
-      return await this.getProposal(id)
-        .then((proposal, error) => {
-          return proposal;
-        });
     } catch (e) {
       console.log(e);
     }
@@ -224,7 +206,7 @@ export default class VotingService {
         // console.log('promiseStatus', promiseStatus);
         if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4'
           || promiseStatus === '5') {
-          let promiseRes = await this.proposalIteratorResult(id);
+          let promiseRes = await this.getProposal(id);
           if (promiseRes) {
             objRes = await this.getProposalData(promiseRes, id, promiseStatus);
             // console.log("objRes", objRes);
@@ -232,6 +214,29 @@ export default class VotingService {
         } else {
           // console.log('objRes', objRes);
           return objRes;
+        }
+        return [objRes];
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
+  }
+
+  /**
+   * get proposal with any status
+   * @param id
+   * @return array
+   */
+  async getProposalWithoutStatusChecked(id) {
+    try {
+      if (id) {
+        let objRes = null;
+        let promiseStatus = await this.getProposalStatus(id);
+        let promiseRes = await this.getProposal(id);
+        if (promiseRes) {
+          objRes = await this.getProposalData(promiseRes, id, promiseStatus);
+          // console.log("objRes", objRes);
         }
         return [objRes];
       }
@@ -265,7 +270,7 @@ export default class VotingService {
           let objRes = {};
           let promiseStatus = await this.getProposalStatus(id);
           if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
-            let promiseRes = await this.proposalIteratorResult(id);
+            let promiseRes = await this.getProposal(id);
             if (promiseRes) {
               objRes = await this.getProposalData(promiseRes, id, promiseStatus);
               proposals.push(objRes);
@@ -294,7 +299,7 @@ export default class VotingService {
           let objRes = {};
           let promiseStatus = await this.getProposalStatus(id);
           if (promiseStatus !== '1' || promiseStatus !== '3' || promiseStatus !== '4') {
-            let promiseRes = await this.proposalIteratorResult(id);
+            let promiseRes = await this.getProposal(id);
             if (promiseRes) {
               objRes = await this.getProposalData(promiseRes, id, promiseStatus);
               proposals.push(objRes);

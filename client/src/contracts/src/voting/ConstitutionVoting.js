@@ -1,4 +1,4 @@
-import { web3, contracts } from '../../config/drizzle-config';
+import { drizzleRegistry } from '../../config/drizzle-config';
 import {
   convertNumVotes,
   getPastEvents,
@@ -9,11 +9,10 @@ import {
   bn,
   getStatusTransformation
 } from '../../handler/VotingHandler';
-import VotingService from 'api/contracts/Voting/VotingService';
+import VotingService from './VotingService';
 import { roundBalance } from '../../../func/balance';
 
 export default class ConstitutionVoting extends VotingService {
-
   /**
    * get proposal sting type
    * @param type
@@ -51,9 +50,9 @@ export default class ConstitutionVoting extends VotingService {
       objRes.newConstitutionHash = promiseRes.newConstitutionHash;
       objRes.currentConstitutionHash = promiseRes.currentConstitutionHash;
       const weightAgainst = promiseRes.base.counters.weightAgainst;
-      objRes.votesAgainst = web3.utils.fromWei(weightAgainst, 'ether');
+      objRes.votesAgainst = drizzleRegistry.web3.utils.fromWei(weightAgainst, 'ether');
       const weightFor = promiseRes.base.counters.weightFor;
-      objRes.votesFor = web3.utils.fromWei(weightFor, 'ether');
+      objRes.votesFor = drizzleRegistry.web3.utils.fromWei(weightFor, 'ether');
       objRes.vetosCount = promiseRes.base.counters.vetosCount;
 
       // const votesCount = await bn(weightFor)

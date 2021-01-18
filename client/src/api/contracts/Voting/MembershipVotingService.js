@@ -77,7 +77,7 @@ export default class MembershipVotingService extends VotingService {
           let objRes = {};
           let promiseStatus = await this.getProposalStatus(id);
           if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
-            let promiseRes = await this.proposalIteratorResult(id);
+            let promiseRes = await this.getProposal(id);
             if (promiseRes) {
               objRes = await this.getProposalData(promiseRes, id, promiseStatus);
               proposals.push(objRes);
@@ -108,7 +108,7 @@ export default class MembershipVotingService extends VotingService {
           let objRes = {};
           let promiseStatus = await this.getProposalStatus(id);
           if (promiseStatus !== "1") {
-            let promiseRes = await this.proposalIteratorResult(id);
+            let promiseRes = await this.getProposal(id);
             if (promiseRes) {
               objRes = await this.getProposalData(promiseRes, id, promiseStatus);
               proposals.push(objRes);

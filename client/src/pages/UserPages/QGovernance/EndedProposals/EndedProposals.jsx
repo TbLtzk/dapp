@@ -1,24 +1,24 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import {getEndedProposals} from "store/actions/action-creaters/voting/proposals";
-import {endedProposals, loadingEndedProposals, errorEnded} from "store/selectors/voting/proposals";
-import {useDispatch, useSelector} from "react-redux";
-import {drizzleReactHooks} from "@drizzle/react-plugin";
+import { getEndedProposals } from 'store/actions/action-creaters/voting/proposals';
+import { endedProposals, loadingEndedProposals, errorEnded } from 'store/selectors/voting/proposals';
+import { useDispatch, useSelector } from 'react-redux';
+import { drizzleReactHooks } from '@drizzle/react-plugin';
 
-import {useLocation} from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
-import ProposalsList from "pages/UserPages/QGovernance/components/ProposalsList";
+import ProposalsList from 'pages/UserPages/QGovernance/components/ProposalsList';
+import { checkCurrentTab } from 'pages/UserPages/QGovernance/components/constants';
 
-import {Row, Col} from "react-bootstrap";
-import {Title} from "./styles";
+import { Row, Col } from 'react-bootstrap';
+import { Title } from '../styles';
 
-const {useDrizzle} = drizzleReactHooks;
+const { useDrizzle } = drizzleReactHooks;
 
 function EndedProposals() {
   const location = useLocation();
-  const {drizzle} = useDrizzle();
+  const { drizzle } = useDrizzle();
   const dispatch = useDispatch();
-  const [numberOfProposals, setNumberOfProposals] = useState(location?.state?.numberOfProposals);
 
   const endedArr = useSelector(endedProposals);
   const loading = useSelector(loadingEndedProposals);
@@ -29,35 +29,22 @@ function EndedProposals() {
   }, [dispatch]);
 
   const proposalKind = useMemo(() => {
-    switch (location?.state?.activeTab) {
-      case "q-proposals":
-        return "QProposals";
-      case "q-root-node-panel":
-        return "QRootNodePanel";
-      case "q-expert-proposals":
-        return "QExpertProposals";
-      case "slashing-proposals":
-        return "SlashingProposals";
-      default:
-        return "QProposals";
-    }
-
-
+    return checkCurrentTab(location?.state?.activeTab);
   }, [location?.state?.activeTab, location?.state?.numberOfProposals]);
 
   return (
-      <Row>
-        <Col xs={8}>
-          <Title>{`Ended ${location?.state?.activeTab?.replace(/-/g, " ")} (${endedArr.length}`})</Title>
-          <ProposalsList
-              activeTab={location?.state?.activeTab}
-              proposals={endedArr}
-              loading={loading}
-              errorMessage={error}
-              proposalsKind={proposalKind}
-          />
-        </Col>
-      </Row>
+    <Row>
+      <Col xs={8}>
+        <Title>{`Ended ${location?.state?.activeTab?.replace(/-/g, ' ')} (${endedArr.length}`})</Title>
+        <ProposalsList
+          activeTab={location?.state?.activeTab}
+          proposals={endedArr}
+          loading={loading}
+          errorMessage={error}
+          proposalsKind={proposalKind}
+        />
+      </Col>
+    </Row>
   );
 }
 

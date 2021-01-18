@@ -22,7 +22,7 @@ function Routes() {
       <Route path="/ended-proposals" component={AuthProtect(UserPages)}/>
       <Route path="/decentralized-auctions" component={AuthProtect(UserPages)}/>
       <Route path="/ended-auctions" component={AuthProtect(UserPages)}/>
-      <Route path="/q-governance/proposal/:id?/:contract?" component={AuthProtect(UserPages)}/>
+      <Route path="/q-governance/proposal/:contract?/:id?" component={AuthProtect(UserPages)}/>
     </Switch>
   );
 }

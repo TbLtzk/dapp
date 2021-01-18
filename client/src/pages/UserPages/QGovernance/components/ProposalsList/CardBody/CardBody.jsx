@@ -96,7 +96,7 @@ function CardBody(props) {
           />
         }
         onShareBtn={() => {}}
-        shareText={`${window.location.origin}/q-governance/one-proposal/${proposalID}/${contract}`}
+        shareText={`${window.location.origin}/q-governance/proposal/${contract}/${proposalID}`}
       >
         <Details md={4}>
           <div>

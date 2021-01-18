@@ -9,26 +9,27 @@ import {
   createProposalSuccess, voteForProposalSuccess,
   getEndedProposalsSuccess, getEndedProposalsError,
   executeProposalSuccess, executeProposalError,
-  updateProposalSuccess, updateProposalError
+  getProposalsListError, getProposalsListSuccess,
+  getProposalSuccess, getEmptyProposalSuccess, getProposalError, getProposalVote
 } from 'store/actions/action-creaters/voting/proposals';
-import { getQProposal } from 'store/actions/action-creaters/voting/qproposals';
-import { getRootsVotingProposal } from 'store/actions/action-creaters/voting/roots-voting';
-import { getQExpertProposal } from 'store/actions/action-creaters/voting/expert-voting';
-import { getSlashingVotingProposal } from 'store/actions/action-creaters/voting/slashing-voting';
-import { arrContracts } from 'store/sagas/voting/expert-voting';
+import {
+  creationQContractObj, creationRootContractObj, creationExpertContractObj, creationSlashingContractObj,
+  creationQContractsObjArray, creationSlashingContractsObjArray, creationExpertContractsObjArray
+} from 'api/contracts/Voting/handler/creationVotingObj';
 
 import ConstitutionVotingService from 'api/contracts/Voting/ConstitutionVotingService';
 import EmergencyUpdateVotingService from 'api/contracts/Voting/EmergencyUpdateVotingService';
 import GeneralUpdateVotingService from 'api/contracts/Voting/GeneralUpdateVotingService';
 import RootsVotingService from 'api/contracts/Voting/RootsVotingService';
+import VotingService from 'api/contracts/Voting/VotingService';
 
 import {
   chooseExpertContractDependsOnType,
   chooseExpertContractNameDependsOnType
 } from 'api/contracts/Voting/handler/QExpertVotingHandler';
+
 import { chooseSlashingContractDependsOnType } from 'api/contracts/Voting/handler/SlashingVotingHandler';
-import VotingService from 'api/contracts/Voting/VotingService';
-import SlashingVotingService from 'api/contracts/Voting/SlashingVotingService';
+
 
 function* createProposal({ drizzle, data }) {
   try {
@@ -94,8 +95,7 @@ function* createProposal({ drizzle, data }) {
           return null;
       }
     }
-    // idProposal = result?.events?.ProposalCreated?.returnValues?._id;
-    yield call(getProposalDependsOnType, contractName, drizzle, data, idProposal);
+    yield call(getProposalDependsOnType, contractName, drizzle, data, idProposal, true);
     yield put(createProposalSuccess(result));
     yield put(setTransactionLoadingSuccess());
 
@@ -117,13 +117,11 @@ function* voteForProposal({ drizzle, data }) {
       if (data?.first === 'basic-vote-on-proposal') {
         if (data['vote-proposal'] === 'yes') {
           result = yield contract.voteFor(data?.idProposal, userAddress);
-          const execute = yield contract.execute(data?.idProposal, userAddress);
-          console.log('RESULT VOTING voteFor', result);
+          // const execute = yield contract.execute(data?.idProposal, userAddress);
           // console.log("RESULT VOTING execute", execute);
         } else if (data['vote-proposal'] === 'no') {
           result = yield contract.voteAgainst(data?.idProposal, userAddress);
-          const execute = yield contract.execute(data?.idProposal, userAddress);
-          console.log('RESULT VOTING voteAgainst', result);
+          // const execute = yield contract.execute(data?.idProposal, userAddress);
           // console.log("RESULT VOTING execute", execute);
         }
       } else if (data?.first === 'constitution-check') {
@@ -133,7 +131,7 @@ function* voteForProposal({ drizzle, data }) {
         //TODO: when backenders do it
       }
     }
-    yield call(getProposalDependsOnType, data?.contract, drizzle, data, data?.idProposal);
+    yield call(getProposalDependsOnType, data?.contract, drizzle, data, data?.idProposal, true);
     yield put(voteForProposalSuccess(result));
     yield put(setTransactionLoadingSuccess());
 
@@ -147,16 +145,13 @@ function* executeProposal({ drizzle, data }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select(state => state.userInf);
-    console.log('executeProposal', drizzle);
-    console.log('executeProposal', data);
     let result = null;
     if (data && drizzle) {
       const contract = new VotingService(drizzle, data?.contract);
-      console.log('contract', contract);
       const execute = yield contract.execute(data?.idProposal, userAddress);
       console.log('RESULT execute', execute);
     }
-    yield call(getProposalDependsOnType, data?.contract, drizzle, data, data?.idProposal);
+    yield call(getProposalDependsOnType, data?.contract, drizzle, data, data?.idProposal, true);
     yield put(executeProposalSuccess(result));
     yield put(setTransactionLoadingSuccess());
   } catch (err) {
@@ -167,36 +162,29 @@ function* executeProposal({ drizzle, data }) {
 }
 
 function* updateProposal({ drizzle, data }) {
-  try {
-    console.log('updateProposal', data);
-    yield call(getProposalDependsOnType, data?.contract, drizzle, data, data?.idProposal);
-    yield put(updateProposalSuccess("success"));
-  } catch (err) {
-    console.log('err', err.message);
-    yield put(updateProposalError(err.message));
-  }
+  yield call(getProposalDependsOnType, data?.contract, drizzle, data, data?.idProposal, false);
 }
 
-function* getProposalDependsOnType(contractName, drizzle, data, id,) {
+function* getProposalDependsOnType(contractName, drizzle, data, id, activeProposal) {
   try {
     switch (contractName) {
       case 'ConstitutionVoting':
       case 'EmergencyUpdateVoting':
       case 'GeneralUpdateVoting':
-        yield put(getQProposal(contractName, id, drizzle));
+        yield put(getProposalVote(contractName, id, drizzle, 'q-proposals', activeProposal));
         break;
       case 'RootsVoting':
-        yield put(getRootsVotingProposal(contractName, id, drizzle));
+        yield put(getProposalVote(contractName, id, drizzle, 'q-root-node-panel', activeProposal));
         break;
       case 'RootNodesSlashingVoting':
       case 'ValidatorsSlashingVoting':
-        yield put(getSlashingVotingProposal(contractName, id, drizzle));
+        yield put(getProposalVote(contractName, id, drizzle, 'slashing-proposals', activeProposal));
         break;
       case 'EPQFI_MembershipVoting':
       case 'EPDR_MembershipVoting':
       case 'EPQFI_ParametersVoting':
       case 'EPDR_ParametersVoting':
-        yield put(getQExpertProposal(contractName, id, drizzle));
+        yield put(getProposalVote(contractName, id, drizzle, 'q-expert-proposals', activeProposal));
         break;
       default:
         return null;
@@ -204,54 +192,114 @@ function* getProposalDependsOnType(contractName, drizzle, data, id,) {
   } catch (e) {
     console.log('e', e);
   }
+}
 
+function* getOneProposalShared({ drizzle, data }) {
+  yield call(getProposalDependsOnType, data?.contract, drizzle, data, data?.id, false);
+}
+
+function* getProposalsList({ drizzle, activeTab }) {
+  try {
+    let contracts = null;
+    switch (activeTab) {
+      case 'q-proposals':
+        contracts = creationQContractsObjArray(drizzle);
+        break;
+      case 'q-root-node-panel':
+        contracts = creationRootContractObj(drizzle);
+        break;
+      case 'slashing-proposals':
+        contracts = creationSlashingContractsObjArray(drizzle);
+        break;
+      case 'q-expert-proposals':
+        contracts = creationExpertContractsObjArray(drizzle);
+        break;
+    }
+    let result = [];
+    console.log('contracts', contracts);
+    if (Array.isArray(contracts)) {
+      for (let contractName of contracts) {
+        const data = yield contractName.getProposals();
+        result = [...result, ...data];
+      }
+    } else {
+      result = yield contracts?.getProposals();
+    }
+
+    console.log('Proposals', result);
+
+    yield put(getProposalsListSuccess(result));
+  } catch (e) {
+    console.log('e', e);
+    yield put(getProposalsListError(e));
+  }
+}
+
+function* getProposal({ contractName, id, drizzle, activeTab, activeProposal }) {
+  try {
+    let contract = null;
+    switch (activeTab) {
+      case 'q-proposals':
+        contract = creationQContractObj(drizzle, contractName);
+        break;
+      case 'q-root-node-panel':
+        contract = creationRootContractObj(drizzle);
+        break;
+      case 'slashing-proposals':
+        contract = creationSlashingContractObj(drizzle, contractName);
+        break;
+      case 'q-expert-proposals':
+        contract = creationExpertContractObj(drizzle, contractName);
+        break;
+    }
+    if (contract) {
+      let data = null;
+      if (activeProposal) {
+        data = yield contract.getOneProposal(id);
+      } else {
+        data = yield contract.getProposalWithoutStatusChecked(id);
+      }
+      // const data = null;
+      console.log('GET_PROPOSAL', data);
+      if (data) {
+        yield put(getProposalSuccess(data));
+      } else {
+        yield put(getEmptyProposalSuccess(id));
+      }
+    }
+  } catch (err) {
+    console.log('err', err);
+    yield put(getProposalError(id));
+  }
 }
 
 function* getEndedProposals({ drizzle, activeTab }) {
   try {
-    console.log('drizzle', drizzle);
-    console.log('activeTab', activeTab);
-    let result = [];
+    let contracts = null;
     if (drizzle) {
       switch (activeTab) {
         case 'q-proposals':
-          const constitutionVoting = new ConstitutionVotingService(drizzle, 'ConstitutionVoting');
-          const emergencyUpdateVoting = new EmergencyUpdateVotingService(drizzle, 'EmergencyUpdateVoting');
-          const generalUpdateVoting = new GeneralUpdateVotingService(drizzle, 'GeneralUpdateVoting');
-          const contracts = [constitutionVoting, emergencyUpdateVoting, generalUpdateVoting];
-          for (let contractName of contracts) {
-            const data = yield contractName.getEndedProposals();
-            result = [...result, ...data];
-          }
-          console.log('GET_Q_PROPOSALS_ENDED', result);
+          contracts = creationQContractsObjArray(drizzle);
           break;
         case 'q-root-node-panel':
-          const rootsVotingService = new RootsVotingService(drizzle, 'RootsVoting');
-          result = yield rootsVotingService.getEndedProposals();
-          console.log('GET_ROOT_VOTING_PROPOSALS_ENDED', result);
+          contracts = creationRootContractObj(drizzle);
           break;
         case 'q-expert-proposals':
-          let contractsList = [];
-          for (let contract of arrContracts) {
-            contractsList.push(chooseExpertContractDependsOnType(drizzle, contract.typeContract, contract.type));
-          }
-          for (let contract of contractsList) {
-            const data = yield contract.getEndedProposals();
-            result = [...result, ...data];
-          }
-          console.log('GET_QEXPERT_PROPOSALS_ENDED', result);
+          contracts = creationExpertContractsObjArray(drizzle);
           break;
         case 'slashing-proposals':
-          const validatorsSlashingVoting = new SlashingVotingService(drizzle, 'ValidatorsSlashingVoting');
-          const rootNodesSlashingVoting = new SlashingVotingService(drizzle, 'RootNodesSlashingVoting');
-          const contractsLists = [validatorsSlashingVoting, rootNodesSlashingVoting];
-          for (let contractName of contractsLists) {
-            const data = yield contractName.getEndedProposals();
-            result = [...result, ...data];
-          }
-          console.log('GET_SLASHING_VOTING_PROPOSALS_ENDED', result);
+          contracts = creationSlashingContractsObjArray(drizzle);
           break;
       }
+    }
+    let result = [];
+    if (Array.isArray(contracts)) {
+      for (let contractName of contracts) {
+        const data = yield contractName.getEndedProposals();
+        result = [...result, ...data];
+      }
+    } else {
+      result = yield contracts?.getEndedProposals();
     }
 
     yield put(getEndedProposalsSuccess(result));
@@ -269,4 +317,7 @@ export default [
   takeEvery(actionTypes.UPDATE_PROPOSAL, updateProposal),
 
   takeEvery(actionTypes.GET_ENDED_PROPOSALS, getEndedProposals),
+  takeEvery(actionTypes.GET_ONE_PROPOSAL, getOneProposalShared),
+  takeEvery(actionTypes.GET_PROPOSALS_LIST, getProposalsList),
+  takeEvery(actionTypes.GET_PROPOSAL, getProposal),
 ];

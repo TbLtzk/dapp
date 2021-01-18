@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react';
 import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { useDispatch, useSelector } from 'react-redux';
-import { getQProposals } from 'store/actions/action-creaters/voting/qproposals';
-import { errorM, loadingProposals, proposalsArr } from 'store/selectors/voting/qproposals';
+import { errorM, loadingProposals, proposalsArr } from 'store/selectors/voting/proposals';
 
 import { Col } from 'react-bootstrap';
 
 import ProposalsList from '../ProposalsList';
 import { Title, WrapDescr } from '../../../../QGovernance/components/QTypeProposalsTabs/styles';
-import { getPastEvents, bn } from '../../../../../../api/contracts/Voting/handler/commonFunc';
-import { userAddressMetamask } from '../../../../../../store/selectors/user-inf';
+import { getPastEvents, bn } from 'api/contracts/Voting/handler/commonFunc';
+import { userAddressMetamask } from 'store/selectors/user-inf';
 
 const { useDrizzle } = drizzleReactHooks;
 
@@ -21,7 +20,7 @@ function TabContent(props) {
   const userAddress = useSelector(userAddressMetamask);
 
   useEffect(() => {
-    dispatch(getQProposals(drizzle));
+    // dispatch(getQProposals(drizzle));
   }, []);
 
   const loading = useSelector(loadingProposals);

@@ -25,26 +25,12 @@ function ProposalsList(props) {
   const { proposals, proposalsKind, loading, errorMessage, activeTab } = props;
   const { drizzle } = useDrizzle();
   const dispatch = useDispatch();
-  const userAddress = useSelector(userAddressMetamask);
   const [modalShow, setModalShow] = useState(false);
   const [proposalId, setProposalId] = useState(null);
   const [vetoEndTime, setVetoEndTime] = useState(null);
   const [proposalContract, setProposalContract] = useState(null);
 
-
-
   const onProposalVote = (id, contract, vetoEndTime) => {
-    // console.log("Vote", id);
-    // try{
-    //     const proposalVote = await drizzle.contracts.ConstitutionVoting.methods.voteFor(id, true).send(
-    //         {from: userAddress});
-    //     console.log("proposalVote", proposalVote);
-    // }catch (e) {
-    //     console.log("e", e);
-    // }
-
-    // const proposalVote = await drizzle.contracts.ConstitutionVoting.methods.veto.cacheSend(
-    //     id, {from: userAddress});
     dispatch(setDisabledCreatedProposalBtn(true));
     setProposalId(id);
     setVetoEndTime(vetoEndTime);
@@ -75,7 +61,7 @@ function ProposalsList(props) {
               : proposals.map((proposal, i) => {
                 //TODO: don`t show proposal if veto time === 0
                 // return remainDate(proposal.vetoEndTime) !== 0 ?
-                return <CardBlock key={proposal.id + proposal?.type}>
+                return <CardBlock key={proposal.id + proposal?.contract}>
                   <CardHeader
                     title={proposal.title}
                     status={proposal.status}
@@ -90,7 +76,7 @@ function ProposalsList(props) {
                     }}
                   />
                   <CardBody
-                    id={proposal.id + proposal?.type}
+                    id={proposal.id + proposal?.contract}
                     proposalType={proposal?.type}
                     // mainText={"Text"}
                     // date={convertToMonthDayYear(proposal.vetoEndTime)}
