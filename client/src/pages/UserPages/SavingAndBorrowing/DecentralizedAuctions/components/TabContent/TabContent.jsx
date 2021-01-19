@@ -7,7 +7,6 @@ import { Col } from 'react-bootstrap';
 
 import ProposalsList from '../ProposalsList';
 import { Title, WrapDescr } from '../../../../QGovernance/components/QTypeProposalsTabs/styles';
-import { getPastEvents, bn } from 'api/contracts/Voting/handler/commonFunc';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 
 const { useDrizzle } = drizzleReactHooks;
@@ -28,14 +27,6 @@ function TabContent(props) {
   const proposals = useSelector(proposalsArr);
 
   useEffect(async () => {
-    // const result = await getPastEvents(drizzle, 'LiquidationAuction', 'AuctionStarted');
-    // const result = await drizzle.contracts.LiquidationAuction.methods.auctions().call();
-    // const vaultId = 0;
-    // const bid = bn(100);
-    // const result = await drizzle.contracts.LiquidationAuction.methods.startAuction(
-    //   userAddress, vaultId, bid)
-    //   .send({ from: userAddress });
-    // console.log('LiquidationAuction', result);
 
   }, []);
 
@@ -43,13 +34,13 @@ function TabContent(props) {
     <Col xs={12}>
       <Title>Active Auctions</Title>
       <WrapDescr>{proposals?.length + ' auctions'}</WrapDescr>
-      <ProposalsList
-        activeTab="q-proposals"
-        proposals={proposals}
-        loading={loading}
-        errorMessage={errorMessage}
-        proposalsKind="Liquidation"
-      />
+      {/*<ProposalsList*/}
+      {/*  activeTab="q-proposals"*/}
+      {/*  proposals={proposals}*/}
+      {/*  loading={loading}*/}
+      {/*  errorMessage={errorMessage}*/}
+      {/*  proposalsKind="Liquidation"*/}
+      {/*/>*/}
     </Col>
 
   );

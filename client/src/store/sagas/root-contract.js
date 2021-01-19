@@ -1,6 +1,6 @@
 import {call, put, takeEvery, all} from "redux-saga/effects";
 
-import {detectMetamask} from "api/metamaskAccount"
+import {detectMetamask} from "contracts/handler/metamaskAccount"
 import * as actionTypes from "store/actions/action-types/root-contract";
 import {
     getRootMembersDataSuccess, getRootMembersDataError,
@@ -10,7 +10,7 @@ import {
     announceWithdrawalSuccess, announceWithdrawalError,
     withdrawSuccess, withdrawError
 } from "store/actions/action-creaters/root-contract";
-import RootService from "api/contracts/RootService";
+import RootService from "contracts/src/Root";
 
 function* getRootMembersData({contract}) {
     try {

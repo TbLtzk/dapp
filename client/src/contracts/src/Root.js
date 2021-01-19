@@ -1,10 +1,10 @@
-import { web3 } from '../../contracts/config/drizzle-config';
+import { drizzleRegistry, contracts } from '../config/drizzle-config';
 
 export default class RootService {
 
   constructor(drizzle) {
-    this.drizzle = drizzle;
-    this.Root = drizzle.contracts.Root;
+    this.contract = contracts['Root'];
+    this.contractName = 'Root';
   }
 
   /**
@@ -12,7 +12,7 @@ export default class RootService {
    * @return array
    */
   async getRootMembers() {
-    return await this.Root.methods.getMembers()
+    return await this.contract.methods.getMembers()
       .call();
   }
 
@@ -22,7 +22,7 @@ export default class RootService {
    * @return boolean
    */
   async checkMemberIsRoot(userAddress) {
-    return await this.Root.methods.isMember(userAddress)
+    return await this.contract.methods.isMember(userAddress)
       .call();
   }
 
@@ -31,7 +31,7 @@ export default class RootService {
    * @return number
    */
   async getMemberCount() {
-    return await this.Root.methods.getCount()
+    return await this.contract.methods.getCount()
       .call();
   }
 
@@ -41,9 +41,9 @@ export default class RootService {
    * @return number
    */
   async getRootNodeStake(node) {
-    const balance = await this.Root.methods.getRootNodeStake(node)
+    const balance = await this.contract.methods.getRootNodeStake(node)
       .call();
-    return this.drizzle.web3.utils.fromWei(balance, 'ether');
+    return drizzleRegistry.web3.utils.fromWei(balance, 'ether');
   }
 
   /**
@@ -114,7 +114,7 @@ export default class RootService {
     try {
       // new web3.utils.BN(web3.utils.toWei
       // console.log(data);
-      return await this.Root.methods.commitStake.cacheSend(data);
+      return await this.contract.methods.commitStake.cacheSend(data);
     } catch (e) {
       console.log(e);
     }
@@ -127,7 +127,7 @@ export default class RootService {
    */
   async announceWithdrawal(amount, paymentInf) {
     try {
-      return await this.Root.methods.announceWithdrawal.cacheSend(amount, paymentInf);
+      return await this.contract.methods.announceWithdrawal.cacheSend(amount, paymentInf);
       // const result = await this.Root.methods.announceWithdrawal(amount).call(function (result) {
       //     console.log('announceWithdrawal result', result);
       // });
@@ -149,7 +149,7 @@ export default class RootService {
       // const result = await this.Root.methods.withdraw(amount, payTo).call(function (result) {
       //     console.log('withdraw result', result);
       // });
-      return await this.Root.methods.withdraw.cacheSend(amount, payTo, paymentInf);
+      return await this.contract.methods.withdraw.cacheSend(amount, payTo, paymentInf);
     } catch (e) {
       console.log(e);
     }

@@ -17,17 +17,23 @@ function OneProposalPage(props) {
   const { params } = props;
   const { drizzle } = useDrizzle();
   const dispatch = useDispatch();
+  const [empty, setEmpty] = useState(false);
 
   const proposal = useSelector(proposalsArr);
   const loading = useSelector(loadingProposals);
   const error = useSelector(errorM);
 
   useEffect(() => {
-    dispatch(getOneProposal(drizzle, {
-      id: params?.id,
-      contract: params?.contract
-    }));
-  }, [dispatch]);
+    if (params?.id && params?.contract && !isNaN((Number(params?.id)))) {
+      setEmpty(false);
+      dispatch(getOneProposal(drizzle, {
+        id: params?.id,
+        contract: params?.contract
+      }));
+    } else {
+      setEmpty(true);
+    }
+  }, [dispatch, params]);
 
   const activeTab = useMemo(() => {
     return checkActiveTabByContract(proposal[0]?.contract);
@@ -40,14 +46,16 @@ function OneProposalPage(props) {
   return (
     <Row>
       <Col xs={8}>
-        <Title>{activeTab ? `${activeTab?.replace(/-/g, ' ')}`: null}</Title>
-        <ProposalsList
-          activeTab={activeTab}
-          proposals={proposal}
-          loading={loading}
-          errorMessage={error}
-          proposalsKind={proposalKind}
-        />
+        <Title>{activeTab ? `${activeTab?.replace(/-/g, ' ')}` : null}</Title>
+        {empty ? <p>Wrong link</p> :
+          <ProposalsList
+            activeTab={activeTab}
+            proposals={proposal}
+            loading={loading}
+            errorMessage={error}
+            proposalsKind={proposalKind}
+          />
+        }
       </Col>
     </Row>
   );

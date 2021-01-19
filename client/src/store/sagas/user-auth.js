@@ -1,6 +1,6 @@
 import {call, put, takeEvery, all} from "redux-saga/effects";
 
-import {detectMetamask} from "api/metamaskAccount"
+import {detectMetamask} from "contracts/handler/metamaskAccount"
 import * as actionTypes from "store/actions/action-types/user-auth";
 import {
     detectEthereumProviderSuccess,

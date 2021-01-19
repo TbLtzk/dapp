@@ -10,9 +10,9 @@ export default class VotingService {
   constructor(contractName) {
     this.contract = contracts[contractName];
     this.contractName = contractName;
-    console.log("this.contract", this.contract);
-    console.log("contractName", contractName);
-    console.log("contracts", contracts);
+    // console.log("this.contract", this.contract);
+    // console.log("contractName", contractName);
+    // console.log("contracts", contracts);
   }
   /**
    * get proposal event

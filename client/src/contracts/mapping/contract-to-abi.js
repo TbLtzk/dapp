@@ -24,6 +24,8 @@ import RootsVotingABI from '../abi/RootsVotingABI';
 import ValidatorsSlashingVotingABI from '../abi/ValidatorsSlashingVotingABI';
 import RootNodesSlashingVotingABI from '../abi/RootNodesSlashingVotingABI';
 
+import RootABI from '../abi/RootABI';
+
 export const contractsToAbi = {
   ContractRegistry: ContractRegistryABI,
   QPiggyBank: QPiggyBankABI,
@@ -53,4 +55,5 @@ export const contractsToAbi = {
   RootsVoting: RootsVotingABI,
   ValidatorsSlashingVoting: ValidatorsSlashingVotingABI,
   RootNodesSlashingVoting: RootNodesSlashingVotingABI,
+  Root: RootABI,
 };

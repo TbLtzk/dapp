@@ -15,21 +15,20 @@ import {
 import {
   creationQContractObj, creationRootContractObj, creationExpertContractObj, creationSlashingContractObj,
   creationQContractsObjArray, creationSlashingContractsObjArray, creationExpertContractsObjArray
-} from 'api/contracts/Voting/handler/creationVotingObj';
+} from 'contracts/handler/VotingHandler';
 
-import ConstitutionVotingService from 'api/contracts/Voting/ConstitutionVotingService';
-import EmergencyUpdateVotingService from 'api/contracts/Voting/EmergencyUpdateVotingService';
-import GeneralUpdateVotingService from 'api/contracts/Voting/GeneralUpdateVotingService';
-import RootsVotingService from 'api/contracts/Voting/RootsVotingService';
-import VotingService from 'api/contracts/Voting/VotingService';
+import ConstitutionVotingService from 'contracts/src/voting/ConstitutionVoting';
+import EmergencyUpdateVotingService from 'contracts/src/voting/EmergencyUpdateVoting';
+import GeneralUpdateVotingService from 'contracts/src/voting/GeneralUpdateVoting';
+import RootsVotingService from 'contracts/src/voting/RootsVoting';
+import VotingService from 'contracts/src/voting/VotingService';
 
 import {
   chooseExpertContractDependsOnType,
   chooseExpertContractNameDependsOnType
-} from 'api/contracts/Voting/handler/QExpertVotingHandler';
+} from 'contracts/handler/QExpertVotingHandler';
 
-import { chooseSlashingContractDependsOnType } from 'api/contracts/Voting/handler/SlashingVotingHandler';
-
+import { chooseSlashingContractDependsOnType } from 'contracts/handler/SlashingVotingHandler';
 
 function* createProposal({ drizzle, data }) {
   try {
@@ -42,26 +41,26 @@ function* createProposal({ drizzle, data }) {
     if (data && drizzle) {
       switch (data?.first) {
         case 'constitution-update':
-          const constitutionVoting = new ConstitutionVotingService(drizzle, 'ConstitutionVoting');
+          const constitutionVoting = new ConstitutionVotingService('ConstitutionVoting');
           result = yield constitutionVoting.createProposal(data, userAddress);
           contractName = 'ConstitutionVoting';
           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
           break;
         case 'general-q-update':
-          const generalUpdateVoting = new GeneralUpdateVotingService(drizzle, 'GeneralUpdateVoting');
+          const generalUpdateVoting = new GeneralUpdateVotingService('GeneralUpdateVoting');
           result = yield generalUpdateVoting.createProposal(data, userAddress);
           contractName = 'GeneralUpdateVoting';
           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
           break;
         case 'emergency-update':
-          const emergencyUpdateVoting = new EmergencyUpdateVotingService(drizzle, 'EmergencyUpdateVoting');
+          const emergencyUpdateVoting = new EmergencyUpdateVotingService('EmergencyUpdateVoting');
           result = yield emergencyUpdateVoting.createProposal(data, userAddress);
           contractName = 'EmergencyUpdateVoting';
           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
           break;
         case 'add-a-new-root-node':
         case 'remove-a-current-root-node':
-          const rootsVoting = new RootsVotingService(drizzle, 'RootsVoting');
+          const rootsVoting = new RootsVotingService('RootsVoting');
           result = yield rootsVoting.createProposal(data, userAddress);
           contractName = 'RootsVoting';
           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
@@ -112,7 +111,7 @@ function* voteForProposal({ drizzle, data }) {
 
     let result = null;
     if (data && drizzle) {
-      const contract = new VotingService(drizzle, data?.contract);
+      const contract = new VotingService(data?.contract);
       console.log('VOTING contract', contract);
       if (data?.first === 'basic-vote-on-proposal') {
         if (data['vote-proposal'] === 'yes') {
@@ -147,7 +146,7 @@ function* executeProposal({ drizzle, data }) {
     const { userAddress } = yield select(state => state.userInf);
     let result = null;
     if (data && drizzle) {
-      const contract = new VotingService(drizzle, data?.contract);
+      const contract = new VotingService(data?.contract);
       const execute = yield contract.execute(data?.idProposal, userAddress);
       console.log('RESULT execute', execute);
     }
@@ -252,6 +251,7 @@ function* getProposal({ contractName, id, drizzle, activeTab, activeProposal }) 
         contract = creationExpertContractObj(drizzle, contractName);
         break;
     }
+    console.log('contract', contract);
     if (contract) {
       let data = null;
       if (activeProposal) {

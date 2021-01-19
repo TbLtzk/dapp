@@ -3,6 +3,7 @@ import { web3 } from 'contracts/config/drizzle-config';
 import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
+import { drizzleRegistry, contracts } from 'contracts/config/drizzle-config';
 import {
   setCreatedStepsLimit,
   setCreateProposalObj,
@@ -12,7 +13,10 @@ import {
 import CreateQBtn from 'components/Custom/PageLists/CreateQBtn';
 
 import { liquidation, systemDebt, systemSurplus } from './constants';
-import { bn } from '../../../../../../api/contracts/Voting/handler/commonFunc';
+import { bn } from 'contracts/handler/VotingHandler';
+import Handler from 'pages/UserPages/SavingAndBorrowing/BorrowBlock/handler';
+import { StableCoinQUSD } from 'contracts/StableCoin';
+import { getPastEvents } from 'contracts/handler/VotingHandler';
 
 const { useDrizzle } = drizzleReactHooks;
 
@@ -22,6 +26,8 @@ function CreateAuctionBtn(props) {
   const userAddress = useSelector(userAddressMetamask);
   const [modalShow, setModalShow] = useState(false);
   const dispatch = useDispatch();
+  const StableCoin = new StableCoinQUSD();
+  // const handler = new Handler(userAddress, 'QETH' ,useDispatch());
 
   const activeTabTitle = useMemo(() => {
     switch (activeTab) {
@@ -50,9 +56,12 @@ function CreateAuctionBtn(props) {
     //     dispatch(setCreatedStepsLimit(3));
     //     break;
     // }
-    // const result = await getPastEvents(drizzle, 'LiquidationAuction', 'AuctionStarted');
+    const result = await getPastEvents(drizzle, contracts['LiquidationAuction'], 'AuctionStarted');
+    const method = await contracts['LiquidationAuction'].methods.auctions("0xd10a97806b8FdFC8E4CC83a49f35CCF513F0a1f3", 1).call();
+    console.log('result', result);
+    console.log('method', method);
     // const result = await drizzle.contracts.LiquidationAuction.methods.auctions().call();
-    const vaultId = 0;
+    const vaultId = 1;
     // const bid = 10;
 
     // const bid = web3.utils.BN((web3.utils.toWei("10")));
@@ -61,15 +70,18 @@ function CreateAuctionBtn(props) {
     const bid = bn(10000000000000000000); //10
     // const bid = bn(1000000000000000000000); //100
     // const bid = bn(1000000000000000000000); //100
+    // await StableCoin.approve('0xFef40e2286F2240843E55fE66F06c34e7d6Ae317', bid, userAddress);
     // const result = await drizzle.contracts.LiquidationAuction.methods.startAuction(
     //   '0xd10a97806b8FdFC8E4CC83a49f35CCF513F0a1f3', vaultId, bid)
     //   .send({ from: userAddress });
+    // const result = await drizzle.contracts.SystemDebtAuction.methods.startAuction(bid)
+    //   .send({ from: userAddress });
     // console.log('LiquidationAuction', result);
-    const result = await drizzle.contracts.SystemSurplusAuction.methods.startAuction()
-      .send({
-        from: userAddress,
-        value: bid
-      });
+    // const result = await drizzle.contracts.SystemSurplusAuction.methods.startAuction()
+    //   .send({
+    //     from: userAddress,
+    //     value: bid
+    //   });
   };
 
   return (

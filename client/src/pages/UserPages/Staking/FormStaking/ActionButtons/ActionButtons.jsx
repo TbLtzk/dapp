@@ -7,7 +7,7 @@ import {stakeToPanel, announceWithdrawal, withdraw} from "store/actions/action-c
 import {userAddressMetamask} from "store/selectors/user-inf";
 import {stakeToPanelTransId, announceWithdrawTransId, withdrawTransId} from "store/selectors/root-contract";
 
-import RootService from "api/contracts/RootService";
+import RootService from "contracts/src/Root";
 import LoadingSpinner from "components/Base/LoadingSpinner";
 
 import {Col, Row} from "react-bootstrap";

@@ -17,12 +17,9 @@ function TabContent(props) {
   const { drizzle } = useDrizzle();
   const dispatch = useDispatch();
 
-  console.log('activeTab', activeTab);
-
   const proposalKind = useMemo(() => {
     return checkCurrentTab(activeTab);
   }, [activeTab]);
-  console.log("proposalKind", proposalKind);
 
   useEffect(() => {
     dispatch(getProposalsList(drizzle, activeTab));

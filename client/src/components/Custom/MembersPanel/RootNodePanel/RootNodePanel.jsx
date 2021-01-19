@@ -10,7 +10,7 @@ import {
 
 import { Container, Row, Col } from 'react-bootstrap';
 
-import RootService from 'api/contracts/RootService';
+import RootService from 'contracts/src/Root';
 import PieChartCustom from 'components/Base/PieChartCustom';
 import ButtonLinkArrow from 'components/Base/Buttons/ButtonLinkArrow';
 import LoadingSpinner from 'components/Base/LoadingSpinner';

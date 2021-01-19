@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
-import { Accordion, Col, Container, Row, useAccordionToggle } from 'react-bootstrap';
+import { Accordion, Col, Container, Row, useAccordionToggle, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faShare } from '@fortawesome/free-solid-svg-icons';
 
@@ -36,15 +36,29 @@ function ListCardBody(props) {
             </Row>
           </Col>
           <WrapToggleBlock md={2}>
-            <CopyToClipboard text={shareText}>
-              <BtnShare
-                type="button"
-                onClick={onShareBtn}
-              >
-                <span>Share</span>
-                <FontAwesomeIcon icon={faShare}/>
-              </BtnShare>
-            </CopyToClipboard>
+
+            <OverlayTrigger
+              key="top"
+              placement="top"
+              overlay={
+                <Tooltip id={'tooltip-top' + id}>
+                  <span>Copy to clipboard</span>
+                </Tooltip>
+              }
+            >
+              <CopyToClipboard text={shareText}>
+                <BtnShare
+                  type="button"
+                  onClick={() => {
+                    // console.log('Copied to clipboard');
+                  }}
+                >
+                  <span>Share</span>
+                  <FontAwesomeIcon icon={faShare}/>
+                </BtnShare>
+              </CopyToClipboard>
+            </OverlayTrigger>
+
             <CustomToggle eventKey={id}/>
           </WrapToggleBlock>
           <Col md={12}>

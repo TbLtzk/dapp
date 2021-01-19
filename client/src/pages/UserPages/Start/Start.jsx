@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import { checkIsUserRootNode } from 'store/actions/action-creaters/root-contract';
 import { detectEthereumProvider } from 'store/actions/action-creaters/user-auth';
-import RootService from 'api/contracts/RootService';
+import RootService from 'contracts/src/Root';
 import { Redirect } from 'react-router';
 
 const { useDrizzle, useDrizzleState } = drizzleReactHooks;

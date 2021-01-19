@@ -148,4 +148,9 @@ export default class Handler {
       console.log(res);
     });
   }
+
+  async approve(contractAddress, amountL) {
+    const approve = await this.stableCoinContract.approve(contractAddress, amountL, this.address);
+    console.log("approve", approve);
+  }
 }
