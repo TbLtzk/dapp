@@ -86,6 +86,8 @@ function CardBody(props) {
     }
   };
 
+  // console.log("window.location.origin",window.location.origin)
+
   return (
     <>
       <ListCardBody
@@ -96,6 +98,7 @@ function CardBody(props) {
           />
         }
         onShareBtn={() => {}}
+        // shareText={`${window.location.origin}/proposal/${contract}/${proposalID}`}
         shareText={`${window.location.origin}/q-governance/proposal/${contract}/${proposalID}`}
       >
         <Details md={4}>

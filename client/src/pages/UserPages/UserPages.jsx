@@ -19,6 +19,7 @@ export default function UserPages(props) {
   const { location, match } = props;
 
   const componentSwitcher = () => {
+    // if (location.pathname.includes("/proposal/")){
     if (location.pathname.includes("/q-governance/proposal/")){
       return <OneProposalPage params={match.params}/>
     }else {
