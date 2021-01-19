@@ -33,23 +33,23 @@ export class StableCoin {
 export class StableCoinQUSD extends StableCoin {
   constructor() {
     super();
-    this.methods = contracts['StableCoinQUSD'].methods;
-    this.address = contractsToAddresses['StableCoinQUSD'];
+    this.methods = contracts.StableCoinQUSD.methods;
+    this.address = contractsToAddresses.StableCoinQUSD;
   }
 }
 
 export class GovernedEpdrQethAddress extends StableCoin {
   constructor() {
     super();
-    this.methods = contracts['GovernedEpdrQethAddress'].methods;
-    this.address = contractsToAddresses['GovernedEpdrQethAddress'];
+    this.methods = contracts.GovernedEpdrQethAddress.methods;
+    this.address = contractsToAddresses.GovernedEpdrQethAddress;
   }
 }
 
 export class GovernedEpdrQbtcAddress extends StableCoin {
   constructor() {
     super();
-    this.methods = contracts['GovernedEpdrQbtcAddress'].methods;
-    this.address = contractsToAddresses['GovernedEpdrQbtcAddress'];
+    this.methods = contracts.GovernedEpdrQbtcAddress.methods;
+    this.address = contractsToAddresses.GovernedEpdrQbtcAddress;
   }
 }
