@@ -11,7 +11,7 @@ import ProposalsList from 'pages/UserPages/QGovernance/components/ProposalsList'
 import { checkCurrentTab } from 'pages/UserPages/QGovernance/components/constants';
 
 import { Row, Col } from 'react-bootstrap';
-import { Title } from '../styles';
+import { Title } from 'components/Custom/PageLists/styles';
 
 const { useDrizzle } = drizzleReactHooks;
 
@@ -35,7 +35,7 @@ function EndedProposals() {
   return (
     <Row>
       <Col xs={8}>
-        <Title>{`Ended ${location?.state?.activeTab?.replace(/-/g, ' ')} (${endedArr.length}`})</Title>
+        <Title>{`Ended ${location?.state?.activeTab?.replace(/-/g, ' ')} (${endedArr?.length}`})</Title>
         <ProposalsList
           activeTab={location?.state?.activeTab}
           proposals={endedArr}

@@ -1,46 +1,36 @@
 import React, { useEffect } from 'react';
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { useDispatch, useSelector } from 'react-redux';
-import { errorM, loadingProposals, proposalsArr } from 'store/selectors/voting/proposals';
+import { errorM, loadingAuctions, auctionsArr } from 'store/selectors/auctions/auctions';
+import { getAuctionsList } from 'store/actions/action-creaters/auctions/auctions';
 
 import { Col } from 'react-bootstrap';
 
-import ProposalsList from '../ProposalsList';
-import { Title, WrapDescr } from '../../../../QGovernance/components/QTypeProposalsTabs/styles';
-import { userAddressMetamask } from 'store/selectors/user-inf';
-
-const { useDrizzle } = drizzleReactHooks;
+import AuctionsList from '../AuctionsList';
+import { Title, WrapDescr } from 'components/Custom/PageLists/Tabs/styles';
 
 function TabContent(props) {
   const { activeTab } = props;
-  const { drizzle } = useDrizzle();
   const dispatch = useDispatch();
-  console.log('drizzle', drizzle);
-  const userAddress = useSelector(userAddressMetamask);
 
   useEffect(() => {
-    // dispatch(getQProposals(drizzle));
-  }, []);
+    dispatch(getAuctionsList(activeTab, true));
+  }, [dispatch]);
 
-  const loading = useSelector(loadingProposals);
+  const loading = useSelector(loadingAuctions);
   const errorMessage = useSelector(errorM);
-  const proposals = useSelector(proposalsArr);
-
-  useEffect(async () => {
-
-  }, []);
+  const auctions = useSelector(auctionsArr);
 
   return (
     <Col xs={12}>
       <Title>Active Auctions</Title>
-      <WrapDescr>{proposals?.length + ' auctions'}</WrapDescr>
-      {/*<ProposalsList*/}
-      {/*  activeTab="q-proposals"*/}
-      {/*  proposals={proposals}*/}
-      {/*  loading={loading}*/}
-      {/*  errorMessage={errorMessage}*/}
-      {/*  proposalsKind="Liquidation"*/}
-      {/*/>*/}
+      <WrapDescr>{auctions?.length + ' auctions'}</WrapDescr>
+      <AuctionsList
+        activeTab={activeTab}
+        auctions={auctions}
+        loading={loading}
+        errorMessage={errorMessage}
+        proposalsKind={activeTab}
+      />
     </Col>
 
   );

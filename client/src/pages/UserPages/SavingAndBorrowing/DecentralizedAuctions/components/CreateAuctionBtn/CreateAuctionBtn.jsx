@@ -56,21 +56,28 @@ function CreateAuctionBtn(props) {
     //     dispatch(setCreatedStepsLimit(3));
     //     break;
     // }
-    const result = await getPastEvents(drizzle, contracts['LiquidationAuction'], 'AuctionStarted');
-    const method = await contracts['LiquidationAuction'].methods.auctions("0xd10a97806b8FdFC8E4CC83a49f35CCF513F0a1f3", 1).call();
-    console.log('result', result);
-    console.log('method', method);
+    // const result = await getPastEvents(drizzle, contracts['LiquidationAuction'], 'AuctionStarted');
+    // const method = await contracts['LiquidationAuction'].methods.auctions('0xd10a97806b8FdFC8E4CC83a49f35CCF513F0a1f3', 1)
+    //   .call();
+    // console.log('result', result);
+    // console.log('method', method);
     // const result = await drizzle.contracts.LiquidationAuction.methods.auctions().call();
-    const vaultId = 1;
+    // const vaultId = 1;
     // const bid = 10;
 
     // const bid = web3.utils.BN((web3.utils.toWei("10")));
     // console.log('bid', bid);
     // const bid = bn(100);
-    const bid = bn(10000000000000000000); //10
+    // const bid = bn(10000000000000000000); //10
+    const maxApproveAmount = "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
     // const bid = bn(1000000000000000000000); //100
     // const bid = bn(1000000000000000000000); //100
-    // await StableCoin.approve('0xFef40e2286F2240843E55fE66F06c34e7d6Ae317', bid, userAddress);
+    let res = await StableCoin.allowance(userAddress, '0xFef40e2286F2240843E55fE66F06c34e7d6Ae317');
+    console.log('res', res);
+    // if (allowance < bid ) {
+    //   make approve
+    // }
+    // await StableCoin.approve('0xFef40e2286F2240843E55fE66F06c34e7d6Ae317', maxApproveAmount, userAddress);
     // const result = await drizzle.contracts.LiquidationAuction.methods.startAuction(
     //   '0xd10a97806b8FdFC8E4CC83a49f35CCF513F0a1f3', vaultId, bid)
     //   .send({ from: userAddress });

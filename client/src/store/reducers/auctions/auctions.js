@@ -1,0 +1,62 @@
+import * as actionTypes from 'store/actions/action-types/auctions/auctions';
+
+const initialState = {
+  auctionsArr: [],
+  loadingAuctions: true,
+  errorM: null,
+};
+
+export default function auctions(state = initialState, action) {
+
+  switch (action.type) {
+    case actionTypes.GET_AUCTIONS_LIST:
+      return {
+        ...state,
+        loadingAuctions: true,
+      };
+    case actionTypes.GET_AUCTIONS_LIST_SUCCESS:
+      return {
+        ...state,
+        auctionsArr: action.result,
+        loadingAuctions: false,
+        errorM: null,
+      };
+    case actionTypes.GET_AUCTIONS_LIST_ERROR:
+      return {
+        ...state,
+        auctionsArr: [],
+        loadingAuctions: false,
+        errorM: action.result,
+      };
+    case actionTypes.GET_AUCTION_SUCCESS:
+      return {
+        ...state,
+        auctionsArr: (() => {
+          const findElem = state.auctionsArr?.find((element => {
+            return element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user;
+          }));
+          if (findElem) {
+            return state.auctionsArr?.map((element) => {
+              if (element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user) {
+                return { ...action.result[0] };
+              } else {
+                return { ...element };
+              }
+            });
+          } else {
+            return [...state.auctionsArr, ...action.result];
+          }
+        })(),
+        loadingAuctions: false,
+        errorM: null,
+      };
+    case actionTypes.GET_AUCTION_ERROR:
+      return {
+        ...state,
+        auctionsArr: [...state.auctionsArr],
+        loadingAuctions: false,
+      };
+    default:
+      return state;
+  }
+}

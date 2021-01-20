@@ -7,8 +7,9 @@ import rootContract from './root-contract';
 import qPiggyBank from './q-piggy-bank';
 import validators from './validators';
 import validationRewardPools from './validation-reward-pools';
+import auctions from './auctions/auctions';
 
 export default function* rootSaga() {
   yield all([...userAuth, ...userInf, ...rootContract, ...qPiggyBank,
-    ...proposals, ...validators, ...validationRewardPools]);
+    ...proposals, ...validators, ...validationRewardPools, ...auctions]);
 }

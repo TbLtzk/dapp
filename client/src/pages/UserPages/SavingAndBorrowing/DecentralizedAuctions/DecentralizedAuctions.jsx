@@ -1,24 +1,21 @@
 import React, { useMemo, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
-import { WrapContainer } from './styles';
 import { useHistory } from 'react-router-dom';
-import { WrapBtn, WrapTabs } from '../../QGovernance/styles';
-import Liquidation from './MainTabs/Liquidation';
-import SystemDebt from './MainTabs/SystemDebt';
-import SystemSurplus from './MainTabs/SystemSurplus';
 
-import ButtonTabs from 'components/Base/Tabs/ButtonTabs';
+import ButtonsGroupTabs from 'components/Base/Tabs/ButtonsGroupTabs';
 import Button from 'components/Base/Buttons/Button';
 import CreateAuctionBtn from './components/CreateAuctionBtn';
 import Stats from 'components/Custom/PageLists/Stats';
 import TabContent from './components/TabContent';
 import References from 'components/Custom/PageLists/References';
 
+import { WrapBtn, WrapTabs } from 'components/Custom/PageLists/styles';
+
 export default function DecentralizedAuctions() {
   const history = useHistory();
 
-  const [activeTab, setActiveTab] = useState("liquidation");
+  const [activeTab, setActiveTab] = useState('liquidation');
 
   const statsData = useMemo(() => {
     return (
@@ -48,40 +45,25 @@ export default function DecentralizedAuctions() {
           content: (
             <WrapTabs>
               <TabContent activeTab={activeTab}/>
-              {/*<Liquidation/>*/}
             </WrapTabs>
           )
         },
         {
           label: 'system-debt',
           title: 'System Debt',
-          content: (
-            <WrapTabs>
-              <TabContent activeTab={activeTab}/>
-              {/*<SystemDebt/>*/}
-            </WrapTabs>
-          )
         },
         {
           label: 'system-surplus',
           title: 'System Surplus',
-          content: (
-            <WrapTabs>
-              <TabContent activeTab={activeTab}/>
-              {/*<SystemSurplus/>*/}
-            </WrapTabs>
-          )
         },
       ]
     );
   }, [activeTab]);
 
-
-
   return (
     <Row>
       <Col md={8}>
-        <ButtonTabs
+        <ButtonsGroupTabs
           tabsItems={tabsItems}
           tabsHandler={(key) => {
             setActiveTab(key);
@@ -97,7 +79,7 @@ export default function DecentralizedAuctions() {
                 pathname: '/ended-auctions',
                 state: {
                   activeTab: activeTab,
-                  numberOfProposals: 0
+                  numberOfAuctions: 0
                 }
               });
             }}

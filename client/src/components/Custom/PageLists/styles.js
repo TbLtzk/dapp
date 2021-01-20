@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
-import { Card, Col } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
+import { indents } from '../../../constants/style';
 
 export const LabelStatus = styled.div`
   display: inline-block;
@@ -27,4 +28,37 @@ export const WrapRefreshBtn = styled.div`
     padding-right: 0;
     margin-right: 8px;
   }
+`;
+
+export const WrapTabs = styled(Row)`
+  padding-top: ${indents[40]};
+`;
+export const WrapBtn = styled(Row)`
+  padding-top: ${indents[40]};
+`;
+
+export const Title = styled.p`
+ ${props => props.theme.fontStyles.title.big};
+ text-transform: capitalize;
+`;
+export const TitleSmall = styled.h5`
+  margin-bottom: 11px;
+  ${props => props.theme.fontStyles.h5}
+
+`;
+
+export const Text = styled.p`
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 150%;
+    color: ${props => props.theme.colors.lightGrey};
+`;
+
+export const Link = styled.a`
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 150%;
+    color: ${props => props.theme.colors.lightGrey};
 `;

@@ -5,8 +5,9 @@ import UserAuth from './userAuth';
 import userInf from './userInf';
 import rootContract from './rootContract';
 import qPiggyBank from './qPiggyBank';
-import proposals from 'store/reducers/voting/proposals';
+import proposals from './voting/proposals';
 import validationRewardPools from './validationRewardPools';
+import auctions from './auctions/auctions';
 
 import transactionHandler from 'store/reducers/transactionHandler';
 
@@ -17,6 +18,7 @@ const RootReducer = combineReducers({
   qPiggyBank,
 
   proposals,
+  auctions,
 
   transactionHandler,
 

@@ -1,16 +1,16 @@
 import React, { useMemo, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 
-import ButtonsGroupTabs from 'components/Base/Tabs/ButtonsGroupTabs';
+import { useHistory } from 'react-router-dom';
 
+import ButtonsGroupTabs from 'components/Base/Tabs/ButtonsGroupTabs';
 import CreateQProposalBtn from './components/CreateQProposalBtn';
 import Stats from 'components/Custom/PageLists/Stats';
 import References from 'components/Custom/PageLists/References';
-
-import { WrapTabs, WrapBtn } from './styles';
 import Button from 'components/Base/Buttons/Button';
-import { useHistory } from 'react-router-dom';
 import TabContent from './components/TabContent';
+
+import { WrapBtn, WrapTabs } from 'components/Custom/PageLists/styles';
 
 function QGovernance() {
   const history = useHistory();

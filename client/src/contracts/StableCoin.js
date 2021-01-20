@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
-import { contracts, web3 } from './config/drizzle-config';
-import { contractsToAddresses } from './mapping/contract-to-address';
+import {contracts, web3} from './config/drizzle-config';
+import {contractsToAddresses} from './mapping/contract-to-address';
 
 export class StableCoin {
   constructor() {
@@ -18,13 +18,19 @@ export class StableCoin {
 
   async approve(spender, amount, address) {
     // const amountL = new web3.utils.BN(web3.utils.toWei(amount));
-    return await this.methods.approve(spender, amount).send({ from: address });
+    return await this.methods.approve(spender, amount).send({from: address});
+  }
+
+  async allowance(owner, spender) {
+    // const amountL = new web3.utils.BN(web3.utils.toWei(amount));
+    return web3.utils.fromWei(await this.methods.allowance(owner, spender).call());
   }
 
   async mint(address, recepient, amount) {
-    return await this.methods.mint(recepient, new web3.utils.BN(web3.utils.toWei(amount))).send({ from: address });
+    return await this.methods.mint(recepient, new web3.utils.BN(web3.utils.toWei(amount))).send({from: address});
   }
 }
+
 export class StableCoinQUSD extends StableCoin {
   constructor() {
     super();

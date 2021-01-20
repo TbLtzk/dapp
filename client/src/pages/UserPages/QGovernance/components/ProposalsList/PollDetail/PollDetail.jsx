@@ -1,5 +1,5 @@
 import React from 'react';
-import { Title, Text, Link } from './styles';
+import { TitleSmall, Text, Link } from 'components/Custom/PageLists/styles';
 
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
 
@@ -148,9 +148,9 @@ function PollDetail(props) {
 
   return (
     <div>
-      <Title>Description</Title>
+      <TitleSmall>Description</TitleSmall>
       {switchContentDependsOnKind()}
-      <Title>External Reference</Title>
+      <TitleSmall>External Reference</TitleSmall>
       <Link href={pollDetail.remark} target="_blank">{pollDetail.remark}</Link>
     </div>
   );

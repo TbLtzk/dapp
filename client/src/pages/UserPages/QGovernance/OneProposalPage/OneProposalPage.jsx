@@ -9,7 +9,7 @@ import { Row, Col } from 'react-bootstrap';
 
 import ProposalsList from 'pages/UserPages/QGovernance/components/ProposalsList';
 import { checkCurrentTab, checkActiveTabByContract } from '../components/constants';
-import { Title } from '../styles';
+import { Title } from 'components/Custom/PageLists/styles';
 
 const { useDrizzle } = drizzleReactHooks;
 

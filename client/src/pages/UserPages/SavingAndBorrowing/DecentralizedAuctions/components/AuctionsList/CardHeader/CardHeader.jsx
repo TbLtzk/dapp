@@ -6,7 +6,7 @@ import ListCardHeader from 'components/Custom/PageLists/ListCardHeader';
 import { LabelStatus, WrapVoteBtn } from 'components/Custom/PageLists/styles';
 
 function CardHeader(props) {
-  const { title, status, handleBid } = props;
+  const { title, status, handleBid, handleExecute, remainDate } = props;
 
   return (
     <>
@@ -17,13 +17,24 @@ function CardHeader(props) {
             {!status ? null :
               <LabelStatus>{status}</LabelStatus>
             }
+            {status === 'Active' && remainDate === 0?
             <WrapVoteBtn>
               <Button
-                title="Bid"
+                title="Execute"
                 type="white"
-                handleButton={handleBid}
+                handleButton={handleExecute}
               />
-            </WrapVoteBtn>
+            </WrapVoteBtn> : null
+            }
+            {status === 'Active' && remainDate > 0 ?
+              <WrapVoteBtn>
+                <Button
+                  title="Bid"
+                  type="white"
+                  handleButton={handleBid}
+                />
+              </WrapVoteBtn> : null
+            }
           </>
         }
       />
