@@ -20,7 +20,6 @@ export default class ParametersVoting extends VotingService {
     let objRes = {};
     let objStats = {};
     try {
-      console.log('promiseRes', promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.base.remark;
       objRes.parameterKey = promiseRes.parameterKey;
@@ -70,7 +69,6 @@ export default class ParametersVoting extends VotingService {
    */
   async createProposal(data, userAddress) {
     try {
-      console.log('DATA ParametersVoting', data);
       let result = null;
       const link = data['external-link'];
       const typeValueProposal = data['type-value-proposal'];
@@ -86,11 +84,9 @@ export default class ParametersVoting extends VotingService {
           break;
         case 'boolean':
           valueInput = (valueInput.toLowerCase() === 'true');
-          console.log('boolean', valueInput);
           result = await this.contract.methods.createBoolProposal(link, key, valueInput)
             .send(
               { from: userAddress });
-          console.log('result', result);
           break;
         case 'string':
           result = await this.contract.methods.createStrProposal(link, key, valueInput)
@@ -99,7 +95,6 @@ export default class ParametersVoting extends VotingService {
           break;
         case 'bytes':
           valueInput = drizzleRegistry.web3.utils.fromAscii(valueInput);
-          console.log('bytes', valueInput);
           result = await this.contract.methods.createBytesProposal(link, key, valueInput)
             .send(
               { from: userAddress });
@@ -118,7 +113,6 @@ export default class ParametersVoting extends VotingService {
         default:
           return null;
       }
-      console.log('result', result);
       return result;
     } catch (e) {
       console.warn('ERROR', e);

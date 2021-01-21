@@ -41,7 +41,7 @@ function Stats(props) {
               title="Manage PiggyBank"
               width="100%"
               handleButton={() => {
-                console.log('click');
+                // console.log('click');
                 history.push('piggy-bank');
               }}
             />

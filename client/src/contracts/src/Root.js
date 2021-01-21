@@ -55,7 +55,7 @@ export default class RootService {
     let promiseRes;
     const members = await this.getRootMembers();
     if (members) {
-      console.log('members', members);
+      // console.log('members', members);
       let i = 0;
       for (let member of members) {
         promiseRes = await this.getRootNodeStake(member)
@@ -71,7 +71,7 @@ export default class RootService {
         i++;
       }
     }
-    console.log('rootStakes', rootStakes);
+    // console.log('rootStakes', rootStakes);
     return rootStakes;
   }
 

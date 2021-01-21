@@ -5,7 +5,7 @@ import {
   approveModalBtn
 } from 'store/selectors/auctions/auctions';
 import {
-  bidForAuction
+  bidForAuction, setApproveModalBtn
 } from 'store/actions/action-creaters/auctions/auctions';
 import {
   setCreateObj,
@@ -26,15 +26,19 @@ import CreateStep1 from './CreateStep1';
 import CreateStep2 from './CreateStep2';
 
 import { Title, Descr } from 'components/Custom/ModalActions/styles';
-import { contractsToAddresses } from '../../../../../../../contracts/mapping/contract-to-address';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 import { maxApproveAmount } from '../../../../../../../contracts/handler/AuctionHandler';
-import { StableCoinQUSD } from '../../../../../../../contracts/StableCoin';
+import { StableCoinQUSD } from 'contracts/StableCoin';
 import { checkTabContract } from './constants';
+import { drizzleReactHooks } from '@drizzle/react-plugin';
+
+const { useDrizzle } = drizzleReactHooks;
 
 function ModalBid(props) {
   const { modalShow, onHide, activeTab, inf } = props;
   const { register, errors, handleSubmit } = useForm();
   const dispatch = useDispatch();
+  const { drizzle } = useDrizzle();
 
   const formData = useSelector(formObject);
   const stepCounter = useSelector(stepCounterModal);
@@ -42,7 +46,6 @@ function ModalBid(props) {
   const approveBtn = useSelector(approveModalBtn);
   const userAddress = useSelector(userAddressMetamask);
   const StableCoin = new StableCoinQUSD();
-  console.log('approveBtnModal', approveBtn);
 
   const switchProposalContentDependsOnType = useCallback(() => {
     switch (stepCounter) {
@@ -72,8 +75,10 @@ function ModalBid(props) {
   const onNext = async (data) => {
     dispatch(setCreateObj({ ...formData, ...data }));
     if (approveBtn) {
+      console.log('data', data);
       const contractName = checkTabContract(activeTab);
       let approve = await StableCoin.approve(contractsToAddresses[contractName], maxApproveAmount, userAddress);
+      dispatch(setApproveModalBtn(false));
     } else {
       if (stepCounter < stepLimit) {
         dispatch(setStepCounter(stepCounter + 1));

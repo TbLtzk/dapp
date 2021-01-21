@@ -17,7 +17,6 @@ export default class EmergencyUpdateVoting extends VotingService {
     let objRes = {};
     let objStats = {};
     try {
-      console.log('promiseRes', promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.remark;
       // objRes.votesAgainst = promiseRes.counters.weightAgainst;
@@ -51,9 +50,7 @@ export default class EmergencyUpdateVoting extends VotingService {
    * @return string
    */
   async createProposal(data, userAddress) {
-    console.log("data", data);
     const link = data["external-link"];
-    console.log("external-link", data["external-link"]);
     const result = await this.contract.methods.createProposal(link).send(
         {from: userAddress});
     return result;

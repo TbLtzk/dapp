@@ -15,7 +15,6 @@ import RootService from "contracts/src/Root";
 function* getRootMembersData({contract}) {
     try {
         const data = yield contract.getRootCalc();
-        console.log("data", data);
         yield put(getRootMembersDataSuccess(data));
     } catch (err) {
         console.log('err',err);
@@ -26,7 +25,6 @@ function* getRootMembersData({contract}) {
 function* stakeToPanel({contract, data}) {
     try {
         const res = yield contract.stakeToPanel(data);
-        console.log("stakeToPanel id", res);
 
         yield put(stakeToPanelSuccess(res));
     } catch (err) {
@@ -38,7 +36,6 @@ function* stakeToPanel({contract, data}) {
 function* announceWithdrawal({contract, amount, paymentInf}) {
     try {
         const data = yield contract.announceWithdrawal(amount, paymentInf);
-        console.log("announceWithdrawal id", data);
 
         yield put(announceWithdrawalSuccess(data));
     } catch (err) {
@@ -50,7 +47,6 @@ function* announceWithdrawal({contract, amount, paymentInf}) {
 function* withdraw({contract, amount, payTo, paymentInf}) {
     try {
         const data = yield contract.withdraw(amount, payTo, paymentInf);
-        console.log("withdraw id", data);
 
         yield put(withdrawSuccess(data));
     } catch (err) {
@@ -74,7 +70,6 @@ function* checkIsUserRootNode({contract, address}) {
 function* getRootNodeStakes({contract, address}) {
     try {
         const data = yield contract.getRootNodeStake(address);
-        console.log("getRootNodeStake", data);
 
         yield put(getRootNodeStakesSuccess(data));
     } catch (err) {

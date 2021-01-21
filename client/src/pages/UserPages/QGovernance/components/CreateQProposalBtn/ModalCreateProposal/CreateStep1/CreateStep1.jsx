@@ -19,7 +19,6 @@ function CreateStep1(props) {
     const formData = useSelector(formObject);
 
     const onChooseProposal = useCallback((value) => {
-        console.log("clean object");
         const radioVal = value.target.value;
         dispatch(setCreateProposalObj({first: radioVal}));
         dispatch(setDisabledCreatedProposalBtn(false));

@@ -20,7 +20,6 @@ export default class SlashingVoting extends VotingService {
     let objRes = {};
     let objStats = {};
     try {
-      console.log("promiseRes", promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.base.remark;
       objRes.candidate = promiseRes.candidate;
@@ -60,7 +59,6 @@ export default class SlashingVoting extends VotingService {
    * @return string
    */
   async createProposal(data, userAddress) {
-    console.log('DATA', data);
     const link = data['external-link'];
     //percentage of stake to slash
     let percentageStake = data['%-value'];

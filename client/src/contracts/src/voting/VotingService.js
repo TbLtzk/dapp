@@ -125,7 +125,6 @@ export default class VotingService {
           .send(
             { from: userAddress });
       }
-      console.log('voteAgainst', result);
       return result;
     } catch (e) {
       console.log(e);
@@ -152,7 +151,6 @@ export default class VotingService {
           { from: userAddress });
     }
 
-    console.log('voteFor', result);
     return result;
   }
 
@@ -163,12 +161,9 @@ export default class VotingService {
    * @return array
    */
   async veto(id, userAddress) {
-    console.log('veto id', id);
-    console.log('veto userAddress', userAddress);
     const result = await this.contract.methods.veto(id)
       .send(
         { from: userAddress });
-    console.log('veto', result);
     return result;
   }
 
@@ -180,16 +175,12 @@ export default class VotingService {
    */
   async execute(id, userAddress) {
     // 4 === passed status
-    console.log('execute id', id);
-    console.log('execute userAddress', userAddress);
     let promiseStatus = await this.getProposalStatus(id);
-    console.log('execute promiseStatus', promiseStatus);
     let result = null;
     if (promiseStatus === '4') {
       result = await this.contract.methods.execute(id)
         .send(
           { from: userAddress });
-      console.log('execute', result);
     }
     return result;
   }
@@ -348,18 +339,17 @@ export default class VotingService {
       const votesArrAll = await getPastEvents(drizzleRegistry, this.contract, 'UserVoted');
       const votesArrById = votesArrAll?.filter((elem) => {
         if (elem.returnValues._id === id) {
-          console.log('elem', elem);
           return elem.returnValues;
         }
       });
       const commonVotes = votesArrById?.reduce((sum, current) => {
-        console.log('current.returnValues._votingOption', current.returnValues._votingOption);
-        console.log('sum', sum);
+        // console.log('current.returnValues._votingOption', current.returnValues._votingOption);
+        // console.log('sum', sum);
         switch (current?.returnValues?._votingOption) {
           case '0': //NONE
             return sum['none'] = 0;
           case '1': //FOR
-            console.log('sum.votesFor', sum.votesFor);
+            // console.log('sum.votesFor', sum.votesFor);
             return sum += 1;
           case '2': //AGAINST
             return sum['votesAgainst'] = sum['votesAgainst'] + 1;
@@ -367,8 +357,8 @@ export default class VotingService {
         // return sum + current.returnValues._votingOption
         // return {votesFor: 1, votesAgainst: 2};
       }, 0);
-      console.log('votesArrById', votesArrById);
-      console.log('commonVotes', commonVotes);
+      // console.log('votesArrById', votesArrById);
+      // console.log('commonVotes', commonVotes);
       return votesArrAll;
     } catch (e) {
       console.log(e);

@@ -63,7 +63,6 @@ function Header() {
                   title={userAddress || 'Connect Wallet'}
                   disabled={userAddress}
                   handleButton={() => {
-                    console.log('click');
                     window.ethereum.request({ method: 'eth_requestAccounts' });
                   }}
                 />

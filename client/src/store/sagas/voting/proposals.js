@@ -112,7 +112,6 @@ function* voteForProposal({ drizzle, data }) {
     let result = null;
     if (data && drizzle) {
       const contract = new VotingService(data?.contract);
-      console.log('VOTING contract', contract);
       if (data?.first === 'basic-vote-on-proposal') {
         if (data['vote-proposal'] === 'yes') {
           result = yield contract.voteFor(data?.idProposal, userAddress);
@@ -125,7 +124,6 @@ function* voteForProposal({ drizzle, data }) {
         }
       } else if (data?.first === 'constitution-check') {
         result = yield contract.veto(data?.idProposal, userAddress);
-        console.log('RESULT VETO', result);
       } else if (data?.first === 'q-community-veto') {
         //TODO: when backenders do it
       }
@@ -148,7 +146,6 @@ function* executeProposal({ drizzle, data }) {
     if (data && drizzle) {
       const contract = new VotingService(data?.contract);
       const execute = yield contract.execute(data?.idProposal, userAddress);
-      console.log('RESULT execute', execute);
     }
     yield call(getProposalDependsOnType, data?.contract, drizzle, data, data?.idProposal, true);
     yield put(executeProposalSuccess(result));
@@ -215,7 +212,6 @@ function* getProposalsList({ drizzle, activeTab }) {
         break;
     }
     let result = [];
-    console.log('contracts', contracts);
     if (Array.isArray(contracts)) {
       for (let contractName of contracts) {
         const data = yield contractName.getProposals();
@@ -224,8 +220,6 @@ function* getProposalsList({ drizzle, activeTab }) {
     } else {
       result = yield contracts?.getProposals();
     }
-
-    console.log('Proposals', result);
 
     yield put(getProposalsListSuccess(result));
   } catch (e) {
@@ -251,7 +245,6 @@ function* getProposal({ contractName, id, drizzle, activeTab, activeProposal }) 
         contract = creationExpertContractObj(drizzle, contractName);
         break;
     }
-    console.log('contract', contract);
     if (contract) {
       let data = null;
       if (activeProposal) {
@@ -260,7 +253,6 @@ function* getProposal({ contractName, id, drizzle, activeTab, activeProposal }) 
         data = yield contract.getProposalWithoutStatusChecked(id);
       }
       // const data = null;
-      console.log('GET_PROPOSAL', data);
       if (data) {
         yield put(getProposalSuccess(data));
       } else {

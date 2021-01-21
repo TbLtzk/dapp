@@ -14,11 +14,9 @@ export default class GeneralUpdateVoting extends VotingService {
    * @return array
    */
   async getProposalData(promiseRes, id, promiseStatus) {
-    console.log(promiseRes);
     let objRes = {};
     let objStats = {};
     try {
-      console.log('promiseRes', promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.remark;
       // objRes.votesAgainst = promiseRes.counters.weightAgainst;
@@ -50,10 +48,7 @@ export default class GeneralUpdateVoting extends VotingService {
    * @return string
    */
   async createProposal(data, userAddress) {
-    console.log('data', data);
-    console.log('userAddress', userAddress);
     const link = data['external-link'];
-    console.log('external-link', data['external-link']);
     const result = await this.contract.methods.createProposal(link)
       .send(
         { from: userAddress });

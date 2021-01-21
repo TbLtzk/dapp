@@ -42,7 +42,6 @@ export default class ConstitutionVoting extends VotingService {
     let objRes = {};
     let objStats = {};
     try {
-      console.log('promiseRes', promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.base.remark;
       const proposalType = this.getProposalStringType(promiseRes.classification);
@@ -132,7 +131,6 @@ export default class ConstitutionVoting extends VotingService {
             break;
           case 'boolean':
             valueInput = (valueInput.toLowerCase() === 'true');
-            console.log('valueInput', valueInput);
             result = await this.contract.methods.createBoolProposal(link, classification, hash,
               parameterKey, valueInput)
               .send({ from: userAddress });

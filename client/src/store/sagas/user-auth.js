@@ -11,8 +11,6 @@ function* detectEthereumProviderRequest() {
     try {
         const data = yield call(detectMetamask);
 
-        console.log(data);
-
         yield put(detectEthereumProviderSuccess(data));
     } catch (err) {
         console.log('err',err);

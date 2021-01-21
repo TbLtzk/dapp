@@ -77,14 +77,14 @@ export default class AuctionService {
   async getAuctions(activeAuction) {
     const auctionEvents = await this.getAuctionsEvent();
     const auctionInf = getPastAuctionsIds(auctionEvents);
-    console.log('auctionEvents', auctionEvents);
-    console.log('auctionInf', auctionInf);
+    // console.log('auctionEvents', auctionEvents);
+    // console.log('auctionInf', auctionInf);
     let auctions = [];
     if (auctionInf?.length > 0) {
       for (let inf of auctionInf) {
         let objRes = {};
         let promiseRes = await this.getAuction(inf?.user, inf?.vaultId);
-        console.log('promiseRes', promiseRes);
+        // console.log('promiseRes', promiseRes);
         if (activeAuction) {
           if (promiseRes && promiseRes.status === '1') {
             objRes = await this.getAuctionData(promiseRes, inf);
@@ -97,30 +97,6 @@ export default class AuctionService {
           }
         }
 
-      }
-    }
-    return auctions;
-  }
-
-  /**
-   * get ended auctions
-   * @return array
-   */
-  async getEndedAuctions() {
-    const auctionEvents = await this.getAuctionsEvent();
-    const auctionInf = getPastAuctionsIds(auctionEvents);
-    console.log('auctionEvents', auctionEvents);
-    console.log('auctionInf', auctionInf);
-    let auctions = [];
-    if (auctionInf?.length > 0) {
-      for (let inf of auctionInf) {
-        let objRes = {};
-        let promiseRes = await this.getAuction(inf?.user, inf?.vaultId);
-        console.log('promiseRes', promiseRes);
-        if (promiseRes && promiseRes.status !== '1') {
-          objRes = await this.getAuctionData(promiseRes, inf);
-          auctions.push(objRes);
-        }
       }
     }
     return auctions;

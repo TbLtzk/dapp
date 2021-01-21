@@ -36,7 +36,6 @@ export default class RootsVoting extends VotingService {
     let objRes = {};
     let objStats = {};
     try {
-      console.log('promiseRes', promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.base.remark;
       const candidateAddress = promiseRes.candidate;
@@ -84,7 +83,6 @@ export default class RootsVoting extends VotingService {
     try {
       const result = await this.RootsVoting.methods.votes(id, address)
         .call();
-      console.log('votes', result);
       return result;
     } catch (e) {
       console.log(e);
@@ -98,7 +96,6 @@ export default class RootsVoting extends VotingService {
    * @return string
    */
   async createProposal(data, userAddress) {
-    console.log("data", data);
     // console.log("DATA", data);
     let result = null;
     // const hash = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
