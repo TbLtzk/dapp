@@ -9,6 +9,7 @@ export default class AuctionService {
   constructor(contractName) {
     this.contract = contracts[contractName];
     this.contractName = contractName;
+
   }
 
   /**
@@ -89,7 +90,7 @@ export default class AuctionService {
             objRes = await this.getAuctionData(promiseRes, inf);
             auctions.push(objRes);
           }
-        }else {
+        } else {
           if (promiseRes && promiseRes.status !== '1') {
             objRes = await this.getAuctionData(promiseRes, inf);
             auctions.push(objRes);

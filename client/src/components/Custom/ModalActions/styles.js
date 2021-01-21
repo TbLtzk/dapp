@@ -1,8 +1,5 @@
 import styled from 'styled-components'
 
-import {Button, Card, Col, Container} from "react-bootstrap";
-
-import {indents} from "constants/style";
 
 export const Title = styled.p`
  ${props => props.theme.fontStyles.title.big};
@@ -29,9 +26,18 @@ export const SummarText = styled.p`
   ${props => props.theme.fontStyles.text.little};
 `;
 
+export const SummarTextLink = styled(SummarText)`
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 export const SummarTextType = styled.span`
   ${props => props.theme.fontStyles.text.little};
   text-transform: capitalize
+`;
+
+export const Wrap = styled.div`
+ //min-height: 240px;
 `;
 
 export const Warning = styled(SummarText)`

@@ -1,15 +1,15 @@
 import React, { useCallback } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { formVoteObject } from 'store/selectors/voting/proposals';
-import { basicVote, constitutionCheck, communityVeto } from './constants';
-import { SubTitle, Descr, Warning } from 'pages/UserPages/QGovernance/components/CreateQProposalBtn/ModalVote/styles';
-import RadioBtnGroup from '../../RadioBtnGroup';
-import { getLockedAssets } from 'store/actions/action-creaters/q-piggy-bank';
-import { userAddressMetamask } from 'store/selectors/user-inf';
-import { fromSolDateFormattingT1 } from 'func/date';
 import { votingLockingEnd } from 'store/selectors/q-piggy-bank';
-import { setDisabledCreatedProposalBtn } from 'store/actions/action-creaters/voting/proposals';
+import { formVoteObject } from 'store/selectors/voting/proposals';
+
+import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
+
+import { fromSolDateFormattingT1 } from 'func/date';
+import { basicVote, constitutionCheck, communityVeto } from './constants';
+
+import { SubTitle, Descr, Warning } from 'components/Custom/ModalActions/styles';
 
 function CreateStep2(props) {
   const { activeTab, register, errors, proposalContract, vetoEndTime } = props;

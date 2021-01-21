@@ -4,6 +4,7 @@ const initialState = {
   auctionsArr: [],
   loadingAuctions: true,
   errorM: null,
+  approveModalBtn: false,
 };
 
 export default function auctions(state = initialState, action) {
@@ -55,6 +56,11 @@ export default function auctions(state = initialState, action) {
         ...state,
         auctionsArr: [...state.auctionsArr],
         loadingAuctions: false,
+      };
+    case actionTypes.SET_APPROVE_MODAL_BTN:
+      return {
+        ...state,
+        approveModalBtn: action.result,
       };
     default:
       return state;

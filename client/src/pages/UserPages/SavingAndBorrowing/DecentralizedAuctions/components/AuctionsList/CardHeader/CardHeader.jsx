@@ -26,15 +26,16 @@ function CardHeader(props) {
               />
             </WrapVoteBtn> : null
             }
-            {status === 'Active' && remainDate > 0 ?
+            {/*{status === 'Active' && remainDate > 0 ?*/}
               <WrapVoteBtn>
                 <Button
                   title="Bid"
                   type="white"
                   handleButton={handleBid}
                 />
-              </WrapVoteBtn> : null
-            }
+              </WrapVoteBtn>
+            {/*: null*/}
+            {/*}*/}
           </>
         }
       />

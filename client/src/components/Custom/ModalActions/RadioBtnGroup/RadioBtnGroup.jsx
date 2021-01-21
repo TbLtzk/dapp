@@ -1,12 +1,9 @@
 import React, {useEffect, useState} from "react";
 
-import {useSelector} from "react-redux";
-import {formObject} from "store/selectors/voting/proposals";
-
 import InputRadio from "components/Base/Form/InputRadio";
 import ErrorInputMessage from "components/Base/ErrorInputMessage";
 
-import {Wrap} from "./styles";
+import {Wrap} from "../styles";
 
 function RadioBtnGroup(props) {
   const {nameArr, handleChange, register, errors, radioArr, formData} = props;

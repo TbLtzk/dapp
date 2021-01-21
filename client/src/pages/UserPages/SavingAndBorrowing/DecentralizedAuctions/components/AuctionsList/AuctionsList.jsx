@@ -9,33 +9,41 @@ import { CardBlock, LoadingW } from './styles';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 
-import ModalVote from 'pages/UserPages/QGovernance/components/CreateQProposalBtn/ModalVote';
+import ModalBid from '../CreateAuctionBtn/ModalBid';
 import { remainDate } from 'func/convertDate';
 import { bn } from '../../../../../../contracts/handler/VotingHandler';
-import { bidForAuction, executeAuction } from '../../../../../../store/actions/action-creaters/auctions/auctions';
-
-const { useDrizzle, useDrizzleState } = drizzleReactHooks;
+import { bidForAuction, executeAuction } from 'store/actions/action-creaters/auctions/auctions';
+import {
+  setCreatedStepsLimit, setCreateObj,
+  setStepCounter, setDisabledCreatedObjBtn
+} from 'store/actions/action-creaters/auctions/modalHandler';
 
 function AuctionsList(props) {
   const { auctions, loading, errorMessage, activeTab } = props;
-  const { drizzle } = useDrizzle();
   const dispatch = useDispatch();
   const userAddress = useSelector(userAddressMetamask);
   const [modalShow, setModalShow] = useState(false);
-  const [proposalId, setProposalId] = useState(null);
-  const [vetoEndTime, setVetoEndTime] = useState(null);
-  const [proposalContract, setProposalContract] = useState(null);
+  const [inf, setInf] = useState(null);
 
   const onAuctionBid = (user, vaultId, contract) => {
-    const bid = bn(14000000000000000000); //10
-    dispatch(bidForAuction({
+    setInf({
       user,
       vaultId,
-      bid,
-      contract,
-    }));
+      contract
+    });
+    dispatch(setStepCounter(1));
+    dispatch(setCreatedStepsLimit(2));
+    setModalShow(true);
+    dispatch(setCreateObj({ first: activeTab }));
+
+    // const bid = bn(14000000000000000000); //10
+    // dispatch(bidForAuction({
+    //   user,
+    //   vaultId,
+    //   bid,
+    //   contract,
+    // }));
   };
 
   const onAuctionExecute = (user, vaultId, contract) => {
@@ -74,18 +82,15 @@ function AuctionsList(props) {
               })
         }
       </Accordion>
-      <ModalVote
-        proposalContract={proposalContract}
-        proposalId={proposalId}
-        vetoEndTime={vetoEndTime}
+      <ModalBid
+        inf={inf}
         activeTab={activeTab}
         modalShow={modalShow}
         onHide={() => {
           setModalShow(false);
-          // dispatch(setVoteProposalObj({}));
-          // dispatch(setStepVoteCounter(1));
-          // dispatch(setDisabledCreatedProposalBtn(true));
-
+          dispatch(setCreateObj({}));
+          dispatch(setStepCounter(1));
+          // dispatch(setDisabledCreatedObjBtn(true));
         }}
       />
     </>

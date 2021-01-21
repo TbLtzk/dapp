@@ -22,7 +22,6 @@ export class StableCoin {
   }
 
   async allowance(owner, spender) {
-    // const amountL = new web3.utils.BN(web3.utils.toWei(amount));
     return web3.utils.fromWei(await this.methods.allowance(owner, spender).call());
   }
 

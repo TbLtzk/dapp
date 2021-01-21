@@ -16,7 +16,6 @@ import ModalCreateProposal from './ModalCreateProposal';
 import CreateQBtn from 'components/Custom/PageLists/CreateQBtn';
 
 import { QExpert, QProposal, QRootNode, QSlashing } from './constants';
-import { WrapBtnBlock, ButtonCustom, BtnLabel } from './styles';
 
 const { useDrizzle } = drizzleReactHooks;
 
@@ -70,15 +69,6 @@ function CreateQProposalBtn(props) {
         onCreate={onCreateProposal}
         activeTabTitle={activeTabTitle}
       />
-      {/*<WrapBtnBlock>*/}
-      {/*  <ButtonCustom*/}
-      {/*    variant="primary"*/}
-      {/*    onClick={onCreateProposal}*/}
-      {/*  >*/}
-      {/*    <FontAwesomeIcon icon={faPlus}/>*/}
-      {/*  </ButtonCustom>*/}
-      {/*  <BtnLabel>Create {activeTabTitle}</BtnLabel>*/}
-      {/*</WrapBtnBlock>*/}
 
       <ModalCreateProposal
         activeTab={activeTab}

@@ -3,12 +3,12 @@ import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { formObject } from 'store/selectors/voting/proposals';
 
-import InputGroup from '../../InputGroup';
-import RadioBtnGroup from 'pages/UserPages/QGovernance/components/CreateQProposalBtn/RadioBtnGroup';
+import InputGroup from 'components/Custom/ModalActions/InputGroup';
+import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
 
 import { constUpdate } from './constants';
 
-import { SubTitle, SummarText, SummarTextLink, SummarTextType } from '../styles';
+import { SubTitle, SummarText, SummarTextLink, SummarTextType } from 'components/Custom/ModalActions/styles';
 
 function CreateStep3(props) {
   const { activeTab, register, errors } = props;

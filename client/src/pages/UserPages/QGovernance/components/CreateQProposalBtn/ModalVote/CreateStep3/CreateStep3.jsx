@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux';
 import { formVoteObject } from 'store/selectors/voting/proposals';
-import { SubTitle } from 'pages/UserPages/QGovernance/components/CreateQProposalBtn/ModalVote/styles';
 import {
   SummarText,
   SummarTextType,
-} from 'pages/UserPages/QGovernance/components/CreateQProposalBtn/ModalCreateProposal/styles';
+  SubTitle
+} from 'components/Custom/ModalActions/styles';
 
 function CreateStep3(props) {
   const { activeTab, register, errors } = props;

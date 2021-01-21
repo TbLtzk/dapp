@@ -6,11 +6,11 @@ import {
     setCreateProposalObj,
     setDisabledCreatedProposalBtn
 } from "store/actions/action-creaters/voting/proposals";
-
-import RadioBtnGroup from "../../RadioBtnGroup";
-
-import {SubTitle, SubTitleHighlightProposal} from "../styles";
 import {formObject} from "store/selectors/voting/proposals";
+
+import RadioBtnGroup from "components/Custom/ModalActions/RadioBtnGroup";
+
+import {SubTitle, SubTitleHighlightProposal} from "components/Custom/ModalActions/styles";
 
 function CreateStep1(props) {
     const {activeTab, activeTabTitle, register, errors, radioArr} = props;

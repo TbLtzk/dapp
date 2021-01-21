@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   setVoteProposalObj,
   setDisabledCreatedProposalBtn,
-  createProposal,
   setStepVoteCounter,
   voteForProposal
 } from 'store/actions/action-creaters/voting/proposals';
@@ -23,7 +22,7 @@ import CreateStep1 from './CreateStep1';
 import CreateStep2 from './CreateStep2';
 import CreateStep3 from './CreateStep3';
 
-import { Title, Descr } from './styles';
+import { Title, Descr } from 'components/Custom/ModalActions/styles';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import { getLockedAssets } from 'store/actions/action-creaters/q-piggy-bank';
 

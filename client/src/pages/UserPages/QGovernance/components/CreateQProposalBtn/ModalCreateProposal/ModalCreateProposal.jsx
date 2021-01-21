@@ -24,7 +24,7 @@ import CreateStep3 from './CreateStep3';
 import CreateStep4 from './CreateStep4';
 
 import { arrExpert, arrQProposal, arrQRootNode, arrSlashing } from './constants';
-import { Title, Descr } from './styles';
+import { Title, Descr } from 'components/Custom/ModalActions/styles';
 
 const { useDrizzle } = drizzleReactHooks;
 

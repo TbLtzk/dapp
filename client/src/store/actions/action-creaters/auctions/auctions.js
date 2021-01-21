@@ -67,3 +67,22 @@ export const getAuctionError = (result) => ({
   type: actionTypes.GET_AUCTION_ERROR,
   result,
 });
+
+export const createAuction = (data) => ({
+  type: actionTypes.CREATE_AUCTION,
+  data
+});
+
+export const createAuctionSuccess = (result) => ({
+  type: actionTypes.CREATE_AUCTION_SUCCESS,
+  result
+});
+export const createAuctionError = (result) => ({
+  type: actionTypes.CREATE_AUCTION_ERROR,
+  result
+});
+
+export const setApproveModalBtn = (result) => ({
+  type: actionTypes.SET_APPROVE_MODAL_BTN,
+  result
+});

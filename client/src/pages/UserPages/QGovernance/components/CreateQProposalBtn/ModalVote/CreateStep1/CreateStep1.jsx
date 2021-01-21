@@ -6,9 +6,9 @@ import {
   setDisabledCreatedProposalBtn
 } from 'store/actions/action-creaters/voting/proposals';
 
-import RadioBtnGroup from '../../RadioBtnGroup';
+import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
 
-import { SubTitle } from '../styles';
+import { SubTitle } from 'components/Custom/ModalActions/styles';
 import { arrRadioBtn } from './constants';
 import { formVoteObject } from 'store/selectors/voting/proposals';
 

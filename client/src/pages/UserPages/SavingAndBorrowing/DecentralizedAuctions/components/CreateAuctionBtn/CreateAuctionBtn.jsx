@@ -6,13 +6,13 @@ import { userAddressMetamask } from 'store/selectors/user-inf';
 import { drizzleRegistry, contracts } from 'contracts/config/drizzle-config';
 import {
   setCreatedStepsLimit,
-  setCreateProposalObj,
+  setCreateObj,
   setStepCounter
-} from 'store/actions/action-creaters/voting/proposals';
+} from 'store/actions/action-creaters/auctions/modalHandler';
 
 import CreateQBtn from 'components/Custom/PageLists/CreateQBtn';
+import ModalCreateAuction from './ModalCreateAuction';
 
-import { liquidation, systemDebt, systemSurplus } from './constants';
 import { bn } from 'contracts/handler/VotingHandler';
 import Handler from 'pages/UserPages/SavingAndBorrowing/BorrowBlock/handler';
 import { StableCoinQUSD } from 'contracts/StableCoin';
@@ -29,39 +29,11 @@ function CreateAuctionBtn(props) {
   const StableCoin = new StableCoinQUSD();
   // const handler = new Handler(userAddress, 'QETH' ,useDispatch());
 
-  const activeTabTitle = useMemo(() => {
-    switch (activeTab) {
-      case 'liquidation':
-        return liquidation;
-      case 'system-debt':
-        return systemDebt;
-      case 'system-surplus':
-        return systemSurplus;
-      default:
-        return liquidation;
-    }
-  }, [activeTab]);
-
   const onCreateAuction = async () => {
-    // dispatch(setStepCounter(1));
-    // setModalShow(true);
-    // switch (activeTab) {
-    //   case 'liquidation':
-    //     dispatch(setCreatedStepsLimit(4));
-    //     break;
-    //   case 'system-debt':
-    //     dispatch(setCreatedStepsLimit(3));
-    //     break;
-    //   case 'system-surplus':
-    //     dispatch(setCreatedStepsLimit(3));
-    //     break;
-    // }
-    // const result = await getPastEvents(drizzle, contracts['LiquidationAuction'], 'AuctionStarted');
-    // const method = await contracts['LiquidationAuction'].methods.auctions('0xd10a97806b8FdFC8E4CC83a49f35CCF513F0a1f3', 1)
-    //   .call();
-    // console.log('result', result);
-    // console.log('method', method);
-    // const result = await drizzle.contracts.LiquidationAuction.methods.auctions().call();
+    dispatch(setStepCounter(1));
+    dispatch(setCreatedStepsLimit(2));
+    setModalShow(true);
+    dispatch(setCreateObj({ first: activeTab }));
     // const vaultId = 1;
     // const bid = 10;
 
@@ -69,11 +41,12 @@ function CreateAuctionBtn(props) {
     // console.log('bid', bid);
     // const bid = bn(100);
     // const bid = bn(10000000000000000000); //10
-    const maxApproveAmount = "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+    const maxApproveAmount = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
     // const bid = bn(1000000000000000000000); //100
     // const bid = bn(1000000000000000000000); //100
-    let res = await StableCoin.allowance(userAddress, '0xFef40e2286F2240843E55fE66F06c34e7d6Ae317');
-    console.log('res', res);
+
+    // let res = await StableCoin.allowance(userAddress, '0xFef40e2286F2240843E55fE66F06c34e7d6Ae317');
+    // console.log('res', res);
     // if (allowance < bid ) {
     //   make approve
     // }
@@ -95,18 +68,16 @@ function CreateAuctionBtn(props) {
     <>
       <CreateQBtn
         onCreate={onCreateAuction}
-        activeTabTitle={activeTabTitle}
+        activeTabTitle={activeTab?.replace(/-/g, ' ') + ' Auction'}
       />
-
-      {/*<ModalCreateProposal*/}
-      {/*  activeTab={activeTab}*/}
-      {/*  activeTabTitle={activeTabTitle}*/}
-      {/*  modalShow={modalShow}*/}
-      {/*  onHide={() => {*/}
-      {/*    setModalShow(false);*/}
-      {/*    dispatch(setCreateProposalObj({}));*/}
-      {/*  }}*/}
-      {/*/>*/}
+      <ModalCreateAuction
+        activeTab={activeTab}
+        modalShow={modalShow}
+        onHide={() => {
+          setModalShow(false);
+          dispatch(setCreateObj({}));
+        }}
+      />
     </>
 
   );

@@ -7,100 +7,56 @@ import {
 
 import {
   getAuctionsListError, getAuctionsListSuccess,
-  getAuction, getAuctionSuccess, getAuctionError, getEmptyAuctionSuccess
+  getAuction, getAuctionSuccess, getAuctionError, getEmptyAuctionSuccess,
+  createAuctionSuccess, createAuctionError, bidForAuctionSuccess
 } from 'store/actions/action-creaters/auctions/auctions';
 import {
   creationLiquidationContractObj,
   creationSystemDebtContractObj,
   creationSystemSurplusContractObj
 } from 'contracts/handler/AuctionHandler';
-import VotingService from '../../../contracts/src/voting/VotingService';
-import {
-  getEmptyProposalSuccess, getProposalError,
-  getProposalSuccess,
-  voteForProposalSuccess
-} from '../../actions/action-creaters/voting/proposals';
 import AuctionService from '../../../contracts/src/auction/AuctionService';
-import {
-  creationExpertContractObj,
-  creationQContractObj,
-  creationRootContractObj,
-  creationSlashingContractObj
-} from '../../../contracts/handler/VotingHandler';
 
-// function* createAuction({ drizzle, data }) {
-//   try {
-//     yield put(setTransactionLoading());
-//     const { userAddress } = yield select(state => state.userInf);
-//
-//     let result = null;
-//     let idProposal = null;
-//     let contractName = null;
-//     if (data && drizzle) {
-//       switch (data?.first) {
-//         case 'constitution-update':
-//           const constitutionVoting = new ConstitutionVotingService('ConstitutionVoting');
-//           result = yield constitutionVoting.createProposal(data, userAddress);
-//           contractName = 'ConstitutionVoting';
-//           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
-//           break;
-//         case 'general-q-update':
-//           const generalUpdateVoting = new GeneralUpdateVotingService('GeneralUpdateVoting');
-//           result = yield generalUpdateVoting.createProposal(data, userAddress);
-//           contractName = 'GeneralUpdateVoting';
-//           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
-//           break;
-//         case 'emergency-update':
-//           const emergencyUpdateVoting = new EmergencyUpdateVotingService('EmergencyUpdateVoting');
-//           result = yield emergencyUpdateVoting.createProposal(data, userAddress);
-//           contractName = 'EmergencyUpdateVoting';
-//           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
-//           break;
-//         case 'add-a-new-root-node':
-//         case 'remove-a-current-root-node':
-//           const rootsVoting = new RootsVotingService('RootsVoting');
-//           result = yield rootsVoting.createProposal(data, userAddress);
-//           contractName = 'RootsVoting';
-//           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
-//           break;
-//         case 'root-node-slashing':
-//         case 'validator-node-slashing':
-//           const chosenContract = chooseSlashingContractDependsOnType(drizzle, data?.first);
-//           result = yield chosenContract.createProposal(data, userAddress);
-//           if (data?.first === 'root-node-slashing') {
-//             contractName = 'RootNodesSlashingVoting';
-//           } else if (data?.first === 'validator-node-slashing') {
-//             contractName = 'ValidatorsSlashingVoting';
-//           }
-//           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
-//           break;
-//         case 'add-a-new-expert':
-//         case 'remove-a-current-expert':
-//         case 'parameter-vote':
-//           const typeContract = data.first !== 'parameter-vote' ? 'member' : 'parameters';
-//           const contract = chooseExpertContractDependsOnType(drizzle, typeContract, data['type-proposal']);
-//           result = yield contract.createProposal(data, userAddress);
-//           contractName = chooseExpertContractNameDependsOnType(drizzle, typeContract, data['type-proposal']);
-//           if (data?.first === 'remove-a-current-expert') {
-//             //TODO: for createRemoveExpertProposal use RemoveProposalCreated event
-//             idProposal = result?.events?.RemoveProposalCreated?.returnValues?._id;
-//           } else {
-//             idProposal = result?.events?.ProposalCreated?.returnValues?._id;
-//           }
-//           break;
-//         default:
-//           return null;
-//       }
-//     }
-//     yield call(getAuctionDependsOnType, contractName, drizzle, data, idProposal, true);
-//     yield put(createProposalSuccess(result));
-//     yield put(setTransactionLoadingSuccess());
-//
-//   } catch (err) {
-//     console.log('err', err.message);
-//     yield put(setTransactionLoadingError(err.message));
-//   }
-// }
+function* createAuction({ data }) {
+  console.log('data', data);
+  try {
+    yield put(setTransactionLoading());
+    const { userAddress } = yield select(state => state.userInf);
+
+    let result = null;
+    if (data) {
+      let contract = null;
+      switch (data?.first) {
+        case 'liquidation':
+          contract = creationLiquidationContractObj();
+          break;
+        case 'system-debt':
+          contract = creationSystemDebtContractObj();
+          break;
+        case 'system-surplus':
+          contract = creationSystemSurplusContractObj();
+          break;
+        default:
+          return null;
+      }
+      result = yield contract.createAuction(data, userAddress);
+      if (result) {
+        const inf = {
+          'user': result?.events?.AuctionStarted?.returnValues?._user,
+          'vaultId': result?.events?.AuctionStarted?.returnValues?._vaultId
+        };
+        yield call(getAuctionDependsOnType, contract?.contractName, inf, true);
+      }
+    }
+
+    yield put(createAuctionSuccess(result));
+    yield put(setTransactionLoadingSuccess());
+
+  } catch (err) {
+    console.log('err', err.message);
+    yield put(setTransactionLoadingError(err.message));
+  }
+}
 
 function* getAuctionDependsOnType(contractName, inf, activeAuction) {
   try {
@@ -168,9 +124,7 @@ function* getAuctionsList({ activeTab, activeAuction }) {
         break;
     }
     let result = [];
-    console.log('contract', contract);
     result = yield contract?.getAuctions(activeAuction);
-
     console.log('Auctions', result);
 
     yield put(getAuctionsListSuccess(result));
@@ -189,14 +143,11 @@ function* bidForAuctionHandler({ data }) {
     let result = null;
     console.log('data', data);
     if (data?.user && data?.vaultId && data?.bid) {
-      console.log('data', data);
       const contract = new AuctionService(data?.contract);
-      console.log('Auction contract', contract);
       result = yield contract.bid(data.user, data.vaultId, data.bid, userAddress);
-      console.log('result', result);
     }
     yield call(getAuctionDependsOnType, data?.contract, data, true);
-    // yield put(voteForProposalSuccess(result));
+    yield put(bidForAuctionSuccess(result));
     yield put(setTransactionLoadingSuccess());
 
   } catch (err) {
@@ -226,7 +177,7 @@ function* executeAuctionHandler({ data }) {
 }
 
 export default [
-  // takeEvery(actionTypes.CREATE_PROPOSAL, createProposal),
+  takeEvery(actionTypes.CREATE_AUCTION, createAuction),
   takeEvery(actionTypes.GET_AUCTIONS_LIST, getAuctionsList),
   takeEvery(actionTypes.GET_AUCTION, getOneAuction),
   takeEvery(actionTypes.BID_FOR_AUCTION, bidForAuctionHandler),

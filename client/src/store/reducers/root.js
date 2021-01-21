@@ -8,6 +8,7 @@ import qPiggyBank from './qPiggyBank';
 import proposals from './voting/proposals';
 import validationRewardPools from './validationRewardPools';
 import auctions from './auctions/auctions';
+import modalHandler from './auctions/modalHandler';
 
 import transactionHandler from 'store/reducers/transactionHandler';
 
@@ -19,6 +20,7 @@ const RootReducer = combineReducers({
 
   proposals,
   auctions,
+  modalHandler,
 
   transactionHandler,
 

@@ -3,6 +3,8 @@ import LiquidationAuction from '../src/auction/LiquidationAuction';
 import SystemDebtAuction from '../src/auction/SystemDebtAuction';
 import SystemSurplusAuction from '../src/auction/SystemSurplusAuction';
 
+export const maxApproveAmount = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+
 export const getPastAuctionsIds = (auctionArr) => {
   return auctionArr?.map(evt => {
     // return {}
