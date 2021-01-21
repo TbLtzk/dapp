@@ -1,9 +1,9 @@
 import AuctionService from './AuctionService';
 
-import { web3, contracts } from '../../config/drizzle-config';
+import { web3, contracts, drizzleRegistry } from '../../config/drizzle-config';
 import { StableCoinQUSD } from '../../StableCoin';
 import { contractsToAddresses } from '../../mapping/contract-to-address';
-import { maxApproveAmount } from '../../handler/AuctionHandler';
+import { bn, maxApproveAmount } from '../../handler/AuctionHandler';
 
 export default class SystemSurplusAuction extends AuctionService {
 
@@ -24,7 +24,7 @@ export default class SystemSurplusAuction extends AuctionService {
     return await this.contract.methods.startAuction()
       .send({
         from: userAddress,
-        value: data?.bid
+        value: bn(drizzleRegistry.web3.utils.toWei(data?.bid))
       });
   }
 }

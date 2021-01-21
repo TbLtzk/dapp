@@ -49,7 +49,7 @@ function InputGroup(props) {
               onChange={(value) => {
                 const valObg = { [nameField]: value.target.value };
                 changeValueInput({ ...valueInput, ...valObg });
-                onChangeInput(value.target.value);
+                onChangeInput ? onChangeInput(value.target.value) : null
               }}
               value={val}
               placeholder={label}

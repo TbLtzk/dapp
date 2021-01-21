@@ -2,7 +2,7 @@ import { web3, contracts, drizzleRegistry } from '../../config/drizzle-config';
 import {
   getPastEvents,
 } from '../../handler/VotingHandler';
-import { getPastAuctionsIds } from '../../handler/AuctionHandler';
+import { bn, getPastAuctionsIds } from '../../handler/AuctionHandler';
 
 export default class AuctionService {
 
@@ -47,7 +47,8 @@ export default class AuctionService {
     console.log('vaultId', vaultId);
     console.log('bid', bid);
     console.log('userAddress', userAddress);
-    const result = await this.contract.methods.bid(user, vaultId, bid)
+    const result = await this.contract.methods.bid(user, vaultId,
+      bn(drizzleRegistry.web3.utils.toWei(bid)))
       .send(
         { from: userAddress });
     console.log('bid', result);
