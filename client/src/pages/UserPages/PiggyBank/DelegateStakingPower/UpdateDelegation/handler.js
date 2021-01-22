@@ -50,16 +50,18 @@ export class ComponentHandler {
     // Validate shares
     let shareSum = 0;
     inputShares.forEach((element, key) => {
+      const elementL = Number(element);
+
       if (applyZeroShare === true && (element.isNaN || element < 0)) {
         invalidSharesKey.push(key);
       } else if (applyZeroShare === false && (element.isNaN || element <= 0)) {
         invalidSharesKey.push(key);
       }
 
-      shareSum += Number(element);
+      shareSum += elementL;
 
-      if (element.isNaN === false) {
-        inputShares[key] = new web3.utils.BN(web3.utils.toWei(element));
+      if (typeof elementL === 'number') {
+        inputShares[key] = new web3.utils.BN(web3.utils.toWei(String(elementL)));
       } else {
         inputShares[key] = 0;
       }

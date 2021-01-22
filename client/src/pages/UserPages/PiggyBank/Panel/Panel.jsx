@@ -1,39 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import { getLockedAssets } from 'store/actions/action-creaters/q-piggy-bank';
-import { votingWeight, votingLockingEnd } from 'store/selectors/q-piggy-bank';
+import { getUserBalance, getLockedAssets } from 'store/actions/action-creaters/q-piggy-bank';
+import { userBalance, votingWeight, votingLockingEnd } from 'store/selectors/q-piggy-bank';
 import { fN } from 'func/useful';
 import { fromSolDateFormattingT1 } from 'func/date';
 import { useAlert } from 'react-alert';
-import { TextPanelSmallBlack, TextPanelSmallGrey, TextPanel, CustomBlockPanel } from '../styles';
 import PiggyBankHandler from '../handler';
-
+import { TextPanelSmallBlack, TextPanelSmallGrey, TextPanel, CustomBlockPanel } from '../styles';
 
 export default function Panel() {
   const userAddressL = useSelector(userAddressMetamask);
+  const userPBBalanceL = fN(useSelector(userBalance));
   const userVotingWeight = fN(useSelector(votingWeight));
   const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd));
 
-  const [userBalance, setUserBalance] = useState(0);
-  const [accountBalance, setAccountBalance] = useState(0);
+  const [accountBalance, setAccountBalance] = useState();
 
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
   const pBHandler = new PiggyBankHandler(address, useDispatch(), useAlert());
 
   useEffect(() => {
-    pBHandler.setUserBalance(setUserBalance);
-    pBHandler.setAccountBalance(setAccountBalance);
+    dispatch(getUserBalance(userAddressL));
     dispatch(getLockedAssets(userAddressL));
+
   }, []);
+
+  useEffect(() => {
+    pBHandler.setAccountBalance(setAccountBalance);
+  });
 
   return (
     <CustomBlockPanel>
       <TextPanel>
         <span>Piggy Bank balance: </span>
         <span>
-          {fN(userBalance)}
+          {fN(userPBBalanceL)}
           Q
         </span>
       </TextPanel>
