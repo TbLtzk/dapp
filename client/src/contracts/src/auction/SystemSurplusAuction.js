@@ -24,7 +24,7 @@ export default class SystemSurplusAuction extends AuctionService {
     return await this.contract.methods.startAuction()
       .send({
         from: userAddress,
-        value: bn(drizzleRegistry.web3.utils.toWei(data?.bid))
+        value: bn(drizzleRegistry.web3.utils.toWei(data?.bid, 'ether'))
       });
   }
 }

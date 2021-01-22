@@ -103,3 +103,19 @@ export const getRootNodeStakesError = (result) => ({
     type: actionTypes.GET_ROOT_NODE_STAKES_ERROR,
     result,
 });
+
+/* check is user root node */
+export const getWithdrawals = (address) => ({
+    type: actionTypes.GET_WITHDRAWALS,
+    address,
+});
+
+export const getWithdrawalsSuccess = (result) => ({
+    type: actionTypes.GET_WITHDRAWALS_SUCCESS,
+    result,
+});
+
+export const getWithdrawalsError = (result) => ({
+    type: actionTypes.GET_WITHDRAWALS_ERROR,
+    result,
+});

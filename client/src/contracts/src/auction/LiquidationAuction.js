@@ -44,7 +44,7 @@ export default class LiquidationAuction extends AuctionService {
     }
     // await StableCoin.approve('0xFef40e2286F2240843E55fE66F06c34e7d6Ae317', bid, userAddress);
     return await this.contract.methods.startAuction(
-      data?.address, data['vault-id'], bn(drizzleRegistry.web3.utils.toWei(data?.bid)))
+      data?.address, data['vault-id'], bn(drizzleRegistry.web3.utils.toWei(data?.bid, 'ether')))
       .send({ from: userAddress });
   }
 }

@@ -1,83 +1,62 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import {drizzleReactHooks} from "@drizzle/react-plugin";
-import {useDispatch, useSelector} from "react-redux";
-import {stakeToPanel, announceWithdrawal, withdraw} from "store/actions/action-creaters/root-contract";
-import {userAddressMetamask} from "store/selectors/user-inf";
-import {stakeToPanelTransId, announceWithdrawTransId, withdrawTransId} from "store/selectors/root-contract";
+import { drizzleReactHooks } from '@drizzle/react-plugin';
+import { useDispatch, useSelector } from 'react-redux';
+import { stakeToPanel, announceWithdrawal, withdraw } from 'store/actions/action-creaters/root-contract';
+import { userAddressMetamask } from 'store/selectors/user-inf';
 
-import RootService from "contracts/src/Root";
-import LoadingSpinner from "components/Base/LoadingSpinner";
+import RootService from 'contracts/src/Root';
 
-import {Col, Row} from "react-bootstrap";
-import Button from "components/Base/Buttons/Button";
+import { Col, Row } from 'react-bootstrap';
+import Button from 'components/Base/Buttons/Button';
 
-import {TransResult} from "./styles"
+import { bn } from '../../../../../contracts/handler/AuctionHandler';
 
-const {useDrizzle, useDrizzleState} = drizzleReactHooks;
+const { useDrizzle, useDrizzleState } = drizzleReactHooks;
 
 function ActionButtons(props) {
-  const {handleSubmit} = props;
-  const {drizzle} = useDrizzle();
+  const { handleSubmit } = props;
+  const { drizzle } = useDrizzle();
   const state = useDrizzleState(state => state);
   const dispatch = useDispatch();
-  const rootService = new RootService(drizzle);
+  const rootService = new RootService();
   const userAddress = useSelector(userAddressMetamask);
-  const stakeToPanelTransactionId = useSelector(stakeToPanelTransId);
-  const announceWithdrawTransactionId = useSelector(announceWithdrawTransId);
-  const withdrawTransactionId = useSelector(withdrawTransId);
 
-  const [transStakeToPanelStatus, setTransStakeToPanelStatus] = useState(null);
-  const [transWithdrawStatus, setTransWithdrawStatus] = useState(null);
-  const [transAccounceWithdrawStatus, setTransAccounceWithdrawStatus] = useState(null);
-
-  useEffect(() => {
-    if (state.transactionStack[stakeToPanelTransactionId]) {
-      const txHash = state.transactionStack[stakeToPanelTransactionId];
-      setTransStakeToPanelStatus(state.transactions[txHash]?.status);
-    }
-
-    if (state.transactionStack[announceWithdrawTransactionId]) {
-      const txHash = state.transactionStack[announceWithdrawTransactionId];
-      setTransAccounceWithdrawStatus(state.transactions[txHash]?.status);
-    }
-
-    if (state.transactionStack[withdrawTransactionId]) {
-      const txHash = state.transactionStack[withdrawTransactionId];
-      setTransWithdrawStatus(state.transactions[txHash]?.status);
-    }
-  }, [stakeToPanelTransactionId, announceWithdrawTransactionId, withdrawTransactionId, state]);
-
-  const convertToGWei = (amount) => {
-    return drizzle.web3.utils.toWei(amount, 'ether');
+  const convertToWei = (amount) => {
+    return bn(drizzle.web3.utils.toWei(amount, 'ether'));
+    // return drizzle.web3.utils.toWei(amount, 'ether');
   };
 
   const onStakeToPanel = useCallback(async (data) => {
+
     dispatch(stakeToPanel(rootService,
       {
         from: userAddress,
-        value: parseInt(convertToGWei(data?.amount)),
+        value: convertToWei(data?.amount),
+        // value: parseInt(convertToGWei(data?.amount)),
       }
     ));
   }, [drizzle]);
 
   const onWithdrawFromPanel = useCallback(async (data) => {
-    dispatch(withdraw(rootService, convertToGWei(data.amount), userAddress,
+    dispatch(withdraw(rootService,
+      convertToWei(data?.amount),
+      // convertToGWei(data.amount),
+      userAddress,
       {
-        // gasPrice: convertToGWei(data?.amount),
         from: userAddress
-      }))
+      }));
   }, [dispatch]);
 
   const onAnnounce = useCallback(async (data) => {
-    dispatch(announceWithdrawal(rootService, convertToGWei(data.amount),
+    dispatch(announceWithdrawal(rootService,
+      convertToWei(data?.amount),
+      // convertToGWei(data.amount),
       {
-        // gasPrice: convertToGWei(data?.amount),
         from: userAddress
-      }))
+      }));
   }, [dispatch]);
-
 
   return (
     <Row>
@@ -85,41 +64,25 @@ function ActionButtons(props) {
         <Button
           width="100%"
           type="full-width"
-          title={transStakeToPanelStatus === "pending"
-            ? <LoadingSpinner/>
-            : "Stake to Panel"}
+          title="Stake to Panel"
           handleButton={handleSubmit(onStakeToPanel)}
         />
-        {transStakeToPanelStatus !== "success" ? null :
-          <TransResult>Transaction is successful</TransResult>
-        }
-
       </Col>
       <Col md={4}>
         <Button
           width="100%"
           type="full-width"
-          title={transAccounceWithdrawStatus === "pending"
-            ? <LoadingSpinner/>
-            : "Announce"}
+          title="Announce"
           handleButton={handleSubmit(onAnnounce)}
         />
-        {transAccounceWithdrawStatus !== "success" ? null :
-          <TransResult>Transaction is successful</TransResult>
-        }
       </Col>
       <Col md={4}>
         <Button
           width="100%"
           type="full-width"
-          title={transWithdrawStatus === "pending"
-            ? <LoadingSpinner/>
-            : "Withdraw from Panel"}
+          title="Withdraw from Panel"
           handleButton={handleSubmit(onWithdrawFromPanel)}
         />
-        {transWithdrawStatus !== "success" ? null :
-          <TransResult>Transaction is successful</TransResult>
-        }
       </Col>
     </Row>
   );

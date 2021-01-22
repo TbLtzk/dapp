@@ -12,6 +12,7 @@ const initialState = {
   stakeToPanelTransId: null,
   announceWithdrawTransId: null,
   withdrawTransId: null,
+  withdrawals: null,
 };
 
 export default function rootContract(state = initialState, action) {
@@ -83,6 +84,11 @@ export default function rootContract(state = initialState, action) {
       return {
         ...state,
         withdrawTransId: null,
+      };
+    case actionTypes.GET_WITHDRAWALS_SUCCESS:
+      return {
+        ...state,
+        withdrawals: action.result,
       };
     default:
       return state;

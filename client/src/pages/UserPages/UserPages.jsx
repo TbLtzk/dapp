@@ -41,7 +41,7 @@ export default function UserPages(props) {
         case '/decentralized-auctions':
           return <DecentralizedAuctions/>;
         default:
-          return <QGovernance/>;
+          return null;
       }
     }
   };

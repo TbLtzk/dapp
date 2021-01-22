@@ -48,7 +48,7 @@ export default class AuctionService {
     console.log('bid', bid);
     console.log('userAddress', userAddress);
     const result = await this.contract.methods.bid(user, vaultId,
-      bn(drizzleRegistry.web3.utils.toWei(bid)))
+      bn(drizzleRegistry.web3.utils.toWei(bid, 'ether')))
       .send(
         { from: userAddress });
     console.log('bid', result);

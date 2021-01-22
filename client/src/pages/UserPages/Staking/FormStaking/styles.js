@@ -1,8 +1,8 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-import {Col} from "react-bootstrap";
+import { Col } from 'react-bootstrap';
 
-import {indents} from "constants/style";
+import { indents } from 'constants/style';
 
 export const Headline = styled.p`
   color: ${props => props.theme.colors.black};
@@ -31,6 +31,9 @@ export const TextWrap = styled(Col)`
 export const TextWrapBlack = styled(TextWrap)`
   text-align: right;
   color: ${props => props.theme.colors.black};
+  ul{
+    list-style: none;
+  }
 `;
 
 export const TextWrapGrey = styled(TextWrap)`
@@ -42,8 +45,8 @@ export const Subtitle = styled(TextWrapGrey)`
 `;
 
 export const TotalText = styled(TextWrap)`
-  display: flex;
-  align-items: center;
+  //display: flex;
+  //align-items: center;
   color: ${props => props.theme.colors.black};
   p{
     margin-bottom: 0;
@@ -52,5 +55,5 @@ export const TotalText = styled(TextWrap)`
 export const WrapInput = styled(Col)`
   //display: flex;
   //align-items: center;
-    
+
 `;

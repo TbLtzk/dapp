@@ -4,8 +4,12 @@ import { Row, Col } from 'react-bootstrap';
 import BigTabsView from 'components/Base/Tabs/BigTabsView';
 import StakingContent from './StakingContent';
 import ValidatorStaking from './ValidatorStaking';
+import { useSelector } from 'react-redux';
+import { rootNodeStake } from '../../../store/selectors/root-contract';
 
 function Staking() {
+  const amountNodeStake = useSelector(rootNodeStake);
+
   const tabsItems = useMemo(() => (
     [
       {
@@ -20,7 +24,7 @@ function Staking() {
         content: <ValidatorStaking />,
       },
     ]
-  ), []);
+  ), [amountNodeStake]);
 
   return (
     <Row>

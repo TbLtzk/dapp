@@ -17,16 +17,16 @@ function CardHeader(props) {
             {!status ? null :
               <LabelStatus>{status}</LabelStatus>
             }
-            {status === 'Active' && remainDate === 0?
-            <WrapVoteBtn>
-              <Button
-                title="Execute"
-                type="white"
-                handleButton={handleExecute}
-              />
-            </WrapVoteBtn> : null
+            {status === 'Active' && remainDate === 0 ?
+              <WrapVoteBtn>
+                <Button
+                  title="Execute"
+                  type="white"
+                  handleButton={handleExecute}
+                />
+              </WrapVoteBtn> : null
             }
-            {/*{status === 'Active' && remainDate > 0 ?*/}
+            {status === 'Active' && remainDate > 0 ?
               <WrapVoteBtn>
                 <Button
                   title="Bid"
@@ -34,8 +34,8 @@ function CardHeader(props) {
                   handleButton={handleBid}
                 />
               </WrapVoteBtn>
-            {/*: null*/}
-            {/*}*/}
+              : null
+            }
           </>
         }
       />

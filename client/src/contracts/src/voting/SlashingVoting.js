@@ -65,7 +65,7 @@ export default class SlashingVoting extends VotingService {
     percentageStake = getPercentageFormat(percentageStake);
     let candidate = data['address'];
     // console.log("candidate", candidate);
-    // console.log("percentageStake", percentageStake);
+    console.log("percentageStake", percentageStake);
     // candidate = "0x6a39b688d591ea00c9ea69658438794204b5cc62";
     // candidate = this.contractName === 'ValidatorsSlashingVoting' //validator member
     //   ? '0x6a39b688d591ea00c9ea69658438794204b5cc62'

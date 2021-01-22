@@ -21,7 +21,7 @@ export default class SystemDebtAuction extends AuctionService {
       let approve = await StableCoin.approve(contractsToAddresses.SystemDebtAuction, maxApproveAmount, userAddress);
       console.log('approve', approve);
     }
-    return await this.contract.methods.startAuction(bn(drizzleRegistry.web3.utils.toWei(data?.bid)))
+    return await this.contract.methods.startAuction(bn(drizzleRegistry.web3.utils.toWei(data?.bid, 'ether')))
       .send({ from: userAddress });
   }
 

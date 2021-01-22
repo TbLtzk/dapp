@@ -23,7 +23,8 @@ function Routes() {
       <Switch>
         <Route exact path="/" component={Start} />
         <Route exact path="/start-configurations" component={StartConfigurations} />
-
+      </Switch>
+      <Switch>
         <Route exact path="/q-governance" component={AuthProtect(UserPages)} />
         <Route path="/piggy-bank" component={AuthProtect(UserPages)} />
         <Route path="/staking" component={AuthProtect(UserPages)} />

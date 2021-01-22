@@ -114,7 +114,8 @@ export default class RootService {
     try {
       // new web3.utils.BN(web3.utils.toWei
       // console.log(data);
-      return await this.contract.methods.commitStake.cacheSend(data);
+      return await this.contract.methods.commitStake()
+        .send(data);
     } catch (e) {
       console.log(e);
     }
@@ -127,7 +128,8 @@ export default class RootService {
    */
   async announceWithdrawal(amount, paymentInf) {
     try {
-      return await this.contract.methods.announceWithdrawal.cacheSend(amount, paymentInf);
+      return await this.contract.methods.announceWithdrawal(amount)
+        .send(paymentInf);
       // const result = await this.Root.methods.announceWithdrawal(amount).call(function (result) {
       //     console.log('announceWithdrawal result', result);
       // });
@@ -149,10 +151,21 @@ export default class RootService {
       // const result = await this.Root.methods.withdraw(amount, payTo).call(function (result) {
       //     console.log('withdraw result', result);
       // });
-      return await this.contract.methods.withdraw.cacheSend(amount, payTo, paymentInf);
+      return await this.contract.methods.withdraw(amount, payTo)
+        .send(paymentInf);
     } catch (e) {
       console.log(e);
     }
+  }
+
+  /**
+   * get withdrawals
+   * @param userAddress
+   * @return obj
+   */
+  async withdrawals(userAddress) {
+    return await this.contract.methods.withdrawals(userAddress)
+      .call();
   }
 
 }

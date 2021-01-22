@@ -7,6 +7,7 @@ import TableView from 'components/Base/TableView';
 import { Pagination, setElementsForOnePage, countPages } from 'components/Base/Pagination';
 
 import { Circle, MemberPanelWrap, MemberAddress } from './styles';
+import { rootNodeStake } from '../../../../store/selectors/root-contract';
 
 const { useDrizzle } = drizzleReactHooks;
 
@@ -15,6 +16,7 @@ function MemberTable(props) {
 
   const { drizzle } = useDrizzle();
   const userAddress = useSelector(userAddressMetamask);
+  const amountNodeStake = useSelector(rootNodeStake);
 
   const [offset, setOffset] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -88,13 +90,13 @@ function MemberTable(props) {
               {member.address.slice(0, 14) + '...'}
             </MemberAddress>
           </td>
-          <td>{member.stakeAmount} Q</td>
+          <td>{userAddress === member.address ? amountNodeStake : member.stakeAmount} Q</td>
           <td>{member.share + '%'}</td>
         </tr>
       );
     }
 
-  }, [elements]);
+  }, [elements, amountNodeStake]);
 
   return (
     <MemberPanelWrap type={type}>

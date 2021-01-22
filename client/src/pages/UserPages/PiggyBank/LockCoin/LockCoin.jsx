@@ -60,7 +60,7 @@ export default function LockCoin() {
           <FormInput
             name="amountQ"
             type="number"
-            placeholder="666Q"
+            placeholder="0.0 Q"
             ref={reg1({ required: 'Field is required!' })}
             valid={err1.amountQ?.message}
           />
@@ -145,7 +145,7 @@ export default function LockCoin() {
           <FormInput
             name="amountQ"
             type="number"
-            placeholder="666Q"
+            placeholder="0.0 Q"
             ref={reg3({ required: 'Field is required!' })}
             valid={err3.amountQ?.message}
           />

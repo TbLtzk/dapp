@@ -56,7 +56,7 @@ export default function ManageBalance() {
           <FormInput
             name="amountQ"
             type="number"
-            placeholder="666Q"
+            placeholder="0.0 Q"
             ref={reg2({ required: 'Field is required!', pattern: /[0-9]/i })}
             valid={err2.amountQ?.message}
           />
@@ -78,7 +78,7 @@ export default function ManageBalance() {
           <FormInput
             name="amountQ"
             type="number"
-            placeholder="666Q"
+            placeholder="0.0 Q"
             ref={reg3({ required: 'Field is required!' })}
             valid={err3.amountQ?.message}
           />
