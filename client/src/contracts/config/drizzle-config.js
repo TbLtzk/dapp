@@ -39,6 +39,8 @@ const optionsDrizzle = () => {
       // console.warn(`${contractName} missing in mapping when creating drizzle config!`);
     }
   }
+
+  console.log("contracts",contracts);
   return { contracts, ...optionsDrizzleBase };
 };
 
@@ -55,6 +57,8 @@ const getContracts = () => {
   return contracts;
 };
 
+// export const drizzleRegistry = new Drizzle(optionsDrizzle());
 export const drizzleRegistry = new Drizzle(optionsDrizzleRegistry);
 export const contracts = getContracts();
 console.log("contracts", contracts);
+// console.log("optionsDrizzle", drizzleRegistry);
