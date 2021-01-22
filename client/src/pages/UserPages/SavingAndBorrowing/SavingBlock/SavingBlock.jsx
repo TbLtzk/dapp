@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import ButtonSlide from 'components/Base/Buttons/ButtonSlide';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import { roundNumber } from 'func/useful';
+import { uintPercentToNumber, fN } from 'func/useful';
+import { web3 } from 'contracts/config/drizzle-config';
 
 import { CardDetail } from '../styles';
 import Handler from './handler';
@@ -13,8 +14,11 @@ export default function SavingBlock(props) {
   const { actCardData } = props;
 
   const [savingBalance, setSavingBalance] = useState(0);
+  const [latestClaim, setLatestClaim] = useState(0);
   const [avToDeposit, setAvToDeposit] = useState(0);
   const [estInterest, setEstInterest] = useState(0);
+  const [savingRate, setSavingRate] = useState(0);
+  const [claimReward, setClaimReward] = useState('0');
 
   const address = useSelector(userAddressMetamask);
   const handler = new Handler(address, useDispatch());
@@ -22,15 +26,26 @@ export default function SavingBlock(props) {
   useEffect(async () => {
     if (actCardData.type !== 'saving') return;
 
-    handler.setSavingBalance(setSavingBalance);
+    handler.setSavingBalanceAndLatestClaim(setSavingBalance, setLatestClaim);
     handler.setAvailableToDeposit(setAvToDeposit);
+    handler.setSavingRate(setSavingRate);
   }, [actCardData]);
+
+  const calculateClaimReward = () => {
+    const timeLastClaim = Math.floor(Date.now() / 1000) - latestClaim;
+    const balAtPrClaim = web3.utils.toWei(new web3.utils.BN(savingBalance));
+
+    let res = (1 + uintPercentToNumber(savingRate)) ** timeLastClaim * balAtPrClaim - balAtPrClaim;
+    res = web3.utils.fromWei(new web3.utils.BN(String(res)));
+    setClaimReward(String(res));
+  };
 
   useEffect(() => {
     if (actCardData.intRate !== undefined) {
-      const estInterestL = roundNumber(savingBalance * (actCardData.intRate / 100), 4);
+      const estInterestL = savingBalance * (actCardData.intRate / 100);
       setEstInterest(estInterestL);
     }
+    calculateClaimReward();
   });
 
   const deposit = (formData) => {
@@ -46,7 +61,7 @@ export default function SavingBlock(props) {
   };
 
   const claim = () => {
-    handler.claim();
+    handler.claim(setClaimReward);
   };
 
   return (
@@ -60,11 +75,11 @@ export default function SavingBlock(props) {
         </div>
         <div className="txt">
           <span>Saving Balance</span>
-          <span>{savingBalance}</span>
+          <span>{fN(savingBalance)}</span>
         </div>
         <div className="txt">
           <span>Available to deposit</span>
-          <span>{avToDeposit}</span>
+          <span>{fN(avToDeposit)}</span>
         </div>
         <p className="title-2">Interest</p>
         <div className="txt">
@@ -73,27 +88,28 @@ export default function SavingBlock(props) {
         </div>
         <div className="txt">
           <span>Estimated Interest</span>
-          <span>{estInterest}</span>
+          <span>{fN(estInterest)}</span>
         </div>
         <div className="txt">
           <span>Interest Rate p.a.</span>
-          <span>{actCardData.intRate === undefined ? '-' : `${actCardData.intRate}%`}</span>
+          <span>{actCardData.intRate === undefined ? '-' : `${fN(actCardData.intRate)}%`}</span>
         </div>
         <div className="btn-group">
           <ButtonSlide
             btnTxt="Claim reward"
-            btnShortTxt="Apply"
+            btnShortTxt="Claim"
             onclick={claim}
             inpType="number"
-            inpPlaceholder="Amount (Q)"
+            inpPlaceholder={fN(claimReward)}
             inpRules={{ required: false }}
+            disabled={true}
           />
           <ButtonSlide
             btnTxt="Deposit Saving Asset"
             btnShortTxt="Deposit"
             onclick={deposit}
             inpType="number"
-            inpPlaceholder="Amount (Q)"
+            inpPlaceholder="Amount (QUSD)"
             inpRules={{ required: true }}
           />
           <ButtonSlide
@@ -101,7 +117,7 @@ export default function SavingBlock(props) {
             btnShortTxt="Withdraw"
             onclick={withdraw}
             inpType="number"
-            inpPlaceholder="Amount (Q)"
+            inpPlaceholder="Amount (QUSD)"
             inpRules={{ required: true }}
           />
         </div>

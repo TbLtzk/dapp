@@ -1,6 +1,6 @@
 import Validators from 'contracts/Validators';
 import ValidationRewardPools from 'contracts/ValidationRewardPools';
-import { numberToUintPercent, roundNumber, uintPercentToNumber } from 'func/useful';
+import { numberToUintPercent, uintPercentToNumber } from 'func/useful';
 import { setTransactionCounter } from '../../../../store/actions/action-creaters/transaction-handler';
 
 const contractValidators = new Validators();
@@ -16,7 +16,7 @@ export default class Handler {
     this.dispatch(setTransactionCounter(1));
 
     contractVRP.getBalance(this.address).then((res) => {
-      const rate = roundNumber(uintPercentToNumber(res), 2);
+      const rate = uintPercentToNumber(res) * 100;
       stateSetter(rate);
     }).catch((e) => {
       console.log(e);
@@ -42,7 +42,7 @@ export default class Handler {
     this.dispatch(setTransactionCounter(1));
 
     contractValidators.getInterestRate(this.address).then((res) => {
-      const rate = roundNumber(uintPercentToNumber(res), 2);
+      const rate =uintPercentToNumber(res) * 100;
       stateSetter(rate);
     }).catch((e) => {
       console.log(e);
@@ -68,7 +68,7 @@ export default class Handler {
     this.dispatch(setTransactionCounter(1));
 
     contractValidators.getDelegatorsShare(this.address).then((res) => {
-      const rate = roundNumber(uintPercentToNumber(res), 2);
+      const rate =uintPercentToNumber(res) * 100;
       stateSetter(rate);
     }).catch((e) => {
       console.log(e);

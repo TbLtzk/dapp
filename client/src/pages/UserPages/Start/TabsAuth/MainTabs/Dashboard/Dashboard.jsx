@@ -6,7 +6,6 @@ import { Row, Col } from 'react-bootstrap';
 import RootNodePanel from 'components/Custom/MembersPanel/RootNodePanel';
 import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
 import UserData from 'components/Custom/UserData';
-import { roundBalance } from 'func/balance';
 
 import { WrapContainer } from './styles';
 

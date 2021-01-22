@@ -96,7 +96,7 @@ export default class RootService {
               share: Math.round(member.stakeAmount * 100 / totalStakes)
             };
           });
-          console.log('rootNodeData', rootNodeData);
+          // console.log('rootNodeData', rootNodeData);
           return {
             rootNodeData,
             totalStakes

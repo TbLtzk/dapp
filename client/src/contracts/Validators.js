@@ -1,16 +1,23 @@
-import { web3, contracts } from './config/drizzle-config';
+import { contracts } from './config/drizzle-config';
 
 const contractName = 'Validators';
 
 export default class Validators {
   constructor() {
-    this.methods = contracts['Validators'].methods;
+    this.methods = contracts[contractName].methods;
+  }
+
+  async withdrawals(address) {
+    return await this.methods.withdrawals(address).call();
+  }
+
+  async validatorExist(address) {
+    return await this.methods.validatorExist(address).call();
   }
 
   async getValidatorTotalStake(address) {
     return await this.methods.getValidatorTotalStake(address).call();
   }
-
 
   async getValidatorsOwnStake(address) {
     return await this.methods.getValidatorsOwnStake(address).call();
@@ -41,8 +48,7 @@ export default class Validators {
   }
 
   async commitCollateral(address, value) {
-    const valueL = new web3.utils.BN(web3.utils.toWei(value));
-    return await this.methods.commitCollateral().send({ from: address, value: valueL });
+    return await this.methods.commitCollateral().send({ from: address, value });
   }
 
   async enterShortList(address) {
@@ -51,5 +57,13 @@ export default class Validators {
 
   async getPositiveValidatorStake() {
     return await this.methods.getPositiveValidatorStake().call();
+  }
+
+  async announceWithdrawal(amount, address) {
+    return await this.methods.announceWithdrawal(amount).send({ from: address });
+  }
+
+  async withdraw(amount, address) {
+    return await this.methods.withdraw(amount, address).send({ from: address });
   }
 }

@@ -4,6 +4,7 @@ import { Row, Col } from 'react-bootstrap';
 import ManageBalance from './ManageBalance';
 import LockCoin from './LockCoin';
 import Panel from './Panel/Panel';
+import DelegateStakingPower from './DelegateStakingPower';
 
 function PiggyBank() {
   return (
@@ -19,6 +20,12 @@ function PiggyBank() {
       </Col>
       <Col xs={6}>
         <LockCoin />
+      </Col>
+      <Col xs={12}>
+        <h3 style={{ margin: '37px 0 24px 0' }}>Delegate Staking Power</h3>
+      </Col>
+      <Col xs={12}>
+        <DelegateStakingPower />
       </Col>
     </Row>
   );

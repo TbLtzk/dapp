@@ -9,7 +9,7 @@ import {useForm} from "react-hook-form";
 
 import {Row} from "react-bootstrap";
 
-import {roundBalance} from "func/balance"
+import { fN } from 'func/useful';
 import CustomBlock from "components/Base/CustomBlock"
 import FormInput from "components/Base/Form/FormInput"
 import ActionButtons from "pages/UserPages/Staking/FormStaking/ActionButtons";
@@ -46,7 +46,7 @@ function FormStaking() {
         if (drizzle) {
             drizzle.web3.eth.getBalance(userAddress, (err, balance) => {
                 const userBalance = drizzle.web3.utils.fromWei(balance, "ether");
-                setUserBalance(roundBalance(userBalance));
+                setUserBalance(fN(userBalance));
             });
         }
     }, [state]);

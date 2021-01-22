@@ -15,6 +15,7 @@ export function fromSolDateFormattingT1(solTimestamp) {
 
   const data = parseDate(solTimestamp);
   const offset = new Date().getTimezoneOffset() / 60;
+  // eslint-disable-next-line max-len
   return `${data.dateNum}.${data.month}.${data.year} ${data.hours}:${data.minute} GMT${offset < 0 ? '+' : '-'}${offset < 0 ? offset * -1 : offset}:00`;
 }
 

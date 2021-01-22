@@ -17,5 +17,6 @@ p.value {
   font-family: 'Rubik', sans-serif;
   color: ${colors.main};
   margin-bottom: 0;
+  word-wrap: break-word;
 }
 `;

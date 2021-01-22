@@ -10,7 +10,6 @@ import {
   getStatusTransformation
 } from '../../handler/VotingHandler';
 import VotingService from './VotingService';
-import { roundBalance } from '../../../func/balance';
 
 export default class ConstitutionVoting extends VotingService {
   /**

@@ -4,12 +4,10 @@ import { Block } from 'constants/style';
 import { useForm } from 'react-hook-form';
 import FormInput from 'components/Base/Form/FormInput';
 import Button from 'components/Base/Buttons/Button';
-import { errorHandler } from 'func/useful';
+import { errorHandler, fN } from 'func/useful';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import ValidationRewardProxy from '../../../../contracts/ValidationRewardProxy';
 import Handler from './handler';
-import Validators from '../../../../contracts/Validators';
 
 export default function RewardStats() {
   const { register: reg1, handleSubmit: submit1, errors: err1 } = useForm();
@@ -36,43 +34,34 @@ export default function RewardStats() {
     handler.setValidatorShare(formData, setDelShare);
   };
 
-  const updateAmountRP = async () => {
-    const vrpCont = new ValidationRewardProxy();
-    const res1 = await vrpCont.allocate(address);
-    if (res1.status === true) {
-      // const validatorsCont = new Validators();
-      // validatorsCont.enterShortList(address).then((res) => console.log(res));
-    }
-  };
-
   return (
     <Block>
       <p className="title type-1">Reward Stats</p>
       <div>
         <span>Amount of Pool Rewards:</span>
         <span>
-          {amountRP}
+          {fN(amountRP)}
           Q
         </span>
       </div>
       <div>
         <span>Validator Share:</span>
         <span>
-          {delShare === 0 ? 0 : 100 - delShare}
+          {delShare === 0 ? 0 : fN(100 - delShare)}
           %
         </span>
       </div>
       <div>
         <span>Delegators Share:</span>
         <span>
-          {delShare}
+          {fN(delShare)}
           %
         </span>
       </div>
       <div>
         <span>Payout Interest:</span>
         <span>
-          {intRate}
+          {fN(intRate)}
           %
         </span>
       </div>
@@ -112,17 +101,6 @@ export default function RewardStats() {
               title="Set"
               width="94px"
               handleButton={submit2(setInterestRate)}
-            />
-          </div>
-        </Col>
-        <Col xs={12} className="form-container">
-          <span>Calculate amount of reward pool (Test only, enterShortList() -> allocate())</span>
-          <div>
-            <Button
-              type="outline"
-              title="Set"
-              width="100%"
-              handleButton={updateAmountRP}
             />
           </div>
         </Col>

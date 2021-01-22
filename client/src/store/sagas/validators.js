@@ -3,7 +3,7 @@ import * as actionTypes from 'store/actions/action-types/validators';
 import {
   setError, setDelegatorsShare, getDelegatorsShare, setTotalStake, setOwnStake,
   setDelegatedStake, setAccTotalStake, setInterestRate, getInterestRate,
-  getValidatorMembersSuccess, getValidatorMembersError
+  getValidatorMembersSuccess, getValidatorMembersError,
 } from 'store/actions/action-creaters/validators';
 import Validators from '../../contracts/Validators';
 import { web3 } from '../../contracts/config/drizzle-config';
@@ -69,7 +69,8 @@ function* getDelegatedStakeGenerator({ address }) {
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADING });
 
     const contract = getContractInstance();
-    const data = yield contract.getValidatorDelegatedStake(address);
+    let data = yield contract.getValidatorDelegatedStake(address);
+    data = web3.utils.fromWei(data);
 
     yield put(setDelegatedStake(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
@@ -146,7 +147,7 @@ function* getValidatorsMembers() {
     const contract = getContractInstance();
     const data = yield contract.getPositiveValidatorStake();
     // console.log("data", data.slice().reverse());
-   yield put(getValidatorMembersSuccess(data));
+    yield put(getValidatorMembersSuccess(data));
   } catch (err) {
     console.error('ValidatorsMember.Error', err);
     yield put(getValidatorMembersError(err.message));

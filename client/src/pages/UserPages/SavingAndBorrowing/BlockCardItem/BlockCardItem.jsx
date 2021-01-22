@@ -1,6 +1,7 @@
 import React from 'react';
 import { Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { fN } from 'func/useful';
 import { ContainerBCI } from './styles';
 
 export default function BlockCardItem(props) {
@@ -66,7 +67,7 @@ export default function BlockCardItem(props) {
       </Col>
       <Col xs={4} className="info-cont">
         <span>{txt3}</span>
-        <span>{val3 === undefined ? '-' : `${val3}%`}</span>
+        <span>{val3 === undefined ? '-' : `${fN(val3)}%`}</span>
       </Col>
     </ContainerBCI>
   );

@@ -14,17 +14,11 @@ import {
   ownStakeSelector,
   totalStakeSelector,
 } from 'store/selectors/validators';
-import { useForm } from 'react-hook-form';
 import { CustomBlockVP } from './styles';
-import FormInput from '../../Base/Form/FormInput';
-import { errorHandler } from '../../../func/useful';
-import Button from '../../Base/Buttons/Button';
-import Validators from '../../../contracts/Validators';
+import { fN } from 'func/useful';
 
 export default function ValidatorPool(props) {
   const { showTitle } = props;
-
-  const { register: reg3, handleSubmit: submit3, errors: err3 } = useForm();
 
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
@@ -40,11 +34,6 @@ export default function ValidatorPool(props) {
     dispatch(getAccTotalStake(address));
   }, []);
 
-  const setTotalStake = (formData) => {
-    const validatorsCont = new Validators();
-    validatorsCont.commitCollateral(address, formData.amount).then((res) => console.log(res));
-  };
-
   return (
     <CustomBlockVP>
       { showTitle === false ? '' : (
@@ -53,21 +42,21 @@ export default function ValidatorPool(props) {
       <div>
         <span>Total Stake:</span>
         <span>
-          {totalStake}
+          {fN(totalStake)}
           Q
         </span>
       </div>
       <div>
         <span>Of which is Validator own Stake:</span>
         <span>
-          {ownStake}
+          {fN(ownStake)}
           Q
         </span>
       </div>
       <div>
         <span>Delegated Stake:</span>
         <span>
-          {delegatedStake}
+          {fN(delegatedStake)}
           Q
         </span>
       </div>
@@ -78,27 +67,9 @@ export default function ValidatorPool(props) {
       <div>
         <span>Accountable Stake:</span>
         <span>
-          {accTotalStake}
+          {fN(accTotalStake)}
           Q
         </span>
-      </div>
-      <div className="form-container" style={{ flexDirection: 'column' }}>
-        <span style={{ marginBottom: '10px' }}><b>Set Total stake (Test only)</b></span>
-        <div>
-          <FormInput
-            name="amount"
-            type="number"
-            placeholder="1Q"
-            ref={reg3({ required: true })}
-            valid={errorHandler(err3, 'amount')}
-          />
-          <Button
-            type="outline"
-            title="Set"
-            width="auto"
-            handleButton={submit3(setTotalStake)}
-          />
-        </div>
       </div>
     </CustomBlockVP>
   );

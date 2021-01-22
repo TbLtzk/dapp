@@ -5,10 +5,10 @@ import { useHistory } from 'react-router-dom';
 
 import ButtonsGroupTabs from 'components/Base/Tabs/ButtonsGroupTabs';
 import CreateQProposalBtn from './components/CreateQProposalBtn';
-import Stats from 'components/Custom/PageLists/Stats';
 import References from 'components/Custom/PageLists/References';
 import Button from 'components/Base/Buttons/Button';
 import TabContent from './components/TabContent';
+import VotingStats from './VotingStats';
 
 import { WrapBtn, WrapTabs } from 'components/Custom/PageLists/styles';
 
@@ -92,7 +92,7 @@ function QGovernance() {
       </Col>
       <Col md={4}>
         <CreateQProposalBtn activeTab={activeTab}/>
-        <Stats statsData={statsData} type="Voting"/>
+        <VotingStats />
         <References type="voting"/>
       </Col>
     </Row>

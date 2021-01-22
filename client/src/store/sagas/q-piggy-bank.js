@@ -7,10 +7,10 @@ import {
   getUserBalance,
   getLockedAssets,
 } from 'store/actions/action-creaters/q-piggy-bank';
-import QPiggyBank from '../../contracts/QPiggyBank';
-import { handleLockedAssetsResponse } from '../../contracts/handler/QPiggyBankHandler';
-import { WeiToQ } from '../../func/balance';
+import QPiggyBank from 'contracts/QPiggyBank';
+import { handleLockedAssetsResponse } from 'contracts/handler/QPiggyBankHandler';
 import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler';
+import { web3 } from 'contracts/config/drizzle-config';
 
 let contractInstance = null;
 
@@ -27,7 +27,7 @@ function* getUserBalanceGenerator({ address }) {
 
     const contract = getContractInstance();
     let data = yield contract.getUserBalance(address);
-    data = WeiToQ(data);
+    data = web3.utils.fromWei(data);
 
     yield put(setUserBalance(data));
   } catch (err) {
