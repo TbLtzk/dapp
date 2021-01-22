@@ -27,12 +27,10 @@ export const AccountContainer = styled.div`
     .marker {
       margin-left: 15px;
     }
-    span {
-      margin-top: 8px;
-    }
   }
+
   .list_2_container {
-    margin-bottom: 8px;
+    margin-top: 8px;
   }
 
   .stats_container {
@@ -43,7 +41,12 @@ export const AccountContainer = styled.div`
       font-weight: 600;
       display: flex;
       justify-content: space-between;
-      margin-top: 16px;
+
+      .num {
+        color: ${colors.black};
+        display: flex;
+        align-items: center;
+      }
     }
   }
 
