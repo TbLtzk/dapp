@@ -19,6 +19,7 @@ function CardHeader(props) {
             <Button
               title={<FontAwesomeIcon icon={faRedo}/>}
               type="transparent"
+              width="auto"
               handleButton={handleUpdate}
             />
             <span>{title}</span>
