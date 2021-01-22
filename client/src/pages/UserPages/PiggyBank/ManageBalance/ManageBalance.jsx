@@ -30,7 +30,7 @@ export default function ManageBalance() {
   }
 
   return (
-    <CustomBlock>
+    <CustomBlock style={{ height: '100%' }}>
       <Headline>Manage balance</Headline>
       <Row>
         <Col xs={8}>
