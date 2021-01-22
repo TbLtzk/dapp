@@ -1,25 +1,28 @@
-import { roundNumber } from 'func/useful';
-import { StableCoinQUSD } from '../../../../contracts/StableCoin';
-import { web3 } from '../../../../contracts/config/drizzle-config';
-import { SavingQUSD } from '../../../../contracts/Saving';
-import { setTransactionCounter } from '../../../../store/actions/action-creaters/transaction-handler';
+import { StableCoinQUSD } from 'contracts/StableCoin';
+import { web3 } from 'contracts/config/drizzle-config';
+import { SavingQUSD } from 'contracts/Saving';
+import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
+import EPDRParameters from '../../../../contracts/EPDRParameters';
 
 export default class Handler {
   constructor(address, dispatch) {
     this.address = address;
     this.contractSavingQUSD = new SavingQUSD();
     this.contractStableCoinQUSD = new StableCoinQUSD();
+    this.contractEPDRParameters = new EPDRParameters();
     this.dispatch = dispatch;
   }
 
-  setSavingBalance(stateSetter) {
+  setSavingBalanceAndLatestClaim(savingBalanceSetter, latestClaimSetter) {
     this.dispatch(setTransactionCounter(1));
 
     this.contractSavingQUSD.usersSavings(this.address).then((res) => {
-      const resL = roundNumber(web3.utils.fromWei(res.balance), 4);
-      stateSetter(resL);
+      latestClaimSetter(res.latestClaim);
+      const sbL = web3.utils.fromWei(res.balance);
+      savingBalanceSetter(sbL);
     }).catch((e) => {
-      stateSetter(0);
+      savingBalanceSetter(0);
+      latestClaimSetter(0);
       console.log(e);
     }).finally(() => {
       this.dispatch(setTransactionCounter(-1));
@@ -30,8 +33,21 @@ export default class Handler {
     this.dispatch(setTransactionCounter(1));
 
     this.contractStableCoinQUSD.balanceOf(this.address).then((res) => {
-      const resL = roundNumber(web3.utils.fromWei(new web3.utils.BN(res)), 4);
+      const resL = web3.utils.fromWei(new web3.utils.BN(res));
       stateSetter(resL);
+    }).catch((e) => {
+      stateSetter(0);
+      console.log(e);
+    }).finally(() => {
+      this.dispatch(setTransactionCounter(-1));
+    });
+  }
+
+  setSavingRate(stateSetter) {
+    this.dispatch(setTransactionCounter(1));
+
+    this.contractEPDRParameters.getUint('governed.EPDR.QUSD_savingRate').then((res) => {
+      stateSetter(res);
     }).catch((e) => {
       stateSetter(0);
       console.log(e);
@@ -82,10 +98,11 @@ export default class Handler {
     });
   }
 
-  async claim() {
+  async claim(stateSetter) {
     this.dispatch(setTransactionCounter(1));
 
     this.contractSavingQUSD.claim(this.address).then(() => {
+      stateSetter('0');
     }).catch((e) => {
       console.log(e);
     }).finally(() => {

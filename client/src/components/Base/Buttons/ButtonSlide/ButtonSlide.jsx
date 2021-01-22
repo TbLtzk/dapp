@@ -7,7 +7,7 @@ import FormInput from '../../Form/FormInput';
 import { ButtonSlideForm, BtnSlide } from './styles';
 
 export default function ButtonSlide(props) {
-  const { btnTxt, btnShortTxt, onclick, inpType, inpPlaceholder, inpRules } = props;
+  const { btnTxt, btnShortTxt, onclick, inpType, inpPlaceholder, inpRules, disabled } = props;
   const { register, handleSubmit, errors } = useForm();
   const [isClickedOnce, setIsClickedOnce] = useState(false);
 
@@ -26,6 +26,7 @@ export default function ButtonSlide(props) {
         placeholder={inpPlaceholder}
         ref={register(inpRules)}
         valid={errorHandler(errors, 'field')}
+        disabled={disabled}
       />
       <BtnSlide
         type="submit"
@@ -45,4 +46,9 @@ ButtonSlide.propTypes = {
   inpType: PropTypes.string.isRequired,
   inpPlaceholder: PropTypes.string.isRequired,
   inpRules: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
+};
+
+ButtonSlide.defaultProps = {
+  disabled: false,
 };

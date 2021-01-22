@@ -16,17 +16,9 @@ export const errorHandler = (error, field, min = 0, max = 100) => {
   }
 };
 
-export const roundNumber = (num, numAfterComa = 0) => {
-  if (num === undefined || num.isNaN === true) return undefined;
-
-  let res = num;
-  if (numAfterComa === 0) {
-    res = Math.round(num);
-  } else {
-    const roundNum = 10 ** numAfterComa;
-    res = Math.round(num * roundNum) / roundNum;
-  }
-  return res;
+export const fN = (number) => {
+  if (number === undefined || number.isNaN) return number;
+  return new Intl.NumberFormat('en-GB', { maximumFractionDigits: 4 }).format(number);
 };
 
 export const numberToUintPercent = (num) => {
@@ -50,14 +42,13 @@ export const uintPercentToNumber = (num) => {
   if (num <= 0) return 0;
   if (num >= (10 ** 27)) return 100;
 
-  return (num * 100) / (10 ** 27);
+  return num / (10 ** 27);
 };
 
 export const uintPerSecondToPerYearNumber = (num) => {
   const numL = num;
   if (numL === undefined || numL.isNaN === true) return undefined;
 
-  const perSec = uintPercentToNumber(numL) / 100;
-  const res = (((1 + perSec) ** (365 * 24 * 3600)) - 1) * 100;
-  return roundNumber(res, 4);
+  const perSec = uintPercentToNumber(numL);
+  return (((1 + perSec) ** (365 * 24 * 3600)) - 1) * 100;
 };

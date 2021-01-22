@@ -5,7 +5,8 @@ import ErrorInputMessage from 'components/Base/ErrorInputMessage';
 import { InputWrapper } from 'components/Base/Form/FormInput/styles';
 
 const FormInput = forwardRef((props, ref) => {
-  const { name, type, placeholder, valid, align, onChange, value } = props;
+  // eslint-disable-next-line react/prop-types
+  const { name, type, placeholder, valid, align, onChange, value, disabled } = props;
   return (
     <InputWrapper
       controlId="formBasicEmail"
@@ -19,6 +20,7 @@ const FormInput = forwardRef((props, ref) => {
         ref={ref}
         onChange={onChange}
         value={value}
+        disabled={disabled}
       />
       <ErrorInputMessage message={valid} />
     </InputWrapper>

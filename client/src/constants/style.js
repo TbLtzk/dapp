@@ -93,6 +93,10 @@ export const Block = styled(BlockBase)`
       margin-top: 30px;
     }
   }
+
+  button {
+    height: 42px;
+  }
 `;
 
 const theme = {

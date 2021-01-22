@@ -5,14 +5,14 @@ import CustomBlock from 'components/Base/CustomBlock';
 import Button from 'components/Base/Buttons/Button';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { fN } from 'func/useful';
+import { votingLockingEnd, votingWeight } from 'store/selectors/q-piggy-bank';
+import { fromSolDateFormattingT1 } from 'func/date';
 import { VotingStatsContainer, Title } from './styles';
-import { roundBalance } from '../../../../func/balance';
-import { votingLockingEnd, votingWeight } from '../../../../store/selectors/q-piggy-bank';
-import { fromSolDateFormattingT1 } from '../../../../func/date';
 
 function VotingStats() {
   const history = useHistory();
-  const userVotingWeight = roundBalance(useSelector(votingWeight));
+  const userVotingWeight = fN(useSelector(votingWeight));
   const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd));
 
   return (

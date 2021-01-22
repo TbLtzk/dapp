@@ -1,4 +1,4 @@
-import { roundNumber, uintPercentToNumber } from 'func/useful';
+import { uintPercentToNumber } from 'func/useful';
 import { GovernedEpdrQbtcQusdOracle, GovernedEpdrQethQusdOracle } from '../../../../contracts/FxPriceFeed';
 import { GovernedEpdrQbtcAddress, GovernedEpdrQethAddress } from '../../../../contracts/StableCoin';
 import { web3 } from '../../../../contracts/config/drizzle-config';
@@ -27,20 +27,6 @@ export default class Handler {
     }
   }
 
-  setExchangeRate(stateSetter) {
-    this.dispatch(setTransactionCounter(1));
-
-    this.oracleContract.exchangeRate().then((res) => {
-      const resL = roundNumber(web3.utils.fromWei(new web3.utils.BN(res)), 4);
-      stateSetter(resL);
-    }).catch((e) => {
-      stateSetter(0);
-      console.log(e);
-    }).finally(() => {
-      this.dispatch(setTransactionCounter(-1));
-    });
-  }
-
   setAvailableToDeposit(stateSetter) {
     this.dispatch(setTransactionCounter(1));
 
@@ -61,7 +47,7 @@ export default class Handler {
 
     const key = `governed.EPDR.${collateral}_QUSD_collateralizationRatio`;
     this.contractEPDRParameters.getUint(key).then((res) => {
-      const resL = (uintPercentToNumber(res) / 100) + 1;
+      const resL = uintPercentToNumber(res) + 1;
       stateSetter(resL);
     }).catch((e) => {
       stateSetter(0);
@@ -76,7 +62,7 @@ export default class Handler {
 
     const key = `governed.EPDR.${collateral}_QUSD_liquidationRatio`;
     this.contractEPDRParameters.getUint(key).then((res) => {
-      const resL = (uintPercentToNumber(Number(res)) / 100) + 1;
+      const resL = uintPercentToNumber(Number(res)) + 1;
       stateSetter(resL);
     }).catch((e) => {
       console.log(e);

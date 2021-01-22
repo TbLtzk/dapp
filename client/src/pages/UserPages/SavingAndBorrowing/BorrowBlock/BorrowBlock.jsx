@@ -4,11 +4,11 @@ import ButtonSlide from 'components/Base/Buttons/ButtonSlide';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
+import { fromBtcBlockchain } from 'func/balance';
+import { fN } from 'func/useful';
+import CommonHandler from '../handler';
 import Handler from './handler';
-
 import { CardDetail } from '../styles';
-import { roundNumber } from '../../../../func/useful';
-import { fromBtcBlockchain } from '../../../../func/balance';
 
 export default function BorrowBlock(props) {
   const { actCardData } = props;
@@ -28,11 +28,12 @@ export default function BorrowBlock(props) {
 
   const address = useSelector(userAddressMetamask);
   const handler = new Handler(address, actCardData?.vault?.colKey, useDispatch());
+  const commonHandler = new CommonHandler(address, useDispatch());
 
   useEffect(async () => {
     if (actCardData.type !== 'borrow') return;
 
-    handler.setExchangeRate(setExchangeRate);
+    commonHandler.setExchangeRate(actCardData.vault.colKey, setExchangeRate);
     handler.setAvailableToDeposit(setAvToDeposit);
     handler.setCollateralRatio(actCardData.collateral, setColRatio);
     handler.setLiquidationRatio(actCardData.collateral, setLiqRatio);
@@ -40,8 +41,6 @@ export default function BorrowBlock(props) {
 
   useEffect(() => {
     if (actCardData.type !== 'borrow') return;
-
-    console.log(lockedCol);
 
     // Setup locked collateral
     let lockedColL = lockedCol;
@@ -53,7 +52,7 @@ export default function BorrowBlock(props) {
     setLockedCol(lockedColL);
 
     // Setup collateral value
-    const colValueL = roundNumber(lockedColL * exchangeRate, 4);
+    const colValueL = lockedColL * exchangeRate;
     setColValue(colValueL);
 
     // Setup available to borrow
@@ -62,25 +61,25 @@ export default function BorrowBlock(props) {
 
     // Setup liquidation price
     if (colRatio !== 0 && Number(lockedColL) !== 0) {
-      const liqPriceL = roundNumber((actCardData.vault.debtBalance * liqRatio) / lockedColL, 4);
+      const liqPriceL = (actCardData.vault.debtBalance * liqRatio) / lockedColL;
       setLiqPrice(liqPriceL);
     }
 
     // Setup borrow limit
     if (colRatio !== 0) {
-      const borLimitL = roundNumber(colValueL / colRatio, 4);
+      const borLimitL = colValueL / colRatio;
       setBorLimit(borLimitL);
     }
 
     // Setup liquidation limit
     if (liqRatio !== 0) {
-      const liqLimitL = roundNumber(colValueL / liqRatio, 4);
+      const liqLimitL = colValueL / liqRatio;
       setLiqLimit(liqLimitL);
     }
 
     // Setup liquidation limit
     if (exchangeRate !== 0) {
-      const avToWithdrawL = roundNumber((avToBorrow / exchangeRate) * colRatio, 4);
+      const avToWithdrawL = (avToBorrow / exchangeRate) * colRatio;
       setAvToWithdraw(avToWithdrawL);
     }
   });
@@ -97,9 +96,6 @@ export default function BorrowBlock(props) {
   const withdraw = (formData) => {
     handler.withdraw(formData.field, actCardData.vault.vaultNum, lockedCol, setLockedCol, setAvToDeposit);
   };
-  // const mint = (formData) => {
-  //   handler.mint(formData.field);
-  // };
 
   return (
     <Col xs={12}>
@@ -112,23 +108,23 @@ export default function BorrowBlock(props) {
         </div>
         <div className="txt">
           <span>Locked collateral</span>
-          <span>{lockedCol}</span>
+          <span>{fN(lockedCol)}</span>
         </div>
         <div className="txt">
           <span>Asset price</span>
-          <span>{exchangeRate}</span>
+          <span>{fN(exchangeRate)}</span>
         </div>
         <div className="txt">
           <span>Available to deposit</span>
-          <span>{avToDeposit || 0}</span>
+          <span>{fN(avToDeposit) || 0}</span>
         </div>
         <div className="txt">
           <span>Available to withdraw</span>
-          <span>{avToWithdraw}</span>
+          <span>{fN(avToWithdraw)}</span>
         </div>
         <div className="txt">
           <span>Liquidation Price</span>
-          <span>{liqPrice}</span>
+          <span>{fN(liqPrice)}</span>
         </div>
 
         <p className="title-2">Borrowing</p>
@@ -138,27 +134,27 @@ export default function BorrowBlock(props) {
         </div>
         <div className="txt">
           <span>Collateral value</span>
-          <span>{colValue}</span>
+          <span>{fN(colValue)}</span>
         </div>
         <div className="txt">
           <span>Borrowing limit</span>
-          <span>{borLimit}</span>
+          <span>{fN(borLimit)}</span>
         </div>
         <div className="txt">
           <span>Available to borrow</span>
-          <span>{avToBorrow}</span>
+          <span>{fN(avToBorrow)}</span>
         </div>
         <div className="txt">
           <span>Outstanding debt</span>
-          <span>{actCardData.vault?.debtBalance}</span>
+          <span>{fN(actCardData.vault?.debtBalance)}</span>
         </div>
         <div className="txt">
           <span>Liquidation limit</span>
-          <span>{liqLimit}</span>
+          <span>{fN(liqLimit)}</span>
         </div>
         <div className="txt">
           <span>Borrowing fee p. a.</span>
-          <span>{actCardData.vault?.borrowingFee === undefined ? '-' : `${actCardData.vault.borrowingFee}%`}</span>
+          <span>{actCardData.vault?.borrowingFee === undefined ? '-' : `${fN(actCardData.vault.borrowingFee)}%`}</span>
         </div>
 
         <div className="btn-group">
@@ -194,14 +190,6 @@ export default function BorrowBlock(props) {
             inpPlaceholder={`Amount (${actCardData?.vault?.colKey})`}
             inpRules={{ required: true }}
           />
-          {/*<ButtonSlide*/}
-          {/*  btnTxt="Mint"*/}
-          {/*  btnShortTxt="Mint"*/}
-          {/*  onclick={mint}*/}
-          {/*  inpType="text"*/}
-          {/*  inpPlaceholder="Amount to mint"*/}
-          {/*  inpRules={{ required: true }}*/}
-          {/*/>*/}
         </div>
       </CardDetail>
     </Col>
