@@ -8,6 +8,16 @@ import StartConfigurations from 'pages/StartConfigurations';
 
 import UserPages from 'pages/UserPages';
 import { AuthProtect } from './AuthProtect';
+import QGovernance from '../pages/UserPages/QGovernance';
+import PiggyBank from '../pages/UserPages/PiggyBank';
+import Staking from '../pages/UserPages/Staking';
+import OneProposalPage from '../pages/UserPages/QGovernance/OneProposalPage';
+import EndedAuctions from '../pages/UserPages/SavingAndBorrowing/DecentralizedAuctions/EndedAuctions';
+import EndedProposals from '../pages/UserPages/QGovernance/EndedProposals';
+import SavingAndBorrowing from '../pages/UserPages/SavingAndBorrowing';
+import DecentralizedAuctions from '../pages/UserPages/SavingAndBorrowing/DecentralizedAuctions';
+import ManageStakerRewardPool from '../pages/UserPages/ManageStakerRewardPool';
+import SavingAndBorrowingContent from '../pages/UserPages/SavingAndBorrowing/SavingAndBorrowingContent';
 
 function Routes() {
   const options = {
@@ -21,19 +31,19 @@ function Routes() {
     // eslint-disable-next-line react/jsx-props-no-spreading
     <AlertProvider template={AlertTemplate} {...options}>
       <Switch>
-        <Route exact path="/" component={Start} />
-        <Route exact path="/start-configurations" component={StartConfigurations} />
+        <Route exact path="/" component={Start}/>
+        <Route exact path="/start-configurations" component={StartConfigurations}/>
       </Switch>
       <Switch>
-        <Route exact path="/q-governance" component={AuthProtect(UserPages)} />
-        <Route path="/piggy-bank" component={AuthProtect(UserPages)} />
-        <Route path="/staking" component={AuthProtect(UserPages)} />
-        <Route path="/manage-staker-reward-pool" component={AuthProtect(UserPages)} />
-        <Route path="/saving-and-borrowing" component={AuthProtect(UserPages)} />
-        <Route path="/ended-proposals" component={AuthProtect(UserPages)} />
-        <Route path="/decentralized-auctions" component={AuthProtect(UserPages)} />
-        <Route path="/ended-auctions" component={AuthProtect(UserPages)} />
-        <Route path="/q-governance/proposal/:contract?/:id?" component={AuthProtect(UserPages)} />
+        <Route exact path="/q-governance" component={AuthProtect(QGovernance)}/>
+        <Route exact path="/piggy-bank" component={AuthProtect(PiggyBank)}/>
+        <Route exact path="/staking" component={AuthProtect(Staking)}/>
+        <Route exact path="/manage-staker-reward-pool" component={AuthProtect(ManageStakerRewardPool)}/>
+        <Route exact path="/saving-and-borrowing" component={AuthProtect(SavingAndBorrowingContent)}/>
+        <Route exact path="/ended-proposals" component={AuthProtect(EndedProposals)}/>
+        <Route exact path="/decentralized-auctions" component={AuthProtect(DecentralizedAuctions)}/>
+        <Route exact path="/ended-auctions" component={AuthProtect(EndedAuctions)}/>
+        <Route exact path="/q-governance/proposal/:contract?/:id?" component={AuthProtect(OneProposalPage)}/>
       </Switch>
     </AlertProvider>
   );

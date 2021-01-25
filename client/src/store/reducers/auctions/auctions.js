@@ -34,13 +34,23 @@ export default function auctions(state = initialState, action) {
         ...state,
         auctionsArr: (() => {
           const findElem = state.auctionsArr?.find((element => {
-            return element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user;
+            if (action.result[0].contract === "LiquidationAuction"){
+              return element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user;
+            }else if (action.result[0].contract === "SystemSurplusAuction"){
+              return element.id === action.result[0].id;
+            }
+            // return element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user || element.id === action.result[0].id;
+            // return element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user;
           }));
           if (findElem) {
             return state.auctionsArr?.map((element) => {
-              if (element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user) {
+              if (element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user && element.contract === "LiquidationAuction") {
+              // if (element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user) {
                 return { ...action.result[0] };
-              } else {
+              } else if (element.id === action.result[0].id && action.result[0].contract === "SystemSurplusAuction"){
+                return { ...action.result[0] };
+              }
+              else {
                 return { ...element };
               }
             });

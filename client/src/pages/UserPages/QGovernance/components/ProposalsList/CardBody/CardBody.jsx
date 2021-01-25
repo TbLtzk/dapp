@@ -61,31 +61,6 @@ function CardBody(props) {
 
   // },[currentDate, votingTime, vetoTime]);
 
-  const remainDate = (unixTimestamp) => {
-
-    const vetoDate = new Date(unixTimestamp * 1000);
-    // console.log('currentDate', currentDate);
-    const currentDate = new Date();
-    if (currentDate > vetoDate) {
-      return 0;
-    } else {
-      const m1 = moment(currentDate, 'DD-MM-YYYY HH:mm');
-      const m2 = moment(vetoDate, 'DD-MM-YYYY HH:mm');
-      const m3 = m2.diff(m1, 'minutes');
-
-      const numdays = Math.floor(m3 / 1440);
-      const numhours = Math.floor((m3 % 1440) / 60);
-      const numminutes = Math.floor((m3 % 1440) % 60);
-
-      if (numdays === 0 && numhours === 0 && numminutes === 0) {
-        return 0;
-      } else {
-        // console.log('Time', numdays + ' day(s) ' + numhours + ' hours ' + numminutes + ' minutes');
-        return numdays + ' day(s) ' + numhours + ' hours ' + numminutes + ' minutes';
-      }
-    }
-  };
-
   // console.log("window.location.origin",window.location.origin)
 
   return (

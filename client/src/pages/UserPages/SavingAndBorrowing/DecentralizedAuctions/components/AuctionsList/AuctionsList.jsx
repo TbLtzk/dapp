@@ -26,11 +26,12 @@ function AuctionsList(props) {
   const [modalShow, setModalShow] = useState(false);
   const [inf, setInf] = useState(null);
 
-  const onAuctionBid = (user, vaultId, contract) => {
+  const onAuctionBid = (user, vaultId, contract, id) => {
     setInf({
       user,
       vaultId,
-      contract
+      contract,
+      id: id
     });
     dispatch(setStepCounter(1));
     dispatch(setCreatedStepsLimit(2));
@@ -46,11 +47,12 @@ function AuctionsList(props) {
     // }));
   };
 
-  const onAuctionExecute = (user, vaultId, contract) => {
+  const onAuctionExecute = (user, vaultId, contract, id) => {
     dispatch(executeAuction({
       user,
       vaultId,
-      contract
+      contract,
+      id: id
     }));
   };
 
@@ -62,20 +64,22 @@ function AuctionsList(props) {
             auctions.length === 0
               ? <p>No auctions</p>
               : auctions.map((auction, i) => {
-                return <CardBlock key={i + auction?.contract}>
+                return <CardBlock key={auction?.contract === 'SystemSurplusAuction' ? auction.id : i + auction?.contract}>
                   <CardHeader
+                    auction={auction}
                     title={auction?.title}
                     status={auction?.status}
+                    isExecuted={auction?.isExecuted}
                     handleBid={() => {
-                      onAuctionBid(auction.user, auction.userVaultId, auction.contract);
+                      onAuctionBid(auction.user, auction.userVaultId, auction.contract, auction?.id);
                     }}
                     handleExecute={() => {
-                      onAuctionExecute(auction.user, auction.userVaultId, auction.contract);
+                      onAuctionExecute(auction.user, auction.userVaultId, auction.contract, auction?.id);
                     }}
                     remainDate={remainDate(auction.endTime)}
                   />
                   <CardBody
-                    id={i + auction?.contract}
+                    id={auction?.contract === 'SystemSurplusAuction' ? auction.id : i + auction?.contract}
                     data={auction}
                   />
                 </CardBlock>;

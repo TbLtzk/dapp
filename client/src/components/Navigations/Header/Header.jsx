@@ -38,23 +38,18 @@ function Header() {
               {
                 navItems.map((value, key) => {
                   return (
-                    <Nav.Link to={'/' + value.location} key={key} href={'/' + value.location}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                // console.log('value.location', value.location);
-                                // console.log('value.location includes', location.pathname.includes('/q-governance/proposal/'));
-                                // if (location.pathname.includes('/q-governance/proposal/')) {
-                                //   console.log("true");
-                                //   history.replace(value.location);
-                                // } else {
-                                history.push(value.location);
-                                // }
-                              }}
-                              className="nav-link"
-                              highlight={Number(history.location.pathname === ('/' + value.location))}
+                    <Link
+                      to={'/' + value.location}
+                      key={key}
+                      onClick={(e) => {
+                        // e.preventDefault();
+                        // history.push(value.location);
+                      }}
+                      className="nav-link"
+                      highlight={Number(history.location.pathname === ('/' + value.location))}
                     >
                       {value.label}
-                    </Nav.Link>
+                    </Link>
                   );
                 })
               }

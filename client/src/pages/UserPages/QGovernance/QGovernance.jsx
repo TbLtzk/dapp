@@ -8,6 +8,7 @@ import CreateQProposalBtn from './components/CreateQProposalBtn';
 import References from 'components/Custom/PageLists/References';
 import Button from 'components/Base/Buttons/Button';
 import TabContent from './components/TabContent';
+import PageWrap from 'components/Base/PageWrap';
 import VotingStats from './VotingStats';
 
 import { WrapBtn, WrapTabs } from 'components/Custom/PageLists/styles';
@@ -65,37 +66,39 @@ function QGovernance() {
   }, [activeTab]);
 
   return (
-    <Row>
-      <Col md={8}>
-        <ButtonsGroupTabs
-          tabsItems={tabsItems}
-          tabsHandler={(key) => {
-            setActiveTab(key);
-          }}
-        />
-        <WrapBtn>
-          <Button
-            title="View ended proposals"
-            type="white"
-            width="100%"
-            handleButton={() => {
-              history.push({
-                pathname: '/ended-proposals',
-                state: {
-                  activeTab: activeTab,
-                  numberOfProposals: 0
-                }
-              });
+    <PageWrap>
+      <Row>
+        <Col md={8}>
+          <ButtonsGroupTabs
+            tabsItems={tabsItems}
+            tabsHandler={(key) => {
+              setActiveTab(key);
             }}
           />
-        </WrapBtn>
-      </Col>
-      <Col md={4}>
-        <CreateQProposalBtn activeTab={activeTab}/>
-        <VotingStats />
-        <References type="voting"/>
-      </Col>
-    </Row>
+          <WrapBtn>
+            <Button
+              title="View ended proposals"
+              type="white"
+              width="100%"
+              handleButton={() => {
+                history.push({
+                  pathname: '/ended-proposals',
+                  state: {
+                    activeTab: activeTab,
+                    numberOfProposals: 0
+                  }
+                });
+              }}
+            />
+          </WrapBtn>
+        </Col>
+        <Col md={4}>
+          <CreateQProposalBtn activeTab={activeTab}/>
+          <VotingStats/>
+          <References type="voting"/>
+        </Col>
+      </Row>
+    </PageWrap>
   );
 }
 

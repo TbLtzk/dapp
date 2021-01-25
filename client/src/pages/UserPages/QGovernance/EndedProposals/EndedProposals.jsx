@@ -12,6 +12,7 @@ import { checkCurrentTab } from 'pages/UserPages/QGovernance/components/constant
 
 import { Row, Col } from 'react-bootstrap';
 import { Title } from 'components/Custom/PageLists/styles';
+import PageWrap from '../../../../components/Base/PageWrap';
 
 const { useDrizzle } = drizzleReactHooks;
 
@@ -33,18 +34,20 @@ function EndedProposals() {
   }, [location?.state?.activeTab, location?.state?.numberOfProposals]);
 
   return (
-    <Row>
-      <Col xs={8}>
-        <Title>{`Ended ${location?.state?.activeTab?.replace(/-/g, ' ')} (${endedArr?.length}`})</Title>
-        <ProposalsList
-          activeTab={location?.state?.activeTab}
-          proposals={endedArr}
-          loading={loading}
-          errorMessage={error}
-          proposalsKind={proposalKind}
-        />
-      </Col>
-    </Row>
+    <PageWrap>
+      <Row>
+        <Col xs={8}>
+          <Title>{`Ended ${location?.state?.activeTab?.replace(/-/g, ' ')} (${endedArr?.length}`})</Title>
+          <ProposalsList
+            activeTab={location?.state?.activeTab}
+            proposals={endedArr}
+            loading={loading}
+            errorMessage={error}
+            proposalsKind={proposalKind}
+          />
+        </Col>
+      </Row>
+    </PageWrap>
   );
 }
 

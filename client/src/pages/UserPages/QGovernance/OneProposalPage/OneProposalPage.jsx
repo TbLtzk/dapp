@@ -10,11 +10,12 @@ import { Row, Col } from 'react-bootstrap';
 import ProposalsList from 'pages/UserPages/QGovernance/components/ProposalsList';
 import { checkCurrentTab, checkActiveTabByContract } from '../components/constants';
 import { Title } from 'components/Custom/PageLists/styles';
+import PageWrap from '../../../../components/Base/PageWrap';
 
 const { useDrizzle } = drizzleReactHooks;
 
 function OneProposalPage(props) {
-  const { params } = props;
+  const { match } = props;
   const { drizzle } = useDrizzle();
   const dispatch = useDispatch();
   const [empty, setEmpty] = useState(false);
@@ -24,16 +25,16 @@ function OneProposalPage(props) {
   const error = useSelector(errorM);
 
   useEffect(() => {
-    if (params?.id && params?.contract && !isNaN((Number(params?.id)))) {
+    if (match.params?.id && match.params?.contract && !isNaN((Number(match.params?.id)))) {
       setEmpty(false);
       dispatch(getOneProposal(drizzle, {
-        id: params?.id,
-        contract: params?.contract
+        id: match.params?.id,
+        contract: match.params?.contract
       }));
     } else {
       setEmpty(true);
     }
-  }, [dispatch, params]);
+  }, [dispatch, match]);
 
   const activeTab = useMemo(() => {
     return checkActiveTabByContract(proposal[0]?.contract);
@@ -44,20 +45,22 @@ function OneProposalPage(props) {
   }, [activeTab]);
 
   return (
-    <Row>
-      <Col xs={8}>
-        <Title>{activeTab ? `${activeTab?.replace(/-/g, ' ')}` : null}</Title>
-        {empty ? <p>Wrong link</p> :
-          <ProposalsList
-            activeTab={activeTab}
-            proposals={proposal}
-            loading={loading}
-            errorMessage={error}
-            proposalsKind={proposalKind}
-          />
-        }
-      </Col>
-    </Row>
+    <PageWrap>
+      <Row>
+        <Col xs={8}>
+          <Title>{activeTab ? `${activeTab?.replace(/-/g, ' ')}` : null}</Title>
+          {empty ? <p>Wrong link</p> :
+            <ProposalsList
+              activeTab={activeTab}
+              proposals={proposal}
+              loading={loading}
+              errorMessage={error}
+              proposalsKind={proposalKind}
+            />
+          }
+        </Col>
+      </Row>
+    </PageWrap>
   );
 }
 

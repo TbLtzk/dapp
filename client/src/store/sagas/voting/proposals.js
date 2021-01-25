@@ -10,7 +10,7 @@ import {
   getEndedProposalsSuccess, getEndedProposalsError,
   executeProposalSuccess, executeProposalError,
   getProposalsListError, getProposalsListSuccess,
-  getProposalSuccess, getEmptyProposalSuccess, getProposalError, getProposalVote
+  getProposalSuccess, getEmptyProposalSuccess, getProposalError, getProposalVote, getNumberAllEndedProposals
 } from 'store/actions/action-creaters/voting/proposals';
 import {
   creationQContractObj, creationRootContractObj, creationExpertContractObj, creationSlashingContractObj,
@@ -312,4 +312,7 @@ export default [
   takeEvery(actionTypes.GET_ONE_PROPOSAL, getOneProposalShared),
   takeEvery(actionTypes.GET_PROPOSALS_LIST, getProposalsList),
   takeEvery(actionTypes.GET_PROPOSAL, getProposal),
+
+  // takeEvery(actionTypes.GET_NUMBER_ALL_ACTIVE_PROPOSALS, getNumberActiveProposals),
+  // takeEvery(actionTypes.GET_NUMBER_ALL_ENDED_PROPOSALS, getNumberEndedProposals),
 ];

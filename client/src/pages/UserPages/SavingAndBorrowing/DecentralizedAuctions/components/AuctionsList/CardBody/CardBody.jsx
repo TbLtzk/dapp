@@ -15,12 +15,17 @@ function CardBody(props) {
   return (
     <ListCardBody
       id={id}
+      shareText={`${window.location.origin}/auction/${data.contract}/`}
       collapsedContent={
         <>
           <Text>Highest bid: {data.highestBid}</Text>
           <Text>Bidder: {data.bidder}</Text>
           <Text>User: {data.user}</Text>
-          <Text>Vault id: {data.userVaultId}</Text>
+          {data.contract !== 'SystemSurplusAuction'
+            ? <Text>Vault id: {data.userVaultId}</Text>
+            : <Text>Lot: {data.lot} QUSD</Text>
+          }
+
         </>
       }
     >
@@ -37,8 +42,14 @@ function CardBody(props) {
         </div>
       </Details>
       <Details md={4}>
-        <p>User: {data.user.slice(0, 14) + '...'}</p>
-        <p>Vault id: {data.userVaultId}</p>
+
+        {data.contract !== 'SystemSurplusAuction'
+          ? <>
+            <p>User: {data.user.slice(0, 14) + '...'}</p>
+            <p>Vault id: {data.userVaultId}</p>
+          </>
+          : <p>Auction id: {data.id}</p>
+        }
       </Details>
     </ListCardBody>
   );

@@ -11,6 +11,7 @@ import TabContent from './components/TabContent';
 import References from 'components/Custom/PageLists/References';
 
 import { WrapBtn, WrapTabs } from 'components/Custom/PageLists/styles';
+import PageWrap from '../../../../components/Base/PageWrap';
 
 export default function DecentralizedAuctions() {
   const history = useHistory();
@@ -61,36 +62,38 @@ export default function DecentralizedAuctions() {
   }, [activeTab]);
 
   return (
-    <Row>
-      <Col md={8}>
-        <ButtonsGroupTabs
-          tabsItems={tabsItems}
-          tabsHandler={(key) => {
-            setActiveTab(key);
-          }}
-        />
-        <WrapBtn>
-          <Button
-            title="View ended auctions"
-            type="white"
-            width="100%"
-            handleButton={() => {
-              history.push({
-                pathname: '/ended-auctions',
-                state: {
-                  activeTab: activeTab,
-                  numberOfAuctions: 0
-                }
-              });
+    <PageWrap>
+      <Row>
+        <Col md={8}>
+          <ButtonsGroupTabs
+            tabsItems={tabsItems}
+            tabsHandler={(key) => {
+              setActiveTab(key);
             }}
           />
-        </WrapBtn>
-      </Col>
-      <Col md={4}>
-        <CreateAuctionBtn activeTab={activeTab}/>
-        <Stats statsData={statsData} type="Auction"/>
-        <References type="auction"/>
-      </Col>
-    </Row>
+          <WrapBtn>
+            <Button
+              title="View ended auctions"
+              type="white"
+              width="100%"
+              handleButton={() => {
+                history.push({
+                  pathname: '/ended-auctions',
+                  state: {
+                    activeTab: activeTab,
+                    numberOfAuctions: 0
+                  }
+                });
+              }}
+            />
+          </WrapBtn>
+        </Col>
+        <Col md={4}>
+          <CreateAuctionBtn activeTab={activeTab}/>
+          <Stats statsData={statsData} type="Auction"/>
+          <References type="auction"/>
+        </Col>
+      </Row>
+    </PageWrap>
   );
 }

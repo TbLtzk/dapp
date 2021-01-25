@@ -28,8 +28,15 @@ export default class AuctionService {
    * @return array
    */
   async getAuction(user, vaultId) {
-    const result = await this.contract.methods.auctions(user, vaultId)
-      .call();
+    let result = null;
+    if (vaultId) {
+      result = await this.contract.methods.auctions(user, vaultId)
+        .call();
+    } else {
+      result = await this.contract.methods.auctions(user)
+        .call();
+    }
+
     return result;
 
   }
@@ -43,27 +50,21 @@ export default class AuctionService {
    * @return array
    */
   async bid(user, vaultId, bid, userAddress) {
-    console.log('user', user);
-    console.log('vaultId', vaultId);
-    console.log('bid', bid);
-    console.log('userAddress', userAddress);
     const result = await this.contract.methods.bid(user, vaultId,
       bn(drizzleRegistry.web3.utils.toWei(bid, 'ether')))
       .send(
         { from: userAddress });
-    console.log('bid', result);
     return result;
   }
 
   /**
-   * bid for auction
+   * execute for auction
    * @param user
    * @param vaultId
    * @param userAddress
    * @return array
    */
   async execute(user, vaultId, userAddress) {
-    console.log('execute');
     const result = await this.contract.methods.execute(user, vaultId)
       .send(
         { from: userAddress });
@@ -78,8 +79,8 @@ export default class AuctionService {
   async getAuctions(activeAuction) {
     const auctionEvents = await this.getAuctionsEvent();
     const auctionInf = getPastAuctionsIds(auctionEvents);
-    // console.log('auctionEvents', auctionEvents);
-    // console.log('auctionInf', auctionInf);
+    console.log('auctionEvents', auctionEvents);
+    console.log('auctionInf', auctionInf);
     let auctions = [];
     if (auctionInf?.length > 0) {
       for (let inf of auctionInf) {

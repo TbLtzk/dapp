@@ -95,6 +95,7 @@ function* getOneAuction({ contractName, inf, activeTab, activeAuction }) {
     if (contract) {
       let data = null;
       data = yield contract.getOneAuction(inf);
+      console.log("data", data);
       if (data) {
         yield put(getAuctionSuccess(data));
       } else {
@@ -136,12 +137,29 @@ function* bidForAuctionHandler({ data }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select(state => state.userInf);
-
+    let contract = null;
     let result = null;
-    if (data?.user && data?.vaultId && data?.bid) {
-      const contract = new AuctionService(data?.contract);
-      result = yield contract.bid(data.user, data.vaultId, data.bid, userAddress);
+    switch (data?.contract) {
+      case 'LiquidationAuction':
+        contract = creationLiquidationContractObj();
+        result = yield contract.bid(data.user, data.vaultId, data.bid, userAddress);
+        break;
+      case 'SystemDebtAuction':
+        contract = creationSystemDebtContractObj();
+        break;
+      case 'SystemSurplusAuction':
+        contract = creationSystemSurplusContractObj();
+        result = yield contract.bid(data.id, data.bid, userAddress);
+        break;
+      default:
+        return null;
     }
+
+
+    // if (data?.user && data?.vaultId && data?.bid) {
+    //   const contract = new AuctionService(data?.contract);
+    //   result = yield contract.bid(data.user, data.vaultId, data.bid, userAddress);
+    // }
     yield call(getAuctionDependsOnType, data?.contract, data, true);
     yield put(bidForAuctionSuccess(result));
     yield put(setTransactionLoadingSuccess());
@@ -157,12 +175,24 @@ function* executeAuctionHandler({ data }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select(state => state.userInf);
-
+    let contract = null;
     let result = null;
-    if (data?.user && data?.vaultId) {
-      const contract = new AuctionService(data?.contract);
-      result = yield contract.execute(data.user, data.vaultId, userAddress);
+    switch (data?.contract) {
+      case 'LiquidationAuction':
+        contract = creationLiquidationContractObj();
+        result = yield contract.execute(data.user, data.vaultId, userAddress);
+        break;
+      case 'SystemDebtAuction':
+        contract = creationSystemDebtContractObj();
+        break;
+      case 'SystemSurplusAuction':
+        contract = creationSystemSurplusContractObj();
+        result = yield contract.execute(data.id, userAddress);
+        break;
+      default:
+        return null;
     }
+
     yield call(getAuctionDependsOnType, data?.contract, data, true);
     yield put(setTransactionLoadingSuccess());
 

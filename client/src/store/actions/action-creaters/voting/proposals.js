@@ -81,7 +81,6 @@ export const executeProposalError = (result) => ({
   result
 });
 
-
 export const updateProposal = (drizzle, data) => ({
   type: actionTypes.UPDATE_PROPOSAL,
   drizzle,
@@ -131,4 +130,22 @@ export const getEmptyProposalSuccess = (result) => ({
 export const getProposalError = (result) => ({
   type: actionTypes.GET_PROPOSAL_ERROR,
   result,
+});
+//dashboard
+export const getNumberAllActiveProposals = () => ({
+  type: actionTypes.GET_NUMBER_ALL_ACTIVE_PROPOSALS,
+});
+
+export const getNumberAllActiveProposalsSuccess = (result) => ({
+  type: actionTypes.GET_NUMBER_ALL_ACTIVE_PROPOSALS_SUCCESS,
+  result
+});
+
+export const getNumberAllEndedProposals = () => ({
+  type: actionTypes.GET_NUMBER_ALL_ENDED_PROPOSALS,
+});
+
+export const getNumberAllEndedProposalsSuccess = (result) => ({
+  type: actionTypes.GET_NUMBER_ALL_ENDED_PROPOSALS_SUCCESS,
+  result
 });

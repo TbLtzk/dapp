@@ -3,6 +3,7 @@ import { Row } from 'react-bootstrap';
 import { BlockBase } from 'constants/style';
 import colors from 'constants/colors.js';
 
+// export const ContainerSB = styled(Row)`
 export const ContainerSB = styled(Row)`
 .col-info-container.saving, .col-info-container.borrow {
   display: none;

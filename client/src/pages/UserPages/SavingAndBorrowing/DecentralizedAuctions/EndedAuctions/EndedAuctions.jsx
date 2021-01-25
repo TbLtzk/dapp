@@ -9,6 +9,7 @@ import AuctionsList from '../components/AuctionsList';
 
 import { Row, Col } from 'react-bootstrap';
 import { Title } from './styles';
+import PageWrap from '../../../../../components/Base/PageWrap';
 
 function EndedAuctions() {
   const location = useLocation();
@@ -24,17 +25,19 @@ function EndedAuctions() {
   }, [dispatch]);
 
   return (
-    <Row>
-      <Col xs={8}>
-        <Title>{`Ended ${location?.state?.activeTab?.replace(/-/g, ' ')} (${auctions.length}`})</Title>
-        <AuctionsList
-          activeTab={location?.state?.activeTab}
-          auctions={auctions}
-          loading={loading}
-          errorMessage={errorMessage}
-        />
-      </Col>
-    </Row>
+    <PageWrap>
+      <Row>
+        <Col xs={8}>
+          <Title>{`Ended ${location?.state?.activeTab?.replace(/-/g, ' ')} (${auctions.length}`})</Title>
+          <AuctionsList
+            activeTab={location?.state?.activeTab}
+            auctions={auctions}
+            loading={loading}
+            errorMessage={errorMessage}
+          />
+        </Col>
+      </Row>
+    </PageWrap>
   );
 }
 
