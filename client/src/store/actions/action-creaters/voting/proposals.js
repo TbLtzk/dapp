@@ -131,21 +131,13 @@ export const getProposalError = (result) => ({
   type: actionTypes.GET_PROPOSAL_ERROR,
   result,
 });
+
 //dashboard
-export const getNumberAllActiveProposals = () => ({
-  type: actionTypes.GET_NUMBER_ALL_ACTIVE_PROPOSALS,
+export const getNumberAllProposals = () => ({
+  type: actionTypes.GET_NUMBER_ALL_PROPOSALS,
 });
 
-export const getNumberAllActiveProposalsSuccess = (result) => ({
-  type: actionTypes.GET_NUMBER_ALL_ACTIVE_PROPOSALS_SUCCESS,
-  result
-});
-
-export const getNumberAllEndedProposals = () => ({
-  type: actionTypes.GET_NUMBER_ALL_ENDED_PROPOSALS,
-});
-
-export const getNumberAllEndedProposalsSuccess = (result) => ({
-  type: actionTypes.GET_NUMBER_ALL_ENDED_PROPOSALS_SUCCESS,
+export const getNumberAllProposalsSuccess = (result) => ({
+  type: actionTypes.GET_NUMBER_ALL_PROPOSALS_SUCCESS,
   result
 });

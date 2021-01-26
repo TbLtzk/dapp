@@ -18,14 +18,13 @@ function CardBody(props) {
       shareText={`${window.location.origin}/auction/${data.contract}/`}
       collapsedContent={
         <>
-          <Text>Highest bid: {data.highestBid}</Text>
+          <Text>Highest bid: {data.highestBid}Q</Text>
           <Text>Bidder: {data.bidder}</Text>
           <Text>User: {data.user}</Text>
           {data.contract !== 'SystemSurplusAuction'
             ? <Text>Vault id: {data.userVaultId}</Text>
             : <Text>Lot: {data.lot} QUSD</Text>
           }
-
         </>
       }
     >

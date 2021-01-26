@@ -19,7 +19,5 @@ export const loadingProposals = state => state.proposals.loadingProposals;
 export const errorM = state => state.proposals.errorM;
 
 /*for dashboard*/
-export const numberOfEndedProposals = state => state.proposals.numberOfEndedProposals;
-export const loadingNumberEnded = state => state.proposals.loadingNumberEnded;
-export const numberOfActiveProposals = state => state.proposals.numberOfActiveProposals;
-export const loadingNumberActive = state => state.proposals.loadingNumberActive;
+export const numberOfAllProposals = state => state.proposals.numberOfAllProposals;
+export const loadingNumberAll = state => state.proposals.loadingNumberAll;

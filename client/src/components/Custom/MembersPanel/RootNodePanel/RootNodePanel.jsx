@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { drizzleReactHooks } from '@drizzle/react-plugin';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getRootMembersData } from 'store/actions/action-creaters/root-contract';
+import { getRootMembersData, getRootNodeStakes, getWithdrawals } from 'store/actions/action-creaters/root-contract';
 import {
   rootMembersData, rootMembersAmountStakes, loadingRootMembers, errorM,
 } from 'store/selectors/root-contract';
@@ -23,6 +23,7 @@ import {
 } from '../styles';
 
 import { tableHeader } from '../RootNodePanel/constants';
+import { userAddressMetamask } from '../../../../store/selectors/user-inf';
 
 const { useDrizzle } = drizzleReactHooks;
 
@@ -31,6 +32,7 @@ function RootNodePanel(props) {
   const { drizzle } = useDrizzle();
   const rootService = new RootService(drizzle);
 
+  const userAddress = useSelector(userAddressMetamask);
   const rootMembersArray = useSelector(rootMembersData);
   const loading = useSelector(loadingRootMembers);
   const errorMessage = useSelector(errorM);
@@ -40,6 +42,7 @@ function RootNodePanel(props) {
 
   useEffect(() => {
     dispatch(getRootMembersData(rootService));
+    dispatch(getRootNodeStakes(rootService, userAddress));
   }, [dispatch]);
 
   return (

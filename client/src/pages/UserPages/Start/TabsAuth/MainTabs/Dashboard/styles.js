@@ -19,6 +19,9 @@ export const BlockAlign = styled.div`
    p:first-child{
     margin-bottom: 3px;
    }
+   p{
+    word-wrap: break-word;
+   }
    a{
      color: ${props => props.theme.colors.main};
      text-decoration: none;

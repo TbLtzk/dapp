@@ -20,10 +20,8 @@ const initialState = {
   loadingEndedProposals: true,
   errorEnded: null,
 
-  numberOfActiveProposals: 0,
-  numberOfEndedProposals: 0,
-  loadingNumberActive: true,
-  loadingNumberEnded: true,
+  numberOfAllProposals: 0,
+  loadingNumberAll: true,
 };
 
 export default function proposals(state = initialState, action) {
@@ -146,27 +144,16 @@ export default function proposals(state = initialState, action) {
         })(),
         loadingProposals: false,
       };
-    case actionTypes.GET_NUMBER_ALL_ACTIVE_PROPOSALS:
+    case actionTypes.GET_NUMBER_ALL_PROPOSALS:
       return {
         ...state,
-        loadingNumberActive: true,
+        loadingNumberAll: true,
       };
-    case actionTypes.GET_NUMBER_ALL_ACTIVE_PROPOSALS_SUCCESS:
+    case actionTypes.GET_NUMBER_ALL_PROPOSALS_SUCCESS:
       return {
         ...state,
-        numberOfActiveProposals: action.result,
-        loadingNumberActive: false,
-      };
-    case actionTypes.GET_NUMBER_ALL_ENDED_PROPOSALS:
-      return {
-        ...state,
-        loadingNumberEnded: true,
-      };
-    case actionTypes.GET_NUMBER_ALL_ENDED_PROPOSALS_SUCCESS:
-      return {
-        ...state,
-        numberOfEndedProposals: action.result,
-        loadingNumberEnded: false,
+        numberOfAllProposals: action.result,
+        loadingNumberAll: false,
       };
     default:
       return state;

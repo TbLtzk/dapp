@@ -365,4 +365,41 @@ export default class VotingService {
     }
   }
 
+  /**
+   * get number of active and ended proposals
+   * @return array
+   */
+  async getProposalsCount() {
+    try {
+      const proposalEvents = await this.getProposalsEvent();
+      console.log("proposalEvents", proposalEvents);
+      const proposalIds = getPastProposalsIds(proposalEvents);
+      let proposalsActive = 0;
+      let proposalsEnded = 0;
+      if (proposalIds) {
+        for (let id of proposalIds) {
+          let objRes = {};
+          let promiseStatus = await this.getProposalStatus(id);
+          if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
+            // let promiseRes = await this.getProposal(id);
+            // if (promiseRes) {
+            //   objRes = await this.getProposalData(promiseRes, id, promiseStatus);
+              proposalsActive++;
+            // }
+          }else {
+            // let promiseRes = await this.getProposal(id);
+            // if (promiseRes) {
+            //   objRes = await this.getProposalData(promiseRes, id, promiseStatus);
+              proposalsEnded++;
+            // }
+          }
+
+        }
+      }
+      return {ended: proposalsEnded, active: proposalsActive};
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
 }

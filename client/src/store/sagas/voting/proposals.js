@@ -10,7 +10,8 @@ import {
   getEndedProposalsSuccess, getEndedProposalsError,
   executeProposalSuccess, executeProposalError,
   getProposalsListError, getProposalsListSuccess,
-  getProposalSuccess, getEmptyProposalSuccess, getProposalError, getProposalVote, getNumberAllEndedProposals
+  getProposalSuccess, getEmptyProposalSuccess, getProposalError, getProposalVote,
+  getNumberAllProposalsSuccess
 } from 'store/actions/action-creaters/voting/proposals';
 import {
   creationQContractObj, creationRootContractObj, creationExpertContractObj, creationSlashingContractObj,
@@ -302,6 +303,27 @@ function* getEndedProposals({ drizzle, activeTab }) {
   }
 }
 
+function* getNumberAllProposals() {
+  try {
+    const contracts = [...creationQContractsObjArray(), creationRootContractObj(),
+      ...creationExpertContractsObjArray(), ...creationSlashingContractsObjArray()];
+    console.log("contracts", contracts);
+    let result = {ended: 0, active: 0};
+    for (let contractName of contracts) {
+      const data = yield contractName.getProposalsCount();
+      console.log("data", data);
+      result = {ended: data?.ended + result?.ended, active: data?.active + result?.active};
+    }
+
+    console.log("Proposals counter", result);
+
+    yield put(getNumberAllProposalsSuccess(result));
+
+  } catch (err) {
+    console.log('err', err.message);
+  }
+}
+
 export default [
   takeEvery(actionTypes.CREATE_PROPOSAL, createProposal),
   takeEvery(actionTypes.VOTE_FOR_PROPOSAL, voteForProposal),
@@ -314,5 +336,5 @@ export default [
   takeEvery(actionTypes.GET_PROPOSAL, getProposal),
 
   // takeEvery(actionTypes.GET_NUMBER_ALL_ACTIVE_PROPOSALS, getNumberActiveProposals),
-  // takeEvery(actionTypes.GET_NUMBER_ALL_ENDED_PROPOSALS, getNumberEndedProposals),
+  takeEvery(actionTypes.GET_NUMBER_ALL_PROPOSALS, getNumberAllProposals),
 ];

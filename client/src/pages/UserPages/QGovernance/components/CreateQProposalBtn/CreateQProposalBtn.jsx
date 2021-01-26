@@ -46,16 +46,16 @@ function CreateQProposalBtn(props) {
     dispatch(setStepCounter(1));
     setModalShow(true);
     switch (activeTab) {
-      case 'q-auctions':
+      case 'q-proposals':
         dispatch(setCreatedStepsLimit(4));
         break;
       case 'q-root-node-panel':
         dispatch(setCreatedStepsLimit(3));
         break;
-      case 'q-expert-auctions':
+      case 'q-expert-proposals':
         dispatch(setCreatedStepsLimit(3));
         break;
-      case 'slashing-auctions':
+      case 'slashing-proposals':
         dispatch(setCreatedStepsLimit(3));
         break;
       default:
