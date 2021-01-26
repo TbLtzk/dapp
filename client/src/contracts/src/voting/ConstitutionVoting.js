@@ -152,6 +152,15 @@ export default class ConstitutionVoting extends VotingService {
     }catch (e) {
       console.log("e", e);
     }
-
   }
+  /**
+   * get constitution hash
+   * @return string
+   */
+  async getConstitutionHash() {
+    const result = await this.contract.methods.constitutionHash()
+      .call();
+    return result;
+  }
+
 }

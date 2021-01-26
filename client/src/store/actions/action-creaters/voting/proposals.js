@@ -141,3 +141,11 @@ export const getNumberAllProposalsSuccess = (result) => ({
   type: actionTypes.GET_NUMBER_ALL_PROPOSALS_SUCCESS,
   result
 });
+export const getConstitutionHash = () => ({
+  type: actionTypes.GET_CONSTITUTION_HASH,
+});
+
+export const getConstitutionHashSuccess = (result) => ({
+  type: actionTypes.GET_CONSTITUTION_HASH_SUCCESS,
+  result
+});

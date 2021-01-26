@@ -21,3 +21,4 @@ export const errorM = state => state.proposals.errorM;
 /*for dashboard*/
 export const numberOfAllProposals = state => state.proposals.numberOfAllProposals;
 export const loadingNumberAll = state => state.proposals.loadingNumberAll;
+export const constitutionHash = state => state.proposals.constitutionHash;

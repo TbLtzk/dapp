@@ -7,8 +7,8 @@ import { Col, Row } from 'react-bootstrap';
 import { LoadingWrap } from 'components/Custom/MembersPanel/styles';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadingNumberAll, numberOfAllProposals } from 'store/selectors/voting/proposals';
-import { getNumberAllProposals } from 'store/actions/action-creaters/voting/proposals';
+import { loadingNumberAll, numberOfAllProposals, constitutionHash } from 'store/selectors/voting/proposals';
+import { getNumberAllProposals, getConstitutionHash } from 'store/actions/action-creaters/voting/proposals';
 
 const { useDrizzle, useDrizzleState } = drizzleReactHooks;
 
@@ -19,9 +19,11 @@ function InfBlocksUp() {
 
   const numberAllProposals = useSelector(numberOfAllProposals);
   const loadingNumberAllProposals = useSelector(loadingNumberAll);
+  const constitutionHashShow = useSelector(constitutionHash);
 
   useEffect(() => {
     dispatch(getNumberAllProposals());
+    dispatch(getConstitutionHash());
   }, [dispatch]);
 
   return (
@@ -45,7 +47,7 @@ function InfBlocksUp() {
           secondSubtitle={null}
           firstContent={
             <p>
-              {contractsToAddresses.ContractRegistry}
+              {constitutionHashShow}
             </p>
           }
           secondContent={

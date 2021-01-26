@@ -22,6 +22,7 @@ const initialState = {
 
   numberOfAllProposals: 0,
   loadingNumberAll: true,
+  constitutionHash: '...',
 };
 
 export default function proposals(state = initialState, action) {
@@ -154,6 +155,11 @@ export default function proposals(state = initialState, action) {
         ...state,
         numberOfAllProposals: action.result,
         loadingNumberAll: false,
+      };
+    case actionTypes.GET_CONSTITUTION_HASH_SUCCESS:
+      return {
+        ...state,
+        constitutionHash: action.result,
       };
     default:
       return state;
