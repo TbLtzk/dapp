@@ -33,6 +33,11 @@ export default function index(state = initialState, action) {
         ...state,
         balance: action.payload,
       };
+    case actionTypes.GET_VRP_BALANCE_DASHBOARD_SUCCESS:
+      return {
+        ...state,
+        balance: action.result,
+      };
     default:
       return {
         ...state,

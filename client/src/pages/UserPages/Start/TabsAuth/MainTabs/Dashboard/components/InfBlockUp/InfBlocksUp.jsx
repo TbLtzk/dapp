@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
-import SmallBlock from '../SmallBlock';
+import SmallBlock from './SmallBlock';
 
 import { Col, Row } from 'react-bootstrap';
 import { LoadingWrap } from 'components/Custom/MembersPanel/styles';

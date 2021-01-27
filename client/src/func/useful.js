@@ -52,3 +52,15 @@ export const uintPerSecondToPerYearNumber = (num) => {
   const perSec = uintPercentToNumber(numL);
   return (((1 + perSec) ** (365 * 24 * 3600)) - 1) * 100;
 };
+
+export const bn = (number) => {
+  return new BigNumber(number);
+};
+
+export const getPercentageFormat = (number) => {
+  return bn(1e+27)
+    .multipliedBy(number)
+    .dividedBy(100);
+};
+
+

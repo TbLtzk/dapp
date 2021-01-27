@@ -1,7 +1,7 @@
 import React from 'react';
 import CustomBlock from 'components/Base/CustomBlock';
 
-import { Title, BlockAlign } from '../../styles';
+import { Title, BlockAlign } from 'pages/UserPages/Start/TabsAuth/MainTabs/Dashboard/styles';
 
 function SmallBlock(props) {
   const { title, firstSubtitle, secondSubtitle, firstContent, secondContent } = props;

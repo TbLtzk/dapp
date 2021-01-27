@@ -24,6 +24,12 @@ import RootsVotingABI from '../abi/RootsVotingABI';
 import ValidatorsSlashingVotingABI from '../abi/ValidatorsSlashingVotingABI';
 import RootNodesSlashingVotingABI from '../abi/RootNodesSlashingVotingABI';
 
+import DefaultAllocationProxyABI from '../abi/DefaultAllocationProxyABI';
+import RootNodeRewardProxyABI from '../abi/RootNodeRewardProxyABI';
+import QHolderRewardPoolABI from '../abi/QHolderRewardPoolABI';
+import SystemReserveABI from '../abi/SystemReserveABI';
+import EPDR_ParametersABI from '../abi/EPDR_ParametersABI';
+
 import RootABI from '../abi/RootABI';
 
 export const contractsToAbi = {
@@ -56,4 +62,10 @@ export const contractsToAbi = {
   ValidatorsSlashingVoting: ValidatorsSlashingVotingABI,
   RootNodesSlashingVoting: RootNodesSlashingVotingABI,
   Root: RootABI,
+
+  DefaultAllocationProxy: DefaultAllocationProxyABI,
+  RootNodeRewardProxy: RootNodeRewardProxyABI,
+  QHolderRewardPool: QHolderRewardPoolABI,
+  SystemReserve: SystemReserveABI,
+  EPDR_Parameters: EPDR_ParametersABI,
 };

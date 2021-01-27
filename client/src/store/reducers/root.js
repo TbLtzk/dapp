@@ -9,6 +9,7 @@ import proposals from './voting/proposals';
 import validationRewardPools from './validationRewardPools';
 import auctions from './auctions/auctions';
 import modalHandler from './auctions/modalHandler';
+import stableCoin from './stableCoin';
 
 import transactionHandler from 'store/reducers/transactionHandler';
 
@@ -26,6 +27,7 @@ const RootReducer = combineReducers({
 
   validators,
   validationRewardPools,
+  stableCoin,
 });
 
 export default RootReducer;

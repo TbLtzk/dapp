@@ -307,14 +307,14 @@ function* getNumberAllProposals() {
   try {
     const contracts = [...creationQContractsObjArray(), creationRootContractObj(),
       ...creationExpertContractsObjArray(), ...creationSlashingContractsObjArray()];
-    console.log('contracts', contracts);
+    // console.log('contracts', contracts);
     let result = {
       ended: 0,
       active: 0
     };
     for (let contractName of contracts) {
       const data = yield contractName.getProposalsCount();
-      console.log('data', data);
+      // console.log('data', data);
       result = {
         ended: data?.ended + result?.ended,
         active: data?.active + result?.active
@@ -334,7 +334,7 @@ function* getConstitutionHash() {
   try {
     const contract = creationQContractObj(null, 'ConstitutionVoting');
     const data = yield contract.getConstitutionHash();
-    console.log('data', data);
+    console.log('getConstitutionHash', data);
 
     yield put(getConstitutionHashSuccess(data));
 

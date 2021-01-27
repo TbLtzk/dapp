@@ -11,7 +11,7 @@ export const contractsToContractsRegistryKey = {
 
   EPDRMembership: 'governance.experts.EPDR.membership',
   EPDR_MembershipVoting: 'governance.experts.EPDR.membershipVoting',
-  EPDRParameters: 'governance.experts.EPDR.parameters',
+  EPDR_Parameters: 'governance.experts.EPDR.parameters',
   EPDR_ParametersVoting: 'governance.experts.EPDR.parametersVoting',
   EPQFIMembership: 'governance.experts.EPQFI.membership',
   EPQFI_MembershipVoting: 'governance.experts.EPQFI.membershipVoting',

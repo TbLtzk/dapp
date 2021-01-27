@@ -6,6 +6,7 @@ import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
 import CustomBlock from 'components/Base/CustomBlock';
 import InfBlock from './components/InfBlockUp';
 import TokenomicsBlock from './components/TokenomicsBlock';
+import SavingBorrowingBlock from './components/SavingBorrowingBlock';
 
 import { Row, Col } from 'react-bootstrap';
 import { WrapContainer, Title, BlockAlign, WrapTab } from './styles';
@@ -28,7 +29,8 @@ function Dashboard() {
       </WrapTab>
       <Row>
         <Col md={6}>
-          {/*<TokenomicsBlock/>*/}
+          <TokenomicsBlock/>
+          <SavingBorrowingBlock/>
         </Col>
         <Col md={6}>
           <WrapContainer>
