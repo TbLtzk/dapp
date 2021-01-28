@@ -4,7 +4,7 @@ import ParametersVotingService from '../src/voting/ParametersVoting';
 export const chooseExpertContractDependsOnType = (drizzle, typeContract, type) => {
   let contract = null;
   let contractName = null;
-  if (type === 'q-fees-&-incentives-expert-panel') {
+  if (type === 'q-fees-&-incentives-membership-panel') {
     if (typeContract === 'member') {
       contractName = 'EPQFI_MembershipVoting';
       contract = new MembershipVotingService(contractName);
@@ -12,7 +12,7 @@ export const chooseExpertContractDependsOnType = (drizzle, typeContract, type) =
       contractName = 'EPQFI_ParametersVoting';
       contract = new ParametersVotingService(contractName);
     }
-  } else if (type === 'q-defi-(decentralized-finance)-expert-panel') {
+  } else if (type === 'q-defi-(decentralized-finance)-membership-panel') {
     if (typeContract === 'member') {
       contractName = 'EPDR_MembershipVoting';
       contract = new MembershipVotingService(contractName);
@@ -26,13 +26,13 @@ export const chooseExpertContractDependsOnType = (drizzle, typeContract, type) =
 };
 export const chooseExpertContractNameDependsOnType = (drizzle, typeContract, type) => {
   let contractName = null;
-  if (type === 'q-fees-&-incentives-expert-panel') {
+  if (type === 'q-fees-&-incentives-membership-panel') {
     if (typeContract === 'member') {
       contractName = 'EPQFI_MembershipVoting';
     } else if (typeContract === 'parameters') {
       contractName = 'EPQFI_ParametersVoting';
     }
-  } else if (type === 'q-defi-(decentralized-finance)-expert-panel') {
+  } else if (type === 'q-defi-(decentralized-finance)-membership-panel') {
     if (typeContract === 'member') {
       contractName = 'EPDR_MembershipVoting';
     } else if (typeContract === 'parameters') {

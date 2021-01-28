@@ -2,14 +2,14 @@ import { StableCoinQUSD } from 'contracts/StableCoin';
 import { web3 } from 'contracts/config/drizzle-config';
 import { SavingQUSD } from 'contracts/Saving';
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
-import EPDRParameters from '../../../../contracts/EPDRParameters';
+import EPDR_Parameters from 'contracts/EPDR_Parameters';
 
 export default class Handler {
   constructor(address, dispatch) {
     this.address = address;
     this.contractSavingQUSD = new SavingQUSD();
     this.contractStableCoinQUSD = new StableCoinQUSD();
-    this.contractEPDRParameters = new EPDRParameters();
+    this.contractEPDRParameters = new EPDR_Parameters();
     this.dispatch = dispatch;
   }
 

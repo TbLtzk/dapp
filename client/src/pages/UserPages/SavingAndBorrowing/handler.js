@@ -73,7 +73,7 @@ export default class Handler {
 // useEffect(async () => {
 //   dispatch(setTransactionCounter(1));
 //
-//   const contractEPDR = new EPDRParameters();
+//   const contractEPDR = new EPDR_Parameters();
 //   const vaultsLoc = [];
 //   for (let i = 0; i < vaultsCount; i += 1) {
 //     const vaultInfo = await contract.userVaults(address, i).catch(() => {});

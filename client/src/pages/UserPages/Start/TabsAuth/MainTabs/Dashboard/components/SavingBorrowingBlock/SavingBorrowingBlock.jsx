@@ -20,7 +20,6 @@ function SavingBorrowingBlock() {
   const [savingRate, setSavingRate] = useState('0');
   const [interestRate, setInterestRate] = useState('0');
 
-
   useEffect(async () => {
     handler.getTotalSupply(setTotalSupply);
     handler.getSystemBalance(setSystemBalance);

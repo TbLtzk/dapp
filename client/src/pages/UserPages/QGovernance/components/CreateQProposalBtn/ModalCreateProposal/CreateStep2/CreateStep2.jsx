@@ -14,7 +14,7 @@ function CreateStep2(props) {
                 return <QProposalS2 register={register} errors={errors}/>;
             case "q-root-node-panel":
                 return <QRootNodeS2 register={register} errors={errors}/>;
-            case "q-expert-proposals":
+            case "q-membership-proposals":
                 return <QExpertS2 register={register} errors={errors}/>;
             case "slashing-proposals":
                 return <SlashingS2 register={register} errors={errors}/>;

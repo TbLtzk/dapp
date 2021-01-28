@@ -29,6 +29,8 @@ import RootNodeRewardProxyABI from '../abi/RootNodeRewardProxyABI';
 import QHolderRewardPoolABI from '../abi/QHolderRewardPoolABI';
 import SystemReserveABI from '../abi/SystemReserveABI';
 import EPDR_ParametersABI from '../abi/EPDR_ParametersABI';
+import EPDR_MembershipABI from '../abi/EPDR_MembershipABI';
+import EPQFI_MembershipABI from '../abi/EPQFI_MembershipABI';
 
 import RootABI from '../abi/RootABI';
 
@@ -67,5 +69,8 @@ export const contractsToAbi = {
   RootNodeRewardProxy: RootNodeRewardProxyABI,
   QHolderRewardPool: QHolderRewardPoolABI,
   SystemReserve: SystemReserveABI,
+
   EPDR_Parameters: EPDR_ParametersABI,
+  EPQFI_Membership: EPQFI_MembershipABI,
+  EPDR_Membership: EPDR_MembershipABI,
 };

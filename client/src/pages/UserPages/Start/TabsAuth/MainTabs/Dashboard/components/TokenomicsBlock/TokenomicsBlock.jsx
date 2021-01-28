@@ -1,107 +1,97 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { drizzleReactHooks } from '@drizzle/react-plugin';
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
-import { StableCoinQUSD } from 'contracts/StableCoin';
-import SystemReserve from 'contracts/src/SystemReserve';
-import DefaultAllocationProxy from 'contracts/src/DefaultAllocationProxy';
-
-import { useDispatch, useSelector } from 'react-redux';
-import { userAddressMetamask } from 'store/selectors/user-inf';
+import { useSelector } from 'react-redux';
 import { balanceSelector } from 'store/selectors/validation-reward-pools';
-import { getVRPBalance } from 'store/actions/action-creaters/validation-reward-pools';
+import Handler from './handler';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import CardBlock from '../CardBlock';
-
-import { fN } from 'func/useful';
-
-import { Container, Col, Row } from 'react-bootstrap';
-import { LoadingWrap } from 'components/Custom/MembersPanel/styles';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 
+import { Container, Col, Row } from 'react-bootstrap';
 import { TitleNotAlign } from '../../styles';
-import { bn } from 'contracts/handler/AuctionHandler';
-import { drizzleRegistry } from '../../../../../../../../contracts/config/drizzle-config';
 
 const { useDrizzle, useDrizzleState } = drizzleReactHooks;
 
 function TokenomicsBlock() {
   const { drizzle } = useDrizzle();
-  const state = useDrizzleState(state => state);
-  const userAddress = useSelector(userAddressMetamask);
-  const dispatch = useDispatch();
-  const StableCoin = new StableCoinQUSD();
-  const DefaultAllocationProxyContract = new DefaultAllocationProxy();
-  const SystemReserveContract = new SystemReserve();
   const [defaultAllocationProxy, setDefaultAllocationProxy] = useState('0');
+  const [loadingDefaultAllocation, setLoadingDefaultAllocation] = useState(false);
+
   const [rootNodeRewardProxy, setRootNodeRewardProxy] = useState('0');
+  const [loadingRootNodeReward, setLoadingRootNodeReward] = useState(false);
+
   const [validationRewardProxy, setValidationRewardProxy] = useState('0');
-  const [systemReserveAvailable, setSystemReserveAvailable] = useState('0');
+  const [loadingValidationReward, setLoadingValidationReward] = useState(false);
+
+  const [systemReserve, setSystemReserve] = useState('0');
+  const [validationRewardPools, setValidationRewardPools] = useState('0');
+  const [QHolderRewardPool, setQHolderRewardPool] = useState('0');
+
   const balanceVRP = useSelector(balanceSelector);
-  //
+  const handler = new Handler(drizzle);
+
   useEffect(async () => {
-    dispatch(getVRPBalance(userAddress));
-    const defaultAllocationProxy = await StableCoin.allowance(userAddress, contractsToAddresses.DefaultAllocationProxy);
-    setDefaultAllocationProxy(bn(defaultAllocationProxy));
-    const rootNodeRewardProxy = await StableCoin.allowance(userAddress, contractsToAddresses.RootNodeRewardProxy);
-    setRootNodeRewardProxy(bn(rootNodeRewardProxy));
-    const validationRewardProxy = await StableCoin.allowance(userAddress, contractsToAddresses.ValidationRewardProxy);
-    setValidationRewardProxy(bn(validationRewardProxy));
-    const systemReserveAvailable = await SystemReserveContract.availableAmount();
-    setSystemReserveAvailable(systemReserveAvailable);
-    console.log('defaultAllocationProxy', defaultAllocationProxy);
-    console.log('rootNodeRewardProxy', rootNodeRewardProxy);
-    console.log('validationRewardProxy', validationRewardProxy);
-    console.log('systemReserveAvailable', systemReserveAvailable);
-    const result = await drizzle.web3.eth.getBalance(contractsToAddresses.DefaultAllocationProxy);
-    console.log('result', result);
-    const result1 = await DefaultAllocationProxyContract.allocate();
-    console.log('result1', result1);
-  }, [dispatch]);
+    handler.getDefaultAllocationProxy(setDefaultAllocationProxy, () => {});
+    handler.getRootNodeRewardProxy(setRootNodeRewardProxy, () => {});
+    handler.getValidationRewardProxy(setValidationRewardProxy, () => {});
+
+    handler.getQHolderRewardPool(setQHolderRewardPool);
+    handler.getSystemReserve(setSystemReserve);
+    handler.getValidationRewardPools(setValidationRewardPools);
+  }, []);
 
   const onAllocate = useCallback((type) => {
-    console.log('click onAllocate', type);
-
+    switch (type) {
+      case 'default-allocation':
+        handler.getDefaultAllocationProxy(setDefaultAllocationProxy, setLoadingDefaultAllocation);
+        break;
+      case 'validation-reward-allocation':
+        handler.getValidationRewardProxy(setValidationRewardProxy, setLoadingRootNodeReward);
+        break;
+      case 'root-node-allocation':
+        handler.getRootNodeRewardProxy(setRootNodeRewardProxy, setLoadingValidationReward);
+        break;
+    }
   }, []);
 
   const onRefresh = useCallback(() => {
     console.log('click onRefresh');
-
   }, []);
 
   const dataArr = useMemo(() => {
     return [
       {
         title: 'Default Allocation Proxy',
-        firstContent: fN(defaultAllocationProxy) + ' Q',
+        firstContent: defaultAllocationProxy + ' Q',
         btnTitle: 'Allocate',
         btnType: 'default-allocation',
       },
       {
         title: 'Validation Reward Proxy',
-        firstContent: fN(validationRewardProxy) + ' Q',
+        firstContent: validationRewardProxy + ' Q',
         btnTitle: 'Allocate',
         btnType: 'validation-reward-allocation',
       },
       {
         title: 'Q Holdre Reward Pool',
-        firstContent: '749 Q',
+        firstContent: QHolderRewardPool + ' Q',
         btnTitle: null,
       },
       {
         title: 'Q System Reserve',
-        firstContent: systemReserveAvailable + ' Q',
+        firstContent: systemReserve + ' Q',
         btnTitle: null,
       },
       {
         title: 'Root Node Reward Proxy',
-        firstContent: fN(rootNodeRewardProxy) + ' Q',
+        firstContent: rootNodeRewardProxy + ' Q',
         btnTitle: 'Allocate',
         btnType: 'root-node-allocation',
       },
       {
         title: 'Validation Reward Pools',
-        firstContent: fN(balanceVRP) + ' Q',
+        firstContent: validationRewardPools + ' Q',
         btnTitle: null,
       },
       {
@@ -110,7 +100,32 @@ function TokenomicsBlock() {
         btnTitle: 'Refresh',
       },
     ];
-  }, [defaultAllocationProxy, validationRewardProxy, systemReserveAvailable, balanceVRP]);
+  }, [defaultAllocationProxy, validationRewardPools, validationRewardProxy, systemReserve, balanceVRP, rootNodeRewardProxy, QHolderRewardPool]);
+
+  const showBtnTitle = (title, type) => {
+    switch (type) {
+      case 'default-allocation':
+        if (loadingDefaultAllocation) {
+          return <LoadingSpinner/>;
+        } else {
+          return title;
+        }
+      case 'validation-reward-allocation':
+        if (loadingRootNodeReward) {
+          return <LoadingSpinner/>;
+        } else {
+          return title;
+        }
+      case 'root-node-allocation':
+        if (loadingValidationReward) {
+          return <LoadingSpinner/>;
+        } else {
+          return title;
+        }
+      default:
+        return title;
+    }
+  };
 
   return (
     <CustomBlock style={{
@@ -130,7 +145,7 @@ function TokenomicsBlock() {
                   key={el.title.replace(' ', '-')}
                   title={el.title}
                   firstContent={el.firstContent}
-                  btnTitle={el.btnTitle}
+                  btnTitle={showBtnTitle(el.btnTitle, el.btnType)}
                   btnHandler={!el.btnTitle ? null : () => {
                     if (el.btnTitle === 'Allocate') {
                       onAllocate(el.btnType);

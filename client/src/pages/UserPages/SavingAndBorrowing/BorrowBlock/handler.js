@@ -2,7 +2,7 @@ import { uintPercentToNumber } from 'func/useful';
 import { GovernedEpdrQbtcQusdOracle, GovernedEpdrQethQusdOracle } from '../../../../contracts/FxPriceFeed';
 import { GovernedEpdrQbtcAddress, GovernedEpdrQethAddress } from '../../../../contracts/StableCoin';
 import { web3 } from '../../../../contracts/config/drizzle-config';
-import EPDRParameters from '../../../../contracts/EPDRParameters';
+import EPDR_Parameters from 'contracts/EPDR_Parameters';
 import { BorrowingCoreQUSD } from '../../../../contracts/BorrowingCore';
 import { fromBtcBlockchain, toBtcBlockchain } from '../../../../func/balance';
 import { setTransactionCounter } from '../../../../store/actions/action-creaters/transaction-handler';
@@ -10,7 +10,7 @@ import { setTransactionCounter } from '../../../../store/actions/action-creaters
 export default class Handler {
   constructor(address, collateralKey, dispatch) {
     this.address = address;
-    this.contractEPDRParameters = new EPDRParameters();
+    this.contractEPDRParameters = new EPDR_Parameters();
     this.borrowingContract = new BorrowingCoreQUSD();
     this.dispatch = dispatch;
 

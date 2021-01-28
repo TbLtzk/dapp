@@ -3,7 +3,7 @@ import * as actionTypes from 'store/actions/action-types/validators';
 import {
   setError, setDelegatorsShare, getDelegatorsShare, setTotalStake, setOwnStake,
   setDelegatedStake, setAccTotalStake, setInterestRate, getInterestRate,
-  getValidatorMembersSuccess, getValidatorMembersError,
+  getValidatorMembersSuccess, getValidatorMembersError, isUserValidatorSuccess
 } from 'store/actions/action-creaters/validators';
 import Validators from '../../contracts/Validators';
 import { web3 } from '../../contracts/config/drizzle-config';
@@ -153,6 +153,16 @@ function* getValidatorsMembers() {
     yield put(getValidatorMembersError(err.message));
   }
 }
+function* isUserValidator({address}) {
+  try {
+    const contract = getContractInstance();
+    const data = yield contract.validatorExist(address);
+    // console.log("data", data);
+    yield put(isUserValidatorSuccess(data));
+  } catch (err) {
+    console.error('isUserValidator.Error', err);
+  }
+}
 
 export default [
   takeEvery(actionTypes.GET_VAL_DELEGATORS_SHARE, getDelegatorsShareGenerator),
@@ -166,4 +176,5 @@ export default [
   takeEvery(actionTypes.SET_VAL_INTEREST_RATE_SEND, setInterestRateGenerator),
 
   takeEvery(actionTypes.GET_VALIDATORS_MEMBERS, getValidatorsMembers),
+  takeEvery(actionTypes.IS_USER_VALIDATOR, isUserValidator),
 ];

@@ -103,7 +103,7 @@ function CreateStep3(props) {
             <SummarTextLink>{formData['external-link']}</SummarTextLink>
           </>
         );
-      case 'q-expert-proposals':
+      case 'q-membership-proposals':
         return showCommonData(
           <>
             <SummarText>Panel to add an Expert:

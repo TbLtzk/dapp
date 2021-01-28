@@ -9,11 +9,11 @@ export const contractsToContractsRegistryKey = {
   Validators: 'governance.validators',
   ValidatorsSlashingVoting: 'governance.validators.slashingVoting',
 
-  EPDRMembership: 'governance.experts.EPDR.membership',
+  EPDR_Membership: 'governance.experts.EPDR.membership',
   EPDR_MembershipVoting: 'governance.experts.EPDR.membershipVoting',
   EPDR_Parameters: 'governance.experts.EPDR.parameters',
   EPDR_ParametersVoting: 'governance.experts.EPDR.parametersVoting',
-  EPQFIMembership: 'governance.experts.EPQFI.membership',
+  EPQFI_Membership: 'governance.experts.EPQFI.membership',
   EPQFI_MembershipVoting: 'governance.experts.EPQFI.membershipVoting',
   EPQFIParameters: 'governance.experts.EPQFI.parameters',
   EPQFI_ParametersVoting: 'governance.experts.EPQFI.parametersVoting',

@@ -77,14 +77,14 @@ function* createProposal({ drizzle, data }) {
           }
           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
           break;
-        case 'add-a-new-expert':
-        case 'remove-a-current-expert':
+        case 'add-a-new-membership':
+        case 'remove-a-current-membership':
         case 'parameter-vote':
           const typeContract = data.first !== 'parameter-vote' ? 'member' : 'parameters';
           const contract = chooseExpertContractDependsOnType(drizzle, typeContract, data['type-proposal']);
           result = yield contract.createProposal(data, userAddress);
           contractName = chooseExpertContractNameDependsOnType(drizzle, typeContract, data['type-proposal']);
-          if (data?.first === 'remove-a-current-expert') {
+          if (data?.first === 'remove-a-current-membership') {
             //TODO: for createRemoveExpertProposal use RemoveProposalCreated event
             idProposal = result?.events?.RemoveProposalCreated?.returnValues?._id;
           } else {
@@ -181,7 +181,7 @@ function* getProposalDependsOnType(contractName, drizzle, data, id, activePropos
       case 'EPDR_MembershipVoting':
       case 'EPQFI_ParametersVoting':
       case 'EPDR_ParametersVoting':
-        yield put(getProposalVote(contractName, id, drizzle, 'q-expert-proposals', activeProposal));
+        yield put(getProposalVote(contractName, id, drizzle, 'q-membership-proposals', activeProposal));
         break;
       default:
         return null;
@@ -208,7 +208,7 @@ function* getProposalsList({ drizzle, activeTab }) {
       case 'slashing-proposals':
         contracts = creationSlashingContractsObjArray(drizzle);
         break;
-      case 'q-expert-proposals':
+      case 'q-membership-proposals':
         contracts = creationExpertContractsObjArray(drizzle);
         break;
     }
@@ -242,7 +242,7 @@ function* getProposal({ contractName, id, drizzle, activeTab, activeProposal }) 
       case 'slashing-proposals':
         contract = creationSlashingContractObj(drizzle, contractName);
         break;
-      case 'q-expert-proposals':
+      case 'q-membership-proposals':
         contract = creationExpertContractObj(drizzle, contractName);
         break;
     }
@@ -277,7 +277,7 @@ function* getEndedProposals({ drizzle, activeTab }) {
         case 'q-root-node-panel':
           contracts = creationRootContractObj(drizzle);
           break;
-        case 'q-expert-proposals':
+        case 'q-membership-proposals':
           contracts = creationExpertContractsObjArray(drizzle);
           break;
         case 'slashing-proposals':
@@ -307,22 +307,19 @@ function* getNumberAllProposals() {
   try {
     const contracts = [...creationQContractsObjArray(), creationRootContractObj(),
       ...creationExpertContractsObjArray(), ...creationSlashingContractsObjArray()];
-    // console.log('contracts', contracts);
     let result = {
       ended: 0,
       active: 0
     };
     for (let contractName of contracts) {
       const data = yield contractName.getProposalsCount();
-      // console.log('data', data);
       result = {
         ended: data?.ended + result?.ended,
         active: data?.active + result?.active
       };
     }
 
-    console.log('Proposals counter', result);
-
+    // console.log('Proposals counter', result);
     yield put(getNumberAllProposalsSuccess(result));
 
   } catch (err) {
@@ -334,7 +331,6 @@ function* getConstitutionHash() {
   try {
     const contract = creationQContractObj(null, 'ConstitutionVoting');
     const data = yield contract.getConstitutionHash();
-    console.log('getConstitutionHash', data);
 
     yield put(getConstitutionHashSuccess(data));
 
@@ -354,7 +350,6 @@ export default [
   takeEvery(actionTypes.GET_PROPOSALS_LIST, getProposalsList),
   takeEvery(actionTypes.GET_PROPOSAL, getProposal),
 
-  // takeEvery(actionTypes.GET_NUMBER_ALL_ACTIVE_PROPOSALS, getNumberActiveProposals),
   takeEvery(actionTypes.GET_NUMBER_ALL_PROPOSALS, getNumberAllProposals),
   takeEvery(actionTypes.GET_CONSTITUTION_HASH, getConstitutionHash),
 ];

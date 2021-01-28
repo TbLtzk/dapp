@@ -83,3 +83,12 @@ export const setInterestRateSend = (address, uintPercent) => ({
   address,
   uintPercent,
 });
+
+export const getIsUserValidator = (address) => ({
+  type: actionTypes.IS_USER_VALIDATOR,
+  address
+});
+export const isUserValidatorSuccess = (result) => ({
+  type: actionTypes.IS_USER_VALIDATOR_SUCCESS,
+  result
+});

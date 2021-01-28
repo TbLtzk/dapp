@@ -15,6 +15,7 @@ const initialState = {
   validatorMembers: [],
   loadingMembers: true,
   errorMembers: null,
+  isUserValidator: false,
 };
 
 export default function index(state = initialState, action) {
@@ -84,7 +85,12 @@ export default function index(state = initialState, action) {
         ...state,
         loadingMembers: false,
         validatorMembers: [],
-        errorMembers:  action.error,
+        errorMembers: action.error,
+      };
+    case actionTypes.IS_USER_VALIDATOR_SUCCESS:
+      return {
+        ...state,
+        isUserValidator: action.result,
       };
     default:
       return {

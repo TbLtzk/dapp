@@ -45,7 +45,7 @@ function ModalCreateProposal(props) {
         return arrQProposal;
       case 'q-root-node-panel':
         return arrQRootNode;
-      case 'q-expert-proposals':
+      case 'q-membership-proposals':
         return arrExpert;
       case 'slashing-proposals':
         return arrSlashing;

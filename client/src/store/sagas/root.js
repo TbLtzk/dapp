@@ -9,8 +9,10 @@ import validators from './validators';
 import validationRewardPools from './validation-reward-pools';
 import auctions from './auctions/auctions';
 import stableCoin from './stable-coin';
+import membership from './membership';
 
 export default function* rootSaga() {
   yield all([...userAuth, ...userInf, ...rootContract, ...qPiggyBank,
-    ...proposals, ...validators, ...validationRewardPools, ...auctions, ...stableCoin]);
+    ...proposals, ...validators, ...validationRewardPools, ...auctions, ...stableCoin,
+    ...membership]);
 }

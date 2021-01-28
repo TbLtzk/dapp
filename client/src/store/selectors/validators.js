@@ -9,3 +9,5 @@ export const interestRateSelector = (state) => state.validators.interestRate;
 export const loadingMembers = (state) => state.validators.loadingMembers;
 export const validatorMembers = (state) => state.validators.validatorMembers;
 export const errorMembers = (state) => state.validators.errorMembers;
+
+export const isUserValidator = (state) => state.validators.isUserValidator;

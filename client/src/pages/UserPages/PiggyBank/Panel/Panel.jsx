@@ -8,6 +8,7 @@ import { fromSolDateFormattingT1 } from 'func/date';
 import { useAlert } from 'react-alert';
 import PiggyBankHandler from '../handler';
 import { TextPanelSmallBlack, TextPanelSmallGrey, TextPanel, CustomBlockPanel } from '../styles';
+import VoterStatus from '../../../../components/Custom/PageLists/VoterStatus';
 
 export default function Panel() {
   const userAddressL = useSelector(userAddressMetamask);
@@ -36,7 +37,7 @@ export default function Panel() {
       <TextPanel>
         <span>Piggy Bank balance: </span>
         <span>
-          {fN(userPBBalanceL)}
+          {userPBBalanceL}
           Q
         </span>
       </TextPanel>
@@ -48,10 +49,10 @@ export default function Panel() {
         </span>
       </TextPanel>
       <TextPanel type="parentNode">
-        <span>Voting Weight</span>
+        {/*<span>Voting Weight</span>*/}
         <TextPanelSmallGrey style={{ margin: '0 8px 0 16px' }}>PiggyBank Voting Weight:</TextPanelSmallGrey>
         <TextPanelSmallBlack>
-          {fN(userVotingWeight)}
+          {userVotingWeight}
           Q
         </TextPanelSmallBlack>
         <TextPanelSmallGrey style={{ margin: '0 16px' }}>|</TextPanelSmallGrey>
@@ -61,7 +62,9 @@ export default function Panel() {
           {' '}
         </TextPanelSmallBlack>
         <TextPanelSmallGrey>Voting Status:</TextPanelSmallGrey>
-        <TextPanelSmallBlack style={{ marginLeft: '8px' }}>Root Node</TextPanelSmallBlack>
+        <TextPanelSmallBlack style={{ marginLeft: '8px' }}>
+          <VoterStatus/>
+        </TextPanelSmallBlack>
       </TextPanel>
     </CustomBlockPanel>
   );

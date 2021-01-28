@@ -16,7 +16,7 @@ function QExpertS2(props) {
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (formData?.first) {
-      case 'add-a-new-expert':
+      case 'add-a-new-membership':
         return (
           <>
             <SubTitle>{addNewExpert.subtitle}</SubTitle>
@@ -49,7 +49,7 @@ function QExpertS2(props) {
 
           </>
         );
-      case 'remove-a-current-expert':
+      case 'remove-a-current-membership':
         return (
           <>
             <SubTitle>{removeExpert.subtitle}</SubTitle>

@@ -1,5 +1,8 @@
 import React, { useMemo, useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { fN } from 'func/useful';
+import { useSelector } from 'react-redux';
+import { votingLockingEnd, votingWeight } from 'store/selectors/q-piggy-bank';
+import { fromSolDateFormattingT1 } from 'func/date';
 
 import { useHistory } from 'react-router-dom';
 
@@ -9,13 +12,16 @@ import References from 'components/Custom/PageLists/References';
 import Button from 'components/Base/Buttons/Button';
 import TabContent from './components/TabContent';
 import PageWrap from 'components/Base/PageWrap';
-import VotingStats from './VotingStats';
+import Stats from 'components/Custom/PageLists/Stats';
+import VoterStatus from 'components/Custom/PageLists/VoterStatus';
 
+import { Row, Col } from 'react-bootstrap';
 import { WrapBtn, WrapTabs } from 'components/Custom/PageLists/styles';
 
 function QGovernance() {
   const history = useHistory();
-
+  const userVotingWeight = fN(useSelector(votingWeight));
+  const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd));
   const [activeTab, setActiveTab] = useState('q-proposals');
 
   const statsData = useMemo(() => {
@@ -23,19 +29,19 @@ function QGovernance() {
       [
         {
           title: 'PiggyBank Voting Weight (Q)',
-          value: '4563Q',
+          value: userVotingWeight + ' Q',
         },
         {
           title: 'Voting Locking End',
-          value: '3rd December 2026 15:51 UTC',
+          value: userLockingEnd,
         },
         {
           title: 'Voting Status',
-          value: 'Root Node',
+          value: <VoterStatus/>,
         },
       ]
     );
-  }, []);
+  }, [userVotingWeight, userLockingEnd]);
 
   const tabsItems = useMemo(() => {
     return (
@@ -54,7 +60,7 @@ function QGovernance() {
           title: 'Q Root Node Panel',
         },
         {
-          label: 'q-expert-proposals',
+          label: 'q-membership-proposals',
           title: 'Q Expert Proposals',
         },
         {
@@ -94,7 +100,7 @@ function QGovernance() {
         </Col>
         <Col md={4}>
           <CreateQProposalBtn activeTab={activeTab}/>
-          <VotingStats/>
+          <Stats statsData={statsData} type="Voting"/>
           <References type="voting"/>
         </Col>
       </Row>

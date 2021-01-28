@@ -33,7 +33,7 @@ function CreateQProposalBtn(props) {
         return QProposal;
       case 'q-root-node-panel':
         return QRootNode;
-      case 'q-expert-proposals':
+      case 'q-membership-proposals':
         return QExpert;
       case 'slashing-proposals':
         return QSlashing;
@@ -52,7 +52,7 @@ function CreateQProposalBtn(props) {
       case 'q-root-node-panel':
         dispatch(setCreatedStepsLimit(3));
         break;
-      case 'q-expert-proposals':
+      case 'q-membership-proposals':
         dispatch(setCreatedStepsLimit(3));
         break;
       case 'slashing-proposals':

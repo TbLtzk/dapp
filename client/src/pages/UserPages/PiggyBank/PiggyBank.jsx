@@ -5,7 +5,7 @@ import ManageBalance from './ManageBalance';
 import LockCoin from './LockCoin';
 import Panel from './Panel/Panel';
 import DelegateStakingPower from './DelegateStakingPower';
-import PageWrap from '../../../components/Base/PageWrap';
+import PageWrap from 'components/Base/PageWrap';
 
 function PiggyBank() {
   return (

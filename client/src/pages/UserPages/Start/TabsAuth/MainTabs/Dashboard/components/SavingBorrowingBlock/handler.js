@@ -1,6 +1,6 @@
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 import { StableCoinQUSD } from 'contracts/StableCoin';
-import EPDR_Parameters from 'contracts/src/EPDR_Parameters';
+import EPDR_Parameters from 'contracts/EPDR_Parameters';
 import { bn, fN, getPercentageFormat } from 'func/useful';
 
 export default class Handler {

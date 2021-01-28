@@ -158,22 +158,22 @@ export const arrContractsExpert = [
   {
     // EPQFI_MembershipVoting
     typeContract: 'member',
-    type: 'q-fees-&-incentives-expert-panel',
+    type: 'q-fees-&-incentives-membership-panel',
   },
   {
     // EPDR_MembershipVoting
     typeContract: 'member',
-    type: 'q-defi-(decentralized-finance)-expert-panel',
+    type: 'q-defi-(decentralized-finance)-membership-panel',
   },
   {
     // EPQFI_ParametersVoting
     typeContract: 'parameters',
-    type: 'q-fees-&-incentives-expert-panel',
+    type: 'q-fees-&-incentives-membership-panel',
   },
   {
     // EPDR_ParametersVoting
     typeContract: 'parameters',
-    type: 'q-defi-(decentralized-finance)-expert-panel',
+    type: 'q-defi-(decentralized-finance)-membership-panel',
   }
 ];
 
