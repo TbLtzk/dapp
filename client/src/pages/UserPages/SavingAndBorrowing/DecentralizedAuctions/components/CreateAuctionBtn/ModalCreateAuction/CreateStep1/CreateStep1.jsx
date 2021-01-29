@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 
 import { useSelector } from 'react-redux';
 import { formObject } from 'store/selectors/auctions/modalHandler';
+import { symbol } from 'store/selectors/stable-coin';
 
 import InputGroup from 'components/Custom/ModalActions/InputGroup';
 
@@ -13,6 +14,7 @@ function CreateStep1(props) {
   const { activeTab, register, errors } = props;
 
   const formData = useSelector(formObject);
+  const symbolType = useSelector(symbol);
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (activeTab) {
@@ -35,7 +37,7 @@ function CreateStep1(props) {
               register={register}
               errors={errors}
             />
-            <SubTitle>{liquidation.subtitleInputDown}</SubTitle>
+            <SubTitle>{liquidation.subtitleInputDown + symbolType}</SubTitle>
             <InputGroup
               formData={formData}
               inputArr={liquidation.inputPlaceholderDown}
@@ -62,7 +64,7 @@ function CreateStep1(props) {
       case 'system-surplus':
         return (
           <>
-            <SubTitle>{systemSurplus.subtitleInput}</SubTitle>
+            <SubTitle>{systemSurplus.subtitleInput + symbolType}</SubTitle>
             <InputGroup
               formData={formData}
               inputArr={systemSurplus.inputPlaceholder}

@@ -7,7 +7,8 @@ export default class ProxyService {
     this.contractName = contractName;
   }
 
-  async allocate() {
-    return await this.contract.methods.allocate().call();
+  async allocate(userAddress) {
+    return await this.contract.methods.allocate()
+      .send({ from: userAddress });
   }
 }

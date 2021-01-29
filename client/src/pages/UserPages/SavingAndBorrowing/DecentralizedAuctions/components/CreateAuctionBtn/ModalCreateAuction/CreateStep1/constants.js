@@ -5,7 +5,7 @@ export const liquidation = {
   subtitleInputMiddle: 'Provide the Vault ID to be liquidated',
   inputPlaceholderMiddle: ['Vault ID'],
   inputMiddleObj: { 'vault-id': '' },
-  subtitleInputDown: 'Provide your initial Bid in STABLECOIN.SYMBOL',
+  subtitleInputDown: 'Provide your initial Bid in ',
   inputPlaceholderDown: ['Bid'],
   inputDownObj: { 'bid': '' },
 };
@@ -17,7 +17,7 @@ export const systemDebt = {
 };
 
 export const systemSurplus = {
-  subtitleInput: 'Provide your initial Bid in STABLECOIN.SYMBOL',
+  subtitleInput: 'Provide your initial Bid in ',
   inputPlaceholder: ['Bid'],
   inputObj: { 'bid': '' },
 };

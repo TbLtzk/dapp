@@ -13,7 +13,9 @@ export default class Handler {
   getTotalSupply(stateSetter) {
     this.StableCoin.totalSupply()
       .then(val => {
-        stateSetter(fN(bn(val)));
+        const transf = fN(bn(val)
+          .toString());
+        stateSetter(transf);
       })
       .catch(e => {
         stateSetter(0);
@@ -23,7 +25,9 @@ export default class Handler {
   getSystemBalance(stateSetter) {
     this.StableCoin.balanceOf(contractsToAddresses.SystemBalance)
       .then(val => {
-        stateSetter(fN(bn(this.drizzle.web3.utils.fromWei(val))));
+        const transf = fN(bn(this.drizzle.web3.utils.fromWei(val))
+          .toString());
+        stateSetter(transf);
       })
       .catch(e => {
         stateSetter(0);
@@ -33,6 +37,7 @@ export default class Handler {
   getSavingRate(stateSetter) {
     this.EPDR_ParametersContract.getUint('governed.EPDR.QUSD_savingRate')
       .then(val => {
+        console.log("QUSD_savingRate", val);
         const res = getPercentageFormat(val);
         stateSetter(res?.c);
       })
@@ -44,6 +49,7 @@ export default class Handler {
   getInterestRate(stateSetter) {
     this.EPDR_ParametersContract.getUint('governed.EPDR.QBTC_QUSD_interestRate')
       .then(val => {
+        console.log("QBTC_QUSD_interestRate", val);
         const res = getPercentageFormat(val);
         stateSetter(res?.c);
       })

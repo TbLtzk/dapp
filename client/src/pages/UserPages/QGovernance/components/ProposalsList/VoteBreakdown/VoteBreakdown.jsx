@@ -9,6 +9,7 @@ import {
   CircleDescrData, WrapResult
 } from './styles';
 import colors from 'constants/colors';
+import { fN } from '../../../../../../func/useful';
 
 const requiredQuorum = 50;
 const currentQuorum = 50;
@@ -41,16 +42,16 @@ function VoteBreakdown(props) {
             </WrapColorDescr>
 
           </WrapBlock>
-          <CircleDescrData>- For: {voteBreakdown.votesFor}
+          <CircleDescrData>- For:
             {voteBreakdown.contract === 'EPQFI_ParametersVoting' || voteBreakdown.contract === 'EPDR_ParametersVoting' ||
             voteBreakdown.contract === 'RootNodesSlashingVoting' || voteBreakdown.contract === 'ValidatorsSlashingVoting' ||
-            voteBreakdown.contract === 'EmergencyUpdateVoting' ? null : 'Q'}
+            voteBreakdown.contract === 'EmergencyUpdateVoting' ? ' ' + voteBreakdown.votesFor : ' ' + fN(voteBreakdown.votesFor) + 'Q'}
           </CircleDescrData>
           {/*<CircleDescrData>- For: {voteBreakdown.currentMajority}%</CircleDescrData>*/}
-          <CircleDescrData>- Against: {voteBreakdown.votesAgainst}
+          <CircleDescrData>- Against:
             {voteBreakdown.contract === 'EPQFI_ParametersVoting' || voteBreakdown.contract === 'EPDR_ParametersVoting' ||
             voteBreakdown.contract === 'RootNodesSlashingVoting' || voteBreakdown.contract === 'ValidatorsSlashingVoting' ||
-            voteBreakdown.contract === 'EmergencyUpdateVoting' ? null : 'Q'}
+            voteBreakdown.contract === 'EmergencyUpdateVoting' ? ' ' + voteBreakdown.votesAgainst : ' ' + fN(voteBreakdown.votesAgainst) + 'Q'}
             {/*<CircleDescrData>- Against: {(voteBreakdown.requiredMajority) - (voteBreakdown.currentMajority)}%*/}
           </CircleDescrData>
         </Col>
@@ -73,7 +74,7 @@ function VoteBreakdown(props) {
               <ColorTitle><CircleColor color={colors.circleWhite}/>No Vote</ColorTitle>
             </WrapColorDescr>
           </WrapBlock>
-          <CircleDescrData>- Root Nodes Objections {voteBreakdown.currentVetoPercentage}</CircleDescrData>
+          <CircleDescrData>- Root Nodes Objections {voteBreakdown.currentVetoPercentage}%</CircleDescrData>
         </Col>
         <Col md={4}>
           <SubTitle>Q Community Veto</SubTitle>

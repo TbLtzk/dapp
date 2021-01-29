@@ -1,5 +1,5 @@
 export const liquidation = {
-  subtitleInput: 'Provide a Bid for this auction in STABLECOIN.SYMBOL',
+  subtitleInput: 'Provide a Bid for this auction in ',
   inputPlaceholder: ['Bid'],
   inputObj: { 'bid': '' },
 };
@@ -11,7 +11,7 @@ export const systemDebt = {
 };
 
 export const systemSurplus = {
-  subtitleInput: 'Provide a Bid for this auction in STABLECOIN.SYMBOL',
+  subtitleInput: 'Provide a Bid for this auction in ',
   inputPlaceholder: ['Bid'],
   inputObj: { 'bid': '' },
 };

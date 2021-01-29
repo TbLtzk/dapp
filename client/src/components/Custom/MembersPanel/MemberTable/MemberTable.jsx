@@ -8,6 +8,7 @@ import { Pagination, setElementsForOnePage, countPages } from 'components/Base/P
 
 import { Circle, MemberPanelWrap, MemberAddress } from './styles';
 import { rootNodeStake } from '../../../../store/selectors/root-contract';
+import { fN } from '../../../../func/useful';
 
 const { useDrizzle } = drizzleReactHooks;
 
@@ -71,7 +72,7 @@ function MemberTable(props) {
               {member.validator}
             </MemberAddress>
           </td>
-          <td>{drizzle.web3.utils.fromWei(member.amount, 'ether')}Q</td>
+          <td>{fN(drizzle.web3.utils.fromWei(member.amount, 'ether'))}Q</td>
         </tr>
       );
     } else {
@@ -90,7 +91,7 @@ function MemberTable(props) {
               {member.address.slice(0, 14) + '...'}
             </MemberAddress>
           </td>
-          <td>{userAddress === member.address ? amountNodeStake : member.stakeAmount} Q</td>
+          <td>{userAddress === member.address ? fN(amountNodeStake) : fN(member.stakeAmount)} Q</td>
           <td>{member.share + '%'}</td>
         </tr>
       );

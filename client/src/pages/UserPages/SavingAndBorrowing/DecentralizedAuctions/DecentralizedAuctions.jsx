@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
-
+import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { getSymbol } from 'store/actions/action-creaters/stable-coin';
 
 import ButtonsGroupTabs from 'components/Base/Tabs/ButtonsGroupTabs';
 import Button from 'components/Base/Buttons/Button';
@@ -9,12 +9,18 @@ import CreateAuctionBtn from './components/CreateAuctionBtn';
 import Stats from 'components/Custom/PageLists/Stats';
 import TabContent from './components/TabContent';
 import References from 'components/Custom/PageLists/References';
+import PageWrap from 'components/Base/PageWrap';
 
+import { Col, Row } from 'react-bootstrap';
 import { WrapBtn, WrapTabs } from 'components/Custom/PageLists/styles';
-import PageWrap from '../../../../components/Base/PageWrap';
 
 export default function DecentralizedAuctions() {
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getSymbol())
+  }, [dispatch]);
 
   const [activeTab, setActiveTab] = useState('liquidation');
 

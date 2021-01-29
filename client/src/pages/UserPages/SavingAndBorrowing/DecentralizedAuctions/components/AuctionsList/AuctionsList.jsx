@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Accordion, Col } from 'react-bootstrap';
 
 import LoadingSpinner from 'components/Base/LoadingSpinner';
@@ -12,7 +12,6 @@ import { userAddressMetamask } from 'store/selectors/user-inf';
 
 import ModalBid from '../CreateAuctionBtn/ModalBid';
 import { remainDate } from 'func/convertDate';
-import { bn } from '../../../../../../contracts/handler/VotingHandler';
 import { bidForAuction, executeAuction } from 'store/actions/action-creaters/auctions/auctions';
 import {
   setCreatedStepsLimit, setCreateObj,

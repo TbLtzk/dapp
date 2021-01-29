@@ -14,6 +14,7 @@ import { liquidation, systemSurplus, systemDebt } from './constants';
 
 import { SubTitle } from 'components/Custom/ModalActions/styles';
 import { checkTabContract } from '../constants';
+import { symbol } from 'store/selectors/stable-coin';
 
 function CreateStep1(props) {
   const { activeTab, register, errors } = props;
@@ -22,6 +23,7 @@ function CreateStep1(props) {
   const approveBtn = useSelector(approveModalBtn);
   const dispatch = useDispatch();
   const StableCoin = new StableCoinQUSD();
+  const symbolType = useSelector(symbol);
 
   const onChangeInput = async (value) => {
     const contractName = checkTabContract(activeTab);
@@ -34,10 +36,10 @@ function CreateStep1(props) {
     }
   };
 
-  const showData = (data) => {
+  const showData = (data, symbol) => {
     return (
       <>
-        <SubTitle>{data.subtitleInput}</SubTitle>
+        <SubTitle>{data.subtitleInput + symbol}</SubTitle>
         <InputGroup
           onChangeInput={onChangeInput}
           formData={formData}
@@ -53,11 +55,11 @@ function CreateStep1(props) {
   const switchContentOnTypeProposal = useCallback(() => {
     switch (activeTab) {
       case 'liquidation':
-        return showData(liquidation);
+        return showData(liquidation, symbolType);
       case 'system-debt':
-        return showData(systemDebt);
+        return showData(systemDebt, null);
       case 'system-surplus':
-        return showData(systemSurplus);
+        return showData(systemSurplus, symbolType);
       default:
         return null;
     }

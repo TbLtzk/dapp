@@ -18,6 +18,11 @@ export class StableCoin {
       .call();
   }
 
+  async symbol() {
+    return await this.methods.symbol()
+      .call();
+  }
+
   async approve(spender, amount, address) {
     // const amountL = new web3.utils.BN(web3.utils.toWei(amount));
     return await this.methods.approve(spender, amount)

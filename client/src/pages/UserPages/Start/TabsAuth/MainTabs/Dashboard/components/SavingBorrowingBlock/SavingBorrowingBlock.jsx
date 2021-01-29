@@ -24,7 +24,7 @@ function SavingBorrowingBlock() {
     handler.getTotalSupply(setTotalSupply);
     handler.getSystemBalance(setSystemBalance);
     handler.getSavingRate(setSavingRate);
-    handler.getSavingRate(setInterestRate);
+    handler.getInterestRate(setInterestRate);
   }, []);
 
   const onRefresh = useCallback((type) => {

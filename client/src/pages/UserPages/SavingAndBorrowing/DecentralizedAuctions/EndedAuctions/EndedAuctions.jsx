@@ -3,13 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuctionsList } from 'store/actions/action-creaters/auctions/auctions';
 import { auctionsArr, errorM, loadingAuctions } from 'store/selectors/auctions/auctions';
+import { getSymbol } from 'store/actions/action-creaters/stable-coin';
 import { useLocation } from 'react-router-dom';
 
 import AuctionsList from '../components/AuctionsList';
+import PageWrap from 'components/Base/PageWrap';
 
 import { Row, Col } from 'react-bootstrap';
 import { Title } from './styles';
-import PageWrap from '../../../../../components/Base/PageWrap';
 
 function EndedAuctions() {
   const location = useLocation();
@@ -22,6 +23,7 @@ function EndedAuctions() {
 
   useEffect(() => {
     dispatch(getAuctionsList(location?.state?.activeTab, false));
+    dispatch(getSymbol());
   }, [dispatch]);
 
   return (

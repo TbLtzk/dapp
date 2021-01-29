@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { useSelector } from 'react-redux';
 import { balanceSelector } from 'store/selectors/validation-reward-pools';
+import { userAddressMetamask } from 'store/selectors/user-inf';
 import Handler from './handler';
 
 import CustomBlock from 'components/Base/CustomBlock';
@@ -15,6 +16,7 @@ const { useDrizzle, useDrizzleState } = drizzleReactHooks;
 
 function TokenomicsBlock() {
   const { drizzle } = useDrizzle();
+  const userAddress = useSelector(userAddressMetamask);
   const [defaultAllocationProxy, setDefaultAllocationProxy] = useState('0');
   const [loadingDefaultAllocation, setLoadingDefaultAllocation] = useState(false);
 
@@ -29,12 +31,12 @@ function TokenomicsBlock() {
   const [QHolderRewardPool, setQHolderRewardPool] = useState('0');
 
   const balanceVRP = useSelector(balanceSelector);
-  const handler = new Handler(drizzle);
+  const handler = new Handler(drizzle, userAddress);
 
   useEffect(async () => {
-    handler.getDefaultAllocationProxy(setDefaultAllocationProxy, () => {});
-    handler.getRootNodeRewardProxy(setRootNodeRewardProxy, () => {});
-    handler.getValidationRewardProxy(setValidationRewardProxy, () => {});
+    handler.getDefaultAllocationProxy(setDefaultAllocationProxy, () => {}, false);
+    handler.getRootNodeRewardProxy(setRootNodeRewardProxy, () => {}, false);
+    handler.getValidationRewardProxy(setValidationRewardProxy, () => {}, false);
 
     handler.getQHolderRewardPool(setQHolderRewardPool);
     handler.getSystemReserve(setSystemReserve);
@@ -44,13 +46,13 @@ function TokenomicsBlock() {
   const onAllocate = useCallback((type) => {
     switch (type) {
       case 'default-allocation':
-        handler.getDefaultAllocationProxy(setDefaultAllocationProxy, setLoadingDefaultAllocation);
+        handler.getDefaultAllocationProxy(setDefaultAllocationProxy, setLoadingDefaultAllocation, true);
         break;
       case 'validation-reward-allocation':
-        handler.getValidationRewardProxy(setValidationRewardProxy, setLoadingRootNodeReward);
+        handler.getValidationRewardProxy(setValidationRewardProxy, setLoadingRootNodeReward, true);
         break;
       case 'root-node-allocation':
-        handler.getRootNodeRewardProxy(setRootNodeRewardProxy, setLoadingValidationReward);
+        handler.getRootNodeRewardProxy(setRootNodeRewardProxy, setLoadingValidationReward, true);
         break;
     }
   }, []);
@@ -131,7 +133,6 @@ function TokenomicsBlock() {
     <CustomBlock style={{
       padding: '14px 10px',
       width: '100%',
-      marginTop: '20px'
     }}>
       <Container fluid>
         <Row>
