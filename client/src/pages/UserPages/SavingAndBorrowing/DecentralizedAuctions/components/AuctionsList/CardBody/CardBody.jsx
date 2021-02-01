@@ -21,7 +21,7 @@ function CardBody(props) {
           <Text>Highest bid: {data.highestBid}Q</Text>
           <Text>Bidder: {data.bidder}</Text>
           <Text>User: {data.user}</Text>
-          {data.contract !== 'SystemSurplusAuction'
+          {data.contract === 'LiquidationAuction'
             ? <Text>Vault id: {data.userVaultId}</Text>
             : <Text>Lot: {data.lot} QUSD</Text>
           }
@@ -42,7 +42,7 @@ function CardBody(props) {
       </Details>
       <Details md={4}>
 
-        {data.contract !== 'SystemSurplusAuction'
+        {data.contract === 'LiquidationAuction'
           ? <>
             <p>User: {data.user.slice(0, 14) + '...'}</p>
             <p>Vault id: {data.userVaultId}</p>

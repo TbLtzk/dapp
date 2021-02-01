@@ -8,6 +8,61 @@ import { bn, getStatusTransformation, maxApproveAmount } from '../../handler/Auc
 export default class SystemDebtAuction extends AuctionService {
 
   /**
+   * get proposal data
+   * @param promiseRes
+   * @param inf
+   * @return array
+   */
+  async getAuctionData(promiseRes, inf) {
+    let objRes = {};
+    console.log('promiseRes', promiseRes);
+    objRes.status = getStatusTransformation(promiseRes.status);
+    objRes.bidder = promiseRes.bidder;
+    objRes.endTime = promiseRes.endTime;
+    const highestBid = promiseRes.highestBid;
+    objRes.highestBid = drizzleRegistry.web3.utils.fromWei(highestBid, 'ether');
+    objRes.reserveLot = promiseRes.reserveLot;
+    objRes.title = `System Debt Auction`;
+    objRes.contract = this.contractName;
+    return { ...objRes };
+
+  }
+
+  /**
+   * get active auctions
+   * @param activeAuction
+   * @return array
+   */
+  async getAuctions(activeAuction) {
+    const auctionEvents = await this.getAuctionsEvent();
+    const auctionInf = auctionEvents?.map(evt => {
+      return {
+        bidder: evt.returnValues._bidder,
+        bid: evt.returnValues._bid,
+      };
+    });
+    console.log('auctionEvents', auctionEvents);
+    console.log('auctionInf', auctionInf);
+    let auctions = [];
+    if (auctionInf) {
+      for (let inf of auctionInf) {
+        let objRes = {};
+        let promiseRes = await this.getAuction(inf.bidder, null);
+        console.log('promiseRes', promiseRes);
+        if (activeAuction) {
+          objRes = await this.getAuctionData(promiseRes, inf);
+          auctions.push(objRes);
+        } else {
+          objRes = await this.getAuctionData(promiseRes, inf);
+          auctions.push(objRes);
+        }
+      }
+    }
+    // console.log('auctions', auctions);
+    return auctions;
+  }
+
+  /**
    * create auction
    * @param data
    * @param userAddress

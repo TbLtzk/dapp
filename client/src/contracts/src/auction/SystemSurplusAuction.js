@@ -36,16 +36,17 @@ export default class SystemSurplusAuction extends AuctionService {
    */
   async getAuctionData(promiseRes, inf) {
     let objRes = {};
+    console.log("promiseRes", promiseRes);
     objRes.bidder = promiseRes.bidder;
     // objRes.user = inf?.bidder;
     objRes.user = inf?.bidder || inf?.user;
     objRes.id = inf.id;
-    objRes.bid = drizzleRegistry.web3.utils.fromWei(inf.bid, 'ether');
+    // objRes.bid = drizzleRegistry.web3.utils.fromWei(inf.bid, 'ether');
     objRes.endTime = promiseRes.endTime;
     objRes.isExecuted = promiseRes.isExecuted;
     objRes.lot = promiseRes.lot;
     const highestBid = promiseRes.highestBid;
-    objRes.highestBid = drizzleRegistry.web3.utils.fromWei(highestBid, 'ether');
+    objRes.highestBid = (drizzleRegistry.web3.utils.fromWei(highestBid, 'ether'));
     objRes.title = `System Surplus Auction`;
     objRes.contract = this.contractName;
     return { ...objRes };

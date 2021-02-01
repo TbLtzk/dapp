@@ -6,7 +6,7 @@ import FormStaking from 'pages/UserPages/Staking/FormStaking';
 
 import { WrapContainer } from './styles';
 
-export default function StakingContent() {
+export default function RootNodeStakingContent() {
   return (
     <>
       <WrapContainer>

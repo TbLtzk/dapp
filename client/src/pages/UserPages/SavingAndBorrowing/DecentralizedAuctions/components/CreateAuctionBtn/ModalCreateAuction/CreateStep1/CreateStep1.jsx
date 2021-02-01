@@ -51,7 +51,7 @@ function CreateStep1(props) {
       case 'system-debt':
         return (
           <>
-            <SubTitle>{systemDebt.subtitleInput}</SubTitle>
+            <SubTitle>{systemDebt.subtitleInput + symbolType}</SubTitle>
             <InputGroup
               formData={formData}
               inputArr={systemDebt.inputPlaceholder}
@@ -64,7 +64,7 @@ function CreateStep1(props) {
       case 'system-surplus':
         return (
           <>
-            <SubTitle>{systemSurplus.subtitleInput + symbolType}</SubTitle>
+            <SubTitle>{systemSurplus.subtitleInput}</SubTitle>
             <InputGroup
               formData={formData}
               inputArr={systemSurplus.inputPlaceholder}

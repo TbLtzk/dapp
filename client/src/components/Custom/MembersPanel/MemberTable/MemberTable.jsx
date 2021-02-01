@@ -69,7 +69,7 @@ function MemberTable(props) {
             <MemberAddress
               color={userAddress === member.validator ? 'highlight' : 'default'}
             >
-              {member.validator}
+              <span className="validator-member">{member.validator}</span>
             </MemberAddress>
           </td>
           <td>{fN(drizzle.web3.utils.fromWei(member.amount, 'ether'))}Q</td>
@@ -88,7 +88,8 @@ function MemberTable(props) {
             <MemberAddress
               color={userAddress === member.address ? 'highlight' : 'default'}
             >
-              {member.address.slice(0, 14) + '...'}
+              <span className="root-member">{member.address}</span>
+              {/*{member.address.slice(0, 14) + '...'}*/}
             </MemberAddress>
           </td>
           <td>{userAddress === member.address ? fN(amountNodeStake) : fN(member.stakeAmount)} Q</td>

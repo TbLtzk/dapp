@@ -53,7 +53,7 @@ function RootNodePanel(props) {
             {loading ? <LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap> :
               errorMessage ? <Col xs={12}><p>No roots node</p></Col> :
                 <>
-                  <Col xs={5}>
+                  <Col xs={4}>
                     <HeadlineWrap>
                       <H5Headline>Root Node Panel</H5Headline>
                       {type !== 'with-total' ? null :
@@ -61,7 +61,7 @@ function RootNodePanel(props) {
                     </HeadlineWrap>
                     <PieChartCustom/>
                   </Col>
-                  <Col xs={7}>
+                  <Col xs={8}>
                     <MemberTable
                       type="root-node"
                       arrayData={rootMembersArray}

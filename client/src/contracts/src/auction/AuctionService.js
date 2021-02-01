@@ -79,8 +79,8 @@ export default class AuctionService {
   async getAuctions(activeAuction) {
     const auctionEvents = await this.getAuctionsEvent();
     const auctionInf = getPastAuctionsIds(auctionEvents);
-    console.log('auctionEvents', auctionEvents);
-    console.log('auctionInf', auctionInf);
+    // console.log('auctionEvents', auctionEvents);
+    // console.log('auctionInf', auctionInf);
     let auctions = [];
     if (auctionInf?.length > 0) {
       for (let inf of auctionInf) {

@@ -57,9 +57,9 @@ function CreateStep1(props) {
       case 'liquidation':
         return showData(liquidation, symbolType);
       case 'system-debt':
-        return showData(systemDebt, null);
+        return showData(systemDebt, symbolType);
       case 'system-surplus':
-        return showData(systemSurplus, symbolType);
+        return showData(systemSurplus, null);
       default:
         return null;
     }

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Row, Col } from 'react-bootstrap';
 
 import BigTabsView from 'components/Base/Tabs/BigTabsView';
-import StakingContent from './StakingContent';
+import RootNodeStakingContent from './RootNodeStakingContent';
 import ValidatorStaking from './ValidatorStaking';
 import { useSelector } from 'react-redux';
 import { rootNodeStake } from '../../../store/selectors/root-contract';
@@ -16,12 +16,11 @@ function Staking() {
       {
         label: 'root-node-staking',
         title: 'Root Node Staking',
-        content: <StakingContent/>,
+        content: <RootNodeStakingContent/>,
       },
       {
         label: 'validator-staking',
         title: 'Validator Staking',
-        // content: <p>Validator Staking</p>,
         content: <ValidatorStaking/>,
       },
     ]

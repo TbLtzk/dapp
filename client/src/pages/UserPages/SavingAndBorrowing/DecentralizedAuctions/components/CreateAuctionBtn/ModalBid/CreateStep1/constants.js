@@ -5,13 +5,13 @@ export const liquidation = {
 };
 
 export const systemDebt = {
-  subtitleInput: 'Provide your Bid in Q',
+  subtitleInput: 'Provide your Bid in ',
   inputPlaceholder: ['Bid'],
   inputObj: { 'bid': '' },
 };
 
 export const systemSurplus = {
-  subtitleInput: 'Provide a Bid for this auction in ',
+  subtitleInput: 'Provide a Bid for this auction in Q',
   inputPlaceholder: ['Bid'],
   inputObj: { 'bid': '' },
 };

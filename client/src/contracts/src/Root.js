@@ -84,8 +84,6 @@ export default class RootService {
     let totalStakes;
     return await this.getRootNodeAllData()
       .then((data) => {
-        // console.log('getRootCalcData', data);
-        // console.log('getRootCalcData', data.length);
         if (data.length) {
           totalStakes = data.reduce((sum, current) => {
             return sum + current.stakeAmount;
@@ -93,10 +91,9 @@ export default class RootService {
           rootNodeData = data.map((member, i) => {
             return {
               ...member,
-              share: Math.round(member.stakeAmount * 100 / totalStakes)
+              share: Math.ceil(member.stakeAmount * 100 / totalStakes)
             };
           });
-          // console.log('rootNodeData', rootNodeData);
           return {
             rootNodeData,
             totalStakes

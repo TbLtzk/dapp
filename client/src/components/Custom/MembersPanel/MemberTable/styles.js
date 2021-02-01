@@ -27,10 +27,21 @@ export const Circle = styled.div`
   background-color: ${props => props.color ? props.color : '#282c34'};
   border-radius: 50%;
   margin-right: 7px;
+  vertical-align: text-top;
 `;
 
 export const MemberAddress = styled.span`
   color: ${props => props.color === 'highlight' ? props => props.theme.colors.green : props => props.theme.colors.darkGrey};
+  span{
+    display: inline-block;
+    overflow: scroll;
+  }
+  .root-member{
+    max-width: 140px;
+  }
+  .validator-member{
+    max-width: 320px;
+  }
 `;
 
 

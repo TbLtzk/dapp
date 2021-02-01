@@ -1,7 +1,7 @@
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 import { StableCoinQUSD } from 'contracts/StableCoin';
 import EPDR_Parameters from 'contracts/EPDR_Parameters';
-import { bn, fN, getPercentageFormat } from 'func/useful';
+import { bn, fN, getPercentageFormat, uintPerSecondToPerYearNumber } from 'func/useful';
 
 export default class Handler {
   constructor(drizzle) {
@@ -37,9 +37,8 @@ export default class Handler {
   getSavingRate(stateSetter) {
     this.EPDR_ParametersContract.getUint('governed.EPDR.QUSD_savingRate')
       .then(val => {
-        console.log("QUSD_savingRate", val);
-        const res = getPercentageFormat(val);
-        stateSetter(res?.c);
+        const res = uintPerSecondToPerYearNumber(val);
+        stateSetter(fN(res));
       })
       .catch(e => {
         stateSetter(0);
@@ -49,9 +48,8 @@ export default class Handler {
   getInterestRate(stateSetter) {
     this.EPDR_ParametersContract.getUint('governed.EPDR.QBTC_QUSD_interestRate')
       .then(val => {
-        console.log("QBTC_QUSD_interestRate", val);
-        const res = getPercentageFormat(val);
-        stateSetter(res?.c);
+        const res = uintPerSecondToPerYearNumber(val);
+        stateSetter(fN(res));
       })
       .catch(e => {
         stateSetter(0);
