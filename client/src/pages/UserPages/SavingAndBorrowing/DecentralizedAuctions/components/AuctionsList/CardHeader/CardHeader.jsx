@@ -25,16 +25,16 @@ function CardHeader(props) {
             </WrapVoteBtn>
             : null
           }
-          {/*{status === 'Active' && remainDate > 0 ?*/}
-          <WrapVoteBtn>
-            <Button
-              title="Bid"
-              type="white"
-              handleButton={handleBid}
-            />
-          </WrapVoteBtn>
-          {/*  : null*/}
-          {/*}*/}
+          {status === 'Active' && remainDate > 0 ?
+            <WrapVoteBtn>
+              <Button
+                title="Bid"
+                type="white"
+                handleButton={handleBid}
+              />
+            </WrapVoteBtn>
+            : null
+          }
         </>
       );
     } else if (auction.contract === 'SystemSurplusAuction') {
@@ -74,7 +74,36 @@ function CardHeader(props) {
           }
         </>
       );
+    } else if (auction.contract === 'SystemDebtAuction') {
+      return (
+        <>
+          {!status ? null :
+            <LabelStatus>{status}</LabelStatus>
+          }
+          {status === 'Active' && remainDate === 0 ?
+            <WrapVoteBtn>
+              <Button
+                title="Execute"
+                type="white"
+                handleButton={handleExecute}
+              />
+            </WrapVoteBtn>
+            : null
+          }
+          {status === 'Active' && remainDate !== 0 ?
+            <WrapVoteBtn>
+              <Button
+                title="Bid"
+                type="white"
+                handleButton={handleBid}
+              />
+            </WrapVoteBtn>
+            : null
+          }
+        </>
+      );
     }
+
   }, [auction]);
 
   return (

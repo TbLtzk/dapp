@@ -8,9 +8,12 @@ import ListCardBody from 'components/Custom/PageLists/ListCardBody';
 import { convertToMonthDayYear, remainDate } from 'func/convertDate';
 import { Details, } from 'components/Custom/PageLists/ListCardBody/styles';
 import { Text } from 'components/Custom/PageLists/styles';
+import { useSelector } from 'react-redux';
+import { symbol } from 'store/selectors/stable-coin';
 
 function CardBody(props) {
   const { id, data } = props;
+  const symbolType = useSelector(symbol);
 
   return (
     <ListCardBody
@@ -18,12 +21,27 @@ function CardBody(props) {
       shareText={`${window.location.origin}/auction/${data.contract}/`}
       collapsedContent={
         <>
-          <Text>Highest bid: {data.highestBid}Q</Text>
+          <Text>Highest bid: {data.highestBid }{data.contract === 'SystemSurplusAuction' ? " Q" : " " + symbolType} </Text>
           <Text>Bidder: {data.bidder}</Text>
-          <Text>User: {data.user}</Text>
+
           {data.contract === 'LiquidationAuction'
-            ? <Text>Vault id: {data.userVaultId}</Text>
-            : <Text>Lot: {data.lot} QUSD</Text>
+            ? <>
+              <Text>Vault id: {data.userVaultId}</Text>
+              <Text>Vault owner: {data.user}</Text>
+              <Text>{data.colAsset + ' ' + data.colKey}</Text>
+            </>
+            : null
+          }
+          {data.contract === 'SystemSurplusAuction'
+            ? <>
+              <Text>Auction initiated by: {data.user}</Text>
+              <Text>Lot: {data.lot} QUSD</Text>
+            </>
+            : null
+          }
+          {data.contract === 'SystemDebtAuction'
+            ? <Text>Reserve Lot: {data.reserveLot} Q</Text>
+            : null
           }
         </>
       }
@@ -44,7 +62,7 @@ function CardBody(props) {
 
         {data.contract === 'LiquidationAuction'
           ? <>
-            <p>User: {data.user.slice(0, 14) + '...'}</p>
+            <p>Vault owner: {data.user.slice(0, 14) + '...'}</p>
             <p>Vault id: {data.userVaultId}</p>
           </>
           : <p>Auction id: {data.id}</p>

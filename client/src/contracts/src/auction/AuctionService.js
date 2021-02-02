@@ -3,12 +3,14 @@ import {
   getPastEvents,
 } from '../../handler/VotingHandler';
 import { bn, getPastAuctionsIds } from '../../handler/AuctionHandler';
+import { BorrowingCoreQUSD } from '../../BorrowingCore';
 
 export default class AuctionService {
 
   constructor(contractName) {
     this.contract = contracts[contractName];
     this.contractName = contractName;
+    this.borrowingContract = new BorrowingCoreQUSD();
 
   }
 
@@ -79,7 +81,7 @@ export default class AuctionService {
   async getAuctions(activeAuction) {
     const auctionEvents = await this.getAuctionsEvent();
     const auctionInf = getPastAuctionsIds(auctionEvents);
-    // console.log('auctionEvents', auctionEvents);
+    console.log('auctionEvents LiquidationAuction', auctionEvents);
     // console.log('auctionInf', auctionInf);
     let auctions = [];
     if (auctionInf?.length > 0) {

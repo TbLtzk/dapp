@@ -9,6 +9,7 @@ import { fN } from 'func/useful';
 import CommonHandler from '../handler';
 import Handler from './handler';
 import { CardDetail } from '../styles';
+import { drizzleRegistry } from '../../../../contracts/config/drizzle-config';
 
 export default function BorrowBlock(props) {
   const { actCardData } = props;
@@ -54,19 +55,21 @@ export default function BorrowBlock(props) {
     // Setup collateral value
     const colValueL = lockedColL * exchangeRate;
     setColValue(colValueL);
-
+    const debtBalance = drizzleRegistry.web3.utils.fromWei(actCardData.vault.debtBalance, 'ether');
     // Setup available to borrow
-    const avToBorrowL = borLimit - actCardData.vault.debtBalance;
+    const avToBorrowL = borLimit - debtBalance;
     setAvToBorrow(avToBorrowL);
 
     // Setup liquidation price
     if (colRatio !== 0 && Number(lockedColL) !== 0) {
-      const liqPriceL = (actCardData.vault.debtBalance * liqRatio) / lockedColL;
+      const liqPriceL = (debtBalance * liqRatio) / lockedColL;
       setLiqPrice(liqPriceL);
     }
 
     // Setup borrow limit
     if (colRatio !== 0) {
+      console.log("colValueL", colValueL);
+      console.log("colRatio", colRatio);
       const borLimitL = colValueL / colRatio;
       setBorLimit(borLimitL);
     }
@@ -146,7 +149,11 @@ export default function BorrowBlock(props) {
         </div>
         <div className="txt">
           <span>Outstanding debt</span>
-          <span>{fN(actCardData.vault?.debtBalance)}</span>
+          <span>{
+            actCardData.vault?.debtBalance ?
+              fN(drizzleRegistry.web3.utils.fromWei(actCardData.vault.debtBalance, 'ether')) :
+              null
+          }</span>
         </div>
         <div className="txt">
           <span>Liquidation limit</span>

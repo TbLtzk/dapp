@@ -18,14 +18,15 @@ export default class SystemDebtAuction extends AuctionService {
     console.log('promiseRes', promiseRes);
     objRes.status = getStatusTransformation(promiseRes.status);
     objRes.bidder = promiseRes.bidder;
+    objRes.bid = inf.bid;
     objRes.endTime = promiseRes.endTime;
     const highestBid = promiseRes.highestBid;
+    const reserveLot = promiseRes.reserveLot;
     objRes.highestBid = drizzleRegistry.web3.utils.fromWei(highestBid, 'ether');
-    objRes.reserveLot = promiseRes.reserveLot;
+    objRes.reserveLot = drizzleRegistry.web3.utils.fromWei(reserveLot, 'ether');
     objRes.title = `System Debt Auction`;
     objRes.contract = this.contractName;
     return { ...objRes };
-
   }
 
   /**
@@ -47,7 +48,8 @@ export default class SystemDebtAuction extends AuctionService {
     if (auctionInf) {
       for (let inf of auctionInf) {
         let objRes = {};
-        let promiseRes = await this.getAuction(inf.bidder, null);
+        let promiseRes = await this.getAuction(1, null);
+        // let promiseRes = await this.getAuction(inf.bidder, null);
         console.log('promiseRes', promiseRes);
         if (activeAuction) {
           objRes = await this.getAuctionData(promiseRes, inf);
@@ -58,8 +60,31 @@ export default class SystemDebtAuction extends AuctionService {
         }
       }
     }
-    // console.log('auctions', auctions);
+    console.log('AUCTIONS', auctions);
     return auctions;
+  }
+
+  /**
+   * get one auction with data handling
+   * @param inf
+   * @param active
+   * @return array
+   */
+  async getOneAuction(inf, active) {
+    try {
+      // if (inf.id) {
+      let objRes = null;
+      let promiseRes = await this.getAuction(1, null);
+      // let promiseRes = await this.getAuction(inf.id, null);
+      if (promiseRes) {
+        objRes = await this.getAuctionData(promiseRes, inf);
+      }
+      return [objRes];
+      // }
+    } catch (e) {
+      console.log(e);
+    }
+
   }
 
   /**
@@ -78,6 +103,20 @@ export default class SystemDebtAuction extends AuctionService {
     }
     return await this.contract.methods.startAuction(bn(drizzleRegistry.web3.utils.toWei(data?.bid, 'ether')))
       .send({ from: userAddress });
+  }
+
+  /**
+   * bid for auction
+   * @param bid
+   * @param userAddress
+   * @return array
+   */
+  async bid(bid, userAddress) {
+    const result = await this.contract.methods.bid(
+      bn(drizzleRegistry.web3.utils.toWei(bid, 'ether')))
+      .send(
+        { from: userAddress });
+    return result;
   }
 
 }

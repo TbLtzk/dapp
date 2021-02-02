@@ -36,7 +36,7 @@ export default class SystemSurplusAuction extends AuctionService {
    */
   async getAuctionData(promiseRes, inf) {
     let objRes = {};
-    console.log("promiseRes", promiseRes);
+    console.log('getAuctionData SystemSurplusAuction', promiseRes);
     objRes.bidder = promiseRes.bidder;
     // objRes.user = inf?.bidder;
     objRes.user = inf?.bidder || inf?.user;
@@ -68,8 +68,9 @@ export default class SystemSurplusAuction extends AuctionService {
         bid: evt.returnValues._bid,
       };
     });
-    console.log('auctionEvents', auctionEvents);
-    console.log('auctionInf', auctionInf);
+    console.log('auctionEvents SystemSurplusAuction', auctionEvents);
+    // console.log('auctionInf', auctionInf);
+
     let auctions = [];
     if (auctionInf) {
       for (let inf of auctionInf) {

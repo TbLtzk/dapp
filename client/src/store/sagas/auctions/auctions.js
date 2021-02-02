@@ -146,6 +146,7 @@ function* bidForAuctionHandler({ data }) {
         break;
       case 'SystemDebtAuction':
         contract = creationSystemDebtContractObj();
+        result = yield contract.bid(data.bid, userAddress);
         break;
       case 'SystemSurplusAuction':
         contract = creationSystemSurplusContractObj();

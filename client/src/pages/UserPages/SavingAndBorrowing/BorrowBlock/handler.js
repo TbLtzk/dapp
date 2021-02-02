@@ -1,11 +1,12 @@
-import { uintPercentToNumber } from 'func/useful';
-import { GovernedEpdrQbtcQusdOracle, GovernedEpdrQethQusdOracle } from '../../../../contracts/FxPriceFeed';
-import { GovernedEpdrQbtcAddress, GovernedEpdrQethAddress } from '../../../../contracts/StableCoin';
-import { web3 } from '../../../../contracts/config/drizzle-config';
+import {uintPercentToNumber} from 'func/useful';
+import {GovernedEpdrQbtcQusdOracle, GovernedEpdrQethQusdOracle} from '../../../../contracts/FxPriceFeed';
+import {GovernedEpdrQbtcAddress, GovernedEpdrQethAddress} from '../../../../contracts/StableCoin';
+import {drizzleRegistry, web3} from '../../../../contracts/config/drizzle-config';
 import EPDR_Parameters from 'contracts/EPDR_Parameters';
-import { BorrowingCoreQUSD } from '../../../../contracts/BorrowingCore';
-import { fromBtcBlockchain, toBtcBlockchain } from '../../../../func/balance';
-import { setTransactionCounter } from '../../../../store/actions/action-creaters/transaction-handler';
+import {BorrowingCoreQUSD} from '../../../../contracts/BorrowingCore';
+import {fromBtcBlockchain, toBtcBlockchain} from '../../../../func/balance';
+import {setTransactionCounter} from '../../../../store/actions/action-creaters/transaction-handler';
+import {transformToPercentage} from 'contracts/handler/VotingHandler';
 
 export default class Handler {
   constructor(address, collateralKey, dispatch) {
@@ -47,7 +48,8 @@ export default class Handler {
 
     const key = `governed.EPDR.${collateral}_QUSD_collateralizationRatio`;
     this.contractEPDRParameters.getUint(key).then((res) => {
-      const resL = uintPercentToNumber(res) + 1;
+      const resL = transformToPercentage(res) / 100;
+      // const resL = uintPercentToNumber(res) + 1;
       stateSetter(resL);
     }).catch((e) => {
       stateSetter(0);
@@ -106,7 +108,9 @@ export default class Handler {
   async borrow(amount, vaultNum) {
     this.dispatch(setTransactionCounter(1));
 
-    this.borrowingContract.generateStc(this.address, vaultNum, amount).then((res) => {
+    this.borrowingContract.generateStc(this.address, vaultNum,
+        drizzleRegistry.web3.utils.toWei(amount, 'ether')
+    ).then((res) => {
       console.log(res);
     }).catch((e) => {
       console.log(e);

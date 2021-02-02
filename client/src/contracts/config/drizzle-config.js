@@ -3,6 +3,7 @@ import { Drizzle } from '@drizzle/store';
 
 import { contractsToAbi } from '../mapping/contract-to-abi';
 import { contractsToAddresses } from '../mapping/contract-to-address';
+import validateContractsAddress from './cotracts-address-checker';
 
 export const web3 = new Web3(Web3.givenProvider);
 web3.eth.handleRevert = true;
@@ -43,6 +44,7 @@ const optionsDrizzle = () => {
 };
 
 const getContracts = () => {
+
   const contracts = {};
   // eslint-disable-next-line no-restricted-syntax
   for (const contractName in contractsToAddresses) {
@@ -60,3 +62,5 @@ console.log("drizzleRegistry", drizzleRegistry);
 // export const drizzleRegistry = new Drizzle(optionsDrizzleRegistry);
 export const contracts = getContracts();
 
+// const res =  validateContractsAddress();
+// console.log(res);

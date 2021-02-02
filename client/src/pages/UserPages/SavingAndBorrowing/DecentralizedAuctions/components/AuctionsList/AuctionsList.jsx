@@ -25,12 +25,12 @@ function AuctionsList(props) {
   const [modalShow, setModalShow] = useState(false);
   const [inf, setInf] = useState(null);
 
-  const onAuctionBid = (user, vaultId, contract, id) => {
+  const onAuctionBid = (user, vaultId, contract, id, bid) => {
     setInf({
       user,
       vaultId,
       contract,
-      id: id
+      id: id,
     });
     dispatch(setStepCounter(1));
     dispatch(setCreatedStepsLimit(2));

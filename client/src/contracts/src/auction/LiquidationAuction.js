@@ -2,8 +2,10 @@ import AuctionService from './AuctionService';
 
 import { web3, contracts, drizzleRegistry } from '../../config/drizzle-config';
 import { getStatusTransformation, maxApproveAmount, bn } from '../../handler/AuctionHandler';
+import BorrowingCore from '../../BorrowingCore';
 import { StableCoinQUSD } from '../../StableCoin';
 import { contractsToAddresses } from '../../mapping/contract-to-address';
+import { fromBtcBlockchain } from 'func/balance';
 
 export default class LiquidationAuction extends AuctionService {
 
@@ -14,11 +16,18 @@ export default class LiquidationAuction extends AuctionService {
    * @return array
    */
   async getAuctionData(promiseRes, inf) {
+    console.log('user', inf.user);
+    console.log('vaultId', inf.vaultId);
+    const result = await this.borrowingContract.userVaults(inf.user, inf.vaultId);
+    console.log('userVaults', result);
     let objRes = {};
+    console.log('getAuctionData LiquidationAuction', promiseRes);
     objRes.status = getStatusTransformation(promiseRes.status);
     objRes.bidder = promiseRes.bidder;
     objRes.user = inf.user;
     objRes.userVaultId = inf.vaultId;
+    objRes.colAsset = fromBtcBlockchain(result.colAsset);
+    objRes.colKey = result.colKey;
     objRes.endTime = promiseRes.endTime;
     const highestBid = promiseRes.highestBid;
     objRes.highestBid = drizzleRegistry.web3.utils.fromWei(highestBid, 'ether');
