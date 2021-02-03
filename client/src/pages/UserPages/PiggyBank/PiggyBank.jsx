@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
 
 import ManageBalance from './ManageBalance';
@@ -6,8 +6,14 @@ import LockCoin from './LockCoin';
 import Panel from './Panel/Panel';
 import DelegateStakingPower from './DelegateStakingPower';
 import PageWrap from 'components/Base/PageWrap';
+import validateContractsAddress from '../../../contracts/config/cotracts-address-checker';
 
 function PiggyBank() {
+  useEffect(async () => {
+    const res = await validateContractsAddress();
+    console.log('Result', res);
+  })
+
   return (
     <PageWrap>
       <Row>
