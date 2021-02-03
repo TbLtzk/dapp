@@ -119,4 +119,15 @@ export default class SystemDebtAuction extends AuctionService {
     return result;
   }
 
+  /**
+   * execute for auction
+   * @param userAddress
+   * @return array
+   */
+  async execute(userAddress) {
+    const result = await this.contract.methods.execute()
+      .send(
+        { from: userAddress });
+    return result;
+  }
 }

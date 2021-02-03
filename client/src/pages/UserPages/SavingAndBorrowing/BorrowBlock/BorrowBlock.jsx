@@ -5,14 +5,22 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import { fromBtcBlockchain } from 'func/balance';
-import { fN } from 'func/useful';
+import { fN, uintPerSecondToPerYearNumber } from 'func/useful';
 import CommonHandler from '../handler';
 import Handler from './handler';
 import { CardDetail } from '../styles';
-import { drizzleRegistry } from '../../../../contracts/config/drizzle-config';
+import { drizzleRegistry, web3 } from 'contracts/config/drizzle-config';
+import { BN, fromWei } from 'func/balance';
 
 export default function BorrowBlock(props) {
   const { actCardData } = props;
+  console.log('actCardData', actCardData);
+
+  const [actCardDataInf, setActCardDataInf] = useState(actCardData);
+
+  useEffect(() => {
+    setActCardDataInf(actCardData);
+  }, [actCardData]);
 
   const [lockedCol, setLockedCol] = useState(0);
   const [exchangeRate, setExchangeRate] = useState(0);
@@ -20,6 +28,7 @@ export default function BorrowBlock(props) {
   const [avToDeposit, setAvToDeposit] = useState(0);
   const [borLimit, setBorLimit] = useState(0);
   const [avToBorrow, setAvToBorrow] = useState(0);
+  const [avToRepay, setAvToRepay] = useState(0);
   const [colValue, setColValue] = useState(0);
   const [liqLimit, setLiqLimit] = useState(0);
   const [liqPrice, setLiqPrice] = useState(0);
@@ -27,35 +36,44 @@ export default function BorrowBlock(props) {
   const [colRatio, setColRatio] = useState(0);
   const [liqRatio, setLiqRatio] = useState(0);
 
+  const [repayBtnTitle, setRepayBtnTitle] = useState('Repay');
+  const [depositBtnTitle, setDepositBtnTitle] = useState('Add');
+  const [allowance, setAllowance] = useState(0);
+
   const address = useSelector(userAddressMetamask);
-  const handler = new Handler(address, actCardData?.vault?.colKey, useDispatch());
+  const handler = new Handler(address, actCardDataInf?.vault?.colKey, useDispatch());
   const commonHandler = new CommonHandler(address, useDispatch());
 
   useEffect(async () => {
-    if (actCardData.type !== 'borrow') return;
+    if (actCardDataInf.type !== 'borrow') return;
 
-    commonHandler.setExchangeRate(actCardData.vault.colKey, setExchangeRate);
+    commonHandler.setExchangeRate(actCardDataInf.vault.colKey, setExchangeRate);
     handler.setAvailableToDeposit(setAvToDeposit);
-    handler.setCollateralRatio(actCardData.collateral, setColRatio);
-    handler.setLiquidationRatio(actCardData.collateral, setLiqRatio);
-  }, [actCardData]);
+    handler.setCollateralRatio(actCardDataInf.collateral, setColRatio);
+    handler.setLiquidationRatio(actCardDataInf.collateral, setLiqRatio);
+    handler.allowance(setAllowance);
+    // await handler.approve();
+    if (actCardDataInf?.collateral === 'QBTC') {
+      handler.setAvailableToRepay(setAvToRepay);
+    }
+  }, [actCardDataInf]);
 
   useEffect(() => {
-    if (actCardData.type !== 'borrow') return;
+    if (actCardDataInf.type !== 'borrow') return;
 
     // Setup locked collateral
     let lockedColL = lockedCol;
-    if (actCardData?.vault?.colKey === 'QETH') {
-      lockedColL = actCardData.vault.colAsset;
-    } else if (actCardData?.vault?.colKey === 'QBTC') {
-      lockedColL = fromBtcBlockchain(actCardData.vault.colAsset);
+    if (actCardDataInf?.vault?.colKey === 'QETH') {
+      lockedColL = actCardDataInf.vault.colAsset;
+    } else if (actCardDataInf?.vault?.colKey === 'QBTC') {
+      lockedColL = fromBtcBlockchain(actCardDataInf.vault.colAsset);
     }
     setLockedCol(lockedColL);
 
     // Setup collateral value
     const colValueL = lockedColL * exchangeRate;
     setColValue(colValueL);
-    const debtBalance = drizzleRegistry.web3.utils.fromWei(actCardData.vault.debtBalance, 'ether');
+    const debtBalance = drizzleRegistry.web3.utils.fromWei(actCardDataInf.vault.debtBalance, 'ether');
     // Setup available to borrow
     const avToBorrowL = borLimit - debtBalance;
     setAvToBorrow(avToBorrowL);
@@ -68,8 +86,6 @@ export default function BorrowBlock(props) {
 
     // Setup borrow limit
     if (colRatio !== 0) {
-      console.log("colValueL", colValueL);
-      console.log("colRatio", colRatio);
       const borLimitL = colValueL / colRatio;
       setBorLimit(borLimitL);
     }
@@ -85,19 +101,54 @@ export default function BorrowBlock(props) {
       const avToWithdrawL = (avToBorrow / exchangeRate) * colRatio;
       setAvToWithdraw(avToWithdrawL);
     }
-  });
+  },[actCardDataInf, exchangeRate, liqRatio, colRatio, borLimit, lockedCol, avToBorrow]);
 
-  const borrow = (formData) => {
-    handler.borrow(formData.field, actCardData.vault.vaultNum);
+  const borrow = async(formData) => {
+    await handler.borrow(formData.field, actCardDataInf.vault.vaultNum, actCardDataInf, setActCardDataInf);
   };
-  const repay = (formData) => {
-    handler.repay(formData.field, actCardData.vault.vaultNum);
+
+  const repay = async (formData) => {
+    if (repayBtnTitle === 'Approve') {
+      await handler.approve();
+      handler.allowance(setAllowance);
+      setRepayBtnTitle('Repay');
+    } else {
+      await handler.repay(formData.field, actCardDataInf.vault.vaultNum, actCardDataInf, setActCardDataInf);
+    }
+
   };
   const addDeposit = async (formData) => {
-    handler.addDeposit(formData.field, actCardData.vault.vaultNum, lockedCol, setLockedCol, setAvToDeposit);
+    if (depositBtnTitle === 'Approve') {
+      await handler.approve();
+      handler.allowance(setAllowance);
+      setDepositBtnTitle('Add');
+    } else {
+      await handler.addDeposit(formData.field, actCardDataInf.vault.vaultNum, lockedCol, setLockedCol, setAvToDeposit,
+        actCardDataInf, setActCardDataInf);
+    }
   };
-  const withdraw = (formData) => {
-    handler.withdraw(formData.field, actCardData.vault.vaultNum, lockedCol, setLockedCol, setAvToDeposit);
+  const withdraw = async (formData) => {
+    await handler.withdraw(formData.field, actCardDataInf.vault.vaultNum, lockedCol, setLockedCol, setAvToDeposit,
+      actCardDataInf, setActCardDataInf);
+  };
+
+  // let allowance = await StableCoin.allowance(userAddress, contractsToAddresses.SystemSurplusAuction);
+  const onChangeValueBtnSlide = async (type, value) => {
+    const inputValue = value.target.value;
+    if (allowance === '0' || inputValue === allowance) {
+      if (type === 'deposit') {
+        setDepositBtnTitle('Approve');
+      } else if (type === 'repay') {
+        setRepayBtnTitle('Approve');
+      }
+    } else {
+      if (type === 'deposit') {
+        setDepositBtnTitle('Add');
+      } else if (type === 'repay') {
+        setRepayBtnTitle('Repay');
+      }
+    }
+    console.log('allowance', allowance);
   };
 
   return (
@@ -107,7 +158,7 @@ export default function BorrowBlock(props) {
         <p className="title-2">Collateral</p>
         <div className="txt">
           <span>Asset</span>
-          <span>{actCardData.vault?.colKey}</span>
+          <span>{actCardDataInf.vault?.colKey}</span>
         </div>
         <div className="txt">
           <span>Locked collateral</span>
@@ -148,10 +199,14 @@ export default function BorrowBlock(props) {
           <span>{fN(avToBorrow)}</span>
         </div>
         <div className="txt">
+          <span>Available to repay</span>
+          <span>{fN(avToRepay)}</span>
+        </div>
+        <div className="txt">
           <span>Outstanding debt</span>
           <span>{
-            actCardData.vault?.debtBalance ?
-              fN(drizzleRegistry.web3.utils.fromWei(actCardData.vault.debtBalance, 'ether')) :
+            actCardDataInf.vault?.debtBalance ?
+              fN(drizzleRegistry.web3.utils.fromWei(actCardDataInf.vault.debtBalance, 'ether')) :
               null
           }</span>
         </div>
@@ -161,7 +216,7 @@ export default function BorrowBlock(props) {
         </div>
         <div className="txt">
           <span>Borrowing fee p. a.</span>
-          <span>{actCardData.vault?.borrowingFee === undefined ? '-' : `${fN(actCardData.vault.borrowingFee)}%`}</span>
+          <span>{actCardDataInf.vault?.borrowingFee === undefined ? '-' : `${fN(actCardDataInf.vault.borrowingFee)}%`}</span>
         </div>
 
         <div className="btn-group">
@@ -175,26 +230,32 @@ export default function BorrowBlock(props) {
           />
           <ButtonSlide
             btnTxt="Repay Borrowed Asset"
-            btnShortTxt="Repay"
+            btnShortTxt={repayBtnTitle}
             onclick={repay}
             inpType="number"
             inpPlaceholder="Amount (QUSD)"
             inpRules={{ required: true }}
+            onChange={(value) => {
+              onChangeValueBtnSlide('repay', value);
+            }}
           />
           <ButtonSlide
             btnTxt="Deposit collateral"
-            btnShortTxt="Add"
+            btnShortTxt={depositBtnTitle}
             onclick={addDeposit}
             inpType="number"
-            inpPlaceholder={`Amount (${actCardData?.vault?.colKey})`}
+            inpPlaceholder={`Amount (${actCardDataInf?.vault?.colKey})`}
             inpRules={{ required: true }}
+            onChange={(value) => {
+              onChangeValueBtnSlide('deposit', value);
+            }}
           />
           <ButtonSlide
             btnTxt="Withdraw Collateral"
             btnShortTxt="Withdraw"
             onclick={withdraw}
             inpType="number"
-            inpPlaceholder={`Amount (${actCardData?.vault?.colKey})`}
+            inpPlaceholder={`Amount (${actCardDataInf?.vault?.colKey})`}
             inpRules={{ required: true }}
           />
         </div>

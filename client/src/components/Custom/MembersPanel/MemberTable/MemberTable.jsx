@@ -6,9 +6,11 @@ import { drizzleReactHooks } from '@drizzle/react-plugin';
 import TableView from 'components/Base/TableView';
 import { Pagination, setElementsForOnePage, countPages } from 'components/Base/Pagination';
 
-import { Circle, MemberPanelWrap, MemberAddress } from './styles';
+import { Circle, MemberPanelWrap, MemberAddress, Sharing } from './styles';
 import { rootNodeStake } from '../../../../store/selectors/root-contract';
 import { fN } from '../../../../func/useful';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const { useDrizzle } = drizzleReactHooks;
 
@@ -69,7 +71,26 @@ function MemberTable(props) {
             <MemberAddress
               color={userAddress === member.validator ? 'highlight' : 'default'}
             >
-              <span className="validator-member">{member.validator}</span>
+              <OverlayTrigger
+                key="top"
+                placement="top"
+                overlay={
+                  <Tooltip id={'tooltip-top' + i}>
+                    <span>Copy to clipboard</span>
+                  </Tooltip>
+                }
+              >
+                <CopyToClipboard text={member.validator}>
+                  <Sharing
+                    type="button"
+                    onClick={() => {
+                    }}
+                  >
+                    <span className="validator-member">{member.validator}</span>
+                  </Sharing>
+                </CopyToClipboard>
+              </OverlayTrigger>
+              {/*<span className="validator-member">{member.validator}</span>*/}
             </MemberAddress>
           </td>
           <td>{fN(drizzle.web3.utils.fromWei(member.amount, 'ether'))}Q</td>
@@ -88,7 +109,26 @@ function MemberTable(props) {
             <MemberAddress
               color={userAddress === member.address ? 'highlight' : 'default'}
             >
-              <span className="root-member">{member.address}</span>
+              <OverlayTrigger
+                key="top"
+                placement="top"
+                overlay={
+                  <Tooltip id={'tooltip-top' + i}>
+                    <span>Copy to clipboard</span>
+                  </Tooltip>
+                }
+              >
+                <CopyToClipboard text={member.address}>
+                  <Sharing
+                    type="button"
+                    onClick={() => {
+                    }}
+                  >
+                    <span className="root-member">{member.address.slice(0, 14) + '...'}</span>
+                  </Sharing>
+                </CopyToClipboard>
+              </OverlayTrigger>
+              {/*<span className="root-member">{member.address}</span>*/}
               {/*{member.address.slice(0, 14) + '...'}*/}
             </MemberAddress>
           </td>

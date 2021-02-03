@@ -12,7 +12,7 @@ export default function stableCoin(state = initialState, action) {
         ...state,
         balance: action.result,
       };
-      case actionTypes.GET_SYMBOL_SUCCESS:
+    case actionTypes.GET_SYMBOL_SUCCESS:
       return {
         ...state,
         symbol: action.result,

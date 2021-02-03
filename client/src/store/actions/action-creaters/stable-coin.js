@@ -19,3 +19,5 @@ export const getSymbolSuccess = (result) => ({
   type: actionTypes.GET_SYMBOL_SUCCESS,
   result
 });
+
+

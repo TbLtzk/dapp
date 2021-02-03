@@ -95,7 +95,7 @@ function* getOneAuction({ contractName, inf, activeTab, activeAuction }) {
     if (contract) {
       let data = null;
       data = yield contract.getOneAuction(inf);
-      console.log("data", data);
+      console.log('data', data);
       if (data) {
         yield put(getAuctionSuccess(data));
       } else {
@@ -156,7 +156,6 @@ function* bidForAuctionHandler({ data }) {
         return null;
     }
 
-
     // if (data?.user && data?.vaultId && data?.bid) {
     //   const contract = new AuctionService(data?.contract);
     //   result = yield contract.bid(data.user, data.vaultId, data.bid, userAddress);
@@ -185,6 +184,7 @@ function* executeAuctionHandler({ data }) {
         break;
       case 'SystemDebtAuction':
         contract = creationSystemDebtContractObj();
+        result = yield contract.execute(userAddress);
         break;
       case 'SystemSurplusAuction':
         contract = creationSystemSurplusContractObj();

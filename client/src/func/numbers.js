@@ -1,3 +1,5 @@
+import { drizzleRegistry, web3 } from '../contracts/config/drizzle-config';
+
 export const fromBtcBlockchain = (btc) => {
   if (btc.isNaN === true) return 0;
   return btc / 1e+8;

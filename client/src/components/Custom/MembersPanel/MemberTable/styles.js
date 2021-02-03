@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { ToggleBtn } from '../../PageLists/ListCardBody/styles';
 
 export const MemberPanelWrap = styled.div`
   .table th{
@@ -31,10 +32,17 @@ export const Circle = styled.div`
 `;
 
 export const MemberAddress = styled.span`
-  color: ${props => props.color === 'highlight' ? props => props.theme.colors.green : props => props.theme.colors.darkGrey};
+  button span{
+    color: ${props => props.color === 'highlight' ? props => props.theme.colors.green : props => props.theme.colors.darkGrey};
+  }
+  // overflow-wrap: break-word;
+  //word-wrap: break-word;
+  //word-break: break-all;
+  //word-break: break-word;
+  //hyphens: auto;
   span{
     display: inline-block;
-    overflow: scroll;
+    overflow: hidden;
   }
   .root-member{
     max-width: 140px;
@@ -44,4 +52,7 @@ export const MemberAddress = styled.span`
   }
 `;
 
-
+export const Sharing = styled(ToggleBtn)`
+  font-size: 14px;
+  color: ${props => props.theme.colors.darkGrey};
+`;

@@ -9,7 +9,7 @@ import { uintPerSecondToPerYearNumber } from 'func/useful';
 import BlockCardItem from '../BlockCardItem';
 
 import { BlockCard } from '../styles';
-import { setTransactionCounter } from '../../../../store/actions/action-creaters/transaction-handler';
+import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
 
 export default function BorrowCard(props) {
   const { setActCardData } = props;
@@ -23,7 +23,9 @@ export default function BorrowCard(props) {
   // Get vault count for address
   useEffect(async () => {
     dispatch(setTransactionCounter(1));
-    const data = await contract.userVaultsCount(address).catch(() => {});
+    const data = await contract.userVaultsCount(address)
+      .catch(() => {
+      });
     setVaultsCount(data);
     dispatch(setTransactionCounter(-1));
   }, []);
@@ -35,8 +37,12 @@ export default function BorrowCard(props) {
     const contractEPDR = new EPDR_Parameters();
     const vaultsLoc = [];
     for (let i = 0; i < vaultsCount; i += 1) {
-      const vaultInfo = await contract.userVaults(address, i).catch(() => {});
-      let fee = await contractEPDR.getUint(`governed.EPDR.${vaultInfo.colKey}_QUSD_interestRate`).catch(() => {});
+      const vaultInfo = await contract.userVaults(address, i)
+        .catch(() => {
+        });
+      let fee = await contractEPDR.getUint(`governed.EPDR.${vaultInfo.colKey}_QUSD_interestRate`)
+        .catch(() => {
+        });
       fee = uintPerSecondToPerYearNumber(fee);
       vaultInfo.borrowingFee = fee;
       vaultInfo.vaultNum = i;

@@ -46,11 +46,21 @@ export default function BlockCardItem(props) {
       if (container.classList.contains('borrow')) {
         colInfoContainerBorrow.classList.add('active');
         colInfoContainerSaving.classList.remove('active');
-        setActCardData({ type: 'borrow', collateral: val1, borrow: val2, vault });
+        setActCardData({
+          type: 'borrow',
+          collateral: val1,
+          borrow: val2,
+          vault
+        });
       } else {
         colInfoContainerBorrow.classList.remove('active');
         colInfoContainerSaving.classList.add('active');
-        setActCardData({ type: 'saving', deposit: val1, interest: val2, intRate: val3 });
+        setActCardData({
+          type: 'saving',
+          deposit: val1,
+          interest: val2,
+          intRate: val3
+        });
       }
     }
   };
