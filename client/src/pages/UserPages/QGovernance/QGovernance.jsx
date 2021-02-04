@@ -60,7 +60,7 @@ function QGovernance() {
           title: 'Q Root Node Panel',
         },
         {
-          label: 'q-membership-proposals',
+          label: 'q-expert-proposals',
           title: 'Q Expert Proposals',
         },
         {

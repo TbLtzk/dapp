@@ -77,14 +77,15 @@ function* createProposal({ drizzle, data }) {
           }
           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
           break;
-        case 'add-a-new-membership':
-        case 'remove-a-current-membership':
+        case 'add-a-new-expert':
+        case 'remove-a-current-expert':
         case 'parameter-vote':
           const typeContract = data.first !== 'parameter-vote' ? 'member' : 'parameters';
           const contract = chooseExpertContractDependsOnType(drizzle, typeContract, data['type-proposal']);
+          console.log("contract", contract);
           result = yield contract.createProposal(data, userAddress);
           contractName = chooseExpertContractNameDependsOnType(drizzle, typeContract, data['type-proposal']);
-          if (data?.first === 'remove-a-current-membership') {
+          if (data?.first === 'remove-a-current-expert') {
             //TODO: for createRemoveExpertProposal use RemoveProposalCreated event
             idProposal = result?.events?.RemoveProposalCreated?.returnValues?._id;
           } else {
@@ -181,7 +182,7 @@ function* getProposalDependsOnType(contractName, drizzle, data, id, activePropos
       case 'EPDR_MembershipVoting':
       case 'EPQFI_ParametersVoting':
       case 'EPDR_ParametersVoting':
-        yield put(getProposalVote(contractName, id, drizzle, 'q-membership-proposals', activeProposal));
+        yield put(getProposalVote(contractName, id, drizzle, 'q-expert-proposals', activeProposal));
         break;
       default:
         return null;
@@ -208,7 +209,7 @@ function* getProposalsList({ drizzle, activeTab }) {
       case 'slashing-proposals':
         contracts = creationSlashingContractsObjArray(drizzle);
         break;
-      case 'q-membership-proposals':
+      case 'q-expert-proposals':
         contracts = creationExpertContractsObjArray(drizzle);
         break;
     }
@@ -242,10 +243,11 @@ function* getProposal({ contractName, id, drizzle, activeTab, activeProposal }) 
       case 'slashing-proposals':
         contract = creationSlashingContractObj(drizzle, contractName);
         break;
-      case 'q-membership-proposals':
+      case 'q-expert-proposals':
         contract = creationExpertContractObj(drizzle, contractName);
         break;
     }
+    console.log("contract", contract);
     if (contract) {
       let data = null;
       if (activeProposal) {
@@ -253,6 +255,8 @@ function* getProposal({ contractName, id, drizzle, activeTab, activeProposal }) 
       } else {
         data = yield contract.getProposalWithoutStatusChecked(id);
       }
+      console.log("data", data);
+      console.log("id", id);
       // const data = null;
       if (data) {
         yield put(getProposalSuccess(data));
@@ -277,7 +281,7 @@ function* getEndedProposals({ drizzle, activeTab }) {
         case 'q-root-node-panel':
           contracts = creationRootContractObj(drizzle);
           break;
-        case 'q-membership-proposals':
+        case 'q-expert-proposals':
           contracts = creationExpertContractsObjArray(drizzle);
           break;
         case 'slashing-proposals':

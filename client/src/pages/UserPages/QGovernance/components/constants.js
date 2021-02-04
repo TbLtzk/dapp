@@ -4,7 +4,7 @@ export function checkCurrentTab(activeTab) {
       return 'QProposals';
     case 'q-root-node-panel':
       return 'QRootNodePanel';
-    case 'q-membership-proposals':
+    case 'q-expert-proposals':
       return 'QExpertProposals';
     case 'slashing-proposals':
       return 'SlashingProposals';
@@ -23,7 +23,7 @@ export function checkActiveTabByContract(contract) {
     case 'EPDR_MembershipVoting':
     case 'EPQFI_ParametersVoting':
     case 'EPDR_ParametersVoting':
-      return 'q-membership-proposals';
+      return 'q-expert-proposals';
     case 'RootNodesSlashingVoting':
     case 'ValidatorsSlashingVoting':
       return 'slashing-proposals';
