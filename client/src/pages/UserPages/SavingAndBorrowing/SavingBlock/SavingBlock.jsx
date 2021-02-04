@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import ButtonSlide from 'components/Base/Buttons/ButtonSlide';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import { uintPercentToNumber, fN } from 'func/useful';
-import { web3 } from 'contracts/config/drizzle-config';
+import { max_allowance } from 'func/numbers';
+import { toWei, fromWei } from 'func/balance';
+import Handler from './handler';
 
 import { CardDetail } from '../styles';
-import Handler from './handler';
 
 export default function SavingBlock(props) {
   const { actCardData } = props;
@@ -20,6 +21,9 @@ export default function SavingBlock(props) {
   const [savingRate, setSavingRate] = useState(0);
   const [claimReward, setClaimReward] = useState('0');
 
+  const [allowance, setAllowance] = useState(0);
+  const [depositBtnTitle, setDepositBtnTitle] = useState('Deposit');
+
   const address = useSelector(userAddressMetamask);
   const handler = new Handler(address, useDispatch());
 
@@ -29,14 +33,16 @@ export default function SavingBlock(props) {
     handler.setSavingBalanceAndLatestClaim(setSavingBalance, setLatestClaim);
     handler.setAvailableToDeposit(setAvToDeposit);
     handler.setSavingRate(setSavingRate);
+    handler.allowance(setAllowance);
+    // await handler.approve();
   }, [actCardData]);
 
   const calculateClaimReward = () => {
     const timeLastClaim = Math.floor(Date.now() / 1000) - latestClaim;
-    const balAtPrClaim = web3.utils.toWei(new web3.utils.BN(savingBalance));
+    const balAtPrClaim = toWei(savingBalance);
 
     let res = (1 + uintPercentToNumber(savingRate)) ** timeLastClaim * balAtPrClaim - balAtPrClaim;
-    res = web3.utils.fromWei(new web3.utils.BN(String(res)));
+    res = fromWei(String(res));
     setClaimReward(String(res));
   };
 
@@ -46,14 +52,20 @@ export default function SavingBlock(props) {
       setEstInterest(estInterestL);
     }
     calculateClaimReward();
-  });
+  }, [savingBalance, latestClaim]);
 
-  const deposit = (formData) => {
-    handler.deposit(formData.field, setSavingBalance, setAvToDeposit);
+  const deposit = async (formData) => {
+    if (depositBtnTitle === 'Approve') {
+      await handler.approve();
+      handler.allowance(setAllowance);
+      setDepositBtnTitle('Deposit');
+    } else {
+      await handler.deposit(formData.field, setSavingBalance, setAvToDeposit, setLatestClaim);
+    }
   };
 
   const withdraw = (formData) => {
-    handler.withdraw(formData.field, setSavingBalance, setAvToDeposit);
+    handler.withdraw(formData.field, setSavingBalance, setAvToDeposit, setLatestClaim);
   };
 
   const mint = (formData) => {
@@ -62,6 +74,15 @@ export default function SavingBlock(props) {
 
   const claim = () => {
     handler.claim(setClaimReward);
+  };
+
+  const onChangeValueBtnSlide = async (value) => {
+    if (Number(allowance) !== Number(max_allowance)) {
+      setDepositBtnTitle('Approve');
+    } else {
+      setDepositBtnTitle('Deposit');
+    }
+    console.log('allowance', allowance);
   };
 
   return (
@@ -106,11 +127,14 @@ export default function SavingBlock(props) {
           />
           <ButtonSlide
             btnTxt="Deposit Saving Asset"
-            btnShortTxt="Deposit"
+            btnShortTxt={depositBtnTitle}
             onclick={deposit}
             inpType="number"
             inpPlaceholder="Amount (QUSD)"
             inpRules={{ required: true }}
+            onChange={(value) => {
+              onChangeValueBtnSlide(value);
+            }}
           />
           <ButtonSlide
             btnTxt="Withdraw Saving Asset"

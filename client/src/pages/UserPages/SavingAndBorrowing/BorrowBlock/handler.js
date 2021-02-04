@@ -1,14 +1,14 @@
 import { uintPercentToNumber, uintPerSecondToPerYearNumber } from 'func/useful';
 import { GovernedEpdrQbtcQusdOracle, GovernedEpdrQethQusdOracle } from 'contracts/FxPriceFeed';
 import { GovernedEpdrQbtcAddress, GovernedEpdrQethAddress, StableCoinQUSD } from 'contracts/StableCoin';
-import { drizzleRegistry, web3 } from 'contracts/config/drizzle-config';
+import { web3 } from 'contracts/config/drizzle-config';
 import EPDR_Parameters from 'contracts/EPDR_Parameters';
 import { BorrowingCoreQUSD } from 'contracts/BorrowingCore';
 import { fromBtcBlockchain, toBtcBlockchain, toWei, fromWei } from 'func/balance';
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
 import { transformToPercentage } from 'contracts/handler/VotingHandler';
+import { maxApproveAmount } from 'func/numbers';
 
-export const maxApproveAmount = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 
 export default class Handler {
   constructor(address, collateralKey, dispatch) {
@@ -37,7 +37,7 @@ export default class Handler {
 
     this.stableCoinContract.balanceOf(this.address)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         const resL = res === undefined ? 0 : fromBtcBlockchain(res);
         stateSetter(resL);
       })
@@ -130,7 +130,7 @@ export default class Handler {
     this.dispatch(setTransactionCounter(1));
 
     this.borrowingContract.generateStc(this.address, vaultNum,
-      drizzleRegistry.web3.utils.toWei(amount, 'ether')
+      toWei(amount)
     )
       .then((res) => {
         this.updateDataInf(actCardDataInf, setActCardDataInf);
@@ -147,8 +147,8 @@ export default class Handler {
   async repay(amount, vaultNum, actCardDataInf, setActCardDataInf) {
     this.dispatch(setTransactionCounter(1));
     const valueAmount = toWei(amount);
-    console.log('valueAmount', amount);
-    console.log('valueAmount', valueAmount);
+    // console.log('valueAmount', amount);
+    // console.log('valueAmount', valueAmount);
     this.borrowingContract.payBackSTC(this.address, vaultNum, valueAmount)
       .then((res) => {
         this.updateDataInf(actCardDataInf, setActCardDataInf);
@@ -174,7 +174,7 @@ export default class Handler {
   async approve() {
     const approve = await this.stableCoinContract.approve(this.borrowingContract.address, maxApproveAmount, this.address);
     // const approve = await this.stableCoinContract.approve(this.borrowingContract.address, 0, this.address);
-    console.log('approve', approve);
+    // console.log('approve', approve);
   }
 
   allowance(stateSetter) {
@@ -182,7 +182,7 @@ export default class Handler {
     // console.log('allowance', allowance);
     this.stableCoinContract.allowance(this.address, this.borrowingContract.address)
       .then((res) => {
-        console.log('allowance', res);
+        // console.log('stateSetter allowance', res);
         stateSetter(res);
       })
       .catch((e) => {
@@ -218,7 +218,7 @@ export default class Handler {
       fee = uintPerSecondToPerYearNumber(fee);
       vaultInfo.borrowingFee = fee;
       vaultInfo.vaultNum = actCardDataInf?.vault?.vaultNum;
-      console.log('vaultInfo', vaultInfo);
+      // console.log('vaultInfo', vaultInfo);
       newVaultInf = {
         borrow: actCardDataInf?.borrow,
         collateral: actCardDataInf?.collateral,

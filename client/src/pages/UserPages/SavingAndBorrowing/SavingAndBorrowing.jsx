@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 
 import PageWrap from 'components/Base/PageWrap';
-import ButtonsGroupTabs from 'components/Base/Tabs/ButtonsGroupTabs';
+import BigTabsGroupView from 'components/Base/Tabs/BigTabsGroupView';
 import { WrapTabs } from 'components/Custom/PageLists/styles';
 import TabContent from './TabContent';
 
@@ -34,7 +34,7 @@ export default function SavingAndBorrowing() {
     <PageWrap>
       <Row>
         <Col md={12}>
-          <ButtonsGroupTabs
+          <BigTabsGroupView
             tabsItems={tabsItems}
             tabsHandler={(key) => {
               setActiveTab(key);

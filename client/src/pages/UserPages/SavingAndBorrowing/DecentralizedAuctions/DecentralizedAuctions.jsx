@@ -11,7 +11,7 @@ import TabContent from './components/TabContent';
 import References from 'components/Custom/PageLists/References';
 import PageWrap from 'components/Base/PageWrap';
 
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Container } from 'react-bootstrap';
 import { WrapBtn, WrapTabs } from 'components/Custom/PageLists/styles';
 
 export default function DecentralizedAuctions() {
@@ -68,7 +68,7 @@ export default function DecentralizedAuctions() {
   }, [activeTab]);
 
   return (
-    <PageWrap>
+    <Container fluid>
       <Row>
         <Col md={8}>
           <ButtonsGroupTabs
@@ -100,6 +100,6 @@ export default function DecentralizedAuctions() {
           <References type="auction"/>
         </Col>
       </Row>
-    </PageWrap>
+    </Container>
   );
 }

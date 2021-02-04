@@ -8,11 +8,14 @@ export default function BlockCardItem(props) {
   const { txt1, val1, txt2, val2, txt3, val3, setActCardData, vault } = props;
 
   const clickItem = (e) => {
-    const elementAct = document.querySelector('div.active');
+    const elementAct = document.querySelector('div.active.borrowing');
+    // const elementAct = document.querySelector('div.active');
     const elementToAct = e.target.closest('div.row');
 
     // Clear all dynamic classes
     if (elementAct !== null) elementAct.classList.remove('active');
+    if (elementAct !== null) elementAct.classList.remove('borrowing');
+    // if (elementAct !== null) elementAct.classList.remove('active');
     const cont1 = document.querySelector('div.first');
     if (cont1 !== null) cont1.classList.remove('first');
     const cont2 = document.querySelector('div.last');
@@ -26,11 +29,14 @@ export default function BlockCardItem(props) {
       colContainer.classList.remove('col-8');
       colContainer.classList.add('col-12');
       colInfoContainerSaving.classList.remove('active');
+      colInfoContainerSaving.classList.remove('borrowing');
       colInfoContainerBorrow.classList.remove('active');
+      colInfoContainerBorrow.classList.remove('borrowing');
     } else {
       // Setup new classes
       const container = e.target.closest('div.card-item-container');
       elementToAct.classList.add('active');
+      elementToAct.classList.add('borrowing');
 
       container.childNodes.forEach((el, index) => {
         if (elementToAct === el && index === 1) {
@@ -45,7 +51,9 @@ export default function BlockCardItem(props) {
       colContainer.classList.add('col-8');
       if (container.classList.contains('borrow')) {
         colInfoContainerBorrow.classList.add('active');
+        colInfoContainerBorrow.classList.add('borrowing');
         colInfoContainerSaving.classList.remove('active');
+        colInfoContainerSaving.classList.remove('borrowing');
         setActCardData({
           type: 'borrow',
           collateral: val1,
@@ -54,7 +62,9 @@ export default function BlockCardItem(props) {
         });
       } else {
         colInfoContainerBorrow.classList.remove('active');
+        colInfoContainerBorrow.classList.remove('borrowing');
         colInfoContainerSaving.classList.add('active');
+        colInfoContainerSaving.classList.add('borrowing');
         setActCardData({
           type: 'saving',
           deposit: val1,

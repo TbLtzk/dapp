@@ -1,8 +1,10 @@
-import { StableCoinQUSD } from 'contracts/StableCoin';
-import { web3 } from 'contracts/config/drizzle-config';
-import { SavingQUSD } from 'contracts/Saving';
-import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
+import {StableCoinQUSD} from 'contracts/StableCoin';
+import {web3} from 'contracts/config/drizzle-config';
+import {SavingQUSD} from 'contracts/Saving';
+import {setTransactionCounter} from 'store/actions/action-creaters/transaction-handler';
 import EPDR_Parameters from 'contracts/EPDR_Parameters';
+import {maxApproveAmount} from 'func/numbers';
+import {toWei, fromWei} from 'func/balance';
 
 export default class Handler {
   constructor(address, dispatch) {
@@ -18,7 +20,7 @@ export default class Handler {
 
     this.contractSavingQUSD.usersSavings(this.address).then((res) => {
       latestClaimSetter(res.latestClaim);
-      const sbL = web3.utils.fromWei(res.balance);
+      const sbL = fromWei(res.balance);
       savingBalanceSetter(sbL);
     }).catch((e) => {
       savingBalanceSetter(0);
@@ -33,7 +35,7 @@ export default class Handler {
     this.dispatch(setTransactionCounter(1));
 
     this.contractStableCoinQUSD.balanceOf(this.address).then((res) => {
-      const resL = web3.utils.fromWei(new web3.utils.BN(res));
+      const resL = fromWei(res);
       stateSetter(resL);
     }).catch((e) => {
       stateSetter(0);
@@ -56,28 +58,28 @@ export default class Handler {
     });
   }
 
-  async deposit(amount, setterSavBal, setAvDep) {
+  async deposit(amount, setterSavBal, setAvDep, setLatestClaim) {
     this.dispatch(setTransactionCounter(1));
 
-    const amountL = new web3.utils.BN(web3.utils.toWei(amount));
-    const approve = await this.contractStableCoinQUSD.approve(this.contractSavingQUSD.address, amountL, this.address);
-    if (approve.status === true) {
-      this.contractSavingQUSD.deposit(this.address, amount).then(() => {
-        this.setSavingBalance(setterSavBal);
-        this.setAvailableToDeposit(setAvDep);
-      }).catch((e) => {
-        console.log(e);
-      }).finally(() => {
-        this.dispatch(setTransactionCounter(-1));
-      });
-    }
+    const amountL = toWei(amount);
+    // const approve = await this.contractStableCoinQUSD.approve(this.contractSavingQUSD.address, amountL, this.address);
+    // if (approve.status === true) {
+    this.contractSavingQUSD.deposit(this.address, amount).then(() => {
+      this.setSavingBalanceAndLatestClaim(setterSavBal, setLatestClaim);
+      this.setAvailableToDeposit(setAvDep);
+    }).catch((e) => {
+      console.log(e);
+    }).finally(() => {
+      this.dispatch(setTransactionCounter(-1));
+    });
+    // }
   }
 
-  async withdraw(amount, setterSavBal, setAvDep) {
+  async withdraw(amount, setterSavBal, setAvDep, setLatestClaim) {
     this.dispatch(setTransactionCounter(1));
 
     this.contractSavingQUSD.withdraw(this.address, amount).then(() => {
-      this.setSavingBalance(setterSavBal);
+      this.setSavingBalanceAndLatestClaim(setterSavBal, setLatestClaim);
       this.setAvailableToDeposit(setAvDep);
     }).catch((e) => {
       console.log(e);
@@ -108,5 +110,21 @@ export default class Handler {
     }).finally(() => {
       this.dispatch(setTransactionCounter(-1));
     });
+  }
+
+  allowance(stateSetter) {
+    this.contractStableCoinQUSD.allowance(this.address, this.contractSavingQUSD.address)
+        .then((res) => {
+          stateSetter(res);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+  }
+
+  async approve() {
+    const approve = await this.contractStableCoinQUSD.approve(this.contractSavingQUSD.address, maxApproveAmount, this.address);
+    // const approve = await this.contractStableCoinQUSD.approve(this.contractSavingQUSD.address, 0, this.address);
+    // console.log('approve', approve);
   }
 }

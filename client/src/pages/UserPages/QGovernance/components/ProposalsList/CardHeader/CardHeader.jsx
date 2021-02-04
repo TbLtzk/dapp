@@ -63,7 +63,7 @@ function CardHeader(props) {
       {/*      }*/}
       {/*      {status === 'Passed' ?*/}
       {/*        <WrapVoteBtn>*/}
-      {/*          <ButtonsGroupTabs*/}
+      {/*          <BigTabsGroupView*/}
       {/*            title="Execute"*/}
       {/*            type="white"*/}
       {/*            handleButton={handleExecute}*/}
@@ -72,7 +72,7 @@ function CardHeader(props) {
       {/*      }*/}
       {/*      {status === 'Pending' || status === 'Accepted' ?*/}
       {/*        <WrapVoteBtn>*/}
-      {/*          <ButtonsGroupTabs*/}
+      {/*          <BigTabsGroupView*/}
       {/*            title="Vote"*/}
       {/*            type="white"*/}
       {/*            handleButton={handleVote}*/}

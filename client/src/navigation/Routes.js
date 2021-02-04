@@ -39,7 +39,8 @@ function Routes() {
         <Route exact path="/piggy-bank" component={AuthProtect(PiggyBank)}/>
         <Route exact path="/staking" component={AuthProtect(Staking)}/>
         <Route exact path="/manage-staker-reward-pool" component={AuthProtect(ManageStakerRewardPool)}/>
-        <Route exact path="/saving-and-borrowing" component={AuthProtect(SavingAndBorrowingContent)}/>
+        <Route exact path="/saving-and-borrowing" component={AuthProtect(SavingAndBorrowing)}/>
+        {/*<Route exact path="/saving-and-borrowing" component={AuthProtect(SavingAndBorrowingContent)}/>*/}
         <Route exact path="/ended-proposals" component={AuthProtect(EndedProposals)}/>
         <Route exact path="/decentralized-auctions" component={AuthProtect(DecentralizedAuctions)}/>
         <Route exact path="/ended-auctions" component={AuthProtect(EndedAuctions)}/>

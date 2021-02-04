@@ -35,3 +35,6 @@ export const roundNumbers = (value, exp) => {
   return decimalAdjust('round', value, exp);
 };
 
+export const maxApproveAmount = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+
+export const max_allowance = "115792089237316195423570985008687907853269984665640564039457.584007913129639935";

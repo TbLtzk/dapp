@@ -5,16 +5,16 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import { fromBtcBlockchain } from 'func/balance';
-import { fN, uintPerSecondToPerYearNumber } from 'func/useful';
+import { fN } from 'func/useful';
+import { max_allowance } from 'func/numbers';
+import { fromWei } from 'func/balance';
 import CommonHandler from '../handler';
 import Handler from './handler';
+
 import { CardDetail } from '../styles';
-import { drizzleRegistry, web3 } from 'contracts/config/drizzle-config';
-import { BN, fromWei } from 'func/balance';
 
 export default function BorrowBlock(props) {
   const { actCardData } = props;
-  console.log('actCardData', actCardData);
 
   const [actCardDataInf, setActCardDataInf] = useState(actCardData);
 
@@ -73,7 +73,7 @@ export default function BorrowBlock(props) {
     // Setup collateral value
     const colValueL = lockedColL * exchangeRate;
     setColValue(colValueL);
-    const debtBalance = drizzleRegistry.web3.utils.fromWei(actCardDataInf.vault.debtBalance, 'ether');
+    const debtBalance = fromWei(actCardDataInf.vault.debtBalance);
     // Setup available to borrow
     const avToBorrowL = borLimit - debtBalance;
     setAvToBorrow(avToBorrowL);
@@ -101,9 +101,9 @@ export default function BorrowBlock(props) {
       const avToWithdrawL = (avToBorrow / exchangeRate) * colRatio;
       setAvToWithdraw(avToWithdrawL);
     }
-  },[actCardDataInf, exchangeRate, liqRatio, colRatio, borLimit, lockedCol, avToBorrow]);
+  }, [actCardDataInf, exchangeRate, liqRatio, colRatio, borLimit, lockedCol, avToBorrow]);
 
-  const borrow = async(formData) => {
+  const borrow = async (formData) => {
     await handler.borrow(formData.field, actCardDataInf.vault.vaultNum, actCardDataInf, setActCardDataInf);
   };
 
@@ -132,10 +132,10 @@ export default function BorrowBlock(props) {
       actCardDataInf, setActCardDataInf);
   };
 
-  // let allowance = await StableCoin.allowance(userAddress, contractsToAddresses.SystemSurplusAuction);
   const onChangeValueBtnSlide = async (type, value) => {
     const inputValue = value.target.value;
-    if (allowance === '0' || inputValue === allowance) {
+    console.log('allowance', allowance);
+    if (Number(allowance) !== Number(max_allowance)) {
       if (type === 'deposit') {
         setDepositBtnTitle('Approve');
       } else if (type === 'repay') {
@@ -148,7 +148,6 @@ export default function BorrowBlock(props) {
         setRepayBtnTitle('Repay');
       }
     }
-    console.log('allowance', allowance);
   };
 
   return (
@@ -206,7 +205,7 @@ export default function BorrowBlock(props) {
           <span>Outstanding debt</span>
           <span>{
             actCardDataInf.vault?.debtBalance ?
-              fN(drizzleRegistry.web3.utils.fromWei(actCardDataInf.vault.debtBalance, 'ether')) :
+              fN(fromWei(actCardDataInf.vault.debtBalance)) :
               null
           }</span>
         </div>

@@ -5,6 +5,7 @@ import {
   getPercentageFormat, transformToPercentage
 } from '../../handler/VotingHandler';
 import VotingService from './VotingService';
+import { fromWei } from 'func/balance';
 
 /*contacts: RootNodesSlashingVoting, ValidatorsSlashingVoting*/
 export default class SlashingVoting extends VotingService {
@@ -24,7 +25,7 @@ export default class SlashingVoting extends VotingService {
       objRes.id = id;
       objRes.remark = promiseRes.base.remark;
       objRes.candidate = promiseRes.candidate;
-      objRes.amountToSlash = drizzleRegistry.web3.utils.fromWei(promiseRes.amountToSlash, 'ether');
+      objRes.amountToSlash = fromWei(promiseRes.amountToSlash);
       objRes.vetosCount = promiseRes.base.counters.vetosCount;
       // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
       // objRes.votesFor = promiseRes.base.counters.weightFor;
@@ -33,7 +34,7 @@ export default class SlashingVoting extends VotingService {
       objRes.votesAgainst = weightAgainst;
       //number of voting people for
       const weightFor = promiseRes.base.counters.weightFor;
-      objRes.votesFor =  weightFor;
+      objRes.votesFor = weightFor;
       //the ending is given by: vetoEndTime.
       objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
       //the time until when users can vote
@@ -66,7 +67,7 @@ export default class SlashingVoting extends VotingService {
     percentageStake = getPercentageFormat(percentageStake);
     let candidate = data['address'];
     // console.log("candidate", candidate);
-    console.log("percentageStake", percentageStake);
+    console.log('percentageStake', percentageStake);
     // candidate = "0x6a39b688d591ea00c9ea69658438794204b5cc62";
     // candidate = this.contractName === 'ValidatorsSlashingVoting' //validator member
     //   ? '0x6a39b688d591ea00c9ea69658438794204b5cc62'

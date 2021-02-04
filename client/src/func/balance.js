@@ -11,8 +11,8 @@ export const toBtcBlockchain = (num) => {
 };
 
 export const toWei = (value) => {
-  return (drizzleRegistry.web3.utils.toWei(value, 'ether'));
-  // return new web3.utils.BN(drizzleRegistry.web3.utils.toWei(value, 'ether'));
+  // return (drizzleRegistry.web3.utils.toWei(value, 'ether'));
+  return drizzleRegistry.web3.utils.toWei(new web3.utils.BN(value), 'ether');
 };
 
 export const fromWei = (value) => {
