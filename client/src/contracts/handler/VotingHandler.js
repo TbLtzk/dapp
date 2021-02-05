@@ -95,9 +95,9 @@ export function toFixed(x) {
 
 export const getPercentageFormat = (number) => {
   console.log('number', number);
-  return bn(1e+27);
-    // .multipliedBy(Number(number))
-    // .dividedBy(100);
+  return bn('1e+27')
+    .multipliedBy(Number(number))
+    .dividedBy(100);
 };
 
 export const transformToPercentage = (number) => {
