@@ -2,8 +2,9 @@ import { web3, contracts, drizzleRegistry } from '../../config/drizzle-config';
 import {
   getPastEvents,
 } from '../../handler/VotingHandler';
-import { bn, getPastAuctionsIds } from '../../handler/AuctionHandler';
+import { getPastAuctionsIds } from '../../handler/AuctionHandler';
 import { BorrowingCoreQUSD } from '../../BorrowingCore';
+import { toWei } from 'func/balance';
 
 export default class AuctionService {
 
@@ -11,7 +12,6 @@ export default class AuctionService {
     this.contract = contracts[contractName];
     this.contractName = contractName;
     this.borrowingContract = new BorrowingCoreQUSD();
-
   }
 
   /**
@@ -44,6 +44,14 @@ export default class AuctionService {
   }
 
   /**
+   * get allowance
+   * @param userAddress
+   * @return string
+   */
+  async getAllowance(userAddress) {
+  }
+
+  /**
    * bid for auction
    * @param user
    * @param vaultId
@@ -52,8 +60,9 @@ export default class AuctionService {
    * @return array
    */
   async bid(user, vaultId, bid, userAddress) {
+    await this.getAllowance(userAddress);
     const result = await this.contract.methods.bid(user, vaultId,
-      bn(drizzleRegistry.web3.utils.toWei(bid, 'ether')))
+      toWei(bid))
       .send(
         { from: userAddress });
     return result;

@@ -1,4 +1,5 @@
 import { contracts, web3 } from './config/drizzle-config';
+import { toWei } from 'func/balance';
 
 export default class RootNodes {
   constructor() {
@@ -6,15 +7,18 @@ export default class RootNodes {
   }
 
   async getMembers() {
-    return await this.methods.getMembers().call();
+    return await this.methods.getMembers()
+      .call();
   }
 
   async addMember(address) {
-    return await this.methods.addMember(address).send({ from: address });
+    return await this.methods.addMember(address)
+      .send({ from: address });
   }
 
   async announceWithdrawal(address, amount) {
-    const amountConv = web3.utils.toWei(new web3.utils.BN(amount));
-    return await this.methods.announceWithdrawal(amountConv).send({ from: address });
+    const amountConv = toWei(amount);
+    return await this.methods.announceWithdrawal(amountConv)
+      .send({ from: address });
   }
 }

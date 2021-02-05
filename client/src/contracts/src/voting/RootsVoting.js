@@ -4,6 +4,7 @@ import {
   convertNumVotes, transformToPercentage
 } from '../../handler/VotingHandler';
 import VotingService from './VotingService';
+import { fromWei } from 'func/balance';
 
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
 
@@ -46,10 +47,10 @@ export default class RootsVoting extends VotingService {
       // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
       // objRes.votesFor = promiseRes.base.counters.weightFor;
       const weightAgainst = promiseRes.base.counters.weightAgainst;
-      objRes.votesAgainst = drizzleRegistry.web3.utils.fromWei(weightAgainst, 'ether');
+      objRes.votesAgainst =fromWei(weightAgainst);
 
       const weightFor = promiseRes.base.counters.weightFor;
-      objRes.votesFor = drizzleRegistry.web3.utils.fromWei(weightFor, 'ether');
+      objRes.votesFor = fromWei(weightFor);
       objRes.requiredMajority = promiseRes.base.params.requiredMajority;
       objRes.requiredQuorum = promiseRes.base.params.requiredQuorum;
       //the ending is given by: vetoEndTime.

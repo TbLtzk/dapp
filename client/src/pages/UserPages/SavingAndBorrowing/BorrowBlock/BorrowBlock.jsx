@@ -39,6 +39,9 @@ export default function BorrowBlock(props) {
   const [repayBtnTitle, setRepayBtnTitle] = useState('Repay');
   const [depositBtnTitle, setDepositBtnTitle] = useState('Add');
   const [allowance, setAllowance] = useState(0);
+  const [allowanceDeposit, setAllowanceDeposit] = useState(0);
+  const [allowanceRepay, setAllowanceRepay] = useState(0);
+
 
   const address = useSelector(userAddressMetamask);
   const handler = new Handler(address, actCardDataInf?.vault?.colKey, useDispatch());
@@ -51,7 +54,9 @@ export default function BorrowBlock(props) {
     handler.setAvailableToDeposit(setAvToDeposit);
     handler.setCollateralRatio(actCardDataInf.collateral, setColRatio);
     handler.setLiquidationRatio(actCardDataInf.collateral, setLiqRatio);
-    handler.allowance(setAllowance);
+
+    handler.allowanceSwitcher(setAllowanceDeposit, 'deposit');
+    handler.allowanceSwitcher(setAllowanceRepay, 'repay');
     // await handler.approve();
     if (actCardDataInf?.collateral === 'QBTC') {
       handler.setAvailableToRepay(setAvToRepay);
@@ -109,8 +114,8 @@ export default function BorrowBlock(props) {
 
   const repay = async (formData) => {
     if (repayBtnTitle === 'Approve') {
-      await handler.approve();
-      handler.allowance(setAllowance);
+      await handler.approveSwitcher("repay");
+      handler.allowanceSwitcher(setAllowanceRepay, 'repay');
       setRepayBtnTitle('Repay');
     } else {
       await handler.repay(formData.field, actCardDataInf.vault.vaultNum, actCardDataInf, setActCardDataInf);
@@ -119,8 +124,8 @@ export default function BorrowBlock(props) {
   };
   const addDeposit = async (formData) => {
     if (depositBtnTitle === 'Approve') {
-      await handler.approve();
-      handler.allowance(setAllowance);
+      await handler.approveSwitcher("deposit");
+      handler.allowanceSwitcher(setAllowanceDeposit, 'deposit');
       setDepositBtnTitle('Add');
     } else {
       await handler.addDeposit(formData.field, actCardDataInf.vault.vaultNum, lockedCol, setLockedCol, setAvToDeposit,
@@ -134,20 +139,24 @@ export default function BorrowBlock(props) {
 
   const onChangeValueBtnSlide = async (type, value) => {
     const inputValue = value.target.value;
-    console.log('allowance', allowance);
-    if (Number(allowance) !== Number(max_allowance)) {
-      if (type === 'deposit') {
+
+    if (type === 'deposit') {
+      console.log('allowanceDeposit', allowanceDeposit);
+      if (Number(allowanceDeposit) < Number(inputValue)) {
+        // if (Number(allowance) !== Number(max_allowance)) {
         setDepositBtnTitle('Approve');
-      } else if (type === 'repay') {
-        setRepayBtnTitle('Approve');
-      }
-    } else {
-      if (type === 'deposit') {
+      } else {
         setDepositBtnTitle('Add');
-      } else if (type === 'repay') {
+      }
+    } else if (type === 'repay') {
+      console.log('allowanceRepay', allowanceRepay);
+      if (Number(allowanceRepay) < Number(inputValue)) {
+        setRepayBtnTitle('Approve');
+      } else {
         setRepayBtnTitle('Repay');
       }
     }
+
   };
 
   return (

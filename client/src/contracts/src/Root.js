@@ -1,5 +1,7 @@
 import { drizzleRegistry, contracts } from '../config/drizzle-config';
 
+import { fromWei } from 'func/balance';
+
 export default class RootService {
 
   constructor(drizzle) {
@@ -43,7 +45,7 @@ export default class RootService {
   async getRootNodeStake(node) {
     const balance = await this.contract.methods.getRootNodeStake(node)
       .call();
-    return drizzleRegistry.web3.utils.fromWei(balance, 'ether');
+    return fromWei(balance);
   }
 
   /**

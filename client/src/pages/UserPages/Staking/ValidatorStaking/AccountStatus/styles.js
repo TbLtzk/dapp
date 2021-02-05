@@ -56,7 +56,7 @@ export const AccountContainer = styled.div`
   }
 
   button {
-    height: 46px;
+    min-height: 46px;
   }
 
   .btn_container {

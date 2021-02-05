@@ -10,6 +10,7 @@ import {
   getStatusTransformation
 } from '../../handler/VotingHandler';
 import VotingService from './VotingService';
+import { fromWei } from 'func/balance';
 
 export default class ConstitutionVoting extends VotingService {
   /**
@@ -48,9 +49,9 @@ export default class ConstitutionVoting extends VotingService {
       objRes.newConstitutionHash = promiseRes.newConstitutionHash;
       objRes.currentConstitutionHash = promiseRes.currentConstitutionHash;
       const weightAgainst = promiseRes.base.counters.weightAgainst;
-      objRes.votesAgainst = drizzleRegistry.web3.utils.fromWei(weightAgainst, 'ether');
+      objRes.votesAgainst = fromWei(weightAgainst);
       const weightFor = promiseRes.base.counters.weightFor;
-      objRes.votesFor = drizzleRegistry.web3.utils.fromWei(weightFor, 'ether');
+      objRes.votesFor = fromWei(weightFor);
       objRes.vetosCount = promiseRes.base.counters.vetosCount;
 
       // const votesCount = await bn(weightFor)

@@ -1,11 +1,10 @@
 import AuctionService from './AuctionService';
 
-import { web3, contracts, drizzleRegistry } from '../../config/drizzle-config';
 import { getStatusTransformation, maxApproveAmount, bn } from '../../handler/AuctionHandler';
-import BorrowingCore from '../../BorrowingCore';
 import { StableCoinQUSD } from '../../StableCoin';
 import { contractsToAddresses } from '../../mapping/contract-to-address';
-import { fromBtcBlockchain } from 'func/balance';
+import { fromBtcBlockchain, toWei, fromWei } from 'func/balance';
+import { max_allowance } from '../../../func/numbers';
 
 export default class LiquidationAuction extends AuctionService {
 
@@ -30,11 +29,26 @@ export default class LiquidationAuction extends AuctionService {
     objRes.colKey = result.colKey;
     objRes.endTime = promiseRes.endTime;
     const highestBid = promiseRes.highestBid;
-    objRes.highestBid = drizzleRegistry.web3.utils.fromWei(highestBid, 'ether');
+    objRes.highestBid = fromWei(highestBid);
     objRes.title = `Liquidation Auction`;
     objRes.contract = this.contractName;
     return { ...objRes };
 
+  }
+
+  /**
+   * get allowance
+   * @param userAddress
+   * @return string
+   */
+  async getAllowance(userAddress) {
+    const StableCoin = new StableCoinQUSD();
+    let allowance = await StableCoin.allowance(userAddress, contractsToAddresses.LiquidationAuction);
+    console.log('allowance', allowance);
+    if (allowance !== max_allowance) {
+      let approve = await StableCoin.approve(contractsToAddresses.LiquidationAuction, maxApproveAmount, userAddress);
+      console.log('approve', approve);
+    }
   }
 
   /**
@@ -44,16 +58,17 @@ export default class LiquidationAuction extends AuctionService {
    * @return string
    */
   async createAuction(data, userAddress) {
-    const StableCoin = new StableCoinQUSD();
-    let allowance = await StableCoin.allowance(userAddress, contractsToAddresses.LiquidationAuction);
-    console.log('allowance', allowance);
-    if (allowance !== '115792089237316195423570985008687907853269984665640564039457.584007913129639935') {
-      let approve = await StableCoin.approve(contractsToAddresses.LiquidationAuction, maxApproveAmount, userAddress);
-      console.log('approve', approve);
-    }
+    // const StableCoin = new StableCoinQUSD();
+    // let allowance = await StableCoin.allowance(userAddress, contractsToAddresses.LiquidationAuction);
+    // console.log('allowance', allowance);
+    // if (allowance !== '115792089237316195423570985008687907853269984665640564039457.584007913129639935') {
+    //   let approve = await StableCoin.approve(contractsToAddresses.LiquidationAuction, maxApproveAmount, userAddress);
+    //   console.log('approve', approve);
+    // }
+    await this.getAllowance(userAddress);
     // await StableCoin.approve('0xFef40e2286F2240843E55fE66F06c34e7d6Ae317', bid, userAddress);
     return await this.contract.methods.startAuction(
-      data?.address, data['vault-id'], bn(drizzleRegistry.web3.utils.toWei(data?.bid, 'ether')))
+      data?.address, data['vault-id'], toWei(data?.bid))
       .send({ from: userAddress });
   }
 }

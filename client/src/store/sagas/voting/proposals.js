@@ -30,6 +30,7 @@ import {
 } from 'contracts/handler/QExpertVotingHandler';
 
 import { chooseSlashingContractDependsOnType } from 'contracts/handler/SlashingVotingHandler';
+import proposals from '../../reducers/voting/proposals';
 
 function* createProposal({ drizzle, data }) {
   try {
@@ -82,7 +83,7 @@ function* createProposal({ drizzle, data }) {
         case 'parameter-vote':
           const typeContract = data.first !== 'parameter-vote' ? 'member' : 'parameters';
           const contract = chooseExpertContractDependsOnType(drizzle, typeContract, data['type-proposal']);
-          console.log("contract", contract);
+          console.log('contract', contract);
           result = yield contract.createProposal(data, userAddress);
           contractName = chooseExpertContractNameDependsOnType(drizzle, typeContract, data['type-proposal']);
           if (data?.first === 'remove-a-current-expert') {
@@ -197,7 +198,10 @@ function* getOneProposalShared({ drizzle, data }) {
 }
 
 function* getProposalsList({ drizzle, activeTab }) {
+
   try {
+    const { activeTab } = yield select(state => state.proposals);
+    console.log("activeTab", activeTab);
     let contracts = null;
     switch (activeTab) {
       case 'q-proposals':
@@ -222,6 +226,8 @@ function* getProposalsList({ drizzle, activeTab }) {
     } else {
       result = yield contracts?.getProposals();
     }
+    console.log('activeTab', activeTab);
+    console.log('result', result);
 
     yield put(getProposalsListSuccess(result));
   } catch (e) {
@@ -247,7 +253,7 @@ function* getProposal({ contractName, id, drizzle, activeTab, activeProposal }) 
         contract = creationExpertContractObj(drizzle, contractName);
         break;
     }
-    console.log("contract", contract);
+    console.log('contract', contract);
     if (contract) {
       let data = null;
       if (activeProposal) {
@@ -255,13 +261,15 @@ function* getProposal({ contractName, id, drizzle, activeTab, activeProposal }) 
       } else {
         data = yield contract.getProposalWithoutStatusChecked(id);
       }
-      console.log("data", data);
-      console.log("id", id);
+      console.log('data', data);
+      console.log('id', id);
       // const data = null;
       if (data) {
         yield put(getProposalSuccess(data));
       } else {
-        yield put(getEmptyProposalSuccess(id));
+        if (id) {
+          yield put(getEmptyProposalSuccess(id));
+        }
       }
     }
   } catch (err) {

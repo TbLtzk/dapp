@@ -84,16 +84,24 @@ function FormStaking() {
         </TextWrapBlack>
         <TextWrapGrey md={6}>
           <ul>
-            <li>Announcement status</li>
-            <li>Announced amount</li>
-            <li>End time for announcement</li>
+            <li>Announcement withdrawal status</li>
+            {withdrawalsData?.pending ?
+              <>
+                <li>Announced amount</li>
+                <li>End time for announcement</li>
+              </>
+              : null}
           </ul>
         </TextWrapGrey>
         <TextWrapBlack md={6}>
           <ul>
             <li>{withdrawalsData?.pending ? 'pending' : 'not-active'}</li>
-            <li>{withdrawalsData ? drizzle.web3.utils.fromWei(withdrawalsData?.amount, 'ether') : 0}Q</li>
-            <li>{withdrawalsData?.endTime !== '0' ? fromSolDateFormattingT1(Number(withdrawalsData?.endTime)) : '-'}</li>
+            {withdrawalsData?.pending ?
+              <>
+                <li>{withdrawalsData ? drizzle.web3.utils.fromWei(withdrawalsData?.amount, 'ether') : 0}Q</li>
+                <li>{withdrawalsData?.endTime !== '0' ? fromSolDateFormattingT1(Number(withdrawalsData?.endTime)) : '-'}</li>
+              </>
+              : null}
           </ul>
         </TextWrapBlack>
         <TotalText md={7}>

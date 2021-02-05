@@ -149,3 +149,12 @@ export const getConstitutionHashSuccess = (result) => ({
   type: actionTypes.GET_CONSTITUTION_HASH_SUCCESS,
   result
 });
+
+export const onChangeProposalTab = () => ({
+  type: actionTypes.ON_CHANGE_PROPOSAL_TAB,
+});
+
+export const onSetActiveTab = (activeTab) => ({
+  type: actionTypes.ACTIVE_TAB,
+  activeTab
+});

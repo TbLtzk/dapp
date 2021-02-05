@@ -7,6 +7,8 @@ import {
   getStatusTransformation, transformToPercentage
 } from '../../handler/VotingHandler';
 
+import { fromWei } from 'func/balance';
+
 /*EPDR_MembershipVoting, EPQFI_MembershipVoting*/
 export default class MembershipVoting extends VotingService {
 
@@ -29,9 +31,9 @@ export default class MembershipVoting extends VotingService {
       // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
       // objRes.votesFor = promiseRes.base.counters.weightFor;
       const weightAgainst = promiseRes.base.counters.weightAgainst;
-      objRes.votesAgainst = drizzleRegistry.web3.utils.fromWei(weightAgainst, 'ether');
+      objRes.votesAgainst = fromWei(weightAgainst);
       const weightFor = promiseRes.base.counters.weightFor;
-      objRes.votesFor = drizzleRegistry.web3.utils.fromWei(weightFor, 'ether');
+      objRes.votesFor = fromWei(weightFor);
 
       //the ending is given by: vetoEndTime.
       objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;

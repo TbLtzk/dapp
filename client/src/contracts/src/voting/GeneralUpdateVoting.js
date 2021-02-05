@@ -4,6 +4,8 @@ import {
 } from '../../handler/VotingHandler';
 import VotingService from './VotingService';
 
+import { fromWei } from 'func/balance';
+
 export default class GeneralUpdateVoting extends VotingService {
 
   /**
@@ -22,9 +24,9 @@ export default class GeneralUpdateVoting extends VotingService {
       // objRes.votesAgainst = promiseRes.counters.weightAgainst;
       // objRes.votesFor = promiseRes.counters.weightFor;
       const weightAgainst = promiseRes.counters.weightAgainst;
-      objRes.votesAgainst = drizzleRegistry.web3.utils.fromWei(weightAgainst, 'ether');
+      objRes.votesAgainst = fromWei(weightAgainst, 'ether');
       const weightFor = promiseRes.counters.weightFor;
-      objRes.votesFor = drizzleRegistry.web3.utils.fromWei(weightFor, 'ether');
+      objRes.votesFor = fromWei(weightFor, 'ether');
 
       objRes.vetosCount = promiseRes.counters.vetosCount;
       objRes.votingEndTime = promiseRes.params.votingEndTime;

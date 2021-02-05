@@ -12,6 +12,7 @@ import { Col, Row } from 'react-bootstrap';
 import Button from 'components/Base/Buttons/Button';
 
 import { bn } from '../../../../../contracts/handler/AuctionHandler';
+import { toWei } from 'func/balance';
 
 const { useDrizzle, useDrizzleState } = drizzleReactHooks;
 
@@ -23,17 +24,17 @@ function ActionButtons(props) {
   const rootService = new RootService();
   const userAddress = useSelector(userAddressMetamask);
 
-  const convertToWei = (amount) => {
-    return bn(drizzle.web3.utils.toWei(amount, 'ether'));
-    // return drizzle.web3.utils.toWei(amount, 'ether');
-  };
+  // const convertToWei = (amount) => {
+  //   return bn(drizzle.web3.utils.toWei(amount, 'ether'));
+  //   // return drizzle.web3.utils.toWei(amount, 'ether');
+  // };
 
   const onStakeToPanel = useCallback(async (data) => {
 
     dispatch(stakeToPanel(rootService,
       {
         from: userAddress,
-        value: convertToWei(data?.amount),
+        value: toWei(data?.amount),
         // value: parseInt(convertToGWei(data?.amount)),
       }
     ));
@@ -41,7 +42,7 @@ function ActionButtons(props) {
 
   const onWithdrawFromPanel = useCallback(async (data) => {
     dispatch(withdraw(rootService,
-      convertToWei(data?.amount),
+      toWei(data?.amount),
       // convertToGWei(data.amount),
       userAddress,
       {
@@ -51,7 +52,7 @@ function ActionButtons(props) {
 
   const onAnnounce = useCallback(async (data) => {
     dispatch(announceWithdrawal(rootService,
-      convertToWei(data?.amount),
+      toWei(data?.amount),
       // convertToGWei(data.amount),
       {
         from: userAddress

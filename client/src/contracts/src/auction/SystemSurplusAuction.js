@@ -1,11 +1,27 @@
 import AuctionService from './AuctionService';
 
-import { web3, contracts, drizzleRegistry } from '../../config/drizzle-config';
 import { StableCoinQUSD } from '../../StableCoin';
 import { contractsToAddresses } from '../../mapping/contract-to-address';
-import { bn, maxApproveAmount } from '../../handler/AuctionHandler';
+import { maxApproveAmount } from '../../handler/AuctionHandler';
+import { max_allowance } from 'func/numbers';
+import { toWei, fromWei } from 'func/balance';
 
 export default class SystemSurplusAuction extends AuctionService {
+
+  /**
+   * get allowance
+   * @param userAddress
+   * @return string
+   */
+  async getAllowance(userAddress) {
+    const StableCoin = new StableCoinQUSD();
+    let allowance = await StableCoin.allowance(userAddress, contractsToAddresses.SystemSurplusAuction);
+    console.log('allowance', allowance);
+    if (allowance !== max_allowance) {
+      let approve = await StableCoin.approve(contractsToAddresses.SystemSurplusAuction, maxApproveAmount, userAddress);
+      console.log('approve', approve);
+    }
+  }
 
   /**
    * create auction
@@ -14,17 +30,11 @@ export default class SystemSurplusAuction extends AuctionService {
    * @return string
    */
   async createAuction(data, userAddress) {
-    const StableCoin = new StableCoinQUSD();
-    let allowance = await StableCoin.allowance(userAddress, contractsToAddresses.SystemSurplusAuction);
-    console.log('allowance', allowance);
-    if (allowance !== '115792089237316195423570985008687907853269984665640564039457.584007913129639935') {
-      let approve = await StableCoin.approve(contractsToAddresses.SystemSurplusAuction, maxApproveAmount, userAddress);
-      console.log('approve', approve);
-    }
+    await this.getAllowance(userAddress);
     return await this.contract.methods.startAuction()
       .send({
         from: userAddress,
-        value: bn(drizzleRegistry.web3.utils.toWei(data?.bid, 'ether'))
+        value: toWei(data?.bid)
       });
   }
 
@@ -46,7 +56,7 @@ export default class SystemSurplusAuction extends AuctionService {
     objRes.isExecuted = promiseRes.isExecuted;
     objRes.lot = promiseRes.lot;
     const highestBid = promiseRes.highestBid;
-    objRes.highestBid = (drizzleRegistry.web3.utils.fromWei(highestBid, 'ether'));
+    objRes.highestBid = fromWei(highestBid);
     objRes.title = `System Surplus Auction`;
     objRes.contract = this.contractName;
     return { ...objRes };
@@ -124,11 +134,12 @@ export default class SystemSurplusAuction extends AuctionService {
   async bid(auctionId, bid, userAddress) {
     console.log('auctionId', auctionId);
     console.log('userAddress', userAddress);
+    await this.getAllowance(userAddress);
     const result = await this.contract.methods.bid(auctionId)
       .send(
         {
           from: userAddress,
-          value: bn(drizzleRegistry.web3.utils.toWei(bid, 'ether'))
+          value: toWei(bid)
         });
     console.log('bid', result);
     return result;

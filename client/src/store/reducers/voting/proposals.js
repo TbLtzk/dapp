@@ -23,6 +23,7 @@ const initialState = {
   numberOfAllProposals: 0,
   loadingNumberAll: true,
   constitutionHash: '...',
+  activeTab: 'q-proposals',
 };
 
 export default function proposals(state = initialState, action) {
@@ -160,6 +161,16 @@ export default function proposals(state = initialState, action) {
       return {
         ...state,
         constitutionHash: action.result,
+      };
+    case actionTypes.ON_CHANGE_PROPOSAL_TAB:
+      return {
+        ...state,
+        proposalsArr: [],
+      };
+    case actionTypes.ACTIVE_TAB:
+      return {
+        ...state,
+        activeTab: action.activeTab,
       };
     default:
       return state;

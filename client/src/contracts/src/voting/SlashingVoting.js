@@ -61,20 +61,25 @@ export default class SlashingVoting extends VotingService {
    * @return string
    */
   async createProposal(data, userAddress) {
-    const link = data['external-link'];
-    //percentage of stake to slash
-    let percentageStake = data['%-value'];
-    percentageStake = getPercentageFormat(percentageStake);
-    let candidate = data['address'];
-    // console.log("candidate", candidate);
-    console.log('percentageStake', percentageStake);
-    // candidate = "0x6a39b688d591ea00c9ea69658438794204b5cc62";
-    // candidate = this.contractName === 'ValidatorsSlashingVoting' //validator member
-    //   ? '0x6a39b688d591ea00c9ea69658438794204b5cc62'
-    //   : '0x4a14D788D86D021670EBcecE1196631d66595984'; //root member
-    const result = await this.contract.methods.createProposal(link, candidate, percentageStake)
-      .send(
-        { from: userAddress });
-    return result;
+    try {
+      const link = data['external-link'];
+      //percentage of stake to slash
+      let percentageStake = data['%-value'];
+      percentageStake = getPercentageFormat(percentageStake);
+      let candidate = data['address'];
+      // console.log("candidate", candidate);
+      console.log('percentageStake', percentageStake);
+      // candidate = "0x6a39b688d591ea00c9ea69658438794204b5cc62";
+      // candidate = this.contractName === 'ValidatorsSlashingVoting' //validator member
+      //   ? '0x6a39b688d591ea00c9ea69658438794204b5cc62'
+      //   : '0x4a14D788D86D021670EBcecE1196631d66595984'; //root member
+      const result = await this.contract.methods.createProposal(link, candidate, percentageStake)
+        .send(
+          { from: userAddress });
+      return result;
+    } catch (e) {
+      console.log(e);
+    }
+
   }
 }

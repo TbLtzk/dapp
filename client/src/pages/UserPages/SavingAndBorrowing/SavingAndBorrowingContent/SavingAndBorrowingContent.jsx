@@ -29,7 +29,7 @@ export default function SavingAndBorrowingContent() {
 
   return (
     <>
-      <Row>
+      {/*<Row>*/}
         {/*<Col md={6}>*/}
         {/*  <h3 style={{ margin: '0px 0 36px' }}>Decentralized Saving and Borrowing</h3>*/}
         {/*</Col>*/}
@@ -43,7 +43,7 @@ export default function SavingAndBorrowingContent() {
         {/*      }}*/}
         {/*    />*/}
         {/*</Col>*/}
-      </Row>
+      {/*</Row>*/}
       <ContainerSB>
         <Col xs={12} className="col-container">
           <Row>

@@ -151,7 +151,7 @@ function PollDetail(props) {
       <TitleSmall>Description</TitleSmall>
       {switchContentDependsOnKind()}
       <TitleSmall>External Reference</TitleSmall>
-      <Link href={pollDetail.remark} target="_blank">{pollDetail.remark}</Link>
+      <Link href={'//' + pollDetail.remark} target="_blank">{pollDetail.remark}</Link>
     </div>
   );
 }

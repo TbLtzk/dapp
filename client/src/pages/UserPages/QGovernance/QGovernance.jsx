@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { fN } from 'func/useful';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { votingLockingEnd, votingWeight } from 'store/selectors/q-piggy-bank';
+import { onChangeProposalTab, onSetActiveTab } from 'store/actions/action-creaters/voting/proposals';
 import { fromSolDateFormattingT1 } from 'func/date';
 
 import { useHistory } from 'react-router-dom';
@@ -23,6 +24,7 @@ function QGovernance() {
   const userVotingWeight = fN(useSelector(votingWeight));
   const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd));
   const [activeTab, setActiveTab] = useState('q-proposals');
+  const dispatch = useDispatch();
 
   const statsData = useMemo(() => {
     return (
@@ -79,6 +81,9 @@ function QGovernance() {
             tabsItems={tabsItems}
             tabsHandler={(key) => {
               setActiveTab(key);
+              console.log("click");
+              dispatch(onChangeProposalTab());
+              dispatch(onSetActiveTab(key))
             }}
           />
           <WrapBtn>

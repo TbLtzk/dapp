@@ -9,7 +9,6 @@ import { setTransactionCounter } from 'store/actions/action-creaters/transaction
 import { transformToPercentage } from 'contracts/handler/VotingHandler';
 import { maxApproveAmount } from 'func/numbers';
 
-
 export default class Handler {
   constructor(address, collateralKey, dispatch) {
     this.address = address;
@@ -19,17 +18,23 @@ export default class Handler {
     const contractEPDR = new EPDR_Parameters();
 
     if (collateralKey === 'QETH') {
+      //collateral contract
       this.oracleContract = new GovernedEpdrQethQusdOracle();
+      //collateral contract
     } else if (collateralKey === 'QBTC') {
       this.oracleContract = new GovernedEpdrQbtcQusdOracle();
     }
 
     if (collateralKey === 'QETH') {
+      //collateral contract
       this.stableCoinContract = new GovernedEpdrQethAddress();
     } else if (collateralKey === 'QBTC') {
+      //collateral contract
       this.stableCoinContract = new GovernedEpdrQbtcAddress();
+
     }
     this.stableCoinUSDContract = new StableCoinQUSD();
+    // console.log("contract", this.stableCoinContract);
   }
 
   setAvailableToDeposit(stateSetter) {
@@ -171,16 +176,25 @@ export default class Handler {
       });
   }
 
-  async approve() {
-    const approve = await this.stableCoinContract.approve(this.borrowingContract.address, maxApproveAmount, this.address);
-    // const approve = await this.stableCoinContract.approve(this.borrowingContract.address, 0, this.address);
-    // console.log('approve', approve);
+  async approve(contract) {
+    await contract.approve(this.borrowingContract.address, maxApproveAmount, this.address);
   }
 
-  allowance(stateSetter) {
-    // const allowance = await this.stableCoinContract.allowance(this.address, this.borrowingContract.address);
-    // console.log('allowance', allowance);
-    this.stableCoinContract.allowance(this.address, this.borrowingContract.address)
+  async approveSwitcher(type) {
+    if (type === 'deposit') {
+      await this.approve(this.stableCoinContract);
+      // const approve = await this.stableCoinContract.approve(this.borrowingContract.address, maxApproveAmount, this.address);
+      // const approve = await this.stableCoinContract.approve(this.borrowingContract.address, 0, this.address);
+      // console.log('approve', approve);
+    } else if (type === 'repay') {
+      await this.approve(this.stableCoinUSDContract);
+      // const approve = await this.stableCoinUSDContract.approve(this.borrowingContract.address, maxApproveAmount, this.address);
+    }
+  }
+
+  allowance(contract, stateSetter) {
+    console.log("contract", contract);
+    contract.allowance(this.address, this.borrowingContract.address)
       .then((res) => {
         // console.log('stateSetter allowance', res);
         stateSetter(res);
@@ -188,6 +202,33 @@ export default class Handler {
       .catch((e) => {
         console.log(e);
       });
+  }
+
+  allowanceSwitcher(stateSetter, type) {
+    if (type === 'deposit') {
+      console.log("contract", this.stableCoinContract);
+      this.allowance(this.stableCoinContract, stateSetter);
+      // const allowance = await this.stableCoinContract.allowance(this.address, this.borrowingContract.address);
+      // console.log('allowance', allowance);
+      // this.stableCoinContract.allowance(this.address, this.borrowingContract.address)
+      //   .then((res) => {
+      //     // console.log('stateSetter allowance', res);
+      //     stateSetter(res);
+      //   })
+      //   .catch((e) => {
+      //     console.log(e);
+      //   });
+    } else if (type === 'repay') {
+      this.allowance(this.stableCoinUSDContract, stateSetter);
+      // this.stableCoinUSDContract.allowance(this.address, this.borrowingContract.address)
+      //   .then((res) => {
+      //     // console.log('stateSetter allowance', res);
+      //     stateSetter(res);
+      //   })
+      //   .catch((e) => {
+      //     console.log(e);
+      //   });
+    }
   }
 
   setAvailableToRepay(stateSetter) {

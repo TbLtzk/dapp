@@ -27,7 +27,7 @@ const contractsToAddressesDynamic = {
   RootsVoting: '0x4e6741F59ca564614D1De3f22Bb9E3E358C5990E',
   RootNodesSlashingVoting: '0x03628E42caf21E6d437f2805D97BA48665a90524',
   SavingQUSD: '0x44CB5A8eE30E0Bc5b19BCf3Fa7470766f6bc6Ae8',
-  StableCoinQUSD: '0xd53e0F0ea25FEC308D1616e156a6fBd4af2875d4',
+  StableCoinQUSD: '0xd53e0F0ea25FEC308D1616e156a6fBd4af2875d4', //QUSD address wallet
   SystemBalance: '0xdC98b08363f3BfC73195dc6b532e39C51EC3c3bC',
   SystemDebtAuction: '0xBb06FC6EA77187F8ac5E98393b74428105F706f3',
   SystemReserve: '0xDe1be0cdE7257955123da10BC1ea37Ee54875DdF',
@@ -43,7 +43,7 @@ const contractsToAddressesCustom = {
   GovernedEpdrQethQusdOracle: '0x62BD936432C97cD2A2908Bf1973e3ec3a68F81B5',
   GovernedEpdrQbtcQusdOracle: '0x3C7343037645530a65f4FeC5a6A596f9C91eAf3e',
   GovernedEpdrQethAddress: '0x62BD936432C97cD2A2908Bf1973e3ec3a68F81B5',
-  GovernedEpdrQbtcAddress: '0x6d5B4AC93A6afc3725FA16345BD9730D95E2176A',
+  GovernedEpdrQbtcAddress: '0x6d5B4AC93A6afc3725FA16345BD9730D95E2176A', //QBTC address wallet
   //GovernedEpdrQbtcAddress: 0x10A2298bc68e41700520F1dCb9E9E2B14E15d2E5
 };
 
