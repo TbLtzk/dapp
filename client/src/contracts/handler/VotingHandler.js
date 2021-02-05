@@ -94,8 +94,9 @@ export function toFixed(x) {
 }
 
 export const getPercentageFormat = (number) => {
+  console.log('number', number);
   return bn(1e+27)
-    .multipliedBy(bn(number))
+    .multipliedBy(Number(number))
     .dividedBy(100);
 };
 
@@ -119,7 +120,6 @@ export const calculatePercentage = (part, amount) => {
   return bn(((10 ** 27) * part) / amount);
 
 };
-
 
 export function creationSlashingContractObj(drizzle, contractName) {
   return new SlashingVotingService(contractName);

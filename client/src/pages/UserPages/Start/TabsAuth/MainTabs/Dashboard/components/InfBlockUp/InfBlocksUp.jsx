@@ -9,6 +9,7 @@ import LoadingSpinner from 'components/Base/LoadingSpinner';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadingNumberAll, numberOfAllProposals, constitutionHash } from 'store/selectors/voting/proposals';
 import { getNumberAllProposals, getConstitutionHash } from 'store/actions/action-creaters/voting/proposals';
+import { latestConstitution, archiveConstitution } from 'contracts/handler/ConstitutionHandler';
 
 const { useDrizzle, useDrizzleState } = drizzleReactHooks;
 
@@ -52,8 +53,8 @@ function InfBlocksUp() {
           }
           secondContent={
             <>
-              <p><a href="#" target="_blank">Download Latest</a></p>
-              <p><a href="#" target="_blank">Check archive</a></p>
+              <p><a href={latestConstitution} target="_blank">Download Latest</a></p>
+              <p><a href={archiveConstitution} target="_blank">Check archive</a></p>
             </>
           }
         />

@@ -1,4 +1,4 @@
-# App uses Truffle, Ganache, Drizzle, React, Redux
+# App uses Drizzle, React, Redux
 
 If on you computer isn`t installed node.js, you can download this there https://nodejs.org/en/download/
 
@@ -11,7 +11,7 @@ In the project directory in the client folder run the command:
 ## Then
 
 In the same directory run the command:
-                      
+
 ### `yarn start`
 
 Runs the app in the development mode.
