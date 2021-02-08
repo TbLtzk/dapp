@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import { BorrowingCoreQUSD } from 'contracts/BorrowingCore';
-import EPDR_Parameters from 'contracts/EPDR_Parameters';
+import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
 import { uintPerSecondToPerYearNumber } from 'func/useful';
 import BlockCardItem from '../BlockCardItem';
 
@@ -34,7 +34,7 @@ export default function BorrowCard(props) {
   useEffect(async () => {
     dispatch(setTransactionCounter(1));
 
-    const contractEPDR = new EPDR_Parameters();
+    const contractEPDR = new EPDR_Parameters("EPDR_Parameters");
     const vaultsLoc = [];
     for (let i = 0; i < vaultsCount; i += 1) {
       const vaultInfo = await contract.userVaults(address, i)

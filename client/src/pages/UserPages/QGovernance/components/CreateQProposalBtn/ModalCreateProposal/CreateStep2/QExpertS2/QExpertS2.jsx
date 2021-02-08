@@ -1,10 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { formObject } from 'store/selectors/voting/proposals';
+import { parameterValueByKey } from 'store/selectors/parameters';
+import { getParameterValueByKey } from 'store/actions/action-creaters/parameters';
 
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
 import InputGroup from 'components/Custom/ModalActions/InputGroup';
+import InputGroupParameter from 'components/Custom/ModalActions/InputGroupParameter';
 
 import { addNewExpert, removeExpert, parameterVote } from './constants';
 
@@ -12,7 +15,26 @@ import { SubTitle, Descr } from 'components/Custom/ModalActions/styles';
 
 function QExpertS2(props) {
   const { activeTab, register, errors } = props;
+  const dispatch = useDispatch();
   const formData = useSelector(formObject);
+
+  const parameterByKeyValue = useSelector(parameterValueByKey);
+  const [parameterValue, setParameterValue] = useState(parameterByKeyValue);
+
+  const [typePanel, setTypePanel] = useState('');
+  const [typeParameter, setTypeParameter] = useState('');
+  const [parameterKey, setParameterKey] = useState('');
+  // console.log('setTypePanel', typePanel);
+  // console.log('setTypeParameter', typeParameter);
+  // console.log('setParameterKey', parameterKey);
+  console.log('parameterByKeyValue', parameterByKeyValue);
+  console.log('parameterValue', parameterValue);
+  console.log('formData', formData);
+
+  useEffect(() => {
+    setParameterValue("");
+    setParameterValue(parameterByKeyValue)
+  },[parameterByKeyValue, typePanel, typeParameter, parameterKey]);
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (formData?.first) {
@@ -85,36 +107,70 @@ function QExpertS2(props) {
             <SubTitle>{parameterVote.subtitle}</SubTitle>
             <Descr>{parameterVote.radioDescr}</Descr>
             <RadioBtnGroup
+              formData={formData}
               radioArr={parameterVote.radioBtn}
               register={register}
               errors={errors}
               nameArr={parameterVote.radioBtnName}
               handleChange={(value) => {
+                console.log('setTypePanel', value.target.value);
+                setTypePanel(value.target.value);
               }}
             />
             <SubTitle>{parameterVote.subtitleInputUp}</SubTitle>
             <SubTitle>{parameterVote.radioBtnTitleDown}</SubTitle>
             <RadioBtnGroup
+              formData={formData}
               radioArr={parameterVote.radioBtnDown}
               register={register}
               errors={errors}
               nameArr={parameterVote.radioBtnNameDown}
               handleChange={(value) => {
+                console.log('setTypeParameter', value.target.value);
+                setTypeParameter(value.target.value);
+                dispatch(getParameterValueByKey(typePanel, value.target.value, parameterKey));
               }}
             />
             <InputGroup
+              formData={formData}
               inputArr={parameterVote.inputUp}
               inputsObj={parameterVote.inputUpObj}
               register={register}
               errors={errors}
+              onChangeInput={(val) => {
+                console.log('setParameterKey', val);
+                setParameterKey(val);
+                dispatch(getParameterValueByKey(typePanel, typeParameter, val));
+              }}
+            />
+            <SubTitle>{parameterVote.subtitleUpSecond}</SubTitle>
+            <InputGroupParameter
+              formData={formData}
+              inputArr={parameterVote.inputUpSecond}
+              inputsObj={parameterVote.inputUpObjSecond}
+              register={register}
+              value={parameterValue}
+              errors={errors}
+              onChangeTypes={typePanel}
+              onChangeInput={(val) => {
+                console.log('val', val);
+                console.log('parameterValue', parameterValue);
+                setParameterValue(val);
+                // console.log('setTypePanel', typePanel);
+                // console.log('setTypeParameter', typeParameter);
+                // console.log('setParameterKey', parameterKey);
+
+              }}
             />
             <SubTitle>{parameterVote.subtitleInputDown}</SubTitle>
             <InputGroup
+              formData={formData}
               inputArr={parameterVote.inputDown}
               inputsObj={parameterVote.inputDownObj}
               register={register}
               errors={errors}
             />
+
 
           </>
         );
@@ -122,7 +178,8 @@ function QExpertS2(props) {
         return null;
     }
 
-  }, [activeTab, register, errors]);
+  }, [activeTab, register, errors, typePanel, typeParameter, parameterKey,
+    parameterValue, parameterByKeyValue]);
 
   return (
     <div>

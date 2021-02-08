@@ -1,27 +1,9 @@
 import AuctionService from './AuctionService';
 
-import { StableCoinQUSD } from '../../StableCoin';
 import { contractsToAddresses } from '../../mapping/contract-to-address';
-import { maxApproveAmount } from '../../handler/AuctionHandler';
-import { max_allowance } from 'func/numbers';
 import { toWei, fromWei } from 'func/balance';
 
 export default class SystemSurplusAuction extends AuctionService {
-
-  /**
-   * get allowance
-   * @param userAddress
-   * @return string
-   */
-  async getAllowance(userAddress) {
-    const StableCoin = new StableCoinQUSD();
-    let allowance = await StableCoin.allowance(userAddress, contractsToAddresses.SystemSurplusAuction);
-    console.log('allowance', allowance);
-    if (allowance !== max_allowance) {
-      let approve = await StableCoin.approve(contractsToAddresses.SystemSurplusAuction, maxApproveAmount, userAddress);
-      console.log('approve', approve);
-    }
-  }
 
   /**
    * create auction
@@ -30,7 +12,7 @@ export default class SystemSurplusAuction extends AuctionService {
    * @return string
    */
   async createAuction(data, userAddress) {
-    await this.getAllowance(userAddress);
+    await this.getAllowance(userAddress, contractsToAddresses.SystemSurplusAuction, data?.bid);
     return await this.contract.methods.startAuction()
       .send({
         from: userAddress,
@@ -134,7 +116,7 @@ export default class SystemSurplusAuction extends AuctionService {
   async bid(auctionId, bid, userAddress) {
     console.log('auctionId', auctionId);
     console.log('userAddress', userAddress);
-    await this.getAllowance(userAddress);
+    await this.getAllowance(userAddress, contractsToAddresses.SystemSurplusAuction, bid);
     const result = await this.contract.methods.bid(auctionId)
       .send(
         {

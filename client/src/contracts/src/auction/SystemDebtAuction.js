@@ -1,11 +1,8 @@
 import AuctionService from './AuctionService';
 
-import { StableCoinQUSD } from '../../StableCoin';
 import { contractsToAddresses } from '../../mapping/contract-to-address';
-import { bn, getStatusTransformation, maxApproveAmount } from '../../handler/AuctionHandler';
+import { getStatusTransformation } from '../../handler/AuctionHandler';
 import { toWei, fromWei } from 'func/balance';
-
-export const max_allowance_auction = '115792089237316195423570985008687907853269984665640564039447.584007913129639935';
 
 export default class SystemDebtAuction extends AuctionService {
 
@@ -90,28 +87,13 @@ export default class SystemDebtAuction extends AuctionService {
   }
 
   /**
-   * get allowance
-   * @param userAddress
-   * @return string
-   */
-  async getAllowance(userAddress) {
-    const StableCoin = new StableCoinQUSD();
-    let allowance = await StableCoin.allowance(userAddress, contractsToAddresses.SystemDebtAuction);
-    console.log('allowance', allowance);
-    if (allowance !== max_allowance_auction) {
-      let approve = await StableCoin.approve(contractsToAddresses.SystemDebtAuction, maxApproveAmount, userAddress);
-      console.log('approve', approve);
-    }
-  }
-
-  /**
    * create auction
    * @param data
    * @param userAddress
    * @return string
    */
   async createAuction(data, userAddress) {
-    await this.getAllowance(userAddress);
+    await this.getAllowance(userAddress, contractsToAddresses.SystemDebtAuction, data?.bid);
     return await this.contract.methods.startAuction(toWei(data?.bid))
       .send({ from: userAddress });
   }
@@ -123,7 +105,7 @@ export default class SystemDebtAuction extends AuctionService {
    * @return array
    */
   async bid(bid, userAddress) {
-    await this.getAllowance(userAddress);
+    await this.getAllowance(userAddress, contractsToAddresses.SystemDebtAuction, bid);
     const result = await this.contract.methods.bid(
       toWei(bid))
       .send(

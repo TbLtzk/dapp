@@ -2,7 +2,7 @@ import { uintPercentToNumber, uintPerSecondToPerYearNumber } from 'func/useful';
 import { GovernedEpdrQbtcQusdOracle, GovernedEpdrQethQusdOracle } from 'contracts/FxPriceFeed';
 import { GovernedEpdrQbtcAddress, GovernedEpdrQethAddress, StableCoinQUSD } from 'contracts/StableCoin';
 import { web3 } from 'contracts/config/drizzle-config';
-import EPDR_Parameters from 'contracts/EPDR_Parameters';
+import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
 import { BorrowingCoreQUSD } from 'contracts/BorrowingCore';
 import { fromBtcBlockchain, toBtcBlockchain, toWei, fromWei } from 'func/balance';
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
@@ -12,10 +12,9 @@ import { maxApproveAmount } from 'func/numbers';
 export default class Handler {
   constructor(address, collateralKey, dispatch) {
     this.address = address;
-    this.contractEPDRParameters = new EPDR_Parameters();
+    this.contractEPDRParameters = new EPDR_Parameters("EPDR_Parameters");
     this.borrowingContract = new BorrowingCoreQUSD();
     this.dispatch = dispatch;
-    const contractEPDR = new EPDR_Parameters();
 
     if (collateralKey === 'QETH') {
       //collateral contract

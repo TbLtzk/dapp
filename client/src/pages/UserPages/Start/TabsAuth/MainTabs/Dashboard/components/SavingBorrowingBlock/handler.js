@@ -1,13 +1,13 @@
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 import { StableCoinQUSD } from 'contracts/StableCoin';
-import EPDR_Parameters from 'contracts/EPDR_Parameters';
+import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
 import { bn, fN, getPercentageFormat, uintPerSecondToPerYearNumber } from 'func/useful';
 
 export default class Handler {
   constructor(drizzle) {
     this.drizzle = drizzle;
     this.StableCoin = new StableCoinQUSD();
-    this.EPDR_ParametersContract = new EPDR_Parameters();
+    this.EPDR_ParametersContract = new EPDR_Parameters("EPDR_Parameters");
   }
 
   getTotalSupply(stateSetter) {

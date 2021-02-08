@@ -1,10 +1,8 @@
 import AuctionService from './AuctionService';
 
-import { getStatusTransformation, maxApproveAmount, bn } from '../../handler/AuctionHandler';
-import { StableCoinQUSD } from '../../StableCoin';
+import { getPastAuctionsIds, getStatusTransformation } from '../../handler/AuctionHandler';
 import { contractsToAddresses } from '../../mapping/contract-to-address';
 import { fromBtcBlockchain, toWei, fromWei } from 'func/balance';
-import { max_allowance } from '../../../func/numbers';
 
 export default class LiquidationAuction extends AuctionService {
 
@@ -37,38 +35,100 @@ export default class LiquidationAuction extends AuctionService {
   }
 
   /**
-   * get allowance
-   * @param userAddress
-   * @return string
-   */
-  async getAllowance(userAddress) {
-    const StableCoin = new StableCoinQUSD();
-    let allowance = await StableCoin.allowance(userAddress, contractsToAddresses.LiquidationAuction);
-    console.log('allowance', allowance);
-    if (allowance !== max_allowance) {
-      let approve = await StableCoin.approve(contractsToAddresses.LiquidationAuction, maxApproveAmount, userAddress);
-      console.log('approve', approve);
-    }
-  }
-
-  /**
    * create auction
    * @param data
    * @param userAddress
    * @return string
    */
   async createAuction(data, userAddress) {
-    // const StableCoin = new StableCoinQUSD();
-    // let allowance = await StableCoin.allowance(userAddress, contractsToAddresses.LiquidationAuction);
-    // console.log('allowance', allowance);
-    // if (allowance !== '115792089237316195423570985008687907853269984665640564039457.584007913129639935') {
-    //   let approve = await StableCoin.approve(contractsToAddresses.LiquidationAuction, maxApproveAmount, userAddress);
-    //   console.log('approve', approve);
-    // }
-    await this.getAllowance(userAddress);
-    // await StableCoin.approve('0xFef40e2286F2240843E55fE66F06c34e7d6Ae317', bid, userAddress);
+    await this.getAllowance(userAddress, contractsToAddresses.LiquidationAuction, data?.bid);
     return await this.contract.methods.startAuction(
       data?.address, data['vault-id'], toWei(data?.bid))
       .send({ from: userAddress });
+  }
+  /**
+   * bid for auction
+   * @param user
+   * @param vaultId
+   * @param bid
+   * @param userAddress
+   * @return array
+   */
+  async bid(user, vaultId, bid, userAddress) {
+    await this.getAllowance(userAddress, contractsToAddresses.LiquidationAuction, bid);
+    const result = await this.contract.methods.bid(user, vaultId,
+      toWei(bid))
+      .send(
+        { from: userAddress });
+    return result;
+  }
+
+  /**
+   * execute for auction
+   * @param user
+   * @param vaultId
+   * @param userAddress
+   * @return array
+   */
+  async execute(user, vaultId, userAddress) {
+    const result = await this.contract.methods.execute(user, vaultId)
+      .send(
+        { from: userAddress });
+    return result;
+  }
+
+  /**
+   * get active auctions
+   * @param activeAuction
+   * @return array
+   */
+  async getAuctions(activeAuction) {
+    const auctionEvents = await this.getAuctionsEvent();
+    const auctionInf = getPastAuctionsIds(auctionEvents);
+    console.log('auctionEvents LiquidationAuction', auctionEvents);
+    // console.log('auctionInf', auctionInf);
+    let auctions = [];
+    if (auctionInf?.length > 0) {
+      for (let inf of auctionInf) {
+        let objRes = {};
+        let promiseRes = await this.getAuction(inf?.user, inf?.vaultId);
+        // console.log('promiseRes', promiseRes);
+        if (activeAuction) {
+          if (promiseRes && promiseRes.status === '1') {
+            objRes = await this.getAuctionData(promiseRes, inf);
+            auctions.push(objRes);
+          }
+        } else {
+          if (promiseRes && promiseRes.status !== '1') {
+            objRes = await this.getAuctionData(promiseRes, inf);
+            auctions.push(objRes);
+          }
+        }
+
+      }
+    }
+    return auctions;
+  }
+
+  /**
+   * get one auction with data handling
+   * @param inf
+   * @param active
+   * @return array
+   */
+  async getOneAuction(inf, active) {
+    try {
+      if (inf.user && inf.vaultId) {
+        let objRes = null;
+        let promiseRes = await this.getAuction(inf.user, inf.vaultId);
+        if (promiseRes) {
+          objRes = await this.getAuctionData(promiseRes, inf);
+        }
+        return [objRes];
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
   }
 }

@@ -15,7 +15,7 @@ export const contractsToContractsRegistryKey = {
   EPDR_ParametersVoting: 'governance.experts.EPDR.parametersVoting',
   EPQFI_Membership: 'governance.experts.EPQFI.membership',
   EPQFI_MembershipVoting: 'governance.experts.EPQFI.membershipVoting',
-  EPQFIParameters: 'governance.experts.EPQFI.parameters',
+  EPQFI_Parameters: 'governance.experts.EPQFI.parameters',
   EPQFI_ParametersVoting: 'governance.experts.EPQFI.parametersVoting',
 
   DefaultAllocationProxy: 'tokeneconomics.defaultAllocationProxy',

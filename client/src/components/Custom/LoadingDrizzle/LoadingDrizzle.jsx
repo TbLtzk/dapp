@@ -52,7 +52,6 @@ function LoadingDrizzle({ children }) {
         }
       });
     } else {
-
       if (ethereum?.isMetaMask) {
         try {
           const promise = await new Promise(function (resolve, reject) {

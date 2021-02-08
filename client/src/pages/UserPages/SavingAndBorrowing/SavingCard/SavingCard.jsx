@@ -3,7 +3,7 @@ import { Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { BlockCard } from '../styles';
 import BlockCardItem from '../BlockCardItem';
-import EPDR_Parameters from 'contracts/EPDR_Parameters';
+import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
 import { uintPerSecondToPerYearNumber } from '../../../../func/useful';
 
 export default function SavingCard(props) {

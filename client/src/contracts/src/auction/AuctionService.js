@@ -2,9 +2,9 @@ import { web3, contracts, drizzleRegistry } from '../../config/drizzle-config';
 import {
   getPastEvents,
 } from '../../handler/VotingHandler';
-import { getPastAuctionsIds } from '../../handler/AuctionHandler';
+import { maxApproveAmount } from '../../handler/AuctionHandler';
 import { BorrowingCoreQUSD } from '../../BorrowingCore';
-import { toWei } from 'func/balance';
+import { StableCoinQUSD } from '../../StableCoin';
 
 export default class AuctionService {
 
@@ -12,6 +12,7 @@ export default class AuctionService {
     this.contract = contracts[contractName];
     this.contractName = contractName;
     this.borrowingContract = new BorrowingCoreQUSD();
+    this.stableCoinUSD = new StableCoinQUSD();
   }
 
   /**
@@ -20,7 +21,6 @@ export default class AuctionService {
    */
   async getAuctionsEvent() {
     return await getPastEvents(drizzleRegistry, this.contract, 'AuctionStarted');
-
   }
 
   /**
@@ -38,81 +38,7 @@ export default class AuctionService {
       result = await this.contract.methods.auctions(user)
         .call();
     }
-
     return result;
-
-  }
-
-  /**
-   * get allowance
-   * @param userAddress
-   * @return string
-   */
-  async getAllowance(userAddress) {
-  }
-
-  /**
-   * bid for auction
-   * @param user
-   * @param vaultId
-   * @param bid
-   * @param userAddress
-   * @return array
-   */
-  async bid(user, vaultId, bid, userAddress) {
-    await this.getAllowance(userAddress);
-    const result = await this.contract.methods.bid(user, vaultId,
-      toWei(bid))
-      .send(
-        { from: userAddress });
-    return result;
-  }
-
-  /**
-   * execute for auction
-   * @param user
-   * @param vaultId
-   * @param userAddress
-   * @return array
-   */
-  async execute(user, vaultId, userAddress) {
-    const result = await this.contract.methods.execute(user, vaultId)
-      .send(
-        { from: userAddress });
-    return result;
-  }
-
-  /**
-   * get active auctions
-   * @param activeAuction
-   * @return array
-   */
-  async getAuctions(activeAuction) {
-    const auctionEvents = await this.getAuctionsEvent();
-    const auctionInf = getPastAuctionsIds(auctionEvents);
-    console.log('auctionEvents LiquidationAuction', auctionEvents);
-    // console.log('auctionInf', auctionInf);
-    let auctions = [];
-    if (auctionInf?.length > 0) {
-      for (let inf of auctionInf) {
-        let objRes = {};
-        let promiseRes = await this.getAuction(inf?.user, inf?.vaultId);
-        // console.log('promiseRes', promiseRes);
-        if (activeAuction) {
-          if (promiseRes && promiseRes.status === '1') {
-            objRes = await this.getAuctionData(promiseRes, inf);
-            auctions.push(objRes);
-          }
-        } else {
-          if (promiseRes && promiseRes.status !== '1') {
-            objRes = await this.getAuctionData(promiseRes, inf);
-            auctions.push(objRes);
-          }
-        }
-
-      }
-    }
-    return auctions;
   }
 
   /**
@@ -125,24 +51,22 @@ export default class AuctionService {
   }
 
   /**
-   * get one auction with data handling
-   * @param inf
-   * @param active
-   * @return array
+   * get allowance
+   * @param userAddress
+   * @param contractAddress
+   * @param value
+   * @return string
    */
-  async getOneAuction(inf, active) {
-    try {
-      if (inf.user && inf.vaultId) {
-        let objRes = null;
-        let promiseRes = await this.getAuction(inf.user, inf.vaultId);
-        if (promiseRes) {
-          objRes = await this.getAuctionData(promiseRes, inf);
-        }
-        return [objRes];
+  async getAllowance(userAddress, contractAddress, value) {
+    let allowance = await this.stableCoinUSD.allowance(userAddress, contractAddress);
+    console.log('allowance', allowance);
+    // console.log('value', value);
+    if (value) {
+      if (Number(allowance) < Number(value)) {
+        // if (allowance !== max_allowance) {
+        let approve = await this.stableCoinUSD.approve(contractAddress, maxApproveAmount, userAddress);
+        console.log('approve', approve);
       }
-    } catch (e) {
-      console.log(e);
     }
-
   }
 }

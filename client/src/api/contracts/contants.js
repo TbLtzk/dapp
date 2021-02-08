@@ -1,7 +1,7 @@
 import Web3 from 'web3';
 
 const web3 = new Web3(Web3.givenProvider);
-web3.eth.handleRevert = true;
+// web3.eth.handleRevert = true;
 
 // console.log("getId", web3.eth.net.getId());
 // console.log("getNetworkType", web3.eth.net.getNetworkType());
