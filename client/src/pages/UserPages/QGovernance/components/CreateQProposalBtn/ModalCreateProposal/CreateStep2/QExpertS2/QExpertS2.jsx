@@ -19,21 +19,30 @@ function QExpertS2(props) {
   const formData = useSelector(formObject);
 
   const parameterByKeyValue = useSelector(parameterValueByKey);
-  const [parameterValue, setParameterValue] = useState(parameterByKeyValue);
+  const [parameterValue, setParameterValue] = useState('');
 
   const [typePanel, setTypePanel] = useState('');
   const [typeParameter, setTypeParameter] = useState('');
   const [parameterKey, setParameterKey] = useState('');
-  console.log('parameterValue', parameterValue);
+  console.log('parameterByKeyValue', parameterByKeyValue);
 
   useEffect(() => {
-    if (formData?.first === 'parameter-vote') {
-      console.log('parameterValue in ', parameterValue);
-      console.log('formData in ', formData?.value);
-      setParameterValue(parameterByKeyValue);
+    // if (formData?.first === 'parameter-vote') {
+    //   console.log('parameterValue in ', parameterValue);
+    //   console.log('formData in ', formData?.value);
+    //   setParameterValue(parameterByKeyValue);
+    // }
+    if (typePanel && typeParameter && parameterKey){
+      if (parameterByKeyValue?.length === 0){
+        const foundValue = parameterByKeyValue.find(value => parameterKey == value);
+        console.log("found", foundValue);
+        foundValue ? setParameterValue(parameterKey) : setParameterValue("No such value");
+      }else {
+        setParameterValue("No such value");
+      }
     }
 
-  }, [parameterByKeyValue, typePanel, typeParameter, parameterKey, formData]);
+  }, [parameterByKeyValue, typePanel, typeParameter, parameterKey]);
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (formData?.first) {
@@ -145,18 +154,18 @@ function QExpertS2(props) {
                 dispatch(getParameterValueByKey(typePanel, typeParameter, val));
               }}
             />
-            <SubTitle>{parameterVote.subtitleUpSecond}</SubTitle>
-            <InputGroupParameter
+            <SubTitle>{`${parameterVote.subtitleUpSecond}: ${parameterValue}`} </SubTitle>
+            <InputGroup
               formData={formData}
               inputArr={parameterVote.inputUpSecond}
               inputsObj={parameterVote.inputUpObjSecond}
               register={register}
-              value={parameterValue}
+              // value={parameterValue}
               errors={errors}
               onChangeInput={(val) => {
                 console.log('val', val);
                 // console.log('parameterValue', parameterValue);
-                setParameterValue(val);
+                // setParameterValue(val);
                 // console.log('setTypePanel', typePanel);
                 // console.log('setTypeParameter', typeParameter);
                 // console.log('setParameterKey', parameterKey);

@@ -94,7 +94,7 @@ function* getParameterValueByKey({ typeContract, typeParameter, parameterKey }) 
   console.log('typeParameter', typeParameter);
   console.log('parameterKey', parameterKey);
   try {
-    if (typeContract && typeParameter && parameterKey) {
+    if (typeContract && typeParameter) {
       let contract = null;
       if (typeContract === 'q-fees-&-incentives-membership-panel') {
         contract = new EPQFI_Parameters('EPQFI_Parameters');
@@ -107,32 +107,34 @@ function* getParameterValueByKey({ typeContract, typeParameter, parameterKey }) 
       let data = null;
       switch (typeParameter) {
         case 'address':
-          data = yield contract.getAddr(parameterKey);
+          data = yield contract.getAddrKeys();
           break;
         case 'boolean':
-          data = yield contract.getBool(parameterKey);
+          data = yield contract.getBoolKeys();
           break;
         case 'string':
-          data = yield contract.getString(parameterKey);
+          data = yield contract.getStringKeys();
           break;
         case 'bytes':
-          data = yield contract.getBytes(parameterKey);
+          data = yield contract.getBytesKeys();
           break;
         case 'uint':
-          data = yield contract.getUint(parameterKey);
+          data = yield contract.getUintKeys();
           break;
       }
+      console.log("getParameterValueByKey". data);
       if (data) {
-        console.log('getParameterValueByKey', data);
+        // console.log('getParameterValueByKey', data);
         yield put(getParameterValueByKeySuccess(data));
       }else {
-        yield put(getParameterValueByKeySuccess('Value not found. Key does not exist yet?'));
+        yield put(getParameterValueByKeySuccess([]));
+        // yield put(getParameterValueByKeySuccess('Value not found. Key does not exist yet?'));
       }
     }
 
   } catch (err) {
     console.error('getParameterValueByKey.Error', err?.message);
-    yield put(getParameterValueByKeySuccess('Value not found. Key does not exist yet?'));
+    yield put(getParameterValueByKeySuccess([]));
   }
 }
 
