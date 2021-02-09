@@ -6,7 +6,7 @@ import { contractsToAddresses } from '../mapping/contract-to-address';
 import validateContractsAddress from './cotracts-address-checker';
 
 export const web3 = new Web3(Web3.givenProvider);
-// web3.eth.handleRevert = true;
+web3.eth.handleRevert = true;
 
 const optionsDrizzleBase = {
   web3: {

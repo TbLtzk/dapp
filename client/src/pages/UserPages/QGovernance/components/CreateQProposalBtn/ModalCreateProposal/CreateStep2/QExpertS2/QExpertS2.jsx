@@ -24,17 +24,16 @@ function QExpertS2(props) {
   const [typePanel, setTypePanel] = useState('');
   const [typeParameter, setTypeParameter] = useState('');
   const [parameterKey, setParameterKey] = useState('');
-  // console.log('setTypePanel', typePanel);
-  // console.log('setTypeParameter', typeParameter);
-  // console.log('setParameterKey', parameterKey);
-  console.log('parameterByKeyValue', parameterByKeyValue);
   console.log('parameterValue', parameterValue);
-  console.log('formData', formData);
 
   useEffect(() => {
-    setParameterValue("");
-    setParameterValue(parameterByKeyValue)
-  },[parameterByKeyValue, typePanel, typeParameter, parameterKey]);
+    if (formData?.first === 'parameter-vote') {
+      console.log('parameterValue in ', parameterValue);
+      console.log('formData in ', formData?.value);
+      setParameterValue(parameterByKeyValue);
+    }
+
+  }, [parameterByKeyValue, typePanel, typeParameter, parameterKey, formData]);
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (formData?.first) {
@@ -77,6 +76,7 @@ function QExpertS2(props) {
             <SubTitle>{removeExpert.subtitle}</SubTitle>
             <Descr>{removeExpert.radioDescr}</Descr>
             <RadioBtnGroup
+              formData={formData}
               radioArr={removeExpert.radioBtn}
               register={register}
               errors={errors}
@@ -86,6 +86,7 @@ function QExpertS2(props) {
             />
             <SubTitle>{removeExpert.subtitleInputUp}</SubTitle>
             <InputGroup
+              formData={formData}
               inputArr={removeExpert.inputUp}
               inputsObj={removeExpert.inputUpObj}
               register={register}
@@ -93,6 +94,7 @@ function QExpertS2(props) {
             />
             <SubTitle>{removeExpert.subtitleInputDown}</SubTitle>
             <InputGroup
+              formData={formData}
               inputArr={removeExpert.inputDown}
               inputsObj={removeExpert.inputDownObj}
               register={register}
@@ -151,10 +153,9 @@ function QExpertS2(props) {
               register={register}
               value={parameterValue}
               errors={errors}
-              onChangeTypes={typePanel}
               onChangeInput={(val) => {
                 console.log('val', val);
-                console.log('parameterValue', parameterValue);
+                // console.log('parameterValue', parameterValue);
                 setParameterValue(val);
                 // console.log('setTypePanel', typePanel);
                 // console.log('setTypeParameter', typeParameter);

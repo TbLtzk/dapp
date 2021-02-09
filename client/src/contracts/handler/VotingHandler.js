@@ -7,6 +7,7 @@ import GeneralUpdateVotingService from '../src/voting/GeneralUpdateVoting';
 import MembershipVotingService from '../src/voting/MembershipVoting';
 import ParametersVotingService from '../src/voting/ParametersVoting';
 import { chooseExpertContractDependsOnType } from './QExpertVotingHandler';
+import { web3 } from '../config/drizzle-config';
 
 export const getPastEvents = async (drizzle, contract, event) => {
   const web3 = drizzle.web3;
@@ -95,9 +96,11 @@ export function toFixed(x) {
 
 export const getPercentageFormat = (number) => {
   console.log('number', number);
-  return bn('1e+27')
-    .multipliedBy(Number(number))
-    .dividedBy(100);
+  // console.log('number', 10 ** 27);
+  return bn(( (10 ** 27) * Number(number) ) / 100);
+  // return bn('1e+25') * bn(number);
+  // .multipliedBy(Number(number))
+  // .dividedBy(100);
 };
 
 export const transformToPercentage = (number) => {
@@ -113,6 +116,7 @@ export const transformToPercentage = (number) => {
 };
 
 export const bn = (number) => {
+  // return new web3.utils.BN(number);
   return new BigNumber(number);
 };
 

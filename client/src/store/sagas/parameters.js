@@ -7,6 +7,7 @@ import {
 } from 'store/actions/action-creaters/parameters';
 import EPQFI_Parameters from 'contracts/src/parameters/EPQFI_Parameters';
 import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
+import ConstitutionParameters from 'contracts/src/parameters/ConstitutionParameters';
 
 function* getAddressParameter({ value, typeContract }) {
   try {
@@ -89,18 +90,20 @@ function* getBooleanParameter({ value, typeContract }) {
 }
 
 function* getParameterValueByKey({ typeContract, typeParameter, parameterKey }) {
-  console.log("typeContract", typeContract);
-  console.log("typeParameter", typeParameter);
-  console.log("parameterKey", parameterKey);
+  console.log('typeContract', typeContract);
+  console.log('typeParameter', typeParameter);
+  console.log('parameterKey', parameterKey);
   try {
-    if (typeContract && typeParameter && parameterKey){
+    if (typeContract && typeParameter && parameterKey) {
       let contract = null;
       if (typeContract === 'q-fees-&-incentives-membership-panel') {
         contract = new EPQFI_Parameters('EPQFI_Parameters');
       } else if (typeContract === 'q-defi-(decentralized-finance)-membership-panel') {
         contract = new EPDR_Parameters('EPDR_Parameters');
+      } else if (typeContract === 'constitution') {
+        contract = new ConstitutionParameters('ConstitutionParameters');
       }
-      console.log("contract", contract);
+      console.log('contract', contract);
       let data = null;
       switch (typeParameter) {
         case 'address':
@@ -119,14 +122,17 @@ function* getParameterValueByKey({ typeContract, typeParameter, parameterKey }) 
           data = yield contract.getUint(parameterKey);
           break;
       }
-
-      console.log('getParameterValueByKey', data);
-      yield put(getParameterValueByKeySuccess(data));
+      if (data) {
+        console.log('getParameterValueByKey', data);
+        yield put(getParameterValueByKeySuccess(data));
+      }else {
+        yield put(getParameterValueByKeySuccess('Value not found. Key does not exist yet?'));
+      }
     }
 
   } catch (err) {
     console.error('getParameterValueByKey.Error', err?.message);
-    yield put(getParameterValueByKeySuccess("Value not found. Key does not exist yet?"));
+    yield put(getParameterValueByKeySuccess('Value not found. Key does not exist yet?'));
   }
 }
 

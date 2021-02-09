@@ -1,7 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import { BigNumber } from 'bignumber.js';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +8,7 @@ import {
   setCreateProposalObj,
   setStepCounter
 } from 'store/actions/action-creaters/voting/proposals';
+import { getParameterValueByKeySuccess } from 'store/actions/action-creaters/parameters';
 
 import ModalCreateProposal from './ModalCreateProposal';
 import CreateQBtn from 'components/Custom/PageLists/CreateQBtn';
@@ -77,6 +75,7 @@ function CreateQProposalBtn(props) {
         onHide={() => {
           setModalShow(false);
           dispatch(setCreateProposalObj({}));
+          dispatch(getParameterValueByKeySuccess(''));
         }}
       />
     </>
