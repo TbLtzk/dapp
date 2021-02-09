@@ -116,8 +116,8 @@ export const transformToPercentage = (number) => {
 };
 
 export const bn = (number) => {
-  // return new web3.utils.BN(number);
-  return new BigNumber(number);
+  return new web3.utils.BN(number);
+  // return new BigNumber(number);
 };
 
 export const calculatePercentage = (part, amount) => {
