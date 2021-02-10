@@ -1,35 +1,28 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { formObject } from 'store/selectors/voting/proposals';
+import { getParameterKeysByType } from 'store/actions/action-creaters/parameters';
+import { parameterValueByKey } from 'store/selectors/parameters';
+import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue';
 
 import InputGroup from 'components/Custom/ModalActions/InputGroup';
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
-import InputGroupParameter from 'components/Custom/ModalActions/InputGroupParameter';
 
 import { constUpdate } from './constants';
 
-import { SubTitle, SummarText, SummarTextLink, SummarTextType } from 'components/Custom/ModalActions/styles';
-import { getParameterValueByKey } from 'store/actions/action-creaters/parameters';
-import { parameterValueByKey } from 'store/selectors/parameters';
+import { SubTitle, SummarText, SummarTextLink, SummarTextType }
+  from 'components/Custom/ModalActions/styles';
 
 function CreateStep3(props) {
   const { activeTab, register, errors } = props;
   const dispatch = useDispatch();
+  const formData = useSelector(formObject);
 
   const parameterByKeyValue = useSelector(parameterValueByKey);
-  const [parameterValue, setParameterValue] = useState(parameterByKeyValue);
-  const formData = useSelector(formObject);
+
   const [typeParameter, setTypeParameter] = useState('');
   const [parameterKey, setParameterKey] = useState('');
-
-  useEffect(() => {
-    console.log('parameterByKeyValue', parameterByKeyValue);
-    if (formData?.first === 'constitution-update') {
-      setParameterValue(parameterByKeyValue);
-    }
-
-  }, [parameterByKeyValue, typeParameter, parameterKey, formData]);
 
   const showCommonData = (children) => {
     return (
@@ -75,10 +68,8 @@ function CreateStep3(props) {
                   errors={errors}
                   nameArr={constUpdate.radioBtnName}
                   handleChange={(value) => {
-                    console.log("TypeParameter", value.target.value);
-                    console.log("parameterKey", parameterKey);
                     setTypeParameter(value.target.value);
-                    dispatch(getParameterValueByKey("constitution", value.target.value, parameterKey));
+                    dispatch(getParameterKeysByType('constitution', value.target.value));
                   }}
                 />
                 <InputGroup
@@ -88,28 +79,21 @@ function CreateStep3(props) {
                   register={register}
                   errors={errors}
                   onChangeInput={(val) => {
-                    console.log('ParameterKey', val);
-                    console.log('typeParameter', typeParameter);
                     setParameterKey(val);
-                    dispatch(getParameterValueByKey("constitution", typeParameter, val));
                   }}
                 />
-                <SubTitle>Current Value</SubTitle>
-                <InputGroupParameter
+                <CurrentParameterValue
+                  typePanel={'constitution'}
+                  typeParameter={typeParameter}
+                  parameterKey={parameterKey}
+                />
+                <InputGroup
                   formData={formData}
                   inputArr={constUpdate.inputsSecond}
                   inputsObj={constUpdate.inputsObjSecond}
                   register={register}
-                  value={parameterValue}
                   errors={errors}
                   onChangeInput={(val) => {
-                    console.log('val', val);
-                    // console.log('parameterValue', parameterValue);
-                    setParameterValue(val);
-                    // console.log('setTypePanel', typePanel);
-                    // console.log('setTypeParameter', typeParameter);
-                    // console.log('setParameterKey', parameterKey);
-
                   }}
                 />
               </div>
@@ -171,7 +155,7 @@ function CreateStep3(props) {
     }
 
   }, [activeTab, register, errors, typeParameter, parameterKey,
-    parameterValue, parameterByKeyValue]);
+    parameterByKeyValue]);
 
   return (
     <>

@@ -66,3 +66,15 @@ export const getParameterValueByKeyError = (result) => ({
   type: actionTypes.GET_PARAMETER_VALUE_BY_KEY_ERROR,
   result
 });
+
+export const getParameterKeysByType = (typeContract, typeParameter) => ({
+  type: actionTypes.GET_PARAMETER_KEYS_BY_TYPE,
+  typeContract,
+  typeParameter,
+});
+
+export const getParameterKeysByTypeSuccess = (result) => ({
+  type: actionTypes.GET_PARAMETER_KEYS_BY_TYPE_SUCCESS,
+  result
+});
+

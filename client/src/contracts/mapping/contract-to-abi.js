@@ -33,6 +33,7 @@ import EPDR_MembershipABI from '../abi/EPDR_MembershipABI';
 import EPQFI_MembershipABI from '../abi/EPQFI_MembershipABI';
 import EPQFI_ParametersABI from '../abi/EPQFI_ParametersABI';
 import ConstitutionParametersABI from '../abi/ConstitutionParametersABI';
+import SystemBalanceABI from '../abi/SystemBalanceABI';
 
 import RootABI from '../abi/RootABI';
 
@@ -77,4 +78,6 @@ export const contractsToAbi = {
   EPDR_Membership: EPDR_MembershipABI,
   EPQFI_Parameters: EPQFI_ParametersABI,
   ConstitutionParameters: ConstitutionParametersABI,
+
+  SystemBalance: SystemBalanceABI,
 };

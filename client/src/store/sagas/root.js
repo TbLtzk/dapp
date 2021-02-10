@@ -11,9 +11,11 @@ import auctions from './auctions/auctions';
 import stableCoin from './stable-coin';
 import membership from './membership';
 import parameters from './parameters';
+import systemBalance from './system-balance';
+import systemReserve from './system-reserve';
 
 export default function* rootSaga() {
   yield all([...userAuth, ...userInf, ...rootContract, ...qPiggyBank,
     ...proposals, ...validators, ...validationRewardPools, ...auctions, ...stableCoin,
-    ...membership, ...parameters]);
+    ...membership, ...parameters, ...systemBalance, ...systemReserve]);
 }

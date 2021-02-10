@@ -94,10 +94,16 @@ export function toFixed(x) {
   return x;
 }
 
+
+export const bnSlashing = (number) => {
+  return new web3.utils.BN(number);
+  // return new BigNumber(number);
+};
+
 export const getPercentageFormat = (number) => {
   console.log('number', number);
   // console.log('number', 10 ** 27);
-  return bn(String(( (10 ** 27) * Number(number) ) / 100));
+  return bnSlashing(String(( (10 ** 27) * Number(number) ) / 100));
   // return bn('1e+25') * bn(number);
   // .multipliedBy(Number(number))
   // .dividedBy(100);
@@ -116,8 +122,8 @@ export const transformToPercentage = (number) => {
 };
 
 export const bn = (number) => {
-  return new web3.utils.BN(number);
-  // return new BigNumber(number);
+  // return new web3.utils.BN(number);
+  return new BigNumber(number);
 };
 
 export const calculatePercentage = (part, amount) => {

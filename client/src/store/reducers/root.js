@@ -12,6 +12,8 @@ import modalHandler from './auctions/modalHandler';
 import stableCoin from './stableCoin';
 import membership from './membership';
 import parameters from './parameters';
+import systemBalance from './systemBalance';
+import systemReserve from './systemReserve';
 
 import transactionHandler from 'store/reducers/transactionHandler';
 
@@ -32,6 +34,8 @@ const RootReducer = combineReducers({
   validators,
   validationRewardPools,
   stableCoin,
+  systemBalance,
+  systemReserve
 });
 
 export default RootReducer;

@@ -7,7 +7,6 @@ import { InputWrapper } from 'components/Base/Form/FormInput/styles';
 const FormInput = forwardRef((props, ref) => {
   // eslint-disable-next-line react/prop-types
   const { name, type, placeholder, valid, align, onChange, value, disabled } = props;
-  console.log("valid", valid);
   return (
     <InputWrapper
       controlId="formBasicEmail"

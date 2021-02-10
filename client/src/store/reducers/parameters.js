@@ -6,8 +6,10 @@ const initialState = {
   stringParameter: null,
   bytesParameter: null,
   uintParameter: null,
+
   parameterValueByKey: '',
   parameterValueByKeyError: '',
+  arrayParameterKeysByType: [],
 };
 
 export default function parameters(state = initialState, action) {
@@ -46,6 +48,11 @@ export default function parameters(state = initialState, action) {
       return {
         ...state,
         parameterValueByKeyError: action.result,
+      };
+    case actionTypes.GET_PARAMETER_KEYS_BY_TYPE_SUCCESS:
+      return {
+        ...state,
+        arrayParameterKeysByType: action.result,
       };
     default:
       return state;

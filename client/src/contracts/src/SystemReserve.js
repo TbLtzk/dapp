@@ -1,17 +1,16 @@
-import { drizzleRegistry, contracts, web3 } from '../config/drizzle-config';
-import { bn } from '../handler/AuctionHandler';
+import { contracts } from '../config/drizzle-config';
+import { fromWei } from 'func/balance';
 
 export default class SystemReserve {
 
   constructor() {
     this.contract = contracts['SystemReserve'];
-    this.contractName = 'SystemReserve';
   }
 
   async availableAmount() {
     let value = await this.contract.methods.availableAmount()
       .call();
-    value = bn(drizzleRegistry.web3.utils.fromWei(value, 'ether'));
+    value = fromWei(value);
     return value;
   }
 
