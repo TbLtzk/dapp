@@ -2,10 +2,10 @@ import React, { Fragment } from 'react';
 import { Row, Col } from 'react-bootstrap';
 
 import CustomBlock from 'components/Base/CustomBlock';
+import Button from 'components/Base/Buttons/Button';
 
-import {
-  Title, WrapTitle, BlockWrap, WrapDescr, WrapDescrTitle
-} from './styles';
+import { Title, BlockWrap } from './styles';
+import { WrapBtn, WrapDescr, WrapDescrTitle, WrapTitle } from '../styles';
 
 function SystemCard(props) {
   const { data, title } = props;
@@ -23,6 +23,18 @@ function SystemCard(props) {
               </Fragment>
             );
           })}
+          {title === 'QUSD System Balance' ?
+            <WrapBtn md={12}>
+              <Button
+                title="Perform Netting"
+                width="100%"
+                handleButton={() => {
+                  console.log('click');
+                }}
+              />
+            </WrapBtn>
+            : null
+          }
         </Row>
       </CustomBlock>
     </BlockWrap>

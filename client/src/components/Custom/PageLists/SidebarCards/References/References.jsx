@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
 import CustomBlock from 'components/Base/CustomBlock';
@@ -9,8 +9,9 @@ import ButtonLink from 'components/Base/Buttons/ButtonLink';
 import { arrayLinksVoting, arrayLinksAuctions } from './constants';
 
 import {
-  WrapTitleBlock, Title, WrapTitle, BlockWrap, WrapBtnView, WrapDescrLink
-} from './styles';
+  BlockWrap, WrapDescrLink
+} from 'components/Custom/PageLists/SidebarCards/References/styles';
+import { WrapTitle, Title, WrapTitleBlock, WrapBtnView } from '../styles';
 
 function References(props) {
   const { type } = props;

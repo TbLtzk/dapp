@@ -78,13 +78,8 @@ function ProposalsList(props) {
                   <CardBody
                     id={proposal.id + proposal?.contract}
                     proposalType={proposal?.type}
-                    // mainText={"Text"}
-                    // date={convertToMonthDayYear(proposal.vetoEndTime)}
                     vetoTime={proposal.vetoEndTime}
-                    // vetoTime={remainDate(proposal.vetoEndTime)}
                     votingTime={proposal.votingEndTime}
-                    // votingTime={remainDate(proposal.votingEndTime)}
-                    // time={remainDate("7d 0h remaining")}
                     proposalID={proposal.id}
                     pollDetail={proposal}
                     proposalsKind={proposalsKind}
@@ -92,7 +87,6 @@ function ProposalsList(props) {
                     contract={proposal.contract}
                   />
                 </CardBlock>;
-                // : null
               })
         }
       </Accordion>

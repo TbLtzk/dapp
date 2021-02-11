@@ -10,10 +10,10 @@ import { availableAmountSR } from 'store/selectors/system-reserve';
 import ButtonsGroupTabs from 'components/Base/Tabs/ButtonsGroupTabs';
 import Button from 'components/Base/Buttons/Button';
 import CreateAuctionBtn from './components/CreateAuctionBtn';
-import Stats from 'components/Custom/PageLists/Stats';
-import SystemCard from 'components/Custom/PageLists/SystemCard';
+import Stats from 'components/Custom/PageLists/SidebarCards/Stats';
+import SystemCard from 'components/Custom/PageLists/SidebarCards/SystemCard';
 import TabContent from './components/TabContent';
-import References from 'components/Custom/PageLists/References';
+import References from 'components/Custom/PageLists/SidebarCards/References';
 
 import { Col, Row, Container } from 'react-bootstrap';
 import { WrapBtn, WrapTabs } from 'components/Custom/PageLists/styles';

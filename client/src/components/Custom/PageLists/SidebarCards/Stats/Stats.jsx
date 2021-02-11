@@ -1,15 +1,14 @@
 import React, { Fragment } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
+
+import { Row } from 'react-bootstrap';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import ButtonLinkArrow from 'components/Base/Buttons/ButtonLinkArrow';
-
-import {
-  WrapTitleBlock, Title, WrapTitle, BlockWrap, WrapBtnView, WrapDescr,
-  WrapDescrTitle, WrapBtn
-} from './styles';
 import Button from 'components/Base/Buttons/Button';
-import { useHistory } from 'react-router-dom';
+
+import { BlockWrap } from './styles';
+import { WrapTitle, Title, WrapBtn, WrapDescr, WrapDescrTitle, WrapBtnView, WrapTitleBlock } from '../styles';
 
 function Stats(props) {
   const { statsData, type } = props;

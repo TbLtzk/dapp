@@ -9,11 +9,11 @@ import { useHistory } from 'react-router-dom';
 
 import ButtonsGroupTabs from 'components/Base/Tabs/ButtonsGroupTabs';
 import CreateQProposalBtn from './components/CreateQProposalBtn';
-import References from 'components/Custom/PageLists/References';
+import References from 'components/Custom/PageLists/SidebarCards/References';
 import Button from 'components/Base/Buttons/Button';
 import TabContent from './components/TabContent';
 import PageWrap from 'components/Base/PageWrap';
-import Stats from 'components/Custom/PageLists/Stats';
+import Stats from 'components/Custom/PageLists/SidebarCards/Stats';
 import VoterStatus from 'components/Custom/PageLists/VoterStatus';
 
 import { Row, Col } from 'react-bootstrap';

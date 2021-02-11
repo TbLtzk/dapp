@@ -40,6 +40,7 @@ function InputGroup(props) {
       {inputArr?.map((label, i) => {
         const nameField = label.replace(/ /g, '-')
           .toLowerCase();
+        console.log("nameField", nameField);
         let val = valueInput[nameField];
         return (
           <Fragment key={i}>
