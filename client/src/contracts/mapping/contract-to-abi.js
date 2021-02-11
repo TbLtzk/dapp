@@ -1,41 +1,40 @@
-import ContractRegistryABI from '../abi/ContractRegistryABI';
-import QPiggyBankABI from '../abi/QPiggyBankABI';
-import ValidatorsABI from '../abi/ValidatorsABI';
-import ValidationRewardPoolsABI from '../abi/ValidationRewardPoolsABI';
-import ValidationRewardProxyABI from '../abi/ValidationRewardProxyABI';
-import SavingABI from '../abi/SavingABI';
-import BorrowingCoreABI from '../abi/BorrowingCoreABI';
-import StableCoinABI from '../abi/StableCoinABI';
-import EPDRParametersABI from '../abi/EPDRParametersABI';
-import FxPriceFeedABI from '../abi/FxPriceFeedABI';
+import ContractRegistryABI from '../abi-devnet/ContractRegistryABI';
+import QPiggyBankABI from '../abi-devnet/QPiggyBankABI';
+import ValidatorsABI from '../abi-devnet/ValidatorsABI';
+import ValidationRewardPoolsABI from '../abi-devnet/ValidationRewardPoolsABI';
+import ValidationRewardProxyABI from '../abi-devnet/ValidationRewardProxyABI';
+import SavingABI from '../abi-devnet/SavingABI';
+import BorrowingCoreABI from '../abi-devnet/BorrowingCoreABI';
+import StableCoinABI from '../abi-devnet/StableCoinABI';
+import FxPriceFeedABI from '../abi-devnet/FxPriceFeedABI';
 import RootNodesABI from '../abi/RootNodesABI';
-import LiquidationAuctionABI from '../abi/LiquidationAuctionABI';
-import SystemSurplusAuctionABI from '../abi/SystemSurplusAuctionABI';
-import SystemDebtAuctionABI from '../abi/SystemDebtAuctionABI';
+import LiquidationAuctionABI from '../abi-devnet/LiquidationAuctionABI';
+import SystemSurplusAuctionABI from '../abi-devnet/SystemSurplusAuctionABI';
+import SystemDebtAuctionABI from '../abi-devnet/SystemDebtAuctionABI';
 
-import ConstitutionVotingABI from '../abi/ConstitutionVotingABI';
-import EmergencyUpdateVotingABI from '../abi/EmergencyUpdateVotingABI';
-import GeneralUpdateVotingABI from '../abi/GeneralUpdateVotingABI';
-import EPDR_MembershipVotingABI from '../abi/EPDR_MembershipVotingABI';
-import EPDR_ParametersVotingABI from '../abi/EPDR_ParametersVotingABI';
-import EPQFI_MembershipVotingABI from '../abi/EPQFI_MembershipVotingABI';
-import EPQFI_ParametersVotingABI from '../abi/EPQFI_ParametersVotingABI';
-import RootsVotingABI from '../abi/RootsVotingABI';
-import ValidatorsSlashingVotingABI from '../abi/ValidatorsSlashingVotingABI';
-import RootNodesSlashingVotingABI from '../abi/RootNodesSlashingVotingABI';
+import ConstitutionVotingABI from '../abi-devnet/ConstitutionVotingABI';
+import EmergencyUpdateVotingABI from '../abi-devnet/EmergencyUpdateVotingABI';
+import GeneralUpdateVotingABI from '../abi-devnet/GeneralUpdateVotingABI';
+import EPDR_MembershipVotingABI from '../abi-devnet/EPDR_MembershipVotingABI';
+import EPDR_ParametersVotingABI from '../abi-devnet/EPDR_ParametersVotingABI';
+import EPQFI_MembershipVotingABI from '../abi-devnet/EPQFI_MembershipVotingABI';
+import EPQFI_ParametersVotingABI from '../abi-devnet/EPQFI_ParametersVotingABI';
+import RootsVotingABI from '../abi-devnet/RootsVotingABI';
+import ValidatorsSlashingVotingABI from '../abi-devnet/ValidatorsSlashingVotingABI';
+import RootNodesSlashingVotingABI from '../abi-devnet/RootNodesSlashingVotingABI';
 
-import DefaultAllocationProxyABI from '../abi/DefaultAllocationProxyABI';
-import RootNodeRewardProxyABI from '../abi/RootNodeRewardProxyABI';
-import QHolderRewardPoolABI from '../abi/QHolderRewardPoolABI';
-import SystemReserveABI from '../abi/SystemReserveABI';
-import EPDR_ParametersABI from '../abi/EPDR_ParametersABI';
-import EPDR_MembershipABI from '../abi/EPDR_MembershipABI';
-import EPQFI_MembershipABI from '../abi/EPQFI_MembershipABI';
-import EPQFI_ParametersABI from '../abi/EPQFI_ParametersABI';
+import DefaultAllocationProxyABI from '../abi-devnet/DefaultAllocationProxyABI';
+import RootNodeRewardProxyABI from '../abi-devnet/RootNodeRewardProxyABI';
+import QHolderRewardPoolABI from '../abi-devnet/QHolderRewardPoolABI';
+import SystemReserveABI from '../abi-devnet/SystemReserveABI';
+import EPDR_ParametersABI from '../abi-devnet/EPDR_ParametersABI';
+import EPDR_MembershipABI from '../abi-devnet/EPDR_MembershipABI';
+import EPQFI_MembershipABI from '../abi-devnet/EPQFI_MembershipABI';
+import EPQFI_ParametersABI from '../abi-devnet/EPQFI_ParametersABI';
 import ConstitutionParametersABI from '../abi/ConstitutionParametersABI';
-import SystemBalanceABI from '../abi/SystemBalanceABI';
+import SystemBalanceABI from '../abi-devnet/SystemBalanceABI';
 
-import RootABI from '../abi/RootABI';
+import RootABI from '../abi-devnet/RootABI';
 
 export const contractsToAbi = {
   ContractRegistry: ContractRegistryABI,
@@ -46,7 +45,6 @@ export const contractsToAbi = {
   SavingQUSD: SavingABI,
   BorrowingCoreQUSD: BorrowingCoreABI,
   StableCoinQUSD: StableCoinABI,
-  EPDRParameters: EPDRParametersABI,
   GovernedEpdrQethQusdOracle: FxPriceFeedABI,
   GovernedEpdrQbtcQusdOracle: FxPriceFeedABI,
   GovernedEpdrQethAddress: StableCoinABI,
