@@ -83,15 +83,15 @@ function ModalVote(props) {
   }, [activeTab, stepCounter, register, errors, stepLimit, dispatch]);
 
   const onNext = (data) => {
-    if (formData?.first === 'basic-vote-on-proposal') {
-      if (proposalContract === 'ConstitutionVoting' || proposalContract === 'GeneralUpdateVoting'
-        || proposalContract === 'RootsVoting' || proposalContract === 'EPDR_MembershipVoting'
-        || proposalContract === 'EPQFI_MembershipVoting') {
-        if (vetoEndTime >= userLockingEnd) {
-          dispatch(setDisabledCreatedProposalBtn(true));
-        }
-      }
-    }
+    // if (formData?.first === 'basic-vote-on-proposal') {
+    //   if (proposalContract === 'ConstitutionVoting' || proposalContract === 'GeneralUpdateVoting'
+    //     || proposalContract === 'RootsVoting' || proposalContract === 'EPDR_MembershipVoting'
+    //     || proposalContract === 'EPQFI_MembershipVoting') {
+    //     if (vetoEndTime >= userLockingEnd) {
+    //       dispatch(setDisabledCreatedProposalBtn(true));
+    //     }
+    //   }
+    // }
     dispatch(setVoteProposalObj({ ...formData, ...data }));
     if (stepCounter < stepLimit) {
       dispatch(setStepVoteCounter(stepCounter + 1));
@@ -121,7 +121,7 @@ function ModalVote(props) {
       continueBtnTitle={
         stepLimit !== stepCounter ? 'Next' : 'Confirm'
       }
-      disabled={disabledContinueBtn}
+      // disabled={disabledContinueBtn}
       continueBtnHandler={handleSubmit(onNext)}
       content={
         <>

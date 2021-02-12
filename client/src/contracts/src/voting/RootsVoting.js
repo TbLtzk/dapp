@@ -101,13 +101,13 @@ export default class RootsVoting extends VotingService {
     let result = null;
     // const hash = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
     const hash = data.hash;
+    console.log("hash", hash);
     const link = data['external-link'];
     let addressToRemove = data.address;
     // const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
     if (data.first === 'add-a-new-root-node') {
       const removeCurrent = data['remove-current'];
       if (removeCurrent === 'no') {
-        //TODO: in future backenders add to argument list - hash
         result = await this.contract.methods.createProposal(link, hash, userAddress, EMPTY_ADDR)
           .send(
             { from: userAddress });

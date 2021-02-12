@@ -115,17 +115,17 @@ export default class VotingService {
   async voteAgainst(id, userAddress) {
     try {
       let result = null;
-      if (this.contractName === 'RootNodesSlashingVoting' || this.contractName === 'ValidatorsSlashingVoting'
-        || this.contractName === 'EPDR_ParametersVoting' || this.contractName === 'EPQFI_ParametersVoting'
-        || this.contractName === 'EmergencyUpdateVoting') {
+      // if (this.contractName === 'RootNodesSlashingVoting' || this.contractName === 'ValidatorsSlashingVoting'
+      //   || this.contractName === 'EPDR_ParametersVoting' || this.contractName === 'EPQFI_ParametersVoting'
+      //   || this.contractName === 'EmergencyUpdateVoting') {
         result = await this.contract.methods.voteAgainst(id)
           .send(
             { from: userAddress });
-      } else {
-        result = await this.contract.methods.voteAgainst(id, true)
-          .send(
-            { from: userAddress });
-      }
+      // } else {
+      //   result = await this.contract.methods.voteAgainst(id, true)
+      //     .send(
+      //       { from: userAddress });
+      // }
       return result;
     } catch (e) {
       console.log(e);
@@ -140,17 +140,17 @@ export default class VotingService {
    */
   async voteFor(id, userAddress) {
     let result = null;
-    if (this.contractName === 'RootNodesSlashingVoting' || this.contractName === 'ValidatorsSlashingVoting'
-      || this.contractName === 'EPDR_ParametersVoting' || this.contractName === 'EPQFI_ParametersVoting'
-      || this.contractName === 'EmergencyUpdateVoting') {
+    // if (this.contractName === 'RootNodesSlashingVoting' || this.contractName === 'ValidatorsSlashingVoting'
+    //   || this.contractName === 'EPDR_ParametersVoting' || this.contractName === 'EPQFI_ParametersVoting'
+    //   || this.contractName === 'EmergencyUpdateVoting') {
       result = await this.contract.methods.voteFor(id)
         .send(
           { from: userAddress });
-    } else {
-      result = await this.contract.methods.voteFor(id, true)
-        .send(
-          { from: userAddress });
-    }
+    // } else {
+    //   result = await this.contract.methods.voteFor(id, true)
+    //     .send(
+    //       { from: userAddress });
+    // }
 
     return result;
   }

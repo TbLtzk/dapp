@@ -29,8 +29,7 @@ export default class QPiggyBank {
   }
 
   async getLockInfo() {
-    return await this.methods.getLockInfo()
-      .call();
+    return await this.methods.getLockInfo().call();
   }
 
   async withdraw(address, amount, abandonClaims = true) {
