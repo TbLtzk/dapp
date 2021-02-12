@@ -20,15 +20,16 @@ export default class ParametersVoting extends VotingService {
     let objRes = {};
     let objStats = {};
     try {
+      console.log("ParametersVoting", promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.base.remark;
-      objRes.parameterKey = promiseRes.parameterKey;
-      objRes.parameterType = getParameterTypeTransformation(promiseRes.parameterType);
-      objRes.addrValue = promiseRes.parameterValue.addrValue;
-      objRes.boolValue = promiseRes.parameterValue.boolValue;
-      objRes.bytes32Value = promiseRes.parameterValue.bytes32Value;
-      objRes.strValue = promiseRes.parameterValue.strValue;
-      objRes.uintValue = promiseRes.parameterValue.uintValue;
+      // objRes.parameterKey = promiseRes.parameterKey;
+      // objRes.parameterType = getParameterTypeTransformation(promiseRes.parameterType);
+      // objRes.addrValue = promiseRes.parameterValue.addrValue;
+      // objRes.boolValue = promiseRes.parameterValue.boolValue;
+      // objRes.bytes32Value = promiseRes.parameterValue.bytes32Value;
+      // objRes.strValue = promiseRes.parameterValue.strValue;
+      // objRes.uintValue = promiseRes.parameterValue.uintValue;
 
       objRes.vetosCount = promiseRes.base.counters.vetosCount;
       // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;

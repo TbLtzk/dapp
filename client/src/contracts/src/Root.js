@@ -1,10 +1,10 @@
-import { drizzleRegistry, contracts } from '../config/drizzle-config';
+import { contracts } from '../config/drizzle-config';
 
 import { fromWei } from 'func/balance';
 
 export default class RootService {
 
-  constructor(drizzle) {
+  constructor() {
     this.contract = contracts['Root'];
     this.contractName = 'Root';
   }
@@ -91,9 +91,13 @@ export default class RootService {
             return sum + current.stakeAmount;
           }, 0);
           rootNodeData = data.map((member, i) => {
+            let share = 0;
+            if (totalStakes !== 0) {
+              share = Math.ceil(member.stakeAmount * 100 / totalStakes);
+            }
             return {
               ...member,
-              share: Math.ceil(member.stakeAmount * 100 / totalStakes)
+              share: share
             };
           });
           return {
@@ -102,7 +106,6 @@ export default class RootService {
           };
         }
       });
-
   }
 
   /**

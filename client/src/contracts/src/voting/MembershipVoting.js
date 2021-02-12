@@ -23,6 +23,7 @@ export default class MembershipVoting extends VotingService {
     let objRes = {};
     let objStats = {};
     try {
+      console.log("promiseRes MembershipVoting", promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.base.remark;
       objRes.addressToAdd = promiseRes.proposalDetails.addressToAdd;
@@ -54,7 +55,7 @@ export default class MembershipVoting extends VotingService {
       objRes.currentVetoPercentage = transformToPercentage(proposalStats.currentVetoPercentage);
       objRes.requiredMajority = transformToPercentage(proposalStats.requiredMajority);
       objRes.requiredQuorum = transformToPercentage(proposalStats.requiredQuorum);
-      objRes.vetoThreshold = transformToPercentage(proposalStats.vetoThreshold);
+      // objRes.vetoThreshold = transformToPercentage(proposalStats.vetoThreshold);
       objRes.contract = this.contractName;
 
       return { ...objRes, ...objStats };

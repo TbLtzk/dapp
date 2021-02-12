@@ -256,6 +256,7 @@ export default class VotingService {
   async getProposals() {
     try {
       const proposalEvents = await this.getProposalsEvent();
+      console.log("proposalEvents",proposalEvents);
       const proposalIds = getPastProposalsIds(proposalEvents);
       let proposals = [];
       if (proposalIds) {
@@ -316,12 +317,14 @@ export default class VotingService {
     try {
       let objRes = {};
       let proposalStats = await this.getProposalStats(id);
+      console.log("contract", this.contractName);
+      console.log("proposalStats", proposalStats);
       objRes.currentMajority = transformToPercentage(proposalStats.currentMajority);
       objRes.currentQuorum = transformToPercentage(proposalStats.currentQuorum);
       objRes.currentVetoPercentage = transformToPercentage(proposalStats.currentVetoPercentage);
       objRes.requiredMajority = transformToPercentage(proposalStats.requiredMajority);
       objRes.requiredQuorum = transformToPercentage(proposalStats.requiredQuorum);
-      objRes.vetoThreshold = transformToPercentage(proposalStats.vetoThreshold);
+      // objRes.vetoThreshold = transformToPercentage(proposalStats.vetoThreshold);
       return objRes;
     } catch (e) {
       console.log(e);

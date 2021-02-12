@@ -47,7 +47,7 @@ export default class RootsVoting extends VotingService {
       // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
       // objRes.votesFor = promiseRes.base.counters.weightFor;
       const weightAgainst = promiseRes.base.counters.weightAgainst;
-      objRes.votesAgainst =fromWei(weightAgainst);
+      objRes.votesAgainst = fromWei(weightAgainst);
 
       const weightFor = promiseRes.base.counters.weightFor;
       objRes.votesFor = fromWei(weightFor);
@@ -97,10 +97,10 @@ export default class RootsVoting extends VotingService {
    * @return string
    */
   async createProposal(data, userAddress) {
-    // console.log("DATA", data);
+    console.log('DATA', data);
     let result = null;
     // const hash = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
-    // const hash = data.hash.toLowerCase();
+    const hash = data.hash;
     const link = data['external-link'];
     let addressToRemove = data.address;
     // const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
@@ -108,18 +108,18 @@ export default class RootsVoting extends VotingService {
       const removeCurrent = data['remove-current'];
       if (removeCurrent === 'no') {
         //TODO: in future backenders add to argument list - hash
-        result = await this.contract.methods.createProposal(link, userAddress, EMPTY_ADDR)
+        result = await this.contract.methods.createProposal(link, hash, userAddress, EMPTY_ADDR)
           .send(
             { from: userAddress });
       } else {
         // addressToRemove = '0x6A39B688d591Ea00C9EA69658438794204B5cC62'; //remove root address
-        result = await this.contract.methods.createProposal(link, userAddress, addressToRemove)
+        result = await this.contract.methods.createProposal(link, hash, userAddress, addressToRemove)
           .send(
             { from: userAddress });
       }
     } else if (data.first === 'remove-a-current-root-node') {
       // addressToRemove = '0x6A39B688d591Ea00C9EA69658438794204B5cC62'; //remove root address
-      result = await this.contract.methods.createProposal(link, EMPTY_ADDR, addressToRemove)
+      result = await this.contract.methods.createProposal(link, hash, EMPTY_ADDR, addressToRemove)
         .send(
           { from: userAddress });
     }

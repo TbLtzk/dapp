@@ -1,7 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
 import { web3 } from 'contracts/config/drizzle-config';
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
-import QPiggyBank from 'contracts/QPiggyBank';
+import QPiggyBank from 'contracts/src/QPiggyBank';
 
 export class ContractHandler {
   constructor(address, dispatch, alert) {

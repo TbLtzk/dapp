@@ -4,8 +4,6 @@ import { rootMembersData } from 'store/selectors/root-contract';
 
 import { PieChart, Pie, Cell } from 'recharts';
 
-import { circles } from 'components/Custom/MembersPanel/RootNodePanel/constants';
-
 import colors from 'constants/colors';
 import { WrapChart } from './styles';
 
@@ -23,9 +21,8 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
   );
 };
 
-function PieChartCustom(props) {
+function PieChartCustom() {
   const rootMembersArray = useSelector(rootMembersData);
-  // const {data} = props;
   const [transformData, setTransformData] = useState(null);
   const [maxValue, setMaxValue] = useState(null);
 
@@ -51,7 +48,7 @@ function PieChartCustom(props) {
   return (
     <WrapChart>
       {
-        !transformData ? null :
+        !transformData || maxValue === 0 ? null :
           <PieChart width={200} height={200}>
             {/*<text x={108} y={102} dy={8} textAnchor="middle"*/}
             <text x={'40%'} y={'50%'} dy={8} textAnchor="middle"
@@ -83,6 +80,32 @@ function PieChartCustom(props) {
               )}
             </Pie>
           </PieChart>
+      }
+      {maxValue !== 0 ? null :
+        <div>
+          <PieChart width={200} height={200}>
+            <text
+              x={'40%'} y={'50%'} dy={8} textAnchor="middle"
+              fill={colors.darkBlue}
+              fontSize="24"
+              fontWeight="bold"
+            >
+              {maxValue + '%'}
+            </text>
+            <Pie
+              data={[{
+                name: 0,
+                value: 101
+              }]}
+              cx={'37%'}
+              cy={'50%'}
+              labelLine={false}
+              innerRadius={47}
+              fill="#9595A5"
+              dataKey="value"
+            />
+          </PieChart>
+        </div>
       }
     </WrapChart>
   );

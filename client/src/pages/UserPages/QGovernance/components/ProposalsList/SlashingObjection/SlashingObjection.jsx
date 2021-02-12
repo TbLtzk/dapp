@@ -1,22 +1,29 @@
 import React, { useMemo, useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
-import { TitleSmall } from 'components/Custom/PageLists/styles';
-import CustomBlock from 'components/Base/CustomBlock';
-import ListDetails from './ListDetails';
-import Button from 'components/Base/Buttons/Button';
-import ModalSlashingObjection from './ModalSlashingObjection';
-import { WrapBtn, WrapBtnGroup } from './styles';
+
 import { useDispatch } from 'react-redux';
 import {
   setCreatedStepsLimit, setCreateObj,
   setStepCounter
 } from 'store/actions/action-creaters/auctions/modalHandler';
 
+import SlashingEscrow from 'contracts/src/SlashingEscrow';
+
+import CustomBlock from 'components/Base/CustomBlock';
+import ListDetails from './ListDetails';
+import Button from 'components/Base/Buttons/Button';
+import ModalSlashingObjection from './ModalSlashingObjection';
+
+import { Container, Row, Col } from 'react-bootstrap';
+import { WrapBtn, WrapBtnGroup } from './styles';
+import { TitleSmall } from 'components/Custom/PageLists/styles';
+
 function SlashingObjection(props) {
-  const { data } = props;
+  const { contract, proposalId } = props;
   const [modalShow, setModalShow] = useState(false);
   const [activeModal, setActiveModal] = useState('');
   const dispatch = useDispatch();
+
+  const SlashingEscrowContract = new SlashingEscrow();
 
   const objectionData = useMemo(() => {
     return (

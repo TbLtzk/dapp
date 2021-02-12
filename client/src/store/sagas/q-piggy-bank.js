@@ -7,7 +7,7 @@ import {
   getUserBalance,
   getLockedAssets,
 } from 'store/actions/action-creaters/q-piggy-bank';
-import QPiggyBank from 'contracts/QPiggyBank';
+import QPiggyBank from 'contracts/src/QPiggyBank';
 import { handleLockedAssetsResponse } from 'contracts/handler/QPiggyBankHandler';
 import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler';
 import { web3 } from 'contracts/config/drizzle-config';
@@ -23,7 +23,10 @@ function getContractInstance() {
 
 function* getUserBalanceGenerator({ address }) {
   try {
-    yield put({ type: SET_TRANSACTION_COUNTER, payload: 1 });
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    });
 
     const contract = getContractInstance();
     let data = yield contract.getUserBalance(address);
@@ -34,30 +37,43 @@ function* getUserBalanceGenerator({ address }) {
     console.error('QPB.Error', err);
     yield put(setError(err.message));
   } finally {
-    yield put({ type: SET_TRANSACTION_COUNTER, payload: -1 });
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    });
   }
 }
 
 function* getLockedAssetsGenerator({ address }) {
   try {
-    yield put({ type: SET_TRANSACTION_COUNTER, payload: 1 });
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    });
 
     const contract = getContractInstance();
-    let data = yield contract.getLockedAssets(address);
+    let data = yield contract.getLockInfo(address);
+    console.log("getLockInfo", data);
+    // let data = yield contract.getLockedAssets(address);
     data = handleLockedAssetsResponse(data);
-
     yield put(setLockedAssets(data.votingWeight, data.votingLockingEnd));
   } catch (err) {
     console.error('QPB.Error', err);
     yield put(setError(err.message));
   } finally {
-    yield put({ type: SET_TRANSACTION_COUNTER, payload: -1 });
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    });
   }
 }
 
 function* setDepositGenerator({ address, amountQ }) {
   try {
-    yield put({ type: SET_TRANSACTION_COUNTER, payload: 1 });
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    });
 
     const contract = getContractInstance();
     const data = yield contract.deposit(address, amountQ);
@@ -69,13 +85,19 @@ function* setDepositGenerator({ address, amountQ }) {
     console.error('QPB.Error', err);
     yield put(setError(err.message));
   } finally {
-    yield put({ type: SET_TRANSACTION_COUNTER, payload: -1 });
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    });
   }
 }
 
 function* setWithdrawGenerator({ address, amountQ }) {
   try {
-    yield put({ type: SET_TRANSACTION_COUNTER, payload: 1 });
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    });
 
     const contract = getContractInstance();
     const data = yield contract.withdraw(address, amountQ);
@@ -87,13 +109,19 @@ function* setWithdrawGenerator({ address, amountQ }) {
     console.error('QPB.Error', err);
     yield put(setError(err.message));
   } finally {
-    yield put({ type: SET_TRANSACTION_COUNTER, payload: -1 });
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    });
   }
 }
 
 function* setLockAmountGenerator({ address, amountQ, expiration }) {
   try {
-    yield put({ type: SET_TRANSACTION_COUNTER, payload: 1 });
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    });
 
     const contract = getContractInstance();
     const data = yield contract.lock(address, amountQ, expiration);
@@ -106,13 +134,19 @@ function* setLockAmountGenerator({ address, amountQ, expiration }) {
     console.error('QPB.Error', err);
     yield put(setError(err.message));
   } finally {
-    yield put({ type: SET_TRANSACTION_COUNTER, payload: -1 });
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    });
   }
 }
 
 function* setUnlockAmountGenerator({ address, amountQ }) {
   try {
-    yield put({ type: SET_TRANSACTION_COUNTER, payload: 1 });
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    });
 
     const contract = getContractInstance();
     const data = yield contract.unlock(address, amountQ);
@@ -125,13 +159,19 @@ function* setUnlockAmountGenerator({ address, amountQ }) {
     console.error('QPB.Error', err);
     yield put(setError(err.message));
   } finally {
-    yield put({ type: SET_TRANSACTION_COUNTER, payload: -1 });
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    });
   }
 }
 
 function* setNewExpirationGenerator({ address, expiration }) {
   try {
-    yield put({ type: SET_TRANSACTION_COUNTER, payload: 1 });
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    });
 
     const contract = getContractInstance();
     const data = yield contract.extendExpiration(address, expiration);
@@ -143,13 +183,19 @@ function* setNewExpirationGenerator({ address, expiration }) {
     console.error('QPB.Error', err);
     yield put(setError(err.message));
   } finally {
-    yield put({ type: SET_TRANSACTION_COUNTER, payload: -1 });
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    });
   }
 }
 
 function* setClaimRewardGenerator({ address }) {
   try {
-    yield put({ type: SET_TRANSACTION_COUNTER, payload: 1 });
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    });
 
     const contract = getContractInstance();
     const data = yield contract.claimQHolderReward(address);
@@ -161,7 +207,10 @@ function* setClaimRewardGenerator({ address }) {
     console.error('QPB.Error', err);
     yield put(setError(err.message));
   } finally {
-    yield put({ type: SET_TRANSACTION_COUNTER, payload: -1 });
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    });
   }
 }
 

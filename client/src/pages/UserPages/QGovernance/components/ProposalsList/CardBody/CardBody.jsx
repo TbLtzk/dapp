@@ -48,7 +48,7 @@ function CardBody(props) {
           label: 'slashing-objection',
           title: 'Slashing Objection',
           content: (
-            <SlashingObjection data={pollDetail}/>
+            <SlashingObjection contract={contract} proposalId={id}/>
           )
         },
       ];

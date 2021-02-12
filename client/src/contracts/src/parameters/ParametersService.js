@@ -1,6 +1,7 @@
 import { contracts } from '../../config/drizzle-config';
 
 export default class ParametersService {
+
   constructor(contractName) {
     this.contract = contracts[contractName];
     this.contractName = contractName;
@@ -40,16 +41,6 @@ export default class ParametersService {
 
   async getUint(key) {
     return await this.contract.methods.getUint(key)
-      .call();
-  }
-
-  async getAddrKeys() {
-    return await this.contract.methods.getAddrKeys()
-      .call();
-  }
-
-  async getUintKeys() {
-    return await this.contract.methods.getUintKeys()
       .call();
   }
 

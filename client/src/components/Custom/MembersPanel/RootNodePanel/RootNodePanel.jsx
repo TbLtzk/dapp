@@ -30,7 +30,7 @@ const { useDrizzle } = drizzleReactHooks;
 function RootNodePanel(props) {
   const { type, bottom } = props;
   const { drizzle } = useDrizzle();
-  const rootService = new RootService(drizzle);
+  const rootService = new RootService();
 
   const userAddress = useSelector(userAddressMetamask);
   const rootMembersArray = useSelector(rootMembersData);

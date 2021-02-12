@@ -6,8 +6,10 @@ export const contractsToContractsRegistryKey = {
   Root: 'governance.rootNodes',
   RootsVoting: 'governance.rootNodes.membershipVoting',
   RootNodesSlashingVoting: 'governance.rootNodes.slashingVoting',
+  RootNodesSlashingEscrow: 'governance.rootNodes.slashingEscrow',
   Validators: 'governance.validators',
   ValidatorsSlashingVoting: 'governance.validators.slashingVoting',
+  ValidatorsSlashingEscrow: 'governance.validators.slashingEscrow',
 
   EPDR_Membership: 'governance.experts.EPDR.membership',
   EPDR_MembershipVoting: 'governance.experts.EPDR.membershipVoting',

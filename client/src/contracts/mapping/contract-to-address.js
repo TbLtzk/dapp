@@ -43,6 +43,7 @@ const contractsToAddressesDynamic = {
   RootsVoting: '0x912885FB7c72c5a0024Aa6dBC5425F0517878732',    //devnet
   // RootNodesSlashingVoting: '0x03628E42caf21E6d437f2805D97BA48665a90524', //testnet
   RootNodesSlashingVoting: '0x4C392dFb8c44Dc813Be778eB78B58492d05af84b',    //devnet
+  RootNodesSlashingEscrow: '0x536061A4A6633d5A1AF99DE29B7cE82439e1e5c0',    //devnet
   // SavingQUSD: '0x44CB5A8eE30E0Bc5b19BCf3Fa7470766f6bc6Ae8',//testnet
   SavingQUSD: '0x47923de3a07654058bf53d3F510D99f185392dF1',  //devnet
   // StableCoinQUSD: '0xd53e0F0ea25FEC308D1616e156a6fBd4af2875d4',//testnet //QUSD address wallet
@@ -62,13 +63,16 @@ const contractsToAddressesDynamic = {
   WrappedQ: '0x1a6c61b097124fd1FD11745D72356a69d78A614E',
   // ValidatorsSlashingVoting: '0x4C5043A5Cd20516b86C3AA9867515B32c11c7fA8',  //testnet
   ValidatorsSlashingVoting: '0x7D6F635B66DaF406725654c71c9B29fFF74fb092',     //devnet
+  ValidatorsSlashingEscrow: '0x2Bf1bFAc66B97E3611CE46E01Cc24835eE79619e',     //devnet
 };
 
 const contractsToAddressesCustom = {
   GovernedEpdrQethQusdOracle: '0x62BD936432C97cD2A2908Bf1973e3ec3a68F81B5',
-  GovernedEpdrQbtcQusdOracle: '0x3C7343037645530a65f4FeC5a6A596f9C91eAf3e',
+  // GovernedEpdrQbtcQusdOracle: '0x3C7343037645530a65f4FeC5a6A596f9C91eAf3e', //governed.EPDR.QBTC_QUSD_oracle" //testnet
+  GovernedEpdrQbtcQusdOracle: '0x62BD936432C97cD2A2908Bf1973e3ec3a68F81B5', //governed.EPDR.QBTC_QUSD_oracle" //devnet
   GovernedEpdrQethAddress: '0x62BD936432C97cD2A2908Bf1973e3ec3a68F81B5',
-  GovernedEpdrQbtcAddress: '0x6d5B4AC93A6afc3725FA16345BD9730D95E2176A', //QBTC address wallet
+  // GovernedEpdrQbtcAddress: '0x6d5B4AC93A6afc3725FA16345BD9730D95E2176A', //QBTC address wallet //governed.EPDR.QBTC_address //testnet
+  GovernedEpdrQbtcAddress: '0x0000000000000000000000000000000000000001', //QBTC address wallet //governed.EPDR.QBTC_address   //devnet
   //GovernedEpdrQbtcAddress: 0x10A2298bc68e41700520F1dCb9E9E2B14E15d2E5
 };
 

@@ -1,6 +1,6 @@
 import { web3 } from 'contracts/config/drizzle-config';
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
-import QPiggyBank from 'contracts/QPiggyBank';
+import QPiggyBank from 'contracts/src/QPiggyBank';
 
 export default class PiggyBankHandler {
   constructor(address, dispatch, alert) {

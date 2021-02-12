@@ -1,5 +1,5 @@
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
-import QPiggyBank from 'contracts/QPiggyBank';
+import QPiggyBank from 'contracts/src/QPiggyBank';
 
 export class Handler {
   constructor(address, dispatch) {

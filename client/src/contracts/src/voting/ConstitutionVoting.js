@@ -42,6 +42,7 @@ export default class ConstitutionVoting extends VotingService {
     let objRes = {};
     let objStats = {};
     try {
+      console.log("promiseRes ConstitutionVoting", promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.base.remark;
       const proposalType = this.getProposalStringType(promiseRes.classification);
@@ -59,15 +60,15 @@ export default class ConstitutionVoting extends VotingService {
       // objRes.votesCount = votesCount?.c;
       objRes.votingEndTime = promiseRes.base.params.votingEndTime;
       objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
-      objRes.addrValue = promiseRes.parameterValue.addrValue;
-      objRes.boolValue = promiseRes.parameterValue.boolValue;
-      objRes.bytes32Value = promiseRes.parameterValue.bytes32Value;
-      objRes.strValue = promiseRes.parameterValue.strValue;
-      objRes.uintValue = promiseRes.parameterValue.uintValue;
-      objRes.parameterKey = promiseRes.parameterKey;
+      // objRes.addrValue = promiseRes.parameterValue.addrValue;
+      // objRes.boolValue = promiseRes.parameterValue.boolValue;
+      // objRes.bytes32Value = promiseRes.parameterValue.bytes32Value;
+      // objRes.strValue = promiseRes.parameterValue.strValue;
+      // objRes.uintValue = promiseRes.parameterValue.uintValue;
+      // objRes.parameterKey = promiseRes.parameterKey;
       //TODO parameterType
       // objRes.parameterType = promiseRes.parameterType;
-      objRes.vetoThreshold = transformToPercentage(promiseRes.base.params.vetoThreshold);
+      // objRes.vetoThreshold = transformToPercentage(promiseRes.base.params.vetoThreshold);
       objRes.status = getStatusTransformation(promiseStatus);
       // objRes.vetoesNumber = await this.getVetoesNumber(id);
       // objRes.vetoesPercentage = await this.getVetoesPercentage(id);

@@ -1,4 +1,4 @@
-import { web3 } from '../config/drizzle-config';
+import {fromWei} from '../../func/balance';
 
 export function handleLockedAssetsResponse(data) {
   const resp = {
@@ -7,12 +7,12 @@ export function handleLockedAssetsResponse(data) {
   };
 
   if (undefined !== data[0]) {
-    resp.votingWeight = web3.utils.fromWei(data[0]);
+    resp.votingWeight = fromWei(data["lockedAmount"]);
   }
 
   if (undefined !== data[1]) {
     // eslint-disable-next-line prefer-destructuring
-    resp.votingLockingEnd = data[1];
+    resp.votingLockingEnd = data["lockedUntil"];
   }
 
   return resp;

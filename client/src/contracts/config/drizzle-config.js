@@ -4,15 +4,19 @@ import { Drizzle } from '@drizzle/store';
 import { contractsToAbi } from '../mapping/contract-to-abi';
 import { contractsToAddresses } from '../mapping/contract-to-address';
 import validateContractsAddress from './cotracts-address-checker';
-
 export const web3 = new Web3(Web3.givenProvider);
 web3.eth.handleRevert = true;
+
+const netWorkRPC = "54.218.22.38"; //devnet
+// const netWorkRPC = "18.158.7.68"; //testnet
+const netWork = "devnet";
+const port = "8545";
 
 const optionsDrizzleBase = {
   web3: {
     fallback: {
       type: 'ws',
-      url: 'ws://18.158.7.68:8545',
+      url: 'ws://' + netWorkRPC + port,
     },
   },
 };
@@ -61,6 +65,3 @@ export const drizzleRegistry = new Drizzle(optionsDrizzle());
 console.log("drizzleRegistry", drizzleRegistry);
 // export const drizzleRegistry = new Drizzle(optionsDrizzleRegistry);
 export const contracts = getContracts();
-
-// const res =  validateContractsAddress();
-// console.log(res);
