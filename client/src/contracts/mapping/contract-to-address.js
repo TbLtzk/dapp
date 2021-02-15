@@ -15,22 +15,22 @@ const contractsToAddressesDynamic = {
   // EPDR_MembershipVoting: '0x7070E3EBBB5f65EBDEB61D3bC19E281965808A04', //testnet
   EPDR_MembershipVoting: '0x1fBa268ab8CcDA2cdF80cBf77CF1E1C9ec700aF0',    //devnet
   // EPDR_Parameters: '0x9935591e4670A9dE2a10e69c3C2E922c226996F8',  //testnet
-  EPDR_Parameters: '0xEe93d4D2684b6aF86385D466D316Ce8ea594123F',     //devnet
+  EPDR_Parameters: '0x721EF5a59ee5c1DF89Ab6AAaEF698d14930d05e4',     //devnet
   // EPDR_ParametersVoting: '0xbAB16874949FCFb15e83FfA7FCebE546F36bcbDA', //testnet
-  EPDR_ParametersVoting: '0xE1b04fd6238A54533938b79CfD6a0f388E4d6869', //devnet
+  EPDR_ParametersVoting: '0x88899150b8BdFFE2A4D2a9A598e1Bf8fe9CA4611', //devnet
   // EPQFI_Membership: '0xE7E8828c0d7241a38c83b938a9Af59762a3C837d', /testnet
-  EPQFI_Membership: '0xFff45a02D10C703088263a24850B2cbcFCD55cfE',   //devnet
+  EPQFI_Membership: '0x26FB4f212684F467A56637447bc677734814631B',   //devnet
   // EPQFI_MembershipVoting: '0xEe93d4D2684b6aF86385D466D316Ce8ea594123F',  /testnet
-  EPQFI_MembershipVoting: '0x0976D446Ee5E95E81E1aD51891bc952676350209',   //devnet
+  EPQFI_MembershipVoting: '0xD486E3065aB05561346a0cB254B49783d1CD0a42',   //devnet
   // EPQFI_Parameters: '0xE1b04fd6238A54533938b79CfD6a0f388E4d6869', //testnet
-  EPQFI_Parameters: '0x3B8ac0643872B1E521f12c98C10E49158d1362c0',  //devnet
+  EPQFI_Parameters: '0xB8c7Fdc24Dd912810AC284B116FbB182e736D0BF',  //devnet
   // EPQFI_ParametersVoting: '0xFff45a02D10C703088263a24850B2cbcFCD55cfE', //testnet
-  EPQFI_ParametersVoting: '0xDe1be0cdE7257955123da10BC1ea37Ee54875DdF',   //devnet
+  EPQFI_ParametersVoting: '0x3B8ac0643872B1E521f12c98C10E49158d1362c0',   //devnet
   // EmergencyUpdateVoting: '0x0976D446Ee5E95E81E1aD51891bc952676350209', //testnet
-  EmergencyUpdateVoting: '0x3ef1A5a2aCA66e0E8Bf1ceAf085BAF1ea714f2b7', //devnet
+  EmergencyUpdateVoting: '0xDe1be0cdE7257955123da10BC1ea37Ee54875DdF', //devnet
   FxPriceFeed: '0x0000000000000000000000000000000000000000',
   // GeneralUpdateVoting: '0x3B8ac0643872B1E521f12c98C10E49158d1362c0', //testnet
-  GeneralUpdateVoting: '0x980b5061117D0a0dE580507eC39Fb96eeBF1DCFe', //devnet
+  GeneralUpdateVoting: '0x3ef1A5a2aCA66e0E8Bf1ceAf085BAF1ea714f2b7', //devnet
   // LiquidationAuction: '0xFef40e2286F2240843E55fE66F06c34e7d6Ae317',  //testnet
   LiquidationAuction: '0xe018B004EA77dD71B57Df796BbD4E1705D0b9BC3',  //devnet
   QHolderRewardPool: '0xac7682a9459Fc100B2dD4efC31dF07F12EfBF2EB',
@@ -53,7 +53,7 @@ const contractsToAddressesDynamic = {
   // SystemDebtAuction: '0xBb06FC6EA77187F8ac5E98393b74428105F706f3', //testnet
   SystemDebtAuction: '0x961CfC41F170136cBF2657517012d55Df6e9Dd45',  //devnet
   // SystemReserve: '0xDe1be0cdE7257955123da10BC1ea37Ee54875DdF', //testnet
-  SystemReserve: '0x574E85F30eAa8475974Cf1fE32fFa482EA46C37D',  //devnet
+  SystemReserve: '0x61d1CA8586E06F760AE4BB6FF0Ecd7a71D7f71bf',  //devnet
   // SystemSurplusAuction: '0x26f9D9E619f70329e4990E7Cd926c0E2AE81833d', //testnet
   SystemSurplusAuction: '0x0FD2af8cFC3E6023a7bF7b656B411d679ff2C726', //devnet
   ValidationRewardPools: '0x79f972B7e8d75733bB5C24BE57DdE47942dB7f94',
