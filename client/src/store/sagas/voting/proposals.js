@@ -32,7 +32,7 @@ import {
 import { chooseSlashingContractDependsOnType } from 'contracts/handler/SlashingVotingHandler';
 import proposals from '../../reducers/voting/proposals';
 
-function* createProposal({ drizzle, data }) {
+function* createProposal({ data }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select(state => state.userInf);
@@ -40,36 +40,36 @@ function* createProposal({ drizzle, data }) {
     let result = null;
     let idProposal = null;
     let contractName = null;
-    if (data && drizzle) {
+    if (data) {
       switch (data?.first) {
         case 'constitution-update':
-          const constitutionVoting = new ConstitutionVotingService('ConstitutionVoting');
+          const constitutionVoting = new ConstitutionVotingService();
           result = yield constitutionVoting.createProposal(data, userAddress);
           contractName = 'ConstitutionVoting';
           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
           break;
         case 'general-q-update':
-          const generalUpdateVoting = new GeneralUpdateVotingService('GeneralUpdateVoting');
+          const generalUpdateVoting = new GeneralUpdateVotingService();
           result = yield generalUpdateVoting.createProposal(data, userAddress);
           contractName = 'GeneralUpdateVoting';
           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
           break;
         case 'emergency-update':
-          const emergencyUpdateVoting = new EmergencyUpdateVotingService('EmergencyUpdateVoting');
+          const emergencyUpdateVoting = new EmergencyUpdateVotingService();
           result = yield emergencyUpdateVoting.createProposal(data, userAddress);
           contractName = 'EmergencyUpdateVoting';
           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
           break;
         case 'add-a-new-root-node':
         case 'remove-a-current-root-node':
-          const rootsVoting = new RootsVotingService('RootsVoting');
+          const rootsVoting = new RootsVotingService();
           result = yield rootsVoting.createProposal(data, userAddress);
           contractName = 'RootsVoting';
           idProposal = result?.events?.ProposalCreated?.returnValues?._id;
           break;
         case 'root-node-slashing':
         case 'validator-node-slashing':
-          const chosenContract = chooseSlashingContractDependsOnType(drizzle, data?.first);
+          const chosenContract = chooseSlashingContractDependsOnType(data?.first);
           result = yield chosenContract.createProposal(data, userAddress);
           if (data?.first === 'root-node-slashing') {
             contractName = 'RootNodesSlashingVoting';
@@ -82,10 +82,10 @@ function* createProposal({ drizzle, data }) {
         case 'remove-a-current-expert':
         case 'parameter-vote':
           const typeContract = data.first !== 'parameter-vote' ? 'member' : 'parameters';
-          const contract = chooseExpertContractDependsOnType(drizzle, typeContract, data['type-proposal']);
+          const contract = chooseExpertContractDependsOnType(typeContract, data['type-proposal']);
           console.log('contract', contract);
           result = yield contract.createProposal(data, userAddress);
-          contractName = chooseExpertContractNameDependsOnType(drizzle, typeContract, data['type-proposal']);
+          contractName = chooseExpertContractNameDependsOnType(typeContract, data['type-proposal']);
           if (data?.first === 'remove-a-current-expert') {
             //TODO: for createRemoveExpertProposal use RemoveProposalCreated event
             idProposal = result?.events?.RemoveProposalCreated?.returnValues?._id;
@@ -97,7 +97,7 @@ function* createProposal({ drizzle, data }) {
           return null;
       }
     }
-    yield call(getProposalDependsOnType, contractName, drizzle, data, idProposal, true);
+    yield call(getProposalDependsOnType, contractName, data, idProposal, true);
     yield put(createProposalSuccess(result));
     yield put(setTransactionLoadingSuccess());
 
@@ -107,13 +107,13 @@ function* createProposal({ drizzle, data }) {
   }
 }
 
-function* voteForProposal({ drizzle, data }) {
+function* voteForProposal({ data }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select(state => state.userInf);
 
     let result = null;
-    if (data && drizzle) {
+    if (data) {
       const contract = new VotingService(data?.contract);
       if (data?.first === 'basic-vote-on-proposal') {
         if (data['vote-proposal'] === 'yes') {
@@ -131,7 +131,7 @@ function* voteForProposal({ drizzle, data }) {
         //TODO: when backenders do it
       }
     }
-    yield call(getProposalDependsOnType, data?.contract, drizzle, data, data?.idProposal, true);
+    yield call(getProposalDependsOnType, data?.contract, data, data?.idProposal, true);
     yield put(voteForProposalSuccess(result));
     yield put(setTransactionLoadingSuccess());
 
@@ -141,16 +141,16 @@ function* voteForProposal({ drizzle, data }) {
   }
 }
 
-function* executeProposal({ drizzle, data }) {
+function* executeProposal({ data }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select(state => state.userInf);
     let result = null;
-    if (data && drizzle) {
+    if (data) {
       const contract = new VotingService(data?.contract);
       const execute = yield contract.execute(data?.idProposal, userAddress);
     }
-    yield call(getProposalDependsOnType, data?.contract, drizzle, data, data?.idProposal, true);
+    yield call(getProposalDependsOnType, data?.contract, data, data?.idProposal, true);
     yield put(executeProposalSuccess(result));
     yield put(setTransactionLoadingSuccess());
   } catch (err) {
@@ -160,30 +160,30 @@ function* executeProposal({ drizzle, data }) {
   }
 }
 
-function* updateProposal({ drizzle, data }) {
-  yield call(getProposalDependsOnType, data?.contract, drizzle, data, data?.idProposal, false);
+function* updateProposal({ data }) {
+  yield call(getProposalDependsOnType, data?.contract, data, data?.idProposal, false);
 }
 
-function* getProposalDependsOnType(contractName, drizzle, data, id, activeProposal) {
+function* getProposalDependsOnType(contractName, data, id, activeProposal) {
   try {
     switch (contractName) {
       case 'ConstitutionVoting':
       case 'EmergencyUpdateVoting':
       case 'GeneralUpdateVoting':
-        yield put(getProposalVote(contractName, id, drizzle, 'q-proposals', activeProposal));
+        yield put(getProposalVote(contractName, id, 'q-proposals', activeProposal));
         break;
       case 'RootsVoting':
-        yield put(getProposalVote(contractName, id, drizzle, 'q-root-node-panel', activeProposal));
+        yield put(getProposalVote(contractName, id, 'q-root-node-panel', activeProposal));
         break;
       case 'RootNodesSlashingVoting':
       case 'ValidatorsSlashingVoting':
-        yield put(getProposalVote(contractName, id, drizzle, 'slashing-proposals', activeProposal));
+        yield put(getProposalVote(contractName, id, 'slashing-proposals', activeProposal));
         break;
       case 'EPQFI_MembershipVoting':
       case 'EPDR_MembershipVoting':
       case 'EPQFI_ParametersVoting':
       case 'EPDR_ParametersVoting':
-        yield put(getProposalVote(contractName, id, drizzle, 'q-expert-proposals', activeProposal));
+        yield put(getProposalVote(contractName, id, 'q-expert-proposals', activeProposal));
         break;
       default:
         return null;
@@ -193,28 +193,28 @@ function* getProposalDependsOnType(contractName, drizzle, data, id, activePropos
   }
 }
 
-function* getOneProposalShared({ drizzle, data }) {
-  yield call(getProposalDependsOnType, data?.contract, drizzle, data, data?.id, false);
+function* getOneProposalShared({ data }) {
+  yield call(getProposalDependsOnType, data?.contract, data, data?.id, false);
 }
 
-function* getProposalsList({ drizzle, activeTab }) {
+function* getProposalsList({ activeTab }) {
 
   try {
-    const { activeTab } = yield select(state => state.proposals);
-    console.log("activeTab", activeTab);
+    // const { activeTab } = yield select(state => state.proposals);
+    console.log('activeTab', activeTab);
     let contracts = null;
     switch (activeTab) {
       case 'q-proposals':
-        contracts = creationQContractsObjArray(drizzle);
+        contracts = creationQContractsObjArray();
         break;
       case 'q-root-node-panel':
-        contracts = creationRootContractObj(drizzle);
+        contracts = creationRootContractObj();
         break;
       case 'slashing-proposals':
-        contracts = creationSlashingContractsObjArray(drizzle);
+        contracts = creationSlashingContractsObjArray();
         break;
       case 'q-expert-proposals':
-        contracts = creationExpertContractsObjArray(drizzle);
+        contracts = creationExpertContractsObjArray();
         break;
     }
     let result = [];
@@ -236,21 +236,21 @@ function* getProposalsList({ drizzle, activeTab }) {
   }
 }
 
-function* getProposal({ contractName, id, drizzle, activeTab, activeProposal }) {
+function* getProposal({ contractName, id, activeTab, activeProposal }) {
   try {
     let contract = null;
     switch (activeTab) {
       case 'q-proposals':
-        contract = creationQContractObj(drizzle, contractName);
+        contract = creationQContractObj(contractName);
         break;
       case 'q-root-node-panel':
-        contract = creationRootContractObj(drizzle);
+        contract = creationRootContractObj();
         break;
       case 'slashing-proposals':
-        contract = creationSlashingContractObj(drizzle, contractName);
+        contract = creationSlashingContractObj(contractName);
         break;
       case 'q-expert-proposals':
-        contract = creationExpertContractObj(drizzle, contractName);
+        contract = creationExpertContractObj(contractName);
         break;
     }
     console.log('contract', contract);
@@ -278,24 +278,22 @@ function* getProposal({ contractName, id, drizzle, activeTab, activeProposal }) 
   }
 }
 
-function* getEndedProposals({ drizzle, activeTab }) {
+function* getEndedProposals({ activeTab }) {
   try {
     let contracts = null;
-    if (drizzle) {
-      switch (activeTab) {
-        case 'q-proposals':
-          contracts = creationQContractsObjArray(drizzle);
-          break;
-        case 'q-root-node-panel':
-          contracts = creationRootContractObj(drizzle);
-          break;
-        case 'q-expert-proposals':
-          contracts = creationExpertContractsObjArray(drizzle);
-          break;
-        case 'slashing-proposals':
-          contracts = creationSlashingContractsObjArray(drizzle);
-          break;
-      }
+    switch (activeTab) {
+      case 'q-proposals':
+        contracts = creationQContractsObjArray();
+        break;
+      case 'q-root-node-panel':
+        contracts = creationRootContractObj();
+        break;
+      case 'q-expert-proposals':
+        contracts = creationExpertContractsObjArray();
+        break;
+      case 'slashing-proposals':
+        contracts = creationSlashingContractsObjArray();
+        break;
     }
     let result = [];
     if (Array.isArray(contracts)) {
@@ -341,7 +339,7 @@ function* getNumberAllProposals() {
 
 function* getConstitutionHash() {
   try {
-    const contract = creationQContractObj(null, 'ConstitutionVoting');
+    const contract = creationQContractObj('ConstitutionVoting');
     const data = yield contract.getConstitutionHash();
 
     yield put(getConstitutionHashSuccess(data));

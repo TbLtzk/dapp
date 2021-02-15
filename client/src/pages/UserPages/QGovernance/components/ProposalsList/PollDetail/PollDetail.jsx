@@ -1,155 +1,120 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { TitleSmall, Text, Link } from 'components/Custom/PageLists/styles';
 
+// const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
 
 function PollDetail(props) {
   const { pollDetail, proposalsKind } = props;
 
-  const switchContentDependsOnKind = () => {
+  const showDataArr = useMemo(() => {
     switch (proposalsKind) {
-      case 'QRootNodePanel':
-        return (
-          <>
-            {!pollDetail.candidate || pollDetail.candidate === EMPTY_ADDR ? null :
-              <Text>
-                Proposal to Add Root Node: {pollDetail.candidate}
-              </Text>
-            }
-            {!pollDetail.replaceDest || pollDetail.replaceDest === EMPTY_ADDR ? null :
-              <Text>
-                Proposal to Remove Root Node: {pollDetail.replaceDest}
-              </Text>
-            }
-          </>
-        );
       case 'QProposals':
-        return (
-          <>
-            {!pollDetail.currentConstitutionHash ? null :
-              <Text>
-                Current constitution hash: {pollDetail.currentConstitutionHash}
-              </Text>
-            }
-            {!pollDetail.currentConstitutionHash ? null :
-              <Text>
-                New constitution hash: {pollDetail.newConstitutionHash}
-              </Text>
-            }
-            {!pollDetail.parameterKey ? null :
-              <Text>
-                Parameter key: {pollDetail.parameterKey}
-              </Text>
-            }
-            {!pollDetail.addrValue ? null :
-              <Text>
-                addrValue: {pollDetail.addrValue}
-              </Text>
-            }
-            {!String(pollDetail.boolValue) || !pollDetail?.boolValue ? null :
-              <Text>
-                boolValue: {String(pollDetail.boolValue)}
-              </Text>
-            }
-            {!pollDetail.bytes32Value ? null :
-              <Text>
-                bytes32Value: {pollDetail.bytes32Value}
-              </Text>
-            }
-            {!pollDetail.strValue ? null :
-              <Text>
-                strValue: {pollDetail.strValue}
-              </Text>
-            }
-            {!pollDetail.uintValue ? null :
-              <Text>
-                uintValue: {pollDetail.uintValue}
-              </Text>
-            }
-          </>
-        );
-      case 'SlashingProposals':
-        return (
-          <>
-            {!pollDetail.candidate ? null :
-              <Text>
-                Candidate: {pollDetail.candidate}
-              </Text>
-            }
-            {!pollDetail.amountToSlash ? null :
-              <Text>
-                amountToSlash: {pollDetail.amountToSlash}Q
-              </Text>
-            }
-          </>
-        );
+        return [
+          {
+            label: 'Current constitution hash',
+            value: pollDetail?.currentConstitutionHash
+          },
+          {
+            label: 'New constitution hash',
+            value: pollDetail?.newConstitutionHash
+          },
+          {
+            label: 'Parameter type',
+            value: pollDetail?.parameterType
+          },
+          {
+            label: 'Parameter key',
+            value: pollDetail?.parameterKey
+          },
+          {
+            label: 'Parameter value',
+            value: String(pollDetail?.parameterValue)
+          },
+        ];
+      case 'QRootNodePanel':
+        let rootNodeArr = [];
+        if (pollDetail.candidate && pollDetail.candidate !== EMPTY_ADDR) {
+          rootNodeArr.push({
+            label: 'Proposal to Add Root Node',
+            value: pollDetail.candidate
+          });
+        }
+        if (pollDetail.replaceDest && pollDetail.replaceDest !== EMPTY_ADDR) {
+          rootNodeArr.push({
+            label: 'Proposal to Remove Root Node',
+            value: pollDetail.replaceDest
+          });
+        }
+        return rootNodeArr;
       case 'QExpertProposals':
-        return (
-          <>
-            {pollDetail.kindVoting === 'membership' ?
-              <>
-                {!pollDetail.addressToAdd || pollDetail.addressToAdd === EMPTY_ADDR ? null :
-                  <Text>
-                    addressToAdd: {pollDetail.addressToAdd}
-                  </Text>}
-
-                {!pollDetail.addressToRemove || pollDetail.addressToRemove === EMPTY_ADDR ? null :
-                  <Text>
-                    addressToRemove: {pollDetail.addressToRemove}
-                  </Text>}
-              </>
-              : <>
-                {!pollDetail.parameterType ? null :
-                  <Text>
-                    parameterKey: {pollDetail.parameterType}
-                  </Text>
-                }
-                {!pollDetail.parameterKey ? null :
-                  <Text>
-                    parameterKey: {pollDetail.parameterKey}
-                  </Text>
-                }
-                {!pollDetail.addrValue ? null :
-                  <Text>
-                    addrValue: {pollDetail.addrValue}
-                  </Text>
-                }
-                {!String(pollDetail.boolValue) ? null :
-                  <Text>
-                    boolValue: {String(pollDetail.boolValue)}
-                  </Text>
-                }
-                {!pollDetail.bytes32Value ? null :
-                  <Text>
-                    bytes32Value: {pollDetail.bytes32Value}
-                  </Text>
-                }
-                {!pollDetail.strValue ? null :
-                  <Text>
-                    strValue: {pollDetail.strValue}
-                  </Text>
-                }
-                {!pollDetail.uintValue ? null :
-                  <Text>
-                    uintValue: {pollDetail.uintValue}
-                  </Text>
-                }
-              </>
-            }
-
-
-          </>
-        );
-      default:
-        return null;
+        if (pollDetail.kindVoting === 'membership') {
+          let membershipArr = [];
+          if (pollDetail.addressToAdd && pollDetail.addressToAdd !== EMPTY_ADDR) {
+            membershipArr.push({
+              label: 'Address to Add',
+              value: pollDetail.addressToAdd
+            });
+          }
+          if (pollDetail.addressToRemove && pollDetail.addressToRemove !== EMPTY_ADDR) {
+            membershipArr.push({
+              label: 'Address to Remove',
+              value: pollDetail.addressToRemove
+            });
+          }
+          return membershipArr;
+        } else {
+          return [
+            {
+              label: 'Parameter type',
+              value: pollDetail?.parameterType
+            },
+            {
+              label: 'Parameter key',
+              value: pollDetail?.parameterKey
+            },
+            {
+              label: 'Parameter value',
+              value: String(pollDetail?.parameterValue)
+            },
+          ];
+        }
+      case 'SlashingProposals':
+        return [
+          {
+            label: 'Candidate',
+            value: pollDetail?.candidate
+          },
+          {
+            label: 'Amount to slash',
+            value: pollDetail?.amountToSlash + 'Q'
+          },
+        ];
     }
 
+  }, [pollDetail]);
+
+  const printValues = (label, value, key) => {
+    {
+      return !value || value === 'undefined' ? null :
+        <Text key={key + label.replace(/ /g, '-')
+          .toLowerCase()}>
+          {label}: {value}
+        </Text>;
+    }
   };
+
+  const showContent = useCallback(() => {
+    return showDataArr.map((el, i) => {
+      return printValues(el.label, el.value, i);
+    });
+
+  }, [showDataArr]);
 
   return (
     <div>
       <TitleSmall>Description</TitleSmall>
-      {switchContentDependsOnKind()}
+      {showContent()}
       <TitleSmall>External Reference</TitleSmall>
       <Link href={'//' + pollDetail.remark} target="_blank">{pollDetail.remark}</Link>
     </div>

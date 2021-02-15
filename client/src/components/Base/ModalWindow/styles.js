@@ -13,6 +13,11 @@ export const Body = styled(Modal.Body)`
   padding-right: ${indents["40"]};
   padding-top: 0;
   min-height: 326px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
 `;
 
 export const Footer = styled(Modal.Footer)`

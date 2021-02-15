@@ -21,9 +21,8 @@ export const setDisabledCreatedProposalBtn = (result) => ({
   result
 });
 
-export const createProposal = (drizzle, data) => ({
+export const createProposal = (data) => ({
   type: actionTypes.CREATE_PROPOSAL,
-  drizzle,
   data
 });
 
@@ -43,9 +42,8 @@ export const setStepVoteCounter = (result) => ({
   result
 });
 
-export const voteForProposal = (drizzle, data) => ({
+export const voteForProposal = (data) => ({
   type: actionTypes.VOTE_FOR_PROPOSAL,
-  drizzle,
   data
 });
 export const voteForProposalSuccess = (result) => ({
@@ -53,9 +51,8 @@ export const voteForProposalSuccess = (result) => ({
   result
 });
 
-export const getEndedProposals = (drizzle, activeTab) => ({
+export const getEndedProposals = (activeTab) => ({
   type: actionTypes.GET_ENDED_PROPOSALS,
-  drizzle,
   activeTab
 });
 export const getEndedProposalsSuccess = (result) => ({
@@ -67,9 +64,8 @@ export const getEndedProposalsError = (result) => ({
   result
 });
 
-export const executeProposal = (drizzle, data) => ({
+export const executeProposal = (data) => ({
   type: actionTypes.EXECUTE_PROPOSAL,
-  drizzle,
   data
 });
 export const executeProposalSuccess = (result) => ({
@@ -81,21 +77,18 @@ export const executeProposalError = (result) => ({
   result
 });
 
-export const updateProposal = (drizzle, data) => ({
+export const updateProposal = (data) => ({
   type: actionTypes.UPDATE_PROPOSAL,
-  drizzle,
   data
 });
 
-export const getOneProposal = (drizzle, data) => ({
+export const getOneProposal = (data) => ({
   type: actionTypes.GET_ONE_PROPOSAL,
-  drizzle,
   data
 });
 
-export const getProposalsList = (drizzle, activeTab) => ({
+export const getProposalsList = (activeTab) => ({
   type: actionTypes.GET_PROPOSALS_LIST,
-  drizzle,
   activeTab
 });
 
@@ -109,11 +102,10 @@ export const getProposalsListError = (result) => ({
   result
 });
 
-export const getProposalVote = (contractName, id, drizzle, activeTab, activeProposal) => ({
+export const getProposalVote = (contractName, id, activeTab, activeProposal) => ({
   type: actionTypes.GET_PROPOSAL,
   contractName,
   id,
-  drizzle,
   activeTab,
   activeProposal
 });

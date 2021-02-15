@@ -1,10 +1,9 @@
 import { drizzleRegistry, contracts, web3 } from '../../config/drizzle-config';
 import VotingService from './VotingService';
 import {
-  convertNumVotes,
   getPastEvents,
   getPastProposalsIds,
-  getStatusTransformation, transformToPercentage
+  getStatusTransformation
 } from '../../handler/VotingHandler';
 
 import { fromWei } from 'func/balance';
@@ -12,18 +11,12 @@ import { fromWei } from 'func/balance';
 /*EPDR_MembershipVoting, EPQFI_MembershipVoting*/
 export default class MembershipVoting extends VotingService {
 
-  /**
-   * get proposal data
-   * @param promiseRes
-   * @param id
-   * @param promiseStatus
-   * @return array
-   */
+  //get proposal data
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
     try {
-      console.log("promiseRes MembershipVoting", promiseRes);
+      console.log('promiseRes MembershipVoting', promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.base.remark;
       objRes.addressToAdd = promiseRes.proposalDetails.addressToAdd;
@@ -48,14 +41,7 @@ export default class MembershipVoting extends VotingService {
         ? 'DeFi Risk Expert membership'
         : 'Fees & Incentives Experts membership';
       objRes.kindVoting = 'membership';
-      // objStats = await this.getProposalStatsData(id);
-      let proposalStats = await this.getProposalStats(id);
-      objRes.currentMajority = transformToPercentage(proposalStats.currentMajority);
-      objRes.currentQuorum = transformToPercentage(proposalStats.currentQuorum);
-      objRes.currentVetoPercentage = transformToPercentage(proposalStats.currentVetoPercentage);
-      objRes.requiredMajority = transformToPercentage(proposalStats.requiredMajority);
-      objRes.requiredQuorum = transformToPercentage(proposalStats.requiredQuorum);
-      // objRes.vetoThreshold = transformToPercentage(proposalStats.vetoThreshold);
+      objStats = await this.getProposalStatsData(id);
       objRes.contract = this.contractName;
 
       return { ...objRes, ...objStats };
@@ -64,15 +50,12 @@ export default class MembershipVoting extends VotingService {
     }
   }
 
-  /**
-   * get proposals
-   * @return array
-   */
+  //get proposals
   async getProposals() {
     try {
       //TODO: for createRemoveExpertProposal use RemoveProposalCreated event
       const proposalEvents = await this.getProposalsEvent();
-      const proposalRemoveEvents = await getPastEvents(web3, this.contract, 'RemoveProposalCreated');
+      const proposalRemoveEvents = await getPastEvents(this.contract, 'RemoveProposalCreated');
       const proposalIds = getPastProposalsIds([...proposalEvents, ...proposalRemoveEvents]);
       let proposals = [];
       if (proposalIds) {
@@ -95,15 +78,12 @@ export default class MembershipVoting extends VotingService {
     }
   }
 
-  /**
-   * get proposals
-   * @return array
-   */
+  //get ended proposals
   async getEndedProposals() {
     try {
       //TODO: for createRemoveExpertProposal use RemoveProposalCreated event
       const proposalEvents = await this.getProposalsEvent();
-      const proposalRemoveEvents = await getPastEvents(web3, this.contract, 'RemoveProposalCreated');
+      const proposalRemoveEvents = await getPastEvents(this.contract, 'RemoveProposalCreated');
       const proposalIds = getPastProposalsIds([...proposalEvents, ...proposalRemoveEvents]);
       let proposals = [];
       if (proposalIds) {
@@ -126,12 +106,7 @@ export default class MembershipVoting extends VotingService {
     }
   }
 
-  /**
-   * create proposal
-   * @param data
-   * @param userAddress
-   * @return string
-   */
+  //create proposal
   async createProposal(data, userAddress) {
     let result = null;
     const link = data['external-link'];
@@ -153,14 +128,11 @@ export default class MembershipVoting extends VotingService {
     return result;
   }
 
-  /**
-   * get number of active and ended proposals
-   * @return array
-   */
+  //get number of active and ended proposals
   async getProposalsCount() {
     try {
       const proposalEvents = await this.getProposalsEvent();
-      const proposalRemoveEvents = await getPastEvents(web3, this.contract, 'RemoveProposalCreated');
+      const proposalRemoveEvents = await getPastEvents(this.contract, 'RemoveProposalCreated');
       const proposalIds = getPastProposalsIds([...proposalEvents, ...proposalRemoveEvents]);
 
       let proposalsActive = 0;

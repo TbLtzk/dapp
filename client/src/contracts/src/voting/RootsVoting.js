@@ -10,6 +10,12 @@ const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
 
 export default class RootsVoting extends VotingService {
 
+  constructor() {
+    super();
+    this.contract = contracts['RootsVoting'];
+    this.contractName = 'RootsVoting';
+  }
+
   /**
    * check proposal type depends on candidate and replaceDest addresses
    * @param candidateAddress
@@ -99,9 +105,8 @@ export default class RootsVoting extends VotingService {
   async createProposal(data, userAddress) {
     console.log('DATA', data);
     let result = null;
-    // const hash = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
-    const hash = data.hash;
-    console.log("hash", hash);
+    // let hash = data.hash;
+    let hash = '';
     const link = data['external-link'];
     let addressToRemove = data.address;
     // const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';

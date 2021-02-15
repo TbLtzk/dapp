@@ -6,13 +6,14 @@ import { InputWrapper } from 'components/Base/Form/FormInput/styles';
 
 const FormInput = forwardRef((props, ref) => {
   // eslint-disable-next-line react/prop-types
-  const { name, type, placeholder, valid, align, onChange, value, disabled } = props;
+  const { name, type, placeholder, valid, align, onChange, value, disabled, min } = props;
   return (
     <InputWrapper
       controlId="formBasicEmail"
       align={align}
     >
       <Form.Control
+        min={min}
         type={type}
         step="0.000000000000000001"
         placeholder={placeholder}

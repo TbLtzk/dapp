@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback } from 'react';
 
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setVoteProposalObj,
@@ -11,9 +10,7 @@ import {
 import {
   stepVoteCounterModal,
   formVoteObject,
-  disabledContinueProposalBtn
 } from 'store/selectors/voting/proposals';
-import { votingLockingEnd } from 'store/selectors/q-piggy-bank';
 
 import { useForm } from 'react-hook-form';
 
@@ -23,27 +20,15 @@ import CreateStep2 from './CreateStep2';
 import CreateStep3 from './CreateStep3';
 
 import { Title, Descr } from 'components/Custom/ModalActions/styles';
-import { userAddressMetamask } from 'store/selectors/user-inf';
-import { getLockedAssets } from 'store/actions/action-creaters/q-piggy-bank';
-
-const { useDrizzle } = drizzleReactHooks;
 
 function ModalVote(props) {
   const { modalShow, onHide, activeTab, proposalId, proposalContract, vetoEndTime } = props;
-  const { drizzle } = useDrizzle();
   const { register, errors, handleSubmit } = useForm();
   const dispatch = useDispatch();
 
   const formData = useSelector(formVoteObject);
   const stepCounter = useSelector(stepVoteCounterModal);
   const stepLimit = 3;
-  const disabledContinueBtn = useSelector(disabledContinueProposalBtn);
-  const userLockingEnd = useSelector(votingLockingEnd);
-  const userAddressL = useSelector(userAddressMetamask);
-
-  useEffect(() => {
-    dispatch(getLockedAssets(userAddressL));
-  }, [dispatch, userAddressL]);
 
   const switchProposalContentDependsOnType = useCallback(() => {
     switch (stepCounter) {
@@ -83,21 +68,12 @@ function ModalVote(props) {
   }, [activeTab, stepCounter, register, errors, stepLimit, dispatch]);
 
   const onNext = (data) => {
-    // if (formData?.first === 'basic-vote-on-proposal') {
-    //   if (proposalContract === 'ConstitutionVoting' || proposalContract === 'GeneralUpdateVoting'
-    //     || proposalContract === 'RootsVoting' || proposalContract === 'EPDR_MembershipVoting'
-    //     || proposalContract === 'EPQFI_MembershipVoting') {
-    //     if (vetoEndTime >= userLockingEnd) {
-    //       dispatch(setDisabledCreatedProposalBtn(true));
-    //     }
-    //   }
-    // }
     dispatch(setVoteProposalObj({ ...formData, ...data }));
     if (stepCounter < stepLimit) {
       dispatch(setStepVoteCounter(stepCounter + 1));
     } else {
       if (formData['constitution-check'] !== 'no') {
-        dispatch(voteForProposal(drizzle, {
+        dispatch(voteForProposal({
           ...formData, ...data,
           idProposal: proposalId,
           contract: proposalContract

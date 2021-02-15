@@ -20,7 +20,7 @@ export default class AuctionService {
    * @return array
    */
   async getAuctionsEvent() {
-    return await getPastEvents(drizzleRegistry, this.contract, 'AuctionStarted');
+    return await getPastEvents(this.contract, 'AuctionStarted');
   }
 
   /**

@@ -30,12 +30,12 @@ function ListCardBody(props) {
     <BlockBody>
       <Container fluid>
         <Row>
-          <Col md={10}>
+          <Col md={9}>
             <Row>
               {children}
             </Row>
           </Col>
-          <WrapToggleBlock md={2}>
+          <WrapToggleBlock md={3}>
 
             <OverlayTrigger
               key="top"

@@ -9,11 +9,8 @@ import ParametersVotingService from '../src/voting/ParametersVoting';
 import { chooseExpertContractDependsOnType } from './QExpertVotingHandler';
 import { web3 } from '../config/drizzle-config';
 
-export const getPastEvents = async (drizzle, contract, event) => {
-  const web3 = drizzle.web3;
-  // const contract = drizzle.contracts[contractName];
+export const getPastEvents = async (contract, event) => {
   const contractWeb3 = contract;
-  // const contractWeb3 = new web3.eth.Contract(contract.abi, contract.address);
   const eventOptions = {
     // topics: [],
     fromBlock: 0,
@@ -94,7 +91,6 @@ export function toFixed(x) {
   return x;
 }
 
-
 export const bnSlashing = (number) => {
   return new web3.utils.BN(number);
   // return new BigNumber(number);
@@ -103,7 +99,7 @@ export const bnSlashing = (number) => {
 export const getPercentageFormat = (number) => {
   console.log('number', number);
   // console.log('number', 10 ** 27);
-  return bnSlashing(String(( (10 ** 27) * Number(number) ) / 100));
+  return bnSlashing(String(((10 ** 27) * Number(number)) / 100));
   // return bn('1e+25') * bn(number);
   // .multipliedBy(Number(number))
   // .dividedBy(100);
@@ -131,36 +127,35 @@ export const calculatePercentage = (part, amount) => {
 
 };
 
-export function creationSlashingContractObj(drizzle, contractName) {
+export function creationSlashingContractObj(contractName) {
   return new SlashingVotingService(contractName);
-  // return new SlashingVotingService(drizzle, contractName);
 }
 
-export function creationSlashingContractsObjArray(drizzle) {
+export function creationSlashingContractsObjArray() {
   const validatorsSlashingVoting = new SlashingVotingService('ValidatorsSlashingVoting');
   const rootNodesSlashingVoting = new SlashingVotingService('RootNodesSlashingVoting');
   return [validatorsSlashingVoting, rootNodesSlashingVoting];
 }
 
-export function creationRootContractObj(drizzle) {
-  return new RootsVotingService('RootsVoting');
+export function creationRootContractObj() {
+  return new RootsVotingService();
 }
 
-export function creationQContractObj(drizzle, contractName) {
+export function creationQContractObj(contractName) {
   switch (contractName) {
     case 'ConstitutionVoting':
-      return new ConstitutionVotingService(contractName);
+      return new ConstitutionVotingService();
     case 'EmergencyUpdateVoting':
-      return new EmergencyUpdateVotingService(contractName);
+      return new EmergencyUpdateVotingService();
     case 'GeneralUpdateVoting':
-      return new GeneralUpdateVotingService(contractName);
+      return new GeneralUpdateVotingService();
   }
 }
 
-export function creationQContractsObjArray(drizzle) {
-  const constitutionVoting = new ConstitutionVotingService('ConstitutionVoting');
-  const emergencyUpdateVoting = new EmergencyUpdateVotingService('EmergencyUpdateVoting');
-  const generalUpdateVoting = new GeneralUpdateVotingService('GeneralUpdateVoting');
+export function creationQContractsObjArray() {
+  const constitutionVoting = new ConstitutionVotingService();
+  const emergencyUpdateVoting = new EmergencyUpdateVotingService();
+  const generalUpdateVoting = new GeneralUpdateVotingService();
   return [constitutionVoting, emergencyUpdateVoting, generalUpdateVoting];
 }
 
@@ -187,7 +182,7 @@ export const arrContractsExpert = [
   }
 ];
 
-export function creationExpertContractObj(drizzle, contractName) {
+export function creationExpertContractObj(contractName) {
   switch (contractName) {
     case 'EPQFI_MembershipVoting':
     case 'EPDR_MembershipVoting':
@@ -198,10 +193,10 @@ export function creationExpertContractObj(drizzle, contractName) {
   }
 }
 
-export function creationExpertContractsObjArray(drizzle) {
+export function creationExpertContractsObjArray() {
   let contracts = [];
   for (let contract of arrContractsExpert) {
-    contracts.push(chooseExpertContractDependsOnType(drizzle, contract.typeContract, contract.type));
+    contracts.push(chooseExpertContractDependsOnType(contract.typeContract, contract.type));
   }
   return contracts;
 }

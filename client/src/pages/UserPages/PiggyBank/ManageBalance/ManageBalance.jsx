@@ -1,13 +1,15 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+
 import { useDispatch, useSelector } from 'react-redux';
+import { setDepositCall, setWithdrawCall } from 'store/actions/action-creaters/q-piggy-bank';
+import { userAddressMetamask } from 'store/selectors/user-inf';
+
 import CustomBlock from 'components/Base/CustomBlock';
 import FormInput from 'components/Base/Form/FormInput';
 import Button from 'components/Base/Buttons/Button';
-import { setClaimReward, setDepositCall, setWithdrawCall } from 'store/actions/action-creaters/q-piggy-bank';
-import { userAddressMetamask } from 'store/selectors/user-inf';
 
+import { Row, Col } from 'react-bootstrap';
 import { Headline, TextWrapGrey } from '../styles';
 
 export default function ManageBalance() {
@@ -16,10 +18,6 @@ export default function ManageBalance() {
 
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
-
-  function claimable() {
-    dispatch(setClaimReward(address));
-  }
 
   function setDepositL(formData) {
     dispatch(setDepositCall(address, formData.amountQ));
@@ -33,31 +31,19 @@ export default function ManageBalance() {
     <CustomBlock style={{ height: '100%' }}>
       <Headline>Manage balance</Headline>
       <Row>
-        <Col xs={8}>
-          <TextWrapGrey>
-            <span>Claimable Saving Reward</span>
-            <span>0Q</span>
-          </TextWrapGrey>
-        </Col>
-        <Col>
-          <Button
-            type="outline"
-            title="Claim"
-            width="100%"
-            handleButton={() => claimable()}
-          />
-        </Col>
-      </Row>
-      <Row>
         <Col xs={12}>
           <TextWrapGrey>Transfer into PiggyBank</TextWrapGrey>
         </Col>
         <Col xs={8}>
           <FormInput
+            min={0}
             name="amountQ"
             type="number"
             placeholder="0.0 Q"
-            ref={reg2({ required: 'Field is required!', pattern: /[0-9]/i })}
+            ref={reg2({
+              required: 'Field is required!',
+              pattern: /[0-9]/i
+            })}
             valid={err2.amountQ?.message}
           />
         </Col>
@@ -76,6 +62,7 @@ export default function ManageBalance() {
         </Col>
         <Col xs={8}>
           <FormInput
+            min={0}
             name="amountQ"
             type="number"
             placeholder="0.0 Q"

@@ -68,9 +68,9 @@ export default function SavingBlock(props) {
     handler.withdraw(formData.field, setSavingBalance, setAvToDeposit, setLatestClaim);
   };
 
-  const mint = (formData) => {
-    handler.mint(formData.field, setAvToDeposit);
-  };
+  // const mint = (formData) => {
+  //   handler.mint(formData.field, setAvToDeposit);
+  // };
 
   const claim = () => {
     handler.claim(setClaimReward);
@@ -147,14 +147,14 @@ export default function SavingBlock(props) {
             inpRules={{ required: true }}
           />
         </div>
-        <ButtonSlide
-          btnTxt="Mint (Test only)"
-          btnShortTxt="Mint"
-          onclick={mint}
-          inpType="text"
-          inpPlaceholder="Amount to mint"
-          inpRules={{ required: true }}
-        />
+        {/*<ButtonSlide*/}
+        {/*  btnTxt="Mint (Test only)"*/}
+        {/*  btnShortTxt="Mint"*/}
+        {/*  onclick={mint}*/}
+        {/*  inpType="text"*/}
+        {/*  inpPlaceholder="Amount to mint"*/}
+        {/*  inpRules={{ required: true }}*/}
+        {/*/>*/}
       </CardDetail>
     </Col>
   );

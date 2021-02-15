@@ -39,26 +39,16 @@ export default class QPiggyBank {
       .send({ from: address });
   }
 
-  async lock(address, amount, expiration) {
+  async lock(address, amount) {
     const amountL = toWei(amount);
+    console.log(amount);
     return await this.methods.lock(amountL)
       .send({ from: address });
-    // return await this.methods.lock(amountL, expiration).send({ from: address });
   }
 
   async unlock(address, amount) {
     const amountL = toWei(amount);
     return await this.methods.unlock(amountL)
-      .send({ from: address });
-  }
-
-  async extendExpiration(address, expiration) {
-    return await this.methods.extendExpiration(expiration)
-      .send({ from: address });
-  }
-
-  async claimQHolderReward(address, abandonClaims = true) {
-    return await this.methods.claimQHolderReward(abandonClaims)
       .send({ from: address });
   }
 

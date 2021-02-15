@@ -72,7 +72,7 @@ const contractsToAddressesCustom = {
   GovernedEpdrQbtcQusdOracle: '0x62BD936432C97cD2A2908Bf1973e3ec3a68F81B5', //governed.EPDR.QBTC_QUSD_oracle" //devnet
   GovernedEpdrQethAddress: '0x62BD936432C97cD2A2908Bf1973e3ec3a68F81B5',
   // GovernedEpdrQbtcAddress: '0x6d5B4AC93A6afc3725FA16345BD9730D95E2176A', //QBTC address wallet //governed.EPDR.QBTC_address //testnet
-  GovernedEpdrQbtcAddress: '0x0000000000000000000000000000000000000001', //QBTC address wallet //governed.EPDR.QBTC_address   //devnet
+  GovernedEpdrQbtcAddress: '0x000d90A52c884b6456Fe645F7F88FA5c20F975fC', //QBTC address wallet //governed.EPDR.QBTC_address   //devnet
   //GovernedEpdrQbtcAddress: 0x10A2298bc68e41700520F1dCb9E9E2B14E15d2E5
 };
 

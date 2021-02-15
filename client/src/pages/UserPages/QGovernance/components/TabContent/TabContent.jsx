@@ -22,7 +22,7 @@ function TabContent(props) {
   }, [activeTab]);
 
   useEffect(() => {
-    dispatch(getProposalsList(drizzle, activeTab));
+    dispatch(getProposalsList(activeTab));
   }, [activeTab]);
 
   const loading = useSelector(loadingProposals);

@@ -1,7 +1,7 @@
 import MembershipVotingService from '../src/voting/MembershipVoting';
 import ParametersVotingService from '../src/voting/ParametersVoting';
 
-export const chooseExpertContractDependsOnType = (drizzle, typeContract, type) => {
+export const chooseExpertContractDependsOnType = (typeContract, type) => {
   let contract = null;
   let contractName = null;
   if (type === 'q-fees-&-incentives-membership-panel') {
@@ -24,7 +24,7 @@ export const chooseExpertContractDependsOnType = (drizzle, typeContract, type) =
 
   return contract;
 };
-export const chooseExpertContractNameDependsOnType = (drizzle, typeContract, type) => {
+export const chooseExpertContractNameDependsOnType = (typeContract, type) => {
   let contractName = null;
   if (type === 'q-fees-&-incentives-membership-panel') {
     if (typeContract === 'member') {

@@ -3,7 +3,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { getEndedProposals } from 'store/actions/action-creaters/voting/proposals';
 import { endedProposals, loadingEndedProposals, errorEnded } from 'store/selectors/voting/proposals';
 import { useDispatch, useSelector } from 'react-redux';
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 
 import { useLocation } from 'react-router-dom';
 
@@ -14,11 +13,8 @@ import { Row, Col } from 'react-bootstrap';
 import { Title } from 'components/Custom/PageLists/styles';
 import PageWrap from '../../../../components/Base/PageWrap';
 
-const { useDrizzle } = drizzleReactHooks;
-
 function EndedProposals() {
   const location = useLocation();
-  const { drizzle } = useDrizzle();
   const dispatch = useDispatch();
 
   const endedArr = useSelector(endedProposals);
@@ -26,7 +22,7 @@ function EndedProposals() {
   const error = useSelector(errorEnded);
 
   useEffect(() => {
-    dispatch(getEndedProposals(drizzle, location?.state?.activeTab));
+    dispatch(getEndedProposals(location?.state?.activeTab));
   }, [dispatch]);
 
   const proposalKind = useMemo(() => {

@@ -117,7 +117,7 @@ function* setWithdrawGenerator({ address, amountQ }) {
   }
 }
 
-function* setLockAmountGenerator({ address, amountQ, expiration }) {
+function* setLockAmountGenerator({ address, amountQ }) {
   try {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -125,7 +125,7 @@ function* setLockAmountGenerator({ address, amountQ, expiration }) {
     });
 
     const contract = getContractInstance();
-    const data = yield contract.lock(address, amountQ, expiration);
+    const data = yield contract.lock(address, amountQ);
 
     if (data.status === true) {
       yield put(getUserBalance(address));
@@ -167,54 +167,6 @@ function* setUnlockAmountGenerator({ address, amountQ }) {
   }
 }
 
-function* setNewExpirationGenerator({ address, expiration }) {
-  try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    });
-
-    const contract = getContractInstance();
-    const data = yield contract.extendExpiration(address, expiration);
-
-    if (data.status === true) {
-      yield put(getLockedAssets(address));
-    }
-  } catch (err) {
-    console.error('QPB.Error', err);
-    yield put(setError(err.message));
-  } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    });
-  }
-}
-
-function* setClaimRewardGenerator({ address }) {
-  try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    });
-
-    const contract = getContractInstance();
-    const data = yield contract.claimQHolderReward(address);
-
-    if (data.status === true) {
-      yield put(getUserBalance(address));
-    }
-  } catch (err) {
-    console.error('QPB.Error', err);
-    yield put(setError(err.message));
-  } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    });
-  }
-}
-
 export default [
   takeEvery(actionTypes.GET_PB_USER_BALANCE, getUserBalanceGenerator),
   takeEvery(actionTypes.GET_PB_LOCKED_ASSETS, getLockedAssetsGenerator),
@@ -223,6 +175,4 @@ export default [
   takeEvery(actionTypes.SET_PB_WITHDRAW_CALL, setWithdrawGenerator),
   takeEvery(actionTypes.SET_PB_LOCK_AMOUNT, setLockAmountGenerator),
   takeEvery(actionTypes.SET_PB_UNLOCK_AMOUNT, setUnlockAmountGenerator),
-  takeEvery(actionTypes.SET_PB_NEW_EXPIRATION, setNewExpirationGenerator),
-  takeEvery(actionTypes.SET_PB_CLAIM_REWARD, setClaimRewardGenerator),
 ];

@@ -15,12 +15,9 @@ export const setLockedAssets = (votingWeight, votingLockingEnd) => ({
 // Action without write to Store
 export const setDepositCall = (address, amountQ) => ({ type: actionTypes.SET_PB_DEPOSIT_CALL, address, amountQ });
 export const setWithdrawCall = (address, amountQ) => ({ type: actionTypes.SET_PB_WITHDRAW_CALL, address, amountQ });
-export const setLockAmount = (address, amountQ, expiration) => ({
+export const setLockAmount = (address, amountQ) => ({
   type: actionTypes.SET_PB_LOCK_AMOUNT,
   address,
   amountQ,
-  expiration,
 });
 export const setUnlockAmount = (address, amountQ) => ({ type: actionTypes.SET_PB_UNLOCK_AMOUNT, address, amountQ });
-export const setNewExpiration = (address, expiration) => ({ type: actionTypes.SET_PB_NEW_EXPIRATION, address, expiration });
-export const setClaimReward = (address) => ({ type: actionTypes.SET_PB_CLAIM_REWARD, address });

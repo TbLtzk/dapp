@@ -9,28 +9,15 @@ import {
 /*EPQFI_ParametersVoting, EPDR_ParametersVoting*/
 export default class ParametersVoting extends VotingService {
 
-  /**
-   * get proposal data
-   * @param promiseRes
-   * @param id
-   * @param promiseStatus
-   * @return array
-   */
+  // get proposal data
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
+    let objParameters = {};
     try {
-      console.log("ParametersVoting", promiseRes);
+      console.log('ParametersVoting', promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.base.remark;
-      // objRes.parameterKey = promiseRes.parameterKey;
-      // objRes.parameterType = getParameterTypeTransformation(promiseRes.parameterType);
-      // objRes.addrValue = promiseRes.parameterValue.addrValue;
-      // objRes.boolValue = promiseRes.parameterValue.boolValue;
-      // objRes.bytes32Value = promiseRes.parameterValue.bytes32Value;
-      // objRes.strValue = promiseRes.parameterValue.strValue;
-      // objRes.uintValue = promiseRes.parameterValue.uintValue;
-
       objRes.vetosCount = promiseRes.base.counters.vetosCount;
       // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
       // objRes.votesFor = promiseRes.base.counters.weightFor;
@@ -39,7 +26,7 @@ export default class ParametersVoting extends VotingService {
       objRes.votesAgainst = weightAgainst;
       //number of voting people for
       const weightFor = promiseRes.base.counters.weightFor;
-      objRes.votesFor =  weightFor;
+      objRes.votesFor = weightFor;
       //the ending is given by: vetoEndTime.
       objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
       //the time until when users can vote
@@ -55,19 +42,17 @@ export default class ParametersVoting extends VotingService {
       objRes.kindVoting = 'parameters';
       objStats = await this.getProposalStatsData(id);
       objRes.contract = this.contractName;
-
-      return { ...objRes, ...objStats };
+      const parametersSize = promiseRes.parametersSize;
+      if (parametersSize >= '1') {
+        objParameters = await this.getProposalParametersData(id);
+      }
+      return { ...objRes, ...objStats, ...objParameters };
     } catch (e) {
       console.log('e', e);
     }
   }
 
-  /**
-   * create proposal
-   * @param data
-   * @param userAddress
-   * @return string
-   */
+  //create proposal
   async createProposal(data, userAddress) {
     try {
       let result = null;

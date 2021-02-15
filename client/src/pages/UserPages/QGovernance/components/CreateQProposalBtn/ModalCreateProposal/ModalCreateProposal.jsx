@@ -1,6 +1,5 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setCreateProposalObj,
@@ -26,11 +25,8 @@ import CreateStep4 from './CreateStep4';
 import { arrExpert, arrQProposal, arrQRootNode, arrSlashing } from './constants';
 import { Title, Descr } from 'components/Custom/ModalActions/styles';
 
-const { useDrizzle } = drizzleReactHooks;
-
 function ModalCreateProposal(props) {
   const { modalShow, onHide, activeTab, activeTabTitle } = props;
-  const { drizzle } = useDrizzle();
   const { register, errors, handleSubmit } = useForm();
   const dispatch = useDispatch();
 
@@ -107,7 +103,7 @@ function ModalCreateProposal(props) {
     if (stepCounter < stepLimit) {
       dispatch(setStepCounter(stepCounter + 1));
     } else {
-      dispatch(createProposal(drizzle, { ...formData, ...data }));
+      dispatch(createProposal({ ...formData, ...data }));
       onHide();
     }
   };

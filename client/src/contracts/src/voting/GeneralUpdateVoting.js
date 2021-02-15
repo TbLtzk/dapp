@@ -8,6 +8,12 @@ import { fromWei } from 'func/balance';
 
 export default class GeneralUpdateVoting extends VotingService {
 
+  constructor() {
+    super();
+    this.contract = contracts["GeneralUpdateVoting"];
+    this.contractName = "GeneralUpdateVoting";
+  }
+
   /**
    * get proposal data
    * @param promiseRes

@@ -1,4 +1,4 @@
-import { drizzleRegistry, contracts } from '../../config/drizzle-config';
+import { contracts } from '../../config/drizzle-config';
 import {
   getStatusTransformation,
 } from '../../handler/VotingHandler';
@@ -6,17 +6,18 @@ import VotingService from './VotingService';
 
 export default class EmergencyUpdateVoting extends VotingService {
 
-  /**
-   * get proposal data
-   * @param promiseRes
-   * @param id
-   * @param promiseStatus
-   * @return array
-   */
+  constructor() {
+    super();
+    this.contract = contracts['EmergencyUpdateVoting'];
+    this.contractName = 'EmergencyUpdateVoting';
+  }
+
+  //get proposal data
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
     try {
+      console.log('promiseRes', promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.remark;
       // objRes.votesAgainst = promiseRes.counters.weightAgainst;
@@ -26,34 +27,29 @@ export default class EmergencyUpdateVoting extends VotingService {
       objRes.votesAgainst = weightAgainst;
       //number of voting people for
       const weightFor = promiseRes.counters.weightFor;
-      objRes.votesFor =  weightFor;
+      objRes.votesFor = weightFor;
 
       objRes.vetosCount = promiseRes.counters.vetosCount;
       objRes.votingEndTime = promiseRes.params.votingEndTime;
       objRes.vetoEndTime = promiseRes.params.vetoEndTime;
       objRes.proposalExecutionP = promiseRes.params.proposalExecutionP;
       objRes.status = getStatusTransformation(promiseStatus);
-      objRes.title = "Emergency update proposal";
+      objRes.title = 'Emergency update proposal';
       objRes.contract = this.contractName;
       objStats = await this.getProposalStatsData(id);
 
       return { ...objRes, ...objStats };
     } catch (e) {
-      console.log("e", e);
+      console.log('e', e);
     }
   }
 
-  /**
-   * create proposal
-   * @param data
-   * @param userAddress
-   * @return string
-   */
+  //create proposal
   async createProposal(data, userAddress) {
-    const link = data["external-link"];
-    const result = await this.contract.methods.createProposal(link).send(
-        {from: userAddress});
+    const link = data['external-link'];
+    const result = await this.contract.methods.createProposal(link)
+      .send(
+        { from: userAddress });
     return result;
-
   }
 }

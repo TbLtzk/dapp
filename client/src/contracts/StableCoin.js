@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { contracts, web3 } from './config/drizzle-config';
 import { contractsToAddresses } from './mapping/contract-to-address';
+import { fromWei, toWei } from 'func/balance';
 
 export class StableCoin {
   constructor() {
@@ -30,18 +31,18 @@ export class StableCoin {
   }
 
   async allowance(owner, spender) {
-    return web3.utils.fromWei(await this.methods.allowance(owner, spender)
+    return fromWei(await this.methods.allowance(owner, spender)
       .call());
   }
 
   async totalSupply() {
     // return new web3.utils.BN(web3.utils.fromWei(await this.methods.totalSupply()
-    return (web3.utils.fromWei(await this.methods.totalSupply()
-      .call()));
+    return fromWei(await this.methods.totalSupply()
+      .call());
   }
 
   async mint(address, recepient, amount) {
-    return await this.methods.mint(recepient, new web3.utils.BN(web3.utils.toWei(amount)))
+    return await this.methods.mint(recepient, toWei(amount))
       .send({ from: address });
   }
 }

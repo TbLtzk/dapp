@@ -9,7 +9,6 @@ import { CardBlock, LoadingW } from './styles';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 import {
   setVoteProposalObj,
   setStepVoteCounter,
@@ -19,11 +18,8 @@ import {
 import ModalVote from 'pages/UserPages/QGovernance/components/CreateQProposalBtn/ModalVote';
 import { remainDate } from 'func/convertDate';
 
-const { useDrizzle, useDrizzleState } = drizzleReactHooks;
-
 function ProposalsList(props) {
   const { proposals, proposalsKind, loading, errorMessage, activeTab } = props;
-  const { drizzle } = useDrizzle();
   const dispatch = useDispatch();
   const [modalShow, setModalShow] = useState(false);
   const [proposalId, setProposalId] = useState(null);
@@ -39,13 +35,13 @@ function ProposalsList(props) {
   };
 
   const onProposalExecute = (id, contract) => {
-    dispatch(executeProposal(drizzle, {
+    dispatch(executeProposal( {
       idProposal: id,
       contract
     }));
   };
   const onProposalUpdate = (id, contract) => {
-    dispatch(updateProposal(drizzle, {
+    dispatch(updateProposal({
       idProposal: id,
       contract
     }));

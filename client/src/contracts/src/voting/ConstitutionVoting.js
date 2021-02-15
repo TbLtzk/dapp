@@ -1,4 +1,4 @@
-import { drizzleRegistry } from '../../config/drizzle-config';
+import { contracts, drizzleRegistry } from '../../config/drizzle-config';
 import {
   convertNumVotes,
   getPastEvents,
@@ -13,6 +13,12 @@ import VotingService from './VotingService';
 import { fromWei } from 'func/balance';
 
 export default class ConstitutionVoting extends VotingService {
+  constructor() {
+    super();
+    this.contract = contracts["ConstitutionVoting"];
+    this.contractName = "ConstitutionVoting";
+  }
+
   /**
    * get proposal sting type
    * @param type
@@ -41,34 +47,27 @@ export default class ConstitutionVoting extends VotingService {
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
+    let objParameters = {};
     try {
-      console.log("promiseRes ConstitutionVoting", promiseRes);
+      console.log('promiseRes ConstitutionVoting', promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.base.remark;
       const proposalType = this.getProposalStringType(promiseRes.classification);
       objRes.type = proposalType;
       objRes.newConstitutionHash = promiseRes.newConstitutionHash;
       objRes.currentConstitutionHash = promiseRes.currentConstitutionHash;
+      const parametersSize = promiseRes.parametersSize;
+      if (parametersSize >= '1') {
+        objParameters = await this.getProposalParametersData(id);
+      }
       const weightAgainst = promiseRes.base.counters.weightAgainst;
       objRes.votesAgainst = fromWei(weightAgainst);
       const weightFor = promiseRes.base.counters.weightFor;
       objRes.votesFor = fromWei(weightFor);
       objRes.vetosCount = promiseRes.base.counters.vetosCount;
-
-      // const votesCount = await bn(weightFor)
-      //   .plus(weightAgainst);
-      // objRes.votesCount = votesCount?.c;
       objRes.votingEndTime = promiseRes.base.params.votingEndTime;
       objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
-      // objRes.addrValue = promiseRes.parameterValue.addrValue;
-      // objRes.boolValue = promiseRes.parameterValue.boolValue;
-      // objRes.bytes32Value = promiseRes.parameterValue.bytes32Value;
-      // objRes.strValue = promiseRes.parameterValue.strValue;
-      // objRes.uintValue = promiseRes.parameterValue.uintValue;
-      // objRes.parameterKey = promiseRes.parameterKey;
-      //TODO parameterType
-      // objRes.parameterType = promiseRes.parameterType;
-      // objRes.vetoThreshold = transformToPercentage(promiseRes.base.params.vetoThreshold);
+
       objRes.status = getStatusTransformation(promiseStatus);
       // objRes.vetoesNumber = await this.getVetoesNumber(id);
       // objRes.vetoesPercentage = await this.getVetoesPercentage(id);
@@ -76,7 +75,8 @@ export default class ConstitutionVoting extends VotingService {
       objStats = await this.getProposalStatsData(id);
       // console.log('UserVoted', await this.getProposalVotes(id));
       objRes.contract = this.contractName;
-      return { ...objRes, ...objStats };
+      console.log('objRes', objRes);
+      return { ...objRes, ...objStats, ...objParameters };
     } catch (e) {
       console.log('e', e);
     }
@@ -107,7 +107,7 @@ export default class ConstitutionVoting extends VotingService {
    * @return string
    */
   async createProposal(data, userAddress) {
-    try{
+    try {
       let result = null;
       const classification = this.getProposalNumberType(data?.classification);
       // const hash = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
@@ -145,16 +145,17 @@ export default class ConstitutionVoting extends VotingService {
 
         }
       } else {
-        result = await this.contract.methods.createProposal(link, classification, hash)
+        result = await this.contract.methods.createProposal(link, classification, hash, [])
           .send(
             { from: userAddress });
       }
 
       return result;
-    }catch (e) {
-      console.log("e", e);
+    } catch (e) {
+      console.log('e', e);
     }
   }
+
   /**
    * get constitution hash
    * @return string
@@ -162,7 +163,7 @@ export default class ConstitutionVoting extends VotingService {
   async getConstitutionHash() {
     const result = await this.contract.methods.constitutionHash()
       .call();
-    console.log("getConstitutionHash", result);
+    console.log('getConstitutionHash', result);
     return result;
   }
 

@@ -27,7 +27,7 @@ function OneProposalPage(props) {
   useEffect(() => {
     if (match.params?.id && match.params?.contract && !isNaN((Number(match.params?.id)))) {
       setEmpty(false);
-      dispatch(getOneProposal(drizzle, {
+      dispatch(getOneProposal( {
         id: match.params?.id,
         contract: match.params?.contract
       }));

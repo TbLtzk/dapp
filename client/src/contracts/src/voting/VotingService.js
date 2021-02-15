@@ -10,75 +10,36 @@ export default class VotingService {
   constructor(contractName) {
     this.contract = contracts[contractName];
     this.contractName = contractName;
-    // console.log("this.contract", this.contract);
-    // console.log("contractName", contractName);
-    // console.log("contracts", contracts);
   }
 
-  /**
-   * get proposal event
-   * @return array
-   */
+  //get proposal event
   async getProposalsEvent() {
-    try {
-      return await getPastEvents(drizzleRegistry, this.contract, 'ProposalCreated');
-    } catch (e) {
-      console.log(e);
-    }
+    return await getPastEvents(this.contract, 'ProposalCreated');
   }
 
-  /**
-   * get proposal
-   * @param id
-   * @return array
-   */
+  //get proposal
   async getProposal(id) {
-    try {
-      const result = await this.contract.methods.proposals(id)
-        .call();
-      return result;
-    } catch (e) {
-      console.log(e);
-    }
+    const result = await this.contract.methods.proposals(id)
+      .call();
+    return result;
   }
 
-  /**
-   * get proposal status
-   * @param id
-   * @return string
-   */
+  //get proposal status
   async getProposalStatus(id) {
-    try {
-      const result = await this.contract.methods.getStatus(id)
-        .call();
-      // console.log("getStatus", result);
-      return result;
-    } catch (e) {
-      console.log(e);
-    }
+    const result = await this.contract.methods.getStatus(id)
+      .call();
+    return result;
   }
 
-  /**
-   * proposal stats
-   * @param id
-   * @return array
-   */
+  //proposal stats
   async getProposalStats(id) {
-    try {
-      const result = await this.contract.methods.getProposalStats(id)
-        .call();
-      // console.log("getProposalStats", result);
-      return result;
-    } catch (e) {
-      console.log(e);
-    }
+    const result = await this.contract.methods.getProposalStats(id)
+      .call();
+    // console.log("getProposalStats", result);
+    return result;
   }
 
-  /**
-   * get vetoes number
-   * @param id
-   * @return array
-   */
+  //get vetoes number
   async getVetoesNumber(id) {
     try {
       const result = await this.contract.methods.getVetosNumber(id)
@@ -90,11 +51,7 @@ export default class VotingService {
     }
   }
 
-  /**
-   * get vetoes percentage
-   * @param id
-   * @return array
-   */
+  //get vetoes percentage
   async getVetoesPercentage(id) {
     try {
       const result = await this.contract.methods.getVetosPercentage(id)
@@ -106,61 +63,24 @@ export default class VotingService {
     }
   }
 
-  /**
-   * vote against proposal
-   * @param id
-   * @param userAddress
-   * @return array
-   */
+  //vote against proposal
   async voteAgainst(id, userAddress) {
-    try {
-      let result = null;
-      // if (this.contractName === 'RootNodesSlashingVoting' || this.contractName === 'ValidatorsSlashingVoting'
-      //   || this.contractName === 'EPDR_ParametersVoting' || this.contractName === 'EPQFI_ParametersVoting'
-      //   || this.contractName === 'EmergencyUpdateVoting') {
-        result = await this.contract.methods.voteAgainst(id)
-          .send(
-            { from: userAddress });
-      // } else {
-      //   result = await this.contract.methods.voteAgainst(id, true)
-      //     .send(
-      //       { from: userAddress });
-      // }
-      return result;
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  /**
-   * vote for proposal
-   * @param id
-   * @param userAddress
-   * @return array
-   */
-  async voteFor(id, userAddress) {
-    let result = null;
-    // if (this.contractName === 'RootNodesSlashingVoting' || this.contractName === 'ValidatorsSlashingVoting'
-    //   || this.contractName === 'EPDR_ParametersVoting' || this.contractName === 'EPQFI_ParametersVoting'
-    //   || this.contractName === 'EmergencyUpdateVoting') {
-      result = await this.contract.methods.voteFor(id)
-        .send(
-          { from: userAddress });
-    // } else {
-    //   result = await this.contract.methods.voteFor(id, true)
-    //     .send(
-    //       { from: userAddress });
-    // }
+    const result = await this.contract.methods.voteAgainst(id)
+      .send(
+        { from: userAddress });
 
     return result;
   }
 
-  /**
-   * veto for proposal
-   * @param id
-   * @param userAddress
-   * @return array
-   */
+  //vote for proposal
+  async voteFor(id, userAddress) {
+    const result = await this.contract.methods.voteFor(id)
+      .send(
+        { from: userAddress });
+    return result;
+  }
+
+  // veto for proposal
   async veto(id, userAddress) {
     const result = await this.contract.methods.veto(id)
       .send(
@@ -168,12 +88,7 @@ export default class VotingService {
     return result;
   }
 
-  /**
-   * applies changes for specified proposal after voting
-   * @param id
-   * @param userAddress
-   * @return array
-   */
+  //applies changes for specified proposal after voting
   async execute(id, userAddress) {
     // 4 === passed status
     let promiseStatus = await this.getProposalStatus(id);
@@ -186,11 +101,7 @@ export default class VotingService {
     return result;
   }
 
-  /**
-   * get one proposal
-   * @param id
-   * @return array
-   */
+  //get one proposal
   async getOneProposal(id) {
     try {
       if (id) {
@@ -216,11 +127,7 @@ export default class VotingService {
 
   }
 
-  /**
-   * get proposal with any status
-   * @param id
-   * @return array
-   */
+  //get proposal with any status
   async getProposalWithoutStatusChecked(id) {
     try {
       if (id) {
@@ -239,24 +146,14 @@ export default class VotingService {
 
   }
 
-  /**
-   * get proposal data
-   * @param promiseRes
-   * @param id
-   * @param promiseStatus
-   * @return array
-   */
+  //get proposal data
   async getProposalData(promiseRes, id, promiseStatus) {
   }
 
-  /**
-   * get proposals
-   * @return array
-   */
+  //get proposals
   async getProposals() {
     try {
       const proposalEvents = await this.getProposalsEvent();
-      console.log("proposalEvents",proposalEvents);
       const proposalIds = getPastProposalsIds(proposalEvents);
       let proposals = [];
       if (proposalIds) {
@@ -279,10 +176,7 @@ export default class VotingService {
     }
   }
 
-  /**
-   * get ended proposals
-   * @return array
-   */
+  //get ended proposals
   async getEndedProposals() {
     try {
       const proposalEvents = await this.getProposalsEvent();
@@ -308,23 +202,19 @@ export default class VotingService {
     }
   }
 
-  /**
-   * proposal stats data
-   * @param id
-   * @return array
-   */
+  //proposal stats data
   async getProposalStatsData(id) {
     try {
       let objRes = {};
       let proposalStats = await this.getProposalStats(id);
-      console.log("contract", this.contractName);
-      console.log("proposalStats", proposalStats);
+      console.log('contract', this.contractName);
+      console.log('proposalStats', proposalStats);
       objRes.currentMajority = transformToPercentage(proposalStats.currentMajority);
       objRes.currentQuorum = transformToPercentage(proposalStats.currentQuorum);
       objRes.currentVetoPercentage = transformToPercentage(proposalStats.currentVetoPercentage);
       objRes.requiredMajority = transformToPercentage(proposalStats.requiredMajority);
       objRes.requiredQuorum = transformToPercentage(proposalStats.requiredQuorum);
-      // objRes.vetoThreshold = transformToPercentage(proposalStats.vetoThreshold);
+      objRes.vetoThreshold = '50';
       return objRes;
     } catch (e) {
       console.log(e);
@@ -369,10 +259,7 @@ export default class VotingService {
     }
   }
 
-  /**
-   * get number of active and ended proposals
-   * @return array
-   */
+  // get number of active and ended proposals
   async getProposalsCount() {
     try {
       const proposalEvents = await this.getProposalsEvent();
@@ -397,6 +284,46 @@ export default class VotingService {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  transformParameterType(id) {
+    const type = ['None', 'Address', 'Uint', 'String', 'Byte', 'Boolean'];
+    return type[Number(id)];
+  }
+
+  async getParametersArr(id) {
+    const result = await this.contract.methods.getParametersArr(id)
+      .call();
+    console.log('getParametersArr', result);
+    return result;
+  }
+
+  async getProposalParametersData(id) {
+    let objRes = {};
+    const parametersArr = await this.getParametersArr(id);
+    let value = null;
+    let parameterType = this.transformParameterType(parametersArr[0].paramType);
+    switch (parameterType) {
+      case 'Address':
+        value = parametersArr[0].addrValue;
+        break;
+      case 'Uint':
+        value = parametersArr[0].uintValue;
+        break;
+      case 'String':
+        value = parametersArr[0].strValue;
+        break;
+      case 'Byte':
+        value = parametersArr[0].bytes32Value;
+        break;
+      case 'Boolean':
+        value = parametersArr[0].boolValue;
+        break;
+    }
+    objRes.parameterType = parameterType;
+    objRes.parameterValue = value;
+    objRes.parameterKey = parametersArr[0].paramKey;
+    return objRes;
   }
 
 }

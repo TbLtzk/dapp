@@ -88,17 +88,17 @@ export default class Handler {
     });
   }
 
-  mint(amount, stateSetter) {
-    this.dispatch(setTransactionCounter(1));
-
-    this.contractStableCoinQUSD.mint(this.address, this.address, amount).then(() => {
-      this.setAvailableToDeposit(stateSetter);
-    }).catch((e) => {
-      console.log(e);
-    }).finally(() => {
-      this.dispatch(setTransactionCounter(-1));
-    });
-  }
+  // mint(amount, stateSetter) {
+  //   this.dispatch(setTransactionCounter(1));
+  //
+  //   this.contractStableCoinQUSD.mint(this.address, this.address, amount).then(() => {
+  //     this.setAvailableToDeposit(stateSetter);
+  //   }).catch((e) => {
+  //     console.log(e);
+  //   }).finally(() => {
+  //     this.dispatch(setTransactionCounter(-1));
+  //   });
+  // }
 
   async claim(stateSetter) {
     this.dispatch(setTransactionCounter(1));

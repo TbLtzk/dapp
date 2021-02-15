@@ -1,8 +1,6 @@
-import { drizzleRegistry, contracts } from '../../config/drizzle-config';
 import {
   getStatusTransformation,
-  convertNumVotes,
-  getPercentageFormat, transformToPercentage
+  getPercentageFormat
 } from '../../handler/VotingHandler';
 import VotingService from './VotingService';
 import { fromWei } from 'func/balance';
@@ -10,13 +8,7 @@ import { fromWei } from 'func/balance';
 /*contacts: RootNodesSlashingVoting, ValidatorsSlashingVoting*/
 export default class SlashingVoting extends VotingService {
 
-  /**
-   * get proposal data
-   * @param promiseRes
-   * @param id
-   * @param promiseStatus
-   * @return array
-   */
+  // get proposal data
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
@@ -54,12 +46,7 @@ export default class SlashingVoting extends VotingService {
     }
   }
 
-  /**
-   * create proposal
-   * @param data
-   * @param userAddress
-   * @return string
-   */
+  //create proposal
   async createProposal(data, userAddress) {
     try {
       const link = data['external-link'];
@@ -67,7 +54,6 @@ export default class SlashingVoting extends VotingService {
       let percentageStake = data['%-value'];
       percentageStake = getPercentageFormat(percentageStake);
       let candidate = data['address'];
-      // console.log("candidate", candidate);
       console.log('percentageStake', percentageStake);
       // candidate = "0x6a39b688d591ea00c9ea69658438794204b5cc62";
       // candidate = this.contractName === 'ValidatorsSlashingVoting' //validator member
@@ -80,6 +66,5 @@ export default class SlashingVoting extends VotingService {
     } catch (e) {
       console.log(e);
     }
-x
   }
 }

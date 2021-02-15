@@ -1,6 +1,6 @@
 import SlashingVotingService from '../src/voting/SlashingVoting';
 
-export const chooseSlashingContractDependsOnType = (drizzle, type) => {
+export const chooseSlashingContractDependsOnType = (type) => {
   let contractName = null;
   if (type === 'root-node-slashing') {
     contractName = 'RootNodesSlashingVoting';
