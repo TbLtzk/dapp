@@ -49,7 +49,7 @@ const contractsToAddressesDynamic = {
   // StableCoinQUSD: '0xd53e0F0ea25FEC308D1616e156a6fBd4af2875d4',//testnet //QUSD address wallet
   StableCoinQUSD: '0xd9EAC83C202303c32c4c8A5d468AC3Ff335b65E3', //devnet //QUSD address wallet
   // SystemBalance: '0xdC98b08363f3BfC73195dc6b532e39C51EC3c3bC', //testnet
-  SystemBalance: '0x0000000000000000000000000000000000000000',    //devnet
+  SystemBalance: '0x3FDB3046FFfB25E802C438b0f79A607D7864dA56',    //devnet
   // SystemDebtAuction: '0xBb06FC6EA77187F8ac5E98393b74428105F706f3', //testnet
   SystemDebtAuction: '0x961CfC41F170136cBF2657517012d55Df6e9Dd45',  //devnet
   // SystemReserve: '0xDe1be0cdE7257955123da10BC1ea37Ee54875DdF', //testnet

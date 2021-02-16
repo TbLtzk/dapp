@@ -21,7 +21,7 @@ export default class SlashingVoting extends VotingService {
       },
     };
     try {
-      // console.log("promiseRes", promiseRes);
+      console.log("promiseRes", promiseRes);
       objRes.id = id;
       objRes.remark = promiseRes.base.remark;
       objRes.candidate = promiseRes.candidate;

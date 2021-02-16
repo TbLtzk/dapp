@@ -92,7 +92,7 @@ function SlashingObjection(props) {
     dispatch(onEscrowRecallProposeDecision(contract, proposalId));
   }, [dispatch]);
 
-const onConfirmCurrentDecision = useCallback(() => {
+  const onConfirmCurrentDecision = useCallback(() => {
     dispatch(onEscrowConfirmDecision(contract, proposalId));
   }, [dispatch]);
 

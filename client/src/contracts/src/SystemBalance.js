@@ -15,10 +15,15 @@ export default class SystemBalance {
   }
 
   async getDebt() {
-    return fromWei(
-      await this.contract.methods.getDebt()
-        .call()
-    );
+    try{
+      return fromWei(
+        await this.contract.methods.getDebt()
+          .call()
+      );
+    }catch (e) {
+      console.log("getDebt e")
+    }
+
   }
 
   async getBalance() {

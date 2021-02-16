@@ -15,7 +15,7 @@ const FormInput = forwardRef((props, ref) => {
       <Form.Control
         min={min}
         type={type}
-        step="0.000000000000000001"
+        step="1.0"
         placeholder={placeholder}
         name={name}
         ref={ref}
