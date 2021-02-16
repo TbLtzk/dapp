@@ -3,7 +3,9 @@ import {
   getPercentageFormat
 } from '../../handler/VotingHandler';
 import VotingService from './VotingService';
+import SlashingEscrow from './SlashingEscrow';
 import { fromWei } from 'func/balance';
+import { fromSolDateFormattingT1 } from 'func/date';
 
 /*contacts: RootNodesSlashingVoting, ValidatorsSlashingVoting*/
 export default class SlashingVoting extends VotingService {
@@ -12,6 +14,12 @@ export default class SlashingVoting extends VotingService {
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
+    let objEscrow = {
+      objEscrow: {
+        objection: {},
+        decision: {}
+      },
+    };
     try {
       // console.log("promiseRes", promiseRes);
       objRes.id = id;
@@ -40,7 +48,25 @@ export default class SlashingVoting extends VotingService {
       objStats = await this.getProposalStatsData(id);
       objRes.contract = this.contractName;
 
-      return { ...objRes, ...objStats };
+      const SlashingEscrowContractName = this.contractName === 'ValidatorsSlashingVoting'
+        ? 'ValidatorsSlashingEscrow' : 'RootNodesSlashingEscrow';
+      const SlashingEscrowContract = new SlashingEscrow(SlashingEscrowContractName);
+      objEscrow.objEscrow.objection.statusObjection =
+        SlashingEscrowContract.getTitleStatus(await SlashingEscrowContract.getStatus(id));
+      const escrowArbitrationInfo = await SlashingEscrowContract.getArbitrationInfos(id);
+      objEscrow.objEscrow.objection.executed = escrowArbitrationInfo.executed;
+      objEscrow.objEscrow.objection.remark = escrowArbitrationInfo.remark;
+      objEscrow.objEscrow.objection.slashedAmount = fromWei(escrowArbitrationInfo.params.slashedAmount);
+      objEscrow.objEscrow.objection.objectionEndTime = fromSolDateFormattingT1(escrowArbitrationInfo.params.objectionEndTime);
+      objEscrow.objEscrow.objection.appealEndTime = fromSolDateFormattingT1(escrowArbitrationInfo.params.appealEndTime);
+      objEscrow.objEscrow.decision.confirmationCount = escrowArbitrationInfo.decision.confirmationCount;
+      objEscrow.objEscrow.decision.endDate = fromSolDateFormattingT1(escrowArbitrationInfo.decision.endDate);
+      objEscrow.objEscrow.decision.externalReference = escrowArbitrationInfo.decision.externalReference;
+      objEscrow.objEscrow.decision.notAppealed = escrowArbitrationInfo.decision.notAppealed;
+      objEscrow.objEscrow.decision.percentage = escrowArbitrationInfo.decision.percentage;
+      objEscrow.objEscrow.decision.proposer = escrowArbitrationInfo.decision.proposer;
+
+      return { ...objRes, ...objStats, ...objEscrow };
     } catch (e) {
       console.log('e', e);
     }

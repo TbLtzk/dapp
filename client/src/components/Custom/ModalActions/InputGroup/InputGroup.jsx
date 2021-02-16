@@ -6,7 +6,8 @@ import { Wrap } from './styles';
 import { Descr } from '../styles';
 
 function InputGroup(props) {
-  const { register, errors, inputArr, inputsObj, labelsArr, formData, onChangeInput } = props;
+  const { register, errors, inputArr, inputsObj, labelsArr, formData,
+    onChangeInput, min, max, type } = props;
   const [valueInput, changeValueInput] = useState(() => {
     return formData?.hasOwnProperty(inputArr[0]?.replace(/ /g, '-')
       .toLowerCase())
@@ -56,6 +57,9 @@ function InputGroup(props) {
               placeholder={label}
               ref={refType(nameField)}
               valid={errors[nameField]?.message}
+              min={min}
+              max={max}
+              type={type}
             />
           </Fragment>
         );

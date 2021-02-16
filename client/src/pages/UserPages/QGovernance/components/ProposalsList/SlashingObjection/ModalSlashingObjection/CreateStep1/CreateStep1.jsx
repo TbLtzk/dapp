@@ -44,11 +44,14 @@ function CreateStep1(props) {
             />
             <Descr>{proposeDecision.inputLabelTwo}</Descr>
             <InputGroup
+              min={0}
+              max={101}
               formData={formData}
               inputArr={proposeDecision.inputPlaceholderTwo}
               inputsObj={proposeDecision.inputObjTwo}
               register={register}
               errors={errors}
+              type={'number'}
             />
             <Descr>{proposeDecision.radioLabel}</Descr>
             <RadioBtnGroup

@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 
-import {Text} from './styles'
+import { Link } from 'components/Custom/PageLists/styles';
+import { Text } from './styles';
 
 function ListDetails(props) {
   const { list } = props;
@@ -9,7 +10,11 @@ function ListDetails(props) {
       {list?.map((elem) => {
         return (
           <Fragment key={elem.title}>
-            <Text>{elem.title}: {elem.value}</Text>
+            <Text>{elem.title}:
+              {elem.title === 'Remark'
+                ? <Link href={'//' + elem.value} target="_blank">{elem.value}</Link>
+                : elem.value
+              }</Text>
           </Fragment>
         );
       })}

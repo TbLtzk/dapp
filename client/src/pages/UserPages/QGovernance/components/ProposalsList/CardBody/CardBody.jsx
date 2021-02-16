@@ -17,10 +17,10 @@ import {
 
 function CardBody(props) {
   const {
-    id, vetoTime, votingTime, proposalType, proposalID, pollDetail,
+    id, vetoTime, votingTime, proposalType, proposalID, proposal,
     voteBreakdown, proposalsKind, contract
   } = props;
-  console.log("proposalsKind", proposalsKind);
+  console.log('proposalsKind', proposalsKind);
 
   const tabsItems = useMemo(() => {
     let result = [
@@ -28,7 +28,7 @@ function CardBody(props) {
         label: 'poll-detail',
         title: 'Poll Detail',
         content: (
-          <PollDetail pollDetail={pollDetail} proposalsKind={proposalsKind}/>
+          <PollDetail pollDetail={proposal} proposalsKind={proposalsKind}/>
         )
       },
       {
@@ -40,15 +40,19 @@ function CardBody(props) {
       },
     ];
 
-    if (proposalsKind !== "SlashingProposals"){
+    if (proposalsKind !== 'SlashingProposals') {
       return result;
-    }else {
+    } else {
       const slashingTab = [
         {
           label: 'slashing-objection',
           title: 'Slashing Objection',
           content: (
-            <SlashingObjection contract={contract} proposalId={id}/>
+            <SlashingObjection
+              contract={contract}
+              proposalId={proposalID}
+              objData={proposal?.objEscrow}
+            />
           )
         },
       ];
@@ -65,7 +69,8 @@ function CardBody(props) {
             tabsItems={tabsItems}
           />
         }
-        onShareBtn={() => {}}
+        onShareBtn={() => {
+        }}
         shareText={`${window.location.origin}/q-governance/proposal/${contract}/${proposalID}`}
       >
         <Details md={4}>

@@ -150,3 +150,38 @@ export const onSetActiveTab = (activeTab) => ({
   type: actionTypes.ACTIVE_TAB,
   activeTab
 });
+
+//escrow
+export const onEscrowCastObjection = (data, contractName, proposalId) => ({
+  type: actionTypes.ESCROW_CAST_OBJECTION,
+  data,
+  contractName,
+  proposalId
+});
+export const onEscrowCastObjectionSuccess = (result) => ({
+  type: actionTypes.ESCROW_CAST_OBJECTION_SUCCESS,
+  result,
+});
+
+export const onEscrowCastObjectionError = (result) => ({
+  type: actionTypes.ESCROW_CAST_OBJECTION_ERROR,
+  result,
+});
+
+export const onEscrowProposeDecision = (data, contractName, proposalId) => ({
+  type: actionTypes.ESCROW_PROPOSE_DECISION,
+  data,
+  contractName,
+  proposalId
+});
+
+export const onEscrowRecallProposeDecision = (contractName, proposalId) => ({
+  type: actionTypes.ESCROW_RECALL_PROPOSE_DECISION,
+  contractName,
+  proposalId
+});
+export const onEscrowConfirmDecision = (contractName, proposalId) => ({
+  type: actionTypes.ESCROW_CONFIRM_DECISION,
+  contractName,
+  proposalId
+});

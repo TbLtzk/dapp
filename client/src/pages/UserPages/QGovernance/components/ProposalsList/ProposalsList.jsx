@@ -77,7 +77,7 @@ function ProposalsList(props) {
                     vetoTime={proposal.vetoEndTime}
                     votingTime={proposal.votingEndTime}
                     proposalID={proposal.id}
-                    pollDetail={proposal}
+                    proposal={proposal}
                     proposalsKind={proposalsKind}
                     voteBreakdown={proposal}
                     contract={proposal.contract}

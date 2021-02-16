@@ -106,11 +106,11 @@ export default function proposals(state = initialState, action) {
         ...state,
         proposalsArr: (() => {
           const findElem = state.proposalsArr?.find((element => {
-            return element.id === action.result[0].id;
+            return element.id === action.result[0].id && element.contract === action.result[0].contract;
           }));
           if (findElem) {
             return state.proposalsArr?.map((element) => {
-              if (element.id === action.result[0].id) {
+              if (element.id === action.result[0].id && element.contract === action.result[0].contract) {
                 return { ...action.result[0] };
               } else {
                 return { ...element };
@@ -171,6 +171,11 @@ export default function proposals(state = initialState, action) {
       return {
         ...state,
         activeTab: action.activeTab,
+      };
+      case actionTypes.ESCROW_CAST_OBJECTION_SUCCESS:
+      return {
+        ...state,
+        // activeTab: action.activeTab,
       };
     default:
       return state;

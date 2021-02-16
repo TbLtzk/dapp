@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setCreateObj, setStepCounter } from 'store/actions/action-creaters/auctions/modalHandler';
+import { onEscrowCastObjection, onEscrowProposeDecision } from 'store/actions/action-creaters/voting/proposals';
 import {
   createdStepsLimit,
   formObject,
@@ -16,7 +17,7 @@ import CreateStep2 from './CreateStep2';
 import { Descr, Title } from 'components/Custom/ModalActions/styles';
 
 function ModalSlashingObjection(props) {
-  const { modalShow, onHide, activeTab } = props;
+  const { modalShow, onHide, activeTab, contract, proposalId } = props;
   const { register, errors, handleSubmit } = useForm();
   const dispatch = useDispatch();
 
@@ -56,7 +57,11 @@ function ModalSlashingObjection(props) {
     if (stepCounter < stepLimit) {
       dispatch(setStepCounter(stepCounter + 1));
     } else {
-      // dispatch(createAuction({ ...formData, ...data }));
+      if (activeTab === 'cast-objection') {
+        dispatch(onEscrowCastObjection({ ...formData, ...data }, contract, proposalId));
+      } else if (activeTab === 'propose-decision') {
+        dispatch(onEscrowProposeDecision({ ...formData, ...data }, contract, proposalId));
+      }
       onHide();
     }
   };

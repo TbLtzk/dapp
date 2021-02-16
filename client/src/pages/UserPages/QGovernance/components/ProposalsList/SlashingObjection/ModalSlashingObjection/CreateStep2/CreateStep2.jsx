@@ -30,7 +30,7 @@ function CreateStep2(props) {
       case 'propose-decision' :
         return showCommonData(
           <>
-            <SummarText>Adjusted percentage for slashing: {formData['adjusted-percentage']}</SummarText>
+            <SummarText>Adjusted percentage for slashing: {formData['%-value']}</SummarText>
             <SummarText>Did the target of the slashing appeal? {formData['target-slashing-appeal']}</SummarText>
           </>
         );

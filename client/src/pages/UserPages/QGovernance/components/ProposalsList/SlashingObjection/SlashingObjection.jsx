@@ -1,14 +1,13 @@
-import React, { useMemo, useState } from 'react';
-
+import React, { useCallback, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   setCreatedStepsLimit, setCreateObj,
   setStepCounter
 } from 'store/actions/action-creaters/auctions/modalHandler';
+import {
+  onEscrowRecallProposeDecision, onEscrowConfirmDecision
+} from 'store/actions/action-creaters/voting/proposals';
 
-import SlashingEscrow from 'contracts/src/SlashingEscrow';
-
-import CustomBlock from 'components/Base/CustomBlock';
 import ListDetails from './ListDetails';
 import Button from 'components/Base/Buttons/Button';
 import ModalSlashingObjection from './ModalSlashingObjection';
@@ -18,58 +17,56 @@ import { WrapBtn, WrapBtnGroup } from './styles';
 import { TitleSmall } from 'components/Custom/PageLists/styles';
 
 function SlashingObjection(props) {
-  const { contract, proposalId } = props;
+  const { contract, proposalId, objData } = props;
   const [modalShow, setModalShow] = useState(false);
   const [activeModal, setActiveModal] = useState('');
   const dispatch = useDispatch();
-
-  const SlashingEscrowContract = new SlashingEscrow();
 
   const objectionData = useMemo(() => {
     return (
       [
         {
           title: 'Status',
-          value: 'Pending',
+          value: objData.objection.statusObjection,
         },
         {
           title: 'Remark',
-          value: 'http://filedForArbitration.info',
+          value: objData.objection.remark,
         },
         {
           title: 'Executed',
-          value: 'false',
+          value: String(objData.objection.executed),
         },
         {
           title: 'Slashed Amount',
-          value: '2.4 Q',
+          value: objData.objection.slashedAmount + ' Q',
         },
         {
           title: 'Objection End Time',
-          value: 'March 15, 2021 13:45 GMT',
+          value: objData.objection.objectionEndTime,
         },
         {
           title: 'Appeal End Time',
-          value: 'December 26, 2021 18:00 GMT',
+          value: objData.objection.appealEndTime,
         },
       ]
     );
-  }, []);
+  }, [objData?.objection]);
 
   const decisionData = useMemo(() => {
     return (
       [
         {
           title: 'Current decision proposer',
-          value: '0x4a14D788D86D021670EBcecE1196631d66595984',
+          value: objData.decision.proposer,
         },
         {
           title: 'Current decision end time',
-          value: 'March 24, 2021 15:35 GMT',
+          value: objData.decision.endDate,
         },
         {
           title: 'Remark',
-          value: 'http://courtrulingresults.info',
+          value: objData.decision.externalReference,
         },
         {
           title: 'Adjusted slashing percentage',
@@ -77,7 +74,7 @@ function SlashingObjection(props) {
         },
         {
           title: 'Current confirmation count',
-          value: '3',
+          value: objData.decision.confirmationCount,
         },
         {
           title: 'Required confirmations',
@@ -89,9 +86,17 @@ function SlashingObjection(props) {
         },
       ]
     );
-  }, []);
+  }, [objData?.decision]);
 
-  const onShowModal = (activeTab) =>{
+  const onRecallCurrentDecision = useCallback(() => {
+    dispatch(onEscrowRecallProposeDecision(contract, proposalId));
+  }, [dispatch]);
+
+const onConfirmCurrentDecision = useCallback(() => {
+    dispatch(onEscrowConfirmDecision(contract, proposalId));
+  }, [dispatch]);
+
+  const onShowModal = (activeTab) => {
     dispatch(setStepCounter(1));
     dispatch(setCreatedStepsLimit(2));
     setActiveModal(activeTab);
@@ -111,7 +116,6 @@ function SlashingObjection(props) {
     <Container fluid>
       <Row>
         <Col md={6}>
-          {/*<CustomBlock style={{ padding: '7px' }}>*/}
           <TitleSmall>Objection</TitleSmall>
           <ListDetails list={objectionData}/>
           <WrapBtn>
@@ -121,10 +125,8 @@ function SlashingObjection(props) {
               handleButton={onCastObjection}
             />
           </WrapBtn>
-          {/*</CustomBlock>*/}
         </Col>
         <Col md={6}>
-          {/*<CustomBlock style={{ padding: '7px' }}>*/}
           <TitleSmall>Decision</TitleSmall>
           <ListDetails list={decisionData}/>
           <WrapBtn>
@@ -137,23 +139,20 @@ function SlashingObjection(props) {
               <Button
                 title="Vote to confirm current decision"
                 width="100%"
-                handleButton={() => {
-                  console.log('click');
-                }}
+                handleButton={onConfirmCurrentDecision}
               />
               <Button
                 title="Recall current decision"
                 width="100%"
-                handleButton={() => {
-                  console.log('click');
-                }}
+                handleButton={onRecallCurrentDecision}
               />
             </WrapBtnGroup>
           </WrapBtn>
-          {/*</CustomBlock>*/}
         </Col>
       </Row>
       <ModalSlashingObjection
+        contract={contract}
+        proposalId={proposalId}
         activeTab={activeModal}
         modalShow={modalShow}
         onHide={() => {
