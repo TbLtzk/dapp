@@ -19,6 +19,7 @@ build:
   <<: [*docker-login]
   stage: build
   only: [tags]
+  tags: [q-docker]
   script:
     - cd client/
     - docker build -t $IMAGE -t $IMAGE_LATEST .
@@ -28,6 +29,7 @@ build:
 deploy:
   stage: deploy
   only: [tags]
+  tags: [q-docker]
   variables:
     DEPLOY_DIR: ~/dapp
   before_script:
