@@ -70,7 +70,7 @@ function SlashingObjection(props) {
         },
         {
           title: 'Adjusted slashing percentage',
-          value: '7%',
+          value: objData.decision.percentage + '%',
         },
         {
           title: 'Current confirmation count',
@@ -78,11 +78,11 @@ function SlashingObjection(props) {
         },
         {
           title: 'Required confirmations',
-          value: '10',
+          value: objData.decision.requiredConfirmations,
         },
         {
           title: 'Current Confirmation Percentage',
-          value: '30%',
+          value: objData.decision.currentConfirmationPercentage + '%',
         },
       ]
     );

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { BorrowingCoreQUSD } from 'contracts/BorrowingCore';
+import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import Button from 'components/Base/Buttons/Button';
 import InfoBlocks from '../InfoBlocks';

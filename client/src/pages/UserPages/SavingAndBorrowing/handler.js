@@ -1,7 +1,7 @@
 import { web3 } from 'contracts/config/drizzle-config';
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
 import { StableCoinQUSD } from '../../../contracts/StableCoin';
-import { BorrowingCoreQUSD } from '../../../contracts/BorrowingCore';
+import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
 import { GovernedEpdrQbtcQusdOracle, GovernedEpdrQethQusdOracle } from '../../../contracts/FxPriceFeed';
 
 export default class Handler {

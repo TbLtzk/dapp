@@ -1,6 +1,6 @@
 import {StableCoinQUSD} from 'contracts/StableCoin';
 import {web3} from 'contracts/config/drizzle-config';
-import {SavingQUSD} from 'contracts/Saving';
+import {SavingQUSD} from 'contracts/src/Saving';
 import {setTransactionCounter} from 'store/actions/action-creaters/transaction-handler';
 import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
 import {maxApproveAmount} from 'func/numbers';

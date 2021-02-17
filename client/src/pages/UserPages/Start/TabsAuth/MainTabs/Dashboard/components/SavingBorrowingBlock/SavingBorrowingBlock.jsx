@@ -8,6 +8,8 @@ import Handler from './handler';
 
 import { Container, Col, Row } from 'react-bootstrap';
 import { TitleNotAlign } from '../../styles';
+import { remainDateTimeSince } from 'func/convertDate';
+import LoadingSpinner from 'components/Base/LoadingSpinner';
 
 const { useDrizzle } = drizzleReactHooks;
 
@@ -20,6 +22,14 @@ function SavingBorrowingBlock() {
   const [savingRate, setSavingRate] = useState('0');
   const [interestRate, setInterestRate] = useState('0');
 
+  const [timeSinceRefreshBalance, setTimeSinceRefreshBalance] = useState('0');
+  const [timeSinceUnixTimestampRefreshBalance, setTimeSinceUnixTimestampRefreshBalance] = useState('0');
+  const [loadingTimeSinceRefreshBalance, setLoadingTimeSinceRefreshBalance] = useState(false);
+
+  const [timeSinceOutstandingDebt, setTimeSinceOutstandingDeb] = useState('0');
+  const [timeSinceUnixTimestampOutstandingDeb, setTimeSinceUnixTimestampOutstandingDeb] = useState('0');
+  const [loadingTimeSinceOutstandingDeb, setLoadingTimeSinceOutstandingDeb] = useState(false);
+
   useEffect(async () => {
     handler.getTotalSupply(setTotalSupply);
     handler.getSystemBalance(setSystemBalance);
@@ -27,8 +37,41 @@ function SavingBorrowingBlock() {
     handler.getInterestRate(setInterestRate);
   }, []);
 
+  useEffect(() => {
+    setTimeSinceRefreshBalance('...');
+    setTimeSinceOutstandingDeb('...');
+    handler.getTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance);
+    handler.getTimeSinceOutstandingDebt(setTimeSinceOutstandingDeb, setTimeSinceUnixTimestampOutstandingDeb);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeSinceRefreshBalance(remainDateTimeSince(timeSinceUnixTimestampRefreshBalance));
+    }, 60000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [timeSinceUnixTimestampRefreshBalance]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeSinceOutstandingDeb(remainDateTimeSince(timeSinceUnixTimestampOutstandingDeb));
+    }, 60000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [timeSinceUnixTimestampOutstandingDeb]);
+
   const onRefresh = useCallback((type) => {
     console.log('onRefresh', type);
+    switch (type) {
+      case 'of-balance':
+        handler.refreshTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setLoadingTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance);
+        break;
+      case 'of-outstanding-debt':
+        return '';
+        break;
+    }
   }, []);
 
   const dataArr = useMemo(() => {
@@ -60,7 +103,7 @@ function SavingBorrowingBlock() {
       },
       {
         title: 'QUSD Saving time since refresh of balance',
-        firstContent: '0d 1h 34m',
+        firstContent: timeSinceRefreshBalance,
         btnTitle: 'Refresh',
         btnType: 'of-balance'
       },
@@ -71,7 +114,26 @@ function SavingBorrowingBlock() {
         btnType: 'of-outstanding-debt'
       },
     ];
-  }, [totalSupply, systemBalance, savingRate, interestRate]);
+  }, [totalSupply, systemBalance, savingRate, interestRate, timeSinceRefreshBalance]);
+
+  const showBtnTitle = (title, type) => {
+    switch (type) {
+      case 'of-balance':
+        if (loadingTimeSinceRefreshBalance) {
+          return <LoadingSpinner/>;
+        } else {
+          return title;
+        }
+      case 'of-outstanding-debt':
+        if (loadingTimeSinceOutstandingDeb) {
+          return <LoadingSpinner/>;
+        } else {
+          return title;
+        }
+      default:
+        return title;
+    }
+  };
 
   return (
     <CustomBlock style={{
@@ -91,7 +153,7 @@ function SavingBorrowingBlock() {
                   key={el.title.replace(' ', '-')}
                   title={el.title}
                   firstContent={el.firstContent}
-                  btnTitle={el.btnTitle}
+                  btnTitle={showBtnTitle(el.btnTitle, el.btnType)}
                   btnHandler={!el.btnTitle ? null : () => {
                     onRefresh(el.btnType);
                   }}

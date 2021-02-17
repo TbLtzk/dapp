@@ -7,8 +7,9 @@ import TableView from 'components/Base/TableView';
 import { Pagination, setElementsForOnePage, countPages } from 'components/Base/Pagination';
 
 import { Circle, MemberPanelWrap, MemberAddress, Sharing } from './styles';
-import { rootNodeStake } from '../../../../store/selectors/root-contract';
-import { fN } from '../../../../func/useful';
+import { rootNodeStake } from 'store/selectors/root-contract';
+import { fN } from 'func/useful';
+import { fromWei } from 'func/balance';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -52,90 +53,62 @@ function MemberTable(props) {
     setElements(setElementsForOnePage(data, offset, perPage));
   }, [data, offset, perPage]);
 
-  const showBodyTable = useCallback((member, i) => {
+  const showBodyTable = (i, number, address, amount, classType, share) => {
+    return (
+      <tr key={i}>
+        {!number ? null : <td>{number}</td>}
+        <td>
+          <Circle
+            className={'circleNum '}
+            color={'#' + address?.slice(2, 8)}
+          >
+
+          </Circle>
+          <MemberAddress
+            color={userAddress === address ? 'highlight' : 'default'}
+          >
+            <OverlayTrigger
+              key="top"
+              placement="top"
+              overlay={
+                <Tooltip id={'tooltip-top' + i}>
+                  <span>Copy to clipboard</span>
+                </Tooltip>
+              }
+            >
+              <CopyToClipboard text={address}>
+                <Sharing
+                  type="button"
+                  onClick={() => {
+                  }}
+                >
+                  <span className={classType}>{address}</span>
+                </Sharing>
+              </CopyToClipboard>
+            </OverlayTrigger>
+          </MemberAddress>
+        </td>
+        <td>{amount}</td>
+        {!share ? null : <td>{share}</td>}
+      </tr>
+    );
+  };
+
+  const showBodyTableValue = useCallback((member, i) => {
+    const commonClass = 'validator-member';
     if (type === 'validators') {
-      return (
-        <tr key={i}>
-          <td>{
-            (i + 1) === 10
-              ? currentPage + 1 + '0'
-              : currentPage === 0 ? i + 1 : currentPage + `${i + 1}`
-          }</td>
-          <td>
-            <Circle
-              className={'circleNum '}
-              color={'#' + member.validator?.slice(2, 8)}
-            >
-
-            </Circle>
-            <MemberAddress
-              color={userAddress === member.validator ? 'highlight' : 'default'}
-            >
-              <OverlayTrigger
-                key="top"
-                placement="top"
-                overlay={
-                  <Tooltip id={'tooltip-top' + i}>
-                    <span>Copy to clipboard</span>
-                  </Tooltip>
-                }
-              >
-                <CopyToClipboard text={member.validator}>
-                  <Sharing
-                    type="button"
-                    onClick={() => {
-                    }}
-                  >
-                    <span className="validator-member">{member.validator}</span>
-                  </Sharing>
-                </CopyToClipboard>
-              </OverlayTrigger>
-              {/*<span className="validator-member">{member.validator}</span>*/}
-            </MemberAddress>
-          </td>
-          <td>{fN(drizzle.web3.utils.fromWei(member.amount, 'ether'))}Q</td>
-        </tr>
-      );
-    } else {
-      return (
-        <tr key={i}>
-          <td>
-            <Circle
-              className={'circleNum '}
-              color={'#' + member.address?.slice(2, 8)}
-            >
-
-            </Circle>
-            <MemberAddress
-              color={userAddress === member.address ? 'highlight' : 'default'}
-            >
-              <OverlayTrigger
-                key="top"
-                placement="top"
-                overlay={
-                  <Tooltip id={'tooltip-top' + i}>
-                    <span>Copy to clipboard</span>
-                  </Tooltip>
-                }
-              >
-                <CopyToClipboard text={member.address}>
-                  <Sharing
-                    type="button"
-                    onClick={() => {
-                    }}
-                  >
-                    <span className="root-member">{member.address.slice(0, 14) + '...'}</span>
-                  </Sharing>
-                </CopyToClipboard>
-              </OverlayTrigger>
-              {/*<span className="root-member">{member.address}</span>*/}
-              {/*{member.address.slice(0, 14) + '...'}*/}
-            </MemberAddress>
-          </td>
-          <td>{userAddress === member.address ? fN(amountNodeStake) : fN(member.stakeAmount)} Q</td>
-          <td>{member.share + '%'}</td>
-        </tr>
-      );
+      const numMember = (i + 1) === 10
+        ? currentPage + 1 + '0'
+        : currentPage === 0 ? i + 1 : currentPage + `${i + 1}`;
+      const amount = fN(fromWei(member.amount)) + 'Q';
+      return showBodyTable(i, numMember, member.validator, amount, commonClass, null);
+    } else if (type === 'root-node') {
+      const amount = fN(member.stakeAmount) + 'Q';
+      const share = member.share + '%';
+      return showBodyTable(i, null, member.address, amount, 'root-member', share);
+    } else if (type === "delegated-validators"){
+      const amount = fN(fromWei(member.amount)) + 'Q';
+      return showBodyTable(i, null, member.validator, amount, commonClass, null);
     }
 
   }, [elements, amountNodeStake]);
@@ -150,7 +123,7 @@ function MemberTable(props) {
               body={
                 elements?.length === 0 ? null :
                   elements.map((member, i) => {
-                    return showBodyTable(member, i);
+                    return showBodyTableValue(member, i);
                   })
               }
             />

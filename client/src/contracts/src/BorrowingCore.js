@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
-import { contracts, web3 } from './config/drizzle-config';
-import { contractsToAddresses } from './mapping/contract-to-address';
+import { contracts, web3 } from '../config/drizzle-config';
+import { contractsToAddresses } from '../mapping/contract-to-address';
 
 class BorrowingCore {
   constructor() {
@@ -40,6 +40,16 @@ class BorrowingCore {
 
   async balanceOf(address) {
     return await this.methods.balanceOf(address).call();
+  }
+
+  async compoundRateKeeper() {
+    return await this.methods.compoundRateKeeper()
+      .call();
+  }
+
+  async updateCompoundRate(address) {
+    return await this.methods.updateCompoundRate()
+      .send({ from: address });
   }
 }
 

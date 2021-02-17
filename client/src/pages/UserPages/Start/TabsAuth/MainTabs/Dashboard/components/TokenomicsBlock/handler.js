@@ -1,8 +1,10 @@
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
+import {contractsToAddresses} from 'contracts/mapping/contract-to-address';
 import DefaultAllocationProxy from 'contracts/src/proxy/DefaultAllocationProxy';
 import RootNodeRewardProxy from 'contracts/src/proxy/RootNodeRewardProxy';
 import ValidationRewardProxy from 'contracts/src/proxy/ValidationRewardProxy';
-import { bn, fN } from 'func/useful';
+import QPiggyBank from 'contracts/src/QPiggyBank';
+import {bn, fN} from 'func/useful';
+import {remainDateTimeSince} from "func/convertDate";
 
 export default class Handler {
   constructor(drizzle, userAddress) {
@@ -11,34 +13,35 @@ export default class Handler {
     this.DefaultAllocationProxy = new DefaultAllocationProxy('DefaultAllocationProxy');
     this.RootNodeRewardProxy = new RootNodeRewardProxy('RootNodeRewardProxy');
     this.ValidationRewardProxy = new ValidationRewardProxy('ValidationRewardProxy');
+    this.QPiggyBank = new QPiggyBank();
   }
 
   getBalanceValue(contract, stateSetter) {
     this.drizzle.web3.eth.getBalance(contractsToAddresses[contract])
-      .then(
-        res => {
-          let transf = this.drizzle.web3.utils.fromWei(res);
-          transf = fN(bn(transf)
-            .toString());
-          stateSetter(transf);
-        }
-      )
-      .catch(e => {
-        stateSetter(0);
-      });
+        .then(
+            res => {
+              let transf = this.drizzle.web3.utils.fromWei(res);
+              transf = fN(bn(transf)
+                  .toString());
+              stateSetter(transf);
+            }
+        )
+        .catch(e => {
+          stateSetter(0);
+        });
   }
 
   allocateValue(contract, stateSetter, stateLoading) {
     contract.allocate(this.userAddress)
-      .then(val => {
-        this.getBalanceValue(contract.contractName, stateSetter);
-        stateLoading(false);
-      })
-      .catch(e => {
-        console.log('e', e);
-        stateSetter(0);
-        stateLoading(false);
-      });
+        .then(val => {
+          this.getBalanceValue(contract.contractName, stateSetter);
+          stateLoading(false);
+        })
+        .catch(e => {
+          console.log('e', e);
+          stateSetter(0);
+          stateLoading(false);
+        });
   }
 
   getDefaultAllocationProxy(stateSetter, stateLoading, isAllocate, allocateStateSetters) {
@@ -64,9 +67,32 @@ export default class Handler {
     stateLoading(true);
     if (isAllocate) {
       this.ValidationRewardProxy.allocate(this.userAddress)
-        .then(val => {
-          this.drizzle.web3.eth.getBalance(contractsToAddresses.ValidationRewardProxy)
-            .then(
+          .then(val => {
+            this.drizzle.web3.eth.getBalance(contractsToAddresses.ValidationRewardProxy)
+                .then(
+                    res => {
+                      let transf = this.drizzle.web3.utils.fromWei(res);
+                      // console.log("transf", transf);
+                      // transf = (bn(transf)
+                      //   .toString());
+                      stateSetter(transf);
+                      stateLoading(false);
+                    }
+                )
+                .catch(e => {
+                  console.log('e', e);
+                  stateSetter(0);
+                  stateLoading(false);
+                });
+          })
+          .catch(e => {
+            console.log('e', e);
+            stateSetter(0);
+            stateLoading(false);
+          });
+    } else {
+      this.drizzle.web3.eth.getBalance(contractsToAddresses.ValidationRewardProxy)
+          .then(
               res => {
                 let transf = this.drizzle.web3.utils.fromWei(res);
                 // console.log("transf", transf);
@@ -75,35 +101,12 @@ export default class Handler {
                 stateSetter(transf);
                 stateLoading(false);
               }
-            )
-            .catch(e => {
-              console.log('e', e);
-              stateSetter(0);
-              stateLoading(false);
-            });
-        })
-        .catch(e => {
-          console.log('e', e);
-          stateSetter(0);
-          stateLoading(false);
-        });
-    } else {
-      this.drizzle.web3.eth.getBalance(contractsToAddresses.ValidationRewardProxy)
-        .then(
-          res => {
-            let transf = this.drizzle.web3.utils.fromWei(res);
-            // console.log("transf", transf);
-            // transf = (bn(transf)
-            //   .toString());
-            stateSetter(transf);
+          )
+          .catch(e => {
+            console.log('e', e);
+            stateSetter(0);
             stateLoading(false);
-          }
-        )
-        .catch(e => {
-          console.log('e', e);
-          stateSetter(0);
-          stateLoading(false);
-        });
+          });
     }
 
   }
@@ -118,5 +121,35 @@ export default class Handler {
 
   getValidationRewardPools(stateSetter) {
     this.getBalanceValue('ValidationRewardPools', stateSetter);
+  }
+
+  getTimeSinceQHolderRewardUpdate(stateSetter, stateSetterUnixTimestamp) {
+    this.QPiggyBank.getBalanceDetails()
+        .then(
+            res => {
+              stateSetterUnixTimestamp(res?.lastUpdateOfCompoundRate);
+              const transformTime = remainDateTimeSince(res?.lastUpdateOfCompoundRate);
+              stateSetter(transformTime);
+            }
+        )
+        .catch(e => {
+          stateSetter(0);
+          stateSetterUnixTimestamp(0);
+        });
+  }
+
+  refreshTimeSinceQHolderRewardUpdate(stateSetter, stateLoading, stateSetterUnixTimestamp) {
+    stateLoading(true);
+    this.QPiggyBank.updateCompoundRate(this.userAddress)
+        .then(
+            res => {
+              this.getTimeSinceQHolderRewardUpdate(stateSetter, stateSetterUnixTimestamp);
+              stateLoading(false);
+            }
+        )
+        .catch(e => {
+          stateSetter(0);
+          stateLoading(false);
+        });
   }
 }

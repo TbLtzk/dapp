@@ -21,17 +21,11 @@ export default function LockCoin() {
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
 
-  // function getClearDate(date) {
-  //   return new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
-  // }
-
   function lockCoinL(formData) {
-    console.log('formData', formData);
     dispatch(setLockAmount(address, formData.amountQ));
   }
 
   function unlockCoinL(formData) {
-    console.log('formData', formData);
     dispatch(setUnlockAmount(address, formData.amountQ));
   }
 

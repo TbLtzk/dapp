@@ -3,7 +3,7 @@ import {
   getPastEvents,
 } from '../../handler/VotingHandler';
 import { maxApproveAmount } from '../../handler/AuctionHandler';
-import { BorrowingCoreQUSD } from '../../BorrowingCore';
+import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
 import { StableCoinQUSD } from '../../StableCoin';
 
 export default class AuctionService {

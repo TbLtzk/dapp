@@ -54,6 +54,7 @@ export default class SlashingVoting extends VotingService {
       objEscrow.objEscrow.objection.statusObjection =
         SlashingEscrowContract.getTitleStatus(await SlashingEscrowContract.getStatus(id));
       const escrowArbitrationInfo = await SlashingEscrowContract.getArbitrationInfos(id);
+      const escrowDecisionStats = await SlashingEscrowContract.getDecisionStats(id);
       objEscrow.objEscrow.objection.executed = escrowArbitrationInfo.executed;
       objEscrow.objEscrow.objection.remark = escrowArbitrationInfo.remark;
       objEscrow.objEscrow.objection.slashedAmount = fromWei(escrowArbitrationInfo.params.slashedAmount);
@@ -65,6 +66,9 @@ export default class SlashingVoting extends VotingService {
       objEscrow.objEscrow.decision.notAppealed = escrowArbitrationInfo.decision.notAppealed;
       objEscrow.objEscrow.decision.percentage = escrowArbitrationInfo.decision.percentage;
       objEscrow.objEscrow.decision.proposer = escrowArbitrationInfo.decision.proposer;
+      objEscrow.objEscrow.decision.confirmationCount = escrowDecisionStats.confirmationCount;
+      objEscrow.objEscrow.decision.currentConfirmationPercentage = escrowDecisionStats.currentConfirmationPercentage;
+      objEscrow.objEscrow.decision.requiredConfirmations = escrowDecisionStats.requiredConfirmations;
 
       return { ...objRes, ...objStats, ...objEscrow };
     } catch (e) {
