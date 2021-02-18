@@ -88,7 +88,7 @@ function MemberTable(props) {
             </OverlayTrigger>
           </MemberAddress>
         </td>
-        <td>{amount}</td>
+        {!amount ? null : <td>{amount}</td>}
         {!share ? null : <td>{share}</td>}
       </tr>
     );
@@ -106,9 +106,11 @@ function MemberTable(props) {
       const amount = fN(member.stakeAmount) + 'Q';
       const share = member.share + '%';
       return showBodyTable(i, null, member.address, amount, 'root-member', share);
-    } else if (type === "delegated-validators"){
+    } else if (type === 'delegated-validators') {
       const amount = fN(fromWei(member.amount)) + 'Q';
       return showBodyTable(i, null, member.validator, amount, commonClass, null);
+    } else if (type === 'members') {
+      return showBodyTable(i, null, member, null, 'members', null);
     }
 
   }, [elements, amountNodeStake]);

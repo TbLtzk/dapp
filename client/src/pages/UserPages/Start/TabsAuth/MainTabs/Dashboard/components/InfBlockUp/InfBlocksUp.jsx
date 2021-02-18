@@ -34,7 +34,7 @@ function InfBlocksUp() {
           title="Blockchain"
           firstSubtitle="Block Height"
           secondSubtitle="System Contract Registry:"
-          firstContent={<p> {state?.currentBlock?.number}</p>}
+          firstContent={<p> {state?.currentBlock ? state?.currentBlock?.number : 0}</p>}
           secondContent={
             <p>
               {contractsToAddresses.ContractRegistry}

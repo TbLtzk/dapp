@@ -53,6 +53,7 @@ function* getLockedAssetsGenerator({ address }) {
 
     const contract = getContractInstance();
     let data = yield contract.getLockInfo(address);
+    console.log("getLockInfo", data);
     data = handleLockedAssetsResponse(data);
     yield put(setLockedAssets(data.votingWeight, data.votingLockingEnd));
   } catch (err) {

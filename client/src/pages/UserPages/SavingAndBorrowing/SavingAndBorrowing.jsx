@@ -17,9 +17,9 @@ export default function SavingAndBorrowing() {
           label: 'decentralized-saving-borrowing',
           title: 'Decentralized Saving and Borrowing',
           content: (
-            <WrapTabs>
+            <div style={{paddingTop: '40px'}}>
               <TabContent activeTab={activeTab}/>
-            </WrapTabs>
+            </div>
           )
         },
         {

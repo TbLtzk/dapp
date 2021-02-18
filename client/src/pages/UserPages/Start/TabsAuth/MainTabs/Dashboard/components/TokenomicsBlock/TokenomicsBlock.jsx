@@ -39,12 +39,9 @@ function TokenomicsBlock() {
   const handler = new Handler(drizzle, userAddress);
 
   useEffect(() => {
-
     const interval = setInterval(() => {
         setTimeSinceQHolderRewardUpdate(remainDateTimeSince(timeSinceUnixTimestamp));
-      },
-      60000
-    );
+      }, 60000);
     return () => {
       clearInterval(interval);
     };

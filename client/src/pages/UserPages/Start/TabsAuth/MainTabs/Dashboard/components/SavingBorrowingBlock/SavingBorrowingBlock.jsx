@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
+import { useSelector } from 'react-redux';
+import { userAddressMetamask } from 'store/selectors/user-inf';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import CardBlock from '../CardBlock';
@@ -15,7 +17,9 @@ const { useDrizzle } = drizzleReactHooks;
 
 function SavingBorrowingBlock() {
   const { drizzle } = useDrizzle();
-  const handler = new Handler(drizzle);
+
+  const userAddress = useSelector(userAddressMetamask);
+  const handler = new Handler(drizzle, userAddress);
 
   const [totalSupply, setTotalSupply] = useState('0');
   const [systemBalance, setSystemBalance] = useState('0');
@@ -69,7 +73,7 @@ function SavingBorrowingBlock() {
         handler.refreshTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setLoadingTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance);
         break;
       case 'of-outstanding-debt':
-        return '';
+        handler.refreshTimeSinceOutstandingDebt(setTimeSinceOutstandingDeb, setLoadingTimeSinceOutstandingDeb, setTimeSinceUnixTimestampOutstandingDeb);
         break;
     }
   }, []);
@@ -109,12 +113,13 @@ function SavingBorrowingBlock() {
       },
       {
         title: 'QUSD - QBTC Time since refresh of outstanding debt',
-        firstContent: '0d 1h 34m',
+        firstContent: timeSinceOutstandingDebt,
         btnTitle: 'Refresh',
         btnType: 'of-outstanding-debt'
       },
     ];
-  }, [totalSupply, systemBalance, savingRate, interestRate, timeSinceRefreshBalance]);
+  }, [totalSupply, systemBalance, savingRate, interestRate,
+    timeSinceRefreshBalance, timeSinceOutstandingDebt]);
 
   const showBtnTitle = (title, type) => {
     switch (type) {
