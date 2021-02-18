@@ -21,6 +21,13 @@ export default class SlashingEscrow {
     return result;
   }
 
+  async getDecisionStats(id) {
+    const result = await this.contract.methods.getDecisionStats(id)
+      .call();
+    console.log("getDecisionStats", result);
+    return result;
+  }
+
   async recallProposedDecision(id, userAddress) {
     const result = await this.contract.methods.recallProposedDecision(id)
       .send(

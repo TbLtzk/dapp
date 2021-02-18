@@ -9,6 +9,7 @@ import CustomBlock from 'components/Base/CustomBlock';
 import CardBlock from '../CardBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 
+import { remainDateTimeSince } from 'func/convertDate';
 import { Container, Col, Row } from 'react-bootstrap';
 import { TitleNotAlign } from '../../styles';
 
@@ -30,8 +31,21 @@ function TokenomicsBlock() {
   const [validationRewardPools, setValidationRewardPools] = useState('0');
   const [QHolderRewardPool, setQHolderRewardPool] = useState('0');
 
+  const [timeSinceQHolderRewardUpdate, setTimeSinceQHolderRewardUpdate] = useState('0');
+  const [timeSinceUnixTimestamp, setTimeSinceUnixTimestamp] = useState('0');
+  const [loadingTimeSince, setLoadingTimeSince] = useState(false);
+
   const balanceVRP = useSelector(balanceSelector);
   const handler = new Handler(drizzle, userAddress);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+        setTimeSinceQHolderRewardUpdate(remainDateTimeSince(timeSinceUnixTimestamp));
+      }, 60000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [timeSinceUnixTimestamp]);
 
   useEffect(async () => {
     setDefaultAllocationProxy('...');
@@ -70,6 +84,11 @@ function TokenomicsBlock() {
   }, [defaultAllocationProxy]);
 
   useEffect(() => {
+    setTimeSinceQHolderRewardUpdate('...');
+    handler.getTimeSinceQHolderRewardUpdate(setTimeSinceQHolderRewardUpdate, setTimeSinceUnixTimestamp);
+  }, []);
+
+  useEffect(() => {
     setValidationRewardPools('...');
     handler.getValidationRewardPools(setValidationRewardPools);
   }, [validationRewardProxy]);
@@ -90,7 +109,7 @@ function TokenomicsBlock() {
   }, []);
 
   const onRefresh = useCallback(() => {
-    console.log('click onRefresh');
+    handler.refreshTimeSinceQHolderRewardUpdate(setTimeSinceQHolderRewardUpdate, setLoadingTimeSince, setTimeSinceUnixTimestamp);
   }, []);
 
   const dataArr = useMemo(() => {
@@ -130,11 +149,13 @@ function TokenomicsBlock() {
       },
       {
         title: 'Time Since Q Holder Reward Update',
-        firstContent: '0d 1h 34m',
+        firstContent: timeSinceQHolderRewardUpdate,
         btnTitle: 'Refresh',
+        btnType: 'time-since-q-holder',
       },
     ];
-  }, [defaultAllocationProxy, validationRewardPools, validationRewardProxy, systemReserve, balanceVRP, rootNodeRewardProxy, QHolderRewardPool]);
+  }, [defaultAllocationProxy, validationRewardPools, validationRewardProxy, systemReserve, balanceVRP,
+    rootNodeRewardProxy, QHolderRewardPool, timeSinceQHolderRewardUpdate]);
 
   const showBtnTitle = (title, type) => {
     switch (type) {
@@ -152,6 +173,12 @@ function TokenomicsBlock() {
         }
       case 'root-node-allocation':
         if (loadingValidationReward) {
+          return <LoadingSpinner/>;
+        } else {
+          return title;
+        }
+      case 'time-since-q-holder':
+        if (loadingTimeSince) {
           return <LoadingSpinner/>;
         } else {
           return title;

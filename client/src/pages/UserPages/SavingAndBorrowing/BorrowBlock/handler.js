@@ -3,7 +3,7 @@ import { GovernedEpdrQbtcQusdOracle, GovernedEpdrQethQusdOracle } from 'contract
 import { GovernedEpdrQbtcAddress, GovernedEpdrQethAddress, StableCoinQUSD } from 'contracts/StableCoin';
 import { web3 } from 'contracts/config/drizzle-config';
 import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
-import { BorrowingCoreQUSD } from 'contracts/BorrowingCore';
+import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
 import { fromBtcBlockchain, toBtcBlockchain, toWei, fromWei } from 'func/balance';
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
 import { transformToPercentage } from 'contracts/handler/VotingHandler';

@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Col } from 'react-bootstrap';
-import ButtonSlide from 'components/Base/Buttons/ButtonSlide';
+
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
+
 import { fromBtcBlockchain } from 'func/balance';
 import { fN } from 'func/useful';
-import { max_allowance } from 'func/numbers';
 import { fromWei } from 'func/balance';
+
 import CommonHandler from '../handler';
 import Handler from './handler';
 
+import ButtonSlide from 'components/Base/Buttons/ButtonSlide';
+
+import { Col } from 'react-bootstrap';
 import { CardDetail } from '../styles';
 
 export default function BorrowBlock(props) {
@@ -21,6 +24,8 @@ export default function BorrowBlock(props) {
   useEffect(() => {
     setActCardDataInf(actCardData);
   }, [actCardData]);
+
+  console.log("actCardData", actCardData);
 
   const [lockedCol, setLockedCol] = useState(0);
   const [exchangeRate, setExchangeRate] = useState(0);

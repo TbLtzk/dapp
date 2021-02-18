@@ -13,14 +13,8 @@ export default class QPiggyBank {
       .call();
   }
 
-  async getLockedAssets(address) {
-    return await this.methods.getLockedAssets(address)
-      .call();
-  }
-
-  async deposit(address, amount, abandonClaims = true) {
+  async deposit(address, amount) {
     const amountL = toWei(amount);
-    // return await this.methods.deposit(abandonClaims).send({
     return await this.methods.deposit()
       .send({
         from: address,
@@ -28,13 +22,28 @@ export default class QPiggyBank {
       });
   }
 
-  async getLockInfo() {
-    return await this.methods.getLockInfo().call();
+  async getLockInfo(address) {
+    return await this.methods.getLockInfo()
+      .call({ from: address });
   }
 
-  async withdraw(address, amount, abandonClaims = true) {
+  async getBalanceDetails() {
+    return await this.methods.getBalanceDetails()
+      .call();
+  }
+
+  async compoundRateKeeper() {
+    return await this.methods.compoundRateKeeper()
+      .call();
+  }
+
+  async updateCompoundRate(address) {
+    return await this.methods.updateCompoundRate()
+      .send({ from: address });
+  }
+
+  async withdraw(address, amount) {
     const amountL = toWei(amount);
-    // return await this.methods.withdraw(amountL, abandonClaims)
     return await this.methods.withdraw(amountL)
       .send({ from: address });
   }

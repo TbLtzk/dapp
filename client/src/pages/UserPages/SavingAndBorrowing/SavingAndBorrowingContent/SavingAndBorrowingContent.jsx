@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { BorrowingCoreQUSD } from 'contracts/BorrowingCore';
+import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import Button from 'components/Base/Buttons/Button';
 import InfoBlocks from '../InfoBlocks';
@@ -29,21 +29,6 @@ export default function SavingAndBorrowingContent() {
 
   return (
     <>
-      {/*<Row>*/}
-        {/*<Col md={6}>*/}
-        {/*  <h3 style={{ margin: '0px 0 36px' }}>Decentralized Saving and Borrowing</h3>*/}
-        {/*</Col>*/}
-        {/*<Col md={6} style={{textAlign: 'right'}}>*/}
-        {/*    <Button*/}
-        {/*      title="Go to Decentralized auctions"*/}
-        {/*      width="30%"*/}
-        {/*      handleButton={() => {*/}
-        {/*        // console.log('click');*/}
-        {/*        history.push('decentralized-auctions');*/}
-        {/*      }}*/}
-        {/*    />*/}
-        {/*</Col>*/}
-      {/*</Row>*/}
       <ContainerSB>
         <Col xs={12} className="col-container">
           <Row>

@@ -1,0 +1,539 @@
+[
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "ArbitrationDecided",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "arbitrationInfos",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "remark",
+				"type": "string"
+			},
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "slashedAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "objectionEndTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "appealEndTime",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct ASlashingEscrow.ArbitrationParams",
+				"name": "params",
+				"type": "tuple"
+			},
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "externalReference",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "percentage",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "notAppealed",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "confirmationCount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "proposer",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "endDate",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct ASlashingEscrow.Decision",
+				"name": "decision",
+				"type": "tuple"
+			},
+			{
+				"internalType": "bool",
+				"name": "executed",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "associatedContractKey",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "confirmed",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "slashingAppealP",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "slashingOBJP",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "slashingReward",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "slashingRewardMax",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "slashingVP",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "slashingVotingContractKey",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_registry",
+				"type": "address"
+			}
+		],
+		"name": "initialize",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "open",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_remark",
+				"type": "string"
+			}
+		],
+		"name": "setRemark",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_remark",
+				"type": "string"
+			}
+		],
+		"name": "castObjection",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "getProposal",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "remark",
+						"type": "string"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "votingStartTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "votingEndTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "vetoEndTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "proposalExecutionP",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "requiredQuorum",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "requiredMajority",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "requiredSMajority",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "requiredSQuorum",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct IVoting.VotingParams",
+						"name": "params",
+						"type": "tuple"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "weightFor",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "weightAgainst",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "vetosCount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct IVoting.VotingCounters",
+						"name": "counters",
+						"type": "tuple"
+					},
+					{
+						"internalType": "bool",
+						"name": "executed",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct IVoting.BaseProposal",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_percentage",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "_notAppealed",
+				"type": "bool"
+			},
+			{
+				"internalType": "string",
+				"name": "_reference",
+				"type": "string"
+			}
+		],
+		"name": "proposeDecision",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "recallProposedDecision",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "confirmDecision",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "execute",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "getStatus",
+		"outputs": [
+			{
+				"internalType": "enum ASlashingEscrow.ArbitrationStatus",
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "getDecisionStats",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "confirmationCount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "requiredConfirmations",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "currentConfirmationPercentage",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct ASlashingEscrow.DecisionStats",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

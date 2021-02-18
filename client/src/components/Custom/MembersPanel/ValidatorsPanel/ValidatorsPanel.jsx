@@ -39,7 +39,7 @@ function ValidatorsPanel(props) {
         <Container fluid>
           <Row>
             {loading ? <LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap> :
-              errorMessage ? <Col xs={12}><p>No validators</p></Col> :
+              errorMessage || validators?.length === 0 ? <Col xs={12}><p>No validators</p></Col> :
                 <>
                   <Col xs={12}>
                     <HeadlineWrap>

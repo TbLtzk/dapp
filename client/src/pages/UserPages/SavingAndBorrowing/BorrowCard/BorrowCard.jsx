@@ -3,7 +3,7 @@ import { Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import { BorrowingCoreQUSD } from 'contracts/BorrowingCore';
+import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
 import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
 import { uintPerSecondToPerYearNumber } from 'func/useful';
 import BlockCardItem from '../BlockCardItem';

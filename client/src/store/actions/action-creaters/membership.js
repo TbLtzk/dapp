@@ -17,3 +17,28 @@ export const getIsUserEPQFIMemberSuccess = (result) => ({
   type: actionTypes.IS_USER_EPQFI_MEMBER_SUCCESS,
   result
 });
+
+
+export const getEPDRMembers = () => ({
+  type: actionTypes.GET_EPDR_MEMBERS,
+});
+export const getEPDRMembersSuccess = (result) => ({
+  type: actionTypes.GET_EPDR_MEMBERS_SUCCESS,
+  result
+});
+export const getEPDRMembersError = (result) => ({
+  type: actionTypes.GET_EPDR_MEMBERS_ERROR,
+  result
+});
+
+export const getEPQFIMembers = () => ({
+  type: actionTypes.GET_EPQFI_MEMBERS,
+});
+export const getEPQFIMembersSuccess = (result) => ({
+  type: actionTypes.GET_EPQFI_MEMBERS_SUCCESS,
+  result
+});
+export const getEPQFIMembersError = (result) => ({
+  type: actionTypes.GET_EPQFI_MEMBERS_ERROR,
+  result
+});

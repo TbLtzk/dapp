@@ -52,12 +52,10 @@ function* getLockedAssetsGenerator({ address }) {
     });
 
     const contract = getContractInstance();
-    console.log("contract", contract);
-    let data = yield contract.getLockInfo();
+    let data = yield contract.getLockInfo(address);
     console.log("getLockInfo", data);
-    // let data = yield contract.getLockedAssets(address);
-    // data = handleLockedAssetsResponse(data);
-    // yield put(setLockedAssets(data.votingWeight, data.votingLockingEnd));
+    data = handleLockedAssetsResponse(data);
+    yield put(setLockedAssets(data.votingWeight, data.votingLockingEnd));
   } catch (err) {
     console.error('QPB.Error', err);
     yield put(setError(err.message));

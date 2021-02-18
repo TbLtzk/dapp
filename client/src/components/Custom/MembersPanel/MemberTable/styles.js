@@ -50,6 +50,9 @@ export const MemberAddress = styled.span`
   .validator-member{
     max-width: 320px;
   }
+  .members{
+    max-width: 100%;
+  }
 `;
 
 export const Sharing = styled(ToggleBtn)`

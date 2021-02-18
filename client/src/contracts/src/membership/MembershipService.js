@@ -11,4 +11,9 @@ export default class MembershipService {
     return await this.contract.methods.isMember(address)
       .call();
   }
+
+  async getMembers() {
+    return await this.contract.methods.getMembers()
+      .call();
+  }
 }

@@ -1,0 +1,495 @@
+[
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "_user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "_newDepositAmount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "_newBalance",
+				"type": "uint256"
+			}
+		],
+		"name": "UserDeposited",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "_user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "_withdrawnAmount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "_newBalance",
+				"type": "uint256"
+			}
+		],
+		"name": "UserWithdrawn",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "aggregatedNormalizedBalance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "announceUnlock",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "claimStakeDelegatorReward",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "compoundRateKeeper",
+		"outputs": [
+			{
+				"internalType": "contract CompoundRateKeeper",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address[]",
+				"name": "_delegatedTo",
+				"type": "address[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "_stakes",
+				"type": "uint256[]"
+			}
+		],
+		"name": "delegateStake",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "deposit",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getBalanceDetails",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "currentBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "normalizedBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "compoundRate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "lastUpdateOfCompoundRate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "interestRate",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct PiggyBank.BalanceDetails",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_delegator",
+				"type": "address"
+			}
+		],
+		"name": "getDelegationsList",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "validator",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "actualStake",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "normalizedStake",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "compoundRate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "latestUpdateOfCompoundRate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "idealStake",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "claimableReward",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct PiggyBank.ValidatorInfo[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getLockInfo",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "lockedAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "lockedUntil",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "pendingUnlockAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "pendingUnlockTime",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct VotingLockInfo",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_userAddress",
+				"type": "address"
+			}
+		],
+		"name": "getUserBalance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_registry",
+				"type": "address"
+			}
+		],
+		"name": "initialize",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "lock",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "normalizedBalances",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "unlock",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "updateCompoundRate",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_validator",
+				"type": "address"
+			}
+		],
+		"name": "updateValidatorsCompoundRate",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "withdraw",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"stateMutability": "payable",
+		"type": "receive"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_delegator",
+				"type": "address"
+			}
+		],
+		"name": "testListOfDelegatedTo",
+		"outputs": [
+			{
+				"internalType": "address[]",
+				"name": "",
+				"type": "address[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_delegator",
+				"type": "address"
+			}
+		],
+		"name": "testTotalDelegatedStake",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_delegator",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_validator",
+				"type": "address"
+			}
+		],
+		"name": "testValidatorsActualStakes",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_delegator",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_validator",
+				"type": "address"
+			}
+		],
+		"name": "testValidatorsNormalizedStakes",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

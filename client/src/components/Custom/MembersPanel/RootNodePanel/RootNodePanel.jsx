@@ -51,7 +51,7 @@ function RootNodePanel(props) {
         <Container fluid>
           <Row>
             {loading ? <LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap> :
-              errorMessage ? <Col xs={12}><p>No roots node</p></Col> :
+              errorMessage || rootMembersArray?.length === 0 ? <Col xs={12}><p>No roots node</p></Col> :
                 <>
                   <Col xs={4}>
                     <HeadlineWrap>
