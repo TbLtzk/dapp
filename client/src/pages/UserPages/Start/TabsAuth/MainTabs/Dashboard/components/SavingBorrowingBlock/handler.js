@@ -83,34 +83,13 @@ export default class Handler {
 
   refreshTimeSinceRefreshBalance(stateSetter, stateLoading, stateSetterUnixTimestamp) {
     stateLoading(true);
-    // this.SavingQUSD.updateCompoundRate(this.userAddress)
-    //   .then(
-    //     res => {
-    //       this.getTimeSinceRefreshBalance(stateSetter, stateSetterUnixTimestamp);
-    //       stateLoading(false);
-    //     }
-    //   )
-    //   .catch(e => {
-    //     console.log('refreshTimeSinceRefreshBalance.Error', e);
-    //     stateSetter(0);
-    //     stateLoading(false);
-    //   });
-    this.CompoundRateKeeperSaving.getCurrentRate()
-      .then(res => {
-        console.log("getCurrentRate", res);
-        this.CompoundRateKeeperSaving.update(this.userAddress, res)
-          .then(res => {
-              console.log("update", res);
-              this.getTimeSinceOutstandingDebt(stateSetter, stateSetterUnixTimestamp);
-              stateLoading(false);
-            }
-          )
-          .catch(e => {
-            console.log("refreshTimeSinceRefreshBalance.Error", e);
-            stateSetter(0);
-            stateLoading(false);
-          });
-      })
+    this.SavingQUSD.updateCompoundRate(this.userAddress)
+      .then(
+        res => {
+          this.getTimeSinceRefreshBalance(stateSetter, stateSetterUnixTimestamp);
+          stateLoading(false);
+        }
+      )
       .catch(e => {
         console.log('refreshTimeSinceRefreshBalance.Error', e);
         stateSetter(0);
@@ -135,38 +114,17 @@ export default class Handler {
 
   refreshTimeSinceOutstandingDebt(stateSetter, stateLoading, stateSetterUnixTimestamp) {
     stateLoading(true);
-    this.CompoundRateKeeperBorrowing.getCurrentRate()
-      .then(res => {
-        console.log("getCurrentRate", res);
-        this.CompoundRateKeeperBorrowing.update(this.userAddress, res)
-          .then(res => {
-              console.log("update", res);
-              this.getTimeSinceOutstandingDebt(stateSetter, stateSetterUnixTimestamp);
-              stateLoading(false);
-            }
-          )
-          .catch(e => {
-            console.log("refreshTimeSinceOutstandingDebt.Error", e);
-            stateSetter(0);
-            stateLoading(false);
-          });
-      })
+    this.BorrowingCoreQUSD.updateCompoundRate(this.userAddress, 'QBTC')
+      .then(
+        res => {
+          this.getTimeSinceOutstandingDebt(stateSetter, stateSetterUnixTimestamp);
+          stateLoading(false);
+        }
+      )
       .catch(e => {
         console.log('refreshTimeSinceOutstandingDebt.Error', e);
         stateSetter(0);
         stateLoading(false);
       });
-    // this.BorrowingCoreQUSD.updateCompoundRate(this.userAddress, 'QBTC')
-    //   .then(
-    //     res => {
-    //       this.getTimeSinceOutstandingDebt(stateSetter, stateSetterUnixTimestamp);
-    //       stateLoading(false);
-    //     }
-    //   )
-    //   .catch(e => {
-    //     console.log("refreshTimeSinceOutstandingDebt.Error", e);
-    //     stateSetter(0);
-    //     stateLoading(false);
-    //   });
   }
 }

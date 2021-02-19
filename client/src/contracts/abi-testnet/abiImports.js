@@ -19,6 +19,7 @@ export const contractsAbiTestnet = {
   CompoundRateKeeper: require('./CompoundRateKeeper'),
   CompoundRateKeeperSaving: require('./CompoundRateKeeper'),
   CompoundRateKeeperBorrowing: require('./CompoundRateKeeper'),
+  CompoundRateKeeperPiggyBank: require('./CompoundRateKeeper'),
   ConstitutionParameters: require('./Constitution'),
   ConstitutionVoting: require('./ConstitutionVoting'),
   ContractRegistry: require('./ContractRegistry'),

@@ -5,6 +5,7 @@ import ValidationRewardProxy from 'contracts/src/proxy/ValidationRewardProxy';
 import QPiggyBank from 'contracts/src/QPiggyBank';
 import {bn, fN} from 'func/useful';
 import {remainDateTimeSince} from "func/convertDate";
+import CompoundRateKeeper from "contracts/src/CompoundRateKeeper";
 
 export default class Handler {
   constructor(drizzle, userAddress) {
@@ -14,6 +15,7 @@ export default class Handler {
     this.RootNodeRewardProxy = new RootNodeRewardProxy('RootNodeRewardProxy');
     this.ValidationRewardProxy = new ValidationRewardProxy('ValidationRewardProxy');
     this.QPiggyBank = new QPiggyBank();
+    this.CompoundRateKeeperPiggyBank = new CompoundRateKeeper('CompoundRateKeeperPiggyBank');
   }
 
   getBalanceValue(contract, stateSetter) {
@@ -124,11 +126,11 @@ export default class Handler {
   }
 
   getTimeSinceQHolderRewardUpdate(stateSetter, stateSetterUnixTimestamp) {
-    this.QPiggyBank.getBalanceDetails()
+    this.CompoundRateKeeperPiggyBank.getLastUpdate()
         .then(
             res => {
-              stateSetterUnixTimestamp(res?.lastUpdateOfCompoundRate);
-              const transformTime = remainDateTimeSince(res?.lastUpdateOfCompoundRate);
+              stateSetterUnixTimestamp(res);
+              const transformTime = remainDateTimeSince(res);
               stateSetter(transformTime);
             }
         )
