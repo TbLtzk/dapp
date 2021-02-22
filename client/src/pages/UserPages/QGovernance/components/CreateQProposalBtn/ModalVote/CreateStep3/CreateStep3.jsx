@@ -23,8 +23,7 @@ function CreateStep3(props) {
         <SummarText>Answer: {answer}</SummarText>
         {proposalContract !== 'EPDR_MembershipVoting' || proposalContract !== 'EPQFI_MembershipVoting' ||
         proposalContract !== 'RootNodesSlashingVoting' || proposalContract !== 'ValidatorsSlashingVoting' ||
-        proposalContract !== 'EmergencyUpdateVoting'
-          ?
+        proposalContract !== 'EmergencyUpdateVoting' ?
           <Warning>Notice: Your currently locked amount of Q inside the piggy bank will be extended until the end of
             this proposal.</Warning>
           : null
