@@ -6,6 +6,10 @@ import {
 } from 'store/actions/action-creaters/transaction-handler';
 
 import {
+  getLockedAssets
+} from 'store/actions/action-creaters/q-piggy-bank';
+
+import {
   createProposalSuccess, voteForProposalSuccess,
   getEndedProposalsSuccess, getEndedProposalsError,
   executeProposalSuccess, executeProposalError,
@@ -136,6 +140,7 @@ function* voteForProposal({ data }) {
     yield call(getProposalDependsOnType, data?.contract, data, data?.idProposal, true);
     yield put(voteForProposalSuccess(result));
     yield put(setTransactionLoadingSuccess());
+    yield put(getLockedAssets(userAddress));
 
   } catch (err) {
     console.log('err', err.message);
@@ -203,7 +208,6 @@ function* getProposalsList({ activeTab }) {
 
   try {
     // const { activeTab } = yield select(state => state.proposals);
-    console.log('activeTab', activeTab);
     let contracts = null;
     switch (activeTab) {
       case 'q-proposals':

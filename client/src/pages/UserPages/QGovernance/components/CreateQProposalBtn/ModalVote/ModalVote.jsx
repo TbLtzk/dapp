@@ -59,6 +59,7 @@ function ModalVote(props) {
             activeTab={activeTab}
             register={register}
             errors={errors}
+            proposalContract={proposalContract}
           />
         );
       default:

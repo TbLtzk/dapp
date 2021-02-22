@@ -24,7 +24,6 @@ export default class SlashingEscrow {
   async getDecisionStats(id) {
     const result = await this.contract.methods.getDecisionStats(id)
       .call();
-    console.log("getDecisionStats", result);
     return result;
   }
 
@@ -43,14 +42,9 @@ export default class SlashingEscrow {
   }
 
   async getArbitrationInfos(id) {
-    try {
-      const result = await this.contract.methods.arbitrationInfos(id)
-        .call();
-      console.log('getArbitrationInfos', result);
-      return result;
-    } catch (e) {
-      console.log(e);
-    }
+    const result = await this.contract.methods.arbitrationInfos(id)
+      .call();
+    return result;
   }
 
   async castObjection(id, link, userAddress) {

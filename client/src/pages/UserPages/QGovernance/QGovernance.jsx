@@ -1,11 +1,11 @@
-import React, { useMemo, useState } from 'react';
-import { fN } from 'func/useful';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { votingLockingEnd, votingWeight } from 'store/selectors/q-piggy-bank';
 import { onChangeProposalTab, onSetActiveTab } from 'store/actions/action-creaters/voting/proposals';
+import { getLockedAssets, getUserBalance } from 'store/actions/action-creaters/q-piggy-bank';
+import { userAddressMetamask } from 'store/selectors/user-inf';
 import { fromSolDateFormattingT1 } from 'func/date';
-
-import { useHistory } from 'react-router-dom';
 
 import ButtonsGroupTabs from 'components/Base/Tabs/ButtonsGroupTabs';
 import CreateQProposalBtn from './components/CreateQProposalBtn';
@@ -16,15 +16,24 @@ import PageWrap from 'components/Base/PageWrap';
 import Stats from 'components/Custom/PageLists/SidebarCards/Stats';
 import VoterStatus from 'components/Custom/PageLists/VoterStatus';
 
+import { fN } from 'func/useful';
+
 import { Row, Col } from 'react-bootstrap';
 import { WrapBtn, WrapTabs } from 'components/Custom/PageLists/styles';
 
 function QGovernance() {
   const history = useHistory();
+  const address = useSelector(userAddressMetamask);
   const userVotingWeight = fN(useSelector(votingWeight));
   const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd));
   const [activeTab, setActiveTab] = useState('q-proposals');
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserBalance(address));
+    dispatch(getLockedAssets(address));
+
+  }, [dispatch]);
 
   const statsData = useMemo(() => {
     return (
@@ -81,7 +90,6 @@ function QGovernance() {
             tabsItems={tabsItems}
             tabsHandler={(key) => {
               setActiveTab(key);
-              console.log("click");
               dispatch(onChangeProposalTab());
               dispatch(onSetActiveTab(key))
             }}

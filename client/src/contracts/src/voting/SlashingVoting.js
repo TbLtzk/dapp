@@ -20,34 +20,32 @@ export default class SlashingVoting extends VotingService {
         decision: {}
       },
     };
-    try {
-      console.log("promiseRes", promiseRes);
-      objRes.id = id;
-      objRes.remark = promiseRes.base.remark;
-      objRes.candidate = promiseRes.candidate;
-      objRes.amountToSlash = fromWei(promiseRes.amountToSlash);
-      objRes.vetosCount = promiseRes.base.counters.vetosCount;
-      // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
-      // objRes.votesFor = promiseRes.base.counters.weightFor;
-      //number of voting people against
-      const weightAgainst = promiseRes.base.counters.weightAgainst;
-      objRes.votesAgainst = weightAgainst;
-      //number of voting people for
-      const weightFor = promiseRes.base.counters.weightFor;
-      objRes.votesFor = weightFor;
-      //the ending is given by: vetoEndTime.
-      objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
-      //the time until when users can vote
-      objRes.votingEndTime = promiseRes.base.params.votingEndTime;
+    objRes.id = id;
+    objRes.remark = promiseRes.base.remark;
+    objRes.candidate = promiseRes.candidate;
+    objRes.amountToSlash = fromWei(promiseRes.amountToSlash);
+    objRes.vetosCount = promiseRes.base.counters.vetosCount;
+    // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
+    // objRes.votesFor = promiseRes.base.counters.weightFor;
+    //number of voting people against
+    const weightAgainst = promiseRes.base.counters.weightAgainst;
+    objRes.votesAgainst = weightAgainst;
+    //number of voting people for
+    const weightFor = promiseRes.base.counters.weightFor;
+    objRes.votesFor = weightFor;
+    //the ending is given by: vetoEndTime.
+    objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
+    //the time until when users can vote
+    objRes.votingEndTime = promiseRes.base.params.votingEndTime;
 
-      objRes.status = getStatusTransformation(promiseStatus);
-      objRes.title = this.contractName === 'ValidatorsSlashingVoting'
-        ? 'Validator slashing proposals' : 'Root Nodes slashing proposals';
-      objRes.type = this.contractName === 'ValidatorsSlashingVoting'
-        ? 'validator slashing' : 'root nodes slashing';
-      objStats = await this.getProposalStatsData(id);
-      objRes.contract = this.contractName;
-
+    objRes.status = getStatusTransformation(promiseStatus);
+    objRes.title = this.contractName === 'ValidatorsSlashingVoting'
+      ? 'Validator slashing proposals' : 'Root Nodes slashing proposals';
+    objRes.type = this.contractName === 'ValidatorsSlashingVoting'
+      ? 'validator slashing' : 'root nodes slashing';
+    objStats = await this.getProposalStatsData(id);
+    objRes.contract = this.contractName;
+    if (promiseStatus === '5') {
       const SlashingEscrowContractName = this.contractName === 'ValidatorsSlashingVoting'
         ? 'ValidatorsSlashingEscrow' : 'RootNodesSlashingEscrow';
       const SlashingEscrowContract = new SlashingEscrow(SlashingEscrowContractName);
@@ -69,11 +67,9 @@ export default class SlashingVoting extends VotingService {
       objEscrow.objEscrow.decision.confirmationCount = escrowDecisionStats.confirmationCount;
       objEscrow.objEscrow.decision.currentConfirmationPercentage = escrowDecisionStats.currentConfirmationPercentage;
       objEscrow.objEscrow.decision.requiredConfirmations = escrowDecisionStats.requiredConfirmations;
-
-      return { ...objRes, ...objStats, ...objEscrow };
-    } catch (e) {
-      console.log('e', e);
     }
+
+    return { ...objRes, ...objStats, ...objEscrow };
   }
 
   //create proposal

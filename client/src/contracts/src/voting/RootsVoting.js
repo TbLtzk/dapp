@@ -42,42 +42,38 @@ export default class RootsVoting extends VotingService {
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
-    try {
-      objRes.id = id;
-      objRes.remark = promiseRes.base.remark;
-      const candidateAddress = promiseRes.candidate;
-      objRes.candidate = candidateAddress;
-      const replaceDestAddress = promiseRes.replaceDest;
-      objRes.replaceDest = replaceDestAddress;
-      objRes.votesCount = promiseRes.votesCount;
-      // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
-      // objRes.votesFor = promiseRes.base.counters.weightFor;
-      const weightAgainst = promiseRes.base.counters.weightAgainst;
-      objRes.votesAgainst = fromWei(weightAgainst);
+    objRes.id = id;
+    objRes.remark = promiseRes.base.remark;
+    const candidateAddress = promiseRes.candidate;
+    objRes.candidate = candidateAddress;
+    const replaceDestAddress = promiseRes.replaceDest;
+    objRes.replaceDest = replaceDestAddress;
+    objRes.votesCount = promiseRes.votesCount;
+    // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
+    // objRes.votesFor = promiseRes.base.counters.weightFor;
+    const weightAgainst = promiseRes.base.counters.weightAgainst;
+    objRes.votesAgainst = fromWei(weightAgainst);
 
-      const weightFor = promiseRes.base.counters.weightFor;
-      objRes.votesFor = fromWei(weightFor);
-      objRes.requiredMajority = promiseRes.base.params.requiredMajority;
-      objRes.requiredQuorum = promiseRes.base.params.requiredQuorum;
-      //the ending is given by: vetoEndTime.
-      objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
-      objRes.vetoThreshold = promiseRes.base.params.vetoThreshold;
-      //the time until when users can vote
-      objRes.votingEndTime = promiseRes.base.params.votingEndTime;
+    const weightFor = promiseRes.base.counters.weightFor;
+    objRes.votesFor = fromWei(weightFor);
+    objRes.requiredMajority = promiseRes.base.params.requiredMajority;
+    objRes.requiredQuorum = promiseRes.base.params.requiredQuorum;
+    //the ending is given by: vetoEndTime.
+    objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
+    objRes.vetoThreshold = promiseRes.base.params.vetoThreshold;
+    //the time until when users can vote
+    objRes.votingEndTime = promiseRes.base.params.votingEndTime;
 
-      objRes.title = this.checkProposalTitle(candidateAddress, replaceDestAddress);
-      // let getVotesAddress = await this.isUserVote(id, "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7");
-      let getVetoesNumber = await this.getVetoesNumber(id);
-      let getVetoesPercentage = await this.getVetoesPercentage(id);
-      objRes.vetoesNumber = getVetoesNumber;
-      objRes.vetoesPercentage = getVetoesPercentage;
-      objStats = await this.getProposalStatsData(id);
-      objRes.status = getStatusTransformation(promiseStatus);
-      objRes.contract = this.contractName;
-      return { ...objRes, ...objStats };
-    } catch (e) {
-      console.log('e', e);
-    }
+    objRes.title = this.checkProposalTitle(candidateAddress, replaceDestAddress);
+    // let getVotesAddress = await this.isUserVote(id, "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7");
+    let getVetoesNumber = await this.getVetoesNumber(id);
+    let getVetoesPercentage = await this.getVetoesPercentage(id);
+    objRes.vetoesNumber = getVetoesNumber;
+    objRes.vetoesPercentage = getVetoesPercentage;
+    objStats = await this.getProposalStatsData(id);
+    objRes.status = getStatusTransformation(promiseStatus);
+    objRes.contract = this.contractName;
+    return { ...objRes, ...objStats };
   }
 
   /**

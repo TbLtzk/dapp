@@ -1,14 +1,19 @@
 import React, { useMemo } from 'react';
-import { Row, Col } from 'react-bootstrap';
+
+import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { rootNodeStake } from 'store/selectors/root-contract';
 
 import BigTabsView from 'components/Base/Tabs/BigTabsView';
 import RootNodeStakingContent from './RootNodeStakingContent';
 import ValidatorStaking from './ValidatorStaking';
-import { useSelector } from 'react-redux';
-import { rootNodeStake } from '../../../store/selectors/root-contract';
-import PageWrap from '../../../components/Base/PageWrap';
+import PageWrap from 'components/Base/PageWrap';
+
+import { Row, Col } from 'react-bootstrap';
 
 function Staking() {
+  const location = useLocation();
+  const { state } = location;
   const amountNodeStake = useSelector(rootNodeStake);
 
   const tabsItems = useMemo(() => (
@@ -32,6 +37,7 @@ function Staking() {
         <Col xs={12}>
           <BigTabsView
             tabsItems={tabsItems}
+            active={state?.activeTab ? state.activeTab : tabsItems[0]?.label}
           />
         </Col>
       </Row>

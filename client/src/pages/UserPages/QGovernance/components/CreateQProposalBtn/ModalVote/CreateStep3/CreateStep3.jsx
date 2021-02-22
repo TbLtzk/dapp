@@ -5,11 +5,12 @@ import { formVoteObject } from 'store/selectors/voting/proposals';
 import {
   SummarText,
   SummarTextType,
-  SubTitle
+  SubTitle,
+  Warning
 } from 'components/Custom/ModalActions/styles';
 
 function CreateStep3(props) {
-  const { activeTab, register, errors } = props;
+  const { activeTab, register, errors, proposalContract } = props;
   const formData = useSelector(formVoteObject);
 
   const showCommonData = (answer) => {
@@ -20,6 +21,14 @@ function CreateStep3(props) {
           <SummarTextType> {formData?.first?.replace(/-/g, ' ')}</SummarTextType>
         </SummarText>
         <SummarText>Answer: {answer}</SummarText>
+        {proposalContract !== 'EPDR_MembershipVoting' || proposalContract !== 'EPQFI_MembershipVoting' ||
+        proposalContract !== 'RootNodesSlashingVoting' || proposalContract !== 'ValidatorsSlashingVoting' ||
+        proposalContract !== 'EmergencyUpdateVoting'
+          ?
+          <Warning>Notice: Your currently locked amount of Q inside the piggy bank will be extended until the end of
+            this proposal.</Warning>
+          : null
+        }
       </div>
     );
   };

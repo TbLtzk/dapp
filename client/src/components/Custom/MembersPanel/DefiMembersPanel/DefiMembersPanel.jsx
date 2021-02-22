@@ -26,7 +26,6 @@ function DefiMembersPanel() {
       errorMessage={errorMessage}
       title="DeFi Risk"
     />
-
   );
 }
 

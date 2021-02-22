@@ -1,4 +1,4 @@
-import { contracts } from './config/drizzle-config';
+import { contracts } from '../config/drizzle-config';
 
 const contractName = 'ValidationRewardPools';
 
@@ -8,7 +8,6 @@ export default class ValidationRewardPools {
   }
 
   async getBalance(address) {
-    console.log("getBalance", address);
     return await this.methods.getBalance(address).call();
   }
 }

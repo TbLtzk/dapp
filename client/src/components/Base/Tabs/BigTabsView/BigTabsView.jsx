@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import { TabsStyle, TabStyle } from './styles';
 
 function BigTabsView(props) {
-  const { tabsItems } = props;
-  const [key, setKey] = useState(tabsItems[0]?.label);
-  // console.log("key", key);
+  const { tabsItems, active } = props;
+  const [key, setKey] = useState(() => active ? active : tabsItems[0]?.label);
 
   return (
     <TabsStyle

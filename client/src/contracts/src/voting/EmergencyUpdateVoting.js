@@ -16,32 +16,27 @@ export default class EmergencyUpdateVoting extends VotingService {
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
-    try {
-      console.log('promiseRes', promiseRes);
-      objRes.id = id;
-      objRes.remark = promiseRes.remark;
-      // objRes.votesAgainst = promiseRes.counters.weightAgainst;
-      // objRes.votesFor = promiseRes.counters.weightFor;
-      //number of voting people against
-      const weightAgainst = promiseRes.counters.weightAgainst;
-      objRes.votesAgainst = weightAgainst;
-      //number of voting people for
-      const weightFor = promiseRes.counters.weightFor;
-      objRes.votesFor = weightFor;
+    objRes.id = id;
+    objRes.remark = promiseRes.remark;
+    // objRes.votesAgainst = promiseRes.counters.weightAgainst;
+    // objRes.votesFor = promiseRes.counters.weightFor;
+    //number of voting people against
+    const weightAgainst = promiseRes.counters.weightAgainst;
+    objRes.votesAgainst = weightAgainst;
+    //number of voting people for
+    const weightFor = promiseRes.counters.weightFor;
+    objRes.votesFor = weightFor;
 
-      objRes.vetosCount = promiseRes.counters.vetosCount;
-      objRes.votingEndTime = promiseRes.params.votingEndTime;
-      objRes.vetoEndTime = promiseRes.params.vetoEndTime;
-      objRes.proposalExecutionP = promiseRes.params.proposalExecutionP;
-      objRes.status = getStatusTransformation(promiseStatus);
-      objRes.title = 'Emergency update proposal';
-      objRes.contract = this.contractName;
-      objStats = await this.getProposalStatsData(id);
+    objRes.vetosCount = promiseRes.counters.vetosCount;
+    objRes.votingEndTime = promiseRes.params.votingEndTime;
+    objRes.vetoEndTime = promiseRes.params.vetoEndTime;
+    objRes.proposalExecutionP = promiseRes.params.proposalExecutionP;
+    objRes.status = getStatusTransformation(promiseStatus);
+    objRes.title = 'Emergency update proposal';
+    objRes.contract = this.contractName;
+    objStats = await this.getProposalStatsData(id);
 
-      return { ...objRes, ...objStats };
-    } catch (e) {
-      console.log('e', e);
-    }
+    return { ...objRes, ...objStats };
   }
 
   //create proposal

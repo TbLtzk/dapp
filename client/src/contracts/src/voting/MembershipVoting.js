@@ -15,39 +15,34 @@ export default class MembershipVoting extends VotingService {
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
-    try {
-      console.log('promiseRes MembershipVoting', promiseRes);
-      objRes.id = id;
-      objRes.remark = promiseRes.base.remark;
-      objRes.addressToAdd = promiseRes.proposalDetails.addressToAdd;
-      objRes.addressToRemove = promiseRes.proposalDetails.addressToRemove;
-      objRes.vetosCount = promiseRes.base.counters.vetosCount;
-      // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
-      // objRes.votesFor = promiseRes.base.counters.weightFor;
-      const weightAgainst = promiseRes.base.counters.weightAgainst;
-      objRes.votesAgainst = fromWei(weightAgainst);
-      const weightFor = promiseRes.base.counters.weightFor;
-      objRes.votesFor = fromWei(weightFor);
+    objRes.id = id;
+    objRes.remark = promiseRes.base.remark;
+    objRes.addressToAdd = promiseRes.proposalDetails.addressToAdd;
+    objRes.addressToRemove = promiseRes.proposalDetails.addressToRemove;
+    objRes.vetosCount = promiseRes.base.counters.vetosCount;
+    // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
+    // objRes.votesFor = promiseRes.base.counters.weightFor;
+    const weightAgainst = promiseRes.base.counters.weightAgainst;
+    objRes.votesAgainst = fromWei(weightAgainst);
+    const weightFor = promiseRes.base.counters.weightFor;
+    objRes.votesFor = fromWei(weightFor);
 
-      //the ending is given by: vetoEndTime.
-      objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
-      //the time until when users can vote
-      objRes.votingEndTime = promiseRes.base.params.votingEndTime;
-      objRes.status = getStatusTransformation(promiseStatus);
-      objRes.title = this.contractName === 'EPDR_MembershipVoting'
-        ? 'DeFi Risk Expert membership proposals'
-        : 'Fees & Incentives Experts membership proposals';
-      objRes.type = this.contractName === 'EPDR_MembershipVoting'
-        ? 'DeFi Risk Expert membership'
-        : 'Fees & Incentives Experts membership';
-      objRes.kindVoting = 'membership';
-      objStats = await this.getProposalStatsData(id);
-      objRes.contract = this.contractName;
+    //the ending is given by: vetoEndTime.
+    objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
+    //the time until when users can vote
+    objRes.votingEndTime = promiseRes.base.params.votingEndTime;
+    objRes.status = getStatusTransformation(promiseStatus);
+    objRes.title = this.contractName === 'EPDR_MembershipVoting'
+      ? 'DeFi Risk Expert membership proposals'
+      : 'Fees & Incentives Experts membership proposals';
+    objRes.type = this.contractName === 'EPDR_MembershipVoting'
+      ? 'DeFi Risk Expert membership'
+      : 'Fees & Incentives Experts membership';
+    objRes.kindVoting = 'membership';
+    objStats = await this.getProposalStatsData(id);
+    objRes.contract = this.contractName;
 
-      return { ...objRes, ...objStats };
-    } catch (e) {
-      console.log('e', e);
-    }
+    return { ...objRes, ...objStats };
   }
 
   //get proposals

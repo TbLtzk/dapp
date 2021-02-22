@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { formObject } from 'store/selectors/auctions/modalHandler';
-import { StableCoinQUSD } from 'contracts/StableCoin';
+import { StableCoinQUSD } from 'contracts/src/StableCoin';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 import { setApproveModalBtn } from 'store/actions/action-creaters/auctions/auctions';

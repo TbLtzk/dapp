@@ -3,7 +3,8 @@ import {
   transformToPercentage,
 } from '../handler/VotingHandler';
 import { fromWei } from 'func/balance';
-import ValidationRewardPools from '../ValidationRewardPools'
+import ValidationRewardPools from './ValidationRewardPools';
+
 const contractName = 'Validators';
 
 export default class Validators {
@@ -98,6 +99,7 @@ export default class Validators {
       return [];
     } else {
       let resultArr = [];
+      let count = 1;
       for (let member of validatorsArr) {
         const selfStake = fromWei(await this.methods.getValidatorsOwnStake(member.validator)
           .call());
@@ -108,8 +110,7 @@ export default class Validators {
         const delegatorShare = transformToPercentage(await this.methods.getDelegatorsShare(member.validator)
           .call());
         const validatorShare = delegatorShare ? 100 - delegatorShare : 0;
-        const validatorPoolBalance = fromWei(await this.ValidationRewardPoolsContract.methods.getBalance(member.validator)
-          .call());
+        const validatorPoolBalance = fromWei(await this.ValidationRewardPoolsContract.getBalance(member.validator));
 
         resultArr.push({
           ...member,
@@ -118,8 +119,10 @@ export default class Validators {
           validatorShare,
           selfStake,
           validatorPoolBalance,
-          poolPayoutRatio
+          poolPayoutRatio,
+          rank: count
         });
+        count ++;
       }
       return resultArr;
     }

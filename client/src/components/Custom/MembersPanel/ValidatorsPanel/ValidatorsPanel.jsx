@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { lazy, Suspense, useEffect, useMemo } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getValidatorMembers } from 'store/actions/action-creaters/validators';
@@ -6,15 +6,16 @@ import {
   loadingMembers, errorMembers, validatorMembers
 } from 'store/selectors/validators';
 
-import { Container, Row, Col } from 'react-bootstrap';
-
 import ButtonLinkArrow from 'components/Base/Buttons/ButtonLinkArrow';
-import MemberTable from 'components/Custom/MembersPanel/MemberTable';
+// import MemberTable from 'components/Custom/MembersPanel/MemberTable';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
-import CustomBlock from '../../../Base/CustomBlock';
+import CustomBlock from 'components/Base/CustomBlock';
+
+const MemberTable = lazy(() => import('components/Custom/MembersPanel/MemberTable'));
 
 import { tableHeaderShort, tableHeaderWidened } from './constants';
 
+import { Container, Row, Col } from 'react-bootstrap';
 import {
   H5Headline, ContainerWrap, HeadlineWrap,
   BottomText, WrapBtn, LoadingWrap
@@ -34,41 +35,49 @@ function ValidatorsPanel(props) {
   }, [dispatch]);
 
   const tableHeader = useMemo(() => {
-    if (!widened){
+    // if (!widened) {
       return tableHeaderShort;
-    }else {
-      return tableHeaderWidened;
-    }
-  },[widened]);
-
-    console.log("validators", validators);
+    // } else {
+    //   return tableHeaderWidened;
+    // }
+  }, [widened]);
 
   return (
     <CustomBlock>
       <ContainerWrap>
         <Container fluid>
           <Row>
-            {loading ? <LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap> :
-              errorMessage || validators?.length === 0 ? <Col xs={12}><p>No validators</p></Col> :
-                <>
-                  <Col xs={12}>
-                    <HeadlineWrap>
-                      <H5Headline>Validator Ranking</H5Headline>
-                    </HeadlineWrap>
-                  </Col>
+            <Col xs={12}>
+              <HeadlineWrap>
+                <H5Headline>Validator Ranking</H5Headline>
+              </HeadlineWrap>
+            </Col>
+            <Suspense fallback={<LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap>}>
+              {loading ? <LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap> :
+                errorMessage || validators?.length === 0 ? <Col xs={12}><p>No validators</p></Col> :
                   <Col xs={12}>
                     <MemberTable
-                      type={!widened ? 'validators' : 'validators-widened'}
+                      type={'validators'}
+                      // type={!widened ? 'validators' : 'validators-widened'}
                       arrayData={validators}
                       tableHeader={tableHeader}
                       widened
                     />
                   </Col>
-                </>
-            }
+              }
+            </Suspense>
             <Col xs={12}>
-              {!bottom ? null :
-                <Row>
+              {!bottom
+                ? <WrapBtn xs={12}>
+                  <ButtonLinkArrow
+                    title="See more details"
+                    path="/staking"
+                    stateHistory={{
+                      activeTab: 'validator-staking'
+                    }}
+                  />
+                </WrapBtn>
+                : <Row>
                   <Col xs={7}>
                     <BottomText>Manage your validator pool parameters in piggy bank.</BottomText>
                   </Col>

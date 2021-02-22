@@ -1,7 +1,7 @@
 import { put, takeEvery } from 'redux-saga/effects';
 import * as actionTypes from 'store/actions/action-types/validation-reward-pools';
 import { setError, setBalance, getVRPBalanceSuccess } from 'store/actions/action-creaters/validation-reward-pools';
-import ValidationRewardPools from 'contracts/ValidationRewardPools';
+import ValidationRewardPools from 'contracts/src/ValidationRewardPools';
 
 let contractInstance = null;
 

@@ -4,7 +4,7 @@ import {
 } from '../../handler/VotingHandler';
 import { maxApproveAmount } from '../../handler/AuctionHandler';
 import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
-import { StableCoinQUSD } from '../../StableCoin';
+import { StableCoinQUSD } from 'contracts/src/StableCoin';
 
 export default class AuctionService {
 

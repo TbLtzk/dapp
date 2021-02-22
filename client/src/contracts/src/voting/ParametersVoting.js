@@ -14,42 +14,37 @@ export default class ParametersVoting extends VotingService {
     let objRes = {};
     let objStats = {};
     let objParameters = {};
-    try {
-      console.log('ParametersVoting', promiseRes);
-      objRes.id = id;
-      objRes.remark = promiseRes.base.remark;
-      objRes.vetosCount = promiseRes.base.counters.vetosCount;
-      // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
-      // objRes.votesFor = promiseRes.base.counters.weightFor;
-      //number of voting people against
-      const weightAgainst = promiseRes.base.counters.weightAgainst;
-      objRes.votesAgainst = weightAgainst;
-      //number of voting people for
-      const weightFor = promiseRes.base.counters.weightFor;
-      objRes.votesFor = weightFor;
-      //the ending is given by: vetoEndTime.
-      objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
-      //the time until when users can vote
-      objRes.votingEndTime = promiseRes.base.params.votingEndTime;
+    objRes.id = id;
+    objRes.remark = promiseRes.base.remark;
+    objRes.vetosCount = promiseRes.base.counters.vetosCount;
+    // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
+    // objRes.votesFor = promiseRes.base.counters.weightFor;
+    //number of voting people against
+    const weightAgainst = promiseRes.base.counters.weightAgainst;
+    objRes.votesAgainst = weightAgainst;
+    //number of voting people for
+    const weightFor = promiseRes.base.counters.weightFor;
+    objRes.votesFor = weightFor;
+    //the ending is given by: vetoEndTime.
+    objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
+    //the time until when users can vote
+    objRes.votingEndTime = promiseRes.base.params.votingEndTime;
 
-      objRes.status = getStatusTransformation(promiseStatus);
-      objRes.title = this.contractName === 'EPDR_ParametersVoting'
-        ? 'DeFi Risk Expert parameter voting proposals'
-        : 'Fees & Incentives Experts parameter voting proposals';
-      objRes.type = this.contractName === 'EPDR_ParametersVoting'
-        ? 'DeFi Risk Expert Parameters Proposals'
-        : 'Fees & Incentives Experts Parameters Proposals';
-      objRes.kindVoting = 'parameters';
-      objStats = await this.getProposalStatsData(id);
-      objRes.contract = this.contractName;
-      const parametersSize = promiseRes.parametersSize;
-      if (parametersSize >= '1') {
-        objParameters = await this.getProposalParametersData(id);
-      }
-      return { ...objRes, ...objStats, ...objParameters };
-    } catch (e) {
-      console.log('e', e);
+    objRes.status = getStatusTransformation(promiseStatus);
+    objRes.title = this.contractName === 'EPDR_ParametersVoting'
+      ? 'DeFi Risk Expert parameter voting proposals'
+      : 'Fees & Incentives Experts parameter voting proposals';
+    objRes.type = this.contractName === 'EPDR_ParametersVoting'
+      ? 'DeFi Risk Expert Parameters Proposals'
+      : 'Fees & Incentives Experts Parameters Proposals';
+    objRes.kindVoting = 'parameters';
+    objStats = await this.getProposalStatsData(id);
+    objRes.contract = this.contractName;
+    const parametersSize = promiseRes.parametersSize;
+    if (parametersSize >= '1') {
+      objParameters = await this.getProposalParametersData(id);
     }
+    return { ...objRes, ...objStats, ...objParameters };
   }
 
   //create proposal

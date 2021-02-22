@@ -16,6 +16,9 @@ export const MemberPanelWrap = styled.div`
     color: ${props => props.type === 'validators' ? props.theme.colors.darkBlue : props.theme.colors.darkGrey};
     width: ${(props) => (props.type === 'validators' ? '15%' : 'auto')};
   }
+  .table .validators-widened td{
+    padding: 0 6px 15px;
+  }
   .pagination{
     justify-content: center;
   }
@@ -52,6 +55,9 @@ export const MemberAddress = styled.span`
   }
   .members{
     max-width: 100%;
+  }
+  .validators-widened{
+    max-width: 247px;
   }
 `;
 

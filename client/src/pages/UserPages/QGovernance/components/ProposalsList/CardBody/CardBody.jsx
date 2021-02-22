@@ -20,7 +20,6 @@ function CardBody(props) {
     id, vetoTime, votingTime, proposalType, proposalID, proposal,
     voteBreakdown, proposalsKind, contract
   } = props;
-  console.log('proposalsKind', proposalsKind);
 
   const tabsItems = useMemo(() => {
     let result = [

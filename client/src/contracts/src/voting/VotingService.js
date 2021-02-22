@@ -41,14 +41,10 @@ export default class VotingService {
 
   //get vetoes number
   async getVetoesNumber(id) {
-    try {
-      const result = await this.contract.methods.getVetosNumber(id)
-        .call();
-      // console.log("getVetoesNumber", result);
-      return result;
-    } catch (e) {
-      console.log(e);
-    }
+    const result = await this.contract.methods.getVetosNumber(id)
+      .call();
+    // console.log("getVetoesNumber", result);
+    return result;
   }
 
   //get vetoes percentage
@@ -103,47 +99,37 @@ export default class VotingService {
 
   //get one proposal
   async getOneProposal(id) {
-    try {
-      if (id) {
-        let objRes = null;
-        let promiseStatus = await this.getProposalStatus(id);
-        // console.log('promiseStatus', promiseStatus);
-        if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4'
-          || promiseStatus === '5') {
-          let promiseRes = await this.getProposal(id);
-          if (promiseRes) {
-            objRes = await this.getProposalData(promiseRes, id, promiseStatus);
-            // console.log("objRes", objRes);
-          }
-        } else {
-          // console.log('objRes', objRes);
-          return objRes;
-        }
-        return [objRes];
-      }
-    } catch (e) {
-      console.log(e);
-    }
-
-  }
-
-  //get proposal with any status
-  async getProposalWithoutStatusChecked(id) {
-    try {
-      if (id) {
-        let objRes = null;
-        let promiseStatus = await this.getProposalStatus(id);
+    if (id) {
+      let objRes = null;
+      let promiseStatus = await this.getProposalStatus(id);
+      // console.log('promiseStatus', promiseStatus);
+      if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4'
+        || promiseStatus === '5') {
         let promiseRes = await this.getProposal(id);
         if (promiseRes) {
           objRes = await this.getProposalData(promiseRes, id, promiseStatus);
           // console.log("objRes", objRes);
         }
-        return [objRes];
+      } else {
+        // console.log('objRes', objRes);
+        return objRes;
       }
-    } catch (e) {
-      console.log(e);
+      return [objRes];
     }
+  }
 
+  //get proposal with any status
+  async getProposalWithoutStatusChecked(id) {
+    if (id) {
+      let objRes = null;
+      let promiseStatus = await this.getProposalStatus(id);
+      let promiseRes = await this.getProposal(id);
+      if (promiseRes) {
+        objRes = await this.getProposalData(promiseRes, id, promiseStatus);
+        // console.log("objRes", objRes);
+      }
+      return [objRes];
+    }
   }
 
   //get proposal data
@@ -152,73 +138,59 @@ export default class VotingService {
 
   //get proposals
   async getProposals() {
-    try {
-      const proposalEvents = await this.getProposalsEvent();
-      const proposalIds = getPastProposalsIds(proposalEvents);
-      let proposals = [];
-      if (proposalIds) {
-        for (let id of proposalIds) {
-          let objRes = {};
-          let promiseStatus = await this.getProposalStatus(id);
-          if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
-            let promiseRes = await this.getProposal(id);
-            if (promiseRes) {
-              objRes = await this.getProposalData(promiseRes, id, promiseStatus);
-              proposals.push(objRes);
-            }
+    const proposalEvents = await this.getProposalsEvent();
+    const proposalIds = getPastProposalsIds(proposalEvents);
+    let proposals = [];
+    if (proposalIds) {
+      for (let id of proposalIds) {
+        let objRes = {};
+        let promiseStatus = await this.getProposalStatus(id);
+        if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
+          let promiseRes = await this.getProposal(id);
+          if (promiseRes) {
+            objRes = await this.getProposalData(promiseRes, id, promiseStatus);
+            proposals.push(objRes);
           }
-
         }
+
       }
-      return proposals;
-    } catch (e) {
-      console.log(e);
     }
+    return proposals;
   }
 
   //get ended proposals
   async getEndedProposals() {
-    try {
-      const proposalEvents = await this.getProposalsEvent();
-      const proposalIds = getPastProposalsIds(proposalEvents);
-      let proposals = [];
-      if (proposalIds) {
-        for (let id of proposalIds) {
-          let objRes = {};
-          let promiseStatus = await this.getProposalStatus(id);
-          if (promiseStatus !== '1' || promiseStatus !== '3' || promiseStatus !== '4') {
-            let promiseRes = await this.getProposal(id);
-            if (promiseRes) {
-              objRes = await this.getProposalData(promiseRes, id, promiseStatus);
-              proposals.push(objRes);
-            }
+    const proposalEvents = await this.getProposalsEvent();
+    const proposalIds = getPastProposalsIds(proposalEvents);
+    let proposals = [];
+    if (proposalIds) {
+      for (let id of proposalIds) {
+        let objRes = {};
+        let promiseStatus = await this.getProposalStatus(id);
+        if (promiseStatus !== '1' || promiseStatus !== '3' || promiseStatus !== '4') {
+          let promiseRes = await this.getProposal(id);
+          if (promiseRes) {
+            objRes = await this.getProposalData(promiseRes, id, promiseStatus);
+            proposals.push(objRes);
           }
-
         }
+
       }
-      return proposals;
-    } catch (e) {
-      console.log(e);
     }
+    return proposals;
   }
 
   //proposal stats data
   async getProposalStatsData(id) {
-    try {
-      let objRes = {};
-      let proposalStats = await this.getProposalStats(id);
-      console.log('contract', this.contractName);
-      console.log('proposalStats', proposalStats);
-      objRes.currentMajority = transformToPercentage(proposalStats.currentMajority);
-      objRes.currentQuorum = transformToPercentage(proposalStats.currentQuorum);
-      objRes.currentVetoPercentage = transformToPercentage(proposalStats.currentVetoPercentage);
-      objRes.requiredMajority = transformToPercentage(proposalStats.requiredMajority);
-      objRes.requiredQuorum = transformToPercentage(proposalStats.requiredQuorum);
-      objRes.vetoThreshold = '50';
-      return objRes;
-    } catch (e) {
-      console.log(e);
-    }
+    let objRes = {};
+    let proposalStats = await this.getProposalStats(id);
+    objRes.currentMajority = transformToPercentage(proposalStats.currentMajority);
+    objRes.currentQuorum = transformToPercentage(proposalStats.currentQuorum);
+    objRes.currentVetoPercentage = transformToPercentage(proposalStats.currentVetoPercentage);
+    objRes.requiredMajority = transformToPercentage(proposalStats.requiredMajority);
+    objRes.requiredQuorum = transformToPercentage(proposalStats.requiredQuorum);
+    objRes.vetoThreshold = '50';
+    return objRes;
   }
 
   /**
@@ -261,29 +233,25 @@ export default class VotingService {
 
   // get number of active and ended proposals
   async getProposalsCount() {
-    try {
-      const proposalEvents = await this.getProposalsEvent();
-      const proposalIds = getPastProposalsIds(proposalEvents);
-      let proposalsActive = 0;
-      let proposalsEnded = 0;
-      if (proposalIds) {
-        for (let id of proposalIds) {
-          let promiseStatus = await this.getProposalStatus(id);
-          if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
-            proposalsActive++;
-          } else {
-            proposalsEnded++;
-          }
-
+    const proposalEvents = await this.getProposalsEvent();
+    const proposalIds = getPastProposalsIds(proposalEvents);
+    let proposalsActive = 0;
+    let proposalsEnded = 0;
+    if (proposalIds) {
+      for (let id of proposalIds) {
+        let promiseStatus = await this.getProposalStatus(id);
+        if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
+          proposalsActive++;
+        } else {
+          proposalsEnded++;
         }
+
       }
-      return {
-        ended: proposalsEnded,
-        active: proposalsActive
-      };
-    } catch (e) {
-      console.log(e);
     }
+    return {
+      ended: proposalsEnded,
+      active: proposalsActive
+    };
   }
 
   transformParameterType(id) {

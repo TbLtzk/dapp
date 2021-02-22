@@ -1,7 +1,7 @@
 import { put, takeEvery } from 'redux-saga/effects';
 import * as actionTypes from 'store/actions/action-types/stable-coin';
 import { getAllowanceSuccess, getSymbolSuccess } from 'store/actions/action-creaters/stable-coin';
-import { StableCoinQUSD } from '../../contracts/StableCoin';
+import { StableCoinQUSD } from 'contracts/src/StableCoin';
 
 let contractInstance = null;
 

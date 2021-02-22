@@ -1,6 +1,6 @@
 import { uintPercentToNumber, uintPerSecondToPerYearNumber } from 'func/useful';
-import { GovernedEpdrQbtcQusdOracle, GovernedEpdrQethQusdOracle } from 'contracts/FxPriceFeed';
-import { GovernedEpdrQbtcAddress, GovernedEpdrQethAddress, StableCoinQUSD } from 'contracts/StableCoin';
+import { GovernedEpdrQbtcQusdOracle, GovernedEpdrQethQusdOracle } from 'contracts/src/FxPriceFeed';
+import { GovernedEpdrQbtcAddress, GovernedEpdrQethAddress, StableCoinQUSD } from 'contracts/src/StableCoin';
 import { web3 } from 'contracts/config/drizzle-config';
 import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
 import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';

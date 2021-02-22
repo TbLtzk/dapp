@@ -10,8 +10,8 @@ export default class GeneralUpdateVoting extends VotingService {
 
   constructor() {
     super();
-    this.contract = contracts["GeneralUpdateVoting"];
-    this.contractName = "GeneralUpdateVoting";
+    this.contract = contracts['GeneralUpdateVoting'];
+    this.contractName = 'GeneralUpdateVoting';
   }
 
   /**
@@ -24,29 +24,25 @@ export default class GeneralUpdateVoting extends VotingService {
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
-    try {
-      objRes.id = id;
-      objRes.remark = promiseRes.remark;
-      // objRes.votesAgainst = promiseRes.counters.weightAgainst;
-      // objRes.votesFor = promiseRes.counters.weightFor;
-      const weightAgainst = promiseRes.counters.weightAgainst;
-      objRes.votesAgainst = fromWei(weightAgainst);
-      const weightFor = promiseRes.counters.weightFor;
-      objRes.votesFor = fromWei(weightFor);
+    objRes.id = id;
+    objRes.remark = promiseRes.remark;
+    // objRes.votesAgainst = promiseRes.counters.weightAgainst;
+    // objRes.votesFor = promiseRes.counters.weightFor;
+    const weightAgainst = promiseRes.counters.weightAgainst;
+    objRes.votesAgainst = fromWei(weightAgainst);
+    const weightFor = promiseRes.counters.weightFor;
+    objRes.votesFor = fromWei(weightFor);
 
-      objRes.vetosCount = promiseRes.counters.vetosCount;
-      objRes.votingEndTime = promiseRes.params.votingEndTime;
-      objRes.vetoEndTime = promiseRes.params.vetoEndTime;
-      objRes.proposalExecutionP = promiseRes.params.proposalExecutionP;
-      objRes.status = getStatusTransformation(promiseStatus);
-      objRes.title = 'General update proposal';
-      objRes.contract = this.contractName;
-      objStats = await this.getProposalStatsData(id);
+    objRes.vetosCount = promiseRes.counters.vetosCount;
+    objRes.votingEndTime = promiseRes.params.votingEndTime;
+    objRes.vetoEndTime = promiseRes.params.vetoEndTime;
+    objRes.proposalExecutionP = promiseRes.params.proposalExecutionP;
+    objRes.status = getStatusTransformation(promiseStatus);
+    objRes.title = 'General update proposal';
+    objRes.contract = this.contractName;
+    objStats = await this.getProposalStatsData(id);
 
-      return { ...objRes, ...objStats };
-    } catch (e) {
-      console.log('e', e);
-    }
+    return { ...objRes, ...objStats };
   }
 
   /**

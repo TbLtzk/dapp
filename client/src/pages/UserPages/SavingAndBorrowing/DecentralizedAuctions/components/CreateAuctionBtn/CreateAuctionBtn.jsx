@@ -15,7 +15,7 @@ import ModalCreateAuction from './ModalCreateAuction';
 
 import { bn } from 'contracts/handler/VotingHandler';
 import Handler from 'pages/UserPages/SavingAndBorrowing/BorrowBlock/handler';
-import { StableCoinQUSD } from 'contracts/StableCoin';
+import { StableCoinQUSD } from 'contracts/src/StableCoin';
 import { getPastEvents } from 'contracts/handler/VotingHandler';
 
 const { useDrizzle } = drizzleReactHooks;

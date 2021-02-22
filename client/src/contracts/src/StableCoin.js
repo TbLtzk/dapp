@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
-import { contracts, web3 } from './config/drizzle-config';
-import { contractsToAddresses } from './mapping/contract-to-address';
+import { contracts, web3 } from '../config/drizzle-config';
+import { contractsToAddresses } from '../mapping/contract-to-address';
 import { fromWei, toWei } from 'func/balance';
 
 export class StableCoin {

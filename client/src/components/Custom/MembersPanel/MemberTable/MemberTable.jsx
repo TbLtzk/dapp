@@ -53,9 +53,9 @@ function MemberTable(props) {
     setElements(setElementsForOnePage(data, offset, perPage));
   }, [data, offset, perPage]);
 
-  const showBodyTable = (i, number, address, amount, classType, share) => {
+  const showBodyTable = (i, number, address, amount, classType, children) => {
     return (
-      <tr key={i}>
+      <tr key={i} className={classType}>
         {!number ? null : <td>{number}</td>}
         <td>
           <Circle
@@ -89,7 +89,7 @@ function MemberTable(props) {
           </MemberAddress>
         </td>
         {!amount ? null : <td>{amount}</td>}
-        {!share ? null : <td>{share}</td>}
+        {children}
       </tr>
     );
   };
@@ -97,21 +97,26 @@ function MemberTable(props) {
   const showBodyTableValue = useCallback((member, i) => {
     const commonClass = 'validator-member';
     if (type === 'validators') {
-      const numMember = (i + 1) === 10
-        ? currentPage + 1 + '0'
-        : currentPage === 0 ? i + 1 : currentPage + `${i + 1}`;
+      const numMember = member.rank;
       const amount = fN(fromWei(member.amount)) + 'Q';
       return showBodyTable(i, numMember, member.validator, amount, commonClass, null);
     } else if (type === 'validators-widened') {
-      const numMember = (i + 1) === 10
-        ? currentPage + 1 + '0'
-        : currentPage === 0 ? i + 1 : currentPage + `${i + 1}`;
+      const numMember = member.rank;
       const amount = fN(fromWei(member.amount)) + 'Q';
-      return showBodyTable(i, numMember, member.validator, amount, commonClass, null);
+      const children = <>
+        <td>{fN(member.selfStake) + 'Q'}</td>
+        <td>{fN(member.delegatedStake) + 'Q'}</td>
+        <td>{member.validatorShare + '%'}</td>
+        <td>{member.delegatorShare + '%'}</td>
+        <td>{fN(member.validatorPoolBalance) + 'Q'}</td>
+        <td>{member.poolPayoutRatio + '%'}</td>
+      </>;
+      return showBodyTable(i, numMember, member.validator, amount, 'validators-widened', children);
     } else if (type === 'root-node') {
       const amount = fN(member.stakeAmount) + 'Q';
       const share = member.share + '%';
-      return showBodyTable(i, null, member.address, amount, 'root-member', share);
+      const children = <td>{share}</td>;
+      return showBodyTable(i, null, member.address, amount, 'root-member', children);
     } else if (type === 'delegated-validators') {
       const amount = fN(fromWei(member.amount)) + 'Q';
       return showBodyTable(i, null, member.validator, amount, commonClass, null);

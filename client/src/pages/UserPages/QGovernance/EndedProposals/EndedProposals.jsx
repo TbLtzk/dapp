@@ -1,17 +1,17 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
+import { useLocation } from 'react-router-dom';
 import { getEndedProposals } from 'store/actions/action-creaters/voting/proposals';
 import { endedProposals, loadingEndedProposals, errorEnded } from 'store/selectors/voting/proposals';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useLocation } from 'react-router-dom';
-
 import ProposalsList from 'pages/UserPages/QGovernance/components/ProposalsList';
+import PageWrap from 'components/Base/PageWrap';
+
 import { checkCurrentTab } from 'pages/UserPages/QGovernance/components/constants';
 
 import { Row, Col } from 'react-bootstrap';
 import { Title } from 'components/Custom/PageLists/styles';
-import PageWrap from '../../../../components/Base/PageWrap';
 
 function EndedProposals() {
   const location = useLocation();

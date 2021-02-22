@@ -15,8 +15,8 @@ import { fromWei } from 'func/balance';
 export default class ConstitutionVoting extends VotingService {
   constructor() {
     super();
-    this.contract = contracts["ConstitutionVoting"];
-    this.contractName = "ConstitutionVoting";
+    this.contract = contracts['ConstitutionVoting'];
+    this.contractName = 'ConstitutionVoting';
   }
 
   /**
@@ -48,38 +48,32 @@ export default class ConstitutionVoting extends VotingService {
     let objRes = {};
     let objStats = {};
     let objParameters = {};
-    try {
-      console.log('promiseRes ConstitutionVoting', promiseRes);
-      objRes.id = id;
-      objRes.remark = promiseRes.base.remark;
-      const proposalType = this.getProposalStringType(promiseRes.classification);
-      objRes.type = proposalType;
-      objRes.newConstitutionHash = promiseRes.newConstitutionHash;
-      objRes.currentConstitutionHash = promiseRes.currentConstitutionHash;
-      const parametersSize = promiseRes.parametersSize;
-      if (parametersSize >= '1') {
-        objParameters = await this.getProposalParametersData(id);
-      }
-      const weightAgainst = promiseRes.base.counters.weightAgainst;
-      objRes.votesAgainst = fromWei(weightAgainst);
-      const weightFor = promiseRes.base.counters.weightFor;
-      objRes.votesFor = fromWei(weightFor);
-      objRes.vetosCount = promiseRes.base.counters.vetosCount;
-      objRes.votingEndTime = promiseRes.base.params.votingEndTime;
-      objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
-
-      objRes.status = getStatusTransformation(promiseStatus);
-      // objRes.vetoesNumber = await this.getVetoesNumber(id);
-      // objRes.vetoesPercentage = await this.getVetoesPercentage(id);
-      objRes.title = `${proposalType} constitution proposal`;
-      objStats = await this.getProposalStatsData(id);
-      // console.log('UserVoted', await this.getProposalVotes(id));
-      objRes.contract = this.contractName;
-      console.log('objRes', objRes);
-      return { ...objRes, ...objStats, ...objParameters };
-    } catch (e) {
-      console.log('e', e);
+    objRes.id = id;
+    objRes.remark = promiseRes.base.remark;
+    const proposalType = this.getProposalStringType(promiseRes.classification);
+    objRes.type = proposalType;
+    objRes.newConstitutionHash = promiseRes.newConstitutionHash;
+    objRes.currentConstitutionHash = promiseRes.currentConstitutionHash;
+    const parametersSize = promiseRes.parametersSize;
+    if (parametersSize >= '1') {
+      objParameters = await this.getProposalParametersData(id);
     }
+    const weightAgainst = promiseRes.base.counters.weightAgainst;
+    objRes.votesAgainst = fromWei(weightAgainst);
+    const weightFor = promiseRes.base.counters.weightFor;
+    objRes.votesFor = fromWei(weightFor);
+    objRes.vetosCount = promiseRes.base.counters.vetosCount;
+    objRes.votingEndTime = promiseRes.base.params.votingEndTime;
+    objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
+
+    objRes.status = getStatusTransformation(promiseStatus);
+    // objRes.vetoesNumber = await this.getVetoesNumber(id);
+    // objRes.vetoesPercentage = await this.getVetoesPercentage(id);
+    objRes.title = `${proposalType} constitution proposal`;
+    objStats = await this.getProposalStatsData(id);
+    // console.log('UserVoted', await this.getProposalVotes(id));
+    objRes.contract = this.contractName;
+    return { ...objRes, ...objStats, ...objParameters };
   }
 
   /**

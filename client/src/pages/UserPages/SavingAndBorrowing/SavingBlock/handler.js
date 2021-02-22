@@ -1,4 +1,4 @@
-import {StableCoinQUSD} from 'contracts/StableCoin';
+import {StableCoinQUSD} from 'contracts/src/StableCoin';
 import {web3} from 'contracts/config/drizzle-config';
 import {SavingQUSD} from 'contracts/src/Saving';
 import {setTransactionCounter} from 'store/actions/action-creaters/transaction-handler';

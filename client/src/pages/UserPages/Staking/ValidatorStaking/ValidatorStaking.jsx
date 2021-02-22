@@ -1,11 +1,11 @@
 import React from 'react';
-import { Col } from 'react-bootstrap';
 
 import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
 import AccountStatus from './AccountStatus';
 import ValidatorPool from 'components/Custom/ValidatorPool/ValidatorPool';
 import ButtonLinkArrow from 'components/Base/Buttons/ButtonLinkArrow/ButtonLinkArrow';
 
+import { Col } from 'react-bootstrap';
 import { WrapContainer } from './styles';
 
 export default function ValidatorStaking() {

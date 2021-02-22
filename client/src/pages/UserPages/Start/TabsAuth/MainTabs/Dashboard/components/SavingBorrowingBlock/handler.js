@@ -1,5 +1,5 @@
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
-import { StableCoinQUSD } from 'contracts/StableCoin';
+import { StableCoinQUSD } from 'contracts/src/StableCoin';
 import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
 import CompoundRateKeeper from 'contracts/src/CompoundRateKeeper';
 import { SavingQUSD } from 'contracts/src/Saving';
