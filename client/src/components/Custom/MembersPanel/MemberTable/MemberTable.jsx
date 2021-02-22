@@ -102,6 +102,12 @@ function MemberTable(props) {
         : currentPage === 0 ? i + 1 : currentPage + `${i + 1}`;
       const amount = fN(fromWei(member.amount)) + 'Q';
       return showBodyTable(i, numMember, member.validator, amount, commonClass, null);
+    } else if (type === 'validators-widened') {
+      const numMember = (i + 1) === 10
+        ? currentPage + 1 + '0'
+        : currentPage === 0 ? i + 1 : currentPage + `${i + 1}`;
+      const amount = fN(fromWei(member.amount)) + 'Q';
+      return showBodyTable(i, numMember, member.validator, amount, commonClass, null);
     } else if (type === 'root-node') {
       const amount = fN(member.stakeAmount) + 'Q';
       const share = member.share + '%';

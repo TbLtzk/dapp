@@ -8,6 +8,7 @@ export default class ValidationRewardPools {
   }
 
   async getBalance(address) {
+    console.log("getBalance", address);
     return await this.methods.getBalance(address).call();
   }
 }

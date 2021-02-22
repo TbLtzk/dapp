@@ -3,22 +3,19 @@ import { Col } from 'react-bootstrap';
 
 import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
 import AccountStatus from './AccountStatus';
+import ValidatorPool from 'components/Custom/ValidatorPool/ValidatorPool';
+import ButtonLinkArrow from 'components/Base/Buttons/ButtonLinkArrow/ButtonLinkArrow';
 
 import { WrapContainer } from './styles';
-import ValidatorPool from '../../../../components/Custom/ValidatorPool/ValidatorPool';
-import ButtonLinkArrow from '../../../../components/Base/Buttons/ButtonLinkArrow/ButtonLinkArrow';
 
 export default function ValidatorStaking() {
   return (
     <>
       <WrapContainer>
-        <Col xs={6}>
-          <AccountStatus />
+        <Col md={6}>
+          <AccountStatus/>
         </Col>
-        <Col xs={6}>
-          <ValidatorsPanel type="with-total" bottom />
-        </Col>
-        <Col xs={6} style={{ paddingTop: '60px' }}>
+        <Col md={6}>
           <div className="block-name">
             <span>Validator Pool</span>
             <ButtonLinkArrow
@@ -26,7 +23,14 @@ export default function ValidatorStaking() {
               path="/manage-staker-reward-pool"
             />
           </div>
-          <ValidatorPool />
+          <ValidatorPool/>
+        </Col>
+        <Col md={12} style={{ paddingTop: '40px' }}>
+          <ValidatorsPanel
+            type="with-total"
+            bottom
+            widened
+          />
         </Col>
       </WrapContainer>
     </>

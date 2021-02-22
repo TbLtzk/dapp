@@ -1,7 +1,18 @@
-export const tableHeader = [
+export const tableHeaderShort = [
   'Rank',
   'Validator Address',
-  "Staked \n Amount",
+  "Total Accountable Stake",
 ];
 
-export const circles = ["#283FFF", "#FFA000", "#FF5A3A", "#00C3F8",];
+export const tableHeaderWidened = [
+  'Rank',
+  'Validator Address',
+  "Total Accountable Stake",
+  "Self Stake",
+  "Total Delegated Stake",
+  "Validator Stake",
+  "Delegator Share",
+  "Validator Pool Balance",
+  "Pool Payout Ratio",
+];
+

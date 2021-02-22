@@ -5,7 +5,7 @@ import {
   setDelegatedStake, setAccTotalStake, setInterestRate, getInterestRate,
   getValidatorMembersSuccess, getValidatorMembersError, isUserValidatorSuccess
 } from 'store/actions/action-creaters/validators';
-import Validators from '../../contracts/Validators';
+import Validators from '../../contracts/src/Validators';
 import { web3 } from '../../contracts/config/drizzle-config';
 
 let contractInstance = null;
@@ -145,7 +145,7 @@ function* setInterestRateGenerator({ address, uintPercent }) {
 function* getValidatorsMembers() {
   try {
     const contract = getContractInstance();
-    const data = yield contract.getPositiveValidatorStake();
+    const data = yield contract.getMembersList();
     // console.log("data", data.slice().reverse());
     yield put(getValidatorMembersSuccess(data));
   } catch (err) {

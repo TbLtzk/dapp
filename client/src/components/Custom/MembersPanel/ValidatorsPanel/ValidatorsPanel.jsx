@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getValidatorMembers } from 'store/actions/action-creaters/validators';
@@ -13,7 +13,7 @@ import MemberTable from 'components/Custom/MembersPanel/MemberTable';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import CustomBlock from '../../../Base/CustomBlock';
 
-import { tableHeader } from './constants';
+import { tableHeaderShort, tableHeaderWidened } from './constants';
 
 import {
   H5Headline, ContainerWrap, HeadlineWrap,
@@ -21,7 +21,7 @@ import {
 } from '../styles';
 
 function ValidatorsPanel(props) {
-  const { bottom } = props;
+  const { bottom, widened } = props;
 
   const loading = useSelector(loadingMembers);
   const errorMessage = useSelector(errorMembers);
@@ -32,6 +32,16 @@ function ValidatorsPanel(props) {
   useEffect(() => {
     dispatch(getValidatorMembers());
   }, [dispatch]);
+
+  const tableHeader = useMemo(() => {
+    if (!widened){
+      return tableHeaderShort;
+    }else {
+      return tableHeaderWidened;
+    }
+  },[widened]);
+
+    console.log("validators", validators);
 
   return (
     <CustomBlock>
@@ -48,9 +58,10 @@ function ValidatorsPanel(props) {
                   </Col>
                   <Col xs={12}>
                     <MemberTable
-                      type="validators"
+                      type={!widened ? 'validators' : 'validators-widened'}
                       arrayData={validators}
                       tableHeader={tableHeader}
+                      widened
                     />
                   </Col>
                 </>

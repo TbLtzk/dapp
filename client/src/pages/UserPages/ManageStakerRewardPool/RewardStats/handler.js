@@ -1,4 +1,4 @@
-import Validators from 'contracts/Validators';
+import Validators from 'contracts/src/Validators';
 import ValidationRewardPools from 'contracts/ValidationRewardPools';
 import { numberToUintPercent, uintPercentToNumber } from 'func/useful';
 import { setTransactionCounter } from '../../../../store/actions/action-creaters/transaction-handler';

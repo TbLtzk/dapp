@@ -1,4 +1,4 @@
-import Validators from 'contracts/Validators';
+import Validators from 'contracts/src/Validators';
 import { web3 } from 'contracts/config/drizzle-config';
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
 

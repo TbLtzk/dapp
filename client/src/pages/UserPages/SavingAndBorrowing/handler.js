@@ -28,7 +28,7 @@ export default class Handler {
 
   setExchangeRate(collateral, stateSetter) {
     this.dispatch(setTransactionCounter(1));
-
+    console.log("collateral", collateral);
     let oracleContract;
     if (collateral === 'QETH') {
       oracleContract = new GovernedEpdrQethQusdOracle();
