@@ -21,3 +21,16 @@ export const setLockAmount = (address, amountQ) => ({
   amountQ,
 });
 export const setUnlockAmount = (address, amountQ) => ({ type: actionTypes.SET_PB_UNLOCK_AMOUNT, address, amountQ });
+
+export const getDelegationsList = (address) => ({
+  type: actionTypes.GET_DELEGATIONS_LIST,
+  address
+});
+export const getDelegationsListSuccess = (result) => ({
+  type: actionTypes.GET_DELEGATIONS_LIST_SUCCESS,
+  result
+});
+export const getDelegationsListError = (result) => ({
+  type: actionTypes.GET_DELEGATIONS_LIST_ERROR,
+  result
+});

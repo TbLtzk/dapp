@@ -1,7 +1,9 @@
 // eslint-disable-next-line max-classes-per-file
 import { web3 } from 'contracts/config/drizzle-config';
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
+import { getDelegationsList } from 'store/actions/action-creaters/q-piggy-bank';
 import QPiggyBank from 'contracts/src/QPiggyBank';
+
 
 export class ContractHandler {
   constructor(address, dispatch, alert) {
@@ -14,12 +16,16 @@ export class ContractHandler {
   async delegateStake(delegateAddresses, stakes) {
     this.dispatch(setTransactionCounter(1));
 
-    this.piggyBank.delegateStake(this.address, delegateAddresses, stakes).then(() => {
-    }).catch((e) => {
-      this.alert.error(e.message);
-    }).finally(() => {
-      this.dispatch(setTransactionCounter(-1));
-    });
+    this.piggyBank.delegateStake(this.address, delegateAddresses, stakes)
+      .then(() => {
+        this.dispatch(getDelegationsList(this.address));
+      })
+      .catch((e) => {
+        this.alert.error(e.message);
+      })
+      .finally(() => {
+        this.dispatch(setTransactionCounter(-1));
+      });
   }
 }
 

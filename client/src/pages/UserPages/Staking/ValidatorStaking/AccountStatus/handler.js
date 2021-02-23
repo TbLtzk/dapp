@@ -1,6 +1,7 @@
 import Validators from 'contracts/src/Validators';
-import { web3 } from 'contracts/config/drizzle-config';
-import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
+import {web3} from 'contracts/config/drizzle-config';
+import {setTransactionCounter} from 'store/actions/action-creaters/transaction-handler';
+import {getValidatorMembers} from 'store/actions/action-creaters/validators';
 
 export default class Handler {
   constructor(address, dispatch, alert) {
@@ -89,6 +90,7 @@ export default class Handler {
       this.setAccountableTotalStake(accTotStSet);
       this.setValidatorsList(valListSet);
       this.setAccountBalance(accBalSet);
+      this.dispatch(getValidatorMembers())
     }).catch((e) => {
       this.alert.error(e.message);
     }).finally(() => {

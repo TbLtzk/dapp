@@ -11,28 +11,20 @@ import {
 
 import {
   createProposalSuccess, voteForProposalSuccess,
-  getEndedProposalsSuccess, getEndedProposalsError,
-  executeProposalSuccess, executeProposalError,
-  getProposalsListError, getProposalsListSuccess,
-  getProposalSuccess, getEmptyProposalSuccess, getProposalError, getProposalVote,
+  executeProposalSuccess, executeProposalError, getEmptyProposalSuccess, getProposalError,
   getNumberAllProposalsSuccess, getConstitutionHashSuccess,
-  onEscrowCastObjectionSuccess, onEscrowCastObjectionError
 } from 'store/actions/action-creaters/voting/proposals';
 import {
-  getProposalQ, getQProposalsListSuccess, getQProposalsListError,
-  getQEndedProposalsSuccess, getQEndedProposalsError
+  getProposalQ, getQEndedProposals, getQProposalsList
 } from 'store/actions/action-creaters/voting/q-proposals';
 import {
-  getProposalRootNode, getRootNodeProposalsListSuccess, getRootNodeProposalsListError,
-  getRootNodeEndedProposalsError, getRootNodeEndedProposalsSuccess
+  getProposalRootNode, getRootNodeEndedProposals, getRootNodeProposalsList
 } from 'store/actions/action-creaters/voting/root-node-proposals';
 import {
-  getProposalExpert, getExpertProposalsListSuccess, getExpertProposalsListError,
-  getExpertEndedProposalsSuccess, getExpertEndedProposalsError
+  getProposalExpert, getExpertEndedProposals, getExpertProposalsList
 } from 'store/actions/action-creaters/voting/expert-proposals';
 import {
-  getProposalSlashing, getSlashingProposalsListSuccess, getSlashingProposalsListError,
-  getSlashingEndedProposalsError, getSlashingEndedProposalsSuccess
+  getProposalSlashing, getSlashingEndedProposals, getSlashingProposalsList
 } from 'store/actions/action-creaters/voting/slashing-proposals';
 
 import {
@@ -45,7 +37,6 @@ import EmergencyUpdateVotingService from 'contracts/src/voting/EmergencyUpdateVo
 import GeneralUpdateVotingService from 'contracts/src/voting/GeneralUpdateVoting';
 import RootsVotingService from 'contracts/src/voting/RootsVoting';
 import VotingService from 'contracts/src/voting/VotingService';
-import SlashingEscrow from 'contracts/src/voting/SlashingEscrow';
 
 import {
   chooseExpertContractDependsOnType,
@@ -53,8 +44,6 @@ import {
 } from 'contracts/handler/QExpertVotingHandler';
 
 import { chooseSlashingContractDependsOnType } from 'contracts/handler/SlashingVotingHandler';
-import proposals from '../../reducers/voting/proposals';
-import { get } from 'react-hook-form';
 
 function* createProposal({ data }) {
   try {
@@ -195,20 +184,20 @@ function* getProposalDependsOnType(contractName, data, id, activeProposal) {
       case 'ConstitutionVoting':
       case 'EmergencyUpdateVoting':
       case 'GeneralUpdateVoting':
-        yield put(getProposalQ(contractName, id, 'q-proposals', activeProposal));
+        yield put(getProposalQ(contractName, id, activeProposal));
         break;
       case 'RootsVoting':
-        yield put(getProposalRootNode(contractName, id, 'q-root-node-panel', activeProposal));
+        yield put(getProposalRootNode(contractName, id, activeProposal));
         break;
       case 'RootNodesSlashingVoting':
       case 'ValidatorsSlashingVoting':
-        yield put(getProposalSlashing(contractName, id, 'slashing-proposals', activeProposal));
+        yield put(getProposalSlashing(contractName, id, activeProposal));
         break;
       case 'EPQFI_MembershipVoting':
       case 'EPDR_MembershipVoting':
       case 'EPQFI_ParametersVoting':
       case 'EPDR_ParametersVoting':
-        yield put(getProposalExpert(contractName, id, 'q-expert-proposals', activeProposal));
+        yield put(getProposalExpert(contractName, id, activeProposal));
         break;
       default:
         return null;
@@ -223,68 +212,23 @@ function* getOneProposalShared({ data }) {
 }
 
 function* getProposalsList({ activeTab }) {
-
   try {
-    // const { activeTab } = yield select(state => state.proposals);
-    let contracts = null;
     switch (activeTab) {
       case 'q-proposals':
-        contracts = creationQContractsObjArray();
+        yield put(getQProposalsList());
         break;
       case 'q-root-node-panel':
-        contracts = creationRootContractObj();
+        yield put(getRootNodeProposalsList());
         break;
       case 'slashing-proposals':
-        contracts = creationSlashingContractsObjArray();
+        yield put(getSlashingProposalsList());
         break;
       case 'q-expert-proposals':
-        contracts = creationExpertContractsObjArray();
-        break;
-    }
-    let result = [];
-    if (Array.isArray(contracts)) {
-      for (let contractName of contracts) {
-        const data = yield contractName.getProposals();
-        result = [...result, ...data];
-      }
-    } else {
-      result = yield contracts?.getProposals();
-    }
-    console.log('activeTab', activeTab);
-    console.log('result', result);
-
-    // yield put(getProposalsListSuccess(result));
-    switch (activeTab) {
-      case 'q-proposals':
-        yield put(getQProposalsListSuccess(result));
-        break;
-      case 'q-root-node-panel':
-        yield put(getRootNodeProposalsListSuccess(result));
-        break;
-      case 'slashing-proposals':
-        yield put(getSlashingProposalsListSuccess(result));
-        break;
-      case 'q-expert-proposals':
-        yield put(getExpertProposalsListSuccess(result));
+        yield put(getExpertProposalsList());
         break;
     }
   } catch (e) {
     console.log('e', e);
-    // yield put(getProposalsListError(e));
-    switch (activeTab) {
-      case 'q-proposals':
-        yield put(getQProposalsListError(e));
-        break;
-      case 'q-root-node-panel':
-        yield put(getRootNodeProposalsListError(e));
-        break;
-      case 'slashing-proposals':
-        yield put(getSlashingProposalsListError(e));
-        break;
-      case 'q-expert-proposals':
-        yield put(getExpertProposalsListError(e));
-        break;
-    }
   }
 }
 
@@ -333,64 +277,22 @@ function* getProposal({ contractName, id, activeTab, activeProposal }) {
 
 function* getEndedProposals({ activeTab }) {
   try {
-    let contracts = null;
     switch (activeTab) {
       case 'q-proposals':
-        contracts = creationQContractsObjArray();
+        yield put(getQEndedProposals());
         break;
       case 'q-root-node-panel':
-        contracts = creationRootContractObj();
+        yield put(getRootNodeEndedProposals());
         break;
       case 'q-expert-proposals':
-        contracts = creationExpertContractsObjArray();
+        yield put(getExpertEndedProposals());
         break;
       case 'slashing-proposals':
-        contracts = creationSlashingContractsObjArray();
+        yield put(getSlashingEndedProposals());
         break;
     }
-    let result = [];
-    if (Array.isArray(contracts)) {
-      for (let contractName of contracts) {
-        const data = yield contractName.getEndedProposals();
-        result = [...result, ...data];
-      }
-    } else {
-      result = yield contracts?.getEndedProposals();
-    }
-    switch (activeTab) {
-      case 'q-proposals':
-        yield put(getQEndedProposalsSuccess(result));
-        break;
-      case 'q-root-node-panel':
-        yield put(getRootNodeEndedProposalsSuccess(result));
-        break;
-      case 'q-expert-proposals':
-        yield put(getExpertEndedProposalsSuccess(result));
-        break;
-      case 'slashing-proposals':
-        yield put(getSlashingEndedProposalsSuccess(result));
-        break;
-    }
-    // yield put(getEndedProposalsSuccess(result));
-
   } catch (err) {
     console.log('err', err.message);
-    yield put(getEndedProposalsError(err.message));
-
-    switch (activeTab) {
-      case 'q-proposals':
-        yield put(getQEndedProposalsError(result));
-        break;
-      case 'q-root-node-panel':
-        yield put(getRootNodeEndedProposalsError(result));
-        break;
-      case 'q-expert-proposals':
-        yield put(getExpertEndedProposalsError(result));
-        break;
-      case 'slashing-proposals':
-        yield put(getSlashingEndedProposalsError(result));
-        break;
-    }
   }
 }
 

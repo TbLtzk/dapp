@@ -6,6 +6,7 @@ import {
   setLockedAssets,
   getUserBalance,
   getLockedAssets,
+  getDelegationsListError, getDelegationsListSuccess
 } from 'store/actions/action-creaters/q-piggy-bank';
 import QPiggyBank from 'contracts/src/QPiggyBank';
 import { handleLockedAssetsResponse } from 'contracts/handler/QPiggyBankHandler';
@@ -53,7 +54,7 @@ function* getLockedAssetsGenerator({ address }) {
 
     const contract = getContractInstance();
     let data = yield contract.getLockInfo(address);
-    console.log("getLockInfo", data);
+    console.log('getLockInfo', data);
     data = handleLockedAssetsResponse(data);
     yield put(setLockedAssets(data.votingWeight, data.votingLockingEnd));
   } catch (err) {
@@ -165,6 +166,17 @@ function* setUnlockAmountGenerator({ address, amountQ }) {
   }
 }
 
+function* getDelegationList({ address }) {
+  try {
+    const contract = getContractInstance();
+    const data = yield contract.getDelegations(address);
+    yield put(getDelegationsListSuccess(data));
+  } catch (err) {
+    console.error('getDelegationList.Error', err);
+    yield put(getDelegationsListError(err));
+  }
+}
+
 export default [
   takeEvery(actionTypes.GET_PB_USER_BALANCE, getUserBalanceGenerator),
   takeEvery(actionTypes.GET_PB_LOCKED_ASSETS, getLockedAssetsGenerator),
@@ -173,4 +185,5 @@ export default [
   takeEvery(actionTypes.SET_PB_WITHDRAW_CALL, setWithdrawGenerator),
   takeEvery(actionTypes.SET_PB_LOCK_AMOUNT, setLockAmountGenerator),
   takeEvery(actionTypes.SET_PB_UNLOCK_AMOUNT, setUnlockAmountGenerator),
+  takeEvery(actionTypes.GET_DELEGATIONS_LIST, getDelegationList),
 ];

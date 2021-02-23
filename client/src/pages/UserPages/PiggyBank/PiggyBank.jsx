@@ -12,7 +12,7 @@ function PiggyBank() {
   useEffect(async () => {
     const res = await validateContractsAddress();
     console.log('Result', res);
-  })
+  });
 
   return (
     <PageWrap>

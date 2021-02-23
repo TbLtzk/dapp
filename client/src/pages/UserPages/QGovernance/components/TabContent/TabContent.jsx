@@ -1,20 +1,16 @@
 import React, { useEffect, useMemo } from 'react';
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProposalsList } from 'store/actions/action-creaters/voting/proposals';
 import { errorM, loadingProposals, proposalsArr } from 'store/selectors/voting/proposals';
-
-import { Col } from 'react-bootstrap';
 
 import QTypeProposalsTabs from 'pages/UserPages/QGovernance/components/QTypeProposalsTabs';
 import ProposalsList from 'pages/UserPages/QGovernance/components/ProposalsList';
 import { checkCurrentTab } from '../constants';
 
-const { useDrizzle } = drizzleReactHooks;
+import { Col } from 'react-bootstrap';
 
 function TabContent(props) {
   const { activeTab } = props;
-  const { drizzle } = useDrizzle();
   const dispatch = useDispatch();
 
   const proposalKind = useMemo(() => {

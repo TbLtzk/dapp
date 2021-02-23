@@ -10,7 +10,7 @@ export const MemberPanelWrap = styled.div`
   }
   .table td:nth-child(2){
     color: ${props => props.theme.colors.darkBlue};
-    width: ${(props) => (props.type === 'validators' ? 'auto' : '29%')};
+    width: ${(props) => (props.type === 'validators' || props.type === 'delegated-validators' ? 'auto' : '29%')};
   }
   .table td:nth-child(3){
     color: ${props => props.type === 'validators' ? props.theme.colors.darkBlue : props.theme.colors.darkGrey};
@@ -58,6 +58,9 @@ export const MemberAddress = styled.span`
   }
   .validators-widened{
     max-width: 247px;
+  }
+  .delegated-validators{
+    max-width: 270px;
   }
 `;
 

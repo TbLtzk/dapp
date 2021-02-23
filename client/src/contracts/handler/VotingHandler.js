@@ -200,3 +200,16 @@ export function creationExpertContractsObjArray() {
   }
   return contracts;
 }
+
+export function tabSwitcher(qProp, rootNodeProp, expertProp, slashingProp) {
+  switch (activeTab) {
+    case 'q-proposals':
+      return qProp;
+    case 'q-root-node-panel':
+      return rootNodeProp;
+    case 'q-expert-proposals':
+      return expertProp;
+    case 'slashing-proposals':
+      return slashingProp;
+  }
+};

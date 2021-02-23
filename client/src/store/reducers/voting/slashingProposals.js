@@ -2,26 +2,17 @@ import * as actionTypes from 'store/actions/action-types/voting/slashing-proposa
 
 const initialState = {
   proposalsArr: [],
-  loading: true,
   loadingProposals: true,
   errorM: null,
-  createProposalLoading: true,
-  createProposalResult: null,
+
+  endedProposals: [],
+  loadingEndedProposals: true,
+  errorEnded: null,
 };
 
 export default function slashingProposals(state = initialState, action) {
 
   switch (action.type) {
-    case actionTypes.SET_VOTE_PROPOSAL_OBJECT:
-      return {
-        ...state,
-        formObjectVoteProposal: action.result
-      };
-    case actionTypes.SET_STEP_VOTE_COUNTER:
-      return {
-        ...state,
-        stepVoteCounter: action.result
-      };
     case actionTypes.GET_ENDED_PROPOSALS:
       return {
         ...state,

@@ -1,33 +1,34 @@
 import React, { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getValidatorMembers } from 'store/actions/action-creaters/validators';
+import { getDelegationsList } from 'store/actions/action-creaters/q-piggy-bank';
 import {
-  loadingMembers, errorMembers, validatorMembers
-} from 'store/selectors/validators';
-
-import { Container, Row, Col } from 'react-bootstrap';
+  loadingDelegationList, errorDelegationList, delegationList,
+} from 'store/selectors/q-piggy-bank';
+import { userAddressMetamask } from 'store/selectors/user-inf';
 
 import MemberTable from 'components/Custom/MembersPanel/MemberTable';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
-import CustomBlock from '../../../Base/CustomBlock';
+import CustomBlock from 'components/Base/CustomBlock';
 
 import { tableHeader } from './constants';
 
+import { Container, Row, Col } from 'react-bootstrap';
 import {
   H5Headline, ContainerWrap, HeadlineWrap,
   LoadingWrap
 } from '../styles';
 
 function DelegatedValidatorsPanel() {
-  const loading = useSelector(loadingMembers);
-  const errorMessage = useSelector(errorMembers);
-  const validators = useSelector(validatorMembers);
+  const userAddress = useSelector(userAddressMetamask);
+  const loading = useSelector(loadingDelegationList);
+  const errorMessage = useSelector(errorDelegationList);
+  const delegations = useSelector(delegationList);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getValidatorMembers());
+    dispatch(getDelegationsList(userAddress));
   }, [dispatch]);
 
   return (
@@ -36,7 +37,7 @@ function DelegatedValidatorsPanel() {
         <Container fluid>
           <Row>
             {loading ? <LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap> :
-              errorMessage ? <Col xs={12}><p>No validators</p></Col> :
+              errorMessage || delegations?.length === 0 ? <Col xs={12}><p>No delegations</p></Col> :
                 <>
                   <Col xs={12}>
                     <HeadlineWrap>
@@ -46,7 +47,7 @@ function DelegatedValidatorsPanel() {
                   <Col xs={12}>
                     <MemberTable
                       type="delegated-validators"
-                      arrayData={validators}
+                      arrayData={delegations}
                       tableHeader={tableHeader}
                     />
                   </Col>

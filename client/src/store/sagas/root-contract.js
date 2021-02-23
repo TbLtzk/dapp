@@ -8,7 +8,7 @@ import {
   checkIsUserRootNodeSuccess, checkIsUserRootNodeError,
   getRootNodeStakesSuccess, getRootNodeStakesError,
   announceWithdrawalSuccess, announceWithdrawalError,
-  withdrawSuccess, withdrawError, getWithdrawalsSuccess, getWithdrawalsError
+  withdrawSuccess, withdrawError, getWithdrawalsSuccess, getWithdrawalsError, getRootMembersData
 } from 'store/actions/action-creaters/root-contract';
 import RootService from 'contracts/src/Root';
 import {
@@ -17,7 +17,7 @@ import {
   setTransactionLoadingSuccess
 } from '../actions/action-creaters/transaction-handler';
 
-function* getRootMembersData({ contract }) {
+function* getRootMembers({ contract }) {
   try {
     const data = yield contract.getRootCalc();
     yield put(getRootMembersDataSuccess(data));
@@ -34,6 +34,8 @@ function* stakeToPanel({ contract, data }) {
 
     yield put(stakeToPanelSuccess('success'));
     yield put(setTransactionLoadingSuccess());
+    yield put(getRootMembersData(contract));
+
   } catch (err) {
     console.log('err', err);
     yield put(stakeToPanelError(err.message));
@@ -104,7 +106,7 @@ function* getWithdrawals({ address }) {
 }
 
 export default [
-  takeEvery(actionTypes.GET_ROOT_MEMBERS_DATA, getRootMembersData),
+  takeEvery(actionTypes.GET_ROOT_MEMBERS_DATA, getRootMembers),
   takeEvery(actionTypes.STAKE_TO_PANEL, stakeToPanel),
   takeEvery(actionTypes.ANNOUNCE_WITHDRAWAL, announceWithdrawal),
   takeEvery(actionTypes.WITHDRAW, withdraw),

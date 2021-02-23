@@ -35,7 +35,7 @@ function QGovernance() {
 
   }, [dispatch]);
 
-  const statsData = useMemo(() => {
+  const statsData = (() => {
     return (
       [
         {
@@ -52,7 +52,7 @@ function QGovernance() {
         },
       ]
     );
-  }, [userVotingWeight, userLockingEnd]);
+  });
 
   const tabsItems = useMemo(() => {
     return (
@@ -113,7 +113,7 @@ function QGovernance() {
         </Col>
         <Col md={4}>
           <CreateQProposalBtn activeTab={activeTab}/>
-          <Stats statsData={statsData} type="Voting"/>
+          <Stats statsData={statsData()} type="Voting"/>
           <References type="voting"/>
         </Col>
       </Row>

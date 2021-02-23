@@ -1,1 +1,1 @@
-export {default} from './EndedProposals';
+export {default} from 'pages/UserPages/QGovernance/EndedProposals/EndedProposals';

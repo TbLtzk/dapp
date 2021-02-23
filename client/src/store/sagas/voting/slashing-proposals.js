@@ -6,26 +6,86 @@ import {
 } from 'store/actions/action-creaters/transaction-handler';
 
 import {
-  getLockedAssets
-} from 'store/actions/action-creaters/q-piggy-bank';
-
-import {
-  createProposalSuccess, voteForProposalSuccess,
-  executeProposalSuccess, executeProposalError,
-  getProposalsListError, getProposalsListSuccess,
-  getProposalSuccess, getEmptyProposalSuccess, getProposalError, getProposalVote,
+  getSlashingProposalsListSuccess,
+  getSlashingProposalsListError,
+  getSlashingEndedProposalsSuccess,
+  getSlashingEndedProposalsError,
+  getProposalError, getEmptyProposalSuccess, getProposalSuccess
 } from 'store/actions/action-creaters/voting/slashing-proposals';
 import {
-  creationQContractObj, creationRootContractObj, creationExpertContractObj, creationSlashingContractObj,
-  creationQContractsObjArray, creationSlashingContractsObjArray, creationExpertContractsObjArray
+  creationSlashingContractObj,
+  creationSlashingContractsObjArray
 } from 'contracts/handler/VotingHandler';
 
-import ConstitutionVotingService from 'contracts/src/voting/ConstitutionVoting';
-import EmergencyUpdateVotingService from 'contracts/src/voting/EmergencyUpdateVoting';
-import GeneralUpdateVotingService from 'contracts/src/voting/GeneralUpdateVoting';
-import RootsVotingService from 'contracts/src/voting/RootsVoting';
-import VotingService from 'contracts/src/voting/VotingService';
 import SlashingEscrow from 'contracts/src/voting/SlashingEscrow';
+
+function* getProposalsList() {
+
+  try {
+    const contracts = creationSlashingContractsObjArray();
+    let result = [];
+    if (Array.isArray(contracts)) {
+      for (let contractName of contracts) {
+        const data = yield contractName.getProposals();
+        result = [...result, ...data];
+      }
+    } else {
+      result = yield contracts?.getProposals();
+    }
+    yield put(getSlashingProposalsListSuccess(result));
+
+  } catch (e) {
+    console.log('e', e);
+    yield put(getSlashingProposalsListError(e));
+  }
+}
+
+function* getEndedProposals() {
+  try {
+    let contracts = creationSlashingContractsObjArray();
+    let result = [];
+    if (Array.isArray(contracts)) {
+      for (let contractName of contracts) {
+        const data = yield contractName.getEndedProposals();
+        result = [...result, ...data];
+      }
+    } else {
+      result = yield contracts?.getEndedProposals();
+    }
+
+    yield put(getSlashingEndedProposalsSuccess(result));
+
+  } catch (err) {
+    yield put(getSlashingEndedProposalsError(err));
+  }
+}
+
+function* getProposal({ contractName, id, activeProposal }) {
+  try {
+    const contract = creationSlashingContractObj(contractName);
+    if (contract) {
+      let data = null;
+      if (activeProposal) {
+        data = yield contract.getOneProposal(id);
+      } else {
+        data = yield contract.getProposalWithoutStatusChecked(id);
+      }
+      console.log('data', data);
+      console.log('id', id);
+      // const data = null;
+      if (data) {
+        yield put(getProposalSuccess(data));
+      } else {
+        if (id) {
+          yield put(getEmptyProposalSuccess(id));
+        }
+      }
+    }
+  } catch (err) {
+    console.log('err', err);
+    yield put(getProposalError(id));
+  }
+}
 
 function* onEscrowCastObjection({ data, contractName, proposalId }) {
   try {
@@ -103,13 +163,7 @@ function* onEscrowConfirmProposeDecision({ contractName, proposalId }) {
 }
 
 export default [
-  takeEvery(actionTypes.CREATE_PROPOSAL, createProposal),
-  takeEvery(actionTypes.VOTE_FOR_PROPOSAL, voteForProposal),
-  takeEvery(actionTypes.EXECUTE_PROPOSAL, executeProposal),
-  takeEvery(actionTypes.UPDATE_PROPOSAL, updateProposal),
-
   takeEvery(actionTypes.GET_ENDED_PROPOSALS, getEndedProposals),
-  takeEvery(actionTypes.GET_ONE_PROPOSAL, getOneProposalShared),
   takeEvery(actionTypes.GET_PROPOSALS_LIST, getProposalsList),
   takeEvery(actionTypes.GET_PROPOSAL, getProposal),
 
