@@ -102,16 +102,13 @@ export default class VotingService {
     if (id) {
       let objRes = null;
       let promiseStatus = await this.getProposalStatus(id);
-      // console.log('promiseStatus', promiseStatus);
       if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4'
         || promiseStatus === '5') {
         let promiseRes = await this.getProposal(id);
         if (promiseRes) {
           objRes = await this.getProposalData(promiseRes, id, promiseStatus);
-          // console.log("objRes", objRes);
         }
       } else {
-        // console.log('objRes', objRes);
         return objRes;
       }
       return [objRes];
@@ -126,7 +123,6 @@ export default class VotingService {
       let promiseRes = await this.getProposal(id);
       if (promiseRes) {
         objRes = await this.getProposalData(promiseRes, id, promiseStatus);
-        // console.log("objRes", objRes);
       }
       return [objRes];
     }

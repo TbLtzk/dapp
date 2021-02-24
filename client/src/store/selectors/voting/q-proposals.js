@@ -1,10 +1,10 @@
 /*ended proposals staff*/
-export const qEndedProposals = state => state.proposals.endedProposals;
-export const qLoadingEndedProposals = state => state.proposals.loadingEndedProposals;
-export const qErrorEnded = state => state.proposals.errorEnded;
+export const qEndedProposals = state => state.qProposals.endedProposals;
+export const qLoadingEndedProposals = state => state.qProposals.loadingEndedProposals;
+export const qErrorEnded = state => state.qProposals.errorEnded;
 
 /*get list of proposals*/
-export const qProposalsArr = state => state.proposals.proposalsArr;
-export const qLoadingProposals = state => state.proposals.loadingProposals;
-export const qErrorM = state => state.proposals.errorM;
+export const qProposalsArr = state => state.qProposals.proposalsArr;
+export const qLoadingProposals = state => state.qProposals.loadingProposals;
+export const qErrorM = state => state.qProposals.errorM;
 

@@ -6,7 +6,7 @@ import {
 } from 'store/actions/action-creaters/auctions/modalHandler';
 import {
   onEscrowRecallProposeDecision, onEscrowConfirmDecision
-} from 'store/actions/action-creaters/voting/proposals';
+} from 'store/actions/action-creaters/voting/slashing-proposals';
 
 import ListDetails from './ListDetails';
 import Button from 'components/Base/Buttons/Button';

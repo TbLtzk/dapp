@@ -10,11 +10,12 @@ import { transformToPercentage } from 'contracts/handler/VotingHandler';
 import { maxApproveAmount } from 'func/numbers';
 
 export default class Handler {
-  constructor(address, collateralKey, dispatch) {
+  constructor(address, collateralKey, dispatch, vaultId) {
     this.address = address;
-    this.contractEPDRParameters = new EPDR_Parameters("EPDR_Parameters");
+    this.contractEPDRParameters = new EPDR_Parameters('EPDR_Parameters');
     this.borrowingContract = new BorrowingCoreQUSD();
     this.dispatch = dispatch;
+    this.vaultId = String(vaultId);
 
     if (collateralKey === 'QETH') {
       //collateral contract
@@ -34,6 +35,26 @@ export default class Handler {
     }
     this.stableCoinUSDContract = new StableCoinQUSD();
     // console.log("contract", this.stableCoinContract);
+  }
+
+  setVaultStats(stateSetter) {
+    this.dispatch(setTransactionCounter(1));
+    console.log('this.borrowingContract', this.borrowingContract);
+    console.log('this.address', this.address);
+    console.log('this.vaultId', this.vaultId);
+    this.borrowingContract.getVaultStats(this.address, this.vaultId)
+      .then((res) => {
+        console.log('setVaultStats', res);
+        // const resL = web3.utils.fromWei(new web3.utils.BN(res));
+        // stateSetter(resL);
+      })
+      .catch((e) => {
+        // stateSetter(0);
+        console.log(e);
+      })
+      .finally(() => {
+        this.dispatch(setTransactionCounter(-1));
+      });
   }
 
   setAvailableToDeposit(stateSetter) {
@@ -192,7 +213,7 @@ export default class Handler {
   }
 
   allowance(contract, stateSetter) {
-    console.log("contract", contract);
+    console.log('contract', contract);
     contract.allowance(this.address, this.borrowingContract.address)
       .then((res) => {
         // console.log('stateSetter allowance', res);
@@ -205,7 +226,7 @@ export default class Handler {
 
   allowanceSwitcher(stateSetter, type) {
     if (type === 'deposit') {
-      console.log("contract", this.stableCoinContract);
+      console.log('contract', this.stableCoinContract);
       this.allowance(this.stableCoinContract, stateSetter);
       // const allowance = await this.stableCoinContract.allowance(this.address, this.borrowingContract.address);
       // console.log('allowance', allowance);

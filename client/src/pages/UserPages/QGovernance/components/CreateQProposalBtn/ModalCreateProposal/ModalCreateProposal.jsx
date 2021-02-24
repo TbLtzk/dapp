@@ -35,8 +35,6 @@ function ModalCreateProposal(props) {
   const stepCounter = useSelector(stepCounterModal);
   const disabledContinueBtn = useSelector(disabledContinueProposalBtn);
 
-  console.log("formData", formData);
-
   const radioArrFirstStep = useMemo(() => {
     switch (activeTab) {
       case 'q-proposals':

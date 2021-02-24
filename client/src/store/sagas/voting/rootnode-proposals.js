@@ -1,18 +1,19 @@
-import { call, put, takeEvery, select } from 'redux-saga/effects';
+import { put, takeEvery, select } from 'redux-saga/effects';
 
 import * as actionTypes from 'store/actions/action-types/voting/root-node-proposals';
 
 import {
   getRootNodeProposalsListError, getRootNodeProposalsListSuccess,
   getRootNodeEndedProposalsError, getRootNodeEndedProposalsSuccess,
-  getEmptyProposalSuccess, getProposalError, getProposalSuccess
+  getEmptyProposalSuccess, getProposalError, getProposalSuccess,
+  getProposalEndedSuccess, getEmptyProposalEndedSuccess, getRootNodeProposalEnded,
+  getProposalEndedError
 } from 'store/actions/action-creaters/voting/root-node-proposals';
 import {
   creationRootContractObj,
 } from 'contracts/handler/VotingHandler';
 
 function* getProposalsList() {
-
   try {
     const contracts = creationRootContractObj();
     let result = [];
@@ -51,11 +52,14 @@ function* getEndedProposals() {
   }
 }
 
-function* getProposal({ contractName, id, activeProposal }) {
+function* getRootNodeProposal({ contractName, id, activeProposal }) {
+  const { pageType } = yield select(state => state.proposals);
   try {
+    if (pageType === 'ended') {
+      yield put(getRootNodeProposalEnded());
+    }
     const contract = creationRootContractObj();
 
-    console.log('contract', contract);
     if (contract) {
       let data = null;
       if (activeProposal) {
@@ -63,25 +67,42 @@ function* getProposal({ contractName, id, activeProposal }) {
       } else {
         data = yield contract.getProposalWithoutStatusChecked(id);
       }
-      console.log('data', data);
-      console.log('id', id);
-      // const data = null;
-      if (data) {
-        yield put(getProposalSuccess(data));
-      } else {
-        if (id) {
-          yield put(getEmptyProposalSuccess(id));
+      if (pageType === 'ended') {
+        if (data) {
+          yield put(getProposalEndedSuccess(data));
+        } else {
+          if (id) {
+            yield put(getEmptyProposalEndedSuccess({
+              id,
+              contractName
+            }));
+          }
+        }
+      } else if (pageType === 'active') {
+        if (data) {
+          yield put(getProposalSuccess(data));
+        } else {
+          if (id) {
+            yield put(getEmptyProposalSuccess({
+              id,
+              contractName
+            }));
+          }
         }
       }
     }
   } catch (err) {
     console.log('err', err);
-    yield put(getProposalError(id));
+    if (pageType === 'ended') {
+      yield put(getProposalEndedError(id));
+    } else {
+      yield put(getProposalError(id));
+    }
   }
 }
 
 export default [
-  takeEvery(actionTypes.GET_ENDED_PROPOSALS, getEndedProposals),
-  takeEvery(actionTypes.GET_PROPOSALS_LIST, getProposalsList),
-  takeEvery(actionTypes.GET_PROPOSAL, getProposal),
+  takeEvery(actionTypes.GET_ROOT_NODE_ENDED_PROPOSALS, getEndedProposals),
+  takeEvery(actionTypes.GET_ROOT_NODE_PROPOSALS_LIST, getProposalsList),
+  takeEvery(actionTypes.GET_ROOT_NODE_PROPOSAL, getRootNodeProposal),
 ];

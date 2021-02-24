@@ -2,8 +2,13 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { votingLockingEnd, votingWeight } from 'store/selectors/q-piggy-bank';
-import { onChangeProposalTab, onSetActiveTab } from 'store/actions/action-creaters/voting/proposals';
+import {
+  onChangeProposalTab,
+  onSetActiveTab,
+  onChangePageType
+} from 'store/actions/action-creaters/voting/proposals';
 import { getLockedAssets, getUserBalance } from 'store/actions/action-creaters/q-piggy-bank';
+import { pageType } from 'store/selectors/voting/proposals';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import { fromSolDateFormattingT1 } from 'func/date';
 
@@ -24,6 +29,7 @@ import { WrapBtn, WrapTabs } from 'components/Custom/PageLists/styles';
 function QGovernance() {
   const history = useHistory();
   const address = useSelector(userAddressMetamask);
+  const page = useSelector(pageType);
   const userVotingWeight = fN(useSelector(votingWeight));
   const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd));
   const [activeTab, setActiveTab] = useState('q-proposals');
@@ -34,6 +40,12 @@ function QGovernance() {
     dispatch(getLockedAssets(address));
 
   }, [dispatch]);
+
+  useEffect(() => {
+    if (page === 'ended' || !page) {
+      dispatch(onChangePageType('active'));
+    }
+  }, []);
 
   const statsData = (() => {
     return (
@@ -91,7 +103,8 @@ function QGovernance() {
             tabsHandler={(key) => {
               setActiveTab(key);
               dispatch(onChangeProposalTab());
-              dispatch(onSetActiveTab(key))
+              dispatch(onSetActiveTab(key));
+              dispatch(onChangePageType('active'));
             }}
           />
           <WrapBtn>
@@ -100,6 +113,7 @@ function QGovernance() {
               type="white"
               width="100%"
               handleButton={() => {
+                dispatch(onChangePageType('ended'));
                 history.push({
                   pathname: '/ended-proposals',
                   state: {

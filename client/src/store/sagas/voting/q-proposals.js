@@ -1,11 +1,12 @@
-import { put, takeEvery } from 'redux-saga/effects';
+import { put, select, takeEvery } from 'redux-saga/effects';
 
 import * as actionTypes from 'store/actions/action-types/voting/q-proposals';
 
 import {
   getQEndedProposalsError, getQEndedProposalsSuccess,
   getProposalSuccess, getEmptyProposalSuccess, getProposalError,
-  getQProposalsListError, getQProposalsListSuccess
+  getQProposalsListError, getQProposalsListSuccess, getProposalEndedSuccess,
+  getEmptyProposalEndedSuccess, getQProposalEnded, getProposalEndedError
 } from 'store/actions/action-creaters/voting/q-proposals';
 import {
   creationQContractObj,
@@ -15,7 +16,6 @@ import {
 function* getProposalsList() {
   try {
     const contracts = creationQContractsObjArray();
-
     let result = [];
     if (Array.isArray(contracts)) {
       for (let contractName of contracts) {
@@ -32,8 +32,12 @@ function* getProposalsList() {
   }
 }
 
-function* getProposal({ contractName, id, activeProposal }) {
+function* getQProposal({ contractName, id, activeProposal }) {
+  const { pageType } = yield select(state => state.proposals);
   try {
+    if (pageType === 'ended') {
+      yield put(getQProposalEnded());
+    }
     const contract = creationQContractObj(contractName);
     if (contract) {
       let data = null;
@@ -42,26 +46,44 @@ function* getProposal({ contractName, id, activeProposal }) {
       } else {
         data = yield contract.getProposalWithoutStatusChecked(id);
       }
-      console.log('data', data);
-      console.log('id', id);
-      // const data = null;
-      if (data) {
-        yield put(getProposalSuccess(data));
-      } else {
-        if (id) {
-          yield put(getEmptyProposalSuccess(id));
+      if (pageType === 'ended') {
+        if (data) {
+          yield put(getProposalEndedSuccess(data));
+        } else {
+          if (id) {
+            yield put(getEmptyProposalEndedSuccess({
+              id,
+              contractName
+            }));
+          }
+        }
+      } else if (pageType === 'active') {
+        if (data) {
+          yield put(getProposalSuccess(data));
+        } else {
+          if (id) {
+            yield put(getEmptyProposalSuccess({
+              id,
+              contractName
+            }));
+          }
         }
       }
     }
   } catch (err) {
     console.log('err', err);
-    yield put(getProposalError(id));
+    if (pageType === 'ended') {
+      yield put(getProposalEndedError(id));
+    } else {
+      yield put(getProposalError(id));
+    }
   }
 }
 
 function* getEndedProposals() {
   try {
     const contracts = creationQContractsObjArray();
+    console.log('getEndedProposals', contracts);
 
     let result = [];
     if (Array.isArray(contracts)) {
@@ -82,7 +104,7 @@ function* getEndedProposals() {
 }
 
 export default [
-  takeEvery(actionTypes.GET_ENDED_PROPOSALS, getEndedProposals),
-  takeEvery(actionTypes.GET_PROPOSALS_LIST, getProposalsList),
-  takeEvery(actionTypes.GET_PROPOSAL, getProposal),
+  takeEvery(actionTypes.GET_Q_ENDED_PROPOSALS, getEndedProposals),
+  takeEvery(actionTypes.GET_Q_PROPOSALS_LIST, getProposalsList),
+  takeEvery(actionTypes.GET_Q_PROPOSAL, getQProposal),
 ];

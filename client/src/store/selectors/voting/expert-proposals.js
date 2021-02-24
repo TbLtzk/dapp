@@ -1,10 +1,10 @@
 /*ended proposals staff*/
-export const expertEndedProposals = state => state.proposals.endedProposals;
-export const expertLoadingEndedProposals = state => state.proposals.loadingEndedProposals;
-export const expertErrorEnded = state => state.proposals.errorEnded;
+export const expertEndedProposals = state => state.expertProposals.endedProposals;
+export const expertLoadingEndedProposals = state => state.expertProposals.loadingEndedProposals;
+export const expertErrorEnded = state => state.expertProposals.errorEnded;
 
 /*get list of proposals*/
-export const expertProposalsArr = state => state.proposals.proposalsArr;
-export const loadingExpertProposals = state => state.proposals.loadingProposals;
-export const expertErrorM = state => state.proposals.errorM;
+export const expertProposalsArr = state => state.expertProposals.proposalsArr;
+export const loadingExpertProposals = state => state.expertProposals.loadingProposals;
+export const expertErrorM = state => state.expertProposals.errorM;
 

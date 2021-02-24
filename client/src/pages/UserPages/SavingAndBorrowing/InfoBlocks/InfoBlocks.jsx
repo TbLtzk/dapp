@@ -20,6 +20,7 @@ export default function InfoBlocks() {
   const commonHandler = new CommonHandler(address, useDispatch());
 
   useEffect(() => {
+    commonHandler.setOutstandingDebt(setTotalDebt);
     commonHandler.setAvailableToDeposit(setAvailableToDeposit);
     commonHandler.setVaults(setVaults);
     commonHandler.setExchangeRate('QBTC', setExchangeRateQBTC);
@@ -37,24 +38,9 @@ export default function InfoBlocks() {
     }
   };
 
-  const calculateTotalDebt = () => {
-    let totalDebtL = 0;
-    if (vaults.length > 0) {
-      vaults.forEach((vault) => {
-        const totalDebtVault = vault.debtBalance;
-        totalDebtL += totalDebtVault;
-      });
-      setTotalDebt(totalDebtL);
-    }
-  };
-
   useEffect(() => {
     calculateTotalColVal();
-    calculateTotalDebt();
   });
-
-  // console.log(vaults);
-  // console.log(exchangeRateQBTC);
 
   return (
     <>

@@ -21,8 +21,7 @@ import systemReserve from './system-reserve';
 
 export default function* rootSaga() {
   yield all([...userAuth, ...userInf, ...rootContract, ...qPiggyBank,
-    ...proposals,
-    // ...qProposals, ...rootNodeProposals, ...expertProposals, ...slashingProposals,
+    ...proposals, ...qProposals, ...rootNodeProposals, ...expertProposals, ...slashingProposals,
     ...validators, ...validationRewardPools, ...auctions, ...stableCoin,
     ...membership, ...parameters, ...systemBalance, ...systemReserve]);
 }

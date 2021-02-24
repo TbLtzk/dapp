@@ -60,7 +60,7 @@ export const MemberAddress = styled.span`
     max-width: 247px;
   }
   .delegated-validators{
-    max-width: 270px;
+    max-width: 176px;
   }
 `;
 

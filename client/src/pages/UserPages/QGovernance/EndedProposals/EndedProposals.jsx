@@ -3,7 +3,6 @@ import React, { useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getEndedProposals } from 'store/actions/action-creaters/voting/proposals';
-import { endedProposals, loadingEndedProposals, errorEnded } from 'store/selectors/voting/proposals';
 import { qEndedProposals, qLoadingEndedProposals, qErrorEnded } from 'store/selectors/voting/q-proposals';
 import {
   rootNodeEndedProposals,
@@ -20,10 +19,13 @@ import {
   slashingLoadingEndedProposals,
   slashingErrorEnded
 } from 'store/selectors/voting/slashing-proposals';
+import { onChangePageType } from 'store/actions/action-creaters/voting/proposals';
+import { pageType } from 'store/selectors/voting/proposals';
 
 import ProposalsList from 'pages/UserPages/QGovernance/components/ProposalsList';
 import PageWrap from 'components/Base/PageWrap';
 
+import { tabSwitcher } from 'contracts/handler/VotingHandler';
 import { checkCurrentTab } from 'pages/UserPages/QGovernance/components/constants';
 
 import { Row, Col } from 'react-bootstrap';
@@ -33,12 +35,29 @@ function EndedProposals() {
   const location = useLocation();
   const dispatch = useDispatch();
   const { activeTab } = location.state;
+  const page = useSelector(pageType);
 
-  console.log('location?.state?.activeTab', activeTab);
+  const qEnded = useSelector(qEndedProposals);
+  const qLoading = useSelector(qLoadingEndedProposals);
+  const qError = useSelector(qErrorEnded);
 
-  const endedArr = useSelector(endedProposals);
-  const loading = useSelector(loadingEndedProposals);
-  const error = useSelector(errorEnded);
+  const rootNodeEnded = useSelector(rootNodeEndedProposals);
+  const rootNodeLoading = useSelector(rootNodeLoadingEndedProposals);
+  const rootNodeError = useSelector(rootNodeErrorEnded);
+
+  const expertEnded = useSelector(expertEndedProposals);
+  const expertLoading = useSelector(expertLoadingEndedProposals);
+  const expertError = useSelector(expertErrorEnded);
+
+  const slashingEnded = useSelector(slashingEndedProposals);
+  const slashingLoading = useSelector(slashingLoadingEndedProposals);
+  const slashingError = useSelector(slashingErrorEnded);
+
+  useEffect(() => {
+    if (page === 'active' || !page) {
+      dispatch(onChangePageType('ended'));
+    }
+  }, []);
 
   useEffect(() => {
     dispatch(getEndedProposals(activeTab));
@@ -47,6 +66,18 @@ function EndedProposals() {
   const proposalKind = useMemo(() => {
     return checkCurrentTab(activeTab);
   }, [activeTab, location?.state?.numberOfProposals]);
+
+  const endedArr = useMemo(() => {
+    return tabSwitcher(activeTab, qEnded, rootNodeEnded, expertEnded, slashingEnded);
+  }, [activeTab, qEnded, rootNodeEnded, expertEnded, slashingEnded]);
+
+  const loading = useMemo(() => {
+    return tabSwitcher(activeTab, qLoading, rootNodeLoading, expertLoading, slashingLoading);
+  }, [activeTab, qLoading, rootNodeLoading, expertLoading, slashingLoading]);
+
+  const error = useMemo(() => {
+    return tabSwitcher(activeTab, qError, rootNodeError, expertError, slashingError);
+  }, [activeTab, qError, rootNodeError, expertError, slashingError]);
 
   return (
     <PageWrap>

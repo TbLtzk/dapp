@@ -10,7 +10,9 @@ import {
   getSlashingProposalsListError,
   getSlashingEndedProposalsSuccess,
   getSlashingEndedProposalsError,
-  getProposalError, getEmptyProposalSuccess, getProposalSuccess
+  getProposalError, getEmptyProposalSuccess, getProposalSuccess,
+  getEmptyProposalEndedSuccess,
+  getProposalEndedSuccess, getSlashingProposalEnded, getProposalEndedError
 } from 'store/actions/action-creaters/voting/slashing-proposals';
 import {
   creationSlashingContractObj,
@@ -20,7 +22,6 @@ import {
 import SlashingEscrow from 'contracts/src/voting/SlashingEscrow';
 
 function* getProposalsList() {
-
   try {
     const contracts = creationSlashingContractsObjArray();
     let result = [];
@@ -61,7 +62,11 @@ function* getEndedProposals() {
 }
 
 function* getProposal({ contractName, id, activeProposal }) {
+  const { pageType } = yield select(state => state.proposals);
   try {
+    if (pageType === 'ended') {
+      yield put(getSlashingProposalEnded());
+    }
     const contract = creationSlashingContractObj(contractName);
     if (contract) {
       let data = null;
@@ -70,20 +75,38 @@ function* getProposal({ contractName, id, activeProposal }) {
       } else {
         data = yield contract.getProposalWithoutStatusChecked(id);
       }
-      console.log('data', data);
-      console.log('id', id);
-      // const data = null;
-      if (data) {
-        yield put(getProposalSuccess(data));
-      } else {
-        if (id) {
-          yield put(getEmptyProposalSuccess(id));
+      if (pageType === 'ended') {
+        if (data) {
+          yield put(getProposalEndedSuccess(data));
+        } else {
+          if (id) {
+            yield put(getEmptyProposalEndedSuccess({
+              id,
+              contractName
+            }));
+          }
+        }
+      } else if (pageType === 'active') {
+        if (data) {
+          yield put(getProposalSuccess(data));
+        } else {
+          if (id) {
+            yield put(getEmptyProposalSuccess({
+              id,
+              contractName
+            }));
+          }
         }
       }
+
     }
   } catch (err) {
     console.log('err', err);
-    yield put(getProposalError(id));
+    if (pageType === 'ended') {
+      yield put(getProposalEndedError(id));
+    } else {
+      yield put(getProposalError(id));
+    }
   }
 }
 
@@ -107,7 +130,6 @@ function* onEscrowCastObjection({ data, contractName, proposalId }) {
 
 function* onEscrowProposeDecision({ data, contractName, proposalId }) {
   try {
-    console.log('data', data);
     yield put(setTransactionLoading());
     const { userAddress } = yield select(state => state.userInf);
     const SlashingEscrowContractName = contractName === 'ValidatorsSlashingVoting'
@@ -163,9 +185,9 @@ function* onEscrowConfirmProposeDecision({ contractName, proposalId }) {
 }
 
 export default [
-  takeEvery(actionTypes.GET_ENDED_PROPOSALS, getEndedProposals),
-  takeEvery(actionTypes.GET_PROPOSALS_LIST, getProposalsList),
-  takeEvery(actionTypes.GET_PROPOSAL, getProposal),
+  takeEvery(actionTypes.GET_SLASHING_ENDED_PROPOSALS, getEndedProposals),
+  takeEvery(actionTypes.GET_SLASHING_PROPOSALS_LIST, getProposalsList),
+  takeEvery(actionTypes.GET_SLASHING_PROPOSAL, getProposal),
 
   takeEvery(actionTypes.ESCROW_CAST_OBJECTION, onEscrowCastObjection),
   takeEvery(actionTypes.ESCROW_PROPOSE_DECISION, onEscrowProposeDecision),

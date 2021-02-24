@@ -30,10 +30,10 @@ const RootReducer = combineReducers({
   qPiggyBank,
 
   proposals,
-  // qProposals,
-  // rootNodeProposals,
-  // expertProposals,
-  // slashingProposals,
+  qProposals,
+  rootNodeProposals,
+  expertProposals,
+  slashingProposals,
 
   auctions,
   modalHandler,

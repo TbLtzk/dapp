@@ -116,7 +116,6 @@ function MemberTable(props) {
     } else if (type === 'delegated-validators') {
       const children = <>
         <td>{fN(member.idealStake) + 'Q'}</td>
-        <td>{member.compoundRate + '%'}</td>
         <td>{fN(member.claimableReward) + 'Q'}</td>
       </>;
       return showBodyTable(i, null, member.validator, null, 'delegated-validators', children);

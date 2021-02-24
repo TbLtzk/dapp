@@ -25,7 +25,7 @@ export default function BorrowBlock(props) {
     setActCardDataInf(actCardData);
   }, [actCardData]);
 
-  console.log("actCardData", actCardData);
+  console.log('actCardData', actCardData);
 
   const [lockedCol, setLockedCol] = useState(0);
   const [exchangeRate, setExchangeRate] = useState(0);
@@ -47,10 +47,13 @@ export default function BorrowBlock(props) {
   const [allowanceDeposit, setAllowanceDeposit] = useState(0);
   const [allowanceRepay, setAllowanceRepay] = useState(0);
 
-
   const address = useSelector(userAddressMetamask);
-  const handler = new Handler(address, actCardDataInf?.vault?.colKey, useDispatch());
+  const handler = new Handler(address, actCardDataInf?.vault?.colKey, useDispatch(), actCardDataInf?.vault?.vaultNum);
   const commonHandler = new CommonHandler(address, useDispatch());
+
+  useEffect(() => {
+    // handler.setVaultStats('');
+  });
 
   useEffect(async () => {
     if (actCardDataInf.type !== 'borrow') return;
@@ -119,7 +122,7 @@ export default function BorrowBlock(props) {
 
   const repay = async (formData) => {
     if (repayBtnTitle === 'Approve') {
-      await handler.approveSwitcher("repay");
+      await handler.approveSwitcher('repay');
       handler.allowanceSwitcher(setAllowanceRepay, 'repay');
       setRepayBtnTitle('Repay');
     } else {
@@ -129,7 +132,7 @@ export default function BorrowBlock(props) {
   };
   const addDeposit = async (formData) => {
     if (depositBtnTitle === 'Approve') {
-      await handler.approveSwitcher("deposit");
+      await handler.approveSwitcher('deposit');
       handler.allowanceSwitcher(setAllowanceDeposit, 'deposit');
       setDepositBtnTitle('Add');
     } else {
@@ -237,7 +240,7 @@ export default function BorrowBlock(props) {
             btnTxt="Borrow asset"
             btnShortTxt="Borrow"
             onclick={borrow}
-            inpType="number"
+            inpType="text"
             inpPlaceholder="Amount (QUSD)"
             inpRules={{ required: true }}
           />
@@ -245,7 +248,7 @@ export default function BorrowBlock(props) {
             btnTxt="Repay Borrowed Asset"
             btnShortTxt={repayBtnTitle}
             onclick={repay}
-            inpType="number"
+            inpType="text"
             inpPlaceholder="Amount (QUSD)"
             inpRules={{ required: true }}
             onChange={(value) => {
@@ -256,7 +259,7 @@ export default function BorrowBlock(props) {
             btnTxt="Deposit collateral"
             btnShortTxt={depositBtnTitle}
             onclick={addDeposit}
-            inpType="number"
+            inpType="text"
             inpPlaceholder={`Amount (${actCardDataInf?.vault?.colKey})`}
             inpRules={{ required: true }}
             onChange={(value) => {
@@ -267,7 +270,7 @@ export default function BorrowBlock(props) {
             btnTxt="Withdraw Collateral"
             btnShortTxt="Withdraw"
             onclick={withdraw}
-            inpType="number"
+            inpType="text"
             inpPlaceholder={`Amount (${actCardDataInf?.vault?.colKey})`}
             inpRules={{ required: true }}
           />

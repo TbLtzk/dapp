@@ -1,8 +1,9 @@
 import { web3 } from 'contracts/config/drizzle-config';
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
-import { StableCoinQUSD } from '../../../contracts/src/StableCoin';
+import { StableCoinQUSD } from 'contracts/src/StableCoin';
 import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
-import { GovernedEpdrQbtcQusdOracle, GovernedEpdrQethQusdOracle } from '../../../contracts/src/FxPriceFeed';
+import { GovernedEpdrQbtcQusdOracle, GovernedEpdrQethQusdOracle } from 'contracts/src/FxPriceFeed';
+import { fromWei } from 'func/balance';
 
 export default class Handler {
   constructor(address, dispatch) {
@@ -12,23 +13,44 @@ export default class Handler {
     this.contractBorrowingCoreQUSD = new BorrowingCoreQUSD();
   }
 
+  setOutstandingDebt(stateSetter) {
+    this.dispatch(setTransactionCounter(1));
+    console.log('contractBorrowingCoreQUSD', this.contractBorrowingCoreQUSD);
+
+    this.contractBorrowingCoreQUSD.totalStcBackedByCol(this.address)
+      .then((res) => {
+        console.log('totalStcBackedByCol', res);
+        stateSetter(fromWei(res));
+      })
+      .catch((e) => {
+        stateSetter(0);
+        console.log(e);
+      })
+      .finally(() => {
+        this.dispatch(setTransactionCounter(-1));
+      });
+  }
+
   setAvailableToDeposit(stateSetter) {
     this.dispatch(setTransactionCounter(1));
 
-    this.contractStableCoinQUSD.balanceOf(this.address).then((res) => {
-      const resL = web3.utils.fromWei(new web3.utils.BN(res));
-      stateSetter(resL);
-    }).catch((e) => {
-      stateSetter(0);
-      console.log(e);
-    }).finally(() => {
-      this.dispatch(setTransactionCounter(-1));
-    });
+    this.contractStableCoinQUSD.balanceOf(this.address)
+      .then((res) => {
+        const resL = web3.utils.fromWei(new web3.utils.BN(res));
+        stateSetter(resL);
+      })
+      .catch((e) => {
+        stateSetter(0);
+        console.log(e);
+      })
+      .finally(() => {
+        this.dispatch(setTransactionCounter(-1));
+      });
   }
 
   setExchangeRate(collateral, stateSetter) {
     this.dispatch(setTransactionCounter(1));
-    console.log("collateral", collateral);
+    console.log('collateral', collateral);
     let oracleContract;
     if (collateral === 'QETH') {
       oracleContract = new GovernedEpdrQethQusdOracle();
@@ -36,25 +58,32 @@ export default class Handler {
       oracleContract = new GovernedEpdrQbtcQusdOracle();
     }
 
-    oracleContract.exchangeRate().then((res) => {
-      const resL = web3.utils.fromWei(new web3.utils.BN(res));
-      stateSetter(resL);
-    }).catch((e) => {
-      stateSetter(0);
-      console.log(e);
-    }).finally(() => {
-      this.dispatch(setTransactionCounter(-1));
-    });
+    oracleContract.exchangeRate()
+      .then((res) => {
+        const resL = web3.utils.fromWei(new web3.utils.BN(res));
+        stateSetter(resL);
+      })
+      .catch((e) => {
+        stateSetter(0);
+        console.log(e);
+      })
+      .finally(() => {
+        this.dispatch(setTransactionCounter(-1));
+      });
   }
 
   async setVaults(stateSetter) {
     this.dispatch(setTransactionCounter(1));
 
-    const vaultsCount = await this.contractBorrowingCoreQUSD.userVaultsCount(this.address).catch(() => {});
+    const vaultsCount = await this.contractBorrowingCoreQUSD.userVaultsCount(this.address)
+      .catch(() => {
+      });
 
     const vaultsLoc = [];
     for (let i = 0; i < vaultsCount; i += 1) {
-      const vaultInfo = await this.contractBorrowingCoreQUSD.userVaults(this.address, i).catch(() => {});
+      const vaultInfo = await this.contractBorrowingCoreQUSD.userVaults(this.address, i)
+        .catch(() => {
+        });
       vaultsLoc.push(vaultInfo);
     }
     stateSetter(vaultsLoc);

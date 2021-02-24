@@ -5,26 +5,29 @@ import {setTransactionCounter} from 'store/actions/action-creaters/transaction-h
 import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
 import {maxApproveAmount} from 'func/numbers';
 import {toWei, fromWei} from 'func/balance';
+import {uintPerSecondToPerYearNumber} from 'func/useful';
 
 export default class Handler {
   constructor(address, dispatch) {
     this.address = address;
     this.contractSavingQUSD = new SavingQUSD();
     this.contractStableCoinQUSD = new StableCoinQUSD();
-    this.contractEPDRParameters = new EPDR_Parameters("EPDR_Parameters");
     this.dispatch = dispatch;
   }
 
-  setSavingBalanceAndLatestClaim(savingBalanceSetter, latestClaimSetter) {
+  setSavingBalanceIntRateEstInterest(savingBalanceSetter, interestRateSetter, estimatedInterestSetter) {
     this.dispatch(setTransactionCounter(1));
 
-    this.contractSavingQUSD.usersSavings(this.address).then((res) => {
-      latestClaimSetter(res.latestClaim);
-      const sbL = fromWei(res.balance);
-      savingBalanceSetter(sbL);
+    this.contractSavingQUSD.getBalanceDetails().then((res) => {
+      // console.log("setSavingBalanceIntRateEstInterest", res);
+      const interestRate = uintPerSecondToPerYearNumber(res.interestRate);
+      savingBalanceSetter(fromWei(res.currentBalance));
+      interestRateSetter(interestRate);
+      estimatedInterestSetter(res.currentBalance * ((1 + interestRate) / 100));
     }).catch((e) => {
       savingBalanceSetter(0);
-      latestClaimSetter(0);
+      interestRateSetter('-');
+      estimatedInterestSetter(0);
       console.log(e);
     }).finally(() => {
       this.dispatch(setTransactionCounter(-1));
@@ -45,66 +48,26 @@ export default class Handler {
     });
   }
 
-  setSavingRate(stateSetter) {
-    this.dispatch(setTransactionCounter(1));
-
-    this.contractEPDRParameters.getUint('governed.EPDR.QUSD_savingRate').then((res) => {
-      stateSetter(res);
-    }).catch((e) => {
-      stateSetter(0);
-      console.log(e);
-    }).finally(() => {
-      this.dispatch(setTransactionCounter(-1));
-    });
-  }
-
-  async deposit(amount, setterSavBal, setAvDep, setLatestClaim) {
+  async deposit(amount, setterSavBal, setAvDep, setInterestRate, setEstInterest) {
     this.dispatch(setTransactionCounter(1));
 
     const amountL = toWei(amount);
-    // const approve = await this.contractStableCoinQUSD.approve(this.contractSavingQUSD.address, amountL, this.address);
-    // if (approve.status === true) {
     this.contractSavingQUSD.deposit(this.address, amount).then(() => {
-      this.setSavingBalanceAndLatestClaim(setterSavBal, setLatestClaim);
+      this.setSavingBalanceIntRateEstInterest(setterSavBal, setInterestRate, setEstInterest);
       this.setAvailableToDeposit(setAvDep);
     }).catch((e) => {
       console.log(e);
     }).finally(() => {
       this.dispatch(setTransactionCounter(-1));
     });
-    // }
   }
 
-  async withdraw(amount, setterSavBal, setAvDep, setLatestClaim) {
+  async withdraw(amount, setterSavBal, setAvDep, setInterestRate, setEstInterest) {
     this.dispatch(setTransactionCounter(1));
 
     this.contractSavingQUSD.withdraw(this.address, amount).then(() => {
-      this.setSavingBalanceAndLatestClaim(setterSavBal, setLatestClaim);
+      this.setSavingBalanceIntRateEstInterest(setterSavBal, setInterestRate, setEstInterest);
       this.setAvailableToDeposit(setAvDep);
-    }).catch((e) => {
-      console.log(e);
-    }).finally(() => {
-      this.dispatch(setTransactionCounter(-1));
-    });
-  }
-
-  // mint(amount, stateSetter) {
-  //   this.dispatch(setTransactionCounter(1));
-  //
-  //   this.contractStableCoinQUSD.mint(this.address, this.address, amount).then(() => {
-  //     this.setAvailableToDeposit(stateSetter);
-  //   }).catch((e) => {
-  //     console.log(e);
-  //   }).finally(() => {
-  //     this.dispatch(setTransactionCounter(-1));
-  //   });
-  // }
-
-  async claim(stateSetter) {
-    this.dispatch(setTransactionCounter(1));
-
-    this.contractSavingQUSD.claim(this.address).then(() => {
-      stateSetter('0');
     }).catch((e) => {
       console.log(e);
     }).finally(() => {

@@ -55,14 +55,6 @@ export const getEndedProposals = (activeTab) => ({
   type: actionTypes.GET_ENDED_PROPOSALS,
   activeTab
 });
-export const getEndedProposalsSuccess = (result) => ({
-  type: actionTypes.GET_ENDED_PROPOSALS_SUCCESS,
-  result
-});
-export const getEndedProposalsError = (result) => ({
-  type: actionTypes.GET_ENDED_PROPOSALS_ERROR,
-  result
-});
 
 export const executeProposal = (data) => ({
   type: actionTypes.EXECUTE_PROPOSAL,
@@ -92,37 +84,6 @@ export const getProposalsList = (activeTab) => ({
   activeTab
 });
 
-export const getProposalsListSuccess = (result) => ({
-  type: actionTypes.GET_PROPOSALS_LIST_SUCCESS,
-  result
-});
-
-export const getProposalsListError = (result) => ({
-  type: actionTypes.GET_PROPOSALS_LIST_ERROR,
-  result
-});
-
-export const getProposalVote = (contractName, id, activeTab, activeProposal) => ({
-  type: actionTypes.GET_PROPOSAL,
-  contractName,
-  id,
-  activeTab,
-  activeProposal
-});
-
-export const getProposalSuccess = (result) => ({
-  type: actionTypes.GET_PROPOSAL_SUCCESS,
-  result,
-});
-export const getEmptyProposalSuccess = (result) => ({
-  type: actionTypes.GET_EMPTY_PROPOSAL_SUCCESS,
-  result,
-});
-
-export const getProposalError = (result) => ({
-  type: actionTypes.GET_PROPOSAL_ERROR,
-  result,
-});
 
 //dashboard
 export const getNumberAllProposals = () => ({
@@ -151,37 +112,8 @@ export const onSetActiveTab = (activeTab) => ({
   activeTab
 });
 
-//escrow
-export const onEscrowCastObjection = (data, contractName, proposalId) => ({
-  type: actionTypes.ESCROW_CAST_OBJECTION,
-  data,
-  contractName,
-  proposalId
-});
-export const onEscrowCastObjectionSuccess = (result) => ({
-  type: actionTypes.ESCROW_CAST_OBJECTION_SUCCESS,
-  result,
-});
 
-export const onEscrowCastObjectionError = (result) => ({
-  type: actionTypes.ESCROW_CAST_OBJECTION_ERROR,
-  result,
-});
-
-export const onEscrowProposeDecision = (data, contractName, proposalId) => ({
-  type: actionTypes.ESCROW_PROPOSE_DECISION,
-  data,
-  contractName,
-  proposalId
-});
-
-export const onEscrowRecallProposeDecision = (contractName, proposalId) => ({
-  type: actionTypes.ESCROW_RECALL_PROPOSE_DECISION,
-  contractName,
-  proposalId
-});
-export const onEscrowConfirmDecision = (contractName, proposalId) => ({
-  type: actionTypes.ESCROW_CONFIRM_DECISION,
-  contractName,
-  proposalId
+export const onChangePageType = (pageType) => ({
+  type: actionTypes.PAGE_TYPE,
+  pageType
 });

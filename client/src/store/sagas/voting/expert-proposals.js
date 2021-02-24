@@ -1,4 +1,4 @@
-import { put, takeEvery } from 'redux-saga/effects';
+import { put, select, takeEvery } from 'redux-saga/effects';
 
 import * as actionTypes from 'store/actions/action-types/voting/expert-proposals';
 
@@ -6,6 +6,8 @@ import {
   getExpertEndedProposalsError, getExpertEndedProposalsSuccess,
   getExpertProposalsListError, getExpertProposalsListSuccess,
   getProposalSuccess, getEmptyProposalSuccess, getProposalError,
+  getProposalEndedSuccess, getEmptyProposalEndedSuccess, getExpertProposalEnded,
+  getProposalEndedError
 } from 'store/actions/action-creaters/voting/expert-proposals';
 import {
   creationExpertContractObj, creationExpertContractsObjArray
@@ -33,7 +35,11 @@ function* getProposalsList() {
 }
 
 function* getProposal({ contractName, id, activeProposal }) {
+  const { pageType } = yield select(state => state.proposals);
   try {
+    if (pageType === 'ended') {
+      yield put(getExpertProposalEnded());
+    }
     const contract = creationExpertContractObj(contractName);
     if (contract) {
       let data = null;
@@ -42,26 +48,44 @@ function* getProposal({ contractName, id, activeProposal }) {
       } else {
         data = yield contract.getProposalWithoutStatusChecked(id);
       }
-      console.log('data', data);
-      console.log('id', id);
-      // const data = null;
-      if (data) {
-        yield put(getProposalSuccess(data));
-      } else {
-        if (id) {
-          yield put(getEmptyProposalSuccess(id));
+      if (pageType === 'ended') {
+        if (data) {
+          yield put(getProposalEndedSuccess(data));
+        } else {
+          if (id) {
+            yield put(getEmptyProposalEndedSuccess({
+              id,
+              contractName
+            }));
+          }
+        }
+      } else if (pageType === 'active') {
+        if (data) {
+          yield put(getProposalSuccess(data));
+        } else {
+          if (id) {
+            yield put(getEmptyProposalSuccess({
+              id,
+              contractName
+            }));
+          }
         }
       }
     }
   } catch (err) {
     console.log('err', err);
-    yield put(getProposalError(id));
+    if (pageType === 'ended') {
+      yield put(getProposalEndedError(id));
+    } else {
+      yield put(getProposalError(id));
+    }
   }
 }
 
 function* getEndedProposals() {
   try {
     const contracts = creationExpertContractsObjArray();
+    console.log('getEndedProposals', contracts);
     let result = [];
     if (Array.isArray(contracts)) {
       for (let contractName of contracts) {
@@ -81,7 +105,7 @@ function* getEndedProposals() {
 }
 
 export default [
-  takeEvery(actionTypes.GET_ENDED_PROPOSALS, getEndedProposals),
-  takeEvery(actionTypes.GET_PROPOSALS_LIST, getProposalsList),
-  takeEvery(actionTypes.GET_PROPOSAL, getProposal),
+  takeEvery(actionTypes.GET_EXPERT_ENDED_PROPOSALS, getEndedProposals),
+  takeEvery(actionTypes.GET_EXPERT_PROPOSALS_LIST, getProposalsList),
+  takeEvery(actionTypes.GET_EXPERT_PROPOSAL, getProposal),
 ];

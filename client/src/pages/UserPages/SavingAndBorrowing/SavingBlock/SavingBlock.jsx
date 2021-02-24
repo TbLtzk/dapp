@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import ButtonSlide from 'components/Base/Buttons/ButtonSlide';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import { uintPercentToNumber, fN } from 'func/useful';
-import { max_allowance } from 'func/numbers';
-import { toWei, fromWei } from 'func/balance';
+import { fN } from 'func/useful';
 import Handler from './handler';
 
 import { CardDetail } from '../styles';
@@ -15,11 +13,10 @@ export default function SavingBlock(props) {
   const { actCardData } = props;
 
   const [savingBalance, setSavingBalance] = useState(0);
-  const [latestClaim, setLatestClaim] = useState(0);
+  const [interestRate, setInterestRate] = useState('-');
+
   const [avToDeposit, setAvToDeposit] = useState(0);
   const [estInterest, setEstInterest] = useState(0);
-  const [savingRate, setSavingRate] = useState(0);
-  const [claimReward, setClaimReward] = useState('0');
 
   const [allowance, setAllowance] = useState(0);
   const [depositBtnTitle, setDepositBtnTitle] = useState('Deposit');
@@ -30,29 +27,11 @@ export default function SavingBlock(props) {
   useEffect(async () => {
     if (actCardData.type !== 'saving') return;
 
-    handler.setSavingBalanceAndLatestClaim(setSavingBalance, setLatestClaim);
+    handler.setSavingBalanceIntRateEstInterest(setSavingBalance, setInterestRate, setEstInterest);
     handler.setAvailableToDeposit(setAvToDeposit);
-    handler.setSavingRate(setSavingRate);
     handler.allowance(setAllowance);
     // await handler.approve();
   }, [actCardData]);
-
-  const calculateClaimReward = () => {
-    const timeLastClaim = Math.floor(Date.now() / 1000) - latestClaim;
-    const balAtPrClaim = toWei(savingBalance);
-
-    let res = (1 + uintPercentToNumber(savingRate)) ** timeLastClaim * balAtPrClaim - balAtPrClaim;
-    res = fromWei(String(res));
-    setClaimReward(String(res));
-  };
-
-  useEffect(() => {
-    if (actCardData.intRate !== undefined) {
-      const estInterestL = savingBalance * (actCardData.intRate / 100);
-      setEstInterest(estInterestL);
-    }
-    calculateClaimReward();
-  }, [savingBalance, latestClaim]);
 
   const deposit = async (formData) => {
     if (depositBtnTitle === 'Approve') {
@@ -60,31 +39,21 @@ export default function SavingBlock(props) {
       handler.allowance(setAllowance);
       setDepositBtnTitle('Deposit');
     } else {
-      await handler.deposit(formData.field, setSavingBalance, setAvToDeposit, setLatestClaim);
+      await handler.deposit(formData.field, setSavingBalance, setAvToDeposit, setInterestRate, setEstInterest);
     }
   };
 
   const withdraw = (formData) => {
-    handler.withdraw(formData.field, setSavingBalance, setAvToDeposit, setLatestClaim);
-  };
-
-  // const mint = (formData) => {
-  //   handler.mint(formData.field, setAvToDeposit);
-  // };
-
-  const claim = () => {
-    handler.claim(setClaimReward);
+    handler.withdraw(formData.field, setSavingBalance, setAvToDeposit, setInterestRate, setEstInterest);
   };
 
   const onChangeValueBtnSlide = async (value) => {
     const inputValue = value.target.value;
     if (Number(allowance) < Number(inputValue)) {
-      // if (Number(allowance) !== Number(max_allowance)) {
       setDepositBtnTitle('Approve');
     } else {
       setDepositBtnTitle('Deposit');
     }
-    console.log('allowance', allowance);
   };
 
   return (
@@ -115,23 +84,14 @@ export default function SavingBlock(props) {
         </div>
         <div className="txt">
           <span>Interest Rate p.a.</span>
-          <span>{actCardData.intRate === undefined ? '-' : `${fN(actCardData.intRate)}%`}</span>
+          <span>{`${fN(interestRate)}%`}</span>
         </div>
         <div className="btn-group">
-          <ButtonSlide
-            btnTxt="Claim reward"
-            btnShortTxt="Claim"
-            onclick={claim}
-            inpType="number"
-            inpPlaceholder={fN(claimReward)}
-            inpRules={{ required: false }}
-            disabled={true}
-          />
           <ButtonSlide
             btnTxt="Deposit Saving Asset"
             btnShortTxt={depositBtnTitle}
             onclick={deposit}
-            inpType="number"
+            inpType="text"
             inpPlaceholder="Amount (QUSD)"
             inpRules={{ required: true }}
             onChange={(value) => {
@@ -142,19 +102,11 @@ export default function SavingBlock(props) {
             btnTxt="Withdraw Saving Asset"
             btnShortTxt="Withdraw"
             onclick={withdraw}
-            inpType="number"
+            inpType="text"
             inpPlaceholder="Amount (QUSD)"
             inpRules={{ required: true }}
           />
         </div>
-        {/*<ButtonSlide*/}
-        {/*  btnTxt="Mint (Test only)"*/}
-        {/*  btnShortTxt="Mint"*/}
-        {/*  onclick={mint}*/}
-        {/*  inpType="text"*/}
-        {/*  inpPlaceholder="Amount to mint"*/}
-        {/*  inpRules={{ required: true }}*/}
-        {/*/>*/}
       </CardDetail>
     </Col>
   );

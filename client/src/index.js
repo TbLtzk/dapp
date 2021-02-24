@@ -8,7 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import LoadingDrizzle from 'components/Custom/LoadingDrizzle';
 import StyleLayout from 'components/Base/StyleLayout';
 import Routes from './navigation/Routes';
-import {drizzleRegistry} from 'contracts/config/drizzle-config';
+import { drizzleRegistry } from 'contracts/config/drizzle-config';
 import { store } from './store/index';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -22,7 +22,7 @@ ReactDOM.render(
       <StyleLayout>
         <LoadingDrizzle>
           <BrowserRouter>
-            <Routes />
+            <Routes/>
           </BrowserRouter>
         </LoadingDrizzle>
       </StyleLayout>

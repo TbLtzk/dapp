@@ -56,7 +56,15 @@ class BorrowingCore {
   }
 
   async getVaultStats(userAddress, vaultId) {
+    console.log('userAddress', userAddress);
+    console.log('vaultId', vaultId);
     return await this.methods.getVaultStats(userAddress, vaultId)
+      .call();
+  }
+
+  async totalStcBackedByCol(userAddress) {
+    console.log('userAddress', userAddress);
+    return await this.methods.totalStcBackedByCol(userAddress)
       .call();
   }
 
