@@ -19,7 +19,6 @@ function* getAddressParameter({ value, typeContract }) {
       contract = new EPDR_Parameters('EPDR_Parameters');
     }
     const data = yield contract.getAddr(value);
-    console.log('getAddressParameter', data);
     yield put(getAddressParameterSuccess(data));
   } catch (err) {
     console.error('getAddressParameter.Error', err);
@@ -35,7 +34,6 @@ function* getStringParameter({ value, typeContract }) {
       contract = new EPDR_Parameters('EPDR_Parameters');
     }
     const data = yield contract.getString(value);
-    console.log('getStringParameter', data);
     yield put(getStringParameterSuccess(data));
   } catch (err) {
     console.error('getStringParameter.Error', err);
@@ -51,7 +49,6 @@ function* getBytesParameter({ value, typeContract }) {
       contract = new EPDR_Parameters('EPDR_Parameters');
     }
     const data = yield contract.getBytes(value);
-    console.log('getBytesParameter', data);
     yield put(getBytesParameterSuccess(data));
   } catch (err) {
     console.error('getBytesParameter.Error', err);
@@ -67,7 +64,6 @@ function* getUintParameter({ value, typeContract }) {
       contract = new EPDR_Parameters('EPDR_Parameters');
     }
     const data = yield contract.getUint(value);
-    console.log('getUintParameter', data);
     yield put(getUintParameterSuccess(data));
   } catch (err) {
     console.error('getUintParameter.Error', err);
@@ -83,7 +79,6 @@ function* getBooleanParameter({ value, typeContract }) {
       contract = new EPDR_Parameters('EPDR_Parameters');
     }
     const data = yield contract.getBool(value);
-    console.log('getBooleanParameter', data);
     yield put(getBoolParameterSuccess(data));
   } catch (err) {
     console.error('getBooleanParameter.Error', err);
@@ -104,14 +99,9 @@ function getContract(typeContract) {
 }
 
 function* getParameterValueByKey({ typeContract, typeParameter, parameterKey }) {
-  console.log('typeContract', typeContract);
-  console.log('typeParameter', typeParameter);
-  console.log('parameterKey', parameterKey);
   try {
     if (typeContract && typeParameter && parameterKey) {
       const contract = getContract(typeContract);
-      console.log('contract', contract);
-      console.log('typeParameter', typeParameter);
       let data = null;
       switch (typeParameter) {
         case 'address':
@@ -130,12 +120,9 @@ function* getParameterValueByKey({ typeContract, typeParameter, parameterKey }) 
           data = yield contract.getUint(parameterKey);
           break;
       }
-      console.log('getParameterValueByKey', data);
       if (data) {
-        // console.log('getParameterValueByKey', data);
         yield put(getParameterValueByKeySuccess(data));
       } else {
-        // yield put(getParameterValueByKeySuccess([]));
         yield put(getParameterValueByKeySuccess('Value not found. Key does not exist yet?'));
       }
     }
@@ -147,12 +134,9 @@ function* getParameterValueByKey({ typeContract, typeParameter, parameterKey }) 
 }
 
 function* getParameterKeysByType({ typeContract, typeParameter }) {
-  console.log('typeContract', typeContract);
-  console.log('typeParameter', typeParameter);
   try {
     if (typeContract && typeParameter) {
       const contract = getContract(typeContract);
-      console.log('contract', contract);
       let data = null;
       switch (typeParameter) {
         case 'address':
@@ -171,7 +155,6 @@ function* getParameterKeysByType({ typeContract, typeParameter }) {
           data = yield contract.getUintKeys();
           break;
       }
-      console.log('getParameterValueByKey', data);
       if (data) {
         yield put(getParameterKeysByTypeSuccess(data));
       } else {

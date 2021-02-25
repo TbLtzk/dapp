@@ -41,7 +41,6 @@ export const uintPercentToNumber = (num) => {
   if (num === undefined || num.isNaN === true) return undefined;
   if (num <= 0) return 0;
   if (num >= (10 ** 27)) return 100;
-  console.log('num', num);
 
   return num / (10 ** 27);
 };
@@ -52,7 +51,6 @@ export const uintPerSecondToPerYearNumber = (num) => {
   if (numL === undefined || numL.isNaN === true) return undefined;
 
   const perSec = uintPercentToNumber(numL);
-  console.log('perSec', perSec);
   return (((1 + perSec) ** (365 * 24 * 3600)) - 1) * 100;
 };
 

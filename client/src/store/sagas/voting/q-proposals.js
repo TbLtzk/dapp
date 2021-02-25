@@ -83,7 +83,6 @@ function* getQProposal({ contractName, id, activeProposal }) {
 function* getEndedProposals() {
   try {
     const contracts = creationQContractsObjArray();
-    console.log('getEndedProposals', contracts);
 
     let result = [];
     if (Array.isArray(contracts)) {

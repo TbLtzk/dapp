@@ -157,7 +157,6 @@ export default class ConstitutionVoting extends VotingService {
   async getConstitutionHash() {
     const result = await this.contract.methods.constitutionHash()
       .call();
-    console.log('getConstitutionHash', result);
     return result;
   }
 

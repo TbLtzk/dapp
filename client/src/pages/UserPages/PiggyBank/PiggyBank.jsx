@@ -6,12 +6,13 @@ import LockCoin from './LockCoin';
 import Panel from './Panel/Panel';
 import DelegateStakingPower from './DelegateStakingPower';
 import PageWrap from 'components/Base/PageWrap';
-import validateContractsAddress from '../../../contracts/config/cotracts-address-checker';
+
+import validateContractsAddress from 'contracts/config/cotracts-address-checker';
 
 function PiggyBank() {
   useEffect(async () => {
     const res = await validateContractsAddress();
-    console.log('Result', res);
+    // console.log('Result', res);
   });
 
   return (

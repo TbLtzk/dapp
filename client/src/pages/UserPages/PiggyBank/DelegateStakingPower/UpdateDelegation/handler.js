@@ -96,8 +96,6 @@ export class ComponentHandler {
       }
     });
 
-    console.log(inputShares);
-
     if (invalidAddressesKey.length === 0 && invalidSharesKey.length === 0) {
       return {
         addresses: inputAddresses,

@@ -101,7 +101,6 @@ export default class Handler {
     this.CompoundRateKeeperBorrowing.getLastUpdate()
       // this.BorrowingCoreQUSD.compoundRateKeeper("QBTC")
       .then(res => {
-        console.log('compoundRateKeeper.getLastUpdate', res);
         stateSetterUnixTimestamp(res);
         const transformTime = remainDateTimeSince(res);
         stateSetter(transformTime);

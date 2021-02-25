@@ -29,25 +29,33 @@ export const TextWrapGrey = styled.p`
 `;
 
 export const TextPanel = styled.div`
+  font-size: 14px;
   font-weight: 600;
   color: ${(props) => props.theme.colors.black};
   ${(props) => {
-    switch (props.type) {
-      case 'parentNode':
-        return `
+  switch (props.type) {
+    case 'parentNode':
+      return `
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
               `;
-      default:
-        return '';
-    }
-  }}
+    default:
+      return '';
+  }
+}}
+
 `;
 
 export const TextPanelSmall = styled(TextPanel)`
   font-weight: 400;
   font-size: 12px;
+`;
+
+export const PanelAlign = styled.div`
+  align-items: center;
+  display: flex;
+  height: 100%;
 `;
 
 export const TextPanelSmallGrey = styled(TextPanelSmall)`

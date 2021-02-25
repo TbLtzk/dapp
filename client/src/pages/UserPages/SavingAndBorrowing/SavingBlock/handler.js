@@ -19,7 +19,6 @@ export default class Handler {
     this.dispatch(setTransactionCounter(1));
 
     this.contractSavingQUSD.getBalanceDetails().then((res) => {
-      // console.log("setSavingBalanceIntRateEstInterest", res);
       const interestRate = uintPerSecondToPerYearNumber(res.interestRate);
       savingBalanceSetter(fromWei(res.currentBalance));
       interestRateSetter(interestRate);

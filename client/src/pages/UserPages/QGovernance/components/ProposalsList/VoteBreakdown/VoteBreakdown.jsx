@@ -16,7 +16,6 @@ const currentQuorum = 50;
 
 function VoteBreakdown(props) {
   const { voteBreakdown } = props;
-  // console.log('voteBreakdown', voteBreakdown);
 
   return (
     <div>

@@ -48,8 +48,8 @@ function OneProposalPage(props) {
   const expertLoading = useSelector(loadingExpertProposals);
   const expertError = useSelector(expertErrorM);
 
+
   const slashingProposals = useSelector(slashingProposalsArr);
-  const slashingLoading = useSelector(slashingLoadingProposals);
   const slashingError = useSelector(slashingErrorM);
 
   useEffect(() => {

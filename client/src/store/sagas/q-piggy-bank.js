@@ -1,12 +1,9 @@
 import { put, takeEvery } from 'redux-saga/effects';
 import * as actionTypes from 'store/actions/action-types/q-piggy-bank';
 import {
-  setError,
-  setUserBalance,
-  setLockedAssets,
-  getUserBalance,
-  getLockedAssets,
-  getDelegationsListError, getDelegationsListSuccess
+  setError, setUserBalance, setLockedAssets, getUserBalance,
+  getLockedAssets, getDelegationsListError, getDelegationsListSuccess,
+  getPBBalanceSuccess
 } from 'store/actions/action-creaters/q-piggy-bank';
 import QPiggyBank from 'contracts/src/QPiggyBank';
 import { handleLockedAssetsResponse } from 'contracts/handler/QPiggyBankHandler';
@@ -176,6 +173,16 @@ function* getDelegationList({ address }) {
   }
 }
 
+function* getBalanceDetails() {
+  try {
+    const contract = getContractInstance();
+    const data = yield contract.getBalanceDetails();
+    yield put(getPBBalanceSuccess(data));
+  } catch (err) {
+    console.error('getDelegationList.Error', err);
+  }
+}
+
 export default [
   takeEvery(actionTypes.GET_PB_USER_BALANCE, getUserBalanceGenerator),
   takeEvery(actionTypes.GET_PB_LOCKED_ASSETS, getLockedAssetsGenerator),
@@ -185,4 +192,6 @@ export default [
   takeEvery(actionTypes.SET_PB_LOCK_AMOUNT, setLockAmountGenerator),
   takeEvery(actionTypes.SET_PB_UNLOCK_AMOUNT, setUnlockAmountGenerator),
   takeEvery(actionTypes.GET_DELEGATIONS_LIST, getDelegationList),
+
+  takeEvery(actionTypes.GET_PB_BALANCE, getBalanceDetails),
 ];

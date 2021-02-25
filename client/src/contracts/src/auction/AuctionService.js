@@ -59,13 +59,9 @@ export default class AuctionService {
    */
   async getAllowance(userAddress, contractAddress, value) {
     let allowance = await this.stableCoinUSD.allowance(userAddress, contractAddress);
-    console.log('allowance', allowance);
-    // console.log('value', value);
     if (value) {
       if (Number(allowance) < Number(value)) {
-        // if (allowance !== max_allowance) {
         let approve = await this.stableCoinUSD.approve(contractAddress, maxApproveAmount, userAddress);
-        console.log('approve', approve);
       }
     }
   }

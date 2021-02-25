@@ -85,7 +85,6 @@ function* getProposal({ contractName, id, activeProposal }) {
 function* getEndedProposals() {
   try {
     const contracts = creationExpertContractsObjArray();
-    console.log('getEndedProposals', contracts);
     let result = [];
     if (Array.isArray(contracts)) {
       for (let contractName of contracts) {

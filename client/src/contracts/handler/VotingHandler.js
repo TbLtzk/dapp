@@ -87,7 +87,6 @@ export function toFixed(x) {
       x += (new Array(e + 1)).join('0');
     }
   }
-  console.log('toFixed', x);
   return x;
 }
 
@@ -97,7 +96,6 @@ export const bnSlashing = (number) => {
 };
 
 export const getPercentageFormat = (number) => {
-  console.log('number', number);
   // console.log('number', 10 ** 27);
   return bnSlashing(String(((10 ** 27) * Number(number)) / 100));
   // return bn('1e+25') * bn(number);

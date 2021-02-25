@@ -14,7 +14,6 @@ if (netWork === "devnet"){
 }else if (netWork === "testnet"){
   netWorkRPC = "18.158.7.68"; //testnet
 }
-console.log("netWorkRPC", netWorkRPC);
 
 const port = "8545";
 

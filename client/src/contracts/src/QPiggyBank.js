@@ -1,6 +1,5 @@
 import {contracts} from '../config/drizzle-config';
 import {fromWei, toWei} from 'func/balance';
-import {uintPerSecondToPerYearNumber} from 'func/useful';
 
 const contractName = 'QPiggyBank';
 
@@ -56,7 +55,6 @@ export default class QPiggyBank {
 
   async lock(address, amount) {
     const amountL = toWei(amount);
-    console.log(amount);
     return await this.methods.lock(amountL)
         .send({from: address});
   }
@@ -75,7 +73,6 @@ export default class QPiggyBank {
   async getDelegations(address) {
     let resultArr = [];
     const delegationsList = await this.getDelegationsList(address);
-    console.log('delegationsList', delegationsList);
     if (delegationsList === 0) {
       return [];
     } else {
@@ -86,7 +83,6 @@ export default class QPiggyBank {
           claimableReward: (member.claimableReward),
         });
       }
-      console.log("resultArr", resultArr);
       return resultArr;
     }
   }

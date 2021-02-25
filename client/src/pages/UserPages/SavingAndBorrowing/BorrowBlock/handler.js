@@ -45,8 +45,52 @@ export default class Handler {
     this.borrowingContract.getVaultStats(this.address, this.vaultId)
       .then((res) => {
         console.log('setVaultStats', res);
-        // const resL = web3.utils.fromWei(new web3.utils.BN(res));
-        // stateSetter(resL);
+
+        const colAssets = res?.colStats?.key;
+        let lockedCol = res?.colStats?.balance;
+
+        if (lockedCol) {
+          if (colAssets === 'QETH') {
+            lockedCol = fromWei(lockedCol);
+          } else if (colAssets === 'QBTC') {
+            lockedCol = fromBtcBlockchain(lockedCol);
+          } else {
+            lockedCol = 0;
+          }
+        } else {
+          lockedCol = 0;
+        }
+
+        const colPrice = res?.colStats?.price ? fromWei(res.colStats.price) : 0;
+
+        const borOutstandingDebt = res?.stcStats?.outstandingDebt ? fromWei(res.stcStats.outstandingDebt) : 0;
+        const borrowingLimit = res?.stcStats?.borrowingLimit ? fromWei(res.stcStats.borrowingLimit) : 0;
+
+        const availableWithdraw = colPrice !== 0 ? (borrowingLimit - borOutstandingDebt) / colPrice : 0;
+
+        const collateralDetails = {
+          assets: colAssets,
+          lockedCol: lockedCol,
+          assetPrice: colPrice,
+          availableWithdraw: availableWithdraw,
+          availableDeposit: 0, // ????
+          liquidationPrice: res?.colStats?.liquidationPrice ? fromWei(res.colStats.liquidationPrice) : 0,
+        };
+
+        const borCollateralValue = lockedCol * colPrice;
+        const availableBorrow = borrowingLimit - borOutstandingDebt;
+
+        const borrowingDetails = {
+          assets: res?.stcStats?.key,
+          collateralValue: borCollateralValue,
+          borrowingLimit: borrowingLimit,
+          availableBorrow: availableBorrow,
+          availableRepay: 0, // ?????
+          outstandingDebt: borOutstandingDebt,
+          liquidationLimit: res?.stcStats?.liquidationLimit ? fromWei(res.stcStats.liquidationLimit) : 0,
+          borrowingFee: res?.stcStats?.borrowingFee ? uintPerSecondToPerYearNumber(res.stcStats.borrowingFee) : 0,
+        };
+        // stateSetter(res);
       })
       .catch((e) => {
         // stateSetter(0);

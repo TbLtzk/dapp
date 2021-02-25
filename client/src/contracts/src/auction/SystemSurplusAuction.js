@@ -28,7 +28,6 @@ export default class SystemSurplusAuction extends AuctionService {
    */
   async getAuctionData(promiseRes, inf) {
     let objRes = {};
-    console.log('getAuctionData SystemSurplusAuction', promiseRes);
     objRes.bidder = promiseRes.bidder;
     // objRes.user = inf?.bidder;
     objRes.user = inf?.bidder || inf?.user;
@@ -60,8 +59,6 @@ export default class SystemSurplusAuction extends AuctionService {
         bid: evt.returnValues._bid,
       };
     });
-    console.log('auctionEvents SystemSurplusAuction', auctionEvents);
-    // console.log('auctionInf', auctionInf);
 
     let auctions = [];
     if (auctionInf) {
@@ -81,7 +78,6 @@ export default class SystemSurplusAuction extends AuctionService {
         }
       }
     }
-    console.log('auctions', auctions);
     return auctions;
   }
 
@@ -114,8 +110,6 @@ export default class SystemSurplusAuction extends AuctionService {
    * @return array
    */
   async bid(auctionId, bid, userAddress) {
-    console.log('auctionId', auctionId);
-    console.log('userAddress', userAddress);
     await this.getAllowance(userAddress, contractsToAddresses.SystemSurplusAuction, bid);
     const result = await this.contract.methods.bid(auctionId)
       .send(
@@ -123,7 +117,6 @@ export default class SystemSurplusAuction extends AuctionService {
           from: userAddress,
           value: toWei(bid)
         });
-    console.log('bid', result);
     return result;
   }
 
@@ -134,7 +127,6 @@ export default class SystemSurplusAuction extends AuctionService {
    * @return array
    */
   async execute(auctionId, userAddress) {
-    console.log('execute');
     const result = await this.contract.methods.execute(auctionId)
       .send(
         { from: userAddress });

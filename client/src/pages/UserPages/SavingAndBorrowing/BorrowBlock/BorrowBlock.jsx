@@ -27,6 +27,8 @@ export default function BorrowBlock(props) {
 
   console.log('actCardData', actCardData);
 
+  const [userVaultStats, setUserVaultStats] = useState(null);
+
   const [lockedCol, setLockedCol] = useState(0);
   const [exchangeRate, setExchangeRate] = useState(0);
   const [avToWithdraw, setAvToWithdraw] = useState(0);
@@ -52,8 +54,8 @@ export default function BorrowBlock(props) {
   const commonHandler = new CommonHandler(address, useDispatch());
 
   useEffect(() => {
-    // handler.setVaultStats('');
-  });
+    handler.setVaultStats(setUserVaultStats);
+  },[actCardDataInf]);
 
   useEffect(async () => {
     if (actCardDataInf.type !== 'borrow') return;

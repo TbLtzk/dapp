@@ -38,7 +38,6 @@ function QGovernance() {
   useEffect(() => {
     dispatch(getUserBalance(address));
     dispatch(getLockedAssets(address));
-
   }, [dispatch]);
 
   useEffect(() => {
