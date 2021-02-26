@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
-import { contracts, web3 } from '../config/drizzle-config';
-import { contractsToAddresses } from '../mapping/contract-to-address';
+import {contracts, web3} from '../config/drizzle-config';
+import {contractsToAddresses} from '../mapping/contract-to-address';
 
 class BorrowingCore {
   constructor() {
@@ -10,67 +10,65 @@ class BorrowingCore {
 
   async userVaultsCount(address) {
     return await this.methods.userVaultsCount(address)
-      .call();
+        .call();
   }
 
   async userVaults(address, vaultNum) {
     return await this.methods.userVaults(address, vaultNum)
-      .call();
+        .call();
   }
 
   async createVault(address, collateral) {
     return await this.methods.createVault(collateral)
-      .send({ from: address });
+        .send({from: address});
   }
 
   async depositCol(address, vaultId, amount) {
     return await this.methods.depositCol(vaultId, amount)
-      .send({ from: address });
+        .send({from: address});
   }
 
   async generateStc(address, vaultId, amount) {
     const amountL = new web3.utils.BN(amount);
     return await this.methods.generateStc(vaultId, amountL)
-      .send({ from: address });
+        .send({from: address});
   }
 
   async payBackSTC(address, vaultId, amount) {
     const amountL = new web3.utils.BN(amount);
     return await this.methods.payBackSTC(vaultId, amountL)
-      .send({ from: address });
+        .send({from: address});
   }
 
   async withdrawCol(address, vaultId, amount) {
     return await this.methods.withdrawCol(vaultId, amount)
-      .send({ from: address });
+        .send({from: address});
   }
 
   async balanceOf(address) {
     return await this.methods.balanceOf(address)
-      .call();
+        .call();
   }
 
   async compoundRateKeeper(colKey) {
     return await this.methods.compoundRateKeeper(colKey)
-      .call();
+        .call();
   }
 
   async getVaultStats(userAddress, vaultId) {
-    console.log('userAddress', userAddress);
-    console.log('vaultId', vaultId);
     return await this.methods.getVaultStats(userAddress, vaultId)
-      .call();
+        .call();
   }
 
   async totalStcBackedByCol(userAddress) {
     console.log('userAddress', userAddress);
     return await this.methods.totalStcBackedByCol(userAddress)
-      .call();
+        .call();
   }
 
   async updateCompoundRate(address, colKey) {
     return await this.methods.updateCompoundRate(colKey)
-      .send({ from: address });
+        .send({from: address});
   }
 }
 

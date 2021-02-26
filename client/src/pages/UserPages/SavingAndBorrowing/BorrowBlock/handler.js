@@ -1,29 +1,19 @@
-import { uintPercentToNumber, uintPerSecondToPerYearNumber } from 'func/useful';
-import { GovernedEpdrQbtcQusdOracle, GovernedEpdrQethQusdOracle } from 'contracts/src/FxPriceFeed';
-import { GovernedEpdrQbtcAddress, GovernedEpdrQethAddress, StableCoinQUSD } from 'contracts/src/StableCoin';
 import { web3 } from 'contracts/config/drizzle-config';
-import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
-import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
-import { fromBtcBlockchain, toBtcBlockchain, toWei, fromWei } from 'func/balance';
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
-import { transformToPercentage } from 'contracts/handler/VotingHandler';
+
+import { GovernedEpdrQbtcAddress, GovernedEpdrQethAddress, StableCoinQUSD } from 'contracts/src/StableCoin';
+import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
+
+import { uintPerSecondToPerYearNumber } from 'func/useful';
+import { fromBtcBlockchain, toBtcBlockchain, toWei, fromWei } from 'func/balance';
 import { maxApproveAmount } from 'func/numbers';
 
 export default class Handler {
   constructor(address, collateralKey, dispatch, vaultId) {
     this.address = address;
-    this.contractEPDRParameters = new EPDR_Parameters('EPDR_Parameters');
     this.borrowingContract = new BorrowingCoreQUSD();
     this.dispatch = dispatch;
     this.vaultId = String(vaultId);
-
-    if (collateralKey === 'QETH') {
-      //collateral contract
-      this.oracleContract = new GovernedEpdrQethQusdOracle();
-      //collateral contract
-    } else if (collateralKey === 'QBTC') {
-      this.oracleContract = new GovernedEpdrQbtcQusdOracle();
-    }
 
     if (collateralKey === 'QETH') {
       //collateral contract
@@ -31,17 +21,17 @@ export default class Handler {
     } else if (collateralKey === 'QBTC') {
       //collateral contract
       this.stableCoinContract = new GovernedEpdrQbtcAddress();
-
     }
+
     this.stableCoinUSDContract = new StableCoinQUSD();
-    // console.log("contract", this.stableCoinContract);
   }
 
-  setVaultStats(stateSetter) {
-    this.dispatch(setTransactionCounter(1));
-    console.log('this.borrowingContract', this.borrowingContract);
+  async setVaultStats(setCollateralInf, setBorrowingInf) {
+    // this.dispatch(setTransactionCounter(1));
     console.log('this.address', this.address);
     console.log('this.vaultId', this.vaultId);
+    let availableDeposit = await this.setAvailableToDeposit();
+    let availableRepay = await this.setAvailableToRepay();
     this.borrowingContract.getVaultStats(this.address, this.vaultId)
       .then((res) => {
         console.log('setVaultStats', res);
@@ -60,7 +50,6 @@ export default class Handler {
         } else {
           lockedCol = 0;
         }
-
         const colPrice = res?.colStats?.price ? fromWei(res.colStats.price) : 0;
 
         const borOutstandingDebt = res?.stcStats?.outstandingDebt ? fromWei(res.stcStats.outstandingDebt) : 0;
@@ -68,124 +57,74 @@ export default class Handler {
 
         const availableWithdraw = colPrice !== 0 ? (borrowingLimit - borOutstandingDebt) / colPrice : 0;
 
+        availableDeposit = !availableDeposit ? 0 : fromBtcBlockchain(availableDeposit);
+
         const collateralDetails = {
           assets: colAssets,
           lockedCol: lockedCol,
           assetPrice: colPrice,
           availableWithdraw: availableWithdraw,
-          availableDeposit: 0, // ????
+          availableDeposit: availableDeposit,
           liquidationPrice: res?.colStats?.liquidationPrice ? fromWei(res.colStats.liquidationPrice) : 0,
         };
 
+        console.log('collateralDetails', collateralDetails);
+
         const borCollateralValue = lockedCol * colPrice;
         const availableBorrow = borrowingLimit - borOutstandingDebt;
+        availableRepay = !availableRepay ? 0 : fromWei(availableRepay);
 
         const borrowingDetails = {
           assets: res?.stcStats?.key,
           collateralValue: borCollateralValue,
           borrowingLimit: borrowingLimit,
           availableBorrow: availableBorrow,
-          availableRepay: 0, // ?????
+          availableRepay: availableRepay,
           outstandingDebt: borOutstandingDebt,
           liquidationLimit: res?.stcStats?.liquidationLimit ? fromWei(res.stcStats.liquidationLimit) : 0,
           borrowingFee: res?.stcStats?.borrowingFee ? uintPerSecondToPerYearNumber(res.stcStats.borrowingFee) : 0,
         };
-        // stateSetter(res);
+        console.log('borrowingDetails', borrowingDetails);
+        setCollateralInf(collateralDetails);
+        setBorrowingInf(borrowingDetails);
       })
       .catch((e) => {
-        // stateSetter(0);
+        setCollateralInf({});
+        setBorrowingInf({});
         console.log(e);
       })
       .finally(() => {
-        this.dispatch(setTransactionCounter(-1));
+        // this.dispatch(setTransactionCounter(-1));
       });
   }
 
-  setAvailableToDeposit(stateSetter) {
-    this.dispatch(setTransactionCounter(1));
-
-    this.stableCoinContract.balanceOf(this.address)
-      .then((res) => {
-        // console.log(res);
-        const resL = res === undefined ? 0 : fromBtcBlockchain(res);
-        stateSetter(resL);
-      })
-      .catch((e) => {
-        stateSetter(0);
-        console.log(e);
-      })
-      .finally(() => {
-        this.dispatch(setTransactionCounter(-1));
-      });
+  async setAvailableToDeposit() {
+    return await this.stableCoinContract?.balanceOf(this.address);
   }
 
-  setCollateralRatio(collateral, stateSetter) {
-    this.dispatch(setTransactionCounter(1));
-
-    const key = `governed.EPDR.${collateral}_QUSD_collateralizationRatio`;
-    this.contractEPDRParameters.getUint(key)
-      .then((res) => {
-        const resL = transformToPercentage(res) / 100;
-        // const resL = uintPercentToNumber(res) + 1;
-        stateSetter(resL);
-      })
-      .catch((e) => {
-        stateSetter(0);
-        console.log(e);
-      })
-      .finally(() => {
-        this.dispatch(setTransactionCounter(-1));
-      });
-  }
-
-  setLiquidationRatio(collateral, stateSetter) {
-    this.dispatch(setTransactionCounter(1));
-
-    const key = `governed.EPDR.${collateral}_QUSD_liquidationRatio`;
-    this.contractEPDRParameters.getUint(key)
-      .then((res) => {
-        const resL = uintPercentToNumber(Number(res)) + 1;
-        stateSetter(resL);
-      })
-      .catch((e) => {
-        console.log(e);
-      })
-      .finally(() => {
-        this.dispatch(setTransactionCounter(-1));
-      });
-  }
-
-  async addDeposit(amount, vaultNum, lockedCol, setLockedCol, setAvToDeposit, actCardDataInf, setActCardDataInf) {
+  async addDeposit(amount, vaultNum, setCollateralInf, setBorrowingInf) {
     this.dispatch(setTransactionCounter(1));
 
     const amountL = new web3.utils.BN(toBtcBlockchain(amount));
-    // const approve = await this.stableCoinContract.approve(this.borrowingContract.address, amountL, this.address);
-    // if (approve.status === true) {
     this.borrowingContract.depositCol(this.address, vaultNum, amountL)
       .then(() => {
-        setLockedCol(Number(lockedCol) + Number(amount));
-        this.setAvailableToDeposit(setAvToDeposit);
-        this.updateDataInf(actCardDataInf, setActCardDataInf);
+        this.setVaultStats(setCollateralInf, setBorrowingInf);
       })
       .catch((e) => {
-        // stateSetter(0);
         console.log(e);
       })
       .finally(() => {
         this.dispatch(setTransactionCounter(-1));
       });
-    // }
   }
 
-  async withdraw(amount, vaultNum, lockedCol, setLockedCol, setAvToDeposit, actCardDataInf, setActCardDataInf) {
+  async withdraw(amount, vaultNum, setCollateralInf, setBorrowingInf) {
     this.dispatch(setTransactionCounter(1));
 
     const amountL = new web3.utils.BN(toBtcBlockchain(amount));
     this.borrowingContract.withdrawCol(this.address, vaultNum, amountL)
       .then(() => {
-        setLockedCol(Number(lockedCol) + Number(amount));
-        this.setAvailableToDeposit(setAvToDeposit);
-        this.updateDataInf(actCardDataInf, setActCardDataInf);
+        this.setVaultStats(setCollateralInf, setBorrowingInf);
       })
       .catch((e) => {
         console.log(e);
@@ -195,15 +134,14 @@ export default class Handler {
       });
   }
 
-  async borrow(amount, vaultNum, actCardDataInf, setActCardDataInf) {
+  async borrow(amount, vaultNum, setCollateralInf, setBorrowingInf) {
     this.dispatch(setTransactionCounter(1));
 
     this.borrowingContract.generateStc(this.address, vaultNum,
       toWei(amount)
     )
-      .then((res) => {
-        this.updateDataInf(actCardDataInf, setActCardDataInf);
-        console.log(res);
+      .then(() => {
+        this.setVaultStats(setCollateralInf, setBorrowingInf);
       })
       .catch((e) => {
         console.log(e);
@@ -213,30 +151,18 @@ export default class Handler {
       });
   }
 
-  async repay(amount, vaultNum, actCardDataInf, setActCardDataInf) {
+  async repay(amount, vaultNum, setCollateralInf, setBorrowingInf) {
     this.dispatch(setTransactionCounter(1));
     const valueAmount = toWei(amount);
-    // console.log('valueAmount', amount);
-    // console.log('valueAmount', valueAmount);
     this.borrowingContract.payBackSTC(this.address, vaultNum, valueAmount)
-      .then((res) => {
-        this.updateDataInf(actCardDataInf, setActCardDataInf);
-        console.log(res);
+      .then(() => {
+        this.setVaultStats(setCollateralInf, setBorrowingInf);
       })
       .catch((e) => {
         console.log(e);
       })
       .finally(() => {
         this.dispatch(setTransactionCounter(-1));
-      });
-  }
-
-  mint(amount) {
-    this.dispatch(setTransactionCounter(1));
-
-    this.stableCoinContract.mint(this.address, this.address, amount)
-      .then((res) => {
-        console.log(res);
       });
   }
 
@@ -247,12 +173,8 @@ export default class Handler {
   async approveSwitcher(type) {
     if (type === 'deposit') {
       await this.approve(this.stableCoinContract);
-      // const approve = await this.stableCoinContract.approve(this.borrowingContract.address, maxApproveAmount, this.address);
-      // const approve = await this.stableCoinContract.approve(this.borrowingContract.address, 0, this.address);
-      // console.log('approve', approve);
     } else if (type === 'repay') {
       await this.approve(this.stableCoinUSDContract);
-      // const approve = await this.stableCoinUSDContract.approve(this.borrowingContract.address, maxApproveAmount, this.address);
     }
   }
 
@@ -260,7 +182,6 @@ export default class Handler {
     console.log('contract', contract);
     contract.allowance(this.address, this.borrowingContract.address)
       .then((res) => {
-        // console.log('stateSetter allowance', res);
         stateSetter(res);
       })
       .catch((e) => {
@@ -270,67 +191,13 @@ export default class Handler {
 
   allowanceSwitcher(stateSetter, type) {
     if (type === 'deposit') {
-      console.log('contract', this.stableCoinContract);
       this.allowance(this.stableCoinContract, stateSetter);
-      // const allowance = await this.stableCoinContract.allowance(this.address, this.borrowingContract.address);
-      // console.log('allowance', allowance);
-      // this.stableCoinContract.allowance(this.address, this.borrowingContract.address)
-      //   .then((res) => {
-      //     // console.log('stateSetter allowance', res);
-      //     stateSetter(res);
-      //   })
-      //   .catch((e) => {
-      //     console.log(e);
-      //   });
     } else if (type === 'repay') {
       this.allowance(this.stableCoinUSDContract, stateSetter);
-      // this.stableCoinUSDContract.allowance(this.address, this.borrowingContract.address)
-      //   .then((res) => {
-      //     // console.log('stateSetter allowance', res);
-      //     stateSetter(res);
-      //   })
-      //   .catch((e) => {
-      //     console.log(e);
-      //   });
     }
   }
 
-  setAvailableToRepay(stateSetter) {
-    this.dispatch(setTransactionCounter(1));
-
-    this.stableCoinUSDContract.balanceOf(this.address)
-      .then((res) => {
-        stateSetter(fromWei(res));
-      })
-      .catch((e) => {
-        stateSetter(0);
-        console.log(e);
-      })
-      .finally(() => {
-        this.dispatch(setTransactionCounter(-1));
-      });
+  async setAvailableToRepay() {
+    return await this.stableCoinUSDContract.balanceOf(this.address);
   }
-
-  async updateDataInf(actCardDataInf, newStateSetter) {
-    if (actCardDataInf?.type === 'borrow') {
-      let newVaultInf = {};
-      const vaultInfo = await this.borrowingContract.userVaults(this.address, actCardDataInf?.vault?.vaultNum)
-        .catch(() => {
-        });
-      let fee = await this.contractEPDRParameters.getUint(`governed.EPDR.${vaultInfo.colKey}_QUSD_interestRate`)
-        .catch(() => {
-        });
-      fee = uintPerSecondToPerYearNumber(fee);
-      vaultInfo.borrowingFee = fee;
-      vaultInfo.vaultNum = actCardDataInf?.vault?.vaultNum;
-      // console.log('vaultInfo', vaultInfo);
-      newVaultInf = {
-        borrow: actCardDataInf?.borrow,
-        collateral: actCardDataInf?.collateral,
-        type: actCardDataInf?.type,
-        vault: vaultInfo
-      };
-      newStateSetter(newVaultInf);
-    }
-  };
 }

@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import FormInput from 'components/Base/Form/FormInput';
+
 import { useForm } from 'react-hook-form';
-import Button from 'components/Base/Buttons/Button';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import { useAlert } from 'react-alert';
+import { userBalance } from 'store/selectors/q-piggy-bank';
+
+import FormInput from 'components/Base/Form/FormInput';
+import Button from 'components/Base/Buttons/Button';
+
 import { ComponentHandler, ContractHandler } from './handler';
 import PiggyBankHandler from '../../handler';
+
+import { useAlert } from 'react-alert';
 import { UpdateDelegationContainer } from './styles';
 
 export default function UpdateDelegation() {
   const { register: reg1 } = useForm();
 
-  const [userBalance, setUserBalance] = useState(0);
+  const [userBalancePB, setUserBalance] = useState(0);
 
   const address = useSelector(userAddressMetamask);
+  const userPBBalanceL = useSelector(userBalance);
+
   const contHandler = new ContractHandler(address, useDispatch(), useAlert());
   const compHandler = new ComponentHandler(useAlert());
   const pBHandler = new PiggyBankHandler(address, useDispatch(), useAlert());
@@ -32,11 +40,11 @@ export default function UpdateDelegation() {
 
   useEffect(() => {
     addInputContainer(true);
-    pBHandler.setUserBalance(setUserBalance);
+    // pBHandler.setUserBalance(setUserBalance);
   }, []);
 
   function updateDelegations(applyZeroShare) {
-    const data = compHandler.getAddressesAndShares(applyZeroShare, userBalance);
+    const data = compHandler.getAddressesAndShares(applyZeroShare, userPBBalanceL);
     if (data.addresses.length !== 0 && data.shares.length !== 0) {
       contHandler.delegateStake(data.addresses, data.shares);
     }

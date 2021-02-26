@@ -54,6 +54,7 @@ export const uintPerSecondToPerYearNumber = (num) => {
   return (((1 + perSec) ** (365 * 24 * 3600)) - 1) * 100;
 };
 
+
 export const bn = (number) => {
   return new BigNumber(number);
 };

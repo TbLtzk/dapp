@@ -43,12 +43,12 @@ export default function SavingAndBorrowingContent() {
           <Row style={{ marginTop: '20px' }}>
             <Col xs={6}> </Col>
             <Col xs={3}>
-              <Button
-                type="outline"
-                title="Create QETH vault"
-                width="100%"
-                handleButton={() => createVault('QETH')}
-              />
+              {/*<Button*/}
+              {/*  type="outline"*/}
+              {/*  title="Create QETH vault"*/}
+              {/*  width="100%"*/}
+              {/*  handleButton={() => createVault('QETH')}*/}
+              {/*/>*/}
             </Col>
             <Col xs={3}>
               <Button
