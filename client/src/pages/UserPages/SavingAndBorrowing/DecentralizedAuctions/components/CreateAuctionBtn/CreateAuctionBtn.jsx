@@ -14,7 +14,7 @@ import CreateQBtn from 'components/Custom/PageLists/CreateQBtn';
 import ModalCreateAuction from './ModalCreateAuction';
 
 import { bn } from 'contracts/handler/VotingHandler';
-import Handler from 'pages/UserPages/SavingAndBorrowing/BorrowBlock/handler';
+import Handler from 'pages/UserPages/SavingAndBorrowing/components/BorrowBlock/handler';
 import { StableCoinQUSD } from 'contracts/src/StableCoin';
 import { getPastEvents } from 'contracts/handler/VotingHandler';
 

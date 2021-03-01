@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
-import { Block } from 'constants/style';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { userAddressMetamask } from 'store/selectors/user-inf';
+import Handler from './handler';
+
 import { useForm } from 'react-hook-form';
 import FormInput from 'components/Base/Form/FormInput';
 import Button from 'components/Base/Buttons/Button';
 import { errorHandler, fN } from 'func/useful';
-import { useDispatch, useSelector } from 'react-redux';
-import { userAddressMetamask } from 'store/selectors/user-inf';
-import Handler from './handler';
+
+import { Row, Col } from 'react-bootstrap';
+import { Block } from 'constants/style';
 
 export default function RewardStats() {
   const { register: reg1, handleSubmit: submit1, errors: err1 } = useForm();

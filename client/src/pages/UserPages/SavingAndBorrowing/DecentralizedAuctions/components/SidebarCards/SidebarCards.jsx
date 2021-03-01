@@ -15,6 +15,9 @@ import Stats from 'components/Custom/PageLists/SidebarCards/Stats';
 import SystemCard from 'components/Custom/PageLists/SidebarCards/SystemCard';
 import References from 'components/Custom/PageLists/SidebarCards/References';
 
+import ContractBalance from 'contracts/handler/ContractBalance';
+import { StableCoinQUSD } from 'contracts/src/StableCoin';
+
 import { fN } from 'func/useful';
 import { fromWei } from 'func/balance';
 
@@ -24,14 +27,21 @@ function SidebarCards() {
   const dispatch = useDispatch();
   const { drizzle } = useDrizzle();
   const state = useDrizzleState((state) => state);
+
   const userAddress = useSelector(userAddressMetamask);
   const [userBalanceQ, setUserBalanceQ] = useState(null);
+  const [QUSDUserBalance, setQUSDUserBalance] = useState(0);
+
+  const contractBalance = new ContractBalance(drizzle, userAddress);
+  const contractStableCoinQUSD = new StableCoinQUSD();
 
   const surplus = fN(useSelector(surplusSB));
   const debt = fN(useSelector(debtSB));
   const systemBalanceResult = fN(useSelector(systemBalanceSB));
   const availableAmount = fN(useSelector(availableAmountSR));
   const userPBBalance = fN(useSelector(userBalance));
+
+  const [reserveBalance, setReserveBalance] = useState('0');
 
   useEffect(() => {
     if (drizzle) {
@@ -48,7 +58,20 @@ function SidebarCards() {
     dispatch(getAvailableAmount());
     //stats
     dispatch(getUserBalance(userAddress));
+
   }, [dispatch]);
+
+  useEffect(() => {
+    contractBalance.getBalanceValue('SystemReserve', setReserveBalance);
+    contractStableCoinQUSD.balanceOf(userAddress)
+      .then((res) => {
+        setQUSDUserBalance(fromWei(res));
+      })
+      .catch((e) => {
+        setQUSDUserBalance(0);
+        console.log(e);
+      });
+  }, []);
 
   const statsData = useMemo(() => {
     return (
@@ -63,11 +86,11 @@ function SidebarCards() {
         },
         {
           title: 'QUSD Balance',
-          value: '4563 QUSD',
+          value: fN(QUSDUserBalance) + ' QUSD',
         },
       ]
     );
-  }, [userPBBalance, userBalanceQ]);
+  }, [userPBBalance, userBalanceQ, QUSDUserBalance]);
 
   const systemBalance = useMemo(() => {
     return (
@@ -92,12 +115,16 @@ function SidebarCards() {
     return (
       [
         {
-          title: 'Reserve Amount',
+          title: 'Reserve Balance',
+          value: reserveBalance + ' Q',
+        },
+        {
+          title: 'Immediately available',
           value: availableAmount + ' Q',
         },
       ]
     );
-  }, [availableAmount]);
+  }, [availableAmount, reserveBalance]);
 
   return (
     <>

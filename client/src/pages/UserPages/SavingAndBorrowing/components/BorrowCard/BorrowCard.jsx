@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { userAddressMetamask } from 'store/selectors/user-inf';
-import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
-import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
-import { uintPerSecondToPerYearNumber } from 'func/useful';
-import BlockCardItem from '../BlockCardItem';
 
-import { BlockCard } from '../styles';
+import { useDispatch, useSelector } from 'react-redux';
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
+import { userAddressMetamask } from 'store/selectors/user-inf';
+
+import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
+
+import BlockCardItem from '../../BlockCardItem';
+
+import { uintPerSecondToPerYearNumber } from 'func/useful';
+
+import { Col } from 'react-bootstrap';
+import { BlockCard } from '../../styles';
 
 export default function BorrowCard(props) {
   const { setActCardData } = props;
@@ -34,18 +37,19 @@ export default function BorrowCard(props) {
   useEffect(async () => {
     dispatch(setTransactionCounter(1));
 
-    const contractEPDR = new EPDR_Parameters("EPDR_Parameters");
+    //TODO: Change logic using borrowingContract.getVaultStats function twice
+    const borrowingContract = new BorrowingCoreQUSD();
     const vaultsLoc = [];
     for (let i = 0; i < vaultsCount; i += 1) {
       const vaultInfo = await contract.userVaults(address, i)
         .catch(() => {
         });
-      let fee = await contractEPDR.getUint(`governed.EPDR.${vaultInfo.colKey}_QUSD_interestRate`)
-        .catch(() => {
-        });
-      fee = uintPerSecondToPerYearNumber(fee);
+      let vaultStats = await borrowingContract.getVaultStats(address, i).catch(() => {
+      });
+      let fee = vaultStats?.stcStats?.borrowingFee ? uintPerSecondToPerYearNumber(vaultStats?.stcStats?.borrowingFee) : 0;
       vaultInfo.borrowingFee = fee;
       vaultInfo.vaultNum = i;
+
       vaultsLoc.push(vaultInfo);
     }
     setVaults(vaultsLoc);

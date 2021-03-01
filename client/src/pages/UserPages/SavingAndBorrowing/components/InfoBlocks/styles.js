@@ -11,7 +11,7 @@ p.info {
   color: ${colors.grey};
   margin-bottom: 5px;
 }
-p.value {
+p.value, div.value span {
   font-size: 36px;
   font-weight: 400;
   font-family: 'Rubik', sans-serif;

@@ -12,7 +12,6 @@ function* getSurplus() {
     const contract = new SystemBalance();
     const data = yield contract.getSurplus();
 
-    console.log('getSurplus', data);
     yield put(getSurplusSuccess(data));
   } catch (err) {
     console.error('getSurplus.Error', err);
@@ -25,7 +24,6 @@ function* getDebt() {
     const contract = new SystemBalance();
     const data = yield contract.getDebt();
 
-    console.log('getDebt', data);
     yield put(getDebtSuccess(data));
   } catch (err) {
     console.error('getDebt.Error', err);
@@ -38,7 +36,6 @@ function* getSystemBalance() {
     const contract = new SystemBalance();
     const data = yield contract.getBalance();
 
-    console.log('getSystemBalance', data);
     yield put(getSystemBalanceSuccess(data));
   } catch (err) {
     console.error('getSystemBalance.Error', err);

@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { contracts, web3 } from '../config/drizzle-config';
 import { contractsToAddresses } from '../mapping/contract-to-address';
+import { toWei } from '../../func/balance';
 
 class Saving {
   constructor() {
@@ -14,13 +15,13 @@ class Saving {
   }
 
   async deposit(address, amount) {
-    const amountL = new web3.utils.BN(web3.utils.toWei(amount));
+    const amountL = toWei(amount);
     return await this.methods.deposit(amountL)
       .send({ from: address });
   }
 
   async withdraw(address, amount) {
-    const amountL = new web3.utils.BN(web3.utils.toWei(amount));
+    const amountL = toWei(amount);
     return await this.methods.withdraw(amountL)
       .send({ from: address });
   }
@@ -37,6 +38,11 @@ class Saving {
 
   async getBalanceDetails() {
     return await this.methods.getBalanceDetails()
+      .call();
+  }
+
+  async getBalance() {
+    return await this.methods.getBalance()
       .call();
   }
 

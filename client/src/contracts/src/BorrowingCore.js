@@ -61,7 +61,6 @@ class BorrowingCore {
   }
 
   async totalStcBackedByCol(userAddress) {
-    console.log('userAddress', userAddress);
     return await this.methods.totalStcBackedByCol(userAddress)
         .call();
   }

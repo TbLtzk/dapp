@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
+
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getAccTotalStake,
@@ -14,8 +15,10 @@ import {
   ownStakeSelector,
   totalStakeSelector,
 } from 'store/selectors/validators';
-import { CustomBlockVP } from './styles';
+
 import { fN } from 'func/useful';
+
+import { CustomBlockVP } from './styles';
 
 export default function ValidatorPool(props) {
   const { showTitle } = props;
@@ -34,43 +37,44 @@ export default function ValidatorPool(props) {
     dispatch(getAccTotalStake(address));
   }, []);
 
+  const validatorPoolInfArr = useMemo(() => {
+    return [
+      {
+        label: 'Total Stake:',
+        value: fN(totalStake) + 'Q'
+      },
+      {
+        label: 'Of which is Validator own Stake:',
+        value: fN(ownStake) + 'Q'
+      },
+      {
+        label: 'Delegated Stake:',
+        value: fN(delegatedStake) + 'Q'
+      },
+      {
+        label: 'Number of Delegators:',
+        value: '? Addresses'
+      },
+      {
+        label: 'Accountable Stake:',
+        value: fN(accTotalStake) + 'Q'
+      },
+    ];
+  }, [totalStake, ownStake, delegatedStake, accTotalStake]);
+
   return (
     <CustomBlockVP>
-      { showTitle === false ? '' : (
+      {showTitle === false ? '' : (
         <p className="title">Validator Pool</p>
       )}
-      <div>
-        <span>Total Stake:</span>
-        <span>
-          {fN(totalStake)}
-          Q
-        </span>
-      </div>
-      <div>
-        <span>Of which is Validator own Stake:</span>
-        <span>
-          {fN(ownStake)}
-          Q
-        </span>
-      </div>
-      <div>
-        <span>Delegated Stake:</span>
-        <span>
-          {fN(delegatedStake)}
-          Q
-        </span>
-      </div>
-      <div>
-        <span>Number of Delegators:</span>
-        <span>? Addresses</span>
-      </div>
-      <div>
-        <span>Accountable Stake:</span>
-        <span>
-          {fN(accTotalStake)}
-          Q
-        </span>
-      </div>
+      {validatorPoolInfArr?.map((el => {
+        return (
+          <div key={el.label + 'validator-pool'}>
+            <span>{el.label}</span>
+            <span>{el.value}</span>
+          </div>
+        );
+      }))}
     </CustomBlockVP>
   );
 }

@@ -1,17 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { Col } from 'react-bootstrap';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
+
 import { useDispatch, useSelector } from 'react-redux';
-import ButtonSlide from 'components/Base/Buttons/ButtonSlide';
 import { userAddressMetamask } from 'store/selectors/user-inf';
+
+import ButtonSlide from 'components/Base/Buttons/ButtonSlide';
+import { LoadingWrap } from 'components/Custom/MembersPanel/styles';
+import LoadingSpinner from 'components/Base/LoadingSpinner';
+import ShowListElem from '../ShowListElem';
+
 import { fN } from 'func/useful';
 import Handler from './handler';
 
-import { CardDetail } from '../styles';
+import { Col } from 'react-bootstrap';
+import { CardDetail } from '../../styles';
 
 export default function SavingBlock(props) {
   const { actCardData } = props;
 
+  const [loadingInf, setLoadingInf] = useState(true);
   const [savingBalance, setSavingBalance] = useState(0);
   const [interestRate, setInterestRate] = useState('-');
 
@@ -27,25 +34,28 @@ export default function SavingBlock(props) {
   useEffect(async () => {
     if (actCardData.type !== 'saving') return;
 
-    handler.setSavingBalanceIntRateEstInterest(setSavingBalance, setInterestRate, setEstInterest);
     handler.setAvailableToDeposit(setAvToDeposit);
+    handler.setSavingBalanceIntRateEstInterest(setSavingBalance, setInterestRate, setEstInterest,
+      setLoadingInf);
     handler.allowance(setAllowance);
     // await handler.approve();
   }, [actCardData]);
 
-  const deposit = async (formData) => {
+  const deposit = useCallback(async (formData) => {
     if (depositBtnTitle === 'Approve') {
       await handler.approve();
       handler.allowance(setAllowance);
       setDepositBtnTitle('Deposit');
     } else {
-      await handler.deposit(formData.field, setSavingBalance, setAvToDeposit, setInterestRate, setEstInterest);
+      await handler.deposit(formData.field, setSavingBalance, setAvToDeposit, setInterestRate, setEstInterest,
+        setLoadingInf);
     }
-  };
+  }, [actCardData]);
 
-  const withdraw = (formData) => {
-    handler.withdraw(formData.field, setSavingBalance, setAvToDeposit, setInterestRate, setEstInterest);
-  };
+  const withdraw = useCallback((formData) => {
+    handler.withdraw(formData.field, setSavingBalance, setAvToDeposit, setInterestRate, setEstInterest,
+      setLoadingInf);
+  }, [actCardData]);
 
   const onChangeValueBtnSlide = async (value) => {
     const inputValue = value.target.value;
@@ -56,36 +66,52 @@ export default function SavingBlock(props) {
     }
   };
 
+  const depositInfArr = useMemo(() => {
+    return [
+      {
+        label: 'Asset',
+        value: 'QUSD'
+      },
+      {
+        label: 'Saving Balance',
+        value: fN(savingBalance)
+      },
+      {
+        label: 'Available to deposit',
+        value: fN(avToDeposit)
+      },
+    ];
+  }, [savingBalance, avToDeposit]);
+  const interestInfArr = useMemo(() => {
+    return [
+      {
+        label: 'Receive Asset',
+        value: 'QUSD'
+      },
+      {
+        label: 'Estimated Interest',
+        value: fN(estInterest)
+      },
+      {
+        label: 'Interest Rate p.a.',
+        value: fN(interestRate) + '%'
+      },
+    ];
+  }, [estInterest, interestRate]);
+
   return (
     <Col xs={12}>
       <CardDetail>
         <p className="title-1">Save QUSD</p>
-        <p className="title-2">Deposit</p>
-        <div className="txt">
-          <span>Asset</span>
-          <span>QUSD</span>
-        </div>
-        <div className="txt">
-          <span>Saving Balance</span>
-          <span>{fN(savingBalance)}</span>
-        </div>
-        <div className="txt">
-          <span>Available to deposit</span>
-          <span>{fN(avToDeposit)}</span>
-        </div>
-        <p className="title-2">Interest</p>
-        <div className="txt">
-          <span>Receive Asset</span>
-          <span>QUSD</span>
-        </div>
-        <div className="txt">
-          <span>Estimated Interest</span>
-          <span>{fN(estInterest)}</span>
-        </div>
-        <div className="txt">
-          <span>Interest Rate p.a.</span>
-          <span>{`${fN(interestRate)}%`}</span>
-        </div>
+        {loadingInf ? <LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap> :
+          <>
+            <p className="title-2">Deposit</p>
+            {ShowListElem(depositInfArr)}
+            <p className="title-2">Interest</p>
+            {ShowListElem(interestInfArr)}
+          </>
+        }
+
         <div className="btn-group">
           <ButtonSlide
             btnTxt="Deposit Saving Asset"

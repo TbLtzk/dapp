@@ -1,10 +1,9 @@
-import { drizzleRegistry, contracts } from '../../config/drizzle-config';
+import { drizzleRegistry } from '../../config/drizzle-config';
 import VotingService from './VotingService';
 import {
-  convertNumVotes,
-  getParameterTypeTransformation,
   getStatusTransformation, transformToPercentage
 } from '../../handler/VotingHandler';
+import { BN } from 'func/balance';
 
 /*EPQFI_ParametersVoting, EPDR_ParametersVoting*/
 export default class ParametersVoting extends VotingService {
@@ -55,10 +54,8 @@ export default class ParametersVoting extends VotingService {
       const typeValueProposal = data['type-value-proposal'];
       const key = data.key;
       let valueInput = data.value;
-      // candidate = "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7"; //usual account 1
       switch (typeValueProposal) {
         case 'address':
-          // valueInput = '0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7';
           result = await this.contract.methods.createAddrProposal(link, key, valueInput)
             .send(
               { from: userAddress });
@@ -81,7 +78,7 @@ export default class ParametersVoting extends VotingService {
               { from: userAddress });
           break;
         case 'uint':
-          valueInput = Number(valueInput);
+          valueInput = BN(valueInput);
           result = await this.contract.methods.createUintProposal(link, key, valueInput)
             .send(
               { from: userAddress });

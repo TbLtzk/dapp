@@ -26,16 +26,12 @@ export default class Handler {
     this.stableCoinUSDContract = new StableCoinQUSD();
   }
 
-  async setVaultStats(setCollateralInf, setBorrowingInf) {
-    // this.dispatch(setTransactionCounter(1));
-    console.log('this.address', this.address);
-    console.log('this.vaultId', this.vaultId);
+  async setVaultStats(setCollateralInf, setBorrowingInf, setLoadingInf) {
+    setLoadingInf(true);
     let availableDeposit = await this.setAvailableToDeposit();
     let availableRepay = await this.setAvailableToRepay();
     this.borrowingContract.getVaultStats(this.address, this.vaultId)
       .then((res) => {
-        console.log('setVaultStats', res);
-
         const colAssets = res?.colStats?.key;
         let lockedCol = res?.colStats?.balance;
 
@@ -68,8 +64,6 @@ export default class Handler {
           liquidationPrice: res?.colStats?.liquidationPrice ? fromWei(res.colStats.liquidationPrice) : 0,
         };
 
-        console.log('collateralDetails', collateralDetails);
-
         const borCollateralValue = lockedCol * colPrice;
         const availableBorrow = borrowingLimit - borOutstandingDebt;
         availableRepay = !availableRepay ? 0 : fromWei(availableRepay);
@@ -84,17 +78,18 @@ export default class Handler {
           liquidationLimit: res?.stcStats?.liquidationLimit ? fromWei(res.stcStats.liquidationLimit) : 0,
           borrowingFee: res?.stcStats?.borrowingFee ? uintPerSecondToPerYearNumber(res.stcStats.borrowingFee) : 0,
         };
-        console.log('borrowingDetails', borrowingDetails);
+
         setCollateralInf(collateralDetails);
         setBorrowingInf(borrowingDetails);
+        setLoadingInf(false);
       })
       .catch((e) => {
         setCollateralInf({});
         setBorrowingInf({});
+        setLoadingInf(false);
         console.log(e);
       })
       .finally(() => {
-        // this.dispatch(setTransactionCounter(-1));
       });
   }
 
@@ -102,13 +97,13 @@ export default class Handler {
     return await this.stableCoinContract?.balanceOf(this.address);
   }
 
-  async addDeposit(amount, vaultNum, setCollateralInf, setBorrowingInf) {
+  async addDeposit(amount, vaultNum, setCollateralInf, setBorrowingInf, setLoadingInf) {
     this.dispatch(setTransactionCounter(1));
 
     const amountL = new web3.utils.BN(toBtcBlockchain(amount));
     this.borrowingContract.depositCol(this.address, vaultNum, amountL)
       .then(() => {
-        this.setVaultStats(setCollateralInf, setBorrowingInf);
+        this.setVaultStats(setCollateralInf, setBorrowingInf, setLoadingInf);
       })
       .catch((e) => {
         console.log(e);
@@ -118,13 +113,13 @@ export default class Handler {
       });
   }
 
-  async withdraw(amount, vaultNum, setCollateralInf, setBorrowingInf) {
+  async withdraw(amount, vaultNum, setCollateralInf, setBorrowingInf, setLoadingInf) {
     this.dispatch(setTransactionCounter(1));
 
     const amountL = new web3.utils.BN(toBtcBlockchain(amount));
     this.borrowingContract.withdrawCol(this.address, vaultNum, amountL)
       .then(() => {
-        this.setVaultStats(setCollateralInf, setBorrowingInf);
+        this.setVaultStats(setCollateralInf, setBorrowingInf, setLoadingInf);
       })
       .catch((e) => {
         console.log(e);
@@ -134,14 +129,14 @@ export default class Handler {
       });
   }
 
-  async borrow(amount, vaultNum, setCollateralInf, setBorrowingInf) {
+  async borrow(amount, vaultNum, setCollateralInf, setBorrowingInf, setLoadingInf) {
     this.dispatch(setTransactionCounter(1));
 
     this.borrowingContract.generateStc(this.address, vaultNum,
       toWei(amount)
     )
       .then(() => {
-        this.setVaultStats(setCollateralInf, setBorrowingInf);
+        this.setVaultStats(setCollateralInf, setBorrowingInf, setLoadingInf);
       })
       .catch((e) => {
         console.log(e);
@@ -151,12 +146,12 @@ export default class Handler {
       });
   }
 
-  async repay(amount, vaultNum, setCollateralInf, setBorrowingInf) {
+  async repay(amount, vaultNum, setCollateralInf, setBorrowingInf, setLoadingInf) {
     this.dispatch(setTransactionCounter(1));
     const valueAmount = toWei(amount);
     this.borrowingContract.payBackSTC(this.address, vaultNum, valueAmount)
       .then(() => {
-        this.setVaultStats(setCollateralInf, setBorrowingInf);
+        this.setVaultStats(setCollateralInf, setBorrowingInf, setLoadingInf);
       })
       .catch((e) => {
         console.log(e);
@@ -179,7 +174,6 @@ export default class Handler {
   }
 
   allowance(contract, stateSetter) {
-    console.log('contract', contract);
     contract.allowance(this.address, this.borrowingContract.address)
       .then((res) => {
         stateSetter(res);

@@ -10,7 +10,6 @@ function* getAvailableAmount() {
     const contract = new SystemReserve();
     const data = yield contract.availableAmount();
 
-    console.log('getAvailableAmount', data);
     yield put(getAvailableAmountSuccess(data));
   } catch (err) {
     console.error('getAvailableAmount.Error', err);

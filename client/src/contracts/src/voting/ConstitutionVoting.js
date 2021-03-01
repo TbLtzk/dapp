@@ -1,16 +1,9 @@
-import { contracts, drizzleRegistry } from '../../config/drizzle-config';
+import { contracts } from '../../config/drizzle-config';
 import {
-  convertNumVotes,
-  getPastEvents,
-  getPastProposalsIds,
-  calculatePercentage,
-  transformToPercentage,
-  toFixed,
-  bn,
   getStatusTransformation
 } from '../../handler/VotingHandler';
 import VotingService from './VotingService';
-import { fromWei } from 'func/balance';
+import { BN, fromWei } from 'func/balance';
 
 export default class ConstitutionVoting extends VotingService {
   constructor() {
@@ -105,7 +98,7 @@ export default class ConstitutionVoting extends VotingService {
       let result = null;
       const classification = this.getProposalNumberType(data?.classification);
       // const hash = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
-      const hash = data.hash.toLowerCase();
+      const hash = data.hash;
       const link = data['external-link'];
       const type = data['type-proposal'];
       if (type) {
@@ -113,13 +106,11 @@ export default class ConstitutionVoting extends VotingService {
         let valueInput = data.value;
         switch (type) {
           case 'address':
-            // valueInput = '0xcca19442F5b3e5Fa71aaE69C092aC280e81Fd39f';
             result = await this.contract.methods.createAddrProposal(link, classification, hash,
               parameterKey, valueInput)
               .send({ from: userAddress });
             break;
           case 'string':
-            // valueInput = 'abcd';
             result = await this.contract.methods.createStrProposal(link, classification, hash,
               parameterKey, valueInput)
               .send({ from: userAddress });
@@ -131,7 +122,7 @@ export default class ConstitutionVoting extends VotingService {
               .send({ from: userAddress });
             break;
           case 'uint':
-            valueInput = Number(valueInput);
+            valueInput = BN(valueInput);
             result = await this.contract.methods.createUintProposal(link, classification, hash,
               parameterKey, valueInput)
               .send({ from: userAddress });

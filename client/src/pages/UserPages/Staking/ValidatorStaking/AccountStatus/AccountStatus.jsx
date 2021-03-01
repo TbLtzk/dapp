@@ -11,9 +11,17 @@ import { fromSolDateFormattingT1 } from 'func/date';
 import { useAlert } from 'react-alert';
 import Handler from './handler';
 import { Headline, AccountContainer } from './styles';
+import {
+  getAccTotalStake,
+  getDelegatedStake,
+  getOwnStake,
+  getTotalStake
+} from '../../../../../store/actions/action-creaters/validators';
 
 export default function AccountStatus() {
   const { register: reg, handleSubmit: submit, errors } = useForm();
+  const dispatch = useDispatch();
+
   const [validatorExist, setValidatorExist] = useState(false);
   const [accountableTotalStake, setAccountableTotalStake] = useState(0);
   const [validatorsList, setValidatorsList] = useState([]);
@@ -24,6 +32,13 @@ export default function AccountStatus() {
 
   const address = useSelector(userAddressMetamask);
   const handler = new Handler(address, useDispatch(), useAlert());
+
+  useEffect(() => {
+    dispatch(getTotalStake(address));
+    dispatch(getOwnStake(address));
+    dispatch(getDelegatedStake(address));
+    dispatch(getAccTotalStake(address));
+  }, [accountableTotalStake, accountBalance, annToWithdraw, annToWithdrawEndTime]);
 
   useEffect(() => {
     handler.setValidatorExist(setValidatorExist);

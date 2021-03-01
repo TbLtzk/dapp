@@ -1,43 +1,46 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 
 import ButtonSlide from 'components/Base/Buttons/ButtonSlide';
+import LoadingSpinner from 'components/Base/LoadingSpinner';
+import ShowListElem from '../ShowListElem';
 
 import { fN } from 'func/useful';
 import Handler from './handler';
 
 import { Col } from 'react-bootstrap';
-import { CardDetail } from '../styles';
+import { LoadingWrap } from 'components/Custom/MembersPanel/styles';
+import { CardDetail } from '../../styles';
 
 export default function BorrowBlock(props) {
   const { actCardData } = props;
+  const address = useSelector(userAddressMetamask);
 
   const [actCardDataInf, setActCardDataInf] = useState(actCardData);
+  const handler = new Handler(address, actCardDataInf?.vault?.colKey, useDispatch(), actCardDataInf?.vault?.vaultNum);
 
   useEffect(() => {
     setActCardDataInf(actCardData);
   }, [actCardData]);
 
-  console.log('actCardData', actCardData);
-
   const [collateralInf, setCollateralInf] = useState({});
   const [borrowingInf, setBorrowingInf] = useState({});
+  const [loadingInf, setLoadingInf] = useState(true);
 
   const [repayBtnTitle, setRepayBtnTitle] = useState('Repay');
   const [depositBtnTitle, setDepositBtnTitle] = useState('Add');
   const [allowanceDeposit, setAllowanceDeposit] = useState(0);
   const [allowanceRepay, setAllowanceRepay] = useState(0);
 
-  const address = useSelector(userAddressMetamask);
-  const handler = new Handler(address, actCardDataInf?.vault?.colKey, useDispatch(), actCardDataInf?.vault?.vaultNum);
 
   useEffect(async () => {
     if (actCardDataInf.type !== 'borrow') return;
 
     if (actCardDataInf?.collateral === 'QBTC') {
-      handler.setVaultStats(setCollateralInf, setBorrowingInf);
+      await handler.setVaultStats(setCollateralInf, setBorrowingInf, setLoadingInf);
       handler.allowanceSwitcher(setAllowanceDeposit, 'deposit');
       handler.allowanceSwitcher(setAllowanceRepay, 'repay');
       // await handler.approve();
@@ -45,7 +48,8 @@ export default function BorrowBlock(props) {
   }, [actCardDataInf]);
 
   const borrow = useCallback(async (formData) => {
-    await handler.borrow(formData.field, actCardDataInf.vault.vaultNum, setCollateralInf, setBorrowingInf);
+    await handler.borrow(formData.field, actCardDataInf.vault.vaultNum, setCollateralInf,
+      setBorrowingInf, setLoadingInf);
   }, [actCardDataInf]);
 
   const repay = useCallback(async (formData) => {
@@ -54,7 +58,8 @@ export default function BorrowBlock(props) {
       handler.allowanceSwitcher(setAllowanceRepay, 'repay');
       setRepayBtnTitle('Repay');
     } else {
-      await handler.repay(formData.field, actCardDataInf.vault.vaultNum, setCollateralInf, setBorrowingInf);
+      await handler.repay(formData.field, actCardDataInf.vault.vaultNum, setCollateralInf,
+        setBorrowingInf, setLoadingInf);
     }
   }, [actCardDataInf]);
 
@@ -64,12 +69,14 @@ export default function BorrowBlock(props) {
       handler.allowanceSwitcher(setAllowanceDeposit, 'deposit');
       setDepositBtnTitle('Add');
     } else {
-      await handler.addDeposit(formData.field, actCardDataInf.vault.vaultNum, setCollateralInf, setBorrowingInf);
+      await handler.addDeposit(formData.field, actCardDataInf.vault.vaultNum, setCollateralInf,
+        setBorrowingInf, setLoadingInf);
     }
   }, [actCardDataInf]);
 
   const withdraw = useCallback(async (formData) => {
-    await handler.withdraw(formData.field, actCardDataInf.vault.vaultNum, setCollateralInf, setBorrowingInf);
+    await handler.withdraw(formData.field, actCardDataInf.vault.vaultNum, setCollateralInf,
+      setBorrowingInf, setLoadingInf);
   }, [actCardDataInf]);
 
   const onChangeValueBtnSlide = async (type, value) => {
@@ -158,25 +165,18 @@ export default function BorrowBlock(props) {
     ];
   }, [borrowingInf]);
 
-  const showListElem = (arr) => {
-    return (arr?.map((el) => {
-      return (
-        <div className="txt" key={el.label}>
-          <span>{el.label}</span>
-          <span>{el.value}</span>
-        </div>
-      );
-    }));
-  };
-
   return (
     <Col xs={12}>
       <CardDetail>
         <p className="title-1">Borrow QUSD</p>
-        <p className="title-2">Collateral</p>
-        {showListElem(collateralInfArr)}
-        <p className="title-2">Borrowing</p>
-        {showListElem(borrowingInfArr)}
+        {loadingInf ? <LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap> :
+          <>
+            <p className="title-2">Collateral</p>
+            {ShowListElem(collateralInfArr)}
+            <p className="title-2">Borrowing</p>
+            {ShowListElem(borrowingInfArr)}
+          </>
+        }
         <div className="btn-group">
           <ButtonSlide
             btnTxt="Borrow asset"

@@ -27,7 +27,6 @@ function* getSymbol() {
   try {
     const contract = getContractInstance();
     const data = yield contract.symbol();
-    console.log('symbol', data);
     yield put(getSymbolSuccess(data));
   } catch (err) {
     console.error('StableCoinQUSD.Error', err);

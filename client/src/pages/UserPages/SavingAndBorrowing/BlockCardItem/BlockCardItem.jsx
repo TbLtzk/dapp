@@ -8,6 +8,7 @@ export default function BlockCardItem(props) {
   const { txt1, val1, txt2, val2, txt3, val3, setActCardData, vault } = props;
 
   const clickItem = (e) => {
+    //TODO: rewrite
     const elementAct = document.querySelector('div.active.borrowing');
     // const elementAct = document.querySelector('div.active');
     const elementToAct = e.target.closest('div.row');
