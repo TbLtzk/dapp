@@ -2,7 +2,7 @@ import Web3 from 'web3';
 import { Drizzle } from '@drizzle/store';
 
 import { contractsToAbi } from '../mapping/contract-to-abi';
-import { contractsToAddresses } from '../mapping/contract-to-address';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 import { netWork } from 'contracts/config/network-config';
 import validateContractsAddress from './cotracts-address-checker';
 export const web3 = new Web3(Web3.givenProvider);
@@ -54,7 +54,6 @@ const optionsDrizzle = () => {
 };
 
 const getContracts = () => {
-
   const contracts = {};
   // eslint-disable-next-line no-restricted-syntax
   for (const contractName in contractsToAddresses) {
