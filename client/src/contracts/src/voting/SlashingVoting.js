@@ -1,16 +1,16 @@
+import VotingService from './VotingService';
+import SlashingEscrow from './SlashingEscrow';
+
 import {
   getStatusTransformation,
   getPercentageFormat
 } from '../../handler/VotingHandler';
-import VotingService from './VotingService';
-import SlashingEscrow from './SlashingEscrow';
 import { fromWei } from 'func/balance';
 import { fromSolDateFormattingT1 } from 'func/date';
 
 /*contacts: RootNodesSlashingVoting, ValidatorsSlashingVoting*/
 export default class SlashingVoting extends VotingService {
 
-  // get proposal data
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
@@ -72,7 +72,6 @@ export default class SlashingVoting extends VotingService {
     return { ...objRes, ...objStats, ...objEscrow };
   }
 
-  //create proposal
   async createProposal(data, userAddress) {
     try {
       const link = data['external-link'];
@@ -81,13 +80,8 @@ export default class SlashingVoting extends VotingService {
       percentageStake = getPercentageFormat(percentageStake);
       let candidate = data['address'];
       console.log('percentageStake', percentageStake);
-      // candidate = "0x6a39b688d591ea00c9ea69658438794204b5cc62";
-      // candidate = this.contractName === 'ValidatorsSlashingVoting' //validator member
-      //   ? '0x6a39b688d591ea00c9ea69658438794204b5cc62'
-      //   : '0x4a14D788D86D021670EBcecE1196631d66595984'; //root member
       const result = await this.contract.methods.createProposal(link, candidate, percentageStake)
-        .send(
-          { from: userAddress });
+        .send({ from: userAddress });
       return result;
     } catch (e) {
       console.log(e);

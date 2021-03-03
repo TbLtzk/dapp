@@ -1,10 +1,13 @@
 import { contracts } from '../config/drizzle-config';
+
+import ValidationRewardPools from './ValidationRewardPools';
+import QPiggyBank from './QPiggyBank';
+
 import {
   transformToPercentage,
 } from '../handler/VotingHandler';
 import { fromWei } from 'func/balance';
-import ValidationRewardPools from './ValidationRewardPools';
-import QPiggyBank from './QPiggyBank';
+import { uintPerSecondToPerYearNumber } from '../../func/useful';
 
 const contractName = 'Validators';
 
@@ -109,7 +112,7 @@ export default class Validators {
       let count = 1;
       for (let member of validatorsArr) {
         const selfStake = fromWei(await this.getValidatorsOwnStake(member.validator));
-        const poolPayoutRatio = transformToPercentage(await this.getInterestRate(member.validator));
+        const poolPayoutRatio = uintPerSecondToPerYearNumber(await this.getInterestRate(member.validator));
         const delegatedStake = fromWei(await this.getValidatorDelegatedStake(member.validator));
         const delegatorShare = transformToPercentage(await this.getDelegatorsShare(member.validator));
         const validatorShare = delegatorShare ? 100 - delegatorShare : 0;

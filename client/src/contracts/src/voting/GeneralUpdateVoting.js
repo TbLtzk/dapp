@@ -1,9 +1,9 @@
-import { drizzleRegistry, contracts } from '../../config/drizzle-config';
+import { contracts } from '../../config/drizzle-config';
+import VotingService from './VotingService';
+
 import {
   getStatusTransformation,
 } from '../../handler/VotingHandler';
-import VotingService from './VotingService';
-
 import { fromWei } from 'func/balance';
 
 export default class GeneralUpdateVoting extends VotingService {
@@ -14,13 +14,6 @@ export default class GeneralUpdateVoting extends VotingService {
     this.contractName = 'GeneralUpdateVoting';
   }
 
-  /**
-   * get proposal data
-   * @param promiseRes
-   * @param id
-   * @param promiseStatus
-   * @return array
-   */
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
@@ -45,18 +38,11 @@ export default class GeneralUpdateVoting extends VotingService {
     return { ...objRes, ...objStats };
   }
 
-  /**
-   * create proposal
-   * @param data
-   * @param userAddress
-   * @return string
-   */
   async createProposal(data, userAddress) {
     const link = data['external-link'];
     const result = await this.contract.methods.createProposal(link)
       .send(
         { from: userAddress });
     return result;
-
   }
 }

@@ -5,6 +5,7 @@ import {
   getSurplusError, getSurplusSuccess,
   getSystemBalanceError, getSystemBalanceSuccess
 } from 'store/actions/action-creaters/system-balance';
+
 import SystemBalance from 'contracts/src/SystemBalance';
 
 function* getSurplus() {

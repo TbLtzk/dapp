@@ -1,13 +1,21 @@
-import { put, takeEvery } from 'redux-saga/effects';
+import { put, select, takeEvery } from 'redux-saga/effects';
+
 import * as actionTypes from 'store/actions/action-types/q-piggy-bank';
+import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler';
 import {
   setError, setUserBalance, setLockedAssets, getUserBalance,
   getLockedAssets, getDelegationsListError, getDelegationsListSuccess,
-  getPBBalanceSuccess
+  getPBBalanceSuccess, getOutstandingDelegationRewardsSuccess, getOutstandingDelegationRewardsError,
+  getOutstandingDelegationRewards, getDelegationsList
 } from 'store/actions/action-creaters/q-piggy-bank';
+import {
+  setTransactionLoading,
+  setTransactionLoadingError,
+  setTransactionLoadingSuccess
+} from '../actions/action-creaters/transaction-handler';
+
 import QPiggyBank from 'contracts/src/QPiggyBank';
 import { handleLockedAssetsResponse } from 'contracts/handler/QPiggyBankHandler';
-import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler';
 import { web3 } from 'contracts/config/drizzle-config';
 
 let contractInstance = null;
@@ -162,10 +170,11 @@ function* setUnlockAmountGenerator({ address, amountQ }) {
   }
 }
 
-function* getDelegationList({ address }) {
+function* getDelegationList() {
   try {
+    const { userAddress } = yield select(state => state.userInf);
     const contract = getContractInstance();
-    const data = yield contract.getDelegations(address);
+    const data = yield contract.getDelegations(userAddress);
     yield put(getDelegationsListSuccess(data));
   } catch (err) {
     console.error('getDelegationList.Error', err);
@@ -183,6 +192,35 @@ function* getBalanceDetails() {
   }
 }
 
+function* getOutstandingDelegationRewardsValue() {
+  try {
+    const { userAddress } = yield select(state => state.userInf);
+    const contract = getContractInstance();
+
+    const data = yield contract.getOutstandingDelegationRewards(userAddress);
+    yield put(getOutstandingDelegationRewardsSuccess(data));
+  } catch (err) {
+    console.error('getOutstandingDelegationRewards.Error', err);
+    yield put(getOutstandingDelegationRewardsError(err.message));
+  }
+}
+
+function* onClaimStakeDelegatorReward() {
+  try {
+    yield put(setTransactionLoading());
+    const { userAddress } = yield select(state => state.userInf);
+    const contract = getContractInstance();
+
+    const data = yield contract.claimStakeDelegatorReward(userAddress);
+    yield put(getOutstandingDelegationRewards());
+    yield put(getDelegationsList());
+    yield put(setTransactionLoadingSuccess());
+  } catch (err) {
+    console.error('onClaimStakeDelegatorReward.Error', err);
+    yield put(setTransactionLoadingError(err.message));
+  }
+}
+
 export default [
   takeEvery(actionTypes.GET_PB_USER_BALANCE, getUserBalanceGenerator),
   takeEvery(actionTypes.GET_PB_LOCKED_ASSETS, getLockedAssetsGenerator),
@@ -194,4 +232,6 @@ export default [
   takeEvery(actionTypes.GET_DELEGATIONS_LIST, getDelegationList),
 
   takeEvery(actionTypes.GET_PB_BALANCE, getBalanceDetails),
+  takeEvery(actionTypes.ON_CLAIM_STAKE_DELEGATOR_REWARD, onClaimStakeDelegatorReward),
+  takeEvery(actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS, getOutstandingDelegationRewardsValue),
 ];

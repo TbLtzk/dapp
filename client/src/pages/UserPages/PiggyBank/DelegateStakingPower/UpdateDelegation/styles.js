@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import colors from 'constants/colors';
 
-export const UpdateDelegationContainer = styled.div`
-  padding: 0 24px;
+import { Row, Col } from 'react-bootstrap';
+
+export const UpdateDelegationContainer = styled(Row)`
+  //padding: 0 24px;
 
   .title {
-    font-weight: 600;
-    font-size: 18px;
-    color: ${colors.black};
+    ${(props) => props.theme.fontStyles.title.subtitle};
     margin: 0;
   }
 

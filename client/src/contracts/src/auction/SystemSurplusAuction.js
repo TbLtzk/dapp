@@ -52,7 +52,6 @@ export default class SystemSurplusAuction extends AuctionService {
   async getAuctions(activeAuction) {
     const auctionEvents = await this.getAuctionsEvent();
     const auctionInf = auctionEvents?.map(evt => {
-      // return {}
       return {
         id: evt.returnValues._auctionId,
         bidder: evt.returnValues._bidder,
@@ -81,34 +80,17 @@ export default class SystemSurplusAuction extends AuctionService {
     return auctions;
   }
 
-  /**
-   * get one auction with data handling
-   * @param inf
-   * @param active
-   * @return array
-   */
   async getOneAuction(inf, active) {
-    try {
-      if (inf.id) {
-        let objRes = null;
-        let promiseRes = await this.getAuction(inf.id, null);
-        if (promiseRes) {
-          objRes = await this.getAuctionData(promiseRes, inf);
-        }
-        return [objRes];
+    if (inf.id) {
+      let objRes = null;
+      let promiseRes = await this.getAuction(inf.id, null);
+      if (promiseRes) {
+        objRes = await this.getAuctionData(promiseRes, inf);
       }
-    } catch (e) {
-      console.log(e);
+      return [objRes];
     }
-
   }
 
-  /**
-   * bid for auction
-   * @param auctionId
-   * @param userAddress
-   * @return array
-   */
   async bid(auctionId, bid, userAddress) {
     await this.getAllowance(userAddress, contractsToAddresses.SystemSurplusAuction, bid);
     const result = await this.contract.methods.bid(auctionId)
@@ -120,12 +102,6 @@ export default class SystemSurplusAuction extends AuctionService {
     return result;
   }
 
-  /**
-   * execute for auction
-   * @param auctionId
-   * @param userAddress
-   * @return array
-   */
   async execute(auctionId, userAddress) {
     const result = await this.contract.methods.execute(auctionId)
       .send(

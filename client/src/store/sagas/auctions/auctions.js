@@ -15,7 +15,6 @@ import {
   creationSystemDebtContractObj,
   creationSystemSurplusContractObj
 } from 'contracts/handler/AuctionHandler';
-import AuctionService from '../../../contracts/src/auction/AuctionService';
 
 function* createAuction({ data }) {
   console.log('data', data);
@@ -156,10 +155,6 @@ function* bidForAuctionHandler({ data }) {
         return null;
     }
 
-    // if (data?.user && data?.vaultId && data?.bid) {
-    //   const contract = new AuctionService(data?.contract);
-    //   result = yield contract.bid(data.user, data.vaultId, data.bid, userAddress);
-    // }
     yield call(getAuctionDependsOnType, data?.contract, data, true);
     yield put(bidForAuctionSuccess(result));
     yield put(setTransactionLoadingSuccess());

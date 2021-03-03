@@ -1,4 +1,4 @@
-import { drizzleRegistry, contracts } from '../config/drizzle-config';
+import { contracts } from '../config/drizzle-config';
 
 export default class QHolderRewardPool {
 

@@ -12,54 +12,40 @@ export default class VotingService {
     this.contractName = contractName;
   }
 
-  //get proposal event
   async getProposalsEvent() {
     return await getPastEvents(this.contract, 'ProposalCreated');
   }
 
-  //get proposal
   async getProposal(id) {
     const result = await this.contract.methods.proposals(id)
       .call();
     return result;
   }
 
-  //get proposal status
   async getProposalStatus(id) {
     const result = await this.contract.methods.getStatus(id)
       .call();
     return result;
   }
 
-  //proposal stats
   async getProposalStats(id) {
     const result = await this.contract.methods.getProposalStats(id)
       .call();
-    // console.log("getProposalStats", result);
     return result;
   }
 
-  //get vetoes number
   async getVetoesNumber(id) {
     const result = await this.contract.methods.getVetosNumber(id)
       .call();
-    // console.log("getVetoesNumber", result);
     return result;
   }
 
-  //get vetoes percentage
   async getVetoesPercentage(id) {
-    try {
-      const result = await this.contract.methods.getVetosPercentage(id)
-        .call();
-      // console.log("getVetoesPercentage", result);
-      return result;
-    } catch (e) {
-      console.log(e);
-    }
+    const result = await this.contract.methods.getVetosPercentage(id)
+      .call();
+    return result;
   }
 
-  //vote against proposal
   async voteAgainst(id, userAddress) {
     const result = await this.contract.methods.voteAgainst(id)
       .send(
@@ -68,7 +54,6 @@ export default class VotingService {
     return result;
   }
 
-  //vote for proposal
   async voteFor(id, userAddress) {
     const result = await this.contract.methods.voteFor(id)
       .send(
@@ -76,7 +61,6 @@ export default class VotingService {
     return result;
   }
 
-  // veto for proposal
   async veto(id, userAddress) {
     const result = await this.contract.methods.veto(id)
       .send(
@@ -84,9 +68,7 @@ export default class VotingService {
     return result;
   }
 
-  //applies changes for specified proposal after voting
   async execute(id, userAddress) {
-    // 4 === passed status
     let promiseStatus = await this.getProposalStatus(id);
     let result = null;
     if (promiseStatus === '4') {
@@ -97,7 +79,6 @@ export default class VotingService {
     return result;
   }
 
-  //get one proposal
   async getOneProposal(id) {
     if (id) {
       let objRes = null;
@@ -115,7 +96,6 @@ export default class VotingService {
     }
   }
 
-  //get proposal with any status
   async getProposalWithoutStatusChecked(id) {
     if (id) {
       let objRes = null;
@@ -128,11 +108,9 @@ export default class VotingService {
     }
   }
 
-  //get proposal data
   async getProposalData(promiseRes, id, promiseStatus) {
   }
 
-  //get proposals
   async getProposals() {
     const proposalEvents = await this.getProposalsEvent();
     const proposalIds = getPastProposalsIds(proposalEvents);
@@ -154,7 +132,6 @@ export default class VotingService {
     return proposals;
   }
 
-  //get ended proposals
   async getEndedProposals() {
     const proposalEvents = await this.getProposalsEvent();
     const proposalIds = getPastProposalsIds(proposalEvents);
@@ -176,10 +153,10 @@ export default class VotingService {
     return proposals;
   }
 
-  //proposal stats data
   async getProposalStatsData(id) {
     let objRes = {};
     let proposalStats = await this.getProposalStats(id);
+    // console.log('currentQuorum', proposalStats);
     objRes.currentMajority = transformToPercentage(proposalStats.currentMajority);
     objRes.currentQuorum = transformToPercentage(proposalStats.currentQuorum);
     objRes.currentVetoPercentage = transformToPercentage(proposalStats.currentVetoPercentage);
@@ -227,7 +204,6 @@ export default class VotingService {
     }
   }
 
-  // get number of active and ended proposals
   async getProposalsCount() {
     const proposalEvents = await this.getProposalsEvent();
     const proposalIds = getPastProposalsIds(proposalEvents);
@@ -241,7 +217,6 @@ export default class VotingService {
         } else {
           proposalsEnded++;
         }
-
       }
     }
     return {
@@ -258,7 +233,6 @@ export default class VotingService {
   async getParametersArr(id) {
     const result = await this.contract.methods.getParametersArr(id)
       .call();
-    console.log('getParametersArr', result);
     return result;
   }
 

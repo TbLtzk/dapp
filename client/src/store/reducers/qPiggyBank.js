@@ -14,6 +14,7 @@ const initialState = {
   errorDelegationList: null,
 
   pbBalance: null,
+  outstandingDelegationRewards: 0,
 };
 
 export default function qPiggyBank(state = initialState, action) {
@@ -72,6 +73,16 @@ export default function qPiggyBank(state = initialState, action) {
           return {
             ...state,
             pbBalance: action.result,
+          };
+        case actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS_SUCCESS:
+          return {
+            ...state,
+            outstandingDelegationRewards: action.result,
+          };
+        case actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS_ERROR:
+          return {
+            ...state,
+            outstandingDelegationRewards: 0,
           };
         default:
           return state;

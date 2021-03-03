@@ -26,6 +26,7 @@ export default function BorrowBlock(props) {
     setActCardDataInf(actCardData);
   }, [actCardData]);
 
+
   const [collateralInf, setCollateralInf] = useState({});
   const [borrowingInf, setBorrowingInf] = useState({});
   const [loadingInf, setLoadingInf] = useState(true);

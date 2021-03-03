@@ -1,5 +1,6 @@
 import { drizzleRegistry } from '../../config/drizzle-config';
 import VotingService from './VotingService';
+
 import {
   getStatusTransformation, transformToPercentage
 } from '../../handler/VotingHandler';
@@ -8,7 +9,6 @@ import { BN } from 'func/balance';
 /*EPQFI_ParametersVoting, EPDR_ParametersVoting*/
 export default class ParametersVoting extends VotingService {
 
-  // get proposal data
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
@@ -46,55 +46,44 @@ export default class ParametersVoting extends VotingService {
     return { ...objRes, ...objStats, ...objParameters };
   }
 
-  //create proposal
   async createProposal(data, userAddress) {
-    try {
-      let result = null;
-      const link = data['external-link'];
-      const typeValueProposal = data['type-value-proposal'];
-      const key = data.key;
-      let valueInput = data.value;
-      switch (typeValueProposal) {
-        case 'address':
-          result = await this.contract.methods.createAddrProposal(link, key, valueInput)
-            .send(
-              { from: userAddress });
-          break;
-        case 'boolean':
-          valueInput = (valueInput.toLowerCase() === 'true');
-          result = await this.contract.methods.createBoolProposal(link, key, valueInput)
-            .send(
-              { from: userAddress });
-          break;
-        case 'string':
-          result = await this.contract.methods.createStrProposal(link, key, valueInput)
-            .send(
-              { from: userAddress });
-          break;
-        case 'bytes':
-          valueInput = drizzleRegistry.web3.utils.fromAscii(valueInput);
-          result = await this.contract.methods.createBytesProposal(link, key, valueInput)
-            .send(
-              { from: userAddress });
-          break;
-        case 'uint':
-          valueInput = BN(valueInput);
-          result = await this.contract.methods.createUintProposal(link, key, valueInput)
-            .send(
-              { from: userAddress });
-          break;
-        // case "asset-uint":
-        //     valueInput = Number(valueInput);
-        //     result = await this.contract.methods.createAssetUintProposal(link, key, valueInput, 'QBTC:QUSD').send(
-        //         {from: userAddress});
-        //     break;
-        default:
-          return null;
-      }
-      return result;
-    } catch (e) {
-      console.warn('ERROR', e);
+    let result = null;
+    const link = data['external-link'];
+    const typeValueProposal = data['type-value-proposal'];
+    const key = data.key;
+    let valueInput = data.value;
+    switch (typeValueProposal) {
+      case 'address':
+        result = await this.contract.methods.createAddrProposal(link, key, valueInput)
+          .send(
+            { from: userAddress });
+        break;
+      case 'boolean':
+        valueInput = (valueInput.toLowerCase() === 'true');
+        result = await this.contract.methods.createBoolProposal(link, key, valueInput)
+          .send(
+            { from: userAddress });
+        break;
+      case 'string':
+        result = await this.contract.methods.createStrProposal(link, key, valueInput)
+          .send(
+            { from: userAddress });
+        break;
+      case 'bytes':
+        valueInput = drizzleRegistry.web3.utils.fromAscii(valueInput);
+        result = await this.contract.methods.createBytesProposal(link, key, valueInput)
+          .send(
+            { from: userAddress });
+        break;
+      case 'uint':
+        valueInput = BN(valueInput);
+        result = await this.contract.methods.createUintProposal(link, key, valueInput)
+          .send(
+            { from: userAddress });
+        break;
+      default:
+        return null;
     }
-
+    return result;
   }
 }

@@ -31,19 +31,17 @@ import {
   creationQContractObj, creationRootContractObj, creationExpertContractObj, creationSlashingContractObj,
   creationQContractsObjArray, creationSlashingContractsObjArray, creationExpertContractsObjArray
 } from 'contracts/handler/VotingHandler';
+import { chooseSlashingContractDependsOnType } from 'contracts/handler/SlashingVotingHandler';
+import {
+  chooseExpertContractDependsOnType,
+  chooseExpertContractNameDependsOnType
+} from 'contracts/handler/QExpertVotingHandler';
 
 import ConstitutionVotingService from 'contracts/src/voting/ConstitutionVoting';
 import EmergencyUpdateVotingService from 'contracts/src/voting/EmergencyUpdateVoting';
 import GeneralUpdateVotingService from 'contracts/src/voting/GeneralUpdateVoting';
 import RootsVotingService from 'contracts/src/voting/RootsVoting';
 import VotingService from 'contracts/src/voting/VotingService';
-
-import {
-  chooseExpertContractDependsOnType,
-  chooseExpertContractNameDependsOnType
-} from 'contracts/handler/QExpertVotingHandler';
-
-import { chooseSlashingContractDependsOnType } from 'contracts/handler/SlashingVotingHandler';
 
 function* createProposal({ data }) {
   try {

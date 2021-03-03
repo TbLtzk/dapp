@@ -46,9 +46,8 @@ export const setUnlockAmount = (address, amountQ) => ({
   amountQ
 });
 
-export const getDelegationsList = (address) => ({
+export const getDelegationsList = () => ({
   type: actionTypes.GET_DELEGATIONS_LIST,
-  address
 });
 export const getDelegationsListSuccess = (result) => ({
   type: actionTypes.GET_DELEGATIONS_LIST_SUCCESS,
@@ -64,5 +63,22 @@ export const getPBBalance = () => ({
 });
 export const getPBBalanceSuccess = (result) => ({
   type: actionTypes.GET_PB_BALANCE_SUCCESS,
+  result
+});
+
+export const onClaimStakeDelegatorReward = () => ({
+  type: actionTypes.ON_CLAIM_STAKE_DELEGATOR_REWARD,
+});
+
+export const getOutstandingDelegationRewards = () => ({
+  type: actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS,
+});
+
+export const getOutstandingDelegationRewardsSuccess = (result) => ({
+  type: actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS_SUCCESS,
+  result
+});
+export const getOutstandingDelegationRewardsError = (result) => ({
+  type: actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS_ERROR,
   result
 });

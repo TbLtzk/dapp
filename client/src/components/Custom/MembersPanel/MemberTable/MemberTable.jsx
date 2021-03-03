@@ -1,16 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react';
+
 import { useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
+import { rootNodeStake } from 'store/selectors/root-contract';
 
 import TableView from 'components/Base/TableView';
 import { Pagination, setElementsForOnePage, countPages } from 'components/Base/Pagination';
 
-import { Circle, MemberPanelWrap, MemberAddress, Sharing } from './styles';
-import { rootNodeStake } from 'store/selectors/root-contract';
-import { fN } from 'func/useful';
+import { fN, uintPerSecondToPerYearNumber } from 'func/useful';
 import { fromWei } from 'func/balance';
+
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Circle, MemberPanelWrap, MemberAddress, Sharing } from './styles';
 
 function MemberTable(props) {
   const { arrayData, tableHeader, type } = props;
@@ -99,13 +101,14 @@ function MemberTable(props) {
     } else if (type === 'validators-widened') {
       const numMember = member.rank;
       const amount = fN(fromWei(member.amount)) + 'Q';
+      console.log("member.poolPayoutRatio", member.poolPayoutRatio);
       const children = <>
         <td>{fN(member.selfStake) + 'Q'}</td>
         <td>{fN(member.delegatedStake) + 'Q'}</td>
         <td>{member.validatorShare + '%'}</td>
         <td>{member.delegatorShare + '%'}</td>
         <td>{fN(member.validatorPoolBalance) + 'Q'}</td>
-        <td>{member.poolPayoutRatio + '%'}</td>
+        <td>{(member.poolPayoutRatio) + '%'}</td>
       </>;
       return showBodyTable(i, numMember, member.validator, amount, 'validators-widened', children);
     } else if (type === 'root-node') {

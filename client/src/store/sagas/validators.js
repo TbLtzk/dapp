@@ -4,7 +4,6 @@ import {
   setError, setDelegatorsShare, getDelegatorsShare, setTotalStake, setOwnStake,
   setDelegatedStake, setAccTotalStake, setInterestRate, getInterestRate,
   getValidatorMembersSuccess, getValidatorMembersError, isUserValidatorSuccess,
-  getDelegationsListError, getDelegationsListSuccess
 } from 'store/actions/action-creaters/validators';
 import Validators from '../../contracts/src/Validators';
 import { web3 } from '../../contracts/config/drizzle-config';

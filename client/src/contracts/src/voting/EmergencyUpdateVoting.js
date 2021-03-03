@@ -1,8 +1,10 @@
 import { contracts } from '../../config/drizzle-config';
+import VotingService from './VotingService';
+
 import {
   getStatusTransformation,
 } from '../../handler/VotingHandler';
-import VotingService from './VotingService';
+
 
 export default class EmergencyUpdateVoting extends VotingService {
 
@@ -12,7 +14,6 @@ export default class EmergencyUpdateVoting extends VotingService {
     this.contractName = 'EmergencyUpdateVoting';
   }
 
-  //get proposal data
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
@@ -39,7 +40,6 @@ export default class EmergencyUpdateVoting extends VotingService {
     return { ...objRes, ...objStats };
   }
 
-  //create proposal
   async createProposal(data, userAddress) {
     const link = data['external-link'];
     const result = await this.contract.methods.createProposal(link)
