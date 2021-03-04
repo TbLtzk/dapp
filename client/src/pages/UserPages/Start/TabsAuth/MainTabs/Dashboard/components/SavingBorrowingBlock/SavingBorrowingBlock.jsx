@@ -67,7 +67,6 @@ function SavingBorrowingBlock() {
   }, [timeSinceUnixTimestampOutstandingDeb]);
 
   const onRefresh = useCallback((type) => {
-    console.log('onRefresh', type);
     switch (type) {
       case 'of-balance':
         handler.refreshTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setLoadingTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance);

@@ -74,8 +74,6 @@ function* withdraw({ contract, amount, payTo, paymentInf }) {
 function* checkIsUserRootNode({ contract, address }) {
   try {
     const data = yield contract.checkMemberIsRoot(address);
-    // console.log("checkMemberIsRoot", data);
-
     yield put(checkIsUserRootNodeSuccess(data));
   } catch (err) {
     console.log('err', err);

@@ -5,7 +5,6 @@ import {
   getStatusTransformation,
 } from '../../handler/VotingHandler';
 
-
 export default class EmergencyUpdateVoting extends VotingService {
 
   constructor() {
@@ -36,6 +35,13 @@ export default class EmergencyUpdateVoting extends VotingService {
     objRes.title = 'Emergency update proposal';
     objRes.contract = this.contractName;
     objStats = await this.getProposalStatsData(id);
+
+    if (weightFor > 0 || weightAgainst > 0) {
+      objRes.numberProposalVotes = {
+        votesFor: Number(weightFor),
+        votesAgainst: Number(weightAgainst)
+      };
+    }
 
     return { ...objRes, ...objStats };
   }

@@ -2,15 +2,16 @@ import AuctionService from './AuctionService';
 
 import { contractsToAddresses } from '../../mapping/contract-to-address';
 import { toWei, fromWei } from 'func/balance';
+import { contracts } from '../../config/drizzle-config';
 
 export default class SystemSurplusAuction extends AuctionService {
 
-  /**
-   * create auction
-   * @param data
-   * @param userAddress
-   * @return string
-   */
+  constructor() {
+    super();
+    this.contract = contracts['SystemSurplusAuction'];
+    this.contractName = 'SystemSurplusAuction';
+  }
+
   async createAuction(data, userAddress) {
     await this.getAllowance(userAddress, contractsToAddresses.SystemSurplusAuction, data?.bid);
     return await this.contract.methods.startAuction()
@@ -20,12 +21,6 @@ export default class SystemSurplusAuction extends AuctionService {
       });
   }
 
-  /**
-   * get proposal data
-   * @param promiseRes
-   * @param inf
-   * @return array
-   */
   async getAuctionData(promiseRes, inf) {
     let objRes = {};
     objRes.bidder = promiseRes.bidder;
@@ -35,7 +30,7 @@ export default class SystemSurplusAuction extends AuctionService {
     // objRes.bid = drizzleRegistry.web3.utils.fromWei(inf.bid, 'ether');
     objRes.endTime = promiseRes.endTime;
     objRes.isExecuted = promiseRes.isExecuted;
-    objRes.lot = promiseRes.lot;
+    objRes.lot = fromWei(promiseRes.lot);
     const highestBid = promiseRes.highestBid;
     objRes.highestBid = fromWei(highestBid);
     objRes.title = `System Surplus Auction`;
@@ -44,11 +39,6 @@ export default class SystemSurplusAuction extends AuctionService {
 
   }
 
-  /**
-   * get active auctions
-   * @param activeAuction
-   * @return array
-   */
   async getAuctions(activeAuction) {
     const auctionEvents = await this.getAuctionsEvent();
     const auctionInf = auctionEvents?.map(evt => {

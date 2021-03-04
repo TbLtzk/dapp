@@ -29,8 +29,6 @@ export const percentageToPercentPerSecond = (number) => {
     const first = number / 100;
     const second = (1 + first) ** (1 / (3600 * 24 * 365)) - 1;
     const third = BN(String(second * (10 ** 27)));
-    console.log('percentageToPercentPerSecond', third);
-    console.log('percentageToPercentPerSecond', third.toString());
     return third;
   } else {
     return 0;

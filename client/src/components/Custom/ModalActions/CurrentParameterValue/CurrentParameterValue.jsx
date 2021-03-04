@@ -18,15 +18,9 @@ function CurrentParameterValue(props) {
   const parameterKeysByType = useSelector(arrayParameterKeysByType);
 
   useEffect(() => {
-    // console.log('typePanel Effect', typePanel);
-    // console.log('typeParameter Effect', typeParameter);
-    // console.log('parameterKey Effect', parameterKey);
-    // console.log('parameterKeysByType Effect', parameterKeysByType);
     if (typePanel && typeParameter && parameterKey) {
       if (parameterKeysByType?.length !== 0) {
-        // console.log('parameterKeysByType?.length', parameterKeysByType?.length);
         const foundValue = parameterKeysByType.find(value => parameterKey == value);
-        // console.log('found', foundValue);
         if (foundValue) {
           dispatch(getParameterValueByKey(typePanel, typeParameter, parameterKey));
           setCurrentParameterValue(parameterByKeyValue);

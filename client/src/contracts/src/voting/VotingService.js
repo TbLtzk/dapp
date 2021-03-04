@@ -1,4 +1,4 @@
-import { drizzleRegistry, contracts } from '../../config/drizzle-config';
+import { contracts } from '../../config/drizzle-config';
 import {
   convertNumVotes,
   getPastEvents,
@@ -156,7 +156,6 @@ export default class VotingService {
   async getProposalStatsData(id) {
     let objRes = {};
     let proposalStats = await this.getProposalStats(id);
-    // console.log('currentQuorum', proposalStats);
     objRes.currentMajority = transformToPercentage(proposalStats.currentMajority);
     objRes.currentQuorum = transformToPercentage(proposalStats.currentQuorum);
     objRes.currentVetoPercentage = transformToPercentage(proposalStats.currentVetoPercentage);
@@ -175,30 +174,41 @@ export default class VotingService {
   async getProposalVotes(id) {
 
     try {
-      const votesArrAll = await getPastEvents(drizzleRegistry, this.contract, 'UserVoted');
+      const votesArrAll = await getPastEvents(this.contract, 'UserVoted');
       const votesArrById = votesArrAll?.filter((elem) => {
-        if (elem.returnValues._id === id) {
+        if (elem.returnValues._proposalId === id) {
           return elem.returnValues;
         }
       });
-      const commonVotes = votesArrById?.reduce((sum, current) => {
-        // console.log('current.returnValues._votingOption', current.returnValues._votingOption);
-        // console.log('sum', sum);
-        switch (current?.returnValues?._votingOption) {
-          case '0': //NONE
-            return sum['none'] = 0;
+      const commonVotes = votesArrById?.map((el) => {
+        switch (el?.returnValues?._votingOption) {
           case '1': //FOR
-            // console.log('sum.votesFor', sum.votesFor);
-            return sum += 1;
+            return {
+              'votesFor': 1,
+              'votesAgainst': 0
+            };
           case '2': //AGAINST
-            return sum['votesAgainst'] = sum['votesAgainst'] + 1;
+            return {
+              'votesAgainst': 1,
+              'votesFor': 0
+            };
         }
-        // return sum + current.returnValues._votingOption
-        // return {votesFor: 1, votesAgainst: 2};
-      }, 0);
-      // console.log('votesArrById', votesArrById);
-      // console.log('commonVotes', commonVotes);
-      return votesArrAll;
+        return el;
+      });
+      let sumResults = 0;
+      if (commonVotes.length !== 0) {
+        sumResults = commonVotes?.reduce((accumulator, currentValue) => {
+          accumulator.votesFor = accumulator.votesFor + currentValue.votesFor;
+          accumulator.votesAgainst = accumulator.votesAgainst + currentValue.votesAgainst;
+          return accumulator;
+        }, {
+          votesFor: 0,
+          votesAgainst: 0
+        });
+        return sumResults;
+      } else {
+        return 0;
+      }
     } catch (e) {
       console.log(e);
     }

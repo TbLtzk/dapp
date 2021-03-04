@@ -3,8 +3,15 @@ import AuctionService from './AuctionService';
 import { contractsToAddresses } from '../../mapping/contract-to-address';
 import { getStatusTransformation } from '../../handler/AuctionHandler';
 import { toWei, fromWei } from 'func/balance';
+import { contracts } from '../../config/drizzle-config';
 
 export default class SystemDebtAuction extends AuctionService {
+
+  constructor() {
+    super();
+    this.contract = contracts['SystemDebtAuction'];
+    this.contractName = 'SystemDebtAuction';
+  }
 
   async getAuctionData(promiseRes, inf) {
     let objRes = {};
@@ -12,6 +19,7 @@ export default class SystemDebtAuction extends AuctionService {
     objRes.status = getStatusTransformation(promiseRes.status);
     objRes.bidder = promiseRes.bidder;
     objRes.bid = inf.bid;
+    objRes.id = inf.id;
     objRes.endTime = promiseRes.endTime;
     const highestBid = promiseRes.highestBid;
     const reserveLot = promiseRes.reserveLot;

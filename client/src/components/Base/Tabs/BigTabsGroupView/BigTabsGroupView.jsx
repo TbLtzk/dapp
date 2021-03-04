@@ -20,7 +20,6 @@ function BigTabsGroupView(props) {
       {
         !tabsItems ? null :
           tabsItems.map((el, i) => {
-            console.log();
             return (
               <TabStyle key={i} eventKey={el.label} title={el.title}>
                 {key !== el.label ? <p></p> : tabsItems[0]?.content}

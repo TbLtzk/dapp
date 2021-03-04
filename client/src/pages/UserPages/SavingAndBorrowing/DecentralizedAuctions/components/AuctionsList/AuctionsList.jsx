@@ -37,13 +37,6 @@ function AuctionsList(props) {
     setModalShow(true);
     dispatch(setCreateObj({ first: activeTab }));
 
-    // const bid = bn(14000000000000000000); //10
-    // dispatch(bidForAuction({
-    //   user,
-    //   vaultId,
-    //   bid,
-    //   contract,
-    // }));
   };
 
   const onAuctionExecute = (user, vaultId, contract, id) => {
@@ -78,7 +71,7 @@ function AuctionsList(props) {
                     remainDate={remainDate(auction.endTime)}
                   />
                   <CardBody
-                    id={auction?.contract === 'SystemSurplusAuction' ? auction.id : i + auction?.contract}
+                    id={auction?.contract === 'SystemSurplusAuction' || auction?.contract === 'SystemDebtAuction' ? auction.id : i + auction?.contract}
                     data={auction}
                   />
                 </CardBlock>;

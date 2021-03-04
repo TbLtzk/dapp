@@ -84,14 +84,12 @@ export default function BorrowBlock(props) {
     const inputValue = value.target.value;
 
     if (type === 'deposit') {
-      console.log('allowanceDeposit', allowanceDeposit);
       if (Number(allowanceDeposit) < Number(inputValue)) {
         setDepositBtnTitle('Approve');
       } else {
         setDepositBtnTitle('Add');
       }
     } else if (type === 'repay') {
-      console.log('allowanceRepay', allowanceRepay);
       if (Number(allowanceRepay) < Number(inputValue)) {
         setRepayBtnTitle('Approve');
       } else {

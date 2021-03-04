@@ -97,7 +97,5 @@ export default class Handler {
 
   async approve() {
     const approve = await this.contractStableCoinQUSD.approve(this.contractSavingQUSD.address, maxApproveAmount, this.address);
-    // const approve = await this.contractStableCoinQUSD.approve(this.contractSavingQUSD.address, 0, this.address);
-    // console.log('approve', approve);
   }
 }

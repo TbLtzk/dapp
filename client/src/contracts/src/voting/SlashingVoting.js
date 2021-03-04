@@ -33,6 +33,12 @@ export default class SlashingVoting extends VotingService {
     //number of voting people for
     const weightFor = promiseRes.base.counters.weightFor;
     objRes.votesFor = weightFor;
+    if (weightFor > 0 || weightAgainst > 0) {
+      objRes.numberProposalVotes = {
+        votesFor: Number(weightFor),
+        votesAgainst: Number(weightAgainst)
+      };
+    }
     //the ending is given by: vetoEndTime.
     objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
     //the time until when users can vote
@@ -77,7 +83,9 @@ export default class SlashingVoting extends VotingService {
       const link = data['external-link'];
       //percentage of stake to slash
       let percentageStake = data['%-value'];
+      console.log('percentageStake', percentageStake);
       percentageStake = getPercentageFormat(percentageStake);
+      console.log('percentageStake converted', percentageStake.toString());
       let candidate = data['address'];
       console.log('percentageStake', percentageStake);
       const result = await this.contract.methods.createProposal(link, candidate, percentageStake)

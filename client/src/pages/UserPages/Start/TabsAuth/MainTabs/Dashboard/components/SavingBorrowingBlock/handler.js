@@ -70,7 +70,6 @@ export default class Handler {
     // this.SavingQUSD.getBalanceDetails()
     this.CompoundRateKeeperSaving.getLastUpdate()
       .then(res => {
-        // console.log('getBalanceDetails', res);
         stateSetterUnixTimestamp(res);
         const transformTime = remainDateTimeSince(res);
         stateSetter(transformTime);

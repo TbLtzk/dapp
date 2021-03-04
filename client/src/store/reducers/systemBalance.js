@@ -4,6 +4,8 @@ const initialState = {
   surplus: 0,
   debt: 0,
   systemBalance: 0,
+
+  loadingPerformNetting: false,
 };
 
 export default function systemBalance(state = initialState, action) {
@@ -37,6 +39,21 @@ export default function systemBalance(state = initialState, action) {
       return {
         ...state,
         systemBalance: action.result,
+      };
+    case actionTypes.ON_PERFORM_NETTING:
+      return {
+        ...state,
+        loadingPerformNetting: true,
+      };
+    case actionTypes.ON_PERFORM_NETTING_SUCCESS:
+      return {
+        ...state,
+        loadingPerformNetting: false,
+      };
+    case actionTypes.ON_PERFORM_NETTING_ERROR:
+      return {
+        ...state,
+        loadingPerformNetting: false,
       };
     default:
       return state;

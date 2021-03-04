@@ -17,7 +17,6 @@ function* getAllowance({ userAddress, contractAddress }) {
   try {
     const contract = getContractInstance();
     const data = yield contract.allowance(userAddress, contractAddress);
-    console.log('getAllowance', data);
     yield put(getAllowanceSuccess(data));
   } catch (err) {
     console.error('getAllowance.Error', err);

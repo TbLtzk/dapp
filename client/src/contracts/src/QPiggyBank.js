@@ -95,7 +95,6 @@ export default class QPiggyBank {
   async getOutstandingDelegationRewards(address) {
     let sumArr = [];
     const delegationsList = await this.getDelegationsList(address);
-    console.log('delegationsList', delegationsList);
     if (delegationsList.length === 0) {
       return 0;
     } else {
@@ -106,7 +105,6 @@ export default class QPiggyBank {
         const result = sumArr.reduce((accumulator, currentValue) => {
           return accumulator + currentValue;
         });
-        console.log('sum', result);
         return result;
       } else {
         return 0;

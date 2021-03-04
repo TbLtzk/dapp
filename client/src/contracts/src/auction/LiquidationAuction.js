@@ -4,15 +4,19 @@ import { getPastAuctionsIds, getStatusTransformation } from '../../handler/Aucti
 import { contractsToAddresses } from '../../mapping/contract-to-address';
 import { fromBtcBlockchain, toWei, fromWei } from 'func/balance';
 
+import { contracts } from '../../config/drizzle-config';
+
 export default class LiquidationAuction extends AuctionService {
 
+  constructor() {
+    super();
+    this.contract = contracts['LiquidationAuction'];
+    this.contractName = 'LiquidationAuction';
+  }
+
   async getAuctionData(promiseRes, inf) {
-    console.log('user', inf.user);
-    console.log('vaultId', inf.vaultId);
     const result = await this.borrowingContract.userVaults(inf.user, inf.vaultId);
-    console.log('userVaults', result);
     let objRes = {};
-    console.log('getAuctionData LiquidationAuction', promiseRes);
     objRes.status = getStatusTransformation(promiseRes.status);
     objRes.bidder = promiseRes.bidder;
     objRes.user = inf.user;

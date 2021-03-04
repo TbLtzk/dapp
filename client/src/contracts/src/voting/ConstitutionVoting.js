@@ -58,8 +58,9 @@ export default class ConstitutionVoting extends VotingService {
     // objRes.vetoesPercentage = await this.getVetoesPercentage(id);
     objRes.title = `${proposalType} constitution proposal`;
     objStats = await this.getProposalStatsData(id);
-    // console.log('UserVoted', await this.getProposalVotes(id));
     objRes.contract = this.contractName;
+
+    objRes.numberProposalVotes = await this.getProposalVotes(id);
     return { ...objRes, ...objStats, ...objParameters };
   }
 

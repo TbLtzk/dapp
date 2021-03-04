@@ -101,14 +101,13 @@ function MemberTable(props) {
     } else if (type === 'validators-widened') {
       const numMember = member.rank;
       const amount = fN(fromWei(member.amount)) + 'Q';
-      console.log("member.poolPayoutRatio", member.poolPayoutRatio);
       const children = <>
         <td>{fN(member.selfStake) + 'Q'}</td>
         <td>{fN(member.delegatedStake) + 'Q'}</td>
-        <td>{member.validatorShare + '%'}</td>
-        <td>{member.delegatorShare + '%'}</td>
+        <td>{fN(member.validatorShare) + '%'}</td>
+        <td>{fN(member.delegatorShare) + '%'}</td>
         <td>{fN(member.validatorPoolBalance) + 'Q'}</td>
-        <td>{(member.poolPayoutRatio) + '%'}</td>
+        <td>{fN(member.poolPayoutRatio) + '%'}</td>
       </>;
       return showBodyTable(i, numMember, member.validator, amount, 'validators-widened', children);
     } else if (type === 'root-node') {

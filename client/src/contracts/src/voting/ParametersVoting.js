@@ -43,6 +43,12 @@ export default class ParametersVoting extends VotingService {
     if (parametersSize >= '1') {
       objParameters = await this.getProposalParametersData(id);
     }
+    if (weightFor > 0 || weightAgainst > 0) {
+      objRes.numberProposalVotes = {
+        votesFor: Number(weightFor),
+        votesAgainst: Number(weightAgainst)
+      };
+    }
     return { ...objRes, ...objStats, ...objParameters };
   }
 

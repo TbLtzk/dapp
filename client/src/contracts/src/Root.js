@@ -57,7 +57,6 @@ export default class RootService {
     let promiseRes;
     const members = await this.getRootMembers();
     if (members) {
-      // console.log('members', members);
       let i = 0;
       for (let member of members) {
         promiseRes = await this.getRootNodeStake(member)
@@ -73,7 +72,6 @@ export default class RootService {
         i++;
       }
     }
-    // console.log('rootStakes', rootStakes);
     return rootStakes;
   }
 
@@ -114,8 +112,6 @@ export default class RootService {
    */
   async stakeToPanel(data) {
     try {
-      // new web3.utils.BN(web3.utils.toWei
-      // console.log(data);
       return await this.contract.methods.commitStake()
         .send(data);
     } catch (e) {
@@ -132,10 +128,6 @@ export default class RootService {
     try {
       return await this.contract.methods.announceWithdrawal(amount)
         .send(paymentInf);
-      // const result = await this.Root.methods.announceWithdrawal(amount).call(function (result) {
-      //     console.log('announceWithdrawal result', result);
-      // });
-
     } catch (e) {
       console.log(e);
     }
@@ -150,9 +142,6 @@ export default class RootService {
    */
   async withdraw(amount, payTo, paymentInf) {
     try {
-      // const result = await this.Root.methods.withdraw(amount, payTo).call(function (result) {
-      //     console.log('withdraw result', result);
-      // });
       return await this.contract.methods.withdraw(amount, payTo)
         .send(paymentInf);
     } catch (e) {

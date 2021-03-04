@@ -1,4 +1,5 @@
 import { BigNumber } from 'bignumber.js';
+
 import SlashingVotingService from '../src/voting/SlashingVoting';
 import RootsVotingService from '../src/voting/RootsVoting';
 import ConstitutionVotingService from '../src/voting/ConstitutionVoting';
@@ -7,6 +8,7 @@ import GeneralUpdateVotingService from '../src/voting/GeneralUpdateVoting';
 import MembershipVotingService from '../src/voting/MembershipVoting';
 import ParametersVotingService from '../src/voting/ParametersVoting';
 import { chooseExpertContractDependsOnType } from './QExpertVotingHandler';
+
 import { web3 } from '../config/drizzle-config';
 
 export const getPastEvents = async (contract, event) => {
@@ -97,9 +99,10 @@ export const bnSlashing = (number) => {
 
 export const getPercentageFormat = (number) => {
   // console.log('number', 10 ** 27);
-  return bnSlashing(String(((10 ** 27) * Number(number)) / 100));
-  // return bn('1e+25') * bn(number);
-  // .multipliedBy(Number(number))
+  return bnSlashing(String(((10 ** 27) * (number)) / 100));
+  // return bn('1e+25') * bn(number)
+  // return bn('1e+27')
+  // .multipliedBy((number))
   // .dividedBy(100);
 };
 

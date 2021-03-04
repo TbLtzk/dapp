@@ -35,6 +35,8 @@ export default class GeneralUpdateVoting extends VotingService {
     objRes.contract = this.contractName;
     objStats = await this.getProposalStatsData(id);
 
+    objRes.numberProposalVotes = await this.getProposalVotes(id);
+
     return { ...objRes, ...objStats };
   }
 

@@ -32,7 +32,6 @@ function* getBalanceDashboard({ address }) {
   try {
     const contract = getContractInstance();
     const data = yield contract.getBalance(address);
-    console.log("getBalanceDashboard", data);
     yield put(getVRPBalanceSuccess(data));
   } catch (err) {
     console.error('VRP.Error', err);

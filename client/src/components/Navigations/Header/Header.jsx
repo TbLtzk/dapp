@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 
@@ -15,15 +14,9 @@ import { navItems } from './constants';
 
 import { NavbarContainer, ListContainer, WrapBtn, LinkStyle } from './styles';
 
-const { useDrizzle, useDrizzleState } = drizzleReactHooks;
-
 function Header() {
-  const { drizzle } = useDrizzle();
-  const state = useDrizzleState(state => state);
   const history = useHistory();
-  const location = useLocation();
   const userAddress = useSelector(userAddressMetamask);
-  // console.log('history', history.location.pathname);
 
   return (
     <header>

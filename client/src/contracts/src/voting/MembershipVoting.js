@@ -40,6 +40,7 @@ export default class MembershipVoting extends VotingService {
     objRes.kindVoting = 'membership';
     objStats = await this.getProposalStatsData(id);
     objRes.contract = this.contractName;
+    objRes.numberProposalVotes = await this.getProposalVotes(id);
 
     return { ...objRes, ...objStats };
   }

@@ -1,14 +1,26 @@
-import React, { Fragment } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import React, { Fragment, useCallback } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { loadingPerformNetting } from 'store/selectors/system-balance';
+import { onPerformNetting } from 'store/actions/action-creaters/system-balance';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import Button from 'components/Base/Buttons/Button';
+import LoadingSpinner from 'components/Base/LoadingSpinner';
 
+import { Row } from 'react-bootstrap';
 import { Title, BlockWrap } from './styles';
 import { WrapBtn, WrapDescr, WrapDescrTitle, WrapTitle } from '../styles';
 
 function SystemCard(props) {
   const { data, title } = props;
+
+  const dispatch = useDispatch();
+  const loadingPerfNetting = useSelector(loadingPerformNetting);
+
+  const onHandlePerformNetting = useCallback(() => {
+    dispatch(onPerformNetting());
+  }, []);
 
   return (
     <BlockWrap>
@@ -26,11 +38,9 @@ function SystemCard(props) {
           {title === 'QUSD System Balance' ?
             <WrapBtn md={12}>
               <Button
-                title="Perform Netting"
+                title={!loadingPerfNetting ? 'Perform Netting' : <LoadingSpinner/>}
                 width="100%"
-                handleButton={() => {
-                  console.log('click');
-                }}
+                handleButton={onHandlePerformNetting}
               />
             </WrapBtn>
             : null

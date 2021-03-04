@@ -58,7 +58,6 @@ export default class Handler {
 
     contractValidators.getInterestRate(this.address)
       .then((res) => {
-        console.log("getInterestRate", res);
         const rate = uintPerSecondToPerYearNumber(res);
         // const rate = uintPercentToNumber(res) * 100;
         stateSetter(rate);

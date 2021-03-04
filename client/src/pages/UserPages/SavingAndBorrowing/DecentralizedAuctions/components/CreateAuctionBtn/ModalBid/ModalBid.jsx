@@ -27,7 +27,7 @@ import CreateStep2 from './CreateStep2';
 
 import { Title, Descr } from 'components/Custom/ModalActions/styles';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
-import { maxApproveAmount } from '../../../../../../../contracts/handler/AuctionHandler';
+import { maxApproveAmount } from 'contracts/handler/AuctionHandler';
 import { StableCoinQUSD } from 'contracts/src/StableCoin';
 import { checkTabContract } from './constants';
 import { drizzleReactHooks } from '@drizzle/react-plugin';
@@ -75,7 +75,6 @@ function ModalBid(props) {
   const onNext = async (data) => {
     dispatch(setCreateObj({ ...formData, ...data }));
     if (approveBtn) {
-      console.log('data', data);
       const contractName = checkTabContract(activeTab);
       let approve = await StableCoin.approve(contractsToAddresses[contractName], maxApproveAmount, userAddress);
       dispatch(setApproveModalBtn(false));

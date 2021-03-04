@@ -20,7 +20,6 @@ export function AuthProtect(ProtectComponent) {
         const dispatch = useDispatch();
 
         const userAddress = useSelector(userAddressMetamask);
-        // console.log("userAddress", userAddress);
 
         useEffect(() => {
             if (userAddress) {

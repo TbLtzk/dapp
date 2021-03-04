@@ -50,7 +50,6 @@ function ListCardBody(props) {
                 <BtnShare
                   type="button"
                   onClick={() => {
-                    // console.log('Copied to clipboard');
                   }}
                 >
                   <span>Share</span>

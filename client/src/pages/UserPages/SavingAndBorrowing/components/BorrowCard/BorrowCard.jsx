@@ -25,17 +25,14 @@ export default function BorrowCard(props) {
 
   // Get vault count for address
   useEffect(async () => {
-    dispatch(setTransactionCounter(1));
     const data = await contract.userVaultsCount(address)
       .catch(() => {
       });
     setVaultsCount(data);
-    dispatch(setTransactionCounter(-1));
   }, []);
 
   // Get vaults for address by count
   useEffect(async () => {
-    dispatch(setTransactionCounter(1));
 
     //TODO: Change logic using borrowingContract.getVaultStats function twice
     const borrowingContract = new BorrowingCoreQUSD();
@@ -44,8 +41,9 @@ export default function BorrowCard(props) {
       const vaultInfo = await contract.userVaults(address, i)
         .catch(() => {
         });
-      let vaultStats = await borrowingContract.getVaultStats(address, i).catch(() => {
-      });
+      let vaultStats = await borrowingContract.getVaultStats(address, i)
+        .catch(() => {
+        });
       let fee = vaultStats?.stcStats?.borrowingFee ? uintPerSecondToPerYearNumber(vaultStats?.stcStats?.borrowingFee) : 0;
       vaultInfo.borrowingFee = fee;
       vaultInfo.vaultNum = i;
@@ -53,7 +51,6 @@ export default function BorrowCard(props) {
       vaultsLoc.push(vaultInfo);
     }
     setVaults(vaultsLoc);
-    dispatch(setTransactionCounter(-1));
   }, [vaultsCount]);
 
   function renderVaults() {

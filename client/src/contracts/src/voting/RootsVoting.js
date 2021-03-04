@@ -65,6 +65,7 @@ export default class RootsVoting extends VotingService {
     objStats = await this.getProposalStatsData(id);
     objRes.status = getStatusTransformation(promiseStatus);
     objRes.contract = this.contractName;
+    objRes.numberProposalVotes = await this.getProposalVotes(id);
     return { ...objRes, ...objStats };
   }
 
