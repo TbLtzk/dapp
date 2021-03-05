@@ -34,9 +34,9 @@ export default function auctions(state = initialState, action) {
         ...state,
         auctionsArr: (() => {
           const findElem = state.auctionsArr?.find((element => {
-            if (action.result[0].contract === "LiquidationAuction"){
+            if (action.result[0].contract === 'LiquidationAuction') {
               return element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user;
-            }else if (action.result[0].contract === "SystemSurplusAuction"){
+            } else if (action.result[0].contract === 'SystemSurplusAuction' || action.result[0].contract === 'SystemDebtAuction') {
               return element.id === action.result[0].id;
             }
             // return element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user || element.id === action.result[0].id;
@@ -44,13 +44,14 @@ export default function auctions(state = initialState, action) {
           }));
           if (findElem) {
             return state.auctionsArr?.map((element) => {
-              if (element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user && element.contract === "LiquidationAuction") {
-              // if (element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user) {
+              if (element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user && element.contract === 'LiquidationAuction') {
+                // if (element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user) {
                 return { ...action.result[0] };
-              } else if (element.id === action.result[0].id && action.result[0].contract === "SystemSurplusAuction"){
+              } else if (element.id === action.result[0].id && action.result[0].contract === 'SystemSurplusAuction' ||
+                element.id === action.result[0].id && action.result[0].contract === 'SystemDebtAuction'
+              ) {
                 return { ...action.result[0] };
-              }
-              else {
+              } else {
                 return { ...element };
               }
             });

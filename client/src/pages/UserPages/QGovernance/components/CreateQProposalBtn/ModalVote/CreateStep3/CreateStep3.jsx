@@ -21,9 +21,9 @@ function CreateStep3(props) {
           <SummarTextType> {formData?.first?.replace(/-/g, ' ')}</SummarTextType>
         </SummarText>
         <SummarText>Answer: {answer}</SummarText>
-        {proposalContract !== 'EPDR_MembershipVoting' || proposalContract !== 'EPQFI_MembershipVoting' ||
-        proposalContract !== 'RootNodesSlashingVoting' || proposalContract !== 'ValidatorsSlashingVoting' ||
-        proposalContract !== 'EmergencyUpdateVoting' ?
+        {proposalContract === 'ConstitutionVoting' || proposalContract === 'GeneralUpdateVoting' ||
+        proposalContract === 'EPDR_MembershipVoting' || proposalContract === 'EPQFI_MembershipVoting' ||
+        proposalContract === 'RootsVoting' ?
           <Warning>Notice: Your currently locked amount of Q inside the piggy bank will be extended until the end of
             this proposal.</Warning>
           : null
