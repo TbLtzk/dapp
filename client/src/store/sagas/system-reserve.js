@@ -3,6 +3,7 @@ import * as actionTypes from 'store/actions/action-types/system-reserve';
 import {
   getAvailableAmountSuccess, getAvailableAmountError
 } from 'store/actions/action-creaters/system-reserve';
+
 import SystemReserve from 'contracts/src/SystemReserve';
 
 function* getAvailableAmount() {

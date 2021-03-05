@@ -1,6 +1,5 @@
 import { call, put, takeEvery, all } from 'redux-saga/effects';
 
-import { detectMetamask } from 'contracts/handler/metamaskAccount';
 import * as actionTypes from 'store/actions/action-types/root-contract';
 import {
   getRootMembersDataSuccess, getRootMembersDataError,
@@ -10,12 +9,13 @@ import {
   announceWithdrawalSuccess, announceWithdrawalError,
   withdrawSuccess, withdrawError, getWithdrawalsSuccess, getWithdrawalsError, getRootMembersData
 } from 'store/actions/action-creaters/root-contract';
-import RootService from 'contracts/src/Root';
 import {
   setTransactionLoading,
   setTransactionLoadingError,
   setTransactionLoadingSuccess
 } from '../actions/action-creaters/transaction-handler';
+
+import RootService from 'contracts/src/Root';
 
 function* getRootMembers({ contract }) {
   try {
@@ -74,8 +74,6 @@ function* withdraw({ contract, amount, payTo, paymentInf }) {
 function* checkIsUserRootNode({ contract, address }) {
   try {
     const data = yield contract.checkMemberIsRoot(address);
-    // console.log("checkMemberIsRoot", data);
-
     yield put(checkIsUserRootNodeSuccess(data));
   } catch (err) {
     console.log('err', err);

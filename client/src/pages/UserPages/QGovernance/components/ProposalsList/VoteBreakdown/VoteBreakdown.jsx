@@ -23,21 +23,40 @@ function VoteBreakdown(props) {
       <WrapResult>
         <Col md={4}>
           <SubTitle>Vote Results</SubTitle>
-          <Descr>Majority Requirement; {voteBreakdown.requiredMajority}%</Descr>
+          <Descr>Majority Requirement: {voteBreakdown.requiredMajority}%</Descr>
           <WrapBlock>
-            <PieChartTwoItem
-              data={[{
-                name: 'For',
-                value: 70
-              },
-                {
-                  name: 'Against',
-                  value: 30
-                },]}
-            />
+            {voteBreakdown?.numberProposalVotes ?
+              <PieChartTwoItem
+                data={[{
+                  name: 'For',
+                  value: voteBreakdown.numberProposalVotes.votesFor
+                },
+                  {
+                    name: 'Against',
+                    value: voteBreakdown.numberProposalVotes.votesAgainst
+                  },]}
+              /> :
+              <PieChartTwoItem
+                data={null}
+              />
+            }
+            {/*<PieChartTwoItem*/}
+            {/*  data={[{*/}
+            {/*    name: 'For',*/}
+            {/*    value: 70*/}
+            {/*  },*/}
+            {/*    {*/}
+            {/*      name: 'Against',*/}
+            {/*      value: 30*/}
+            {/*    },]}*/}
+            {/*/>*/}
             <WrapColorDescr>
-              <ColorTitle><CircleColor color={colors.main}/>For</ColorTitle>
-              <ColorTitle><CircleColor color={colors.circleWhite}/>Against</ColorTitle>
+              <ColorTitle><CircleColor color={colors.main}/>
+                For: {voteBreakdown?.numberProposalVotes ? voteBreakdown.numberProposalVotes.votesFor : 0}
+              </ColorTitle>
+              <ColorTitle><CircleColor color={colors.circleWhite}/>
+                Against: {voteBreakdown?.numberProposalVotes ? voteBreakdown.numberProposalVotes.votesAgainst : 0}
+              </ColorTitle>
             </WrapColorDescr>
 
           </WrapBlock>

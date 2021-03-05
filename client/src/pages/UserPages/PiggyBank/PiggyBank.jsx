@@ -12,7 +12,6 @@ import validateContractsAddress from 'contracts/config/cotracts-address-checker'
 function PiggyBank() {
   useEffect(async () => {
     const res = await validateContractsAddress();
-    // console.log('Result', res);
   });
 
   return (

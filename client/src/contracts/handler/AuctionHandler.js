@@ -25,13 +25,13 @@ export const bn = (number) => {
 };
 
 export function creationLiquidationContractObj() {
-  return new LiquidationAuction('LiquidationAuction');
+  return new LiquidationAuction();
 }
 
 export function creationSystemDebtContractObj() {
-  return new SystemDebtAuction('SystemDebtAuction');
+  return new SystemDebtAuction();
 }
 
 export function creationSystemSurplusContractObj() {
-  return new SystemSurplusAuction('SystemSurplusAuction');
+  return new SystemSurplusAuction();
 }

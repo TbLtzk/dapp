@@ -3,21 +3,23 @@ import AuctionService from './AuctionService';
 import { contractsToAddresses } from '../../mapping/contract-to-address';
 import { getStatusTransformation } from '../../handler/AuctionHandler';
 import { toWei, fromWei } from 'func/balance';
+import { contracts } from '../../config/drizzle-config';
 
 export default class SystemDebtAuction extends AuctionService {
 
-  /**
-   * get auction data
-   * @param promiseRes
-   * @param inf
-   * @return array
-   */
+  constructor() {
+    super();
+    this.contract = contracts['SystemDebtAuction'];
+    this.contractName = 'SystemDebtAuction';
+  }
+
   async getAuctionData(promiseRes, inf) {
     let objRes = {};
     console.log('promiseRes', promiseRes);
     objRes.status = getStatusTransformation(promiseRes.status);
     objRes.bidder = promiseRes.bidder;
     objRes.bid = inf.bid;
+    objRes.id = inf.id;
     objRes.endTime = promiseRes.endTime;
     const highestBid = promiseRes.highestBid;
     const reserveLot = promiseRes.reserveLot;
@@ -28,17 +30,13 @@ export default class SystemDebtAuction extends AuctionService {
     return { ...objRes };
   }
 
-  /**
-   * get active auctions
-   * @param activeAuction
-   * @return array
-   */
   async getAuctions(activeAuction) {
     const auctionEvents = await this.getAuctionsEvent();
     const auctionInf = auctionEvents?.map(evt => {
       return {
         bidder: evt.returnValues._bidder,
         bid: evt.returnValues._bid,
+        id: evt.returnValues._auctionId,
       };
     });
     console.log('auctionEvents', auctionEvents);
@@ -47,7 +45,7 @@ export default class SystemDebtAuction extends AuctionService {
     if (auctionInf) {
       for (let inf of auctionInf) {
         let objRes = {};
-        let promiseRes = await this.getAuction(2, null);
+        let promiseRes = await this.getAuction(inf.id, null);
         // let promiseRes = await this.getAuction(inf.bidder, null);
         console.log('promiseRes', promiseRes);
         if (activeAuction) {

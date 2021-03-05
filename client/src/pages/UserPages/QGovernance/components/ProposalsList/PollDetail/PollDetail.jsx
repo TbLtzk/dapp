@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { TitleSmall, Text, Link } from 'components/Custom/PageLists/styles';
 
-// const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
 
 function PollDetail(props) {
@@ -111,12 +110,22 @@ function PollDetail(props) {
 
   }, [showDataArr]);
 
+  const checkLinkAndPrint = () => {
+    let hrefValue = '';
+    if (pollDetail?.remark?.includes('http') || pollDetail?.remark?.includes('https')) {
+      hrefValue = pollDetail.remark;
+    }else {
+      hrefValue = '//' + pollDetail.remark;
+    }
+    return <Link href={hrefValue} target="_blank">{pollDetail.remark}</Link>;
+  };
+
   return (
     <div>
       <TitleSmall>Description</TitleSmall>
       {showContent()}
       <TitleSmall>External Reference</TitleSmall>
-      <Link href={'//' + pollDetail.remark} target="_blank">{pollDetail.remark}</Link>
+      {checkLinkAndPrint()}
     </div>
   );
 }

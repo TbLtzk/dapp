@@ -5,7 +5,6 @@ import { getDelegationsList } from 'store/actions/action-creaters/q-piggy-bank';
 import {
   loadingDelegationList, errorDelegationList, delegationList,
 } from 'store/selectors/q-piggy-bank';
-import { userAddressMetamask } from 'store/selectors/user-inf';
 
 import MemberTable from 'components/Custom/MembersPanel/MemberTable';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
@@ -20,7 +19,6 @@ import {
 } from '../styles';
 
 function DelegatedValidatorsPanel() {
-  const userAddress = useSelector(userAddressMetamask);
   const loading = useSelector(loadingDelegationList);
   const errorMessage = useSelector(errorDelegationList);
   const delegations = useSelector(delegationList);
@@ -28,7 +26,7 @@ function DelegatedValidatorsPanel() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getDelegationsList(userAddress));
+    dispatch(getDelegationsList());
   }, [dispatch]);
 
   return (

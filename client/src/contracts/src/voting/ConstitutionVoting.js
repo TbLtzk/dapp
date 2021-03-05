@@ -1,8 +1,9 @@
 import { contracts } from '../../config/drizzle-config';
+import VotingService from './VotingService';
+
 import {
   getStatusTransformation
 } from '../../handler/VotingHandler';
-import VotingService from './VotingService';
 import { BN, fromWei } from 'func/balance';
 
 export default class ConstitutionVoting extends VotingService {
@@ -30,13 +31,6 @@ export default class ConstitutionVoting extends VotingService {
     }
   }
 
-  /**
-   * get proposal data
-   * @param promiseRes
-   * @param id
-   * @param promiseStatus
-   * @return array
-   */
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
@@ -64,8 +58,9 @@ export default class ConstitutionVoting extends VotingService {
     // objRes.vetoesPercentage = await this.getVetoesPercentage(id);
     objRes.title = `${proposalType} constitution proposal`;
     objStats = await this.getProposalStatsData(id);
-    // console.log('UserVoted', await this.getProposalVotes(id));
     objRes.contract = this.contractName;
+
+    objRes.numberProposalVotes = await this.getProposalVotes(id);
     return { ...objRes, ...objStats, ...objParameters };
   }
 
@@ -87,64 +82,47 @@ export default class ConstitutionVoting extends VotingService {
     }
   }
 
-  /**
-   * create proposal
-   * @param data
-   * @param userAddress
-   * @return string
-   */
   async createProposal(data, userAddress) {
-    try {
-      let result = null;
-      const classification = this.getProposalNumberType(data?.classification);
-      // const hash = '0xc81ff8689878486c77098faba9d872fd6b0ab442fa97d9c76ff94c5c56d6a6a9'.toLowerCase();
-      const hash = data.hash;
-      const link = data['external-link'];
-      const type = data['type-proposal'];
-      if (type) {
-        const parameterKey = data['parameter-key'];
-        let valueInput = data.value;
-        switch (type) {
-          case 'address':
-            result = await this.contract.methods.createAddrProposal(link, classification, hash,
-              parameterKey, valueInput)
-              .send({ from: userAddress });
-            break;
-          case 'string':
-            result = await this.contract.methods.createStrProposal(link, classification, hash,
-              parameterKey, valueInput)
-              .send({ from: userAddress });
-            break;
-          case 'boolean':
-            valueInput = (valueInput.toLowerCase() === 'true');
-            result = await this.contract.methods.createBoolProposal(link, classification, hash,
-              parameterKey, valueInput)
-              .send({ from: userAddress });
-            break;
-          case 'uint':
-            valueInput = BN(valueInput);
-            result = await this.contract.methods.createUintProposal(link, classification, hash,
-              parameterKey, valueInput)
-              .send({ from: userAddress });
-            break;
+    let result = null;
+    const classification = this.getProposalNumberType(data?.classification);
+    const hash = data.hash;
+    const link = data['external-link'];
+    const type = data['type-proposal'];
+    if (type) {
+      const parameterKey = data['parameter-key'];
+      let valueInput = data.value;
+      switch (type) {
+        case 'address':
+          result = await this.contract.methods.createAddrProposal(link, classification, hash,
+            parameterKey, valueInput)
+            .send({ from: userAddress });
+          break;
+        case 'string':
+          result = await this.contract.methods.createStrProposal(link, classification, hash,
+            parameterKey, valueInput)
+            .send({ from: userAddress });
+          break;
+        case 'boolean':
+          valueInput = (valueInput.toLowerCase() === 'true');
+          result = await this.contract.methods.createBoolProposal(link, classification, hash,
+            parameterKey, valueInput)
+            .send({ from: userAddress });
+          break;
+        case 'uint':
+          valueInput = BN(valueInput);
+          result = await this.contract.methods.createUintProposal(link, classification, hash,
+            parameterKey, valueInput)
+            .send({ from: userAddress });
+          break;
 
-        }
-      } else {
-        result = await this.contract.methods.createProposal(link, classification, hash, [])
-          .send(
-            { from: userAddress });
       }
-
-      return result;
-    } catch (e) {
-      console.log('e', e);
+    } else {
+      result = await this.contract.methods.createProposal(link, classification, hash, [])
+        .send({ from: userAddress });
     }
+    return result;
   }
 
-  /**
-   * get constitution hash
-   * @return string
-   */
   async getConstitutionHash() {
     const result = await this.contract.methods.constitutionHash()
       .call();

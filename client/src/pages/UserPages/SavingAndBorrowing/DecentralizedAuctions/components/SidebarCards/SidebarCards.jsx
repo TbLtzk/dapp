@@ -3,7 +3,7 @@ import { drizzleReactHooks } from '@drizzle/react-plugin';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import { debtSB, surplusSB, systemBalanceSB } from 'store/selectors/system-balance';
+import { debtSB, loadingPerformNetting, surplusSB, systemBalanceSB } from 'store/selectors/system-balance';
 import { availableAmountSR } from 'store/selectors/system-reserve';
 import { userBalance } from 'store/selectors/q-piggy-bank';
 
@@ -40,6 +40,7 @@ function SidebarCards() {
   const systemBalanceResult = fN(useSelector(systemBalanceSB));
   const availableAmount = fN(useSelector(availableAmountSR));
   const userPBBalance = fN(useSelector(userBalance));
+  const loadingPerfNetting = useSelector(loadingPerformNetting);
 
   const [reserveBalance, setReserveBalance] = useState('0');
 
@@ -59,7 +60,7 @@ function SidebarCards() {
     //stats
     dispatch(getUserBalance(userAddress));
 
-  }, [dispatch]);
+  }, [dispatch, loadingPerfNetting]);
 
   useEffect(() => {
     contractBalance.getBalanceValue('SystemReserve', setReserveBalance);
@@ -71,7 +72,7 @@ function SidebarCards() {
         setQUSDUserBalance(0);
         console.log(e);
       });
-  }, []);
+  }, [loadingPerfNetting]);
 
   const statsData = useMemo(() => {
     return (

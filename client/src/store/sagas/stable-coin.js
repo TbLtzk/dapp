@@ -1,6 +1,7 @@
 import { put, takeEvery } from 'redux-saga/effects';
 import * as actionTypes from 'store/actions/action-types/stable-coin';
 import { getAllowanceSuccess, getSymbolSuccess } from 'store/actions/action-creaters/stable-coin';
+
 import { StableCoinQUSD } from 'contracts/src/StableCoin';
 
 let contractInstance = null;
@@ -16,10 +17,9 @@ function* getAllowance({ userAddress, contractAddress }) {
   try {
     const contract = getContractInstance();
     const data = yield contract.allowance(userAddress, contractAddress);
-    console.log('getAllowance', data);
     yield put(getAllowanceSuccess(data));
   } catch (err) {
-    console.error('StableCoinQUSD.Error', err);
+    console.error('getAllowance.Error', err);
   }
 }
 
@@ -29,7 +29,7 @@ function* getSymbol() {
     const data = yield contract.symbol();
     yield put(getSymbolSuccess(data));
   } catch (err) {
-    console.error('StableCoinQUSD.Error', err);
+    console.error('getSymbol.Error', err);
   }
 }
 

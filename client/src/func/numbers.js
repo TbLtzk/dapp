@@ -1,5 +1,3 @@
-import { drizzleRegistry, web3 } from '../contracts/config/drizzle-config';
-
 export const fromBtcBlockchain = (btc) => {
   if (btc.isNaN === true) return 0;
   return btc / 1e+8;
@@ -32,5 +30,3 @@ export const roundNumbers = (value, exp) => {
 };
 
 export const maxApproveAmount = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
-
-export const max_allowance = "115792089237316195423570985008687907853269984665640564039457.584007913129639935";

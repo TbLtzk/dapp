@@ -1,10 +1,12 @@
-import { put, takeEvery } from 'redux-saga/effects';
+import { put, select, takeEvery } from 'redux-saga/effects';
 import * as actionTypes from 'store/actions/action-types/system-balance';
 import {
   getDebtError, getDebtSuccess,
   getSurplusError, getSurplusSuccess,
-  getSystemBalanceError, getSystemBalanceSuccess
+  getSystemBalanceError, getSystemBalanceSuccess,
+  onPerformNettingSuccess, onPerformNettingError
 } from 'store/actions/action-creaters/system-balance';
+
 import SystemBalance from 'contracts/src/SystemBalance';
 
 function* getSurplus() {
@@ -42,8 +44,23 @@ function* getSystemBalance() {
     yield put(getSystemBalanceError(0));
   }
 }
+
+function* onPerformNetting() {
+  try {
+    const { userAddress } = yield select(state => state.userInf);
+    const contract = new SystemBalance();
+    const data = yield contract.performNetting(userAddress);
+
+    yield put(onPerformNettingSuccess(data));
+  } catch (err) {
+    console.error('onPerformNetting.Error', err);
+    yield put(onPerformNettingError(err));
+  }
+}
+
 export default [
   takeEvery(actionTypes.GET_SURPLUS, getSurplus),
   takeEvery(actionTypes.GET_DEBT, getDebt),
   takeEvery(actionTypes.GET_SYSTEM_BALANCE, getSystemBalance),
+  takeEvery(actionTypes.ON_PERFORM_NETTING, onPerformNetting),
 ];

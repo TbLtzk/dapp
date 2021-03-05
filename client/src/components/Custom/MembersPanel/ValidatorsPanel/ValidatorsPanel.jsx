@@ -7,7 +7,6 @@ import {
 } from 'store/selectors/validators';
 
 import ButtonLinkArrow from 'components/Base/Buttons/ButtonLinkArrow';
-// import MemberTable from 'components/Custom/MembersPanel/MemberTable';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import CustomBlock from 'components/Base/CustomBlock';
 

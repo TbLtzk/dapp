@@ -1,7 +1,15 @@
 import Validators from 'contracts/src/Validators';
 import ValidationRewardPools from 'contracts/src/ValidationRewardPools';
-import { numberToUintPercent, uintPercentToNumber } from 'func/useful';
-import { setTransactionCounter } from '../../../../store/actions/action-creaters/transaction-handler';
+
+import {
+  numberToUintPercent,
+  uintPercentToNumber,
+  getPercentageFormat,
+  uintPerSecondToPerYearNumber
+} from 'func/useful';
+import {percentageToPercentPerSecond} from 'func/balance'
+
+import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
 
 const contractValidators = new Validators();
 const contractVRP = new ValidationRewardPools();
@@ -15,65 +23,82 @@ export default class Handler {
   getAmountOfRewardPool(stateSetter) {
     this.dispatch(setTransactionCounter(1));
 
-    contractVRP.getBalance(this.address).then((res) => {
-      const rate = uintPercentToNumber(res) * 100;
-      stateSetter(rate);
-    }).catch((e) => {
-      console.log(e);
-    }).finally(() => {
-      this.dispatch(setTransactionCounter(-1));
-    });
+    contractVRP.getBalance(this.address)
+      .then((res) => {
+        const rate = uintPercentToNumber(res) * 100;
+        stateSetter(rate);
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(() => {
+        this.dispatch(setTransactionCounter(-1));
+      });
   }
 
   setInterestRate(formData, stateSetter) {
     this.dispatch(setTransactionCounter(1));
 
-    const amountL = numberToUintPercent(formData.amount);
-    contractValidators.setInterestRate(this.address, amountL).then(() => {
-      this.getInterestRate(stateSetter);
-    }).catch((e) => {
-      console.log(e);
-    }).finally(() => {
-      this.dispatch(setTransactionCounter(-1));
-    });
+    const amountL = percentageToPercentPerSecond(formData.amount);
+    // const amountL = numberToUintPercent(formData.amount);
+    contractValidators.setInterestRate(this.address, amountL)
+      .then(() => {
+        this.getInterestRate(stateSetter);
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(() => {
+        this.dispatch(setTransactionCounter(-1));
+      });
   }
 
   getInterestRate(stateSetter) {
     this.dispatch(setTransactionCounter(1));
 
-    contractValidators.getInterestRate(this.address).then((res) => {
-      const rate =uintPercentToNumber(res) * 100;
-      stateSetter(rate);
-    }).catch((e) => {
-      console.log(e);
-    }).finally(() => {
-      this.dispatch(setTransactionCounter(-1));
-    });
+    contractValidators.getInterestRate(this.address)
+      .then((res) => {
+        const rate = uintPerSecondToPerYearNumber(res);
+        // const rate = uintPercentToNumber(res) * 100;
+        stateSetter(rate);
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(() => {
+        this.dispatch(setTransactionCounter(-1));
+      });
   }
 
   setValidatorShare(formData, stateSetter) {
     this.dispatch(setTransactionCounter(1));
-
-    const delShare = numberToUintPercent(100 - formData.amount);
-    contractValidators.setDelegatorsShare(this.address, delShare).then(() => {
-      this.getDelegatorShare(stateSetter);
-    }).catch((e) => {
-      console.log(e);
-    }).finally(() => {
-      this.dispatch(setTransactionCounter(-1));
-    });
+    const delShare = getPercentageFormat(formData.amount);
+    // const delShare = numberToUintPercent(100 - formData.amount);
+    contractValidators.setDelegatorsShare(this.address, delShare)
+      .then(() => {
+        this.getDelegatorShare(stateSetter);
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(() => {
+        this.dispatch(setTransactionCounter(-1));
+      });
   }
 
   getDelegatorShare(stateSetter) {
     this.dispatch(setTransactionCounter(1));
 
-    contractValidators.getDelegatorsShare(this.address).then((res) => {
-      const rate =uintPercentToNumber(res) * 100;
-      stateSetter(rate);
-    }).catch((e) => {
-      console.log(e);
-    }).finally(() => {
-      this.dispatch(setTransactionCounter(-1));
-    });
+    contractValidators.getDelegatorsShare(this.address)
+      .then((res) => {
+        const rate = uintPercentToNumber(res) * 100;
+        stateSetter(rate);
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(() => {
+        this.dispatch(setTransactionCounter(-1));
+      });
   }
 }

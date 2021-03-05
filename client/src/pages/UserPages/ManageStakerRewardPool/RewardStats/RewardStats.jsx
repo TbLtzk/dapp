@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import Handler from './handler';
 
-import { useForm } from 'react-hook-form';
 import FormInput from 'components/Base/Form/FormInput';
 import Button from 'components/Base/Buttons/Button';
+
+import { useForm } from 'react-hook-form';
+import Handler from './handler';
+
 import { errorHandler, fN } from 'func/useful';
 
 import { Row, Col } from 'react-bootstrap';
@@ -37,38 +39,39 @@ export default function RewardStats() {
     handler.setValidatorShare(formData, setDelShare);
   };
 
+  const rewardStatsArr = useMemo(() => {
+    return [
+      {
+        label: 'Amount of Pool Rewards:',
+        value: fN(amountRP) + 'Q'
+      },
+      {
+        label: 'Validator Share:',
+        value: delShare === 0 ? 0 : fN(100 - delShare) + '%'
+      },
+      {
+        label: 'Delegators Share:',
+        value: fN(delShare) + '%'
+      },
+      {
+        label: 'Payout Interest:',
+        value: fN(intRate) + '%'
+      },
+    ];
+
+  }, [amountRP, delShare, intRate]);
+
   return (
     <Block>
       <p className="title type-1">Reward Stats</p>
-      <div>
-        <span>Amount of Pool Rewards:</span>
-        <span>
-          {fN(amountRP)}
-          Q
-        </span>
-      </div>
-      <div>
-        <span>Validator Share:</span>
-        <span>
-          {delShare === 0 ? 0 : fN(100 - delShare)}
-          %
-        </span>
-      </div>
-      <div>
-        <span>Delegators Share:</span>
-        <span>
-          {fN(delShare)}
-          %
-        </span>
-      </div>
-      <div>
-        <span>Payout Interest:</span>
-        <span>
-          {fN(intRate)}
-          %
-        </span>
-      </div>
-
+      {rewardStatsArr?.map(el => {
+        return (
+          <div key={el.label + 'reward-stats'}>
+            <span>{el.label}</span>
+            <span>{el.value}</span>
+          </div>
+        );
+      })}
       <p className="title type-2">Manage Rewards</p>
       <Row>
         <Col xs={6} className="form-container">
@@ -78,7 +81,11 @@ export default function RewardStats() {
               name="amount"
               type="number"
               placeholder="10%"
-              ref={reg1({ required: true, min: 0, max: 100.0001 })}
+              ref={reg1({
+                required: true,
+                min: 0,
+                max: 100.0001
+              })}
               valid={errorHandler(err1, 'amount')}
             />
             <Button
@@ -96,7 +103,11 @@ export default function RewardStats() {
               name="amount"
               type="number"
               placeholder="10%"
-              ref={reg2({ required: true, min: 0, max: 100.0001 })}
+              ref={reg2({
+                required: true,
+                min: 0,
+                max: 100.0001
+              })}
               valid={errorHandler(err2, 'amount')}
             />
             <Button
