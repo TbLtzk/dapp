@@ -12,6 +12,7 @@ export default class Handler {
 
   setOutstandingDebt(stateSetter, setLoading) {
     setLoading(true);
+    //TODO: change this.address argument
     this.contractBorrowingCoreQUSD.totalStcBackedByCol(this.address)
         .then((res) => {
           stateSetter(fromWei(res));
