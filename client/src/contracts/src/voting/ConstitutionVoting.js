@@ -91,34 +91,42 @@ export default class ConstitutionVoting extends VotingService {
     if (type) {
       const parameterKey = data['parameter-key'];
       let valueInput = data.value;
-      switch (type) {
-        case 'address':
-          result = await this.contract.methods.createAddrProposal(link, classification, hash,
-            parameterKey, valueInput)
-            .send({ from: userAddress });
-          break;
-        case 'string':
-          result = await this.contract.methods.createStrProposal(link, classification, hash,
-            parameterKey, valueInput)
-            .send({ from: userAddress });
-          break;
-        case 'boolean':
-          valueInput = (valueInput.toLowerCase() === 'true');
-          result = await this.contract.methods.createBoolProposal(link, classification, hash,
-            parameterKey, valueInput)
-            .send({ from: userAddress });
-          break;
-        case 'uint':
-          valueInput = BN(valueInput);
-          result = await this.contract.methods.createUintProposal(link, classification, hash,
-            parameterKey, valueInput)
-            .send({ from: userAddress });
-          break;
+      try {
+        switch (type) {
+          case 'address':
+            result = await this.contract.methods.createAddrProposal(link, classification, hash,
+              parameterKey, valueInput)
+              .send({ from: userAddress });
+            break;
+          case 'string':
+            result = await this.contract.methods.createStrProposal(link, classification, hash,
+              parameterKey, valueInput)
+              .send({ from: userAddress });
+            break;
+          case 'boolean':
+            valueInput = (valueInput.toLowerCase() === 'true');
+            result = await this.contract.methods.createBoolProposal(link, classification, hash,
+              parameterKey, valueInput)
+              .send({ from: userAddress });
+            break;
+          case 'uint':
+            valueInput = BN(valueInput);
+            result = await this.contract.methods.createUintProposal(link, classification, hash,
+              parameterKey, valueInput)
+              .send({ from: userAddress });
+            break;
 
+        }
+      } catch (e){
+        console.log('Please provide a valid input')
       }
     } else {
-      result = await this.contract.methods.createProposal(link, classification, hash, [])
-        .send({ from: userAddress });
+      try {
+        result = await this.contract.methods.createProposal(link, classification, hash, [])
+          .send({ from: userAddress });
+      } catch (e){
+        console.log('Please provide a valid hash')
+      }
     }
     return result;
   }
