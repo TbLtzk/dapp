@@ -60,9 +60,9 @@ function InstructionMetamask() {
                 2. Enter the custom RPC details:
             </p>
             <ul>
-                <li>Network Name: custom name</li>
-                <li>New RPC URL: http://54.187.245.252:8545</li>
-                <li>ChainID: 35442</li>
+                <li>Network Name: Q Testnet</li>
+                <li>New RPC Url: http://18.158.7.68:8545</li>
+                <li>ChainID: 35443</li>
                 <li>Symbol: Q</li>
             </ul>
             <p>3. Click Save</p>
