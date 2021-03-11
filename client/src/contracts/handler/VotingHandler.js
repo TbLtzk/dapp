@@ -98,12 +98,8 @@ export const bnSlashing = (number) => {
 };
 
 export const getPercentageFormat = (number) => {
-  // console.log('number', 10 ** 27);
-  return bnSlashing(String(((10 ** 27) * (number)) / 100));
-  // return bn('1e+25') * bn(number)
-  // return bn('1e+27')
-  // .multipliedBy((number))
-  // .dividedBy(100);
+  const bNumber = new BigNumber(number)
+  return bNumber.multipliedBy(new BigNumber(10 ** 27)).dividedBy(100);
 };
 
 export const transformToPercentage = (number) => {
