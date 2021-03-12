@@ -8,12 +8,13 @@ import { fromBtcBlockchain, toBtcBlockchain, toWei, fromWei } from 'func/balance
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
 import { transformToPercentage } from 'contracts/handler/VotingHandler';
 import { maxApproveAmount } from 'func/numbers';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export default class Handler {
   constructor(address, collateralKey, dispatch) {
     this.address = address;
-    this.contractEPDRParameters = new EPDR_Parameters("EPDR_Parameters");
-    this.borrowingContract = new BorrowingCoreQUSD();
+    this.contractEPDRParameters = new EPDR_Parameters(contractsToAddresses['EPDR_Parameters']);
+    this.borrowingContract = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD']);
     this.dispatch = dispatch;
 
     if (collateralKey === 'QETH') {

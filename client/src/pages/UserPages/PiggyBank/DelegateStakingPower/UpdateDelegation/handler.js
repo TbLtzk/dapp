@@ -2,10 +2,11 @@
 import { web3 } from 'contracts/config/drizzle-config';
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
 import QPiggyBank from 'contracts/src/QPiggyBank';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export class ContractHandler {
   constructor(address, dispatch, alert) {
-    this.piggyBank = new QPiggyBank();
+    this.piggyBank = new QPiggyBank(contractsToAddresses['QPiggyBank']);
     this.dispatch = dispatch;
     this.address = address;
     this.alert = alert;

@@ -5,13 +5,14 @@ import {setTransactionCounter} from 'store/actions/action-creaters/transaction-h
 import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
 import {maxApproveAmount} from 'func/numbers';
 import {toWei, fromWei} from 'func/balance';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export default class Handler {
   constructor(address, dispatch) {
     this.address = address;
-    this.contractSavingQUSD = new SavingQUSD();
+    this.contractSavingQUSD = new SavingQUSD(contractsToAddresses['SavingQUSD']);
     this.contractStableCoinQUSD = new StableCoinQUSD();
-    this.contractEPDRParameters = new EPDR_Parameters("EPDR_Parameters");
+    this.contractEPDRParameters = new EPDR_Parameters(contractsToAddresses['EPDR_Parameters']);
     this.dispatch = dispatch;
   }
 

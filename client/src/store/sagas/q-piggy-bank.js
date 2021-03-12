@@ -11,12 +11,14 @@ import QPiggyBank from 'contracts/src/QPiggyBank';
 import { handleLockedAssetsResponse } from 'contracts/handler/QPiggyBankHandler';
 import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler';
 import { web3 } from 'contracts/config/drizzle-config';
+import { toWei } from '../../func/balance';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 let contractInstance = null;
 
 function getContractInstance() {
   if (contractInstance === null) {
-    contractInstance = new QPiggyBank();
+    contractInstance = new QPiggyBank(contractsToAddresses['QPiggyBank']);
   }
   return contractInstance;
 }
@@ -75,7 +77,7 @@ function* setDepositGenerator({ address, amountQ }) {
     });
 
     const contract = getContractInstance();
-    const data = yield contract.deposit(address, amountQ);
+    const data = yield contract.deposit(address, toWei(amountQ));
 
     if (data.status === true) {
       yield put(getUserBalance(address));
@@ -99,7 +101,7 @@ function* setWithdrawGenerator({ address, amountQ }) {
     });
 
     const contract = getContractInstance();
-    const data = yield contract.withdraw(address, amountQ);
+    const data = yield contract.withdraw(address, toWei(amountQ));
 
     if (data.status === true) {
       yield put(getUserBalance(address));
@@ -123,7 +125,7 @@ function* setLockAmountGenerator({ address, amountQ }) {
     });
 
     const contract = getContractInstance();
-    const data = yield contract.lock(address, amountQ);
+    const data = yield contract.lock(address, toWei(amountQ));
 
     if (data.status === true) {
       yield put(getUserBalance(address));
@@ -148,7 +150,7 @@ function* setUnlockAmountGenerator({ address, amountQ }) {
     });
 
     const contract = getContractInstance();
-    const data = yield contract.unlock(address, amountQ);
+    const data = yield contract.unlock(address, toWei(amountQ));
 
     if (data.status === true) {
       yield put(getUserBalance(address));

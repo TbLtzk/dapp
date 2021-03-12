@@ -3,13 +3,14 @@ import { setTransactionCounter } from 'store/actions/action-creaters/transaction
 import { StableCoinQUSD } from '../../../contracts/src/StableCoin';
 import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
 import { GovernedEpdrQbtcQusdOracle, GovernedEpdrQethQusdOracle } from '../../../contracts/src/FxPriceFeed';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export default class Handler {
   constructor(address, dispatch) {
     this.address = address;
     this.dispatch = dispatch;
     this.contractStableCoinQUSD = new StableCoinQUSD();
-    this.contractBorrowingCoreQUSD = new BorrowingCoreQUSD();
+    this.contractBorrowingCoreQUSD = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD']);
   }
 
   setAvailableToDeposit(stateSetter) {

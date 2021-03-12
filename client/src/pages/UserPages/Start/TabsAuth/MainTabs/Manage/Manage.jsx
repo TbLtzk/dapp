@@ -1,12 +1,13 @@
 import React from "react";
-import {Row, Col} from "react-bootstrap";
+import ContractRegistry from './components/ContractRegistry'
 
+import {Row, Col} from "react-bootstrap";
 function Manage() {
 
     return (
         <Row>
             <Col md={12}>
-                Manage
+                <ContractRegistry />
             </Col>
         </Row>
 

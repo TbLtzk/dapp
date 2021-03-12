@@ -13,6 +13,7 @@ import BorrowBlock from '../BorrowBlock';
 import { ContainerSB } from '../styles';
 import PageWrap from 'components/Base/PageWrap';
 import { useHistory } from 'react-router-dom';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export default function SavingAndBorrowingContent() {
   const [actCardData, setActCardData] = useState({ type: 1 });
@@ -20,7 +21,7 @@ export default function SavingAndBorrowingContent() {
   const address = useSelector(userAddressMetamask);
 
   const createVault = (collateral) => {
-    const contract = new BorrowingCoreQUSD();
+    const contract = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD']);
     contract.createVault(address, collateral)
       .then((data) => {
         console.log(data);

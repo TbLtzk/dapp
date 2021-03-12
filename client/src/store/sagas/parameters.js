@@ -9,6 +9,7 @@ import {
 import EPQFI_Parameters from 'contracts/src/parameters/EPQFI_Parameters';
 import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
 import ConstitutionParameters from 'contracts/src/parameters/ConstitutionParameters';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 function* getAddressParameter({ value, typeContract }) {
   try {
@@ -16,7 +17,7 @@ function* getAddressParameter({ value, typeContract }) {
     if (typeContract === 'EPQFI') {
       contract = new EPQFI_Parameters('EPQFI_Parameters');
     } else if (typeContract === 'EPDR') {
-      contract = new EPDR_Parameters('EPDR_Parameters');
+      contract = new EPDR_Parameters(contractsToAddresses['EPDR_Parameters']);
     }
     const data = yield contract.getAddr(value);
     console.log('getAddressParameter', data);
@@ -32,7 +33,7 @@ function* getStringParameter({ value, typeContract }) {
     if (typeContract === 'EPQFI') {
       contract = new EPQFI_Parameters('EPQFI_Parameters');
     } else if (typeContract === 'EPDR') {
-      contract = new EPDR_Parameters('EPDR_Parameters');
+      contract = new EPDR_Parameters(contractsToAddresses['EPDR_Parameters']);
     }
     const data = yield contract.getString(value);
     console.log('getStringParameter', data);
@@ -48,7 +49,7 @@ function* getBytesParameter({ value, typeContract }) {
     if (typeContract === 'EPQFI') {
       contract = new EPQFI_Parameters('EPQFI_Parameters');
     } else if (typeContract === 'EPDR') {
-      contract = new EPDR_Parameters('EPDR_Parameters');
+      contract = new EPDR_Parameters(contractsToAddresses['EPDR_Parameters']);
     }
     const data = yield contract.getBytes(value);
     console.log('getBytesParameter', data);
@@ -64,7 +65,7 @@ function* getUintParameter({ value, typeContract }) {
     if (typeContract === 'EPQFI') {
       contract = new EPQFI_Parameters('EPQFI_Parameters');
     } else if (typeContract === 'EPDR') {
-      contract = new EPDR_Parameters('EPDR_Parameters');
+      contract = new EPDR_Parameters(contractsToAddresses['EPDR_Parameters']);
     }
     const data = yield contract.getUint(value);
     console.log('getUintParameter', data);
@@ -80,7 +81,7 @@ function* getBooleanParameter({ value, typeContract }) {
     if (typeContract === 'EPQFI') {
       contract = new EPQFI_Parameters('EPQFI_Parameters');
     } else if (typeContract === 'EPDR') {
-      contract = new EPDR_Parameters('EPDR_Parameters');
+      contract = new EPDR_Parameters(contractsToAddresses['EPDR_Parameters']);
     }
     const data = yield contract.getBool(value);
     console.log('getBooleanParameter', data);
@@ -94,7 +95,7 @@ function getContract(typeContract) {
   if (typeContract === 'q-fees-&-incentives-membership-panel') {
     return new EPQFI_Parameters('EPQFI_Parameters');
   } else if (typeContract === 'q-defi-(decentralized-finance)-membership-panel') {
-    return new EPDR_Parameters('EPDR_Parameters');
+    return new EPDR_Parameters(contractsToAddresses['EPDR_Parameters']);
   } else if (typeContract === 'constitution') {
     return new ConstitutionParameters('ConstitutionParameters');
   } else {

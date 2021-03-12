@@ -1,9 +1,10 @@
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
 import QPiggyBank from 'contracts/src/QPiggyBank';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export class Handler {
   constructor(address, dispatch) {
-    this.piggyBank = new QPiggyBank();
+    this.piggyBank = new QPiggyBank(contractsToAddresses['QPiggyBank']);
     this.dispatch = dispatch;
     this.address = address;
   }

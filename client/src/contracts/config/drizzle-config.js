@@ -66,6 +66,8 @@ const getContracts = () => {
   return contracts;
 };
 
+console.log('optionsDrizzle()', optionsDrizzle())
+
 export const drizzleRegistry = new Drizzle(optionsDrizzle());
 console.log("drizzleRegistry", drizzleRegistry);
 // export const drizzleRegistry = new Drizzle(optionsDrizzleRegistry);

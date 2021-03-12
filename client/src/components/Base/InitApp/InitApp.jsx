@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { initAddresses } from 'contracts/mapping/contract-to-address';
 
 import LoadingSpinner from 'components/Base/LoadingSpinner';
-import StartConfigurations from 'pages/StartConfigurations';
 
 import { WrapContainer } from './styles';
 
@@ -12,15 +12,17 @@ const STATES = {
   loaded:'loaded'
 }
 
+
 function InitApp () {
   const [appState, setAppState] = useState(STATES.loading);
-  const [errorMessage, setErrorMessage] = useState('Can\'t load addresses');
+  const [errorMessage, setErrorMessage] = useState('Can\'t load addresses. Please reload app');
   const [appComponent, setAppComponent] = useState({});
+
   useEffect(async () => {
     try {
       await initAddresses()
-      // setAppComponent(await import('components/Base/App'))
-      // setAppState(STATES.loaded)
+      setAppComponent(await import('components/Base/App'))
+      setAppState(STATES.loaded)
     } catch (e) {
       console.error(e)
       setAppState(STATES.error)
@@ -32,7 +34,11 @@ function InitApp () {
       case STATES.loaded:
         return appComponent.default()
       case 'error':
-        return <StartConfigurations error={errorMessage}/>;
+        return (
+        <WrapContainer>
+          {errorMessage}
+        </WrapContainer>
+        );
       case 'loading':
         return (
           <WrapContainer>

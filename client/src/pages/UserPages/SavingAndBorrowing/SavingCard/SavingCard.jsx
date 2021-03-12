@@ -5,6 +5,7 @@ import { BlockCard } from '../styles';
 import BlockCardItem from '../BlockCardItem';
 import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
 import { uintPerSecondToPerYearNumber } from '../../../../func/useful';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export default function SavingCard(props) {
   const { setActCardData } = props;
@@ -12,7 +13,7 @@ export default function SavingCard(props) {
   const [intRate, setIntRate] = useState(0);
 
   useEffect(async () => {
-    const parametersContract = new EPDR_Parameters();
+    const parametersContract = new EPDR_Parameters(contractsToAddresses['EPDR_Parameters']);
     let intRateL = await parametersContract.getUint('governed.EPDR.QUSD_savingRate').catch(() => {});
     intRateL = uintPerSecondToPerYearNumber(intRateL);
     setIntRate(intRateL);

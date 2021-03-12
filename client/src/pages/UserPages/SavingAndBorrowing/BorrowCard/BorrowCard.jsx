@@ -10,13 +10,14 @@ import BlockCardItem from '../BlockCardItem';
 
 import { BlockCard } from '../styles';
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export default function BorrowCard(props) {
   const { setActCardData } = props;
   const [vaultsCount, setVaultsCount] = useState(0);
   const [vaults, setVaults] = useState([]);
 
-  const contract = new BorrowingCoreQUSD();
+  const contract = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD']);
   const address = useSelector(userAddressMetamask);
   const dispatch = useDispatch();
 
@@ -34,7 +35,7 @@ export default function BorrowCard(props) {
   useEffect(async () => {
     dispatch(setTransactionCounter(1));
 
-    const contractEPDR = new EPDR_Parameters("EPDR_Parameters");
+    const contractEPDR = new EPDR_Parameters(contractsToAddresses['EPDR_Parameters']);
     const vaultsLoc = [];
     for (let i = 0; i < vaultsCount; i += 1) {
       const vaultInfo = await contract.userVaults(address, i)
