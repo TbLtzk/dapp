@@ -11,7 +11,7 @@ function ContractRegistry () {
           <Row>
             <Col xs={12}>
               <HeadlineWrap>
-                <H5Headline>Validator Ranking</H5Headline>
+                <H5Headline>Manage</H5Headline>
               </HeadlineWrap>
             </Col>
           </Row>
