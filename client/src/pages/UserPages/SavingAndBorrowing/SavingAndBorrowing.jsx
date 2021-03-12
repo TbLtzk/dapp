@@ -3,7 +3,6 @@ import { Row, Col } from 'react-bootstrap';
 
 import PageWrap from 'components/Base/PageWrap';
 import BigTabsGroupView from 'components/Base/Tabs/BigTabsGroupView';
-import { WrapTabs } from 'components/Custom/PageLists/styles';
 import TabContent from './TabContent';
 
 export default function SavingAndBorrowing() {

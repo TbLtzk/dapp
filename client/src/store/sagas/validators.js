@@ -3,7 +3,7 @@ import * as actionTypes from 'store/actions/action-types/validators';
 import {
   setError, setDelegatorsShare, getDelegatorsShare, setTotalStake, setOwnStake,
   setDelegatedStake, setAccTotalStake, setInterestRate, getInterestRate,
-  getValidatorMembersSuccess, getValidatorMembersError, isUserValidatorSuccess
+  getValidatorMembersSuccess, getValidatorMembersError, isUserValidatorSuccess,
 } from 'store/actions/action-creaters/validators';
 import Validators from '../../contracts/src/Validators';
 import { web3 } from '../../contracts/config/drizzle-config';
@@ -102,7 +102,6 @@ function* getInterestRateGenerator({ address }) {
 
     const contract = getContractInstance();
     const data = yield contract.getInterestRate(address);
-    console.log(data);
 
     yield put(setInterestRate(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
@@ -146,18 +145,17 @@ function* getValidatorsMembers() {
   try {
     const contract = getContractInstance();
     const data = yield contract.getMembersList();
-    // console.log("data", data.slice().reverse());
     yield put(getValidatorMembersSuccess(data));
   } catch (err) {
     console.error('ValidatorsMember.Error', err);
     yield put(getValidatorMembersError(err.message));
   }
 }
-function* isUserValidator({address}) {
+
+function* isUserValidator({ address }) {
   try {
     const contract = getContractInstance();
     const data = yield contract.validatorExist(address);
-    // console.log("data", data);
     yield put(isUserValidatorSuccess(data));
   } catch (err) {
     console.error('isUserValidator.Error', err);

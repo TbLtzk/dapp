@@ -7,7 +7,6 @@ import {
 } from 'store/selectors/validators';
 
 import ButtonLinkArrow from 'components/Base/Buttons/ButtonLinkArrow';
-// import MemberTable from 'components/Custom/MembersPanel/MemberTable';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import CustomBlock from 'components/Base/CustomBlock';
 
@@ -35,11 +34,11 @@ function ValidatorsPanel(props) {
   }, [dispatch]);
 
   const tableHeader = useMemo(() => {
-    // if (!widened) {
+    if (!widened) {
       return tableHeaderShort;
-    // } else {
-    //   return tableHeaderWidened;
-    // }
+    } else {
+      return tableHeaderWidened;
+    }
   }, [widened]);
 
   return (
@@ -57,8 +56,7 @@ function ValidatorsPanel(props) {
                 errorMessage || validators?.length === 0 ? <Col xs={12}><p>No validators</p></Col> :
                   <Col xs={12}>
                     <MemberTable
-                      type={'validators'}
-                      // type={!widened ? 'validators' : 'validators-widened'}
+                      type={!widened ? 'validators' : 'validators-widened'}
                       arrayData={validators}
                       tableHeader={tableHeader}
                       widened

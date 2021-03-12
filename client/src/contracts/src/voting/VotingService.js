@@ -1,4 +1,4 @@
-import { drizzleRegistry, contracts } from '../../config/drizzle-config';
+import { contracts } from '../../config/drizzle-config';
 import {
   convertNumVotes,
   getPastEvents,
@@ -12,54 +12,40 @@ export default class VotingService {
     this.contractName = contractName;
   }
 
-  //get proposal event
   async getProposalsEvent() {
     return await getPastEvents(this.contract, 'ProposalCreated');
   }
 
-  //get proposal
   async getProposal(id) {
     const result = await this.contract.methods.proposals(id)
       .call();
     return result;
   }
 
-  //get proposal status
   async getProposalStatus(id) {
     const result = await this.contract.methods.getStatus(id)
       .call();
     return result;
   }
 
-  //proposal stats
   async getProposalStats(id) {
     const result = await this.contract.methods.getProposalStats(id)
       .call();
-    // console.log("getProposalStats", result);
     return result;
   }
 
-  //get vetoes number
   async getVetoesNumber(id) {
     const result = await this.contract.methods.getVetosNumber(id)
       .call();
-    // console.log("getVetoesNumber", result);
     return result;
   }
 
-  //get vetoes percentage
   async getVetoesPercentage(id) {
-    try {
-      const result = await this.contract.methods.getVetosPercentage(id)
-        .call();
-      // console.log("getVetoesPercentage", result);
-      return result;
-    } catch (e) {
-      console.log(e);
-    }
+    const result = await this.contract.methods.getVetosPercentage(id)
+      .call();
+    return result;
   }
 
-  //vote against proposal
   async voteAgainst(id, userAddress) {
     const result = await this.contract.methods.voteAgainst(id)
       .send(
@@ -68,7 +54,6 @@ export default class VotingService {
     return result;
   }
 
-  //vote for proposal
   async voteFor(id, userAddress) {
     const result = await this.contract.methods.voteFor(id)
       .send(
@@ -76,7 +61,6 @@ export default class VotingService {
     return result;
   }
 
-  // veto for proposal
   async veto(id, userAddress) {
     const result = await this.contract.methods.veto(id)
       .send(
@@ -84,9 +68,7 @@ export default class VotingService {
     return result;
   }
 
-  //applies changes for specified proposal after voting
   async execute(id, userAddress) {
-    // 4 === passed status
     let promiseStatus = await this.getProposalStatus(id);
     let result = null;
     if (promiseStatus === '4') {
@@ -97,28 +79,23 @@ export default class VotingService {
     return result;
   }
 
-  //get one proposal
   async getOneProposal(id) {
     if (id) {
       let objRes = null;
       let promiseStatus = await this.getProposalStatus(id);
-      // console.log('promiseStatus', promiseStatus);
       if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4'
         || promiseStatus === '5') {
         let promiseRes = await this.getProposal(id);
         if (promiseRes) {
           objRes = await this.getProposalData(promiseRes, id, promiseStatus);
-          // console.log("objRes", objRes);
         }
       } else {
-        // console.log('objRes', objRes);
         return objRes;
       }
       return [objRes];
     }
   }
 
-  //get proposal with any status
   async getProposalWithoutStatusChecked(id) {
     if (id) {
       let objRes = null;
@@ -126,17 +103,14 @@ export default class VotingService {
       let promiseRes = await this.getProposal(id);
       if (promiseRes) {
         objRes = await this.getProposalData(promiseRes, id, promiseStatus);
-        // console.log("objRes", objRes);
       }
       return [objRes];
     }
   }
 
-  //get proposal data
   async getProposalData(promiseRes, id, promiseStatus) {
   }
 
-  //get proposals
   async getProposals() {
     const proposalEvents = await this.getProposalsEvent();
     const proposalIds = getPastProposalsIds(proposalEvents);
@@ -158,7 +132,6 @@ export default class VotingService {
     return proposals;
   }
 
-  //get ended proposals
   async getEndedProposals() {
     const proposalEvents = await this.getProposalsEvent();
     const proposalIds = getPastProposalsIds(proposalEvents);
@@ -180,7 +153,6 @@ export default class VotingService {
     return proposals;
   }
 
-  //proposal stats data
   async getProposalStatsData(id) {
     let objRes = {};
     let proposalStats = await this.getProposalStats(id);
@@ -202,36 +174,46 @@ export default class VotingService {
   async getProposalVotes(id) {
 
     try {
-      const votesArrAll = await getPastEvents(drizzleRegistry, this.contract, 'UserVoted');
+      const votesArrAll = await getPastEvents(this.contract, 'UserVoted');
       const votesArrById = votesArrAll?.filter((elem) => {
-        if (elem.returnValues._id === id) {
+        if (elem.returnValues._proposalId === id) {
           return elem.returnValues;
         }
       });
-      const commonVotes = votesArrById?.reduce((sum, current) => {
-        // console.log('current.returnValues._votingOption', current.returnValues._votingOption);
-        // console.log('sum', sum);
-        switch (current?.returnValues?._votingOption) {
-          case '0': //NONE
-            return sum['none'] = 0;
+      const commonVotes = votesArrById?.map((el) => {
+        switch (el?.returnValues?._votingOption) {
           case '1': //FOR
-            // console.log('sum.votesFor', sum.votesFor);
-            return sum += 1;
+            return {
+              'votesFor': 1,
+              'votesAgainst': 0
+            };
           case '2': //AGAINST
-            return sum['votesAgainst'] = sum['votesAgainst'] + 1;
+            return {
+              'votesAgainst': 1,
+              'votesFor': 0
+            };
         }
-        // return sum + current.returnValues._votingOption
-        // return {votesFor: 1, votesAgainst: 2};
-      }, 0);
-      // console.log('votesArrById', votesArrById);
-      // console.log('commonVotes', commonVotes);
-      return votesArrAll;
+        return el;
+      });
+      let sumResults = 0;
+      if (commonVotes.length !== 0) {
+        sumResults = commonVotes?.reduce((accumulator, currentValue) => {
+          accumulator.votesFor = accumulator.votesFor + currentValue.votesFor;
+          accumulator.votesAgainst = accumulator.votesAgainst + currentValue.votesAgainst;
+          return accumulator;
+        }, {
+          votesFor: 0,
+          votesAgainst: 0
+        });
+        return sumResults;
+      } else {
+        return 0;
+      }
     } catch (e) {
       console.log(e);
     }
   }
 
-  // get number of active and ended proposals
   async getProposalsCount() {
     const proposalEvents = await this.getProposalsEvent();
     const proposalIds = getPastProposalsIds(proposalEvents);
@@ -245,7 +227,6 @@ export default class VotingService {
         } else {
           proposalsEnded++;
         }
-
       }
     }
     return {
@@ -262,7 +243,6 @@ export default class VotingService {
   async getParametersArr(id) {
     const result = await this.contract.methods.getParametersArr(id)
       .call();
-    console.log('getParametersArr', result);
     return result;
   }
 

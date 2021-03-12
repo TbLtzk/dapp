@@ -2,15 +2,16 @@ import AuctionService from './AuctionService';
 
 import { contractsToAddresses } from '../../mapping/contract-to-address';
 import { toWei, fromWei } from 'func/balance';
+import { contracts } from '../../config/drizzle-config';
 
 export default class SystemSurplusAuction extends AuctionService {
 
-  /**
-   * create auction
-   * @param data
-   * @param userAddress
-   * @return string
-   */
+  constructor() {
+    super();
+    this.contract = contracts['SystemSurplusAuction'];
+    this.contractName = 'SystemSurplusAuction';
+  }
+
   async createAuction(data, userAddress) {
     await this.getAllowance(userAddress, contractsToAddresses.SystemSurplusAuction, data?.bid);
     return await this.contract.methods.startAuction()
@@ -20,15 +21,8 @@ export default class SystemSurplusAuction extends AuctionService {
       });
   }
 
-  /**
-   * get proposal data
-   * @param promiseRes
-   * @param inf
-   * @return array
-   */
   async getAuctionData(promiseRes, inf) {
     let objRes = {};
-    console.log('getAuctionData SystemSurplusAuction', promiseRes);
     objRes.bidder = promiseRes.bidder;
     // objRes.user = inf?.bidder;
     objRes.user = inf?.bidder || inf?.user;
@@ -36,7 +30,7 @@ export default class SystemSurplusAuction extends AuctionService {
     // objRes.bid = drizzleRegistry.web3.utils.fromWei(inf.bid, 'ether');
     objRes.endTime = promiseRes.endTime;
     objRes.isExecuted = promiseRes.isExecuted;
-    objRes.lot = promiseRes.lot;
+    objRes.lot = fromWei(promiseRes.lot);
     const highestBid = promiseRes.highestBid;
     objRes.highestBid = fromWei(highestBid);
     objRes.title = `System Surplus Auction`;
@@ -45,23 +39,15 @@ export default class SystemSurplusAuction extends AuctionService {
 
   }
 
-  /**
-   * get active auctions
-   * @param activeAuction
-   * @return array
-   */
   async getAuctions(activeAuction) {
     const auctionEvents = await this.getAuctionsEvent();
     const auctionInf = auctionEvents?.map(evt => {
-      // return {}
       return {
         id: evt.returnValues._auctionId,
         bidder: evt.returnValues._bidder,
         bid: evt.returnValues._bid,
       };
     });
-    console.log('auctionEvents SystemSurplusAuction', auctionEvents);
-    // console.log('auctionInf', auctionInf);
 
     let auctions = [];
     if (auctionInf) {
@@ -81,41 +67,21 @@ export default class SystemSurplusAuction extends AuctionService {
         }
       }
     }
-    console.log('auctions', auctions);
     return auctions;
   }
 
-  /**
-   * get one auction with data handling
-   * @param inf
-   * @param active
-   * @return array
-   */
   async getOneAuction(inf, active) {
-    try {
-      if (inf.id) {
-        let objRes = null;
-        let promiseRes = await this.getAuction(inf.id, null);
-        if (promiseRes) {
-          objRes = await this.getAuctionData(promiseRes, inf);
-        }
-        return [objRes];
+    if (inf.id) {
+      let objRes = null;
+      let promiseRes = await this.getAuction(inf.id, null);
+      if (promiseRes) {
+        objRes = await this.getAuctionData(promiseRes, inf);
       }
-    } catch (e) {
-      console.log(e);
+      return [objRes];
     }
-
   }
 
-  /**
-   * bid for auction
-   * @param auctionId
-   * @param userAddress
-   * @return array
-   */
   async bid(auctionId, bid, userAddress) {
-    console.log('auctionId', auctionId);
-    console.log('userAddress', userAddress);
     await this.getAllowance(userAddress, contractsToAddresses.SystemSurplusAuction, bid);
     const result = await this.contract.methods.bid(auctionId)
       .send(
@@ -123,18 +89,10 @@ export default class SystemSurplusAuction extends AuctionService {
           from: userAddress,
           value: toWei(bid)
         });
-    console.log('bid', result);
     return result;
   }
 
-  /**
-   * execute for auction
-   * @param auctionId
-   * @param userAddress
-   * @return array
-   */
   async execute(auctionId, userAddress) {
-    console.log('execute');
     const result = await this.contract.methods.execute(auctionId)
       .send(
         { from: userAddress });

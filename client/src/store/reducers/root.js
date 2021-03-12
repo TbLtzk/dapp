@@ -5,7 +5,13 @@ import UserAuth from './userAuth';
 import userInf from './userInf';
 import rootContract from './rootContract';
 import qPiggyBank from './qPiggyBank';
+
 import proposals from './voting/proposals';
+import qProposals from './voting/qProposals';
+import rootNodeProposals from './voting/rootNodeProposals';
+import expertProposals from './voting/expertProposals';
+import slashingProposals from './voting/slashingProposals';
+
 import validationRewardPools from './validationRewardPools';
 import auctions from './auctions/auctions';
 import modalHandler from './auctions/modalHandler';
@@ -24,6 +30,11 @@ const RootReducer = combineReducers({
   qPiggyBank,
 
   proposals,
+  qProposals,
+  rootNodeProposals,
+  expertProposals,
+  slashingProposals,
+
   auctions,
   modalHandler,
 

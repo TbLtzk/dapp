@@ -6,7 +6,6 @@ import AlertTemplate from 'react-alert-template-basic';
 import Start from 'pages/UserPages/Start';
 import StartConfigurations from 'pages/StartConfigurations';
 
-import UserPages from 'pages/UserPages';
 import { AuthProtect } from './AuthProtect';
 import QGovernance from '../pages/UserPages/QGovernance';
 import PiggyBank from '../pages/UserPages/PiggyBank';
@@ -17,7 +16,6 @@ import EndedProposals from '../pages/UserPages/QGovernance/EndedProposals';
 import SavingAndBorrowing from '../pages/UserPages/SavingAndBorrowing';
 import DecentralizedAuctions from '../pages/UserPages/SavingAndBorrowing/DecentralizedAuctions';
 import ManageStakerRewardPool from '../pages/UserPages/ManageStakerRewardPool';
-import SavingAndBorrowingContent from '../pages/UserPages/SavingAndBorrowing/SavingAndBorrowingContent';
 
 function Routes() {
   const options = {
@@ -40,7 +38,6 @@ function Routes() {
         <Route exact path="/staking" component={AuthProtect(Staking)}/>
         <Route exact path="/manage-staker-reward-pool" component={AuthProtect(ManageStakerRewardPool)}/>
         <Route exact path="/saving-and-borrowing" component={AuthProtect(SavingAndBorrowing)}/>
-        {/*<Route exact path="/saving-and-borrowing" component={AuthProtect(SavingAndBorrowingContent)}/>*/}
         <Route exact path="/ended-proposals" component={AuthProtect(EndedProposals)}/>
         <Route exact path="/decentralized-auctions" component={AuthProtect(DecentralizedAuctions)}/>
         <Route exact path="/ended-auctions" component={AuthProtect(EndedAuctions)}/>

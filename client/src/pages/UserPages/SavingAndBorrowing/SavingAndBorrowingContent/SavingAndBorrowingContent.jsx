@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
+
 import { useSelector } from 'react-redux';
 import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import Button from 'components/Base/Buttons/Button';
-import InfoBlocks from '../InfoBlocks';
-import SavingCard from '../SavingCard';
-import BorrowCard from '../BorrowCard';
-import SavingBlock from '../SavingBlock';
-import BorrowBlock from '../BorrowBlock';
 
+import Button from 'components/Base/Buttons/Button';
+import InfoBlocks from '../components/InfoBlocks';
+import SavingCard from '../components/SavingCard';
+import BorrowCard from '../components/BorrowCard';
+import SavingBlock from '../components/SavingBlock';
+import BorrowBlock from '../components/BorrowBlock';
+
+import { Row, Col } from 'react-bootstrap';
 import { ContainerSB } from '../styles';
-import PageWrap from 'components/Base/PageWrap';
-import { useHistory } from 'react-router-dom';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export default function SavingAndBorrowingContent() {
   const [actCardData, setActCardData] = useState({ type: 1 });
-  const history = useHistory();
   const address = useSelector(userAddressMetamask);
 
   const createVault = (collateral) => {
@@ -44,12 +43,12 @@ export default function SavingAndBorrowingContent() {
           <Row style={{ marginTop: '20px' }}>
             <Col xs={6}> </Col>
             <Col xs={3}>
-              <Button
-                type="outline"
-                title="Create QETH vault"
-                width="100%"
-                handleButton={() => createVault('QETH')}
-              />
+              {/*<Button*/}
+              {/*  type="outline"*/}
+              {/*  title="Create QETH vault"*/}
+              {/*  width="100%"*/}
+              {/*  handleButton={() => createVault('QETH')}*/}
+              {/*/>*/}
             </Col>
             <Col xs={3}>
               <Button

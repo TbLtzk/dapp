@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
-import { Accordion, Col } from 'react-bootstrap';
 
-import LoadingSpinner from 'components/Base/LoadingSpinner';
-import CardHeader from 'pages/UserPages/QGovernance/components/ProposalsList/CardHeader';
-import CardBody from 'pages/UserPages/QGovernance/components/ProposalsList/CardBody';
-
-import { CardBlock, LoadingW } from './styles';
-
-import { useDispatch, useSelector } from 'react-redux';
-import { userAddressMetamask } from 'store/selectors/user-inf';
+import { useDispatch } from 'react-redux';
 import {
   setVoteProposalObj,
   setStepVoteCounter,
   setDisabledCreatedProposalBtn,
   executeProposal, updateProposal
 } from 'store/actions/action-creaters/voting/proposals';
+
+import LoadingSpinner from 'components/Base/LoadingSpinner';
+import CardHeader from 'pages/UserPages/QGovernance/components/ProposalsList/CardHeader';
+import CardBody from 'pages/UserPages/QGovernance/components/ProposalsList/CardBody';
 import ModalVote from 'pages/UserPages/QGovernance/components/CreateQProposalBtn/ModalVote';
-import { remainDate } from 'func/convertDate';
+
+import { Accordion } from 'react-bootstrap';
+import { CardBlock, LoadingW } from './styles';
 
 function ProposalsList(props) {
   const { proposals, proposalsKind, loading, errorMessage, activeTab } = props;
@@ -35,7 +33,7 @@ function ProposalsList(props) {
   };
 
   const onProposalExecute = (id, contract) => {
-    dispatch(executeProposal( {
+    dispatch(executeProposal({
       idProposal: id,
       contract
     }));
@@ -52,9 +50,9 @@ function ProposalsList(props) {
       <Accordion defaultActiveKey="0">
         {loading ? <LoadingW xs={12}><LoadingSpinner/></LoadingW> :
           errorMessage ? <p>No proposals</p> :
-            proposals.length === 0
+            proposals?.length === 0
               ? <p>No proposals</p>
-              : proposals.map((proposal, i) => {
+              : !proposals ? <p>No proposals</p> : proposals.map((proposal, i) => {
                 //TODO: don`t show proposal if veto time === 0
                 // return remainDate(proposal.vetoEndTime) !== 0 ?
                 return <CardBlock key={proposal.id + proposal?.contract}>

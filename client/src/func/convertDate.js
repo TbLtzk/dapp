@@ -3,11 +3,6 @@ import moment from 'moment';
 export const convertToMonthDayYear = (unixTimestamp) => {
   if (unixTimestamp !== '0') {
     const date = new Date(unixTimestamp * 1000);
-    // console.log("date", date);
-    const dateToLocaleString = date.toLocaleString();
-    // console.log("unixTimestamp", unixTimestamp);
-    // console.log("toLocaleString", dateToLocaleString);
-    // console.log("moment.locale();", moment.locale());
     return moment(date)
       .format('hh:mm, MMMM DD, YYYY');
   }

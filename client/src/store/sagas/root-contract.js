@@ -1,6 +1,5 @@
 import { call, put, takeEvery, all } from 'redux-saga/effects';
 
-import { detectMetamask } from 'contracts/handler/metamaskAccount';
 import * as actionTypes from 'store/actions/action-types/root-contract';
 import {
   getRootMembersDataSuccess, getRootMembersDataError,
@@ -8,16 +7,17 @@ import {
   checkIsUserRootNodeSuccess, checkIsUserRootNodeError,
   getRootNodeStakesSuccess, getRootNodeStakesError,
   announceWithdrawalSuccess, announceWithdrawalError,
-  withdrawSuccess, withdrawError, getWithdrawalsSuccess, getWithdrawalsError
+  withdrawSuccess, withdrawError, getWithdrawalsSuccess, getWithdrawalsError, getRootMembersData
 } from 'store/actions/action-creaters/root-contract';
-import RootService from 'contracts/src/Root';
 import {
   setTransactionLoading,
   setTransactionLoadingError,
   setTransactionLoadingSuccess
 } from '../actions/action-creaters/transaction-handler';
 
-function* getRootMembersData({ contract }) {
+import RootService from 'contracts/src/Root';
+
+function* getRootMembers({ contract }) {
   try {
     const data = yield contract.getRootCalc();
     yield put(getRootMembersDataSuccess(data));
@@ -34,6 +34,8 @@ function* stakeToPanel({ contract, data }) {
 
     yield put(stakeToPanelSuccess('success'));
     yield put(setTransactionLoadingSuccess());
+    yield put(getRootMembersData(contract));
+
   } catch (err) {
     console.log('err', err);
     yield put(stakeToPanelError(err.message));
@@ -72,8 +74,6 @@ function* withdraw({ contract, amount, payTo, paymentInf }) {
 function* checkIsUserRootNode({ contract, address }) {
   try {
     const data = yield contract.checkMemberIsRoot(address);
-    // console.log("checkMemberIsRoot", data);
-
     yield put(checkIsUserRootNodeSuccess(data));
   } catch (err) {
     console.log('err', err);
@@ -104,7 +104,7 @@ function* getWithdrawals({ address }) {
 }
 
 export default [
-  takeEvery(actionTypes.GET_ROOT_MEMBERS_DATA, getRootMembersData),
+  takeEvery(actionTypes.GET_ROOT_MEMBERS_DATA, getRootMembers),
   takeEvery(actionTypes.STAKE_TO_PANEL, stakeToPanel),
   takeEvery(actionTypes.ANNOUNCE_WITHDRAWAL, announceWithdrawal),
   takeEvery(actionTypes.WITHDRAW, withdraw),

@@ -1,4 +1,5 @@
 import { BigNumber } from 'bignumber.js';
+
 import SlashingVotingService from '../src/voting/SlashingVoting';
 import RootsVotingService from '../src/voting/RootsVoting';
 import ConstitutionVotingService from '../src/voting/ConstitutionVoting';
@@ -7,6 +8,7 @@ import GeneralUpdateVotingService from '../src/voting/GeneralUpdateVoting';
 import MembershipVotingService from '../src/voting/MembershipVoting';
 import ParametersVotingService from '../src/voting/ParametersVoting';
 import { chooseExpertContractDependsOnType } from './QExpertVotingHandler';
+
 import { web3 } from '../config/drizzle-config';
 
 export const getPastEvents = async (contract, event) => {
@@ -87,7 +89,6 @@ export function toFixed(x) {
       x += (new Array(e + 1)).join('0');
     }
   }
-  console.log('toFixed', x);
   return x;
 }
 
@@ -97,12 +98,8 @@ export const bnSlashing = (number) => {
 };
 
 export const getPercentageFormat = (number) => {
-  console.log('number', number);
-  // console.log('number', 10 ** 27);
-  return bnSlashing(String(((10 ** 27) * Number(number)) / 100));
-  // return bn('1e+25') * bn(number);
-  // .multipliedBy(Number(number))
-  // .dividedBy(100);
+  const bNumber = new BigNumber(number)
+  return bNumber.multipliedBy(new BigNumber(10 ** 27)).dividedBy(100);
 };
 
 export const transformToPercentage = (number) => {
@@ -200,3 +197,48 @@ export function creationExpertContractsObjArray() {
   }
   return contracts;
 }
+
+export function tabSwitcher(activeTab, qProp, rootNodeProp, expertProp, slashingProp) {
+  switch (activeTab) {
+    case 'q-proposals':
+      return qProp;
+    case 'q-root-node-panel':
+      return rootNodeProp;
+    case 'q-expert-proposals':
+      return expertProp;
+    case 'slashing-proposals':
+      return slashingProp;
+  }
+}
+
+export function changeProposalsArrIfExist(proposalsArr, data) {
+  const findElem = proposalsArr?.find((element => {
+    return element.id === data.result[0].id && element.contract === data.result[0].contract;
+  }));
+  if (findElem) {
+    return proposalsArr?.map((element) => {
+      if (element.id === data.result[0].id && element.contract === data.result[0].contract) {
+        return { ...data.result[0] };
+      } else {
+        return { ...element };
+      }
+    });
+  } else {
+    return [...proposalsArr, ...data.result];
+  }
+}
+
+export function changeProposalsArrIfEmptyResult(proposalsArr, data) {
+  const findElem = proposalsArr?.find((element => {
+    return element.id === data.result.id && element.contract === data.result.contractName;
+  }));
+  if (findElem) {
+    return proposalsArr?.filter((element) => {
+      if (element.id === data.result.id && element.contract === data.result.contractName) {
+      } else {
+        return { ...element };
+      }
+    });
+  }
+}
+

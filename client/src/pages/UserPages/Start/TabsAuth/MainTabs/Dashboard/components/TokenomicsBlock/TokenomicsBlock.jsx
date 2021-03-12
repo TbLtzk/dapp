@@ -10,14 +10,16 @@ import CardBlock from '../CardBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 
 import { remainDateTimeSince } from 'func/convertDate';
+
 import { Container, Col, Row } from 'react-bootstrap';
 import { TitleNotAlign } from '../../styles';
 
-const { useDrizzle, useDrizzleState } = drizzleReactHooks;
+const { useDrizzle } = drizzleReactHooks;
 
 function TokenomicsBlock() {
   const { drizzle } = useDrizzle();
   const userAddress = useSelector(userAddressMetamask);
+
   const [defaultAllocationProxy, setDefaultAllocationProxy] = useState('0');
   const [loadingDefaultAllocation, setLoadingDefaultAllocation] = useState(false);
 
@@ -66,6 +68,11 @@ function TokenomicsBlock() {
     handler.getSystemReserve(setSystemReserve);
     handler.getValidationRewardPools(setValidationRewardPools);
   }, []);
+
+  useEffect(async () => {
+    setQHolderRewardPool('...');
+    handler.getQHolderRewardPool(setQHolderRewardPool);
+  }, [timeSinceQHolderRewardUpdate]);
 
   useEffect(() => {
     setRootNodeRewardProxy('...');

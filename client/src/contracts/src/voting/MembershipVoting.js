@@ -1,5 +1,5 @@
-import { drizzleRegistry, contracts, web3 } from '../../config/drizzle-config';
 import VotingService from './VotingService';
+
 import {
   getPastEvents,
   getPastProposalsIds,
@@ -11,7 +11,6 @@ import { fromWei } from 'func/balance';
 /*EPDR_MembershipVoting, EPQFI_MembershipVoting*/
 export default class MembershipVoting extends VotingService {
 
-  //get proposal data
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
@@ -41,81 +40,67 @@ export default class MembershipVoting extends VotingService {
     objRes.kindVoting = 'membership';
     objStats = await this.getProposalStatsData(id);
     objRes.contract = this.contractName;
+    objRes.numberProposalVotes = await this.getProposalVotes(id);
 
     return { ...objRes, ...objStats };
   }
 
-  //get proposals
   async getProposals() {
-    try {
-      //TODO: for createRemoveExpertProposal use RemoveProposalCreated event
-      const proposalEvents = await this.getProposalsEvent();
-      const proposalRemoveEvents = await getPastEvents(this.contract, 'RemoveProposalCreated');
-      const proposalIds = getPastProposalsIds([...proposalEvents, ...proposalRemoveEvents]);
-      let proposals = [];
-      if (proposalIds) {
-        for (let id of proposalIds) {
-          let objRes = {};
-          let promiseStatus = await this.getProposalStatus(id);
-          if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
-            let promiseRes = await this.getProposal(id);
-            if (promiseRes) {
-              objRes = await this.getProposalData(promiseRes, id, promiseStatus);
-              proposals.push(objRes);
-            }
+    //TODO: bug from blockchain for createRemoveExpertProposal use RemoveProposalCreated event
+    const proposalEvents = await this.getProposalsEvent();
+    const proposalRemoveEvents = await getPastEvents(this.contract, 'RemoveProposalCreated');
+    const proposalIds = getPastProposalsIds([...proposalEvents, ...proposalRemoveEvents]);
+    let proposals = [];
+    if (proposalIds) {
+      for (let id of proposalIds) {
+        let objRes = {};
+        let promiseStatus = await this.getProposalStatus(id);
+        if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
+          let promiseRes = await this.getProposal(id);
+          if (promiseRes) {
+            objRes = await this.getProposalData(promiseRes, id, promiseStatus);
+            proposals.push(objRes);
           }
-
         }
+
       }
-      return proposals;
-    } catch (e) {
-      console.log(e);
     }
+    return proposals;
   }
 
-  //get ended proposals
   async getEndedProposals() {
-    try {
-      //TODO: for createRemoveExpertProposal use RemoveProposalCreated event
-      const proposalEvents = await this.getProposalsEvent();
-      const proposalRemoveEvents = await getPastEvents(this.contract, 'RemoveProposalCreated');
-      const proposalIds = getPastProposalsIds([...proposalEvents, ...proposalRemoveEvents]);
-      let proposals = [];
-      if (proposalIds) {
-        for (let id of proposalIds) {
-          let objRes = {};
-          let promiseStatus = await this.getProposalStatus(id);
-          if (promiseStatus !== '1') {
-            let promiseRes = await this.getProposal(id);
-            if (promiseRes) {
-              objRes = await this.getProposalData(promiseRes, id, promiseStatus);
-              proposals.push(objRes);
-            }
+    //TODO: for createRemoveExpertProposal use RemoveProposalCreated event
+    const proposalEvents = await this.getProposalsEvent();
+    const proposalRemoveEvents = await getPastEvents(this.contract, 'RemoveProposalCreated');
+    const proposalIds = getPastProposalsIds([...proposalEvents, ...proposalRemoveEvents]);
+    let proposals = [];
+    if (proposalIds) {
+      for (let id of proposalIds) {
+        let objRes = {};
+        let promiseStatus = await this.getProposalStatus(id);
+        if (promiseStatus !== '1') {
+          let promiseRes = await this.getProposal(id);
+          if (promiseRes) {
+            objRes = await this.getProposalData(promiseRes, id, promiseStatus);
+            proposals.push(objRes);
           }
-
         }
+
       }
-      return proposals;
-    } catch (e) {
-      console.log(e);
     }
+    return proposals;
   }
 
-  //create proposal
   async createProposal(data, userAddress) {
     let result = null;
     const link = data['external-link'];
     let candidate = data['address'];
-    // console.log("candidate", candidate);
-    // candidate = "0xde4a0D41cA0AE39A3e479Cb6a029c134274b1Bde"; //usual account 1
-    // candidate = "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7"; //usual account 1
     //TODO: createChangeExpertProposal
     if (data?.first === 'add-a-new-expert') {
       result = await this.contract.methods.createAddExpertProposal(link, candidate)
         .send(
           { from: userAddress });
     } else if (data?.first === 'remove-a-current-expert') {
-      // candidate = "0x66316FfA38490d4d072F34EF7D7BA64Ce6b4478e"; //membership account
       result = await this.contract.methods.createRemoveExpertProposal(link, candidate)
         .send(
           { from: userAddress });

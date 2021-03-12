@@ -1,6 +1,9 @@
 // eslint-disable-next-line max-classes-per-file
 import { web3 } from 'contracts/config/drizzle-config';
+
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
+import { getDelegationsList, getOutstandingDelegationRewards } from 'store/actions/action-creaters/q-piggy-bank';
+
 import QPiggyBank from 'contracts/src/QPiggyBank';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
@@ -15,12 +18,17 @@ export class ContractHandler {
   async delegateStake(delegateAddresses, stakes) {
     this.dispatch(setTransactionCounter(1));
 
-    this.piggyBank.delegateStake(this.address, delegateAddresses, stakes).then(() => {
-    }).catch((e) => {
-      this.alert.error(e.message);
-    }).finally(() => {
-      this.dispatch(setTransactionCounter(-1));
-    });
+    this.piggyBank.delegateStake(this.address, delegateAddresses, stakes)
+      .then(() => {
+        this.dispatch(getOutstandingDelegationRewards());
+        this.dispatch(getDelegationsList());
+      })
+      .catch((e) => {
+        this.alert.error(e.message);
+      })
+      .finally(() => {
+        this.dispatch(setTransactionCounter(-1));
+      });
   }
 }
 
@@ -90,8 +98,6 @@ export class ComponentHandler {
         errorShareCont.innerHTML = '';
       }
     });
-
-    console.log(inputShares);
 
     if (invalidAddressesKey.length === 0 && invalidSharesKey.length === 0) {
       return {

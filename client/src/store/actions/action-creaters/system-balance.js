@@ -41,3 +41,15 @@ export const getSystemBalanceError = (result) => ({
   type: actionTypes.GET_SYSTEM_BALANCE_ERROR,
   result
 });
+
+export const onPerformNetting = () => ({
+  type: actionTypes.ON_PERFORM_NETTING,
+});
+export const onPerformNettingSuccess = (result) => ({
+  type: actionTypes.ON_PERFORM_NETTING_SUCCESS,
+  result
+});
+export const onPerformNettingError = (result) => ({
+  type: actionTypes.ON_PERFORM_NETTING_ERROR,
+  result
+});

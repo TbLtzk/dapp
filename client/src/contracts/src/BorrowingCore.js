@@ -16,58 +16,63 @@ export class BorrowingCoreQUSD {
 
   async userVaultsCount(address) {
     return await this.methods.userVaultsCount(address)
-      .call();
+        .call();
   }
 
   async userVaults(address, vaultNum) {
     return await this.methods.userVaults(address, vaultNum)
-      .call();
+        .call();
   }
 
   async createVault(address, collateral) {
     return await this.methods.createVault(collateral)
-      .send({ from: address });
+        .send({from: address});
   }
 
   async depositCol(address, vaultId, amount) {
     return await this.methods.depositCol(vaultId, amount)
-      .send({ from: address });
+        .send({from: address});
   }
 
   async generateStc(address, vaultId, amount) {
     const amountL = new web3.utils.BN(amount);
     return await this.methods.generateStc(vaultId, amountL)
-      .send({ from: address });
+        .send({from: address});
   }
 
   async payBackSTC(address, vaultId, amount) {
     const amountL = new web3.utils.BN(amount);
     return await this.methods.payBackSTC(vaultId, amountL)
-      .send({ from: address });
+        .send({from: address});
   }
 
   async withdrawCol(address, vaultId, amount) {
     return await this.methods.withdrawCol(vaultId, amount)
-      .send({ from: address });
+        .send({from: address});
   }
 
   async balanceOf(address) {
     return await this.methods.balanceOf(address)
-      .call();
+        .call();
   }
 
   async compoundRateKeeper(colKey) {
     return await this.methods.compoundRateKeeper(colKey)
-      .call();
+        .call();
   }
 
   async getVaultStats(userAddress, vaultId) {
     return await this.methods.getVaultStats(userAddress, vaultId)
-      .call();
+        .call();
+  }
+
+  async totalStcBackedByCol(userAddress) {
+    return await this.methods.totalStcBackedByCol(userAddress)
+        .call();
   }
 
   async updateCompoundRate(address, colKey) {
     return await this.methods.updateCompoundRate(colKey)
-      .send({ from: address });
+        .send({from: address});
   }
 }

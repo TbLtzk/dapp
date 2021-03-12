@@ -10,7 +10,7 @@ export const tableHeaderWidened = [
   "Total Accountable Stake",
   "Self Stake",
   "Total Delegated Stake",
-  "Validator Stake",
+  "Validator Share",
   "Delegator Share",
   "Validator Pool Balance",
   "Pool Payout Ratio",

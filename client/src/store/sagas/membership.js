@@ -5,6 +5,7 @@ import {
   getEPDRMembersError, getEPDRMembersSuccess, getEPQFIMembersError,
   getEPQFIMembersSuccess
 } from 'store/actions/action-creaters/membership';
+
 import EPDR_Membership from 'contracts/src/membership/EPDR_Membership';
 import EPQFI_Membership from 'contracts/src/membership/EPQFI_Membership';
 
@@ -20,7 +21,6 @@ function* isUserEPDRMember({ address }) {
   try {
     const contract = getContract_EPDR_Membership();
     const data = yield contract.isMember(address);
-    // console.log("data", data);
     yield put(getIsUserEPDRMemberSuccess(data));
   } catch (err) {
     console.error('isUserValidator.Error', err);
@@ -31,7 +31,6 @@ function* isUserEPQFIMember({ address }) {
   try {
     const contract = getContract_EPQFI_Membership();
     const data = yield contract.isMember(address);
-    // console.log("data", data);
     yield put(getIsUserEPQFIMemberSuccess(data));
   } catch (err) {
     console.error('isUserValidator.Error', err);
@@ -42,7 +41,6 @@ function* getEPDR_Members() {
   try {
     const contract = getContract_EPDR_Membership();
     const data = yield contract.getMembers();
-    // console.log("getEPDR_Members", data);
     yield put(getEPDRMembersSuccess(data));
   } catch (err) {
     console.error('getEPDR_Members.Error', err);
@@ -54,7 +52,6 @@ function* getEPQFI_Members() {
   try {
     const contract = getContract_EPQFI_Membership();
     const data = yield contract.getMembers();
-    // console.log("data", data);
     yield put(getEPQFIMembersSuccess(data));
   } catch (err) {
     console.error('getEPQFI_Members.Error', err);

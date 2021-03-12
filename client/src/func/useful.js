@@ -47,6 +47,7 @@ export const uintPercentToNumber = (num) => {
 
 export const uintPerSecondToPerYearNumber = (num) => {
   const numL = num;
+
   if (numL === undefined || numL.isNaN === true) return undefined;
 
   const perSec = uintPercentToNumber(numL);

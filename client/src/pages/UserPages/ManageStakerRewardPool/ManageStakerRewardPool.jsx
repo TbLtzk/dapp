@@ -1,8 +1,10 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+
 import ValidatorPool from 'components/Custom/ValidatorPool';
 import RewardStats from './RewardStats';
 import PageWrap from '../../../components/Base/PageWrap';
+
+import { Row, Col } from 'react-bootstrap';
 
 export default function ManageStakerRewardPool() {
   return (

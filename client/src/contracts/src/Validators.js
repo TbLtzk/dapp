@@ -1,9 +1,14 @@
 import { contracts } from '../config/drizzle-config';
+
+import ValidationRewardPools from './ValidationRewardPools';
+import QPiggyBank from './QPiggyBank';
+
 import {
   transformToPercentage,
 } from '../handler/VotingHandler';
 import { fromWei } from 'func/balance';
-import ValidationRewardPools from './ValidationRewardPools';
+import { uintPerSecondToPerYearNumber } from '../../func/useful';
+import { contractsToAddresses } from '../mapping/contract-to-address';
 
 const contractName = 'Validators';
 
@@ -11,6 +16,7 @@ export default class Validators {
   constructor() {
     this.methods = contracts[contractName].methods;
     this.ValidationRewardPoolsContract = new ValidationRewardPools();
+    this.QPiggyBank = new QPiggyBank(contractsToAddresses['QPiggyBank']);
   }
 
   async withdrawals(address) {
@@ -20,6 +26,11 @@ export default class Validators {
 
   async validatorExist(address) {
     return await this.methods.validatorExist(address)
+      .call();
+  }
+
+  async getValidatorsList() {
+    return await this.methods.getValidatorsList()
       .call();
   }
 
@@ -101,14 +112,10 @@ export default class Validators {
       let resultArr = [];
       let count = 1;
       for (let member of validatorsArr) {
-        const selfStake = fromWei(await this.methods.getValidatorsOwnStake(member.validator)
-          .call());
-        const poolPayoutRatio = transformToPercentage(await this.methods.getInterestRate(member.validator)
-          .call());
-        const delegatedStake = fromWei(await this.methods.getValidatorDelegatedStake(member.validator)
-          .call());
-        const delegatorShare = transformToPercentage(await this.methods.getDelegatorsShare(member.validator)
-          .call());
+        const selfStake = fromWei(await this.getValidatorsOwnStake(member.validator));
+        const poolPayoutRatio = uintPerSecondToPerYearNumber(await this.getInterestRate(member.validator));
+        const delegatedStake = fromWei(await this.getValidatorDelegatedStake(member.validator));
+        const delegatorShare = transformToPercentage(await this.getDelegatorsShare(member.validator));
         const validatorShare = delegatorShare ? 100 - delegatorShare : 0;
         const validatorPoolBalance = fromWei(await this.ValidationRewardPoolsContract.getBalance(member.validator));
 
@@ -122,11 +129,10 @@ export default class Validators {
           poolPayoutRatio,
           rank: count
         });
-        count ++;
+        count++;
       }
       return resultArr;
     }
 
   }
-
 }

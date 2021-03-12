@@ -1,24 +1,22 @@
 import React, { useCallback, useEffect, useState } from 'react';
+
 import { useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import { drizzleReactHooks } from '@drizzle/react-plugin';
+import { rootNodeStake } from 'store/selectors/root-contract';
 
 import TableView from 'components/Base/TableView';
 import { Pagination, setElementsForOnePage, countPages } from 'components/Base/Pagination';
 
-import { Circle, MemberPanelWrap, MemberAddress, Sharing } from './styles';
-import { rootNodeStake } from 'store/selectors/root-contract';
-import { fN } from 'func/useful';
+import { fN, uintPerSecondToPerYearNumber } from 'func/useful';
 import { fromWei } from 'func/balance';
+
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-
-const { useDrizzle } = drizzleReactHooks;
+import { Circle, MemberPanelWrap, MemberAddress, Sharing } from './styles';
 
 function MemberTable(props) {
   const { arrayData, tableHeader, type } = props;
 
-  const { drizzle } = useDrizzle();
   const userAddress = useSelector(userAddressMetamask);
   const amountNodeStake = useSelector(rootNodeStake);
 
@@ -106,10 +104,10 @@ function MemberTable(props) {
       const children = <>
         <td>{fN(member.selfStake) + 'Q'}</td>
         <td>{fN(member.delegatedStake) + 'Q'}</td>
-        <td>{member.validatorShare + '%'}</td>
-        <td>{member.delegatorShare + '%'}</td>
+        <td>{fN(member.validatorShare) + '%'}</td>
+        <td>{fN(member.delegatorShare) + '%'}</td>
         <td>{fN(member.validatorPoolBalance) + 'Q'}</td>
-        <td>{member.poolPayoutRatio + '%'}</td>
+        <td>{fN(member.poolPayoutRatio) + '%'}</td>
       </>;
       return showBodyTable(i, numMember, member.validator, amount, 'validators-widened', children);
     } else if (type === 'root-node') {
@@ -118,8 +116,11 @@ function MemberTable(props) {
       const children = <td>{share}</td>;
       return showBodyTable(i, null, member.address, amount, 'root-member', children);
     } else if (type === 'delegated-validators') {
-      const amount = fN(fromWei(member.amount)) + 'Q';
-      return showBodyTable(i, null, member.validator, amount, commonClass, null);
+      const children = <>
+        <td>{fN(member.idealStake) + 'Q'}</td>
+        <td>{fN(member.claimableReward) + 'Q'}</td>
+      </>;
+      return showBodyTable(i, null, member.validator, null, 'delegated-validators', children);
     } else if (type === 'members') {
       return showBodyTable(i, null, member, null, 'members', null);
     }

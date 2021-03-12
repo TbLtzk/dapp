@@ -26,11 +26,7 @@ function Start() {
   const userAddress = useSelector(userAddressMetamask);
 
   useEffect(() => {
-    // contractRegistry.getAddress().then((address) => {
-    //     console.log('QRootNodePanel address', address);
-    // });
     if (userAddress) {
-      // dispatch(checkIsUserRootNode(rootService, "0x66316FfA38490d4d072F34EF7D7BA64Ce6b4478e"))
       dispatch(checkIsUserRootNode(rootService, userAddress));
     }
   }, [userAddress, dispatch]);

@@ -1,4 +1,5 @@
 export const tableHeader = [
   'Validator Address',
-  "Amount of \n PiggyBank amount",
+  "Ideal stake",
+  "Claimable Reward",
 ];

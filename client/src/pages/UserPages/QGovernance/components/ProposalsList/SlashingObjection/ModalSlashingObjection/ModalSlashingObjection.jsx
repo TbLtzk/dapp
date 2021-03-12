@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setCreateObj, setStepCounter } from 'store/actions/action-creaters/auctions/modalHandler';
-import { onEscrowCastObjection, onEscrowProposeDecision } from 'store/actions/action-creaters/voting/proposals';
+import { onEscrowCastObjection, onEscrowProposeDecision } from 'store/actions/action-creaters/voting/slashing-proposals';
 import {
   createdStepsLimit,
   formObject,

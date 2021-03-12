@@ -1,8 +1,12 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
-import CustomBlock from 'components/Base/CustomBlock';
-import UpdateDelegation from './UpdateDelegation';
+
 import DelegatedValidatorsPanel from 'components/Custom/MembersPanel/DelegatedValidatorsPanel';
+import CustomBlock from 'components/Base/CustomBlock';
+
+import UpdateDelegation from './UpdateDelegation';
+import DelegationRewards from './DelegationRewards';
+
+import { Row, Col } from 'react-bootstrap';
 
 export default function DelegateStakingPower() {
   return (
@@ -12,7 +16,8 @@ export default function DelegateStakingPower() {
           <DelegatedValidatorsPanel/>
         </Col>
         <Col xs={6}>
-          <UpdateDelegation />
+          <DelegationRewards/>
+          <UpdateDelegation/>
         </Col>
       </Row>
     </CustomBlock>

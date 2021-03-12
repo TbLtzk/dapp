@@ -1,15 +1,21 @@
-import { put, takeEvery } from 'redux-saga/effects';
+import { put, select, takeEvery } from 'redux-saga/effects';
+
 import * as actionTypes from 'store/actions/action-types/q-piggy-bank';
+import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler';
 import {
-  setError,
-  setUserBalance,
-  setLockedAssets,
-  getUserBalance,
-  getLockedAssets,
+  setError, setUserBalance, setLockedAssets, getUserBalance,
+  getLockedAssets, getDelegationsListError, getDelegationsListSuccess,
+  getPBBalanceSuccess, getOutstandingDelegationRewardsSuccess, getOutstandingDelegationRewardsError,
+  getOutstandingDelegationRewards, getDelegationsList
 } from 'store/actions/action-creaters/q-piggy-bank';
+import {
+  setTransactionLoading,
+  setTransactionLoadingError,
+  setTransactionLoadingSuccess
+} from '../actions/action-creaters/transaction-handler';
+
 import QPiggyBank from 'contracts/src/QPiggyBank';
 import { handleLockedAssetsResponse } from 'contracts/handler/QPiggyBankHandler';
-import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler';
 import { web3 } from 'contracts/config/drizzle-config';
 import { toWei } from '../../func/balance';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
@@ -55,7 +61,6 @@ function* getLockedAssetsGenerator({ address }) {
 
     const contract = getContractInstance();
     let data = yield contract.getLockInfo(address);
-    console.log("getLockInfo", data);
     data = handleLockedAssetsResponse(data);
     yield put(setLockedAssets(data.votingWeight, data.votingLockingEnd));
   } catch (err) {
@@ -167,6 +172,57 @@ function* setUnlockAmountGenerator({ address, amountQ }) {
   }
 }
 
+function* getDelegationList() {
+  try {
+    const { userAddress } = yield select(state => state.userInf);
+    const contract = getContractInstance();
+    const data = yield contract.getDelegations(userAddress);
+    yield put(getDelegationsListSuccess(data));
+  } catch (err) {
+    console.error('getDelegationList.Error', err);
+    yield put(getDelegationsListError(err));
+  }
+}
+
+function* getBalanceDetails() {
+  try {
+    const contract = getContractInstance();
+    const data = yield contract.getBalanceDetails();
+    yield put(getPBBalanceSuccess(data));
+  } catch (err) {
+    console.error('getDelegationList.Error', err);
+  }
+}
+
+function* getOutstandingDelegationRewardsValue() {
+  try {
+    const { userAddress } = yield select(state => state.userInf);
+    const contract = getContractInstance();
+
+    const data = yield contract.getOutstandingDelegationRewards(userAddress);
+    yield put(getOutstandingDelegationRewardsSuccess(data));
+  } catch (err) {
+    console.error('getOutstandingDelegationRewards.Error', err);
+    yield put(getOutstandingDelegationRewardsError(err.message));
+  }
+}
+
+function* onClaimStakeDelegatorReward() {
+  try {
+    yield put(setTransactionLoading());
+    const { userAddress } = yield select(state => state.userInf);
+    const contract = getContractInstance();
+
+    const data = yield contract.claimStakeDelegatorReward(userAddress);
+    yield put(getOutstandingDelegationRewards());
+    yield put(getDelegationsList());
+    yield put(setTransactionLoadingSuccess());
+  } catch (err) {
+    console.error('onClaimStakeDelegatorReward.Error', err);
+    yield put(setTransactionLoadingError(err.message));
+  }
+}
+
 export default [
   takeEvery(actionTypes.GET_PB_USER_BALANCE, getUserBalanceGenerator),
   takeEvery(actionTypes.GET_PB_LOCKED_ASSETS, getLockedAssetsGenerator),
@@ -175,4 +231,9 @@ export default [
   takeEvery(actionTypes.SET_PB_WITHDRAW_CALL, setWithdrawGenerator),
   takeEvery(actionTypes.SET_PB_LOCK_AMOUNT, setLockAmountGenerator),
   takeEvery(actionTypes.SET_PB_UNLOCK_AMOUNT, setUnlockAmountGenerator),
+  takeEvery(actionTypes.GET_DELEGATIONS_LIST, getDelegationList),
+
+  takeEvery(actionTypes.GET_PB_BALANCE, getBalanceDetails),
+  takeEvery(actionTypes.ON_CLAIM_STAKE_DELEGATOR_REWARD, onClaimStakeDelegatorReward),
+  takeEvery(actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS, getOutstandingDelegationRewardsValue),
 ];

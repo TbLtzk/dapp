@@ -1,7 +1,6 @@
-import { drizzleRegistry, contracts } from '../../config/drizzle-config';
+import { contracts } from '../../config/drizzle-config';
 import {
   getStatusTransformation,
-  convertNumVotes, transformToPercentage
 } from '../../handler/VotingHandler';
 import VotingService from './VotingService';
 import { fromWei } from 'func/balance';
@@ -32,13 +31,6 @@ export default class RootsVoting extends VotingService {
     }
   }
 
-  /**
-   * get proposal data
-   * @param promiseRes
-   * @param id
-   * @param promiseStatus
-   * @return array
-   */
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
@@ -73,15 +65,10 @@ export default class RootsVoting extends VotingService {
     objStats = await this.getProposalStatsData(id);
     objRes.status = getStatusTransformation(promiseStatus);
     objRes.contract = this.contractName;
+    // objRes.numberProposalVotes = await this.getProposalVotes(id);
     return { ...objRes, ...objStats };
   }
 
-  /**
-   * check is user vote
-   * @param id
-   * @param address
-   * @return boolean
-   */
   async isUserVote(id, address) {
     try {
       const result = await this.RootsVoting.methods.votes(id, address)
@@ -92,39 +79,27 @@ export default class RootsVoting extends VotingService {
     }
   }
 
-  /**
-   * create proposal
-   * @param data
-   * @param userAddress
-   * @return string
-   */
   async createProposal(data, userAddress) {
-    console.log('DATA', data);
     let result = null;
     // let hash = data.hash;
+    //TODO: bug from blockchain
     let hash = '';
     const link = data['external-link'];
     let addressToRemove = data.address;
-    // const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
     if (data.first === 'add-a-new-root-node') {
       const removeCurrent = data['remove-current'];
       if (removeCurrent === 'no') {
         result = await this.contract.methods.createProposal(link, hash, userAddress, EMPTY_ADDR)
-          .send(
-            { from: userAddress });
+          .send({ from: userAddress });
       } else {
-        // addressToRemove = '0x6A39B688d591Ea00C9EA69658438794204B5cC62'; //remove root address
         result = await this.contract.methods.createProposal(link, hash, userAddress, addressToRemove)
-          .send(
-            { from: userAddress });
+          .send({ from: userAddress });
       }
     } else if (data.first === 'remove-a-current-root-node') {
-      // addressToRemove = '0x6A39B688d591Ea00C9EA69658438794204B5cC62'; //remove root address
       result = await this.contract.methods.createProposal(link, hash, EMPTY_ADDR, addressToRemove)
         .send(
           { from: userAddress });
     }
-
     return result;
   }
 }

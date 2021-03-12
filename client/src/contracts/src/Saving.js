@@ -45,6 +45,11 @@ export class SavingQUSD {
       .call();
   }
 
+  async getBalance() {
+    return await this.methods.getBalance()
+      .call();
+  }
+
   async updateCompoundRate(address) {
     return await this.methods.updateCompoundRate()
       .send({ from: address });

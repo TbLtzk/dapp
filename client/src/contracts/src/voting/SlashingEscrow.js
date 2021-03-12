@@ -1,5 +1,4 @@
 import { contracts } from '../../config/drizzle-config';
-import { fromWei } from 'func/balance';
 import { getPercentageFormat } from '../../handler/VotingHandler';
 
 /*contacts: RootNodesSlashingEscrow, ValidatorsSlashingEscrow*/

@@ -1,33 +1,67 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { getOneProposal } from 'store/actions/action-creaters/voting/proposals';
-import { errorM, loadingProposals, proposalsArr } from 'store/selectors/voting/proposals';
 import { useDispatch, useSelector } from 'react-redux';
-import { drizzleReactHooks } from '@drizzle/react-plugin';
-
-import { Row, Col } from 'react-bootstrap';
+import { getOneProposal } from 'store/actions/action-creaters/voting/proposals';
+import { qErrorM, qLoadingProposals, qProposalsArr } from 'store/selectors/voting/q-proposals';
+import {
+  rootNodeErrorM,
+  rootNodeLoadingProposals,
+  rootNodeProposalsArr
+} from 'store/selectors/voting/root-node-proposals';
+import {
+  expertErrorM,
+  expertProposalsArr,
+  loadingExpertProposals
+} from 'store/selectors/voting/expert-proposals';
+import {
+  slashingErrorM,
+  slashingLoadingProposals,
+  slashingProposalsArr
+} from 'store/selectors/voting/slashing-proposals';
+import { onChangePageType } from 'store/actions/action-creaters/voting/proposals';
+import { pageType } from 'store/selectors/voting/proposals';
 
 import ProposalsList from 'pages/UserPages/QGovernance/components/ProposalsList';
+import PageWrap from 'components/Base/PageWrap';
 import { checkCurrentTab, checkActiveTabByContract } from '../components/constants';
-import { Title } from 'components/Custom/PageLists/styles';
-import PageWrap from '../../../../components/Base/PageWrap';
+import { tabSwitcher } from 'contracts/handler/VotingHandler';
 
-const { useDrizzle } = drizzleReactHooks;
+import { Row, Col } from 'react-bootstrap';
+import { Title } from 'components/Custom/PageLists/styles';
 
 function OneProposalPage(props) {
   const { match } = props;
-  const { drizzle } = useDrizzle();
   const dispatch = useDispatch();
   const [empty, setEmpty] = useState(false);
 
-  const proposal = useSelector(proposalsArr);
-  const loading = useSelector(loadingProposals);
-  const error = useSelector(errorM);
+  const page = useSelector(pageType);
+
+  const qProposals = useSelector(qProposalsArr);
+  const qLoading = useSelector(qLoadingProposals);
+  const qError = useSelector(qErrorM);
+
+  const rootNodeProposals = useSelector(rootNodeProposalsArr);
+  const rootNodeLoading = useSelector(rootNodeLoadingProposals);
+  const rootNodeError = useSelector(rootNodeErrorM);
+
+  const expertProposals = useSelector(expertProposalsArr);
+  const expertLoading = useSelector(loadingExpertProposals);
+  const expertError = useSelector(expertErrorM);
+
+
+  const slashingProposals = useSelector(slashingProposalsArr);
+  const slashingError = useSelector(slashingErrorM);
+
+  useEffect(() => {
+    if (page === 'ended' || !page) {
+      dispatch(onChangePageType('active'));
+    }
+  }, []);
 
   useEffect(() => {
     if (match.params?.id && match.params?.contract && !isNaN((Number(match.params?.id)))) {
       setEmpty(false);
-      dispatch(getOneProposal( {
+      dispatch(getOneProposal({
         id: match.params?.id,
         contract: match.params?.contract
       }));
@@ -37,8 +71,20 @@ function OneProposalPage(props) {
   }, [dispatch, match]);
 
   const activeTab = useMemo(() => {
-    return checkActiveTabByContract(proposal[0]?.contract);
-  }, [proposal]);
+    return checkActiveTabByContract(match.params?.contract);
+  }, [match]);
+
+  const proposal = useMemo(() => {
+    return tabSwitcher(activeTab, qProposals, rootNodeProposals, expertProposals, slashingProposals);
+  }, [activeTab, qProposals, rootNodeProposals, expertProposals, slashingProposals]);
+
+  const loading = useMemo(() => {
+    return tabSwitcher(activeTab, qLoading, rootNodeLoading, expertLoading, slashingLoading);
+  }, [activeTab, qLoading, rootNodeLoading, expertLoading, slashingLoading]);
+
+  const error = useMemo(() => {
+    return tabSwitcher(activeTab, qError, rootNodeError, expertError, slashingError);
+  }, [activeTab, qError, rootNodeError, expertError, slashingError]);
 
   const proposalKind = useMemo(() => {
     return checkCurrentTab(activeTab);

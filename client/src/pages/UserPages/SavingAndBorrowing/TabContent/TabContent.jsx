@@ -12,7 +12,6 @@ function TabContent(props) {
     } else if (activeTab === 'decentralized-auctions') {
       return <DecentralizedAuctions/>;
     }
-
   }, [activeTab]);
 
   return (

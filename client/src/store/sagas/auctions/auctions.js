@@ -15,10 +15,8 @@ import {
   creationSystemDebtContractObj,
   creationSystemSurplusContractObj
 } from 'contracts/handler/AuctionHandler';
-import AuctionService from '../../../contracts/src/auction/AuctionService';
 
 function* createAuction({ data }) {
-  console.log('data', data);
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select(state => state.userInf);
@@ -43,12 +41,12 @@ function* createAuction({ data }) {
       if (result) {
         const inf = {
           'user': result?.events?.AuctionStarted?.returnValues?._user,
-          'vaultId': result?.events?.AuctionStarted?.returnValues?._vaultId
+          'vaultId': result?.events?.AuctionStarted?.returnValues?._vaultId,
+          'id': result?.events?.AuctionStarted?.returnValues?._auctionId,
         };
         yield call(getAuctionDependsOnType, contract?.contractName, inf, true);
       }
     }
-
     yield put(createAuctionSuccess(result));
     yield put(setTransactionLoadingSuccess());
 
@@ -95,7 +93,6 @@ function* getOneAuction({ contractName, inf, activeTab, activeAuction }) {
     if (contract) {
       let data = null;
       data = yield contract.getOneAuction(inf);
-      console.log('data', data);
       if (data) {
         yield put(getAuctionSuccess(data));
       } else {
@@ -133,7 +130,6 @@ function* getAuctionsList({ activeTab, activeAuction }) {
 }
 
 function* bidForAuctionHandler({ data }) {
-  console.log('data', data);
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select(state => state.userInf);
@@ -156,10 +152,6 @@ function* bidForAuctionHandler({ data }) {
         return null;
     }
 
-    // if (data?.user && data?.vaultId && data?.bid) {
-    //   const contract = new AuctionService(data?.contract);
-    //   result = yield contract.bid(data.user, data.vaultId, data.bid, userAddress);
-    // }
     yield call(getAuctionDependsOnType, data?.contract, data, true);
     yield put(bidForAuctionSuccess(result));
     yield put(setTransactionLoadingSuccess());
@@ -171,7 +163,6 @@ function* bidForAuctionHandler({ data }) {
 }
 
 function* executeAuctionHandler({ data }) {
-  console.log('data', data);
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select(state => state.userInf);

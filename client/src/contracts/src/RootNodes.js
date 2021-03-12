@@ -1,4 +1,4 @@
-import { contracts, web3 } from '../config/drizzle-config';
+import { contracts } from '../config/drizzle-config';
 import { toWei } from 'func/balance';
 
 export default class RootNodes {

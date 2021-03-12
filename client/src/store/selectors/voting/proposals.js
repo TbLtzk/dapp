@@ -8,17 +8,8 @@ export const disabledContinueProposalBtn = state => state.proposals.disabledCont
 export const formVoteObject = state => state.proposals.formObjectVoteProposal;
 export const stepVoteCounterModal = state => state.proposals.stepVoteCounter;
 
-/*ended proposals staff*/
-export const endedProposals = state => state.proposals.endedProposals;
-export const loadingEndedProposals = state => state.proposals.loadingEndedProposals;
-export const errorEnded = state => state.proposals.errorEnded;
-
-/*get list of proposals*/
-export const proposalsArr = state => state.proposals.proposalsArr;
-export const loadingProposals = state => state.proposals.loadingProposals;
-export const errorM = state => state.proposals.errorM;
-
 /*for dashboard*/
 export const numberOfAllProposals = state => state.proposals.numberOfAllProposals;
 export const loadingNumberAll = state => state.proposals.loadingNumberAll;
 export const constitutionHash = state => state.proposals.constitutionHash;
+export const pageType = state => state.proposals.pageType;

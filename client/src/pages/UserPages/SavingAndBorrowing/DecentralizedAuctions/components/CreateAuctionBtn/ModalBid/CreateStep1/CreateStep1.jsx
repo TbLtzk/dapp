@@ -28,7 +28,6 @@ function CreateStep1(props) {
   const onChangeInput = async (value) => {
     const contractName = checkTabContract(activeTab);
     let allowance = await StableCoin.allowance(userAddress, contractsToAddresses[contractName]);
-    console.log('allowance', allowance);
     if (Number(value) > allowance) {
       dispatch(setApproveModalBtn(true));
     } else {
