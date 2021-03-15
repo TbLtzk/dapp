@@ -8,6 +8,9 @@ RUN yarn install
 COPY public/ public/
 COPY src/ src/
 
+ARG netconf=src/contracts/config/network-config-devnet.js
+COPY $netconf ./src/contracts/config/network-config.js
+
 RUN yarn build
 
 FROM nginx:stable-alpine
