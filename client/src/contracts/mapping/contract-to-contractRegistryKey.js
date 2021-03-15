@@ -1,17 +1,8 @@
-export const contractsToContractsRegistryKey = {
+const testnetContractsToContractsRegistryKey = {
   ConstitutionParameters: 'governance.constitution.parameters',
   ConstitutionVoting: 'governance.constitution.parametersVoting',
-  GeneralUpdateVoting: 'governance.generalUpdateVoting',
-  EmergencyUpdateVoting: 'governance.emergencyUpdateVoting',
-  Root: 'governance.rootNodes',
-  RootsVoting: 'governance.rootNodes.membershipVoting',
-  RootNodesSlashingVoting: 'governance.rootNodes.slashingVoting',
-  RootNodesSlashingEscrow: 'governance.rootNodes.slashingEscrow',
-  Validators: 'governance.validators',
-  ValidatorsSlashingVoting: 'governance.validators.slashingVoting',
-  ValidatorsSlashingEscrow: 'governance.validators.slashingEscrow',
-
   EPDR_Membership: 'governance.experts.EPDR.membership',
+  BorrowingCoreQUSD: 'defi.QUSD.borrowing',
   EPDR_MembershipVoting: 'governance.experts.EPDR.membershipVoting',
   EPDR_Parameters: 'governance.experts.EPDR.parameters',
   EPDR_ParametersVoting: 'governance.experts.EPDR.parametersVoting',
@@ -19,25 +10,44 @@ export const contractsToContractsRegistryKey = {
   EPQFI_MembershipVoting: 'governance.experts.EPQFI.membershipVoting',
   EPQFI_Parameters: 'governance.experts.EPQFI.parameters',
   EPQFI_ParametersVoting: 'governance.experts.EPQFI.parametersVoting',
-
-  DefaultAllocationProxy: 'tokeneconomics.defaultAllocationProxy',
-  RootNodeRewardProxy: 'tokeneconomics.rootNodeRewardProxy',
-  ValidationRewardProxy: 'tokeneconomics.validationRewardProxy',
-  QHolderRewardProxy: 'tokeneconomics.qHolderRewardProxy',
-  QHolderRewardPool: 'tokeneconomics.qHolderRewardPool',
-  ValidationRewardPools: 'tokeneconomics.validationRewardPools',
-  QPiggyBank: 'tokeneconomics.qPiggyBank',
-  SystemReserve: 'tokeneconomics.systemReserve',
-
-  StableCoinQUSD: 'defi.QUSD.coin',
-  BorrowingCoreQUSD: 'defi.QUSD.borrowing',
-  SavingQUSD: 'defi.QUSD.saving',
-
-  WrappedQ: 'defi.wrappedQ',
-  SystemBalance: 'defi.QUSD.systemBalance',
-  // SystemBalance: 'defi.<STC>.systemBalance',
+  EmergencyUpdateVoting: 'governance.emergencyUpdateVoting',
+  GeneralUpdateVoting: 'governance.generalUpdateVoting',
   LiquidationAuction: 'defi.QUSD.liquidationAuction',
-  SystemSurplusAuction: 'defi.QUSD.systemSurplusAuction',
+  Root: 'governance.rootNodes',
+  RootsVoting: 'governance.rootNodes.membershipVoting',
+  RootNodesSlashingVoting: 'governance.rootNodes.slashingVoting',
+  SavingQUSD: 'defi.QUSD.saving',
+  StableCoinQUSD: 'defi.QUSD.coin',
+  SystemBalance: 'defi.QUSD.systemBalance',
   SystemDebtAuction: 'defi.QUSD.systemDebtAuction',
+  SystemReserve: 'tokeneconomics.systemReserve',
+  SystemSurplusAuction: 'defi.QUSD.systemSurplusAuction',
+  Validators: 'governance.validators',
+  ValidatorsSlashingVoting: 'governance.validators.slashingVoting',
+}
+
+const devnetContractsToContractsRegistryKey = {
+  DefaultAllocationProxy: 'tokeneconomics.defaultAllocationProxy',
+  QHolderRewardPool: 'tokeneconomics.qHolderRewardPool',
+  QHolderRewardProxy: 'tokeneconomics.qHolderRewardProxy',
+  QPiggyBank: 'tokeneconomics.qPiggyBank',
+  RootNodeRewardProxy: 'tokeneconomics.rootNodeRewardProxy',
+  RootNodesSlashingEscrow: 'governance.rootNodes.slashingEscrow',
+  ValidationRewardPools: 'tokeneconomics.validationRewardPools',
+  ValidationRewardProxy: 'tokeneconomics.validationRewardProxy',
+  WrappedQ: 'defi.wrappedQ',
+  ValidatorsSlashingEscrow: 'governance.validators.slashingEscrow',
+}
+
+const contractsToContractsRegistryKeyCustom = {
+  GovernedEpdrQbtcAddress: 'governed.EPDR.QBTC_address',
+  GovernedEpdrQbtcQusdOracle: 'governed.EPDR.QBTCQUSD_oracle',
+}
+
+export const contractsToContractsRegistryKey = {
+  ...testnetContractsToContractsRegistryKey,
+  ...devnetContractsToContractsRegistryKey,
+  ...contractsToContractsRegistryKeyCustom
+  // SystemBalance: 'defi.<STC>.systemBalance',
 };
 

@@ -12,9 +12,9 @@ export default class Handler {
     this.drizzle = drizzle;
     this.userAddress = userAddress;
     this.StableCoin = new StableCoinQUSD();
-    this.SavingQUSD = new SavingQUSD();
-    this.BorrowingCoreQUSD = new BorrowingCoreQUSD();
-    this.EPDR_ParametersContract = new EPDR_Parameters();
+    this.SavingQUSD = new SavingQUSD(contractsToAddresses['SavingQUSD']);
+    this.BorrowingCoreQUSD = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD']);
+    this.EPDR_ParametersContract = new EPDR_Parameters(contractsToAddresses['EPDR_Parameters']);
     this.CompoundRateKeeperBorrowing = new CompoundRateKeeper('CompoundRateKeeperBorrowing');
     this.CompoundRateKeeperSaving = new CompoundRateKeeper('CompoundRateKeeperSaving');
   }

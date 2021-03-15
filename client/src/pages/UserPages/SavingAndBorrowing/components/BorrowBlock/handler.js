@@ -7,11 +7,12 @@ import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
 import { uintPerSecondToPerYearNumber } from 'func/useful';
 import { fromBtcBlockchain, toBtcBlockchain, toWei, fromWei } from 'func/balance';
 import { maxApproveAmount } from 'func/numbers';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export default class Handler {
   constructor(address, collateralKey, dispatch, vaultId) {
     this.address = address;
-    this.borrowingContract = new BorrowingCoreQUSD();
+    this.borrowingContract = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD']);
     this.dispatch = dispatch;
     this.vaultId = String(vaultId);
 

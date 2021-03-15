@@ -1,13 +1,14 @@
-import {BorrowingCoreQUSD} from 'contracts/src/BorrowingCore';
+import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
 import {SavingQUSD} from 'contracts/src/Saving';
 
 import {fromWei} from 'func/balance';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export default class Handler {
   constructor(address) {
     this.address = address;
-    this.contractBorrowingCoreQUSD = new BorrowingCoreQUSD();
-    this.contractSavingQUSD = new SavingQUSD();
+    this.contractBorrowingCoreQUSD = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD']);
+    this.contractSavingQUSD = new SavingQUSD(contractsToAddresses['SavingQUSD']);
   }
 
   setOutstandingDebt(stateSetter, setLoading) {

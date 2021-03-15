@@ -12,9 +12,10 @@ import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
 
 import { Row, Col } from 'react-bootstrap';
 import { WrapContainer, WrapTab } from './styles';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 function Dashboard() {
-  const EPDR_ParametersContract = new EPDR_Parameters();
+  const EPDR_ParametersContract = new EPDR_Parameters(contractsToAddresses['EPDR_Parameters']);
 
   useEffect(async () => {
     // const getAddrGovernedEpdrQbtcQusdOracle = await EPDR_ParametersContract.getAddr('governed.EPDR.QBTC_QUSD_oracle');

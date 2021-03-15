@@ -13,13 +13,14 @@ import BorrowBlock from '../components/BorrowBlock';
 
 import { Row, Col } from 'react-bootstrap';
 import { ContainerSB } from '../styles';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export default function SavingAndBorrowingContent() {
   const [actCardData, setActCardData] = useState({ type: 1 });
   const address = useSelector(userAddressMetamask);
 
   const createVault = (collateral) => {
-    const contract = new BorrowingCoreQUSD();
+    const contract = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD']);
     contract.createVault(address, collateral)
       .then((data) => {
         console.log(data);

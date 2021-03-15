@@ -1,55 +1,23 @@
-const contractsToAddressesBase = {
+import EPDR_Parameters from '../src/parameters/EPDR_Parameters';
+import QPiggyBank from '../src/QPiggyBank';
+import { BorrowingCoreQUSD } from '../src/BorrowingCore';
+import { SavingQUSD } from '../src/Saving';
+import { ContractRegistry } from '../src/ContractRegistry';
+import { contractsToContractsRegistryKey as contToKey } from './contract-to-contractRegistryKey';
+
+export const contractsToAddressesBase = {
   ContractRegistry: '0xc3E589056Ece16BCB88c6f9318e9a7343b663522',
 };
 
 const contractsToAddressesDynamic = {
-  BorrowingCoreQUSD: '0x3C7343037645530a65f4FeC5a6A596f9C91eAf3e',
-  ConstitutionParameters: '0xB62F62634a918e1B8d53915d0C7ADD6CcBA95945',
-  ConstitutionVoting: '0x6609E0E17F4be0e5aE0AcA68169d239b5414374e',
-  DefaultAllocationProxy: '0xc4D32b94f039991703b869AA8AcB1A354c32AFd1',
-  EPDR_Membership: '0xB4b60A3f6Bb712D474B8a5677121B4dCc021C7E4',
-  EPDR_MembershipVoting: '0x1fBa268ab8CcDA2cdF80cBf77CF1E1C9ec700aF0',
-  EPDR_Parameters: '0x721EF5a59ee5c1DF89Ab6AAaEF698d14930d05e4',
-  EPDR_ParametersVoting: '0x88899150b8BdFFE2A4D2a9A598e1Bf8fe9CA4611',
-  EPQFI_Membership: '0x26FB4f212684F467A56637447bc677734814631B',
-  EPQFI_MembershipVoting: '0xD486E3065aB05561346a0cB254B49783d1CD0a42',
-  EPQFI_Parameters: '0xB8c7Fdc24Dd912810AC284B116FbB182e736D0BF',
-  EPQFI_ParametersVoting: '0x3B8ac0643872B1E521f12c98C10E49158d1362c0',
-  EmergencyUpdateVoting: '0xDe1be0cdE7257955123da10BC1ea37Ee54875DdF',
   FxPriceFeed: '0x0000000000000000000000000000000000000000',
-  GeneralUpdateVoting: '0x3ef1A5a2aCA66e0E8Bf1ceAf085BAF1ea714f2b7',
-  LiquidationAuction: '0xe018B004EA77dD71B57Df796BbD4E1705D0b9BC3',
-  QHolderRewardPool: '0xac7682a9459Fc100B2dD4efC31dF07F12EfBF2EB',
-  QHolderRewardProxy: '0xb633De0400Fed3eE6ec2bc2AFd8f2A2270Eaa451',
-  QPiggyBank: '0x538b6aD964C56dAEa3699a2Eee5B24AD62B912E0',
-  RootNodeRewardProxy: '0x0D06cC70B4CaC70419D0068Fa93E87933408B274',
-  Root: '0xf1e8359C8CE05af33D53F87E07C621B110cE8FbE',
-  RootsVoting: '0x912885FB7c72c5a0024Aa6dBC5425F0517878732',
-  RootNodesSlashingVoting: '0x4C392dFb8c44Dc813Be778eB78B58492d05af84b',
-  RootNodesSlashingEscrow: '0x536061A4A6633d5A1AF99DE29B7cE82439e1e5c0',
-  SavingQUSD: '0x47923de3a07654058bf53d3F510D99f185392dF1',
-  StableCoinQUSD: '0xd9EAC83C202303c32c4c8A5d468AC3Ff335b65E3', //QUSD address wallet
-  SystemBalance: '0x3FDB3046FFfB25E802C438b0f79A607D7864dA56',
-  SystemDebtAuction: '0x961CfC41F170136cBF2657517012d55Df6e9Dd45',
-  SystemReserve: '0x61d1CA8586E06F760AE4BB6FF0Ecd7a71D7f71bf',
-  SystemSurplusAuction: '0x0FD2af8cFC3E6023a7bF7b656B411d679ff2C726',
-  ValidationRewardPools: '0x79f972B7e8d75733bB5C24BE57DdE47942dB7f94',
-  ValidationRewardProxy: '0x9B3419124468A9cb90330Fc0585d112049Ea49DC',
-  Validators: '0x543760F6a2F4e0eB2e52473150736c4f197d564b',
-  WrappedQ: '0x1a6c61b097124fd1FD11745D72356a69d78A614E',
-  ValidatorsSlashingVoting: '0x7D6F635B66DaF406725654c71c9B29fFF74fb092',
-  ValidatorsSlashingEscrow: '0x2Bf1bFAc66B97E3611CE46E01Cc24835eE79619e',
 };
 
 const contractsToAddressesCustom = {
-  CompoundRateKeeperPiggyBank: '0x9f8cEE0e0fa33b5537f47e44bd682C881ff1847f',
-  CompoundRateKeeperSaving: '0xDbD3A62aAe37b07ecfaccd2B4fc772F0666dc132',
-  CompoundRateKeeperBorrowing: '0x314b63b7Beabe501642a197e5970e64C602b2D44', //borrowing
 
+  // Deprecated
   GovernedEpdrQethQusdOracle: '0x62BD936432C97cD2A2908Bf1973e3ec3a68F81B5',
-  GovernedEpdrQbtcQusdOracle: '0xC85048B7F7Dfcd9C134e329Bb63C0D8554274983', //governed.EPDR.QBTC_QUSD_oracle"
   GovernedEpdrQethAddress: '0x62BD936432C97cD2A2908Bf1973e3ec3a68F81B5',
-  GovernedEpdrQbtcAddress: '0xDfDFfD92fA847d61FAc220966eC76628da47b89D', //QBTC address wallet //governed.EPDR.QBTC_address
 };
 
 export const contractsToAddresses = {
@@ -57,3 +25,27 @@ export const contractsToAddresses = {
   ...contractsToAddressesDynamic,
   ...contractsToAddressesCustom,
 };
+
+export async function initAddresses () {
+  const contractRegistry = new ContractRegistry()
+  for (const contractName in contToKey) {
+    contractsToAddresses[contractName] = await contractRegistry.getAddress(contToKey[contractName])
+  }
+  // EPDR_Parameters
+  const epdrParametersContract = new EPDR_Parameters(contractsToAddresses['EPDR_Parameters'])
+  contractsToAddresses['GovernedEpdrQbtcAddress'] = await epdrParametersContract.getAddr(contToKey['GovernedEpdrQbtcAddress'])
+  contractsToAddresses['GovernedEpdrQbtcQusdOracle'] = await epdrParametersContract.getAddr(contToKey['GovernedEpdrQbtcQusdOracle'])
+
+  // BorrowingCoreQUSD
+  const borrowingCoreQUSDContract = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD'])
+  contractsToAddresses['CompoundRateKeeperBorrowing'] = await borrowingCoreQUSDContract.compoundRateKeeper('QBTC')
+
+
+  // SavingQUSD
+  const savingQUSDContract = new SavingQUSD(contractsToAddresses['SavingQUSD'])
+  contractsToAddresses['CompoundRateKeeperSaving'] = await savingQUSDContract.compoundRateKeeper()
+
+  // QPiggyBank
+  const qPiggyBankContract = new QPiggyBank(contractsToAddresses['QPiggyBank'])
+  contractsToAddresses['CompoundRateKeeperPiggyBank'] = await qPiggyBankContract.compoundRateKeeper()
+}

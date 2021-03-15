@@ -6,11 +6,12 @@ import { SavingQUSD } from 'contracts/src/Saving';
 import { maxApproveAmount } from 'func/numbers';
 import { fromWei } from 'func/balance';
 import { uintPerSecondToPerYearNumber } from 'func/useful';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export default class Handler {
   constructor(address, dispatch) {
     this.address = address;
-    this.contractSavingQUSD = new SavingQUSD();
+    this.contractSavingQUSD = new SavingQUSD(contractsToAddresses['SavingQUSD']);
     this.contractStableCoinQUSD = new StableCoinQUSD();
     this.dispatch = dispatch;
   }

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 
 import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
@@ -11,6 +10,7 @@ import BlockCardItem from '../../BlockCardItem';
 
 import { uintPerSecondToPerYearNumber } from 'func/useful';
 
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 import { Col } from 'react-bootstrap';
 import { BlockCard } from '../../styles';
 
@@ -19,7 +19,7 @@ export default function BorrowCard(props) {
   const [vaultsCount, setVaultsCount] = useState(0);
   const [vaults, setVaults] = useState([]);
 
-  const contract = new BorrowingCoreQUSD();
+  const contract = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD']);
   const address = useSelector(userAddressMetamask);
   const dispatch = useDispatch();
 
@@ -35,7 +35,7 @@ export default function BorrowCard(props) {
   useEffect(async () => {
 
     //TODO: Change logic using borrowingContract.getVaultStats function twice
-    const borrowingContract = new BorrowingCoreQUSD();
+    const borrowingContract = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD']);
     const vaultsLoc = [];
     for (let i = 0; i < vaultsCount; i += 1) {
       const vaultInfo = await contract.userVaults(address, i)

@@ -6,13 +6,14 @@ import { maxApproveAmount } from '../../handler/AuctionHandler';
 
 import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
 import { StableCoinQUSD } from 'contracts/src/StableCoin';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export default class AuctionService {
 
   constructor(contractName) {
     this.contract = contracts[contractName];
     this.contractName = contractName;
-    this.borrowingContract = new BorrowingCoreQUSD();
+    this.borrowingContract = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD']);
     this.stableCoinUSD = new StableCoinQUSD();
   }
 

@@ -8,6 +8,7 @@ import {
 } from '../handler/VotingHandler';
 import { fromWei } from 'func/balance';
 import { uintPerSecondToPerYearNumber } from '../../func/useful';
+import { contractsToAddresses } from '../mapping/contract-to-address';
 
 const contractName = 'Validators';
 
@@ -15,7 +16,7 @@ export default class Validators {
   constructor() {
     this.methods = contracts[contractName].methods;
     this.ValidationRewardPoolsContract = new ValidationRewardPools();
-    this.QPiggyBank = new QPiggyBank();
+    this.QPiggyBank = new QPiggyBank(contractsToAddresses['QPiggyBank']);
   }
 
   async withdrawals(address) {

@@ -5,10 +5,11 @@ import { setTransactionCounter } from 'store/actions/action-creaters/transaction
 import { getDelegationsList, getOutstandingDelegationRewards } from 'store/actions/action-creaters/q-piggy-bank';
 
 import QPiggyBank from 'contracts/src/QPiggyBank';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export class ContractHandler {
   constructor(address, dispatch, alert) {
-    this.piggyBank = new QPiggyBank();
+    this.piggyBank = new QPiggyBank(contractsToAddresses['QPiggyBank']);
     this.dispatch = dispatch;
     this.address = address;
     this.alert = alert;

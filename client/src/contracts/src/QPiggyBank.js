@@ -1,11 +1,14 @@
-import { contracts } from '../config/drizzle-config';
-import { fromWei, toWei } from 'func/balance';
+import Web3 from 'web3';
+import { contractsToAbi } from '../mapping/contract-to-abi';
 
-const contractName = 'QPiggyBank';
+const web3 = new Web3(Web3.givenProvider);
+web3.eth.handleRevert = true;
 
 export default class QPiggyBank {
-  constructor() {
-    this.methods = contracts[contractName].methods;
+  constructor(address) {
+    this.contractName = 'QPiggyBank';
+    this.contract = new web3.eth.Contract(contractsToAbi[this.contractName], address)
+    this.methods = this.contract.methods;
   }
 
   async getUserBalance(address) {
@@ -52,20 +55,17 @@ export default class QPiggyBank {
       .send({ from: address });
   }
 
-  async withdraw(address, amount) {
-    const amountL = toWei(amount);
+  async withdraw(address, amountL) {
     return await this.methods.withdraw(amountL)
       .send({ from: address });
   }
 
-  async lock(address, amount) {
-    const amountL = toWei(amount);
+  async lock(address, amountL) {
     return await this.methods.lock(amountL)
       .send({ from: address });
   }
 
-  async unlock(address, amount) {
-    const amountL = toWei(amount);
+  async unlock(address, amountL) {
     return await this.methods.unlock(amountL)
       .send({ from: address });
   }

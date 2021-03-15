@@ -1,12 +1,16 @@
 /* eslint-disable max-classes-per-file */
-import { contracts } from '../config/drizzle-config';
-import { contractsToAddresses } from '../mapping/contract-to-address';
-import { toWei } from '../../func/balance';
+import Web3 from 'web3';
+import { contractsToAbi } from '../mapping/contract-to-abi';
 
-class Saving {
-  constructor() {
-    this.methods = {};
-    this.address = '';
+const web3 = new Web3(Web3.givenProvider);
+web3.eth.handleRevert = true;
+
+export class SavingQUSD {
+  constructor(address) {
+    this.contractName = 'SavingQUSD';
+    this.address = address;
+    this.contract = new web3.eth.Contract(contractsToAbi[this.contractName], address);
+    this.methods = this.contract.methods;
   }
 
   async usersSavings(address) {
@@ -15,13 +19,13 @@ class Saving {
   }
 
   async deposit(address, amount) {
-    const amountL = toWei(amount);
+    const amountL = new web3.utils.BN(web3.utils.toWei(amount));
     return await this.methods.deposit(amountL)
       .send({ from: address });
   }
 
   async withdraw(address, amount) {
-    const amountL = toWei(amount);
+    const amountL = new web3.utils.BN(web3.utils.toWei(amount));
     return await this.methods.withdraw(amountL)
       .send({ from: address });
   }
@@ -49,13 +53,5 @@ class Saving {
   async updateCompoundRate(address) {
     return await this.methods.updateCompoundRate()
       .send({ from: address });
-  }
-}
-
-export class SavingQUSD extends Saving {
-  constructor() {
-    super();
-    this.methods = contracts['SavingQUSD'].methods;
-    this.address = contractsToAddresses['SavingQUSD'];
   }
 }

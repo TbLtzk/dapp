@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-
 import BlockCardItem from 'pages/UserPages/SavingAndBorrowing/BlockCardItem';
 
 import { SavingQUSD } from 'contracts/src/Saving';
@@ -9,6 +8,7 @@ import { uintPerSecondToPerYearNumber } from 'func/useful';
 
 import { Col } from 'react-bootstrap';
 import { BlockCard } from 'pages/UserPages/SavingAndBorrowing/styles';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export default function SavingCard(props) {
   const { setActCardData } = props;
@@ -16,7 +16,7 @@ export default function SavingCard(props) {
   const [intRate, setIntRate] = useState(0);
 
   useEffect(async () => {
-    const contractSavingQUSD = new SavingQUSD();
+    const contractSavingQUSD = new SavingQUSD(contractsToAddresses['SavingQUSD']);
     const BalanceDetails = await contractSavingQUSD.getBalanceDetails()
       .catch(() => {
       });

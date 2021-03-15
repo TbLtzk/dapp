@@ -1,11 +1,17 @@
 /* eslint-disable max-classes-per-file */
-import {contracts, web3} from '../config/drizzle-config';
-import {contractsToAddresses} from '../mapping/contract-to-address';
+import Web3 from 'web3';
 
-class BorrowingCore {
-  constructor() {
-    this.methods = {};
-    this.address = '';
+import { contractsToAbi } from '../mapping/contract-to-abi';
+
+const web3 = new Web3(Web3.givenProvider);
+web3.eth.handleRevert = true;
+
+export class BorrowingCoreQUSD {
+  constructor(address) {
+    this.contractName = 'BorrowingCoreQUSD';
+    this.address = address;
+    this.contract = new web3.eth.Contract(contractsToAbi[this.contractName], address);
+    this.methods = this.contract.methods;
   }
 
   async userVaultsCount(address) {
@@ -68,13 +74,5 @@ class BorrowingCore {
   async updateCompoundRate(address, colKey) {
     return await this.methods.updateCompoundRate(colKey)
         .send({from: address});
-  }
-}
-
-export class BorrowingCoreQUSD extends BorrowingCore {
-  constructor() {
-    super();
-    this.methods = contracts['BorrowingCoreQUSD'].methods;
-    this.address = contractsToAddresses['BorrowingCoreQUSD'];
   }
 }
