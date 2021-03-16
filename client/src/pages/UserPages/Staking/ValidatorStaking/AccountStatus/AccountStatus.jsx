@@ -197,7 +197,7 @@ export default function AccountStatus() {
               />
               <Button
                 type="default"
-                title="Announce"
+                title="Announce Withdrawal"
                 width="30%"
                 handleButton={submit(announce)}
               />
