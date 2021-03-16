@@ -73,7 +73,7 @@ function ActionButtons(props) {
         <Button
           width="100%"
           type="full-width"
-          title="Announce"
+          title="Announce Withdrawal"
           handleButton={handleSubmit(onAnnounce)}
         />
       </Col>
