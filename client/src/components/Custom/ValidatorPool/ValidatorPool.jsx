@@ -52,10 +52,6 @@ export default function ValidatorPool(props) {
         value: fN(delegatedStake) + 'Q'
       },
       {
-        label: 'Number of Delegators:',
-        value: '? Addresses'
-      },
-      {
         label: 'Accountable Stake:',
         value: fN(accTotalStake) + 'Q'
       },

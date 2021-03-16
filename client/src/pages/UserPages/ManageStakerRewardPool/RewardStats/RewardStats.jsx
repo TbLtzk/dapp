@@ -75,7 +75,7 @@ export default function RewardStats() {
       <p className="title type-2">Manage Rewards</p>
       <Row>
         <Col xs={6} className="form-container">
-          <span>Set Validator Share</span>
+          <span>Set Delegator Share</span>
           <div>
             <FormInput
               name="amount"
