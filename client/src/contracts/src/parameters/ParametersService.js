@@ -49,7 +49,7 @@ export default class ParametersService {
       .call();
   }
 
-  async getBytesKeys() {
+  async getBytes32Keys() {
     return await this.contract.methods.getBytes32Keys()
       .call();
   }
