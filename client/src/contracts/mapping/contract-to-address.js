@@ -26,26 +26,30 @@ export const contractsToAddresses = {
   ...contractsToAddressesCustom,
 };
 
-export async function initAddresses () {
-  const contractRegistry = new ContractRegistry()
-  for (const contractName in contToKey) {
-    contractsToAddresses[contractName] = await contractRegistry.getAddress(contToKey[contractName])
+export async function initAddresses() {
+  const contractRegistry = new ContractRegistry();
+
+  async function getAddress(objectKey) {
+    contractsToAddresses[objectKey] = await contractRegistry.getAddress(contToKey[objectKey]);
   }
+
+  await Promise.all(Object.keys(contToKey)
+    .map(i => getAddress(i)));
+
   // EPDR_Parameters
-  const epdrParametersContract = new EPDR_Parameters(contractsToAddresses['EPDR_Parameters'])
-  contractsToAddresses['GovernedEpdrQbtcAddress'] = await epdrParametersContract.getAddr(contToKey['GovernedEpdrQbtcAddress'])
-  contractsToAddresses['GovernedEpdrQbtcQusdOracle'] = await epdrParametersContract.getAddr(contToKey['GovernedEpdrQbtcQusdOracle'])
+  const epdrParametersContract = new EPDR_Parameters(contractsToAddresses['EPDR_Parameters']);
+  contractsToAddresses['GovernedEpdrQbtcAddress'] = await epdrParametersContract.getAddr(contToKey['GovernedEpdrQbtcAddress']);
+  contractsToAddresses['GovernedEpdrQbtcQusdOracle'] = await epdrParametersContract.getAddr(contToKey['GovernedEpdrQbtcQusdOracle']);
 
   // BorrowingCoreQUSD
-  const borrowingCoreQUSDContract = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD'])
-  contractsToAddresses['CompoundRateKeeperBorrowing'] = await borrowingCoreQUSDContract.compoundRateKeeper('QBTC')
-
+  const borrowingCoreQUSDContract = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD']);
+  contractsToAddresses['CompoundRateKeeperBorrowing'] = await borrowingCoreQUSDContract.compoundRateKeeper('QBTC');
 
   // SavingQUSD
-  const savingQUSDContract = new SavingQUSD(contractsToAddresses['SavingQUSD'])
-  contractsToAddresses['CompoundRateKeeperSaving'] = await savingQUSDContract.compoundRateKeeper()
+  const savingQUSDContract = new SavingQUSD(contractsToAddresses['SavingQUSD']);
+  contractsToAddresses['CompoundRateKeeperSaving'] = await savingQUSDContract.compoundRateKeeper();
 
   // QPiggyBank
-  const qPiggyBankContract = new QPiggyBank(contractsToAddresses['QPiggyBank'])
-  contractsToAddresses['CompoundRateKeeperPiggyBank'] = await qPiggyBankContract.compoundRateKeeper()
+  const qPiggyBankContract = new QPiggyBank(contractsToAddresses['QPiggyBank']);
+  contractsToAddresses['CompoundRateKeeperPiggyBank'] = await qPiggyBankContract.compoundRateKeeper();
 }

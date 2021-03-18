@@ -17,10 +17,11 @@ import membership from './membership';
 import parameters from './parameters';
 import systemBalance from './system-balance';
 import systemReserve from './system-reserve';
+import parametersAddresses from './parameters-addresses';
 
 export default function* rootSaga() {
   yield all([...userAuth, ...rootContract, ...qPiggyBank,
     ...proposals, ...qProposals, ...rootNodeProposals, ...expertProposals, ...slashingProposals,
     ...validators, ...validationRewardPools, ...auctions, ...stableCoin,
-    ...membership, ...parameters, ...systemBalance, ...systemReserve]);
+    ...membership, ...parameters, ...systemBalance, ...systemReserve, ...parametersAddresses]);
 }

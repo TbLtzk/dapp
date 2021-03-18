@@ -22,4 +22,8 @@ export class ContractRegistry {
     return await this.contract.methods.getAddress(key)
       .call();
   }
+  async getContracts() {
+    return await this.contract.methods.getContracts()
+      .call();
+  }
 }
