@@ -63,7 +63,7 @@ function Manage() {
             <KeyAddressViewer
               tableData={kvCR}
               loading={loadingCR}
-              errorMessage={errorMessageCR}
+              errorMsg={errorMessageCR}
               subHeader={`(${contractsToAddresses.ContractRegistry})`}
               header={'Q Contract Registry'}
               emptyMsg={'No addresses'}
@@ -75,7 +75,7 @@ function Manage() {
             <KeyAddressViewer
               tableData={kvFI}
               loading={loadingFI}
-              errorMessage={errorMessageFI}
+              errorMsg={errorMessageFI}
               subHeader={`(${contractsToAddresses.EPQFI_Parameters})`}
               header={'Q Fees & Incentives Expert Panel Parameters'}
               emptyMsg={'No data'}
@@ -89,7 +89,7 @@ function Manage() {
             <KeyAddressViewer
               tableData={kvCP}
               loading={loadingCP}
-              errorMessage={errorMessageCP}
+              errorMsg={errorMessageCP}
               subHeader={`(${contractsToAddresses.ConstitutionParameters})`}
               header={'Q Constitution Parameters'}
               emptyMsg={'No data'}
@@ -101,7 +101,7 @@ function Manage() {
             <KeyAddressViewer
               tableData={kvEPDRP}
               loading={loadingEPDRP}
-              errorMessage={errorMessageEPDRP}
+              errorMsg={errorMessageEPDRP}
               subHeader={`(${contractsToAddresses.EPDR_Parameters})`}
               header={'Q DeFi Risk Expert Panel Parameters'}
               emptyMsg={'No addresses'}

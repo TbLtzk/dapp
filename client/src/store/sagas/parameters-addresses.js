@@ -29,8 +29,8 @@ function* getContractRegistryKV() {
         };
       })));
   } catch (err) {
-    console.error(err)
-    yield put(getContractRegistryKVError(err));
+    console.error(err);
+    yield put(getContractRegistryKVError('There was an error while loading Contract Registry data'));
   }
 }
 
@@ -40,8 +40,8 @@ function* getConstitutionParametersKV() {
     const data = yield loadKVParameters(contract);
     yield put(getConstitutionParametersKVSuccess(data));
   } catch (err) {
-    console.error(err)
-    yield put(getConstitutionParametersKVError(err));
+    console.error(err);
+    yield put(getConstitutionParametersKVError('There was an error while loading Constitution Parameters data'));
   }
 }
 
@@ -51,8 +51,10 @@ function* getFeesIncentivesExpertPanelParametersKV() {
     const data = yield loadKVParameters(contract);
     yield put(getFeesIncentivesExpertPanelParametersKVSuccess(data));
   } catch (err) {
-    console.error(err)
-    yield put(getFeesIncentivesExpertPanelParametersKVError(err));
+    console.error(err);
+    yield put(getFeesIncentivesExpertPanelParametersKVError(
+      'There was an error while loading EPQFI Parameters data'
+    ));
   }
 }
 
@@ -62,8 +64,8 @@ function* getEPDRParametersKV() {
     const data = yield loadKVParameters(contract);
     yield put(getEPDRParametersKVSuccess(data));
   } catch (err) {
-    console.error(err)
-    yield put(getEPDRParametersKVError(err));
+    console.error(err);
+    yield put(getEPDRParametersKVError('There was an error while loading EPDR Parameters data'));
   }
 }
 

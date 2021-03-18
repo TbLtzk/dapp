@@ -11,8 +11,16 @@ import {
 import { Col, Container, Row } from 'react-bootstrap';
 import { Text } from '../../../../../../QGovernance/components/ProposalsList/VoteBreakdown/styles';
 
-function KeyAddressViewer (props) {
-  const { tableData, loading, errorMsg, header, subHeader, tableHeaders = [], emptyMsg} = props;
+function KeyAddressViewer(props) {
+  const {
+    tableData,
+    loading,
+    errorMsg,
+    header,
+    subHeader,
+    tableHeaders = [],
+    emptyMsg
+  } = props;
   return (
     <CustomBlock>
       <ContainerWrap>
@@ -28,19 +36,21 @@ function KeyAddressViewer (props) {
             </Col>
             <Suspense fallback={<LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap>}>
               {loading ? <LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap> :
-                errorMsg || !tableData?.length ? <Col xs={12}><p>{emptyMsg}</p></Col> :
-                  <Col xs={12}>
-                    <KeyAddressesTable
-                      tableData={tableData}
-                      tableHeaders={tableHeaders}
-                    />
-                  </Col>
+                errorMsg ? <Col xs={12}><p>{errorMsg}</p></Col> :
+                  !tableData?.length ? <Col xs={12}><p>{emptyMsg}</p></Col> :
+                    <Col xs={12}>
+                      <KeyAddressesTable
+                        tableData={tableData}
+                        tableHeaders={tableHeaders}
+                      />
+                    </Col>
               }
             </Suspense>
           </Row>
         </Container>
       </ContainerWrap>
     </CustomBlock>
-  )
+  );
 }
+
 export default KeyAddressViewer;
