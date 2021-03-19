@@ -7,13 +7,7 @@ import Panel from './Panel/Panel';
 import DelegateStakingPower from './DelegateStakingPower';
 import PageWrap from 'components/Base/PageWrap';
 
-import validateContractsAddress from 'contracts/config/cotracts-address-checker';
-
 function PiggyBank() {
-  useEffect(async () => {
-    const res = await validateContractsAddress();
-  });
-
   return (
     <PageWrap>
       <Row>
