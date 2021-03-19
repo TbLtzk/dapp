@@ -21,8 +21,7 @@ export default class QPiggyBank {
       .call();
   }
 
-  async deposit(address, amount) {
-    const amountL = toWei(amount);
+  async deposit(address, amountL) {
     return await this.methods.deposit()
       .send({
         from: address,
