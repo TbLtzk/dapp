@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
+import RefreshDelegationUpdate from './components/RefreshDelegationUpdate'
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -71,6 +72,7 @@ export default function ValidatorPool(props) {
           </div>
         );
       }))}
+      <RefreshDelegationUpdate />
     </CustomBlockVP>
   );
 }

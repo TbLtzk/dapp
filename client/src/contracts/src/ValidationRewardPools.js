@@ -10,4 +10,8 @@ export default class ValidationRewardPools {
   async getBalance(address) {
     return await this.methods.getBalance(address).call();
   }
+
+  async getLastUpdateOfCompoundRate(validatorAddress, signerAddress) {
+    return await this.methods.getLastUpdateOfCompoundRate(validatorAddress).send({ from: signerAddress })
+  }
 }

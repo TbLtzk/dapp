@@ -49,6 +49,13 @@ export const BlockAlignBlock = styled(BlockAlign)`
   hyphens: auto;
 
   > div:first-child{
+    display: block;
     height: 100%;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
   }
 `;
