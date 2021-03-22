@@ -41,7 +41,7 @@ const devnetContractsToContractsRegistryKey = {
 
 const contractsToContractsRegistryKeyCustom = {
   GovernedEpdrQbtcAddress: 'governed.EPDR.QBTC_address',
-  GovernedEpdrQbtcQusdOracle: 'governed.EPDR.QBTCQUSD_oracle',
+  GovernedEpdrQbtcQusdOracle: 'governed.EPDR.QBTC_QUSD_oracle',
 }
 
 export const contractsToContractsRegistryKey = {
