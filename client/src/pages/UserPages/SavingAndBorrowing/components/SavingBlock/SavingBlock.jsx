@@ -59,7 +59,6 @@ export default function SavingBlock(props) {
 
   const onChangeValueBtnSlide = async (value) => {
     const inputValue = value.target.value;
-    console.log("on change Value: ", allowance)
     if (Number(allowance) < Number(inputValue)) {
       setDepositBtnTitle('Approve');
     } else {
