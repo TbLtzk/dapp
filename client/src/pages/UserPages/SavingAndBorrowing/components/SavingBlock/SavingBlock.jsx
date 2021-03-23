@@ -41,7 +41,7 @@ export default function SavingBlock(props) {
     // await handler.approve();
   }, [actCardData]);
 
-  const deposit = useCallback(async (formData) => {
+  const deposit = async (formData) => {
     if (depositBtnTitle === 'Approve') {
       await handler.approve();
       handler.allowance(setAllowance);
@@ -50,7 +50,7 @@ export default function SavingBlock(props) {
       await handler.deposit(formData.field, setSavingBalance, setAvToDeposit, setInterestRate, setEstInterest,
         setLoadingInf);
     }
-  }, [actCardData]);
+  };
 
   const withdraw = useCallback((formData) => {
     handler.withdraw(formData.field, setSavingBalance, setAvToDeposit, setInterestRate, setEstInterest,
