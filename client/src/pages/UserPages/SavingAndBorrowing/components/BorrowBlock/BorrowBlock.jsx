@@ -53,7 +53,7 @@ export default function BorrowBlock(props) {
       setBorrowingInf, setLoadingInf);
   }, [actCardDataInf]);
 
-  const repay = useCallback(async (formData) => {
+  const repay = async (formData) => {
     if (repayBtnTitle === 'Approve') {
       await handler.approveSwitcher('repay');
       handler.allowanceSwitcher(setAllowanceRepay, 'repay');
@@ -62,9 +62,9 @@ export default function BorrowBlock(props) {
       await handler.repay(formData.field, actCardDataInf.vault.vaultNum, setCollateralInf,
         setBorrowingInf, setLoadingInf);
     }
-  }, [actCardDataInf]);
+  };
 
-  const addDeposit = useCallback(async (formData) => {
+  const addDeposit = async (formData) => {
     if (depositBtnTitle === 'Approve') {
       await handler.approveSwitcher('deposit');
       handler.allowanceSwitcher(setAllowanceDeposit, 'deposit');
@@ -73,7 +73,7 @@ export default function BorrowBlock(props) {
       await handler.addDeposit(formData.field, actCardDataInf.vault.vaultNum, setCollateralInf,
         setBorrowingInf, setLoadingInf);
     }
-  }, [actCardDataInf]);
+  };
 
   const withdraw = useCallback(async (formData) => {
     await handler.withdraw(formData.field, actCardDataInf.vault.vaultNum, setCollateralInf,
