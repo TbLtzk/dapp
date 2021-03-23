@@ -1,7 +1,6 @@
 import React from 'react';
-import CustomBlock from 'components/Base/CustomBlock';
 
-import { Title, BlockAlign, BlockAlignBlock } from 'pages/UserPages/Start/TabsAuth/MainTabs/Dashboard/styles';
+import { BlockAlignBlock } from 'pages/UserPages/Start/TabsAuth/MainTabs/Dashboard/styles';
 import Button from 'components/Base/Buttons/Button';
 import { Col } from 'react-bootstrap';
 
