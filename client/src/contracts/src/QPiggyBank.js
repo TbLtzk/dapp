@@ -45,8 +45,7 @@ export default class QPiggyBank {
   }
 
   async updateValidatorsCompoundRate(validatorAddress, signerAddress) {
-    return await this.methods.updateValidatorsCompoundRate(validatorAddress)
-      .send({ from: signerAddress })
+    return await this.methods.updateValidatorsCompoundRate(validatorAddress).send({ from: signerAddress })
   }
 
   async updateCompoundRate(address) {
