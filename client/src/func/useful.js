@@ -59,10 +59,10 @@ export const bn = (number) => {
 };
 
 export const getPercentageFormat = (number) => {
-  const a = new web3.utils.BN('1e+27')
-  const b = new web3.utils.BN(String(number))
-  const c = new web3.utils.BN('100')
-  return a.mul(b).div(c);
+  const a = new BigNumber('1e+25');
+  const b = new BigNumber(number);
+  return a.multipliedBy(b)
+    .toFixed();
 };
 
 
