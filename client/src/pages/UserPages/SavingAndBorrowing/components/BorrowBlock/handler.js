@@ -52,9 +52,11 @@ export default class Handler {
         const borOutstandingDebt = res?.stcStats?.outstandingDebt ? fromWei(res.stcStats.outstandingDebt) : 0;
         const borrowingLimit = res?.stcStats?.borrowingLimit ? fromWei(res.stcStats.borrowingLimit) : 0;
 
-        const availableWithdraw = colPrice !== 0 ? (borrowingLimit - borOutstandingDebt) / colPrice : 0;
+        let availableWithdraw = res?.colStats?.withdrawableAmount
+        let availableBorrow = res?.stcStats?.availableToBorrow
 
         availableDeposit = !availableDeposit ? 0 : fromBtcBlockchain(availableDeposit);
+
 
         const collateralDetails = {
           assets: colAssets,
@@ -66,7 +68,6 @@ export default class Handler {
         };
 
         const borCollateralValue = lockedCol * colPrice;
-        const availableBorrow = borrowingLimit - borOutstandingDebt;
         availableRepay = !availableRepay ? 0 : fromWei(availableRepay);
 
         const borrowingDetails = {
