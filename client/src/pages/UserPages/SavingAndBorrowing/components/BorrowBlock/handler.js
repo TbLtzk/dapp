@@ -52,11 +52,10 @@ export default class Handler {
         const borOutstandingDebt = res?.stcStats?.outstandingDebt ? fromWei(res.stcStats.outstandingDebt) : 0;
         const borrowingLimit = res?.stcStats?.borrowingLimit ? fromWei(res.stcStats.borrowingLimit) : 0;
 
-        let availableWithdraw = res?.colStats?.withdrawableAmount
-        let availableBorrow = res?.stcStats?.availableToBorrow
+        let availableWithdraw = res?.colStats?.withdrawableAmount ? fromWei(res.colStats.withdrawableAmount) : 0;
+        let availableBorrow = res?.stcStats?.availableToBorrow ? fromWei(res.stcStats.availableToBorrow) : 0;
 
         availableDeposit = !availableDeposit ? 0 : fromBtcBlockchain(availableDeposit);
-
 
         const collateralDetails = {
           assets: colAssets,

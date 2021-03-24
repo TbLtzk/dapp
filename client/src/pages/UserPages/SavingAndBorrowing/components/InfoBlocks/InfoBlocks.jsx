@@ -22,10 +22,10 @@ export default function InfoBlocks() {
   const address = useSelector(userAddressMetamask);
   const commonHandler = new CommonHandler(address);
 
-  useEffect(async () => {
+  useEffect(() => {
     commonHandler.setTotalSavingBalance(setTotalSavingBalance, setLoadingTotalDebt);
     commonHandler.setOutstandingDebt(setTotalDebt, setLoadingTotalColVal);
-    await commonHandler.setTotalCollateralLocked(setTotalColVal, setLoadingTotalSavingBalance);
+    commonHandler.setTotalCollateralLocked(setTotalColVal, setLoadingTotalSavingBalance);
   }, []);
 
   const infArr = useMemo(() => {
