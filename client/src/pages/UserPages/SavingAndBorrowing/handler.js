@@ -1,8 +1,8 @@
 import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
 import { SavingQUSD } from 'contracts/src/Saving';
-import { BigNumber } from 'bignumber.js';
 
 import { fromWei } from 'func/balance';
+import { BN } from 'func/useful';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export default class Handler {
@@ -22,8 +22,8 @@ export default class Handler {
       }
       const vaultStats = await Promise.all(promises);
       const amount = vaultStats.reduce(function (sum, item) {
-        return sum.plus(new BigNumber(item?.stcStats?.outstandingDebt));
-      }, new BigNumber(0));
+        return sum.plus(BN(item?.stcStats?.outstandingDebt));
+      }, BN(0));
       stateSetter(fromWei(amount.toFixed()));
       setLoading(false);
     } catch (e) {

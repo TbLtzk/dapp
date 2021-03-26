@@ -1,0 +1,1 @@
+export const MAX_APPROVE_AMOUNT = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';

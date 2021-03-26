@@ -20,14 +20,12 @@ export class SavingQUSD {
   }
 
   async deposit(address, amount) {
-    const amountL = new web3.utils.BN(toWei(amount));
-    return await this.methods.deposit(amountL)
+    return await this.methods.deposit(toWei(amount))
       .send({ from: address });
   }
 
   async withdraw(address, amount) {
-    const amountL = new web3.utils.BN(toWei(amount));
-    return await this.methods.withdraw(amountL)
+    return await this.methods.withdraw(toWei(amount))
       .send({ from: address });
   }
 

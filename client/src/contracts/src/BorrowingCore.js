@@ -34,14 +34,12 @@ export class BorrowingCoreQUSD {
         .send({from: address});
   }
 
-  async generateStc(address, vaultId, amount) {
-    const amountL = new web3.utils.BN(amount);
+  async generateStc(address, vaultId, amountL) {
     return await this.methods.generateStc(vaultId, amountL)
         .send({from: address});
   }
 
-  async payBackSTC(address, vaultId, amount) {
-    const amountL = new web3.utils.BN(amount);
+  async payBackSTC(address, vaultId, amountL) {
     return await this.methods.payBackSTC(vaultId, amountL)
         .send({from: address});
   }

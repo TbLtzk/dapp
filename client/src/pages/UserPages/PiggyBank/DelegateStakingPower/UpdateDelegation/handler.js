@@ -1,6 +1,4 @@
 // eslint-disable-next-line max-classes-per-file
-import { web3 } from 'contracts/config/drizzle-config';
-
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
 import { getDelegationsList, getOutstandingDelegationRewards } from 'store/actions/action-creaters/q-piggy-bank';
 
@@ -71,7 +69,7 @@ export class ComponentHandler {
       shareSum += elementL;
 
       if (typeof elementL === 'number') {
-        inputShares[key] = new web3.utils.BN(toWei(String(elementL)));
+        inputShares[key] = toWei(elementL);
       } else {
         inputShares[key] = 0;
       }

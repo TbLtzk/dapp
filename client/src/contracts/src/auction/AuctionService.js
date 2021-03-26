@@ -1,8 +1,6 @@
 import { contracts } from '../../config/drizzle-config';
-import {
-  getPastEvents,
-} from '../../handler/VotingHandler';
-import { maxApproveAmount } from '../../handler/AuctionHandler';
+import { getPastEvents } from '../../handler/VotingHandler';
+import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 
 import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
 import { StableCoinQUSD } from 'contracts/src/StableCoin';
@@ -40,7 +38,11 @@ export default class AuctionService {
     let allowance = await this.stableCoinUSD.allowance(userAddress, contractAddress);
     if (value) {
       if (Number(allowance) < Number(value)) {
-        let approve = await this.stableCoinUSD.approve(contractAddress, maxApproveAmount, userAddress);
+        await this.stableCoinUSD.approve(
+          contractAddress,
+          MAX_APPROVE_AMOUNT,
+          userAddress
+        );
       }
     }
   }

@@ -1,5 +1,4 @@
 import { put, select, takeEvery } from 'redux-saga/effects';
-import { BigNumber } from 'bignumber.js';
 
 import * as actionTypes from 'store/actions/action-types/q-piggy-bank';
 import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler';
@@ -17,7 +16,6 @@ import {
 
 import QPiggyBank from 'contracts/src/QPiggyBank';
 import { handleLockedAssetsResponse } from 'contracts/handler/QPiggyBankHandler';
-import { web3 } from 'contracts/config/drizzle-config';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 import { toWei, fromWei } from 'func/balance';
 

@@ -1,4 +1,3 @@
-import { web3 } from 'contracts/config/drizzle-config';
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
 
 import { GovernedEpdrQbtcAddress, GovernedEpdrQethAddress, StableCoinQUSD } from 'contracts/src/StableCoin';
@@ -6,7 +5,7 @@ import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
 
 import { uintPerSecondToPerYearNumber } from 'func/useful';
 import { fromBtcBlockchain, toBtcBlockchain, toWei, fromWei } from 'func/balance';
-import { maxApproveAmount } from 'func/numbers';
+import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export default class Handler {
@@ -101,8 +100,7 @@ export default class Handler {
   async addDeposit(amount, vaultNum, setCollateralInf, setBorrowingInf, setLoadingInf) {
     this.dispatch(setTransactionCounter(1));
 
-    const amountL = new web3.utils.BN(toBtcBlockchain(amount));
-    this.borrowingContract.depositCol(this.address, vaultNum, amountL)
+    this.borrowingContract.depositCol(this.address, vaultNum, toBtcBlockchain(amount))
       .then(() => {
         this.setVaultStats(setCollateralInf, setBorrowingInf, setLoadingInf);
       })
@@ -117,8 +115,7 @@ export default class Handler {
   async withdraw(amount, vaultNum, setCollateralInf, setBorrowingInf, setLoadingInf) {
     this.dispatch(setTransactionCounter(1));
 
-    const amountL = new web3.utils.BN(toBtcBlockchain(amount));
-    this.borrowingContract.withdrawCol(this.address, vaultNum, amountL)
+    this.borrowingContract.withdrawCol(this.address, vaultNum, toBtcBlockchain(amount))
       .then(() => {
         this.setVaultStats(setCollateralInf, setBorrowingInf, setLoadingInf);
       })
@@ -163,7 +160,7 @@ export default class Handler {
   }
 
   async approve(contract) {
-    await contract.approve(this.borrowingContract.address, maxApproveAmount, this.address);
+    await contract.approve(this.borrowingContract.address, MAX_APPROVE_AMOUNT, this.address);
   }
 
   async approveSwitcher(type) {

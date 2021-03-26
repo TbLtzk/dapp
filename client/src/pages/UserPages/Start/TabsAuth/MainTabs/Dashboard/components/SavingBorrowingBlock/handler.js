@@ -4,7 +4,7 @@ import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
 import CompoundRateKeeper from 'contracts/src/CompoundRateKeeper';
 import { SavingQUSD } from 'contracts/src/Saving';
 import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
-import { bn, fN, uintPerSecondToPerYearNumber } from 'func/useful';
+import { BN, fN, uintPerSecondToPerYearNumber } from 'func/useful';
 import { remainDateTimeSince } from 'func/convertDate';
 import { fromWei } from 'func/balance';
 
@@ -23,7 +23,7 @@ export default class Handler {
   getTotalSupply(stateSetter) {
     this.StableCoin.totalSupply()
       .then(val => {
-        const transf = fN(bn(val)
+        const transf = fN(BN(val)
           .toString());
         stateSetter(transf);
       })
@@ -35,7 +35,7 @@ export default class Handler {
   getSystemBalance(stateSetter) {
     this.StableCoin.balanceOf(contractsToAddresses.SystemBalance)
       .then(val => {
-        const transf = fN(bn(fromWei(val))
+        const transf = fN(BN(fromWei(val))
           .toString());
         stateSetter(transf);
       })

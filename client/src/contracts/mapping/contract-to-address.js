@@ -5,31 +5,6 @@ import { SavingQUSD } from '../src/Saving';
 import { ContractRegistry } from '../src/ContractRegistry';
 import { contractsToContractsRegistryKey as contToKey } from './contract-to-contractRegistryKey';
 
-
-import { fromWei } from 'func/balance';
-import Web3 from 'web3';
-
-const web3 = new Web3(Web3.givenProvider);
-web3.eth.handleRevert = true;
-
-const a = 10**18
-const aStr = a + ''
-const b = 1
-const bStr = b + ''
-
-console.log('----------------')
-console.log('a', a)
-console.log('aStr', aStr)
-console.log('aStr.length', aStr.length)
-console.log('b', b)
-console.log('bStr', bStr)
-console.log('bStr.length', bStr.length)
-console.log('----------------')
-console.log('----------------')
-
-
-
-
 export const contractsToAddressesBase = {
   ContractRegistry: '0xc3E589056Ece16BCB88c6f9318e9a7343b663522',
 };

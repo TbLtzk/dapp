@@ -1,5 +1,5 @@
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
-import { bn, fN } from 'func/useful';
+import { BN, fN } from 'func/useful';
 import { fromWei } from 'func/balance';
 
 export default class ContractBalance {
@@ -13,7 +13,7 @@ export default class ContractBalance {
       .then(
         res => {
           let transf = fromWei(res);
-          transf = fN(bn(transf)
+          transf = fN(BN(transf)
             .toString());
           stateSetter(transf);
         }

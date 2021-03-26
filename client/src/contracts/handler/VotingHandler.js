@@ -1,5 +1,3 @@
-import { BigNumber } from 'bignumber.js';
-
 import SlashingVotingService from '../src/voting/SlashingVoting';
 import RootsVotingService from '../src/voting/RootsVoting';
 import ConstitutionVotingService from '../src/voting/ConstitutionVoting';
@@ -8,8 +6,7 @@ import GeneralUpdateVotingService from '../src/voting/GeneralUpdateVoting';
 import MembershipVotingService from '../src/voting/MembershipVoting';
 import ParametersVotingService from '../src/voting/ParametersVoting';
 import { chooseExpertContractDependsOnType } from './QExpertVotingHandler';
-
-import { web3 } from '../config/drizzle-config';
+import { BN } from 'func/useful';
 
 export const getPastEvents = async (contract, event) => {
   const contractWeb3 = contract;
@@ -92,19 +89,13 @@ export function toFixed(x) {
   return x;
 }
 
-export const bnSlashing = (number) => {
-  return new web3.utils.BN(number);
-  // return new BigNumber(number);
-};
-
 export const getPercentageFormat = (number) => {
-  const bNumber = new BigNumber(number)
-  return bNumber.multipliedBy(new BigNumber(10 ** 27)).dividedBy(100);
+  return BN(number).multipliedBy(BN(10 ** 27)).dividedBy(100);
 };
 
 export const transformToPercentage = (number) => {
   const amount = '10000000000000000000000000';
-  let convertedNumber = bn(number)
+  let convertedNumber = BN(number)
     .dividedBy(amount);
   if (convertedNumber?.e < 0) {
     convertedNumber = ((convertedNumber)).toFixed(10);
@@ -112,16 +103,6 @@ export const transformToPercentage = (number) => {
     convertedNumber = Math.round(convertedNumber?.c[0]);
   }
   return convertedNumber;
-};
-
-export const bn = (number) => {
-  // return new web3.utils.BN(number);
-  return new BigNumber(number);
-};
-
-export const calculatePercentage = (part, amount) => {
-  return bn(((10 ** 27) * part) / amount);
-
 };
 
 export function creationSlashingContractObj(contractName) {

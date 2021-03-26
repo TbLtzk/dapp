@@ -3,7 +3,7 @@ import { setTransactionCounter } from 'store/actions/action-creaters/transaction
 import { StableCoinQUSD } from 'contracts/src/StableCoin';
 import { SavingQUSD } from 'contracts/src/Saving';
 
-import { maxApproveAmount } from 'func/numbers';
+import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 import { fromWei } from 'func/balance';
 import { uintPerSecondToPerYearNumber } from 'func/useful';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
@@ -97,6 +97,9 @@ export default class Handler {
   }
 
   async approve() {
-    const approve = await this.contractStableCoinQUSD.approve(this.contractSavingQUSD.address, maxApproveAmount, this.address);
+    await this.contractStableCoinQUSD.approve(
+      this.contractSavingQUSD.address,
+      MAX_APPROVE_AMOUNT,
+      this.address);
   }
 }
