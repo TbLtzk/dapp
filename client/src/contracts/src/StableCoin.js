@@ -25,25 +25,20 @@ export class StableCoin {
   }
 
   async approve(spender, amount, address) {
-    // const amountL = new web3.utils.BN(web3.utils.toWei(amount));
     return await this.methods.approve(spender, amount)
       .send({ from: address });
   }
 
   async allowance(owner, spender) {
-    return fromWei(await this.methods.allowance(owner, spender)
-      .call());
+    return fromWei(await this.methods.allowance(owner, spender).call());
   }
 
   async totalSupply() {
-    // return new web3.utils.BN(web3.utils.fromWei(await this.methods.totalSupply()
-    return fromWei(await this.methods.totalSupply()
-      .call());
+    return fromWei(await this.methods.totalSupply().call());
   }
 
   async mint(address, recepient, amount) {
-    return await this.methods.mint(recepient, toWei(amount))
-      .send({ from: address });
+    return await this.methods.mint(recepient, toWei(amount)).send({ from: address });
   }
 }
 

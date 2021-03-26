@@ -2,6 +2,7 @@ import Validators from 'contracts/src/Validators';
 import {web3} from 'contracts/config/drizzle-config';
 import {setTransactionCounter} from 'store/actions/action-creaters/transaction-handler';
 import {getValidatorMembers} from 'store/actions/action-creaters/validators';
+import { toWei, fromWei } from 'func/balance';
 
 export default class Handler {
   constructor(address, dispatch, alert) {
@@ -28,7 +29,7 @@ export default class Handler {
     this.dispatch(setTransactionCounter(1));
 
     this.validators.getAccountableTotalStake(this.address).then((res) => {
-      const resL = web3.utils.fromWei(res);
+      const resL = fromWei(res);
       stateSetter(resL);
     }).catch((e) => {
       stateSetter(false);
@@ -55,7 +56,7 @@ export default class Handler {
     this.dispatch(setTransactionCounter(1));
 
     this.validators.withdrawals(this.address).then((res) => {
-      const amount = web3.utils.fromWei(res.amount);
+      const amount = fromWei(res.amount);
       annToWithdrawSetter(amount);
       annToWithdrawEndTimeSetter(Number(res.endTime));
     }).catch((e) => {
@@ -71,7 +72,7 @@ export default class Handler {
     this.dispatch(setTransactionCounter(1));
 
     web3.eth.getBalance(this.address).then((res) => {
-      const resL = web3.utils.fromWei(res);
+      const resL = fromWei(res);
       stateSetter(resL);
     }).catch((e) => {
       stateSetter(false);
@@ -84,7 +85,7 @@ export default class Handler {
   async stakeToRanking(amount, valExSetter, accTotStSet, valListSet, accBalSet) {
     this.dispatch(setTransactionCounter(1));
 
-    const amountL = new web3.utils.BN(web3.utils.toWei(amount));
+    const amountL = new web3.utils.BN(toWei(amount));
     this.validators.commitCollateral(this.address, amountL).then(() => {
       this.setValidatorExist(valExSetter);
       this.setAccountableTotalStake(accTotStSet);
@@ -101,7 +102,7 @@ export default class Handler {
   async announce(amount, accountableTotalStakeSetter, annToWithdrawSetter, annToWithdrawEndTimeSetter) {
     this.dispatch(setTransactionCounter(1));
 
-    const amountL = new web3.utils.BN(web3.utils.toWei(amount));
+    const amountL = new web3.utils.BN(toWei(amount));
     this.validators.announceWithdrawal(amountL, this.address).then(() => {
       this.setAccountableTotalStake(accountableTotalStakeSetter);
       this.setAnnToWithdrawData(annToWithdrawSetter, annToWithdrawEndTimeSetter);
@@ -115,7 +116,7 @@ export default class Handler {
   async withdrawFromRanking(amount, valExSetter, accTotStSet, valListSet, accBalSet, annToWithSet, annToWithETSet) {
     this.dispatch(setTransactionCounter(1));
 
-    const amountL = new web3.utils.BN(web3.utils.toWei(amount));
+    const amountL = new web3.utils.BN(toWei(amount));
     this.validators.withdraw(amountL, this.address).then(() => {
       this.setValidatorExist(valExSetter);
       this.setAccountableTotalStake(accTotStSet);

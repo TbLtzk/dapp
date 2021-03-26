@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import { Row } from 'react-bootstrap';
 
 import { fN } from 'func/useful';
+import { fromWei } from 'func/balance';
 import CustomBlock from 'components/Base/CustomBlock';
 import FormInput from 'components/Base/Form/FormInput';
 import ActionButtons from 'pages/UserPages/Staking/FormStaking/ActionButtons';
@@ -48,7 +49,7 @@ function FormStaking() {
   useEffect(() => {
     if (drizzle) {
       drizzle.web3.eth.getBalance(userAddress, (err, balance) => {
-        const userBalance = drizzle.web3.utils.fromWei(balance, 'ether');
+        const userBalance = fromWei(balance);
         setUserBalance(fN(userBalance));
       });
     }
@@ -98,7 +99,7 @@ function FormStaking() {
             <li>{withdrawalsData?.pending ? 'pending' : 'not-active'}</li>
             {withdrawalsData?.pending ?
               <>
-                <li>{withdrawalsData ? drizzle.web3.utils.fromWei(withdrawalsData?.amount, 'ether') : 0}Q</li>
+                <li>{withdrawalsData ? fromWei(withdrawalsData?.amount) : 0}Q</li>
                 <li>{withdrawalsData?.endTime !== '0' ? fromSolDateFormattingT1(Number(withdrawalsData?.endTime)) : '-'}</li>
               </>
               : null}

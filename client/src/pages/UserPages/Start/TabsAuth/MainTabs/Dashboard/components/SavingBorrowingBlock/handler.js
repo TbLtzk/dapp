@@ -4,8 +4,9 @@ import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
 import CompoundRateKeeper from 'contracts/src/CompoundRateKeeper';
 import { SavingQUSD } from 'contracts/src/Saving';
 import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
-import { bn, fN, getPercentageFormat, uintPerSecondToPerYearNumber } from 'func/useful';
+import { bn, fN, uintPerSecondToPerYearNumber } from 'func/useful';
 import { remainDateTimeSince } from 'func/convertDate';
+import { fromWei } from 'func/balance';
 
 export default class Handler {
   constructor(drizzle, userAddress) {
@@ -34,7 +35,7 @@ export default class Handler {
   getSystemBalance(stateSetter) {
     this.StableCoin.balanceOf(contractsToAddresses.SystemBalance)
       .then(val => {
-        const transf = fN(bn(this.drizzle.web3.utils.fromWei(val))
+        const transf = fN(bn(fromWei(val))
           .toString());
         stateSetter(transf);
       })

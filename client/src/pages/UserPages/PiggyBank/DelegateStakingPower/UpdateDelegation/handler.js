@@ -6,6 +6,7 @@ import { getDelegationsList, getOutstandingDelegationRewards } from 'store/actio
 
 import QPiggyBank from 'contracts/src/QPiggyBank';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
+import { toWei } from 'func/balance';
 
 export class ContractHandler {
   constructor(address, dispatch, alert) {
@@ -70,7 +71,7 @@ export class ComponentHandler {
       shareSum += elementL;
 
       if (typeof elementL === 'number') {
-        inputShares[key] = new web3.utils.BN(web3.utils.toWei(String(elementL)));
+        inputShares[key] = new web3.utils.BN(toWei(String(elementL)));
       } else {
         inputShares[key] = 0;
       }

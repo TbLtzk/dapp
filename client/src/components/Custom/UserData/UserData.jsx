@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 
 import { fN } from 'func/useful';
+import { fromWei } from 'func/balance';
 
 const { useDrizzle, useDrizzleState } = drizzleReactHooks;
 
@@ -17,7 +18,7 @@ function UserData() {
   useEffect(() => {
     if (drizzle) {
       drizzle.web3.eth.getBalance(userAddress, (err, balance) => {
-        const userBalance = drizzle.web3.utils.fromWei(balance, 'ether');
+        const userBalance = fromWei(balance);
         setUserBalance(fN(userBalance));
       });
     }

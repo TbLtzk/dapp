@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import Web3 from 'web3';
 import { contractsToAbi } from '../mapping/contract-to-abi';
+import { toWei } from 'func/balance';
 
 const web3 = new Web3(Web3.givenProvider);
 web3.eth.handleRevert = true;
@@ -19,13 +20,13 @@ export class SavingQUSD {
   }
 
   async deposit(address, amount) {
-    const amountL = new web3.utils.BN(web3.utils.toWei(amount));
+    const amountL = new web3.utils.BN(toWei(amount));
     return await this.methods.deposit(amountL)
       .send({ from: address });
   }
 
   async withdraw(address, amount) {
-    const amountL = new web3.utils.BN(web3.utils.toWei(amount));
+    const amountL = new web3.utils.BN(toWei(amount));
     return await this.methods.withdraw(amountL)
       .send({ from: address });
   }

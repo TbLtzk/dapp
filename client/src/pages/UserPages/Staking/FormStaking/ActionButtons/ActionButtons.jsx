@@ -11,7 +11,6 @@ import RootService from 'contracts/src/Root';
 import { Col, Row } from 'react-bootstrap';
 import Button from 'components/Base/Buttons/Button';
 
-import { bn } from '../../../../../contracts/handler/AuctionHandler';
 import { toWei } from 'func/balance';
 
 const { useDrizzle, useDrizzleState } = drizzleReactHooks;
@@ -23,11 +22,6 @@ function ActionButtons(props) {
   const dispatch = useDispatch();
   const rootService = new RootService();
   const userAddress = useSelector(userAddressMetamask);
-
-  // const convertToWei = (amount) => {
-  //   return bn(drizzle.web3.utils.toWei(amount, 'ether'));
-  //   // return drizzle.web3.utils.toWei(amount, 'ether');
-  // };
 
   const onStakeToPanel = useCallback(async (data) => {
 
