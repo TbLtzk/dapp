@@ -87,8 +87,8 @@ export default class QPiggyBank {
       for (let member of delegationsList) {
         resultArr.push({
           validator: member.validator,
-          idealStake: fromWei(member.idealStake),
-          claimableReward: fromWei(member.claimableReward),
+          idealStake: web3.utils.fromWei(member.idealStake),
+          claimableReward: web3.utils.fromWei(member.claimableReward),
         });
       }
       return resultArr;
@@ -102,7 +102,7 @@ export default class QPiggyBank {
       return 0;
     } else {
       for (let member of delegationsList) {
-        sumArr.push(+fromWei(member?.claimableReward));
+        sumArr.push(+web3.utils.fromWei(member?.claimableReward));
       }
       if (sumArr?.length !== 0) {
         const result = sumArr.reduce((accumulator, currentValue) => {
