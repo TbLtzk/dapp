@@ -4,7 +4,7 @@ export const navItems = [
     location: 'q-governance',
   },
   {
-    label: 'PiggyBank',
+    label: 'Q Vault',
     location: 'piggy-bank',
   },
   {
