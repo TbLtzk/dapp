@@ -53,7 +53,7 @@ export default function Panel() {
     <CustomBlockPanel>
       <TextPanel>
         <div>
-          <span>Piggy Bank balance: </span>
+          <span>Q Vault balance: </span>
           <span>{fN(userPBBalanceL) + 'Q'}</span>
         </div>
         <div>
@@ -80,7 +80,7 @@ export default function Panel() {
       </TextPanel>
       <TextPanel type="parentNode">
         {/*<span>Voting Weight</span>*/}
-        <TextPanelSmallGrey style={{ margin: '0 8px 0 16px' }}>PiggyBank Voting Weight:</TextPanelSmallGrey>
+        <TextPanelSmallGrey style={{ margin: '0 8px 0 16px' }}>Q Vault Voting Weight:</TextPanelSmallGrey>
         <TextPanelSmallBlack>
           {userVotingWeight}
           Q

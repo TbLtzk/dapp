@@ -37,7 +37,7 @@ function Stats(props) {
           })}
           <WrapBtn md={12}>
             <Button
-              title="Manage PiggyBank"
+              title="Manage Q Vault"
               width="100%"
               handleButton={() => {
                 history.push('piggy-bank');
