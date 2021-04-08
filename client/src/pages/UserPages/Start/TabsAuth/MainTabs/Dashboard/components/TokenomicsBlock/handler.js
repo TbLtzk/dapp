@@ -16,7 +16,7 @@ export default class Handler {
     this.DefaultAllocationProxy = new DefaultAllocationProxy('DefaultAllocationProxy');
     this.RootNodeRewardProxy = new RootNodeRewardProxy('RootNodeRewardProxy');
     this.ValidationRewardProxy = new ValidationRewardProxy('ValidationRewardProxy');
-    this.QPiggyBank = new QPiggyBank(contractsToAddresses['QPiggyBank']);
+    this.QPiggyBank = new QPiggyBank(contractsToAddresses['QVault']);
     this.CompoundRateKeeperPiggyBank = new CompoundRateKeeper('CompoundRateKeeperPiggyBank');
     this.ContractBalance = new ContractBalance(this.drizzle, this.userAddress);
   }

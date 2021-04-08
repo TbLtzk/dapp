@@ -8,7 +8,7 @@ import { toWei } from 'func/balance';
 
 export class ContractHandler {
   constructor(address, dispatch, alert) {
-    this.piggyBank = new QPiggyBank(contractsToAddresses['QPiggyBank']);
+    this.piggyBank = new QPiggyBank(contractsToAddresses['QVault']);
     this.dispatch = dispatch;
     this.address = address;
     this.alert = alert;

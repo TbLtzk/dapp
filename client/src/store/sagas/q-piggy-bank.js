@@ -23,7 +23,7 @@ let contractInstance = null;
 
 function getContractInstance() {
   if (contractInstance === null) {
-    contractInstance = new QPiggyBank(contractsToAddresses['QPiggyBank']);
+    contractInstance = new QPiggyBank(contractsToAddresses['QVault']);
   }
   return contractInstance;
 }

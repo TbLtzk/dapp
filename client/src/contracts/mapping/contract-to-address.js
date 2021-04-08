@@ -2,11 +2,14 @@ import EPDR_Parameters from '../src/parameters/EPDR_Parameters';
 import QPiggyBank from '../src/QPiggyBank';
 import { BorrowingCoreQUSD } from '../src/BorrowingCore';
 import { SavingQUSD } from '../src/Saving';
-import { ContractRegistry } from '../src/ContractRegistry';
 import { contractsToContractsRegistryKey as contToKey } from './contract-to-contractRegistryKey';
+import {
+  CONTRACT_REGISTRY_ADDRESS,
+  contractRegistryInstance,
+} from '../contracts'
 
 export const contractsToAddressesBase = {
-  ContractRegistry: '0xc3E589056Ece16BCB88c6f9318e9a7343b663522',
+  ContractRegistry: CONTRACT_REGISTRY_ADDRESS,
 };
 
 const contractsToAddressesDynamic = {
@@ -27,15 +30,15 @@ export const contractsToAddresses = {
 };
 
 export async function initAddresses() {
-  const contractRegistry = new ContractRegistry();
 
   async function getAddress(objectKey) {
-    contractsToAddresses[objectKey] = await contractRegistry.getAddress(contToKey[objectKey]);
+    contractsToAddresses[objectKey] = await contractRegistryInstance.instance.methods.getAddress(contToKey[objectKey]).call();
   }
 
   await Promise.all(Object.keys(contToKey)
     .map(i => getAddress(i)));
 
+  console.log('contractsToAddresses', contractsToAddresses)
   // EPDR_Parameters
   const epdrParametersContract = new EPDR_Parameters(contractsToAddresses['EPDR_Parameters']);
   contractsToAddresses['GovernedEpdrQbtcAddress'] = await epdrParametersContract.getAddr(contToKey['GovernedEpdrQbtcAddress']);
@@ -50,6 +53,6 @@ export async function initAddresses() {
   contractsToAddresses['CompoundRateKeeperSaving'] = await savingQUSDContract.compoundRateKeeper();
 
   // QPiggyBank
-  const qPiggyBankContract = new QPiggyBank(contractsToAddresses['QPiggyBank']);
+  const qPiggyBankContract = new QPiggyBank(contractsToAddresses['QVault']);
   contractsToAddresses['CompoundRateKeeperPiggyBank'] = await qPiggyBankContract.compoundRateKeeper();
 }

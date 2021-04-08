@@ -16,7 +16,7 @@ export default class Validators {
   constructor() {
     this.methods = contracts[contractName].methods;
     this.ValidationRewardPoolsContract = new ValidationRewardPools();
-    this.QPiggyBank = new QPiggyBank(contractsToAddresses['QPiggyBank']);
+    this.QPiggyBank = new QPiggyBank(contractsToAddresses['QVault']);
   }
 
   async withdrawals(address) {
