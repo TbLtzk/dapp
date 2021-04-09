@@ -1,3 +1,4 @@
+import {fromWei} from 'func/balance.js'
 import Web3 from 'web3';
 import { contractsToAbi } from '../mapping/contract-to-abi';
 
@@ -87,8 +88,8 @@ export default class QPiggyBank {
       for (let member of delegationsList) {
         resultArr.push({
           validator: member.validator,
-          idealStake: web3.utils.fromWei(member.idealStake),
-          claimableReward: web3.utils.fromWei(member.claimableReward),
+          idealStake: fromWei(member.idealStake),
+          claimableReward: fromWei(member.claimableReward),
         });
       }
       return resultArr;
@@ -102,7 +103,7 @@ export default class QPiggyBank {
       return 0;
     } else {
       for (let member of delegationsList) {
-        sumArr.push(+web3.utils.fromWei(member?.claimableReward));
+        sumArr.push(+fromWei(member?.claimableReward));
       }
       if (sumArr?.length !== 0) {
         const result = sumArr.reduce((accumulator, currentValue) => {
