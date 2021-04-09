@@ -4,7 +4,7 @@ import VotingService from './VotingService';
 import {
   getStatusTransformation, transformToPercentage
 } from '../../handler/VotingHandler';
-import { BN } from 'func/balance';
+import { BN } from 'func/useful';
 
 /*EPQFI_ParametersVoting, EPDR_ParametersVoting*/
 export default class ParametersVoting extends VotingService {

@@ -1,12 +1,12 @@
 import { put, takeEvery } from 'redux-saga/effects';
+import Validators from '../../contracts/src/Validators';
 import * as actionTypes from 'store/actions/action-types/validators';
 import {
   setError, setDelegatorsShare, getDelegatorsShare, setTotalStake, setOwnStake,
   setDelegatedStake, setAccTotalStake, setInterestRate, getInterestRate,
   getValidatorMembersSuccess, getValidatorMembersError, isUserValidatorSuccess,
 } from 'store/actions/action-creaters/validators';
-import Validators from '../../contracts/src/Validators';
-import { web3 } from '../../contracts/config/drizzle-config';
+import { fromWei } from 'func/balance';
 
 let contractInstance = null;
 
@@ -38,7 +38,7 @@ function* getTotalStakeGenerator({ address }) {
 
     const contract = getContractInstance();
     let data = yield contract.getValidatorTotalStake(address);
-    data = web3.utils.fromWei(data);
+    data = fromWei(data);
 
     yield put(setTotalStake(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
@@ -54,7 +54,7 @@ function* getOwnStakeGenerator({ address }) {
 
     const contract = getContractInstance();
     let data = yield contract.getValidatorsOwnStake(address);
-    data = web3.utils.fromWei(data);
+    data = fromWei(data);
 
     yield put(setOwnStake(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
@@ -70,7 +70,7 @@ function* getDelegatedStakeGenerator({ address }) {
 
     const contract = getContractInstance();
     let data = yield contract.getValidatorDelegatedStake(address);
-    data = web3.utils.fromWei(data);
+    data = fromWei(data);
 
     yield put(setDelegatedStake(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
@@ -86,7 +86,7 @@ function* getAccTotalStakeGenerator({ address }) {
 
     const contract = getContractInstance();
     let data = yield contract.getAccountableTotalStake(address);
-    data = web3.utils.fromWei(data);
+    data = fromWei(data);
 
     yield put(setAccTotalStake(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });

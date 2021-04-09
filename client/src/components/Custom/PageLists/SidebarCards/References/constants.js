@@ -23,7 +23,7 @@ export const arrayLinksVoting = [
     path: "/#",
   },
   {
-    title: "What is the PiggyBank",
+    title: "What is the Q Vault?",
     path: "/#",
   },
 ];

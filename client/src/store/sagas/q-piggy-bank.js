@@ -1,5 +1,4 @@
 import { put, select, takeEvery } from 'redux-saga/effects';
-import { BigNumber } from 'bignumber.js';
 
 import * as actionTypes from 'store/actions/action-types/q-piggy-bank';
 import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler';
@@ -17,14 +16,9 @@ import {
 
 import QPiggyBank from 'contracts/src/QPiggyBank';
 import { handleLockedAssetsResponse } from 'contracts/handler/QPiggyBankHandler';
-import { web3 } from 'contracts/config/drizzle-config';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
+import { toWei, fromWei } from 'func/balance';
 
-function toWei(number) {
-  const amount = new BigNumber(number)
-  const a = new BigNumber(10 ** 18 )
-  return amount.multipliedBy(a).toFixed()
-}
 let contractInstance = null;
 
 function getContractInstance() {
@@ -43,9 +37,8 @@ function* getUserBalanceGenerator({ address }) {
 
     const contract = getContractInstance();
     let data = yield contract.getUserBalance(address);
-    data = web3.utils.fromWei(data);
 
-    yield put(setUserBalance(data));
+    yield put(setUserBalance(fromWei(data)));
   } catch (err) {
     console.error('QPB.Error', err);
     yield put(setError(err.message));

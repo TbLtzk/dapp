@@ -27,7 +27,6 @@ export default class SystemSurplusAuction extends AuctionService {
     // objRes.user = inf?.bidder;
     objRes.user = inf?.bidder || inf?.user;
     objRes.id = inf.id;
-    // objRes.bid = drizzleRegistry.web3.utils.fromWei(inf.bid, 'ether');
     objRes.endTime = promiseRes.endTime;
     objRes.isExecuted = promiseRes.isExecuted;
     objRes.lot = fromWei(promiseRes.lot);

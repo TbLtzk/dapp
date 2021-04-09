@@ -7,6 +7,7 @@ import CompoundRateKeeper from 'contracts/src/CompoundRateKeeper';
 import ContractBalance from 'contracts/handler/ContractBalance';
 
 import { remainDateTimeSince } from 'func/convertDate';
+import { fromWei } from 'func/balance';
 
 export default class Handler {
   constructor(drizzle, userAddress) {
@@ -60,7 +61,7 @@ export default class Handler {
           this.drizzle.web3.eth.getBalance(contractsToAddresses.ValidationRewardProxy)
             .then(
               res => {
-                let transf = this.drizzle.web3.utils.fromWei(res);
+                let transf = fromWei(res);
                 stateSetter(transf);
                 stateLoading(false);
               }
@@ -80,7 +81,7 @@ export default class Handler {
       this.drizzle.web3.eth.getBalance(contractsToAddresses.ValidationRewardProxy)
         .then(
           res => {
-            let transf = this.drizzle.web3.utils.fromWei(res);
+            let transf = fromWei(res);
             stateSetter(transf);
             stateLoading(false);
           }

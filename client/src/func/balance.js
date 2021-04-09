@@ -1,36 +1,38 @@
-import { drizzleRegistry, web3 } from '../contracts/config/drizzle-config';
-import { bn } from './useful';
-import { BigNumber } from 'bignumber.js';
+import { BN } from './useful'
 
-export const fromBtcBlockchain = (btc) => {
-  if (btc.isNaN === true) return 0;
-  return btc / 1e+8;
-};
+export function fromBtcBlockchain(value) {
+  return BN(value)
+    .dividedBy(1e+8)
+    .toFixed();
+}
 
-export const toBtcBlockchain = (num) => {
-  if (num.isNaN === true) return 0;
-  return num * 1e+8;
-};
+export function toBtcBlockchain(value) {
+  return BN(value)
+    .multipliedBy(1e+8)
+    .toFixed();
+}
 
-export const toWei = (value) => {
-  return drizzleRegistry.web3.utils.toWei(new web3.utils.BN(value), 'ether');
-};
-
-export const fromWei = (value) => {
-  return drizzleRegistry.web3.utils.fromWei(new web3.utils.BN(value), 'ether');
-};
-export const BN = (value) => {
-  // return new BigNumber(value);
-  return new web3.utils.BN(value);
-};
-
-export const percentageToPercentPerSecond = (number) => {
+export function percentageToPercentPerSecond(number) {
   if (number) {
     const first = number / 100;
     const second = (1 + first) ** (1 / (3600 * 24 * 365)) - 1;
     const third = BN(String(second * (10 ** 27)));
-    return third;
+    return third.toFixed();
   } else {
     return 0;
   }
-};
+}
+
+export function toWei(value) {
+  const amount = BN(value);
+  const a = BN(10 ** 18);
+  return amount.multipliedBy(a)
+    .toFixed();
+}
+
+export function fromWei(value) {
+  const amount = BN(value);
+  const a = BN(10 ** 18);
+  return amount.dividedBy(a)
+    .toFixed();
+}

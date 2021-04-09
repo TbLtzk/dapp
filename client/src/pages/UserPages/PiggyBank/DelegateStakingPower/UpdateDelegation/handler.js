@@ -1,11 +1,10 @@
 // eslint-disable-next-line max-classes-per-file
-import { web3 } from 'contracts/config/drizzle-config';
-
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
 import { getDelegationsList, getOutstandingDelegationRewards } from 'store/actions/action-creaters/q-piggy-bank';
 
 import QPiggyBank from 'contracts/src/QPiggyBank';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
+import { toWei } from 'func/balance';
 
 export class ContractHandler {
   constructor(address, dispatch, alert) {
@@ -70,7 +69,7 @@ export class ComponentHandler {
       shareSum += elementL;
 
       if (typeof elementL === 'number') {
-        inputShares[key] = new web3.utils.BN(web3.utils.toWei(String(elementL)));
+        inputShares[key] = toWei(elementL);
       } else {
         inputShares[key] = 0;
       }

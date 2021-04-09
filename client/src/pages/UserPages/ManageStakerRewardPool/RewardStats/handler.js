@@ -2,7 +2,6 @@ import Validators from 'contracts/src/Validators';
 import ValidationRewardPools from 'contracts/src/ValidationRewardPools';
 
 import {
-  numberToUintPercent,
   uintPercentToNumber,
   getPercentageFormat,
   uintPerSecondToPerYearNumber
@@ -40,7 +39,6 @@ export default class Handler {
     this.dispatch(setTransactionCounter(1));
 
     const amountL = percentageToPercentPerSecond(formData.amount);
-    // const amountL = numberToUintPercent(formData.amount);
     contractValidators.setInterestRate(this.address, amountL)
       .then(() => {
         this.getInterestRate(stateSetter);
@@ -73,7 +71,6 @@ export default class Handler {
   setValidatorShare(formData, stateSetter) {
     this.dispatch(setTransactionCounter(1));
     const delShare = getPercentageFormat(formData.amount);
-    // const delShare = numberToUintPercent(100 - formData.amount);
     contractValidators.setDelegatorsShare(this.address, delShare)
       .then(() => {
         this.getDelegatorShare(stateSetter);

@@ -1,5 +1,4 @@
 import { BigNumber } from 'bignumber.js';
-import { web3 } from '../contracts/config/drizzle-config';
 
 export const errorHandler = (error, field, min = 0, max = 100) => {
   if (undefined === error[field]) return '';
@@ -21,22 +20,6 @@ export const fN = (number) => {
   return new Intl.NumberFormat('en-GB', { maximumFractionDigits: 4 }).format(number);
 };
 
-export const numberToUintPercent = (num) => {
-  const numL = num;
-  let uintNum;
-  if (numL === undefined || numL.isNaN === true) return undefined;
-  if (numL <= 0) {
-    uintNum = 0;
-  } else if (numL >= 100) {
-    uintNum = 10 ** 27;
-  } else {
-    uintNum = (numL * (10 ** 27)) / 100;
-  }
-
-  const BNNum = new BigNumber(uintNum);
-  return web3.utils.toHex(BNNum);
-};
-
 export const uintPercentToNumber = (num) => {
   if (num === undefined || num.isNaN === true) return undefined;
   if (num <= 0) return 0;
@@ -54,14 +37,13 @@ export const uintPerSecondToPerYearNumber = (num) => {
   return (((1 + perSec) ** (365 * 24 * 3600)) - 1) * 100;
 };
 
-export const bn = (number) => {
-  return new BigNumber(number);
-};
+export function BN(value) {
+  return new BigNumber(value);
+}
 
 export const getPercentageFormat = (number) => {
-  const a = new BigNumber('1e+25');
-  const b = new BigNumber(number);
-  return a.multipliedBy(b)
+  return BN('1e+25')
+    .multipliedBy(number)
     .toFixed();
 };
 

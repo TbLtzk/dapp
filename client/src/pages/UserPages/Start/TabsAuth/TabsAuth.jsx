@@ -18,7 +18,7 @@ function TabsAuth() {
         },
         {
           label: 'manage',
-          title: 'Manage',
+          title: 'Q Parameters',
           content: <Manage/>
         },
       ]

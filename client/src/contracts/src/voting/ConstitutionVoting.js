@@ -4,7 +4,8 @@ import VotingService from './VotingService';
 import {
   getStatusTransformation
 } from '../../handler/VotingHandler';
-import { BN, fromWei } from 'func/balance';
+import { fromWei } from 'func/balance';
+import { BN } from 'func/useful';
 
 export default class ConstitutionVoting extends VotingService {
   constructor() {

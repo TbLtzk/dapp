@@ -77,11 +77,11 @@ function ValidatorsPanel(props) {
                 </WrapBtn>
                 : <Row>
                   <Col xs={7}>
-                    <BottomText>Manage your validator pool parameters in piggy bank.</BottomText>
+                    <BottomText>Manage your validator pool parameters in Q Vault.</BottomText>
                   </Col>
                   <WrapBtn xs={5}>
                     <ButtonLinkArrow
-                      title="Go to Piggy Bank"
+                      title="Go to Q Vault"
                       path="/piggy-bank"
                     />
                   </WrapBtn>

@@ -2,6 +2,7 @@ import { web3 } from 'contracts/config/drizzle-config';
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
 import QPiggyBank from 'contracts/src/QPiggyBank';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
+import { fromWei } from 'func/balance';
 
 export default class PiggyBankHandler {
   constructor(address, dispatch, alert) {
@@ -15,7 +16,7 @@ export default class PiggyBankHandler {
     this.dispatch(setTransactionCounter(1));
 
     this.piggyBank.getUserBalance(this.address).then((res) => {
-      const resL = web3.utils.fromWei(res);
+      const resL = fromWei(res);
       stateSetter(resL);
     }).catch((e) => {
       stateSetter(0);
@@ -29,7 +30,7 @@ export default class PiggyBankHandler {
     this.dispatch(setTransactionCounter(1));
 
     web3.eth.getBalance(this.address).then((res) => {
-      const resL = web3.utils.fromWei(res);
+      const resL = fromWei(res);
       stateSetter(resL);
     }).catch((e) => {
       stateSetter(false);
