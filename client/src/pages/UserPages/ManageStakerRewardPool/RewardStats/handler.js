@@ -1,16 +1,15 @@
-import Validators from 'contracts/src/Validators';
 import ValidationRewardPools from 'contracts/src/ValidationRewardPools';
+import { validationRewardPoolsInstance } from 'contracts/contracts';
 
 import {
   uintPercentToNumber,
   getPercentageFormat,
   uintPerSecondToPerYearNumber
 } from 'func/useful';
-import {percentageToPercentPerSecond} from 'func/balance'
+import { percentageToPercentPerSecond } from 'func/balance';
 
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
 
-const contractValidators = new Validators();
 const contractVRP = new ValidationRewardPools();
 
 export default class Handler {
@@ -39,7 +38,7 @@ export default class Handler {
     this.dispatch(setTransactionCounter(1));
 
     const amountL = percentageToPercentPerSecond(formData.amount);
-    contractValidators.setInterestRate(this.address, amountL)
+    validationRewardPoolsInstance.setInterestRate(this.address, amountL)
       .then(() => {
         this.getInterestRate(stateSetter);
       })
@@ -54,7 +53,7 @@ export default class Handler {
   getInterestRate(stateSetter) {
     this.dispatch(setTransactionCounter(1));
 
-    contractValidators.getInterestRate(this.address)
+    validationRewardPoolsInstance.getInterestRate(this.address)
       .then((res) => {
         const rate = uintPerSecondToPerYearNumber(res);
         // const rate = uintPercentToNumber(res) * 100;
@@ -71,7 +70,7 @@ export default class Handler {
   setValidatorShare(formData, stateSetter) {
     this.dispatch(setTransactionCounter(1));
     const delShare = getPercentageFormat(formData.amount);
-    contractValidators.setDelegatorsShare(this.address, delShare)
+    validationRewardPoolsInstance.setDelegatorsShare(this.address, delShare)
       .then(() => {
         this.getDelegatorShare(stateSetter);
       })
@@ -86,7 +85,7 @@ export default class Handler {
   getDelegatorShare(stateSetter) {
     this.dispatch(setTransactionCounter(1));
 
-    contractValidators.getDelegatorsShare(this.address)
+    validationRewardPoolsInstance.getDelegatorsShare(this.address)
       .then((res) => {
         const rate = uintPercentToNumber(res) * 100;
         stateSetter(rate);

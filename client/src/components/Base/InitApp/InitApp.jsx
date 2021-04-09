@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { initAddresses } from 'contracts/mapping/contract-to-address';
+import { initInstances } from 'contracts/contracts';
 
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 
@@ -20,7 +21,7 @@ function InitApp () {
 
   useEffect(async () => {
     try {
-      await initAddresses()
+      await Promise.all([initInstances(), initAddresses()])
       setAppComponent(await import('components/Base/App'))
       setAppState(STATES.loaded)
     } catch (e) {

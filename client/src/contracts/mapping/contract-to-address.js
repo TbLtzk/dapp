@@ -6,7 +6,7 @@ import { contractsToContractsRegistryKey as contToKey } from './contract-to-cont
 import {
   CONTRACT_REGISTRY_ADDRESS,
   contractRegistryInstance,
-} from '../contracts'
+} from '../contracts';
 
 export const contractsToAddressesBase = {
   ContractRegistry: CONTRACT_REGISTRY_ADDRESS,
@@ -32,13 +32,13 @@ export const contractsToAddresses = {
 export async function initAddresses() {
 
   async function getAddress(objectKey) {
-    contractsToAddresses[objectKey] = await contractRegistryInstance.instance.methods.getAddress(contToKey[objectKey]).call();
+    contractsToAddresses[objectKey] = await contractRegistryInstance.instance.methods.getAddress(contToKey[objectKey])
+      .call();
   }
 
   await Promise.all(Object.keys(contToKey)
     .map(i => getAddress(i)));
 
-  console.log('contractsToAddresses', contractsToAddresses)
   // EPDR_Parameters
   const epdrParametersContract = new EPDR_Parameters(contractsToAddresses['EPDR_Parameters']);
   contractsToAddresses['GovernedEpdrQbtcAddress'] = await epdrParametersContract.getAddr(contToKey['GovernedEpdrQbtcAddress']);

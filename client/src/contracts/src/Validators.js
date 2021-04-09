@@ -9,6 +9,7 @@ import {
 import { fromWei } from 'func/balance';
 import { uintPerSecondToPerYearNumber } from '../../func/useful';
 import { contractsToAddresses } from '../mapping/contract-to-address';
+import { validatorsInstance, validationRewardPoolsInstance } from 'contracts/contracts';
 
 const contractName = 'Validators';
 
@@ -19,16 +20,6 @@ export default class Validators {
     this.QPiggyBank = new QPiggyBank(contractsToAddresses['QVault']);
   }
 
-  async withdrawals(address) {
-    return await this.methods.withdrawals(address)
-      .call();
-  }
-
-  async validatorExist(address) {
-    return await this.methods.validatorExist(address)
-      .call();
-  }
-
   async getValidatorsList() {
     return await this.methods.getValidatorsList()
       .call();
@@ -36,11 +27,6 @@ export default class Validators {
 
   async getValidatorTotalStake(address) {
     return await this.methods.getValidatorTotalStake(address)
-      .call();
-  }
-
-  async getValidatorsOwnStake(address) {
-    return await this.methods.getValidatorsOwnStake(address)
       .call();
   }
 
@@ -54,42 +40,9 @@ export default class Validators {
       .call();
   }
 
-  async getDelegatorsShare(address) {
-    return await this.methods.getDelegatorsShare(address)
-      .call();
-  }
-
-  async getInterestRate(address) {
-    return await this.methods.getInterestRate(address)
-      .call();
-  }
-
-  async setDelegatorsShare(address, uintPercent) {
-    return await this.methods.setDelegatorsShare(uintPercent)
-      .send({ from: address });
-  }
-
-  async setInterestRate(address, uintPercent) {
-    return await this.methods.setInterestRate(uintPercent)
-      .send({ from: address });
-  }
-
-  async commitCollateral(address, value) {
-    return await this.methods.commitCollateral()
-      .send({
-        from: address,
-        value
-      });
-  }
-
   async enterShortList(address) {
     return await this.methods.enterShortList()
       .send({ from: address });
-  }
-
-  async getPositiveValidatorStake() {
-    return await this.methods.getPositiveValidatorStake()
-      .call();
   }
 
   async announceWithdrawal(amount, address) {
@@ -102,36 +55,42 @@ export default class Validators {
       .send({ from: address });
   }
 
+  async getValidator (validator, index) {
+
+    const additionalData = await Promise.all([
+      validatorsInstance.getValidatorTotalStake(validator.validator),
+      validationRewardPoolsInstance.getInterestRate(validator.validator),
+      this.getValidatorDelegatedStake(validator.validator),
+      validationRewardPoolsInstance.getDelegatorsShare(validator.validator),
+      this.ValidationRewardPoolsContract.getBalance(validator.validator)
+    ])
+
+    const selfStake = fromWei(additionalData[0]);
+    const poolPayoutRatio = uintPerSecondToPerYearNumber(additionalData[1]);
+    const delegatedStake = fromWei(additionalData[2]);
+    const delegatorShare = transformToPercentage(additionalData[3]);
+    const validatorShare = delegatorShare ? 100 - delegatorShare : 0;
+    const validatorPoolBalance = fromWei(additionalData[4]);
+    return {
+      ...validator,
+      delegatedStake,
+      delegatorShare,
+      validatorShare,
+      selfStake,
+      validatorPoolBalance,
+      poolPayoutRatio,
+      rank: index + 1
+    }
+  }
+
   async getMembersList() {
-    const validatorsArr = await this.methods.getPositiveValidatorStake()
+    const validatorsArr = await validatorsInstance.instance.methods.getValidatorShortList()
       .call();
 
     if (validatorsArr?.length === 0) {
       return [];
     } else {
-      let resultArr = [];
-      let count = 1;
-      for (let member of validatorsArr) {
-        const selfStake = fromWei(await this.getValidatorsOwnStake(member.validator));
-        const poolPayoutRatio = uintPerSecondToPerYearNumber(await this.getInterestRate(member.validator));
-        const delegatedStake = fromWei(await this.getValidatorDelegatedStake(member.validator));
-        const delegatorShare = transformToPercentage(await this.getDelegatorsShare(member.validator));
-        const validatorShare = delegatorShare ? 100 - delegatorShare : 0;
-        const validatorPoolBalance = fromWei(await this.ValidationRewardPoolsContract.getBalance(member.validator));
-
-        resultArr.push({
-          ...member,
-          delegatedStake,
-          delegatorShare,
-          validatorShare,
-          selfStake,
-          validatorPoolBalance,
-          poolPayoutRatio,
-          rank: count
-        });
-        count++;
-      }
-      return resultArr;
+      return await Promise.all(validatorsArr.map((i, index) => this.getValidator(i, index)));
     }
 
   }
