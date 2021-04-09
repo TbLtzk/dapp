@@ -82,7 +82,7 @@ function SidebarCards() {
           value: userBalanceQ + ' Q',
         },
         {
-          title: 'Q Balance in PiggyBank',
+          title: 'Q Balance in Q Vault',
           value: userPBBalance + ' Q',
         },
         {

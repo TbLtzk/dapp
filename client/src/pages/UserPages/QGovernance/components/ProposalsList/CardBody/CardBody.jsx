@@ -25,7 +25,7 @@ function CardBody(props) {
     let result = [
       {
         label: 'poll-detail',
-        title: 'Poll Detail',
+        title: 'Proposal Details',
         content: (
           <PollDetail pollDetail={proposal} proposalsKind={proposalsKind}/>
         )

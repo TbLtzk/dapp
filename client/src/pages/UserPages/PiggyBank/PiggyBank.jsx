@@ -15,7 +15,7 @@ function PiggyBank() {
           <Panel/>
         </Col>
         <Col xs={12}>
-          <h3 style={{ marginBottom: '24px' }}>PiggyBank</h3>
+          <h3 style={{ marginBottom: '24px' }}>Q Vault</h3>
         </Col>
         <Col xs={6}>
           <ManageBalance/>
