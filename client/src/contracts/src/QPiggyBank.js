@@ -1,3 +1,4 @@
+import {fromWei} from 'func/balance.js'
 import Web3 from 'web3';
 import { contractsToAbi } from '../mapping/contract-to-abi';
 
