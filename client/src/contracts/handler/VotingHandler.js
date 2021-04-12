@@ -90,7 +90,7 @@ export function toFixed(x) {
 }
 
 export const getPercentageFormat = (number) => {
-  return BN(number).multipliedBy(BN(10 ** 27)).dividedBy(100);
+  return BN(number).multipliedBy(BN(10 ** 27)).dividedBy(100).toFixed();
 };
 
 export const transformToPercentage = (number) => {

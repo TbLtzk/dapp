@@ -111,7 +111,7 @@ export default class ConstitutionVoting extends VotingService {
               .send({ from: userAddress });
             break;
           case 'uint':
-            valueInput = BN(valueInput);
+            valueInput = BN(valueInput).toFixed();
             result = await this.contract.methods.createUintProposal(link, classification, hash,
               parameterKey, valueInput)
               .send({ from: userAddress });
