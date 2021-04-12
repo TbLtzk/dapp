@@ -24,7 +24,7 @@ export default class Handler {
     this.StableCoin.totalSupply()
       .then(val => {
         const transf = fN(BN(val)
-          .toString());
+          .toFixed());
         stateSetter(transf);
       })
       .catch(e => {
@@ -36,7 +36,7 @@ export default class Handler {
     this.StableCoin.balanceOf(contractsToAddresses.SystemBalance)
       .then(val => {
         const transf = fN(BN(fromWei(val))
-          .toString());
+          .toFixed());
         stateSetter(transf);
       })
       .catch(e => {
