@@ -2,8 +2,10 @@ FROM node:lts-alpine AS builder
 
 WORKDIR /app
 
-COPY jsconfig.json package.json yarn.lock ./
-RUN yarn install
+COPY .npmrc jsconfig.json package.json package-lock.json ./
+ARG NPM_TOKEN
+RUN npm config set '//gitlab.com/api/v4/packages/npm/:_authToken' $NPM_TOKEN
+RUN npm ci
 
 COPY public/ public/
 COPY src/ src/
@@ -11,7 +13,7 @@ COPY src/ src/
 ARG netconf=src/contracts/config/network-config-devnet.js
 COPY $netconf ./src/contracts/config/network-config.js
 
-RUN yarn build
+RUN npm run build
 
 FROM nginx:stable-alpine
 
