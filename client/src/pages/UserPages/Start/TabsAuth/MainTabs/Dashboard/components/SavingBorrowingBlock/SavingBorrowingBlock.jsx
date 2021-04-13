@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 import { useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
@@ -13,13 +12,9 @@ import { TitleNotAlign } from '../../styles';
 import { remainDateTimeSince } from 'func/convertDate';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 
-const { useDrizzle } = drizzleReactHooks;
-
 function SavingBorrowingBlock() {
-  const { drizzle } = useDrizzle();
-
   const userAddress = useSelector(userAddressMetamask);
-  const handler = new Handler(drizzle, userAddress);
+  const handler = new Handler(userAddress);
 
   const [totalSupply, setTotalSupply] = useState('0');
   const [systemBalance, setSystemBalance] = useState('0');

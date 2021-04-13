@@ -4,7 +4,7 @@ import { getPastAuctionsIds, getStatusTransformation } from '../../handler/Aucti
 import { contractsToAddresses } from '../../mapping/contract-to-address';
 import { fromBtcBlockchain, toWei, fromWei } from 'func/balance';
 
-import { contracts } from '../../config/drizzle-config';
+import { contracts } from '../../config/config';
 
 export default class LiquidationAuction extends AuctionService {
 

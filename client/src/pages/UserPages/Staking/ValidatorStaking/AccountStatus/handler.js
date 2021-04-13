@@ -1,5 +1,4 @@
 import Validators from 'contracts/src/Validators';
-import { web3 } from 'contracts/config/drizzle-config';
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
 import { getValidatorMembers } from 'store/actions/action-creaters/validators';
 import { toWei, fromWei } from 'func/balance';
@@ -84,7 +83,7 @@ export default class Handler {
   setAccountBalance(stateSetter) {
     this.dispatch(setTransactionCounter(1));
 
-    web3.eth.getBalance(this.address)
+    window.web3.eth.getBalance(this.address)
       .then((res) => {
         const resL = fromWei(res);
         stateSetter(resL);

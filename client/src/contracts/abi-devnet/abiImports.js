@@ -42,6 +42,10 @@ const customContracts = {
   GovernedEpdrQbtcQusdOracle: require('./FxPriceFeed'),
   GovernedEpdrQethAddress: require('./StableCoin'),
   GovernedEpdrQbtcAddress: require('./StableCoin'),
+
+  CompoundRateKeeperPiggyBank: require('./CompoundRateKeeper'),
+  CompoundRateKeeperSaving: require('./CompoundRateKeeper'),
+  CompoundRateKeeperBorrowing: require('./CompoundRateKeeper'),
 }
 
 export const contractsAbiDevnet = {

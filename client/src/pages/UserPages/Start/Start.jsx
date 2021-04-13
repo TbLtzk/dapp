@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 
 import Header from 'components/Navigations/Header';
 import TabsAuth from 'pages/UserPages/Start/TabsAuth';
@@ -13,12 +12,8 @@ import { detectEthereumProvider } from 'store/actions/action-creaters/user-auth'
 import RootService from 'contracts/src/Root';
 import { Redirect } from 'react-router';
 
-const { useDrizzle, useDrizzleState } = drizzleReactHooks;
-
 function Start() {
-  const { drizzle } = useDrizzle();
-  const drizzleStatus = useDrizzleState(state => state.drizzleStatus);
-  const rootService = new RootService(drizzle);
+  const rootService = new RootService();
 
   const ethereum = window.ethereum;
   const dispatch = useDispatch();
@@ -35,14 +30,11 @@ function Start() {
     if (ethereum) {
       ethereum.on('accountsChanged', function (accounts) {
         dispatch(detectEthereumProvider());
-        if (drizzle) {
-          window.location.reload();
-        }
       });
     }
   }, [ethereum]);
 
-  if (!drizzleStatus && !ethereum) {
+  if (!ethereum) {
     return <NotAuth/>;
   } else {
     return (

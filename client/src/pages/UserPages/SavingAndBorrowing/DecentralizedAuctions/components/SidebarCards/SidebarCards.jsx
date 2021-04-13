@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
@@ -21,18 +20,14 @@ import { StableCoinQUSD } from 'contracts/src/StableCoin';
 import { fN } from 'func/useful';
 import { fromWei } from 'func/balance';
 
-const { useDrizzle, useDrizzleState } = drizzleReactHooks;
-
 function SidebarCards() {
   const dispatch = useDispatch();
-  const { drizzle } = useDrizzle();
-  const state = useDrizzleState((state) => state);
 
   const userAddress = useSelector(userAddressMetamask);
   const [userBalanceQ, setUserBalanceQ] = useState(null);
   const [QUSDUserBalance, setQUSDUserBalance] = useState(0);
 
-  const contractBalance = new ContractBalance(drizzle, userAddress);
+  const contractBalance = new ContractBalance(userAddress);
   const contractStableCoinQUSD = new StableCoinQUSD();
 
   const surplus = fN(useSelector(surplusSB));
@@ -45,12 +40,10 @@ function SidebarCards() {
   const [reserveBalance, setReserveBalance] = useState('0');
 
   useEffect(() => {
-    if (drizzle) {
-      drizzle.web3.eth.getBalance(userAddress, (err, balance) => {
+      window.web3.eth.getBalance(userAddress, (err, balance) => {
         setUserBalanceQ(fN(fromWei(balance)));
       });
-    }
-  }, [state]);
+  }, []);
 
   useEffect(() => {
     dispatch(getSurplus());

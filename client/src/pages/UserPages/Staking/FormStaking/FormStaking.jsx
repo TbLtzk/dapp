@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRootNodeStakes, getWithdrawals } from 'store/actions/action-creaters/root-contract';
 import { isUserRootNode, loadingCheckingRootNode, rootNodeStake, withdrawals } from 'store/selectors/root-contract';
@@ -22,14 +21,10 @@ import {
 } from './styles';
 import { fromSolDateFormattingT1 } from '../../../../func/date';
 
-const { useDrizzle, useDrizzleState } = drizzleReactHooks;
-
 function FormStaking() {
   const { register, errors, handleSubmit } = useForm();
-  const { drizzle } = useDrizzle();
   const dispatch = useDispatch();
-  const state = useDrizzleState(state => state);
-  const rootService = new RootService(drizzle);
+  const rootService = new RootService();
   const [userBalance, setUserBalance] = useState(null);
 
   const isUserRoot = useSelector(isUserRootNode);
@@ -44,16 +39,14 @@ function FormStaking() {
       dispatch(getRootNodeStakes(rootService, userAddress));
       dispatch(getWithdrawals(userAddress));
     }
-  }, [userAddress, isUserRoot, dispatch, state]);
+  }, [userAddress, isUserRoot, dispatch]);
 
   useEffect(() => {
-    if (drizzle) {
-      drizzle.web3.eth.getBalance(userAddress, (err, balance) => {
+      window.web3.eth.getBalance(userAddress, (err, balance) => {
         const userBalance = fromWei(balance);
         setUserBalance(fN(userBalance));
       });
-    }
-  }, [state]);
+  }, []);
 
   const handleBtn = useMemo(() => {
     return handleSubmit;

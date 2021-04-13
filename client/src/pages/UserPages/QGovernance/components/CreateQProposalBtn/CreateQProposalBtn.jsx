@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import {
@@ -15,11 +14,8 @@ import CreateQBtn from 'components/Custom/PageLists/CreateQBtn';
 
 import { QExpert, QProposal, QRootNode, QSlashing } from './constants';
 
-const { useDrizzle } = drizzleReactHooks;
-
 function CreateQProposalBtn(props) {
   const { activeTab } = props;
-  const { drizzle } = useDrizzle();
   const userAddress = useSelector(userAddressMetamask);
   const [modalShow, setModalShow] = useState(false);
   const dispatch = useDispatch();

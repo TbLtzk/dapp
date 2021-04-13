@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { contracts } from '../config/drizzle-config';
+import { contracts } from '../config/config';
 
 class FxPriceFeed {
   constructor() {

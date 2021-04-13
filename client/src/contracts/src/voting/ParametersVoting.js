@@ -1,4 +1,3 @@
-import { drizzleRegistry } from '../../config/drizzle-config';
 import VotingService from './VotingService';
 
 import {
@@ -76,7 +75,7 @@ export default class ParametersVoting extends VotingService {
             { from: userAddress });
         break;
       case 'bytes':
-        valueInput = drizzleRegistry.web3.utils.fromAscii(valueInput);
+        valueInput = window.web3.utils.fromAscii(valueInput);
         result = await this.contract.methods.createBytesProposal(link, key, valueInput)
           .send(
             { from: userAddress });

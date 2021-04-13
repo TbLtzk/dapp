@@ -1,4 +1,4 @@
-import { contracts } from '../../config/drizzle-config';
+import { contracts } from '../../config/config';
 import VotingService from './VotingService';
 
 import {
