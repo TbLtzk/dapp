@@ -36,13 +36,10 @@ build:
   <<: [*docker-login]
   stage: build
   only:
-    - /^v.*$/
-  except:
-    - branches
+    - master
   script:
     - cd client/
-    - docker build --build-arg NPM_TOKEN --build-arg netconf=src/contracts/config/network-config-testnet.js -t $IMAGE -t $IMAGE_LATEST .
-    - docker push $IMAGE
+    - docker build --build-arg NPM_TOKEN --build-arg netconf=src/contracts/config/network-config-devnet.js -t $IMAGE_LATEST .
     - docker push $IMAGE_LATEST
 
 build-testnet:
@@ -52,9 +49,8 @@ build-testnet:
     - if: '$CI_COMMIT_TAG == "testnet"'
   script:
     - cd client/
-    - docker build --build-arg NPM_TOKEN --build-arg netconf=src/contracts/config/network-config-testnet.js -t $IMAGE -t $IMAGE_LATEST .
+    - docker build --build-arg NPM_TOKEN --build-arg netconf=src/contracts/config/network-config-testnet.js -t $IMAGE .
     - docker push $IMAGE
-    - docker push $IMAGE_LATEST
 
 deploy:
   <<: [*host-login]
