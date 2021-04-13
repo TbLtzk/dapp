@@ -25,12 +25,10 @@ stages:
     - chmod 600 ~/.ssh/id_rsa ~/.ssh/id_rsa.pub
 
 .host-deploy: &host-deploy
-  variables:
-    DEPLOY_DIR: ~/dapp
   script:
-    - ssh $DEPLOY_USER@$DEPLOY_HOST "mkdir -p $DEPLOY_DIR"
-    - scp client/production.yml $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_DIR/docker-compose.yml
-    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_DIR && IMAGE=$IMAGE docker-compose up -d"
+    - ssh $DEPLOY_USER@$DEPLOY_HOST "mkdir -p ~/dapp"
+    - scp client/production.yml $DEPLOY_USER@$DEPLOY_HOST:~/dapp/docker-compose.yml
+    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd ~/dapp && IMAGE=$IMAGE docker-compose up -d"
 
 build:
   <<: [*docker-login]
@@ -62,6 +60,8 @@ deploy:
 deploy-testnet:
   <<: [*host-login]
   <<: [*host-deploy]
+  variables:
+    IMAGE: $IMAGE_LATEST
   stage: deploy
   rules:
     - if: '$CI_COMMIT_TAG == "testnet"'
