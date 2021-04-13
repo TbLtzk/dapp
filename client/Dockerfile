@@ -10,9 +10,6 @@ RUN npm ci
 COPY public/ public/
 COPY src/ src/
 
-ARG netconf=src/contracts/config/network-config-devnet.js
-COPY $netconf ./src/contracts/config/network-config.js
-
 RUN npm run build
 
 FROM nginx:stable-alpine
