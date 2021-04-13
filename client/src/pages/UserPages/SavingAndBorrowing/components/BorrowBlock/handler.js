@@ -5,7 +5,7 @@ import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
 
 import { uintPerSecondToPerYearNumber } from 'func/useful';
 import { fromBtcBlockchain, toBtcBlockchain, toWei, fromWei } from 'func/balance';
-import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
+import { MAX_APPROVE_AMOUNT, UINT_PSEUDO_UNDEFINED } from 'constants/numbers';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export default class Handler {
@@ -56,13 +56,19 @@ export default class Handler {
 
         availableDeposit = !availableDeposit ? 0 : fromBtcBlockchain(availableDeposit);
 
+        const liquidationPriceRaw = res?.colStats?.liquidationPrice;
+        let liquidationPrice = 0;
+        if(liquidationPriceRaw && liquidationPriceRaw != UINT_PSEUDO_UNDEFINED) {
+          liquidationPrice = fromWei(liquidationPriceRaw);
+        }
+
         const collateralDetails = {
           assets: colAssets,
           lockedCol: lockedCol,
           assetPrice: colPrice,
           availableWithdraw: availableWithdraw,
           availableDeposit: availableDeposit,
-          liquidationPrice: res?.colStats?.liquidationPrice ? fromWei(res.colStats.liquidationPrice) : 0,
+          liquidationPrice,
         };
 
         const borCollateralValue = lockedCol * colPrice;

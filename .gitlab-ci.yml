@@ -30,6 +30,17 @@ stages:
     - scp client/production.yml $DEPLOY_USER@$DEPLOY_HOST:~/dapp/docker-compose.yml
     - ssh $DEPLOY_USER@$DEPLOY_HOST "cd ~/dapp && IMAGE=$IMAGE docker-compose up -d"
 
+compile:
+  image: node:lts
+  stage: build
+  only:
+    - merge_request
+  script:
+    - cd client/
+    - npm config set '//gitlab.com/api/v4/packages/npm/:_authToken' $NPM_TOKEN
+    - npm ci
+    - npm run build
+
 build:
   <<: [*docker-login]
   stage: build
