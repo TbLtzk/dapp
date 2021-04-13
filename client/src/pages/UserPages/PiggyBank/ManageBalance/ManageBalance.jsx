@@ -32,7 +32,7 @@ export default function ManageBalance() {
       <Headline>Manage balance</Headline>
       <Row>
         <Col xs={12}>
-          <TextWrapGrey>Transfer into PiggyBank</TextWrapGrey>
+          <TextWrapGrey>Transfer into Q Vault</TextWrapGrey>
         </Col>
         <Col xs={8}>
           <FormInput
@@ -58,7 +58,7 @@ export default function ManageBalance() {
       </Row>
       <Row>
         <Col xs={12}>
-          <TextWrapGrey>Withdraw from PiggyBank</TextWrapGrey>
+          <TextWrapGrey>Withdraw from Q Vault</TextWrapGrey>
         </Col>
         <Col xs={8}>
           <FormInput

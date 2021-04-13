@@ -82,7 +82,7 @@ export default class ParametersVoting extends VotingService {
             { from: userAddress });
         break;
       case 'uint':
-        valueInput = BN(valueInput);
+        valueInput = BN(valueInput).toFixed();
         result = await this.contract.methods.createUintProposal(link, key, valueInput)
           .send(
             { from: userAddress });

@@ -11,6 +11,8 @@ import { useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
+import { contractRegistryInstance } from 'contracts/contracts'
+
 export default function RefreshDelegationUpdate() {
   const userAddress = useSelector(userAddressMetamask);
 
@@ -41,19 +43,22 @@ export default function RefreshDelegationUpdate() {
 
   const btnHandler = useCallback(() => {
     setLoading(true);
-    const contractQPiggyBank = new QPiggyBank(contractsToAddresses['QPiggyBank']);
-    contractQPiggyBank.updateValidatorsCompoundRate(userAddress, userAddress)
-      .then(
-        res => {
-          getTimeDelegationUpdate(setTimeDelegationUpdate, setDelegationUnixTimestamp);
-          setLoading(false);
-        }
-      )
-      .catch(e => {
-        console.error(e)
-        setTimeDelegationUpdate(0);
-        setLoading(false);
-      });
+    contractRegistryInstance.validationRewardPools().then(
+      validationRewardPools => {
+        validationRewardPools.updateValidatorsCompoundRate(userAddress, { from: userAddress })
+          .then(
+            res => {
+              getTimeDelegationUpdate(setTimeDelegationUpdate, setDelegationUnixTimestamp);
+              setLoading(false);
+            }
+          )
+          .catch(e => {
+            console.error(e)
+            setTimeDelegationUpdate(0);
+            setLoading(false);
+          });
+      }
+    )
   }, []);
 
   return (

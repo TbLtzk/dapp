@@ -8,6 +8,8 @@ import {
 } from 'store/actions/action-creaters/validators';
 import { fromWei } from 'func/balance';
 
+import { validatorsInstance, validationRewardPoolsInstance } from 'contracts/contracts'
+
 let contractInstance = null;
 
 function getContractInstance() {
@@ -21,8 +23,7 @@ function* getDelegatorsShareGenerator({ address }) {
   try {
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADING });
 
-    const contract = getContractInstance();
-    const data = yield contract.getDelegatorsShare(address);
+    const data = yield validationRewardPoolsInstance.getDelegatorsShare(address);
 
     yield put(setDelegatorsShare(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
@@ -52,8 +53,7 @@ function* getOwnStakeGenerator({ address }) {
   try {
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADING });
 
-    const contract = getContractInstance();
-    let data = yield contract.getValidatorsOwnStake(address);
+    let data = yield validatorsInstance.getAccountableSelfStake(address);
     data = fromWei(data);
 
     yield put(setOwnStake(data));
@@ -100,8 +100,7 @@ function* getInterestRateGenerator({ address }) {
   try {
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADING });
 
-    const contract = getContractInstance();
-    const data = yield contract.getInterestRate(address);
+    const data = yield validationRewardPoolsInstance.getInterestRate(address);
 
     yield put(setInterestRate(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
@@ -115,8 +114,7 @@ function* setDelegatorsShareGenerator({ address, uintPercent }) {
   try {
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADING });
 
-    const contract = getContractInstance();
-    const data = yield contract.setDelegatorsShare(address, uintPercent);
+    const data = yield validationRewardPoolsInstance.setDelegatorsShare(address, uintPercent);
 
     if (data.status === true) yield put(getDelegatorsShare(address));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
@@ -154,8 +152,7 @@ function* getValidatorsMembers() {
 
 function* isUserValidator({ address }) {
   try {
-    const contract = getContractInstance();
-    const data = yield contract.validatorExist(address);
+    const data = yield validatorsInstance.isInShortList(address);
     yield put(isUserValidatorSuccess(data));
   } catch (err) {
     console.error('isUserValidator.Error', err);

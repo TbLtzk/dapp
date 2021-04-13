@@ -1,3 +1,4 @@
+import {fromWei} from 'func/balance.js'
 import Web3 from 'web3';
 import { contractsToAbi } from '../mapping/contract-to-abi';
 
@@ -42,10 +43,6 @@ export default class QPiggyBank {
   async compoundRateKeeper() {
     return await this.methods.compoundRateKeeper()
       .call();
-  }
-
-  async updateValidatorsCompoundRate(validatorAddress, signerAddress) {
-    return await this.methods.updateValidatorsCompoundRate(validatorAddress).send({ from: signerAddress })
   }
 
   async updateCompoundRate(address) {

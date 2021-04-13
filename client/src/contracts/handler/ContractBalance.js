@@ -14,7 +14,7 @@ export default class ContractBalance {
         res => {
           let transf = fromWei(res);
           transf = fN(BN(transf)
-            .toString());
+            .toFixed());
           stateSetter(transf);
         }
       )

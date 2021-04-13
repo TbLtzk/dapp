@@ -4,7 +4,7 @@ import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 export class Handler {
   constructor(address, dispatch) {
-    this.piggyBank = new QPiggyBank(contractsToAddresses['QPiggyBank']);
+    this.piggyBank = new QPiggyBank(contractsToAddresses['QVault']);
     this.dispatch = dispatch;
     this.address = address;
   }

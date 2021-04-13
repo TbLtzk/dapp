@@ -9,7 +9,7 @@ export default class PiggyBankHandler {
     this.dispatch = dispatch;
     this.address = address;
     this.alert = alert;
-    this.piggyBank = new QPiggyBank(contractsToAddresses['QPiggyBank']);
+    this.piggyBank = new QPiggyBank(contractsToAddresses['QVault']);
   }
 
   async setUserBalance(stateSetter) {

@@ -30,7 +30,7 @@ const devnetContractsToContractsRegistryKey = {
   DefaultAllocationProxy: 'tokeneconomics.defaultAllocationProxy',
   QHolderRewardPool: 'tokeneconomics.qHolderRewardPool',
   QHolderRewardProxy: 'tokeneconomics.qHolderRewardProxy',
-  QPiggyBank: 'tokeneconomics.qPiggyBank',
+  QVault: 'tokeneconomics.qVault',
   RootNodeRewardProxy: 'tokeneconomics.rootNodeRewardProxy',
   RootNodesSlashingEscrow: 'governance.rootNodes.slashingEscrow',
   ValidationRewardPools: 'tokeneconomics.validationRewardPools',
