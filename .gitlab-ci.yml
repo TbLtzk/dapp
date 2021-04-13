@@ -57,9 +57,7 @@ deploy:
   <<: [*host-deploy]
   stage: deploy
   only:
-    - /^v.*$/
-  except:
-    - branches
+    - master
 
 deploy-testnet:
   <<: [*host-login]
