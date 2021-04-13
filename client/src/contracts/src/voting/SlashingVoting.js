@@ -3,7 +3,8 @@ import SlashingEscrow from './SlashingEscrow';
 
 import {
   getStatusTransformation,
-  getPercentageFormat
+  getPercentageFormat,
+  transformToPercentage
 } from '../../handler/VotingHandler';
 import { fromWei } from 'func/balance';
 import { fromSolDateFormattingT1 } from 'func/date';
@@ -68,10 +69,10 @@ export default class SlashingVoting extends VotingService {
       objEscrow.objEscrow.decision.endDate = fromSolDateFormattingT1(escrowArbitrationInfo.decision.endDate);
       objEscrow.objEscrow.decision.externalReference = escrowArbitrationInfo.decision.externalReference;
       objEscrow.objEscrow.decision.notAppealed = escrowArbitrationInfo.decision.notAppealed;
-      objEscrow.objEscrow.decision.percentage = escrowArbitrationInfo.decision.percentage;
+      objEscrow.objEscrow.decision.percentage = transformToPercentage(escrowArbitrationInfo.decision.percentage);
       objEscrow.objEscrow.decision.proposer = escrowArbitrationInfo.decision.proposer;
       objEscrow.objEscrow.decision.confirmationCount = escrowDecisionStats.confirmationCount;
-      objEscrow.objEscrow.decision.currentConfirmationPercentage = escrowDecisionStats.currentConfirmationPercentage;
+      objEscrow.objEscrow.decision.currentConfirmationPercentage = transformToPercentage(escrowDecisionStats.currentConfirmationPercentage);
       objEscrow.objEscrow.decision.requiredConfirmations = escrowDecisionStats.requiredConfirmations;
     }
 
