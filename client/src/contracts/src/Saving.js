@@ -1,16 +1,12 @@
 /* eslint-disable max-classes-per-file */
-import Web3 from 'web3';
 import { contractsToAbi } from '../mapping/contract-to-abi';
 import { toWei } from 'func/balance';
-
-const web3 = new Web3(Web3.givenProvider);
-web3.eth.handleRevert = true;
 
 export class SavingQUSD {
   constructor(address) {
     this.contractName = 'SavingQUSD';
     this.address = address;
-    this.contract = new web3.eth.Contract(contractsToAbi[this.contractName], address);
+    this.contract = new window.web3.eth.Contract(contractsToAbi[this.contractName], address);
     this.methods = this.contract.methods;
   }
 

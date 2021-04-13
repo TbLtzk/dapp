@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { useDispatch, useSelector } from 'react-redux';
 import { stakeToPanel, announceWithdrawal, withdraw } from 'store/actions/action-creaters/root-contract';
 import { userAddressMetamask } from 'store/selectors/user-inf';
@@ -13,12 +12,8 @@ import Button from 'components/Base/Buttons/Button';
 
 import { toWei } from 'func/balance';
 
-const { useDrizzle, useDrizzleState } = drizzleReactHooks;
-
 function ActionButtons(props) {
   const { handleSubmit } = props;
-  const { drizzle } = useDrizzle();
-  const state = useDrizzleState(state => state);
   const dispatch = useDispatch();
   const rootService = new RootService();
   const userAddress = useSelector(userAddressMetamask);
@@ -32,7 +27,7 @@ function ActionButtons(props) {
         // value: parseInt(convertToGWei(data?.amount)),
       }
     ));
-  }, [drizzle]);
+  }, []);
 
   const onWithdrawFromPanel = useCallback(async (data) => {
     dispatch(withdraw(rootService,

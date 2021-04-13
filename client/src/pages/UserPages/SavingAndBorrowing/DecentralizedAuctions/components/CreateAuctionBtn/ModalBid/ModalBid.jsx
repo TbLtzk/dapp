@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -30,15 +30,12 @@ import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 import { StableCoinQUSD } from 'contracts/src/StableCoin';
 import { checkTabContract } from './constants';
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 
-const { useDrizzle } = drizzleReactHooks;
 
 function ModalBid(props) {
   const { modalShow, onHide, activeTab, inf } = props;
   const { register, errors, handleSubmit } = useForm();
   const dispatch = useDispatch();
-  const { drizzle } = useDrizzle();
 
   const formData = useSelector(formObject);
   const stepCounter = useSelector(stepCounterModal);

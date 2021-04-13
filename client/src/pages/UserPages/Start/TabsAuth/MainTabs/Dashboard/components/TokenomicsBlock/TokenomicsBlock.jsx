@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { useSelector } from 'react-redux';
 import { balanceSelector } from 'store/selectors/validation-reward-pools';
 import { userAddressMetamask } from 'store/selectors/user-inf';
@@ -14,10 +13,7 @@ import { remainDateTimeSince } from 'func/convertDate';
 import { Container, Col, Row } from 'react-bootstrap';
 import { TitleNotAlign } from '../../styles';
 
-const { useDrizzle } = drizzleReactHooks;
-
 function TokenomicsBlock() {
-  const { drizzle } = useDrizzle();
   const userAddress = useSelector(userAddressMetamask);
 
   const [defaultAllocationProxy, setDefaultAllocationProxy] = useState('0');
@@ -38,7 +34,7 @@ function TokenomicsBlock() {
   const [loadingTimeSince, setLoadingTimeSince] = useState(false);
 
   const balanceVRP = useSelector(balanceSelector);
-  const handler = new Handler(drizzle, userAddress);
+  const handler = new Handler(userAddress);
 
   useEffect(() => {
     const interval = setInterval(() => {

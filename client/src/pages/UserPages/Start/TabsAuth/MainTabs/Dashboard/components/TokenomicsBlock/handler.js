@@ -10,15 +10,14 @@ import { remainDateTimeSince } from 'func/convertDate';
 import { fromWei } from 'func/balance';
 
 export default class Handler {
-  constructor(drizzle, userAddress) {
-    this.drizzle = drizzle;
+  constructor(userAddress) {
     this.userAddress = userAddress;
     this.DefaultAllocationProxy = new DefaultAllocationProxy('DefaultAllocationProxy');
     this.RootNodeRewardProxy = new RootNodeRewardProxy('RootNodeRewardProxy');
     this.ValidationRewardProxy = new ValidationRewardProxy('ValidationRewardProxy');
     this.QPiggyBank = new QPiggyBank(contractsToAddresses['QVault']);
     this.CompoundRateKeeperPiggyBank = new CompoundRateKeeper('CompoundRateKeeperPiggyBank');
-    this.ContractBalance = new ContractBalance(this.drizzle, this.userAddress);
+    this.ContractBalance = new ContractBalance(this.userAddress);
   }
 
   allocateValue(contract, stateSetter, stateLoading) {
@@ -58,7 +57,7 @@ export default class Handler {
     if (isAllocate) {
       this.ValidationRewardProxy.allocate(this.userAddress)
         .then(val => {
-          this.drizzle.web3.eth.getBalance(contractsToAddresses.ValidationRewardProxy)
+          window.web3.eth.getBalance(contractsToAddresses.ValidationRewardProxy)
             .then(
               res => {
                 let transf = fromWei(res);
@@ -78,7 +77,7 @@ export default class Handler {
           stateLoading(false);
         });
     } else {
-      this.drizzle.web3.eth.getBalance(contractsToAddresses.ValidationRewardProxy)
+      window.web3.eth.getBalance(contractsToAddresses.ValidationRewardProxy)
         .then(
           res => {
             let transf = fromWei(res);

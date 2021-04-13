@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { initAddresses } from 'contracts/mapping/contract-to-address';
 import { initInstances } from 'contracts/contracts';
 

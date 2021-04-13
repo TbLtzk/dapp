@@ -2,7 +2,7 @@ import AuctionService from './AuctionService';
 
 import { contractsToAddresses } from '../../mapping/contract-to-address';
 import { toWei, fromWei } from 'func/balance';
-import { contracts } from '../../config/drizzle-config';
+import { contracts } from '../../config/config';
 
 export default class SystemSurplusAuction extends AuctionService {
 

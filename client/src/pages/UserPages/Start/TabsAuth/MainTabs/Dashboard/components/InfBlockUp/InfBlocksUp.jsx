@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { drizzleReactHooks } from '@drizzle/react-plugin';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 import SmallBlock from './SmallBlock';
 
@@ -11,10 +10,12 @@ import { loadingNumberAll, numberOfAllProposals, constitutionHash } from 'store/
 import { getNumberAllProposals, getConstitutionHash } from 'store/actions/action-creaters/voting/proposals';
 import { latestConstitution, archiveConstitution } from 'contracts/handler/ConstitutionHandler';
 
-const { useDrizzle, useDrizzleState } = drizzleReactHooks;
-
 function InfBlocksUp() {
-  const state = useDrizzleState(state => state);
+  const [blockNumber, setBlockNumber] = useState('0');
+
+  window.web3.eth.getBlock('latest').then(response => {
+    setBlockNumber(response.number || 0)
+  })
 
   const dispatch = useDispatch();
 
@@ -34,7 +35,7 @@ function InfBlocksUp() {
           title="Blockchain"
           firstSubtitle="Block Height"
           secondSubtitle="System Contract Registry:"
-          firstContent={<p> {state?.currentBlock ? state?.currentBlock?.number : 0}</p>}
+          firstContent={<p> {blockNumber}</p>}
           secondContent={
             <p>
               {contractsToAddresses.ContractRegistry}

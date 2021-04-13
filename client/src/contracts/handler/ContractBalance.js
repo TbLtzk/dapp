@@ -3,13 +3,12 @@ import { BN, fN } from 'func/useful';
 import { fromWei } from 'func/balance';
 
 export default class ContractBalance {
-  constructor(drizzle, userAddress) {
-    this.drizzle = drizzle;
+  constructor(userAddress) {
     this.userAddress = userAddress;
   }
 
   getBalanceValue(contract, stateSetter) {
-    this.drizzle.web3.eth.getBalance(contractsToAddresses[contract])
+    window.web3.eth.getBalance(contractsToAddresses[contract])
       .then(
         res => {
           let transf = fromWei(res);

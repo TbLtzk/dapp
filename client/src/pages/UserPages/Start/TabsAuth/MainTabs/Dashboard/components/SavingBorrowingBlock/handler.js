@@ -9,8 +9,7 @@ import { remainDateTimeSince } from 'func/convertDate';
 import { fromWei } from 'func/balance';
 
 export default class Handler {
-  constructor(drizzle, userAddress) {
-    this.drizzle = drizzle;
+  constructor(userAddress) {
     this.userAddress = userAddress;
     this.StableCoin = new StableCoinQUSD();
     this.SavingQUSD = new SavingQUSD(contractsToAddresses['SavingQUSD']);

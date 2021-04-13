@@ -1,4 +1,4 @@
-import { contracts } from '../../config/drizzle-config';
+import { contracts } from '../../config/config';
 import { getPastEvents } from '../../handler/VotingHandler';
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 

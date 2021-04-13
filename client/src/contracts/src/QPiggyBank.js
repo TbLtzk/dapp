@@ -1,14 +1,10 @@
 import {fromWei} from 'func/balance.js'
-import Web3 from 'web3';
 import { contractsToAbi } from '../mapping/contract-to-abi';
-
-const web3 = new Web3(Web3.givenProvider);
-web3.eth.handleRevert = true;
 
 export default class QPiggyBank {
   constructor(address) {
     this.contractName = 'QPiggyBank';
-    this.contract = new web3.eth.Contract(contractsToAbi[this.contractName], address)
+    this.contract = new window.web3.eth.Contract(contractsToAbi[this.contractName], address)
     this.methods = this.contract.methods;
   }
 

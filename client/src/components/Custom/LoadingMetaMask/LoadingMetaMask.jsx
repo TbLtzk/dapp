@@ -22,6 +22,9 @@ function LoadingMetaMask() {
       } else if (!accounts.length) {
         setIsMetaMask('not-logged');
       } else {
+        const { ethereum } = window
+        window.web3 = new Web3(ethereum)
+        window.web3.eth.handleRevert = true;
         setIsMetaMask('logged');
       }
     });
