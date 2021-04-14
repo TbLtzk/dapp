@@ -62,8 +62,9 @@ export default class SlashingEscrow {
 
   async execute(id, userAddress) {
     const result = await this.contract.methods.execute(id)
-      .send(
-        { from: userAddress });
+      .send({
+        from: userAddress
+      });
     return result;
   }
 

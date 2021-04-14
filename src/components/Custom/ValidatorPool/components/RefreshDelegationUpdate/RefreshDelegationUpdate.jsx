@@ -9,7 +9,6 @@ import { Col } from 'react-bootstrap';
 import { remainDateTimeSince } from 'func/convertDate';
 import { useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
 import { contractRegistryInstance } from 'contracts/contracts'
 

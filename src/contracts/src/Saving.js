@@ -35,14 +35,20 @@ export class SavingQUSD {
       .call();
   }
 
-  async getBalanceDetails() {
+  async getBalanceDetails(accountId) {
     return await this.methods.getBalanceDetails()
-      .call();
+      .call(
+        {
+          from: accountId || ''
+        }
+      );
   }
 
-  async getBalance() {
+  async getBalance(accountId) {
     return await this.methods.getBalance()
-      .call();
+      .call({
+        from: accountId || ''
+      });
   }
 
   async updateCompoundRate(address) {

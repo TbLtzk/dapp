@@ -18,7 +18,7 @@ export default class Handler {
 
   setSavingBalanceIntRateEstInterest(savingBalanceSetter, interestRateSetter, estimatedInterestSetter, setLoadingInf) {
     setLoadingInf(true);
-    this.contractSavingQUSD.getBalanceDetails()
+    this.contractSavingQUSD.getBalanceDetails(this.address)
       .then((res) => {
         const interestRate = res?.interestRate ? uintPerSecondToPerYearNumber(res.interestRate) : 0;
         const currentBalance = res?.currentBalance ? fromWei(res.currentBalance) : 0;
