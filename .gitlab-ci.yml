@@ -27,7 +27,7 @@ stages:
 .host-deploy: &host-deploy
   script:
     - ssh $DEPLOY_USER@$DEPLOY_HOST "mkdir -p ~/dapp"
-    - scp client/production.yml $DEPLOY_USER@$DEPLOY_HOST:~/dapp/docker-compose.yml
+    - scp production.yml $DEPLOY_USER@$DEPLOY_HOST:~/dapp/docker-compose.yml
     - ssh $DEPLOY_USER@$DEPLOY_HOST "cd ~/dapp && IMAGE=$IMAGE docker-compose up -d"
 
 compile:

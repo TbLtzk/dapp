@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "q-hq-dapp",
   "version": "0.2.3",
   "private": true,
   "dependencies": {

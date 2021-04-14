@@ -1,21 +1,23 @@
-# App uses Drizzle, React, Redux
+# Q Blockchain Headquarters dApp
 
-If on you computer isn`t installed node.js, you can download this there https://nodejs.org/en/download/
+App uses React, Redux
 
-## Firstly you need
+## Prerequisites
 
-In the project directory in the client folder run the command:
+* Node.js - you can download it here https://nodejs.org/en/download/
 
-### `yarn`
+## Prepare
 
-## Then
+```
+  npm install
+```
 
-In the same directory run the command:
+## Run locally
 
-### `yarn start`
+```
+  npm start
+```
 
 Runs the app in the development mode.
 Open http://localhost:3000 to view it in the browser.
 
-## Code quality
-`eslint [src/ ...] [--fix]` - run eslint checker for directory or file
