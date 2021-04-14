@@ -34,6 +34,7 @@ compile:
   image: node:lts
   stage: build
   only:
+    - master
     - merge_request
   script:
     - cd client/
@@ -45,10 +46,11 @@ build:
   <<: [*docker-login]
   stage: build
   only:
-    - master
+    - /^v.*$/
   script:
     - cd client/
-    - docker build --build-arg NPM_TOKEN -t $IMAGE_LATEST .
+    - docker build --build-arg NPM_TOKEN -t $IMAGE -t $IMAGE_LATEST .
+    - docker push $IMAGE
     - docker push $IMAGE_LATEST
 
 build-testnet:
