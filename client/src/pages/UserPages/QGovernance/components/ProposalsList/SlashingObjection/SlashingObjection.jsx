@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { STATUSES } from "constants/statuses"
 import {
   setCreatedStepsLimit, setCreateObj,
   setStepCounter
@@ -8,19 +9,26 @@ import {
   onEscrowRecallProposeDecision, onEscrowConfirmDecision
 } from 'store/actions/action-creaters/voting/slashing-proposals';
 
+import { userAddressMetamask } from 'store/selectors/user-inf';
+
 import ListDetails from './ListDetails';
 import Button from 'components/Base/Buttons/Button';
 import ModalSlashingObjection from './ModalSlashingObjection';
+import LoadingSpinner from 'components/Base/LoadingSpinner';
 
 import { Container, Row, Col } from 'react-bootstrap';
 import { WrapBtn, WrapBtnGroup } from './styles';
 import { TitleSmall } from 'components/Custom/PageLists/styles';
+import SlashingEscrow from '../../../../../../contracts/src/voting/SlashingEscrow';
 
 function SlashingObjection(props) {
   const { contract, proposalId, objData } = props;
   const [modalShow, setModalShow] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [activeModal, setActiveModal] = useState('');
   const dispatch = useDispatch();
+  const userAddress = useSelector(userAddressMetamask);
+
 
   const objectionData = useMemo(() => {
     return (
@@ -112,6 +120,21 @@ function SlashingObjection(props) {
     onShowModal('propose-decision');
   };
 
+  const executeDecision = async () => {
+    setIsPending(true)
+    const slashingEscrowContract = new SlashingEscrow(contract);
+    await slashingEscrowContract.execute(proposalId, userAddress)
+    setIsPending(false)
+
+  };
+
+  const executeDecisionBTN = <WrapBtn>
+        <Button
+          title={isPending ? <LoadingSpinner/> : "Execute Decision"}
+          width="100%"
+          handleButton={executeDecision}
+        />
+  </WrapBtn>
   return (
     <Container fluid>
       <Row>
@@ -148,6 +171,7 @@ function SlashingObjection(props) {
               />
             </WrapBtnGroup>
           </WrapBtn>
+          { objData.objection.statusObjection === STATUSES.decided && executeDecisionBTN}
         </Col>
       </Row>
       <ModalSlashingObjection

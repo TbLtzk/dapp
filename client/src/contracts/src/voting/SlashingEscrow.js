@@ -1,16 +1,24 @@
 import { contracts } from '../../config/config';
 import { getPercentageFormat } from '../../handler/VotingHandler';
-
+import { STATUSES } from "constants/statuses"
 /*contacts: RootNodesSlashingEscrow, ValidatorsSlashingEscrow*/
 export default class SlashingEscrow {
 
   constructor(contractName) {
+    console.log('contractName', contractName)
     this.contract = contracts[contractName];
     this.contractName = contractName;
   }
 
   getTitleStatus(statusID) {
-    const status = ['None', 'Open', 'Accepted', 'Pending', 'Decided', 'Executed'];
+    const status = [
+      STATUSES.none,
+      STATUSES.open,
+      STATUSES.accepted,
+      STATUSES.pending,
+      STATUSES.decided,
+      STATUSES.executed
+    ];
     return status[Number(statusID)];
   }
 
@@ -48,6 +56,13 @@ export default class SlashingEscrow {
 
   async castObjection(id, link, userAddress) {
     const result = await this.contract.methods.castObjection(id, link)
+      .send(
+        { from: userAddress });
+    return result;
+  }
+
+  async execute(id, userAddress) {
+    const result = await this.contract.methods.execute(id)
       .send(
         { from: userAddress });
     return result;
