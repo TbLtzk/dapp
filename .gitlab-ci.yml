@@ -46,6 +46,8 @@ build:
   stage: build
   only:
     - /^v.*$/
+  except:
+    - branches
   script:
     - docker build --build-arg NPM_TOKEN -t $IMAGE -t $IMAGE_LATEST .
     - docker push $IMAGE
@@ -63,11 +65,11 @@ build-testnet:
 deploy:
   <<: [*host-login]
   <<: [*host-deploy]
-  variables:
-    IMAGE: $IMAGE_LATEST
   stage: deploy
   only:
-    - master
+    - /^v.*$/
+  except:
+    - branches
 
 deploy-testnet:
   <<: [*host-login]
