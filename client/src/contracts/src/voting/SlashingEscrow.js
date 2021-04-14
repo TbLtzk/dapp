@@ -5,7 +5,6 @@ import { STATUSES } from "constants/statuses"
 export default class SlashingEscrow {
 
   constructor(contractName) {
-    console.log('contractName', contractName)
     this.contract = contracts[contractName];
     this.contractName = contractName;
   }
