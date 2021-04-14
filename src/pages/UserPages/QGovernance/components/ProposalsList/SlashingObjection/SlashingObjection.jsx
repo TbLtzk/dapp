@@ -122,7 +122,10 @@ function SlashingObjection(props) {
 
   const executeDecision = async () => {
     setIsPending(true)
-    const slashingEscrowContract = new SlashingEscrow(contract);
+    const slashingEscrowContract = new SlashingEscrow(
+      contract === 'ValidatorsSlashingVoting'
+        ? 'ValidatorsSlashingEscrow' : 'RootNodesSlashingEscrow'
+    );
     try {
       await slashingEscrowContract.execute(proposalId, userAddress);
     } catch (e) {
