@@ -1,6 +1,6 @@
 {
-  "name": "client",
-  "version": "0.2.2",
+  "name": "q-hq-dapp",
+  "version": "0.2.3",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
@@ -44,7 +44,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "patch-version": "npm version patch -m \"Upgrade to %s\"",
+    "postversion": "git push && git push --tags"
   },
   "browserslist": {
     "production": [
