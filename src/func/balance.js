@@ -19,7 +19,7 @@ export function percentageToPercentPerSecond(number) {
     const third = BN(String(second * (10 ** 27)));
     return third.toFixed();
   } else {
-    return 0;
+    return '0';
   }
 }
 
