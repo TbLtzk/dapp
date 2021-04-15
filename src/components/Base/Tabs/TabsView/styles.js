@@ -8,14 +8,14 @@ import {indents} from "constants/style";
 export const TabsStyle = styled(Tabs)`
   border-bottom: 0;
   .nav-link.active{
-    color: ${props => props.theme.colors.blue};
+    color: ${props => props.theme.colors.activeLinks};
     background-color: transparent;
     border-color: transparent;
   }
   .nav-link{
     padding-left: 0;
     padding-right: 30px;
-    color: ${props => props.theme.colors.grey};
+    color: ${props => props.theme.colors.links};
   }
    .nav-link:hover{
     background-color: transparent;
@@ -23,5 +23,5 @@ export const TabsStyle = styled(Tabs)`
   }
 `;
 export const TabStyle = styled(Tab)`
-    
+
 `;

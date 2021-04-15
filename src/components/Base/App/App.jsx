@@ -8,9 +8,11 @@ import { Provider } from 'react-redux';
 
 import { BrowserRouter } from 'react-router-dom';
 import { store } from '../../../store';
+import { WrapContainer } from './styles';
 
 function App() {
   return (
+    <WrapContainer>
       <Provider store={store}>
         <LoadingAccount>
           <BrowserRouter>
@@ -18,6 +20,7 @@ function App() {
           </BrowserRouter>
         </LoadingAccount>
       </Provider>
+    </WrapContainer>
   );
 }
 

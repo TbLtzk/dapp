@@ -40,9 +40,9 @@ export const Circle = styled.div`
 `;
 
 export const BlockBase = styled.div`
-  background-color: ${colors.white};
+  background-color: ${colors.oxfordBlueTint1};
   box-shadow: 0 0 10px rgba(0, 34, 133, 0.25);
-  border-radius: 8px;
+  border-radius: 3px;
   padding: 24px;
 `;
 

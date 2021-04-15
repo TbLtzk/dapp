@@ -40,7 +40,7 @@ function KeyAddressesTable(props) {
                           onClick={() => {
                           }}
                         >
-                          <span className="key-addresses-table-wrap__address">{i.value}</span>
+                          <span>{i.value}</span>
                         </Sharing>
                       </CopyToClipboard>
                     </OverlayTrigger>

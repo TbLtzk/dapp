@@ -1,18 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from './styles';
+import Button from "components/Base/Buttons/Button";
 
 export default function ButtonLink(props) {
   const { title, width, handleLink } = props;
-
   return (
-    <Link
+    <Button
+      title={title || ''}
+      type={'transparent'}
       width={width}
-      variant="default"
-      onClick={handleLink}
-    >
-      {title}
-    </Link>
+      handleButton={handleLink}
+    />
   );
 }
 

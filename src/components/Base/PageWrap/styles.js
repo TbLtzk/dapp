@@ -4,7 +4,7 @@ import { indents } from 'constants/style';
 import { Container } from 'react-bootstrap';
 
 export const WrapContainer = styled(Container)`
-  background: ${props => props.theme.colors.background};
+  background: ${props => props.theme.colors.oxfordBlue};
   //height: 100vh;
   padding-top: ${indents['30']};
   padding-left: ${indents['30']};

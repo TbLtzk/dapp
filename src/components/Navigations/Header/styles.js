@@ -6,10 +6,9 @@ import {Link} from "react-router-dom";
 import {indents} from "constants/style";
 
 export const NavbarContainer = styled(Navbar)`
-  background-color: ${props => props.theme.colors.white}!important;
+  background-color: ${props => props.theme.colors.oxfordBlue}!important;
   padding: ${indents["20"]};
-  -webkit-box-shadow: 0px -1px 13px -4px rgba(0,0,0,0.6);
-  box-shadow: 0px -1px 13px -4px rgba(0,0,0,0.6);
+  border-bottom: 1px solid ${props => props.theme.colors.oxfordBlueTint2};
 `;
 
 export const ListContainer = styled(Navbar.Collapse)`
@@ -24,5 +23,5 @@ export const WrapBtn = styled.div`
 `;
 
 export const LinkStyle = styled(Link)`
-  color: ${props => props.highlight === '1' ? props => props.theme.colors.black : props => props.theme.colors.main}!important;
+  color: ${props => props.highlight === '1' ? props => props.theme.colors.black : props => props.theme.colors.links}!important;
 `;

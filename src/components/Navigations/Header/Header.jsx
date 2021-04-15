@@ -31,7 +31,7 @@ function Header() {
               {
                 navItems.map((value, key) => {
                   return (
-                    <Link
+                    <LinkStyle
                       to={'/' + value.location}
                       key={key}
                       onClick={(e) => {
@@ -42,7 +42,7 @@ function Header() {
                       highlight={Number(history.location.pathname === ('/' + value.location))}
                     >
                       {value.label}
-                    </Link>
+                    </LinkStyle>
                   );
                 })
               }

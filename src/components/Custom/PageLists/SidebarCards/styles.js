@@ -18,7 +18,7 @@ export const WrapDescrTitle = styled(Col)`
   font-weight: normal;
   font-size: 14px;
   line-height: 150%;
-  color: ${props => props.theme.colors.lightGrey}
+  color: ${props => props.theme.colors.white}
 `;
 export const WrapDescr = styled(Col)`
   text-align: right;
@@ -26,7 +26,7 @@ export const WrapDescr = styled(Col)`
   font-weight: normal;
   font-size: 14px;
   line-height: 150%;
-  color: ${props => props.theme.colors.black}
+  color: ${props => props.theme.colors.white}
 `;
 export const WrapBtn = styled(Col)`
   padding-top: 30px;

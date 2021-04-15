@@ -5,15 +5,14 @@ export const MemberPanelWrap = styled.div`
   .table th{
     vertical-align: baseline;
   }
-  .table td:nth-child(1){
-    color: ${props => props.theme.colors.black};
+  .table td{
+    color: ${props => props.theme.colors.td};
   }
   .table td:nth-child(2){
-    color: ${props => props.theme.colors.darkBlue};
     width: ${(props) => (props.type === 'validators' || props.type === 'delegated-validators' ? 'auto' : '29%')};
   }
   .table td:nth-child(3){
-    color: ${props => props.type === 'validators' ? props.theme.colors.darkBlue : props.theme.colors.darkGrey};
+    color: ${props => props.type === 'validators' ? props.theme.colors.td : props.theme.colors.neonGreen};
     width: ${(props) => (props.type === 'validators' ? '15%' : 'auto')};
   }
   .table .validators-widened td{
@@ -36,7 +35,7 @@ export const Circle = styled.div`
 
 export const MemberAddress = styled.span`
   button span{
-    color: ${props => props.color === 'highlight' ? props => props.theme.colors.green : props => props.theme.colors.darkGrey};
+    color: ${props => props.color === 'highlight' ? props => props.theme.colors.activeLinks : props => props.theme.colors.td};
   }
   // overflow-wrap: break-word;
   //word-wrap: break-word;
@@ -66,5 +65,5 @@ export const MemberAddress = styled.span`
 
 export const Sharing = styled(ToggleBtn)`
   font-size: 14px;
-  color: ${props => props.theme.colors.darkGrey};
+  color: ${props => props.theme.colors.white};
 `;

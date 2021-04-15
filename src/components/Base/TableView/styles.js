@@ -13,12 +13,12 @@ export const TableStyle = styled(Table)`
     ${(props) => props.theme.fontStyles.text.middle};
   }
   thead th{
-    color: ${props => props.theme.colors.lightGrey};
+    color: ${props => props.theme.colors.th};
     //font-weight: 600;
     //text-align: center;
   }
   td{
-    color: ${props => props.theme.colors.darkGrey};
+    color: ${props => props.theme.colors.td};
     font-weight: 500;
     line-height: 17px;
   }

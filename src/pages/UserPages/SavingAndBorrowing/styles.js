@@ -35,7 +35,7 @@ p {
 }
 
 &.first {
-  background-color: ${colors.blue};
+  background-color: ${colors.oxfordBlueTint2};
   p {
     color: ${colors.white};
   }
@@ -47,7 +47,7 @@ p {
 }
 
 &.last:after {
-  background-color: ${colors.blue};
+  background-color: ${colors.oxfordBlueTint2};
   content: "";
 }
 `;
@@ -55,11 +55,14 @@ p {
 export const CardDetail = styled(BlockBase)`
 font-family: Mulish;
 font-weight: 600;
+color: ${colors.white};
 
 .title-1 {
+  color: ${colors.white};
   font-size: 24px;
 }
 .title-2 {
+  color: ${colors.white};
   font-size: 18px;
   margin: 24px 0 12px 0;
 }
@@ -72,12 +75,12 @@ div.txt {
     font-size: 14px;
   }
   span:first-child {
-    color: ${colors.grey}
+    color: ${colors.white}
   }
 
   span:last-child {
     font-weight: 500;
-    color: ${colors.black}
+    color: ${colors.white}
   }
 }
 

@@ -8,7 +8,7 @@ export default {
     fontWeight: 600,
     fontSize: '20px',
     lineHeight: '25px',
-    color: colors.black,
+    color: colors.white,
   },
   description: {
     small: {
@@ -27,7 +27,7 @@ export default {
       fontWeight: 600,
       fontSize: '24px',
       lineHeight: '30px',
-      color: colors.black,
+      color: colors.white,
     },
     subtitle: {
       fontFamily: fonts.primary,
@@ -35,7 +35,7 @@ export default {
       fontWeight: 600,
       fontSize: '18px',
       lineHeight: '150%',
-      color: colors.black,
+      color: colors.white,
     }
   },
   text: {
@@ -45,7 +45,7 @@ export default {
       fontWeight: 600,
       fontSize: '16px',
       lineHeight: '150%',
-      color: colors.lightGrey,
+      color: colors.white,
     },
     middle: {
       fontFamily: fonts.primary,
@@ -53,7 +53,7 @@ export default {
       fontWeight: 600,
       fontSize: '14px',
       lineHeight: '150%',
-      color: colors.lightGrey,
+      color: colors.white,
     },
     little: {
       fontFamily: fonts.primary,
@@ -61,7 +61,7 @@ export default {
       fontWeight: 700,
       fontSize: '12px',
       lineHeight: '150%',
-      color: colors.black,
+      color: colors.white,
     }
   }
 };

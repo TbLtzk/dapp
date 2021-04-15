@@ -8,7 +8,7 @@ import 'assets/fonts/fonts.css';
 
 ReactDOM.render(
   <StyleLayout>
-    <LoadingMetaMask/>
+    <LoadingMetaMask />
   </StyleLayout>,
   document.getElementById('root'),
 );
