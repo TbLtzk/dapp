@@ -35,8 +35,8 @@ export default function RewardStats() {
     handler.setInterestRate(formData, setIntRate);
   };
 
-  const setValidatorShare = (formData) => {
-    handler.setValidatorShare(formData, setDelShare);
+  const setDelegatorShare = (formData) => {
+    handler.setDelegatorShare(formData, setDelShare);
   };
 
   const rewardStatsArr = useMemo(() => {
@@ -47,7 +47,7 @@ export default function RewardStats() {
       },
       {
         label: 'Validator Share:',
-        value: delShare === 0 ? 0 : fN(100 - delShare) + '%'
+        value: delShare === 0 ? '100%' : fN(100 - delShare) + '%'
       },
       {
         label: 'Delegators Share:',
@@ -92,7 +92,7 @@ export default function RewardStats() {
               type="outline"
               title="Set"
               width="94px"
-              handleButton={submit1(setValidatorShare)}
+              handleButton={submit1(setDelegatorShare)}
             />
           </div>
         </Col>

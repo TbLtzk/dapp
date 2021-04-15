@@ -38,7 +38,7 @@ export default class Handler {
     this.dispatch(setTransactionCounter(1));
 
     const amountL = percentageToPercentPerSecond(formData.amount);
-    validationRewardPoolsInstance.setInterestRate(this.address, amountL)
+    validationRewardPoolsInstance.setInterestRate(amountL)
       .then(() => {
         this.getInterestRate(stateSetter);
       })
@@ -67,10 +67,10 @@ export default class Handler {
       });
   }
 
-  setValidatorShare(formData, stateSetter) {
+  setDelegatorShare(formData, stateSetter) {
     this.dispatch(setTransactionCounter(1));
     const delShare = getPercentageFormat(formData.amount);
-    validationRewardPoolsInstance.setDelegatorsShare(this.address, delShare)
+    validationRewardPoolsInstance.setDelegatorsShare(delShare)
       .then(() => {
         this.getDelegatorShare(stateSetter);
       })
