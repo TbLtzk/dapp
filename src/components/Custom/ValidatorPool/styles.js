@@ -21,7 +21,7 @@ export const CustomBlockVP = styled(Block)`
       }
 
       &:last-child {
-        color: ${colors.black}
+        color: ${colors.white}
       }
     }
   }

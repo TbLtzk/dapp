@@ -7,4 +7,5 @@ export const Headline = styled.p`
 `;
 
 export const DelegationBlock = styled(Row)`
+  color: ${(props) => props.theme.colors.white};
 `;

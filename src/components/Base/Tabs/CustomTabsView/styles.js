@@ -11,28 +11,29 @@ export const TabsStyle = styled(Tabs)`
     padding-top:20px;
   }
   .nav-link.active{
-    border: 1px solid ${props => props.theme.colors.main};
+    border: 1px solid ${props => props.theme.colors.oxfordBlueTint2};
     box-sizing: border-box;
     border-radius: 8px 8px 0 0;
     border-bottom-color: transparent;
-    color: ${props => props.theme.colors.main};
+    color: ${props => props.theme.colors.white};
+    background: transparent;
   }
   .nav-link{
     background-color: transparent;
     border-color: transparent;
     padding: 12px 23px 13px;
-    border-bottom: 1px solid ${props => props.theme.colors.main};
+    border-bottom: 1px solid ${props => props.theme.colors.oxfordBlueTint2};
     margin-bottom: 50px;
     font-weight: 600;
     font-size: 12px;
     line-height: 15px;
-    color:${props => props.theme.colors.black};
+    color:${props => props.theme.colors.white};
   }
    .nav-link:hover{
     border-radius: 8px 8px 0 0;
-    border-color: ${props => props.theme.colors.main};
+    border-color: ${props => props.theme.colors.oxfordBlueTint2};
   }
 `;
 export const TabStyle = styled(Tab)`
-    
+
 `;

@@ -23,5 +23,5 @@ export const WrapBtn = styled.div`
 `;
 
 export const LinkStyle = styled(Link)`
-  color: ${props => props.highlight === '1' ? props => props.theme.colors.black : props => props.theme.colors.links}!important;
+  color: ${props => props.highlight === '1' ? props => props.theme.colors.white : props => props.theme.colors.links}!important;
 `;

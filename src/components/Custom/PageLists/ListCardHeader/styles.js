@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {Card, Col} from "react-bootstrap";
 
 export const Header = styled(Card.Header)`
-  background: ${props => props.theme.colors.main};
+  background: ${props => props.theme.colors.oxfordBlueTint2};
   border-radius: 8px 8px 0 0!important;
 `;
 

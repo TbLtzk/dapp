@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Block } from '../../../components/Base/CustomBlock/styles';
 
 export const Headline = styled.p`
-  color: ${(props) => props.theme.colors.black};
+  color: ${(props) => props.theme.colors.white};
   font-weight: 600;
   font-size: 18px;
 `;
@@ -12,7 +12,7 @@ export const TextWrapGrey = styled.p`
   font-size: 14px;
   margin-bottom: 1rem;
   width: 100%;
-  color: ${(props) => props.theme.colors.lightGrey};
+  color: ${(props) => props.theme.colors.oxfordBlueTint3};
   display: flex;
   justify-content: space-between;
   span {
@@ -21,17 +21,17 @@ export const TextWrapGrey = styled.p`
     align-items: center;
   }
   span:last-child {
-    color: ${(props) => props.theme.colors.black};
+    color: ${(props) => props.theme.colors.white};
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
     font-style: normal;
   }
-`;
+`;3
 
 export const TextPanel = styled.div`
   font-size: 14px;
   font-weight: 600;
-  color: ${(props) => props.theme.colors.black};
+  color: ${(props) => props.theme.colors.white};
   ${(props) => {
   switch (props.type) {
     case 'parentNode':
@@ -59,11 +59,11 @@ export const PanelAlign = styled.div`
 `;
 
 export const TextPanelSmallGrey = styled(TextPanelSmall)`
-  color: ${(props) => props.theme.colors.grey};
+  color: ${(props) => props.theme.colors.oxfordBlueTint3};
 `;
 
 export const TextPanelSmallBlack = styled(TextPanelSmall)`
-  color: ${(props) => props.theme.colors.black};
+  color: ${(props) => props.theme.colors.white};
 `;
 
 export const CustomBlockPanel = styled(Block)`

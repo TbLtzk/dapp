@@ -3,7 +3,7 @@ import {UsualText} from "constants/style";
 
 export const Text = styled.p`
   ${(props) => props.theme.fontStyles.text.middle};
-   color: ${(props) => props.theme.colors.black};
+   color: ${(props) => props.theme.colors.white};
   margin-bottom: 0;
 `;
 export const Link = styled.a`
@@ -11,6 +11,6 @@ export const Link = styled.a`
     font-weight: normal;
     font-size: 14px;
     line-height: 150%;
-    color: ${props => props.theme.colors.black};
+    color: ${props => props.theme.colors.white};
 `;
 

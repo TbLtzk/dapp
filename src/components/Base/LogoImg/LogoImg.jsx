@@ -5,9 +5,10 @@ import logo from "assets/img/logo.png";
 function LogoImg() {
     return (
         <img
-            alt="logo"
-            src={logo}
-            className="d-inline-block align-top"
+          style={{ filter: 'brightness(10)' }}
+          alt="logo"
+          src={logo}
+          className="d-inline-block align-top"
         />
     );
 }

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button } from 'react-bootstrap';
+import { ButtonCustom } from 'components/Base/Buttons/Button/styles';
 import colors from '../../../../constants/colors';
 
 export const ButtonSlideForm = styled.form`
@@ -13,12 +13,8 @@ position: relative;
 }
 `;
 
-export const BtnSlide = styled(Button)`
+export const BtnSlide = styled(ButtonCustom)`
 height: 46px;
-background: ${colors.blue};
-box-shadow: 0px 4px 4px rgba(81, 126, 255, 0.25);
-border-radius: 8px;
-border: none;
 position: absolute;
 width: 100%;
 top: 0;

@@ -14,8 +14,6 @@ export const ButtonCustom = styled(Button)`
     switch (props.type) {
       case 'white':
         return props.theme.colors.oxfordBlueTint5;
-      case 'outline':
-        return props.theme.colors.main;
       case 'transparent':
         return 'transparent';
       default:
@@ -26,8 +24,6 @@ export const ButtonCustom = styled(Button)`
     switch (props.type) {
       case 'white':
         return 'transparent';
-      case 'outline':
-        return props.theme.colors.white;
       case 'transparent':
         return 'transparent';
       default:
@@ -38,8 +34,6 @@ export const ButtonCustom = styled(Button)`
     switch (props.type) {
       case 'white':
         return props.theme.colors.oxfordBlueTint5;
-      case 'outline':
-        return props.theme.colors.main;
       case 'transparent':
         return props.theme.colors.oxfordBlueTint5;
       default:
@@ -53,8 +47,6 @@ export const ButtonCustom = styled(Button)`
       switch (props.type) {
         case 'white':
           return props.theme.colors.oxfordBlue;
-        case 'outline':
-          return props.theme.colors.main;
         case 'usual':
           return props.theme.colors.white;
         case 'transparent':
@@ -67,8 +59,6 @@ export const ButtonCustom = styled(Button)`
       switch (props.type) {
         case 'white':
           return props.theme.colors.oxfordBlueTint2;
-        case 'outline':
-          return props.theme.colors.white;
         case 'usual':
           return props.theme.colors.whiteGrey;
         case 'transparent':
@@ -80,8 +70,6 @@ export const ButtonCustom = styled(Button)`
     border-color: ${(props) => {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint2;
-        case 'outline':
           return props.theme.colors.oxfordBlueTint2;
         case 'usual':
           return props.theme.colors.whiteGrey;
@@ -133,8 +121,6 @@ export const ButtonCustom = styled(Button)`
       switch (props.type) {
         case 'white':
           return props.theme.colors.oxfordBlueTint5;
-        case 'outline':
-          return props.theme.colors.main;
         case 'transparent':
           return props.theme.colors.oxfordBlueTint5;
         default:
@@ -145,8 +131,6 @@ export const ButtonCustom = styled(Button)`
       switch (props.type) {
         case 'white':
           return 'transparent';
-        case 'outline':
-          return props.theme.colors.white;
         case 'transparent':
           return 'transparent';
         default:
@@ -157,8 +141,6 @@ export const ButtonCustom = styled(Button)`
       switch (props.type) {
         case 'white':
           return props.theme.colors.oxfordBlueTint5;
-        case 'outline':
-          return props.theme.colors.main;
         case 'transparent':
           return 'transparent';
         default:
@@ -172,8 +154,6 @@ export const ButtonCustom = styled(Button)`
       switch (props.type) {
         case 'white':
           return props.theme.colors.oxfordBlueTint5;
-        case 'outline':
-          return props.theme.colors.main;
         case 'transparent':
           return props.theme.colors.oxfordBlueTint5;
         default:
@@ -184,8 +164,6 @@ export const ButtonCustom = styled(Button)`
       switch (props.type) {
         case 'white':
           return 'transparent';
-        case 'outline':
-          return props.theme.colors.white;
         case 'transparent':
           return 'transparent';
         default:
@@ -196,8 +174,6 @@ export const ButtonCustom = styled(Button)`
       switch (props.type) {
         case 'white':
           return props.theme.colors.oxfordBlueTint5;
-        case 'outline':
-          return props.theme.colors.main;
         case 'transparent':
           return 'transparent';
         default:

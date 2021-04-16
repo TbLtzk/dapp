@@ -22,7 +22,7 @@ export const HeadlineWrap = styled.div`
 export const TotalWrap = styled.div`
   ${(props) => props.theme.fontStyles.text.middle};
   line-height: 18px;
-  color: ${props => props.theme.colors.totalBlack};
+  color: ${props => props.theme.colors.white};
 `;
 
 export const BottomText = styled.p`

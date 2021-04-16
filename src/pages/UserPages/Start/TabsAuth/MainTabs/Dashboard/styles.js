@@ -30,8 +30,11 @@ export const BlockAlign = styled.div`
     overflow-wrap: break-word;
    }
    a{
-     color: ${props => props.theme.colors.main};
+     color: ${props => props.theme.colors.white};
      text-decoration: none;
+     &:hover {
+       text-decoration: revert;
+     }
    }
 `;
 

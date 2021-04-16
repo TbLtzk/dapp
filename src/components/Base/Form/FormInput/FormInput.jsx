@@ -11,6 +11,7 @@ const FormInput = forwardRef((props, ref) => {
     <InputWrapper
       controlId="formBasicEmail"
       align={align}
+      type={Boolean(valid) ? 'error' : ''}
     >
       <Form.Control
         min={min}

@@ -52,7 +52,7 @@ function PieChartCustom() {
           <PieChart width={200} height={200}>
             {/*<text x={108} y={102} dy={8} textAnchor="middle"*/}
             <text x={'40%'} y={'50%'} dy={8} textAnchor="middle"
-                  fill={colors.darkBlue}
+                  fill={colors.white}
                   fontSize="24"
                   fontWeight="bold"
             >

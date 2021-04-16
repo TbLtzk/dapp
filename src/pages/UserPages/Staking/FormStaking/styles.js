@@ -5,7 +5,7 @@ import { Col } from 'react-bootstrap';
 import { indents } from 'constants/style';
 
 export const Headline = styled.p`
-  color: ${props => props.theme.colors.black};
+  color: ${props => props.theme.colors.white};
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
@@ -18,7 +18,7 @@ export const List = styled.ul`
       font-weight: 600;
       font-size: 14px;
       line-height: 18px;
-      color: ${props => props.theme.colors.lightGrey};
+      color: ${props => props.theme.colors.oxfordBlueTint3};
   }
 `;
 export const TextWrap = styled(Col)`
@@ -30,14 +30,14 @@ export const TextWrap = styled(Col)`
 
 export const TextWrapBlack = styled(TextWrap)`
   text-align: right;
-  color: ${props => props.theme.colors.black};
+  color: ${props => props.theme.colors.white};
   ul{
     list-style: none;
   }
 `;
 
 export const TextWrapGrey = styled(TextWrap)`
-  color: ${props => props.theme.colors.lightGrey};
+  color: ${props => props.theme.colors.oxfordBlueTint3};
 `;
 
 export const Subtitle = styled(TextWrapGrey)`
@@ -47,7 +47,7 @@ export const Subtitle = styled(TextWrapGrey)`
 export const TotalText = styled(TextWrap)`
   //display: flex;
   //align-items: center;
-  color: ${props => props.theme.colors.black};
+  color: ${props => props.theme.colors.oxfordBlueTint3};
   p{
     margin-bottom: 0;
   }

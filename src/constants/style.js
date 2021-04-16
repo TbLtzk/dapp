@@ -13,12 +13,12 @@ export const indents = {
 
 export const h5Text = styled.h5`
   font-size: ${indents['20']};
-  color: ${colors.black};
+  color: ${colors.white};
   font-style: normal;
 `;
 
 export const UsualText = styled.p`
-  color: ${colors.black};
+  color: ${colors.white};
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -55,7 +55,7 @@ export const Block = styled(BlockBase)`
     }
 
     &:last-child {
-      color: ${colors.black}
+      color: ${colors.white}
     }
   }
 

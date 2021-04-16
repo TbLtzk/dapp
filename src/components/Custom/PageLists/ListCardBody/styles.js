@@ -5,10 +5,9 @@ import { Button, Card, Col, Container } from 'react-bootstrap';
 import { indents } from 'constants/style';
 
 export const BlockBody = styled(Card.Body)`
-    background-color: ${props => props.theme.colors.white};
-    border: 1px solid ${props => props.theme.colors.lightGrey};
+    background-color: ${props => props.theme.colors.oxfordBlueTint1};
     box-sizing: border-box;
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 3px 3px;
     padding: 15px 0 20px;
     margin-bottom: 16px;
 `;
@@ -20,7 +19,7 @@ export const CollapsedBody = styled(Card.Body)`
 export const Details = styled(Col)`
   ${props => props.theme.fontStyles.text.middle};
   font-weight: 500;
-  color: ${props => props.theme.colors.whiteGrey};
+  color: ${props => props.theme.colors.oxfordBlueTint3};
     span{
       margin-left: 8px;
       ${props => props.theme.fontStyles.text.middle};
@@ -29,7 +28,7 @@ export const Details = styled(Col)`
     p{
       ${props => props.theme.fontStyles.text.middle};
       font-weight: 500;
-      color: ${props => props.theme.colors.whiteGrey};
+      color: ${props => props.theme.colors.oxfordBlueTint3};
       display: inline-block;
       margin-bottom: 0;
     }
@@ -40,7 +39,7 @@ export const MainText = styled.p`
   font-weight: normal;
   font-size: 14px;
   line-height: 150%;
-  color: ${props => props.theme.colors.lightGrey};
+  color: ${props => props.theme.colors.oxfordBlueTint3};
 `;
 
 export const WrapToggleBlock = styled(Col)`
@@ -52,7 +51,7 @@ export const ToggleBtn = styled.button`
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
-  color: ${props => props.theme.colors.main};
+  color: ${props => props.theme.colors.white};
   background: transparent;
   border: 0;
   outline: 0!important;

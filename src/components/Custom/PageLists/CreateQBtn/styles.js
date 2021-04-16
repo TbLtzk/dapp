@@ -29,5 +29,5 @@ export const BtnLabel = styled.p`
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
-  color: ${props => props.theme.colors.main};
+  color: ${props => props.theme.colors.oxfordBlueTint5};
 `;

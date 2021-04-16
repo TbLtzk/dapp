@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import colors from 'constants/colors.js';
 
 export const Headline = styled.p`
-  color: ${colors.black};
+  color: ${colors.white};
   font-weight: 600;
   font-size: 20px;
 `;
@@ -43,7 +43,7 @@ export const AccountContainer = styled.div`
       justify-content: space-between;
 
       .num {
-        color: ${colors.black};
+        color: ${colors.white};
         display: flex;
         align-items: center;
       }

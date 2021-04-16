@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const WrapPagination = styled.div`
   .page-link{
       background-color: ${props => props.theme.colors.white};
-      color: ${props => props.theme.colors.black};
+      color: ${props => props.theme.colors.white};
       cursor: pointer;
       box-shadow: none;
   }

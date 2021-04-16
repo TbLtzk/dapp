@@ -11,6 +11,6 @@ export const AlertStyle = styled(Alert)`
   //background-color:  ${props => props.theme.colors.error};
   //border-color: ${props => props.theme.colors.error};
   p{
-    color: ${props => props.theme.colors.black}
+    color: ${props => props.theme.colors.white}
   }
 `;
