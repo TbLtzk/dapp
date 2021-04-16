@@ -81,7 +81,7 @@ export default class RootsVoting extends VotingService {
 
   async createProposal(data, userAddress) {
     let result = null;
-    let hash = data.hash;
+    const hash = data.hash ?? '0x00';
     const link = data['external-link'];
     let addressToRemove = data.address;
     if (data.first === 'add-a-new-root-node') {

@@ -112,7 +112,7 @@ function* createProposal({ data }) {
     yield put(setTransactionLoadingSuccess());
 
   } catch (err) {
-    console.log('err', err.message);
+    console.error('err', err);
     yield put(setTransactionLoadingError(err.message));
   }
 }
