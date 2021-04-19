@@ -62,14 +62,16 @@ function VoteBreakdown(props) {
           </WrapBlock>
           <CircleDescrData>- For:
             {voteBreakdown.contract === 'EPQFI_ParametersVoting' || voteBreakdown.contract === 'EPDR_ParametersVoting' ||
-            voteBreakdown.contract === 'RootNodesSlashingVoting' || voteBreakdown.contract === 'ValidatorsSlashingVoting' ||
-            voteBreakdown.contract === 'EmergencyUpdateVoting' ? ' ' + voteBreakdown.votesFor : ' ' + fN(voteBreakdown.votesFor) + 'Q'}
+            voteBreakdown.contract === 'ValidatorsSlashingVoting' || voteBreakdown.contract === 'EmergencyUpdateVoting'
+              ? ' ' + voteBreakdown.votesFor
+              : ' ' + fN(voteBreakdown.votesFor) + ' Q'}
           </CircleDescrData>
           {/*<CircleDescrData>- For: {voteBreakdown.currentMajority}%</CircleDescrData>*/}
           <CircleDescrData>- Against:
             {voteBreakdown.contract === 'EPQFI_ParametersVoting' || voteBreakdown.contract === 'EPDR_ParametersVoting' ||
-            voteBreakdown.contract === 'RootNodesSlashingVoting' || voteBreakdown.contract === 'ValidatorsSlashingVoting' ||
-            voteBreakdown.contract === 'EmergencyUpdateVoting' ? ' ' + voteBreakdown.votesAgainst : ' ' + fN(voteBreakdown.votesAgainst) + 'Q'}
+            voteBreakdown.contract === 'ValidatorsSlashingVoting' || voteBreakdown.contract === 'EmergencyUpdateVoting'
+              ? ' ' + voteBreakdown.votesAgainst
+              : ' ' + fN(voteBreakdown.votesAgainst) + ' Q'}
             {/*<CircleDescrData>- Against: {(voteBreakdown.requiredMajority) - (voteBreakdown.currentMajority)}%*/}
           </CircleDescrData>
         </Col>
