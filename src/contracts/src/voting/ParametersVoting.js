@@ -44,8 +44,8 @@ export default class ParametersVoting extends VotingService {
     }
     if (weightFor > 0 || weightAgainst > 0) {
       objRes.numberProposalVotes = {
-        votesFor: Number(weightFor),
-        votesAgainst: Number(weightAgainst)
+        votesFor: Number(objRes.votesFor),
+        votesAgainst: Number( objRes.votesAgainst)
       };
     }
     return { ...objRes, ...objStats, ...objParameters };

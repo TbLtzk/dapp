@@ -165,55 +165,6 @@ export default class VotingService {
     return objRes;
   }
 
-  /**
-   * VotingOption {NONE, FOR, AGAINST}
-   * get proposal votes
-   * @param id
-   * @return array
-   */
-  async getProposalVotes(id) {
-
-    try {
-      const votesArrAll = await getPastEvents(this.contract, 'UserVoted');
-      const votesArrById = votesArrAll?.filter((elem) => {
-        if (elem.returnValues._proposalId === id) {
-          return elem.returnValues;
-        }
-      });
-      const commonVotes = votesArrById?.map((el) => {
-        switch (el?.returnValues?._votingOption) {
-          case '1': //FOR
-            return {
-              'votesFor': 1,
-              'votesAgainst': 0
-            };
-          case '2': //AGAINST
-            return {
-              'votesAgainst': 1,
-              'votesFor': 0
-            };
-        }
-        return el;
-      });
-      let sumResults = 0;
-      if (commonVotes.length !== 0) {
-        sumResults = commonVotes?.reduce((accumulator, currentValue) => {
-          accumulator.votesFor = accumulator.votesFor + currentValue.votesFor;
-          accumulator.votesAgainst = accumulator.votesAgainst + currentValue.votesAgainst;
-          return accumulator;
-        }, {
-          votesFor: 0,
-          votesAgainst: 0
-        });
-        return sumResults;
-      } else {
-        return 0;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   async getProposalsCount() {
     const proposalEvents = await this.getProposalsEvent();
     const proposalIds = getPastProposalsIds(proposalEvents);

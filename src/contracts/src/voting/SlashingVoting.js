@@ -36,8 +36,8 @@ export default class SlashingVoting extends VotingService {
     objRes.votesFor = weightFor;
     if (weightFor > 0 || weightAgainst > 0) {
       objRes.numberProposalVotes = {
-        votesFor: Number(weightFor),
-        votesAgainst: Number(weightAgainst)
+        votesFor: Number(objRes.votesFor),
+        votesAgainst: Number( objRes.votesAgainst)
       };
     }
     //the ending is given by: vetoEndTime.
