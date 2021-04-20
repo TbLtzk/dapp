@@ -21,23 +21,24 @@ export default class SlashingVoting extends VotingService {
         decision: {}
       },
     };
+
+    const isValidatorSlashingMode = this.contractName === 'ValidatorsSlashingVoting'; // else rootnode slashing mode
+
     objRes.id = id;
     objRes.remark = promiseRes.base.remark;
     objRes.candidate = promiseRes.candidate;
     objRes.amountToSlash = fromWei(promiseRes.amountToSlash);
     objRes.vetosCount = promiseRes.base.counters.vetosCount;
-    // objRes.votesAgainst = promiseRes.base.counters.weightAgainst;
-    // objRes.votesFor = promiseRes.base.counters.weightFor;
-    //number of voting people against
+    //number of voting people/Q tokens against
     const weightAgainst = promiseRes.base.counters.weightAgainst;
-    objRes.votesAgainst = weightAgainst;
-    //number of voting people for
+    objRes.votesAgainst = isValidatorSlashingMode ? weightAgainst : fromWei(weightAgainst);
+    //number of voting people/Q tokens for
     const weightFor = promiseRes.base.counters.weightFor;
-    objRes.votesFor = weightFor;
+    objRes.votesFor = isValidatorSlashingMode ? weightFor: fromWei(weightFor);
     if (weightFor > 0 || weightAgainst > 0) {
       objRes.numberProposalVotes = {
-        votesFor: Number(weightFor),
-        votesAgainst: Number(weightAgainst)
+        votesFor: Number(objRes.votesFor),
+        votesAgainst: Number( objRes.votesAgainst)
       };
     }
     //the ending is given by: vetoEndTime.
@@ -46,14 +47,14 @@ export default class SlashingVoting extends VotingService {
     objRes.votingEndTime = promiseRes.base.params.votingEndTime;
 
     objRes.status = getStatusTransformation(promiseStatus);
-    objRes.title = this.contractName === 'ValidatorsSlashingVoting'
+    objRes.title = isValidatorSlashingMode
       ? 'Validator slashing proposals' : 'Root Nodes slashing proposals';
-    objRes.type = this.contractName === 'ValidatorsSlashingVoting'
+    objRes.type = isValidatorSlashingMode
       ? 'validator slashing' : 'root nodes slashing';
     objStats = await this.getProposalStatsData(id);
     objRes.contract = this.contractName;
     if (promiseStatus === '5') {
-      const SlashingEscrowContractName = this.contractName === 'ValidatorsSlashingVoting'
+      const SlashingEscrowContractName = isValidatorSlashingMode
         ? 'ValidatorsSlashingEscrow' : 'RootNodesSlashingEscrow';
       const SlashingEscrowContract = new SlashingEscrow(SlashingEscrowContractName);
       objEscrow.objEscrow.objection.statusObjection =

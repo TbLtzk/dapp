@@ -57,29 +57,25 @@ export default class Validators {
 
   async getValidator (validator, index) {
 
-    const additionalData = await Promise.all([
-      validatorsInstance.getValidatorTotalStake(validator.validator),
-      validationRewardPoolsInstance.getInterestRate(validator.validator),
-      this.getValidatorDelegatedStake(validator.validator),
-      validationRewardPoolsInstance.getDelegatorsShare(validator.validator),
-      this.ValidationRewardPoolsContract.getBalance(validator.validator)
-    ])
+    const validatorInfo = await validatorsInstance.getValidatorInfo(validator.validator)
+    const poolInfo = await validationRewardPoolsInstance.getPoolInfo(validator.validator)
 
-    const selfStake = fromWei(additionalData[0]);
-    const poolPayoutRatio = uintPerSecondToPerYearNumber(additionalData[1]);
-    const delegatedStake = fromWei(additionalData[2]);
-    const delegatorShare = transformToPercentage(additionalData[3]);
+    const selfStake = validatorInfo.selfStake
+    const delegatedStake = validatorInfo.delegatedStake
+    const delegatorShare = transformToPercentage(poolInfo.delegatorsShare);
     const validatorShare = delegatorShare ? 100 - delegatorShare : 0;
-    const validatorPoolBalance = fromWei(additionalData[4]);
+    const validatorPoolBalance = fromWei(poolInfo.poolBalance);
+    const poolinterestRate = uintPerSecondToPerYearNumber(poolInfo.interestRate);
+
     return {
       ...validator,
+      rank: index + 1,
+      selfStake,
       delegatedStake,
       delegatorShare,
       validatorShare,
-      selfStake,
       validatorPoolBalance,
-      poolPayoutRatio,
-      rank: index + 1
+      poolinterestRate,
     }
   }
 
