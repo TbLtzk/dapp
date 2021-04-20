@@ -46,7 +46,12 @@ export class ComponentHandler {
     // Get all values from input containers
     inputContainers.forEach((element) => {
       inputAddresses.push(element.querySelector('.input_address input').value);
-      inputShares.push(element.querySelector('.input_share input').value);
+      if (applyZeroShare) {
+        inputShares.push('0');
+        element.querySelector('.input_share input').value = '0';
+      } else {
+        inputShares.push(element.querySelector('.input_share input').value);
+      }
     });
 
     // Validate addresses
