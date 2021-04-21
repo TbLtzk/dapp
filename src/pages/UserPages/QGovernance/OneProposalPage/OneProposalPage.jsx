@@ -50,6 +50,7 @@ function OneProposalPage(props) {
 
 
   const slashingProposals = useSelector(slashingProposalsArr);
+  const slashingLoading = useSelector(slashingLoadingProposals);
   const slashingError = useSelector(slashingErrorM);
 
   useEffect(() => {
