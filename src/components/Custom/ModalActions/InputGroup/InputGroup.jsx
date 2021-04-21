@@ -46,6 +46,7 @@ function InputGroup(props) {
           <Fragment key={i}>
             {labelsArr ? <Descr>{labelsArr[i]}</Descr> : null}
             <FormInput
+              palette={'dark'}
               name={nameField}
               onChange={(value) => {
                 const valObg = { [nameField]: value.target.value };
