@@ -61,7 +61,7 @@ function InstructionMetamask() {
             </p>
             <ul>
                 <li>Network Name: Q Testnet</li>
-                <li>New RPC Url: http://18.158.7.68:8545</li>
+                <li>New RPC Url: https://rpc.qtestnet.org</li>
                 <li>ChainID: 35443</li>
                 <li>Symbol: Q</li>
             </ul>
