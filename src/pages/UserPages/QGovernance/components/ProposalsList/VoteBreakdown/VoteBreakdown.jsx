@@ -77,7 +77,7 @@ function VoteBreakdown(props) {
         </Col>
         <Col md={4}>
           <SubTitle>Constitution Check</SubTitle>
-          <Descr>Objection Requirement: {voteBreakdown.vetoThreshold}%</Descr>
+          <Descr>Objection Requirement: {'>'}{voteBreakdown.vetoThreshold}%</Descr>
           <WrapBlock>
             <PieChartTwoItem
               data={[{
@@ -140,7 +140,7 @@ function VoteBreakdown(props) {
                 </tr>
                 <tr>
                   <td><Text>Root Node Objection
-                    Requirement: {voteBreakdown.vetoThreshold}%</Text>
+                    Requirement: {'>'}{voteBreakdown.vetoThreshold}%</Text>
                   </td>
                   <td><Text>Current Root Node
                     Objection: {voteBreakdown.currentVetoPercentage}%</Text>
