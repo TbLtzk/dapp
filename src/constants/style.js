@@ -9,6 +9,7 @@ export const indents = {
   20: '20px',
   30: '30px',
   40: '40px',
+  50: '50px',
 };
 
 export const h5Text = styled.h5`

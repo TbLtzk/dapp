@@ -51,7 +51,7 @@ export default {
       fontFamily: fonts.primary,
       fontStyle: 'normal',
       fontWeight: 600,
-      fontSize: '14px',
+      fontSize: '13px',
       lineHeight: '150%',
       color: colors.white,
     },

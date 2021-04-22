@@ -2,17 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
+import colors from 'constants/colors';
+
 import { useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-
-import { Container, Navbar, Nav } from 'react-bootstrap';
 
 import Button from 'components/Base/Buttons/Button';
 import LogoImg from 'components/Base/LogoImg';
 
-import { navItems } from './constants';
+import { navItems, referencesItems, helpItems } from './constants';
 
-import { NavbarContainer, ListContainer, WrapBtn, LinkStyle } from './styles';
+import { NavbarContainer, ListContainer, LinkStyle, WrapLogo, ListTitle } from './styles';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 function Header() {
   const history = useHistory();
@@ -20,47 +23,91 @@ function Header() {
 
   return (
     <header>
-      <NavbarContainer bg="light" expand="lg">
-        <Container fluid>
-          <Link to={'/'} className="navbar-brand">
+      <NavbarContainer bg={colors.oxfordBlue} expand="lg">
+        <WrapLogo>
+          <Link to={'/'}>
             <LogoImg/>
           </Link>
-          <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-          <ListContainer id="basic-navbar-nav">
-            <Nav>
-              {
-                navItems.map((value, key) => {
-                  return (
-                    <LinkStyle
-                      to={'/' + value.location}
-                      key={key}
-                      onClick={(e) => {
-                        // e.preventDefault();
-                        // history.push(value.location);
-                      }}
-                      className="nav-link"
-                      highlight={Number(history.location.pathname === ('/' + value.location))}
-                    >
-                      {value.label}
-                    </LinkStyle>
-                  );
-                })
-              }
-              <WrapBtn>
-                <Button
-                  title={userAddress || 'Connect Wallet'}
-                  disabled={userAddress}
-                  handleButton={() => {
-                    window.ethereum.request({ method: 'eth_requestAccounts' });
+        </WrapLogo>
+        <ListContainer id="basic-navbar-nav">
+          {
+            navItems.map((value, key) => {
+              return (
+                <LinkStyle
+                  to={'/' + value.location}
+                  key={key}
+                  onClick={(e) => {
+                    // e.preventDefault();
+                    // history.push(value.location);
                   }}
-                />
-              </WrapBtn>
-            </Nav>
-          </ListContainer>
-        </Container>
+                  className="nav-link"
+                  highlight={Number(history.location.pathname === ('/' + value.location))}
+                >
+                  {value.label}
+                </LinkStyle>
+              );
+            })
+          }
+        </ListContainer>
+        <ListTitle>References</ListTitle>
+        <ListContainer>
+          {
+            referencesItems.map((value, key) => {
+              return (
+                <LinkStyle
+                  to={'/' + value.location}
+                  key={key}
+                  onClick={(e) => {
+                    // e.preventDefault();
+                    // history.push(value.location);
+                  }}
+                  className="nav-link"
+                  highlight={Number(history.location.pathname === ('/' + value.location))}
+                >
+                  {value.label}
+                </LinkStyle>
+              );
+            })
+          }
+        </ListContainer>
+        <ListTitle>Help</ListTitle>
+        <ListContainer>
+          {
+            helpItems.map((value, key) => {
+              return (
+                <LinkStyle
+                  to={'/' + value.location}
+                  key={key}
+                  onClick={(e) => {
+                    // e.preventDefault();
+                    // history.push(value.location);
+                  }}
+                  className="nav-link"
+                  highlight={Number(history.location.pathname === ('/' + value.location))}
+                >
+                  {value.label}
+                </LinkStyle>
+              );
+            })
+          }
+          <CopyToClipboard text={userAddress}>
+            <span>
+            <Button
+              type={'white'}
+              width={'140px'}
+              title={(
+                <>
+                  <FontAwesomeIcon className={'btn-icon'} icon={faCopy}/>Your address
+                </>
+              )}
+              handleButton={() => {
+              }}
+            />
+              </span>
+          </CopyToClipboard>
+        </ListContainer>
       </NavbarContainer>
     </header>
-
   );
 }
 

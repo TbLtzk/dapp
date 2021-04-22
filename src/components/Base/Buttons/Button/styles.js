@@ -6,10 +6,7 @@ import { indents } from 'constants/style';
 export const ButtonCustom = styled(Button)`
   width: ${(props) => (props.width === 'undefined' ? 'auto' : props.width)};
   ${(props) => props.theme.fontStyles.text.middle};
-  padding-top: 7px;
-  padding-bottom: 7px;
-  padding-left: ${indents['20']};
-  padding-right: ${indents['20']};
+  padding: 7px;
   border-color: ${(props) => {
     switch (props.type) {
       case 'white':
@@ -180,5 +177,9 @@ export const ButtonCustom = styled(Button)`
           return props.theme.colors.oxfordBlueTint2;
       }
     }}!important;
+  }
+
+  .btn-icon {
+    margin-right: 10px;
   }
 `;
