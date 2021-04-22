@@ -7,7 +7,9 @@ import {indents} from "constants/style";
 
 export const NavbarContainer = styled(Navbar)`
   width: 350px;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   padding: ${indents["40"]};
   border-right: 1px solid ${props => props.theme.colors.oxfordBlueTint2};
   .header__logo {

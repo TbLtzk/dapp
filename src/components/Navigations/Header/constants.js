@@ -31,14 +31,3 @@ export const referencesItems = [
     location: 'voting-manual',
   }
 ];
-
-export const helpItems = [
-  {
-    label: 'How does the Root Panel work?',
-    location: 'How does the Root Panel',
-  },
-  {
-    label: 'What is the Vault?',
-    location: 'What is the Vault',
-  }
-];

@@ -31,6 +31,9 @@ const colors = {
   green: generalColors.neonGreen,
   // table
   th: generalColors.oxfordBlueTint3,
-  td: generalColors.white
+  td: generalColors.white,
+  // text
+  darkText: generalColors.oxfordBlue,
+  lightText: generalColors.white,
 };
 export default colors;

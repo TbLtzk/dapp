@@ -9,8 +9,9 @@ import { userAddressMetamask } from 'store/selectors/user-inf';
 
 import Button from 'components/Base/Buttons/Button';
 import LogoImg from 'components/Base/LogoImg';
+import Version from './components/Version';
 
-import { navItems, referencesItems, helpItems } from './constants';
+import { navItems, referencesItems } from './constants';
 
 import { NavbarContainer, ListContainer, LinkStyle, WrapLogo, ListTitle } from './styles';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
@@ -69,27 +70,6 @@ function Header() {
               );
             })
           }
-        </ListContainer>
-        <ListTitle>Help</ListTitle>
-        <ListContainer>
-          {
-            helpItems.map((value, key) => {
-              return (
-                <LinkStyle
-                  to={'/' + value.location}
-                  key={key}
-                  onClick={(e) => {
-                    // e.preventDefault();
-                    // history.push(value.location);
-                  }}
-                  className="nav-link"
-                  highlight={Number(history.location.pathname === ('/' + value.location))}
-                >
-                  {value.label}
-                </LinkStyle>
-              );
-            })
-          }
           <CopyToClipboard text={userAddress}>
             <span>
             <Button
@@ -106,6 +86,7 @@ function Header() {
               </span>
           </CopyToClipboard>
         </ListContainer>
+        <Version />
       </NavbarContainer>
     </header>
   );
