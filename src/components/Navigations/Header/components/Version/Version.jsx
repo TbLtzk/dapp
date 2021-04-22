@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ModalWindow from 'components/Base/ModalWindow';
 import VersionsTable from '../VersionsTable'
 
-import { Title, Descr } from 'components/Custom/ModalActions/styles';
+import { Title } from 'components/Custom/ModalActions/styles';
 import { WrpVersion } from './styles';
 import { Web3Adapter } from '@q-dev/q-js-sdk';
 import pkg from '../../../../../../package.json';
