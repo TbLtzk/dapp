@@ -34,8 +34,8 @@ export class BorrowingCoreQUSD {
         .send({from: address});
   }
 
-  async payBackSTC(address, vaultId, amountL) {
-    return await this.methods.payBackSTC(vaultId, amountL)
+  async payBackStc(address, vaultId, amountL) {
+    return await this.methods.payBackStc(vaultId, amountL)
         .send({from: address});
   }
 

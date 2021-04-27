@@ -153,7 +153,7 @@ export default class Handler {
   async repay(amount, vaultNum, setCollateralInf, setBorrowingInf, setLoadingInf) {
     this.dispatch(setTransactionCounter(1));
     const valueAmount = toWei(amount);
-    this.borrowingContract.payBackSTC(this.address, vaultNum, valueAmount)
+    this.borrowingContract.payBackStc(this.address, vaultNum, valueAmount)
       .then(() => {
         this.setVaultStats(setCollateralInf, setBorrowingInf, setLoadingInf);
       })
