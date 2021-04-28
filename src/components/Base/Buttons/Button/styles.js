@@ -5,8 +5,13 @@ import { indents } from 'constants/style';
 
 export const ButtonCustom = styled(Button)`
   width: ${(props) => (props.width === 'undefined' ? 'auto' : props.width)};
+  max-width: ${(props) => (props.width === 'undefined' ? 'auto' : props.width)};
   ${(props) => props.theme.fontStyles.text.middle};
   padding: 7px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+
   border-color: ${(props) => {
     switch (props.type) {
       case 'white':

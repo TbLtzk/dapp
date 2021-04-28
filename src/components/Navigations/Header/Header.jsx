@@ -80,12 +80,12 @@ function Header() {
         </LinksContainer>
         <FooterContainer>
           <CopyToClipboard text={userAddress}>
-            <span>
+            <span title={userAddress}>
             <Button
               type={'white'}
               title={(
                 <>
-                  <FontAwesomeIcon className={'btn-icon'} icon={faCopy}/>{userAddress.substr(0, 13)}...
+                  <FontAwesomeIcon className={'btn-icon'} icon={faCopy}/>{userAddress}
                 </>
               )}
               handleButton={() => {
