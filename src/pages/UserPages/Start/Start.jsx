@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import Header from 'components/Navigations/Header';
 import TabsAuth from 'pages/UserPages/Start/TabsAuth';
 import NotAuth from 'pages/UserPages/Start/NotAuth';
+import PageWrap from 'components/Base/PageWrap';
 
 import { WrapContainer } from 'pages/UserPages/styles';
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,23 +39,11 @@ function Start() {
     return <NotAuth/>;
   } else {
     return (
-      <>
-        <Header/>
-        <WrapContainer fluid>
-          <TabsAuth/>
-        </WrapContainer>
-      </>
+      <PageWrap>
+        <TabsAuth/>
+      </PageWrap>
     );
   }
-
-  // return (
-  //     <>
-  //         <Header/>
-  //         <WrapContainer fluid>
-  //             <TabsAuth/>
-  //         </WrapContainer>
-  //     </>
-  // );
 }
 
 export default Start;

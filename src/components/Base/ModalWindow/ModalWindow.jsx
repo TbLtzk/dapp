@@ -9,8 +9,16 @@ import ButtonLink from 'components/Base/Buttons/ButtonLink';
 import { Header, Body, Footer, ModalW } from './styles';
 
 function ModalWindow(props) {
-  const { disabled, show, onHide, backBtnTitle, backBtnHandler,
-    continueBtnTitle, continueBtnHandler, content } = props;
+  const {
+    disabled,
+    show,
+    onHide,
+    backBtnTitle,
+    backBtnHandler,
+    continueBtnTitle,
+    continueBtnHandler,
+    content
+  } = props;
 
   return (
     <ModalW
@@ -27,31 +35,34 @@ function ModalWindow(props) {
       <Body>
         {content}
       </Body>
-      <Footer>
-        <Container>
-          <Row>
-            <Col md={6}>
-              {!backBtnTitle ? null :
-                <ButtonLink
-                  width="100%"
-                  title={backBtnTitle}
-                  handleLink={backBtnHandler}
-                />
-              }
-            </Col>
-            <Col md={6}>
-              <Button
-                type="usual"
-                width="100%"
-                disabled={disabled}
-                title={continueBtnTitle}
-                handleButton={continueBtnHandler}
-              />
-            </Col>
-          </Row>
-        </Container>
-
-      </Footer>
+      {(!backBtnTitle && !continueBtnTitle) ? null :
+        <Footer>
+          <Container>
+            <Row>
+              <Col md={6}>
+                {!backBtnTitle ? null :
+                  <ButtonLink
+                    width="100%"
+                    title={backBtnTitle}
+                    handleLink={backBtnHandler}
+                  />
+                }
+              </Col>
+              <Col md={6}>
+                {!continueBtnTitle ? null :
+                  <Button
+                    type="usual"
+                    width="100%"
+                    disabled={disabled}
+                    title={continueBtnTitle}
+                    handleButton={continueBtnHandler}
+                  />
+                }
+              </Col>
+            </Row>
+          </Container>
+        </Footer>
+      }
     </ModalW>
   );
 }

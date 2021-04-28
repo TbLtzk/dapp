@@ -2,17 +2,30 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
+import colors from 'constants/colors';
+
 import { useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 
-import { Container, Navbar, Nav } from 'react-bootstrap';
-
 import Button from 'components/Base/Buttons/Button';
 import LogoImg from 'components/Base/LogoImg';
+import Version from './components/Version';
 
-import { navItems } from './constants';
+import { navItems, referencesItems } from './constants';
 
-import { NavbarContainer, ListContainer, WrapBtn, LinkStyle } from './styles';
+import {
+  NavbarContainer,
+  ListContainer,
+  LinkStyle,
+  WrapLogo,
+  ListTitle,
+  ALinkStyle,
+  LinksContainer,
+  FooterContainer
+} from './styles';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 function Header() {
   const history = useHistory();
@@ -20,47 +33,70 @@ function Header() {
 
   return (
     <header>
-      <NavbarContainer bg="light" expand="lg">
-        <Container fluid>
-          <Link to={'/'} className="navbar-brand">
-            <LogoImg/>
-          </Link>
-          <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+      <NavbarContainer bg={colors.oxfordBlue} expand="lg">
+        <LinksContainer>
+          <WrapLogo>
+            <Link to={'/'}>
+              <LogoImg/>
+            </Link>
+          </WrapLogo>
           <ListContainer id="basic-navbar-nav">
-            <Nav>
-              {
-                navItems.map((value, key) => {
-                  return (
-                    <LinkStyle
-                      to={'/' + value.location}
-                      key={key}
-                      onClick={(e) => {
-                        // e.preventDefault();
-                        // history.push(value.location);
-                      }}
-                      className="nav-link"
-                      highlight={Number(history.location.pathname === ('/' + value.location))}
-                    >
-                      {value.label}
-                    </LinkStyle>
-                  );
-                })
-              }
-              <WrapBtn>
-                <Button
-                  title={userAddress || 'Connect Wallet'}
-                  disabled={userAddress}
-                  handleButton={() => {
-                    window.ethereum.request({ method: 'eth_requestAccounts' });
-                  }}
-                />
-              </WrapBtn>
-            </Nav>
+            {
+              navItems.map((value, key) => {
+                return (
+                  <LinkStyle
+                    to={'/' + value.location}
+                    key={key}
+                    onClick={(e) => {
+                      // e.preventDefault();
+                      // history.push(value.location);
+                    }}
+                    className="nav-link"
+                    highlight={Number(history.location.pathname === ('/' + value.location))}
+                  >
+                    {value.label}
+                  </LinkStyle>
+                );
+              })
+            }
           </ListContainer>
-        </Container>
+          <ListTitle>References</ListTitle>
+          <ListContainer>
+            {
+              referencesItems.map((value, key) => {
+                return (
+                  <ALinkStyle
+                    key={'references' + key}
+                    className="nav-link"
+                    href={value.location}
+                    target={value.tag === 'a' ? '_blank' : '_self'}
+                  >
+                    {value.label}
+                  </ALinkStyle>
+                );
+              })
+            }
+          </ListContainer>
+        </LinksContainer>
+        <FooterContainer>
+          <CopyToClipboard text={userAddress}>
+            <span>
+            <Button
+              type={'white'}
+              title={(
+                <>
+                  <FontAwesomeIcon className={'btn-icon'} icon={faCopy}/>{userAddress.substr(0, 13)}...
+                </>
+              )}
+              handleButton={() => {
+              }}
+            />
+              </span>
+          </CopyToClipboard>
+          <Version/>
+        </FooterContainer>
       </NavbarContainer>
     </header>
-
   );
 }
 

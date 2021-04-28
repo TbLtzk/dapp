@@ -1,8 +1,6 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-import {Table} from "react-bootstrap";
-
-import {indents} from "constants/style";
+import { Table } from 'react-bootstrap';
 
 export const TableStyle = styled(Table)`
   thead th, td {
@@ -12,12 +10,12 @@ export const TableStyle = styled(Table)`
     //font-size: 14px;
     ${(props) => props.theme.fontStyles.text.middle};
   }
-  thead th{
+
+  thead th {
     color: ${props => props.theme.colors.th};
-    //font-weight: 600;
-    //text-align: center;
   }
-  td{
+
+  td {
     color: ${props => props.theme.colors.td};
     font-weight: 500;
     line-height: 17px;
