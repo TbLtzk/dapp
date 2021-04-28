@@ -83,10 +83,9 @@ function Header() {
             <span>
             <Button
               type={'white'}
-              width={'140px'}
               title={(
                 <>
-                  <FontAwesomeIcon className={'btn-icon'} icon={faCopy}/>Your address
+                  <FontAwesomeIcon className={'btn-icon'} icon={faCopy}/>{userAddress.substr(0, 13)}...
                 </>
               )}
               handleButton={() => {
