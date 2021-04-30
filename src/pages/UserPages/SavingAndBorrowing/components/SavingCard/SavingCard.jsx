@@ -34,9 +34,9 @@ export default function SavingCard(props) {
         <BlockCardItem
           txt1="Deposit Asset"
           val1="QUSD"
-          txt2="Interest Asset"
+          txt2="Reward Asset"
           val2="QUSD"
-          txt3="Interest Rate (p.a.)"
+          txt3="Saving Reward (p.a.)"
           val3={intRate}
           setActCardData={setActCardData}
         />

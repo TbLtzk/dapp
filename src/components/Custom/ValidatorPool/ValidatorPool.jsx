@@ -45,7 +45,7 @@ export default function ValidatorPool(props) {
         value: fN(totalStake) + 'Q'
       },
       {
-        label: 'Of which is Validator own Stake:',
+        label: 'Validator own Stake:',
         value: fN(ownStake) + 'Q'
       },
       {

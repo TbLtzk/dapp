@@ -50,11 +50,11 @@ export default function RewardStats() {
         value: delShare === 0 ? '100%' : fN(100 - delShare) + '%'
       },
       {
-        label: 'Delegators Share:',
+        label: 'Delegator Share:',
         value: fN(delShare) + '%'
       },
       {
-        label: 'Payout Interest:',
+        label: 'Delegator Reward (p.a.):',
         value: fN(intRate) + '%'
       },
     ];
@@ -97,7 +97,7 @@ export default function RewardStats() {
           </div>
         </Col>
         <Col xs={6} className="form-container">
-          <span>Set Payout Interest</span>
+          <span>Set Delegator Reward (p.a.)</span>
           <div>
             <FormInput
               name="amount"
