@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRootNodeStakes, getWithdrawals } from 'store/actions/action-creaters/root-contract';
-import { isUserRootNode, loadingCheckingRootNode, rootNodeStake, withdrawals } from 'store/selectors/root-contract';
+import { isUserRootNode, lastActionRoot, loadingCheckingRootNode, rootNodeStake, withdrawals } from 'store/selectors/root-contract';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 
 import { useForm } from 'react-hook-form';
@@ -32,6 +32,7 @@ function FormStaking() {
   const userAddress = useSelector(userAddressMetamask);
   const amountNodeStake = useSelector(rootNodeStake);
   const withdrawalsData = useSelector(withdrawals);
+  const lastUpdateRoot = useSelector(lastActionRoot);
 
   useEffect(() => {
     if (userAddress) {
@@ -39,14 +40,14 @@ function FormStaking() {
       dispatch(getRootNodeStakes(rootService, userAddress));
       dispatch(getWithdrawals(userAddress));
     }
-  }, [userAddress, isUserRoot, dispatch]);
+  }, [userAddress, isUserRoot, dispatch, lastUpdateRoot]);
 
   useEffect(() => {
       window.web3.eth.getBalance(userAddress, (err, balance) => {
         const userBalance = fromWei(balance);
         setUserBalance(fN(userBalance));
       });
-  }, []);
+  }, [lastUpdateRoot]);
 
   const handleBtn = useMemo(() => {
     return handleSubmit;

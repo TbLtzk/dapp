@@ -13,6 +13,7 @@ const initialState = {
   announceWithdrawTransId: null,
   withdrawTransId: null,
   withdrawals: null,
+  lastActionRoot: 0
 };
 
 export default function rootContract(state = initialState, action) {
@@ -58,6 +59,7 @@ export default function rootContract(state = initialState, action) {
       return {
         ...state,
         stakeToPanelTransId: action.result,
+        lastActionRoot: +new Date()
       };
     case actionTypes.STAKE_TO_PANEL_ERROR:
       return {
@@ -68,6 +70,7 @@ export default function rootContract(state = initialState, action) {
       return {
         ...state,
         announceWithdrawTransId: action.result,
+        lastActionRoot: +new Date()
       };
     case actionTypes.ANNOUNCE_WITHDRAWAL_ERROR:
       return {
@@ -79,6 +82,7 @@ export default function rootContract(state = initialState, action) {
       return {
         ...state,
         withdrawTransId: action.result,
+        lastActionRoot: +new Date(),
       };
     case actionTypes.WITHDRAW_ERROR:
       return {
