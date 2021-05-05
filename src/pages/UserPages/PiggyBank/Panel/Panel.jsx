@@ -57,13 +57,13 @@ export default function Panel() {
           <span>{fN(userPBBalanceL) + 'Q'}</span>
         </div>
         <div>
-          <span>Q Holder interest rate: </span>
+          <span>Q Token Holder reward rate (p.a.): </span>
           <span>
             {(balanceDetails?.interestRate ? fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate)) : 0) + '%'}
           </span>
         </div>
         <div>
-          <span>Yearly expected earnings: </span>
+          <span>Yearly expected reward: </span>
           <span>
             {fN(yearlyExpectedEarnings) + 'Q'}
         </span>
@@ -80,7 +80,7 @@ export default function Panel() {
       </TextPanel>
       <TextPanel type="parentNode">
         {/*<span>Voting Weight</span>*/}
-        <TextPanelSmallGrey style={{ margin: '0 8px 0 16px' }}>Q Vault Voting Weight:</TextPanelSmallGrey>
+        <TextPanelSmallGrey style={{ margin: '0 8px 0 16px' }}>Q Voting Weight:</TextPanelSmallGrey>
         <TextPanelSmallBlack>
           {userVotingWeight}
           Q

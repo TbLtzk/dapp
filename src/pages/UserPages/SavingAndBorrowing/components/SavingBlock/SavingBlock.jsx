@@ -73,7 +73,7 @@ export default function SavingBlock(props) {
         value: 'QUSD'
       },
       {
-        label: 'Saving Balance',
+        label: 'Saving balance',
         value: fN(savingBalance)
       },
       {
@@ -85,15 +85,15 @@ export default function SavingBlock(props) {
   const interestInfArr = useMemo(() => {
     return [
       {
-        label: 'Receive Asset',
+        label: 'Receive asset',
         value: 'QUSD'
       },
       {
-        label: 'Estimated Interest',
+        label: 'Yearly expected reward',
         value: fN(estInterest)
       },
       {
-        label: 'Interest Rate p.a.',
+        label: 'Saving reward (p.a)',
         value: fN(interestRate) + '%'
       },
     ];
@@ -107,7 +107,7 @@ export default function SavingBlock(props) {
           <>
             <p className="title-2">Deposit</p>
             {ShowListElem(depositInfArr)}
-            <p className="title-2">Interest</p>
+            <p className="title-2">Reward</p>
             {ShowListElem(interestInfArr)}
           </>
         }

@@ -80,12 +80,12 @@ function SavingBorrowingBlock() {
         btnTitle: null,
       },
       {
-        title: 'QUSD Saving Rate (p a.)',
+        title: 'QUSD Saving Reward (p.a.)',
         firstContent: savingRate + ' %',
         btnTitle: null,
       },
       {
-        title: 'QUSD - QBTC Borrowing interest Rate Fee (p a.)',
+        title: 'QUSD - QBTC Borrowing Fee (p.a.)',
         firstContent: interestRate + ' %',
         btnTitle: null,
       },

@@ -13,6 +13,6 @@ export const tableHeaderWidened = [
   "Validator Share",
   "Delegator Share",
   "Validator Pool Balance",
-  "Pool Interest Rate (p.a.)",
+  "Delegator Reward (p.a.)",
 ];
 

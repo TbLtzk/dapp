@@ -54,7 +54,7 @@ function InfBlocksUp() {
           }
           secondContent={
             <>
-              <p><a href={latestConstitution} target="_blank">Download Latest</a></p>
+              <p><a href={latestConstitution} target="_blank">Download</a></p>
               <p><a href={archiveConstitution} target="_blank">Check archive</a></p>
             </>
           }

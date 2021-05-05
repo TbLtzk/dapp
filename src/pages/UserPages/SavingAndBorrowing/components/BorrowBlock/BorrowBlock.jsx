@@ -158,7 +158,7 @@ export default function BorrowBlock(props) {
         value: fN(borrowingInf?.liquidationLimit) || 0
       },
       {
-        label: 'Borrowing fee p. a.',
+        label: 'Borrowing fee (p.a.)',
         value: (fN(borrowingInf?.borrowingFee) || 0) + '%'
       },
     ];
@@ -197,7 +197,7 @@ export default function BorrowBlock(props) {
             }}
           />
           <ButtonSlide
-            btnTxt="Deposit collateral"
+            btnTxt="Deposit Collateral"
             btnShortTxt={depositBtnTitle}
             onclick={addDeposit}
             inpType="text"

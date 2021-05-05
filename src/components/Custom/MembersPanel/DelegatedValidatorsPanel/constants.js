@@ -1,5 +1,5 @@
 export const tableHeader = [
   'Validator Address',
-  "Ideal stake",
+  "Current Stake",
   "Claimable Reward",
 ];

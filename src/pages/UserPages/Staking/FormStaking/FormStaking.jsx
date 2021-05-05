@@ -71,7 +71,7 @@ function FormStaking() {
           {/*<p>{!isUserRoot ? "0Q" : amountNodeStake + "Q"}</p>*/}
         </TextWrapBlack>
         <TextWrapGrey md={6}>
-          <p>Personal Balance (Q)</p>
+          <p>Q Address Balance</p>
         </TextWrapGrey>
         <TextWrapBlack md={6}>
           <p>{userBalance ? userBalance : 0}Q</p>

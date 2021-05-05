@@ -80,7 +80,7 @@ export default class QPiggyBank {
       for (let member of delegationsList) {
         resultArr.push({
           validator: member.validator,
-          idealStake: fromWei(member.idealStake),
+          actualStake: fromWei(member.actualStake),
           claimableReward: fromWei(member.claimableReward),
         });
       }

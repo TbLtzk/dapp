@@ -77,7 +77,6 @@ function ValidatorsPanel(props) {
                 </WrapBtn>
                 : <Row>
                   <Col xs={7}>
-                    <BottomText>Manage your validator pool parameters in Q Vault.</BottomText>
                   </Col>
                   <WrapBtn xs={5}>
                     <ButtonLinkArrow
