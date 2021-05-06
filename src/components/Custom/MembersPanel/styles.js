@@ -10,24 +10,13 @@ export const ContainerWrap = styled.div`
 `;
 
 export const LoadingWrap = styled(Col)`
-  text-align: center;
+  text-align: start;
+  margin: 10px 0;
 `;
 
 export const HeadlineWrap = styled.div`
-  //display: flex;
   justify-content: space-between;
   align-items: baseline;
-`;
-
-export const TotalWrap = styled.div`
-  ${(props) => props.theme.fontStyles.text.middle};
-  line-height: 18px;
-  color: ${props => props.theme.colors.white};
-`;
-
-export const BottomText = styled.p`
-  ${(props) => props.theme.fontStyles.text.middle};
-  line-height: 22px;
 `;
 
 export const WrapBtn = styled(Col)`

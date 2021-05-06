@@ -4,7 +4,7 @@ import Button from 'components/Base/Buttons/Button';
 import ValidationRewardPools from 'contracts/src/ValidationRewardPools';
 import QPiggyBank from 'contracts/src/QPiggyBank';
 
-import { BlockAlignBlock } from 'pages/UserPages/Start/TabsAuth/MainTabs/Dashboard/styles';
+import { BlockAlignBlock } from 'pages/UserPages/Dashboard/Dashboard/styles';
 import { Col } from 'react-bootstrap';
 import { remainDateTimeSince } from 'func/convertDate';
 import { useSelector } from 'react-redux';

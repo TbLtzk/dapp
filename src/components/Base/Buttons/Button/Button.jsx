@@ -4,7 +4,15 @@ import PropTypes from 'prop-types';
 import { ButtonCustom } from './styles';
 
 function Button(props) {
-  const { title, type, width, disabled, handleButton } = props;
+  const {
+    title,
+    type,
+    width,
+    disabled,
+    handleButton,
+    icon,
+    iconFontSize
+  } = props;
 
   return (
     <ButtonCustom
@@ -13,14 +21,19 @@ function Button(props) {
       width={width}
       variant="primary"
       onClick={handleButton}
+      title={title}
+      iconfontsize={iconFontSize}
     >
-      {title}
+      {icon ? (
+        <>
+          <i className={`mdi mdi-${icon} btn-icon`}/>{title}
+        </>
+      ) : title}
     </ButtonCustom>
   );
 }
 
 Button.propTypes = {
-  // title: PropTypes.string,
   type: PropTypes.string,
   width: PropTypes.string,
   disabled: PropTypes.bool,
@@ -29,7 +42,7 @@ Button.propTypes = {
 
 Button.defaultProps = {
   type: 'main',
-  width: '100%',
+  width: '',
   disabled: false,
 };
 

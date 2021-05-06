@@ -3,10 +3,11 @@ import { Route, Switch } from 'react-router-dom';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
 
-import Start from 'pages/UserPages/Start';
 import StartConfigurations from 'pages/StartConfigurations';
 
 import { AuthProtect } from './AuthProtect';
+import Dashboard from '../pages/UserPages/Dashboard/Dashboard';
+import Manage from '../pages/UserPages/Dashboard/Manage';
 import QGovernance from '../pages/UserPages/QGovernance';
 import PiggyBank from '../pages/UserPages/PiggyBank';
 import Staking from '../pages/UserPages/Staking';
@@ -29,7 +30,8 @@ function Routes() {
     // eslint-disable-next-line react/jsx-props-no-spreading
     <AlertProvider template={AlertTemplate} {...options}>
       <Switch>
-        <Route exact path="/" component={Start}/>
+        <Route exact path="/" component={AuthProtect(Dashboard)}/>
+        <Route exact path="/q-parameters" component={AuthProtect(Manage)}/>
         <Route exact path="/start-configurations" component={StartConfigurations}/>
       </Switch>
       <Switch>

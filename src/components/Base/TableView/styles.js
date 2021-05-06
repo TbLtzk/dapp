@@ -3,21 +3,21 @@ import styled from 'styled-components';
 import { Table } from 'react-bootstrap';
 
 export const TableStyle = styled(Table)`
-  thead th, td {
+  thead th {
     border-top: 0;
     border-bottom: 0;
-    padding: 0 0 15px;
-    //font-size: 14px;
-    ${(props) => props.theme.fontStyles.text.middle};
-  }
-
-  thead th {
+    padding: 0 0 10px;
+    font-size: 13px;
+    line-height: 17px;
     color: ${props => props.theme.colors.th};
+    border-bottom: 1px solid ${(props) => props.theme.colors.th};
   }
 
   td {
     color: ${props => props.theme.colors.td};
-    font-weight: 500;
+    font-size: 13px;
     line-height: 17px;
+    padding: 7px 0 0 0;
+    border-top: none;
   }
 `;

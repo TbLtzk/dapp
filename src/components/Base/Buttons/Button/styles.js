@@ -1,11 +1,10 @@
 import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
 
-import { indents } from 'constants/style';
-
 export const ButtonCustom = styled(Button)`
-  width: ${(props) => (props.width === 'undefined' ? 'auto' : props.width)};
-  max-width: ${(props) => (props.width === 'undefined' ? 'auto' : props.width)};
+  align-items: center;
+  width: ${(props) => (!props.width ? 'auto' : props.width)};
+  max-width: ${(props) => (!props.width ? 'auto' : props.width)};
   ${(props) => props.theme.fontStyles.text.middle};
   padding: 7px;
   text-overflow: ellipsis;
@@ -128,7 +127,7 @@ export const ButtonCustom = styled(Button)`
         default:
           return props.theme.colors.white;
       }
-    }}!important;
+    }} !important;
     background-color: ${(props) => {
       switch (props.type) {
         case 'white':
@@ -138,7 +137,7 @@ export const ButtonCustom = styled(Button)`
         default:
           return props.theme.colors.oxfordBlueTint2;
       }
-    }}!important;
+    }} !important;
     border-color: ${(props) => {
       switch (props.type) {
         case 'white':
@@ -148,7 +147,7 @@ export const ButtonCustom = styled(Button)`
         default:
           return props.theme.colors.oxfordBlueTint2;
       }
-    }}!important;
+    }} !important;
   }
 
   &:focus {
@@ -161,7 +160,7 @@ export const ButtonCustom = styled(Button)`
         default:
           return props.theme.colors.white;
       }
-    }}!important;
+    }} !important;
     background-color: ${(props) => {
       switch (props.type) {
         case 'white':
@@ -171,7 +170,7 @@ export const ButtonCustom = styled(Button)`
         default:
           return props.theme.colors.oxfordBlueTint2;
       }
-    }}!important;
+    }} !important;
     border-color: ${(props) => {
       switch (props.type) {
         case 'white':
@@ -181,10 +180,12 @@ export const ButtonCustom = styled(Button)`
         default:
           return props.theme.colors.oxfordBlueTint2;
       }
-    }}!important;
+    }} !important;
   }
 
   .btn-icon {
-    margin-right: 10px;
+    margin-right: ${(props) => !props.title ? '0px' : '10px'};
+    font-size: ${(props) => props.iconfontsize ? props.iconfontsize : undefined};
   }
+}
 `;

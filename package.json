@@ -6,6 +6,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.13",
+    "@mdi/font": "^5.9.55",
     "@metamask/detect-provider": "^1.2.0",
     "@q-dev/q-js-sdk": "^0.5.4",
     "@testing-library/jest-dom": "^5.11.4",

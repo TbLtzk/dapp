@@ -1,5 +1,5 @@
 const fonts = {
-  primary: 'Mulish',
+  primary: 'OpenSans',
   secondary: 'Montserrat',
 };
 

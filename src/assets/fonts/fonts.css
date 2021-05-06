@@ -194,9 +194,30 @@
     font-weight: 900;
 }
 
+@font-face {
+    font-family: OpenSans;
+    src: url(./Open_Sans/OpenSans-SemiBold.ttf);
+    font-style: normal;
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: OpenSans;
+    src: url(./Open_Sans/OpenSans-Regular.ttf);
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Lora;
+    src: url(./Lora/static/Lora-Regular.ttf);
+    font-style: normal;
+    font-weight: 400;
+}
+
 body {
     margin: 0 !important;
-    font-family: 'Mulish', 'Montserrat',
+    font-family: 'OpenSans', 'Montserrat',
     sans-serif !important;
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale !important;

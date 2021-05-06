@@ -7,15 +7,20 @@ import { rootNodeStake } from 'store/selectors/root-contract';
 import TableView from 'components/Base/TableView';
 import { Pagination, setElementsForOnePage, countPages } from 'components/Base/Pagination';
 
-import { fN, uintPerSecondToPerYearNumber } from 'func/useful';
+import { fN } from 'func/useful';
 import { fromWei } from 'func/balance';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { Circle, MemberPanelWrap, MemberAddress, Sharing } from './styles';
+import { OverlayTrigger, Popover, Tooltip } from 'react-bootstrap';
+import { MemberAddress } from './styles';
+import colors from 'constants/colors';
 
 function MemberTable(props) {
-  const { arrayData, tableHeader, type } = props;
+  const {
+    arrayData,
+    tableHeader,
+    type
+  } = props;
 
   const userAddress = useSelector(userAddressMetamask);
   const amountNodeStake = useSelector(rootNodeStake);
@@ -56,12 +61,6 @@ function MemberTable(props) {
       <tr key={i} className={classType}>
         {!number ? null : <td>{number}</td>}
         <td>
-          <Circle
-            className={'circleNum '}
-            color={'#' + address?.slice(2, 8)}
-          >
-
-          </Circle>
           <MemberAddress
             color={userAddress === address ? 'highlight' : 'default'}
           >
@@ -69,19 +68,17 @@ function MemberTable(props) {
               key="top"
               placement="top"
               overlay={
-                <Tooltip id={'tooltip-top' + i}>
-                  <span>Copy to clipboard</span>
-                </Tooltip>
+                <Popover id="popover-basic">
+                  <Popover.Content style={{
+                    background: colors.neonGreen,
+                  }}>
+                    Copy
+                  </Popover.Content>
+                </Popover>
               }
             >
               <CopyToClipboard text={address}>
-                <Sharing
-                  type="button"
-                  onClick={() => {
-                  }}
-                >
-                  <span className={classType}>{address}</span>
-                </Sharing>
+                <span className={classType}>{address}</span>
               </CopyToClipboard>
             </OverlayTrigger>
           </MemberAddress>
@@ -114,7 +111,7 @@ function MemberTable(props) {
       const amount = fN(member.stakeAmount) + 'Q';
       const share = member.share + '%';
       const children = <td>{share}</td>;
-      return showBodyTable(i, null, member.address, amount, 'root-member', children);
+      return showBodyTable(i, null, member.address, amount, '', children);
     } else if (type === 'delegated-validators') {
       const children = <>
         <td>{fN(member.idealStake) + 'Q'}</td>
@@ -128,7 +125,7 @@ function MemberTable(props) {
   }, [elements, amountNodeStake]);
 
   return (
-    <MemberPanelWrap type={type}>
+    <>
       {
         arrayData?.length === 0 ? <p>No data</p> :
           <>
@@ -151,7 +148,7 @@ function MemberTable(props) {
             }
           </>
       }
-    </MemberPanelWrap>
+    </>
   );
 }
 

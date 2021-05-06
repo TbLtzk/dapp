@@ -9,6 +9,7 @@ export const indents = {
   20: '20px',
   30: '30px',
   40: '40px',
+  45: '45px',
   50: '50px',
 };
 
@@ -119,7 +120,7 @@ const theme = {
     '72px',
     '80px',
   ],
-  borderRadius: ['8px', '12px'],
+  borderRadius: ['3px', '12px'],
   colors: {
     ...colors,
   },

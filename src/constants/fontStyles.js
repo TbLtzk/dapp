@@ -32,8 +32,8 @@ export default {
     subtitle: {
       fontFamily: fonts.primary,
       fontStyle: 'normal',
-      fontWeight: 600,
-      fontSize: '18px',
+      fontWeight: 400,
+      fontSize: '20px',
       lineHeight: '150%',
       color: colors.white,
     }

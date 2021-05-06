@@ -1,21 +1,35 @@
 import styled from 'styled-components';
 
 export const WrapPagination = styled.div`
-  .page-link{
-      background-color: ${props => props.theme.colors.white};
-      color: ${props => props.theme.colors.white};
-      cursor: pointer;
-      box-shadow: none;
+  display: flex;
+  align-items: center;
+
+  .pagination {
+    margin: 0;
   }
-  .active .page-link{
-      background-color: ${props => props.theme.colors.main};
-      color: ${props => props.theme.colors.white};
-      border-color: ${props => props.theme.colors.main};
+
+  .page-link {
+    background-color: transparent;
+    color: ${props => props.theme.colors.oxfordBlueTint3};
+    cursor: pointer;
+    border: none;
+    padding: 5px;
+    box-shadow: none;
   }
-  .disabled .page-link{
-      background-color: ${props => props.theme.colors.lightGrey};
-      color: ${props => props.theme.colors.white};
-      cursor: default;
+
+  .active .page-link {
+    background-color: transparent;
+    color: ${props => props.theme.colors.white};
+  }
+
+  .disabled .page-link {
+    background-color: transparent;
+    color: ${props => props.theme.colors.white};
+    cursor: default;
   }
 
 `;
+
+export const WrapText = styled.div`
+  margin-right: 10px;
+  `
