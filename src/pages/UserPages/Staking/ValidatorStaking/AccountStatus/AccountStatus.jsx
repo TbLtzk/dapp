@@ -81,8 +81,7 @@ export default function AccountStatus() {
       return (
         <>
           <div className="list_1">
-            <div className="marker" />
-            <span>Inside Validator Ranking</span>
+            <span>Validator Ranking</span>
           </div>
           <div className="list_2_container">
             <div className="list_2">
@@ -104,8 +103,7 @@ export default function AccountStatus() {
     }
     return (
       <div className="list_1">
-        <div className="marker" />
-        <span>Not inside Validator Ranking</span>
+        <span>Not a Validator</span>
       </div>
     );
   };
@@ -163,7 +161,7 @@ export default function AccountStatus() {
             </div>
             <div className="stats_container">
               <div>
-                <span>Personal Balance</span>
+                <span>Q Address Balance</span>
                 <span className="num">
                   {fN(accountBalance)}
                   Q

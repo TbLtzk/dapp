@@ -5,6 +5,7 @@ const initialState = {
   loadingAuctions: true,
   errorM: null,
   approveModalBtn: false,
+  lastAuctionModification: 0,
 };
 
 export default function auctions(state = initialState, action) {
@@ -72,6 +73,21 @@ export default function auctions(state = initialState, action) {
       return {
         ...state,
         approveModalBtn: action.result,
+      };
+    case actionTypes.CREATE_AUCTION_SUCCESS:
+      return {
+        ...state,
+        lastAuctionModification: +new Date()
+      };
+    case actionTypes.BID_FOR_AUCTION_SUCCESS:
+      return {
+        ...state,
+        lastAuctionModification: +new Date()
+      };
+    case actionTypes.EXECUTE_AUCTION_SUCCESS:
+      return{
+        ...state,
+        lastAuctionModification: +new Date()
       };
     default:
       return state;

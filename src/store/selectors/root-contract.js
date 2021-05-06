@@ -7,6 +7,7 @@ export const isUserRootNode = state => state.rootContract.isUserRootNode;
 export const loadingCheckingRootNode = state => state.rootContract.loadingCheckingRootNode;
 
 export const rootNodeStake = state => state.rootContract.rootNodeStake;
+export const lastActionRoot = state => state.rootContract.lastActionRoot;
 
 export const stakeToPanelTransId = state => state.rootContract.stakeToPanelTransId;
 export const announceWithdrawTransId = state => state.rootContract.announceWithdrawTransId;

@@ -129,7 +129,7 @@ function TokenomicsBlock() {
         btnType: 'validation-reward-allocation',
       },
       {
-        title: 'Q Holder Reward Pool',
+        title: 'Q Token Holder Reward Pool',
         firstContent: QHolderRewardPool + ' Q',
         btnTitle: null,
       },
@@ -151,7 +151,7 @@ function TokenomicsBlock() {
         btnTitle: null,
       },
       {
-        title: 'Time Since Q Holder Reward Update',
+        title: 'Time Since Q Token Holder Reward Update',
         firstContent: timeSinceQHolderRewardUpdate,
         btnIcon: 'cached',
         iconFontSize: '20px',

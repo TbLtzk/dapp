@@ -31,10 +31,10 @@ export default function LockCoin() {
 
   return (
     <CustomBlock>
-      <Headline>Lock Your Coins for Voting</Headline>
+      <Headline>Lock Your Q Tokens for Voting</Headline>
       <Row>
         <Col xs={12}>
-          <TextWrapGrey>Increase Weight</TextWrapGrey>
+          <TextWrapGrey>Increase Voting Weight by</TextWrapGrey>
         </Col>
         <Col xs={8}>
           <FormInput
@@ -58,7 +58,7 @@ export default function LockCoin() {
 
       <Row>
         <Col xs={12}>
-          <TextWrapGrey>Reduce Weight by</TextWrapGrey>
+          <TextWrapGrey>Reduce Voting Weight by</TextWrapGrey>
         </Col>
         <Col xs={8}>
           <FormInput
@@ -81,11 +81,6 @@ export default function LockCoin() {
       </Row>
       <Row>
         <Col xs={8}>
-          <TextWrapGrey>
-            Participate in Q Governance with your locked
-            <br/>
-            amount
-          </TextWrapGrey>
         </Col>
         <Col xs={4}>
           <div className="go-governance">

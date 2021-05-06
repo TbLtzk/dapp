@@ -8,7 +8,7 @@ import {
 import {
   getAuctionsListError, getAuctionsListSuccess,
   getAuction, getAuctionSuccess, getAuctionError, getEmptyAuctionSuccess,
-  createAuctionSuccess, createAuctionError, bidForAuctionSuccess
+  createAuctionSuccess, createAuctionError, bidForAuctionSuccess, executeAuctionSuccess
 } from 'store/actions/action-creaters/auctions/auctions';
 import {
   creationLiquidationContractObj,
@@ -186,7 +186,9 @@ function* executeAuctionHandler({ data }) {
     }
 
     yield call(getAuctionDependsOnType, data?.contract, data, true);
+    yield put(executeAuctionSuccess(result));
     yield put(setTransactionLoadingSuccess());
+    
 
   } catch (err) {
     console.log('err', err.message);

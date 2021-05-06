@@ -50,7 +50,7 @@ function QGovernance() {
     return (
       [
         {
-          title: 'Q Vault Voting Weight (Q)',
+          title: 'Q Voting Weight (Q)',
           value: userVotingWeight + ' Q',
         },
         {

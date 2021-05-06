@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import { debtSB, loadingPerformNetting, surplusSB, systemBalanceSB } from 'store/selectors/system-balance';
+import { lastAuctionModification } from 'store/selectors/auctions/auctions';
 import { availableAmountSR } from 'store/selectors/system-reserve';
 import { userBalance } from 'store/selectors/q-piggy-bank';
 
@@ -36,6 +37,7 @@ function SidebarCards() {
   const availableAmount = fN(useSelector(availableAmountSR));
   const userPBBalance = fN(useSelector(userBalance));
   const loadingPerfNetting = useSelector(loadingPerformNetting);
+  const isAuctionModified = useSelector(lastAuctionModification);
 
   const [reserveBalance, setReserveBalance] = useState('0');
 
@@ -43,7 +45,7 @@ function SidebarCards() {
       window.web3.eth.getBalance(userAddress, (err, balance) => {
         setUserBalanceQ(fN(fromWei(balance)));
       });
-  }, []);
+  }, [isAuctionModified]);
 
   useEffect(() => {
     dispatch(getSurplus());
@@ -53,7 +55,7 @@ function SidebarCards() {
     //stats
     dispatch(getUserBalance(userAddress));
 
-  }, [dispatch, loadingPerfNetting]);
+  }, [dispatch, loadingPerfNetting, isAuctionModified]);
 
   useEffect(() => {
     contractBalance.getBalanceValue('SystemReserve', setReserveBalance);
@@ -65,7 +67,7 @@ function SidebarCards() {
         setQUSDUserBalance(0);
         console.log(e);
       });
-  }, [loadingPerfNetting]);
+  }, [loadingPerfNetting, isAuctionModified]);
 
   const statsData = useMemo(() => {
     return (
