@@ -31,7 +31,7 @@ function CreateStep2(props) {
         return showCommonData(
           <>
             <SummarText>Adjusted percentage for slashing: {formData['%-value']}</SummarText>
-            <SummarText>Did the target of the slashing appeal? {formData['target-slashing-appeal']}</SummarText>
+            <SummarText>Did the target of the slashing neglect a formal appeal? {formData['target-slashing-appeal']}</SummarText>
           </>
         );
       default:
