@@ -9,7 +9,6 @@ export const InputWrapper = styled(Form.Group)`
     background: transparent;
     border: 1px solid ${(props) => {
       if (props.palette === 'dark') {
-        console.log(props.type === 'error' ? props.theme.colors.validationError : props.theme.colors.oxfordBlueTint2)
         return props.type === 'error' ? props.theme.colors.validationError : props.theme.colors.oxfordBlueTint2;
       } else {
         return props.type === 'error' ? props.theme.colors.validationError : props.theme.colors.oxfordBlueTint4;

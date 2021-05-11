@@ -85,11 +85,8 @@ export default class SlashingVoting extends VotingService {
       const link = data['external-link'];
       //percentage of stake to slash
       let percentageStake = data['%-value'];
-      console.log('percentageStake', percentageStake);
       percentageStake = getPercentageFormat(percentageStake);
-      console.log('percentageStake converted', percentageStake.toString());
       let candidate = data['address'];
-      console.log('percentageStake', percentageStake);
       const result = await this.contract.methods.createProposal(link, candidate, percentageStake)
         .send({ from: userAddress });
       return result;
