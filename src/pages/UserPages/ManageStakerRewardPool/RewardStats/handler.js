@@ -6,7 +6,7 @@ import {
   getPercentageFormat,
   uintPerSecondToPerYearNumber
 } from 'func/useful';
-import { percentageToPercentPerSecond } from 'func/balance';
+import { percentageToPercentPerSecond, fromWei } from 'func/balance';
 
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
 
@@ -23,8 +23,8 @@ export default class Handler {
 
     contractVRP.getBalance(this.address)
       .then((res) => {
-        const rate = uintPercentToNumber(res) * 100;
-        stateSetter(rate);
+        const bal = fromWei(res);
+        stateSetter(bal);
       })
       .catch((e) => {
         console.log(e);
