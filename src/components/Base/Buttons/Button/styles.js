@@ -5,11 +5,14 @@ export const ButtonCustom = styled(Button)`
   align-items: center;
   width: ${(props) => (!props.width ? 'auto' : props.width)};
   max-width: ${(props) => (!props.width ? 'auto' : props.width)};
+  min-width: ${(props) => (!props.width ? 'auto' : props.width)};
   ${(props) => props.theme.fontStyles.text.middle};
   padding: 7px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  font-size: 13px;
+  line-height: 18px;
 
   border-color: ${(props) => {
     switch (props.type) {

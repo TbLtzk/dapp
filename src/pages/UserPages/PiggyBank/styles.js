@@ -51,24 +51,3 @@ export const TextPanelSmall = styled(TextPanel)`
   font-weight: 400;
   font-size: 12px;
 `;
-
-export const PanelAlign = styled.div`
-  align-items: center;
-  display: flex;
-  height: 100%;
-`;
-
-export const TextPanelSmallGrey = styled(TextPanelSmall)`
-  color: ${(props) => props.theme.colors.oxfordBlueTint3};
-`;
-
-export const TextPanelSmallBlack = styled(TextPanelSmall)`
-  color: ${(props) => props.theme.colors.white};
-`;
-
-export const CustomBlockPanel = styled(Block)`
-  display: flex;
-  justify-content: space-between;
-  align-item: center;
-  margin-bottom: 30px;
-`;

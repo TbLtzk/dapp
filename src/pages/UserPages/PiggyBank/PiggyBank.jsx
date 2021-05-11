@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import React from 'react';
 
 import ManageBalance from './ManageBalance';
 import LockCoin from './LockCoin';
@@ -9,27 +8,18 @@ import PageWrap from 'components/Base/PageWrap';
 
 function PiggyBank() {
   return (
-    <PageWrap>
-      <Row>
-        <Col xs={12}>
-          <Panel/>
-        </Col>
-        <Col xs={12}>
-          <h3 style={{ marginBottom: '24px' }}>Q Vault</h3>
-        </Col>
-        <Col xs={6}>
-          <ManageBalance/>
-        </Col>
-        <Col xs={6}>
-          <LockCoin/>
-        </Col>
-        <Col xs={12}>
-          <h3 style={{ margin: '37px 0 24px 0' }}>Delegate Staking Power</h3>
-        </Col>
-        <Col xs={12}>
-          <DelegateStakingPower/>
-        </Col>
-      </Row>
+    <PageWrap
+      wrapContentClasses={'column-2-1'}
+      headerTitle={'Vault'}
+    >
+      <div>
+        <ManageBalance/>
+        <LockCoin/>
+        <DelegateStakingPower/>
+      </div>
+      <div>
+        <Panel/>
+      </div>
     </PageWrap>
   );
 }
