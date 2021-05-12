@@ -13,7 +13,7 @@ export const proposeDecision = {
   inputLabelTwo: 'Please provide the adjusted percentage for slashing',
   inputPlaceholderTwo: ['%-Value'],
   inputObjTwo: { '%-value': '' },
-  radioLabel: 'Did the target of the slashing appeal?',
+  radioLabel: 'Did the target of the slashing neglect a formal appeal?',
   radioName: 'target-slashing-appeal',
   radioBtn: ['Yes', 'No'],
 };

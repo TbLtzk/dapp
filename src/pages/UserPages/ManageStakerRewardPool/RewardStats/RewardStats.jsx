@@ -42,7 +42,7 @@ export default function RewardStats() {
   const rewardStatsArr = useMemo(() => {
     return [
       {
-        label: 'Amount of Pool Rewards:',
+        label: 'Validator Pool Balance:',
         value: fN(amountRP) + 'Q'
       },
       {
