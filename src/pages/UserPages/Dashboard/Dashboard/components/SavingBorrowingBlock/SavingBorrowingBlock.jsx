@@ -6,11 +6,9 @@ import { userAddressMetamask } from 'store/selectors/user-inf';
 import CustomBlock from 'components/Base/CustomBlock';
 import CardBlock from 'components/Base/CardBlock';
 import Handler from './handler';
-
-import { Container, Col, Row } from 'react-bootstrap';
-import { TitleNotAlign } from '../../styles';
-import { remainDateTimeSince } from 'func/convertDate';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
+
+import { remainDateTimeSince } from 'func/convertDate';
 
 function SavingBorrowingBlock() {
   const userAddress = useSelector(userAddressMetamask);

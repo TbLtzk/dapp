@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 
@@ -13,7 +13,6 @@ import { ComponentHandler, ContractHandler } from './handler';
 
 import { useAlert } from 'react-alert';
 import { UpdateDelegationContainer } from './styles';
-import { TabStyle } from '../../../../../components/Base/Tabs/BigTabsView/styles';
 
 export default function UpdateDelegation() {
   const { register: reg1 } = useForm();

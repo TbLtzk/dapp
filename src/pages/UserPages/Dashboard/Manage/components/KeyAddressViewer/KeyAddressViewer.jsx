@@ -3,9 +3,6 @@ import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import KeyAddressesTable from '../KeyAddressesTable';
 import {
-  ContainerWrap,
-  H5Headline,
-  HeadlineWrap,
   LoadingWrap
 } from 'components/Custom/MembersPanel/styles';
 

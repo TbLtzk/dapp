@@ -10,9 +10,7 @@ import CustomBlock from 'components/Base/CustomBlock';
 import FormInput from 'components/Base/Form/FormInput';
 import Button from 'components/Base/Buttons/Button';
 
-import { Row, Col } from 'react-bootstrap';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Headline, TextWrapGrey } from '../styles';
 
 export default function LockCoin() {
   const {
