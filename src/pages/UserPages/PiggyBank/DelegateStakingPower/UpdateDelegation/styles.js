@@ -3,44 +3,28 @@ import colors from 'constants/colors';
 
 import { Row, Col } from 'react-bootstrap';
 
-export const UpdateDelegationContainer = styled(Row)`
-  //padding: 0 24px;
-
-  .title {
-    ${(props) => props.theme.fontStyles.title.subtitle};
-    margin: 0;
-  }
-
-  span {
-    display: block;
-    color: ${colors.grey};
-    font-size: 14px;
-    margin: 15px 0;
-  }
-
+export const UpdateDelegationContainer = styled.div`
   .input_container_item {
     display: flex;
 
     .input_address {
-      width: calc(100% - 100px);
+      width: calc(60%);
       margin-right: 10px;
     }
 
     .input_share {
-      width: 100px;
+      width: 30%;
     }
-  }
 
-  .btn_container {
-    margin-top: 20px;
+    .btn_additional {
+      width: 20%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
 
-    button:first-child {
-      width: calc(70% - 10px);
-      margin-right: 10px;
+      & > *:not(:first-child) {
+        margin-left: 10px;
+      }
     }
-  }
-
-  .btn_additional button {
-    padding: 6px 0;
   }
 `;

@@ -10,13 +10,19 @@ import CustomBlock from 'components/Base/CustomBlock';
 import FormInput from 'components/Base/Form/FormInput';
 import Button from 'components/Base/Buttons/Button';
 
-import { Row, Col } from 'react-bootstrap';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Headline, TextWrapGrey } from '../styles';
 
 export default function LockCoin() {
-  const { register: reg1, handleSubmit: submit1, errors: err1 } = useForm();
-  const { register: reg3, handleSubmit: submit3, errors: err3 } = useForm();
+  const {
+    register: reg1,
+    handleSubmit: submit1,
+    errors: err1
+  } = useForm();
+  const {
+    register: reg3,
+    handleSubmit: submit3,
+    errors: err3
+  } = useForm();
 
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
@@ -31,66 +37,50 @@ export default function LockCoin() {
 
   return (
     <CustomBlock>
-      <Headline>Lock Your Q Tokens for Voting</Headline>
-      <Row>
-        <Col xs={12}>
-          <TextWrapGrey>Increase Voting Weight by</TextWrapGrey>
-        </Col>
-        <Col xs={8}>
-          <FormInput
-            min={0}
-            name="amountQ"
-            type="number"
-            placeholder="0.0 Q"
-            ref={reg1({ required: 'Field is required!' })}
-            valid={err1.amountQ?.message}
-          />
-        </Col>
-        <Col>
-          <Button
-            type="outline"
-            title="Increase"
-            width="100%"
-            handleButton={submit1(lockCoinL)}
-          />
-        </Col>
-      </Row>
+      <h1>Lock Your Q Tokens for Voting</h1>
+      <h4>Increase Voting Weight by</h4>
+      <div className={'card__one-line-form'}>
+        <FormInput
+          min={0}
+          lbl={'Q'}
+          name="amountQ"
+          type="number"
+          placeholder="0.0"
+          ref={reg1({ required: 'Field is required!' })}
+          valid={err1.amountQ?.message}
+        />
+        <Button
+          type="outline"
+          title="Increase"
+          width="82px"
+          handleButton={submit1(lockCoinL)}
+        />
+      </div>
 
-      <Row>
-        <Col xs={12}>
-          <TextWrapGrey>Reduce Voting Weight by</TextWrapGrey>
-        </Col>
-        <Col xs={8}>
-          <FormInput
-            min={0}
-            name="amountQ"
-            type="number"
-            placeholder="0.0 Q"
-            ref={reg3({ required: 'Field is required!' })}
-            valid={err3.amountQ?.message}
-          />
-        </Col>
-        <Col>
-          <Button
-            type="outline"
-            title="Reduce"
-            width="100%"
-            handleButton={submit3(unlockCoinL)}
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col xs={8}>
-        </Col>
-        <Col xs={4}>
-          <div className="go-governance">
-            <ButtonLinkArrow
-              title="Go to Governance"
-              path="/q-governance"
-            />
-          </div>
-        </Col>
-      </Row>
+      <h4>Reduce Voting Weight by</h4>
+      <div className={'card__one-line-form'}>
+        <FormInput
+          min={0}
+          name="amountQ"
+          type="number"
+          lbl={'Q'}
+          placeholder="0.0"
+          ref={reg3({ required: 'Field is required!' })}
+          valid={err3.amountQ?.message}
+        />
+        <Button
+          type="outline"
+          title="Reduce"
+          width="82px"
+          handleButton={submit3(unlockCoinL)}
+        />
+      </div>
+      <div className='card__actions'>
+        <ButtonLinkArrow
+          title="Go to Governance"
+          path="/q-governance"
+        />
+      </div>
     </CustomBlock>
   );
 }

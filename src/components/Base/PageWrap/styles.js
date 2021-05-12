@@ -25,6 +25,11 @@ export const WrapContent = styled.div`
     grid-column-gap:15px
   }
 
+  &.column-2-1 {
+    grid-template-columns: 1fr 0.5fr;
+    grid-column-gap:15px
+  }
+
   .row {
     margin-right: 0;
     margin-left: 0;

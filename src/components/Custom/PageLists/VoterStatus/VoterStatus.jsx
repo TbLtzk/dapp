@@ -52,7 +52,7 @@ function VoterStatus() {
   }, [isRootNode, isValidator, userPBBalance]);
 
   return (
-    <span>{showStatus}</span>
+    <p>{showStatus}</p>
   );
 }
 

@@ -5,14 +5,14 @@ import { getUserBalance, getLockedAssets, getPBBalance } from 'store/actions/act
 import { userBalance, votingWeight, votingLockingEnd, pbBalance } from 'store/selectors/q-piggy-bank';
 
 import { useAlert } from 'react-alert';
+
 import VoterStatus from 'components/Custom/PageLists/VoterStatus';
+import CustomBlock from 'components/Base/CustomBlock';
 
 import PiggyBankHandler from '../handler';
 import { fN } from 'func/useful';
 import { fromSolDateFormattingT1 } from 'func/date';
 import { uintPerSecondToPerYearNumber } from 'func/useful';
-
-import { TextPanelSmallBlack, TextPanelSmallGrey, TextPanel, CustomBlockPanel, PanelAlign } from '../styles';
 
 export default function Panel() {
   const userAddressL = useSelector(userAddressMetamask);
@@ -50,52 +50,27 @@ export default function Panel() {
   }, [balanceDetails, userPBBalanceL]);
 
   return (
-    <CustomBlockPanel>
-      <TextPanel>
-        <div>
-          <span>Q Vault balance: </span>
-          <span>{fN(userPBBalanceL) + 'Q'}</span>
-        </div>
-        <div>
-          <span>Q Token Holder reward rate (p.a.): </span>
-          <span>
-            {(balanceDetails?.interestRate ? fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate)) : 0) + '%'}
-          </span>
-        </div>
-        <div>
-          <span>Yearly expected reward: </span>
-          <span>
-            {fN(yearlyExpectedEarnings) + 'Q'}
-        </span>
-        </div>
-      </TextPanel>
-      <TextPanel>
-        <PanelAlign>
-          <span>Q address balance: </span>
-          <span>
-            {fN(accountBalance)}
-            Q
-          </span>
-        </PanelAlign>
-      </TextPanel>
-      <TextPanel type="parentNode">
-        {/*<span>Voting Weight</span>*/}
-        <TextPanelSmallGrey style={{ margin: '0 8px 0 16px' }}>Q Voting Weight:</TextPanelSmallGrey>
-        <TextPanelSmallBlack>
-          {userVotingWeight}
-          Q
-        </TextPanelSmallBlack>
-        <TextPanelSmallGrey style={{ margin: '0 16px' }}>|</TextPanelSmallGrey>
-        <TextPanelSmallGrey>Voting Locking End:</TextPanelSmallGrey>
-        <TextPanelSmallBlack style={{ margin: '0 16px 0 8px' }}>
-          {userLockingEnd}
-          {' '}
-        </TextPanelSmallBlack>
-        <TextPanelSmallGrey>Voting Status:</TextPanelSmallGrey>
-        <TextPanelSmallBlack style={{ marginLeft: '8px' }}>
-          <VoterStatus/>
-        </TextPanelSmallBlack>
-      </TextPanel>
-    </CustomBlockPanel>
+    <CustomBlock>
+      <h1>Overview</h1>
+      <div>
+        <h5>Q Vault balance</h5>
+        <p>{fN(userPBBalanceL) + ' Q'}</p>
+        <h5>Q Token Holder reward rate (p.a.)</h5>
+        <p>{(balanceDetails?.interestRate ? fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate)) : 0) + '%'}</p>
+        <h5>Yearly expected reward</h5>
+        <p>{fN(yearlyExpectedEarnings) + ' Q'}</p>
+        <h5>Q address balance</h5>
+        <p>{fN(accountBalance) + ' Q'}</p>
+
+        <div className={'card__line'}/>
+
+        <h5>Q Voting Weight</h5>
+        <p>{userVotingWeight + ' Q'}</p>
+        <h5>Voting Locking End</h5>
+        <p>{userLockingEnd}</p>
+        <h5>Voting Status</h5>
+        <VoterStatus/>
+      </div>
+    </CustomBlock>
   );
 }

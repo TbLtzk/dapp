@@ -2,9 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import Button from 'components/Base/Buttons/Button';
 import ValidationRewardPools from 'contracts/src/ValidationRewardPools';
-import QPiggyBank from 'contracts/src/QPiggyBank';
 
-import { BlockAlignBlock } from 'pages/UserPages/Dashboard/Dashboard/styles';
+import { BlockAlignBlock } from 'components/Base/CardBlock/styles';
 import { Col } from 'react-bootstrap';
 import { remainDateTimeSince } from 'func/convertDate';
 import { useSelector } from 'react-redux';

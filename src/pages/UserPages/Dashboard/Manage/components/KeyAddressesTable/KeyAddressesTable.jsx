@@ -1,9 +1,9 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import TableView from 'components/Base/TableView';
+import colors from 'constants/colors';
 import { KeyAddressesTableWrap } from './style';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
-import colors from 'constants/colors';
 
 function KeyAddressesTable(props) {
   const {

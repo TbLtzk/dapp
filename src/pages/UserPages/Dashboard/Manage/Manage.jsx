@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import KeyAddressViewer from './components/KeyAddressViewer';
 
-import { Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getContractRegistryKV,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 
@@ -10,39 +10,28 @@ import FormInput from 'components/Base/Form/FormInput';
 import Button from 'components/Base/Buttons/Button';
 
 import { ComponentHandler, ContractHandler } from './handler';
-import PiggyBankHandler from '../../handler';
 
-import { Col } from 'react-bootstrap';
 import { useAlert } from 'react-alert';
 import { UpdateDelegationContainer } from './styles';
 
 export default function UpdateDelegation() {
   const { register: reg1 } = useForm();
 
-  const [userBalancePB, setUserBalance] = useState(0);
-
   const address = useSelector(userAddressMetamask);
   const userPBBalanceL = useSelector(userBalance);
 
   const contHandler = new ContractHandler(address, useDispatch(), useAlert());
   const compHandler = new ComponentHandler(useAlert());
-  const pBHandler = new PiggyBankHandler(address, useDispatch(), useAlert());
 
-  function addInputContainer(isFirstCall = false) {
-    const inputContainers = document.querySelectorAll('.input_container .input_container_item');
-    if (inputContainers.length > 0 && isFirstCall === true) return;
+  const [items, setItems] = useState(1);
 
-    const container = document.querySelector('.input_container');
-    const temp = document.querySelector('.input_container_template');
-    const newNode = temp.cloneNode(true);
-    newNode.style.display = 'block';
-    container.appendChild(newNode);
+  function addInputContainer() {
+    if (items < 30) setItems(items + 1);
   }
 
-  useEffect(() => {
-    addInputContainer(true);
-    // pBHandler.setUserBalance(setUserBalance);
-  }, []);
+  function removeInputContainer() {
+    if (items > 1) setItems(items - 1);
+  }
 
   function updateDelegations(applyZeroShare) {
     const data = compHandler.getAddressesAndShares(applyZeroShare, userPBBalanceL);
@@ -51,71 +40,79 @@ export default function UpdateDelegation() {
     }
   }
 
+  function getForms() {
+    let elements = [];
+    for (let i = 0; i < items; i++) {
+      elements.push(
+        <div key={i + 'input_address'} className="input_container_item">
+          <div className="input_address">
+            <FormInput
+              name="address"
+              type="text"
+              placeholder="0x000"
+              ref={reg1({
+                required: 'Field is required!',
+                pattern: /[0-9]/i
+              })}
+            />
+          </div>
+          <div className="input_share">
+            <FormInput
+              name="share"
+              type="number"
+              lbl="Q"
+              placeholder="0.00"
+              ref={reg1({
+                required: 'Field is required!',
+                min: 100
+              })}
+            />
+          </div>
+          <div className="btn_additional">
+            <Button
+              type="outline"
+              icon="plus"
+              width="34px"
+              handleButton={() => addInputContainer()}
+            />
+            <Button
+              type="outline"
+              icon="minus"
+              width="34px"
+              handleButton={() => removeInputContainer()}
+            />
+          </div>
+        </div>
+      );
+    }
+    return elements;
+  }
+
   return (
     <UpdateDelegationContainer>
-      <Col md={12}>
-        <span className="title">Update delegation</span>
-        <div className="input_container_template" style={{ display: 'none' }}>
-          <div className="input_container_item">
-            <div className="input_address">
-              <FormInput
-                name="address"
-                type="text"
-                placeholder="0x000..."
-                ref={reg1({
-                  required: 'Field is required!',
-                  pattern: /[0-9]/i
-                })}
-              />
-            </div>
-            <div className="input_share">
-              <FormInput
-                name="share"
-                type="number"
-                placeholder="Weight"
-                ref={reg1({
-                  required: 'Field is required!',
-                  min: 100
-                })}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="label_container">
-          <div className="input_container_item">
-            <div className="input_address">
-              <span>Address</span>
-            </div>
-            <div className="input_share">
-              <span>Share</span>
-            </div>
-          </div>
-        </div>
-        <div className="input_container"/>
-        <div className="btn_additional">
-          <Button
-            type="outline"
-            title="+"
-            width="35px"
-            handleButton={() => addInputContainer()}
-          />
-        </div>
+      <h3>Update delegation</h3>
+      <div className="input_container_item">
+        <p className="input_address">Address</p>
+        <p className="input_share">Share</p>
+      </div>
+      <div className="input_container">
+        {getForms()}
+      </div>
 
-        <div className="btn_container">
-          <Button
-            type="outline"
-            title="Update Delegation"
-            width="auto"
-            handleButton={() => updateDelegations(false)}
-          />
-          <Button
-            type="outline"
-            title="Remove Delegation"
-            width="30%"
-            handleButton={() => updateDelegations(true)}
-          />
-        </div>
-      </Col>
+      <div className='card__actions' style={{ marginBottom: '30px' }}>
+        <Button
+          icon="cached"
+          type="outline"
+          title="Update Delegation"
+          handleButton={() => updateDelegations(false)}
+        />
+        <Button
+          type="outline"
+          icon="minus-circle-outline"
+          title="Remove Delegation"
+          handleButton={() => updateDelegations(true)}
+        />
+      </div>
     </UpdateDelegationContainer>
   );
 }
