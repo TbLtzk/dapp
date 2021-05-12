@@ -44,12 +44,7 @@ export const Block = styled.div`
     margin-bottom: 15px;
   }
 
-  .flex-space-between {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .actions {
+  .card__actions {
     display: flex;
     align-items: flex-start;
     margin-top: 30px;
@@ -59,13 +54,13 @@ export const Block = styled.div`
     }
   }
 
-  .card-spinner {
+  .card__spinner {
     display: flex;
     align-items: flex-start;
     margin: 15px 0;
   }
 
-  .card-form-one-line {
+  .card__one-line-form {
     display: flex;
     align-items: flex-start;
     width: 100%;
@@ -76,7 +71,7 @@ export const Block = styled.div`
     }
   }
 
-  .line {
+  .card__line {
     width: 100%;
     height: 1px;
     margin-top: 30px;

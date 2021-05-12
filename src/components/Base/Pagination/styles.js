@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const WrapPagination = styled.div`
   display: flex;
   align-items: center;
+  border-top: 1px solid ${props => props.theme.colors.oxfordBlueTint3};
 
   .pagination {
     margin: 0;
@@ -13,7 +14,7 @@ export const WrapPagination = styled.div`
     color: ${props => props.theme.colors.oxfordBlueTint3};
     cursor: pointer;
     border: none;
-    padding: 5px;
+    padding: 10px;
     box-shadow: none;
   }
 

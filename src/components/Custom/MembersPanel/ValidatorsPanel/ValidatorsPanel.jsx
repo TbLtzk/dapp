@@ -57,7 +57,7 @@ function ValidatorsPanel(props) {
         }
       </Suspense>
       {!bottom
-        ? <div className={'actions'}>
+        ? <div className={'card__actions'}>
           <Button
             type={'white'}
             icon="arrow-right"
@@ -71,7 +71,7 @@ function ValidatorsPanel(props) {
           />
         </div>
         :
-        <div className={'actions'}>
+        <div className={'card__actions'}>
           <Button
             type={'white'}
             icon="arrow-right"

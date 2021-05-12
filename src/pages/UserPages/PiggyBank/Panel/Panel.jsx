@@ -62,7 +62,7 @@ export default function Panel() {
         <h5>Q address balance</h5>
         <p>{fN(accountBalance) + ' Q'}</p>
 
-        <div className={'line'}/>
+        <div className={'card__line'}/>
 
         <h5>Q Voting Weight</h5>
         <p>{userVotingWeight + ' Q'}</p>

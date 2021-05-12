@@ -11,7 +11,7 @@ export default function DelegateStakingPower() {
     <CustomBlock>
       <h1>Delegate Staking Power</h1>
       <DelegationRewards/>
-      <div className={'line'} />
+      <div className={'card__line'} />
       <UpdateDelegation/>
       <DelegatedValidatorsPanel/>
     </CustomBlock>

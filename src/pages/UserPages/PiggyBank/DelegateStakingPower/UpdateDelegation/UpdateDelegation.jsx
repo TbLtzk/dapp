@@ -99,7 +99,7 @@ export default function UpdateDelegation() {
         {getForms()}
       </div>
 
-      <div className="actions" style={{ marginBottom: '30px' }}>
+      <div className='card__actions' style={{ marginBottom: '30px' }}>
         <Button
           icon="cached"
           type="outline"

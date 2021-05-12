@@ -51,7 +51,7 @@ function InfBlocksUp() {
           </p>
         }
         secondContent={
-          <div className={'actions'}>
+          <div className={'card__actions'}>
             <a href={latestConstitution} target="_blank">
               <Button
                 icon='download'
@@ -77,10 +77,10 @@ function InfBlocksUp() {
         firstSubtitle="Active proposals"
         secondSubtitle="Past proposals"
         firstContent={
-          loadingNumberAllProposals ? <LoadingSpinner className={'card-spinner'}/> :
+          loadingNumberAllProposals ? <LoadingSpinner className={'card__spinner'}/> :
             <>
               <p>{numberAllProposals?.active}</p>
-              <div className={'actions'}>
+              <div className={'card__actions'}>
                 <Link to={'/q-governance'}>
                   <Button
                     type={'white'}
@@ -94,7 +94,7 @@ function InfBlocksUp() {
             </>
         }
         secondContent={
-          loadingNumberAllProposals ? <LoadingSpinner className={'card-spinner'}/> :
+          loadingNumberAllProposals ? <LoadingSpinner className={'card__spinner'}/> :
             (<>
               <p>{numberAllProposals?.ended}</p>
             </>)

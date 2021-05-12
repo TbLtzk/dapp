@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Table } from 'react-bootstrap';
 
 export const TableStyle = styled(Table)`
+  margin-bottom: 10px;
+
   thead th {
     border-top: 0;
     border-bottom: 0;
@@ -17,7 +19,7 @@ export const TableStyle = styled(Table)`
     color: ${props => props.theme.colors.td};
     font-size: 13px;
     line-height: 17px;
-    padding: 7px 0 0 0;
+    padding: 10px 0 0 0;
     border-top: none;
   }
 `;
