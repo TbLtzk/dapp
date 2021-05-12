@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
 function Dashboard() {
   return (
     <PageWrap
-      wrapContentClasses={'tow-colm'}
+      wrapContentClasses={'wrap-content__tow-colm'}
       headerTitle={'Dashboard'}
       headerExtra={(
         <Link to={'/q-parameters'}>

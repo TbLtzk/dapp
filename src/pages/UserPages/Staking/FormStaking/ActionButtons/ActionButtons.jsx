@@ -49,32 +49,23 @@ function ActionButtons(props) {
   }, [dispatch]);
 
   return (
-    <Row>
-      <Col md={4}>
-        <Button
-          width="100%"
-          type="full-width"
-          title="Stake to Panel"
-          handleButton={handleSubmit(onStakeToPanel)}
-        />
-      </Col>
-      <Col md={4}>
-        <Button
-          width="100%"
-          type="full-width"
-          title="Announce Withdrawal"
-          handleButton={handleSubmit(onAnnounce)}
-        />
-      </Col>
-      <Col md={4}>
-        <Button
-          width="100%"
-          type="full-width"
-          title="Withdraw from Panel"
-          handleButton={handleSubmit(onWithdrawFromPanel)}
-        />
-      </Col>
-    </Row>
+    <div className={'card__actions'}>
+      <Button
+        type="full-width"
+        title="Stake to Panel"
+        handleButton={handleSubmit(onStakeToPanel)}
+      />
+      <Button
+        type="full-width"
+        title="Announce"
+        handleButton={handleSubmit(onAnnounce)}
+      />
+      <Button
+        type="full-width"
+        title="Withdraw from Panel"
+        handleButton={handleSubmit(onWithdrawFromPanel)}
+      />
+    </div>
   );
 }
 

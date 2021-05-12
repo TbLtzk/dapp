@@ -1,9 +1,8 @@
 import styled from 'styled-components';
-
-import { Row } from 'react-bootstrap';
-
 import { indents } from 'constants/style';
 
-export const WrapContainer = styled(Row)`
-  padding-top: ${indents['30']};
+export const RootNodeStaking = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: ${indents['15']};
 `;

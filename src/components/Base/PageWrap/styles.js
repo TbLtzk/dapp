@@ -18,21 +18,17 @@ export const Page = styled.div`
 export const WrapContent = styled.div`
   height: calc(100vh - 107px);
   overflow: scroll;
-  display: grid;
 
-  &.tow-colm {
+  &.wrap-content__tow-colm {
+    display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-column-gap:15px
+    grid-column-gap: ${indents['15']};
   }
 
-  &.column-2-1 {
+  &.wrap-content__column-2-1 {
+    display: grid;
     grid-template-columns: 1fr 0.5fr;
-    grid-column-gap:15px
-  }
-
-  .row {
-    margin-right: 0;
-    margin-left: 0;
+    grid-column-gap: ${indents['15']};
   }
 `;
 

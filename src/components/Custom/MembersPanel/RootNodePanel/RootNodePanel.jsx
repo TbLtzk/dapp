@@ -24,7 +24,6 @@ import { tableHeader } from './constants';
 function RootNodePanel(props) {
   const {
     type,
-    bottom
   } = props;
   const rootService = new RootService();
 
@@ -58,20 +57,6 @@ function RootNodePanel(props) {
                 arrayData={rootMembersArray}
                 tableHeader={tableHeader}
               />
-              {
-                !bottom ? null :
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                  }}>
-                    <p>Create a proposal to enter or leave the Root Node Panel</p>
-                    <ButtonLinkArrow
-                      title="Go to Governance"
-                      path="/q-governance"
-                    />
-                  </div>
-              }
             </>
         }
       </Suspense>

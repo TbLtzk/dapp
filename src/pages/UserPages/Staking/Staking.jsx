@@ -9,8 +9,6 @@ import RootNodeStakingContent from './RootNodeStakingContent';
 import ValidatorStaking from './ValidatorStaking';
 import PageWrap from 'components/Base/PageWrap';
 
-import { Row, Col } from 'react-bootstrap';
-
 function Staking() {
   const location = useLocation();
   const { state } = location;
@@ -32,15 +30,11 @@ function Staking() {
   ), [amountNodeStake]);
 
   return (
-    <PageWrap>
-      <Row>
-        <Col xs={12}>
-          <BigTabsView
-            tabsItems={tabsItems}
-            active={state?.activeTab ? state.activeTab : tabsItems[0]?.label}
-          />
-        </Col>
-      </Row>
+    <PageWrap headerTitle={'Staking'}>
+      <BigTabsView
+        tabsItems={tabsItems}
+        active={state?.activeTab ? state.activeTab : tabsItems[0]?.label}
+      />
     </PageWrap>
   );
 }

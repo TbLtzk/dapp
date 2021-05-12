@@ -1,21 +1,26 @@
-import React from "react";
+import React from 'react';
 
-import {Block} from "./styles"
-import PropTypes from "prop-types";
-import Button from "../Buttons/Button";
+import { Block } from './styles';
+import PropTypes from 'prop-types';
+import Button from '../Buttons/Button';
 
 function CustomBlock(props) {
-    const {children, style} = props;
+  const {
+    children,
+    style
+  } = props;
 
-    return (
-        <Block style={style}>
-            {children}
-        </Block>
-    );
+  return (
+    <div>
+      <Block style={style}>
+        {children}
+      </Block>
+    </div>
+  );
 }
 
 Button.propTypes = {
-    style: PropTypes.string,
+  style: PropTypes.string,
 };
 
 export default CustomBlock;

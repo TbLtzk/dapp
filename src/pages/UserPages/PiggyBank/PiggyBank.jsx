@@ -9,7 +9,7 @@ import PageWrap from 'components/Base/PageWrap';
 function PiggyBank() {
   return (
     <PageWrap
-      wrapContentClasses={'column-2-1'}
+      wrapContentClasses={'wrap-content__column-2-1'}
       headerTitle={'Vault'}
     >
       <div>

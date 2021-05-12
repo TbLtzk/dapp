@@ -10,7 +10,7 @@ import { errorHandler, fN } from 'func/useful';
 import { fromSolDateFormattingT1 } from 'func/date';
 import { useAlert } from 'react-alert';
 import Handler from './handler';
-import { Headline, AccountContainer } from './styles';
+import { AccountContainer } from './styles';
 import {
   getAccTotalStake,
   getDelegatedStake,
@@ -127,7 +127,7 @@ export default function AccountStatus() {
   return (
     <CustomBlock>
       <AccountContainer>
-        <Headline>Manage balance</Headline>
+        <h1>Manage balance</h1>
         <Row>
           <Col xs={12}>
             {renderValidatorRanking()}
