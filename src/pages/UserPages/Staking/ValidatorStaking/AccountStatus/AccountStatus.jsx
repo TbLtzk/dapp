@@ -1,25 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { userAddressMetamask } from 'store/selectors/user-inf';
 import Button from 'components/Base/Buttons/Button';
-import { useForm } from 'react-hook-form';
 import CustomBlock from 'components/Base/CustomBlock';
 import FormInput from 'components/Base/Form/FormInput';
+import Handler from './handler';
+import { useDispatch, useSelector } from 'react-redux';
+import { userAddressMetamask } from 'store/selectors/user-inf';
+import { useForm } from 'react-hook-form';
 import { errorHandler, fN } from 'func/useful';
 import { fromSolDateFormattingT1 } from 'func/date';
 import { useAlert } from 'react-alert';
-import Handler from './handler';
-import { AccountContainer } from './styles';
+import { AccountStatusForm, AccountStatusInfo } from './styles';
 import {
   getAccTotalStake,
   getDelegatedStake,
   getOwnStake,
   getTotalStake
-} from '../../../../../store/actions/action-creaters/validators';
+} from 'store/actions/action-creaters/validators';
 
 export default function AccountStatus() {
-  const { register: reg, handleSubmit: submit, errors } = useForm();
+  const {
+    register: reg,
+    handleSubmit: submit,
+    errors
+  } = useForm();
   const dispatch = useDispatch();
 
   const [validatorExist, setValidatorExist] = useState(false);
@@ -77,33 +80,24 @@ export default function AccountStatus() {
   };
 
   const renderValidatorRanking = () => {
-    if (validatorExist === true) {
+    if (validatorExist) {
       return (
         <>
-          <div className="list_1">
-            <span>Validator Ranking</span>
+          <div>
+            <h5>Status</h5>
+            <p>Active Validator</p>
           </div>
-          <div className="list_2_container">
-            <div className="list_2">
-              <div className="marker" />
-              <span>Active Validator</span>
-            </div>
-          </div>
-          <div className="list_2_container">
-            <div className="list_2">
-              <div className="marker" />
-              <span>
-                Current Rank is: #
-                {validatorRank}
-              </span>
-            </div>
+          <div>
+            <h5>Current Rank</h5>
+            <p>{validatorRank}#</p>
           </div>
         </>
       );
     }
     return (
-      <div className="list_1">
-        <span>Not a Validator</span>
+      <div>
+        <h5>Status</h5>
+        <p>Not a Validator</p>
       </div>
     );
   };
@@ -111,105 +105,74 @@ export default function AccountStatus() {
   const renderConfValBtn = () => {
     if (accountableTotalStake > 0) {
       return (
-        <Col xs={12} style={{ marginTop: '10px' }}>
+        <div className="card__actions">
           <Button
             type="default"
             title="Confirm Validation"
-            width="100%"
             handleButton={() => confirmValidation()}
           />
-        </Col>
+        </div>
       );
     }
-    return '';
+    return null;
   };
 
   return (
     <CustomBlock>
-      <AccountContainer>
-        <h1>Manage balance</h1>
-        <Row>
-          <Col xs={12}>
-            {renderValidatorRanking()}
-            <div className="stats_container">
-              <div>
-                <span>Stake in Validator Ranking</span>
-                <span className="num">
-                  {fN(accountableTotalStake)}
-                  Q
-                </span>
-              </div>
-              <div className="list_2_container">
-                <div className="list_2">
-                  <div className="marker" />
-                  <span>Announced for withdrawal</span>
-                </div>
-                <span className="num">
-                  {fN(annToWithdraw)}
-                  Q
-                </span>
-              </div>
-              <div className="list_2_container">
-                <div className="list_2">
-                  <div className="marker" />
-                  <span>After</span>
-                </div>
-                <span className="num">
-                  {annToWithdrawEndTime === 0 ? '-' : fromSolDateFormattingT1(annToWithdrawEndTime)}
-                </span>
-              </div>
-            </div>
-            <div className="stats_container">
-              <div>
-                <span>Q Address Balance</span>
-                <span className="num">
-                  {fN(accountBalance)}
-                  Q
-                </span>
-              </div>
-            </div>
-          </Col>
-        </Row>
-        <Row style={{ marginTop: '16px' }}>
-          <Col xs={8} className="input_label">
-            <span>Amount (Q):</span>
-          </Col>
-          <Col xs={4}>
-            <FormInput
-              name="amount"
-              type="number"
-              placeholder="Q"
-              ref={reg({ required: 'Field is required!', min: 0 })}
-              valid={errorHandler(errors, 'amount')}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12}>
-            <div className="btn_container">
-              <Button
-                type="default"
-                title="Stake to Ranking"
-                width="35%"
-                handleButton={submit(stakeToRanking)}
-              />
-              <Button
-                type="default"
-                title="Announce Withdrawal"
-                width="30%"
-                handleButton={submit(announce)}
-              />
-              <Button
-                type="default"
-                title="Withdraw from Ranking"
-                width="35%"
-                handleButton={submit(withdrawFromRanking)}
-              />
-            </div>
-          </Col>
-          {renderConfValBtn()}
-        </Row>
-      </AccountContainer>
+      <h1>Manage balance</h1>
+      <AccountStatusInfo>
+        {renderValidatorRanking()}
+        <div>
+          <h5>Stake in Validator Ranking</h5>
+          <p>{fN(accountableTotalStake)} Q</p>
+        </div>
+        <div>
+          <h3>Announced for withdrawal</h3>
+          <p>{fN(annToWithdraw)} Q</p>
+        </div>
+        <div>
+          <h3>After</h3>
+          <p>{annToWithdrawEndTime === 0 ? '-' : fromSolDateFormattingT1(annToWithdrawEndTime)}</p>
+        </div>
+        <div>
+          <h3>Personal balance</h3>
+          <p>{fN(accountBalance)} Q</p>
+        </div>
+      </AccountStatusInfo>
+      <h4>Amount</h4>
+      <AccountStatusForm>
+        <div className={'account-status__form-input'}>
+          <FormInput
+            name="amount"
+            type="number"
+            lbl="Q"
+            placeholder="0.00"
+            ref={reg({
+              required: 'Field is required!',
+              min: 0
+            })}
+            valid={errorHandler(errors, 'amount')}
+          />
+        </div>
+        <div className="account-status__form-actions">
+          <Button
+            type="default"
+            title="Stake to Ranking"
+            handleButton={submit(stakeToRanking)}
+          />
+          <Button
+            type="default"
+            title="Announce Withdrawal"
+            handleButton={submit(announce)}
+          />
+          <Button
+            type="default"
+            title="Withdraw from Ranking"
+            handleButton={submit(withdrawFromRanking)}
+          />
+        </div>
+      </AccountStatusForm>
+      {renderConfValBtn()}
     </CustomBlock>
   );
 }

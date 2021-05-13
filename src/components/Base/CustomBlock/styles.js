@@ -79,6 +79,3 @@ export const Block = styled.div`
     border-bottom: 1px solid ${props => props.theme.colors.oxfordBlueTint3};
   }
 `;
-
-export const BlockSubheader = styled.h5`
-`;

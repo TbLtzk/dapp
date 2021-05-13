@@ -5,11 +5,7 @@ import CustomBlock from 'components/Base/CustomBlock';
 
 import { tableHeader } from './constants';
 
-import { Col } from 'react-bootstrap';
-import {
-  H5Headline, ContainerWrap, HeadlineWrap,
-  LoadingWrap
-} from '../styles';
+import { LoadingWrap } from '../styles';
 
 const MemberTable = lazy(() => import('components/Custom/MembersPanel/MemberTable'));
 
