@@ -7,7 +7,6 @@ import { userAddressMetamask } from 'store/selectors/user-inf';
 
 import RootService from 'contracts/src/Root';
 
-import { Col, Row } from 'react-bootstrap';
 import Button from 'components/Base/Buttons/Button';
 
 import { toWei } from 'func/balance';
@@ -24,7 +23,6 @@ function ActionButtons(props) {
       {
         from: userAddress,
         value: toWei(data?.amount),
-        // value: parseInt(convertToGWei(data?.amount)),
       }
     ));
   }, []);
@@ -32,7 +30,6 @@ function ActionButtons(props) {
   const onWithdrawFromPanel = useCallback(async (data) => {
     dispatch(withdraw(rootService,
       toWei(data?.amount),
-      // convertToGWei(data.amount),
       userAddress,
       {
         from: userAddress
@@ -42,7 +39,6 @@ function ActionButtons(props) {
   const onAnnounce = useCallback(async (data) => {
     dispatch(announceWithdrawal(rootService,
       toWei(data?.amount),
-      // convertToGWei(data.amount),
       {
         from: userAddress
       }));
