@@ -8,7 +8,6 @@ export const HeaderWrp = styled.div`
   justify-content: space-between;
   padding-bottom: ${indents['30']};
   padding-top: ${indents['40']};
-  height: 107px;
 
   a {
     text-decoration: none;
