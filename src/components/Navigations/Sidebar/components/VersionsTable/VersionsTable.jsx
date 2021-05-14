@@ -1,7 +1,6 @@
 import React from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { TableStyle, TableHeader } from './styles';
 
 function VersionsTable(props) {
   const {
@@ -10,35 +9,35 @@ function VersionsTable(props) {
   } = props;
   return (
     <>
-      <TableHeader>{header}</TableHeader>
-      <TableStyle responsive>
-        <tbody>
-        {
-          data.map((item, index) => {
-            return (
-              <tr key={index}>
-                <td>{item.name}</td>
-                <td>
-                  <OverlayTrigger
-                    key="top"
-                    placement="top"
-                    overlay={
-                      <Tooltip id={'tooltip-top' + index}>
-                        <span>Copy to clipboard</span>
-                      </Tooltip>
-                    }
-                  >
-                    <CopyToClipboard text={`${item.name} - ${item.value}`}>
-                      <span>{item.value}</span>
-                    </CopyToClipboard>
-                  </OverlayTrigger>
-                </td>
-              </tr>
-            );
-          })
-        }
-        </tbody>
-      </TableStyle>
+      <h3>{header}</h3>
+      {data?.map((line, index) => {
+        return (
+          <div key={index + '-validator-line'} style={{ display: 'flex' }}>
+            {
+              line.map((item => {
+                return (
+                  <div key={item.name + '-validator-pool'} style={{ width: '50%' }}>
+                    <h5>{item.name}</h5>
+                    <OverlayTrigger
+                      key="top"
+                      placement="top"
+                      overlay={
+                        <Tooltip id={'tooltip-top' + index}>
+                          <span>Copy to clipboard</span>
+                        </Tooltip>
+                      }
+                    >
+                      <CopyToClipboard text={`${item.name} - ${item.value}`}>
+                        <p>{item.value}</p>
+                      </CopyToClipboard>
+                    </OverlayTrigger>
+                  </div>
+                );
+              }))
+            }
+          </div>
+        );
+      })}
     </>
   );
 }

@@ -6,12 +6,13 @@ import {Link} from "react-router-dom";
 import {indents} from "constants/style";
 
 export const NavbarContainer = styled(Navbar)`
-  width: 350px;
+  width: 348px;
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
+  overflow: scroll;
   padding: ${indents["40"]};
   border-right: 1px solid ${props => props.theme.colors.oxfordBlueTint2};
   .header__logo {

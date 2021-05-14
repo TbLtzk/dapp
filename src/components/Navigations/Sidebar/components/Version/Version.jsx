@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ModalWindow from 'components/Base/ModalWindow';
-import VersionsTable from '../VersionsTable'
+import VersionsTable from '../VersionsTable';
 
-import { Title } from 'components/Custom/ModalActions/styles';
 import { WrpVersion } from './styles';
 import { Web3Adapter } from '@q-dev/q-js-sdk';
 import pkg from '../../../../../../package.json';
@@ -27,40 +26,48 @@ function Version() {
     const connectionInfo = await web3Adapter.getConnectionInfo();
 
     setMainVersionInfo([
-      {
-        group: versionInfoGroups.main,
-        name: 'dApp',
-        value: pkg.version,
-      },
+      [
+        {
+          group: versionInfoGroups.main,
+          name: 'dApp',
+          value: pkg.version,
+        },
+      ]
     ]);
     setModulesVersionInfo([
-      {
-        group: versionInfoGroups.modules,
-        name: 'Web3.js',
-        value: web3Adapter.web3.version,
-      },
-      {
-        group: versionInfoGroups.modules,
-        name: 'Q.js SDK',
-        value: web3Adapter.SDK_VERSION,
-      },
+      [
+        {
+          group: versionInfoGroups.modules,
+          name: 'Web3.js',
+          value: web3Adapter.web3.version,
+        },
+        {
+          group: versionInfoGroups.modules,
+          name: 'Q.js SDK',
+          value: web3Adapter.SDK_VERSION,
+        },
+      ]
     ]);
     setClientVersionInfo([
-      {
-        group: versionInfoGroups.client,
-        name: 'RPC URL',
-        value: connectionInfo.rpcUrl,
-      },
-      {
-        group: versionInfoGroups.client,
-        name: 'Network ID',
-        value: connectionInfo.networkId,
-      },
-      {
-        group: versionInfoGroups.client,
-        name: 'Node Info',
-        value: connectionInfo.nodeInfo,
-      },
+      [
+        {
+          group: versionInfoGroups.client,
+          name: 'RPC URL',
+          value: connectionInfo.rpcUrl,
+        },
+        {
+          group: versionInfoGroups.client,
+          name: 'Network ID',
+          value: connectionInfo.networkId,
+        },
+      ],
+      [
+        {
+          group: versionInfoGroups.client,
+          name: 'Node Info',
+          value: connectionInfo.nodeInfo,
+        },
+      ]
     ]);
   }, []);
 
@@ -76,11 +83,14 @@ function Version() {
         onHide={() => {
           setModalShow(false);
         }}
+        modalTitle={'Version Information'}
         content={
           <>
-            <Title>Version Information</Title>
+            <div className="modal-line"/>
             <VersionsTable data={mainVersionInfo} header={versionInfoGroups.main}/>
+            <div className="modal-line"/>
             <VersionsTable data={modulesVersionInfo} header={versionInfoGroups.modules}/>
+            <div className="modal-line"/>
             <VersionsTable data={clientVersionInfo} header={versionInfoGroups.client}/>
           </>
         }
