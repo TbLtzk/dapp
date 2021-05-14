@@ -64,9 +64,11 @@ export default function RefreshDelegationUpdate() {
     <CardBlock
       title={title}
       firstContent={timeDelegationUpdate}
-      btnTitle={loading ? <LoadingSpinner/> : 'Refresh'}
+      btnTitle={loading ? <LoadingSpinner/> : ''}
       btnHandler={btnHandler}
       btnDisabled={loading}
+      btnIcon={loading ? '' : 'cached'}
+      iconFontSize="20px"
     />
   );
 }

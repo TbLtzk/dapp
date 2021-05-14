@@ -17,8 +17,8 @@ function CardBlock(props) {
   return (
     <BlockAlignBlock>
       <div>
-        {!(String(title)) ? null : <h5>{title}</h5>}
-        {!(String(firstContent)) ? null : <p>{firstContent}</p>}
+        {title === undefined ? null : <h5>{title}</h5>}
+        {firstContent === undefined ? null : <p>{firstContent}</p>}
       </div>
 
       {(!btnTitle && !btnIcon) ? null :
