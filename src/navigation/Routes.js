@@ -16,7 +16,6 @@ import EndedAuctions from '../pages/UserPages/SavingAndBorrowing/DecentralizedAu
 import EndedProposals from '../pages/UserPages/QGovernance/EndedProposals';
 import SavingAndBorrowing from '../pages/UserPages/SavingAndBorrowing';
 import DecentralizedAuctions from '../pages/UserPages/SavingAndBorrowing/DecentralizedAuctions';
-import ManageStakerRewardPool from '../pages/UserPages/ManageStakerRewardPool';
 
 function Routes() {
   const options = {
@@ -38,7 +37,6 @@ function Routes() {
         <Route exact path="/q-governance" component={AuthProtect(QGovernance)}/>
         <Route exact path="/piggy-bank" component={AuthProtect(PiggyBank)}/>
         <Route exact path="/staking" component={AuthProtect(Staking)}/>
-        <Route exact path="/manage-staker-reward-pool" component={AuthProtect(ManageStakerRewardPool)}/>
         <Route exact path="/saving-and-borrowing" component={AuthProtect(SavingAndBorrowing)}/>
         <Route exact path="/ended-proposals" component={AuthProtect(EndedProposals)}/>
         <Route exact path="/decentralized-auctions" component={AuthProtect(DecentralizedAuctions)}/>

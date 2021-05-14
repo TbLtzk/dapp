@@ -84,7 +84,7 @@ function FormStaking() {
           <p>{withdrawalsData?.endTime !== '0' ? fromSolDateFormattingT1(Number(withdrawalsData?.endTime)) : '-'}</p>
         </>
         : null}
-      <p>Amount</p>
+      <h4>Amount</h4>
       <FormInput
         name="amount"
         lbl="Q"

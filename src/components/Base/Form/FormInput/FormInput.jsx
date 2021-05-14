@@ -29,7 +29,7 @@ const FormInput = forwardRef((props, ref) => {
       palette={palette}
       lbl={lbl}
       isfocus={isFocus}
-      isdisabled={disabled}
+      isdisabled={disabled ? '1' : ''}
     >
       <div style={{ display: 'flex' }}>
         {

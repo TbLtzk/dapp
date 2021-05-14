@@ -11,18 +11,20 @@ function CardBlock(props) {
     btnHandler,
     btnIcon,
     iconFontSize,
+    btnDisabled,
   } = props;
 
   return (
     <BlockAlignBlock>
       <div>
-        {!title ? null : <h5>{title}</h5>}
-        {!firstContent ? null : <p>{firstContent}</p>}
+        {!(String(title)) ? null : <h5>{title}</h5>}
+        {!(String(firstContent)) ? null : <p>{firstContent}</p>}
       </div>
 
       {(!btnTitle && !btnIcon) ? null :
         <div>
           <Button
+            disabled={btnDisabled}
             icon={btnIcon}
             title={btnTitle}
             width="100%"

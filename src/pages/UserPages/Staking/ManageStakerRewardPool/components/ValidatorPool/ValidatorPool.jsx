@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import RefreshDelegationUpdate from './components/RefreshDelegationUpdate'
+import RefreshDelegationUpdate from './components/RefreshDelegationUpdate';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -19,10 +19,7 @@ import {
 
 import { fN } from 'func/useful';
 
-import { CustomBlockVP } from './styles';
-
 export default function ValidatorPool(props) {
-  const { showTitle } = props;
 
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
@@ -39,7 +36,7 @@ export default function ValidatorPool(props) {
   }, []);
 
   const validatorPoolInfArr = useMemo(() => {
-    return [
+    return [[
       {
         label: 'Total Stake:',
         value: fN(totalStake) + 'Q'
@@ -48,39 +45,40 @@ export default function ValidatorPool(props) {
         label: 'Validator own Stake:',
         value: fN(ownStake) + 'Q'
       },
-      {
-        label: 'Delegated Stake:',
-        value: fN(delegatedStake) + 'Q'
-      },
-      {
-        label: 'Accountable Stake:',
-        value: fN(accTotalStake) + 'Q'
-      },
+    ],
+      [
+        {
+          label: 'Delegated Stake:',
+          value: fN(delegatedStake) + 'Q'
+        },
+        {
+          label: 'Accountable Stake:',
+          value: fN(accTotalStake) + 'Q'
+        },
+      ]
     ];
   }, [totalStake, ownStake, delegatedStake, accTotalStake]);
 
   return (
-    <CustomBlockVP>
-      {showTitle === false ? '' : (
-        <p className="title">Validator Pool</p>
-      )}
-      {validatorPoolInfArr?.map((el => {
+    <div>
+      <h3>Validator Pool</h3>
+      {validatorPoolInfArr?.map((line, index) => {
         return (
-          <div key={el.label + 'validator-pool'}>
-            <span>{el.label}</span>
-            <span>{el.value}</span>
+          <div key={index + '-validator-line'} style={{ display: 'flex' }}>
+            {
+              line.map((el => {
+                return (
+                  <div key={el.label + '-validator-pool'} style={{ width: '50%' }}>
+                    <h5>{el.label}</h5>
+                    <p>{el.value}</p>
+                  </div>
+                );
+              }))
+            }
           </div>
         );
-      }))}
-      <RefreshDelegationUpdate />
-    </CustomBlockVP>
+      })}
+      <RefreshDelegationUpdate/>
+    </div>
   );
 }
-
-ValidatorPool.propTypes = {
-  showTitle: PropTypes.bool,
-};
-
-ValidatorPool.defaultProps = {
-  showTitle: false,
-};

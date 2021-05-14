@@ -16,7 +16,6 @@ import { QExpert, QProposal, QRootNode, QSlashing } from './constants';
 
 function CreateQProposalBtn(props) {
   const { activeTab } = props;
-  const userAddress = useSelector(userAddressMetamask);
   const [modalShow, setModalShow] = useState(false);
   const dispatch = useDispatch();
 

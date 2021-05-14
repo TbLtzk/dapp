@@ -91,10 +91,6 @@ export const Block = styled(BlockBase)`
   .title {
     font-size: 20px;
     margin-bottom: 20px;
-
-    &.type-2 {
-      margin-top: 30px;
-    }
   }
 
   button {

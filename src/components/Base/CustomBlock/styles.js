@@ -35,6 +35,7 @@ export const Block = styled.div`
     color: ${props => props.theme.colors.oxfordBlueTint3};
     font-size: 13px;
     line-height: 17px;
+    font-weight: 600;
     font-family: 'OpenSans', sans-serif;
     margin-bottom: 2px;
   }

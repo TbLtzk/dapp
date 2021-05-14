@@ -8,6 +8,7 @@ import BigTabsView from 'components/Base/Tabs/BigTabsView';
 import RootNodeStakingContent from './RootNodeStakingContent';
 import ValidatorStaking from './ValidatorStaking';
 import PageWrap from 'components/Base/PageWrap';
+import ManageStakerRewardPool from './ManageStakerRewardPool';
 
 function Staking() {
   const location = useLocation();
@@ -30,7 +31,12 @@ function Staking() {
   ), [amountNodeStake]);
 
   return (
-    <PageWrap headerTitle={'Staking'}>
+    <PageWrap
+      headerTitle={'Staking'}
+      headerExtra={(
+        <ManageStakerRewardPool/>
+      )}
+    >
       <BigTabsView
         tabsItems={tabsItems}
         active={state?.activeTab ? state.activeTab : tabsItems[0]?.label}

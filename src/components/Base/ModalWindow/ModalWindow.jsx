@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Modal, Row, Col, Container } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 import Button from 'components/Base/Buttons/Button';
 import ButtonLink from 'components/Base/Buttons/ButtonLink';
@@ -17,7 +17,8 @@ function ModalWindow(props) {
     backBtnHandler,
     continueBtnTitle,
     continueBtnHandler,
-    content
+    content,
+    modalTitle
   } = props;
 
   return (
@@ -29,7 +30,8 @@ function ModalWindow(props) {
       centered
     >
       <Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
+        <Modal.Title>
+          {modalTitle}
         </Modal.Title>
       </Header>
       <Body>
@@ -37,30 +39,22 @@ function ModalWindow(props) {
       </Body>
       {(!backBtnTitle && !continueBtnTitle) ? null :
         <Footer>
-          <Container>
-            <Row>
-              <Col md={6}>
-                {!backBtnTitle ? null :
-                  <ButtonLink
-                    width="100%"
-                    title={backBtnTitle}
-                    handleLink={backBtnHandler}
-                  />
-                }
-              </Col>
-              <Col md={6}>
-                {!continueBtnTitle ? null :
-                  <Button
-                    type="usual"
-                    width="100%"
-                    disabled={disabled}
-                    title={continueBtnTitle}
-                    handleButton={continueBtnHandler}
-                  />
-                }
-              </Col>
-            </Row>
-          </Container>
+          {!backBtnTitle ? null :
+            <ButtonLink
+              width="100%"
+              title={backBtnTitle}
+              handleLink={backBtnHandler}
+            />
+          }
+          {!continueBtnTitle ? null :
+            <Button
+              type="usual"
+              width="100%"
+              disabled={disabled}
+              title={continueBtnTitle}
+              handleButton={continueBtnHandler}
+            />
+          }
         </Footer>
       }
     </ModalW>
