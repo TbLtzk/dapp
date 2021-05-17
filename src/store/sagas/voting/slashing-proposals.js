@@ -26,10 +26,8 @@ function* getProposalsList() {
     const contracts = creationSlashingContractsObjArray();
     let result = [];
     if (Array.isArray(contracts)) {
-      for (let contractName of contracts) {
-        const data = yield contractName.getProposals();
-        result = [...result, ...data];
-      }
+      const data = yield Promise.all(contracts.map(item => item.getProposals()));
+      result = [].concat.apply([], data);
     } else {
       result = yield contracts?.getProposals();
     }
@@ -46,10 +44,8 @@ function* getEndedProposals() {
     let contracts = creationSlashingContractsObjArray();
     let result = [];
     if (Array.isArray(contracts)) {
-      for (let contractName of contracts) {
-        const data = yield contractName.getEndedProposals();
-        result = [...result, ...data];
-      }
+      const data = yield Promise.all(contracts.map(item => item.getEndedProposals()));
+      result = [].concat.apply([], data);
     } else {
       result = yield contracts?.getEndedProposals();
     }

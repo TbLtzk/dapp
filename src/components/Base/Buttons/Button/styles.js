@@ -6,7 +6,7 @@ export const ButtonCustom = styled(Button)`
   width: ${(props) => (!props.width ? 'auto' : props.width)};
   max-width: ${(props) => (!props.width ? 'auto' : props.width)};
   min-width: ${(props) => (!props.width ? 'auto' : props.width)};
-  padding: 7px;
+  padding: 7px 11px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

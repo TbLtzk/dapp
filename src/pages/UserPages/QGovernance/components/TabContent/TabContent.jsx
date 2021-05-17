@@ -22,8 +22,6 @@ import {
   slashingLoadingProposals,
 } from 'store/selectors/voting/slashing-proposals';
 
-import { Col } from 'react-bootstrap';
-
 import QTypeProposalsTabs from 'pages/UserPages/QGovernance/components/QTypeProposalsTabs';
 import ProposalsList from 'pages/UserPages/QGovernance/components/ProposalsList';
 
@@ -71,22 +69,20 @@ function TabContent(props) {
   }, [activeTab, qError, rootNodeError, expertError, slashingError]);
 
   return (
-    <Col xs={12}>
-      <QTypeProposalsTabs
-        activeDescr={proposals?.length + ' Proposals'}
-        activeContent={
-          <ProposalsList
-            activeTab={activeTab}
-            proposals={proposals}
-            loading={loading}
-            errorMessage={errorMessage}
-            proposalsKind={proposalKind}
-          />
-        }
-        votableDesc="0 Proposals"
-        votableContent={<p>Only votable</p>}
-      />
-    </Col>
+    <QTypeProposalsTabs
+      activeDescr={proposals?.length + ' Proposals'}
+      activeContent={
+        <ProposalsList
+          activeTab={activeTab}
+          proposals={proposals}
+          loading={loading}
+          errorMessage={errorMessage}
+          proposalsKind={proposalKind}
+        />
+      }
+      votableDesc="0 Proposals"
+      votableContent={<p>Only votable</p>}
+    />
 
   );
 }

@@ -17,6 +17,15 @@ export const Block = styled.div`
     font-family: 'Lora', sans-serif;
   }
 
+  h2 {
+    color: ${props => props.theme.colors.white};
+    font-size: 40px;
+    line-height: 45px;
+    font-weight: 300;
+    margin-bottom: 15px;
+    font-family: 'OpenSans', sans-serif;
+  }
+
   h3 {
     color: ${props => props.theme.colors.oxfordBlueTint3};
     font-size: 16px;

@@ -24,6 +24,7 @@ export default function slashingProposals(state = initialState, action) {
         ...state,
         endedProposals: action.result,
         loadingEndedProposals: false,
+        errorEnded: null
       };
     case actionTypes.GET_SLASHING_ENDED_PROPOSALS_ERROR:
       return {

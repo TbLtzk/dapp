@@ -9,6 +9,7 @@ import { AuthProtect } from './AuthProtect';
 import Dashboard from '../pages/UserPages/Dashboard/Dashboard';
 import Manage from '../pages/UserPages/Dashboard/Manage';
 import QGovernance from '../pages/UserPages/QGovernance';
+import Governance from '../pages/UserPages/Governance';
 import PiggyBank from '../pages/UserPages/PiggyBank';
 import Staking from '../pages/UserPages/Staking';
 import OneProposalPage from '../pages/UserPages/QGovernance/OneProposalPage';
@@ -34,7 +35,8 @@ function Routes() {
         <Route exact path="/start-configurations" component={StartConfigurations}/>
       </Switch>
       <Switch>
-        <Route exact path="/q-governance" component={AuthProtect(QGovernance)}/>
+        <Route exact path="/governance" component={AuthProtect(QGovernance)}/>
+        <Route exact path="/q-governance" component={AuthProtect(Governance)}/>
         <Route exact path="/piggy-bank" component={AuthProtect(PiggyBank)}/>
         <Route exact path="/staking" component={AuthProtect(Staking)}/>
         <Route exact path="/saving-and-borrowing" component={AuthProtect(SavingAndBorrowing)}/>

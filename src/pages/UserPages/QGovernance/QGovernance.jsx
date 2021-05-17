@@ -95,41 +95,35 @@ function QGovernance() {
 
   return (
     <PageWrap>
-      <Row>
-        <Col md={8}>
-          <ButtonsGroupTabs
-            tabsItems={tabsItems}
-            tabsHandler={(key) => {
-              setActiveTab(key);
-              dispatch(onChangeProposalTab());
-              dispatch(onSetActiveTab(key));
-              dispatch(onChangePageType('active'));
-            }}
-          />
-          <WrapBtn>
-            <Button
-              title="View ended proposals"
-              type="white"
-              width="100%"
-              handleButton={() => {
-                dispatch(onChangePageType('ended'));
-                history.push({
-                  pathname: '/ended-proposals',
-                  state: {
-                    activeTab: activeTab,
-                    numberOfProposals: 0
-                  }
-                });
-              }}
-            />
-          </WrapBtn>
-        </Col>
-        <Col md={4}>
-          <CreateQProposalBtn activeTab={activeTab}/>
-          <Stats statsData={statsData()} type="Voting"/>
-          <References type="voting"/>
-        </Col>
-      </Row>
+      <ButtonsGroupTabs
+        tabsItems={tabsItems}
+        tabsHandler={(key) => {
+          setActiveTab(key);
+          dispatch(onChangeProposalTab());
+          dispatch(onSetActiveTab(key));
+          dispatch(onChangePageType('active'));
+        }}
+      />
+      <WrapBtn>
+        <Button
+          title="View ended proposals"
+          type="white"
+          width="100%"
+          handleButton={() => {
+            dispatch(onChangePageType('ended'));
+            history.push({
+              pathname: '/ended-proposals',
+              state: {
+                activeTab: activeTab,
+                numberOfProposals: 0
+              }
+            });
+          }}
+        />
+      </WrapBtn>
+      <CreateQProposalBtn activeTab={activeTab}/>
+      <Stats statsData={statsData()} type="Voting"/>
+      <References type="voting"/>
     </PageWrap>
   );
 }

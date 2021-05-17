@@ -18,8 +18,9 @@ export const Page = styled.div`
 
 export const WrapContent = styled.div`
   height: calc(100vh - 108px);
+  min-height: 490px;
   max-width: 100%;
-  //overflow-x: hidden;
+  overflow-x: hidden;
   overflow-y: auto;
 
   &.wrap-content__tow-colm {
@@ -31,6 +32,12 @@ export const WrapContent = styled.div`
   &.wrap-content__column-2-1 {
     display: grid;
     grid-template-columns: minmax(100px, 2fr) minmax(100px, 1fr);
+    grid-column-gap: ${indents['15']};
+  }
+
+  &.wrap-content__three-colm {
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
     grid-column-gap: ${indents['15']};
   }
 `;
