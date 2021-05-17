@@ -2,10 +2,12 @@ import styled from 'styled-components';
 
 export const Block = styled.div`
   width: 100%;
+  max-width: 100%;
   background-color: ${props => props.theme.colors.oxfordBlueTint1};
   border-radius: 3px;
   padding: 20px;
   margin-bottom: 10px;
+  height: fit-content;
 
   h1 {
     color: ${props => props.theme.colors.white};

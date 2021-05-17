@@ -11,11 +11,9 @@ function CustomBlock(props) {
   } = props;
 
   return (
-    <div>
-      <Block style={style}>
-        {children}
-      </Block>
-    </div>
+    <Block style={style}>
+      {children}
+    </Block>
   );
 }
 

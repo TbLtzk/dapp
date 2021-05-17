@@ -60,7 +60,7 @@ function MemberTable(props) {
     return (
       <tr key={i} className={classType}>
         {!number ? null : <td>{number}</td>}
-        <td>
+        <td className={classType}>
           <MemberAddress
             color={userAddress === address ? 'highlight' : 'default'}
           >
@@ -78,7 +78,7 @@ function MemberTable(props) {
               }
             >
               <CopyToClipboard text={address}>
-                <span className={classType}>{address}</span>
+                <span>{address}</span>
               </CopyToClipboard>
             </OverlayTrigger>
           </MemberAddress>
