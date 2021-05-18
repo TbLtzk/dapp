@@ -10,6 +10,7 @@ import { userBalance } from 'store/selectors/q-piggy-bank';
 import { getDebt, getSurplus, getSystemBalance } from 'store/actions/action-creaters/system-balance';
 import { getAvailableAmount } from 'store/actions/action-creaters/system-reserve';
 import { getUserBalance } from 'store/actions/action-creaters/q-piggy-bank';
+import { getEPDRUint } from 'contracts/handler/ContractsEPDR';
 
 import Stats from 'components/Custom/PageLists/SidebarCards/Stats';
 import SystemCard from 'components/Custom/PageLists/SidebarCards/SystemCard';
@@ -40,6 +41,9 @@ function SidebarCards() {
   const isAuctionModified = useSelector(lastAuctionModification);
 
   const [reserveBalance, setReserveBalance] = useState('0');
+  const [surplusLot, setSurplusLot] = useState('0');
+  const [reserveLot, setReserveLot] = useState('0');
+
 
   useEffect(() => {
       window.web3.eth.getBalance(userAddress, (err, balance) => {
@@ -55,10 +59,13 @@ function SidebarCards() {
     //stats
     dispatch(getUserBalance(userAddress));
 
+
   }, [dispatch, loadingPerfNetting, isAuctionModified]);
 
   useEffect(() => {
     contractBalance.getBalanceValue('SystemReserve', setReserveBalance);
+    getEPDRUint("governed.EPDR.QUSD_surplusLot", setSurplusLot);
+    getEPDRUint("governed.EPDR.reserveLot", setReserveLot);
     contractStableCoinQUSD.balanceOf(userAddress)
       .then((res) => {
         setQUSDUserBalance(fromWei(res));
@@ -103,9 +110,13 @@ function SidebarCards() {
           title: 'Balance',
           value: systemBalanceResult + ' QUSD',
         },
+        {
+          title: 'System Surplus Auction Lot',
+          value: surplusLot + ' QUSD',
+        },
       ]
     );
-  }, [surplus, debt, systemBalanceResult]);
+  }, [surplus, debt, systemBalanceResult, surplusLot]);
 
   const systemReserve = useMemo(() => {
     return (
@@ -118,9 +129,13 @@ function SidebarCards() {
           title: 'Immediately available',
           value: availableAmount + ' Q',
         },
+        {
+          title: 'System Debt Auction Lot',
+          value: reserveLot + ' Q',
+        },
       ]
     );
-  }, [availableAmount, reserveBalance]);
+  }, [availableAmount, reserveBalance, reserveLot]);
 
   return (
     <>
