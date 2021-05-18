@@ -9,7 +9,6 @@ function InfoBlock(props) {
   const {
     header,
     activeProposalsNumber,
-    onlyVotableNumber,
     endedProposalsNumber,
     detailsLink,
     isLoading,
@@ -31,8 +30,6 @@ function InfoBlock(props) {
               <>
                 <h5>Active proposals</h5>
                 <h2>{activeProposalsNumber}</h2>
-                <h5>Only votable</h5>
-                <p>{onlyVotableNumber}</p>
                 <h5>Ended proposals</h5>
                 <p>{endedProposalsNumber}</p>
               </>

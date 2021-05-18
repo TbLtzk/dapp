@@ -82,7 +82,6 @@ function Governance() {
         <InfoBlock
           header="Q Proposals"
           activeProposalsNumber={qProposals.length}
-          onlyVotableNumber="-"
           endedProposalsNumber={qEnded.length}
           detailsLink="q-proposals"
           isLoading={qLoading || qLoadingEnded}
@@ -92,7 +91,6 @@ function Governance() {
         <InfoBlock
           header="Expert Proposals"
           activeProposalsNumber={expertProposals.length}
-          onlyVotableNumber="-"
           endedProposalsNumber={expertEnded.length}
           detailsLink="expert-proposals"
           isLoading={expertLoading || expertLoadingEnded}
@@ -103,7 +101,6 @@ function Governance() {
         <InfoBlock
           header="Root Node Panel"
           activeProposalsNumber={rootNodeProposals.length}
-          onlyVotableNumber="-"
           endedProposalsNumber={rootNodeEnded.length}
           detailsLink="root-node-panel"
           isLoading={rootNodeLoading || rootNodeLoadingEnded}
@@ -112,7 +109,6 @@ function Governance() {
         <InfoBlock
           header="Slashing Proposals"
           activeProposalsNumber={slashingProposals.length}
-          onlyVotableNumber="-"
           endedProposalsNumber={slashingEnded.length}
           detailsLink="slashing-proposals"
           isLoading={slashingLoading || slashingLoadingEnded}
