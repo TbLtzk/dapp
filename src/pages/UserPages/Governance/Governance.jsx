@@ -83,7 +83,7 @@ function Governance() {
           header="Q Proposals"
           activeProposalsNumber={qProposals.length}
           endedProposalsNumber={qEnded.length}
-          detailsLink="q-proposals"
+          detailsLink="governance"
           isLoading={qLoading || qLoadingEnded}
           isError={qError || qErrorEndedM}
         />
@@ -92,7 +92,7 @@ function Governance() {
           header="Expert Proposals"
           activeProposalsNumber={expertProposals.length}
           endedProposalsNumber={expertEnded.length}
-          detailsLink="expert-proposals"
+          detailsLink="governance"
           isLoading={expertLoading || expertLoadingEnded}
           isError={expertError || expertErrorEndedM}
         />
@@ -102,7 +102,7 @@ function Governance() {
           header="Root Node Panel"
           activeProposalsNumber={rootNodeProposals.length}
           endedProposalsNumber={rootNodeEnded.length}
-          detailsLink="root-node-panel"
+          detailsLink="governance"
           isLoading={rootNodeLoading || rootNodeLoadingEnded}
           isError={rootNodeError || rootNodeErrorEndedM}
         />
@@ -110,7 +110,7 @@ function Governance() {
           header="Slashing Proposals"
           activeProposalsNumber={slashingProposals.length}
           endedProposalsNumber={slashingEnded.length}
-          detailsLink="slashing-proposals"
+          detailsLink="governance"
           isLoading={slashingLoading || slashingLoadingEnded}
           isError={slashingError || slashingErrorEndedM}
         />
