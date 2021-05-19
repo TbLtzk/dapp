@@ -6,6 +6,7 @@ import GeneralUpdateVotingService from '../src/voting/GeneralUpdateVoting';
 import MembershipVotingService from '../src/voting/MembershipVoting';
 import ParametersVotingService from '../src/voting/ParametersVoting';
 import { chooseExpertContractDependsOnType } from './QExpertVotingHandler';
+import { PROPOSALS_TYPES } from 'constants/statuses';
 import { BN } from 'func/useful';
 
 export const getPastEvents = async (contract, event) => {
@@ -181,13 +182,13 @@ export function creationExpertContractsObjArray() {
 
 export function tabSwitcher(activeTab, qProp, rootNodeProp, expertProp, slashingProp) {
   switch (activeTab) {
-    case 'q-proposals':
+    case PROPOSALS_TYPES.proposals:
       return qProp;
-    case 'q-root-node-panel':
+    case PROPOSALS_TYPES.rootNodePanel:
       return rootNodeProp;
-    case 'q-expert-proposals':
+    case PROPOSALS_TYPES.expertProposals:
       return expertProp;
-    case 'slashing-proposals':
+    case 'PROPOSALS_TYPES.slashingProposals':
       return slashingProp;
   }
 }

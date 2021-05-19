@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import PageWrap from 'components/Base/PageWrap';
 import InfoBlock from './components/InfoBlock';
-import VotingStats from './components/VotingStats';
+import VotingStats from 'components/Custom/VotingStats';
+import { PROPOSALS_TYPES } from 'constants/statuses';
 import { useDispatch, useSelector } from 'react-redux';
-import { getEndedProposals, getProposalsList, onChangePageType } from 'store/actions/action-creaters/voting/proposals';
+import { getEndedProposals, getProposalsList } from 'store/actions/action-creaters/voting/proposals';
 import {
   qEndedProposals, qErrorEnded,
   qErrorM, qLoadingEndedProposals,
@@ -33,16 +34,10 @@ function Governance() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getProposalsList('q-root-node-panel'));
-    dispatch(getEndedProposals('q-root-node-panel'));
-
-    dispatch(getProposalsList('q-proposals'));
-    dispatch(getProposalsList('q-expert-proposals'));
-    dispatch(getProposalsList('slashing-proposals'));
-
-    dispatch(getEndedProposals('q-proposals'));
-    dispatch(getEndedProposals('q-expert-proposals'));
-    dispatch(getEndedProposals('slashing-proposals'));
+    for (let item in PROPOSALS_TYPES) {
+      dispatch(getProposalsList(PROPOSALS_TYPES[item]));
+      dispatch(getEndedProposals(PROPOSALS_TYPES[item]));
+    }
   }, []);
 
   const qProposals = useSelector(qProposalsArr);
@@ -83,7 +78,7 @@ function Governance() {
           header="Q Proposals"
           activeProposalsNumber={qProposals.length}
           endedProposalsNumber={qEnded.length}
-          detailsLink="governance"
+          detailsLink="q-proposals"
           isLoading={qLoading || qLoadingEnded}
           isError={qError || qErrorEndedM}
         />
@@ -92,7 +87,7 @@ function Governance() {
           header="Expert Proposals"
           activeProposalsNumber={expertProposals.length}
           endedProposalsNumber={expertEnded.length}
-          detailsLink="governance"
+          detailsLink="q-expert-proposals"
           isLoading={expertLoading || expertLoadingEnded}
           isError={expertError || expertErrorEndedM}
         />
@@ -102,7 +97,7 @@ function Governance() {
           header="Root Node Panel"
           activeProposalsNumber={rootNodeProposals.length}
           endedProposalsNumber={rootNodeEnded.length}
-          detailsLink="governance"
+          detailsLink="q-root-node-panel"
           isLoading={rootNodeLoading || rootNodeLoadingEnded}
           isError={rootNodeError || rootNodeErrorEndedM}
         />
@@ -110,7 +105,7 @@ function Governance() {
           header="Slashing Proposals"
           activeProposalsNumber={slashingProposals.length}
           endedProposalsNumber={slashingEnded.length}
-          detailsLink="governance"
+          detailsLink="slashing-proposals"
           isLoading={slashingLoading || slashingLoadingEnded}
           isError={slashingError || slashingErrorEndedM}
         />

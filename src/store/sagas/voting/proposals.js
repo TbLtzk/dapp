@@ -1,5 +1,7 @@
 import { call, put, takeEvery, select } from 'redux-saga/effects';
 
+import { PROPOSALS_TYPES } from 'constants/statuses';
+
 import * as actionTypes from 'store/actions/action-types/voting/proposals';
 import {
   setTransactionLoading, setTransactionLoadingError, setTransactionLoadingSuccess
@@ -28,7 +30,7 @@ import {
 } from 'store/actions/action-creaters/voting/slashing-proposals';
 
 import {
-  creationQContractObj, creationRootContractObj, creationExpertContractObj, creationSlashingContractObj,
+  creationQContractObj, creationRootContractObj,
   creationQContractsObjArray, creationSlashingContractsObjArray, creationExpertContractsObjArray
 } from 'contracts/handler/VotingHandler';
 import { chooseSlashingContractDependsOnType } from 'contracts/handler/SlashingVotingHandler';
@@ -205,16 +207,16 @@ function* getOneProposalShared({ data }) {
 function* getProposalsList({ activeTab }) {
   try {
     switch (activeTab) {
-      case 'q-proposals':
+      case PROPOSALS_TYPES.proposals:
         yield put(getQProposalsList());
         break;
-      case 'q-root-node-panel':
+      case PROPOSALS_TYPES.rootNodePanel:
         yield put(getRootNodeProposalsList());
         break;
-      case 'slashing-proposals':
+      case PROPOSALS_TYPES.slashingProposals:
         yield put(getSlashingProposalsList());
         break;
-      case 'q-expert-proposals':
+      case PROPOSALS_TYPES.expertProposals:
         yield put(getExpertProposalsList());
         break;
     }
@@ -226,16 +228,16 @@ function* getProposalsList({ activeTab }) {
 function* getEndedProposals({ activeTab }) {
   try {
     switch (activeTab) {
-      case 'q-proposals':
+      case PROPOSALS_TYPES.proposals:
         yield put(getQEndedProposals());
         break;
-      case 'q-root-node-panel':
+      case PROPOSALS_TYPES.rootNodePanel:
         yield put(getRootNodeEndedProposals());
         break;
-      case 'q-expert-proposals':
+      case PROPOSALS_TYPES.expertProposals:
         yield put(getExpertEndedProposals());
         break;
-      case 'slashing-proposals':
+      case PROPOSALS_TYPES.slashingProposals:
         yield put(getSlashingEndedProposals());
         break;
     }
