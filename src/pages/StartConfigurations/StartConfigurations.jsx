@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-import { Col } from 'react-bootstrap';
 import InstructionMetamask from 'pages/StartConfigurations/InstructionMetamask';
 
-import { WrapContainer, WrapRow, WrapBlock } from './styles';
+import { WrapContainer, WrapBlock } from './styles';
 
 function StartConfigurations(props) {
   const { error } = props;
@@ -23,13 +22,9 @@ function StartConfigurations(props) {
 
   return (
     <WrapContainer fluid>
-      <WrapRow>
-        <Col xs={12}>
-          <WrapBlock block={!error}>
-            {checkMetaMask()}
-          </WrapBlock>
-        </Col>
-      </WrapRow>
+      <WrapBlock block={!error}>
+        {checkMetaMask()}
+      </WrapBlock>
     </WrapContainer>
   );
 }
