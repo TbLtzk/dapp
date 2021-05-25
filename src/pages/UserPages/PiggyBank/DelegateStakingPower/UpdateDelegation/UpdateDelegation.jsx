@@ -72,13 +72,13 @@ export default function UpdateDelegation() {
             <Button
               type="outline"
               icon="plus"
-              width="34px"
+              width="37px"
               handleButton={() => addInputContainer()}
             />
             <Button
               type="outline"
               icon="minus"
-              width="34px"
+              width="37px"
               handleButton={() => removeInputContainer()}
             />
           </div>
@@ -99,7 +99,7 @@ export default function UpdateDelegation() {
         {getForms()}
       </div>
 
-      <div className='card__actions' style={{ marginBottom: '30px' }}>
+      <div className="card__actions" style={{ marginBottom: '30px' }}>
         <Button
           icon="cached"
           type="outline"

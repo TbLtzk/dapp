@@ -1,27 +1,26 @@
 import React from 'react';
 import { PieChart, Pie, Cell } from 'recharts';
+import colors from 'constants/colors';
 
-import { WrapChart } from './styles';
-import { WrapBlock } from '../styles';
-import colors from '../../../../../../../constants/colors';
-
-export const circles = ['#2C2B9C', '#F1F2FD'];
+export const circles = [colors.circleWhite, colors.circleDark];
 
 function PieChartTwoItem(props) {
   const { data } = props;
 
   return (
-    <WrapChart>
+    <div>
       {
         data ?
-          <PieChart width={100} height={100}>
+          <PieChart width={60} height={60}>
             <Pie
               data={data}
-              cx={'34%'}
-              cy={'34%'}
+              cx={''}
+              cy={''}
               labelLine={false}
-              innerRadius={20}
+              innerRadius={23}
+              outerRadius={29}
               fill="#8884d8"
+              stroke={0}
               dataKey="value"
             >
               {data.map((entry, index) =>
@@ -32,7 +31,7 @@ function PieChartTwoItem(props) {
               )}
             </Pie>
           </PieChart>
-          : <PieChart width={100} height={100}>
+          : <PieChart width={60} height={60}>
             <Pie
               data={
                 [{
@@ -40,17 +39,19 @@ function PieChartTwoItem(props) {
                   value: 100
                 }]
               }
-              cx={'34%'}
-              cy={'34%'}
+              cx={''}
+              cy={''}
               labelLine={false}
-              innerRadius={20}
+              innerRadius={23}
+              outerRadius={29}
+              stroke={0}
               fill={colors.grey}
               dataKey="value"
             >
             </Pie>
           </PieChart>
       }
-    </WrapChart>
+    </div>
   );
 }
 

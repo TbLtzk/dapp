@@ -1,1 +1,1 @@
-export {default, CustomToggle} from './ListCardBody';
+export {default} from './ListCardBody';

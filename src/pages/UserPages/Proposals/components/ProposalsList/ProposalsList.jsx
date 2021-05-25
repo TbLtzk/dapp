@@ -5,16 +5,17 @@ import {
   setVoteProposalObj,
   setStepVoteCounter,
   setDisabledCreatedProposalBtn,
-  executeProposal, updateProposal
+  executeProposal
 } from 'store/actions/action-creaters/voting/proposals';
 
 import LoadingSpinner from 'components/Base/LoadingSpinner';
-import CardHeader from 'pages/UserPages/Proposals/components/ProposalsList/CardHeader';
-import CardBody from 'pages/UserPages/Proposals/components/ProposalsList/CardBody';
-import ModalVote from 'pages/UserPages/Proposals/components/CreateQProposalBtn/ModalVote';
+import ModalVote from '../CreateQProposalBtn/ModalVote';
 
-import { Accordion } from 'react-bootstrap';
-import { CardBlock, LoadingW } from './styles';
+import ListCard from 'components/Custom/PageLists/ListCard';
+import CardDropdownItems from './components/CardDropdownItems';
+import CardCollapsedContent from './components/CardCollapsedContent';
+import { LoadingWrap } from 'constants/style';
+import { convertToMonthDayYear, remainDate } from 'func/convertDate';
 
 function ProposalsList(props) {
   const {
@@ -44,52 +45,70 @@ function ProposalsList(props) {
       contract
     }));
   };
-  const onProposalUpdate = (id, contract) => {
-    dispatch(updateProposal({
-      idProposal: id,
-      contract
-    }));
-  };
 
   return (
-    <>
-      <Accordion defaultActiveKey="0">
-        {loading ? <LoadingW xs={12}><LoadingSpinner/></LoadingW> :
-          errorMessage ? <p>No proposals</p> :
-            proposals?.length === 0
-              ? <p>No proposals</p>
-              : !proposals ? <p>No proposals</p> : proposals.map((proposal, i) => {
-                //TODO: don`t show proposal if veto time === 0
-                // return remainDate(proposal.vetoEndTime) !== 0 ?
-                return <CardBlock key={proposal.id + proposal?.contract}>
-                  <CardHeader
-                    title={proposal.title}
-                    status={proposal.status}
-                    handleVote={() => {
-                      onProposalVote(proposal.id, proposal.contract, proposal.vetoEndTime);
-                    }}
-                    handleExecute={() => {
-                      onProposalExecute(proposal.id, proposal.contract);
-                    }}
-                    handleUpdate={() => {
-                      onProposalUpdate(proposal.id, proposal.contract);
-                    }}
-                  />
-                  <CardBody
-                    id={proposal.id + proposal?.contract}
-                    proposalType={proposal?.type}
-                    vetoTime={proposal.vetoEndTime}
-                    votingTime={proposal.votingEndTime}
-                    proposalID={proposal.id}
-                    proposal={proposal}
-                    proposalsKind={proposalsKind}
-                    voteBreakdown={proposal}
-                    contract={proposal.contract}
-                  />
-                </CardBlock>;
-              })
-        }
-      </Accordion>
+    <div>
+      {loading ? <LoadingWrap><LoadingSpinner/></LoadingWrap> :
+        errorMessage ? <p>No proposals</p> :
+          proposals?.length === 0
+            ? <p>No proposals</p>
+            : !proposals ? <p>No proposals</p> : proposals.map((proposal, i) => {
+              //TODO: don`t show proposal if veto time === 0
+              // return remainDate(proposal.vetoEndTime) !== 0 ?
+              return (
+                <ListCard
+                  key={proposal.id + proposal?.contract}
+                  id={proposal.id + proposal?.contract}
+                  headerLeftSide={
+                    <>
+                      <h1>{proposal.title}</h1>
+                      {proposal.status ? <div className="list-card__status">{proposal.status}</div> : null}
+                    </>
+                  }
+                  dropdownItems={
+                    <CardDropdownItems
+                      status={proposal.status}
+                      handleVote={() => {
+                        onProposalVote(proposal.id, proposal.contract, proposal.vetoEndTime);
+                      }}
+                      handleExecute={() => {
+                        onProposalExecute(proposal.id, proposal.contract);
+                      }}
+                      shareText={`${window.location.origin}/q-governance/proposal/${proposal.contract}/${proposal.id}`}
+                    />
+                  }
+                  collapsedContent={
+                    <CardCollapsedContent
+                      proposalType={proposal?.type}
+                      proposal={proposal}
+                      voteBreakdown={proposal}
+                      proposalsKind={proposalsKind}
+                      contract={proposal.contract}
+                      proposalID={proposal.id}
+                      votingTime={proposal.votingEndTime}
+                      vetoTime={proposal.vetoEndTime}
+                    />
+                  }
+                  content={
+                    <div className="list-card__three-colm">
+                      <div>
+                        <h5>Proposal ID</h5>
+                        <p>{proposal.id}</p>
+                      </div>
+                      <div>
+                        <h5>Voting until</h5>
+                        <p>{convertToMonthDayYear(proposal.vetoEndTime)}</p>
+                      </div>
+                      <div>
+                        <h5>Remaining Time for Voting</h5>
+                        <p>{remainDate(proposal.votingEndTime)}</p>
+                      </div>
+                    </div>
+                  }
+                />
+              );
+            })
+      }
       <ModalVote
         proposalContract={proposalContract}
         proposalId={proposalId}
@@ -104,7 +123,7 @@ function ProposalsList(props) {
 
         }}
       />
-    </>
+    </div>
   );
 }
 

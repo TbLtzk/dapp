@@ -1,14 +1,11 @@
 import styled from 'styled-components';
-
 import { Card } from 'react-bootstrap';
+import { indents } from 'constants/style';
 
-export const Header = styled(Card.Header)`
-  padding: 20px 20px 0 20px;
+export const ListCardWrp = styled(Card)`
+  border: 0;
   background: ${props => props.theme.colors.oxfordBlueTint1};
-  border-radius: 3px 3px 0 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  margin-bottom: 16px;
 
   h1 {
     color: ${props => props.theme.colors.white};
@@ -16,6 +13,49 @@ export const Header = styled(Card.Header)`
     line-height: 35px;
     margin-bottom: 0;
     font-family: 'Lora', sans-serif;
+  }
+
+  h3 {
+    color: ${props => props.theme.colors.oxfordBlueTint3};
+    font-size: 16px;
+    line-height: 17px;
+    font-family: 'OpenSans', sans-serif;
+    margin-bottom: 15px;
+  }
+
+  h4 {
+    color: ${props => props.theme.colors.white};
+    font-size: 12px;
+    line-height: 17px;
+    font-family: 'OpenSans', sans-serif;
+    margin-bottom: 10px;
+  }
+
+  h5 {
+    color: ${props => props.theme.colors.oxfordBlueTint3};
+    font-size: 13px;
+    line-height: 17px;
+    font-weight: 600;
+    font-family: 'OpenSans', sans-serif;
+    margin-bottom: 2px;
+  }
+
+  p {
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+
+  a {
+    padding-left: 0;
+    font-size: 13px;
+    line-height: 17px;
+    color: ${props => props.theme.colors.white};
+    margin-bottom: 15px;
+
+    :hover {
+      color: ${props => props.theme.colors.white};
+      text-decoration: underline;
+    }
   }
 
   .list-card__status {
@@ -74,7 +114,7 @@ export const Header = styled(Card.Header)`
     &:active {
       color: ${(props) => props.theme.colors.white} !important;
       background-color: ${(props) => props.theme.colors.oxfordBlueTint2} !important;
-      border-color: ${(props) => props.theme.colors.oxfordBlueTint2}!important;
+      border-color: ${(props) => props.theme.colors.oxfordBlueTint2} !important;
 
       :after {
         border-left: 1px solid ${(props) => props.theme.colors.white};
@@ -126,6 +166,9 @@ export const Header = styled(Card.Header)`
     background-color: ${(props) => props.theme.colors.oxfordBlueTint2};
     color: ${(props) => props.theme.colors.white};
     border-radius: 3px;
+    margin-bottom: 0;
+    text-decoration: none !important;
+    cursor: pointer;
 
     &:disabled {
       color: ${(props) => props.theme.colors.oxfordBlue};
@@ -168,17 +211,80 @@ export const Header = styled(Card.Header)`
       }
     }
 
-    i{
+    i {
       margin-right: 5px;
+    }
+  }
+
+  .list-card__tow-colm {
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
+    grid-column-gap: ${indents['15']};
+  }
+
+  .list-card__three-colm {
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
+    grid-column-gap: ${indents['15']};
+
+    & > * {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+
+  .list-card__chart-block {
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+    margin-bottom: 15px;
+
+    & > :first-child {
+      margin-right: 30px;
+    }
+  }
+
+  .list-card__line {
+    width: 100%;
+    height: 1px;
+    margin-top: 15px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid ${props => props.theme.colors.oxfordBlueTint3};
+  }
+
+  .list-card__actions {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 30px;
+
+    & > *:not(:first-child) {
+      margin-left: 10px;
     }
   }
 `;
 
-export const CardTitle = styled.div`
+export const ListCardHeader = styled(Card.Header)`
+  padding: 20px 20px 0 20px;
+  background: ${props => props.theme.colors.oxfordBlueTint1};
+  border-radius: 3px 3px 0 0;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+
+  & > *:not(:first-child) {
+    text-align: right;
+  }
+
+  & > * {
+    display: flex;
+    align-items: center;
+  }
 `;
 
-export const WrapBtnHeader = styled.div`
-  text-align: right;
+export const ListCardBody = styled(Card.Body)`
+  background-color: ${props => props.theme.colors.oxfordBlueTint1};
+  border-radius: 0 0 3px 3px;
+  padding: 20px;
+  margin-bottom: 16px;
 `;

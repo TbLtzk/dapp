@@ -7,7 +7,6 @@ import ListCardBody from 'components/Custom/PageLists/ListCardBody';
 
 import { convertToMonthDayYear, remainDate } from 'func/convertDate';
 import { Details, } from 'components/Custom/PageLists/ListCardBody/styles';
-import { Text } from 'components/Custom/PageLists/styles';
 import { useSelector } from 'react-redux';
 import { symbol } from 'store/selectors/stable-coin';
 
@@ -21,26 +20,26 @@ function CardBody(props) {
       shareText={`${window.location.origin}/auction/${data.contract}/`}
       collapsedContent={
         <>
-          <Text>Highest bid: {data.highestBid }{data.contract === 'SystemSurplusAuction' ? " Q" : " " + symbolType} </Text>
-          <Text>Bidder: {data.bidder}</Text>
+          <p>Highest bid: {data.highestBid }{data.contract === 'SystemSurplusAuction' ? " Q" : " " + symbolType} </p>
+          <p>Bidder: {data.bidder}</p>
 
           {data.contract === 'LiquidationAuction'
             ? <>
-              <Text>Vault id: {data.userVaultId}</Text>
-              <Text>Vault owner: {data.user}</Text>
-              <Text>{data.colAsset + ' ' + data.colKey}</Text>
+              <p>Vault id: {data.userVaultId}</p>
+              <p>Vault owner: {data.user}</p>
+              <p>{data.colAsset + ' ' + data.colKey}</p>
             </>
             : null
           }
           {data.contract === 'SystemSurplusAuction'
             ? <>
-              <Text>Auction initiated by: {data.user}</Text>
-              <Text>Lot: {data.lot} QUSD</Text>
+              <p>Auction initiated by: {data.user}</p>
+              <p>Lot: {data.lot} QUSD</p>
             </>
             : null
           }
           {data.contract === 'SystemDebtAuction'
-            ? <Text>Reserve Lot: {data.reserveLot} Q</Text>
+            ? <p>Reserve Lot: {data.reserveLot} Q</p>
             : null
           }
         </>

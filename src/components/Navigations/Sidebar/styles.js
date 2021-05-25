@@ -68,7 +68,12 @@ export const LinkStyle = styled(Link)`
 export const ALinkStyle = styled.a`
   padding-left: 0;
   font-size: 15px;
-  color: ${props => props.highlight === 1 ? props => props.theme.colors.activeLinks : props => props.theme.colors.white} !important;
+  color: ${props => props.theme.colors.white};
+
+  :hover {
+    color: ${props => props.theme.colors.white};
+    text-decoration: underline;
+  }
 `;
 
 export const WrapLogo = styled.div`

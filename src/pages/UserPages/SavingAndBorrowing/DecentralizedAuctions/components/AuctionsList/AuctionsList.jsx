@@ -19,7 +19,12 @@ import {
 } from 'store/actions/action-creaters/auctions/modalHandler';
 
 function AuctionsList(props) {
-  const { auctions, loading, errorMessage, activeTab } = props;
+  const {
+    auctions,
+    loading,
+    errorMessage,
+    activeTab
+  } = props;
   const dispatch = useDispatch();
   const userAddress = useSelector(userAddressMetamask);
   const [modalShow, setModalShow] = useState(false);
@@ -59,7 +64,14 @@ function AuctionsList(props) {
                 return <CardBlock key={auction?.contract === 'SystemSurplusAuction' ? auction.id : i + auction?.contract}>
                   <CardHeader
                     auction={auction}
-                    title={auction?.title}
+                    title={
+                      (
+                        <>
+                          <h1>{auction?.title}</h1>
+                          {auction?.status ? <div className="list-card__status">{auction?.status}</div> : null}
+                        </>
+                      )
+                    }
                     status={auction?.status}
                     isExecuted={auction?.isExecuted}
                     handleBid={() => {

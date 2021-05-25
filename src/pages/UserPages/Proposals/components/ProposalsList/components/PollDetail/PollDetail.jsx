@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from 'react';
-import { TitleSmall, Text, Link } from 'components/Custom/PageLists/styles';
 import { PROPOSALS_TYPES } from 'constants/statuses';
 
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
@@ -100,10 +99,11 @@ function PollDetail(props) {
   const printValues = (label, value, key) => {
     {
       return !value || value === 'undefined' ? null :
-        <Text key={key + label.replace(/ /g, '-')
+        <div key={key + label.replace(/ /g, '-')
           .toLowerCase()}>
-          {label}: {value}
-        </Text>;
+          <h5>{label}</h5>
+          <p>{value}</p>
+        </div>;
     }
   };
 
@@ -121,14 +121,14 @@ function PollDetail(props) {
     } else {
       hrefValue = '//' + pollDetail.remark;
     }
-    return <Link href={hrefValue} target="_blank">{pollDetail.remark}</Link>;
+    return <a href={hrefValue} target="_blank">{pollDetail.remark}</a>;
   };
 
   return (
     <div>
-      <TitleSmall>Description</TitleSmall>
+      <h3>Proposal Details</h3>
       {showContent()}
-      <TitleSmall>External Reference</TitleSmall>
+      <h5>External Reference</h5>
       {checkLinkAndPrint()}
     </div>
   );
