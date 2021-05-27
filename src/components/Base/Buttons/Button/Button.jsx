@@ -11,7 +11,8 @@ function Button(props) {
     disabled,
     handleButton,
     icon,
-    iconFontSize
+    iconFontSize,
+    isIconPositionRight,
   } = props;
 
   return (
@@ -23,12 +24,17 @@ function Button(props) {
       onClick={handleButton}
       title={title}
       iconfontsize={iconFontSize}
+      isiconpositionright={isIconPositionRight ? '1' : ''}
     >
-      {icon ? (
-        <>
+      {icon ? isIconPositionRight ?
+        (<>
+          {title}<i className={`mdi mdi-${icon} btn-icon`}/>
+        </>)
+        :
+        (<>
           <i className={`mdi mdi-${icon} btn-icon`}/>{title}
-        </>
-      ) : title}
+        </>)
+        : title}
     </ButtonCustom>
   );
 }

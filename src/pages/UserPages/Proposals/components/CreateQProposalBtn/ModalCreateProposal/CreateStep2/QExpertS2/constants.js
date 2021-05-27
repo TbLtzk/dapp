@@ -33,6 +33,7 @@ export const parameterVote = {
   radioBtn: ['Q Fees & Incentives Membership Panel', 'Q DeFi (Decentralized Finance) Membership Panel'],
   subtitleInputUp: 'Please provide exact Key-Name, Type and new Value for Parameter',
   inputUp: ['Key'],
+  labelsArr: ['Key'],
   inputUpObj: {
     'key': '',
   },
@@ -44,7 +45,6 @@ export const parameterVote = {
   radioBtnTitleDown: 'Choose type',
   radioBtnNameDown: 'type-value-proposal',
   radioBtnDown: ['Address', 'Boolean', 'String', 'Bytes', 'Uint'],
-  // radioBtnDown: ["Address", "Boolean", "String", "Bytes", "Uint", "Asset Uint"],
   subtitleInputDown: 'Provide a reference link to external source',
   inputDown: ['External Link'],
   inputDownObj: { 'external-link': '' },

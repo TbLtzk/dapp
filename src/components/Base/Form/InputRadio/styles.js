@@ -1,14 +1,12 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-import {Form} from "react-bootstrap";
-
-import {indents} from "constants/style";
+import { Form } from 'react-bootstrap';
 
 export const RadioBtn = styled(Form.Check)`
-  label{
-    ${props => props.theme.fontStyles.text.big};
-    color: ${props => props.active ? props.theme.colors.main : props.theme.colors.lightGrey };
+  label {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 400;
+    color: ${props => props.active ? props.theme.colors.oxfordBlue : props.theme.colors.oxfordBlueTint3};
   }
-  
-  
 `;

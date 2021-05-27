@@ -43,6 +43,8 @@ export const ListCardWrp = styled(Card)`
   p {
     font-size: 13px;
     margin-bottom: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   a {
@@ -217,9 +219,17 @@ export const ListCardWrp = styled(Card)`
   }
 
   .list-card__tow-colm {
+    width: 100%;
     display: grid;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
     grid-column-gap: ${indents['15']};
+
+    & > * {
+      width: 100%;
+      max-width: 100%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 
   .list-card__three-colm {
@@ -271,14 +281,28 @@ export const ListCardHeader = styled(Card.Header)`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border: none;
 
   & > *:not(:first-child) {
     text-align: right;
   }
 
+  & > *:first-child {
+    align-items: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
+    h1 {
+      max-width: 290px;
+      align-items: center;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+
   & > * {
     display: flex;
-    align-items: center;
   }
 `;
 
@@ -287,4 +311,5 @@ export const ListCardBody = styled(Card.Body)`
   border-radius: 0 0 3px 3px;
   padding: 20px;
   margin-bottom: 16px;
+  border: none;
 `;

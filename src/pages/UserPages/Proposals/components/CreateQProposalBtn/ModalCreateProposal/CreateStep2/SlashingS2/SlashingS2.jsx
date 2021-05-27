@@ -7,8 +7,6 @@ import InputGroup from 'components/Custom/ModalActions/InputGroup';
 
 import { rootSlashing, validatorSlashing } from './constants';
 
-import { SubTitle } from 'components/Custom/ModalActions/styles';
-
 function SlashingS2(props) {
   const { activeTab, register, errors } = props;
   const formData = useSelector(formObject);
@@ -18,7 +16,7 @@ function SlashingS2(props) {
       case 'root-node-slashing':
         return (
           <>
-            <SubTitle>{rootSlashing.subtitle}</SubTitle>
+            <h2>{rootSlashing.subtitle}</h2>
             <InputGroup
               formData={formData}
               labelsArr={rootSlashing.inputTitleDescr}
@@ -27,7 +25,7 @@ function SlashingS2(props) {
               register={register}
               errors={errors}
             />
-            <SubTitle>{rootSlashing.inputTitleDown}</SubTitle>
+            <h4>{rootSlashing.inputTitleDown}</h4>
             <InputGroup
               formData={formData}
               inputArr={rootSlashing.inputDown}
@@ -40,7 +38,7 @@ function SlashingS2(props) {
       case 'validator-node-slashing':
         return (
           <>
-            <SubTitle>{validatorSlashing.subtitle}</SubTitle>
+            <h2>{validatorSlashing.subtitle}</h2>
             <InputGroup
               formData={formData}
               labelsArr={validatorSlashing.inputTitleDescr}
@@ -49,7 +47,7 @@ function SlashingS2(props) {
               register={register}
               errors={errors}
             />
-            <SubTitle>{validatorSlashing.inputTitleDown}</SubTitle>
+            <h4>{validatorSlashing.inputTitleDown}</h4>
             <InputGroup
               formData={formData}
               inputArr={validatorSlashing.inputDown}

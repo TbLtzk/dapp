@@ -8,7 +8,6 @@ import {
 
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
 
-import { SubTitle } from 'components/Custom/ModalActions/styles';
 import { arrRadioBtn } from './constants';
 import { formVoteObject } from 'store/selectors/voting/proposals';
 
@@ -25,9 +24,7 @@ function CreateStep1(props) {
 
   return (
     <div>
-      <SubTitle>
-        Please select type of Vote
-      </SubTitle>
+      <h2>Please select type of Vote</h2>
 
       <RadioBtnGroup
         formData={formData}

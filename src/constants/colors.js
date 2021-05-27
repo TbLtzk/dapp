@@ -9,7 +9,7 @@ const generalColors = {
   white: '#FFFFFF',
   neonGreen: '#87FF65',
   validationError: '#FF8550',
-}
+};
 
 const colors = {
   ...generalColors,
@@ -19,7 +19,7 @@ const colors = {
   circleDark: generalColors.oxfordBlueTint2,
   circleWhite: generalColors.white,
   blue: generalColors.oxfordBlue,
-  darkBlue: '#151552',
+  darkBlue: generalColors.oxfordBlueTint1,
   grey: generalColors.oxfordBlueTint3,
   lightGrey: '#A7AAB9',
   whiteGrey: '#AFB2CD',

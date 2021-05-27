@@ -3,22 +3,25 @@ import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { formObject } from 'store/selectors/auctions/modalHandler';
 
-import { SubTitle, SummarText, SummarTextType } from 'components/Custom/ModalActions/styles';
+import { SummarText } from 'components/Custom/ModalActions/styles';
 
 function CreateStep2(props) {
-  const { activeTab, register, errors } = props;
+  const {
+    activeTab,
+    register,
+    errors
+  } = props;
   const formData = useSelector(formObject);
 
   const showCommonData = (children) => {
     return (
       <div>
-        <SubTitle>Chosen data:</SubTitle>
-        <SummarText>Type:
-          <SummarTextType> {formData?.first?.replace(/-/g, ' ')}</SummarTextType>
-        </SummarText>
-        <SummarText>External link: {formData['external-link']}</SummarText>
+        <h2>Chosen data:</h2>
+        <h5>Type:</h5>
+        <p>{formData?.first?.replace(/-/g, ' ')}</p>
+        <h5>External link</h5>
+        <p>{formData['external-link']}</p>
         {children}
-
       </div>
     );
   };
@@ -30,8 +33,10 @@ function CreateStep2(props) {
       case 'propose-decision' :
         return showCommonData(
           <>
-            <SummarText>Adjusted percentage for slashing: {formData['%-value']}</SummarText>
-            <SummarText>Did the target of the slashing neglect a formal appeal? {formData['target-slashing-appeal']}</SummarText>
+            <h5>Adjusted percentage for slashing</h5>
+            <p>{formData['%-value']}</p>
+            <h5>Did the target of the slashing neglect a formal appeal?</h5>
+            <p>{formData['target-slashing-appeal']}</p>
           </>
         );
       default:

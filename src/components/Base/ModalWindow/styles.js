@@ -16,7 +16,6 @@ export const Body = styled(Modal.Body)`
   min-height: 326px;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  word-break: break-all;
   word-break: break-word;
   background: ${props => props.theme.colors.oxfordBlueTint6};
   hyphens: auto;
@@ -48,6 +47,20 @@ export const ModalW = styled(Modal)`
     height: 1px;
     margin-bottom: 10px;
     border-bottom: 1px solid ${props => props.theme.colors.oxfordBlueTint3};
+  }
+
+
+  .modal-footer {
+    justify-content: ${props => props.backbtntitle ? 'space-between' : null};
+  }
+
+  h2 {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: ${props => props.theme.colors.oxfordBlue};
+    font-family: 'OpenSans', sans-serif;
   }
 
   h3 {
@@ -90,5 +103,23 @@ export const ModalW = styled(Modal)`
     & > *:not(:first-child) {
       margin-left: 14px;
     }
+  }
+
+  .progress {
+    height: 1px;
+    background-color: ${props => props.theme.colors.oxfordBlueTint5};
+  }
+
+  .progress-bar {
+    background-color: ${props => props.theme.colors.oxfordBlue};
+  }
+
+  .modal__steps {
+    font-size: 13px;
+    line-height: 13px;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    color: ${props => props.theme.colors.oxfordBlue};
   }
 `;

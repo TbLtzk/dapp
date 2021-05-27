@@ -186,7 +186,17 @@ export const ButtonCustom = styled(Button)`
   }
 
   .btn-icon {
-    margin-right: ${(props) => !props.title ? '0px' : '10px'};
+    margin: ${(props) => {
+      if (props.title) {
+        if (props.isiconpositionright) {
+          return '0 0 0 10px';
+        } else {
+          return '0 10px 0 0';
+        }
+      } else {
+        return '0';
+      }
+    }};
     font-size: ${(props) => props.iconfontsize ? props.iconfontsize : undefined};
   }
 }

@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getParameterValueByKey } from 'store/actions/action-creaters/parameters';
 import { arrayParameterKeysByType, parameterValueByKey } from 'store/selectors/parameters';
 
-import { SubTitle } from './styles';
-
 const keyNotFound = 'Value not found. Key does not exist yet?';
 
 function CurrentParameterValue(props) {
@@ -35,7 +33,7 @@ function CurrentParameterValue(props) {
   }, [parameterKeysByType, parameterByKeyValue, typePanel, typeParameter, parameterKey]);
 
   return (
-    <SubTitle>{`Current Value: ${currentParameterValue}`} </SubTitle>
+    <h4>{`Current Value ${currentParameterValue}`} </h4>
   );
 }
 

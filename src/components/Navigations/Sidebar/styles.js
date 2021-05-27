@@ -49,6 +49,11 @@ export const LinkGroup = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding: 0 14px 0 0;
+
+  :hover {
+    background: ${props => props.theme.colors.oxfordBlueTint1};
+  }
 
   button {
     margin: 0;
@@ -60,9 +65,13 @@ export const LinkGroup = styled.div`
 `;
 
 export const LinkStyle = styled(Link)`
-  padding-left: 0;
+  padding: 6px 12px;
   font-size: 15px;
   color: ${props => props.highlight === 1 ? props => props.theme.colors.activeLinks : props => props.theme.colors.white} !important;
+
+  :hover {
+    background: ${props => props.theme.colors.oxfordBlueTint1};
+  }
 `;
 
 export const ALinkStyle = styled.a`

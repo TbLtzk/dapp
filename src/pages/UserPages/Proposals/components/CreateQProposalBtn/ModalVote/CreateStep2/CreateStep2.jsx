@@ -6,13 +6,14 @@ import { formVoteObject } from 'store/selectors/voting/proposals';
 
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
 
-import { fromSolDateFormattingT1 } from 'func/date';
 import { basicVote, constitutionCheck, communityVeto } from './constants';
 
-import { SubTitle, Descr, Warning } from 'components/Custom/ModalActions/styles';
-
 function CreateStep2(props) {
-  const { activeTab, register, errors } = props;
+  const {
+    activeTab,
+    register,
+    errors
+  } = props;
   const formData = useSelector(formVoteObject);
   const userLockingEnd = useSelector(votingLockingEnd);
   const dispatch = useDispatch();
@@ -22,8 +23,8 @@ function CreateStep2(props) {
       case 'basic-vote-on-proposal':
         return (
           <>
-            <SubTitle>{basicVote.subtitle}</SubTitle>
-            <Descr>{basicVote.radioBtnDescr}</Descr>
+            <h2>{basicVote.subtitle}</h2>
+            <h2>{basicVote.radioBtnDescr}</h2>
             <RadioBtnGroup
               formData={formData}
               radioArr={basicVote.radioBtn}
@@ -38,8 +39,8 @@ function CreateStep2(props) {
       case 'constitution-check':
         return (
           <>
-            <SubTitle>{constitutionCheck.subtitle}</SubTitle>
-            <Descr>{constitutionCheck.radioBtnDescr}</Descr>
+            <h2>{constitutionCheck.subtitle}</h2>
+            <h2>{constitutionCheck.radioBtnDescr}</h2>
             <RadioBtnGroup
               formData={formData}
               radioArr={constitutionCheck.radioBtn}
@@ -54,8 +55,8 @@ function CreateStep2(props) {
       case 'q-community-veto':
         return (
           <>
-            <SubTitle>{communityVeto.subtitle}</SubTitle>
-            <Descr>{communityVeto.radioBtnDescr}</Descr>
+            <h2>{communityVeto.subtitle}</h2>
+            <h2>{communityVeto.radioBtnDescr}</h2>
             <RadioBtnGroup
               formData={formData}
               radioArr={communityVeto.radioBtn}

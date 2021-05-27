@@ -6,8 +6,8 @@ import {
   setStepCounter
 } from 'store/actions/action-creaters/auctions/modalHandler';
 
-import CreateQBtn from 'components/Custom/PageLists/CreateQBtn';
 import ModalCreateAuction from './ModalCreateAuction';
+import Button from 'components/Base/Buttons/Button';
 
 function CreateAuctionBtn(props) {
   const { activeTab } = props;
@@ -23,9 +23,10 @@ function CreateAuctionBtn(props) {
 
   return (
     <>
-      <CreateQBtn
-        onCreate={onCreateAuction}
-        activeTabTitle={activeTab?.replace(/-/g, ' ') + ' Auction'}
+      <Button
+        icon="plus-circle-outline"
+        handleButton={onCreateAuction}
+        title={`Create ${activeTab?.replace(/-/g, ' ') + ' Auction'}`}
       />
       <ModalCreateAuction
         activeTab={activeTab}

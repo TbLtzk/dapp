@@ -8,7 +8,7 @@ import {RadioBtn} from "./styles"
 const InputRadio = forwardRef((props, ref) => {
     const {active, label, name, value, checked, handleChange} = props;
     return (
-        <Form.Group controlId={value}>
+        <Form.Group controlId={value} style={{padding: 0}}>
             <RadioBtn
                 active={Number(active)}
                 type="radio"

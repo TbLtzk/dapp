@@ -8,8 +8,6 @@ import InputGroup from 'components/Custom/ModalActions/InputGroup';
 
 import { addRootNode, removeRootNode } from './constants';
 
-import { SubTitle } from 'components/Custom/ModalActions/styles';
-
 function QRootNodeS2(props) {
   const { activeTab, register, errors } = props;
   const formData = useSelector(formObject);
@@ -22,7 +20,7 @@ function QRootNodeS2(props) {
       case 'add-a-new-root-node':
         return (
           <>
-            <SubTitle>{addRootNode.subtitle}</SubTitle>
+            <h2>{addRootNode.subtitle}</h2>
             <InputGroup
               formData={formData}
               labelsArr={addRootNode.inputTitleDescr}
@@ -31,7 +29,7 @@ function QRootNodeS2(props) {
               register={register}
               errors={errors}
             />
-            <SubTitle>{addRootNode.radioBtnTitle}</SubTitle>
+            <h2>{addRootNode.radioBtnTitle}</h2>
             <RadioBtnGroup
               formData={formData}
               radioArr={addRootNode.radioBtnDown}
@@ -46,7 +44,7 @@ function QRootNodeS2(props) {
             />
             {!showAddress ? null :
               <>
-                <SubTitle>{addRootNode.inputTitleDown}</SubTitle>
+                <h4>{addRootNode.inputTitleDown}</h4>
                 <InputGroup
                   formData={formData}
                   inputArr={addRootNode.inputDown}
@@ -61,7 +59,7 @@ function QRootNodeS2(props) {
       case 'remove-a-current-root-node':
         return (
           <>
-            <SubTitle>{removeRootNode.subtitle}</SubTitle>
+            <h2>{removeRootNode.subtitle}</h2>
             <InputGroup
               formData={formData}
               labelsArr={removeRootNode.inputTitleDescr}

@@ -4,8 +4,6 @@ import { useSelector } from 'react-redux';
 import { formObject } from 'store/selectors/voting/proposals';
 import { PROPOSALS_TYPES } from 'constants/statuses';
 
-import { SubTitle, SummarText, SummarTextLink, SummarTextType } from 'components/Custom/ModalActions/styles';
-
 function CreateStep4(props) {
   const { activeTab } = props;
   const formData = useSelector(formObject);
@@ -16,17 +14,23 @@ function CreateStep4(props) {
         if (formData['change-constitution-parameter'] === 'yes') {
           return (
             <div>
-              <SubTitle>Chosen data:</SubTitle>
-              <SummarText>Type: <SummarTextType>{formData?.first?.replace(/-/g, ' ')}</SummarTextType></SummarText>
-              <SummarText>Classification: <SummarTextType>{formData?.classification?.replace(/-/g, ' ')}</SummarTextType></SummarText>
-              <SummarText>External link:</SummarText>
-              <SummarTextLink>{formData['external-link']}</SummarTextLink>
-              <SummarText style={{ marginBottom: 0 }}>Hash:</SummarText>
-              <SummarText>{formData.hash}</SummarText>
-              <SummarText>Change Constitution Parameter: {formData['change-constitution-parameter']}</SummarText>
-              <SummarText>Parameter key: {formData['parameter-key']}</SummarText>
-              <SummarText>Type Proposal: {formData['type-proposal']}</SummarText>
-              <SummarText>Value: {formData['value']}</SummarText>
+              <h2>Chosen data</h2>
+              <h5>Type</h5>
+              <p>{formData?.first?.replace(/-/g, ' ')}</p>
+              <h5>Classification</h5>
+              <p>{formData?.classification?.replace(/-/g, ' ')}</p>
+              <h5>External link</h5>
+              <p>{formData['external-link']}</p>
+              <h5>Hash</h5>
+              <p>{formData.hash}</p>
+              <h5>Change Constitution Parameter</h5>
+              <p>{formData['change-constitution-parameter']}</p>
+              <h5>Parameter key</h5>
+              <p>{formData['parameter-key']}</p>
+              <h5>Type Proposal</h5>
+              <p>{formData['type-proposal']}</p>
+              <h5>Value</h5>
+              <p>{formData['value']}</p>
             </div>
           );
         }

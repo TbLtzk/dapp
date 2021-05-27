@@ -9,10 +9,15 @@ import InputGroup from 'components/Custom/ModalActions/InputGroup';
 
 import { constUpdate, generalUpdate, emergencyUpdate } from './constants';
 
-import { SubTitle, SubTitleBold, Descr } from 'components/Custom/ModalActions/styles';
+import { Descr } from 'components/Custom/ModalActions/styles';
+import { removeRootNode } from '../QRootNodeS2/constants';
 
 function QProposalS2(props) {
-  const { activeTab, register, errors } = props;
+  const {
+    activeTab,
+    register,
+    errors
+  } = props;
   const formData = useSelector(formObject);
 
   const dispatch = useDispatch();
@@ -22,8 +27,8 @@ function QProposalS2(props) {
       case 'constitution-update':
         return (
           <>
-            <SubTitleBold>{constUpdate.subtitle}</SubTitleBold>
-            <SubTitle>{constUpdate.radioBtnUpTitle}</SubTitle>
+            <h2>{constUpdate.subtitle}</h2>
+            <h2>{constUpdate.radioBtnUpTitle}</h2>
             <RadioBtnGroup
               formData={formData}
               radioArr={constUpdate.radioBtnUp}
@@ -33,15 +38,15 @@ function QProposalS2(props) {
               handleChange={() => {
               }}
             />
-            <SubTitle>{constUpdate.inputTitle}</SubTitle>
             <InputGroup
+              labelsArr={constUpdate.inputTitle}
               formData={formData}
               inputArr={constUpdate.inputs}
               inputsObj={constUpdate.inputsObj}
               register={register}
               errors={errors}
             />
-            <SubTitle>{constUpdate.radioBtnDownTitle}</SubTitle>
+            <h2>{constUpdate.radioBtnDownTitle}</h2>
             <RadioBtnGroup
               formData={formData}
               radioArr={constUpdate.radioBtnDown}
@@ -60,14 +65,13 @@ function QProposalS2(props) {
       case 'emergency-update':
         return (
           <>
-            <SubTitleBold>
+            <h2>
               {formData.first === 'general-q-update'
                 ? generalUpdate.subtitle
                 : emergencyUpdate.subtitle
               }
-            </SubTitleBold>
-            <SubTitle style={{ marginBottom: '5px' }}>{generalUpdate.inputTitle}</SubTitle>
-            <Descr>{generalUpdate.inputTitleDescr}</Descr>
+            </h2>
+            <h4>{generalUpdate.inputTitleDescr}</h4>
             <InputGroup
               formData={formData}
               inputArr={generalUpdate.inputs}

@@ -1,63 +1,69 @@
-import React, {useCallback} from "react";
+import React, { useCallback } from 'react';
 
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 import {
-    setCreatedStepsLimit,
-    setCreateProposalObj,
-    setDisabledCreatedProposalBtn
-} from "store/actions/action-creaters/voting/proposals";
-import {formObject} from "store/selectors/voting/proposals";
+  setCreatedStepsLimit,
+  setCreateProposalObj,
+  setDisabledCreatedProposalBtn
+} from 'store/actions/action-creaters/voting/proposals';
+import { formObject } from 'store/selectors/voting/proposals';
 
-import RadioBtnGroup from "components/Custom/ModalActions/RadioBtnGroup";
+import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
 
-import {SubTitle, SubTitleHighlightProposal} from "components/Custom/ModalActions/styles";
+import { SubTitleHighlightProposal } from 'components/Custom/ModalActions/styles';
 
 function CreateStep1(props) {
-    const {activeTab, activeTabTitle, register, errors, radioArr} = props;
-    const dispatch = useDispatch();
+  const {
+    activeTab,
+    activeTabTitle,
+    register,
+    errors,
+    radioArr
+  } = props;
+  const dispatch = useDispatch();
 
-    const formData = useSelector(formObject);
+  const formData = useSelector(formObject);
 
-    const onChooseProposal = useCallback((value) => {
-        const radioVal = value.target.value;
-        dispatch(setCreateProposalObj({first: radioVal}));
-        dispatch(setDisabledCreatedProposalBtn(false));
+  const onChooseProposal = useCallback((value) => {
+    const radioVal = value.target.value;
+    dispatch(setCreateProposalObj({ first: radioVal }));
+    dispatch(setDisabledCreatedProposalBtn(false));
 
-        switch (activeTab) {
-            case "q-proposals":
-                switch (radioVal) {
-                    case "constitution-update":
-                        dispatch(setCreatedStepsLimit(4));
-                        break;
-                    case "general-q-update":
-                        dispatch(setCreatedStepsLimit(3));
-                        break;
-                    case "emergency-update":
-                        dispatch(setCreatedStepsLimit(3));
-                        break;
-                }
-                break;
-            default:
-                return [];
+    switch (activeTab) {
+      case 'q-proposals':
+        switch (radioVal) {
+          case 'constitution-update':
+            dispatch(setCreatedStepsLimit(4));
+            break;
+          case 'general-q-update':
+            dispatch(setCreatedStepsLimit(3));
+            break;
+          case 'emergency-update':
+            dispatch(setCreatedStepsLimit(3));
+            break;
         }
-    }, []);
+        break;
+      default:
+        return [];
+    }
+  }, []);
 
-    return (
-        <div>
-            <SubTitle>
-                Please select type of <SubTitleHighlightProposal>{activeTabTitle}</SubTitleHighlightProposal>
-            </SubTitle>
+  return (
+    <div>
+      <h2>
+        Please select type of {activeTabTitle}
+      </h2>
 
-            <RadioBtnGroup
-                formData={formData}
-                register={register}
-                errors={errors}
-                nameArr="first"
-                radioArr={radioArr}
-                handleChange={onChooseProposal}
-            />
-        </div>
-    );
+      <RadioBtnGroup
+        formData={formData}
+        register={register}
+        errors={errors}
+        nameArr="first"
+        radioArr={radioArr}
+        handleChange={onChooseProposal}
+      />
+    </div>
+  );
 }
 
 export default CreateStep1;

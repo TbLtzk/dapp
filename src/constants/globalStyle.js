@@ -8,6 +8,12 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .arrow::after {
-    border-top-color: #87FF65!important;
+    border-top-color: #87FF65 !important;
+  }
+
+  .modal-backdrop {
+    background: ${(props) => props.theme.colors.oxfordBlueTint2};
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
   }
 `;

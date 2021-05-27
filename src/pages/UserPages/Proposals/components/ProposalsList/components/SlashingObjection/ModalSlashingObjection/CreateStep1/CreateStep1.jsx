@@ -7,7 +7,6 @@ import InputGroup from 'components/Custom/ModalActions/InputGroup';
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
 
 import { castObjection, proposeDecision } from './constants';
-import { Descr, SubTitle } from 'components/Custom/ModalActions/styles';
 
 function CreateStep1(props) {
   const { activeTab, register, errors } = props;
@@ -19,8 +18,8 @@ function CreateStep1(props) {
       case 'cast-objection':
         return (
           <>
-            <SubTitle>{castObjection.subtitleOne}</SubTitle>
-            <Descr>{castObjection.subtitleTwo}</Descr>
+            <h2>{castObjection.subtitleOne}</h2>
+            <p>{castObjection.subtitleTwo}</p>
             <InputGroup
               formData={formData}
               inputArr={castObjection.inputPlaceholderUp}
@@ -33,8 +32,8 @@ function CreateStep1(props) {
       case 'propose-decision':
         return (
           <>
-            <SubTitle>{proposeDecision.subtitleOne}</SubTitle>
-            <Descr>{proposeDecision.subtitleTwo}</Descr>
+            <h2>{proposeDecision.subtitleOne}</h2>
+            <h4>{proposeDecision.subtitleTwo}</h4>
             <InputGroup
               formData={formData}
               inputArr={proposeDecision.inputPlaceholder}
@@ -42,7 +41,7 @@ function CreateStep1(props) {
               register={register}
               errors={errors}
             />
-            <Descr>{proposeDecision.inputLabelTwo}</Descr>
+            <h4>{proposeDecision.inputLabelTwo}</h4>
             <InputGroup
               min={0}
               max={101}
@@ -53,7 +52,7 @@ function CreateStep1(props) {
               errors={errors}
               type={'number'}
             />
-            <Descr>{proposeDecision.radioLabel}</Descr>
+            <h2>{proposeDecision.radioLabel}</h2>
             <RadioBtnGroup
               formData={formData}
               radioArr={proposeDecision.radioBtn}

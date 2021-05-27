@@ -10,7 +10,7 @@ import {
 import { getParameterValueByKeySuccess } from 'store/actions/action-creaters/parameters';
 
 import ModalCreateProposal from './ModalCreateProposal';
-import CreateQBtn from 'components/Custom/PageLists/CreateQBtn';
+import Button from 'components/Base/Buttons/Button';
 
 import { QExpert, QProposal, QRootNode, QSlashing } from './constants';
 
@@ -57,9 +57,10 @@ function CreateQProposalBtn(props) {
 
   return (
     <>
-      <CreateQBtn
-        onCreate={onCreateProposal}
-        activeTabTitle={activeTabTitle}
+      <Button
+        icon="plus-circle-outline"
+        handleButton={onCreateProposal}
+        title={`Create ${activeTabTitle}`}
       />
 
       <ModalCreateProposal

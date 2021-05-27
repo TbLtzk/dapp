@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import { ProgressBar } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { PROPOSALS_TYPES } from 'constants/statuses';
 import {
@@ -24,11 +25,19 @@ import CreateStep3 from './CreateStep3';
 import CreateStep4 from './CreateStep4';
 
 import { arrExpert, arrQProposal, arrQRootNode, arrSlashing } from './constants';
-import { Title, Descr } from 'components/Custom/ModalActions/styles';
 
 function ModalCreateProposal(props) {
-  const { modalShow, onHide, activeTab, activeTabTitle } = props;
-  const { register, errors, handleSubmit } = useForm();
+  const {
+    modalShow,
+    onHide,
+    activeTab,
+    activeTabTitle
+  } = props;
+  const {
+    register,
+    errors,
+    handleSubmit
+  } = useForm();
   const dispatch = useDispatch();
 
   const formData = useSelector(formObject);
@@ -111,6 +120,7 @@ function ModalCreateProposal(props) {
     <ModalWindow
       show={modalShow}
       onHide={onHide}
+      modalTitle={activeTabTitle}
       backBtnTitle={
         stepCounter !== 1 ? 'Back' : null
       }
@@ -125,8 +135,8 @@ function ModalCreateProposal(props) {
       continueBtnHandler={handleSubmit(onNext)}
       content={
         <>
-          <Title style={{ textTransform: 'capitalize' }}>{activeTabTitle}</Title>
-          <Descr>Step {stepCounter} of {stepLimit}</Descr>
+          <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)}/>
+          <div className="modal__steps">Step {stepCounter} of {stepLimit}</div>
           <form>
             {switchProposalContentDependsOnType}
           </form>

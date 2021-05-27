@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Modal } from 'react-bootstrap';
 
 import Button from 'components/Base/Buttons/Button';
-import ButtonLink from 'components/Base/Buttons/ButtonLink';
 
 import { Header, Body, Footer, ModalW } from './styles';
 
@@ -28,6 +27,7 @@ function ModalWindow(props) {
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      backbtntitle={backBtnTitle}
     >
       <Header closeButton>
         <Modal.Title>
@@ -40,16 +40,18 @@ function ModalWindow(props) {
       {(!backBtnTitle && !continueBtnTitle) ? null :
         <Footer>
           {!backBtnTitle ? null :
-            <ButtonLink
-              width="100%"
+            <Button
+              type='white'
+              icon="arrow-left"
               title={backBtnTitle}
-              handleLink={backBtnHandler}
+              handleButton={backBtnHandler}
             />
           }
           {!continueBtnTitle ? null :
             <Button
               type="usual"
-              width="100%"
+              icon="arrow-right"
+              isIconPositionRight={true}
               disabled={disabled}
               title={continueBtnTitle}
               handleButton={continueBtnHandler}

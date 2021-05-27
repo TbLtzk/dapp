@@ -2,9 +2,6 @@ import React, { useCallback, useState, Fragment } from 'react';
 
 import FormInput from 'components/Base/Form/FormInput';
 
-import { Wrap } from './styles';
-import { Descr } from '../styles';
-
 function InputGroup(props) {
   const { register, errors, inputArr, inputsObj, labelsArr, formData,
     onChangeInput, min, max, type } = props;
@@ -37,14 +34,14 @@ function InputGroup(props) {
   }, []);
 
   return (
-    <Wrap>
+    <div>
       {inputArr?.map((label, i) => {
         const nameField = label.replace(/ /g, '-')
           .toLowerCase();
         let val = valueInput[nameField];
         return (
           <Fragment key={i}>
-            {labelsArr ? <Descr>{labelsArr[i]}</Descr> : null}
+            {labelsArr ? <h4>{labelsArr[i]}</h4> : null}
             <FormInput
               palette={'dark'}
               name={nameField}
@@ -64,7 +61,7 @@ function InputGroup(props) {
           </Fragment>
         );
       })}
-    </Wrap>
+    </div>
   );
 }
 

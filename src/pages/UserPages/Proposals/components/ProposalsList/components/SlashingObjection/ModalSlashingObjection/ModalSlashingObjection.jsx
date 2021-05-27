@@ -1,9 +1,12 @@
-import React, { Fragment, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setCreateObj, setStepCounter } from 'store/actions/action-creaters/auctions/modalHandler';
-import { onEscrowCastObjection, onEscrowProposeDecision } from 'store/actions/action-creaters/voting/slashing-proposals';
+import {
+  onEscrowCastObjection,
+  onEscrowProposeDecision
+} from 'store/actions/action-creaters/voting/slashing-proposals';
 import {
   createdStepsLimit,
   formObject,
@@ -14,11 +17,21 @@ import ModalWindow from 'components/Base/ModalWindow';
 import CreateStep1 from './CreateStep1';
 import CreateStep2 from './CreateStep2';
 
-import { Descr, Title } from 'components/Custom/ModalActions/styles';
+import { ProgressBar } from 'react-bootstrap';
 
 function ModalSlashingObjection(props) {
-  const { modalShow, onHide, activeTab, contract, proposalId } = props;
-  const { register, errors, handleSubmit } = useForm();
+  const {
+    modalShow,
+    onHide,
+    activeTab,
+    contract,
+    proposalId
+  } = props;
+  const {
+    register,
+    errors,
+    handleSubmit
+  } = useForm();
   const dispatch = useDispatch();
 
   const formData = useSelector(formObject);
@@ -81,10 +94,14 @@ function ModalSlashingObjection(props) {
           stepLimit !== stepCounter ? 'Next' : 'Confirm'
         }
         continueBtnHandler={handleSubmit(onNext)}
+        modalTitle={activeTab?.replace(/-/g, ' ')
+          .charAt(0)
+          .toUpperCase() + activeTab?.replace(/-/g, ' ')
+          .slice(1)}
         content={
           <>
-            <Title style={{ textTransform: 'capitalize' }}>{activeTab?.replace(/-/g, ' ')}</Title>
-            <Descr>Step {stepCounter} of {stepLimit}</Descr>
+            <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)}/>
+            <div className="modal__steps">Step {stepCounter} of {stepLimit}</div>
             <form>
               {switchContentDependsOnType()}
             </form>

@@ -10,7 +10,6 @@ import InputGroup from 'components/Custom/ModalActions/InputGroup';
 import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue';
 
 import { addNewExpert, removeExpert, parameterVote } from './constants';
-import { SubTitle, Descr } from 'components/Custom/ModalActions/styles';
 
 function QExpertS2(props) {
   const { activeTab, register, errors } = props;
@@ -28,8 +27,8 @@ function QExpertS2(props) {
       case 'add-a-new-expert':
         return (
           <>
-            <SubTitle>{addNewExpert.subtitle}</SubTitle>
-            <Descr>{addNewExpert.radioDescr}</Descr>
+            <h2>{addNewExpert.subtitle}</h2>
+            <h2>{addNewExpert.radioDescr}</h2>
             <RadioBtnGroup
               formData={formData}
               radioArr={addNewExpert.radioBtn}
@@ -39,7 +38,7 @@ function QExpertS2(props) {
               handleChange={(value) => {
               }}
             />
-            <SubTitle>{addNewExpert.subtitleInputUp}</SubTitle>
+            <h4>{addNewExpert.subtitleInputUp}</h4>
             <InputGroup
               formData={formData}
               inputArr={addNewExpert.inputUp}
@@ -47,7 +46,7 @@ function QExpertS2(props) {
               register={register}
               errors={errors}
             />
-            <SubTitle>{addNewExpert.subtitleInputDown}</SubTitle>
+            <h4>{addNewExpert.subtitleInputDown}</h4>
             <InputGroup
               formData={formData}
               inputArr={addNewExpert.inputDown}
@@ -61,8 +60,8 @@ function QExpertS2(props) {
       case 'remove-a-current-expert':
         return (
           <>
-            <SubTitle>{removeExpert.subtitle}</SubTitle>
-            <Descr>{removeExpert.radioDescr}</Descr>
+            <h2>{removeExpert.subtitle}</h2>
+            <h2>{removeExpert.radioDescr}</h2>
             <RadioBtnGroup
               formData={formData}
               radioArr={removeExpert.radioBtn}
@@ -72,7 +71,7 @@ function QExpertS2(props) {
               handleChange={(value) => {
               }}
             />
-            <SubTitle>{removeExpert.subtitleInputUp}</SubTitle>
+            <h4>{removeExpert.subtitleInputUp}</h4>
             <InputGroup
               formData={formData}
               inputArr={removeExpert.inputUp}
@@ -80,7 +79,7 @@ function QExpertS2(props) {
               register={register}
               errors={errors}
             />
-            <SubTitle>{removeExpert.subtitleInputDown}</SubTitle>
+            <h4>{removeExpert.subtitleInputDown}</h4>
             <InputGroup
               formData={formData}
               inputArr={removeExpert.inputDown}
@@ -94,8 +93,8 @@ function QExpertS2(props) {
       case 'parameter-vote':
         return (
           <>
-            <SubTitle>{parameterVote.subtitle}</SubTitle>
-            <Descr>{parameterVote.radioDescr}</Descr>
+            <h2>{parameterVote.subtitle}</h2>
+            <h2>{parameterVote.radioDescr}</h2>
             <RadioBtnGroup
               formData={formData}
               radioArr={parameterVote.radioBtn}
@@ -107,8 +106,8 @@ function QExpertS2(props) {
                 dispatch(getParameterKeysByType(value.target.value, typeParameter));
               }}
             />
-            <SubTitle>{parameterVote.subtitleInputUp}</SubTitle>
-            <SubTitle>{parameterVote.radioBtnTitleDown}</SubTitle>
+            <h2>{parameterVote.subtitleInputUp}</h2>
+            <h2>{parameterVote.radioBtnTitleDown}</h2>
             <RadioBtnGroup
               formData={formData}
               radioArr={parameterVote.radioBtnDown}
@@ -123,6 +122,7 @@ function QExpertS2(props) {
             <InputGroup
               formData={formData}
               inputArr={parameterVote.inputUp}
+              labelsArr={parameterVote.labelsArr}
               inputsObj={parameterVote.inputUpObj}
               register={register}
               errors={errors}
@@ -144,7 +144,7 @@ function QExpertS2(props) {
               onChangeInput={(val) => {
               }}
             />
-            <SubTitle>{parameterVote.subtitleInputDown}</SubTitle>
+            <h4>{parameterVote.subtitleInputDown}</h4>
             <InputGroup
               formData={formData}
               inputArr={parameterVote.inputDown}

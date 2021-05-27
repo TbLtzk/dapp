@@ -18,7 +18,3 @@ export function fromSolDateFormattingT1(solTimestamp) {
   // eslint-disable-next-line max-len
   return `${data.dateNum}.${data.month}.${data.year} ${data.hours}:${data.minute} GMT${offset < 0 ? '+' : '-'}${offset < 0 ? offset * -1 : offset}:00`;
 }
-
-export function fromMillisecondToSec(millisecond) {
-  return Math.floor(millisecond / 1000);
-}

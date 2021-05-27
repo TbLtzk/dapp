@@ -19,11 +19,22 @@ import CreateStep1 from './CreateStep1';
 import CreateStep2 from './CreateStep2';
 import CreateStep3 from './CreateStep3';
 
-import { Title, Descr } from 'components/Custom/ModalActions/styles';
+import { ProgressBar } from 'react-bootstrap';
 
 function ModalVote(props) {
-  const { modalShow, onHide, activeTab, proposalId, proposalContract, vetoEndTime } = props;
-  const { register, errors, handleSubmit } = useForm();
+  const {
+    modalShow,
+    onHide,
+    activeTab,
+    proposalId,
+    proposalContract,
+    vetoEndTime
+  } = props;
+  const {
+    register,
+    errors,
+    handleSubmit
+  } = useForm();
   const dispatch = useDispatch();
 
   const formData = useSelector(formVoteObject);
@@ -98,12 +109,13 @@ function ModalVote(props) {
       continueBtnTitle={
         stepLimit !== stepCounter ? 'Next' : 'Confirm'
       }
+      modalTitle={'Vote for Proposal'}
       // disabled={disabledContinueBtn}
       continueBtnHandler={handleSubmit(onNext)}
       content={
         <>
-          <Title style={{ textTransform: 'capitalize' }}>Vote for Proposal</Title>
-          <Descr>Step {stepCounter} of {stepLimit}</Descr>
+          <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)}/>
+          <div className="modal__steps">Step {stepCounter} of {stepLimit}</div>
           <form>
             {switchProposalContentDependsOnType()}
           </form>
