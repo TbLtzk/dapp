@@ -111,7 +111,7 @@ function SidebarCards() {
           value: systemBalanceResult + ' QUSD',
         },
         {
-          title: 'System Surplus Auction Lot',
+          title: 'Surplus Auction Lot',
           value: surplusLot + ' QUSD',
         },
       ]
@@ -130,7 +130,7 @@ function SidebarCards() {
           value: availableAmount + ' Q',
         },
         {
-          title: 'System Debt Auction Lot',
+          title: 'Debt Auction Lot',
           value: reserveLot + ' Q',
         },
       ]

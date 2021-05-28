@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux';
-import { formObject, stepCounterModal, createdStepsLimit } from 'store/selectors/auctions/modalHandler';
+import { formObject } from 'store/selectors/auctions/modalHandler';
 import { symbol } from 'store/selectors/stable-coin';
 
 import InputGroup from 'components/Custom/ModalActions/InputGroup';
@@ -9,7 +9,7 @@ import { getEPDRUint } from 'contracts/handler/ContractsEPDR';
 
 import { liquidation, systemDebt, systemSurplus } from './constants';
 
-import { SubTitle, SummarText } from 'components/Custom/ModalActions/styles';
+import { SubTitle } from 'components/Custom/ModalActions/styles';
 
 function CreateStep1(props) {
   const { activeTab, register, errors } = props;
@@ -18,11 +18,11 @@ function CreateStep1(props) {
   const symbolType = useSelector(symbol);
   const [surplusLot, setSurplusLot] = useState('0');
   const [reserveLot, setReserveLot] = useState('0');
-  
+
   useEffect (() => {
     getEPDRUint("governed.EPDR.QUSD_surplusLot", setSurplusLot);
     getEPDRUint("governed.EPDR.reserveLot", setReserveLot);
-  },[formData])
+  },[])
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (activeTab) {
@@ -60,7 +60,7 @@ function CreateStep1(props) {
         return (
           <>
           
-            <SubTitle>{systemDebt.subtitleInputUp +reserveLot}</SubTitle>
+            <SubTitle>{systemDebt.subtitleInputUp + reserveLot + 'Q'}</SubTitle>
 
             <SubTitle>{systemDebt.subtitleInputDown + symbolType}</SubTitle>
             <InputGroup
@@ -75,7 +75,7 @@ function CreateStep1(props) {
       case 'system-surplus':
         return (
           <>
-            <SubTitle>{systemSurplus.subtitleInputUp + surplusLot}</SubTitle>
+            <SubTitle>{systemSurplus.subtitleInputUp + surplusLot + symbolType}</SubTitle>
 
             <SubTitle>{systemSurplus.subtitleInputDown}</SubTitle>
             <InputGroup
@@ -92,7 +92,7 @@ function CreateStep1(props) {
         return null;
         
     }
-  }, [activeTab, register, errors]);
+  }, [activeTab, register, errors, reserveLot, surplusLot]);
 
   return (
     <div>
