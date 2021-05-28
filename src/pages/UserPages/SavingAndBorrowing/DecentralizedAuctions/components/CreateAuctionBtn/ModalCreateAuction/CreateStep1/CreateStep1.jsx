@@ -1,20 +1,28 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux';
-import { formObject } from 'store/selectors/auctions/modalHandler';
+import { formObject, stepCounterModal, createdStepsLimit } from 'store/selectors/auctions/modalHandler';
 import { symbol } from 'store/selectors/stable-coin';
 
 import InputGroup from 'components/Custom/ModalActions/InputGroup';
+import { getEPDRUint } from 'contracts/handler/ContractsEPDR';
 
 import { liquidation, systemDebt, systemSurplus } from './constants';
 
-import { SubTitle } from 'components/Custom/ModalActions/styles';
+import { SubTitle, SummarText } from 'components/Custom/ModalActions/styles';
 
 function CreateStep1(props) {
   const { activeTab, register, errors } = props;
 
   const formData = useSelector(formObject);
   const symbolType = useSelector(symbol);
+  const [surplusLot, setSurplusLot] = useState('0');
+  const [reserveLot, setReserveLot] = useState('0');
+  
+  useEffect (() => {
+    getEPDRUint("governed.EPDR.QUSD_surplusLot", setSurplusLot);
+    getEPDRUint("governed.EPDR.reserveLot", setReserveLot);
+  },[formData])
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (activeTab) {
@@ -51,7 +59,12 @@ function CreateStep1(props) {
       case 'system-debt':
         return (
           <>
-            <SubTitle>{systemDebt.subtitleInput + symbolType}</SubTitle>
+          
+            <SubTitle>{systemDebt.subtitleInputUp + reserveLot}</SubTitle>
+            <SummarText
+              formData={formData}
+            />
+            <SubTitle>{systemDebt.subtitleInputDown + symbolType}</SubTitle>
             <InputGroup
               formData={formData}
               inputArr={systemDebt.inputPlaceholder}
@@ -64,7 +77,11 @@ function CreateStep1(props) {
       case 'system-surplus':
         return (
           <>
-            <SubTitle>{systemSurplus.subtitleInput}</SubTitle>
+            <SubTitle>{systemSurplus.subtitleInputUp + surplusLot}</SubTitle>
+            <SummarText
+              formData={formData}
+            />
+            <SubTitle>{systemSurplus.subtitleInputDown}</SubTitle>
             <InputGroup
               formData={formData}
               inputArr={systemSurplus.inputPlaceholder}
@@ -73,9 +90,11 @@ function CreateStep1(props) {
               errors={errors}
             />
           </>
+          
         );
       default:
         return null;
+        
     }
   }, [activeTab, register, errors]);
 
