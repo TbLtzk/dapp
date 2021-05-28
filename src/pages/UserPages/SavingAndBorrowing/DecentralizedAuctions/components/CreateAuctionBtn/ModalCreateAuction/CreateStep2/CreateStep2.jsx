@@ -1,13 +1,22 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 import { formObject } from 'store/selectors/auctions/modalHandler';
+import { getEPDRUint } from 'contracts/handler/ContractsEPDR';
 
 import { SubTitle, SummarText, SummarTextType } from 'components/Custom/ModalActions/styles';
+
 
 function CreateStep2(props) {
   const { activeTab, register, errors } = props;
   const formData = useSelector(formObject);
+  const [surplusLot, setSurplusLot] = useState('0');
+  const [reserveLot, setReserveLot] = useState('0');
+
+  useEffect (() => {
+    getEPDRUint("governed.EPDR.QUSD_surplusLot", setSurplusLot);
+    getEPDRUint("governed.EPDR.reserveLot", setReserveLot);
+  },[])
 
   const showCommonData = (children) => {
     return (
@@ -33,14 +42,18 @@ function CreateStep2(props) {
           </>
         );
       case 'system-debt' :
-        return showCommonData(<></>);
+        return showCommonData(<>
+        <SummarText>Auction Lot: {reserveLot}</SummarText>
+        </>);
       case 'system-surplus':
-        return showCommonData(<></>);
+        return showCommonData(<>
+        <SummarText>Auction Lot: {surplusLot}</SummarText>
+        </>);
       default:
         return null;
     }
 
-  }, [activeTab, register, errors]);
+  }, [activeTab, register,surplusLot, reserveLot, errors]);
 
   return (
     <>
