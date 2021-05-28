@@ -60,10 +60,8 @@ function CreateStep1(props) {
         return (
           <>
           
-            <SubTitle>{systemDebt.subtitleInputUp + reserveLot}</SubTitle>
-            <SummarText
-              formData={formData}
-            />
+            <SubTitle>{systemDebt.subtitleInputUp +reserveLot}</SubTitle>
+
             <SubTitle>{systemDebt.subtitleInputDown + symbolType}</SubTitle>
             <InputGroup
               formData={formData}
@@ -78,9 +76,7 @@ function CreateStep1(props) {
         return (
           <>
             <SubTitle>{systemSurplus.subtitleInputUp + surplusLot}</SubTitle>
-            <SummarText
-              formData={formData}
-            />
+
             <SubTitle>{systemSurplus.subtitleInputDown}</SubTitle>
             <InputGroup
               formData={formData}
