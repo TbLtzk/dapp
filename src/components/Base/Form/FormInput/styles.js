@@ -90,6 +90,7 @@ export const InputWrapper = styled(Form.Group)`
     min-height: ${inputMinHeight};
     border-radius: 3px 0 0 3px;
     padding: 6px 10px;
+    white-space: nowrap;
     color: ${(props) => {
       if (props.palette === 'dark') return props.theme.colors.white;
       return props.theme.colors.oxfordBlueTint1;

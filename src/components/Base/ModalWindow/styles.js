@@ -122,4 +122,28 @@ export const ModalW = styled(Modal)`
     margin-bottom: 30px;
     color: ${props => props.theme.colors.oxfordBlue};
   }
+
+  .modal__line {
+    width: 100%;
+    height: 1px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid ${props => props.theme.colors.oxfordBlueTint3};
+  }
+
+  .modal__three-colm {
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
+    grid-column-gap: ${indents['15']};
+  }
+
+  .modal__one-line-form {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 15px;
+
+    & > *:not(:first-child) {
+      margin-left: 14px;
+    }
+  }
 `;

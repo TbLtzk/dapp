@@ -24,10 +24,33 @@ export const TableStyle = styled(Table)`
   }
 
   td {
+    vertical-align: ${(props) => {
+      if (props.type === 'with-action') {
+        return 'baseline';
+      } else {
+        return 'top';
+      }
+    }
+    };
     color: ${props => props.theme.colors.td};
     font-size: 13px;
     line-height: 17px;
-    padding: 5px;
+    padding: ${(props) => {
+      if (props.type === 'with-action') {
+        return '15px 5px';
+      } else {
+        return '5px';
+      }
+    }
+    };;
     border-top: none;
+    border-bottom: ${(props) => {
+      if (props.type === 'with-action') {
+        return '1px solid ' + props.theme.colors.th;
+      } else {
+        return null;
+      }
+    }
+    }
   }
 `;

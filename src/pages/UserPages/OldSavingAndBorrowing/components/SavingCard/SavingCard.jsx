@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import BlockCardItem from 'pages/UserPages/SavingAndBorrowing/BlockCardItem';
+import BlockCardItem from '../../BlockCardItem';
 
 import { SavingQUSD } from 'contracts/src/Saving';
 
 import { uintPerSecondToPerYearNumber } from 'func/useful';
 
 import { Col } from 'react-bootstrap';
-import { BlockCard } from 'pages/UserPages/SavingAndBorrowing/styles';
+import { BlockCard } from '../../styles';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 import { useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';

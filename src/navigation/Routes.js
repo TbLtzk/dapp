@@ -14,9 +14,10 @@ import Proposals from '../pages/UserPages/Proposals';
 import PiggyBank from '../pages/UserPages/PiggyBank';
 import Staking from '../pages/UserPages/Staking';
 import OneProposalPage from '../pages/UserPages/OneProposalPage';
-import EndedAuctions from '../pages/UserPages/SavingAndBorrowing/DecentralizedAuctions/EndedAuctions';
 import SavingAndBorrowing from '../pages/UserPages/SavingAndBorrowing';
-import DecentralizedAuctions from '../pages/UserPages/SavingAndBorrowing/DecentralizedAuctions';
+import EndedAuctions from '../pages/UserPages/OldSavingAndBorrowing/DecentralizedAuctions/EndedAuctions';
+import OldSavingAndBorrowing from '../pages/UserPages/OldSavingAndBorrowing';
+import DecentralizedAuctions from '../pages/UserPages/OldSavingAndBorrowing/DecentralizedAuctions';
 
 function Routes() {
   const options = {
@@ -47,8 +48,9 @@ function Routes() {
         <Route exact path="/piggy-bank" component={AuthProtect(PiggyBank)}/>
         <Route exact path="/staking" component={AuthProtect(Staking)}/>
         <Route exact path="/saving-and-borrowing" component={AuthProtect(SavingAndBorrowing)}/>
-        <Route exact path="/decentralized-auctions" component={AuthProtect(DecentralizedAuctions)}/>
-        <Route exact path="/ended-auctions" component={AuthProtect(EndedAuctions)}/>
+        <Route exact path="/Old-saving-and-borrowing" component={AuthProtect(OldSavingAndBorrowing)}/>
+        <Route exact path="/Old-decentralized-auctions" component={AuthProtect(DecentralizedAuctions)}/>
+        <Route exact path="/Old-ended-auctions" component={AuthProtect(EndedAuctions)}/>
         <Route exact path="/q-governance/proposal/:contract?/:id?" component={AuthProtect(OneProposalPage)}/>
       </Switch>
     </AlertProvider>

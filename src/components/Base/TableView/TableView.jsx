@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { TableStyle } from './styles';
 
 function TableView(props) {
-  const { header, body } = props;
+  const { header, body, type } = props;
 
   return (
-    <TableStyle responsive>
+    <TableStyle responsive type={type || ''}>
       {!header ? null :
         <thead>
         <tr>

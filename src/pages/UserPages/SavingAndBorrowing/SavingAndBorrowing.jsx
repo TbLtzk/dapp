@@ -1,46 +1,42 @@
-import React, { useMemo, useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
-
+import React from 'react';
 import PageWrap from 'components/Base/PageWrap';
-import BigTabsGroupView from 'components/Base/Tabs/BigTabsGroupView';
-import TabContent from './TabContent';
+import Button from 'components/Base/Buttons/Button';
+import Overview from './components/Overview';
+import SavingCryptoAssets from './components/SavingCryptoAssets';
+import BorrowCryptoAssets from './components/BorrowCryptoAssets';
 
-export default function SavingAndBorrowing() {
+import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
+import { userAddressMetamask } from 'store/selectors/user-inf';
+import { useSelector } from 'react-redux';
 
-  const [activeTab, setActiveTab] = useState('decentralized-saving-borrowing');
+function SavingAndBorrowing() {
+  const address = useSelector(userAddressMetamask);
 
-  const tabsItems = useMemo(() => {
-    return (
-      [
-        {
-          label: 'decentralized-saving-borrowing',
-          title: 'Decentralized Saving and Borrowing',
-          content: (
-            <div style={{paddingTop: '40px'}}>
-              <TabContent activeTab={activeTab}/>
-            </div>
-          )
-        },
-        {
-          label: 'decentralized-auctions',
-          title: 'Decentralized auctions',
-        },
-      ]
-    );
-  }, [activeTab]);
+  const createVault = (collateral) => {
+    const contract = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD']);
+    contract.createVault(address, collateral);
+  };
 
   return (
-    <PageWrap>
-      <Row>
-        <Col md={12}>
-          <BigTabsGroupView
-            tabsItems={tabsItems}
-            tabsHandler={(key) => {
-              setActiveTab(key);
-            }}
-          />
-        </Col>
-      </Row>
+    <PageWrap
+      wrapContentClasses={'wrap-content__column-2-1'}
+      headerTitle={'Saving and Borrowing'}
+      headerExtra={(
+        <Button
+          icon="plus-circle-outline"
+          handleButton={() => createVault('QBTC')}
+          title="Create QBTC vault"
+        />
+      )}
+    >
+      <div>
+        <SavingCryptoAssets/>
+        <BorrowCryptoAssets/>
+      </div>
+      <Overview/>
     </PageWrap>
   );
 }
+
+export default SavingAndBorrowing;
