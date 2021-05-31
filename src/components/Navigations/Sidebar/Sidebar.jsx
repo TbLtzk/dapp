@@ -182,7 +182,7 @@ function Sidebar() {
                     key={'references' + key}
                     className="nav-link"
                     href={value.location}
-                    target={value.tag === 'a' ? '_blank' : '_self'}
+                    target='_blank'
                   >
                     {value.label}
                   </ALinkStyle>
