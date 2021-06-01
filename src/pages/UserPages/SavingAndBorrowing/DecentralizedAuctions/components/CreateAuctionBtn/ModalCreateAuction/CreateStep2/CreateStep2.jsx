@@ -43,11 +43,11 @@ function CreateStep2(props) {
         );
       case 'system-debt' :
         return showCommonData(<>
-        <SummarText>Auction Lot: {reserveLot}</SummarText>
+        <SummarText>Auction Lot: {reserveLot} Q</SummarText>
         </>);
       case 'system-surplus':
         return showCommonData(<>
-        <SummarText>Auction Lot: {surplusLot}</SummarText>
+        <SummarText>Auction Lot: {surplusLot} QUSD</SummarText>
         </>);
       default:
         return null;
