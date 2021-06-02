@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux';
 import { formObject } from 'store/selectors/auctions/modalHandler';
 import { symbol } from 'store/selectors/stable-coin';
 
 import InputGroup from 'components/Custom/ModalActions/InputGroup';
+import { getEPDRUint } from 'contracts/handler/ContractsEPDR';
 
 import { liquidation, systemDebt, systemSurplus } from './constants';
 import { AUCTIONS_TYPES } from 'constants/statuses';
@@ -18,6 +19,13 @@ function CreateStep1(props) {
 
   const formData = useSelector(formObject);
   const symbolType = useSelector(symbol);
+  const [surplusLot, setSurplusLot] = useState('0');
+  const [reserveLot, setReserveLot] = useState('0');
+
+  useEffect(() => {
+    getEPDRUint('governed.EPDR.QUSD_surplusLot', setSurplusLot);
+    getEPDRUint('governed.EPDR.reserveLot', setReserveLot);
+  }, []);
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (activeTab) {
@@ -54,7 +62,10 @@ function CreateStep1(props) {
       case AUCTIONS_TYPES.systemDebt:
         return (
           <>
-            <h4>{systemDebt.subtitleInput + symbolType}</h4>
+            <h5>{systemDebt.subtitleInputUp}</h5>
+            <p>{reserveLot + 'Q'}</p>
+
+            <h4>{systemDebt.subtitleInputDown + symbolType}</h4>
             <InputGroup
               formData={formData}
               inputArr={systemDebt.inputPlaceholder}
@@ -67,7 +78,10 @@ function CreateStep1(props) {
       case AUCTIONS_TYPES.systemSurplus:
         return (
           <>
-            <h4>{systemSurplus.subtitleInput}</h4>
+            <h5>{systemSurplus.subtitleInputUp}</h5>
+            <p>{surplusLot + ' ' + symbolType}</p>
+
+            <h4>{systemSurplus.subtitleInputDown}</h4>
             <InputGroup
               formData={formData}
               inputArr={systemSurplus.inputPlaceholder}
@@ -76,11 +90,13 @@ function CreateStep1(props) {
               errors={errors}
             />
           </>
+
         );
       default:
         return null;
+
     }
-  }, [activeTab, register, errors]);
+  }, [activeTab, register, errors, reserveLot, surplusLot]);
 
   return (
     <div>

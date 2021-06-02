@@ -27,7 +27,7 @@ function CardDropdownItems(props) {
         if (auction.isExecuted) status = 'Executed';
         if (!auction.isExecuted && remainDate(auction.endTime) === 0) status = 'Accepted';
         if (status === 'Accepted') return <Dropdown.Item onClick={handleExecute}><i className={`mdi mdi-play btn-icon`}/>Execute</Dropdown.Item>;
-        if (status !== 'Pending') return <Dropdown.Item onClick={handleBid}><i className={`mdi mdi-shape-circle-plus btn-icon`}/>Bid</Dropdown.Item>;
+        if (status === 'Pending') return <Dropdown.Item onClick={handleBid}><i className={`mdi mdi-shape-circle-plus btn-icon`}/>Bid</Dropdown.Item>;
 
     }
   }

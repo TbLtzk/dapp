@@ -1,11 +1,5 @@
 import styled from 'styled-components'
 
-
-export const Title = styled.p`
- ${props => props.theme.fontStyles.title.big};
-  color: ${props => props.theme.colors.oxfordBlue};
-`;
-
 export const Descr = styled.p`
  ${props => props.theme.fontStyles.description.small};
   color: ${props => props.theme.colors.oxfordBlue};

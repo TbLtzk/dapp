@@ -22,6 +22,7 @@ export const HeaderTitle = styled.div`
   overflow: hidden;
   align-items: flex-start;
   font-family: 'Lora', sans-serif;
+  text-transform: capitalize;
   `
 
 export const HeaderActions = styled.div`

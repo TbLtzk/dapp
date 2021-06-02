@@ -63,7 +63,7 @@ export default class Validators {
     const selfStake = validatorInfo.selfStake
     const delegatedStake = validatorInfo.delegatedStake
     const delegatorShare = transformToPercentage(poolInfo.delegatorsShare);
-    const validatorShare = delegatorShare ? 100 - delegatorShare : 0;
+    const validatorShare = delegatorShare ? 100 - delegatorShare : 100;
     const validatorPoolBalance = fromWei(poolInfo.poolBalance);
     const poolinterestRate = uintPerSecondToPerYearNumber(poolInfo.interestRate);
 

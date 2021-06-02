@@ -91,7 +91,10 @@ export function toFixed(x) {
 }
 
 export const getPercentageFormat = (number) => {
-  return BN(number).multipliedBy(BN(10 ** 27)).dividedBy(100).toFixed();
+  return BN(number)
+    .multipliedBy(BN(10 ** 27))
+    .dividedBy(100)
+    .toFixed();
 };
 
 export const transformToPercentage = (number) => {
@@ -181,6 +184,10 @@ export function creationExpertContractsObjArray() {
 }
 
 export function tabSwitcher(activeTab, qProp, rootNodeProp, expertProp, slashingProp) {
+  console.log('qProp', qProp);
+  console.log('rootNodeProp', rootNodeProp);
+  console.log('expertProp', expertProp);
+  console.log('slashingProp', slashingProp);
   switch (activeTab) {
     case PROPOSALS_TYPES.proposals:
       return qProp;
@@ -188,7 +195,7 @@ export function tabSwitcher(activeTab, qProp, rootNodeProp, expertProp, slashing
       return rootNodeProp;
     case PROPOSALS_TYPES.expertProposals:
       return expertProp;
-    case 'PROPOSALS_TYPES.slashingProposals':
+    case PROPOSALS_TYPES.slashingProposals:
       return slashingProp;
   }
 }

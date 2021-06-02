@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
+import VotingStats from 'components/Custom/VotingStats';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOneProposal } from 'store/actions/action-creaters/voting/proposals';
 import { qErrorM, qLoadingProposals, qProposalsArr } from 'store/selectors/voting/q-proposals';
@@ -25,9 +26,6 @@ import { pageType } from 'store/selectors/voting/proposals';
 import ProposalsList from 'pages/UserPages/Proposals/components/ProposalsList';
 import PageWrap from 'components/Base/PageWrap';
 import { tabSwitcher } from 'contracts/handler/VotingHandler';
-
-import { Row, Col } from 'react-bootstrap';
-import { Title } from 'components/Custom/PageLists/styles';
 
 function OneProposalPage(props) {
   const { match } = props;
@@ -106,21 +104,22 @@ function OneProposalPage(props) {
   }
 
   return (
-    <PageWrap>
-      <Row>
-        <Col xs={8}>
-          <Title>{activeTab ? `${activeTab?.replace(/-/g, ' ')}` : null}</Title>
-          {empty ? <p>Wrong link</p> :
-            <ProposalsList
-              activeTab={activeTab}
-              proposals={proposal}
-              loading={loading}
-              errorMessage={error}
-              proposalsKind={activeTab}
-            />
-          }
-        </Col>
-      </Row>
+    <PageWrap
+      wrapContentClasses="wrap-content__column-2-1"
+      headerTitle={activeTab ? `${activeTab?.replace(/-/g, ' ')}` : null}
+    >
+      {empty ? <h2>Wrong link</h2> :
+        <>
+          <ProposalsList
+            activeTab={activeTab}
+            proposals={proposal}
+            loading={loading}
+            errorMessage={error}
+            proposalsKind={activeTab}
+          />
+          <VotingStats/>
+        </>
+      }
     </PageWrap>
   );
 }

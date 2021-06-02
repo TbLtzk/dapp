@@ -1,7 +1,7 @@
 import React from 'react';
 import SidebarCards from '../SidebarCards';
 import AuctionsList from '../AuctionsList';
-import { ProposalsTabWrp } from './styles';
+import { AuctionsTabWrp } from './styles';
 
 function AuctionsTab(props) {
   const {
@@ -11,7 +11,7 @@ function AuctionsTab(props) {
     errorMessage,
   } = props;
   return (
-    <ProposalsTabWrp>
+    <AuctionsTabWrp>
       <AuctionsList
         activeTab={auctionsType}
         auctions={auctions}
@@ -19,7 +19,7 @@ function AuctionsTab(props) {
         errorMessage={errorMessage}
       />
       <SidebarCards/>
-    </ProposalsTabWrp>
+    </AuctionsTabWrp>
   );
 }
 

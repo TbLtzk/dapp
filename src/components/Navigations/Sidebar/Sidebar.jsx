@@ -198,9 +198,8 @@ function Sidebar() {
               }}>
               <LinkGroup>
                 <LinkStyle
-                  to={'/q-governance'}
+                  to={'/liquidation'}
                   className="nav-link"
-                  highlight={highlight('q-governance')}
                 >
                   Decentralized Auctions
                 </LinkStyle>
@@ -261,7 +260,7 @@ function Sidebar() {
                     key={'references' + key}
                     className="nav-link"
                     href={value.location}
-                    target={value.tag === 'a' ? '_blank' : '_self'}
+                    target='_blank'
                   >
                     {value.label}
                   </ALinkStyle>
