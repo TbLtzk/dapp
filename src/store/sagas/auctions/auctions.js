@@ -6,15 +6,25 @@ import {
 } from 'store/actions/action-creaters/transaction-handler';
 
 import {
-  getAuctionsListError, getAuctionsListSuccess,
-  getAuction, getAuctionSuccess, getAuctionError, getEmptyAuctionSuccess,
-  createAuctionSuccess, createAuctionError, bidForAuctionSuccess, executeAuctionSuccess
+  getEndedAuctionsListSuccess,
+  getEndedAuctionsListError,
+
+  getAuctionsListError,
+  getAuctionsListSuccess,
+  getAuction,
+  getAuctionSuccess,
+  getAuctionError,
+  getEmptyAuctionSuccess,
+  createAuctionSuccess,
+  bidForAuctionSuccess,
+  executeAuctionSuccess
 } from 'store/actions/action-creaters/auctions/auctions';
 import {
   creationLiquidationContractObj,
   creationSystemDebtContractObj,
   creationSystemSurplusContractObj
 } from 'contracts/handler/AuctionHandler';
+import { AUCTIONS_TYPES } from 'constants/statuses';
 
 function* createAuction({ data }) {
   try {
@@ -25,13 +35,13 @@ function* createAuction({ data }) {
     if (data) {
       let contract = null;
       switch (data?.first) {
-        case 'liquidation':
+        case AUCTIONS_TYPES.liquidation:
           contract = creationLiquidationContractObj();
           break;
-        case 'system-debt':
+        case AUCTIONS_TYPES.systemDebt:
           contract = creationSystemDebtContractObj();
           break;
-        case 'system-surplus':
+        case AUCTIONS_TYPES.systemSurplus:
           contract = creationSystemSurplusContractObj();
           break;
         default:
@@ -60,13 +70,13 @@ function* getAuctionDependsOnType(contractName, inf, activeAuction) {
   try {
     switch (contractName) {
       case 'LiquidationAuction':
-        yield put(getAuction(contractName, inf, 'liquidation', activeAuction));
+        yield put(getAuction(contractName, inf, AUCTIONS_TYPES.liquidation, activeAuction));
         break;
       case 'SystemDebtAuction':
-        yield put(getAuction(contractName, inf, 'system-debt', activeAuction));
+        yield put(getAuction(contractName, inf, AUCTIONS_TYPES.systemDebt, activeAuction));
         break;
       case 'SystemSurplusAuction':
-        yield put(getAuction(contractName, inf, 'system-surplus', activeAuction));
+        yield put(getAuction(contractName, inf, AUCTIONS_TYPES.systemSurplus, activeAuction));
         break;
       default:
         return null;
@@ -76,17 +86,22 @@ function* getAuctionDependsOnType(contractName, inf, activeAuction) {
   }
 }
 
-function* getOneAuction({ contractName, inf, activeTab, activeAuction }) {
+function* getOneAuction({
+  contractName,
+  inf,
+  activeTab,
+  activeAuction
+}) {
   try {
     let contract = null;
     switch (activeTab) {
-      case 'liquidation':
+      case AUCTIONS_TYPES.liquidation:
         contract = creationLiquidationContractObj(contractName);
         break;
-      case 'system-debt':
+      case AUCTIONS_TYPES.systemDebt:
         contract = creationSystemDebtContractObj();
         break;
-      case 'system-surplus':
+      case AUCTIONS_TYPES.systemSurplus:
         contract = creationSystemSurplusContractObj(contractName);
         break;
     }
@@ -105,27 +120,60 @@ function* getOneAuction({ contractName, inf, activeTab, activeAuction }) {
   }
 }
 
-function* getAuctionsList({ activeTab, activeAuction }) {
+function* getAuctionsList({
+  activeTab,
+  activeAuction
+}) {
   try {
     let contract = null;
     switch (activeTab) {
-      case 'liquidation':
+      case AUCTIONS_TYPES.liquidation:
         contract = creationLiquidationContractObj();
         break;
-      case 'system-debt':
+      case AUCTIONS_TYPES.systemDebt:
         contract = creationSystemDebtContractObj();
         break;
-      case 'system-surplus':
+      case AUCTIONS_TYPES.systemSurplus:
         contract = creationSystemSurplusContractObj();
         break;
     }
     let result = [];
     result = yield contract?.getAuctions(activeAuction);
 
-    yield put(getAuctionsListSuccess(result));
+    yield put(getAuctionsListSuccess({
+      result,
+      activeTab: activeTab
+    }));
   } catch (e) {
     console.log('e', e);
     yield put(getAuctionsListError(e));
+  }
+}
+
+function* getEndedAuctionsList({
+  activeTab,
+  activeAuction
+}) {
+  try {
+    let contract = null;
+    switch (activeTab) {
+      case AUCTIONS_TYPES.liquidation:
+        contract = creationLiquidationContractObj();
+        break;
+      case AUCTIONS_TYPES.systemDebt:
+        contract = creationSystemDebtContractObj();
+        break;
+      case AUCTIONS_TYPES.systemSurplus:
+        contract = creationSystemSurplusContractObj();
+        break;
+    }
+    let result = [];
+    result = yield contract?.getAuctions(activeAuction);
+
+    yield put(getEndedAuctionsListSuccess(result));
+  } catch (e) {
+    console.log('e', e);
+    yield put(getEndedAuctionsListError(e));
   }
 }
 
@@ -188,7 +236,6 @@ function* executeAuctionHandler({ data }) {
     yield call(getAuctionDependsOnType, data?.contract, data, true);
     yield put(executeAuctionSuccess(result));
     yield put(setTransactionLoadingSuccess());
-    
 
   } catch (err) {
     console.log('err', err.message);
@@ -199,6 +246,7 @@ function* executeAuctionHandler({ data }) {
 export default [
   takeEvery(actionTypes.CREATE_AUCTION, createAuction),
   takeEvery(actionTypes.GET_AUCTIONS_LIST, getAuctionsList),
+  takeEvery(actionTypes.GET_ENDED_AUCTIONS_LIST, getEndedAuctionsList),
   takeEvery(actionTypes.GET_AUCTION, getOneAuction),
   takeEvery(actionTypes.BID_FOR_AUCTION, bidForAuctionHandler),
   takeEvery(actionTypes.EXECUTE_AUCTION, executeAuctionHandler),

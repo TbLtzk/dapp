@@ -16,6 +16,22 @@ export const getAuctionsListError = (result) => ({
   result
 });
 
+export const getEndedAuctionsList = (activeTab, activeAuction) => ({
+  type: actionTypes.GET_ENDED_AUCTIONS_LIST,
+  activeTab,
+  activeAuction
+});
+
+export const getEndedAuctionsListSuccess = (result) => ({
+  type: actionTypes.GET_ENDED_AUCTIONS_LIST_SUCCESS,
+  result
+});
+
+export const getEndedAuctionsListError = (result) => ({
+  type: actionTypes.GET_ENDED_AUCTIONS_LIST_ERROR,
+  result
+});
+
 export const bidForAuction = (data) => ({
   type: actionTypes.BID_FOR_AUCTION,
   data
@@ -58,6 +74,7 @@ export const getAuctionSuccess = (result) => ({
   type: actionTypes.GET_AUCTION_SUCCESS,
   result,
 });
+
 export const getEmptyAuctionSuccess = (result) => ({
   type: actionTypes.GET_EMPTY_AUCTION_SUCCESS,
   result,
@@ -68,6 +85,7 @@ export const getAuctionError = (result) => ({
   result,
 });
 
+
 export const createAuction = (data) => ({
   type: actionTypes.CREATE_AUCTION,
   data
@@ -77,6 +95,7 @@ export const createAuctionSuccess = (result) => ({
   type: actionTypes.CREATE_AUCTION_SUCCESS,
   result
 });
+
 export const createAuctionError = (result) => ({
   type: actionTypes.CREATE_AUCTION_ERROR,
   result

@@ -87,7 +87,7 @@ function SaveManageAsset(props) {
         onHide={() => {
           setIsModalShown(false);
         }}
-        modalTitle={'Save ' + depositAsset}
+        modalTitle={'Saving ' + depositAsset}
         content={
           loadingInf
             ? <LoadingSpinner/>

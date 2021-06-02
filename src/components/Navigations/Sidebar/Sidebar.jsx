@@ -11,6 +11,11 @@ import { qProposalsArr } from 'store/selectors/voting/q-proposals';
 import { rootNodeProposalsArr } from 'store/selectors/voting/root-node-proposals';
 import { expertProposalsArr } from 'store/selectors/voting/expert-proposals';
 import { slashingProposalsArr } from 'store/selectors/voting/slashing-proposals';
+import {
+  liquidationAuctions,
+  systemDebtAuctions,
+  systemSurplusAuctions,
+} from 'store/selectors/auctions/auctions';
 
 import Button from 'components/Base/Buttons/Button';
 import LogoImg from 'components/Base/LogoImg';
@@ -32,8 +37,9 @@ import {
   AccordionLbl
 } from './styles';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { PROPOSALS_TYPES } from 'constants/statuses';
+import { PROPOSALS_TYPES, AUCTIONS_TYPES } from 'constants/statuses';
 import { getProposalsList } from 'store/actions/action-creaters/voting/proposals';
+import { getAuctionsList } from 'store/actions/action-creaters/auctions/auctions';
 
 function Sidebar() {
   const history = useHistory();
@@ -45,7 +51,12 @@ function Sidebar() {
   const expertProposals = useSelector(expertProposalsArr);
   const slashingProposals = useSelector(slashingProposalsArr);
 
+  const liquidations = useSelector(liquidationAuctions);
+  const systemDebts = useSelector(systemDebtAuctions);
+  const systemSurplus = useSelector(systemSurplusAuctions);
+
   const [isGovernanceAccordionOpened, setIsGovernanceAccordionOpened] = useState('1');
+  const [isAuctionAccordionOpened, setIsAuctionAccordionOpened] = useState('1');
 
   function highlight(location) {
     return Number(history.location.pathname === ('/' + location));
@@ -54,6 +65,9 @@ function Sidebar() {
   useEffect(() => {
     for (let item in PROPOSALS_TYPES) {
       dispatch(getProposalsList(PROPOSALS_TYPES[item]));
+    }
+    for (let item in AUCTIONS_TYPES) {
+      dispatch(getAuctionsList(AUCTIONS_TYPES[item], true));
     }
   }, []);
 
@@ -172,6 +186,71 @@ function Sidebar() {
             >
               Saving & Borrowing
             </LinkStyle>
+            <Accordion
+              defaultActiveKey="0"
+              style={{ width: '100%' }}
+              onSelect={(state) => {
+                if (state) {
+                  setIsAuctionAccordionOpened('1');
+                } else {
+                  setIsAuctionAccordionOpened('');
+                }
+              }}>
+              <LinkGroup>
+                <LinkStyle
+                  to={'/q-governance'}
+                  className="nav-link"
+                  highlight={highlight('q-governance')}
+                >
+                  Decentralized Auctions
+                </LinkStyle>
+                <Accordion.Toggle eventKey="0">
+                  <AccordionIcon state={isAuctionAccordionOpened}>
+                    <i className={`mdi mdi-chevron-down`}/>
+                  </AccordionIcon>
+                </Accordion.Toggle>
+              </LinkGroup>
+              <Accordion.Collapse eventKey="0">
+                <div>
+                  <LinkGroup>
+                    <LinkStyle
+                      to={'/liquidation'}
+                      className="nav-link"
+                      highlight={highlight('liquidation')}
+                    >– Liquidation</LinkStyle>
+                    {liquidations.length ? (
+                      <AccordionLbl highlight={highlight('liquidation')}>
+                        {liquidations.length}
+                      </AccordionLbl>
+                    ) : null}
+                  </LinkGroup>
+                  <LinkGroup>
+                    <LinkStyle
+                      to={'/system-debt'}
+                      className="nav-link"
+                      highlight={highlight('system-debt')}
+                    >– System Debt</LinkStyle>
+                    {systemDebts.length ? (
+                      <AccordionLbl highlight={highlight('system-debt')}>
+                        {systemDebts.length}
+                      </AccordionLbl>
+                    ) : null}
+                  </LinkGroup>
+                  <LinkGroup>
+                    <LinkStyle
+                      to={'/system-surplus'}
+                      className="nav-link"
+                      highlight={highlight('system-surplus')}
+                    >– System Surplus</LinkStyle>
+                    {systemSurplus.length ? (
+                      <AccordionLbl highlight={highlight('system-surplus')}>
+                        {systemSurplus.length}
+                      </AccordionLbl>
+                    ) : null}
+                  </LinkGroup>
+                </div>
+              </Accordion.Collapse>
+            </Accordion>
           </ListContainer>
           <ListTitle>References</ListTitle>
           <ListContainer>

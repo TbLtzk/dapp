@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert';
 import { AuthProtect } from './AuthProtect';
-import { PROPOSALS_TYPES } from 'constants/statuses';
+import { PROPOSALS_TYPES, AUCTIONS_TYPES } from 'constants/statuses';
 
 import AlertTemplate from 'react-alert-template-basic';
 
@@ -11,13 +11,11 @@ import Dashboard from '../pages/UserPages/Dashboard/Dashboard';
 import Manage from '../pages/UserPages/Dashboard/Manage';
 import Governance from '../pages/UserPages/Governance';
 import Proposals from '../pages/UserPages/Proposals';
+import Auctions from '../pages/UserPages/Auctions';
 import PiggyBank from '../pages/UserPages/PiggyBank';
 import Staking from '../pages/UserPages/Staking';
 import OneProposalPage from '../pages/UserPages/OneProposalPage';
 import SavingAndBorrowing from '../pages/UserPages/SavingAndBorrowing';
-import EndedAuctions from '../pages/UserPages/OldSavingAndBorrowing/DecentralizedAuctions/EndedAuctions';
-import OldSavingAndBorrowing from '../pages/UserPages/OldSavingAndBorrowing';
-import DecentralizedAuctions from '../pages/UserPages/OldSavingAndBorrowing/DecentralizedAuctions';
 
 function Routes() {
   const options = {
@@ -45,12 +43,15 @@ function Routes() {
                component={AuthProtect(Proposals, { proposalsType: PROPOSALS_TYPES.expertProposals })}/>
         <Route exact path="/slashing-proposals"
                component={AuthProtect(Proposals, { proposalsType: PROPOSALS_TYPES.slashingProposals })}/>
+        <Route exact path="/liquidation"
+               component={AuthProtect(Auctions, { auctionsType: AUCTIONS_TYPES.liquidation })}/>
+        <Route exact path="/system-debt"
+               component={AuthProtect(Auctions, { auctionsType: AUCTIONS_TYPES.systemDebt })}/>
+        <Route exact path="/system-surplus"
+               component={AuthProtect(Auctions, { auctionsType: AUCTIONS_TYPES.systemSurplus })}/>
         <Route exact path="/piggy-bank" component={AuthProtect(PiggyBank)}/>
         <Route exact path="/staking" component={AuthProtect(Staking)}/>
         <Route exact path="/saving-and-borrowing" component={AuthProtect(SavingAndBorrowing)}/>
-        <Route exact path="/Old-saving-and-borrowing" component={AuthProtect(OldSavingAndBorrowing)}/>
-        <Route exact path="/Old-decentralized-auctions" component={AuthProtect(DecentralizedAuctions)}/>
-        <Route exact path="/Old-ended-auctions" component={AuthProtect(EndedAuctions)}/>
         <Route exact path="/q-governance/proposal/:contract?/:id?" component={AuthProtect(OneProposalPage)}/>
       </Switch>
     </AlertProvider>

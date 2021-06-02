@@ -13,3 +13,9 @@ export const PROPOSALS_TYPES = {
   expertProposals: 'q-expert-proposals',
   slashingProposals: 'slashing-proposals'
 };
+
+export const AUCTIONS_TYPES = {
+  liquidation: 'liquidation',
+  systemDebt: 'system-debt',
+  systemSurplus: 'system-surplus',
+};

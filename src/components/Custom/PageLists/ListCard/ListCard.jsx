@@ -47,9 +47,6 @@ function ListCard(props) {
         </ListCardHeader>
         <ListCardBody>
           {content}
-          {/*<Accordion.Toggle variant="link" eventKey={id}>*/}
-          {/*  Click me!*/}
-          {/*</Accordion.Toggle>*/}
           <Accordion.Collapse eventKey={id}>
             {collapsedContent}
           </Accordion.Collapse>
