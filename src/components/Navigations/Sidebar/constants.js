@@ -11,6 +11,6 @@ export const referencesItems = [
   },
   {
     label: 'Tutorials',
-    location: 'https://www.reddit.com/r/QBlockchain/',
+    location: 'https://docs.qtestnet.org',
   }
 ];
