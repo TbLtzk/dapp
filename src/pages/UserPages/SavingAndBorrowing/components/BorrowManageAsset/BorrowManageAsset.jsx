@@ -145,7 +145,7 @@ function BorrowManageAsset(props) {
         onHide={() => {
           setIsModalShown(false);
         }}
-        modalTitle={'Saving ' + borrowingAsset}
+        modalTitle={'Borrowing ' + borrowingAsset}
         content={
           loadingInf
             ? <LoadingSpinner/>
