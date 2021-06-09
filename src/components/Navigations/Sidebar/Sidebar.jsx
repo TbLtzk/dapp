@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import { Accordion } from 'react-bootstrap';
 
-import colors from 'constants/colors';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import { qProposalsArr } from 'store/selectors/voting/q-proposals';
@@ -20,6 +18,7 @@ import {
 import Button from 'components/Base/Buttons/Button';
 import LogoImg from 'components/Base/LogoImg';
 import Version from './components/Version';
+import Themes from 'components/Base/Themes';
 
 import { referencesItems } from './constants';
 
@@ -34,7 +33,8 @@ import {
   FooterContainer,
   LinkGroup,
   AccordionIcon,
-  AccordionLbl
+  AccordionLbl,
+  Footer
 } from './styles';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { PROPOSALS_TYPES, AUCTIONS_TYPES } from 'constants/statuses';
@@ -73,7 +73,7 @@ function Sidebar() {
 
   return (
     <header>
-      <NavbarContainer bg={colors.oxfordBlue} expand="lg">
+      <NavbarContainer expand="lg">
         <LinksContainer>
           <WrapLogo>
             <Link to={'/'}>
@@ -260,7 +260,7 @@ function Sidebar() {
                     key={'references' + key}
                     className="nav-link"
                     href={value.location}
-                    target='_blank'
+                    target="_blank"
                   >
                     {value.label}
                   </ALinkStyle>
@@ -282,7 +282,10 @@ function Sidebar() {
               />
               </span>
           </CopyToClipboard>
-          <Version/>
+          <Footer>
+            <Themes/>
+            <Version/>
+          </Footer>
         </FooterContainer>
       </NavbarContainer>
     </header>

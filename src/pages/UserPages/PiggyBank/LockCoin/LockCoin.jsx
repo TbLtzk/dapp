@@ -53,7 +53,7 @@ export default function LockCoin() {
         <Button
           type="outline"
           title="Increase"
-          width="82px"
+          width="90px"
           handleButton={submit1(lockCoinL)}
         />
       </div>
@@ -72,7 +72,7 @@ export default function LockCoin() {
         <Button
           type="outline"
           title="Reduce"
-          width="82px"
+          width="90px"
           handleButton={submit3(unlockCoinL)}
         />
       </div>

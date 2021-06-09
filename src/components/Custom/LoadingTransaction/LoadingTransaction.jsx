@@ -5,8 +5,7 @@ import { transactionLoading, errorMessage, transactionCounter } from 'store/sele
 
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 
-import { Col } from 'react-bootstrap';
-import { Wrap, Shadow, WrapLoading, WrapText, Text } from './styles';
+import { Wrap, Shadow, WrapLoading, WrapText } from './styles';
 
 function LoadingTransaction() {
   const loading = useSelector(transactionLoading);
@@ -19,7 +18,7 @@ function LoadingTransaction() {
         <Wrap>
           <WrapLoading>
             <WrapText>
-              <Text>Loading</Text>
+              <p>Loading</p>
               <LoadingSpinner type="light"/>
             </WrapText>
           </WrapLoading>
@@ -30,11 +29,9 @@ function LoadingTransaction() {
 
     if (error === true) {
       return (
-        <Col xs={12}>
-          <p>
-            {error}
-          </p>
-        </Col>
+        <p>
+          {error}
+        </p>
       );
     }
 

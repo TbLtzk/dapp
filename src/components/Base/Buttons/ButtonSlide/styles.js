@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { ButtonCustom } from 'components/Base/Buttons/Button/styles';
-import colors from '../../../../constants/colors';
 
 export const ButtonSlideForm = styled.form`
 position: relative;

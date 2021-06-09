@@ -52,7 +52,7 @@ export default function ManageBalance() {
         <Button
           type="outline"
           title="Transfer"
-          width="82px"
+          width="90px"
           handleButton={submit2(setDepositL)}
         />
       </div>
@@ -70,7 +70,7 @@ export default function ManageBalance() {
         <Button
           type="outline"
           title="Withdraw"
-          width="82px"
+          width="90px"
           handleButton={submit3(withdrawL)}
         />
       </div>

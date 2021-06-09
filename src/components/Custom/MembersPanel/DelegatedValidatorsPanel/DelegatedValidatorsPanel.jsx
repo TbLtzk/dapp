@@ -28,7 +28,7 @@ function DelegatedValidatorsPanel() {
 
   return (
     <div>
-      {loading ? <LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap> :
+      {loading ? <LoadingWrap><LoadingSpinner/></LoadingWrap> :
         errorMessage || delegations?.length === 0 ? <p>No delegations</p> :
           <>
             <h3>Your current delegations</h3>

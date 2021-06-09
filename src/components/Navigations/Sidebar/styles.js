@@ -86,7 +86,20 @@ export const ALinkStyle = styled.a`
 `;
 
 export const WrapLogo = styled.div`
-  margin-bottom: 54px
+  margin-bottom: 54px;
+
+  img {
+    width: 53px;
+  }
+`;
+
+export const Footer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+  & > :first-child {
+    margin-right: 10px;
+  }
 `;
 
 export const AccordionIcon = styled.div`

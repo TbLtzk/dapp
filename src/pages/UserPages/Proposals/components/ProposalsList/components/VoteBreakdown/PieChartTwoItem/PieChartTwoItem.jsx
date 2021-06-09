@@ -2,7 +2,7 @@ import React from 'react';
 import { PieChart, Pie, Cell } from 'recharts';
 import colors from 'constants/colors';
 
-export const circles = [colors.circleWhite, colors.circleDark];
+export const circles = [colors.white, colors.oxfordBlueTint2];
 
 function PieChartTwoItem(props) {
   const { data } = props;
@@ -45,7 +45,7 @@ function PieChartTwoItem(props) {
               innerRadius={23}
               outerRadius={29}
               stroke={0}
-              fill={colors.grey}
+              fill={colors.oxfordBlueTint3}
               dataKey="value"
             >
             </Pie>
