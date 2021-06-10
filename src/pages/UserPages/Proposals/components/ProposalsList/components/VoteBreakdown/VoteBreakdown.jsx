@@ -1,6 +1,5 @@
 import React from 'react';
 import PieChartTwoItem from './PieChartTwoItem';
-import colors from 'constants/colors';
 
 import { ColorTitle } from './styles';
 import { Circle } from 'constants/style';
@@ -35,10 +34,10 @@ function VoteBreakdown(props) {
               />
             }
             <div>
-              <ColorTitle color={colors.circleWhite}><Circle color={colors.circleWhite}/>
+              <ColorTitle color="white"><Circle color="circle-white"/>
                 For: {voteBreakdown?.numberProposalVotes ? voteBreakdown.numberProposalVotes.votesFor : 0}
               </ColorTitle>
-              <ColorTitle color={colors.circleDark}><Circle color={colors.circleDark}/>
+              <ColorTitle color="dark"><Circle color="circle-dark"/>
                 Against: {voteBreakdown?.numberProposalVotes ? voteBreakdown.numberProposalVotes.votesAgainst : 0}
               </ColorTitle>
             </div>
@@ -60,8 +59,8 @@ function VoteBreakdown(props) {
                 },]}
             />
             <div>
-              <ColorTitle color={colors.circleWhite}><Circle color={colors.circleWhite}/>Objection</ColorTitle>
-              <ColorTitle color={colors.circleDark}><Circle color={colors.circleDark}/>No Vote</ColorTitle>
+              <ColorTitle color="white"><Circle color="circle-white"/>Objection</ColorTitle>
+              <ColorTitle color="dark"><Circle color="circle-dark"/>No Vote</ColorTitle>
             </div>
           </div>
           <h5>Objection Requirement: {'>'}{voteBreakdown.vetoThreshold}%</h5>
@@ -80,8 +79,8 @@ function VoteBreakdown(props) {
                 },]}
             />
             <div>
-              <ColorTitle color={colors.circleWhite}><Circle color={colors.circleWhite}/>For</ColorTitle>
-              <ColorTitle color={colors.circleDark}><Circle color={colors.circleDark}/>Against</ColorTitle>
+              <ColorTitle color="white"><Circle color="circle-white"/>For</ColorTitle>
+              <ColorTitle color="dark"><Circle color="circle-dark"/>Against</ColorTitle>
             </div>
           </div>
           <h5>Veto Requirement: 0%</h5>

@@ -2,6 +2,7 @@ import React from 'react';
 
 import InstructionMetamask from 'pages/StartConfigurations/InstructionMetamask';
 
+import StartConfigurationStyleLayout from 'components/Base/StartConfigurationStyleLayout';
 import { WrapContainer, WrapBlock } from './styles';
 
 function StartConfigurations(props) {
@@ -21,11 +22,13 @@ function StartConfigurations(props) {
   };
 
   return (
-    <WrapContainer fluid>
-      <WrapBlock block={!error}>
-        {checkMetaMask()}
-      </WrapBlock>
-    </WrapContainer>
+    <StartConfigurationStyleLayout>
+      <WrapContainer fluid>
+        <WrapBlock block={!error}>
+          {checkMetaMask()}
+        </WrapBlock>
+      </WrapContainer>
+    </StartConfigurationStyleLayout>
   );
 }
 

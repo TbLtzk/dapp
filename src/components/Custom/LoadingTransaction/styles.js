@@ -29,8 +29,3 @@ export const WrapText = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-
-export const Text = styled.p`
- ${props => props.theme.fontStyles.title.big};
- color: ${props => props.theme.colors.white};
-`;

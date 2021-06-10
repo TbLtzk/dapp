@@ -2,12 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux';
 import { formVoteObject } from 'store/selectors/voting/proposals';
-import {
-  SummarText,
-  SummarTextType,
-  SubTitle,
-  Warning
-} from 'components/Custom/ModalActions/styles';
 
 function CreateStep3(props) {
   const {

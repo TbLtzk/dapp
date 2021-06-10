@@ -14,7 +14,6 @@ import { getEPDRUint } from 'contracts/handler/ContractsEPDR';
 
 import Stats from 'components/Custom/PageLists/SidebarCards/Stats';
 import SystemCard from 'components/Custom/PageLists/SidebarCards/SystemCard';
-import References from 'components/Custom/PageLists/SidebarCards/References';
 
 import ContractBalance from 'contracts/handler/ContractBalance';
 import { StableCoinQUSD } from 'contracts/src/StableCoin';

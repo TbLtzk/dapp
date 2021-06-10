@@ -20,8 +20,8 @@ function KeyAddressViewer(props) {
     <CustomBlock>
       <h1>{header}</h1>
       <h5>{subHeader}</h5>
-      <Suspense fallback={<LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap>}>
-        {loading ? <LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap> :
+      <Suspense fallback={<LoadingWrap><LoadingSpinner/></LoadingWrap>}>
+        {loading ? <LoadingWrap><LoadingSpinner/></LoadingWrap> :
           errorMsg ? <p>{errorMsg}</p> :
             !tableData?.length ? <p>{emptyMsg}</p> :
               <KeyAddressesTable
