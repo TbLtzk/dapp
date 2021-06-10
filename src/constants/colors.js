@@ -17,15 +17,15 @@ export const darkColors = {
 };
 
 export const lightColors = {
-  oxfordBlue: '#FFFFFF',
-  oxfordBlueTint6: '#07172B',
-  oxfordBlueTint5: '#3C516A',
-  oxfordBlueTint4: '#6D7C8F',
-  oxfordBlueTint3: '#8592A2',
-  oxfordBlueTint2: '#B6BEC7',
   oxfordBlueTint1: '#E4EAF2',
-  white: '#0B2545',
-  neonGreen: '#87FF65',
+  oxfordBlue: '#FFFFFF',
+  oxfordBlueTint2: '#B6BEC7',
+  oxfordBlueTint3: '#8592A2',
+  oxfordBlueTint4: '#6D7C8F',
+  oxfordBlueTint5: '#3C516A',
+  oxfordBlueTint6: '#0B2545',
+  white: '#07172B',
+  neonGreen: '#67c54d',
   validationError: '#FF8550',
 };
 

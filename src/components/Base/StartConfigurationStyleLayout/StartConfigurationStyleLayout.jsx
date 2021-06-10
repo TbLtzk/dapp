@@ -1,27 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { GlobalStyle } from 'constants/globalStyle';
 import { ThemeProvider } from 'styled-components';
 import themeStyles from 'constants/style';
 import { darkColors, lightColors } from 'constants/colors';
-import { theme } from 'store/selectors/theme';
-import { setThem } from 'store/actions/action-creaters/theme';
 import { THEMES } from 'constants/colors';
-import { useDispatch, useSelector } from 'react-redux';
 
-function StyleLayout({ children }) {
-  const dispatch = useDispatch();
-  const currentTheme = useSelector(theme);
-
-  useEffect(() => {
-    switch (localStorage['theme-mode']) {
-      case THEMES.light:
-      case THEMES.dark:
-        dispatch(setThem(localStorage['theme-mode'] || THEMES.dark));
-        break;
-      default:
-        dispatch(setThem(THEMES.dark));
-    }
-  }, []);
+//It's a crutch. Due to the prevailing architecture, the store is not
+// available on the project from the beginning of the application and
+// this is an option for components with a theme without a store.
+function StartConfigurationStyleLayout({ children }) {
 
   function getColors(theme) {
     let generalColors = {};
@@ -32,6 +19,8 @@ function StyleLayout({ children }) {
       case THEMES.dark:
         generalColors = darkColors;
         break;
+      default:
+        generalColors = darkColors;
     }
     return {
       ...generalColors,
@@ -52,7 +41,7 @@ function StyleLayout({ children }) {
   return <ThemeProvider theme={
     {
       ...themeStyles,
-      colors: getColors(currentTheme)
+      colors: getColors(localStorage['theme-mode'] || THEMES.dark)
     }
   }
   >
@@ -61,4 +50,4 @@ function StyleLayout({ children }) {
   </ThemeProvider>;
 }
 
-export default StyleLayout;
+export default StartConfigurationStyleLayout;

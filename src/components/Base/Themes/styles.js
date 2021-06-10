@@ -5,7 +5,6 @@ export const ThemesWrp = styled.div`
   width: 10px;
   height: 10px;
   background: ${(props) => {
-    console.log('props.curenttheme', props.curenttheme)
     switch (props.curenttheme) {
       case THEMES.dark:
         return props.theme.colors.white;
