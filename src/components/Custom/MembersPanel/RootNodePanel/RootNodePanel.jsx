@@ -1,7 +1,6 @@
 import React, { lazy, Suspense, useEffect } from 'react';
 import RootService from 'contracts/src/Root';
 
-import ButtonLinkArrow from 'components/Base/Buttons/ButtonLinkArrow';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import CustomBlock from 'components/Base/CustomBlock';
 
