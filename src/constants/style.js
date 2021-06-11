@@ -14,12 +14,6 @@ export const indents = {
   50: '50px',
 };
 
-export const h5Text = styled.h5`
-  font-size: ${indents['20']};
-  color: ${colors.white};
-  font-style: normal;
-`;
-
 export const UsualText = styled.p`
   color: ${colors.white};
   font-style: normal;

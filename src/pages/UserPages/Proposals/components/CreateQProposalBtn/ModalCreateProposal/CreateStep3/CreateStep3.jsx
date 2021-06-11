@@ -8,9 +8,9 @@ import { parameterValueByKey } from 'store/selectors/parameters';
 import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue';
 
 import InputGroup from 'components/Custom/ModalActions/InputGroup';
-import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
 
 import { constUpdate } from './constants';
+import FormSelect from 'components/Base/Form/FormSelect';
 
 function CreateStep3(props) {
   const {
@@ -62,20 +62,28 @@ function CreateStep3(props) {
               </>
             );
           } else {
+            console.log('1formData', formData)
             return (
               <div>
                 <h2>{constUpdate.inputTitle}</h2>
                 <h2>{constUpdate.radioBtnTitle}</h2>
-                <RadioBtnGroup
-                  formData={formData}
-                  radioArr={constUpdate.radioBtn}
+                <FormSelect
+                  name={constUpdate.radioBtnName + '[4433]'}
                   register={register}
-                  errors={errors}
-                  nameArr={constUpdate.radioBtnName}
-                  handleChange={(value) => {
+                  palette={'dark'}
+                  value={formData[constUpdate.radioBtnName]}
+                  onChange={(value) => {
                     setTypeParameter(value.target.value);
                     dispatch(getParameterKeysByType('constitution', value.target.value));
                   }}
+                  ref={register({ required: 'Choose one option!' })}
+                  optionValues={constUpdate.radioBtn.map(i => {
+                    return {
+                      value: i.replace(/ /g, '-')
+                        .toLowerCase(),
+                      lbl: i
+                    };
+                  })}
                 />
                 <InputGroup
                   formData={formData}
@@ -84,6 +92,7 @@ function CreateStep3(props) {
                   register={register}
                   errors={errors}
                   onChangeInput={(val) => {
+                    console.log('formData', formData);
                     setParameterKey(val);
                   }}
                 />

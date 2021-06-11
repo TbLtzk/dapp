@@ -3,6 +3,7 @@ import PageWrap from 'components/Base/PageWrap';
 import BigTabsView from 'components/Base/Tabs/BigTabsView';
 import ProposalsTab from './components/ProposalsTab';
 import CreateQProposalBtn from './components/CreateQProposalBtn';
+import FormSelect from 'components/Base/Form/FormSelect';
 
 import { PROPOSALS_TYPES } from 'constants/statuses';
 import { useDispatch, useSelector } from 'react-redux';
@@ -140,7 +141,6 @@ function Proposals(props) {
       headerTitle={name}
       headerExtra={<CreateQProposalBtn activeTab={proposalsType}/>}
     >
-
       <BigTabsView
         tabsItems={tabsItems}
         active={tabsItems[0]?.label}
