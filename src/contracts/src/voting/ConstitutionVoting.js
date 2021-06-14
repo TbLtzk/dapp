@@ -1,11 +1,13 @@
 import { contracts } from '../../config/config';
 import VotingService from './VotingService';
+import { constitutionVotingInstance } from '../../contracts';
 
 import {
   getStatusTransformation
 } from '../../handler/VotingHandler';
 import { fromWei } from 'func/balance';
 import { BN } from 'func/useful';
+import { ParamType } from '@q-dev/q-js-sdk';
 
 export default class ConstitutionVoting extends VotingService {
   constructor() {
@@ -64,7 +66,7 @@ export default class ConstitutionVoting extends VotingService {
     if (weightFor > 0 || weightAgainst > 0) {
       objRes.numberProposalVotes = {
         votesFor: Number(objRes.votesFor),
-        votesAgainst: Number( objRes.votesAgainst)
+        votesAgainst: Number(objRes.votesAgainst)
       };
     }
 
@@ -94,45 +96,49 @@ export default class ConstitutionVoting extends VotingService {
     const classification = this.getProposalNumberType(data?.classification);
     const hash = data.hash;
     const link = data['external-link'];
-    const type = data['type-proposal'];
-    if (type) {
-      const parameterKey = data['parameter-key'];
-      let valueInput = data.value;
-      try {
-        switch (type) {
-          case 'address':
-            result = await this.contract.methods.createAddrProposal(link, classification, hash,
-              parameterKey, valueInput)
-              .send({ from: userAddress });
+    const paramInputs = data['type-proposal']
+      .reduce((types, item, index) => {
+        let inputValue = data['value'][index];
+        switch (+item) {
+          case ParamType.BOOL:
+            inputValue = (inputValue.toLowerCase() === 'true');
             break;
-          case 'string':
-            result = await this.contract.methods.createStrProposal(link, classification, hash,
-              parameterKey, valueInput)
-              .send({ from: userAddress });
+          case ParamType.UINT:
+            inputValue = BN(inputValue)
+              .toFixed();
             break;
-          case 'boolean':
-            valueInput = (valueInput.toLowerCase() === 'true');
-            result = await this.contract.methods.createBoolProposal(link, classification, hash,
-              parameterKey, valueInput)
-              .send({ from: userAddress });
-            break;
-          case 'uint':
-            valueInput = BN(valueInput).toFixed();
-            result = await this.contract.methods.createUintProposal(link, classification, hash,
-              parameterKey, valueInput)
-              .send({ from: userAddress });
-            break;
-
         }
-      } catch (e){
-        console.log('Please provide a valid input')
+        types.push({
+          paramType: +item,
+          paramKey: data['parameter-key'][index],
+          paramValue: inputValue,
+        });
+        return types;
+      }, []);
+    if (paramInputs.length) {
+      try {
+        result = await constitutionVotingInstance.createProposal(
+          link,
+          classification,
+          hash,
+          paramInputs,
+          { from: userAddress }
+        );
+      } catch (e) {
+        console.log(e)
+        console.log('Please provide a valid input');
       }
     } else {
       try {
-        result = await this.contract.methods.createProposal(link, classification, hash, [])
-          .send({ from: userAddress });
-      } catch (e){
-        console.log('Please provide a valid hash')
+        result = await constitutionVotingInstance.createProposal(
+          link,
+          classification,
+          hash,
+          [],
+          { from: userAddress }
+        );
+      } catch (e) {
+        console.log('Please provide a valid hash');
       }
     }
     return result;

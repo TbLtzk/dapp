@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, Fragment, useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { PROPOSALS_TYPES } from 'constants/statuses';
@@ -7,10 +7,9 @@ import { getParameterKeysByType } from 'store/actions/action-creaters/parameters
 import { parameterValueByKey } from 'store/selectors/parameters';
 import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue';
 
-import InputGroup from 'components/Custom/ModalActions/InputGroup';
-
 import { constUpdate } from './constants';
 import FormSelect from 'components/Base/Form/FormSelect';
+import FormInput from 'components/Base/Form/FormInput';
 
 function CreateStep3(props) {
   const {
@@ -23,8 +22,11 @@ function CreateStep3(props) {
 
   const parameterByKeyValue = useSelector(parameterValueByKey);
 
-  const [typeParameter, setTypeParameter] = useState('');
-  const [parameterKey, setParameterKey] = useState('');
+  const [params, setParams] = useState([{
+    type: '',
+    key: '',
+    value: ''
+  }]);
 
   const showCommonData = (children) => {
     return (
@@ -36,6 +38,50 @@ function CreateStep3(props) {
       </div>
     );
   };
+
+  function changeTypesCapacity(action) {
+    let newCapacity = 0;
+    switch (action) {
+      case -1:
+        if (params.length - 1 < 1) return;
+        const newParams = [...params];
+        newParams.pop();
+        setParams(newParams);
+        break;
+      case 1:
+        if (newCapacity > 100) return;
+        setParams([
+          ...params,
+          {
+            type: '',
+            key: '',
+            value: ''
+          }
+        ]);
+        break;
+    }
+  }
+
+  function setNewValue(index, key, newType) {
+    const newParams = [...params];
+    newParams[index][key] = newType;
+    setParams(newParams);
+  }
+
+  useEffect(() => {
+    if (formData[constUpdate.radioBtnName]) {
+      setParams(
+        formData[constUpdate.radioBtnName].reduce((types, item, index) => {
+          types.push({
+            type: item,
+            key: formData[constUpdate.inputsObjFirst][index],
+            value: formData[constUpdate.inputsObjSecond][index],
+          });
+          return types;
+        }, [])
+      );
+    }
+  }, []);
 
   const contentSwitcher = useCallback(() => {
     switch (activeTab) {
@@ -62,54 +108,75 @@ function CreateStep3(props) {
               </>
             );
           } else {
-            console.log('1formData', formData)
             return (
               <div>
                 <h2>{constUpdate.inputTitle}</h2>
-                <h2>{constUpdate.radioBtnTitle}</h2>
-                <FormSelect
-                  name={constUpdate.radioBtnName + '[4433]'}
-                  register={register}
-                  palette={'dark'}
-                  value={formData[constUpdate.radioBtnName]}
-                  onChange={(value) => {
-                    setTypeParameter(value.target.value);
-                    dispatch(getParameterKeysByType('constitution', value.target.value));
-                  }}
-                  ref={register({ required: 'Choose one option!' })}
-                  optionValues={constUpdate.radioBtn.map(i => {
-                    return {
-                      value: i.replace(/ /g, '-')
-                        .toLowerCase(),
-                      lbl: i
-                    };
-                  })}
-                />
-                <InputGroup
-                  formData={formData}
-                  inputArr={constUpdate.inputsFirst}
-                  inputsObj={constUpdate.inputsObjFirst}
-                  register={register}
-                  errors={errors}
-                  onChangeInput={(val) => {
-                    console.log('formData', formData);
-                    setParameterKey(val);
-                  }}
-                />
-                <CurrentParameterValue
-                  typePanel={'constitution'}
-                  typeParameter={typeParameter}
-                  parameterKey={parameterKey}
-                />
-                <InputGroup
-                  formData={formData}
-                  inputArr={constUpdate.inputsSecond}
-                  inputsObj={constUpdate.inputsObjSecond}
-                  register={register}
-                  errors={errors}
-                  onChangeInput={(val) => {
-                  }}
-                />
+                {params.map((item, index) => {
+                  return (
+                    <Fragment key={index}>
+                      <h2>{constUpdate.radioBtnTitle} #{index + 1}</h2>
+                      <FormSelect
+                        name={`${constUpdate.radioBtnName}[${index}]`}
+                        register={register}
+                        palette={'dark'}
+                        value={params[index].type}
+                        onChange={(value) => {
+                          setNewValue(index, 'type', value.target.value);
+                          dispatch(getParameterKeysByType('constitution', value.target.value));
+                        }}
+                        ref={register({ required: 'Choose one option!' })}
+                        optionValues={constUpdate.radioBtn}
+                      />
+                      <FormInput
+                        name={`${constUpdate.inputsObjFirst}[${index}]`}
+                        type="string"
+                        palette={'dark'}
+                        value={params[index].key}
+                        placeholder={constUpdate.inputsFirst}
+                        ref={register({ required: 'Field is required!' })}
+                        valid={errors[constUpdate.inputsObjFirst]?.[index]?.message}
+                        onChange={(value) => {
+                          setNewValue(index, 'key', value.target.value);
+                        }}
+                      />
+                      <CurrentParameterValue
+                        typePanel={'constitution'}
+                        typeParameter={params[index].type}
+                        parameterKey={params[index].key}
+                      />
+                      <FormInput
+                        name={`${constUpdate.inputsObjSecond}[${index}]`}
+                        type="string"
+                        palette={'dark'}
+                        value={params[index].value}
+                        placeholder={constUpdate.inputsSecond}
+                        ref={register({ required: 'Field is required!' })}
+                        valid={errors[constUpdate.inputsObjSecond]?.[index]?.message}
+                        onChange={(value) => {
+                          setNewValue(index, 'value', value.target.value);
+                        }}
+                      />
+                    </Fragment>
+                  );
+                })}
+                <div className="modal__text-wrp">
+                  <div className="modal__text-btn"
+                       onClick={() => {
+                         changeTypesCapacity(1);
+                       }}
+                  >Add type
+                  </div>
+                  {
+                    params.length > 1
+                      ? (<div className="modal__text-btn"
+                              onClick={() => {
+                                changeTypesCapacity(-1);
+                              }}
+                      >Remove type
+                      </div>)
+                      : null
+                  }
+                </div>
               </div>
 
             );
@@ -178,8 +245,7 @@ function CreateStep3(props) {
         return null;
     }
 
-  }, [activeTab, register, errors, typeParameter, parameterKey,
-    parameterByKeyValue]);
+  }, [activeTab, register, errors, params, parameterByKeyValue]);
 
   return (
     <>

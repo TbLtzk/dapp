@@ -1,12 +1,46 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState, Fragment } from 'react';
 
 import { useSelector } from 'react-redux';
 import { formObject } from 'store/selectors/voting/proposals';
 import { PROPOSALS_TYPES } from 'constants/statuses';
+import { ParamType } from '@q-dev/q-js-sdk';
 
 function CreateStep4(props) {
   const { activeTab } = props;
   const formData = useSelector(formObject);
+  const [params, setParams] = useState([{
+    type: '',
+    key: '',
+    value: ''
+  }]);
+
+  useEffect(() => {
+    if (formData['type-proposal']) {
+      setParams(
+        formData['type-proposal'].reduce((types, item, index) => {
+          types.push({
+            type: item,
+            key: formData['parameter-key'][index],
+            value: formData['value'][index],
+          });
+          return types;
+        }, [])
+      );
+    }
+  }, []);
+
+  function getTypeName(typeId) {
+    switch (+typeId){
+      case ParamType.ADDRESS:
+        return 'Address'
+      case ParamType.BOOL:
+        return 'Boolean'
+      case ParamType.STRING:
+        return 'String'
+      case ParamType.UINT:
+        return 'Uint'
+    }
+  }
 
   const contentSwitcher = useCallback(() => {
     switch (activeTab) {
@@ -25,12 +59,16 @@ function CreateStep4(props) {
               <p>{formData.hash}</p>
               <h5>Change Constitution Parameter</h5>
               <p>{formData['change-constitution-parameter']}</p>
-              <h5>Parameter key</h5>
-              <p>{formData['parameter-key']}</p>
-              <h5>Type Proposal</h5>
-              <p>{formData['type-proposal']}</p>
-              <h5>Value</h5>
-              <p>{formData['value']}</p>
+              {params.map((item, index) => {
+                return <Fragment key={index + 'param'}>
+                  <h5>Parameter key #{index + 1}</h5>
+                  <p>{item.key}</p>
+                  <h5>Type Proposal</h5>
+                  <p>{getTypeName(item.type)}</p>
+                  <h5>Value</h5>
+                  <p>{item.value}</p>
+                </Fragment>;
+              })}
             </div>
           );
         }
@@ -39,7 +77,7 @@ function CreateStep4(props) {
         return null;
     }
 
-  }, [activeTab]);
+  }, [activeTab, params]);
 
   return (
     <>
