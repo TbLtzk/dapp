@@ -45,8 +45,8 @@ function ValidatorsPanel(props) {
   return (
     <CustomBlock>
       <h1>Validator Ranking</h1>
-      <Suspense fallback={<LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap>}>
-        {loading ? <LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap> :
+      <Suspense fallback={<LoadingWrap><LoadingSpinner/></LoadingWrap>}>
+        {loading ? <LoadingWrap><LoadingSpinner/></LoadingWrap> :
           errorMessage || validators?.length === 0 ? <p>No validators</p> :
             <MemberTable
               type={!widened ? 'validators' : 'validators-widened'}

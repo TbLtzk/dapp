@@ -1,7 +1,6 @@
 import React, { lazy, Suspense, useEffect } from 'react';
 import RootService from 'contracts/src/Root';
 
-import ButtonLinkArrow from 'components/Base/Buttons/ButtonLinkArrow';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import CustomBlock from 'components/Base/CustomBlock';
 
@@ -42,10 +41,10 @@ function RootNodePanel(props) {
 
   return (
     <CustomBlock>
-      <Suspense fallback={<LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap>}>
+      <Suspense fallback={<LoadingWrap><LoadingSpinner/></LoadingWrap>}>
         {loading ? <div>
             <h1>Root Node Panel</h1>
-            <LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap>
+            <LoadingWrap><LoadingSpinner/></LoadingWrap>
           </div> :
           errorMessage || rootMembersArray?.length === 0 ? <p>No roots node</p> :
             <>

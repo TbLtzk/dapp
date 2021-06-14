@@ -1,7 +1,4 @@
 import styled from 'styled-components';
-import colors from 'constants/colors';
-
-import { Row, Col } from 'react-bootstrap';
 
 export const UpdateDelegationContainer = styled.div`
   .input_container_item {

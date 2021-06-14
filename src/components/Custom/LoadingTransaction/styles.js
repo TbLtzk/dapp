@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const Wrap = styled.div`
   position: fixed;
@@ -28,9 +28,8 @@ export const WrapText = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
 
-export const Text = styled.p`
- ${props => props.theme.fontStyles.title.big};
- color: ${props => props.theme.colors.white};
+  p {
+    color: #FFFFFF;
+  }
 `;

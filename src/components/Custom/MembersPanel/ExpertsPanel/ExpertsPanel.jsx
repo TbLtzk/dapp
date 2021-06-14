@@ -19,8 +19,8 @@ function ExpertsPanel(props) {
   return (
     <CustomBlock>
       <h1>List of {title} Experts</h1>
-      <Suspense fallback={<LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap>}>
-        {loading ? <LoadingWrap xs={12}><LoadingSpinner/></LoadingWrap> :
+      <Suspense fallback={<LoadingWrap><LoadingSpinner/></LoadingWrap>}>
+        {loading ? <LoadingWrap><LoadingSpinner/></LoadingWrap> :
           errorMessage || members?.length === 0 ? <p>No members</p> :
             <MemberTable
               type="members"

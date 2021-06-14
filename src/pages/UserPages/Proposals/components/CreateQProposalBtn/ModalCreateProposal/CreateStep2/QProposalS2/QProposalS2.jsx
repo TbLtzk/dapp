@@ -9,9 +9,6 @@ import InputGroup from 'components/Custom/ModalActions/InputGroup';
 
 import { constUpdate, generalUpdate, emergencyUpdate } from './constants';
 
-import { Descr } from 'components/Custom/ModalActions/styles';
-import { removeRootNode } from '../QRootNodeS2/constants';
-
 function QProposalS2(props) {
   const {
     activeTab,

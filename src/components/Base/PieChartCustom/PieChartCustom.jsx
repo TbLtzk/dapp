@@ -7,20 +7,6 @@ import { PieChart, Pie, Cell } from 'recharts';
 import colors from 'constants/colors';
 import { WrapChart } from './styles';
 
-const RADIAN = Math.PI / 180;
-
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, }) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  );
-};
-
 function PieChartCustom() {
   const rootMembersArray = useSelector(rootMembersData);
   const [transformData, setTransformData] = useState(null);
@@ -50,7 +36,6 @@ function PieChartCustom() {
       {
         !transformData || maxValue === 0 ? null :
           <PieChart width={200} height={200}>
-            {/*<text x={108} y={102} dy={8} textAnchor="middle"*/}
             <text x={'40%'} y={'50%'} dy={8} textAnchor="middle"
                   fill={colors.white}
                   fontSize="24"
@@ -61,21 +46,16 @@ function PieChartCustom() {
             <Pie
               data={transformData}
               cx={'37%'}
-              // cx={100}
               cy={'50%'}
-              // cy={100}
               labelLine={false}
-              // label={renderCustomizedLabel}
               innerRadius={47}
               fill="#8884d8"
               dataKey="value"
-              // activeShape={"sfs"}
             >
               {rootMembersArray.map((entry, index) =>
                 <Cell
                   key={`cell-${index}`}
                   fill={'#' + entry?.address?.slice(2, 8)}
-                  // fill={circles[index % circles.length]}
                 />
               )}
             </Pie>
@@ -86,7 +66,7 @@ function PieChartCustom() {
           <PieChart width={200} height={200}>
             <text
               x={'40%'} y={'50%'} dy={8} textAnchor="middle"
-              fill={colors.darkBlue}
+              fill={colors.oxfordBlueTint1}
               fontSize="24"
               fontWeight="bold"
             >

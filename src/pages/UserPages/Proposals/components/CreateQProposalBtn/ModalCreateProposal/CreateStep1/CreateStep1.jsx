@@ -10,8 +10,6 @@ import { formObject } from 'store/selectors/voting/proposals';
 
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
 
-import { SubTitleHighlightProposal } from 'components/Custom/ModalActions/styles';
-
 function CreateStep1(props) {
   const {
     activeTab,

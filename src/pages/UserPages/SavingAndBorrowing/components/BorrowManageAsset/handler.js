@@ -32,38 +32,30 @@ export default class Handler {
     let availableRepay = await this.setAvailableToRepay();
     this.borrowingContract.getVaultStats(this.address, this.vaultId)
       .then((res) => {
-        const colAssets = res?.colStats?.key;
-        let lockedCol = res?.colStats?.balance;
+        const colAsset = res?.colStats?.key;
+        const stcConversion = fromWei;
+        const colConversion = colAsset === 'QBTC' ? fromBtcBlockchain : fromWei;
 
-        if (lockedCol) {
-          if (colAssets === 'QETH') {
-            lockedCol = fromWei(lockedCol);
-          } else if (colAssets === 'QBTC') {
-            lockedCol = fromBtcBlockchain(lockedCol);
-          } else {
-            lockedCol = 0;
-          }
-        } else {
-          lockedCol = 0;
-        }
-        const colPrice = res?.colStats?.price ? fromWei(res.colStats.price) : 0;
+        const lockedCol = colConversion(res?.colStats?.balance || 0);
 
-        const borOutstandingDebt = res?.stcStats?.outstandingDebt ? fromWei(res.stcStats.outstandingDebt) : 0;
-        const borrowingLimit = res?.stcStats?.borrowingLimit ? fromWei(res.stcStats.borrowingLimit) : 0;
+        const colPrice = res?.colStats?.price ? stcConversion(res.colStats.price) : 0;
 
-        let availableWithdraw = res?.colStats?.withdrawableAmount ? fromWei(res.colStats.withdrawableAmount) : 0;
-        let availableBorrow = res?.stcStats?.availableToBorrow ? fromWei(res.stcStats.availableToBorrow) : 0;
+        const borOutstandingDebt = res?.stcStats?.outstandingDebt ? stcConversion(res.stcStats.outstandingDebt) : 0;
+        const borrowingLimit = res?.stcStats?.borrowingLimit ? stcConversion(res.stcStats.borrowingLimit) : 0;
 
-        availableDeposit = !availableDeposit ? 0 : fromBtcBlockchain(availableDeposit);
+        let availableWithdraw = res?.colStats?.withdrawableAmount ? colConversion(res.colStats.withdrawableAmount) : 0;
+        let availableBorrow = res?.stcStats?.availableToBorrow ? stcConversion(res.stcStats.availableToBorrow) : 0;
+
+        availableDeposit = !availableDeposit ? 0 : colConversion(availableDeposit);
 
         const liquidationPriceRaw = res?.colStats?.liquidationPrice;
         let liquidationPrice = 0;
         if(liquidationPriceRaw && liquidationPriceRaw != UINT_PSEUDO_UNDEFINED) {
-          liquidationPrice = fromWei(liquidationPriceRaw);
+          liquidationPrice = stcConversion(liquidationPriceRaw);
         }
 
         const collateralDetails = {
-          assets: colAssets,
+          assets: colAsset,
           lockedCol: lockedCol,
           assetPrice: colPrice,
           availableWithdraw: availableWithdraw,
@@ -72,7 +64,7 @@ export default class Handler {
         };
 
         const borCollateralValue = lockedCol * colPrice;
-        availableRepay = !availableRepay ? 0 : fromWei(availableRepay);
+        availableRepay = !availableRepay ? 0 : stcConversion(availableRepay);
 
         const borrowingDetails = {
           assets: res?.stcStats?.key,
@@ -81,7 +73,7 @@ export default class Handler {
           availableBorrow: availableBorrow,
           availableRepay: availableRepay,
           outstandingDebt: borOutstandingDebt,
-          liquidationLimit: res?.stcStats?.liquidationLimit ? fromWei(res.stcStats.liquidationLimit) : 0,
+          liquidationLimit: res?.stcStats?.liquidationLimit ? stcConversion(res.stcStats.liquidationLimit) : 0,
           borrowingFee: res?.stcStats?.borrowingFee ? uintPerSecondToPerYearNumber(res.stcStats.borrowingFee) : 0,
         };
 

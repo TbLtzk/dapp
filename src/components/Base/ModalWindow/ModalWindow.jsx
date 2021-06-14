@@ -49,7 +49,6 @@ function ModalWindow(props) {
           }
           {!continueBtnTitle ? null :
             <Button
-              type="usual"
               icon="arrow-right"
               isIconPositionRight={true}
               disabled={disabled}

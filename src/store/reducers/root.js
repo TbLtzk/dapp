@@ -21,6 +21,7 @@ import parametersAddresses from './parameters-addresses';
 import parameters from './parameters';
 import systemBalance from './systemBalance';
 import systemReserve from './systemReserve';
+import theme from './theme';
 
 import transactionHandler from 'store/reducers/transactionHandler';
 
@@ -49,7 +50,9 @@ const RootReducer = combineReducers({
   systemBalance,
   systemReserve,
 
-  parametersAddresses
+  parametersAddresses,
+
+  theme
 });
 
 export default RootReducer;
