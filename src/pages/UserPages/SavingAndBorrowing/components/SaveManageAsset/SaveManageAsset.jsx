@@ -62,7 +62,7 @@ function SaveManageAsset(props) {
   }
 
   async function withdraw(formData) {
-    await handler.withdraw(formData.field, setSavingBalance, setAvToDeposit, setInterestRate, setEstInterest, setLoadingInf);
+    await handler.withdraw(formData.amount, setSavingBalance, setAvToDeposit, setInterestRate, setEstInterest, setLoadingInf);
   }
 
   useEffect(async () => {
