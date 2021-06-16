@@ -115,35 +115,38 @@ function CreateStep3(props) {
                   return (
                     <Fragment key={index}>
                       <h2>{constUpdate.radioBtnTitle} #{index + 1}</h2>
-                      <FormSelect
-                        name={`${constUpdate.radioBtnName}[${index}]`}
-                        register={register}
-                        palette={'dark'}
-                        value={params[index].type}
-                        onChange={(value) => {
-                          setNewValue(index, 'type', value.target.value);
-                          dispatch(getParameterKeysByType('constitution', value.target.value));
-                        }}
-                        ref={register({ required: 'Choose one option!' })}
-                        optionValues={constUpdate.radioBtn}
-                      />
-                      <FormInput
-                        name={`${constUpdate.inputsObjFirst}[${index}]`}
-                        type="string"
-                        palette={'dark'}
-                        value={params[index].key}
-                        placeholder={constUpdate.inputsFirst}
-                        ref={register({ required: 'Field is required!' })}
-                        valid={errors[constUpdate.inputsObjFirst]?.[index]?.message}
-                        onChange={(value) => {
-                          setNewValue(index, 'key', value.target.value);
-                        }}
-                      />
                       <CurrentParameterValue
                         typePanel={'constitution'}
                         typeParameter={params[index].type}
                         parameterKey={params[index].key}
                       />
+                      <div className="modal__one-line-form" style={{marginBottom: 0}}>
+                        <FormSelect
+                          width='40%'
+                          name={`${constUpdate.radioBtnName}[${index}]`}
+                          register={register}
+                          palette={'dark'}
+                          value={params[index].type}
+                          onChange={(value) => {
+                            setNewValue(index, 'type', value.target.value);
+                            dispatch(getParameterKeysByType('constitution', value.target.value));
+                          }}
+                          ref={register({ required: 'Choose one option!' })}
+                          optionValues={constUpdate.radioBtn}
+                        />
+                        <FormInput
+                          name={`${constUpdate.inputsObjFirst}[${index}]`}
+                          type="string"
+                          palette={'dark'}
+                          value={params[index].key}
+                          placeholder={constUpdate.inputsFirst}
+                          ref={register({ required: 'Field is required!' })}
+                          valid={errors[constUpdate.inputsObjFirst]?.[index]?.message}
+                          onChange={(value) => {
+                            setNewValue(index, 'key', value.target.value);
+                          }}
+                        />
+                      </div>
                       <FormInput
                         name={`${constUpdate.inputsObjSecond}[${index}]`}
                         type="string"
@@ -164,7 +167,7 @@ function CreateStep3(props) {
                        onClick={() => {
                          changeTypesCapacity(1);
                        }}
-                  >Add type
+                  >Add parameter
                   </div>
                   {
                     params.length > 1
@@ -172,7 +175,7 @@ function CreateStep3(props) {
                               onClick={() => {
                                 changeTypesCapacity(-1);
                               }}
-                      >Remove type
+                      >Remove parameter
                       </div>)
                       : null
                   }

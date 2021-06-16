@@ -5,7 +5,7 @@ const selectMinHeight = '10px';
 
 export const SelectWrapper = styled(Form.Group)`
   margin-bottom: 0;
-  width: 100%;
+  width: ${(props) => (!props.width ? '100%' : props.width)};
 
   select {
     font-size: 14px;

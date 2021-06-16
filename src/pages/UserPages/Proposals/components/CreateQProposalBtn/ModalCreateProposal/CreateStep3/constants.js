@@ -6,7 +6,7 @@ export const constUpdate = {
   inputsObjFirst: 'parameter-key',
   inputsSecond: ['Value'],
   inputsObjSecond: 'value',
-  radioBtnTitle: 'Choose type',
+  radioBtnTitle: 'Parameter',
   radioBtnName: 'type-proposal',
   radioBtn: [
     {

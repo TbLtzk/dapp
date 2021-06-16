@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 const FormSelect = forwardRef((props, ref) => {
   const {
+    width,
     name,
     valid,
     disabled,
@@ -17,6 +18,7 @@ const FormSelect = forwardRef((props, ref) => {
   const [isFocus, setIsFocus] = useState('');
   return (
     <SelectWrapper
+      width={width}
       palette={palette}
       isfocus={isFocus}
       type={Boolean(valid) ? 'error' : ''}

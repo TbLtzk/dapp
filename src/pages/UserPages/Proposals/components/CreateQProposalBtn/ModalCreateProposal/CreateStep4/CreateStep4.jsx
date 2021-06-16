@@ -30,15 +30,15 @@ function CreateStep4(props) {
   }, []);
 
   function getTypeName(typeId) {
-    switch (+typeId){
+    switch (+typeId) {
       case ParamType.ADDRESS:
-        return 'Address'
+        return 'Address';
       case ParamType.BOOL:
-        return 'Boolean'
+        return 'Boolean';
       case ParamType.STRING:
-        return 'String'
+        return 'String';
       case ParamType.UINT:
-        return 'Uint'
+        return 'Uint';
     }
   }
 
@@ -61,12 +61,21 @@ function CreateStep4(props) {
               <p>{formData['change-constitution-parameter']}</p>
               {params.map((item, index) => {
                 return <Fragment key={index + 'param'}>
-                  <h5>Parameter key #{index + 1}</h5>
-                  <p>{item.key}</p>
-                  <h5>Type Proposal</h5>
-                  <p>{getTypeName(item.type)}</p>
-                  <h5>Value</h5>
-                  <p>{item.value}</p>
+                  <h4>Parameter #{index + 1}</h4>
+                  <div className="modal__three-colm">
+                    <div>
+                      <h5>Type</h5>
+                      <p title={getTypeName(item.type)}>{getTypeName(item.type)}</p>
+                    </div>
+                    <div>
+                      <h5>Key</h5>
+                      <p title={item.key}>{item.key}</p>
+                    </div>
+                    <div>
+                      <h5>Value</h5>
+                      <p title={item.value}>{item.value}</p>
+                    </div>
+                  </div>
                 </Fragment>;
               })}
             </div>
