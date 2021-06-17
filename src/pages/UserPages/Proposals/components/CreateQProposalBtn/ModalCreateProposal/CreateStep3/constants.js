@@ -1,7 +1,5 @@
 import { ParameterType } from '@q-dev/q-js-sdk';
 
-console.log('ParameterType', ParameterType)
-
 export const constUpdate = {
   inputTitle: 'Please provide exact Key-Name, Type and new Value for Parameter',
   inputsFirst: ['Parameter Key'],
