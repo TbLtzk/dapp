@@ -7,7 +7,7 @@ import {
   getExpertProposalsListError, getExpertProposalsListSuccess,
   getProposalSuccess, getEmptyProposalSuccess, getProposalError,
   getProposalEndedSuccess, getEmptyProposalEndedSuccess, getExpertProposalEnded,
-  getProposalEndedError
+  getProposalEndedError, getOneProposalSuccess
 } from 'store/actions/action-creaters/voting/expert-proposals';
 import {
   creationExpertContractObj, creationExpertContractsObjArray
@@ -68,6 +68,8 @@ function* getProposal({ contractName, id, activeProposal }) {
             }));
           }
         }
+      } else {
+        yield put(getOneProposalSuccess(data));
       }
     }
   } catch (err) {

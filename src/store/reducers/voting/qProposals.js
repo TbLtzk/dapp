@@ -1,7 +1,9 @@
 import * as actionTypes from 'store/actions/action-types/voting/q-proposals';
 import { changeProposalsArrIfExist, changeProposalsArrIfEmptyResult } from 'contracts/handler/VotingHandler';
+import { GET_Q_ONE_PROPOSAL_SUCCESS } from 'store/actions/action-types/voting/q-proposals';
 
 const initialState = {
+  oneProposal: [],
   proposalsArr: [],
   loadingProposals: true,
   errorM: null,
@@ -61,6 +63,13 @@ export default function qProposals(state = initialState, action) {
       return {
         ...state,
         proposalsArr: changeProposalsArrIfExist(state.proposalsArr, action),
+        loadingProposals: false
+      };
+
+    case actionTypes.GET_Q_ONE_PROPOSAL_SUCCESS:
+      return {
+        ...state,
+        oneProposal: action.result,
         loadingProposals: false
       };
     case actionTypes.GET_Q_PROPOSAL_ENDED_SUCCESS:

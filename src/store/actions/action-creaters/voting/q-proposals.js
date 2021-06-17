@@ -37,6 +37,10 @@ export const getProposalSuccess = (result) => ({
   type: actionTypes.GET_Q_PROPOSAL_SUCCESS,
   result,
 });
+export const getOneProposalSuccess = (result) => ({
+  type: actionTypes.GET_Q_ONE_PROPOSAL_SUCCESS,
+  result,
+});
 export const getEmptyProposalSuccess = (result) => ({
   type: actionTypes.GET_Q_EMPTY_PROPOSAL_SUCCESS,
   result,

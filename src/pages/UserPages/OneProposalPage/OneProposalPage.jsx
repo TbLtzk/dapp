@@ -3,25 +3,23 @@ import React, { useEffect, useMemo, useState } from 'react';
 import VotingStats from 'components/Custom/VotingStats';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOneProposal } from 'store/actions/action-creaters/voting/proposals';
-import { qErrorM, qLoadingProposals, qProposalsArr } from 'store/selectors/voting/q-proposals';
+import { qErrorM, qLoadingProposals, oneQProposal } from 'store/selectors/voting/q-proposals';
 import { PROPOSALS_TYPES } from 'constants/statuses';
 import {
   rootNodeErrorM,
   rootNodeLoadingProposals,
-  rootNodeProposalsArr
+  oneRootNodeProposal
 } from 'store/selectors/voting/root-node-proposals';
 import {
   expertErrorM,
-  expertProposalsArr,
+  oneExpertProposal,
   loadingExpertProposals
 } from 'store/selectors/voting/expert-proposals';
 import {
   slashingErrorM,
   slashingLoadingProposals,
-  slashingProposalsArr
+  oneSlashingProposal
 } from 'store/selectors/voting/slashing-proposals';
-import { onChangePageType } from 'store/actions/action-creaters/voting/proposals';
-import { pageType } from 'store/selectors/voting/proposals';
 
 import ProposalsList from 'pages/UserPages/Proposals/components/ProposalsList';
 import PageWrap from 'components/Base/PageWrap';
@@ -32,29 +30,21 @@ function OneProposalPage(props) {
   const dispatch = useDispatch();
   const [empty, setEmpty] = useState(false);
 
-  const page = useSelector(pageType);
-
-  const qProposals = useSelector(qProposalsArr);
+  const qProposals = useSelector(oneQProposal);
   const qLoading = useSelector(qLoadingProposals);
   const qError = useSelector(qErrorM);
 
-  const rootNodeProposals = useSelector(rootNodeProposalsArr);
+  const rootNodeProposals = useSelector(oneRootNodeProposal);
   const rootNodeLoading = useSelector(rootNodeLoadingProposals);
   const rootNodeError = useSelector(rootNodeErrorM);
 
-  const expertProposals = useSelector(expertProposalsArr);
+  const expertProposals = useSelector(oneExpertProposal);
   const expertLoading = useSelector(loadingExpertProposals);
   const expertError = useSelector(expertErrorM);
 
-  const slashingProposals = useSelector(slashingProposalsArr);
+  const slashingProposals = useSelector(oneSlashingProposal);
   const slashingLoading = useSelector(slashingLoadingProposals);
   const slashingError = useSelector(slashingErrorM);
-
-  useEffect(() => {
-    if (page === 'ended' || !page) {
-      dispatch(onChangePageType('active'));
-    }
-  }, []);
 
   useEffect(() => {
     if (match.params?.id && match.params?.contract && !isNaN((Number(match.params?.id)))) {
@@ -99,7 +89,7 @@ function OneProposalPage(props) {
         return PROPOSALS_TYPES.expertProposals;
       case 'RootNodesSlashingVoting':
       case 'ValidatorsSlashingVoting':
-        return 'PROPOSALS_TYPES.slashingProposals';
+        return PROPOSALS_TYPES.slashingProposals;
     }
   }
 

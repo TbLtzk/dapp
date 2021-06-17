@@ -184,6 +184,10 @@ export function creationExpertContractsObjArray() {
 }
 
 export function tabSwitcher(activeTab, qProp, rootNodeProp, expertProp, slashingProp) {
+  console.log('qProp', qProp);
+  console.log('rootNodeProp', rootNodeProp);
+  console.log('expertProp', expertProp);
+  console.log('slashingProp', slashingProp);
   switch (activeTab) {
     case PROPOSALS_TYPES.proposals:
       return qProp;

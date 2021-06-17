@@ -3,6 +3,8 @@ export const rootNodeEndedProposals = state => state.rootNodeProposals.endedProp
 export const rootNodeLoadingEndedProposals = state => state.rootNodeProposals.loadingEndedProposals;
 export const rootNodeErrorEnded = state => state.rootNodeProposals.errorEnded;
 
+export const oneRootNodeProposal = state => state.rootNodeProposals.oneProposal;
+
 /*get list of proposals*/
 export const rootNodeProposalsArr = state => state.rootNodeProposals.proposalsArr;
 export const rootNodeLoadingProposals = state => state.rootNodeProposals.loadingProposals;

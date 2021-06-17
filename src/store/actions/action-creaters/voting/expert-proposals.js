@@ -63,3 +63,8 @@ export const getProposalEndedError = (result) => ({
   type: actionTypes.GET_EXPERT_PROPOSAL_ENDED_ERROR,
   result,
 });
+
+export const getOneProposalSuccess = (result) => ({
+  type: actionTypes.GET_ONE_EXPERT_PROPOSAL_SUCCESS,
+  result,
+});

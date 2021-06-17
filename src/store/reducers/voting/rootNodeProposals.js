@@ -2,6 +2,7 @@ import * as actionTypes from 'store/actions/action-types/voting/root-node-propos
 import { changeProposalsArrIfExist, changeProposalsArrIfEmptyResult } from 'contracts/handler/VotingHandler';
 
 const initialState = {
+  oneProposal: [],
   proposalsArr: [],
   loadingProposals: true,
   errorM: null,
@@ -96,6 +97,12 @@ export default function rootNodeProposals(state = initialState, action) {
         ...state,
         endedProposals: [...state.endedProposals],
         loadingEndedProposals: false,
+      };
+    case actionTypes.GET_ONE_ROOT_NODE_PROPOSAL_SUCCESS:
+      return {
+        ...state,
+        oneProposal: action.result,
+        loadingProposals: false
       };
     default:
       return state;

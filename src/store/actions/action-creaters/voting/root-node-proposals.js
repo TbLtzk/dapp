@@ -64,3 +64,8 @@ export const getProposalEndedError = (result) => ({
   type: actionTypes.GET_ROOT_NODE_PROPOSAL_ENDED_ERROR,
   result,
 });
+
+export const getOneProposalSuccess = (result) => ({
+  type: actionTypes.GET_ONE_ROOT_NODE_PROPOSAL_SUCCESS,
+  result,
+});
