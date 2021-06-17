@@ -1,4 +1,6 @@
-import { ParamType } from '@q-dev/q-js-sdk';
+import { ParameterType } from '@q-dev/q-js-sdk';
+
+console.log('ParameterType', ParameterType)
 
 export const constUpdate = {
   inputTitle: 'Please provide exact Key-Name, Type and new Value for Parameter',
@@ -11,18 +13,18 @@ export const constUpdate = {
   radioBtn: [
     {
       lbl: 'Address',
-      value: ParamType.ADDRESS
+      value: ParameterType.ADDRESS
     },
     {
       lbl: 'Boolean',
-      value: ParamType.BOOL
+      value: ParameterType.BOOL
     },
     {
       lbl: 'String',
-      value: ParamType.STRING
+      value: ParameterType.STRING
     },
     {
       lbl: 'Uint',
-      value: ParamType.UINT
+      value: ParameterType.UINT
     }],
 };

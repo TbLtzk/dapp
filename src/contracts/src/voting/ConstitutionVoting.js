@@ -7,7 +7,7 @@ import {
 } from '../../handler/VotingHandler';
 import { fromWei } from 'func/balance';
 import { BN } from 'func/useful';
-import { ParamType } from '@q-dev/q-js-sdk';
+import { ParameterType } from '@q-dev/q-js-sdk';
 
 export default class ConstitutionVoting extends VotingService {
   constructor() {
@@ -100,10 +100,10 @@ export default class ConstitutionVoting extends VotingService {
       .reduce((types, item, index) => {
         let inputValue = data['value'][index];
         switch (+item) {
-          case ParamType.BOOL:
+          case ParameterType.BOOL:
             inputValue = (inputValue.toLowerCase() === 'true');
             break;
-          case ParamType.UINT:
+          case ParameterType.UINT:
             inputValue = BN(inputValue)
               .toFixed();
             break;

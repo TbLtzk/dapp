@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState, Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { formObject } from 'store/selectors/voting/proposals';
 import { PROPOSALS_TYPES } from 'constants/statuses';
-import { ParamType } from '@q-dev/q-js-sdk';
+import { ParameterType } from '@q-dev/q-js-sdk';
 
 function CreateStep4(props) {
   const { activeTab } = props;
@@ -30,14 +30,14 @@ function CreateStep4(props) {
   }, []);
 
   function getTypeName(typeId) {
-    switch (+typeId) {
-      case ParamType.ADDRESS:
+    switch (typeId) {
+      case ParameterType.ADDRESS:
         return 'Address';
-      case ParamType.BOOL:
+      case ParameterType.BOOL:
         return 'Boolean';
-      case ParamType.STRING:
+      case ParameterType.STRING:
         return 'String';
-      case ParamType.UINT:
+      case ParameterType.UINT:
         return 'Uint';
     }
   }
