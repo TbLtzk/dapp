@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import SmallBlock from './SmallBlock';
 import Button from 'components/Base/Buttons/Button';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import colors from 'constants/colors';
 
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,6 +26,15 @@ function InfBlocksUp() {
   const numberAllProposals = useSelector(numberOfAllProposals);
   const loadingNumberAllProposals = useSelector(loadingNumberAll);
   const constitutionHashShow = useSelector(constitutionHash);
+  const popover = (
+    <Popover id="popover-basic">
+      <Popover.Content style={{
+        background: colors.neonGreen,
+      }}>
+        Copy
+      </Popover.Content>
+    </Popover>
+  );
 
   useEffect(() => {
     dispatch(getNumberAllProposals());
@@ -37,18 +49,32 @@ function InfBlocksUp() {
         secondSubtitle="System Contract Registry:"
         firstContent={<p> {blockNumber}</p>}
         secondContent={
-          <p>
-            {contractsToAddresses.ContractRegistry}
-          </p>}
-      />
+
+          <OverlayTrigger
+              key="top"
+              placement="top"
+              overlay={popover}
+            >
+            <CopyToClipboard text={contractsToAddresses.ContractRegistry}>
+              <p>{contractsToAddresses.ContractRegistry}</p>
+            </CopyToClipboard>                  
+          </OverlayTrigger>
+        }/>
       <SmallBlock
         title="Constitution"
         firstSubtitle="Hash:"
         secondSubtitle={null}
         firstContent={
-          <p>
-            {constitutionHashShow}
-          </p>
+
+          <OverlayTrigger
+          key="top"
+          placement="top"
+          overlay={popover}
+        >
+          <CopyToClipboard text={contractsToAddresses.ContractRegistry}>
+            <p>{constitutionHashShow}</p>
+          </CopyToClipboard>
+        </OverlayTrigger>
         }
         secondContent={
           <div className={'card__actions'}>
