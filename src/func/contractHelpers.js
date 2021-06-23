@@ -1,3 +1,5 @@
+import { ParameterType } from '@q-dev/q-js-sdk';
+
 /**
  * @contract {contract} ConstitutionParameters or EPQFI_Parameters or EPDR_Parameters
  * or other which extends ParametersService
@@ -91,5 +93,18 @@ export async function loadBoolsKeys(contract) {
   return await Promise.all(
     keys.map(i => getValue(i))
   );
+}
+
+export function getTypeName(typeId) {
+  switch (typeId) {
+    case ParameterType.ADDRESS:
+      return 'Address';
+    case ParameterType.BOOL:
+      return 'Boolean';
+    case ParameterType.STRING:
+      return 'String';
+    case ParameterType.UINT:
+      return 'Uint';
+  }
 }
 

@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState, Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { formObject } from 'store/selectors/voting/proposals';
 import { PROPOSALS_TYPES } from 'constants/statuses';
-import { ParameterType } from '@q-dev/q-js-sdk';
+import { getTypeName } from 'func/contractHelpers';
 
 function CreateStep4(props) {
   const { activeTab } = props;
@@ -28,19 +28,6 @@ function CreateStep4(props) {
       );
     }
   }, []);
-
-  function getTypeName(typeId) {
-    switch (typeId) {
-      case ParameterType.ADDRESS:
-        return 'Address';
-      case ParameterType.BOOL:
-        return 'Boolean';
-      case ParameterType.STRING:
-        return 'String';
-      case ParameterType.UINT:
-        return 'Uint';
-    }
-  }
 
   const contentSwitcher = useCallback(() => {
     switch (activeTab) {

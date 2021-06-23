@@ -4,6 +4,7 @@ import {
   getPastEvents,
   getPastProposalsIds, transformToPercentage,
 } from '../../handler/VotingHandler';
+import { ParameterType } from '@q-dev/q-js-sdk';
 
 export default class VotingService {
 
@@ -198,31 +199,33 @@ export default class VotingService {
   }
 
   async getProposalParametersData(id) {
-    let objRes = {};
-    const parametersArr = await this.getParametersArr(id);
-    let value = null;
-    let parameterType = this.transformParameterType(parametersArr[0].paramType);
-    switch (parameterType) {
-      case 'Address':
-        value = parametersArr[0].addrValue;
-        break;
-      case 'Uint':
-        value = parametersArr[0].uintValue;
-        break;
-      case 'String':
-        value = parametersArr[0].strValue;
-        break;
-      case 'Byte':
-        value = parametersArr[0].bytes32Value;
-        break;
-      case 'Boolean':
-        value = parametersArr[0].boolValue;
-        break;
-    }
-    objRes.parameterType = parameterType;
-    objRes.parameterValue = value;
-    objRes.parameterKey = parametersArr[0].paramKey;
-    return objRes;
+    const parameters = await this.getParametersArr(id);
+    return parameters.map(item => {
+      let value = null;
+      // console.log('item', item)
+      switch (item.paramType) {
+        case ParameterType.ADDRESS:
+          value = item.addrValue;
+          break;
+        case ParameterType.BOOL:
+          value = item.boolValue;
+          break;
+        case ParameterType.STRING:
+          value = item.strValue;
+          break;
+        case ParameterType.UINT:
+          value = item.uintValue;
+          break;
+        case ParameterType.BYTE:
+          value = item.bytes32Value;
+          break;
+      }
+      return {
+        parameterType: item.paramType,
+        parameterValue: value,
+        parameterKey: item.paramKey
+      };
+    });
   }
 
 }

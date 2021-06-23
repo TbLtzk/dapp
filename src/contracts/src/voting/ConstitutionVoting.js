@@ -3,6 +3,7 @@ import VotingService from './VotingService';
 import { constitutionVotingInstance } from '../../contracts';
 
 import {
+  getPastProposalsIds,
   getStatusTransformation
 } from '../../handler/VotingHandler';
 import { fromWei } from 'func/balance';
@@ -37,7 +38,7 @@ export default class ConstitutionVoting extends VotingService {
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
-    let objParameters = {};
+    let parameters = [];
     objRes.id = id;
     objRes.remark = promiseRes.base.remark;
     const proposalType = this.getProposalStringType(promiseRes.classification);
@@ -46,7 +47,7 @@ export default class ConstitutionVoting extends VotingService {
     objRes.currentConstitutionHash = promiseRes.currentConstitutionHash;
     const parametersSize = promiseRes.parametersSize;
     if (parametersSize >= '1') {
-      objParameters = await this.getProposalParametersData(id);
+      parameters = await this.getProposalParametersData(id);
     }
     const weightAgainst = promiseRes.base.counters.weightAgainst;
     objRes.votesAgainst = fromWei(weightAgainst);
@@ -70,7 +71,11 @@ export default class ConstitutionVoting extends VotingService {
       };
     }
 
-    return { ...objRes, ...objStats, ...objParameters };
+    return {
+      ...objRes,
+      ...objStats,
+      parameters: parameters
+    };
   }
 
   /**
@@ -125,7 +130,7 @@ export default class ConstitutionVoting extends VotingService {
           { from: userAddress }
         );
       } catch (e) {
-        console.log(e)
+        console.log(e);
         console.log('Please provide a valid input');
       }
     } else {
@@ -148,6 +153,27 @@ export default class ConstitutionVoting extends VotingService {
     const result = await this.contract.methods.constitutionHash()
       .call();
     return result;
+  }
+
+  async getProposals() {
+    const proposalEvents = await this.getProposalsEvent();
+    const proposalIds = getPastProposalsIds(proposalEvents);
+    let proposals = [];
+    if (proposalIds) {
+      for (let id of proposalIds) {
+        let objRes = {};
+        let promiseStatus = await this.getProposalStatus(id);
+        if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
+          let promiseRes = await this.getProposal(id);
+          if (promiseRes) {
+            objRes = await this.getProposalData(promiseRes, id, promiseStatus);
+            proposals.push(objRes);
+          }
+        }
+
+      }
+    }
+    return proposals;
   }
 
 }

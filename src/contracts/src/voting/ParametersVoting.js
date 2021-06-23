@@ -11,7 +11,7 @@ export default class ParametersVoting extends VotingService {
   async getProposalData(promiseRes, id, promiseStatus) {
     let objRes = {};
     let objStats = {};
-    let objParameters = {};
+    let parameters = [];
     objRes.id = id;
     objRes.remark = promiseRes.base.remark;
     objRes.vetosCount = promiseRes.base.counters.vetosCount;
@@ -40,15 +40,19 @@ export default class ParametersVoting extends VotingService {
     objRes.contract = this.contractName;
     const parametersSize = promiseRes.parametersSize;
     if (parametersSize >= '1') {
-      objParameters = await this.getProposalParametersData(id);
+      parameters = await this.getProposalParametersData(id);
     }
     if (weightFor > 0 || weightAgainst > 0) {
       objRes.numberProposalVotes = {
         votesFor: Number(objRes.votesFor),
-        votesAgainst: Number( objRes.votesAgainst)
+        votesAgainst: Number(objRes.votesAgainst)
       };
     }
-    return { ...objRes, ...objStats, ...objParameters };
+    return {
+      ...objRes,
+      ...objStats,
+      parameters: parameters
+    };
   }
 
   async createProposal(data, userAddress) {
@@ -81,7 +85,8 @@ export default class ParametersVoting extends VotingService {
             { from: userAddress });
         break;
       case 'uint':
-        valueInput = BN(valueInput).toFixed();
+        valueInput = BN(valueInput)
+          .toFixed();
         result = await this.contract.methods.createUintProposal(link, key, valueInput)
           .send(
             { from: userAddress });
