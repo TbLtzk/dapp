@@ -37,7 +37,7 @@ function PollDetail(props) {
               },
               {
                 label: `Parameter value #${index + 1}`,
-                value: item.parameterValue
+                value: item.parameterValue + ''
               },
             ];
           });

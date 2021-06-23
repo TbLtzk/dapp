@@ -114,7 +114,7 @@ export default class ConstitutionVoting extends VotingService {
             break;
         }
         types.push({
-          paramType: +item,
+          paramType: item,
           paramKey: data['parameter-key'][index],
           paramValue: inputValue,
         });

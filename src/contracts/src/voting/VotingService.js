@@ -202,7 +202,6 @@ export default class VotingService {
     const parameters = await this.getParametersArr(id);
     return parameters.map(item => {
       let value = null;
-      // console.log('item', item)
       switch (item.paramType) {
         case ParameterType.ADDRESS:
           value = item.addrValue;
