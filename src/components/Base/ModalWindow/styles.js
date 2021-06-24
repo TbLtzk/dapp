@@ -155,7 +155,8 @@ export const ModalW = styled(Modal)`
   .modal__text-btn {
     display: flex;
     color: ${props => props.theme.colors.oxfordBlue};
-    font-size: 13px;
+    font-size: 15px;
+    font-weight: 600;
     margin-bottom: 15px;
     cursor: pointer;
 

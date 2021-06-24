@@ -10,6 +10,7 @@ import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParamet
 import { constUpdate } from './constants';
 import FormSelect from 'components/Base/Form/FormSelect';
 import FormInput from 'components/Base/Form/FormInput';
+import { ParameterType } from '@q-dev/q-js-sdk';
 
 function CreateStep3(props) {
   const {
@@ -69,6 +70,12 @@ function CreateStep3(props) {
   }
 
   useEffect(() => {
+    if (activeTab === PROPOSALS_TYPES.proposals) {
+      dispatch(getParameterKeysByType('constitution', ParameterType.ADDRESS));
+    }
+  }, []);
+
+  useEffect(() => {
     if (formData[constUpdate.radioBtnName]) {
       setParams(
         formData[constUpdate.radioBtnName].reduce((types, item, index) => {
@@ -115,14 +122,9 @@ function CreateStep3(props) {
                   return (
                     <Fragment key={index}>
                       <h2>{constUpdate.radioBtnTitle} #{index + 1}</h2>
-                      <CurrentParameterValue
-                        typePanel={'constitution'}
-                        typeParameter={params[index].type}
-                        parameterKey={params[index].key}
-                      />
-                      <div className="modal__one-line-form" style={{marginBottom: 0}}>
+                      <div className="modal__one-line-form" style={{ marginBottom: 0 }}>
                         <FormSelect
-                          width='40%'
+                          width="40%"
                           name={`${constUpdate.radioBtnName}[${index}]`}
                           register={register}
                           palette={'dark'}
@@ -158,6 +160,11 @@ function CreateStep3(props) {
                         onChange={(value) => {
                           setNewValue(index, 'value', value.target.value);
                         }}
+                      />
+                      <CurrentParameterValue
+                        typePanel={'constitution'}
+                        typeParameter={params[index].type}
+                        parameterKey={params[index].key}
                       />
                     </Fragment>
                   );

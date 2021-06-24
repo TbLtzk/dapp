@@ -4,6 +4,7 @@ import {
   getStatusTransformation, transformToPercentage
 } from '../../handler/VotingHandler';
 import { BN } from 'func/useful';
+import { ParameterType } from '@q-dev/q-js-sdk';
 
 /*EPQFI_ParametersVoting, EPDR_ParametersVoting*/
 export default class ParametersVoting extends VotingService {
@@ -62,29 +63,29 @@ export default class ParametersVoting extends VotingService {
     const key = data.key;
     let valueInput = data.value;
     switch (typeValueProposal) {
-      case 'address':
+      case ParameterType.ADDRESS:
         result = await this.contract.methods.createAddrProposal(link, key, valueInput)
           .send(
             { from: userAddress });
         break;
-      case 'boolean':
+      case ParameterType.BOOL:
         valueInput = (valueInput.toLowerCase() === 'true');
         result = await this.contract.methods.createBoolProposal(link, key, valueInput)
           .send(
             { from: userAddress });
         break;
-      case 'string':
+      case ParameterType.STRING:
         result = await this.contract.methods.createStrProposal(link, key, valueInput)
           .send(
             { from: userAddress });
         break;
-      case 'bytes':
+      case ParameterType.BYTE:
         valueInput = window.web3.utils.fromAscii(valueInput);
         result = await this.contract.methods.createBytesProposal(link, key, valueInput)
           .send(
             { from: userAddress });
         break;
-      case 'uint':
+      case ParameterType.UINT:
         valueInput = BN(valueInput)
           .toFixed();
         result = await this.contract.methods.createUintProposal(link, key, valueInput)

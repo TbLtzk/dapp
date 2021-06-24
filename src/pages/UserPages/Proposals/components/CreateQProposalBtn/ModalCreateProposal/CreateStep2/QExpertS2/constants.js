@@ -1,3 +1,5 @@
+import { ParameterType } from '@q-dev/q-js-sdk';
+
 export const addNewExpert = {
   subtitle: 'Nominate an Expert to Add to an Expert Panel',
   radioDescr: 'Select the Panel to which you want to add an Expert',
@@ -44,7 +46,22 @@ export const parameterVote = {
   },
   radioBtnTitleDown: 'Choose type',
   radioBtnNameDown: 'type-value-proposal',
-  radioBtnDown: ['Address', 'Boolean', 'String', 'Bytes', 'Uint'],
+  radioBtnDown: [{
+    lbl: 'Address',
+    value: ParameterType.ADDRESS
+  },
+    {
+      lbl: 'Boolean',
+      value: ParameterType.BOOL
+    },
+    {
+      lbl: 'String',
+      value: ParameterType.STRING
+    },
+    {
+      lbl: 'Uint',
+      value: ParameterType.UINT
+    }],
   subtitleInputDown: 'Provide a reference link to external source',
   inputDown: ['External Link'],
   inputDownObj: { 'external-link': '' },
