@@ -33,7 +33,7 @@ function CurrentParameterValue(props) {
   }, [parameterKeysByType, parameterByKeyValue, typePanel, typeParameter, parameterKey]);
 
   return (
-    <h4>{`Current Value ${currentParameterValue}`} </h4>
+    <h4 style={{marginBottom: '20px'}}>{`Current Value ${currentParameterValue}`} </h4>
   );
 }
 

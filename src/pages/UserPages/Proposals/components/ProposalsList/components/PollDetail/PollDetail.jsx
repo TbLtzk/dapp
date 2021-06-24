@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { PROPOSALS_TYPES } from 'constants/statuses';
+import { getTypeName } from 'func/contractHelpers';
 
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
 
@@ -12,7 +13,8 @@ function PollDetail(props) {
   const showDataArr = useMemo(() => {
     switch (proposalsKind) {
       case PROPOSALS_TYPES.proposals:
-        return [
+        let oneLineInfos = [];
+        const defaultInfo = [
           {
             label: 'Current constitution hash',
             value: pollDetail?.currentConstitutionHash
@@ -21,19 +23,26 @@ function PollDetail(props) {
             label: 'New constitution hash',
             value: pollDetail?.newConstitutionHash
           },
-          {
-            label: 'Parameter type',
-            value: pollDetail?.parameterType
-          },
-          {
-            label: 'Parameter key',
-            value: pollDetail?.parameterKey
-          },
-          {
-            label: 'Parameter value',
-            value: String(pollDetail?.parameterValue)
-          },
         ];
+        if (pollDetail.parameters) {
+          oneLineInfos = pollDetail.parameters.map((item, index) => {
+            return [
+              {
+                label: `Parameter type #${index + 1}`,
+                value: getTypeName(item.parameterType)
+              },
+              {
+                label: `Parameter key #${index + 1}`,
+                value: item.parameterKey
+              },
+              {
+                label: `Parameter value #${index + 1}`,
+                value: item.parameterValue + ''
+              },
+            ];
+          });
+        }
+        return [...defaultInfo, ...oneLineInfos];
       case PROPOSALS_TYPES.rootNodePanel:
         let rootNodeArr = [];
         if (pollDetail.candidate && pollDetail.candidate !== EMPTY_ADDR) {
@@ -98,9 +107,10 @@ function PollDetail(props) {
 
   const printValues = (label, value, key) => {
     {
+      const keyId = key + label.replace(/ /g, '-')
+        .toLowerCase() + +new Date();
       return !value || value === 'undefined' ? null :
-        <div key={key + label.replace(/ /g, '-')
-          .toLowerCase()}>
+        <div key={keyId}>
           <h5>{label}</h5>
           <p>{value}</p>
         </div>;
@@ -109,20 +119,31 @@ function PollDetail(props) {
 
   const showContent = useCallback(() => {
     return showDataArr.map((el, i) => {
-      return printValues(el.label, el.value, i);
+      if (!Array.isArray(el)) {
+        return printValues(el.label, el.value, i);
+      } else {
+        return (
+          <div className="list-card__three-colm" key={+new Date() + i}>
+            {el.map((item, index) => {
+              return printValues(item.label, item.value, i + '-' + index + +new Date());
+            })}
+          </div>
+        );
+      }
     });
 
   }, [showDataArr]);
 
   const checkLinkAndPrint = () => {
-    let hrefValue = '';
-    if (pollDetail?.remark?.includes('http') || pollDetail?.remark?.includes('https')) {
-      hrefValue = pollDetail.remark;
-    } else {
-      hrefValue = '//' + pollDetail.remark;
+      let hrefValue = '';
+      if (pollDetail?.remark?.includes('http') || pollDetail?.remark?.includes('https')) {
+        hrefValue = pollDetail.remark;
+      } else {
+        hrefValue = '//' + pollDetail.remark;
+      }
+      return <a href={hrefValue} target="_blank">{pollDetail.remark}</a>;
     }
-    return <a href={hrefValue} target="_blank">{pollDetail.remark}</a>;
-  };
+  ;
 
   return (
     <div>

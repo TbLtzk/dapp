@@ -3,16 +3,20 @@ import * as actionTypes from 'store/actions/action-types/parameters';
 import {
   getAddressParameterSuccess, getBoolParameterSuccess,
   getStringParameterSuccess, getUintParameterSuccess, getBytesParameterSuccess,
-  getParameterValueByKeyError, getParameterValueByKeySuccess,
+  getParameterValueByKeySuccess,
   getParameterKeysByTypeSuccess
 } from 'store/actions/action-creaters/parameters';
+import { ParameterType } from '@q-dev/q-js-sdk';
 
 import EPQFI_Parameters from 'contracts/src/parameters/EPQFI_Parameters';
 import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
 import ConstitutionParameters from 'contracts/src/parameters/ConstitutionParameters';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 
-function* getAddressParameter({ value, typeContract }) {
+function* getAddressParameter({
+  value,
+  typeContract
+}) {
   try {
     let contract = null;
     if (typeContract === 'EPQFI') {
@@ -27,7 +31,10 @@ function* getAddressParameter({ value, typeContract }) {
   }
 }
 
-function* getStringParameter({ value, typeContract }) {
+function* getStringParameter({
+  value,
+  typeContract
+}) {
   try {
     let contract = null;
     if (typeContract === 'EPQFI') {
@@ -42,7 +49,10 @@ function* getStringParameter({ value, typeContract }) {
   }
 }
 
-function* getBytesParameter({ value, typeContract }) {
+function* getBytesParameter({
+  value,
+  typeContract
+}) {
   try {
     let contract = null;
     if (typeContract === 'EPQFI') {
@@ -57,7 +67,10 @@ function* getBytesParameter({ value, typeContract }) {
   }
 }
 
-function* getUintParameter({ value, typeContract }) {
+function* getUintParameter({
+  value,
+  typeContract
+}) {
   try {
     let contract = null;
     if (typeContract === 'EPQFI') {
@@ -72,7 +85,10 @@ function* getUintParameter({ value, typeContract }) {
   }
 }
 
-function* getBooleanParameter({ value, typeContract }) {
+function* getBooleanParameter({
+  value,
+  typeContract
+}) {
   try {
     let contract = null;
     if (typeContract === 'EPQFI') {
@@ -100,25 +116,29 @@ function getContract(typeContract) {
 
 }
 
-function* getParameterValueByKey({ typeContract, typeParameter, parameterKey }) {
+function* getParameterValueByKey({
+  typeContract,
+  typeParameter,
+  parameterKey
+}) {
   try {
     if (typeContract && typeParameter && parameterKey) {
       const contract = getContract(typeContract);
       let data = null;
       switch (typeParameter) {
-        case 'address':
+        case ParameterType.ADDRESS:
           data = yield contract.getAddr(parameterKey);
           break;
-        case 'boolean':
+        case ParameterType.BOOL:
           data = yield contract.getBool(parameterKey);
           break;
-        case 'string':
+        case ParameterType.STRING:
           data = yield contract.getString(parameterKey);
           break;
-        case 'bytes':
+        case ParameterType.BYTE:
           data = yield contract.getBytes(parameterKey);
           break;
-        case 'uint':
+        case ParameterType.UINT:
           data = yield contract.getUint(parameterKey);
           break;
       }
@@ -135,25 +155,28 @@ function* getParameterValueByKey({ typeContract, typeParameter, parameterKey }) 
   }
 }
 
-function* getParameterKeysByType({ typeContract, typeParameter }) {
+function* getParameterKeysByType({
+  typeContract,
+  typeParameter
+}) {
   try {
     if (typeContract && typeParameter) {
       const contract = getContract(typeContract);
       let data = null;
       switch (typeParameter) {
-        case 'address':
+        case ParameterType.ADDRESS:
           data = yield contract.getAddrKeys();
           break;
-        case 'boolean':
+        case ParameterType.BOOL:
           data = yield contract.getBoolKeys();
           break;
-        case 'string':
+        case ParameterType.STRING:
           data = yield contract.getStringKeys();
           break;
-        case 'bytes':
+        case ParameterType.BYTE:
           data = yield contract.getBytesKeys();
           break;
-        case 'uint':
+        case ParameterType.UINT:
           data = yield contract.getUintKeys();
           break;
       }

@@ -146,4 +146,22 @@ export const ModalW = styled(Modal)`
       margin-left: 14px;
     }
   }
+
+  .modal__text-wrp {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .modal__text-btn {
+    display: flex;
+    color: ${props => props.theme.colors.oxfordBlue};
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    cursor: pointer;
+
+    :hover {
+      text-decoration: underline;
+    }
+  }
 `;

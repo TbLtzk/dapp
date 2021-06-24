@@ -10,6 +10,7 @@ import InputGroup from 'components/Custom/ModalActions/InputGroup';
 import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue';
 
 import { addNewExpert, removeExpert, parameterVote } from './constants';
+import FormSelect from 'components/Base/Form/FormSelect';
 
 function QExpertS2(props) {
   const { activeTab, register, errors } = props;
@@ -108,16 +109,17 @@ function QExpertS2(props) {
             />
             <h2>{parameterVote.subtitleInputUp}</h2>
             <h2>{parameterVote.radioBtnTitleDown}</h2>
-            <RadioBtnGroup
-              formData={formData}
-              radioArr={parameterVote.radioBtnDown}
+            <FormSelect
+              name={parameterVote.radioBtnNameDown}
               register={register}
-              errors={errors}
-              nameArr={parameterVote.radioBtnNameDown}
-              handleChange={(value) => {
+              palette={'dark'}
+              value={typeParameter}
+              onChange={(value) => {
                 setTypeParameter(value.target.value);
                 dispatch(getParameterKeysByType(typePanel, value.target.value));
               }}
+              ref={register({ required: 'Choose one option!' })}
+              optionValues={parameterVote.radioBtnDown}
             />
             <InputGroup
               formData={formData}

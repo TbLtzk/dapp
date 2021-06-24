@@ -6,11 +6,13 @@ export let contractRegistryInstance = {}
 
 export let validatorsInstance = {}
 export let validationRewardPoolsInstance = {}
+export let constitutionVotingInstance = {}
 
 export async function initInstances() {
   contractRegistryInstance = new ContractRegistryInstance(window.web3, CONTRACT_REGISTRY_ADDRESS)
   validatorsInstance = await contractRegistryInstance.validators()
   validationRewardPoolsInstance = await contractRegistryInstance.validationRewardPools()
+  constitutionVotingInstance = await contractRegistryInstance.constitutionVoting()
 
   // console logging of the versions should be removed, when we display the information in the app
 }
