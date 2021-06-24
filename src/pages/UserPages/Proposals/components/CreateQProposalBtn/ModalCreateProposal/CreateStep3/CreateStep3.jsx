@@ -76,17 +76,19 @@ function CreateStep3(props) {
   }, []);
 
   useEffect(() => {
-    if (formData[constUpdate.radioBtnName]) {
-      setParams(
-        formData[constUpdate.radioBtnName].reduce((types, item, index) => {
-          types.push({
-            type: item,
-            key: formData[constUpdate.inputsObjFirst][index],
-            value: formData[constUpdate.inputsObjSecond][index],
-          });
-          return types;
-        }, [])
-      );
+    if (activeTab === PROPOSALS_TYPES.proposals) {
+      if (formData[constUpdate.radioBtnName]) {
+        setParams(
+          formData[constUpdate.radioBtnName].reduce((types, item, index) => {
+            types.push({
+              type: item,
+              key: formData[constUpdate.inputsObjFirst][index],
+              value: formData[constUpdate.inputsObjSecond][index],
+            });
+            return types;
+          }, [])
+        );
+      }
     }
   }, []);
 
