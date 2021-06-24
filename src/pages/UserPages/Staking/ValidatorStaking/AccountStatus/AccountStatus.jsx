@@ -108,7 +108,7 @@ export default function AccountStatus() {
         <div className="card__actions">
           <Button
             type="default"
-            title="Confirm Validation"
+            title="Join Validator Ranking"
             handleButton={() => confirmValidation()}
           />
         </div>

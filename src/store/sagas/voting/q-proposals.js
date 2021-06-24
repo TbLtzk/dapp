@@ -6,7 +6,7 @@ import {
   getQEndedProposalsError, getQEndedProposalsSuccess,
   getProposalSuccess, getEmptyProposalSuccess, getProposalError,
   getQProposalsListError, getQProposalsListSuccess, getProposalEndedSuccess,
-  getEmptyProposalEndedSuccess, getQProposalEnded, getProposalEndedError
+  getEmptyProposalEndedSuccess, getQProposalEnded, getProposalEndedError, getOneProposalSuccess
 } from 'store/actions/action-creaters/voting/q-proposals';
 import {
   creationQContractObj,
@@ -30,7 +30,11 @@ function* getProposalsList() {
   }
 }
 
-function* getQProposal({ contractName, id, activeProposal }) {
+function* getQProposal({
+  contractName,
+  id,
+  activeProposal
+}) {
   const { pageType } = yield select(state => state.proposals);
   try {
     if (pageType === 'ended') {
@@ -66,6 +70,8 @@ function* getQProposal({ contractName, id, activeProposal }) {
             }));
           }
         }
+      } else {
+        yield put(getOneProposalSuccess(data));
       }
     }
   } catch (err) {

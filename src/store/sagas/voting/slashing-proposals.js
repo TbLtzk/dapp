@@ -12,7 +12,7 @@ import {
   getSlashingEndedProposalsError,
   getProposalError, getEmptyProposalSuccess, getProposalSuccess,
   getEmptyProposalEndedSuccess,
-  getProposalEndedSuccess, getSlashingProposalEnded, getProposalEndedError
+  getProposalEndedSuccess, getSlashingProposalEnded, getProposalEndedError, getOneProposalSuccess
 } from 'store/actions/action-creaters/voting/slashing-proposals';
 import {
   creationSlashingContractObj,
@@ -93,6 +93,8 @@ function* getProposal({ contractName, id, activeProposal }) {
             }));
           }
         }
+      } else {
+        yield put(getOneProposalSuccess(data));
       }
 
     }

@@ -7,7 +7,7 @@ import {
   getRootNodeEndedProposalsError, getRootNodeEndedProposalsSuccess,
   getEmptyProposalSuccess, getProposalError, getProposalSuccess,
   getProposalEndedSuccess, getEmptyProposalEndedSuccess, getRootNodeProposalEnded,
-  getProposalEndedError
+  getProposalEndedError, getOneProposalSuccess
 } from 'store/actions/action-creaters/voting/root-node-proposals';
 import {
   creationRootContractObj,
@@ -85,6 +85,8 @@ function* getRootNodeProposal({ contractName, id, activeProposal }) {
             }));
           }
         }
+      } else {
+        yield put(getOneProposalSuccess(data));
       }
     }
   } catch (err) {

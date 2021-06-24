@@ -244,7 +244,7 @@ function BorrowManageAsset(props) {
               <div className="modal__one-line-form">
                 <FormInput
                   palette="dark"
-                  lbl={borrowingInf?.assets}
+                  lbl={collateralInf?.assets}
                   min={0}
                   name="field"
                   type="number"

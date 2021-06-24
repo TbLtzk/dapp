@@ -90,3 +90,8 @@ export const getSlashingEndedProposalsError = (result) => ({
   type: actionTypes.GET_SLASHING_ENDED_PROPOSALS_ERROR,
   result
 });
+
+export const getOneProposalSuccess = (result) => ({
+  type: actionTypes.GET_ONE_SLASHING_PROPOSAL_SUCCESS,
+  result,
+});

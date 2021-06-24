@@ -3,6 +3,8 @@ export const slashingEndedProposals = state => state.slashingProposals.endedProp
 export const slashingLoadingEndedProposals = state => state.slashingProposals.loadingEndedProposals;
 export const slashingErrorEnded = state => state.slashingProposals.errorEnded;
 
+export const oneSlashingProposal = state => state.slashingProposals.oneProposal;
+
 /*get list of proposals*/
 export const slashingProposalsArr = state => state.slashingProposals.proposalsArr;
 export const slashingLoadingProposals = state => state.slashingProposals.loadingProposals;
