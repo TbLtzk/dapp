@@ -16,8 +16,10 @@ export const errorHandler = (error, field, min = 0, max = 100) => {
 };
 
 export const fN = (number) => {
+  const maximumFractionDigits = 4
+  const truncated = BN(number).toFixed(maximumFractionDigits, BigNumber.ROUND_DOWN)
   if (number === undefined || number.isNaN) return number;
-  return new Intl.NumberFormat('en-GB', { maximumFractionDigits: 4 }).format(number);
+  return new Intl.NumberFormat('en-GB', { maximumFractionDigits }).format(truncated);
 };
 
 export const uintPercentToNumber = (num) => {
