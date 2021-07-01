@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { formObject } from 'store/selectors/voting/proposals';
 import { PROPOSALS_TYPES } from 'constants/statuses';
 import { getTypeName } from 'func/contractHelpers';
+import { constUpdate } from '../CreateStep3/constants';
 
 function CreateStep4(props) {
   const { activeTab } = props;
@@ -15,13 +16,13 @@ function CreateStep4(props) {
   }]);
 
   useEffect(() => {
-    if (formData['type-proposal']) {
+    if (formData[constUpdate.radioBtnName]) {
       setParams(
-        formData['type-proposal'].reduce((types, item, index) => {
+        formData[constUpdate.radioBtnName].reduce((types, item, index) => {
           types.push({
             type: item,
-            key: formData['parameter-key'][index],
-            value: formData['value'][index],
+            key: formData[constUpdate.inputsObjFirst][index],
+            value: formData[constUpdate.inputsObjSecond][index],
           });
           return types;
         }, [])

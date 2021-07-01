@@ -103,7 +103,7 @@ export default class ConstitutionVoting extends VotingService {
     const link = data['external-link'];
     const paramInputs = data['type-proposal']
       .reduce((types, item, index) => {
-        let inputValue = data['value'][index];
+        let inputValue = data['parameter-value'][index];
         switch (+item) {
           case ParameterType.BOOL:
             inputValue = (inputValue.toLowerCase() === 'true');
