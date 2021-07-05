@@ -136,6 +136,12 @@ export const ModalW = styled(Modal)`
     grid-column-gap: ${indents['15']};
   }
 
+  .modal__column-1-2-2 {
+    display: grid;
+    grid-template-columns: minmax(80px, 80px) minmax(100px, 1fr) minmax(100px, 1fr);
+    grid-column-gap: ${indents['15']};
+  }
+
   .modal__one-line-form {
     display: flex;
     align-items: flex-start;

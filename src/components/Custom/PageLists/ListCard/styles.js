@@ -244,6 +244,18 @@ export const ListCardWrp = styled(Card)`
     }
   }
 
+  .list-card__column-1-2-2 {
+    display: grid;
+    grid-template-columns: minmax(100px, 120px) minmax(100px, 2fr) minmax(100px, 2fr);
+    grid-column-gap: ${indents['15']};
+
+    & > * {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+
   .list-card__chart-block {
     display: flex;
     align-items: center;

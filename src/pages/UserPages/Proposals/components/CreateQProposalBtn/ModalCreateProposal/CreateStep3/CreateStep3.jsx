@@ -253,7 +253,7 @@ function CreateStep3(props) {
                 {params.map((item, index) => {
                   return <Fragment key={index + 'param'}>
                     <h4>Parameter #{index + 1}</h4>
-                    <div className="modal__three-colm">
+                    <div className="modal__column-1-2-2">
                       <div>
                         <h5>Type</h5>
                         <p title={getTypeName(item.type)}>{getTypeName(item.type)}</p>
