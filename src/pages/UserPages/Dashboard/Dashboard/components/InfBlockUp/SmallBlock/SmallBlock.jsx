@@ -17,11 +17,15 @@ function SmallBlock(props) {
       <div style={{ display: display === 'columns' ? 'flex' : 'block' }}>
         <div style={{ width: display === 'columns' ? '50%' : null }}>
           <h5>{firstSubtitle}</h5>
-          {firstContent}
+          <div style={{ display: 'flex' }}>
+            {firstContent}
+          </div>
         </div>
         <div style={{ width: display === 'columns' ? '50%' : null }}>
           <h5>{secondSubtitle}</h5>
-          {secondContent}
+          <div style={{ display: 'flex' }}>
+            {secondContent}
+          </div>
         </div>
       </div>
     </CustomBlock>

@@ -51,13 +51,13 @@ function InfBlocksUp() {
         secondContent={
 
           <OverlayTrigger
-              key="top"
-              placement="top"
-              overlay={popover}
-            >
+            key="top"
+            placement="top"
+            overlay={popover}
+          >
             <CopyToClipboard text={contractsToAddresses.ContractRegistry}>
               <p>{contractsToAddresses.ContractRegistry}</p>
-            </CopyToClipboard>                  
+            </CopyToClipboard>
           </OverlayTrigger>
         }/>
       <SmallBlock
@@ -67,20 +67,20 @@ function InfBlocksUp() {
         firstContent={
 
           <OverlayTrigger
-          key="top"
-          placement="top"
-          overlay={popover}
-        >
-          <CopyToClipboard text={contractsToAddresses.ContractRegistry}>
-            <p>{constitutionHashShow}</p>
-          </CopyToClipboard>
-        </OverlayTrigger>
+            key="top"
+            placement="top"
+            overlay={popover}
+          >
+            <CopyToClipboard text={contractsToAddresses.ContractRegistry}>
+              <p>{constitutionHashShow}</p>
+            </CopyToClipboard>
+          </OverlayTrigger>
         }
         secondContent={
           <div className={'card__actions'}>
             <a href={latestConstitution} target="_blank">
               <Button
-                icon='download'
+                icon="download"
                 title={'Download Latest'}
                 handleButton={() => {
                 }}
@@ -88,7 +88,7 @@ function InfBlocksUp() {
             </a>
             <a href={archiveConstitution} target="_blank">
               <Button
-                icon='archive-outline'
+                icon="archive-outline"
                 title={'Check archive'}
                 handleButton={() => {
                 }}
