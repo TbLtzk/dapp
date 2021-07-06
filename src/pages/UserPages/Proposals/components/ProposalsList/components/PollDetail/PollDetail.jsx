@@ -10,6 +10,25 @@ function PollDetail(props) {
     proposalsKind
   } = props;
 
+  function getParametersInfo(parameters) {
+    return parameters.map((item, index) => {
+      return [
+        {
+          label: `Parameter type #${index + 1}`,
+          value: getTypeName(item.parameterType)
+        },
+        {
+          label: `Parameter key #${index + 1}`,
+          value: item.parameterKey
+        },
+        {
+          label: `Parameter value #${index + 1}`,
+          value: item.parameterValue + ''
+        },
+      ];
+    });
+  }
+
   const showDataArr = useMemo(() => {
     switch (proposalsKind) {
       case PROPOSALS_TYPES.proposals:
@@ -25,22 +44,7 @@ function PollDetail(props) {
           },
         ];
         if (pollDetail.parameters) {
-          oneLineInfos = pollDetail.parameters.map((item, index) => {
-            return [
-              {
-                label: `Parameter type #${index + 1}`,
-                value: getTypeName(item.parameterType)
-              },
-              {
-                label: `Parameter key #${index + 1}`,
-                value: item.parameterKey
-              },
-              {
-                label: `Parameter value #${index + 1}`,
-                value: item.parameterValue + ''
-              },
-            ];
-          });
+          oneLineInfos = getParametersInfo(pollDetail.parameters);
         }
         return [...defaultInfo, ...oneLineInfos];
       case PROPOSALS_TYPES.rootNodePanel:
@@ -75,20 +79,7 @@ function PollDetail(props) {
           }
           return membershipArr;
         } else {
-          return [
-            {
-              label: 'Parameter type',
-              value: pollDetail?.parameterType
-            },
-            {
-              label: 'Parameter key',
-              value: pollDetail?.parameterKey
-            },
-            {
-              label: 'Parameter value',
-              value: String(pollDetail?.parameterValue)
-            },
-          ];
+          return getParametersInfo(pollDetail.parameters);
         }
       case PROPOSALS_TYPES.slashingProposals:
         return [
@@ -112,7 +103,7 @@ function PollDetail(props) {
       return !value || value === 'undefined' ? null :
         <div key={keyId}>
           <h5>{label}</h5>
-          <p>{value}</p>
+          <p title={value}>{value}</p>
         </div>;
     }
   };
@@ -123,7 +114,7 @@ function PollDetail(props) {
         return printValues(el.label, el.value, i);
       } else {
         return (
-          <div className="list-card__three-colm" key={+new Date() + i}>
+          <div className="list-card__column-1-2-2" key={+new Date() + i}>
             {el.map((item, index) => {
               return printValues(item.label, item.value, i + '-' + index + +new Date());
             })}

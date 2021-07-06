@@ -1,10 +1,11 @@
 import MembershipVotingService from '../src/voting/MembershipVoting';
 import ParametersVotingService from '../src/voting/ParametersVoting';
+import { GOVERNS_TYPES } from 'constants/contracts';
 
 export const chooseExpertContractDependsOnType = (typeContract, type) => {
   let contract = null;
   let contractName = null;
-  if (type === 'q-fees-&-incentives-membership-panel') {
+  if (type === GOVERNS_TYPES.qFee) {
     if (typeContract === 'member') {
       contractName = 'EPQFI_MembershipVoting';
       contract = new MembershipVotingService(contractName);
@@ -12,7 +13,7 @@ export const chooseExpertContractDependsOnType = (typeContract, type) => {
       contractName = 'EPQFI_ParametersVoting';
       contract = new ParametersVotingService(contractName);
     }
-  } else if (type === 'q-defi-(decentralized-finance)-membership-panel') {
+  } else if (type === GOVERNS_TYPES.qDefi) {
     if (typeContract === 'member') {
       contractName = 'EPDR_MembershipVoting';
       contract = new MembershipVotingService(contractName);
@@ -26,13 +27,13 @@ export const chooseExpertContractDependsOnType = (typeContract, type) => {
 };
 export const chooseExpertContractNameDependsOnType = (typeContract, type) => {
   let contractName = null;
-  if (type === 'q-fees-&-incentives-membership-panel') {
+  if (type === GOVERNS_TYPES.qFee) {
     if (typeContract === 'member') {
       contractName = 'EPQFI_MembershipVoting';
     } else if (typeContract === 'parameters') {
       contractName = 'EPQFI_ParametersVoting';
     }
-  } else if (type === 'q-defi-(decentralized-finance)-membership-panel') {
+  } else if (type === GOVERNS_TYPES.qDefi) {
     if (typeContract === 'member') {
       contractName = 'EPDR_MembershipVoting';
     } else if (typeContract === 'parameters') {

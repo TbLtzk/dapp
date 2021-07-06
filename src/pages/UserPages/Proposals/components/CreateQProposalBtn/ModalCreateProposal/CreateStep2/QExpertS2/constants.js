@@ -46,7 +46,8 @@ export const parameterVote = {
   },
   radioBtnTitleDown: 'Choose type',
   radioBtnNameDown: 'type-value-proposal',
-  radioBtnDown: [{
+  radioBtnDown: [
+    {
     lbl: 'Address',
     value: ParameterType.ADDRESS
   },
@@ -65,4 +66,7 @@ export const parameterVote = {
   subtitleInputDown: 'Provide a reference link to external source',
   inputDown: ['External Link'],
   inputDownObj: { 'external-link': '' },
+  parameterKey: 'parameter-key',
+  parameterValue: 'parameter-value',
+  parameterType: 'parameter-type'
 };

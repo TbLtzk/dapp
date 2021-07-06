@@ -5,6 +5,9 @@ import {
 } from '../../handler/VotingHandler';
 import { BN } from 'func/useful';
 import { ParameterType } from '@q-dev/q-js-sdk';
+import { parameterVote } from 'pages/UserPages/Proposals/components/CreateQProposalBtn/ModalCreateProposal/CreateStep2/QExpertS2/constants';
+import { epqfiParametersVoting, epdrParametersVoting } from 'contracts/contracts';
+import { GOVERNS_TYPES } from 'constants/contracts';
 
 /*EPQFI_ParametersVoting, EPDR_ParametersVoting*/
 export default class ParametersVoting extends VotingService {
@@ -56,43 +59,37 @@ export default class ParametersVoting extends VotingService {
     };
   }
 
-  async createProposal(data, userAddress) {
-    let result = null;
+  async createProposal(data) {
+    let result = {};
     const link = data['external-link'];
-    const typeValueProposal = data['type-value-proposal'];
-    const key = data.key;
-    let valueInput = data.value;
-    switch (typeValueProposal) {
-      case ParameterType.ADDRESS:
-        result = await this.contract.methods.createAddrProposal(link, key, valueInput)
-          .send(
-            { from: userAddress });
+    const paramInputs = data[parameterVote.parameterType]
+      .reduce((types, item, index) => {
+        let inputValue = data[parameterVote.parameterValue][index];
+        switch (+item) {
+          case ParameterType.BOOL:
+            inputValue = (inputValue.toLowerCase() === 'true');
+            break;
+          case ParameterType.UINT:
+            inputValue = BN(inputValue)
+              .toFixed();
+            break;
+        }
+        types.push({
+          paramType: item,
+          paramKey: data[parameterVote.parameterKey][index],
+          paramValue: inputValue,
+        });
+        return types;
+      }, []);
+    switch (data[parameterVote.radioBtnName]) {
+      case GOVERNS_TYPES.qFee:
+        result = epqfiParametersVoting.createProposal(link, paramInputs);
         break;
-      case ParameterType.BOOL:
-        valueInput = (valueInput.toLowerCase() === 'true');
-        result = await this.contract.methods.createBoolProposal(link, key, valueInput)
-          .send(
-            { from: userAddress });
-        break;
-      case ParameterType.STRING:
-        result = await this.contract.methods.createStrProposal(link, key, valueInput)
-          .send(
-            { from: userAddress });
-        break;
-      case ParameterType.BYTE:
-        valueInput = window.web3.utils.fromAscii(valueInput);
-        result = await this.contract.methods.createBytesProposal(link, key, valueInput)
-          .send(
-            { from: userAddress });
-        break;
-      case ParameterType.UINT:
-        valueInput = BN(valueInput)
-          .toFixed();
-        result = await this.contract.methods.createUintProposal(link, key, valueInput)
-          .send(
-            { from: userAddress });
+      case GOVERNS_TYPES.qDefi:
+        result = epdrParametersVoting.createProposal(link, paramInputs);
         break;
       default:
+        console.error('Unknown type');
         return null;
     }
     return result;
