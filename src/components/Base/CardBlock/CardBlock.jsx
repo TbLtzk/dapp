@@ -2,6 +2,9 @@ import React from 'react';
 
 import { BlockAlignBlock } from './styles';
 import Button from 'components/Base/Buttons/Button';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import colors from 'constants/colors';
 
 function CardBlock(props) {
   const {
@@ -13,12 +16,33 @@ function CardBlock(props) {
     iconFontSize,
     btnDisabled,
   } = props;
+  const popover = (
+    <Popover id="popover-basic">
+      <Popover.Content style={{
+        background: colors.neonGreen,
+      }}>
+        Copy
+      </Popover.Content>
+    </Popover>
+  );
 
   return (
     <BlockAlignBlock>
       <div>
         {title === undefined ? null : <h5>{title}</h5>}
-        {firstContent === undefined ? null : <p>{firstContent}</p>}
+        {firstContent === undefined ? null :
+          title === 'QUSD Contract' ?
+            <OverlayTrigger
+              key="top"
+              placement="top"
+              overlay={popover}
+            >
+              <CopyToClipboard text={firstContent}>
+                <p>{firstContent}</p>
+              </CopyToClipboard>
+            </OverlayTrigger> :
+            <p>{firstContent}</p>
+        }
       </div>
 
       {(!btnTitle && !btnIcon) ? null :

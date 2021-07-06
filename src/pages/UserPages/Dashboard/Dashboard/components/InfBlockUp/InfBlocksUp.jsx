@@ -71,7 +71,7 @@ function InfBlocksUp() {
             placement="top"
             overlay={popover}
           >
-            <CopyToClipboard text={contractsToAddresses.ContractRegistry}>
+            <CopyToClipboard text={constitutionHashShow}>
               <p>{constitutionHashShow}</p>
             </CopyToClipboard>
           </OverlayTrigger>
