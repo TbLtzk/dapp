@@ -3,7 +3,6 @@ import PageWrap from 'components/Base/PageWrap';
 import BigTabsView from 'components/Base/Tabs/BigTabsView';
 import ProposalsTab from './components/ProposalsTab';
 import CreateQProposalBtn from './components/CreateQProposalBtn';
-import FormSelect from 'components/Base/Form/FormSelect';
 
 import { PROPOSALS_TYPES } from 'constants/statuses';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,12 +34,15 @@ import {
   getEndedProposals,
   getProposalsList
 } from 'store/actions/action-creaters/voting/proposals';
+import { getLockedAssets } from 'store/actions/action-creaters/q-piggy-bank';
+import { userAddressMetamask } from 'store/selectors/user-inf';
 
 function Proposals(props) {
   const {
     proposalsType
   } = props;
   const dispatch = useDispatch();
+  const address = useSelector(userAddressMetamask);
 
   const {
     proposals,
@@ -111,6 +113,7 @@ function Proposals(props) {
   useEffect(() => {
     dispatch(getProposalsList(proposalsType));
     dispatch(getEndedProposals(proposalsType));
+    dispatch(getLockedAssets(address));
   }, []);
 
   const tabsItems = [

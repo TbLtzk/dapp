@@ -29,14 +29,18 @@ import {
   slashingLoadingProposals,
   slashingProposalsArr
 } from 'store/selectors/voting/slashing-proposals';
+import { getLockedAssets } from 'store/actions/action-creaters/q-piggy-bank';
+import { userAddressMetamask } from 'store/selectors/user-inf';
 
 function Governance() {
   const dispatch = useDispatch();
+  const address = useSelector(userAddressMetamask);
 
   useEffect(() => {
     for (let item in PROPOSALS_TYPES) {
       dispatch(getProposalsList(PROPOSALS_TYPES[item]));
       dispatch(getEndedProposals(PROPOSALS_TYPES[item]));
+      dispatch(getLockedAssets(address));
     }
   }, []);
 
