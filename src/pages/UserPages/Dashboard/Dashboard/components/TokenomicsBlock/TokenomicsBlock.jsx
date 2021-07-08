@@ -205,10 +205,10 @@ function TokenomicsBlock() {
               btnIcon={el.btnIcon}
               iconFontSize={el.iconFontSize}
               btnTitle={showBtnTitle(el.btnTitle, el.btnType)}
-              btnHandler={!el.btnTitle ? null : () => {
+              btnHandler={!el.btnTitle && !el.btnIcon ? null : () => {
                 if (el.btnTitle === 'Allocate') {
                   onAllocate(el.btnType);
-                } else if (el.btnTitle === 'Refresh') {
+                } else if (el.btnTitle === 'Refresh' || el.btnIcon === 'cached') {
                   onRefresh();
                 }
               }}

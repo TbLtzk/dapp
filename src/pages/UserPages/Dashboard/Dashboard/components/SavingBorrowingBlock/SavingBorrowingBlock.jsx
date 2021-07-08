@@ -147,7 +147,7 @@ function SavingBorrowingBlock() {
               btnIcon={el.btnIcon}
               firstContent={el.firstContent}
               btnTitle={showBtnTitle(el.btnTitle, el.btnType)}
-              btnHandler={!el.btnTitle ? null : () => {
+              btnHandler={!el.btnTitle && !el.btnIcon ? null : () => {
                 onRefresh(el.btnType);
               }}
             />
