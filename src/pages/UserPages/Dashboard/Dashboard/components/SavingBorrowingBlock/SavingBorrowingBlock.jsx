@@ -10,6 +10,11 @@ import LoadingSpinner from 'components/Base/LoadingSpinner';
 
 import { remainDateTimeSince } from 'func/convertDate';
 
+const BTN_TYPES = {
+  balance: 'of-balance',
+  outstandingDebt: 'of-outstanding-debt',
+};
+
 function SavingBorrowingBlock() {
   const userAddress = useSelector(userAddressMetamask);
   const handler = new Handler(userAddress);
@@ -61,10 +66,10 @@ function SavingBorrowingBlock() {
 
   const onRefresh = useCallback((type) => {
     switch (type) {
-      case 'of-balance':
+      case BTN_TYPES.balance:
         handler.refreshTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setLoadingTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance);
         break;
-      case 'of-outstanding-debt':
+      case BTN_TYPES.outstandingDebt:
         handler.refreshTimeSinceOutstandingDebt(setTimeSinceOutstandingDeb, setLoadingTimeSinceOutstandingDeb, setTimeSinceUnixTimestampOutstandingDeb);
         break;
     }
@@ -102,35 +107,27 @@ function SavingBorrowingBlock() {
         firstContent: timeSinceRefreshBalance,
         btnIcon: 'cached',
         iconFontSize: '20px',
-        btnType: 'of-balance'
+        btnType: BTN_TYPES.balance
       },
       {
         title: 'QUSD - QBTC Time since refresh of outstanding debt',
         firstContent: timeSinceOutstandingDebt,
         btnIcon: 'cached',
         iconFontSize: '20px',
-        btnType: 'of-outstanding-debt'
+        btnType: BTN_TYPES.outstandingDebt
       },
     ];
   }, [totalSupply, systemBalance, savingRate, interestRate,
     timeSinceRefreshBalance, timeSinceOutstandingDebt]);
 
-  const showBtnTitle = (title, type) => {
+  const getIsLoading = (type) => {
     switch (type) {
-      case 'of-balance':
-        if (loadingTimeSinceRefreshBalance) {
-          return <LoadingSpinner/>;
-        } else {
-          return title;
-        }
-      case 'of-outstanding-debt':
-        if (loadingTimeSinceOutstandingDeb) {
-          return <LoadingSpinner/>;
-        } else {
-          return title;
-        }
+      case BTN_TYPES.balance:
+        return loadingTimeSinceRefreshBalance;
+      case BTN_TYPES.outstandingDebt:
+        return loadingTimeSinceOutstandingDeb;
       default:
-        return title;
+        return false;
     }
   };
 
@@ -142,12 +139,13 @@ function SavingBorrowingBlock() {
           return (
             <CardBlock
               key={el.title.replace(' ', '-')}
+              btnDisabled={getIsLoading(el.btnType)}
               title={el.title}
               iconFontSize={el.iconFontSize}
-              btnIcon={el.btnIcon}
+              btnIcon={getIsLoading(el.btnType) ? null : el.btnIcon}
               firstContent={el.firstContent}
-              btnTitle={showBtnTitle(el.btnTitle, el.btnType)}
-              btnHandler={!el.btnTitle ? null : () => {
+              btnTitle={getIsLoading(el.btnType) ? <LoadingSpinner/> : el.btnTitle}
+              btnHandler={!el.btnTitle && !el.btnIcon ? null : () => {
                 onRefresh(el.btnType);
               }}
             />

@@ -10,6 +10,13 @@ import LoadingSpinner from 'components/Base/LoadingSpinner';
 
 import { remainDateTimeSince } from 'func/convertDate';
 
+const BTN_TYPES = {
+  defaultAllocation: 'default-allocation',
+  validationRewardAllocation: 'validation-reward-allocation',
+  rootNodeAllocation: 'root-node-allocation',
+  timeSinceHolder: 'time-since-q-holder',
+};
+
 function TokenomicsBlock() {
   const userAddress = useSelector(userAddressMetamask);
 
@@ -95,14 +102,14 @@ function TokenomicsBlock() {
 
   const onAllocate = useCallback((type) => {
     switch (type) {
-      case 'default-allocation':
+      case BTN_TYPES.defaultAllocation:
         handler.getDefaultAllocationProxy(setDefaultAllocationProxy, setLoadingDefaultAllocation, true,
           null);
         break;
-      case 'validation-reward-allocation':
+      case BTN_TYPES.validationRewardAllocation:
         handler.getValidationRewardProxy(setValidationRewardProxy, setLoadingRootNodeReward, true);
         break;
-      case 'root-node-allocation':
+      case BTN_TYPES.rootNodeAllocation:
         handler.getRootNodeRewardProxy(setRootNodeRewardProxy, setLoadingValidationReward, true);
         break;
     }
@@ -118,7 +125,7 @@ function TokenomicsBlock() {
         title: 'Default Allocation Proxy',
         firstContent: defaultAllocationProxy + ' Q',
         btnTitle: 'Allocate',
-        btnType: 'default-allocation',
+        btnType: BTN_TYPES.defaultAllocation,
         btnIcon: 'cube-outline'
       },
       {
@@ -126,7 +133,7 @@ function TokenomicsBlock() {
         firstContent: validationRewardProxy + ' Q',
         btnTitle: 'Allocate',
         btnIcon: 'cube-outline',
-        btnType: 'validation-reward-allocation',
+        btnType: BTN_TYPES.validationRewardAllocation,
       },
       {
         title: 'Q Token Holder Reward Pool',
@@ -143,7 +150,7 @@ function TokenomicsBlock() {
         firstContent: rootNodeRewardProxy + ' Q',
         btnTitle: 'Allocate',
         btnIcon: 'cube-outline',
-        btnType: 'root-node-allocation',
+        btnType: BTN_TYPES.rootNodeAllocation,
       },
       {
         title: 'Validation Reward Pools',
@@ -155,40 +162,24 @@ function TokenomicsBlock() {
         firstContent: timeSinceQHolderRewardUpdate,
         btnIcon: 'cached',
         iconFontSize: '20px',
-        btnType: 'time-since-q-holder',
+        btnType: BTN_TYPES.timeSinceHolder,
       },
     ];
   }, [defaultAllocationProxy, validationRewardPools, validationRewardProxy, systemReserve, balanceVRP,
     rootNodeRewardProxy, QHolderRewardPool, timeSinceQHolderRewardUpdate]);
 
-  const showBtnTitle = (title, type) => {
+  const getIsLoading = (type) => {
     switch (type) {
-      case 'default-allocation':
-        if (loadingDefaultAllocation) {
-          return <LoadingSpinner/>;
-        } else {
-          return title;
-        }
-      case 'validation-reward-allocation':
-        if (loadingRootNodeReward) {
-          return <LoadingSpinner/>;
-        } else {
-          return title;
-        }
-      case 'root-node-allocation':
-        if (loadingValidationReward) {
-          return <LoadingSpinner/>;
-        } else {
-          return title;
-        }
-      case 'time-since-q-holder':
-        if (loadingTimeSince) {
-          return <LoadingSpinner/>;
-        } else {
-          return title;
-        }
+      case BTN_TYPES.defaultAllocation:
+        return loadingDefaultAllocation;
+      case BTN_TYPES.validationRewardAllocation:
+        return loadingRootNodeReward;
+      case BTN_TYPES.rootNodeAllocation:
+        return loadingValidationReward;
+      case BTN_TYPES.timeSinceHolder:
+        return loadingTimeSince;
       default:
-        return title;
+        return false;
     }
   };
 
@@ -200,15 +191,16 @@ function TokenomicsBlock() {
           return (
             <CardBlock
               key={el.title.replace(' ', '-')}
+              btnDisabled={getIsLoading(el.btnType)}
               title={el.title}
               firstContent={el.firstContent}
-              btnIcon={el.btnIcon}
+              btnIcon={getIsLoading(el.btnType) ? null : el.btnIcon}
               iconFontSize={el.iconFontSize}
-              btnTitle={showBtnTitle(el.btnTitle, el.btnType)}
-              btnHandler={!el.btnTitle ? null : () => {
+              btnTitle={getIsLoading(el.btnType) ? <LoadingSpinner/> : el.btnTitle}
+              btnHandler={!el.btnTitle && !el.btnIcon ? null : () => {
                 if (el.btnTitle === 'Allocate') {
                   onAllocate(el.btnType);
-                } else if (el.btnTitle === 'Refresh') {
+                } else if (el.btnTitle === 'Refresh' || el.btnIcon === 'cached') {
                   onRefresh();
                 }
               }}
