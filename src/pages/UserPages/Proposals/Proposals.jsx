@@ -144,12 +144,13 @@ function Proposals(props) {
     },
     {
       title: <Button
-        title="Refresh"
+        title='Refresh'
         handleButton={uploadProposals}
-        type="button"
-        width="100px"
+        type='button'
+        width='100px'
         position='absolute'
-        right='39%'
+        right='70px'
+        top='108px'
       />,
     },
   ];

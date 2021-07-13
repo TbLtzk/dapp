@@ -9,6 +9,7 @@ function Button(props) {
     type,
     position,
     right,
+    top,
     width,
     disabled,
     handleButton,
@@ -24,6 +25,7 @@ function Button(props) {
       width={width}
       position={position}
       right={right}
+      top={top}
       variant="primary"
       onClick={handleButton}
       title={title}
