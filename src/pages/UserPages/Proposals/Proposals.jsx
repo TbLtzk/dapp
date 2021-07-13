@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
-import PageWrap from "components/Base/PageWrap";
-import BigTabsView from "components/Base/Tabs/BigTabsView";
-import ProposalsTab from "./components/ProposalsTab";
-import CreateQProposalBtn from "./components/CreateQProposalBtn";
-import { transactionLoading } from "store/selectors/transaction-handler";
+import React, { useEffect } from 'react';
+import PageWrap from 'components/Base/PageWrap';
+import BigTabsView from 'components/Base/Tabs/BigTabsView';
+import ProposalsTab from './components/ProposalsTab';
+import CreateQProposalBtn from './components/CreateQProposalBtn';
+import { transactionLoading } from 'store/selectors/transaction-handler';
 
-import { PROPOSALS_TYPES } from "constants/statuses";
-import { useDispatch, useSelector } from "react-redux";
+import { PROPOSALS_TYPES } from 'constants/statuses';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     qEndedProposals,
     qErrorEnded,
@@ -14,7 +14,7 @@ import {
     qLoadingEndedProposals,
     qLoadingProposals,
     qProposalsArr,
-} from "store/selectors/voting/q-proposals";
+} from 'store/selectors/voting/q-proposals';
 import {
     rootNodeEndedProposals,
     rootNodeErrorEnded,
@@ -22,7 +22,7 @@ import {
     rootNodeLoadingEndedProposals,
     rootNodeLoadingProposals,
     rootNodeProposalsArr,
-} from "store/selectors/voting/root-node-proposals";
+} from 'store/selectors/voting/root-node-proposals';
 import {
     expertEndedProposals,
     expertErrorEnded,
@@ -30,7 +30,7 @@ import {
     expertLoadingEndedProposals,
     expertProposalsArr,
     loadingExpertProposals,
-} from "store/selectors/voting/expert-proposals";
+} from 'store/selectors/voting/expert-proposals';
 import {
     slashingEndedProposals,
     slashingErrorEnded,
@@ -38,10 +38,10 @@ import {
     slashingLoadingEndedProposals,
     slashingLoadingProposals,
     slashingProposalsArr,
-} from "store/selectors/voting/slashing-proposals";
-import { getEndedProposals, getProposalsList } from "store/actions/action-creaters/voting/proposals";
-import { getLockedAssets } from "store/actions/action-creaters/q-piggy-bank";
-import { userAddressMetamask } from "store/selectors/user-inf";
+} from 'store/selectors/voting/slashing-proposals';
+import { getEndedProposals, getProposalsList } from 'store/actions/action-creaters/voting/proposals';
+import { getLockedAssets } from 'store/actions/action-creaters/q-piggy-bank';
+import { userAddressMetamask } from 'store/selectors/user-inf';
 
 function Proposals(props) {
     const { proposalsType } = props;
@@ -57,14 +57,14 @@ function Proposals(props) {
     function getPageName(type) {
         switch (type) {
             case PROPOSALS_TYPES.proposals:
-                return "Q Proposals";
+                return 'Q Proposals';
             case PROPOSALS_TYPES.rootNodePanel:
-                return "Q Root Node Panel";
+                return 'Q Root Node Panel';
             case PROPOSALS_TYPES.expertProposals:
-                return "Q Expert Proposals";
+                return 'Q Expert Proposals';
             case PROPOSALS_TYPES.slashingProposals:
             default:
-                return "Slashing Proposals";
+                return 'Slashing Proposals';
         }
     }
 
@@ -119,8 +119,8 @@ function Proposals(props) {
 
     const tabsItems = [
         {
-            label: "active-proposals",
-            title: "Active Proposals",
+            label: 'active-proposals',
+            title: 'Active Proposals',
             content: (
                 <ProposalsTab
                     isLoading={isLoading}
@@ -131,8 +131,8 @@ function Proposals(props) {
             ),
         },
         {
-            label: "ended-proposals",
-            title: "Ended Proposals",
+            label: 'ended-proposals',
+            title: 'Ended Proposals',
             content: (
                 <ProposalsTab
                     isLoading={isEndedLoading}
