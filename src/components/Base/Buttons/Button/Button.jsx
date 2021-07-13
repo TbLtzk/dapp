@@ -7,6 +7,8 @@ function Button(props) {
   const {
     title,
     type,
+    position,
+    right,
     width,
     disabled,
     handleButton,
@@ -20,6 +22,8 @@ function Button(props) {
       disabled={disabled}
       type={type}
       width={width}
+      position={position}
+      right={right}
       variant="primary"
       onClick={handleButton}
       title={title}

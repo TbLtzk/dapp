@@ -21,7 +21,7 @@ function ProposalsTab(props) {
         proposalsKind={proposalsType}
       />
       <VotingStats/>
-    </ProposalsTabWrp>
+      </ProposalsTabWrp>
   );
 }
 

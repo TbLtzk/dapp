@@ -105,7 +105,7 @@ function ProposalsList(props) {
                       </div>
                     </div>
                   }
-                />
+                  />
               );
             })
       }
