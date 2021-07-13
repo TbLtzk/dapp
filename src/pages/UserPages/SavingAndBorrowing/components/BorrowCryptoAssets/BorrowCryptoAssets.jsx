@@ -16,12 +16,12 @@ const HEADERS = [
   ''
 ];
 
-function SavingCryptoAssets() {
+function BorrowCryptoAssets({ reload }) {
   const myAddress = useSelector(userAddressMetamask);
   const contract = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD']);
   const [assets, setAssets] = useState([]);
 
-  useEffect(async () => {
+  const fetchBorrowAssets = async () => {
     const userVaultsCount = await contract.userVaultsCount(myAddress);
 
     const count = new Array(+userVaultsCount);
@@ -42,7 +42,13 @@ function SavingCryptoAssets() {
     const vaultsLoc = await Promise.all(count.map((i, index) => getAdditionalData(index)));
 
     setAssets(vaultsLoc);
-  }, []);
+  }
+
+  useEffect(() => {
+    if (!reload) {
+      fetchBorrowAssets();
+    }
+  }, [reload]);
 
   return (
     <CustomBlock>
@@ -82,4 +88,4 @@ function SavingCryptoAssets() {
   );
 }
 
-export default SavingCryptoAssets;
+export default BorrowCryptoAssets;
