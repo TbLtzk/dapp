@@ -8,6 +8,7 @@ const initialState = {
   votingWeight: 0,
   votingLockingEnd: 0,
   deposit: 0,
+  lastClaim: 0,
 
   delegationList: [],
   loadingDelegationList: false,
@@ -78,6 +79,7 @@ export default function qPiggyBank(state = initialState, action) {
           return {
             ...state,
             outstandingDelegationRewards: action.result,
+            lastClaim: +new Date()
           };
         case actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS_ERROR:
           return {
