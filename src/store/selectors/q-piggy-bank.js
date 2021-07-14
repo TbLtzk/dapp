@@ -8,3 +8,4 @@ export const errorDelegationList = (state) => state.qPiggyBank.errorDelegationLi
 
 export const pbBalance = (state) => state.qPiggyBank.pbBalance;
 export const outstandingDelegationRewards = (state) => state.qPiggyBank.outstandingDelegationRewards;
+export const lastClaim = (state) => state.qPiggyBank.lastClaim;
