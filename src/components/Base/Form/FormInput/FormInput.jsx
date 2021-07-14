@@ -3,6 +3,8 @@ import { Form } from 'react-bootstrap';
 
 import ErrorInputMessage from 'components/Base/ErrorInputMessage';
 import { InputWrapper } from 'components/Base/Form/FormInput/styles';
+import { useSelector } from 'react-redux';
+import { theme } from 'store/selectors/theme';
 
 const FormInput = forwardRef((props, ref) => {
   // eslint-disable-next-line react/prop-types
@@ -21,12 +23,13 @@ const FormInput = forwardRef((props, ref) => {
   } = props;
 
   const [isFocus, setIsFocus] = useState('');
+  const currentTheme = useSelector(theme)
   return (
     <InputWrapper
       controlId="formBasicEmail"
       align={align}
       type={Boolean(valid) ? 'error' : ''}
-      palette={palette}
+      palette={currentTheme}
       lbl={lbl}
       isfocus={isFocus}
       isdisabled={disabled ? '1' : ''}

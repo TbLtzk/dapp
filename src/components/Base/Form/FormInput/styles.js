@@ -12,7 +12,20 @@ export const InputWrapper = styled(Form.Group)`
     font-size: 14px;
     line-height: 20px;
     padding: 6px 11px;
-    background: transparent;
+    ::placeholder {
+      color: ${(props) => {
+        if (props.palette === 'light') {
+        return props.theme.colors.white;
+        }
+      }};
+    }
+    background: ${(props) => {
+      if (props.palette === 'dark') {
+        return 'transparent';
+      } else {
+        return props.theme.colors.blue;
+      }
+    }};
     border: 1px solid ${(props) => {
       if (props.palette === 'dark') {
         return props.type === 'error' ? props.theme.colors.validationError : props.theme.colors.oxfordBlueTint2;
@@ -42,7 +55,13 @@ export const InputWrapper = styled(Form.Group)`
 
     &:focus {
       outline: none;
-      background: transparent;
+      background: ${(props) => {
+        if (props.palette === 'dark') {
+          return 'transparent';
+        } else {
+          return props.theme.colors.blue;
+        }
+      }};
       border: 1px solid ${(props) => {
         if (props.palette === 'dark') {
           return props.theme.colors.oxfordBlueTint1;
@@ -57,10 +76,22 @@ export const InputWrapper = styled(Form.Group)`
           return props.theme.colors.white;
         }
       }};
+      ::placeholder {
+        color: ${(props) => {
+        if (props.palette === 'light') {
+        return props.theme.colors.oxfordBlueTint2;
+        }
+      }};
     }
 
     &:disabled {
-      background: transparent;
+      background: ${(props) => {
+        if (props.palette === 'dark') {
+          return 'transparent';
+        } else {
+          return props.theme.colors.blue;
+        }
+      }};
       border: 1px solid ${(props) => {
         if (props.palette === 'dark') {
           return props.theme.colors.oxfordBlueTint5;
@@ -85,7 +116,7 @@ export const InputWrapper = styled(Form.Group)`
     font-size: 14px;
     line-height: 20px;
     min-height: ${inputMinHeight};
-    border-radius: 3px 0 0 3px;
+    border-radius: 30px 0 0 3px;
     padding: 6px 10px;
     white-space: nowrap;
     color: ${(props) => {

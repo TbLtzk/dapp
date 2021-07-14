@@ -283,7 +283,7 @@ function Sidebar() {
               </span>
           </CopyToClipboard>
           <Footer>
-            <Themes/>
+            <Themes />
             <Version/>
           </Footer>
         </FooterContainer>
