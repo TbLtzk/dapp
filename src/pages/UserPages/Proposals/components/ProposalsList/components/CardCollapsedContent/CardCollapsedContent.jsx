@@ -1,5 +1,5 @@
 import React from 'react';
-import { PROPOSALS_TYPES } from 'constants/statuses';
+import { PROPOSALS_TYPES, STATUSES } from 'constants/statuses';
 import PollDetail from '../PollDetail';
 import VoteBreakdown from '../VoteBreakdown';
 import SlashingObjection from '../SlashingObjection';
@@ -15,6 +15,7 @@ function CardCollapsedContent(props) {
     contract,
     proposalID,
     votingTime,
+    objData,
     vetoTime
   } = props;
   return (
@@ -37,16 +38,16 @@ function CardCollapsedContent(props) {
       <div className="list-card__line"/>
       <VoteBreakdown voteBreakdown={voteBreakdown}/>
       {
-        proposalsKind !== PROPOSALS_TYPES.slashingProposals
-          ? null
-          : (<>
+        proposalsKind === PROPOSALS_TYPES.slashingProposals && objData === STATUSES.executed
+          ?(<>
             <div className="list-card__line"/>
             <SlashingObjection
               contract={contract}
               proposalId={proposalID}
               objData={proposal?.objEscrow}
-            />
+              />  
           </>)
+        :null
       }
     </>
   );
