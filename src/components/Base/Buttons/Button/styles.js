@@ -17,6 +17,7 @@ export const ButtonCustom = styled(Button)`
   line-height: 18px;
 
   border-color: ${(props) => {
+  if (props.palette === 'dark' && props.variant === 'primary') {
     switch (props.type) {
       case 'white':
         return props.theme.colors.oxfordBlueTint5;
@@ -25,8 +26,19 @@ export const ButtonCustom = styled(Button)`
       default:
         return props.theme.colors.oxfordBlueTint2;
     }
+  } else {
+    switch (props.type) {
+      case 'white':
+        return props.theme.colors.oxfordBlueTint5;
+      case 'transparent':
+        return 'transparent';
+      default:
+        return props.theme.colors.oxfordBlueTint2;
+    }
+  }
   }};
   background-color: ${(props) => {
+  if (props.palette === 'dark' && props.variant === 'primary') {
     switch (props.type) {
       case 'white':
         return 'transparent';
@@ -35,8 +47,19 @@ export const ButtonCustom = styled(Button)`
       default:
         return props.theme.colors.oxfordBlueTint2;
     }
+  } else {
+    switch (props.type) {
+      case 'white':
+        return props.theme.colors.oxfordBlueTint5;;
+      case 'transparent':
+        return props.theme.colors.oxfordBlueTint5;;
+      default:
+        return props.theme.colors.oxfordBlueTint5;;
+    }
+   }
   }};
   color: ${(props) => {
+  if (props.palette === 'dark' && props.variant === 'primary') {
     switch (props.type) {
       case 'white':
         return props.theme.colors.oxfordBlueTint5;
@@ -45,38 +68,82 @@ export const ButtonCustom = styled(Button)`
       default:
         return props.theme.colors.white;
     }
+  } else {
+    switch (props.type) {
+      case 'white':
+        return props.theme.colors.oxfordBlue;
+      case 'transparent':
+        return props.theme.colors.oxfordBlue;
+      default:
+        return props.theme.colors.oxfordBlue;
+    }
+    }
   }};
   border-radius: 3px;
 
   &:disabled {
     color: ${(props) => {
-      switch (props.type) {
-        case 'white':
-          return props.theme.colors.oxfordBlue;
-        case 'transparent':
-          return props.theme.colors.oxfordBlueTint2;
-        default:
-          return props.theme.colors.oxfordBlue;
-      }
+  if (props.palette === 'dark' && props.variant === 'primary') {
+    switch (props.type) {
+      case 'white':
+        return props.theme.colors.oxfordBlue;
+      case 'transparent':
+        return props.theme.colors.oxfordBlueTint2;
+      default:
+        return props.theme.colors.oxfordBlue;
+    }
+  } else {
+    switch (props.type) {
+      case 'white':
+        return props.theme.colors.oxfordBlue;
+      case 'transparent':
+        return props.theme.colors.oxfordBlue;
+      default:
+        return props.theme.colors.oxfordBlue;
+    } 
+  }
     }};
     background-color: ${(props) => {
-      switch (props.type) {
-        case 'white':
-          return props.theme.colors.oxfordBlueTint2;
-        case 'transparent':
-          return 'transparent';
-        default:
-          return props.theme.colors.oxfordBlueTint2;
+  console.log(props);
+      if (props.palette === 'dark' && props.variant === 'primary') {
+        switch (props.type) {
+          case 'white':
+            return props.theme.colors.oxfordBlueTint2;
+          case 'transparent':
+            return 'transparent';
+          default:
+            return props.theme.colors.circleDark;
+        }
+      } else {
+        switch (props.type) {
+          case 'white':
+            return props.theme.colors.circleDark;
+          case 'transparent':
+            return  props.theme.colors.circleDark;
+          default:
+            return props.theme.colors.circleDark;
+        } 
       }
     }};
     border-color: ${(props) => {
-      switch (props.type) {
-        case 'white':
-          return props.theme.colors.oxfordBlueTint2;
-        case 'transparent':
-          return 'transparent';
-        default:
-          return props.theme.colors.oxfordBlueTint2;
+  if (props.palette === 'dark' && props.variant === 'primary') {
+    switch (props.type) {
+      case 'white':
+        return props.theme.colors.oxfordBlueTint2;
+      case 'transparent':
+        return 'transparent';
+      default:
+        return props.theme.colors.oxfordBlueTint2;
+    }
+  } else {
+    switch (props.type) {
+      case 'white':
+        return props.theme.colors.circleDark;
+      case 'transparent':
+        return 'transparent';
+      default:
+        return props.theme.colors.circleDark;
+    }
       }
     }};
     opacity: 1;
@@ -95,23 +162,45 @@ export const ButtonCustom = styled(Button)`
       }
     }};
     background-color: ${(props) => {
-      switch (props.type) {
-        case 'white':
-          return props.theme.colors.oxfordBlueTint5;
-        case 'transparent':
-          return props.theme.colors.oxfordBlueTint5;
-        default:
-          return props.theme.colors.neonGreen;
+  if (props.palette === 'dark' && props.variant === 'primary') {
+    switch (props.type) {
+      case 'white':
+        return props.theme.colors.oxfordBlueTint5;
+      case 'transparent':
+        return props.theme.colors.oxfordBlueTint5;
+      default:
+        return props.theme.colors.neonGreen;
+    }
+  } else {
+    switch (props.type) {
+      case 'white':
+        return props.theme.colors.oxfordBlueTint4;
+      case 'transparent':
+        return props.theme.colors.oxfordBlueTint4;
+      default:
+        return props.theme.colors.oxfordBlueTint4;
+    }
       }
     }};
     border-color: ${(props) => {
-      switch (props.type) {
-        case 'white':
-          return props.theme.colors.oxfordBlueTint5;
-        case 'transparent':
-          return props.theme.colors.oxfordBlueTint5;
-        default:
-          return props.theme.colors.neonGreen;
+  if (props.palette === 'dark' && props.variant === 'primary') {
+    switch (props.type) {
+      case 'white':
+        return props.theme.colors.oxfordBlueTint5;
+      case 'transparent':
+        return props.theme.colors.oxfordBlueTint5;
+      default:
+        return props.theme.colors.neonGreen;
+    }
+  } else {
+    switch (props.type) {
+      case 'white':
+        return props.theme.colors.oxfordBlueTint4;
+      case 'transparent':
+        return props.theme.colors.oxfordBlueTint4;
+      default:
+        return props.theme.colors.oxfordBlueTint4;
+    }
       }
     }};
   }
