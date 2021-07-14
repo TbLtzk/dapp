@@ -16,11 +16,11 @@ const HEADERS = [
   ''
 ];
 
-function SavingCryptoAssets() {
+function SavingCryptoAssets({ reload }) {
   const myAddress = useSelector(userAddressMetamask);
   const [assets, setAssets] = useState([]);
 
-  useEffect(async () => {
+  const fetchAssets = async () => {
     const contractSavingQUSD = new SavingQUSD(contractsToAddresses['SavingQUSD']);
     const BalanceDetails = await contractSavingQUSD.getBalanceDetails(myAddress)
       .catch(() => {
@@ -35,7 +35,13 @@ function SavingCryptoAssets() {
         },
       ]
     );
-  }, []);
+  }
+  
+  useEffect(() => {
+    if (!reload) {
+      fetchAssets()
+    }
+  }, [reload]);
 
   return (
     <CustomBlock>

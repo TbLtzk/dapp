@@ -7,13 +7,13 @@ import LoadingSpinner from 'components/Base/LoadingSpinner';
 
 import { Wrap, Shadow, WrapLoading, WrapText } from './styles';
 
-function LoadingTransaction() {
+function LoadingTransaction({ isLoading }) {
   const loading = useSelector(transactionLoading);
   const error = useSelector(errorMessage);
   const trCounter = useSelector(transactionCounter);
 
   const render = () => {
-    if (loading === true || trCounter > 0) {
+    if (loading === true || trCounter > 0 || isLoading) {
       return (
         <Wrap>
           <WrapLoading>
