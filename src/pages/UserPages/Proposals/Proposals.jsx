@@ -3,6 +3,7 @@ import PageWrap from 'components/Base/PageWrap';
 import BigTabsView from 'components/Base/Tabs/BigTabsView';
 import ProposalsTab from './components/ProposalsTab';
 import CreateQProposalBtn from './components/CreateQProposalBtn';
+import Button from 'components/Base/Buttons/Button';
 
 import { PROPOSALS_TYPES } from 'constants/statuses';
 import { useDispatch, useSelector } from 'react-redux';
@@ -111,12 +112,16 @@ function Proposals(props) {
         };
     }
   }
+ 
+  function uploadProposals () {
+    dispatch(getProposalsList(proposalsType));
+    dispatch(getEndedProposals(proposalsType));
+    dispatch(getLockedAssets(address));
+  }
 
   useEffect(() => {
     if (!loadingTransaction) {
-      dispatch(getProposalsList(proposalsType));
-      dispatch(getEndedProposals(proposalsType));
-      dispatch(getLockedAssets(address));
+      uploadProposals()
     }
   }, [loadingTransaction]);
 
@@ -139,6 +144,17 @@ function Proposals(props) {
         proposals={endedProposals}
         proposalsType={proposalsType}
         errorMessage={endedError}
+      />,
+    },
+    {
+      title: <Button
+        title='Refresh'
+        handleButton={uploadProposals}
+        type='button'
+        width='100px'
+        position='absolute'
+        right='70px'
+        top='108px'
       />,
     },
   ];

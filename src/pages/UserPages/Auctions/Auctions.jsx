@@ -94,7 +94,6 @@ function Auctions(props) {
       headerTitle={name}
       headerExtra={<CreateAuctionBtn activeTab={auctionsType}/>}
     >
-
       <BigTabsView
         tabsItems={tabsItems}
         active={tabsItems[0]?.label}

@@ -86,7 +86,7 @@ function Version() {
         modalTitle={'Version Information'}
         content={
           <>
-            <div className="modal-line"/>
+            <div className="modal-line" />
             <VersionsTable data={mainVersionInfo} header={versionInfoGroups.main}/>
             <div className="modal-line"/>
             <VersionsTable data={modulesVersionInfo} header={versionInfoGroups.modules}/>
