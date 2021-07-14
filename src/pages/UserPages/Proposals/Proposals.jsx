@@ -37,6 +37,7 @@ import {
 } from 'store/actions/action-creaters/voting/proposals';
 import { getLockedAssets } from 'store/actions/action-creaters/q-piggy-bank';
 import { userAddressMetamask } from 'store/selectors/user-inf';
+import { transactionLoading } from 'store/selectors/transaction-handler';
 
 function Proposals(props) {
   const {
@@ -44,6 +45,7 @@ function Proposals(props) {
   } = props;
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
+  const loadingTransaction = useSelector(transactionLoading);
 
   const {
     proposals,
@@ -118,8 +120,10 @@ function Proposals(props) {
   }
 
   useEffect(() => {
-    uploadProposals()
-  }, []);
+    if (!loadingTransaction) {
+      uploadProposals()
+    }
+  }, [loadingTransaction]);
 
   const tabsItems = [
     {
