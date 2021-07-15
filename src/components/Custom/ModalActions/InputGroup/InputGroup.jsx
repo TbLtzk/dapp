@@ -12,8 +12,11 @@ function InputGroup(props) {
       : { ...formData, ...inputsObj };
   });
 
-  const refType = useCallback((nameField) => {
+  const refType = useCallback((nameField, valueInput) => {
     if (nameField !== 'external-link' && nameField !== 'address') {
+      if (nameField === 'bid' && (Object.values(valueInput)[1]?.length > 0)) {
+        return
+      }
       return register({ required: 'Field is required!' });
     } else {
       let valueValid = '';
@@ -30,7 +33,6 @@ function InputGroup(props) {
         }
       });
     }
-
   }, []);
 
   return (
@@ -42,7 +44,7 @@ function InputGroup(props) {
         return (
           <Fragment key={i}>
             {labelsArr ? <h4>{labelsArr[i]}</h4> : null}
-            <FormInput
+              <FormInput
               palette={'dark'}
               name={nameField}
               onChange={(value) => {
@@ -52,7 +54,7 @@ function InputGroup(props) {
               }}
               value={val}
               placeholder={label}
-              ref={refType(nameField)}
+              ref={refType(nameField,valueInput)}
               valid={errors[nameField]?.message}
               min={min}
               max={max}
