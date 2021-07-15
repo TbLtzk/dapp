@@ -20,6 +20,7 @@ import { getAuctionsList, getEndedAuctionsList } from 'store/actions/action-crea
 import { AUCTIONS_TYPES } from 'constants/statuses';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSymbol } from 'store/actions/action-creaters/stable-coin';
+import { transactionLoading } from 'store/selectors/transaction-handler';
 
 function Auctions(props) {
   const {
@@ -33,6 +34,7 @@ function Auctions(props) {
   const isEndedLoading = useSelector(endedLoadingAuctions);
   const error = useSelector(errorM);
   const endedError = useSelector(endedErrorM);
+  const loadingTransaction = useSelector(transactionLoading)
 
   const name = getPageName(auctionsType);
 
@@ -61,10 +63,12 @@ function Auctions(props) {
   }
 
   useEffect(() => {
-    dispatch(getAuctionsList(auctionsType, true));
-    dispatch(getEndedAuctionsList(auctionsType, false));
-    dispatch(getSymbol());
-  }, []);
+    if (!loadingTransaction) {
+      dispatch(getAuctionsList(auctionsType, true));
+      dispatch(getEndedAuctionsList(auctionsType, false));
+      dispatch(getSymbol()); 
+    } 
+  }, [loadingTransaction]);
 
   const tabsItems = [
     {
