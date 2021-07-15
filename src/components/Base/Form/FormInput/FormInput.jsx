@@ -23,7 +23,7 @@ const FormInput = forwardRef((props, ref) => {
   } = props;
 
   const [isFocus, setIsFocus] = useState('');
-  const currentTheme = useSelector(theme)
+  const currentTheme = useSelector(theme);
   return (
     <InputWrapper
       controlId="formBasicEmail"

@@ -6,7 +6,7 @@ import { ButtonCustom } from './styles';
 import { theme } from 'store/selectors/theme';
 
 function Button(props) {
-  const currentTheme = useSelector(theme)
+  const currentTheme = useSelector(theme);
   const {
     title,
     type,

@@ -90,8 +90,20 @@ export const ListCardWrp = styled(Card)`
     font-size: 13px;
     line-height: 18px;
     border-color: ${(props) => props.theme.colors.oxfordBlueTint2};
-    background-color: ${(props) => props.theme.colors.oxfordBlueTint2};
-    color: ${(props) => props.theme.colors.white};
+    background-color: ${(props) => {
+    if (props.palette === 'dark') {
+      return props.theme.colors.oxfordBlueTint2;
+    } else {
+      return props.theme.colors.oxfordBlueTint5;
+    }
+  }};
+    color: ${(props) => {
+    if (props.palette === 'dark') {
+      return props.theme.colors.white;
+    } else {
+      return props.theme.colors.oxfordBlue;
+    }
+  }};
     border-radius: 3px;
 
     &:disabled {
@@ -125,21 +137,58 @@ export const ListCardWrp = styled(Card)`
     }
 
     &:focus {
-      color: ${(props) => props.theme.colors.white};
-      background-color: ${(props) => props.theme.colors.oxfordBlueTint2};
+      box-shadow: ${(props) => (props.palette === 'light' ? 'none !important' : 'auto')};
+      color: ${(props) => {
+    if (props.palette === 'dark') {
+      return props.theme.colors.white;
+    } else {
+      return props.theme.colors.oxfordBlue;
+    }
+  }}!important;
+      background-color: ${(props) => {
+    if (props.palette === 'dark') {
+      return props.theme.colors.oxfordBlueTint2;
+    } else {
+      return props.theme.colors.oxfordBlueTint5;
+    }
+  }}!important;
       border-color: ${(props) => props.theme.colors.oxfordBlueTint2};
 
       :after {
-        border-left: 1px solid ${(props) => props.theme.colors.white};
-        border-top: 1px solid ${(props) => props.theme.colors.white};
+        border-left: 1px solid ${(props) => {
+          if (props.palette === 'dark') {
+            return props.theme.colors.white;
+          } else {
+            return props.theme.colors.oxfordBlue;
+          }
+        }};
+        border-top: 1px solid ${(props) => {
+          if (props.palette === 'dark') {
+            return props.theme.colors.white;
+          } else {
+            return props.theme.colors.oxfordBlue;
+          }
+        }};
       }
     }
 
     :after {
       border-radius: 0;
       margin-left: 10px;
-      border-left: 1px solid ${(props) => props.theme.colors.white};
-      border-top: 1px solid ${(props) => props.theme.colors.white};
+      border-left: 1px solid ${(props) => {
+    if (props.palette === 'dark') {
+      return props.theme.colors.white;
+    } else {
+      return props.theme.colors.oxfordBlue;
+    }
+  }};
+      border-top: 1px solid ${(props) => {
+    if (props.palette === 'dark') {
+      return props.theme.colors.white;
+    } else {
+      return props.theme.colors.oxfordBlue;
+    }
+  }};
       border-right: none;
       width: 6px;
       height: 6px;
