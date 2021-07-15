@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import { getUserBalance, getLockedAssets, getPBBalance } from 'store/actions/action-creaters/q-piggy-bank';
-import { userBalance, votingWeight, votingLockingEnd, pbBalance } from 'store/selectors/q-piggy-bank';
+import { userBalance, votingWeight, votingLockingEnd, pbBalance, lastClaim } from 'store/selectors/q-piggy-bank';
 
 import { useAlert } from 'react-alert';
 
@@ -20,9 +20,11 @@ export default function Panel() {
   const userPBBalanceL = useSelector(userBalance);
   const userVotingWeight = fN(useSelector(votingWeight));
   const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd));
+  const updateOnClaim = useSelector(lastClaim);
 
   const [accountBalance, setAccountBalance] = useState();
   const [yearlyExpectedEarnings, setYearlyExpectedEarnings] = useState(0);
+  
 
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
@@ -32,7 +34,7 @@ export default function Panel() {
     dispatch(getUserBalance(userAddressL));
     dispatch(getLockedAssets(userAddressL));
     dispatch(getPBBalance());
-  }, [dispatch]);
+  }, [dispatch, updateOnClaim]);
 
   useEffect(() => {
     pBHandler.setAccountBalance(setAccountBalance);

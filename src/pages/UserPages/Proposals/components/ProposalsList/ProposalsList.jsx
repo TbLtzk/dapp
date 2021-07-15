@@ -86,6 +86,7 @@ function ProposalsList(props) {
                       contract={proposal.contract}
                       proposalID={proposal.id}
                       votingTime={proposal.votingEndTime}
+                      objData={proposal.status}
                       vetoTime={proposal.vetoEndTime}
                     />
                   }
