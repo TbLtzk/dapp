@@ -88,8 +88,6 @@ export const transformToPercentage = (number) => {
   return convertedNumber;
 };
 
-
-
 export function creationSlashingContractObj(contractName) {
   return new SlashingVotingService(contractName);
 }
