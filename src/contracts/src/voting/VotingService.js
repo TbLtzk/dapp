@@ -4,6 +4,7 @@ import {
   getPastEvents,
   getPastProposalsIds, transformToPercentage,
 } from '../../handler/VotingHandler';
+import RootService from '../Root'
 import { ParameterType } from '@q-dev/q-js-sdk';
 
 export default class VotingService {
@@ -36,9 +37,14 @@ export default class VotingService {
   }
 
   async getVetoesNumber(id) {
-    const result = await this.contract.methods.getVetosNumber(id)
-      .call();
-    return result;
+    try {
+      const result = await this.contract.methods.getVetosNumber(id)
+        .call();
+      return result;
+    } catch(err) {
+      console.log(id, 'error' + err)
+      return 0;
+    }
   }
 
   async getVetoesPercentage(id) {
@@ -51,7 +57,6 @@ export default class VotingService {
     const result = await this.contract.methods.voteAgainst(id)
       .send(
         { from: userAddress });
-
     return result;
   }
 
@@ -154,12 +159,21 @@ export default class VotingService {
     return proposals;
   }
 
+  async getRootNodesNumber() {
+    const root = new RootService;
+    return await root.contract.methods.getSize().call();
+  }
+
   async getProposalStatsData(id) {
     let objRes = {};
     let proposalStats = await this.getProposalStats(id);
+    let getVetoesNumber = await this.getVetoesNumber(id);
+    let rootNodesNumber = await this.getRootNodesNumber();
+    objRes.vetoesNumber = getVetoesNumber;
+    objRes.noVote = rootNodesNumber - getVetoesNumber;
+    objRes.vetoesPercentage = getVetoesNumber * 100 / rootNodesNumber;
     objRes.currentMajority = transformToPercentage(proposalStats.currentMajority);
     objRes.currentQuorum = transformToPercentage(proposalStats.currentQuorum);
-    objRes.currentVetoPercentage = transformToPercentage(proposalStats.currentVetoPercentage);
     objRes.requiredMajority = transformToPercentage(proposalStats.requiredMajority);
     objRes.requiredQuorum = transformToPercentage(proposalStats.requiredQuorum);
     objRes.vetoThreshold = '50';
@@ -228,3 +242,4 @@ export default class VotingService {
   }
 
 }
+
