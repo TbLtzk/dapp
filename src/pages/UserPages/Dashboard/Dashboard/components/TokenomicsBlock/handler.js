@@ -2,7 +2,7 @@ import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 import DefaultAllocationProxy from 'contracts/src/proxy/DefaultAllocationProxy';
 import RootNodeRewardProxy from 'contracts/src/proxy/RootNodeRewardProxy';
 import ValidationRewardProxy from 'contracts/src/proxy/ValidationRewardProxy';
-import QPiggyBank from 'contracts/src/QPiggyBank';
+import QVault from 'contracts/src/QVault';
 import CompoundRateKeeper from 'contracts/src/CompoundRateKeeper';
 import ContractBalance from 'contracts/handler/ContractBalance';
 
@@ -15,8 +15,8 @@ export default class Handler {
     this.DefaultAllocationProxy = new DefaultAllocationProxy('DefaultAllocationProxy');
     this.RootNodeRewardProxy = new RootNodeRewardProxy('RootNodeRewardProxy');
     this.ValidationRewardProxy = new ValidationRewardProxy('ValidationRewardProxy');
-    this.QPiggyBank = new QPiggyBank(contractsToAddresses['QVault']);
-    this.CompoundRateKeeperPiggyBank = new CompoundRateKeeper('CompoundRateKeeperPiggyBank');
+    this.QVault = new QVault(contractsToAddresses['QVault']);
+    this.CompoundRateKeeperQVault = new CompoundRateKeeper('CompoundRateKeeperQVault');
     this.ContractBalance = new ContractBalance(this.userAddress);
   }
 
@@ -107,7 +107,7 @@ export default class Handler {
   }
 
   getTimeSinceQHolderRewardUpdate(stateSetter, stateSetterUnixTimestamp) {
-    this.CompoundRateKeeperPiggyBank.getLastUpdate()
+    this.CompoundRateKeeperQVault.getLastUpdate()
       .then(
         res => {
           stateSetterUnixTimestamp(res);
@@ -123,7 +123,7 @@ export default class Handler {
 
   refreshTimeSinceQHolderRewardUpdate(stateSetter, stateLoading, stateSetterUnixTimestamp) {
     stateLoading(true);
-    this.QPiggyBank.updateCompoundRate(this.userAddress)
+    this.QVault.updateCompoundRate(this.userAddress)
       .then(
         res => {
           this.getTimeSinceQHolderRewardUpdate(stateSetter, stateSetterUnixTimestamp);

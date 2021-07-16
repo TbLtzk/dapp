@@ -4,7 +4,7 @@ import validators from 'store/reducers/validators';
 import UserAuth from './userAuth';
 import userInf from './userInf';
 import rootContract from './rootContract';
-import qPiggyBank from './qPiggyBank';
+import qVault from './qVault';
 
 import proposals from './voting/proposals';
 import qProposals from './voting/qProposals';
@@ -29,7 +29,7 @@ const RootReducer = combineReducers({
   userAuth: UserAuth,
   userInf,
   rootContract,
-  qPiggyBank,
+  qVault,
 
   proposals,
   qProposals,

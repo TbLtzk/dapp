@@ -29,7 +29,7 @@ import {
   slashingLoadingProposals,
   slashingProposalsArr
 } from 'store/selectors/voting/slashing-proposals';
-import { getLockedAssets } from 'store/actions/action-creaters/q-piggy-bank';
+import { getLockedAssets } from 'store/actions/action-creaters/q-vault';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 
 function Governance() {

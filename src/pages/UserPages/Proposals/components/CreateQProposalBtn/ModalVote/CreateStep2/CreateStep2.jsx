@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { votingLockingEnd } from 'store/selectors/q-piggy-bank';
+import { votingLockingEnd } from 'store/selectors/q-vault';
 import { formVoteObject } from 'store/selectors/voting/proposals';
 
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
