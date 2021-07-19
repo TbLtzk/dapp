@@ -9,6 +9,7 @@ export const ButtonCustom = styled(Button)`
   position: ${(props) => (!props.position ? 'auto' : props.position)};
   right: ${(props) => (!props.right ? 'auto' : props.right)};
   top: ${(props) => (!props.top ? 'auto' : props.top)};
+  margin: ${(props) => (!props.margin ? 'auto' : props.margin)};
   padding: 7px 11px;
   text-overflow: ellipsis;
   overflow: hidden;

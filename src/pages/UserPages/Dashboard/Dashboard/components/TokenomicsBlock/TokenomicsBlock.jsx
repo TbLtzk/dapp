@@ -182,7 +182,6 @@ function TokenomicsBlock() {
         return false;
     }
   };
-
   return (
     <CustomBlock>
       <h1>Tokenomics</h1>
