@@ -40,6 +40,8 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { PROPOSALS_TYPES, AUCTIONS_TYPES } from 'constants/statuses';
 import { getProposalsList } from 'store/actions/action-creaters/voting/proposals';
 import { getAuctionsList } from 'store/actions/action-creaters/auctions/auctions';
+import { mode } from 'store/selectors/dashboardMode';
+import { MODE } from 'components/Base/DashboardMode/DashboarModeButton';
 
 function Sidebar() {
   const history = useHistory();
@@ -54,6 +56,7 @@ function Sidebar() {
   const liquidations = useSelector(liquidationAuctions);
   const systemDebts = useSelector(systemDebtAuctions);
   const systemSurplus = useSelector(systemSurplusAuctions);
+  const appMode = useSelector(mode)
 
   const [isGovernanceAccordionOpened, setIsGovernanceAccordionOpened] = useState('1');
   const [isAuctionAccordionOpened, setIsAuctionAccordionOpened] = useState('1');
@@ -172,13 +175,17 @@ function Sidebar() {
             >
               Q Vault
             </LinkStyle>
-            <LinkStyle
+            {
+              appMode === MODE.advanced
+              ? <LinkStyle
               to={'/staking'}
               className="nav-link"
               highlight={highlight('staking')}
             >
-              Staking
-            </LinkStyle>
+              Consensus Services
+              </LinkStyle> 
+              : null
+            }
             <LinkStyle
               to={'/saving-and-borrowing'}
               className="nav-link"
