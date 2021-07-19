@@ -14,6 +14,7 @@ import {
   systemDebtAuctions,
   systemSurplusAuctions,
 } from 'store/selectors/auctions/auctions';
+import { mode } from 'store/selectors/dashboardMode'
 
 import Button from 'components/Base/Buttons/Button';
 import LogoImg from 'components/Base/LogoImg';
@@ -41,6 +42,9 @@ import { PROPOSALS_TYPES, AUCTIONS_TYPES } from 'constants/statuses';
 import { getProposalsList } from 'store/actions/action-creaters/voting/proposals';
 import { getAuctionsList } from 'store/actions/action-creaters/auctions/auctions';
 
+import { MODE } from 'components/Base/DashboardMode/DashboarModeButton';
+
+
 function Sidebar() {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -54,6 +58,8 @@ function Sidebar() {
   const liquidations = useSelector(liquidationAuctions);
   const systemDebts = useSelector(systemDebtAuctions);
   const systemSurplus = useSelector(systemSurplusAuctions);
+
+  const appMode = useSelector(mode)
 
   const [isGovernanceAccordionOpened, setIsGovernanceAccordionOpened] = useState('1');
   const [isAuctionAccordionOpened, setIsAuctionAccordionOpened] = useState('1');
@@ -77,7 +83,7 @@ function Sidebar() {
         <LinksContainer>
           <WrapLogo>
             <Link to={'/'}>
-              <LogoImg/>
+              <LogoImg />
             </Link>
           </WrapLogo>
           <ListContainer id="basic-navbar-nav">
@@ -108,7 +114,7 @@ function Sidebar() {
                 </LinkStyle>
                 <Accordion.Toggle eventKey="0">
                   <AccordionIcon state={isGovernanceAccordionOpened}>
-                    <i className={`mdi mdi-chevron-down`}/>
+                    <i className={`mdi mdi-chevron-down`} />
                   </AccordionIcon>
                 </Accordion.Toggle>
               </LinkGroup>
@@ -186,7 +192,7 @@ function Sidebar() {
             >
               Saving & Borrowing
             </LinkStyle>
-            <Accordion
+            {appMode === MODE.advanced ? (<Accordion
               defaultActiveKey="0"
               style={{ width: '100%' }}
               onSelect={(state) => {
@@ -205,7 +211,7 @@ function Sidebar() {
                 </LinkStyle>
                 <Accordion.Toggle eventKey="0">
                   <AccordionIcon state={isAuctionAccordionOpened}>
-                    <i className={`mdi mdi-chevron-down`}/>
+                    <i className={`mdi mdi-chevron-down`} />
                   </AccordionIcon>
                 </Accordion.Toggle>
               </LinkGroup>
@@ -249,7 +255,7 @@ function Sidebar() {
                   </LinkGroup>
                 </div>
               </Accordion.Collapse>
-            </Accordion>
+            </Accordion>) : null}
           </ListContainer>
           <ListTitle>References</ListTitle>
           <ListContainer>
@@ -271,7 +277,7 @@ function Sidebar() {
         </LinksContainer>
         <FooterContainer>
           <CopyToClipboard text={userAddress}>
-              <span title={userAddress}>
+            <span title={userAddress}>
               <Button
                 width={'100%'}
                 type={'white'}
@@ -280,11 +286,11 @@ function Sidebar() {
                 handleButton={() => {
                 }}
               />
-              </span>
+            </span>
           </CopyToClipboard>
           <Footer>
             <Themes />
-            <Version/>
+            <Version />
           </Footer>
         </FooterContainer>
       </NavbarContainer>
