@@ -252,7 +252,6 @@ export const ButtonCustom = styled(Button)`
   }
   };
     border-color: ${(props) => {
-  console.log(props);
     if (props.palette === 'dark' && props.variant === 'primary') {
       switch (props.type) {
         case 'white':
