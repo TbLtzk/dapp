@@ -1,9 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { ButtonCustom } from './styles';
+import { theme } from 'store/selectors/theme';
 
 function Button(props) {
+  const currentTheme = useSelector(theme);
   const {
     title,
     type,
@@ -20,6 +23,7 @@ function Button(props) {
 
   return (
     <ButtonCustom
+      palette={currentTheme}
       disabled={disabled}
       type={type}
       width={width}

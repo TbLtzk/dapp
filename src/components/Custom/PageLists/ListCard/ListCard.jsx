@@ -1,7 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { ListCardWrp, ListCardHeader, ListCardBody } from './styles';
 import { Accordion, useAccordionToggle } from 'react-bootstrap';
 import { DropdownButton } from 'react-bootstrap';
+import { theme } from 'store/selectors/theme';
 
 export function CustomToggle({ eventKey }) {
   const decoratedOnClick = useAccordionToggle(eventKey, () => {
@@ -15,6 +17,7 @@ export function CustomToggle({ eventKey }) {
 }
 
 function ListCard(props) {
+  const currentTheme = useSelector(theme)
   const {
     headerLeftSide,
     headerRightSide,
@@ -27,7 +30,7 @@ function ListCard(props) {
 
   } = props;
   return (
-    <ListCardWrp>
+    <ListCardWrp palette={currentTheme}>
       <Accordion defaultActiveKey="0">
         <ListCardHeader>
           <div>{headerLeftSide}</div>

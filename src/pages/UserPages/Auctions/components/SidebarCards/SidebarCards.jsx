@@ -138,7 +138,7 @@ function SidebarCards() {
 
   return (
     <div>
-      <Stats statsData={statsData} type="Auction"/>
+      <Stats statsData={statsData} type="Auction" />
       <SystemCard data={systemBalance} title={'QUSD System Balance'}/>
       <SystemCard data={systemReserve} title={'Q System Reserve'}/>
     </div>
