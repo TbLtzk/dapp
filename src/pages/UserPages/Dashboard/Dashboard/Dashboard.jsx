@@ -24,7 +24,8 @@ function Dashboard() {
     <PageWrap
       wrapContentClasses={'wrap-content__tow-colm'}
       headerTitle={'Dashboard'}
-      headerExtra={ appMode === MODE.advanced && (
+      headerExtra={appMode === MODE.advanced
+        ? (
         <Link to={'/q-parameters'}>
           <Button
             type={'white'}
@@ -32,20 +33,22 @@ function Dashboard() {
             handleButton={() => {
             }}
           />
-        </Link>
-      )}
+          </Link>
+        ) 
+        : null
+      }
       extraButton={<DashboardModeButton />}
     >
       <div>
         <InfBlock/>
-        {appMode ===  MODE.advanced && <TokenomicsBlock/>}
+        {appMode ===  MODE.advanced ? <TokenomicsBlock/> : null}
         <SavingBorrowingBlock />
       </div>
       <div>
         <RootNodePanel/>
         <ValidatorsPanel/>
-        {appMode ===  MODE.advanced && <DefiMembersPanel />}
-        {appMode ===  MODE.advanced && <QFeesMembersPanel />}
+        {appMode ===  MODE.advanced ? <DefiMembersPanel /> : null}
+        {appMode ===  MODE.advanced ? <QFeesMembersPanel /> : null}
       </div>
     </PageWrap>
   );
