@@ -1,9 +1,9 @@
 import {fromWei} from 'func/balance.js'
 import { contractsToAbi } from '../mapping/contract-to-abi';
 
-export default class QPiggyBank {
+export default class QVault {
   constructor(address) {
-    this.contractName = 'QPiggyBank';
+    this.contractName = 'QVault';
     this.contract = new window.web3.eth.Contract(contractsToAbi[this.contractName], address)
     this.methods = this.contract.methods;
   }

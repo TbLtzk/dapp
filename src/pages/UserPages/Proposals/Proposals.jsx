@@ -35,7 +35,7 @@ import {
   getEndedProposals,
   getProposalsList
 } from 'store/actions/action-creaters/voting/proposals';
-import { getLockedAssets } from 'store/actions/action-creaters/q-piggy-bank';
+import { getLockedAssets } from 'store/actions/action-creaters/q-vault';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import { transactionLoading } from 'store/selectors/transaction-handler';
 

@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getDelegationsList } from 'store/actions/action-creaters/q-piggy-bank';
+import { getDelegationsList } from 'store/actions/action-creaters/q-vault';
 import {
   loadingDelegationList,
   errorDelegationList,
   delegationList,
-} from 'store/selectors/q-piggy-bank';
+} from 'store/selectors/q-vault';
 
 import MemberTable from 'components/Custom/MembersPanel/MemberTable';
 import LoadingSpinner from 'components/Base/LoadingSpinner';

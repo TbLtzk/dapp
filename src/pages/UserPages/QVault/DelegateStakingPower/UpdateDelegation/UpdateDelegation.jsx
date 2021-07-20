@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import { userBalance } from 'store/selectors/q-piggy-bank';
+import { userBalance } from 'store/selectors/q-vault';
 
 import FormInput from 'components/Base/Form/FormInput';
 import Button from 'components/Base/Buttons/Button';
@@ -18,7 +18,7 @@ export default function UpdateDelegation() {
   const { register: reg1 } = useForm();
 
   const address = useSelector(userAddressMetamask);
-  const userPBBalanceL = useSelector(userBalance);
+  const userQVBalanceL = useSelector(userBalance);
 
   const contHandler = new ContractHandler(address, useDispatch(), useAlert());
   const compHandler = new ComponentHandler(useAlert());
@@ -34,7 +34,7 @@ export default function UpdateDelegation() {
   }
 
   function updateDelegations(applyZeroShare) {
-    const data = compHandler.getAddressesAndShares(applyZeroShare, userPBBalanceL);
+    const data = compHandler.getAddressesAndShares(applyZeroShare, userQVBalanceL);
     if (data.addresses.length !== 0 && data.shares.length !== 0) {
       contHandler.delegateStake(data.addresses, data.shares);
     }

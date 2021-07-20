@@ -6,7 +6,7 @@ import Panel from './Panel/Panel';
 import DelegateStakingPower from './DelegateStakingPower';
 import PageWrap from 'components/Base/PageWrap';
 
-function PiggyBank() {
+function QVault() {
   return (
     <PageWrap
       wrapContentClasses={'wrap-content__column-2-1'}
@@ -24,4 +24,4 @@ function PiggyBank() {
   );
 }
 
-export default PiggyBank;
+export default QVault;

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIsUserValidator } from 'store/actions/action-creaters/validators';
-import { getUserBalance } from 'store/actions/action-creaters/q-piggy-bank';
+import { getUserBalance } from 'store/actions/action-creaters/q-vault';
 import { getIsUserEPDRMember, getIsUserEPQFIMember } from 'store/actions/action-creaters/membership';
 
 import { isUserRootNode } from 'store/selectors/root-contract';
@@ -9,14 +9,14 @@ import { userAddressMetamask } from 'store/selectors/user-inf';
 import { isUserValidator } from 'store/selectors/validators';
 import { isUserEPDRMembership, isUserEPQFIMembership } from 'store/selectors/membership';
 
-import { userBalance } from 'store/selectors/q-piggy-bank';
+import { userBalance } from 'store/selectors/q-vault';
 
 function VoterStatus() {
   const dispatch = useDispatch();
   const userAddress = useSelector(userAddressMetamask);
   const isRootNode = useSelector(isUserRootNode);
   const isValidator = useSelector(isUserValidator);
-  const userPBBalance = useSelector(userBalance);
+  const userQVBalance = useSelector(userBalance);
   const isEPDRMembership = useSelector(isUserEPDRMembership);
   const isEPQFIMembership = useSelector(isUserEPQFIMembership);
 
@@ -35,7 +35,7 @@ function VoterStatus() {
     if (isValidator) {
       arrStatus.push('Validator');
     }
-    if (userPBBalance !== '0') {
+    if (userQVBalance !== '0') {
       arrStatus.push('Q Token Holder');
     }
     if (isEPDRMembership) {
@@ -49,7 +49,7 @@ function VoterStatus() {
     } else {
       return arrStatus.join(', ');
     }
-  }, [isRootNode, isValidator, userPBBalance]);
+  }, [isRootNode, isValidator, userQVBalance]);
 
   return (
     <>{showStatus}</>

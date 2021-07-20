@@ -12,7 +12,7 @@ import Manage from '../pages/UserPages/Dashboard/Manage';
 import Governance from '../pages/UserPages/Governance';
 import Proposals from '../pages/UserPages/Proposals';
 import Auctions from '../pages/UserPages/Auctions';
-import PiggyBank from '../pages/UserPages/PiggyBank';
+import QVault from '../pages/UserPages/QVault';
 import Staking from '../pages/UserPages/Staking';
 import OneProposalPage from '../pages/UserPages/OneProposalPage';
 import SavingAndBorrowing from '../pages/UserPages/SavingAndBorrowing';
@@ -49,7 +49,7 @@ function Routes() {
                component={AuthProtect(Auctions, { auctionsType: AUCTIONS_TYPES.systemDebt })}/>
         <Route exact path="/system-surplus"
                component={AuthProtect(Auctions, { auctionsType: AUCTIONS_TYPES.systemSurplus })}/>
-        <Route exact path="/piggy-bank" component={AuthProtect(PiggyBank)}/>
+        <Route exact path="/q-vault" component={AuthProtect(QVault)}/>
         <Route exact path="/staking" component={AuthProtect(Staking)}/>
         <Route exact path="/saving-and-borrowing" component={AuthProtect(SavingAndBorrowing)}/>
         <Route exact path="/q-governance/proposal/:contract?/:id?" component={AuthProtect(OneProposalPage)}/>

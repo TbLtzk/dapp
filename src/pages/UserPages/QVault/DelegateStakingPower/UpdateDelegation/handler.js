@@ -1,14 +1,14 @@
 // eslint-disable-next-line max-classes-per-file
 import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
-import { getDelegationsList, getOutstandingDelegationRewards } from 'store/actions/action-creaters/q-piggy-bank';
+import { getDelegationsList, getOutstandingDelegationRewards } from 'store/actions/action-creaters/q-vault';
 
-import QPiggyBank from 'contracts/src/QPiggyBank';
+import QVault from 'contracts/src/QVault';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 import { toWei } from 'func/balance';
 
 export class ContractHandler {
   constructor(address, dispatch, alert) {
-    this.piggyBank = new QPiggyBank(contractsToAddresses['QVault']);
+    this.qvault = new QVault(contractsToAddresses['QVault']);
     this.dispatch = dispatch;
     this.address = address;
     this.alert = alert;
@@ -17,7 +17,7 @@ export class ContractHandler {
   async delegateStake(delegateAddresses, stakes) {
     this.dispatch(setTransactionCounter(1));
 
-    this.piggyBank.delegateStake(this.address, delegateAddresses, stakes)
+    this.qvault.delegateStake(this.address, delegateAddresses, stakes)
       .then(() => {
         this.dispatch(getOutstandingDelegationRewards());
         this.dispatch(getDelegationsList());
@@ -81,7 +81,7 @@ export class ComponentHandler {
     });
 
     if (shareSum > userBalance) {
-      this.alert.error('Shared sum should be less then PB balance!');
+      this.alert.error('Shared sum should be less then QV balance!');
       invalidSharesKey.push(inputShares.length - 1);
     }
 

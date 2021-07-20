@@ -1,5 +1,5 @@
 import EPDR_Parameters from '../src/parameters/EPDR_Parameters';
-import QPiggyBank from '../src/QPiggyBank';
+import QVault from '../src/QVault'
 import { BorrowingCoreQUSD } from '../src/BorrowingCore';
 import { SavingQUSD } from '../src/Saving';
 import { contractsToContractsRegistryKey as contToKey } from './contract-to-contractRegistryKey';
@@ -52,7 +52,7 @@ export async function initAddresses() {
   const savingQUSDContract = new SavingQUSD(contractsToAddresses['SavingQUSD']);
   contractsToAddresses['CompoundRateKeeperSaving'] = await savingQUSDContract.compoundRateKeeper();
 
-  // QPiggyBank
-  const qPiggyBankContract = new QPiggyBank(contractsToAddresses['QVault']);
-  contractsToAddresses['CompoundRateKeeperPiggyBank'] = await qPiggyBankContract.compoundRateKeeper();
+  // QVault
+  const qVaultContract = new QVault(contractsToAddresses['QVault']);
+  contractsToAddresses['CompoundRateKeeperQVault'] = await qVaultContract.compoundRateKeeper();
 }

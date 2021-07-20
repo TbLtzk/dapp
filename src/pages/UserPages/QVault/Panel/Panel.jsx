@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
-import { getUserBalance, getLockedAssets, getPBBalance } from 'store/actions/action-creaters/q-piggy-bank';
-import { userBalance, votingWeight, votingLockingEnd, pbBalance, lastClaim } from 'store/selectors/q-piggy-bank';
+import { getUserBalance, getLockedAssets, getQVBalance } from 'store/actions/action-creaters/q-vault';
+import { userBalance, votingWeight, votingLockingEnd, qvBalance, lastClaim } from 'store/selectors/q-vault';
 
 import { useAlert } from 'react-alert';
 
 import VoterStatus from 'components/Custom/PageLists/VoterStatus';
 import CustomBlock from 'components/Base/CustomBlock';
 
-import PiggyBankHandler from '../handler';
+import QVaultHandler from '../handler';
 import { fN } from 'func/useful';
 import { fromSolDateFormattingT1 } from 'func/date';
 import { uintPerSecondToPerYearNumber } from 'func/useful';
 
 export default function Panel() {
   const userAddressL = useSelector(userAddressMetamask);
-  const balanceDetails = useSelector(pbBalance);
-  const userPBBalanceL = useSelector(userBalance);
+  const balanceDetails = useSelector(qvBalance);
+  const userQVBalanceL = useSelector(userBalance);
   const userVotingWeight = fN(useSelector(votingWeight));
   const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd));
   const updateOnClaim = useSelector(lastClaim);
@@ -28,16 +28,16 @@ export default function Panel() {
 
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
-  const pBHandler = new PiggyBankHandler(address, useDispatch(), useAlert());
+  const qvHandler = new QVaultHandler(address, useDispatch(), useAlert());
 
   useEffect(() => {
     dispatch(getUserBalance(userAddressL));
     dispatch(getLockedAssets(userAddressL));
-    dispatch(getPBBalance());
+    dispatch(getQVBalance());
   }, [dispatch, updateOnClaim]);
 
   useEffect(() => {
-    pBHandler.setAccountBalance(setAccountBalance);
+    qvHandler.setAccountBalance(setAccountBalance);
   });
 
   useEffect(() => {
@@ -45,18 +45,18 @@ export default function Panel() {
       ? uintPerSecondToPerYearNumber(balanceDetails.interestRate)
       : 0;
     let yearlyExpectedEarningsCalc = 0;
-    if (userPBBalanceL) {
-      yearlyExpectedEarningsCalc = userPBBalanceL * ((1 + interestRate) / 100);
+    if (userQVBalanceL) {
+      yearlyExpectedEarningsCalc = userQVBalanceL * ((1 + interestRate) / 100);
     }
     setYearlyExpectedEarnings(yearlyExpectedEarningsCalc);
-  }, [balanceDetails, userPBBalanceL]);
+  }, [balanceDetails, userQVBalanceL]);
 
   return (
     <CustomBlock>
       <h1>Overview</h1>
       <div>
         <h5>Q Vault balance</h5>
-        <p>{fN(userPBBalanceL) + ' Q'}</p>
+        <p>{fN(userQVBalanceL) + ' Q'}</p>
         <h5>Q Token Holder reward rate (p.a.)</h5>
         <p>{(balanceDetails?.interestRate ? fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate)) : 0) + '%'}</p>
         <h5>Yearly expected reward</h5>

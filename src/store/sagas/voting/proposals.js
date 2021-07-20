@@ -9,7 +9,7 @@ import {
 
 import {
   getLockedAssets
-} from 'store/actions/action-creaters/q-piggy-bank';
+} from 'store/actions/action-creaters/q-vault';
 
 import {
   createProposalSuccess, voteForProposalSuccess,
