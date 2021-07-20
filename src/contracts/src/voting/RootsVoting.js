@@ -55,13 +55,8 @@ export default class RootsVoting extends VotingService {
     objRes.vetoThreshold = promiseRes.base.params.vetoThreshold;
     //the time until when users can vote
     objRes.votingEndTime = promiseRes.base.params.votingEndTime;
-
     objRes.title = this.checkProposalTitle(candidateAddress, replaceDestAddress);
     // let getVotesAddress = await this.isUserVote(id, "0x00Ec0A77f6813dB9c01C65d2E2a086EE60e69ed7");
-    let getVetoesNumber = await this.getVetoesNumber(id);
-    let getVetoesPercentage = await this.getVetoesPercentage(id);
-    objRes.vetoesNumber = getVetoesNumber;
-    objRes.vetoesPercentage = getVetoesPercentage;
     objStats = await this.getProposalStatsData(id);
     objRes.status = getStatusTransformation(promiseStatus);
     objRes.contract = this.contractName;
