@@ -14,7 +14,6 @@ import {
   systemDebtAuctions,
   systemSurplusAuctions,
 } from 'store/selectors/auctions/auctions';
-import { mode } from 'store/selectors/dashboardMode'
 
 import Button from 'components/Base/Buttons/Button';
 import LogoImg from 'components/Base/LogoImg';
@@ -44,11 +43,6 @@ import { getAuctionsList } from 'store/actions/action-creaters/auctions/auctions
 import { mode } from 'store/selectors/dashboardMode';
 import { MODE } from 'components/Base/DashboardMode/DashboarModeButton';
 
-import { mode } from 'store/selectors/dashboardMode';
-import { MODE } from 'components/Base/DashboardMode/DashboarModeButton';
-
-import { MODE } from 'components/Base/DashboardMode/DashboarModeButton';
-
 
 function Sidebar() {
   const history = useHistory();
@@ -64,9 +58,6 @@ function Sidebar() {
   const liquidations = useSelector(liquidationAuctions);
   const systemDebts = useSelector(systemDebtAuctions);
   const systemSurplus = useSelector(systemSurplusAuctions);
-  const appMode = useSelector(mode)
-
-  const appMode = useSelector(mode)
 
   const [isGovernanceAccordionOpened, setIsGovernanceAccordionOpened] = useState('1');
   const [isAuctionAccordionOpened, setIsAuctionAccordionOpened] = useState('1');
@@ -196,7 +187,7 @@ function Sidebar() {
               highlight={highlight('staking')}
             >
               Consensus Services
-              </LinkStyle> 
+              </LinkStyle>
               : null
             }
             <LinkStyle
