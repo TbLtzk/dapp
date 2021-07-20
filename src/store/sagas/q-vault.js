@@ -1,21 +1,21 @@
 import { put, select, takeEvery } from 'redux-saga/effects';
 
-import * as actionTypes from 'store/actions/action-types/q-piggy-bank';
+import * as actionTypes from 'store/actions/action-types/q-vault';
 import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler';
 import {
   setError, setUserBalance, setLockedAssets, getUserBalance,
   getLockedAssets, getDelegationsListError, getDelegationsListSuccess,
-  getPBBalanceSuccess, getOutstandingDelegationRewardsSuccess, getOutstandingDelegationRewardsError,
+  getQVBalanceSuccess, getOutstandingDelegationRewardsSuccess, getOutstandingDelegationRewardsError,
   getOutstandingDelegationRewards, getDelegationsList
-} from 'store/actions/action-creaters/q-piggy-bank';
+} from 'store/actions/action-creaters/q-vault';
 import {
   setTransactionLoading,
   setTransactionLoadingError,
   setTransactionLoadingSuccess
 } from '../actions/action-creaters/transaction-handler';
 
-import QPiggyBank from 'contracts/src/QPiggyBank';
-import { handleLockedAssetsResponse } from 'contracts/handler/QPiggyBankHandler';
+import QVault from 'contracts/src/QVault';
+import { handleLockedAssetsResponse } from 'contracts/handler/QVaultHandler';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 import { toWei, fromWei } from 'func/balance';
 
@@ -23,7 +23,7 @@ let contractInstance = null;
 
 function getContractInstance() {
   if (contractInstance === null) {
-    contractInstance = new QPiggyBank(contractsToAddresses['QVault']);
+    contractInstance = new QVault(contractsToAddresses['QVault']);
   }
   return contractInstance;
 }
@@ -40,7 +40,7 @@ function* getUserBalanceGenerator({ address }) {
 
     yield put(setUserBalance(fromWei(data)));
   } catch (err) {
-    console.error('QPB.Error', err);
+    console.error('QV.Error', err);
     yield put(setError(err.message));
   } finally {
     yield put({
@@ -62,7 +62,7 @@ function* getLockedAssetsGenerator({ address }) {
     data = handleLockedAssetsResponse(data);
     yield put(setLockedAssets(data.votingWeight, data.votingLockingEnd));
   } catch (err) {
-    console.error('QPB.Error', err);
+    console.error('QV.Error', err);
     yield put(setError(err.message));
   } finally {
     yield put({
@@ -86,7 +86,7 @@ function* setDepositGenerator({ address, amountQ }) {
       yield put(getUserBalance(address));
     }
   } catch (err) {
-    console.error('QPB.Error', err);
+    console.error('QV.Error', err);
     yield put(setError(err.message));
   } finally {
     yield put({
@@ -110,7 +110,7 @@ function* setWithdrawGenerator({ address, amountQ }) {
       yield put(getUserBalance(address));
     }
   } catch (err) {
-    console.error('QPB.Error', err);
+    console.error('QV.Error', err);
     yield put(setError(err.message));
   } finally {
     yield put({
@@ -135,7 +135,7 @@ function* setLockAmountGenerator({ address, amountQ }) {
       yield put(getLockedAssets(address));
     }
   } catch (err) {
-    console.error('QPB.Error', err);
+    console.error('QV.Error', err);
     yield put(setError(err.message));
   } finally {
     yield put({
@@ -160,7 +160,7 @@ function* setUnlockAmountGenerator({ address, amountQ }) {
       yield put(getLockedAssets(address));
     }
   } catch (err) {
-    console.error('QPB.Error', err);
+    console.error('QV.Error', err);
     yield put(setError(err.message));
   } finally {
     yield put({
@@ -186,7 +186,7 @@ function* getBalanceDetails() {
   try {
     const contract = getContractInstance();
     const data = yield contract.getBalanceDetails();
-    yield put(getPBBalanceSuccess(data));
+    yield put(getQVBalanceSuccess(data));
   } catch (err) {
     console.error('getDelegationList.Error', err);
   }
@@ -222,16 +222,16 @@ function* onClaimStakeDelegatorReward() {
 }
 
 export default [
-  takeEvery(actionTypes.GET_PB_USER_BALANCE, getUserBalanceGenerator),
-  takeEvery(actionTypes.GET_PB_LOCKED_ASSETS, getLockedAssetsGenerator),
+  takeEvery(actionTypes.GET_QV_USER_BALANCE, getUserBalanceGenerator),
+  takeEvery(actionTypes.GET_QV_LOCKED_ASSETS, getLockedAssetsGenerator),
 
-  takeEvery(actionTypes.SET_PB_DEPOSIT_CALL, setDepositGenerator),
-  takeEvery(actionTypes.SET_PB_WITHDRAW_CALL, setWithdrawGenerator),
-  takeEvery(actionTypes.SET_PB_LOCK_AMOUNT, setLockAmountGenerator),
-  takeEvery(actionTypes.SET_PB_UNLOCK_AMOUNT, setUnlockAmountGenerator),
+  takeEvery(actionTypes.SET_QV_DEPOSIT_CALL, setDepositGenerator),
+  takeEvery(actionTypes.SET_QV_WITHDRAW_CALL, setWithdrawGenerator),
+  takeEvery(actionTypes.SET_QV_LOCK_AMOUNT, setLockAmountGenerator),
+  takeEvery(actionTypes.SET_QV_UNLOCK_AMOUNT, setUnlockAmountGenerator),
   takeEvery(actionTypes.GET_DELEGATIONS_LIST, getDelegationList),
 
-  takeEvery(actionTypes.GET_PB_BALANCE, getBalanceDetails),
+  takeEvery(actionTypes.GET_QV_BALANCE, getBalanceDetails),
   takeEvery(actionTypes.ON_CLAIM_STAKE_DELEGATOR_REWARD, onClaimStakeDelegatorReward),
   takeEvery(actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS, getOutstandingDelegationRewardsValue),
 ];

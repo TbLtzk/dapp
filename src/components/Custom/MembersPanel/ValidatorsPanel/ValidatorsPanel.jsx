@@ -77,7 +77,7 @@ function ValidatorsPanel(props) {
             icon="arrow-right"
             title={'Go to Q Vault'}
             handleButton={() => history.push({
-              pathname: '/piggy-bank',
+              pathname: '/q-vault',
             })}
           />
         </div>

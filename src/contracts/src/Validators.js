@@ -1,7 +1,7 @@
 import { contracts } from '../config/config';
 
 import ValidationRewardPools from './ValidationRewardPools';
-import QPiggyBank from './QPiggyBank';
+import QVault from './QVault';
 
 import {
   transformToPercentage,
@@ -17,7 +17,7 @@ export default class Validators {
   constructor() {
     this.methods = contracts[contractName].methods;
     this.ValidationRewardPoolsContract = new ValidationRewardPools();
-    this.QPiggyBank = new QPiggyBank(contractsToAddresses['QVault']);
+    this.QVault = new QVault(contractsToAddresses['QVault']);
   }
 
   async getValidatorsList() {

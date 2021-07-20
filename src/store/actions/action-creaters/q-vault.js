@@ -1,47 +1,47 @@
-import * as actionTypes from '../action-types/q-piggy-bank';
+import * as actionTypes from '../action-types/q-vault';
 
 export const setError = (data) => ({
-  type: actionTypes.SET_PB_ERROR,
+  type: actionTypes.SET_QV_ERROR,
   error: data
 });
 
 export const getUserBalance = (address) => ({
-  type: actionTypes.GET_PB_USER_BALANCE,
+  type: actionTypes.GET_QV_USER_BALANCE,
   address
 });
 export const setUserBalance = (data) => ({
-  type: actionTypes.SET_PB_USER_BALANCE,
+  type: actionTypes.SET_QV_USER_BALANCE,
   payload: data
 });
 
 export const getLockedAssets = (address) => ({
-  type: actionTypes.GET_PB_LOCKED_ASSETS,
+  type: actionTypes.GET_QV_LOCKED_ASSETS,
   address
 });
 export const setLockedAssets = (votingWeight, votingLockingEnd) => ({
-  type: actionTypes.SET_PB_LOCKED_ASSETS,
+  type: actionTypes.SET_QV_LOCKED_ASSETS,
   votingWeight,
   votingLockingEnd,
 });
 
 // Action without write to Store
 export const setDepositCall = (address, amountQ) => ({
-  type: actionTypes.SET_PB_DEPOSIT_CALL,
+  type: actionTypes.SET_QV_DEPOSIT_CALL,
   address,
   amountQ
 });
 export const setWithdrawCall = (address, amountQ) => ({
-  type: actionTypes.SET_PB_WITHDRAW_CALL,
+  type: actionTypes.SET_QV_WITHDRAW_CALL,
   address,
   amountQ
 });
 export const setLockAmount = (address, amountQ) => ({
-  type: actionTypes.SET_PB_LOCK_AMOUNT,
+  type: actionTypes.SET_QV_LOCK_AMOUNT,
   address,
   amountQ,
 });
 export const setUnlockAmount = (address, amountQ) => ({
-  type: actionTypes.SET_PB_UNLOCK_AMOUNT,
+  type: actionTypes.SET_QV_UNLOCK_AMOUNT,
   address,
   amountQ
 });
@@ -58,11 +58,11 @@ export const getDelegationsListError = (result) => ({
   result
 });
 
-export const getPBBalance = () => ({
-  type: actionTypes.GET_PB_BALANCE,
+export const getQVBalance = () => ({
+  type: actionTypes.GET_QV_BALANCE,
 });
-export const getPBBalanceSuccess = (result) => ({
-  type: actionTypes.GET_PB_BALANCE_SUCCESS,
+export const getQVBalanceSuccess = (result) => ({
+  type: actionTypes.GET_QV_BALANCE_SUCCESS,
   result
 });
 

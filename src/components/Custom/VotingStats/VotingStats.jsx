@@ -5,7 +5,7 @@ import VoterStatus from 'components/Custom/PageLists/VoterStatus';
 import { fN } from 'func/useful';
 import { fromSolDateFormattingT1 } from 'func/date';
 import { useSelector } from 'react-redux';
-import { votingLockingEnd, votingWeight } from 'store/selectors/q-piggy-bank';
+import { votingLockingEnd, votingWeight } from 'store/selectors/q-vault';
 
 function VotingStats() {
   const userVotingWeight = fN(useSelector(votingWeight));

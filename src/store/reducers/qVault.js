@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/action-types/q-piggy-bank';
+import * as actionTypes from '../actions/action-types/q-vault';
 
 const initialState = {
   lastUpdate: 0,
@@ -14,18 +14,18 @@ const initialState = {
   loadingDelegationList: false,
   errorDelegationList: null,
 
-  pbBalance: null,
+  qvBalance: null,
   outstandingDelegationRewards: 0,
 };
 
-export default function qPiggyBank(state = initialState, action) {
+export default function qVault(state = initialState, action) {
   switch (action.type) {
-    case actionTypes.SET_PB_DATA_IS_LOADING:
+    case actionTypes.SET_QV_DATA_IS_LOADING:
       return {
         ...state,
         isLoading: true
       };
-    case actionTypes.SET_PB_ERROR:
+    case actionTypes.SET_QV_ERROR:
       return {
         ...state,
         lastUpdate: Date.now(),
@@ -40,12 +40,12 @@ export default function qPiggyBank(state = initialState, action) {
         error: '',
       };
       switch (action.type) {
-        case actionTypes.SET_PB_USER_BALANCE:
+        case actionTypes.SET_QV_USER_BALANCE:
           return {
             ...newState,
             userBalance: action.payload,
           };
-        case actionTypes.SET_PB_LOCKED_ASSETS:
+        case actionTypes.SET_QV_LOCKED_ASSETS:
           return {
             ...newState,
             votingWeight: action.votingWeight,
@@ -70,10 +70,10 @@ export default function qPiggyBank(state = initialState, action) {
             delegationList: [],
             errorDelegationList: action.result,
           };
-        case actionTypes.GET_PB_BALANCE_SUCCESS:
+        case actionTypes.GET_QV_BALANCE_SUCCESS:
           return {
             ...state,
-            pbBalance: action.result,
+            qvBalance: action.result,
           };
         case actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS_SUCCESS:
           return {

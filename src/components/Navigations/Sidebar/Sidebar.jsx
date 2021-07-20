@@ -166,9 +166,9 @@ function Sidebar() {
               </Accordion.Collapse>
             </Accordion>
             <LinkStyle
-              to={'/piggy-bank'}
+              to={'/q-vault'}
               className="nav-link"
-              highlight={highlight('piggy-bank')}
+              highlight={highlight('q-vault')}
             >
               Q Vault
             </LinkStyle>
