@@ -32,9 +32,13 @@ import {
 import { getLockedAssets } from 'store/actions/action-creaters/q-vault';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 
+import { mode } from 'store/selectors/dashboardMode';
+import { MODE } from 'components/Base/DashboardMode/DashboarModeButton';
+
 function Governance() {
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
+  const appMode = useSelector(mode)
 
   useEffect(() => {
     for (let item in PROPOSALS_TYPES) {
@@ -86,15 +90,14 @@ function Governance() {
           isLoading={qLoading || qLoadingEnded}
           isError={qError || qErrorEndedM}
         />
-
-        <InfoBlock
+        {appMode === MODE.advanced ? <InfoBlock
           header="Expert Proposals"
           activeProposalsNumber={expertProposals.length}
           endedProposalsNumber={expertEnded.length}
           detailsLink="q-expert-proposals"
           isLoading={expertLoading || expertLoadingEnded}
           isError={expertError || expertErrorEndedM}
-        />
+        /> : null}
       </div>
       <div>
         <InfoBlock
@@ -105,16 +108,16 @@ function Governance() {
           isLoading={rootNodeLoading || rootNodeLoadingEnded}
           isError={rootNodeError || rootNodeErrorEndedM}
         />
-        <InfoBlock
+        {appMode === MODE.advanced ? <InfoBlock
           header="Slashing Proposals"
           activeProposalsNumber={slashingProposals.length}
           endedProposalsNumber={slashingEnded.length}
           detailsLink="slashing-proposals"
           isLoading={slashingLoading || slashingLoadingEnded}
           isError={slashingError || slashingErrorEndedM}
-        />
+        /> : null}
       </div>
-      <VotingStats/>
+      <VotingStats />
     </PageWrap>
   );
 }

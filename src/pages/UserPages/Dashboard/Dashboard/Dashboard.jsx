@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import RootNodePanel from 'components/Custom/MembersPanel/RootNodePanel';
 import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
@@ -10,15 +11,21 @@ import TokenomicsBlock from './components/TokenomicsBlock';
 import SavingBorrowingBlock from './components/SavingBorrowingBlock';
 import Button from 'components/Base/Buttons/Button';
 import PageWrap from 'components/Base/PageWrap';
+import DashboardModeButton from 'components/Base/DashboardMode/DashboarModeButton';
 
 import { Link } from 'react-router-dom';
 
+import { mode } from 'store/selectors/dashboardMode';
+import { MODE } from 'components/Base/DashboardMode/DashboarModeButton';
+
 function Dashboard() {
+  const appMode = useSelector(mode)
   return (
     <PageWrap
       wrapContentClasses={'wrap-content__tow-colm'}
       headerTitle={'Dashboard'}
-      headerExtra={(
+      headerExtra={appMode === MODE.advanced
+        ? (
         <Link to={'/q-parameters'}>
           <Button
             type={'white'}
@@ -26,19 +33,22 @@ function Dashboard() {
             handleButton={() => {
             }}
           />
-        </Link>
-      )}
+          </Link>
+        ) 
+        : null
+      }
+      extraButton={<DashboardModeButton />}
     >
       <div>
         <InfBlock/>
-        <TokenomicsBlock/>
-        <SavingBorrowingBlock/>
+        {appMode ===  MODE.advanced ? <TokenomicsBlock/> : null}
+        <SavingBorrowingBlock />
       </div>
       <div>
         <RootNodePanel/>
         <ValidatorsPanel/>
-        <DefiMembersPanel/>
-        <QFeesMembersPanel/>
+        {appMode ===  MODE.advanced ? <DefiMembersPanel /> : null}
+        {appMode ===  MODE.advanced ? <QFeesMembersPanel /> : null}
       </div>
     </PageWrap>
   );

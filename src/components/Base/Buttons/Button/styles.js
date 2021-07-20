@@ -9,6 +9,7 @@ export const ButtonCustom = styled(Button)`
   position: ${(props) => (!props.position ? 'auto' : props.position)};
   right: ${(props) => (!props.right ? 'auto' : props.right)};
   top: ${(props) => (!props.top ? 'auto' : props.top)};
+  margin: ${(props) => (!props.margin ? 'auto' : props.margin)};
   padding: 7px 11px;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -263,11 +264,11 @@ export const ButtonCustom = styled(Button)`
     } else {
       switch (props.type) {
         case 'white':
-          return '#87FF65';
+          return props.theme.colors.activeLinks;
         case 'transparent':
-          return '#87FF65';
+          return props.theme.colors.activeLinks;
         default:
-          return '#87FF65';
+          return props.theme.colors.activeLinks;
       }
     }
   }}

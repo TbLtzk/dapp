@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
 import { useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
+import { mode } from 'store/selectors/dashboardMode';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import CardBlock from 'components/Base/CardBlock';
@@ -9,6 +10,7 @@ import Handler from './handler';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 
 import { remainDateTimeSince } from 'func/convertDate';
+import { MODE } from 'components/Base/DashboardMode/DashboarModeButton';
 
 const BTN_TYPES = {
   balance: 'of-balance',
@@ -17,6 +19,7 @@ const BTN_TYPES = {
 
 function SavingBorrowingBlock() {
   const userAddress = useSelector(userAddressMetamask);
+  const appMode = useSelector(mode)
   const handler = new Handler(userAddress);
 
   const [totalSupply, setTotalSupply] = useState('0');
@@ -135,7 +138,8 @@ function SavingBorrowingBlock() {
     <CustomBlock>
       <h1>Saving and Borrowing</h1>
       {
-        dataArr?.map((el) => {
+        dataArr?.filter(el =>appMode === MODE.basic ? el.btnTitle === null : el)
+        .map((el) => {
           return (
             <CardBlock
               key={el.title.replace(' ', '-')}

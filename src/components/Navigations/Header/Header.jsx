@@ -9,7 +9,8 @@ import {
 function Header(props) {
   const {
     header,
-    extra
+    extra,
+    extraButton
   } = props;
 
   return (
@@ -18,6 +19,7 @@ function Header(props) {
         {header}
       </HeaderTitle>
       <HeaderActions>
+      {extraButton}
         {extra}
       </HeaderActions>
     </HeaderWrp>

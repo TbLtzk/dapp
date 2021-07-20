@@ -13,6 +13,7 @@ function Button(props) {
     position,
     right,
     top,
+    margin,
     width,
     disabled,
     handleButton,
@@ -30,6 +31,7 @@ function Button(props) {
       position={position}
       right={right}
       top={top}
+      margin={margin}
       variant="primary"
       onClick={handleButton}
       title={title}
