@@ -70,7 +70,6 @@ function CreateQProposalBtn(props) {
         onHide={() => {
           setModalShow(false);
           dispatch(setCreateProposalObj({}));
-          dispatch(getParameterValueByKeySuccess(''));
         }}
       />
     </>
