@@ -65,26 +65,6 @@ function VoteBreakdown(props) {
           </div>
           <h5>Objection Requirement: {'>'}{voteBreakdown.vetoThreshold}%</h5>
         </div>
-        {/* <div>
-          <h4>Q Community Veto</h4>
-          <div className="list-card__chart-block">
-            <PieChartTwoItem
-              data={[{
-                name: 'For',
-                value: 25
-              },
-                {
-                  name: 'Against',
-                  value: 75
-                },]}
-            />
-            <div>
-              <ColorTitle color="white"><Circle color="circle-white"/>For</ColorTitle>
-              <ColorTitle color="dark"><Circle color="circle-dark"/>Against</ColorTitle>
-            </div>
-          </div>
-          <h5>Veto Requirement: 0%</h5>
-        </div> */}
       </div>
       <h3 style={{ marginTop: '20px' }}>Vote Requirements</h3>
       <div className="list-card__three-colm">
