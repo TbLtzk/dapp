@@ -8,6 +8,7 @@ import ParametersVotingService from '../src/voting/ParametersVoting';
 import { chooseExpertContractDependsOnType } from './QExpertVotingHandler';
 import { PROPOSALS_TYPES } from 'constants/statuses';
 import { BN } from 'func/useful';
+import { CONTRACT_TYPES } from 'constants/contracts';
 
 export const getPastEvents = async (contract, event) => {
   const contractWeb3 = contract;
@@ -124,22 +125,22 @@ export const arrContractsExpert = [
   {
     // EPQFI_MembershipVoting
     typeContract: 'member',
-    type: 'q-fees-&-incentives-membership-panel',
+    type: CONTRACT_TYPES.qFee,
   },
   {
     // EPDR_MembershipVoting
     typeContract: 'member',
-    type: 'q-defi-(decentralized-finance)-membership-panel',
+    type: CONTRACT_TYPES.qDefi,
   },
   {
     // EPQFI_ParametersVoting
     typeContract: 'parameters',
-    type: 'q-fees-&-incentives-membership-panel',
+    type: CONTRACT_TYPES.qFee,
   },
   {
     // EPDR_ParametersVoting
     typeContract: 'parameters',
-    type: 'q-defi-(decentralized-finance)-membership-panel',
+    type: CONTRACT_TYPES.qDefi,
   }
 ];
 

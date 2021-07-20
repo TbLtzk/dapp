@@ -1,4 +1,5 @@
 import { ParameterType } from '@q-dev/q-js-sdk';
+import { CONTRACT_TYPES } from 'constants/contracts';
 
 /**
  * @contract {contract} ConstitutionParameters or EPQFI_Parameters or EPDR_Parameters
@@ -107,4 +108,35 @@ export function getTypeName(typeId) {
       return 'Uint';
   }
 }
+
+export function getTypeKey(typeId) {
+  switch (typeId) {
+    case ParameterType.ADDRESS:
+      return 'address';
+    case ParameterType.BOOL:
+      return 'boolean';
+    case ParameterType.STRING:
+      return 'string';
+    case ParameterType.UINT:
+      return 'uint';
+    case ParameterType.BYTE:
+      return 'byte';
+    default:
+      return '';
+  }
+}
+
+export function getContractTypeKey(typeId) {
+  switch (typeId) {
+    case CONTRACT_TYPES.constitution:
+      return 'constitution';
+    case CONTRACT_TYPES.qDefi:
+      return 'qDefi';
+    case CONTRACT_TYPES.qFee:
+      return 'qFee';
+    default:
+      return '';
+  }
+}
+
 

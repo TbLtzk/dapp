@@ -1,11 +1,11 @@
 import MembershipVotingService from '../src/voting/MembershipVoting';
 import ParametersVotingService from '../src/voting/ParametersVoting';
-import { GOVERNS_TYPES } from 'constants/contracts';
+import { CONTRACT_TYPES } from 'constants/contracts';
 
 export const chooseExpertContractDependsOnType = (typeContract, type) => {
   let contract = null;
   let contractName = null;
-  if (type === GOVERNS_TYPES.qFee) {
+  if (type === CONTRACT_TYPES.qFee) {
     if (typeContract === 'member') {
       contractName = 'EPQFI_MembershipVoting';
       contract = new MembershipVotingService(contractName);
@@ -13,7 +13,7 @@ export const chooseExpertContractDependsOnType = (typeContract, type) => {
       contractName = 'EPQFI_ParametersVoting';
       contract = new ParametersVotingService(contractName);
     }
-  } else if (type === GOVERNS_TYPES.qDefi) {
+  } else if (type === CONTRACT_TYPES.qDefi) {
     if (typeContract === 'member') {
       contractName = 'EPDR_MembershipVoting';
       contract = new MembershipVotingService(contractName);
@@ -27,13 +27,13 @@ export const chooseExpertContractDependsOnType = (typeContract, type) => {
 };
 export const chooseExpertContractNameDependsOnType = (typeContract, type) => {
   let contractName = null;
-  if (type === GOVERNS_TYPES.qFee) {
+  if (type === CONTRACT_TYPES.qFee) {
     if (typeContract === 'member') {
       contractName = 'EPQFI_MembershipVoting';
     } else if (typeContract === 'parameters') {
       contractName = 'EPQFI_ParametersVoting';
     }
-  } else if (type === GOVERNS_TYPES.qDefi) {
+  } else if (type === CONTRACT_TYPES.qDefi) {
     if (typeContract === 'member') {
       contractName = 'EPDR_MembershipVoting';
     } else if (typeContract === 'parameters') {

@@ -7,7 +7,7 @@ import { getParameterKeysByType } from 'store/actions/action-creaters/parameters
 
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
 import InputGroup from 'components/Custom/ModalActions/InputGroup';
-// import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue';
+import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue';
 
 import { addNewExpert, removeExpert, parameterVote } from './constants';
 import FormSelect from 'components/Base/Form/FormSelect';
@@ -38,6 +38,7 @@ function QExpertS2(props) {
     newParams[index][key] = newType;
     setParams(newParams);
   }
+
   function changeTypesCapacity(action) {
     let newCapacity = 0;
     switch (action) {
@@ -60,15 +61,17 @@ function QExpertS2(props) {
         break;
     }
   }
-  function changePanel (panelType) {
+
+  function changePanel(panelType) {
     setTypePanel(panelType);
     params.forEach(item => {
-      if(item.type) dispatch(getParameterKeysByType(panelType, item.type));
-    })
+      if (item.type) dispatch(getParameterKeysByType(panelType, item.type));
+    });
   }
+
   useEffect(() => {
     if (formData?.first === 'parameter-vote') {
-      let  key = parameterVote.parameterType
+      let key = parameterVote.parameterType;
 
       if (formData[key]) {
         setParams(
@@ -165,7 +168,7 @@ function QExpertS2(props) {
               errors={errors}
               nameArr={parameterVote.radioBtnName}
               handleChange={(value) => {
-                changePanel(value.target.value)
+                changePanel(value.target.value);
               }}
             />
             <h2>{parameterVote.subtitleInputUp}</h2>
@@ -212,12 +215,11 @@ function QExpertS2(props) {
                       setNewValue(index, 'value', value.target.value);
                     }}
                   />
-                  {/*TODO: need to fix CurrentParameterValue bug*/}
-                  {/*<CurrentParameterValue*/}
-                  {/*  typePanel={typePanel}*/}
-                  {/*  typeParameter={params[index].type}*/}
-                  {/*  parameterKey={params[index].key}*/}
-                  {/*/>*/}
+                  <CurrentParameterValue
+                    typePanel={typePanel}
+                    typeParameter={params[index].type}
+                    parameterKey={params[index].key}
+                  />
                 </Fragment>
               );
             })}
