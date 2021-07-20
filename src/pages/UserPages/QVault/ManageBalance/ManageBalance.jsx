@@ -6,7 +6,7 @@ import Button from 'components/Base/Buttons/Button';
 import { useForm } from 'react-hook-form';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setDepositCall, setWithdrawCall } from 'store/actions/action-creaters/q-piggy-bank';
+import { setDepositCall, setWithdrawCall } from 'store/actions/action-creaters/q-vault';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 
 export default function ManageBalance() {

@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   onClaimStakeDelegatorReward,
   getOutstandingDelegationRewards
-} from 'store/actions/action-creaters/q-piggy-bank';
-import { outstandingDelegationRewards } from 'store/selectors/q-piggy-bank';
+} from 'store/actions/action-creaters/q-vault';
+import { outstandingDelegationRewards } from 'store/selectors/q-vault';
 
 import { fN } from 'func/useful';
 import CardBlock from 'components/Base/CardBlock';

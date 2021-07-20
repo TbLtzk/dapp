@@ -5,11 +5,11 @@ import { userAddressMetamask } from 'store/selectors/user-inf';
 import { debtSB, loadingPerformNetting, surplusSB, systemBalanceSB } from 'store/selectors/system-balance';
 import { lastAuctionModification } from 'store/selectors/auctions/auctions';
 import { availableAmountSR } from 'store/selectors/system-reserve';
-import { userBalance } from 'store/selectors/q-piggy-bank';
+import { userBalance } from 'store/selectors/q-vault';
 
 import { getDebt, getSurplus, getSystemBalance } from 'store/actions/action-creaters/system-balance';
 import { getAvailableAmount } from 'store/actions/action-creaters/system-reserve';
-import { getUserBalance } from 'store/actions/action-creaters/q-piggy-bank';
+import { getUserBalance } from 'store/actions/action-creaters/q-vault';
 import { getEPDRUint } from 'contracts/handler/ContractsEPDR';
 
 import Stats from 'components/Custom/PageLists/SidebarCards/Stats';
@@ -35,7 +35,7 @@ function SidebarCards() {
   const debt = fN(useSelector(debtSB));
   const systemBalanceResult = fN(useSelector(systemBalanceSB));
   const availableAmount = fN(useSelector(availableAmountSR));
-  const userPBBalance = fN(useSelector(userBalance));
+  const userQVBalance = fN(useSelector(userBalance));
   const loadingPerfNetting = useSelector(loadingPerformNetting);
   const isAuctionModified = useSelector(lastAuctionModification);
 
@@ -84,7 +84,7 @@ function SidebarCards() {
         },
         {
           title: 'Q Balance in Q Vault',
-          value: userPBBalance + ' Q',
+          value: userQVBalance + ' Q',
         },
         {
           title: 'QUSD Balance',
@@ -92,7 +92,7 @@ function SidebarCards() {
         },
       ]
     );
-  }, [userPBBalance, userBalanceQ, QUSDUserBalance]);
+  }, [userQVBalance, userBalanceQ, QUSDUserBalance]);
 
   const systemBalance = useMemo(() => {
     return (

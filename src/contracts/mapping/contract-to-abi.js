@@ -20,7 +20,7 @@ const dynamicContracts = {
   GeneralUpdateVoting: getAbi('GeneralUpdateVoting.json'),
   LiquidationAuction: getAbi('LiquidationAuction.json'),
   QHolderRewardPool: getAbi('QHolderRewardPool.json'),
-  QPiggyBank: getAbi('QVault.json'),
+  QVault: getAbi('QVault.json'),
   RootNodeRewardProxy: getAbi('RootNodeRewardProxy.json'),
   Root: getAbi('Roots.json'),
   RootsVoting: getAbi('RootsVoting.json'),
@@ -45,7 +45,7 @@ const customContracts = {
   GovernedEpdrQethAddress: getAbi('StableCoin.json'),
   GovernedEpdrQbtcAddress: getAbi('StableCoin.json'),
 
-  CompoundRateKeeperPiggyBank: getAbi('CompoundRateKeeper.json'),
+  CompoundRateKeeperQVault: getAbi('CompoundRateKeeper.json'),
   CompoundRateKeeperSaving: getAbi('CompoundRateKeeper.json'),
   CompoundRateKeeperBorrowing: getAbi('CompoundRateKeeper.json'),
 }

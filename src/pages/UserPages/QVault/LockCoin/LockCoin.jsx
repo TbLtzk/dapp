@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setLockAmount, setUnlockAmount } from 'store/actions/action-creaters/q-piggy-bank';
+import { setLockAmount, setUnlockAmount } from 'store/actions/action-creaters/q-vault';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 
 import ButtonLinkArrow from 'components/Base/Buttons/ButtonLinkArrow';

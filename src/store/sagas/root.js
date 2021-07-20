@@ -8,7 +8,7 @@ import slashingProposals from 'store/sagas/voting/slashing-proposals';
 
 import userAuth from './user-auth';
 import rootContract from './root-contract';
-import qPiggyBank from './q-piggy-bank';
+import qVault from './q-vault';
 import validators from './validators';
 import validationRewardPools from './validation-reward-pools';
 import auctions from './auctions/auctions';
@@ -20,7 +20,7 @@ import systemReserve from './system-reserve';
 import parametersAddresses from './parameters-addresses';
 
 export default function* rootSaga() {
-  yield all([...userAuth, ...rootContract, ...qPiggyBank,
+  yield all([...userAuth, ...rootContract, ...qVault,
     ...proposals, ...qProposals, ...rootNodeProposals, ...expertProposals, ...slashingProposals,
     ...validators, ...validationRewardPools, ...auctions, ...stableCoin,
     ...membership, ...parameters, ...systemBalance, ...systemReserve, ...parametersAddresses]);

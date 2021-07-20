@@ -27,7 +27,7 @@ function Stats(props) {
           title="Manage Vault"
           type="white"
           handleButton={() => {
-            history.push('piggy-bank');
+            history.push('q-vault');
           }}
         />
       </div>
