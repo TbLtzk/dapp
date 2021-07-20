@@ -14,6 +14,7 @@ import {
   systemDebtAuctions,
   systemSurplusAuctions,
 } from 'store/selectors/auctions/auctions';
+import { mode } from 'store/selectors/dashboardMode'
 
 import Button from 'components/Base/Buttons/Button';
 import LogoImg from 'components/Base/LogoImg';
@@ -46,6 +47,9 @@ import { MODE } from 'components/Base/DashboardMode/DashboarModeButton';
 import { mode } from 'store/selectors/dashboardMode';
 import { MODE } from 'components/Base/DashboardMode/DashboarModeButton';
 
+import { MODE } from 'components/Base/DashboardMode/DashboarModeButton';
+
+
 function Sidebar() {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -60,6 +64,8 @@ function Sidebar() {
   const liquidations = useSelector(liquidationAuctions);
   const systemDebts = useSelector(systemDebtAuctions);
   const systemSurplus = useSelector(systemSurplusAuctions);
+  const appMode = useSelector(mode)
+
   const appMode = useSelector(mode)
 
   const [isGovernanceAccordionOpened, setIsGovernanceAccordionOpened] = useState('1');
@@ -200,7 +206,7 @@ function Sidebar() {
             >
               Saving & Borrowing
             </LinkStyle>
-            <Accordion
+            {appMode === MODE.advanced ? (<Accordion
               defaultActiveKey="0"
               style={{ width: '100%' }}
               onSelect={(state) => {
@@ -263,7 +269,7 @@ function Sidebar() {
                   </LinkGroup>
                 </div>
               </Accordion.Collapse>
-            </Accordion>
+            </Accordion>) : null}
           </ListContainer>
           <ListTitle>References</ListTitle>
           <ListContainer>
