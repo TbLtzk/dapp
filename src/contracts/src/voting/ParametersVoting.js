@@ -7,7 +7,7 @@ import { BN } from 'func/useful';
 import { ParameterType } from '@q-dev/q-js-sdk';
 import { parameterVote } from 'pages/UserPages/Proposals/components/CreateQProposalBtn/ModalCreateProposal/CreateStep2/QExpertS2/constants';
 import { epqfiParametersVoting, epdrParametersVoting } from 'contracts/contracts';
-import { GOVERNS_TYPES } from 'constants/contracts';
+import { CONTRACT_TYPES } from 'constants/contracts';
 
 /*EPQFI_ParametersVoting, EPDR_ParametersVoting*/
 export default class ParametersVoting extends VotingService {
@@ -82,10 +82,10 @@ export default class ParametersVoting extends VotingService {
         return types;
       }, []);
     switch (data[parameterVote.radioBtnName]) {
-      case GOVERNS_TYPES.qFee:
+      case CONTRACT_TYPES.qFee:
         result = epqfiParametersVoting.createProposal(link, paramInputs);
         break;
-      case GOVERNS_TYPES.qDefi:
+      case CONTRACT_TYPES.qDefi:
         result = epdrParametersVoting.createProposal(link, paramInputs);
         break;
       default:

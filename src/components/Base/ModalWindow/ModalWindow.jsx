@@ -6,8 +6,11 @@ import { Modal } from 'react-bootstrap';
 import Button from 'components/Base/Buttons/Button';
 
 import { Header, Body, Footer, ModalW } from './styles';
+import { useSelector } from 'react-redux';
+import { theme } from 'store/selectors/theme';
 
 function ModalWindow(props) {
+  const currentTheme = useSelector(theme)
   const {
     disabled,
     show,

@@ -40,6 +40,9 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { PROPOSALS_TYPES, AUCTIONS_TYPES } from 'constants/statuses';
 import { getProposalsList } from 'store/actions/action-creaters/voting/proposals';
 import { getAuctionsList } from 'store/actions/action-creaters/auctions/auctions';
+import { mode } from 'store/selectors/dashboardMode';
+import { MODE } from 'components/Base/DashboardMode/DashboarModeButton';
+
 
 function Sidebar() {
   const history = useHistory();
@@ -50,6 +53,7 @@ function Sidebar() {
   const rootNodeProposals = useSelector(rootNodeProposalsArr);
   const expertProposals = useSelector(expertProposalsArr);
   const slashingProposals = useSelector(slashingProposalsArr);
+  const appMode = useSelector(mode)
 
   const liquidations = useSelector(liquidationAuctions);
   const systemDebts = useSelector(systemDebtAuctions);
@@ -77,7 +81,7 @@ function Sidebar() {
         <LinksContainer>
           <WrapLogo>
             <Link to={'/'}>
-              <LogoImg/>
+              <LogoImg />
             </Link>
           </WrapLogo>
           <ListContainer id="basic-navbar-nav">
@@ -108,7 +112,7 @@ function Sidebar() {
                 </LinkStyle>
                 <Accordion.Toggle eventKey="0">
                   <AccordionIcon state={isGovernanceAccordionOpened}>
-                    <i className={`mdi mdi-chevron-down`}/>
+                    <i className={`mdi mdi-chevron-down`} />
                   </AccordionIcon>
                 </Accordion.Toggle>
               </LinkGroup>
@@ -138,30 +142,33 @@ function Sidebar() {
                       </AccordionLbl>
                     ) : null}
                   </LinkGroup>
-                  <LinkGroup>
-                    <LinkStyle
-                      to={'/q-expert-proposals'}
-                      className="nav-link"
-                      highlight={highlight('q-expert-proposals')}
-                    >– Expert Proposals</LinkStyle>
-                    {expertProposals.length ? (
-                      <AccordionLbl highlight={highlight('q-expert-proposals')}>
-                        {expertProposals.length}
-                      </AccordionLbl>
-                    ) : null}
-                  </LinkGroup>
-                  <LinkGroup>
-                    <LinkStyle
-                      to={'/slashing-proposals'}
-                      className="nav-link"
-                      highlight={highlight('slashing-proposals')}
-                    >– Slashing Proposals</LinkStyle>
-                    {slashingProposals.length ? (
-                      <AccordionLbl highlight={highlight('slashing-proposals')}>
-                        {slashingProposals.length}
-                      </AccordionLbl>
-                    ) : null}
-                  </LinkGroup>
+                  {appMode === MODE.advanced ?
+                    <>
+                      <LinkGroup>
+                        <LinkStyle
+                          to={'/q-expert-proposals'}
+                          className="nav-link"
+                          highlight={highlight('q-expert-proposals')}
+                        >– Expert Proposals</LinkStyle>
+                        {expertProposals.length ? (
+                          <AccordionLbl highlight={highlight('q-expert-proposals')}>
+                            {expertProposals.length}
+                          </AccordionLbl>
+                        ) : null}
+                      </LinkGroup>
+                      <LinkGroup>
+                        <LinkStyle
+                          to={'/slashing-proposals'}
+                          className="nav-link"
+                          highlight={highlight('slashing-proposals')}
+                        >– Slashing Proposals</LinkStyle>
+                        {slashingProposals.length ? (
+                          <AccordionLbl highlight={highlight('slashing-proposals')}>
+                            {slashingProposals.length}
+                          </AccordionLbl>
+                        ) : null}
+                      </LinkGroup>
+                    </> : null}
                 </div>
               </Accordion.Collapse>
             </Accordion>
@@ -172,13 +179,17 @@ function Sidebar() {
             >
               Q Vault
             </LinkStyle>
-            <LinkStyle
+            {
+              appMode === MODE.advanced
+              ? <LinkStyle
               to={'/staking'}
               className="nav-link"
               highlight={highlight('staking')}
             >
-              Staking
-            </LinkStyle>
+              Consensus Services
+              </LinkStyle>
+              : null
+            }
             <LinkStyle
               to={'/saving-and-borrowing'}
               className="nav-link"
@@ -186,7 +197,7 @@ function Sidebar() {
             >
               Saving & Borrowing
             </LinkStyle>
-            <Accordion
+            {appMode === MODE.advanced ? (<Accordion
               defaultActiveKey="0"
               style={{ width: '100%' }}
               onSelect={(state) => {
@@ -205,7 +216,7 @@ function Sidebar() {
                 </LinkStyle>
                 <Accordion.Toggle eventKey="0">
                   <AccordionIcon state={isAuctionAccordionOpened}>
-                    <i className={`mdi mdi-chevron-down`}/>
+                    <i className={`mdi mdi-chevron-down`} />
                   </AccordionIcon>
                 </Accordion.Toggle>
               </LinkGroup>
@@ -249,7 +260,7 @@ function Sidebar() {
                   </LinkGroup>
                 </div>
               </Accordion.Collapse>
-            </Accordion>
+            </Accordion>) : null}
           </ListContainer>
           <ListTitle>References</ListTitle>
           <ListContainer>
@@ -271,7 +282,7 @@ function Sidebar() {
         </LinksContainer>
         <FooterContainer>
           <CopyToClipboard text={userAddress}>
-              <span title={userAddress}>
+            <span title={userAddress}>
               <Button
                 width={'100%'}
                 type={'white'}
@@ -280,11 +291,11 @@ function Sidebar() {
                 handleButton={() => {
                 }}
               />
-              </span>
+            </span>
           </CopyToClipboard>
           <Footer>
             <Themes />
-            <Version/>
+            <Version />
           </Footer>
         </FooterContainer>
       </NavbarContainer>

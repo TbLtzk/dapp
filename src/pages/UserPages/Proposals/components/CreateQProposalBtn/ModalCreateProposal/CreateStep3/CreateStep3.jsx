@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PROPOSALS_TYPES } from 'constants/statuses';
 import { formObject } from 'store/selectors/voting/proposals';
 import { getParameterKeysByType } from 'store/actions/action-creaters/parameters';
-import { parameterValueByKey } from 'store/selectors/parameters';
 import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue';
 
 import { constUpdate } from './constants';
@@ -13,6 +12,8 @@ import FormInput from 'components/Base/Form/FormInput';
 import { ParameterType } from '@q-dev/q-js-sdk';
 import { getTypeName } from 'func/contractHelpers';
 import { parameterVote } from '../CreateStep2/QExpertS2/constants';
+
+import { CONTRACT_TYPES } from 'constants/contracts';
 
 function CreateStep3(props) {
   const {
@@ -23,10 +24,8 @@ function CreateStep3(props) {
   const dispatch = useDispatch();
   const formData = useSelector(formObject);
 
-  const parameterByKeyValue = useSelector(parameterValueByKey);
-
   const [params, setParams] = useState([{
-    type: '',
+    type: ParameterType.ADDRESS,
     key: '',
     value: ''
   }]);
@@ -56,7 +55,7 @@ function CreateStep3(props) {
         setParams([
           ...params,
           {
-            type: '',
+            type: ParameterType.ADDRESS,
             key: '',
             value: ''
           }
@@ -73,15 +72,15 @@ function CreateStep3(props) {
 
   useEffect(() => {
     if (activeTab === PROPOSALS_TYPES.proposals) {
-      dispatch(getParameterKeysByType('constitution', ParameterType.ADDRESS));
+      dispatch(getParameterKeysByType(CONTRACT_TYPES.constitution, ParameterType.ADDRESS));
     }
   }, []);
 
   useEffect(() => {
     if (activeTab === PROPOSALS_TYPES.proposals || activeTab === PROPOSALS_TYPES.expertProposals) {
-      let  key = ''
-      if(activeTab === PROPOSALS_TYPES.proposals) key = constUpdate.radioBtnName
-      if(activeTab === PROPOSALS_TYPES.expertProposals) key = parameterVote.parameterType
+      let key = '';
+      if (activeTab === PROPOSALS_TYPES.proposals) key = constUpdate.radioBtnName;
+      if (activeTab === PROPOSALS_TYPES.expertProposals) key = parameterVote.parameterType;
       if (formData[key]) {
         setParams(
           formData[key].reduce((types, item, index) => {
@@ -138,7 +137,7 @@ function CreateStep3(props) {
                           value={params[index].type}
                           onChange={(value) => {
                             setNewValue(index, 'type', value.target.value);
-                            dispatch(getParameterKeysByType('constitution', value.target.value));
+                            dispatch(getParameterKeysByType(CONTRACT_TYPES.constitution, value.target.value));
                           }}
                           ref={register({ required: 'Choose one option!' })}
                           optionValues={constUpdate.radioBtn}
@@ -168,13 +167,12 @@ function CreateStep3(props) {
                           setNewValue(index, 'value', value.target.value);
                         }}
                       />
-                      {/*TODO: need to fix CurrentParameterValue bug*/}
-                      {/*<CurrentParameterValue*/}
-                      {/*  key={'current-parameter-value' + index}*/}
-                      {/*  typePanel={'constitution'}*/}
-                      {/*  typeParameter={params[index].type}*/}
-                      {/*  parameterKey={params[index].key}*/}
-                      {/*/>*/}
+                      <CurrentParameterValue
+                        key={'current-parameter-value' + index}
+                        typePanel={CONTRACT_TYPES.constitution}
+                        typeParameter={params[index].type}
+                        parameterKey={params[index].key}
+                      />
                     </Fragment>
                   );
                 })}
@@ -277,7 +275,7 @@ function CreateStep3(props) {
         return null;
     }
 
-  }, [activeTab, register, errors, params, parameterByKeyValue]);
+  }, [activeTab, register, errors, params]);
 
   return (
     <>

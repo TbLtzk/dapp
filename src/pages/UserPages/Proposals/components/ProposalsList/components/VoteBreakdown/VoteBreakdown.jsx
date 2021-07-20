@@ -12,7 +12,7 @@ function VoteBreakdown(props) {
       <h3>Vote Breakdown</h3>
       <div className="list-card__three-colm">
         <div>
-          <h4>Vote Results</h4>
+          <h4>Left</h4>
           <div className="list-card__chart-block">
             {voteBreakdown?.numberProposalVotes ?
               <PieChartTwoItem
@@ -34,10 +34,10 @@ function VoteBreakdown(props) {
               />
             }
             <div>
-              <ColorTitle color="white"><Circle color="circle-white"/>
+              <ColorTitle color="white"><Circle color="circle-white" />
                 For: {voteBreakdown?.numberProposalVotes ? voteBreakdown.numberProposalVotes.votesFor : 0}
               </ColorTitle>
-              <ColorTitle color="dark"><Circle color="circle-dark"/>
+              <ColorTitle color="dark"><Circle color="circle-dark" />
                 Against: {voteBreakdown?.numberProposalVotes ? voteBreakdown.numberProposalVotes.votesAgainst : 0}
               </ColorTitle>
             </div>
@@ -46,44 +46,24 @@ function VoteBreakdown(props) {
           <h5>Majority Requirement: {voteBreakdown.requiredMajority}%</h5>
         </div>
         <div>
-          <h4>Constitution Check</h4>
+          <h4>Middle</h4>
           <div className="list-card__chart-block">
             <PieChartTwoItem
               data={[{
                 name: 'For',
-                value: 10
+                value: Number(voteBreakdown.vetoesNumber)
               },
-                {
-                  name: 'Against',
-                  value: 90
-                },]}
+              {
+                name: 'Against',
+                value: Number(voteBreakdown.noVote)
+              },]}
             />
             <div>
-              <ColorTitle color="white"><Circle color="circle-white"/>Objection</ColorTitle>
-              <ColorTitle color="dark"><Circle color="circle-dark"/>No Vote</ColorTitle>
+              <ColorTitle color="white"><Circle color="circle-white" />Objection: {voteBreakdown.vetoesNumber}</ColorTitle>
+              <ColorTitle color="dark"><Circle color="circle-dark" />No Vote: {voteBreakdown.noVote}</ColorTitle>
             </div>
           </div>
           <h5>Objection Requirement: {'>'}{voteBreakdown.vetoThreshold}%</h5>
-        </div>
-        <div>
-          <h4>Q Community Veto</h4>
-          <div className="list-card__chart-block">
-            <PieChartTwoItem
-              data={[{
-                name: 'For',
-                value: 25
-              },
-                {
-                  name: 'Against',
-                  value: 75
-                },]}
-            />
-            <div>
-              <ColorTitle color="white"><Circle color="circle-white"/>For</ColorTitle>
-              <ColorTitle color="dark"><Circle color="circle-dark"/>Against</ColorTitle>
-            </div>
-          </div>
-          <h5>Veto Requirement: 0%</h5>
         </div>
       </div>
       <h3 style={{ marginTop: '20px' }}>Vote Requirements</h3>
@@ -96,7 +76,7 @@ function VoteBreakdown(props) {
         </div>
         <div>
           <h5>Current Root Node Objection</h5>
-          <p>{voteBreakdown.currentVetoPercentage}%</p>
+          <p>{voteBreakdown.vetoesPercentage}%</p>
         </div>
       </div>
     </div>

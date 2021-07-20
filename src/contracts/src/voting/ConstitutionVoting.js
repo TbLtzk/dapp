@@ -58,8 +58,6 @@ export default class ConstitutionVoting extends VotingService {
     objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
 
     objRes.status = getStatusTransformation(promiseStatus);
-    // objRes.vetoesNumber = await this.getVetoesNumber(id);
-    // objRes.vetoesPercentage = await this.getVetoesPercentage(id);
     objRes.title = `${proposalType} constitution proposal`;
     objStats = await this.getProposalStatsData(id);
     objRes.contract = this.contractName;

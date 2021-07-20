@@ -264,11 +264,11 @@ export const ButtonCustom = styled(Button)`
     } else {
       switch (props.type) {
         case 'white':
-          return '#87FF65';
+          return props.theme.colors.activeLinks;
         case 'transparent':
-          return '#87FF65';
+          return props.theme.colors.activeLinks;
         default:
-          return '#87FF65';
+          return props.theme.colors.activeLinks;
       }
     }
   }}

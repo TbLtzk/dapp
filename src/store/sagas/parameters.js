@@ -12,6 +12,8 @@ import EPQFI_Parameters from 'contracts/src/parameters/EPQFI_Parameters';
 import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters';
 import ConstitutionParameters from 'contracts/src/parameters/ConstitutionParameters';
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
+import { CONTRACT_TYPES } from 'constants/contracts';
+import { getContractTypeKey } from 'func/contractHelpers';
 
 function* getAddressParameter({
   value,
@@ -104,11 +106,11 @@ function* getBooleanParameter({
 }
 
 function getContract(typeContract) {
-  if (typeContract === 'q-fees-&-incentives-membership-panel') {
+  if (typeContract === CONTRACT_TYPES.qFee) {
     return new EPQFI_Parameters('EPQFI_Parameters');
-  } else if (typeContract === 'q-defi-(decentralized-finance)-membership-panel') {
+  } else if (typeContract === CONTRACT_TYPES.qDefi) {
     return new EPDR_Parameters(contractsToAddresses['EPDR_Parameters']);
-  } else if (typeContract === 'constitution') {
+  } else if (typeContract === CONTRACT_TYPES.constitution) {
     return new ConstitutionParameters('ConstitutionParameters');
   } else {
     return null;
@@ -143,15 +145,17 @@ function* getParameterValueByKey({
           break;
       }
       if (data) {
-        yield put(getParameterValueByKeySuccess(data));
-      } else {
-        yield put(getParameterValueByKeySuccess('Value not found. Key does not exist yet?'));
+        yield put(getParameterValueByKeySuccess({
+          typeContract: getContractTypeKey(typeContract),
+          typeParameter,
+          parameterKey,
+          data
+        }));
       }
     }
 
   } catch (err) {
     console.error('getParameterValueByKey.Error', err?.message);
-    yield put(getParameterValueByKeySuccess('Value not found. Key does not exist yet?'));
   }
 }
 
@@ -181,15 +185,27 @@ function* getParameterKeysByType({
           break;
       }
       if (data) {
-        yield put(getParameterKeysByTypeSuccess(data));
+        yield put(getParameterKeysByTypeSuccess({
+          typeContract,
+          typeParameter,
+          data
+        }));
       } else {
-        yield put(getParameterKeysByTypeSuccess([]));
+        yield put(getParameterKeysByTypeSuccess({
+          typeContract,
+          typeParameter,
+          data: {}
+        }));
       }
     }
 
   } catch (err) {
     console.error('getParameterValueByKey.Error', err?.message);
-    yield put(getParameterKeysByTypeSuccess([]));
+    yield put(getParameterKeysByTypeSuccess({
+      typeContract,
+      typeParameter,
+      data: {}
+    }));
   }
 }
 

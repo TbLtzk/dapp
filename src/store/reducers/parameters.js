@@ -1,4 +1,5 @@
 import * as actionTypes from '../actions/action-types/parameters';
+import { getTypeKey, getContractTypeKey } from 'func/contractHelpers';
 
 const initialState = {
   addressParameter: null,
@@ -7,52 +8,78 @@ const initialState = {
   bytesParameter: null,
   uintParameter: null,
 
-  parameterValueByKey: '',
+  parameterValueByKey: [],
   parameterValueByKeyError: '',
-  arrayParameterKeysByType: [],
+  arrayParameterKeysByType: {
+    constitution: [],
+    qDefi: [],
+    qFee: []
+  },
 };
 
 export default function parameters(state = initialState, action) {
+  let contractKey = '';
+  let typeKey = '';
+  const result = action.result;
   switch (action.type) {
     case actionTypes.GET_ADDRESS_PARAMETER_SUCCESS:
       return {
         ...state,
-        addressParameter: action.result,
+        addressParameter: result,
       };
     case actionTypes.GET_BOOLEAN_PARAMETER_SUCCESS:
       return {
         ...state,
-        booleanParameter: action.result,
+        booleanParameter: result,
       };
     case actionTypes.GET_STRING_PARAMETER_SUCCESS:
       return {
         ...state,
-        stringParameter: action.result,
+        stringParameter: result,
       };
     case actionTypes.GET_BYTES_PARAMETER_SUCCESS:
       return {
         ...state,
-        bytesParameter: action.result,
+        bytesParameter: result,
       };
     case actionTypes.GET_UINT_PARAMETER_SUCCESS:
       return {
         ...state,
-        uintParameter: action.result,
+        uintParameter: result,
       };
     case actionTypes.GET_PARAMETER_VALUE_BY_KEY_SUCCESS:
+      let newParameterValueByKey = [];
+      contractKey = getContractTypeKey(result.typeContract);
+      typeKey = getTypeKey(result.typeParameter);
+      const value = state.parameterValueByKey.find(i => {
+        return i.typeContract === contractKey && i.parameterKey === result.parameterKey && i.typeParameter === result.typeParameter;
+      });
+      if (value) {
+        value.data = result.data;
+        newParameterValueByKey = [...state.parameterValueByKey];
+      } else {
+        newParameterValueByKey = [...state.parameterValueByKey, result];
+      }
       return {
         ...state,
-        parameterValueByKey: action.result,
+        parameterValueByKey: newParameterValueByKey,
       };
     case actionTypes.GET_PARAMETER_VALUE_BY_KEY_ERROR:
       return {
         ...state,
-        parameterValueByKeyError: action.result,
+        parameterValueByKeyError: result,
       };
     case actionTypes.GET_PARAMETER_KEYS_BY_TYPE_SUCCESS:
+      contractKey = getContractTypeKey(result.typeContract);
+      typeKey = getTypeKey(result.typeParameter);
+      let arrayParameterKeysByType = state.arrayParameterKeysByType;
+      if (contractKey && typeKey) {
+        const newArrayParameterKeysByType = [...arrayParameterKeysByType[contractKey], ...result.data];
+        arrayParameterKeysByType[contractKey] = Array.from(new Set(newArrayParameterKeysByType));
+      }
       return {
         ...state,
-        arrayParameterKeysByType: action.result,
+        arrayParameterKeysByType,
       };
     default:
       return state;
