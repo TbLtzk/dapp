@@ -5,8 +5,12 @@ import LockCoin from './LockCoin';
 import Panel from './Panel/Panel';
 import DelegateStakingPower from './DelegateStakingPower';
 import PageWrap from 'components/Base/PageWrap';
+import { useSelector } from 'react-redux';
+import { mode } from 'store/selectors/dashboardMode';
+import { MODE } from 'components/Base/DashboardMode/DashboarModeButton';
 
 function QVault() {
+  const appMode = useSelector(mode)
   return (
     <PageWrap
       wrapContentClasses={'wrap-content__column-2-1'}
@@ -15,7 +19,7 @@ function QVault() {
       <div>
         <ManageBalance/>
         <LockCoin/>
-        <DelegateStakingPower/>
+        {appMode === MODE.advanced ? <DelegateStakingPower/>: null}
       </div>
       <div>
         <Panel/>

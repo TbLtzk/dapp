@@ -24,7 +24,10 @@ import CreateStep2 from './CreateStep2';
 import CreateStep3 from './CreateStep3';
 import CreateStep4 from './CreateStep4';
 
-import { arrExpert, arrQProposal, arrQRootNode, arrSlashing } from './constants';
+import { arrExpert, arrQProposal, arrQProposalAdvanced, arrQRootNode, arrSlashing } from './constants';
+
+import { mode } from 'store/selectors/dashboardMode';
+import { MODE } from 'components/Base/DashboardMode/DashboarModeButton';
 
 function ModalCreateProposal(props) {
   const {
@@ -44,11 +47,12 @@ function ModalCreateProposal(props) {
   const stepLimit = useSelector(createdStepsLimit);
   const stepCounter = useSelector(stepCounterModal);
   const disabledContinueBtn = useSelector(disabledContinueProposalBtn);
+  const appMode = useSelector(mode)
 
   const radioArrFirstStep = useMemo(() => {
     switch (activeTab) {
       case PROPOSALS_TYPES.proposals:
-        return arrQProposal;
+        return appMode === MODE.advanced ? arrQProposalAdvanced : arrQProposal;
       case PROPOSALS_TYPES.rootNodePanel:
         return arrQRootNode;
       case PROPOSALS_TYPES.expertProposals:
