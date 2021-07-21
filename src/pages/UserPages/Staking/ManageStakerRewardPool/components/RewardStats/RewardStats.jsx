@@ -36,7 +36,6 @@ export default function RewardStats() {
   useEffect(() => {
     handler.getAmountOfRewardPool(setAmountRP);
     handler.getDelegatorShare(setDelShare);
-    handler.getInterestRate(setIntRate);
     handler.getPoolInfo(setDelClaim);
   }, []);
 
