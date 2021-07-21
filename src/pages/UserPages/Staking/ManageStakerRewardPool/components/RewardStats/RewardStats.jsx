@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
+import { delegatedStakeSelector } from 'store/selectors/validators';
 
 import FormInput from 'components/Base/Form/FormInput';
 import Button from 'components/Base/Buttons/Button';
@@ -25,50 +26,59 @@ export default function RewardStats() {
 
   const [amountRP, setAmountRP] = useState(0);
   const [delShare, setDelShare] = useState(0);
-  const [intRate, setIntRate] = useState(0);
+  const [delClaim, setDelClaim] = useState('0')
+  const delegatedStake = useSelector(delegatedStakeSelector);
 
   const address = useSelector(userAddressMetamask);
   const handler = new Handler(address, useDispatch());
+  
 
   useEffect(() => {
     handler.getAmountOfRewardPool(setAmountRP);
     handler.getDelegatorShare(setDelShare);
     handler.getInterestRate(setIntRate);
+    handler.getPoolInfo(setDelClaim);
   }, []);
-
-  const setInterestRate = (formData) => {
-    handler.setInterestRate(formData, setIntRate);
-  };
 
   const setDelegatorShare = (formData) => {
     handler.setDelegatorShare(formData, setDelShare);
   };
 
+  const disDelClaims = amountRP - delClaim;
+
   const rewardStatsArr = useMemo(() => {
     return [
       [
         {
-          label: 'Validator Pool Balance:',
+          label: 'Collected Pool Rewards:',
           value: fN(amountRP) + 'Q'
         },
         {
-          label: 'Validator Share:',
-          value: delShare === 0 ? '100%' : fN(100 - delShare) + '%'
+          label: 'Outstanding Delegator Claims:',
+          value: fN(delClaim) + 'Q'
+        },
+        {
+          label: 'Distributable Delegator Rewards:',
+          value: fN(disDelClaims) + 'Q'
+        },
+        {
+          label: 'Distributable Delegator Percentage:',
+          value:   fN(disDelClaims / delegatedStake)+ '%'
         },
       ],
       [
         {
-          label: 'Delegator Share:',
-          value: fN(delShare) + '%'
+          label: 'Validator Share:',
+          value: delShare === 0 ? '100%' : fN(100 - delShare) + '%'
         },
         {
-          label: 'Delegator Reward (p.a.):',
-          value: fN(intRate) + '%'
+          label: 'Delegator Share:',
+          value: fN(delShare) + '%'
         },
       ]
     ];
 
-  }, [amountRP, delShare, intRate]);
+  }, [amountRP, delShare, delClaim, disDelClaims, delegatedStake]);
 
   return (
     <>
@@ -109,28 +119,6 @@ export default function RewardStats() {
           title="Set"
           width="94px"
           handleButton={submit1(setDelegatorShare)}
-        />
-      </div>
-      <h4>Set Delegator Reward (p.a.)</h4>
-      <div className="modal-one-line-form">
-        <FormInput
-          name="amount"
-          type="number"
-          lbl="%"
-          placeholder="0"
-          palette="dark"
-          ref={reg2({
-            required: true,
-            min: 0,
-            max: 100.0001
-          })}
-          valid={errorHandler(err2, 'amount')}
-        />
-        <Button
-          type="outline"
-          title="Set"
-          width="94px"
-          handleButton={submit2(setInterestRate)}
         />
       </div>
     </>

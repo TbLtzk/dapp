@@ -12,7 +12,5 @@ export const tableHeaderWidened = [
   "Total Delegated Stake",
   "Validator Share",
   "Delegator Share",
-  "Validator Pool Balance",
-  "Delegator Reward (p.a.)",
 ];
 
