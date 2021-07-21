@@ -21,10 +21,11 @@ export default function Panel() {
   const userVotingWeight = fN(useSelector(votingWeight));
   const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd));
   const updateOnClaim = useSelector(lastClaim);
+  const timeLockedAmount = 30;
 
   const [accountBalance, setAccountBalance] = useState();
   const [yearlyExpectedEarnings, setYearlyExpectedEarnings] = useState(0);
-  
+
 
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
@@ -57,6 +58,11 @@ export default function Panel() {
       <div>
         <h5>Q Vault balance</h5>
         <p>{fN(userQVBalanceL) + ' Q'}</p>
+        {Number(timeLockedAmount) > 0 ?
+          <>
+            <h5>Time locked amount</h5>
+            <p>{timeLockedAmount + ' Q'}</p>
+          </> : null}
         <h5>Q Token Holder reward rate (p.a.)</h5>
         <p>{(balanceDetails?.interestRate ? fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate)) : 0) + '%'}</p>
         <h5>Yearly expected reward</h5>
@@ -64,14 +70,14 @@ export default function Panel() {
         <h5>Q address balance</h5>
         <p>{fN(accountBalance) + ' Q'}</p>
 
-        <div className={'card__line'}/>
+        <div className={'card__line'} />
 
         <h5>Q Voting Weight</h5>
         <p>{userVotingWeight + ' Q'}</p>
         <h5>Voting Locking End</h5>
         <p>{userLockingEnd}</p>
         <h5>Voting Status</h5>
-        <VoterStatus/>
+        <VoterStatus />
       </div>
     </CustomBlock>
   );

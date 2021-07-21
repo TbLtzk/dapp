@@ -37,6 +37,7 @@ function FormStaking() {
   const amountNodeStake = useSelector(rootNodeStake);
   const withdrawalsData = useSelector(withdrawals);
   const lastUpdateRoot = useSelector(lastActionRoot);
+  const timeLockedAmount = 20;
 
   useEffect(() => {
     if (userAddress) {
@@ -67,12 +68,17 @@ function FormStaking() {
       }
       <h5>Stake in Root Node Panel (Q)</h5>
       <p>{amountNodeStake + 'Q'}</p>
+      {timeLockedAmount > 0 ?
+        <>
+          <h5>Time locked amount</h5>
+          <p>{timeLockedAmount + ' Q'}</p>
+        </> : null}
       <h5>Q Address Balance</h5>
       <p>{userBalance ? userBalance : 0}Q</p>
       <h5>Announcement withdrawal status</h5>
       {withdrawalsData?.pending ?
         <p>
-          Announced amount<br/>
+          Announced amount<br />
           End time for announcement
         </p>
         : null}

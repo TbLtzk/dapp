@@ -27,8 +27,10 @@ export default class QVault {
   }
 
   async getLockInfo(address) {
-    return await this.methods.getLockInfo()
+    const res =  await this.methods.getLockInfo()
       .call({ from: address });
+      console.log(await this.methods)
+    return res
   }
 
   async getBalanceDetails() {

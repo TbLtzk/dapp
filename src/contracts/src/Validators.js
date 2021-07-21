@@ -31,6 +31,7 @@ export default class Validators {
   }
 
   async getValidatorDelegatedStake(address) {
+    // console.log(await this.methods.getLockInfo().call({from: address}))
     return await this.methods.getValidatorDelegatedStake(address)
       .call();
   }

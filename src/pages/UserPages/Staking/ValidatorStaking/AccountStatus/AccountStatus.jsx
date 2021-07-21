@@ -35,6 +35,7 @@ export default function AccountStatus() {
 
   const address = useSelector(userAddressMetamask);
   const handler = new Handler(address, useDispatch(), useAlert());
+  const timeLockedAmount = 10
 
   useEffect(() => {
     dispatch(getTotalStake(address));
@@ -126,6 +127,11 @@ export default function AccountStatus() {
           <h5>Stake in Validator Ranking</h5>
           <p>{fN(accountableTotalStake)} Q</p>
         </div>
+        {timeLockedAmount > 0 ?
+          <div>
+            <h5>Time locked amount</h5>
+            <p>{timeLockedAmount} Q </p>
+          </div> : null}
         <div>
           <h3>Announced for withdrawal</h3>
           <p>{fN(annToWithdraw)} Q</p>
