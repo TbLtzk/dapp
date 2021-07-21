@@ -18,15 +18,10 @@ export default function RewardStats() {
     handleSubmit: submit1,
     errors: err1
   } = useForm();
-  const {
-    register: reg2,
-    handleSubmit: submit2,
-    errors: err2
-  } = useForm();
 
   const [amountRP, setAmountRP] = useState(0);
   const [delShare, setDelShare] = useState(0);
-  const [delClaim, setDelClaim] = useState('0')
+  const [delClaim, setDelClaim] = useState(0)
   const delegatedStake = useSelector(delegatedStakeSelector);
 
   const address = useSelector(userAddressMetamask);
