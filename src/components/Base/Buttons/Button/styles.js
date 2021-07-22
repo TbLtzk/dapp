@@ -6,10 +6,10 @@ export const ButtonCustom = styled(Button)`
   width: ${(props) => (!props.width ? 'auto' : props.width)};
   max-width: ${(props) => (!props.width ? 'auto' : props.width)};
   min-width: ${(props) => (!props.width ? 'auto' : props.width)};
-  position: ${(props) => (!props.position ? 'auto' : props.position)};
-  right: ${(props) => (!props.right ? 'auto' : props.right)};
-  top: ${(props) => (!props.top ? 'auto' : props.top)};
-  margin: ${(props) => (!props.margin ? 'auto' : props.margin)};
+  position: ${(props) => (!props.position ? '' : props.position)};
+  right: ${(props) => (!props.right ? '' : props.right)};
+  top: ${(props) => (!props.top ? '' : props.top)};
+  margin: ${(props) => (!props.margin ? '' : props.margin)};
   padding: 7px 11px;
   text-overflow: ellipsis;
   overflow: hidden;
