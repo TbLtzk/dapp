@@ -181,14 +181,14 @@ function Sidebar() {
             </LinkStyle>
             {
               appMode === MODE.advanced
-              ? <LinkStyle
-              to={'/staking'}
-              className="nav-link"
-              highlight={highlight('staking')}
-            >
-              Consensus Services
-              </LinkStyle>
-              : null
+                ? <LinkStyle
+                  to={'/staking'}
+                  className="nav-link"
+                  highlight={highlight('staking')}
+                >
+                  Consensus Services
+                </LinkStyle>
+                : null
             }
             <LinkStyle
               to={'/saving-and-borrowing'}
@@ -261,6 +261,14 @@ function Sidebar() {
                 </div>
               </Accordion.Collapse>
             </Accordion>) : null}
+            {appMode === MODE.advanced ? 
+              <LinkStyle
+                to={'/time-locks'}
+                className="nav-link"
+                highlight={highlight('time-locks')}
+              >
+                Time Locks
+              </LinkStyle> : null}
           </ListContainer>
           <ListTitle>References</ListTitle>
           <ListContainer>
