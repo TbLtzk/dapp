@@ -8,6 +8,7 @@ import { userAddressMetamask } from 'store/selectors/user-inf';
 import { useForm } from 'react-hook-form';
 import { errorHandler, fN } from 'func/useful';
 import { fromSolDateFormattingT1 } from 'func/date';
+import { fromWei } from 'func/balance';
 import { useAlert } from 'react-alert';
 import { AccountStatusForm, AccountStatusInfo } from './styles';
 import {
@@ -16,6 +17,8 @@ import {
   getOwnStake,
   getTotalStake
 } from 'store/actions/action-creaters/validators';
+import { getValidatorAmount } from 'store/actions/action-creaters/locked-amount';
+import { validatorAmount } from 'store/selectors/locked-amount';
 
 export default function AccountStatus() {
   const {
@@ -34,10 +37,13 @@ export default function AccountStatus() {
   const [annToWithdrawEndTime, setAnnToWithdrawEndTime] = useState(0);
 
   const address = useSelector(userAddressMetamask);
+  const validatorData = useSelector(validatorAmount)
+  const timeLockedAmount = fromWei(Number(validatorData.amount))
+  
   const handler = new Handler(address, useDispatch(), useAlert());
-  const timeLockedAmount = 10
 
   useEffect(() => {
+    dispatch(getValidatorAmount(address))
     dispatch(getTotalStake(address));
     dispatch(getOwnStake(address));
     dispatch(getDelegatedStake(address));

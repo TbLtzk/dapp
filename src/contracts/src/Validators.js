@@ -31,7 +31,6 @@ export default class Validators {
   }
 
   async getValidatorDelegatedStake(address) {
-    // console.log(await this.methods.getLockInfo().call({from: address}))
     return await this.methods.getValidatorDelegatedStake(address)
       .call();
   }
@@ -54,6 +53,15 @@ export default class Validators {
   async withdraw(amount, address) {
     return await this.methods.withdraw(amount, address)
       .send({ from: address });
+  }
+
+  async getTimeLockedAmounts(address) {
+    const res = {
+      amount: "40000000000000000000",
+      releaseStart: "1626872970",
+      releaseEnd: "1627000000",
+    };
+    return res;
   }
 
   async getValidator (validator, index) {

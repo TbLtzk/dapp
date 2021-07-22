@@ -4,6 +4,9 @@ import { userAddressMetamask } from 'store/selectors/user-inf';
 import { getUserBalance, getLockedAssets, getQVBalance } from 'store/actions/action-creaters/q-vault';
 import { userBalance, votingWeight, votingLockingEnd, qvBalance, lastClaim } from 'store/selectors/q-vault';
 
+import { getQVaultAmount } from 'store/actions/action-creaters/locked-amount';
+import { qVaultAmount } from 'store/selectors/locked-amount';
+
 import { useAlert } from 'react-alert';
 
 import VoterStatus from 'components/Custom/PageLists/VoterStatus';
@@ -11,21 +14,21 @@ import CustomBlock from 'components/Base/CustomBlock';
 
 import QVaultHandler from '../handler';
 import { fN } from 'func/useful';
+import { fromWei } from 'func/balance';
 import { fromSolDateFormattingT1 } from 'func/date';
 import { uintPerSecondToPerYearNumber } from 'func/useful';
 
 export default function Panel() {
   const userAddressL = useSelector(userAddressMetamask);
+  const qVaultData = useSelector(qVaultAmount)
+  const timeLockedAmount = fromWei(Number(qVaultData.amount))
   const balanceDetails = useSelector(qvBalance);
   const userQVBalanceL = useSelector(userBalance);
   const userVotingWeight = fN(useSelector(votingWeight));
   const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd));
   const updateOnClaim = useSelector(lastClaim);
-  const timeLockedAmount = 30;
-
   const [accountBalance, setAccountBalance] = useState();
   const [yearlyExpectedEarnings, setYearlyExpectedEarnings] = useState(0);
-
 
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
@@ -34,6 +37,7 @@ export default function Panel() {
   useEffect(() => {
     dispatch(getUserBalance(userAddressL));
     dispatch(getLockedAssets(userAddressL));
+    dispatch(getQVaultAmount(userAddressL))
     dispatch(getQVBalance());
   }, [dispatch, updateOnClaim]);
 
@@ -52,13 +56,14 @@ export default function Panel() {
     setYearlyExpectedEarnings(yearlyExpectedEarningsCalc);
   }, [balanceDetails, userQVBalanceL]);
 
+
   return (
     <CustomBlock>
       <h1>Overview</h1>
       <div>
         <h5>Q Vault balance</h5>
-        <p>{fN(userQVBalanceL) + ' Q'}</p>
-        {Number(timeLockedAmount) > 0 ?
+        <p>{userQVBalanceL + ' Q'}</p>
+        {timeLockedAmount > 0 ?
           <>
             <h5>Time locked amount</h5>
             <p>{timeLockedAmount + ' Q'}</p>

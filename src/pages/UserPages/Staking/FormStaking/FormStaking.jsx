@@ -10,6 +10,9 @@ import {
 } from 'store/selectors/root-contract';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 
+import { getRootNodeAmount } from 'store/actions/action-creaters/locked-amount';
+import { rootNodeAmount } from 'store/selectors/locked-amount';
+
 import { useForm } from 'react-hook-form';
 
 import { fN } from 'func/useful';
@@ -37,12 +40,14 @@ function FormStaking() {
   const amountNodeStake = useSelector(rootNodeStake);
   const withdrawalsData = useSelector(withdrawals);
   const lastUpdateRoot = useSelector(lastActionRoot);
-  const timeLockedAmount = 20;
+  const rootNodeData = useSelector(rootNodeAmount);
+  const timeLockedAmount = fromWei(Number(rootNodeData.amount));
 
   useEffect(() => {
     if (userAddress) {
       dispatch(getRootNodeStakes(rootService, userAddress));
       dispatch(getWithdrawals(userAddress));
+      dispatch(getRootNodeAmount(userAddress))
     }
   }, [userAddress, isUserRoot, dispatch, lastUpdateRoot]);
 
