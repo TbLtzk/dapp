@@ -7,7 +7,7 @@ import Button from '../Buttons/Button';
 function CustomBlock(props) {
   const {
     children,
-    style
+    style,
   } = props;
 
   return (

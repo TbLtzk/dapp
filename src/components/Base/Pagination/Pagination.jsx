@@ -19,8 +19,8 @@ export function Pagination({
     <WrapPagination>
       <WrapText>Page</WrapText>
       <ReactPaginate
-        previousLabel={''}
-        nextLabel={''}
+        previousLabel={'<'}
+        nextLabel={'>'}
         breakLabel={<span className="gap">...</span>}
         pageCount={pageCount}
         pageClassName={'page-item'}
