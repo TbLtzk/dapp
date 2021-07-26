@@ -1,6 +1,7 @@
-import {fromWei} from '../../func/balance';
+import { fromWei } from '../../func/balance';
 
 export function handleLockedAssetsResponse(data) {
+
   const resp = {
     votingWeight: 0,
     votingLockingEnd: 0,

@@ -55,6 +55,15 @@ export default class Validators {
       .send({ from: address });
   }
 
+  async getTimeLockedAmounts(address) {
+    const res = {
+      amount: "40000000000000000000",
+      releaseStart: "1626872970",
+      releaseEnd: "1627000000",
+    };
+    return res;
+  }
+
   async getValidator (validator, index) {
 
     const validatorInfo = await validatorsInstance.getValidatorInfo(validator.validator)

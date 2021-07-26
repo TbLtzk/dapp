@@ -1,4 +1,4 @@
-import {fromWei} from 'func/balance.js'
+import { fromWei } from 'func/balance.js'
 import { contractsToAbi } from '../mapping/contract-to-abi';
 
 export default class QVault {
@@ -26,9 +26,19 @@ export default class QVault {
       });
   }
 
+  async getTimeLockedAmounts(address) {
+    const res = {
+      amount: "100000000000000000000",
+      releaseStart: "1626872970",
+      releaseEnd: "1627000000",
+    };
+    return res;
+  }
+
   async getLockInfo(address) {
-    return await this.methods.getLockInfo()
+    const res = await this.methods.getLockInfo()
       .call({ from: address });
+    return res
   }
 
   async getBalanceDetails() {
