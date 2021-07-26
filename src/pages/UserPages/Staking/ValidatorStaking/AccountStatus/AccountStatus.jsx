@@ -127,15 +127,15 @@ export default function AccountStatus() {
           <p>{fN(accountableTotalStake)} Q</p>
         </div>
         <div>
-          <h3>Announced for withdrawal</h3>
+          <h5>Announced for withdrawal</h5>
           <p>{fN(annToWithdraw)} Q</p>
         </div>
         <div>
-          <h3>After</h3>
+          <h5>After</h5>
           <p>{annToWithdrawEndTime === 0 ? '-' : fromSolDateFormattingT1(annToWithdrawEndTime)}</p>
         </div>
         <div>
-          <h3>Personal balance</h3>
+          <h5>Personal balance</h5>
           <p>{fN(accountBalance)} Q</p>
         </div>
       </AccountStatusInfo>
