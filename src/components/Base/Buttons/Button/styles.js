@@ -207,7 +207,6 @@ export const ButtonCustom = styled(Button)`
 
     &:focus {
       box-shadow: ${(props) => (props.palette === 'light' ? 'none !important' : 'auto')};
-      border: ${(props) => (props.palette === 'light' ? '4px solid' : 0)};
       color: ${(props) => {
       if (props.palette === 'dark' && props.variant === 'primary') {
       switch (props.type) {
