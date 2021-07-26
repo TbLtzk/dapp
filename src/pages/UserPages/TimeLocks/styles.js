@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const WrapContainer = styled.div`
   display: flex;
+  align-items: center;
   max-width: 80%;
   & input {
     margin-top: 20px;
