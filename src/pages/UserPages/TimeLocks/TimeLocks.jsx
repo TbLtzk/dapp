@@ -1,62 +1,45 @@
-import React from 'react'
-import PageWrap from 'components/Base/PageWrap';
+import React, { useState, useEffect } from "react";
+import PageWrap from "components/Base/PageWrap";
+import { useDispatch, useSelector } from "react-redux";
+import { userAddressMetamask } from "store/selectors/user-inf";
 
+import { getQVaultAmount } from 'store/actions/action-creaters/locked-amount';
+import { qVaultAmount } from 'store/selectors/locked-amount';
 
-import AddressForm from './components/AddressForm';
-import { InfoWrap } from './styles'
-import BalancePage from './components/BalancePage';
+import AddressForm from "./components/AddressForm";
+import { InfoWrap } from "./styles";
+import BalancePage from "./components/BalancePage";
 
 function TimeLocks() {
+  const userAddress = useSelector(userAddressMetamask);
+  const [address, setAddress] = useState({token: userAddress})
+  const qVaultArray = useSelector(qVaultAmount)
+  // const rootNodeArray = useSelector(rootNodeAmount)
+  // const validatorArray = useSelector(validatorAmount)
+  // const vestingArray = useSelector(vestingAmount)
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getQVaultAmount(address.token))
+    // dispatch(getRootNodeAmount(address))
+    // dispatch(getValidatorAmount(address))
+    // dispatch(getVestingAmount(address))
+  }, [dispatch, address])
 
-    const array = [
-        {
-          id: 1,
-          amount: '10',
-          startDate: '13.07.21 21:30:33',
-          endDate: '16.07.21 21:30:33',
-        },
-        {
-          id: 2,
-          amount: '103',
-          startDate: '13.07.21 21:30:33',
-          endDate: '16.07.21 21:30:33',
-        },
-        {
-          id: 3,
-          amount: '101',
-          startDate: '13.07.21 21:30:33',
-          endDate: '15.07.21 21:30:33',
-        },
-        {
-          id: 4,
-          amount: '120',
-          startDate: '13.07.21 21:30:33',
-          endDate: '22.07.21 21:30:33',
-        },
-        {
-          id: 5,
-          amount: '510',
-          startDate: '13.07.21 21:30:33',
-          endDate: '15.07.21 21:30:33',
-        },
-        
-      ];
-      
-    const handleRefresh = (userAddress) => {
-        console.log(userAddress)
-    }
+  const handleRefresh = (userAddress) => {
+    setAddress(userAddress);
+  };
 
-    return (
-        <PageWrap headerTitle='Time Locks'>
-            <AddressForm setAddressRefresh={handleRefresh}/>
-            <InfoWrap>
-                <BalancePage title='Q Vault account balance' locksArray={array} />
-                <BalancePage title='Root stake balance' locksArray={array}/>
-                <BalancePage title='Validator stake balance' locksArray={array}/>
-                <BalancePage title='Vesting balance' locksArray={array} />
-            </InfoWrap>
-        </PageWrap>
-    )
+  return (
+    <PageWrap headerTitle="Time Locks">
+      <AddressForm setAddressRefresh={handleRefresh} address={address} />
+      <InfoWrap>
+        <BalancePage title="Q Vault account balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
+        <BalancePage title="Root stake balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
+        <BalancePage title="Validator stake balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
+        <BalancePage title="Vesting balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
+      </InfoWrap>
+    </PageWrap>
+  );
 }
 
-export default TimeLocks
+export default TimeLocks;

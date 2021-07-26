@@ -1,6 +1,39 @@
 import { fromWei } from 'func/balance.js'
 import { contractsToAbi } from '../mapping/contract-to-abi';
 
+const array = [
+  {
+    id: 1,
+    amount: "10",
+    startDate: "13.07.21 21:30:33",
+    endDate: "16.07.21 21:30:33",
+  },
+  {
+    id: 2,
+    amount: "103",
+    startDate: "13.07.21 21:30:33",
+    endDate: "16.07.21 21:30:33",
+  },
+  {
+    id: 3,
+    amount: "101",
+    startDate: "13.07.21 21:30:33",
+    endDate: "15.07.21 21:30:33",
+  },
+  {
+    id: 4,
+    amount: "120",
+    startDate: "13.07.21 21:30:33",
+    endDate: "22.07.21 21:30:33",
+  },
+  {
+    id: 5,
+    amount: "510",
+    startDate: "13.07.21 21:30:33",
+    endDate: "15.07.21 21:30:33",
+  },
+];
+
 export default class QVault {
   constructor(address) {
     this.contractName = 'QVault';
@@ -32,7 +65,7 @@ export default class QVault {
       releaseStart: "1626872970",
       releaseEnd: "1627000000",
     };
-    return res;
+    return array;
   }
 
   async getLockInfo(address) {

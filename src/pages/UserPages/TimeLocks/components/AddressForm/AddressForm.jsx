@@ -4,18 +4,16 @@ import Button from 'components/Base/Buttons/Button';
 
 import { useForm } from 'react-hook-form';
 import { WrapContainer } from '../../styles'
-import { useSelector } from 'react-redux';
-import { userAddressMetamask } from 'store/selectors/user-inf';
 
-function AddressForm({setAddressRefresh}) {
-    const address = useSelector(userAddressMetamask);
-    const [userAddress, setUserAddress] = useState(address)
+function AddressForm({ setAddressRefresh, address }) {
+
+    const [userAddress, setUserAddress] = useState(address.token)
 
     const {
-        register: reg2,
-        handleSubmit: submitAddressRefresh,
-        errors: err2
-    } = useForm();
+        register,
+        handleSubmit,
+        errors
+    } = useForm(); 
 
     return (
         <WrapContainer>
@@ -26,20 +24,25 @@ function AddressForm({setAddressRefresh}) {
                 disabled={true}
             />
             <FormInput
-                name="amountQ"
+                name="token"
                 type="string"
                 value={userAddress}
-                onChange={(e) => setUserAddress(e.target.value)}
-                // ref={reg2({
-                //     required: 'Check address!',
-                //     pattern: /^.{42}$/gim
-                // })}
+                ref={register({
+                    required: "Address Required!",
+                    pattern: {
+                        required: true,
+                        value: /^.{42}$/gim,
+                        message: "Invalid Address!"
+                    }
+                })}
+                valid={errors?.token?.message}
+                onChange={(value) => setUserAddress(value.target.value)}
             />
             <Button
                 type="outline"
                 title="Refresh"
                 width="90px"
-                handleButton={() => submitAddressRefresh(setAddressRefresh(userAddress))}
+                handleButton={handleSubmit(setAddressRefresh)}
             />
         </WrapContainer>
     )
