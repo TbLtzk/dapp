@@ -28,15 +28,16 @@ function TimeLocks() {
   const handleRefresh = (userAddress) => {
     setAddress(userAddress);
   };
+  
 
   return (
     <PageWrap headerTitle="Time Locks">
       <AddressForm setAddressRefresh={handleRefresh} address={address} />
       <InfoWrap>
-        <BalancePage title="Q Vault account balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
-        <BalancePage title="Root stake balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
-        <BalancePage title="Validator stake balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
-        <BalancePage title="Vesting balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
+        <BalancePage setDeposit={(data) => console.log(data, 'qVault')} id='qVault' title="Q Vault account balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
+        <BalancePage setDeposit={(data) => console.log(data, 'root')} id='root' title="Root stake balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
+        <BalancePage setDeposit={(data) => console.log(data, 'validator')} id='validator' title="Validator stake balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
+        <BalancePage setDeposit={(data) => console.log(data, 'vesting')} id='vesting' title="Vesting balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
       </InfoWrap>
     </PageWrap>
   );

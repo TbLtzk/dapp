@@ -42,3 +42,11 @@ export const Button = styled.button`
   font-size: 10px;
   cursor: pointer;
 `
+
+
+export const CalendarWraper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  padding-bottom: 20px;
+`

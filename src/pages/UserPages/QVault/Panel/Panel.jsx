@@ -22,6 +22,7 @@ export default function Panel() {
   const userAddressL = useSelector(userAddressMetamask);
   const qVaultData = useSelector(qVaultAmount)
   const timeLockedAmount = fromWei(Number(qVaultData.amount))
+  console.log(qVaultData)
   const balanceDetails = useSelector(qvBalance);
   const userQVBalanceL = useSelector(userBalance);
   const userVotingWeight = fN(useSelector(votingWeight));
