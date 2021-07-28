@@ -11,7 +11,6 @@ import TokenomicsBlock from './components/TokenomicsBlock';
 import SavingBorrowingBlock from './components/SavingBorrowingBlock';
 import Button from 'components/Base/Buttons/Button';
 import PageWrap from 'components/Base/PageWrap';
-import DashboardModeButton from 'components/Base/DashboardMode/DashboarModeButton';
 
 import { Link } from 'react-router-dom';
 
@@ -34,10 +33,9 @@ function Dashboard() {
             }}
           />
           </Link>
-        ) 
+        )
         : null
       }
-      extraButton={<DashboardModeButton />}
     >
       <div>
         <InfBlock/>
