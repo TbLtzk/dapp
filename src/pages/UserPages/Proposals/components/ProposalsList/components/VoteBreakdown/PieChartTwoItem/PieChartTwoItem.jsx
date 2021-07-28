@@ -1,17 +1,17 @@
-import React from 'react';
-import { PieChart, Pie, Cell } from 'recharts';
-import colors from 'constants/colors';
+import React from 'react'
+import { PieChart, Pie, Cell } from 'recharts'
+import colors from 'constants/colors'
 
-export const circles = [colors.white, colors.oxfordBlueTint2];
+export const circles = [colors.white, colors.oxfordBlueTint2]
 
-function PieChartTwoItem(props) {
-  const { data } = props;
+function PieChartTwoItem (props) {
+  const { data } = props
 
   return (
     <div>
       {
-        data ?
-          <PieChart width={60} height={60}>
+        data
+          ? <PieChart width={60} height={60}>
             <Pie
               data={data}
               cx={''}
@@ -52,8 +52,7 @@ function PieChartTwoItem(props) {
           </PieChart>
       }
     </div>
-  );
+  )
 }
 
-export default PieChartTwoItem;
-
+export default PieChartTwoItem

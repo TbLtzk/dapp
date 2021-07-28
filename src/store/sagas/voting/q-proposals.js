@@ -1,111 +1,110 @@
-import { put, select, takeEvery } from 'redux-saga/effects';
+import { put, select, takeEvery } from 'redux-saga/effects'
 
-import * as actionTypes from 'store/actions/action-types/voting/q-proposals';
+import * as actionTypes from 'store/actions/action-types/voting/q-proposals'
 
 import {
   getQEndedProposalsError, getQEndedProposalsSuccess,
   getProposalSuccess, getEmptyProposalSuccess, getProposalError,
   getQProposalsListError, getQProposalsListSuccess, getProposalEndedSuccess,
   getEmptyProposalEndedSuccess, getQProposalEnded, getProposalEndedError, getOneProposalSuccess
-} from 'store/actions/action-creaters/voting/q-proposals';
+} from 'store/actions/action-creaters/voting/q-proposals'
 import {
   creationQContractObj,
-  creationQContractsObjArray,
-} from 'contracts/handler/VotingHandler';
+  creationQContractsObjArray
+} from 'contracts/handler/VotingHandler'
 
-function* getProposalsList() {
+function * getProposalsList () {
   try {
-    const contracts = creationQContractsObjArray();
-    let result = [];
+    const contracts = creationQContractsObjArray()
+    let result = []
     if (Array.isArray(contracts)) {
-      const data = yield Promise.all(contracts.map(item => item.getProposals()));
-      result = [].concat.apply([], data);
+      const data = yield Promise.all(contracts.map(item => item.getProposals()))
+      result = [].concat.apply([], data)
     } else {
-      result = yield contracts?.getProposals();
+      result = yield contracts?.getProposals()
     }
-    yield put(getQProposalsListSuccess(result));
+    yield put(getQProposalsListSuccess(result))
   } catch (e) {
-    console.log('e', e);
-    yield put(getQProposalsListError(e));
+    console.log('e', e)
+    yield put(getQProposalsListError(e))
   }
 }
 
-function* getQProposal({
+function * getQProposal ({
   contractName,
   id,
   activeProposal
 }) {
-  const { pageType } = yield select(state => state.proposals);
+  const { pageType } = yield select(state => state.proposals)
   try {
     if (pageType === 'ended') {
-      yield put(getQProposalEnded());
+      yield put(getQProposalEnded())
     }
-    const contract = creationQContractObj(contractName);
+    const contract = creationQContractObj(contractName)
     if (contract) {
-      let data = null;
+      let data = null
       if (activeProposal) {
-        data = yield contract.getOneProposal(id);
+        data = yield contract.getOneProposal(id)
       } else {
-        data = yield contract.getProposalWithoutStatusChecked(id);
+        data = yield contract.getProposalWithoutStatusChecked(id)
       }
       if (pageType === 'ended') {
         if (data) {
-          yield put(getProposalEndedSuccess(data));
+          yield put(getProposalEndedSuccess(data))
         } else {
           if (id) {
             yield put(getEmptyProposalEndedSuccess({
               id,
               contractName
-            }));
+            }))
           }
         }
       } else if (pageType === 'active') {
         if (data) {
-          yield put(getProposalSuccess(data));
+          yield put(getProposalSuccess(data))
         } else {
           if (id) {
             yield put(getEmptyProposalSuccess({
               id,
               contractName
-            }));
+            }))
           }
         }
       } else {
-        yield put(getOneProposalSuccess(data));
+        yield put(getOneProposalSuccess(data))
       }
     }
   } catch (err) {
-    console.log('err', err);
+    console.log('err', err)
     if (pageType === 'ended') {
-      yield put(getProposalEndedError(id));
+      yield put(getProposalEndedError(id))
     } else {
-      yield put(getProposalError(id));
+      yield put(getProposalError(id))
     }
   }
 }
 
-function* getEndedProposals() {
+function * getEndedProposals () {
   try {
-    const contracts = creationQContractsObjArray();
+    const contracts = creationQContractsObjArray()
 
-    let result = [];
+    let result = []
     if (Array.isArray(contracts)) {
-      const data = yield Promise.all(contracts.map(item => item.getEndedProposals()));
-      result = [].concat.apply([], data);
+      const data = yield Promise.all(contracts.map(item => item.getEndedProposals()))
+      result = [].concat.apply([], data)
     } else {
-      result = yield contracts?.getEndedProposals();
+      result = yield contracts?.getEndedProposals()
     }
 
-    yield put(getQEndedProposalsSuccess(result));
-
+    yield put(getQEndedProposalsSuccess(result))
   } catch (err) {
-    console.log('err', err.message);
-    yield put(getQEndedProposalsError(err.message));
+    console.log('err', err.message)
+    yield put(getQEndedProposalsError(err.message))
   }
 }
 
 export default [
   takeEvery(actionTypes.GET_Q_ENDED_PROPOSALS, getEndedProposals),
   takeEvery(actionTypes.GET_Q_PROPOSALS_LIST, getProposalsList),
-  takeEvery(actionTypes.GET_Q_PROPOSAL, getQProposal),
-];
+  takeEvery(actionTypes.GET_Q_PROPOSAL, getQProposal)
+]

@@ -1,16 +1,16 @@
-import React, { useCallback, useMemo } from 'react';
-import { PROPOSALS_TYPES } from 'constants/statuses';
-import { getTypeName } from 'func/contractHelpers';
+import React, { useCallback, useMemo } from 'react'
+import { PROPOSALS_TYPES } from 'constants/statuses'
+import { getTypeName } from 'func/contractHelpers'
 
-const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
+const EMPTY_ADDR = '0x0000000000000000000000000000000000000000'
 
-function PollDetail(props) {
+function PollDetail (props) {
   const {
     pollDetail,
     proposalsKind
-  } = props;
+  } = props
 
-  function getParametersInfo(parameters) {
+  function getParametersInfo (parameters) {
     return parameters.map((item, index) => {
       return [
         {
@@ -24,15 +24,15 @@ function PollDetail(props) {
         {
           label: `Parameter value #${index + 1}`,
           value: item.parameterValue + ''
-        },
-      ];
-    });
+        }
+      ]
+    })
   }
 
   const showDataArr = useMemo(() => {
     switch (proposalsKind) {
       case PROPOSALS_TYPES.proposals:
-        let oneLineInfos = [];
+        let oneLineInfos = []
         const defaultInfo = [
           {
             label: 'Current constitution hash',
@@ -41,45 +41,45 @@ function PollDetail(props) {
           {
             label: 'New constitution hash',
             value: pollDetail?.newConstitutionHash
-          },
-        ];
+          }
+        ]
         if (pollDetail.parameters) {
-          oneLineInfos = getParametersInfo(pollDetail.parameters);
+          oneLineInfos = getParametersInfo(pollDetail.parameters)
         }
-        return [...defaultInfo, ...oneLineInfos];
+        return [...defaultInfo, ...oneLineInfos]
       case PROPOSALS_TYPES.rootNodePanel:
-        let rootNodeArr = [];
+        const rootNodeArr = []
         if (pollDetail.candidate && pollDetail.candidate !== EMPTY_ADDR) {
           rootNodeArr.push({
             label: 'Proposal to Add Root Node',
             value: pollDetail.candidate
-          });
+          })
         }
         if (pollDetail.replaceDest && pollDetail.replaceDest !== EMPTY_ADDR) {
           rootNodeArr.push({
             label: 'Proposal to Remove Root Node',
             value: pollDetail.replaceDest
-          });
+          })
         }
-        return rootNodeArr;
+        return rootNodeArr
       case PROPOSALS_TYPES.expertProposals:
         if (pollDetail.kindVoting === 'membership') {
-          let membershipArr = [];
+          const membershipArr = []
           if (pollDetail.addressToAdd && pollDetail.addressToAdd !== EMPTY_ADDR) {
             membershipArr.push({
               label: 'Address to Add',
               value: pollDetail.addressToAdd
-            });
+            })
           }
           if (pollDetail.addressToRemove && pollDetail.addressToRemove !== EMPTY_ADDR) {
             membershipArr.push({
               label: 'Address to Remove',
               value: pollDetail.addressToRemove
-            });
+            })
           }
-          return membershipArr;
+          return membershipArr
         } else {
-          return getParametersInfo(pollDetail.parameters);
+          return getParametersInfo(pollDetail.parameters)
         }
       case PROPOSALS_TYPES.slashingProposals:
         return [
@@ -90,51 +90,49 @@ function PollDetail(props) {
           {
             label: 'Amount to slash',
             value: pollDetail?.amountToSlash + 'Q'
-          },
-        ];
+          }
+        ]
     }
-
-  }, [pollDetail]);
+  }, [pollDetail])
 
   const printValues = (label, value, key) => {
     {
       const keyId = key + label.replace(/ /g, '-')
-        .toLowerCase() + +new Date();
-      return !value || value === 'undefined' ? null :
-        <div key={keyId}>
+        .toLowerCase() + +new Date()
+      return !value || value === 'undefined'
+        ? null
+        : <div key={keyId}>
           <h5>{label}</h5>
           <p title={value}>{value}</p>
-        </div>;
+        </div>
     }
-  };
+  }
 
   const showContent = useCallback(() => {
     return showDataArr.map((el, i) => {
       if (!Array.isArray(el)) {
-        return printValues(el.label, el.value, i);
+        return printValues(el.label, el.value, i)
       } else {
         return (
           <div className="list-card__column-1-2-2" key={+new Date() + i}>
             {el.map((item, index) => {
-              return printValues(item.label, item.value, i + '-' + index + +new Date());
+              return printValues(item.label, item.value, i + '-' + index + +new Date())
             })}
           </div>
-        );
+        )
       }
-    });
-
-  }, [showDataArr]);
+    })
+  }, [showDataArr])
 
   const checkLinkAndPrint = () => {
-      let hrefValue = '';
-      if (pollDetail?.remark?.includes('http') || pollDetail?.remark?.includes('https')) {
-        hrefValue = pollDetail.remark;
-      } else {
-        hrefValue = '//' + pollDetail.remark;
-      }
-      return <a href={hrefValue} target="_blank">{pollDetail.remark}</a>;
+    let hrefValue = ''
+    if (pollDetail?.remark?.includes('http') || pollDetail?.remark?.includes('https')) {
+      hrefValue = pollDetail.remark
+    } else {
+      hrefValue = '//' + pollDetail.remark
     }
-  ;
+    return <a href={hrefValue} target="_blank" rel="noreferrer">{pollDetail.remark}</a>
+  }
 
   return (
     <div>
@@ -143,8 +141,7 @@ function PollDetail(props) {
       <h5>External Reference</h5>
       {checkLinkAndPrint()}
     </div>
-  );
+  )
 }
 
-export default PollDetail;
-
+export default PollDetail

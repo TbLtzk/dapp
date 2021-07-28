@@ -1,8 +1,8 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-import { Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap'
 
-import { indents } from 'constants/style';
+import { indents } from 'constants/style'
 
 export const Header = styled(Modal.Header)`
   background: ${props => props.theme.colors.oxfordBlueTint6};
@@ -11,7 +11,7 @@ export const Header = styled(Modal.Header)`
     color: ${props => props.theme.colors.oxfordBlueTint2};
   }!important;
 }
-`;
+`
 
 export const Body = styled(Modal.Body)`
   padding-left: ${indents['40']};
@@ -23,12 +23,12 @@ export const Body = styled(Modal.Body)`
   word-break: break-word;
   background: ${props => props.theme.colors.oxfordBlueTint6};
   hyphens: auto;
-`;
+`
 
 export const Footer = styled(Modal.Footer)`
   border-top: 0;
   background: ${props => props.theme.colors.oxfordBlueTint6};
-`;
+`
 
 export const ModalW = styled(Modal)`
   .modal-header {
@@ -174,4 +174,4 @@ export const ModalW = styled(Modal)`
       text-decoration: underline;
     }
   }
-`;
+`

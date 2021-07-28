@@ -1,4 +1,4 @@
-import { ParameterType } from '@q-dev/q-js-sdk';
+import { ParameterType } from '@q-dev/q-js-sdk'
 
 export const constUpdate = {
   inputTitle: 'Please provide exact Key-Name, Type and new Value for Parameter',
@@ -24,5 +24,5 @@ export const constUpdate = {
     {
       lbl: 'Uint',
       value: ParameterType.UINT
-    }],
-};
+    }]
+}

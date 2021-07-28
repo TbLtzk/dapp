@@ -1,19 +1,19 @@
-import React, { useCallback, useEffect, useState, Fragment } from 'react';
+import React, { useCallback, useEffect, useState, Fragment } from 'react'
 
-import { useSelector } from 'react-redux';
-import { formObject } from 'store/selectors/voting/proposals';
-import { PROPOSALS_TYPES } from 'constants/statuses';
-import { getTypeName } from 'func/contractHelpers';
-import { constUpdate } from '../CreateStep3/constants';
+import { useSelector } from 'react-redux'
+import { formObject } from 'store/selectors/voting/proposals'
+import { PROPOSALS_TYPES } from 'constants/statuses'
+import { getTypeName } from 'func/contractHelpers'
+import { constUpdate } from '../CreateStep3/constants'
 
-function CreateStep4(props) {
-  const { activeTab } = props;
-  const formData = useSelector(formObject);
+function CreateStep4 (props) {
+  const { activeTab } = props
+  const formData = useSelector(formObject)
   const [params, setParams] = useState([{
     type: '',
     key: '',
     value: ''
-  }]);
+  }])
 
   useEffect(() => {
     if (formData[constUpdate.radioBtnName]) {
@@ -22,13 +22,13 @@ function CreateStep4(props) {
           types.push({
             type: item,
             key: formData[constUpdate.inputsObjFirst][index],
-            value: formData[constUpdate.inputsObjSecond][index],
-          });
-          return types;
+            value: formData[constUpdate.inputsObjSecond][index]
+          })
+          return types
         }, [])
-      );
+      )
     }
-  }, []);
+  }, [])
 
   const contentSwitcher = useCallback(() => {
     switch (activeTab) {
@@ -64,24 +64,22 @@ function CreateStep4(props) {
                       <p title={item.value}>{item.value}</p>
                     </div>
                   </div>
-                </Fragment>;
+                </Fragment>
               })}
             </div>
-          );
+          )
         }
-        break;
+        break
       default:
-        return null;
+        return null
     }
-
-  }, [activeTab, params]);
+  }, [activeTab, params])
 
   return (
     <>
       {contentSwitcher()}
     </>
-  );
+  )
 }
 
-export default CreateStep4;
-
+export default CreateStep4

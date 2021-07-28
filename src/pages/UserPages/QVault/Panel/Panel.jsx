@@ -1,55 +1,53 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { userAddressMetamask } from 'store/selectors/user-inf';
-import { getUserBalance, getLockedAssets, getQVBalance } from 'store/actions/action-creaters/q-vault';
-import { userBalance, votingWeight, votingLockingEnd, qvBalance, lastClaim } from 'store/selectors/q-vault';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { userAddressMetamask } from 'store/selectors/user-inf'
+import { getUserBalance, getLockedAssets, getQVBalance } from 'store/actions/action-creaters/q-vault'
+import { userBalance, votingWeight, votingLockingEnd, qvBalance, lastClaim } from 'store/selectors/q-vault'
 
-import { useAlert } from 'react-alert';
+import { useAlert } from 'react-alert'
 
-import VoterStatus from 'components/Custom/PageLists/VoterStatus';
-import CustomBlock from 'components/Base/CustomBlock';
+import VoterStatus from 'components/Custom/PageLists/VoterStatus'
+import CustomBlock from 'components/Base/CustomBlock'
 
-import QVaultHandler from '../handler';
-import { fN } from 'func/useful';
-import { fromSolDateFormattingT1 } from 'func/date';
-import { uintPerSecondToPerYearNumber } from 'func/useful';
+import QVaultHandler from '../handler'
+import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
+import { fromSolDateFormattingT1 } from 'func/date'
 
-export default function Panel() {
-  const userAddressL = useSelector(userAddressMetamask);
-  const balanceDetails = useSelector(qvBalance);
-  const userQVBalanceL = useSelector(userBalance);
-  const userVotingWeight = fN(useSelector(votingWeight));
-  const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd));
-  const updateOnClaim = useSelector(lastClaim);
+export default function Panel () {
+  const userAddressL = useSelector(userAddressMetamask)
+  const balanceDetails = useSelector(qvBalance)
+  const userQVBalanceL = useSelector(userBalance)
+  const userVotingWeight = fN(useSelector(votingWeight))
+  const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd))
+  const updateOnClaim = useSelector(lastClaim)
 
-  const [accountBalance, setAccountBalance] = useState();
-  const [yearlyExpectedEarnings, setYearlyExpectedEarnings] = useState(0);
-  
+  const [accountBalance, setAccountBalance] = useState()
+  const [yearlyExpectedEarnings, setYearlyExpectedEarnings] = useState(0)
 
-  const dispatch = useDispatch();
-  const address = useSelector(userAddressMetamask);
-  const qvHandler = new QVaultHandler(address, useDispatch(), useAlert());
+  const dispatch = useDispatch()
+  const address = useSelector(userAddressMetamask)
+  const qvHandler = new QVaultHandler(address, useDispatch(), useAlert())
 
   useEffect(() => {
-    dispatch(getUserBalance(userAddressL));
-    dispatch(getLockedAssets(userAddressL));
-    dispatch(getQVBalance());
-  }, [dispatch, updateOnClaim]);
+    dispatch(getUserBalance(userAddressL))
+    dispatch(getLockedAssets(userAddressL))
+    dispatch(getQVBalance())
+  }, [dispatch, updateOnClaim])
 
   useEffect(() => {
-    qvHandler.setAccountBalance(setAccountBalance);
-  });
+    qvHandler.setAccountBalance(setAccountBalance)
+  })
 
   useEffect(() => {
     const interestRate = balanceDetails?.interestRate
       ? uintPerSecondToPerYearNumber(balanceDetails.interestRate)
-      : 0;
-    let yearlyExpectedEarningsCalc = 0;
+      : 0
+    let yearlyExpectedEarningsCalc = 0
     if (userQVBalanceL) {
-      yearlyExpectedEarningsCalc = userQVBalanceL * ((1 + interestRate) / 100);
+      yearlyExpectedEarningsCalc = userQVBalanceL * ((1 + interestRate) / 100)
     }
-    setYearlyExpectedEarnings(yearlyExpectedEarningsCalc);
-  }, [balanceDetails, userQVBalanceL]);
+    setYearlyExpectedEarnings(yearlyExpectedEarningsCalc)
+  }, [balanceDetails, userQVBalanceL])
 
   return (
     <CustomBlock>
@@ -74,5 +72,5 @@ export default function Panel() {
         <VoterStatus/>
       </div>
     </CustomBlock>
-  );
+  )
 }

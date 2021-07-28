@@ -1,1 +1,1 @@
-export {default} from './FormStaking';
+export { default } from './FormStaking'

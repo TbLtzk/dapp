@@ -1,1 +1,1 @@
-export {default} from './AuctionsList';
+export { default } from './AuctionsList'

@@ -1,1 +1,1 @@
-export {default} from './DefiMembersPanel';
+export { default } from './DefiMembersPanel'

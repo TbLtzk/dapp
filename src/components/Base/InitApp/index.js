@@ -1,1 +1,1 @@
-export {default} from './InitApp';
+export { default } from './InitApp'

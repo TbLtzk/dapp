@@ -1,1 +1,1 @@
-export {default} from './SlashingObjection';
+export { default } from './SlashingObjection'

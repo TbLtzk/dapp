@@ -1,1 +1,1 @@
-export {default} from './ExpertsPanel';
+export { default } from './ExpertsPanel'

@@ -1,1 +1,1 @@
-export {default} from './SavingBorrowingBlock';
+export { default } from './SavingBorrowingBlock'

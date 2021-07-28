@@ -1,9 +1,9 @@
-import React, {forwardRef} from "react";
-import {Form} from "react-bootstrap";
+import React, { forwardRef } from 'react'
+import { Form } from 'react-bootstrap'
 
 const InputCheckbox = forwardRef((props, ref) => {
-    const {label, name, value, checked, handleChange} = props;
-    return (
+  const { label, name, value, checked, handleChange } = props
+  return (
         <Form.Group controlId="formBasicCheckbox">
             <Form.Check
                 type="checkbox"
@@ -15,8 +15,7 @@ const InputCheckbox = forwardRef((props, ref) => {
                 onChange={handleChange}
             />
         </Form.Group>
-    );
-});
+  )
+})
 
-export default InputCheckbox;
-
+export default InputCheckbox

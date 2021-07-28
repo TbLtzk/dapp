@@ -1,37 +1,37 @@
-import React, { useEffect } from 'react';
-import { GlobalStyle } from 'constants/globalStyle';
-import { ThemeProvider } from 'styled-components';
-import themeStyles from 'constants/style';
-import { darkColors, lightColors } from 'constants/colors';
-import { theme } from 'store/selectors/theme';
-import { setThem } from 'store/actions/action-creaters/theme';
-import { THEMES } from 'constants/colors';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react'
+import { GlobalStyle } from 'constants/globalStyle'
+import { ThemeProvider } from 'styled-components'
+import themeStyles from 'constants/style'
+import { darkColors, lightColors, THEMES } from 'constants/colors'
+import { theme } from 'store/selectors/theme'
+import { setThem } from 'store/actions/action-creaters/theme'
 
-function StyleLayout({ children }) {
-  const dispatch = useDispatch();
-  const currentTheme = useSelector(theme);
+import { useDispatch, useSelector } from 'react-redux'
+
+function StyleLayout ({ children }) {
+  const dispatch = useDispatch()
+  const currentTheme = useSelector(theme)
 
   useEffect(() => {
     switch (localStorage['theme-mode']) {
       case THEMES.light:
       case THEMES.dark:
-        dispatch(setThem(localStorage['theme-mode'] || THEMES.dark));
-        break;
+        dispatch(setThem(localStorage['theme-mode'] || THEMES.dark))
+        break
       default:
-        dispatch(setThem(THEMES.dark));
+        dispatch(setThem(THEMES.dark))
     }
-  }, []);
+  }, [])
 
-  function getColors(theme) {
-    let generalColors = {};
+  function getColors (theme) {
+    let generalColors = {}
     switch (theme) {
       case THEMES.light:
-        generalColors = lightColors;
-        break;
+        generalColors = lightColors
+        break
       case THEMES.dark:
-        generalColors = darkColors;
-        break;
+        generalColors = darkColors
+        break
     }
     return {
       ...generalColors,
@@ -45,8 +45,8 @@ function StyleLayout({ children }) {
       error: generalColors.validationError,
       th: generalColors.oxfordBlueTint3,
       td: generalColors.white,
-      darkText: generalColors.oxfordBlue,
-    };
+      darkText: generalColors.oxfordBlue
+    }
   }
 
   return <ThemeProvider theme={
@@ -58,7 +58,7 @@ function StyleLayout({ children }) {
   >
     <GlobalStyle/>
     {children}
-  </ThemeProvider>;
+  </ThemeProvider>
 }
 
-export default StyleLayout;
+export default StyleLayout

@@ -1,71 +1,71 @@
 /* eslint-disable max-classes-per-file */
-import { contractsToAbi } from '../mapping/contract-to-abi';
+import { contractsToAbi } from '../mapping/contract-to-abi'
 
 export class BorrowingCoreQUSD {
-  constructor(address) {
-    this.contractName = 'BorrowingCoreQUSD';
-    this.address = address;
-    this.contract = new window.web3.eth.Contract(contractsToAbi[this.contractName], address);
-    this.methods = this.contract.methods;
+  constructor (address) {
+    this.contractName = 'BorrowingCoreQUSD'
+    this.address = address
+    this.contract = new window.web3.eth.Contract(contractsToAbi[this.contractName], address)
+    this.methods = this.contract.methods
   }
 
-  async userVaultsCount(address) {
+  async userVaultsCount (address) {
     return await this.methods.userVaultsCount(address)
-        .call();
+      .call()
   }
 
-  async userVaults(address, vaultNum) {
+  async userVaults (address, vaultNum) {
     return await this.methods.userVaults(address, vaultNum)
-        .call();
+      .call()
   }
 
-  async createVault(address, collateral) {
+  async createVault (address, collateral) {
     return await this.methods.createVault(collateral)
-        .send({from: address});
+      .send({ from: address })
   }
 
-  async depositCol(address, vaultId, amount) {
+  async depositCol (address, vaultId, amount) {
     return await this.methods.depositCol(vaultId, amount)
-        .send({from: address});
+      .send({ from: address })
   }
 
-  async generateStc(address, vaultId, amountL) {
+  async generateStc (address, vaultId, amountL) {
     return await this.methods.generateStc(vaultId, amountL)
-        .send({from: address});
+      .send({ from: address })
   }
 
-  async payBackStc(address, vaultId, amountL) {
+  async payBackStc (address, vaultId, amountL) {
     return await this.methods.payBackStc(vaultId, amountL)
-        .send({from: address});
+      .send({ from: address })
   }
 
-  async withdrawCol(address, vaultId, amount) {
+  async withdrawCol (address, vaultId, amount) {
     return await this.methods.withdrawCol(vaultId, amount)
-        .send({from: address});
+      .send({ from: address })
   }
 
-  async balanceOf(address) {
+  async balanceOf (address) {
     return await this.methods.balanceOf(address)
-        .call();
+      .call()
   }
 
-  async compoundRateKeeper(colKey) {
+  async compoundRateKeeper (colKey) {
     return await this.methods.compoundRateKeeper(colKey)
-        .call();
+      .call()
   }
 
-  async getVaultStats(userAddress, vaultId) {
+  async getVaultStats (userAddress, vaultId) {
     return await this.methods.getVaultStats(userAddress, vaultId)
-        .call();
+      .call()
   }
 
-  async totalStcBackedByCol(userAddress) {
+  async totalStcBackedByCol (userAddress) {
     return await this.methods.totalStcBackedByCol(userAddress)
-        .call();
+      .call()
   }
 
-  async updateCompoundRate(address, colKey) {
+  async updateCompoundRate (address, colKey) {
     return await this.methods.updateCompoundRate(colKey)
-        .send({from: address});
+      .send({ from: address })
   }
 }

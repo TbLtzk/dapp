@@ -1,13 +1,13 @@
-import SlashingVotingService from '../src/voting/SlashingVoting';
+import SlashingVotingService from '../src/voting/SlashingVoting'
 
 export const chooseSlashingContractDependsOnType = (type) => {
-  let contractName = null;
+  let contractName = null
   if (type === 'root-node-slashing') {
-    contractName = 'RootNodesSlashingVoting';
+    contractName = 'RootNodesSlashingVoting'
   } else if (type === 'validator-node-slashing') {
-    contractName = 'ValidatorsSlashingVoting';
+    contractName = 'ValidatorsSlashingVoting'
   }
-  const contract = new SlashingVotingService(contractName);
+  const contract = new SlashingVotingService(contractName)
 
-  return contract;
-};
+  return contract
+}

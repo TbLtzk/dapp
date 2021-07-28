@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
-import { TabsStyle, TabStyle } from './styles';
+import { TabsStyle, TabStyle } from './styles'
 
-function BigTabsView(props) {
-  const { tabsItems, active } = props;
-  const [key, setKey] = useState(() => active ? active : tabsItems[0]?.label);
+function BigTabsView (props) {
+  const { tabsItems, active } = props
+  const [key, setKey] = useState(() => active || tabsItems[0]?.label)
 
   return (
     <TabsStyle
@@ -14,23 +14,22 @@ function BigTabsView(props) {
       onSelect={(k) => setKey(k)}
     >
       {
-        !tabsItems ? null :
-          tabsItems.map((el, i) => {
+        !tabsItems
+          ? null
+          : tabsItems.map((el, i) => {
             return (
               <TabStyle key={i} eventKey={el.label} title={el.title}>
                 {el.content}
               </TabStyle>
-            );
-
+            )
           })
       }
     </TabsStyle>
-  );
+  )
 }
 
 BigTabsView.propTypes = {
-  tabsItems: PropTypes.array,
-};
+  tabsItems: PropTypes.array
+}
 
-export default BigTabsView;
-
+export default BigTabsView

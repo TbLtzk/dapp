@@ -1,61 +1,60 @@
-import { contractsToAbi } from '../../mapping/contract-to-abi';
+import { contractsToAbi } from '../../mapping/contract-to-abi'
 
 export default class EPDR_Parameters {
-
-  constructor(address) {
-    this.contractName = 'EPDR_Parameters';
+  constructor (address) {
+    this.contractName = 'EPDR_Parameters'
     this.contract = new window.web3.eth.Contract(contractsToAbi[this.contractName], address)
   }
 
-  async getAddrKeys() {
+  async getAddrKeys () {
     return await this.contract.methods.getAddrKeys()
-      .call();
+      .call()
   }
 
-  async getUintKeys() {
+  async getUintKeys () {
     return await this.contract.methods.getUintKeys()
-      .call();
+      .call()
   }
 
-  //getAddress
-  async getAddr(key) {
+  // getAddress
+  async getAddr (key) {
     return await this.contract.methods.getAddr(key)
-      .call();
+      .call()
   }
 
-  //getBoolean
-  async getBool(key) {
+  // getBoolean
+  async getBool (key) {
     return await this.contract.methods.getBool(key)
-      .call();
+      .call()
   }
 
-  async getString(key) {
+  async getString (key) {
     return await this.contract.methods.getString(key)
-      .call();
+      .call()
   }
 
-  async getBytes(key) {
+  async getBytes (key) {
     return await this.contract.methods.getBytes32(key)
-      .call();
+      .call()
   }
 
-  async getUint(key) {
+  async getUint (key) {
     return await this.contract.methods.getUint(key)
-      .call();
+      .call()
   }
 
-  async getStringKeys() {
+  async getStringKeys () {
     return await this.contract.methods.getStringKeys()
-      .call();
+      .call()
   }
 
-  async getBytes32Keys() {
+  async getBytes32Keys () {
     return await this.contract.methods.getBytes32Keys()
-      .call();
+      .call()
   }
 
-  async getBoolKeys() {
+  async getBoolKeys () {
     return await this.contract.methods.getBoolKeys()
-      .call();
+      .call()
   }
 }

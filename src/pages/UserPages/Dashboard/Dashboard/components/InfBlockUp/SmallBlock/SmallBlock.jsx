@@ -1,7 +1,7 @@
-import React from 'react';
-import CustomBlock from 'components/Base/CustomBlock';
+import React from 'react'
+import CustomBlock from 'components/Base/CustomBlock'
 
-function SmallBlock(props) {
+function SmallBlock (props) {
   const {
     title,
     firstSubtitle,
@@ -9,7 +9,7 @@ function SmallBlock(props) {
     firstContent,
     secondContent,
     display
-  } = props;
+  } = props
 
   return (
     <CustomBlock>
@@ -29,8 +29,7 @@ function SmallBlock(props) {
         </div>
       </div>
     </CustomBlock>
-  );
+  )
 }
 
-export default SmallBlock;
-
+export default SmallBlock

@@ -1,9 +1,9 @@
-import { call, put, takeEvery, select } from 'redux-saga/effects';
+import { call, put, takeEvery, select } from 'redux-saga/effects'
 
-import * as actionTypes from 'store/actions/action-types/voting/slashing-proposals';
+import * as actionTypes from 'store/actions/action-types/voting/slashing-proposals'
 import {
   setTransactionLoading, setTransactionLoadingError, setTransactionLoadingSuccess
-} from 'store/actions/action-creaters/transaction-handler';
+} from 'store/actions/action-creaters/transaction-handler'
 
 import {
   getSlashingProposalsListSuccess,
@@ -13,172 +13,173 @@ import {
   getProposalError, getEmptyProposalSuccess, getProposalSuccess,
   getEmptyProposalEndedSuccess,
   getProposalEndedSuccess, getSlashingProposalEnded, getProposalEndedError, getOneProposalSuccess
-} from 'store/actions/action-creaters/voting/slashing-proposals';
+} from 'store/actions/action-creaters/voting/slashing-proposals'
 import {
   creationSlashingContractObj,
   creationSlashingContractsObjArray
-} from 'contracts/handler/VotingHandler';
+} from 'contracts/handler/VotingHandler'
 
-import SlashingEscrow from 'contracts/src/voting/SlashingEscrow';
+import SlashingEscrow from 'contracts/src/voting/SlashingEscrow'
 
-function* getProposalsList() {
+function * getProposalsList () {
   try {
-    const contracts = creationSlashingContractsObjArray();
-    let result = [];
+    const contracts = creationSlashingContractsObjArray()
+    let result = []
     if (Array.isArray(contracts)) {
-      const data = yield Promise.all(contracts.map(item => item.getProposals()));
-      result = [].concat.apply([], data);
+      const data = yield Promise.all(contracts.map(item => item.getProposals()))
+      result = [].concat.apply([], data)
     } else {
-      result = yield contracts?.getProposals();
+      result = yield contracts?.getProposals()
     }
-    yield put(getSlashingProposalsListSuccess(result));
-
+    yield put(getSlashingProposalsListSuccess(result))
   } catch (e) {
-    console.log('e', e);
-    yield put(getSlashingProposalsListError(e));
+    console.log('e', e)
+    yield put(getSlashingProposalsListError(e))
   }
 }
 
-function* getEndedProposals() {
+function * getEndedProposals () {
   try {
-    let contracts = creationSlashingContractsObjArray();
-    let result = [];
+    const contracts = creationSlashingContractsObjArray()
+    let result = []
     if (Array.isArray(contracts)) {
-      const data = yield Promise.all(contracts.map(item => item.getEndedProposals()));
-      result = [].concat.apply([], data);
+      const data = yield Promise.all(contracts.map(item => item.getEndedProposals()))
+      result = [].concat.apply([], data)
     } else {
-      result = yield contracts?.getEndedProposals();
+      result = yield contracts?.getEndedProposals()
     }
 
-    yield put(getSlashingEndedProposalsSuccess(result));
-
+    yield put(getSlashingEndedProposalsSuccess(result))
   } catch (err) {
-    yield put(getSlashingEndedProposalsError(err));
+    yield put(getSlashingEndedProposalsError(err))
   }
 }
 
-function* getProposal({ contractName, id, activeProposal }) {
-  const { pageType } = yield select(state => state.proposals);
+function * getProposal ({ contractName, id, activeProposal }) {
+  const { pageType } = yield select(state => state.proposals)
   try {
     if (pageType === 'ended') {
-      yield put(getSlashingProposalEnded());
+      yield put(getSlashingProposalEnded())
     }
-    const contract = creationSlashingContractObj(contractName);
+    const contract = creationSlashingContractObj(contractName)
     if (contract) {
-      let data = null;
+      let data = null
       if (activeProposal) {
-        data = yield contract.getOneProposal(id);
+        data = yield contract.getOneProposal(id)
       } else {
-        data = yield contract.getProposalWithoutStatusChecked(id);
+        data = yield contract.getProposalWithoutStatusChecked(id)
       }
       if (pageType === 'ended') {
         if (data) {
-          yield put(getProposalEndedSuccess(data));
+          yield put(getProposalEndedSuccess(data))
         } else {
           if (id) {
             yield put(getEmptyProposalEndedSuccess({
               id,
               contractName
-            }));
+            }))
           }
         }
       } else if (pageType === 'active') {
         if (data) {
-          yield put(getProposalSuccess(data));
+          yield put(getProposalSuccess(data))
         } else {
           if (id) {
             yield put(getEmptyProposalSuccess({
               id,
               contractName
-            }));
+            }))
           }
         }
       } else {
-        yield put(getOneProposalSuccess(data));
+        yield put(getOneProposalSuccess(data))
       }
-
     }
   } catch (err) {
-    console.log('err', err);
+    console.log('err', err)
     if (pageType === 'ended') {
-      yield put(getProposalEndedError(id));
+      yield put(getProposalEndedError(id))
     } else {
-      yield put(getProposalError(id));
+      yield put(getProposalError(id))
     }
   }
 }
 
-function* onEscrowCastObjection({ data, contractName, proposalId }) {
+function * onEscrowCastObjection ({ data, contractName, proposalId }) {
   try {
-    yield put(setTransactionLoading());
-    const { userAddress } = yield select(state => state.userInf);
+    yield put(setTransactionLoading())
+    const { userAddress } = yield select(state => state.userInf)
     const SlashingEscrowContractName = contractName === 'ValidatorsSlashingVoting'
-      ? 'ValidatorsSlashingEscrow' : 'RootNodesSlashingEscrow';
-    const contract = new SlashingEscrow(SlashingEscrowContractName);
-    const result = yield contract.castObjection(proposalId, data['external-link'], userAddress);
+      ? 'ValidatorsSlashingEscrow'
+      : 'RootNodesSlashingEscrow'
+    const contract = new SlashingEscrow(SlashingEscrowContractName)
+    const result = yield contract.castObjection(proposalId, data['external-link'], userAddress)
     if (result) {
-      yield call(getProposalDependsOnType, contractName, {}, proposalId, false);
+      yield call(() => {}, contractName, {}, proposalId, false)
     }
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess())
   } catch (err) {
-    console.log('err', err.message);
-    yield put(setTransactionLoadingError(err.message));
+    console.log('err', err.message)
+    yield put(setTransactionLoadingError(err.message))
   }
 }
 
-function* onEscrowProposeDecision({ data, contractName, proposalId }) {
+function * onEscrowProposeDecision ({ data, contractName, proposalId }) {
   try {
-    yield put(setTransactionLoading());
-    const { userAddress } = yield select(state => state.userInf);
+    yield put(setTransactionLoading())
+    const { userAddress } = yield select(state => state.userInf)
     const SlashingEscrowContractName = contractName === 'ValidatorsSlashingVoting'
-      ? 'ValidatorsSlashingEscrow' : 'RootNodesSlashingEscrow';
-    const contract = new SlashingEscrow(SlashingEscrowContractName);
-    const notAppealed = data['target-slashing-appeal'] === 'yes';
+      ? 'ValidatorsSlashingEscrow'
+      : 'RootNodesSlashingEscrow'
+    const contract = new SlashingEscrow(SlashingEscrowContractName)
+    const notAppealed = data['target-slashing-appeal'] === 'yes'
     const result = yield contract.proposeDecision(proposalId, data['%-value'], notAppealed,
-      data['external-link'], userAddress);
+      data['external-link'], userAddress)
     if (result) {
-      yield call(getProposalDependsOnType, contractName, {}, proposalId, false);
+      yield call(() => {}, contractName, {}, proposalId, false)
     }
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess())
   } catch (err) {
-    console.log('err', err.message);
-    yield put(setTransactionLoadingError(err.message));
+    console.log('err', err.message)
+    yield put(setTransactionLoadingError(err.message))
   }
 }
 
-function* onEscrowRecallProposeDecision({ contractName, proposalId }) {
+function * onEscrowRecallProposeDecision ({ contractName, proposalId }) {
   try {
-    yield put(setTransactionLoading());
-    const { userAddress } = yield select(state => state.userInf);
+    yield put(setTransactionLoading())
+    const { userAddress } = yield select(state => state.userInf)
     const SlashingEscrowContractName = contractName === 'ValidatorsSlashingVoting'
-      ? 'ValidatorsSlashingEscrow' : 'RootNodesSlashingEscrow';
-    const contract = new SlashingEscrow(SlashingEscrowContractName);
-    const result = yield contract.recallProposedDecision(proposalId, userAddress);
+      ? 'ValidatorsSlashingEscrow'
+      : 'RootNodesSlashingEscrow'
+    const contract = new SlashingEscrow(SlashingEscrowContractName)
+    const result = yield contract.recallProposedDecision(proposalId, userAddress)
     if (result) {
-      yield call(getProposalDependsOnType, contractName, {}, proposalId, false);
+      yield call(() => {}, contractName, {}, proposalId, false)
     }
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess())
   } catch (err) {
-    console.log('err', err.message);
-    yield put(setTransactionLoadingError(err.message));
+    console.log('err', err.message)
+    yield put(setTransactionLoadingError(err.message))
   }
 }
 
-function* onEscrowConfirmProposeDecision({ contractName, proposalId }) {
+function * onEscrowConfirmProposeDecision ({ contractName, proposalId }) {
   try {
-    yield put(setTransactionLoading());
-    const { userAddress } = yield select(state => state.userInf);
+    yield put(setTransactionLoading())
+    const { userAddress } = yield select(state => state.userInf)
     const SlashingEscrowContractName = contractName === 'ValidatorsSlashingVoting'
-      ? 'ValidatorsSlashingEscrow' : 'RootNodesSlashingEscrow';
-    const contract = new SlashingEscrow(SlashingEscrowContractName);
-    const result = yield contract.confirmDecision(proposalId, userAddress);
+      ? 'ValidatorsSlashingEscrow'
+      : 'RootNodesSlashingEscrow'
+    const contract = new SlashingEscrow(SlashingEscrowContractName)
+    const result = yield contract.confirmDecision(proposalId, userAddress)
     if (result) {
-      yield call(getProposalDependsOnType, contractName, {}, proposalId, false);
+      yield call(() => {}, contractName, {}, proposalId, false)
     }
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess())
   } catch (err) {
-    console.log('err', err.message);
-    yield put(setTransactionLoadingError(err.message));
+    console.log('err', err.message)
+    yield put(setTransactionLoadingError(err.message))
   }
 }
 
@@ -190,6 +191,6 @@ export default [
   takeEvery(actionTypes.ESCROW_CAST_OBJECTION, onEscrowCastObjection),
   takeEvery(actionTypes.ESCROW_PROPOSE_DECISION, onEscrowProposeDecision),
   takeEvery(actionTypes.ESCROW_RECALL_PROPOSE_DECISION, onEscrowRecallProposeDecision),
-  takeEvery(actionTypes.ESCROW_CONFIRM_DECISION, onEscrowConfirmProposeDecision),
+  takeEvery(actionTypes.ESCROW_CONFIRM_DECISION, onEscrowConfirmProposeDecision)
 
-];
+]

@@ -1,31 +1,31 @@
-import React, { useState } from 'react';
-import PageWrap from 'components/Base/PageWrap';
-import Button from 'components/Base/Buttons/Button';
-import Overview from './components/Overview';
-import SavingCryptoAssets from './components/SavingCryptoAssets';
-import BorrowCryptoAssets from './components/BorrowCryptoAssets';
-import LoadingTransaction from 'components/Custom/LoadingTransaction';
+import React, { useState } from 'react'
+import PageWrap from 'components/Base/PageWrap'
+import Button from 'components/Base/Buttons/Button'
+import Overview from './components/Overview'
+import SavingCryptoAssets from './components/SavingCryptoAssets'
+import BorrowCryptoAssets from './components/BorrowCryptoAssets'
+import LoadingTransaction from 'components/Custom/LoadingTransaction'
 
-import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
-import { userAddressMetamask } from 'store/selectors/user-inf';
-import { useSelector } from 'react-redux';
+import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore'
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
+import { userAddressMetamask } from 'store/selectors/user-inf'
+import { useSelector } from 'react-redux'
 
-function SavingAndBorrowing() {
-  const address = useSelector(userAddressMetamask);
-  const [isLoading, setIsLoading] = useState(false);
+function SavingAndBorrowing () {
+  const address = useSelector(userAddressMetamask)
+  const [isLoading, setIsLoading] = useState(false)
 
   const createVault = async (collateral) => {
     try {
       setIsLoading(true)
-      const contract = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD']);
-      await contract.createVault(address, collateral);
+      const contract = new BorrowingCoreQUSD(contractsToAddresses.BorrowingCoreQUSD)
+      await contract.createVault(address, collateral)
     } catch (e) {
       console.log(e)
     } finally {
       setIsLoading(false)
     }
-  };
+  }
 
   return (
     <PageWrap
@@ -46,7 +46,7 @@ function SavingAndBorrowing() {
       </div>
       <Overview/>
     </PageWrap>
-  );
+  )
 }
 
-export default SavingAndBorrowing;
+export default SavingAndBorrowing

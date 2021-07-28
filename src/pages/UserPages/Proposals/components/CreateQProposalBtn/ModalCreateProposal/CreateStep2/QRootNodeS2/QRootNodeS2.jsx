@@ -1,19 +1,19 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react'
 
-import { useSelector } from 'react-redux';
-import { formObject } from 'store/selectors/voting/proposals';
+import { useSelector } from 'react-redux'
+import { formObject } from 'store/selectors/voting/proposals'
 
-import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
-import InputGroup from 'components/Custom/ModalActions/InputGroup';
+import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
+import InputGroup from 'components/Custom/ModalActions/InputGroup'
 
-import { addRootNode, removeRootNode } from './constants';
+import { addRootNode, removeRootNode } from './constants'
 
-function QRootNodeS2(props) {
-  const { activeTab, register, errors } = props;
-  const formData = useSelector(formObject);
+function QRootNodeS2 (props) {
+  const { activeTab, register, errors } = props
+  const formData = useSelector(formObject)
 
   const [showAddress, setShowAddress] =
-    useState(formData['remove-current'] === 'yes');
+    useState(formData['remove-current'] === 'yes')
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (formData?.first) {
@@ -39,11 +39,12 @@ function QRootNodeS2(props) {
               handleChange={(value) => {
                 value.target.value === 'no'
                   ? setShowAddress(false)
-                  : setShowAddress(true);
+                  : setShowAddress(true)
               }}
             />
-            {!showAddress ? null :
-              <>
+            {!showAddress
+              ? null
+              : <>
                 <h4>{addRootNode.inputTitleDown}</h4>
                 <InputGroup
                   formData={formData}
@@ -55,7 +56,7 @@ function QRootNodeS2(props) {
               </>
             }
           </>
-        );
+        )
       case 'remove-a-current-root-node':
         return (
           <>
@@ -69,19 +70,17 @@ function QRootNodeS2(props) {
               errors={errors}
             />
           </>
-        );
+        )
       default:
-        return null;
+        return null
     }
-
-  }, [activeTab, register, errors, showAddress]);
+  }, [activeTab, register, errors, showAddress])
 
   return (
     <div>
       {switchContentOnTypeProposal()}
     </div>
-  );
+  )
 }
 
-export default QRootNodeS2;
-
+export default QRootNodeS2

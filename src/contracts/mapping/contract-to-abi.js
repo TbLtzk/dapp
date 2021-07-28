@@ -1,7 +1,7 @@
 import { getAbi } from '@q-dev/q-js-sdk/lib/abi/AbiImporter'
 
 const baseContracts = {
-  ContractRegistry: getAbi('ContractRegistry.json'),
+  ContractRegistry: getAbi('ContractRegistry.json')
 }
 const dynamicContracts = {
   BorrowingCoreQUSD: getAbi('BorrowingCore.json'),
@@ -36,7 +36,7 @@ const dynamicContracts = {
   ValidationRewardProxy: getAbi('ValidationRewardProxy.json'),
   Validators: getAbi('Validators.json'),
   ValidatorsSlashingVoting: getAbi('ValidatorsSlashingVoting.json'),
-  ValidatorsSlashingEscrow: getAbi('ValidatorSlashingEscrow.json'),
+  ValidatorsSlashingEscrow: getAbi('ValidatorSlashingEscrow.json')
 }
 
 const customContracts = {
@@ -47,11 +47,11 @@ const customContracts = {
 
   CompoundRateKeeperQVault: getAbi('CompoundRateKeeper.json'),
   CompoundRateKeeperSaving: getAbi('CompoundRateKeeper.json'),
-  CompoundRateKeeperBorrowing: getAbi('CompoundRateKeeper.json'),
+  CompoundRateKeeperBorrowing: getAbi('CompoundRateKeeper.json')
 }
 
 export const contractsToAbi = {
   ...baseContracts,
   ...dynamicContracts,
   ...customContracts
-};
+}

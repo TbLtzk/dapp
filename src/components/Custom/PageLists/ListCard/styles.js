@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import { Card } from 'react-bootstrap';
-import { indents } from 'constants/style';
+import styled from 'styled-components'
+import { Card } from 'react-bootstrap'
+import { indents } from 'constants/style'
 
 export const ListCardWrp = styled(Card)`
   border: 0;
@@ -92,16 +92,16 @@ export const ListCardWrp = styled(Card)`
     border-color: ${(props) => props.theme.colors.oxfordBlueTint2};
     background-color: ${(props) => {
     if (props.palette === 'dark') {
-      return props.theme.colors.oxfordBlueTint2;
+      return props.theme.colors.oxfordBlueTint2
     } else {
-      return props.theme.colors.oxfordBlueTint5;
+      return props.theme.colors.oxfordBlueTint5
     }
   }};
     color: ${(props) => {
     if (props.palette === 'dark') {
-      return props.theme.colors.white;
+      return props.theme.colors.white
     } else {
-      return props.theme.colors.oxfordBlue;
+      return props.theme.colors.oxfordBlue
     }
   }};
     border-radius: 3px;
@@ -140,16 +140,16 @@ export const ListCardWrp = styled(Card)`
       box-shadow: ${(props) => (props.palette === 'light' ? 'none !important' : 'auto')};
       color: ${(props) => {
     if (props.palette === 'dark') {
-      return props.theme.colors.white;
+      return props.theme.colors.white
     } else {
-      return props.theme.colors.oxfordBlue;
+      return props.theme.colors.oxfordBlue
     }
   }}!important;
       background-color: ${(props) => {
     if (props.palette === 'dark') {
-      return props.theme.colors.oxfordBlueTint2;
+      return props.theme.colors.oxfordBlueTint2
     } else {
-      return props.theme.colors.oxfordBlueTint5;
+      return props.theme.colors.oxfordBlueTint5
     }
   }}!important;
       border-color: ${(props) => props.theme.colors.oxfordBlueTint2};
@@ -157,16 +157,16 @@ export const ListCardWrp = styled(Card)`
       :after {
         border-left: 1px solid ${(props) => {
           if (props.palette === 'dark') {
-            return props.theme.colors.white;
+            return props.theme.colors.white
           } else {
-            return props.theme.colors.oxfordBlue;
+            return props.theme.colors.oxfordBlue
           }
         }};
         border-top: 1px solid ${(props) => {
           if (props.palette === 'dark') {
-            return props.theme.colors.white;
+            return props.theme.colors.white
           } else {
-            return props.theme.colors.oxfordBlue;
+            return props.theme.colors.oxfordBlue
           }
         }};
       }
@@ -177,16 +177,16 @@ export const ListCardWrp = styled(Card)`
       margin-left: 10px;
       border-left: 1px solid ${(props) => {
     if (props.palette === 'dark') {
-      return props.theme.colors.white;
+      return props.theme.colors.white
     } else {
-      return props.theme.colors.oxfordBlue;
+      return props.theme.colors.oxfordBlue
     }
   }};
       border-top: 1px solid ${(props) => {
     if (props.palette === 'dark') {
-      return props.theme.colors.white;
+      return props.theme.colors.white
     } else {
-      return props.theme.colors.oxfordBlue;
+      return props.theme.colors.oxfordBlue
     }
   }};
       border-right: none;
@@ -333,7 +333,7 @@ export const ListCardWrp = styled(Card)`
       margin-left: 10px;
     }
   }
-`;
+`
 
 export const ListCardHeader = styled(Card.Header)`
   padding: 20px 20px 0 20px;
@@ -365,7 +365,7 @@ export const ListCardHeader = styled(Card.Header)`
   & > * {
     display: flex;
   }
-`;
+`
 
 export const ListCardBody = styled(Card.Body)`
   background-color: ${props => props.theme.colors.oxfordBlueTint1};
@@ -373,4 +373,4 @@ export const ListCardBody = styled(Card.Body)`
   padding: 20px;
   margin-bottom: 16px;
   border: none;
-`;
+`

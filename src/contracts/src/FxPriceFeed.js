@@ -1,26 +1,26 @@
 /* eslint-disable max-classes-per-file */
-import { contracts } from '../config/config';
+import { contracts } from '../config/config'
 
 class FxPriceFeed {
-  constructor() {
-    this.methods = '';
+  constructor () {
+    this.methods = ''
   }
 
-  async exchangeRate() {
-    return await this.methods.exchangeRate().call();
+  async exchangeRate () {
+    return await this.methods.exchangeRate().call()
   }
 }
 
 export class GovernedEpdrQethQusdOracle extends FxPriceFeed {
-  constructor() {
-    super();
-    this.methods = contracts['GovernedEpdrQethQusdOracle'].methods;
+  constructor () {
+    super()
+    this.methods = contracts.GovernedEpdrQethQusdOracle.methods
   }
 }
 
 export class GovernedEpdrQbtcQusdOracle extends FxPriceFeed {
-  constructor() {
-    super();
-    this.methods = contracts['GovernedEpdrQbtcQusdOracle'].methods;
+  constructor () {
+    super()
+    this.methods = contracts.GovernedEpdrQbtcQusdOracle.methods
   }
 }

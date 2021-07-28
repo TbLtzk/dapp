@@ -1,12 +1,12 @@
-import React from "react";
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import {LinkCustom} from "./styles";
+import { LinkCustom } from './styles'
 
-function LinkLikeBtn(props) {
-    const {title, type, path} = props;
+function LinkLikeBtn (props) {
+  const { title, type, path } = props
 
-    return (
+  return (
         <LinkCustom
             href={path}
             type={type}
@@ -14,19 +14,17 @@ function LinkLikeBtn(props) {
         >
             {title}
         </LinkCustom>
-    );
+  )
 }
 
 LinkLikeBtn.propTypes = {
-    title: PropTypes.string,
-    path: PropTypes.string,
-    type: PropTypes.string,
-};
-
+  title: PropTypes.string,
+  path: PropTypes.string,
+  type: PropTypes.string
+}
 
 LinkLikeBtn.defaultProps = {
-    type: 'main',
-};
+  type: 'main'
+}
 
-export default LinkLikeBtn;
-
+export default LinkLikeBtn

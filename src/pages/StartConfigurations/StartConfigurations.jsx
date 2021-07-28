@@ -1,12 +1,12 @@
-import React from 'react';
+import React from 'react'
 
-import InstructionMetamask from 'pages/StartConfigurations/InstructionMetamask';
+import InstructionMetamask from 'pages/StartConfigurations/InstructionMetamask'
 
-import StartConfigurationStyleLayout from 'components/Base/StartConfigurationStyleLayout';
-import { WrapContainer, WrapBlock } from './styles';
+import StartConfigurationStyleLayout from 'components/Base/StartConfigurationStyleLayout'
+import { WrapContainer, WrapBlock } from './styles'
 
-function StartConfigurations(props) {
-  const { error } = props;
+function StartConfigurations (props) {
+  const { error } = props
 
   const showInstructions = (errorMessage) => {
     return (
@@ -14,12 +14,12 @@ function StartConfigurations(props) {
         <h3>{errorMessage}</h3>
         <InstructionMetamask/>
       </div>
-    );
-  };
+    )
+  }
 
   const checkMetaMask = () => {
-    return showInstructions(error);
-  };
+    return showInstructions(error)
+  }
 
   return (
     <StartConfigurationStyleLayout>
@@ -29,8 +29,7 @@ function StartConfigurations(props) {
         </WrapBlock>
       </WrapContainer>
     </StartConfigurationStyleLayout>
-  );
+  )
 }
 
-export default StartConfigurations;
-
+export default StartConfigurations

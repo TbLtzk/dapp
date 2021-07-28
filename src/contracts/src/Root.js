@@ -1,21 +1,20 @@
-import { contracts } from '../config/config';
+import { contracts } from '../config/config'
 
-import { fromWei } from 'func/balance';
+import { fromWei } from 'func/balance'
 
 export default class RootService {
-
-  constructor() {
-    this.contract = contracts['Root'];
-    this.contractName = 'Root';
+  constructor () {
+    this.contract = contracts.Root
+    this.contractName = 'Root'
   }
 
   /**
    * get root members
    * @return array
    */
-  async getRootMembers() {
+  async getRootMembers () {
     return await this.contract.methods.getMembers()
-      .call();
+      .call()
   }
 
   /**
@@ -23,18 +22,18 @@ export default class RootService {
    * @param userAddress
    * @return boolean
    */
-  async checkMemberIsRoot(userAddress) {
+  async checkMemberIsRoot (userAddress) {
     return await this.contract.methods.isMember(userAddress)
-      .call();
+      .call()
   }
 
   /**
    * get member count
    * @return number
    */
-  async getMemberCount() {
+  async getMemberCount () {
     return await this.contract.methods.getCount()
-      .call();
+      .call()
   }
 
   /**
@@ -42,80 +41,76 @@ export default class RootService {
    *  @param node
    * @return number
    */
-  async getRootNodeStake(node) {
+  async getRootNodeStake (node) {
     const balance = await this.contract.methods.getRootNodeStake(node)
-      .call();
-    return fromWei(balance);
+      .call()
+    return fromWei(balance)
   }
 
   /**
    * get root node data
    * @return array
    */
-  async getRootNodeAllData() {
-    const rootStakes = [];
-    let promiseRes;
-    const members = await this.getRootMembers();
+  async getRootNodeAllData () {
+    const rootStakes = []
+    const members = await this.getRootMembers()
     if (members) {
-      let i = 0;
-      for (let member of members) {
-        promiseRes = await this.getRootNodeStake(member)
+      for (const member of members) {
+        await this.getRootNodeStake(member)
           .then((nodeStake) => {
             rootStakes.push(
               {
                 address: member,
-                // stakeAmount: (i + 1) * 450,
-                stakeAmount: Number(nodeStake),
+                stakeAmount: Number(nodeStake)
               }
-            );
-          });
-        i++;
+            )
+          })
       }
     }
-    return rootStakes;
+    return rootStakes
   }
 
   /**
    * get root node data with calculation of share percents
    * @return array
    */
-  async getRootCalc() {
-    let rootNodeData;
-    let totalStakes;
+  async getRootCalc () {
+    let rootNodeData
+    let totalStakes
     return await this.getRootNodeAllData()
       .then((data) => {
         if (data.length) {
           totalStakes = data.reduce((sum, current) => {
-            return sum + current.stakeAmount;
-          }, 0);
+            return sum + current.stakeAmount
+          }, 0)
           rootNodeData = data.map((member, i) => {
-            let share = 0;
+            let share = 0
             if (totalStakes !== 0) {
-              share = Math.ceil(member.stakeAmount * 100 / totalStakes);
+              share = Math.ceil(member.stakeAmount * 100 / totalStakes)
             }
             return {
               ...member,
               share: share
-            };
-          });
+            }
+          })
           return {
             rootNodeData,
             totalStakes
-          };
+          }
         }
-      });
+      })
   }
 
   /**
    * commit stake
    * @return number
    */
-  async stakeToPanel(data) {
+  async stakeToPanel (data) {
     try {
       return await this.contract.methods.commitStake()
-        .send(data);
+        .send(data)
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
   }
 
@@ -124,12 +119,12 @@ export default class RootService {
    * @param amount
    * @return number
    */
-  async announceWithdrawal(amount, paymentInf) {
+  async announceWithdrawal (amount, paymentInf) {
     try {
       return await this.contract.methods.announceWithdrawal(amount)
-        .send(paymentInf);
+        .send(paymentInf)
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
   }
 
@@ -140,12 +135,12 @@ export default class RootService {
    * @param paymentInf
    * @return number
    */
-  async withdraw(amount, payTo, paymentInf) {
+  async withdraw (amount, payTo, paymentInf) {
     try {
       return await this.contract.methods.withdraw(amount, payTo)
-        .send(paymentInf);
+        .send(paymentInf)
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
   }
 
@@ -154,9 +149,8 @@ export default class RootService {
    * @param userAddress
    * @return obj
    */
-  async withdrawals(userAddress) {
+  async withdrawals (userAddress) {
     return await this.contract.methods.withdrawals(userAddress)
-      .call();
+      .call()
   }
-
 }

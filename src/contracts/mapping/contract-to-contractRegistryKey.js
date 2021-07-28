@@ -23,7 +23,7 @@ const testnetContractsToContractsRegistryKey = {
   SystemReserve: 'tokeneconomics.systemReserve',
   SystemSurplusAuction: 'defi.QUSD.systemSurplusAuction',
   Validators: 'governance.validators',
-  ValidatorsSlashingVoting: 'governance.validators.slashingVoting',
+  ValidatorsSlashingVoting: 'governance.validators.slashingVoting'
 }
 
 const devnetContractsToContractsRegistryKey = {
@@ -36,12 +36,12 @@ const devnetContractsToContractsRegistryKey = {
   ValidationRewardPools: 'tokeneconomics.validationRewardPools',
   ValidationRewardProxy: 'tokeneconomics.validationRewardProxy',
   WrappedQ: 'defi.wrappedQ',
-  ValidatorsSlashingEscrow: 'governance.validators.slashingEscrow',
+  ValidatorsSlashingEscrow: 'governance.validators.slashingEscrow'
 }
 
 const contractsToContractsRegistryKeyCustom = {
   GovernedEpdrQbtcAddress: 'governed.EPDR.QBTC_address',
-  GovernedEpdrQbtcQusdOracle: 'governed.EPDR.QBTC_QUSD_oracle',
+  GovernedEpdrQbtcQusdOracle: 'governed.EPDR.QBTC_QUSD_oracle'
 }
 
 export const contractsToContractsRegistryKey = {
@@ -49,5 +49,4 @@ export const contractsToContractsRegistryKey = {
   ...devnetContractsToContractsRegistryKey,
   ...contractsToContractsRegistryKeyCustom
   // SystemBalance: 'defi.<STC>.systemBalance',
-};
-
+}

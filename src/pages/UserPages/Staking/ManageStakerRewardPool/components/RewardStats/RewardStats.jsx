@@ -1,48 +1,48 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { userAddressMetamask } from 'store/selectors/user-inf';
+import { useDispatch, useSelector } from 'react-redux'
+import { userAddressMetamask } from 'store/selectors/user-inf'
 
-import FormInput from 'components/Base/Form/FormInput';
-import Button from 'components/Base/Buttons/Button';
+import FormInput from 'components/Base/Form/FormInput'
+import Button from 'components/Base/Buttons/Button'
 
-import { useForm } from 'react-hook-form';
-import Handler from './handler';
+import { useForm } from 'react-hook-form'
+import Handler from './handler'
 
-import { errorHandler, fN } from 'func/useful';
+import { errorHandler, fN } from 'func/useful'
 
-export default function RewardStats() {
+export default function RewardStats () {
   const {
     register: reg1,
     handleSubmit: submit1,
     errors: err1
-  } = useForm();
+  } = useForm()
   const {
     register: reg2,
     handleSubmit: submit2,
     errors: err2
-  } = useForm();
+  } = useForm()
 
-  const [amountRP, setAmountRP] = useState(0);
-  const [delShare, setDelShare] = useState(0);
-  const [intRate, setIntRate] = useState(0);
+  const [amountRP, setAmountRP] = useState(0)
+  const [delShare, setDelShare] = useState(0)
+  const [intRate, setIntRate] = useState(0)
 
-  const address = useSelector(userAddressMetamask);
-  const handler = new Handler(address, useDispatch());
+  const address = useSelector(userAddressMetamask)
+  const handler = new Handler(address, useDispatch())
 
   useEffect(() => {
-    handler.getAmountOfRewardPool(setAmountRP);
-    handler.getDelegatorShare(setDelShare);
-    handler.getInterestRate(setIntRate);
-  }, []);
+    handler.getAmountOfRewardPool(setAmountRP)
+    handler.getDelegatorShare(setDelShare)
+    handler.getInterestRate(setIntRate)
+  }, [])
 
   const setInterestRate = (formData) => {
-    handler.setInterestRate(formData, setIntRate);
-  };
+    handler.setInterestRate(formData, setIntRate)
+  }
 
   const setDelegatorShare = (formData) => {
-    handler.setDelegatorShare(formData, setDelShare);
-  };
+    handler.setDelegatorShare(formData, setDelShare)
+  }
 
   const rewardStatsArr = useMemo(() => {
     return [
@@ -54,7 +54,7 @@ export default function RewardStats() {
         {
           label: 'Validator Share:',
           value: delShare === 0 ? '100%' : fN(100 - delShare) + '%'
-        },
+        }
       ],
       [
         {
@@ -64,11 +64,10 @@ export default function RewardStats() {
         {
           label: 'Delegator Reward (p.a.):',
           value: fN(intRate) + '%'
-        },
+        }
       ]
-    ];
-
-  }, [amountRP, delShare, intRate]);
+    ]
+  }, [amountRP, delShare, intRate])
 
   return (
     <>
@@ -83,11 +82,11 @@ export default function RewardStats() {
                     <h5>{el.label}</h5>
                     <p>{el.value}</p>
                   </div>
-                );
+                )
               })
             }
           </div>
-        );
+        )
       })}
       <h4>Set Delegator Share</h4>
       <div className="modal-one-line-form">
@@ -134,5 +133,5 @@ export default function RewardStats() {
         />
       </div>
     </>
-  );
+  )
 }

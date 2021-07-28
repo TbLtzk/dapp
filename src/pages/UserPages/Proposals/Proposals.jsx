@@ -1,51 +1,51 @@
-import React, { useEffect } from 'react';
-import PageWrap from 'components/Base/PageWrap';
-import BigTabsView from 'components/Base/Tabs/BigTabsView';
-import ProposalsTab from './components/ProposalsTab';
-import CreateQProposalBtn from './components/CreateQProposalBtn';
-import Button from 'components/Base/Buttons/Button';
+import React, { useEffect } from 'react'
+import PageWrap from 'components/Base/PageWrap'
+import BigTabsView from 'components/Base/Tabs/BigTabsView'
+import ProposalsTab from './components/ProposalsTab'
+import CreateQProposalBtn from './components/CreateQProposalBtn'
+import Button from 'components/Base/Buttons/Button'
 
-import { PROPOSALS_TYPES } from 'constants/statuses';
-import { useDispatch, useSelector } from 'react-redux';
+import { PROPOSALS_TYPES } from 'constants/statuses'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   qEndedProposals, qErrorEnded,
   qErrorM, qLoadingEndedProposals,
   qLoadingProposals,
   qProposalsArr
-} from 'store/selectors/voting/q-proposals';
+} from 'store/selectors/voting/q-proposals'
 import {
   rootNodeEndedProposals, rootNodeErrorEnded,
   rootNodeErrorM, rootNodeLoadingEndedProposals,
   rootNodeLoadingProposals,
   rootNodeProposalsArr
-} from 'store/selectors/voting/root-node-proposals';
+} from 'store/selectors/voting/root-node-proposals'
 import {
   expertEndedProposals, expertErrorEnded,
   expertErrorM, expertLoadingEndedProposals,
   expertProposalsArr,
   loadingExpertProposals
-} from 'store/selectors/voting/expert-proposals';
+} from 'store/selectors/voting/expert-proposals'
 import {
   slashingEndedProposals, slashingErrorEnded,
   slashingErrorM, slashingLoadingEndedProposals,
   slashingLoadingProposals,
   slashingProposalsArr
-} from 'store/selectors/voting/slashing-proposals';
+} from 'store/selectors/voting/slashing-proposals'
 import {
   getEndedProposals,
   getProposalsList
-} from 'store/actions/action-creaters/voting/proposals';
-import { getLockedAssets } from 'store/actions/action-creaters/q-vault';
-import { userAddressMetamask } from 'store/selectors/user-inf';
-import { transactionLoading } from 'store/selectors/transaction-handler';
+} from 'store/actions/action-creaters/voting/proposals'
+import { getLockedAssets } from 'store/actions/action-creaters/q-vault'
+import { userAddressMetamask } from 'store/selectors/user-inf'
+import { transactionLoading } from 'store/selectors/transaction-handler'
 
-function Proposals(props) {
+function Proposals (props) {
   const {
     proposalsType
-  } = props;
-  const dispatch = useDispatch();
-  const address = useSelector(userAddressMetamask);
-  const loadingTransaction = useSelector(transactionLoading);
+  } = props
+  const dispatch = useDispatch()
+  const address = useSelector(userAddressMetamask)
+  const loadingTransaction = useSelector(transactionLoading)
 
   const {
     proposals,
@@ -54,25 +54,25 @@ function Proposals(props) {
     isEndedLoading,
     error,
     endedError
-  } = getProposalsSelector(proposalsType);
+  } = getProposalsSelector(proposalsType)
 
-  const name = getPageName(proposalsType);
+  const name = getPageName(proposalsType)
 
-  function getPageName(type) {
+  function getPageName (type) {
     switch (type) {
       case PROPOSALS_TYPES.proposals:
-        return 'Q Proposals';
+        return 'Q Proposals'
       case PROPOSALS_TYPES.rootNodePanel:
-        return 'Q Root Node Panel';
+        return 'Q Root Node Panel'
       case PROPOSALS_TYPES.expertProposals:
-        return 'Q Expert Proposals';
+        return 'Q Expert Proposals'
       case PROPOSALS_TYPES.slashingProposals:
       default:
-        return 'Slashing Proposals';
+        return 'Slashing Proposals'
     }
   }
 
-  function getProposalsSelector(type) {
+  function getProposalsSelector (type) {
     switch (type) {
       case PROPOSALS_TYPES.proposals:
         return {
@@ -81,8 +81,8 @@ function Proposals(props) {
           isLoading: useSelector(qLoadingProposals),
           isEndedLoading: useSelector(qLoadingEndedProposals),
           error: useSelector(qErrorM),
-          endedError: useSelector(qErrorEnded),
-        };
+          endedError: useSelector(qErrorEnded)
+        }
       case PROPOSALS_TYPES.rootNodePanel:
         return {
           proposals: useSelector(rootNodeProposalsArr),
@@ -90,8 +90,8 @@ function Proposals(props) {
           isLoading: useSelector(rootNodeLoadingProposals),
           isEndedLoading: useSelector(rootNodeLoadingEndedProposals),
           error: useSelector(rootNodeErrorM),
-          endedError: useSelector(rootNodeErrorEnded),
-        };
+          endedError: useSelector(rootNodeErrorEnded)
+        }
       case PROPOSALS_TYPES.expertProposals:
         return {
           proposals: useSelector(expertProposalsArr),
@@ -99,8 +99,8 @@ function Proposals(props) {
           isLoading: useSelector(loadingExpertProposals),
           isEndedLoading: useSelector(expertLoadingEndedProposals),
           error: useSelector(expertErrorM),
-          endedError: useSelector(expertErrorEnded),
-        };
+          endedError: useSelector(expertErrorEnded)
+        }
       case PROPOSALS_TYPES.slashingProposals:
         return {
           proposals: useSelector(slashingProposalsArr),
@@ -108,22 +108,22 @@ function Proposals(props) {
           isLoading: useSelector(slashingLoadingProposals),
           isEndedLoading: useSelector(slashingLoadingEndedProposals),
           error: useSelector(slashingErrorM),
-          endedError: useSelector(slashingErrorEnded),
-        };
+          endedError: useSelector(slashingErrorEnded)
+        }
     }
   }
- 
+
   function uploadProposals () {
-    dispatch(getProposalsList(proposalsType));
-    dispatch(getEndedProposals(proposalsType));
-    dispatch(getLockedAssets(address));
+    dispatch(getProposalsList(proposalsType))
+    dispatch(getEndedProposals(proposalsType))
+    dispatch(getLockedAssets(address))
   }
 
   useEffect(() => {
     if (!loadingTransaction) {
       uploadProposals()
     }
-  }, [loadingTransaction]);
+  }, [loadingTransaction])
 
   const tabsItems = [
     {
@@ -134,7 +134,7 @@ function Proposals(props) {
         proposals={proposals}
         proposalsType={proposalsType}
         errorMessage={error}
-      />,
+      />
     },
     {
       label: 'ended-proposals',
@@ -144,7 +144,7 @@ function Proposals(props) {
         proposals={endedProposals}
         proposalsType={proposalsType}
         errorMessage={endedError}
-      />,
+      />
     },
     {
       title: <Button
@@ -155,9 +155,9 @@ function Proposals(props) {
         position='absolute'
         right='70px'
         top='108px'
-      />,
-    },
-  ];
+      />
+    }
+  ]
 
   return (
     <PageWrap
@@ -169,7 +169,7 @@ function Proposals(props) {
         active={tabsItems[0]?.label}
       />
     </PageWrap>
-  );
+  )
 };
 
-export default Proposals;
+export default Proposals

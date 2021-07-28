@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const WrapContainer = styled.div`
   background-color: #07172B;
@@ -6,4 +6,4 @@ export const WrapContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-`;
+`

@@ -1,42 +1,42 @@
-import React, { useCallback } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useCallback } from 'react'
+import { useForm } from 'react-hook-form'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { setCreateObj, setStepCounter } from 'store/actions/action-creaters/auctions/modalHandler';
+import { useDispatch, useSelector } from 'react-redux'
+import { setCreateObj, setStepCounter } from 'store/actions/action-creaters/auctions/modalHandler'
 import {
   onEscrowCastObjection,
   onEscrowProposeDecision
-} from 'store/actions/action-creaters/voting/slashing-proposals';
+} from 'store/actions/action-creaters/voting/slashing-proposals'
 import {
   createdStepsLimit,
   formObject,
   stepCounterModal
-} from 'store/selectors/auctions/modalHandler';
+} from 'store/selectors/auctions/modalHandler'
 
-import ModalWindow from 'components/Base/ModalWindow';
-import CreateStep1 from './CreateStep1';
-import CreateStep2 from './CreateStep2';
+import ModalWindow from 'components/Base/ModalWindow'
+import CreateStep1 from './CreateStep1'
+import CreateStep2 from './CreateStep2'
 
-import { ProgressBar } from 'react-bootstrap';
+import { ProgressBar } from 'react-bootstrap'
 
-function ModalSlashingObjection(props) {
+function ModalSlashingObjection (props) {
   const {
     modalShow,
     onHide,
     activeTab,
     contract,
     proposalId
-  } = props;
+  } = props
   const {
     register,
     errors,
     handleSubmit
-  } = useForm();
-  const dispatch = useDispatch();
+  } = useForm()
+  const dispatch = useDispatch()
 
-  const formData = useSelector(formObject);
-  const stepLimit = useSelector(createdStepsLimit);
-  const stepCounter = useSelector(stepCounterModal);
+  const formData = useSelector(formObject)
+  const stepLimit = useSelector(createdStepsLimit)
+  const stepCounter = useSelector(stepCounterModal)
 
   const switchContentDependsOnType = useCallback(() => {
     switch (stepCounter) {
@@ -48,7 +48,7 @@ function ModalSlashingObjection(props) {
             register={register}
             errors={errors}
           />
-        );
+        )
       case 2:
         return (
           <CreateStep2
@@ -57,27 +57,26 @@ function ModalSlashingObjection(props) {
             register={register}
             errors={errors}
           />
-        );
+        )
 
       default:
-        return null;
+        return null
     }
-
-  }, [activeTab, stepCounter, register, errors, stepLimit]);
+  }, [activeTab, stepCounter, register, errors, stepLimit])
 
   const onNext = (data) => {
-    dispatch(setCreateObj({ ...formData, ...data }));
+    dispatch(setCreateObj({ ...formData, ...data }))
     if (stepCounter < stepLimit) {
-      dispatch(setStepCounter(stepCounter + 1));
+      dispatch(setStepCounter(stepCounter + 1))
     } else {
       if (activeTab === 'cast-objection') {
-        dispatch(onEscrowCastObjection({ ...formData, ...data }, contract, proposalId));
+        dispatch(onEscrowCastObjection({ ...formData, ...data }, contract, proposalId))
       } else if (activeTab === 'propose-decision') {
-        dispatch(onEscrowProposeDecision({ ...formData, ...data }, contract, proposalId));
+        dispatch(onEscrowProposeDecision({ ...formData, ...data }, contract, proposalId))
       }
-      onHide();
+      onHide()
     }
-  };
+  }
 
   return (
     <>
@@ -88,7 +87,7 @@ function ModalSlashingObjection(props) {
           stepCounter !== 1 ? 'Back' : null
         }
         backBtnHandler={() => {
-          dispatch(setStepCounter(stepCounter - 1));
+          dispatch(setStepCounter(stepCounter - 1))
         }}
         continueBtnTitle={
           stepLimit !== stepCounter ? 'Next' : 'Confirm'
@@ -109,8 +108,7 @@ function ModalSlashingObjection(props) {
         }
       />
     </>
-  );
+  )
 }
 
-export default ModalSlashingObjection;
-
+export default ModalSlashingObjection

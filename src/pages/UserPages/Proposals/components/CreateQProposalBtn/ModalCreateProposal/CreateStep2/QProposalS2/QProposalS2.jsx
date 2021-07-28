@@ -1,23 +1,23 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { formObject } from 'store/selectors/voting/proposals';
-import { setCreatedStepsLimit } from 'store/actions/action-creaters/voting/proposals';
+import { useDispatch, useSelector } from 'react-redux'
+import { formObject } from 'store/selectors/voting/proposals'
+import { setCreatedStepsLimit } from 'store/actions/action-creaters/voting/proposals'
 
-import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
-import InputGroup from 'components/Custom/ModalActions/InputGroup';
+import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
+import InputGroup from 'components/Custom/ModalActions/InputGroup'
 
-import { constUpdate, generalUpdate, emergencyUpdate } from './constants';
+import { constUpdate, generalUpdate, emergencyUpdate } from './constants'
 
-function QProposalS2(props) {
+function QProposalS2 (props) {
   const {
     activeTab,
     register,
     errors
-  } = props;
-  const formData = useSelector(formObject);
+  } = props
+  const formData = useSelector(formObject)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (formData?.first) {
@@ -53,11 +53,11 @@ function QProposalS2(props) {
               handleChange={(value) => {
                 value.target.value === 'no'
                   ? dispatch(setCreatedStepsLimit(3))
-                  : dispatch(setCreatedStepsLimit(4));
+                  : dispatch(setCreatedStepsLimit(4))
               }}
             />
           </>
-        );
+        )
       case 'general-q-update':
       case 'emergency-update':
         return (
@@ -77,19 +77,17 @@ function QProposalS2(props) {
               errors={errors}
             />
           </>
-        );
+        )
       default:
-        return null;
+        return null
     }
-
-  }, [activeTab, register, errors]);
+  }, [activeTab, register, errors])
 
   return (
     <div>
       {switchContentOnTypeProposal()}
     </div>
-  );
+  )
 }
 
-export default QProposalS2;
-
+export default QProposalS2

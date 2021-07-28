@@ -1,24 +1,24 @@
-import { contracts } from '../config/config';
-import { toWei } from 'func/balance';
+import { contracts } from '../config/config'
+import { toWei } from 'func/balance'
 
 export default class RootNodes {
-  constructor() {
-    this.methods = contracts['RootNodes'].methods;
+  constructor () {
+    this.methods = contracts.RootNodes.methods
   }
 
-  async getMembers() {
+  async getMembers () {
     return await this.methods.getMembers()
-      .call();
+      .call()
   }
 
-  async addMember(address) {
+  async addMember (address) {
     return await this.methods.addMember(address)
-      .send({ from: address });
+      .send({ from: address })
   }
 
-  async announceWithdrawal(address, amount) {
-    const amountConv = toWei(amount);
+  async announceWithdrawal (address, amount) {
+    const amountConv = toWei(amount)
     return await this.methods.announceWithdrawal(amountConv)
-      .send({ from: address });
+      .send({ from: address })
   }
 }

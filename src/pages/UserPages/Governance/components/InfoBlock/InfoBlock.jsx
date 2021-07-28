@@ -1,11 +1,11 @@
-import React from 'react';
-import CustomBlock from 'components/Base/CustomBlock';
-import Button from 'components/Base/Buttons/Button';
-import LoadingSpinner from 'components/Base/LoadingSpinner';
+import React from 'react'
+import CustomBlock from 'components/Base/CustomBlock'
+import Button from 'components/Base/Buttons/Button'
+import LoadingSpinner from 'components/Base/LoadingSpinner'
 
-import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom'
 
-function InfoBlock(props) {
+function InfoBlock (props) {
   const {
     header,
     activeProposalsNumber,
@@ -13,9 +13,9 @@ function InfoBlock(props) {
     detailsLink,
     isLoading,
     isError
-  } = props;
+  } = props
 
-  const history = useHistory();
+  const history = useHistory()
 
   return (
     <CustomBlock>
@@ -23,8 +23,7 @@ function InfoBlock(props) {
       {
         isLoading
           ? (<LoadingSpinner/>)
-          :
-          isError
+          : isError
             ? (<p>There was error while loading</p>)
             : (
               <>
@@ -33,18 +32,18 @@ function InfoBlock(props) {
                 <h5>Ended proposals</h5>
                 <p>{endedProposalsNumber}</p>
               </>
-            )
+              )
       }
       <div className="card__actions">
         <Button
           title="View page"
           handleButton={() => {
-            history.push(detailsLink);
+            history.push(detailsLink)
           }}
         />
       </div>
     </CustomBlock>
-  );
+  )
 }
 
-export default InfoBlock;
+export default InfoBlock

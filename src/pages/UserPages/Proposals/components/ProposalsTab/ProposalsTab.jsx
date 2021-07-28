@@ -1,15 +1,15 @@
-import React from 'react';
-import VotingStats from 'components/Custom/VotingStats';
-import ProposalsList from '../ProposalsList';
-import { ProposalsTabWrp } from './styles';
+import React from 'react'
+import VotingStats from 'components/Custom/VotingStats'
+import ProposalsList from '../ProposalsList'
+import { ProposalsTabWrp } from './styles'
 
-function ProposalsTab(props) {
+function ProposalsTab (props) {
   const {
     proposalsType,
     isLoading,
     proposals,
-    errorMessage,
-  } = props;
+    errorMessage
+  } = props
 
   return (
     <ProposalsTabWrp>
@@ -22,7 +22,7 @@ function ProposalsTab(props) {
       />
       <VotingStats/>
       </ProposalsTabWrp>
-  );
+  )
 }
 
-export default ProposalsTab;
+export default ProposalsTab

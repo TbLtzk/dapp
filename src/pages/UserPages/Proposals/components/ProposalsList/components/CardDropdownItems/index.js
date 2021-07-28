@@ -1,1 +1,1 @@
-export { default } from './CardDropdownItems';
+export { default } from './CardDropdownItems'

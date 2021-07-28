@@ -47,7 +47,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "patch-version": "npm version patch -m \"Upgrade to %s\"",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "lint": "eslint \"**/*.{js,jsx}\" --quiet --fix"
   },
   "browserslist": {
     "production": [
@@ -62,11 +63,15 @@
     ]
   },
   "devDependencies": {
+    "eslint": "^7.31.0",
     "eslint-config-airbnb": "18.2.1",
+    "eslint-config-standard": "^16.0.3",
     "eslint-import-resolver-webpack": "^0.13.0",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "4.0.0"
   }
 }

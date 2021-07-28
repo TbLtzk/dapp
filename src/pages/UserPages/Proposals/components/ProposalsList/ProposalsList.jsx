@@ -1,59 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
-import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux'
 import {
   setVoteProposalObj,
   setStepVoteCounter,
   setDisabledCreatedProposalBtn,
   executeProposal
-} from 'store/actions/action-creaters/voting/proposals';
+} from 'store/actions/action-creaters/voting/proposals'
 
-import LoadingSpinner from 'components/Base/LoadingSpinner';
-import ModalVote from '../CreateQProposalBtn/ModalVote';
+import LoadingSpinner from 'components/Base/LoadingSpinner'
+import ModalVote from '../CreateQProposalBtn/ModalVote'
 
-import ListCard from 'components/Custom/PageLists/ListCard';
-import CardDropdownItems from './components/CardDropdownItems';
-import CardCollapsedContent from './components/CardCollapsedContent';
-import { LoadingWrap } from 'constants/style';
-import { convertToMonthDayYear, remainDate } from 'func/convertDate';
+import ListCard from 'components/Custom/PageLists/ListCard'
+import CardDropdownItems from './components/CardDropdownItems'
+import CardCollapsedContent from './components/CardCollapsedContent'
+import { LoadingWrap } from 'constants/style'
+import { convertToMonthDayYear, remainDate } from 'func/convertDate'
 
-function ProposalsList(props) {
+function ProposalsList (props) {
   const {
     proposals,
     proposalsKind,
     loading,
     errorMessage,
     activeTab
-  } = props;
-  const dispatch = useDispatch();
-  const [modalShow, setModalShow] = useState(false);
-  const [proposalId, setProposalId] = useState(null);
-  const [vetoEndTime, setVetoEndTime] = useState(null);
-  const [proposalContract, setProposalContract] = useState(null);
+  } = props
+  const dispatch = useDispatch()
+  const [modalShow, setModalShow] = useState(false)
+  const [proposalId, setProposalId] = useState(null)
+  const [vetoEndTime, setVetoEndTime] = useState(null)
+  const [proposalContract, setProposalContract] = useState(null)
 
   const onProposalVote = (id, contract, vetoEndTime) => {
-    dispatch(setDisabledCreatedProposalBtn(true));
-    setProposalId(id);
-    setVetoEndTime(vetoEndTime);
-    setProposalContract(contract);
-    setModalShow(true);
-  };
+    dispatch(setDisabledCreatedProposalBtn(true))
+    setProposalId(id)
+    setVetoEndTime(vetoEndTime)
+    setProposalContract(contract)
+    setModalShow(true)
+  }
 
   const onProposalExecute = (id, contract) => {
     dispatch(executeProposal({
       idProposal: id,
       contract
-    }));
-  };
+    }))
+  }
 
   return (
     <div>
-      {loading ? <LoadingWrap><LoadingSpinner/></LoadingWrap> :
-        errorMessage ? <p>No proposals</p> :
-          proposals?.length === 0
+      {loading ? <LoadingWrap><LoadingSpinner/></LoadingWrap>
+        : errorMessage ? <p>No proposals</p>
+          : proposals?.length === 0
             ? <p>No proposals</p>
             : !proposals ? <p>No proposals</p> : proposals.map((proposal, i) => {
-              //TODO: don`t show proposal if veto time === 0
+              // TODO: don`t show proposal if veto time === 0
               // return remainDate(proposal.vetoEndTime) !== 0 ?
               return (
                 <ListCard
@@ -69,10 +69,10 @@ function ProposalsList(props) {
                     <CardDropdownItems
                       status={proposal.status}
                       handleVote={() => {
-                        onProposalVote(proposal.id, proposal.contract, proposal.vetoEndTime);
+                        onProposalVote(proposal.id, proposal.contract, proposal.vetoEndTime)
                       }}
                       handleExecute={() => {
-                        onProposalExecute(proposal.id, proposal.contract);
+                        onProposalExecute(proposal.id, proposal.contract)
                       }}
                       shareText={`${window.location.origin}/q-governance/proposal/${proposal.contract}/${proposal.id}`}
                     />
@@ -107,7 +107,7 @@ function ProposalsList(props) {
                     </div>
                   }
                   />
-              );
+              )
             })
       }
       <ModalVote
@@ -117,16 +117,14 @@ function ProposalsList(props) {
         activeTab={activeTab}
         modalShow={modalShow}
         onHide={() => {
-          setModalShow(false);
-          dispatch(setVoteProposalObj({}));
-          dispatch(setStepVoteCounter(1));
-          dispatch(setDisabledCreatedProposalBtn(true));
-
+          setModalShow(false)
+          dispatch(setVoteProposalObj({}))
+          dispatch(setStepVoteCounter(1))
+          dispatch(setDisabledCreatedProposalBtn(true))
         }}
       />
     </div>
-  );
+  )
 }
 
-export default ProposalsList;
-
+export default ProposalsList

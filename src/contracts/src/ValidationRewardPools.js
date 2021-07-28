@@ -1,17 +1,15 @@
-import { contracts } from '../config/config';
-
-const contractName = 'ValidationRewardPools';
+import { contracts } from '../config/config'
 
 export default class ValidationRewardPools {
-  constructor() {
-    this.methods = contracts['ValidationRewardPools'].methods;
+  constructor () {
+    this.methods = contracts.ValidationRewardPools.methods
   }
 
-  async getBalance(address) {
-    return await this.methods.getBalance(address).call();
+  async getBalance (address) {
+    return await this.methods.getBalance(address).call()
   }
 
-  async getLastUpdateOfCompoundRate(validatorAddress) {
+  async getLastUpdateOfCompoundRate (validatorAddress) {
     return await this.methods.getLastUpdateOfCompoundRate(validatorAddress).call()
   }
 }

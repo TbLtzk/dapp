@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react';
+import React, { Fragment } from 'react'
 
-function ListDetails(props) {
-  const { list } = props;
+function ListDetails (props) {
+  const { list } = props
   return (
     <>
       {list?.map((elem) => {
@@ -9,15 +9,14 @@ function ListDetails(props) {
           ? (<Fragment key={elem.title}>
             <h5>{elem.title}</h5>
             {elem.title === 'Remark'
-              ? <a href={'//' + elem.value} target="_blank">{elem.value}</a>
+              ? <a href={'//' + elem.value} target="_blank" rel="noreferrer">{elem.value}</a>
               : <p title={elem.value}>{elem.value}</p>
             }
           </Fragment>)
-          : null;
+          : null
       })}
     </>
-  );
+  )
 }
 
-export default ListDetails;
-
+export default ListDetails

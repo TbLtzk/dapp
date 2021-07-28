@@ -1,11 +1,11 @@
-import React from 'react';
-import PieChartTwoItem from './PieChartTwoItem';
+import React from 'react'
+import PieChartTwoItem from './PieChartTwoItem'
 
-import { ColorTitle } from './styles';
-import { Circle } from 'constants/style';
+import { ColorTitle } from './styles'
+import { Circle } from 'constants/style'
 
-function VoteBreakdown(props) {
-  const { voteBreakdown } = props;
+function VoteBreakdown (props) {
+  const { voteBreakdown } = props
 
   return (
     <div>
@@ -14,8 +14,8 @@ function VoteBreakdown(props) {
         <div>
           <h4>Left</h4>
           <div className="list-card__chart-block">
-            {voteBreakdown?.numberProposalVotes ?
-              <PieChartTwoItem
+            {voteBreakdown?.numberProposalVotes
+              ? <PieChartTwoItem
                 data={
                   [
                     {
@@ -25,11 +25,11 @@ function VoteBreakdown(props) {
                     {
                       name: 'Against',
                       value: voteBreakdown.numberProposalVotes.votesAgainst
-                    },
+                    }
                   ]
                 }
-              /> :
-              <PieChartTwoItem
+              />
+              : <PieChartTwoItem
                 data={null}
               />
             }
@@ -56,7 +56,7 @@ function VoteBreakdown(props) {
               {
                 name: 'Against',
                 value: Number(voteBreakdown.noVote)
-              },]}
+              }]}
             />
             <div>
               <ColorTitle color="white"><Circle color="circle-white" />Objection: {voteBreakdown.vetoesNumber}</ColorTitle>
@@ -80,8 +80,7 @@ function VoteBreakdown(props) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default VoteBreakdown;
-
+export default VoteBreakdown

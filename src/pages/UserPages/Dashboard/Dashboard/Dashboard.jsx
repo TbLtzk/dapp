@@ -1,24 +1,23 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react'
+import { useSelector } from 'react-redux'
 
-import RootNodePanel from 'components/Custom/MembersPanel/RootNodePanel';
-import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
-import DefiMembersPanel from 'components/Custom/MembersPanel/DefiMembersPanel';
-import QFeesMembersPanel from 'components/Custom/MembersPanel/QFeesMembersPanel';
+import RootNodePanel from 'components/Custom/MembersPanel/RootNodePanel'
+import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel'
+import DefiMembersPanel from 'components/Custom/MembersPanel/DefiMembersPanel'
+import QFeesMembersPanel from 'components/Custom/MembersPanel/QFeesMembersPanel'
 
-import InfBlock from './components/InfBlockUp';
-import TokenomicsBlock from './components/TokenomicsBlock';
-import SavingBorrowingBlock from './components/SavingBorrowingBlock';
-import Button from 'components/Base/Buttons/Button';
-import PageWrap from 'components/Base/PageWrap';
-import DashboardModeButton from 'components/Base/DashboardMode/DashboarModeButton';
+import InfBlock from './components/InfBlockUp'
+import TokenomicsBlock from './components/TokenomicsBlock'
+import SavingBorrowingBlock from './components/SavingBorrowingBlock'
+import Button from 'components/Base/Buttons/Button'
+import PageWrap from 'components/Base/PageWrap'
+import DashboardModeButton, { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
 
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
-import { mode } from 'store/selectors/dashboardMode';
-import { MODE } from 'components/Base/DashboardMode/DashboarModeButton';
+import { mode } from 'store/selectors/dashboardMode'
 
-function Dashboard() {
+function Dashboard () {
   const appMode = useSelector(mode)
   return (
     <PageWrap
@@ -34,25 +33,24 @@ function Dashboard() {
             }}
           />
           </Link>
-        ) 
+          )
         : null
       }
       extraButton={<DashboardModeButton />}
     >
       <div>
         <InfBlock/>
-        {appMode ===  MODE.advanced ? <TokenomicsBlock/> : null}
+        {appMode === MODE.advanced ? <TokenomicsBlock/> : null}
         <SavingBorrowingBlock />
       </div>
       <div>
         <RootNodePanel/>
         <ValidatorsPanel/>
-        {appMode ===  MODE.advanced ? <DefiMembersPanel /> : null}
-        {appMode ===  MODE.advanced ? <QFeesMembersPanel /> : null}
+        {appMode === MODE.advanced ? <DefiMembersPanel /> : null}
+        {appMode === MODE.advanced ? <QFeesMembersPanel /> : null}
       </div>
     </PageWrap>
-  );
+  )
 }
 
-export default Dashboard;
-
+export default Dashboard

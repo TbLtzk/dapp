@@ -1,5 +1,5 @@
-import { createGlobalStyle } from 'styled-components';
-import '../../node_modules/@mdi/font/css/materialdesignicons.min.css';
+import { createGlobalStyle } from 'styled-components'
+import '../../node_modules/@mdi/font/css/materialdesignicons.min.css'
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -16,4 +16,4 @@ export const GlobalStyle = createGlobalStyle`
     backdrop-filter: blur(3px);
     -webkit-backdrop-filter: blur(3px);
   }
-`;
+`

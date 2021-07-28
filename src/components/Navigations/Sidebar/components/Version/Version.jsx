@@ -1,87 +1,86 @@
-import React, { useEffect, useState } from 'react';
-import ModalWindow from 'components/Base/ModalWindow';
-import VersionsTable from '../VersionsTable';
+import React, { useEffect, useState } from 'react'
+import ModalWindow from 'components/Base/ModalWindow'
+import VersionsTable from '../VersionsTable'
 
-import { WrpVersion } from './styles';
-import { Web3Adapter } from '@q-dev/q-js-sdk';
-import pkg from '../../../../../../package.json';
+import { WrpVersion } from './styles'
+import { Web3Adapter } from '@q-dev/q-js-sdk'
+import pkg from '../../../../../../package.json'
 
-function Version() {
-
-  const web3Adapter = new Web3Adapter(window.web3);
+function Version () {
+  const web3Adapter = new Web3Adapter(window.web3)
   const versionInfoGroups = {
     main: 'Main',
     modules: 'Modules',
     client: 'Q client'
-  };
+  }
 
-  const [modalShow, setModalShow] = useState(false);
-  const [mainVersionInfo, setMainVersionInfo] = useState([]);
-  const [modulesVersionInfo, setModulesVersionInfo] = useState([]);
-  const [clientVersionInfo, setClientVersionInfo] = useState([]);
+  const [modalShow, setModalShow] = useState(false)
+  const [mainVersionInfo, setMainVersionInfo] = useState([])
+  const [modulesVersionInfo, setModulesVersionInfo] = useState([])
+  const [clientVersionInfo, setClientVersionInfo] = useState([])
 
   useEffect(async () => {
-    if (!web3Adapter) return []; // not initialized
+    if (!web3Adapter) return [] // not initialized
 
-    const connectionInfo = await web3Adapter.getConnectionInfo();
+    const connectionInfo = await web3Adapter.getConnectionInfo()
 
     setMainVersionInfo([
       [
         {
           group: versionInfoGroups.main,
           name: 'dApp',
-          value: pkg.version,
-        },
+          value: pkg.version
+        }
       ]
-    ]);
+    ])
     setModulesVersionInfo([
       [
         {
           group: versionInfoGroups.modules,
           name: 'Web3.js',
-          value: web3Adapter.web3.version,
+          value: web3Adapter.web3.version
         },
         {
           group: versionInfoGroups.modules,
           name: 'Q.js SDK',
-          value: web3Adapter.SDK_VERSION,
-        },
+          value: web3Adapter.SDK_VERSION
+        }
       ]
-    ]);
+    ])
     setClientVersionInfo([
       [
         {
           group: versionInfoGroups.client,
           name: 'RPC URL',
-          value: connectionInfo.rpcUrl,
+          value: connectionInfo.rpcUrl
         },
         {
           group: versionInfoGroups.client,
           name: 'Network ID',
-          value: connectionInfo.networkId,
-        },
+          value: connectionInfo.networkId
+        }
       ],
       [
         {
           group: versionInfoGroups.client,
           name: 'Node Info',
-          value: connectionInfo.nodeInfo,
-        },
+          value: connectionInfo.nodeInfo
+        }
       ]
-    ]);
-  }, []);
+    ])
+  }, [])
 
   return (
     <>
       <WrpVersion onClick={() => {
-        setModalShow(true);
+        setModalShow(true)
       }}>
         {pkg.version}
       </WrpVersion>
       <ModalWindow
         show={modalShow}
         onHide={() => {
-          setModalShow(false);
+          setModalShow(false)
         }}
         modalTitle={'Version Information'}
         content={
@@ -96,7 +95,7 @@ function Version() {
         }
       />
     </>
-  );
+  )
 }
 
-export default Version;
+export default Version
