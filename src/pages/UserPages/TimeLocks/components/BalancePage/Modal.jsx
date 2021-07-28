@@ -8,14 +8,15 @@ import { CalendarWraper } from '../../styles';
 import "react-datepicker/dist/react-datepicker.css";
 
 function Modal({ modalShow, setModalShow, setDeposit }) {
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
 
     const {
         register,
         control,
         handleSubmit,
-        errors
+        errors,
+        getValues
     } = useForm();
 
     return (
@@ -48,17 +49,24 @@ function Modal({ modalShow, setModalShow, setDeposit }) {
                                 control={control}
                                 name='startDate'
                                 defaultValue={''}
+
                                 render={({ onChange, onBlur, value, ref }) => (
                                     <DatePicker
                                         name='end'
-                                        onChange={onChange}
+                                        onChange={(date) => {
+                                            setStartDate(date)
+                                            onChange(date)
+                                        }}
+                                        selectsStart
                                         onBlur={onBlur}
-                                        selected={value}
+                                        selected={startDate}
+                                        startDate={startDate}
+                                        endDate={endDate}
                                     />
                                 )}
                             />
                         </div>
-                        <div>
+                        <div onClick={() => getValues()}>
                             <p>End Date</p>
                             <Controller
                                 control={control}
@@ -67,9 +75,16 @@ function Modal({ modalShow, setModalShow, setDeposit }) {
                                 render={({ onChange, onBlur, value }) => (
                                     <DatePicker
                                         name='end'
-                                        onChange={onChange}
+                                        onChange={(date) => {
+                                            setEndDate(date)
+                                            onChange(date)
+                                        }}
                                         onBlur={onBlur}
-                                        selected={value}
+                                        selectsEnd
+                                        selected={endDate}
+                                        startDate={startDate}
+                                        endDate={endDate}
+                                        minDate={startDate}
                                     />
                                 )}
                             />

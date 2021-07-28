@@ -17,6 +17,7 @@ function TimeLocks() {
   // const rootNodeArray = useSelector(rootNodeAmount)
   // const validatorArray = useSelector(validatorAmount)
   // const vestingArray = useSelector(vestingAmount)
+  
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getQVaultAmount(address.token))
