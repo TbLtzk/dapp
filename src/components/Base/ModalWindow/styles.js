@@ -22,6 +22,7 @@ export const Body = styled(Modal.Body)`
   word-wrap: break-word;
   word-break: break-word;
   background: ${props => props.theme.colors.oxfordBlueTint6};
+  color: ${props => props.theme.colors.oxfordBlue};
   hyphens: auto;
 `;
 
