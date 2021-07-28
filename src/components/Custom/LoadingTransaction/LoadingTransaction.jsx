@@ -11,7 +11,8 @@ function LoadingTransaction({ isLoading }) {
   const loading = useSelector(transactionLoading);
   const error = useSelector(errorMessage);
   const trCounter = useSelector(transactionCounter);
-
+  console.log(trCounter)
+  console.log(loading)
   const render = () => {
     if (loading === true || trCounter > 0 || isLoading) {
       return (

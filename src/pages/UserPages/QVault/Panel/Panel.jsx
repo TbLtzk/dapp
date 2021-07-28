@@ -20,9 +20,8 @@ import { uintPerSecondToPerYearNumber } from 'func/useful';
 
 export default function Panel() {
   const userAddressL = useSelector(userAddressMetamask);
-  const qVaultData = useSelector(qVaultAmount)
-  const timeLockedAmount = fromWei(Number(qVaultData.amount))
-  console.log(qVaultData)
+  const qVaultLockedAmount = useSelector(qVaultAmount) //get min
+  const timeLockedAmount = fromWei(Number(qVaultLockedAmount?.minQVaultAmount?.amount)) //convert min
   const balanceDetails = useSelector(qvBalance);
   const userQVBalanceL = useSelector(userBalance);
   const userVotingWeight = fN(useSelector(votingWeight));

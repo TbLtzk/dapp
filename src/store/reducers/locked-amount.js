@@ -8,7 +8,6 @@ const initialState = {
     qVaultAmount: 0,
     rootNodeAmount: 0,
     validatorAmount: 0,
-
 };
 
 export default function index(state = initialState, action) {

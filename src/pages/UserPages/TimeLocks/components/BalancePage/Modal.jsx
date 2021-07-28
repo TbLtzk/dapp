@@ -7,7 +7,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { CalendarWraper } from '../../styles';
 import "react-datepicker/dist/react-datepicker.css";
 
-function Modal({ modalShow, setModalShow, setDeposit }) {
+function Modal({ modalShow, setModalShow, setDeposit, contract }) {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
@@ -27,11 +27,11 @@ function Modal({ modalShow, setModalShow, setDeposit }) {
             }}
             modalTitle="Deposit & withdraw time locked tokens"
             content={
-                <>
+                <>  <p>Recipient Address</p>
                     <FormInput
                         name="token"
                         type="string"
-                        placeholder='User address'
+                        placeholder='0x000'
                         ref={register({
                             required: "Address Required!",
                             pattern: {
@@ -49,7 +49,6 @@ function Modal({ modalShow, setModalShow, setDeposit }) {
                                 control={control}
                                 name='startDate'
                                 defaultValue={''}
-
                                 render={({ onChange, onBlur, value, ref }) => (
                                     <DatePicker
                                         name='end'
@@ -90,7 +89,7 @@ function Modal({ modalShow, setModalShow, setDeposit }) {
                             />
                         </div>
                     </CalendarWraper>
-
+                    <p>Amount</p>
                     <FormInput
                         lbl={'Q'}
                         min={0}
@@ -100,12 +99,21 @@ function Modal({ modalShow, setModalShow, setDeposit }) {
                         ref={register({ required: 'Field is required!' })}
                         valid={errors.amountQ?.message}
                     />
-                    <Button
-                        type="outline"
-                        title="Confirm"
-                        width="80px"
-                        handleButton={handleSubmit(setDeposit)}
-                    />
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Button
+                            type="outline"
+                            title="Confirm"
+                            width="80px"
+                            handleButton={handleSubmit(setDeposit)} // handle close window
+                        />
+                        <Button
+                            type="outline"
+                            title="Purge expired time locks"
+                            width="200px"
+                            handleButton={() => console.log(contract)}
+                        />
+                    </div>
+
                 </>
             }
         />

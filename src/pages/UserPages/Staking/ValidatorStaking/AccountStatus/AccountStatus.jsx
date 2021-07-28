@@ -37,8 +37,8 @@ export default function AccountStatus() {
   const [annToWithdrawEndTime, setAnnToWithdrawEndTime] = useState(0);
 
   const address = useSelector(userAddressMetamask);
-  const validatorData = useSelector(validatorAmount)
-  const timeLockedAmount = fromWei(Number(validatorData.amount))
+  const validatorLockedAmount = useSelector(validatorAmount)
+  const timeLockedAmount = fromWei(Number(validatorLockedAmount?.minValidatorAmount?.amount))
   
   const handler = new Handler(address, useDispatch(), useAlert());
 

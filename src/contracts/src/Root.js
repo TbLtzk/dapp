@@ -2,6 +2,15 @@ import { contracts } from '../config/config';
 
 import { fromWei } from 'func/balance';
 
+const array = [
+  {
+    id: 1,
+    amount: "10",
+    startDate: "13.07.21 21:30:33",
+    endDate: "16.07.21 21:30:33",
+  },
+];
+
 export default class RootService {
 
   constructor() {
@@ -38,12 +47,16 @@ export default class RootService {
   }
 
   async getTimeLockedAmounts(address) {
+    return array; //`function getTimeLocks(address _account)`
+  }
+
+  async getMinimumLockedAmount(address) {
     const res = {
-      amount: "60000000000000000000",
+      amount: "33000000000000000000",
       releaseStart: "1626872970",
       releaseEnd: "1627000000",
     };
-    return res;
+    return await res;
   }
 
   /**

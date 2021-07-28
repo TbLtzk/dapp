@@ -2,13 +2,13 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
-import { BlockWrap, Button, TableTR } from '../../styles';
+import { BlockWrap, TableTR } from '../../styles';
 import ListPaganation from './ListPaganation';
 import ModalButton from 'components/Base/Buttons/Button';
 import Modal from './Modal';
 
 
-function BalancePage({ title, lockAmountData, setDeposit }) {
+function BalancePage({ balance, title, lockAmountData, setDeposit, timeLockBalance, contract }) {
 
     const [modalShow, setModalShow] = useState(false);
 
@@ -16,11 +16,11 @@ function BalancePage({ title, lockAmountData, setDeposit }) {
         <CustomBlock>
             <BlockWrap>
                 <h5>{title}</h5>
-                <h4>1234 Q</h4>
+                <h4>{balance + ' Q'}</h4>
             </BlockWrap>
             <BlockWrap>
                 <h5>Time lock balance</h5>
-                <h4>1234 Q</h4>
+                <h4>{timeLockBalance} Q</h4>
             </BlockWrap>
 
             <h5>Time locks</h5>
@@ -34,11 +34,8 @@ function BalancePage({ title, lockAmountData, setDeposit }) {
                     }}
                 />
                 <ListPaganation lockAmountData={lockAmountData} />
-                <Button>
-                    Purge expired time locks
-                </Button>
             </div>
-            <Modal setDeposit={setDeposit} modalShow={modalShow} setModalShow={(value) => setModalShow(value)} />
+            <Modal contract={contract} setDeposit={setDeposit} modalShow={modalShow} setModalShow={(value) => setModalShow(value)} />
         </CustomBlock >
     )
 }

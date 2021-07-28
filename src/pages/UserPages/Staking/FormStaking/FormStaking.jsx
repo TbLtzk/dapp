@@ -40,8 +40,8 @@ function FormStaking() {
   const amountNodeStake = useSelector(rootNodeStake);
   const withdrawalsData = useSelector(withdrawals);
   const lastUpdateRoot = useSelector(lastActionRoot);
-  const rootNodeData = useSelector(rootNodeAmount);
-  const timeLockedAmount = fromWei(Number(rootNodeData.amount));
+  const rootNodeLockedAmount = useSelector(rootNodeAmount);
+  const timeLockedAmount = fromWei(Number(rootNodeLockedAmount?.minRootNodeAmount?.amount));
 
   useEffect(() => {
     if (userAddress) {
