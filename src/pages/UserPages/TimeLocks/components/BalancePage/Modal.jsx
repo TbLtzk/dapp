@@ -7,7 +7,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { CalendarWraper } from '../../styles';
 import "react-datepicker/dist/react-datepicker.css";
 
-function Modal({ modalShow, setModalShow, setDeposit, contract }) {
+function Modal({ modalShow, setModalShow, setDeposit, setPurge }) {
+
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
@@ -22,10 +23,12 @@ function Modal({ modalShow, setModalShow, setDeposit, contract }) {
 
     const handleSetDeposit = () => {
         const values = getValues();
-        const isEmpty = Object.values(values).every(x => (x === null || x === ''));
+        const isFull = Object.values(values).every(x => x.length !== 0);
         handleSubmit(setDeposit)()
-        if (!isEmpty) {
+        if (isFull) {
             setModalShow(false)
+            setStartDate('');
+            setEndDate('');
         }
     }
 
@@ -61,7 +64,6 @@ function Modal({ modalShow, setModalShow, setDeposit, contract }) {
                                 control={control}
                                 name='startDate'
                                 defaultValue={''}
-
                                 render={({ onChange, onBlur, value, ref }) => (
                                     <DatePicker
                                         name='end'
@@ -126,7 +128,7 @@ function Modal({ modalShow, setModalShow, setDeposit, contract }) {
                             type="outline"
                             title="Purge expired time locks"
                             width="200px"
-                            handleButton={() => console.log(contract)}
+                            handleButton={setPurge}
                         />
                     </div>
 

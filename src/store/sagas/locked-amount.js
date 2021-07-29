@@ -13,6 +13,18 @@ import {
 
 import { toWei, fromWei } from 'func/balance';
 
+function getContractInstance(contract) {
+    if (contract === 'qvault') {
+        return new QVault(contractsToAddresses['QVault']);
+    }
+    if (contract === 'node') {
+        return new RootService(contractsToAddresses['RootNode']);
+    }
+    if (contract === 'validator') {
+        return new Validators(contractsToAddresses['Validators']);
+    }
+}
+
 function* getQVaultAmount({ address }) {
     try {
         const contract = new QVault;
@@ -49,10 +61,10 @@ function* getValidatorAmount({ address }) {
     }
 }
 
-function* purgeTimeLocksAmount({ address, contract }) {
+function* purgeTimeLocksAmount({ payload }) {
     try {
-        console.log(address, contract)
-        yield put();
+        console.log(payload)
+        // yield put();
     } catch (err) {
         console.error('Validators.Error', err);
         yield put(setError(err.message));
@@ -65,11 +77,12 @@ function* depositLockedAmount({ payload }) {
             type: SET_TRANSACTION_COUNTER,
             payload: 1
         });
-        const contract = new QVault(contractsToAddresses['QVault']);
-        const data = yield contract.withdraw(payload.userAddress, toWei(payload.data.amountQ));
-        if (data.status === true) {
-            yield put(getUserBalance(payload.userAddress));
-        }
+        console.log(payload)
+        // const contract = new QVault(contractsToAddresses['QVault']);
+        // const data = yield contract.withdraw(payload.userAddress, toWei(payload.data.amountQ));
+        // if (data.status === true) {
+        //     yield put(getUserBalance(payload.userAddress));
+        // }
         // yield contract.depositOnBehalfOf(payload.data.token, payload.data.startDate, payload.data.endDate);
     } catch (err) {
         console.error('depositLockedAmount.Error', err);

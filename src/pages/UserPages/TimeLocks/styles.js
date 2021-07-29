@@ -34,4 +34,7 @@ export const CalendarWraper = styled.div`
   display: flex;
   justify-content: space-between;
   padding-bottom: 20px;
+  & input {
+    background-color: #E4EAF2;
+  }
 `

@@ -1,16 +1,30 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { userAddressMetamask } from "store/selectors/user-inf";
+import { setDepositLockedAmount, setPurgeTimeLocksAmount } from "store/actions/action-creaters/locked-amount";
+
 
 import CustomBlock from 'components/Base/CustomBlock';
-import { BlockWrap, TableTR } from '../../styles';
+import { BlockWrap } from '../../styles';
 import ListPaganation from './ListPaganation';
 import ModalButton from 'components/Base/Buttons/Button';
 import Modal from './Modal';
 
 
-function BalancePage({ balance, title, lockAmountData, setDeposit, timeLockBalance, contract }) {
+function BalancePage({ balance, title, lockAmountData, timeLockBalance, contract }) {
+    const dispatch = useDispatch();
+
+    const userAddress = useSelector(userAddressMetamask);
 
     const [modalShow, setModalShow] = useState(false);
+
+    const setDeposit = (data) => {
+        dispatch(setDepositLockedAmount({ data, contract, userAddress }));
+    };
+
+    const setPurge = () => {
+        dispatch(setPurgeTimeLocksAmount(contract))
+    }
 
     return (
         <CustomBlock>
@@ -35,7 +49,7 @@ function BalancePage({ balance, title, lockAmountData, setDeposit, timeLockBalan
                 />
                 <ListPaganation lockAmountData={lockAmountData} />
             </div>
-            <Modal contract={contract} setDeposit={setDeposit} modalShow={modalShow} setModalShow={(value) => setModalShow(value)} />
+            <Modal contract={contract} setPurge={setPurge} setDeposit={setDeposit} modalShow={modalShow} setModalShow={(value) => setModalShow(value)} />
         </CustomBlock >
     )
 }
