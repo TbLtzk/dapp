@@ -16,14 +16,27 @@ function Modal({ modalShow, setModalShow, setDeposit, contract }) {
         control,
         handleSubmit,
         errors,
-        getValues
+        getValues,
+        reset
     } = useForm();
+
+    const handleSetDeposit = () => {
+        const values = getValues();
+        const isEmpty = Object.values(values).every(x => (x === null || x === ''));
+        handleSubmit(setDeposit)()
+        if (!isEmpty) {
+            setModalShow(false)
+        }
+    }
 
     return (
         <ModalWindow
             show={modalShow}
             onHide={() => {
                 setModalShow(false);
+                setStartDate('');
+                setEndDate('');
+                reset();
             }}
             modalTitle="Deposit & withdraw time locked tokens"
             content={
@@ -35,7 +48,6 @@ function Modal({ modalShow, setModalShow, setDeposit, contract }) {
                         ref={register({
                             required: "Address Required!",
                             pattern: {
-                                required: true,
                                 value: /^.{42}$/gim,
                                 message: "Invalid Address!"
                             }
@@ -49,6 +61,7 @@ function Modal({ modalShow, setModalShow, setDeposit, contract }) {
                                 control={control}
                                 name='startDate'
                                 defaultValue={''}
+
                                 render={({ onChange, onBlur, value, ref }) => (
                                     <DatePicker
                                         name='end'
@@ -61,11 +74,13 @@ function Modal({ modalShow, setModalShow, setDeposit, contract }) {
                                         selected={startDate}
                                         startDate={startDate}
                                         endDate={endDate}
+                                        minDate={new Date()}
+                                        dateFormat="d, MM, yyyy"
                                     />
                                 )}
                             />
                         </div>
-                        <div onClick={() => getValues()}>
+                        <div>
                             <p>End Date</p>
                             <Controller
                                 control={control}
@@ -84,6 +99,7 @@ function Modal({ modalShow, setModalShow, setDeposit, contract }) {
                                         startDate={startDate}
                                         endDate={endDate}
                                         minDate={startDate}
+                                        dateFormat="d, MM, yyyy"
                                     />
                                 )}
                             />
@@ -104,7 +120,7 @@ function Modal({ modalShow, setModalShow, setDeposit, contract }) {
                             type="outline"
                             title="Confirm"
                             width="80px"
-                            handleButton={handleSubmit(setDeposit)} // handle close window
+                            handleButton={handleSetDeposit} // handle close window
                         />
                         <Button
                             type="outline"
