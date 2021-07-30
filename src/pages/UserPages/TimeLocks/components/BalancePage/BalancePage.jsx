@@ -7,9 +7,9 @@ function BalancePage({ title, lockAmountData }) {
     return (
         <CustomBlock>
             <h5>{title}</h5>
-            <h4>10 Q</h4>
+            <p>10 Q</p>
             <h5>Time lock balance</h5>
-            <h4>10 Q</h4>
+            <p>10 Q</p>
             <h5>Time locks</h5>
             <ListPaganation lockAmountData={lockAmountData} />
         </CustomBlock >
