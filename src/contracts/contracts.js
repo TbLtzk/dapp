@@ -11,6 +11,7 @@ export let constitutionVotingInstance = {}
 export let epqfiParametersVoting = {}
 export let epdrParametersVoting = {}
 
+
 export async function initInstances() {
   contractRegistryInstance = new ContractRegistryInstance(window.web3, CONTRACT_REGISTRY_ADDRESS)
   validatorsInstance = await contractRegistryInstance.validators()
@@ -18,6 +19,6 @@ export async function initInstances() {
   constitutionVotingInstance = await contractRegistryInstance.constitutionVoting()
   epqfiParametersVoting = await contractRegistryInstance.epqfiParametersVoting()
   epdrParametersVoting = await contractRegistryInstance.epdrParametersVoting()
-
+console.log(contractRegistryInstance)
   // console logging of the versions should be removed, when we display the information in the app
 }

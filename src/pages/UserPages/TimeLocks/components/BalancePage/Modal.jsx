@@ -9,8 +9,8 @@ import "react-datepicker/dist/react-datepicker.css";
 
 function Modal({ modalShow, setModalShow, setDeposit, setPurge }) {
 
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
 
     const {
         register,
@@ -27,8 +27,8 @@ function Modal({ modalShow, setModalShow, setDeposit, setPurge }) {
         handleSubmit(setDeposit)()
         if (isFull) {
             setModalShow(false)
-            setStartDate('');
-            setEndDate('');
+            setStartDate(null);
+            setEndDate(null);
         }
     }
 
@@ -37,8 +37,8 @@ function Modal({ modalShow, setModalShow, setDeposit, setPurge }) {
             show={modalShow}
             onHide={() => {
                 setModalShow(false);
-                setStartDate('');
-                setEndDate('');
+                setStartDate(null);
+                setEndDate(null);
                 reset();
             }}
             modalTitle="Deposit & withdraw time locked tokens"
@@ -77,7 +77,7 @@ function Modal({ modalShow, setModalShow, setDeposit, setPurge }) {
                                         startDate={startDate}
                                         endDate={endDate}
                                         minDate={new Date()}
-                                        dateFormat="d, MM, yyyy"
+                                        dateFormat="d/MM/yyyy"
                                     />
                                 )}
                             />
@@ -97,11 +97,12 @@ function Modal({ modalShow, setModalShow, setDeposit, setPurge }) {
                                         }}
                                         onBlur={onBlur}
                                         selectsEnd
+                                        disabled={startDate === null ? true : false}
                                         selected={endDate}
                                         startDate={startDate}
                                         endDate={endDate}
                                         minDate={startDate}
-                                        dateFormat="d, MM, yyyy"
+                                        dateFormat="d/MM/yyyy"
                                     />
                                 )}
                             />

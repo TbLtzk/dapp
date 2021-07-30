@@ -1,4 +1,4 @@
-import { put, select, takeEvery } from 'redux-saga/effects';
+import { put, select, takeEvery, call } from 'redux-saga/effects';
 
 import * as actionTypes from 'store/actions/action-types/locked-amount';
 import Validators from '../../contracts/src/Validators';
@@ -12,16 +12,31 @@ import {
 } from 'store/actions/action-creaters/locked-amount';
 
 import { toWei, fromWei } from 'func/balance';
+import { CONTRACT_TYPES } from 'constants/contracts';
 
-function getContractInstance(contract) {
-    if (contract === 'qvault') {
+import { contractRegistryInstance } from 'contracts/contracts'
+
+const initContract = async (typeContract) => {
+    if (typeContract === CONTRACT_TYPES.qVault) {
+        return await contractRegistryInstance.qVault();
+    } else if (typeContract === CONTRACT_TYPES.root) {
+        return await contractRegistryInstance.rootNodes();
+    } else if (typeContract === CONTRACT_TYPES.validators) {
+        return await contractRegistryInstance.validators();
+    } else {
+        return null;
+    }
+}
+
+function getContract(typeContract) {
+    if (typeContract === CONTRACT_TYPES.qVault) {
         return new QVault(contractsToAddresses['QVault']);
-    }
-    if (contract === 'node') {
+    } else if (typeContract === CONTRACT_TYPES.root) {
         return new RootService(contractsToAddresses['RootNode']);
-    }
-    if (contract === 'validator') {
-        return new Validators(contractsToAddresses['Validators']);
+    } else if (typeContract === CONTRACT_TYPES.validators) {
+        return new Validators();
+    } else {
+        return null;
     }
 }
 
@@ -63,7 +78,8 @@ function* getValidatorAmount({ address }) {
 
 function* purgeTimeLocksAmount({ payload }) {
     try {
-        console.log(payload)
+        const contract = getContract(payload); //what address do i need to purge ???
+        console.log(contract)
         // yield put();
     } catch (err) {
         console.error('Validators.Error', err);
@@ -71,18 +87,19 @@ function* purgeTimeLocksAmount({ payload }) {
     }
 }
 
-function* depositLockedAmount({ payload }) {
+function* depositLockedAmount({ payload }) { //typeContract
     try {
         yield put({
             type: SET_TRANSACTION_COUNTER,
             payload: 1
         });
-        console.log(payload)
+        const contract = yield call(initContract, payload.data.contract)
+        const data = yield contract.instance.methods.withdraw(toWei(payload.data.amountQ)).send({ from: payload.userAddress })
         // const contract = new QVault(contractsToAddresses['QVault']);
         // const data = yield contract.withdraw(payload.userAddress, toWei(payload.data.amountQ));
-        // if (data.status === true) {
-        //     yield put(getUserBalance(payload.userAddress));
-        // }
+        if (data.status === true) {
+            yield put(getUserBalance(payload.userAddress));
+        }
         // yield contract.depositOnBehalfOf(payload.data.token, payload.data.startDate, payload.data.endDate);
     } catch (err) {
         console.error('depositLockedAmount.Error', err);
@@ -111,3 +128,6 @@ export default [
     takeEvery(actionTypes.SET_LOCKEDAMOUNT_CALL, depositLockedAmount),
 
 ];
+
+
+// const { userAddress } = yield select(state => state.userInf);

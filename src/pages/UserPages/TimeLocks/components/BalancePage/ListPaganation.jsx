@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { Pagination, setElementsForOnePage, countPages } from 'components/Base/Pagination';
 import { TableTR } from '../../styles';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+import TableView from 'components/Base/TableView';
+
 function ListPaganation({ lockAmountData }) {
 
     const [offset, setOffset] = useState(0);
@@ -33,21 +35,51 @@ function ListPaganation({ lockAmountData }) {
         setElements(setElementsForOnePage(data, offset, perPage));
     }, [data, offset, perPage]);
 
-    const renderTooltip = (props) => {
-        let message = ""
-        if (props.popper.state) {
-            message = props.popper.state.options.value
-        }
-        return (
-            <Tooltip id="button-tooltip" {...props}>
-                {message}
-            </Tooltip>
-        );
+    
+    const tableHeader = ['#', 'amount', 'start date', 'end date'];
+    const showBodyTable = ({ id, amount, startDate, endDate }) => {
+        return <tr key={id + amount}>
+            <td>
+                {id}
+            </td>
+            <td>
+                {amount}
+            </td>
+            <td>
+                {startDate}
+            </td>
+            <td>
+                {endDate}
+            </td>
+        </tr>
     }
 
     return (
-        <>
-            <table style={{ width: '75%' }}>
+        <div>
+            <TableView
+                header={tableHeader}
+                body={
+                    elements.map(item => {
+                        return showBodyTable(item)
+                    })
+                }
+            />
+            {pageCount > 1 ?
+                <Pagination
+                    pageCount={pageCount}
+                    currentPage={currentPage}
+                    handleClick={handlePageClick}
+                />
+                : null
+            }
+        </div>
+    )
+}
+
+export default ListPaganation
+
+
+{/* <table style={{ width: '75%' }}>
                 <thead>
                     <TableTR>
                         <th><h5>#</h5></th>
@@ -83,17 +115,4 @@ function ListPaganation({ lockAmountData }) {
                     ))}
                 </tbody>
             </table>
-
-            {pageCount > 1 ?
-                <Pagination
-                    pageCount={pageCount}
-                    currentPage={currentPage}
-                    handleClick={handlePageClick}
-                />
-                : null
-            }
-        </>
-    )
-}
-
-export default ListPaganation
+*/}

@@ -22,10 +22,6 @@ export const BlockWrap = styled.div`
   padding-bottom: 10px;
 `
 
-export const TableTR = styled.tr`
-  text-align: center;
-`
-
 export const ValueWrap = styled.h4`
   width: ${(props) => props.width}
 `

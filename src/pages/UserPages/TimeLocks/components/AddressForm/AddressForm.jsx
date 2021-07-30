@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import FormAddress from 'components/Base/Form/FormAddress';
+import FormInput from 'components/Base/Form/FormInput';
 import Button from 'components/Base/Buttons/Button';
 
 import { useForm } from 'react-hook-form';
@@ -23,7 +23,7 @@ function AddressForm({ setAddressRefresh, address }) {
                 width="80px"
                 disabled={true}
             />
-            <FormAddress
+            <FormInput
                 name="token"
                 type="string"
                 value={userAddress}
