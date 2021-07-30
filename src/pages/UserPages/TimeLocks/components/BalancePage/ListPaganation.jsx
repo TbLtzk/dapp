@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Pagination, setElementsForOnePage, countPages } from 'components/Base/Pagination';
 import TableView from 'components/Base/TableView';
+import { OverlayTrigger, Popover, Tooltip } from 'react-bootstrap';
 
 function ListPaganation({ lockAmountData }) {
 
@@ -33,8 +34,9 @@ function ListPaganation({ lockAmountData }) {
         setElements(setElementsForOnePage(data, offset, perPage));
     }, [data, offset, perPage]);
 
-    
-    const tableHeader = ['#', 'amount', 'start date', 'end date'];
+
+    const tableHeader = ['#', 'Amount', 'Start date', 'End date'];
+
     const showBodyTable = ({ id, amount, startDate, endDate }) => {
         return <tr key={id + amount}>
             <td>
@@ -53,7 +55,7 @@ function ListPaganation({ lockAmountData }) {
     }
 
     return (
-        <div>
+        <>
             <TableView
                 header={tableHeader}
                 body={
@@ -70,7 +72,7 @@ function ListPaganation({ lockAmountData }) {
                 />
                 : null
             }
-        </div>
+        </>
     )
 }
 
