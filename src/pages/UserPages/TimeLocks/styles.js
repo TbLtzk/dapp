@@ -22,23 +22,15 @@ export const BlockWrap = styled.div`
   padding-bottom: 10px;
 `
 
-export const TableTR = styled.tr`
-  text-align: center;
-`
-
 export const ValueWrap = styled.h4`
   width: ${(props) => props.width}
 `
 
-export const Button = styled.button`
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 100px;
-  background-color: #7856F0;
-  outline: none;
-  border: none;
-  color: white;
-  font-size: 10px;
-  cursor: pointer;
+export const CalendarWraper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  & input {
+    background-color: #E4EAF2;
+  }
 `
