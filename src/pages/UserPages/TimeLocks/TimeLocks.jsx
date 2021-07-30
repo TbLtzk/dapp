@@ -18,12 +18,15 @@ import { userBalance } from "store/selectors/q-vault";
 
 import AddressForm from "./components/AddressForm";
 import { InfoWrap } from "./styles";
-import BalancePage from "./components/BalancePage";
+import BalanceCard from "./components/BalanceCard";
 import { fromWei } from "func/balance";
 import RootService from 'contracts/src/Root';
 
+import Handler from '../Staking/ValidatorStaking/AccountStatus/handler'
+
 function TimeLocks() {
     const dispatch = useDispatch();
+    const [accountableTotalStake, setAccountableTotalStake] = useState(0);
 
     const userAddress = useSelector(userAddressMetamask);
 
@@ -44,6 +47,8 @@ function TimeLocks() {
     // const vestingArray = useSelector(vestingAmount)
 
     const rootService = new RootService();
+    const handler = new Handler(address.token, useDispatch());
+
     useEffect(() => {
         dispatch(getQVaultAmount(address.token));
         dispatch(getRootNodeAmount(address.token));
@@ -53,6 +58,10 @@ function TimeLocks() {
         // dispatch(getVestingAmount(address))
     }, [dispatch, address]);
 
+    useEffect(() => {
+        handler.setAccountableTotalStake(setAccountableTotalStake);
+    }, [])
+
     const handleRefresh = (userAddress) => {
         setAddress(userAddress);
     };
@@ -61,28 +70,28 @@ function TimeLocks() {
         <PageWrap headerTitle="Time Locks">
             <AddressForm setAddressRefresh={handleRefresh} address={address} />
             <InfoWrap>
-                <BalancePage
+                <BalanceCard
                     timeLockBalance={qVaultMin}
                     balance={userQVBalance}
                     contract="qVault"
                     title="Q Vault account balance"
                     lockAmountData={qVaultLockedAmount === 0 ? [] : qVaultLockedAmount.lockedQVaultAmounts}
                 />
-                <BalancePage
+                <BalanceCard
                     timeLockBalance={rootNodeMin}
                     balance={amountNodeStake}
                     contract="root"
                     title="Root stake balance"
                     lockAmountData={rootNodeLockedAmount === 0 ? [] : rootNodeLockedAmount.lockedRootNodeAmounts}
                 />
-                <BalancePage
+                <BalanceCard
                     timeLockBalance={validatorMin}
-                    balance={"VALIDATOR"}
+                    balance={accountableTotalStake}
                     contract="validators"
                     title="Validator stake balance"
                     lockAmountData={validatorLockedAmount === 0 ? [] : validatorLockedAmount.lockedValidatorAmounts}
                 />
-                {/* <BalancePage setDeposit={(data) => console.log(data, 'vesting')} id='vesting' title="Vesting balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} /> */}
+                {/* <BalanceCard setDeposit={(data) => console.log(data, 'vesting')} id='vesting' title="Vesting balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} /> */}
             </InfoWrap>
         </PageWrap>
     );

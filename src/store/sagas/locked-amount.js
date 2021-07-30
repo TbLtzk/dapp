@@ -112,8 +112,6 @@ function* depositLockedAmount({ payload }) { //typeContract
     }
 }
 
-
-
 export default [
     takeEvery(actionTypes.GET_QVAULT_AMOUNT, getQVaultAmount),
     takeEvery(actionTypes.GET_ROOTNODE_AMOUNT, getRootNodeAmount),
