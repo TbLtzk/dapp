@@ -9,6 +9,7 @@ export const getDelegatorsShare = (address) => ({
   type: actionTypes.GET_VAL_DELEGATORS_SHARE,
   address
 });
+
 export const setDelegatorsShare = (data) => ({
   type: actionTypes.SET_VAL_DELEGATORS_SHARE,
   payload: data
@@ -54,6 +55,7 @@ export const getAccTotalStake = (address) => ({
   type: actionTypes.GET_VAL_ACC_TOTAL_STAKE,
   address
 });
+
 export const setAccTotalStake = (data) => ({
   type: actionTypes.SET_VAL_ACC_TOTAL_STAKE,
   payload: data
