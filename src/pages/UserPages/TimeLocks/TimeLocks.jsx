@@ -11,35 +11,31 @@ import { InfoWrap } from "./styles";
 import BalancePage from "./components/BalancePage";
 
 function TimeLocks() {
-  const userAddress = useSelector(userAddressMetamask);
-  const [address, setAddress] = useState({token: userAddress})
-  const qVaultArray = useSelector(qVaultAmount)
-  // const rootNodeArray = useSelector(rootNodeAmount)
-  // const validatorArray = useSelector(validatorAmount)
-  // const vestingArray = useSelector(vestingAmount)
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getQVaultAmount(address.token))
-    // dispatch(getRootNodeAmount(address))
-    // dispatch(getValidatorAmount(address))
-    // dispatch(getVestingAmount(address))
-  }, [dispatch, address])
+    const userAddress = useSelector(userAddressMetamask);
+    const [address, setAddress] = useState({ token: userAddress })
+    const qVaultArray = useSelector(qVaultAmount)
 
-  const handleRefresh = (userAddress) => {
-    setAddress(userAddress);
-  };
+    const dispatch = useDispatch();
 
-  return (
-    <PageWrap headerTitle="Time Locks">
-      <AddressForm setAddressRefresh={handleRefresh} address={address} />
-      <InfoWrap>
-        <BalancePage title="Q Vault account balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
-        <BalancePage title="Root stake balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
-        <BalancePage title="Validator stake balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
-        <BalancePage title="Vesting balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
-      </InfoWrap>
-    </PageWrap>
-  );
+    useEffect(() => {
+        dispatch(getQVaultAmount(address.token))
+    }, [dispatch, address])
+
+    const handleRefresh = (userAddress) => {
+        setAddress(userAddress);
+    };
+
+    return (
+        <PageWrap headerTitle="Time Locks">
+            <AddressForm setAddressRefresh={handleRefresh} address={address} />
+            <InfoWrap>
+                <BalancePage title="Q Vault account balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
+                <BalancePage title="Root stake balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
+                <BalancePage title="Validator stake balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
+                <BalancePage title="Vesting balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} />
+            </InfoWrap>
+        </PageWrap>
+    );
 }
 
 export default TimeLocks;
