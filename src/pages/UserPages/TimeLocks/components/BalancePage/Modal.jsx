@@ -1,36 +1,28 @@
-import React, { useState } from 'react'
-import DatePicker from 'react-datepicker'
-import ModalWindow from 'components/Base/ModalWindow';
-import FormInput from 'components/Base/Form/FormInput';
-import Button from 'components/Base/Buttons/Button';
-import { Controller, useForm } from 'react-hook-form';
-import { CalendarWraper } from '../../styles';
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import ModalWindow from "components/Base/ModalWindow";
+import FormInput from "components/Base/Form/FormInput";
+import Button from "components/Base/Buttons/Button";
+import { Controller, useForm } from "react-hook-form";
+import { CalendarWraper } from "../../styles";
 import "react-datepicker/dist/react-datepicker.css";
 
 function Modal({ modalShow, setModalShow, setDeposit, setPurge }) {
-
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
 
-    const {
-        register,
-        control,
-        handleSubmit,
-        errors,
-        getValues,
-        reset
-    } = useForm();
+    const { register, control, handleSubmit, errors, getValues, reset } = useForm();
 
     const handleSetDeposit = () => {
         const values = getValues();
-        const isFull = Object.values(values).every(x => x.length !== 0);
-        handleSubmit(setDeposit)()
+        const isFull = Object.values(values).every((x) => x.length !== 0);
+        handleSubmit(setDeposit)();
         if (isFull) {
-            setModalShow(false)
+            setModalShow(false);
             setStartDate(null);
             setEndDate(null);
         }
-    }
+    };
 
     return (
         <ModalWindow
@@ -43,33 +35,35 @@ function Modal({ modalShow, setModalShow, setDeposit, setPurge }) {
             }}
             modalTitle="Deposit & withdraw time locked tokens"
             content={
-                <>  <p>Recipient Address</p>
+                <>
+                    <div className="modal-line" />
+                    <h4>Recipient Address</h4>
                     <FormInput
                         name="token"
                         type="string"
-                        placeholder='0x000'
+                        placeholder="0x000"
                         ref={register({
                             required: "Address Required!",
                             pattern: {
                                 value: /^.{42}$/gim,
-                                message: "Invalid Address!"
-                            }
+                                message: "Invalid Address!",
+                            },
                         })}
                         valid={errors?.token?.message}
                     />
-                    <CalendarWraper >
+                    <CalendarWraper>
                         <div>
-                            <p>Start date</p>
+                            <h4>Start date</h4>
                             <Controller
                                 control={control}
-                                name='startDate'
-                                defaultValue={''}
+                                name="startDate"
+                                defaultValue={""}
                                 render={({ onChange, onBlur, value, ref }) => (
                                     <DatePicker
-                                        name='end'
+                                        name="end"
                                         onChange={(date) => {
-                                            setStartDate(date)
-                                            onChange(date)
+                                            setStartDate(date);
+                                            onChange(date);
                                         }}
                                         selectsStart
                                         onBlur={onBlur}
@@ -83,17 +77,17 @@ function Modal({ modalShow, setModalShow, setDeposit, setPurge }) {
                             />
                         </div>
                         <div>
-                            <p>End Date</p>
+                            <h4>End Date</h4>
                             <Controller
                                 control={control}
-                                name='endDate'
-                                defaultValue={''}
+                                name="endDate"
+                                defaultValue={""}
                                 render={({ onChange, onBlur, value }) => (
                                     <DatePicker
-                                        name='end'
+                                        name="end"
                                         onChange={(date) => {
-                                            setEndDate(date)
-                                            onChange(date)
+                                            setEndDate(date);
+                                            onChange(date);
                                         }}
                                         onBlur={onBlur}
                                         selectsEnd
@@ -108,35 +102,29 @@ function Modal({ modalShow, setModalShow, setDeposit, setPurge }) {
                             />
                         </div>
                     </CalendarWraper>
-                    <p>Amount</p>
+                    <h4>Amount</h4>
                     <FormInput
-                        lbl={'Q'}
+                        lbl={"Q"}
                         min={0}
                         name="amountQ"
                         type="number"
                         placeholder="0.0"
-                        ref={register({ required: 'Field is required!' })}
+                        ref={register({ required: "Field is required!" })}
                         valid={errors.amountQ?.message}
                     />
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
                         <Button
                             type="outline"
                             title="Confirm"
                             width="80px"
                             handleButton={handleSetDeposit} // handle close window
                         />
-                        <Button
-                            type="outline"
-                            title="Purge expired time locks"
-                            width="200px"
-                            handleButton={setPurge}
-                        />
+                        <Button type="outline" title="Purge expired time locks" width="200px" handleButton={setPurge} />
                     </div>
-
                 </>
             }
         />
-    )
+    );
 }
 
-export default Modal
+export default Modal;

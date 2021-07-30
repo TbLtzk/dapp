@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Pagination, setElementsForOnePage, countPages } from 'components/Base/Pagination';
-import { TableTR } from '../../styles';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import TableView from 'components/Base/TableView';
 
 function ListPaganation({ lockAmountData }) {
@@ -77,42 +75,3 @@ function ListPaganation({ lockAmountData }) {
 }
 
 export default ListPaganation
-
-
-{/* <table style={{ width: '75%' }}>
-                <thead>
-                    <TableTR>
-                        <th><h5>#</h5></th>
-                        <th><h5>amount</h5></th>
-                        <th><h5>start date</h5></th>
-                        <th><h5>end date</h5></th>
-                    </TableTR>
-                </thead>
-                <tbody>
-                    {elements.map(item => (
-                        <TableTR key={item.id + item.amount}>
-                            <td><h4>{item.id}</h4></td>
-                            <td><h4>{item.amount + ' Q'}</h4></td>
-
-                            <OverlayTrigger
-                                placement="top"
-                                delay={{ show: 250, hide: 400 }}
-                                overlay={renderTooltip}
-                                popperConfig={{ value: item.startDate }}
-                            >
-                                <td><h4>{item.startDate}</h4></td>
-                            </OverlayTrigger>
-                            <OverlayTrigger
-                                placement="top"
-                                delay={{ show: 250, hide: 400 }}
-                                overlay={renderTooltip}
-                                popperConfig={{ value: item.endDate }}
-                            >
-                                <td><h4>{item.endDate}</h4></td>
-                            </OverlayTrigger>
-
-                        </TableTR>
-                    ))}
-                </tbody>
-            </table>
-*/}
