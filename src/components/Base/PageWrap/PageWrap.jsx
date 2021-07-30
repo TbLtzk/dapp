@@ -11,7 +11,6 @@ function PageWrap(props) {
     children,
     headerTitle,
     headerExtra,
-    extraButton,
     wrapContentClasses
   } = props;
 
@@ -22,7 +21,6 @@ function PageWrap(props) {
         <Header
           header={headerTitle}
           extra={headerExtra}
-          extraButton={extraButton}
         />
         <WrapContent className={wrapContentClasses}>
           {children}
