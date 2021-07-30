@@ -13,7 +13,7 @@ export const WrapContainer = styled.div`
 export const InfoWrap = styled.div`
     display: grid;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
-    & div {
+    & > div {
       width: 95%;
     }
 `;
