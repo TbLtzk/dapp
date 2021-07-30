@@ -26,9 +26,9 @@ function BalanceCard({ balance, title, lockAmountData, timeLockBalance, contract
     return (
         <CustomBlock>
             <h5>{title}</h5>
-            <h4>{balance + " Q"}</h4>
+            <p>{balance + " Q"}</p>
             <h5>Time lock balance</h5>
-            <h4>{timeLockBalance} Q</h4>
+            <p>{timeLockBalance} Q</p>
             <ModalButton
                 type="outline"
                 title="Manage"
