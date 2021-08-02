@@ -47,6 +47,7 @@ export default function UpdateDelegation() {
         <div key={i + 'input_address'} className="input_container_item">
           <div className="input_address">
             <FormInput
+              color={true}
               name="address"
               type="text"
               placeholder="0x000"
@@ -58,6 +59,7 @@ export default function UpdateDelegation() {
           </div>
           <div className="input_share">
             <FormInput
+              color={true}
               name="share"
               type="number"
               lbl="Q"

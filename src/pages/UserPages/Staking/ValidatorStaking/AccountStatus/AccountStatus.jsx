@@ -155,6 +155,7 @@ export default function AccountStatus() {
       <AccountStatusForm>
         <div className={'account-status__form-input'}>
           <FormInput
+            color={true}
             name="amount"
             type="number"
             lbl="Q"
