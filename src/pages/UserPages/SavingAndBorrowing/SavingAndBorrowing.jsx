@@ -21,7 +21,7 @@ function SavingAndBorrowing () {
       const contract = new BorrowingCoreQUSD(contractsToAddresses.BorrowingCoreQUSD)
       await contract.createVault(address, collateral)
     } catch (e) {
-      console.log(e)
+      console.error(e)
     } finally {
       setIsLoading(false)
     }

@@ -8,10 +8,15 @@ function InputGroup (props) {
     onChangeInput, min, max, type
   } = props
   const [valueInput, changeValueInput] = useState(() => {
-    return formData?.hasOwnProperty(inputArr[0]?.replace(/ /g, '-')
-      .toLowerCase())
-      ? formData
-      : { ...formData, ...inputsObj }
+    if (formData) {
+      if (Object.prototype.hasOwnProperty.call(formData, inputArr[0]?.replace(/ /g, '-').toLowerCase())) {
+        return formData
+      } else {
+        return { ...formData, ...inputsObj }
+      }
+    } else {
+      return { ...formData, ...inputsObj }
+    }
   })
 
   const refType = useCallback((nameField, valueInput) => {
@@ -22,7 +27,9 @@ function InputGroup (props) {
       return register({ required: 'Field is required!' })
     } else {
       let valueValid = ''
+
       if (nameField === 'external-link') {
+        /* eslint-disable-next-line no-useless-escape */
         valueValid = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
       } else if (nameField === 'address') {
         valueValid = /^(0x)?[0-9a-f]{40}$/i

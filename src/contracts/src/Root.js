@@ -110,7 +110,7 @@ export default class RootService {
       return await this.contract.methods.commitStake()
         .send(data)
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 
@@ -124,7 +124,7 @@ export default class RootService {
       return await this.contract.methods.announceWithdrawal(amount)
         .send(paymentInf)
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 
@@ -140,7 +140,7 @@ export default class RootService {
       return await this.contract.methods.withdraw(amount, payTo)
         .send(paymentInf)
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 

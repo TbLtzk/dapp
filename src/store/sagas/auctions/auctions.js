@@ -60,7 +60,7 @@ function * createAuction ({ data }) {
     yield put(createAuctionSuccess(result))
     yield put(setTransactionLoadingSuccess())
   } catch (err) {
-    console.log('err', err.message)
+    console.error('err', err.message)
     yield put(setTransactionLoadingError(err.message))
   }
 }
@@ -81,7 +81,7 @@ function * getAuctionDependsOnType (contractName, inf, activeAuction) {
         return null
     }
   } catch (e) {
-    console.log('e', e)
+    console.error('e', e)
   }
 }
 
@@ -114,7 +114,7 @@ function * getOneAuction ({
       }
     }
   } catch (err) {
-    console.log('err', err)
+    console.error('err', err)
     yield put(getAuctionError())
   }
 }
@@ -144,7 +144,7 @@ function * getAuctionsList ({
       activeTab: activeTab
     }))
   } catch (e) {
-    console.log('e', e)
+    console.error('e', e)
     yield put(getAuctionsListError(e))
   }
 }
@@ -171,7 +171,7 @@ function * getEndedAuctionsList ({
 
     yield put(getEndedAuctionsListSuccess(result))
   } catch (e) {
-    console.log('e', e)
+    console.error('e', e)
     yield put(getEndedAuctionsListError(e))
   }
 }
@@ -203,7 +203,7 @@ function * bidForAuctionHandler ({ data }) {
     yield put(bidForAuctionSuccess(result))
     yield put(setTransactionLoadingSuccess())
   } catch (err) {
-    console.log('err', err.message)
+    console.error('err', err.message)
     yield put(setTransactionLoadingError(err.message))
   }
 }
@@ -235,7 +235,7 @@ function * executeAuctionHandler ({ data }) {
     yield put(executeAuctionSuccess(result))
     yield put(setTransactionLoadingSuccess())
   } catch (err) {
-    console.log('err', err.message)
+    console.error('err', err.message)
     yield put(setTransactionLoadingError(err.message))
   }
 }

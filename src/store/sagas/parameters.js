@@ -8,8 +8,8 @@ import {
 } from 'store/actions/action-creaters/parameters'
 import { ParameterType } from '@q-dev/q-js-sdk'
 
-import EPQFI_Parameters from 'contracts/src/parameters/EPQFI_Parameters'
-import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters'
+import EPQFIParameters from 'contracts/src/parameters/EPQFI_Parameters'
+import EPDRParameters from 'contracts/src/parameters/EPDR_Parameters'
 import ConstitutionParameters from 'contracts/src/parameters/ConstitutionParameters'
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { CONTRACT_TYPES } from 'constants/contracts'
@@ -22,9 +22,9 @@ function * getAddressParameter ({
   try {
     let contract = null
     if (typeContract === 'EPQFI') {
-      contract = new EPQFI_Parameters('EPQFI_Parameters')
+      contract = new EPQFIParameters('EPQFIParameters')
     } else if (typeContract === 'EPDR') {
-      contract = new EPDR_Parameters(contractsToAddresses.EPDR_Parameters)
+      contract = new EPDRParameters(contractsToAddresses.EPDRParameters)
     }
     const data = yield contract.getAddr(value)
     yield put(getAddressParameterSuccess(data))
@@ -40,9 +40,9 @@ function * getStringParameter ({
   try {
     let contract = null
     if (typeContract === 'EPQFI') {
-      contract = new EPQFI_Parameters('EPQFI_Parameters')
+      contract = new EPQFIParameters('EPQFIParameters')
     } else if (typeContract === 'EPDR') {
-      contract = new EPDR_Parameters(contractsToAddresses.EPDR_Parameters)
+      contract = new EPDRParameters(contractsToAddresses.EPDRParameters)
     }
     const data = yield contract.getString(value)
     yield put(getStringParameterSuccess(data))
@@ -58,9 +58,9 @@ function * getBytesParameter ({
   try {
     let contract = null
     if (typeContract === 'EPQFI') {
-      contract = new EPQFI_Parameters('EPQFI_Parameters')
+      contract = new EPQFIParameters('EPQFIParameters')
     } else if (typeContract === 'EPDR') {
-      contract = new EPDR_Parameters(contractsToAddresses.EPDR_Parameters)
+      contract = new EPDRParameters(contractsToAddresses.EPDRParameters)
     }
     const data = yield contract.getBytes(value)
     yield put(getBytesParameterSuccess(data))
@@ -76,9 +76,9 @@ function * getUintParameter ({
   try {
     let contract = null
     if (typeContract === 'EPQFI') {
-      contract = new EPQFI_Parameters('EPQFI_Parameters')
+      contract = new EPQFIParameters('EPQFIParameters')
     } else if (typeContract === 'EPDR') {
-      contract = new EPDR_Parameters(contractsToAddresses.EPDR_Parameters)
+      contract = new EPDRParameters(contractsToAddresses.EPDRParameters)
     }
     const data = yield contract.getUint(value)
     yield put(getUintParameterSuccess(data))
@@ -94,9 +94,9 @@ function * getBooleanParameter ({
   try {
     let contract = null
     if (typeContract === 'EPQFI') {
-      contract = new EPQFI_Parameters('EPQFI_Parameters')
+      contract = new EPQFIParameters('EPQFIParameters')
     } else if (typeContract === 'EPDR') {
-      contract = new EPDR_Parameters(contractsToAddresses.EPDR_Parameters)
+      contract = new EPDRParameters(contractsToAddresses.EPDRParameters)
     }
     const data = yield contract.getBool(value)
     yield put(getBoolParameterSuccess(data))
@@ -107,9 +107,9 @@ function * getBooleanParameter ({
 
 function getContract (typeContract) {
   if (typeContract === CONTRACT_TYPES.qFee) {
-    return new EPQFI_Parameters('EPQFI_Parameters')
+    return new EPQFIParameters('EPQFIParameters')
   } else if (typeContract === CONTRACT_TYPES.qDefi) {
-    return new EPDR_Parameters(contractsToAddresses.EPDR_Parameters)
+    return new EPDRParameters(contractsToAddresses.EPDRParameters)
   } else if (typeContract === CONTRACT_TYPES.constitution) {
     return new ConstitutionParameters('ConstitutionParameters')
   } else {

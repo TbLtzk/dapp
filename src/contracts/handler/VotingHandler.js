@@ -121,22 +121,22 @@ export function creationQContractsObjArray () {
 
 export const arrContractsExpert = [
   {
-    // EPQFI_MembershipVoting
+    // EPQFIMembershipVoting
     typeContract: 'member',
     type: CONTRACT_TYPES.qFee
   },
   {
-    // EPDR_MembershipVoting
+    // EPDRMembershipVoting
     typeContract: 'member',
     type: CONTRACT_TYPES.qDefi
   },
   {
-    // EPQFI_ParametersVoting
+    // EPQFIParametersVoting
     typeContract: 'parameters',
     type: CONTRACT_TYPES.qFee
   },
   {
-    // EPDR_ParametersVoting
+    // EPDRParametersVoting
     typeContract: 'parameters',
     type: CONTRACT_TYPES.qDefi
   }
@@ -144,11 +144,11 @@ export const arrContractsExpert = [
 
 export function creationExpertContractObj (contractName) {
   switch (contractName) {
-    case 'EPQFI_MembershipVoting':
-    case 'EPDR_MembershipVoting':
+    case 'EPQFIMembershipVoting':
+    case 'EPDRMembershipVoting':
       return new MembershipVotingService(contractName)
-    case 'EPQFI_ParametersVoting':
-    case 'EPDR_ParametersVoting':
+    case 'EPQFIParametersVoting':
+    case 'EPDRParametersVoting':
       return new ParametersVotingService(contractName)
   }
 }

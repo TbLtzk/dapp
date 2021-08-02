@@ -1,10 +1,10 @@
 import { contracts } from '../../config/config'
 import MembershipService from './MembershipService'
 
-export default class EPDR_Membership extends MembershipService {
+export default class EPDRMembership extends MembershipService {
   constructor () {
     super()
-    this.contract = contracts.EPDR_Membership
-    this.contractName = 'EPDR_Membership'
+    this.contract = contracts.EPDRMembership
+    this.contractName = 'EPDRMembership'
   }
 }

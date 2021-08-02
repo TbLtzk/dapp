@@ -70,7 +70,7 @@ export default class SystemDebtAuction extends AuctionService {
         return [objRes]
       }
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 

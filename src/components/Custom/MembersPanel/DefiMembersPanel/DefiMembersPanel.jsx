@@ -3,15 +3,15 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getEPDRMembers } from 'store/actions/action-creaters/membership'
 import {
-  EPDR_Members, EPDR_MembersError, EPDR_MembersLoading
+  EPDRMembers, EPDRMembersError, EPDRMembersLoading
 } from 'store/selectors/membership'
 
 import ExpertsPanel from 'components/Custom/MembersPanel/ExpertsPanel'
 
 function DefiMembersPanel () {
-  const loading = useSelector(EPDR_MembersLoading)
-  const errorMessage = useSelector(EPDR_MembersError)
-  const members = useSelector(EPDR_Members)
+  const loading = useSelector(EPDRMembersLoading)
+  const errorMessage = useSelector(EPDRMembersError)
+  const members = useSelector(EPDRMembers)
 
   const dispatch = useDispatch()
 

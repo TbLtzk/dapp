@@ -75,7 +75,7 @@ export default class RootsVoting extends VotingService {
         .call()
       return result
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 

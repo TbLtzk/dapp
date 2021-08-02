@@ -1,8 +1,8 @@
 import { contractsToAbi } from '../../mapping/contract-to-abi'
 
-export default class EPDR_Parameters {
+export default class EPDRParameters {
   constructor (address) {
-    this.contractName = 'EPDR_Parameters'
+    this.contractName = 'EPDRParameters'
     this.contract = new window.web3.eth.Contract(contractsToAbi[this.contractName], address)
   }
 

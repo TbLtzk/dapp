@@ -18,16 +18,12 @@ module.exports = {
     'react'
   ],
   rules: {
-    camelcase: 'off',
     'no-case-declarations': 'off',
-    'react/prop-types': 'off',
-    'react/display-name': 'off',
     'react/no-unescaped-entities': 'off',
-    'node/handle-callback-err': 'off',
-    'no-mixed-operators': 'off',
-    'multiline-ternary': 'off',
-    'no-lone-blocks': 'off',
-    'no-useless-escape': 'off',
-    'no-prototype-builtins': 'off'
+    'react/prop-types': 'warn',
+    'react/display-name': 'off',
+    'no-console': ['error', {
+      allow: ['warn', 'error']
+    }]
   }
 }

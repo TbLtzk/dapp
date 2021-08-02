@@ -45,6 +45,9 @@ function SidebarCards () {
 
   useEffect(() => {
     window.web3.eth.getBalance(userAddress, (err, balance) => {
+      if (err) {
+        console.error(err)
+      }
       setUserBalanceQ(fN(fromWei(balance)))
     })
   }, [isAuctionModified])
@@ -68,7 +71,7 @@ function SidebarCards () {
       })
       .catch((e) => {
         setQUSDUserBalance(0)
-        console.log(e)
+        console.error(e)
       })
   }, [loadingPerfNetting, isAuctionModified])
 

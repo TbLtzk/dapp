@@ -7,18 +7,18 @@ export const chooseExpertContractDependsOnType = (typeContract, type) => {
   let contractName = null
   if (type === CONTRACT_TYPES.qFee) {
     if (typeContract === 'member') {
-      contractName = 'EPQFI_MembershipVoting'
+      contractName = 'EPQFIMembershipVoting'
       contract = new MembershipVotingService(contractName)
     } else if (typeContract === 'parameters') {
-      contractName = 'EPQFI_ParametersVoting'
+      contractName = 'EPQFIParametersVoting'
       contract = new ParametersVotingService(contractName)
     }
   } else if (type === CONTRACT_TYPES.qDefi) {
     if (typeContract === 'member') {
-      contractName = 'EPDR_MembershipVoting'
+      contractName = 'EPDRMembershipVoting'
       contract = new MembershipVotingService(contractName)
     } else if (typeContract === 'parameters') {
-      contractName = 'EPDR_ParametersVoting'
+      contractName = 'EPDRParametersVoting'
       contract = new ParametersVotingService(contractName)
     }
   }
@@ -29,15 +29,15 @@ export const chooseExpertContractNameDependsOnType = (typeContract, type) => {
   let contractName = null
   if (type === CONTRACT_TYPES.qFee) {
     if (typeContract === 'member') {
-      contractName = 'EPQFI_MembershipVoting'
+      contractName = 'EPQFIMembershipVoting'
     } else if (typeContract === 'parameters') {
-      contractName = 'EPQFI_ParametersVoting'
+      contractName = 'EPQFIParametersVoting'
     }
   } else if (type === CONTRACT_TYPES.qDefi) {
     if (typeContract === 'member') {
-      contractName = 'EPDR_MembershipVoting'
+      contractName = 'EPDRMembershipVoting'
     } else if (typeContract === 'parameters') {
-      contractName = 'EPDR_ParametersVoting'
+      contractName = 'EPDRParametersVoting'
     }
   }
 

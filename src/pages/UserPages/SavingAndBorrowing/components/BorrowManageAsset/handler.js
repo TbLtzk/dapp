@@ -85,7 +85,7 @@ export default class Handler {
         setCollateralInf({})
         setBorrowingInf({})
         setLoadingInf(false)
-        console.log(e)
+        console.error(e)
       })
       .finally(() => {
       })
@@ -103,7 +103,7 @@ export default class Handler {
         this.setVaultStats(setCollateralInf, setBorrowingInf, setLoadingInf)
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
       })
       .finally(() => {
         this.dispatch(setTransactionCounter(-1))
@@ -118,7 +118,7 @@ export default class Handler {
         this.setVaultStats(setCollateralInf, setBorrowingInf, setLoadingInf)
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
       })
       .finally(() => {
         this.dispatch(setTransactionCounter(-1))
@@ -135,7 +135,7 @@ export default class Handler {
         this.setVaultStats(setCollateralInf, setBorrowingInf, setLoadingInf)
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
       })
       .finally(() => {
         this.dispatch(setTransactionCounter(-1))
@@ -150,7 +150,7 @@ export default class Handler {
         this.setVaultStats(setCollateralInf, setBorrowingInf, setLoadingInf)
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
       })
       .finally(() => {
         this.dispatch(setTransactionCounter(-1))
@@ -175,7 +175,7 @@ export default class Handler {
         stateSetter(res)
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
       })
   }
 

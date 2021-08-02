@@ -21,7 +21,7 @@ function CreateStep3 (props) {
           <h5>Answer</h5>
           <p>{answer}</p>
           {proposalContract === 'ConstitutionVoting' || proposalContract === 'GeneralUpdateVoting' ||
-          proposalContract === 'EPDR_MembershipVoting' || proposalContract === 'EPQFI_MembershipVoting' ||
+          proposalContract === 'EPDRMembershipVoting' || proposalContract === 'EPQFIMembershipVoting' ||
           proposalContract === 'RootsVoting'
             ? <h2>Notice: Your currently locked amount of Q inside the Q Vault will be extended until the end of this
               proposal.</h2>

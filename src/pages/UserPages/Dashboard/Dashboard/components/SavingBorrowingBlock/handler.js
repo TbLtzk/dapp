@@ -1,6 +1,6 @@
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { StableCoinQUSD } from 'contracts/src/StableCoin'
-import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters'
+import EPDRParameters from 'contracts/src/parameters/EPDR_Parameters'
 import CompoundRateKeeper from 'contracts/src/CompoundRateKeeper'
 import { SavingQUSD } from 'contracts/src/Saving'
 import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore'
@@ -14,7 +14,7 @@ export default class Handler {
     this.StableCoin = new StableCoinQUSD()
     this.SavingQUSD = new SavingQUSD(contractsToAddresses.SavingQUSD)
     this.BorrowingCoreQUSD = new BorrowingCoreQUSD(contractsToAddresses.BorrowingCoreQUSD)
-    this.EPDR_ParametersContract = new EPDR_Parameters(contractsToAddresses.EPDR_Parameters)
+    this.EPDRParametersContract = new EPDRParameters(contractsToAddresses.EPDRParameters)
     this.CompoundRateKeeperBorrowing = new CompoundRateKeeper('CompoundRateKeeperBorrowing')
     this.CompoundRateKeeperSaving = new CompoundRateKeeper('CompoundRateKeeperSaving')
     this.SystemBalance = new SystemBalance()
@@ -45,7 +45,7 @@ export default class Handler {
   }
 
   getSavingRate (stateSetter) {
-    this.EPDR_ParametersContract.getUint('governed.EPDR.QUSD_savingRate')
+    this.EPDRParametersContract.getUint('governed.EPDR.QUSD_savingRate')
       .then(val => {
         const res = uintPerSecondToPerYearNumber(val)
         stateSetter(fN(res))
@@ -56,7 +56,7 @@ export default class Handler {
   }
 
   getInterestRate (stateSetter) {
-    this.EPDR_ParametersContract.getUint('governed.EPDR.QBTC_QUSD_interestRate')
+    this.EPDRParametersContract.getUint('governed.EPDR.QBTC_QUSD_interestRate')
       .then(val => {
         const res = uintPerSecondToPerYearNumber(val)
         stateSetter(fN(res))
@@ -91,7 +91,7 @@ export default class Handler {
         }
       )
       .catch(e => {
-        console.log('refreshTimeSinceRefreshBalance.Error', e)
+        console.error('refreshTimeSinceRefreshBalance.Error', e)
         stateSetter(0)
         stateLoading(false)
       })
@@ -106,7 +106,7 @@ export default class Handler {
         stateSetter(transformTime)
       })
       .catch(e => {
-        console.log('getTimeSinceOutstandingDebt.Error', e)
+        console.error('getTimeSinceOutstandingDebt.Error', e)
         stateSetter(0)
       })
   }
@@ -121,7 +121,7 @@ export default class Handler {
         }
       )
       .catch(e => {
-        console.log('refreshTimeSinceOutstandingDebt.Error', e)
+        console.error('refreshTimeSinceOutstandingDebt.Error', e)
         stateSetter(0)
         stateLoading(false)
       })

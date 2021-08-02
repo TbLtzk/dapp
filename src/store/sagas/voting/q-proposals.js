@@ -25,7 +25,7 @@ function * getProposalsList () {
     }
     yield put(getQProposalsListSuccess(result))
   } catch (e) {
-    console.log('e', e)
+    console.error('e', e)
     yield put(getQProposalsListError(e))
   }
 }
@@ -75,7 +75,7 @@ function * getQProposal ({
       }
     }
   } catch (err) {
-    console.log('err', err)
+    console.error('err', err)
     if (pageType === 'ended') {
       yield put(getProposalEndedError(id))
     } else {
@@ -98,7 +98,7 @@ function * getEndedProposals () {
 
     yield put(getQEndedProposalsSuccess(result))
   } catch (err) {
-    console.log('err', err.message)
+    console.error('err', err.message)
     yield put(getQEndedProposalsError(err.message))
   }
 }

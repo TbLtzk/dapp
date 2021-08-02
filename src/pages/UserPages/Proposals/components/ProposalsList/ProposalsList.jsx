@@ -48,14 +48,18 @@ function ProposalsList (props) {
 
   return (
     <div>
-      {loading ? <LoadingWrap><LoadingSpinner/></LoadingWrap>
-        : errorMessage ? <p>No proposals</p>
+      {loading
+        ? <LoadingWrap><LoadingSpinner/></LoadingWrap>
+        : errorMessage
+          ? <p>No proposals</p>
           : proposals?.length === 0
             ? <p>No proposals</p>
-            : !proposals ? <p>No proposals</p> : proposals.map((proposal, i) => {
-              // TODO: don`t show proposal if veto time === 0
-              // return remainDate(proposal.vetoEndTime) !== 0 ?
-              return (
+            : !proposals
+                ? <p>No proposals</p>
+                : proposals.map((proposal, i) => {
+                  // TODO: don`t show proposal if veto time === 0
+                  // return remainDate(proposal.vetoEndTime) !== 0 ?
+                  return (
                 <ListCard
                   key={proposal.id + proposal?.contract}
                   id={proposal.id + proposal?.contract}
@@ -107,8 +111,8 @@ function ProposalsList (props) {
                     </div>
                   }
                   />
-              )
-            })
+                  )
+                })
       }
       <ModalVote
         proposalContract={proposalContract}

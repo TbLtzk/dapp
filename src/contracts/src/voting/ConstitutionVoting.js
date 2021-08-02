@@ -128,8 +128,8 @@ export default class ConstitutionVoting extends VotingService {
           { from: userAddress }
         )
       } catch (e) {
-        console.log(e)
-        console.log('Please provide a valid input')
+        console.error(e)
+        console.error('Please provide a valid input')
       }
     } else {
       try {
@@ -141,7 +141,7 @@ export default class ConstitutionVoting extends VotingService {
           { from: userAddress }
         )
       } catch (e) {
-        console.log('Please provide a valid hash')
+        console.error('Please provide a valid hash')
       }
     }
     return result

@@ -9,7 +9,7 @@ import { parameterVote } from 'pages/UserPages/Proposals/components/CreateQPropo
 import { epqfiParametersVoting, epdrParametersVoting } from 'contracts/contracts'
 import { CONTRACT_TYPES } from 'constants/contracts'
 
-/* EPQFI_ParametersVoting, EPDR_ParametersVoting */
+/* EPQFIParametersVoting, EPDRParametersVoting */
 export default class ParametersVoting extends VotingService {
   async getProposalData (promiseRes, id, promiseStatus) {
     const objRes = {}
@@ -32,10 +32,10 @@ export default class ParametersVoting extends VotingService {
     objRes.votingEndTime = promiseRes.base.params.votingEndTime
 
     objRes.status = getStatusTransformation(promiseStatus)
-    objRes.title = this.contractName === 'EPDR_ParametersVoting'
+    objRes.title = this.contractName === 'EPDRParametersVoting'
       ? 'DeFi Risk Expert parameter voting proposals'
       : 'Fees & Incentives Experts parameter voting proposals'
-    objRes.type = this.contractName === 'EPDR_ParametersVoting'
+    objRes.type = this.contractName === 'EPDRParametersVoting'
       ? 'DeFi Risk Expert Parameters Proposals'
       : 'Fees & Incentives Experts Parameters Proposals'
     objRes.kindVoting = 'parameters'

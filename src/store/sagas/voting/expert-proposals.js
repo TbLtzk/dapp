@@ -26,7 +26,7 @@ function * getProposalsList () {
 
     yield put(getExpertProposalsListSuccess(result))
   } catch (e) {
-    console.log('e', e)
+    console.error('e', e)
     yield put(getExpertProposalsListError(e))
   }
 }
@@ -72,7 +72,7 @@ function * getProposal ({ contractName, id, activeProposal }) {
       }
     }
   } catch (err) {
-    console.log('err', err)
+    console.error('err', err)
     if (pageType === 'ended') {
       yield put(getProposalEndedError(id))
     } else {
@@ -94,7 +94,7 @@ function * getEndedProposals () {
 
     yield put(getExpertEndedProposalsSuccess(result))
   } catch (err) {
-    console.log('err', err.message)
+    console.error('err', err.message)
     yield put(getExpertEndedProposalsError(err.message))
   }
 }

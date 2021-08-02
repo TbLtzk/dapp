@@ -25,7 +25,7 @@ function * getProposalsList () {
     }
     yield put(getRootNodeProposalsListSuccess(result))
   } catch (e) {
-    console.log('e', e)
+    console.error('e', e)
     yield put(getRootNodeProposalsListError(e))
   }
 }
@@ -42,7 +42,7 @@ function * getEndedProposals () {
     }
     yield put(getRootNodeEndedProposalsSuccess(result))
   } catch (err) {
-    console.log('err', err.message)
+    console.error('err', err.message)
     yield put(getRootNodeEndedProposalsError(err.message))
   }
 }
@@ -89,7 +89,7 @@ function * getRootNodeProposal ({ contractName, id, activeProposal }) {
       }
     }
   } catch (err) {
-    console.log('err', err)
+    console.error('err', err)
     if (pageType === 'ended') {
       yield put(getProposalEndedError(id))
     } else {

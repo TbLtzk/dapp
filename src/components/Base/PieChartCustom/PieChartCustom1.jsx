@@ -9,7 +9,8 @@ function PieChartCustom (props) {
   return (
         <WrapChart>
             {
-                !data ? null
+                !data
+                  ? null
                   : <PieChart
                         data={[
                           { title: 'One', value: 10, color: '#283FFF', style: { strokeWidth: 9 } },

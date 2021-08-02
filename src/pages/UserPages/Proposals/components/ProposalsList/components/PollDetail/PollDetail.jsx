@@ -96,16 +96,14 @@ function PollDetail (props) {
   }, [pollDetail])
 
   const printValues = (label, value, key) => {
-    {
-      const keyId = key + label.replace(/ /g, '-')
-        .toLowerCase() + +new Date()
-      return !value || value === 'undefined'
-        ? null
-        : <div key={keyId}>
+    const keyId = key + label.replace(/ /g, '-')
+      .toLowerCase() + +new Date()
+    return !value || value === 'undefined'
+      ? null
+      : <div key={keyId}>
           <h5>{label}</h5>
           <p title={value}>{value}</p>
         </div>
-    }
   }
 
   const showContent = useCallback(() => {

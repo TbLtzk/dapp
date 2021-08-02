@@ -35,6 +35,9 @@ function LoadingMetaMask () {
       window.location.reload()
     })
     web3.eth.net.getNetworkType((err, netId) => {
+      if (err) {
+        console.error(err)
+      }
       if (netId !== 'private') {
         setErrorMessage('Choose the correct network!')
         setIsMetaMask('error')
@@ -46,7 +49,7 @@ function LoadingMetaMask () {
           window.ethereum.enable()
         })
       } catch (error) {
-        console.log('error', error)
+        console.error('error', error)
       }
     } else {
       setIsMetaMask('loading')

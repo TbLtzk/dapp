@@ -82,10 +82,10 @@ function OneProposalPage (props) {
         return PROPOSALS_TYPES.proposals
       case 'RootsVoting':
         return PROPOSALS_TYPES.rootNodePanel
-      case 'EPQFI_MembershipVoting':
-      case 'EPDR_MembershipVoting':
-      case 'EPQFI_ParametersVoting':
-      case 'EPDR_ParametersVoting':
+      case 'EPQFIMembershipVoting':
+      case 'EPDRMembershipVoting':
+      case 'EPQFIParametersVoting':
+      case 'EPDRParametersVoting':
         return PROPOSALS_TYPES.expertProposals
       case 'RootNodesSlashingVoting':
       case 'ValidatorsSlashingVoting':

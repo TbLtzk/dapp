@@ -29,7 +29,7 @@ export default class Handler {
     } catch (e) {
       stateSetter(0)
       setLoading(false)
-      console.log(e)
+      console.error(e)
     }
   }
 
@@ -43,7 +43,7 @@ export default class Handler {
       .catch((e) => {
         stateSetter(0)
         setLoading(false)
-        console.log(e)
+        console.error(e)
       })
       .finally(() => {
       })

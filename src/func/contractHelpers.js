@@ -2,7 +2,7 @@ import { ParameterType } from '@q-dev/q-js-sdk'
 import { CONTRACT_TYPES } from 'constants/contracts'
 
 /**
- * @contract {contract} ConstitutionParameters or EPQFI_Parameters or EPDR_Parameters
+ * @contract {contract} ConstitutionParameters or EPQFIParameters or EPDRParameters
  * or other which extends ParametersService
  */
 export async function loadKVParameters (contract) {

@@ -27,7 +27,7 @@ export default class Handler {
         stateSetter(bal)
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
       })
       .finally(() => {
         this.dispatch(setTransactionCounter(-1))
@@ -43,7 +43,7 @@ export default class Handler {
         this.getInterestRate(stateSetter)
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
       })
       .finally(() => {
         this.dispatch(setTransactionCounter(-1))
@@ -60,7 +60,7 @@ export default class Handler {
         stateSetter(rate)
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
       })
       .finally(() => {
         this.dispatch(setTransactionCounter(-1))
@@ -75,7 +75,7 @@ export default class Handler {
         this.getDelegatorShare(stateSetter)
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
       })
       .finally(() => {
         this.dispatch(setTransactionCounter(-1))
@@ -91,7 +91,7 @@ export default class Handler {
         stateSetter(rate)
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
       })
       .finally(() => {
         this.dispatch(setTransactionCounter(-1))

@@ -22,7 +22,7 @@ function * getRootMembers ({ contract }) {
     const data = yield contract.getRootCalc()
     yield put(getRootMembersDataSuccess(data))
   } catch (err) {
-    console.log('err', err)
+    console.error('err', err)
     yield put(getRootMembersDataError(err.message))
   }
 }
@@ -36,7 +36,7 @@ function * stakeToPanel ({ contract, data }) {
     yield put(setTransactionLoadingSuccess())
     yield put(getRootMembersData(contract))
   } catch (err) {
-    console.log('err', err)
+    console.error('err', err)
     yield put(stakeToPanelError(err.message))
     yield put(setTransactionLoadingError(err.message))
   }
@@ -50,7 +50,7 @@ function * announceWithdrawal ({ contract, amount, paymentInf }) {
     yield put(announceWithdrawalSuccess('success'))
     yield put(setTransactionLoadingSuccess())
   } catch (err) {
-    console.log('err', err)
+    console.error('err', err)
     yield put(announceWithdrawalError(err.message))
     yield put(setTransactionLoadingError(err.message))
   }
@@ -64,7 +64,7 @@ function * withdraw ({ contract, amount, payTo, paymentInf }) {
     yield put(withdrawSuccess('success'))
     yield put(setTransactionLoadingSuccess())
   } catch (err) {
-    console.log('err', err)
+    console.error('err', err)
     yield put(withdrawError(err.message))
     yield put(setTransactionLoadingError(err.message))
   }
@@ -75,7 +75,7 @@ function * checkIsUserRootNode ({ contract, address }) {
     const data = yield contract.checkMemberIsRoot(address)
     yield put(checkIsUserRootNodeSuccess(data))
   } catch (err) {
-    console.log('err', err)
+    console.error('err', err)
     yield put(checkIsUserRootNodeError(err.message))
   }
 }
@@ -86,7 +86,7 @@ function * getRootNodeStakes ({ contract, address }) {
 
     yield put(getRootNodeStakesSuccess(data))
   } catch (err) {
-    console.log('err', err)
+    console.error('err', err)
     yield put(getRootNodeStakesError(err.message))
   }
 }
@@ -97,7 +97,7 @@ function * getWithdrawals ({ address }) {
     const data = yield contract.withdrawals(address)
     yield put(getWithdrawalsSuccess(data))
   } catch (err) {
-    console.log('err', err)
+    console.error('err', err)
     yield put(getWithdrawalsError(err.message))
   }
 }

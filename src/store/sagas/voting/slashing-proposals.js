@@ -33,7 +33,7 @@ function * getProposalsList () {
     }
     yield put(getSlashingProposalsListSuccess(result))
   } catch (e) {
-    console.log('e', e)
+    console.error('e', e)
     yield put(getSlashingProposalsListError(e))
   }
 }
@@ -96,7 +96,7 @@ function * getProposal ({ contractName, id, activeProposal }) {
       }
     }
   } catch (err) {
-    console.log('err', err)
+    console.error('err', err)
     if (pageType === 'ended') {
       yield put(getProposalEndedError(id))
     } else {
@@ -119,7 +119,7 @@ function * onEscrowCastObjection ({ data, contractName, proposalId }) {
     }
     yield put(setTransactionLoadingSuccess())
   } catch (err) {
-    console.log('err', err.message)
+    console.error('err', err.message)
     yield put(setTransactionLoadingError(err.message))
   }
 }
@@ -140,7 +140,7 @@ function * onEscrowProposeDecision ({ data, contractName, proposalId }) {
     }
     yield put(setTransactionLoadingSuccess())
   } catch (err) {
-    console.log('err', err.message)
+    console.error('err', err.message)
     yield put(setTransactionLoadingError(err.message))
   }
 }
@@ -159,7 +159,7 @@ function * onEscrowRecallProposeDecision ({ contractName, proposalId }) {
     }
     yield put(setTransactionLoadingSuccess())
   } catch (err) {
-    console.log('err', err.message)
+    console.error('err', err.message)
     yield put(setTransactionLoadingError(err.message))
   }
 }
@@ -178,7 +178,7 @@ function * onEscrowConfirmProposeDecision ({ contractName, proposalId }) {
     }
     yield put(setTransactionLoadingSuccess())
   } catch (err) {
-    console.log('err', err.message)
+    console.error('err', err.message)
     yield put(setTransactionLoadingError(err.message))
   }
 }

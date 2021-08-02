@@ -1,7 +1,7 @@
 import { put, takeEvery } from 'redux-saga/effects'
 import ConstitutionParameters from 'contracts/src/parameters/ConstitutionParameters'
-import EPQFI_Parameters from 'contracts/src/parameters/EPQFI_Parameters'
-import EPDR_Parameters from 'contracts/src/parameters/EPDR_Parameters'
+import EPQFIParameters from 'contracts/src/parameters/EPQFI_Parameters'
+import EPDRParameters from 'contracts/src/parameters/EPDR_Parameters'
 import { ContractRegistry } from 'contracts/src/ContractRegistry'
 import {
   getContractRegistryKVSuccess,
@@ -47,7 +47,7 @@ function * getConstitutionParametersKV () {
 
 function * getFeesIncentivesExpertPanelParametersKV () {
   try {
-    const contract = new EPQFI_Parameters()
+    const contract = new EPQFIParameters()
     const data = yield loadKVParameters(contract)
     yield put(getFeesIncentivesExpertPanelParametersKVSuccess(data))
   } catch (err) {
@@ -60,7 +60,7 @@ function * getFeesIncentivesExpertPanelParametersKV () {
 
 function * getEPDRParametersKV () {
   try {
-    const contract = new EPDR_Parameters(contractsToAddresses.EPDR_Parameters)
+    const contract = new EPDRParameters(contractsToAddresses.EPDRParameters)
     const data = yield loadKVParameters(contract)
     yield put(getEPDRParametersKVSuccess(data))
   } catch (err) {

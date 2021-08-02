@@ -84,7 +84,7 @@ function Manage () {
           tableData={kvFI}
           loading={loadingFI}
           errorMsg={errorMessageFI}
-          subHeader={`(${contractsToAddresses.EPQFI_Parameters})`}
+          subHeader={`(${contractsToAddresses.EPQFIParameters})`}
           header={'Q Fees & Incentives Expert Panel Parameters'}
           emptyMsg={'No data'}
         />
@@ -102,7 +102,7 @@ function Manage () {
           tableData={kvEPDRP}
           loading={loadingEPDRP}
           errorMsg={errorMessageEPDRP}
-          subHeader={`(${contractsToAddresses.EPDR_Parameters})`}
+          subHeader={`(${contractsToAddresses.EPDRParameters})`}
           header={'Q DeFi Risk Expert Panel Parameters'}
           emptyMsg={'No addresses'}
         />

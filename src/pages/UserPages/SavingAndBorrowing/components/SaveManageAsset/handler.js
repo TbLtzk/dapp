@@ -32,7 +32,7 @@ export default class Handler {
         interestRateSetter('-')
         estimatedInterestSetter(0)
         setLoadingInf(false)
-        console.log(e)
+        console.error(e)
       })
       .finally(() => {})
   }
@@ -47,7 +47,7 @@ export default class Handler {
       })
       .catch((e) => {
         stateSetter(0)
-        console.log(e)
+        console.error(e)
       })
       .finally(() => {
         this.dispatch(setTransactionCounter(-1))
@@ -63,7 +63,7 @@ export default class Handler {
         this.setAvailableToDeposit(setAvDep)
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
       })
       .finally(() => {
         this.dispatch(setTransactionCounter(-1))
@@ -79,7 +79,7 @@ export default class Handler {
         this.setAvailableToDeposit(setAvDep)
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
       })
       .finally(() => {
         this.dispatch(setTransactionCounter(-1))
@@ -92,7 +92,7 @@ export default class Handler {
         stateSetter(res)
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
       })
   }
 

@@ -1,10 +1,10 @@
 import ParametersService from './ParametersService'
 import { contracts } from '../../config/config'
 
-export default class EPQFI_Parameters extends ParametersService {
+export default class EPQFIParameters extends ParametersService {
   constructor () {
     super()
-    this.contract = contracts.EPQFI_Parameters
-    this.contractName = 'EPQFI_Parameters'
+    this.contract = contracts.EPQFIParameters
+    this.contractName = 'EPQFIParameters'
   }
 }

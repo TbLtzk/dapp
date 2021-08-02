@@ -47,6 +47,9 @@ function FormStaking () {
 
   useEffect(() => {
     window.web3.eth.getBalance(userAddress, (error, balance) => {
+      if (error) {
+        console.error(error)
+      }
       const userBalance = fromWei(balance)
       setUserBalance(fN(userBalance))
     })

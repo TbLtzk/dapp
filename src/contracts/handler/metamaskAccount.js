@@ -10,7 +10,7 @@ export async function detectMetamask () {
       return provider
     }
   } catch (e) {
-    console.log('e', e)
+    console.error('e', e)
     throw new Error('Please install MetaMask!')
   }
 }

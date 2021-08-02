@@ -40,7 +40,7 @@ export default class VotingService {
         .call()
       return result
     } catch (err) {
-      console.log(id, 'error' + err)
+      console.error(id, 'error' + err)
       return 0
     }
   }

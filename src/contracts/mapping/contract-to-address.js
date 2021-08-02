@@ -1,4 +1,4 @@
-import EPDR_Parameters from '../src/parameters/EPDR_Parameters'
+import EPDRParameters from '../src/parameters/EPDR_Parameters'
 import QVault from '../src/QVault'
 import { BorrowingCoreQUSD } from '../src/BorrowingCore'
 import { SavingQUSD } from '../src/Saving'
@@ -38,8 +38,8 @@ export async function initAddresses () {
   await Promise.all(Object.keys(contToKey)
     .map(i => getAddress(i)))
 
-  // EPDR_Parameters
-  const epdrParametersContract = new EPDR_Parameters(contractsToAddresses.EPDR_Parameters)
+  // EPDRParameters
+  const epdrParametersContract = new EPDRParameters(contractsToAddresses.EPDRParameters)
   contractsToAddresses.GovernedEpdrQbtcAddress = await epdrParametersContract.getAddr(contToKey.GovernedEpdrQbtcAddress)
   contractsToAddresses.GovernedEpdrQbtcQusdOracle = await epdrParametersContract.getAddr(contToKey.GovernedEpdrQbtcQusdOracle)
 

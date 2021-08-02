@@ -93,7 +93,7 @@ export default class SlashingVoting extends VotingService {
         .send({ from: userAddress })
       return result
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 }

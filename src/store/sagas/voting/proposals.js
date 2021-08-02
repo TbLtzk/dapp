@@ -143,7 +143,7 @@ function * voteForProposal ({ data }) {
     yield put(setTransactionLoadingSuccess())
     yield put(getLockedAssets(userAddress))
   } catch (err) {
-    console.log('err', err.message)
+    console.error('err', err.message)
     yield put(setTransactionLoadingError(err.message))
   }
 }
@@ -161,7 +161,7 @@ function * executeProposal ({ data }) {
     yield put(executeProposalSuccess(result))
     yield put(setTransactionLoadingSuccess())
   } catch (err) {
-    console.log('err', err.message)
+    console.error('err', err.message)
     yield put(executeProposalError(err.message))
     yield put(setTransactionLoadingError(err.message))
   }
@@ -186,15 +186,15 @@ function * getProposalDependsOnType (contractName, data, id, activeProposal) {
       case 'ValidatorsSlashingVoting':
         yield put(getProposalSlashing(contractName, id, activeProposal))
         break
-      case 'EPQFI_MembershipVoting':
-      case 'EPDR_MembershipVoting':
-      case 'EPQFI_ParametersVoting':
-      case 'EPDR_ParametersVoting':
+      case 'EPQFIMembershipVoting':
+      case 'EPDRMembershipVoting':
+      case 'EPQFIParametersVoting':
+      case 'EPDRParametersVoting':
         yield put(getProposalExpert(contractName, id, activeProposal))
         break
     }
   } catch (e) {
-    console.log('e', e)
+    console.error('e', e)
   }
 }
 
@@ -219,7 +219,7 @@ function * getProposalsList ({ activeTab }) {
         break
     }
   } catch (e) {
-    console.log('e', e)
+    console.error('e', e)
   }
 }
 
@@ -240,7 +240,7 @@ function * getEndedProposals ({ activeTab }) {
         break
     }
   } catch (err) {
-    console.log('err', err.message)
+    console.error('err', err.message)
   }
 }
 
@@ -261,7 +261,7 @@ function * getNumberAllProposals () {
     }
     yield put(getNumberAllProposalsSuccess(result))
   } catch (err) {
-    console.log('err', err.message)
+    console.error('err', err.message)
   }
 }
 
@@ -272,7 +272,7 @@ function * getConstitutionHash () {
 
     yield put(getConstitutionHashSuccess(data))
   } catch (err) {
-    console.log('err', err.message)
+    console.error('err', err.message)
   }
 }
 

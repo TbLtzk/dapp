@@ -89,8 +89,8 @@ export default function auctions (state = initialState, action) {
             return state.auctionsArr?.map((element) => {
               if (element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user && element.contract === 'LiquidationAuction') {
                 return { ...action.result[0] }
-              } else if (element.id === action.result[0].id && action.result[0].contract === 'SystemSurplusAuction' ||
-                element.id === action.result[0].id && action.result[0].contract === 'SystemDebtAuction'
+              } else if ((element.id === action.result[0].id && action.result[0].contract === 'SystemSurplusAuction') ||
+                (element.id === action.result[0].id && action.result[0].contract === 'SystemDebtAuction')
               ) {
                 return { ...action.result[0] }
               } else {

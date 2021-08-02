@@ -27,7 +27,7 @@ export default class Handler {
         stateLoading(false)
       })
       .catch(e => {
-        console.log('e', e)
+        console.error('e', e)
         stateSetter(0)
         stateLoading(false)
       })
@@ -65,13 +65,13 @@ export default class Handler {
               }
             )
             .catch(e => {
-              console.log('e', e)
+              console.error('e', e)
               stateSetter(0)
               stateLoading(false)
             })
         })
         .catch(e => {
-          console.log('e', e)
+          console.error('e', e)
           stateSetter(0)
           stateLoading(false)
         })
@@ -85,7 +85,7 @@ export default class Handler {
           }
         )
         .catch(e => {
-          console.log('e', e)
+          console.error('e', e)
           stateSetter(0)
           stateLoading(false)
         })

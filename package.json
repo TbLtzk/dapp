@@ -2,6 +2,11 @@
   "name": "q-hq-dapp",
   "version": "0.3.12",
   "private": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm lint"
+    }
+  },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
@@ -48,7 +53,7 @@
     "eject": "react-scripts eject",
     "patch-version": "npm version patch -m \"Upgrade to %s\"",
     "postversion": "git push && git push --tags",
-    "lint": "eslint \"**/*.{js,jsx}\" --quiet --fix"
+    "lint": "eslint \"**/*.{js,jsx}\" --fix --max-warnings 415"
   },
   "browserslist": {
     "production": [

@@ -3,15 +3,15 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getEPQFIMembers } from 'store/actions/action-creaters/membership'
 import {
-  EPQFI_Members, EPQFI_MembersLoading, EPQFI_MembersError
+  EPQFIMembers, EPQFIMembersLoading, EPQFIMembersError
 } from 'store/selectors/membership'
 
 import ExpertsPanel from 'components/Custom/MembersPanel/ExpertsPanel'
 
 function QFeesMembersPanel () {
-  const loading = useSelector(EPQFI_MembersError)
-  const errorMessage = useSelector(EPQFI_MembersLoading)
-  const members = useSelector(EPQFI_Members)
+  const loading = useSelector(EPQFIMembersError)
+  const errorMessage = useSelector(EPQFIMembersLoading)
+  const members = useSelector(EPQFIMembers)
 
   const dispatch = useDispatch()
 

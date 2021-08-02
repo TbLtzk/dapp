@@ -8,7 +8,7 @@ import {
 
 import { fromWei } from 'func/balance'
 
-/* EPDR_MembershipVoting, EPQFI_MembershipVoting */
+/* EPDRMembershipVoting, EPQFIMembershipVoting */
 export default class MembershipVoting extends VotingService {
   async getProposalData (promiseRes, id, promiseStatus) {
     const objRes = {}
@@ -30,10 +30,10 @@ export default class MembershipVoting extends VotingService {
     // the time until when users can vote
     objRes.votingEndTime = promiseRes.base.params.votingEndTime
     objRes.status = getStatusTransformation(promiseStatus)
-    objRes.title = this.contractName === 'EPDR_MembershipVoting'
+    objRes.title = this.contractName === 'EPDRMembershipVoting'
       ? 'DeFi Risk Expert membership proposals'
       : 'Fees & Incentives Experts membership proposals'
-    objRes.type = this.contractName === 'EPDR_MembershipVoting'
+    objRes.type = this.contractName === 'EPDRMembershipVoting'
       ? 'DeFi Risk Expert membership'
       : 'Fees & Incentives Experts membership'
     objRes.kindVoting = 'membership'
@@ -135,7 +135,7 @@ export default class MembershipVoting extends VotingService {
         active: proposalsActive
       }
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 }
