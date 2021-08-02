@@ -40,6 +40,7 @@ export default function ManageBalance() {
         <FormInput
           lbl={'Q'}
           min={0}
+          color={true}
           name="amountQ"
           type="number"
           placeholder="0.0"
@@ -61,6 +62,7 @@ export default function ManageBalance() {
         <FormInput
           min={0}
           name="amountQ"
+          color={true}
           type="number"
           lbl={'Q'}
           placeholder="0.0"

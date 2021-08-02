@@ -26,6 +26,7 @@ function AddressForm({ setAddressRefresh, address }) {
             <FormInput
                 name="token"
                 type="string"
+                color={true}
                 value={userAddress}
                 ref={register({
                     required: "Address Required!",

@@ -97,6 +97,7 @@ function FormStaking() {
         : null}
       <h4>Amount</h4>
       <FormInput
+        color={true}
         name="amount"
         lbl="Q"
         type="number"

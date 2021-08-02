@@ -19,6 +19,7 @@ const FormInput = forwardRef((props, ref) => {
     disabled,
     min,
     palette,
+    color,
     lbl
   } = props;
 
@@ -30,6 +31,7 @@ const FormInput = forwardRef((props, ref) => {
       align={align}
       type={Boolean(valid) ? 'error' : ''}
       palette={currentTheme}
+      color={Boolean(color) ? 1 : 0}
       lbl={lbl}
       isfocus={isFocus}
       isdisabled={disabled ? '1' : ''}
