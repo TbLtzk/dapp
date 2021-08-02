@@ -5,6 +5,7 @@ import UserAuth from './userAuth'
 import userInf from './userInf'
 import rootContract from './rootContract'
 import qVault from './qVault'
+import lockedAmount from './locked-amount'
 
 import proposals from './voting/proposals'
 import qProposals from './voting/qProposals'
@@ -31,6 +32,7 @@ const RootReducer = combineReducers({
   userInf,
   rootContract,
   qVault,
+  lockedAmount,
 
   proposals,
   qProposals,

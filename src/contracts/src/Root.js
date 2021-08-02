@@ -36,6 +36,15 @@ export default class RootService {
       .call()
   }
 
+  async getTimeLockedAmounts (address) {
+    const res = {
+      amount: '60000000000000000000',
+      releaseStart: '1626872970',
+      releaseEnd: '1627000000'
+    }
+    return res
+  }
+
   /**
    * get root node stake
    *  @param node

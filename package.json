@@ -49,7 +49,7 @@
     "eject": "react-scripts eject",
     "patch-version": "npm version patch -m \"Upgrade to %s\"",
     "postversion": "git push && git push --tags",
-    "lint": "eslint \"**/*.{js,jsx}\" --fix --max-warnings 415",
+    "lint": "eslint \"**/*.{js,jsx}\" --fix --max-warnings 420",
     "prepare": "husky install"
   },
   "browserslist": {

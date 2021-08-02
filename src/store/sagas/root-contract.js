@@ -83,7 +83,6 @@ function * checkIsUserRootNode ({ contract, address }) {
 function * getRootNodeStakes ({ contract, address }) {
   try {
     const data = yield contract.getRootNodeStake(address)
-
     yield put(getRootNodeStakesSuccess(data))
   } catch (err) {
     console.error('err', err)

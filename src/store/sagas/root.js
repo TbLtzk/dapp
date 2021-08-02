@@ -18,10 +18,11 @@ import parameters from './parameters'
 import systemBalance from './system-balance'
 import systemReserve from './system-reserve'
 import parametersAddresses from './parameters-addresses'
+import lockedAmount from './locked-amount'
 
 export default function * rootSaga () {
   yield all([...userAuth, ...rootContract, ...qVault,
     ...proposals, ...qProposals, ...rootNodeProposals, ...expertProposals, ...slashingProposals,
     ...validators, ...validationRewardPools, ...auctions, ...stableCoin,
-    ...membership, ...parameters, ...systemBalance, ...systemReserve, ...parametersAddresses])
+    ...membership, ...parameters, ...systemBalance, ...systemReserve, ...parametersAddresses, ...lockedAmount])
 }

@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Button from '../Buttons/Button'
 import { mode } from 'store/selectors/dashboardMode'
 import { setDashboardMode } from 'store/actions/action-creaters/dashboardMode'
+import FormSwithch from 'components/Base/Form/FormSwithch'
 
 export const MODE = {
   basic: 'basic',
@@ -12,22 +12,24 @@ export const MODE = {
 function DashboardModeButton () {
   const dispatch = useDispatch()
   const appMode = useSelector(mode)
+  const [isSwitchOn, setIsSwitchOn] = useState(appMode === MODE.advanced)
 
   function changeMode () {
+    setIsSwitchOn(!isSwitchOn)
     if (appMode === MODE.basic) {
       dispatch(setDashboardMode(MODE.advanced))
     } else {
       dispatch(setDashboardMode(MODE.basic))
     }
   }
+
   return (
-        <Button
-            title={`${appMode === MODE.basic ? MODE.advanced : MODE.basic} mode`}
-            type='button'
-            width='140px'
-            margin='0 20px 0 0'
-            handleButton={changeMode}
-        />
+    <FormSwithch
+      onChange={changeMode}
+      id="mode-switcher"
+      checked={isSwitchOn}
+      label="Advanced mode"
+    />
   )
 };
 

@@ -40,7 +40,6 @@ function * getTotalStakeGenerator ({ address }) {
     const contract = getContractInstance()
     let data = yield contract.getValidatorTotalStake(address)
     data = fromWei(data)
-
     yield put(setTotalStake(data))
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED })
   } catch (err) {

@@ -11,11 +11,11 @@ import TokenomicsBlock from './components/TokenomicsBlock'
 import SavingBorrowingBlock from './components/SavingBorrowingBlock'
 import Button from 'components/Base/Buttons/Button'
 import PageWrap from 'components/Base/PageWrap'
-import DashboardModeButton, { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
 
 import { Link } from 'react-router-dom'
 
 import { mode } from 'store/selectors/dashboardMode'
+import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
 
 function Dashboard () {
   const appMode = useSelector(mode)
@@ -36,7 +36,6 @@ function Dashboard () {
           )
         : null
       }
-      extraButton={<DashboardModeButton />}
     >
       <div>
         <InfBlock/>

@@ -18,7 +18,7 @@ import {
 import Button from 'components/Base/Buttons/Button'
 import LogoImg from 'components/Base/LogoImg'
 import Version from './components/Version'
-import Themes from 'components/Base/Themes'
+import Settings from './components/Settings'
 
 import { referencesItems } from './constants'
 
@@ -310,7 +310,7 @@ function Sidebar () {
             </span>
           </CopyToClipboard>
           <Footer>
-            <Themes />
+            <Settings />
             <Version />
           </Footer>
         </FooterContainer>
