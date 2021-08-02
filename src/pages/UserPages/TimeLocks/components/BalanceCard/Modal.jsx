@@ -8,7 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import { CalendarWraper } from "../../styles";
 import "react-datepicker/dist/react-datepicker.css";
 
-function Modal({ modalShow, setModalShow, setDeposit, setPurge }) {
+function Modal({ modalShow, setModalShow, setDeposit, setPurge, modalTitle }) {
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
 
@@ -34,7 +34,7 @@ function Modal({ modalShow, setModalShow, setDeposit, setPurge }) {
                 setEndDate(null);
                 reset();
             }}
-            modalTitle="Deposit & withdraw time locked tokens"
+            modalTitle={modalTitle}
             content={
                 <>
                     <div className="modal-line" />

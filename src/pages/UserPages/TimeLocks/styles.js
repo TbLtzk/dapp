@@ -15,6 +15,7 @@ export const InfoWrap = styled.div`
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
     & > div {
       width: 95%;
+      height: 95%;
     }
 `;
 

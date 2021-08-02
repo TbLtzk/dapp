@@ -7,7 +7,6 @@ import {
     getQVaultAmount,
     getRootNodeAmount,
     getValidatorAmount,
-    setDepositLockedAmount,
 } from "store/actions/action-creaters/locked-amount";
 import { qVaultAmount, rootNodeAmount, validatorAmount } from "store/selectors/locked-amount";
 import { getRootNodeStakes } from "store/actions/action-creaters/root-contract";
@@ -42,9 +41,6 @@ function TimeLocks() {
     const [address, setAddress] = useState({ token: userAddress });
 
     const userQVBalance = useSelector(userBalance);
-    // const rootNodeArray = useSelector(rootNodeAmount)
-    // const validatorArray = useSelector(validatorAmount)
-    // const vestingArray = useSelector(vestingAmount)
 
     const rootService = new RootService();
     const handler = new Handler(address.token, useDispatch());
@@ -55,7 +51,6 @@ function TimeLocks() {
         dispatch(getValidatorAmount(address.token));
         dispatch(getUserBalance(address.token));
         dispatch(getRootNodeStakes(rootService, address.token));
-        // dispatch(getVestingAmount(address))
     }, [dispatch, address]);
 
     useEffect(() => {
@@ -75,6 +70,7 @@ function TimeLocks() {
                     timeLockBalance={qVaultMin}
                     balance={userQVBalance}
                     contract="qVault"
+                    modalTitle='Deposit & purge'
                     title="Q Vault account balance"
                     lockAmountData={qVaultLockedAmount === 0 ? [] : qVaultLockedAmount.lockedQVaultAmounts}
                 />
@@ -83,6 +79,7 @@ function TimeLocks() {
                     timeLockBalance={rootNodeMin}
                     balance={amountNodeStake}
                     contract="root"
+                    modalTitle='Deposit & purge'
                     title="Root stake balance"
                     lockAmountData={rootNodeLockedAmount === 0 ? [] : rootNodeLockedAmount.lockedRootNodeAmounts}
                 />
@@ -91,10 +88,19 @@ function TimeLocks() {
                     timeLockBalance={validatorMin}
                     balance={accountableTotalStake}
                     contract="validators"
+                    modalTitle='Deposit & purge'
                     title="Validator stake balance"
                     lockAmountData={validatorLockedAmount === 0 ? [] : validatorLockedAmount.lockedValidatorAmounts}
                 />
-                {/* <BalanceCard setDeposit={(data) => console.log(data, 'vesting')} id='vesting' title="Vesting balance" lockAmountData={qVaultArray === 0 ? [] : qVaultArray} /> */}
+                <BalanceCard
+                    address={address.token}
+                    timeLockBalance={'Vesting'}
+                    balance={'Vesting'}
+                    contract="vesting"
+                    modalTitle='Deposit, withdraw & purge'
+                    title="Vesting stake balance"
+                    lockAmountData={validatorLockedAmount === 0 ? [] : validatorLockedAmount.lockedValidatorAmounts}
+                />
             </InfoWrap>
         </PageWrap>
     );

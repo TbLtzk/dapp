@@ -79,7 +79,6 @@ function* getValidatorAmount({ address }) {
 function* purgeTimeLocksAmount({ payload }) {
     try {
         const contract = yield call(initContract, payload.contract);
-        console.log(contract)
         // yield put();
     } catch (err) {
         console.error('Validators.Error', err);
@@ -87,7 +86,7 @@ function* purgeTimeLocksAmount({ payload }) {
     }
 }
 
-function* depositLockedAmount({ payload }) { //typeContract
+function* depositLockedAmount({ payload }) {
     try {
         yield put({
             type: SET_TRANSACTION_COUNTER,
@@ -98,7 +97,6 @@ function* depositLockedAmount({ payload }) { //typeContract
         if (data.status === true) {
             yield put(getUserBalance(payload.userAddress));
         }
-        // yield contract.depositOnBehalfOf(payload.data.token, payload.data.startDate, payload.data.endDate);
     } catch (err) {
         console.error('depositLockedAmount.Error', err);
         yield put(setError(err.message));

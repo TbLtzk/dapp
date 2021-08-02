@@ -38,6 +38,7 @@ function BalanceCard({ balance, title, lockAmountData, timeLockBalance, contract
             <h5>Time locks</h5>
             <ListPaganation lockAmountData={lockAmountData} />
             <Modal
+                modalTitle={contract === "vesting" ? "Deposit, withdraw & purge" : "Deposit & purge"}
                 contract={contract}
                 setPurge={setPurge}
                 setDeposit={setDeposit}
