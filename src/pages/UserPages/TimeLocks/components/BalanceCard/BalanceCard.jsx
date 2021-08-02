@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { userAddressMetamask } from "store/selectors/user-inf";
+import { useDispatch } from "react-redux";
 import { setDepositLockedAmount, setPurgeTimeLocksAmount } from "store/actions/action-creaters/locked-amount";
 
 import CustomBlock from "components/Base/CustomBlock";
@@ -8,19 +7,18 @@ import ListPaganation from "./ListPaganation";
 import ModalButton from "components/Base/Buttons/Button";
 import Modal from "./Modal";
 
-function BalanceCard({ balance, title, lockAmountData, timeLockBalance, contract }) {
+function BalanceCard({ balance, title, lockAmountData, timeLockBalance, contract, address }) {
     const dispatch = useDispatch();
-
-    const userAddress = useSelector(userAddressMetamask);
 
     const [modalShow, setModalShow] = useState(false);
 
     const setDeposit = (data) => {
-        dispatch(setDepositLockedAmount({ data, contract, userAddress }));
+        dispatch(setDepositLockedAmount({ data, contract, address }));
     };
 
     const setPurge = () => {
-        dispatch(setPurgeTimeLocksAmount(contract));
+        dispatch(setPurgeTimeLocksAmount({ contract, address }));
+        setModalShow(false);
     };
 
     return (

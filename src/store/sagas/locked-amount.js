@@ -78,7 +78,7 @@ function* getValidatorAmount({ address }) {
 
 function* purgeTimeLocksAmount({ payload }) {
     try {
-        const contract = getContract(payload); //what address do i need to purge ???
+        const contract = yield call(initContract, payload.contract);
         console.log(contract)
         // yield put();
     } catch (err) {
@@ -95,8 +95,6 @@ function* depositLockedAmount({ payload }) { //typeContract
         });
         const contract = yield call(initContract, payload.data.contract)
         const data = yield contract.instance.methods.withdraw(toWei(payload.data.amountQ)).send({ from: payload.userAddress })
-        // const contract = new QVault(contractsToAddresses['QVault']);
-        // const data = yield contract.withdraw(payload.userAddress, toWei(payload.data.amountQ));
         if (data.status === true) {
             yield put(getUserBalance(payload.userAddress));
         }

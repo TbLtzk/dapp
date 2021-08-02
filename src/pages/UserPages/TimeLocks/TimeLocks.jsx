@@ -10,8 +10,8 @@ import {
     setDepositLockedAmount,
 } from "store/actions/action-creaters/locked-amount";
 import { qVaultAmount, rootNodeAmount, validatorAmount } from "store/selectors/locked-amount";
-import { getRootNodeStakes } from 'store/actions/action-creaters/root-contract';
-import { rootNodeStake } from 'store/selectors/root-contract';
+import { getRootNodeStakes } from "store/actions/action-creaters/root-contract";
+import { rootNodeStake } from "store/selectors/root-contract";
 
 import { getUserBalance } from "store/actions/action-creaters/q-vault";
 import { userBalance } from "store/selectors/q-vault";
@@ -20,9 +20,9 @@ import AddressForm from "./components/AddressForm";
 import { InfoWrap } from "./styles";
 import BalanceCard from "./components/BalanceCard";
 import { fromWei } from "func/balance";
-import RootService from 'contracts/src/Root';
+import RootService from "contracts/src/Root";
 
-import Handler from '../Staking/ValidatorStaking/AccountStatus/handler'
+import Handler from "../Staking/ValidatorStaking/AccountStatus/handler";
 
 function TimeLocks() {
     const dispatch = useDispatch();
@@ -60,7 +60,7 @@ function TimeLocks() {
 
     useEffect(() => {
         handler.setAccountableTotalStake(setAccountableTotalStake);
-    }, [])
+    }, []);
 
     const handleRefresh = (userAddress) => {
         setAddress(userAddress);
@@ -71,6 +71,7 @@ function TimeLocks() {
             <AddressForm setAddressRefresh={handleRefresh} address={address} />
             <InfoWrap>
                 <BalanceCard
+                    address={address.token}
                     timeLockBalance={qVaultMin}
                     balance={userQVBalance}
                     contract="qVault"
@@ -78,6 +79,7 @@ function TimeLocks() {
                     lockAmountData={qVaultLockedAmount === 0 ? [] : qVaultLockedAmount.lockedQVaultAmounts}
                 />
                 <BalanceCard
+                    address={address.token}
                     timeLockBalance={rootNodeMin}
                     balance={amountNodeStake}
                     contract="root"
@@ -85,6 +87,7 @@ function TimeLocks() {
                     lockAmountData={rootNodeLockedAmount === 0 ? [] : rootNodeLockedAmount.lockedRootNodeAmounts}
                 />
                 <BalanceCard
+                    address={address.token}
                     timeLockBalance={validatorMin}
                     balance={accountableTotalStake}
                     contract="validators"

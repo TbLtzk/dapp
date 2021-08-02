@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { Pagination, setElementsForOnePage, countPages } from 'components/Base/Pagination';
-import TableView from 'components/Base/TableView';
+import React, { useState, useEffect, useCallback } from "react";
+import { Pagination, setElementsForOnePage, countPages } from "components/Base/Pagination";
+import TableView from "components/Base/TableView";
 
 function ListPaganation({ lockAmountData }) {
-
     const [offset, setOffset] = useState(0);
     const [pageCount, setPageCount] = useState(0);
     const [data, setData] = useState([]);
@@ -29,49 +28,33 @@ function ListPaganation({ lockAmountData }) {
         setElementsForCurrentPage(data, offset, perPage);
     };
 
-    const setElementsForCurrentPage = useCallback((data, offset, perPage) => {
-        setElements(setElementsForOnePage(data, offset, perPage));
-    }, [data, offset, perPage]);
+    const setElementsForCurrentPage = useCallback(
+        (data, offset, perPage) => {
+            setElements(setElementsForOnePage(data, offset, perPage));
+        },
+        [data, offset, perPage]
+    );
 
-    
-    const tableHeader = ['#', 'amount', 'start date', 'end date'];
+    const tableHeader = ["#", "amount", "start date", "end date"];
     const showBodyTable = ({ id, amount, startDate, endDate }) => {
-        return <tr key={id + amount}>
-            <td>
-                {id}
-            </td>
-            <td>
-                {amount}
-            </td>
-            <td>
-                {startDate}
-            </td>
-            <td>
-                {endDate}
-            </td>
-        </tr>
-    }
+        return (
+            <tr key={id + amount}>
+                <td>{id}</td>
+                <td>{amount}</td>
+                <td>{startDate}</td>
+                <td>{endDate}</td>
+            </tr>
+        );
+    };
 
     return (
         <div>
-            <TableView
-                header={tableHeader}
-                body={
-                    elements.map(item => {
-                        return showBodyTable(item)
-                    })
-                }
-            />
-            {pageCount > 1 ?
-                <Pagination
-                    pageCount={pageCount}
-                    currentPage={currentPage}
-                    handleClick={handlePageClick}
-                />
-                : null
-            }
+            <TableView header={tableHeader} body={elements.map((item) => showBodyTable(item))} />
+            {pageCount > 1 ? (
+                <Pagination pageCount={pageCount} currentPage={currentPage} handleClick={handlePageClick} />
+            ) : null}
         </div>
-    )
+    );
 }
 
-export default ListPaganation
+export default ListPaganation;

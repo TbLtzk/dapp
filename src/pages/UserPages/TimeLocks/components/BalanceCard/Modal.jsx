@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import ModalWindow from "components/Base/ModalWindow";
+import Calendar from "components/Base/Calendar";
 import FormInput from "components/Base/Form/FormInput";
 import Button from "components/Base/Buttons/Button";
 import { Controller, useForm } from "react-hook-form";
@@ -52,55 +53,31 @@ function Modal({ modalShow, setModalShow, setDeposit, setPurge }) {
                         valid={errors?.token?.message}
                     />
                     <CalendarWraper>
-                        <div>
-                            <h4>Start date</h4>
-                            <Controller
-                                control={control}
-                                name="startDate"
-                                defaultValue={""}
-                                render={({ onChange, onBlur, value, ref }) => (
-                                    <DatePicker
-                                        name="end"
-                                        onChange={(date) => {
-                                            setStartDate(date);
-                                            onChange(date);
-                                        }}
-                                        selectsStart
-                                        onBlur={onBlur}
-                                        selected={startDate}
-                                        startDate={startDate}
-                                        endDate={endDate}
-                                        minDate={new Date()}
-                                        dateFormat="d/MM/yyyy"
-                                    />
-                                )}
-                            />
-                        </div>
-                        <div>
-                            <h4>End Date</h4>
-                            <Controller
-                                control={control}
-                                name="endDate"
-                                defaultValue={""}
-                                render={({ onChange, onBlur, value }) => (
-                                    <DatePicker
-                                        name="end"
-                                        onChange={(date) => {
-                                            setEndDate(date);
-                                            onChange(date);
-                                        }}
-                                        onBlur={onBlur}
-                                        selectsEnd
-                                        disabled={startDate === null ? true : false}
-                                        selected={endDate}
-                                        startDate={startDate}
-                                        endDate={endDate}
-                                        minDate={startDate}
-                                        dateFormat="d/MM/yyyy"
-                                    />
-                                )}
-                            />
-                        </div>
+                        <Calendar
+                            selectsStart={true}
+                            selectsEnd={false}
+                            title="Start date"
+                            control={control}
+                            name="startDate"
+                            selected={startDate}
+                            startDate={startDate}
+                            endDate={endDate}
+                            minDate={new Date()}
+                            setDate={setStartDate}
+                        />
+                        <Calendar
+                            title="End Date"
+                            selectsStart={false}
+                            selectsEnd={true}
+                            control={control}
+                            name="endDate"
+                            disabled={startDate === null ? true : false}
+                            setDate={setEndDate}
+                            selected={endDate}
+                            startDate={startDate}
+                            endDate={endDate}
+                            minDate={startDate}
+                        />
                     </CalendarWraper>
                     <h4>Amount</h4>
                     <FormInput
