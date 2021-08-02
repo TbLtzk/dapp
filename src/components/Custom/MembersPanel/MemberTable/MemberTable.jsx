@@ -103,8 +103,6 @@ function MemberTable(props) {
         <td>{fN(member.delegatedStake) + 'Q'}</td>
         <td>{fN(member.validatorShare) + '%'}</td>
         <td>{fN(member.delegatorShare) + '%'}</td>
-        <td>{fN(member.validatorPoolBalance) + 'Q'}</td>
-        <td>{fN(member.poolinterestRate) + '%'}</td>
       </>;
       return showBodyTable(i, numMember, member.validator, amount, 'validators-widened', children);
     } else if (type === 'root-node') {

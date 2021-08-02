@@ -97,4 +97,20 @@ export default class Handler {
         this.dispatch(setTransactionCounter(-1));
       });
   }
+
+  getPoolInfo(stateSetter) {
+    this.dispatch(setTransactionCounter(1));
+
+    validationRewardPoolsInstance.getPoolInfo(this.address)
+    .then((res) => {
+      const info = res;
+      stateSetter(fromWei(info[1]))
+    })
+    .catch((e) => {
+      console.log(e);
+    })
+    .finally(() => {
+      this.dispatch(setTransactionCounter(-1))
+    })
+  }
 }
