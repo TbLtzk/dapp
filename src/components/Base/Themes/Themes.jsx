@@ -24,7 +24,7 @@ function Themes () {
       onChange={changeThemes}
       id="theme-switcher"
       checked={isSwitchOn}
-      label="Dark them"
+      label="Dark theme"
     />
   )
 }
