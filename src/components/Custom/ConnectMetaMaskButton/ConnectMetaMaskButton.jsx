@@ -1,25 +1,24 @@
-import React, {useState} from "react";
-import PropTypes from 'prop-types';
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
-import Button from "components/Base/Buttons/Button";
-import AlertMessage from "components/Base/AlertMessage";
+import Button from 'components/Base/Buttons/Button'
+import AlertMessage from 'components/Base/AlertMessage'
 
-function ConnectMetaMaskButton(props) {
-    const {title} = props;
-    const [alertShow, setAlertShow] = useState(false);
-    const ethereum = window.ethereum;
+function ConnectMetaMaskButton (props) {
+  const { title } = props
+  const [alertShow, setAlertShow] = useState(false)
+  const ethereum = window.ethereum
 
-    const requestConnect = () => {
-        // console.log('ethereum', ethereum);
-        setAlertShow(false);
-        if (ethereum) {
-            ethereum.request({method: 'eth_requestAccounts'})
-        } else {
-            setAlertShow(true)
-        }
-    };
+  const requestConnect = () => {
+    setAlertShow(false)
+    if (ethereum) {
+      ethereum.request({ method: 'eth_requestAccounts' })
+    } else {
+      setAlertShow(true)
+    }
+  }
 
-    return (
+  return (
         <>
             <Button
                 type="white"
@@ -32,23 +31,21 @@ function ConnectMetaMaskButton(props) {
                 content="Install MetaMask"
                 show={alertShow}
                 onClose={() => {
-                    setAlertShow(false)
+                  setAlertShow(false)
                 }}
             />
         </>
-    );
+  )
 }
 
 ConnectMetaMaskButton.propTypes = {
-    title: PropTypes.string,
-    type: PropTypes.string,
-    handleButton: PropTypes.func,
-};
-
+  title: PropTypes.string,
+  type: PropTypes.string,
+  handleButton: PropTypes.func
+}
 
 ConnectMetaMaskButton.defaultProps = {
-    type: 'danger',
-};
+  type: 'danger'
+}
 
-export default ConnectMetaMaskButton;
-
+export default ConnectMetaMaskButton

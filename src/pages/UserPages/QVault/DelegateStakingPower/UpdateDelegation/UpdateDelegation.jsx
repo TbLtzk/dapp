@@ -1,47 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
-import { useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { userAddressMetamask } from 'store/selectors/user-inf';
-import { userBalance } from 'store/selectors/q-vault';
+import { useDispatch, useSelector } from 'react-redux'
+import { userAddressMetamask } from 'store/selectors/user-inf'
+import { userBalance } from 'store/selectors/q-vault'
 
-import FormInput from 'components/Base/Form/FormInput';
-import Button from 'components/Base/Buttons/Button';
+import FormInput from 'components/Base/Form/FormInput'
+import Button from 'components/Base/Buttons/Button'
 
-import { ComponentHandler, ContractHandler } from './handler';
+import { ComponentHandler, ContractHandler } from './handler'
 
-import { useAlert } from 'react-alert';
-import { UpdateDelegationContainer } from './styles';
+import { useAlert } from 'react-alert'
+import { UpdateDelegationContainer } from './styles'
 
-export default function UpdateDelegation() {
-  const { register: reg1 } = useForm();
+export default function UpdateDelegation () {
+  const { register: reg1 } = useForm()
 
-  const address = useSelector(userAddressMetamask);
-  const userQVBalanceL = useSelector(userBalance);
+  const address = useSelector(userAddressMetamask)
+  const userQVBalanceL = useSelector(userBalance)
 
-  const contHandler = new ContractHandler(address, useDispatch(), useAlert());
-  const compHandler = new ComponentHandler(useAlert());
+  const contHandler = new ContractHandler(address, useDispatch(), useAlert())
+  const compHandler = new ComponentHandler(useAlert())
 
-  const [items, setItems] = useState(1);
+  const [items, setItems] = useState(1)
 
-  function addInputContainer() {
-    if (items < 30) setItems(items + 1);
+  function addInputContainer () {
+    if (items < 30) setItems(items + 1)
   }
 
-  function removeInputContainer() {
-    if (items > 1) setItems(items - 1);
+  function removeInputContainer () {
+    if (items > 1) setItems(items - 1)
   }
 
-  function updateDelegations(applyZeroShare) {
-    const data = compHandler.getAddressesAndShares(applyZeroShare, userQVBalanceL);
+  function updateDelegations (applyZeroShare) {
+    const data = compHandler.getAddressesAndShares(applyZeroShare, userQVBalanceL)
     if (data.addresses.length !== 0 && data.shares.length !== 0) {
-      contHandler.delegateStake(data.addresses, data.shares);
+      contHandler.delegateStake(data.addresses, data.shares)
     }
   }
 
-  function getForms() {
-    let elements = [];
+  function getForms () {
+    const elements = []
     for (let i = 0; i < items; i++) {
       elements.push(
         <div key={i + 'input_address'} className="input_container_item">
@@ -83,9 +83,9 @@ export default function UpdateDelegation() {
             />
           </div>
         </div>
-      );
+      )
     }
-    return elements;
+    return elements
   }
 
   return (
@@ -114,5 +114,5 @@ export default function UpdateDelegation() {
         />
       </div>
     </UpdateDelegationContainer>
-  );
+  )
 }

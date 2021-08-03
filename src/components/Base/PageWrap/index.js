@@ -1,1 +1,1 @@
-export {default} from './PageWrap';
+export { default } from './PageWrap'

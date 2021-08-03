@@ -1,7 +1,7 @@
-import React, { forwardRef, useState } from 'react';
-import { SelectWrapper } from './styles';
-import { Form } from 'react-bootstrap';
-import PropTypes from 'prop-types';
+import React, { forwardRef, useState } from 'react'
+import { SelectWrapper } from './styles'
+import { Form } from 'react-bootstrap'
+import PropTypes from 'prop-types'
 
 const FormSelect = forwardRef((props, ref) => {
   const {
@@ -13,25 +13,25 @@ const FormSelect = forwardRef((props, ref) => {
     defaultValue,
     optionValues,
     value,
-    palette,
-  } = props;
-  const [isFocus, setIsFocus] = useState('');
+    palette
+  } = props
+  const [isFocus, setIsFocus] = useState('')
   return (
     <SelectWrapper
       width={width}
       palette={palette}
       isfocus={isFocus}
-      type={Boolean(valid) ? 'error' : ''}
+      type={valid ? 'error' : ''}
       isdisabled={disabled ? '1' : ''}
       disabled={disabled}
     >
       <Form.Control
         name={name}
         onFocus={() => {
-          setIsFocus('1');
+          setIsFocus('1')
         }}
         onBlur={() => {
-          setIsFocus('');
+          setIsFocus('')
         }}
         as="select"
         disabled={disabled}
@@ -44,16 +44,16 @@ const FormSelect = forwardRef((props, ref) => {
           optionValues.map(item => <option key={item.value} value={item.value}>{item.lbl}</option>)
         }
       </Form.Control>
-    </SelectWrapper>);
-});
+    </SelectWrapper>)
+})
 
 FormSelect.propTypes = {
-  name: PropTypes.string,
-};
+  name: PropTypes.string
+}
 
 FormSelect.defaultProps = {
   name: +new Date() + '',
-  optionValues: [],
-};
+  optionValues: []
+}
 
-export default FormSelect;
+export default FormSelect

@@ -1,5 +1,5 @@
-import * as actionTypes from '../actions/action-types/parameters';
-import { getTypeKey, getContractTypeKey } from 'func/contractHelpers';
+import * as actionTypes from '../actions/action-types/parameters'
+import { getTypeKey, getContractTypeKey } from 'func/contractHelpers'
 
 const initialState = {
   addressParameter: null,
@@ -14,74 +14,74 @@ const initialState = {
     constitution: [],
     qDefi: [],
     qFee: []
-  },
-};
+  }
+}
 
-export default function parameters(state = initialState, action) {
-  let contractKey = '';
-  let typeKey = '';
-  const result = action.result;
+export default function parameters (state = initialState, action) {
+  let contractKey = ''
+  let typeKey = ''
+  const result = action.result
   switch (action.type) {
     case actionTypes.GET_ADDRESS_PARAMETER_SUCCESS:
       return {
         ...state,
-        addressParameter: result,
-      };
+        addressParameter: result
+      }
     case actionTypes.GET_BOOLEAN_PARAMETER_SUCCESS:
       return {
         ...state,
-        booleanParameter: result,
-      };
+        booleanParameter: result
+      }
     case actionTypes.GET_STRING_PARAMETER_SUCCESS:
       return {
         ...state,
-        stringParameter: result,
-      };
+        stringParameter: result
+      }
     case actionTypes.GET_BYTES_PARAMETER_SUCCESS:
       return {
         ...state,
-        bytesParameter: result,
-      };
+        bytesParameter: result
+      }
     case actionTypes.GET_UINT_PARAMETER_SUCCESS:
       return {
         ...state,
-        uintParameter: result,
-      };
+        uintParameter: result
+      }
     case actionTypes.GET_PARAMETER_VALUE_BY_KEY_SUCCESS:
-      let newParameterValueByKey = [];
-      contractKey = getContractTypeKey(result.typeContract);
-      typeKey = getTypeKey(result.typeParameter);
+      let newParameterValueByKey = []
+      contractKey = getContractTypeKey(result.typeContract)
+      typeKey = getTypeKey(result.typeParameter)
       const value = state.parameterValueByKey.find(i => {
-        return i.typeContract === contractKey && i.parameterKey === result.parameterKey && i.typeParameter === result.typeParameter;
-      });
+        return i.typeContract === contractKey && i.parameterKey === result.parameterKey && i.typeParameter === result.typeParameter
+      })
       if (value) {
-        value.data = result.data;
-        newParameterValueByKey = [...state.parameterValueByKey];
+        value.data = result.data
+        newParameterValueByKey = [...state.parameterValueByKey]
       } else {
-        newParameterValueByKey = [...state.parameterValueByKey, result];
+        newParameterValueByKey = [...state.parameterValueByKey, result]
       }
       return {
         ...state,
-        parameterValueByKey: newParameterValueByKey,
-      };
+        parameterValueByKey: newParameterValueByKey
+      }
     case actionTypes.GET_PARAMETER_VALUE_BY_KEY_ERROR:
       return {
         ...state,
-        parameterValueByKeyError: result,
-      };
+        parameterValueByKeyError: result
+      }
     case actionTypes.GET_PARAMETER_KEYS_BY_TYPE_SUCCESS:
-      contractKey = getContractTypeKey(result.typeContract);
-      typeKey = getTypeKey(result.typeParameter);
-      let arrayParameterKeysByType = state.arrayParameterKeysByType;
+      contractKey = getContractTypeKey(result.typeContract)
+      typeKey = getTypeKey(result.typeParameter)
+      const arrayParameterKeysByType = state.arrayParameterKeysByType
       if (contractKey && typeKey) {
-        const newArrayParameterKeysByType = [...arrayParameterKeysByType[contractKey], ...result.data];
-        arrayParameterKeysByType[contractKey] = Array.from(new Set(newArrayParameterKeysByType));
+        const newArrayParameterKeysByType = [...arrayParameterKeysByType[contractKey], ...result.data]
+        arrayParameterKeysByType[contractKey] = Array.from(new Set(newArrayParameterKeysByType))
       }
       return {
         ...state,
-        arrayParameterKeysByType,
-      };
+        arrayParameterKeysByType
+      }
     default:
-      return state;
+      return state
   }
 }

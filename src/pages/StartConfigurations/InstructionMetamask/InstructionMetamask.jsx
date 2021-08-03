@@ -1,14 +1,13 @@
-import React from "react";
+import React from 'react'
 
-import firefox from "assets/img/firefox.png";
-import chrome from "assets/img/chrome.png";
+import firefox from 'assets/img/firefox.png'
+import chrome from 'assets/img/chrome.png'
 
-import {WrapContainer, WrapImgs, Image} from "pages/StartConfigurations/InstructionMetamask/styles"
-import ConnectMetaMaskButton from "components/Custom/ConnectMetaMaskButton";
+import { WrapContainer, WrapImgs, Image } from 'pages/StartConfigurations/InstructionMetamask/styles'
+import ConnectMetaMaskButton from 'components/Custom/ConnectMetaMaskButton'
 
-function InstructionMetamask() {
-
-    return (
+function InstructionMetamask () {
+  return (
         <WrapContainer>
             <p>
                 MetaMask is a browser plugin that allows users to make Ethereum transactions through regular websites.
@@ -17,14 +16,14 @@ function InstructionMetamask() {
             <p>1. Install MetaMask for your browser (Supported Browsers: Chrome, Firefox)</p>
             <WrapImgs>
                 <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn"
-                   target="_blank">
+                   target="_blank" rel="noreferrer">
                     <Image
                         alt="chrome logo"
                         src={chrome}
                         className="d-inline-block align-top"
                     />
                 </a>
-                <a href="https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/" target="_blank">
+                <a href="https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/" target="_blank" rel="noreferrer">
                     <Image
                         alt="firefox logo"
                         src={firefox}
@@ -71,8 +70,7 @@ function InstructionMetamask() {
                 title="Connect to MetaMask"
             />
         </WrapContainer>
-    );
+  )
 }
 
-export default InstructionMetamask;
-
+export default InstructionMetamask

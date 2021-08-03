@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import { Col } from 'react-bootstrap';
-import fonts from './fonts';
+import styled from 'styled-components'
+import { Col } from 'react-bootstrap'
+import fonts from './fonts'
 
 export const indents = {
   10: '10px',
@@ -9,12 +9,12 @@ export const indents = {
   30: '30px',
   40: '40px',
   45: '45px',
-  50: '50px',
-};
+  50: '50px'
+}
 
 export const LoadingWrap = styled(Col)`
   text-align: center;
-`;
+`
 
 export const Circle = styled.div`
   display: inline-block;
@@ -23,16 +23,16 @@ export const Circle = styled.div`
   background-color: ${(props) => {
     switch (props.color) {
       case 'circle-white':
-        return props.theme.colors.circleWhite;
+        return props.theme.colors.circleWhite
       case 'circle-dark':
-        return props.theme.colors.circleDark;
+        return props.theme.colors.circleDark
       default:
-        return props.theme.colors.circleWhite;
+        return props.theme.colors.circleWhite
     }
   }};;
   border-radius: 50%;
   margin-right: 7px;
-`;
+`
 
 const theme = {
   fonts,
@@ -50,8 +50,8 @@ const theme = {
     '56px',
     '64px',
     '72px',
-    '80px',
+    '80px'
   ],
-  borderRadius: ['3px', '12px'],
-};
-export default theme;
+  borderRadius: ['3px', '12px']
+}
+export default theme

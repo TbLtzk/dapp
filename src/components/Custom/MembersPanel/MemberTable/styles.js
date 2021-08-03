@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const MemberAddress = styled.span`
   button span {
@@ -25,4 +25,4 @@ export const MemberAddress = styled.span`
   .delegated-validators {
     max-width: 176px;
   }
-`;
+`

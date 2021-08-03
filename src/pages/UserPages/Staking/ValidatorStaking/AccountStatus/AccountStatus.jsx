@@ -1,90 +1,90 @@
-import React, { useEffect, useState } from 'react';
-import Button from 'components/Base/Buttons/Button';
-import CustomBlock from 'components/Base/CustomBlock';
-import FormInput from 'components/Base/Form/FormInput';
-import Handler from './handler';
-import { useDispatch, useSelector } from 'react-redux';
-import { userAddressMetamask } from 'store/selectors/user-inf';
-import { useForm } from 'react-hook-form';
-import { errorHandler, fN } from 'func/useful';
-import { fromSolDateFormattingT1 } from 'func/date';
-import { fromWei } from 'func/balance';
-import { useAlert } from 'react-alert';
-import { AccountStatusForm, AccountStatusInfo } from './styles';
+import React, { useEffect, useState } from 'react'
+import Button from 'components/Base/Buttons/Button'
+import CustomBlock from 'components/Base/CustomBlock'
+import FormInput from 'components/Base/Form/FormInput'
+import Handler from './handler'
+import { useDispatch, useSelector } from 'react-redux'
+import { userAddressMetamask } from 'store/selectors/user-inf'
+import { useForm } from 'react-hook-form'
+import { errorHandler, fN } from 'func/useful'
+import { fromSolDateFormattingT1 } from 'func/date'
+import { fromWei } from 'func/balance'
+import { useAlert } from 'react-alert'
+import { AccountStatusForm, AccountStatusInfo } from './styles'
 import {
   getAccTotalStake,
   getDelegatedStake,
   getOwnStake,
   getTotalStake
-} from 'store/actions/action-creaters/validators';
-import { getValidatorAmount } from 'store/actions/action-creaters/locked-amount';
-import { validatorAmount } from 'store/selectors/locked-amount';
+} from 'store/actions/action-creaters/validators'
+import { getValidatorAmount } from 'store/actions/action-creaters/locked-amount'
+import { validatorAmount } from 'store/selectors/locked-amount'
 
-export default function AccountStatus() {
+export default function AccountStatus () {
   const {
     register: reg,
     handleSubmit: submit,
     errors
-  } = useForm();
-  const dispatch = useDispatch();
+  } = useForm()
+  const dispatch = useDispatch()
 
-  const [validatorExist, setValidatorExist] = useState(false);
-  const [accountableTotalStake, setAccountableTotalStake] = useState(0);
-  const [validatorsList, setValidatorsList] = useState([]);
-  const [validatorRank, setValidatorRank] = useState(0);
-  const [accountBalance, setAccountBalance] = useState(0);
-  const [annToWithdraw, setAnnToWithdraw] = useState(0);
-  const [annToWithdrawEndTime, setAnnToWithdrawEndTime] = useState(0);
+  const [validatorExist, setValidatorExist] = useState(false)
+  const [accountableTotalStake, setAccountableTotalStake] = useState(0)
+  const [validatorsList, setValidatorsList] = useState([])
+  const [validatorRank, setValidatorRank] = useState(0)
+  const [accountBalance, setAccountBalance] = useState(0)
+  const [annToWithdraw, setAnnToWithdraw] = useState(0)
+  const [annToWithdrawEndTime, setAnnToWithdrawEndTime] = useState(0)
 
-  const address = useSelector(userAddressMetamask);
+  const address = useSelector(userAddressMetamask)
   const validatorData = useSelector(validatorAmount)
   const timeLockedAmount = fromWei(Number(validatorData.amount))
-  
-  const handler = new Handler(address, useDispatch(), useAlert());
+
+  const handler = new Handler(address, useDispatch(), useAlert())
 
   useEffect(() => {
     dispatch(getValidatorAmount(address))
-    dispatch(getTotalStake(address));
-    dispatch(getOwnStake(address));
-    dispatch(getDelegatedStake(address));
-    dispatch(getAccTotalStake(address));
-  }, [accountableTotalStake, accountBalance, annToWithdraw, annToWithdrawEndTime]);
+    dispatch(getTotalStake(address))
+    dispatch(getOwnStake(address))
+    dispatch(getDelegatedStake(address))
+    dispatch(getAccTotalStake(address))
+  }, [accountableTotalStake, accountBalance, annToWithdraw, annToWithdrawEndTime])
 
   useEffect(() => {
-    handler.setValidatorExist(setValidatorExist);
-    handler.setAccountableTotalStake(setAccountableTotalStake);
-    handler.setValidatorsList(setValidatorsList);
-    handler.setAccountBalance(setAccountBalance);
-    handler.setAnnToWithdrawData(setAnnToWithdraw, setAnnToWithdrawEndTime);
-  }, []);
+    handler.setValidatorExist(setValidatorExist)
+    handler.setAccountableTotalStake(setAccountableTotalStake)
+    handler.setValidatorsList(setValidatorsList)
+    handler.setAccountBalance(setAccountBalance)
+    handler.setAnnToWithdrawData(setAnnToWithdraw, setAnnToWithdrawEndTime)
+  }, [])
 
   useEffect(() => {
     if (Array.isArray(validatorsList) && validatorsList.length > 0) {
       validatorsList.forEach((el, key) => {
         if (address === el.validator) {
-          setValidatorRank(key + 1);
+          setValidatorRank(key + 1)
         }
-      });
+      })
     }
-  }, [validatorsList]);
+  }, [validatorsList])
 
   const stakeToRanking = (formData) => {
     handler.stakeToRanking(formData.amount, setValidatorExist, setAccountableTotalStake, setValidatorsList,
-      setAccountBalance);
-  };
+      setAccountBalance)
+  }
 
   const announce = (formData) => {
-    handler.announce(formData.amount, setAccountableTotalStake, setAnnToWithdraw, setAnnToWithdrawEndTime);
-  };
+    handler.announce(formData.amount, setAccountableTotalStake, setAnnToWithdraw, setAnnToWithdrawEndTime)
+  }
 
   const withdrawFromRanking = (formData) => {
     handler.withdrawFromRanking(formData.amount, setValidatorExist, setAccountableTotalStake, setValidatorsList,
-      setAccountBalance, setAnnToWithdraw, setAnnToWithdrawEndTime);
-  };
+      setAccountBalance, setAnnToWithdraw, setAnnToWithdrawEndTime)
+  }
 
   const confirmValidation = () => {
-    handler.confirmValidation();
-  };
+    handler.confirmValidation()
+  }
 
   const renderValidatorRanking = () => {
     if (validatorExist) {
@@ -99,15 +99,15 @@ export default function AccountStatus() {
             <p>{validatorRank}#</p>
           </div>
         </>
-      );
+      )
     }
     return (
       <div>
         <h5>Status</h5>
         <p>Not a Validator</p>
       </div>
-    );
-  };
+    )
+  }
 
   const renderConfValBtn = () => {
     if (accountableTotalStake > 0) {
@@ -119,10 +119,10 @@ export default function AccountStatus() {
             handleButton={() => confirmValidation()}
           />
         </div>
-      );
+      )
     }
-    return null;
-  };
+    return null
+  }
 
   return (
     <CustomBlock>
@@ -133,11 +133,12 @@ export default function AccountStatus() {
           <h5>Stake in Validator Ranking</h5>
           <p>{fN(accountableTotalStake)} Q</p>
         </div>
-        {timeLockedAmount > 0 ?
-          <div>
+        {timeLockedAmount > 0
+          ? <div>
             <h5>Time locked amount</h5>
             <p>{timeLockedAmount} Q </p>
-          </div> : null}
+          </div>
+          : null}
         <div>
           <h5>Announced for withdrawal</h5>
           <p>{fN(annToWithdraw)} Q</p>
@@ -186,5 +187,5 @@ export default function AccountStatus() {
       </AccountStatusForm>
       {renderConfValBtn()}
     </CustomBlock>
-  );
+  )
 }

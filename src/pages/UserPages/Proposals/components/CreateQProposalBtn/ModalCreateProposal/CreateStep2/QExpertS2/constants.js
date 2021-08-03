@@ -1,4 +1,4 @@
-import { ParameterType } from '@q-dev/q-js-sdk';
+import { ParameterType } from '@q-dev/q-js-sdk'
 
 export const addNewExpert = {
   subtitle: 'Nominate an Expert to Add to an Expert Panel',
@@ -8,11 +8,11 @@ export const addNewExpert = {
   subtitleInputUp: 'Provide Candidate Q Address',
   inputTitleDescrUp: 'Candidate to add',
   inputUp: ['Address'],
-  inputUpObj: { 'address': '' },
+  inputUpObj: { address: '' },
   subtitleInputDown: 'Provide a reference link to external source',
   inputDown: ['External Link'],
-  inputDownObj: { 'external-link': '' },
-};
+  inputDownObj: { 'external-link': '' }
+}
 
 export const removeExpert = {
   subtitle: 'Nominate an Expert to Remove from an Expert Panel',
@@ -22,11 +22,11 @@ export const removeExpert = {
   subtitleInputUp: 'Provide Candidate Q Address',
   inputTitleDescrUp: 'Expert to remove',
   inputUp: ['Address'],
-  inputUpObj: { 'address': '' },
+  inputUpObj: { address: '' },
   subtitleInputDown: 'Provide a reference link to external source',
   inputDown: ['External Link'],
-  inputDownObj: { 'external-link': '' },
-};
+  inputDownObj: { 'external-link': '' }
+}
 
 export const parameterVote = {
   subtitle: 'Create a Proposal to Change a Q System Parameter.',
@@ -37,20 +37,20 @@ export const parameterVote = {
   inputUp: ['Key'],
   labelsArr: ['Key'],
   inputUpObj: {
-    'key': '',
+    key: ''
   },
   inputUpSecond: ['Value'],
   subtitleUpSecond: 'Current Value',
   inputUpObjSecond: {
-    'value': '',
+    value: ''
   },
   radioBtnTitleDown: 'Choose type',
   radioBtnNameDown: 'type-value-proposal',
   radioBtnDown: [
     {
-    lbl: 'Address',
-    value: ParameterType.ADDRESS
-  },
+      lbl: 'Address',
+      value: ParameterType.ADDRESS
+    },
     {
       lbl: 'Boolean',
       value: ParameterType.BOOL
@@ -69,4 +69,4 @@ export const parameterVote = {
   parameterKey: 'parameter-key',
   parameterValue: 'parameter-value',
   parameterType: 'parameter-type'
-};
+}

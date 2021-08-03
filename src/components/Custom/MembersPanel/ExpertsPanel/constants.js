@@ -1,3 +1,3 @@
 export const tableHeader = [
-  'Member Address',
-];
+  'Member Address'
+]

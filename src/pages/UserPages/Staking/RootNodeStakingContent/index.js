@@ -1,1 +1,1 @@
-export {default} from 'pages/UserPages/Staking/RootNodeStakingContent/RootNodeStakingContent';
+export { default } from 'pages/UserPages/Staking/RootNodeStakingContent/RootNodeStakingContent'

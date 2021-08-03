@@ -1,15 +1,15 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { useSelector } from 'react-redux';
-import { formObject } from 'store/selectors/voting/proposals';
+import { useSelector } from 'react-redux'
+import { formObject } from 'store/selectors/voting/proposals'
 
-import InputGroup from 'components/Custom/ModalActions/InputGroup';
+import InputGroup from 'components/Custom/ModalActions/InputGroup'
 
-import { rootSlashing, validatorSlashing } from './constants';
+import { rootSlashing, validatorSlashing } from './constants'
 
-function SlashingS2(props) {
-  const { activeTab, register, errors } = props;
-  const formData = useSelector(formObject);
+function SlashingS2 (props) {
+  const { activeTab, register, errors } = props
+  const formData = useSelector(formObject)
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (formData?.first) {
@@ -34,7 +34,7 @@ function SlashingS2(props) {
               errors={errors}
             />
           </>
-        );
+        )
       case 'validator-node-slashing':
         return (
           <>
@@ -56,19 +56,17 @@ function SlashingS2(props) {
               errors={errors}
             />
           </>
-        );
+        )
       default:
-        return null;
+        return null
     }
-
-  }, [activeTab, register, errors]);
+  }, [activeTab, register, errors])
 
   return (
     <div>
       {switchContentOnTypeProposal()}
     </div>
-  );
+  )
 }
 
-export default SlashingS2;
-
+export default SlashingS2

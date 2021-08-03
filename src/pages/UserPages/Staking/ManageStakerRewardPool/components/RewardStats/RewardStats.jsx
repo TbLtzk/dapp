@@ -1,18 +1,18 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { userAddressMetamask } from 'store/selectors/user-inf';
 import { delegatedStakeSelector } from 'store/selectors/validators';
 
-import FormInput from 'components/Base/Form/FormInput';
-import Button from 'components/Base/Buttons/Button';
+import FormInput from 'components/Base/Form/FormInput'
+import Button from 'components/Base/Buttons/Button'
 
-import { useForm } from 'react-hook-form';
-import Handler from './handler';
+import { useForm } from 'react-hook-form'
+import Handler from './handler'
 
-import { errorHandler, fN } from 'func/useful';
+import { errorHandler, fN } from 'func/useful'
 
-export default function RewardStats() {
+export default function RewardStats () {
   const {
     register: reg1,
     handleSubmit: submit1,
@@ -35,8 +35,8 @@ export default function RewardStats() {
   }, []);
 
   const setDelegatorShare = (formData) => {
-    handler.setDelegatorShare(formData, setDelShare);
-  };
+    handler.setDelegatorShare(formData, setDelShare)
+  }
 
   const disDelClaims = amountRP - delClaim;
 
@@ -87,11 +87,11 @@ export default function RewardStats() {
                     <h5>{el.label}</h5>
                     <p>{el.value}</p>
                   </div>
-                );
+                )
               })
             }
           </div>
-        );
+        )
       })}
       <h4>Set Delegator Share</h4>
       <div className="modal-one-line-form">
@@ -116,5 +116,5 @@ export default function RewardStats() {
         />
       </div>
     </>
-  );
+  )
 }

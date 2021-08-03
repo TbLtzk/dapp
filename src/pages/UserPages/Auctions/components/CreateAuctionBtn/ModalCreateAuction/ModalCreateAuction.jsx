@@ -1,41 +1,41 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux'
 import {
   setCreateObj,
-  setStepCounter,
-} from 'store/actions/action-creaters/auctions/modalHandler';
-import { createAuction } from 'store/actions/action-creaters/auctions/auctions';
-import { ProgressBar } from 'react-bootstrap';
+  setStepCounter
+} from 'store/actions/action-creaters/auctions/modalHandler'
+import { createAuction } from 'store/actions/action-creaters/auctions/auctions'
+import { ProgressBar } from 'react-bootstrap'
 
 import {
   formObject,
   createdStepsLimit,
-  stepCounterModal,
-} from 'store/selectors/auctions/modalHandler';
+  stepCounterModal
+} from 'store/selectors/auctions/modalHandler'
 
-import { useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form'
 
-import ModalWindow from 'components/Base/ModalWindow';
-import CreateStep1 from './CreateStep1';
-import CreateStep2 from './CreateStep2';
+import ModalWindow from 'components/Base/ModalWindow'
+import CreateStep1 from './CreateStep1'
+import CreateStep2 from './CreateStep2'
 
-function ModalCreateAuction(props) {
+function ModalCreateAuction (props) {
   const {
     modalShow,
     onHide,
     activeTab
-  } = props;
+  } = props
   const {
     register,
     errors,
     handleSubmit
-  } = useForm();
-  const dispatch = useDispatch();
+  } = useForm()
+  const dispatch = useDispatch()
 
-  const formData = useSelector(formObject);
-  const stepLimit = useSelector(createdStepsLimit);
-  const stepCounter = useSelector(stepCounterModal);
+  const formData = useSelector(formObject)
+  const stepLimit = useSelector(createdStepsLimit)
+  const stepCounter = useSelector(stepCounterModal)
 
   const switchContentDependsOnType = useCallback(() => {
     switch (stepCounter) {
@@ -47,7 +47,7 @@ function ModalCreateAuction(props) {
             register={register}
             errors={errors}
           />
-        );
+        )
       case 2:
         return (
           <CreateStep2
@@ -56,23 +56,22 @@ function ModalCreateAuction(props) {
             register={register}
             errors={errors}
           />
-        );
+        )
 
       default:
-        return null;
+        return null
     }
-
-  }, [activeTab, stepCounter, register, errors, stepLimit]);
+  }, [activeTab, stepCounter, register, errors, stepLimit])
 
   const onNext = (data) => {
-    dispatch(setCreateObj({ ...formData, ...data }));
+    dispatch(setCreateObj({ ...formData, ...data }))
     if (stepCounter < stepLimit) {
-      dispatch(setStepCounter(stepCounter + 1));
+      dispatch(setStepCounter(stepCounter + 1))
     } else {
-      dispatch(createAuction({ ...formData, ...data }));
-      onHide();
+      dispatch(createAuction({ ...formData, ...data }))
+      onHide()
     }
-  };
+  }
 
   return (
     <ModalWindow
@@ -83,7 +82,7 @@ function ModalCreateAuction(props) {
         stepCounter !== 1 ? 'Back' : null
       }
       backBtnHandler={() => {
-        dispatch(setStepCounter(stepCounter - 1));
+        dispatch(setStepCounter(stepCounter - 1))
       }}
       continueBtnTitle={
         stepLimit !== stepCounter ? 'Next' : 'Confirm'
@@ -99,8 +98,7 @@ function ModalCreateAuction(props) {
         </>
       }
     />
-  );
+  )
 }
 
-export default ModalCreateAuction;
-
+export default ModalCreateAuction

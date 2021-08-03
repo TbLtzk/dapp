@@ -1,1 +1,1 @@
-export { default } from './ProposalsTab';
+export { default } from './ProposalsTab'

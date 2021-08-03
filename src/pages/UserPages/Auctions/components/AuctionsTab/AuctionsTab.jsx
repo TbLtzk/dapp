@@ -1,15 +1,15 @@
-import React from 'react';
-import SidebarCards from '../SidebarCards';
-import AuctionsList from '../AuctionsList';
-import { AuctionsTabWrp } from './styles';
+import React from 'react'
+import SidebarCards from '../SidebarCards'
+import AuctionsList from '../AuctionsList'
+import { AuctionsTabWrp } from './styles'
 
-function AuctionsTab(props) {
+function AuctionsTab (props) {
   const {
     auctionsType,
     isLoading,
     auctions,
-    errorMessage,
-  } = props;
+    errorMessage
+  } = props
   return (
     <AuctionsTabWrp>
       <AuctionsList
@@ -20,7 +20,7 @@ function AuctionsTab(props) {
       />
       <SidebarCards/>
     </AuctionsTabWrp>
-  );
+  )
 }
 
-export default AuctionsTab;
+export default AuctionsTab

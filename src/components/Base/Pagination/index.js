@@ -1,1 +1,1 @@
-export {Pagination, countPages, setElementsForOnePage} from './Pagination';
+export { Pagination, countPages, setElementsForOnePage } from './Pagination'

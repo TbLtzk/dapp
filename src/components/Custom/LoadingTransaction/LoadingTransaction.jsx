@@ -1,16 +1,16 @@
-import React from 'react';
+import React from 'react'
 
-import { useSelector } from 'react-redux';
-import { transactionLoading, errorMessage, transactionCounter } from 'store/selectors/transaction-handler';
+import { useSelector } from 'react-redux'
+import { transactionLoading, errorMessage, transactionCounter } from 'store/selectors/transaction-handler'
 
-import LoadingSpinner from 'components/Base/LoadingSpinner';
+import LoadingSpinner from 'components/Base/LoadingSpinner'
 
-import { Wrap, Shadow, WrapLoading, WrapText } from './styles';
+import { Wrap, Shadow, WrapLoading, WrapText } from './styles'
 
-function LoadingTransaction({ isLoading }) {
-  const loading = useSelector(transactionLoading);
-  const error = useSelector(errorMessage);
-  const trCounter = useSelector(transactionCounter);
+function LoadingTransaction ({ isLoading }) {
+  const loading = useSelector(transactionLoading)
+  const error = useSelector(errorMessage)
+  const trCounter = useSelector(transactionCounter)
 
   const render = () => {
     if (loading === true || trCounter > 0 || isLoading) {
@@ -24,7 +24,7 @@ function LoadingTransaction({ isLoading }) {
           </WrapLoading>
           <Shadow/>
         </Wrap>
-      );
+      )
     }
 
     if (error === true) {
@@ -32,13 +32,13 @@ function LoadingTransaction({ isLoading }) {
         <p>
           {error}
         </p>
-      );
+      )
     }
 
-    return '';
-  };
+    return ''
+  }
 
-  return render();
+  return render()
 }
 
-export default LoadingTransaction;
+export default LoadingTransaction

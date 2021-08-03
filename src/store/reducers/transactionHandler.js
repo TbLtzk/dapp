@@ -1,13 +1,13 @@
-import * as actionTypes from '../actions/action-types/transaction-handler';
+import * as actionTypes from '../actions/action-types/transaction-handler'
 
 const initialState = {
   transactionLoading: false,
   errorMessage: null,
-  transactionCounter: 0,
-};
+  transactionCounter: 0
+}
 
-export default function transactionHandler(state = initialState, action) {
-  let newTrCounter;
+export default function transactionHandler (state = initialState, action) {
+  let newTrCounter
 
   switch (action.type) {
     case actionTypes.SET_TRANSACTION_LOADING:
@@ -15,28 +15,28 @@ export default function transactionHandler(state = initialState, action) {
         ...state,
         transactionLoading: true,
         success: false,
-        errorMessage: null,
-      };
+        errorMessage: null
+      }
     case actionTypes.SET_TRANSACTION_LOADING_SUCCESS:
       return {
         ...state,
         transactionLoading: false,
-        success: true,
-      };
+        success: true
+      }
     case actionTypes.SET_TRANSACTION_LOADING_ERROR:
       return {
         ...state,
         transactionLoading: false,
-        errorMessage: action.errorMessage,
-      };
+        errorMessage: action.errorMessage
+      }
     case actionTypes.SET_TRANSACTION_COUNTER:
-      newTrCounter = state.transactionCounter + action.payload;
-      newTrCounter = newTrCounter < 0 ? 0 : newTrCounter;
+      newTrCounter = state.transactionCounter + action.payload
+      newTrCounter = newTrCounter < 0 ? 0 : newTrCounter
       return {
         ...state,
-        transactionCounter: newTrCounter,
-      };
+        transactionCounter: newTrCounter
+      }
     default:
-      return state;
+      return state
   }
 }

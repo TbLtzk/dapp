@@ -1,1 +1,1 @@
-export const availableAmountSR = (state) => state.systemReserve.availableAmount;
+export const availableAmountSR = (state) => state.systemReserve.availableAmount

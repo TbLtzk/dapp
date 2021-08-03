@@ -1,6 +1,6 @@
 const fonts = {
   primary: 'OpenSans',
-  secondary: 'Montserrat',
-};
+  secondary: 'Montserrat'
+}
 
-export default fonts;
+export default fonts

@@ -1,1 +1,1 @@
-export {default} from 'pages/UserPages/Staking/FormStaking/ActionButtons/ActionButtons';
+export { default } from 'pages/UserPages/Staking/FormStaking/ActionButtons/ActionButtons'

@@ -1,16 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import { Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap'
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Buttons/Button'
 
-import { Header, Body, Footer, ModalW } from './styles';
-import { useSelector } from 'react-redux';
-import { theme } from 'store/selectors/theme';
+import { Header, Body, Footer, ModalW } from './styles'
 
-function ModalWindow(props) {
-  const currentTheme = useSelector(theme)
+function ModalWindow (props) {
   const {
     disabled,
     show,
@@ -21,7 +18,7 @@ function ModalWindow(props) {
     continueBtnHandler,
     content,
     modalTitle
-  } = props;
+  } = props
 
   return (
     <ModalW
@@ -40,18 +37,21 @@ function ModalWindow(props) {
       <Body>
         {content}
       </Body>
-      {(!backBtnTitle && !continueBtnTitle) ? null :
-        <Footer>
-          {!backBtnTitle ? null :
-            <Button
+      {(!backBtnTitle && !continueBtnTitle)
+        ? null
+        : <Footer>
+          {!backBtnTitle
+            ? null
+            : <Button
               type='white'
               icon="arrow-left"
               title={backBtnTitle}
               handleButton={backBtnHandler}
             />
           }
-          {!continueBtnTitle ? null :
-            <Button
+          {!continueBtnTitle
+            ? null
+            : <Button
               icon="arrow-right"
               isIconPositionRight={true}
               disabled={disabled}
@@ -62,15 +62,14 @@ function ModalWindow(props) {
         </Footer>
       }
     </ModalW>
-  );
+  )
 }
 
 ModalWindow.propTypes = {
   continueBtnTitle: PropTypes.string,
   show: PropTypes.bool,
   content: PropTypes.object,
-  onHide: PropTypes.func,
-};
+  onHide: PropTypes.func
+}
 
-export default ModalWindow;
-
+export default ModalWindow

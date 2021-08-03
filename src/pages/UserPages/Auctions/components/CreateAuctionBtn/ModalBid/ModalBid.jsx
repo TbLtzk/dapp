@@ -1,48 +1,47 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux'
 import {
   approveModalBtn
-} from 'store/selectors/auctions/auctions';
+} from 'store/selectors/auctions/auctions'
 import {
   bidForAuction, setApproveModalBtn
-} from 'store/actions/action-creaters/auctions/auctions';
+} from 'store/actions/action-creaters/auctions/auctions'
 import {
   setCreateObj,
   setDisabledCreatedObjBtn,
-  setStepCounter,
-} from 'store/actions/action-creaters/auctions/modalHandler';
+  setStepCounter
+} from 'store/actions/action-creaters/auctions/modalHandler'
 import {
   stepCounterModal,
   formObject,
   createdStepsLimit
-} from 'store/selectors/auctions/modalHandler';
-import { userAddressMetamask } from 'store/selectors/user-inf';
+} from 'store/selectors/auctions/modalHandler'
+import { userAddressMetamask } from 'store/selectors/user-inf'
 
-import { useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form'
 
-import ModalWindow from 'components/Base/ModalWindow';
-import CreateStep1 from './CreateStep1';
-import CreateStep2 from './CreateStep2';
+import ModalWindow from 'components/Base/ModalWindow'
+import CreateStep1 from './CreateStep1'
+import CreateStep2 from './CreateStep2'
 
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
-import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
-import { StableCoinQUSD } from 'contracts/src/StableCoin';
-import { checkTabContract } from './constants';
-import { ProgressBar } from 'react-bootstrap';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
+import { MAX_APPROVE_AMOUNT } from 'constants/numbers'
+import { StableCoinQUSD } from 'contracts/src/StableCoin'
+import { checkTabContract } from './constants'
+import { ProgressBar } from 'react-bootstrap'
 
+function ModalBid (props) {
+  const { modalShow, onHide, activeTab, inf } = props
+  const { register, errors, handleSubmit } = useForm()
+  const dispatch = useDispatch()
 
-function ModalBid(props) {
-  const { modalShow, onHide, activeTab, inf } = props;
-  const { register, errors, handleSubmit } = useForm();
-  const dispatch = useDispatch();
-
-  const formData = useSelector(formObject);
-  const stepCounter = useSelector(stepCounterModal);
-  const stepLimit = useSelector(createdStepsLimit);
-  const approveBtn = useSelector(approveModalBtn);
-  const userAddress = useSelector(userAddressMetamask);
-  const StableCoin = new StableCoinQUSD();
+  const formData = useSelector(formObject)
+  const stepCounter = useSelector(stepCounterModal)
+  const stepLimit = useSelector(createdStepsLimit)
+  const approveBtn = useSelector(approveModalBtn)
+  const userAddress = useSelector(userAddressMetamask)
+  const StableCoin = new StableCoinQUSD()
 
   const switchProposalContentDependsOnType = useCallback(() => {
     switch (stepCounter) {
@@ -53,7 +52,7 @@ function ModalBid(props) {
             register={register}
             errors={errors}
           />
-        );
+        )
       case 2:
         return (
           <CreateStep2
@@ -62,31 +61,31 @@ function ModalBid(props) {
             register={register}
             errors={errors}
           />
-        );
+        )
       default:
-        return null;
+        return null
     }
-
-  }, [activeTab, stepCounter, register, errors, stepLimit, dispatch]);
+  }, [activeTab, stepCounter, register, errors, stepLimit, dispatch])
 
   const onNext = async (data) => {
-    dispatch(setCreateObj({ ...formData, ...data }));
+    dispatch(setCreateObj({ ...formData, ...data }))
     if (approveBtn) {
-      const contractName = checkTabContract(activeTab);
-      await StableCoin.approve(contractsToAddresses[contractName], MAX_APPROVE_AMOUNT, userAddress);
-      dispatch(setApproveModalBtn(false));
+      const contractName = checkTabContract(activeTab)
+      await StableCoin.approve(contractsToAddresses[contractName], MAX_APPROVE_AMOUNT, userAddress)
+      dispatch(setApproveModalBtn(false))
     } else {
       if (stepCounter < stepLimit) {
-        dispatch(setStepCounter(stepCounter + 1));
+        dispatch(setStepCounter(stepCounter + 1))
       } else {
         dispatch(bidForAuction({
-          ...formData, ...data,
-          ...inf,
-        }));
-        onHide();
+          ...formData,
+          ...data,
+          ...inf
+        }))
+        onHide()
       }
     }
-  };
+  }
 
   return (
     <ModalWindow
@@ -96,13 +95,13 @@ function ModalBid(props) {
         stepCounter !== 1 ? 'Back' : null
       }
       backBtnHandler={() => {
-        dispatch(setStepCounter(stepCounter - 1));
-        dispatch(setDisabledCreatedObjBtn(false));
+        dispatch(setStepCounter(stepCounter - 1))
+        dispatch(setDisabledCreatedObjBtn(false))
       }}
       continueBtnTitle={
 
-        stepLimit !== stepCounter ?
-          approveBtn ? 'Approve' : 'Next'
+        stepLimit !== stepCounter
+          ? approveBtn ? 'Approve' : 'Next'
           : 'Confirm'
       }
       continueBtnHandler={handleSubmit(onNext)}
@@ -117,8 +116,7 @@ function ModalBid(props) {
         </>
       }
     />
-  );
+  )
 }
 
-export default ModalBid;
-
+export default ModalBid

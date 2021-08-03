@@ -1,10 +1,10 @@
-export const isUserEPQFIMembership = (state) => state.membership.isUserEPQFIMembership;
-export const isUserEPDRMembership = (state) => state.membership.isUserEPDRMembership;
+export const isUserEPQFIMembership = (state) => state.membership.isUserEPQFIMembership
+export const isUserEPDRMembership = (state) => state.membership.isUserEPDRMembership
 
-export const EPQFI_Members = (state) => state.membership.EPQFI_Members;
-export const EPQFI_MembersLoading = (state) => state.membership.EPQFI_MembersLoading;
-export const EPQFI_MembersError = (state) => state.membership.EPQFI_MembersError;
+export const EPQFIMembers = (state) => state.membership.EPQFIMembers
+export const EPQFIMembersLoading = (state) => state.membership.EPQFIMembersLoading
+export const EPQFIMembersError = (state) => state.membership.EPQFIMembersError
 
-export const EPDR_Members = (state) => state.membership.EPDR_Members;
-export const EPDR_MembersLoading = (state) => state.membership.EPDR_MembersLoading;
-export const EPDR_MembersError = (state) => state.membership.EPDR_MembersError;
+export const EPDRMembers = (state) => state.membership.EPDRMembers
+export const EPDRMembersLoading = (state) => state.membership.EPDRMembersLoading
+export const EPDRMembersError = (state) => state.membership.EPDRMembersError

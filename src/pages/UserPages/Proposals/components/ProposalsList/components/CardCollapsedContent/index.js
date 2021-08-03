@@ -1,1 +1,1 @@
-export {default} from './CardCollapsedContent'
+export { default } from './CardCollapsedContent'

@@ -1,1 +1,1 @@
-export { default } from './SaveManageAsset';
+export { default } from './SaveManageAsset'

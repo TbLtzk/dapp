@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const Block = styled.div`
   width: 100%;
@@ -90,4 +90,4 @@ export const Block = styled.div`
     margin-bottom: 30px;
     border-bottom: 1px solid ${props => props.theme.colors.oxfordBlueTint3};
   }
-`;
+`

@@ -1,1 +1,1 @@
-export {default} from './ConnectMetaMaskButton';
+export { default } from './ConnectMetaMaskButton'

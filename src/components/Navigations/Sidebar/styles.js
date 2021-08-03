@@ -1,9 +1,9 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-import { Navbar } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Navbar } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
-import { indents } from 'constants/style';
+import { indents } from 'constants/style'
 
 export const NavbarContainer = styled(Navbar)`
   width: 348px;
@@ -18,31 +18,31 @@ export const NavbarContainer = styled(Navbar)`
   .header__logo {
     margin-bottom: 54px;
   }
-`;
+`
 
 export const LinksContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-`;
+`
 
 export const FooterContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-`;
+`
 
 export const ListContainer = styled.div`
   display: block;
   width: 100%;
-`;
+`
 
 export const ListTitle = styled.div`
   display: block;
   color: ${props => props.theme.colors.oxfordBlueTint3};
   font-size: 12px;
   margin-top: 34px;
-`;
+`
 
 export const LinkGroup = styled.div`
   display: flex;
@@ -62,7 +62,7 @@ export const LinkGroup = styled.div`
     color: ${props => props.theme.colors.white};
     border: none;
   }
-`;
+`
 
 export const LinkStyle = styled(Link)`
   padding: 6px 12px;
@@ -72,7 +72,7 @@ export const LinkStyle = styled(Link)`
   :hover {
     background: ${props => props.theme.colors.oxfordBlueTint1};
   }
-`;
+`
 
 export const ALinkStyle = styled.a`
   padding-left: 0;
@@ -83,7 +83,7 @@ export const ALinkStyle = styled.a`
     color: ${props => props.theme.colors.white};
     text-decoration: underline;
   }
-`;
+`
 
 export const WrapLogo = styled.div`
   margin-bottom: 54px;
@@ -91,7 +91,7 @@ export const WrapLogo = styled.div`
   img {
     width: 53px;
   }
-`;
+`
 
 export const Footer = styled.div`
   display: flex;
@@ -100,14 +100,14 @@ export const Footer = styled.div`
   & > :first-child {
     margin-right: 10px;
   }
-`;
+`
 
 export const AccordionIcon = styled.div`
   font-size: 20px;
   transform: rotate(${props => props.state ? '180deg' : '0'});
   transition-duration: 0.1s;
   transition-property: transform;
-`;
+`
 
 export const AccordionLbl = styled.div`
   display: flex;
@@ -118,4 +118,4 @@ export const AccordionLbl = styled.div`
   color: ${(props) => props.highlight === 1 ? props.theme.colors.activeLinks : props.theme.colors.white};
   border: 1px solid ${(props) => props.highlight === 1 ? props.theme.colors.activeLinks : props.theme.colors.white};
   border-radius: 13px;
-`;
+`

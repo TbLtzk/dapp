@@ -1,4 +1,4 @@
-import * as actionTypes from 'store/actions/action-types/voting/proposals';
+import * as actionTypes from 'store/actions/action-types/voting/proposals'
 
 const initialState = {
   createProposalLoading: true,
@@ -15,69 +15,68 @@ const initialState = {
   numberOfAllProposals: 0,
   loadingNumberAll: true,
   constitutionHash: '...',
-  pageType: null,
-};
+  pageType: null
+}
 
-export default function proposals(state = initialState, action) {
-
+export default function proposals (state = initialState, action) {
   switch (action.type) {
     case actionTypes.SET_CREATED_PROPOSAL_OBJECT:
       return {
         ...state,
         formObjectCreateProposal: action.result
-      };
+      }
     case actionTypes.SET_CREATED_STEPS_LIMIT:
       return {
         ...state,
         createdStepsLimit: action.result
-      };
+      }
     case actionTypes.SET_STEP_COUNTER:
       return {
         ...state,
         stepCounter: action.result
-      };
+      }
     case actionTypes.SET_DISABLED_CREATED_PROPOSAL_BTN:
       return {
         ...state,
         disabledContinueBtn: action.result
-      };
+      }
     case actionTypes.SET_VOTE_PROPOSAL_OBJECT:
       return {
         ...state,
         formObjectVoteProposal: action.result
-      };
+      }
     case actionTypes.SET_STEP_VOTE_COUNTER:
       return {
         ...state,
         stepVoteCounter: action.result
-      };
+      }
     case actionTypes.GET_NUMBER_ALL_PROPOSALS:
       return {
         ...state,
-        loadingNumberAll: true,
-      };
+        loadingNumberAll: true
+      }
     case actionTypes.GET_NUMBER_ALL_PROPOSALS_SUCCESS:
       return {
         ...state,
         numberOfAllProposals: action.result,
-        loadingNumberAll: false,
-      };
+        loadingNumberAll: false
+      }
     case actionTypes.GET_CONSTITUTION_HASH_SUCCESS:
       return {
         ...state,
-        constitutionHash: action.result,
-      };
+        constitutionHash: action.result
+      }
     case actionTypes.ON_CHANGE_PROPOSAL_TAB:
       return {
         ...state,
-        proposalsArr: [],
-      };
+        proposalsArr: []
+      }
     case actionTypes.PAGE_TYPE:
       return {
         ...state,
-        pageType: action.pageType,
-      };
+        pageType: action.pageType
+      }
     default:
-      return state;
+      return state
   }
 }

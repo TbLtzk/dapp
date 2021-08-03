@@ -1,1 +1,1 @@
-export { default } from './DelegationRewards';
+export { default } from './DelegationRewards'

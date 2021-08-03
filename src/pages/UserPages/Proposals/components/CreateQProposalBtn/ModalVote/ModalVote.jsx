@@ -1,27 +1,27 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux'
 import {
   setVoteProposalObj,
   setDisabledCreatedProposalBtn,
   setStepVoteCounter,
   voteForProposal
-} from 'store/actions/action-creaters/voting/proposals';
+} from 'store/actions/action-creaters/voting/proposals'
 import {
   stepVoteCounterModal,
-  formVoteObject,
-} from 'store/selectors/voting/proposals';
+  formVoteObject
+} from 'store/selectors/voting/proposals'
 
-import { useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form'
 
-import ModalWindow from 'components/Base/ModalWindow';
-import CreateStep1 from './CreateStep1';
-import CreateStep2 from './CreateStep2';
-import CreateStep3 from './CreateStep3';
+import ModalWindow from 'components/Base/ModalWindow'
+import CreateStep1 from './CreateStep1'
+import CreateStep2 from './CreateStep2'
+import CreateStep3 from './CreateStep3'
 
-import { ProgressBar } from 'react-bootstrap';
+import { ProgressBar } from 'react-bootstrap'
 
-function ModalVote(props) {
+function ModalVote (props) {
   const {
     modalShow,
     onHide,
@@ -29,17 +29,17 @@ function ModalVote(props) {
     proposalId,
     proposalContract,
     vetoEndTime
-  } = props;
+  } = props
   const {
     register,
     errors,
     handleSubmit
-  } = useForm();
-  const dispatch = useDispatch();
+  } = useForm()
+  const dispatch = useDispatch()
 
-  const formData = useSelector(formVoteObject);
-  const stepCounter = useSelector(stepVoteCounterModal);
-  const stepLimit = 3;
+  const formData = useSelector(formVoteObject)
+  const stepCounter = useSelector(stepVoteCounterModal)
+  const stepLimit = 3
 
   const switchProposalContentDependsOnType = useCallback(() => {
     switch (stepCounter) {
@@ -51,7 +51,7 @@ function ModalVote(props) {
             register={register}
             errors={errors}
           />
-        );
+        )
       case 2:
         return (
           <CreateStep2
@@ -62,7 +62,7 @@ function ModalVote(props) {
             register={register}
             errors={errors}
           />
-        );
+        )
       case 3:
         return (
           <CreateStep3
@@ -72,28 +72,28 @@ function ModalVote(props) {
             errors={errors}
             proposalContract={proposalContract}
           />
-        );
+        )
       default:
-        return null;
+        return null
     }
-
-  }, [activeTab, stepCounter, register, errors, stepLimit, dispatch]);
+  }, [activeTab, stepCounter, register, errors, stepLimit, dispatch])
 
   const onNext = (data) => {
-    dispatch(setVoteProposalObj({ ...formData, ...data }));
+    dispatch(setVoteProposalObj({ ...formData, ...data }))
     if (stepCounter < stepLimit) {
-      dispatch(setStepVoteCounter(stepCounter + 1));
+      dispatch(setStepVoteCounter(stepCounter + 1))
     } else {
       if (formData['constitution-check'] !== 'no') {
         dispatch(voteForProposal({
-          ...formData, ...data,
+          ...formData,
+          ...data,
           idProposal: proposalId,
           contract: proposalContract
-        }));
+        }))
       }
-      onHide();
+      onHide()
     }
-  };
+  }
 
   return (
     <ModalWindow
@@ -103,8 +103,8 @@ function ModalVote(props) {
         stepCounter !== 1 ? 'Back' : null
       }
       backBtnHandler={() => {
-        dispatch(setStepVoteCounter(stepCounter - 1));
-        dispatch(setDisabledCreatedProposalBtn(false));
+        dispatch(setStepVoteCounter(stepCounter - 1))
+        dispatch(setDisabledCreatedProposalBtn(false))
       }}
       continueBtnTitle={
         stepLimit !== stepCounter ? 'Next' : 'Confirm'
@@ -121,8 +121,7 @@ function ModalVote(props) {
         </>
       }
     />
-  );
+  )
 }
 
-export default ModalVote;
-
+export default ModalVote

@@ -1,22 +1,22 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { votingLockingEnd } from 'store/selectors/q-vault';
-import { formVoteObject } from 'store/selectors/voting/proposals';
+import { useDispatch, useSelector } from 'react-redux'
+import { votingLockingEnd } from 'store/selectors/q-vault'
+import { formVoteObject } from 'store/selectors/voting/proposals'
 
-import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
+import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
 
-import { basicVote, constitutionCheck, communityVeto } from './constants';
+import { basicVote, constitutionCheck, communityVeto } from './constants'
 
-function CreateStep2(props) {
+function CreateStep2 (props) {
   const {
     activeTab,
     register,
     errors
-  } = props;
-  const formData = useSelector(formVoteObject);
-  const userLockingEnd = useSelector(votingLockingEnd);
-  const dispatch = useDispatch();
+  } = props
+  const formData = useSelector(formVoteObject)
+  const userLockingEnd = useSelector(votingLockingEnd)
+  const dispatch = useDispatch()
 
   const contentSwitcher = useCallback(() => {
     switch (formData?.first) {
@@ -35,7 +35,7 @@ function CreateStep2(props) {
               }}
             />
           </>
-        );
+        )
       case 'constitution-check':
         return (
           <>
@@ -51,7 +51,7 @@ function CreateStep2(props) {
               }}
             />
           </>
-        );
+        )
       case 'q-community-veto':
         return (
           <>
@@ -67,19 +67,17 @@ function CreateStep2(props) {
               }}
             />
           </>
-        );
+        )
       default:
-        return null;
+        return null
     }
-
-  }, [activeTab, register, errors, userLockingEnd, dispatch]);
+  }, [activeTab, register, errors, userLockingEnd, dispatch])
 
   return (
     <>
       {contentSwitcher()}
     </>
-  );
+  )
 }
 
-export default CreateStep2;
-
+export default CreateStep2

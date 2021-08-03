@@ -1,12 +1,12 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
+import React from 'react'
+import { useSelector } from 'react-redux'
+import PropTypes from 'prop-types'
 
-import { ButtonCustom } from './styles';
-import { theme } from 'store/selectors/theme';
+import { ButtonCustom } from './styles'
+import { theme } from 'store/selectors/theme'
 
-function Button(props) {
-  const currentTheme = useSelector(theme);
+function Button (props) {
+  const currentTheme = useSelector(theme)
   const {
     title,
     type,
@@ -19,8 +19,8 @@ function Button(props) {
     handleButton,
     icon,
     iconFontSize,
-    isIconPositionRight,
-  } = props;
+    isIconPositionRight
+  } = props
 
   return (
     <ButtonCustom
@@ -38,30 +38,30 @@ function Button(props) {
       iconfontsize={iconFontSize}
       isiconpositionright={isIconPositionRight ? '1' : ''}
     >
-      {icon ? isIconPositionRight ?
-        (<>
+      {icon
+        ? isIconPositionRight
+          ? (<>
           {title}<i className={`mdi mdi-${icon} btn-icon`}/>
         </>)
-        :
-        (<>
+          : (<>
           <i className={`mdi mdi-${icon} btn-icon`}/>{title}
         </>)
         : title}
     </ButtonCustom>
-  );
+  )
 }
 
 Button.propTypes = {
   type: PropTypes.string,
   width: PropTypes.string,
   disabled: PropTypes.bool,
-  handleButton: PropTypes.func.isRequired,
-};
+  handleButton: PropTypes.func.isRequired
+}
 
 Button.defaultProps = {
   type: 'main',
   width: '',
-  disabled: false,
-};
+  disabled: false
+}
 
-export default Button;
+export default Button

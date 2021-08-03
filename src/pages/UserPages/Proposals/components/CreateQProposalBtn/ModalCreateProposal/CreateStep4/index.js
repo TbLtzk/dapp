@@ -1,1 +1,1 @@
-export {default} from './CreateStep4';
+export { default } from './CreateStep4'

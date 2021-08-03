@@ -1,31 +1,30 @@
-import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
+import React, { useCallback } from 'react'
+import PropTypes from 'prop-types'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { stakeToPanel, announceWithdrawal, withdraw } from 'store/actions/action-creaters/root-contract';
-import { userAddressMetamask } from 'store/selectors/user-inf';
+import { useDispatch, useSelector } from 'react-redux'
+import { stakeToPanel, announceWithdrawal, withdraw } from 'store/actions/action-creaters/root-contract'
+import { userAddressMetamask } from 'store/selectors/user-inf'
 
-import RootService from 'contracts/src/Root';
+import RootService from 'contracts/src/Root'
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Buttons/Button'
 
-import { toWei } from 'func/balance';
+import { toWei } from 'func/balance'
 
-function ActionButtons(props) {
-  const { handleSubmit } = props;
-  const dispatch = useDispatch();
-  const rootService = new RootService();
-  const userAddress = useSelector(userAddressMetamask);
+function ActionButtons (props) {
+  const { handleSubmit } = props
+  const dispatch = useDispatch()
+  const rootService = new RootService()
+  const userAddress = useSelector(userAddressMetamask)
 
   const onStakeToPanel = useCallback(async (data) => {
-
     dispatch(stakeToPanel(rootService,
       {
         from: userAddress,
-        value: toWei(data?.amount),
+        value: toWei(data?.amount)
       }
-    ));
-  }, []);
+    ))
+  }, [])
 
   const onWithdrawFromPanel = useCallback(async (data) => {
     dispatch(withdraw(rootService,
@@ -33,16 +32,16 @@ function ActionButtons(props) {
       userAddress,
       {
         from: userAddress
-      }));
-  }, [dispatch]);
+      }))
+  }, [dispatch])
 
   const onAnnounce = useCallback(async (data) => {
     dispatch(announceWithdrawal(rootService,
       toWei(data?.amount),
       {
         from: userAddress
-      }));
-  }, [dispatch]);
+      }))
+  }, [dispatch])
 
   return (
     <div className={'card__actions'}>
@@ -62,12 +61,11 @@ function ActionButtons(props) {
         handleButton={handleSubmit(onWithdrawFromPanel)}
       />
     </div>
-  );
+  )
 }
 
 ActionButtons.propTypes = {
   handleSubmit: PropTypes.func
-};
+}
 
-export default ActionButtons;
-
+export default ActionButtons

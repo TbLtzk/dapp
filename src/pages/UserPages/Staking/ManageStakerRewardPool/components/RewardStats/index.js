@@ -1,1 +1,1 @@
-export { default } from './RewardStats';
+export { default } from './RewardStats'

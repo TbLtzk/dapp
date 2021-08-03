@@ -1,55 +1,54 @@
-import React, { Fragment, useCallback, useState, useEffect } from 'react';
+import React, { Fragment, useCallback, useState, useEffect } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { formObject } from 'store/selectors/voting/proposals';
-import { parameterValueByKey } from 'store/selectors/parameters';
-import { getParameterKeysByType } from 'store/actions/action-creaters/parameters';
+import { useDispatch, useSelector } from 'react-redux'
+import { formObject } from 'store/selectors/voting/proposals'
+import { parameterValueByKey } from 'store/selectors/parameters'
+import { getParameterKeysByType } from 'store/actions/action-creaters/parameters'
 
-import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
-import InputGroup from 'components/Custom/ModalActions/InputGroup';
-import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue';
+import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
+import InputGroup from 'components/Custom/ModalActions/InputGroup'
+import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue'
 
-import { addNewExpert, removeExpert, parameterVote } from './constants';
-import FormSelect from 'components/Base/Form/FormSelect';
-import FormInput from 'components/Base/Form/FormInput';
+import { addNewExpert, removeExpert, parameterVote } from './constants'
+import FormSelect from 'components/Base/Form/FormSelect'
+import FormInput from 'components/Base/Form/FormInput'
 
-function QExpertS2(props) {
+function QExpertS2 (props) {
   const {
     activeTab,
     register,
     errors
-  } = props;
-  const dispatch = useDispatch();
-  const formData = useSelector(formObject);
+  } = props
+  const dispatch = useDispatch()
+  const formData = useSelector(formObject)
 
-  const parameterByKeyValue = useSelector(parameterValueByKey);
+  const parameterByKeyValue = useSelector(parameterValueByKey)
 
-  const [typePanel, setTypePanel] = useState('');
-  const [parameterKey, setParameterKey] = useState('');
+  const [typePanel, setTypePanel] = useState('')
 
   const [params, setParams] = useState([{
     type: '',
     key: '',
     value: ''
-  }]);
+  }])
 
-  function setNewValue(index, key, newType) {
-    const newParams = [...params];
-    newParams[index][key] = newType;
-    setParams(newParams);
+  function setNewValue (index, key, newType) {
+    const newParams = [...params]
+    newParams[index][key] = newType
+    setParams(newParams)
   }
 
-  function changeTypesCapacity(action) {
-    let newCapacity = 0;
+  function changeTypesCapacity (action) {
+    const newCapacity = 0
     switch (action) {
       case -1:
-        if (params.length - 1 < 1) return;
-        const newParams = [...params];
-        newParams.pop();
-        setParams(newParams);
-        break;
+        if (params.length - 1 < 1) return
+        const newParams = [...params]
+        newParams.pop()
+        setParams(newParams)
+        break
       case 1:
-        if (newCapacity > 100) return;
+        if (newCapacity > 100) return
         setParams([
           ...params,
           {
@@ -57,21 +56,21 @@ function QExpertS2(props) {
             key: '',
             value: ''
           }
-        ]);
-        break;
+        ])
+        break
     }
   }
 
-  function changePanel(panelType) {
-    setTypePanel(panelType);
+  function changePanel (panelType) {
+    setTypePanel(panelType)
     params.forEach(item => {
-      if (item.type) dispatch(getParameterKeysByType(panelType, item.type));
-    });
+      if (item.type) dispatch(getParameterKeysByType(panelType, item.type))
+    })
   }
 
   useEffect(() => {
     if (formData?.first === 'parameter-vote') {
-      let key = parameterVote.parameterType;
+      const key = parameterVote.parameterType
 
       if (formData[key]) {
         setParams(
@@ -79,14 +78,14 @@ function QExpertS2(props) {
             types.push({
               type: item,
               key: formData[parameterVote.parameterKey][index],
-              value: formData[parameterVote.parameterValue][index],
-            });
-            return types;
+              value: formData[parameterVote.parameterValue][index]
+            })
+            return types
           }, [])
-        );
+        )
       }
     }
-  }, []);
+  }, [])
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (formData?.first) {
@@ -122,7 +121,7 @@ function QExpertS2(props) {
             />
 
           </>
-        );
+        )
       case 'remove-a-current-expert':
         return (
           <>
@@ -155,7 +154,7 @@ function QExpertS2(props) {
             />
 
           </>
-        );
+        )
       case 'parameter-vote':
         return (
           <>
@@ -168,7 +167,7 @@ function QExpertS2(props) {
               errors={errors}
               nameArr={parameterVote.radioBtnName}
               handleChange={(value) => {
-                changePanel(value.target.value);
+                changePanel(value.target.value)
               }}
             />
             <h2>{parameterVote.subtitleInputUp}</h2>
@@ -184,8 +183,8 @@ function QExpertS2(props) {
                       palette={'dark'}
                       value={params[index].type}
                       onChange={(value) => {
-                        setNewValue(index, 'type', value.target.value);
-                        dispatch(getParameterKeysByType(typePanel, value.target.value));
+                        setNewValue(index, 'type', value.target.value)
+                        dispatch(getParameterKeysByType(typePanel, value.target.value))
                       }}
                       ref={register({ required: 'Choose one option!' })}
                       optionValues={parameterVote.radioBtnDown}
@@ -199,7 +198,7 @@ function QExpertS2(props) {
                       ref={register({ required: 'Field is required!' })}
                       valid={errors[parameterVote.parameterKey]?.[index]?.message}
                       onChange={(value) => {
-                        setNewValue(index, 'key', value.target.value);
+                        setNewValue(index, 'key', value.target.value)
                       }}
                     />
                   </div>
@@ -212,7 +211,7 @@ function QExpertS2(props) {
                     ref={register({ required: 'Field is required!' })}
                     valid={errors[parameterVote.parameterValue]?.[index]?.message}
                     onChange={(value) => {
-                      setNewValue(index, 'value', value.target.value);
+                      setNewValue(index, 'value', value.target.value)
                     }}
                   />
                   <CurrentParameterValue
@@ -221,12 +220,12 @@ function QExpertS2(props) {
                     parameterKey={params[index].key}
                   />
                 </Fragment>
-              );
+              )
             })}
             <div className="modal__text-wrp">
               <div className="modal__text-btn"
                    onClick={() => {
-                     changeTypesCapacity(1);
+                     changeTypesCapacity(1)
                    }}
               >Add parameter
               </div>
@@ -234,14 +233,13 @@ function QExpertS2(props) {
                 params.length > 1
                   ? (<div className="modal__text-btn"
                           onClick={() => {
-                            changeTypesCapacity(-1);
+                            changeTypesCapacity(-1)
                           }}
                   >Remove parameter
                   </div>)
                   : null
               }
             </div>
-
 
             <h4>{parameterVote.subtitleInputDown}</h4>
             <InputGroup
@@ -252,19 +250,17 @@ function QExpertS2(props) {
               errors={errors}
             />
           </>
-        );
+        )
       default:
-        return null;
+        return null
     }
-
-  }, [activeTab, register, errors, typePanel, parameterKey, parameterByKeyValue, params]);
+  }, [activeTab, register, errors, typePanel, parameterByKeyValue, params])
 
   return (
     <div>
       {switchContentOnTypeProposal()}
     </div>
-  );
+  )
 }
 
-export default QExpertS2;
-
+export default QExpertS2

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const WrapPagination = styled.div`
   display: flex;
@@ -29,7 +29,7 @@ export const WrapPagination = styled.div`
     cursor: default;
   }
 
-`;
+`
 
 export const WrapText = styled.div`
   margin-right: 10px;

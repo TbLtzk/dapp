@@ -1,5 +1,5 @@
-import ProxyService from './ProxyService';
+import ProxyService from './ProxyService'
 
-export default class RootNodeRewardProxy extends ProxyService{
+export default class RootNodeRewardProxy extends ProxyService {
 
 }

@@ -1,23 +1,23 @@
-import { put, takeEvery } from 'redux-saga/effects';
-import * as actionTypes from 'store/actions/action-types/system-reserve';
+import { put, takeEvery } from 'redux-saga/effects'
+import * as actionTypes from 'store/actions/action-types/system-reserve'
 import {
   getAvailableAmountSuccess, getAvailableAmountError
-} from 'store/actions/action-creaters/system-reserve';
+} from 'store/actions/action-creaters/system-reserve'
 
-import SystemReserve from 'contracts/src/SystemReserve';
+import SystemReserve from 'contracts/src/SystemReserve'
 
-function* getAvailableAmount() {
+function * getAvailableAmount () {
   try {
-    const contract = new SystemReserve();
-    const data = yield contract.availableAmount();
+    const contract = new SystemReserve()
+    const data = yield contract.availableAmount()
 
-    yield put(getAvailableAmountSuccess(data));
+    yield put(getAvailableAmountSuccess(data))
   } catch (err) {
-    console.error('getAvailableAmount.Error', err);
-    yield put(getAvailableAmountError(0));
+    console.error('getAvailableAmount.Error', err)
+    yield put(getAvailableAmountError(0))
   }
 }
 
 export default [
-  takeEvery(actionTypes.GET_AVAILABLE_AMOUNT, getAvailableAmount),
-];
+  takeEvery(actionTypes.GET_AVAILABLE_AMOUNT, getAvailableAmount)
+]

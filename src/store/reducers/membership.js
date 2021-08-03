@@ -1,70 +1,70 @@
-import * as actionTypes from '../actions/action-types/membership';
+import * as actionTypes from '../actions/action-types/membership'
 
 const initialState = {
   isUserEPQFIMembership: false,
   isUserEPDRMembership: false,
 
-  EPQFI_Members: [],
-  EPQFI_MembersLoading: false,
-  EPQFI_MembersError: null,
+  EPQFIMembers: [],
+  EPQFIMembersLoading: false,
+  EPQFIMembersError: null,
 
-  EPDR_Members: [],
-  EPDR_MembersLoading: false,
-  EPDR_MembersError: null,
-};
+  EPDRMembers: [],
+  EPDRMembersLoading: false,
+  EPDRMembersError: null
+}
 
-export default function membership(state = initialState, action) {
+export default function membership (state = initialState, action) {
   switch (action.type) {
     case actionTypes.IS_USER_EPQFI_MEMBER_SUCCESS:
       return {
         ...state,
-        isUserEPQFIMembership: action.result,
-      };
+        isUserEPQFIMembership: action.result
+      }
     case actionTypes.IS_USER_EPDR_MEMBER_SUCCESS:
       return {
         ...state,
-        isUserEPDRMembership: action.result,
-      };
+        isUserEPDRMembership: action.result
+      }
     case actionTypes.GET_EPQFI_MEMBERS:
       return {
         ...state,
-        EPQFI_MembersLoading: true,
-      };
+        EPQFIMembersLoading: true
+      }
     case actionTypes.GET_EPQFI_MEMBERS_SUCCESS:
       return {
         ...state,
-        EPQFI_MembersLoading: false,
-        EPQFI_Members: action.result,
-        EPQFI_MembersError: null,
-      };
+        EPQFIMembersLoading: false,
+        EPQFIMembers: action.result,
+        EPQFIMembersError: null
+      }
     case actionTypes.GET_EPQFI_MEMBERS_ERROR:
       return {
         ...state,
-        EPQFI_MembersLoading: false,
-        EPQFI_Members: [],
-        EPQFI_MembersError: action.result,
-      };
+        EPQFIMembersLoading: false,
+        EPQFIMembers: [],
+        EPQFIMembersError: action.result
+      }
 
     case actionTypes.GET_EPDR_MEMBERS:
       return {
         ...state,
-        EPDR_MembersLoading: true,
-      };
+        EPDRMembersLoading: true
+      }
     case actionTypes.GET_EPDR_MEMBERS_SUCCESS:
       return {
         ...state,
-        EPDR_MembersLoading: false,
-        EPDR_Members: action.result,
-        EPDR_MembersError: null,
-      };
+        EPDRMembersLoading: false,
+        EPDRMembers: action.result,
+        EPDRMembersError: null
+      }
     case actionTypes.GET_EPDR_MEMBERS_ERROR:
       return {
         ...state,
-        EPDR_MembersLoading: false,
-        EPDR_Members: [],
-        EPDR_MembersError: action.result,
-      };
+        EPDRMembersLoading: false,
+        EPDRMembers: [],
+        EPDRMembersError: action.result
+      }
     default:
-      return state;
+      return state
   }
 }
