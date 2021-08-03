@@ -16,6 +16,7 @@ import QVault from '../pages/UserPages/QVault'
 import Staking from '../pages/UserPages/Staking'
 import OneProposalPage from '../pages/UserPages/OneProposalPage'
 import SavingAndBorrowing from '../pages/UserPages/SavingAndBorrowing'
+import TimeLocks from '../pages/UserPages/TimeLocks'
 
 function Routes () {
   const options = {
@@ -52,6 +53,7 @@ function Routes () {
         <Route exact path="/q-vault" component={AuthProtect(QVault)}/>
         <Route exact path="/staking" component={AuthProtect(Staking)}/>
         <Route exact path="/saving-and-borrowing" component={AuthProtect(SavingAndBorrowing)}/>
+        <Route exact path="/time-locks" component={AuthProtect(TimeLocks)}/>
         <Route exact path="/q-governance/proposal/:contract?/:id?" component={AuthProtect(OneProposalPage)}/>
       </Switch>
     </AlertProvider>

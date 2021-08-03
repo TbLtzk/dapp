@@ -2,9 +2,19 @@ import { put, takeEvery } from 'redux-saga/effects'
 import Validators from '../../contracts/src/Validators'
 import * as actionTypes from 'store/actions/action-types/validators'
 import {
-  setError, setDelegatorsShare, getDelegatorsShare, setTotalStake, setOwnStake,
-  setDelegatedStake, setAccTotalStake, setInterestRate, getInterestRate,
-  getValidatorMembersSuccess, getValidatorMembersError, isUserValidatorSuccess
+  setError,
+  setDelegatorsShare,
+  getDelegatorsShare,
+  setTotalStake,
+  setSelfStake,
+  setOwnStake,
+  setDelegatedStake,
+  setAccTotalStake,
+  setInterestRate,
+  getInterestRate,
+  getValidatorMembersSuccess,
+  getValidatorMembersError,
+  isUserValidatorSuccess
 } from 'store/actions/action-creaters/validators'
 import { fromWei } from 'func/balance'
 
@@ -95,6 +105,20 @@ function * getAccTotalStakeGenerator ({ address }) {
   }
 }
 
+function * getAccountableSelfStake ({ address }) {
+  try {
+    yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADING })
+
+    const data = yield validatorsInstance.getAccountableSelfStake(address)
+    yield put(setSelfStake(fromWei(data)))
+
+    yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED })
+  } catch (err) {
+    console.error('Validators.Error', err)
+    yield put(setError(err.message))
+  }
+}
+
 function * getInterestRateGenerator ({ address }) {
   try {
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADING })
@@ -165,7 +189,7 @@ export default [
   takeEvery(actionTypes.GET_VAL_DELEGATED_STAKE, getDelegatedStakeGenerator),
   takeEvery(actionTypes.GET_VAL_ACC_TOTAL_STAKE, getAccTotalStakeGenerator),
   takeEvery(actionTypes.GET_VAL_INTEREST_RATE, getInterestRateGenerator),
-
+  takeEvery(actionTypes.GET_VAL_SELF_STAKE, getAccountableSelfStake),
   takeEvery(actionTypes.SET_VAL_DELEGATORS_SHARE_SEND, setDelegatorsShareGenerator),
   takeEvery(actionTypes.SET_VAL_INTEREST_RATE_SEND, setInterestRateGenerator),
 

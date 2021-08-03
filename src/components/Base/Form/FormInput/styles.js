@@ -14,7 +14,7 @@ export const InputWrapper = styled(Form.Group)`
     padding: 6px 11px;
     background: ${(props) => {
       if (props.palette === 'dark') {
-        return 'transparent'
+        return props.color ? props.theme.colors.oxfordBlueTint1 : 'transparent'
       } else {
         return props.theme.colors.blue
       }
@@ -49,7 +49,7 @@ export const InputWrapper = styled(Form.Group)`
       outline: none;
       background: ${(props) => {
         if (props.palette === 'dark') {
-          return 'transparent'
+          return props.color ? props.theme.colors.oxfordBlueTint1 : 'transparent'
         } else {
           return props.theme.colors.blue
         }
@@ -63,7 +63,7 @@ export const InputWrapper = styled(Form.Group)`
       }};
       color: ${(props) => {
         if (props.palette === 'dark') {
-          return props.theme.colors.oxfordBlueTint1
+          return props.color ? props.theme.colors.white : props.theme.colors.oxfordBlueTint1
         } else {
           return props.theme.colors.white
         }

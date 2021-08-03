@@ -1,6 +1,33 @@
 import { fromWei } from 'func/balance.js'
 import { contractsToAbi } from '../mapping/contract-to-abi'
 
+const array = [
+  {
+    id: 1,
+    amount: '10',
+    startDate: '13.07.21 21:30:33',
+    endDate: '16.07.21 21:30:33'
+  },
+  {
+    id: 2,
+    amount: '103',
+    startDate: '13.07.21 21:30:33',
+    endDate: '16.07.21 21:30:33'
+  },
+  {
+    id: 3,
+    amount: '101',
+    startDate: '13.07.21 21:30:33',
+    endDate: '15.07.21 21:30:33'
+  },
+  {
+    id: 4,
+    amount: '120',
+    startDate: '13.07.21 21:30:33',
+    endDate: '22.07.21 21:30:33'
+  }
+]
+
 export default class QVault {
   constructor (address) {
     this.contractName = 'QVault'
@@ -27,12 +54,16 @@ export default class QVault {
   }
 
   async getTimeLockedAmounts (address) {
+    return array // `function getTimeLocks(address _account)`
+  }
+
+  async getMinimumLockedAmount (address) {
     const res = {
-      amount: '100000000000000000000',
+      amount: '64000000000000000000',
       releaseStart: '1626872970',
       releaseEnd: '1627000000'
     }
-    return res
+    return await res
   }
 
   async getLockInfo (address) {

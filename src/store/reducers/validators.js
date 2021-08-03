@@ -11,6 +11,7 @@ const initialState = {
   delegatedStake: 0,
   accTotalStake: 0,
   interestRate: 0,
+  selfStake: 0,
 
   validatorMembers: [],
   loadingMembers: true,
@@ -52,6 +53,11 @@ export default function index (state = initialState, action) {
       return {
         ...state,
         ownStake: action.payload
+      }
+    case actionTypes.SET_VAL_SELF_STAKE:
+      return {
+        ...state,
+        selfStake: action.payload
       }
     case actionTypes.SET_VAL_DELEGATED_STAKE:
       return {

@@ -42,6 +42,7 @@ export default function LockCoin () {
       <h4>Increase Voting Weight by</h4>
       <div className={'card__one-line-form'}>
         <FormInput
+          color={true}
           min={0}
           lbl={'Q'}
           name="amountQ"
@@ -61,6 +62,7 @@ export default function LockCoin () {
       <h4>Reduce Voting Weight by</h4>
       <div className={'card__one-line-form'}>
         <FormInput
+          color={true}
           min={0}
           name="amountQ"
           type="number"

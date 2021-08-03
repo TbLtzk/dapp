@@ -13,6 +13,21 @@ import { validatorsInstance, validationRewardPoolsInstance } from 'contracts/con
 
 const contractName = 'Validators'
 
+const array = [
+  {
+    id: 1,
+    amount: '10',
+    startDate: '13.07.21 21:30:33',
+    endDate: '16.07.21 21:30:33'
+  },
+  {
+    id: 2,
+    amount: '103',
+    startDate: '13.07.21 21:30:33',
+    endDate: '16.07.21 21:30:33'
+  }
+]
+
 export default class Validators {
   constructor () {
     this.methods = contracts[contractName].methods
@@ -56,12 +71,16 @@ export default class Validators {
   }
 
   async getTimeLockedAmounts (address) {
+    return array // `function getTimeLocks(address _account)`
+  }
+
+  async getMinimumLockedAmount (address) {
     const res = {
-      amount: '40000000000000000000',
+      amount: '91000000000000000000',
       releaseStart: '1626872970',
       releaseEnd: '1627000000'
     }
-    return res
+    return await res
   }
 
   async getValidator (validator, index) {
