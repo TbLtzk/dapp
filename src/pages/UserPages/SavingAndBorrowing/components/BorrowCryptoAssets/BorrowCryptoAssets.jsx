@@ -1,61 +1,61 @@
-import React, { useEffect, useState } from 'react';
-import CustomBlock from 'components/Base/CustomBlock';
-import TableView from 'components/Base/TableView';
-import BorrowManageAsset from '../BorrowManageAsset';
+import React, { useEffect, useState } from 'react'
+import CustomBlock from 'components/Base/CustomBlock'
+import TableView from 'components/Base/TableView'
+import BorrowManageAsset from '../BorrowManageAsset'
 
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
-import { fN, uintPerSecondToPerYearNumber } from 'func/useful';
-import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore';
-import { useSelector } from 'react-redux';
-import { userAddressMetamask } from 'store/selectors/user-inf';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
+import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
+import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore'
+import { useSelector } from 'react-redux'
+import { userAddressMetamask } from 'store/selectors/user-inf'
 
 const HEADERS = [
   'Collateral Asset',
   'Borrowing Asset',
   'Borrowing Fee (p.a.)',
   ''
-];
+]
 
-function BorrowCryptoAssets({ reload }) {
-  const myAddress = useSelector(userAddressMetamask);
-  const contract = new BorrowingCoreQUSD(contractsToAddresses['BorrowingCoreQUSD']);
-  const [assets, setAssets] = useState([]);
+function BorrowCryptoAssets ({ reload }) {
+  const myAddress = useSelector(userAddressMetamask)
+  const contract = new BorrowingCoreQUSD(contractsToAddresses.BorrowingCoreQUSD)
+  const [assets, setAssets] = useState([])
 
   const fetchBorrowAssets = async () => {
-    const userVaultsCount = await contract.userVaultsCount(myAddress);
+    const userVaultsCount = await contract.userVaultsCount(myAddress)
 
-    const count = new Array(+userVaultsCount);
-    count.fill('');
+    const count = new Array(+userVaultsCount)
+    count.fill('')
 
-    async function getAdditionalData(index) {
+    async function getAdditionalData (index) {
       const res = await Promise.all([
         await contract.userVaults(myAddress, index),
         await contract.getVaultStats(myAddress, index)
-      ]);
-      let fee = res[1]?.stcStats?.borrowingFee ? uintPerSecondToPerYearNumber(res[1]?.stcStats?.borrowingFee) : 0;
-      let vaultInfo = res[0];
-      vaultInfo.borrowingFee = fee;
-      vaultInfo.vaultNum = index;
-      return vaultInfo;
+      ])
+      const fee = res[1]?.stcStats?.borrowingFee ? uintPerSecondToPerYearNumber(res[1]?.stcStats?.borrowingFee) : 0
+      const vaultInfo = res[0]
+      vaultInfo.borrowingFee = fee
+      vaultInfo.vaultNum = index
+      return vaultInfo
     }
 
-    const vaultsLoc = await Promise.all(count.map((i, index) => getAdditionalData(index)));
+    const vaultsLoc = await Promise.all(count.map((i, index) => getAdditionalData(index)))
 
-    setAssets(vaultsLoc);
+    setAssets(vaultsLoc)
   }
 
   useEffect(() => {
     if (!reload) {
-      fetchBorrowAssets();
+      fetchBorrowAssets()
     }
-  }, [reload]);
+  }, [reload])
 
   return (
     <CustomBlock>
       <h1>Borrow Crypto Assets</h1>
       {
-        assets.length ?
-          <TableView
+        assets.length
+          ? <TableView
             type='with-action'
             header={HEADERS}
             body={
@@ -78,14 +78,14 @@ function BorrowCryptoAssets({ reload }) {
                       />
                     </td>
                   </tr>
-                );
+                )
               })
             }
           />
           : 'No Borrow assets'
       }
     </CustomBlock>
-  );
+  )
 }
 
-export default BorrowCryptoAssets;
+export default BorrowCryptoAssets

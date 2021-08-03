@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const UpdateDelegationContainer = styled.div`
   .input_container_item {
@@ -24,4 +24,4 @@ export const UpdateDelegationContainer = styled.div`
       }
     }
   }
-`;
+`

@@ -1,142 +1,139 @@
-import { ParameterType } from '@q-dev/q-js-sdk';
-import { CONTRACT_TYPES } from 'constants/contracts';
+import { ParameterType } from '@q-dev/q-js-sdk'
+import { CONTRACT_TYPES } from 'constants/contracts'
 
 /**
- * @contract {contract} ConstitutionParameters or EPQFI_Parameters or EPDR_Parameters
+ * @contract {contract} ConstitutionParameters or EPQFIParameters or EPDRParameters
  * or other which extends ParametersService
  */
-export async function loadKVParameters(contract) {
+export async function loadKVParameters (contract) {
   return await Promise.all([
     ...await loadUintsKeys(contract),
     ...await loadAddrsKeys(contract),
     ...await loadStringsKeys(contract),
     ...await loadBytes32sKeys(contract),
-    ...await loadBoolsKeys(contract),
-  ]);
-  ;
+    ...await loadBoolsKeys(contract)
+  ])
 }
 
-export async function loadUintsKeys(contract) {
-  const uintKeys = await contract.getUintKeys();
+export async function loadUintsKeys (contract) {
+  const uintKeys = await contract.getUintKeys()
 
-  async function getUint(i) {
-    const value = await contract.getUint(i);
+  async function getUint (i) {
+    const value = await contract.getUint(i)
     return {
       key: i,
       value: value
-    };
+    }
   }
 
   return await Promise.all(
     uintKeys.map(i => getUint(i))
-  );
+  )
 }
 
-export async function loadAddrsKeys(contract) {
-  const keys = await contract.getAddrKeys();
+export async function loadAddrsKeys (contract) {
+  const keys = await contract.getAddrKeys()
 
-  async function getValue(i) {
-    const value = await contract.getAddr(i);
+  async function getValue (i) {
+    const value = await contract.getAddr(i)
     return {
       key: i,
       value: value
-    };
+    }
   }
 
   return await Promise.all(
     keys.map(i => getValue(i))
-  );
+  )
 }
 
-export async function loadStringsKeys(contract) {
-  const keys = await contract.getStringKeys();
+export async function loadStringsKeys (contract) {
+  const keys = await contract.getStringKeys()
 
-  async function getValue(i) {
-    const value = await contract.getString(i);
+  async function getValue (i) {
+    const value = await contract.getString(i)
     return {
       key: i,
       value: value
-    };
+    }
   }
 
   return await Promise.all(
     keys.map(i => getValue(i))
-  );
+  )
 }
 
-export async function loadBytes32sKeys(contract) {
-  const keys = await contract.getBytes32Keys();
+export async function loadBytes32sKeys (contract) {
+  const keys = await contract.getBytes32Keys()
 
-  async function getValue(i) {
-    const value = await contract.getBytes(i);
+  async function getValue (i) {
+    const value = await contract.getBytes(i)
     return {
       key: i,
       value: value
-    };
+    }
   }
 
   return await Promise.all(
     keys.map(i => getValue(i))
-  );
+  )
 }
 
-export async function loadBoolsKeys(contract) {
-  const keys = await contract.getBoolKeys();
+export async function loadBoolsKeys (contract) {
+  const keys = await contract.getBoolKeys()
 
-  async function getValue(i) {
-    const value = await contract.getBool(i);
+  async function getValue (i) {
+    const value = await contract.getBool(i)
     return {
       key: i,
       value: value
-    };
+    }
   }
 
   return await Promise.all(
     keys.map(i => getValue(i))
-  );
+  )
 }
 
-export function getTypeName(typeId) {
+export function getTypeName (typeId) {
   switch (typeId) {
     case ParameterType.ADDRESS:
-      return 'Address';
+      return 'Address'
     case ParameterType.BOOL:
-      return 'Boolean';
+      return 'Boolean'
     case ParameterType.STRING:
-      return 'String';
+      return 'String'
     case ParameterType.UINT:
-      return 'Uint';
+      return 'Uint'
   }
 }
 
-export function getTypeKey(typeId) {
+export function getTypeKey (typeId) {
   switch (typeId) {
     case ParameterType.ADDRESS:
-      return 'address';
+      return 'address'
     case ParameterType.BOOL:
-      return 'boolean';
+      return 'boolean'
     case ParameterType.STRING:
-      return 'string';
+      return 'string'
     case ParameterType.UINT:
-      return 'uint';
+      return 'uint'
     case ParameterType.BYTE:
-      return 'byte';
+      return 'byte'
     default:
-      return '';
+      return ''
   }
 }
 
-export function getContractTypeKey(typeId) {
+export function getContractTypeKey (typeId) {
   switch (typeId) {
     case CONTRACT_TYPES.constitution:
-      return 'constitution';
+      return 'constitution'
     case CONTRACT_TYPES.qDefi:
-      return 'qDefi';
+      return 'qDefi'
     case CONTRACT_TYPES.qFee:
-      return 'qFee';
+      return 'qFee'
     default:
-      return '';
+      return ''
   }
 }
-
-

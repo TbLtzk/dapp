@@ -1,31 +1,31 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react'
 
-import { useSelector } from 'react-redux';
-import { formObject } from 'store/selectors/auctions/modalHandler';
-import { symbol } from 'store/selectors/stable-coin';
+import { useSelector } from 'react-redux'
+import { formObject } from 'store/selectors/auctions/modalHandler'
+import { symbol } from 'store/selectors/stable-coin'
 
-import InputGroup from 'components/Custom/ModalActions/InputGroup';
-import { getEPDRUint } from 'contracts/handler/ContractsEPDR';
+import InputGroup from 'components/Custom/ModalActions/InputGroup'
+import { getEPDRUint } from 'contracts/handler/ContractsEPDR'
 
-import { liquidation, systemDebt, systemSurplus } from './constants';
-import { AUCTIONS_TYPES } from 'constants/statuses';
+import { liquidation, systemDebt, systemSurplus } from './constants'
+import { AUCTIONS_TYPES } from 'constants/statuses'
 
-function CreateStep1(props) {
+function CreateStep1 (props) {
   const {
     activeTab,
     register,
     errors
-  } = props;
+  } = props
 
-  const formData = useSelector(formObject);
-  const symbolType = useSelector(symbol);
-  const [surplusLot, setSurplusLot] = useState('0');
-  const [reserveLot, setReserveLot] = useState('0');
+  const formData = useSelector(formObject)
+  const symbolType = useSelector(symbol)
+  const [surplusLot, setSurplusLot] = useState('0')
+  const [reserveLot, setReserveLot] = useState('0')
 
   useEffect(() => {
-    getEPDRUint('governed.EPDR.QUSD_surplusLot', setSurplusLot);
-    getEPDRUint('governed.EPDR.reserveLot', setReserveLot);
-  }, []);
+    getEPDRUint('governed.EPDR.QUSD_surplusLot', setSurplusLot)
+    getEPDRUint('governed.EPDR.reserveLot', setReserveLot)
+  }, [])
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (activeTab) {
@@ -58,7 +58,7 @@ function CreateStep1(props) {
             />
 
           </>
-        );
+        )
       case AUCTIONS_TYPES.systemDebt:
         return (
           <>
@@ -74,7 +74,7 @@ function CreateStep1(props) {
               errors={errors}
             />
           </>
-        );
+        )
       case AUCTIONS_TYPES.systemSurplus:
         return (
           <>
@@ -91,19 +91,17 @@ function CreateStep1(props) {
             />
           </>
 
-        );
+        )
       default:
-        return null;
-
+        return null
     }
-  }, [activeTab, register, errors, reserveLot, surplusLot]);
+  }, [activeTab, register, errors, reserveLot, surplusLot])
 
   return (
     <div>
       {switchContentOnTypeProposal()}
     </div>
-  );
+  )
 }
 
-export default CreateStep1;
-
+export default CreateStep1

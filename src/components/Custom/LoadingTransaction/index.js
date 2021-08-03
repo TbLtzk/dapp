@@ -1,1 +1,1 @@
-export {default} from './LoadingTransaction';
+export { default } from './LoadingTransaction'

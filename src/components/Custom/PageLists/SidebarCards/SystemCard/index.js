@@ -1,1 +1,1 @@
-export {default} from './SystemCard';
+export { default } from './SystemCard'

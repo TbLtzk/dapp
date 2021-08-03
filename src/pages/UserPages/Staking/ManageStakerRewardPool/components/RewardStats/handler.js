@@ -1,116 +1,116 @@
-import ValidationRewardPools from 'contracts/src/ValidationRewardPools';
-import { validationRewardPoolsInstance } from 'contracts/contracts';
+import ValidationRewardPools from 'contracts/src/ValidationRewardPools'
+import { validationRewardPoolsInstance } from 'contracts/contracts'
 
 import {
   uintPercentToNumber,
   getPercentageFormat,
   uintPerSecondToPerYearNumber
-} from 'func/useful';
-import { percentageToPercentPerSecond, fromWei } from 'func/balance';
+} from 'func/useful'
+import { percentageToPercentPerSecond, fromWei } from 'func/balance'
 
-import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler';
+import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler'
 
-const contractVRP = new ValidationRewardPools();
+const contractVRP = new ValidationRewardPools()
 
 export default class Handler {
-  constructor(address, dispatch) {
-    this.address = address;
-    this.dispatch = dispatch;
+  constructor (address, dispatch) {
+    this.address = address
+    this.dispatch = dispatch
   }
 
-  getAmountOfRewardPool(stateSetter) {
-    this.dispatch(setTransactionCounter(1));
+  getAmountOfRewardPool (stateSetter) {
+    this.dispatch(setTransactionCounter(1))
 
     contractVRP.getBalance(this.address)
       .then((res) => {
-        const bal = fromWei(res);
-        stateSetter(bal);
+        const bal = fromWei(res)
+        stateSetter(bal)
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e)
       })
       .finally(() => {
-        this.dispatch(setTransactionCounter(-1));
-      });
+        this.dispatch(setTransactionCounter(-1))
+      })
   }
 
-  setInterestRate(formData, stateSetter) {
-    this.dispatch(setTransactionCounter(1));
+  setInterestRate (formData, stateSetter) {
+    this.dispatch(setTransactionCounter(1))
 
-    const amountL = percentageToPercentPerSecond(formData.amount);
+    const amountL = percentageToPercentPerSecond(formData.amount)
     validationRewardPoolsInstance.setInterestRate(amountL)
       .then(() => {
-        this.getInterestRate(stateSetter);
+        this.getInterestRate(stateSetter)
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e)
       })
       .finally(() => {
-        this.dispatch(setTransactionCounter(-1));
-      });
+        this.dispatch(setTransactionCounter(-1))
+      })
   }
 
-  getInterestRate(stateSetter) {
-    this.dispatch(setTransactionCounter(1));
+  getInterestRate (stateSetter) {
+    this.dispatch(setTransactionCounter(1))
 
     validationRewardPoolsInstance.getInterestRate(this.address)
       .then((res) => {
-        const rate = uintPerSecondToPerYearNumber(res);
+        const rate = uintPerSecondToPerYearNumber(res)
         // const rate = uintPercentToNumber(res) * 100;
-        stateSetter(rate);
+        stateSetter(rate)
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e)
       })
       .finally(() => {
-        this.dispatch(setTransactionCounter(-1));
-      });
+        this.dispatch(setTransactionCounter(-1))
+      })
   }
 
-  setDelegatorShare(formData, stateSetter) {
-    this.dispatch(setTransactionCounter(1));
-    const delShare = getPercentageFormat(formData.amount);
+  setDelegatorShare (formData, stateSetter) {
+    this.dispatch(setTransactionCounter(1))
+    const delShare = getPercentageFormat(formData.amount)
     validationRewardPoolsInstance.setDelegatorsShare(delShare)
       .then(() => {
-        this.getDelegatorShare(stateSetter);
+        this.getDelegatorShare(stateSetter)
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e)
       })
       .finally(() => {
-        this.dispatch(setTransactionCounter(-1));
-      });
+        this.dispatch(setTransactionCounter(-1))
+      })
   }
 
-  getDelegatorShare(stateSetter) {
-    this.dispatch(setTransactionCounter(1));
+  getDelegatorShare (stateSetter) {
+    this.dispatch(setTransactionCounter(1))
 
     validationRewardPoolsInstance.getDelegatorsShare(this.address)
       .then((res) => {
-        const rate = uintPercentToNumber(res) * 100;
-        stateSetter(rate);
+        const rate = uintPercentToNumber(res) * 100
+        stateSetter(rate)
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e)
       })
       .finally(() => {
-        this.dispatch(setTransactionCounter(-1));
-      });
+        this.dispatch(setTransactionCounter(-1))
+      })
   }
 
-  getPoolInfo(stateSetter) {
-    this.dispatch(setTransactionCounter(1));
+  getPoolInfo (stateSetter) {
+    this.dispatch(setTransactionCounter(1))
 
     validationRewardPoolsInstance.getPoolInfo(this.address)
-    .then((res) => {
-      const info = res;
-      stateSetter(fromWei(info[1]))
-    })
-    .catch((e) => {
-      console.log(e);
-    })
-    .finally(() => {
-      this.dispatch(setTransactionCounter(-1))
-    })
+      .then((res) => {
+        const info = res
+        stateSetter(fromWei(info[1]))
+      })
+      .catch((e) => {
+        console.error(e)
+      })
+      .finally(() => {
+        this.dispatch(setTransactionCounter(-1))
+      })
   }
 }

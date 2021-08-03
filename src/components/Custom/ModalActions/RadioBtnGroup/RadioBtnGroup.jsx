@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 
-import InputRadio from 'components/Base/Form/InputRadio';
-import ErrorInputMessage from 'components/Base/ErrorInputMessage';
+import InputRadio from 'components/Base/Form/InputRadio'
+import ErrorInputMessage from 'components/Base/ErrorInputMessage'
 
-function RadioBtnGroup(props) {
+function RadioBtnGroup (props) {
   const {
     nameArr,
     handleChange,
@@ -11,21 +11,21 @@ function RadioBtnGroup(props) {
     errors,
     radioArr,
     formData
-  } = props;
-  const [activeRadioBtn, setActiveRadioBtn] = useState('');
+  } = props
+  const [activeRadioBtn, setActiveRadioBtn] = useState('')
 
   useEffect(() => {
     if (formData) {
-      setActiveRadioBtn(formData[nameArr]);
+      setActiveRadioBtn(formData[nameArr])
     }
-  }, [formData, nameArr]);
+  }, [formData, nameArr])
 
   return (
     <div>
       {radioArr?.map((value, i) => {
         const valueField = value.replace(/ /g, '-')
-          .toLowerCase();
-        const name = nameArr + '[]';
+          .toLowerCase()
+        const name = nameArr + '[]'
         return (
           <InputRadio
             key={i}
@@ -33,19 +33,18 @@ function RadioBtnGroup(props) {
             active={activeRadioBtn === valueField}
             checked={activeRadioBtn === valueField}
             handleChange={(value) => {
-              setActiveRadioBtn(value.target.value);
-              handleChange(value);
+              setActiveRadioBtn(value.target.value)
+              handleChange(value)
             }}
             label={value}
             value={valueField}
             ref={register({ required: 'Choose one option!' })}
           />
-        );
+        )
       })}
       <ErrorInputMessage message={errors[nameArr]?.message}/>
     </div>
-  );
+  )
 }
 
-export default RadioBtnGroup;
-
+export default RadioBtnGroup

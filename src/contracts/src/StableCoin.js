@@ -1,67 +1,67 @@
 /* eslint-disable max-classes-per-file */
-import { contracts } from '../config/config';
-import { contractsToAddresses } from '../mapping/contract-to-address';
-import { fromWei, toWei } from 'func/balance';
+import { contracts } from '../config/config'
+import { contractsToAddresses } from '../mapping/contract-to-address'
+import { fromWei, toWei } from 'func/balance'
 
 export class StableCoin {
-  constructor() {
-    this.methods = {};
-    this.address = '';
+  constructor () {
+    this.methods = {}
+    this.address = ''
   }
 
-  async balanceOf(address) {
+  async balanceOf (address) {
     return await this.methods.balanceOf(address)
-      .call();
+      .call()
   }
 
-  async decimals() {
+  async decimals () {
     return await this.methods.decimals()
-      .call();
+      .call()
   }
 
-  async symbol() {
+  async symbol () {
     return await this.methods.symbol()
-      .call();
+      .call()
   }
 
-  async approve(spender, amount, address) {
+  async approve (spender, amount, address) {
     return await this.methods.approve(spender, amount)
-      .send({ from: address });
+      .send({ from: address })
   }
 
-  async allowance(owner, spender) {
-    return fromWei(await this.methods.allowance(owner, spender).call());
+  async allowance (owner, spender) {
+    return fromWei(await this.methods.allowance(owner, spender).call())
   }
 
-  async totalSupply() {
-    return fromWei(await this.methods.totalSupply().call());
+  async totalSupply () {
+    return fromWei(await this.methods.totalSupply().call())
   }
 
-  async mint(address, recepient, amount) {
-    return await this.methods.mint(recepient, toWei(amount)).send({ from: address });
+  async mint (address, recepient, amount) {
+    return await this.methods.mint(recepient, toWei(amount)).send({ from: address })
   }
 }
 
 export class StableCoinQUSD extends StableCoin {
-  constructor() {
-    super();
-    this.methods = contracts.StableCoinQUSD.methods;
-    this.address = contractsToAddresses.StableCoinQUSD;
+  constructor () {
+    super()
+    this.methods = contracts.StableCoinQUSD.methods
+    this.address = contractsToAddresses.StableCoinQUSD
   }
 }
 
 export class GovernedEpdrQethAddress extends StableCoin {
-  constructor() {
-    super();
-    this.methods = contracts.GovernedEpdrQethAddress.methods;
-    this.address = contractsToAddresses.GovernedEpdrQethAddress;
+  constructor () {
+    super()
+    this.methods = contracts.GovernedEpdrQethAddress.methods
+    this.address = contractsToAddresses.GovernedEpdrQethAddress
   }
 }
 
 export class GovernedEpdrQbtcAddress extends StableCoin {
-  constructor() {
-    super();
-    this.methods = contracts.GovernedEpdrQbtcAddress.methods;
-    this.address = contractsToAddresses.GovernedEpdrQbtcAddress;
+  constructor () {
+    super()
+    this.methods = contracts.GovernedEpdrQbtcAddress.methods
+    this.address = contractsToAddresses.GovernedEpdrQbtcAddress
   }
 }

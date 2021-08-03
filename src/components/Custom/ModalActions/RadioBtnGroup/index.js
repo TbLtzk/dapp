@@ -1,1 +1,1 @@
-export {default} from './RadioBtnGroup';
+export { default } from './RadioBtnGroup'

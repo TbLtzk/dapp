@@ -1,1 +1,1 @@
-export {default} from './ManageStakerRewardPool';
+export { default } from './ManageStakerRewardPool'

@@ -1,12 +1,12 @@
-import React from 'react';
-import { PROPOSALS_TYPES, STATUSES } from 'constants/statuses';
-import PollDetail from '../PollDetail';
-import VoteBreakdown from '../VoteBreakdown';
-import SlashingObjection from '../SlashingObjection';
+import React from 'react'
+import { PROPOSALS_TYPES, STATUSES } from 'constants/statuses'
+import PollDetail from '../PollDetail'
+import VoteBreakdown from '../VoteBreakdown'
+import SlashingObjection from '../SlashingObjection'
 
-import { convertToMonthDayYear, remainDate } from 'func/convertDate';
+import { convertToMonthDayYear, remainDate } from 'func/convertDate'
 
-function CardCollapsedContent(props) {
+function CardCollapsedContent (props) {
   const {
     proposalType,
     proposal,
@@ -17,7 +17,7 @@ function CardCollapsedContent(props) {
     votingTime,
     objData,
     vetoTime
-  } = props;
+  } = props
   return (
     <>
       <div className="list-card__three-colm">
@@ -39,18 +39,18 @@ function CardCollapsedContent(props) {
       <VoteBreakdown voteBreakdown={voteBreakdown}/>
       {
         proposalsKind === PROPOSALS_TYPES.slashingProposals && objData === STATUSES.executed
-          ?(<>
+          ? (<>
             <div className="list-card__line"/>
             <SlashingObjection
               contract={contract}
               proposalId={proposalID}
               objData={proposal?.objEscrow}
-              />  
+              />
           </>)
-        :null
+          : null
       }
     </>
-  );
+  )
 }
 
-export default CardCollapsedContent;
+export default CardCollapsedContent

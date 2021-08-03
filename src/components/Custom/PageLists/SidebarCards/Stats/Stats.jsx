@@ -1,15 +1,15 @@
-import React, { Fragment } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { Fragment } from 'react'
+import { useHistory } from 'react-router-dom'
 
-import CustomBlock from 'components/Base/CustomBlock';
-import Button from 'components/Base/Buttons/Button';
+import CustomBlock from 'components/Base/CustomBlock'
+import Button from 'components/Base/Buttons/Button'
 
-function Stats(props) {
+function Stats (props) {
   const {
     statsData,
     type
-  } = props;
-  const history = useHistory();
+  } = props
+  const history = useHistory()
 
   return (
     <CustomBlock>
@@ -20,20 +20,19 @@ function Stats(props) {
             <h5>{elem.title}</h5>
             <p>{elem.value}</p>
           </Fragment>
-        );
+        )
       })}
       <div className="card__actions">
         <Button
           title="Manage Vault"
           type="white"
           handleButton={() => {
-            history.push('q-vault');
+            history.push('q-vault')
           }}
         />
       </div>
     </CustomBlock>
-  );
+  )
 }
 
-export default Stats;
-
+export default Stats

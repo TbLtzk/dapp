@@ -1,1 +1,1 @@
-export { default } from './RefreshDelegationUpdate';
+export { default } from './RefreshDelegationUpdate'

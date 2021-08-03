@@ -1,23 +1,23 @@
-import * as actionTypes from '../actions/action-types/stable-coin';
+import * as actionTypes from '../actions/action-types/stable-coin'
 
 const initialState = {
   balance: 0,
-  symbol: null,
-};
+  symbol: null
+}
 
-export default function stableCoin(state = initialState, action) {
+export default function stableCoin (state = initialState, action) {
   switch (action.type) {
     case actionTypes.GET_ALLOWANCE_SUCCESS:
       return {
         ...state,
-        balance: action.result,
-      };
+        balance: action.result
+      }
     case actionTypes.GET_SYMBOL_SUCCESS:
       return {
         ...state,
-        symbol: action.result,
-      };
+        symbol: action.result
+      }
     default:
-      return state;
+      return state
   }
 }

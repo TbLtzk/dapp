@@ -1,34 +1,34 @@
-import React, { useMemo } from 'react';
+import React, { useMemo } from 'react'
 
-import { useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { rootNodeStake } from 'store/selectors/root-contract';
+import { useLocation } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { rootNodeStake } from 'store/selectors/root-contract'
 
-import BigTabsView from 'components/Base/Tabs/BigTabsView';
-import RootNodeStakingContent from './RootNodeStakingContent';
-import ValidatorStaking from './ValidatorStaking';
-import PageWrap from 'components/Base/PageWrap';
-import ManageStakerRewardPool from './ManageStakerRewardPool';
+import BigTabsView from 'components/Base/Tabs/BigTabsView'
+import RootNodeStakingContent from './RootNodeStakingContent'
+import ValidatorStaking from './ValidatorStaking'
+import PageWrap from 'components/Base/PageWrap'
+import ManageStakerRewardPool from './ManageStakerRewardPool'
 
-function Staking() {
-  const location = useLocation();
-  const { state } = location;
-  const amountNodeStake = useSelector(rootNodeStake);
+function Staking () {
+  const location = useLocation()
+  const { state } = location
+  const amountNodeStake = useSelector(rootNodeStake)
 
   const tabsItems = useMemo(() => (
     [
       {
         label: 'root-node-staking',
         title: 'Root Node Staking',
-        content: <RootNodeStakingContent/>,
+        content: <RootNodeStakingContent/>
       },
       {
         label: 'validator-staking',
         title: 'Validator Staking',
-        content: <ValidatorStaking/>,
-      },
+        content: <ValidatorStaking/>
+      }
     ]
-  ), [amountNodeStake]);
+  ), [amountNodeStake])
 
   return (
     <PageWrap
@@ -42,7 +42,7 @@ function Staking() {
         active={state?.activeTab ? state.activeTab : tabsItems[0]?.label}
       />
     </PageWrap>
-  );
+  )
 }
 
-export default Staking;
+export default Staking

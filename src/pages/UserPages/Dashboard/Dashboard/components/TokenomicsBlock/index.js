@@ -1,1 +1,1 @@
-export {default} from './TokenomicsBlock';
+export { default } from './TokenomicsBlock'

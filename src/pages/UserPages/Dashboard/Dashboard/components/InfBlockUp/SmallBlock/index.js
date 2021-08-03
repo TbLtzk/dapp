@@ -1,1 +1,1 @@
-export {default} from 'pages/UserPages/Dashboard/Dashboard/components/InfBlockUp/SmallBlock/SmallBlock';
+export { default } from 'pages/UserPages/Dashboard/Dashboard/components/InfBlockUp/SmallBlock/SmallBlock'

@@ -1,45 +1,45 @@
-import React, { useEffect, useState } from 'react';
-import LoadingSpinner from 'components/Base/LoadingSpinner';
-import SmallBlock from './SmallBlock';
-import Button from 'components/Base/Buttons/Button';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
-import colors from 'constants/colors';
+import React, { useEffect, useState } from 'react'
+import LoadingSpinner from 'components/Base/LoadingSpinner'
+import SmallBlock from './SmallBlock'
+import Button from 'components/Base/Buttons/Button'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { OverlayTrigger, Popover } from 'react-bootstrap'
+import colors from 'constants/colors'
 
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
-import { useDispatch, useSelector } from 'react-redux';
-import { loadingNumberAll, numberOfAllProposals, constitutionHash } from 'store/selectors/voting/proposals';
-import { getNumberAllProposals, getConstitutionHash } from 'store/actions/action-creaters/voting/proposals';
-import { latestConstitution, archiveConstitution } from 'contracts/handler/ConstitutionHandler';
-import { Link } from 'react-router-dom';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
+import { useDispatch, useSelector } from 'react-redux'
+import { loadingNumberAll, numberOfAllProposals, constitutionHash } from 'store/selectors/voting/proposals'
+import { getNumberAllProposals, getConstitutionHash } from 'store/actions/action-creaters/voting/proposals'
+import { latestConstitution, archiveConstitution } from 'contracts/handler/ConstitutionHandler'
+import { Link } from 'react-router-dom'
 
-function InfBlocksUp() {
-  const [blockNumber, setBlockNumber] = useState('0');
+function InfBlocksUp () {
+  const [blockNumber, setBlockNumber] = useState('0')
 
   window.web3.eth.getBlock('latest')
     .then(response => {
-      setBlockNumber(response.number || 0);
-    });
+      setBlockNumber(response.number || 0)
+    })
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const numberAllProposals = useSelector(numberOfAllProposals);
-  const loadingNumberAllProposals = useSelector(loadingNumberAll);
-  const constitutionHashShow = useSelector(constitutionHash);
+  const numberAllProposals = useSelector(numberOfAllProposals)
+  const loadingNumberAllProposals = useSelector(loadingNumberAll)
+  const constitutionHashShow = useSelector(constitutionHash)
   const popover = (
     <Popover id="popover-basic">
       <Popover.Content style={{
-        background: colors.neonGreen,
+        background: colors.neonGreen
       }}>
         Copy
       </Popover.Content>
     </Popover>
-  );
+  )
 
   useEffect(() => {
-    dispatch(getNumberAllProposals());
-    dispatch(getConstitutionHash());
-  }, [dispatch]);
+    dispatch(getNumberAllProposals())
+    dispatch(getConstitutionHash())
+  }, [dispatch])
 
   return (
     <>
@@ -78,7 +78,7 @@ function InfBlocksUp() {
         }
         secondContent={
           <div className={'card__actions'}>
-            <a href={latestConstitution} target="_blank">
+            <a href={latestConstitution} target="_blank" rel="noreferrer">
               <Button
                 icon="download"
                 title={'Download Latest'}
@@ -86,7 +86,7 @@ function InfBlocksUp() {
                 }}
               />
             </a>
-            <a href={archiveConstitution} target="_blank">
+            <a href={archiveConstitution} target="_blank" rel="noreferrer">
               <Button
                 icon="archive-outline"
                 title={'Check archive'}
@@ -103,8 +103,9 @@ function InfBlocksUp() {
         firstSubtitle="Active proposals"
         secondSubtitle="Past proposals"
         firstContent={
-          loadingNumberAllProposals ? <LoadingSpinner className={'card__spinner'}/> :
-            <>
+          loadingNumberAllProposals
+            ? <LoadingSpinner className={'card__spinner'}/>
+            : <>
               <p>{numberAllProposals?.active}</p>
               <div className={'card__actions'}>
                 <Link to={'/q-governance'}>
@@ -120,15 +121,15 @@ function InfBlocksUp() {
             </>
         }
         secondContent={
-          loadingNumberAllProposals ? <LoadingSpinner className={'card__spinner'}/> :
-            (<>
+          loadingNumberAllProposals
+            ? <LoadingSpinner className={'card__spinner'}/>
+            : (<>
               <p>{numberAllProposals?.ended}</p>
             </>)
         }
       />
     </>
-  );
+  )
 }
 
-export default InfBlocksUp;
-
+export default InfBlocksUp

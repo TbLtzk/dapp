@@ -1,40 +1,38 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { formObject } from 'store/selectors/auctions/modalHandler';
-import { StableCoinQUSD } from 'contracts/src/StableCoin';
-import { userAddressMetamask } from 'store/selectors/user-inf';
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
-import { setApproveModalBtn } from 'store/actions/action-creaters/auctions/auctions';
-import { approveModalBtn } from 'store/selectors/auctions/auctions';
+import { useDispatch, useSelector } from 'react-redux'
+import { formObject } from 'store/selectors/auctions/modalHandler'
+import { StableCoinQUSD } from 'contracts/src/StableCoin'
+import { userAddressMetamask } from 'store/selectors/user-inf'
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
+import { setApproveModalBtn } from 'store/actions/action-creaters/auctions/auctions'
 
-import { AUCTIONS_TYPES } from 'constants/statuses';
+import { AUCTIONS_TYPES } from 'constants/statuses'
 
-import InputGroup from 'components/Custom/ModalActions/InputGroup';
+import InputGroup from 'components/Custom/ModalActions/InputGroup'
 
-import { liquidation, systemSurplus, systemDebt } from './constants';
+import { liquidation, systemSurplus, systemDebt } from './constants'
 
-import { checkTabContract } from '../constants';
-import { symbol } from 'store/selectors/stable-coin';
+import { checkTabContract } from '../constants'
+import { symbol } from 'store/selectors/stable-coin'
 
-function CreateStep1(props) {
-  const { activeTab, register, errors } = props;
-  const formData = useSelector(formObject);
-  const userAddress = useSelector(userAddressMetamask);
-  const approveBtn = useSelector(approveModalBtn);
-  const dispatch = useDispatch();
-  const StableCoin = new StableCoinQUSD();
-  const symbolType = useSelector(symbol);
+function CreateStep1 (props) {
+  const { activeTab, register, errors } = props
+  const formData = useSelector(formObject)
+  const userAddress = useSelector(userAddressMetamask)
+  const dispatch = useDispatch()
+  const StableCoin = new StableCoinQUSD()
+  const symbolType = useSelector(symbol)
 
   const onChangeInput = async (value) => {
-    const contractName = checkTabContract(activeTab);
-    let allowance = await StableCoin.allowance(userAddress, contractsToAddresses[contractName]);
+    const contractName = checkTabContract(activeTab)
+    const allowance = await StableCoin.allowance(userAddress, contractsToAddresses[contractName])
     if (Number(value) > allowance) {
-      dispatch(setApproveModalBtn(true));
+      dispatch(setApproveModalBtn(true))
     } else {
-      dispatch(setApproveModalBtn(false));
+      dispatch(setApproveModalBtn(false))
     }
-  };
+  }
 
   const showData = (data, symbol) => {
     return (
@@ -49,28 +47,27 @@ function CreateStep1(props) {
           errors={errors}
         />
       </>
-    );
-  };
+    )
+  }
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (activeTab) {
       case AUCTIONS_TYPES.liquidation:
-        return showData(liquidation, symbolType);
+        return showData(liquidation, symbolType)
       case AUCTIONS_TYPES.systemDebt:
-        return showData(systemDebt, symbolType);
+        return showData(systemDebt, symbolType)
       case AUCTIONS_TYPES.systemSurplus:
-        return showData(systemSurplus, null);
+        return showData(systemSurplus, null)
       default:
-        return null;
+        return null
     }
-  }, [activeTab, register, errors]);
+  }, [activeTab, register, errors])
 
   return (
     <div>
       {switchContentOnTypeProposal()}
     </div>
-  );
+  )
 }
 
-export default CreateStep1;
-
+export default CreateStep1

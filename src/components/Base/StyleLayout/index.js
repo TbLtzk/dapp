@@ -1,1 +1,1 @@
-export {default} from './StyleLayout';
+export { default } from './StyleLayout'

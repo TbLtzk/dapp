@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/action-types/q-vault';
+import * as actionTypes from '../actions/action-types/q-vault'
 
 const initialState = {
   lastUpdate: 0,
@@ -15,79 +15,79 @@ const initialState = {
   errorDelegationList: null,
 
   qvBalance: null,
-  outstandingDelegationRewards: 0,
-};
+  outstandingDelegationRewards: 0
+}
 
-export default function qVault(state = initialState, action) {
+export default function qVault (state = initialState, action) {
   switch (action.type) {
     case actionTypes.SET_QV_DATA_IS_LOADING:
       return {
         ...state,
         isLoading: true
-      };
+      }
     case actionTypes.SET_QV_ERROR:
       return {
         ...state,
         lastUpdate: Date.now(),
         isLoading: false,
         error: action.error
-      };
+      }
     default:
-      let newState = {
+      const newState = {
         ...state,
         lastUpdate: Date.now(),
         isLoading: false,
-        error: '',
-      };
+        error: ''
+      }
       switch (action.type) {
         case actionTypes.SET_QV_USER_BALANCE:
           return {
             ...newState,
-            userBalance: action.payload,
-          };
+            userBalance: action.payload
+          }
         case actionTypes.SET_QV_LOCKED_ASSETS:
           return {
             ...newState,
             votingWeight: action.votingWeight,
-            votingLockingEnd: action.votingLockingEnd,
-          };
+            votingLockingEnd: action.votingLockingEnd
+          }
         case actionTypes.GET_DELEGATIONS_LIST:
           return {
             ...state,
-            loadingDelegationList: true,
-          };
+            loadingDelegationList: true
+          }
         case actionTypes.GET_DELEGATIONS_LIST_SUCCESS:
           return {
             ...state,
             loadingDelegationList: false,
             delegationList: action.result,
-            errorDelegationList: null,
-          };
+            errorDelegationList: null
+          }
         case actionTypes.GET_DELEGATIONS_LIST_ERROR:
           return {
             ...state,
             loadingDelegationList: false,
             delegationList: [],
-            errorDelegationList: action.result,
-          };
+            errorDelegationList: action.result
+          }
         case actionTypes.GET_QV_BALANCE_SUCCESS:
           return {
             ...state,
-            qvBalance: action.result,
-          };
+            qvBalance: action.result
+          }
         case actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS_SUCCESS:
           return {
             ...state,
             outstandingDelegationRewards: action.result,
             lastClaim: +new Date()
-          };
+          }
         case actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS_ERROR:
           return {
             ...state,
-            outstandingDelegationRewards: 0,
-          };
+            outstandingDelegationRewards: 0
+          }
         default:
-          return state;
+          return state
       }
   }
 }

@@ -1,17 +1,17 @@
-import React from 'react';
+import React from 'react'
 
 import {
   HeaderWrp,
   HeaderTitle,
   HeaderActions
-} from './styles';
+} from './styles'
 
-function Header(props) {
+function Header (props) {
   const {
     header,
     extra,
     extraButton
-  } = props;
+  } = props
 
   return (
     <HeaderWrp>
@@ -23,7 +23,7 @@ function Header(props) {
         {extra}
       </HeaderActions>
     </HeaderWrp>
-  );
+  )
 }
 
-export default Header;
+export default Header

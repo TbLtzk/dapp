@@ -1,18 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import { TableStyle } from './styles';
+import { TableStyle } from './styles'
 
-function TableView(props) {
-  const { header, body, type } = props;
+function TableView (props) {
+  const { header, body, type } = props
 
   return (
     <TableStyle responsive type={type || ''}>
-      {!header ? null :
-        <thead>
+      {!header
+        ? null
+        : <thead>
         <tr>
           {header.map((elem, i) => {
-            return <th key={i}>{elem}</th>;
+            return <th key={i}>{elem}</th>
           })}
         </tr>
         </thead>
@@ -21,12 +22,11 @@ function TableView(props) {
       {body}
       </tbody>
     </TableStyle>
-  );
+  )
 }
 
 TableView.propTypes = {
-  header: PropTypes.array,
-};
+  header: PropTypes.array
+}
 
-export default TableView;
-
+export default TableView

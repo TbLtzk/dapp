@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react';
-import { Form } from 'react-bootstrap';
-import { SwitcherWrapper } from './styles';
+import React, { forwardRef } from 'react'
+import { Form } from 'react-bootstrap'
+import { SwitcherWrapper } from './styles'
 
 const FormSwithch = forwardRef((props, ref) => {
   const {
@@ -9,8 +9,8 @@ const FormSwithch = forwardRef((props, ref) => {
     checked,
     onChange,
     id,
-    palette,
-  } = props;
+    palette
+  } = props
   return (
     <SwitcherWrapper
       palette={palette}
@@ -26,8 +26,7 @@ const FormSwithch = forwardRef((props, ref) => {
         />
       </Form.Group>
     </SwitcherWrapper>
-  );
-});
+  )
+})
 
-export default FormSwithch;
-
+export default FormSwithch

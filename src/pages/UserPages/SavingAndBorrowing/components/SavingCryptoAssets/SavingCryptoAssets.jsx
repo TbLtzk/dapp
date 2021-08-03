@@ -1,54 +1,54 @@
-import React, { useEffect, useState } from 'react';
-import CustomBlock from 'components/Base/CustomBlock';
-import TableView from 'components/Base/TableView';
-import SaveManageAsset from '../SaveManageAsset';
+import React, { useEffect, useState } from 'react'
+import CustomBlock from 'components/Base/CustomBlock'
+import TableView from 'components/Base/TableView'
+import SaveManageAsset from '../SaveManageAsset'
 
-import { SavingQUSD } from 'contracts/src/Saving';
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
-import { fN, uintPerSecondToPerYearNumber } from 'func/useful';
-import { useSelector } from 'react-redux';
-import { userAddressMetamask } from 'store/selectors/user-inf';
+import { SavingQUSD } from 'contracts/src/Saving'
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
+import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
+import { useSelector } from 'react-redux'
+import { userAddressMetamask } from 'store/selectors/user-inf'
 
 const HEADERS = [
   'Deposit asset',
   'Interest asset',
   'Interest rate (p.a.)',
   ''
-];
+]
 
-function SavingCryptoAssets({ reload }) {
-  const myAddress = useSelector(userAddressMetamask);
-  const [assets, setAssets] = useState([]);
+function SavingCryptoAssets ({ reload }) {
+  const myAddress = useSelector(userAddressMetamask)
+  const [assets, setAssets] = useState([])
 
   const fetchAssets = async () => {
-    const contractSavingQUSD = new SavingQUSD(contractsToAddresses['SavingQUSD']);
+    const contractSavingQUSD = new SavingQUSD(contractsToAddresses.SavingQUSD)
     const BalanceDetails = await contractSavingQUSD.getBalanceDetails(myAddress)
       .catch(() => {
-      });
-    const intRateL = uintPerSecondToPerYearNumber(BalanceDetails.interestRate);
+      })
+    const intRateL = uintPerSecondToPerYearNumber(BalanceDetails.interestRate)
     setAssets(
       [
         {
           depositAsset: 'QUSD',
           interestAsset: 'QUSD',
           rate: intRateL
-        },
+        }
       ]
-    );
+    )
   }
-  
+
   useEffect(() => {
     if (!reload) {
       fetchAssets()
     }
-  }, [reload]);
+  }, [reload])
 
   return (
     <CustomBlock>
       <h1>Saving Crypto Assets</h1>
       {
-        assets.length ?
-          <TableView
+        assets.length
+          ? <TableView
             type="with-action"
             header={HEADERS}
             body={
@@ -72,14 +72,14 @@ function SavingCryptoAssets({ reload }) {
                       />
                     </td>
                   </tr>
-                );
+                )
               })
             }
           />
           : 'No Saving assets'
       }
     </CustomBlock>
-  );
+  )
 }
 
-export default SavingCryptoAssets;
+export default SavingCryptoAssets

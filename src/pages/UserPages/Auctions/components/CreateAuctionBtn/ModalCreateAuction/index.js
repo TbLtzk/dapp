@@ -1,1 +1,1 @@
-export {default} from './ModalCreateAuction';
+export { default } from './ModalCreateAuction'

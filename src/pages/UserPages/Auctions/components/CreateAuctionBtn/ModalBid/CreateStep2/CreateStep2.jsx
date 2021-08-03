@@ -1,15 +1,15 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { useSelector } from 'react-redux';
-import { formObject } from 'store/selectors/auctions/modalHandler';
+import { useSelector } from 'react-redux'
+import { formObject } from 'store/selectors/auctions/modalHandler'
 
-function CreateStep2(props) {
+function CreateStep2 (props) {
   const {
     activeTab,
     register,
     errors
-  } = props;
-  const formData = useSelector(formObject);
+  } = props
+  const formData = useSelector(formObject)
 
   const contentSwitcher = useCallback(() => {
     return (
@@ -20,15 +20,14 @@ function CreateStep2(props) {
         <h5>Bid</h5>
         <p>{formData?.bid}</p>
       </div>
-    );
-  }, [activeTab, register, errors]);
+    )
+  }, [activeTab, register, errors])
 
   return (
     <>
       {contentSwitcher()}
     </>
-  );
+  )
 }
 
-export default CreateStep2;
-
+export default CreateStep2

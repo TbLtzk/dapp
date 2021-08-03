@@ -1,61 +1,61 @@
-import { put, takeEvery } from 'redux-saga/effects';
-import * as actionTypes from 'store/actions/action-types/membership';
+import { put, takeEvery } from 'redux-saga/effects'
+import * as actionTypes from 'store/actions/action-types/membership'
 import {
   getIsUserEPDRMemberSuccess, getIsUserEPQFIMemberSuccess,
   getEPDRMembersError, getEPDRMembersSuccess, getEPQFIMembersError,
   getEPQFIMembersSuccess
-} from 'store/actions/action-creaters/membership';
+} from 'store/actions/action-creaters/membership'
 
-import EPDR_Membership from 'contracts/src/membership/EPDR_Membership';
-import EPQFI_Membership from 'contracts/src/membership/EPQFI_Membership';
+import EPDRMembership from 'contracts/src/membership/EPDR_Membership'
+import EPQFIMembership from 'contracts/src/membership/EPQFI_Membership'
 
-function getContract_EPDR_Membership() {
-  return new EPDR_Membership();
+function getContractEPDRMembership () {
+  return new EPDRMembership()
 }
 
-function getContract_EPQFI_Membership() {
-  return new EPQFI_Membership();
+function getContractEPQFIMembership () {
+  return new EPQFIMembership()
 }
 
-function* isUserEPDRMember({ address }) {
+function * isUserEPDRMember ({ address }) {
   try {
-    const contract = getContract_EPDR_Membership();
-    const data = yield contract.isMember(address);
-    yield put(getIsUserEPDRMemberSuccess(data));
+    const contract = getContractEPDRMembership()
+    const data = yield contract.isMember(address)
+    yield put(getIsUserEPDRMemberSuccess(data))
   } catch (err) {
-    console.error('isUserValidator.Error', err);
+    console.error('isUserValidator.Error', err)
   }
 }
 
-function* isUserEPQFIMember({ address }) {
+function * isUserEPQFIMember ({ address }) {
   try {
-    const contract = getContract_EPQFI_Membership();
-    const data = yield contract.isMember(address);
-    yield put(getIsUserEPQFIMemberSuccess(data));
+    const contract = getContractEPQFIMembership()
+    const data = yield contract.isMember(address)
+    yield put(getIsUserEPQFIMemberSuccess(data))
   } catch (err) {
-    console.error('isUserValidator.Error', err);
+    console.error('isUserValidator.Error', err)
   }
 }
 
-function* getEPDR_Members() {
+function * getEPDRMembers () {
   try {
-    const contract = getContract_EPDR_Membership();
-    const data = yield contract.getMembers();
-    yield put(getEPDRMembersSuccess(data));
+    const contract = getContractEPDRMembership()
+    const data = yield contract.getMembers()
+    yield put(getEPDRMembersSuccess(data))
   } catch (err) {
-    console.error('getEPDR_Members.Error', err);
-    yield put(getEPDRMembersError(err));
+    console.error('getEPDRMembers.Error', err)
+    yield put(getEPDRMembersError(err))
   }
 }
 
-function* getEPQFI_Members() {
+function * getEPQFIMembers () {
   try {
-    const contract = getContract_EPQFI_Membership();
-    const data = yield contract.getMembers();
-    yield put(getEPQFIMembersSuccess(data));
+    const contract = getContractEPQFIMembership()
+    const data = yield contract.getMembers()
+    yield put(getEPQFIMembersSuccess(data))
   } catch (err) {
-    console.error('getEPQFI_Members.Error', err);
-    yield put(getEPQFIMembersError(err));
+    console.error('getEPQFIMembers.Error', err)
+    yield put(getEPQFIMembersError(err))
   }
 }
 
@@ -63,6 +63,6 @@ export default [
   takeEvery(actionTypes.IS_USER_EPDR_MEMBER, isUserEPDRMember),
   takeEvery(actionTypes.IS_USER_EPQFI_MEMBER, isUserEPQFIMember),
 
-  takeEvery(actionTypes.GET_EPDR_MEMBERS, getEPDR_Members),
-  takeEvery(actionTypes.GET_EPQFI_MEMBERS, getEPQFI_Members),
-];
+  takeEvery(actionTypes.GET_EPDR_MEMBERS, getEPDRMembers),
+  takeEvery(actionTypes.GET_EPQFI_MEMBERS, getEPQFIMembers)
+]

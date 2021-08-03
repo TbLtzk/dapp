@@ -1,1 +1,1 @@
-export {default} from './AlertWindow';
+export { default } from './AlertWindow'

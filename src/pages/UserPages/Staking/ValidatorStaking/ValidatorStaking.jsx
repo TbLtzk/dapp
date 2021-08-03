@@ -1,9 +1,9 @@
-import React from 'react';
+import React from 'react'
 
-import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
-import AccountStatus from './AccountStatus';
+import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel'
+import AccountStatus from './AccountStatus'
 
-export default function ValidatorStaking() {
+export default function ValidatorStaking () {
   return (
     <div>
       <AccountStatus/>
@@ -13,5 +13,5 @@ export default function ValidatorStaking() {
         widened
       />
     </div>
-  );
+  )
 }

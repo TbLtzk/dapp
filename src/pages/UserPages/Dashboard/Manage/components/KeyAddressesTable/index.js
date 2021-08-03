@@ -1,1 +1,1 @@
-export {default} from './KeyAddressesTable';
+export { default } from './KeyAddressesTable'

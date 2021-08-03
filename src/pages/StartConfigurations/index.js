@@ -1,1 +1,1 @@
-export {default} from './StartConfigurations';
+export { default } from './StartConfigurations'

@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Button } from 'react-bootstrap';
+import styled from 'styled-components'
+import { Button } from 'react-bootstrap'
 
 export const ButtonCustom = styled(Button)`
   align-items: center;
@@ -21,20 +21,20 @@ export const ButtonCustom = styled(Button)`
     if (props.palette === 'dark' && props.variant === 'primary') {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         case 'transparent':
-          return 'transparent';
+          return 'transparent'
         default:
-          return props.theme.colors.oxfordBlueTint2;
+          return props.theme.colors.oxfordBlueTint2
       }
     } else {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         case 'transparent':
-          return 'transparent';
+          return 'transparent'
         default:
-          return props.theme.colors.oxfordBlueTint2;
+          return props.theme.colors.oxfordBlueTint2
       }
     }
   }};
@@ -42,20 +42,20 @@ export const ButtonCustom = styled(Button)`
     if (props.palette === 'dark' && props.variant === 'primary') {
       switch (props.type) {
         case 'white':
-          return 'transparent';
+          return 'transparent'
         case 'transparent':
-          return 'transparent';
+          return 'transparent'
         default:
-          return props.theme.colors.oxfordBlueTint2;
+          return props.theme.colors.oxfordBlueTint2
       }
     } else {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         case 'transparent':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         default:
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
       }
     }
   }};
@@ -63,20 +63,20 @@ export const ButtonCustom = styled(Button)`
     if (props.palette === 'dark' && props.variant === 'primary') {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         case 'transparent':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         default:
-          return props.theme.colors.white;
+          return props.theme.colors.white
       }
     } else {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlue;
+          return props.theme.colors.oxfordBlue
         case 'transparent':
-          return props.theme.colors.oxfordBlue;
+          return props.theme.colors.oxfordBlue
         default:
-          return props.theme.colors.oxfordBlue;
+          return props.theme.colors.oxfordBlue
       }
     }
   }};
@@ -87,20 +87,20 @@ export const ButtonCustom = styled(Button)`
     if (props.palette === 'dark' && props.variant === 'primary') {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlue;
+          return props.theme.colors.oxfordBlue
         case 'transparent':
-          return props.theme.colors.oxfordBlueTint2;
+          return props.theme.colors.oxfordBlueTint2
         default:
-          return props.theme.colors.oxfordBlue;
+          return props.theme.colors.oxfordBlue
       }
     } else {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlue;
+          return props.theme.colors.oxfordBlue
         case 'transparent':
-          return props.theme.colors.oxfordBlue;
+          return props.theme.colors.oxfordBlue
         default:
-          return props.theme.colors.oxfordBlue;
+          return props.theme.colors.oxfordBlue
       }
     }
   }};
@@ -108,20 +108,20 @@ export const ButtonCustom = styled(Button)`
     if (props.palette === 'dark' && props.variant === 'primary') {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint2;
+          return props.theme.colors.oxfordBlueTint2
         case 'transparent':
-          return 'transparent';
+          return 'transparent'
         default:
-          return props.theme.colors.circleDark;
+          return props.theme.colors.circleDark
       }
     } else {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.circleDark;
+          return props.theme.colors.circleDark
         case 'transparent':
-          return props.theme.colors.circleDark;
+          return props.theme.colors.circleDark
         default:
-          return props.theme.colors.circleDark;
+          return props.theme.colors.circleDark
       }
     }
   }};
@@ -129,20 +129,20 @@ export const ButtonCustom = styled(Button)`
     if (props.palette === 'dark' && props.variant === 'primary') {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint2;
+          return props.theme.colors.oxfordBlueTint2
         case 'transparent':
-          return 'transparent';
+          return 'transparent'
         default:
-          return props.theme.colors.oxfordBlueTint2;
+          return props.theme.colors.oxfordBlueTint2
       }
     } else {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.circleDark;
+          return props.theme.colors.circleDark
         case 'transparent':
-          return 'transparent';
+          return 'transparent'
         default:
-          return props.theme.colors.circleDark;
+          return props.theme.colors.circleDark
       }
     }
   }};
@@ -154,31 +154,31 @@ export const ButtonCustom = styled(Button)`
     color: ${(props) => {
     switch (props.type) {
       case 'white':
-        return props.theme.colors.oxfordBlue;
+        return props.theme.colors.oxfordBlue
       case 'transparent':
-        return props.theme.colors.oxfordBlue;
+        return props.theme.colors.oxfordBlue
       default:
-        return props.theme.colors.oxfordBlue;
+        return props.theme.colors.oxfordBlue
     }
   }};
     background-color: ${(props) => {
     if (props.palette === 'dark' && props.variant === 'primary') {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         case 'transparent':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         default:
-          return props.theme.colors.neonGreen;
+          return props.theme.colors.neonGreen
       }
     } else {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint4;
+          return props.theme.colors.oxfordBlueTint4
         case 'transparent':
-          return props.theme.colors.oxfordBlueTint4;
+          return props.theme.colors.oxfordBlueTint4
         default:
-          return props.theme.colors.oxfordBlueTint4;
+          return props.theme.colors.oxfordBlueTint4
       }
     }
   }};
@@ -186,20 +186,20 @@ export const ButtonCustom = styled(Button)`
     if (props.palette === 'dark' && props.variant === 'primary') {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         case 'transparent':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         default:
-          return props.theme.colors.neonGreen;
+          return props.theme.colors.neonGreen
       }
     } else {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint4;
+          return props.theme.colors.oxfordBlueTint4
         case 'transparent':
-          return props.theme.colors.oxfordBlueTint4;
+          return props.theme.colors.oxfordBlueTint4
         default:
-          return props.theme.colors.oxfordBlueTint4;
+          return props.theme.colors.oxfordBlueTint4
       }
     }
   }};
@@ -211,20 +211,20 @@ export const ButtonCustom = styled(Button)`
       if (props.palette === 'dark' && props.variant === 'primary') {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         case 'transparent':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         default:
-          return props.theme.colors.white;
+          return props.theme.colors.white
       }
       } else {
         switch (props.type) {
           case 'white':
-            return props.theme.colors.oxfordBlue;
+            return props.theme.colors.oxfordBlue
           case 'transparent':
-            return props.theme.colors.oxfordBlue;
+            return props.theme.colors.oxfordBlue
           default:
-            return props.theme.colors.oxfordBlue;
+            return props.theme.colors.oxfordBlue
         }
       }
     }};
@@ -232,20 +232,20 @@ export const ButtonCustom = styled(Button)`
     if (props.palette === 'dark' && props.variant === 'primary') {
       switch (props.type) {
         case 'white':
-          return 'transparent';
+          return 'transparent'
         case 'transparent':
-          return 'transparent';
+          return 'transparent'
         default:
-          return props.theme.colors.oxfordBlueTint2;
+          return props.theme.colors.oxfordBlueTint2
       }
     } else {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         case 'transparent':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         default:
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
       }
     }
   }
@@ -254,20 +254,20 @@ export const ButtonCustom = styled(Button)`
     if (props.palette === 'dark' && props.variant === 'primary') {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         case 'transparent':
-          return 'transparent';
+          return 'transparent'
         default:
-          return props.theme.colors.oxfordBlueTint2;
+          return props.theme.colors.oxfordBlueTint2
       }
     } else {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.activeLinks;
+          return props.theme.colors.activeLinks
         case 'transparent':
-          return props.theme.colors.activeLinks;
+          return props.theme.colors.activeLinks
         default:
-          return props.theme.colors.activeLinks;
+          return props.theme.colors.activeLinks
       }
     }
   }}
@@ -279,20 +279,20 @@ export const ButtonCustom = styled(Button)`
     if (props.palette === 'dark' && props.variant === 'primary') {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         case 'transparent':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         default:
-          return props.theme.colors.white;
+          return props.theme.colors.white
       }
     } else {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlue;
+          return props.theme.colors.oxfordBlue
         case 'transparent':
-          return props.theme.colors.oxfordBlue;
+          return props.theme.colors.oxfordBlue
         default:
-          return props.theme.colors.oxfordBlue;
+          return props.theme.colors.oxfordBlue
       }
     }
   }} !important;
@@ -300,20 +300,20 @@ export const ButtonCustom = styled(Button)`
     if (props.palette === 'dark' && props.variant === 'primary') {
       switch (props.type) {
         case 'white':
-          return 'transparent';
+          return 'transparent'
         case 'transparent':
-          return 'transparent';
+          return 'transparent'
         default:
-          return props.theme.colors.oxfordBlueTint2;
+          return props.theme.colors.oxfordBlueTint2
       }
     } else {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint6;
+          return props.theme.colors.oxfordBlueTint6
         case 'transparent':
-          return props.theme.colors.oxfordBlueTint6;
+          return props.theme.colors.oxfordBlueTint6
         default:
-          return props.theme.colors.oxfordBlueTint6;
+          return props.theme.colors.oxfordBlueTint6
       }
     }
   }} !important;
@@ -321,20 +321,20 @@ export const ButtonCustom = styled(Button)`
     if (props.palette === 'dark' && props.variant === 'primary') {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint5;
+          return props.theme.colors.oxfordBlueTint5
         case 'transparent':
-          return 'transparent';
+          return 'transparent'
         default:
-          return props.theme.colors.oxfordBlueTint2;
+          return props.theme.colors.oxfordBlueTint2
       }
     } else {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint6;
+          return props.theme.colors.oxfordBlueTint6
         case 'transparent':
-          return props.theme.colors.oxfordBlueTint6;
+          return props.theme.colors.oxfordBlueTint6
         default:
-          return props.theme.colors.oxfordBlueTint6;
+          return props.theme.colors.oxfordBlueTint6
       }
     }
   }}!important;
@@ -343,15 +343,15 @@ export const ButtonCustom = styled(Button)`
     margin: ${(props) => {
     if (props.title) {
       if (props.isiconpositionright) {
-        return '0 0 0 10px';
+        return '0 0 0 10px'
       } else {
-        return '0 10px 0 0';
+        return '0 10px 0 0'
       }
     } else {
-      return '0';
+      return '0'
     }
   }};
     font-size: ${(props) => props.iconfontsize ? props.iconfontsize : undefined};
   }
 }
-`;
+`

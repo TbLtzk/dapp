@@ -1,1 +1,1 @@
-export { default } from './DelegateStakingPower';
+export { default } from './DelegateStakingPower'

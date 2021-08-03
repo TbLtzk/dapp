@@ -1,1 +1,1 @@
-export { default } from './DelegatedValidatorsPanel';
+export { default } from './DelegatedValidatorsPanel'

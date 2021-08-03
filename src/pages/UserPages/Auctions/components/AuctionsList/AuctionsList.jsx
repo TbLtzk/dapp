@@ -1,47 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
-import LoadingSpinner from 'components/Base/LoadingSpinner';
-import CardBody from './components/CardBody';
+import LoadingSpinner from 'components/Base/LoadingSpinner'
+import CardBody from './components/CardBody'
 
-import { LoadingWrap} from "constants/style";
+import { LoadingWrap } from 'constants/style'
 
-import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux'
 
-import Status from './components/Status';
-import ModalBid from '../CreateAuctionBtn/ModalBid';
-import { convertToMonthDayYear, remainDate } from 'func/convertDate';
-import { executeAuction } from 'store/actions/action-creaters/auctions/auctions';
+import Status from './components/Status'
+import ModalBid from '../CreateAuctionBtn/ModalBid'
+import { convertToMonthDayYear, remainDate } from 'func/convertDate'
+import { executeAuction } from 'store/actions/action-creaters/auctions/auctions'
 import {
   setCreatedStepsLimit, setCreateObj,
   setStepCounter
-} from 'store/actions/action-creaters/auctions/modalHandler';
-import CardDropdownItems from './components/CardDropdownItems';
-import ListCard from 'components/Custom/PageLists/ListCard';
+} from 'store/actions/action-creaters/auctions/modalHandler'
+import CardDropdownItems from './components/CardDropdownItems'
+import ListCard from 'components/Custom/PageLists/ListCard'
 
-function AuctionsList(props) {
+function AuctionsList (props) {
   const {
     auctions,
     loading,
     errorMessage,
     activeTab
-  } = props;
-  const dispatch = useDispatch();
-  const [modalShow, setModalShow] = useState(false);
-  const [inf, setInf] = useState(null);
+  } = props
+  const dispatch = useDispatch()
+  const [modalShow, setModalShow] = useState(false)
+  const [inf, setInf] = useState(null)
 
   const onAuctionBid = (user, vaultId, contract, id, bid) => {
     setInf({
       user,
       vaultId,
       contract,
-      id: id,
-    });
-    dispatch(setStepCounter(1));
-    dispatch(setCreatedStepsLimit(2));
-    setModalShow(true);
-    dispatch(setCreateObj({ first: activeTab }));
-
-  };
+      id: id
+    })
+    dispatch(setStepCounter(1))
+    dispatch(setCreatedStepsLimit(2))
+    setModalShow(true)
+    dispatch(setCreateObj({ first: activeTab }))
+  }
 
   const onAuctionExecute = (user, vaultId, contract, id) => {
     dispatch(executeAuction({
@@ -49,14 +48,16 @@ function AuctionsList(props) {
       vaultId,
       contract,
       id: id
-    }));
-  };
+    }))
+  }
 
   return (
     <>
-      {loading ? <LoadingWrap><LoadingSpinner/></LoadingWrap> :
-        errorMessage ? <p>No auctions</p> :
-          auctions.length === 0
+      {loading
+        ? <LoadingWrap><LoadingSpinner/></LoadingWrap>
+        : errorMessage
+          ? <p>No auctions</p>
+          : auctions.length === 0
             ? <p>No auctions</p>
             : <div>{auctions.map((auction, i) => {
               return <ListCard
@@ -74,10 +75,10 @@ function AuctionsList(props) {
                   <CardDropdownItems
                     auction={auction}
                     handleExecute={() => {
-                      onAuctionExecute(auction.user, auction.userVaultId, auction.contract, auction?.id);
+                      onAuctionExecute(auction.user, auction.userVaultId, auction.contract, auction?.id)
                     }}
                     handleBid={() => {
-                      onAuctionBid(auction.user, auction.userVaultId, auction.contract, auction?.id);
+                      onAuctionBid(auction.user, auction.userVaultId, auction.contract, auction?.id)
                     }}
                     shareText={`${window.location.origin}/q-governance/proposal/${auction.contract}/${auction.id}`}
                   />
@@ -112,7 +113,7 @@ function AuctionsList(props) {
 
                   </div>
                 }
-              />;
+              />
             })}</div>
       }
       <ModalBid
@@ -120,14 +121,13 @@ function AuctionsList(props) {
         activeTab={activeTab}
         modalShow={modalShow}
         onHide={() => {
-          setModalShow(false);
-          dispatch(setCreateObj({}));
-          dispatch(setStepCounter(1));
+          setModalShow(false)
+          dispatch(setCreateObj({}))
+          dispatch(setStepCounter(1))
         }}
       />
     </>
-  );
+  )
 }
 
-export default AuctionsList;
-
+export default AuctionsList

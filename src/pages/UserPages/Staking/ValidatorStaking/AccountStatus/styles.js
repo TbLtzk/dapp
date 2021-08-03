@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const AccountStatusForm = styled.div`
   width: 100%;
@@ -22,7 +22,7 @@ export const AccountStatusForm = styled.div`
       margin-left: 10px;
     }
   }
-`;
+`
 
 export const AccountStatusInfo = styled.div`
   width: 100%;
@@ -31,4 +31,4 @@ export const AccountStatusInfo = styled.div`
   & > *:not(:first-child) {
     margin-left: 38px;
   }
-`;
+`

@@ -1,58 +1,58 @@
 /* eslint-disable max-classes-per-file */
-import { contractsToAbi } from '../mapping/contract-to-abi';
-import { toWei } from 'func/balance';
+import { contractsToAbi } from '../mapping/contract-to-abi'
+import { toWei } from 'func/balance'
 
 export class SavingQUSD {
-  constructor(address) {
-    this.contractName = 'SavingQUSD';
-    this.address = address;
-    this.contract = new window.web3.eth.Contract(contractsToAbi[this.contractName], address);
-    this.methods = this.contract.methods;
+  constructor (address) {
+    this.contractName = 'SavingQUSD'
+    this.address = address
+    this.contract = new window.web3.eth.Contract(contractsToAbi[this.contractName], address)
+    this.methods = this.contract.methods
   }
 
-  async usersSavings(address) {
+  async usersSavings (address) {
     return await this.methods.usersSavings(address)
-      .call();
+      .call()
   }
 
-  async deposit(address, amount) {
+  async deposit (address, amount) {
     return await this.methods.deposit(toWei(amount))
-      .send({ from: address });
+      .send({ from: address })
   }
 
-  async withdraw(address, amount) {
+  async withdraw (address, amount) {
     return await this.methods.withdraw(toWei(amount))
-      .send({ from: address });
+      .send({ from: address })
   }
 
-  async claim(address) {
+  async claim (address) {
     return await this.methods.claim()
-      .send({ from: address });
+      .send({ from: address })
   }
 
-  async compoundRateKeeper() {
+  async compoundRateKeeper () {
     return await this.methods.compoundRateKeeper()
-      .call();
+      .call()
   }
 
-  async getBalanceDetails(accountId) {
+  async getBalanceDetails (accountId) {
     return await this.methods.getBalanceDetails()
       .call(
         {
           from: accountId || ''
         }
-      );
+      )
   }
 
-  async getBalance(accountId) {
+  async getBalance (accountId) {
     return await this.methods.getBalance()
       .call({
         from: accountId || ''
-      });
+      })
   }
 
-  async updateCompoundRate(address) {
+  async updateCompoundRate (address) {
     return await this.methods.updateCompoundRate()
-      .send({ from: address });
+      .send({ from: address })
   }
 }

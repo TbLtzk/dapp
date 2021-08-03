@@ -1,16 +1,16 @@
-import React from 'react';
-import ReactPaginate from 'react-paginate';
-import { WrapPagination, WrapText } from './styles';
+import React from 'react'
+import ReactPaginate from 'react-paginate'
+import { WrapPagination, WrapText } from './styles'
 
 export const setElementsForOnePage = (data, offset, perPage) => {
-  return data.slice(offset, offset + perPage);
-};
+  return data.slice(offset, offset + perPage)
+}
 
 export const countPages = (data, perPage) => {
-  return Math.ceil(data.length / perPage);
-};
+  return Math.ceil(data.length / perPage)
+}
 
-export function Pagination({
+export function Pagination ({
   pageCount,
   handleClick,
   currentPage
@@ -34,7 +34,5 @@ export function Pagination({
         activeClassName={'active'}
       />
     </WrapPagination>
-  );
+  )
 }
-
-

@@ -1,75 +1,74 @@
-import React, { useEffect, useState } from 'react';
-import Button from 'components/Base/Buttons/Button';
-import ModalWindow from 'components/Base/ModalWindow';
-import LoadingSpinner from 'components/Base/LoadingSpinner';
-import FormInput from 'components/Base/Form/FormInput';
+import React, { useEffect, useState } from 'react'
+import Button from 'components/Base/Buttons/Button'
+import ModalWindow from 'components/Base/ModalWindow'
+import LoadingSpinner from 'components/Base/LoadingSpinner'
+import FormInput from 'components/Base/Form/FormInput'
 
-import Handler from './handler';
+import Handler from './handler'
 
-import { fN } from 'func/useful';
-import { useDispatch, useSelector } from 'react-redux';
-import { useForm } from 'react-hook-form';
-import { userAddressMetamask } from 'store/selectors/user-inf';
-import { errorHandler } from 'func/useful';
+import { fN, errorHandler } from 'func/useful'
+import { useDispatch, useSelector } from 'react-redux'
+import { useForm } from 'react-hook-form'
+import { userAddressMetamask } from 'store/selectors/user-inf'
 
 const DEPOSIT_BTN_TEXT = {
   deposit: 'Deposit',
   approve: 'Approve'
-};
+}
 
-const BTN_LENGTH = '100px';
+const BTN_LENGTH = '100px'
 
-function SaveManageAsset(props) {
+function SaveManageAsset (props) {
   const {
     depositAsset,
     interestAsset,
     rate
-  } = props;
+  } = props
 
   const {
-    register : register1,
+    register: register1,
     handleSubmit: handleSubmit1,
     errors: errors1
-  } = useForm();
+  } = useForm()
 
   const {
-    register : register2,
+    register: register2,
     handleSubmit: handleSubmit2,
     errors: errors2
-  } = useForm();
+  } = useForm()
 
-  const [depositBtnTitle, setDepositBtnTitle] = useState(DEPOSIT_BTN_TEXT.deposit);
+  const [depositBtnTitle, setDepositBtnTitle] = useState(DEPOSIT_BTN_TEXT.deposit)
 
-  const [isModalShown, setIsModalShown] = useState(false);
-  const [avToDeposit, setAvToDeposit] = useState(0);
-  const [savingBalance, setSavingBalance] = useState(0);
-  const [interestRate, setInterestRate] = useState('-');
-  const [estInterest, setEstInterest] = useState(0);
-  const [loadingInf, setLoadingInf] = useState(true);
-  const [allowance, setAllowance] = useState(0);
+  const [isModalShown, setIsModalShown] = useState(false)
+  const [avToDeposit, setAvToDeposit] = useState(0)
+  const [savingBalance, setSavingBalance] = useState(0)
+  const [interestRate, setInterestRate] = useState('-')
+  const [estInterest, setEstInterest] = useState(0)
+  const [loadingInf, setLoadingInf] = useState(true)
+  const [allowance, setAllowance] = useState(0)
 
-  const address = useSelector(userAddressMetamask);
-  const handler = new Handler(address, useDispatch());
+  const address = useSelector(userAddressMetamask)
+  const handler = new Handler(address, useDispatch())
 
-  async function deposit(formData) {
+  async function deposit (formData) {
     if (depositBtnTitle === DEPOSIT_BTN_TEXT.approve) {
-      await handler.approve();
-      handler.allowance(setAllowance);
-      setDepositBtnTitle(DEPOSIT_BTN_TEXT.deposit);
+      await handler.approve()
+      handler.allowance(setAllowance)
+      setDepositBtnTitle(DEPOSIT_BTN_TEXT.deposit)
     } else {
-      await handler.deposit(formData.amount, setSavingBalance, setAvToDeposit, setInterestRate, setEstInterest, setLoadingInf);
+      await handler.deposit(formData.amount, setSavingBalance, setAvToDeposit, setInterestRate, setEstInterest, setLoadingInf)
     }
   }
 
-  async function withdraw(formData) {
-    await handler.withdraw(formData.amount, setSavingBalance, setAvToDeposit, setInterestRate, setEstInterest, setLoadingInf);
+  async function withdraw (formData) {
+    await handler.withdraw(formData.amount, setSavingBalance, setAvToDeposit, setInterestRate, setEstInterest, setLoadingInf)
   }
 
   useEffect(async () => {
-    handler.setAvailableToDeposit(setAvToDeposit);
-    handler.setSavingBalanceIntRateEstInterest(setSavingBalance, setInterestRate, setEstInterest, setLoadingInf);
-    handler.allowance(setAllowance);
-  }, [depositAsset, interestAsset, rate]);
+    handler.setAvailableToDeposit(setAvToDeposit)
+    handler.setSavingBalanceIntRateEstInterest(setSavingBalance, setInterestRate, setEstInterest, setLoadingInf)
+    handler.allowance(setAllowance)
+  }, [depositAsset, interestAsset, rate])
 
   return (
     <>
@@ -79,13 +78,13 @@ function SaveManageAsset(props) {
         title={'Manage'}
         type="transparent"
         handleButton={() => {
-          setIsModalShown(true);
+          setIsModalShown(true)
         }}
       />
       <ModalWindow
         show={isModalShown}
         onHide={() => {
-          setIsModalShown(false);
+          setIsModalShown(false)
         }}
         modalTitle={'Saving ' + depositAsset}
         content={
@@ -137,9 +136,9 @@ function SaveManageAsset(props) {
                   valid={errorHandler(errors1, 'field')}
                   onChange={(value) => {
                     if (Number(allowance) < Number(value.target.value)) {
-                      setDepositBtnTitle(DEPOSIT_BTN_TEXT.approve);
+                      setDepositBtnTitle(DEPOSIT_BTN_TEXT.approve)
                     } else {
-                      setDepositBtnTitle(DEPOSIT_BTN_TEXT.deposit);
+                      setDepositBtnTitle(DEPOSIT_BTN_TEXT.deposit)
                     }
                   }}
                 />
@@ -173,7 +172,7 @@ function SaveManageAsset(props) {
         }
       />
     </>
-  );
+  )
 }
 
-export default SaveManageAsset;
+export default SaveManageAsset

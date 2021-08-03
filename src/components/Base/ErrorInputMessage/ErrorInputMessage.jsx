@@ -1,24 +1,21 @@
-import React from "react";
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import {ErrorMessage} from './styles';
+import { ErrorMessage } from './styles'
 
-function ErrorInputMessage(props) {
-    const {message} = props;
-    return (
+function ErrorInputMessage (props) {
+  const { message } = props
+  return (
         <ErrorMessage>{message}</ErrorMessage>
-    );
+  )
 }
 
 ErrorInputMessage.propTypes = {
-    message: PropTypes.string,
-};
+  message: PropTypes.string
+}
 
 ErrorInputMessage.defaultProps = {
-    message: '',
-};
+  message: ''
+}
 
-export default ErrorInputMessage;
-
-
-
+export default ErrorInputMessage

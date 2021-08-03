@@ -1,12 +1,12 @@
-import React from 'react';
+import React from 'react'
 
-import { Header, CardTitle, WrapBtnHeader } from './styles';
+import { Header, CardTitle, WrapBtnHeader } from './styles'
 
-function ListCardHeader(props) {
+function ListCardHeader (props) {
   const {
     title,
     data
-  } = props;
+  } = props
 
   return (
     <Header>
@@ -17,8 +17,7 @@ function ListCardHeader(props) {
         {data}
       </WrapBtnHeader>
     </Header>
-  );
+  )
 }
 
-export default ListCardHeader;
-
+export default ListCardHeader

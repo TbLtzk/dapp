@@ -1,47 +1,47 @@
-import * as actionTypes from '../actions/action-types/validation-reward-pools';
+import * as actionTypes from '../actions/action-types/validation-reward-pools'
 
 const initialState = {
   lastUpdate: 0,
   loadCounter: 0,
   error: '',
 
-  balance: 0,
-};
+  balance: 0
+}
 
-export default function index(state = initialState, action) {
+export default function index (state = initialState, action) {
   switch (action.type) {
     case actionTypes.SET_VRP_DATA_IS_LOADING:
       return {
         ...state,
-        loadCounter: state.loadCounter + 1,
-      };
+        loadCounter: state.loadCounter + 1
+      }
     case actionTypes.SET_VRP_DATA_IS_LOADED:
       return {
         ...state,
         lastUpdate: Date.now(),
-        loadCounter: state.loadCounter - 1,
-      };
+        loadCounter: state.loadCounter - 1
+      }
     case actionTypes.SET_VRP_ERROR:
       return {
         ...state,
         lastUpdate: Date.now(),
         loadCounter: state.loadCounter - 1,
-        error: action.error,
-      };
+        error: action.error
+      }
     case actionTypes.SET_VRP_BALANCE:
       return {
         ...state,
-        balance: action.payload,
-      };
+        balance: action.payload
+      }
     case actionTypes.GET_VRP_BALANCE_DASHBOARD_SUCCESS:
       return {
         ...state,
-        balance: action.result,
-      };
+        balance: action.result
+      }
     default:
       return {
         ...state,
-        lastUpdate: Date.now(),
-      };
+        lastUpdate: Date.now()
+      }
   }
 }

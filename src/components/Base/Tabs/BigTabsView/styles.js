@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-import { Tabs, Tab } from 'react-bootstrap';
+import { Tabs, Tab } from 'react-bootstrap'
 
 export const TabsStyle = styled(Tabs)`
   border-bottom: 0;
@@ -25,7 +25,7 @@ export const TabsStyle = styled(Tabs)`
     background-color: transparent;
     border-color: transparent;
   }
-`;
+`
 export const TabStyle = styled(Tab)`
 
-`;
+`

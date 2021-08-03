@@ -1,26 +1,26 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux'
 import {
   setVoteProposalObj,
   setDisabledCreatedProposalBtn
-} from 'store/actions/action-creaters/voting/proposals';
+} from 'store/actions/action-creaters/voting/proposals'
 
-import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
+import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
 
-import { arrRadioBtn } from './constants';
-import { formVoteObject } from 'store/selectors/voting/proposals';
+import { arrRadioBtn } from './constants'
+import { formVoteObject } from 'store/selectors/voting/proposals'
 
-function CreateStep1(props) {
-  const { register, errors } = props;
-  const dispatch = useDispatch();
-  const formData = useSelector(formVoteObject);
+function CreateStep1 (props) {
+  const { register, errors } = props
+  const dispatch = useDispatch()
+  const formData = useSelector(formVoteObject)
 
   const onChooseProposal = useCallback((value) => {
-    const radioVal = value.target.value;
-    dispatch(setVoteProposalObj({ first: radioVal }));
-    dispatch(setDisabledCreatedProposalBtn(false));
-  }, []);
+    const radioVal = value.target.value
+    dispatch(setVoteProposalObj({ first: radioVal }))
+    dispatch(setDisabledCreatedProposalBtn(false))
+  }, [])
 
   return (
     <div>
@@ -35,8 +35,7 @@ function CreateStep1(props) {
         handleChange={onChooseProposal}
       />
     </div>
-  );
+  )
 }
 
-export default CreateStep1;
-
+export default CreateStep1

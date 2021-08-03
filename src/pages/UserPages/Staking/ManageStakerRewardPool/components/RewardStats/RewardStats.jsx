@@ -1,44 +1,43 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { userAddressMetamask } from 'store/selectors/user-inf';
-import { delegatedStakeSelector } from 'store/selectors/validators';
+import { useDispatch, useSelector } from 'react-redux'
+import { userAddressMetamask } from 'store/selectors/user-inf'
+import { delegatedStakeSelector } from 'store/selectors/validators'
 
-import FormInput from 'components/Base/Form/FormInput';
-import Button from 'components/Base/Buttons/Button';
+import FormInput from 'components/Base/Form/FormInput'
+import Button from 'components/Base/Buttons/Button'
 
-import { useForm } from 'react-hook-form';
-import Handler from './handler';
+import { useForm } from 'react-hook-form'
+import Handler from './handler'
 
-import { errorHandler, fN } from 'func/useful';
+import { errorHandler, fN } from 'func/useful'
 
-export default function RewardStats() {
+export default function RewardStats () {
   const {
     register: reg1,
     handleSubmit: submit1,
     errors: err1
-  } = useForm();
+  } = useForm()
 
-  const [amountRP, setAmountRP] = useState(0);
-  const [delShare, setDelShare] = useState(0);
+  const [amountRP, setAmountRP] = useState(0)
+  const [delShare, setDelShare] = useState(0)
   const [delClaim, setDelClaim] = useState(0)
-  const delegatedStake = useSelector(delegatedStakeSelector);
+  const delegatedStake = useSelector(delegatedStakeSelector)
 
-  const address = useSelector(userAddressMetamask);
-  const handler = new Handler(address, useDispatch());
-  
+  const address = useSelector(userAddressMetamask)
+  const handler = new Handler(address, useDispatch())
 
   useEffect(() => {
-    handler.getAmountOfRewardPool(setAmountRP);
-    handler.getDelegatorShare(setDelShare);
-    handler.getPoolInfo(setDelClaim);
-  }, []);
+    handler.getAmountOfRewardPool(setAmountRP)
+    handler.getDelegatorShare(setDelShare)
+    handler.getPoolInfo(setDelClaim)
+  }, [])
 
   const setDelegatorShare = (formData) => {
-    handler.setDelegatorShare(formData, setDelShare);
-  };
+    handler.setDelegatorShare(formData, setDelShare)
+  }
 
-  const disDelClaims = amountRP - delClaim;
+  const disDelClaims = amountRP - delClaim
 
   const rewardStatsArr = useMemo(() => {
     return [
@@ -57,8 +56,8 @@ export default function RewardStats() {
         },
         {
           label: 'Distributable Delegator Percentage:',
-          value:   fN(disDelClaims / delegatedStake)+ '%'
-        },
+          value: fN(disDelClaims / delegatedStake) + '%'
+        }
       ],
       [
         {
@@ -68,11 +67,10 @@ export default function RewardStats() {
         {
           label: 'Delegator Share:',
           value: fN(delShare) + '%'
-        },
+        }
       ]
-    ];
-
-  }, [amountRP, delShare, delClaim, disDelClaims, delegatedStake]);
+    ]
+  }, [amountRP, delShare, delClaim, disDelClaims, delegatedStake])
 
   return (
     <>
@@ -87,11 +85,11 @@ export default function RewardStats() {
                     <h5>{el.label}</h5>
                     <p>{el.value}</p>
                   </div>
-                );
+                )
               })
             }
           </div>
-        );
+        )
       })}
       <h4>Set Delegator Share</h4>
       <div className="modal-one-line-form">
@@ -116,5 +114,5 @@ export default function RewardStats() {
         />
       </div>
     </>
-  );
+  )
 }

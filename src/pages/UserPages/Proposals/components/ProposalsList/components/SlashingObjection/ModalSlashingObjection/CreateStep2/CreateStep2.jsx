@@ -1,15 +1,15 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { useSelector } from 'react-redux';
-import { formObject } from 'store/selectors/auctions/modalHandler';
+import { useSelector } from 'react-redux'
+import { formObject } from 'store/selectors/auctions/modalHandler'
 
-function CreateStep2(props) {
+function CreateStep2 (props) {
   const {
     activeTab,
     register,
     errors
-  } = props;
-  const formData = useSelector(formObject);
+  } = props
+  const formData = useSelector(formObject)
 
   const showCommonData = (children) => {
     return (
@@ -21,13 +21,13 @@ function CreateStep2(props) {
         <p>{formData['external-link']}</p>
         {children}
       </div>
-    );
-  };
+    )
+  }
 
   const contentSwitcher = useCallback(() => {
     switch (activeTab) {
       case 'cast-objection':
-        return showCommonData(<></>);
+        return showCommonData(<></>)
       case 'propose-decision' :
         return showCommonData(
           <>
@@ -36,19 +36,17 @@ function CreateStep2(props) {
             <h5>Did the target of the slashing neglect a formal appeal?</h5>
             <p>{formData['target-slashing-appeal']}</p>
           </>
-        );
+        )
       default:
-        return null;
+        return null
     }
-
-  }, [activeTab, register, errors]);
+  }, [activeTab, register, errors])
 
   return (
     <>
       {contentSwitcher()}
     </>
-  );
+  )
 }
 
-export default CreateStep2;
-
+export default CreateStep2

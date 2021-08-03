@@ -1,26 +1,24 @@
-import React from 'react';
-import { GlobalStyle } from 'constants/globalStyle';
-import { ThemeProvider } from 'styled-components';
-import themeStyles from 'constants/style';
-import { darkColors, lightColors } from 'constants/colors';
-import { THEMES } from 'constants/colors';
+import React from 'react'
+import { GlobalStyle } from 'constants/globalStyle'
+import { ThemeProvider } from 'styled-components'
+import themeStyles from 'constants/style'
+import { darkColors, lightColors, THEMES } from 'constants/colors'
 
-//It's a crutch. Due to the prevailing architecture, the store is not
+// It's a crutch. Due to the prevailing architecture, the store is not
 // available on the project from the beginning of the application and
 // this is an option for components with a theme without a store.
-function StartConfigurationStyleLayout({ children }) {
-
-  function getColors(theme) {
-    let generalColors = {};
+function StartConfigurationStyleLayout ({ children }) {
+  function getColors (theme) {
+    let generalColors = {}
     switch (theme) {
       case THEMES.light:
-        generalColors = lightColors;
-        break;
+        generalColors = lightColors
+        break
       case THEMES.dark:
-        generalColors = darkColors;
-        break;
+        generalColors = darkColors
+        break
       default:
-        generalColors = darkColors;
+        generalColors = darkColors
     }
     return {
       ...generalColors,
@@ -34,8 +32,8 @@ function StartConfigurationStyleLayout({ children }) {
       error: generalColors.validationError,
       th: generalColors.oxfordBlueTint3,
       td: generalColors.white,
-      darkText: generalColors.oxfordBlue,
-    };
+      darkText: generalColors.oxfordBlue
+    }
   }
 
   return <ThemeProvider theme={
@@ -47,7 +45,7 @@ function StartConfigurationStyleLayout({ children }) {
   >
     <GlobalStyle/>
     {children}
-  </ThemeProvider>;
+  </ThemeProvider>
 }
 
-export default StartConfigurationStyleLayout;
+export default StartConfigurationStyleLayout

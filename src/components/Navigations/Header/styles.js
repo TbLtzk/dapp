@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { indents } from 'constants/style';
+import { indents } from 'constants/style'
 
 export const HeaderWrp = styled.div`
   width: 100%;

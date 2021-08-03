@@ -1,19 +1,19 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react'
 
-import { useSelector } from 'react-redux';
-import { formVoteObject } from 'store/selectors/voting/proposals';
+import { useSelector } from 'react-redux'
+import { formVoteObject } from 'store/selectors/voting/proposals'
 
-function CreateStep3(props) {
+function CreateStep3 (props) {
   const {
     activeTab,
     register,
     errors,
     proposalContract
-  } = props;
-  const formData = useSelector(formVoteObject);
+  } = props
+  const formData = useSelector(formVoteObject)
 
   const showCommonData = (answer) => {
-      return (
+    return (
         <div>
           <h2>Chosen data:</h2>
           <h5>Type</h5>
@@ -21,38 +21,35 @@ function CreateStep3(props) {
           <h5>Answer</h5>
           <p>{answer}</p>
           {proposalContract === 'ConstitutionVoting' || proposalContract === 'GeneralUpdateVoting' ||
-          proposalContract === 'EPDR_MembershipVoting' || proposalContract === 'EPQFI_MembershipVoting' ||
-          proposalContract === 'RootsVoting' ?
-            <h2>Notice: Your currently locked amount of Q inside the Q Vault will be extended until the end of this
+          proposalContract === 'EPDRMembershipVoting' || proposalContract === 'EPQFIMembershipVoting' ||
+          proposalContract === 'RootsVoting'
+            ? <h2>Notice: Your currently locked amount of Q inside the Q Vault will be extended until the end of this
               proposal.</h2>
             : null
           }
         </div>
-      );
-    }
-  ;
+    )
+  }
 
   const contentSwitcher = useCallback(() => {
-      switch (formData?.first) {
-        case 'basic-vote-on-proposal':
-          return showCommonData(formData['vote-proposal']);
-        case 'constitution-check':
-          return showCommonData(formData['constitution-check']);
-        case 'q-community-veto':
-          return showCommonData(formData?.veto);
-        default:
-          return null;
-      }
-
+    switch (formData?.first) {
+      case 'basic-vote-on-proposal':
+        return showCommonData(formData['vote-proposal'])
+      case 'constitution-check':
+        return showCommonData(formData['constitution-check'])
+      case 'q-community-veto':
+        return showCommonData(formData?.veto)
+      default:
+        return null
     }
-    , [activeTab, register, errors]);
+  }
+  , [activeTab, register, errors])
 
   return (
     <>
       {contentSwitcher()}
     </>
-  );
+  )
 }
 
-export default CreateStep3;
-
+export default CreateStep3

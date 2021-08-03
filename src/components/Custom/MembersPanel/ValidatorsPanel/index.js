@@ -1,1 +1,1 @@
-export {default} from 'components/Custom/MembersPanel/ValidatorsPanel/ValidatorsPanel';
+export { default } from 'components/Custom/MembersPanel/ValidatorsPanel/ValidatorsPanel'

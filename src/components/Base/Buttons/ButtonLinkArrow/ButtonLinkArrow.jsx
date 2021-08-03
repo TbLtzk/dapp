@@ -1,15 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import ButtonLink from 'components/Base/Buttons/ButtonLink';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { useHistory } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import ButtonLink from 'components/Base/Buttons/ButtonLink'
 
-import { WrapTitle } from './styles';
+import { WrapTitle } from './styles'
 
-export default function ButtonLinkArrow(props) {
-  const { title, path, stateHistory } = props;
-  const history = useHistory();
+export default function ButtonLinkArrow (props) {
+  const { title, path, stateHistory } = props
+  const history = useHistory()
 
   return (
     <ButtonLink
@@ -24,10 +24,10 @@ export default function ButtonLinkArrow(props) {
         state: stateHistory
       })}
     />
-  );
+  )
 }
 
 ButtonLinkArrow.propTypes = {
   title: PropTypes.string.isRequired,
-  path: PropTypes.string.isRequired,
-};
+  path: PropTypes.string.isRequired
+}
