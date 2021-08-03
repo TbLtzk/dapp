@@ -1,9 +1,9 @@
-import * as actionTypes from '../actions/action-types/validators';
+import * as actionTypes from "../actions/action-types/validators";
 
 const initialState = {
   lastUpdate: 0,
   loadCounter: 0,
-  error: '',
+  error: "",
 
   delegatorsShare: 0,
   totalStake: 0,
@@ -11,6 +11,7 @@ const initialState = {
   delegatedStake: 0,
   accTotalStake: 0,
   interestRate: 0,
+  selfStake: 0,
 
   validatorMembers: [],
   loadingMembers: true,
@@ -52,6 +53,11 @@ export default function index(state = initialState, action) {
       return {
         ...state,
         ownStake: action.payload,
+      };
+    case actionTypes.SET_VAL_SELF_STAKE:
+      return {
+        ...state,
+        selfStake: action.payload,
       };
     case actionTypes.SET_VAL_DELEGATED_STAKE:
       return {

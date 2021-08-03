@@ -19,6 +19,7 @@ export const getInterestRate = (address) => ({
   type: actionTypes.GET_VAL_INTEREST_RATE,
   address
 });
+
 export const setInterestRate = (data) => ({
   type: actionTypes.SET_VAL_INTEREST_RATE,
   payload: data
@@ -37,8 +38,19 @@ export const getOwnStake = (address) => ({
   type: actionTypes.GET_VAL_OWN_STAKE,
   address
 });
+
 export const setOwnStake = (data) => ({
   type: actionTypes.SET_VAL_OWN_STAKE,
+  payload: data
+});
+
+export const getSelfStake = (address) => ({
+  type: actionTypes.GET_VAL_SELF_STAKE,
+  address
+});
+
+export const setSelfStake = (data) => ({
+  type: actionTypes.SET_VAL_SELF_STAKE,
   payload: data
 });
 
@@ -72,6 +84,7 @@ export const getValidatorMembersError = (error) => ({
   type: actionTypes.GET_VALIDATORS_MEMBERS_ERROR,
   error: error
 });
+
 
 // Action without write to Store
 export const setDelegatorsShareSend = (address, uintPercent) => ({

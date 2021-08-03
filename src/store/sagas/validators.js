@@ -1,14 +1,24 @@
-import { put, takeEvery } from 'redux-saga/effects';
-import Validators from '../../contracts/src/Validators';
-import * as actionTypes from 'store/actions/action-types/validators';
+import { put, takeEvery } from "redux-saga/effects";
+import Validators from "../../contracts/src/Validators";
+import * as actionTypes from "store/actions/action-types/validators";
 import {
-  setError, setDelegatorsShare, getDelegatorsShare, setTotalStake, setOwnStake,
-  setDelegatedStake, setAccTotalStake, setInterestRate, getInterestRate,
-  getValidatorMembersSuccess, getValidatorMembersError, isUserValidatorSuccess,
-} from 'store/actions/action-creaters/validators';
-import { fromWei } from 'func/balance';
+  setError,
+  setDelegatorsShare,
+  getDelegatorsShare,
+  setTotalStake,
+  setSelfStake,
+  setOwnStake,
+  setDelegatedStake,
+  setAccTotalStake,
+  setInterestRate,
+  getInterestRate,
+  getValidatorMembersSuccess,
+  getValidatorMembersError,
+  isUserValidatorSuccess,
+} from "store/actions/action-creaters/validators";
+import { fromWei } from "func/balance";
 
-import { validatorsInstance, validationRewardPoolsInstance } from 'contracts/contracts'
+import { validatorsInstance, validationRewardPoolsInstance } from "contracts/contracts";
 
 let contractInstance = null;
 
@@ -28,7 +38,7 @@ function* getDelegatorsShareGenerator({ address }) {
     yield put(setDelegatorsShare(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
   } catch (err) {
-    console.error('Validators.Error', err);
+    console.error("Validators.Error", err);
     yield put(setError(err.message));
   }
 }
@@ -43,7 +53,7 @@ function* getTotalStakeGenerator({ address }) {
     yield put(setTotalStake(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
   } catch (err) {
-    console.error('Validators.Error', err);
+    console.error("Validators.Error", err);
     yield put(setError(err.message));
   }
 }
@@ -58,7 +68,7 @@ function* getOwnStakeGenerator({ address }) {
     yield put(setOwnStake(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
   } catch (err) {
-    console.error('Validators.Error', err);
+    console.error("Validators.Error", err);
     yield put(setError(err.message));
   }
 }
@@ -74,7 +84,7 @@ function* getDelegatedStakeGenerator({ address }) {
     yield put(setDelegatedStake(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
   } catch (err) {
-    console.error('Validators.Error', err);
+    console.error("Validators.Error", err);
     yield put(setError(err.message));
   }
 }
@@ -90,7 +100,21 @@ function* getAccTotalStakeGenerator({ address }) {
     yield put(setAccTotalStake(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
   } catch (err) {
-    console.error('Validators.Error', err);
+    console.error("Validators.Error", err);
+    yield put(setError(err.message));
+  }
+}
+
+function* getAccountableSelfStake({ address }) {
+  try {
+    yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADING });
+
+    const data = yield validatorsInstance.getAccountableSelfStake(address);
+    yield put(setSelfStake(fromWei(data)));
+
+    yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
+  } catch {
+    console.error("Validators.Error", err);
     yield put(setError(err.message));
   }
 }
@@ -104,7 +128,7 @@ function* getInterestRateGenerator({ address }) {
     yield put(setInterestRate(data));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
   } catch (err) {
-    console.error('Validators.Error', err);
+    console.error("Validators.Error", err);
     yield put(setError(err.message));
   }
 }
@@ -118,7 +142,7 @@ function* setDelegatorsShareGenerator({ address, uintPercent }) {
     if (data.status === true) yield put(getDelegatorsShare(address));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
   } catch (err) {
-    console.error('Validators.Error', err);
+    console.error("Validators.Error", err);
     yield put(setError(err.message));
   }
 }
@@ -133,7 +157,7 @@ function* setInterestRateGenerator({ address, uintPercent }) {
     if (data.status === true) yield put(getInterestRate(address));
     yield put({ type: actionTypes.SET_VAL_DATA_IS_LOADED });
   } catch (err) {
-    console.error('Validators.Error', err);
+    console.error("Validators.Error", err);
     yield put(setError(err.message));
   }
 }
@@ -144,7 +168,7 @@ function* getValidatorsMembers() {
     const data = yield contract.getMembersList();
     yield put(getValidatorMembersSuccess(data));
   } catch (err) {
-    console.error('ValidatorsMember.Error', err);
+    console.error("ValidatorsMember.Error", err);
     yield put(getValidatorMembersError(err.message));
   }
 }
@@ -154,7 +178,7 @@ function* isUserValidator({ address }) {
     const data = yield validatorsInstance.isInShortList(address);
     yield put(isUserValidatorSuccess(data));
   } catch (err) {
-    console.error('isUserValidator.Error', err);
+    console.error("isUserValidator.Error", err);
   }
 }
 
@@ -165,7 +189,7 @@ export default [
   takeEvery(actionTypes.GET_VAL_DELEGATED_STAKE, getDelegatedStakeGenerator),
   takeEvery(actionTypes.GET_VAL_ACC_TOTAL_STAKE, getAccTotalStakeGenerator),
   takeEvery(actionTypes.GET_VAL_INTEREST_RATE, getInterestRateGenerator),
-
+  takeEvery(actionTypes.GET_VAL_SELF_STAKE, getAccountableSelfStake),
   takeEvery(actionTypes.SET_VAL_DELEGATORS_SHARE_SEND, setDelegatorsShareGenerator),
   takeEvery(actionTypes.SET_VAL_INTEREST_RATE_SEND, setInterestRateGenerator),
 

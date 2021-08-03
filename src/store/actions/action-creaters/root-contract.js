@@ -88,9 +88,8 @@ export const checkIsUserRootNodeError = (result) => ({
 });
 
 /* check is user root node */
-export const getRootNodeStakes = (contract, address) => ({
+export const getRootNodeStakes = (address) => ({
     type: actionTypes.GET_ROOT_NODE_STAKES,
-    contract,
     address,
 });
 

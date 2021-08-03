@@ -81,8 +81,9 @@ function* checkIsUserRootNode({ contract, address }) {
   }
 }
 
-function* getRootNodeStakes({ contract, address }) {
+function* getRootNodeStakes({ address }) {
   try {
+    const contract = new RootService;
     const data = yield contract.getRootNodeStake(address);
     yield put(getRootNodeStakesSuccess(data));
   } catch (err) {
