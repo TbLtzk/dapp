@@ -20,7 +20,7 @@ module.exports = {
   rules: {
     'no-case-declarations': 'off',
     'react/no-unescaped-entities': 'off',
-    'react/prop-types': 'warn',
+    'react/prop-types': 'off',
     'react/display-name': 'off',
     'no-console': ['error', {
       allow: ['warn', 'error']
