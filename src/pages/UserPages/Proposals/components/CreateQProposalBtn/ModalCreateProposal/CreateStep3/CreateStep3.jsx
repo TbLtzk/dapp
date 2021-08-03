@@ -1,34 +1,34 @@
-import React, { useCallback, useState, Fragment, useEffect } from 'react';
+import React, { useCallback, useState, Fragment, useEffect } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { PROPOSALS_TYPES } from 'constants/statuses';
-import { formObject } from 'store/selectors/voting/proposals';
-import { getParameterKeysByType } from 'store/actions/action-creaters/parameters';
-import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue';
+import { useDispatch, useSelector } from 'react-redux'
+import { PROPOSALS_TYPES } from 'constants/statuses'
+import { formObject } from 'store/selectors/voting/proposals'
+import { getParameterKeysByType } from 'store/actions/action-creaters/parameters'
+import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue'
 
-import { constUpdate } from './constants';
-import FormSelect from 'components/Base/Form/FormSelect';
-import FormInput from 'components/Base/Form/FormInput';
-import { ParameterType } from '@q-dev/q-js-sdk';
-import { getTypeName } from 'func/contractHelpers';
-import { parameterVote } from '../CreateStep2/QExpertS2/constants';
+import { constUpdate } from './constants'
+import FormSelect from 'components/Base/Form/FormSelect'
+import FormInput from 'components/Base/Form/FormInput'
+import { ParameterType } from '@q-dev/q-js-sdk'
+import { getTypeName } from 'func/contractHelpers'
+import { parameterVote } from '../CreateStep2/QExpertS2/constants'
 
-import { CONTRACT_TYPES } from 'constants/contracts';
+import { CONTRACT_TYPES } from 'constants/contracts'
 
-function CreateStep3(props) {
+function CreateStep3 (props) {
   const {
     activeTab,
     register,
     errors
-  } = props;
-  const dispatch = useDispatch();
-  const formData = useSelector(formObject);
+  } = props
+  const dispatch = useDispatch()
+  const formData = useSelector(formObject)
 
   const [params, setParams] = useState([{
     type: ParameterType.ADDRESS,
     key: '',
     value: ''
-  }]);
+  }])
 
   const showCommonData = (children) => {
     return (
@@ -38,20 +38,20 @@ function CreateStep3(props) {
         <p> {formData?.first?.replace(/-/g, ' ')}</p>
         {children}
       </div>
-    );
-  };
+    )
+  }
 
-  function changeTypesCapacity(action) {
-    let newCapacity = 0;
+  function changeTypesCapacity (action) {
+    const newCapacity = 0
     switch (action) {
       case -1:
-        if (params.length - 1 < 1) return;
-        const newParams = [...params];
-        newParams.pop();
-        setParams(newParams);
-        break;
+        if (params.length - 1 < 1) return
+        const newParams = [...params]
+        newParams.pop()
+        setParams(newParams)
+        break
       case 1:
-        if (newCapacity > 100) return;
+        if (newCapacity > 100) return
         setParams([
           ...params,
           {
@@ -59,42 +59,42 @@ function CreateStep3(props) {
             key: '',
             value: ''
           }
-        ]);
-        break;
+        ])
+        break
     }
   }
 
-  function setNewValue(index, key, newType) {
-    const newParams = [...params];
-    newParams[index][key] = newType;
-    setParams(newParams);
+  function setNewValue (index, key, newType) {
+    const newParams = [...params]
+    newParams[index][key] = newType
+    setParams(newParams)
   }
 
   useEffect(() => {
     if (activeTab === PROPOSALS_TYPES.proposals) {
-      dispatch(getParameterKeysByType(CONTRACT_TYPES.constitution, ParameterType.ADDRESS));
+      dispatch(getParameterKeysByType(CONTRACT_TYPES.constitution, ParameterType.ADDRESS))
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (activeTab === PROPOSALS_TYPES.proposals || activeTab === PROPOSALS_TYPES.expertProposals) {
-      let key = '';
-      if (activeTab === PROPOSALS_TYPES.proposals) key = constUpdate.radioBtnName;
-      if (activeTab === PROPOSALS_TYPES.expertProposals) key = parameterVote.parameterType;
+      let key = ''
+      if (activeTab === PROPOSALS_TYPES.proposals) key = constUpdate.radioBtnName
+      if (activeTab === PROPOSALS_TYPES.expertProposals) key = parameterVote.parameterType
       if (formData[key]) {
         setParams(
           formData[key].reduce((types, item, index) => {
             types.push({
               type: item,
               key: formData[constUpdate.inputsObjFirst][index],
-              value: formData[constUpdate.inputsObjSecond][index],
-            });
-            return types;
+              value: formData[constUpdate.inputsObjSecond][index]
+            })
+            return types
           }, [])
-        );
+        )
       }
     }
-  }, []);
+  }, [])
 
   const contentSwitcher = useCallback(() => {
     switch (activeTab) {
@@ -105,7 +105,7 @@ function CreateStep3(props) {
               <h5>External link</h5>
               <p>{formData['external-link']}</p>
             </>
-          );
+          )
         } else if (formData?.first === 'constitution-update') {
           if (formData['change-constitution-parameter'] === 'no') {
             return showCommonData(
@@ -119,7 +119,7 @@ function CreateStep3(props) {
                 <h5>Change Constitution Parameter</h5>
                 <p>{formData['change-constitution-parameter']}</p>
               </>
-            );
+            )
           } else {
             return (
               <div>
@@ -136,8 +136,8 @@ function CreateStep3(props) {
                           palette={'dark'}
                           value={params[index].type}
                           onChange={(value) => {
-                            setNewValue(index, 'type', value.target.value);
-                            dispatch(getParameterKeysByType(CONTRACT_TYPES.constitution, value.target.value));
+                            setNewValue(index, 'type', value.target.value)
+                            dispatch(getParameterKeysByType(CONTRACT_TYPES.constitution, value.target.value))
                           }}
                           ref={register({ required: 'Choose one option!' })}
                           optionValues={constUpdate.radioBtn}
@@ -151,7 +151,7 @@ function CreateStep3(props) {
                           ref={register({ required: 'Field is required!' })}
                           valid={errors[constUpdate.inputsObjFirst]?.[index]?.message}
                           onChange={(value) => {
-                            setNewValue(index, 'key', value.target.value);
+                            setNewValue(index, 'key', value.target.value)
                           }}
                         />
                       </div>
@@ -164,7 +164,7 @@ function CreateStep3(props) {
                         ref={register({ required: 'Field is required!' })}
                         valid={errors[constUpdate.inputsObjSecond]?.[index]?.message}
                         onChange={(value) => {
-                          setNewValue(index, 'value', value.target.value);
+                          setNewValue(index, 'value', value.target.value)
                         }}
                       />
                       <CurrentParameterValue
@@ -174,12 +174,12 @@ function CreateStep3(props) {
                         parameterKey={params[index].key}
                       />
                     </Fragment>
-                  );
+                  )
                 })}
                 <div className="modal__text-wrp">
                   <div className="modal__text-btn"
                        onClick={() => {
-                         changeTypesCapacity(1);
+                         changeTypesCapacity(1)
                        }}
                   >Add parameter
                   </div>
@@ -187,7 +187,7 @@ function CreateStep3(props) {
                     params.length > 1
                       ? (<div className="modal__text-btn"
                               onClick={() => {
-                                changeTypesCapacity(-1);
+                                changeTypesCapacity(-1)
                               }}
                       >Remove parameter
                       </div>)
@@ -196,10 +196,10 @@ function CreateStep3(props) {
                 </div>
               </div>
 
-            );
+            )
           }
         }
-        break;
+        break
       case PROPOSALS_TYPES.rootNodePanel:
         return showCommonData(
           <>
@@ -211,8 +211,9 @@ function CreateStep3(props) {
                 <p>{formData.hash}</p>
                 <h5>Remove a current Root Node</h5>
                 <p>{formData['remove-current']}</p>
-                {formData['remove-current'] === 'no' ? null :
-                  <>
+                {formData['remove-current'] === 'no'
+                  ? null
+                  : <>
                     <h5>Root Node to Remove</h5>
                     <p>{formData.address}</p>
                   </>
@@ -226,7 +227,7 @@ function CreateStep3(props) {
               </>
             }
           </>
-        );
+        )
       case PROPOSALS_TYPES.slashingProposals :
         return showCommonData(
           <>
@@ -237,7 +238,7 @@ function CreateStep3(props) {
             <h5>External link</h5>
             <p>{formData['external-link']}</p>
           </>
-        );
+        )
       case PROPOSALS_TYPES.expertProposals:
         return showCommonData(
           <>
@@ -265,24 +266,22 @@ function CreateStep3(props) {
                         <p title={item.value}>{item.value}</p>
                       </div>
                     </div>
-                  </Fragment>;
+                  </Fragment>
                 })}
               </>
             }
           </>
-        );
+        )
       default:
-        return null;
+        return null
     }
-
-  }, [activeTab, register, errors, params]);
+  }, [activeTab, register, errors, params])
 
   return (
     <>
       {contentSwitcher()}
     </>
-  );
+  )
 }
 
-export default CreateStep3;
-
+export default CreateStep3

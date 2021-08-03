@@ -1,1 +1,1 @@
-export {default} from 'pages/StartConfigurations/InstructionMetamask/InstructionMetamask';
+export { default } from 'pages/StartConfigurations/InstructionMetamask/InstructionMetamask'

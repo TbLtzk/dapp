@@ -1,1 +1,1 @@
-export {default} from './BigTabsView';
+export { default } from './BigTabsView'

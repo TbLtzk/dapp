@@ -1,21 +1,20 @@
 import React, { useState } from 'react'
-import FormInput from 'components/Base/Form/FormInput';
-import Button from 'components/Base/Buttons/Button';
+import FormInput from 'components/Base/Form/FormInput'
+import Button from 'components/Base/Buttons/Button'
 
-import { useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form'
 import { WrapContainer } from '../../styles'
 
-function AddressForm({ setAddressRefresh, address }) {
+function AddressForm ({ setAddressRefresh, address }) {
+  const [userAddress, setUserAddress] = useState(address.token)
 
-    const [userAddress, setUserAddress] = useState(address.token)
+  const {
+    register,
+    handleSubmit,
+    errors
+  } = useForm()
 
-    const {
-        register,
-        handleSubmit,
-        errors
-    } = useForm(); 
-
-    return (
+  return (
         <WrapContainer>
             <Button
                 type="outline"
@@ -29,12 +28,12 @@ function AddressForm({ setAddressRefresh, address }) {
                 color={true}
                 value={userAddress}
                 ref={register({
-                    required: "Address Required!",
-                    pattern: {
-                        required: true,
-                        value: /^.{42}$/gim,
-                        message: "Invalid Address!"
-                    }
+                  required: 'Address Required!',
+                  pattern: {
+                    required: true,
+                    value: /^.{42}$/gim,
+                    message: 'Invalid Address!'
+                  }
                 })}
                 valid={errors?.token?.message}
                 onChange={(value) => setUserAddress(value.target.value)}
@@ -46,8 +45,7 @@ function AddressForm({ setAddressRefresh, address }) {
                 handleButton={handleSubmit(setAddressRefresh)}
             />
         </WrapContainer>
-    )
+  )
 }
 
 export default AddressForm
-

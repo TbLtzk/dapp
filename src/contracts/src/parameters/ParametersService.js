@@ -1,62 +1,60 @@
-import { contracts } from '../../config/config';
+import { contracts } from '../../config/config'
 
 export default class ParametersService {
-
-  constructor(contractName) {
-    this.contract = contracts[contractName];
-    this.contractName = contractName;
+  constructor (contractName) {
+    this.contract = contracts[contractName]
+    this.contractName = contractName
   }
 
-  async getAddrKeys() {
+  async getAddrKeys () {
     return await this.contract.methods.getAddrKeys()
-      .call();
+      .call()
   }
 
-  async getUintKeys() {
+  async getUintKeys () {
     return await this.contract.methods.getUintKeys()
-      .call();
+      .call()
   }
 
-  //getAddress
-  async getAddr(key) {
+  // getAddress
+  async getAddr (key) {
     return await this.contract.methods.getAddr(key)
-      .call();
+      .call()
   }
 
-  //getBoolean
-  async getBool(key) {
+  // getBoolean
+  async getBool (key) {
     return await this.contract.methods.getBool(key)
-      .call();
+      .call()
   }
 
-  async getString(key) {
+  async getString (key) {
     return await this.contract.methods.getString(key)
-      .call();
+      .call()
   }
 
-  async getBytes(key) {
+  async getBytes (key) {
     return await this.contract.methods.getBytes32(key)
-      .call();
+      .call()
   }
 
-  async getUint(key) {
+  async getUint (key) {
     return await this.contract.methods.getUint(key)
-      .call();
+      .call()
   }
 
-  async getStringKeys() {
+  async getStringKeys () {
     return await this.contract.methods.getStringKeys()
-      .call();
+      .call()
   }
 
-  async getBytes32Keys() {
+  async getBytes32Keys () {
     return await this.contract.methods.getBytes32Keys()
-      .call();
+      .call()
   }
 
-  async getBoolKeys() {
+  async getBoolKeys () {
     return await this.contract.methods.getBoolKeys()
-      .call();
+      .call()
   }
-
 }

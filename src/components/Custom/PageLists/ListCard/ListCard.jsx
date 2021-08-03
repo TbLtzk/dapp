@@ -1,22 +1,22 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { ListCardWrp, ListCardHeader, ListCardBody } from './styles';
-import { Accordion, useAccordionToggle } from 'react-bootstrap';
-import { DropdownButton } from 'react-bootstrap';
-import { theme } from 'store/selectors/theme';
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { ListCardWrp, ListCardHeader, ListCardBody } from './styles'
+import { Accordion, useAccordionToggle, DropdownButton } from 'react-bootstrap'
 
-export function CustomToggle({ eventKey }) {
+import { theme } from 'store/selectors/theme'
+
+export function CustomToggle ({ eventKey }) {
   const decoratedOnClick = useAccordionToggle(eventKey, () => {
-  });
+  })
 
   return (
     <a className="dropdown-item" onClick={decoratedOnClick}>
-      <i className={`mdi mdi-eye-outline btn-icon`}/>View Details
+      <i className={'mdi mdi-eye-outline btn-icon'}/>View Details
     </a>
-  );
+  )
 }
 
-function ListCard(props) {
+function ListCard (props) {
   const currentTheme = useSelector(theme)
   const {
     headerLeftSide,
@@ -28,16 +28,14 @@ function ListCard(props) {
     dropdownButtonTitle,
     dropdownItems
 
-  } = props;
+  } = props
   return (
     <ListCardWrp palette={currentTheme}>
       <Accordion defaultActiveKey="0">
         <ListCardHeader>
           <div>{headerLeftSide}</div>
           <div>
-            {headerRightSide
-              ? headerRightSide
-              : <DropdownButton
+            {headerRightSide || <DropdownButton
                 menuAlign="right"
                 title={dropdownButtonTitle || 'Actions'}
                 id="dropdown-menu-align-right"
@@ -56,7 +54,7 @@ function ListCard(props) {
         </ListCardBody>
       </Accordion>
     </ListCardWrp>
-  );
+  )
 }
 
-export default ListCard;
+export default ListCard

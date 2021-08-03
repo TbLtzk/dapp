@@ -1,1 +1,1 @@
-export {default} from './QRootNodeS2';
+export { default } from './QRootNodeS2'

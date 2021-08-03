@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import ModalWindow from 'components/Base/ModalWindow';
-import Themes from 'components/Base/Themes';
-import DashboardModeButton from 'components/Base/DashboardMode/DashboarModeButton';
+import React, { useEffect, useState } from 'react'
+import ModalWindow from 'components/Base/ModalWindow'
+import Themes from 'components/Base/Themes'
+import DashboardModeButton from 'components/Base/DashboardMode/DashboarModeButton'
 
-import { WrpVersion } from './styles';
+import { WrpVersion } from './styles'
 
-function Settings() {
-  const [modalShow, setModalShow] = useState(false);
+function Settings () {
+  const [modalShow, setModalShow] = useState(false)
 
   useEffect(async () => {
 
-  }, []);
+  }, [])
 
   return (
     <>
       <WrpVersion onClick={() => {
-        setModalShow(true);
+        setModalShow(true)
       }}>
-        <i className={`mdi mdi-cog btn-icon`}/>
+        <i className={'mdi mdi-cog btn-icon'}/>
       </WrpVersion>
       <ModalWindow
         show={modalShow}
         onHide={() => {
-          setModalShow(false);
+          setModalShow(false)
         }}
         modalTitle={'Settings'}
         content={
@@ -38,7 +38,7 @@ function Settings() {
         }
       />
     </>
-  );
+  )
 }
 
-export default Settings;
+export default Settings

@@ -1,12 +1,12 @@
-import React, { Suspense } from 'react';
-import CustomBlock from 'components/Base/CustomBlock';
-import LoadingSpinner from 'components/Base/LoadingSpinner';
-import KeyAddressesTable from '../KeyAddressesTable';
+import React, { Suspense } from 'react'
+import CustomBlock from 'components/Base/CustomBlock'
+import LoadingSpinner from 'components/Base/LoadingSpinner'
+import KeyAddressesTable from '../KeyAddressesTable'
 import {
   LoadingWrap
-} from 'components/Custom/MembersPanel/styles';
+} from 'components/Custom/MembersPanel/styles'
 
-function KeyAddressViewer(props) {
+function KeyAddressViewer (props) {
   const {
     tableData,
     loading,
@@ -15,23 +15,26 @@ function KeyAddressViewer(props) {
     subHeader,
     tableHeaders = [],
     emptyMsg
-  } = props;
+  } = props
   return (
     <CustomBlock>
       <h1>{header}</h1>
       <h5>{subHeader}</h5>
       <Suspense fallback={<LoadingWrap><LoadingSpinner/></LoadingWrap>}>
-        {loading ? <LoadingWrap><LoadingSpinner/></LoadingWrap> :
-          errorMsg ? <p>{errorMsg}</p> :
-            !tableData?.length ? <p>{emptyMsg}</p> :
-              <KeyAddressesTable
+        {loading
+          ? <LoadingWrap><LoadingSpinner/></LoadingWrap>
+          : errorMsg
+            ? <p>{errorMsg}</p>
+            : !tableData?.length
+                ? <p>{emptyMsg}</p>
+                : <KeyAddressesTable
                 tableData={tableData}
                 tableHeaders={tableHeaders}
               />
         }
       </Suspense>
     </CustomBlock>
-  );
+  )
 }
 
-export default KeyAddressViewer;
+export default KeyAddressViewer

@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-import { Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap'
 
 export const TableStyle = styled(Table)`
   margin-bottom: 10px;
@@ -26,9 +26,9 @@ export const TableStyle = styled(Table)`
   td {
     vertical-align: ${(props) => {
       if (props.type === 'with-action') {
-        return 'baseline';
+        return 'baseline'
       } else {
-        return 'top';
+        return 'top'
       }
     }
     };
@@ -37,20 +37,20 @@ export const TableStyle = styled(Table)`
     line-height: 17px;
     padding: ${(props) => {
       if (props.type === 'with-action') {
-        return '15px 5px';
+        return '15px 5px'
       } else {
-        return '5px';
+        return '5px'
       }
     }
     };;
     border-top: none;
     border-bottom: ${(props) => {
       if (props.type === 'with-action') {
-        return '1px solid ' + props.theme.colors.th;
+        return '1px solid ' + props.theme.colors.th
       } else {
-        return null;
+        return null
       }
     }
     }
   }
-`;
+`

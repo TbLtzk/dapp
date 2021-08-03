@@ -1,1 +1,1 @@
-export {default} from './ModalBid';
+export { default } from './ModalBid'

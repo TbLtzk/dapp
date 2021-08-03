@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-import { Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap'
 
 export const Header = styled(Card.Header)`
   padding: 20px 20px 0 20px;
@@ -172,13 +172,13 @@ export const Header = styled(Card.Header)`
       margin-right: 5px;
     }
   }
-`;
+`
 
 export const CardTitle = styled.div`
   display: flex;
   align-items: center;
-`;
+`
 
 export const WrapBtnHeader = styled.div`
   text-align: right;
-`;
+`

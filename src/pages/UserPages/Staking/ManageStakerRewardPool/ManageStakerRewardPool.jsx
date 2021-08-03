@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import Button from 'components/Base/Buttons/Button';
-import ModalWindow from 'components/Base/ModalWindow';
-import ValidatorPool from './components/ValidatorPool';
-import RewardStats from './components/RewardStats';
+import React, { useState } from 'react'
+import Button from 'components/Base/Buttons/Button'
+import ModalWindow from 'components/Base/ModalWindow'
+import ValidatorPool from './components/ValidatorPool'
+import RewardStats from './components/RewardStats'
 
-function ManageStakerRewardPool() {
-
-  const [modalShow, setModalShow] = useState(false);
+function ManageStakerRewardPool () {
+  const [modalShow, setModalShow] = useState(false)
 
   return (
     <>
@@ -14,14 +13,14 @@ function ManageStakerRewardPool() {
         type="white"
         title="Manage staker reward pool"
         handleButton={() => {
-          setModalShow(true);
+          setModalShow(true)
         }}
       />
 
       <ModalWindow
         show={modalShow}
         onHide={() => {
-          setModalShow(false);
+          setModalShow(false)
         }}
         modalTitle={'Manage Staker Reward Pool'}
         content={
@@ -35,7 +34,7 @@ function ManageStakerRewardPool() {
       />
 
     </>
-  );
+  )
 }
 
-export default ManageStakerRewardPool;
+export default ManageStakerRewardPool

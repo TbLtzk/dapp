@@ -1,17 +1,17 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { useSelector } from 'react-redux';
-import { formObject } from 'store/selectors/auctions/modalHandler';
+import { useSelector } from 'react-redux'
+import { formObject } from 'store/selectors/auctions/modalHandler'
 
-import InputGroup from 'components/Custom/ModalActions/InputGroup';
-import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
+import InputGroup from 'components/Custom/ModalActions/InputGroup'
+import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
 
-import { castObjection, proposeDecision } from './constants';
+import { castObjection, proposeDecision } from './constants'
 
-function CreateStep1(props) {
-  const { activeTab, register, errors } = props;
+function CreateStep1 (props) {
+  const { activeTab, register, errors } = props
 
-  const formData = useSelector(formObject);
+  const formData = useSelector(formObject)
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (activeTab) {
@@ -28,7 +28,7 @@ function CreateStep1(props) {
               errors={errors}
             />
           </>
-        );
+        )
       case 'propose-decision':
         return (
           <>
@@ -64,18 +64,17 @@ function CreateStep1(props) {
             />
           </>
 
-        );
+        )
       default:
-        return null;
+        return null
     }
-  }, [activeTab, register, errors]);
+  }, [activeTab, register, errors])
 
   return (
     <div>
       {switchContentOnTypeProposal()}
     </div>
-  );
+  )
 }
 
-export default CreateStep1;
-
+export default CreateStep1

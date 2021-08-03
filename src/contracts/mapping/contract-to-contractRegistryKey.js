@@ -1,15 +1,15 @@
 const testnetContractsToContractsRegistryKey = {
   ConstitutionParameters: 'governance.constitution.parameters',
   ConstitutionVoting: 'governance.constitution.parametersVoting',
-  EPDR_Membership: 'governance.experts.EPDR.membership',
+  EPDRMembership: 'governance.experts.EPDR.membership',
   BorrowingCoreQUSD: 'defi.QUSD.borrowing',
-  EPDR_MembershipVoting: 'governance.experts.EPDR.membershipVoting',
-  EPDR_Parameters: 'governance.experts.EPDR.parameters',
-  EPDR_ParametersVoting: 'governance.experts.EPDR.parametersVoting',
-  EPQFI_Membership: 'governance.experts.EPQFI.membership',
-  EPQFI_MembershipVoting: 'governance.experts.EPQFI.membershipVoting',
-  EPQFI_Parameters: 'governance.experts.EPQFI.parameters',
-  EPQFI_ParametersVoting: 'governance.experts.EPQFI.parametersVoting',
+  EPDRMembershipVoting: 'governance.experts.EPDR.membershipVoting',
+  EPDRParameters: 'governance.experts.EPDR.parameters',
+  EPDRParametersVoting: 'governance.experts.EPDR.parametersVoting',
+  EPQFIMembership: 'governance.experts.EPQFI.membership',
+  EPQFIMembershipVoting: 'governance.experts.EPQFI.membershipVoting',
+  EPQFIParameters: 'governance.experts.EPQFI.parameters',
+  EPQFIParametersVoting: 'governance.experts.EPQFI.parametersVoting',
   EmergencyUpdateVoting: 'governance.emergencyUpdateVoting',
   GeneralUpdateVoting: 'governance.generalUpdateVoting',
   LiquidationAuction: 'defi.QUSD.liquidationAuction',
@@ -23,7 +23,7 @@ const testnetContractsToContractsRegistryKey = {
   SystemReserve: 'tokeneconomics.systemReserve',
   SystemSurplusAuction: 'defi.QUSD.systemSurplusAuction',
   Validators: 'governance.validators',
-  ValidatorsSlashingVoting: 'governance.validators.slashingVoting',
+  ValidatorsSlashingVoting: 'governance.validators.slashingVoting'
 }
 
 const devnetContractsToContractsRegistryKey = {
@@ -36,12 +36,12 @@ const devnetContractsToContractsRegistryKey = {
   ValidationRewardPools: 'tokeneconomics.validationRewardPools',
   ValidationRewardProxy: 'tokeneconomics.validationRewardProxy',
   WrappedQ: 'defi.wrappedQ',
-  ValidatorsSlashingEscrow: 'governance.validators.slashingEscrow',
+  ValidatorsSlashingEscrow: 'governance.validators.slashingEscrow'
 }
 
 const contractsToContractsRegistryKeyCustom = {
   GovernedEpdrQbtcAddress: 'governed.EPDR.QBTC_address',
-  GovernedEpdrQbtcQusdOracle: 'governed.EPDR.QBTC_QUSD_oracle',
+  GovernedEpdrQbtcQusdOracle: 'governed.EPDR.QBTC_QUSD_oracle'
 }
 
 export const contractsToContractsRegistryKey = {
@@ -49,5 +49,4 @@ export const contractsToContractsRegistryKey = {
   ...devnetContractsToContractsRegistryKey,
   ...contractsToContractsRegistryKeyCustom
   // SystemBalance: 'defi.<STC>.systemBalance',
-};
-
+}

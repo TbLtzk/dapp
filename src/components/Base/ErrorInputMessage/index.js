@@ -1,3 +1,3 @@
-import ErrorInputMessage from "./ErrorInputMessage";
+import ErrorInputMessage from './ErrorInputMessage'
 
-export default ErrorInputMessage;
+export default ErrorInputMessage

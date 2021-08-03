@@ -1,23 +1,21 @@
-import React, { useState } from 'react';
-import { ThemesWrp } from './styles';
-import { useDispatch, useSelector } from 'react-redux';
-import { setThem } from 'store/actions/action-creaters/theme';
-import { THEMES } from 'constants/colors';
-import { theme } from 'store/selectors/theme';
-import FormSwithch from '../Form/FormSwithch';
-import { MODE } from '../DashboardMode/DashboarModeButton';
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setThem } from 'store/actions/action-creaters/theme'
+import { THEMES } from 'constants/colors'
+import { theme } from 'store/selectors/theme'
+import FormSwithch from '../Form/FormSwithch'
 
-function Themes() {
-  const dispatch = useDispatch();
-  const currentTheme = useSelector(theme);
-  const [isSwitchOn, setIsSwitchOn] = useState(currentTheme === THEMES.dark);
+function Themes () {
+  const dispatch = useDispatch()
+  const currentTheme = useSelector(theme)
+  const [isSwitchOn, setIsSwitchOn] = useState(currentTheme === THEMES.dark)
 
-  function changeThemes() {
-    setIsSwitchOn(!isSwitchOn);
+  function changeThemes () {
+    setIsSwitchOn(!isSwitchOn)
     if (currentTheme === THEMES.light) {
-      dispatch(setThem(THEMES.dark));
+      dispatch(setThem(THEMES.dark))
     } else {
-      dispatch(setThem(THEMES.light));
+      dispatch(setThem(THEMES.light))
     }
   }
 
@@ -28,7 +26,7 @@ function Themes() {
       checked={isSwitchOn}
       label="Dark them"
     />
-  );
+  )
 }
 
-export default Themes;
+export default Themes

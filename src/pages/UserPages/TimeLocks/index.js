@@ -1,1 +1,1 @@
-export { default } from './TimeLocks';
+export { default } from './TimeLocks'

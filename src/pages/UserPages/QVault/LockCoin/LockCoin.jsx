@@ -1,38 +1,38 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React from 'react'
+import { useForm } from 'react-hook-form'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { setLockAmount, setUnlockAmount } from 'store/actions/action-creaters/q-vault';
-import { userAddressMetamask } from 'store/selectors/user-inf';
+import { useDispatch, useSelector } from 'react-redux'
+import { setLockAmount, setUnlockAmount } from 'store/actions/action-creaters/q-vault'
+import { userAddressMetamask } from 'store/selectors/user-inf'
 
-import ButtonLinkArrow from 'components/Base/Buttons/ButtonLinkArrow';
-import CustomBlock from 'components/Base/CustomBlock';
-import FormInput from 'components/Base/Form/FormInput';
-import Button from 'components/Base/Buttons/Button';
+import ButtonLinkArrow from 'components/Base/Buttons/ButtonLinkArrow'
+import CustomBlock from 'components/Base/CustomBlock'
+import FormInput from 'components/Base/Form/FormInput'
+import Button from 'components/Base/Buttons/Button'
 
-import 'react-datepicker/dist/react-datepicker.css';
+import 'react-datepicker/dist/react-datepicker.css'
 
-export default function LockCoin() {
+export default function LockCoin () {
   const {
     register: reg1,
     handleSubmit: submit1,
     errors: err1
-  } = useForm();
+  } = useForm()
   const {
     register: reg3,
     handleSubmit: submit3,
     errors: err3
-  } = useForm();
+  } = useForm()
 
-  const dispatch = useDispatch();
-  const address = useSelector(userAddressMetamask);
+  const dispatch = useDispatch()
+  const address = useSelector(userAddressMetamask)
 
-  function lockCoinL(formData) {
-    dispatch(setLockAmount(address, formData.amountQ));
+  function lockCoinL (formData) {
+    dispatch(setLockAmount(address, formData.amountQ))
   }
 
-  function unlockCoinL(formData) {
-    dispatch(setUnlockAmount(address, formData.amountQ));
+  function unlockCoinL (formData) {
+    dispatch(setUnlockAmount(address, formData.amountQ))
   }
 
   return (
@@ -85,5 +85,5 @@ export default function LockCoin() {
         />
       </div>
     </CustomBlock>
-  );
+  )
 }

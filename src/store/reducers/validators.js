@@ -1,9 +1,9 @@
-import * as actionTypes from "../actions/action-types/validators";
+import * as actionTypes from '../actions/action-types/validators'
 
 const initialState = {
   lastUpdate: 0,
   loadCounter: 0,
-  error: "",
+  error: '',
 
   delegatorsShare: 0,
   totalStake: 0,
@@ -16,92 +16,92 @@ const initialState = {
   validatorMembers: [],
   loadingMembers: true,
   errorMembers: null,
-  isUserValidator: false,
-};
+  isUserValidator: false
+}
 
-export default function index(state = initialState, action) {
+export default function index (state = initialState, action) {
   switch (action.type) {
     case actionTypes.SET_VAL_DATA_IS_LOADING:
       return {
         ...state,
-        loadCounter: state.loadCounter + 1,
-      };
+        loadCounter: state.loadCounter + 1
+      }
     case actionTypes.SET_VAL_DATA_IS_LOADED:
       return {
         ...state,
         lastUpdate: Date.now(),
-        loadCounter: state.loadCounter - 1,
-      };
+        loadCounter: state.loadCounter - 1
+      }
     case actionTypes.SET_VAL_ERROR:
       return {
         ...state,
         lastUpdate: Date.now(),
         loadCounter: state.loadCounter - 1,
-        error: action.error,
-      };
+        error: action.error
+      }
     case actionTypes.SET_VAL_DELEGATORS_SHARE:
       return {
         ...state,
-        delegatorsShare: action.payload,
-      };
+        delegatorsShare: action.payload
+      }
     case actionTypes.SET_VAL_TOTAL_STAKE:
       return {
         ...state,
-        totalStake: action.payload,
-      };
+        totalStake: action.payload
+      }
     case actionTypes.SET_VAL_OWN_STAKE:
       return {
         ...state,
-        ownStake: action.payload,
-      };
+        ownStake: action.payload
+      }
     case actionTypes.SET_VAL_SELF_STAKE:
       return {
         ...state,
-        selfStake: action.payload,
-      };
+        selfStake: action.payload
+      }
     case actionTypes.SET_VAL_DELEGATED_STAKE:
       return {
         ...state,
-        delegatedStake: action.payload,
-      };
+        delegatedStake: action.payload
+      }
     case actionTypes.SET_VAL_ACC_TOTAL_STAKE:
       return {
         ...state,
-        accTotalStake: action.payload,
-      };
+        accTotalStake: action.payload
+      }
     case actionTypes.SET_VAL_INTEREST_RATE:
       return {
         ...state,
-        interestRate: action.payload,
-      };
+        interestRate: action.payload
+      }
     case actionTypes.GET_VALIDATORS_MEMBERS:
       return {
         ...state,
-        loadingMembers: true,
-      };
+        loadingMembers: true
+      }
     case actionTypes.GET_VALIDATORS_MEMBERS_SUCCESS:
       return {
         ...state,
         loadingMembers: false,
         validatorMembers: action.data,
-        errorMembers: null,
-      };
+        errorMembers: null
+      }
     case actionTypes.GET_VALIDATORS_MEMBERS_ERROR:
       return {
         ...state,
         loadingMembers: false,
         validatorMembers: [],
-        errorMembers: action.error,
-      };
+        errorMembers: action.error
+      }
     case actionTypes.IS_USER_VALIDATOR_SUCCESS:
       return {
         ...state,
-        isUserValidator: action.result,
-      };
+        isUserValidator: action.result
+      }
     default:
       return {
         ...state,
-        lastUpdate: Date.now(),
-      };
+        lastUpdate: Date.now()
+      }
   }
 }

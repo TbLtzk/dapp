@@ -1,30 +1,30 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { setDepositLockedAmount, setPurgeTimeLocksAmount } from "store/actions/action-creaters/locked-amount";
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { setDepositLockedAmount, setPurgeTimeLocksAmount } from 'store/actions/action-creaters/locked-amount'
 
-import CustomBlock from "components/Base/CustomBlock";
-import ListPaganation from "./ListPaganation";
-import ModalButton from "components/Base/Buttons/Button";
-import Modal from "./Modal";
+import CustomBlock from 'components/Base/CustomBlock'
+import ListPaganation from './ListPaganation'
+import ModalButton from 'components/Base/Buttons/Button'
+import Modal from './Modal'
 
-function BalanceCard({ balance, title, lockAmountData, timeLockBalance, contract, address }) {
-    const dispatch = useDispatch();
+function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contract, address }) {
+  const dispatch = useDispatch()
 
-    const [modalShow, setModalShow] = useState(false);
+  const [modalShow, setModalShow] = useState(false)
 
-    const setDeposit = (data) => {
-        dispatch(setDepositLockedAmount({ data, contract, address }));
-    };
+  const setDeposit = (data) => {
+    dispatch(setDepositLockedAmount({ data, contract, address }))
+  }
 
-    const setPurge = () => {
-        dispatch(setPurgeTimeLocksAmount({ contract, address }));
-        setModalShow(false);
-    };
+  const setPurge = () => {
+    dispatch(setPurgeTimeLocksAmount({ contract, address }))
+    setModalShow(false)
+  }
 
-    return (
+  return (
         <CustomBlock>
             <h5>{title}</h5>
-            <p>{balance + " Q"}</p>
+            <p>{balance + ' Q'}</p>
             <h5>Time lock balance</h5>
             <p>{timeLockBalance} Q</p>
             <ModalButton
@@ -32,13 +32,13 @@ function BalanceCard({ balance, title, lockAmountData, timeLockBalance, contract
                 title="Manage"
                 width="80px"
                 handleButton={() => {
-                    setModalShow(true);
+                  setModalShow(true)
                 }}
             />
             <h5>Time locks</h5>
             <ListPaganation lockAmountData={lockAmountData} />
             <Modal
-                modalTitle={contract === "vesting" ? "Deposit, withdraw & purge" : "Deposit & purge"}
+                modalTitle={contract === 'vesting' ? 'Deposit, withdraw & purge' : 'Deposit & purge'}
                 contract={contract}
                 setPurge={setPurge}
                 setDeposit={setDeposit}
@@ -46,7 +46,7 @@ function BalanceCard({ balance, title, lockAmountData, timeLockBalance, contract
                 setModalShow={(value) => setModalShow(value)}
             />
         </CustomBlock>
-    );
+  )
 }
 
-export default BalanceCard;
+export default BalanceCard

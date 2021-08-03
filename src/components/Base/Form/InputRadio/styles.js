@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-import { Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap'
 
 export const RadioBtn = styled(Form.Check)`
   label {
@@ -9,4 +9,4 @@ export const RadioBtn = styled(Form.Check)`
     font-weight: 400;
     color: ${props => props.active ? props.theme.colors.oxfordBlue : props.theme.colors.oxfordBlueTint3};
   }
-`;
+`

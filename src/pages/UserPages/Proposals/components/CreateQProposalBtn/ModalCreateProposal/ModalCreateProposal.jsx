@@ -1,68 +1,68 @@
-import React, { useMemo } from 'react';
+import React, { useMemo } from 'react'
 
-import { ProgressBar } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { PROPOSALS_TYPES } from 'constants/statuses';
+import { ProgressBar } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { PROPOSALS_TYPES } from 'constants/statuses'
 import {
   setCreateProposalObj,
   setStepCounter,
   setDisabledCreatedProposalBtn,
   createProposal
-} from 'store/actions/action-creaters/voting/proposals';
+} from 'store/actions/action-creaters/voting/proposals'
 import {
   formObject,
   createdStepsLimit,
   stepCounterModal,
   disabledContinueProposalBtn
-} from 'store/selectors/voting/proposals';
+} from 'store/selectors/voting/proposals'
 
-import { useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form'
 
-import ModalWindow from 'components/Base/ModalWindow';
-import CreateStep1 from './CreateStep1';
-import CreateStep2 from './CreateStep2';
-import CreateStep3 from './CreateStep3';
-import CreateStep4 from './CreateStep4';
+import ModalWindow from 'components/Base/ModalWindow'
+import CreateStep1 from './CreateStep1'
+import CreateStep2 from './CreateStep2'
+import CreateStep3 from './CreateStep3'
+import CreateStep4 from './CreateStep4'
 
-import { arrExpert, arrQProposal, arrQProposalAdvanced, arrQRootNode, arrSlashing } from './constants';
+import { arrExpert, arrQProposal, arrQProposalAdvanced, arrQRootNode, arrSlashing } from './constants'
 
-import { mode } from 'store/selectors/dashboardMode';
-import { MODE } from 'components/Base/DashboardMode/DashboarModeButton';
+import { mode } from 'store/selectors/dashboardMode'
+import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
 
-function ModalCreateProposal(props) {
+function ModalCreateProposal (props) {
   const {
     modalShow,
     onHide,
     activeTab,
     activeTabTitle
-  } = props;
+  } = props
   const {
     register,
     errors,
     handleSubmit
-  } = useForm();
-  const dispatch = useDispatch();
+  } = useForm()
+  const dispatch = useDispatch()
 
-  const formData = useSelector(formObject);
-  const stepLimit = useSelector(createdStepsLimit);
-  const stepCounter = useSelector(stepCounterModal);
-  const disabledContinueBtn = useSelector(disabledContinueProposalBtn);
+  const formData = useSelector(formObject)
+  const stepLimit = useSelector(createdStepsLimit)
+  const stepCounter = useSelector(stepCounterModal)
+  const disabledContinueBtn = useSelector(disabledContinueProposalBtn)
   const appMode = useSelector(mode)
 
   const radioArrFirstStep = useMemo(() => {
     switch (activeTab) {
       case PROPOSALS_TYPES.proposals:
-        return appMode === MODE.advanced ? arrQProposalAdvanced : arrQProposal;
+        return appMode === MODE.advanced ? arrQProposalAdvanced : arrQProposal
       case PROPOSALS_TYPES.rootNodePanel:
-        return arrQRootNode;
+        return arrQRootNode
       case PROPOSALS_TYPES.expertProposals:
-        return arrExpert;
+        return arrExpert
       case PROPOSALS_TYPES.slashingProposals:
-        return arrSlashing;
+        return arrSlashing
       default:
-        return [];
+        return []
     }
-  }, [activeTab]);
+  }, [activeTab])
 
   const switchProposalContentDependsOnType = useMemo(() => {
     switch (stepCounter) {
@@ -76,7 +76,7 @@ function ModalCreateProposal(props) {
             errors={errors}
             radioArr={radioArrFirstStep}
           />
-        );
+        )
       case 2:
         return (
           <CreateStep2
@@ -86,7 +86,7 @@ function ModalCreateProposal(props) {
             register={register}
             errors={errors}
           />
-        );
+        )
       case 3:
         return (
           <CreateStep3
@@ -96,29 +96,28 @@ function ModalCreateProposal(props) {
             register={register}
             errors={errors}
           />
-        );
+        )
       case 4:
         return (
           <CreateStep4
             formData={formData}
             activeTab={activeTab}
           />
-        );
+        )
       default:
-        return null;
+        return null
     }
-
-  }, [activeTab, stepCounter, register, errors, stepLimit]);
+  }, [activeTab, stepCounter, register, errors, stepLimit])
 
   const onNext = (data) => {
-    dispatch(setCreateProposalObj({ ...formData, ...data }));
+    dispatch(setCreateProposalObj({ ...formData, ...data }))
     if (stepCounter < stepLimit) {
-      dispatch(setStepCounter(stepCounter + 1));
+      dispatch(setStepCounter(stepCounter + 1))
     } else {
-      dispatch(createProposal({ ...formData, ...data }));
-      onHide();
+      dispatch(createProposal({ ...formData, ...data }))
+      onHide()
     }
-  };
+  }
 
   return (
     <ModalWindow
@@ -129,8 +128,8 @@ function ModalCreateProposal(props) {
         stepCounter !== 1 ? 'Back' : null
       }
       backBtnHandler={() => {
-        dispatch(setStepCounter(stepCounter - 1));
-        dispatch(setDisabledCreatedProposalBtn(false));
+        dispatch(setStepCounter(stepCounter - 1))
+        dispatch(setDisabledCreatedProposalBtn(false))
       }}
       continueBtnTitle={
         stepLimit !== stepCounter ? 'Next' : 'Confirm'
@@ -147,8 +146,7 @@ function ModalCreateProposal(props) {
         </>
       }
     />
-  );
+  )
 }
 
-export default ModalCreateProposal;
-
+export default ModalCreateProposal

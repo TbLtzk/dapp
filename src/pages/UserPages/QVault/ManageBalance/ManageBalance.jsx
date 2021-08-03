@@ -1,35 +1,35 @@
-import React from 'react';
-import CustomBlock from 'components/Base/CustomBlock';
-import FormInput from 'components/Base/Form/FormInput';
-import Button from 'components/Base/Buttons/Button';
+import React from 'react'
+import CustomBlock from 'components/Base/CustomBlock'
+import FormInput from 'components/Base/Form/FormInput'
+import Button from 'components/Base/Buttons/Button'
 
-import { useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { setDepositCall, setWithdrawCall } from 'store/actions/action-creaters/q-vault';
-import { userAddressMetamask } from 'store/selectors/user-inf';
+import { useDispatch, useSelector } from 'react-redux'
+import { setDepositCall, setWithdrawCall } from 'store/actions/action-creaters/q-vault'
+import { userAddressMetamask } from 'store/selectors/user-inf'
 
-export default function ManageBalance() {
+export default function ManageBalance () {
   const {
     register: reg2,
     handleSubmit: submit2,
     errors: err2
-  } = useForm();
+  } = useForm()
   const {
     register: reg3,
     handleSubmit: submit3,
     errors: err3
-  } = useForm();
+  } = useForm()
 
-  const dispatch = useDispatch();
-  const address = useSelector(userAddressMetamask);
+  const dispatch = useDispatch()
+  const address = useSelector(userAddressMetamask)
 
-  function setDepositL(formData) {
-    dispatch(setDepositCall(address, formData.amountQ));
+  function setDepositL (formData) {
+    dispatch(setDepositCall(address, formData.amountQ))
   }
 
-  function withdrawL(formData) {
-    dispatch(setWithdrawCall(address, formData.amountQ));
+  function withdrawL (formData) {
+    dispatch(setWithdrawCall(address, formData.amountQ))
   }
 
   return (
@@ -77,5 +77,5 @@ export default function ManageBalance() {
         />
       </div>
     </CustomBlock>
-  );
+  )
 }

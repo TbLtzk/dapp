@@ -1,24 +1,24 @@
-import React from 'react';
-import TableView from 'components/Base/TableView';
-import colors from 'constants/colors';
-import { KeyAddressesTableWrap } from './style';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
+import React from 'react'
+import TableView from 'components/Base/TableView'
+import colors from 'constants/colors'
+import { KeyAddressesTableWrap } from './style'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { OverlayTrigger, Popover } from 'react-bootstrap'
 
-function KeyAddressesTable(props) {
+function KeyAddressesTable (props) {
   const {
     tableData,
     tableHeaders
-  } = props;
+  } = props
   const popover = (
     <Popover id="popover-basic">
       <Popover.Content style={{
-        background: colors.neonGreen,
+        background: colors.neonGreen
       }}>
         Copy
       </Popover.Content>
     </Popover>
-  );
+  )
 
   return (
     <KeyAddressesTableWrap>
@@ -26,7 +26,7 @@ function KeyAddressesTable(props) {
         body={
           <>
             <tr>
-              {tableHeaders.map(i => <th>{i}</th>)}
+              {tableHeaders.map(i => <th key={i}>{i}</th>)}
             </tr>
             {tableData.map((i, index) => {
               return (
@@ -46,13 +46,13 @@ function KeyAddressesTable(props) {
                     </OverlayTrigger>
                   </td>
                 </tr>
-              );
+              )
             })}
           </>
         }
       />
     </KeyAddressesTableWrap>
-  );
+  )
 }
 
-export default KeyAddressesTable;
+export default KeyAddressesTable

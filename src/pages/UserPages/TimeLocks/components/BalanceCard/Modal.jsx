@@ -1,38 +1,37 @@
-import React, { useState } from "react";
-import DatePicker from "react-datepicker";
-import ModalWindow from "components/Base/ModalWindow";
-import Calendar from "components/Base/Calendar";
-import FormInput from "components/Base/Form/FormInput";
-import Button from "components/Base/Buttons/Button";
-import { Controller, useForm } from "react-hook-form";
-import { CalendarWraper } from "../../styles";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { useState } from 'react'
+import ModalWindow from 'components/Base/ModalWindow'
+import Calendar from 'components/Base/Calendar'
+import FormInput from 'components/Base/Form/FormInput'
+import Button from 'components/Base/Buttons/Button'
+import { useForm } from 'react-hook-form'
+import { CalendarWraper } from '../../styles'
+import 'react-datepicker/dist/react-datepicker.css'
 
-function Modal({ modalShow, setModalShow, setDeposit, setPurge, modalTitle }) {
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
+function Modal ({ modalShow, setModalShow, setDeposit, setPurge, modalTitle }) {
+  const [startDate, setStartDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
 
-    const { register, control, handleSubmit, errors, getValues, reset } = useForm();
+  const { register, control, handleSubmit, errors, getValues, reset } = useForm()
 
-    const handleSetDeposit = () => {
-        const values = getValues();
-        const isFull = Object.values(values).every((x) => x.length !== 0);
-        handleSubmit(setDeposit)();
-        if (isFull) {
-            setModalShow(false);
-            setStartDate(null);
-            setEndDate(null);
-        }
-    };
+  const handleSetDeposit = () => {
+    const values = getValues()
+    const isFull = Object.values(values).every((x) => x.length !== 0)
+    handleSubmit(setDeposit)()
+    if (isFull) {
+      setModalShow(false)
+      setStartDate(null)
+      setEndDate(null)
+    }
+  }
 
-    return (
+  return (
         <ModalWindow
             show={modalShow}
             onHide={() => {
-                setModalShow(false);
-                setStartDate(null);
-                setEndDate(null);
-                reset();
+              setModalShow(false)
+              setStartDate(null)
+              setEndDate(null)
+              reset()
             }}
             modalTitle={modalTitle}
             content={
@@ -44,11 +43,11 @@ function Modal({ modalShow, setModalShow, setDeposit, setPurge, modalTitle }) {
                         type="string"
                         placeholder="0x000"
                         ref={register({
-                            required: "Address Required!",
-                            pattern: {
-                                value: /^.{42}$/gim,
-                                message: "Invalid Address!",
-                            },
+                          required: 'Address Required!',
+                          pattern: {
+                            value: /^.{42}$/gim,
+                            message: 'Invalid Address!'
+                          }
                         })}
                         valid={errors?.token?.message}
                     />
@@ -71,7 +70,7 @@ function Modal({ modalShow, setModalShow, setDeposit, setPurge, modalTitle }) {
                             selectsEnd={true}
                             control={control}
                             name="endDate"
-                            disabled={startDate === null ? true : false}
+                            disabled={startDate === null}
                             setDate={setEndDate}
                             selected={endDate}
                             startDate={startDate}
@@ -81,15 +80,15 @@ function Modal({ modalShow, setModalShow, setDeposit, setPurge, modalTitle }) {
                     </CalendarWraper>
                     <h4>Amount</h4>
                     <FormInput
-                        lbl={"Q"}
+                        lbl={'Q'}
                         min={0}
                         name="amountQ"
                         type="number"
                         placeholder="0.0"
-                        ref={register({ required: "Field is required!" })}
+                        ref={register({ required: 'Field is required!' })}
                         valid={errors.amountQ?.message}
                     />
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Button
                             type="outline"
                             title="Confirm"
@@ -101,7 +100,7 @@ function Modal({ modalShow, setModalShow, setDeposit, setPurge, modalTitle }) {
                 </>
             }
         />
-    );
+  )
 }
 
-export default Modal;
+export default Modal

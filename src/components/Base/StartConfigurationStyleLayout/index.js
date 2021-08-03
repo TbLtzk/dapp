@@ -1,1 +1,1 @@
-export {default} from './StartConfigurationStyleLayout';
+export { default } from './StartConfigurationStyleLayout'

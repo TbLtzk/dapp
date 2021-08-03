@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const WrapContainer = styled.div`
   display: flex;
@@ -8,7 +8,7 @@ export const WrapContainer = styled.div`
     margin-top: 20px;
     margin-right: 30px;
   }
-`;
+`
 
 export const InfoWrap = styled.div`
     display: grid;
@@ -17,7 +17,7 @@ export const InfoWrap = styled.div`
       width: 95%;
       height: 95%;
     }
-`;
+`
 
 export const BlockWrap = styled.div`
   padding-bottom: 10px;

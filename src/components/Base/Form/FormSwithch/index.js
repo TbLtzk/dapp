@@ -1,1 +1,1 @@
-export { default } from './FormSwithch';
+export { default } from './FormSwithch'

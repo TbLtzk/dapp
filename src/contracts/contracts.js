@@ -1,4 +1,4 @@
-import { ContractRegistryInstance } from '@q-dev/q-js-sdk';
+import { ContractRegistryInstance } from '@q-dev/q-js-sdk'
 
 export const CONTRACT_REGISTRY_ADDRESS = '0xc3E589056Ece16BCB88c6f9318e9a7343b663522'
 
@@ -11,8 +11,7 @@ export let constitutionVotingInstance = {}
 export let epqfiParametersVoting = {}
 export let epdrParametersVoting = {}
 
-
-export async function initInstances() {
+export async function initInstances () {
   contractRegistryInstance = new ContractRegistryInstance(window.web3, CONTRACT_REGISTRY_ADDRESS)
   validatorsInstance = await contractRegistryInstance.validators()
   validationRewardPoolsInstance = await contractRegistryInstance.validationRewardPools()

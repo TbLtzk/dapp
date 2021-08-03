@@ -1,96 +1,101 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getRootNodeStakes, getWithdrawals } from 'store/actions/action-creaters/root-contract';
+import React, { useEffect, useState, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getRootNodeStakes, getWithdrawals } from 'store/actions/action-creaters/root-contract'
 import {
   isUserRootNode,
   lastActionRoot,
   loadingCheckingRootNode,
   rootNodeStake,
   withdrawals
-} from 'store/selectors/root-contract';
-import { userAddressMetamask } from 'store/selectors/user-inf';
+} from 'store/selectors/root-contract'
+import { userAddressMetamask } from 'store/selectors/user-inf'
 
-import { getRootNodeAmount } from 'store/actions/action-creaters/locked-amount';
-import { rootNodeAmount } from 'store/selectors/locked-amount';
+import { getRootNodeAmount } from 'store/actions/action-creaters/locked-amount'
+import { rootNodeAmount } from 'store/selectors/locked-amount'
 
-import { useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form'
 
-import { fN } from 'func/useful';
-import { fromWei } from 'func/balance';
-import CustomBlock from 'components/Base/CustomBlock';
-import FormInput from 'components/Base/Form/FormInput';
-import ActionButtons from 'pages/UserPages/Staking/FormStaking/ActionButtons';
-import RootService from 'contracts/src/Root';
+import { fN } from 'func/useful'
+import { fromWei } from 'func/balance'
+import CustomBlock from 'components/Base/CustomBlock'
+import FormInput from 'components/Base/Form/FormInput'
+import ActionButtons from 'pages/UserPages/Staking/FormStaking/ActionButtons'
+import RootService from 'contracts/src/Root'
 
-import { fromSolDateFormattingT1 } from '../../../../func/date';
+import { fromSolDateFormattingT1 } from '../../../../func/date'
 
-function FormStaking() {
+function FormStaking () {
   const {
     register,
     errors,
     handleSubmit
-  } = useForm();
-  const dispatch = useDispatch();
-  const rootService = new RootService();
-  const [userBalance, setUserBalance] = useState(null);
+  } = useForm()
+  const dispatch = useDispatch()
+  const rootService = new RootService()
+  const [userBalance, setUserBalance] = useState(null)
 
-  const isUserRoot = useSelector(isUserRootNode);
-  const loadingCheckingRoot = useSelector(loadingCheckingRootNode);
-  const userAddress = useSelector(userAddressMetamask);
-  const amountNodeStake = useSelector(rootNodeStake);
-  const withdrawalsData = useSelector(withdrawals);
-  const lastUpdateRoot = useSelector(lastActionRoot);
-  const rootNodeLockedAmount = useSelector(rootNodeAmount);
-  const timeLockedAmount = fromWei(Number(rootNodeLockedAmount?.minRootNodeAmount?.amount));
+  const isUserRoot = useSelector(isUserRootNode)
+  const loadingCheckingRoot = useSelector(loadingCheckingRootNode)
+  const userAddress = useSelector(userAddressMetamask)
+  const amountNodeStake = useSelector(rootNodeStake)
+  const withdrawalsData = useSelector(withdrawals)
+  const lastUpdateRoot = useSelector(lastActionRoot)
+  const rootNodeLockedAmount = useSelector(rootNodeAmount)
+  const timeLockedAmount = fromWei(Number(rootNodeLockedAmount?.minRootNodeAmount?.amount))
 
   useEffect(() => {
     if (userAddress) {
-      dispatch(getRootNodeStakes(rootService, userAddress));
-      dispatch(getWithdrawals(userAddress));
+      dispatch(getRootNodeStakes(rootService, userAddress))
+      dispatch(getWithdrawals(userAddress))
       dispatch(getRootNodeAmount(userAddress))
     }
-  }, [userAddress, isUserRoot, dispatch, lastUpdateRoot]);
+  }, [userAddress, isUserRoot, dispatch, lastUpdateRoot])
 
   useEffect(() => {
-    window.web3.eth.getBalance(userAddress, (err, balance) => {
-      const userBalance = fromWei(balance);
-      setUserBalance(fN(userBalance));
-    });
-  }, [lastUpdateRoot]);
+    window.web3.eth.getBalance(userAddress, (error, balance) => {
+      if (error) {
+        console.error(error)
+      }
+      const userBalance = fromWei(balance)
+      setUserBalance(fN(userBalance))
+    })
+  }, [lastUpdateRoot])
 
   const handleBtn = useMemo(() => {
-    return handleSubmit;
-  }, [handleSubmit]);
+    return handleSubmit
+  }, [handleSubmit])
 
   return (
     <CustomBlock>
       <h1>Account Status</h1>
       <h5>Status</h5>
-      {loadingCheckingRoot ? null :
-        isUserRoot
+      {loadingCheckingRoot
+        ? null
+        : isUserRoot
           ? <p>Member of Root Node Panel</p>
           : <p>Not a Member of Root Node Panel</p>
       }
       <h5>Stake in Root Node Panel (Q)</h5>
       <p>{amountNodeStake + 'Q'}</p>
-      {timeLockedAmount > 0 ?
-        <>
+      {timeLockedAmount > 0
+        ? <>
           <h5>Time locked amount</h5>
           <p>{timeLockedAmount + ' Q'}</p>
-        </> : null}
+        </>
+        : null}
       <h5>Q Address Balance</h5>
-      <p>{userBalance ? userBalance : 0}Q</p>
+      <p>{userBalance || 0}Q</p>
       <h5>Announcement withdrawal status</h5>
-      {withdrawalsData?.pending ?
-        <p>
+      {withdrawalsData?.pending
+        ? <p>
           Announced amount<br />
           End time for announcement
         </p>
         : null}
 
       <p>{withdrawalsData?.pending ? 'pending' : 'not-active'}</p>
-      {withdrawalsData?.pending ?
-        <>
+      {withdrawalsData?.pending
+        ? <>
           <p>{withdrawalsData ? fromWei(withdrawalsData?.amount) : 0}Q</p>
           <p>{withdrawalsData?.endTime !== '0' ? fromSolDateFormattingT1(Number(withdrawalsData?.endTime)) : '-'}</p>
         </>
@@ -111,8 +116,7 @@ function FormStaking() {
         handleSubmit={handleBtn}
       />
     </CustomBlock>
-  );
+  )
 }
 
-export default FormStaking;
-
+export default FormStaking

@@ -1,25 +1,25 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { loadingPerformNetting } from 'store/selectors/system-balance';
-import { onPerformNetting } from 'store/actions/action-creaters/system-balance';
+import { useDispatch, useSelector } from 'react-redux'
+import { loadingPerformNetting } from 'store/selectors/system-balance'
+import { onPerformNetting } from 'store/actions/action-creaters/system-balance'
 
-import CustomBlock from 'components/Base/CustomBlock';
-import Button from 'components/Base/Buttons/Button';
-import LoadingSpinner from 'components/Base/LoadingSpinner';
+import CustomBlock from 'components/Base/CustomBlock'
+import Button from 'components/Base/Buttons/Button'
+import LoadingSpinner from 'components/Base/LoadingSpinner'
 
-function SystemCard(props) {
+function SystemCard (props) {
   const {
     data,
     title
-  } = props;
+  } = props
 
-  const dispatch = useDispatch();
-  const loadingPerfNetting = useSelector(loadingPerformNetting);
+  const dispatch = useDispatch()
+  const loadingPerfNetting = useSelector(loadingPerformNetting)
 
   const onHandlePerformNetting = useCallback(() => {
-    dispatch(onPerformNetting());
-  }, []);
+    dispatch(onPerformNetting())
+  }, [])
 
   return (
     <CustomBlock>
@@ -30,10 +30,10 @@ function SystemCard(props) {
             <h5>{elem.title}</h5>
             <p>{elem.value}</p>
           </div>
-        );
+        )
       })}
-      {title === 'QUSD System Balance' ?
-        <div className="card__actions">
+      {title === 'QUSD System Balance'
+        ? <div className="card__actions">
           <Button
             title={!loadingPerfNetting ? 'Perform Netting' : <LoadingSpinner/>}
             type="white"
@@ -43,8 +43,7 @@ function SystemCard(props) {
         : null
       }
     </CustomBlock>
-  );
+  )
 }
 
-export default SystemCard;
-
+export default SystemCard

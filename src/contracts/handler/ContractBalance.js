@@ -1,24 +1,24 @@
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address';
-import { BN, fN } from 'func/useful';
-import { fromWei } from 'func/balance';
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
+import { BN, fN } from 'func/useful'
+import { fromWei } from 'func/balance'
 
 export default class ContractBalance {
-  constructor(userAddress) {
-    this.userAddress = userAddress;
+  constructor (userAddress) {
+    this.userAddress = userAddress
   }
 
-  getBalanceValue(contract, stateSetter) {
+  getBalanceValue (contract, stateSetter) {
     window.web3.eth.getBalance(contractsToAddresses[contract])
       .then(
         res => {
-          let transf = fromWei(res);
+          let transf = fromWei(res)
           transf = fN(BN(transf)
-            .toFixed());
-          stateSetter(transf);
+            .toFixed())
+          stateSetter(transf)
         }
       )
       .catch(e => {
-        stateSetter(0);
-      });
+        stateSetter(0)
+      })
   }
 }

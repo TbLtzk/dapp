@@ -1,1 +1,1 @@
-export { default } from './AuctionsTab';
+export { default } from './AuctionsTab'

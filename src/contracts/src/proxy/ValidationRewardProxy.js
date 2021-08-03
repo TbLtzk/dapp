@@ -1,5 +1,5 @@
-import ProxyService from './ProxyService';
+import ProxyService from './ProxyService'
 
-export default class ValidationRewardProxy extends ProxyService{
+export default class ValidationRewardProxy extends ProxyService {
 
 }

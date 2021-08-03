@@ -1,1 +1,1 @@
-export {default} from './SidebarCards';
+export { default } from './SidebarCards'

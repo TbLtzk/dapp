@@ -1,44 +1,44 @@
-import { put, takeEvery } from 'redux-saga/effects';
-import * as actionTypes from 'store/actions/action-types/validation-reward-pools';
+import { put, takeEvery } from 'redux-saga/effects'
+import * as actionTypes from 'store/actions/action-types/validation-reward-pools'
 
-import { setError, setBalance, getVRPBalanceSuccess } from 'store/actions/action-creaters/validation-reward-pools';
-import ValidationRewardPools from 'contracts/src/ValidationRewardPools';
+import { setError, setBalance, getVRPBalanceSuccess } from 'store/actions/action-creaters/validation-reward-pools'
+import ValidationRewardPools from 'contracts/src/ValidationRewardPools'
 
-let contractInstance = null;
+let contractInstance = null
 
-function getContractInstance() {
+function getContractInstance () {
   if (contractInstance === null) {
-    contractInstance = new ValidationRewardPools();
+    contractInstance = new ValidationRewardPools()
   }
-  return contractInstance;
+  return contractInstance
 }
 
-function* getBalanceGenerator({ address }) {
+function * getBalanceGenerator ({ address }) {
   try {
-    yield put({ type: actionTypes.SET_VRP_DATA_IS_LOADING });
+    yield put({ type: actionTypes.SET_VRP_DATA_IS_LOADING })
 
-    const contract = getContractInstance();
-    const data = yield contract.getBalance(address);
+    const contract = getContractInstance()
+    const data = yield contract.getBalance(address)
 
-    yield put(setBalance(data));
-    yield put({ type: actionTypes.SET_VRP_DATA_IS_LOADED });
+    yield put(setBalance(data))
+    yield put({ type: actionTypes.SET_VRP_DATA_IS_LOADED })
   } catch (err) {
-    console.error('VRP.Error', err);
-    yield put(setError(err.message));
+    console.error('VRP.Error', err)
+    yield put(setError(err.message))
   }
 }
 
-function* getBalanceDashboard({ address }) {
+function * getBalanceDashboard ({ address }) {
   try {
-    const contract = getContractInstance();
-    const data = yield contract.getBalance(address);
-    yield put(getVRPBalanceSuccess(data));
+    const contract = getContractInstance()
+    const data = yield contract.getBalance(address)
+    yield put(getVRPBalanceSuccess(data))
   } catch (err) {
-    console.error('VRP.Error', err);
+    console.error('VRP.Error', err)
   }
 }
 
 export default [
   takeEvery(actionTypes.GET_VRP_BALANCE, getBalanceGenerator),
-  takeEvery(actionTypes.GET_VRP_BALANCE_DASHBOARD, getBalanceDashboard),
-];
+  takeEvery(actionTypes.GET_VRP_BALANCE_DASHBOARD, getBalanceDashboard)
+]

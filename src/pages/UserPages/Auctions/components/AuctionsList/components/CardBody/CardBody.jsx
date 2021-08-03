@@ -1,16 +1,13 @@
-import React from 'react';
-import ListCard from 'components/Custom/PageLists/ListCard';
+import React from 'react'
 
-import { convertToMonthDayYear, remainDate } from 'func/convertDate';
-import { useSelector } from 'react-redux';
-import { symbol } from 'store/selectors/stable-coin';
+import { useSelector } from 'react-redux'
+import { symbol } from 'store/selectors/stable-coin'
 
-function CardBody(props) {
+function CardBody (props) {
   const {
-    id,
     data
-  } = props;
-  const symbolType = useSelector(symbol);
+  } = props
+  const symbolType = useSelector(symbol)
 
   return (
     <div>
@@ -69,8 +66,7 @@ function CardBody(props) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default CardBody;
-
+export default CardBody

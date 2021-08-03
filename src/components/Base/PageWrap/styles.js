@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-import {indents} from 'constants/style';
-import {Container} from 'react-bootstrap';
+import { indents } from 'constants/style'
+import { Container } from 'react-bootstrap'
 
 export const WrapContainer = styled(Container)`
   height: 100%;
@@ -9,12 +9,12 @@ export const WrapContainer = styled(Container)`
   position: relative;
   background: ${props => props.theme.colors.oxfordBlue};
   padding: 0 ${indents['45']} 0 ${indents['40']};
-`;
+`
 
 export const Page = styled.div`
   display: flex;
   height: 100%;
-`;
+`
 
 export const WrapContent = styled.div`
   height: calc(100vh - 108px);
@@ -40,6 +40,4 @@ export const WrapContent = styled.div`
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
     grid-column-gap: ${indents['15']};
   }
-`;
-
-
+`

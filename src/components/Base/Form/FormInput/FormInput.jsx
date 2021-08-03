@@ -1,10 +1,10 @@
-import React, { forwardRef, useState } from 'react';
-import { Form } from 'react-bootstrap';
+import React, { forwardRef, useState } from 'react'
+import { Form } from 'react-bootstrap'
 
-import ErrorInputMessage from 'components/Base/ErrorInputMessage';
-import { InputWrapper } from 'components/Base/Form/FormInput/styles';
-import { useSelector } from 'react-redux';
-import { theme } from 'store/selectors/theme';
+import ErrorInputMessage from 'components/Base/ErrorInputMessage'
+import { InputWrapper } from 'components/Base/Form/FormInput/styles'
+import { useSelector } from 'react-redux'
+import { theme } from 'store/selectors/theme'
 
 const FormInput = forwardRef((props, ref) => {
   // eslint-disable-next-line react/prop-types
@@ -18,20 +18,19 @@ const FormInput = forwardRef((props, ref) => {
     value,
     disabled,
     min,
-    palette,
     color,
     lbl
-  } = props;
+  } = props
 
-  const [isFocus, setIsFocus] = useState('');
-  const currentTheme = useSelector(theme);
+  const [isFocus, setIsFocus] = useState('')
+  const currentTheme = useSelector(theme)
   return (
     <InputWrapper
       controlId="formBasicEmail"
       align={align}
-      type={Boolean(valid) ? 'error' : ''}
+      type={valid ? 'error' : ''}
       palette={currentTheme}
-      color={Boolean(color) ? 1 : 0}
+      color={color ? 1 : 0}
       lbl={lbl}
       isfocus={isFocus}
       isdisabled={disabled ? '1' : ''}
@@ -42,10 +41,10 @@ const FormInput = forwardRef((props, ref) => {
         }
         <Form.Control
           onFocus={() => {
-            setIsFocus('1');
+            setIsFocus('1')
           }}
           onBlur={() => {
-            setIsFocus('');
+            setIsFocus('')
           }}
           min={min}
           type={type}
@@ -60,7 +59,7 @@ const FormInput = forwardRef((props, ref) => {
       </div>
       <ErrorInputMessage message={valid}/>
     </InputWrapper>
-  );
-});
+  )
+})
 
-export default FormInput;
+export default FormInput

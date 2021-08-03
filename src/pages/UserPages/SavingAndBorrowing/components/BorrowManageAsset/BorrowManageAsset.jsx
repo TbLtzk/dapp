@@ -1,132 +1,131 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import Button from 'components/Base/Buttons/Button';
-import ModalWindow from 'components/Base/ModalWindow';
-import LoadingSpinner from 'components/Base/LoadingSpinner';
-import FormInput from 'components/Base/Form/FormInput';
+import React, { useEffect, useState } from 'react'
+import Button from 'components/Base/Buttons/Button'
+import ModalWindow from 'components/Base/ModalWindow'
+import LoadingSpinner from 'components/Base/LoadingSpinner'
+import FormInput from 'components/Base/Form/FormInput'
 
-import Handler from './handler';
+import Handler from './handler'
 
-import { fN } from 'func/useful';
-import { useDispatch, useSelector } from 'react-redux';
-import { useForm } from 'react-hook-form';
-import { userAddressMetamask } from 'store/selectors/user-inf';
-import { errorHandler } from 'func/useful';
+import { fN, errorHandler } from 'func/useful'
+import { useDispatch, useSelector } from 'react-redux'
+import { useForm } from 'react-hook-form'
+import { userAddressMetamask } from 'store/selectors/user-inf'
 
-const BTN_LENGTH = '100px';
+const BTN_LENGTH = '100px'
 
 const DEPOSIT_BTN_TEXT = {
   approve: 'Approve',
   repay: 'Repay',
   add: 'Add'
-};
+}
 
-function BorrowManageAsset(props) {
+function BorrowManageAsset (props) {
   const {
     borrowingAsset,
     vault
-  } = props;
+  } = props
 
   const {
     register: register1,
     handleSubmit: handleSubmit1,
     errors: errors1
-  } = useForm();
+  } = useForm()
 
   const {
     register: register2,
     handleSubmit: handleSubmit2,
     errors: errors2
-  } = useForm();
+  } = useForm()
 
   const {
     register: register3,
     handleSubmit: handleSubmit3,
     errors: errors3
-  } = useForm();
+  } = useForm()
 
   const {
     register: register4,
     handleSubmit: handleSubmit4,
     errors: errors4
-  } = useForm();
+  } = useForm()
 
-  const address = useSelector(userAddressMetamask);
+  const address = useSelector(userAddressMetamask)
 
-  const [isModalShown, setIsModalShown] = useState(false);
-  const [loadingInf, setLoadingInf] = useState(false);
-  const [actCardDataInf, setActCardDataInf] = useState({
+  const [isModalShown, setIsModalShown] = useState(false)
+  const [loadingInf, setLoadingInf] = useState(false)
+  const [actCardDataInf] = useState({
     type: 'borrow',
     collateral: vault.colKey,
     borrow: borrowingAsset,
     vault
-  });
+  })
 
-  const handler = new Handler(address, actCardDataInf?.vault?.colKey, useDispatch(), actCardDataInf?.vault?.vaultNum);
+  const handler = new Handler(address, actCardDataInf?.vault?.colKey, useDispatch(), actCardDataInf?.vault?.vaultNum)
 
-  const [collateralInf, setCollateralInf] = useState({});
-  const [borrowingInf, setBorrowingInf] = useState({});
-  const [allowanceDeposit, setAllowanceDeposit] = useState(0);
-  const [allowanceRepay, setAllowanceRepay] = useState(0);
+  const [collateralInf, setCollateralInf] = useState({})
+  const [borrowingInf, setBorrowingInf] = useState({})
+  const [allowanceDeposit, setAllowanceDeposit] = useState(0)
+  const [allowanceRepay, setAllowanceRepay] = useState(0)
 
-  const [repayBtnTitle, setRepayBtnTitle] = useState(DEPOSIT_BTN_TEXT.repay);
-  const [depositBtnTitle, setDepositBtnTitle] = useState(DEPOSIT_BTN_TEXT.add);
+  const [repayBtnTitle, setRepayBtnTitle] = useState(DEPOSIT_BTN_TEXT.repay)
+  const [depositBtnTitle, setDepositBtnTitle] = useState(DEPOSIT_BTN_TEXT.add)
 
   useEffect(async () => {
     if (actCardDataInf?.collateral === 'QBTC') {
-      await handler.setVaultStats(setCollateralInf, setBorrowingInf, setLoadingInf);
-      handler.allowanceSwitcher(setAllowanceDeposit, 'deposit');
-      handler.allowanceSwitcher(setAllowanceRepay, 'repay');
+      await handler.setVaultStats(setCollateralInf, setBorrowingInf, setLoadingInf)
+      handler.allowanceSwitcher(setAllowanceDeposit, 'deposit')
+      handler.allowanceSwitcher(setAllowanceRepay, 'repay')
     }
-  }, []);
+  }, [])
 
-  function onChangeValueBtnSlide(type, value) {
-    const inputValue = value.target.value;
+  function onChangeValueBtnSlide (type, value) {
+    const inputValue = value.target.value
 
     if (type === 'deposit') {
       if (Number(allowanceDeposit) < Number(inputValue)) {
-        setDepositBtnTitle(DEPOSIT_BTN_TEXT.approve);
+        setDepositBtnTitle(DEPOSIT_BTN_TEXT.approve)
       } else {
-        setDepositBtnTitle(DEPOSIT_BTN_TEXT.add);
+        setDepositBtnTitle(DEPOSIT_BTN_TEXT.add)
       }
     } else if (type === 'repay') {
       if (Number(allowanceRepay) < Number(inputValue)) {
-        setRepayBtnTitle(DEPOSIT_BTN_TEXT.approve);
+        setRepayBtnTitle(DEPOSIT_BTN_TEXT.approve)
       } else {
-        setRepayBtnTitle(DEPOSIT_BTN_TEXT.repay);
+        setRepayBtnTitle(DEPOSIT_BTN_TEXT.repay)
       }
     }
   }
 
-  async function repay(formData) {
+  async function repay (formData) {
     if (repayBtnTitle === DEPOSIT_BTN_TEXT.approve) {
-      await handler.approveSwitcher('repay');
-      handler.allowanceSwitcher(setAllowanceRepay, 'repay');
-      setRepayBtnTitle(DEPOSIT_BTN_TEXT.repay);
+      await handler.approveSwitcher('repay')
+      handler.allowanceSwitcher(setAllowanceRepay, 'repay')
+      setRepayBtnTitle(DEPOSIT_BTN_TEXT.repay)
     } else {
       await handler.repay(formData.field, actCardDataInf.vault.vaultNum, setCollateralInf,
-        setBorrowingInf, setLoadingInf);
+        setBorrowingInf, setLoadingInf)
     }
   }
 
-  async function borrow(formData) {
+  async function borrow (formData) {
     await handler.borrow(formData.field, actCardDataInf.vault.vaultNum, setCollateralInf,
-      setBorrowingInf, setLoadingInf);
+      setBorrowingInf, setLoadingInf)
   }
 
-  async function addDeposit(formData) {
+  async function addDeposit (formData) {
     if (depositBtnTitle === DEPOSIT_BTN_TEXT.approve) {
-      await handler.approveSwitcher('deposit');
-      handler.allowanceSwitcher(setAllowanceDeposit, 'deposit');
-      setDepositBtnTitle(DEPOSIT_BTN_TEXT.add);
+      await handler.approveSwitcher('deposit')
+      handler.allowanceSwitcher(setAllowanceDeposit, 'deposit')
+      setDepositBtnTitle(DEPOSIT_BTN_TEXT.add)
     } else {
       await handler.addDeposit(formData.field, actCardDataInf.vault.vaultNum, setCollateralInf,
-        setBorrowingInf, setLoadingInf);
+        setBorrowingInf, setLoadingInf)
     }
   }
 
-  async function withdraw(formData) {
+  async function withdraw (formData) {
     await handler.withdraw(formData.field, actCardDataInf.vault.vaultNum, setCollateralInf,
-      setBorrowingInf, setLoadingInf);
+      setBorrowingInf, setLoadingInf)
   }
 
   return (
@@ -137,13 +136,13 @@ function BorrowManageAsset(props) {
         title={'Manage'}
         type="transparent"
         handleButton={() => {
-          setIsModalShown(true);
+          setIsModalShown(true)
         }}
       />
       <ModalWindow
         show={isModalShown}
         onHide={() => {
-          setIsModalShown(false);
+          setIsModalShown(false)
         }}
         modalTitle={'Borrowing ' + borrowingAsset}
         content={
@@ -230,7 +229,7 @@ function BorrowManageAsset(props) {
                   ref={register2({ required: true })}
                   valid={errorHandler(errors2, 'field')}
                   onChange={(value) => {
-                    onChangeValueBtnSlide('repay', value);
+                    onChangeValueBtnSlide('repay', value)
                   }}
                 />
                 <Button
@@ -252,7 +251,7 @@ function BorrowManageAsset(props) {
                   ref={register3({ required: true })}
                   valid={errorHandler(errors3, 'field')}
                   onChange={(value) => {
-                    onChangeValueBtnSlide('deposit', value);
+                    onChangeValueBtnSlide('deposit', value)
                   }}
                 />
                 <Button
@@ -285,7 +284,7 @@ function BorrowManageAsset(props) {
         }
       />
     </>
-  );
+  )
 }
 
-export default BorrowManageAsset;
+export default BorrowManageAsset

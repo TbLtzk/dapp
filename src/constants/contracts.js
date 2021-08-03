@@ -5,4 +5,4 @@ export const CONTRACT_TYPES = {
   qVault: 'qVault',
   root: 'root',
   validators: 'validators'
-};
+}

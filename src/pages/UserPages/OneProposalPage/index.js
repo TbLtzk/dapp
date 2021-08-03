@@ -1,1 +1,1 @@
-export {default} from './OneProposalPage';
+export { default } from './OneProposalPage'

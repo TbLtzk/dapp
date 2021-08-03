@@ -1,18 +1,18 @@
-import React from 'react';
+import React from 'react'
 
-import Sidebar from 'components/Navigations/Sidebar';
-import LoadingTransaction from 'components/Custom/LoadingTransaction';
-import Header from 'components/Navigations/Header';
+import Sidebar from 'components/Navigations/Sidebar'
+import LoadingTransaction from 'components/Custom/LoadingTransaction'
+import Header from 'components/Navigations/Header'
 
-import { WrapContainer, Page, WrapContent } from './styles';
+import { WrapContainer, Page, WrapContent } from './styles'
 
-function PageWrap(props) {
+function PageWrap (props) {
   const {
     children,
     headerTitle,
     headerExtra,
     wrapContentClasses
-  } = props;
+  } = props
 
   return (
     <Page>
@@ -28,10 +28,9 @@ function PageWrap(props) {
       </WrapContainer>
       <LoadingTransaction/>
     </Page>
-  );
+  )
 }
 
-PageWrap.propTypes = {};
+PageWrap.propTypes = {}
 
-export default PageWrap;
-
+export default PageWrap
