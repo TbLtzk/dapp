@@ -1,4 +1,5 @@
 import React from 'react'
+import Alert from '../../Custom/Alerts'
 
 import {
   HeaderWrp,
@@ -12,9 +13,9 @@ function Header (props) {
     extra,
     extraButton
   } = props
-
   return (
     <HeaderWrp>
+      <Alert/>
       <HeaderTitle>
         {header}
       </HeaderTitle>

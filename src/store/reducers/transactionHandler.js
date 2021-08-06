@@ -3,7 +3,8 @@ import * as actionTypes from '../actions/action-types/transaction-handler'
 const initialState = {
   transactionLoading: false,
   errorMessage: null,
-  transactionCounter: 0
+  transactionCounter: 0,
+  successMessage: null
 }
 
 export default function transactionHandler (state = initialState, action) {
@@ -14,14 +15,14 @@ export default function transactionHandler (state = initialState, action) {
       return {
         ...state,
         transactionLoading: true,
-        success: false,
+        successMessage: null,
         errorMessage: null
       }
     case actionTypes.SET_TRANSACTION_LOADING_SUCCESS:
       return {
         ...state,
         transactionLoading: false,
-        success: true
+        successMessage: action.successMessage
       }
     case actionTypes.SET_TRANSACTION_LOADING_ERROR:
       return {

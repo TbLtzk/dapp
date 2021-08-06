@@ -3,11 +3,20 @@ import { put, select, takeEvery } from 'redux-saga/effects'
 import * as actionTypes from 'store/actions/action-types/q-vault'
 import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler'
 import {
-  setError, setUserBalance, setLockedAssets, getUserBalance,
-  getLockedAssets, getDelegationsListError, getDelegationsListSuccess,
-  getQVBalanceSuccess, getOutstandingDelegationRewardsSuccess, getOutstandingDelegationRewardsError,
-  getOutstandingDelegationRewards, getDelegationsList
+  setError,
+  setUserBalance,
+  setLockedAssets,
+  getUserBalance,
+  getLockedAssets,
+  getDelegationsListError,
+  getDelegationsListSuccess,
+  getQVBalanceSuccess,
+  getOutstandingDelegationRewardsSuccess,
+  getOutstandingDelegationRewardsError,
+  getOutstandingDelegationRewards,
+  getDelegationsList
 } from 'store/actions/action-creaters/q-vault'
+
 import {
   setTransactionLoading,
   setTransactionLoadingError,
@@ -42,6 +51,7 @@ function * getUserBalanceGenerator ({ address }) {
   } catch (err) {
     console.error('QV.Error', err)
     yield put(setError(err.message))
+    yield put(setTransactionLoadingError(err))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -64,6 +74,7 @@ function * getLockedAssetsGenerator ({ address }) {
   } catch (err) {
     console.error('QV.Error', err)
     yield put(setError(err.message))
+    yield put(setTransactionLoadingError(err))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -84,10 +95,12 @@ function * setDepositGenerator ({ address, amountQ }) {
 
     if (data.status === true) {
       yield put(getUserBalance(address))
+      yield put(setTransactionLoadingSuccess())
     }
   } catch (err) {
     console.error('QV.Error', err)
     yield put(setError(err.message))
+    yield put(setTransactionLoadingError(err))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -105,13 +118,14 @@ function * setWithdrawGenerator ({ address, amountQ }) {
 
     const contract = getContractInstance()
     const data = yield contract.withdraw(address, toWei(amountQ))
-
-    if (data.status === true) {
+    if (data) {
       yield put(getUserBalance(address))
+      yield put(setTransactionLoadingSuccess('success'))
     }
   } catch (err) {
     console.error('QV.Error', err)
-    yield put(setError(err.message))
+    yield put(setError(err))
+    yield put(setTransactionLoadingError(err))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -133,10 +147,12 @@ function * setLockAmountGenerator ({ address, amountQ }) {
     if (data.status === true) {
       yield put(getUserBalance(address))
       yield put(getLockedAssets(address))
+      yield put(setTransactionLoadingSuccess())
     }
   } catch (err) {
     console.error('QV.Error', err)
     yield put(setError(err.message))
+    yield put(setTransactionLoadingError(err))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -158,10 +174,12 @@ function * setUnlockAmountGenerator ({ address, amountQ }) {
     if (data.status === true) {
       yield put(getUserBalance(address))
       yield put(getLockedAssets(address))
+      yield put(setTransactionLoadingSuccess())
     }
   } catch (err) {
     console.error('QV.Error', err)
     yield put(setError(err.message))
+    yield put(setTransactionLoadingError(err))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -172,7 +190,7 @@ function * setUnlockAmountGenerator ({ address, amountQ }) {
 
 function * getDelegationList () {
   try {
-    const { userAddress } = yield select(state => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf)
     const contract = getContractInstance()
     const data = yield contract.getDelegations(userAddress)
     yield put(getDelegationsListSuccess(data))
@@ -194,7 +212,7 @@ function * getBalanceDetails () {
 
 function * getOutstandingDelegationRewardsValue () {
   try {
-    const { userAddress } = yield select(state => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf)
     const contract = getContractInstance()
 
     const data = yield contract.getOutstandingDelegationRewards(userAddress)
@@ -208,7 +226,7 @@ function * getOutstandingDelegationRewardsValue () {
 function * onClaimStakeDelegatorReward () {
   try {
     yield put(setTransactionLoading())
-    const { userAddress } = yield select(state => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf)
     const contract = getContractInstance()
 
     yield contract.claimStakeDelegatorReward(userAddress)

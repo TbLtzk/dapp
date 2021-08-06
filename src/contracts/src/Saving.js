@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { contractsToAbi } from '../mapping/contract-to-abi'
 import { toWei } from 'func/balance'
+import { errorHanlder } from 'func/useful.js'
 
 export class SavingQUSD {
   constructor (address) {
@@ -16,13 +17,13 @@ export class SavingQUSD {
   }
 
   async deposit (address, amount) {
-    return await this.methods.deposit(toWei(amount))
-      .send({ from: address })
+    return await errorHanlder(this.methods.deposit(toWei(amount))
+      .send({ from: address }))
   }
 
   async withdraw (address, amount) {
-    return await this.methods.withdraw(toWei(amount))
-      .send({ from: address })
+    return await errorHanlder(this.methods.withdraw(toWei(amount))
+      .send({ from: address }))
   }
 
   async claim (address) {
