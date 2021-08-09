@@ -1,12 +1,9 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import {
-  setTransactionLoadingError,
-  setTransactionLoadingSuccess
-} from 'store/actions/action-creaters/transaction-handler'
+import { setTransactionLoadingError } from 'store/actions/action-creaters/transaction-handler'
 
-import { errorMessage, successMessage } from 'store/selectors/transaction-handler'
+import { errorMessage } from 'store/selectors/transaction-handler'
 import { useAlert } from 'react-alert'
 
 function Alert () {
@@ -14,13 +11,16 @@ function Alert () {
   const alert = useAlert()
 
   const errorTransaction = useSelector(errorMessage)
-  const successTransaction = useSelector(successMessage)
 
-  const createAlert = (obj) => {
-    if (obj.status === undefined) {
-      return { title: 'User denied transaction', info: obj.message }
+  const createAlert = (error) => {
+    if (error.message) {
+      const message = error.message.split(':')
+      return { title: message[0], message: message[1] }
+    }
+    if (error.status === false) {
+      return { title: 'Error', message: 'Not enough balance on wallet account' }
     } else {
-      return { title: 'Transaction denied', info: 'User do not have enough Q' }
+      return { title: 'Unknown type of error', message: 'No additional info' }
     }
   }
 
@@ -28,26 +28,18 @@ function Alert () {
     if (errorTransaction !== null) {
       const errorAlert = createAlert(errorTransaction)
       alert.error(
-                <div style={{ textAlign: 'center' }}>
-                    <h6> {errorAlert.title} </h6>
-                    <p> {errorAlert.info} </p>
-                </div>
+                <>
+                    <p style={{ fontSize: '13px' }}>{errorAlert.title}</p>
+                    <p style={{ fontSize: '12px' }}>{errorAlert.message}</p>
+                </>
       )
       dispatch(setTransactionLoadingError(null))
-    }
-    if (successTransaction !== null) {
-      alert.success(
-                <div style={{ textAlign: 'center' }}>
-                    <h6> Success transaction </h6>
-                </div>
-      )
-      dispatch(setTransactionLoadingSuccess(null))
     }
   }
 
   useEffect(() => {
     transactionHanlder()
-  }, [errorTransaction, successTransaction, dispatch])
+  }, [errorTransaction, dispatch])
 
   return <></>
 }

@@ -19,8 +19,7 @@ import {
 
 import {
   setTransactionLoading,
-  setTransactionLoadingError,
-  setTransactionLoadingSuccess
+  setTransactionLoadingError
 } from '../actions/action-creaters/transaction-handler'
 
 import QVault from 'contracts/src/QVault'
@@ -95,7 +94,6 @@ function * setDepositGenerator ({ address, amountQ }) {
 
     if (data.status === true) {
       yield put(getUserBalance(address))
-      yield put(setTransactionLoadingSuccess())
     }
   } catch (err) {
     console.error('QV.Error', err)
@@ -120,7 +118,6 @@ function * setWithdrawGenerator ({ address, amountQ }) {
     const data = yield contract.withdraw(address, toWei(amountQ))
     if (data) {
       yield put(getUserBalance(address))
-      yield put(setTransactionLoadingSuccess('success'))
     }
   } catch (err) {
     console.error('QV.Error', err)
@@ -147,7 +144,6 @@ function * setLockAmountGenerator ({ address, amountQ }) {
     if (data.status === true) {
       yield put(getUserBalance(address))
       yield put(getLockedAssets(address))
-      yield put(setTransactionLoadingSuccess())
     }
   } catch (err) {
     console.error('QV.Error', err)
@@ -174,7 +170,6 @@ function * setUnlockAmountGenerator ({ address, amountQ }) {
     if (data.status === true) {
       yield put(getUserBalance(address))
       yield put(getLockedAssets(address))
-      yield put(setTransactionLoadingSuccess())
     }
   } catch (err) {
     console.error('QV.Error', err)
@@ -232,7 +227,6 @@ function * onClaimStakeDelegatorReward () {
     yield contract.claimStakeDelegatorReward(userAddress)
     yield put(getOutstandingDelegationRewards())
     yield put(getDelegationsList())
-    yield put(setTransactionLoadingSuccess())
   } catch (err) {
     console.error('onClaimStakeDelegatorReward.Error', err)
     yield put(setTransactionLoadingError(err.message))

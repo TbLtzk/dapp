@@ -5,7 +5,6 @@ import Validators from '../../contracts/src/Validators'
 import QVault from '../../contracts/src/QVault'
 import RootService from 'contracts/src/Root'
 import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler'
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { getUserBalance } from 'store/actions/action-creaters/q-vault'
 import {
   setError,
@@ -26,18 +25,6 @@ const initContract = async (typeContract) => {
     return await contractRegistryInstance.rootNodes()
   } else if (typeContract === CONTRACT_TYPES.validators) {
     return await contractRegistryInstance.validators()
-  } else {
-    return null
-  }
-}
-
-function getContract (typeContract) {
-  if (typeContract === CONTRACT_TYPES.qVault) {
-    return new QVault(contractsToAddresses.QVault)
-  } else if (typeContract === CONTRACT_TYPES.root) {
-    return new RootService(contractsToAddresses.RootNode)
-  } else if (typeContract === CONTRACT_TYPES.validators) {
-    return new Validators()
   } else {
     return null
   }
@@ -82,7 +69,7 @@ function * getValidatorAmount ({ address }) {
 function * purgeTimeLocksAmount ({ payload }) {
   try {
     /* eslint-disable */
-    const contract = getContract(payload.contract)
+    const contract =  yield call(initContract, payload.contract)
     // yield put();
   } catch (err) {
     console.error('Validators.Error', err)
@@ -127,5 +114,3 @@ export default [
 
   takeEvery(actionTypes.SET_LOCKEDAMOUNT_CALL, depositLockedAmount)
 ]
-
-// const { userAddress } = yield select(state => state.userInf);
