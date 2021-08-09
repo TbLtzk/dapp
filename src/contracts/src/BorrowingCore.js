@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { contractsToAbi } from '../mapping/contract-to-abi'
-import { errorHanlder } from 'func/useful.js'
+import { errorWrapper } from 'func/useful.js'
 
 export class BorrowingCoreQUSD {
   constructor (address) {
@@ -23,19 +23,19 @@ export class BorrowingCoreQUSD {
   }
 
   async depositCol (address, vaultId, amount) {
-    return await errorHanlder(this.methods.depositCol(vaultId, amount).send({ from: address }))
+    return await errorWrapper(this.methods.depositCol(vaultId, amount).send({ from: address }))
   }
 
   async generateStc (address, vaultId, amountL) {
-    return await errorHanlder(this.methods.generateStc(vaultId, amountL).send({ from: address }))
+    return await errorWrapper(this.methods.generateStc(vaultId, amountL).send({ from: address }))
   }
 
   async payBackStc (address, vaultId, amountL) {
-    return await errorHanlder(this.methods.payBackStc(vaultId, amountL).send({ from: address }))
+    return await errorWrapper(this.methods.payBackStc(vaultId, amountL).send({ from: address }))
   }
 
   async withdrawCol (address, vaultId, amount) {
-    return await errorHanlder(this.methods.withdrawCol(vaultId, amount).send({ from: address }))
+    return await errorWrapper(this.methods.withdrawCol(vaultId, amount).send({ from: address }))
   }
 
   async balanceOf (address) {

@@ -47,7 +47,7 @@ export const getPercentageFormat = (number) => {
   return BN('1e+25').multipliedBy(number).toFixed()
 }
 
-export const errorHanlder = async (method) => {
+export const errorWrapper = async (method) => {
   return await promisify((get) =>
     method.on('confirmation', (confNumber, receipt, latestBlockHash) => get(receipt)).on('error', (error) => get(error))
   )

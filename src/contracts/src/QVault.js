@@ -1,6 +1,6 @@
 import { fromWei } from 'func/balance.js'
 import { contractsToAbi } from '../mapping/contract-to-abi'
-import { errorHanlder } from 'func/useful.js'
+import { errorWrapper } from 'func/useful.js'
 
 const array = [
   {
@@ -86,19 +86,19 @@ export default class QVault {
   }
 
   async withdraw (address, amountL) {
-    return await errorHanlder(this.methods.withdraw(amountL).send({ from: address }))
+    return await errorWrapper(this.methods.withdraw(amountL).send({ from: address }))
   }
 
   async lock (address, amountL) {
-    return await errorHanlder(this.methods.lock(amountL).send({ from: address }))
+    return await errorWrapper(this.methods.lock(amountL).send({ from: address }))
   }
 
   async unlock (address, amountL) {
-    return await errorHanlder(this.methods.unlock(amountL).send({ from: address }))
+    return await errorWrapper(this.methods.unlock(amountL).send({ from: address }))
   }
 
   async delegateStake (address, delegateAddresses, stakes) {
-    return await errorHanlder(this.methods.delegateStake(delegateAddresses, stakes).send({ from: address }))
+    return await errorWrapper(this.methods.delegateStake(delegateAddresses, stakes).send({ from: address }))
   }
 
   async getDelegations (address) {

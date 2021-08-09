@@ -1,5 +1,5 @@
 import { contracts } from '../config/config'
-import { errorHanlder } from 'func/useful.js'
+import { errorWrapper } from 'func/useful.js'
 
 import ValidationRewardPools from './ValidationRewardPools'
 import QVault from './QVault'
@@ -57,17 +57,17 @@ export default class Validators {
   }
 
   async enterShortList (address) {
-    return await errorHanlder(this.methods.enterShortList()
+    return await errorWrapper(this.methods.enterShortList()
       .send({ from: address }))
   }
 
   async announceWithdrawal (amount, address) {
-    return await errorHanlder(this.methods.announceWithdrawal(amount)
+    return await errorWrapper(this.methods.announceWithdrawal(amount)
       .send({ from: address }))
   }
 
   async withdraw (amount, address) {
-    return await errorHanlder(this.methods.withdraw(amount, address)
+    return await errorWrapper(this.methods.withdraw(amount, address)
       .send({ from: address }))
   }
 
