@@ -5,25 +5,26 @@ const initialState = {
   loadCounter: 0,
   error: '',
 
-  qVaultAmount: 0,
-  rootNodeAmount: 0,
-  validatorAmount: 0
+  qVaultAmount: null,
+  rootNodeAmount: null,
+  validatorAmount: null,
+  vestingAmount: null
 }
 
 export default function index (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.SET_VAL_DATA_IS_LOADING:
+    case actionTypes.SET_LOCK_DATA_IS_LOADING:
       return {
         ...state,
         loadCounter: state.loadCounter + 1
       }
-    case actionTypes.SET_VAL_DATA_IS_LOADED:
+    case actionTypes.SET_LOCK_DATA_IS_LOADED:
       return {
         ...state,
         lastUpdate: Date.now(),
         loadCounter: state.loadCounter - 1
       }
-    case actionTypes.SET_VAL_ERROR:
+    case actionTypes.SET_LOCK_ERROR:
       return {
         ...state,
         lastUpdate: Date.now(),

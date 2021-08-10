@@ -1,7 +1,7 @@
 import * as actionTypes from '../action-types/locked-amount'
 
 export const setError = (data) => ({
-  type: actionTypes.SET_VAL_ERROR,
+  type: actionTypes.SET_LOCK_ERROR,
   error: data
 })
 

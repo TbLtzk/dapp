@@ -29,14 +29,14 @@ function TimeLocks () {
   const validatorLockedAmount = useSelector(validatorAmount)
   const amountNodeStake = useSelector(rootNodeStake)
   const validatorSelfStake = useSelector(selfStake)
-  const qVaultMin = fromWei(Number(qVaultLockedAmount?.minQVaultAmount?.amount))
-  const rootNodeMin = fromWei(Number(rootNodeLockedAmount?.minRootNodeAmount?.amount))
-  const validatorMin = fromWei(Number(validatorLockedAmount?.minValidatorAmount?.amount))
-
+  const qVaultMin = fromWei(0)
+  const rootNodeMin = fromWei(0)
+  const validatorMin = fromWei(0)
   const [address, setAddress] = useState({ token: userAddress })
 
   const userQVBalance = useSelector(userBalance)
   const contract = new RootService()
+
   useEffect(() => {
     dispatch(getQVaultAmount(address.token))
     dispatch(getRootNodeAmount(address.token))
@@ -61,7 +61,7 @@ function TimeLocks () {
                     contract="qVault"
                     modalTitle="Deposit & purge"
                     title="Q Vault account balance"
-                    lockAmountData={qVaultLockedAmount === 0 ? [] : qVaultLockedAmount.lockedQVaultAmounts}
+                    lockAmountData={qVaultLockedAmount === null ? [] : qVaultLockedAmount.lockedQVaultAmounts}
                 />
                 <BalanceCard
                     address={address.token}
@@ -70,7 +70,7 @@ function TimeLocks () {
                     contract="root"
                     modalTitle="Deposit & purge"
                     title="Root stake balance"
-                    lockAmountData={rootNodeLockedAmount === 0 ? [] : rootNodeLockedAmount.lockedRootNodeAmounts}
+                    lockAmountData={rootNodeLockedAmount === null ? [] : rootNodeLockedAmount.lockedRootNodeAmounts}
                 />
                 <BalanceCard
                     address={address.token}
@@ -79,7 +79,7 @@ function TimeLocks () {
                     contract="validators"
                     modalTitle="Deposit & purge"
                     title="Validator stake balance"
-                    lockAmountData={validatorLockedAmount === 0 ? [] : validatorLockedAmount.lockedValidatorAmounts}
+                    lockAmountData={validatorLockedAmount === null ? [] : validatorLockedAmount.lockedValidatorAmounts}
                 />
                 <BalanceCard
                     address={address.token}
@@ -88,7 +88,7 @@ function TimeLocks () {
                     contract="vesting"
                     modalTitle="Deposit, withdraw & purge"
                     title="Vesting stake balance"
-                    lockAmountData={validatorLockedAmount === 0 ? [] : validatorLockedAmount.lockedValidatorAmounts}
+                    lockAmountData={validatorLockedAmount === null ? [] : validatorLockedAmount.lockedValidatorAmounts}
                 />
             </InfoWrap>
         </PageWrap>

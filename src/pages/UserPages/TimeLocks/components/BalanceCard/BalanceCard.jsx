@@ -12,8 +12,8 @@ function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contrac
 
   const [modalShow, setModalShow] = useState(false)
 
-  const setDeposit = (data) => {
-    dispatch(setDepositLockedAmount({ data, contract, address }))
+  const setDeposit = (list) => {
+    dispatch(setDepositLockedAmount({contract, ...list}))
   }
 
   const setPurge = () => {
