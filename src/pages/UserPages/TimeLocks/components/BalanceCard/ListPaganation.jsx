@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Pagination, setElementsForOnePage, countPages } from "components/Base/Pagination";
-import TableView from "components/Base/TableView";
-import { fromWei } from "func/balance";
+import React, { useState, useEffect, useCallback } from 'react'
+import { Pagination, setElementsForOnePage, countPages } from 'components/Base/Pagination'
+import TableView from 'components/Base/TableView'
+import { fromWei } from 'func/balance'
 
-function ListPaganation({ lockAmountData }) {
-    const [offset, setOffset] = useState(0);
-    const [pageCount, setPageCount] = useState(0);
-    const [data, setData] = useState([]);
-    const [elements, setElements] = useState([]);
-    /* eslint-disable */
+function ListPaganation ({ lockAmountData }) {
+  const [offset, setOffset] = useState(0)
+  const [pageCount, setPageCount] = useState(0)
+  const [data, setData] = useState([])
+  const [elements, setElements] = useState([])
+  /* eslint-disable */
     const [perPage, setPerPage] = useState(3);
     const [currentPage, setCurrentPage] = useState(0);
     /* eslint-disable */

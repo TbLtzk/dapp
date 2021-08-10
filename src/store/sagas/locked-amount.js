@@ -7,6 +7,11 @@ import {
   setQVaultAmount,
   setRootNodeAmount,
   setValidatorAmount,
+  setVestingAmount,
+  getVestingAmount,
+  getValidatorAmount,
+  getRootNodeAmount,
+  getQVaultAmount,
 } from "store/actions/action-creaters/locked-amount";
 
 import { toWei } from "func/balance";
@@ -26,20 +31,17 @@ async function initContract(typeContract) {
       qVaultInstance = await contractRegistryInstance.qVault();
     }
     return await qVaultInstance;
-  }
-  if (typeContract === CONTRACT_TYPES.root) {
+  } else if (typeContract === CONTRACT_TYPES.root) {
     if (rootNodesInstance === null) {
       rootNodesInstance = await contractRegistryInstance.rootNodes();
     }
     return rootNodesInstance;
-  }
-  if (typeContract === CONTRACT_TYPES.validators) {
+  } else if (typeContract === CONTRACT_TYPES.validators) {
     if (validatorsInstance === null) {
       validatorsInstance = await contractRegistryInstance.validators();
     }
     return validatorsInstance;
-  }
-  if (typeContract === CONTRACT_TYPES.vesting) {
+  } else if (typeContract === CONTRACT_TYPES.vesting) {
     if (vestingInstance === null) {
       vestingInstance = await contractRegistryInstance.vesting();
     }
@@ -48,8 +50,21 @@ async function initContract(typeContract) {
   return null;
 }
 
-function* getQVaultAmount({ address }) {
+function* getAmountOnContract(contract, address) {
+  if (contract === CONTRACT_TYPES.qVault) {
+    yield put(getQVaultAmount(address));
+  } else if (contract === CONTRACT_TYPES.root) {
+    yield put(getRootNodeAmount(address));
+  } else if (contract === CONTRACT_TYPES.validators) {
+    yield put(getValidatorAmount(address));
+  } else if (contract === CONTRACT_TYPES.vesting) {
+    yield put(getVestingAmount(address));
+  }
+}
+
+function* getQVaultAmountGenerator({ address }) {
   try {
+    console.log(address, "1");
     const contract = yield call(initContract, CONTRACT_TYPES.qVault);
     const minQVaultAmount = yield contract.getMinimumBalance(address, new Date().getTime());
     const array = yield contract.getTimeLocks(address);
@@ -61,7 +76,7 @@ function* getQVaultAmount({ address }) {
   }
 }
 
-function* getRootNodeAmount({ address }) {
+function* getRootNodeAmountGenerator({ address }) {
   try {
     const contract = yield call(initContract, CONTRACT_TYPES.root);
     const minRootNodeAmount = yield contract.getMinimumBalance(address, new Date().getTime());
@@ -74,7 +89,7 @@ function* getRootNodeAmount({ address }) {
   }
 }
 
-function* getValidatorAmount({ address }) {
+function* getValidatorAmountGenerator({ address }) {
   try {
     const contract = yield call(initContract, CONTRACT_TYPES.validators);
     const minValidatorAmount = yield contract.getMinimumBalance(address, new Date().getTime());
@@ -87,6 +102,19 @@ function* getValidatorAmount({ address }) {
   }
 }
 
+function* getVestingAmountGenerator({ address }) {
+  try {
+    const contract = yield call(initContract, CONTRACT_TYPES.vesting);
+    const minVestingAmount = yield contract.getMinimumBalance(address, new Date().getTime());
+    const array = yield contract.getTimeLocks(address);
+    const lockedVestingAmounts = addIndex(array);
+    yield put(setVestingAmount({ minVestingAmount, lockedVestingAmounts }));
+  } catch (err) {
+    console.error("vestingAmount.Error", err);
+    yield put(setError(err.message));
+  }
+}
+
 function* setPurgeTimeLocksAmount({ payload }) {
   try {
     yield put({
@@ -95,10 +123,12 @@ function* setPurgeTimeLocksAmount({ payload }) {
     });
     const contract = yield call(initContract, payload.contract);
     const data = yield contract.purgeTimeLocks(payload.address);
-    console.log(data);
-    // yield put();
+
+    if (data.status === true) {
+      yield call(getAmountOnContract, payload.contract, payload.address);
+    }
   } catch (err) {
-    console.error("Purge.Error", err);
+    console.error("PurgeTimeLocks.Error", err);
     yield put(setError(err.message));
   } finally {
     yield put({
@@ -114,13 +144,19 @@ function* setDepositLockedAmount({ payload }) {
       type: SET_TRANSACTION_COUNTER,
       payload: 1,
     });
-    const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(initContract, payload.contract);
-    // const pay = yield contract.withdraw(toWei(payload.amountQ), {from: userAddress})
-    yield contract.depositOnBehalfOf(payload.token, dateToNumber(payload.startDate), dateToNumber(payload.endDate), {
-      from: userAddress,
-      amountQ: toWei(payload.amountQ),
-    });
+
+    const data = yield contract.depositOnBehalfOf(
+      payload.token,
+      dateToNumber(payload.startDate),
+      dateToNumber(payload.endDate),
+      {
+        value: toWei(payload.amountQ),
+      }
+    );
+    if (data.status === true) {
+      yield call(getAmountOnContract, payload.contract, payload.token);
+    }
   } catch (err) {
     console.error("depositLockedAmount.Error", err);
     yield put(setError(err.message));
@@ -133,13 +169,15 @@ function* setDepositLockedAmount({ payload }) {
 }
 
 export default [
-  takeEvery(actionTypes.GET_QVAULT_AMOUNT, getQVaultAmount),
-  takeEvery(actionTypes.GET_ROOTNODE_AMOUNT, getRootNodeAmount),
-  takeEvery(actionTypes.GET_VALIDATOR_AMOUNT, getValidatorAmount),
+  takeEvery(actionTypes.GET_QVAULT_AMOUNT, getQVaultAmountGenerator),
+  takeEvery(actionTypes.GET_ROOTNODE_AMOUNT, getRootNodeAmountGenerator),
+  takeEvery(actionTypes.GET_VALIDATOR_AMOUNT, getValidatorAmountGenerator),
+  takeEvery(actionTypes.GET_VESTING_AMOUNT, getVestingAmountGenerator),
 
   takeEvery(actionTypes.SET_QVAULT_AMOUNT, setQVaultAmount),
   takeEvery(actionTypes.SET_ROOTNODE_AMOUNT, setRootNodeAmount),
   takeEvery(actionTypes.SET_VALIDATOR_AMOUNT, setValidatorAmount),
+  takeEvery(actionTypes.SET_VESTING_AMOUNT, setVestingAmount),
 
   takeEvery(actionTypes.SET_PURGEAMOUNT_CALL, setPurgeTimeLocksAmount),
 

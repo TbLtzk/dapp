@@ -9,6 +9,7 @@ export const getUserBalance = (address) => ({
   type: actionTypes.GET_QV_USER_BALANCE,
   address
 })
+
 export const setUserBalance = (data) => ({
   type: actionTypes.SET_QV_USER_BALANCE,
   payload: data
