@@ -83,3 +83,25 @@ export const getOutstandingDelegationRewardsError = (result) => ({
   type: actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS_ERROR,
   result
 })
+
+//sdk creaters
+export const getMinimumQVaultTimeLock = (address) => ({
+  type: actionTypes.GET_QVAULT_MINIMUM_TIME_LOCK,
+  address,
+});
+
+export const setMinimumQVaultTimeLock = (data) => ({
+  type: actionTypes.SET_QVAULT_MINIMUM_TIME_LOCK,
+  payload: data,
+});
+
+export const getQVaultTimeLocks = (address) => ({
+  type: actionTypes.GET_QVAULT_TIME_LOCKS,
+  address,
+});
+
+export const setQVaultTimeLocks = (data) => ({
+  type: actionTypes.SET_QVAULT_TIME_LOCKS,
+  payload: data,
+});
+

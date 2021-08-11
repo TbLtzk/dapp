@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/selectors/user-inf'
-import { getUserBalance, getLockedAssets, getQVBalance } from 'store/actions/action-creaters/q-vault'
-import { userBalance, votingWeight, votingLockingEnd, qvBalance, lastClaim } from 'store/selectors/q-vault'
-
-import { getQVaultAmount } from 'store/actions/action-creaters/locked-amount'
-import { qVaultAmount } from 'store/selectors/locked-amount'
+import { getUserBalance, getLockedAssets, getQVBalance, getMinimumQVaultTimeLock } from 'store/actions/action-creaters/q-vault'
+import { userBalance, votingWeight, votingLockingEnd, qvBalance, lastClaim, qVaultMinimumTimeLock } from 'store/selectors/q-vault'
 
 import { useAlert } from 'react-alert'
 
@@ -19,8 +16,8 @@ import { fromSolDateFormattingT1 } from 'func/date'
 
 export default function Panel () {
   const userAddressL = useSelector(userAddressMetamask)
-  const qVaultLockedAmount = useSelector(qVaultAmount) // get min
-  const timeLockedAmount = fromWei(Number(qVaultLockedAmount?.minQVaultAmount?.amount)) // convert min
+  const qVaultLockedAmount = useSelector(qVaultMinimumTimeLock) // get min
+  const timeLockedAmount = fromWei(qVaultLockedAmount) // convert min
   const balanceDetails = useSelector(qvBalance)
   const userQVBalanceL = useSelector(userBalance)
   const userVotingWeight = fN(useSelector(votingWeight))
@@ -36,7 +33,7 @@ export default function Panel () {
   useEffect(() => {
     dispatch(getUserBalance(userAddressL))
     dispatch(getLockedAssets(userAddressL))
-    dispatch(getQVaultAmount(userAddressL))
+    dispatch(getMinimumQVaultTimeLock(userAddressL))
     dispatch(getQVBalance())
   }, [dispatch, updateOnClaim])
 

@@ -44,3 +44,7 @@ export const remainDateTimeSince = (unixTimestamp) => {
     return calculateRemainDate(dataDate, currentDate)
   }
 }
+
+export const dateToNumber = (value) => {
+  return new Date(value).getTime() / 1000
+}

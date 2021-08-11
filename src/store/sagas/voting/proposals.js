@@ -49,7 +49,6 @@ function * createProposal ({ data }) {
   try {
     yield put(setTransactionLoading())
     const { userAddress } = yield select(state => state.userInf)
-
     let result = null
     let idProposal = null
     let contractName = null

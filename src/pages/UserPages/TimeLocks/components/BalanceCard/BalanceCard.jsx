@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux'
 import { setDepositLockedAmount, setPurgeTimeLocksAmount } from 'store/actions/action-creaters/locked-amount'
 
 import CustomBlock from 'components/Base/CustomBlock'
-import ListPaganation from './ListPaganation'
+import ListPaganation from './TimeLocksTable/TimeLocksTable'
 import ModalButton from 'components/Base/Buttons/Button'
-import Modal from './Modal'
+import ModalManage from './ModalManage'
 
 function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contract, address }) {
   const dispatch = useDispatch()
@@ -37,7 +37,7 @@ function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contrac
             />
             <h5>Time locks</h5>
             <ListPaganation lockAmountData={lockAmountData} />
-            <Modal
+            <ModalManage
                 modalTitle={contract === 'vesting' ? 'Deposit, withdraw & purge' : 'Deposit & purge'}
                 contract={contract}
                 setPurge={setPurge}

@@ -5,8 +5,8 @@ import Button from 'components/Base/Buttons/Button'
 import { useForm } from 'react-hook-form'
 import { WrapContainer } from '../../styles'
 
-function AddressForm ({ setAddressRefresh, address }) {
-  const [userAddress, setUserAddress] = useState(address.token)
+function AddressForm ({ setAddressRefresh, userAddress }) {
+  const [inputAddress, setInputAddress] = useState(userAddress.address)
 
   const {
     register,
@@ -23,10 +23,10 @@ function AddressForm ({ setAddressRefresh, address }) {
                 disabled={true}
             />
             <FormInput
-                name="token"
+                name="address"
                 type="string"
                 color={true}
-                value={userAddress}
+                value={inputAddress}
                 ref={register({
                   required: 'Address Required!',
                   pattern: {
@@ -36,7 +36,7 @@ function AddressForm ({ setAddressRefresh, address }) {
                   }
                 })}
                 valid={errors?.token?.message}
-                onChange={(value) => setUserAddress(value.target.value)}
+                onChange={(value) => setInputAddress(value.target.value.trim())}
             />
             <Button
                 type="outline"

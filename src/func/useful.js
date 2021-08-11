@@ -51,6 +51,3 @@ export const addIndex = (array) => {
   return array.map((item, idx) => ({ id: idx + 1, ...item }))
 }
 
-export const dateToNumber = (value) => {
-  return new Date(value).getTime() / 1000
-}

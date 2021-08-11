@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/action-types/root-contract'
+import * as actionTypes from "../actions/action-types/root-contract";
 
 const initialState = {
   rootMembersData: [],
@@ -13,88 +13,101 @@ const initialState = {
   announceWithdrawTransId: null,
   withdrawTransId: null,
   withdrawals: null,
-  lastActionRoot: 0
-}
+  lastActionRoot: 0,
 
-export default function rootContract (state = initialState, action) {
+  qVaultMinimumTimeLock: null,
+  qVaultTimeLocks: null,
+};
+
+export default function rootContract(state = initialState, action) {
   switch (action.type) {
     case actionTypes.GET_ROOT_MEMBERS_DATA:
       return {
         ...state,
-        loadingRootMembers: true
-      }
+        loadingRootMembers: true,
+      };
     case actionTypes.GET_ROOT_MEMBERS_DATA_SUCCESS:
       return {
         ...state,
         rootMembersData: action?.result?.rootNodeData,
         rootMembersAmountStakes: action?.result?.totalStakes,
-        loadingRootMembers: false
-      }
+        loadingRootMembers: false,
+      };
     case actionTypes.GET_ROOT_MEMBERS_DATA_ERROR:
       return {
         ...state,
         rootMembersData: [],
         loadingRootMembers: false,
-        errorM: action.result
-      }
+        errorM: action.result,
+      };
 
     case actionTypes.CHECK_IS_USER_ROOT_NODE_SUCCESS:
       return {
         ...state,
         isUserRootNode: action.result,
-        loadingCheckingRootNode: false
-      }
+        loadingCheckingRootNode: false,
+      };
     case actionTypes.CHECK_IS_USER_ROOT_NODE_ERROR:
       return {
         ...state,
         isUserRootNode: false,
-        loadingCheckingRootNode: false
-      }
+        loadingCheckingRootNode: false,
+      };
     case actionTypes.GET_ROOT_NODE_STAKES_SUCCESS:
       return {
         ...state,
-        rootNodeStake: action.result
-      }
+        rootNodeStake: action.result,
+      };
     case actionTypes.STAKE_TO_PANEL_SUCCESS:
       return {
         ...state,
         stakeToPanelTransId: action.result,
-        lastActionRoot: +new Date()
-      }
+        lastActionRoot: +new Date(),
+      };
     case actionTypes.STAKE_TO_PANEL_ERROR:
       return {
         ...state,
-        stakeToPanelTransId: null
-      }
+        stakeToPanelTransId: null,
+      };
     case actionTypes.ANNOUNCE_WITHDRAWAL_SUCCESS:
       return {
         ...state,
         announceWithdrawTransId: action.result,
-        lastActionRoot: +new Date()
-      }
+        lastActionRoot: +new Date(),
+      };
     case actionTypes.ANNOUNCE_WITHDRAWAL_ERROR:
       return {
         ...state,
-        announceWithdrawTransId: null
-      }
+        announceWithdrawTransId: null,
+      };
 
     case actionTypes.WITHDRAW_SUCCESS:
       return {
         ...state,
         withdrawTransId: action.result,
-        lastActionRoot: +new Date()
-      }
+        lastActionRoot: +new Date(),
+      };
     case actionTypes.WITHDRAW_ERROR:
       return {
         ...state,
-        withdrawTransId: null
-      }
+        withdrawTransId: null,
+      };
     case actionTypes.GET_WITHDRAWALS_SUCCESS:
       return {
         ...state,
-        withdrawals: action.result
-      }
+        withdrawals: action.result,
+      };
+    case actionTypes.SET_ROOT_MINIMUM_TIME_LOCK:
+      return {
+        ...state,
+        rootMinimumTimeLock: action.payload,
+      };
+    case actionTypes.SET_ROOT_TIME_LOCKS:
+      return {
+        ...state,
+        rootTimeLocks: action.payload,
+      };
     default:
-      return state
+      return state;
   }
 }

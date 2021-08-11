@@ -15,10 +15,10 @@ import {
   getAccTotalStake,
   getDelegatedStake,
   getOwnStake,
-  getTotalStake
+  getTotalStake,
+  getMinimumValidatorsTimeLock
 } from 'store/actions/action-creaters/validators'
-import { getValidatorAmount } from 'store/actions/action-creaters/locked-amount'
-import { validatorAmount } from 'store/selectors/locked-amount'
+import { validatorsMinimumTimeLock } from 'store/selectors/validators'
 
 export default function AccountStatus () {
   const {
@@ -37,13 +37,12 @@ export default function AccountStatus () {
   const [annToWithdrawEndTime, setAnnToWithdrawEndTime] = useState(0)
 
   const address = useSelector(userAddressMetamask)
-  const validatorLockedAmount = useSelector(validatorAmount)
-  const timeLockedAmount = fromWei(Number(validatorLockedAmount?.minValidatorAmount?.amount))
-
+  const validatorLockedAmount = useSelector(validatorsMinimumTimeLock)
+  const minimumValidatorAmount = fromWei(validatorLockedAmount);
   const handler = new Handler(address, useDispatch(), useAlert())
 
   useEffect(() => {
-    dispatch(getValidatorAmount(address))
+    dispatch(getMinimumValidatorsTimeLock(address))
     dispatch(getTotalStake(address))
     dispatch(getOwnStake(address))
     dispatch(getDelegatedStake(address))
@@ -133,10 +132,10 @@ export default function AccountStatus () {
           <h5>Stake in Validator Ranking</h5>
           <p>{fN(accountableTotalStake)} Q</p>
         </div>
-        {timeLockedAmount > 0
+        {minimumValidatorAmount > 0
           ? <div>
             <h5>Time locked amount</h5>
-            <p>{timeLockedAmount} Q </p>
+            <p>{minimumValidatorAmount} Q </p>
           </div>
           : null}
         <div>

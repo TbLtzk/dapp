@@ -3,103 +3,128 @@ import PageWrap from "components/Base/PageWrap";
 import { useDispatch, useSelector } from "react-redux";
 import { userAddressMetamask } from "store/selectors/user-inf";
 
-import {
-    getQVaultAmount,
-    getRootNodeAmount,
-    getValidatorAmount,
-    getVestingAmount,
-} from "store/actions/action-creaters/locked-amount";
-import { getSelfStake } from "store/actions/action-creaters/validators";
-import { selfStake } from "store/selectors/validators";
-import { qVaultAmount, rootNodeAmount, validatorAmount, vestingAmount } from "store/selectors/locked-amount";
-import { getRootNodeStakes } from "store/actions/action-creaters/root-contract";
-import { rootNodeStake } from "store/selectors/root-contract";
-
-import { getUserBalance } from "store/actions/action-creaters/q-vault";
-import { userBalance } from "store/selectors/q-vault";
-
 import AddressForm from "./components/AddressForm";
 import { InfoWrap } from "./styles";
 import BalanceCard from "./components/BalanceCard";
 import { fromWei } from "func/balance";
 import RootService from "contracts/src/Root";
+//qvault
+import { getUserBalance, getMinimumQVaultTimeLock, getQVaultTimeLocks } from "store/actions/action-creaters/q-vault";
+
+//root
+import {
+    getRootNodeStakes,
+    getMinimumRootTimeLock,
+    getRootTimeLocks,
+} from "store/actions/action-creaters/root-contract";
+
+//validators
+import {
+    getSelfStake,
+    getMinimumValidatorsTimeLock,
+    getValidatorsTimeLocks,
+} from "store/actions/action-creaters/validators";
+
+//vesting
+import {
+    getVestingBalance,
+    getMinimumVestingTimeLock,
+    getVestingTimeLocks,
+} from "store/actions/action-creaters/vesting";
+
+import { userBalance, qVaultMinimumTimeLock, qVaultTimeLocks } from "store/selectors/q-vault";
+import { rootNodeStake, rootMinimumTimeLock, rootTimeLocks } from "store/selectors/root-contract";
+import { selfStake, validatorsMinimumTimeLock, validatorsTimeLocks } from "store/selectors/validators";
+import { vestingBalance, vestingMinimumTimeLock, vestingTimeLocks } from "store/selectors/vesting";
 
 function TimeLocks() {
     const dispatch = useDispatch();
 
     const userAddress = useSelector(userAddressMetamask);
 
-    const qVaultLockedAmount = useSelector(qVaultAmount);
-    const rootNodeLockedAmount = useSelector(rootNodeAmount);
-    const validatorLockedAmount = useSelector(validatorAmount);
-    const vestingLockedAmount = useSelector(vestingAmount);
+    const [currentAddress, setCurrentAddress] = useState({ address: userAddress });
 
-    const amountNodeStake = useSelector(rootNodeStake);
-    const validatorSelfStake = useSelector(selfStake);
-    const qVaultMin = fromWei(0);
-    const rootNodeMin = fromWei(0);
-    const validatorMin = fromWei(0);
-    const vestingMin = fromWei(0);
-
-
-    const [address, setAddress] = useState({ token: userAddress });
-
-    const userQVBalance = useSelector(userBalance);
     const contract = new RootService();
+    //qvault
+    const qVaultStakeBalance = useSelector(userBalance);
+    const qVaultTimeLockMinimumBalance = useSelector(qVaultMinimumTimeLock);
+    const qVaultTimeLocksArray = useSelector(qVaultTimeLocks);
+    //root
+    const rootStakeBalance = useSelector(rootNodeStake);
+    const rootTimeLockMinimumBalance = useSelector(rootMinimumTimeLock);
+    const rootTimeLocksArray = useSelector(rootTimeLocks);
+
+    //validators
+    const validatorSelfStake = useSelector(selfStake);
+    const validatorsTimeLockMinimumBalance = useSelector(validatorsMinimumTimeLock);
+    const validatorsTimeLocksArray = useSelector(validatorsTimeLocks);
+    //vesting
+    const vestingStakeBalance = useSelector(vestingBalance);
+    const vestingTimeLockMinimumBalance = useSelector(vestingMinimumTimeLock);
+    const vestingTimeLocksArray = useSelector(vestingTimeLocks);
 
     useEffect(() => {
-        dispatch(getQVaultAmount(address.token));
-        dispatch(getRootNodeAmount(address.token));
-        dispatch(getValidatorAmount(address.token));
-        dispatch(getVestingAmount(address.token));
-        dispatch(getUserBalance(address.token));
-        dispatch(getRootNodeStakes(contract, address.token));
-        dispatch(getSelfStake(address.token));
-    }, [dispatch, address]);
+        //qvault
+        dispatch(getUserBalance(currentAddress.address));
+        dispatch(getMinimumQVaultTimeLock(currentAddress.address));
+        dispatch(getQVaultTimeLocks(currentAddress.address));
+        //root
+        dispatch(getRootNodeStakes(contract, currentAddress.address));
+        dispatch(getMinimumRootTimeLock(currentAddress.address));
+        dispatch(getRootTimeLocks(currentAddress.address));
+        //validators
+        dispatch(getSelfStake(currentAddress.address));
+        dispatch(getMinimumValidatorsTimeLock(currentAddress.address));
+        dispatch(getValidatorsTimeLocks(currentAddress.address));
+        //vesting
+        dispatch(getVestingBalance(currentAddress.address));
+        dispatch(getMinimumVestingTimeLock(currentAddress.address));
+        dispatch(getVestingTimeLocks(currentAddress.address));
+    }, [dispatch, currentAddress]);
 
     const handleRefresh = (userAddress) => {
-        setAddress(userAddress);
+      setCurrentAddress(userAddress);
     };
 
     return (
         <PageWrap headerTitle="Time Locks">
-            <AddressForm setAddressRefresh={handleRefresh} address={address} />
+            <AddressForm setAddressRefresh={handleRefresh} userAddress={currentAddress} />
             <InfoWrap>
                 <BalanceCard
-                    address={address.token}
-                    timeLockBalance={qVaultMin}
-                    balance={userQVBalance}
+                    address={currentAddress.address}
+                    timeLockBalance={qVaultTimeLockMinimumBalance}
+                    balance={qVaultStakeBalance}
                     contract="qVault"
                     modalTitle="Deposit & purge"
                     title="Q Vault account balance"
-                    lockAmountData={qVaultLockedAmount === null ? [] : qVaultLockedAmount.lockedQVaultAmounts}
+                    lockAmountData={qVaultTimeLocksArray || []}
                 />
                 <BalanceCard
-                    address={address.token}
-                    timeLockBalance={rootNodeMin}
-                    balance={amountNodeStake}
+                    address={currentAddress.address}
+                    timeLockBalance={rootTimeLockMinimumBalance}
+                    balance={rootStakeBalance}
                     contract="root"
                     modalTitle="Deposit & purge"
                     title="Root stake balance"
-                    lockAmountData={rootNodeLockedAmount === null ? [] : rootNodeLockedAmount.lockedRootNodeAmounts}
+                    lockAmountData={rootTimeLocksArray || []}
                 />
                 <BalanceCard
-                    address={address.token}
-                    timeLockBalance={validatorMin}
+                    address={currentAddress.address}
+                    timeLockBalance={validatorsTimeLockMinimumBalance}
                     balance={validatorSelfStake}
                     contract="validators"
                     modalTitle="Deposit & purge"
                     title="Validator stake balance"
-                    lockAmountData={validatorLockedAmount === null ? [] : validatorLockedAmount.lockedValidatorAmounts}
+                    lockAmountData={validatorsTimeLocksArray || []}
                 />
                 <BalanceCard
-                    address={address.token}
-                    timeLockBalance={vestingMin}
-                    balance={"Vesting"}
+                    address={currentAddress.address}
+                    timeLockBalance={vestingTimeLockMinimumBalance}
+                    balance={vestingStakeBalance}
                     contract="vesting"
                     modalTitle="Deposit, withdraw & purge"
                     title="Vesting stake balance"
-                    lockAmountData={vestingLockedAmount === null ? [] : vestingLockedAmount.lockedVestingAmounts}
+                    lockAmountData={vestingTimeLocksArray || []}
                 />
             </InfoWrap>
         </PageWrap>
