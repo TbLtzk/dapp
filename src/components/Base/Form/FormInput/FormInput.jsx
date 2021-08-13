@@ -25,7 +25,7 @@ const FormInput = forwardRef((props, ref) => {
 
   const [isFocus, setIsFocus] = useState('')
   const currentTheme = useSelector(theme)
-  
+
   return (
     <InputWrapper
       controlId={controlId}

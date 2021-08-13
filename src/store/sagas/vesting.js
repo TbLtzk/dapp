@@ -6,7 +6,7 @@ import {
   setVestingBalance,
   setMinimumVestingTimeLock,
   setVestingTimeLocks,
-  setVestingWithdraw,
+  setVestingWithdraw
 } from 'store/actions/action-creaters/vesting'
 
 import { toWei, fromWei } from 'func/balance'
@@ -118,7 +118,7 @@ function * setVestingWithdrawGenerator ({ amountQ }) {
     const contract = yield call(getVestingInstance)
     const data = yield contract.withdraw(toWei(amountQ), { from: userAddress })
     if (data.status === true) {
-      yield put(setVestingWithdraw(address));
+      yield put(setVestingWithdraw(userAddress))
     }
   } catch (err) {
     console.error('VestingWithdraw.Error', err)
