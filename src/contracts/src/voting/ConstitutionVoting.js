@@ -96,27 +96,26 @@ export default class ConstitutionVoting extends VotingService {
     const classification = this.getProposalNumberType(data?.classification)
     const hash = data.hash
     const link = data['external-link']
-
-    const paramInputs =
-      data['type-proposal'] === undefined
-        ? []
-        : data['type-proposal'].reduce((types, item, index) => {
-          let inputValue = data['parameter-value'][index]
-          switch (+item) {
-            case ParameterType.BOOL:
-              inputValue = inputValue.toLowerCase() === 'true'
-              break
-            case ParameterType.UINT:
-              inputValue = BN(inputValue).toFixed()
-              break
-          }
-          types.push({
-            paramType: item,
-            paramKey: data['parameter-key'][index],
-            paramValue: inputValue
-          })
-          return types
-        }, [])
+    const paramInputs = data['type-proposal'] === undefined
+      ? []
+      : data['type-proposal'].reduce((types, item, index) => {
+        let inputValue = data['parameter-value'][index]
+        switch (+item) {
+          case ParameterType.BOOL:
+            inputValue = (inputValue.toLowerCase() === 'true')
+            break
+          case ParameterType.UINT:
+            inputValue = BN(inputValue)
+              .toFixed()
+            break
+        }
+        types.push({
+          paramType: item,
+          paramKey: data['parameter-key'][index],
+          paramValue: inputValue
+        })
+        return types
+      }, [])
     if (paramInputs.length !== 0) {
       try {
         result = await constitutionVotingInstance.createProposal(link, classification, hash, paramInputs, {
