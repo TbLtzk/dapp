@@ -107,24 +107,23 @@ export const isUserValidatorSuccess = (result) => ({
   result
 })
 
-//sdk creaters
+// sdk creaters
 export const getMinimumValidatorsTimeLock = (address) => ({
   type: actionTypes.GET_VALIDATORS_MINIMUM_TIME_LOCK,
-  address,
-});
+  address
+})
 
 export const setMinimumValidatorsTimeLock = (data) => ({
   type: actionTypes.SET_VALIDATORS_MINIMUM_TIME_LOCK,
-  payload: data,
-});
+  payload: data
+})
 
 export const getValidatorsTimeLocks = (address) => ({
   type: actionTypes.GET_VALIDATORS_TIME_LOCKS,
-  address,
-});
+  address
+})
 
 export const setValidatorsTimeLocks = (data) => ({
   type: actionTypes.SET_VALIDATORS_TIME_LOCKS,
-  payload: data,
-});
-
+  payload: data
+})

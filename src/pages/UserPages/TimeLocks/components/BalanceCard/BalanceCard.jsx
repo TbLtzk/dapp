@@ -12,8 +12,8 @@ function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contrac
 
   const [modalShow, setModalShow] = useState(false)
 
-  const setDeposit = (list) => {
-    dispatch(setDepositLockedAmount({ contract, ...list }))
+  const setDeposit = (data) => {
+    dispatch(setDepositLockedAmount({ contract, ...data }))
   }
 
   const setPurge = () => {
@@ -25,7 +25,7 @@ function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contrac
         <CustomBlock>
             <h5>{title}</h5>
             <p>{balance + ' Q'}</p>
-            <h5>Time lock balance</h5>
+            <h5>Time locked balance</h5>
             <p>{timeLockBalance} Q</p>
             <ModalButton
                 type="outline"

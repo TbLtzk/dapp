@@ -8,7 +8,6 @@ import { userAddressMetamask } from 'store/selectors/user-inf'
 import { useForm } from 'react-hook-form'
 import { errorHandler, fN } from 'func/useful'
 import { fromSolDateFormattingT1 } from 'func/date'
-import { fromWei } from 'func/balance'
 import { useAlert } from 'react-alert'
 import { AccountStatusForm, AccountStatusInfo } from './styles'
 import {
@@ -38,7 +37,6 @@ export default function AccountStatus () {
 
   const address = useSelector(userAddressMetamask)
   const validatorLockedAmount = useSelector(validatorsMinimumTimeLock)
-  const minimumValidatorAmount = fromWei(validatorLockedAmount);
   const handler = new Handler(address, useDispatch(), useAlert())
 
   useEffect(() => {
@@ -132,10 +130,10 @@ export default function AccountStatus () {
           <h5>Stake in Validator Ranking</h5>
           <p>{fN(accountableTotalStake)} Q</p>
         </div>
-        {minimumValidatorAmount > 0
+        {Number(validatorLockedAmount) > 0
           ? <div>
             <h5>Time locked amount</h5>
-            <p>{minimumValidatorAmount} Q </p>
+            <p>{fN(validatorLockedAmount)} Q </p>
           </div>
           : null}
         <div>

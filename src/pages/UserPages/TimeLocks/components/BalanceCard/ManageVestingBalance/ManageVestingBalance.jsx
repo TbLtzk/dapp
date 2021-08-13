@@ -1,35 +1,35 @@
-import React  from "react";
-import FormInput from "components/Base/Form/FormInput";
-import Button from "components/Base/Buttons/Button";
+import React from 'react'
+import FormInput from 'components/Base/Form/FormInput'
+import Button from 'components/Base/Buttons/Button'
 
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form'
 
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux'
 
-import { setVestingWithdraw } from "store/actions/action-creaters/vesting";
+import { setVestingWithdraw } from 'store/actions/action-creaters/vesting'
 
-function ManageVestingBalance() {
-    const dispatch = useDispatch();
+function ManageVestingBalance () {
+  const dispatch = useDispatch()
 
-    const { register, handleSubmit, errors} = useForm();
+  const { register, handleSubmit, errors } = useForm()
 
-    const setWithdrawVesting = (formData) => {
-        dispatch(setVestingWithdraw(formData.amountQ));
-    };
+  const setWithdrawVesting = (formData) => {
+    dispatch(setVestingWithdraw(formData.amountQ))
+  }
 
-    return (
+  return (
         <>
             <div className="modal-line" />
             <h4>Amount</h4>
             <FormInput
-                lbl={"Q"}
+                lbl={'Q'}
                 min={0}
                 name="amountQ"
                 type="number"
                 placeholder="0.0"
                 ref={register({
-                    required: "Field is required!",
-                    pattern: /[0-9]/i,
+                  required: 'Field is required!',
+                  pattern: /[0-9]/i
                 })}
                 valid={errors.amountQ?.message}
             />
@@ -41,7 +41,7 @@ function ManageVestingBalance() {
                 handleButton={handleSubmit(setWithdrawVesting)}
             />
         </>
-    );
+  )
 }
 
-export default ManageVestingBalance;
+export default ManageVestingBalance

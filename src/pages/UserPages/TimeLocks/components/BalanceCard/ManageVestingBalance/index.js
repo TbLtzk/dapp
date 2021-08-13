@@ -1,1 +1,1 @@
-export { default } from "./ManageVestingBalance";
+export { default } from './ManageVestingBalance'

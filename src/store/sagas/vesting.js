@@ -1,144 +1,132 @@
-import { put, takeEvery, call, select } from "redux-saga/effects";
+import { put, takeEvery, call, select } from 'redux-saga/effects'
 
-import * as actionTypes from "store/actions/action-types/vesting";
-import { SET_TRANSACTION_COUNTER } from "../actions/action-types/transaction-handler";
+import * as actionTypes from 'store/actions/action-types/vesting'
+import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler'
 import {
-  getVestingBalance,
   setVestingBalance,
-  getMinimumVestingTimeLock,
   setMinimumVestingTimeLock,
-  getVestingTimeLocks,
   setVestingTimeLocks,
   setVestingWithdraw,
-  setVestingDeposit,
-} from "store/actions/action-creaters/vesting";
+} from 'store/actions/action-creaters/vesting'
 
-import { toWei } from "func/balance";
-import { addIndex } from "func/useful";
+import { toWei, fromWei } from 'func/balance'
+import { addIndex } from 'func/useful'
+import { getNowTimestamp } from 'func/convertDate'
+import { contractRegistryInstance } from 'contracts/contracts'
 
-import { contractRegistryInstance } from "contracts/contracts";
+let vestingInstance = null
 
-let vestingInstance = null;
-
-const initContract = async () => {
+const getVestingInstance = async () => {
   if (vestingInstance === null) {
-    vestingInstance = await contractRegistryInstance.vesting();
+    vestingInstance = await contractRegistryInstance.vesting()
   }
-  return vestingInstance;
-};
+  return vestingInstance
+}
 
-function* getVestingBalanceGenerator({ address }) { //???
-  //Vesting stake balance
+function * getVestingBalanceGenerator ({ address }) {
   try {
     yield put({
       type: SET_TRANSACTION_COUNTER,
-      payload: 1,
-    });
-    // const contract = yield call(initContract);
-    // const data = yield contract.getUserBalance(address);
-
-    yield put(setVestingBalance(10));
+      payload: 1
+    })
+    const contract = yield call(getVestingInstance)
+    const data = yield contract.balanceOf(address)
+    yield put(setVestingBalance(fromWei(data)))
   } catch (err) {
-    console.error("QV.Error", err);
+    console.error('QV.Error', err)
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
-      payload: -1,
-    });
+      payload: -1
+    })
   }
 }
 
-function* getMinimumVestingTimeLockGenerator({ address }) {
+function * getMinimumVestingTimeLockGenerator ({ address }) {
   try {
     yield put({
       type: SET_TRANSACTION_COUNTER,
-      payload: 1,
-    });
-    
-    const contract = yield call(initContract);
-    const data = yield contract.getMinimumBalance(address, new Date().getTime()); //date now to mil-sec
-    yield put(setMinimumVestingTimeLock(data));
+      payload: 1
+    })
 
+    const contract = yield call(getVestingInstance)
+    const data = yield contract.getMinimumBalance(address, getNowTimestamp())
+    yield put(setMinimumVestingTimeLock(fromWei(data)))
   } catch (err) {
-    console.error("QV.Error", err);
+    console.error('QV.Error', err)
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
-      payload: -1,
-    });
+      payload: -1
+    })
   }
 }
 
-function* getVestingTimeLocksGenerator({ address }) {
-  //array time lock balance
+function * getVestingTimeLocksGenerator ({ address }) {
   try {
     yield put({
       type: SET_TRANSACTION_COUNTER,
-      payload: 1,
-    });
-    const contract = yield call(initContract);
-    const data = yield contract.getTimeLocks(address);
-    yield put(setVestingTimeLocks(addIndex(data)));
+      payload: 1
+    })
+    const contract = yield call(getVestingInstance)
+    const data = yield contract.getTimeLocks(address)
+    yield put(setVestingTimeLocks(addIndex(data)))
   } catch (err) {
-    console.error("QV.Error", err);
+    console.error('QV.Error', err)
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
-      payload: -1,
-    });
+      payload: -1
+    })
   }
 }
 
-function* setVestingDepositGenerator({ address, amountQ }) {
-  //deposit  vesting
+function * setVestingDepositGenerator ({ address, amountQ }) {
   try {
     yield put({
       type: SET_TRANSACTION_COUNTER,
-      payload: 1,
-    });
-    console.log("setVestingDepositGenerator");
-    console.log(address, amountQ);
+      payload: 1
+    })
+    // console.log("setVestingDepositGenerator");
+    // console.log(address, amountQ);
     // const { userAddress } = yield select((state) => state.userInf);
 
-    // const contract = yield call(initContract);
+    // const contract = yield call(getVestingInstance);
     // const data = yield contract.deposit(toWei(amountQ), { from: userAddress });
 
     // if (data.status === true) {
     //   yield put(setVestingDeposit(address));
     // }
   } catch (err) {
-    console.error("VestingDeposit.Error", err);
+    console.error('VestingDeposit.Error', err)
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
-      payload: -1,
-    });
+      payload: -1
+    })
   }
 }
 
-function* setVestingWithdrawGenerator({ amountQ }) {
-  //withdraw vesting
+function * setVestingWithdrawGenerator ({ amountQ }) {
   try {
     yield put({
       type: SET_TRANSACTION_COUNTER,
-      payload: 1,
-    });
-    console.log(amountQ);
-    // const { userAddress } = yield select((state) => state.userInf);
+      payload: 1
+    })
+    const { userAddress } = yield select((state) => state.userInf)
 
-    // const contract = yield call(initContract);
-    // const data = yield contract.deposit(toWei(amountQ), { from: userAddress });
-
-    // if (data.status === true) {
-    //   yield put(setVestingWithdraw(address));
-    // }
+    const contract = yield call(getVestingInstance)
+    const data = yield contract.withdraw(toWei(amountQ), { from: userAddress })
+    if (data.status === true) {
+      yield put(setVestingWithdraw(address));
+    }
   } catch (err) {
-    console.error("VestingDeposit.Error", err);
+    console.error('VestingWithdraw.Error', err)
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
-      payload: -1,
-    });
+      payload: -1
+    })
   }
 }
 
@@ -148,5 +136,5 @@ export default [
   takeEvery(actionTypes.GET_VESTING_TIME_LOCKS, getVestingTimeLocksGenerator),
 
   takeEvery(actionTypes.SET_VESTING_WITHDRAW, setVestingWithdrawGenerator),
-  takeEvery(actionTypes.SET_VESTING_DEPOSIT, setVestingDepositGenerator),
-];
+  takeEvery(actionTypes.SET_VESTING_DEPOSIT, setVestingDepositGenerator)
+]

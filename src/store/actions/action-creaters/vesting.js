@@ -1,41 +1,41 @@
-import * as actionTypes from "../action-types/vesting";
+import * as actionTypes from '../action-types/vesting'
 
 export const getVestingBalance = (address) => ({
   type: actionTypes.GET_VESTING_BALANCE,
-  address,
-});
+  address
+})
 
 export const setVestingBalance = (data) => ({
   type: actionTypes.SET_VESTING_BALANCE,
-  payload: data,
-});
+  payload: data
+})
 
 export const getMinimumVestingTimeLock = (address) => ({
   type: actionTypes.GET_VESTING_MINIMUM_TIME_LOCK,
-  address,
-});
+  address
+})
 
 export const setMinimumVestingTimeLock = (data) => ({
   type: actionTypes.SET_VESTING_MINIMUM_TIME_LOCK,
-  payload: data,
-});
+  payload: data
+})
 
 export const getVestingTimeLocks = (address) => ({
   type: actionTypes.GET_VESTING_TIME_LOCKS,
-  address,
-});
+  address
+})
 
 export const setVestingTimeLocks = (data) => ({
   type: actionTypes.SET_VESTING_TIME_LOCKS,
-  payload: data,
-});
+  payload: data
+})
 
 export const setVestingWithdraw = (data) => ({
   type: actionTypes.SET_VESTING_WITHDRAW,
-  amountQ: data,
-});
+  amountQ: data
+})
 
 export const setVestingDeposit = (data) => ({
   type: actionTypes.SET_VESTING_DEPOSIT,
-  payload: data,
-});
+  payload: data
+})

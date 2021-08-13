@@ -2,11 +2,14 @@ import styled from 'styled-components'
 
 export const WrapContainer = styled.div`
   display: flex;
+  margin-top: 5px;
   align-items: center;
-  max-width: 80%;
+  max-width: 70%;
   & input {
-    margin-top: 20px;
     margin-right: 30px;
+  }
+  & button {
+    margin-bottom: 20px;
   }
 `
 
@@ -14,8 +17,8 @@ export const InfoWrap = styled.div`
     display: grid;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
     & > div {
-      width: 95%;
-      height: 95%;
+      width: 98%;
+      height: 96%;
     }
 `
 
@@ -30,5 +33,4 @@ export const ValueWrap = styled.h4`
 export const CalendarWraper = styled.div`
   display: flex;
   justify-content: space-between;
-  padding-bottom: 20px;
 `

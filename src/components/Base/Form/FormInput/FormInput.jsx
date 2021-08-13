@@ -19,14 +19,16 @@ const FormInput = forwardRef((props, ref) => {
     disabled,
     min,
     color,
-    lbl
+    lbl,
+    controlId = 'formBasicEmail'
   } = props
 
   const [isFocus, setIsFocus] = useState('')
   const currentTheme = useSelector(theme)
+  
   return (
     <InputWrapper
-      controlId="formBasicEmail"
+      controlId={controlId}
       align={align}
       type={valid ? 'error' : ''}
       palette={currentTheme}

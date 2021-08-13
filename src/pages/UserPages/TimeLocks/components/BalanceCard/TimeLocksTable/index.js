@@ -1,1 +1,1 @@
-export {default} from './TimeLocksTable'
+export { default } from './TimeLocksTable'

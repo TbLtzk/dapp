@@ -120,25 +120,23 @@ export const getWithdrawalsError = (result) => ({
   result
 })
 
-
-//sdk creaters
+// sdk creaters
 export const getMinimumRootTimeLock = (address) => ({
   type: actionTypes.GET_ROOT_MINIMUM_TIME_LOCK,
-  address,
-});
+  address
+})
 
 export const setMinimumRootTimeLock = (data) => ({
   type: actionTypes.SET_ROOT_MINIMUM_TIME_LOCK,
-  payload: data,
-});
+  payload: data
+})
 
 export const getRootTimeLocks = (address) => ({
   type: actionTypes.GET_ROOT_TIME_LOCKS,
-  address,
-});
+  address
+})
 
 export const setRootTimeLocks = (data) => ({
   type: actionTypes.SET_ROOT_TIME_LOCKS,
-  payload: data,
-});
-
+  payload: data
+})

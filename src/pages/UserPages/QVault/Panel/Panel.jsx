@@ -11,13 +11,11 @@ import CustomBlock from 'components/Base/CustomBlock'
 
 import QVaultHandler from '../handler'
 import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
-import { fromWei } from 'func/balance'
 import { fromSolDateFormattingT1 } from 'func/date'
 
 export default function Panel () {
   const userAddressL = useSelector(userAddressMetamask)
   const qVaultLockedAmount = useSelector(qVaultMinimumTimeLock) // get min
-  const timeLockedAmount = fromWei(qVaultLockedAmount) // convert min
   const balanceDetails = useSelector(qvBalance)
   const userQVBalanceL = useSelector(userBalance)
   const userVotingWeight = fN(useSelector(votingWeight))
@@ -57,11 +55,11 @@ export default function Panel () {
       <h1>Overview</h1>
       <div>
         <h5>Q Vault balance</h5>
-        <p>{userQVBalanceL + ' Q'}</p>
-        {timeLockedAmount > 0
+        <p>{fN(userQVBalanceL) + ' Q'}</p>
+        {Number(qVaultLockedAmount) > 0
           ? <>
             <h5>Time locked amount</h5>
-            <p>{timeLockedAmount + ' Q'}</p>
+            <p>{fN(qVaultLockedAmount) + ' Q'}</p>
           </>
           : null}
         <h5>Q Token Holder reward rate (p.a.)</h5>

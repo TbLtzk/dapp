@@ -16,15 +16,10 @@ function AddressForm ({ setAddressRefresh, userAddress }) {
 
   return (
         <WrapContainer>
-            <Button
-                type="outline"
-                title="address"
-                width="80px"
-                disabled={true}
-            />
             <FormInput
                 name="address"
                 type="string"
+                lbl="Address"
                 color={true}
                 value={inputAddress}
                 ref={register({
