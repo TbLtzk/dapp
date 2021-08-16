@@ -30,6 +30,19 @@ function SlashingObjection (props) {
   const dispatch = useDispatch()
   const userAddress = useSelector(userAddressMetamask)
 
+  const arbitrationInfo = async () => {
+    const slashingEscrowContract = new SlashingEscrow(
+      contract === 'ValidatorsSlashingVoting'
+        ? 'ValidatorsSlashingEscrow'
+        : 'RootNodesSlashingEscrow'
+    )
+    try {
+      await slashingEscrowContract.getArbitrationInfos(proposalId)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   const objectionData = useMemo(() => {
     return ([
       {
@@ -39,6 +52,14 @@ function SlashingObjection (props) {
       {
         title: 'Remark',
         value: objData.objection.remark
+      },
+      {
+        title: 'Proposer Remark',
+        value: String(arbitrationInfo[1])
+      },
+      {
+        title: 'Candidate Appeal Confirmation',
+        value: String(arbitrationInfo[5])
       },
       {
         title: 'Executed',
@@ -57,7 +78,7 @@ function SlashingObjection (props) {
         value: objData.objection.appealEndTime
       }
     ])
-  }, [objData?.objection])
+  }, [objData?.objection, arbitrationInfo])
 
   const decisionData = useMemo(() => {
     return ([
@@ -131,6 +152,21 @@ function SlashingObjection (props) {
     setIsPending(false)
   }
 
+  const onConfirmAppeal = async () => {
+    setIsPending(true)
+    const slashingEscrowContract = new SlashingEscrow(
+      contract === 'ValidatorsSlashingVoting'
+        ? 'ValidatorsSlashingEscrow'
+        : 'RootNodesSlashingEscrow'
+    )
+    try {
+      await slashingEscrowContract.setProposerRemark(proposalId, arbitrationInfo[1], arbitrationInfo[5])
+    } catch (e) {
+      console.error(e)
+    }
+    setIsPending(false)
+  }
+
   const executeDecisionBTN = <Dropdown.Item onClick={executeDecision}>
     {isPending ? <LoadingSpinner/> : <><i className={'mdi mdi-play btn-icon'}/>Execute Decision</>}
   </Dropdown.Item>
@@ -146,6 +182,9 @@ function SlashingObjection (props) {
           >
             <Dropdown.Item onClick={onCastObjection}>
               <i className={'mdi mdi-cast btn-icon'}/>Cast objection
+            </Dropdown.Item>
+            <Dropdown.Item onClick={onConfirmAppeal}>
+              <i className={'mdi mdi-cast btn-icon'}/>Cofirm Appeal initiated by Slashing Candidate
             </Dropdown.Item>
             <Dropdown.Item onClick={onProposeDecision}>
               <i className={'mdi mdi-arrow-decision btn-icon'}/>Propose decision
