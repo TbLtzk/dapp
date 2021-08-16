@@ -15,7 +15,6 @@ function Header (props) {
   } = props
   return (
     <HeaderWrp>
-      <Alert/>
       <HeaderTitle>
         {header}
       </HeaderTitle>
@@ -23,6 +22,7 @@ function Header (props) {
       {extraButton}
         {extra}
       </HeaderActions>
+      <Alert/>
     </HeaderWrp>
   )
 }
