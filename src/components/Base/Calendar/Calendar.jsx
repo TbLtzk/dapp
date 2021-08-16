@@ -1,7 +1,5 @@
 import React, { forwardRef } from 'react'
 import DatePicker from 'react-datepicker'
-// import { useSelector } from 'react-redux'
-// import { theme } from 'store/selectors/theme'
 import { Controller } from 'react-hook-form'
 import 'react-datepicker/dist/react-datepicker.css'
 import FormInput from '../Form/FormInput'
@@ -20,20 +18,17 @@ function Calendar ({
   disabled,
   isCorrectDate
 }) {
-  // const currentTheme = useSelector(theme)
-
-  // const CalendarStyles = ({ className, children }) => {
-  //     return (
-  //         <CalendarContainer className={className}>
-  //             <Wrapper palette={currentTheme}>{children}</Wrapper>
-  //         </CalendarContainer>
-  //     );
-  // };
-
   const CustomInput = forwardRef(({ value, onClick }, ref) => (
-        <div onClick={onClick}>
-            <FormInput controlId={title} valid={isCorrectDate} name={name} value={value} onChange={() => {}} ref={ref} disabled={disabled} />
-        </div>
+        <FormInput
+            controlId={title}
+            valid={isCorrectDate}
+            name={name}
+            value={value}
+            onChange={() => {}}
+            ref={ref}
+            disabled={disabled}
+            onClick={onClick}
+        />
   ))
 
   return (

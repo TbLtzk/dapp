@@ -81,47 +81,57 @@ function TimeLocks () {
   const handleRefresh = (userAddress) => {
     setCurrentAddress(userAddress)
   }
+  const cardsData = [
+    {
+      contract: 'qVault',
+      timeLockBalance: fN(qVaultTimeLockMinimumBalance),
+      balance: fN(qVaultStakeBalance),
+      lockAmountData: qVaultTimeLocksArray || [],
+      modalTitle: 'Deposit & purge',
+      title: 'Q Vault account balance'
+    },
+    {
+      contract: 'root',
+      timeLockBalance: fN(rootTimeLockMinimumBalance),
+      balance: fN(rootStakeBalance),
+      lockAmountData: rootTimeLocksArray || [],
+      modalTitle: 'Deposit & purge',
+      title: 'Root stake balance'
+    },
+    {
+      contract: 'validators',
+      timeLockBalance: fN(validatorsTimeLockMinimumBalance),
+      balance: fN(validatorSelfStake),
+      lockAmountData: validatorsTimeLocksArray || [],
+      modalTitle: 'Deposit & purge',
+      title: 'Validator stake balance'
+    },
+    {
+      contract: 'vesting',
+      timeLockBalance: fN(vestingTimeLockMinimumBalance),
+      balance: fN(vestingStakeBalance),
+      lockAmountData: vestingTimeLocksArray || [],
+      modalTitle: 'Deposit, withdraw & purge',
+      title: 'Vesting account balance'
+    }
+  ]
 
   return (
         <PageWrap headerTitle="Time Locks">
-            <AddressForm setAddressRefresh={handleRefresh} userAddress={currentAddress} />
             <InfoWrap>
-                <BalanceCard
-                    address={currentAddress.address}
-                    timeLockBalance={fN(qVaultTimeLockMinimumBalance)}
-                    balance={fN(qVaultStakeBalance)}
-                    contract="qVault"
-                    modalTitle="Deposit & purge"
-                    title="Q Vault account balance"
-                    lockAmountData={qVaultTimeLocksArray || []}
-                />
-                <BalanceCard
-                    address={currentAddress.address}
-                    timeLockBalance={fN(rootTimeLockMinimumBalance)}
-                    balance={fN(rootStakeBalance)}
-                    contract="root"
-                    modalTitle="Deposit & purge"
-                    title="Root stake balance"
-                    lockAmountData={rootTimeLocksArray || []}
-                />
-                <BalanceCard
-                    address={currentAddress.address}
-                    timeLockBalance={fN(validatorsTimeLockMinimumBalance)}
-                    balance={fN(validatorSelfStake)}
-                    contract="validators"
-                    modalTitle="Deposit & purge"
-                    title="Validator stake balance"
-                    lockAmountData={validatorsTimeLocksArray || []}
-                />
-                <BalanceCard
-                    address={currentAddress.address}
-                    timeLockBalance={fN(vestingTimeLockMinimumBalance)}
-                    balance={fN(vestingStakeBalance)}
-                    contract="vesting"
-                    modalTitle="Deposit, withdraw & purge"
-                    title="Vesting account balance"
-                    lockAmountData={vestingTimeLocksArray || []}
-                />
+                <AddressForm setAddressRefresh={handleRefresh} userAddress={currentAddress} />
+                {cardsData.map((card) => (
+                    <BalanceCard
+                        key={card.contract}
+                        address={currentAddress.address}
+                        timeLockBalance={card.timeLockBalance}
+                        balance={card.balance}
+                        contract={card.contract}
+                        modalTitle={card.modalTitle}
+                        title={card.title}
+                        lockAmountData={card.lockAmountData}
+                    />
+                ))}
             </InfoWrap>
         </PageWrap>
   )

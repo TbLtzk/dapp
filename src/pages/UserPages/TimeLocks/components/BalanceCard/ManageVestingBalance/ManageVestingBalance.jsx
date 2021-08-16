@@ -19,7 +19,6 @@ function ManageVestingBalance () {
 
   return (
         <>
-            <div className="modal-line" />
             <h4>Amount</h4>
             <FormInput
                 lbl={'Q'}
@@ -40,6 +39,7 @@ function ManageVestingBalance () {
                 width="90px"
                 handleButton={handleSubmit(setWithdrawVesting)}
             />
+            <div className="modal-line" />
         </>
   )
 }

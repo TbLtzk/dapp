@@ -14,12 +14,20 @@ export const WrapContainer = styled.div`
 `
 
 export const InfoWrap = styled.div`
-    display: grid;
-    grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
-    & > div {
-      width: 98%;
-      height: 96%;
-    }
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
+  grid-auto-rows: auto;
+
+  & > div:first-child {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    width: 99%;
+    height: 95%
+  }
+  & > div {
+    width: 98%;
+    height: 97%;
+  }
 `
 
 export const BlockWrap = styled.div`
@@ -27,7 +35,7 @@ export const BlockWrap = styled.div`
 `
 
 export const ValueWrap = styled.h4`
-  width: ${(props) => props.width}
+  width: ${(props) => props.width};
 `
 
 export const CalendarWraper = styled.div`

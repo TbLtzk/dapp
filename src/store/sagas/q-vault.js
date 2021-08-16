@@ -102,6 +102,7 @@ function * setDepositGenerator ({ address, amountQ }) {
   } catch (err) {
     console.error('QV.Error', err)
     yield put(setError(err.message))
+    // ErrorHandler.process(err)
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,

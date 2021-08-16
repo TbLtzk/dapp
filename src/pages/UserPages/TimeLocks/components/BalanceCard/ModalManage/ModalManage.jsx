@@ -10,7 +10,7 @@ import { dateToTimestamp } from 'func/convertDate'
 
 import 'react-datepicker/dist/react-datepicker.css'
 
-function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitle, contract }) {
+function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitle, contract, address }) {
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
   const [isCorrectDate, setIsCorrectDate] = useState('')
@@ -55,22 +55,10 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
             modalTitle={modalTitle}
             content={
                 <>
-                    {contract === 'vesting' ? <ManageVestingBalance /> : null}
                     <div className="modal-line" />
-                    <h4>Recipient Address</h4>
-                    <FormInput
-                        name="address"
-                        type="string"
-                        placeholder="0x000"
-                        ref={register({
-                          required: 'Address Required!',
-                          pattern: {
-                            value: /^.{42}$/gim,
-                            message: 'Invalid Address!'
-                          }
-                        })}
-                        valid={errors?.address?.message}
-                    />
+                    <h5>Recipient Address</h5>
+                    <h4>{address}</h4>
+                    {contract === 'vesting' ? <ManageVestingBalance /> : null}
                     <CalendarWraper>
                         <Calendar
                             selectsStart={true}
