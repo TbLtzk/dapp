@@ -87,16 +87,6 @@ function * setVestingDepositGenerator ({ address, amountQ }) {
       type: SET_TRANSACTION_COUNTER,
       payload: 1
     })
-    // console.log("setVestingDepositGenerator");
-    // console.log(address, amountQ);
-    // const { userAddress } = yield select((state) => state.userInf);
-
-    // const contract = yield call(getVestingInstance);
-    // const data = yield contract.deposit(toWei(amountQ), { from: userAddress });
-
-    // if (data.status === true) {
-    //   yield put(setVestingDeposit(address));
-    // }
   } catch (err) {
     console.error('VestingDeposit.Error', err)
   } finally {
