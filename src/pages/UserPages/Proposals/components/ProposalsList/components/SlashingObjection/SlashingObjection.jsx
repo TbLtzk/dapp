@@ -30,19 +30,6 @@ function SlashingObjection (props) {
   const dispatch = useDispatch()
   const userAddress = useSelector(userAddressMetamask)
 
-  const arbitrationInfo = async () => {
-    const slashingEscrowContract = new SlashingEscrow(
-      contract === 'ValidatorsSlashingVoting'
-        ? 'ValidatorsSlashingEscrow'
-        : 'RootNodesSlashingEscrow'
-    )
-    try {
-      await slashingEscrowContract.getArbitrationInfos(proposalId)
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
   const objectionData = useMemo(() => {
     return ([
       {
@@ -55,11 +42,11 @@ function SlashingObjection (props) {
       },
       {
         title: 'Proposer Remark',
-        value: String(arbitrationInfo[1])
+        value: String(objData.objection.proposerRemark)
       },
       {
         title: 'Candidate Appeal Confirmation',
-        value: String(arbitrationInfo[5])
+        value: String(objData.objection.appealConfirmed)
       },
       {
         title: 'Executed',
@@ -78,7 +65,7 @@ function SlashingObjection (props) {
         value: objData.objection.appealEndTime
       }
     ])
-  }, [objData?.objection, arbitrationInfo])
+  }, [objData?.objection])
 
   const decisionData = useMemo(() => {
     return ([
@@ -160,7 +147,7 @@ function SlashingObjection (props) {
         : 'RootNodesSlashingEscrow'
     )
     try {
-      await slashingEscrowContract.setProposerRemark(proposalId, arbitrationInfo[1], arbitrationInfo[5])
+      await slashingEscrowContract.setProposerRemark(proposalId, 'proposer string', objData.objection.appealConfirmed, userAddress)
     } catch (e) {
       console.error(e)
     }

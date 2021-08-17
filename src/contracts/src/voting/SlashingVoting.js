@@ -68,6 +68,8 @@ export default class SlashingVoting extends VotingService {
       objEscrow.objEscrow.objection.slashedAmount = fromWei(escrowArbitrationInfo.params.slashedAmount)
       objEscrow.objEscrow.objection.objectionEndTime = fromSolDateFormattingT1(escrowArbitrationInfo.params.objectionEndTime)
       objEscrow.objEscrow.objection.appealEndTime = fromSolDateFormattingT1(escrowArbitrationInfo.params.appealEndTime)
+      objEscrow.objEscrow.objection.proposerRemark = escrowArbitrationInfo.proposerRemark
+      objEscrow.objEscrow.objection.appealConfirmed = escrowArbitrationInfo.appealConfirmed
       objEscrow.objEscrow.decision.confirmationCount = escrowArbitrationInfo.decision.confirmationCount
       objEscrow.objEscrow.decision.endDate = fromSolDateFormattingT1(escrowArbitrationInfo.decision.endDate)
       objEscrow.objEscrow.decision.externalReference = escrowArbitrationInfo.decision.externalReference
