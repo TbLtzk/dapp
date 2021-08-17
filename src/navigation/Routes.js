@@ -1,30 +1,30 @@
-import React from 'react'
-import { Route, Switch } from 'react-router-dom'
-import { transitions, positions, Provider as AlertProvider } from 'react-alert'
-import { AuthProtect } from './AuthProtect'
-import { PROPOSALS_TYPES, AUCTIONS_TYPES } from 'constants/statuses'
+import React from "react";
+import { Route, Switch } from "react-router-dom";
+import { transitions, positions, Provider as AlertProvider } from "react-alert";
+import { AuthProtect } from "./AuthProtect";
+import { PROPOSALS_TYPES, AUCTIONS_TYPES } from "constants/statuses";
 
-import StartConfigurations from 'pages/StartConfigurations'
-import Dashboard from '../pages/UserPages/Dashboard/Dashboard'
-import Manage from '../pages/UserPages/Dashboard/Manage'
-import Governance from '../pages/UserPages/Governance'
-import Proposals from '../pages/UserPages/Proposals'
-import Auctions from '../pages/UserPages/Auctions'
-import QVault from '../pages/UserPages/QVault'
-import Staking from '../pages/UserPages/Staking'
-import OneProposalPage from '../pages/UserPages/OneProposalPage'
-import SavingAndBorrowing from '../pages/UserPages/SavingAndBorrowing'
-import TimeLocks from '../pages/UserPages/TimeLocks'
+import StartConfigurations from "pages/StartConfigurations";
+import Dashboard from "../pages/UserPages/Dashboard/Dashboard";
+import Manage from "../pages/UserPages/Dashboard/Manage";
+import Governance from "../pages/UserPages/Governance";
+import Proposals from "../pages/UserPages/Proposals";
+import Auctions from "../pages/UserPages/Auctions";
+import QVault from "../pages/UserPages/QVault";
+import Staking from "../pages/UserPages/Staking";
+import OneProposalPage from "../pages/UserPages/OneProposalPage";
+import SavingAndBorrowing from "../pages/UserPages/SavingAndBorrowing";
+import TimeLocks from "../pages/UserPages/TimeLocks";
 
-import AlertTemplate from 'components/Custom/Alerts/AlertTemplate'
+import AlertTemplate from "components/Custom/Alerts/AlertTemplate";
 
-function Routes () {
+function Routes() {
   const options = {
     position: positions.TOP_RIGHT,
-    timeout: 100000,
-    offset: '10px',
-    transition: transitions.SCALE
-  }
+    timeout: 10000,
+    offset: "10px",
+    transition: transitions.SCALE,
+  };
 
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
@@ -78,7 +78,7 @@ function Routes () {
         <Route exact path="/q-governance/proposal/:contract?/:id?" component={AuthProtect(OneProposalPage)} />
       </Switch>
     </AlertProvider>
-  )
+  );
 }
 
-export default Routes
+export default Routes;

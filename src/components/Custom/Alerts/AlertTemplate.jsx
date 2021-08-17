@@ -1,17 +1,18 @@
-import React from 'react'
-import { CloseButton } from 'react-bootstrap'
-import { AlertWrapper } from './styles'
+import React from "react";
+import { CloseButton } from "react-bootstrap";
+import { AlertWrapper } from "./styles";
 
 const AlertTemplate = ({ style, options, message, close }) => {
-  return (
+    const { header, text } = message;
+    return (
         <AlertWrapper style={style}>
-            <div className="modal-title">
-                <h1>{message.title}</h1>
+            <div className="alert-template__header">
+                <h1>{header}</h1>
                 <CloseButton onClick={close} />
             </div>
-            <h4>{message.info}</h4>
+            <h4 className="alert-template__text">{text}</h4>
         </AlertWrapper>
-  )
-}
+    );
+};
 
-export default AlertTemplate
+export default AlertTemplate;

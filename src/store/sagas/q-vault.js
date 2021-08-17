@@ -26,7 +26,9 @@ import QVault from 'contracts/src/QVault'
 import { handleLockedAssetsResponse } from 'contracts/handler/QVaultHandler'
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { toWei, fromWei } from 'func/balance'
-import ErrorHandler from '../../components/Custom/Alerts/helper'
+
+import ErrorHandler from 'func/ErrorHandler'
+
 let contractInstance = null
 
 function getContractInstance () {
@@ -120,7 +122,6 @@ function * setWithdrawGenerator ({ address, amountQ }) {
       yield put(getUserBalance(address))
     }
   } catch (error) {
-    console.error('QV.Error', error)
     yield put(setError(error))
     yield put(setTransactionLoadingError(error))
     ErrorHandler.process(error)

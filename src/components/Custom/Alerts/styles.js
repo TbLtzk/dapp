@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const AlertWrapper = styled.div`
   background: ${(props) => props.theme.colors.oxfordBlueTint6};
@@ -9,14 +9,12 @@ export const AlertWrapper = styled.div`
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 0.3rem;
-  outline: 0;
 
-  .modal-title {
+  .alert-template__header {
     color: ${(props) => props.theme.colors.validationError};
     display: flex;
     justify-content: space-between;
     align-items: center;
-    text-align: center;
     & h1 {
       margin-bottom: 0;
       margin-right: 20px;
@@ -26,14 +24,7 @@ export const AlertWrapper = styled.div`
     }
   }
 
-  .modal-line {
-    width: 100%;
-    height: 1px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
-  }
-
-  h4 {
+  .alert-template__text {
     color: ${(props) => props.theme.colors.oxfordBlue};
     font-size: 13px;
     line-height: 18px;
@@ -43,5 +34,5 @@ export const AlertWrapper = styled.div`
 
   & .close {
     color: ${(props) => props.theme.colors.oxfordBlueTint2} !important;
-  };
-`
+  }
+`;

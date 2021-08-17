@@ -15,12 +15,12 @@ function Alert () {
   const createAlert = (error) => {
     if (error.message) {
       const message = error.message.split(':')
-      return { title: message[0], info: message[1] }
+      return { header: message[0], text: message[1] }
     }
     if (error.status === false) {
-      return { title: 'Error', info: 'Not enough balance on wallet account' }
+      return { header: 'Error', text: 'Not enough balance on wallet account' }
     } else {
-      return { title: 'Unknown type of error', info: 'No additional info' }
+      return { header: 'Unknown type of error', text: 'No additional info' }
     }
   }
 
