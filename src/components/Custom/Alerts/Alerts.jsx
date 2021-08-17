@@ -36,7 +36,9 @@ function Alert () {
     transactionHanlder()
   }, [errorTransaction, dispatch])
 
-  return <></>
+  return (
+        <></>
+  )
 }
 
 export default Alert

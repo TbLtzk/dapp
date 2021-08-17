@@ -43,5 +43,5 @@ export const AlertWrapper = styled.div`
 
   & .close {
     color: ${(props) => props.theme.colors.oxfordBlueTint2} !important;
-  }
+  };
 `
