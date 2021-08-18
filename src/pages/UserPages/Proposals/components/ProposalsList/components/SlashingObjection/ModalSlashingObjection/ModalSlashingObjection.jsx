@@ -75,7 +75,7 @@ function ModalSlashingObjection (props) {
       } else if (activeTab === 'propose-decision') {
         dispatch(onEscrowProposeDecision({ ...formData, ...data }, contract, proposalId))
       } else if (activeTab === 'proposer-remark') {
-        dispatch(onEscrowProposerRemark({...formData,...data }, contract, proposalId))
+        dispatch(onEscrowProposerRemark({ ...formData, ...data }, contract, proposalId))
       }
       onHide()
     }

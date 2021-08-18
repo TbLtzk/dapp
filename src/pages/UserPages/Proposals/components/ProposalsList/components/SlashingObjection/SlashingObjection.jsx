@@ -123,7 +123,7 @@ function SlashingObjection (props) {
   const onProposeDecision = () => {
     onShowModal('propose-decision')
   }
-  
+
   const onConfirmAppeal = () => {
     onShowModal('proposer-remark')
   }

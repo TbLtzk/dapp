@@ -153,8 +153,8 @@ function * onEscrowProposerRemark ({ data, contractName, proposalId }) {
       ? 'ValidatorsSlashingEscrow'
       : 'RootNodesSlashingEscrow'
     const contract = new SlashingEscrow(SlashingEscrowContractName)
-    const appealConfirmed = data['appealConfirmed'] === 'yes'
-    const result = yield contract.setProposerRemark(proposalId,data['proposer-remark'], appealConfirmed, userAddress)
+    const appealConfirmed = data.appealConfirmed === 'yes'
+    const result = yield contract.setProposerRemark(proposalId, data['proposer-remark'], appealConfirmed, userAddress)
     if (result) {
       yield call(() => {}, contractName, {}, proposalId, false)
     }
