@@ -68,6 +68,13 @@ export const onEscrowProposeDecision = (data, contractName, proposalId) => ({
   proposalId
 })
 
+export const onEscrowProposerRemark = (data, contractName, proposalId) => ({
+  type: actionTypes.ESCROW_PROPOSER_REMARK,
+  data,
+  contractName,
+  proposalId
+})
+
 export const onEscrowRecallProposeDecision = (contractName, proposalId) => ({
   type: actionTypes.ESCROW_RECALL_PROPOSE_DECISION,
   contractName,

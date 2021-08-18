@@ -145,6 +145,26 @@ function * onEscrowProposeDecision ({ data, contractName, proposalId }) {
   }
 }
 
+function * onEscrowProposerRemark ({ data, contractName, proposalId }) {
+  try {
+    yield put(setTransactionLoading())
+    const { userAddress } = yield select(state => state.userInf)
+    const SlashingEscrowContractName = contractName === 'ValidatorsSlashingVoting'
+      ? 'ValidatorsSlashingEscrow'
+      : 'RootNodesSlashingEscrow'
+    const contract = new SlashingEscrow(SlashingEscrowContractName)
+    const appealConfirmed = data['appealConfirmed'] === 'yes'
+    const result = yield contract.setProposerRemark(proposalId,data['proposer-remark'], appealConfirmed, userAddress)
+    if (result) {
+      yield call(() => {}, contractName, {}, proposalId, false)
+    }
+    yield put(setTransactionLoadingSuccess())
+  } catch (err) {
+    console.error('err', err.message)
+    yield put(setTransactionLoadingError(err.message))
+  }
+}
+
 function * onEscrowRecallProposeDecision ({ contractName, proposalId }) {
   try {
     yield put(setTransactionLoading())
@@ -191,6 +211,7 @@ export default [
   takeEvery(actionTypes.ESCROW_CAST_OBJECTION, onEscrowCastObjection),
   takeEvery(actionTypes.ESCROW_PROPOSE_DECISION, onEscrowProposeDecision),
   takeEvery(actionTypes.ESCROW_RECALL_PROPOSE_DECISION, onEscrowRecallProposeDecision),
-  takeEvery(actionTypes.ESCROW_CONFIRM_DECISION, onEscrowConfirmProposeDecision)
+  takeEvery(actionTypes.ESCROW_CONFIRM_DECISION, onEscrowConfirmProposeDecision),
+  takeEvery(actionTypes.ESCROW_PROPOSER_REMARK, onEscrowProposerRemark)
 
 ]

@@ -123,6 +123,10 @@ function SlashingObjection (props) {
   const onProposeDecision = () => {
     onShowModal('propose-decision')
   }
+  
+  const onConfirmAppeal = () => {
+    onShowModal('proposer-remark')
+  }
 
   const executeDecision = async () => {
     setIsPending(true)
@@ -133,21 +137,6 @@ function SlashingObjection (props) {
     )
     try {
       await slashingEscrowContract.execute(proposalId, userAddress)
-    } catch (e) {
-      console.error(e)
-    }
-    setIsPending(false)
-  }
-
-  const onConfirmAppeal = async () => {
-    setIsPending(true)
-    const slashingEscrowContract = new SlashingEscrow(
-      contract === 'ValidatorsSlashingVoting'
-        ? 'ValidatorsSlashingEscrow'
-        : 'RootNodesSlashingEscrow'
-    )
-    try {
-      await slashingEscrowContract.setProposerRemark(proposalId, 'proposer string', objData.objection.appealConfirmed, userAddress)
     } catch (e) {
       console.error(e)
     }
