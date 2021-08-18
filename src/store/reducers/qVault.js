@@ -15,7 +15,10 @@ const initialState = {
   errorDelegationList: null,
 
   qvBalance: null,
-  outstandingDelegationRewards: 0
+  outstandingDelegationRewards: 0,
+
+  qVaultMinimumTimeLock: null,
+  qVaultTimeLocks: null
 }
 
 export default function qVault (state = initialState, action) {
@@ -85,6 +88,16 @@ export default function qVault (state = initialState, action) {
           return {
             ...state,
             outstandingDelegationRewards: 0
+          }
+        case actionTypes.SET_QVAULT_MINIMUM_TIME_LOCK:
+          return {
+            ...state,
+            qVaultMinimumTimeLock: action.payload
+          }
+        case actionTypes.SET_QVAULT_TIME_LOCKS:
+          return {
+            ...state,
+            qVaultTimeLocks: action.payload
           }
         default:
           return state

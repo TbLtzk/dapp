@@ -19,10 +19,27 @@ import systemBalance from './system-balance'
 import systemReserve from './system-reserve'
 import parametersAddresses from './parameters-addresses'
 import lockedAmount from './locked-amount'
-
+import vesting from './vesting'
 export default function * rootSaga () {
-  yield all([...userAuth, ...rootContract, ...qVault,
-    ...proposals, ...qProposals, ...rootNodeProposals, ...expertProposals, ...slashingProposals,
-    ...validators, ...validationRewardPools, ...auctions, ...stableCoin,
-    ...membership, ...parameters, ...systemBalance, ...systemReserve, ...parametersAddresses, ...lockedAmount])
+  yield all([
+    ...userAuth,
+    ...rootContract,
+    ...qVault,
+    ...proposals,
+    ...qProposals,
+    ...rootNodeProposals,
+    ...expertProposals,
+    ...slashingProposals,
+    ...validators,
+    ...validationRewardPools,
+    ...auctions,
+    ...stableCoin,
+    ...membership,
+    ...parameters,
+    ...systemBalance,
+    ...systemReserve,
+    ...parametersAddresses,
+    ...lockedAmount,
+    ...vesting
+  ])
 }

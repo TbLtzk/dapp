@@ -4,5 +4,6 @@ export const CONTRACT_TYPES = {
   constitution: 'constitution',
   qVault: 'qVault',
   root: 'root',
-  validators: 'validators'
+  validators: 'validators',
+  vesting: 'vesting'
 }

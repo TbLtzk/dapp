@@ -1,98 +1,123 @@
 import { put, takeEvery, call } from 'redux-saga/effects'
 
 import * as actionTypes from 'store/actions/action-types/locked-amount'
-import Validators from '../../contracts/src/Validators'
-import QVault from '../../contracts/src/QVault'
-import RootService from 'contracts/src/Root'
 import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler'
-import { getUserBalance } from 'store/actions/action-creaters/q-vault'
+
+import { getUserBalance, getMinimumQVaultTimeLock, getQVaultTimeLocks } from 'store/actions/action-creaters/q-vault'
 import {
-  setError,
-  setQVaultAmount,
-  setRootNodeAmount,
-  setValidatorAmount
-} from 'store/actions/action-creaters/locked-amount'
+  getRootNodeStakes,
+  getMinimumRootTimeLock,
+  getRootTimeLocks
+} from 'store/actions/action-creaters/root-contract'
+import {
+  getSelfStake,
+  getMinimumValidatorsTimeLock,
+  getValidatorsTimeLocks
+} from 'store/actions/action-creaters/validators'
+import {
+  getMinimumVestingTimeLock,
+  getVestingTimeLocks,
+  setVestingBalance
+} from 'store/actions/action-creaters/vesting'
 
 import { toWei } from 'func/balance'
 import { CONTRACT_TYPES } from 'constants/contracts'
 
 import { contractRegistryInstance } from 'contracts/contracts'
+import { dateToTimestamp } from 'func/convertDate'
 
-const initContract = async (typeContract) => {
+let qVaultInstance = null
+let rootNodesInstance = null
+let validatorsInstance = null
+let vestingInstance = null
+
+async function getContractInstance (typeContract) {
   if (typeContract === CONTRACT_TYPES.qVault) {
-    return await contractRegistryInstance.qVault()
+    if (qVaultInstance === null) {
+      qVaultInstance = await contractRegistryInstance.qVault()
+    }
+    return await qVaultInstance
   } else if (typeContract === CONTRACT_TYPES.root) {
-    return await contractRegistryInstance.rootNodes()
+    if (rootNodesInstance === null) {
+      rootNodesInstance = await contractRegistryInstance.rootNodes()
+    }
+    return rootNodesInstance
   } else if (typeContract === CONTRACT_TYPES.validators) {
-    return await contractRegistryInstance.validators()
-  } else {
-    return null
+    if (validatorsInstance === null) {
+      validatorsInstance = await contractRegistryInstance.validators()
+    }
+    return validatorsInstance
+  } else if (typeContract === CONTRACT_TYPES.vesting) {
+    if (vestingInstance === null) {
+      vestingInstance = await contractRegistryInstance.vesting()
+    }
+    return vestingInstance
+  }
+  return null
+}
+
+function * getAmountOnContract (contract, address) {
+  if (contract === CONTRACT_TYPES.qVault) {
+    yield put(getUserBalance(address))
+    yield put(getMinimumQVaultTimeLock(address))
+    yield put(getQVaultTimeLocks(address))
+  } else if (contract === CONTRACT_TYPES.root) {
+    yield put(getRootNodeStakes('', address))
+    yield put(getMinimumRootTimeLock(address))
+    yield put(getRootTimeLocks(address))
+  } else if (contract === CONTRACT_TYPES.validators) {
+    yield put(getSelfStake(address))
+    yield put(getMinimumValidatorsTimeLock(address))
+    yield put(getValidatorsTimeLocks(address))
+  } else if (contract === CONTRACT_TYPES.vesting) {
+    yield put(getMinimumVestingTimeLock(address))
+    yield put(getVestingTimeLocks(address))
+    yield put(setVestingBalance(address))
   }
 }
 
-function * getQVaultAmount ({ address }) {
-  try {
-    const contract = new QVault()
-    const minQVaultAmount = yield contract.getMinimumLockedAmount(address)
-    const lockedQVaultAmounts = yield contract.getTimeLockedAmounts(address)
-    yield put(setQVaultAmount({ minQVaultAmount, lockedQVaultAmounts }))
-  } catch (err) {
-    console.error('getQVaultAmount.Error', err)
-    yield put(setError(err.message))
-  }
-}
-
-function * getRootNodeAmount ({ address }) {
-  try {
-    const contract = new RootService()
-    const minRootNodeAmount = yield contract.getMinimumLockedAmount(address)
-    const lockedRootNodeAmounts = yield contract.getTimeLockedAmounts(address)
-    yield put(setRootNodeAmount({ minRootNodeAmount, lockedRootNodeAmounts }))
-  } catch (err) {
-    console.error('getRootNodeAmount.Error', err)
-    yield put(setError(err.message))
-  }
-}
-
-function * getValidatorAmount ({ address }) {
-  try {
-    const contract = new Validators()
-    const minValidatorAmount = yield contract.getMinimumLockedAmount(address)
-    const lockedValidatorAmounts = yield contract.getTimeLockedAmounts(address)
-    yield put(setValidatorAmount({ minValidatorAmount, lockedValidatorAmounts }))
-  } catch (err) {
-    console.error('getValidatorAmount.Error', err)
-    yield put(setError(err.message))
-  }
-}
-
-function * purgeTimeLocksAmount ({ payload }) {
-  try {
-    /* eslint-disable */
-    const contract =  yield call(initContract, payload.contract)
-    // yield put();
-  } catch (err) {
-    console.error('Validators.Error', err)
-    yield put(setError(err.message))
-  }
-}
-
-function * depositLockedAmount ({ payload }) {
+function * setPurgeTimeLocksAmount ({ payload }) {
   try {
     yield put({
       type: SET_TRANSACTION_COUNTER,
       payload: 1
     })
-    const contract = yield call(initContract, payload.data.contract)
-    const data = yield contract.instance.methods
-      .withdraw(toWei(payload.data.amountQ))
-      .send({ from: payload.userAddress })
+    const contract = yield call(getContractInstance, payload.contract)
+    const data = yield contract.purgeTimeLocks(payload.address)
+
     if (data.status === true) {
-      yield put(getUserBalance(payload.userAddress))
+      yield call(getAmountOnContract, payload.contract, payload.address)
+    }
+  } catch (err) {
+    console.error('PurgeTimeLocks.Error', err)
+  } finally {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    })
+  }
+}
+
+function * setDepositLockedAmount ({ payload }) {
+  try {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    })
+    const contract = yield call(getContractInstance, payload.contract)
+    const data = yield contract.depositOnBehalfOf(
+      payload.address,
+      dateToTimestamp(payload.startDate),
+      dateToTimestamp(payload.endDate),
+      {
+        value: toWei(payload.amountQ)
+      }
+    )
+    if (data.status === true) {
+      yield call(getAmountOnContract, payload.contract, payload.address)
     }
   } catch (err) {
     console.error('depositLockedAmount.Error', err)
-    yield put(setError(err.message))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -102,15 +127,6 @@ function * depositLockedAmount ({ payload }) {
 }
 
 export default [
-  takeEvery(actionTypes.GET_QVAULT_AMOUNT, getQVaultAmount),
-  takeEvery(actionTypes.GET_ROOTNODE_AMOUNT, getRootNodeAmount),
-  takeEvery(actionTypes.GET_VALIDATOR_AMOUNT, getValidatorAmount),
-
-  takeEvery(actionTypes.SET_QVAULT_AMOUNT, setQVaultAmount),
-  takeEvery(actionTypes.SET_ROOTNODE_AMOUNT, setRootNodeAmount),
-  takeEvery(actionTypes.SET_VALIDATOR_AMOUNT, setValidatorAmount),
-
-  takeEvery(actionTypes.SET_PURGEAMOUNT_CALL, purgeTimeLocksAmount),
-
-  takeEvery(actionTypes.SET_LOCKEDAMOUNT_CALL, depositLockedAmount)
+  takeEvery(actionTypes.SET_PURGEAMOUNT_CALL, setPurgeTimeLocksAmount),
+  takeEvery(actionTypes.SET_LOCKEDAMOUNT_CALL, setDepositLockedAmount)
 ]

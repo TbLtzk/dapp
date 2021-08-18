@@ -1,10 +1,8 @@
-import React from 'react'
-import DatePicker, { CalendarContainer } from 'react-datepicker'
-import { useSelector } from 'react-redux'
-import { theme } from 'store/selectors/theme'
+import React, { forwardRef } from 'react'
+import DatePicker from 'react-datepicker'
 import { Controller } from 'react-hook-form'
-import { WrapperCalendar, Wrapper } from './styles'
 import 'react-datepicker/dist/react-datepicker.css'
+import FormInput from '../Form/FormInput'
 
 function Calendar ({
   title,
@@ -17,33 +15,35 @@ function Calendar ({
   setDate,
   selectsStart,
   selectsEnd,
-  disabled
+  disabled,
+  isCorrectDate
 }) {
-  const currentTheme = useSelector(theme)
-
-  const CalendarStyles = ({ className, children }) => {
-    return (
-            <CalendarContainer className={className}>
-                <Wrapper palette={currentTheme}>{children}</Wrapper>
-            </CalendarContainer>
-    )
-  }
+  const CustomInput = forwardRef(({ value, onClick }, ref) => (
+        <FormInput
+            controlId={title}
+            valid={isCorrectDate}
+            name={name}
+            value={value}
+            onChange={() => {}}
+            ref={ref}
+            disabled={disabled}
+            onClick={onClick}
+        />
+  ))
 
   return (
-        <WrapperCalendar palette={currentTheme}>
+        <div>
             <h4>{title}</h4>
             <Controller
                 control={control}
                 name={name}
                 defaultValue={''}
-                render={({ onChange, onBlur, value, ref }) => (
+                render={({ onChange, onBlur }) => (
                     <DatePicker
-                        name={name}
                         onChange={(date) => {
                           setDate(date)
                           onChange(date)
                         }}
-                        disabled={disabled}
                         selectsStart={selectsStart}
                         selectsEnd={selectsEnd}
                         onBlur={onBlur}
@@ -51,12 +51,15 @@ function Calendar ({
                         startDate={startDate}
                         endDate={endDate}
                         minDate={minDate}
-                        dateFormat="d/MM/yyyy"
-                        calendarContainer={CalendarStyles}
+                        dateFormat="h:mm, MMMM d, yyyy aa"
+                        showTimeSelect
+                        timeFormat="HH:mm"
+                        timeIntervals={15}
+                        customInput={<CustomInput />}
                     />
                 )}
             />
-        </WrapperCalendar>
+        </div>
   )
 }
 

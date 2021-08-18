@@ -16,9 +16,9 @@ export const errorHandler = (error, field, min = 0, max = 100) => {
 }
 
 export const fN = (number) => {
+  if (number === undefined || isNaN(number) || number === null) return 0
   const maximumFractionDigits = 4
   const truncated = BN(number).toFixed(maximumFractionDigits, BigNumber.ROUND_DOWN)
-  if (number === undefined || number.isNaN) return number
   return new Intl.NumberFormat('en-GB', { maximumFractionDigits }).format(truncated)
 }
 
@@ -45,6 +45,10 @@ export function BN (value) {
 
 export const getPercentageFormat = (number) => {
   return BN('1e+25').multipliedBy(number).toFixed()
+}
+
+export const addIndex = (array) => {
+  return array.map((item, idx) => ({ id: idx + 1, ...item }))
 }
 
 export const errorWrapper = async (method) => {
