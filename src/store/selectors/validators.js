@@ -12,3 +12,7 @@ export const validatorMembers = (state) => state.validators.validatorMembers
 export const errorMembers = (state) => state.validators.errorMembers
 
 export const isUserValidator = (state) => state.validators.isUserValidator
+
+// sdk
+export const validatorsMinimumTimeLock = (state) => state.validators.validatorsMinimumTimeLock
+export const validatorsTimeLocks = (state) => state.validators.validatorsTimeLocks

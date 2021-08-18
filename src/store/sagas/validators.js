@@ -1,6 +1,8 @@
 import { put, takeEvery } from 'redux-saga/effects'
 import Validators from '../../contracts/src/Validators'
 import * as actionTypes from 'store/actions/action-types/validators'
+import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler'
+
 import {
   setError,
   setDelegatorsShare,
@@ -14,9 +16,13 @@ import {
   getInterestRate,
   getValidatorMembersSuccess,
   getValidatorMembersError,
-  isUserValidatorSuccess
+  isUserValidatorSuccess,
+  setMinimumValidatorsTimeLock,
+  setValidatorsTimeLocks
 } from 'store/actions/action-creaters/validators'
 import { fromWei } from 'func/balance'
+import { addIndex } from 'func/useful'
+import { getNowTimestamp } from 'func/convertDate'
 
 import { validatorsInstance, validationRewardPoolsInstance } from 'contracts/contracts'
 
@@ -182,6 +188,44 @@ function * isUserValidator ({ address }) {
   }
 }
 
+// sdk
+function * getMinimumValidatorsTimeLockGenerator ({ address }) {
+  try {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    })
+
+    const data = yield validatorsInstance.getMinimumBalance(address, getNowTimestamp())
+    yield put(setMinimumValidatorsTimeLock(fromWei(data)))
+  } catch (err) {
+    console.error('getMinimumValidatorsTimeLockGenerator.Error', err)
+  } finally {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    })
+  }
+}
+
+function * getValidatorsTimeLocksGenerator ({ address }) {
+  try {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    })
+    const data = yield validatorsInstance.getTimeLocks(address)
+    yield put(setValidatorsTimeLocks(addIndex(data)))
+  } catch (err) {
+    console.error('getValidatorsTimeLocksGenerator.Error', err)
+  } finally {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    })
+  }
+}
+
 export default [
   takeEvery(actionTypes.GET_VAL_DELEGATORS_SHARE, getDelegatorsShareGenerator),
   takeEvery(actionTypes.GET_VAL_TOTAL_STAKE, getTotalStakeGenerator),
@@ -194,5 +238,9 @@ export default [
   takeEvery(actionTypes.SET_VAL_INTEREST_RATE_SEND, setInterestRateGenerator),
 
   takeEvery(actionTypes.GET_VALIDATORS_MEMBERS, getValidatorsMembers),
-  takeEvery(actionTypes.IS_USER_VALIDATOR, isUserValidator)
+  takeEvery(actionTypes.IS_USER_VALIDATOR, isUserValidator),
+
+  // sdk
+  takeEvery(actionTypes.GET_VALIDATORS_MINIMUM_TIME_LOCK, getMinimumValidatorsTimeLockGenerator),
+  takeEvery(actionTypes.GET_VALIDATORS_TIME_LOCKS, getValidatorsTimeLocksGenerator)
 ]

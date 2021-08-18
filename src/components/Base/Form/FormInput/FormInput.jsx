@@ -13,52 +13,54 @@ const FormInput = forwardRef((props, ref) => {
     type,
     placeholder,
     valid,
+    onClick = () => {},
     align,
     onChange,
     value,
     disabled,
     min,
     color,
-    lbl
+    lbl,
+    controlId = 'formBasicEmail'
   } = props
 
   const [isFocus, setIsFocus] = useState('')
   const currentTheme = useSelector(theme)
+
   return (
-    <InputWrapper
-      controlId="formBasicEmail"
-      align={align}
-      type={valid ? 'error' : ''}
-      palette={currentTheme}
-      color={color ? 1 : 0}
-      lbl={lbl}
-      isfocus={isFocus}
-      isdisabled={disabled ? '1' : ''}
-    >
-      <div style={{ display: 'flex' }}>
-        {
-          lbl ? <div className={'input_lbl'}>{lbl}</div> : null
-        }
-        <Form.Control
-          onFocus={() => {
-            setIsFocus('1')
-          }}
-          onBlur={() => {
-            setIsFocus('')
-          }}
-          min={min}
-          type={type}
-          step="0.5"
-          placeholder={placeholder}
-          name={name}
-          ref={ref}
-          onChange={onChange}
-          value={value}
-          disabled={disabled}
-        />
-      </div>
-      <ErrorInputMessage message={valid}/>
-    </InputWrapper>
+        <InputWrapper
+            controlId={controlId}
+            align={align}
+            type={valid ? 'error' : ''}
+            palette={currentTheme}
+            color={color ? 1 : 0}
+            lbl={lbl}
+            isfocus={isFocus}
+            isdisabled={disabled ? '1' : ''}
+        >
+            <div style={{ display: 'flex' }}>
+                {lbl ? <div className={'input_lbl'}>{lbl}</div> : null}
+                <Form.Control
+                    onFocus={() => {
+                      setIsFocus('1')
+                    }}
+                    onBlur={() => {
+                      setIsFocus('')
+                    }}
+                    min={min}
+                    type={type}
+                    step="0.5"
+                    onClick={onClick}
+                    placeholder={placeholder}
+                    name={name}
+                    ref={ref}
+                    onChange={onChange}
+                    value={value}
+                    disabled={disabled}
+                />
+            </div>
+            <ErrorInputMessage message={valid} />
+        </InputWrapper>
   )
 })
 

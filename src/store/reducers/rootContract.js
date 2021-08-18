@@ -13,7 +13,10 @@ const initialState = {
   announceWithdrawTransId: null,
   withdrawTransId: null,
   withdrawals: null,
-  lastActionRoot: 0
+  lastActionRoot: 0,
+
+  qVaultMinimumTimeLock: null,
+  qVaultTimeLocks: null
 }
 
 export default function rootContract (state = initialState, action) {
@@ -93,6 +96,16 @@ export default function rootContract (state = initialState, action) {
       return {
         ...state,
         withdrawals: action.result
+      }
+    case actionTypes.SET_ROOT_MINIMUM_TIME_LOCK:
+      return {
+        ...state,
+        rootMinimumTimeLock: action.payload
+      }
+    case actionTypes.SET_ROOT_TIME_LOCKS:
+      return {
+        ...state,
+        rootTimeLocks: action.payload
       }
     default:
       return state

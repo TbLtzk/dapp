@@ -16,7 +16,10 @@ const initialState = {
   validatorMembers: [],
   loadingMembers: true,
   errorMembers: null,
-  isUserValidator: false
+  isUserValidator: false,
+
+  validatorsTimeLocks: null,
+  validatorsMinimumTimeLock: null
 }
 
 export default function index (state = initialState, action) {
@@ -97,6 +100,16 @@ export default function index (state = initialState, action) {
       return {
         ...state,
         isUserValidator: action.result
+      }
+    case actionTypes.SET_VALIDATORS_MINIMUM_TIME_LOCK:
+      return {
+        ...state,
+        validatorsMinimumTimeLock: action.payload
+      }
+    case actionTypes.SET_VALIDATORS_TIME_LOCKS:
+      return {
+        ...state,
+        validatorsTimeLocks: action.payload
       }
     default:
       return {

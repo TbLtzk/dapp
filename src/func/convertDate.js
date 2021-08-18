@@ -3,8 +3,7 @@ import moment from 'moment'
 export const convertToMonthDayYear = (unixTimestamp) => {
   if (unixTimestamp !== '0') {
     const date = new Date(unixTimestamp * 1000)
-    return moment(date)
-      .format('hh:mm, MMMM DD, YYYY')
+    return moment(date).format('hh:mm, MMMM DD, YYYY')
   }
   return unixTimestamp
 }
@@ -43,4 +42,12 @@ export const remainDateTimeSince = (unixTimestamp) => {
   } else {
     return calculateRemainDate(dataDate, currentDate)
   }
+}
+
+export const dateToTimestamp = (value) => {
+  return Math.floor(new Date(value).getTime() / 1000)
+}
+
+export const getNowTimestamp = () => {
+  return Math.floor(new Date().getTime() / 1000)
 }

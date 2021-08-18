@@ -2,10 +2,7 @@ import { contracts } from '../../config/config'
 import VotingService from './VotingService'
 import { constitutionVotingInstance } from '../../contracts'
 
-import {
-  getPastProposalsIds,
-  getStatusTransformation
-} from '../../handler/VotingHandler'
+import { getPastProposalsIds, getStatusTransformation } from '../../handler/VotingHandler'
 import { fromWei } from 'func/balance'
 import { BN } from 'func/useful'
 import { ParameterType } from '@q-dev/q-js-sdk'
@@ -121,26 +118,16 @@ export default class ConstitutionVoting extends VotingService {
       }, [])
     if (paramInputs.length !== 0) {
       try {
-        result = await constitutionVotingInstance.createProposal(
-          link,
-          classification,
-          hash,
-          paramInputs,
-          { from: userAddress }
-        )
+        result = await constitutionVotingInstance.createProposal(link, classification, hash, paramInputs, {
+          from: userAddress
+        })
       } catch (e) {
         console.error(e)
         console.error('Please provide a valid input')
       }
     } else {
       try {
-        result = await constitutionVotingInstance.createProposal(
-          link,
-          classification,
-          hash,
-          [],
-          { from: userAddress }
-        )
+        result = await constitutionVotingInstance.createProposal(link, classification, hash, [], { from: userAddress })
       } catch (e) {
         console.error('Please provide a valid hash')
       }
@@ -149,8 +136,7 @@ export default class ConstitutionVoting extends VotingService {
   }
 
   async getConstitutionHash () {
-    const result = await this.contract.methods.constitutionHash()
-      .call()
+    const result = await this.contract.methods.constitutionHash().call()
     return result
   }
 

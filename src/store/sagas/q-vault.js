@@ -1,12 +1,22 @@
-import { put, select, takeEvery } from 'redux-saga/effects'
+import { put, select, takeEvery, call } from 'redux-saga/effects'
 
 import * as actionTypes from 'store/actions/action-types/q-vault'
 import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler'
 import {
-  setError, setUserBalance, setLockedAssets, getUserBalance,
-  getLockedAssets, getDelegationsListError, getDelegationsListSuccess,
-  getQVBalanceSuccess, getOutstandingDelegationRewardsSuccess, getOutstandingDelegationRewardsError,
-  getOutstandingDelegationRewards, getDelegationsList
+  setError,
+  setUserBalance,
+  setLockedAssets,
+  setMinimumQVaultTimeLock,
+  setQVaultTimeLocks,
+  getUserBalance,
+  getLockedAssets,
+  getDelegationsListError,
+  getDelegationsListSuccess,
+  getQVBalanceSuccess,
+  getOutstandingDelegationRewardsSuccess,
+  getOutstandingDelegationRewardsError,
+  getOutstandingDelegationRewards,
+  getDelegationsList
 } from 'store/actions/action-creaters/q-vault'
 import {
   setTransactionLoading,
@@ -18,6 +28,10 @@ import QVault from 'contracts/src/QVault'
 import { handleLockedAssetsResponse } from 'contracts/handler/QVaultHandler'
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { toWei, fromWei } from 'func/balance'
+import { addIndex } from 'func/useful'
+import { getNowTimestamp } from 'func/convertDate'
+
+import { contractRegistryInstance } from 'contracts/contracts'
 
 let contractInstance = null
 
@@ -88,6 +102,7 @@ function * setDepositGenerator ({ address, amountQ }) {
   } catch (err) {
     console.error('QV.Error', err)
     yield put(setError(err.message))
+    // ErrorHandler.process(err)
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -172,7 +187,7 @@ function * setUnlockAmountGenerator ({ address, amountQ }) {
 
 function * getDelegationList () {
   try {
-    const { userAddress } = yield select(state => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf)
     const contract = getContractInstance()
     const data = yield contract.getDelegations(userAddress)
     yield put(getDelegationsListSuccess(data))
@@ -194,7 +209,7 @@ function * getBalanceDetails () {
 
 function * getOutstandingDelegationRewardsValue () {
   try {
-    const { userAddress } = yield select(state => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf)
     const contract = getContractInstance()
 
     const data = yield contract.getOutstandingDelegationRewards(userAddress)
@@ -208,7 +223,7 @@ function * getOutstandingDelegationRewardsValue () {
 function * onClaimStakeDelegatorReward () {
   try {
     yield put(setTransactionLoading())
-    const { userAddress } = yield select(state => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf)
     const contract = getContractInstance()
 
     yield contract.claimStakeDelegatorReward(userAddress)
@@ -218,6 +233,59 @@ function * onClaimStakeDelegatorReward () {
   } catch (err) {
     console.error('onClaimStakeDelegatorReward.Error', err)
     yield put(setTransactionLoadingError(err.message))
+  }
+}
+
+// sdk
+
+let qVaultInstance = null
+
+const getQVaultInstance = async () => {
+  if (qVaultInstance === null) {
+    qVaultInstance = await contractRegistryInstance.qVault()
+  }
+  return qVaultInstance
+}
+
+function * getMinimumQVaultTimeLockGenerator ({ address }) {
+  try {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    })
+
+    const contract = yield call(getQVaultInstance)
+    const data = yield contract.getMinimumBalance(address, getNowTimestamp()) // date now to mil-sec
+    yield put(setMinimumQVaultTimeLock(fromWei(data)))
+  } catch (err) {
+    console.error('getMinimumQVaultTimeLockGenerator.Error', err)
+    yield put(setError(err.message))
+  } finally {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    })
+  }
+}
+
+function * getQVaultTimeLocksGenerator ({ address }) {
+  try {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    })
+
+    const contract = yield call(getQVaultInstance)
+    const data = yield contract.getTimeLocks(address)
+    yield put(setQVaultTimeLocks(addIndex(data)))
+  } catch (err) {
+    console.error('getQVaultTimeLocksGenerator.Error', err)
+    yield put(setError(err.message))
+  } finally {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    })
   }
 }
 
@@ -233,5 +301,9 @@ export default [
 
   takeEvery(actionTypes.GET_QV_BALANCE, getBalanceDetails),
   takeEvery(actionTypes.ON_CLAIM_STAKE_DELEGATOR_REWARD, onClaimStakeDelegatorReward),
-  takeEvery(actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS, getOutstandingDelegationRewardsValue)
+  takeEvery(actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS, getOutstandingDelegationRewardsValue),
+
+  // sdk
+  takeEvery(actionTypes.GET_QVAULT_MINIMUM_TIME_LOCK, getMinimumQVaultTimeLockGenerator),
+  takeEvery(actionTypes.GET_QVAULT_TIME_LOCKS, getQVaultTimeLocksGenerator)
 ]
