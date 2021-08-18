@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setCreateObj, setStepCounter } from 'store/actions/action-creaters/auctions/modalHandler'
 import {
   onEscrowCastObjection,
-  onEscrowProposeDecision
+  onEscrowProposeDecision,
+  onEscrowProposerRemark
 } from 'store/actions/action-creaters/voting/slashing-proposals'
 import {
   createdStepsLimit,
@@ -73,6 +74,8 @@ function ModalSlashingObjection (props) {
         dispatch(onEscrowCastObjection({ ...formData, ...data }, contract, proposalId))
       } else if (activeTab === 'propose-decision') {
         dispatch(onEscrowProposeDecision({ ...formData, ...data }, contract, proposalId))
+      } else if (activeTab === 'proposer-remark') {
+        dispatch(onEscrowProposerRemark({ ...formData, ...data }, contract, proposalId))
       }
       onHide()
     }

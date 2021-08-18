@@ -6,7 +6,7 @@ import { formObject } from 'store/selectors/auctions/modalHandler'
 import InputGroup from 'components/Custom/ModalActions/InputGroup'
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
 
-import { castObjection, proposeDecision } from './constants'
+import { castObjection, proposeDecision, proposerRemark } from './constants'
 
 function CreateStep1 (props) {
   const { activeTab, register, errors } = props
@@ -24,6 +24,20 @@ function CreateStep1 (props) {
               formData={formData}
               inputArr={castObjection.inputPlaceholderUp}
               inputsObj={castObjection.inputUpObj}
+              register={register}
+              errors={errors}
+            />
+          </>
+        )
+      case 'proposer-remark':
+        return (
+          <>
+            <h2>{proposerRemark.subtitleOne}</h2>
+            <p>{proposerRemark.subtitleTwo}</p>
+            <InputGroup
+              formData={formData}
+              inputArr={proposerRemark.inputPlaceholderUp}
+              inputsObj={proposerRemark.inputUpObj}
               register={register}
               errors={errors}
             />

@@ -17,8 +17,6 @@ function CreateStep2 (props) {
         <h2>Chosen data:</h2>
         <h5>Type:</h5>
         <p>{formData?.first?.replace(/-/g, ' ')}</p>
-        <h5>External link</h5>
-        <p>{formData['external-link']}</p>
         {children}
       </div>
     )
@@ -27,10 +25,24 @@ function CreateStep2 (props) {
   const contentSwitcher = useCallback(() => {
     switch (activeTab) {
       case 'cast-objection':
-        return showCommonData(<></>)
+        return showCommonData(
+        <>
+          <h5>External link</h5>
+          <p>{formData['external-link']}</p>
+        </>
+        )
+      case 'proposer-remark':
+        return showCommonData(
+        <>
+          <h5>Proposer Remark</h5>
+          <p>{formData['proposer-remark']}</p>
+        </>
+        )
       case 'propose-decision' :
         return showCommonData(
           <>
+            <h5>External link</h5>
+            <p>{formData['external-link']}</p>
             <h5>Adjusted percentage for slashing</h5>
             <p>{formData['%-value']}</p>
             <h5>Did the target of the slashing neglect a formal appeal?</h5>

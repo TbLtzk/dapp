@@ -74,4 +74,11 @@ export default class SlashingEscrow {
         { from: userAddress })
     return result
   }
+
+  async setProposerRemark (id, proposerRemark, appealConfirmed, userAddress) {
+    const result = await this.contract.methods.setProposerRemark(id, proposerRemark, appealConfirmed)
+      .send(
+        { from: userAddress })
+    return result
+  }
 }

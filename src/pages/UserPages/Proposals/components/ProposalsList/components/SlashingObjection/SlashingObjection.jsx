@@ -41,6 +41,14 @@ function SlashingObjection (props) {
         value: objData.objection.remark
       },
       {
+        title: 'Proposer Remark',
+        value: String(objData.objection.proposerRemark)
+      },
+      {
+        title: 'Candidate Appeal Confirmation',
+        value: String(objData.objection.appealConfirmed)
+      },
+      {
         title: 'Executed',
         value: String(objData.objection.executed)
       },
@@ -116,6 +124,10 @@ function SlashingObjection (props) {
     onShowModal('propose-decision')
   }
 
+  const onConfirmAppeal = () => {
+    onShowModal('proposer-remark')
+  }
+
   const executeDecision = async () => {
     setIsPending(true)
     const slashingEscrowContract = new SlashingEscrow(
@@ -146,6 +158,9 @@ function SlashingObjection (props) {
           >
             <Dropdown.Item onClick={onCastObjection}>
               <i className={'mdi mdi-cast btn-icon'}/>Cast objection
+            </Dropdown.Item>
+            <Dropdown.Item onClick={onConfirmAppeal}>
+              <i className={'mdi mdi-cast btn-icon'}/>Cofirm Appeal initiated by Slashing Candidate
             </Dropdown.Item>
             <Dropdown.Item onClick={onProposeDecision}>
               <i className={'mdi mdi-arrow-decision btn-icon'}/>Propose decision

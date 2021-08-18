@@ -17,3 +17,10 @@ export const proposeDecision = {
   radioName: 'target-slashing-appeal',
   radioBtn: ['Yes', 'No']
 }
+
+export const proposerRemark = {
+  subtitleOne: 'As the slashing objection proposer please provide a valid reason.',
+  subtitleTwo: 'Please provide a remark about the objection',
+  inputPlaceholderUp: ['Proposer remark'],
+  inputUpObj: { 'proposer-remark': '' }
+}
