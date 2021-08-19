@@ -1,5 +1,6 @@
 import { fromWei } from 'func/balance.js'
 import { contractsToAbi } from '../mapping/contract-to-abi'
+import { errorWrapper } from 'func/useful.js'
 
 const array = [
   {
@@ -36,21 +37,18 @@ export default class QVault {
   }
 
   async getUserBalance (address) {
-    return await this.methods.getUserBalance(address)
-      .call()
+    return await this.methods.getUserBalance(address).call()
   }
 
   async getDelegationsList (address) {
-    return await this.methods.getDelegationsList(address)
-      .call()
+    return await this.methods.getDelegationsList(address).call()
   }
 
   async deposit (address, amountL) {
-    return await this.methods.deposit()
-      .send({
-        from: address,
-        value: amountL
-      })
+    return await this.methods.deposit().send({
+      from: address,
+      value: amountL
+    })
   }
 
   async getTimeLockedAmounts (address) {
@@ -67,49 +65,40 @@ export default class QVault {
   }
 
   async getLockInfo (address) {
-    const res = await this.methods.getLockInfo()
-      .call({ from: address })
+    const res = await this.methods.getLockInfo().call({ from: address })
     return res
   }
 
   async getBalanceDetails () {
-    return await this.methods.getBalanceDetails()
-      .call()
+    return await this.methods.getBalanceDetails().call()
   }
 
   async compoundRateKeeper () {
-    return await this.methods.compoundRateKeeper()
-      .call()
+    return await this.methods.compoundRateKeeper().call()
   }
 
   async updateCompoundRate (address) {
-    return await this.methods.updateCompoundRate()
-      .send({ from: address })
+    return await this.methods.updateCompoundRate().send({ from: address })
   }
 
   async claimStakeDelegatorReward (address) {
-    return await this.methods.claimStakeDelegatorReward()
-      .send({ from: address })
+    return await this.methods.claimStakeDelegatorReward().send({ from: address })
   }
 
   async withdraw (address, amountL) {
-    return await this.methods.withdraw(amountL)
-      .send({ from: address })
+    return await errorWrapper(this.methods.withdraw(amountL).send({ from: address }))
   }
 
   async lock (address, amountL) {
-    return await this.methods.lock(amountL)
-      .send({ from: address })
+    return await errorWrapper(this.methods.lock(amountL).send({ from: address }))
   }
 
   async unlock (address, amountL) {
-    return await this.methods.unlock(amountL)
-      .send({ from: address })
+    return await errorWrapper(this.methods.unlock(amountL).send({ from: address }))
   }
 
   async delegateStake (address, delegateAddresses, stakes) {
-    return await this.methods.delegateStake(delegateAddresses, stakes)
-      .send({ from: address })
+    return await errorWrapper(this.methods.delegateStake(delegateAddresses, stakes).send({ from: address }))
   }
 
   async getDelegations (address) {

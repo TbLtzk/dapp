@@ -18,10 +18,10 @@ import {
   getOutstandingDelegationRewards,
   getDelegationsList
 } from 'store/actions/action-creaters/q-vault'
+
 import {
   setTransactionLoading,
-  setTransactionLoadingError,
-  setTransactionLoadingSuccess
+  setTransactionLoadingError
 } from '../actions/action-creaters/transaction-handler'
 
 import QVault from 'contracts/src/QVault'
@@ -32,6 +32,8 @@ import { addIndex } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
 
 import { contractRegistryInstance } from 'contracts/contracts'
+
+import ErrorHandler from 'func/ErrorHandler'
 
 let contractInstance = null
 
@@ -56,6 +58,7 @@ function * getUserBalanceGenerator ({ address }) {
   } catch (err) {
     console.error('QV.Error', err)
     yield put(setError(err.message))
+    yield put(setTransactionLoadingError(err))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -78,6 +81,7 @@ function * getLockedAssetsGenerator ({ address }) {
   } catch (err) {
     console.error('QV.Error', err)
     yield put(setError(err.message))
+    yield put(setTransactionLoadingError(err))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -102,7 +106,7 @@ function * setDepositGenerator ({ address, amountQ }) {
   } catch (err) {
     console.error('QV.Error', err)
     yield put(setError(err.message))
-    // ErrorHandler.process(err)
+    ErrorHandler.process(err)
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -120,13 +124,13 @@ function * setWithdrawGenerator ({ address, amountQ }) {
 
     const contract = getContractInstance()
     const data = yield contract.withdraw(address, toWei(amountQ))
-
-    if (data.status === true) {
+    if (data) {
       yield put(getUserBalance(address))
     }
-  } catch (err) {
-    console.error('QV.Error', err)
-    yield put(setError(err.message))
+  } catch (error) {
+    yield put(setError(error))
+    yield put(setTransactionLoadingError(error))
+    ErrorHandler.process(error)
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -152,6 +156,7 @@ function * setLockAmountGenerator ({ address, amountQ }) {
   } catch (err) {
     console.error('QV.Error', err)
     yield put(setError(err.message))
+    yield put(setTransactionLoadingError(err))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -177,6 +182,7 @@ function * setUnlockAmountGenerator ({ address, amountQ }) {
   } catch (err) {
     console.error('QV.Error', err)
     yield put(setError(err.message))
+    yield put(setTransactionLoadingError(err))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -229,7 +235,6 @@ function * onClaimStakeDelegatorReward () {
     yield contract.claimStakeDelegatorReward(userAddress)
     yield put(getOutstandingDelegationRewards())
     yield put(getDelegationsList())
-    yield put(setTransactionLoadingSuccess())
   } catch (err) {
     console.error('onClaimStakeDelegatorReward.Error', err)
     yield put(setTransactionLoadingError(err.message))

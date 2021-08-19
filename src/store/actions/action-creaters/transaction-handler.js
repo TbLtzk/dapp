@@ -4,8 +4,9 @@ export const setTransactionLoading = () => ({
   type: actionTypes.SET_TRANSACTION_LOADING
 })
 
-export const setTransactionLoadingSuccess = () => ({
-  type: actionTypes.SET_TRANSACTION_LOADING_SUCCESS
+export const setTransactionLoadingSuccess = (successMessage) => ({
+  type: actionTypes.SET_TRANSACTION_LOADING_SUCCESS,
+  successMessage
 })
 
 export const setTransactionLoadingError = (errorMessage) => ({
