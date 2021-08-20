@@ -44,7 +44,7 @@ function * getRootMembers ({ contract }) {
   }
 }
 
-function * stakeToPanel ({ contract, data }) {
+function * stakeToPanel ({ contract, data, callBack }) {
   try {
     yield put(setTransactionLoading())
     yield contract.stakeToPanel(data)
@@ -52,6 +52,7 @@ function * stakeToPanel ({ contract, data }) {
     yield put(stakeToPanelSuccess('success'))
     yield put(setTransactionLoadingSuccess())
     yield put(getRootMembersData(contract))
+    yield callBack()
   } catch (err) {
     console.error('err', err)
     yield put(stakeToPanelError(err.message))
@@ -59,13 +60,14 @@ function * stakeToPanel ({ contract, data }) {
   }
 }
 
-function * announceWithdrawal ({ contract, amount, paymentInf }) {
+function * announceWithdrawal ({ contract, amount, paymentInf, callBack }) {
   try {
     yield put(setTransactionLoading())
     yield contract.announceWithdrawal(amount, paymentInf)
 
     yield put(announceWithdrawalSuccess('success'))
     yield put(setTransactionLoadingSuccess())
+    yield callBack()
   } catch (err) {
     console.error('err', err)
     yield put(announceWithdrawalError(err.message))
@@ -73,13 +75,14 @@ function * announceWithdrawal ({ contract, amount, paymentInf }) {
   }
 }
 
-function * withdraw ({ contract, amount, payTo, paymentInf }) {
+function * withdraw ({ contract, amount, payTo, paymentInf, callBack }) {
   try {
     yield put(setTransactionLoading())
     yield contract.withdraw(amount, payTo, paymentInf)
 
     yield put(withdrawSuccess('success'))
     yield put(setTransactionLoadingSuccess())
+    yield callBack()
   } catch (err) {
     console.error('err', err)
     yield put(withdrawError(err.message))

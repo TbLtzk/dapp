@@ -12,7 +12,7 @@ import Button from 'components/Base/Buttons/Button'
 import { toWei } from 'func/balance'
 
 function ActionButtons (props) {
-  const { handleSubmit } = props
+  const { handleSubmit, actionAfterSubmit } = props
   const dispatch = useDispatch()
   const rootService = new RootService()
   const userAddress = useSelector(userAddressMetamask)
@@ -22,7 +22,8 @@ function ActionButtons (props) {
       {
         from: userAddress,
         value: toWei(data?.amount)
-      }
+      },
+      actionAfterSubmit
     ))
   }, [])
 
@@ -32,7 +33,9 @@ function ActionButtons (props) {
       userAddress,
       {
         from: userAddress
-      }))
+      },
+      actionAfterSubmit
+    ))
   }, [dispatch])
 
   const onAnnounce = useCallback(async (data) => {
@@ -40,7 +43,9 @@ function ActionButtons (props) {
       toWei(data?.amount),
       {
         from: userAddress
-      }))
+      },
+      actionAfterSubmit
+    ))
   }, [dispatch])
 
   return (
@@ -65,7 +70,8 @@ function ActionButtons (props) {
 }
 
 ActionButtons.propTypes = {
-  handleSubmit: PropTypes.func
+  handleSubmit: PropTypes.func,
+  actionAfterSubmit: PropTypes.func
 }
 
 export default ActionButtons

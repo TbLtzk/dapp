@@ -36,12 +36,15 @@ function FormStaking () {
   const lastUpdateRoot = useSelector(lastActionRoot)
   const rootNodeLockedAmount = useSelector(rootMinimumTimeLock)
 
-  useEffect(() => {
+  function getInfo () {
     if (userAddress) {
       dispatch(getRootNodeStakes(rootService, userAddress))
       dispatch(getWithdrawals(userAddress))
       dispatch(getMinimumRootTimeLock(userAddress))
     }
+  }
+  useEffect(() => {
+    getInfo()
   }, [userAddress, isUserRoot, dispatch, lastUpdateRoot])
 
   useEffect(() => {
@@ -118,7 +121,7 @@ function FormStaking () {
                 valid={errors?.amount?.message}
                 onChange={() => {}}
             />
-            <ActionButtons handleSubmit={handleBtn} />
+            <ActionButtons handleSubmit={handleBtn} actionAfterSubmit={getInfo} />
         </CustomBlock>
   )
 }
