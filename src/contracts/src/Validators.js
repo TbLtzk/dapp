@@ -2,14 +2,14 @@ import { contracts } from '../config/config'
 import { errorWrapper } from 'func/useful.js'
 
 import ValidationRewardPools from './ValidationRewardPools'
-import QVault from './QVault'
+// import QVault from './QVault'
 
 import {
   transformToPercentage
 } from '../handler/VotingHandler'
 import { fromWei } from 'func/balance'
 import { uintPerSecondToPerYearNumber } from '../../func/useful'
-import { contractsToAddresses } from '../mapping/contract-to-address'
+// import { contractsToAddresses } from '../mapping/contract-to-address'
 import { validatorsInstance, validationRewardPoolsInstance } from 'contracts/contracts'
 
 const contractName = 'Validators'
@@ -33,7 +33,7 @@ export default class Validators {
   constructor () {
     this.methods = contracts[contractName].methods
     this.ValidationRewardPoolsContract = new ValidationRewardPools()
-    this.QVault = new QVault(contractsToAddresses.QVault)
+    // this.QVault = new QVault(contractsToAddresses.QVault)
   }
 
   async getValidatorsList () {

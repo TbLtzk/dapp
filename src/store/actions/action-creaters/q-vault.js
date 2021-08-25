@@ -5,6 +5,16 @@ export const setError = (data) => ({
   error: data
 })
 
+export const getAccountBalance = (address) => ({
+  type: actionTypes.GET_ACCOUNT_BALANCE,
+  address
+})
+
+export const setAccountBalance = (data) => ({
+  type: actionTypes.SET_ACCOUNT_BALANCE,
+  payload: data
+})
+
 export const getUserBalance = (address) => ({
   type: actionTypes.GET_QV_USER_BALANCE,
   address
@@ -45,6 +55,13 @@ export const setUnlockAmount = (address, amountQ) => ({
   type: actionTypes.SET_QV_UNLOCK_AMOUNT,
   address,
   amountQ
+})
+
+export const setDelegateStake = (address, delegateAddresses, stakes) => ({
+  type: actionTypes.SET_DELEGATE_STAKE,
+  address,
+  delegateAddresses,
+  stakes
 })
 
 export const getDelegationsList = () => ({

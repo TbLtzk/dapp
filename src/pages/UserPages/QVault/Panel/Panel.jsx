@@ -1,43 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/selectors/user-inf'
-import { getUserBalance, getLockedAssets, getQVBalance, getMinimumQVaultTimeLock } from 'store/actions/action-creaters/q-vault'
-import { userBalance, votingWeight, votingLockingEnd, qvBalance, lastClaim, qVaultMinimumTimeLock } from 'store/selectors/q-vault'
-
-import { useAlert } from 'react-alert'
+import { getAccountBalance, getUserBalance, getLockedAssets, getQVBalance, getMinimumQVaultTimeLock } from 'store/actions/action-creaters/q-vault'
+import { accountBalance, userBalance, votingWeight, votingLockingEnd, qvBalance, lastClaim, qVaultMinimumTimeLock } from 'store/selectors/q-vault'
 
 import VoterStatus from 'components/Custom/PageLists/VoterStatus'
 import CustomBlock from 'components/Base/CustomBlock'
 
-import QVaultHandler from '../handler'
 import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
 import { fromSolDateFormattingT1 } from 'func/date'
 
 export default function Panel () {
-  const userAddressL = useSelector(userAddressMetamask)
-  const qVaultLockedAmount = useSelector(qVaultMinimumTimeLock) // get min
+  const userAddress = useSelector(userAddressMetamask)
+  const qVaultLockedAmount = useSelector(qVaultMinimumTimeLock)
   const balanceDetails = useSelector(qvBalance)
   const userQVBalanceL = useSelector(userBalance)
+  const userAccountBalance = useSelector(accountBalance)
   const userVotingWeight = fN(useSelector(votingWeight))
   const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd))
   const updateOnClaim = useSelector(lastClaim)
-  const [accountBalance, setAccountBalance] = useState()
   const [yearlyExpectedEarnings, setYearlyExpectedEarnings] = useState(0)
 
   const dispatch = useDispatch()
-  const address = useSelector(userAddressMetamask)
-  const qvHandler = new QVaultHandler(address, useDispatch(), useAlert())
 
   useEffect(() => {
-    dispatch(getUserBalance(userAddressL))
-    dispatch(getLockedAssets(userAddressL))
-    dispatch(getMinimumQVaultTimeLock(userAddressL))
+    dispatch(getAccountBalance(userAddress))
+    dispatch(getUserBalance(userAddress))
+    dispatch(getLockedAssets(userAddress))
+    dispatch(getMinimumQVaultTimeLock(userAddress))
     dispatch(getQVBalance())
   }, [dispatch, updateOnClaim])
-
-  useEffect(() => {
-    qvHandler.setAccountBalance(setAccountBalance)
-  })
 
   useEffect(() => {
     const interestRate = balanceDetails?.interestRate
@@ -67,7 +59,7 @@ export default function Panel () {
         <h5>Yearly expected reward</h5>
         <p>{fN(yearlyExpectedEarnings) + ' Q'}</p>
         <h5>Q address balance</h5>
-        <p>{fN(accountBalance) + ' Q'}</p>
+        <p>{fN(userAccountBalance) + ' Q'}</p>
 
         <div className={'card__line'} />
 

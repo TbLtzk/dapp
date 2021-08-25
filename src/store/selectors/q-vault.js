@@ -1,3 +1,4 @@
+export const accountBalance = state => state.qVault.accountBalance
 export const userBalance = state => state.qVault.userBalance
 export const votingWeight = state => state.qVault.votingWeight
 export const votingLockingEnd = state => state.qVault.votingLockingEnd

@@ -5,9 +5,11 @@ import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-han
 import {
   setError,
   setUserBalance,
+  setAccountBalance,
   setLockedAssets,
   setMinimumQVaultTimeLock,
   setQVaultTimeLocks,
+  getAccountBalance,
   getUserBalance,
   getLockedAssets,
   getDelegationsListError,
@@ -19,19 +21,17 @@ import {
   getDelegationsList
 } from 'store/actions/action-creaters/q-vault'
 
-import {
-  setTransactionLoading,
-  setTransactionLoadingError
-} from '../actions/action-creaters/transaction-handler'
+import { setTransactionLoading, setTransactionLoadingError } from '../actions/action-creaters/transaction-handler'
 
 import QVault from 'contracts/src/QVault'
-import { handleLockedAssetsResponse } from 'contracts/handler/QVaultHandler'
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { toWei, fromWei } from 'func/balance'
 import { addIndex } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
 
 import { contractRegistryInstance } from 'contracts/contracts'
+
+import { handleLockedAssetsResponse, getOutstandingDelegationRewardsList } from '../helpers/q-vault-helper'
 
 import ErrorHandler from 'func/ErrorHandler'
 
@@ -44,6 +44,39 @@ function getContractInstance () {
   return contractInstance
 }
 
+// SDK
+
+let qVaultInstance = null
+
+const getQVaultInstance = async () => {
+  if (qVaultInstance === null) {
+    qVaultInstance = await contractRegistryInstance.qVault()
+  }
+  return qVaultInstance
+}
+
+function * getAccountBalanceGenerator ({ address }) {
+  try {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    })
+
+    const data = yield window.web3.eth.getBalance(address)
+    yield put(setAccountBalance(fromWei(data)))
+  } catch (err) {
+    console.error('QV.Error', err)
+    yield put(setError(err.message))
+    yield put(setTransactionLoadingError(err))
+  } finally {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    })
+  }
+}
+
+// done
 function * getUserBalanceGenerator ({ address }) {
   try {
     yield put({
@@ -51,9 +84,8 @@ function * getUserBalanceGenerator ({ address }) {
       payload: 1
     })
 
-    const contract = getContractInstance()
+    const contract = yield call(getQVaultInstance)
     const data = yield contract.getUserBalance(address)
-
     yield put(setUserBalance(fromWei(data)))
   } catch (err) {
     console.error('QV.Error', err)
@@ -67,6 +99,7 @@ function * getUserBalanceGenerator ({ address }) {
   }
 }
 
+// done
 function * getLockedAssetsGenerator ({ address }) {
   try {
     yield put({
@@ -74,9 +107,10 @@ function * getLockedAssetsGenerator ({ address }) {
       payload: 1
     })
 
-    const contract = getContractInstance()
+    const contract = yield call(getQVaultInstance)
     let data = yield contract.getLockInfo(address)
     data = handleLockedAssetsResponse(data)
+
     yield put(setLockedAssets(data.votingWeight, data.votingLockingEnd))
   } catch (err) {
     console.error('QV.Error', err)
@@ -90,6 +124,7 @@ function * getLockedAssetsGenerator ({ address }) {
   }
 }
 
+// done
 function * setDepositGenerator ({ address, amountQ }) {
   try {
     yield put({
@@ -97,11 +132,11 @@ function * setDepositGenerator ({ address, amountQ }) {
       payload: 1
     })
 
-    const contract = getContractInstance()
-    const data = yield contract.deposit(address, toWei(amountQ))
-
+    const contract = yield call(getQVaultInstance)
+    const data = yield contract.deposit({ value: toWei(amountQ), from: address })
     if (data.status === true) {
       yield put(getUserBalance(address))
+      yield put(getAccountBalance(address))
     }
   } catch (err) {
     console.error('QV.Error', err)
@@ -114,7 +149,7 @@ function * setDepositGenerator ({ address, amountQ }) {
     })
   }
 }
-
+// done
 function * setWithdrawGenerator ({ address, amountQ }) {
   try {
     yield put({
@@ -122,10 +157,12 @@ function * setWithdrawGenerator ({ address, amountQ }) {
       payload: 1
     })
 
-    const contract = getContractInstance()
-    const data = yield contract.withdraw(address, toWei(amountQ))
+    const contract = yield call(getQVaultInstance)
+    const data = yield contract.withdraw(toWei(amountQ), { from: address })
+
     if (data) {
       yield put(getUserBalance(address))
+      yield put(getAccountBalance(address))
     }
   } catch (error) {
     yield put(setError(error))
@@ -139,6 +176,31 @@ function * setWithdrawGenerator ({ address, amountQ }) {
   }
 }
 
+function * setDelegateStakeGenerator ({ address, delegateAddresses, stakes }) {
+  try {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    })
+
+    const contract = yield call(getQVaultInstance)
+    const data = yield contract.delegateStake(delegateAddresses, stakes, { from: address })
+
+    if (data) {
+      yield put(getOutstandingDelegationRewards())
+      yield put(getDelegationsList())
+    }
+  } catch (error) {
+    yield put(setError(error))
+  } finally {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    })
+  }
+}
+
+// done
 function * setLockAmountGenerator ({ address, amountQ }) {
   try {
     yield put({
@@ -146,8 +208,8 @@ function * setLockAmountGenerator ({ address, amountQ }) {
       payload: 1
     })
 
-    const contract = getContractInstance()
-    const data = yield contract.lock(address, toWei(amountQ))
+    const contract = yield call(getQVaultInstance)
+    const data = yield contract.lock(toWei(amountQ), { from: address })
 
     if (data.status === true) {
       yield put(getUserBalance(address))
@@ -165,6 +227,7 @@ function * setLockAmountGenerator ({ address, amountQ }) {
   }
 }
 
+// done
 function * setUnlockAmountGenerator ({ address, amountQ }) {
   try {
     yield put({
@@ -172,8 +235,8 @@ function * setUnlockAmountGenerator ({ address, amountQ }) {
       payload: 1
     })
 
-    const contract = getContractInstance()
-    const data = yield contract.unlock(address, toWei(amountQ))
+    const contract = yield call(getQVaultInstance)
+    const data = yield contract.unlock(toWei(amountQ), { from: address })
 
     if (data.status === true) {
       yield put(getUserBalance(address))
@@ -191,17 +254,19 @@ function * setUnlockAmountGenerator ({ address, amountQ }) {
   }
 }
 
+// done
 function * getDelegationList () {
   try {
     const { userAddress } = yield select((state) => state.userInf)
-    const contract = getContractInstance()
-    const data = yield contract.getDelegations(userAddress)
+    const contract = yield call(getQVaultInstance)
+    const data = yield contract.getDelegationsList(userAddress)
     yield put(getDelegationsListSuccess(data))
   } catch (err) {
     console.error('getDelegationList.Error', err)
     yield put(getDelegationsListError(err))
   }
 }
+// what balance details?
 
 function * getBalanceDetails () {
   try {
@@ -213,25 +278,27 @@ function * getBalanceDetails () {
   }
 }
 
+// done
 function * getOutstandingDelegationRewardsValue () {
   try {
     const { userAddress } = yield select((state) => state.userInf)
-    const contract = getContractInstance()
 
-    const data = yield contract.getOutstandingDelegationRewards(userAddress)
-    yield put(getOutstandingDelegationRewardsSuccess(data))
+    const contract = yield call(getQVaultInstance)
+    const data = yield contract.getDelegationsList(userAddress)
+    const result = getOutstandingDelegationRewardsList(data)
+
+    yield put(getOutstandingDelegationRewardsSuccess(result))
   } catch (err) {
     console.error('getOutstandingDelegationRewards.Error', err)
     yield put(getOutstandingDelegationRewardsError(err.message))
   }
 }
-
+// function name
 function * onClaimStakeDelegatorReward () {
   try {
     yield put(setTransactionLoading())
     const { userAddress } = yield select((state) => state.userInf)
     const contract = getContractInstance()
-
     yield contract.claimStakeDelegatorReward(userAddress)
     yield put(getOutstandingDelegationRewards())
     yield put(getDelegationsList())
@@ -243,15 +310,6 @@ function * onClaimStakeDelegatorReward () {
 
 // sdk
 
-let qVaultInstance = null
-
-const getQVaultInstance = async () => {
-  if (qVaultInstance === null) {
-    qVaultInstance = await contractRegistryInstance.qVault()
-  }
-  return qVaultInstance
-}
-
 function * getMinimumQVaultTimeLockGenerator ({ address }) {
   try {
     yield put({
@@ -260,7 +318,8 @@ function * getMinimumQVaultTimeLockGenerator ({ address }) {
     })
 
     const contract = yield call(getQVaultInstance)
-    const data = yield contract.getMinimumBalance(address, getNowTimestamp()) // date now to mil-sec
+    const data = yield contract.getMinimumBalance(address, getNowTimestamp())
+
     yield put(setMinimumQVaultTimeLock(fromWei(data)))
   } catch (err) {
     console.error('getMinimumQVaultTimeLockGenerator.Error', err)
@@ -282,6 +341,7 @@ function * getQVaultTimeLocksGenerator ({ address }) {
 
     const contract = yield call(getQVaultInstance)
     const data = yield contract.getTimeLocks(address)
+
     yield put(setQVaultTimeLocks(addIndex(data)))
   } catch (err) {
     console.error('getQVaultTimeLocksGenerator.Error', err)
@@ -295,6 +355,7 @@ function * getQVaultTimeLocksGenerator ({ address }) {
 }
 
 export default [
+  takeEvery(actionTypes.GET_ACCOUNT_BALANCE, getAccountBalanceGenerator),
   takeEvery(actionTypes.GET_QV_USER_BALANCE, getUserBalanceGenerator),
   takeEvery(actionTypes.GET_QV_LOCKED_ASSETS, getLockedAssetsGenerator),
 
@@ -302,8 +363,9 @@ export default [
   takeEvery(actionTypes.SET_QV_WITHDRAW_CALL, setWithdrawGenerator),
   takeEvery(actionTypes.SET_QV_LOCK_AMOUNT, setLockAmountGenerator),
   takeEvery(actionTypes.SET_QV_UNLOCK_AMOUNT, setUnlockAmountGenerator),
-  takeEvery(actionTypes.GET_DELEGATIONS_LIST, getDelegationList),
+  takeEvery(actionTypes.SET_DELEGATE_STAKE, setDelegateStakeGenerator),
 
+  takeEvery(actionTypes.GET_DELEGATIONS_LIST, getDelegationList),
   takeEvery(actionTypes.GET_QV_BALANCE, getBalanceDetails),
   takeEvery(actionTypes.ON_CLAIM_STAKE_DELEGATOR_REWARD, onClaimStakeDelegatorReward),
   takeEvery(actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS, getOutstandingDelegationRewardsValue),

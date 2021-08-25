@@ -5,6 +5,7 @@ const initialState = {
   isLoading: false,
   error: '',
   userBalance: 0,
+  accountBalance: 0,
   votingWeight: 0,
   votingLockingEnd: 0,
   deposit: 0,
@@ -43,6 +44,11 @@ export default function qVault (state = initialState, action) {
         error: ''
       }
       switch (action.type) {
+        case actionTypes.SET_ACCOUNT_BALANCE:
+          return {
+            ...newState,
+            accountBalance: action.payload
+          }
         case actionTypes.SET_QV_USER_BALANCE:
           return {
             ...newState,
