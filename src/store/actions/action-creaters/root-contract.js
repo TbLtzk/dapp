@@ -17,10 +17,11 @@ export const getRootMembersDataError = (result) => ({
 })
 
 /* stakeToPanel */
-export const stakeToPanel = (contract, data) => ({
+export const stakeToPanel = (contract, data, callBack = () => {}) => ({
   type: actionTypes.STAKE_TO_PANEL,
   contract,
-  data
+  data,
+  callBack
 })
 
 export const stakeToPanelSuccess = (result) => ({
@@ -34,11 +35,12 @@ export const stakeToPanelError = (result) => ({
 })
 
 /* announceWithdrawal */
-export const announceWithdrawal = (contract, amount, paymentInf) => ({
+export const announceWithdrawal = (contract, amount, paymentInf, callBack = () => {}) => ({
   type: actionTypes.ANNOUNCE_WITHDRAWAL,
   contract,
   amount,
-  paymentInf
+  paymentInf,
+  callBack
 })
 
 export const announceWithdrawalSuccess = (result) => ({
@@ -52,12 +54,13 @@ export const announceWithdrawalError = (result) => ({
 })
 
 /* WITHDRAW */
-export const withdraw = (contract, amount, payTo, paymentInf) => ({
+export const withdraw = (contract, amount, payTo, paymentInf, callBack = () => {}) => ({
   type: actionTypes.WITHDRAW,
   contract,
   amount,
   payTo,
-  paymentInf
+  paymentInf,
+  callBack
 })
 
 export const withdrawSuccess = (result) => ({
