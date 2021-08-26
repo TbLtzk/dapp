@@ -35,6 +35,17 @@ export const setLockedAssets = (votingWeight, votingLockingEnd) => ({
   votingLockingEnd
 })
 
+// loading compound rate
+export const getUpdateCompoundRate = (address) => ({
+  type: actionTypes.GET_UPDATE_COMPOUND_RATE,
+  address
+})
+
+export const setUpdateCompoundRate = (data) => ({
+  type: actionTypes.SET_UPDATE_COMPOUND_RATE,
+  payload: data
+})
+
 // Action without write to Store
 export const setDepositCall = (address, amountQ) => ({
   type: actionTypes.SET_QV_DEPOSIT_CALL,

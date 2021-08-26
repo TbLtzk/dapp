@@ -1,4 +1,30 @@
 import { fromWei } from 'func/balance'
+import { contractsToAbi } from '../../contracts/mapping/contract-to-abi'
+import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
+
+let contract = null
+
+function getContract () {
+  if (contract === null) {
+    contract = new window.web3.eth.Contract(contractsToAbi.QVault, contractsToAddresses.QVault)
+  }
+  return contract
+}
+
+export async function getBalanceDetails () {
+  const contract = getContract()
+  return await contract.methods.getBalanceDetails().call()
+}
+
+export async function getCompoundRateKeeper () {
+  const contract = getContract()
+  return await contract.methods.compoundRateKeeper().call()
+}
+
+export async function claimStakeDelegatorReward (address) {
+  const contract = getContract()
+  return await contract.methods.claimStakeDelegatorReward().send({ from: address })
+}
 
 export function handleLockedAssetsResponse (data) {
   const resp = {

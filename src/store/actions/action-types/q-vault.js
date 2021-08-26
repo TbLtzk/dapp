@@ -9,6 +9,10 @@ export const SET_QV_USER_BALANCE = 'SET_QV_USER_BALANCE'
 export const GET_QV_LOCKED_ASSETS = 'GET_QV_LOCKED_ASSETS'
 export const SET_QV_LOCKED_ASSETS = 'SET_QV_LOCKED_ASSETS'
 
+// loading compound rate
+export const SET_UPDATE_COMPOUND_RATE = 'SET_UPDATE_COMPOUND_RATE'
+export const GET_UPDATE_COMPOUND_RATE = 'GET_UPDATE_COMPOUND_RATE'
+
 export const SET_QV_ERROR = 'SET_QV_ERROR'
 
 // Action without write to Store

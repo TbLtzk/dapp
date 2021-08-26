@@ -10,6 +10,7 @@ const initialState = {
   votingLockingEnd: 0,
   deposit: 0,
   lastClaim: 0,
+  updateCompoundRate: false,
 
   delegationList: [],
   loadingDelegationList: false,
@@ -44,6 +45,11 @@ export default function qVault (state = initialState, action) {
         error: ''
       }
       switch (action.type) {
+        case actionTypes.SET_UPDATE_COMPOUND_RATE:
+          return {
+            ...newState,
+            updateCompoundRate: action.payload
+          }
         case actionTypes.SET_ACCOUNT_BALANCE:
           return {
             ...newState,
