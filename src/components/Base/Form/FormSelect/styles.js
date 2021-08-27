@@ -80,4 +80,9 @@ export const SelectWrapper = styled(Form.Group)`
       right: 20px
     }
   }
+
+  option {
+    color: #0B2545;
+  }
+
 `
