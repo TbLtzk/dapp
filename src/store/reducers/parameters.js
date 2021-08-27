@@ -10,11 +10,7 @@ const initialState = {
 
   parameterValueByKey: [],
   parameterValueByKeyError: '',
-  arrayParameterKeysByType: {
-    constitution: [],
-    qDefi: [],
-    qFee: []
-  }
+  arrayParameterKeysByType: '{"constitution":[],"qDefi":[],"qFee":[]}'
 }
 
 export default function parameters (state = initialState, action) {
@@ -49,10 +45,9 @@ export default function parameters (state = initialState, action) {
       }
     case actionTypes.GET_PARAMETER_VALUE_BY_KEY_SUCCESS:
       let newParameterValueByKey = []
-      contractKey = getContractTypeKey(result.typeContract)
       typeKey = getTypeKey(result.typeParameter)
       const value = state.parameterValueByKey.find(i => {
-        return i.typeContract === contractKey && i.parameterKey === result.parameterKey && i.typeParameter === result.typeParameter
+        return i.typeContract === result.typeContract && i.parameterKey === result.parameterKey && i.typeParameter === result.typeParameter
       })
       if (value) {
         value.data = result.data
@@ -72,14 +67,14 @@ export default function parameters (state = initialState, action) {
     case actionTypes.GET_PARAMETER_KEYS_BY_TYPE_SUCCESS:
       contractKey = getContractTypeKey(result.typeContract)
       typeKey = getTypeKey(result.typeParameter)
-      const arrayParameterKeysByType = state.arrayParameterKeysByType
+      const arrayParameterKeysByType = JSON.parse(state.arrayParameterKeysByType)
       if (contractKey && typeKey) {
         const newArrayParameterKeysByType = [...arrayParameterKeysByType[contractKey], ...result.data]
         arrayParameterKeysByType[contractKey] = Array.from(new Set(newArrayParameterKeysByType))
       }
       return {
         ...state,
-        arrayParameterKeysByType
+        arrayParameterKeysByType: JSON.stringify(arrayParameterKeysByType)
       }
     default:
       return state

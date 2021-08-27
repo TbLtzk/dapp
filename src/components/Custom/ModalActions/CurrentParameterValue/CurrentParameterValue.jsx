@@ -19,12 +19,13 @@ function CurrentParameterValue (props) {
 
   const parameterByKeyValue = useSelector(parameterValueByKey)
   const parameterKeysByType = useSelector(arrayParameterKeysByType)
-
   useEffect(() => {
     if (typePanel && typeParameter && parameterKey) {
       const contractTypeKey = getContractTypeKey(typePanel)
       if (parameterKeysByType[contractTypeKey].length !== 0) {
-        const foundValue = parameterKeysByType[contractTypeKey].find(value => parameterKey === value)
+        const foundValue = parameterKeysByType[contractTypeKey].find((value, item) => {
+          return parameterKey === value
+        })
         if (foundValue) {
           setCurrentParameterValue('')
           dispatch(getParameterValueByKey(typePanel, typeParameter, parameterKey))
@@ -35,7 +36,7 @@ function CurrentParameterValue (props) {
         setCurrentParameterValue(keyNotFound)
       }
     }
-  }, [parameterKeysByType, typePanel, typeParameter, parameterKey])
+  }, [JSON.stringify(parameterKeysByType), typePanel, typeParameter, parameterKey])
 
   useEffect(() => {
     const contractTypeKey = getContractTypeKey(typePanel)
