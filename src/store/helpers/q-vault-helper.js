@@ -4,11 +4,15 @@ import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 
 let contract = null
 
-function getContract () {
+export function getContract () {
   if (contract === null) {
     contract = new window.web3.eth.Contract(contractsToAbi.QVault, contractsToAddresses.QVault)
   }
   return contract
+}
+export async function updateCompoundRate (address) {
+  const contract = getContract()
+  return await contract.methods.updateCompoundRate().send({ from: address })
 }
 
 export async function getBalanceDetails () {
@@ -16,7 +20,7 @@ export async function getBalanceDetails () {
   return await contract.methods.getBalanceDetails().call()
 }
 
-export async function getCompoundRateKeeper () {
+export async function getQVaultCompoundRateKeeper () {
   const contract = getContract()
   return await contract.methods.compoundRateKeeper().call()
 }

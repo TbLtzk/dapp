@@ -3,7 +3,6 @@ import { put, select, takeEvery, call } from 'redux-saga/effects'
 import * as actionTypes from 'store/actions/action-types/q-vault'
 import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler'
 import {
-  setError,
   setUserBalance,
   setAccountBalance,
   setLockedAssets,
@@ -22,8 +21,6 @@ import {
   getDelegationsList
 } from 'store/actions/action-creaters/q-vault'
 
-import {  setTransactionLoadingError } from '../actions/action-creaters/transaction-handler'
-
 import { toWei, fromWei } from 'func/balance'
 import { addIndex } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
@@ -31,6 +28,7 @@ import { getNowTimestamp } from 'func/convertDate'
 import { contractRegistryInstance } from 'contracts/contracts'
 
 import {
+  updateCompoundRate,
   getBalanceDetails,
   handleLockedAssetsResponse,
   getOutstandingDelegationRewardsList,
@@ -47,19 +45,17 @@ const getQVaultInstance = async () => {
   }
   return qVaultInstance
 }
+
 function * getAccountBalanceGenerator ({ address }) {
   try {
     yield put({
       type: SET_TRANSACTION_COUNTER,
       payload: 1
     })
-
     const data = yield window.web3.eth.getBalance(address)
     yield put(setAccountBalance(fromWei(data)))
-  } catch (err) {
-    console.error('QV.Error', err)
-    yield put(setError(err.message))
-    yield put(setTransactionLoadingError(err))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error, 'account balance')
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -78,10 +74,8 @@ function * getUserBalanceGenerator ({ address }) {
     const contract = yield call(getQVaultInstance)
     const data = yield contract.getUserBalance(address)
     yield put(setUserBalance(fromWei(data)))
-  } catch (err) {
-    console.error('QV.Error', err)
-    yield put(setError(err.message))
-    yield put(setTransactionLoadingError(err))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error, 'user balance')
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -98,14 +92,12 @@ function * getLockedAssetsGenerator ({ address }) {
     })
 
     const contract = yield call(getQVaultInstance)
-    let data = yield contract.getLockInfo(address)
-    data = handleLockedAssetsResponse(data)
+    const data = yield contract.getLockInfo(address)
+    const objectResult = handleLockedAssetsResponse(data)
 
-    yield put(setLockedAssets(data.votingWeight, data.votingLockingEnd))
-  } catch (err) {
-    console.error('QV.Error', err)
-    yield put(setError(err.message))
-    yield put(setTransactionLoadingError(err))
+    yield put(setLockedAssets(objectResult.votingWeight, objectResult.votingLockingEnd))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error, 'locked assets')
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -127,10 +119,8 @@ function * setDepositGenerator ({ address, amountQ }) {
       yield put(getUserBalance(address))
       yield put(getAccountBalance(address))
     }
-  } catch (err) {
-    console.error('QV.Error', err)
-    yield put(setError(err.message))
-    ErrorHandler.process(err)
+  } catch (error) {
+    ErrorHandler.process(error, 'deposit')
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -154,9 +144,7 @@ function * setWithdrawGenerator ({ address, amountQ }) {
       yield put(getAccountBalance(address))
     }
   } catch (error) {
-    yield put(setError(error))
-    yield put(setTransactionLoadingError(error))
-    ErrorHandler.process(error)
+    ErrorHandler.process(error, 'withdraw')
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -180,7 +168,7 @@ function * setDelegateStakeGenerator ({ address, delegateAddresses, stakes }) {
       yield put(getDelegationsList())
     }
   } catch (error) {
-    yield put(setError(error))
+    ErrorHandler.process(error, 'delegate stake')
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -203,10 +191,8 @@ function * setLockAmountGenerator ({ address, amountQ }) {
       yield put(getUserBalance(address))
       yield put(getLockedAssets(address))
     }
-  } catch (err) {
-    console.error('QV.Error', err)
-    yield put(setError(err.message))
-    yield put(setTransactionLoadingError(err))
+  } catch (error) {
+    ErrorHandler.process(error, 'lock amount')
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -229,10 +215,8 @@ function * setUnlockAmountGenerator ({ address, amountQ }) {
       yield put(getUserBalance(address))
       yield put(getLockedAssets(address))
     }
-  } catch (err) {
-    console.error('QV.Error', err)
-    yield put(setError(err.message))
-    yield put(setTransactionLoadingError(err))
+  } catch (error) {
+    ErrorHandler.process(error, 'unlock amount')
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -247,35 +231,9 @@ function * getDelegationListGenerator () {
     const contract = yield call(getQVaultInstance)
     const data = yield contract.getDelegationsList(userAddress)
     yield put(getDelegationsListSuccess(data))
-  } catch (err) {
-    console.error('getDelegationList.Error', err)
-    yield put(getDelegationsListError(err))
-  }
-}
-
-// Internal contract
-function * getBalanceDetailsGenerator () {
-  try {
-    const data = yield call(getBalanceDetails)
-    yield put(getQVBalanceSuccess(data))
-  } catch (err) {
-    console.error('getDelegationList.Error', err)
-  }
-}
-// done but working  50/50
-function * getUpdateCompoundRateGenerator ({ address }) {
-  try {
-    yield put(setUpdateCompoundRate(true))
-    const contract = yield call(getQVaultInstance)
-    const data = yield contract.updateCompoundRate({ from: address })
-    if (data) {
-      yield put(setUpdateCompoundRate('updated'))
-    }
   } catch (error) {
-    yield put(setUpdateCompoundRate(false))
-    yield put(setError(error))
-  } finally {
-    yield put(setUpdateCompoundRate(false))
+    ErrorHandler.processWithoutFeedback(error, 'delegation list')
+    yield put(getDelegationsListError(error.message))
   }
 }
 
@@ -288,31 +246,9 @@ function * getOutstandingDelegationRewardsValueGenerator () {
     const result = getOutstandingDelegationRewardsList(data)
 
     yield put(getOutstandingDelegationRewardsSuccess(result))
-  } catch (err) {
-    console.error('getOutstandingDelegationRewards.Error', err)
-    yield put(getOutstandingDelegationRewardsError(err.message))
-  }
-}
-
-// Internal contract
-function * onClaimStakeDelegatorRewardGenerator () {
-  try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
-    const { userAddress } = yield select((state) => state.userInf)
-    yield call(claimStakeDelegatorReward, userAddress)
-    yield put(getOutstandingDelegationRewards())
-    yield put(getDelegationsList())
-  } catch (err) {
-    console.error('onClaimStakeDelegatorReward.Error', err)
-    yield put(setTransactionLoadingError(err.message))
-  } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+  } catch (error) {
+    yield put(getOutstandingDelegationRewardsError(error))
+    ErrorHandler.processWithoutFeedback(error, 'outstanding delegation rewards value')
   }
 }
 
@@ -327,9 +263,8 @@ function * getMinimumQVaultTimeLockGenerator ({ address }) {
     const data = yield contract.getMinimumBalance(address, getNowTimestamp())
 
     yield put(setMinimumQVaultTimeLock(fromWei(data)))
-  } catch (err) {
-    console.error('getMinimumQVaultTimeLockGenerator.Error', err)
-    yield put(setError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error, 'minimum QVault time lock')
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -349,14 +284,59 @@ function * getQVaultTimeLocksGenerator ({ address }) {
     const data = yield contract.getTimeLocks(address)
 
     yield put(setQVaultTimeLocks(addIndex(data)))
-  } catch (err) {
-    console.error('getQVaultTimeLocksGenerator.Error', err)
-    yield put(setError(err.message))
+  } catch (error) {
+    ErrorHandler.process(error, 'QVault time locks')
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
       payload: -1
     })
+  }
+}
+
+// Internal contract
+function * getUpdateCompoundRateGenerator ({ address }) {
+  try {
+    yield put(setUpdateCompoundRate(true))
+    const data = yield call(updateCompoundRate, address)
+    if (data) {
+      yield put(setUpdateCompoundRate('updated'))
+    }
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error, 'update compound rate')
+  } finally {
+    yield put(setUpdateCompoundRate(false))
+  }
+}
+
+// Internal contract
+function * onClaimStakeDelegatorRewardGenerator () {
+  try {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    })
+    const { userAddress } = yield select((state) => state.userInf)
+    yield call(claimStakeDelegatorReward, userAddress)
+    yield put(getOutstandingDelegationRewards())
+    yield put(getDelegationsList())
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error, 'Claim Stake Delegator Reward')
+  } finally {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    })
+  }
+}
+
+// Internal contract
+function * getBalanceDetailsGenerator () {
+  try {
+    const data = yield call(getBalanceDetails)
+    yield put(getQVBalanceSuccess(data))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error, 'Balance Details')
   }
 }
 

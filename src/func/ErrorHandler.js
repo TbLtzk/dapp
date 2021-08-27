@@ -11,7 +11,7 @@ class ErrorHandler {
   }
 
   static processWithoutFeedback (error, msg) {
-    console.error(error)
+    console.error(error, msg)
   }
 }
 

@@ -78,6 +78,7 @@ export const setDelegateStake = (address, delegateAddresses, stakes) => ({
 export const getDelegationsList = () => ({
   type: actionTypes.GET_DELEGATIONS_LIST
 })
+
 export const getDelegationsListSuccess = (result) => ({
   type: actionTypes.GET_DELEGATIONS_LIST_SUCCESS,
   result

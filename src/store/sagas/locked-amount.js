@@ -25,6 +25,7 @@ import { CONTRACT_TYPES } from 'constants/contracts'
 
 import { contractRegistryInstance } from 'contracts/contracts'
 import { dateToTimestamp } from 'func/convertDate'
+import ErrorHandler from 'func/ErrorHandler'
 
 let qVaultInstance = null
 let rootNodesInstance = null
@@ -36,7 +37,7 @@ async function getContractInstance (typeContract) {
     if (qVaultInstance === null) {
       qVaultInstance = await contractRegistryInstance.qVault()
     }
-    return await qVaultInstance
+    return qVaultInstance
   } else if (typeContract === CONTRACT_TYPES.root) {
     if (rootNodesInstance === null) {
       rootNodesInstance = await contractRegistryInstance.rootNodes()
@@ -90,6 +91,7 @@ function * setPurgeTimeLocksAmount ({ payload }) {
     }
   } catch (err) {
     console.error('PurgeTimeLocks.Error', err)
+    ErrorHandler.process(err, 'deposit locked amount')
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -118,6 +120,7 @@ function * setDepositLockedAmount ({ payload }) {
     }
   } catch (err) {
     console.error('depositLockedAmount.Error', err)
+    ErrorHandler.process(err, 'deposit locked amount')
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,

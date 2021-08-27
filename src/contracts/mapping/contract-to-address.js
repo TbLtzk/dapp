@@ -7,7 +7,7 @@ import {
   CONTRACT_REGISTRY_ADDRESS,
   contractRegistryInstance
 } from '../contracts'
-import { getCompoundRateKeeper } from 'store/helpers/q-vault-helper'
+import { getQVaultCompoundRateKeeper } from 'store/helpers/q-vault-helper'
 
 export const contractsToAddressesBase = {
   ContractRegistry: CONTRACT_REGISTRY_ADDRESS
@@ -54,6 +54,6 @@ export async function initAddresses () {
 
   // QVault
   // const qVaultContract = new QVault(contractsToAddresses.QVault)
-  contractsToAddresses.CompoundRateKeeperQVault = await getCompoundRateKeeper()
+  contractsToAddresses.CompoundRateKeeperQVault = await getQVaultCompoundRateKeeper()
   // console.log(await qVaultContract.compoundRateKeeper())
 }
