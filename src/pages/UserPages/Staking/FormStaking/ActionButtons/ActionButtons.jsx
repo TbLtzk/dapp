@@ -12,7 +12,10 @@ import Button from 'components/Base/Buttons/Button'
 import { toWei } from 'func/balance'
 
 function ActionButtons (props) {
-  const { handleSubmit, actionAfterSubmit } = props
+  const {
+    handleSubmit,
+    actionAfterSubmit
+  } = props
   const dispatch = useDispatch()
   const rootService = new RootService()
   const userAddress = useSelector(userAddressMetamask)
@@ -49,7 +52,7 @@ function ActionButtons (props) {
   }, [dispatch])
 
   return (
-    <div className={'card__actions'}>
+    <>
       <Button
         type="full-width"
         title="Stake to Panel"
@@ -65,7 +68,7 @@ function ActionButtons (props) {
         title="Withdraw from Panel"
         handleButton={handleSubmit(onWithdrawFromPanel)}
       />
-    </div>
+    </>
   )
 }
 

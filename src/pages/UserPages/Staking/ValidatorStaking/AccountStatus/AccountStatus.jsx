@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form'
 import { errorHandler, fN } from 'func/useful'
 import { fromSolDateFormattingT1 } from 'func/date'
 import { useAlert } from 'react-alert'
-import { AccountStatusForm, AccountStatusInfo } from './styles'
+import { AccountStatusForm, AccountStatusInfo } from '../../styles'
 import {
   getAccTotalStake,
   getDelegatedStake,
