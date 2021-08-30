@@ -20,10 +20,15 @@ import FormInput from 'components/Base/Form/FormInput'
 import ActionButtons from 'pages/UserPages/Staking/FormStaking/ActionButtons'
 import RootService from 'contracts/src/Root'
 
-import { fromSolDateFormattingT1 } from '../../../../func/date'
+import { fromSolDateFormattingT1 } from 'func/date'
+import { AccountStatusInfo, AccountStatusForm } from '../styles'
 
 function FormStaking () {
-  const { register, errors, handleSubmit } = useForm()
+  const {
+    register,
+    errors,
+    handleSubmit
+  } = useForm()
   const dispatch = useDispatch()
   const rootService = new RootService()
   const [userBalance, setUserBalance] = useState(null)
@@ -43,6 +48,7 @@ function FormStaking () {
       dispatch(getMinimumRootTimeLock(userAddress))
     }
   }
+
   useEffect(() => {
     getInfo()
   }, [userAddress, isUserRoot, dispatch, lastUpdateRoot])
@@ -62,67 +68,84 @@ function FormStaking () {
   }, [handleSubmit])
 
   return (
-        <CustomBlock>
-            <h1>Account Status</h1>
-            <h5>Status</h5>
-            {loadingCheckingRoot
-              ? null
-              : isUserRoot
-                ? (
+    <CustomBlock>
+      <h1>Account Status</h1>
+      <AccountStatusInfo>
+        <div>
+          <h5>Status</h5>
+          {loadingCheckingRoot
+            ? null
+            : isUserRoot
+              ? (
                 <p>Member of Root Node Panel</p>
-                  )
-                : (
+                )
+              : (
                 <p>Not a Member of Root Node Panel</p>
-                  )}
-            <h5>Stake in Root Node Panel (Q)</h5>
-            <p>{amountNodeStake + 'Q'}</p>
-            {Number(rootNodeLockedAmount) > 0
-              ? (
-                <>
-                    <h5>Time locked amount</h5>
-                    <p>{fN(rootNodeLockedAmount) + ' Q'}</p>
-                </>
-                )
-              : null}
-            <h5>Q Address Balance</h5>
-            <p>{userBalance || 0}Q</p>
-            <h5>Announcement withdrawal status</h5>
-            {withdrawalsData?.pending
-              ? (
-                <p>
-                    Announced amount
-                    <br />
-                    End time for announcement
-                </p>
-                )
-              : null}
+                )}
+        </div>
+        <div>
+          <h5>Stake in Root Node Panel (Q)</h5>
+          <p>{amountNodeStake + 'Q'}</p>
+        </div>
+        {Number(rootNodeLockedAmount) > 0
+          ? (
+            <div>
+              <h5>Time locked amount</h5>
+              <p>{fN(rootNodeLockedAmount) + ' Q'}</p>
+            </div>
+            )
+          : null}
+        <div>
+          <h5>Q Address Balance</h5>
+          <p>{userBalance || 0}Q</p>
+        </div>
+        <div>
+          <h5>Announcement withdrawal status</h5>
+          {withdrawalsData?.pending
+            ? (
+              <p>
+                Announced amount
+                <br/>
+                End time for announcement
+              </p>
+              )
+            : null}
 
-            <p>{withdrawalsData?.pending ? 'pending' : 'not-active'}</p>
-            {withdrawalsData?.pending
-              ? (
-                <>
-                    <p>{withdrawalsData ? fromWei(withdrawalsData?.amount) : 0}Q</p>
-                    <p>
-                        {withdrawalsData?.endTime !== '0'
-                          ? fromSolDateFormattingT1(Number(withdrawalsData?.endTime))
-                          : '-'}
-                    </p>
-                </>
-                )
-              : null}
-            <h4>Amount</h4>
-            <FormInput
-                color={true}
-                name="amount"
-                lbl="Q"
-                type="number"
-                placeholder={'0.00'}
-                ref={register({ required: 'Field is required!' })}
-                valid={errors?.amount?.message}
-                onChange={() => {}}
-            />
-            <ActionButtons handleSubmit={handleBtn} actionAfterSubmit={getInfo} />
-        </CustomBlock>
+          <p>{withdrawalsData?.pending ? 'pending' : 'not-active'}</p>
+          {withdrawalsData?.pending
+            ? (
+              <>
+                <p>{withdrawalsData ? fromWei(withdrawalsData?.amount) : 0}Q</p>
+                <p>
+                  {withdrawalsData?.endTime !== '0'
+                    ? fromSolDateFormattingT1(Number(withdrawalsData?.endTime))
+                    : '-'}
+                </p>
+              </>
+              )
+            : null}
+        </div>
+      </AccountStatusInfo>
+      <h4>Amount</h4>
+      <AccountStatusForm>
+        <div className={'account-status__form-input'}>
+          <FormInput
+            color={true}
+            name="amount"
+            lbl="Q"
+            type="number"
+            placeholder={'0.00'}
+            ref={register({ required: 'Field is required!' })}
+            valid={errors?.amount?.message}
+            onChange={() => {
+            }}
+          />
+        </div>
+        <div className="account-status__form-actions">
+          <ActionButtons handleSubmit={handleBtn} actionAfterSubmit={getInfo}/>
+        </div>
+      </AccountStatusForm>
+    </CustomBlock>
   )
 }
 

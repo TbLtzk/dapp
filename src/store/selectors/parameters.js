@@ -6,4 +6,4 @@ export const uintParameter = (state) => state.parameters.uintParameter
 
 export const parameterValueByKey = (state) => state.parameters.parameterValueByKey
 export const parameterValueByKeyError = (state) => state.parameters.parameterValueByKeyError
-export const arrayParameterKeysByType = (state) => state.parameters.arrayParameterKeysByType
+export const arrayParameterKeysByType = (state) => JSON.parse(state.parameters.arrayParameterKeysByType)

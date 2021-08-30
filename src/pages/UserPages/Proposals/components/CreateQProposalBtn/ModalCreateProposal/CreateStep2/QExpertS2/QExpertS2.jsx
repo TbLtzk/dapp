@@ -27,7 +27,7 @@ function QExpertS2 (props) {
   const [typePanel, setTypePanel] = useState('')
 
   const [params, setParams] = useState([{
-    type: '',
+    type: '1',
     key: '',
     value: ''
   }])
@@ -52,7 +52,7 @@ function QExpertS2 (props) {
         setParams([
           ...params,
           {
-            type: '',
+            type: '1',
             key: '',
             value: ''
           }
