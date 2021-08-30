@@ -46,6 +46,22 @@ export function handleLockedAssetsResponse (data) {
   return resp
 }
 
+export function handleDelegationsList (delegationsList) {
+  const resultArr = []
+  if (delegationsList === 0) {
+    return []
+  } else {
+    for (const member of delegationsList) {
+      resultArr.push({
+        validator: member.validator,
+        actualStake: fromWei(member.actualStake),
+        claimableReward: fromWei(member.claimableReward)
+      })
+    }
+    return resultArr
+  }
+}
+
 export function getOutstandingDelegationRewardsList (delegationsList) {
   const sumArr = []
   if (delegationsList.length === 0) {
