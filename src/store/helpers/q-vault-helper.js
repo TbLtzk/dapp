@@ -10,6 +10,7 @@ export function getContract () {
   }
   return contract
 }
+
 export async function updateCompoundRate (address) {
   const contract = getContract()
   return await contract.methods.updateCompoundRate().send({ from: address })
