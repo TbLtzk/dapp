@@ -103,12 +103,10 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
                             type="outline"
                             title="Deposit"
                             width="80px"
-                            margin="0px 0px 20px 0px"
                             handleButton={handleSetDeposit} // handle close window
                         />
                         <Button
                             type="outline"
-                            margin="0px 0px 20px 0px"
                             title="Purge expired time locks"
                             width="200px"
                             handleButton={setPurge}

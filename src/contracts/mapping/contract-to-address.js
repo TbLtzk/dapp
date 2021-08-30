@@ -53,7 +53,5 @@ export async function initAddresses () {
   contractsToAddresses.CompoundRateKeeperSaving = await savingQUSDContract.compoundRateKeeper()
 
   // QVault
-  // const qVaultContract = new QVault(contractsToAddresses.QVault)
   contractsToAddresses.CompoundRateKeeperQVault = await getQVaultCompoundRateKeeper()
-  // console.log(await qVaultContract.compoundRateKeeper())
 }

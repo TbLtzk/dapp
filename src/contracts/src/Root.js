@@ -3,15 +3,6 @@ import { errorWrapper } from 'func/useful.js'
 
 import { fromWei } from 'func/balance'
 
-const array = [
-  {
-    id: 1,
-    amount: '10',
-    startDate: '13.07.21 21:30:33',
-    endDate: '16.07.21 21:30:33'
-  }
-]
-
 export default class RootService {
   constructor () {
     this.contract = contracts.Root
@@ -44,19 +35,6 @@ export default class RootService {
   async getMemberCount () {
     return await this.contract.methods.getCount()
       .call()
-  }
-
-  async getTimeLockedAmounts (address) {
-    return array // `function getTimeLocks(address _account)`
-  }
-
-  async getMinimumLockedAmount (address) {
-    const res = {
-      amount: '33000000000000000000',
-      releaseStart: '1626872970',
-      releaseEnd: '1627000000'
-    }
-    return await res
   }
 
   /**
