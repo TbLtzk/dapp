@@ -20,7 +20,7 @@ const dynamicContracts = {
   GeneralUpdateVoting: getAbi('GeneralUpdateVoting.json'),
   LiquidationAuction: getAbi('LiquidationAuction.json'),
   QHolderRewardPool: getAbi('QHolderRewardPool.json'),
-  QVault: getAbi('QVault.json'), // removed
+  QVault: getAbi('QVault.json'),
   RootNodeRewardProxy: getAbi('RootNodeRewardProxy.json'),
   Root: getAbi('Roots.json'),
   RootsVoting: getAbi('RootsVoting.json'),
