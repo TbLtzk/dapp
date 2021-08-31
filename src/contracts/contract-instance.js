@@ -13,7 +13,7 @@ export const getQVaultInstance = async () => {
 
 let qVaultContract = null
 
-export function getQVaultContract () {
+export const getQVaultContract = async () => {
   if (qVaultContract === null) {
     qVaultContract = new window.web3.eth.Contract(contractsToAbi.QVault, contractsToAddresses.QVault)
   }

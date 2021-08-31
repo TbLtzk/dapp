@@ -2,17 +2,17 @@ import { fromWei } from 'func/balance'
 import { getQVaultContract } from 'contracts/contract-instance'
 
 export async function updateCompoundRate (address) {
-  const contract = getQVaultContract()
+  const contract = await getQVaultContract()
   return await contract.methods.updateCompoundRate().send({ from: address })
 }
 
 export async function getBalanceDetails () {
-  const contract = getQVaultContract()
+  const contract = await getQVaultContract()
   return await contract.methods.getBalanceDetails().call()
 }
 
 export async function getQVaultCompoundRateKeeper () {
-  const contract = getQVaultContract()
+  const contract = await getQVaultContract()
   return await contract.methods.compoundRateKeeper().call()
 }
 
