@@ -40,7 +40,6 @@ function TokenomicsBlock () {
 
   const [timeSinceQHolderRewardUpdate, setTimeSinceQHolderRewardUpdate] = useState('0')
   const [timeSinceUnixTimestamp, setTimeSinceUnixTimestamp] = useState('0')
-  // const [loadingTimeSince, setLoadingTimeSince] = useState(false);
 
   const balanceVRP = useSelector(balanceSelector)
   const handler = new Handler(userAddress)

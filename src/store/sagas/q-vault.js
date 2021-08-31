@@ -25,7 +25,7 @@ import { toWei, fromWei } from 'func/balance'
 import { addIndex } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
 
-import { contractRegistryInstance } from 'contracts/contracts'
+import { getQVaultInstance } from 'contracts/contract-instance'
 
 import {
   updateCompoundRate,
@@ -33,18 +33,9 @@ import {
   handleLockedAssetsResponse,
   getOutstandingDelegationRewardsList,
   claimStakeDelegatorReward
-} from '../helpers/q-vault-helper'
+} from 'contracts/helpers/q-vault-helper'
 
 import ErrorHandler from 'func/ErrorHandler'
-
-let qVaultInstance = null
-
-const getQVaultInstance = async () => {
-  if (qVaultInstance === null) {
-    qVaultInstance = await contractRegistryInstance.qVault()
-  }
-  return qVaultInstance
-}
 
 function * getAccountBalanceGenerator ({ address }) {
   try {
@@ -294,7 +285,6 @@ function * getQVaultTimeLocksGenerator ({ address }) {
   }
 }
 
-// Internal contract
 function * getUpdateCompoundRateGenerator ({ address }) {
   try {
     yield put(setUpdateCompoundRate(true))
@@ -309,7 +299,6 @@ function * getUpdateCompoundRateGenerator ({ address }) {
   }
 }
 
-// Internal contract
 function * onClaimStakeDelegatorRewardGenerator () {
   try {
     yield put({
@@ -330,7 +319,6 @@ function * onClaimStakeDelegatorRewardGenerator () {
   }
 }
 
-// Internal contract
 function * getBalanceDetailsGenerator () {
   try {
     const data = yield call(getBalanceDetails)

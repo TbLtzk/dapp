@@ -1,5 +1,4 @@
 import EPDRParameters from '../src/parameters/EPDR_Parameters'
-// import QVault from '../src/QVault'
 import { BorrowingCoreQUSD } from '../src/BorrowingCore'
 import { SavingQUSD } from '../src/Saving'
 import { contractsToContractsRegistryKey as contToKey } from './contract-to-contractRegistryKey'
@@ -7,7 +6,7 @@ import {
   CONTRACT_REGISTRY_ADDRESS,
   contractRegistryInstance
 } from '../contracts'
-import { getQVaultCompoundRateKeeper } from 'store/helpers/q-vault-helper'
+import { getQVaultCompoundRateKeeper } from 'contracts/helpers/q-vault-helper'
 
 export const contractsToAddressesBase = {
   ContractRegistry: CONTRACT_REGISTRY_ADDRESS

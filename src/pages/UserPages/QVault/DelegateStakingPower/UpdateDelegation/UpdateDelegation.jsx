@@ -20,7 +20,6 @@ export default function UpdateDelegation () {
   const address = useSelector(userAddressMetamask)
   const userQVBalanceL = useSelector(userBalance)
 
-  // const contHandler = new ContractHandler(address, useDispatch(), useAlert());
   const compHandler = new ComponentHandler(useAlert())
 
   const [items, setItems] = useState(1)
@@ -36,7 +35,6 @@ export default function UpdateDelegation () {
   function updateDelegations (applyZeroShare) {
     const data = compHandler.getAddressesAndShares(applyZeroShare, userQVBalanceL)
     if (data.addresses.length !== 0 && data.shares.length !== 0) {
-      // contHandler.delegateStake(data.addresses, data.shares);
       dispatch(setDelegateStake(address, data.addresses, data.shares))
     }
   }
