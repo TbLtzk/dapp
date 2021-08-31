@@ -6,8 +6,7 @@ import {
   lastActionRoot,
   loadingCheckingRootNode,
   rootNodeStake,
-  withdrawals,
-  rootMinimumTimeLock
+  withdrawals
 } from 'store/selectors/root-contract'
 import { userAddressMetamask } from 'store/selectors/user-inf'
 
@@ -39,7 +38,6 @@ function FormStaking () {
   const amountNodeStake = useSelector(rootNodeStake)
   const withdrawalsData = useSelector(withdrawals)
   const lastUpdateRoot = useSelector(lastActionRoot)
-  const rootNodeLockedAmount = useSelector(rootMinimumTimeLock)
 
   function getInfo () {
     if (userAddress) {
@@ -69,7 +67,7 @@ function FormStaking () {
 
   return (
     <CustomBlock>
-      <h1>Account Status</h1>
+      <h1>Manage balance</h1>
       <AccountStatusInfo>
         <div>
           <h5>Status</h5>
@@ -84,17 +82,9 @@ function FormStaking () {
                 )}
         </div>
         <div>
-          <h5>Stake in Root Node Panel (Q)</h5>
+          <h5>Stake in Root Node Panel</h5>
           <p>{amountNodeStake + 'Q'}</p>
         </div>
-        {Number(rootNodeLockedAmount) > 0
-          ? (
-            <div>
-              <h5>Time locked amount</h5>
-              <p>{fN(rootNodeLockedAmount) + ' Q'}</p>
-            </div>
-            )
-          : null}
         <div>
           <h5>Q Address Balance</h5>
           <p>{userBalance || 0}Q</p>

@@ -106,10 +106,11 @@ function MemberTable (props) {
       </>
       return showBodyTable(i, numMember, member.validator, amount, 'validators-widened', children)
     } else if (type === 'root-node') {
+      const numMember = member.rank
       const amount = fN(member.stakeAmount) + 'Q'
       const share = member.share + '%'
       const children = <td>{share}</td>
-      return showBodyTable(i, null, member.address, amount, '', children)
+      return showBodyTable(i, numMember, member.address, amount, '', children)
     } else if (type === 'delegated-validators') {
       const children = <>
         <td>{fN(member.actualStake) + 'Q'}</td>

@@ -117,7 +117,7 @@ export default class RootService {
             }
           })
           return {
-            rootNodeData,
+            rootNodeData: rootNodeData.map((i, index) => { return { ...i, rank: index + 1 } }),
             totalStakes
           }
         }

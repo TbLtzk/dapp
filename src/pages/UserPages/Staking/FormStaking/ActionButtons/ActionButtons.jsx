@@ -60,7 +60,7 @@ function ActionButtons (props) {
       />
       <Button
         type="full-width"
-        title="Announce"
+        title="Announce Withdrawal"
         handleButton={handleSubmit(onAnnounce)}
       />
       <Button
