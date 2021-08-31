@@ -1,4 +1,5 @@
 export const tableHeader = [
+  'Rank',
   'Root Node Address',
   'Staked \n Amount',
   'Share'
