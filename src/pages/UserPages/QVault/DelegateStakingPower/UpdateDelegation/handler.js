@@ -1,35 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler'
-import { getDelegationsList, getOutstandingDelegationRewards } from 'store/actions/action-creaters/q-vault'
-
-import QVault from 'contracts/src/QVault'
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { toWei } from 'func/balance'
-
-export class ContractHandler {
-  constructor (address, dispatch, alert) {
-    this.qvault = new QVault(contractsToAddresses.QVault)
-    this.dispatch = dispatch
-    this.address = address
-    this.alert = alert
-  }
-
-  async delegateStake (delegateAddresses, stakes) {
-    this.dispatch(setTransactionCounter(1))
-
-    this.qvault.delegateStake(this.address, delegateAddresses, stakes)
-      .then(() => {
-        this.dispatch(getOutstandingDelegationRewards())
-        this.dispatch(getDelegationsList())
-      })
-      .catch((e) => {
-        this.alert.error(e.message)
-      })
-      .finally(() => {
-        this.dispatch(setTransactionCounter(-1))
-      })
-  }
-}
 
 export class ComponentHandler {
   constructor (alert) {

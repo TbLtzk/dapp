@@ -19,7 +19,6 @@ function DelegatedValidatorsPanel () {
   const loading = useSelector(loadingDelegationList)
   const errorMessage = useSelector(errorDelegationList)
   const delegations = useSelector(delegationList)
-
   const dispatch = useDispatch()
 
   useEffect(() => {

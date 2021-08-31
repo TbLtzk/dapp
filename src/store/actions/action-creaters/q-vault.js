@@ -5,6 +5,16 @@ export const setError = (data) => ({
   error: data
 })
 
+export const getAccountBalance = (address) => ({
+  type: actionTypes.GET_ACCOUNT_BALANCE,
+  address
+})
+
+export const setAccountBalance = (data) => ({
+  type: actionTypes.SET_ACCOUNT_BALANCE,
+  payload: data
+})
+
 export const getUserBalance = (address) => ({
   type: actionTypes.GET_QV_USER_BALANCE,
   address
@@ -23,6 +33,17 @@ export const setLockedAssets = (votingWeight, votingLockingEnd) => ({
   type: actionTypes.SET_QV_LOCKED_ASSETS,
   votingWeight,
   votingLockingEnd
+})
+
+// loading compound rate
+export const getUpdateCompoundRate = (address) => ({
+  type: actionTypes.GET_UPDATE_COMPOUND_RATE,
+  address
+})
+
+export const setUpdateCompoundRate = (data) => ({
+  type: actionTypes.SET_UPDATE_COMPOUND_RATE,
+  payload: data
 })
 
 // Action without write to Store
@@ -47,9 +68,17 @@ export const setUnlockAmount = (address, amountQ) => ({
   amountQ
 })
 
+export const setDelegateStake = (address, delegateAddresses, stakes) => ({
+  type: actionTypes.SET_DELEGATE_STAKE,
+  address,
+  delegateAddresses,
+  stakes
+})
+
 export const getDelegationsList = () => ({
   type: actionTypes.GET_DELEGATIONS_LIST
 })
+
 export const getDelegationsListSuccess = (result) => ({
   type: actionTypes.GET_DELEGATIONS_LIST_SUCCESS,
   result

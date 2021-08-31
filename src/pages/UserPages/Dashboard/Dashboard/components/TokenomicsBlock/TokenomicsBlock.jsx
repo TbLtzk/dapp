@@ -1,7 +1,10 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { balanceSelector } from 'store/selectors/validation-reward-pools'
 import { userAddressMetamask } from 'store/selectors/user-inf'
+import { updateCompoundRate } from 'store/selectors/q-vault'
+import { getUpdateCompoundRate } from 'store/actions/action-creaters/q-vault'
+
 import Handler from './handler'
 
 import CustomBlock from 'components/Base/CustomBlock'
@@ -18,7 +21,9 @@ const BTN_TYPES = {
 }
 
 function TokenomicsBlock () {
+  const dispatch = useDispatch()
   const userAddress = useSelector(userAddressMetamask)
+  const isUpdateCompoundRate = useSelector(updateCompoundRate)
 
   const [defaultAllocationProxy, setDefaultAllocationProxy] = useState('0')
   const [loadingDefaultAllocation, setLoadingDefaultAllocation] = useState(false)
@@ -35,7 +40,6 @@ function TokenomicsBlock () {
 
   const [timeSinceQHolderRewardUpdate, setTimeSinceQHolderRewardUpdate] = useState('0')
   const [timeSinceUnixTimestamp, setTimeSinceUnixTimestamp] = useState('0')
-  const [loadingTimeSince, setLoadingTimeSince] = useState(false)
 
   const balanceVRP = useSelector(balanceSelector)
   const handler = new Handler(userAddress)
@@ -57,12 +61,9 @@ function TokenomicsBlock () {
     setSystemReserve('...')
     setValidationRewardPools('...')
 
-    handler.getDefaultAllocationProxy(setDefaultAllocationProxy, () => {
-    }, false, null)
-    handler.getRootNodeRewardProxy(setRootNodeRewardProxy, () => {
-    }, false)
-    handler.getValidationRewardProxy(setValidationRewardProxy, () => {
-    }, false)
+    handler.getDefaultAllocationProxy(setDefaultAllocationProxy, () => {}, false, null)
+    handler.getRootNodeRewardProxy(setRootNodeRewardProxy, () => {}, false)
+    handler.getValidationRewardProxy(setValidationRewardProxy, () => {}, false)
 
     handler.getQHolderRewardPool(setQHolderRewardPool)
     handler.getSystemReserve(setSystemReserve)
@@ -80,10 +81,8 @@ function TokenomicsBlock () {
     setQHolderRewardPool('...')
     setSystemReserve('...')
 
-    handler.getValidationRewardProxy(setValidationRewardProxy, () => {
-    }, false)
-    handler.getRootNodeRewardProxy(setRootNodeRewardProxy, () => {
-    }, false)
+    handler.getValidationRewardProxy(setValidationRewardProxy, () => {}, false)
+    handler.getRootNodeRewardProxy(setRootNodeRewardProxy, () => {}, false)
 
     handler.getQHolderRewardPool(setQHolderRewardPool)
     handler.getSystemReserve(setSystemReserve)
@@ -102,8 +101,7 @@ function TokenomicsBlock () {
   const onAllocate = useCallback((type) => {
     switch (type) {
       case BTN_TYPES.defaultAllocation:
-        handler.getDefaultAllocationProxy(setDefaultAllocationProxy, setLoadingDefaultAllocation, true,
-          null)
+        handler.getDefaultAllocationProxy(setDefaultAllocationProxy, setLoadingDefaultAllocation, true, null)
         break
       case BTN_TYPES.validationRewardAllocation:
         handler.getValidationRewardProxy(setValidationRewardProxy, setLoadingRootNodeReward, true)
@@ -112,10 +110,6 @@ function TokenomicsBlock () {
         handler.getRootNodeRewardProxy(setRootNodeRewardProxy, setLoadingValidationReward, true)
         break
     }
-  }, [])
-
-  const onRefresh = useCallback(() => {
-    handler.refreshTimeSinceQHolderRewardUpdate(setTimeSinceQHolderRewardUpdate, setLoadingTimeSince, setTimeSinceUnixTimestamp)
   }, [])
 
   const dataArr = useMemo(() => {
@@ -164,8 +158,26 @@ function TokenomicsBlock () {
         btnType: BTN_TYPES.timeSinceHolder
       }
     ]
-  }, [defaultAllocationProxy, validationRewardPools, validationRewardProxy, systemReserve, balanceVRP,
-    rootNodeRewardProxy, QHolderRewardPool, timeSinceQHolderRewardUpdate])
+  }, [
+    defaultAllocationProxy,
+    validationRewardPools,
+    validationRewardProxy,
+    systemReserve,
+    balanceVRP,
+    rootNodeRewardProxy,
+    QHolderRewardPool,
+    timeSinceQHolderRewardUpdate
+  ])
+
+  const onRefresh = () => {
+    dispatch(getUpdateCompoundRate(userAddress))
+  }
+
+  useEffect(() => {
+    if (isUpdateCompoundRate === 'updated') {
+      handler.getTimeSinceQHolderRewardUpdate(setTimeSinceQHolderRewardUpdate, setTimeSinceUnixTimestamp)
+    }
+  }, [isUpdateCompoundRate])
 
   const getIsLoading = (type) => {
     switch (type) {
@@ -176,40 +188,39 @@ function TokenomicsBlock () {
       case BTN_TYPES.rootNodeAllocation:
         return loadingValidationReward
       case BTN_TYPES.timeSinceHolder:
-        return loadingTimeSince
+        return isUpdateCompoundRate
       default:
         return false
     }
   }
   return (
-    <CustomBlock>
-      <h1>Tokenomics</h1>
-      {
-        dataArr?.map((el) => {
-          return (
-            <CardBlock
-              key={el.title.replace(' ', '-')}
-              btnDisabled={getIsLoading(el.btnType)}
-              title={el.title}
-              firstContent={el.firstContent}
-              btnIcon={getIsLoading(el.btnType) ? null : el.btnIcon}
-              iconFontSize={el.iconFontSize}
-              btnTitle={getIsLoading(el.btnType) ? <LoadingSpinner/> : el.btnTitle}
-              btnHandler={!el.btnTitle && !el.btnIcon
-                ? null
-                : () => {
-                    if (el.btnTitle === 'Allocate') {
-                      onAllocate(el.btnType)
-                    } else if (el.btnTitle === 'Refresh' || el.btnIcon === 'cached') {
-                      onRefresh()
-                    }
-                  }}
-            />
-          )
-        })
-      }
-    </CustomBlock>
-
+        <CustomBlock>
+            <h1>Tokenomics</h1>
+            {dataArr?.map((el) => {
+              return (
+                    <CardBlock
+                        key={el.title.replace(' ', '-')}
+                        btnDisabled={getIsLoading(el.btnType)}
+                        title={el.title}
+                        firstContent={el.firstContent}
+                        btnIcon={getIsLoading(el.btnType) ? null : el.btnIcon}
+                        iconFontSize={el.iconFontSize}
+                        btnTitle={getIsLoading(el.btnType) ? <LoadingSpinner /> : el.btnTitle}
+                        btnHandler={
+                            !el.btnTitle && !el.btnIcon
+                              ? null
+                              : () => {
+                                  if (el.btnTitle === 'Allocate') {
+                                    onAllocate(el.btnType)
+                                  } else if (el.btnTitle === 'Refresh' || el.btnIcon === 'cached') {
+                                    onRefresh()
+                                  }
+                                }
+                        }
+                    />
+              )
+            })}
+        </CustomBlock>
   )
 }
 

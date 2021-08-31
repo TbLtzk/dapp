@@ -2,38 +2,20 @@ import { contracts } from '../config/config'
 import { errorWrapper } from 'func/useful.js'
 
 import ValidationRewardPools from './ValidationRewardPools'
-import QVault from './QVault'
 
 import {
   transformToPercentage
 } from '../handler/VotingHandler'
 import { fromWei } from 'func/balance'
 import { uintPerSecondToPerYearNumber } from '../../func/useful'
-import { contractsToAddresses } from '../mapping/contract-to-address'
 import { validatorsInstance, validationRewardPoolsInstance } from 'contracts/contracts'
 
 const contractName = 'Validators'
-
-const array = [
-  {
-    id: 1,
-    amount: '10',
-    startDate: '13.07.21 21:30:33',
-    endDate: '16.07.21 21:30:33'
-  },
-  {
-    id: 2,
-    amount: '103',
-    startDate: '13.07.21 21:30:33',
-    endDate: '16.07.21 21:30:33'
-  }
-]
 
 export default class Validators {
   constructor () {
     this.methods = contracts[contractName].methods
     this.ValidationRewardPoolsContract = new ValidationRewardPools()
-    this.QVault = new QVault(contractsToAddresses.QVault)
   }
 
   async getValidatorsList () {
@@ -69,19 +51,6 @@ export default class Validators {
   async withdraw (amount, address) {
     return await errorWrapper(this.methods.withdraw(amount, address)
       .send({ from: address }))
-  }
-
-  async getTimeLockedAmounts (address) {
-    return array // `function getTimeLocks(address _account)`
-  }
-
-  async getMinimumLockedAmount (address) {
-    const res = {
-      amount: '91000000000000000000',
-      releaseStart: '1626872970',
-      releaseEnd: '1627000000'
-    }
-    return await res
   }
 
   async getValidator (validator, index) {
