@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import Button from 'components/Base/Buttons/Button'
 import AlertMessage from 'components/Base/AlertMessage'
+import { ButtonCustom } from '../../Base/Buttons/Button/styles'
 
 function ConnectMetaMaskButton (props) {
   const { title } = props
@@ -20,11 +20,13 @@ function ConnectMetaMaskButton (props) {
 
   return (
         <>
-            <Button
+            <ButtonCustom
                 type="white"
                 title={title}
-                handleButton={requestConnect}
-            />
+                onClick={requestConnect}
+            >
+              {title}
+            </ButtonCustom>
             <AlertMessage
                 type="danger"
                 header="Error"
