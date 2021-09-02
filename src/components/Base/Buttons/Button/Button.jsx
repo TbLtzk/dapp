@@ -32,7 +32,6 @@ function Button (props) {
       right={right}
       top={top}
       margin={margin}
-      variant="primary"
       onClick={handleButton}
       title={title}
       iconfontsize={iconFontSize}
