@@ -21,6 +21,9 @@ function InputGroup (props) {
 
   const refType = useCallback((nameField, valueInput) => {
     if (nameField !== 'external-link' && nameField !== 'address') {
+      if (nameField === 'bid' && valueInput.bid.length === 0) {
+        return register({ required: 'Field is required!' })
+      }
       if (nameField === 'bid' && (Object.values(valueInput)[1]?.length > 0)) {
         return
       }

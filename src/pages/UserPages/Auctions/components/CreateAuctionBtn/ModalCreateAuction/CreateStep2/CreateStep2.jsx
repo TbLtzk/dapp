@@ -11,6 +11,7 @@ function CreateStep2 (props) {
     register,
     errors
   } = props
+
   const formData = useSelector(formObject)
   const [surplusLot, setSurplusLot] = useState('0')
   const [reserveLot, setReserveLot] = useState('0')

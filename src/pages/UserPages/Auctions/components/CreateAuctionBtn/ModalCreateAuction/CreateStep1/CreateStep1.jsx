@@ -14,7 +14,8 @@ function CreateStep1 (props) {
   const {
     activeTab,
     register,
-    errors
+    errors,
+    onChangeInput
   } = props
 
   const formData = useSelector(formObject)
@@ -55,6 +56,7 @@ function CreateStep1 (props) {
               inputsObj={liquidation.inputDownObj}
               register={register}
               errors={errors}
+              onChangeInput={onChangeInput}
             />
 
           </>
@@ -72,6 +74,7 @@ function CreateStep1 (props) {
               inputsObj={systemDebt.inputObj}
               register={register}
               errors={errors}
+              onChangeInput={onChangeInput}
             />
           </>
         )
@@ -88,6 +91,7 @@ function CreateStep1 (props) {
               inputsObj={systemSurplus.inputObj}
               register={register}
               errors={errors}
+              onChangeInput={onChangeInput}
             />
           </>
 

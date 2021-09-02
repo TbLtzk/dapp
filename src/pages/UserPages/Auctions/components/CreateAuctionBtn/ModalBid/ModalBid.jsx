@@ -66,7 +66,6 @@ function ModalBid (props) {
         return null
     }
   }, [activeTab, stepCounter, register, errors, stepLimit, dispatch])
-
   const onNext = async (data) => {
     dispatch(setCreateObj({ ...formData, ...data }))
     if (approveBtn) {
