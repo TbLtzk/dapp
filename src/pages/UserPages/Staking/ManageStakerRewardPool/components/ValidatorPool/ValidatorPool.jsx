@@ -3,14 +3,14 @@ import RefreshDelegationUpdate from './components/RefreshDelegationUpdate'
 
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  getAccTotalStake,
+  getAccountableTotalStake,
   getDelegatedStake,
   getOwnStake,
   getTotalStake
 } from 'store/actions/action-creaters/validators'
 import { userAddressMetamask } from 'store/selectors/user-inf'
 import {
-  accTotalStakeSelector,
+  accountableTotalStake,
   delegatedStakeSelector,
   ownStakeSelector,
   totalStakeSelector
@@ -18,19 +18,20 @@ import {
 
 import { fN } from 'func/useful'
 
-export default function ValidatorPool (props) {
+export default function ValidatorPool () {
   const dispatch = useDispatch()
   const address = useSelector(userAddressMetamask)
+
   const totalStake = useSelector(totalStakeSelector)
   const ownStake = useSelector(ownStakeSelector)
   const delegatedStake = useSelector(delegatedStakeSelector)
-  const accTotalStake = useSelector(accTotalStakeSelector)
+  const accTotalStake = useSelector(accountableTotalStake)
 
   useEffect(() => {
     dispatch(getTotalStake(address))
     dispatch(getOwnStake(address))
     dispatch(getDelegatedStake(address))
-    dispatch(getAccTotalStake(address))
+    dispatch(getAccountableTotalStake(address))
   }, [])
 
   const validatorPoolInfArr = useMemo(() => {

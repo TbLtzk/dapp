@@ -13,8 +13,8 @@ export let epdrParametersVoting = {}
 
 export async function initInstances () {
   contractRegistryInstance = new ContractRegistryInstance(window.web3, CONTRACT_REGISTRY_ADDRESS)
-  validatorsInstance = await contractRegistryInstance.validators()
-  validationRewardPoolsInstance = await contractRegistryInstance.validationRewardPools()
+  validatorsInstance = await contractRegistryInstance.validators() // +
+  validationRewardPoolsInstance = await contractRegistryInstance.validationRewardPools()// +
   constitutionVotingInstance = await contractRegistryInstance.constitutionVoting()
   epqfiParametersVoting = await contractRegistryInstance.epqfiParametersVoting()
   epdrParametersVoting = await contractRegistryInstance.epdrParametersVoting()
