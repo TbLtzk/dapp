@@ -1,13 +1,19 @@
 class ErrorHandler {
   static process (error, msg) {
+    const errorInfo = {
+      header: 'Unknown type of error',
+      msg: 'No additional info'
+    }
     if (error.message) {
       const message = error.message.split(':')
-      console.error({ title: message[0], info: message[1] })
+      errorInfo.header = message[0]
+      errorInfo.message = message[1]
     } else if (error.status === false) {
-      console.error({ title: 'Error', info: 'Not enough balance on wallet account' })
-    } else {
-      console.error({ title: 'Unknown type of error', info: 'No additional info' })
+      errorInfo.header = 'Error'
+      errorInfo.message = 'Not enough balance on wallet account'
     }
+    console.error(errorInfo)
+    return errorInfo
   }
 
   static processWithoutFeedback (error, msg) {
