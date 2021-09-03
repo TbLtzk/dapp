@@ -36,9 +36,13 @@ export default class VotingService {
 
   async getVetoesNumber (id) {
     try {
-      const result = await this.contract.methods.getVetosNumber(id)
-        .call()
-      return result
+      if (this.contract.methods.getVetosNumber) {
+        const result = await this.contract.methods.getVetosNumber(id)
+          .call()
+        return result
+      } else {
+        return 0
+      }
     } catch (err) {
       console.error(id, 'error' + err)
       return 0
