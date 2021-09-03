@@ -1,5 +1,5 @@
 import React, { useCallback, useState, Fragment } from 'react'
-
+import { fields } from 'constants/fieldsNaming'
 import FormInput from 'components/Base/Form/FormInput'
 
 function InputGroup (props) {
@@ -20,18 +20,18 @@ function InputGroup (props) {
   })
 
   const refType = useCallback((nameField, valueInput) => {
-    if (nameField !== 'external-link' && nameField !== 'address') {
-      if (nameField === 'bid' && valueInput.bid.length === 0) {
+    if (nameField !== fields.externalLink && nameField !== fields.address) {
+      if (nameField === fields.bid && valueInput.bid.length === 0) {
         return register({ required: 'Field is required!' })
       }
-      if (nameField === 'bid' && (Object.values(valueInput)[1]?.length > 0)) {
+      if (nameField === fields.bid && (Object.values(valueInput)[1]?.length > 0)) {
         return
       }
       return register({ required: 'Field is required!' })
     } else {
       let valueValid = ''
 
-      if (nameField === 'external-link') {
+      if (nameField === fields.externalLink) {
         /* eslint-disable-next-line no-useless-escape */
         valueValid = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
       } else if (nameField === 'address') {
