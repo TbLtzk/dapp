@@ -26,10 +26,10 @@ export function handleLockedAssetsResponse (data) {
     votingWeight: 0,
     votingLockingEnd: 0
   }
-  if (undefined !== data[0]) {
+  if (undefined !== data.lockedAmount) {
     resp.votingWeight = fromWei(data.lockedAmount)
   }
-  if (undefined !== data[1]) {
+  if (undefined !== data.lockedUntil) {
     resp.votingLockingEnd = data.lockedUntil
   }
   return resp

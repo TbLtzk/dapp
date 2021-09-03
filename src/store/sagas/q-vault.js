@@ -85,7 +85,6 @@ function * getLockedAssetsGenerator ({ address }) {
     const contract = yield call(getQVaultInstance)
     const data = yield contract.getLockInfo(address)
     const objectResult = handleLockedAssetsResponse(data)
-
     yield put(setLockedAssets(objectResult.votingWeight, objectResult.votingLockingEnd))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error, 'locked assets')
@@ -176,6 +175,7 @@ function * setLockAmountGenerator ({ address, amountQ }) {
     })
 
     const contract = yield call(getQVaultInstance)
+
     const data = yield contract.lock(toWei(amountQ), { from: address })
 
     if (data.status === true) {
