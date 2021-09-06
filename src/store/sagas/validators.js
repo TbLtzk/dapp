@@ -27,7 +27,7 @@ import { fromWei, toWei } from 'func/balance'
 import { addIndex } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
 
-import { getValidatorsInstance, getContractInstance } from 'contracts/contract-instance'
+import { getValidatorsInstance, getValidatorsContract } from 'contracts/contract-instance'
 import {
   getMembersList,
   getValidatorDelegatedStake,
@@ -148,7 +148,7 @@ function * setValidatorsInterestRateGenerator ({ address, uintPercent }) {
       type: SET_TRANSACTION_COUNTER,
       payload: 1
     })
-    const contract = getContractInstance()
+    const contract = yield call(getValidatorsContract)
     const data = yield contract.setInterestRate(address, uintPercent)
     if (data.status === true) {
       yield put(getInterestRate(address))
