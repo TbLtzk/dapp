@@ -1,6 +1,7 @@
 import { put, select, takeEvery, call } from 'redux-saga/effects'
 
 import * as actionTypes from 'store/actions/action-types/q-vault'
+import { setErrorMessage } from 'store/actions/action-creaters/transaction-handler'
 import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler'
 import {
   setUserBalance,
@@ -111,7 +112,8 @@ function * setDepositGenerator ({ address, amountQ }) {
       yield put(getAccountBalance(address))
     }
   } catch (error) {
-    ErrorHandler.process(error, 'deposit')
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,

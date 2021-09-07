@@ -111,19 +111,6 @@ function * getRootNodeStakes ({ contract, address }) {
   }
 }
 
-function * getWithdrawals ({ address }) {
-  try {
-    const contract = new RootService()
-    const data = yield contract.withdrawals(address)
-    yield put(getWithdrawalsSuccess(data))
-  } catch (err) {
-    console.error('err', err)
-    yield put(getWithdrawalsError(err.message))
-  }
-}
-
-// sdk
-
 let rootInstance = null
 
 const getRootInstance = async () => {
@@ -131,6 +118,17 @@ const getRootInstance = async () => {
     rootInstance = await contractRegistryInstance.rootNodes()
   }
   return rootInstance
+}
+
+function * getWithdrawals ({ address }) {
+  try {
+    const contract = yield call(getRootInstance)
+    const data = yield contract.getWithdrawalInfo(address)
+    yield put(getWithdrawalsSuccess(data))
+  } catch (err) {
+    console.error('err', err)
+    yield put(getWithdrawalsError(err.message))
+  }
 }
 
 function * getMinimumRootTimeLockGenerator ({ address }) {
