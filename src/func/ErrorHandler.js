@@ -21,13 +21,14 @@
 //   }
 // }
 
+function capitalize (string) {
+  return string.charAt(0).toUpperCase() + string.slice(1)
+}
+
 const checkError = (error) => {
   if (error.message.includes('Internal JSON-RPC error.')) {
     const obj = error.message.match(/[^{]({[^}]*?})/gm, '') || {}
-    if (Object.keys(obj).length === 0) {
-      return {}
-    }
-    return JSON.parse(obj)
+    return Object.keys(obj).length === 0 ? {} : JSON.parse(obj)
   }
   return error
 }
@@ -35,18 +36,28 @@ const checkError = (error) => {
 class ErrorHandler {
   static process (error) {
     const errorObj = checkError(error)
-    const errorInfo = {
+
+    // console.log(errorObj)
+
+    const errorTemplate = {
       header: 'Unknown type of error',
-      message: 'No additional info'
+      details: 'No additional info'
     }
-    if (errorObj.message.includes('Tx')) {
-      errorInfo.header = errorObj.message.split(':')[0]
-      errorInfo.message = errorObj.message.split(':')[1].trim()
+
+    if (errorObj.code === 3) {
+      errorTemplate.header = capitalize(errorObj.message.split(':')[0])
+      errorTemplate.details = capitalize(errorObj.message.split(']-')[1])
+      return errorTemplate
+    } else if (errorObj.stack) {
+      errorTemplate.header = capitalize(errorObj.stack.split(':')[1])
+      errorTemplate.details = capitalize(errorObj.stack.split(':')[2].trim())
+      return errorTemplate
     } else if (!errorObj.status) {
-      errorInfo.header = 'Error'
-      errorInfo.message = 'Not enough balance on wallet account'
+      errorTemplate.header = 'Error'
+      errorTemplate.details = 'Not enough balance on wallet account'
+      return errorTemplate
     }
-    return errorInfo
+    return errorTemplate
   }
 
   static processWithoutFeedback (error, msg) {

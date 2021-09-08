@@ -1,7 +1,7 @@
 import { put, takeEvery, call } from 'redux-saga/effects'
 
 import * as actionTypes from 'store/actions/action-types/root-contract'
-import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler'
+// import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler'
 import {
   getRootMembersDataSuccess,
   getRootMembersDataError,
@@ -31,16 +31,17 @@ import RootService from 'contracts/src/Root'
 import { addIndex } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
 import { fromWei } from 'func/balance'
+import ErrorHandler from 'func/ErrorHandler'
 
-import { contractRegistryInstance } from 'contracts/contracts'
+import { getRootNodesInstance } from 'contracts/contract-instance'
 
 function * getRootMembers ({ contract }) {
   try {
     const data = yield contract.getRootCalc()
     yield put(getRootMembersDataSuccess(data))
-  } catch (err) {
-    console.error('err', err)
-    yield put(getRootMembersDataError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(getRootMembersDataError(error.message))
   }
 }
 
@@ -53,10 +54,10 @@ function * stakeToPanel ({ contract, data, callBack }) {
     yield put(setTransactionLoadingSuccess())
     yield put(getRootMembersData(contract))
     yield callBack()
-  } catch (err) {
-    console.error('err', err)
-    yield put(stakeToPanelError(err.message))
-    yield put(setTransactionLoadingError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(stakeToPanelError(error.message))
+    yield put(setTransactionLoadingError(error.message))
   }
 }
 
@@ -68,10 +69,10 @@ function * announceWithdrawal ({ contract, amount, paymentInf, callBack }) {
     yield put(announceWithdrawalSuccess('success'))
     yield put(setTransactionLoadingSuccess())
     yield callBack()
-  } catch (err) {
-    console.error('err', err)
-    yield put(announceWithdrawalError(err.message))
-    yield put(setTransactionLoadingError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(announceWithdrawalError(error.message))
+    yield put(setTransactionLoadingError(error.message))
   }
 }
 
@@ -83,10 +84,10 @@ function * withdraw ({ contract, amount, payTo, paymentInf, callBack }) {
     yield put(withdrawSuccess('success'))
     yield put(setTransactionLoadingSuccess())
     yield callBack()
-  } catch (err) {
-    console.error('err', err)
-    yield put(withdrawError(err.message))
-    yield put(setTransactionLoadingError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(withdrawError(error.message))
+    yield put(setTransactionLoadingError(error.message))
   }
 }
 
@@ -94,9 +95,9 @@ function * checkIsUserRootNode ({ contract, address }) {
   try {
     const data = yield contract.checkMemberIsRoot(address)
     yield put(checkIsUserRootNodeSuccess(data))
-  } catch (err) {
-    console.error('err', err)
-    yield put(checkIsUserRootNodeError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(checkIsUserRootNodeError(error.message))
   }
 }
 
@@ -105,69 +106,40 @@ function * getRootNodeStakes ({ contract, address }) {
     const contract = new RootService()
     const data = yield contract.getRootNodeStake(address)
     yield put(getRootNodeStakesSuccess(data))
-  } catch (err) {
-    console.error('err', err)
-    yield put(getRootNodeStakesError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(getRootNodeStakesError(error.message))
   }
-}
-
-let rootInstance = null
-
-const getRootInstance = async () => {
-  if (rootInstance === null) {
-    rootInstance = await contractRegistryInstance.rootNodes()
-  }
-  return rootInstance
 }
 
 function * getWithdrawals ({ address }) {
   try {
-    const contract = yield call(getRootInstance)
+    const contract = yield call(getRootNodesInstance)
     const data = yield contract.getWithdrawalInfo(address)
     yield put(getWithdrawalsSuccess(data))
-  } catch (err) {
-    console.error('err', err)
-    yield put(getWithdrawalsError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(getWithdrawalsError(error.message))
   }
 }
 
 function * getMinimumRootTimeLockGenerator ({ address }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
-
-    const contract = yield call(getRootInstance)
-    const data = yield contract.getMinimumBalance(address, getNowTimestamp()) // date now to mil-sec
+    const contract = yield call(getRootNodesInstance)
+    const data = yield contract.getMinimumBalance(address, getNowTimestamp())
     yield put(setMinimumRootTimeLock(fromWei(data)))
-  } catch (err) {
-    console.error('getMinimumRootTimeLockGenerator.Error', err)
-  } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
 function * getRootTimeLocksGenerator ({ address }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
-
-    const contract = yield call(getRootInstance)
+    const contract = yield call(getRootNodesInstance)
     const data = yield contract.getTimeLocks(address)
     yield put(setRootTimeLocks(addIndex(data)))
-  } catch (err) {
-    console.error('getRootTimeLocksGenerator.Error', err)
-  } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
@@ -181,7 +153,6 @@ export default [
   takeEvery(actionTypes.GET_ROOT_NODE_STAKES, getRootNodeStakes),
   takeEvery(actionTypes.GET_WITHDRAWALS, getWithdrawals),
 
-  // sdk
   takeEvery(actionTypes.GET_ROOT_MINIMUM_TIME_LOCK, getMinimumRootTimeLockGenerator),
   takeEvery(actionTypes.GET_ROOT_TIME_LOCKS, getRootTimeLocksGenerator)
 ]

@@ -12,72 +12,38 @@ import {
 import { toWei, fromWei } from 'func/balance'
 import { addIndex } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
-import { contractRegistryInstance } from 'contracts/contracts'
+import { getVestingInstance } from 'contracts/contract-instance'
 
-let vestingInstance = null
-
-const getVestingInstance = async () => {
-  if (vestingInstance === null) {
-    vestingInstance = await contractRegistryInstance.vesting()
-  }
-  return vestingInstance
-}
+import { setErrorMessage } from 'store/actions/action-creaters/transaction-handler'
+import ErrorHandler from 'func/ErrorHandler'
 
 function * getVestingBalanceGenerator ({ address }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
     const contract = yield call(getVestingInstance)
     const data = yield contract.balanceOf(address)
     yield put(setVestingBalance(fromWei(data)))
-  } catch (err) {
-    console.error('QV.Error', err)
-  } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
 function * getMinimumVestingTimeLockGenerator ({ address }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
-
     const contract = yield call(getVestingInstance)
     const data = yield contract.getMinimumBalance(address, getNowTimestamp())
     yield put(setMinimumVestingTimeLock(fromWei(data)))
-  } catch (err) {
-    console.error('QV.Error', err)
-  } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
 function * getVestingTimeLocksGenerator ({ address }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
     const contract = yield call(getVestingInstance)
     const data = yield contract.getTimeLocks(address)
     yield put(setVestingTimeLocks(addIndex(data)))
-  } catch (err) {
-    console.error('QV.Error', err)
-  } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
@@ -87,8 +53,9 @@ function * setVestingDepositGenerator ({ address, amountQ }) {
       type: SET_TRANSACTION_COUNTER,
       payload: 1
     })
-  } catch (err) {
-    console.error('VestingDeposit.Error', err)
+  } catch (error) {
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -110,8 +77,9 @@ function * setVestingWithdrawGenerator ({ amountQ }) {
     if (data.status === true) {
       yield put(setVestingWithdraw(userAddress))
     }
-  } catch (err) {
-    console.error('VestingWithdraw.Error', err)
+  } catch (error) {
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,

@@ -19,3 +19,30 @@ export const getQVaultContract = async () => {
   }
   return qVaultContract
 }
+
+let rootNodesInstance = null
+
+export const getRootNodesInstance = async () => {
+  if (rootNodesInstance === null) {
+    rootNodesInstance = await contractRegistryInstance.rootNodes()
+  }
+  return rootNodesInstance
+}
+
+let validatorsInstance = null
+
+export const getValidatorsInstance = async () => {
+  if (validatorsInstance === null) {
+    validatorsInstance = await contractRegistryInstance.validators()
+  }
+  return validatorsInstance
+}
+
+let vestingInstance = null
+
+export const getVestingInstance = async () => {
+  if (vestingInstance === null) {
+    vestingInstance = await contractRegistryInstance.vesting()
+  }
+  return vestingInstance
+}
