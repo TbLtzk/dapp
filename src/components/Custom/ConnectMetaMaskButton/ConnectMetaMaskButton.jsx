@@ -9,14 +9,21 @@ function ConnectMetaMaskButton (props) {
   const [alertShow, setAlertShow] = useState(false)
   const ethereum = window.ethereum
 
-  const requestConnect = () => {
-    setAlertShow(false)
-    if (ethereum) {
-      ethereum.request({ method: 'eth_requestAccounts' })
-    } else {
-      setAlertShow(true)
-    }
-  }
+  const requestConnect = async () => {
+          try {
+            await ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [{ chainId: '0x8A72', chainName: 'Q Dev net', rpcUrls: ['https://35.161.73.158:8545'], nativeCurrency: {
+                name: 'Q',
+                symbol: 'Q',
+                decimals: 18,
+              }}],
+            })
+            console.log('inside try/succesful add');
+          } catch (addError) {
+            console.log('couldnt add chain')
+          }
+        }
 
   return (
         <>
