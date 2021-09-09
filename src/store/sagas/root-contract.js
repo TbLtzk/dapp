@@ -1,7 +1,6 @@
 import { put, takeEvery, call } from 'redux-saga/effects'
 
 import * as actionTypes from 'store/actions/action-types/root-contract'
-// import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler'
 import {
   getRootMembersDataSuccess,
   getRootMembersDataError,

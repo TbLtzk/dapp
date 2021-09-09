@@ -9,21 +9,18 @@ import BalanceCard from './components/BalanceCard'
 import { fN } from 'func/useful'
 import { getUserBalance, getMinimumQVaultTimeLock, getQVaultTimeLocks } from 'store/actions/action-creaters/q-vault'
 
-// root
 import {
   getRootNodeStakes,
   getMinimumRootTimeLock,
   getRootTimeLocks
 } from 'store/actions/action-creaters/root-contract'
 
-// validators
 import {
   getSelfStake,
   getMinimumValidatorsTimeLock,
   getValidatorsTimeLocks
 } from 'store/actions/action-creaters/validators'
 
-// vesting
 import {
   getVestingBalance,
   getMinimumVestingTimeLock,
@@ -41,38 +38,36 @@ function TimeLocks () {
   const userAddress = useSelector(userAddressMetamask)
 
   const [currentAddress, setCurrentAddress] = useState({ address: userAddress })
-  // qvault
+
   const qVaultStakeBalance = useSelector(userBalance)
   const qVaultTimeLockMinimumBalance = useSelector(qVaultMinimumTimeLock)
   const qVaultTimeLocksArray = useSelector(qVaultTimeLocks)
-  // root
+
   const rootStakeBalance = useSelector(rootNodeStake)
   const rootTimeLockMinimumBalance = useSelector(rootMinimumTimeLock)
   const rootTimeLocksArray = useSelector(rootTimeLocks)
 
-  // validators
   const validatorSelfStake = useSelector(selfStake)
   const validatorsTimeLockMinimumBalance = useSelector(validatorsMinimumTimeLock)
   const validatorsTimeLocksArray = useSelector(validatorsTimeLocks)
-  // vesting
+
   const vestingStakeBalance = useSelector(vestingBalance)
   const vestingTimeLockMinimumBalance = useSelector(vestingMinimumTimeLock)
   const vestingTimeLocksArray = useSelector(vestingTimeLocks)
 
   useEffect(() => {
-    // qvault
     dispatch(getUserBalance(currentAddress.address))
     dispatch(getMinimumQVaultTimeLock(currentAddress.address))
     dispatch(getQVaultTimeLocks(currentAddress.address))
-    // root
+
     dispatch(getRootNodeStakes('', currentAddress.address))
     dispatch(getMinimumRootTimeLock(currentAddress.address))
     dispatch(getRootTimeLocks(currentAddress.address))
-    // validators
+
     dispatch(getSelfStake(currentAddress.address))
     dispatch(getMinimumValidatorsTimeLock(currentAddress.address))
     dispatch(getValidatorsTimeLocks(currentAddress.address))
-    // vesting
+
     dispatch(getVestingBalance(currentAddress.address))
     dispatch(getMinimumVestingTimeLock(currentAddress.address))
     dispatch(getVestingTimeLocks(currentAddress.address))

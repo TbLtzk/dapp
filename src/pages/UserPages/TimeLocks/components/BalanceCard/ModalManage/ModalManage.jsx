@@ -104,7 +104,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
                             title="Deposit"
                             width="80px"
                             margin="0 0 20px 0"
-                            handleButton={handleSetDeposit} // handle close window
+                            handleButton={handleSetDeposit}
                         />
                         <Button
                             type="outline"

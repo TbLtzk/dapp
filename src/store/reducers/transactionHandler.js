@@ -30,7 +30,7 @@ export default function transactionHandler (state = initialState, action) {
         transactionLoading: false,
         errorMessage: action.errorMessage
       }
-    case actionTypes.SET_ERROR_MESSAGE: // MINE
+    case actionTypes.SET_ERROR_MESSAGE:
       return {
         ...state,
         transactionLoading: false,

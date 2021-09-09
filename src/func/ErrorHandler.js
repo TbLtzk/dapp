@@ -1,26 +1,3 @@
-// class ErrorHandler {
-//   static process (error, msg) {
-//     const errorInfo = {
-//       header: 'Unknown type of error',
-//       msg: 'No additional info'
-//     }
-//     if (error.message) {
-//       const message = error.message.split(':')
-//       errorInfo.header = message[0]
-//       errorInfo.message = message[1]
-//     } else if (error.status === false) {
-//       errorInfo.header = 'Error'
-//       errorInfo.message = 'Not enough balance on wallet account'
-//     }
-//     console.error(errorInfo)
-//     return errorInfo
-//   }
-
-//   static processWithoutFeedback (error, msg) {
-//     console.error(error, msg)
-//   }
-// }
-
 function capitalize (string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
@@ -36,8 +13,6 @@ const checkError = (error) => {
 class ErrorHandler {
   static process (error) {
     const errorObj = checkError(error)
-
-    // console.log(errorObj)
 
     const errorTemplate = {
       header: 'Unknown type of error',
@@ -66,18 +41,3 @@ class ErrorHandler {
 }
 
 export default ErrorHandler
-
-// else if (typeof error === "string") {
-//   console.log('lol')
-// } else if (error.data?.message) {
-//   errorInfo.message = error.data.message.split("]-")[1];
-// } else if (error.message) {
-//   errorInfo.header = error.message;
-// } else if (error.message) {
-//   const message = error.message.split(":");
-//   errorInfo.header = message[0];
-//   errorInfo.message = message[1];
-// } else if (!error.status) {
-//   errorInfo.header = "Error";
-//   errorInfo.message = "Not enough balance on wallet account";
-// }

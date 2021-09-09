@@ -18,5 +18,4 @@ export async function initInstances () {
   constitutionVotingInstance = await contractRegistryInstance.constitutionVoting()
   epqfiParametersVoting = await contractRegistryInstance.epqfiParametersVoting()
   epdrParametersVoting = await contractRegistryInstance.epdrParametersVoting()
-  // console logging of the versions should be removed, when we display the information in the app
 }

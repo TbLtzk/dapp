@@ -229,7 +229,6 @@ export default [
   takeEvery(actionTypes.GET_VALIDATORS_MEMBERS, getValidatorsMembers),
   takeEvery(actionTypes.IS_USER_VALIDATOR, isUserValidator),
 
-  // sdk
   takeEvery(actionTypes.GET_VALIDATORS_MINIMUM_TIME_LOCK, getMinimumValidatorsTimeLockGenerator),
   takeEvery(actionTypes.GET_VALIDATORS_TIME_LOCKS, getValidatorsTimeLocksGenerator)
 ]
