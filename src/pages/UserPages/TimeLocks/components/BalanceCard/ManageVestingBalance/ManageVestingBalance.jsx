@@ -8,12 +8,13 @@ import { useDispatch } from 'react-redux'
 
 import { setVestingWithdraw } from 'store/actions/action-creaters/vesting'
 
-function ManageVestingBalance () {
+function ManageVestingBalance ({ setModalShow }) {
   const dispatch = useDispatch()
 
   const { register, handleSubmit, errors } = useForm()
 
   const setWithdrawVesting = (formData) => {
+    setModalShow(false)
     dispatch(setVestingWithdraw(formData.amountQ))
   }
 

@@ -123,7 +123,6 @@ export const getWithdrawalsError = (result) => ({
   result
 })
 
-// sdk creaters
 export const getMinimumRootTimeLock = (address) => ({
   type: actionTypes.GET_ROOT_MINIMUM_TIME_LOCK,
   address

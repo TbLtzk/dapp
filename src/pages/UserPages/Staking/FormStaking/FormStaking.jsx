@@ -23,11 +23,7 @@ import { fromSolDateFormattingT1 } from 'func/date'
 import { AccountStatusInfo, AccountStatusForm } from '../styles'
 
 function FormStaking () {
-  const {
-    register,
-    errors,
-    handleSubmit
-  } = useForm()
+  const { register, errors, handleSubmit } = useForm()
   const dispatch = useDispatch()
   const rootService = new RootService()
   const [userBalance, setUserBalance] = useState(null)
@@ -66,76 +62,74 @@ function FormStaking () {
   }, [handleSubmit])
 
   return (
-    <CustomBlock>
-      <h1>Manage balance</h1>
-      <AccountStatusInfo>
-        <div>
-          <h5>Status</h5>
-          {loadingCheckingRoot
-            ? null
-            : isUserRoot
-              ? (
-                <p>Member of Root Node Panel</p>
-                )
-              : (
-                <p>Not a Member of Root Node Panel</p>
-                )}
-        </div>
-        <div>
-          <h5>Stake in Root Node Panel</h5>
-          <p>{amountNodeStake + 'Q'}</p>
-        </div>
-        <div>
-          <h5>Q Address Balance</h5>
-          <p>{userBalance || 0}Q</p>
-        </div>
-        <div>
-          <h5>Announcement withdrawal status</h5>
-          {withdrawalsData?.pending
-            ? (
-              <p>
-                Announced amount
-                <br/>
-                End time for announcement
-              </p>
-              )
-            : null}
-
-          <p>{withdrawalsData?.pending ? 'pending' : 'not-active'}</p>
-          {withdrawalsData?.pending
-            ? (
-              <>
-                <p>{withdrawalsData ? fromWei(withdrawalsData?.amount) : 0}Q</p>
-                <p>
-                  {withdrawalsData?.endTime !== '0'
-                    ? fromSolDateFormattingT1(Number(withdrawalsData?.endTime))
-                    : '-'}
-                </p>
-              </>
-              )
-            : null}
-        </div>
-      </AccountStatusInfo>
-      <h4>Amount</h4>
-      <AccountStatusForm>
-        <div className={'account-status__form-input'}>
-          <FormInput
-            color={true}
-            name="amount"
-            lbl="Q"
-            type="number"
-            placeholder={'0.00'}
-            ref={register({ required: 'Field is required!' })}
-            valid={errors?.amount?.message}
-            onChange={() => {
-            }}
-          />
-        </div>
-        <div className="account-status__form-actions">
-          <ActionButtons handleSubmit={handleBtn} actionAfterSubmit={getInfo}/>
-        </div>
-      </AccountStatusForm>
-    </CustomBlock>
+        <CustomBlock>
+            <h1>Manage balance</h1>
+            <AccountStatusInfo>
+                <div>
+                    <h5>Status</h5>
+                    {loadingCheckingRoot
+                      ? null
+                      : isUserRoot
+                        ? (
+                        <p>Member of Root Node Panel</p>
+                          )
+                        : (
+                        <p>Not a Member of Root Node Panel</p>
+                          )}
+                </div>
+                <div>
+                    <h5>Stake in Root Node Panel</h5>
+                    <p>{amountNodeStake + 'Q'}</p>
+                </div>
+                <div>
+                    <h5>Q Address Balance</h5>
+                    <p>{userBalance || 0}Q</p>
+                </div>
+                <div>
+                    <h5>Announcement withdrawal status</h5>
+                    {Number(withdrawalsData?.amount) === 0
+                      ? null
+                      : (
+                        <p>
+                            Announced amount
+                            <br />
+                            End time for announcement
+                        </p>
+                        )}
+                    <p>{Number(withdrawalsData?.amount) === 0 ? 'not-active' : 'pending'}</p>
+                    {Number(withdrawalsData?.amount) === 0
+                      ? null
+                      : (
+                        <>
+                            <p>{withdrawalsData ? fromWei(withdrawalsData?.amount) : 0}Q</p>
+                            <p>
+                                {withdrawalsData === null
+                                  ? null
+                                  : fromSolDateFormattingT1(Number(withdrawalsData?.endTime))}
+                            </p>
+                        </>
+                        )}
+                </div>
+            </AccountStatusInfo>
+            <h4>Amount</h4>
+            <AccountStatusForm>
+                <div className={'account-status__form-input'}>
+                    <FormInput
+                        color={true}
+                        name="amount"
+                        lbl="Q"
+                        type="number"
+                        placeholder={'0.00'}
+                        ref={register({ required: 'Field is required!' })}
+                        valid={errors?.amount?.message}
+                        onChange={() => {}}
+                    />
+                </div>
+                <div className="account-status__form-actions">
+                    <ActionButtons handleSubmit={handleBtn} actionAfterSubmit={getInfo} />
+                </div>
+            </AccountStatusForm>
+        </CustomBlock>
   )
 }
 

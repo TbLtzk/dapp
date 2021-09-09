@@ -15,6 +15,5 @@ export const withdrawTransId = state => state.rootContract.withdrawTransId
 
 export const withdrawals = state => state.rootContract.withdrawals
 
-// sdk
 export const rootMinimumTimeLock = (state) => state.rootContract.rootMinimumTimeLock
 export const rootTimeLocks = (state) => state.rootContract.rootTimeLocks

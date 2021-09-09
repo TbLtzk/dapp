@@ -30,6 +30,12 @@ export default function transactionHandler (state = initialState, action) {
         transactionLoading: false,
         errorMessage: action.errorMessage
       }
+    case actionTypes.SET_ERROR_MESSAGE:
+      return {
+        ...state,
+        transactionLoading: false,
+        errorMessage: action.errorMessage
+      }
     case actionTypes.SET_TRANSACTION_COUNTER:
       newTrCounter = state.transactionCounter + action.payload
       newTrCounter = newTrCounter < 0 ? 0 : newTrCounter
