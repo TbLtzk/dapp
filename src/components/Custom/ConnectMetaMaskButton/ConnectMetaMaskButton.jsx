@@ -11,26 +11,34 @@ function ConnectMetaMaskButton (props) {
 
   const requestConnect = async () => {
     try {
-      const chain = {
-        chainId: '0x8a73',
-        chainName: 'TestNet',
-        rpcUrls: ['https://rpc.qtestnet.org'],
-        nativeCurrency: {
-          name: 'Q ',
-          symbol: 'Q ',
-          decimals: 18
-        }
-      }
-
       await ethereum.request({
-        method: 'wallet_addEthereumChain',
-        params: [chain]
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x8a73' }]
       })
     } catch (error) {
-      console.error(error)
+      if (error.code === 4902) {
+        try {
+          const chain = {
+            chainId: '0x8a73',
+            chainName: 'Q testnet',
+            rpcUrls: ['https://rpc.qtestnet.org'],
+            nativeCurrency: {
+              name: 'Q ',
+              symbol: 'Q ',
+              decimals: 18
+            }
+          }
+
+          await ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [chain]
+          })
+        } catch (error) {
+          console.error(error)
+        }
+      }
     }
   }
-
   return (
         <>
             <ButtonCustom type="white" title={title} onClick={requestConnect}>
