@@ -7,25 +7,42 @@ import { ButtonCustom } from '../../Base/Buttons/Button/styles'
 function ConnectMetaMaskButton (props) {
   const { title } = props
   const [alertShow, setAlertShow] = useState(false)
-  const ethereum = window.ethereum
+  const { ethereum } = window
 
-  const requestConnect = () => {
-    setAlertShow(false)
-    if (ethereum) {
-      ethereum.request({ method: 'eth_requestAccounts' })
-    } else {
-      setAlertShow(true)
+  const requestConnect = async () => {
+    try {
+      await ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x8a73' }]
+      })
+    } catch (error) {
+      if (error.code === 4902) {
+        try {
+          const chain = {
+            chainId: '0x8a73',
+            chainName: 'Q testnet',
+            rpcUrls: ['https://rpc.qtestnet.org'],
+            nativeCurrency: {
+              name: 'Q ',
+              symbol: 'Q ',
+              decimals: 18
+            }
+          }
+
+          await ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [chain]
+          })
+        } catch (error) {
+          console.error(error)
+        }
+      }
     }
   }
-
   return (
         <>
-            <ButtonCustom
-                type="white"
-                title={title}
-                onClick={requestConnect}
-            >
-              {title}
+            <ButtonCustom type="white" title={title} onClick={requestConnect}>
+                {title}
             </ButtonCustom>
             <AlertMessage
                 type="danger"
