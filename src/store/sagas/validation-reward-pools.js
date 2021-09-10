@@ -3,6 +3,8 @@ import { put, takeEvery } from 'redux-saga/effects'
 import * as actionTypes from 'store/actions/action-types/validation-reward-pools'
 
 import { setError, setBalance, getVRPBalanceSuccess } from 'store/actions/action-creaters/validation-reward-pools'
+import ValidationRewardPools from 'contracts/src/ValidationRewardPools'
+import ErrorHandler from 'func/ErrorHandler'
 
 import { getValidationRewardPoolsInstance } from 'contracts/contract-instance'
 
@@ -46,9 +48,10 @@ function * getBalanceGenerator ({ address }) {
     const contract = yield call(getValidationRewardPoolsInstance)
     const data = yield contract.getBalance(address)
     yield put(setBalance(data))
-  } catch (err) {
-    console.error('VRP.Error', err)
-    yield put(setError(err.message))
+    yield put({ type: actionTypes.SET_VRP_DATA_IS_LOADED })
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(setError(error.message))
   }
 }
 
@@ -57,8 +60,8 @@ function * getBalanceDashboard ({ address }) {
     const contract = yield call(getValidationRewardPoolsInstance)
     const data = yield contract.getBalance(address)
     yield put(getVRPBalanceSuccess(data))
-  } catch (err) {
-    console.error('VRP.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 

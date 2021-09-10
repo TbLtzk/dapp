@@ -29,22 +29,18 @@ import {
   slashingLoadingProposals,
   slashingProposalsArr
 } from 'store/selectors/voting/slashing-proposals'
-import { getLockedAssets } from 'store/actions/action-creaters/q-vault'
-import { userAddressMetamask } from 'store/selectors/user-inf'
 
 import { mode } from 'store/selectors/dashboardMode'
 import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
 
 function Governance () {
   const dispatch = useDispatch()
-  const address = useSelector(userAddressMetamask)
   const appMode = useSelector(mode)
 
   useEffect(() => {
     for (const item in PROPOSALS_TYPES) {
       dispatch(getProposalsList(PROPOSALS_TYPES[item]))
       dispatch(getEndedProposals(PROPOSALS_TYPES[item]))
-      dispatch(getLockedAssets(address))
     }
   }, [])
 

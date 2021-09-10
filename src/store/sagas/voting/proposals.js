@@ -4,34 +4,44 @@ import { PROPOSALS_TYPES } from 'constants/statuses'
 
 import * as actionTypes from 'store/actions/action-types/voting/proposals'
 import {
-  setTransactionLoading, setTransactionLoadingError, setTransactionLoadingSuccess
+  setTransactionLoading,
+  setTransactionLoadingError,
+  setTransactionLoadingSuccess
 } from 'store/actions/action-creaters/transaction-handler'
 
-import {
-  getLockedAssets
-} from 'store/actions/action-creaters/q-vault'
+import { getLockedAssets } from 'store/actions/action-creaters/q-vault'
 
 import {
-  createProposalSuccess, voteForProposalSuccess,
-  executeProposalSuccess, executeProposalError,
-  getNumberAllProposalsSuccess, getConstitutionHashSuccess
+  createProposalSuccess,
+  voteForProposalSuccess,
+  executeProposalSuccess,
+  executeProposalError,
+  getNumberAllProposalsSuccess,
+  getConstitutionHashSuccess
 } from 'store/actions/action-creaters/voting/proposals'
+import { getProposalQ, getQEndedProposals, getQProposalsList } from 'store/actions/action-creaters/voting/q-proposals'
 import {
-  getProposalQ, getQEndedProposals, getQProposalsList
-} from 'store/actions/action-creaters/voting/q-proposals'
-import {
-  getProposalRootNode, getRootNodeEndedProposals, getRootNodeProposalsList
+  getProposalRootNode,
+  getRootNodeEndedProposals,
+  getRootNodeProposalsList
 } from 'store/actions/action-creaters/voting/root-node-proposals'
 import {
-  getProposalExpert, getExpertEndedProposals, getExpertProposalsList
+  getProposalExpert,
+  getExpertEndedProposals,
+  getExpertProposalsList
 } from 'store/actions/action-creaters/voting/expert-proposals'
 import {
-  getProposalSlashing, getSlashingEndedProposals, getSlashingProposalsList
+  getProposalSlashing,
+  getSlashingEndedProposals,
+  getSlashingProposalsList
 } from 'store/actions/action-creaters/voting/slashing-proposals'
 
 import {
-  creationQContractObj, creationRootContractObj,
-  creationQContractsObjArray, creationSlashingContractsObjArray, creationExpertContractsObjArray
+  creationQContractObj,
+  creationRootContractObj,
+  creationQContractsObjArray,
+  creationSlashingContractsObjArray,
+  creationExpertContractsObjArray
 } from 'contracts/handler/VotingHandler'
 import { chooseSlashingContractDependsOnType } from 'contracts/handler/SlashingVotingHandler'
 import {
@@ -44,11 +54,12 @@ import EmergencyUpdateVotingService from 'contracts/src/voting/EmergencyUpdateVo
 import GeneralUpdateVotingService from 'contracts/src/voting/GeneralUpdateVoting'
 import RootsVotingService from 'contracts/src/voting/RootsVoting'
 import VotingService from 'contracts/src/voting/VotingService'
+import ErrorHandler from 'func/ErrorHandler'
 
 function * createProposal ({ data }) {
   try {
     yield put(setTransactionLoading())
-    const { userAddress } = yield select(state => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf)
     let result = null
     let idProposal = null
     let contractName = null
@@ -111,16 +122,16 @@ function * createProposal ({ data }) {
     yield call(getProposalDependsOnType, contractName, data, idProposal, true)
     yield put(createProposalSuccess(result))
     yield put(setTransactionLoadingSuccess())
-  } catch (err) {
-    console.error('err', err)
-    yield put(setTransactionLoadingError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(setTransactionLoadingError(error.message))
   }
 }
 
 function * voteForProposal ({ data }) {
   try {
     yield put(setTransactionLoading())
-    const { userAddress } = yield select(state => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf)
 
     let result = null
     if (data) {
@@ -141,16 +152,16 @@ function * voteForProposal ({ data }) {
     yield put(voteForProposalSuccess(result))
     yield put(setTransactionLoadingSuccess())
     yield put(getLockedAssets(userAddress))
-  } catch (err) {
-    console.error('err', err.message)
-    yield put(setTransactionLoadingError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(setTransactionLoadingError(error.message))
   }
 }
 
 function * executeProposal ({ data }) {
   try {
     yield put(setTransactionLoading())
-    const { userAddress } = yield select(state => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf)
     const result = null
     if (data) {
       const contract = new VotingService(data?.contract)
@@ -159,10 +170,10 @@ function * executeProposal ({ data }) {
     yield call(getProposalDependsOnType, data?.contract, data, data?.idProposal, false)
     yield put(executeProposalSuccess(result))
     yield put(setTransactionLoadingSuccess())
-  } catch (err) {
-    console.error('err', err.message)
-    yield put(executeProposalError(err.message))
-    yield put(setTransactionLoadingError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(executeProposalError(error.message))
+    yield put(setTransactionLoadingError(error.message))
   }
 }
 
@@ -192,8 +203,8 @@ function * getProposalDependsOnType (contractName, data, id, activeProposal) {
         yield put(getProposalExpert(contractName, id, activeProposal))
         break
     }
-  } catch (e) {
-    console.error('e', e)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
@@ -217,8 +228,8 @@ function * getProposalsList ({ activeTab }) {
         yield put(getExpertProposalsList())
         break
     }
-  } catch (e) {
-    console.error('e', e)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
@@ -238,15 +249,19 @@ function * getEndedProposals ({ activeTab }) {
         yield put(getSlashingEndedProposals())
         break
     }
-  } catch (err) {
-    console.error('err', err.message)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
 function * getNumberAllProposals () {
   try {
-    const contracts = [...creationQContractsObjArray(), creationRootContractObj(),
-      ...creationExpertContractsObjArray(), ...creationSlashingContractsObjArray()]
+    const contracts = [
+      ...creationQContractsObjArray(),
+      creationRootContractObj(),
+      ...creationExpertContractsObjArray(),
+      ...creationSlashingContractsObjArray()
+    ]
     let result = {
       ended: 0,
       active: 0
@@ -259,8 +274,8 @@ function * getNumberAllProposals () {
       }
     }
     yield put(getNumberAllProposalsSuccess(result))
-  } catch (err) {
-    console.error('err', err.message)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
@@ -270,8 +285,8 @@ function * getConstitutionHash () {
     const data = yield contract.getConstitutionHash()
 
     yield put(getConstitutionHashSuccess(data))
-  } catch (err) {
-    console.error('err', err.message)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 

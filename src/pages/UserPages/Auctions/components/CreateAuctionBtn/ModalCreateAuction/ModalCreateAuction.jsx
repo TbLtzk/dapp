@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -36,6 +36,7 @@ function ModalCreateAuction (props) {
   const formData = useSelector(formObject)
   const stepLimit = useSelector(createdStepsLimit)
   const stepCounter = useSelector(stepCounterModal)
+  const [bid, setBid] = useState('')
 
   const switchContentDependsOnType = useCallback(() => {
     switch (stepCounter) {
@@ -46,6 +47,7 @@ function ModalCreateAuction (props) {
             activeTab={activeTab}
             register={register}
             errors={errors}
+            onChangeInput={(value) => setBid(value)}
           />
         )
       case 2:
@@ -64,7 +66,7 @@ function ModalCreateAuction (props) {
   }, [activeTab, stepCounter, register, errors, stepLimit])
 
   const onNext = (data) => {
-    dispatch(setCreateObj({ ...formData, ...data }))
+    dispatch(setCreateObj({ ...formData, ...data, bid }))
     if (stepCounter < stepLimit) {
       dispatch(setStepCounter(stepCounter + 1))
     } else {

@@ -5,6 +5,7 @@ import {
 } from 'store/actions/action-creaters/system-reserve'
 
 import SystemReserve from 'contracts/src/SystemReserve'
+import ErrorHandler from 'func/ErrorHandler'
 
 function * getAvailableAmount () {
   try {
@@ -12,8 +13,8 @@ function * getAvailableAmount () {
     const data = yield contract.availableAmount()
 
     yield put(getAvailableAmountSuccess(data))
-  } catch (err) {
-    console.error('getAvailableAmount.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
     yield put(getAvailableAmountError(0))
   }
 }

@@ -51,21 +51,6 @@ function InstructionMetamask () {
             </p>
             <p> Congratulations! You have successfully created an account in MetaMask with a new wallet address!
             </p>
-            <h4>How to connect to Q network in MetaMask?</h4>
-            <p>
-                1. In network dropdown menu you need to choose "Custom RPC"
-            </p>
-            <p>
-                2. Enter the custom RPC details:
-            </p>
-            <ul>
-                <li>Network Name: Q Testnet</li>
-                <li>New RPC Url: https://rpc.qtestnet.org</li>
-                <li>ChainID: 35443</li>
-                <li>Symbol: Q</li>
-            </ul>
-            <p>3. Click Save</p>
-            <p>4. Select the custom option from the list.</p>
             <ConnectMetaMaskButton
                 title="Connect to MetaMask"
             />

@@ -35,7 +35,6 @@ export const setLockedAssets = (votingWeight, votingLockingEnd) => ({
   votingLockingEnd
 })
 
-// loading compound rate
 export const getUpdateCompoundRate = (address) => ({
   type: actionTypes.GET_UPDATE_COMPOUND_RATE,
   address
@@ -113,7 +112,6 @@ export const getOutstandingDelegationRewardsError = (result) => ({
   result
 })
 
-// sdk creaters
 export const getMinimumQVaultTimeLock = (address) => ({
   type: actionTypes.GET_QVAULT_MINIMUM_TIME_LOCK,
   address

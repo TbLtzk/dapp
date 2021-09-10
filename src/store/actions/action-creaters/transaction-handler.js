@@ -1,5 +1,10 @@
 import * as actionTypes from '../action-types/transaction-handler'
 
+export const setErrorMessage = (errorMessage) => ({
+  type: actionTypes.SET_ERROR_MESSAGE,
+  errorMessage
+})
+
 export const setTransactionLoading = () => ({
   type: actionTypes.SET_TRANSACTION_LOADING
 })

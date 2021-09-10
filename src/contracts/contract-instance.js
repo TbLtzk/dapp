@@ -5,7 +5,6 @@ import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 let qVaultInstance = null
 let qVaultContract = null
 
-let validatorsInstance = null
 let validatorsContract = null
 
 let validationRewardPoolsInstance = null
@@ -23,6 +22,17 @@ export const getQVaultContract = async () => {
   }
   return qVaultContract
 }
+
+let rootNodesInstance = null
+
+export const getRootNodesInstance = async () => {
+  if (rootNodesInstance === null) {
+    rootNodesInstance = await contractRegistryInstance.rootNodes()
+  }
+  return rootNodesInstance
+}
+
+let validatorsInstance = null
 
 export const getValidatorsInstance = async () => {
   if (validatorsInstance === null) {
@@ -43,4 +53,13 @@ export const getValidationRewardPoolsInstance = async () => {
     validationRewardPoolsInstance = await contractRegistryInstance.validationRewardPools()
   }
   return validationRewardPoolsInstance
+}
+
+let vestingInstance = null
+
+export const getVestingInstance = async () => {
+  if (vestingInstance === null) {
+    vestingInstance = await contractRegistryInstance.vesting()
+  }
+  return vestingInstance
 }

@@ -58,7 +58,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
                     <div className="modal-line" />
                     <h5>Recipient Address</h5>
                     <h4>{address}</h4>
-                    {contract === 'vesting' ? <ManageVestingBalance /> : null}
+                    {contract === 'vesting' ? <ManageVestingBalance setModalShow={setModalShow} /> : null}
                     <CalendarWraper>
                         <Calendar
                             selectsStart={true}
@@ -103,12 +103,14 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
                             type="outline"
                             title="Deposit"
                             width="80px"
-                            handleButton={handleSetDeposit} // handle close window
+                            margin="0 0 20px 0"
+                            handleButton={handleSetDeposit}
                         />
                         <Button
                             type="outline"
                             title="Purge expired time locks"
                             width="200px"
+                            margin="0 0 20px 0"
                             handleButton={setPurge}
                         />
                     </div>

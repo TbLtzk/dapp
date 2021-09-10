@@ -13,6 +13,8 @@ import {
   creationQContractsObjArray
 } from 'contracts/handler/VotingHandler'
 
+import ErrorHandler from 'func/ErrorHandler'
+
 function * getProposalsList () {
   try {
     const contracts = creationQContractsObjArray()
@@ -24,9 +26,9 @@ function * getProposalsList () {
       result = yield contracts?.getProposals()
     }
     yield put(getQProposalsListSuccess(result))
-  } catch (e) {
-    console.error('e', e)
-    yield put(getQProposalsListError(e))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(getQProposalsListError(error))
   }
 }
 
@@ -74,8 +76,8 @@ function * getQProposal ({
         yield put(getOneProposalSuccess(data))
       }
     }
-  } catch (err) {
-    console.error('err', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
     if (pageType === 'ended') {
       yield put(getProposalEndedError(id))
     } else {
@@ -97,9 +99,9 @@ function * getEndedProposals () {
     }
 
     yield put(getQEndedProposalsSuccess(result))
-  } catch (err) {
-    console.error('err', err.message)
-    yield put(getQEndedProposalsError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(getQEndedProposalsError(error.message))
   }
 }
 

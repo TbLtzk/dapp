@@ -16,6 +16,7 @@ import {
 import * as actionTypes from '../actions/action-types/parameters-addresses'
 import { loadKVParameters } from 'func/contractHelpers'
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
+import ErrorHandler from 'func/ErrorHandler'
 
 function * getContractRegistryKV () {
   try {
@@ -28,8 +29,8 @@ function * getContractRegistryKV () {
           value: i.addr
         }
       })))
-  } catch (err) {
-    console.error(err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
     yield put(getContractRegistryKVError('There was an error while loading Contract Registry data'))
   }
 }
@@ -39,8 +40,8 @@ function * getConstitutionParametersKV () {
     const contract = new ConstitutionParameters()
     const data = yield loadKVParameters(contract)
     yield put(getConstitutionParametersKVSuccess(data))
-  } catch (err) {
-    console.error(err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
     yield put(getConstitutionParametersKVError('There was an error while loading Constitution Parameters data'))
   }
 }
@@ -50,8 +51,8 @@ function * getFeesIncentivesExpertPanelParametersKV () {
     const contract = new EPQFIParameters()
     const data = yield loadKVParameters(contract)
     yield put(getFeesIncentivesExpertPanelParametersKVSuccess(data))
-  } catch (err) {
-    console.error(err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
     yield put(getFeesIncentivesExpertPanelParametersKVError(
       'There was an error while loading EPQFI Parameters data'
     ))
@@ -63,8 +64,8 @@ function * getEPDRParametersKV () {
     const contract = new EPDRParameters(contractsToAddresses.EPDRParameters)
     const data = yield loadKVParameters(contract)
     yield put(getEPDRParametersKVSuccess(data))
-  } catch (err) {
-    console.error(err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
     yield put(getEPDRParametersKVError('There was an error while loading EPDR Parameters data'))
   }
 }

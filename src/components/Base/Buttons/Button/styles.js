@@ -18,7 +18,7 @@ export const ButtonCustom = styled(Button)`
   line-height: 18px;
 
   border-color: ${(props) => {
-    if (props.palette === 'dark' && props.variant === 'primary') {
+    if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
           return props.theme.colors.oxfordBlueTint5
@@ -39,7 +39,7 @@ export const ButtonCustom = styled(Button)`
     }
   }};
   background-color: ${(props) => {
-    if (props.palette === 'dark' && props.variant === 'primary') {
+    if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
           return 'transparent'
@@ -60,7 +60,7 @@ export const ButtonCustom = styled(Button)`
     }
   }};
   color: ${(props) => {
-    if (props.palette === 'dark' && props.variant === 'primary') {
+    if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
           return props.theme.colors.oxfordBlueTint5
@@ -84,7 +84,7 @@ export const ButtonCustom = styled(Button)`
 
   &:disabled {
     color: ${(props) => {
-    if (props.palette === 'dark' && props.variant === 'primary') {
+    if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
           return props.theme.colors.oxfordBlue
@@ -105,7 +105,7 @@ export const ButtonCustom = styled(Button)`
     }
   }};
     background-color: ${(props) => {
-    if (props.palette === 'dark' && props.variant === 'primary') {
+    if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
           return props.theme.colors.oxfordBlueTint2
@@ -126,7 +126,7 @@ export const ButtonCustom = styled(Button)`
     }
   }};
     border-color: ${(props) => {
-    if (props.palette === 'dark' && props.variant === 'primary') {
+    if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
           return props.theme.colors.oxfordBlueTint2
@@ -162,7 +162,7 @@ export const ButtonCustom = styled(Button)`
     }
   }};
     background-color: ${(props) => {
-    if (props.palette === 'dark' && props.variant === 'primary') {
+    if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
           return props.theme.colors.oxfordBlueTint5
@@ -183,7 +183,7 @@ export const ButtonCustom = styled(Button)`
     }
   }};
     border-color: ${(props) => {
-    if (props.palette === 'dark' && props.variant === 'primary') {
+    if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
           return props.theme.colors.oxfordBlueTint5
@@ -208,7 +208,7 @@ export const ButtonCustom = styled(Button)`
     &:focus {
       box-shadow: ${(props) => (props.palette === 'light' ? 'none !important' : 'auto')};
       color: ${(props) => {
-      if (props.palette === 'dark' && props.variant === 'primary') {
+      if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
           return props.theme.colors.oxfordBlueTint5
@@ -229,7 +229,7 @@ export const ButtonCustom = styled(Button)`
       }
     }};
     background-color: ${(props) => {
-    if (props.palette === 'dark' && props.variant === 'primary') {
+    if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
           return 'transparent'
@@ -251,7 +251,7 @@ export const ButtonCustom = styled(Button)`
   }
   };
     border-color: ${(props) => {
-    if (props.palette === 'dark' && props.variant === 'primary') {
+    if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
           return props.theme.colors.oxfordBlueTint5
@@ -276,7 +276,7 @@ export const ButtonCustom = styled(Button)`
   &:active {
     box-shadow: none !important;
     color: ${(props) => {
-    if (props.palette === 'dark' && props.variant === 'primary') {
+    if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
           return props.theme.colors.oxfordBlueTint5
@@ -297,7 +297,7 @@ export const ButtonCustom = styled(Button)`
     }
   }} !important;
     background-color: ${(props) => {
-    if (props.palette === 'dark' && props.variant === 'primary') {
+    if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
           return 'transparent'
@@ -318,7 +318,7 @@ export const ButtonCustom = styled(Button)`
     }
   }} !important;
     border-color: ${(props) => {
-    if (props.palette === 'dark' && props.variant === 'primary') {
+    if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
           return props.theme.colors.oxfordBlueTint5

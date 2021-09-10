@@ -120,7 +120,6 @@ export const setIsUserValidator = (result) => ({
   result
 })
 
-// sdk creaters
 export const getMinimumValidatorsTimeLock = (address) => ({
   type: actionTypes.GET_VALIDATORS_MINIMUM_TIME_LOCK,
   address
