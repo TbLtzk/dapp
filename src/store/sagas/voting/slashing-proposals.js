@@ -21,6 +21,8 @@ import {
 
 import SlashingEscrow from 'contracts/src/voting/SlashingEscrow'
 
+import ErrorHandler from 'func/ErrorHandler'
+
 function * getProposalsList () {
   try {
     const contracts = creationSlashingContractsObjArray()
@@ -32,9 +34,9 @@ function * getProposalsList () {
       result = yield contracts?.getProposals()
     }
     yield put(getSlashingProposalsListSuccess(result))
-  } catch (e) {
-    console.error('e', e)
-    yield put(getSlashingProposalsListError(e))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(getSlashingProposalsListError(error))
   }
 }
 
@@ -50,8 +52,8 @@ function * getEndedProposals () {
     }
 
     yield put(getSlashingEndedProposalsSuccess(result))
-  } catch (err) {
-    yield put(getSlashingEndedProposalsError(err))
+  } catch (error) {
+    yield put(getSlashingEndedProposalsError(error))
   }
 }
 
@@ -95,8 +97,8 @@ function * getProposal ({ contractName, id, activeProposal }) {
         yield put(getOneProposalSuccess(data))
       }
     }
-  } catch (err) {
-    console.error('err', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
     if (pageType === 'ended') {
       yield put(getProposalEndedError(id))
     } else {
@@ -118,9 +120,9 @@ function * onEscrowCastObjection ({ data, contractName, proposalId }) {
       yield call(() => {}, contractName, {}, proposalId, false)
     }
     yield put(setTransactionLoadingSuccess())
-  } catch (err) {
-    console.error('err', err.message)
-    yield put(setTransactionLoadingError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(setTransactionLoadingError(error.message))
   }
 }
 
@@ -139,9 +141,9 @@ function * onEscrowProposeDecision ({ data, contractName, proposalId }) {
       yield call(() => {}, contractName, {}, proposalId, false)
     }
     yield put(setTransactionLoadingSuccess())
-  } catch (err) {
-    console.error('err', err.message)
-    yield put(setTransactionLoadingError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(setTransactionLoadingError(error.message))
   }
 }
 
@@ -159,9 +161,9 @@ function * onEscrowProposerRemark ({ data, contractName, proposalId }) {
       yield call(() => {}, contractName, {}, proposalId, false)
     }
     yield put(setTransactionLoadingSuccess())
-  } catch (err) {
-    console.error('err', err.message)
-    yield put(setTransactionLoadingError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(setTransactionLoadingError(error.message))
   }
 }
 
@@ -178,9 +180,9 @@ function * onEscrowRecallProposeDecision ({ contractName, proposalId }) {
       yield call(() => {}, contractName, {}, proposalId, false)
     }
     yield put(setTransactionLoadingSuccess())
-  } catch (err) {
-    console.error('err', err.message)
-    yield put(setTransactionLoadingError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(setTransactionLoadingError(error.message))
   }
 }
 
@@ -197,9 +199,9 @@ function * onEscrowConfirmProposeDecision ({ contractName, proposalId }) {
       yield call(() => {}, contractName, {}, proposalId, false)
     }
     yield put(setTransactionLoadingSuccess())
-  } catch (err) {
-    console.error('err', err.message)
-    yield put(setTransactionLoadingError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(setTransactionLoadingError(error.message))
   }
 }
 

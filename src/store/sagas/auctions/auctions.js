@@ -25,6 +25,7 @@ import {
   creationSystemSurplusContractObj
 } from 'contracts/handler/AuctionHandler'
 import { AUCTIONS_TYPES } from 'constants/statuses'
+import ErrorHandler from 'func/ErrorHandler'
 
 function * createAuction ({ data }) {
   try {
@@ -59,9 +60,9 @@ function * createAuction ({ data }) {
     }
     yield put(createAuctionSuccess(result))
     yield put(setTransactionLoadingSuccess())
-  } catch (err) {
-    console.error('err', err.message)
-    yield put(setTransactionLoadingError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(setTransactionLoadingError(error.message))
   }
 }
 
@@ -80,8 +81,8 @@ function * getAuctionDependsOnType (contractName, inf, activeAuction) {
       default:
         return null
     }
-  } catch (e) {
-    console.error('e', e)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
@@ -113,8 +114,8 @@ function * getOneAuction ({
         yield put(getEmptyAuctionSuccess(inf))
       }
     }
-  } catch (err) {
-    console.error('err', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
     yield put(getAuctionError())
   }
 }
@@ -143,9 +144,9 @@ function * getAuctionsList ({
       result,
       activeTab: activeTab
     }))
-  } catch (e) {
-    console.error('e', e)
-    yield put(getAuctionsListError(e))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(getAuctionsListError(error))
   }
 }
 
@@ -170,9 +171,9 @@ function * getEndedAuctionsList ({
     result = yield contract?.getAuctions(activeAuction)
 
     yield put(getEndedAuctionsListSuccess(result))
-  } catch (e) {
-    console.error('e', e)
-    yield put(getEndedAuctionsListError(e))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(getEndedAuctionsListError(error))
   }
 }
 
@@ -202,9 +203,9 @@ function * bidForAuctionHandler ({ data }) {
     yield call(getAuctionDependsOnType, data?.contract, data, true)
     yield put(bidForAuctionSuccess(result))
     yield put(setTransactionLoadingSuccess())
-  } catch (err) {
-    console.error('err', err.message)
-    yield put(setTransactionLoadingError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(setTransactionLoadingError(error.message))
   }
 }
 
@@ -234,9 +235,9 @@ function * executeAuctionHandler ({ data }) {
     yield call(getAuctionDependsOnType, data?.contract, data, true)
     yield put(executeAuctionSuccess(result))
     yield put(setTransactionLoadingSuccess())
-  } catch (err) {
-    console.error('err', err.message)
-    yield put(setTransactionLoadingError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(setTransactionLoadingError(error.message))
   }
 }
 
