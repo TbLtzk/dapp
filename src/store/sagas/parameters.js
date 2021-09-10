@@ -1,8 +1,11 @@
 import { put, takeEvery } from 'redux-saga/effects'
 import * as actionTypes from 'store/actions/action-types/parameters'
 import {
-  getAddressParameterSuccess, getBoolParameterSuccess,
-  getStringParameterSuccess, getUintParameterSuccess, getBytesParameterSuccess,
+  getAddressParameterSuccess,
+  getBoolParameterSuccess,
+  getStringParameterSuccess,
+  getUintParameterSuccess,
+  getBytesParameterSuccess,
   getParameterValueByKeySuccess,
   getParameterKeysByTypeSuccess
 } from 'store/actions/action-creaters/parameters'
@@ -14,11 +17,9 @@ import ConstitutionParameters from 'contracts/src/parameters/ConstitutionParamet
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { CONTRACT_TYPES } from 'constants/contracts'
 import { getContractTypeKey } from 'func/contractHelpers'
+import ErrorHandler from 'func/ErrorHandler'
 
-function * getAddressParameter ({
-  value,
-  typeContract
-}) {
+function * getAddressParameter ({ value, typeContract }) {
   try {
     let contract = null
     if (typeContract === 'EPQFI') {
@@ -28,15 +29,12 @@ function * getAddressParameter ({
     }
     const data = yield contract.getAddr(value)
     yield put(getAddressParameterSuccess(data))
-  } catch (err) {
-    console.error('getAddressParameter.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
-function * getStringParameter ({
-  value,
-  typeContract
-}) {
+function * getStringParameter ({ value, typeContract }) {
   try {
     let contract = null
     if (typeContract === 'EPQFI') {
@@ -46,15 +44,12 @@ function * getStringParameter ({
     }
     const data = yield contract.getString(value)
     yield put(getStringParameterSuccess(data))
-  } catch (err) {
-    console.error('getStringParameter.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
-function * getBytesParameter ({
-  value,
-  typeContract
-}) {
+function * getBytesParameter ({ value, typeContract }) {
   try {
     let contract = null
     if (typeContract === 'EPQFI') {
@@ -64,15 +59,12 @@ function * getBytesParameter ({
     }
     const data = yield contract.getBytes(value)
     yield put(getBytesParameterSuccess(data))
-  } catch (err) {
-    console.error('getBytesParameter.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
-function * getUintParameter ({
-  value,
-  typeContract
-}) {
+function * getUintParameter ({ value, typeContract }) {
   try {
     let contract = null
     if (typeContract === 'EPQFI') {
@@ -82,15 +74,12 @@ function * getUintParameter ({
     }
     const data = yield contract.getUint(value)
     yield put(getUintParameterSuccess(data))
-  } catch (err) {
-    console.error('getUintParameter.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
-function * getBooleanParameter ({
-  value,
-  typeContract
-}) {
+function * getBooleanParameter ({ value, typeContract }) {
   try {
     let contract = null
     if (typeContract === 'EPQFI') {
@@ -100,8 +89,8 @@ function * getBooleanParameter ({
     }
     const data = yield contract.getBool(value)
     yield put(getBoolParameterSuccess(data))
-  } catch (err) {
-    console.error('getBooleanParameter.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
@@ -117,11 +106,7 @@ function getContract (typeContract) {
   }
 }
 
-function * getParameterValueByKey ({
-  typeContract,
-  typeParameter,
-  parameterKey
-}) {
+function * getParameterValueByKey ({ typeContract, typeParameter, parameterKey }) {
   try {
     if (typeContract && typeParameter && parameterKey) {
       const contract = getContract(typeContract)
@@ -144,23 +129,22 @@ function * getParameterValueByKey ({
           break
       }
       if (data) {
-        yield put(getParameterValueByKeySuccess({
-          typeContract: getContractTypeKey(typeContract),
-          typeParameter,
-          parameterKey,
-          data
-        }))
+        yield put(
+          getParameterValueByKeySuccess({
+            typeContract: getContractTypeKey(typeContract),
+            typeParameter,
+            parameterKey,
+            data
+          })
+        )
       }
     }
-  } catch (err) {
-    console.error('getParameterValueByKey.Error', err?.message)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
-function * getParameterKeysByType ({
-  typeContract,
-  typeParameter
-}) {
+function * getParameterKeysByType ({ typeContract, typeParameter }) {
   try {
     if (typeContract && typeParameter) {
       const contract = getContract(typeContract)
@@ -183,26 +167,32 @@ function * getParameterKeysByType ({
           break
       }
       if (data) {
-        yield put(getParameterKeysByTypeSuccess({
-          typeContract,
-          typeParameter,
-          data
-        }))
+        yield put(
+          getParameterKeysByTypeSuccess({
+            typeContract,
+            typeParameter,
+            data
+          })
+        )
       } else {
-        yield put(getParameterKeysByTypeSuccess({
-          typeContract,
-          typeParameter,
-          data: {}
-        }))
+        yield put(
+          getParameterKeysByTypeSuccess({
+            typeContract,
+            typeParameter,
+            data: {}
+          })
+        )
       }
     }
-  } catch (err) {
-    console.error('getParameterValueByKey.Error', err?.message)
-    yield put(getParameterKeysByTypeSuccess({
-      typeContract,
-      typeParameter,
-      data: {}
-    }))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(
+      getParameterKeysByTypeSuccess({
+        typeContract,
+        typeParameter,
+        data: {}
+      })
+    )
   }
 }
 

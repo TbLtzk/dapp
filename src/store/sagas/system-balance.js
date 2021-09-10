@@ -8,6 +8,7 @@ import {
 } from 'store/actions/action-creaters/system-balance'
 
 import SystemBalance from 'contracts/src/SystemBalance'
+import ErrorHandler from 'func/ErrorHandler'
 
 function * getSurplus () {
   try {
@@ -15,8 +16,8 @@ function * getSurplus () {
     const data = yield contract.getSurplus()
 
     yield put(getSurplusSuccess(data))
-  } catch (err) {
-    console.error('getSurplus.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
     yield put(getSurplusError(0))
   }
 }
@@ -27,8 +28,8 @@ function * getDebt () {
     const data = yield contract.getDebt()
 
     yield put(getDebtSuccess(data))
-  } catch (err) {
-    console.error('getDebt.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
     yield put(getDebtError(0))
   }
 }
@@ -39,8 +40,8 @@ function * getSystemBalance () {
     const data = yield contract.getBalance()
 
     yield put(getSystemBalanceSuccess(data))
-  } catch (err) {
-    console.error('getSystemBalance.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
     yield put(getSystemBalanceError(0))
   }
 }
@@ -52,9 +53,9 @@ function * onPerformNetting () {
     const data = yield contract.performNetting(userAddress)
 
     yield put(onPerformNettingSuccess(data))
-  } catch (err) {
-    console.error('onPerformNetting.Error', err)
-    yield put(onPerformNettingError(err))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(onPerformNettingError(error))
   }
 }
 

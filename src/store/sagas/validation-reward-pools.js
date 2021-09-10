@@ -3,6 +3,7 @@ import * as actionTypes from 'store/actions/action-types/validation-reward-pools
 
 import { setError, setBalance, getVRPBalanceSuccess } from 'store/actions/action-creaters/validation-reward-pools'
 import ValidationRewardPools from 'contracts/src/ValidationRewardPools'
+import ErrorHandler from 'func/ErrorHandler'
 
 let contractInstance = null
 
@@ -22,9 +23,9 @@ function * getBalanceGenerator ({ address }) {
 
     yield put(setBalance(data))
     yield put({ type: actionTypes.SET_VRP_DATA_IS_LOADED })
-  } catch (err) {
-    console.error('VRP.Error', err)
-    yield put(setError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(setError(error.message))
   }
 }
 
@@ -33,8 +34,8 @@ function * getBalanceDashboard ({ address }) {
     const contract = getContractInstance()
     const data = yield contract.getBalance(address)
     yield put(getVRPBalanceSuccess(data))
-  } catch (err) {
-    console.error('VRP.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 

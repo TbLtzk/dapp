@@ -3,36 +3,42 @@ import { put, select, takeEvery } from 'redux-saga/effects'
 import * as actionTypes from 'store/actions/action-types/voting/expert-proposals'
 
 import {
-  getExpertEndedProposalsError, getExpertEndedProposalsSuccess,
-  getExpertProposalsListError, getExpertProposalsListSuccess,
-  getProposalSuccess, getEmptyProposalSuccess, getProposalError,
-  getProposalEndedSuccess, getEmptyProposalEndedSuccess, getExpertProposalEnded,
-  getProposalEndedError, getOneProposalSuccess
+  getExpertEndedProposalsError,
+  getExpertEndedProposalsSuccess,
+  getExpertProposalsListError,
+  getExpertProposalsListSuccess,
+  getProposalSuccess,
+  getEmptyProposalSuccess,
+  getProposalError,
+  getProposalEndedSuccess,
+  getEmptyProposalEndedSuccess,
+  getExpertProposalEnded,
+  getProposalEndedError,
+  getOneProposalSuccess
 } from 'store/actions/action-creaters/voting/expert-proposals'
-import {
-  creationExpertContractObj, creationExpertContractsObjArray
-} from 'contracts/handler/VotingHandler'
+import { creationExpertContractObj, creationExpertContractsObjArray } from 'contracts/handler/VotingHandler'
+import ErrorHandler from 'func/ErrorHandler'
 
 function * getProposalsList () {
   try {
     const contracts = creationExpertContractsObjArray()
     let result = []
     if (Array.isArray(contracts)) {
-      const data = yield Promise.all(contracts.map(item => item.getProposals()))
+      const data = yield Promise.all(contracts.map((item) => item.getProposals()))
       result = [].concat.apply([], data)
     } else {
       result = yield contracts?.getProposals()
     }
 
     yield put(getExpertProposalsListSuccess(result))
-  } catch (e) {
-    console.error('e', e)
-    yield put(getExpertProposalsListError(e))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(getExpertProposalsListError(error))
   }
 }
 
 function * getProposal ({ contractName, id, activeProposal }) {
-  const { pageType } = yield select(state => state.proposals)
+  const { pageType } = yield select((state) => state.proposals)
   try {
     if (pageType === 'ended') {
       yield put(getExpertProposalEnded())
@@ -50,10 +56,12 @@ function * getProposal ({ contractName, id, activeProposal }) {
           yield put(getProposalEndedSuccess(data))
         } else {
           if (id) {
-            yield put(getEmptyProposalEndedSuccess({
-              id,
-              contractName
-            }))
+            yield put(
+              getEmptyProposalEndedSuccess({
+                id,
+                contractName
+              })
+            )
           }
         }
       } else if (pageType === 'active') {
@@ -61,18 +69,20 @@ function * getProposal ({ contractName, id, activeProposal }) {
           yield put(getProposalSuccess(data))
         } else {
           if (id) {
-            yield put(getEmptyProposalSuccess({
-              id,
-              contractName
-            }))
+            yield put(
+              getEmptyProposalSuccess({
+                id,
+                contractName
+              })
+            )
           }
         }
       } else {
         yield put(getOneProposalSuccess(data))
       }
     }
-  } catch (err) {
-    console.error('err', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
     if (pageType === 'ended') {
       yield put(getProposalEndedError(id))
     } else {
@@ -86,16 +96,16 @@ function * getEndedProposals () {
     const contracts = creationExpertContractsObjArray()
     let result = []
     if (Array.isArray(contracts)) {
-      const data = yield Promise.all(contracts.map(item => item.getEndedProposals()))
+      const data = yield Promise.all(contracts.map((item) => item.getEndedProposals()))
       result = [].concat.apply([], data)
     } else {
       result = yield contracts?.getEndedProposals()
     }
 
     yield put(getExpertEndedProposalsSuccess(result))
-  } catch (err) {
-    console.error('err', err.message)
-    yield put(getExpertEndedProposalsError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(getExpertEndedProposalsError(error.message))
   }
 }
 

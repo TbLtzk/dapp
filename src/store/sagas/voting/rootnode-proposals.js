@@ -12,6 +12,7 @@ import {
 import {
   creationRootContractObj
 } from 'contracts/handler/VotingHandler'
+import ErrorHandler from 'func/ErrorHandler'
 
 function * getProposalsList () {
   try {
@@ -24,9 +25,9 @@ function * getProposalsList () {
       result = yield contracts?.getProposals()
     }
     yield put(getRootNodeProposalsListSuccess(result))
-  } catch (e) {
-    console.error('e', e)
-    yield put(getRootNodeProposalsListError(e))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(getRootNodeProposalsListError(error))
   }
 }
 
@@ -41,9 +42,9 @@ function * getEndedProposals () {
       result = yield contracts?.getEndedProposals()
     }
     yield put(getRootNodeEndedProposalsSuccess(result))
-  } catch (err) {
-    console.error('err', err.message)
-    yield put(getRootNodeEndedProposalsError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(getRootNodeEndedProposalsError(error.message))
   }
 }
 
@@ -88,8 +89,8 @@ function * getRootNodeProposal ({ contractName, id, activeProposal }) {
         yield put(getOneProposalSuccess(data))
       }
     }
-  } catch (err) {
-    console.error('err', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
     if (pageType === 'ended') {
       yield put(getProposalEndedError(id))
     } else {

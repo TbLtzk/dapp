@@ -1,13 +1,17 @@
 import { put, takeEvery } from 'redux-saga/effects'
 import * as actionTypes from 'store/actions/action-types/membership'
 import {
-  getIsUserEPDRMemberSuccess, getIsUserEPQFIMemberSuccess,
-  getEPDRMembersError, getEPDRMembersSuccess, getEPQFIMembersError,
+  getIsUserEPDRMemberSuccess,
+  getIsUserEPQFIMemberSuccess,
+  getEPDRMembersError,
+  getEPDRMembersSuccess,
+  getEPQFIMembersError,
   getEPQFIMembersSuccess
 } from 'store/actions/action-creaters/membership'
 
 import EPDRMembership from 'contracts/src/membership/EPDR_Membership'
 import EPQFIMembership from 'contracts/src/membership/EPQFI_Membership'
+import ErrorHandler from 'func/ErrorHandler'
 
 function getContractEPDRMembership () {
   return new EPDRMembership()
@@ -22,8 +26,8 @@ function * isUserEPDRMember ({ address }) {
     const contract = getContractEPDRMembership()
     const data = yield contract.isMember(address)
     yield put(getIsUserEPDRMemberSuccess(data))
-  } catch (err) {
-    console.error('isUserValidator.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
@@ -32,8 +36,8 @@ function * isUserEPQFIMember ({ address }) {
     const contract = getContractEPQFIMembership()
     const data = yield contract.isMember(address)
     yield put(getIsUserEPQFIMemberSuccess(data))
-  } catch (err) {
-    console.error('isUserValidator.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
@@ -42,9 +46,9 @@ function * getEPDRMembers () {
     const contract = getContractEPDRMembership()
     const data = yield contract.getMembers()
     yield put(getEPDRMembersSuccess(data))
-  } catch (err) {
-    console.error('getEPDRMembers.Error', err)
-    yield put(getEPDRMembersError(err))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(getEPDRMembersError(error))
   }
 }
 
@@ -53,9 +57,9 @@ function * getEPQFIMembers () {
     const contract = getContractEPQFIMembership()
     const data = yield contract.getMembers()
     yield put(getEPQFIMembersSuccess(data))
-  } catch (err) {
-    console.error('getEPQFIMembers.Error', err)
-    yield put(getEPQFIMembersError(err))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(getEPQFIMembersError(error))
   }
 }
 
