@@ -19,33 +19,41 @@ export default class Handler {
   }
 
   allocateValue (contract, stateSetter, stateLoading) {
-    contract.allocate(this.userAddress)
-      .then(val => {
+    contract
+      .allocate(this.userAddress)
+      .then((val) => {
         this.ContractBalance.getBalanceValue(contract.contractName, stateSetter)
         stateLoading(false)
       })
-      .catch(e => {
+      .catch((e) => {
         console.error('e', e)
-        stateSetter(0)
         stateLoading(false)
       })
   }
 
   getDefaultAllocationProxy (stateSetter, stateLoading, isAllocate, allocateStateSetters) {
     stateLoading(true)
-    if (isAllocate) {
-      this.allocateValue(this.DefaultAllocationProxy, stateSetter, stateLoading)
-    } else {
-      this.ContractBalance.getBalanceValue('DefaultAllocationProxy', stateSetter)
+    try {
+      if (isAllocate) {
+        this.allocateValue(this.DefaultAllocationProxy, stateSetter, stateLoading)
+      } else {
+        this.ContractBalance.getBalanceValue('DefaultAllocationProxy', stateSetter)
+      }
+    } catch {
+      stateLoading(false)
     }
   }
 
   getRootNodeRewardProxy (stateSetter, stateLoading, isAllocate) {
-    stateLoading(true)
-    if (isAllocate) {
-      this.allocateValue(this.RootNodeRewardProxy, stateSetter, stateLoading)
-    } else {
-      this.ContractBalance.getBalanceValue('RootNodeRewardProxy', stateSetter)
+    try {
+      stateLoading(true)
+      if (isAllocate) {
+        this.allocateValue(this.RootNodeRewardProxy, stateSetter, stateLoading)
+      } else {
+        this.ContractBalance.getBalanceValue('RootNodeRewardProxy', stateSetter)
+      }
+    } catch {
+      stateLoading(false)
     }
   }
 
@@ -53,38 +61,33 @@ export default class Handler {
     stateLoading(true)
     if (isAllocate) {
       this.ValidationRewardProxy.allocate(this.userAddress)
-        .then(val => {
-          window.web3.eth.getBalance(contractsToAddresses.ValidationRewardProxy)
-            .then(
-              res => {
-                const transf = fromWei(res)
-                stateSetter(transf)
-                stateLoading(false)
-              }
-            )
-            .catch(e => {
+        .then((val) => {
+          window.web3.eth
+            .getBalance(contractsToAddresses.ValidationRewardProxy)
+            .then((res) => {
+              const transf = fromWei(res)
+              stateSetter(transf)
+              stateLoading(false)
+            })
+            .catch((e) => {
               console.error('e', e)
-              stateSetter(0)
               stateLoading(false)
             })
         })
-        .catch(e => {
+        .catch((e) => {
           console.error('e', e)
-          stateSetter(0)
           stateLoading(false)
         })
     } else {
-      window.web3.eth.getBalance(contractsToAddresses.ValidationRewardProxy)
-        .then(
-          res => {
-            const transf = fromWei(res)
-            stateSetter(transf)
-            stateLoading(false)
-          }
-        )
-        .catch(e => {
+      window.web3.eth
+        .getBalance(contractsToAddresses.ValidationRewardProxy)
+        .then((res) => {
+          const transf = fromWei(res)
+          stateSetter(transf)
+          stateLoading(false)
+        })
+        .catch((e) => {
           console.error('e', e)
-          stateSetter(0)
           stateLoading(false)
         })
     }
@@ -104,15 +107,12 @@ export default class Handler {
 
   getTimeSinceQHolderRewardUpdate (stateSetter, stateSetterUnixTimestamp) {
     this.CompoundRateKeeperQVault.getLastUpdate()
-      .then(
-        res => {
-          stateSetterUnixTimestamp(res)
-          const transformTime = remainDateTimeSince(res)
-          stateSetter(transformTime)
-        }
-      )
-      .catch(e => {
-        stateSetter(0)
+      .then((res) => {
+        stateSetterUnixTimestamp(res)
+        const transformTime = remainDateTimeSince(res)
+        stateSetter(transformTime)
+      })
+      .catch((e) => {
         stateSetterUnixTimestamp(0)
       })
   }
