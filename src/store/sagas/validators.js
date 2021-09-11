@@ -34,6 +34,8 @@ import {
   getAccountableTotalStakeFunction
 } from 'contracts/helpers/validators-helper'
 import { getAccountBalance } from 'store/actions/action-creaters/q-vault'
+import ErrorHandler from 'func/ErrorHandler'
+import { setErrorMessage } from 'store/actions/action-creaters/transaction-handler'
 
 function * getValidatorsShortListGenerator () {
   try {
@@ -43,9 +45,10 @@ function * getValidatorsShortListGenerator () {
       yield put(setValidatorShortList(data))
     }
   } catch (error) {
-    console.error(error)
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
+
 function * getValidatorsWithdrawalInfoGenerator ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance)
@@ -54,18 +57,19 @@ function * getValidatorsWithdrawalInfoGenerator ({ address }) {
       yield put(setValidatorWithdrawalInfo(data))
     }
   } catch (error) {
-    console.error(error)
+    ErrorHandler.processWithoutFeedback(error)
     yield put(setValidatorWithdrawalInfo({}))
   }
 }
+
 function * getValidatorsTotalStakeGenerator ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance)
     let data = yield contract.getValidatorTotalStake(address)
     data = fromWei(data)
     yield put(setTotalStake(data))
-  } catch (err) {
-    console.error('Validators.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 function * getValidatorsOwnStakeGenerator ({ address }) {
@@ -74,8 +78,8 @@ function * getValidatorsOwnStakeGenerator ({ address }) {
     let data = yield contract.getAccountableSelfStake(address)
     data = fromWei(data)
     yield put(setOwnStake(data))
-  } catch (err) {
-    console.error('Validators.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 function * getValidatorsDelegatedStakeGenerator ({ address }) {
@@ -83,65 +87,73 @@ function * getValidatorsDelegatedStakeGenerator ({ address }) {
     let data = yield call(getValidatorDelegatedStake, address)
     data = fromWei(data)
     yield put(setDelegatedStake(data))
-  } catch (err) {
-    console.error('Validators.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
+
 function * getValidatorsAccountableTotalStakeGenerator ({ address }) {
   try {
     let data = yield call(getAccountableTotalStakeFunction, address)
     data = fromWei(data)
     yield put(setAccountableTotalStake(data))
-  } catch (err) {
-    console.error('Validators.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
+
 function * getValidatorsAccountableSelfStake ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance)
     const data = yield contract.getAccountableSelfStake(address)
     yield put(setSelfStake(fromWei(data)))
-  } catch (err) {
-    console.error('Validators.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
-function * getValidatorsMembers () {
+
+function * getValidatorsMembersGenerator () {
   try {
     const data = yield call(getMembersList)
     yield put(getValidatorMembersSuccess(data))
-  } catch (err) {
-    console.error('ValidatorsMember.Error', err)
-    yield put(getValidatorMembersError(err.message))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+
+    yield put(getValidatorMembersError(error.message))
   }
 }
+
 function * getIsUserValidatorGenerator ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance)
     const data = yield contract.isInShortList(address)
     yield put(setIsUserValidator(data))
-  } catch (err) {
-    console.error('isUserValidator.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
     yield put(setIsUserValidator(false))
   }
 }
+
 function * getValidatorsMinimumTimeLockGenerator ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance)
     const data = yield contract.getMinimumBalance(address, getNowTimestamp())
     yield put(setMinimumValidatorsTimeLock(fromWei(data)))
-  } catch (err) {
-    console.error('getMinimumValidatorsTimeLockGenerator.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
+
 function * getValidatorsTimeLocksGenerator ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance)
     const data = yield contract.getTimeLocks(address)
     yield put(setValidatorsTimeLocks(addIndex(data)))
-  } catch (err) {
-    console.error('getValidatorsTimeLocksGenerator.Error', err)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
+
 function * setValidatorsInterestRateGenerator ({ address, uintPercent }) {
   try {
     yield put({
@@ -150,11 +162,12 @@ function * setValidatorsInterestRateGenerator ({ address, uintPercent }) {
     })
     const contract = yield call(getValidatorsContract)
     const data = yield contract.setInterestRate(address, uintPercent)
-    if (data.status === true) {
+    if (data.status) {
       yield put(getInterestRate(address))
     }
-  } catch (err) {
-    console.error('Validators.Error', err)
+  } catch (error) {
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -175,7 +188,7 @@ function * setValidatorsCommitStakeGenerator ({ address, amountQ }) {
       value: toWei(amountQ)
     })
 
-    if (data) {
+    if (data.status) {
       yield put(getIsUserValidator(address))
       yield put(getAccountableTotalStake(address))
       yield put(getValidatorShortList())
@@ -183,7 +196,8 @@ function * setValidatorsCommitStakeGenerator ({ address, amountQ }) {
       yield put(getValidatorMembers(address))
     }
   } catch (error) {
-    console.error(error, 'withdraw')
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -191,6 +205,7 @@ function * setValidatorsCommitStakeGenerator ({ address, amountQ }) {
     })
   }
 }
+
 function * setValidatorsEnterShortListGenerator ({ address }) {
   try {
     yield put({
@@ -201,7 +216,8 @@ function * setValidatorsEnterShortListGenerator ({ address }) {
     yield contract.enterShortList({ from: address })
     yield put(getIsUserValidator(address))
   } catch (error) {
-    console.error(error)
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -224,7 +240,8 @@ function * setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
       yield put(getValidatorWithdrawalInfo(address))
     }
   } catch (error) {
-    console.error(error, 'withdraw')
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -232,6 +249,7 @@ function * setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
     })
   }
 }
+
 function * setValidatorsWithdrawGenerator ({ address, amountQ }) {
   try {
     yield put({
@@ -249,7 +267,8 @@ function * setValidatorsWithdrawGenerator ({ address, amountQ }) {
       yield put(getValidatorWithdrawalInfo(address))
     }
   } catch (error) {
-    console.error(error, 'withdraw')
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   } finally {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -274,7 +293,7 @@ export default [
   takeEvery(actionTypes.GET_VALIDATORS_ACCOUNTABLE_TOTAL_STAKE, getValidatorsAccountableTotalStakeGenerator),
   takeEvery(actionTypes.GET_VALIDATORS_SELF_STAKE, getValidatorsAccountableSelfStake),
 
-  takeEvery(actionTypes.GET_VALIDATORS_MEMBERS, getValidatorsMembers),
+  takeEvery(actionTypes.GET_VALIDATORS_MEMBERS, getValidatorsMembersGenerator),
   takeEvery(actionTypes.GET_IS_USER_VALIDATOR, getIsUserValidatorGenerator),
 
   takeEvery(actionTypes.GET_VALIDATORS_MINIMUM_TIME_LOCK, getValidatorsMinimumTimeLockGenerator),
