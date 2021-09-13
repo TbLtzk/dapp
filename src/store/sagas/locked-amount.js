@@ -85,7 +85,7 @@ function* setPurgeTimeLocksAmount({ payload }) {
     const contract = yield call(getContractInstance, payload.contract);
     const data = yield contract.purgeTimeLocks(payload.address);
 
-    if (data.status === true) {
+    if (data.status) {
       yield call(getAmountOnContract, payload.contract, payload.address);
     }
   } catch (error) {

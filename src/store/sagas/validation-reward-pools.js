@@ -16,7 +16,7 @@ function * setDelegatorsShareGenerator ({ address, uintPercent }) {
       yield put(getDelegatorsShare(address))
     }
   } catch (err) {
-    console.error('Validators.Error', err)
+    ErrorHandler.processWithoutFeedback(error)
     yield put(setError(err.message))
   }
 }
@@ -27,7 +27,7 @@ function * getInterestRateGenerator ({ address }) {
     const data = yield contract.getInterestRate(address)
     yield put(setInterestRate(data))
   } catch (err) {
-    console.error('Validators.Error', err)
+    ErrorHandler.processWithoutFeedback(error)
     yield put(setError(err.message))
   }
 }
@@ -38,7 +38,7 @@ function * getDelegatorsShareGenerator ({ address }) {
     const data = yield contract.getDelegatorsShare(address)
     yield put(setDelegatorsShare(data))
   } catch (err) {
-    console.error('Validators.Error', err)
+    ErrorHandler.processWithoutFeedback(error)
     yield put(setError(err.message))
   }
 }

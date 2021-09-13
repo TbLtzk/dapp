@@ -118,7 +118,6 @@ function * getValidatorsMembersGenerator () {
     yield put(getValidatorMembersSuccess(data))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
-
     yield put(getValidatorMembersError(error.message))
   }
 }

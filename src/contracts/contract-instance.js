@@ -56,35 +56,35 @@ export const getValidationRewardProxyInstance = async () => {
 
 export const getSystemSurplusAuctionInstance = async () => {
   if (systemSurplusAuctionInstance === null) {
-    systemSurplusAuctionInstance = await contractRegistryInstance.systemSurplusAuction()
+    systemSurplusAuctionInstance = await contractRegistryInstance.systemSurplusAuction('QUSD')
   }
   return systemSurplusAuctionInstance
 }
 
 export const getSystemDebtAuctionInstance = async () => {
   if (systemDebtAuctionInstance === null) {
-    systemDebtAuctionInstance = await contractRegistryInstance.systemDebtAuction()
+    systemDebtAuctionInstance = await contractRegistryInstance.systemDebtAuction('QUSD')
   }
   return systemDebtAuctionInstance
 }
 
 export const getSystemBalanceInstance = async () => {
   if (systemBalanceInstance === null) {
-    systemBalanceInstance = await contractRegistryInstance.systemBalance()
+    systemBalanceInstance = await contractRegistryInstance.systemBalance('QUSD')
   }
   return systemBalanceInstance
 }
 
 export const getStableCoinInstance = async () => {
   if (stableCoinInstance === null) {
-    stableCoinInstance = await contractRegistryInstance.stableCoin()
+    stableCoinInstance = await contractRegistryInstance.stableCoin('QUSD')
   }
   return stableCoinInstance
 }
 
 export const getSavingInstance = async () => {
   if (savingInstance === null) {
-    savingInstance = await contractRegistryInstance.saving()
+    savingInstance = await contractRegistryInstance.saving('QUSD')
   }
   return savingInstance
 }
@@ -98,7 +98,7 @@ export const getRootNodesMembershipVotingInstance = async () => {
 
 export const getLiquidationAuctionInstance = async () => {
   if (liquidationAuctionInstance === null) {
-    liquidationAuctionInstance = await contractRegistryInstance.liquidationAuction()
+    liquidationAuctionInstance = await contractRegistryInstance.liquidationAuction('QUSD')
   }
   return liquidationAuctionInstance
 }
@@ -154,7 +154,7 @@ export const getConstitutionInstance = async () => {
 
 export const getBorrowingCoreInstance = async () => {
   if (borrowingCoreInstance === null) {
-    borrowingCoreInstance = await contractRegistryInstance.borrowingCore()
+    borrowingCoreInstance = await contractRegistryInstance.borrowingCore('QUSD')
   }
   return borrowingCoreInstance
 }
