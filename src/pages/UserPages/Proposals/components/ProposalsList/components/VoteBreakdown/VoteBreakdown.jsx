@@ -12,7 +12,7 @@ function VoteBreakdown (props) {
       <h3>Vote Breakdown</h3>
       <div className="list-card__three-colm">
         <div>
-          <h4>Left</h4>
+          <h4>Vote Results</h4>
           <div className="list-card__chart-block">
             {voteBreakdown?.numberProposalVotes
               ? <PieChartTwoItem
@@ -46,7 +46,7 @@ function VoteBreakdown (props) {
           <h5>Majority Requirement: {voteBreakdown.requiredMajority}%</h5>
         </div>
         <div>
-          <h4>Middle</h4>
+          <h4>Constitution Check</h4>
           <div className="list-card__chart-block">
             <PieChartTwoItem
               data={[{
