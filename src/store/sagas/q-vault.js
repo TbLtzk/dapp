@@ -256,7 +256,7 @@ function * getUpdateCompoundRateGenerator ({ address }) {
   }
 }
 
-function * onClaimStakeDelegatorRewardGenerator () {
+function * setOnClaimStakeDelegatorRewardGenerator () {
   try {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -291,18 +291,18 @@ export default [
   takeEvery(actionTypes.GET_QV_USER_BALANCE, getUserBalanceGenerator),
   takeEvery(actionTypes.GET_QV_LOCKED_ASSETS, getLockedAssetsGenerator),
 
+  takeEvery(actionTypes.GET_UPDATE_COMPOUND_RATE, getUpdateCompoundRateGenerator),
+  takeEvery(actionTypes.GET_DELEGATIONS_LIST, getDelegationListGenerator),
+  takeEvery(actionTypes.GET_QV_BALANCE, getBalanceDetailsGenerator),
+  takeEvery(actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS, getOutstandingDelegationRewardsValueGenerator),
+
   takeEvery(actionTypes.SET_QV_DEPOSIT_CALL, setDepositGenerator),
   takeEvery(actionTypes.SET_QV_WITHDRAW_CALL, setWithdrawGenerator),
   takeEvery(actionTypes.SET_QV_LOCK_AMOUNT, setLockAmountGenerator),
   takeEvery(actionTypes.SET_QV_UNLOCK_AMOUNT, setUnlockAmountGenerator),
   takeEvery(actionTypes.SET_DELEGATE_STAKE, setDelegateStakeGenerator),
-  takeEvery(actionTypes.GET_UPDATE_COMPOUND_RATE, getUpdateCompoundRateGenerator),
 
-  takeEvery(actionTypes.GET_DELEGATIONS_LIST, getDelegationListGenerator),
-  takeEvery(actionTypes.GET_QV_BALANCE, getBalanceDetailsGenerator),
-  takeEvery(actionTypes.ON_CLAIM_STAKE_DELEGATOR_REWARD, onClaimStakeDelegatorRewardGenerator),
-  takeEvery(actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS, getOutstandingDelegationRewardsValueGenerator),
-
+  takeEvery(actionTypes.ON_CLAIM_STAKE_DELEGATOR_REWARD, setOnClaimStakeDelegatorRewardGenerator),
   takeEvery(actionTypes.GET_QVAULT_MINIMUM_TIME_LOCK, getMinimumQVaultTimeLockGenerator),
   takeEvery(actionTypes.GET_QVAULT_TIME_LOCKS, getQVaultTimeLocksGenerator)
 ]

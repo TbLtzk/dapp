@@ -2,188 +2,179 @@ import React, { useEffect, useState } from 'react'
 import Button from 'components/Base/Buttons/Button'
 import CustomBlock from 'components/Base/CustomBlock'
 import FormInput from 'components/Base/Form/FormInput'
-import Handler from './handler'
 import { useDispatch, useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/selectors/user-inf'
 import { useForm } from 'react-hook-form'
 import { errorHandler, fN } from 'func/useful'
 import { fromSolDateFormattingT1 } from 'func/date'
-import { useAlert } from 'react-alert'
 import { AccountStatusForm, AccountStatusInfo } from '../../styles'
 import {
-  getAccTotalStake,
+  getAccountableTotalStake,
   getDelegatedStake,
   getOwnStake,
   getTotalStake,
-  getMinimumValidatorsTimeLock
+  getMinimumValidatorsTimeLock,
+  setEnterShortList,
+  getIsUserValidator,
+  setValidatorsWithdraw,
+  setValidatorsAnnounceWithdrawal,
+  setValidatorsCommitStake,
+  getValidatorShortList,
+  getValidatorWithdrawalInfo
 } from 'store/actions/action-creaters/validators'
-import { validatorsMinimumTimeLock } from 'store/selectors/validators'
+import {
+  validatorsMinimumTimeLock,
+  isUserValidator,
+  accountableTotalStake,
+  validatorShortList,
+  validatorWithdrawalInfo
+} from 'store/selectors/validators'
+import { getAccountBalance } from 'store/actions/action-creaters/q-vault'
+import { accountBalance } from 'store/selectors/q-vault'
+import { fromWei } from 'func/balance'
 
 export default function AccountStatus () {
-  const {
-    register: reg,
-    handleSubmit: submit,
-    errors
-  } = useForm()
+  const { register: reg, handleSubmit: submit, errors } = useForm()
   const dispatch = useDispatch()
-
-  const [validatorExist, setValidatorExist] = useState(false)
-  const [accountableTotalStake, setAccountableTotalStake] = useState(0)
-  const [validatorsList, setValidatorsList] = useState([])
-  const [validatorRank, setValidatorRank] = useState(0)
-  const [accountBalance, setAccountBalance] = useState(0)
-  const [annToWithdraw, setAnnToWithdraw] = useState(0)
-  const [annToWithdrawEndTime, setAnnToWithdrawEndTime] = useState(0)
-
+  const userAccountBalance = useSelector(accountBalance)
+  const isThisUserValidator = useSelector(isUserValidator)
+  const userAccountableTotalStake = useSelector(accountableTotalStake)
+  const userValidatorShortList = useSelector(validatorShortList)
+  const userValidatorWithdrawalInfo = useSelector(validatorWithdrawalInfo)
   const address = useSelector(userAddressMetamask)
   const validatorLockedAmount = useSelector(validatorsMinimumTimeLock)
-  const handler = new Handler(address, useDispatch(), useAlert())
+
+  const [validatorRank, setValidatorRank] = useState(0)
 
   useEffect(() => {
+    dispatch(getAccountBalance(address))
+    dispatch(getIsUserValidator(address))
     dispatch(getMinimumValidatorsTimeLock(address))
+    dispatch(getAccountableTotalStake(address))
+    dispatch(getValidatorShortList())
+    dispatch(getValidatorWithdrawalInfo(address))
     dispatch(getTotalStake(address))
     dispatch(getOwnStake(address))
     dispatch(getDelegatedStake(address))
-    dispatch(getAccTotalStake(address))
-  }, [accountableTotalStake, accountBalance, annToWithdraw, annToWithdrawEndTime])
-
-  useEffect(() => {
-    handler.setValidatorExist(setValidatorExist)
-    handler.setAccountableTotalStake(setAccountableTotalStake)
-    handler.setValidatorsList(setValidatorsList)
-    handler.setAccountBalance(setAccountBalance)
-    handler.setAnnToWithdrawData(setAnnToWithdraw, setAnnToWithdrawEndTime)
   }, [])
 
   useEffect(() => {
-    if (Array.isArray(validatorsList) && validatorsList.length > 0) {
-      validatorsList.forEach((el, key) => {
+    if (Array.isArray(userValidatorShortList) && userValidatorShortList.length > 0) {
+      userValidatorShortList.forEach((el, key) => {
         if (address === el.validator) {
           setValidatorRank(key + 1)
         }
       })
     }
-  }, [validatorsList])
+  }, [userValidatorShortList])
 
   const stakeToRanking = (formData) => {
-    handler.stakeToRanking(formData.amount, setValidatorExist, setAccountableTotalStake, setValidatorsList,
-      setAccountBalance)
+    dispatch(setValidatorsCommitStake(address, formData.amount))
   }
 
   const announce = (formData) => {
-    handler.announce(formData.amount, setAccountableTotalStake, setAnnToWithdraw, setAnnToWithdrawEndTime)
+    dispatch(setValidatorsAnnounceWithdrawal(address, formData.amount))
   }
 
   const withdrawFromRanking = (formData) => {
-    handler.withdrawFromRanking(formData.amount, setValidatorExist, setAccountableTotalStake, setValidatorsList,
-      setAccountBalance, setAnnToWithdraw, setAnnToWithdrawEndTime)
-  }
-
-  const confirmValidation = () => {
-    handler.confirmValidation()
+    dispatch(setValidatorsWithdraw(address, formData.amount))
   }
 
   const renderValidatorRanking = () => {
-    if (validatorExist) {
+    if (isThisUserValidator) {
       return (
-        <>
-          <div>
-            <h5>Status</h5>
-            <p>Active Validator</p>
-          </div>
-          <div>
-            <h5>Current Rank</h5>
-            <p>{validatorRank}#</p>
-          </div>
-        </>
+                <>
+                    <div>
+                        <h5>Status</h5>
+                        <p>Active Validator</p>
+                    </div>
+                    <div>
+                        <h5>Current Rank</h5>
+                        <p>{validatorRank}#</p>
+                    </div>
+                </>
       )
     }
     return (
-      <div>
-        <h5>Status</h5>
-        <p>Not a Validator</p>
-      </div>
+            <div>
+                <h5>Status</h5>
+                <p>Not a Validator</p>
+            </div>
     )
   }
 
+  const confirmValidation = () => {
+    dispatch(setEnterShortList(address))
+  }
+
   const renderConfValBtn = () => {
-    if (accountableTotalStake > 0) {
+    if (!isThisUserValidator) {
       return (
-        <div className="card__actions">
-          <Button
-            type="default"
-            title="Join Validator Ranking"
-            handleButton={() => confirmValidation()}
-          />
-        </div>
+                <div className="card__actions">
+                    <Button type="default" title="Join Validator Ranking" handleButton={confirmValidation} />
+                </div>
       )
     }
     return null
   }
 
   return (
-    <CustomBlock>
-      <h1>Manage balance</h1>
-      <AccountStatusInfo>
-        {renderValidatorRanking()}
-        <div>
-          <h5>Stake in Validator Ranking</h5>
-          <p>{fN(accountableTotalStake)} Q</p>
-        </div>
-        {Number(validatorLockedAmount) > 0
-          ? <div>
-            <h5>Time locked amount</h5>
-            <p>{fN(validatorLockedAmount)} Q </p>
-          </div>
-          : null}
-        <div>
-          <h5>Announced for withdrawal</h5>
-          <p>{fN(annToWithdraw)} Q</p>
-        </div>
-        <div>
-          <h5>After</h5>
-          <p>{annToWithdrawEndTime === 0 ? '-' : fromSolDateFormattingT1(annToWithdrawEndTime)}</p>
-        </div>
-        <div>
-          <h5>Personal balance</h5>
-          <p>{fN(accountBalance)} Q</p>
-        </div>
-      </AccountStatusInfo>
-      <h4>Amount</h4>
-      <AccountStatusForm>
-        <div className={'account-status__form-input'}>
-          <FormInput
-            color={true}
-            name="amount"
-            type="number"
-            lbl="Q"
-            placeholder="0.00"
-            ref={reg({
-              required: 'Field is required!',
-              min: 0
-            })}
-            valid={errorHandler(errors, 'amount')}
-          />
-        </div>
-        <div className="account-status__form-actions">
-          <Button
-            type="default"
-            title="Stake to Ranking"
-            handleButton={submit(stakeToRanking)}
-          />
-          <Button
-            type="default"
-            title="Announce Withdrawal"
-            handleButton={submit(announce)}
-          />
-          <Button
-            type="default"
-            title="Withdraw from Ranking"
-            handleButton={submit(withdrawFromRanking)}
-          />
-        </div>
-      </AccountStatusForm>
-      {renderConfValBtn()}
-    </CustomBlock>
+        <CustomBlock>
+            <h1>Manage balance</h1>
+            <AccountStatusInfo>
+                {renderValidatorRanking()}
+                <div>
+                    <h5>Stake in Validator Ranking</h5>
+                    <p>{fN(userAccountableTotalStake)} Q</p>
+                </div>
+                {Number(validatorLockedAmount) > 0
+                  ? (
+                    <div>
+                        <h5>Time locked amount</h5>
+                        <p>{fN(validatorLockedAmount)} Q </p>
+                    </div>
+                    )
+                  : null}
+                <div>
+                    <h5>Announced for withdrawal</h5>
+                    <p>{fromWei(userValidatorWithdrawalInfo.amount)} Q</p>
+                </div>
+                <div>
+                    <h5>After</h5>
+                    <p>
+                        {userValidatorWithdrawalInfo.endTime === 0
+                          ? '-'
+                          : fromSolDateFormattingT1(userValidatorWithdrawalInfo.endTime)}
+                    </p>
+                </div>
+                <div>
+                    <h5>Personal balance</h5>
+                    <p>{fN(userAccountBalance)} Q</p>
+                </div>
+            </AccountStatusInfo>
+            <h4>Amount</h4>
+            <AccountStatusForm>
+                <div className={'account-status__form-input'}>
+                    <FormInput
+                        color={true}
+                        name="amount"
+                        type="number"
+                        lbl="Q"
+                        placeholder="0.00"
+                        ref={reg({
+                          required: 'Field is required!',
+                          min: 0
+                        })}
+                        valid={errorHandler(errors, 'amount')}
+                    />
+                </div>
+                <div className="account-status__form-actions">
+                    <Button type="default" title="Stake to Ranking" handleButton={submit(stakeToRanking)} />
+                    <Button type="default" title="Announce Withdrawal" handleButton={submit(announce)} />
+                    <Button type="default" title="Withdraw from Ranking" handleButton={submit(withdrawFromRanking)} />
+                </div>
+            </AccountStatusForm>
+            {renderConfValBtn()}
+        </CustomBlock>
   )
 }

@@ -1,4 +1,4 @@
-import { put, select, takeEvery } from 'redux-saga/effects'
+import { put, select, takeEvery, call } from 'redux-saga/effects'
 import * as actionTypes from 'store/actions/action-types/system-balance'
 import {
   getDebtError, getDebtSuccess,
@@ -6,52 +6,48 @@ import {
   getSystemBalanceError, getSystemBalanceSuccess,
   onPerformNettingSuccess, onPerformNettingError
 } from 'store/actions/action-creaters/system-balance'
-
-import SystemBalance from 'contracts/src/SystemBalance'
+import { getSystemBalanceInstance } from 'contracts/contract-instance'
 import ErrorHandler from 'func/ErrorHandler'
+import { fromWei } from 'func/balance'
 
-function * getSurplus () {
+function * getSurplusGenerator () {
   try {
-    const contract = new SystemBalance()
+    const contract = yield call(getSystemBalanceInstance)
     const data = yield contract.getSurplus()
-
-    yield put(getSurplusSuccess(data))
+    yield put(getSurplusSuccess(fromWei(data)))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
     yield put(getSurplusError(0))
   }
 }
 
-function * getDebt () {
+function * getDebtGenerator () {
   try {
-    const contract = new SystemBalance()
+    const contract = yield call(getSystemBalanceInstance)
     const data = yield contract.getDebt()
-
-    yield put(getDebtSuccess(data))
+    yield put(getDebtSuccess(fromWei(data)))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
     yield put(getDebtError(0))
   }
 }
 
-function * getSystemBalance () {
+function * getSystemBalanceGenerator () {
   try {
-    const contract = new SystemBalance()
+    const contract = yield call(getSystemBalanceInstance)
     const data = yield contract.getBalance()
-
-    yield put(getSystemBalanceSuccess(data))
+    yield put(getSystemBalanceSuccess(fromWei(data)))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
     yield put(getSystemBalanceError(0))
   }
 }
 
-function * onPerformNetting () {
+function * onPerformNettingGenerator () {
   try {
     const { userAddress } = yield select(state => state.userInf)
-    const contract = new SystemBalance()
-    const data = yield contract.performNetting(userAddress)
-
+    const contract = yield call(getSystemBalanceInstance)
+    const data = yield contract.instance.methods.performNetting().send({ from: userAddress })
     yield put(onPerformNettingSuccess(data))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
@@ -60,8 +56,8 @@ function * onPerformNetting () {
 }
 
 export default [
-  takeEvery(actionTypes.GET_SURPLUS, getSurplus),
-  takeEvery(actionTypes.GET_DEBT, getDebt),
-  takeEvery(actionTypes.GET_SYSTEM_BALANCE, getSystemBalance),
-  takeEvery(actionTypes.ON_PERFORM_NETTING, onPerformNetting)
+  takeEvery(actionTypes.GET_SURPLUS, getSurplusGenerator),
+  takeEvery(actionTypes.GET_DEBT, getDebtGenerator),
+  takeEvery(actionTypes.GET_SYSTEM_BALANCE, getSystemBalanceGenerator),
+  takeEvery(actionTypes.ON_PERFORM_NETTING, onPerformNettingGenerator)
 ]

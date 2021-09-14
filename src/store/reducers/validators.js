@@ -1,17 +1,16 @@
 import * as actionTypes from '../actions/action-types/validators'
 
 const initialState = {
-  lastUpdate: 0,
-  loadCounter: 0,
-  error: '',
 
   delegatorsShare: 0,
   totalStake: 0,
   ownStake: 0,
   delegatedStake: 0,
-  accTotalStake: 0,
+  accountableTotalStake: 0,
   interestRate: 0,
   selfStake: 0,
+  validatorShortlist: [],
+  validatorWithdrawalInfo: [],
 
   validatorMembers: [],
   loadingMembers: true,
@@ -24,55 +23,37 @@ const initialState = {
 
 export default function index (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.SET_VAL_DATA_IS_LOADING:
-      return {
-        ...state,
-        loadCounter: state.loadCounter + 1
-      }
-    case actionTypes.SET_VAL_DATA_IS_LOADED:
-      return {
-        ...state,
-        lastUpdate: Date.now(),
-        loadCounter: state.loadCounter - 1
-      }
-    case actionTypes.SET_VAL_ERROR:
-      return {
-        ...state,
-        lastUpdate: Date.now(),
-        loadCounter: state.loadCounter - 1,
-        error: action.error
-      }
-    case actionTypes.SET_VAL_DELEGATORS_SHARE:
+    case actionTypes.SET_VALIDATORS_DELEGATORS_SHARE:
       return {
         ...state,
         delegatorsShare: action.payload
       }
-    case actionTypes.SET_VAL_TOTAL_STAKE:
+    case actionTypes.SET_VALIDATORS_TOTAL_STAKE:
       return {
         ...state,
         totalStake: action.payload
       }
-    case actionTypes.SET_VAL_OWN_STAKE:
+    case actionTypes.SET_VALIDATORS_OWN_STAKE:
       return {
         ...state,
         ownStake: action.payload
       }
-    case actionTypes.SET_VAL_SELF_STAKE:
+    case actionTypes.SET_VALIDATORS_SELF_STAKE:
       return {
         ...state,
         selfStake: action.payload
       }
-    case actionTypes.SET_VAL_DELEGATED_STAKE:
+    case actionTypes.SET_VALIDATORS_DELEGATED_STAKE:
       return {
         ...state,
         delegatedStake: action.payload
       }
-    case actionTypes.SET_VAL_ACC_TOTAL_STAKE:
+    case actionTypes.SET_VALIDATORS_ACCOUNTABLE_TOTAL_STAKE:
       return {
         ...state,
-        accTotalStake: action.payload
+        accountableTotalStake: action.payload
       }
-    case actionTypes.SET_VAL_INTEREST_RATE:
+    case actionTypes.SET_VALIDATORS_INTEREST_RATE:
       return {
         ...state,
         interestRate: action.payload
@@ -96,7 +77,7 @@ export default function index (state = initialState, action) {
         validatorMembers: [],
         errorMembers: action.error
       }
-    case actionTypes.IS_USER_VALIDATOR_SUCCESS:
+    case actionTypes.SET_IS_USER_VALIDATOR:
       return {
         ...state,
         isUserValidator: action.result
@@ -111,6 +92,18 @@ export default function index (state = initialState, action) {
         ...state,
         validatorsTimeLocks: action.payload
       }
+    case actionTypes.SET_VALIDATORS_SHORT_LIST: {
+      return {
+        ...state,
+        validatorShortlist: action.payload
+      }
+    }
+    case actionTypes.SET_VALIDATORS_WITHDRAWAL_INFO: {
+      return {
+        ...state,
+        validatorWithdrawalInfo: action.payload
+      }
+    }
     default:
       return {
         ...state,

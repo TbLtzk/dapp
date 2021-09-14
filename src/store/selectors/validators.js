@@ -3,7 +3,7 @@ export const delegatorsShareSelector = (state) => state.validators.delegatorsSha
 export const totalStakeSelector = (state) => state.validators.totalStake
 export const ownStakeSelector = (state) => state.validators.ownStake
 export const delegatedStakeSelector = (state) => state.validators.delegatedStake
-export const accTotalStakeSelector = (state) => state.validators.accTotalStake
+export const accountableTotalStake = (state) => state.validators.accountableTotalStake
 export const interestRateSelector = (state) => state.validators.interestRate
 export const selfStake = (state) => state.validators.selfStake
 
@@ -15,3 +15,6 @@ export const isUserValidator = (state) => state.validators.isUserValidator
 
 export const validatorsMinimumTimeLock = (state) => state.validators.validatorsMinimumTimeLock
 export const validatorsTimeLocks = (state) => state.validators.validatorsTimeLocks
+
+export const validatorShortList = (state) => state.validators.validatorShortlist
+export const validatorWithdrawalInfo = (state) => state.validators.validatorWithdrawalInfo
