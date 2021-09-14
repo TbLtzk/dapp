@@ -25,7 +25,7 @@ export const getMembersList = async () => {
   const delegationEfficiency = await getDelegationEfficiency()
   const validators = await mergeArrays(validatorsArr, delegationEfficiency)
 
-  if (validators?.length === 0) {
+  if (validatorsArr?.length === 0) {
     return []
   } else {
     return await Promise.all(validators.map((i, index) => getValidator(i, index)))
