@@ -89,10 +89,12 @@ export const setAccountableTotalStake = (data) => ({
 export const getValidatorMembers = () => ({
   type: actionTypes.GET_VALIDATORS_MEMBERS
 })
+
 export const getValidatorMembersSuccess = (data) => ({
   type: actionTypes.GET_VALIDATORS_MEMBERS_SUCCESS,
   data: data
 })
+
 export const getValidatorMembersError = (error) => ({
   type: actionTypes.GET_VALIDATORS_MEMBERS_ERROR,
   error: error

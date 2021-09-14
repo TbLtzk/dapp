@@ -28,6 +28,7 @@ import { addIndex } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
 
 import { getValidatorsInstance, getValidatorsContract } from 'contracts/contract-instance'
+
 import {
   getMembersList,
   getValidatorDelegatedStake,
@@ -224,6 +225,7 @@ function * setValidatorsEnterShortListGenerator ({ address }) {
     })
   }
 }
+
 function * setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
   try {
     yield put({

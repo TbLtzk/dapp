@@ -1,11 +1,13 @@
 import {
   getValidatorsInstance,
   getValidationRewardPoolsInstance,
-  getValidatorsContract
+  getValidatorsContract,
+  getValidatorMetricsInstance
 } from 'contracts/contract-instance'
 import { transformToPercentage } from '../handler/VotingHandler'
 import { fromWei } from 'func/balance'
 import { uintPerSecondToPerYearNumber } from 'func/useful'
+import { contractRegistryInstance } from 'contracts/contracts'
 
 export const getAccountableTotalStakeFunction = async (address) => {
   const contract = await getValidatorsContract()
@@ -20,12 +22,27 @@ export const getValidatorDelegatedStake = async (address) => {
 export const getMembersList = async () => {
   const validatorsInstance = await getValidatorsInstance()
   const validatorsArr = await validatorsInstance.instance.methods.getValidatorShortList().call()
+  const delegationEfficiency = await getDelegationEfficiency()
+  const validators = await mergeArrays(validatorsArr, delegationEfficiency)
 
-  if (validatorsArr?.length === 0) {
+  if (validators?.length === 0) {
     return []
   } else {
-    return await Promise.all(validatorsArr.map((i, index) => getValidator(i, index)))
+    return await Promise.all(validators.map((i, index) => getValidator(i, index)))
   }
+}
+
+const mergeArrays = async (arr1, arr2) => {
+  return arr1.map((obj, idx) => ({
+    ...obj,
+    ...arr2[idx]
+  }))
+}
+
+const getDelegationEfficiency = async () => {
+  const util = await getValidatorMetricsInstance()
+  await util.takeSnapshotFromNetwork(contractRegistryInstance)
+  return await util.getDelegationEfficiency()
 }
 
 const getValidator = async (validator, index) => {

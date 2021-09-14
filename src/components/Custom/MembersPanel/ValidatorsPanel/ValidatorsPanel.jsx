@@ -9,19 +9,12 @@ import { getValidatorMembers } from 'store/actions/action-creaters/validators'
 import { tableHeaderShort, tableHeaderWidened } from './constants'
 import { useHistory } from 'react-router-dom'
 import { LoadingWrap } from '../styles'
-import {
-  loadingMembers,
-  errorMembers,
-  validatorMembers
-} from 'store/selectors/validators'
+import { loadingMembers, errorMembers, validatorMembers } from 'store/selectors/validators'
 
 const MemberTable = lazy(() => import('components/Custom/MembersPanel/MemberTable'))
 
 function ValidatorsPanel (props) {
-  const {
-    bottom,
-    widened
-  } = props
+  const { bottom, widened } = props
 
   const loading = useSelector(loadingMembers)
   const errorMessage = useSelector(errorMembers)
@@ -43,47 +36,67 @@ function ValidatorsPanel (props) {
   }, [widened])
 
   return (
-    <CustomBlock>
-      <h1>Validator Ranking</h1>
-      <Suspense fallback={<LoadingWrap><LoadingSpinner/></LoadingWrap>}>
-        {loading
-          ? <LoadingWrap><LoadingSpinner/></LoadingWrap>
-          : errorMessage || validators?.length === 0
-            ? <p>No validators</p>
-            : <MemberTable
-              type={!widened ? 'validators' : 'validators-widened'}
-              arrayData={validators}
-              tableHeader={tableHeader}
-              widened
-            />
-        }
-      </Suspense>
-      {!bottom
-        ? <div className={'card__actions'}>
-          <Button
-            type={'white'}
-            icon="arrow-right"
-            title={'See more details'}
-            handleButton={() => history.push({
-              pathname: '/staking',
-              state: {
-                activeTab: 'validator-staking'
-              }
-            })}
-          />
-        </div>
-        : <div className={'card__actions'}>
-          <Button
-            type={'white'}
-            icon="arrow-right"
-            title={'Go to Q Vault'}
-            handleButton={() => history.push({
-              pathname: '/q-vault'
-            })}
-          />
-        </div>
-      }
-    </CustomBlock>
+        <CustomBlock>
+            <h1>Validator Ranking</h1>
+            <Suspense
+                fallback={
+                    <LoadingWrap>
+                        <LoadingSpinner />
+                    </LoadingWrap>
+                }
+            >
+                {loading
+                  ? (
+                    <LoadingWrap>
+                        <LoadingSpinner />
+                    </LoadingWrap>
+                    )
+                  : errorMessage || validators?.length === 0
+                    ? (
+                    <p>No validators</p>
+                      )
+                    : (
+                    <MemberTable
+                        type={!widened ? 'validators' : 'validators-widened'}
+                        arrayData={validators}
+                        tableHeader={tableHeader}
+                        widened
+                    />
+                      )}
+            </Suspense>
+            {!bottom
+              ? (
+                <div className={'card__actions'}>
+                    <Button
+                        type={'white'}
+                        icon="arrow-right"
+                        title={'See more details'}
+                        handleButton={() =>
+                          history.push({
+                            pathname: '/staking',
+                            state: {
+                              activeTab: 'validator-staking'
+                            }
+                          })
+                        }
+                    />
+                </div>
+                )
+              : (
+                <div className={'card__actions'}>
+                    <Button
+                        type={'white'}
+                        icon="arrow-right"
+                        title={'Go to Q Vault'}
+                        handleButton={() =>
+                          history.push({
+                            pathname: '/q-vault'
+                          })
+                        }
+                    />
+                </div>
+                )}
+        </CustomBlock>
   )
 }
 

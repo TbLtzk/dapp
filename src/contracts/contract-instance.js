@@ -1,6 +1,7 @@
 import { contractRegistryInstance } from 'contracts/contracts'
 import { contractsToAbi } from 'contracts/mapping/contract-to-abi'
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
+import { ValidatorMetrics } from '@q-dev/q-js-sdk/lib/utils/validator-metrics'
 
 let qVaultInstance = null
 let qVaultContract = null
@@ -32,6 +33,15 @@ let systemSurplusAuctionInstance = null
 let validationRewardProxyInstance = null
 let votingWeightProxyInstance = null
 let piggyBankInstance = null
+
+let validatorMetricsInstance = null
+
+export const getValidatorMetricsInstance = async () => {
+  if (validatorMetricsInstance === null) {
+    validatorMetricsInstance = new ValidatorMetrics()
+  }
+  return validatorMetricsInstance
+}
 
 export const getPiggyBankInstance = async () => {
   if (piggyBankInstance === null) {

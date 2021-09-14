@@ -11,5 +11,6 @@ export const tableHeaderWidened = [
   'Self Stake',
   'Total Delegated Stake',
   'Validator Share',
-  'Delegator Share'
+  'Delegator Share',
+  'Delegation Efficiency'
 ]
