@@ -59,7 +59,7 @@ function LoadingMetaMask () {
   const accountHandler = useCallback(() => {
     switch (isMetaMask) {
       case 'logged':
-        return <InitApp/>
+        return <InitApp />
       case 'not-logged':
         return <StartConfigurations error={'Waiting for login in MetaMask!'}/>
       case 'error':

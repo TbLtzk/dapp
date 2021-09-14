@@ -18,6 +18,7 @@ function * getAllowance ({ userAddress, contractAddress }) {
   try {
     const contract = getContractInstance()
     const data = yield contract.allowance(userAddress, contractAddress)
+
     yield put(getAllowanceSuccess(data))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)

@@ -1,75 +1,88 @@
 import * as actionTypes from '../action-types/validators'
 
-export const setError = (data) => ({
-  type: actionTypes.SET_VAL_ERROR,
-  error: data
+export const setValidatorsWithdraw = (address, amountQ) => ({
+  type: actionTypes.SET_VALIDATORS_WITHDRAW,
+  address,
+  amountQ
+})
+
+export const setValidatorsCommitStake = (address, amountQ) => ({
+  type: actionTypes.SET_VALIDATORS_COMMIT_STAKE,
+  address,
+  amountQ
+})
+
+export const setValidatorsAnnounceWithdrawal = (address, amountQ) => ({
+  type: actionTypes.SET_VALIDATORS_ANNOUNCE_WITHDRAWAL,
+  address,
+  amountQ
 })
 
 export const getDelegatorsShare = (address) => ({
-  type: actionTypes.GET_VAL_DELEGATORS_SHARE,
+  type: actionTypes.GET_VALIDATORS_DELEGATORS_SHARE,
   address
 })
 
 export const setDelegatorsShare = (data) => ({
-  type: actionTypes.SET_VAL_DELEGATORS_SHARE,
+  type: actionTypes.SET_VALIDATORS_DELEGATORS_SHARE,
   payload: data
 })
 
 export const getInterestRate = (address) => ({
-  type: actionTypes.GET_VAL_INTEREST_RATE,
+  type: actionTypes.GET_VALIDATORS_INTEREST_RATE,
   address
 })
 
 export const setInterestRate = (data) => ({
-  type: actionTypes.SET_VAL_INTEREST_RATE,
+  type: actionTypes.SET_VALIDATORS_INTEREST_RATE,
   payload: data
 })
 
 export const getTotalStake = (address) => ({
-  type: actionTypes.GET_VAL_TOTAL_STAKE,
+  type: actionTypes.GET_VALIDATORS_TOTAL_STAKE,
   address
 })
 export const setTotalStake = (data) => ({
-  type: actionTypes.SET_VAL_TOTAL_STAKE,
+  type: actionTypes.SET_VALIDATORS_TOTAL_STAKE,
   payload: data
 })
 
 export const getOwnStake = (address) => ({
-  type: actionTypes.GET_VAL_OWN_STAKE,
+  type: actionTypes.GET_VALIDATORS_OWN_STAKE,
   address
 })
 
 export const setOwnStake = (data) => ({
-  type: actionTypes.SET_VAL_OWN_STAKE,
+  type: actionTypes.SET_VALIDATORS_OWN_STAKE,
   payload: data
 })
 
 export const getSelfStake = (address) => ({
-  type: actionTypes.GET_VAL_SELF_STAKE,
+  type: actionTypes.GET_VALIDATORS_SELF_STAKE,
   address
 })
 
 export const setSelfStake = (data) => ({
-  type: actionTypes.SET_VAL_SELF_STAKE,
+  type: actionTypes.SET_VALIDATORS_SELF_STAKE,
   payload: data
 })
 
 export const getDelegatedStake = (address) => ({
-  type: actionTypes.GET_VAL_DELEGATED_STAKE,
+  type: actionTypes.GET_VALIDATORS_DELEGATED_STAKE,
   address
 })
 export const setDelegatedStake = (data) => ({
-  type: actionTypes.SET_VAL_DELEGATED_STAKE,
+  type: actionTypes.SET_VALIDATORS_DELEGATED_STAKE,
   payload: data
 })
 
-export const getAccTotalStake = (address) => ({
-  type: actionTypes.GET_VAL_ACC_TOTAL_STAKE,
+export const getAccountableTotalStake = (address) => ({
+  type: actionTypes.GET_VALIDATORS_ACCOUNTABLE_TOTAL_STAKE,
   address
 })
 
-export const setAccTotalStake = (data) => ({
-  type: actionTypes.SET_VAL_ACC_TOTAL_STAKE,
+export const setAccountableTotalStake = (data) => ({
+  type: actionTypes.SET_VALIDATORS_ACCOUNTABLE_TOTAL_STAKE,
   payload: data
 })
 
@@ -87,23 +100,23 @@ export const getValidatorMembersError = (error) => ({
 
 // Action without write to Store
 export const setDelegatorsShareSend = (address, uintPercent) => ({
-  type: actionTypes.SET_VAL_DELEGATORS_SHARE_SEND,
+  type: actionTypes.SET_VALIDATORS_DELEGATORS_SHARE_SEND,
   address,
   uintPercent
 })
 
 export const setInterestRateSend = (address, uintPercent) => ({
-  type: actionTypes.SET_VAL_INTEREST_RATE_SEND,
+  type: actionTypes.SET_VALIDATORS_INTEREST_RATE_SEND,
   address,
   uintPercent
 })
 
 export const getIsUserValidator = (address) => ({
-  type: actionTypes.IS_USER_VALIDATOR,
+  type: actionTypes.GET_IS_USER_VALIDATOR,
   address
 })
-export const isUserValidatorSuccess = (result) => ({
-  type: actionTypes.IS_USER_VALIDATOR_SUCCESS,
+export const setIsUserValidator = (result) => ({
+  type: actionTypes.SET_IS_USER_VALIDATOR,
   result
 })
 
@@ -124,5 +137,29 @@ export const getValidatorsTimeLocks = (address) => ({
 
 export const setValidatorsTimeLocks = (data) => ({
   type: actionTypes.SET_VALIDATORS_TIME_LOCKS,
+  payload: data
+})
+
+export const setEnterShortList = (address) => ({
+  type: actionTypes.SET_VALIDATORS_ENTER_SHORT_LIST,
+  address
+})
+
+export const setValidatorShortList = (data) => ({
+  type: actionTypes.SET_VALIDATORS_SHORT_LIST,
+  payload: data
+})
+
+export const getValidatorShortList = () => ({
+  type: actionTypes.GET_VALIDATORS_SHORT_LIST
+})
+
+export const getValidatorWithdrawalInfo = (address) => ({
+  type: actionTypes.GET_VALIDATORS_WITHDRAWAL_INFO,
+  address
+})
+
+export const setValidatorWithdrawalInfo = (data) => ({
+  type: actionTypes.SET_VALIDATORS_WITHDRAWAL_INFO,
   payload: data
 })
