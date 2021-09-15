@@ -23,7 +23,8 @@ export const getMembersList = async () => {
   const validatorsInstance = await getValidatorsInstance()
   const validatorsArr = await validatorsInstance.instance.methods.getValidatorShortList().call()
   const delegationEfficiency = await getDelegationEfficiency()
-  const validators = await mergeArrays(validatorsArr, delegationEfficiency)
+  const delegationSaturation = await getDelegationSaturation(validatorsArr)
+  const validators = await mergeArrays(validatorsArr, delegationEfficiency, delegationSaturation)
 
   if (validatorsArr?.length === 0) {
     return []
@@ -32,10 +33,16 @@ export const getMembersList = async () => {
   }
 }
 
-const mergeArrays = async (arr1, arr2) => {
+const getDelegationSaturation = async (validators) => {
+  const array = Array(validators.length).fill().map((_, idx) => ({ delegationSaturation: Math.floor(Math.random() * 100) }))
+  return array
+}
+
+const mergeArrays = async (arr1, arr2, arr3) => {
   return arr1.map((obj, idx) => ({
     ...obj,
-    ...arr2[idx]
+    ...arr2[idx],
+    ...arr3[idx]
   }))
 }
 
