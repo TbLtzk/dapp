@@ -2,15 +2,12 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router'
 
-import RootService from 'contracts/src/Root'
 import { detectEthereumProvider } from 'store/actions/action-creaters/user-auth'
-import { checkIsUserRootNode } from 'store/actions/action-creaters/root-contract'
+import { getCheckIsUserRootNode } from 'store/actions/action-creaters/root-contract'
 import { userAddressMetamask } from 'store/selectors/user-inf'
 
 export function AuthProtect (ProtectComponent, additionalProps = {}) {
   function ProtectRoute (props) {
-    const rootService = new RootService()
-
     const ethereum = window.ethereum
     const dispatch = useDispatch()
 
@@ -18,8 +15,7 @@ export function AuthProtect (ProtectComponent, additionalProps = {}) {
 
     useEffect(() => {
       if (userAddress) {
-        // dispatch(checkIsUserRootNode(rootService, "0x66316FfA38490d4d072F34EF7D7BA64Ce6b4478e"))
-        dispatch(checkIsUserRootNode(rootService, userAddress))
+        dispatch(getCheckIsUserRootNode(userAddress))
       }
     }, [userAddress, dispatch])
 

@@ -1,71 +1,82 @@
 /* eslint-disable */
-import { put, takeEvery } from 'redux-saga/effects'
-import * as actionTypes from 'store/actions/action-types/validation-reward-pools'
+import { put, takeEvery, select, call } from "redux-saga/effects";
+import * as actionTypes from "store/actions/action-types/validation-reward-pools";
 
-import { setError, setBalance, getVRPBalanceSuccess } from 'store/actions/action-creaters/validation-reward-pools'
-import ValidationRewardPools from 'contracts/src/ValidationRewardPools'
-import ErrorHandler from 'func/ErrorHandler'
+import {
+  setVRPBalance,
+  setVRPPoolInfo,
+  getVRPDelegatorsShare,
+  setVRPDelegatorsShareData,
+} from "store/actions/action-creaters/validation-reward-pools";
 
-import { getValidationRewardPoolsInstance } from 'contracts/contract-instance'
+import { SET_TRANSACTION_COUNTER } from "../actions/action-types/transaction-handler";
 
-function * setDelegatorsShareGenerator ({ address, uintPercent }) {
+import { getValidationRewardPoolsInstance } from "contracts/contract-instance";
+import { setErrorMessage } from "store/actions/action-creaters/transaction-handler";
+import { getPercentageFormat, uintPercentToNumber } from "func/useful";
+import { fromWei } from "func/balance";
+import ErrorHandler from "func/ErrorHandler";
+
+function* setDelegatorsShareGenerator({ amount }) {
   try {
-    const contract = yield call(getValidationRewardPoolsInstance)
-    const data = yield contract.setDelegatorsShare(address, uintPercent)
-    if (data.status === true) {
-      yield put(getDelegatorsShare(address))
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1,
+    });
+    const { userAddress } = yield select((state) => state.userInf);
+
+    const contract = yield call(getValidationRewardPoolsInstance);
+    const data = yield contract.setDelegatorsShare(getPercentageFormat(amount));
+
+    if (data.status) {
+      yield put(getVRPDelegatorsShare(userAddress));
     }
-  } catch (err) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(setError(err.message))
-  }
-}
-
-function * getInterestRateGenerator ({ address }) {
-  try {
-    const contract = yield call(getValidationRewardPoolsInstance)
-    const data = yield contract.getInterestRate(address)
-    yield put(setInterestRate(data))
-  } catch (err) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(setError(err.message))
-  }
-}
-
-function * getDelegatorsShareGenerator ({ address }) {
-  try {
-    const contract = yield call(getValidationRewardPoolsInstance)
-    const data = yield contract.getDelegatorsShare(address)
-    yield put(setDelegatorsShare(data))
-  } catch (err) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(setError(err.message))
-  }
-}
-
-function * getBalanceGenerator ({ address }) {
-  try {
-    const contract = yield call(getValidationRewardPoolsInstance)
-    const data = yield contract.getBalance(address)
-    yield put(setBalance(data))
-    yield put({ type: actionTypes.SET_VRP_DATA_IS_LOADED })
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(setError(error.message))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setErrorMessage(errorMsg));
+  } finally {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1,
+    });
   }
 }
 
-function * getBalanceDashboard ({ address }) {
+function* getDelegatorsShareGenerator({ address }) {
   try {
-    const contract = yield call(getValidationRewardPoolsInstance)
-    const data = yield contract.getBalance(address)
-    yield put(getVRPBalanceSuccess(data))
+    const contract = yield call(getValidationRewardPoolsInstance);
+    const data = yield contract.getDelegatorsShare(address);
+    const result = uintPercentToNumber(data) * 100
+    yield put(setVRPDelegatorsShareData(result));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
+  }
+}
+
+function* getBalanceGenerator({ address }) {
+  try {
+    const contract = yield call(getValidationRewardPoolsInstance);
+    const data = yield contract.getBalance(address);
+    yield put(setVRPBalance(fromWei(data)));
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error);
+  }
+}
+
+function* getPoolInfoGenerator({ address }) {
+  try {
+    const contract = yield call(getValidationRewardPoolsInstance);
+    const data = yield contract.getPoolInfo(address);
+    yield put(setVRPPoolInfo(data));
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
 export default [
+  takeEvery(actionTypes.SET_VRP_DELEGATOR_SHARE, setDelegatorsShareGenerator),
+
+  takeEvery(actionTypes.GET_VRP_DELEGATOR_SHARE, getDelegatorsShareGenerator),
+  takeEvery(actionTypes.GET_VRP_POOL_INFO, getPoolInfoGenerator),
   takeEvery(actionTypes.GET_VRP_BALANCE, getBalanceGenerator),
-  takeEvery(actionTypes.GET_VRP_BALANCE_DASHBOARD, getBalanceDashboard)
-]
+];

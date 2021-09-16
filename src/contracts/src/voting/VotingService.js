@@ -160,6 +160,8 @@ export default class VotingService {
   }
 
   async getRootNodesNumber () {
+    // const contract = await getRootNodesInstance()
+    // console.log(contract.getSize())
     const root = new RootService()
     return await root.contract.methods.getSize().call()
   }

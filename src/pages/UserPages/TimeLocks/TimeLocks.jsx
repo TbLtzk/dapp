@@ -60,7 +60,7 @@ function TimeLocks () {
     dispatch(getMinimumQVaultTimeLock(currentAddress.address))
     dispatch(getQVaultTimeLocks(currentAddress.address))
 
-    dispatch(getRootNodeStakes('', currentAddress.address))
+    dispatch(getRootNodeStakes(currentAddress.address))
     dispatch(getMinimumRootTimeLock(currentAddress.address))
     dispatch(getRootTimeLocks(currentAddress.address))
 

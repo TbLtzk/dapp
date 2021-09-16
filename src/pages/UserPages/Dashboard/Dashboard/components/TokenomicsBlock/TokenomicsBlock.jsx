@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { balanceSelector } from 'store/selectors/validation-reward-pools'
+import { balance } from 'store/selectors/validation-reward-pools'
 import { userAddressMetamask } from 'store/selectors/user-inf'
 import { updateCompoundRate } from 'store/selectors/q-vault'
 import { getUpdateCompoundRate } from 'store/actions/action-creaters/q-vault'
@@ -41,7 +41,7 @@ function TokenomicsBlock () {
   const [timeSinceQHolderRewardUpdate, setTimeSinceQHolderRewardUpdate] = useState('0')
   const [timeSinceUnixTimestamp, setTimeSinceUnixTimestamp] = useState('0')
 
-  const balanceVRP = useSelector(balanceSelector)
+  const balanceVRP = useSelector(balance)
   const handler = new Handler(userAddress)
 
   useEffect(() => {
