@@ -1,74 +1,50 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
-import ValidationRewardPools from 'contracts/src/ValidationRewardPools'
 import CardBlock from 'components/Base/CardBlock'
+import { useDispatch, useSelector } from 'react-redux'
+import { lastUpdateOfCompoundRate, loadingUpdateOfCompoundRate } from 'store/selectors/validation-reward-pools'
+import { setVRPUpdateValidatorsCompoundRate } from 'store/actions/action-creaters/validation-reward-pools'
 
 import { remainDateTimeSince } from 'func/convertDate'
-import { useSelector } from 'react-redux'
+
 import { userAddressMetamask } from 'store/selectors/user-inf'
 
-import { contractRegistryInstance } from 'contracts/contracts'
-
 export default function RefreshDelegationUpdate () {
-  const userAddress = useSelector(userAddressMetamask)
+  const dispatch = useDispatch()
 
-  const [loading, setLoading] = useState(false)
-  const [timeDelegationUnixTimestamp, setDelegationUnixTimestamp] = useState('0')
-  const [timeDelegationUpdate, setTimeDelegationUpdate] = useState('0')
+  const userAddress = useSelector(userAddressMetamask)
+  const lastUpdateCompoundRate = useSelector(lastUpdateOfCompoundRate)
+  const loadingUpdateCompoundRate = useSelector(loadingUpdateOfCompoundRate)
+  const [timeDelegationUpdate, setTimeDelegationUpdate] = useState(0)
 
   const title = 'Time since last refresh of user delegations'
 
-  async function getTimeDelegationUpdate (setTimeDelegationUpdate, setDelegationUnixTimestamp) {
-    const contractValidationRewardPools = new ValidationRewardPools()
-    const time = await contractValidationRewardPools.getLastUpdateOfCompoundRate(userAddress, userAddress)
-    setDelegationUnixTimestamp(time)
-    setTimeDelegationUpdate(remainDateTimeSince(time))
-  }
-
   useEffect(() => {
-    getTimeDelegationUpdate(setTimeDelegationUpdate, setDelegationUnixTimestamp)
+    setTimeDelegationUpdate(remainDateTimeSince(lastUpdateCompoundRate))
   }, [])
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeDelegationUpdate(remainDateTimeSince(timeDelegationUnixTimestamp))
+      setTimeDelegationUpdate(remainDateTimeSince(lastUpdateCompoundRate))
     }, 60000)
     return () => {
       clearInterval(interval)
     }
-  }, [timeDelegationUnixTimestamp])
+  }, [timeDelegationUpdate])
 
-  const btnHandler = useCallback(() => {
-    setLoading(true)
-    contractRegistryInstance.validationRewardPools()
-      .then(
-        validationRewardPools => {
-          validationRewardPools.updateValidatorsCompoundRate(userAddress, { from: userAddress })
-            .then(
-              res => {
-                getTimeDelegationUpdate(setTimeDelegationUpdate, setDelegationUnixTimestamp)
-                setLoading(false)
-              }
-            )
-            .catch(e => {
-              console.error(e)
-              setTimeDelegationUpdate(0)
-              setLoading(false)
-            })
-        }
-      )
-  }, [])
+  const btnHandler = () => {
+    dispatch(setVRPUpdateValidatorsCompoundRate(userAddress))
+  }
 
   return (
-
-    <CardBlock
-      title={title}
-      firstContent={timeDelegationUpdate}
-      btnTitle={loading ? <LoadingSpinner/> : ''}
-      btnHandler={btnHandler}
-      btnDisabled={loading}
-      btnIcon={loading ? '' : 'cached'}
-      iconFontSize="20px"
-    />
+        <CardBlock
+            title={title}
+            firstContent={timeDelegationUpdate}
+            btnTitle={loadingUpdateCompoundRate ? <LoadingSpinner /> : ''}
+            btnHandler={btnHandler}
+            btnDisabled={loadingUpdateCompoundRate}
+            btnIcon={loadingUpdateCompoundRate ? '' : 'cached'}
+            iconFontSize="20px"
+        />
   )
 }

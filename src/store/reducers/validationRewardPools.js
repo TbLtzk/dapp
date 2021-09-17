@@ -3,7 +3,9 @@ import * as actionTypes from '../actions/action-types/validation-reward-pools'
 const initialState = {
   poolInfo: null,
   delegatorShare: null,
-  balance: 0
+  balance: 0,
+  lastUpdateOfCompoundRate: null,
+  loadingUpdateOfCompoundRate: false
 }
 
 export default function index (state = initialState, action) {
@@ -22,6 +24,16 @@ export default function index (state = initialState, action) {
       return {
         ...state,
         delegatorShare: action.payload
+      }
+    case actionTypes.SET_VRP_LAST_UPDATE_OF_COMPOUND_RATE_DATA:
+      return {
+        ...state,
+        lastUpdateOfCompoundRate: action.payload
+      }
+    case actionTypes.SET_VRP_LOADING_COMPOUND_RATE:
+      return {
+        ...state,
+        loadingUpdateOfCompoundRate: action.payload
       }
     default:
       return state

@@ -1,3 +1,5 @@
 export const balance = (state) => state.validationRewardPools.balance
 export const poolInfo = (state) => state.validationRewardPools.poolInfo
 export const delegatorShare = (state) => state.validationRewardPools.delegatorShare
+export const lastUpdateOfCompoundRate = (state) => state.validationRewardPools.lastUpdateOfCompoundRate
+export const loadingUpdateOfCompoundRate = (state) => state.validationRewardPools.loadingUpdateOfCompoundRate

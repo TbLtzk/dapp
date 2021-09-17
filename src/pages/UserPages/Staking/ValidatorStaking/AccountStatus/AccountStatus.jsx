@@ -29,6 +29,7 @@ import {
 import { getAccountBalance } from 'store/actions/action-creaters/q-vault'
 import { accountBalance } from 'store/selectors/q-vault'
 import { fromWei } from 'func/balance'
+import { getVRPLastUpdateOfCompoundRate } from 'store/actions/action-creaters/validation-reward-pools'
 
 export default function AccountStatus () {
   const { register: reg, handleSubmit: submit, errors } = useForm()
@@ -47,6 +48,7 @@ export default function AccountStatus () {
   const [validatorRank, setValidatorRank] = useState(0)
 
   useEffect(() => {
+    dispatch(getVRPLastUpdateOfCompoundRate(address))
     dispatch(getAccountBalance(address))
     dispatch(getIsUserValidator(address))
     dispatch(getMinimumValidatorsTimeLock(address))

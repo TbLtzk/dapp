@@ -7,6 +7,9 @@ import {
   setVRPPoolInfo,
   getVRPDelegatorsShare,
   setVRPDelegatorsShareData,
+  setVRPLastUpdateOfCompoundRateData,
+  getVRPLastUpdateOfCompoundRate,
+  setVRPLoadingValidatorsCompoundRate,
 } from "store/actions/action-creaters/validation-reward-pools";
 
 import { SET_TRANSACTION_COUNTER } from "../actions/action-types/transaction-handler";
@@ -16,6 +19,23 @@ import { setErrorMessage } from "store/actions/action-creaters/transaction-handl
 import { getPercentageFormat, uintPercentToNumber } from "func/useful";
 import { fromWei } from "func/balance";
 import ErrorHandler from "func/ErrorHandler";
+
+function* setUpdateValidatorsCompoundRateGenerator({ address }) {
+  try {
+    yield put(setVRPLoadingValidatorsCompoundRate(true));
+    const contract = yield call(getValidationRewardPoolsInstance);
+    const data = yield contract.updateValidatorsCompoundRate(address, { from: address });
+
+    if (data.status) {
+      yield put(getVRPLastUpdateOfCompoundRate(address));
+    }
+  } catch (error) {
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setErrorMessage(errorMsg));
+  } finally {
+    yield put(setVRPLoadingValidatorsCompoundRate(false));
+  }
+}
 
 function* setDelegatorsShareGenerator({ amount }) {
   try {
@@ -46,7 +66,7 @@ function* getDelegatorsShareGenerator({ address }) {
   try {
     const contract = yield call(getValidationRewardPoolsInstance);
     const data = yield contract.getDelegatorsShare(address);
-    const result = uintPercentToNumber(data) * 100
+    const result = uintPercentToNumber(data) * 100;
     yield put(setVRPDelegatorsShareData(result));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
@@ -73,9 +93,21 @@ function* getPoolInfoGenerator({ address }) {
   }
 }
 
+function* getLastUpdateOfCompoundRateGenerator({ address }) {
+  try {
+    const contract = yield call(getValidationRewardPoolsInstance);
+    const data = yield contract.getLastUpdateOfCompoundRate(address);
+    yield put(setVRPLastUpdateOfCompoundRateData(data));
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error);
+  }
+}
+
 export default [
   takeEvery(actionTypes.SET_VRP_DELEGATOR_SHARE, setDelegatorsShareGenerator),
+  takeEvery(actionTypes.SET_VRP_UPDATE_VALIDATORS_COMPOUND_RATE, setUpdateValidatorsCompoundRateGenerator),
 
+  takeEvery(actionTypes.GET_VRP_LAST_UPDATE_OF_COMPOUND_RATE, getLastUpdateOfCompoundRateGenerator),
   takeEvery(actionTypes.GET_VRP_DELEGATOR_SHARE, getDelegatorsShareGenerator),
   takeEvery(actionTypes.GET_VRP_POOL_INFO, getPoolInfoGenerator),
   takeEvery(actionTypes.GET_VRP_BALANCE, getBalanceGenerator),
