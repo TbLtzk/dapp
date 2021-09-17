@@ -88,7 +88,7 @@ function FormStaking () {
                 {Number(rootTimeLockMinimumBalance) > 0
                   ? (
                     <div>
-                        <h5>Time locked amount</h5>
+                        <h5>Announced amount</h5>
                         <p>{fN(rootTimeLockMinimumBalance)} Q </p>
                     </div>
                     )
@@ -98,8 +98,18 @@ function FormStaking () {
                     <p>{fromWei(withdrawalsData?.amount)} Q</p>
                 </div>
                 <div>
-                    <h5>After</h5>
-                    <p>{withdrawalsData ? fromSolDateFormattingT1(withdrawalsData?.endTime) : '-'}</p>
+                    <h5>Announcement status</h5>
+                    <p>{Number(withdrawalsData?.amount) === 0 ? '-' : 'Pending'}</p>
+                </div>
+                <div>
+                    <h5>Announcement end</h5>
+                    {Number(withdrawalsData?.amount) === 0
+                      ? (
+                        <p>-</p>
+                        )
+                      : (
+                        <p>{withdrawalsData ? fromSolDateFormattingT1(withdrawalsData?.endTime) : '-'}</p>
+                        )}
                 </div>
             </AccountStatusInfo>
             <h4>Amount</h4>

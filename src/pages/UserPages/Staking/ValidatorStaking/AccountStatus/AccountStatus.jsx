@@ -124,7 +124,7 @@ export default function AccountStatus () {
                 {Number(validatorLockedAmount) > 0
                   ? (
                     <div>
-                        <h5>Time locked amount</h5>
+                        <h5>Announced amount</h5>
                         <p>{fN(validatorLockedAmount)} Q </p>
                     </div>
                     )
@@ -134,12 +134,22 @@ export default function AccountStatus () {
                     <p>{fromWei(userValidatorWithdrawalInfo.amount)} Q</p>
                 </div>
                 <div>
-                    <h5>After</h5>
-                    <p>
-                        {userValidatorWithdrawalInfo
-                          ? fromSolDateFormattingT1(userValidatorWithdrawalInfo.endTime)
-                          : '-'}
-                    </p>
+                    <h5>Announcement status</h5>
+                    <p>{Number(userValidatorWithdrawalInfo?.amount) === 0 ? '-' : 'Pending'}</p>
+                </div>
+                <div>
+                    <h5>Announcement end</h5>
+                    {Number(userValidatorWithdrawalInfo?.amount) === 0
+                      ? (
+                        <p>-</p>
+                        )
+                      : (
+                        <p>
+                            {userValidatorWithdrawalInfo
+                              ? fromSolDateFormattingT1(userValidatorWithdrawalInfo.endTime)
+                              : '-'}
+                        </p>
+                        )}
                 </div>
             </AccountStatusInfo>
             <h4>Amount</h4>
