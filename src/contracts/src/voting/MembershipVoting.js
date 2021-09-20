@@ -111,6 +111,7 @@ export default class MembershipVoting extends VotingService {
     try {
       const proposalEvents = await this.getProposalsEvent()
       const proposalIds = getPastProposalsIds([...proposalEvents])
+
       let proposalsActive = 0
       let proposalsEnded = 0
       if (proposalIds) {
