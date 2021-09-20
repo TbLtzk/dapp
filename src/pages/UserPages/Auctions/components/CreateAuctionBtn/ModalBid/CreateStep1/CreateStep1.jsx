@@ -34,7 +34,7 @@ function CreateStep1 (props) {
     }
   }
 
-  const showData = (data, symbol) => {
+  const showData = (data, symbol = '') => {
     return (
       <>
         <h4>{data.subtitleInput + symbol}</h4>
@@ -57,7 +57,7 @@ function CreateStep1 (props) {
       case AUCTIONS_TYPES.systemDebt:
         return showData(systemDebt, symbolType)
       case AUCTIONS_TYPES.systemSurplus:
-        return showData(systemSurplus, null)
+        return showData(systemSurplus)
       default:
         return null
     }
