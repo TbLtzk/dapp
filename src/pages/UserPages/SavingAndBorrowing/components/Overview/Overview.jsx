@@ -7,8 +7,11 @@ import { useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/selectors/user-inf'
 import CommonHandler from '../../handler'
 import { fN } from 'func/useful'
+import { transactionLoading } from 'store/selectors/transaction-handler'
 
 function Overview () {
+  const loading = useSelector(transactionLoading)
+
   const [totalDebt, setTotalDebt] = useState(0)
   const [loadingTotalDebt, setLoadingTotalDebt] = useState(true)
   const [totalColVal, setTotalColVal] = useState(0)
@@ -19,11 +22,17 @@ function Overview () {
   const address = useSelector(userAddressMetamask)
   const commonHandler = new CommonHandler(address)
 
-  useEffect(() => {
+  const getOverviewStats = () => {
     commonHandler.setTotalSavingBalance(setTotalSavingBalance, setLoadingTotalDebt)
     commonHandler.setOutstandingDebt(setTotalDebt, setLoadingTotalColVal)
     commonHandler.setTotalCollateralLocked(setTotalColVal, setLoadingTotalSavingBalance)
-  }, [])
+  }
+
+  useEffect(() => {
+    if (!loading) {
+      getOverviewStats()
+    }
+  }, [loading])
 
   return (
     <CustomBlock>

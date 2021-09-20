@@ -1,4 +1,4 @@
-import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler'
+import { setTransactionLoading } from 'store/actions/action-creaters/transaction-handler'
 
 import { GovernedEpdrQbtcAddress, GovernedEpdrQethAddress, StableCoinQUSD } from 'contracts/src/StableCoin'
 import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore'
@@ -96,7 +96,7 @@ export default class Handler {
   }
 
   async addDeposit (amount, vaultNum, setCollateralInf, setBorrowingInf, setLoadingInf) {
-    this.dispatch(setTransactionCounter(1))
+    this.dispatch(setTransactionLoading())
 
     this.borrowingContract.depositCol(this.address, vaultNum, toBtcBlockchain(amount))
       .then(() => {
@@ -106,12 +106,12 @@ export default class Handler {
         console.error(e)
       })
       .finally(() => {
-        this.dispatch(setTransactionCounter(-1))
+        this.dispatch(setTransactionLoading())
       })
   }
 
   async withdraw (amount, vaultNum, setCollateralInf, setBorrowingInf, setLoadingInf) {
-    this.dispatch(setTransactionCounter(1))
+    this.dispatch(setTransactionLoading())
 
     this.borrowingContract.withdrawCol(this.address, vaultNum, toBtcBlockchain(amount))
       .then(() => {
@@ -121,12 +121,12 @@ export default class Handler {
         console.error(e)
       })
       .finally(() => {
-        this.dispatch(setTransactionCounter(-1))
+        this.dispatch(setTransactionLoading())
       })
   }
 
   async borrow (amount, vaultNum, setCollateralInf, setBorrowingInf, setLoadingInf) {
-    this.dispatch(setTransactionCounter(1))
+    this.dispatch(setTransactionLoading())
 
     this.borrowingContract.generateStc(this.address, vaultNum,
       toWei(amount)
@@ -138,12 +138,12 @@ export default class Handler {
         console.error(e)
       })
       .finally(() => {
-        this.dispatch(setTransactionCounter(-1))
+        this.dispatch(setTransactionLoading())
       })
   }
 
   async repay (amount, vaultNum, setCollateralInf, setBorrowingInf, setLoadingInf) {
-    this.dispatch(setTransactionCounter(1))
+    this.dispatch(setTransactionLoading())
     const valueAmount = toWei(amount)
     this.borrowingContract.payBackStc(this.address, vaultNum, valueAmount)
       .then(() => {
@@ -153,7 +153,7 @@ export default class Handler {
         console.error(e)
       })
       .finally(() => {
-        this.dispatch(setTransactionCounter(-1))
+        this.dispatch(setTransactionLoading())
       })
   }
 

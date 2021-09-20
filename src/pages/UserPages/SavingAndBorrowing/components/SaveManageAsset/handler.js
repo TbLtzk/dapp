@@ -1,4 +1,4 @@
-import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler'
+import { setTransactionLoading } from 'store/actions/action-creaters/transaction-handler'
 
 import { StableCoinQUSD } from 'contracts/src/StableCoin'
 import { SavingQUSD } from 'contracts/src/Saving'
@@ -38,7 +38,7 @@ export default class Handler {
   }
 
   setAvailableToDeposit (stateSetter) {
-    this.dispatch(setTransactionCounter(1))
+    this.dispatch(setTransactionLoading())
 
     this.contractStableCoinQUSD.balanceOf(this.address)
       .then((res) => {
@@ -50,12 +50,12 @@ export default class Handler {
         console.error(e)
       })
       .finally(() => {
-        this.dispatch(setTransactionCounter(-1))
+        this.dispatch(setTransactionLoading())
       })
   }
 
   async deposit (amount, setterSavBal, setAvDep, setInterestRate, setEstInterest, setLoadingInf) {
-    this.dispatch(setTransactionCounter(1))
+    this.dispatch(setTransactionLoading())
 
     this.contractSavingQUSD.deposit(this.address, amount)
       .then(() => {
@@ -66,12 +66,12 @@ export default class Handler {
         console.error(e)
       })
       .finally(() => {
-        this.dispatch(setTransactionCounter(-1))
+        this.dispatch(setTransactionLoading())
       })
   }
 
   async withdraw (amount, setterSavBal, setAvDep, setInterestRate, setEstInterest, setLoadingInf) {
-    this.dispatch(setTransactionCounter(1))
+    this.dispatch(setTransactionLoading())
 
     this.contractSavingQUSD.withdraw(this.address, amount)
       .then(() => {
@@ -82,7 +82,7 @@ export default class Handler {
         console.error(e)
       })
       .finally(() => {
-        this.dispatch(setTransactionCounter(-1))
+        this.dispatch(setTransactionLoading())
       })
   }
 
