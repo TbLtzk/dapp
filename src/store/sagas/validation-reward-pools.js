@@ -12,7 +12,7 @@ function * setDelegatorsShareGenerator ({ address, uintPercent }) {
   try {
     const contract = yield call(getValidationRewardPoolsInstance)
     const data = yield contract.setDelegatorsShare(address, uintPercent)
-    if (data.status === true) {
+    if (data.status) {
       yield put(getDelegatorsShare(address))
     }
   } catch (err) {

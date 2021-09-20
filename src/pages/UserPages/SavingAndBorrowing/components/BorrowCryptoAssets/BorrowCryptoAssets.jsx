@@ -8,6 +8,7 @@ import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
 import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore'
 import { useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/selectors/user-inf'
+import { transactionLoading } from 'store/selectors/transaction-handler'
 
 const HEADERS = [
   'Collateral Asset',
@@ -16,8 +17,10 @@ const HEADERS = [
   ''
 ]
 
-function BorrowCryptoAssets ({ reload }) {
+function BorrowCryptoAssets () {
   const myAddress = useSelector(userAddressMetamask)
+  const loading = useSelector(transactionLoading)
+
   const contract = new BorrowingCoreQUSD(contractsToAddresses.BorrowingCoreQUSD)
   const [assets, setAssets] = useState([])
 
@@ -45,10 +48,10 @@ function BorrowCryptoAssets ({ reload }) {
   }
 
   useEffect(() => {
-    if (!reload) {
+    if (!loading) {
       fetchBorrowAssets()
     }
-  }, [reload])
+  }, [loading])
 
   return (
     <CustomBlock>

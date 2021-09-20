@@ -24,6 +24,7 @@ function Overview () {
     commonHandler.setOutstandingDebt(setTotalDebt, setLoadingTotalColVal)
     commonHandler.setTotalCollateralLocked(setTotalColVal, setLoadingTotalSavingBalance)
   }, [])
+
   return (
     <CustomBlock>
       <h1>Overview</h1>

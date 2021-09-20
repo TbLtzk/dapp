@@ -114,7 +114,7 @@ function* setDepositLockedAmount({ payload }) {
         value: toWei(payload.amountQ),
       }
     );
-    if (data.status === true) {
+    if (data.status) {
       yield call(getAmountOnContract, payload.contract, payload.address);
     }
   } catch (error) {
