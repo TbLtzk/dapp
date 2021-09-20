@@ -108,12 +108,7 @@ function * createProposal ({ data }) {
           const contract = chooseExpertContractDependsOnType(typeContract, data['type-proposal'])
           result = yield contract.createProposal(data, userAddress)
           contractName = chooseExpertContractNameDependsOnType(typeContract, data['type-proposal'])
-          if (data?.first === 'remove-a-current-expert') {
-            // TODO: for createRemoveExpertProposal use RemoveProposalCreated event
-            idProposal = result?.events?.RemoveProposalCreated?.returnValues?._id
-          } else {
-            idProposal = result?.events?.ProposalCreated?.returnValues?._id
-          }
+          idProposal = result?.events?.ProposalCreated?.returnValues?._id
           break
         default:
           return null

@@ -1,7 +1,6 @@
 import VotingService from './VotingService'
 
 import {
-  getPastEvents,
   getPastProposalsIds,
   getStatusTransformation
 } from '../../handler/VotingHandler'
@@ -51,10 +50,8 @@ export default class MembershipVoting extends VotingService {
   }
 
   async getProposals () {
-    // TODO: bug from blockchain for createRemoveExpertProposal use RemoveProposalCreated event
     const proposalEvents = await this.getProposalsEvent()
-    const proposalRemoveEvents = await getPastEvents(this.contract, 'RemoveProposalCreated')
-    const proposalIds = getPastProposalsIds([...proposalEvents, ...proposalRemoveEvents])
+    const proposalIds = getPastProposalsIds([...proposalEvents])
     const proposals = []
     if (proposalIds) {
       for (const id of proposalIds) {
@@ -73,10 +70,8 @@ export default class MembershipVoting extends VotingService {
   }
 
   async getEndedProposals () {
-    // TODO: for createRemoveExpertProposal use RemoveProposalCreated event
     const proposalEvents = await this.getProposalsEvent()
-    const proposalRemoveEvents = await getPastEvents(this.contract, 'RemoveProposalCreated')
-    const proposalIds = getPastProposalsIds([...proposalEvents, ...proposalRemoveEvents])
+    const proposalIds = getPastProposalsIds([...proposalEvents])
     const proposals = []
     if (proposalIds) {
       for (const id of proposalIds) {
@@ -115,9 +110,7 @@ export default class MembershipVoting extends VotingService {
   async getProposalsCount () {
     try {
       const proposalEvents = await this.getProposalsEvent()
-      const proposalRemoveEvents = await getPastEvents(this.contract, 'RemoveProposalCreated')
-      const proposalIds = getPastProposalsIds([...proposalEvents, ...proposalRemoveEvents])
-
+      const proposalIds = getPastProposalsIds([...proposalEvents])
       let proposalsActive = 0
       let proposalsEnded = 0
       if (proposalIds) {
