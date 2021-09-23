@@ -8,7 +8,6 @@ import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
 import { useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/selectors/user-inf'
-import { transactionLoading } from 'store/selectors/transaction-handler'
 
 const HEADERS = [
   'Deposit asset',
@@ -19,7 +18,6 @@ const HEADERS = [
 
 function SavingCryptoAssets () {
   const myAddress = useSelector(userAddressMetamask)
-  const loading = useSelector(transactionLoading)
 
   const [assets, setAssets] = useState([])
 
@@ -41,10 +39,8 @@ function SavingCryptoAssets () {
   }
 
   useEffect(() => {
-    if (!loading) {
-      fetchAssets()
-    }
-  }, [loading])
+    fetchAssets()
+  }, [])
 
   return (
     <CustomBlock>

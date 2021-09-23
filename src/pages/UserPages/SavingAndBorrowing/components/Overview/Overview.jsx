@@ -7,10 +7,10 @@ import { useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/selectors/user-inf'
 import CommonHandler from '../../handler'
 import { fN } from 'func/useful'
-import { transactionLoading } from 'store/selectors/transaction-handler'
+import { transactionCounter } from 'store/selectors/transaction-handler'
 
 function Overview () {
-  const loading = useSelector(transactionLoading)
+  const trCounter = useSelector(transactionCounter)
 
   const [totalDebt, setTotalDebt] = useState(0)
   const [loadingTotalDebt, setLoadingTotalDebt] = useState(true)
@@ -29,21 +29,21 @@ function Overview () {
   }
 
   useEffect(() => {
-    if (!loading) {
+    if (trCounter === 0) {
       getOverviewStats()
     }
-  }, [loading])
+  }, [trCounter])
 
   return (
-    <CustomBlock>
-      <h1>Overview</h1>
-      <h5>Total saving balance</h5>
-      {!loadingTotalDebt ? <p>{fN(totalSavingBalance) + ' QUSD'}</p> : <LoadingSpinner/>}
-      <h5>Outstanding debt</h5>
-      {!loadingTotalColVal ? <p>{fN(totalDebt) + ' USD'}</p> : <LoadingSpinner/>}
-      <h5>Total collateral locked</h5>
-      {!loadingTotalSavingBalance ? <p>{fN(totalColVal) + ' USD'}</p> : <LoadingSpinner/>}
-    </CustomBlock>
+        <CustomBlock>
+            <h1>Overview</h1>
+            <h5>Total saving balance</h5>
+            {!loadingTotalDebt ? <p>{fN(totalSavingBalance) + ' QUSD'}</p> : <LoadingSpinner />}
+            <h5>Outstanding debt</h5>
+            {!loadingTotalColVal ? <p>{fN(totalDebt) + ' USD'}</p> : <LoadingSpinner />}
+            <h5>Total collateral locked</h5>
+            {!loadingTotalSavingBalance ? <p>{fN(totalColVal) + ' USD'}</p> : <LoadingSpinner />}
+        </CustomBlock>
   )
 }
 

@@ -2,13 +2,13 @@ import { put, takeEvery, call, select } from 'redux-saga/effects'
 import ErrorHandler from 'func/ErrorHandler'
 
 import * as actionTypes from 'store/actions/action-types/borrowing-core'
-import { setErrorMessage, setTransactionLoading } from 'store/actions/action-creaters/transaction-handler'
+import { setErrorMessage, setTransactionCounter } from 'store/actions/action-creaters/transaction-handler'
 
 import { getBorrowingCoreInstance } from 'contracts/contract-instance'
 
 function * setCreateQBTCVault () {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
 
     const contract = yield call(getBorrowingCoreInstance)
@@ -17,7 +17,7 @@ function * setCreateQBTCVault () {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put(setTransactionLoading())
+    yield put(setTransactionCounter(-1))
   }
 }
 

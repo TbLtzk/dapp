@@ -1,5 +1,4 @@
 import { contracts } from '../config/config'
-import { errorWrapper } from 'func/useful.js'
 
 import { fromWei } from 'func/balance'
 
@@ -122,8 +121,8 @@ export default class RootService {
    */
   async announceWithdrawal (amount, paymentInf) {
     try {
-      return await errorWrapper(this.contract.methods.announceWithdrawal(amount)
-        .send(paymentInf))
+      return await this.contract.methods.announceWithdrawal(amount)
+        .send(paymentInf)
     } catch (e) {
       console.error(e)
     }
@@ -138,8 +137,8 @@ export default class RootService {
    */
   async withdraw (amount, payTo, paymentInf) {
     try {
-      return await errorWrapper(this.contract.methods.withdraw(amount, payTo)
-        .send(paymentInf))
+      return await this.contract.methods.withdraw(amount, payTo)
+        .send(paymentInf)
     } catch (e) {
       console.error(e)
     }

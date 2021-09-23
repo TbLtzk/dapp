@@ -10,7 +10,6 @@ import { fN, errorHandler } from 'func/useful'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { userAddressMetamask } from 'store/selectors/user-inf'
-import { transactionLoading } from 'store/selectors/transaction-handler'
 
 const DEPOSIT_BTN_TEXT = {
   deposit: 'Deposit',
@@ -37,8 +36,6 @@ function SaveManageAsset (props) {
     handleSubmit: handleSubmit2,
     errors: errors2
   } = useForm()
-
-  const loading = useSelector(transactionLoading)
 
   const [depositBtnTitle, setDepositBtnTitle] = useState(DEPOSIT_BTN_TEXT.deposit)
 
@@ -67,17 +64,15 @@ function SaveManageAsset (props) {
     await handler.withdraw(formData.amount, setSavingBalance, setAvToDeposit, setInterestRate, setEstInterest, setLoadingInf)
   }
 
-  const updateAllData = () => {
+  const updateAllData = async () => {
     handler.setAvailableToDeposit(setAvToDeposit)
     handler.setSavingBalanceIntRateEstInterest(setSavingBalance, setInterestRate, setEstInterest, setLoadingInf)
     handler.allowance(setAllowance)
   }
 
   useEffect(async () => {
-    if (!loading) {
-      updateAllData()
-    }
-  }, [depositAsset, interestAsset, rate, loading])
+    await updateAllData()
+  }, [depositAsset, interestAsset, rate])
 
   return (
     <>
