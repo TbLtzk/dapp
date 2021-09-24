@@ -1,113 +1,144 @@
-import { put, takeEvery, call } from 'redux-saga/effects'
+import { put, takeEvery, call, select } from 'redux-saga/effects'
 
 import * as actionTypes from 'store/actions/action-types/root-contract'
 import {
-  getRootMembersDataSuccess,
-  getRootMembersDataError,
-  stakeToPanelSuccess,
-  stakeToPanelError,
-  checkIsUserRootNodeSuccess,
-  checkIsUserRootNodeError,
-  getRootNodeStakesSuccess,
-  getRootNodeStakesError,
-  announceWithdrawalSuccess,
-  announceWithdrawalError,
-  withdrawSuccess,
-  withdrawError,
-  getWithdrawalsSuccess,
-  getWithdrawalsError,
   getRootMembersData,
-  setRootTimeLocks,
-  setMinimumRootTimeLock
+  setRootMembersData,
+  setCheckIsUserRootNode,
+  getRootNodeStakes,
+  setRootNodeStakes,
+  getRootWithdrawals,
+  setRootWithdrawals,
+  getMinimumRootTimeLock,
+  setMinimumRootTimeLock,
+  setRootTimeLocks
 } from 'store/actions/action-creaters/root-contract'
-import {
-  setTransactionLoading,
-  setTransactionLoadingError,
-  setTransactionLoadingSuccess
-} from '../actions/action-creaters/transaction-handler'
+import { setErrorMessage } from '../actions/action-creaters/transaction-handler'
+import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler'
 
-import RootService from 'contracts/src/Root'
 import { addIndex } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
 import { fromWei } from 'func/balance'
 import ErrorHandler from 'func/ErrorHandler'
-
+import { getRootCalc } from 'contracts/helpers/root-node-helper'
 import { getRootNodesInstance } from 'contracts/contract-instance'
+import { getAccountBalance } from 'store/actions/action-creaters/q-vault'
 
-function * getRootMembersGenerator ({ contract }) {
+function * setRootStakeToPanelGenerator ({ data }) {
   try {
-    const data = yield contract.getRootCalc()
-    yield put(getRootMembersDataSuccess(data))
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    })
+
+    const { userAddress } = yield select((state) => state.userInf)
+
+    const contract = yield call(getRootNodesInstance)
+    const res = yield contract.commitStake(data)
+
+    if (res) {
+      yield put(getAccountBalance(userAddress))
+      yield put(getRootNodeStakes(userAddress))
+      yield put(getRootWithdrawals(userAddress))
+      yield put(getMinimumRootTimeLock(userAddress))
+      yield put(getRootMembersData())
+    }
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(getRootMembersDataError(error.message))
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    })
   }
 }
 
-function * setRootStakeToPanelGenerator ({ contract, data, callBack }) {
+function * setRootAnnounceWithdrawalGenerator ({ amount, paymentInf }) {
   try {
-    yield put(setTransactionLoading())
-    yield contract.stakeToPanel(data)
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    })
+    const contract = yield call(getRootNodesInstance)
+    const { userAddress } = yield select((state) => state.userInf)
 
-    yield put(stakeToPanelSuccess('success'))
-    yield put(setTransactionLoadingSuccess())
-    yield put(getRootMembersData(contract))
-    yield callBack()
+    const data = yield contract.announceWithdrawal(amount, paymentInf)
+
+    if (data) {
+      yield put(getAccountBalance(userAddress))
+      yield put(getRootNodeStakes(userAddress))
+      yield put(getRootWithdrawals(userAddress))
+      yield put(getMinimumRootTimeLock(userAddress))
+      yield put(getRootMembersData())
+    }
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(stakeToPanelError(error.message))
-    yield put(setTransactionLoadingError(error.message))
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    })
   }
 }
 
-function * setRootAnnounceWithdrawalGenerator ({ contract, amount, paymentInf, callBack }) {
+function * setRootWithdrawGenerator ({ amount, payTo, paymentInf }) {
   try {
-    yield put(setTransactionLoading())
-    yield contract.announceWithdrawal(amount, paymentInf)
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    })
+    const { userAddress } = yield select((state) => state.userInf)
 
-    yield put(announceWithdrawalSuccess('success'))
-    yield put(setTransactionLoadingSuccess())
-    yield callBack()
+    const contract = yield call(getRootNodesInstance)
+
+    const data = yield contract.withdraw(amount, payTo, paymentInf)
+
+    if (data) {
+      yield put(getAccountBalance(userAddress))
+      yield put(getRootNodeStakes(userAddress))
+      yield put(getRootWithdrawals(userAddress))
+      yield put(getMinimumRootTimeLock(userAddress))
+      yield put(getRootMembersData())
+    }
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(announceWithdrawalError(error.message))
-    yield put(setTransactionLoadingError(error.message))
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    })
   }
 }
 
-function * setRootWithdrawGenerator ({ contract, amount, payTo, paymentInf, callBack }) {
+function * getRootMembersGenerator () {
   try {
-    yield put(setTransactionLoading())
-    yield contract.withdraw(amount, payTo, paymentInf)
-
-    yield put(withdrawSuccess('success'))
-    yield put(setTransactionLoadingSuccess())
-    yield callBack()
+    const data = yield call(getRootCalc)
+    yield put(setRootMembersData(data))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
-    yield put(withdrawError(error.message))
-    yield put(setTransactionLoadingError(error.message))
   }
 }
 
-function * getCheckIsUserRootNodeGenerator ({ contract, address }) {
+function * getCheckIsUserRootNodeGenerator ({ address }) {
   try {
-    const data = yield contract.checkMemberIsRoot(address)
-    yield put(checkIsUserRootNodeSuccess(data))
+    const contract = yield call(getRootNodesInstance)
+    const data = yield contract.instance.methods.isMember(address).call()
+    yield put(setCheckIsUserRootNode(data))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
-    yield put(checkIsUserRootNodeError(error.message))
   }
 }
 
-function * getRootNodeStakesGenerator ({ contract, address }) {
+function * getRootNodeStakesGenerator ({ address }) {
   try {
-    const contract = new RootService()
+    const contract = yield call(getRootNodesInstance)
     const data = yield contract.getRootNodeStake(address)
-    yield put(getRootNodeStakesSuccess(data))
+    yield put(setRootNodeStakes(fromWei(data)))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
-    yield put(getRootNodeStakesError(error.message))
   }
 }
 
@@ -115,10 +146,9 @@ function * getRootWithdrawalsGenerator ({ address }) {
   try {
     const contract = yield call(getRootNodesInstance)
     const data = yield contract.getWithdrawalInfo(address)
-    yield put(getWithdrawalsSuccess(data))
+    yield put(setRootWithdrawals(data))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
-    yield put(getWithdrawalsError(error.message))
   }
 }
 
@@ -143,15 +173,14 @@ function * getRootTimeLocksGenerator ({ address }) {
 }
 
 export default [
+  takeEvery(actionTypes.SET_ROOT_STAKE_TO_PANEL, setRootStakeToPanelGenerator),
+  takeEvery(actionTypes.SET_ROOT_ANNOUNCE_WITHDRAWAL, setRootAnnounceWithdrawalGenerator),
+  takeEvery(actionTypes.SET_ROOT_WITHDRAW, setRootWithdrawGenerator),
+
   takeEvery(actionTypes.GET_ROOT_MEMBERS_DATA, getRootMembersGenerator),
-  takeEvery(actionTypes.STAKE_TO_PANEL, setRootStakeToPanelGenerator),
-  takeEvery(actionTypes.ANNOUNCE_WITHDRAWAL, setRootAnnounceWithdrawalGenerator),
-  takeEvery(actionTypes.WITHDRAW, setRootWithdrawGenerator),
-
-  takeEvery(actionTypes.CHECK_IS_USER_ROOT_NODE, getCheckIsUserRootNodeGenerator),
+  takeEvery(actionTypes.GET_CHECK_IS_USER_ROOT_NODE, getCheckIsUserRootNodeGenerator),
   takeEvery(actionTypes.GET_ROOT_NODE_STAKES, getRootNodeStakesGenerator),
-  takeEvery(actionTypes.GET_WITHDRAWALS, getRootWithdrawalsGenerator),
-
+  takeEvery(actionTypes.GET_ROOT_WITHDRAWALS, getRootWithdrawalsGenerator),
   takeEvery(actionTypes.GET_ROOT_MINIMUM_TIME_LOCK, getMinimumRootTimeLockGenerator),
   takeEvery(actionTypes.GET_ROOT_TIME_LOCKS, getRootTimeLocksGenerator)
 ]

@@ -1,47 +1,41 @@
 import * as actionTypes from '../actions/action-types/validation-reward-pools'
 
 const initialState = {
-  lastUpdate: 0,
-  loadCounter: 0,
-  error: '',
-
-  balance: 0
+  poolInfo: null,
+  delegatorShare: null,
+  balance: 0,
+  lastUpdateOfCompoundRate: null,
+  loadingUpdateOfCompoundRate: false
 }
 
 export default function index (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.SET_VRP_DATA_IS_LOADING:
-      return {
-        ...state,
-        loadCounter: state.loadCounter + 1
-      }
-    case actionTypes.SET_VRP_DATA_IS_LOADED:
-      return {
-        ...state,
-        lastUpdate: Date.now(),
-        loadCounter: state.loadCounter - 1
-      }
-    case actionTypes.SET_VRP_ERROR:
-      return {
-        ...state,
-        lastUpdate: Date.now(),
-        loadCounter: state.loadCounter - 1,
-        error: action.error
-      }
     case actionTypes.SET_VRP_BALANCE:
       return {
         ...state,
         balance: action.payload
       }
-    case actionTypes.GET_VRP_BALANCE_DASHBOARD_SUCCESS:
+    case actionTypes.SET_VRP_POOL_INFO:
       return {
         ...state,
-        balance: action.result
+        poolInfo: action.payload
+      }
+    case actionTypes.SET_VRP_DELEGATOR_SHARE_DATA:
+      return {
+        ...state,
+        delegatorShare: action.payload
+      }
+    case actionTypes.SET_VRP_LAST_UPDATE_OF_COMPOUND_RATE_DATA:
+      return {
+        ...state,
+        lastUpdateOfCompoundRate: action.payload
+      }
+    case actionTypes.SET_VRP_LOADING_COMPOUND_RATE:
+      return {
+        ...state,
+        loadingUpdateOfCompoundRate: action.payload
       }
     default:
-      return {
-        ...state,
-        lastUpdate: Date.now()
-      }
+      return state
   }
 }
