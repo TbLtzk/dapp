@@ -22,9 +22,9 @@ export const getValidatorDelegatedStake = async (address) => {
 export const getMembersList = async () => {
   const validatorsInstance = await getValidatorsInstance()
   const validatorsArr = await validatorsInstance.instance.methods.getValidatorShortList().call()
-  const delegationEfficiency = await getDelegationEfficiency()
-  const validators = await mergeArrays(validatorsArr, delegationEfficiency)
+  const delegationSaturationAndEfficiency = await getDelegationEfficiencyAndEfficiency()
 
+  const validators = await mergeArrays(validatorsArr, delegationSaturationAndEfficiency)
   if (validatorsArr?.length === 0) {
     return []
   } else {
@@ -39,10 +39,12 @@ const mergeArrays = async (arr1, arr2) => {
   }))
 }
 
-const getDelegationEfficiency = async () => {
+const getDelegationEfficiencyAndEfficiency = async () => {
   const util = await getValidatorMetricsInstance()
   await util.takeSnapshotFromNetwork(contractRegistryInstance)
-  return await util.getDelegationEfficiency()
+  const efficiency = await util.getDelegationEfficiency()
+  const saturation = await util.getDelegationSaturation()
+  return await efficiency.map((item, idx) => ({ ...item, delegationSaturation: saturation[idx] }))
 }
 
 const getValidator = async (validator, index) => {

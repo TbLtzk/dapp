@@ -1,8 +1,4 @@
-export const tableHeaderShort = [
-  'Rank',
-  'Validator Address',
-  'Total Accountable Stake'
-]
+export const tableHeaderShort = ['Rank', 'Validator Address', 'Total Accountable Stake']
 
 export const tableHeaderWidened = [
   'Rank',
@@ -12,5 +8,6 @@ export const tableHeaderWidened = [
   'Total Delegated Stake',
   'Validator Share',
   'Delegator Share',
-  'Delegation Efficiency'
+  'Delegation Efficiency',
+  'Delegation Saturation'
 ]
