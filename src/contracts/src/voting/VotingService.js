@@ -1,10 +1,7 @@
 import { contracts } from '../../config/config'
-import {
-  getPastEvents,
-  getPastProposalsIds, transformToPercentage
-} from '../../handler/VotingHandler'
-import RootService from '../Root'
+import { getPastEvents, getPastProposalsIds, transformToPercentage } from '../../handler/VotingHandler'
 import { ParameterType } from '@q-dev/q-js-sdk'
+import { getRootNodesInstance } from 'contracts/contract-instance'
 
 export default class VotingService {
   constructor (contractName) {
@@ -17,28 +14,24 @@ export default class VotingService {
   }
 
   async getProposal (id) {
-    const result = await this.contract.methods.proposals(id)
-      .call()
+    const result = await this.contract.methods.proposals(id).call()
     return result
   }
 
   async getProposalStatus (id) {
-    const result = await this.contract.methods.getStatus(id)
-      .call()
+    const result = await this.contract.methods.getStatus(id).call()
     return result
   }
 
   async getProposalStats (id) {
-    const result = await this.contract.methods.getProposalStats(id)
-      .call()
+    const result = await this.contract.methods.getProposalStats(id).call()
     return result
   }
 
   async getVetoesNumber (id) {
     try {
       if (this.contract.methods.getVetosNumber) {
-        const result = await this.contract.methods.getVetosNumber(id)
-          .call()
+        const result = await this.contract.methods.getVetosNumber(id).call()
         return result
       } else {
         return 0
@@ -50,29 +43,22 @@ export default class VotingService {
   }
 
   async getVetoesPercentage (id) {
-    const result = await this.contract.methods.getVetosPercentage(id)
-      .call()
+    const result = await this.contract.methods.getVetosPercentage(id).call()
     return result
   }
 
   async voteAgainst (id, userAddress) {
-    const result = await this.contract.methods.voteAgainst(id)
-      .send(
-        { from: userAddress })
+    const result = await this.contract.methods.voteAgainst(id).send({ from: userAddress })
     return result
   }
 
   async voteFor (id, userAddress) {
-    const result = await this.contract.methods.voteFor(id)
-      .send(
-        { from: userAddress })
+    const result = await this.contract.methods.voteFor(id).send({ from: userAddress })
     return result
   }
 
   async veto (id, userAddress) {
-    const result = await this.contract.methods.veto(id)
-      .send(
-        { from: userAddress })
+    const result = await this.contract.methods.veto(id).send({ from: userAddress })
     return result
   }
 
@@ -80,9 +66,7 @@ export default class VotingService {
     const promiseStatus = await this.getProposalStatus(id)
     let result = null
     if (promiseStatus === '4') {
-      result = await this.contract.methods.execute(id)
-        .send(
-          { from: userAddress })
+      result = await this.contract.methods.execute(id).send({ from: userAddress })
     }
     return result
   }
@@ -91,8 +75,7 @@ export default class VotingService {
     if (id) {
       let objRes = null
       const promiseStatus = await this.getProposalStatus(id)
-      if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4' ||
-        promiseStatus === '5') {
+      if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4' || promiseStatus === '5') {
         const promiseRes = await this.getProposal(id)
         if (promiseRes) {
           objRes = await this.getProposalData(promiseRes, id, promiseStatus)
@@ -116,8 +99,7 @@ export default class VotingService {
     }
   }
 
-  async getProposalData (promiseRes, id, promiseStatus) {
-  }
+  async getProposalData (promiseRes, id, promiseStatus) {}
 
   async getProposals () {
     const proposalEvents = await this.getProposalsEvent()
@@ -160,10 +142,8 @@ export default class VotingService {
   }
 
   async getRootNodesNumber () {
-    // const contract = await getRootNodesInstance()
-    // console.log(contract.getSize())
-    const root = new RootService()
-    return await root.contract.methods.getSize().call()
+    const contract = await getRootNodesInstance()
+    return await contract.getSize()
   }
 
   async getProposalStatsData (id) {
@@ -173,7 +153,7 @@ export default class VotingService {
     const rootNodesNumber = await this.getRootNodesNumber()
     objRes.vetoesNumber = getVetoesNumber
     objRes.noVote = rootNodesNumber - getVetoesNumber
-    objRes.vetoesPercentage = getVetoesNumber * 100 / rootNodesNumber
+    objRes.vetoesPercentage = (getVetoesNumber * 100) / rootNodesNumber
     objRes.currentMajority = transformToPercentage(proposalStats.currentMajority)
     objRes.currentQuorum = transformToPercentage(proposalStats.currentQuorum)
     objRes.requiredMajority = transformToPercentage(proposalStats.requiredMajority)
@@ -209,14 +189,13 @@ export default class VotingService {
   }
 
   async getParametersArr (id) {
-    const result = await this.contract.methods.getParametersArr(id)
-      .call()
+    const result = await this.contract.methods.getParametersArr(id).call()
     return result
   }
 
   async getProposalParametersData (id) {
     const parameters = await this.getParametersArr(id)
-    return parameters.map(item => {
+    return parameters.map((item) => {
       let value = null
       switch (item.paramType) {
         case ParameterType.ADDRESS:
