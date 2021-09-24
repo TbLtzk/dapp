@@ -13,7 +13,8 @@ export const darkColors = {
   oxfordBlueTint6: '#E4EAF2',
   white: '#FFFFFF',
   neonGreen: '#87FF65',
-  validationError: '#FF8550'
+  validationError: '#FF8550',
+  red: '#FC4136'
 }
 
 export const lightColors = {
@@ -26,14 +27,17 @@ export const lightColors = {
   oxfordBlueTint6: '#0B2545',
   white: '#07172B',
   neonGreen: '#67c54d',
-  validationError: '#FF8550'
+  validationError: '#FF8550',
+  red: '#FC4136'
 }
 
 const colors = {
   white: '#FFFFFF',
   neonGreen: '#87FF65',
+  orange: 'FF8550',
   oxfordBlueTint2: '#3C516A',
   oxfordBlueTint1: '#07172B',
   oxfordBlueTint3: '#6D7C8F'
 }
+
 export default colors

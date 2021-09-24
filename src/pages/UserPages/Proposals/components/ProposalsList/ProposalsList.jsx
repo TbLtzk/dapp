@@ -101,7 +101,7 @@ function ProposalsList (props) {
                         <p>{proposal.id}</p>
                       </div>
                       <div>
-                        <h5>Voting until</h5>
+                        <h5>Proposal open until</h5>
                         <p>{convertToMonthDayYear(proposal.vetoEndTime)}</p>
                       </div>
                       <div>
