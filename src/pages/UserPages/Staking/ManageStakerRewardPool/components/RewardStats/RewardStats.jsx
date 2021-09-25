@@ -1,54 +1,58 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/selectors/user-inf'
 import { delegatedStakeSelector } from 'store/selectors/validators'
+import { delegatorShare, balance, poolInfo } from 'store/selectors/validation-reward-pools'
+import {
+  getVRPBalance,
+  getVRPDelegatorsShare,
+  getVRPPoolInfo,
+  setVRPDelegatorsShare
+} from 'store/actions/action-creaters/validation-reward-pools'
 
 import FormInput from 'components/Base/Form/FormInput'
 import Button from 'components/Base/Buttons/Button'
 
 import { useForm } from 'react-hook-form'
-import Handler from './handler'
 
 import { errorHandler, fN } from 'func/useful'
 
-export default function RewardStats () {
-  const {
-    register: reg1,
-    handleSubmit: submit1,
-    errors: err1
-  } = useForm()
+export default function RewardStats ({ setModalShow }) {
+  const { register: reg1, handleSubmit: submit1, errors: err1 } = useForm()
 
-  const [amountRP, setAmountRP] = useState(0)
-  const [delShare, setDelShare] = useState(0)
-  const [delClaim, setDelClaim] = useState(0)
+  const dispatch = useDispatch()
+
   const delegatedStake = useSelector(delegatedStakeSelector)
+  const userDelegatorShare = useSelector(delegatorShare)
+  const userBalance = useSelector(balance)
+  const userPoolInfo = useSelector(poolInfo)
 
   const address = useSelector(userAddressMetamask)
-  const handler = new Handler(address, useDispatch())
 
   useEffect(() => {
-    handler.getAmountOfRewardPool(setAmountRP)
-    handler.getDelegatorShare(setDelShare)
-    handler.getPoolInfo(setDelClaim)
+    dispatch(getVRPDelegatorsShare(address))
+    dispatch(getVRPBalance(address))
+    dispatch(getVRPPoolInfo(address))
   }, [])
 
-  const setDelegatorShare = (formData) => {
-    handler.setDelegatorShare(formData, setDelShare)
+  const setDelegatorShareFunc = (formData) => {
+    dispatch(setVRPDelegatorsShare(formData.amount))
+    setModalShow()
   }
 
-  const disDelClaims = amountRP - delClaim
+  const disDelClaims = userBalance - userPoolInfo
 
   const rewardStatsArr = useMemo(() => {
     return [
       [
         {
           label: 'Collected Pool Rewards:',
-          value: fN(amountRP) + 'Q'
+          value: fN(userBalance) + 'Q'
         },
         {
           label: 'Outstanding Delegator Claims:',
-          value: fN(delClaim) + 'Q'
+          value: fN(userPoolInfo) + 'Q'
         },
         {
           label: 'Distributable Delegator Rewards:',
@@ -62,57 +66,50 @@ export default function RewardStats () {
       [
         {
           label: 'Validator Share:',
-          value: delShare === 0 ? '100%' : fN(100 - delShare) + '%'
+          value: userDelegatorShare === 0 ? '100%' : fN(100 - userDelegatorShare) + '%'
         },
         {
           label: 'Delegator Share:',
-          value: fN(delShare) + '%'
+          value: fN(userDelegatorShare) + '%'
         }
       ]
     ]
-  }, [amountRP, delShare, delClaim, disDelClaims, delegatedStake])
+  }, [userBalance, userDelegatorShare, userPoolInfo, disDelClaims, delegatedStake])
 
   return (
-    <>
-      <h3 className="title type-1">Reward Stats</h3>
-      {rewardStatsArr?.map((line, index) => {
-        return (
-          <div key={index + '--reward-line'} style={{ display: 'flex' }}>
-            {
-              line.map(el => {
-                return (
-                  <div key={el.label + '-reward-stats'} style={{ width: '50%' }}>
-                    <h5>{el.label}</h5>
-                    <p>{el.value}</p>
-                  </div>
-                )
-              })
-            }
-          </div>
-        )
-      })}
-      <h4>Set Delegator Share</h4>
-      <div className="modal-one-line-form">
-        <FormInput
-          name="amount"
-          type="number"
-          lbl="%"
-          placeholder="0"
-          palette="dark"
-          ref={reg1({
-            required: true,
-            min: 0,
-            max: 100.0001
-          })}
-          valid={errorHandler(err1, 'amount')}
-        />
-        <Button
-          type="outline"
-          title="Set"
-          width="94px"
-          handleButton={submit1(setDelegatorShare)}
-        />
-      </div>
-    </>
+        <>
+            <h3 className="title type-1">Reward Stats</h3>
+            {rewardStatsArr?.map((line, index) => {
+              return (
+                    <div key={index + '--reward-line'} style={{ display: 'flex' }}>
+                        {line.map((el) => {
+                          return (
+                                <div key={el.label + '-reward-stats'} style={{ width: '50%' }}>
+                                    <h5>{el.label}</h5>
+                                    <p>{el.value}</p>
+                                </div>
+                          )
+                        })}
+                    </div>
+              )
+            })}
+            <h4>Set Delegator Share</h4>
+            <div className="modal-one-line-form">
+                <FormInput
+                    name="amount"
+                    type="number"
+                    lbl="%"
+                    placeholder="0"
+                    palette="dark"
+                    ref={reg1({
+                      required: true,
+                      min: 0,
+                      max: 100.0001
+                    })}
+                    valid={errorHandler(err1, 'amount')}
+                />
+                <Button type="outline" title="Set" width="94px" handleButton={submit1(setDelegatorShareFunc)} />
+            </div>
+        </>
   )
 }

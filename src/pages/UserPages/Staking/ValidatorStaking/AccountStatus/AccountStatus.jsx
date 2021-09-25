@@ -10,11 +10,8 @@ import { fromSolDateFormattingT1 } from 'func/date'
 import { AccountStatusForm, AccountStatusInfo } from '../../styles'
 import {
   getAccountableTotalStake,
-  getDelegatedStake,
-  getOwnStake,
-  getTotalStake,
   getMinimumValidatorsTimeLock,
-  setEnterShortList,
+  setValidatorsEnterShortList,
   getIsUserValidator,
   setValidatorsWithdraw,
   setValidatorsAnnounceWithdrawal,
@@ -32,30 +29,32 @@ import {
 import { getAccountBalance } from 'store/actions/action-creaters/q-vault'
 import { accountBalance } from 'store/selectors/q-vault'
 import { fromWei } from 'func/balance'
+import { getVRPLastUpdateOfCompoundRate } from 'store/actions/action-creaters/validation-reward-pools'
 
 export default function AccountStatus () {
   const { register: reg, handleSubmit: submit, errors } = useForm()
+
   const dispatch = useDispatch()
+
+  const address = useSelector(userAddressMetamask)
+
   const userAccountBalance = useSelector(accountBalance)
   const isThisUserValidator = useSelector(isUserValidator)
   const userAccountableTotalStake = useSelector(accountableTotalStake)
   const userValidatorShortList = useSelector(validatorShortList)
   const userValidatorWithdrawalInfo = useSelector(validatorWithdrawalInfo)
-  const address = useSelector(userAddressMetamask)
   const validatorLockedAmount = useSelector(validatorsMinimumTimeLock)
 
   const [validatorRank, setValidatorRank] = useState(0)
 
   useEffect(() => {
+    dispatch(getVRPLastUpdateOfCompoundRate(address))
     dispatch(getAccountBalance(address))
     dispatch(getIsUserValidator(address))
     dispatch(getMinimumValidatorsTimeLock(address))
     dispatch(getAccountableTotalStake(address))
     dispatch(getValidatorShortList())
     dispatch(getValidatorWithdrawalInfo(address))
-    dispatch(getTotalStake(address))
-    dispatch(getOwnStake(address))
-    dispatch(getDelegatedStake(address))
   }, [])
 
   useEffect(() => {
@@ -72,7 +71,7 @@ export default function AccountStatus () {
     dispatch(setValidatorsCommitStake(address, formData.amount))
   }
 
-  const announce = (formData) => {
+  const announceWithdrawal = (formData) => {
     dispatch(setValidatorsAnnounceWithdrawal(address, formData.amount))
   }
 
@@ -80,57 +79,52 @@ export default function AccountStatus () {
     dispatch(setValidatorsWithdraw(address, formData.amount))
   }
 
-  const renderValidatorRanking = () => {
-    if (isThisUserValidator) {
-      return (
-                <>
-                    <div>
-                        <h5>Status</h5>
-                        <p>Active Validator</p>
-                    </div>
-                    <div>
-                        <h5>Current Rank</h5>
-                        <p>{validatorRank}#</p>
-                    </div>
-                </>
+  const confirmValidation = () => {
+    dispatch(setValidatorsEnterShortList(address))
+  }
+
+  const confirmValidatorButton = !isThisUserValidator
+    ? (
+        <div className="card__actions">
+            <Button type="default" title="Join Validator Ranking" handleButton={confirmValidation} />
+        </div>
       )
-    }
-    return (
+    : null
+
+  const checkIsUserValidator = (
+        <>
             <div>
                 <h5>Status</h5>
-                <p>Not a Validator</p>
+                {isThisUserValidator ? <p>Active Validator</p> : <p>Not a Validator</p>}
             </div>
-    )
-  }
-
-  const confirmValidation = () => {
-    dispatch(setEnterShortList(address))
-  }
-
-  const renderConfValBtn = () => {
-    if (!isThisUserValidator) {
-      return (
-                <div className="card__actions">
-                    <Button type="default" title="Join Validator Ranking" handleButton={confirmValidation} />
+            {isThisUserValidator
+              ? (
+                <div>
+                    <h5>Current Rank</h5>
+                    <p>{validatorRank}#</p>
                 </div>
-      )
-    }
-    return null
-  }
+                )
+              : null}
+        </>
+  )
 
   return (
         <CustomBlock>
             <h1>Manage balance</h1>
             <AccountStatusInfo>
-                {renderValidatorRanking()}
+                {checkIsUserValidator}
                 <div>
                     <h5>Stake in Validator Ranking</h5>
                     <p>{fN(userAccountableTotalStake)} Q</p>
                 </div>
+                <div>
+                    <h5>Q Balance</h5>
+                    <p>{fN(userAccountBalance)} Q</p>
+                </div>
                 {Number(validatorLockedAmount) > 0
                   ? (
                     <div>
-                        <h5>Time locked amount</h5>
+                        <h5>Announced amount</h5>
                         <p>{fN(validatorLockedAmount)} Q </p>
                     </div>
                     )
@@ -140,21 +134,27 @@ export default function AccountStatus () {
                     <p>{fromWei(userValidatorWithdrawalInfo.amount)} Q</p>
                 </div>
                 <div>
-                    <h5>After</h5>
-                    <p>
-                        {userValidatorWithdrawalInfo.endTime === 0
-                          ? '-'
-                          : fromSolDateFormattingT1(userValidatorWithdrawalInfo.endTime)}
-                    </p>
+                    <h5>Announcement status</h5>
+                    <p>{Number(userValidatorWithdrawalInfo?.amount) === 0 ? '-' : 'Pending'}</p>
                 </div>
                 <div>
-                    <h5>Personal balance</h5>
-                    <p>{fN(userAccountBalance)} Q</p>
+                    <h5>Announcement end</h5>
+                    {Number(userValidatorWithdrawalInfo?.amount) === 0
+                      ? (
+                        <p>-</p>
+                        )
+                      : (
+                        <p>
+                            {userValidatorWithdrawalInfo
+                              ? fromSolDateFormattingT1(userValidatorWithdrawalInfo.endTime)
+                              : '-'}
+                        </p>
+                        )}
                 </div>
             </AccountStatusInfo>
             <h4>Amount</h4>
             <AccountStatusForm>
-                <div className={'account-status__form-input'}>
+                <div className="account-status__form-input">
                     <FormInput
                         color={true}
                         name="amount"
@@ -170,11 +170,11 @@ export default function AccountStatus () {
                 </div>
                 <div className="account-status__form-actions">
                     <Button type="default" title="Stake to Ranking" handleButton={submit(stakeToRanking)} />
-                    <Button type="default" title="Announce Withdrawal" handleButton={submit(announce)} />
+                    <Button type="default" title="Announce Withdrawal" handleButton={submit(announceWithdrawal)} />
                     <Button type="default" title="Withdraw from Ranking" handleButton={submit(withdrawFromRanking)} />
                 </div>
             </AccountStatusForm>
-            {renderConfValBtn()}
+            {confirmValidatorButton}
         </CustomBlock>
   )
 }

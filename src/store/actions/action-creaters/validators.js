@@ -142,7 +142,7 @@ export const setValidatorsTimeLocks = (data) => ({
   payload: data
 })
 
-export const setEnterShortList = (address) => ({
+export const setValidatorsEnterShortList = (address) => ({
   type: actionTypes.SET_VALIDATORS_ENTER_SHORT_LIST,
   address
 })

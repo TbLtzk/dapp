@@ -25,7 +25,7 @@ function VotingStats () {
 
   useEffect(() => {
     dispatch(getLockedAssets(address))
-    dispatch(getRootNodeStakes('', address))
+    dispatch(getRootNodeStakes(address))
     dispatch(getSelfStake(address))
   }, [])
 
