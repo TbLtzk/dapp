@@ -8,76 +8,65 @@ import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
 import { useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/selectors/user-inf'
+import { transactionCounter } from 'store/selectors/transaction-handler'
 
-const HEADERS = [
-  'Deposit asset',
-  'Interest asset',
-  'Interest rate (p.a.)',
-  ''
-]
+const HEADERS = ['Deposit asset', 'Interest asset', 'Interest rate (p.a.)', '']
 
 function SavingCryptoAssets () {
   const myAddress = useSelector(userAddressMetamask)
+  const trCounter = useSelector(transactionCounter)
 
   const [assets, setAssets] = useState([])
 
   const fetchAssets = async () => {
     const contractSavingQUSD = new SavingQUSD(contractsToAddresses.SavingQUSD)
-    const BalanceDetails = await contractSavingQUSD.getBalanceDetails(myAddress)
-      .catch(() => {
-      })
+    const BalanceDetails = await contractSavingQUSD.getBalanceDetails(myAddress).catch(() => {})
     const intRateL = uintPerSecondToPerYearNumber(BalanceDetails.interestRate)
-    setAssets(
-      [
-        {
-          depositAsset: 'QUSD',
-          interestAsset: 'QUSD',
-          rate: intRateL
-        }
-      ]
-    )
+    setAssets([
+      {
+        depositAsset: 'QUSD',
+        interestAsset: 'QUSD',
+        rate: intRateL
+      }
+    ])
   }
 
   useEffect(() => {
-    fetchAssets()
-  }, [])
+    if (trCounter === 0) {
+      fetchAssets()
+    }
+  }, [trCounter])
 
   return (
-    <CustomBlock>
-      <h1>Saving Crypto Assets</h1>
-      {
-        assets.length
-          ? <TableView
-            type="with-action"
-            header={HEADERS}
-            body={
-              assets.map(item => {
-                return (
-                  <tr key={item.depositAsset + '-' + item.interestAsset + item.rate}>
-                    <td>
-                      {item.depositAsset}
-                    </td>
-                    <td>
-                      {item.interestAsset}
-                    </td>
-                    <td>
-                      {fN(item.rate)}%
-                    </td>
-                    <td>
-                      <SaveManageAsset
-                        depositAsset={item.depositAsset}
-                        interestAsset={item.interestAsset}
-                        rate={item.rate}
-                      />
-                    </td>
-                  </tr>
+        <CustomBlock>
+            <h1>Saving Crypto Assets</h1>
+            {assets.length
+              ? (
+                <TableView
+                    type="with-action"
+                    header={HEADERS}
+                    body={assets.map((item) => {
+                      return (
+                            <tr key={item.depositAsset + '-' + item.interestAsset + item.rate}>
+                                <td>{item.depositAsset}</td>
+                                <td>{item.interestAsset}</td>
+                                <td>{fN(item.rate)}%</td>
+                                <td>
+                                    <SaveManageAsset
+                                        depositAsset={item.depositAsset}
+                                        interestAsset={item.interestAsset}
+                                        rate={item.rate}
+                                    />
+                                </td>
+                            </tr>
+                      )
+                    })}
+                />
                 )
-              })
-            }
-          />
-          : 'No Saving assets'
-      }
-    </CustomBlock>
+              : (
+                  'No Saving assets'
+                )}
+        </CustomBlock>
   )
 }
 
