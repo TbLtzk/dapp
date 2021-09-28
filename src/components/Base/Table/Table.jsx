@@ -1,6 +1,8 @@
 import React from 'react'
 import BootstrapTable from 'react-bootstrap-table-next'
 import paginationFactory from 'react-bootstrap-table2-paginator'
+import { useSelector } from 'react-redux'
+import { theme } from 'store/selectors/theme'
 import { TableWrapper, TableStyle } from './styles'
 
 const pageButtonRenderer = ({ page, active, disable, title, onPageChange }) => {
@@ -11,10 +13,8 @@ const pageButtonRenderer = ({ page, active, disable, title, onPageChange }) => {
   const activeStyle = { fontSize: '16px' }
   if (active) {
     activeStyle.backgroundColor = 'transparent'
-    activeStyle.color = 'white'
   } else {
     activeStyle.backgroundColor = 'transparent'
-    activeStyle.color = '#6D7C8F'
   }
   if (typeof page === 'string') {
     activeStyle.display = 'none'
@@ -22,7 +22,7 @@ const pageButtonRenderer = ({ page, active, disable, title, onPageChange }) => {
   return (
         <li className="page-item" key={page + 'idx'}>
             {page === 1 ? <span className="page-title">Page</span> : null}
-            <a href="#" onClick={handleClick} style={activeStyle}>
+            <a href="#" className='page' onClick={handleClick} style={activeStyle}>
                 {page}
             </a>
         </li>
@@ -30,6 +30,8 @@ const pageButtonRenderer = ({ page, active, disable, title, onPageChange }) => {
 }
 
 const Table = ({ tableBody, columns, perPage, keyField }) => {
+  const currentTheme = useSelector(theme)
+
   const options = {
     sizePerPageList: [
       {
@@ -42,13 +44,14 @@ const Table = ({ tableBody, columns, perPage, keyField }) => {
 
   return (
         <>
-            <TableWrapper>
-                <TableStyle>
+            <TableWrapper palette={currentTheme}>
+                <TableStyle bottomLine={perPage < tableBody.length}>
                     <BootstrapTable
                         keyField={keyField}
                         data={tableBody}
                         pagination={tableBody.length > perPage ? paginationFactory(options) : null}
                         columns={columns}
+                        bordered={false}
                     />
                 </TableStyle>
             </TableWrapper>

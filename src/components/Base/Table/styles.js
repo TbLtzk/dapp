@@ -1,22 +1,23 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const TableWrapper = styled.span`
   display: block;
   width: 100%;
   overflow-x: auto;
 
-  .table-bordered td,
-  .table-bordered th,
-  .table-bordered {
-    border: none;
-  }
-
   .validator-member {
     max-width: 300px;
   }
 
-  a {
+  .page {
     margin-right: 10px;
+    color: ${(props) => {
+      if (props.palette === 'dark') {
+        return props.theme.colors.white
+      } else {
+        return props.theme.colors.white
+      }
+    }};
   }
 
   .members {
@@ -36,11 +37,6 @@ export const TableWrapper = styled.span`
     margin-right: 10px;
   }
 
-  tbody {
-    border-top: 1px solid ${(props) => props.theme.colors.th};
-    border-bottom: 1px solid ${(props) => props.theme.colors.th};
-  }
-
   .react-bootstrap-table-pagination {
     > div:first-of-type {
       display: none;
@@ -54,13 +50,22 @@ export const TableStyle = styled.span`
   width: 100%;
 
   thead th {
-    border-top: 0;
-    border-bottom: 0;
+    cursor: pointer;
     padding: 5px 5px 10px 5px;
     font-size: 13px;
+    border-style: none;
     line-height: 17px;
     color: ${(props) => props.theme.colors.th};
-    border-bottom: 1px solid ${(props) => props.theme.colors.th};
+  }
+
+  tbody {
+    border: transparent;
+    border-top: 1px solid ${(props) => props.theme.colors.th};
+    ${(props) => (props.bottomLine ? css`border-bottom: 1px solid ${(props) => props.theme.colors.th}};` : null)}
+  }
+
+  .table td {
+    border-top: transparent;
   }
 
   tr:first-child {
@@ -87,7 +92,7 @@ export const TableStyle = styled.span`
         return '5px'
       }
     }};
-    border-top: none;
+
     border-bottom: ${(props) => {
       if (props.type === 'with-action') {
         return '1px solid ' + props.theme.colors.th
