@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 import CustomBlock from 'components/Base/CustomBlock'
@@ -6,18 +6,15 @@ import Button from 'components/Base/Buttons/Button'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { getValidatorMembers } from 'store/actions/action-creaters/validators'
-import { tableHeaderShort, tableHeaderWidened } from './constants'
 import { useHistory } from 'react-router-dom'
 import { LoadingWrap } from '../styles'
-import { loadingMembers, errorMembers, validatorMembers } from 'store/selectors/validators'
-
-const MemberTable = lazy(() => import('components/Custom/MembersPanel/MemberTable'))
+import { loadingMembers, validatorMembers } from 'store/selectors/validators'
+import MemberTables from 'components/Custom/MemberTables'
 
 function ValidatorsPanel (props) {
   const { bottom, widened } = props
 
   const loading = useSelector(loadingMembers)
-  const errorMessage = useSelector(errorMembers)
   const validators = useSelector(validatorMembers)
 
   const dispatch = useDispatch()
@@ -25,78 +22,66 @@ function ValidatorsPanel (props) {
 
   useEffect(() => {
     dispatch(getValidatorMembers())
-  }, [dispatch])
-
-  const tableHeader = useMemo(() => {
-    if (!widened) {
-      return tableHeaderShort
-    } else {
-      return tableHeaderWidened
-    }
-  }, [widened])
+  }, [])
 
   return (
-        <CustomBlock>
-            <h1>Validator Ranking</h1>
-            <Suspense
-                fallback={
-                    <LoadingWrap>
-                        <LoadingSpinner />
-                    </LoadingWrap>
-                }
-            >
+        <>
+            <CustomBlock>
                 {loading
                   ? (
                     <LoadingWrap>
                         <LoadingSpinner />
                     </LoadingWrap>
                     )
-                  : errorMessage || validators?.length === 0
+                  : validators.length === 0
                     ? (
                     <p>No validators</p>
                       )
                     : (
-                    <MemberTable
-                        type={!widened ? 'validators' : 'validators-widened'}
-                        arrayData={validators}
-                        tableHeader={tableHeader}
-                        widened
+                    <MemberTables
+                        tableType="validators"
+                        perPageLength={10}
+                        tableArray={validators}
+                        title="Validator Ranking"
+                        loading={loading}
+                        widened={widened}
                     />
                       )}
-            </Suspense>
-            {!bottom
-              ? (
-                <div className={'card__actions'}>
-                    <Button
-                        type={'white'}
-                        icon="arrow-right"
-                        title={'See more details'}
-                        handleButton={() =>
-                          history.push({
-                            pathname: '/staking',
-                            state: {
-                              activeTab: 'validator-staking'
+
+                {!bottom
+                  ? (
+                    <div className={'card__actions'}>
+                        <Button
+                            type={'white'}
+                            icon="arrow-right"
+                            title={'See more details'}
+                            handleButton={() =>
+                              history.push({
+                                pathname: '/staking',
+                                state: {
+                                  activeTab: 'validator-staking'
+                                }
+                              })
                             }
-                          })
-                        }
-                    />
-                </div>
-                )
-              : (
-                <div className={'card__actions'}>
-                    <Button
-                        type={'white'}
-                        icon="arrow-right"
-                        title={'Go to Q Vault'}
-                        handleButton={() =>
-                          history.push({
-                            pathname: '/q-vault'
-                          })
-                        }
-                    />
-                </div>
-                )}
-        </CustomBlock>
+                        />
+                    </div>
+                    )
+                  : (
+                    <div className={'card__actions'}>
+                        <Button
+                            type={'white'}
+                            icon="arrow-right"
+                            title={'Go to Q Vault'}
+                            handleButton={() =>
+                              history.push({
+                                pathname: '/q-vault'
+                              })
+                            }
+                        />
+                    </div>
+                    )}
+            </CustomBlock>
+        </>
   )
 }
 

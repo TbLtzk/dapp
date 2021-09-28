@@ -2,45 +2,30 @@ import React, { useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { getDelegationsList } from 'store/actions/action-creaters/q-vault'
-import {
-  loadingDelegationList,
-  errorDelegationList,
-  delegationList
-} from 'store/selectors/q-vault'
+import { loadingDelegationList, delegationList } from 'store/selectors/q-vault'
 
-import MemberTable from 'components/Custom/MembersPanel/MemberTable'
-import LoadingSpinner from 'components/Base/LoadingSpinner'
-
-import { tableHeader } from './constants'
-
-import { LoadingWrap } from '../styles'
+import MemberTables from 'components/Custom/MemberTables/MemberTables'
+import CustomBlock from 'components/Base/CustomBlock'
 
 function DelegatedValidatorsPanel () {
   const loading = useSelector(loadingDelegationList)
-  const errorMessage = useSelector(errorDelegationList)
   const delegations = useSelector(delegationList)
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(getDelegationsList())
-  }, [dispatch])
+  }, [])
 
   return (
-    <div>
-      {loading
-        ? <LoadingWrap><LoadingSpinner/></LoadingWrap>
-        : errorMessage || delegations?.length === 0
-          ? <p>No delegations</p>
-          : <>
-            <h3>Your current delegations</h3>
-            <MemberTable
-              type="delegated-validators"
-              arrayData={delegations}
-              tableHeader={tableHeader}
+        <CustomBlock>
+            <MemberTables
+                tableType="delegations"
+                perPageLength={delegations.length}
+                tableArray={delegations}
+                title="Your current delegations"
+                loading={loading}
             />
-          </>
-      }
-    </div>
+        </CustomBlock>
   )
 }
 

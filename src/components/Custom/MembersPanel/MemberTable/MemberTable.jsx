@@ -22,7 +22,6 @@ function MemberTable (props) {
     tableHeader,
     type
   } = props
-
   const userAddress = useSelector(userAddressMetamask)
   const amountNodeStake = useSelector(rootNodeStake)
 
