@@ -11,12 +11,18 @@ import { setAddCoinsToMetamask, setCreateQBTCVault } from 'store/actions/action-
 function SavingAndBorrowing () {
   const dispatch = useDispatch()
 
+  const shouldAddCoin =
+        !localStorage.getItem('shouldAddCoin') || Boolean(JSON.parse(localStorage.getItem('shouldAddCoin')))
+
   const createVault = () => {
     dispatch(setCreateQBTCVault())
   }
 
   useEffect(() => {
-    dispatch(setAddCoinsToMetamask())
+    if (shouldAddCoin) {
+      localStorage.setItem('shouldAddCoin', false)
+      dispatch(setAddCoinsToMetamask())
+    }
   }, [])
 
   return (
