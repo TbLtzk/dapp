@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PageWrap from 'components/Base/PageWrap'
 import Button from 'components/Base/Buttons/Button'
 import Overview from './components/Overview'
@@ -6,7 +6,7 @@ import SavingCryptoAssets from './components/SavingCryptoAssets'
 import BorrowCryptoAssets from './components/BorrowCryptoAssets'
 
 import { useDispatch } from 'react-redux'
-import { setCreateQBTCVault } from 'store/actions/action-creaters/borrowing-core'
+import { setAddCoinsToMetamask, setCreateQBTCVault } from 'store/actions/action-creaters/borrowing-core'
 
 function SavingAndBorrowing () {
   const dispatch = useDispatch()
@@ -14,6 +14,10 @@ function SavingAndBorrowing () {
   const createVault = () => {
     dispatch(setCreateQBTCVault())
   }
+
+  useEffect(() => {
+    dispatch(setAddCoinsToMetamask())
+  }, [])
 
   return (
         <PageWrap
