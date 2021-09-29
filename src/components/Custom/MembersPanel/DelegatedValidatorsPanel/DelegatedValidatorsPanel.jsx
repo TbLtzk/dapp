@@ -6,6 +6,7 @@ import { loadingDelegationList, delegationList } from 'store/selectors/q-vault'
 
 import MemberTables from 'components/Custom/MemberTables/MemberTables'
 import CustomBlock from 'components/Base/CustomBlock'
+import TABLE_TYPES from 'constants/tableTypes'
 
 function DelegatedValidatorsPanel () {
   const loading = useSelector(loadingDelegationList)
@@ -19,7 +20,7 @@ function DelegatedValidatorsPanel () {
   return (
         <CustomBlock>
             <MemberTables
-                tableType="delegations"
+                tableType={TABLE_TYPES.delegations}
                 perPageLength={delegations.length}
                 tableArray={delegations}
                 title="Your current delegations"

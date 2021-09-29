@@ -6,6 +6,7 @@ import { EPQFIMembers, EPQFIMembersError } from 'store/selectors/membership'
 
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock'
 import MemberTables from 'components/Custom/MemberTables'
+import TABLE_TYPES from 'constants/tableTypes'
 
 function QFeesMembersPanel () {
   const loading = useSelector(EPQFIMembersError)
@@ -20,7 +21,7 @@ function QFeesMembersPanel () {
   return (
         <CustomBlock>
             <MemberTables
-                tableType="qfees"
+                tableType={TABLE_TYPES.qFees}
                 perPageLength={members.length}
                 tableArray={members}
                 title="List of Q Fees & Incentives Experts"

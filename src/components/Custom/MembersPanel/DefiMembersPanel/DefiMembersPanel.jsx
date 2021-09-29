@@ -6,6 +6,7 @@ import { EPDRMembers, EPDRMembersLoading } from 'store/selectors/membership'
 
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock'
 import MemberTables from 'components/Custom/MemberTables/MemberTables'
+import TABLE_TYPES from 'constants/tableTypes'
 
 function DefiMembersPanel () {
   const loading = useSelector(EPDRMembersLoading)
@@ -20,7 +21,7 @@ function DefiMembersPanel () {
   return (
         <CustomBlock>
             <MemberTables
-                tableType="defi"
+                tableType={TABLE_TYPES.qDefi}
                 perPageLength={members.length}
                 tableArray={members}
                 title="List of DeFi Experts"

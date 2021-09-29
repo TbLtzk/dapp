@@ -6,6 +6,7 @@ import MemberTables from 'components/Custom/MemberTables'
 import CustomBlock from 'components/Base/CustomBlock'
 import ModalButton from 'components/Base/Buttons/Button'
 import ModalManage from './ModalManage'
+import TABLE_TYPES from 'constants/tableTypes'
 
 function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contract, address }) {
   const dispatch = useDispatch()
@@ -27,7 +28,7 @@ function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contrac
             <p>{balance + ' Q'}</p>
             <h5>Time locked balance</h5>
             <p>{timeLockBalance} Q</p>
-            <MemberTables tableType="lockAmount" perPageLength={4} tableArray={lockAmountData} title={null} />
+            <MemberTables tableType={TABLE_TYPES.timeLocks} perPageLength={4} tableArray={lockAmountData} title={null} />
             <ModalManage
                 address={address}
                 modalTitle={contract === 'vesting' ? 'Deposit, withdraw & purge' : 'Deposit & purge'}

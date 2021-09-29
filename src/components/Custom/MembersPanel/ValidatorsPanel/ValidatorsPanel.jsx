@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react'
 
-import LoadingSpinner from 'components/Base/LoadingSpinner'
 import CustomBlock from 'components/Base/CustomBlock'
 import Button from 'components/Base/Buttons/Button'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { getValidatorMembers } from 'store/actions/action-creaters/validators'
 import { useHistory } from 'react-router-dom'
-import { LoadingWrap } from '../../MemberTables/styles'
 import { loadingMembers, validatorMembers } from 'store/selectors/validators'
 import MemberTables from 'components/Custom/MemberTables'
+import TABLE_TYPES from 'constants/tableTypes'
 
 function ValidatorsPanel (props) {
   const { bottom, widened } = props
@@ -27,27 +26,15 @@ function ValidatorsPanel (props) {
   return (
         <>
             <CustomBlock>
-                {loading
-                  ? (
-                    <LoadingWrap>
-                        <LoadingSpinner />
-                    </LoadingWrap>
-                    )
-                  : validators.length === 0
-                    ? (
-                    <p>No validators</p>
-                      )
-                    : (
-                    <MemberTables
-                        tableType="validators"
-                        perPageLength={10}
-                        tableArray={validators}
-                        title="Validator Ranking"
-                        loading={loading}
-                        widened={widened}
-                    />
-                      )}
-
+                <MemberTables
+                    tableType={TABLE_TYPES.validators}
+                    perPageLength={10}
+                    tableArray={validators}
+                    title="Validator Ranking"
+                    loading={loading}
+                    widened={widened}
+                    emptyTable="No validators"
+                />
                 {!bottom
                   ? (
                     <div className={'card__actions'}>
