@@ -32,7 +32,7 @@ function Staking () {
 
   return (
     <PageWrap
-      headerTitle={'Staking'}
+      headerTitle='Consensus Services'
       headerExtra={(
         <ManageStakerRewardPool/>
       )}

@@ -234,7 +234,7 @@ function CreateStep3 (props) {
             <h5>Candidate to Slash</h5>
             <p>{formData.address}</p>
             <h5>Stake Amount to slash</h5>
-            <p>{formData['%-value']}%</p>
+            <p>{formData['%-value']} %</p>
             <h5>External link</h5>
             <p>{formData['external-link']}</p>
           </>

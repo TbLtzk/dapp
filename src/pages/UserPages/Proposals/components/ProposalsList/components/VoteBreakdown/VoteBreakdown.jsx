@@ -43,7 +43,7 @@ function VoteBreakdown (props) {
             </div>
 
           </div>
-          <h5>Majority Requirement: {voteBreakdown.requiredMajority}%</h5>
+          <h5>Majority Requirement: {voteBreakdown.requiredMajority} %</h5>
         </div>
         <div>
           <h4>Constitution Check</h4>
@@ -63,20 +63,20 @@ function VoteBreakdown (props) {
               <ColorTitle color="dark"><Circle color="circle-dark" />No Vote: {voteBreakdown.noVote}</ColorTitle>
             </div>
           </div>
-          <h5>Objection Requirement: {'>'}{voteBreakdown.vetoThreshold}%</h5>
+          <h5>Objection Requirement: {'>'}{voteBreakdown.vetoThreshold} %</h5>
         </div>
       </div>
       <h3 style={{ marginTop: '20px' }}>Vote Requirements</h3>
       <div className="list-card__three-colm">
         <div>
           <h5>Quorum</h5>
-          <p>{voteBreakdown.requiredQuorum}%</p>
+          <p>{voteBreakdown.requiredQuorum} %</p>
           <h5>Current Quorum</h5>
-          <p>{voteBreakdown.currentQuorum}%</p>
+          <p>{voteBreakdown.currentQuorum} %</p>
         </div>
         <div>
           <h5>Current Root Node Objection</h5>
-          <p>{voteBreakdown.vetoesPercentage}%</p>
+          <p>{voteBreakdown.vetoesPercentage} %</p>
         </div>
       </div>
     </div>

@@ -60,17 +60,17 @@ export default function RewardStats ({ setModalShow }) {
         },
         {
           label: 'Distributable Delegator Percentage:',
-          value: fN(disDelClaims / delegatedStake) + '%'
+          value: fN(disDelClaims / delegatedStake) + ' %'
         }
       ],
       [
         {
           label: 'Validator Share:',
-          value: userDelegatorShare === 0 ? '100%' : fN(100 - userDelegatorShare) + '%'
+          value: userDelegatorShare === 0 ? '100 %' : fN(100 - userDelegatorShare) + ' %'
         },
         {
           label: 'Delegator Share:',
-          value: fN(userDelegatorShare) + '%'
+          value: fN(userDelegatorShare) + ' %'
         }
       ]
     ]

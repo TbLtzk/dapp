@@ -62,7 +62,7 @@ function SavingCryptoAssets ({ reload }) {
                       {item.interestAsset}
                     </td>
                     <td>
-                      {fN(item.rate)}%
+                      {fN(item.rate)} %
                     </td>
                     <td>
                       <SaveManageAsset

@@ -75,14 +75,14 @@ export default function Panel () {
                 <p>
                     {(balanceDetails?.interestRate
                       ? fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate))
-                      : 0) + '%'}
+                      : 0) + ' %'}
                 </p>
                 <h5>Yearly expected reward</h5>
                 <p>{fN(yearlyExpectedEarnings) + ' Q'}</p>
                 <h5>Q address balance</h5>
                 <p>{fN(userAccountBalance) + ' Q'}</p>
 
-                <div className={'card__line'} />
+                <div className='card__line' />
 
                 <h5>Voting Weight from QVault</h5>
                 <p>{userVotingWeight + ' Q'}</p>

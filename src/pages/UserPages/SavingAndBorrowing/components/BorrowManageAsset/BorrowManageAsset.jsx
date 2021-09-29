@@ -188,7 +188,7 @@ function BorrowManageAsset (props) {
                   <h5>Available to borrow</h5>
                   <p>{fN(borrowingInf?.availableBorrow) || 0}</p>
                   <h5>Borrowing fee (p.a.)</h5>
-                  <p>{(fN(borrowingInf?.borrowingFee) || 0) + '%'}</p>
+                  <p>{(fN(borrowingInf?.borrowingFee) || 0) + ' %'}</p>
                 </div>
                 <div>
                   <h5>Available to repay</h5>

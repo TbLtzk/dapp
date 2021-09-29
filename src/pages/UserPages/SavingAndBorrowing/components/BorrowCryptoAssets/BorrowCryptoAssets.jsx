@@ -69,7 +69,7 @@ function BorrowCryptoAssets ({ reload }) {
                       QUSD
                     </td>
                     <td>
-                      {fN(item.borrowingFee)}%
+                      {fN(item.borrowingFee)} %
                     </td>
                     <td>
                       <BorrowManageAsset
@@ -82,7 +82,7 @@ function BorrowCryptoAssets ({ reload }) {
               })
             }
           />
-          : 'No Borrow assets'
+          : 'No vaults created'
       }
     </CustomBlock>
   )
