@@ -45,10 +45,11 @@ function BorrowCryptoAssets () {
   }
 
   useEffect(() => {
-    if (trCounter === 0) {
+    if (!trCounter) {
       fetchBorrowAssets()
     }
   }, [trCounter])
+
   return (
         <CustomBlock>
             <h1>Borrow Crypto Assets</h1>

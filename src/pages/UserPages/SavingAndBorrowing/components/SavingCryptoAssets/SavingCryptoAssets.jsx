@@ -32,7 +32,7 @@ function SavingCryptoAssets () {
   }
 
   useEffect(() => {
-    if (trCounter === 0) {
+    if (!trCounter) {
       fetchAssets()
     }
   }, [trCounter])

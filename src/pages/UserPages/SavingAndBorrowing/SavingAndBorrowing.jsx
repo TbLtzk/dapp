@@ -5,22 +5,20 @@ import Overview from './components/Overview'
 import SavingCryptoAssets from './components/SavingCryptoAssets'
 import BorrowCryptoAssets from './components/BorrowCryptoAssets'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setAddCoinsToMetamask, setCreateQBTCVault } from 'store/actions/action-creaters/borrowing-core'
+import { shouldAddCoins } from 'store/selectors/borrowing-core'
 
 function SavingAndBorrowing () {
   const dispatch = useDispatch()
-
-  const shouldAddCoin =
-        !localStorage.getItem('shouldAddCoin') || Boolean(JSON.parse(localStorage.getItem('shouldAddCoin')))
+  const shouldAddCoinsToMetamask = useSelector(shouldAddCoins)
 
   const createVault = () => {
     dispatch(setCreateQBTCVault())
   }
 
   useEffect(() => {
-    if (shouldAddCoin) {
-      localStorage.setItem('shouldAddCoin', false)
+    if (shouldAddCoinsToMetamask) {
       dispatch(setAddCoinsToMetamask())
     }
   }, [])

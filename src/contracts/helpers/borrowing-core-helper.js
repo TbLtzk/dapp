@@ -1,7 +1,10 @@
-export async function addCoins () {
-  const tokenAddressQUSD = '0xdC98b08363f3BfC73195dc6b532e39C51EC3c3bC'
+import { getStableCoinInstance } from 'contracts/contract-instance'
+
+export async function addCoinsToMetamask () {
+  const getAddressQUSD = await getStableCoinInstance()
+  const tokenAddressQUSD = getAddressQUSD.address
   const tokenSymbolQUSD = 'QUSD'
-  const tokenAddressQBTC = '0x1115Ab7257e47Ef97Ea0E8254E999a8be8981952'
+  const tokenAddressQBTC = '0x1115Ab7257e47Ef97Ea0E8254E999a8be8981952' // cannot find in SDK
   const tokenSymbolQBTC = 'QBTC'
   const tokenDecimals = 18
 

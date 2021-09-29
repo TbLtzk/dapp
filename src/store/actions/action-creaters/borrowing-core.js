@@ -7,3 +7,7 @@ export const setCreateQBTCVault = () => ({
 export const setAddCoinsToMetamask = () => ({
   type: actionTypes.SET_ADD_COINS_TO_METAMASK
 })
+
+export const setShoulAddCoins = () => ({
+  type: actionTypes.SET_SHOULD_ADD_COINS
+})

@@ -13,7 +13,7 @@ function LoadingTransaction ({ isLoading }) {
   const trCounter = useSelector(transactionCounter)
 
   const render = () => {
-    if (loading || trCounter > 0 || isLoading) {
+    if (loading || trCounter || isLoading) {
       return (
                 <Wrap>
                     <WrapLoading>

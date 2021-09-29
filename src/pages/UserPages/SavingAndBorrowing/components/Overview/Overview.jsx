@@ -29,7 +29,7 @@ function Overview () {
   }
 
   useEffect(() => {
-    if (trCounter === 0) {
+    if (!trCounter) {
       getOverviewStats()
     }
   }, [trCounter])

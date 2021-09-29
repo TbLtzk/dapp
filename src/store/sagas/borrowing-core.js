@@ -2,13 +2,15 @@ import { put, takeEvery, call, select } from 'redux-saga/effects'
 import ErrorHandler from 'func/ErrorHandler'
 import * as actionTypes from 'store/actions/action-types/borrowing-core'
 import { setErrorMessage, setTransactionCounter } from 'store/actions/action-creaters/transaction-handler'
-import { addCoins } from 'contracts/helpers/borrowing-core-helper'
+import { addCoinsToMetamask } from 'contracts/helpers/borrowing-core-helper'
 import { getBorrowingCoreInstance } from 'contracts/contract-instance'
+import { setShoulAddCoins } from 'store/actions/action-creaters/borrowing-core'
 
 function * setAddCoinsToMetamaskGenerator () {
   try {
     yield put(setTransactionCounter(1))
-    yield call(addCoins)
+    yield call(addCoinsToMetamask)
+    yield put(setShoulAddCoins())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
