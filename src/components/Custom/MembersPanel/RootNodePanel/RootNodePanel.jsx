@@ -9,7 +9,7 @@ import { getRootMembersData, getRootNodeStakes } from 'store/actions/action-crea
 import { rootMembersData } from 'store/selectors/root-contract'
 import MemberTables from 'components/Custom/MemberTables'
 
-import { LoadingWrap } from '../styles'
+import { LoadingWrap } from '../../MemberTables/styles'
 
 function RootNodePanel (props) {
   const { type } = props

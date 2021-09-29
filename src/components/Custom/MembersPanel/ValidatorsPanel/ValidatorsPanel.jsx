@@ -7,7 +7,7 @@ import Button from 'components/Base/Buttons/Button'
 import { useDispatch, useSelector } from 'react-redux'
 import { getValidatorMembers } from 'store/actions/action-creaters/validators'
 import { useHistory } from 'react-router-dom'
-import { LoadingWrap } from '../styles'
+import { LoadingWrap } from '../../MemberTables/styles'
 import { loadingMembers, validatorMembers } from 'store/selectors/validators'
 import MemberTables from 'components/Custom/MemberTables'
 

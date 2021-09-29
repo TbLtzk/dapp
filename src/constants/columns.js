@@ -90,46 +90,55 @@ export const columnsRootNode = [
 
 export const columnsValidatorsWidened = [
   {
+    headerStyle: () => ({ minWidth: '20px' }),
     dataField: 'rank',
     text: 'Rank',
     sort: true
   },
   {
+    headerStyle: () => ({ minWidth: '350px' }),
     dataField: 'validator',
     text: 'Validator Address',
     sort: true
   },
   {
+    headerStyle: () => ({ minWidth: '100px' }),
     dataField: 'amount',
     text: 'Total Accountable Stake',
     sort: true
   },
   {
+    headerStyle: () => ({ minWidth: '100px' }),
     dataField: 'selfStake',
     text: 'Self Stake',
     sort: true
   },
   {
+    headerStyle: () => ({ minWidth: '100px' }),
     dataField: 'delegatedStake',
     text: 'Total Delegated Stake',
     sort: true
   },
   {
+    headerStyle: () => ({ minWidth: '100px' }),
     dataField: 'validatorShare',
     text: 'Validator Share',
     sort: true
   },
   {
+    headerStyle: () => ({ minWidth: '100px' }),
     dataField: 'delegatorShare',
     text: 'Delegator Share',
     sort: true
   },
   {
+    headerStyle: () => ({ minWidth: '100px' }),
     dataField: 'delegationEfficiency',
     text: 'Delegation Efficiency',
     sort: true
   },
   {
+    headerStyle: () => ({ minWidth: '100px' }),
     dataField: 'delegationSaturation',
     text: 'Delegation Saturation',
     sort: true

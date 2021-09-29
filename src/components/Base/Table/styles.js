@@ -3,51 +3,15 @@ import styled, { css } from 'styled-components'
 export const TableWrapper = styled.span`
   display: block;
   width: 100%;
+  max-width: 100%;
   overflow-x: auto;
-
-  .validator-member {
-    max-width: 300px;
-  }
-
-  .page {
-    margin-right: 10px;
-    color: ${(props) => {
-      if (props.palette === 'dark') {
-        return props.theme.colors.white
-      } else {
-        return props.theme.colors.white
-      }
-    }};
-  }
-
-  .members {
-    max-width: 100%;
-  }
-
-  .validators-widened {
-    max-width: 247px;
-  }
-
-  .delegated-validators {
-    max-width: 176px;
-  }
-
-  .page-title {
-    color: ${(props) => props.theme.colors.white};
-    margin-right: 10px;
-  }
+  margin-bottom: 10px;
 
   .react-bootstrap-table-pagination {
     > div:first-of-type {
       display: none;
     }
   }
-`
-
-export const TableStyle = styled.span`
-  margin-bottom: 10px;
-  max-width: 100%;
-  width: 100%;
 
   thead th {
     cursor: pointer;
@@ -56,6 +20,9 @@ export const TableStyle = styled.span`
     border-style: none;
     line-height: 17px;
     color: ${(props) => props.theme.colors.th};
+    :hover {
+      color: ${(props) => props.theme.colors.neonGreen};
+    }
   }
 
   tbody {
@@ -100,5 +67,27 @@ export const TableStyle = styled.span`
         return null
       }
     }};
+  }
+`
+
+export const PagesItemWrapper = styled.li`
+  background-color: transparent;
+  font-size: 16px;
+
+  .page-item {
+    display: ${(props) => (props.isDisplayNone ? 'none' : '')};
+    margin-right: 10px;
+    color: ${(props) => {
+      if (props.palette === 'dark') {
+        return props.active ? props.theme.colors.white : props.theme.colors.oxfordBlueTint3
+      } else {
+        return props.active ? props.theme.colors.white : props.theme.colors.oxfordBlueTint4
+      }
+    }};
+  }
+
+  .page-title {
+    color: ${(props) => props.theme.colors.white};
+    margin-right: 10px;
   }
 `

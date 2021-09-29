@@ -9,7 +9,7 @@ import {
   columnsValidatorsWidened,
   columnsDeFiRisk,
   columnnsLockAmount
-} from './columns'
+} from '../../../constants/columns'
 import {
   tableRootNode,
   tableLockAmount,
@@ -18,7 +18,7 @@ import {
   tableQFees,
   tableValidatorsWidened,
   tableValidatorsShort
-} from './tables'
+} from '../../../constants/tables'
 
 const MemberTables = ({ tableType, perPageLength, tableArray, title, widened, loading = false }) => {
   const tables = {
