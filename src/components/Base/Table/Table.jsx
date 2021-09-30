@@ -12,8 +12,8 @@ const pageButtonRenderer = ({ page, active, disable, title, onPageChange }) => {
   }
   return (
         <PagesItemWrapper isDisplayNone={typeof page === 'string'} active={active} key={page + 'idx'}>
-            {page === 1 ? <span className="page-title">Page</span> : null}
-            <a href="#" className="page-item" onClick={handleClick}>
+            {page === 1 ? <span className="page-item__title">Page</span> : null}
+            <a href="#" className="page-item__link" onClick={handleClick}>
                 {page}
             </a>
         </PagesItemWrapper>

@@ -33,7 +33,7 @@ function RootNodePanel (props) {
                 tableArray={rootMembersArray.rootNodeData}
                 title={null}
                 loading={loading}
-                emptyTable="No root node panel"
+                emptyTable="No in root node panel"
             />
         </CustomBlock>
   )

@@ -74,7 +74,7 @@ export const PagesItemWrapper = styled.li`
   background-color: transparent;
   font-size: 16px;
 
-  .page-item {
+  .page-item__link {
     display: ${(props) => (props.isDisplayNone ? 'none' : '')};
     margin-right: 10px;
     color: ${(props) => {
@@ -86,7 +86,7 @@ export const PagesItemWrapper = styled.li`
     }};
   }
 
-  .page-title {
+  .page-item__title {
     color: ${(props) => props.theme.colors.white};
     margin-right: 10px;
   }

@@ -28,7 +28,13 @@ function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contrac
             <p>{balance + ' Q'}</p>
             <h5>Time locked balance</h5>
             <p>{timeLockBalance} Q</p>
-            <MemberTables tableType={TABLE_TYPES.timeLocks} perPageLength={4} tableArray={lockAmountData} title={null} />
+            <MemberTables
+                tableType={TABLE_TYPES.timeLocks}
+                perPageLength={4}
+                tableArray={lockAmountData}
+                title={null}
+                emptyTable={null}
+            />
             <ModalManage
                 address={address}
                 modalTitle={contract === 'vesting' ? 'Deposit, withdraw & purge' : 'Deposit & purge'}

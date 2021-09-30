@@ -26,6 +26,7 @@ function QFeesMembersPanel () {
                 tableArray={members}
                 title="List of Q Fees & Incentives Experts"
                 loading={loading}
+                emptyTable="Emty list"
             />
         </CustomBlock>
   )

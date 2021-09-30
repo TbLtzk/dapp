@@ -25,6 +25,7 @@ function DelegatedValidatorsPanel () {
                 tableArray={delegations}
                 title="Your current delegations"
                 loading={loading}
+                emptyTable="Empty"
             />
         </CustomBlock>
   )
