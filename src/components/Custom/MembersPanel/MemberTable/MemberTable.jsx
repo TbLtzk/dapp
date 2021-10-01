@@ -94,30 +94,30 @@ function MemberTable (props) {
     const commonClass = 'validator-member'
     if (type === 'validators') {
       const numMember = member.rank
-      const amount = fN(fromWei(member.amount)) + 'Q'
+      const amount = fN(fromWei(member.amount)) + ' Q'
       return showBodyTable(i, numMember, member.validator, amount, commonClass, null)
     } else if (type === 'validators-widened') {
       const numMember = member.rank
-      const amount = fN(fromWei(member.amount)) + 'Q'
+      const amount = fN(fromWei(member.amount)) + ' Q'
       const children = <>
         <td>{fN(member.selfStake) + 'Q'}</td>
-        <td>{fN(member.delegatedStake) + 'Q'}</td>
-        <td>{fN(member.validatorShare) + '%'}</td>
-        <td>{fN(member.delegatorShare) + '%'}</td>
-        <td>{fN(member.delegationEfficiency) + '%'}</td>
+        <td>{fN(member.delegatedStake) + ' Q'}</td>
+        <td>{fN(member.validatorShare) + ' %'}</td>
+        <td>{fN(member.delegatorShare) + ' %'}</td>
+        <td>{fN(member.delegationEfficiency) + ' %'}</td>
         <td><ProgressBar value={fN(member.delegationSaturation)}/></td>
       </>
       return showBodyTable(i, numMember, member.validator, amount, 'validators-widened', children)
     } else if (type === 'root-node') {
       const numMember = member.rank
-      const amount = fN(member.stakeAmount) + 'Q'
-      const share = member.share + '%'
+      const amount = fN(member.stakeAmount) + ' Q'
+      const share = member.share + ' %'
       const children = <td>{share}</td>
       return showBodyTable(i, numMember, member.address, amount, '', children)
     } else if (type === 'delegated-validators') {
       const children = <>
-        <td>{fN(member.actualStake) + 'Q'}</td>
-        <td>{fN(member.claimableReward) + 'Q'}</td>
+        <td>{fN(member.actualStake) + ' Q'}</td>
+        <td>{fN(member.claimableReward) + ' Q'}</td>
       </>
       return showBodyTable(i, null, member.validator, null, 'delegated-validators', children)
     } else if (type === 'members') {

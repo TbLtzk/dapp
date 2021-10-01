@@ -5,7 +5,7 @@ const ProgressBar = ({ value }) => {
   return (
         <ProgressBarWrapper value={value}>
             <span> </span>
-            {value}%
+            {value} %
         </ProgressBarWrapper>
   )
 }

@@ -5,6 +5,7 @@ import VersionsTable from '../VersionsTable'
 import { WrpVersion } from './styles'
 import { Web3Adapter } from '@q-dev/q-js-sdk'
 import pkg from '../../../../../../package.json'
+import { getNowTimeWithGMT } from 'func/convertDate'
 
 function Version () {
   const web3Adapter = new Web3Adapter(window.web3)
@@ -30,6 +31,11 @@ function Version () {
           group: versionInfoGroups.main,
           name: 'dApp',
           value: pkg.version
+        },
+        {
+          group: versionInfoGroups.main,
+          name: 'Your Current Time',
+          value: getNowTimeWithGMT()
         }
       ]
     ])
@@ -71,30 +77,32 @@ function Version () {
   }, [])
 
   return (
-    <>
-      <WrpVersion onClick={() => {
-        setModalShow(true)
-      }}>
-        {pkg.version}
-      </WrpVersion>
-      <ModalWindow
-        show={modalShow}
-        onHide={() => {
-          setModalShow(false)
-        }}
-        modalTitle={'Version Information'}
-        content={
-          <>
-            <div className="modal-line" />
-            <VersionsTable data={mainVersionInfo} header={versionInfoGroups.main}/>
-            <div className="modal-line"/>
-            <VersionsTable data={modulesVersionInfo} header={versionInfoGroups.modules}/>
-            <div className="modal-line"/>
-            <VersionsTable data={clientVersionInfo} header={versionInfoGroups.client}/>
-          </>
-        }
-      />
-    </>
+        <>
+            <WrpVersion
+                onClick={() => {
+                  setModalShow(true)
+                }}
+            >
+                {pkg.version}
+            </WrpVersion>
+            <ModalWindow
+                show={modalShow}
+                onHide={() => {
+                  setModalShow(false)
+                }}
+                modalTitle="Version Information"
+                content={
+                    <>
+                        <div className="modal-line" />
+                        <VersionsTable data={mainVersionInfo} header={versionInfoGroups.main} />
+                        <div className="modal-line" />
+                        <VersionsTable data={modulesVersionInfo} header={versionInfoGroups.modules} />
+                        <div className="modal-line" />
+                        <VersionsTable data={clientVersionInfo} header={versionInfoGroups.client} />
+                    </>
+                }
+            />
+        </>
   )
 }
 

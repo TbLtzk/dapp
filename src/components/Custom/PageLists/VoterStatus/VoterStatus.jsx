@@ -52,7 +52,7 @@ function VoterStatus () {
   }, [isRootNode, isValidator, userQVBalance])
 
   return (
-    <p>{showStatus}</p>
+    <>{showStatus}</>
   )
 }
 

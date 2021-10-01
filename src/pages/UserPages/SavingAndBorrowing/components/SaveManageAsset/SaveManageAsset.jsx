@@ -120,7 +120,7 @@ function SaveManageAsset (props) {
                 </div>
                 <div>
                   <h5>Saving reward (p.a)</h5>
-                  <p>{fN(interestRate)}%</p>
+                  <p>{fN(interestRate)} %</p>
                 </div>
               </div>
               <h4>Deposit Saving Asset</h4>

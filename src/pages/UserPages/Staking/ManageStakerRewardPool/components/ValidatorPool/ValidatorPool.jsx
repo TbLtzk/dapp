@@ -38,21 +38,21 @@ export default function ValidatorPool () {
     return [[
       {
         label: 'Total Stake:',
-        value: fN(totalStake) + 'Q'
+        value: fN(totalStake) + ' Q'
       },
       {
         label: 'Validator own Stake:',
-        value: fN(ownStake) + 'Q'
+        value: fN(ownStake) + ' Q'
       }
     ],
     [
       {
         label: 'Delegated Stake:',
-        value: fN(delegatedStake) + 'Q'
+        value: fN(delegatedStake) + ' Q'
       },
       {
         label: 'Accountable Stake:',
-        value: fN(accTotalStake) + 'Q'
+        value: fN(accTotalStake) + ' Q'
       }
     ]
     ]

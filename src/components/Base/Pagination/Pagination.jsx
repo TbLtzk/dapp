@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactPaginate from 'react-paginate'
+
 import { WrapPagination, WrapText } from './styles'
 
 export const setElementsForOnePage = (data, offset, perPage) => {
@@ -18,7 +18,7 @@ export function Pagination ({
   return (
     <WrapPagination>
       <WrapText>Page</WrapText>
-      <ReactPaginate
+      <div
         previousLabel={''}
         nextLabel={''}
         breakLabel={<span className="gap">...</span>}

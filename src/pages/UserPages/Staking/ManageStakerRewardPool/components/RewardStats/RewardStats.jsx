@@ -48,15 +48,15 @@ export default function RewardStats ({ setModalShow }) {
       [
         {
           label: 'Collected Pool Rewards:',
-          value: fN(userBalance) + 'Q'
+          value: fN(userBalance) + ' Q'
         },
         {
           label: 'Outstanding Delegator Claims:',
-          value: fN(userPoolInfo) + 'Q'
+          value: fN(userPoolInfo) + ' Q'
         },
         {
           label: 'Distributable Delegator Rewards:',
-          value: fN(disDelClaims) + 'Q'
+          value: fN(disDelClaims) + ' Q'
         },
         {
           label: 'Distributable Delegator Percentage:',

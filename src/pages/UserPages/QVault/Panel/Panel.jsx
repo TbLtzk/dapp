@@ -82,14 +82,14 @@ export default function Panel () {
                 <h5>Q address balance</h5>
                 <p>{fN(userAccountBalance) + ' Q'}</p>
 
-                <div className='card__line' />
+                <div className="card__line" />
 
                 <h5>Voting Weight from QVault</h5>
                 <p>{userVotingWeight + ' Q'}</p>
                 <h5>Voting Locking End</h5>
                 <p>{userLockingEnd}</p>
                 <h5>Voting Status</h5>
-                <VoterStatus />
+                <p><VoterStatus /></p>
             </div>
         </CustomBlock>
   )
