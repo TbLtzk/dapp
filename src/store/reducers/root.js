@@ -23,6 +23,7 @@ import systemBalance from './systemBalance'
 import systemReserve from './systemReserve'
 import theme from './theme'
 import dashboardMode from './dashboardMode'
+import borrowingCore from './borrowingCore'
 
 import transactionHandler from 'store/reducers/transactionHandler'
 
@@ -32,6 +33,7 @@ const RootReducer = combineReducers({
   rootContract,
   qVault,
   vesting,
+  borrowingCore,
 
   proposals,
   qProposals,

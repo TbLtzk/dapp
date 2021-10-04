@@ -7,8 +7,11 @@ import { useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/selectors/user-inf'
 import CommonHandler from '../../handler'
 import { fN } from 'func/useful'
+import { transactionCounter } from 'store/selectors/transaction-handler'
 
 function Overview () {
+  const trCounter = useSelector(transactionCounter)
+
   const [totalDebt, setTotalDebt] = useState(0)
   const [loadingTotalDebt, setLoadingTotalDebt] = useState(true)
   const [totalColVal, setTotalColVal] = useState(0)
@@ -19,21 +22,28 @@ function Overview () {
   const address = useSelector(userAddressMetamask)
   const commonHandler = new CommonHandler(address)
 
-  useEffect(() => {
+  const getOverviewStats = () => {
     commonHandler.setTotalSavingBalance(setTotalSavingBalance, setLoadingTotalDebt)
     commonHandler.setOutstandingDebt(setTotalDebt, setLoadingTotalColVal)
     commonHandler.setTotalCollateralLocked(setTotalColVal, setLoadingTotalSavingBalance)
-  }, [])
+  }
+
+  useEffect(() => {
+    if (!trCounter) {
+      getOverviewStats()
+    }
+  }, [trCounter])
+
   return (
-    <CustomBlock>
-      <h1>Overview</h1>
-      <h5>Total saving balance</h5>
-      {!loadingTotalDebt ? <p>{fN(totalSavingBalance) + ' QUSD'}</p> : <LoadingSpinner/>}
-      <h5>Outstanding debt</h5>
-      {!loadingTotalColVal ? <p>{fN(totalDebt) + ' USD'}</p> : <LoadingSpinner/>}
-      <h5>Total collateral locked</h5>
-      {!loadingTotalSavingBalance ? <p>{fN(totalColVal) + ' USD'}</p> : <LoadingSpinner/>}
-    </CustomBlock>
+        <CustomBlock>
+            <h1>Overview</h1>
+            <h5>Total saving balance</h5>
+            {!loadingTotalDebt ? <p>{fN(totalSavingBalance) + ' QUSD'}</p> : <LoadingSpinner />}
+            <h5>Outstanding debt</h5>
+            {!loadingTotalColVal ? <p>{fN(totalDebt) + ' USD'}</p> : <LoadingSpinner />}
+            <h5>Total collateral locked</h5>
+            {!loadingTotalSavingBalance ? <p>{fN(totalColVal) + ' USD'}</p> : <LoadingSpinner />}
+        </CustomBlock>
   )
 }
 

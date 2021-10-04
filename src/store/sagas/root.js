@@ -20,10 +20,13 @@ import systemReserve from './system-reserve'
 import parametersAddresses from './parameters-addresses'
 import lockedAmount from './locked-amount'
 import vesting from './vesting'
+import borrowingCore from './borrowing-core'
+
 export default function * rootSaga () {
   yield all([
     ...userAuth,
     ...rootContract,
+    ...borrowingCore,
     ...qVault,
     ...proposals,
     ...qProposals,

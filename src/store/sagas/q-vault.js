@@ -77,7 +77,7 @@ function * setDepositGenerator ({ address, amountQ }) {
 
     const contract = yield call(getQVaultInstance)
     const data = yield contract.deposit({ value: toWei(amountQ), from: address })
-    if (data.status === true) {
+    if (data.status) {
       yield put(getUserBalance(address))
       yield put(getAccountBalance(address))
     }
@@ -153,7 +153,7 @@ function * setLockAmountGenerator ({ address, amountQ }) {
 
     const data = yield contract.lock(toWei(amountQ), { from: address })
 
-    if (data.status === true) {
+    if (data.status) {
       yield put(getUserBalance(address))
       yield put(getLockedAssets(address))
     }
@@ -178,7 +178,7 @@ function * setUnlockAmountGenerator ({ address, amountQ }) {
     const contract = yield call(getQVaultInstance)
     const data = yield contract.unlock(toWei(amountQ), { from: address })
 
-    if (data.status === true) {
+    if (data.status) {
       yield put(getUserBalance(address))
       yield put(getLockedAssets(address))
     }

@@ -1,51 +1,40 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import PageWrap from 'components/Base/PageWrap'
 import Button from 'components/Base/Buttons/Button'
 import Overview from './components/Overview'
 import SavingCryptoAssets from './components/SavingCryptoAssets'
 import BorrowCryptoAssets from './components/BorrowCryptoAssets'
-import LoadingTransaction from 'components/Custom/LoadingTransaction'
 
-import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore'
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
-import { userAddressMetamask } from 'store/selectors/user-inf'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setAddCoinsToMetamask, setCreateQBTCVault } from 'store/actions/action-creaters/borrowing-core'
+import { shouldAddCoins } from 'store/selectors/borrowing-core'
 
 function SavingAndBorrowing () {
-  const address = useSelector(userAddressMetamask)
-  const [isLoading, setIsLoading] = useState(false)
+  const dispatch = useDispatch()
+  const shouldAddCoinsToMetamask = useSelector(shouldAddCoins)
 
-  const createVault = async (collateral) => {
-    try {
-      setIsLoading(true)
-      const contract = new BorrowingCoreQUSD(contractsToAddresses.BorrowingCoreQUSD)
-      await contract.createVault(address, collateral)
-    } catch (e) {
-      console.error(e)
-    } finally {
-      setIsLoading(false)
-    }
+  const createVault = () => {
+    dispatch(setCreateQBTCVault())
   }
 
+  useEffect(() => {
+    if (shouldAddCoinsToMetamask) {
+      dispatch(setAddCoinsToMetamask())
+    }
+  }, [])
+
   return (
-    <PageWrap
-      wrapContentClasses={'wrap-content__column-2-1'}
-      headerTitle={'Saving and Borrowing'}
-      headerExtra={(
-        <Button
-          icon="plus-circle-outline"
-          handleButton={() => createVault('QBTC')}
-          title="Create QBTC vault"
-        />
-      )}
-    >
-      <LoadingTransaction isLoading={isLoading} />
-      <div>
-        <SavingCryptoAssets reload={isLoading} />
-        <BorrowCryptoAssets reload={isLoading} />
-      </div>
-      <Overview/>
-    </PageWrap>
+        <PageWrap
+            wrapContentClasses="wrap-content__column-2-1"
+            headerTitle="Saving and Borrowing"
+            headerExtra={<Button icon="plus-circle-outline" handleButton={createVault} title="Create QBTC vault" />}
+        >
+            <div>
+                <SavingCryptoAssets />
+                <BorrowCryptoAssets />
+            </div>
+            <Overview />
+        </PageWrap>
   )
 }
 

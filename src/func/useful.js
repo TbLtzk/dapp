@@ -50,21 +50,3 @@ export const getPercentageFormat = (number) => {
 export const addIndex = (array) => {
   return array.map((item, idx) => ({ id: idx + 1, ...item }))
 }
-
-export const errorWrapper = async (method) => {
-  return await promisify((get) =>
-    method.on('confirmation', (confNumber, receipt, latestBlockHash) => get(receipt)).on('error', (error) => get(error))
-  )
-}
-
-const promisify = (inner) =>
-  new Promise((resolve, reject) =>
-    inner((res) => {
-      if (res.status === true) {
-        resolve(res)
-        return
-      }
-      reject(res)
-      throw new Error()
-    })
-  )
