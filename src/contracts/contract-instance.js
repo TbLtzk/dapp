@@ -87,7 +87,7 @@ export const getSystemBalanceInstance = async () => {
 
 export const getStableCoinInstance = async () => {
   if (stableCoinInstance === null) {
-    stableCoinInstance = await contractRegistryInstance.stableCoin('QUSD')
+    stableCoinInstance = contractRegistryInstance.stableCoin('QUSD')
   }
   return stableCoinInstance
 }

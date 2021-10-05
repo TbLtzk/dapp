@@ -18,7 +18,8 @@ export default class Handler {
 
   setSavingBalanceIntRateEstInterest (savingBalanceSetter, interestRateSetter, estimatedInterestSetter, setLoadingInf) {
     setLoadingInf(true)
-    this.contractSavingQUSD.getBalanceDetails(this.address)
+    this.contractSavingQUSD
+      .getBalanceDetails(this.address)
       .then((res) => {
         const interestRate = res?.interestRate ? uintPerSecondToPerYearNumber(res.interestRate) : 0
         const currentBalance = res?.currentBalance ? fromWei(res.currentBalance) : 0
@@ -38,9 +39,8 @@ export default class Handler {
   }
 
   setAvailableToDeposit (stateSetter) {
-    this.dispatch(setTransactionCounter(1))
-
-    this.contractStableCoinQUSD.balanceOf(this.address)
+    this.contractStableCoinQUSD
+      .balanceOf(this.address)
       .then((res) => {
         const resL = fromWei(res)
         stateSetter(resL)
@@ -49,15 +49,13 @@ export default class Handler {
         stateSetter(0)
         console.error(e)
       })
-      .finally(() => {
-        this.dispatch(setTransactionCounter(-1))
-      })
   }
 
   async deposit (amount, setterSavBal, setAvDep, setInterestRate, setEstInterest, setLoadingInf) {
     this.dispatch(setTransactionCounter(1))
 
-    this.contractSavingQUSD.deposit(this.address, amount)
+    this.contractSavingQUSD
+      .deposit(this.address, amount)
       .then(() => {
         this.setSavingBalanceIntRateEstInterest(setterSavBal, setInterestRate, setEstInterest, setLoadingInf)
         this.setAvailableToDeposit(setAvDep)
@@ -73,7 +71,8 @@ export default class Handler {
   async withdraw (amount, setterSavBal, setAvDep, setInterestRate, setEstInterest, setLoadingInf) {
     this.dispatch(setTransactionCounter(1))
 
-    this.contractSavingQUSD.withdraw(this.address, amount)
+    this.contractSavingQUSD
+      .withdraw(this.address, amount)
       .then(() => {
         this.setSavingBalanceIntRateEstInterest(setterSavBal, setInterestRate, setEstInterest, setLoadingInf)
         this.setAvailableToDeposit(setAvDep)
@@ -87,7 +86,8 @@ export default class Handler {
   }
 
   allowance (stateSetter) {
-    this.contractStableCoinQUSD.allowance(this.address, this.contractSavingQUSD.address)
+    this.contractStableCoinQUSD
+      .allowance(this.address, this.contractSavingQUSD.address)
       .then((res) => {
         stateSetter(res)
       })
@@ -97,9 +97,6 @@ export default class Handler {
   }
 
   async approve () {
-    await this.contractStableCoinQUSD.approve(
-      this.contractSavingQUSD.address,
-      MAX_APPROVE_AMOUNT,
-      this.address)
+    await this.contractStableCoinQUSD.approve(this.contractSavingQUSD.address, MAX_APPROVE_AMOUNT, this.address)
   }
 }

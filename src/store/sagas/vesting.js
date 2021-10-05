@@ -74,7 +74,7 @@ function * setVestingWithdrawGenerator ({ amountQ }) {
 
     const contract = yield call(getVestingInstance)
     const data = yield contract.withdraw(toWei(amountQ), { from: userAddress })
-    if (data.status === true) {
+    if (data.status) {
       yield put(setVestingWithdraw(userAddress))
     }
   } catch (error) {
