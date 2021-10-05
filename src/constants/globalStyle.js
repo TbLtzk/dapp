@@ -5,8 +5,12 @@ export const GlobalStyle = createGlobalStyle`
   body {
     color: ${(props) => props.theme.colors.white};
     background: ${(props) => props.theme.colors.oxfordBlue};
+    margin: 0 !important;
+    font-family: 'OpenSans', 'Montserrat', sans-serif !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;  
   }
-
+  
   .arrow::after {
     border-top-color: #87FF65 !important;
   }

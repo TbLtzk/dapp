@@ -13,7 +13,7 @@ export const TableStyle = styled(Table)`
     padding: 5px 5px 10px 5px;
     font-size: 13px;
     line-height: 17px;
-    color: ${props => props.theme.colors.th};
+    color: ${(props) => props.theme.colors.th};
     border-bottom: 1px solid ${(props) => props.theme.colors.th};
   }
 
@@ -30,9 +30,8 @@ export const TableStyle = styled(Table)`
       } else {
         return 'top'
       }
-    }
-    };
-    color: ${props => props.theme.colors.td};
+    }};
+    color: ${(props) => props.theme.colors.td};
     font-size: 13px;
     line-height: 17px;
     padding: ${(props) => {
@@ -41,8 +40,7 @@ export const TableStyle = styled(Table)`
       } else {
         return '5px'
       }
-    }
-    };;
+    }};
     border-top: none;
     border-bottom: ${(props) => {
       if (props.type === 'with-action') {
@@ -50,7 +48,6 @@ export const TableStyle = styled(Table)`
       } else {
         return null
       }
-    }
-    }
+    }};
   }
 `
