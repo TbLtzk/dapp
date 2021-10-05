@@ -4,7 +4,7 @@ import LoadingSpinner from 'components/Base/LoadingSpinner'
 import KeyAddressesTable from '../KeyAddressesTable'
 import {
   LoadingWrap
-} from 'components/Custom/MembersPanel/styles'
+} from 'components/Custom/MemberTables/styles'
 
 function KeyAddressViewer (props) {
   const {
