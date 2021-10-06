@@ -64,10 +64,14 @@ function SaveManageAsset (props) {
     await handler.withdraw(formData.amount, setSavingBalance, setAvToDeposit, setInterestRate, setEstInterest, setLoadingInf)
   }
 
-  useEffect(async () => {
+  const updateAllData = async () => {
     handler.setAvailableToDeposit(setAvToDeposit)
     handler.setSavingBalanceIntRateEstInterest(setSavingBalance, setInterestRate, setEstInterest, setLoadingInf)
     handler.allowance(setAllowance)
+  }
+
+  useEffect(async () => {
+    await updateAllData()
   }, [depositAsset, interestAsset, rate])
 
   return (
