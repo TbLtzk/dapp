@@ -59,7 +59,7 @@ function FormStaking () {
         <>
             <div>
                 <h5>Status</h5>
-                {isUserRoot ? <p>Member of Root Node panel</p> : <p>Not a member of Root Node panel</p>}
+                {isUserRoot ? <p>Member of root node panel</p> : <p>Not a member of root node panel</p>}
             </div>
             {isUserRoot
               ? (
@@ -78,7 +78,7 @@ function FormStaking () {
             <AccountStatusInfo>
                 {checkIsUserRootMember}
                 <div>
-                    <h5>Stake in Root Node ranking</h5>
+                    <h5>Stake in root node ranking</h5>
                     <p>{amountNodeStake + ' Q'}</p>
                 </div>
                 <div>

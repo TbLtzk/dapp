@@ -22,7 +22,7 @@ function ManageStakerRewardPool () {
                 onHide={() => {
                   setModalShow(false)
                 }}
-                modalTitle="Manage Staker Reward Pool"
+                modalTitle="Manage staker reward pool"
                 content={
                     <>
                         <div className="modal-line" />

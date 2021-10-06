@@ -81,39 +81,39 @@ function SavingBorrowingBlock () {
   const dataArr = useMemo(() => {
     return [
       {
-        title: 'QUSD Contract',
+        title: 'QUSD contract',
         firstContent: contractsToAddresses.StableCoinQUSD,
         btnTitle: null
       },
       {
-        title: 'QUSD Saving Reward (p.a.)',
+        title: 'QUSD saving reward (p.a.)',
         firstContent: savingRate + ' %',
         btnTitle: null
       },
       {
-        title: 'QUSD - QBTC Borrowing Fee (p.a.)',
+        title: 'QUSD - QBTC borrowing Fee (p.a.)',
         firstContent: interestRate + ' %',
         btnTitle: null
       },
       {
-        title: 'QUSD System Balance',
+        title: 'QUSD system balance',
         firstContent: systemBalance + ' QUSD',
         btnTitle: null
       },
       {
-        title: 'QUSD Total Supply',
+        title: 'QUSD total supply',
         firstContent: totalSupply + ' QUSD',
         btnTitle: null
       },
       {
-        title: 'QUSD Saving time since refresh of balance',
+        title: 'QUSD saving time since refresh of balance',
         firstContent: timeSinceRefreshBalance,
         btnIcon: 'cached',
         iconFontSize: '20px',
         btnType: BTN_TYPES.balance
       },
       {
-        title: 'QUSD - QBTC Time since refresh of outstanding debt',
+        title: 'QUSD - QBTC time since refresh of outstanding debt',
         firstContent: timeSinceOutstandingDebt,
         btnIcon: 'cached',
         iconFontSize: '20px',

@@ -37,21 +37,21 @@ export default function ValidatorPool () {
   const validatorPoolInfArr = useMemo(() => {
     return [[
       {
-        label: 'Total Stake:',
+        label: 'Total stake:',
         value: fN(totalStake) + ' Q'
       },
       {
-        label: 'Validator own Stake:',
+        label: 'Validator own stake:',
         value: fN(ownStake) + ' Q'
       }
     ],
     [
       {
-        label: 'Delegated Stake:',
+        label: 'Delegated stake:',
         value: fN(delegatedStake) + ' Q'
       },
       {
-        label: 'Accountable Stake:',
+        label: 'Accountable stake:',
         value: fN(accTotalStake) + ' Q'
       }
     ]

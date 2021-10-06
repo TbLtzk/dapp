@@ -35,7 +35,7 @@ export default function ManageBalance () {
   return (
     <CustomBlock>
       <h1>Manage balance</h1>
-      <h4>Transfer into Q Vault</h4>
+      <h4>Transfer into Q vault</h4>
       <div className={'card__one-line-form'}>
         <FormInput
           lbl={'Q'}
@@ -57,7 +57,7 @@ export default function ManageBalance () {
           handleButton={submit2(setDepositL)}
         />
       </div>
-      <h4>Withdraw from Q Vault</h4>
+      <h4>Withdraw from Q vault</h4>
       <div className={'card__one-line-form'}>
         <FormInput
           min={0}

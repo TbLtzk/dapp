@@ -116,7 +116,7 @@ function CreateStep3 (props) {
                 <p>{formData['external-link']}</p>
                 <h5>Hash</h5>
                 <p>{formData.hash}</p>
-                <h5>Change Constitution Parameter</h5>
+                <h5>Change constitution parameter</h5>
                 <p>{formData['change-constitution-parameter']}</p>
               </>
             )
@@ -209,18 +209,18 @@ function CreateStep3 (props) {
               ? <>
                 <h5>Hash</h5>
                 <p>{formData.hash}</p>
-                <h5>Remove a current Root Node</h5>
+                <h5>Remove a current root node</h5>
                 <p>{formData['remove-current']}</p>
                 {formData['remove-current'] === 'no'
                   ? null
                   : <>
-                    <h5>Root Node to Remove</h5>
+                    <h5>Root node to remove</h5>
                     <p>{formData.address}</p>
                   </>
                 }
               </>
               : <>
-                <h5>Root Node to Remove</h5>
+                <h5>Root node to remove</h5>
                 <p>{formData.address}</p>
                 <h5>External link</h5>
                 <p>{formData['external-link']}</p>
@@ -231,9 +231,9 @@ function CreateStep3 (props) {
       case PROPOSALS_TYPES.slashingProposals :
         return showCommonData(
           <>
-            <h5>Candidate to Slash</h5>
+            <h5>Candidate to slash</h5>
             <p>{formData.address}</p>
-            <h5>Stake Amount to slash</h5>
+            <h5>Stake amount to slash</h5>
             <p>{formData['%-value']} %</p>
             <h5>External link</h5>
             <p>{formData['external-link']}</p>
@@ -242,12 +242,12 @@ function CreateStep3 (props) {
       case PROPOSALS_TYPES.expertProposals:
         return showCommonData(
           <>
-            <h5>Panel to add an Expert</h5>
+            <h5>Panel to add an expert</h5>
             <p>{formData['type-proposal']?.replace(/-/g, ' ')}</p>
             <h5>External link</h5>
             <p>{formData['external-link']}</p>
             {formData?.first !== 'parameter-vote'
-              ? <><h5>Candidate Q Address</h5><p>{formData.address}</p></>
+              ? <><h5>Candidate Q address</h5><p>{formData.address}</p></>
               : <>
                 {params.map((item, index) => {
                   return <Fragment key={index + 'param'}>

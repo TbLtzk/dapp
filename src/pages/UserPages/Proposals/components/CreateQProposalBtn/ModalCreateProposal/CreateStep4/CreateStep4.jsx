@@ -45,7 +45,7 @@ function CreateStep4 (props) {
               <p>{formData['external-link']}</p>
               <h5>Hash</h5>
               <p>{formData.hash}</p>
-              <h5>Change Constitution Parameter</h5>
+              <h5>Change constitution parameter</h5>
               <p>{formData['change-constitution-parameter']}</p>
               {params.map((item, index) => {
                 return <Fragment key={index + 'param'}>

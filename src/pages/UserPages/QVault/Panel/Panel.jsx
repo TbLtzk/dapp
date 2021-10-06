@@ -84,7 +84,7 @@ export default function Panel () {
 
                 <div className="card__line" />
 
-                <h5>Voting weight from Q Vault</h5>
+                <h5>Voting weight from Q vault</h5>
                 <p>{userVotingWeight + ' Q'}</p>
                 <h5>Voting locking end</h5>
                 <p>{userLockingEnd}</p>

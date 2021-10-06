@@ -23,11 +23,11 @@ function AddressForm ({ setAddressRefresh, userAddress }) {
                     color={true}
                     value={inputAddress}
                     ref={register({
-                      required: 'Address Required!',
+                      required: 'Address required!',
                       pattern: {
                         required: true,
                         value: /^.{42}$/gim,
-                        message: 'Invalid Address!'
+                        message: 'Invalid address!'
                       }
                     })}
                     valid={errors?.token?.message}

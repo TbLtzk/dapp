@@ -97,7 +97,7 @@ function ProposalsList (props) {
                   content={
                     <div className="list-card__three-colm">
                       <div>
-                        <h5>Proposal ID</h5>
+                        <h5>Proposal id</h5>
                         <p>{proposal.id}</p>
                       </div>
                       <div>
@@ -105,7 +105,7 @@ function ProposalsList (props) {
                         <p>{convertToMonthDayYear(proposal.vetoEndTime)}</p>
                       </div>
                       <div>
-                        <h5>Remaining Time for Voting</h5>
+                        <h5>Remaining time for voting</h5>
                         <p>{remainDate(proposal.votingEndTime)}</p>
                       </div>
                     </div>

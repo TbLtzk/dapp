@@ -1,7 +1,7 @@
 import { ParameterType } from '@q-dev/q-js-sdk'
 
 export const addNewExpert = {
-  subtitle: 'Nominate an Expert to Add to an Expert Panel',
+  subtitle: 'Nominate an Expert to add to an Expert Panel',
   radioDescr: 'Select the Panel to which you want to add an Expert',
   radioBtnName: 'type-proposal',
   radioBtn: ['Q Fees & Incentives Membership Panel', 'Q DeFi (Decentralized Finance) Membership Panel'],

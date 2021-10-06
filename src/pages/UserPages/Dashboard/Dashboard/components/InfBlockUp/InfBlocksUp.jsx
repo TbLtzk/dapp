@@ -45,8 +45,8 @@ function InfBlocksUp () {
     <>
       <SmallBlock
         title="Blockchain"
-        firstSubtitle="Block Height"
-        secondSubtitle="System Contract Registry:"
+        firstSubtitle="Block height"
+        secondSubtitle="System contract registry:"
         firstContent={<p> {blockNumber}</p>}
         secondContent={
 
@@ -81,7 +81,7 @@ function InfBlocksUp () {
             <a href={latestConstitution} target="_blank" rel="noreferrer">
               <Button
                 icon="download"
-                title={'Download Latest'}
+                title={'Download latest'}
                 handleButton={() => {
                 }}
               />

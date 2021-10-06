@@ -167,7 +167,7 @@ function BorrowManageAsset (props) {
                 <div>
                   <h5>Available to withdraw</h5>
                   <p>{fN(collateralInf?.availableWithdraw) || 0}</p>
-                  <h5>Liquidation Price</h5>
+                  <h5>Liquidation price</h5>
                   <p>{fN(collateralInf?.liquidationPrice) || 0}</p>
                 </div>
               </div>

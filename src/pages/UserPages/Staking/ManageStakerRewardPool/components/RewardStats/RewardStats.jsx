@@ -47,29 +47,29 @@ export default function RewardStats ({ setModalShow }) {
     return [
       [
         {
-          label: 'Collected Pool Rewards:',
+          label: 'Collected pool rewards:',
           value: fN(userBalance) + ' Q'
         },
         {
-          label: 'Outstanding Delegator Claims:',
+          label: 'Outstanding delegator claims:',
           value: fN(userPoolInfo) + ' Q'
         },
         {
-          label: 'Distributable Delegator Rewards:',
+          label: 'Distributable delegator rewards:',
           value: fN(disDelClaims) + ' Q'
         },
         {
-          label: 'Distributable Delegator Percentage:',
+          label: 'Distributable delegator percentage:',
           value: fN(disDelClaims / delegatedStake) + ' %'
         }
       ],
       [
         {
-          label: 'Validator Share:',
+          label: 'Validator share:',
           value: userDelegatorShare === 0 ? '100 %' : fN(100 - userDelegatorShare) + ' %'
         },
         {
-          label: 'Delegator Share:',
+          label: 'Delegator share:',
           value: fN(userDelegatorShare) + ' %'
         }
       ]

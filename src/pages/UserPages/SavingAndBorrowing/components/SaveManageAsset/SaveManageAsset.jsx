@@ -153,7 +153,7 @@ function SaveManageAsset (props) {
                   handleButton={handleSubmit1(deposit)}
                 />
               </div>
-              <h4>Withdraw Saving Asset</h4>
+              <h4>Withdraw saving asset</h4>
               <div className="modal__one-line-form">
                 <FormInput
                   palette="dark"
