@@ -60,7 +60,7 @@ export default function ValidatorPool () {
 
   return (
     <div>
-      <h3>Validator Pool</h3>
+      <h3>Validator pool</h3>
       {validatorPoolInfArr?.map((line, index) => {
         return (
           <div key={index + '-validator-line'} style={{ display: 'flex' }}>

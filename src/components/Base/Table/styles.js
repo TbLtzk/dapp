@@ -14,15 +14,20 @@ export const TableWrapper = styled.span`
   }
 
   thead th {
-    cursor: pointer;
     padding: 5px 5px 10px 5px;
     font-size: 13px;
     border-style: none;
     line-height: 17px;
     color: ${(props) => props.theme.colors.th};
-    :hover {
-      color: ${(props) => props.theme.colors.neonGreen};
-    }
+    ${(props) =>
+      props.sorting
+        ? css`
+            cursor: pointer;
+            :hover {
+              color: ${props.theme.colors.neonGreen};
+            }
+          `
+        : null}
   }
 
   tbody {

@@ -59,12 +59,12 @@ function FormStaking () {
         <>
             <div>
                 <h5>Status</h5>
-                {isUserRoot ? <p>Member of Root Node Panel</p> : <p>Not a Member of Root Node Panel</p>}
+                {isUserRoot ? <p>Member of Root Node panel</p> : <p>Not a member of Root Node panel</p>}
             </div>
             {isUserRoot
               ? (
                 <div>
-                    <h5>Current Rank</h5>
+                    <h5>Current rank</h5>
                     <p>3 #</p>
                 </div>
                 )
@@ -78,11 +78,11 @@ function FormStaking () {
             <AccountStatusInfo>
                 {checkIsUserRootMember}
                 <div>
-                    <h5>Stake in Root Node Ranking</h5>
+                    <h5>Stake in Root Node ranking</h5>
                     <p>{amountNodeStake + ' Q'}</p>
                 </div>
                 <div>
-                    <h5>Q Balance</h5>
+                    <h5>Q balance</h5>
                     <p>{fN(userAccountBalance)} Q</p>
                 </div>
                 {Number(rootTimeLockMinimumBalance) > 0

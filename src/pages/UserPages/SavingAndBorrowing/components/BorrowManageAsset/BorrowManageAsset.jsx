@@ -217,7 +217,7 @@ function BorrowManageAsset (props) {
                   handleButton={handleSubmit1(borrow)}
                 />
               </div>
-              <h4>Repay Borrowed Asset</h4>
+              <h4>Repay borrowed asset</h4>
               <div className="modal__one-line-form">
                 <FormInput
                   palette="dark"
@@ -239,7 +239,7 @@ function BorrowManageAsset (props) {
                   handleButton={handleSubmit2(repay)}
                 />
               </div>
-              <h4>Deposit Collateral</h4>
+              <h4>Deposit collateral</h4>
               <div className="modal__one-line-form">
                 <FormInput
                   palette="dark"
@@ -261,7 +261,7 @@ function BorrowManageAsset (props) {
                   handleButton={handleSubmit3(addDeposit)}
                 />
               </div>
-              <h4>Withdraw Collateral</h4>
+              <h4>Withdraw collateral</h4>
               <div className="modal__one-line-form">
                 <FormInput
                   palette="dark"

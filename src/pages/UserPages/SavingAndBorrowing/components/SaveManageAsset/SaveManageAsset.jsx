@@ -127,7 +127,7 @@ function SaveManageAsset (props) {
                   <p>{fN(interestRate)} %</p>
                 </div>
               </div>
-              <h4>Deposit Saving Asset</h4>
+              <h4>Deposit saving asset</h4>
               <div className="modal__one-line-form">
                 <FormInput
                   palette="dark"

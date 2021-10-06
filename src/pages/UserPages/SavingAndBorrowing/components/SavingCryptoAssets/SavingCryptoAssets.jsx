@@ -64,7 +64,7 @@ function SavingCryptoAssets () {
                 />
                 )
               : (
-                  'No Saving assets'
+                  'No saving assets'
                 )}
         </CustomBlock>
   )

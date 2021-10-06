@@ -27,6 +27,7 @@ function QFeesMembersPanel () {
                 title="List of Q Fees & Incentives Experts"
                 loading={loading}
                 emptyTable="Emty list"
+                sorting={false}
             />
         </CustomBlock>
   )

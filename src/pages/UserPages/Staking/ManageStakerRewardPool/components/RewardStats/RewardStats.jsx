@@ -78,7 +78,7 @@ export default function RewardStats ({ setModalShow }) {
 
   return (
         <>
-            <h3 className="title type-1">Reward Stats</h3>
+            <h3 className="title type-1">Reward stats</h3>
             {rewardStatsArr?.map((line, index) => {
               return (
                     <div key={index + '--reward-line'} style={{ display: 'flex' }}>
@@ -93,7 +93,7 @@ export default function RewardStats ({ setModalShow }) {
                     </div>
               )
             })}
-            <h4>Set Delegator Share</h4>
+            <h4>Set delegator share</h4>
             <div className="modal-one-line-form">
                 <FormInput
                     name="amount"

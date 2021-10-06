@@ -33,7 +33,7 @@ function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contrac
                 perPageLength={4}
                 tableArray={lockAmountData}
                 title={null}
-                emptyTable={null}
+                sorting={false}
             />
             <ModalManage
                 address={address}

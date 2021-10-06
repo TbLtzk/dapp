@@ -95,12 +95,12 @@ export default function AccountStatus () {
         <>
             <div>
                 <h5>Status</h5>
-                {isThisUserValidator ? <p>Active Validator</p> : <p>Not a Validator</p>}
+                {isThisUserValidator ? <p>Active validator</p> : <p>Not a validator</p>}
             </div>
             {isThisUserValidator
               ? (
                 <div>
-                    <h5>Current Rank</h5>
+                    <h5>Current rank</h5>
                     <p>{validatorRank}#</p>
                 </div>
                 )
@@ -114,11 +114,11 @@ export default function AccountStatus () {
             <AccountStatusInfo>
                 {checkIsUserValidator}
                 <div>
-                    <h5>Stake in Validator Ranking</h5>
+                    <h5>Stake in validator ranking</h5>
                     <p>{fN(userAccountableTotalStake)} Q</p>
                 </div>
                 <div>
-                    <h5>Q Balance</h5>
+                    <h5>Q balance</h5>
                     <p>{fN(userAccountBalance)} Q</p>
                 </div>
                 {Number(validatorLockedAmount) > 0

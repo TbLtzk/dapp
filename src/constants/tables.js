@@ -18,8 +18,8 @@ export const tableRootNode = (tableArray) =>
     id: idx,
     rank: rootNode.rank,
     address: <CopyAddress address={rootNode.address} />,
-    amount: fN(rootNode.stakeAmount) + 'Q',
-    share: rootNode.share + '%'
+    amount: fN(rootNode.stakeAmount) + ' Q',
+    share: rootNode.share + ' %'
   }))
 
 export const tableValidatorsShort = (tableArray) =>
@@ -27,7 +27,7 @@ export const tableValidatorsShort = (tableArray) =>
     id: idx,
     rank: validator.rank,
     validator: <CopyAddress address={validator.validator} />,
-    amount: fN(fromWei(validator.amount)) + 'Q'
+    amount: fN(fromWei(validator.amount)) + ' Q'
   }))
 
 export const tableValidatorsWidened = (tableArray) =>
@@ -35,11 +35,11 @@ export const tableValidatorsWidened = (tableArray) =>
     id: idx,
     rank: validator.rank,
     validator: <CopyAddress address={validator.validator} />,
-    amount: fN(fromWei(validator.amount)) + 'Q',
-    selfStake: fN(validator.selfStake) + 'Q',
-    delegatedStake: fN(validator.delegatedStake) + 'Q',
-    validatorShare: fN(validator.validatorShare) + '%',
-    delegatorShare: fN(validator.delegatorShare) + '%',
+    amount: fN(fromWei(validator.amount)) + ' Q',
+    selfStake: fN(validator.selfStake) + ' Q',
+    delegatedStake: fN(validator.delegatedStake) + ' Q',
+    validatorShare: fN(validator.validatorShare) + ' %',
+    delegatorShare: fN(validator.delegatorShare) + ' %',
     delegationEfficiency: fN(validator.delegationEfficiency) + ' %',
     delegationSaturation: <ProgressBar value={fN(validator.delegationSaturation)} />
   }))

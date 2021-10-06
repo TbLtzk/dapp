@@ -19,6 +19,14 @@ function Version () {
   const [mainVersionInfo, setMainVersionInfo] = useState([])
   const [modulesVersionInfo, setModulesVersionInfo] = useState([])
   const [clientVersionInfo, setClientVersionInfo] = useState([])
+  const [time, setTime] = useState(getNowTimeWithGMT())
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime(getNowTimeWithGMT())
+    }, 50000)
+    return () => clearInterval(timer)
+  }, [time])
 
   useEffect(async () => {
     if (!web3Adapter) return [] // not initialized
@@ -35,7 +43,7 @@ function Version () {
         {
           group: versionInfoGroups.main,
           name: 'Your Current Time',
-          value: getNowTimeWithGMT()
+          value: time
         }
       ]
     ])

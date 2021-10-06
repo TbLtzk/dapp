@@ -21,7 +21,16 @@ import {
 } from 'constants/tables'
 import TABLE_TYPES from 'constants/tableTypes'
 
-const MemberTables = ({ tableType, perPageLength, emptyTable, tableArray, title, widened, loading = false }) => {
+const MemberTables = ({
+  tableType,
+  perPageLength,
+  emptyTable,
+  tableArray,
+  title,
+  widened,
+  loading = false,
+  sorting = true
+}) => {
   const getTableOnType = () => {
     switch (tableType) {
       case TABLE_TYPES.validators:
@@ -73,7 +82,21 @@ const MemberTables = ({ tableType, perPageLength, emptyTable, tableArray, title,
                     )
                   : tableArray.length === 0
                     ? (
-                    <p>{emptyTable}</p>
+                        emptyTable
+                          ? (
+                        <p>{emptyTable}</p>
+                            )
+                          : (
+                        <>
+                            <Table
+                                keyField="id"
+                                columns={getTableOnType().columns}
+                                perPage={perPageLength}
+                                tableBody={getTableOnType().table}
+                                sorting={sorting}
+                            />
+                        </>
+                            )
                       )
                     : (
                     <Table
@@ -81,6 +104,7 @@ const MemberTables = ({ tableType, perPageLength, emptyTable, tableArray, title,
                         columns={getTableOnType().columns}
                         perPage={perPageLength}
                         tableBody={getTableOnType().table}
+                        sorting={sorting}
                     />
                       )}
             </Suspense>

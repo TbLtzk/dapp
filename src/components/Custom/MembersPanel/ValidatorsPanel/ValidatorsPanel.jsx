@@ -30,18 +30,18 @@ function ValidatorsPanel (props) {
                     tableType={TABLE_TYPES.validators}
                     perPageLength={10}
                     tableArray={validators}
-                    title="Validator Ranking"
+                    title="Validator ranking"
                     loading={loading}
                     widened={widened}
                     emptyTable="No validators"
                 />
                 {!bottom
                   ? (
-                    <div className={'card__actions'}>
+                    <div className='card__actions'>
                         <Button
-                            type={'white'}
+                            type='white'
                             icon="arrow-right"
-                            title={'See more details'}
+                            title='See more details'
                             handleButton={() =>
                               history.push({
                                 pathname: '/staking',
@@ -54,11 +54,11 @@ function ValidatorsPanel (props) {
                     </div>
                     )
                   : (
-                    <div className={'card__actions'}>
+                    <div className='card__actions'>
                         <Button
-                            type={'white'}
+                            type='white'
                             icon="arrow-right"
-                            title={'Go to Q Vault'}
+                            title='Go to Q Vault'
                             handleButton={() =>
                               history.push({
                                 pathname: '/q-vault'

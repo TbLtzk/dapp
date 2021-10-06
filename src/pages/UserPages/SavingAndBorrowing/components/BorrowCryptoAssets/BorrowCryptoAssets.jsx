@@ -73,7 +73,7 @@ function BorrowCryptoAssets () {
                 />
                 )
               : (
-                  'No Borrow assets'
+                  'No vaults created'
                 )}
         </CustomBlock>
   )

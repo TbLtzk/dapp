@@ -136,7 +136,7 @@ function SavingBorrowingBlock () {
 
   return (
     <CustomBlock>
-      <h1>Saving and Borrowing</h1>
+      <h1>Saving & Borrowing</h1>
       {
         dataArr?.filter(el => appMode === MODE.basic ? el.btnTitle === null : el)
           .map((el) => {

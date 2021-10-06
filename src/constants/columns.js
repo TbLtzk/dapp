@@ -102,19 +102,19 @@ export const columnsValidatorsWidened = [
     sort: true
   },
   {
-    headerStyle: () => ({ minWidth: '100px' }),
+    headerStyle: () => ({ minWidth: '150px' }),
     dataField: 'amount',
     text: 'Total Accountable Stake',
     sort: true
   },
   {
-    headerStyle: () => ({ minWidth: '100px' }),
+    headerStyle: () => ({ minWidth: '150px' }),
     dataField: 'selfStake',
     text: 'Self Stake',
     sort: true
   },
   {
-    headerStyle: () => ({ minWidth: '100px' }),
+    headerStyle: () => ({ minWidth: '150px' }),
     dataField: 'delegatedStake',
     text: 'Total Delegated Stake',
     sort: true
@@ -138,7 +138,7 @@ export const columnsValidatorsWidened = [
     sort: true
   },
   {
-    headerStyle: () => ({ minWidth: '100px' }),
+    headerStyle: () => ({ minWidth: '150px' }),
     dataField: 'delegationSaturation',
     text: 'Delegation Saturation',
     sort: true

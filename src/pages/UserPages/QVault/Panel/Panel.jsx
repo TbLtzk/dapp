@@ -71,7 +71,7 @@ export default function Panel () {
                     </>
                     )
                   : null}
-                <h5>Q Token Holder reward rate (p.a.)</h5>
+                <h5>Q token holder reward rate (p.a.)</h5>
                 <p>
                     {(balanceDetails?.interestRate
                       ? fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate))
@@ -84,11 +84,11 @@ export default function Panel () {
 
                 <div className="card__line" />
 
-                <h5>Voting Weight from QVault</h5>
+                <h5>Voting weight from Q Vault</h5>
                 <p>{userVotingWeight + ' Q'}</p>
-                <h5>Voting Locking End</h5>
+                <h5>Voting locking end</h5>
                 <p>{userLockingEnd}</p>
-                <h5>Voting Status</h5>
+                <h5>Voting status</h5>
                 <p><VoterStatus /></p>
             </div>
         </CustomBlock>

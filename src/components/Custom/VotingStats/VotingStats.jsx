@@ -31,15 +31,15 @@ function VotingStats () {
 
   const statsData = [
     {
-      title: 'Total Voting Weight',
+      title: 'Total voting weight',
       value: Number(userVotingWeight) + Number(rootStakeBalance) + Number(validatorSelfStake) + ' Q'
     },
     {
-      title: 'Voting Locking End',
+      title: 'Voting locking End',
       value: userLockingEnd
     },
     {
-      title: 'Voting Status',
+      title: 'Voting status',
       value: <VoterStatus />
     }
   ]
