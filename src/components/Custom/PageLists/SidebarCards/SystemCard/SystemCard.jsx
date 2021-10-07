@@ -35,7 +35,7 @@ function SystemCard (props) {
       {title === 'QUSD system balance'
         ? <div className="card__actions">
           <Button
-            title={!loadingPerfNetting ? 'Perform netting' : <LoadingSpinner/>}
+            title={!loadingPerfNetting ? 'Perform Netting' : <LoadingSpinner/>}
             type="white"
             handleButton={onHandlePerformNetting}
           />

@@ -13,7 +13,7 @@ function AddressForm ({ setAddressRefresh, userAddress }) {
 
   return (
         <CustomBlock>
-            <h5>Current address:</h5>
+            <h5>Current Address:</h5>
             <h4>{userAddress.address}</h4>
             <h4>Address</h4>
             <WrapContainer>

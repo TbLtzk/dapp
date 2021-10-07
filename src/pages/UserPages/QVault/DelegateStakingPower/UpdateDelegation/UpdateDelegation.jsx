@@ -81,7 +81,7 @@ export default function UpdateDelegation () {
 
   return (
         <UpdateDelegationContainer>
-            <h3>Update delegation</h3>
+            <h3>Update Delegation</h3>
             <div className="input_container_item">
                 <p className="input_address">Address</p>
                 <p className="input_share">Share</p>

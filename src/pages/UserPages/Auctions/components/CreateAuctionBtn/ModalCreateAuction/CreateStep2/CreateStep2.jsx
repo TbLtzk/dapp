@@ -24,7 +24,7 @@ function CreateStep2 (props) {
   const showCommonData = (children) => {
     return (
       <div>
-        <h2>Chosen data</h2>
+        <h2>Chosen Data</h2>
         <h5>Type</h5>
         <p> {formData?.first?.replace(/-/g, ' ')}</p>
         {children}
@@ -39,9 +39,9 @@ function CreateStep2 (props) {
       case AUCTIONS_TYPES.liquidation:
         return showCommonData(
           <>
-            <h5>Address of vault holder, which shall be liquidated</h5>
+            <h5>Address of Vault Holder, which shall be Liquidated</h5>
             <p>{formData.address}</p>
-            <h5>The Vault ID to be liquidated</h5>
+            <h5>The Vault ID to be Liquidated</h5>
             <p>{formData['vault-id']}</p>
           </>
         )

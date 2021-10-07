@@ -47,29 +47,29 @@ export default function RewardStats ({ setModalShow }) {
     return [
       [
         {
-          label: 'Collected pool rewards:',
+          label: 'Collected Pool Rewards:',
           value: fN(userBalance) + ' Q'
         },
         {
-          label: 'Outstanding delegator claims:',
+          label: 'Outstanding Delegator Claims:',
           value: fN(userPoolInfo) + ' Q'
         },
         {
-          label: 'Distributable delegator rewards:',
+          label: 'Distributable Delegator Rewards:',
           value: fN(disDelClaims) + ' Q'
         },
         {
-          label: 'Distributable delegator percentage:',
+          label: 'Distributable Delegator Percentage:',
           value: fN(disDelClaims / delegatedStake) + ' %'
         }
       ],
       [
         {
-          label: 'Validator share:',
+          label: 'Validator Share:',
           value: userDelegatorShare === 0 ? '100 %' : fN(100 - userDelegatorShare) + ' %'
         },
         {
-          label: 'Delegator share:',
+          label: 'Delegator Share:',
           value: fN(userDelegatorShare) + ' %'
         }
       ]
@@ -78,7 +78,7 @@ export default function RewardStats ({ setModalShow }) {
 
   return (
         <>
-            <h3 className="title type-1">Reward stats</h3>
+            <h3 className="title type-1">Reward Stats</h3>
             {rewardStatsArr?.map((line, index) => {
               return (
                     <div key={index + '--reward-line'} style={{ display: 'flex' }}>
@@ -93,7 +93,7 @@ export default function RewardStats ({ setModalShow }) {
                     </div>
               )
             })}
-            <h4>Set delegator share</h4>
+            <h4>Set Delegator Share</h4>
             <div className="modal-one-line-form">
                 <FormInput
                     name="amount"

@@ -56,7 +56,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
             content={
                 <>
                     <div className="modal-line" />
-                    <h5>Recipient address</h5>
+                    <h5>Recipient Address</h5>
                     <h4>{address}</h4>
                     {contract === 'vesting' ? <ManageVestingBalance setModalShow={setModalShow} /> : null}
                     <CalendarWraper>
@@ -108,7 +108,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
                         />
                         <Button
                             type="outline"
-                            title="Purge expired time locks"
+                            title="Purge Expired Time Locks"
                             width="200px"
                             margin="0 0 20px 0"
                             handleButton={setPurge}

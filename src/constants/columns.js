@@ -1,7 +1,7 @@
 export const columnsDeFiRisk = [
   {
     dataField: 'member',
-    text: 'Member address'
+    text: 'Member Address'
   }
 ]
 
@@ -16,33 +16,33 @@ export const columnnsLockAmount = [
   },
   {
     dataField: 'releaseStart',
-    text: 'Start date'
+    text: 'Start Date'
   },
   {
     dataField: 'releaseEnd',
-    text: 'End date'
+    text: 'End Date'
   }
 ]
 
 export const columnsQFees = [
   {
     dataField: 'member',
-    text: 'Member address'
+    text: 'Member Address'
   }
 ]
 
 export const columnsDelegations = [
   {
     dataField: 'address',
-    text: 'Member address'
+    text: 'Member Address'
   },
   {
     dataField: 'amount',
-    text: 'Current stake'
+    text: 'Current Stake'
   },
   {
     dataField: 'reward',
-    text: 'Claimable reward'
+    text: 'Claimable Reward'
   }
 ]
 
@@ -57,11 +57,11 @@ export const timeLocksColumnns = [
   },
   {
     dataField: 'releaseStart',
-    text: 'Start date'
+    text: 'Start Date'
   },
   {
     dataField: 'releaseEnd',
-    text: 'End date'
+    text: 'End Date'
   }
 ]
 
@@ -73,12 +73,12 @@ export const columnsRootNode = [
   },
   {
     dataField: 'address',
-    text: 'Root node address',
+    text: 'Root Node Address',
     sort: true
   },
   {
     dataField: 'amount',
-    text: 'Staked amount',
+    text: 'Staked Amount',
     sort: true
   },
   {
@@ -98,49 +98,49 @@ export const columnsValidatorsWidened = [
   {
     headerStyle: () => ({ minWidth: '350px' }),
     dataField: 'validator',
-    text: 'Validator address',
+    text: 'Validator Address',
     sort: true
   },
   {
     headerStyle: () => ({ minWidth: '150px' }),
     dataField: 'amount',
-    text: 'Total accountable stake',
+    text: 'Total Accountable Stake',
     sort: true
   },
   {
     headerStyle: () => ({ minWidth: '150px' }),
     dataField: 'selfStake',
-    text: 'Self stake',
+    text: 'Self Stake',
     sort: true
   },
   {
     headerStyle: () => ({ minWidth: '150px' }),
     dataField: 'delegatedStake',
-    text: 'Total delegated stake',
+    text: 'Total Delegated Stake',
     sort: true
   },
   {
     headerStyle: () => ({ minWidth: '100px' }),
     dataField: 'validatorShare',
-    text: 'Validator share',
+    text: 'Validator Share',
     sort: true
   },
   {
     headerStyle: () => ({ minWidth: '100px' }),
     dataField: 'delegatorShare',
-    text: 'Delegator share',
+    text: 'Delegator Share',
     sort: true
   },
   {
     headerStyle: () => ({ minWidth: '100px' }),
     dataField: 'delegationEfficiency',
-    text: 'Delegation efficiency',
+    text: 'Delegation Efficiency',
     sort: true
   },
   {
     headerStyle: () => ({ minWidth: '150px' }),
     dataField: 'delegationSaturation',
-    text: 'Delegation saturation',
+    text: 'Delegation Saturation',
     sort: true
   }
 ]

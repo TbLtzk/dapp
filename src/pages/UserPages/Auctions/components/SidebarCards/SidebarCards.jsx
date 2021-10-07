@@ -96,11 +96,11 @@ function SidebarCards () {
   const systemBalance = useMemo(() => {
     return [
       {
-        title: 'Collected surplus',
+        title: 'Collected Surplus',
         value: surplus + ' QUSD'
       },
       {
-        title: 'Open debt',
+        title: 'Open Debt',
         value: debt + ' QUSD'
       },
       {
@@ -108,7 +108,7 @@ function SidebarCards () {
         value: systemBalanceResult + ' QUSD'
       },
       {
-        title: 'Surplus auction lot',
+        title: 'Surplus Auction Lot',
         value: surplusLot + ' QUSD'
       }
     ]
@@ -117,15 +117,15 @@ function SidebarCards () {
   const systemReserve = useMemo(() => {
     return [
       {
-        title: 'Reserve balance',
+        title: 'Reserve Balance',
         value: reserveBalance + ' Q'
       },
       {
-        title: 'Immediately available',
+        title: 'Immediately Available',
         value: availableAmount + ' Q'
       },
       {
-        title: 'Debt auction lot',
+        title: 'Debt Auction Lot',
         value: reserveLot + ' Q'
       }
     ]
@@ -134,8 +134,8 @@ function SidebarCards () {
   return (
         <div>
             <Stats statsData={statsData} type="Auction" />
-            <SystemCard data={systemBalance} title="QUSD system balance" />
-            <SystemCard data={systemReserve} title="Q system reserve" />
+            <SystemCard data={systemBalance} title="QUSD System Balance" />
+            <SystemCard data={systemReserve} title="Q System Reserve" />
         </div>
   )
 }

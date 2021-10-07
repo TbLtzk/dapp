@@ -64,7 +64,7 @@ function FormStaking () {
             {isUserRoot
               ? (
                 <div>
-                    <h5>Current rank</h5>
+                    <h5>Current Rank</h5>
                     <p>3 #</p>
                 </div>
                 )
@@ -74,35 +74,35 @@ function FormStaking () {
 
   return (
         <CustomBlock>
-            <h1>Manage balance</h1>
+            <h1>Manage Balance</h1>
             <AccountStatusInfo>
                 {checkIsUserRootMember}
                 <div>
-                    <h5>Stake in root node ranking</h5>
+                    <h5>Stake in Root Node Ranking</h5>
                     <p>{amountNodeStake + ' Q'}</p>
                 </div>
                 <div>
-                    <h5>Q balance</h5>
+                    <h5>Q Balance</h5>
                     <p>{fN(userAccountBalance)} Q</p>
                 </div>
                 {Number(rootTimeLockMinimumBalance) > 0
                   ? (
                     <div>
-                        <h5>Announced amount</h5>
+                        <h5>Announced Amount</h5>
                         <p>{fN(rootTimeLockMinimumBalance)} Q </p>
                     </div>
                     )
                   : null}
                 <div>
-                    <h5>Announced for withdrawal</h5>
+                    <h5>Announced for Withdrawal</h5>
                     <p>{fromWei(withdrawalsData?.amount)} Q</p>
                 </div>
                 <div>
-                    <h5>Announcement status</h5>
+                    <h5>Announcement Status</h5>
                     <p>{Number(withdrawalsData?.amount) === 0 ? '-' : 'Pending'}</p>
                 </div>
                 <div>
-                    <h5>Announcement end</h5>
+                    <h5>Announcement End</h5>
                     {Number(withdrawalsData?.amount) === 0
                       ? (
                         <p>-</p>

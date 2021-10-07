@@ -99,7 +99,7 @@ function OneProposalPage (props) {
       headerTitle={activeTab ? `${activeTab?.replace(/-/g, ' ')}` : null}
     >
       {empty
-        ? <h2>Wrong link</h2>
+        ? <h2>Wrong Link</h2>
         : <>
           <ProposalsList
             activeTab={activeTab}

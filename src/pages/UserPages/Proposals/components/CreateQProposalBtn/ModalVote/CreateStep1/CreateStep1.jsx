@@ -24,7 +24,7 @@ function CreateStep1 (props) {
 
   return (
     <div>
-      <h2>Please select type of vote</h2>
+      <h2>Please select type of Vote</h2>
 
       <RadioBtnGroup
         formData={formData}

@@ -103,11 +103,11 @@ function SaveManageAsset (props) {
                   <p>{depositAsset}</p>
                 </div>
                 <div>
-                  <h5>Saving balance</h5>
+                  <h5>Saving Balance</h5>
                   <p>{fN(savingBalance)}</p>
                 </div>
                 <div>
-                  <h5>Available to deposit</h5>
+                  <h5>Available to Deposit</h5>
                   <p>{fN(avToDeposit)}</p>
                 </div>
               </div>
@@ -115,19 +115,19 @@ function SaveManageAsset (props) {
               <h3>Interest</h3>
               <div className="modal__three-colm">
                 <div>
-                  <h5>Receive asset</h5>
+                  <h5>Receive Asset</h5>
                   <p>{interestAsset}</p>
                 </div>
                 <div>
-                  <h5>Yearly expected reward</h5>
+                  <h5>Yearly Expected Reward</h5>
                   <p>{fN(estInterest)}</p>
                 </div>
                 <div>
-                  <h5>Saving reward (p.a)</h5>
+                  <h5>Saving Reward (p.a)</h5>
                   <p>{fN(interestRate)} %</p>
                 </div>
               </div>
-              <h4>Deposit saving asset</h4>
+              <h4>Deposit Saving Asset</h4>
               <div className="modal__one-line-form">
                 <FormInput
                   palette="dark"
@@ -153,7 +153,7 @@ function SaveManageAsset (props) {
                   handleButton={handleSubmit1(deposit)}
                 />
               </div>
-              <h4>Withdraw saving asset</h4>
+              <h4>Withdraw Saving Asset</h4>
               <div className="modal__one-line-form">
                 <FormInput
                   palette="dark"

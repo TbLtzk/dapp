@@ -45,8 +45,8 @@ function InfBlocksUp () {
     <>
       <SmallBlock
         title="Blockchain"
-        firstSubtitle="Block height"
-        secondSubtitle="System contract registry:"
+        firstSubtitle="Block Height"
+        secondSubtitle="System Contract Registry:"
         firstContent={<p> {blockNumber}</p>}
         secondContent={
 
@@ -81,7 +81,7 @@ function InfBlocksUp () {
             <a href={latestConstitution} target="_blank" rel="noreferrer">
               <Button
                 icon="download"
-                title={'Download latest'}
+                title={'Download Latest'}
                 handleButton={() => {
                 }}
               />
@@ -89,7 +89,7 @@ function InfBlocksUp () {
             <a href={archiveConstitution} target="_blank" rel="noreferrer">
               <Button
                 icon="archive-outline"
-                title={'Check archive'}
+                title={'Check Archive'}
                 handleButton={() => {
                 }}
               />
@@ -100,8 +100,8 @@ function InfBlocksUp () {
       <SmallBlock
         display={'columns'}
         title="Governance"
-        firstSubtitle="Active proposals"
-        secondSubtitle="Past proposals"
+        firstSubtitle="Active Proposals"
+        secondSubtitle="Past Proposals"
         firstContent={
           loadingNumberAllProposals
             ? <LoadingSpinner className={'card__spinner'}/>

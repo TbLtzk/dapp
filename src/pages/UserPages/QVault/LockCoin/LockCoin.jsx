@@ -38,8 +38,8 @@ export default function LockCoin () {
   return (
     <CustomBlock>
       <h1>Lock Your Q Tokens for Voting</h1>
-      <h5 style={{ marginBottom: '15px' }}>Participate in Q governance with your locked amount</h5>
-      <h4>Increase voting weight by</h4>
+      <h5 style={{ marginBottom: '15px' }}>Participate in Q Governance with your Locked Amount</h5>
+      <h4>Increase Voting Weight by</h4>
       <div className={'card__one-line-form'}>
         <FormInput
           color={true}
@@ -59,7 +59,7 @@ export default function LockCoin () {
         />
       </div>
 
-      <h4>Reduce voting weight by</h4>
+      <h4>Reduce Voting Weight by</h4>
       <div className={'card__one-line-form'}>
         <FormInput
           color={true}

@@ -24,9 +24,9 @@ export default function DelegationRewards () {
 
   return (
     <CardBlock
-      title={'Outstanding delegation rewards'}
+      title={'Outstanding Delegation Rewards'}
       firstContent={fN(outstandingDelegationRewardsValue) + ' Q'}
-      btnTitle={'Claim delegation reward'}
+      btnTitle={'Claim Delegation Reward'}
       btnHandler={onClaim}
     />
   )

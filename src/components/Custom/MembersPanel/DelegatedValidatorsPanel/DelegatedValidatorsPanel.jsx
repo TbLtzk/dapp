@@ -22,7 +22,7 @@ function DelegatedValidatorsPanel () {
                 tableType={TABLE_TYPES.delegations}
                 perPageLength={delegations.length}
                 tableArray={delegations}
-                title="Your current delegations"
+                title="Your Current Delegations"
                 loading={loading}
                 emptyTable="No delegations"
                 sorting={false}

@@ -70,11 +70,11 @@ function SlashingObjection (props) {
   const decisionData = useMemo(() => {
     return ([
       {
-        title: 'Current decision proposer',
+        title: 'Current Decision Proposer',
         value: objData.decision.proposer
       },
       {
-        title: 'Current decision end time',
+        title: 'Current Decision End Time',
         value: objData.decision.endDate
       },
       {
@@ -82,15 +82,15 @@ function SlashingObjection (props) {
         value: objData.decision.externalReference
       },
       {
-        title: 'Adjusted slashing percentage',
+        title: 'Adjusted Slashing Percentage',
         value: objData.decision.percentage + ' %'
       },
       {
-        title: 'Current confirmation count',
+        title: 'Current Confirmation Count',
         value: objData.decision.confirmationCount
       },
       {
-        title: 'Required confirmations',
+        title: 'Required Confirmations',
         value: objData.decision.requiredConfirmations
       },
       {
@@ -157,19 +157,19 @@ function SlashingObjection (props) {
             id="dropdown-menu-align-right"
           >
             <Dropdown.Item onClick={onCastObjection}>
-              <i className={'mdi mdi-cast btn-icon'}/>Cast objection
+              <i className={'mdi mdi-cast btn-icon'}/>Cast Objection
             </Dropdown.Item>
             <Dropdown.Item onClick={onConfirmAppeal}>
               <i className={'mdi mdi-cast btn-icon'}/>Cofirm Appeal initiated by Slashing Candidate
             </Dropdown.Item>
             <Dropdown.Item onClick={onProposeDecision}>
-              <i className={'mdi mdi-arrow-decision btn-icon'}/>Propose decision
+              <i className={'mdi mdi-arrow-decision btn-icon'}/>Propose Decision
             </Dropdown.Item>
             <Dropdown.Item onClick={onConfirmCurrentDecision}>
-              <i className={'mdi mdi-vote btn-icon'}/>Vote to confirm decision
+              <i className={'mdi mdi-vote btn-icon'}/>Vote to confirm Decision
             </Dropdown.Item>
             <Dropdown.Item onClick={onRecallCurrentDecision}>
-              <i className={'mdi mdi-repeat btn-icon'}/>Recall decision
+              <i className={'mdi mdi-repeat btn-icon'}/>Recall Decision
             </Dropdown.Item>
             {objData.objection.statusObjection === STATUSES.decided && executeDecisionBTN}
           </DropdownButton>

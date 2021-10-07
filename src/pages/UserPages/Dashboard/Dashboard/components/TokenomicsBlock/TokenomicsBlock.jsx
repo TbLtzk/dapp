@@ -115,43 +115,43 @@ function TokenomicsBlock () {
   const dataArr = useMemo(() => {
     return [
       {
-        title: 'Default allocation proxy',
+        title: 'Default Allocation Proxy',
         firstContent: defaultAllocationProxy + ' Q',
         btnTitle: 'Allocate',
         btnType: BTN_TYPES.defaultAllocation,
         btnIcon: 'cube-outline'
       },
       {
-        title: 'Validation reward proxy',
+        title: 'Validation Reward Proxy',
         firstContent: validationRewardProxy + ' Q',
         btnTitle: 'Allocate',
         btnIcon: 'cube-outline',
         btnType: BTN_TYPES.validationRewardAllocation
       },
       {
-        title: 'Q token holder reward pool',
+        title: 'Q Token Holder Reward Pool',
         firstContent: QHolderRewardPool + ' Q',
         btnTitle: null
       },
       {
-        title: 'Q system reserve',
+        title: 'Q System Reserve',
         firstContent: systemReserve + ' Q',
         btnTitle: null
       },
       {
-        title: 'Root node reward proxy',
+        title: 'Root Node Reward Proxy',
         firstContent: rootNodeRewardProxy + ' Q',
         btnTitle: 'Allocate',
         btnIcon: 'cube-outline',
         btnType: BTN_TYPES.rootNodeAllocation
       },
       {
-        title: 'Validation reward pools',
+        title: 'Validation Reward Pools',
         firstContent: validationRewardPools + ' Q',
         btnTitle: null
       },
       {
-        title: 'Time since Q token holder reward update',
+        title: 'Time since Q Token holder reward update',
         firstContent: timeSinceQHolderRewardUpdate,
         btnIcon: 'cached',
         iconFontSize: '20px',

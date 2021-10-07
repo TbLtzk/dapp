@@ -14,7 +14,7 @@ function CreateStep2 (props) {
   const showCommonData = (children) => {
     return (
       <div>
-        <h2>Chosen data:</h2>
+        <h2>Chosen Data:</h2>
         <h5>Type:</h5>
         <p>{formData?.first?.replace(/-/g, ' ')}</p>
         {children}
@@ -27,7 +27,7 @@ function CreateStep2 (props) {
       case 'cast-objection':
         return showCommonData(
         <>
-          <h5>External link</h5>
+          <h5>External Link</h5>
           <p>{formData['external-link']}</p>
         </>
         )
@@ -41,11 +41,11 @@ function CreateStep2 (props) {
       case 'propose-decision' :
         return showCommonData(
           <>
-            <h5>External link</h5>
+            <h5>External Link</h5>
             <p>{formData['external-link']}</p>
-            <h5>Adjusted percentage for slashing</h5>
+            <h5>Adjusted Percentage for Slashing</h5>
             <p>{formData['%-value']}</p>
-            <h5>Did the target of the slashing neglect a formal appeal?</h5>
+            <h5>Did the Target of the Slashing Neglect a Formal Appeal?</h5>
             <p>{formData['target-slashing-appeal']}</p>
           </>
         )

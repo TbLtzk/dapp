@@ -104,24 +104,24 @@ function AuctionsList (props) {
                                 content={
                                     <div className="list-card__three-colm">
                                         <div>
-                                            <h5>Bid until</h5>
+                                            <h5>Bid Until</h5>
                                             <p>{convertToMonthDayYear(auction.endTime)}</p>
                                         </div>
                                         <div>
-                                            <h5>Remaining time for bid</h5>
+                                            <h5>Remaining Time for Bid</h5>
                                             <p>{remainDate(auction.endTime)}</p>
                                         </div>
                                         <div>
                                             {auction.contract === 'LiquidationAuction'
                                               ? (
                                                 <>
-                                                    <h5>Vault owner</h5>
+                                                    <h5>Vault Owner</h5>
                                                     <p>{auction.user}</p>
                                                 </>
                                                 )
                                               : (
                                                 <>
-                                                    <h5>Auction id</h5>
+                                                    <h5>Auction Id</h5>
                                                     <p>{auction.id}</p>
                                                 </>
                                                 )}

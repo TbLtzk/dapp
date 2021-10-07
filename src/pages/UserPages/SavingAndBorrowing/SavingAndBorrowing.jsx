@@ -27,7 +27,7 @@ function SavingAndBorrowing () {
         <PageWrap
             wrapContentClasses="wrap-content__column-2-1"
             headerTitle="Saving & Borrowing"
-            headerExtra={<Button icon="plus-circle-outline" handleButton={createVault} title="Create QBTC vault" />}
+            headerExtra={<Button icon="plus-circle-outline" handleButton={createVault} title="Create QBTC Vault" />}
         >
             <div>
                 <SavingCryptoAssets />

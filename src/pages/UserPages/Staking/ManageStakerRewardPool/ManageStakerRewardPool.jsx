@@ -11,7 +11,7 @@ function ManageStakerRewardPool () {
         <>
             <Button
                 type="white"
-                title="Manage staker reward pool"
+                title="Manage Staker Reward Pool"
                 handleButton={() => {
                   setModalShow(true)
                 }}
@@ -22,7 +22,7 @@ function ManageStakerRewardPool () {
                 onHide={() => {
                   setModalShow(false)
                 }}
-                modalTitle="Manage staker reward pool"
+                modalTitle="Manage Staker Reward Pool"
                 content={
                     <>
                         <div className="modal-line" />

@@ -15,7 +15,7 @@ function CreateStep3 (props) {
   const showCommonData = (answer) => {
     return (
         <div>
-          <h2>Chosen data:</h2>
+          <h2>Chosen Data:</h2>
           <h5>Type</h5>
           <p>{formData?.first?.replace(/-/g, ' ')}</p>
           <h5>Answer</h5>
@@ -24,7 +24,7 @@ function CreateStep3 (props) {
           proposalContract === 'EPDRMembershipVoting' || proposalContract === 'EPQFIMembershipVoting' ||
           proposalContract === 'RootsVoting'
             ? <h2>Notice: Your currently locked amount of Q inside the Q Vault will be extended until the end of this
-              proposal.</h2>
+              Proposal.</h2>
             : null
           }
         </div>

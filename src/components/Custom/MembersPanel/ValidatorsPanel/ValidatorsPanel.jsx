@@ -30,7 +30,7 @@ function ValidatorsPanel (props) {
                     tableType={TABLE_TYPES.validators}
                     perPageLength={10}
                     tableArray={validators}
-                    title="Validator ranking"
+                    title="Validator Ranking"
                     loading={loading}
                     widened={widened}
                     emptyTable="No validators"

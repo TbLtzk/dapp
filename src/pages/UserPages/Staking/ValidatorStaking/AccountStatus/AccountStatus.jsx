@@ -100,8 +100,8 @@ export default function AccountStatus () {
             {isThisUserValidator
               ? (
                 <div>
-                    <h5>Current rank</h5>
-                    <p>{validatorRank}#</p>
+                    <h5>Current Rank</h5>
+                    <p>{validatorRank} #</p>
                 </div>
                 )
               : null}
@@ -110,35 +110,35 @@ export default function AccountStatus () {
 
   return (
         <CustomBlock>
-            <h1>Manage balance</h1>
+            <h1>Manage Balance</h1>
             <AccountStatusInfo>
                 {checkIsUserValidator}
                 <div>
-                    <h5>Stake in validator ranking</h5>
+                    <h5>Stake in Validator Ranking</h5>
                     <p>{fN(userAccountableTotalStake)} Q</p>
                 </div>
                 <div>
-                    <h5>Q balance</h5>
+                    <h5>Q Balance</h5>
                     <p>{fN(userAccountBalance)} Q</p>
                 </div>
                 {Number(validatorLockedAmount) > 0
                   ? (
                     <div>
-                        <h5>Announced amount</h5>
+                        <h5>Announced Amount</h5>
                         <p>{fN(validatorLockedAmount)} Q </p>
                     </div>
                     )
                   : null}
                 <div>
-                    <h5>Announced for withdrawal</h5>
+                    <h5>Announced for Withdrawal</h5>
                     <p>{fromWei(userValidatorWithdrawalInfo.amount)} Q</p>
                 </div>
                 <div>
-                    <h5>Announcement status</h5>
+                    <h5>Announcement Status</h5>
                     <p>{Number(userValidatorWithdrawalInfo?.amount) === 0 ? '-' : 'Pending'}</p>
                 </div>
                 <div>
-                    <h5>Announcement end</h5>
+                    <h5>Announcement End</h5>
                     {Number(userValidatorWithdrawalInfo?.amount) === 0
                       ? (
                         <p>-</p>

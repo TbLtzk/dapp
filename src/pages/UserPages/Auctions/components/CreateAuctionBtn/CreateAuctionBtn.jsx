@@ -26,7 +26,7 @@ function CreateAuctionBtn (props) {
       <Button
         icon="plus-circle-outline"
         handleButton={onCreateAuction}
-        title={`Create ${activeTab?.replace(/-/g, ' ') + ' auction'}`}
+        title={`Create ${activeTab?.replace(/-/g, ' ') + ' Auction'}`}
       />
       <ModalCreateAuction
         activeTab={activeTab}

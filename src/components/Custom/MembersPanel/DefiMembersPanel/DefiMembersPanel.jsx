@@ -26,7 +26,7 @@ function DefiMembersPanel () {
                 tableArray={members}
                 title="List of DeFi Experts"
                 loading={loading}
-                emptyTable="No defi members"
+                emptyTable="No DeFi members"
                 sorting={false}
             />
         </CustomBlock>
