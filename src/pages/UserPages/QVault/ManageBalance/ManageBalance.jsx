@@ -34,8 +34,8 @@ export default function ManageBalance () {
 
   return (
     <CustomBlock>
-      <h1>Manage balance</h1>
-      <h4>Transfer into Q Vault</h4>
+      <h1>Manage Balance</h1>
+      <h4>Transfer Into Q Vault</h4>
       <div className={'card__one-line-form'}>
         <FormInput
           lbl={'Q'}

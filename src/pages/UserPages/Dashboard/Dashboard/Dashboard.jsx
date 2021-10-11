@@ -21,14 +21,14 @@ function Dashboard () {
   const appMode = useSelector(mode)
   return (
     <PageWrap
-      wrapContentClasses={'wrap-content__tow-colm'}
-      headerTitle={'Dashboard'}
+      wrapContentClasses='wrap-content__tow-colm'
+      headerTitle='Dashboard'
       headerExtra={appMode === MODE.advanced
         ? (
         <Link to={'/q-parameters'}>
           <Button
-            type={'white'}
-            title={'Q Parameters'}
+            type='white'
+            title='Q Parameters'
             handleButton={() => {
             }}
           />

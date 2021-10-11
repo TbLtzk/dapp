@@ -26,14 +26,14 @@ function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contrac
         <CustomBlock>
             <h5>{title}</h5>
             <p>{balance + ' Q'}</p>
-            <h5>Time locked balance</h5>
+            <h5>Time Locked Balance</h5>
             <p>{timeLockBalance} Q</p>
             <MemberTables
                 tableType={TABLE_TYPES.timeLocks}
                 perPageLength={4}
                 tableArray={lockAmountData}
                 title={null}
-                emptyTable={null}
+                sorting={false}
             />
             <ModalManage
                 address={address}

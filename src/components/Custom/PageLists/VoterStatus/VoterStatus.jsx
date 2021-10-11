@@ -25,24 +25,24 @@ function VoterStatus () {
     dispatch(getUserBalance(userAddress))
     dispatch(getIsUserEPDRMember(userAddress))
     dispatch(getIsUserEPQFIMember(userAddress))
-  }, [dispatch])
+  }, [])
 
   const showStatus = useMemo(() => {
     const arrStatus = []
     if (isRootNode) {
-      arrStatus.push('Root Node')
+      arrStatus.push('Root node')
     }
     if (isValidator) {
       arrStatus.push('Validator')
     }
     if (userQVBalance !== '0') {
-      arrStatus.push('Q Token Holder')
+      arrStatus.push('Q token holder')
     }
     if (isEPDRMembership) {
-      arrStatus.push('DeFi Risk Expert')
+      arrStatus.push('DeFi risk expert')
     }
     if (isEPQFIMembership) {
-      arrStatus.push('Fees & Incentive Expert')
+      arrStatus.push('Fees & Incentive expert')
     }
     if (arrStatus.length === 0) {
       return 'None'

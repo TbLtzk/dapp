@@ -32,7 +32,7 @@ function SystemCard (props) {
           </div>
         )
       })}
-      {title === 'QUSD System Balance'
+      {title === 'QUSD system balance'
         ? <div className="card__actions">
           <Button
             title={!loadingPerfNetting ? 'Perform Netting' : <LoadingSpinner/>}

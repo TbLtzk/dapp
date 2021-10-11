@@ -83,7 +83,7 @@ function TimeLocks () {
       balance: fN(qVaultStakeBalance),
       lockAmountData: qVaultTimeLocksArray || [],
       modalTitle: 'Deposit & purge',
-      title: 'Q Vault account balance'
+      title: 'Q Vault Account Balance'
     },
     {
       contract: 'root',
@@ -91,23 +91,23 @@ function TimeLocks () {
       balance: fN(rootStakeBalance),
       lockAmountData: rootTimeLocksArray || [],
       modalTitle: 'Deposit & purge',
-      title: 'Root stake balance'
+      title: 'Root Stake Balance'
     },
     {
       contract: 'validators',
       timeLockBalance: fN(validatorsTimeLockMinimumBalance),
       balance: fN(validatorSelfStake),
       lockAmountData: validatorsTimeLocksArray || [],
-      modalTitle: 'Deposit & purge',
-      title: 'Validator stake balance'
+      modalTitle: 'Deposit & Purge',
+      title: 'Validator Stake Balance'
     },
     {
       contract: 'vesting',
       timeLockBalance: fN(vestingTimeLockMinimumBalance),
       balance: fN(vestingStakeBalance),
       lockAmountData: vestingTimeLocksArray || [],
-      modalTitle: 'Deposit, withdraw & purge',
-      title: 'Vesting account balance'
+      modalTitle: 'Deposit, Withdraw & Purge',
+      title: 'Vesting Account Balance'
     }
   ]
 

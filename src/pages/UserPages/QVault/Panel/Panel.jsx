@@ -61,35 +61,35 @@ export default function Panel () {
         <CustomBlock>
             <h1>Overview</h1>
             <div>
-                <h5>Q Vault balance</h5>
+                <h5>Q Vault Balance</h5>
                 <p>{fN(userQVBalanceL) + ' Q'}</p>
                 {Number(qVaultLockedAmount) > 0
                   ? (
                     <>
-                        <h5>Time locked amount</h5>
+                        <h5>Time Locked Amount</h5>
                         <p>{fN(qVaultLockedAmount) + ' Q'}</p>
                     </>
                     )
                   : null}
-                <h5>Q Token Holder reward rate (p.a.)</h5>
+                <h5>Q Token Holder Reward Rate (p.a.)</h5>
                 <p>
                     {(balanceDetails?.interestRate
                       ? fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate))
-                      : 0) + '%'}
+                      : 0) + ' %'}
                 </p>
-                <h5>Yearly expected reward</h5>
+                <h5>Yearly Expected Reward</h5>
                 <p>{fN(yearlyExpectedEarnings) + ' Q'}</p>
-                <h5>Q address balance</h5>
+                <h5>Q Address Balance</h5>
                 <p>{fN(userAccountBalance) + ' Q'}</p>
 
-                <div className={'card__line'} />
+                <div className="card__line" />
 
-                <h5>Voting Weight from QVault</h5>
+                <h5>Voting Weight from Q Vault</h5>
                 <p>{userVotingWeight + ' Q'}</p>
                 <h5>Voting Locking End</h5>
                 <p>{userLockingEnd}</p>
                 <h5>Voting Status</h5>
-                <VoterStatus />
+                <p><VoterStatus /></p>
             </div>
         </CustomBlock>
   )

@@ -107,7 +107,7 @@ function Sidebar () {
                   className="nav-link"
                   highlight={highlight('q-governance')}
                 >
-                  Q Governance
+                  Governance
                 </LinkStyle>
                 <Accordion.Toggle eventKey="0">
                   <AccordionIcon state={isGovernanceAccordionOpened}>

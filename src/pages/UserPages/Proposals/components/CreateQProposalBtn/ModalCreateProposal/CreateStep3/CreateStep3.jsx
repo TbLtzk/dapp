@@ -112,7 +112,7 @@ function CreateStep3 (props) {
               <>
                 <h5>Classification</h5>
                 <p>{formData?.classification?.replace(/-/g, ' ')}</p>
-                <h5>External link</h5>
+                <h5>External Link</h5>
                 <p>{formData['external-link']}</p>
                 <h5>Hash</h5>
                 <p>{formData.hash}</p>
@@ -203,13 +203,13 @@ function CreateStep3 (props) {
       case PROPOSALS_TYPES.rootNodePanel:
         return showCommonData(
           <>
-            <h5>External link</h5>
+            <h5>External Link</h5>
             <p>{formData['external-link']}</p>
             {formData.first === 'add-a-new-root-node'
               ? <>
                 <h5>Hash</h5>
                 <p>{formData.hash}</p>
-                <h5>Remove a current Root Node</h5>
+                <h5>Remove a Current Root Node</h5>
                 <p>{formData['remove-current']}</p>
                 {formData['remove-current'] === 'no'
                   ? null
@@ -222,7 +222,7 @@ function CreateStep3 (props) {
               : <>
                 <h5>Root Node to Remove</h5>
                 <p>{formData.address}</p>
-                <h5>External link</h5>
+                <h5>External Link</h5>
                 <p>{formData['external-link']}</p>
               </>
             }
@@ -233,16 +233,16 @@ function CreateStep3 (props) {
           <>
             <h5>Candidate to Slash</h5>
             <p>{formData.address}</p>
-            <h5>Stake Amount to slash</h5>
-            <p>{formData['%-value']}%</p>
-            <h5>External link</h5>
+            <h5>Stake Amount to Slash</h5>
+            <p>{formData['%-value']} %</p>
+            <h5>External Link</h5>
             <p>{formData['external-link']}</p>
           </>
         )
       case PROPOSALS_TYPES.expertProposals:
         return showCommonData(
           <>
-            <h5>Panel to add an Expert</h5>
+            <h5>Panel to Add an Expert</h5>
             <p>{formData['type-proposal']?.replace(/-/g, ' ')}</p>
             <h5>External link</h5>
             <p>{formData['external-link']}</p>

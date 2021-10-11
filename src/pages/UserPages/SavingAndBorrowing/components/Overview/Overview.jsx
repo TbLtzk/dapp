@@ -37,11 +37,11 @@ function Overview () {
   return (
         <CustomBlock>
             <h1>Overview</h1>
-            <h5>Total saving balance</h5>
+            <h5>Total Saving Balance</h5>
             {!loadingTotalDebt ? <p>{fN(totalSavingBalance) + ' QUSD'}</p> : <LoadingSpinner />}
-            <h5>Outstanding debt</h5>
+            <h5>Outstanding Debt</h5>
             {!loadingTotalColVal ? <p>{fN(totalDebt) + ' USD'}</p> : <LoadingSpinner />}
-            <h5>Total collateral locked</h5>
+            <h5>Total Collateral Locked</h5>
             {!loadingTotalSavingBalance ? <p>{fN(totalColVal) + ' USD'}</p> : <LoadingSpinner />}
         </CustomBlock>
   )

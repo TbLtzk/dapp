@@ -133,7 +133,7 @@ function BorrowManageAsset (props) {
       <Button
         isIconPositionRight
         icon="arrow-top-right"
-        title={'Manage'}
+        title='Manage'
         type="transparent"
         handleButton={() => {
           setIsModalShown(true)
@@ -155,17 +155,17 @@ function BorrowManageAsset (props) {
                 <div>
                   <h5>Asset</h5>
                   <p>{collateralInf?.assets || '-'}</p>
-                  <h5>Locked collateral</h5>
+                  <h5>Locked Collateral</h5>
                   <p>{fN(collateralInf?.lockedCol) || 0}</p>
                 </div>
                 <div>
-                  <h5>Asset price</h5>
+                  <h5>Asset Price</h5>
                   <p>{fN(collateralInf?.assetPrice) || 0}</p>
-                  <h5>Available to deposit</h5>
+                  <h5>Available to Deposit</h5>
                   <p>{fN(collateralInf?.availableDeposit) || 0}</p>
                 </div>
                 <div>
-                  <h5>Available to withdraw</h5>
+                  <h5>Available to Withdraw</h5>
                   <p>{fN(collateralInf?.availableWithdraw) || 0}</p>
                   <h5>Liquidation Price</h5>
                   <p>{fN(collateralInf?.liquidationPrice) || 0}</p>
@@ -177,28 +177,28 @@ function BorrowManageAsset (props) {
                 <div>
                   <h5>Asset</h5>
                   <p>{borrowingInf?.assets || '-'}</p>
-                  <h5>Collateral value</h5>
+                  <h5>Collateral Value</h5>
                   <p>{fN(borrowingInf?.collateralValue) || 0}</p>
-                  <h5>Liquidation limit</h5>
+                  <h5>Liquidation Limit</h5>
                   <p>{fN(borrowingInf?.liquidationLimit) || 0}</p>
                 </div>
                 <div>
-                  <h5>Borrowing limit</h5>
+                  <h5>Borrowing Limit</h5>
                   <p>{fN(borrowingInf?.borrowingLimit) || 0}</p>
-                  <h5>Available to borrow</h5>
+                  <h5>Available to Borrow</h5>
                   <p>{fN(borrowingInf?.availableBorrow) || 0}</p>
-                  <h5>Borrowing fee (p.a.)</h5>
-                  <p>{(fN(borrowingInf?.borrowingFee) || 0) + '%'}</p>
+                  <h5>Borrowing Fee (p.a.)</h5>
+                  <p>{(fN(borrowingInf?.borrowingFee) || 0) + ' %'}</p>
                 </div>
                 <div>
-                  <h5>Available to repay</h5>
+                  <h5>Available to Repay</h5>
                   <p>{fN(borrowingInf?.availableRepay) || 0}</p>
-                  <h5>Outstanding debt</h5>
+                  <h5>Outstanding Debt</h5>
                   <p>{fN(borrowingInf?.outstandingDebt) || 0}</p>
                 </div>
               </div>
 
-              <h4>Borrow asset</h4>
+              <h4>Borrow Asset</h4>
               <div className="modal__one-line-form">
                 <FormInput
                   palette="dark"
