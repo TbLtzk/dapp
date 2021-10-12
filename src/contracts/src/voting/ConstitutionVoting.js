@@ -6,12 +6,13 @@ import { getPastProposalsIds, getStatusTransformation } from '../../handler/Voti
 import { fromWei } from 'func/balance'
 import { BN } from 'func/useful'
 import { ParameterType } from '@q-dev/q-js-sdk'
+import { CONTRACTS_NAMES } from 'constants/contracts'
 
 export default class ConstitutionVoting extends VotingService {
   constructor () {
     super()
     this.contract = contracts.ConstitutionVoting
-    this.contractName = 'ConstitutionVoting'
+    this.contractName = CONTRACTS_NAMES.constitutionVoting
   }
 
   /**

@@ -24,6 +24,7 @@ import {
 import ProposalsList from 'pages/UserPages/Proposals/components/ProposalsList'
 import PageWrap from 'components/Base/PageWrap'
 import { tabSwitcher } from 'contracts/handler/VotingHandler'
+import { CONTRACTS_NAMES } from 'constants/contracts'
 
 function OneProposalPage (props) {
   const { match } = props
@@ -76,19 +77,19 @@ function OneProposalPage (props) {
 
   function checkActiveTabByContract (contract) {
     switch (contract) {
-      case 'ConstitutionVoting':
-      case 'EmergencyUpdateVoting':
-      case 'GeneralUpdateVoting':
+      case CONTRACTS_NAMES.constitutionVoting:
+      case CONTRACTS_NAMES.emergencyUpdateVoting:
+      case CONTRACTS_NAMES.generalUpdateVoting:
         return PROPOSALS_TYPES.proposals
-      case 'RootsVoting':
+      case CONTRACTS_NAMES.rootsVoting:
         return PROPOSALS_TYPES.rootNodePanel
-      case 'EPQFIMembershipVoting':
-      case 'EPDRMembershipVoting':
-      case 'EPQFIParametersVoting':
-      case 'EPDRParametersVoting':
+      case CONTRACTS_NAMES.ePQFIMembershipVoting:
+      case CONTRACTS_NAMES.ePDRMembershipVoting:
+      case CONTRACTS_NAMES.ePQFIParametersVoting:
+      case CONTRACTS_NAMES.ePDRParametersVoting:
         return PROPOSALS_TYPES.expertProposals
-      case 'RootNodesSlashingVoting':
-      case 'ValidatorsSlashingVoting':
+      case CONTRACTS_NAMES.rootNodesSlashingVoting:
+      case CONTRACTS_NAMES.validatorsSlashingVoting:
         return PROPOSALS_TYPES.slashingProposals
     }
   }

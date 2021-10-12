@@ -8,7 +8,7 @@ import ParametersVotingService from '../src/voting/ParametersVoting'
 import { chooseExpertContractDependsOnType } from './QExpertVotingHandler'
 import { PROPOSALS_TYPES } from 'constants/statuses'
 import { BN } from 'func/useful'
-import { CONTRACT_TYPES } from 'constants/contracts'
+import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts'
 
 export const getPastEvents = async (contract, event) => {
   const contractWeb3 = contract
@@ -32,40 +32,6 @@ export const getStatusTransformation = (statusId) => {
 export const getTypeParameter = (id) => {
   const status = ['None', 'Pending', 'Rejected', 'Accepted', 'Passed', 'Boolean', 'Obsolete']
   return status[Number(id)]
-}
-export const getParameterTypeTransformation = (statusId) => {
-  switch (Number(statusId)) {
-    case 0:
-      return 'None'
-    case 1:
-      return 'Address'
-    case 2:
-      return 'Uint'
-    case 3:
-      return 'String'
-    case 4:
-      return 'Byte32'
-    case 5:
-      return 'Bool'
-    default:
-      return 'None'
-  }
-}
-
-export const convertNumVotes = (number) => {
-  if (number.length === 1) {
-    return Number(number)
-  } else if (number.length === 27) {
-    // const result = toFixed(number);
-    const res = number.slice(0, 2)
-    return res * 0.01
-  } else if (number.length === 26) {
-    const res = number.slice(0, 1)
-    return res * 0.01
-  } else {
-    const res = number.slice(0, 2)
-    return res * 0.001
-  }
 }
 
 export const getPercentageFormat = (number) => {
@@ -92,8 +58,8 @@ export function creationSlashingContractObj (contractName) {
 }
 
 export function creationSlashingContractsObjArray () {
-  const validatorsSlashingVoting = new SlashingVotingService('ValidatorsSlashingVoting')
-  const rootNodesSlashingVoting = new SlashingVotingService('RootNodesSlashingVoting')
+  const validatorsSlashingVoting = new SlashingVotingService(CONTRACTS_NAMES.validatorsSlashingVoting)
+  const rootNodesSlashingVoting = new SlashingVotingService(CONTRACTS_NAMES.rootNodesSlashingVoting)
   return [validatorsSlashingVoting, rootNodesSlashingVoting]
 }
 
@@ -103,11 +69,11 @@ export function creationRootContractObj () {
 
 export function creationQContractObj (contractName) {
   switch (contractName) {
-    case 'ConstitutionVoting':
+    case CONTRACTS_NAMES.constitutionVoting:
       return new ConstitutionVotingService()
-    case 'EmergencyUpdateVoting':
+    case CONTRACTS_NAMES.emergencyUpdateVoting:
       return new EmergencyUpdateVotingService()
-    case 'GeneralUpdateVoting':
+    case CONTRACTS_NAMES.generalUpdateVoting:
       return new GeneralUpdateVotingService()
   }
 }
@@ -122,33 +88,33 @@ export function creationQContractsObjArray () {
 export const arrContractsExpert = [
   {
     // EPQFIMembershipVoting
-    typeContract: 'member',
+    typeContract: CONTRACT_TYPES.member,
     type: CONTRACT_TYPES.qFee
   },
   {
     // EPDRMembershipVoting
-    typeContract: 'member',
+    typeContract: CONTRACT_TYPES.member,
     type: CONTRACT_TYPES.qDefi
   },
   {
     // EPQFIParametersVoting
-    typeContract: 'parameters',
+    typeContract: CONTRACT_TYPES.parameters,
     type: CONTRACT_TYPES.qFee
   },
   {
     // EPDRParametersVoting
-    typeContract: 'parameters',
+    typeContract: CONTRACT_TYPES.parameters,
     type: CONTRACT_TYPES.qDefi
   }
 ]
 
 export function creationExpertContractObj (contractName) {
   switch (contractName) {
-    case 'EPQFIMembershipVoting':
-    case 'EPDRMembershipVoting':
+    case CONTRACTS_NAMES.ePQFIMembershipVoting:
+    case CONTRACTS_NAMES.ePDRMembershipVoting:
       return new MembershipVotingService(contractName)
-    case 'EPQFIParametersVoting':
-    case 'EPDRParametersVoting':
+    case CONTRACTS_NAMES.ePQFIParametersVoting:
+    case CONTRACTS_NAMES.ePDRParametersVoting:
       return new ParametersVotingService(contractName)
   }
 }

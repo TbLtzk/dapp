@@ -6,6 +6,7 @@ import { formObject } from 'store/selectors/voting/proposals'
 import InputGroup from 'components/Custom/ModalActions/InputGroup'
 
 import { rootSlashing, validatorSlashing } from './constants'
+import { CONTRACT_TYPES } from 'constants/contracts'
 
 function SlashingS2 (props) {
   const { activeTab, register, errors } = props
@@ -13,7 +14,7 @@ function SlashingS2 (props) {
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (formData?.first) {
-      case 'root-node-slashing':
+      case CONTRACT_TYPES.rootNodeSlashing:
         return (
           <>
             <h2>{rootSlashing.subtitle}</h2>
@@ -35,7 +36,7 @@ function SlashingS2 (props) {
             />
           </>
         )
-      case 'validator-node-slashing':
+      case CONTRACT_TYPES.validatorNodeSlashing:
         return (
           <>
             <h2>{validatorSlashing.subtitle}</h2>

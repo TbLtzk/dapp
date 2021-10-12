@@ -1,5 +1,6 @@
 import { contracts } from '../../config/config'
 import VotingService from './VotingService'
+import { CONTRACTS_NAMES } from 'constants/contracts'
 
 import {
   getStatusTransformation
@@ -9,7 +10,7 @@ export default class EmergencyUpdateVoting extends VotingService {
   constructor () {
     super()
     this.contract = contracts.EmergencyUpdateVoting
-    this.contractName = 'EmergencyUpdateVoting'
+    this.contractName = CONTRACTS_NAMES.emergencyUpdateVoting
   }
 
   async getProposalData (promiseRes, id, promiseStatus) {
@@ -17,8 +18,6 @@ export default class EmergencyUpdateVoting extends VotingService {
     let objStats = {}
     objRes.id = id
     objRes.remark = promiseRes.remark
-    // objRes.votesAgainst = promiseRes.counters.weightAgainst;
-    // objRes.votesFor = promiseRes.counters.weightFor;
     // number of voting people against
     const weightAgainst = promiseRes.counters.weightAgainst
     objRes.votesAgainst = weightAgainst

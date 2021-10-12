@@ -7,6 +7,7 @@ import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
 import InputGroup from 'components/Custom/ModalActions/InputGroup'
 
 import { addRootNode, removeRootNode } from './constants'
+import { CONTRACT_TYPES } from 'constants/contracts'
 
 function QRootNodeS2 (props) {
   const { activeTab, register, errors } = props
@@ -17,7 +18,7 @@ function QRootNodeS2 (props) {
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (formData?.first) {
-      case 'add-a-new-root-node':
+      case CONTRACT_TYPES.addAnewRootNode:
         return (
           <>
             <h2>{addRootNode.subtitle}</h2>
@@ -57,7 +58,7 @@ function QRootNodeS2 (props) {
             }
           </>
         )
-      case 'remove-a-current-root-node':
+      case CONTRACT_TYPES.removeACurrentRootNode:
         return (
           <>
             <h2>{removeRootNode.subtitle}</h2>

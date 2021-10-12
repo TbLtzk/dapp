@@ -1,4 +1,4 @@
-import { put, select, takeEvery } from 'redux-saga/effects'
+import { put, takeEvery } from 'redux-saga/effects'
 
 import * as actionTypes from 'store/actions/action-types/voting/expert-proposals'
 
@@ -7,42 +7,42 @@ import {
   getExpertEndedProposalsSuccess,
   getExpertProposalsListError,
   getExpertProposalsListSuccess,
-  getProposalSuccess,
-  getEmptyProposalSuccess,
   getProposalError,
-  getProposalEndedSuccess,
-  getEmptyProposalEndedSuccess,
-  getExpertProposalEnded,
-  getProposalEndedError,
   getOneProposalSuccess
 } from 'store/actions/action-creaters/voting/expert-proposals'
 import { creationExpertContractObj, creationExpertContractsObjArray } from 'contracts/handler/VotingHandler'
 import ErrorHandler from 'func/ErrorHandler'
+import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
 
-function * getProposalsList () {
+function * getProposalsList ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active }) {
   try {
     const contracts = creationExpertContractsObjArray()
-    let result = []
-    if (Array.isArray(contracts)) {
-      const data = yield Promise.all(contracts.map((item) => item.getProposals()))
-      result = [].concat.apply([], data)
-    } else {
-      result = yield contracts?.getProposals()
+    let data = null
+    switch (proposalStatusType) {
+      case PROPOSAL_STATUS_TYPES.active:
+        data = yield Promise.all(contracts.map((item) => item.getProposals()))
+        yield put(getExpertProposalsListSuccess([].concat.apply([], data)))
+        break
+      case PROPOSAL_STATUS_TYPES.ended:
+        data = yield Promise.all(contracts.map((item) => item.getEndedProposals()))
+        yield put(getExpertEndedProposalsSuccess([].concat.apply([], data)))
+        break
     }
-
-    yield put(getExpertProposalsListSuccess(result))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
-    yield put(getExpertProposalsListError(error))
+    switch (proposalStatusType) {
+      case PROPOSAL_STATUS_TYPES.active:
+        yield put(getExpertProposalsListError(error))
+        break
+      case PROPOSAL_STATUS_TYPES.ended:
+        yield put(getExpertEndedProposalsError(error.message))
+        break
+    }
   }
 }
 
 function * getProposal ({ contractName, id, activeProposal }) {
-  const { pageType } = yield select((state) => state.proposals)
   try {
-    if (pageType === 'ended') {
-      yield put(getExpertProposalEnded())
-    }
     const contract = creationExpertContractObj(contractName)
     if (contract) {
       let data = null
@@ -51,66 +51,15 @@ function * getProposal ({ contractName, id, activeProposal }) {
       } else {
         data = yield contract.getProposalWithoutStatusChecked(id)
       }
-      if (pageType === 'ended') {
-        if (data) {
-          yield put(getProposalEndedSuccess(data))
-        } else {
-          if (id) {
-            yield put(
-              getEmptyProposalEndedSuccess({
-                id,
-                contractName
-              })
-            )
-          }
-        }
-      } else if (pageType === 'active') {
-        if (data) {
-          yield put(getProposalSuccess(data))
-        } else {
-          if (id) {
-            yield put(
-              getEmptyProposalSuccess({
-                id,
-                contractName
-              })
-            )
-          }
-        }
-      } else {
-        yield put(getOneProposalSuccess(data))
-      }
+      yield put(getOneProposalSuccess(data))
     }
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
-    if (pageType === 'ended') {
-      yield put(getProposalEndedError(id))
-    } else {
-      yield put(getProposalError(id))
-    }
-  }
-}
-
-function * getEndedProposals () {
-  try {
-    const contracts = creationExpertContractsObjArray()
-    let result = []
-    if (Array.isArray(contracts)) {
-      const data = yield Promise.all(contracts.map((item) => item.getEndedProposals()))
-      result = [].concat.apply([], data)
-    } else {
-      result = yield contracts?.getEndedProposals()
-    }
-
-    yield put(getExpertEndedProposalsSuccess(result))
-  } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(getExpertEndedProposalsError(error.message))
+    yield put(getProposalError(id))
   }
 }
 
 export default [
-  takeEvery(actionTypes.GET_EXPERT_ENDED_PROPOSALS, getEndedProposals),
   takeEvery(actionTypes.GET_EXPERT_PROPOSALS_LIST, getProposalsList),
   takeEvery(actionTypes.GET_EXPERT_PROPOSAL, getProposal)
 ]

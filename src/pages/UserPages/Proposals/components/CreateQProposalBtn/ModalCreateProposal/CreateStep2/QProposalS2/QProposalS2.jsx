@@ -8,6 +8,7 @@ import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
 import InputGroup from 'components/Custom/ModalActions/InputGroup'
 
 import { constUpdate, generalUpdate, emergencyUpdate } from './constants'
+import { CONTRACT_TYPES } from 'constants/contracts'
 
 function QProposalS2 (props) {
   const {
@@ -21,7 +22,7 @@ function QProposalS2 (props) {
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (formData?.first) {
-      case 'constitution-update':
+      case CONTRACT_TYPES.constitutionUpdate:
         return (
           <>
             <h2>{constUpdate.subtitle}</h2>
@@ -58,12 +59,12 @@ function QProposalS2 (props) {
             />
           </>
         )
-      case 'general-q-update':
-      case 'emergency-update':
+      case CONTRACT_TYPES.generalQUpdate:
+      case CONTRACT_TYPES.emergencyUpdate:
         return (
           <>
             <h2>
-              {formData.first === 'general-q-update'
+              {formData.first === CONTRACT_TYPES.generalQUpdate
                 ? generalUpdate.subtitle
                 : emergencyUpdate.subtitle
               }

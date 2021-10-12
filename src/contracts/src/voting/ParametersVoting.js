@@ -7,7 +7,7 @@ import { BN } from 'func/useful'
 import { ParameterType } from '@q-dev/q-js-sdk'
 import { parameterVote } from 'pages/UserPages/Proposals/components/CreateQProposalBtn/ModalCreateProposal/CreateStep2/QExpertS2/constants'
 import { epqfiParametersVoting, epdrParametersVoting } from 'contracts/contracts'
-import { CONTRACT_TYPES } from 'constants/contracts'
+import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts'
 
 /* EPQFIParametersVoting, EPDRParametersVoting */
 export default class ParametersVoting extends VotingService {
@@ -32,13 +32,13 @@ export default class ParametersVoting extends VotingService {
     objRes.votingEndTime = promiseRes.base.params.votingEndTime
 
     objRes.status = getStatusTransformation(promiseStatus)
-    objRes.title = this.contractName === 'EPDRParametersVoting'
+    objRes.title = this.contractName === CONTRACTS_NAMES.ePDRParametersVoting
       ? 'DeFi Risk Expert parameter voting proposals'
       : 'Fees & Incentives Experts parameter voting proposals'
-    objRes.type = this.contractName === 'EPDRParametersVoting'
+    objRes.type = this.contractName === CONTRACTS_NAMES.ePDRParametersVoting
       ? 'DeFi Risk Expert Parameters Proposals'
       : 'Fees & Incentives Experts Parameters Proposals'
-    objRes.kindVoting = 'parameters'
+    objRes.kindVoting = CONTRACT_TYPES.parameters
     objStats = await this.getProposalStatsData(id)
     objRes.contract = this.contractName
     const parametersSize = promiseRes.parametersSize

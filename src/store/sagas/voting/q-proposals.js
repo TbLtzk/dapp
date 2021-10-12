@@ -1,12 +1,15 @@
-import { put, select, takeEvery } from 'redux-saga/effects'
+import { put, takeEvery } from 'redux-saga/effects'
 
 import * as actionTypes from 'store/actions/action-types/voting/q-proposals'
 
+import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
 import {
-  getQEndedProposalsError, getQEndedProposalsSuccess,
-  getProposalSuccess, getEmptyProposalSuccess, getProposalError,
-  getQProposalsListError, getQProposalsListSuccess, getProposalEndedSuccess,
-  getEmptyProposalEndedSuccess, getQProposalEnded, getProposalEndedError, getOneProposalSuccess
+  getQEndedProposalsSuccess,
+  getProposalError,
+  getQProposalsListError,
+  getQProposalsListSuccess,
+  getOneProposalSuccess,
+  getQEndedProposalsError
 } from 'store/actions/action-creaters/voting/q-proposals'
 import {
   creationQContractObj,
@@ -15,20 +18,33 @@ import {
 
 import ErrorHandler from 'func/ErrorHandler'
 
-function * getProposalsList () {
+function * getProposalsList ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active }) {
   try {
     const contracts = creationQContractsObjArray()
-    let result = []
-    if (Array.isArray(contracts)) {
-      const data = yield Promise.all(contracts.map(item => item.getProposals()))
-      result = [].concat.apply([], data)
-    } else {
-      result = yield contracts?.getProposals()
+    let data = null
+    switch (proposalStatusType) {
+      case PROPOSAL_STATUS_TYPES.active:
+        data = yield Promise.all(contracts.map(item => item.getProposals()))
+        yield put(getQProposalsListSuccess({
+          data: [].concat.apply([], data),
+          proposalStatusType
+        }))
+        break
+      case PROPOSAL_STATUS_TYPES.ended:
+        data = yield Promise.all(contracts.map(item => item.getEndedProposals()))
+        yield put(getQEndedProposalsSuccess([].concat.apply([], data)))
+        break
     }
-    yield put(getQProposalsListSuccess(result))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
-    yield put(getQProposalsListError(error))
+    switch (proposalStatusType) {
+      case PROPOSAL_STATUS_TYPES.active:
+        yield put(getQProposalsListError(error))
+        break
+      case PROPOSAL_STATUS_TYPES.ended:
+        yield put(getQEndedProposalsError(error.message))
+        break
+    }
   }
 }
 
@@ -37,11 +53,7 @@ function * getQProposal ({
   id,
   activeProposal
 }) {
-  const { pageType } = yield select(state => state.proposals)
   try {
-    if (pageType === 'ended') {
-      yield put(getQProposalEnded())
-    }
     const contract = creationQContractObj(contractName)
     if (contract) {
       let data = null
@@ -50,63 +62,15 @@ function * getQProposal ({
       } else {
         data = yield contract.getProposalWithoutStatusChecked(id)
       }
-      if (pageType === 'ended') {
-        if (data) {
-          yield put(getProposalEndedSuccess(data))
-        } else {
-          if (id) {
-            yield put(getEmptyProposalEndedSuccess({
-              id,
-              contractName
-            }))
-          }
-        }
-      } else if (pageType === 'active') {
-        if (data) {
-          yield put(getProposalSuccess(data))
-        } else {
-          if (id) {
-            yield put(getEmptyProposalSuccess({
-              id,
-              contractName
-            }))
-          }
-        }
-      } else {
-        yield put(getOneProposalSuccess(data))
-      }
+      yield put(getOneProposalSuccess(data))
     }
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
-    if (pageType === 'ended') {
-      yield put(getProposalEndedError(id))
-    } else {
-      yield put(getProposalError(id))
-    }
-  }
-}
-
-function * getEndedProposals () {
-  try {
-    const contracts = creationQContractsObjArray()
-
-    let result = []
-    if (Array.isArray(contracts)) {
-      const data = yield Promise.all(contracts.map(item => item.getEndedProposals()))
-      result = [].concat.apply([], data)
-    } else {
-      result = yield contracts?.getEndedProposals()
-    }
-
-    yield put(getQEndedProposalsSuccess(result))
-  } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(getQEndedProposalsError(error.message))
+    yield put(getProposalError(id))
   }
 }
 
 export default [
-  takeEvery(actionTypes.GET_Q_ENDED_PROPOSALS, getEndedProposals),
   takeEvery(actionTypes.GET_Q_PROPOSALS_LIST, getProposalsList),
   takeEvery(actionTypes.GET_Q_PROPOSAL, getQProposal)
 ]

@@ -51,11 +51,6 @@ export const voteForProposalSuccess = (result) => ({
   result
 })
 
-export const getEndedProposals = (activeTab) => ({
-  type: actionTypes.GET_ENDED_PROPOSALS,
-  activeTab
-})
-
 export const executeProposal = (data) => ({
   type: actionTypes.EXECUTE_PROPOSAL,
   data
@@ -79,9 +74,10 @@ export const getOneProposal = (data) => ({
   data
 })
 
-export const getProposalsList = (activeTab) => ({
+export const getProposalsList = (proposalType, proposalStatusType) => ({
   type: actionTypes.GET_PROPOSALS_LIST,
-  activeTab
+  proposalType,
+  proposalStatusType
 })
 
 // dashboard
@@ -109,9 +105,4 @@ export const onChangeProposalTab = () => ({
 export const onSetActiveTab = (activeTab) => ({
   type: actionTypes.ACTIVE_TAB,
   activeTab
-})
-
-export const onChangePageType = (pageType) => ({
-  type: actionTypes.PAGE_TYPE,
-  pageType
 })

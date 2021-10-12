@@ -4,6 +4,7 @@ import {
 } from '../../handler/VotingHandler'
 import VotingService from './VotingService'
 import { fromWei } from 'func/balance'
+import { CONTRACTS_NAMES, CONTRACT_TYPES } from 'constants/contracts'
 
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000'
 
@@ -11,7 +12,7 @@ export default class RootsVoting extends VotingService {
   constructor () {
     super()
     this.contract = contracts.RootsVoting
-    this.contractName = 'RootsVoting'
+    this.contractName = CONTRACTS_NAMES.rootsVoting
   }
 
   /**
@@ -84,7 +85,7 @@ export default class RootsVoting extends VotingService {
     const hash = data.hash ?? '0x00'
     const link = data['external-link']
     const addressToRemove = data.address
-    if (data.first === 'add-a-new-root-node') {
+    if (data.first === CONTRACT_TYPES.addAnewRootNode) {
       const removeCurrent = data['remove-current']
       if (removeCurrent === 'no') {
         result = await this.contract.methods.createProposal(link, hash, userAddress, EMPTY_ADDR)
@@ -93,7 +94,7 @@ export default class RootsVoting extends VotingService {
         result = await this.contract.methods.createProposal(link, hash, userAddress, addressToRemove)
           .send({ from: userAddress })
       }
-    } else if (data.first === 'remove-a-current-root-node') {
+    } else if (data.first === CONTRACT_TYPES.removeACurrentRootNode) {
       result = await this.contract.methods.createProposal(link, hash, EMPTY_ADDR, addressToRemove)
         .send(
           { from: userAddress })

@@ -10,6 +10,7 @@ import InputGroup from 'components/Custom/ModalActions/InputGroup'
 import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue'
 
 import { addNewExpert, removeExpert, parameterVote } from './constants'
+import { CONTRACT_TYPES } from 'constants/contracts'
 import FormSelect from 'components/Base/Form/FormSelect'
 import FormInput from 'components/Base/Form/FormInput'
 
@@ -69,7 +70,7 @@ function QExpertS2 (props) {
   }
 
   useEffect(() => {
-    if (formData?.first === 'parameter-vote') {
+    if (formData?.first === CONTRACT_TYPES.parameterVote) {
       const key = parameterVote.parameterType
 
       if (formData[key]) {
@@ -89,7 +90,7 @@ function QExpertS2 (props) {
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (formData?.first) {
-      case 'add-a-new-expert':
+      case CONTRACT_TYPES.addNewExpert:
         return (
           <>
             <h2>{addNewExpert.subtitle}</h2>
@@ -122,7 +123,7 @@ function QExpertS2 (props) {
 
           </>
         )
-      case 'remove-a-current-expert':
+      case CONTRACT_TYPES.removeCurrentExpert:
         return (
           <>
             <h2>{removeExpert.subtitle}</h2>
@@ -155,7 +156,7 @@ function QExpertS2 (props) {
 
           </>
         )
-      case 'parameter-vote':
+      case CONTRACT_TYPES.parameterVote:
         return (
           <>
             <h2>{parameterVote.subtitle}</h2>

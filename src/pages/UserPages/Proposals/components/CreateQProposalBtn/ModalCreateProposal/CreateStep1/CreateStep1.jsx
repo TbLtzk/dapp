@@ -7,6 +7,7 @@ import {
   setDisabledCreatedProposalBtn
 } from 'store/actions/action-creaters/voting/proposals'
 import { formObject } from 'store/selectors/voting/proposals'
+import { CONTRACT_TYPES } from 'constants/contracts'
 
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
 
@@ -30,13 +31,11 @@ function CreateStep1 (props) {
     switch (activeTab) {
       case 'q-proposals':
         switch (radioVal) {
-          case 'constitution-update':
+          case CONTRACT_TYPES.constitutionUpdate:
             dispatch(setCreatedStepsLimit(4))
             break
-          case 'general-q-update':
-            dispatch(setCreatedStepsLimit(3))
-            break
-          case 'emergency-update':
+          case CONTRACT_TYPES.generalQUpdate:
+          case CONTRACT_TYPES.emergencyUpdate:
             dispatch(setCreatedStepsLimit(3))
             break
         }

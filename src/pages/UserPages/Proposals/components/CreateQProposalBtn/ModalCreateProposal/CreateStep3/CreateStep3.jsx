@@ -99,14 +99,14 @@ function CreateStep3 (props) {
   const contentSwitcher = useCallback(() => {
     switch (activeTab) {
       case PROPOSALS_TYPES.proposals:
-        if (formData?.first === 'emergency-update' || formData?.first === 'general-q-update') {
+        if (formData?.first === CONTRACT_TYPES.emergencyUpdate || formData?.first === CONTRACT_TYPES.generalQUpdate) {
           return showCommonData(
             <>
               <h5>External link</h5>
               <p>{formData['external-link']}</p>
             </>
           )
-        } else if (formData?.first === 'constitution-update') {
+        } else if (formData?.first === CONTRACT_TYPES.constitutionUpdate) {
           if (formData['change-constitution-parameter'] === 'no') {
             return showCommonData(
               <>
@@ -205,7 +205,7 @@ function CreateStep3 (props) {
           <>
             <h5>External link</h5>
             <p>{formData['external-link']}</p>
-            {formData.first === 'add-a-new-root-node'
+            {formData.first === CONTRACT_TYPES.addAnewRootNode
               ? <>
                 <h5>Hash</h5>
                 <p>{formData.hash}</p>
@@ -246,7 +246,7 @@ function CreateStep3 (props) {
             <p>{formData['type-proposal']?.replace(/-/g, ' ')}</p>
             <h5>External link</h5>
             <p>{formData['external-link']}</p>
-            {formData?.first !== 'parameter-vote'
+            {formData?.first !== CONTRACT_TYPES.parameterVote
               ? <><h5>Candidate Q Address</h5><p>{formData.address}</p></>
               : <>
                 {params.map((item, index) => {

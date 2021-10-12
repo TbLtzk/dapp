@@ -17,6 +17,7 @@ import LoadingSpinner from 'components/Base/LoadingSpinner'
 
 import SlashingEscrow from 'contracts/src/voting/SlashingEscrow'
 import { Dropdown, DropdownButton } from 'react-bootstrap'
+import { CONTRACTS_NAMES } from 'constants/contracts'
 
 function SlashingObjection (props) {
   const {
@@ -131,7 +132,7 @@ function SlashingObjection (props) {
   const executeDecision = async () => {
     setIsPending(true)
     const slashingEscrowContract = new SlashingEscrow(
-      contract === 'ValidatorsSlashingVoting'
+      contract === CONTRACTS_NAMES.validatorsSlashingVoting
         ? 'ValidatorsSlashingEscrow'
         : 'RootNodesSlashingEscrow'
     )

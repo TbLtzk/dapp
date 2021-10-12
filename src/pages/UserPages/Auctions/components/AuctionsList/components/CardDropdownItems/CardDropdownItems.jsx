@@ -23,7 +23,7 @@ function CardDropdownItems (props) {
         return null
       case 'SystemSurplusAuction':
         let status = ''
-        if (auction.endTime === 0 || remainDate(auction.endTime) !== 0) status = 'Pending'
+        if (auction.endTime === 0 || !remainDate(auction.endTime) !== 0) status = 'Pending'
         if (auction.isExecuted) status = 'Executed'
         if (!auction.isExecuted && remainDate(auction.endTime) === 0) status = 'Accepted'
         if (status === 'Accepted') return <Dropdown.Item onClick={handleExecute}><i className={'mdi mdi-play btn-icon'}/>Execute</Dropdown.Item>

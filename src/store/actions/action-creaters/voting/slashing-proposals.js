@@ -1,7 +1,8 @@
 import * as actionTypes from 'store/actions/action-types/voting/slashing-proposals'
 
-export const getSlashingProposalsList = () => ({
-  type: actionTypes.GET_SLASHING_PROPOSALS_LIST
+export const getSlashingProposalsList = (proposalStatusType) => ({
+  type: actionTypes.GET_SLASHING_PROPOSALS_LIST,
+  proposalStatusType
 })
 
 export const getSlashingProposalsListSuccess = (result) => ({
@@ -84,10 +85,6 @@ export const onEscrowConfirmDecision = (contractName, proposalId) => ({
   type: actionTypes.ESCROW_CONFIRM_DECISION,
   contractName,
   proposalId
-})
-
-export const getSlashingEndedProposals = () => ({
-  type: actionTypes.GET_SLASHING_ENDED_PROPOSALS
 })
 export const getSlashingEndedProposalsSuccess = (result) => ({
   type: actionTypes.GET_SLASHING_ENDED_PROPOSALS_SUCCESS,

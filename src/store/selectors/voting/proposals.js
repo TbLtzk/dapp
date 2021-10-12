@@ -12,4 +12,3 @@ export const stepVoteCounterModal = state => state.proposals.stepVoteCounter
 export const numberOfAllProposals = state => state.proposals.numberOfAllProposals
 export const loadingNumberAll = state => state.proposals.loadingNumberAll
 export const constitutionHash = state => state.proposals.constitutionHash
-export const pageType = state => state.proposals.pageType
