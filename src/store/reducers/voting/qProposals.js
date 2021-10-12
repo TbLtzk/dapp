@@ -36,8 +36,6 @@ export default function qProposals (state = initialState, action) {
         loadingEndedProposals: action.proposalStatusType === PROPOSAL_STATUS_TYPES.ended ? true : state.loadingEndedProposals
       }
     case actionTypes.GET_Q_PROPOSALS_LIST_SUCCESS:
-      const proposalsArr = {}
-      proposalsArr[action.result.type] = action.result.data
       return {
         ...state,
         proposalsArr: action.result,

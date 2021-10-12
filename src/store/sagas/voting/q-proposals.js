@@ -25,10 +25,7 @@ function * getProposalsList ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active:
         data = yield Promise.all(contracts.map(item => item.getProposals()))
-        yield put(getQProposalsListSuccess({
-          data: [].concat.apply([], data),
-          proposalStatusType
-        }))
+        yield put(getQProposalsListSuccess([].concat.apply([], data)))
         break
       case PROPOSAL_STATUS_TYPES.ended:
         data = yield Promise.all(contracts.map(item => item.getEndedProposals()))
