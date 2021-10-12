@@ -36,12 +36,12 @@ function CreateStep4 (props) {
         if (formData['change-constitution-parameter'] === 'yes') {
           return (
             <div>
-              <h2>Chosen data</h2>
+              <h2>Chosen Aata</h2>
               <h5>Type</h5>
               <p>{formData?.first?.replace(/-/g, ' ')}</p>
               <h5>Classification</h5>
               <p>{formData?.classification?.replace(/-/g, ' ')}</p>
-              <h5>External link</h5>
+              <h5>External Link</h5>
               <p>{formData['external-link']}</p>
               <h5>Hash</h5>
               <p>{formData.hash}</p>

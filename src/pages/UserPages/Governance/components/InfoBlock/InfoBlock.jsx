@@ -27,16 +27,16 @@ function InfoBlock (props) {
             ? (<p>There was error while loading</p>)
             : (
               <>
-                <h5>Active proposals</h5>
+                <h5>Active Proposals</h5>
                 <h2>{activeProposalsNumber}</h2>
-                <h5>Ended proposals</h5>
+                <h5>Ended Proposals</h5>
                 <p>{endedProposalsNumber}</p>
               </>
               )
       }
       <div className="card__actions">
         <Button
-          title="View page"
+          title="View Page"
           handleButton={() => {
             history.push(detailsLink)
           }}

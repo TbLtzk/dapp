@@ -62,9 +62,9 @@ function Proposals (props) {
       case PROPOSALS_TYPES.proposals:
         return 'Q Proposals'
       case PROPOSALS_TYPES.rootNodePanel:
-        return 'Q Root Node Panel'
+        return 'Root Node Panel'
       case PROPOSALS_TYPES.expertProposals:
-        return 'Q Expert Proposals'
+        return 'Expert Proposals'
       case PROPOSALS_TYPES.slashingProposals:
       default:
         return 'Slashing Proposals'

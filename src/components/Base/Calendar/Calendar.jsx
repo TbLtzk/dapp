@@ -1,7 +1,7 @@
+import './datepicker.css'
 import React, { forwardRef } from 'react'
 import DatePicker from 'react-datepicker'
 import { Controller } from 'react-hook-form'
-import 'react-datepicker/dist/react-datepicker.css'
 import FormInput from '../Form/FormInput'
 
 function Calendar ({

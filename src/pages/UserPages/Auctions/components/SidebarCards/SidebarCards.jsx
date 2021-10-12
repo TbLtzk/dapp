@@ -65,7 +65,8 @@ function SidebarCards () {
     contractBalance.getBalanceValue('SystemReserve', setReserveBalance)
     getEPDRUint('governed.EPDR.QUSD_surplusLot', setSurplusLot)
     getEPDRUint('governed.EPDR.reserveLot', setReserveLot)
-    contractStableCoinQUSD.balanceOf(userAddress)
+    contractStableCoinQUSD
+      .balanceOf(userAddress)
       .then((res) => {
         setQUSDUserBalance(fromWei(res))
       })
@@ -76,72 +77,66 @@ function SidebarCards () {
   }, [loadingPerfNetting, isAuctionModified])
 
   const statsData = useMemo(() => {
-    return (
-      [
-        {
-          title: 'Available Q Balance',
-          value: userBalanceQ + ' Q'
-        },
-        {
-          title: 'Q Balance in Q Vault',
-          value: userQVBalance + ' Q'
-        },
-        {
-          title: 'QUSD Balance',
-          value: fN(QUSDUserBalance) + ' QUSD'
-        }
-      ]
-    )
+    return [
+      {
+        title: 'Available Q Balance',
+        value: userBalanceQ + ' Q'
+      },
+      {
+        title: 'Q Balance in Q Vault',
+        value: userQVBalance + ' Q'
+      },
+      {
+        title: 'QUSD Balance',
+        value: fN(QUSDUserBalance) + ' QUSD'
+      }
+    ]
   }, [userQVBalance, userBalanceQ, QUSDUserBalance])
 
   const systemBalance = useMemo(() => {
-    return (
-      [
-        {
-          title: 'Collected Surplus',
-          value: surplus + ' QUSD'
-        },
-        {
-          title: 'Open Debt',
-          value: debt + ' QUSD'
-        },
-        {
-          title: 'Balance',
-          value: systemBalanceResult + ' QUSD'
-        },
-        {
-          title: 'Surplus Auction Lot',
-          value: surplusLot + ' QUSD'
-        }
-      ]
-    )
+    return [
+      {
+        title: 'Collected Surplus',
+        value: surplus + ' QUSD'
+      },
+      {
+        title: 'Open Debt',
+        value: debt + ' QUSD'
+      },
+      {
+        title: 'Balance',
+        value: systemBalanceResult + ' QUSD'
+      },
+      {
+        title: 'Surplus Auction Lot',
+        value: surplusLot + ' QUSD'
+      }
+    ]
   }, [surplus, debt, systemBalanceResult, surplusLot])
 
   const systemReserve = useMemo(() => {
-    return (
-      [
-        {
-          title: 'Reserve Balance',
-          value: reserveBalance + ' Q'
-        },
-        {
-          title: 'Immediately available',
-          value: availableAmount + ' Q'
-        },
-        {
-          title: 'Debt Auction Lot',
-          value: reserveLot + ' Q'
-        }
-      ]
-    )
+    return [
+      {
+        title: 'Reserve Balance',
+        value: reserveBalance + ' Q'
+      },
+      {
+        title: 'Immediately Available',
+        value: availableAmount + ' Q'
+      },
+      {
+        title: 'Debt Auction Lot',
+        value: reserveLot + ' Q'
+      }
+    ]
   }, [availableAmount, reserveBalance, reserveLot])
 
   return (
-    <div>
-      <Stats statsData={statsData} type="Auction" />
-      <SystemCard data={systemBalance} title={'QUSD System Balance'}/>
-      <SystemCard data={systemReserve} title={'Q System Reserve'}/>
-    </div>
+        <div>
+            <Stats statsData={statsData} type="Auction" />
+            <SystemCard data={systemBalance} title="QUSD System Balance" />
+            <SystemCard data={systemReserve} title="Q System Reserve" />
+        </div>
   )
 }
 

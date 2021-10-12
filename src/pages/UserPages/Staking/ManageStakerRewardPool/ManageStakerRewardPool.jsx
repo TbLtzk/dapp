@@ -11,7 +11,7 @@ function ManageStakerRewardPool () {
         <>
             <Button
                 type="white"
-                title="Manage staker reward pool"
+                title="Manage Staker Reward Pool"
                 handleButton={() => {
                   setModalShow(true)
                 }}

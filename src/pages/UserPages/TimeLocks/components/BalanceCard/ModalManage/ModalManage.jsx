@@ -108,7 +108,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
                         />
                         <Button
                             type="outline"
-                            title="Purge expired time locks"
+                            title="Purge Expired Time Locks"
                             width="200px"
                             margin="0 0 20px 0"
                             handleButton={setPurge}

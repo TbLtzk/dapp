@@ -13,11 +13,11 @@ function CardBody (props) {
     <div>
       <div className="list-card__three-colm">
         <div>
-          <h5>Highest bid</h5>
+          <h5>Highest Bid</h5>
           <p>{data.highestBid}{data.contract === 'SystemSurplusAuction' ? ' Q' : ' ' + symbolType}</p>
           {data.contract === 'LiquidationAuction'
             ? <>
-              <h5>Vault id</h5>
+              <h5>Vault ID</h5>
               <p>{data.userVaultId}</p>
             </>
             : null
@@ -44,14 +44,14 @@ function CardBody (props) {
         <div>
           {data.contract === 'LiquidationAuction'
             ? <>
-              <h5>Vault owner</h5>
+              <h5>Vault Owner</h5>
               <p>{data.user}</p>
             </>
             : null
           }
           {data.contract === 'SystemSurplusAuction'
             ? <>
-              <h5>Auction initiated by</h5>
+              <h5>Auction Initiated by</h5>
               <p>{data.user}</p>
             </>
             : null

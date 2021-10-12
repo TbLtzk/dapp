@@ -14,7 +14,7 @@ function CreateStep2 (props) {
   const contentSwitcher = useCallback(() => {
     return (
       <div>
-        <h2>Chosen data:</h2>
+        <h2>Chosen Data:</h2>
         <h5>Type</h5>
         <p>{formData?.first?.replace(/-/g, ' ')}</p>
         <h5>Bid</h5>

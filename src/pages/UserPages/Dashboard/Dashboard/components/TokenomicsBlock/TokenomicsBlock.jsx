@@ -151,7 +151,7 @@ function TokenomicsBlock () {
         btnTitle: null
       },
       {
-        title: 'Time Since Q Token Holder Reward Update',
+        title: 'Time since Q Token holder reward update',
         firstContent: timeSinceQHolderRewardUpdate,
         btnIcon: 'cached',
         iconFontSize: '20px',

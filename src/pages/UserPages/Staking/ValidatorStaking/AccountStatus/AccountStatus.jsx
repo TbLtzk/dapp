@@ -95,13 +95,13 @@ export default function AccountStatus () {
         <>
             <div>
                 <h5>Status</h5>
-                {isThisUserValidator ? <p>Active Validator</p> : <p>Not a Validator</p>}
+                {isThisUserValidator ? <p>Active validator</p> : <p>Not a validator</p>}
             </div>
             {isThisUserValidator
               ? (
                 <div>
                     <h5>Current Rank</h5>
-                    <p>{validatorRank}#</p>
+                    <p>{validatorRank} #</p>
                 </div>
                 )
               : null}
@@ -110,7 +110,7 @@ export default function AccountStatus () {
 
   return (
         <CustomBlock>
-            <h1>Manage balance</h1>
+            <h1>Manage Balance</h1>
             <AccountStatusInfo>
                 {checkIsUserValidator}
                 <div>
@@ -124,21 +124,21 @@ export default function AccountStatus () {
                 {Number(validatorLockedAmount) > 0
                   ? (
                     <div>
-                        <h5>Announced amount</h5>
+                        <h5>Announced Amount</h5>
                         <p>{fN(validatorLockedAmount)} Q </p>
                     </div>
                     )
                   : null}
                 <div>
-                    <h5>Announced for withdrawal</h5>
+                    <h5>Announced for Withdrawal</h5>
                     <p>{fromWei(userValidatorWithdrawalInfo.amount)} Q</p>
                 </div>
                 <div>
-                    <h5>Announcement status</h5>
+                    <h5>Announcement Status</h5>
                     <p>{Number(userValidatorWithdrawalInfo?.amount) === 0 ? '-' : 'Pending'}</p>
                 </div>
                 <div>
-                    <h5>Announcement end</h5>
+                    <h5>Announcement End</h5>
                     {Number(userValidatorWithdrawalInfo?.amount) === 0
                       ? (
                         <p>-</p>

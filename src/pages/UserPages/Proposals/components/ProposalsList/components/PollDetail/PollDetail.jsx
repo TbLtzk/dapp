@@ -35,11 +35,11 @@ function PollDetail (props) {
         let oneLineInfos = []
         const defaultInfo = [
           {
-            label: 'Current constitution hash',
+            label: 'Current Constitution Hash',
             value: pollDetail?.currentConstitutionHash
           },
           {
-            label: 'New constitution hash',
+            label: 'New Constitution Hash',
             value: pollDetail?.newConstitutionHash
           }
         ]
@@ -88,8 +88,8 @@ function PollDetail (props) {
             value: pollDetail?.candidate
           },
           {
-            label: 'Amount to slash',
-            value: pollDetail?.amountToSlash + 'Q'
+            label: 'Amount to Slash',
+            value: pollDetail?.amountToSlash + ' Q'
           }
         ]
     }

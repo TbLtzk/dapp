@@ -12,19 +12,16 @@ import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
 function QVault () {
   const appMode = useSelector(mode)
   return (
-    <PageWrap
-      wrapContentClasses={'wrap-content__column-2-1'}
-      headerTitle={'Vault'}
-    >
-      <div>
-        <ManageBalance/>
-        <LockCoin/>
-        {appMode === MODE.advanced ? <DelegateStakingPower/> : null}
-      </div>
-      <div>
-        <Panel/>
-      </div>
-    </PageWrap>
+        <PageWrap wrapContentClasses="wrap-content__column-2-1" headerTitle="Q Vault">
+            <div>
+                <ManageBalance />
+                <LockCoin />
+                {appMode === MODE.advanced ? <DelegateStakingPower /> : null}
+            </div>
+            <div>
+                <Panel />
+            </div>
+        </PageWrap>
   )
 }
 

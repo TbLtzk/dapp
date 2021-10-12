@@ -59,7 +59,7 @@ function Manage () {
   return (
     <PageWrap
       wrapContentClasses={'wrap-content__tow-colm'}
-      headerTitle={'Q parameters'}
+      headerTitle={'Q Parameters'}
       headerExtra={(
         <Link to={'/'}>
           <Button

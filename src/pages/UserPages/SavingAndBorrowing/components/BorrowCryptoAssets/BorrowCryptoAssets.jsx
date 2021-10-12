@@ -63,7 +63,7 @@ function BorrowCryptoAssets () {
                             <tr key={item.colKey + '-' + item.borrowingFee + index}>
                                 <td>{item.colKey}</td>
                                 <td>QUSD</td>
-                                <td>{fN(item.borrowingFee)}%</td>
+                                <td>{fN(item.borrowingFee)} %</td>
                                 <td>
                                     <BorrowManageAsset borrowingAsset="QUSD" vault={item} />
                                 </td>
@@ -73,7 +73,7 @@ function BorrowCryptoAssets () {
                 />
                 )
               : (
-                  'No Borrow assets'
+                  'No vaults created'
                 )}
         </CustomBlock>
   )

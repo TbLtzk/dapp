@@ -113,7 +113,7 @@ function SavingBorrowingBlock () {
         btnType: BTN_TYPES.balance
       },
       {
-        title: 'QUSD - QBTC Time since refresh of outstanding debt',
+        title: 'QUSD - QBTC time since refresh of outstanding debt',
         firstContent: timeSinceOutstandingDebt,
         btnIcon: 'cached',
         iconFontSize: '20px',
@@ -136,7 +136,7 @@ function SavingBorrowingBlock () {
 
   return (
     <CustomBlock>
-      <h1>Saving and Borrowing</h1>
+      <h1>Saving & Borrowing</h1>
       {
         dataArr?.filter(el => appMode === MODE.basic ? el.btnTitle === null : el)
           .map((el) => {

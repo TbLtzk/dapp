@@ -228,7 +228,7 @@ function QExpertS2 (props) {
                    onClick={() => {
                      changeTypesCapacity(1)
                    }}
-              >Add parameter
+              >Add Parameter
               </div>
               {
                 params.length > 1
@@ -236,7 +236,7 @@ function QExpertS2 (props) {
                           onClick={() => {
                             changeTypesCapacity(-1)
                           }}
-                  >Remove parameter
+                  >Remove Parameter
                   </div>)
                   : null
               }

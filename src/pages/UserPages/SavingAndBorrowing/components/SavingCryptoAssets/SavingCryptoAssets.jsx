@@ -50,7 +50,7 @@ function SavingCryptoAssets () {
                             <tr key={item.depositAsset + '-' + item.interestAsset + item.rate}>
                                 <td>{item.depositAsset}</td>
                                 <td>{item.interestAsset}</td>
-                                <td>{fN(item.rate)}%</td>
+                                <td>{fN(item.rate)} %</td>
                                 <td>
                                     <SaveManageAsset
                                         depositAsset={item.depositAsset}
@@ -64,7 +64,7 @@ function SavingCryptoAssets () {
                 />
                 )
               : (
-                  'No Saving assets'
+                  'No saving assets'
                 )}
         </CustomBlock>
   )

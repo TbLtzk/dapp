@@ -24,7 +24,7 @@ function Stats (props) {
       })}
       <div className="card__actions">
         <Button
-          title="Manage Vault"
+          title="Manage vault"
           type="white"
           handleButton={() => {
             history.push('q-vault')
