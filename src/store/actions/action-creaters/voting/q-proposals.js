@@ -1,8 +1,5 @@
 import * as actionTypes from 'store/actions/action-types/voting/q-proposals'
 
-export const getQEndedProposals = () => ({
-  type: actionTypes.GET_Q_ENDED_PROPOSALS
-})
 export const getQEndedProposalsSuccess = (result) => ({
   type: actionTypes.GET_Q_ENDED_PROPOSALS_SUCCESS,
   result
@@ -12,8 +9,9 @@ export const getQEndedProposalsError = (result) => ({
   result
 })
 
-export const getQProposalsList = () => ({
-  type: actionTypes.GET_Q_PROPOSALS_LIST
+export const getQProposalsList = (proposalStatusType) => ({
+  type: actionTypes.GET_Q_PROPOSALS_LIST,
+  proposalStatusType
 })
 
 export const getQProposalsListSuccess = (result) => ({

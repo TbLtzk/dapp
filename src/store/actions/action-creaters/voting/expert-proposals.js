@@ -1,8 +1,5 @@
 import * as actionTypes from 'store/actions/action-types/voting/expert-proposals'
 
-export const getExpertEndedProposals = () => ({
-  type: actionTypes.GET_EXPERT_ENDED_PROPOSALS
-})
 export const getExpertEndedProposalsSuccess = (result) => ({
   type: actionTypes.GET_EXPERT_ENDED_PROPOSALS_SUCCESS,
   result
@@ -12,8 +9,9 @@ export const getExpertEndedProposalsError = (result) => ({
   result
 })
 
-export const getExpertProposalsList = () => ({
-  type: actionTypes.GET_EXPERT_PROPOSALS_LIST
+export const getExpertProposalsList = (proposalStatusType) => ({
+  type: actionTypes.GET_EXPERT_PROPOSALS_LIST,
+  proposalStatusType
 })
 
 export const getExpertProposalsListSuccess = (result) => ({

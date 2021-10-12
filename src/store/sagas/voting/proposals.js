@@ -19,20 +19,17 @@ import {
   getNumberAllProposalsSuccess,
   getConstitutionHashSuccess
 } from 'store/actions/action-creaters/voting/proposals'
-import { getProposalQ, getQEndedProposals, getQProposalsList } from 'store/actions/action-creaters/voting/q-proposals'
+import { getProposalQ, getQProposalsList } from 'store/actions/action-creaters/voting/q-proposals'
 import {
   getProposalRootNode,
-  getRootNodeEndedProposals,
   getRootNodeProposalsList
 } from 'store/actions/action-creaters/voting/root-node-proposals'
 import {
   getProposalExpert,
-  getExpertEndedProposals,
   getExpertProposalsList
 } from 'store/actions/action-creaters/voting/expert-proposals'
 import {
   getProposalSlashing,
-  getSlashingEndedProposals,
   getSlashingProposalsList
 } from 'store/actions/action-creaters/voting/slashing-proposals'
 
@@ -45,8 +42,7 @@ import {
 } from 'contracts/handler/VotingHandler'
 import { chooseSlashingContractDependsOnType } from 'contracts/handler/SlashingVotingHandler'
 import {
-  chooseExpertContractDependsOnType,
-  chooseExpertContractNameDependsOnType
+  chooseExpertContractDependsOnType
 } from 'contracts/handler/QExpertVotingHandler'
 
 import ConstitutionVotingService from 'contracts/src/voting/ConstitutionVoting'
@@ -55,6 +51,7 @@ import GeneralUpdateVotingService from 'contracts/src/voting/GeneralUpdateVoting
 import RootsVotingService from 'contracts/src/voting/RootsVoting'
 import VotingService from 'contracts/src/voting/VotingService'
 import ErrorHandler from 'func/ErrorHandler'
+import { CONTRACTS_NAMES, CONTRACT_TYPES } from 'constants/contracts'
 
 function * createProposal ({ data }) {
   try {
@@ -64,50 +61,51 @@ function * createProposal ({ data }) {
     let idProposal = null
     let contractName = null
     if (data) {
-      switch (data?.first) {
-        case 'constitution-update':
+      const type = data?.first
+      switch (type) {
+        case CONTRACT_TYPES.constitutionUpdate:
           const constitutionVoting = new ConstitutionVotingService()
           result = yield constitutionVoting.createProposal(data, userAddress)
-          contractName = 'ConstitutionVoting'
+          contractName = CONTRACTS_NAMES.constitutionVoting
           idProposal = result?.events?.ProposalCreated?.returnValues?._id
           break
-        case 'general-q-update':
+        case CONTRACT_TYPES.generalQUpdate:
           const generalUpdateVoting = new GeneralUpdateVotingService()
           result = yield generalUpdateVoting.createProposal(data, userAddress)
-          contractName = 'GeneralUpdateVoting'
+          contractName = CONTRACTS_NAMES.generalUpdateVoting
           idProposal = result?.events?.ProposalCreated?.returnValues?._id
           break
-        case 'emergency-update':
+        case CONTRACT_TYPES.emergencyUpdate:
           const emergencyUpdateVoting = new EmergencyUpdateVotingService()
           result = yield emergencyUpdateVoting.createProposal(data, userAddress)
-          contractName = 'EmergencyUpdateVoting'
+          contractName = CONTRACTS_NAMES.emergencyUpdateVoting
           idProposal = result?.events?.ProposalCreated?.returnValues?._id
           break
-        case 'add-a-new-root-node':
-        case 'remove-a-current-root-node':
+        case CONTRACT_TYPES.addAnewRootNode:
+        case CONTRACT_TYPES.removeACurrentRootNode:
           const rootsVoting = new RootsVotingService()
           result = yield rootsVoting.createProposal(data, userAddress)
-          contractName = 'RootsVoting'
+          contractName = CONTRACTS_NAMES.rootsVoting
           idProposal = result?.events?.ProposalCreated?.returnValues?._id
           break
-        case 'root-node-slashing':
-        case 'validator-node-slashing':
-          const chosenContract = chooseSlashingContractDependsOnType(data?.first)
+        case CONTRACT_TYPES.rootNodeSlashing:
+        case CONTRACT_TYPES.validatorNodeSlashing:
+          const chosenContract = chooseSlashingContractDependsOnType(type)
           result = yield chosenContract.createProposal(data, userAddress)
-          if (data?.first === 'root-node-slashing') {
-            contractName = 'RootNodesSlashingVoting'
-          } else if (data?.first === 'validator-node-slashing') {
-            contractName = 'ValidatorsSlashingVoting'
+          if (type === CONTRACT_TYPES.rootNodeSlashing) {
+            contractName = CONTRACTS_NAMES.rootNodesSlashingVoting
+          } else if (type === CONTRACT_TYPES.validatorNodeSlashing) {
+            contractName = CONTRACTS_NAMES.validatorsSlashingVoting
           }
           idProposal = result?.events?.ProposalCreated?.returnValues?._id
           break
-        case 'add-a-new-expert':
-        case 'remove-a-current-expert':
-        case 'parameter-vote':
-          const typeContract = data.first !== 'parameter-vote' ? 'member' : 'parameters'
+        case CONTRACT_TYPES.addNewExpert:
+        case CONTRACT_TYPES.removeCurrentExpert:
+        case CONTRACT_TYPES.parameterVote:
+          const typeContract = data.first !== CONTRACT_TYPES.parameterVote ? CONTRACT_TYPES.member : CONTRACT_TYPES.parameters
           const contract = chooseExpertContractDependsOnType(typeContract, data['type-proposal'])
+          contractName = contract.contractName
           result = yield contract.createProposal(data, userAddress)
-          contractName = chooseExpertContractNameDependsOnType(typeContract, data['type-proposal'])
           idProposal = result?.events?.ProposalCreated?.returnValues?._id
           break
         default:
@@ -179,22 +177,22 @@ function * updateProposal ({ data }) {
 function * getProposalDependsOnType (contractName, data, id, activeProposal) {
   try {
     switch (contractName) {
-      case 'ConstitutionVoting':
-      case 'EmergencyUpdateVoting':
-      case 'GeneralUpdateVoting':
+      case CONTRACTS_NAMES.constitutionVoting:
+      case CONTRACTS_NAMES.emergencyUpdateVoting:
+      case CONTRACTS_NAMES.generalUpdateVoting:
         yield put(getProposalQ(contractName, id, activeProposal))
         break
-      case 'RootsVoting':
+      case CONTRACTS_NAMES.rootsVoting:
         yield put(getProposalRootNode(contractName, id, activeProposal))
         break
-      case 'RootNodesSlashingVoting':
-      case 'ValidatorsSlashingVoting':
+      case CONTRACTS_NAMES.rootNodesSlashingVoting:
+      case CONTRACTS_NAMES.validatorsSlashingVoting:
         yield put(getProposalSlashing(contractName, id, activeProposal))
         break
-      case 'EPQFIMembershipVoting':
-      case 'EPDRMembershipVoting':
-      case 'EPQFIParametersVoting':
-      case 'EPDRParametersVoting':
+      case CONTRACTS_NAMES.ePQFIMembershipVoting:
+      case CONTRACTS_NAMES.ePDRMembershipVoting:
+      case CONTRACTS_NAMES.ePQFIParametersVoting:
+      case CONTRACTS_NAMES.ePDRParametersVoting:
         yield put(getProposalExpert(contractName, id, activeProposal))
         break
     }
@@ -207,41 +205,20 @@ function * getOneProposalShared ({ data }) {
   yield call(getProposalDependsOnType, data?.contract, data, data?.id, false)
 }
 
-function * getProposalsList ({ activeTab }) {
+function * getProposalsList ({ proposalType, proposalStatusType }) {
   try {
-    switch (activeTab) {
+    switch (proposalType) {
       case PROPOSALS_TYPES.proposals:
-        yield put(getQProposalsList())
+        yield put(getQProposalsList(proposalStatusType))
         break
       case PROPOSALS_TYPES.rootNodePanel:
-        yield put(getRootNodeProposalsList())
+        yield put(getRootNodeProposalsList(proposalStatusType))
         break
       case PROPOSALS_TYPES.slashingProposals:
-        yield put(getSlashingProposalsList())
+        yield put(getSlashingProposalsList(proposalStatusType))
         break
       case PROPOSALS_TYPES.expertProposals:
-        yield put(getExpertProposalsList())
-        break
-    }
-  } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-  }
-}
-
-function * getEndedProposals ({ activeTab }) {
-  try {
-    switch (activeTab) {
-      case PROPOSALS_TYPES.proposals:
-        yield put(getQEndedProposals())
-        break
-      case PROPOSALS_TYPES.rootNodePanel:
-        yield put(getRootNodeEndedProposals())
-        break
-      case PROPOSALS_TYPES.expertProposals:
-        yield put(getExpertEndedProposals())
-        break
-      case PROPOSALS_TYPES.slashingProposals:
-        yield put(getSlashingEndedProposals())
+        yield put(getExpertProposalsList(proposalStatusType))
         break
     }
   } catch (error) {
@@ -276,7 +253,7 @@ function * getNumberAllProposals () {
 
 function * getConstitutionHash () {
   try {
-    const contract = creationQContractObj('ConstitutionVoting')
+    const contract = creationQContractObj(CONTRACTS_NAMES.constitutionVoting)
     const data = yield contract.getConstitutionHash()
 
     yield put(getConstitutionHashSuccess(data))
@@ -291,7 +268,6 @@ export default [
   takeEvery(actionTypes.EXECUTE_PROPOSAL, executeProposal),
   takeEvery(actionTypes.UPDATE_PROPOSAL, updateProposal),
 
-  takeEvery(actionTypes.GET_ENDED_PROPOSALS, getEndedProposals),
   takeEvery(actionTypes.GET_ONE_PROPOSAL, getOneProposalShared),
   takeEvery(actionTypes.GET_PROPOSALS_LIST, getProposalsList),
 

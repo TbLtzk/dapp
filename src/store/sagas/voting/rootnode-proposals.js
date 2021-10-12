@@ -1,59 +1,50 @@
-import { put, takeEvery, select } from 'redux-saga/effects'
+import { put, takeEvery } from 'redux-saga/effects'
 
 import * as actionTypes from 'store/actions/action-types/voting/root-node-proposals'
 
 import {
-  getRootNodeProposalsListError, getRootNodeProposalsListSuccess,
-  getRootNodeEndedProposalsError, getRootNodeEndedProposalsSuccess,
-  getEmptyProposalSuccess, getProposalError, getProposalSuccess,
-  getProposalEndedSuccess, getEmptyProposalEndedSuccess, getRootNodeProposalEnded,
-  getProposalEndedError, getOneProposalSuccess
+  getRootNodeProposalsListError,
+  getRootNodeProposalsListSuccess,
+  getRootNodeEndedProposalsSuccess,
+  getProposalError,
+  getOneProposalSuccess,
+  getRootNodeEndedProposalsError
 } from 'store/actions/action-creaters/voting/root-node-proposals'
 import {
   creationRootContractObj
 } from 'contracts/handler/VotingHandler'
 import ErrorHandler from 'func/ErrorHandler'
+import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
 
-function * getProposalsList () {
+function * getProposalsList ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active }) {
   try {
     const contracts = creationRootContractObj()
-    let result = []
-    if (Array.isArray(contracts)) {
-      const data = yield Promise.all(contracts.map(item => item.getProposals()))
-      result = [].concat.apply([], data)
-    } else {
-      result = yield contracts?.getProposals()
+    let result = null
+    switch (proposalStatusType) {
+      case PROPOSAL_STATUS_TYPES.active:
+        result = yield contracts?.getProposals()
+        yield put(getRootNodeProposalsListSuccess(result))
+        break
+      case PROPOSAL_STATUS_TYPES.ended:
+        result = yield contracts?.getEndedProposals()
+        yield put(getRootNodeEndedProposalsSuccess(result))
+        break
     }
-    yield put(getRootNodeProposalsListSuccess(result))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
-    yield put(getRootNodeProposalsListError(error))
+    switch (proposalStatusType) {
+      case PROPOSAL_STATUS_TYPES.active:
+        yield put(getRootNodeProposalsListError(error))
+        break
+      case PROPOSAL_STATUS_TYPES.ended:
+        yield put(getRootNodeEndedProposalsError(error.message))
+        break
+    }
   }
 }
 
-function * getEndedProposals () {
+function * getRootNodeProposal ({ id, activeProposal }) {
   try {
-    const contracts = creationRootContractObj()
-    let result = []
-    if (Array.isArray(contracts)) {
-      const data = yield Promise.all(contracts.map(item => item.getEndedProposals()))
-      result = [].concat.apply([], data)
-    } else {
-      result = yield contracts?.getEndedProposals()
-    }
-    yield put(getRootNodeEndedProposalsSuccess(result))
-  } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(getRootNodeEndedProposalsError(error.message))
-  }
-}
-
-function * getRootNodeProposal ({ contractName, id, activeProposal }) {
-  const { pageType } = yield select(state => state.proposals)
-  try {
-    if (pageType === 'ended') {
-      yield put(getRootNodeProposalEnded())
-    }
     const contract = creationRootContractObj()
 
     if (contract) {
@@ -63,44 +54,15 @@ function * getRootNodeProposal ({ contractName, id, activeProposal }) {
       } else {
         data = yield contract.getProposalWithoutStatusChecked(id)
       }
-      if (pageType === 'ended') {
-        if (data) {
-          yield put(getProposalEndedSuccess(data))
-        } else {
-          if (id) {
-            yield put(getEmptyProposalEndedSuccess({
-              id,
-              contractName
-            }))
-          }
-        }
-      } else if (pageType === 'active') {
-        if (data) {
-          yield put(getProposalSuccess(data))
-        } else {
-          if (id) {
-            yield put(getEmptyProposalSuccess({
-              id,
-              contractName
-            }))
-          }
-        }
-      } else {
-        yield put(getOneProposalSuccess(data))
-      }
+      yield put(getOneProposalSuccess(data))
     }
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
-    if (pageType === 'ended') {
-      yield put(getProposalEndedError(id))
-    } else {
-      yield put(getProposalError(id))
-    }
+    yield put(getProposalError(id))
   }
 }
 
 export default [
-  takeEvery(actionTypes.GET_ROOT_NODE_ENDED_PROPOSALS, getEndedProposals),
   takeEvery(actionTypes.GET_ROOT_NODE_PROPOSALS_LIST, getProposalsList),
   takeEvery(actionTypes.GET_ROOT_NODE_PROPOSAL, getRootNodeProposal)
 ]

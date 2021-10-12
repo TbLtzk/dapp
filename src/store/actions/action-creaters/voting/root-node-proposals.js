@@ -1,8 +1,5 @@
 import * as actionTypes from 'store/actions/action-types/voting/root-node-proposals'
 
-export const getRootNodeEndedProposals = () => ({
-  type: actionTypes.GET_ROOT_NODE_ENDED_PROPOSALS
-})
 export const getRootNodeEndedProposalsSuccess = (result) => ({
   type: actionTypes.GET_ROOT_NODE_ENDED_PROPOSALS_SUCCESS,
   result
@@ -12,8 +9,9 @@ export const getRootNodeEndedProposalsError = (result) => ({
   result
 })
 
-export const getRootNodeProposalsList = () => ({
-  type: actionTypes.GET_ROOT_NODE_PROPOSALS_LIST
+export const getRootNodeProposalsList = (proposalStatusType) => ({
+  type: actionTypes.GET_ROOT_NODE_PROPOSALS_LIST,
+  proposalStatusType
 })
 
 export const getRootNodeProposalsListSuccess = (result) => ({

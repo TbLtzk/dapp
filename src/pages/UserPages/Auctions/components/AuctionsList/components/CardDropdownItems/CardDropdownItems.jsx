@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { Dropdown } from 'react-bootstrap'
-// import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { remainDate } from 'func/convertDate'
 
 function CardDropdownItems (props) {
@@ -34,11 +33,6 @@ function CardDropdownItems (props) {
   return (
     <>
       {getActions()}
-      {/* <CopyToClipboard text={`${window.location.origin}/auction/${auction.contract}/`}> */}
-      {/*  <Dropdown.Item> */}
-      {/*    <i className={`mdi mdi-share-variant btn-icon`}/>Share */}
-      {/*  </Dropdown.Item> */}
-      {/* </CopyToClipboard> */}
     </>
   )
 }

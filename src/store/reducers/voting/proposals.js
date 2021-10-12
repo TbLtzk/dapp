@@ -14,8 +14,7 @@ const initialState = {
 
   numberOfAllProposals: 0,
   loadingNumberAll: true,
-  constitutionHash: '...',
-  pageType: null
+  constitutionHash: '...'
 }
 
 export default function proposals (state = initialState, action) {
@@ -70,11 +69,6 @@ export default function proposals (state = initialState, action) {
       return {
         ...state,
         proposalsArr: []
-      }
-    case actionTypes.PAGE_TYPE:
-      return {
-        ...state,
-        pageType: action.pageType
       }
     default:
       return state

@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import PageWrap from 'components/Base/PageWrap'
 import InfoBlock from './components/InfoBlock'
 import VotingStats from 'components/Custom/VotingStats'
-import { PROPOSALS_TYPES } from 'constants/statuses'
+import { PROPOSAL_STATUS_TYPES, PROPOSALS_TYPES } from 'constants/statuses'
 import { useDispatch, useSelector } from 'react-redux'
-import { getEndedProposals, getProposalsList } from 'store/actions/action-creaters/voting/proposals'
+import { getProposalsList } from 'store/actions/action-creaters/voting/proposals'
 import {
   qEndedProposals, qErrorEnded,
   qErrorM, qLoadingEndedProposals,
@@ -39,8 +39,8 @@ function Governance () {
 
   useEffect(() => {
     for (const item in PROPOSALS_TYPES) {
-      dispatch(getProposalsList(PROPOSALS_TYPES[item]))
-      dispatch(getEndedProposals(PROPOSALS_TYPES[item]))
+      dispatch(getProposalsList(PROPOSALS_TYPES[item], PROPOSAL_STATUS_TYPES.active))
+      dispatch(getProposalsList(PROPOSALS_TYPES[item], PROPOSAL_STATUS_TYPES.ended))
     }
   }, [])
 

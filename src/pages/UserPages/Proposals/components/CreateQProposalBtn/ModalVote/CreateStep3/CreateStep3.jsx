@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 
 import { useSelector } from 'react-redux'
 import { formVoteObject } from 'store/selectors/voting/proposals'
+import { CONTRACTS_NAMES } from 'constants/contracts'
 
 function CreateStep3 (props) {
   const {
@@ -20,9 +21,9 @@ function CreateStep3 (props) {
           <p>{formData?.first?.replace(/-/g, ' ')}</p>
           <h5>Answer</h5>
           <p>{answer}</p>
-          {proposalContract === 'ConstitutionVoting' || proposalContract === 'GeneralUpdateVoting' ||
-          proposalContract === 'EPDRMembershipVoting' || proposalContract === 'EPQFIMembershipVoting' ||
-          proposalContract === 'RootsVoting'
+          {proposalContract === CONTRACTS_NAMES.constitutionVoting || proposalContract === CONTRACTS_NAMES.generalUpdateVoting ||
+          proposalContract === CONTRACTS_NAMES.ePDRMembershipVoting || proposalContract === CONTRACTS_NAMES.ePQFIMembershipVoting ||
+          proposalContract === CONTRACTS_NAMES.rootsVoting
             ? <h2>Notice: Your currently locked amount of Q inside the Q Vault will be extended until the end of this
               Proposal.</h2>
             : null

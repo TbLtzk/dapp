@@ -5,7 +5,7 @@ import ProposalsTab from './components/ProposalsTab'
 import CreateQProposalBtn from './components/CreateQProposalBtn'
 import Button from 'components/Base/Buttons/Button'
 
-import { PROPOSALS_TYPES } from 'constants/statuses'
+import { PROPOSALS_TYPES, PROPOSAL_STATUS_TYPES } from 'constants/statuses'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   qEndedProposals, qErrorEnded,
@@ -32,7 +32,6 @@ import {
   slashingProposalsArr
 } from 'store/selectors/voting/slashing-proposals'
 import {
-  getEndedProposals,
   getProposalsList
 } from 'store/actions/action-creaters/voting/proposals'
 import { getLockedAssets } from 'store/actions/action-creaters/q-vault'
@@ -114,8 +113,8 @@ function Proposals (props) {
   }
 
   function uploadProposals () {
-    dispatch(getProposalsList(proposalsType))
-    dispatch(getEndedProposals(proposalsType))
+    dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.active))
+    dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.ended))
     dispatch(getLockedAssets(address))
   }
 

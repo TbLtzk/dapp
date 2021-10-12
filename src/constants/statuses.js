@@ -19,3 +19,8 @@ export const AUCTIONS_TYPES = {
   systemDebt: 'system-debt',
   systemSurplus: 'system-surplus'
 }
+
+export const PROPOSAL_STATUS_TYPES = {
+  active: 'active',
+  ended: 'ended'
+}

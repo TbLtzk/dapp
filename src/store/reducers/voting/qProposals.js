@@ -1,5 +1,6 @@
 import * as actionTypes from 'store/actions/action-types/voting/q-proposals'
 import { changeProposalsArrIfExist, changeProposalsArrIfEmptyResult } from 'contracts/handler/VotingHandler'
+import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
 
 const initialState = {
   oneProposal: [],
@@ -14,11 +15,6 @@ const initialState = {
 
 export default function qProposals (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.GET_Q_ENDED_PROPOSALS:
-      return {
-        ...state,
-        loadingEndedProposals: true
-      }
     case actionTypes.GET_Q_ENDED_PROPOSALS_SUCCESS:
       return {
         ...state,
@@ -36,9 +32,12 @@ export default function qProposals (state = initialState, action) {
     case actionTypes.GET_Q_PROPOSALS_LIST:
       return {
         ...state,
-        loadingProposals: true
+        loadingProposals: action.proposalStatusType === PROPOSAL_STATUS_TYPES.active ? true : state.loadingProposals,
+        loadingEndedProposals: action.proposalStatusType === PROPOSAL_STATUS_TYPES.ended ? true : state.loadingEndedProposals
       }
     case actionTypes.GET_Q_PROPOSALS_LIST_SUCCESS:
+      const proposalsArr = {}
+      proposalsArr[action.result.type] = action.result.data
       return {
         ...state,
         proposalsArr: action.result,

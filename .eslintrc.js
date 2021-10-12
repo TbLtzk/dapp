@@ -18,11 +18,6 @@ module.exports = {
     'react/prop-types': 'off',
     'prefer-destructuring': 'off',
     'react/display-name': 'off',
-    'no-console': [
-      'error',
-      {
-        allow: ['warn', 'error']
-      }
-    ]
+    'no-console': 'off'
   }
 }

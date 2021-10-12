@@ -8,6 +8,7 @@ import {
 } from '../../handler/VotingHandler'
 import { fromWei } from 'func/balance'
 import { fromSolDateFormattingT1 } from 'func/date'
+import { CONTRACTS_NAMES } from 'constants/contracts'
 
 /* contacts: RootNodesSlashingVoting, ValidatorsSlashingVoting */
 export default class SlashingVoting extends VotingService {
@@ -21,7 +22,7 @@ export default class SlashingVoting extends VotingService {
       }
     }
 
-    const isValidatorSlashingMode = this.contractName === 'ValidatorsSlashingVoting' // else rootnode slashing mode
+    const isValidatorSlashingMode = this.contractName === CONTRACTS_NAMES.validatorsSlashingVoting // else rootnode slashing mode
 
     objRes.id = id
     objRes.remark = promiseRes.base.remark
