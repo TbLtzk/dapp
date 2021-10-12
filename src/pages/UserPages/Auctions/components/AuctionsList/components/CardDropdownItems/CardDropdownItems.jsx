@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { Dropdown } from 'react-bootstrap'
-// import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { remainDate } from 'func/convertDate'
 
 function CardDropdownItems (props) {
@@ -23,7 +22,7 @@ function CardDropdownItems (props) {
         return null
       case 'SystemSurplusAuction':
         let status = ''
-        if (auction.endTime === 0 || !remainDate(auction.endTime) !== 0) status = 'Pending'
+        if (auction.endTime === 0 || remainDate(auction.endTime) !== 0) status = 'Pending'
         if (auction.isExecuted) status = 'Executed'
         if (!auction.isExecuted && remainDate(auction.endTime) === 0) status = 'Accepted'
         if (status === 'Accepted') return <Dropdown.Item onClick={handleExecute}><i className={'mdi mdi-play btn-icon'}/>Execute</Dropdown.Item>
@@ -34,11 +33,6 @@ function CardDropdownItems (props) {
   return (
     <>
       {getActions()}
-      {/* <CopyToClipboard text={`${window.location.origin}/auction/${auction.contract}/`}> */}
-      {/*  <Dropdown.Item> */}
-      {/*    <i className={`mdi mdi-share-variant btn-icon`}/>Share */}
-      {/*  </Dropdown.Item> */}
-      {/* </CopyToClipboard> */}
     </>
   )
 }
