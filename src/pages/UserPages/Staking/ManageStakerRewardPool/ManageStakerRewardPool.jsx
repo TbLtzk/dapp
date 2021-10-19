@@ -6,7 +6,7 @@ import RewardStats from './components/RewardStats'
 
 function ManageStakerRewardPool () {
   const [modalShow, setModalShow] = useState(false)
-  console.log(modalShow)
+
   return (
         <>
             <Button

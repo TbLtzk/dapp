@@ -87,7 +87,6 @@ function* getPoolInfoGenerator({ address }) {
   try {
     const contract = yield call(getValidationRewardPoolsInstance);
     const data = yield contract.getPoolInfo(address);
-    console.log(data[0])
     yield put(setVRPPoolInfo(fromWei(data[0])));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);

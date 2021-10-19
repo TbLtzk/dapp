@@ -16,7 +16,6 @@ export default function RefreshDelegationUpdate () {
   const lastUpdateCompoundRate = useSelector(lastUpdateOfCompoundRate)
   const loadingUpdateCompoundRate = useSelector(loadingUpdateOfCompoundRate)
   const [timeDelegationUpdate, setTimeDelegationUpdate] = useState(0)
-
   const title = 'Time Since Last Refresh of User Delegations'
 
   useEffect(() => {

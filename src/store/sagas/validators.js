@@ -215,6 +215,7 @@ function * setValidatorsEnterShortListGenerator ({ address }) {
     const contract = yield call(getValidatorsInstance)
     yield contract.enterShortList({ from: address })
     yield put(getIsUserValidator(address))
+    yield put(getValidatorMembers())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
