@@ -107,7 +107,7 @@ function * getValidatorsAccountableSelfStake ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance)
     const data = yield contract.getAccountableSelfStake(address)
-    yield put(setSelfStake(fromWei(data)))
+    yield put(setSelfStake(Number(fromWei(data))))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }
