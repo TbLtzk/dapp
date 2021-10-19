@@ -17,8 +17,8 @@ import { SET_TRANSACTION_COUNTER } from "../actions/action-types/transaction-han
 import { getValidationRewardPoolsInstance } from "contracts/contract-instance";
 import { setErrorMessage } from "store/actions/action-creaters/transaction-handler";
 import { getPercentageFormat, uintPercentToNumber } from "func/useful";
-import { fromWei } from "func/balance";
 import ErrorHandler from "func/ErrorHandler";
+import { fromWei } from "func/balance";
 
 function* setUpdateValidatorsCompoundRateGenerator({ address }) {
   try {
@@ -77,7 +77,7 @@ function* getBalanceGenerator({ address }) {
   try {
     const contract = yield call(getValidationRewardPoolsInstance);
     const data = yield contract.getBalance(address);
-    yield put(setVRPBalance(fromWei(data)));
+    yield put(setVRPBalance(data));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }
@@ -87,7 +87,8 @@ function* getPoolInfoGenerator({ address }) {
   try {
     const contract = yield call(getValidationRewardPoolsInstance);
     const data = yield contract.getPoolInfo(address);
-    yield put(setVRPPoolInfo(data));
+    console.log(data[0])
+    yield put(setVRPPoolInfo(fromWei(data[0])));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }

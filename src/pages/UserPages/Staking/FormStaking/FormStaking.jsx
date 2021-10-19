@@ -95,15 +95,15 @@ function FormStaking () {
                   : null}
                 <div>
                     <h5>Announced for Withdrawal</h5>
-                    <p>{fromWei(withdrawalsData?.amount)} Q</p>
+                    <p>{fromWei(withdrawalsData?.amount) + ' Q'}</p>
                 </div>
                 <div>
                     <h5>Announcement Status</h5>
-                    <p>{Number(withdrawalsData?.amount) === 0 ? '-' : 'Pending'}</p>
+                    <p>{!Number(withdrawalsData?.amount) ? '-' : 'Pending'}</p>
                 </div>
                 <div>
                     <h5>Announcement End</h5>
-                    {Number(withdrawalsData?.amount) === 0
+                    {!Number(withdrawalsData?.amount)
                       ? (
                         <p>-</p>
                         )

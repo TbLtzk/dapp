@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/selectors/user-inf'
 import { delegatedStakeSelector } from 'store/selectors/validators'
-import { delegatorShare, balance, poolInfo } from 'store/selectors/validation-reward-pools'
+import { delegatorShare, balance, poolInfoSelector } from 'store/selectors/validation-reward-pools'
 import {
   getVRPBalance,
   getVRPDelegatorsShare,
@@ -18,41 +18,42 @@ import { useForm } from 'react-hook-form'
 
 import { errorHandler, fN } from 'func/useful'
 
-export default function RewardStats ({ setModalShow }) {
+export default function RewardStats ({ modalShow }) {
   const { register: reg1, handleSubmit: submit1, errors: err1 } = useForm()
 
   const dispatch = useDispatch()
 
   const delegatedStake = useSelector(delegatedStakeSelector)
   const userDelegatorShare = useSelector(delegatorShare)
-  const userBalance = useSelector(balance)
-  const userPoolInfo = useSelector(poolInfo)
+  const valRevPoolsBalance = useSelector(balance)
+  const poolInfo = useSelector(poolInfoSelector)
 
   const address = useSelector(userAddressMetamask)
 
   useEffect(() => {
-    dispatch(getVRPDelegatorsShare(address))
-    dispatch(getVRPBalance(address))
-    dispatch(getVRPPoolInfo(address))
-  }, [])
+    if (modalShow) {
+      dispatch(getVRPDelegatorsShare(address))
+      dispatch(getVRPBalance(address))
+      dispatch(getVRPPoolInfo(address))
+    }
+  }, [modalShow])
 
   const setDelegatorShareFunc = (formData) => {
     dispatch(setVRPDelegatorsShare(formData.amount))
-    setModalShow()
   }
 
-  const disDelClaims = userBalance - userPoolInfo
+  const disDelClaims = valRevPoolsBalance - poolInfo
 
   const rewardStatsArr = useMemo(() => {
     return [
       [
         {
           label: 'Collected Pool Rewards:',
-          value: fN(userBalance) + ' Q'
+          value: fN(valRevPoolsBalance) + ' Q'
         },
         {
           label: 'Outstanding Delegator Claims:',
-          value: fN(userPoolInfo) + ' Q'
+          value: fN(poolInfo) + ' Q'
         },
         {
           label: 'Distributable Delegator Rewards:',
@@ -60,13 +61,13 @@ export default function RewardStats ({ setModalShow }) {
         },
         {
           label: 'Distributable Delegator Percentage:',
-          value: fN(disDelClaims / delegatedStake) + ' %'
+          value: fN(disDelClaims / Number(delegatedStake)) + ' %'
         }
       ],
       [
         {
           label: 'Validator Share:',
-          value: userDelegatorShare === 0 ? '100 %' : fN(100 - userDelegatorShare) + ' %'
+          value: !userDelegatorShare ? '100 %' : fN(100 - userDelegatorShare) + ' %'
         },
         {
           label: 'Delegator Share:',
@@ -74,7 +75,7 @@ export default function RewardStats ({ setModalShow }) {
         }
       ]
     ]
-  }, [userBalance, userDelegatorShare, userPoolInfo, disDelClaims, delegatedStake])
+  }, [valRevPoolsBalance, userDelegatorShare, poolInfo, disDelClaims, delegatedStake])
 
   return (
         <>
