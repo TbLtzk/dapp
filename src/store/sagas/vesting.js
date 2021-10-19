@@ -5,8 +5,7 @@ import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-han
 import {
   setVestingBalance,
   setMinimumVestingTimeLock,
-  setVestingTimeLocks,
-  setVestingWithdraw
+  setVestingTimeLocks
 } from 'store/actions/action-creaters/vesting'
 
 import { toWei, fromWei } from 'func/balance'
@@ -16,6 +15,8 @@ import { getVestingInstance } from 'contracts/contract-instance'
 
 import { setErrorMessage } from 'store/actions/action-creaters/transaction-handler'
 import ErrorHandler from 'func/ErrorHandler'
+import { getAmountOnContract } from './locked-amount'
+import { CONTRACT_TYPES } from 'constants/contracts'
 
 function * getVestingBalanceGenerator ({ address }) {
   try {
@@ -71,11 +72,11 @@ function * setVestingWithdrawGenerator ({ amountQ }) {
       payload: 1
     })
     const { userAddress } = yield select((state) => state.userInf)
-
     const contract = yield call(getVestingInstance)
     const data = yield contract.withdraw(toWei(amountQ), { from: userAddress })
+
     if (data.status) {
-      yield put(setVestingWithdraw(userAddress))
+      yield call(getAmountOnContract, CONTRACT_TYPES.vesting, userAddress)
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
