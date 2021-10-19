@@ -60,6 +60,6 @@ export const tableDelegations = (tableArray) =>
   tableArray.map((member, idx) => ({
     id: idx,
     address: <CopyAddress address={member.validator} />,
-    amount: member.actualStake,
-    reward: member.claimableReward
+    amount: fN(fromWei(member.actualStake)) + ' Q',
+    reward: fN(fromWei(member.claimableReward)) + ' Q'
   }))
