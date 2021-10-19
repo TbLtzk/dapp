@@ -124,7 +124,7 @@ export default function AccountStatus () {
                 {Number(validatorLockedAmount) > 0
                   ? (
                     <div>
-                        <h5>Announced Amount</h5>
+                        <h5>Time Locked Amount</h5>
                         <p>{fN(validatorLockedAmount)} Q </p>
                     </div>
                     )

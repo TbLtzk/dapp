@@ -88,7 +88,7 @@ function FormStaking () {
                 {Number(rootTimeLockMinimumBalance) > 0
                   ? (
                     <div>
-                        <h5>Announced Amount</h5>
+                        <h5>Time Locked Amount</h5>
                         <p>{fN(rootTimeLockMinimumBalance)} Q </p>
                     </div>
                     )
