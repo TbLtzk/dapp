@@ -26,7 +26,7 @@ export default function ValidatorPool () {
   const ownStake = useSelector(ownStakeSelector)
   const delegatedStake = useSelector(delegatedStakeSelector)
   const accTotalStake = useSelector(accountableTotalStake)
-  
+
   useEffect(() => {
     dispatch(getTotalStake(address))
     dispatch(getOwnStake(address))
