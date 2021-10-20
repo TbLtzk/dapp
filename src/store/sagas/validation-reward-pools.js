@@ -25,7 +25,6 @@ function* setUpdateValidatorsCompoundRateGenerator({ address }) {
     yield put(setVRPLoadingValidatorsCompoundRate(true));
     const contract = yield call(getValidationRewardPoolsInstance);
     const data = yield contract.updateValidatorsCompoundRate(address, { from: address });
-
     if (data.status) {
       yield put(getVRPLastUpdateOfCompoundRate(address));
     }
@@ -46,8 +45,7 @@ function* setDelegatorsShareGenerator({ amount }) {
     const { userAddress } = yield select((state) => state.userInf);
 
     const contract = yield call(getValidationRewardPoolsInstance);
-    const data = yield contract.setDelegatorsShare(getPercentageFormat(amount));
-
+    yield contract.setDelegatorsShare(getPercentageFormat(amount));
     if (data.status) {
       yield put(getVRPDelegatorsShare(userAddress));
     }
@@ -87,7 +85,7 @@ function* getPoolInfoGenerator({ address }) {
   try {
     const contract = yield call(getValidationRewardPoolsInstance);
     const data = yield contract.getPoolInfo(address);
-    yield put(setVRPPoolInfo(fromWei(data[0])));
+    yield put(setVRPPoolInfo(fromWei(data[1])));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }

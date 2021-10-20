@@ -20,7 +20,7 @@ export default function RefreshDelegationUpdate () {
 
   useEffect(() => {
     setTimeDelegationUpdate(remainDateTimeSince(lastUpdateCompoundRate))
-  }, [])
+  }, [lastUpdateCompoundRate])
 
   useEffect(() => {
     const interval = setInterval(() => {

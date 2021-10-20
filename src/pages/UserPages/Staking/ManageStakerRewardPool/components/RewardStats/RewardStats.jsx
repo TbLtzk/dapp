@@ -24,9 +24,9 @@ export default function RewardStats ({ modalShow }) {
   const dispatch = useDispatch()
 
   const delegatedStake = useSelector(delegatedStakeSelector)
-  const userDelegatorShare = useSelector(delegatorShare)
-  const valRevPoolsBalance = useSelector(balance)
-  const poolInfo = useSelector(poolInfoSelector)
+  const delShare = useSelector(delegatorShare)
+  const amountRP = useSelector(balance)
+  const delClaim = useSelector(poolInfoSelector)
 
   const address = useSelector(userAddressMetamask)
 
@@ -42,40 +42,40 @@ export default function RewardStats ({ modalShow }) {
     dispatch(setVRPDelegatorsShare(formData.amount))
   }
 
-  const disDelClaims = valRevPoolsBalance - poolInfo
+  const disDelClaims = amountRP - delClaim
 
   const rewardStatsArr = useMemo(() => {
     return [
       [
         {
           label: 'Collected Pool Rewards:',
-          value: fN(valRevPoolsBalance) + ' Q'
+          value: fN(amountRP) + 'Q'
         },
         {
           label: 'Outstanding Delegator Claims:',
-          value: fN(poolInfo) + ' Q'
+          value: fN(delClaim) + 'Q'
         },
         {
           label: 'Distributable Delegator Rewards:',
-          value: fN(disDelClaims) + ' Q'
+          value: fN(disDelClaims) + 'Q'
         },
         {
           label: 'Distributable Delegator Percentage:',
-          value: fN(disDelClaims / Number(delegatedStake)) + ' %'
+          value: fN(disDelClaims / Number(delegatedStake)) + '%'
         }
       ],
       [
         {
           label: 'Validator Share:',
-          value: !userDelegatorShare ? '100 %' : fN(100 - userDelegatorShare) + ' %'
+          value: !delShare ? '100%' : fN(100 - delShare) + '%'
         },
         {
           label: 'Delegator Share:',
-          value: fN(userDelegatorShare) + ' %'
+          value: fN(delShare) + '%'
         }
       ]
     ]
-  }, [valRevPoolsBalance, userDelegatorShare, poolInfo, disDelClaims, delegatedStake])
+  }, [amountRP, delShare, delClaim, disDelClaims, delegatedStake])
 
   return (
         <>
