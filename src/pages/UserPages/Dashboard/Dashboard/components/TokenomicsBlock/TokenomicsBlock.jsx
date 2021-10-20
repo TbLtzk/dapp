@@ -12,6 +12,7 @@ import CardBlock from 'components/Base/CardBlock'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 
 import { remainDateTimeSince } from 'func/convertDate'
+import { fN } from 'func/useful'
 
 const BTN_TYPES = {
   defaultAllocation: 'default-allocation',
@@ -123,7 +124,7 @@ function TokenomicsBlock () {
       },
       {
         title: 'Validation Reward Proxy',
-        firstContent: validationRewardProxy + ' Q',
+        firstContent: fN(validationRewardProxy) + ' Q',
         btnTitle: 'Allocate',
         btnIcon: 'cube-outline',
         btnType: BTN_TYPES.validationRewardAllocation

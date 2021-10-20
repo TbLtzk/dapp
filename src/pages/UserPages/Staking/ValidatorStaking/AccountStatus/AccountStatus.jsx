@@ -65,7 +65,7 @@ export default function AccountStatus () {
         }
       })
     }
-  }, [userValidatorShortList])
+  }, [userValidatorShortList, isThisUserValidator])
 
   const stakeToRanking = (formData) => {
     dispatch(setValidatorsCommitStake(address, formData.amount))

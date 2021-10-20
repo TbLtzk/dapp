@@ -10,6 +10,8 @@ import {
   setVRPLastUpdateOfCompoundRateData,
   getVRPLastUpdateOfCompoundRate,
   setVRPLoadingValidatorsCompoundRate,
+  getVRPBalance,
+  getVRPPoolInfo,
 } from "store/actions/action-creaters/validation-reward-pools";
 
 import { SET_TRANSACTION_COUNTER } from "../actions/action-types/transaction-handler";
@@ -27,6 +29,9 @@ function* setUpdateValidatorsCompoundRateGenerator({ address }) {
     const data = yield contract.updateValidatorsCompoundRate(address, { from: address });
     if (data.status) {
       yield put(getVRPLastUpdateOfCompoundRate(address));
+      yield put(getVRPDelegatorsShare(address));
+      yield put(getVRPBalance(address));
+      yield put(getVRPPoolInfo(address));
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
@@ -74,8 +79,8 @@ function* getDelegatorsShareGenerator({ address }) {
 function* getBalanceGenerator({ address }) {
   try {
     const contract = yield call(getValidationRewardPoolsInstance);
-    const data = yield contract.getBalance(address);
-    yield put(setVRPBalance(data));
+    const data = yield contract.getPoolInfo(address);
+    yield put(setVRPBalance(fromWei(data.poolBalance)));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }
@@ -85,7 +90,7 @@ function* getPoolInfoGenerator({ address }) {
   try {
     const contract = yield call(getValidationRewardPoolsInstance);
     const data = yield contract.getPoolInfo(address);
-    yield put(setVRPPoolInfo(fromWei(data[1])));
+    yield put(setVRPPoolInfo(fromWei(data.reservedForClaims)));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }
