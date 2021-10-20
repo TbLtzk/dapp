@@ -14,13 +14,14 @@ import { getLockedAssets } from 'store/actions/action-creaters/q-vault'
 import { userAddressMetamask } from 'store/selectors/user-inf'
 
 function VotingStats () {
-  const rootStakeBalance = useSelector(rootNodeStake)
-  const validatorSelfStake = useSelector(selfStake)
-  const userVotingWeight = fN(useSelector(votingWeight))
-  const address = useSelector(userAddressMetamask)
-
   const dispatch = useDispatch()
 
+  const rootStakeBalance = useSelector(rootNodeStake)
+  const validatorSelfStake = useSelector(selfStake)
+  const userVotingWeight = useSelector(votingWeight)
+  const address = useSelector(userAddressMetamask)
+
+  const totalVotingWeight = validatorSelfStake + userVotingWeight + rootStakeBalance
   const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd))
 
   useEffect(() => {
@@ -32,7 +33,7 @@ function VotingStats () {
   const statsData = [
     {
       title: 'Total Voting Weight',
-      value: Number(userVotingWeight) + Number(rootStakeBalance) + Number(validatorSelfStake) + ' Q'
+      value: fN(totalVotingWeight) + ' Q'
     },
     {
       title: 'Voting Locking End',

@@ -16,7 +16,6 @@ function SystemCard (props) {
 
   const dispatch = useDispatch()
   const loadingPerfNetting = useSelector(loadingPerformNetting)
-
   const onHandlePerformNetting = useCallback(() => {
     dispatch(onPerformNetting())
   }, [])
@@ -32,7 +31,7 @@ function SystemCard (props) {
           </div>
         )
       })}
-      {title === 'QUSD system balance'
+      {title === 'QUSD System Balance'
         ? <div className="card__actions">
           <Button
             title={!loadingPerfNetting ? 'Perform Netting' : <LoadingSpinner/>}

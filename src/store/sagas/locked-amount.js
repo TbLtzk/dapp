@@ -17,8 +17,8 @@ import {
 } from 'store/actions/action-creaters/validators'
 import {
   getMinimumVestingTimeLock,
-  getVestingTimeLocks,
-  setVestingBalance
+  getVestingBalance,
+  getVestingTimeLocks
 } from 'store/actions/action-creaters/vesting'
 
 import { toWei } from 'func/balance'
@@ -49,7 +49,7 @@ async function getContractInstance(instanceType) {
   }
 }
 
-function* getAmountOnContract(instanceType, address) {
+export function* getAmountOnContract(instanceType, address) {
   switch (instanceType) {
     case CONTRACT_TYPES.qVault: {
       yield put(getUserBalance(address));
@@ -57,7 +57,7 @@ function* getAmountOnContract(instanceType, address) {
       yield put(getQVaultTimeLocks(address));
     }
     case CONTRACT_TYPES.root: {
-      yield put(getRootNodeStakes("", address));
+      yield put(getRootNodeStakes(address));
       yield put(getMinimumRootTimeLock(address));
       yield put(getRootTimeLocks(address));
     }
@@ -69,7 +69,7 @@ function* getAmountOnContract(instanceType, address) {
     case CONTRACT_TYPES.vesting: {
       yield put(getMinimumVestingTimeLock(address));
       yield put(getVestingTimeLocks(address));
-      yield put(setVestingBalance(address));
+      yield put(getVestingBalance(address));
     }
     default:
       return {};
@@ -105,6 +105,7 @@ function* setDepositLockedAmount({ payload }) {
       type: SET_TRANSACTION_COUNTER,
       payload: 1,
     });
+
     const contract = yield call(getContractInstance, payload.contract);
     const data = yield contract.depositOnBehalfOf(
       payload.address,
