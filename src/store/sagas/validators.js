@@ -116,7 +116,6 @@ function * getValidatorsAccountableSelfStake ({ address }) {
 function * getValidatorsMembersGenerator () {
   try {
     const data = yield call(getMembersList)
-    console.log(data)
     yield put(getValidatorMembersSuccess(data))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
@@ -234,7 +233,6 @@ function * setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
       type: SET_TRANSACTION_COUNTER,
       payload: 1
     })
-    console.log(address, amountQ)
     const contract = yield call(getValidatorsInstance)
     const data = yield contract.announceWithdrawal(toWei(amountQ), { from: address })
 
