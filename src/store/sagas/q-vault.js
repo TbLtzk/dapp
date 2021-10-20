@@ -19,14 +19,14 @@ import {
   getOutstandingDelegationRewardsSuccess,
   getOutstandingDelegationRewardsError,
   getOutstandingDelegationRewards,
-  getDelegationsList
+  getDelegationsList, setDelegationInfo
 } from 'store/actions/action-creaters/q-vault'
 
 import { toWei, fromWei } from 'func/balance'
 import { addIndex } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
 
-import { getQVaultInstance } from 'contracts/contract-instance'
+import { getQVaultInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance'
 
 import {
   updateCompoundRate,
@@ -200,7 +200,7 @@ function * getDelegationListGenerator () {
     const data = yield contract.getDelegationsList(userAddress)
     yield put(getDelegationsListSuccess(data))
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.process(error)
     yield put(getDelegationsListError(error.message))
   }
 }
@@ -286,6 +286,17 @@ function * getBalanceDetailsGenerator () {
   }
 }
 
+function * getDelegationInfoGenerator ({ address }) {
+  try {
+    const contract = yield call(getVotingWeightProxyInstance)
+    const data = yield contract.getDelegationInfo(address)
+    yield put(setDelegationInfo(data))
+  } catch (error) {
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
+  }
+}
+
 export default [
   takeEvery(actionTypes.GET_ACCOUNT_BALANCE, getAccountBalanceGenerator),
   takeEvery(actionTypes.GET_QV_USER_BALANCE, getUserBalanceGenerator),
@@ -295,6 +306,8 @@ export default [
   takeEvery(actionTypes.GET_DELEGATIONS_LIST, getDelegationListGenerator),
   takeEvery(actionTypes.GET_QV_BALANCE, getBalanceDetailsGenerator),
   takeEvery(actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS, getOutstandingDelegationRewardsValueGenerator),
+
+  takeEvery(actionTypes.GET_DELEGATION_INFO, getDelegationInfoGenerator),
 
   takeEvery(actionTypes.SET_QV_DEPOSIT_CALL, setDepositGenerator),
   takeEvery(actionTypes.SET_QV_WITHDRAW_CALL, setWithdrawGenerator),

@@ -5,12 +5,16 @@ import VoterStatus from 'components/Custom/PageLists/VoterStatus'
 import { fN } from 'func/useful'
 import { fromSolDateFormattingT1 } from 'func/date'
 import { useSelector, useDispatch } from 'react-redux'
-import { votingLockingEnd, votingWeight } from 'store/selectors/q-vault'
+import {
+  votingLockingEnd,
+  votingWeight,
+  votingAgent
+} from 'store/selectors/q-vault'
 import { rootNodeStake } from 'store/selectors/root-contract'
 import { selfStake } from 'store/selectors/validators'
 import { getSelfStake } from 'store/actions/action-creaters/validators'
 import { getRootNodeStakes } from 'store/actions/action-creaters/root-contract'
-import { getLockedAssets } from 'store/actions/action-creaters/q-vault'
+import { getLockedAssets, getDelegationInfo } from 'store/actions/action-creaters/q-vault'
 import { userAddressMetamask } from 'store/selectors/user-inf'
 
 function VotingStats () {
@@ -18,6 +22,7 @@ function VotingStats () {
   const validatorSelfStake = useSelector(selfStake)
   const userVotingWeight = fN(useSelector(votingWeight))
   const address = useSelector(userAddressMetamask)
+  const agent = useSelector(votingAgent)
 
   const dispatch = useDispatch()
 
@@ -27,6 +32,7 @@ function VotingStats () {
     dispatch(getLockedAssets(address))
     dispatch(getRootNodeStakes(address))
     dispatch(getSelfStake(address))
+    dispatch(getDelegationInfo(address))
   }, [])
 
   const statsData = [
@@ -41,6 +47,10 @@ function VotingStats () {
     {
       title: 'Voting Status',
       value: <VoterStatus />
+    },
+    {
+      title: 'Vote Delegation',
+      value: agent === address ? 'You vote for yourself' : `Your voting agent is ${agent}`
     }
   ]
   return <Stats statsData={statsData} type="Voting" />

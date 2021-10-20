@@ -8,6 +8,11 @@ export const delegationList = (state) => state.qVault.delegationList
 export const loadingDelegationList = (state) => state.qVault.loadingDelegationList
 export const errorDelegationList = (state) => state.qVault.errorDelegationList
 
+export const receivedWeight = (state) => state.qVault.receivedWeight
+export const votingAgent = (state) => state.qVault.votingAgent
+export const isPendingDelegation = (state) => state.qVault.isPendingDelegation
+export const votingAgentPassOverTime = (state) => state.qVault.votingAgentPassOverTime
+
 export const qvBalance = (state) => state.qVault.qvBalance
 export const outstandingDelegationRewards = (state) => state.qVault.outstandingDelegationRewards
 export const lastClaim = (state) => state.qVault.lastClaim

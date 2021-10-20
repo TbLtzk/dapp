@@ -78,6 +78,16 @@ export const getDelegationsList = () => ({
   type: actionTypes.GET_DELEGATIONS_LIST
 })
 
+export const getDelegationInfo = (address) => ({
+  type: actionTypes.GET_DELEGATION_INFO,
+  address
+})
+
+export const setDelegationInfo = (result) => ({
+  type: actionTypes.SET_DELEGATION_INFO,
+  result
+})
+
 export const getDelegationsListSuccess = (result) => ({
   type: actionTypes.GET_DELEGATIONS_LIST_SUCCESS,
   result
