@@ -105,7 +105,7 @@ function ProposalsList (props) {
                         <p>{convertToMonthDayYear(proposal.vetoEndTime)}</p>
                       </div>
                       <div>
-                        <h5>Remaining time for Voting</h5>
+                        <h5>Remaining Time for Voting</h5>
                         <p>{remainDate(proposal.votingEndTime)}</p>
                       </div>
                     </div>
@@ -114,19 +114,23 @@ function ProposalsList (props) {
                   )
                 })
       }
-      <ModalVote
-        proposalContract={proposalContract}
-        proposalId={proposalId}
-        vetoEndTime={vetoEndTime}
-        activeTab={activeTab}
-        modalShow={modalShow}
-        onHide={() => {
-          setModalShow(false)
-          dispatch(setVoteProposalObj({}))
-          dispatch(setStepVoteCounter(1))
-          dispatch(setDisabledCreatedProposalBtn(true))
-        }}
-      />
+      {
+        modalShow
+          ? <ModalVote
+            proposalContract={proposalContract}
+            proposalId={proposalId}
+            vetoEndTime={vetoEndTime}
+            activeTab={activeTab}
+            modalShow={modalShow}
+            onHide={() => {
+              setModalShow(false)
+              dispatch(setVoteProposalObj({}))
+              dispatch(setStepVoteCounter(1))
+              dispatch(setDisabledCreatedProposalBtn(true))
+            }}
+          />
+          : null
+    }
     </div>
   )
 }
