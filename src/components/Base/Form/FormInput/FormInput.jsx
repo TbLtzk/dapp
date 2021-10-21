@@ -51,7 +51,6 @@ const FormInput = forwardRef((props, ref) => {
                     type={type}
                     step="0.5"
                     autoComplete="off"
-                    enterKeyHint="off"
                     onClick={onClick}
                     placeholder={placeholder}
                     name={name}
