@@ -1,12 +1,7 @@
 import { contracts } from '../../config/config'
 import { getPastEvents, getPastProposalsIds, transformToPercentage } from '../../handler/VotingHandler'
 import { ParameterType } from '@q-dev/q-js-sdk'
-import {
-  getRootNodesInstance,
-  getConstitutionVotingInstance,
-  getGeneralUpdateVotingInstance,
-  getEmergencyUpdateVotingInstance
-} from 'contracts/contract-instance'
+import { getRootNodesInstance } from 'contracts/contract-instance'
 
 export default class VotingService {
   constructor (contractName) {
@@ -105,20 +100,6 @@ export default class VotingService {
   }
 
   async getProposalData (promiseRes, id, promiseStatus) {}
-
-  async switchContract () {
-    switch (this.contractName) {
-      case 'GeneralUpdateVoting': {
-        return await getGeneralUpdateVotingInstance()
-      }
-      case 'ConstitutionVoting': {
-        return await getConstitutionVotingInstance()
-      }
-      case 'EmergencyUpdateVoting': {
-        return await getEmergencyUpdateVotingInstance()
-      }
-    }
-  }
 
   async getEndedProposals () {
     const proposalEvents = await this.getProposalsEvent()
