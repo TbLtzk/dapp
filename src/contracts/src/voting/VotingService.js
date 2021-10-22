@@ -101,6 +101,26 @@ export default class VotingService {
 
   async getProposalData (promiseRes, id, promiseStatus) {}
 
+  async getProposals () {
+    const proposalEvents = await this.getProposalsEvent()
+    const proposalIds = getPastProposalsIds(proposalEvents)
+    const proposals = []
+    if (proposalIds) {
+      for (const id of proposalIds) {
+        let objRes = {}
+        const promiseStatus = await this.getProposalStatus(id)
+        if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
+          const promiseRes = await this.getProposal(id)
+          if (promiseRes) {
+            objRes = await this.getProposalData(promiseRes, id, promiseStatus)
+            proposals.push(objRes)
+          }
+        }
+      }
+    }
+    return proposals
+  }
+
   async getEndedProposals () {
     const proposalEvents = await this.getProposalsEvent()
     const proposalIds = getPastProposalsIds(proposalEvents)

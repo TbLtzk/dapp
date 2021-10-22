@@ -1,10 +1,23 @@
-import { contracts } from '../../config/config'
+
 import { getPercentageFormat } from '../../handler/VotingHandler'
 import { STATUSES } from 'constants/statuses'
+import { rootNodeSlashingEscrowInstance, validatorSlashingEscrowInstance } from 'contracts/contract-instance'
+import { CONTRACTS_NAMES } from 'constants/contracts'
 /* contacts: RootNodesSlashingEscrow, ValidatorsSlashingEscrow */
+
+async function switchInstance (contractName) {
+  switch (contractName) {
+    case CONTRACTS_NAMES.RootNodesSlashingEscrow:
+      return await rootNodeSlashingEscrowInstance()
+    case CONTRACTS_NAMES.ValidatorsSlashingEscrow:
+      return await validatorSlashingEscrowInstance()
+    default:
+      return {}
+  }
+}
+
 export default class SlashingEscrow {
   constructor (contractName) {
-    this.contract = contracts[contractName]
     this.contractName = contractName
   }
 
@@ -21,64 +34,61 @@ export default class SlashingEscrow {
   }
 
   async getStatus (id) {
-    const result = await this.contract.methods.getStatus(id)
-      .call()
+    const contract = await switchInstance(this.contractName)
+    const result = await contract.instance.methods.getStatus(id).call()
+    console.log(result)
     return result
   }
 
   async getDecisionStats (id) {
-    const result = await this.contract.methods.getDecisionStats(id)
-      .call()
+    const contract = await switchInstance(this.contractName)
+    const result = await contract.instance.methods.getDecisionStats(id).call()
     return result
   }
 
   async recallProposedDecision (id, userAddress) {
-    const result = await this.contract.methods.recallProposedDecision(id)
-      .send(
-        { from: userAddress })
+    const contract = await switchInstance(this.contractName)
+    const result = await contract.recallProposedDecision(id, { from: userAddress })
     return result
   }
 
   async confirmDecision (id, userAddress) {
-    const result = await this.contract.methods.confirmDecision(id)
-      .send(
-        { from: userAddress })
+    const contract = await switchInstance(this.contractName)
+    const { decision } = await contract.arbitrationInfos(id)
+    const result = await contract.confirmDecision(id, decision.hash, { from: userAddress })
     return result
   }
 
   async getArbitrationInfos (id) {
-    const result = await this.contract.methods.arbitrationInfos(id)
-      .call()
+    const contract = await switchInstance(this.contractName)
+    const result = await contract.arbitrationInfos(id)
     return result
   }
 
   async castObjection (id, link, userAddress) {
-    const result = await this.contract.methods.castObjection(id, link)
-      .send(
-        { from: userAddress })
+    const contract = await switchInstance(this.contractName)
+    const result = await contract.castObjection(id, link, { from: userAddress })
     return result
   }
 
   async execute (id, userAddress) {
-    const result = await this.contract.methods.execute(id)
-      .send({
-        from: userAddress
-      })
+    const contract = await switchInstance(this.contractName)
+    const result = await contract.execute(id, { from: userAddress })
     return result
   }
 
   async proposeDecision (id, percentage, notAppealed, link, userAddress) {
+    const contract = await switchInstance(this.contractName)
     const percentageStake = getPercentageFormat(percentage)
-    const result = await this.contract.methods.proposeDecision(id, percentageStake, notAppealed, link)
-      .send(
-        { from: userAddress })
+    const result = await contract.proposeDecision(id, percentageStake, notAppealed, link, {
+      from: userAddress
+    })
     return result
   }
 
   async setProposerRemark (id, proposerRemark, appealConfirmed, userAddress) {
-    const result = await this.contract.methods.setProposerRemark(id, proposerRemark, appealConfirmed)
-      .send(
-        { from: userAddress })
+    const contract = await switchInstance(this.contractName)
+    const result = await contract.setProposerRemark(id, proposerRemark, appealConfirmed, { from: userAddress })
     return result
   }
 }
