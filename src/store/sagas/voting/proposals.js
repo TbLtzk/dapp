@@ -129,7 +129,6 @@ function * voteForProposal ({ data }) {
     let result = null
     if (data) {
       const contract = new VotingService(data?.contract)
-      console.log('data', data)
       if (data?.first === 'basic-vote-on-proposal') {
         if (data['vote-proposal'] === 'yes') {
           result = yield contract.voteFor(data?.idProposal, userAddress)
