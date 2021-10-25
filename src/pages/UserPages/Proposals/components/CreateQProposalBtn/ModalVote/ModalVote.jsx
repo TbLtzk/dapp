@@ -50,6 +50,7 @@ function ModalVote (props) {
             activeTab={activeTab}
             register={register}
             errors={errors}
+            proposalContract={proposalContract}
           />
         )
       case 2:

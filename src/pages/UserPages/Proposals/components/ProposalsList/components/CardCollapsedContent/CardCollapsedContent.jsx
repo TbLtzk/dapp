@@ -5,6 +5,7 @@ import VoteBreakdown from '../VoteBreakdown'
 import SlashingObjection from '../SlashingObjection'
 
 import { convertToMonthDayYear, remainDate } from 'func/convertDate'
+import { CONTRACTS_NAMES } from 'constants/contracts'
 
 function CardCollapsedContent (props) {
   const {
@@ -15,23 +16,33 @@ function CardCollapsedContent (props) {
     contract,
     proposalID,
     votingTime,
-    objData,
-    vetoTime
+    objData
   } = props
+  function getVetoInfo (proposal) {
+    switch (proposal.contract) {
+      case CONTRACTS_NAMES.validatorsSlashingVoting:
+      case CONTRACTS_NAMES.emergencyUpdateVoting:
+        return null
+      default:
+        return (
+          <>
+            <div>
+              <h5>Veto Start</h5>
+              <p>{convertToMonthDayYear(proposal.vetoEndTime)}</p>
+            </div>
+            <div>
+              <h5>Remaining Time for Veto</h5>
+              <p>{remainDate(proposal.vetoEndTime)}</p>
+            </div>
+          </>
+        )
+    }
+  }
   return (
     <>
       <div className="list-card__three-colm">
-        <div>
-          <h5>Veto Start</h5>
-          <p>{convertToMonthDayYear(votingTime)}</p>
-        </div>
-        <div>
-          {proposalType && <><h5>Proposal Type</h5><p>{proposalType}</p></>}
-        </div>
-        <div>
-          <h5>Remaining Time for Veto</h5>
-          <p>{remainDate(vetoTime)}</p>
-        </div>
+        {proposalType && <div><h5>Proposal Type</h5><p>{proposalType}</p></div>}
+        {getVetoInfo(proposal, votingTime)}
       </div>
       <div className="list-card__line"/>
       <PollDetail pollDetail={proposal} proposalsKind={proposalsKind}/>
