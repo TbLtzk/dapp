@@ -26,9 +26,9 @@ function ManageStakerRewardPool () {
                 content={
                     <>
                         <div className="modal-line" />
-                        <ValidatorPool />
+                        <ValidatorPool modalShow={modalShow}/>
                         <div className="modal-line" />
-                        <RewardStats setModalShow={() => setModalShow(false)} />
+                        <RewardStats modalShow={modalShow}/>
                     </>
                 }
             />
