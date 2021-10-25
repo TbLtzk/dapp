@@ -4,9 +4,9 @@ const initialState = {
   rootMembersData: [],
   isUserRootNode: false,
   rootNodeStake: 0,
-  withdrawals: null,
+  withdrawals: 0,
 
-  qVaultMinimumTimeLock: null,
+  qVaultMinimumTimeLock: 0,
   qVaultTimeLocks: null
 }
 

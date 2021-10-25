@@ -2,7 +2,9 @@ import { call, put, takeEvery, select } from 'redux-saga/effects'
 
 import * as actionTypes from 'store/actions/action-types/voting/slashing-proposals'
 import {
-  setTransactionLoading, setTransactionLoadingError, setTransactionLoadingSuccess
+  setErrorMessage,
+  setTransactionLoading,
+  setTransactionLoadingSuccess
 } from 'store/actions/action-creaters/transaction-handler'
 
 import {
@@ -13,10 +15,7 @@ import {
   getProposalError,
   getOneProposalSuccess
 } from 'store/actions/action-creaters/voting/slashing-proposals'
-import {
-  creationSlashingContractObj,
-  creationSlashingContractsObjArray
-} from 'contracts/handler/VotingHandler'
+import { creationSlashingContractObj, creationSlashingContractsObjArray } from 'contracts/handler/VotingHandler'
 
 import SlashingEscrow from 'contracts/src/voting/SlashingEscrow'
 
@@ -30,11 +29,11 @@ function * getProposalsList ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active
     let data = []
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active:
-        data = yield Promise.all(contracts.map(item => item.getProposals()))
+        data = yield Promise.all(contracts.map((item) => item.getProposals()))
         yield put(getSlashingProposalsListSuccess([].concat.apply([], data)))
         break
       case PROPOSAL_STATUS_TYPES.ended:
-        data = yield Promise.all(contracts.map(item => item.getEndedProposals()))
+        data = yield Promise.all(contracts.map((item) => item.getEndedProposals()))
         yield put(getSlashingEndedProposalsSuccess([].concat.apply([], data)))
         break
     }
@@ -72,10 +71,11 @@ function * getProposal ({ contractName, id, activeProposal }) {
 function * onEscrowCastObjection ({ data, contractName, proposalId }) {
   try {
     yield put(setTransactionLoading())
-    const { userAddress } = yield select(state => state.userInf)
-    const SlashingEscrowContractName = contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-      ? 'ValidatorsSlashingEscrow'
-      : 'RootNodesSlashingEscrow'
+    const { userAddress } = yield select((state) => state.userInf)
+    const SlashingEscrowContractName =
+      contractName === CONTRACTS_NAMES.validatorsSlashingVoting
+        ? 'ValidatorsSlashingEscrow'
+        : 'RootNodesSlashingEscrow'
     const contract = new SlashingEscrow(SlashingEscrowContractName)
     const result = yield contract.castObjection(proposalId, data['external-link'], userAddress)
     if (result) {
@@ -83,39 +83,46 @@ function * onEscrowCastObjection ({ data, contractName, proposalId }) {
     }
     yield put(setTransactionLoadingSuccess())
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(setTransactionLoadingError(error.message))
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   }
 }
 
 function * onEscrowProposeDecision ({ data, contractName, proposalId }) {
   try {
     yield put(setTransactionLoading())
-    const { userAddress } = yield select(state => state.userInf)
-    const SlashingEscrowContractName = contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-      ? 'ValidatorsSlashingEscrow'
-      : 'RootNodesSlashingEscrow'
+    const { userAddress } = yield select((state) => state.userInf)
+    const SlashingEscrowContractName =
+      contractName === CONTRACTS_NAMES.validatorsSlashingVoting
+        ? 'ValidatorsSlashingEscrow'
+        : 'RootNodesSlashingEscrow'
     const contract = new SlashingEscrow(SlashingEscrowContractName)
     const notAppealed = data['target-slashing-appeal'] === 'yes'
-    const result = yield contract.proposeDecision(proposalId, data['%-value'], notAppealed,
-      data['external-link'], userAddress)
+    const result = yield contract.proposeDecision(
+      proposalId,
+      data['%-value'],
+      notAppealed,
+      data['external-link'],
+      userAddress
+    )
     if (result) {
       yield call(() => {}, contractName, {}, proposalId, false)
     }
     yield put(setTransactionLoadingSuccess())
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(setTransactionLoadingError(error.message))
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   }
 }
 
 function * onEscrowProposerRemark ({ data, contractName, proposalId }) {
   try {
     yield put(setTransactionLoading())
-    const { userAddress } = yield select(state => state.userInf)
-    const SlashingEscrowContractName = contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-      ? 'ValidatorsSlashingEscrow'
-      : 'RootNodesSlashingEscrow'
+    const { userAddress } = yield select((state) => state.userInf)
+    const SlashingEscrowContractName =
+      contractName === CONTRACTS_NAMES.validatorsSlashingVoting
+        ? 'ValidatorsSlashingEscrow'
+        : 'RootNodesSlashingEscrow'
     const contract = new SlashingEscrow(SlashingEscrowContractName)
     const appealConfirmed = data.appealConfirmed === 'yes'
     const result = yield contract.setProposerRemark(proposalId, data['proposer-remark'], appealConfirmed, userAddress)
@@ -124,18 +131,19 @@ function * onEscrowProposerRemark ({ data, contractName, proposalId }) {
     }
     yield put(setTransactionLoadingSuccess())
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(setTransactionLoadingError(error.message))
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   }
 }
 
 function * onEscrowRecallProposeDecision ({ contractName, proposalId }) {
   try {
     yield put(setTransactionLoading())
-    const { userAddress } = yield select(state => state.userInf)
-    const SlashingEscrowContractName = contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-      ? 'ValidatorsSlashingEscrow'
-      : 'RootNodesSlashingEscrow'
+    const { userAddress } = yield select((state) => state.userInf)
+    const SlashingEscrowContractName =
+      contractName === CONTRACTS_NAMES.validatorsSlashingVoting
+        ? 'ValidatorsSlashingEscrow'
+        : 'RootNodesSlashingEscrow'
     const contract = new SlashingEscrow(SlashingEscrowContractName)
     const result = yield contract.recallProposedDecision(proposalId, userAddress)
     if (result) {
@@ -143,27 +151,26 @@ function * onEscrowRecallProposeDecision ({ contractName, proposalId }) {
     }
     yield put(setTransactionLoadingSuccess())
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(setTransactionLoadingError(error.message))
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   }
 }
 
 function * onEscrowConfirmProposeDecision ({ contractName, proposalId }) {
   try {
     yield put(setTransactionLoading())
-    const { userAddress } = yield select(state => state.userInf)
-    const SlashingEscrowContractName = contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-      ? 'ValidatorsSlashingEscrow'
-      : 'RootNodesSlashingEscrow'
+    const { userAddress } = yield select((state) => state.userInf)
+    const SlashingEscrowContractName =
+      contractName === CONTRACTS_NAMES.validatorsSlashingVoting
+        ? 'ValidatorsSlashingEscrow'
+        : 'RootNodesSlashingEscrow'
     const contract = new SlashingEscrow(SlashingEscrowContractName)
-    const result = yield contract.confirmDecision(proposalId, userAddress)
-    if (result) {
-      yield call(() => {}, contractName, {}, proposalId, false)
-    }
+    yield contract.confirmDecision(proposalId, userAddress)
+    yield call(() => {}, contractName, {}, proposalId, false)
     yield put(setTransactionLoadingSuccess())
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(setTransactionLoadingError(error.message))
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   }
 }
 
@@ -176,5 +183,4 @@ export default [
   takeEvery(actionTypes.ESCROW_RECALL_PROPOSE_DECISION, onEscrowRecallProposeDecision),
   takeEvery(actionTypes.ESCROW_CONFIRM_DECISION, onEscrowConfirmProposeDecision),
   takeEvery(actionTypes.ESCROW_PROPOSER_REMARK, onEscrowProposerRemark)
-
 ]
