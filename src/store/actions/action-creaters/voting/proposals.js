@@ -106,3 +106,12 @@ export const onSetActiveTab = (activeTab) => ({
   type: actionTypes.ACTIVE_TAB,
   activeTab
 })
+
+export const getBaseVotingWeightInfo = () => ({
+  type: actionTypes.GET_BASE_VOTING_WEIGHT_INFO
+})
+
+export const setBaseVotingWeightInfo = (data) => ({
+  type: actionTypes.SET_BASE_VOTING_WEIGHT_INFO,
+  payload: data
+})

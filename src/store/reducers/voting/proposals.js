@@ -14,7 +14,8 @@ const initialState = {
 
   numberOfAllProposals: 0,
   loadingNumberAll: true,
-  constitutionHash: '...'
+  constitutionHash: '...',
+  baseVotingWeightInfo: {}
 }
 
 export default function proposals (state = initialState, action) {
@@ -69,6 +70,11 @@ export default function proposals (state = initialState, action) {
       return {
         ...state,
         proposalsArr: []
+      }
+    case actionTypes.SET_BASE_VOTING_WEIGHT_INFO:
+      return {
+        ...state,
+        baseVotingWeightInfo: action.payload
       }
     default:
       return state

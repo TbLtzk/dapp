@@ -32,7 +32,7 @@ function * getMinimumVestingTimeLockGenerator ({ address }) {
   try {
     const contract = yield call(getVestingInstance)
     const data = yield contract.getMinimumBalance(address, getNowTimestamp())
-    yield put(setMinimumVestingTimeLock(fromWei(data)))
+    yield put(setMinimumVestingTimeLock(Number(fromWei(data))))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }
