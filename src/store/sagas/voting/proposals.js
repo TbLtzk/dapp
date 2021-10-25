@@ -4,8 +4,8 @@ import { PROPOSALS_TYPES } from 'constants/statuses'
 
 import * as actionTypes from 'store/actions/action-types/voting/proposals'
 import {
+  setErrorMessage,
   setTransactionLoading,
-  setTransactionLoadingError,
   setTransactionLoadingSuccess
 } from 'store/actions/action-creaters/transaction-handler'
 
@@ -15,7 +15,6 @@ import {
   createProposalSuccess,
   voteForProposalSuccess,
   executeProposalSuccess,
-  executeProposalError,
   getNumberAllProposalsSuccess,
   getConstitutionHashSuccess
 } from 'store/actions/action-creaters/voting/proposals'
@@ -116,8 +115,8 @@ function * createProposal ({ data }) {
     yield put(createProposalSuccess(result))
     yield put(setTransactionLoadingSuccess())
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(setTransactionLoadingError(error.message))
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   }
 }
 
@@ -146,8 +145,8 @@ function * voteForProposal ({ data }) {
     yield put(setTransactionLoadingSuccess())
     yield put(getLockedAssets(userAddress))
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(setTransactionLoadingError(error.message))
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   }
 }
 
@@ -164,9 +163,8 @@ function * executeProposal ({ data }) {
     yield put(executeProposalSuccess(result))
     yield put(setTransactionLoadingSuccess())
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(executeProposalError(error.message))
-    yield put(setTransactionLoadingError(error.message))
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   }
 }
 

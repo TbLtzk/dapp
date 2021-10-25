@@ -1,10 +1,10 @@
 import * as actionTypes from '../actions/action-types/validation-reward-pools'
 
 const initialState = {
-  poolInfo: null,
-  delegatorShare: null,
+  poolInfo: 0,
+  delegatorShare: 0,
   balance: 0,
-  lastUpdateOfCompoundRate: null,
+  lastUpdateOfCompoundRate: 0,
   loadingUpdateOfCompoundRate: false
 }
 

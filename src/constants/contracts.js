@@ -33,5 +33,7 @@ export const CONTRACTS_NAMES = {
   ePDRParametersVoting: 'EPDRParametersVoting',
   systemSurplusAuction: 'SystemSurplusAuction',
   liquidationAuction: 'LiquidationAuction',
-  systemDebtAuction: 'SystemDebtAuction'
+  systemDebtAuction: 'SystemDebtAuction',
+  RootNodesSlashingEscrow: 'RootNodesSlashingEscrow',
+  ValidatorsSlashingEscrow: 'ValidatorsSlashingEscrow'
 }
