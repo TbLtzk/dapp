@@ -3,7 +3,6 @@ import { getPercentageFormat } from '../../handler/VotingHandler'
 import { STATUSES } from 'constants/statuses'
 import { rootNodeSlashingEscrowInstance, validatorSlashingEscrowInstance } from 'contracts/contract-instance'
 import { CONTRACTS_NAMES } from 'constants/contracts'
-/* contacts: RootNodesSlashingEscrow, ValidatorsSlashingEscrow */
 
 async function switchInstance (contractName) {
   switch (contractName) {
