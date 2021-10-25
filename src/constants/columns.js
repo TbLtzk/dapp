@@ -138,7 +138,7 @@ export const columnsValidatorsWidened = [
     sort: true
   },
   {
-    headerStyle: () => ({ minWidth: '150px' }),
+    headerStyle: () => ({ minWidth: '165px' }),
     dataField: 'delegationSaturation',
     text: 'Delegation Saturation',
     sort: true
