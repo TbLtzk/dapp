@@ -36,7 +36,6 @@ export default class SlashingEscrow {
   async getStatus (id) {
     const contract = await switchInstance(this.contractName)
     const result = await contract.instance.methods.getStatus(id).call()
-    console.log(result)
     return result
   }
 
