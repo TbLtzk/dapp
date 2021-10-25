@@ -16,6 +16,7 @@ import CardDropdownItems from './components/CardDropdownItems'
 import CardCollapsedContent from './components/CardCollapsedContent'
 import { LoadingWrap } from 'constants/style'
 import { convertToMonthDayYear, remainDate } from 'func/convertDate'
+import { CONTRACTS_NAMES } from 'constants/contracts'
 
 function ProposalsList (props) {
   const {
@@ -37,6 +38,15 @@ function ProposalsList (props) {
     setVetoEndTime(vetoEndTime)
     setProposalContract(contract)
     setModalShow(true)
+  }
+
+  function getProposalOpenUntil (proposal) {
+    switch (proposal.contract) {
+      case CONTRACTS_NAMES.validatorsSlashingVoting:
+      case CONTRACTS_NAMES.emergencyUpdateVoting:
+        return proposal.votingEndTime
+    }
+    return proposal.vetoEndTime
   }
 
   const onProposalExecute = (id, contract) => {
@@ -89,7 +99,6 @@ function ProposalsList (props) {
                       proposalsKind={proposalsKind}
                       contract={proposal.contract}
                       proposalID={proposal.id}
-                      votingTime={proposal.votingEndTime}
                       objData={proposal.status}
                       vetoTime={proposal.vetoEndTime}
                     />
@@ -102,10 +111,10 @@ function ProposalsList (props) {
                       </div>
                       <div>
                         <h5>Proposal Open Until</h5>
-                        <p>{convertToMonthDayYear(proposal.vetoEndTime)}</p>
+                        <p>{convertToMonthDayYear(getProposalOpenUntil(proposal))}</p>
                       </div>
                       <div>
-                        <h5>Remaining time for Voting</h5>
+                        <h5>Remaining Time for Voting</h5>
                         <p>{remainDate(proposal.votingEndTime)}</p>
                       </div>
                     </div>
@@ -114,19 +123,23 @@ function ProposalsList (props) {
                   )
                 })
       }
-      <ModalVote
-        proposalContract={proposalContract}
-        proposalId={proposalId}
-        vetoEndTime={vetoEndTime}
-        activeTab={activeTab}
-        modalShow={modalShow}
-        onHide={() => {
-          setModalShow(false)
-          dispatch(setVoteProposalObj({}))
-          dispatch(setStepVoteCounter(1))
-          dispatch(setDisabledCreatedProposalBtn(true))
-        }}
-      />
+      {
+        modalShow
+          ? <ModalVote
+            proposalContract={proposalContract}
+            proposalId={proposalId}
+            vetoEndTime={vetoEndTime}
+            activeTab={activeTab}
+            modalShow={modalShow}
+            onHide={() => {
+              setModalShow(false)
+              dispatch(setVoteProposalObj({}))
+              dispatch(setStepVoteCounter(1))
+              dispatch(setDisabledCreatedProposalBtn(true))
+            }}
+          />
+          : null
+    }
     </div>
   )
 }
