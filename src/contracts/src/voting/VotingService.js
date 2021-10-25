@@ -1,12 +1,50 @@
 import { contracts } from '../../config/config'
 import { getPastEvents, getPastProposalsIds, transformToPercentage } from '../../handler/VotingHandler'
 import { ParameterType } from '@q-dev/q-js-sdk'
-import { getRootNodesInstance } from 'contracts/contract-instance'
+import {
+  getRootNodesInstance,
+  getConstitutionVotingInstance,
+  getGeneralUpdateVotingInstance,
+  getEmergencyUpdateVotingInstance,
+  getValidatorsSlashingVotingInstance,
+  getRootNodesSlashingVotingInstance,
+  getEpqfiParametersVotingInstance,
+  getEpdrParametersVotingInstance
+} from 'contracts/contract-instance'
 
 export default class VotingService {
   constructor (contractName) {
     this.contract = contracts[contractName]
     this.contractName = contractName
+  }
+
+  async switchContract () {
+    switch (this.contractName) {
+      case 'GeneralUpdateVoting': {
+        return await getGeneralUpdateVotingInstance()
+      }
+      case 'ConstitutionVoting': {
+        return await getConstitutionVotingInstance()
+      }
+      case 'EmergencyUpdateVoting': {
+        return await getEmergencyUpdateVotingInstance()
+      }
+      case 'ValidatorsSlashingVoting': {
+        return await getValidatorsSlashingVotingInstance()
+      }
+      case 'RootNodesSlashingVoting': {
+        return getRootNodesSlashingVotingInstance()
+      }
+      case 'RootsVoting': {
+        return contracts.RootsVoting.methods
+      }
+      case 'EPQFIParametersVoting': {
+        return getEpqfiParametersVotingInstance()
+      }
+      case 'EPDRParametersVoting': {
+        return getEpdrParametersVotingInstance()
+      }
+    }
   }
 
   async getProposalsEvent () {
@@ -99,47 +137,23 @@ export default class VotingService {
     }
   }
 
-  async getProposalData (promiseRes, id, promiseStatus) {}
-
   async getProposals () {
+    const contract = await this.switchContract()
+    // console.log(this.contractName)
     const proposalEvents = await this.getProposalsEvent()
-    const proposalIds = getPastProposalsIds(proposalEvents)
-    const proposals = []
-    if (proposalIds) {
-      for (const id of proposalIds) {
-        let objRes = {}
-        const promiseStatus = await this.getProposalStatus(id)
-        if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
-          const promiseRes = await this.getProposal(id)
-          if (promiseRes) {
-            objRes = await this.getProposalData(promiseRes, id, promiseStatus)
-            proposals.push(objRes)
-          }
-        }
-      }
-    }
-    return proposals
+    const proposalIds = proposalEvents.map((event) => event.returnValues._id)
+    const allProposals = await contract.getProposals(...proposalIds)
+    const endedProposals = allProposals.filter((obj) => obj.status === '1' || obj.status === '3' || obj.status === '4')
+    return await Promise.all(endedProposals.map((prop) => this.getProposalData(prop, prop.id, prop.status)))
   }
 
   async getEndedProposals () {
+    const contract = await this.switchContract()
     const proposalEvents = await this.getProposalsEvent()
-    const proposalIds = proposalEvents.map(event => event.returnValues._id)
-
-    const proposals = []
-    if (proposalIds) {
-      for (const id of proposalIds) {
-        let objRes = {}
-        const promiseStatus = await this.getProposalStatus(id)
-        if (promiseStatus !== '1' && promiseStatus !== '3' && promiseStatus !== '4') {
-          const promiseRes = await this.getProposal(id)
-          if (promiseRes) {
-            objRes = await this.getProposalData(promiseRes, id, promiseStatus)
-            proposals.push(objRes)
-          }
-        }
-      }
-    }
-    return proposals
+    const proposalIds = proposalEvents.map((event) => event.returnValues._id)
+    const allProposals = await contract.getProposals(...proposalIds)
+    const endedProposals = allProposals.filter((obj) => obj.status !== '1' && obj.status !== '3' && obj.status !== '4')
+    return await Promise.all(endedProposals.map((prop) => this.getProposalData(prop, prop.id, prop.status)))
   }
 
   async getRootNodesNumber () {
@@ -166,22 +180,22 @@ export default class VotingService {
   async getProposalsCount () {
     const proposalEvents = await this.getProposalsEvent()
     const proposalIds = getPastProposalsIds(proposalEvents)
-    let proposalsActive = 0
-    let proposalsEnded = 0
-    if (proposalIds) {
-      for (const id of proposalIds) {
+
+    let ended = 0
+    let active = 0
+
+    await Promise.all(
+      proposalIds.map(async (id) => {
         const promiseStatus = await this.getProposalStatus(id)
         if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
-          proposalsActive++
+          active++
         } else {
-          proposalsEnded++
+          ended++
         }
-      }
-    }
-    return {
-      ended: proposalsEnded,
-      active: proposalsActive
-    }
+      })
+    )
+
+    return { ended, active }
   }
 
   transformParameterType (id) {

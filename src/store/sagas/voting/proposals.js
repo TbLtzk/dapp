@@ -23,14 +23,8 @@ import {
   getProposalRootNode,
   getRootNodeProposalsList
 } from 'store/actions/action-creaters/voting/root-node-proposals'
-import {
-  getProposalExpert,
-  getExpertProposalsList
-} from 'store/actions/action-creaters/voting/expert-proposals'
-import {
-  getProposalSlashing,
-  getSlashingProposalsList
-} from 'store/actions/action-creaters/voting/slashing-proposals'
+import { getProposalExpert, getExpertProposalsList } from 'store/actions/action-creaters/voting/expert-proposals'
+import { getProposalSlashing, getSlashingProposalsList } from 'store/actions/action-creaters/voting/slashing-proposals'
 
 import {
   creationQContractObj,
@@ -40,9 +34,7 @@ import {
   creationExpertContractsObjArray
 } from 'contracts/handler/VotingHandler'
 import { chooseSlashingContractDependsOnType } from 'contracts/handler/SlashingVotingHandler'
-import {
-  chooseExpertContractDependsOnType
-} from 'contracts/handler/QExpertVotingHandler'
+import { chooseExpertContractDependsOnType } from 'contracts/handler/QExpertVotingHandler'
 
 import ConstitutionVotingService from 'contracts/src/voting/ConstitutionVoting'
 import EmergencyUpdateVotingService from 'contracts/src/voting/EmergencyUpdateVoting'
@@ -101,7 +93,8 @@ function * createProposal ({ data }) {
         case CONTRACT_TYPES.addNewExpert:
         case CONTRACT_TYPES.removeCurrentExpert:
         case CONTRACT_TYPES.parameterVote:
-          const typeContract = data.first !== CONTRACT_TYPES.parameterVote ? CONTRACT_TYPES.member : CONTRACT_TYPES.parameters
+          const typeContract =
+            data.first !== CONTRACT_TYPES.parameterVote ? CONTRACT_TYPES.member : CONTRACT_TYPES.parameters
           const contract = chooseExpertContractDependsOnType(typeContract, data['type-proposal'])
           contractName = contract.contractName
           result = yield contract.createProposal(data, userAddress)
@@ -232,17 +225,22 @@ function * getNumberAllProposals () {
       ...creationExpertContractsObjArray(),
       ...creationSlashingContractsObjArray()
     ]
-    let result = {
+    const result = {
       ended: 0,
       active: 0
     }
-    for (const contractName of contracts) {
-      const data = yield contractName.getProposalsCount()
-      result = {
-        ended: data?.ended + result?.ended,
-        active: data?.active + result?.active
+
+    const proposals = yield Promise.all(contracts.map((contract) => contract.getProposalsCount()))
+    console.log(proposals)
+    proposals.forEach((proposal) => {
+      if (proposal.ended) {
+        result.ended += proposal.ended
       }
-    }
+      if (proposal.active) {
+        result.active += proposal.active
+      }
+    })
+
     yield put(getNumberAllProposalsSuccess(result))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)

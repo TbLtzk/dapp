@@ -1,7 +1,6 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects'
 
 import * as actionTypes from 'store/actions/action-types/vesting'
-import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler'
 import {
   setVestingBalance,
   setMinimumVestingTimeLock,
@@ -13,7 +12,7 @@ import { addIndex } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
 import { getVestingInstance } from 'contracts/contract-instance'
 
-import { setErrorMessage } from 'store/actions/action-creaters/transaction-handler'
+import { setErrorMessage, setTransactionLoading } from 'store/actions/action-creaters/transaction-handler'
 import ErrorHandler from 'func/ErrorHandler'
 import { getAmountOnContract } from './locked-amount'
 import { CONTRACT_TYPES } from 'constants/contracts'
@@ -50,27 +49,19 @@ function * getVestingTimeLocksGenerator ({ address }) {
 
 function * setVestingDepositGenerator ({ address, amountQ }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading())
   }
 }
 
 function * setVestingWithdrawGenerator ({ amountQ }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading())
+
     const { userAddress } = yield select((state) => state.userInf)
     const contract = yield call(getVestingInstance)
     const data = yield contract.withdraw(toWei(amountQ), { from: userAddress })
@@ -82,10 +73,7 @@ function * setVestingWithdrawGenerator ({ amountQ }) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading())
   }
 }
 

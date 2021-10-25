@@ -1,12 +1,12 @@
 import { contracts } from '../../config/config'
 import VotingService from './VotingService'
-import { constitutionVotingInstance } from '../../contracts'
 
-import { getPastProposalsIds, getStatusTransformation } from '../../handler/VotingHandler'
+import { getStatusTransformation } from '../../handler/VotingHandler'
 import { fromWei } from 'func/balance'
 import { BN } from 'func/useful'
 import { ParameterType } from '@q-dev/q-js-sdk'
 import { CONTRACTS_NAMES } from 'constants/contracts'
+import { getConstitutionVotingInstance } from 'contracts/contract-instance'
 
 export default class ConstitutionVoting extends VotingService {
   constructor () {
@@ -93,6 +93,8 @@ export default class ConstitutionVoting extends VotingService {
   }
 
   async createProposal (data, userAddress) {
+    const contract = await getConstitutionVotingInstance()
+
     let result = null
     const classification = this.getProposalNumberType(data?.classification)
     const hash = data.hash
@@ -119,7 +121,7 @@ export default class ConstitutionVoting extends VotingService {
       }, [])
     if (paramInputs.length !== 0) {
       try {
-        result = await constitutionVotingInstance.createProposal(link, classification, hash, paramInputs, {
+        result = await contract.createProposal(link, classification, hash, paramInputs, {
           from: userAddress
         })
       } catch (e) {
@@ -128,7 +130,7 @@ export default class ConstitutionVoting extends VotingService {
       }
     } else {
       try {
-        result = await constitutionVotingInstance.createProposal(link, classification, hash, [], { from: userAddress })
+        result = await contract.createProposal(link, classification, hash, [], { from: userAddress })
       } catch (e) {
         console.error('Please provide a valid hash')
       }
@@ -141,23 +143,24 @@ export default class ConstitutionVoting extends VotingService {
     return result
   }
 
-  async getProposals () {
-    const proposalEvents = await this.getProposalsEvent()
-    const proposalIds = getPastProposalsIds(proposalEvents)
-    const proposals = []
-    if (proposalIds) {
-      for (const id of proposalIds) {
-        let objRes = {}
-        const promiseStatus = await this.getProposalStatus(id)
-        if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
-          const promiseRes = await this.getProposal(id)
-          if (promiseRes) {
-            objRes = await this.getProposalData(promiseRes, id, promiseStatus)
-            proposals.push(objRes)
-          }
-        }
-      }
-    }
-    return proposals
-  }
+  // async getProposals () {
+  //   const proposalEvents = await this.getProposalsEvent()
+  //   const proposalIds = getPastProposalsIds(proposalEvents)
+  //   const proposals = []
+  //   if (proposalIds) {
+  //     for (const id of proposalIds) {
+  //       let objRes = {}
+  //       const promiseStatus = await this.getProposalStatus(id)
+  //       if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
+  //         const promiseRes = await this.getProposal(id)
+  //         if (promiseRes) {
+  //           objRes = await this.getProposalData(promiseRes, id, promiseStatus)
+  //           proposals.push(objRes)
+  //         }
+  //       }
+  //     }
+  //   }
+  //   console.log(proposals)
+  //   return proposals
+  // }
 }

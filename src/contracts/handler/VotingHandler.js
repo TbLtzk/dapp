@@ -64,7 +64,7 @@ export function creationSlashingContractsObjArray () {
 }
 
 export function creationRootContractObj () {
-  return new RootsVotingService()
+  return new RootsVotingService('RootsVoting')
 }
 
 export function creationQContractObj (contractName) {

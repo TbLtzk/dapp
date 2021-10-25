@@ -14,9 +14,7 @@ export default function transactionHandler (state = initialState, action) {
     case actionTypes.SET_TRANSACTION_LOADING:
       return {
         ...state,
-        transactionLoading: !state.transactionLoading,
-        successMessage: null,
-        errorMessage: null
+        transactionLoading: !state.transactionLoading
       }
     case actionTypes.SET_TRANSACTION_LOADING_SUCCESS:
       return {

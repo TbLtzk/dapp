@@ -17,6 +17,7 @@ module.exports = {
     'react/no-unescaped-entities': 'off',
     'react/prop-types': 'off',
     'prefer-destructuring': 'off',
-    'react/display-name': 'off'
+    'react/display-name': 'off',
+    'no-console': 'off'
   }
 }

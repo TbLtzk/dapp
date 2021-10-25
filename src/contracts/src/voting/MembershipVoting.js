@@ -1,9 +1,6 @@
 import VotingService from './VotingService'
 
-import {
-  getPastProposalsIds,
-  getStatusTransformation
-} from '../../handler/VotingHandler'
+import { getPastProposalsIds, getStatusTransformation } from '../../handler/VotingHandler'
 
 import { fromWei } from 'func/balance'
 import { CONTRACTS_NAMES, CONTRACT_TYPES } from 'constants/contracts'
@@ -30,12 +27,14 @@ export default class MembershipVoting extends VotingService {
     // the time until when users can vote
     objRes.votingEndTime = promiseRes.base.params.votingEndTime
     objRes.status = getStatusTransformation(promiseStatus)
-    objRes.title = this.contractName === CONTRACTS_NAMES.ePDRMembershipVoting
-      ? 'DeFi Risk Expert membership proposals'
-      : 'Fees & Incentives Experts membership proposals'
-    objRes.type = this.contractName === CONTRACTS_NAMES.ePDRMembershipVoting
-      ? 'DeFi Risk Expert membership'
-      : 'Fees & Incentives Experts membership'
+    objRes.title =
+      this.contractName === CONTRACTS_NAMES.ePDRMembershipVoting
+        ? 'DeFi Risk Expert membership proposals'
+        : 'Fees & Incentives Experts membership proposals'
+    objRes.type =
+      this.contractName === CONTRACTS_NAMES.ePDRMembershipVoting
+        ? 'DeFi Risk Expert membership'
+        : 'Fees & Incentives Experts membership'
     objRes.kindVoting = 'membership'
     objStats = await this.getProposalStatsData(id)
     objRes.contract = this.contractName
@@ -96,41 +95,32 @@ export default class MembershipVoting extends VotingService {
     const candidate = data.address
     // TODO: createChangeExpertProposal
     if (data?.first === CONTRACT_TYPES.addNewExpert) {
-      result = await this.contract.methods.createAddExpertProposal(link, candidate)
-        .send(
-          { from: userAddress })
+      result = await this.contract.methods.createAddExpertProposal(link, candidate).send({ from: userAddress })
     } else if (data?.first === CONTRACT_TYPES.removeCurrentExpert) {
-      result = await this.contract.methods.createRemoveExpertProposal(link, candidate)
-        .send(
-          { from: userAddress })
+      result = await this.contract.methods.createRemoveExpertProposal(link, candidate).send({ from: userAddress })
     }
     return result
   }
 
   // get number of active and ended proposals
   async getProposalsCount () {
-    try {
-      const proposalEvents = await this.getProposalsEvent()
-      const proposalIds = getPastProposalsIds([...proposalEvents])
+    const proposalEvents = await this.getProposalsEvent()
+    const proposalIds = getPastProposalsIds([...proposalEvents])
 
-      let proposalsActive = 0
-      let proposalsEnded = 0
-      if (proposalIds) {
-        for (const id of proposalIds) {
-          const promiseStatus = await this.getProposalStatus(id)
-          if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
-            proposalsActive++
-          } else {
-            proposalsEnded++
-          }
+    let ended = 0
+    let active = 0
+
+    await Promise.all(
+      proposalIds.map(async (id) => {
+        const promiseStatus = await this.getProposalStatus(id)
+        if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
+          active++
+        } else {
+          ended++
         }
-      }
-      return {
-        ended: proposalsEnded,
-        active: proposalsActive
-      }
-    } catch (e) {
-      console.error(e)
-    }
+      })
+    )
+
+    return { ended, active }
   }
 }

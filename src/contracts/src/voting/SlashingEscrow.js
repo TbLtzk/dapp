@@ -1,15 +1,14 @@
-
 import { getPercentageFormat } from '../../handler/VotingHandler'
 import { STATUSES } from 'constants/statuses'
-import { rootNodeSlashingEscrowInstance, validatorSlashingEscrowInstance } from 'contracts/contract-instance'
+import { getRootNodeSlashingEscrowInstance, getValidatorSlashingEscrowInstance } from 'contracts/contract-instance'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 
 async function switchInstance (contractName) {
   switch (contractName) {
     case CONTRACTS_NAMES.RootNodesSlashingEscrow:
-      return await rootNodeSlashingEscrowInstance()
+      return await getRootNodeSlashingEscrowInstance()
     case CONTRACTS_NAMES.ValidatorsSlashingEscrow:
-      return await validatorSlashingEscrowInstance()
+      return await getValidatorSlashingEscrowInstance()
     default:
       return {}
   }

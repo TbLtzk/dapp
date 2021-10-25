@@ -1,6 +1,5 @@
 import { put, takeEvery, call } from 'redux-saga/effects'
 import * as actionTypes from 'store/actions/action-types/validators'
-import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler'
 
 import {
   setTotalStake,
@@ -36,7 +35,7 @@ import {
 } from 'contracts/helpers/validators-helper'
 import { getAccountBalance } from 'store/actions/action-creaters/q-vault'
 import ErrorHandler from 'func/ErrorHandler'
-import { setErrorMessage } from 'store/actions/action-creaters/transaction-handler'
+import { setErrorMessage, setTransactionLoading } from 'store/actions/action-creaters/transaction-handler'
 
 function * getValidatorsShortListGenerator () {
   try {
@@ -156,10 +155,8 @@ function * getValidatorsTimeLocksGenerator ({ address }) {
 
 function * setValidatorsInterestRateGenerator ({ address, uintPercent }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading())
+
     const contract = yield call(getValidatorsContract)
     const data = yield contract.setInterestRate(address, uintPercent)
     if (data.status) {
@@ -169,18 +166,12 @@ function * setValidatorsInterestRateGenerator ({ address, uintPercent }) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading())
   }
 }
 function * setValidatorsCommitStakeGenerator ({ address, amountQ }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading())
 
     const contract = yield call(getValidatorsInstance)
     const data = yield contract.commitStake({
@@ -199,19 +190,14 @@ function * setValidatorsCommitStakeGenerator ({ address, amountQ }) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading())
   }
 }
 
 function * setValidatorsEnterShortListGenerator ({ address }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading())
+
     const contract = yield call(getValidatorsInstance)
     yield contract.enterShortList({ from: address })
     yield put(getIsUserValidator(address))
@@ -220,19 +206,14 @@ function * setValidatorsEnterShortListGenerator ({ address }) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading())
   }
 }
 
 function * setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading())
+
     const contract = yield call(getValidatorsInstance)
     const data = yield contract.announceWithdrawal(toWei(amountQ), { from: address })
 
@@ -247,19 +228,14 @@ function * setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading())
   }
 }
 
 function * setValidatorsWithdrawGenerator ({ address, amountQ }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading())
+
     const contract = yield call(getValidatorsInstance)
     const data = yield contract.withdraw(toWei(amountQ), address)
     if (data) {
@@ -274,10 +250,7 @@ function * setValidatorsWithdrawGenerator ({ address, amountQ }) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading())
   }
 }
 

@@ -3,8 +3,7 @@ import { call, put, takeEvery, select } from 'redux-saga/effects'
 import * as actionTypes from 'store/actions/action-types/voting/slashing-proposals'
 import {
   setErrorMessage,
-  setTransactionLoading,
-  setTransactionLoadingSuccess
+  setTransactionLoading, setTransactionLoadingSuccess
 } from 'store/actions/action-creaters/transaction-handler'
 
 import {

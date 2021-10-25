@@ -1,13 +1,11 @@
 import VotingService from './VotingService'
 
-import {
-  getStatusTransformation
-} from '../../handler/VotingHandler'
+import { getStatusTransformation } from '../../handler/VotingHandler'
 import { BN } from 'func/useful'
 import { ParameterType } from '@q-dev/q-js-sdk'
 import { parameterVote } from 'pages/UserPages/Proposals/components/CreateQProposalBtn/ModalCreateProposal/CreateStep2/QExpertS2/constants'
-import { epqfiParametersVoting, epdrParametersVoting } from 'contracts/contracts'
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts'
+import { getEpdrParametersVotingInstance, getEpqfiParametersVotingInstance } from 'contracts/contract-instance'
 
 /* EPQFIParametersVoting, EPDRParametersVoting */
 export default class ParametersVoting extends VotingService {
@@ -32,12 +30,14 @@ export default class ParametersVoting extends VotingService {
     objRes.votingEndTime = promiseRes.base.params.votingEndTime
 
     objRes.status = getStatusTransformation(promiseStatus)
-    objRes.title = this.contractName === CONTRACTS_NAMES.ePDRParametersVoting
-      ? 'DeFi Risk Expert parameter voting proposals'
-      : 'Fees & Incentives Experts parameter voting proposals'
-    objRes.type = this.contractName === CONTRACTS_NAMES.ePDRParametersVoting
-      ? 'DeFi Risk Expert Parameters Proposals'
-      : 'Fees & Incentives Experts Parameters Proposals'
+    objRes.title =
+      this.contractName === CONTRACTS_NAMES.ePDRParametersVoting
+        ? 'DeFi Risk Expert parameter voting proposals'
+        : 'Fees & Incentives Experts parameter voting proposals'
+    objRes.type =
+      this.contractName === CONTRACTS_NAMES.ePDRParametersVoting
+        ? 'DeFi Risk Expert Parameters Proposals'
+        : 'Fees & Incentives Experts Parameters Proposals'
     objRes.kindVoting = CONTRACT_TYPES.parameters
     objStats = await this.getProposalStatsData(id)
     objRes.contract = this.contractName
@@ -61,35 +61,38 @@ export default class ParametersVoting extends VotingService {
   async createProposal (data) {
     let result = {}
     const link = data['external-link']
-    const paramInputs = data[parameterVote.parameterType]
-      .reduce((types, item, index) => {
-        let inputValue = data[parameterVote.parameterValue][index]
-        switch (+item) {
-          case ParameterType.BOOL:
-            inputValue = (inputValue.toLowerCase() === 'true')
-            break
-          case ParameterType.UINT:
-            inputValue = BN(inputValue)
-              .toFixed()
-            break
-        }
-        types.push({
-          paramType: item,
-          paramKey: data[parameterVote.parameterKey][index],
-          paramValue: inputValue
-        })
-        return types
-      }, [])
+    const paramInputs = data[parameterVote.parameterType].reduce((types, item, index) => {
+      let inputValue = data[parameterVote.parameterValue][index]
+      switch (+item) {
+        case ParameterType.BOOL:
+          inputValue = inputValue.toLowerCase() === 'true'
+          break
+        case ParameterType.UINT:
+          inputValue = BN(inputValue).toFixed()
+          break
+      }
+      types.push({
+        paramType: item,
+        paramKey: data[parameterVote.parameterKey][index],
+        paramValue: inputValue
+      })
+      return types
+    }, [])
     switch (data[parameterVote.radioBtnName]) {
-      case CONTRACT_TYPES.qFee:
-        result = epqfiParametersVoting.createProposal(link, paramInputs)
+      case CONTRACT_TYPES.qFee: {
+        const contract = await getEpqfiParametersVotingInstance()
+        result = contract.createProposal(link, paramInputs)
         break
-      case CONTRACT_TYPES.qDefi:
-        result = epdrParametersVoting.createProposal(link, paramInputs)
+      }
+      case CONTRACT_TYPES.qDefi: {
+        const contract = await getEpdrParametersVotingInstance()
+        result = contract.createProposal(link, paramInputs)
         break
-      default:
+      }
+      default: {
         console.error('Unknown type')
         return null
+      }
     }
     return result
   }

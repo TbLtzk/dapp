@@ -1,8 +1,7 @@
 import { put, select, takeEvery, call } from 'redux-saga/effects'
 
 import * as actionTypes from 'store/actions/action-types/q-vault'
-import { setErrorMessage } from 'store/actions/action-creaters/transaction-handler'
-import { SET_TRANSACTION_COUNTER } from '../actions/action-types/transaction-handler'
+import { setErrorMessage, setTransactionLoading } from 'store/actions/action-creaters/transaction-handler'
 import {
   setUserBalance,
   setAccountBalance,
@@ -70,13 +69,11 @@ function * getLockedAssetsGenerator ({ address }) {
 
 function * setDepositGenerator ({ address, amountQ }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading())
 
     const contract = yield call(getQVaultInstance)
     const data = yield contract.deposit({ value: toWei(amountQ), from: address })
+
     if (data.status) {
       yield put(getUserBalance(address))
       yield put(getAccountBalance(address))
@@ -85,19 +82,13 @@ function * setDepositGenerator ({ address, amountQ }) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading())
   }
 }
 
 function * setWithdrawGenerator ({ address, amountQ }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading())
 
     const contract = yield call(getQVaultInstance)
     const data = yield contract.withdraw(toWei(amountQ), { from: address })
@@ -110,19 +101,13 @@ function * setWithdrawGenerator ({ address, amountQ }) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading())
   }
 }
 
 function * setDelegateStakeGenerator ({ address, delegateAddresses, stakes }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading())
 
     const contract = yield call(getQVaultInstance)
     const data = yield contract.delegateStake(delegateAddresses, stakes, { from: address })
@@ -135,19 +120,13 @@ function * setDelegateStakeGenerator ({ address, delegateAddresses, stakes }) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading())
   }
 }
 
 function * setLockAmountGenerator ({ address, amountQ }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading())
 
     const contract = yield call(getQVaultInstance)
 
@@ -161,19 +140,13 @@ function * setLockAmountGenerator ({ address, amountQ }) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading())
   }
 }
 
 function * setUnlockAmountGenerator ({ address, amountQ }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading())
 
     const contract = yield call(getQVaultInstance)
     const data = yield contract.unlock(toWei(amountQ), { from: address })
@@ -186,10 +159,7 @@ function * setUnlockAmountGenerator ({ address, amountQ }) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading())
   }
 }
 
@@ -258,10 +228,8 @@ function * getUpdateCompoundRateGenerator ({ address }) {
 
 function * setOnClaimStakeDelegatorRewardGenerator () {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading())
+
     const { userAddress } = yield select((state) => state.userInf)
     yield call(claimStakeDelegatorReward, userAddress)
     yield put(getOutstandingDelegationRewards())
@@ -270,10 +238,7 @@ function * setOnClaimStakeDelegatorRewardGenerator () {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading())
   }
 }
 
