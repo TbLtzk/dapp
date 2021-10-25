@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { CONTRACTS_NAMES } from 'constants/contracts'
 import { useSelector } from 'react-redux'
 import { symbol } from 'store/selectors/stable-coin'
 
@@ -14,9 +14,9 @@ function CardBody (props) {
                     <h5>Highest Bid</h5>
                     <p>
                         {data.highestBid}
-                        {data.contract === 'SystemSurplusAuction' ? ' Q' : ' ' + symbolType}
+                        {data.contract === CONTRACTS_NAMES.systemSurplusAuction ? ' Q' : ' ' + symbolType}
                     </p>
-                    {data.contract === 'LiquidationAuction'
+                    {data.contract === CONTRACTS_NAMES.liquidationAuction
                       ? (
                         <>
                             <h5>Vault ID</h5>
@@ -24,7 +24,7 @@ function CardBody (props) {
                         </>
                         )
                       : null}
-                    {data.contract === 'SystemSurplusAuction'
+                    {data.contract === CONTRACTS_NAMES.systemSurplusAuction
                       ? (
                         <>
                             <h5>Lot</h5>
@@ -36,7 +36,7 @@ function CardBody (props) {
                 <div>
                     <h5>Bidder</h5>
                     <p>{data.bidder}</p>
-                    {data.contract === 'LiquidationAuction'
+                    {data.contract === CONTRACTS_NAMES.liquidationAuction
                       ? (
                         <>
                             <h5>Auctioned Collateral</h5>
@@ -46,7 +46,7 @@ function CardBody (props) {
                       : null}
                 </div>
                 <div>
-                    {data.contract === 'SystemSurplusAuction'
+                    {data.contract === CONTRACTS_NAMES.systemSurplusAuction
                       ? (
                         <>
                             <h5>Auction Initiated by</h5>
@@ -54,7 +54,7 @@ function CardBody (props) {
                         </>
                         )
                       : null}
-                    {data.contract === 'SystemDebtAuction'
+                    {data.contract === CONTRACTS_NAMES.systemDebtAuction
                       ? (
                         <>
                             <h5>Reserve Lot</h5>

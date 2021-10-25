@@ -16,21 +16,16 @@ import {
   voteForProposalSuccess,
   executeProposalSuccess,
   getNumberAllProposalsSuccess,
-  getConstitutionHashSuccess
+  getConstitutionHashSuccess,
+  setBaseVotingWeightInfo
 } from 'store/actions/action-creaters/voting/proposals'
 import { getProposalQ, getQProposalsList } from 'store/actions/action-creaters/voting/q-proposals'
 import {
   getProposalRootNode,
   getRootNodeProposalsList
 } from 'store/actions/action-creaters/voting/root-node-proposals'
-import {
-  getProposalExpert,
-  getExpertProposalsList
-} from 'store/actions/action-creaters/voting/expert-proposals'
-import {
-  getProposalSlashing,
-  getSlashingProposalsList
-} from 'store/actions/action-creaters/voting/slashing-proposals'
+import { getProposalExpert, getExpertProposalsList } from 'store/actions/action-creaters/voting/expert-proposals'
+import { getProposalSlashing, getSlashingProposalsList } from 'store/actions/action-creaters/voting/slashing-proposals'
 
 import {
   creationQContractObj,
@@ -40,9 +35,7 @@ import {
   creationExpertContractsObjArray
 } from 'contracts/handler/VotingHandler'
 import { chooseSlashingContractDependsOnType } from 'contracts/handler/SlashingVotingHandler'
-import {
-  chooseExpertContractDependsOnType
-} from 'contracts/handler/QExpertVotingHandler'
+import { chooseExpertContractDependsOnType } from 'contracts/handler/QExpertVotingHandler'
 
 import ConstitutionVotingService from 'contracts/src/voting/ConstitutionVoting'
 import EmergencyUpdateVotingService from 'contracts/src/voting/EmergencyUpdateVoting'
@@ -51,6 +44,8 @@ import RootsVotingService from 'contracts/src/voting/RootsVoting'
 import VotingService from 'contracts/src/voting/VotingService'
 import ErrorHandler from 'func/ErrorHandler'
 import { CONTRACTS_NAMES, CONTRACT_TYPES } from 'constants/contracts'
+import { getVotingWeightProxyInstance } from 'contracts/contract-instance'
+import { getNowTimestamp } from 'func/convertDate'
 
 function * createProposal ({ data }) {
   try {
@@ -101,7 +96,8 @@ function * createProposal ({ data }) {
         case CONTRACT_TYPES.addNewExpert:
         case CONTRACT_TYPES.removeCurrentExpert:
         case CONTRACT_TYPES.parameterVote:
-          const typeContract = data.first !== CONTRACT_TYPES.parameterVote ? CONTRACT_TYPES.member : CONTRACT_TYPES.parameters
+          const typeContract =
+            data.first !== CONTRACT_TYPES.parameterVote ? CONTRACT_TYPES.member : CONTRACT_TYPES.parameters
           const contract = chooseExpertContractDependsOnType(typeContract, data['type-proposal'])
           contractName = contract.contractName
           result = yield contract.createProposal(data, userAddress)
@@ -260,6 +256,18 @@ function * getConstitutionHash () {
   }
 }
 
+function * getBaseVotingWeightInfoGenerator () {
+  try {
+    const { userAddress } = yield select((state) => state.userInf)
+    const contract = yield call(getVotingWeightProxyInstance)
+    const timeStamp = getNowTimestamp()
+    const result = yield contract.getBaseVotingWeightInfo(userAddress, timeStamp)
+    yield put(setBaseVotingWeightInfo(result))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+  }
+}
+
 export default [
   takeEvery(actionTypes.CREATE_PROPOSAL, createProposal),
   takeEvery(actionTypes.VOTE_FOR_PROPOSAL, voteForProposal),
@@ -270,5 +278,6 @@ export default [
   takeEvery(actionTypes.GET_PROPOSALS_LIST, getProposalsList),
 
   takeEvery(actionTypes.GET_NUMBER_ALL_PROPOSALS, getNumberAllProposals),
-  takeEvery(actionTypes.GET_CONSTITUTION_HASH, getConstitutionHash)
+  takeEvery(actionTypes.GET_CONSTITUTION_HASH, getConstitutionHash),
+  takeEvery(actionTypes.GET_BASE_VOTING_WEIGHT_INFO, getBaseVotingWeightInfoGenerator)
 ]
