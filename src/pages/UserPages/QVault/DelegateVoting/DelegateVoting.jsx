@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/selectors/user-inf'
 import { getDelegationInfo, setAnnounceNewVotingAgent, setNewVotingAgent } from 'store/actions/action-creaters/q-vault'
-import { remainDateTimeSince } from 'func/convertDate'
+import { remainDate } from 'func/convertDate'
 import { fromWei } from 'func/balance'
 import {
   receivedWeight,
@@ -60,12 +60,11 @@ export default function LockCoin () {
       {
         !isPending
           ? null
-          : +time > 0
+          : (+(time + '000') - +new Date()) > 0
               ? (
               <>
                 <h5>Delegation info</h5>
-                <h4>`This delegation info is currently pending. It can be finalized after
-                  ${remainDateTimeSince(+new Date() + +time)}`</h4>
+                <h4>{`This delegation info is currently pending. It can be finalized after ${remainDate(+time)}`}</h4>
               </>
                 )
               : <CardBlock
