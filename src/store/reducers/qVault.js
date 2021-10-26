@@ -15,6 +15,10 @@ const initialState = {
   delegationList: [],
   loadingDelegationList: false,
   errorDelegationList: null,
+  receivedWeight: 0,
+  votingAgent: '0x0000000000000000000000000000000000000000',
+  isPendingDelegation: false,
+  votingAgentPassOverTime: 0,
 
   qvBalance: null,
   outstandingDelegationRewards: 0,
@@ -110,6 +114,14 @@ export default function qVault (state = initialState, action) {
           return {
             ...state,
             qVaultTimeLocks: action.payload
+          }
+        case actionTypes.SET_DELEGATION_INFO:
+          return {
+            ...state,
+            receivedWeight: action.result.receivedWeight,
+            votingAgent: action.result.votingAgent,
+            isPendingDelegation: action.result.isPending,
+            votingAgentPassOverTime: action.result.votingAgentPassOverTime
           }
         default:
           return state
