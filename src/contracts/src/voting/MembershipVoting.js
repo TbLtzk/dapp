@@ -49,45 +49,46 @@ export default class MembershipVoting extends VotingService {
     return { ...objRes, ...objStats }
   }
 
-  async getProposals () {
-    const proposalEvents = await this.getProposalsEvent()
-    const proposalIds = getPastProposalsIds([...proposalEvents])
-    const proposals = []
-    if (proposalIds) {
-      for (const id of proposalIds) {
-        let objRes = {}
-        const promiseStatus = await this.getProposalStatus(id)
-        if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
-          const promiseRes = await this.getProposal(id)
-          if (promiseRes) {
-            objRes = await this.getProposalData(promiseRes, id, promiseStatus)
-            proposals.push(objRes)
-          }
-        }
-      }
-    }
-    return proposals
-  }
+  // async getProposals () {
+  //   const proposalEvents = await this.getProposalsEvent()
+  //   const proposalIds = getPastProposalsIds([...proposalEvents])
+  //   const proposals = []
+  //   if (proposalIds) {
+  //     for (const id of proposalIds) {
+  //       let objRes = {}
+  //       const promiseStatus = await this.getProposalStatus(id)
+  //       if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
+  //         const promiseRes = await this.getProposal(id)
+  //         if (promiseRes) {
+  //           objRes = await this.getProposalData(promiseRes, id, promiseStatus)
+  //           proposals.push(objRes)
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return proposals
+  // }
 
-  async getEndedProposals () {
-    const proposalEvents = await this.getProposalsEvent()
-    const proposalIds = getPastProposalsIds([...proposalEvents])
-    const proposals = []
-    if (proposalIds) {
-      for (const id of proposalIds) {
-        let objRes = {}
-        const promiseStatus = await this.getProposalStatus(id)
-        if (promiseStatus !== '1') {
-          const promiseRes = await this.getProposal(id)
-          if (promiseRes) {
-            objRes = await this.getProposalData(promiseRes, id, promiseStatus)
-            proposals.push(objRes)
-          }
-        }
-      }
-    }
-    return proposals
-  }
+  // async getEndedProposals () {
+  //   console.log('render')
+  //   const proposalEvents = await this.getProposalsEvent()
+  //   const proposalIds = getPastProposalsIds([...proposalEvents])
+  //   const proposals = []
+  //   if (proposalIds) {
+  //     for (const id of proposalIds) {
+  //       let objRes = {}
+  //       const promiseStatus = await this.getProposalStatus(id)
+  //       if (promiseStatus !== '1') {
+  //         const promiseRes = await this.getProposal(id)
+  //         if (promiseRes) {
+  //           objRes = await this.getProposalData(promiseRes, id, promiseStatus)
+  //           proposals.push(objRes)
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return proposals
+  // }
 
   async createProposal (data, userAddress) {
     let result = null
