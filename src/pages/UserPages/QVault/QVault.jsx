@@ -2,6 +2,7 @@ import React from 'react'
 
 import ManageBalance from './ManageBalance'
 import LockCoin from './LockCoin'
+import DelegateVoting from './DelegateVoting'
 import Panel from './Panel/Panel'
 import DelegateStakingPower from './DelegateStakingPower'
 import PageWrap from 'components/Base/PageWrap'
@@ -16,6 +17,7 @@ function QVault () {
             <div>
                 <ManageBalance />
                 <LockCoin />
+              <DelegateVoting />
                 {appMode === MODE.advanced ? <DelegateStakingPower /> : null}
             </div>
             <div>
