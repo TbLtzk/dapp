@@ -109,6 +109,15 @@ export const onClaimStakeDelegatorReward = () => ({
   type: actionTypes.ON_CLAIM_STAKE_DELEGATOR_REWARD
 })
 
+export const setAnnounceNewVotingAgent = (address) => ({
+  type: actionTypes.SET_ANNOUNCE_VOTING_AGENT,
+  address
+})
+
+export const setNewVotingAgent = () => ({
+  type: actionTypes.SET_NEW_VOTING_AGENT
+})
+
 export const getOutstandingDelegationRewards = () => ({
   type: actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS
 })

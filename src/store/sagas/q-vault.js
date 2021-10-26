@@ -297,6 +297,43 @@ function * getDelegationInfoGenerator ({ address }) {
   }
 }
 
+function * setAnnounceNewVotingAgentGenerator ({ address }) {
+  try {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    })
+    const contract = yield call(getVotingWeightProxyInstance)
+    yield contract.announceNewVotingAgent(address)
+  } catch (error) {
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    })
+  }
+}
+function * setNewVotingAgentGenerator () {
+  try {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    })
+    const contract = yield call(getVotingWeightProxyInstance)
+    yield contract.setNewVotingAgent()
+  } catch (error) {
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    })
+  }
+}
+
 export default [
   takeEvery(actionTypes.GET_ACCOUNT_BALANCE, getAccountBalanceGenerator),
   takeEvery(actionTypes.GET_QV_USER_BALANCE, getUserBalanceGenerator),
@@ -306,6 +343,8 @@ export default [
   takeEvery(actionTypes.GET_DELEGATIONS_LIST, getDelegationListGenerator),
   takeEvery(actionTypes.GET_QV_BALANCE, getBalanceDetailsGenerator),
   takeEvery(actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS, getOutstandingDelegationRewardsValueGenerator),
+  takeEvery(actionTypes.SET_ANNOUNCE_VOTING_AGENT, setAnnounceNewVotingAgentGenerator),
+  takeEvery(actionTypes.SET_NEW_VOTING_AGENT, setNewVotingAgentGenerator),
 
   takeEvery(actionTypes.GET_DELEGATION_INFO, getDelegationInfoGenerator),
 

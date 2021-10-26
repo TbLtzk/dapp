@@ -116,7 +116,6 @@ export default function qVault (state = initialState, action) {
             qVaultTimeLocks: action.payload
           }
         case actionTypes.SET_DELEGATION_INFO:
-          console.log('SET_DELEGATION_INFO', action)
           return {
             ...state,
             receivedWeight: action.result.receivedWeight,
