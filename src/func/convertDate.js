@@ -35,12 +35,11 @@ export const remainDate = (unixTimestamp) => {
 }
 export const remainDateTimeSince = (unixTimestamp) => {
   const currentDateUnixTimestamp = Math.floor(Date.now() / 1000)
-  const currentDate = new Date()
-  const dataDate = new Date(unixTimestamp * 1000)
   if (unixTimestamp > currentDateUnixTimestamp) {
     return 0
   } else {
-    return calculateRemainDate(dataDate, currentDate)
+    const dataDate = new Date(unixTimestamp * 1000)
+    return calculateRemainDate(dataDate, new Date())
   }
 }
 

@@ -19,7 +19,9 @@ import {
   getOutstandingDelegationRewardsSuccess,
   getOutstandingDelegationRewardsError,
   getOutstandingDelegationRewards,
-  getDelegationsList, setDelegationInfo
+  getDelegationsList,
+  setDelegationInfo,
+  getDelegationInfo
 } from 'store/actions/action-creaters/q-vault'
 
 import { toWei, fromWei } from 'func/balance'
@@ -308,6 +310,8 @@ function * setAnnounceNewVotingAgentGenerator ({ address }) {
     })
     const contract = yield call(getVotingWeightProxyInstance)
     yield contract.announceNewVotingAgent(address)
+    const { userAddress } = yield select((state) => state.userInf)
+    yield put(getDelegationInfo(userAddress))
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
@@ -326,6 +330,8 @@ function * setNewVotingAgentGenerator () {
     })
     const contract = yield call(getVotingWeightProxyInstance)
     yield contract.setNewVotingAgent()
+    const { userAddress } = yield select((state) => state.userInf)
+    yield put(getDelegationInfo(userAddress))
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
