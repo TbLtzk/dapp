@@ -29,11 +29,8 @@ import { getNowTimestamp } from 'func/convertDate'
 import { getQVaultInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance'
 
 import {
-  updateCompoundRate,
-  getBalanceDetails,
   handleLockedAssetsResponse,
-  getOutstandingDelegationRewardsList,
-  claimStakeDelegatorReward
+  getOutstandingDelegationRewardsList
 } from 'contracts/helpers/q-vault-helper'
 
 import ErrorHandler from 'func/ErrorHandler'
@@ -212,7 +209,6 @@ function * getOutstandingDelegationRewardsValueGenerator () {
     const contract = yield call(getQVaultInstance)
     const data = yield contract.getDelegationsList(userAddress)
     const result = getOutstandingDelegationRewardsList(data)
-
     yield put(getOutstandingDelegationRewardsSuccess(result))
   } catch (error) {
     yield put(getOutstandingDelegationRewardsError(error))
@@ -245,12 +241,14 @@ function * getQVaultTimeLocksGenerator ({ address }) {
 function * getUpdateCompoundRateGenerator ({ address }) {
   try {
     yield put(setUpdateCompoundRate(true))
-    const data = yield call(updateCompoundRate, address)
+    const contract = yield call(getQVaultInstance)
+    const data = yield contract.updateCompoundRate({ from: address, gasBuffer: 1.2 })
     if (data) {
       yield put(setUpdateCompoundRate('updated'))
     }
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   } finally {
     yield put(setUpdateCompoundRate(false))
   }
@@ -263,9 +261,13 @@ function * setOnClaimStakeDelegatorRewardGenerator () {
       payload: 1
     })
     const { userAddress } = yield select((state) => state.userInf)
-    yield call(claimStakeDelegatorReward, userAddress)
-    yield put(getOutstandingDelegationRewards())
-    yield put(getDelegationsList())
+    const contract = yield call(getQVaultInstance)
+    const result = yield contract.claimStakeDelegatorReward({ from: userAddress })
+
+    if (result) {
+      yield put(getOutstandingDelegationRewards())
+      yield put(getDelegationsList())
+    }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
@@ -279,7 +281,8 @@ function * setOnClaimStakeDelegatorRewardGenerator () {
 
 function * getBalanceDetailsGenerator () {
   try {
-    const data = yield call(getBalanceDetails)
+    const contract = yield call(getQVaultInstance)
+    const data = yield contract.getBalanceDetails()
     yield put(getQVBalanceSuccess(data))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)

@@ -31,7 +31,7 @@ export default function Panel () {
   const balanceDetails = useSelector(qvBalance)
   const userQVBalanceL = useSelector(userBalance)
   const userAccountBalance = useSelector(accountBalance)
-  const userVotingWeight = fN(useSelector(votingWeight))
+  const userVotingWeight = useSelector(votingWeight)
   const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd))
   const updateOnClaim = useSelector(lastClaim)
   const agent = useSelector(votingAgent)
@@ -87,7 +87,7 @@ export default function Panel () {
         <div className="card__line"/>
 
         <h5>Voting Weight from Q Vault</h5>
-        <p>{userVotingWeight + ' Q'}</p>
+        <p>{fN(userVotingWeight) + ' Q'}</p>
         <h5>Voting Locking End</h5>
         <p>{userLockingEnd}</p>
         <h5>Voting Status</h5>

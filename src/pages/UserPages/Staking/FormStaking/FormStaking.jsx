@@ -9,7 +9,13 @@ import {
   setRootAnnounceWithdrawal
 } from 'store/actions/action-creaters/root-contract'
 
-import { isUserRootNode, rootNodeStake, withdrawals, rootMinimumTimeLock } from 'store/selectors/root-contract'
+import {
+  isUserRootNode,
+  rootNodeStake,
+  withdrawals,
+  rootMinimumTimeLock,
+  rootMembersData
+} from 'store/selectors/root-contract'
 
 import { userAddressMetamask } from 'store/selectors/user-inf'
 import { useForm } from 'react-hook-form'
@@ -35,6 +41,7 @@ function FormStaking () {
   const amountNodeStake = useSelector(rootNodeStake)
   const withdrawalsData = useSelector(withdrawals)
   const rootTimeLockMinimumBalance = useSelector(rootMinimumTimeLock)
+  const rootMembersArray = useSelector(rootMembersData)
 
   useEffect(() => {
     dispatch(getAccountBalance(userAddress))
@@ -65,7 +72,12 @@ function FormStaking () {
               ? (
                 <div>
                     <h5>Current Rank</h5>
-                    <p>3 #</p>
+                    <p>
+                        {!rootMembersArray.length
+                          ? '0 #'
+                          : rootMembersArray?.rootNodeData?.find((user) => user.address === userAddress)[0].rank +
+                              ' #'}
+                    </p>
                 </div>
                 )
               : null}
@@ -79,7 +91,7 @@ function FormStaking () {
                 {checkIsUserRootMember}
                 <div>
                     <h5>Stake in Root Node Ranking</h5>
-                    <p>{amountNodeStake + ' Q'}</p>
+                    <p>{fN(amountNodeStake) + ' Q'}</p>
                 </div>
                 <div>
                     <h5>Q Balance</h5>
@@ -88,22 +100,22 @@ function FormStaking () {
                 {Number(rootTimeLockMinimumBalance) > 0
                   ? (
                     <div>
-                        <h5>Announced Amount</h5>
+                        <h5>Time Locked Amount</h5>
                         <p>{fN(rootTimeLockMinimumBalance)} Q </p>
                     </div>
                     )
                   : null}
                 <div>
                     <h5>Announced for Withdrawal</h5>
-                    <p>{fromWei(withdrawalsData?.amount)} Q</p>
+                    <p>{fN(fromWei(withdrawalsData?.amount)) + ' Q'}</p>
                 </div>
                 <div>
                     <h5>Announcement Status</h5>
-                    <p>{Number(withdrawalsData?.amount) === 0 ? '-' : 'Pending'}</p>
+                    <p>{!Number(withdrawalsData?.amount) ? '-' : 'Pending'}</p>
                 </div>
                 <div>
                     <h5>Announcement End</h5>
-                    {Number(withdrawalsData?.amount) === 0
+                    {!Number(withdrawalsData?.amount)
                       ? (
                         <p>-</p>
                         )

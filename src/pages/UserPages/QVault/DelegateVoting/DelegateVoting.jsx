@@ -62,18 +62,19 @@ export default function LockCoin () {
           ? null
           : +time > 0
               ? (
-            <>
-              <h5>Delegation info</h5>
-              <h4>`This delegation info is currently pending. It can be finalized after ${remainDateTimeSince(+new Date() + +time)}`</h4>
-            </>
+              <>
+                <h5>Delegation info</h5>
+                <h4>`This delegation info is currently pending. It can be finalized after
+                  ${remainDateTimeSince(+new Date() + +time)}`</h4>
+              </>
                 )
               : <CardBlock
-            title={'Confirm announced voting agent'}
-            firstContent={'This delegation info is currently pending. Need to confirm.'}
-            iconFontSize={'20px'}
-            btnTitle={'Confirm'}
-            btnHandler={btnHandler}
-          />
+              title="Confirm announced voting agent"
+              firstContent="This delegation info is currently pending. Need to confirm."
+              iconFontSize="20px"
+              btnTitle="Confirm"
+              btnHandler={btnHandler}
+            />
 
       }
       <div className="card__line"/>
@@ -98,7 +99,7 @@ export default function LockCoin () {
           handleButton={submit1(announce)}
         />
       </div>
-      <h4>This will immediately reduce the voting weight of your voting agent for new votings</h4>
+      <h4>This will immediately reduce the voting weight of your voting agent for new voting</h4>
     </CustomBlock>
   )
 }

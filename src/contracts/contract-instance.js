@@ -36,6 +36,19 @@ let piggyBankInstance = null
 
 let validatorMetricsInstance = null
 
+function getInstance (instance) {
+  const cache = {}
+  return async () => {
+    if (!cache[instance]) {
+      cache[instance] = await contractRegistryInstance[instance]()
+    }
+    return cache[instance]
+  }
+}
+
+export const validatorSlashingEscrowInstance = getInstance('validatorSlashingEscrow')
+export const rootNodeSlashingEscrowInstance = getInstance('rootNodeSlashingEscrow')
+
 export const getValidatorMetricsInstance = async () => {
   if (validatorMetricsInstance === null) {
     validatorMetricsInstance = new ValidatorMetrics()

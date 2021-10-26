@@ -107,7 +107,7 @@ function * getValidatorsAccountableSelfStake ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance)
     const data = yield contract.getAccountableSelfStake(address)
-    yield put(setSelfStake(fromWei(data)))
+    yield put(setSelfStake(Number(fromWei(data))))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }
@@ -193,7 +193,7 @@ function * setValidatorsCommitStakeGenerator ({ address, amountQ }) {
       yield put(getAccountableTotalStake(address))
       yield put(getValidatorShortList())
       yield put(getAccountBalance(address))
-      yield put(getValidatorMembers(address))
+      yield put(getValidatorMembers())
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -215,6 +215,7 @@ function * setValidatorsEnterShortListGenerator ({ address }) {
     const contract = yield call(getValidatorsInstance)
     yield contract.enterShortList({ from: address })
     yield put(getIsUserValidator(address))
+    yield put(getValidatorMembers())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
@@ -232,13 +233,15 @@ function * setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
       type: SET_TRANSACTION_COUNTER,
       payload: 1
     })
-
     const contract = yield call(getValidatorsInstance)
     const data = yield contract.announceWithdrawal(toWei(amountQ), { from: address })
 
     if (data) {
-      yield put(getAccountableTotalStake(address))
       yield put(getValidatorWithdrawalInfo(address))
+      yield put(getAccountableTotalStake(address))
+      yield put(getValidatorShortList())
+      yield put(getAccountBalance(address))
+      yield put(getValidatorMembers())
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -264,7 +267,7 @@ function * setValidatorsWithdrawGenerator ({ address, amountQ }) {
       yield put(getAccountableTotalStake(address))
       yield put(getValidatorShortList())
       yield put(getAccountBalance(address))
-      yield put(getValidatorMembers(address))
+      yield put(getValidatorMembers())
       yield put(getValidatorWithdrawalInfo(address))
     }
   } catch (error) {

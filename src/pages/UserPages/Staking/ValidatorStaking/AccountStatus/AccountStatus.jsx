@@ -65,7 +65,7 @@ export default function AccountStatus () {
         }
       })
     }
-  }, [userValidatorShortList])
+  }, [userValidatorShortList, isThisUserValidator])
 
   const stakeToRanking = (formData) => {
     dispatch(setValidatorsCommitStake(address, formData.amount))
@@ -124,7 +124,7 @@ export default function AccountStatus () {
                 {Number(validatorLockedAmount) > 0
                   ? (
                     <div>
-                        <h5>Announced Amount</h5>
+                        <h5>Time Locked Amount</h5>
                         <p>{fN(validatorLockedAmount)} Q </p>
                     </div>
                     )
@@ -135,11 +135,11 @@ export default function AccountStatus () {
                 </div>
                 <div>
                     <h5>Announcement Status</h5>
-                    <p>{Number(userValidatorWithdrawalInfo?.amount) === 0 ? '-' : 'Pending'}</p>
+                    <p>{!Number(userValidatorWithdrawalInfo?.amount) ? '-' : 'Pending'}</p>
                 </div>
                 <div>
                     <h5>Announcement End</h5>
-                    {Number(userValidatorWithdrawalInfo?.amount) === 0
+                    {!Number(userValidatorWithdrawalInfo?.amount)
                       ? (
                         <p>-</p>
                         )

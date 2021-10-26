@@ -1,24 +1,9 @@
 import { fromWei } from 'func/balance'
-import { getQVaultContract } from 'contracts/contract-instance'
-
-export async function updateCompoundRate (address) {
-  const contract = await getQVaultContract()
-  return await contract.methods.updateCompoundRate().send({ from: address })
-}
-
-export async function getBalanceDetails () {
-  const contract = await getQVaultContract()
-  return await contract.methods.getBalanceDetails().call()
-}
+import { getQVaultInstance } from 'contracts/contract-instance'
 
 export async function getQVaultCompoundRateKeeper () {
-  const contract = await getQVaultContract()
-  return await contract.methods.compoundRateKeeper().call()
-}
-
-export async function claimStakeDelegatorReward (address) {
-  const contract = getQVaultContract()
-  return await contract.methods.claimStakeDelegatorReward().send({ from: address })
+  const contract = await getQVaultInstance()
+  return await contract.instance.methods.compoundRateKeeper().call()
 }
 
 export function handleLockedAssetsResponse (data) {
@@ -26,7 +11,7 @@ export function handleLockedAssetsResponse (data) {
     votingWeight: 0,
     votingLockingEnd: 0
   }
-  resp.votingWeight = data.lockedAmount ? fromWei(data.lockedAmount) : 0
+  resp.votingWeight = data.lockedAmount ? Number(fromWei(data.lockedAmount)) : 0
   resp.votingLockingEnd = data.lockedUntil ? data.lockedUntil : 0
   return resp
 }
