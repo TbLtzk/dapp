@@ -9,7 +9,8 @@ import {
   getValidatorsSlashingVotingInstance,
   getRootNodesSlashingVotingInstance,
   getEpqfiParametersVotingInstance,
-  getEpdrParametersVotingInstance
+  getEpdrParametersVotingInstance,
+  getRootNodesMembershipVotingInstance
 } from 'contracts/contract-instance'
 
 export default class VotingService {
@@ -21,6 +22,7 @@ export default class VotingService {
   async switchContract () {
     switch (this.contractName) {
       case 'GeneralUpdateVoting': {
+        console.log(await getGeneralUpdateVotingInstance())
         return await getGeneralUpdateVotingInstance()
       }
       case 'ConstitutionVoting': {
@@ -33,16 +35,16 @@ export default class VotingService {
         return await getValidatorsSlashingVotingInstance()
       }
       case 'RootNodesSlashingVoting': {
-        return getRootNodesSlashingVotingInstance()
+        return await getRootNodesSlashingVotingInstance()
       }
       case 'RootsVoting': {
-        return contracts.RootsVoting.methods
+        return await getRootNodesMembershipVotingInstance()
       }
       case 'EPQFIParametersVoting': {
-        return getEpqfiParametersVotingInstance()
+        return await getEpqfiParametersVotingInstance()
       }
       case 'EPDRParametersVoting': {
-        return getEpdrParametersVotingInstance()
+        return await getEpdrParametersVotingInstance()
       }
     }
   }

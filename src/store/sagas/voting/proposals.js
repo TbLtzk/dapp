@@ -234,7 +234,6 @@ function * getNumberAllProposals () {
     }
 
     const proposals = yield Promise.all(contracts.map((contract) => contract.getProposalsCount()))
-    console.log(proposals)
     proposals.forEach((proposal) => {
       if (proposal.ended) {
         result.ended += proposal.ended
@@ -243,7 +242,6 @@ function * getNumberAllProposals () {
         result.active += proposal.active
       }
     })
-
     yield put(getNumberAllProposalsSuccess(result))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)

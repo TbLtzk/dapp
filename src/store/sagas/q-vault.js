@@ -29,10 +29,7 @@ import { getNowTimestamp } from 'func/convertDate'
 
 import { getQVaultInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance'
 
-import {
-  handleLockedAssetsResponse,
-  getOutstandingDelegationRewardsList
-} from 'contracts/helpers/q-vault-helper'
+import { handleLockedAssetsResponse, getOutstandingDelegationRewardsList } from 'contracts/helpers/q-vault-helper'
 
 import ErrorHandler from 'func/ErrorHandler'
 
@@ -269,10 +266,7 @@ function * getDelegationInfoGenerator ({ address }) {
 
 function * setAnnounceNewVotingAgentGenerator ({ address }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading())
     const contract = yield call(getVotingWeightProxyInstance)
     yield contract.announceNewVotingAgent(address)
     const { userAddress } = yield select((state) => state.userInf)
@@ -281,18 +275,13 @@ function * setAnnounceNewVotingAgentGenerator ({ address }) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading())
   }
 }
 function * setNewVotingAgentGenerator () {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading())
+
     const contract = yield call(getVotingWeightProxyInstance)
     yield contract.setNewVotingAgent()
     const { userAddress } = yield select((state) => state.userInf)
@@ -301,10 +290,7 @@ function * setNewVotingAgentGenerator () {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading())
   }
 }
 
