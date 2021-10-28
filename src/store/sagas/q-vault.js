@@ -18,21 +18,20 @@ import {
   getOutstandingDelegationRewardsSuccess,
   getOutstandingDelegationRewardsError,
   getOutstandingDelegationRewards,
-  getDelegationsList
+  getDelegationsList,
+  setDelegationInfo,
+  getDelegationInfo
 } from 'store/actions/action-creaters/q-vault'
 
 import { toWei, fromWei } from 'func/balance'
 import { addIndex } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
 
-import { getQVaultInstance } from 'contracts/contract-instance'
+import { getQVaultInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance'
 
 import {
-  updateCompoundRate,
-  getBalanceDetails,
   handleLockedAssetsResponse,
-  getOutstandingDelegationRewardsList,
-  claimStakeDelegatorReward
+  getOutstandingDelegationRewardsList
 } from 'contracts/helpers/q-vault-helper'
 
 import ErrorHandler from 'func/ErrorHandler'
@@ -170,7 +169,7 @@ function * getDelegationListGenerator () {
     const data = yield contract.getDelegationsList(userAddress)
     yield put(getDelegationsListSuccess(data))
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.process(error)
     yield put(getDelegationsListError(error.message))
   }
 }
@@ -182,7 +181,6 @@ function * getOutstandingDelegationRewardsValueGenerator () {
     const contract = yield call(getQVaultInstance)
     const data = yield contract.getDelegationsList(userAddress)
     const result = getOutstandingDelegationRewardsList(data)
-
     yield put(getOutstandingDelegationRewardsSuccess(result))
   } catch (error) {
     yield put(getOutstandingDelegationRewardsError(error))
@@ -215,12 +213,14 @@ function * getQVaultTimeLocksGenerator ({ address }) {
 function * getUpdateCompoundRateGenerator ({ address }) {
   try {
     yield put(setUpdateCompoundRate(true))
-    const data = yield call(updateCompoundRate, address)
+    const contract = yield call(getQVaultInstance)
+    const data = yield contract.updateCompoundRate({ from: address, gasBuffer: 1.2 })
     if (data) {
       yield put(setUpdateCompoundRate('updated'))
     }
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   } finally {
     yield put(setUpdateCompoundRate(false))
   }
@@ -231,9 +231,13 @@ function * setOnClaimStakeDelegatorRewardGenerator () {
     yield put(setTransactionLoading())
 
     const { userAddress } = yield select((state) => state.userInf)
-    yield call(claimStakeDelegatorReward, userAddress)
-    yield put(getOutstandingDelegationRewards())
-    yield put(getDelegationsList())
+    const contract = yield call(getQVaultInstance)
+    const result = yield contract.claimStakeDelegatorReward({ from: userAddress })
+
+    if (result) {
+      yield put(getOutstandingDelegationRewards())
+      yield put(getDelegationsList())
+    }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
@@ -244,10 +248,63 @@ function * setOnClaimStakeDelegatorRewardGenerator () {
 
 function * getBalanceDetailsGenerator () {
   try {
-    const data = yield call(getBalanceDetails)
+    const contract = yield call(getQVaultInstance)
+    const data = yield contract.getBalanceDetails()
     yield put(getQVBalanceSuccess(data))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
+  }
+}
+
+function * getDelegationInfoGenerator ({ address }) {
+  try {
+    const contract = yield call(getVotingWeightProxyInstance)
+    const data = yield contract.getDelegationInfo(address)
+    yield put(setDelegationInfo(data))
+  } catch (error) {
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
+  }
+}
+
+function * setAnnounceNewVotingAgentGenerator ({ address }) {
+  try {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    })
+    const contract = yield call(getVotingWeightProxyInstance)
+    yield contract.announceNewVotingAgent(address)
+    const { userAddress } = yield select((state) => state.userInf)
+    yield put(getDelegationInfo(userAddress))
+  } catch (error) {
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    })
+  }
+}
+function * setNewVotingAgentGenerator () {
+  try {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    })
+    const contract = yield call(getVotingWeightProxyInstance)
+    yield contract.setNewVotingAgent()
+    const { userAddress } = yield select((state) => state.userInf)
+    yield put(getDelegationInfo(userAddress))
+  } catch (error) {
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    })
   }
 }
 
@@ -260,6 +317,10 @@ export default [
   takeEvery(actionTypes.GET_DELEGATIONS_LIST, getDelegationListGenerator),
   takeEvery(actionTypes.GET_QV_BALANCE, getBalanceDetailsGenerator),
   takeEvery(actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS, getOutstandingDelegationRewardsValueGenerator),
+  takeEvery(actionTypes.SET_ANNOUNCE_VOTING_AGENT, setAnnounceNewVotingAgentGenerator),
+  takeEvery(actionTypes.SET_NEW_VOTING_AGENT, setNewVotingAgentGenerator),
+
+  takeEvery(actionTypes.GET_DELEGATION_INFO, getDelegationInfoGenerator),
 
   takeEvery(actionTypes.SET_QV_DEPOSIT_CALL, setDepositGenerator),
   takeEvery(actionTypes.SET_QV_WITHDRAW_CALL, setWithdrawGenerator),

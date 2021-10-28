@@ -16,7 +16,8 @@ import {
   voteForProposalSuccess,
   executeProposalSuccess,
   getNumberAllProposalsSuccess,
-  getConstitutionHashSuccess
+  getConstitutionHashSuccess,
+  setBaseVotingWeightInfo
 } from 'store/actions/action-creaters/voting/proposals'
 import { getProposalQ, getQProposalsList } from 'store/actions/action-creaters/voting/q-proposals'
 import {
@@ -43,6 +44,8 @@ import RootsVotingService from 'contracts/src/voting/RootsVoting'
 import VotingService from 'contracts/src/voting/VotingService'
 import ErrorHandler from 'func/ErrorHandler'
 import { CONTRACTS_NAMES, CONTRACT_TYPES } from 'constants/contracts'
+import { getVotingWeightProxyInstance } from 'contracts/contract-instance'
+import { getNowTimestamp } from 'func/convertDate'
 
 function * createProposal ({ data }) {
   try {
@@ -258,6 +261,18 @@ function * getConstitutionHash () {
   }
 }
 
+function * getBaseVotingWeightInfoGenerator () {
+  try {
+    const { userAddress } = yield select((state) => state.userInf)
+    const contract = yield call(getVotingWeightProxyInstance)
+    const timeStamp = getNowTimestamp()
+    const result = yield contract.getBaseVotingWeightInfo(userAddress, timeStamp)
+    yield put(setBaseVotingWeightInfo(result))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+  }
+}
+
 export default [
   takeEvery(actionTypes.CREATE_PROPOSAL, createProposal),
   takeEvery(actionTypes.VOTE_FOR_PROPOSAL, voteForProposal),
@@ -268,5 +283,6 @@ export default [
   takeEvery(actionTypes.GET_PROPOSALS_LIST, getProposalsList),
 
   takeEvery(actionTypes.GET_NUMBER_ALL_PROPOSALS, getNumberAllProposals),
-  takeEvery(actionTypes.GET_CONSTITUTION_HASH, getConstitutionHash)
+  takeEvery(actionTypes.GET_CONSTITUTION_HASH, getConstitutionHash),
+  takeEvery(actionTypes.GET_BASE_VOTING_WEIGHT_INFO, getBaseVotingWeightInfoGenerator)
 ]

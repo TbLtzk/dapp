@@ -18,7 +18,7 @@ function Stats (props) {
         return (
           <Fragment key={elem.title}>
             <h5>{elem.title}</h5>
-            <p>{elem.value}</p>
+            <p title={elem.value}>{elem.value}</p>
           </Fragment>
         )
       })}
