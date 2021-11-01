@@ -27,7 +27,6 @@ export default function index (state = initialState, action) {
         delegatorShare: action.payload
       }
     case actionTypes.SET_VRP_LAST_UPDATE_OF_COMPOUND_RATE_DATA:
-      console.log('SET_VRP_LAST_UPDATE_OF_COMPOUND_RATE_DATA', action.payload)
       return {
         ...state,
         lastUpdateOfCompoundRate: action.payload
