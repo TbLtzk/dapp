@@ -7,6 +7,7 @@ const inputMinHeight = '10px'
 export const InputWrapper = styled(Form.Group)`
   margin-bottom: 0;
   width: 100%;
+  position: relative;
 
   input {
     font-size: 14px;
@@ -19,13 +20,14 @@ export const InputWrapper = styled(Form.Group)`
         return props.theme.colors.blue
       }
     }};
-    border: 1px solid ${(props) => {
-      if (props.palette === 'dark') {
-        return props.type === 'error' ? props.theme.colors.validationError : props.theme.colors.oxfordBlueTint2
-      } else {
-        return props.type === 'error' ? props.theme.colors.validationError : props.theme.colors.oxfordBlueTint4
-      }
-    }};
+    border: 1px solid
+      ${(props) => {
+        if (props.palette === 'dark') {
+          return props.type === 'error' ? props.theme.colors.validationError : props.theme.colors.oxfordBlueTint2
+        } else {
+          return props.type === 'error' ? props.theme.colors.validationError : props.theme.colors.oxfordBlueTint4
+        }
+      }};
     box-sizing: border-box;
 
     border-radius: ${(props) => {
@@ -54,13 +56,14 @@ export const InputWrapper = styled(Form.Group)`
           return props.theme.colors.blue
         }
       }};
-      border: 1px solid ${(props) => {
-        if (props.palette === 'dark') {
-          return props.theme.colors.oxfordBlueTint1
-        } else {
-          return props.theme.colors.white
-        }
-      }};
+      border: 1px solid
+        ${(props) => {
+          if (props.palette === 'dark') {
+            return props.theme.colors.oxfordBlueTint1
+          } else {
+            return props.theme.colors.white
+          }
+        }};
       color: ${(props) => {
         if (props.palette === 'dark') {
           return props.color ? props.theme.colors.white : props.theme.colors.oxfordBlueTint1
@@ -78,13 +81,14 @@ export const InputWrapper = styled(Form.Group)`
           return props.theme.colors.blue
         }
       }};
-      border: 1px solid ${(props) => {
-        if (props.palette === 'dark') {
-          return props.theme.colors.oxfordBlueTint5
-        } else {
-          return props.theme.colors.oxfordBlueTint2
-        }
-      }};
+      border: 1px solid
+        ${(props) => {
+          if (props.palette === 'dark') {
+            return props.theme.colors.oxfordBlueTint5
+          } else {
+            return props.theme.colors.oxfordBlueTint2
+          }
+        }};
       color: ${(props) => {
         if (props.palette === 'dark') {
           return props.theme.colors.oxfordBlueTint5
@@ -93,6 +97,18 @@ export const InputWrapper = styled(Form.Group)`
         }
       }};
     }
+  }
+  .input_maxbtn {
+    right: 8px;
+    top: 4px;
+    position: absolute;
+    font-size: 14px;
+    line-height: 24px;
+  }
+
+  .input_maxbtn:hover {
+    cursor: pointer;
+    color: ${(p) => (p.palette === 'dark' ? p.theme.colors.neonGreen : p.theme.colors.oxfordBlueTint2)};
   }
 
   .input_lbl {

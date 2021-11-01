@@ -73,9 +73,9 @@ function FormStaking () {
                 <div>
                     <h5>Current Rank</h5>
                     <p>
-                        {!rootMembersArray.length
+                        {!rootMembersArray?.rootNodeData?.length
                           ? '0 #'
-                          : rootMembersArray?.rootNodeData?.find((user) => user.address === userAddress)[0].rank +
+                          : rootMembersArray?.rootNodeData?.find((user) => user.address === userAddress).rank +
                               ' #'}
                     </p>
                 </div>
