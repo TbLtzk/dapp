@@ -8,6 +8,7 @@ import {
   getOwnStake,
   getTotalStake
 } from 'store/actions/action-creaters/validators'
+import { isStakerRewardPoolMsgDisplayed } from 'store/selectors/validation-reward-pools'
 import { userAddressMetamask } from 'store/selectors/user-inf'
 import {
   accountableTotalStake,
@@ -26,6 +27,7 @@ export default function ValidatorPool ({ modalShow }) {
   const ownStake = useSelector(ownStakeSelector)
   const delegatedStake = useSelector(delegatedStakeSelector)
   const accTotalStake = useSelector(accountableTotalStake)
+  const isMsgDisplayed = useSelector(isStakerRewardPoolMsgDisplayed)
 
   useEffect(() => {
     if (modalShow) {
@@ -79,6 +81,11 @@ export default function ValidatorPool ({ modalShow }) {
               )
             })}
             <RefreshDelegationUpdate />
+          {
+            isMsgDisplayed
+              ? <p>Stake amount below minimum to apply new rate, old rate applied.</p>
+              : null
+          }
         </div>
   )
 }

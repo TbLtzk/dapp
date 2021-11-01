@@ -10,9 +10,8 @@ import {
   setVRPLastUpdateOfCompoundRateData,
   getVRPLastUpdateOfCompoundRate,
   setVRPLoadingValidatorsCompoundRate,
-  getVRPBalance,
-  getVRPPoolInfo,
-} from "store/actions/action-creaters/validation-reward-pools";
+  getVRPBalance, setIsStakerRewardPoolMsgDisplayed,
+} from 'store/actions/action-creaters/validation-reward-pools';
 
 import { SET_TRANSACTION_COUNTER } from "../actions/action-types/transaction-handler";
 
@@ -24,6 +23,13 @@ import { fromWei } from "func/balance";
 
 function* setUpdateValidatorsCompoundRateGenerator({ address }) {
   try {
+    const {
+      balance,
+      poolInfo,
+      lastUpdateOfCompoundRate : previousLastUpdateCompoundRate
+    } = yield select((state) => state.validationRewardPools);
+    const disDelClaims = +balance - +poolInfo
+
     yield put(setVRPLoadingValidatorsCompoundRate(true));
     const contract = yield call(getValidationRewardPoolsInstance);
     const data = yield contract.updateValidatorsCompoundRate(address, { from: address });
@@ -31,7 +37,14 @@ function* setUpdateValidatorsCompoundRateGenerator({ address }) {
       yield put(getVRPLastUpdateOfCompoundRate(address));
       yield put(getVRPDelegatorsShare(address));
       yield put(getVRPBalance(address));
-      yield put(getVRPPoolInfo(address));
+      yield call(getPoolInfoGenerator, { address });
+    const {
+      lastUpdateOfCompoundRate: newInfo,
+    } = yield select((state) => state.validationRewardPools);
+    yield put(setIsStakerRewardPoolMsgDisplayed(
+      disDelClaims <= 0 ||
+      previousLastUpdateCompoundRate === newInfo
+    ))
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
