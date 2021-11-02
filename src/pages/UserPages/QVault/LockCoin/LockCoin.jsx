@@ -11,25 +11,27 @@ import FormInput from 'components/Base/Form/FormInput'
 import Button from 'components/Base/Buttons/Button'
 
 import 'react-datepicker/dist/react-datepicker.css'
-import { userBalance, votingWeight } from 'store/selectors/q-vault'
+import { votingWeight } from 'store/selectors/q-vault'
 
-export default function LockCoin () {
+export default function LockCoin ({ maxQVaultVotingWeight }) {
   const { register: reg1, handleSubmit: submit1, errors: err1, setValue: setLockMax } = useForm()
   const { register: reg3, handleSubmit: submit3, errors: err3, setValue: setUnlockMax } = useForm()
 
   const dispatch = useDispatch()
 
   const userVotingWeight = useSelector(votingWeight)
-  const userBalanceAmount = useSelector(userBalance)
-
   const address = useSelector(userAddressMetamask)
 
   function handleUnlockMax () {
-    setUnlockMax('amountQ', userVotingWeight)
+    if (userVotingWeight > 0) {
+      setUnlockMax('amountQ', userVotingWeight)
+    }
   }
 
   function handleLockMax () {
-    setLockMax('amountQ', userBalanceAmount - userVotingWeight)
+    if (maxQVaultVotingWeight > 0) {
+      setLockMax('amountQ', maxQVaultVotingWeight)
+    }
   }
 
   function lockCoinL (formData) {

@@ -1,5 +1,6 @@
-import { fromWei } from 'func/balance'
 import { getQVaultInstance } from 'contracts/contract-instance'
+import { fromWei, toWei } from 'func/balance'
+import { calculateGas, fromQ, getEthersQVaultInstance, toQ } from 'func/gasPrice'
 
 export async function getQVaultCompoundRateKeeper () {
   const contract = await getQVaultInstance()
@@ -49,4 +50,22 @@ export function getOutstandingDelegationRewardsList (delegationsList) {
       return 0
     }
   }
+}
+
+export function getMaxQVaultWithdrawAmount (userQVaultBalance, qVaultLockedAmount) {
+  const result = toQ(fromQ(userQVaultBalance).sub(fromQ(qVaultLockedAmount)))
+  return result
+}
+
+export function getMaxQVaultVotingWeight (userQVaultBalance, userVotingWeight) {
+  const result = toQ(fromQ(userQVaultBalance).sub(fromQ(userVotingWeight)))
+  return result
+}
+
+export async function getQVaultDepositAmount (address, transferMax) {
+  const contract = await getQVaultInstance()
+  const ethersQVaultInstance = getEthersQVaultInstance(contract, 'qVaultInstance')
+  const obj = await ethersQVaultInstance.estimateGas.deposit({ value: toWei(transferMax), from: address })
+  const gas = calculateGas(obj)
+  return toQ(fromQ(transferMax).sub(fromQ(gas)))
 }
