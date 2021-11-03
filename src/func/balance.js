@@ -34,3 +34,7 @@ export function fromWei (value) {
     return amount.dividedBy(a).toFixed()
   }
 }
+
+export function calculateGas (data) {
+  return Number(window.web3.utils.fromWei(String(data * 50), 'gwei')).toFixed(6)
+}

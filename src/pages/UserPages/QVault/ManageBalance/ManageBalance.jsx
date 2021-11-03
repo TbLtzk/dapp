@@ -41,6 +41,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
   }
 
   async function handleTransferMax () {
+    console.log(maxQVaultTransferAmount)
     if (Number(maxQVaultTransferAmount) > 0) {
       setTransferMax('amountQ', maxQVaultTransferAmount)
       setTransferMaxError('amountQ', {
