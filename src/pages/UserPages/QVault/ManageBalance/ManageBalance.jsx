@@ -10,6 +10,7 @@ import { setDepositCall, setWithdrawCall } from 'store/actions/action-creaters/q
 import { userAddressMetamask } from 'store/selectors/user-inf'
 import { accountBalance } from 'store/selectors/q-vault'
 import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper'
+import { WARNING_MAX_NUMBER } from 'constants/statuses'
 
 export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
   const {
@@ -43,7 +44,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
     if (Number(maxQVaultTransferAmount) > 0) {
       setTransferMax('amountQ', maxQVaultTransferAmount)
       setTransferMaxError('amountQ', {
-        message: 'Max number, dangerous'
+        message: WARNING_MAX_NUMBER
       })
     }
   }
@@ -51,7 +52,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
   function handleChangeTransferAmount (event) {
     if (Number(event.target.value) === maxQVaultTransferAmount) {
       setTransferMaxError('amountQ', {
-        message: 'Max number, dangerous'
+        message: WARNING_MAX_NUMBER
       })
     } else {
       clearTransferMaxError()
@@ -80,7 +81,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
             <h4>Transfer Into Q Vault</h4>
             <div className="card__one-line-form">
                 <FormInput
-                    lbl={'Q'}
+                    lbl='Q'
                     min={0}
                     color={true}
                     name="amountQ"
@@ -103,7 +104,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
                     name="amountQ"
                     color={true}
                     type="number"
-                    lbl={'Q'}
+                    lbl='Q'
                     placeholder="0.0"
                     onMaxClick={handleWithdrawMax}
                     ref={reg3({ required: 'Field is required!' })}
