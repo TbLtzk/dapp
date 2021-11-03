@@ -12,7 +12,6 @@ import Button from 'components/Base/Buttons/Button'
 import { ComponentHandler } from './handler'
 
 import { useAlert } from 'react-alert'
-import { UpdateDelegationContainer } from './styles'
 
 export default function UpdateDelegation () {
   const { register: reg1 } = useForm()
@@ -43,8 +42,7 @@ export default function UpdateDelegation () {
     const elements = []
     for (let i = 0; i < items; i++) {
       elements.push(
-                <div key={i + 'input_address'} className="input_container_item">
-                    <div className="input_address">
+                <div key={i + 'input_address'} className="card__one-line-form-2-2-1">
                         <FormInput
                             color={true}
                             name="address"
@@ -55,8 +53,6 @@ export default function UpdateDelegation () {
                               pattern: /[0-9]/i
                             })}
                         />
-                    </div>
-                    <div className="input_share">
                         <FormInput
                             color={true}
                             name="share"
@@ -68,8 +64,7 @@ export default function UpdateDelegation () {
                               min: 100
                             })}
                         />
-                    </div>
-                    <div className="btn_additional">
+                    <div className="card__one-line-form-2-2-1-action">
                         <Button type="outline" icon="plus" width="37px" handleButton={() => addInputContainer()} />
                         <Button type="outline" icon="minus" width="37px" handleButton={() => removeInputContainer()} />
                     </div>
@@ -80,13 +75,14 @@ export default function UpdateDelegation () {
   }
 
   return (
-        <UpdateDelegationContainer>
+        <>
             <h3>Update Delegation</h3>
-            <div className="input_container_item">
-                <p className="input_address">Address</p>
-                <p className="input_share">Share</p>
+            <div className="card__one-line-form-2-2-1">
+                <p>Address</p>
+                <p>Share</p>
             </div>
-            <div className="input_container">{getForms()}</div>
+
+            {getForms()}
 
             <div className="card__actions" style={{ marginBottom: '30px' }}>
                 <Button
@@ -102,6 +98,6 @@ export default function UpdateDelegation () {
                     handleButton={() => updateDelegations(true)}
                 />
             </div>
-        </UpdateDelegationContainer>
+        </>
   )
 }

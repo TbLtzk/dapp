@@ -16,6 +16,7 @@ export const SET_QV_ERROR = 'SET_QV_ERROR'
 
 // Action without write to Store
 export const SET_QV_DEPOSIT_CALL = 'SET_QV_DEPOSIT_CALL'
+export const SET_SEND_CALL = 'SET_SEND_CALL'
 export const SET_QV_WITHDRAW_CALL = 'SET_QV_WITHDRAW_CALL'
 export const SET_QV_LOCK_AMOUNT = 'SET_QV_LOCK_AMOUNT'
 export const SET_QV_UNLOCK_AMOUNT = 'SET_QV_UNLOCK_AMOUNT'

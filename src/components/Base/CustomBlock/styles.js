@@ -73,15 +73,26 @@ export const Block = styled.div`
     margin: 15px 0;
   }
 
-  .card__one-line-form {
-    display: flex;
+  .card__one-line-simple-form {
+    display: grid;
+    grid-template-columns: minmax(80px, 1fr) minmax(76px, 90px);
+    grid-column-gap: 14px;
     align-items: flex-start;
     width: 100%;
     margin-bottom: 15px;
+  }
 
-    & > *:not(:first-child) {
-      margin-left: 14px;
-    }
+  .card__one-line-form-2-2-1 {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(80px, 2fr) minmax(80px, 2fr) minmax(70px, 90px);
+    grid-column-gap: 14px;
+  }
+
+  .card__one-line-form-2-2-1-action {
+    justify-content: space-between;
+    display: flex;
+    align-items: flex-start;
   }
 
   .card__line {
