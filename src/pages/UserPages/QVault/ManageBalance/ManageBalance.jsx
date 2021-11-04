@@ -95,7 +95,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
           name="amountQ"
           type="number"
           placeholder="0.0"
-          onClickMax={handleTransferMax}
+          onMaxClick={handleTransferMax}
           onChange={handleChangeTransferAmount}
           ref={reg2({
             required: 'Field is required!',
@@ -117,7 +117,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
           name="amountQ"
           color={true}
           type="number"
-          onClickMax={handleWithdrawMax}
+          onMaxClick={handleWithdrawMax}
           lbl={'Q'}
           placeholder="0.0"
           ref={reg3({ required: 'Field is required!' })}
