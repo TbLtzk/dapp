@@ -79,7 +79,7 @@ export default function LockCoin () {
       <div className="card__line"/>
       <h3>Announce new voting agent</h3>
       <h4>Address</h4>
-      <div className={'card__one-line-form'}>
+      <div className={'card__one-line-simple-form'}>
         <FormInput
           color={true}
           name="address"

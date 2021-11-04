@@ -51,6 +51,13 @@ export const setDepositCall = (address, amountQ) => ({
   address,
   amountQ
 })
+
+export const setSendCall = (address, amount) => ({
+  type: actionTypes.SET_SEND_CALL,
+  address,
+  amount
+})
+
 export const setWithdrawCall = (address, amountQ) => ({
   type: actionTypes.SET_QV_WITHDRAW_CALL,
   address,
