@@ -23,13 +23,13 @@ export default function LockCoin ({ maxQVaultVotingWeight }) {
   const address = useSelector(userAddressMetamask)
 
   function handleUnlockMax () {
-    if (userVotingWeight > 0) {
+    if (Number(userVotingWeight) > 0) {
       setUnlockMax('amountQ', userVotingWeight)
     }
   }
 
   function handleLockMax () {
-    if (maxQVaultVotingWeight > 0) {
+    if (Number(maxQVaultVotingWeight) > 0) {
       setLockMax('amountQ', maxQVaultVotingWeight)
     }
   }

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import { Form } from 'react-bootstrap'
 
@@ -108,8 +108,26 @@ export const InputWrapper = styled(Form.Group)`
 
   .input_maxbtn:hover {
     cursor: pointer;
-    color: ${(p) => (p.palette === 'dark' ? p.theme.colors.neonGreen : p.theme.colors.oxfordBlueTint2)};
   }
+
+  ${(p) =>
+    p.palette === 'dark'
+      ? css`
+          .input_maxbtn {
+            color: ${(p) => (p.modal ? p.theme.colors.oxfordBlueTint3 : p.theme.colors.white)};
+          }
+          .input_maxbtn:hover {
+            color: ${(p) => (p.modal ? p.theme.colors.oxfordBlueTint1 : p.theme.colors.neonGreen)};
+          }
+        `
+      : css`
+          .input_maxbtn {
+            color: ${(p) => p.theme.colors.oxfordBlueTint4};
+          }
+          .input_maxbtn:hover {
+            color: ${(p) => p.theme.colors.oxfordBlueTint6};
+          }
+        `}
 
   .input_lbl {
     display: flex;

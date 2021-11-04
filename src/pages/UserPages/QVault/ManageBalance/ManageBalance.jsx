@@ -41,7 +41,6 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
   }
 
   async function handleTransferMax () {
-    console.log(maxQVaultTransferAmount)
     if (Number(maxQVaultTransferAmount) > 0) {
       setTransferMax('amountQ', maxQVaultTransferAmount)
       setTransferMaxError('amountQ', {
@@ -51,7 +50,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
   }
 
   function handleChangeTransferAmount (event) {
-    if (Number(event.target.value) === maxQVaultTransferAmount) {
+    if (Number(event.target.value) === Number(maxQVaultTransferAmount)) {
       setTransferMaxError('amountQ', {
         message: WARNING_MAX_NUMBER
       })
@@ -61,7 +60,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
   }
 
   function handleWithdrawMax () {
-    if (maxQVaultWithdrawAmount > 0) {
+    if (Number(maxQVaultWithdrawAmount) > 0) {
       setWithdrawMax('amountQ', maxQVaultWithdrawAmount)
     }
   }
@@ -82,9 +81,9 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
             <h4>Transfer Into Q Vault</h4>
             <div className="card__one-line-form">
                 <FormInput
-                    lbl='Q'
+                    lbl="Q"
                     min={0}
-                    color={true}
+                    color
                     name="amountQ"
                     onChange={handleChangeTransferAmount}
                     type="number"
@@ -103,9 +102,9 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
                 <FormInput
                     min={0}
                     name="amountQ"
-                    color={true}
+                    color
                     type="number"
-                    lbl='Q'
+                    lbl="Q"
                     placeholder="0.0"
                     onMaxClick={handleWithdrawMax}
                     ref={reg3({ required: 'Field is required!' })}

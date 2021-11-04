@@ -52,28 +52,11 @@ export function getOutstandingDelegationRewardsList (delegationsList) {
   }
 }
 
-export function getMaxQVaultWithdrawAmount (userQVaultBalance, qVaultLockedAmount) {
-  if (userQVaultBalance && qVaultLockedAmount) {
-    const result = BN(toWei(userQVaultBalance)).minus(toWei(qVaultLockedAmount)).toString()
-    return fromWei(result)
-  }
-  return 0
-}
-
-export function getMaxQVaultVotingWeight (userQVaultBalance, userVotingWeight) {
-  if (userQVaultBalance && userVotingWeight) {
-    const result = BN(toWei(userQVaultBalance)).minus(toWei(userVotingWeight)).toString()
-    return fromWei(result)
-  }
-  return 0
-}
-
 export async function getQVaultDepositAmount (address, transferMax) {
   const contract = await getQVaultInstance()
 
   const fee = await contract.instance.methods.deposit().estimateGas({ value: toWei(transferMax), from: address })
   const gas = calculateGas(fee)
-  console.log(gas)
   const result = BN(toWei(transferMax)).minus(toWei(gas)).toString()
 
   return fromWei(result)

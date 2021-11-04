@@ -21,6 +21,7 @@ const FormInput = forwardRef((props, ref) => {
     min,
     color,
     onMaxClick = null,
+    modal,
     lbl,
     controlId = 'formBasicEmail'
   } = props
@@ -38,6 +39,7 @@ const FormInput = forwardRef((props, ref) => {
             lbl={lbl}
             isfocus={isFocus}
             isdisabled={disabled ? '1' : ''}
+            modal={modal ? 1 : 0}
         >
             <div style={{ display: 'flex' }}>
                 {lbl ? <div className={'input_lbl'}>{lbl}</div> : null}
@@ -63,7 +65,13 @@ const FormInput = forwardRef((props, ref) => {
                     value={value}
                     disabled={disabled}
                 />
-                 {!onMaxClick ? null : <div onClick={onMaxClick} className='input_maxbtn'>Max</div>}
+                {!onMaxClick
+                  ? null
+                  : (
+                    <div onClick={onMaxClick} className="input_maxbtn">
+                        Max
+                    </div>
+                    )}
             </div>
             <ErrorInputMessage message={valid} />
         </InputWrapper>
