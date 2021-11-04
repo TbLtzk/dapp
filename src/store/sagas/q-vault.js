@@ -64,7 +64,10 @@ function * getLockedAssetsGenerator ({ address }) {
   }
 }
 
-function * setDepositGenerator ({ address, amountQ }) {
+function * setDepositGenerator ({
+  address,
+  amountQ
+}) {
   try {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -72,7 +75,10 @@ function * setDepositGenerator ({ address, amountQ }) {
     })
 
     const contract = yield call(getQVaultInstance)
-    const data = yield contract.deposit({ value: toWei(amountQ), from: address })
+    const data = yield contract.deposit({
+      value: toWei(amountQ),
+      from: address
+    })
     if (data.status) {
       yield put(getUserBalance(address))
       yield put(getAccountBalance(address))
@@ -88,7 +94,38 @@ function * setDepositGenerator ({ address, amountQ }) {
   }
 }
 
-function * setWithdrawGenerator ({ address, amountQ }) {
+function * setSendGenerator ({
+  address,
+  amount
+}) {
+  try {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: 1
+    })
+
+    const contract = yield call(getQVaultInstance)
+    const data = yield contract.transfer(address, toWei(amount))
+    if (data.status) {
+      const { userAddress } = yield select(state => state.userInf)
+      yield put(getUserBalance(userAddress))
+      yield put(getAccountBalance(userAddress))
+    }
+  } catch (error) {
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put({
+      type: SET_TRANSACTION_COUNTER,
+      payload: -1
+    })
+  }
+}
+
+function * setWithdrawGenerator ({
+  address,
+  amountQ
+}) {
   try {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -113,7 +150,11 @@ function * setWithdrawGenerator ({ address, amountQ }) {
   }
 }
 
-function * setDelegateStakeGenerator ({ address, delegateAddresses, stakes }) {
+function * setDelegateStakeGenerator ({
+  address,
+  delegateAddresses,
+  stakes
+}) {
   try {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -140,7 +181,10 @@ function * setDelegateStakeGenerator ({ address, delegateAddresses, stakes }) {
   }
 }
 
-function * setLockAmountGenerator ({ address, amountQ }) {
+function * setLockAmountGenerator ({
+  address,
+  amountQ
+}) {
   try {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -166,7 +210,10 @@ function * setLockAmountGenerator ({ address, amountQ }) {
   }
 }
 
-function * setUnlockAmountGenerator ({ address, amountQ }) {
+function * setUnlockAmountGenerator ({
+  address,
+  amountQ
+}) {
   try {
     yield put({
       type: SET_TRANSACTION_COUNTER,
@@ -244,7 +291,10 @@ function * getUpdateCompoundRateGenerator ({ address }) {
   try {
     yield put(setUpdateCompoundRate(true))
     const contract = yield call(getQVaultInstance)
-    const data = yield contract.updateCompoundRate({ from: address, gasBuffer: 1.2 })
+    const data = yield contract.updateCompoundRate({
+      from: address,
+      gasBuffer: 1.2
+    })
     if (data) {
       yield put(setUpdateCompoundRate('updated'))
     }
@@ -326,6 +376,7 @@ function * setAnnounceNewVotingAgentGenerator ({ address }) {
     })
   }
 }
+
 function * setNewVotingAgentGenerator () {
   try {
     yield put({
@@ -365,6 +416,7 @@ export default [
   takeEvery(actionTypes.GET_DELEGATION_INFO, getDelegationInfoGenerator),
 
   takeEvery(actionTypes.SET_QV_DEPOSIT_CALL, setDepositGenerator),
+  takeEvery(actionTypes.SET_SEND_CALL, setSendGenerator),
   takeEvery(actionTypes.SET_QV_WITHDRAW_CALL, setWithdrawGenerator),
   takeEvery(actionTypes.SET_QV_LOCK_AMOUNT, setLockAmountGenerator),
   takeEvery(actionTypes.SET_QV_UNLOCK_AMOUNT, setUnlockAmountGenerator),
