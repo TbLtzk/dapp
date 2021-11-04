@@ -22,7 +22,6 @@ export default class VotingService {
   async switchContract () {
     switch (this.contractName) {
       case 'GeneralUpdateVoting': {
-        console.log(await getGeneralUpdateVotingInstance())
         return await getGeneralUpdateVotingInstance()
       }
       case 'ConstitutionVoting': {
@@ -50,7 +49,8 @@ export default class VotingService {
   }
 
   async getProposalsEvent () {
-    return await getPastEvents(this.contract, 'ProposalCreated')
+    const contract = await this.switchContract()
+    return await getPastEvents(contract, 'ProposalCreated')
   }
 
   async getProposal (id) {
@@ -141,7 +141,6 @@ export default class VotingService {
 
   async getProposals () {
     const contract = await this.switchContract()
-    // console.log(this.contractName)
     const proposalEvents = await this.getProposalsEvent()
     const proposalIds = proposalEvents.map((event) => event.returnValues._id)
     const allProposals = await contract.getProposals(...proposalIds)

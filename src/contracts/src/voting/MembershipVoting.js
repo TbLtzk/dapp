@@ -7,6 +7,11 @@ import { CONTRACTS_NAMES, CONTRACT_TYPES } from 'constants/contracts'
 
 /* EPDRMembershipVoting, EPQFIMembershipVoting */
 export default class MembershipVoting extends VotingService {
+  constructor () {
+    super()
+    this.name = 'name'
+  }
+
   async getProposalData (promiseRes, id, promiseStatus) {
     const objRes = {}
     let objStats = {}

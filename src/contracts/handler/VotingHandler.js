@@ -11,18 +11,22 @@ import { BN } from 'func/useful'
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts'
 
 export const getPastEvents = async (contract, event) => {
-  const contractWeb3 = contract
-  const eventOptions = {
-    // topics: [],
-    fromBlock: 0,
-    toBlock: 'latest'
+  try {
+    const contractWeb3 = contract
+    const eventOptions = {
+      // topics: [],
+      fromBlock: 0,
+      toBlock: 'latest'
+    }
+    const result = await contractWeb3.getPastEvents(event, eventOptions)
+    return result
+  } catch (error) {
+    console.error(error)
   }
-  const result = await contractWeb3.getPastEvents(event, eventOptions)
-  return result
 }
 
 export const getPastProposalsIds = (proposalArr) => {
-  return proposalArr?.map(evt => evt.returnValues._id)
+  return proposalArr?.map((evt) => evt.returnValues._id)
 }
 
 export const getStatusTransformation = (statusId) => {
@@ -43,10 +47,9 @@ export const getPercentageFormat = (number) => {
 
 export const transformToPercentage = (number) => {
   const amount = '10000000000000000000000000'
-  let convertedNumber = BN(number)
-    .dividedBy(amount)
+  let convertedNumber = BN(number).dividedBy(amount)
   if (convertedNumber?.e < 0) {
-    convertedNumber = ((convertedNumber)).toFixed(10)
+    convertedNumber = convertedNumber.toFixed(10)
   } else {
     convertedNumber = Math.round(convertedNumber?.c[0])
   }
@@ -141,7 +144,7 @@ export function tabSwitcher (activeTab, qProp, rootNodeProp, expertProp, slashin
 }
 
 export function changeProposalsArrIfExist (proposalsArr, data) {
-  const findElem = proposalsArr?.find(element => {
+  const findElem = proposalsArr?.find((element) => {
     return element.id === data.result[0].id && element.contract === data.result[0].contract
   })
   if (findElem) {
@@ -158,7 +161,7 @@ export function changeProposalsArrIfExist (proposalsArr, data) {
 }
 
 export function changeProposalsArrIfEmptyResult (proposalsArr, data) {
-  const findElem = proposalsArr?.find(element => {
+  const findElem = proposalsArr?.find((element) => {
     return element.id === data.result.id && element.contract === data.result.contractName
   })
   if (findElem) {
