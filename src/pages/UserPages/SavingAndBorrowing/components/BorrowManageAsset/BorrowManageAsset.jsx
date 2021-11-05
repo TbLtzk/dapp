@@ -128,19 +128,25 @@ function BorrowManageAsset (props) {
 
   function handleMaxRepay () {
     if (Number(borrowingInf?.availableRepay) > 0) {
+      if (Number(allowanceRepay) < Number(borrowingInf?.availableRepay)) {
+        setRepayBtnTitle(DEPOSIT_BTN_TEXT.approve)
+      }
       setRepayMax('field', borrowingInf?.availableRepay)
     }
   }
 
   function handleMaxDeposit () {
     if (Number(collateralInf?.availableDeposit) > 0) {
+      if (Number(allowanceDeposit) < Number(collateralInf?.availableDeposit)) {
+        setDepositBtnTitle(DEPOSIT_BTN_TEXT.approve)
+      }
       setDepositMax('field', collateralInf?.availableDeposit)
     }
   }
 
   function handleMaxBorrow () {
-    if (Number(fN(borrowingInf?.availableBorrow)) > 0) {
-      setBorrowMax('field', Number(borrowingInf?.availableBorrow).toFixed(6))
+    if (Number(borrowingInf?.availableBorrow) > 0) {
+      setBorrowMax('field', Number(borrowingInf?.availableBorrow).toFixed(3))
     }
   }
 

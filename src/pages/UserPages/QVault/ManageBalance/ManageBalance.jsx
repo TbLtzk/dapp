@@ -13,7 +13,7 @@ import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper'
 import { WARNING_MAX_NUMBER } from 'constants/statuses'
 
 export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
-  const { register: reg1, handleSubmit: submit1, errors: err1 } = useForm()
+  const { register: reg1, handleSubmit: submit1, errors: err1, setValue: setSendMax } = useForm()
   const {
     register: reg2,
     handleSubmit: submit2,
@@ -66,12 +66,20 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
     }
   }
 
+  function handleSendMax () {
+    if (Number(maxQVaultWithdrawAmount) > 0) {
+      setSendMax('amountQ', maxQVaultWithdrawAmount)
+    }
+  }
+
   function setDepositL (formData) {
     dispatch(setDepositCall(address, formData.amountQ))
     setTransferMax('amountQ', null)
   }
+
   function send (formData) {
     dispatch(setSendCall(formData.address, formData.amount))
+    setSendMax('amountQ', null)
   }
 
   function withdrawL (formData) {
@@ -135,10 +143,11 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
                 />
                 <FormInput
                     color={true}
-                    name="amount"
+                    name="amountQ"
                     type="number"
                     lbl="Q"
                     placeholder="0.00"
+                    onMaxClick={handleSendMax}
                     ref={reg1({
                       required: 'Field is required!'
                     })}
