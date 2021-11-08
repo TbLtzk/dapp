@@ -11,28 +11,37 @@ import FormInput from 'components/Base/Form/FormInput'
 import Button from 'components/Base/Buttons/Button'
 
 import 'react-datepicker/dist/react-datepicker.css'
+import { votingWeight } from 'store/selectors/q-vault'
 
-export default function LockCoin () {
-  const {
-    register: reg1,
-    handleSubmit: submit1,
-    errors: err1
-  } = useForm()
-  const {
-    register: reg3,
-    handleSubmit: submit3,
-    errors: err3
-  } = useForm()
+export default function LockCoin ({ maxQVaultVotingWeight }) {
+  const { register: reg1, handleSubmit: submit1, errors: err1, setValue: setLockMax } = useForm()
+  const { register: reg3, handleSubmit: submit3, errors: err3, setValue: setUnlockMax } = useForm()
 
   const dispatch = useDispatch()
+
+  const userVotingWeight = useSelector(votingWeight)
   const address = useSelector(userAddressMetamask)
+
+  function handleUnlockMax () {
+    if (Number(userVotingWeight) > 0) {
+      setUnlockMax('amountQ', userVotingWeight)
+    }
+  }
+
+  function handleLockMax () {
+    if (Number(maxQVaultVotingWeight) > 0) {
+      setLockMax('amountQ', maxQVaultVotingWeight)
+    }
+  }
 
   function lockCoinL (formData) {
     dispatch(setLockAmount(address, formData.amountQ))
+    setLockMax('amountQ', null)
   }
 
   function unlockCoinL (formData) {
     dispatch(setUnlockAmount(address, formData.amountQ))
+    setUnlockMax('amountQ', null)
   }
 
   return (
@@ -48,6 +57,7 @@ export default function LockCoin () {
           name="amountQ"
           type="number"
           placeholder="0.0"
+          onMaxClick={handleLockMax}
           ref={reg1({ required: 'Field is required!' })}
           valid={err1.amountQ?.message}
         />
@@ -67,6 +77,7 @@ export default function LockCoin () {
           name="amountQ"
           type="number"
           lbl={'Q'}
+          onMaxClick={handleUnlockMax}
           placeholder="0.0"
           ref={reg3({ required: 'Field is required!' })}
           valid={err3.amountQ?.message}

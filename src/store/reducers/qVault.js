@@ -20,11 +20,11 @@ const initialState = {
   isPendingDelegation: false,
   votingAgentPassOverTime: 0,
 
-  qvBalance: null,
+  qvBalance: 0,
   outstandingDelegationRewards: 0,
 
-  qVaultMinimumTimeLock: null,
-  qVaultTimeLocks: null
+  qVaultMinimumTimeLock: 0,
+  qVaultTimeLocks: []
 }
 
 export default function qVault (state = initialState, action) {

@@ -161,7 +161,7 @@ function SlashingObjection (props) {
               <i className={'mdi mdi-cast btn-icon'}/>Cast Objection
             </Dropdown.Item>
             <Dropdown.Item onClick={onConfirmAppeal}>
-              <i className={'mdi mdi-cast btn-icon'}/>Cofirm Appeal initiated by Slashing Candidate
+              <i className={'mdi mdi-cast btn-icon'}/>Confirm Appeal initiated by Slashing Candidate
             </Dropdown.Item>
             <Dropdown.Item onClick={onProposeDecision}>
               <i className={'mdi mdi-arrow-decision btn-icon'}/>Propose Decision

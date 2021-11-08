@@ -30,10 +30,7 @@ import { getNowTimestamp } from 'func/convertDate'
 
 import { getQVaultInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance'
 
-import {
-  handleLockedAssetsResponse,
-  getOutstandingDelegationRewardsList
-} from 'contracts/helpers/q-vault-helper'
+import { handleLockedAssetsResponse, getOutstandingDelegationRewardsList } from 'contracts/helpers/q-vault-helper'
 
 import ErrorHandler from 'func/ErrorHandler'
 
@@ -106,11 +103,11 @@ function * setSendGenerator ({
       type: SET_TRANSACTION_COUNTER,
       payload: 1
     })
+    const { userAddress } = yield select(state => state.userInf)
 
     const contract = yield call(getQVaultInstance)
     const data = yield contract.transfer(address, toWei(amount))
     if (data.status) {
-      const { userAddress } = yield select(state => state.userInf)
       yield put(getUserBalance(userAddress))
       yield put(getAccountBalance(userAddress))
     }
@@ -163,6 +160,7 @@ function * setDelegateStakeGenerator ({
       type: SET_TRANSACTION_COUNTER,
       payload: 1
     })
+    const { userAddress } = yield select((state) => state.userInf)
 
     const contract = yield call(getQVaultInstance)
     const data = yield contract.delegateStake(delegateAddresses, stakes, { from: address })
@@ -170,6 +168,7 @@ function * setDelegateStakeGenerator ({
     if (data) {
       yield put(getOutstandingDelegationRewards())
       yield put(getDelegationsList())
+      yield put(getAccountBalance(userAddress))
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -193,11 +192,11 @@ function * setLockAmountGenerator ({
     })
 
     const contract = yield call(getQVaultInstance)
-
     const data = yield contract.lock(toWei(amountQ), { from: address })
 
     if (data.status) {
       yield put(getUserBalance(address))
+      yield put(getAccountBalance(address))
       yield put(getLockedAssets(address))
     }
   } catch (error) {
@@ -226,6 +225,7 @@ function * setUnlockAmountGenerator ({
 
     if (data.status) {
       yield put(getUserBalance(address))
+      yield put(getAccountBalance(address))
       yield put(getLockedAssets(address))
     }
   } catch (error) {
@@ -319,6 +319,7 @@ function * setOnClaimStakeDelegatorRewardGenerator () {
     if (result) {
       yield put(getOutstandingDelegationRewards())
       yield put(getDelegationsList())
+      yield put(getAccountBalance(userAddress))
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -358,10 +359,13 @@ function * setAnnounceNewVotingAgentGenerator ({ address }) {
       type: SET_TRANSACTION_COUNTER,
       payload: 1
     })
+    const { userAddress } = yield select((state) => state.userInf)
+
     const contract = yield call(getVotingWeightProxyInstance)
     yield contract.announceNewVotingAgent(address)
-    const { userAddress } = yield select((state) => state.userInf)
+
     yield put(getDelegationInfo(userAddress))
+    yield put(getAccountBalance(userAddress))
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
@@ -379,10 +383,13 @@ function * setNewVotingAgentGenerator () {
       type: SET_TRANSACTION_COUNTER,
       payload: 1
     })
+    const { userAddress } = yield select((state) => state.userInf)
+
     const contract = yield call(getVotingWeightProxyInstance)
     yield contract.setNewVotingAgent()
-    const { userAddress } = yield select((state) => state.userInf)
+
     yield put(getDelegationInfo(userAddress))
+    yield put(getAccountBalance(userAddress))
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))

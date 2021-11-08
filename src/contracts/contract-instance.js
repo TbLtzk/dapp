@@ -51,7 +51,7 @@ export const rootNodeSlashingEscrowInstance = getInstance('rootNodeSlashingEscro
 
 export const getValidatorMetricsInstance = async () => {
   if (validatorMetricsInstance === null) {
-    validatorMetricsInstance = new ValidatorMetrics()
+    validatorMetricsInstance = new ValidatorMetrics(window.web3)
   }
   return validatorMetricsInstance
 }

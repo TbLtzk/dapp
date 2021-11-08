@@ -1,5 +1,6 @@
-import { fromWei } from 'func/balance'
 import { getQVaultInstance } from 'contracts/contract-instance'
+import { calculateGas, fromWei, toWei } from 'func/balance'
+import { BN } from 'func/useful'
 
 export async function getQVaultCompoundRateKeeper () {
   const contract = await getQVaultInstance()
@@ -49,4 +50,14 @@ export function getOutstandingDelegationRewardsList (delegationsList) {
       return 0
     }
   }
+}
+
+export async function getQVaultDepositAmount (address, transferMax) {
+  const contract = await getQVaultInstance()
+
+  const fee = await contract.instance.methods.deposit().estimateGas({ value: toWei(transferMax), from: address })
+  const gas = calculateGas(fee)
+  const result = BN(toWei(transferMax)).minus(toWei(gas)).toString()
+
+  return fromWei(result)
 }
