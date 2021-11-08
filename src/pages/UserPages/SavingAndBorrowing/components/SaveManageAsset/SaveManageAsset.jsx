@@ -76,6 +76,9 @@ function SaveManageAsset (props) {
 
   function handleMaxDeposit () {
     if (Number(avToDeposit) > 0) {
+      if (Number(allowance) < Number(avToDeposit)) {
+        setDepositBtnTitle(DEPOSIT_BTN_TEXT.approve)
+      }
       setDepositMax('amount', avToDeposit)
     }
   }
