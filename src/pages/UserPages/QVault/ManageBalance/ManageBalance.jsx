@@ -78,7 +78,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
   }
 
   function send (formData) {
-    dispatch(setSendCall(formData.address, formData.amount))
+    dispatch(setSendCall(formData.address, formData.amountQ))
     setSendMax('amountQ', null)
   }
 

@@ -103,11 +103,11 @@ function * setSendGenerator ({
       type: SET_TRANSACTION_COUNTER,
       payload: 1
     })
+    const { userAddress } = yield select(state => state.userInf)
 
     const contract = yield call(getQVaultInstance)
     const data = yield contract.transfer(address, toWei(amount))
     if (data.status) {
-      const { userAddress } = yield select(state => state.userInf)
       yield put(getUserBalance(userAddress))
       yield put(getAccountBalance(userAddress))
     }
