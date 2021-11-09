@@ -8,12 +8,12 @@ import DelegationRewards from './DelegationRewards'
 
 export default function DelegateStakingPower () {
   return (
-    <CustomBlock>
-      <h1>Delegate Staking Power</h1>
-      <DelegationRewards/>
-      <div className={'card__line'} />
-      <UpdateDelegation/>
-      <DelegatedValidatorsPanel/>
-    </CustomBlock>
+        <CustomBlock>
+            <h1>Delegate Staking Power</h1>
+            <DelegationRewards />
+            <div className="card__line" />
+            <UpdateDelegation />
+            <DelegatedValidatorsPanel />
+        </CustomBlock>
   )
 }

@@ -24,3 +24,5 @@ export const PROPOSAL_STATUS_TYPES = {
   active: 'active',
   ended: 'ended'
 }
+
+export const WARNING_MAX_NUMBER = 'Warning: No Q left on sender wallet for future transactions (gas)'

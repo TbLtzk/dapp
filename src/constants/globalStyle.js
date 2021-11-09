@@ -10,6 +10,16 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale !important;  
   }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0; 
+  }
+
+  input[type=number] {
+    -moz-appearance:textfield; 
+  }
   
   .arrow::after {
     border-top-color: #87FF65 !important;
