@@ -169,6 +169,7 @@ function * setDelegateStakeGenerator ({
       yield put(getOutstandingDelegationRewards())
       yield put(getDelegationsList())
       yield put(getAccountBalance(userAddress))
+      yield put(getDelegationInfo(userAddress))
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -190,6 +191,7 @@ function * setLockAmountGenerator ({
       type: SET_TRANSACTION_COUNTER,
       payload: 1
     })
+    const { userAddress } = yield select((state) => state.userInf)
 
     const contract = yield call(getQVaultInstance)
     const data = yield contract.lock(toWei(amountQ), { from: address })
@@ -198,6 +200,7 @@ function * setLockAmountGenerator ({
       yield put(getUserBalance(address))
       yield put(getAccountBalance(address))
       yield put(getLockedAssets(address))
+      yield put(getDelegationInfo(userAddress))
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -219,7 +222,7 @@ function * setUnlockAmountGenerator ({
       type: SET_TRANSACTION_COUNTER,
       payload: 1
     })
-
+    const { userAddress } = yield select((state) => state.userInf)
     const contract = yield call(getQVaultInstance)
     const data = yield contract.unlock(toWei(amountQ), { from: address })
 
@@ -227,6 +230,7 @@ function * setUnlockAmountGenerator ({
       yield put(getUserBalance(address))
       yield put(getAccountBalance(address))
       yield put(getLockedAssets(address))
+      yield put(getDelegationInfo(userAddress))
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -269,7 +273,6 @@ function * getMinimumQVaultTimeLockGenerator ({ address }) {
   try {
     const contract = yield call(getQVaultInstance)
     const data = yield contract.getMinimumBalance(address, getNowTimestamp())
-
     yield put(setMinimumQVaultTimeLock(fromWei(data)))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
