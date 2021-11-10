@@ -7,7 +7,6 @@ import { parameterVote } from 'pages/UserPages/Proposals/components/CreateQPropo
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts'
 import { getEpdrParametersVotingInstance, getEpqfiParametersVotingInstance } from 'contracts/contract-instance'
 
-/* EPQFIParametersVoting, EPDRParametersVoting */
 export default class ParametersVoting extends VotingService {
   async getProposalData (promiseRes, id, promiseStatus) {
     const objRes = {}

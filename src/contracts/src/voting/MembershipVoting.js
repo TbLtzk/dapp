@@ -7,11 +7,6 @@ import { CONTRACTS_NAMES, CONTRACT_TYPES } from 'constants/contracts'
 
 /* EPDRMembershipVoting, EPQFIMembershipVoting */
 export default class MembershipVoting extends VotingService {
-  constructor () {
-    super()
-    this.name = 'name'
-  }
-
   async getProposalData (promiseRes, id, promiseStatus) {
     const objRes = {}
     let objStats = {}
@@ -96,14 +91,16 @@ export default class MembershipVoting extends VotingService {
   // }
 
   async createProposal (data, userAddress) {
+    const contract = await this.witchContract()
+
     let result = null
     const link = data['external-link']
     const candidate = data.address
     // TODO: createChangeExpertProposal
     if (data?.first === CONTRACT_TYPES.addNewExpert) {
-      result = await this.contract.methods.createAddExpertProposal(link, candidate).send({ from: userAddress })
+      result = await contract.createAddExpertProposal(link, candidate, { from: userAddress })
     } else if (data?.first === CONTRACT_TYPES.removeCurrentExpert) {
-      result = await this.contract.methods.createRemoveExpertProposal(link, candidate).send({ from: userAddress })
+      result = await contract.createRemoveExpertProposal(link, candidate, { from: userAddress })
     }
     return result
   }

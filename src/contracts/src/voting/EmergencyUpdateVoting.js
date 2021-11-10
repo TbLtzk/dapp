@@ -1,18 +1,10 @@
-import { contracts } from '../../config/config'
 import VotingService from './VotingService'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 
-import {
-  getStatusTransformation
-} from '../../handler/VotingHandler'
+import { getStatusTransformation } from '../../handler/VotingHandler'
+import { getEmergencyUpdateVotingInstance } from 'contracts/contract-instance'
 
 export default class EmergencyUpdateVoting extends VotingService {
-  constructor () {
-    super()
-    this.contract = contracts.EmergencyUpdateVoting
-    this.contractName = CONTRACTS_NAMES.emergencyUpdateVoting
-  }
-
   async getProposalData (promiseRes, id, promiseStatus) {
     const objRes = {}
     let objStats = {}
@@ -31,7 +23,7 @@ export default class EmergencyUpdateVoting extends VotingService {
     objRes.proposalExecutionP = promiseRes.params.proposalExecutionP
     objRes.status = getStatusTransformation(promiseStatus)
     objRes.title = 'Emergency update proposal'
-    objRes.contract = this.contractName
+    objRes.contract = CONTRACTS_NAMES.emergencyUpdateVoting
     objStats = await this.getProposalStatsData(id)
 
     if (weightFor > 0 || weightAgainst > 0) {
@@ -46,9 +38,8 @@ export default class EmergencyUpdateVoting extends VotingService {
 
   async createProposal (data, userAddress) {
     const link = data['external-link']
-    const result = await this.contract.methods.createProposal(link)
-      .send(
-        { from: userAddress })
+    const contract = await getEmergencyUpdateVotingInstance()
+    const result = await contract.createProposal(link, { from: userAddress })
     return result
   }
 }

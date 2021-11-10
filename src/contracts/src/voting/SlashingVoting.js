@@ -1,11 +1,7 @@
 import VotingService from './VotingService'
 import SlashingEscrow from './SlashingEscrow'
 
-import {
-  getStatusTransformation,
-  getPercentageFormat,
-  transformToPercentage
-} from '../../handler/VotingHandler'
+import { getStatusTransformation, getPercentageFormat, transformToPercentage } from '../../handler/VotingHandler'
 import { fromWei } from 'func/balance'
 import { fromSolDateFormattingT1 } from 'func/date'
 import { CONTRACTS_NAMES } from 'constants/contracts'
@@ -47,12 +43,8 @@ export default class SlashingVoting extends VotingService {
     objRes.votingEndTime = promiseRes.base.params.votingEndTime
 
     objRes.status = getStatusTransformation(promiseStatus)
-    objRes.title = isValidatorSlashingMode
-      ? 'Validator slashing proposals'
-      : 'Root Nodes slashing proposals'
-    objRes.type = isValidatorSlashingMode
-      ? 'validator slashing'
-      : 'root nodes slashing'
+    objRes.title = isValidatorSlashingMode ? 'Validator slashing proposals' : 'Root Nodes slashing proposals'
+    objRes.type = isValidatorSlashingMode ? 'validator slashing' : 'root nodes slashing'
     objStats = await this.getProposalStatsData(id)
     objRes.contract = this.contractName
     if (promiseStatus === '5') {
@@ -60,14 +52,17 @@ export default class SlashingVoting extends VotingService {
         ? 'ValidatorsSlashingEscrow'
         : 'RootNodesSlashingEscrow'
       const SlashingEscrowContract = new SlashingEscrow(SlashingEscrowContractName)
-      objEscrow.objEscrow.objection.statusObjection =
-        SlashingEscrowContract.getTitleStatus(await SlashingEscrowContract.getStatus(id))
+      objEscrow.objEscrow.objection.statusObjection = SlashingEscrowContract.getTitleStatus(
+        await SlashingEscrowContract.getStatus(id)
+      )
       const escrowArbitrationInfo = await SlashingEscrowContract.getArbitrationInfos(id)
       const escrowDecisionStats = await SlashingEscrowContract.getDecisionStats(id)
       objEscrow.objEscrow.objection.executed = escrowArbitrationInfo.executed
       objEscrow.objEscrow.objection.remark = escrowArbitrationInfo.remark
       objEscrow.objEscrow.objection.slashedAmount = fromWei(escrowArbitrationInfo.params.slashedAmount)
-      objEscrow.objEscrow.objection.objectionEndTime = fromSolDateFormattingT1(escrowArbitrationInfo.params.objectionEndTime)
+      objEscrow.objEscrow.objection.objectionEndTime = fromSolDateFormattingT1(
+        escrowArbitrationInfo.params.objectionEndTime
+      )
       objEscrow.objEscrow.objection.appealEndTime = fromSolDateFormattingT1(escrowArbitrationInfo.params.appealEndTime)
       objEscrow.objEscrow.objection.proposerRemark = escrowArbitrationInfo.proposerRemark
       objEscrow.objEscrow.objection.appealConfirmed = escrowArbitrationInfo.appealConfirmed
@@ -78,7 +73,9 @@ export default class SlashingVoting extends VotingService {
       objEscrow.objEscrow.decision.percentage = transformToPercentage(escrowArbitrationInfo.decision.percentage)
       objEscrow.objEscrow.decision.proposer = escrowArbitrationInfo.decision.proposer
       objEscrow.objEscrow.decision.confirmationCount = escrowDecisionStats.confirmationCount
-      objEscrow.objEscrow.decision.currentConfirmationPercentage = transformToPercentage(escrowDecisionStats.currentConfirmationPercentage)
+      objEscrow.objEscrow.decision.currentConfirmationPercentage = transformToPercentage(
+        escrowDecisionStats.currentConfirmationPercentage
+      )
       objEscrow.objEscrow.decision.requiredConfirmations = escrowDecisionStats.requiredConfirmations
     }
 
@@ -86,14 +83,15 @@ export default class SlashingVoting extends VotingService {
   }
 
   async createProposal (data, userAddress) {
+    const contract = await this.switchContract()
+
     try {
       const link = data['external-link']
       // percentage of stake to slash
       let percentageStake = data['%-value']
       percentageStake = getPercentageFormat(percentageStake)
       const candidate = data.address
-      const result = await this.contract.methods.createProposal(link, candidate, percentageStake)
-        .send({ from: userAddress })
+      const result = await contract.createProposal(link, candidate, percentageStake, { from: userAddress })
       return result
     } catch (e) {
       console.error(e)

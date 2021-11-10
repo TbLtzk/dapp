@@ -1,4 +1,3 @@
-import { contracts } from '../../config/config'
 import VotingService from './VotingService'
 
 import { getStatusTransformation } from '../../handler/VotingHandler'
@@ -9,17 +8,6 @@ import { CONTRACTS_NAMES } from 'constants/contracts'
 import { getConstitutionVotingInstance } from 'contracts/contract-instance'
 
 export default class ConstitutionVoting extends VotingService {
-  constructor () {
-    super()
-    this.contract = contracts.ConstitutionVoting
-    this.contractName = CONTRACTS_NAMES.constitutionVoting
-  }
-
-  /**
-   * get proposal sting type
-   * @param type
-   * @return string
-   */
   getProposalStringType (type) {
     switch (Number(type)) {
       case 0:
@@ -58,7 +46,7 @@ export default class ConstitutionVoting extends VotingService {
     objRes.status = getStatusTransformation(promiseStatus)
     objRes.title = `${proposalType} constitution proposal`
     objStats = await this.getProposalStatsData(id)
-    objRes.contract = this.contractName
+    objRes.contract = CONTRACTS_NAMES.constitutionVoting
 
     if (weightFor > 0 || weightAgainst > 0) {
       objRes.numberProposalVotes = {
@@ -99,26 +87,26 @@ export default class ConstitutionVoting extends VotingService {
     const classification = this.getProposalNumberType(data?.classification)
     const hash = data.hash
     const link = data['external-link']
-    const paramInputs = data['type-proposal'] === undefined
-      ? []
-      : data['type-proposal'].reduce((types, item, index) => {
-        let inputValue = data['parameter-value'][index]
-        switch (+item) {
-          case ParameterType.BOOL:
-            inputValue = (inputValue.toLowerCase() === 'true')
-            break
-          case ParameterType.UINT:
-            inputValue = BN(inputValue)
-              .toFixed()
-            break
-        }
-        types.push({
-          paramType: item,
-          paramKey: data['parameter-key'][index],
-          paramValue: inputValue
-        })
-        return types
-      }, [])
+    const paramInputs =
+      data['type-proposal'] === undefined
+        ? []
+        : data['type-proposal'].reduce((types, item, index) => {
+          let inputValue = data['parameter-value'][index]
+          switch (+item) {
+            case ParameterType.BOOL:
+              inputValue = inputValue.toLowerCase() === 'true'
+              break
+            case ParameterType.UINT:
+              inputValue = BN(inputValue).toFixed()
+              break
+          }
+          types.push({
+            paramType: item,
+            paramKey: data['parameter-key'][index],
+            paramValue: inputValue
+          })
+          return types
+        }, [])
     if (paramInputs.length !== 0) {
       try {
         result = await contract.createProposal(link, classification, hash, paramInputs, {
@@ -139,28 +127,8 @@ export default class ConstitutionVoting extends VotingService {
   }
 
   async getConstitutionHash () {
-    const result = await this.contract.methods.constitutionHash().call()
+    const contract = await getConstitutionVotingInstance()
+    const result = await contract.constitutionHash()
     return result
   }
-
-  // async getProposals () {
-  //   const proposalEvents = await this.getProposalsEvent()
-  //   const proposalIds = getPastProposalsIds(proposalEvents)
-  //   const proposals = []
-  //   if (proposalIds) {
-  //     for (const id of proposalIds) {
-  //       let objRes = {}
-  //       const promiseStatus = await this.getProposalStatus(id)
-  //       if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
-  //         const promiseRes = await this.getProposal(id)
-  //         if (promiseRes) {
-  //           objRes = await this.getProposalData(promiseRes, id, promiseStatus)
-  //           proposals.push(objRes)
-  //         }
-  //       }
-  //     }
-  //   }
-  //   console.log(proposals)
-  //   return proposals
-  // }
 }

@@ -67,8 +67,6 @@ function ProposalsList (props) {
             : !proposals
                 ? <p>No proposals</p>
                 : proposals.map((proposal, i) => {
-                  // TODO: don`t show proposal if veto time === 0
-                  // return remainDate(proposal.vetoEndTime) !== 0 ?
                   return (
                 <ListCard
                   key={proposal.id + proposal?.contract}

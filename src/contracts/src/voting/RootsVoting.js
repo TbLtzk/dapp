@@ -1,26 +1,11 @@
-import { contracts } from '../../config/config'
-import {
-  getStatusTransformation
-} from '../../handler/VotingHandler'
+import { getStatusTransformation } from '../../handler/VotingHandler'
 import VotingService from './VotingService'
 import { fromWei } from 'func/balance'
-import { CONTRACTS_NAMES, CONTRACT_TYPES } from 'constants/contracts'
+import { CONTRACT_TYPES } from 'constants/contracts'
 
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000'
 
 export default class RootsVoting extends VotingService {
-  constructor () {
-    super()
-    this.contract = contracts.RootsVoting
-    this.contractName = CONTRACTS_NAMES.rootsVoting
-  }
-
-  /**
-   * check proposal type depends on candidate and replaceDest addresses
-   * @param candidateAddress
-   * @param replaceDestAddress
-   * @return string
-   */
   checkProposalTitle (candidateAddress, replaceDestAddress) {
     if (candidateAddress !== EMPTY_ADDR && replaceDestAddress !== EMPTY_ADDR) {
       return 'Rode Node Swapping Proposal'
@@ -71,9 +56,10 @@ export default class RootsVoting extends VotingService {
   }
 
   async isUserVote (id, address) {
+    const contract = await this.switchContract()
+
     try {
-      const result = await this.RootsVoting.methods.votes(id, address)
-        .call()
+      const result = await contract.votes(id, address)
       return result
     } catch (e) {
       console.error(e)
@@ -81,6 +67,8 @@ export default class RootsVoting extends VotingService {
   }
 
   async createProposal (data, userAddress) {
+    const contract = await this.witchContract()
+
     let result = null
     const hash = data.hash ?? '0x00'
     const link = data['external-link']
@@ -88,16 +76,12 @@ export default class RootsVoting extends VotingService {
     if (data.first === CONTRACT_TYPES.addAnewRootNode) {
       const removeCurrent = data['remove-current']
       if (removeCurrent === 'no') {
-        result = await this.contract.methods.createProposal(link, hash, userAddress, EMPTY_ADDR)
-          .send({ from: userAddress })
+        result = await contract.createProposal(link, hash, userAddress, EMPTY_ADDR, { from: userAddress })
       } else {
-        result = await this.contract.methods.createProposal(link, hash, userAddress, addressToRemove)
-          .send({ from: userAddress })
+        result = await contract.createProposal(link, hash, userAddress, addressToRemove, { from: userAddress })
       }
     } else if (data.first === CONTRACT_TYPES.removeACurrentRootNode) {
-      result = await this.contract.methods.createProposal(link, hash, EMPTY_ADDR, addressToRemove)
-        .send(
-          { from: userAddress })
+      result = await contract.createProposal(link, hash, EMPTY_ADDR, addressToRemove, { from: userAddress })
     }
     return result
   }

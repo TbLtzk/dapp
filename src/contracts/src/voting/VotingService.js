@@ -1,5 +1,4 @@
-import { contracts } from '../../config/config'
-import { getPastEvents, getPastProposalsIds, transformToPercentage } from '../../handler/VotingHandler'
+import { getPastProposalsIds, transformToPercentage } from '../../handler/VotingHandler'
 import { ParameterType } from '@q-dev/q-js-sdk'
 import {
   getRootNodesInstance,
@@ -10,12 +9,13 @@ import {
   getRootNodesSlashingVotingInstance,
   getEpqfiParametersVotingInstance,
   getEpdrParametersVotingInstance,
-  getRootNodesMembershipVotingInstance
+  getRootNodesMembershipVotingInstance,
+  getEpqfiMembershipVotingInstance,
+  getEpdrMembershipVotingInstance
 } from 'contracts/contract-instance'
 
 export default class VotingService {
   constructor (contractName) {
-    this.contract = contracts[contractName]
     this.contractName = contractName
   }
 
@@ -45,68 +45,88 @@ export default class VotingService {
       case 'EPDRParametersVoting': {
         return await getEpdrParametersVotingInstance()
       }
+      case 'EPQFIMembershipVoting': {
+        return await getEpqfiMembershipVotingInstance()
+      }
+      case 'EPDRMembershipVoting': {
+        return await getEpdrMembershipVotingInstance()
+      }
     }
   }
 
   async getProposalsEvent () {
     const contract = await this.switchContract()
-    return await getPastEvents(contract, 'ProposalCreated')
+    const eventOptions = {
+      fromBlock: 0,
+      toBlock: 'latest'
+    }
+    return contract.instance.getPastEvents('ProposalCreated', eventOptions)
   }
 
   async getProposal (id) {
-    const result = await this.contract.methods.proposals(id).call()
+    const contract = await this.switchContract()
+    const result = await contract.instance.methods.proposals(id).call()
     return result
   }
 
   async getProposalStatus (id) {
-    const result = await this.contract.methods.getStatus(id).call()
+    const contract = await this.switchContract()
+
+    const result = await contract.getStatus(id)
     return result
   }
 
   async getProposalStats (id) {
-    const result = await this.contract.methods.getProposalStats(id).call()
+    const contract = await this.switchContract()
+    const result = await contract.getProposalStats(id)
     return result
   }
 
   async getVetoesNumber (id) {
+    const contract = await this.switchContract()
     try {
-      if (this.contract.methods.getVetosNumber) {
-        const result = await this.contract.methods.getVetosNumber(id).call()
+      if (contract.instance.methods.getVetosNumber) {
+        const result = await contract.instance.methods.getVetosNumber(id).call()
         return result
       } else {
         return 0
       }
     } catch (err) {
-      console.error(id, 'error' + err)
       return 0
     }
   }
 
   async getVetoesPercentage (id) {
-    const result = await this.contract.methods.getVetosPercentage(id).call()
+    const contract = await this.switchContract()
+    const result = await contract.getVetosPercentage(id)
     return result
   }
 
   async voteAgainst (id, userAddress) {
-    const result = await this.contract.methods.voteAgainst(id).send({ from: userAddress })
+    const contract = await this.switchContract()
+    const result = await contract.voteAgainst(id, { from: userAddress })
     return result
   }
 
   async voteFor (id, userAddress) {
-    const result = await this.contract.methods.voteFor(id).send({ from: userAddress })
+    const contract = await this.switchContract()
+    const result = await contract.voteFor(id, { from: userAddress })
     return result
   }
 
   async veto (id, userAddress) {
-    const result = await this.contract.methods.veto(id).send({ from: userAddress })
+    const contract = await this.switchContract()
+    const result = await contract.veto(id, { from: userAddress })
     return result
   }
 
   async execute (id, userAddress) {
     const promiseStatus = await this.getProposalStatus(id)
+    const contract = await this.switchContract()
+
     let result = null
     if (promiseStatus === '4') {
-      result = await this.contract.methods.execute(id).send({ from: userAddress })
+      result = await contract.execute(id, { from: userAddress })
     }
     return result
   }
@@ -144,8 +164,8 @@ export default class VotingService {
     const proposalEvents = await this.getProposalsEvent()
     const proposalIds = proposalEvents.map((event) => event.returnValues._id)
     const allProposals = await contract.getProposals(...proposalIds)
-    const endedProposals = allProposals.filter((obj) => obj.status === '1' || obj.status === '3' || obj.status === '4')
-    return await Promise.all(endedProposals.map((prop) => this.getProposalData(prop, prop.id, prop.status)))
+    const proposals = allProposals.filter((obj) => obj.status === '1' || obj.status === '3' || obj.status === '4')
+    return await Promise.all(proposals.map((prop) => this.getProposalData(prop, prop.id, prop.status)))
   }
 
   async getEndedProposals () {
@@ -182,21 +202,12 @@ export default class VotingService {
     const proposalEvents = await this.getProposalsEvent()
     const proposalIds = getPastProposalsIds(proposalEvents)
 
-    let ended = 0
-    let active = 0
-
-    await Promise.all(
-      proposalIds.map(async (id) => {
-        const promiseStatus = await this.getProposalStatus(id)
-        if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4') {
-          active++
-        } else {
-          ended++
-        }
-      })
+    const proposals = await Promise.all(proposalIds.map((id) => this.getProposalStatus(id)))
+    const activeProposals = proposals.filter(
+      (promiseStatus) => promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4'
     )
 
-    return { ended, active }
+    return { ended: proposals.length - activeProposals.length, active: activeProposals.length }
   }
 
   transformParameterType (id) {
@@ -205,7 +216,8 @@ export default class VotingService {
   }
 
   async getParametersArr (id) {
-    const result = await this.contract.methods.getParametersArr(id).call()
+    const contract = await this.switchContract()
+    const result = await contract.getParametersArr(id)
     return result
   }
 

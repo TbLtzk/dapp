@@ -3,9 +3,8 @@ import RootsVotingService from '../src/voting/RootsVoting'
 import ConstitutionVotingService from '../src/voting/ConstitutionVoting'
 import EmergencyUpdateVotingService from '../src/voting/EmergencyUpdateVoting'
 import GeneralUpdateVotingService from '../src/voting/GeneralUpdateVoting'
-import MembershipVotingService from '../src/voting/MembershipVoting'
-import ParametersVotingService from '../src/voting/ParametersVoting'
-import { chooseExpertContractDependsOnType } from './QExpertVotingHandler'
+import MembershipVoting from '../src/voting/MembershipVoting'
+import ParametersVoting from '../src/voting/ParametersVoting'
 import { PROPOSALS_TYPES } from 'constants/statuses'
 import { BN } from 'func/useful'
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts'
@@ -21,7 +20,7 @@ export const getPastEvents = async (contract, event) => {
     const result = await contractWeb3.getPastEvents(event, eventOptions)
     return result
   } catch (error) {
-    console.error(error)
+    console.log(error)
   }
 }
 
@@ -73,18 +72,18 @@ export function creationRootContractObj () {
 export function creationQContractObj (contractName) {
   switch (contractName) {
     case CONTRACTS_NAMES.constitutionVoting:
-      return new ConstitutionVotingService()
+      return new ConstitutionVotingService('ConstitutionVoting')
     case CONTRACTS_NAMES.emergencyUpdateVoting:
-      return new EmergencyUpdateVotingService()
+      return new EmergencyUpdateVotingService('EmergencyUpdateVoting')
     case CONTRACTS_NAMES.generalUpdateVoting:
-      return new GeneralUpdateVotingService()
+      return new GeneralUpdateVotingService('GeneralUpdateVoting')
   }
 }
 
 export function creationQContractsObjArray () {
-  const constitutionVoting = new ConstitutionVotingService()
-  const emergencyUpdateVoting = new EmergencyUpdateVotingService()
-  const generalUpdateVoting = new GeneralUpdateVotingService()
+  const constitutionVoting = new ConstitutionVotingService('ConstitutionVoting')
+  const emergencyUpdateVoting = new EmergencyUpdateVotingService('EmergencyUpdateVoting')
+  const generalUpdateVoting = new GeneralUpdateVotingService('GeneralUpdateVoting')
   return [constitutionVoting, emergencyUpdateVoting, generalUpdateVoting]
 }
 
@@ -115,19 +114,19 @@ export function creationExpertContractObj (contractName) {
   switch (contractName) {
     case CONTRACTS_NAMES.ePQFIMembershipVoting:
     case CONTRACTS_NAMES.ePDRMembershipVoting:
-      return new MembershipVotingService(contractName)
+      return new MembershipVoting(contractName)
     case CONTRACTS_NAMES.ePQFIParametersVoting:
     case CONTRACTS_NAMES.ePDRParametersVoting:
-      return new ParametersVotingService(contractName)
+      return new MembershipVoting(contractName)
   }
 }
 
 export function creationExpertContractsObjArray () {
-  const contracts = []
-  for (const contract of arrContractsExpert) {
-    contracts.push(chooseExpertContractDependsOnType(contract.typeContract, contract.type))
-  }
-  return contracts
+  const ePQFImembershipVoting = new MembershipVoting('EPQFIMembershipVoting')
+  const ePDRmembershipVoting = new MembershipVoting('EPDRMembershipVoting')
+  const ePQFIparametersVoting = new ParametersVoting('EPQFIParametersVoting')
+  const ePDRparametersVoting = new ParametersVoting('EPDRParametersVoting')
+  return [ePQFImembershipVoting, ePDRmembershipVoting, ePQFIparametersVoting, ePDRparametersVoting]
 }
 
 export function tabSwitcher (activeTab, qProp, rootNodeProp, expertProp, slashingProp) {
