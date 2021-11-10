@@ -122,6 +122,9 @@ function ProposalsList (props) {
                 })
       }
       {
+        <div>simple paganation</div>
+      }
+      {
         modalShow
           ? <ModalVote
             proposalContract={proposalContract}

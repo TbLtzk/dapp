@@ -17,16 +17,18 @@ import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
 function * getProposalsList ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active }) {
   try {
     const contracts = creationExpertContractsObjArray()
-    let data = null
+
     switch (proposalStatusType) {
-      case PROPOSAL_STATUS_TYPES.active:
-        data = yield Promise.all(contracts.map((item) => item.getProposals()))
-        yield put(getExpertProposalsListSuccess([].concat.apply([], data)))
+      case PROPOSAL_STATUS_TYPES.active: {
+        const pending = yield Promise.all(contracts.map((item) => item.getProposals()))
+        yield put(getExpertProposalsListSuccess([].concat.apply([], pending)))
         break
-      case PROPOSAL_STATUS_TYPES.ended:
-        data = yield Promise.all(contracts.map((item) => item.getEndedProposals()))
-        yield put(getExpertEndedProposalsSuccess([].concat.apply([], data)))
+      }
+      case PROPOSAL_STATUS_TYPES.ended: {
+        const ended = yield Promise.all(contracts.map((item) => item.getEndedProposals()))
+        yield put(getExpertEndedProposalsSuccess([].concat.apply([], ended)))
         break
+      }
     }
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)

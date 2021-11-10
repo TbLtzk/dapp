@@ -10,25 +10,25 @@ import {
   getOneProposalSuccess,
   getRootNodeEndedProposalsError
 } from 'store/actions/action-creaters/voting/root-node-proposals'
-import {
-  creationRootContractObj
-} from 'contracts/handler/VotingHandler'
+import { creationRootContractObj } from 'contracts/handler/VotingHandler'
 import ErrorHandler from 'func/ErrorHandler'
 import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
 
 function * getProposalsList ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active }) {
   try {
     const contracts = creationRootContractObj()
-    let result = null
+
     switch (proposalStatusType) {
-      case PROPOSAL_STATUS_TYPES.active:
-        result = yield contracts?.getProposals()
-        yield put(getRootNodeProposalsListSuccess(result))
+      case PROPOSAL_STATUS_TYPES.active: {
+        const pending = yield contracts?.getProposals()
+        yield put(getRootNodeProposalsListSuccess(pending))
         break
-      case PROPOSAL_STATUS_TYPES.ended:
-        result = yield contracts?.getEndedProposals()
-        yield put(getRootNodeEndedProposalsSuccess(result))
+      }
+      case PROPOSAL_STATUS_TYPES.ended: {
+        const ended = yield contracts?.getEndedProposals()
+        yield put(getRootNodeEndedProposalsSuccess(ended))
         break
+      }
     }
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)

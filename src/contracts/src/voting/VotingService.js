@@ -60,7 +60,7 @@ export default class VotingService {
       fromBlock: 0,
       toBlock: 'latest'
     }
-    return contract.instance.getPastEvents('ProposalCreated', eventOptions)
+    return await contract.instance.getPastEvents('ProposalCreated', eventOptions)
   }
 
   async getProposal (id) {
@@ -171,10 +171,12 @@ export default class VotingService {
   async getEndedProposals () {
     const contract = await this.switchContract()
     const proposalEvents = await this.getProposalsEvent()
-    const proposalIds = proposalEvents.map((event) => event.returnValues._id)
+    const proposalIds = proposalEvents.map((event) => event.returnValues._id).slice(-3)
     const allProposals = await contract.getProposals(...proposalIds)
     const endedProposals = allProposals.filter((obj) => obj.status !== '1' && obj.status !== '3' && obj.status !== '4')
-    return await Promise.all(endedProposals.map((prop) => this.getProposalData(prop, prop.id, prop.status)))
+
+    const result = await Promise.all(endedProposals.map((prop) => this.getProposalData(prop, prop.id, prop.status)))
+    return result
   }
 
   async getRootNodesNumber () {

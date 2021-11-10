@@ -11,26 +11,28 @@ import {
   getOneProposalSuccess,
   getQEndedProposalsError
 } from 'store/actions/action-creaters/voting/q-proposals'
-import {
-  creationQContractObj,
-  creationQContractsObjArray
-} from 'contracts/handler/VotingHandler'
+import { creationQContractObj, creationQContractsObjArray } from 'contracts/handler/VotingHandler'
 
 import ErrorHandler from 'func/ErrorHandler'
+
+// const test = (contracts) => {
+//   await Promise.all(contracts.map(item => item.getProposals()))
+// }
 
 function * getProposalsList ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active }) {
   try {
     const contracts = creationQContractsObjArray()
-    let data = null
     switch (proposalStatusType) {
-      case PROPOSAL_STATUS_TYPES.active:
-        data = yield Promise.all(contracts.map(item => item.getProposals()))
-        yield put(getQProposalsListSuccess([].concat.apply([], data)))
+      case PROPOSAL_STATUS_TYPES.active: {
+        const pedning = yield Promise.all(contracts.map((item) => item.getProposals()))
+        yield put(getQProposalsListSuccess([].concat.apply([], pedning)))
         break
-      case PROPOSAL_STATUS_TYPES.ended:
-        data = yield Promise.all(contracts.map(item => item.getEndedProposals()))
-        yield put(getQEndedProposalsSuccess([].concat.apply([], data)))
+      }
+      case PROPOSAL_STATUS_TYPES.ended: {
+        const ended = yield Promise.all(contracts.map((item) => item.getEndedProposals()))
+        yield put(getQEndedProposalsSuccess([].concat.apply([], ended)))
         break
+      }
     }
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
@@ -45,11 +47,7 @@ function * getProposalsList ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active
   }
 }
 
-function * getQProposal ({
-  contractName,
-  id,
-  activeProposal
-}) {
+function * getQProposal ({ contractName, id, activeProposal }) {
   try {
     const contract = creationQContractObj(contractName)
     if (contract) {

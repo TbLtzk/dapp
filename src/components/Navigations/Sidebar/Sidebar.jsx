@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 
 import { Accordion } from 'react-bootstrap'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/selectors/user-inf'
 import { qProposalsArr } from 'store/selectors/voting/q-proposals'
 import { rootNodeProposalsArr } from 'store/selectors/voting/root-node-proposals'
@@ -37,15 +37,15 @@ import {
   Footer
 } from './styles'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { PROPOSALS_TYPES, AUCTIONS_TYPES } from 'constants/statuses'
-import { getProposalsList } from 'store/actions/action-creaters/voting/proposals'
-import { getAuctionsList } from 'store/actions/action-creaters/auctions/auctions'
+// import { PROPOSALS_TYPES, AUCTIONS_TYPES } from 'constants/statuses'
+// import { getProposalsList } from 'store/actions/action-creaters/voting/proposals'
+// import { getAuctionsList } from 'store/actions/action-creaters/auctions/auctions'
 import { mode } from 'store/selectors/dashboardMode'
 import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
 
 function Sidebar () {
   const history = useHistory()
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
   const userAddress = useSelector(userAddressMetamask)
   const qProposals = useSelector(qProposalsArr)
@@ -65,14 +65,14 @@ function Sidebar () {
     return Number(history.location.pathname === ('/' + location))
   }
 
-  useEffect(() => {
-    for (const item in PROPOSALS_TYPES) {
-      dispatch(getProposalsList(PROPOSALS_TYPES[item]))
-    }
-    for (const item in AUCTIONS_TYPES) {
-      dispatch(getAuctionsList(AUCTIONS_TYPES[item], true))
-    }
-  }, [])
+  // useEffect(() => {
+  //   for (const item in PROPOSALS_TYPES) {
+  //     dispatch(getProposalsList(PROPOSALS_TYPES[item]))
+  //   }
+  //   for (const item in AUCTIONS_TYPES) {
+  //     dispatch(getAuctionsList(AUCTIONS_TYPES[item], true))
+  //   }
+  // }, [])
 
   return (
     <header>

@@ -3,7 +3,8 @@ import { call, put, takeEvery, select } from 'redux-saga/effects'
 import * as actionTypes from 'store/actions/action-types/voting/slashing-proposals'
 import {
   setErrorMessage,
-  setTransactionLoading, setTransactionLoadingSuccess
+  setTransactionLoading,
+  setTransactionLoadingSuccess
 } from 'store/actions/action-creaters/transaction-handler'
 
 import {
@@ -25,16 +26,17 @@ import { CONTRACTS_NAMES } from 'constants/contracts'
 function * getProposalsList ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active }) {
   try {
     const contracts = creationSlashingContractsObjArray()
-    let data = []
     switch (proposalStatusType) {
-      case PROPOSAL_STATUS_TYPES.active:
-        data = yield Promise.all(contracts.map((item) => item.getProposals()))
-        yield put(getSlashingProposalsListSuccess([].concat.apply([], data)))
+      case PROPOSAL_STATUS_TYPES.active: {
+        const pending = yield Promise.all(contracts.map((contract) => contract.getProposals()))
+        yield put(getSlashingProposalsListSuccess([].concat.apply([], pending)))
         break
-      case PROPOSAL_STATUS_TYPES.ended:
-        data = yield Promise.all(contracts.map((item) => item.getEndedProposals()))
-        yield put(getSlashingEndedProposalsSuccess([].concat.apply([], data)))
+      }
+      case PROPOSAL_STATUS_TYPES.ended: {
+        const ended = yield Promise.all(contracts.map((contract) => contract.getEndedProposals()))
+        yield put(getSlashingEndedProposalsSuccess([].concat.apply([], ended)))
         break
+      }
     }
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
