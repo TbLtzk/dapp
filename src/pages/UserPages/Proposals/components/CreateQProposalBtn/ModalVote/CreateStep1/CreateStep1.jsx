@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   setVoteProposalObj,
   setDisabledCreatedProposalBtn
-} from 'store/actions/action-creaters/voting/proposals'
+} from 'store/voting/proposals/action-creators'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
 
-import { formVoteObject } from 'store/selectors/voting/proposals'
+import { formVoteObject } from 'store/voting/proposals/selectors'
 
 function CreateStep1 (props) {
   const { register, errors, proposalContract } = props

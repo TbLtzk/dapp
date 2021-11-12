@@ -3,8 +3,8 @@ import { GlobalStyle } from 'constants/globalStyle'
 import { ThemeProvider } from 'styled-components'
 import themeStyles from 'constants/style'
 import { darkColors, lightColors, THEMES } from 'constants/colors'
-import { theme } from 'store/selectors/theme'
-import { setThem } from 'store/actions/action-creaters/theme'
+import { theme } from 'store/theme/selectors'
+import { setThem } from 'store/theme/action-creators'
 
 import { useDispatch, useSelector } from 'react-redux'
 

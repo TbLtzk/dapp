@@ -1,6 +1,6 @@
 import React from 'react'
 import VotingStats from 'components/Custom/VotingStats'
-import ProposalsList from '../ProposalsList'
+import ProposalsPagination from '../ProposalsPagination'
 import { ProposalsTabWrp } from './styles'
 
 function ProposalsTab (props) {
@@ -8,17 +8,19 @@ function ProposalsTab (props) {
     proposalsType,
     isLoading,
     proposals,
-    errorMessage
+    errorMessage,
+    proposalsCount
   } = props
 
   return (
     <ProposalsTabWrp>
-      <ProposalsList
+      <ProposalsPagination
         activeTab={proposalsType}
         proposals={proposals}
         loading={isLoading}
         errorMessage={errorMessage}
         proposalsKind={proposalsType}
+        proposalsCount={proposalsCount}
       />
       <VotingStats/>
       </ProposalsTabWrp>

@@ -5,8 +5,8 @@ import {
   setCreatedStepsLimit,
   setCreateProposalObj,
   setDisabledCreatedProposalBtn
-} from 'store/actions/action-creaters/voting/proposals'
-import { formObject } from 'store/selectors/voting/proposals'
+} from 'store/voting/proposals/action-creators'
+import { formObject } from 'store/voting/proposals/selectors'
 import { CONTRACT_TYPES } from 'constants/contracts'
 
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'

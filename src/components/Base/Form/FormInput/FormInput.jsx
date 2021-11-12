@@ -4,7 +4,7 @@ import { Form } from 'react-bootstrap'
 import ErrorInputMessage from 'components/Base/ErrorInputMessage'
 import { InputWrapper } from 'components/Base/Form/FormInput/styles'
 import { useSelector } from 'react-redux'
-import { theme } from 'store/selectors/theme'
+import { theme } from 'store/theme/selectors'
 
 const FormInput = forwardRef((props, ref) => {
   // eslint-disable-next-line react/prop-types

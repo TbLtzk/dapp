@@ -1,5 +1,4 @@
 import { contracts } from '../../config/config'
-import { getPastEvents } from '../../handler/VotingHandler'
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers'
 
 import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore'
@@ -15,33 +14,36 @@ export default class AuctionService {
   }
 
   async getAuctionsEvent () {
-    return await getPastEvents(this.contract, 'AuctionStarted')
+    try {
+      const eventOptions = {
+        // topics: [],
+        fromBlock: 0,
+        toBlock: 'latest'
+      }
+      const result = await this.contract.getPastEvents('AuctionStarted', eventOptions)
+      return result
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async getAuction (user, vaultId) {
     let result = null
     if (vaultId) {
-      result = await this.contract.methods.auctions(user, vaultId)
-        .call()
+      result = await this.contract.methods.auctions(user, vaultId).call()
     } else {
-      result = await this.contract.methods.auctions(user)
-        .call()
+      result = await this.contract.methods.auctions(user).call()
     }
     return result
   }
 
-  async getAuctionData (promiseRes, inf) {
-  }
+  async getAuctionData (promiseRes, inf) {}
 
   async getAllowance (userAddress, contractAddress, value) {
     const allowance = await this.stableCoinUSD.allowance(userAddress, contractAddress)
     if (value) {
       if (Number(allowance) < Number(value)) {
-        await this.stableCoinUSD.approve(
-          contractAddress,
-          MAX_APPROVE_AMOUNT,
-          userAddress
-        )
+        await this.stableCoinUSD.approve(contractAddress, MAX_APPROVE_AMOUNT, userAddress)
       }
     }
   }

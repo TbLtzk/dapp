@@ -3,9 +3,9 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { userAddressMetamask } from 'store/selectors/user-inf'
-import { userBalance } from 'store/selectors/q-vault'
-import { setDelegateStake } from 'store/actions/action-creaters/q-vault'
+import { userAddressMetamask } from 'store/user-inf/selectors'
+import { userBalance } from 'store/q-vault/selectors'
+import { setDelegateStake } from 'store/q-vault/action-creators'
 import FormInput from 'components/Base/Form/FormInput'
 import Button from 'components/Base/Buttons/Button'
 

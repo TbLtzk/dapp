@@ -2,28 +2,28 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import VotingStats from 'components/Custom/VotingStats'
 import { useDispatch, useSelector } from 'react-redux'
-import { getOneProposal } from 'store/actions/action-creaters/voting/proposals'
-import { qErrorM, qLoadingProposals, oneQProposal } from 'store/selectors/voting/q-proposals'
+import { getOneProposal } from 'store/voting/proposals/action-creators'
+import { qErrorM, qLoadingProposals, oneQProposal } from 'store/voting/q-proposals/selectors'
 import { PROPOSALS_TYPES } from 'constants/statuses'
 import {
   rootNodeErrorM,
   rootNodeLoadingProposals,
   oneRootNodeProposal
-} from 'store/selectors/voting/root-node-proposals'
+} from 'store/voting/root-node-proposals/selectors'
 import {
   expertErrorM,
   oneExpertProposal,
   loadingExpertProposals
-} from 'store/selectors/voting/expert-proposals'
+} from 'store/voting/expert-proposals/selectors'
 import {
   slashingErrorM,
   slashingLoadingProposals,
   oneSlashingProposal
-} from 'store/selectors/voting/slashing-proposals'
+} from 'store/voting/slashing-proposals/selectors'
 
-import ProposalsList from 'pages/UserPages/Proposals/components/ProposalsList'
+import ProposalsList from 'pages/UserPages/Proposals/components/ProposalsPagination'
 import PageWrap from 'components/Base/PageWrap'
-import { tabSwitcher } from 'contracts/handler/VotingHandler'
+import { tabSwitcher } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 
 function OneProposalPage (props) {

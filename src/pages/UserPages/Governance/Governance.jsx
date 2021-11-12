@@ -2,123 +2,107 @@ import React, { useEffect } from 'react'
 import PageWrap from 'components/Base/PageWrap'
 import InfoBlock from './components/InfoBlock'
 import VotingStats from 'components/Custom/VotingStats'
-import { PROPOSAL_STATUS_TYPES, PROPOSALS_TYPES } from 'constants/statuses'
-import { useDispatch, useSelector } from 'react-redux'
-import { getProposalsList } from 'store/actions/action-creaters/voting/proposals'
-import {
-  qEndedProposals, qErrorEnded,
-  qErrorM, qLoadingEndedProposals,
-  qLoadingProposals,
-  qProposalsArr
-} from 'store/selectors/voting/q-proposals'
-import {
-  rootNodeEndedProposals, rootNodeErrorEnded,
-  rootNodeErrorM, rootNodeLoadingEndedProposals,
-  rootNodeLoadingProposals,
-  rootNodeProposalsArr
-} from 'store/selectors/voting/root-node-proposals'
-import {
-  expertEndedProposals, expertErrorEnded,
-  expertErrorM, expertLoadingEndedProposals,
-  expertProposalsArr,
-  loadingExpertProposals
-} from 'store/selectors/voting/expert-proposals'
-import {
-  slashingEndedProposals, slashingErrorEnded,
-  slashingErrorM, slashingLoadingEndedProposals,
-  slashingLoadingProposals,
-  slashingProposalsArr
-} from 'store/selectors/voting/slashing-proposals'
 
-import { mode } from 'store/selectors/dashboardMode'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  qActiveProposalsCountSelector,
+  qEndedProposalsCountSelector,
+  qLoadingProposalsCountSelector
+} from 'store/voting/q-proposals/selectors'
+import {
+  rootActiveProposalsCountSelector,
+  rootEndedProposalsCountSelector,
+  rootLoadingProposalsCountSelector
+} from 'store/voting/root-node-proposals/selectors'
+import {
+  expertActiveProposalsCountSelector,
+  expertEndedProposalsCountSelector,
+  expertLoadingProposalsCountSelector
+} from 'store/voting/expert-proposals/selectors'
+import {
+  slashingActiveProposalsCountSelector,
+  slashingEndedProposalsCountSelector,
+  slashingLoadingProposalsCountSelector
+} from 'store/voting/slashing-proposals/selectors'
+
+import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
+import { getQProposalsCount } from 'store/voting/q-proposals/action-creators'
+import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-creators'
+import { getSlashingProposalsCount } from 'store/voting/slashing-proposals/action-creators'
+import { getExpertProposalsCount } from 'store/voting/expert-proposals/action-creators'
 
 function Governance () {
   const dispatch = useDispatch()
   const appMode = useSelector(mode)
 
+  const qActiveProposalsCount = useSelector(qActiveProposalsCountSelector)
+  const qEndedProposalsCount = useSelector(qEndedProposalsCountSelector)
+  const qLoadingProposalsCount = useSelector(qLoadingProposalsCountSelector)
+
+  const rootActiveProposalsCount = useSelector(rootActiveProposalsCountSelector)
+  const rootEndedProposalsCount = useSelector(rootEndedProposalsCountSelector)
+  const rootLoadingProposalsCount = useSelector(rootLoadingProposalsCountSelector)
+
+  const expertActiveProposalsCount = useSelector(expertActiveProposalsCountSelector)
+  const expertEndedProposalsCount = useSelector(expertEndedProposalsCountSelector)
+  const expertLoadingProposalsCount = useSelector(expertLoadingProposalsCountSelector)
+
+  const slashingActiveProposalsCount = useSelector(slashingActiveProposalsCountSelector)
+  const slashingEndedProposalsCount = useSelector(slashingEndedProposalsCountSelector)
+  const slashingLoadingProposalsCount = useSelector(slashingLoadingProposalsCountSelector)
+
   useEffect(() => {
-    for (const item in PROPOSALS_TYPES) {
-      dispatch(getProposalsList(PROPOSALS_TYPES[item], PROPOSAL_STATUS_TYPES.active))
-      dispatch(getProposalsList(PROPOSALS_TYPES[item], PROPOSAL_STATUS_TYPES.ended))
-    }
+    dispatch(getQProposalsCount())
+    dispatch(getRootProposalsCount())
+    dispatch(getSlashingProposalsCount())
+    dispatch(getExpertProposalsCount())
   }, [])
 
-  const qProposals = useSelector(qProposalsArr)
-  const qLoading = useSelector(qLoadingProposals)
-  const qError = useSelector(qErrorM)
-  const qEnded = useSelector(qEndedProposals)
-  const qLoadingEnded = useSelector(qLoadingEndedProposals)
-  const qErrorEndedM = useSelector(qErrorEnded)
-
-  const rootNodeProposals = useSelector(rootNodeProposalsArr)
-  const rootNodeLoading = useSelector(rootNodeLoadingProposals)
-  const rootNodeError = useSelector(rootNodeErrorM)
-  const rootNodeEnded = useSelector(rootNodeEndedProposals)
-  const rootNodeLoadingEnded = useSelector(rootNodeLoadingEndedProposals)
-  const rootNodeErrorEndedM = useSelector(rootNodeErrorEnded)
-
-  const expertProposals = useSelector(expertProposalsArr)
-  const expertLoading = useSelector(loadingExpertProposals)
-  const expertError = useSelector(expertErrorM)
-  const expertEnded = useSelector(expertEndedProposals)
-  const expertLoadingEnded = useSelector(expertLoadingEndedProposals)
-  const expertErrorEndedM = useSelector(expertErrorEnded)
-
-  const slashingProposals = useSelector(slashingProposalsArr)
-  const slashingLoading = useSelector(slashingLoadingProposals)
-  const slashingError = useSelector(slashingErrorM)
-  const slashingEnded = useSelector(slashingEndedProposals)
-  const slashingLoadingEnded = useSelector(slashingLoadingEndedProposals)
-  const slashingErrorEndedM = useSelector(slashingErrorEnded)
-
   return (
-    <PageWrap
-      wrapContentClasses={'wrap-content__three-colm'}
-      headerTitle={'Governance'}
-    >
-      <div>
-        <InfoBlock
-          header="Q Proposals"
-          activeProposalsNumber={qProposals.length}
-          endedProposalsNumber={qEnded.length}
-          detailsLink="q-proposals"
-          isLoading={qLoading || qLoadingEnded}
-          isError={qError || qErrorEndedM}
-        />
-        {appMode === MODE.advanced
-          ? <InfoBlock
-          header="Expert Proposals"
-          activeProposalsNumber={expertProposals.length}
-          endedProposalsNumber={expertEnded.length}
-          detailsLink="q-expert-proposals"
-          isLoading={expertLoading || expertLoadingEnded}
-          isError={expertError || expertErrorEndedM}
-        />
-          : null}
-      </div>
-      <div>
-        <InfoBlock
-          header="Root Node Panel"
-          activeProposalsNumber={rootNodeProposals.length}
-          endedProposalsNumber={rootNodeEnded.length}
-          detailsLink="q-root-node-panel"
-          isLoading={rootNodeLoading || rootNodeLoadingEnded}
-          isError={rootNodeError || rootNodeErrorEndedM}
-        />
-        {appMode === MODE.advanced
-          ? <InfoBlock
-          header="Slashing Proposals"
-          activeProposalsNumber={slashingProposals.length}
-          endedProposalsNumber={slashingEnded.length}
-          detailsLink="slashing-proposals"
-          isLoading={slashingLoading || slashingLoadingEnded}
-          isError={slashingError || slashingErrorEndedM}
-        />
-          : null}
-      </div>
-      <VotingStats />
-    </PageWrap>
+        <PageWrap wrapContentClasses="wrap-content__three-colm" headerTitle="Governance">
+            <div>
+                <InfoBlock
+                    header="Q Proposals"
+                    detailsLink="q-proposals"
+                    activeProposalsNumber={qActiveProposalsCount}
+                    endedProposalsNumber={qEndedProposalsCount}
+                    isLoading={qLoadingProposalsCount}
+                />
+                {appMode === MODE.advanced
+                  ? (
+                    <InfoBlock
+                        header="Expert Proposals"
+                        activeProposalsNumber={expertActiveProposalsCount}
+                        endedProposalsNumber={expertEndedProposalsCount}
+                        detailsLink="q-expert-proposals"
+                        isLoading={expertLoadingProposalsCount}
+                    />
+                    )
+                  : null}
+            </div>
+            <div>
+                <InfoBlock
+                    header="Root Node Panel"
+                    activeProposalsNumber={rootActiveProposalsCount}
+                    endedProposalsNumber={rootEndedProposalsCount}
+                    detailsLink="q-root-node-panel"
+                    isLoading={rootLoadingProposalsCount}
+                />
+                {appMode === MODE.advanced
+                  ? (
+                    <InfoBlock
+                        header="Slashing Proposals"
+                        activeProposalsNumber={slashingActiveProposalsCount}
+                        endedProposalsNumber={slashingEndedProposalsCount}
+                        detailsLink="slashing-proposals"
+                        isLoading={slashingLoadingProposalsCount}
+                    />
+                    )
+                  : null}
+            </div>
+            <VotingStats />
+        </PageWrap>
   )
 }
 

@@ -4,21 +4,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   setCreateObj,
   setStepCounter
-} from 'store/actions/action-creaters/auctions/modalHandler'
-import { createAuction } from 'store/actions/action-creaters/auctions/auctions'
+} from 'store/modal-handler/action-creators'
+import { createAuction } from 'store/auctions/action-creators'
 import { ProgressBar } from 'react-bootstrap'
-
-import {
-  formObject,
-  createdStepsLimit,
-  stepCounterModal
-} from 'store/selectors/auctions/modalHandler'
 
 import { useForm } from 'react-hook-form'
 
 import ModalWindow from 'components/Base/ModalWindow'
 import CreateStep1 from './CreateStep1'
 import CreateStep2 from './CreateStep2'
+import { createdStepsLimit, formObject, stepCounterModal } from 'store/voting/proposals/selectors'
 
 function ModalCreateAuction (props) {
   const {

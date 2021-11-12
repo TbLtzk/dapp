@@ -6,11 +6,11 @@ import {
   setDisabledCreatedProposalBtn,
   setStepVoteCounter,
   voteForProposal
-} from 'store/actions/action-creaters/voting/proposals'
+} from 'store/voting/proposals/action-creators'
 import {
   stepVoteCounterModal,
   formVoteObject
-} from 'store/selectors/voting/proposals'
+} from 'store/voting/proposals/selectors'
 
 import { useForm } from 'react-hook-form'
 

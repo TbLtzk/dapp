@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 
 import { useSelector } from 'react-redux'
-import { formVoteObject } from 'store/selectors/voting/proposals'
+import { formVoteObject } from 'store/voting/proposals/selectors'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 
 function CreateStep3 (props) {

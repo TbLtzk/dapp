@@ -14,7 +14,7 @@ import {
   qLoadingEndedProposals,
   qLoadingProposals,
   qProposalsArr
-} from 'store/selectors/voting/q-proposals'
+} from 'store/voting/q-proposals/selectors'
 import {
   rootNodeEndedProposals,
   rootNodeErrorEnded,
@@ -22,7 +22,7 @@ import {
   rootNodeLoadingEndedProposals,
   rootNodeLoadingProposals,
   rootNodeProposalsArr
-} from 'store/selectors/voting/root-node-proposals'
+} from 'store/voting/root-node-proposals/selectors'
 import {
   expertEndedProposals,
   expertErrorEnded,
@@ -30,7 +30,7 @@ import {
   expertLoadingEndedProposals,
   expertProposalsArr,
   loadingExpertProposals
-} from 'store/selectors/voting/expert-proposals'
+} from 'store/voting/expert-proposals/selectors'
 import {
   slashingEndedProposals,
   slashingErrorEnded,
@@ -38,10 +38,11 @@ import {
   slashingLoadingEndedProposals,
   slashingLoadingProposals,
   slashingProposalsArr
-} from 'store/selectors/voting/slashing-proposals'
-import { getProposalsList } from 'store/actions/action-creaters/voting/proposals'
-import { getLockedAssets } from 'store/actions/action-creaters/q-vault'
-import { userAddressMetamask } from 'store/selectors/user-inf'
+} from 'store/voting/slashing-proposals/selectors'
+import { getProposalsList } from 'store/voting/proposals/action-creators'
+import { getLockedAssets } from 'store/q-vault/action-creators'
+import { userAddressMetamask } from 'store/user-inf/selectors'
+import { transactionCounter } from 'store/transaction-handler/selectors'
 
 function Proposals (props) {
   const { proposalsType } = props
@@ -111,13 +112,25 @@ function Proposals (props) {
 
   function uploadProposals () {
     dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.active))
+  }
+
+  function uploadEndedProposals () {
     dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.ended))
-    dispatch(getLockedAssets(address))
   }
 
   useEffect(() => {
-    uploadProposals()
-  }, [])
+    dispatch(getLockedAssets(address))
+    if (!proposals.length) {
+      uploadProposals()
+    }
+    if (!endedProposals.length) {
+      uploadEndedProposals()
+    }
+    if (!transactionCounter) {
+      uploadProposals()
+      uploadEndedProposals()
+    }
+  }, [transactionCounter])
 
   const tabsItems = [
     {
@@ -148,7 +161,10 @@ function Proposals (props) {
       title: (
                 <Button
                     title="Refresh"
-                    handleButton={uploadProposals}
+                    handleButton={() => {
+                      uploadProposals()
+                      uploadEndedProposals()
+                    }}
                     type="button"
                     width="100px"
                     position="absolute"

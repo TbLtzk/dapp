@@ -2,7 +2,7 @@ import React from 'react'
 import BootstrapTable from 'react-bootstrap-table-next'
 import paginationFactory from 'react-bootstrap-table2-paginator'
 import { useSelector } from 'react-redux'
-import { theme } from 'store/selectors/theme'
+import { theme } from 'store/theme/selectors'
 import { TableWrapper, PagesItemWrapper } from './styles'
 
 const pageButtonRenderer = ({ page, active, disable, title, onPageChange }) => {

@@ -4,16 +4,16 @@ import { Link, useHistory } from 'react-router-dom'
 import { Accordion } from 'react-bootstrap'
 
 import { useSelector } from 'react-redux'
-import { userAddressMetamask } from 'store/selectors/user-inf'
-import { qProposalsArr } from 'store/selectors/voting/q-proposals'
-import { rootNodeProposalsArr } from 'store/selectors/voting/root-node-proposals'
-import { expertProposalsArr } from 'store/selectors/voting/expert-proposals'
-import { slashingProposalsArr } from 'store/selectors/voting/slashing-proposals'
+import { userAddressMetamask } from 'store/user-inf/selectors'
+import { qProposalsArr } from 'store/voting/q-proposals/selectors'
+import { rootNodeProposalsArr } from 'store/voting/root-node-proposals/selectors'
+import { expertProposalsArr } from 'store/voting/expert-proposals/selectors'
+import { slashingProposalsArr } from 'store/voting/slashing-proposals/selectors'
 import {
   liquidationAuctions,
   systemDebtAuctions,
   systemSurplusAuctions
-} from 'store/selectors/auctions/auctions'
+} from 'store/auctions/selectors'
 
 import Button from 'components/Base/Buttons/Button'
 import LogoImg from 'components/Base/LogoImg'
@@ -40,7 +40,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 // import { PROPOSALS_TYPES, AUCTIONS_TYPES } from 'constants/statuses'
 // import { getProposalsList } from 'store/actions/action-creaters/voting/proposals'
 // import { getAuctionsList } from 'store/actions/action-creaters/auctions/auctions'
-import { mode } from 'store/selectors/dashboardMode'
+import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
 
 function Sidebar () {

@@ -1,9 +1,9 @@
 import React, { Fragment, useCallback, useState, useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { formObject } from 'store/selectors/voting/proposals'
-import { parameterValueByKey } from 'store/selectors/parameters'
-import { getParameterKeysByType } from 'store/actions/action-creaters/parameters'
+import { formObject } from 'store/voting/proposals/selectors'
+import { parameterValueByKey } from 'store/parameters/selectors'
+import { getParameterKeysByType } from 'store/parameters/action-creators'
 
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
 import InputGroup from 'components/Custom/ModalActions/InputGroup'

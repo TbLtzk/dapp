@@ -1,15 +1,15 @@
 import React, { useEffect, useMemo } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { userAddressMetamask } from 'store/selectors/user-inf'
-import { delegatedStakeSelector } from 'store/selectors/validators'
-import { delegatorShare, balance, poolInfoSelector } from 'store/selectors/validation-reward-pools'
+import { userAddressMetamask } from 'store/user-inf/selectors'
+import { delegatedStakeSelector } from 'store/validators/selectors'
+import { delegatorShare, balance, poolInfoSelector } from 'store/validation-reward-pools/selectors'
 import {
   getVRPBalance,
   getVRPDelegatorsShare,
   getVRPPoolInfo,
   setVRPDelegatorsShare
-} from 'store/actions/action-creaters/validation-reward-pools'
+} from 'store/validation-reward-pools/action-creators'
 
 import FormInput from 'components/Base/Form/FormInput'
 import Button from 'components/Base/Buttons/Button'

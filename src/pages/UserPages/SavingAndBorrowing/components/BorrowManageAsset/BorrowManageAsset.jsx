@@ -9,7 +9,7 @@ import Handler from './handler'
 import { fN, errorHandler } from 'func/useful'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
-import { userAddressMetamask } from 'store/selectors/user-inf'
+import { userAddressMetamask } from 'store/user-inf/selectors'
 
 const BTN_LENGTH = '100px'
 

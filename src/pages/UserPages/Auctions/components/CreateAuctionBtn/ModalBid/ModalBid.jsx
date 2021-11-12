@@ -3,21 +3,21 @@ import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   approveModalBtn
-} from 'store/selectors/auctions/auctions'
+} from 'store/auctions/selectors'
 import {
   bidForAuction, setApproveModalBtn
-} from 'store/actions/action-creaters/auctions/auctions'
+} from 'store/auctions/action-creators'
 import {
   setCreateObj,
   setDisabledCreatedObjBtn,
   setStepCounter
-} from 'store/actions/action-creaters/auctions/modalHandler'
+} from 'store/modal-handler/action-creators'
 import {
   stepCounterModal,
   formObject,
   createdStepsLimit
-} from 'store/selectors/auctions/modalHandler'
-import { userAddressMetamask } from 'store/selectors/user-inf'
+} from 'store/modal-handler/selectors'
+import { userAddressMetamask } from 'store/user-inf/selectors'
 
 import { useForm } from 'react-hook-form'
 

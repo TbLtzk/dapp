@@ -8,8 +8,8 @@ import colors from 'constants/colors'
 
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { useDispatch, useSelector } from 'react-redux'
-import { loadingNumberAll, numberOfAllProposals, constitutionHash } from 'store/selectors/voting/proposals'
-import { getNumberAllProposals, getConstitutionHash } from 'store/actions/action-creaters/voting/proposals'
+import { loadingNumberAll, numberOfAllProposals, constitutionHash } from 'store/voting/proposals/selectors'
+import { getNumberAllProposals, getConstitutionHash } from 'store/voting/proposals/action-creators'
 import { latestConstitution, archiveConstitution } from 'contracts/handler/ConstitutionHandler'
 import { Link } from 'react-router-dom'
 

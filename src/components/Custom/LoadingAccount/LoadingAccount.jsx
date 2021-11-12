@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { setUserAddress } from 'store/actions/action-creaters/user-inf'
+import { setUserAddress } from 'store/user-inf/action-creators'
 
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 

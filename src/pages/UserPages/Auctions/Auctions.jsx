@@ -13,13 +13,13 @@ import {
   endedAuctionsArr,
   endedLoadingAuctions,
   endedErrorM
-} from 'store/selectors/auctions/auctions'
-import { getAuctionsList, getEndedAuctionsList } from 'store/actions/action-creaters/auctions/auctions'
+} from 'store/auctions/selectors'
+import { getAuctionsList, getEndedAuctionsList } from 'store/auctions/action-creators'
 
 import { AUCTIONS_TYPES } from 'constants/statuses'
 import { useDispatch, useSelector } from 'react-redux'
-import { getSymbol } from 'store/actions/action-creaters/stable-coin'
-import { transactionLoading } from 'store/selectors/transaction-handler'
+import { getSymbol } from 'store/stable-coin/action-creators'
+import { transactionLoading } from 'store/transaction-handler/selectors'
 
 function Auctions (props) {
   const {

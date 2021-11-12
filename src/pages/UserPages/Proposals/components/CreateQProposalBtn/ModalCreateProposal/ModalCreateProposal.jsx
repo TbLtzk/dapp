@@ -8,13 +8,13 @@ import {
   setStepCounter,
   setDisabledCreatedProposalBtn,
   createProposal
-} from 'store/actions/action-creaters/voting/proposals'
+} from 'store/voting/proposals/action-creators'
 import {
   formObject,
   createdStepsLimit,
   stepCounterModal,
   disabledContinueProposalBtn
-} from 'store/selectors/voting/proposals'
+} from 'store/voting/proposals/selectors'
 
 import { useForm } from 'react-hook-form'
 
@@ -26,7 +26,7 @@ import CreateStep4 from './CreateStep4'
 
 import { arrExpert, arrQProposal, arrQProposalAdvanced, arrQRootNode, arrSlashing } from './constants'
 
-import { mode } from 'store/selectors/dashboardMode'
+import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
 
 function ModalCreateProposal (props) {

@@ -1,4 +1,4 @@
-import SlashingVotingService from '../src/voting/SlashingVoting'
+import SlashingVotingService from '../helpers/voting-helpers/slashing-voting-helper'
 import { CONTRACTS_NAMES, CONTRACT_TYPES } from 'constants/contracts'
 
 export const chooseSlashingContractDependsOnType = (type) => {

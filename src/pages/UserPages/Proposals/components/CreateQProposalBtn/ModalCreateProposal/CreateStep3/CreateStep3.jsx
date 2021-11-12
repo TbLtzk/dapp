@@ -2,8 +2,8 @@ import React, { useCallback, useState, Fragment, useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { PROPOSALS_TYPES } from 'constants/statuses'
-import { formObject } from 'store/selectors/voting/proposals'
-import { getParameterKeysByType } from 'store/actions/action-creaters/parameters'
+import { formObject } from 'store/voting/proposals/selectors'
+import { getParameterKeysByType } from 'store/parameters/action-creators'
 import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue'
 
 import { constUpdate } from './constants'

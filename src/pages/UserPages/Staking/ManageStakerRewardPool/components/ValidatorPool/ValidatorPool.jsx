@@ -7,15 +7,15 @@ import {
   getDelegatedStake,
   getOwnStake,
   getTotalStake
-} from 'store/actions/action-creaters/validators'
-import { isStakerRewardPoolMsgDisplayed } from 'store/selectors/validation-reward-pools'
-import { userAddressMetamask } from 'store/selectors/user-inf'
+} from 'store/validators/action-creators'
+import { isStakerRewardPoolMsgDisplayed } from 'store/validation-reward-pools/selectors'
+import { userAddressMetamask } from 'store/user-inf/selectors'
 import {
   accountableTotalStake,
   delegatedStakeSelector,
   ownStakeSelector,
   totalStakeSelector
-} from 'store/selectors/validators'
+} from 'store/validators/selectors'
 
 import { fN } from 'func/useful'
 
