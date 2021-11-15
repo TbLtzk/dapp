@@ -21,7 +21,7 @@ import {
   oneSlashingProposal
 } from 'store/voting/slashing-proposals/selectors'
 
-import ProposalsList from 'pages/UserPages/Proposals/components/ProposalsPagination'
+import ProposalsList from 'pages/UserPages/Proposals/components/ProposalsLazyLoading'
 import PageWrap from 'components/Base/PageWrap'
 import { tabSwitcher } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import { CONTRACTS_NAMES } from 'constants/contracts'

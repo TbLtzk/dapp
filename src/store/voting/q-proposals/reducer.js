@@ -1,6 +1,10 @@
 import * as actionTypes from './action-types'
-import { changeProposalsArrIfExist, changeProposalsArrIfEmptyResult } from 'contracts/helpers/voting-helpers/base-voting-helper'
+import {
+  changeProposalsArrIfExist,
+  changeProposalsArrIfEmptyResult
+} from 'contracts/helpers/voting-helpers/base-voting-helper'
 import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
+import { mergeArrays } from 'func/useful'
 
 const initialState = {
   oneProposal: [],
@@ -22,7 +26,7 @@ export default function qProposals (state = initialState, action) {
     case actionTypes.GET_Q_ENDED_PROPOSALS_SUCCESS:
       return {
         ...state,
-        endedProposals: [...state.endedProposals, ...action.result.endedProposals],
+        endedProposals: mergeArrays(state.endedProposals, action.result.endedProposals, action.result.reset),
         loadingEndedProposals: action.result.loading,
         errorEnded: null
       }
@@ -43,8 +47,8 @@ export default function qProposals (state = initialState, action) {
     case actionTypes.GET_Q_PROPOSALS_LIST_SUCCESS:
       return {
         ...state,
-        proposalsArr: action.result,
-        loadingProposals: false,
+        proposalsArr: mergeArrays(state.proposalsArr, action.result.proposalsArr, action.result.loading),
+        loadingProposals: action.result.loading,
         errorM: null
       }
     case actionTypes.GET_Q_PROPOSALS_LIST_ERROR:

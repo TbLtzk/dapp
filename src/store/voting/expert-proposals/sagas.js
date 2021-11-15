@@ -43,19 +43,21 @@ function * getExpertProposalsCountGenerator () {
   }
 }
 
-function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active }) {
+function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, range = [0, 3] }) {
   try {
     const contracts = creationExpertContractsObjArray()
 
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
-        const pending = yield Promise.all(contracts.map((item) => item.getProposals()))
-        yield put(getExpertProposalsListSuccess([].concat.apply([], pending)))
+        yield put(getExpertProposalsListSuccess({ proposalsArr: [], loading: true }))
+        const active = yield Promise.all(contracts.map((contract) => contract.getProposals()))
+        yield put(getExpertProposalsListSuccess({ proposalsArr: active.flat(), loading: false }))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
-        const ended = yield Promise.all(contracts.map((item) => item.getEndedProposals()))
-        yield put(getExpertEndedProposalsSuccess([].concat.apply([], ended)))
+        yield put(getExpertEndedProposalsSuccess({ endedProposals: [], loading: true, reset: !range[0] }))
+        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(range)))
+        yield put(getExpertEndedProposalsSuccess({ endedProposals: endedProposals.flat(), loading: false }))
         break
       }
     }

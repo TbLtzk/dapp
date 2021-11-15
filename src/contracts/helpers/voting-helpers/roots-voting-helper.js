@@ -66,7 +66,7 @@ export default class RootsVoting extends VotingService {
   }
 
   async createProposal (data, userAddress) {
-    const contract = await this.witchContract()
+    const contract = await this.switchContract()
 
     let result = null
     const hash = data.hash ?? '0x00'

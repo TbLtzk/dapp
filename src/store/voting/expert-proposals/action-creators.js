@@ -18,9 +18,10 @@ export const setExpertProposalsCount = (result) => ({
   result
 })
 
-export const getExpertProposalsList = (proposalStatusType) => ({
+export const getExpertProposalsList = (proposalStatusType, range) => ({
   type: actionTypes.GET_EXPERT_PROPOSALS_LIST,
-  proposalStatusType
+  proposalStatusType,
+  range
 })
 
 export const getExpertProposalsListSuccess = (result) => ({

@@ -7,16 +7,17 @@ import { useDispatch } from 'react-redux'
 import { getProposalsList } from 'store/voting/proposals/action-creators'
 import { useInView } from 'react-intersection-observer'
 
-function ProposalsPagination ({ proposals, proposalsKind, loading, errorMessage, activeTab, proposalsCount, types }) {
+function ProposalsLazyLoading ({ proposals, proposalsKind, loading, errorMessage, activeTab, proposalsCount, types }) {
   const dispatch = useDispatch()
-  const [state, setState] = useState([0, 10])
+  const [state, setState] = useState([0, 3])
 
   const { ref, entry } = useInView({ trackVisibility: true, delay: 100 })
 
   function getNextProposals (isVisible) {
-    if (proposalsCount !== proposals.length && !loading && isVisible) {
-      console.log('inside')
-      const range = [state[0] + 10, state[1] + 10]
+    if (proposalsCount === proposals.length) {
+      return null
+    } else if (!loading && isVisible) {
+      const range = [state[0] + 3, state[1] + 3]
       setState(range)
       dispatch(getProposalsList(proposalsKind, types, range))
     }
@@ -32,7 +33,7 @@ function ProposalsPagination ({ proposals, proposalsKind, loading, errorMessage,
               ? (
                 <p>Error loading proposals</p>
                 )
-              : !proposals
+              : !loading && !proposals.length
                   ? (
                 <p>No proposals</p>
                     )
@@ -57,4 +58,4 @@ function ProposalsPagination ({ proposals, proposalsKind, loading, errorMessage,
   )
 }
 
-export default ProposalsPagination
+export default ProposalsLazyLoading

@@ -8,7 +8,9 @@ import Button from 'components/Base/Buttons/Button'
 import { PROPOSALS_TYPES, PROPOSAL_STATUS_TYPES } from 'constants/statuses'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  qActiveProposalsCountSelector,
   qEndedProposals,
+  qEndedProposalsCountSelector,
   qErrorEnded,
   qErrorM,
   qLoadingEndedProposals,
@@ -26,7 +28,9 @@ import {
   rootNodeProposalsArr
 } from 'store/voting/root-node-proposals/selectors'
 import {
+  expertActiveProposalsCountSelector,
   expertEndedProposals,
+  expertEndedProposalsCountSelector,
   expertErrorEnded,
   expertErrorM,
   expertLoadingEndedProposals,
@@ -34,7 +38,9 @@ import {
   loadingExpertProposals
 } from 'store/voting/expert-proposals/selectors'
 import {
+  slashingActiveProposalsCountSelector,
   slashingEndedProposals,
+  slashingEndedProposalsCountSelector,
   slashingErrorEnded,
   slashingErrorM,
   slashingLoadingEndedProposals,
@@ -45,14 +51,11 @@ import { getProposalsList } from 'store/voting/proposals/action-creators'
 import { getLockedAssets } from 'store/q-vault/action-creators'
 import { userAddressMetamask } from 'store/user-inf/selectors'
 import { transactionCounter } from 'store/transaction-handler/selectors'
-import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-creators'
 
-function Proposals (props) {
-  const { proposalsType } = props
-
+function Proposals ({ proposalsType }) {
   const dispatch = useDispatch()
   const address = useSelector(userAddressMetamask)
-
+  const transaction = useSelector(transactionCounter)
   const {
     proposals,
     endedProposals,
@@ -60,8 +63,8 @@ function Proposals (props) {
     isEndedLoading,
     error,
     endedError,
-    rootEndedProposalsCount,
-    rootActiveProposalsCount
+    activeProposalsCount,
+    endedProposalsCount
   } = getProposalsSelector(proposalsType)
 
   const name = getPageName(proposalsType)
@@ -89,7 +92,9 @@ function Proposals (props) {
           isLoading: useSelector(qLoadingProposals),
           isEndedLoading: useSelector(qLoadingEndedProposals),
           error: useSelector(qErrorM),
-          endedError: useSelector(qErrorEnded)
+          endedError: useSelector(qErrorEnded),
+          activeProposalsCount: useSelector(qActiveProposalsCountSelector),
+          endedProposalsCount: useSelector(qEndedProposalsCountSelector)
         }
       case PROPOSALS_TYPES.rootNodePanel:
         return {
@@ -99,8 +104,8 @@ function Proposals (props) {
           isEndedLoading: useSelector(rootNodeLoadingEndedProposals),
           error: useSelector(rootNodeErrorM),
           endedError: useSelector(rootNodeErrorEnded),
-          rootActiveProposalsCount: useSelector(rootActiveProposalsCountSelector),
-          rootEndedProposalsCount: useSelector(rootEndedProposalsCountSelector)
+          activeProposalsCount: useSelector(rootActiveProposalsCountSelector),
+          endedProposalsCount: useSelector(rootEndedProposalsCountSelector)
         }
       case PROPOSALS_TYPES.expertProposals:
         return {
@@ -109,7 +114,9 @@ function Proposals (props) {
           isLoading: useSelector(loadingExpertProposals),
           isEndedLoading: useSelector(expertLoadingEndedProposals),
           error: useSelector(expertErrorM),
-          endedError: useSelector(expertErrorEnded)
+          endedError: useSelector(expertErrorEnded),
+          activeProposalsCount: useSelector(expertActiveProposalsCountSelector),
+          endedProposalsCount: useSelector(expertEndedProposalsCountSelector)
         }
       case PROPOSALS_TYPES.slashingProposals:
         return {
@@ -118,33 +125,28 @@ function Proposals (props) {
           isLoading: useSelector(slashingLoadingProposals),
           isEndedLoading: useSelector(slashingLoadingEndedProposals),
           error: useSelector(slashingErrorM),
-          endedError: useSelector(slashingErrorEnded)
+          endedError: useSelector(slashingErrorEnded),
+          activeProposalsCount: useSelector(slashingActiveProposalsCountSelector),
+          endedProposalsCount: useSelector(slashingEndedProposalsCountSelector)
         }
     }
   }
 
   function uploadProposals () {
-    dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.active, [0, 10]))
+    dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.active))
   }
 
   function uploadEndedProposals () {
-    dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.ended, [0, 10]))
+    dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.ended))
   }
 
   useEffect(() => {
-    dispatch(getLockedAssets(address))
-    if (!proposals.length) {
-      uploadProposals()
-    }
-    if (!endedProposals.length) {
+    if (!transaction) {
       uploadEndedProposals()
-    }
-    if (!transactionCounter) {
       uploadProposals()
-      uploadEndedProposals()
+      dispatch(getLockedAssets(address))
     }
-    dispatch(getRootProposalsCount())
-  }, [transactionCounter])
+  }, [transaction])
 
   const tabsItems = [
     {
@@ -156,8 +158,8 @@ function Proposals (props) {
                     proposals={proposals}
                     proposalsType={proposalsType}
                     errorMessage={error}
-                    proposalsCount={rootActiveProposalsCount}
                     types={PROPOSAL_STATUS_TYPES.active}
+                    proposalsCount={activeProposalsCount}
                 />
       )
     },
@@ -170,8 +172,8 @@ function Proposals (props) {
                     proposals={endedProposals}
                     proposalsType={proposalsType}
                     errorMessage={endedError}
-                    proposalsCount={rootEndedProposalsCount}
                     types={PROPOSAL_STATUS_TYPES.ended}
+                    proposalsCount={endedProposalsCount}
                 />
       )
     },

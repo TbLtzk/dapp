@@ -9,7 +9,6 @@ const initialState = {
 
 export default function transactionHandler (state = initialState, action) {
   let newTrCounter
-
   switch (action.type) {
     case actionTypes.SET_TRANSACTION_LOADING:
       return {

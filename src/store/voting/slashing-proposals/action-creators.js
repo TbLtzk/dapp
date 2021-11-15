@@ -9,9 +9,10 @@ export const setSlashingProposalsCount = (result) => ({
   result
 })
 
-export const getSlashingProposalsList = (proposalStatusType) => ({
+export const getSlashingProposalsList = (proposalStatusType, range) => ({
   type: actionTypes.GET_SLASHING_PROPOSALS_LIST,
-  proposalStatusType
+  proposalStatusType,
+  range
 })
 
 export const getSlashingProposalsListSuccess = (result) => ({

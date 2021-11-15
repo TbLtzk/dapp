@@ -15,6 +15,14 @@ export const errorHandler = (error, field, min = 0, max = 100) => {
   }
 }
 
+export const mergeArrays = (arr1, arr2, reset) => {
+  if (reset) {
+    return arr2
+  } else {
+    const array = [...arr1, ...arr2]
+    return array.filter((v, i, a) => a.findIndex((t) => t.contract === v.contract && t.id === v.id) === i)
+  }
+}
 export const fN = (number) => {
   if (number === undefined || isNaN(number) || number === null) return 0
   const maximumFractionDigits = 4

@@ -5,8 +5,7 @@ import { PROPOSALS_TYPES } from 'constants/statuses'
 import * as actionTypes from 'store/voting/proposals/action-types'
 import {
   setErrorMessage,
-  setTransactionLoading,
-  setTransactionLoadingSuccess
+  setTransactionCounter
 } from 'store/transaction-handler/action-creators'
 
 import { getLockedAssets } from 'store/q-vault/action-creators'
@@ -19,13 +18,22 @@ import {
   getConstitutionHashSuccess,
   setBaseVotingWeightInfo
 } from 'store/voting/proposals/action-creators'
-import { getProposalQ, getQProposalsList } from 'store/voting/q-proposals/action-creators'
+import { getProposalQ, getQProposalsCount, getQProposalsList } from 'store/voting/q-proposals/action-creators'
 import {
   getProposalRootNode,
-  getRootNodeProposalsList
+  getRootNodeProposalsList,
+  getRootProposalsCount
 } from 'store/voting/root-node-proposals/action-creators'
-import { getProposalExpert, getExpertProposalsList } from 'store/voting/expert-proposals/action-creators'
-import { getProposalSlashing, getSlashingProposalsList } from 'store/voting/slashing-proposals/action-creators'
+import {
+  getProposalExpert,
+  getExpertProposalsList,
+  getExpertProposalsCount
+} from 'store/voting/expert-proposals/action-creators'
+import {
+  getProposalSlashing,
+  getSlashingProposalsCount,
+  getSlashingProposalsList
+} from 'store/voting/slashing-proposals/action-creators'
 
 import {
   creationQContractObj,
@@ -49,7 +57,7 @@ import { getNowTimestamp } from 'func/convertDate'
 
 function * createProposalGenerator ({ data }) {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
     let result = null
     let idProposal = null
@@ -109,16 +117,17 @@ function * createProposalGenerator ({ data }) {
     }
     yield call(getProposalDependsOnTypeGenerator, contractName, data, idProposal, true)
     yield put(createProposalSuccess(result))
-    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put(setTransactionCounter(-1))
   }
 }
 
 function * voteForProposalGenerator ({ data }) {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
 
     let result = null
@@ -138,17 +147,18 @@ function * voteForProposalGenerator ({ data }) {
     }
     yield call(getProposalDependsOnTypeGenerator, data?.contract, data, data?.idProposal, true)
     yield put(voteForProposalSuccess(result))
-    yield put(setTransactionLoadingSuccess())
     yield put(getLockedAssets(userAddress))
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put(setTransactionCounter(-1))
   }
 }
 
 function * executeProposalGenerator ({ data }) {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
     const result = null
     if (data) {
@@ -157,10 +167,11 @@ function * executeProposalGenerator ({ data }) {
     }
     yield call(getProposalDependsOnTypeGenerator, data?.contract, data, data?.idProposal, false)
     yield put(executeProposalSuccess(result))
-    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put(setTransactionCounter(-1))
   }
 }
 
@@ -202,18 +213,26 @@ function * getOneProposalSharedGenerator ({ data }) {
 function * getProposalsListGenerator ({ proposalType, proposalStatusType, range }) {
   try {
     switch (proposalType) {
-      case PROPOSALS_TYPES.proposals:
+      case PROPOSALS_TYPES.proposals: {
         yield put(getQProposalsList(proposalStatusType, range))
+        yield put(getQProposalsCount())
         break
-      case PROPOSALS_TYPES.rootNodePanel:
+      }
+      case PROPOSALS_TYPES.rootNodePanel: {
         yield put(getRootNodeProposalsList(proposalStatusType, range))
+        yield put(getRootProposalsCount())
         break
-      case PROPOSALS_TYPES.slashingProposals:
-        yield put(getSlashingProposalsList(proposalStatusType))
+      }
+      case PROPOSALS_TYPES.slashingProposals: {
+        yield put(getSlashingProposalsList(proposalStatusType, range))
+        yield put(getSlashingProposalsCount())
         break
-      case PROPOSALS_TYPES.expertProposals:
-        yield put(getExpertProposalsList(proposalStatusType))
+      }
+      case PROPOSALS_TYPES.expertProposals: {
+        yield put(getExpertProposalsList(proposalStatusType, range))
+        yield put(getExpertProposalsCount())
         break
+      }
     }
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)

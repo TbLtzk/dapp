@@ -1,11 +1,7 @@
 import { call, put, takeEvery, select } from 'redux-saga/effects'
 
 import * as actionTypes from 'store/voting/slashing-proposals/action-types'
-import {
-  setErrorMessage,
-  setTransactionLoading,
-  setTransactionLoadingSuccess
-} from 'store/transaction-handler/action-creators'
+import { setErrorMessage, setTransactionCounter } from 'store/transaction-handler/action-creators'
 
 import {
   getSlashingProposalsListSuccess,
@@ -16,14 +12,16 @@ import {
   getOneProposalSuccess,
   setSlashingProposalsCount
 } from 'store/voting/slashing-proposals/action-creators'
-import { creationSlashingContractObj, creationSlashingContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper'
+import {
+  creationSlashingContractObj,
+  creationSlashingContractsObjArray
+} from 'contracts/helpers/voting-helpers/base-voting-helper'
 
 import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-helper'
 
 import ErrorHandler from 'func/ErrorHandler'
 import { PROPOSAL_STATUS_TYPES, PROPOSALS_TYPES } from 'constants/statuses'
 import { CONTRACTS_NAMES } from 'constants/contracts'
-import { getProposalsList } from 'store/voting/proposals/action-creators'
 
 function * getSlashingProposalsCountGenerator () {
   try {
@@ -49,18 +47,20 @@ function * getSlashingProposalsCountGenerator () {
   }
 }
 
-function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active }) {
+function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, range = [0, 3] }) {
   try {
     const contracts = creationSlashingContractsObjArray()
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
-        const pending = yield Promise.all(contracts.map((contract) => contract.getProposals()))
-        yield put(getSlashingProposalsListSuccess([].concat.apply([], pending)))
+        yield put(getSlashingProposalsListSuccess({ proposalsArr: [], loading: true }))
+        const active = yield Promise.all(contracts.map((contract) => contract.getProposals()))
+        yield put(getSlashingProposalsListSuccess({ proposalsArr: active.flat(), loading: false }))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
-        const ended = yield Promise.all(contracts.map((contract) => contract.getEndedProposals()))
-        yield put(getSlashingEndedProposalsSuccess([].concat.apply([], ended)))
+        yield put(getSlashingEndedProposalsSuccess({ endedProposals: [], loading: true, reset: !range[0] }))
+        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(range)))
+        yield put(getSlashingEndedProposalsSuccess({ endedProposals: endedProposals.flat(), loading: false }))
         break
       }
     }
@@ -97,7 +97,7 @@ function * getProposalGenerator ({ contractName, id, activeProposal }) {
 
 function * onEscrowCastObjectionGenerator ({ data, contractName, proposalId }) {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
     const SlashingEscrowContractName =
       contractName === CONTRACTS_NAMES.validatorsSlashingVoting
@@ -109,16 +109,17 @@ function * onEscrowCastObjectionGenerator ({ data, contractName, proposalId }) {
       yield call(() => {}, contractName, {}, proposalId, false)
     }
     yield put(getProposalsListGenerator(PROPOSALS_TYPES))
-    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put(setTransactionCounter(-1))
   }
 }
 
 function * onEscrowProposeDecisionGenerator ({ data, contractName, proposalId }) {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
     const SlashingEscrowContractName =
       contractName === CONTRACTS_NAMES.validatorsSlashingVoting
@@ -136,17 +137,17 @@ function * onEscrowProposeDecisionGenerator ({ data, contractName, proposalId })
     if (result) {
       yield call(() => {}, contractName, {}, proposalId, false)
     }
-
-    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put(setTransactionCounter(-1))
   }
 }
 
 function * onEscrowProposerRemarkGenerator ({ data, contractName, proposalId }) {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
     const SlashingEscrowContractName =
       contractName === CONTRACTS_NAMES.validatorsSlashingVoting
@@ -158,16 +159,17 @@ function * onEscrowProposerRemarkGenerator ({ data, contractName, proposalId }) 
     if (result) {
       yield call(() => {}, contractName, {}, proposalId, false)
     }
-    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put(setTransactionCounter(-1))
   }
 }
 
 function * onEscrowRecallProposeDecisionGenerator ({ contractName, proposalId }) {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
     const SlashingEscrowContractName =
       contractName === CONTRACTS_NAMES.validatorsSlashingVoting
@@ -178,16 +180,17 @@ function * onEscrowRecallProposeDecisionGenerator ({ contractName, proposalId })
     if (result) {
       yield call(() => {}, contractName, {}, proposalId, false)
     }
-    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put(setTransactionCounter(-1))
   }
 }
 
 function * onEscrowConfirmProposeDecisionGenerator ({ contractName, proposalId }) {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
     const SlashingEscrowContractName =
       contractName === CONTRACTS_NAMES.validatorsSlashingVoting
@@ -196,16 +199,16 @@ function * onEscrowConfirmProposeDecisionGenerator ({ contractName, proposalId }
     const contract = new SlashingEscrow(SlashingEscrowContractName)
     yield contract.confirmDecision(proposalId, userAddress)
     yield call(() => {}, contractName, {}, proposalId, false)
-
-    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put(setTransactionCounter(-1))
   }
 }
 
 export default [
-  takeEvery(actionTypes.GET_SLASHING_PROPOSALS_LIST, getProposalsList),
+  takeEvery(actionTypes.GET_SLASHING_PROPOSALS_LIST, getProposalsListGenerator),
   takeEvery(actionTypes.GET_SLASHING_PROPOSAL, getProposalGenerator),
 
   takeEvery(actionTypes.ESCROW_CAST_OBJECTION, onEscrowCastObjectionGenerator),

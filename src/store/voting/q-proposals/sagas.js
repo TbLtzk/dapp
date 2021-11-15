@@ -38,21 +38,20 @@ function * getQProposalsCountGenerator () {
   }
 }
 
-function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, range }) {
+function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, range = [0, 3] }) {
   try {
     const contracts = creationQContractsObjArray()
-
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
-        const active = yield Promise.all(contracts.map((item) => item.getProposals()))
-        yield put(getQProposalsListSuccess([].concat.apply([], active)))
+        yield put(getQProposalsListSuccess({ proposalsArr: [], loading: true }))
+        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals()))
+        yield put(getQProposalsListSuccess({ proposalsArr: activeProposals.flat(), loading: false }))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
-        yield put(getQEndedProposalsSuccess({ endedProposals: [], loading: true }))
-        const result = yield Promise.all(contracts.map((item) => item.getEndedProposals(range)))
-        const endedProposals = [...result].flat().sort((a, b) => Number(b.id) - Number(a.id))
-        yield put(getQEndedProposalsSuccess({ endedProposals, loading: false }))
+        yield put(getQEndedProposalsSuccess({ endedProposals: [], loading: true, reset: !range[0] }))
+        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(range)))
+        yield put(getQEndedProposalsSuccess({ endedProposals: endedProposals.flat(), loading: false }))
         break
       }
     }

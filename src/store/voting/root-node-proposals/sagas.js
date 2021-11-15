@@ -25,19 +25,20 @@ function * getRootProposalsCountGenerator () {
   }
 }
 
-function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, range = [0, 10] }) {
+function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, range = [0, 3] }) {
   try {
     const contracts = creationRootContractObj()
-
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
-        const pending = yield contracts?.getProposals(range)
-        yield put(getRootNodeProposalsListSuccess(pending))
+        yield put(getRootNodeProposalsListSuccess({ proposalsArr: [], loading: true }))
+        const pending = yield contracts?.getProposals()
+        yield put(getRootNodeProposalsListSuccess({ proposalsArr: pending, loading: false, reset: true }))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
-        console.log(range)
-        yield put(getRootNodeEndedProposalsSuccess({ endedProposals: [], loading: true }))
+        yield put(
+          getRootNodeEndedProposalsSuccess({ endedProposals: [], loading: true, reset: !range[0] })
+        )
         const ended = yield contracts?.getEndedProposals(range)
         yield put(getRootNodeEndedProposalsSuccess({ endedProposals: ended, loading: false }))
         break

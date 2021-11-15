@@ -45,7 +45,7 @@ export default class MembershipVoting extends VotingService {
   }
 
   async createProposal (data, userAddress) {
-    const contract = await this.witchContract()
+    const contract = await this.switchContract()
 
     let result = null
     const link = data['external-link']
