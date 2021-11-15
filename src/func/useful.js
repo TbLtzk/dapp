@@ -23,6 +23,11 @@ export const mergeArrays = (arr1, arr2, reset) => {
     return array.filter((v, i, a) => a.findIndex((t) => t.contract === v.contract && t.id === v.id) === i)
   }
 }
+
+export const sortByTime = (array) => {
+  return [...array].flat().sort((a, b) => Number(b.votingEndTime - Number(a.votingEndTime)))
+}
+
 export const fN = (number) => {
   if (number === undefined || isNaN(number) || number === null) return 0
   const maximumFractionDigits = 4

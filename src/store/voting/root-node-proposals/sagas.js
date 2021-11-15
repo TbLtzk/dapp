@@ -14,6 +14,7 @@ import {
 import { creationRootContractObj } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import ErrorHandler from 'func/ErrorHandler'
 import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
+import { sortByTime } from 'func/useful'
 
 function * getRootProposalsCountGenerator () {
   try {
@@ -31,8 +32,8 @@ function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYP
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
         yield put(getRootNodeProposalsListSuccess({ proposalsArr: [], loading: true }))
-        const pending = yield contracts?.getProposals()
-        yield put(getRootNodeProposalsListSuccess({ proposalsArr: pending, loading: false, reset: true }))
+        const active = yield contracts?.getProposals()
+        yield put(getRootNodeProposalsListSuccess({ proposalsArr: sortByTime(active), loading: false, reset: true }))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
@@ -40,7 +41,7 @@ function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYP
           getRootNodeEndedProposalsSuccess({ endedProposals: [], loading: true, reset: !range[0] })
         )
         const ended = yield contracts?.getEndedProposals(range)
-        yield put(getRootNodeEndedProposalsSuccess({ endedProposals: ended, loading: false }))
+        yield put(getRootNodeEndedProposalsSuccess({ endedProposals: sortByTime(ended), loading: false }))
         break
       }
     }

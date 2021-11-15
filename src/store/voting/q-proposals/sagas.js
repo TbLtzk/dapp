@@ -15,6 +15,7 @@ import {
 import { creationQContractObj, creationQContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper'
 
 import ErrorHandler from 'func/ErrorHandler'
+import { sortByTime } from 'func/useful'
 
 function * getQProposalsCountGenerator () {
   try {
@@ -45,13 +46,13 @@ function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYP
       case PROPOSAL_STATUS_TYPES.active: {
         yield put(getQProposalsListSuccess({ proposalsArr: [], loading: true }))
         const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals()))
-        yield put(getQProposalsListSuccess({ proposalsArr: activeProposals.flat(), loading: false }))
+        yield put(getQProposalsListSuccess({ proposalsArr: sortByTime(activeProposals), loading: false }))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
         yield put(getQEndedProposalsSuccess({ endedProposals: [], loading: true, reset: !range[0] }))
-        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(range)))
-        yield put(getQEndedProposalsSuccess({ endedProposals: endedProposals.flat(), loading: false }))
+        const ended = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(range)))
+        yield put(getQEndedProposalsSuccess({ endedProposals: sortByTime(ended), loading: false }))
         break
       }
     }
