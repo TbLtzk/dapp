@@ -22,8 +22,8 @@ export default function qProposals (state = initialState, action) {
     case actionTypes.GET_Q_ENDED_PROPOSALS_SUCCESS:
       return {
         ...state,
-        endedProposals: action.result,
-        loadingEndedProposals: false,
+        endedProposals: [...state.endedProposals, ...action.result.endedProposals],
+        loadingEndedProposals: action.result.loading,
         errorEnded: null
       }
     case actionTypes.GET_Q_ENDED_PROPOSALS_ERROR:

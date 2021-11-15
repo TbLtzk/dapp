@@ -16,6 +16,8 @@ import {
   qProposalsArr
 } from 'store/voting/q-proposals/selectors'
 import {
+  rootActiveProposalsCountSelector,
+  rootEndedProposalsCountSelector,
   rootNodeEndedProposals,
   rootNodeErrorEnded,
   rootNodeErrorM,
@@ -43,6 +45,7 @@ import { getProposalsList } from 'store/voting/proposals/action-creators'
 import { getLockedAssets } from 'store/q-vault/action-creators'
 import { userAddressMetamask } from 'store/user-inf/selectors'
 import { transactionCounter } from 'store/transaction-handler/selectors'
+import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-creators'
 
 function Proposals (props) {
   const { proposalsType } = props
@@ -50,8 +53,16 @@ function Proposals (props) {
   const dispatch = useDispatch()
   const address = useSelector(userAddressMetamask)
 
-  const { proposals, endedProposals, isLoading, isEndedLoading, error, endedError } =
-        getProposalsSelector(proposalsType)
+  const {
+    proposals,
+    endedProposals,
+    isLoading,
+    isEndedLoading,
+    error,
+    endedError,
+    rootEndedProposalsCount,
+    rootActiveProposalsCount
+  } = getProposalsSelector(proposalsType)
 
   const name = getPageName(proposalsType)
 
@@ -87,7 +98,9 @@ function Proposals (props) {
           isLoading: useSelector(rootNodeLoadingProposals),
           isEndedLoading: useSelector(rootNodeLoadingEndedProposals),
           error: useSelector(rootNodeErrorM),
-          endedError: useSelector(rootNodeErrorEnded)
+          endedError: useSelector(rootNodeErrorEnded),
+          rootActiveProposalsCount: useSelector(rootActiveProposalsCountSelector),
+          rootEndedProposalsCount: useSelector(rootEndedProposalsCountSelector)
         }
       case PROPOSALS_TYPES.expertProposals:
         return {
@@ -111,11 +124,11 @@ function Proposals (props) {
   }
 
   function uploadProposals () {
-    dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.active))
+    dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.active, [0, 10]))
   }
 
   function uploadEndedProposals () {
-    dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.ended))
+    dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.ended, [0, 10]))
   }
 
   useEffect(() => {
@@ -130,6 +143,7 @@ function Proposals (props) {
       uploadProposals()
       uploadEndedProposals()
     }
+    dispatch(getRootProposalsCount())
   }, [transactionCounter])
 
   const tabsItems = [
@@ -142,6 +156,8 @@ function Proposals (props) {
                     proposals={proposals}
                     proposalsType={proposalsType}
                     errorMessage={error}
+                    proposalsCount={rootActiveProposalsCount}
+                    types={PROPOSAL_STATUS_TYPES.active}
                 />
       )
     },
@@ -154,6 +170,8 @@ function Proposals (props) {
                     proposals={endedProposals}
                     proposalsType={proposalsType}
                     errorMessage={endedError}
+                    proposalsCount={rootEndedProposalsCount}
+                    types={PROPOSAL_STATUS_TYPES.ended}
                 />
       )
     },

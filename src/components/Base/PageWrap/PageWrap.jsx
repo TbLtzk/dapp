@@ -22,7 +22,7 @@ function PageWrap (props) {
           header={headerTitle}
           extra={headerExtra}
         />
-        <WrapContent className={wrapContentClasses}>
+        <WrapContent id='wrapContent' className={wrapContentClasses}>
           {children}
         </WrapContent>
       </WrapContainer>

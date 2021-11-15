@@ -9,7 +9,8 @@ function ProposalsTab (props) {
     isLoading,
     proposals,
     errorMessage,
-    proposalsCount
+    proposalsCount,
+    types
   } = props
 
   return (
@@ -21,6 +22,7 @@ function ProposalsTab (props) {
         errorMessage={errorMessage}
         proposalsKind={proposalsType}
         proposalsCount={proposalsCount}
+        types={types}
       />
       <VotingStats/>
       </ProposalsTabWrp>

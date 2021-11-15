@@ -160,13 +160,21 @@ export default class VotingService {
     return await Promise.all(proposals.map((prop) => this.getProposalData(prop, prop.id, prop.status)))
   }
 
-  async getEndedProposals () {
+  async getEndedProposals (range) {
     const contract = await this.switchContract()
     const proposalIds = await contract.getProposalIds('0', 'latest')
-    const allProposals = await contract.getProposals(...proposalIds)
-    const endedProposals = allProposals.filter((obj) => obj.status !== '1' && obj.status !== '3' && obj.status !== '4')
-    const proposals = [...endedProposals].reverse()
-    return await Promise.all(proposals.map((prop) => this.getProposalData(prop, prop.id, prop.status)))
+    const proposalsRange = [...proposalIds].reverse().slice(...range)
+
+    if (!proposalsRange.length) {
+      return []
+    } else {
+      const allProposals = await contract.getProposals(...proposalsRange)
+      const endedProposals = allProposals.filter(
+        (obj) => obj.status !== '1' && obj.status !== '3' && obj.status !== '4'
+      )
+      const proposals = [...endedProposals]
+      return await Promise.all(proposals.map((prop) => this.getProposalData(prop, prop.id, prop.status)))
+    }
   }
 
   async getRootNodesNumber () {

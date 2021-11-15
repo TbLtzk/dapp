@@ -17,7 +17,7 @@ import CardCollapsedContent from './components/CardCollapsedContent'
 import { convertToMonthDayYear, remainDate } from 'func/convertDate'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 
-function ProposalsList ({ proposalsKind, activeTab, currentProposals }) {
+const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentProposals }, ref) => {
   const dispatch = useDispatch()
 
   const [modalShow, setModalShow] = useState(false)
@@ -53,14 +53,14 @@ function ProposalsList ({ proposalsKind, activeTab, currentProposals }) {
 
   return (
         <div>
-            {currentProposals.map((proposal, i) => {
+            {currentProposals.map((proposal, idx) => {
               return (
                     <ListCard
                         key={proposal.id + proposal?.contract}
                         id={proposal.id + proposal?.contract}
                         headerLeftSide={
                             <>
-                                <h1>{proposal.title}</h1>
+                                <h1 ref={ref}>{proposal.title}</h1>
                                 {proposal.status ? <div className="list-card__status">{proposal.status}</div> : null}
                             </>
                         }
@@ -126,6 +126,6 @@ function ProposalsList ({ proposalsKind, activeTab, currentProposals }) {
               : null}
         </div>
   )
-}
+})
 
 export default ProposalsList

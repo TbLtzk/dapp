@@ -18,9 +18,10 @@ export const getRootNodeEndedProposalsError = (result) => ({
   result
 })
 
-export const getRootNodeProposalsList = (proposalStatusType) => ({
+export const getRootNodeProposalsList = (proposalStatusType, range) => ({
   type: actionTypes.GET_ROOT_NODE_PROPOSALS_LIST,
-  proposalStatusType
+  proposalStatusType,
+  range
 })
 
 export const getRootNodeProposalsListSuccess = (result) => ({

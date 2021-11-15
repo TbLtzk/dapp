@@ -22,8 +22,8 @@ export default function rootNodeProposals (state = initialState, action) {
     case actionTypes.GET_ROOT_NODE_ENDED_PROPOSALS_SUCCESS:
       return {
         ...state,
-        endedProposals: action.result,
-        loadingEndedProposals: false
+        endedProposals: [...state.endedProposals, ...action.result.endedProposals],
+        loadingEndedProposals: action.result.loading
       }
     case actionTypes.GET_ROOT_NODE_ENDED_PROPOSALS_ERROR:
       return {

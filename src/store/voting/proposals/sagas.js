@@ -199,14 +199,14 @@ function * getOneProposalSharedGenerator ({ data }) {
   yield call(getProposalDependsOnTypeGenerator, data?.contract, data, data?.id, false)
 }
 
-function * getProposalsListGenerator ({ proposalType, proposalStatusType }) {
+function * getProposalsListGenerator ({ proposalType, proposalStatusType, range }) {
   try {
     switch (proposalType) {
       case PROPOSALS_TYPES.proposals:
-        yield put(getQProposalsList(proposalStatusType))
+        yield put(getQProposalsList(proposalStatusType, range))
         break
       case PROPOSALS_TYPES.rootNodePanel:
-        yield put(getRootNodeProposalsList(proposalStatusType))
+        yield put(getRootNodeProposalsList(proposalStatusType, range))
         break
       case PROPOSALS_TYPES.slashingProposals:
         yield put(getSlashingProposalsList(proposalStatusType))

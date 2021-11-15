@@ -18,9 +18,10 @@ export const getQEndedProposalsError = (result) => ({
   result
 })
 
-export const getQProposalsList = (proposalStatusType) => ({
+export const getQProposalsList = (proposalStatusType, range) => ({
   type: actionTypes.GET_Q_PROPOSALS_LIST,
-  proposalStatusType
+  proposalStatusType,
+  range
 })
 
 export const getQProposalsListSuccess = (result) => ({
