@@ -15,16 +15,15 @@ export const errorHandler = (error, field, min = 0, max = 100) => {
   }
 }
 
-export const mergeArrays = (arr1, arr2, reset) => {
-  if (reset) {
+export const removeCurrentProposals = (arr1, arr2, removeCurrProp) => {
+  if (removeCurrProp) {
     return arr2
   } else {
-    const array = [...arr1, ...arr2]
-    return array.filter((v, i, a) => a.findIndex((t) => t.contract === v.contract && t.id === v.id) === i)
+    return [...arr1, ...arr2]
   }
 }
 
-export const sortByTime = (array) => {
+export const sortByVotingEndTime = (array) => {
   return [...array].flat().sort((a, b) => Number(b.votingEndTime - Number(a.votingEndTime)))
 }
 

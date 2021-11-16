@@ -14,17 +14,12 @@ export default class AuctionService {
   }
 
   async getAuctionsEvent () {
-    try {
-      const eventOptions = {
-        // topics: [],
-        fromBlock: 0,
-        toBlock: 'latest'
-      }
-      const result = await this.contract.getPastEvents('AuctionStarted', eventOptions)
-      return result
-    } catch (error) {
-      console.log(error)
+    const eventOptions = {
+      fromBlock: 0,
+      toBlock: 'latest'
     }
+    const result = await this.contract.getPastEvents('AuctionStarted', eventOptions)
+    return result
   }
 
   async getAuction (user, vaultId) {

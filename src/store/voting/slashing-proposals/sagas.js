@@ -22,7 +22,7 @@ import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-hel
 import ErrorHandler from 'func/ErrorHandler'
 import { PROPOSAL_STATUS_TYPES, PROPOSALS_TYPES } from 'constants/statuses'
 import { CONTRACTS_NAMES } from 'constants/contracts'
-import { sortByTime } from 'func/useful'
+import { sortByVotingEndTime } from 'func/useful'
 
 function * getSlashingProposalsCountGenerator () {
   try {
@@ -55,13 +55,13 @@ function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYP
       case PROPOSAL_STATUS_TYPES.active: {
         yield put(getSlashingProposalsListSuccess({ proposalsArr: [], loading: true }))
         const active = yield Promise.all(contracts.map((contract) => contract.getProposals()))
-        yield put(getSlashingProposalsListSuccess({ proposalsArr: sortByTime(active), loading: false }))
+        yield put(getSlashingProposalsListSuccess({ proposalsArr: sortByVotingEndTime(active), loading: false }))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
         yield put(getSlashingEndedProposalsSuccess({ endedProposals: [], loading: true, reset: !range[0] }))
         const ended = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(range)))
-        yield put(getSlashingEndedProposalsSuccess({ endedProposals: sortByTime(ended), loading: false }))
+        yield put(getSlashingEndedProposalsSuccess({ endedProposals: sortByVotingEndTime(ended), loading: false }))
         break
       }
     }

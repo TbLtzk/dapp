@@ -17,7 +17,7 @@ import {
 } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import ErrorHandler from 'func/ErrorHandler'
 import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
-import { sortByTime } from 'func/useful'
+import { sortByVotingEndTime } from 'func/useful'
 
 function * getExpertProposalsCountGenerator () {
   try {
@@ -52,13 +52,13 @@ function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYP
       case PROPOSAL_STATUS_TYPES.active: {
         yield put(getExpertProposalsListSuccess({ proposalsArr: [], loading: true }))
         const active = yield Promise.all(contracts.map((contract) => contract.getProposals()))
-        yield put(getExpertProposalsListSuccess({ proposalsArr: sortByTime(active), loading: false }))
+        yield put(getExpertProposalsListSuccess({ proposalsArr: sortByVotingEndTime(active), loading: false }))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
         yield put(getExpertEndedProposalsSuccess({ endedProposals: [], loading: true, reset: !range[0] }))
         const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(range)))
-        yield put(getExpertEndedProposalsSuccess({ endedProposals: sortByTime(endedProposals), loading: false }))
+        yield put(getExpertEndedProposalsSuccess({ endedProposals: sortByVotingEndTime(endedProposals), loading: false }))
         break
       }
     }
