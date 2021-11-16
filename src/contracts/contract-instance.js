@@ -15,7 +15,6 @@ export const getQVaultContract = async () => {
 }
 
 export const getValidatorsContract = async () => {
-  console.log(contractRegistryInstance)
   if (validatorsContract === null) {
     console.log(contractRegistryInstance)
     validatorsContract = new window.web3.eth.Contract(contractsToAbi.Validators, contractsToAddresses.Validators)
