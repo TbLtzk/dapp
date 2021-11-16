@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { votingLockingEnd } from 'store/selectors/q-vault'
-import { formVoteObject } from 'store/selectors/voting/proposals'
+import { votingLockingEnd } from 'store/q-vault/selectors'
+import { formVoteObject } from 'store/voting/proposals/selectors'
 
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
 

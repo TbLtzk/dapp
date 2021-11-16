@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 
 import CustomBlock from 'components/Base/CustomBlock'
 
-import { userAddressMetamask } from 'store/selectors/user-inf'
+import { userAddressMetamask } from 'store/user-inf/selectors'
 import { useDispatch, useSelector } from 'react-redux'
-import { getRootMembersData, getRootNodeStakes } from 'store/actions/action-creaters/root-contract'
-import { rootMembersData } from 'store/selectors/root-contract'
+import { getRootMembersData, getRootNodeStakes } from 'store/root-node/action-creators'
+import { rootMembersData } from 'store/root-node/selectors'
 import MemberTables from 'components/Custom/MemberTables'
 
 import TABLE_TYPES from 'constants/tableTypes'

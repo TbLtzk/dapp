@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 
 import { useSelector } from 'react-redux'
-import { formObject } from 'store/selectors/voting/proposals'
+import { formObject } from 'store/voting/proposals/selectors'
 
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
 import InputGroup from 'components/Custom/ModalActions/InputGroup'

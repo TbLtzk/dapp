@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState, Fragment } from 'react'
 
 import { useSelector } from 'react-redux'
-import { formObject } from 'store/selectors/voting/proposals'
+import { formObject } from 'store/voting/proposals/selectors'
 import { PROPOSALS_TYPES } from 'constants/statuses'
 import { getTypeName } from 'func/contractHelpers'
 import { constUpdate } from '../CreateStep3/constants'

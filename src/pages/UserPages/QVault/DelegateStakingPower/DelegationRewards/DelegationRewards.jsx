@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { onClaimStakeDelegatorReward, getOutstandingDelegationRewards } from 'store/actions/action-creaters/q-vault'
-import { outstandingDelegationRewards } from 'store/selectors/q-vault'
+import { onClaimStakeDelegatorReward, getOutstandingDelegationRewards } from 'store/q-vault/action-creators'
+import { outstandingDelegationRewards } from 'store/q-vault/selectors'
 
 import { fN } from 'func/useful'
 import CardBlock from 'components/Base/CardBlock'

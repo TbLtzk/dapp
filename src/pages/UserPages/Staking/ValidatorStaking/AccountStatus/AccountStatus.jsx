@@ -3,7 +3,7 @@ import Button from 'components/Base/Buttons/Button'
 import CustomBlock from 'components/Base/CustomBlock'
 import FormInput from 'components/Base/Form/FormInput'
 import { useDispatch, useSelector } from 'react-redux'
-import { userAddressMetamask } from 'store/selectors/user-inf'
+import { userAddressMetamask } from 'store/user-inf/selectors'
 import { useForm } from 'react-hook-form'
 import { errorHandler, fN } from 'func/useful'
 import { fromSolDateFormattingT1 } from 'func/date'
@@ -18,18 +18,18 @@ import {
   setValidatorsCommitStake,
   getValidatorShortList,
   getValidatorWithdrawalInfo
-} from 'store/actions/action-creaters/validators'
+} from 'store/validators/action-creators'
 import {
   validatorsMinimumTimeLock,
   isUserValidator,
   accountableTotalStake,
   validatorShortList,
   validatorWithdrawalInfo
-} from 'store/selectors/validators'
-import { getAccountBalance } from 'store/actions/action-creaters/q-vault'
-import { accountBalance } from 'store/selectors/q-vault'
+} from 'store/validators/selectors'
+import { getAccountBalance } from 'store/q-vault/action-creators'
+import { accountBalance } from 'store/q-vault/selectors'
 import { fromWei } from 'func/balance'
-import { getVRPLastUpdateOfCompoundRate } from 'store/actions/action-creaters/validation-reward-pools'
+import { getVRPLastUpdateOfCompoundRate } from 'store/validation-reward-pools/action-creators'
 
 export default function AccountStatus () {
   const { register: reg, handleSubmit: submit, errors } = useForm()

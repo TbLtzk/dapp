@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { setErrorMessage, setTransactionLoadingError } from 'store/actions/action-creaters/transaction-handler'
+import { setErrorMessage, setTransactionLoadingError } from 'store/transaction-handler/action-creators'
 
-import { errorMessage } from 'store/selectors/transaction-handler'
+import { errorMessage } from 'store/transaction-handler/selectors'
 import { useAlert } from 'react-alert'
 
 function Alert () {

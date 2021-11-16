@@ -4,7 +4,7 @@ import {
   getValidatorsContract,
   getValidatorMetricsInstance
 } from 'contracts/contract-instance'
-import { transformToPercentage } from '../handler/VotingHandler'
+import { transformToPercentage } from './voting-helpers/base-voting-helper'
 import { fromWei } from 'func/balance'
 import { uintPerSecondToPerYearNumber } from 'func/useful'
 import { contractRegistryInstance } from 'contracts/contracts'

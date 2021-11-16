@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setThem } from 'store/actions/action-creaters/theme'
+import { setThem } from 'store/theme/action-creators'
 import { THEMES } from 'constants/colors'
-import { theme } from 'store/selectors/theme'
+import { theme } from 'store/theme/selectors'
 import FormSwithch from '../Form/FormSwithch'
 
 function Themes () {

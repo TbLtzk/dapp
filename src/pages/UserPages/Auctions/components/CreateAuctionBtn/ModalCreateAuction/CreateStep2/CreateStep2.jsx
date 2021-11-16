@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react'
 
 import { useSelector } from 'react-redux'
-import { formObject } from 'store/selectors/auctions/modalHandler'
+import { formObject } from 'store/modal-handler/selectors'
 import { AUCTIONS_TYPES } from 'constants/statuses'
 import { getEPDRUint } from 'contracts/handler/ContractsEPDR'
 

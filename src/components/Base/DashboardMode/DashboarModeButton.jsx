@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { mode } from 'store/selectors/dashboardMode'
-import { setDashboardMode } from 'store/actions/action-creaters/dashboardMode'
+import { mode } from 'store/dashboard-mode/selectors'
+import { setDashboardMode } from 'store/dashboard-mode/action-creators'
 import FormSwithch from 'components/Base/Form/FormSwithch'
 
 export const MODE = {

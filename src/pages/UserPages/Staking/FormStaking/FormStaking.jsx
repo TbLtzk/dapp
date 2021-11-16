@@ -7,7 +7,7 @@ import {
   setRootStakeToPanel,
   setRootWithdraw,
   setRootAnnounceWithdrawal
-} from 'store/actions/action-creaters/root-contract'
+} from 'store/root-node/action-creators'
 
 import {
   isUserRootNode,
@@ -15,9 +15,9 @@ import {
   withdrawals,
   rootMinimumTimeLock,
   rootMembersData
-} from 'store/selectors/root-contract'
+} from 'store/root-node/selectors'
 
-import { userAddressMetamask } from 'store/selectors/user-inf'
+import { userAddressMetamask } from 'store/user-inf/selectors'
 import { useForm } from 'react-hook-form'
 
 import { fN } from 'func/useful'
@@ -27,8 +27,8 @@ import FormInput from 'components/Base/Form/FormInput'
 import Button from 'components/Base/Buttons/Button'
 import { fromSolDateFormattingT1 } from 'func/date'
 import { AccountStatusInfo, AccountStatusForm } from '../styles'
-import { accountBalance } from 'store/selectors/q-vault'
-import { getAccountBalance } from 'store/actions/action-creaters/q-vault'
+import { accountBalance } from 'store/q-vault/selectors'
+import { getAccountBalance } from 'store/q-vault/action-creators'
 
 function FormStaking () {
   const { register, errors, handleSubmit } = useForm()

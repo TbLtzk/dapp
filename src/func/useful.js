@@ -15,6 +15,18 @@ export const errorHandler = (error, field, min = 0, max = 100) => {
   }
 }
 
+export const removeCurrentProposals = (arr1, arr2, removeCurrProp) => {
+  if (removeCurrProp) {
+    return arr2
+  } else {
+    return [...arr1, ...arr2]
+  }
+}
+
+export const sortByVotingEndTime = (array) => {
+  return [...array].flat().sort((a, b) => Number(b.votingEndTime - Number(a.votingEndTime)))
+}
+
 export const fN = (number) => {
   if (number === undefined || isNaN(number) || number === null) return 0
   const maximumFractionDigits = 4

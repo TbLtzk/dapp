@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { getParameterValueByKey } from 'store/actions/action-creaters/parameters'
-import { arrayParameterKeysByType, parameterValueByKey } from 'store/selectors/parameters'
+import { getParameterValueByKey } from 'store/parameters/action-creators'
+import { arrayParameterKeysByType, parameterValueByKey } from 'store/parameters/selectors'
 import { getContractTypeKey } from 'func/contractHelpers'
 
 const keyNotFound = 'Value not found. Key does not exist yet?'

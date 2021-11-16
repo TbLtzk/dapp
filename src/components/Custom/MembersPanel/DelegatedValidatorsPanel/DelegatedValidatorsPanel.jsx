@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { getDelegationsList } from 'store/actions/action-creaters/q-vault'
-import { loadingDelegationList, delegationList } from 'store/selectors/q-vault'
+import { getDelegationsList } from 'store/q-vault/action-creators'
+import { loadingDelegationList, delegationList } from 'store/q-vault/selectors'
 
 import MemberTables from 'components/Custom/MemberTables/MemberTables'
 import TABLE_TYPES from 'constants/tableTypes'

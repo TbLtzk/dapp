@@ -7,7 +7,7 @@ import {
 } from '../handler/VotingHandler'
 import { fromWei } from 'func/balance'
 import { uintPerSecondToPerYearNumber } from '../../func/useful'
-import { validatorsInstance, validationRewardPoolsInstance } from 'contracts/contracts'
+import { getValidationRewardPoolsInstance, getValidatorsInstance } from 'contracts/contract-instance'
 
 const contractName = 'Validators'
 
@@ -53,6 +53,9 @@ export default class Validators {
   }
 
   async getValidator (validator, index) {
+    const validatorsInstance = await getValidatorsInstance()
+    const validationRewardPoolsInstance = await getValidationRewardPoolsInstance()
+
     const validatorInfo = await validatorsInstance.getValidatorInfo(validator.validator)
     const poolInfo = await validationRewardPoolsInstance.getPoolInfo(validator.validator)
 
@@ -76,6 +79,8 @@ export default class Validators {
   }
 
   async getMembersList () {
+    const validatorsInstance = await getValidatorsInstance()
+
     const validatorsArr = await validatorsInstance.instance.methods.getValidatorShortList()
       .call()
 

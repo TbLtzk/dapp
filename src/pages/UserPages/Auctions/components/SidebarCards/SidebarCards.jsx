@@ -1,15 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { userAddressMetamask } from 'store/selectors/user-inf'
-import { debtSB, loadingPerformNetting, surplusSB, systemBalanceSB } from 'store/selectors/system-balance'
-import { lastAuctionModification } from 'store/selectors/auctions/auctions'
-import { availableAmountSR } from 'store/selectors/system-reserve'
-import { userBalance } from 'store/selectors/q-vault'
+import { userAddressMetamask } from 'store/user-inf/selectors'
+import { debtSB, loadingPerformNetting, surplusSB, systemBalanceSB } from 'store/system-balance/selectors'
+import { lastAuctionModification } from 'store/auctions/selectors'
+import { availableAmountSR } from 'store/system-reserve/selectors'
+import { userBalance } from 'store/q-vault/selectors'
 
-import { getDebt, getSurplus, getSystemBalance } from 'store/actions/action-creaters/system-balance'
-import { getAvailableAmount } from 'store/actions/action-creaters/system-reserve'
-import { getUserBalance } from 'store/actions/action-creaters/q-vault'
+import { getDebt, getSurplus, getSystemBalance } from 'store/system-balance/action-creators'
+import { getAvailableAmount } from 'store/system-reserve/action-creators'
+import { getUserBalance } from 'store/q-vault/action-creators'
 import { getEPDRUint } from 'contracts/handler/ContractsEPDR'
 
 import Stats from 'components/Custom/PageLists/SidebarCards/Stats'

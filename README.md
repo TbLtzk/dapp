@@ -1,6 +1,6 @@
-# Q Blockchain Headquarters dApp
+# Interact with the Q blockchain and smart contracts easily and secure
 
-App uses React, Redux
+App uses React, Redux/Redux-Saga, Styled Components
 
 ## Prerequisites
 
@@ -8,6 +8,12 @@ App uses React, Redux
 
 ## Prepare
 
+Log in to GitLab NPM package registry. Token could be retrieved at GitLab User Settings / Access Tokens with read_api option enabled.
+```
+npm config set '//gitlab.com/api/v4/packages/npm/:_authToken' <token>
+```
+
+Install package dependencies
 ```
   npm install
 ```
@@ -20,4 +26,5 @@ App uses React, Redux
 
 Runs the app in the development mode.
 Open http://localhost:3000 to view it in the browser.
+
 

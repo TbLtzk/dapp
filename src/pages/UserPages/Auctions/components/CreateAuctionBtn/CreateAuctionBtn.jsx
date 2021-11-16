@@ -4,7 +4,7 @@ import {
   setCreatedStepsLimit,
   setCreateObj,
   setStepCounter
-} from 'store/actions/action-creaters/auctions/modalHandler'
+} from 'store/modal-handler/action-creators'
 
 import ModalCreateAuction from './ModalCreateAuction'
 import Button from 'components/Base/Buttons/Button'

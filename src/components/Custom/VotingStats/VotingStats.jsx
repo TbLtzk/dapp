@@ -5,12 +5,12 @@ import VoterStatus from 'components/Custom/PageLists/VoterStatus'
 import { fN } from 'func/useful'
 import { fromSolDateFormattingT1 } from 'func/date'
 import { useSelector, useDispatch } from 'react-redux'
-import { getDelegationInfo } from 'store/actions/action-creaters/q-vault'
-import { baseVotingWeightInfoSelector } from 'store/selectors/voting/proposals'
-import { getBaseVotingWeightInfo } from 'store/actions/action-creaters/voting/proposals'
-import { userAddressMetamask } from 'store/selectors/user-inf'
+import { getDelegationInfo } from 'store/q-vault/action-creators'
+import { baseVotingWeightInfoSelector } from 'store/voting/proposals/selectors'
+import { getBaseVotingWeightInfo } from 'store/voting/proposals/action-creators'
+import { userAddressMetamask } from 'store/user-inf/selectors'
 import { fromWei } from 'func/balance'
-import { votingAgent } from 'store/selectors/q-vault'
+import { votingAgent } from 'store/q-vault/selectors'
 
 function VotingStats () {
   const address = useSelector(userAddressMetamask)

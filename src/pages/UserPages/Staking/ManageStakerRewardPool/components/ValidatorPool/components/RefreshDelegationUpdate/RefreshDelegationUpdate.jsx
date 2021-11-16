@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 import CardBlock from 'components/Base/CardBlock'
 import { useDispatch, useSelector } from 'react-redux'
-import { lastUpdateOfCompoundRate, loadingUpdateOfCompoundRate } from 'store/selectors/validation-reward-pools'
-import { setVRPUpdateValidatorsCompoundRate } from 'store/actions/action-creaters/validation-reward-pools'
+import { lastUpdateOfCompoundRate, loadingUpdateOfCompoundRate } from 'store/validation-reward-pools/selectors'
+import { setVRPUpdateValidatorsCompoundRate } from 'store/validation-reward-pools/action-creators'
 
 import { remainDateTimeSince } from 'func/convertDate'
 
-import { userAddressMetamask } from 'store/selectors/user-inf'
+import { userAddressMetamask } from 'store/user-inf/selectors'
 
 export default function RefreshDelegationUpdate () {
   const dispatch = useDispatch()

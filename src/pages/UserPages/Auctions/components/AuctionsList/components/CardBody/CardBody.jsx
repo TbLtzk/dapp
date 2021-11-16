@@ -1,7 +1,7 @@
 import React from 'react'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 import { useSelector } from 'react-redux'
-import { symbol } from 'store/selectors/stable-coin'
+import { symbol } from 'store/stable-coin/selectors'
 
 function CardBody (props) {
   const { data } = props
