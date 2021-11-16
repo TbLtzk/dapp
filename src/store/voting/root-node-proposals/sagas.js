@@ -29,6 +29,7 @@ function * getRootProposalsCountGenerator () {
 function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, range = [0, 3] }) {
   try {
     const contracts = creationRootContractObj()
+    const newRange = [range[0] * 3, range[1] * 3]
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
         yield put(getRootNodeProposalsListSuccess({ proposalsArr: [], loading: true }))
@@ -40,7 +41,7 @@ function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYP
         yield put(
           getRootNodeEndedProposalsSuccess({ endedProposals: [], loading: true, reset: !range[0] })
         )
-        const ended = yield contracts?.getEndedProposals(range)
+        const ended = yield contracts?.getEndedProposals(newRange)
         yield put(getRootNodeEndedProposalsSuccess({ endedProposals: sortByTime(ended), loading: false }))
         break
       }
