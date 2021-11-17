@@ -18,6 +18,9 @@ import {
 } from 'store/validators/selectors'
 
 import { fN } from 'func/useful'
+import { setErrorMessage } from 'store/transaction-handler/action-creators'
+
+const message = { header: 'Notice', details: 'Stake amount below minimum to apply new rate, old rate applied.' }
 
 export default function ValidatorPool ({ modalShow }) {
   const dispatch = useDispatch()
@@ -28,6 +31,12 @@ export default function ValidatorPool ({ modalShow }) {
   const delegatedStake = useSelector(delegatedStakeSelector)
   const accTotalStake = useSelector(accountableTotalStake)
   const isMsgDisplayed = useSelector(isStakerRewardPoolMsgDisplayed)
+
+  useEffect(() => {
+    if (isMsgDisplayed) {
+      dispatch(setErrorMessage(message))
+    }
+  }, [dispatch, isMsgDisplayed])
 
   useEffect(() => {
     if (modalShow) {
@@ -81,11 +90,6 @@ export default function ValidatorPool ({ modalShow }) {
               )
             })}
             <RefreshDelegationUpdate />
-          {
-            isMsgDisplayed
-              ? <p>Stake amount below minimum to apply new rate, old rate applied.</p>
-              : null
-          }
         </div>
   )
 }

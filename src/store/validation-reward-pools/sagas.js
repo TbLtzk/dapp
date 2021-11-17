@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { put, takeEvery, select, call } from "redux-saga/effects";
-import * as actionTypes from './action-types'
-
+import * as actionTypes from "./action-types";
 
 import {
   setVRPBalance,
@@ -11,8 +10,9 @@ import {
   setVRPLastUpdateOfCompoundRateData,
   getVRPLastUpdateOfCompoundRate,
   setVRPLoadingValidatorsCompoundRate,
-  getVRPBalance, setIsStakerRewardPoolMsgDisplayed,
-} from './action-creators';
+  getVRPBalance,
+  setIsStakerRewardPoolMsgDisplayed,
+} from "./action-creators";
 
 import { SET_TRANSACTION_COUNTER } from "store/transaction-handler/action-types";
 
@@ -27,9 +27,9 @@ function* setUpdateValidatorsCompoundRateGenerator({ address }) {
     const {
       balance,
       poolInfo,
-      lastUpdateOfCompoundRate : previousLastUpdateCompoundRate
+      lastUpdateOfCompoundRate: previousLastUpdateCompoundRate,
     } = yield select((state) => state.validationRewardPools);
-    const disDelClaims = +balance - +poolInfo
+    const disDelClaims = +balance - +poolInfo;
 
     yield put(setVRPLoadingValidatorsCompoundRate(true));
     const contract = yield call(getValidationRewardPoolsInstance);
@@ -39,19 +39,15 @@ function* setUpdateValidatorsCompoundRateGenerator({ address }) {
       yield put(getVRPDelegatorsShare(address));
       yield put(getVRPBalance(address));
       yield call(getPoolInfoGenerator, { address });
-    const {
-      lastUpdateOfCompoundRate: newInfo,
-    } = yield select((state) => state.validationRewardPools);
-    yield put(setIsStakerRewardPoolMsgDisplayed(
-      disDelClaims <= 0 ||
-      previousLastUpdateCompoundRate === newInfo
-    ))
+      const { lastUpdateOfCompoundRate: newInfo } = yield select((state) => state.validationRewardPools);
+      yield put(setIsStakerRewardPoolMsgDisplayed(disDelClaims <= 0 || previousLastUpdateCompoundRate === newInfo));
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setErrorMessage(errorMsg));
   } finally {
     yield put(setVRPLoadingValidatorsCompoundRate(false));
+    yield put(setIsStakerRewardPoolMsgDisplayed(false));
   }
 }
 
