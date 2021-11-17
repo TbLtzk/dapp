@@ -20,7 +20,7 @@ import { getUniqueProposals } from 'func/useful'
 
 const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentProposals }, ref) => {
   const dispatch = useDispatch()
-  
+
   const [modalShow, setModalShow] = useState(false)
   const [proposalId, setProposalId] = useState(null)
   const [vetoEndTime, setVetoEndTime] = useState(null)
