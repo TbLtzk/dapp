@@ -23,7 +23,10 @@ function Routes () {
     position: positions.TOP_RIGHT,
     timeout: 10000,
     offset: '10px',
-    transition: transitions.SCALE
+    transition: transitions.SCALE,
+    containerStyle: {
+      zIndex: 9999
+    }
   }
 
   return (
