@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 
 import { useDispatch } from 'react-redux'
 
-import { setVestingWithdraw } from 'store/actions/action-creaters/vesting'
+import { setVestingWithdraw } from 'store/vesting/action-creators'
 
 function ManageVestingBalance ({ setModalShow }) {
   const dispatch = useDispatch()

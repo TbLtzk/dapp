@@ -7,8 +7,8 @@ import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
 import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore'
 import { useSelector } from 'react-redux'
-import { userAddressMetamask } from 'store/selectors/user-inf'
-import { transactionCounter } from 'store/selectors/transaction-handler'
+import { userAddressMetamask } from 'store/user-inf/selectors'
+import { transactionCounter } from 'store/transaction-handler/selectors'
 
 const HEADERS = ['Collateral Asset', 'Borrowing Asset', 'Borrowing Fee (p.a.)', '']
 

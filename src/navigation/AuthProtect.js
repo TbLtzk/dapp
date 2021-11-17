@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router'
 
-import { detectEthereumProvider } from 'store/actions/action-creaters/user-auth'
-import { getCheckIsUserRootNode } from 'store/actions/action-creaters/root-contract'
-import { userAddressMetamask } from 'store/selectors/user-inf'
+import { detectEthereumProvider } from 'store/user-auth/action-creators'
+import { getCheckIsUserRootNode } from 'store/root-node/action-creators'
+import { userAddressMetamask } from 'store/user-inf/selectors'
 
 export function AuthProtect (ProtectComponent, additionalProps = {}) {
   function ProtectRoute (props) {

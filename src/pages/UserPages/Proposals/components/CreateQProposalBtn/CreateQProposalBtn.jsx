@@ -6,7 +6,7 @@ import {
   setCreatedStepsLimit,
   setCreateProposalObj,
   setStepCounter
-} from 'store/actions/action-creaters/voting/proposals'
+} from 'store/voting/proposals/action-creators'
 
 import ModalCreateProposal from './ModalCreateProposal'
 import Button from 'components/Base/Buttons/Button'

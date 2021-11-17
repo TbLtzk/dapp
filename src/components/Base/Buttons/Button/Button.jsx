@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import { ButtonCustom } from './styles'
-import { theme } from 'store/selectors/theme'
+import { theme } from 'store/theme/selectors'
 
 function Button (props) {
   const currentTheme = useSelector(theme)

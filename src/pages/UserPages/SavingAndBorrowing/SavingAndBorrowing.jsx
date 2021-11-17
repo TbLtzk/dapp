@@ -6,8 +6,8 @@ import SavingCryptoAssets from './components/SavingCryptoAssets'
 import BorrowCryptoAssets from './components/BorrowCryptoAssets'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { setAddCoinsToMetamask, setCreateQBTCVault } from 'store/actions/action-creaters/borrowing-core'
-import { shouldAddCoins } from 'store/selectors/borrowing-core'
+import { setAddCoinsToMetamask, setCreateQBTCVault } from 'store/borrowing-core/action-creators'
+import { shouldAddCoins } from 'store/borrowing-core/selectors'
 
 function SavingAndBorrowing () {
   const dispatch = useDispatch()

@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { formObject } from 'store/selectors/voting/proposals'
-import { setCreatedStepsLimit } from 'store/actions/action-creaters/voting/proposals'
+import { formObject } from 'store/voting/proposals/selectors'
+import { setCreatedStepsLimit } from 'store/voting/proposals/action-creators'
 
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
 import InputGroup from 'components/Custom/ModalActions/InputGroup'

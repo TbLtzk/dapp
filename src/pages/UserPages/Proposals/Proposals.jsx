@@ -8,51 +8,63 @@ import Button from 'components/Base/Buttons/Button'
 import { PROPOSALS_TYPES, PROPOSAL_STATUS_TYPES } from 'constants/statuses'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  qEndedProposals, qErrorEnded,
-  qErrorM, qLoadingEndedProposals,
+  qActiveProposalsCountSelector,
+  qEndedProposals,
+  qEndedProposalsCountSelector,
+  qErrorEnded,
+  qErrorM,
+  qLoadingEndedProposals,
   qLoadingProposals,
   qProposalsArr
-} from 'store/selectors/voting/q-proposals'
+} from 'store/voting/q-proposals/selectors'
 import {
-  rootNodeEndedProposals, rootNodeErrorEnded,
-  rootNodeErrorM, rootNodeLoadingEndedProposals,
+  rootActiveProposalsCountSelector,
+  rootEndedProposalsCountSelector,
+  rootNodeEndedProposals,
+  rootNodeErrorEnded,
+  rootNodeErrorM,
+  rootNodeLoadingEndedProposals,
   rootNodeLoadingProposals,
   rootNodeProposalsArr
-} from 'store/selectors/voting/root-node-proposals'
+} from 'store/voting/root-node-proposals/selectors'
 import {
-  expertEndedProposals, expertErrorEnded,
-  expertErrorM, expertLoadingEndedProposals,
+  expertActiveProposalsCountSelector,
+  expertEndedProposals,
+  expertEndedProposalsCountSelector,
+  expertErrorEnded,
+  expertErrorM,
+  expertLoadingEndedProposals,
   expertProposalsArr,
   loadingExpertProposals
-} from 'store/selectors/voting/expert-proposals'
+} from 'store/voting/expert-proposals/selectors'
 import {
-  slashingEndedProposals, slashingErrorEnded,
-  slashingErrorM, slashingLoadingEndedProposals,
+  slashingActiveProposalsCountSelector,
+  slashingEndedProposals,
+  slashingEndedProposalsCountSelector,
+  slashingErrorEnded,
+  slashingErrorM,
+  slashingLoadingEndedProposals,
   slashingLoadingProposals,
   slashingProposalsArr
-} from 'store/selectors/voting/slashing-proposals'
-import {
-  getProposalsList
-} from 'store/actions/action-creaters/voting/proposals'
-import { getLockedAssets } from 'store/actions/action-creaters/q-vault'
-import { userAddressMetamask } from 'store/selectors/user-inf'
-import { transactionLoading } from 'store/selectors/transaction-handler'
+} from 'store/voting/slashing-proposals/selectors'
+import { getProposalsList } from 'store/voting/proposals/action-creators'
+import { getLockedAssets } from 'store/q-vault/action-creators'
+import { userAddressMetamask } from 'store/user-inf/selectors'
+import { transactionCounter } from 'store/transaction-handler/selectors'
 
-function Proposals (props) {
-  const {
-    proposalsType
-  } = props
+function Proposals ({ proposalsType }) {
   const dispatch = useDispatch()
   const address = useSelector(userAddressMetamask)
-  const loadingTransaction = useSelector(transactionLoading)
-
+  const transaction = useSelector(transactionCounter)
   const {
     proposals,
     endedProposals,
     isLoading,
     isEndedLoading,
     error,
-    endedError
+    endedError,
+    activeProposalsCount,
+    endedProposalsCount
   } = getProposalsSelector(proposalsType)
 
   const name = getPageName(proposalsType)
@@ -80,7 +92,9 @@ function Proposals (props) {
           isLoading: useSelector(qLoadingProposals),
           isEndedLoading: useSelector(qLoadingEndedProposals),
           error: useSelector(qErrorM),
-          endedError: useSelector(qErrorEnded)
+          endedError: useSelector(qErrorEnded),
+          activeProposalsCount: useSelector(qActiveProposalsCountSelector),
+          endedProposalsCount: useSelector(qEndedProposalsCountSelector)
         }
       case PROPOSALS_TYPES.rootNodePanel:
         return {
@@ -89,7 +103,9 @@ function Proposals (props) {
           isLoading: useSelector(rootNodeLoadingProposals),
           isEndedLoading: useSelector(rootNodeLoadingEndedProposals),
           error: useSelector(rootNodeErrorM),
-          endedError: useSelector(rootNodeErrorEnded)
+          endedError: useSelector(rootNodeErrorEnded),
+          activeProposalsCount: useSelector(rootActiveProposalsCountSelector),
+          endedProposalsCount: useSelector(rootEndedProposalsCountSelector)
         }
       case PROPOSALS_TYPES.expertProposals:
         return {
@@ -98,7 +114,9 @@ function Proposals (props) {
           isLoading: useSelector(loadingExpertProposals),
           isEndedLoading: useSelector(expertLoadingEndedProposals),
           error: useSelector(expertErrorM),
-          endedError: useSelector(expertErrorEnded)
+          endedError: useSelector(expertErrorEnded),
+          activeProposalsCount: useSelector(expertActiveProposalsCountSelector),
+          endedProposalsCount: useSelector(expertEndedProposalsCountSelector)
         }
       case PROPOSALS_TYPES.slashingProposals:
         return {
@@ -107,68 +125,81 @@ function Proposals (props) {
           isLoading: useSelector(slashingLoadingProposals),
           isEndedLoading: useSelector(slashingLoadingEndedProposals),
           error: useSelector(slashingErrorM),
-          endedError: useSelector(slashingErrorEnded)
+          endedError: useSelector(slashingErrorEnded),
+          activeProposalsCount: useSelector(slashingActiveProposalsCountSelector),
+          endedProposalsCount: useSelector(slashingEndedProposalsCountSelector)
         }
     }
   }
 
   function uploadProposals () {
     dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.active))
+  }
+
+  function uploadEndedProposals () {
     dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.ended))
-    dispatch(getLockedAssets(address))
   }
 
   useEffect(() => {
-    if (!loadingTransaction) {
+    if (!transaction) {
+      uploadEndedProposals()
       uploadProposals()
+      dispatch(getLockedAssets(address))
     }
-  }, [loadingTransaction])
+  }, [transaction])
 
   const tabsItems = [
     {
       label: 'active-proposals',
       title: 'Active Proposals',
-      content: <ProposalsTab
-        isLoading={isLoading}
-        proposals={proposals}
-        proposalsType={proposalsType}
-        errorMessage={error}
-      />
+      content: (
+                <ProposalsTab
+                    isLoading={isLoading}
+                    proposals={proposals}
+                    proposalsType={proposalsType}
+                    errorMessage={error}
+                    types={PROPOSAL_STATUS_TYPES.active}
+                    proposalsCount={activeProposalsCount}
+                />
+      )
     },
     {
       label: 'ended-proposals',
       title: 'Ended Proposals',
-      content: <ProposalsTab
-        isLoading={isEndedLoading}
-        proposals={endedProposals}
-        proposalsType={proposalsType}
-        errorMessage={endedError}
-      />
+      content: (
+                <ProposalsTab
+                    isLoading={isEndedLoading}
+                    proposals={endedProposals}
+                    proposalsType={proposalsType}
+                    errorMessage={endedError}
+                    types={PROPOSAL_STATUS_TYPES.ended}
+                    proposalsCount={endedProposalsCount}
+                />
+      )
     },
     {
-      title: <Button
-        title='Refresh'
-        handleButton={uploadProposals}
-        type='button'
-        width='100px'
-        position='absolute'
-        right='70px'
-        top='108px'
-      />
+      title: (
+                <Button
+                    title="Refresh"
+                    handleButton={() => {
+                      uploadProposals()
+                      uploadEndedProposals()
+                    }}
+                    type="button"
+                    width="100px"
+                    position="absolute"
+                    right="70px"
+                    top="108px"
+                />
+      )
     }
   ]
 
   return (
-    <PageWrap
-      headerTitle={name}
-      headerExtra={<CreateQProposalBtn activeTab={proposalsType}/>}
-    >
-      <BigTabsView
-        tabsItems={tabsItems}
-        active={tabsItems[0]?.label}
-      />
-    </PageWrap>
+        <PageWrap headerTitle={name} headerExtra={<CreateQProposalBtn activeTab={proposalsType} />}>
+            <BigTabsView tabsItems={tabsItems} active={tabsItems[0]?.label} />
+        </PageWrap>
   )
-};
+}
 
 export default Proposals

@@ -6,9 +6,9 @@ import Button from 'components/Base/Buttons/Button'
 import { useForm } from 'react-hook-form'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { setDepositCall, setWithdrawCall, setSendCall } from 'store/actions/action-creaters/q-vault'
-import { userAddressMetamask } from 'store/selectors/user-inf'
-import { accountBalance } from 'store/selectors/q-vault'
+import { setDepositCall, setWithdrawCall, setSendCall } from 'store/q-vault/action-creators'
+import { userAddressMetamask } from 'store/user-inf/selectors'
+import { accountBalance } from 'store/q-vault/selectors'
 import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper'
 import { WARNING_MAX_NUMBER } from 'constants/statuses'
 

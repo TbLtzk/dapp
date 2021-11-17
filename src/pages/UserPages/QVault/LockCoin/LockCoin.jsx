@@ -2,8 +2,8 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { setLockAmount, setUnlockAmount } from 'store/actions/action-creaters/q-vault'
-import { userAddressMetamask } from 'store/selectors/user-inf'
+import { setLockAmount, setUnlockAmount } from 'store/q-vault/action-creators'
+import { userAddressMetamask } from 'store/user-inf/selectors'
 
 import ButtonLinkArrow from 'components/Base/Buttons/ButtonLinkArrow'
 import CustomBlock from 'components/Base/CustomBlock'
@@ -11,7 +11,7 @@ import FormInput from 'components/Base/Form/FormInput'
 import Button from 'components/Base/Buttons/Button'
 
 import 'react-datepicker/dist/react-datepicker.css'
-import { votingWeight } from 'store/selectors/q-vault'
+import { votingWeight } from 'store/q-vault/selectors'
 
 export default function LockCoin ({ maxQVaultVotingWeight }) {
   const { register: reg1, handleSubmit: submit1, errors: err1, setValue: setLockMax } = useForm()

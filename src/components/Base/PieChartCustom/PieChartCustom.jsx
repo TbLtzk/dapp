@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { rootMembersData } from 'store/selectors/root-contract'
+import { rootMembersData } from 'store/root-node/selectors'
 
 import { PieChart, Pie, Cell } from 'recharts'
 

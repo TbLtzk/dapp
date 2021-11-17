@@ -4,10 +4,10 @@ import CustomBlock from 'components/Base/CustomBlock'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 
 import { useSelector } from 'react-redux'
-import { userAddressMetamask } from 'store/selectors/user-inf'
+import { userAddressMetamask } from 'store/user-inf/selectors'
 import CommonHandler from '../../handler'
 import { fN } from 'func/useful'
-import { transactionCounter } from 'store/selectors/transaction-handler'
+import { transactionCounter } from 'store/transaction-handler/selectors'
 
 function Overview () {
   const trCounter = useSelector(transactionCounter)

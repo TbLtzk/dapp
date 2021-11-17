@@ -1,36 +1,36 @@
 import React, { useState, useEffect } from 'react'
 import PageWrap from 'components/Base/PageWrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { userAddressMetamask } from 'store/selectors/user-inf'
+import { userAddressMetamask } from 'store/user-inf/selectors'
 
 import AddressForm from './components/AddressForm'
 import { InfoWrap } from './styles'
 import BalanceCard from './components/BalanceCard'
 import { fN } from 'func/useful'
-import { getUserBalance, getMinimumQVaultTimeLock, getQVaultTimeLocks } from 'store/actions/action-creaters/q-vault'
+import { getUserBalance, getMinimumQVaultTimeLock, getQVaultTimeLocks } from 'store/q-vault/action-creators'
 
 import {
   getRootNodeStakes,
   getMinimumRootTimeLock,
   getRootTimeLocks
-} from 'store/actions/action-creaters/root-contract'
+} from 'store/root-node/action-creators'
 
 import {
   getSelfStake,
   getMinimumValidatorsTimeLock,
   getValidatorsTimeLocks
-} from 'store/actions/action-creaters/validators'
+} from 'store/validators/action-creators'
 
 import {
   getVestingBalance,
   getMinimumVestingTimeLock,
   getVestingTimeLocks
-} from 'store/actions/action-creaters/vesting'
+} from 'store/vesting/action-creators'
 
-import { userBalance, qVaultMinimumTimeLock, qVaultTimeLocks } from 'store/selectors/q-vault'
-import { rootNodeStake, rootMinimumTimeLock, rootTimeLocks } from 'store/selectors/root-contract'
-import { selfStake, validatorsMinimumTimeLock, validatorsTimeLocks } from 'store/selectors/validators'
-import { vestingBalance, vestingMinimumTimeLock, vestingTimeLocks } from 'store/selectors/vesting'
+import { userBalance, qVaultMinimumTimeLock, qVaultTimeLocks } from 'store/q-vault/selectors'
+import { rootNodeStake, rootMinimumTimeLock, rootTimeLocks } from 'store/root-node/selectors'
+import { selfStake, validatorsMinimumTimeLock, validatorsTimeLocks } from 'store/validators/selectors'
+import { vestingBalance, vestingMinimumTimeLock, vestingTimeLocks } from 'store/vesting/selectors'
 
 function TimeLocks () {
   const dispatch = useDispatch()

@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { balance } from 'store/selectors/validation-reward-pools'
-import { userAddressMetamask } from 'store/selectors/user-inf'
-import { updateCompoundRate } from 'store/selectors/q-vault'
-import { getUpdateCompoundRate } from 'store/actions/action-creaters/q-vault'
+import { balance } from 'store/validation-reward-pools/selectors'
+import { userAddressMetamask } from 'store/user-inf/selectors'
+import { updateCompoundRate } from 'store/q-vault/selectors'
+import { getUpdateCompoundRate } from 'store/q-vault/action-creators'
 
 import Handler from './handler'
 

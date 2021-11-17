@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 import { useSelector } from 'react-redux'
-import { formObject } from 'store/selectors/auctions/modalHandler'
-import { symbol } from 'store/selectors/stable-coin'
+import { formObject } from 'store/modal-handler/selectors'
+import { symbol } from 'store/stable-coin/selectors'
 
 import InputGroup from 'components/Custom/ModalActions/InputGroup'
 import { getEPDRUint } from 'contracts/handler/ContractsEPDR'

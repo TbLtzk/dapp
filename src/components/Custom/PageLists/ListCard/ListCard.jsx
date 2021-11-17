@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { ListCardWrp, ListCardHeader, ListCardBody } from './styles'
 import { Accordion, useAccordionToggle, DropdownButton } from 'react-bootstrap'
 
-import { theme } from 'store/selectors/theme'
+import { theme } from 'store/theme/selectors'
 
 export function CustomToggle ({ eventKey }) {
   const decoratedOnClick = useAccordionToggle(eventKey, () => {

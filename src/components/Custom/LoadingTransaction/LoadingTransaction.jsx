@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useSelector } from 'react-redux'
-import { transactionLoading, errorMessage, transactionCounter } from 'store/selectors/transaction-handler'
+import { transactionLoading, errorMessage, transactionCounter } from 'store/transaction-handler/selectors'
 
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 

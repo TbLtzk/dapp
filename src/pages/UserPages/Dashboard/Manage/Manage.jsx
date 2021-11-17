@@ -7,7 +7,7 @@ import {
   getConstitutionParametersKV,
   getFeesIncentivesExpertPanelParametersKV,
   getEPDRParametersKV
-} from 'store/actions/action-creaters/parameters-addresses'
+} from 'store/parameters-addresses/action-creators'
 import {
   contractRegistryKV,
   contractRegistryKVLoading,
@@ -24,7 +24,7 @@ import {
   ePDRParametersKV,
   ePDRParametersKVLoading,
   ePDRParametersKVError
-} from 'store/selectors/parameters-addresses'
+} from 'store/parameters-addresses/selectors'
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import Button from 'components/Base/Buttons/Button'
 import PageWrap from 'components/Base/PageWrap'

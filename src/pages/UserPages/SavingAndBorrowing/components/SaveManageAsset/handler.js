@@ -1,4 +1,4 @@
-import { setTransactionCounter } from 'store/actions/action-creaters/transaction-handler'
+import { setTransactionCounter } from 'store/transaction-handler/action-creators'
 
 import { StableCoinQUSD } from 'contracts/src/StableCoin'
 import { SavingQUSD } from 'contracts/src/Saving'

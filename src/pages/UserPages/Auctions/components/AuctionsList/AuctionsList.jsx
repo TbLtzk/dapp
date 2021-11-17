@@ -10,12 +10,12 @@ import { useDispatch } from 'react-redux'
 import Status from './components/Status'
 import ModalBid from '../CreateAuctionBtn/ModalBid'
 import { convertToMonthDayYear, remainDate } from 'func/convertDate'
-import { executeAuction } from 'store/actions/action-creaters/auctions/auctions'
+import { executeAuction } from 'store/auctions/action-creators'
 import {
   setCreatedStepsLimit,
   setCreateObj,
   setStepCounter
-} from 'store/actions/action-creaters/auctions/modalHandler'
+} from 'store/modal-handler/action-creators'
 import CardDropdownItems from './components/CardDropdownItems'
 import ListCard from 'components/Custom/PageLists/ListCard'
 

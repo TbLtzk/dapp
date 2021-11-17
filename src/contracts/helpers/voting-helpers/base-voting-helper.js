@@ -1,0 +1,152 @@
+import SlashingVotingService from './slashing-voting-helper'
+import RootsVotingService from './roots-voting-helper'
+import ConstitutionVotingService from './constitution-voting-helper'
+import EmergencyUpdateVotingService from './emergency-update-voting-helper'
+import GeneralUpdateVotingService from './general-update-voting-helper'
+import MembershipVoting from './membership-voting-helper'
+import ParametersVoting from './parameters-voting-helper'
+import { PROPOSALS_TYPES } from 'constants/statuses'
+import { BN } from 'func/useful'
+import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts'
+
+export const getStatusTransformation = (statusId) => {
+  const status = ['None', 'Pending', 'Rejected', 'Accepted', 'Passed', 'Executed', 'Obsolete', 'Expired']
+  return status[Number(statusId)]
+}
+export const getTypeParameter = (id) => {
+  const status = ['None', 'Pending', 'Rejected', 'Accepted', 'Passed', 'Boolean', 'Obsolete']
+  return status[Number(id)]
+}
+
+export const getPercentageFormat = (number) => {
+  return BN(number)
+    .multipliedBy(BN(10 ** 27))
+    .dividedBy(100)
+    .toFixed()
+}
+
+export const transformToPercentage = (number) => {
+  const amount = '10000000000000000000000000'
+  let convertedNumber = BN(number).dividedBy(amount)
+  if (convertedNumber?.e < 0) {
+    convertedNumber = convertedNumber.toFixed(10)
+  } else {
+    convertedNumber = Math.round(convertedNumber?.c[0])
+  }
+  return convertedNumber
+}
+
+export function creationSlashingContractObj (contractName) {
+  return new SlashingVotingService(contractName)
+}
+
+export function creationSlashingContractsObjArray () {
+  const validatorsSlashingVoting = new SlashingVotingService(CONTRACTS_NAMES.validatorsSlashingVoting)
+  const rootNodesSlashingVoting = new SlashingVotingService(CONTRACTS_NAMES.rootNodesSlashingVoting)
+  return [validatorsSlashingVoting, rootNodesSlashingVoting]
+}
+
+export function creationRootContractObj () {
+  return new RootsVotingService(CONTRACTS_NAMES.rootsVoting)
+}
+
+export function creationQContractObj (contractName) {
+  switch (contractName) {
+    case CONTRACTS_NAMES.constitutionVoting:
+      return new ConstitutionVotingService(CONTRACTS_NAMES.constitutionVoting)
+    case CONTRACTS_NAMES.emergencyUpdateVoting:
+      return new EmergencyUpdateVotingService(CONTRACTS_NAMES.emergencyUpdateVoting)
+    case CONTRACTS_NAMES.generalUpdateVoting:
+      return new GeneralUpdateVotingService(CONTRACTS_NAMES.generalUpdateVoting)
+  }
+}
+
+export function creationQContractsObjArray () {
+  const constitutionVoting = new ConstitutionVotingService(CONTRACTS_NAMES.constitutionVoting)
+  const emergencyUpdateVoting = new EmergencyUpdateVotingService(CONTRACTS_NAMES.emergencyUpdateVoting)
+  const generalUpdateVoting = new GeneralUpdateVotingService(CONTRACTS_NAMES.generalUpdateVoting)
+  return [constitutionVoting, emergencyUpdateVoting, generalUpdateVoting]
+}
+
+export const arrContractsExpert = [
+  {
+    typeContract: CONTRACT_TYPES.member,
+    type: CONTRACT_TYPES.qFee
+  },
+  {
+    typeContract: CONTRACT_TYPES.member,
+    type: CONTRACT_TYPES.qDefi
+  },
+  {
+    typeContract: CONTRACT_TYPES.parameters,
+    type: CONTRACT_TYPES.qFee
+  },
+  {
+    typeContract: CONTRACT_TYPES.parameters,
+    type: CONTRACT_TYPES.qDefi
+  }
+]
+
+export function creationExpertContractObj (contractName) {
+  switch (contractName) {
+    case CONTRACTS_NAMES.ePQFIMembershipVoting:
+    case CONTRACTS_NAMES.ePDRMembershipVoting:
+      return new MembershipVoting(contractName)
+    case CONTRACTS_NAMES.ePQFIParametersVoting:
+    case CONTRACTS_NAMES.ePDRParametersVoting:
+      return new MembershipVoting(contractName)
+  }
+}
+
+export function creationExpertContractsObjArray () {
+  const ePQFImembershipVoting = new MembershipVoting(CONTRACTS_NAMES.ePQFIMembershipVoting)
+  const ePDRmembershipVoting = new MembershipVoting(CONTRACTS_NAMES.ePDRMembershipVoting)
+  const ePQFIparametersVoting = new ParametersVoting(CONTRACTS_NAMES.ePQFIParametersVoting)
+  const ePDRparametersVoting = new ParametersVoting(CONTRACTS_NAMES.ePDRParametersVoting)
+  return [ePQFImembershipVoting, ePDRmembershipVoting, ePQFIparametersVoting, ePDRparametersVoting]
+}
+
+export function tabSwitcher (activeTab, qProp, rootNodeProp, expertProp, slashingProp) {
+  switch (activeTab) {
+    case PROPOSALS_TYPES.proposals:
+      return qProp
+    case PROPOSALS_TYPES.rootNodePanel:
+      return rootNodeProp
+    case PROPOSALS_TYPES.expertProposals:
+      return expertProp
+    case PROPOSALS_TYPES.slashingProposals:
+      return slashingProp
+  }
+}
+
+export function changeProposalsArrIfExist (proposalsArr, data) {
+  const findElem = proposalsArr?.find((element) => {
+    return element.id === data.result[0].id && element.contract === data.result[0].contract
+  })
+  if (findElem) {
+    return proposalsArr?.map((element) => {
+      if (element.id === data.result[0].id && element.contract === data.result[0].contract) {
+        return { ...data.result[0] }
+      } else {
+        return { ...element }
+      }
+    })
+  } else {
+    return [...proposalsArr, ...data.result]
+  }
+}
+
+export function changeProposalsArrIfEmptyResult (proposalsArr, data) {
+  const findElem = proposalsArr?.find((element) => {
+    return element.id === data.result.id && element.contract === data.result.contractName
+  })
+  if (findElem) {
+    return proposalsArr?.filter((element) => {
+      if (element.id === data.result.id && element.contract === data.result.contractName) {
+        return false
+      } else {
+        return { ...element }
+      }
+    })
+  }
+}

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 
 import { useSelector } from 'react-redux'
-import { formObject } from 'store/selectors/auctions/modalHandler'
+import { formObject } from 'store/modal-handler/selectors'
 
 function CreateStep2 (props) {
   const {

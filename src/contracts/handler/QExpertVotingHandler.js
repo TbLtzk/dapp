@@ -1,5 +1,5 @@
-import MembershipVotingService from '../src/voting/MembershipVoting'
-import ParametersVotingService from '../src/voting/ParametersVoting'
+import MembershipVotingService from '../helpers/voting-helpers/membership-voting-helper'
+import ParametersVotingService from '../helpers/voting-helpers/parameters-voting-helper'
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts'
 
 export const chooseExpertContractDependsOnType = (typeContract, type) => {

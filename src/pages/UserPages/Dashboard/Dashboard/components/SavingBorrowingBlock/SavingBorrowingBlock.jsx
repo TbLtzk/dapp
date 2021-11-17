@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { useSelector } from 'react-redux'
-import { userAddressMetamask } from 'store/selectors/user-inf'
-import { mode } from 'store/selectors/dashboardMode'
+import { userAddressMetamask } from 'store/user-inf/selectors'
+import { mode } from 'store/dashboard-mode/selectors'
 
 import CustomBlock from 'components/Base/CustomBlock'
 import CardBlock from 'components/Base/CardBlock'

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { getEPQFIMembers } from 'store/actions/action-creaters/membership'
-import { EPQFIMembers, EPQFIMembersError } from 'store/selectors/membership'
+import { getEPQFIMembers } from 'store/membership/action-creators'
+import { EPQFIMembers, EPQFIMembersError } from 'store/membership/selectors'
 
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock'
 import MemberTables from 'components/Custom/MemberTables'

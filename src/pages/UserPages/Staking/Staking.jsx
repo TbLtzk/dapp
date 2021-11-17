@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import { useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { rootNodeStake } from 'store/selectors/root-contract'
+import { rootNodeStake } from 'store/root-node/selectors'
 
 import BigTabsView from 'components/Base/Tabs/BigTabsView'
 import RootNodeStakingContent from './RootNodeStakingContent'

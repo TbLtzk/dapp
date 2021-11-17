@@ -14,7 +14,7 @@ import PageWrap from 'components/Base/PageWrap'
 
 import { Link } from 'react-router-dom'
 
-import { mode } from 'store/selectors/dashboardMode'
+import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
 
 function Dashboard () {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { setDepositLockedAmount, setPurgeTimeLocksAmount } from 'store/actions/action-creaters/locked-amount'
+import { setDepositLockedAmount, setPurgeTimeLocksAmount } from 'store/locked-amount/action-creators'
 
 import MemberTables from 'components/Custom/MemberTables'
 import CustomBlock from 'components/Base/CustomBlock'

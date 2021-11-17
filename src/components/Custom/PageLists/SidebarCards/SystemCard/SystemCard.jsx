@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { loadingPerformNetting } from 'store/selectors/system-balance'
-import { onPerformNetting } from 'store/actions/action-creaters/system-balance'
+import { loadingPerformNetting } from 'store/system-balance/selectors'
+import { onPerformNetting } from 'store/system-balance/action-creators'
 
 import CustomBlock from 'components/Base/CustomBlock'
 import Button from 'components/Base/Buttons/Button'

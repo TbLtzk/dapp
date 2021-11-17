@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { userAddressMetamask } from 'store/selectors/user-inf'
+import { userAddressMetamask } from 'store/user-inf/selectors'
 import {
   getAccountBalance,
   getUserBalance,
   getLockedAssets,
   getQVBalance,
   getMinimumQVaultTimeLock
-} from 'store/actions/action-creaters/q-vault'
+} from 'store/q-vault/action-creators'
 import {
   accountBalance,
   userBalance,
@@ -17,7 +17,7 @@ import {
   lastClaim,
   qVaultMinimumTimeLock,
   votingAgent
-} from 'store/selectors/q-vault'
+} from 'store/q-vault/selectors'
 
 import VoterStatus from 'components/Custom/PageLists/VoterStatus'
 import CustomBlock from 'components/Base/CustomBlock'

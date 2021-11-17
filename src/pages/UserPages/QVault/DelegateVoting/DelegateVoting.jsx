@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { userAddressMetamask } from 'store/selectors/user-inf'
-import { getDelegationInfo, setAnnounceNewVotingAgent, setNewVotingAgent } from 'store/actions/action-creaters/q-vault'
+import { userAddressMetamask } from 'store/user-inf/selectors'
+import { getDelegationInfo, setAnnounceNewVotingAgent, setNewVotingAgent } from 'store/q-vault/action-creators'
 import { getNowTimestamp, remainDate } from 'func/convertDate'
 import { fromWei } from 'func/balance'
-import { receivedWeight, votingAgent, isPendingDelegation, votingAgentPassOverTime } from 'store/selectors/q-vault'
+import { receivedWeight, votingAgent, isPendingDelegation, votingAgentPassOverTime } from 'store/q-vault/selectors'
 
 import CustomBlock from 'components/Base/CustomBlock'
 import CardBlock from 'components/Base/CardBlock'
 
-import 'react-datepicker/dist/react-datepicker.css'
 import FormInput from 'components/Base/Form/FormInput'
 import Button from 'components/Base/Buttons/Button'
 import { useForm } from 'react-hook-form'

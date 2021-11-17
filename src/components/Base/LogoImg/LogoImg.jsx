@@ -2,7 +2,7 @@ import React from 'react'
 
 import logo from 'assets/img/logo.png'
 import { useSelector } from 'react-redux'
-import { theme } from 'store/selectors/theme'
+import { theme } from 'store/theme/selectors'
 import { THEMES } from 'constants/colors'
 
 function LogoImg () {

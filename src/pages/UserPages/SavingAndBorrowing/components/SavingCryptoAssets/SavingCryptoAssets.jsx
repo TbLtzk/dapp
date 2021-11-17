@@ -7,8 +7,8 @@ import { SavingQUSD } from 'contracts/src/Saving'
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
 import { useSelector } from 'react-redux'
-import { userAddressMetamask } from 'store/selectors/user-inf'
-import { transactionCounter } from 'store/selectors/transaction-handler'
+import { userAddressMetamask } from 'store/user-inf/selectors'
+import { transactionCounter } from 'store/transaction-handler/selectors'
 
 const HEADERS = ['Deposit asset', 'Interest asset', 'Interest rate (p.a.)', '']
 
