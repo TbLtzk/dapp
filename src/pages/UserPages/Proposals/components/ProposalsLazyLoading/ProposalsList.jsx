@@ -16,14 +16,17 @@ import CardCollapsedContent from './components/CardCollapsedContent'
 
 import { convertToMonthDayYear, remainDate } from 'func/convertDate'
 import { CONTRACTS_NAMES } from 'constants/contracts'
+import { getUniqueProposals } from 'func/useful'
 
 const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentProposals }, ref) => {
   const dispatch = useDispatch()
-
+  
   const [modalShow, setModalShow] = useState(false)
   const [proposalId, setProposalId] = useState(null)
   const [vetoEndTime, setVetoEndTime] = useState(null)
   const [proposalContract, setProposalContract] = useState(null)
+
+  const proposals = getUniqueProposals(currentProposals)
 
   const onProposalVote = (id, contract, vetoEndTime) => {
     dispatch(setDisabledCreatedProposalBtn(true))
@@ -53,7 +56,7 @@ const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentPropo
 
   return (
         <div>
-            {currentProposals.map((proposal, idx) => {
+            {proposals.map((proposal, idx) => {
               return (
                     <ListCard
                         key={proposal.id + proposal?.contract}
