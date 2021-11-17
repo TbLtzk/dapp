@@ -208,6 +208,7 @@ export default class VotingService {
 
   async getProposalsCount () {
     const contract = await this.switchContract()
+
     const proposalIds = await contract.getProposalIds('0', 'latest')
     const proposals = []
     for (const id of proposalIds) {

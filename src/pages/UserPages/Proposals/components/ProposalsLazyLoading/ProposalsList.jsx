@@ -20,7 +20,6 @@ import { getUniqueProposals } from 'func/useful'
 
 const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentProposals }, ref) => {
   const dispatch = useDispatch()
-
   const [modalShow, setModalShow] = useState(false)
   const [proposalId, setProposalId] = useState(null)
   const [vetoEndTime, setVetoEndTime] = useState(null)
@@ -54,9 +53,15 @@ const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentPropo
     )
   }
 
+  const onChooseTypeOfVoting = (status) => {
+    const type = status === 'Pending' ? 'basic-vote-on-proposal' : 'constitution-check'
+    dispatch(setVoteProposalObj({ first: type }))
+    dispatch(setDisabledCreatedProposalBtn(false))
+  }
+
   return (
         <div>
-            {proposals.map((proposal, idx) => {
+            {proposals.map((proposal) => {
               return (
                     <ListCard
                         key={proposal.id + proposal?.contract}
@@ -72,6 +77,7 @@ const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentPropo
                                 status={proposal.status}
                                 handleVote={() => {
                                   onProposalVote(proposal.id, proposal.contract, proposal.vetoEndTime)
+                                  onChooseTypeOfVoting(proposal.status)
                                 }}
                                 handleExecute={() => {
                                   onProposalExecute(proposal.id, proposal.contract)

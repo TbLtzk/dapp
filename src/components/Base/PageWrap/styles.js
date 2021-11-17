@@ -17,7 +17,7 @@ export const Page = styled.div`
 `
 
 export const WrapContent = styled.div`
-  height: calc(100vh - 50px);
+  height: calc(100vh - 108px);
   min-height: 490px;
   max-width: 100%;
   overflow-x: hidden;

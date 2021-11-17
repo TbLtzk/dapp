@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import PageWrap from 'components/Base/PageWrap'
 import InfoBlock from './components/InfoBlock'
 import VotingStats from 'components/Custom/VotingStats'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import {
   qActiveProposalsCountSelector,
   qEndedProposalsCountSelector,
@@ -27,13 +27,8 @@ import {
 
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
-import { getQProposalsCount } from 'store/voting/q-proposals/action-creators'
-import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-creators'
-import { getSlashingProposalsCount } from 'store/voting/slashing-proposals/action-creators'
-import { getExpertProposalsCount } from 'store/voting/expert-proposals/action-creators'
 
 function Governance () {
-  const dispatch = useDispatch()
   const appMode = useSelector(mode)
 
   const qActiveProposalsCount = useSelector(qActiveProposalsCountSelector)
@@ -51,13 +46,6 @@ function Governance () {
   const slashingActiveProposalsCount = useSelector(slashingActiveProposalsCountSelector)
   const slashingEndedProposalsCount = useSelector(slashingEndedProposalsCountSelector)
   const slashingLoadingProposalsCount = useSelector(slashingLoadingProposalsCountSelector)
-
-  useEffect(() => {
-    dispatch(getQProposalsCount())
-    dispatch(getRootProposalsCount())
-    dispatch(getSlashingProposalsCount())
-    dispatch(getExpertProposalsCount())
-  }, [])
 
   return (
         <PageWrap wrapContentClasses="wrap-content__three-colm" headerTitle="Governance">

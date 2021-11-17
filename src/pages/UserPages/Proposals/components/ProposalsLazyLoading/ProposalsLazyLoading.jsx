@@ -14,12 +14,12 @@ function ProposalsLazyLoading ({ proposals, proposalsKind, loading, errorMessage
   const { ref, entry } = useInView({ trackVisibility: true, delay: 100 })
 
   function getNextProposals (isVisible) {
-    if (proposalsCount === proposals.length) {
-      return null
-    } else if (!loading && isVisible) {
-      const range = [state[0] + 3, state[1] + 3]
-      setState(range)
-      dispatch(getProposalsList(proposalsKind, types, range))
+    if (proposalsCount !== proposals.length) {
+      if (!loading && isVisible && types !== 'active' && !!types) {
+        const range = [state[0] + 3, state[1] + 3]
+        setState(range)
+        dispatch(getProposalsList(proposalsKind, types, range))
+      }
     }
   }
 

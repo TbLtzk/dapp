@@ -1,56 +1,57 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  setVoteProposalObj,
-  setDisabledCreatedProposalBtn
-} from 'store/voting/proposals/action-creators'
-import { CONTRACTS_NAMES } from 'constants/contracts'
+import { votingLockingEnd } from 'store/q-vault/selectors'
+import { formVoteObject } from 'store/voting/proposals/selectors'
 
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
 
-import { formVoteObject } from 'store/voting/proposals/selectors'
+import { basicVote, constitutionCheck } from './constants'
 
-function CreateStep1 (props) {
-  const { register, errors, proposalContract } = props
-  const dispatch = useDispatch()
+function CreateStep1 ({ activeTab, register, errors }) {
   const formData = useSelector(formVoteObject)
-  const [voteTypes, setVoteTypes] = useState([
-    'Basic Vote on Proposal',
-    'Constitution Check',
-    'Q Community Veto'
-  ])
-  const onChooseProposal = useCallback((value) => {
-    const radioVal = value.target.value
-    dispatch(setVoteProposalObj({ first: radioVal }))
-    dispatch(setDisabledCreatedProposalBtn(false))
-  }, [])
+  const userLockingEnd = useSelector(votingLockingEnd)
+  const dispatch = useDispatch()
 
-  useEffect(() => {
-    switch (proposalContract) {
-      case CONTRACTS_NAMES.validatorsSlashingVoting:
-      case CONTRACTS_NAMES.emergencyUpdateVoting:
-        setVoteTypes([
-          'Basic Vote on Proposal',
-          'Q Community Veto'
-        ])
+  const contentSwitcher = useCallback(() => {
+    switch (formData?.first) {
+      case 'basic-vote-on-proposal':
+        return (
+                    <>
+                        <h2>{basicVote.subtitle}</h2>
+                        <h2>{basicVote.radioBtnDescr}</h2>
+                        <RadioBtnGroup
+                            formData={formData}
+                            radioArr={basicVote.radioBtn}
+                            register={register}
+                            errors={errors}
+                            nameArr={basicVote.radioBtnName}
+                            handleChange={(value) => {}}
+                        />
+                    </>
+        )
+      case 'constitution-check':
+        return (
+                    <>
+                        <h2>{constitutionCheck.subtitle}</h2>
+                        <h2>{constitutionCheck.radioBtnDescr}</h2>
+                        <RadioBtnGroup
+                            formData={formData}
+                            radioArr={constitutionCheck.radioBtn}
+                            register={register}
+                            errors={errors}
+                            nameArr={constitutionCheck.radioBtnName}
+                            handleChange={(value) => {}}
+                        />
+                    </>
+        )
+
+      default:
+        return null
     }
-  }, [proposalContract])
+  }, [activeTab, register, errors, userLockingEnd, dispatch])
 
-  return (
-    <div>
-      <h2>Please select type of Vote</h2>
-
-      <RadioBtnGroup
-        formData={formData}
-        register={register}
-        errors={errors}
-        nameArr="first"
-        radioArr={voteTypes}
-        handleChange={onChooseProposal}
-      />
-    </div>
-  )
+  return <>{contentSwitcher()}</>
 }
 
 export default CreateStep1
