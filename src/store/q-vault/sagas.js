@@ -30,9 +30,7 @@ import { getNowTimestamp } from 'func/convertDate'
 import { getQVaultInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance'
 
 import { handleLockedAssetsResponse, getOutstandingDelegationRewardsList } from 'contracts/helpers/q-vault-helper'
-
 import ErrorHandler from 'func/ErrorHandler'
-import { SET_TRANSACTION_COUNTER } from 'store/transaction-handler/action-types'
 
 function * getAccountBalanceGenerator ({ address }) {
   try {
@@ -69,7 +67,7 @@ function * setDepositGenerator ({
   amountQ
 }) {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading(1))
 
     const contract = yield call(getQVaultInstance)
     const data = yield contract.deposit({
@@ -84,7 +82,7 @@ function * setDepositGenerator ({
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading(-1))
   }
 }
 
@@ -93,10 +91,8 @@ function * setSendGenerator ({
   amount
 }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading(1))
+
     const { userAddress } = yield select(state => state.userInf)
 
     const contract = yield call(getQVaultInstance)
@@ -109,10 +105,7 @@ function * setSendGenerator ({
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading(-1))
   }
 }
 
@@ -121,7 +114,7 @@ function * setWithdrawGenerator ({
   amountQ
 }) {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading(1))
 
     const contract = yield call(getQVaultInstance)
     const data = yield contract.withdraw(toWei(amountQ), { from: address })
@@ -134,7 +127,7 @@ function * setWithdrawGenerator ({
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading(-1))
   }
 }
 
@@ -144,10 +137,8 @@ function * setDelegateStakeGenerator ({
   stakes
 }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading(1))
+
     const { userAddress } = yield select((state) => state.userInf)
 
     const contract = yield call(getQVaultInstance)
@@ -163,7 +154,7 @@ function * setDelegateStakeGenerator ({
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading(-1))
   }
 }
 
@@ -172,10 +163,8 @@ function * setLockAmountGenerator ({
   amountQ
 }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading(1))
+
     const { userAddress } = yield select((state) => state.userInf)
 
     const contract = yield call(getQVaultInstance)
@@ -191,7 +180,7 @@ function * setLockAmountGenerator ({
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading(-1))
   }
 }
 
@@ -200,10 +189,8 @@ function * setUnlockAmountGenerator ({
   amountQ
 }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading(1))
+
     const { userAddress } = yield select((state) => state.userInf)
     const contract = yield call(getQVaultInstance)
     const data = yield contract.unlock(toWei(amountQ), { from: address })
@@ -218,7 +205,7 @@ function * setUnlockAmountGenerator ({
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading(-1))
   }
 }
 
@@ -290,7 +277,7 @@ function * getUpdateCompoundRateGenerator ({ address }) {
 
 function * setOnClaimStakeDelegatorRewardGenerator () {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading(1))
 
     const { userAddress } = yield select((state) => state.userInf)
     const contract = yield call(getQVaultInstance)
@@ -305,7 +292,7 @@ function * setOnClaimStakeDelegatorRewardGenerator () {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading(-1))
   }
 }
 
@@ -332,10 +319,8 @@ function * getDelegationInfoGenerator ({ address }) {
 
 function * setAnnounceNewVotingAgentGenerator ({ address }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading(1))
+
     const { userAddress } = yield select((state) => state.userInf)
 
     const contract = yield call(getVotingWeightProxyInstance)
@@ -347,16 +332,14 @@ function * setAnnounceNewVotingAgentGenerator ({ address }) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading(-1))
   }
 }
 
 function * setNewVotingAgentGenerator () {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading(1))
+
     const { userAddress } = yield select((state) => state.userInf)
 
     const contract = yield call(getVotingWeightProxyInstance)
@@ -368,7 +351,7 @@ function * setNewVotingAgentGenerator () {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading(-1))
   }
 }
 
