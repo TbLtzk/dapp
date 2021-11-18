@@ -10,7 +10,9 @@ import {
   setQProposalsList,
   setQProposalsListError,
   setQEndedProposalsError,
-  setQEndedProposals
+  setQEndedProposals,
+  setQProposalsListLoading,
+  setQEndedProposalsLoading
 } from './action-creators'
 import { creationQContractObj, creationQContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper'
 
@@ -43,15 +45,15 @@ function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYP
     const contracts = creationQContractsObjArray()
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
-        yield put(setQProposalsList({ proposalsArr: [], loading: true }))
+        yield put(setQProposalsListLoading())
         const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(blocksRange)))
-        yield put(setQProposalsList({ proposalsArr: activeProposals.flat(), loading: false }))
+        yield put(setQProposalsList(activeProposals.flat()))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
-        yield put(setQEndedProposals({ endedProposals: [], loading: true }))
+        yield put(setQEndedProposalsLoading())
         const ended = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(blocksRange)))
-        yield put(setQEndedProposals({ endedProposals: ended.flat(), loading: false }))
+        yield put(setQEndedProposals(ended.flat()))
         break
       }
       case PROPOSAL_STATUS_TYPES.reset: {

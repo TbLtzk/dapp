@@ -52,13 +52,13 @@ export const getProposalEndedError = (result) => ({
 })
 
 // proposals
-
 export const getQProposalsList = (proposalStatusType, blocksRange) => ({
   type: actionTypes.GET_Q_PROPOSALS_LIST,
   proposalStatusType,
   blocksRange
 })
 
+// active proposals
 export const setQProposalsList = (result) => ({
   type: actionTypes.SET_Q_PROPOSALS_LIST,
   result
@@ -69,11 +69,23 @@ export const setQProposalsListError = (result) => ({
   result
 })
 
+export const setQProposalsListLoading = (result) => ({
+  type: actionTypes.SET_Q_PROPOSALS_LIST_LOADING,
+  result
+})
+
+// ended proposals
+
 export const setQEndedProposals = (result) => ({
   type: actionTypes.SET_Q_ENDED_PROPOSALS,
   result
 })
 export const setQEndedProposalsError = (result) => ({
   type: actionTypes.SET_Q_ENDED_PROPOSALS_ERROR,
+  result
+})
+
+export const setQEndedProposalsLoading = (result) => ({
+  type: actionTypes.SET_Q_ENDED_PROPOSALS_LOADING,
   result
 })

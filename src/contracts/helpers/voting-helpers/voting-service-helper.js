@@ -17,8 +17,10 @@ import {
 export default class VotingService {
   constructor (contractName) {
     this.contractName = contractName
+    // this.contract = governenceContract[contractName]
   }
 
+  // можно убрать с помощью архивации всех контрактов
   async switchContract () {
     switch (this.contractName) {
       case 'GeneralUpdateVoting': {
@@ -84,6 +86,17 @@ export default class VotingService {
     } catch (err) {
       return 0
     }
+  }
+
+  async getLatestBlockNumber () {
+    const block = await window.web3.eth.getBlock('latest')
+    return block.number
+  }
+
+  async getLatestProposalsIds () {
+    const contract = await this.switchContract()
+    const latestBlockNumber = await this.getLatestBlockNumber()
+    return await contract.getProposalIds(latestBlockNumber - 50000, 'latest')
   }
 
   async getVetoesPercentage (id) {
@@ -207,15 +220,16 @@ export default class VotingService {
 
   async getProposalsCount () {
     const contract = await this.switchContract()
-    const activeProposalsId = await contract.getProposalIds('550000', 'latest')
+    const latestProposalsIds = await this.getLatestProposalsIds()
     const allProposalsId = await contract.getProposalIds('0', 'latest')
 
     const activeProposalsArray = []
 
-    for (const id of activeProposalsId) {
+    for (const id of latestProposalsIds) {
       const result = await contract.getStatus(id)
       activeProposalsArray.push(result)
     }
+
     const activeProposals = activeProposalsArray.filter(
       (promiseStatus) => promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4'
     )

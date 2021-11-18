@@ -9,13 +9,13 @@ import { PROPOSALS_TYPES, PROPOSAL_STATUS_TYPES } from 'constants/statuses'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   qActiveProposalsCountSelector,
-  qEndedProposals,
+  qActiveProposalsErrorSelector,
+  qActiveProposalsSelector,
   qEndedProposalsCountSelector,
-  qErrorEnded,
-  qErrorM,
-  qLoadingEndedProposals,
-  qLoadingProposals,
-  qProposalsArr
+  qEndedProposalsErrorSelector,
+  qEndedProposalsSelector,
+  qLoadingActiveProposalsSelector,
+  qLoadingEndedProposalsSelector
 } from 'store/voting/q-proposals/selectors'
 import {
   rootActiveProposalsCountSelector,
@@ -87,12 +87,12 @@ function Proposals ({ proposalsType }) {
     switch (type) {
       case PROPOSALS_TYPES.proposals:
         return {
-          proposals: useSelector(qProposalsArr),
-          endedProposals: useSelector(qEndedProposals),
-          isLoading: useSelector(qLoadingProposals),
-          isEndedLoading: useSelector(qLoadingEndedProposals),
-          error: useSelector(qErrorM),
-          endedError: useSelector(qErrorEnded),
+          proposals: useSelector(qActiveProposalsSelector),
+          endedProposals: useSelector(qEndedProposalsSelector),
+          isLoading: useSelector(qLoadingActiveProposalsSelector),
+          isEndedLoading: useSelector(qLoadingEndedProposalsSelector),
+          error: useSelector(qActiveProposalsErrorSelector),
+          endedError: useSelector(qEndedProposalsErrorSelector),
           activeProposalsCount: useSelector(qActiveProposalsCountSelector),
           endedProposalsCount: useSelector(qEndedProposalsCountSelector)
         }
