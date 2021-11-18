@@ -1,6 +1,7 @@
+/* eslint-disable */
 import React, { useState } from 'react'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   setVoteProposalObj,
   setStepVoteCounter,
@@ -17,13 +18,24 @@ import CardCollapsedContent from './components/CardCollapsedContent'
 import { convertToMonthDayYear, remainDate } from 'func/convertDate'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 import { getUniqueProposals } from 'func/useful'
+import { isUserRootNode } from 'store/root-node/selectors'
+import { isUserValidator } from 'store/validators/selectors'
+import { userBalance } from 'store/q-vault/selectors'
+import { isUserEPDRMembership, isUserEPQFIMembership } from 'store/membership/selectors'
 
-const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentProposals }, ref) => {
+const ProposalsList = ({ proposalsKind, activeTab, currentProposals }) => {
   const dispatch = useDispatch()
   const [modalShow, setModalShow] = useState(false)
   const [proposalId, setProposalId] = useState(null)
   const [vetoEndTime, setVetoEndTime] = useState(null)
   const [proposalContract, setProposalContract] = useState(null)
+
+  const isRootNode = useSelector(isUserRootNode)
+  const isValidator = useSelector(isUserValidator)
+  const userQVBalance = useSelector(userBalance)
+
+  const isEPDRMembership = useSelector(isUserEPDRMembership)
+  const isEPQFIMembership = useSelector(isUserEPQFIMembership)
 
   const proposals = getUniqueProposals(currentProposals)
 
@@ -68,7 +80,7 @@ const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentPropo
                         id={proposal.id + proposal?.contract}
                         headerLeftSide={
                             <>
-                                <h1 ref={ref}>{proposal.title}</h1>
+                                <h1> {proposal.title}</h1>
                                 {proposal.status ? <div className="list-card__status">{proposal.status}</div> : null}
                             </>
                         }
@@ -135,6 +147,6 @@ const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentPropo
               : null}
         </div>
   )
-})
+}
 
 export default ProposalsList

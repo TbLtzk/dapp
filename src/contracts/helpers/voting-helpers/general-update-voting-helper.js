@@ -3,7 +3,6 @@ import { CONTRACTS_NAMES } from 'constants/contracts'
 
 import { getStatusTransformation } from './base-voting-helper'
 import { fromWei } from 'func/balance'
-import { getGeneralUpdateVotingInstance } from 'contracts/contract-instance'
 
 export default class GeneralUpdateVoting extends VotingService {
   async getProposalData (promiseRes, id, promiseStatus) {
@@ -37,7 +36,7 @@ export default class GeneralUpdateVoting extends VotingService {
 
   async createProposal (data, userAddress) {
     const link = data['external-link']
-    const contract = await getGeneralUpdateVotingInstance()
+    const contract = await this.switchContract()
     const result = await contract.createProposal(link, { from: userAddress })
     return result
   }

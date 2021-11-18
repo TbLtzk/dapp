@@ -4,18 +4,17 @@ import * as actionTypes from './action-types'
 
 import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
 import {
-  getQEndedProposalsSuccess,
   getProposalError,
-  getQProposalsListError,
-  getQProposalsListSuccess,
   getOneProposalSuccess,
-  getQEndedProposalsError,
-  setQProposalsCount
+  setQProposalsCount,
+  setQProposalsList,
+  setQProposalsListError,
+  setQEndedProposalsError,
+  setQEndedProposals
 } from './action-creators'
 import { creationQContractObj, creationQContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper'
 
 import ErrorHandler from 'func/ErrorHandler'
-import { sortByVotingEndTime } from 'func/useful'
 
 function * getQProposalsCountGenerator () {
   try {
@@ -39,32 +38,37 @@ function * getQProposalsCountGenerator () {
   }
 }
 
-function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, range = [0, 3] }) {
+function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, blocksRange }) {
   try {
     const contracts = creationQContractsObjArray()
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
-        yield put(getQProposalsListSuccess({ proposalsArr: [], loading: true }))
-        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals()))
-        yield put(getQProposalsListSuccess({ proposalsArr: sortByVotingEndTime(activeProposals), loading: false }))
+        yield put(setQProposalsList({ proposalsArr: [], loading: true }))
+        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(blocksRange)))
+        yield put(setQProposalsList({ proposalsArr: activeProposals.flat(), loading: false }))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
-        yield put(getQEndedProposalsSuccess({ endedProposals: [], loading: true, reset: !range[0] }))
-        const ended = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(range)))
-        yield put(getQEndedProposalsSuccess({ endedProposals: sortByVotingEndTime(ended), loading: false }))
+        yield put(setQEndedProposals({ endedProposals: [], loading: true }))
+        const ended = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(blocksRange)))
+        yield put(setQEndedProposals({ endedProposals: ended.flat(), loading: false }))
         break
+      }
+      case PROPOSAL_STATUS_TYPES.reset: {
+        yield put(setQProposalsList({ reset: true }))
+        yield put(setQEndedProposals({ reset: true }))
       }
     }
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
     switch (proposalStatusType) {
-      case PROPOSAL_STATUS_TYPES.active:
-        yield put(getQProposalsListError(error))
+      case PROPOSAL_STATUS_TYPES.active: {
+        yield put(setQProposalsListError(error))
         break
-      case PROPOSAL_STATUS_TYPES.ended:
-        yield put(getQEndedProposalsError(error.message))
+      }
+      case PROPOSAL_STATUS_TYPES.ended: {
+        yield put(setQEndedProposalsError(error))
         break
+      }
     }
   }
 }

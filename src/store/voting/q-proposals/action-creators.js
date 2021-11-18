@@ -9,31 +9,6 @@ export const setQProposalsCount = (result) => ({
   result
 })
 
-export const getQEndedProposalsSuccess = (result) => ({
-  type: actionTypes.GET_Q_ENDED_PROPOSALS_SUCCESS,
-  result
-})
-export const getQEndedProposalsError = (result) => ({
-  type: actionTypes.GET_Q_ENDED_PROPOSALS_ERROR,
-  result
-})
-
-export const getQProposalsList = (proposalStatusType, range) => ({
-  type: actionTypes.GET_Q_PROPOSALS_LIST,
-  proposalStatusType,
-  range
-})
-
-export const getQProposalsListSuccess = (result) => ({
-  type: actionTypes.GET_Q_PROPOSALS_LIST_SUCCESS,
-  result
-})
-
-export const getQProposalsListError = (result) => ({
-  type: actionTypes.GET_Q_PROPOSALS_LIST_ERROR,
-  result
-})
-
 export const getProposalQ = (contractName, id, activeProposal) => ({
   type: actionTypes.GET_Q_PROPOSAL,
   contractName,
@@ -73,5 +48,32 @@ export const getEmptyProposalEndedSuccess = (result) => ({
 
 export const getProposalEndedError = (result) => ({
   type: actionTypes.GET_Q_PROPOSAL_ENDED_ERROR,
+  result
+})
+
+// proposals
+
+export const getQProposalsList = (proposalStatusType, blocksRange) => ({
+  type: actionTypes.GET_Q_PROPOSALS_LIST,
+  proposalStatusType,
+  blocksRange
+})
+
+export const setQProposalsList = (result) => ({
+  type: actionTypes.SET_Q_PROPOSALS_LIST,
+  result
+})
+
+export const setQProposalsListError = (result) => ({
+  type: actionTypes.SET_Q_PROPOSALS_LIST_ERROR,
+  result
+})
+
+export const setQEndedProposals = (result) => ({
+  type: actionTypes.SET_Q_ENDED_PROPOSALS,
+  result
+})
+export const setQEndedProposalsError = (result) => ({
+  type: actionTypes.SET_Q_ENDED_PROPOSALS_ERROR,
   result
 })

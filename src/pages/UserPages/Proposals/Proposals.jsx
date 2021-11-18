@@ -142,8 +142,6 @@ function Proposals ({ proposalsType }) {
 
   useEffect(() => {
     if (!transaction) {
-      uploadEndedProposals()
-      uploadProposals()
       dispatch(getLockedAssets(address))
     }
   }, [transaction])

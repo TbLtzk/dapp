@@ -1,8 +1,6 @@
 import VotingService from './voting-service-helper'
 import { CONTRACTS_NAMES } from 'constants/contracts'
-
 import { getStatusTransformation } from './base-voting-helper'
-import { getEmergencyUpdateVotingInstance } from 'contracts/contract-instance'
 
 export default class EmergencyUpdateVoting extends VotingService {
   async getProposalData (promiseRes, id, promiseStatus) {
@@ -38,7 +36,7 @@ export default class EmergencyUpdateVoting extends VotingService {
 
   async createProposal (data, userAddress) {
     const link = data['external-link']
-    const contract = await getEmergencyUpdateVotingInstance()
+    const contract = await this.switchContract()
     const result = await contract.createProposal(link, { from: userAddress })
     return result
   }

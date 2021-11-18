@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as actionTypes from './action-types'
 import {
   changeProposalsArrIfExist,
@@ -8,6 +9,7 @@ import { removeCurrentProposals } from 'func/useful'
 
 const initialState = {
   oneProposal: [],
+
   proposalsArr: [],
   loadingProposals: true,
   errorM: null,
@@ -23,14 +25,29 @@ const initialState = {
 
 export default function qProposals (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.GET_Q_ENDED_PROPOSALS_SUCCESS:
+    case actionTypes.SET_Q_PROPOSALS_LIST:
       return {
         ...state,
-        endedProposals: removeCurrentProposals(state.endedProposals, action.result.endedProposals, action.result.reset),
+        proposalsArr: [...state.proposalsArr, ...action.result.proposalsArr],
+        loadingProposals: action.result.loading,
+        errorM: null
+      }
+    case actionTypes.SET_Q_PROPOSALS_LIST_ERROR:
+      return {
+        ...state,
+        proposalsArr: [],
+        loadingProposals: false,
+        errorM: action.result
+      }
+
+    case actionTypes.SET_Q_ENDED_PROPOSALS:
+      return {
+        ...state,
+        endedProposals: [...state.endedProposals, ...action.result.endedProposals],
         loadingEndedProposals: action.result.loading,
         errorEnded: null
       }
-    case actionTypes.GET_Q_ENDED_PROPOSALS_ERROR:
+    case actionTypes.SET_Q_ENDED_PROPOSALS_ERROR:
       return {
         ...state,
         endedProposals: [],
@@ -43,20 +60,6 @@ export default function qProposals (state = initialState, action) {
         loadingProposals: action.proposalStatusType === PROPOSAL_STATUS_TYPES.active ? true : state.loadingProposals,
         loadingEndedProposals:
           action.proposalStatusType === PROPOSAL_STATUS_TYPES.ended ? true : state.loadingEndedProposals
-      }
-    case actionTypes.GET_Q_PROPOSALS_LIST_SUCCESS:
-      return {
-        ...state,
-        proposalsArr: removeCurrentProposals(state.proposalsArr, action.result.proposalsArr, action.result.loading),
-        loadingProposals: action.result.loading,
-        errorM: null
-      }
-    case actionTypes.GET_Q_PROPOSALS_LIST_ERROR:
-      return {
-        ...state,
-        proposalsArr: [],
-        loadingProposals: false,
-        errorM: action.result
       }
     case actionTypes.GET_Q_PROPOSAL:
       return {

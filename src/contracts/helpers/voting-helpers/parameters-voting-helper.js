@@ -85,10 +85,6 @@ export default class ParametersVoting extends VotingService {
         result = contract.createProposal(link, paramInputs)
         break
       }
-      default: {
-        console.error('Unknown type')
-        return null
-      }
     }
     return result
   }

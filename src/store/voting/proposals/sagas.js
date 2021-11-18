@@ -56,19 +56,19 @@ function * createProposalGenerator ({ data }) {
       const type = data?.first
       switch (type) {
         case CONTRACT_TYPES.constitutionUpdate:
-          const constitutionVoting = new ConstitutionVotingService()
+          const constitutionVoting = new ConstitutionVotingService(CONTRACTS_NAMES.constitutionVoting)
           result = yield constitutionVoting.createProposal(data, userAddress)
           contractName = CONTRACTS_NAMES.constitutionVoting
           idProposal = result?.events?.ProposalCreated?.returnValues?._id
           break
         case CONTRACT_TYPES.generalQUpdate:
-          const generalUpdateVoting = new GeneralUpdateVotingService()
+          const generalUpdateVoting = new GeneralUpdateVotingService(CONTRACTS_NAMES.generalUpdateVoting)
           result = yield generalUpdateVoting.createProposal(data, userAddress)
           contractName = CONTRACTS_NAMES.generalUpdateVoting
           idProposal = result?.events?.ProposalCreated?.returnValues?._id
           break
         case CONTRACT_TYPES.emergencyUpdate:
-          const emergencyUpdateVoting = new EmergencyUpdateVotingService()
+          const emergencyUpdateVoting = new EmergencyUpdateVotingService(CONTRACTS_NAMES.emergencyUpdateVoting)
           result = yield emergencyUpdateVoting.createProposal(data, userAddress)
           contractName = CONTRACTS_NAMES.emergencyUpdateVoting
           idProposal = result?.events?.ProposalCreated?.returnValues?._id
@@ -198,26 +198,26 @@ function * getOneProposalSharedGenerator ({ data }) {
   yield call(getProposalDependsOnTypeGenerator, data?.contract, data, data?.id, false)
 }
 
-function * getProposalsListGenerator ({ proposalType, proposalStatusType, range }) {
+function * getProposalsListGenerator ({ proposalType, proposalStatusType, blocksRange }) {
   try {
     switch (proposalType) {
       case PROPOSALS_TYPES.proposals: {
-        yield put(getQProposalsList(proposalStatusType, range))
+        yield put(getQProposalsList(proposalStatusType, blocksRange))
         yield put(getQProposalsCount())
         break
       }
       case PROPOSALS_TYPES.rootNodePanel: {
-        yield put(getRootNodeProposalsList(proposalStatusType, range))
+        yield put(getRootNodeProposalsList(proposalStatusType))
         yield put(getRootProposalsCount())
         break
       }
       case PROPOSALS_TYPES.slashingProposals: {
-        yield put(getSlashingProposalsList(proposalStatusType, range))
+        yield put(getSlashingProposalsList(proposalStatusType))
         yield put(getSlashingProposalsCount())
         break
       }
       case PROPOSALS_TYPES.expertProposals: {
-        yield put(getExpertProposalsList(proposalStatusType, range))
+        yield put(getExpertProposalsList(proposalStatusType))
         yield put(getExpertProposalsCount())
         break
       }

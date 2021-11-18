@@ -149,11 +149,10 @@ export default class VotingService {
     }
   }
 
-  async getProposals () {
+  async getProposals (blocksRange) {
     const contract = await this.switchContract()
-    const proposalIds = await contract.getProposalIds('0', 'latest')
-    const proposalsRange = [...proposalIds].reverse()
-    const allProposals = await contract.getProposals(...proposalsRange)
+    const proposalIds = await contract.getProposalIds(...blocksRange)
+    const allProposals = await contract.getProposals(...proposalIds)
     const activeProposals = allProposals.filter(
       (obj) => obj.status === '1' || obj.status === '3' || obj.status === '4'
     )
@@ -162,17 +161,17 @@ export default class VotingService {
       const result = await this.getProposalData(prop, prop.id, prop.status)
       proposals.push(result)
     }
-    return proposals
+    return [...proposals].reverse()
   }
 
-  async getEndedProposals (range) {
+  async getEndedProposals (blocksRange) {
     const contract = await this.switchContract()
-    const proposalIds = await contract.getProposalIds('0', 'latest')
-    const proposalsRange = [...proposalIds].reverse().slice(...range)
-    if (!proposalsRange.length) {
+    const proposalIds = await contract.getProposalIds(...blocksRange)
+
+    if (!proposalIds.length) {
       return []
     } else {
-      const allProposals = await contract.getProposals(...proposalsRange)
+      const allProposals = await contract.getProposals(...proposalIds)
       const endedProposals = allProposals.filter(
         (obj) => obj.status !== '1' && obj.status !== '3' && obj.status !== '4'
       )
@@ -181,7 +180,7 @@ export default class VotingService {
         const result = await this.getProposalData(prop, prop.id, prop.status)
         proposals.push(result)
       }
-      return proposals
+      return [...proposals].reverse()
     }
   }
 
@@ -208,18 +207,19 @@ export default class VotingService {
 
   async getProposalsCount () {
     const contract = await this.switchContract()
+    const activeProposalsId = await contract.getProposalIds('550000', 'latest')
+    const allProposalsId = await contract.getProposalIds('0', 'latest')
 
-    const proposalIds = await contract.getProposalIds('0', 'latest')
-    const proposals = []
-    for (const id of proposalIds) {
-      const result = await this.getProposalStatus(id)
-      proposals.push(result)
+    const activeProposalsArray = []
+
+    for (const id of activeProposalsId) {
+      const result = await contract.getStatus(id)
+      activeProposalsArray.push(result)
     }
-    const activeProposals = proposals.filter(
+    const activeProposals = activeProposalsArray.filter(
       (promiseStatus) => promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4'
     )
-
-    return { ended: proposals.length - activeProposals.length, active: activeProposals.length }
+    return { ended: allProposalsId.length - activeProposals.length, active: activeProposals.length }
   }
 
   transformParameterType (id) {
