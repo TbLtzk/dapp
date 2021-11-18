@@ -3,9 +3,7 @@ import React from 'react'
 import { Dropdown } from 'react-bootstrap'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
-function CardDropdownItems (props) {
-  const { status, handleVote, handleExecute, shareText } = props
-
+function CardDropdownItems ({ status, handleVote, handleExecute, shareText }) {
   return (
         <>
             {status === 'Passed' ? <Dropdown.Item onClick={handleExecute}>Execute</Dropdown.Item> : null}

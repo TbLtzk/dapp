@@ -137,6 +137,17 @@ export default class VotingService {
     }
   }
 
+  async getLatestBlockNumber () {
+    const block = await window.web3.eth.getBlock('latest')
+    return block.number
+  }
+
+  async getLatestProposalsIds () {
+    const contract = await this.switchContract()
+    const latestBlockNumber = await this.getLatestBlockNumber()
+    return await contract.getProposalIds(latestBlockNumber - 50000, 'latest')
+  }
+
   async getProposalWithoutStatusChecked (id) {
     if (id) {
       let objRes = null
@@ -151,12 +162,12 @@ export default class VotingService {
 
   async getProposals () {
     const contract = await this.switchContract()
+    const latestProposalsIds = await this.getLatestProposalsIds()
 
-    const latestProposals = await contract.getProposalIds('500000', 'latest')
-    if (!latestProposals.length) {
+    if (!latestProposalsIds.length) {
       return []
     } else {
-      const allLatestProposals = await contract.getProposals(...latestProposals)
+      const allLatestProposals = await contract.getProposals(...latestProposalsIds)
       const activeProposals = allLatestProposals.filter(
         (obj) => obj.status === '1' || obj.status === '3' || obj.status === '4'
       )
@@ -171,7 +182,7 @@ export default class VotingService {
 
   async getEndedProposals (range) {
     const contract = await this.switchContract()
-    const proposalIds = await contract.getProposalIds('500000', 'latest')
+    const proposalIds = await contract.getProposalIds('0', 'latest')
 
     const proposalsRange = [...proposalIds].reverse().slice(...range)
     if (!proposalsRange.length) {
@@ -213,9 +224,8 @@ export default class VotingService {
 
   async getProposalsCount () {
     const contract = await this.switchContract()
-
+    const latestProposalsIds = await this.getLatestProposalsIds()
     const allProposalIds = await contract.getProposalIds('0', 'latest')
-    const latestProposalsIds = await contract.getProposalIds('500000', 'latest')
 
     const allProposalsWithStatus = []
     for (const id of latestProposalsIds) {
