@@ -1,5 +1,5 @@
-import { transformToPercentage } from "./base-voting-helper";
-import { ParameterType } from "@q-dev/q-js-sdk";
+import { transformToPercentage } from './base-voting-helper'
+import { ParameterType } from '@q-dev/q-js-sdk'
 import {
   getRootNodesInstance,
   getConstitutionVotingInstance,
@@ -11,261 +11,261 @@ import {
   getEpdrParametersVotingInstance,
   getRootNodesMembershipVotingInstance,
   getEpqfiMembershipVotingInstance,
-  getEpdrMembershipVotingInstance,
-} from "contracts/contract-instance";
+  getEpdrMembershipVotingInstance
+} from 'contracts/contract-instance'
 
 export default class VotingService {
-  constructor(contractName) {
-    this.contractName = contractName;
+  constructor (contractName) {
+    this.contractName = contractName
   }
 
-  async switchContract() {
+  async switchContract () {
     switch (this.contractName) {
-      case "GeneralUpdateVoting": {
-        return await getGeneralUpdateVotingInstance();
+      case 'GeneralUpdateVoting': {
+        return await getGeneralUpdateVotingInstance()
       }
-      case "ConstitutionVoting": {
-        return await getConstitutionVotingInstance();
+      case 'ConstitutionVoting': {
+        return await getConstitutionVotingInstance()
       }
-      case "EmergencyUpdateVoting": {
-        return await getEmergencyUpdateVotingInstance();
+      case 'EmergencyUpdateVoting': {
+        return await getEmergencyUpdateVotingInstance()
       }
-      case "ValidatorsSlashingVoting": {
-        return await getValidatorsSlashingVotingInstance();
+      case 'ValidatorsSlashingVoting': {
+        return await getValidatorsSlashingVotingInstance()
       }
-      case "RootNodesSlashingVoting": {
-        return await getRootNodesSlashingVotingInstance();
+      case 'RootNodesSlashingVoting': {
+        return await getRootNodesSlashingVotingInstance()
       }
-      case "RootsVoting": {
-        return await getRootNodesMembershipVotingInstance();
+      case 'RootsVoting': {
+        return await getRootNodesMembershipVotingInstance()
       }
-      case "EPQFIParametersVoting": {
-        return await getEpqfiParametersVotingInstance();
+      case 'EPQFIParametersVoting': {
+        return await getEpqfiParametersVotingInstance()
       }
-      case "EPDRParametersVoting": {
-        return await getEpdrParametersVotingInstance();
+      case 'EPDRParametersVoting': {
+        return await getEpdrParametersVotingInstance()
       }
-      case "EPQFIMembershipVoting": {
-        return await getEpqfiMembershipVotingInstance();
+      case 'EPQFIMembershipVoting': {
+        return await getEpqfiMembershipVotingInstance()
       }
-      case "EPDRMembershipVoting": {
-        return await getEpdrMembershipVotingInstance();
+      case 'EPDRMembershipVoting': {
+        return await getEpdrMembershipVotingInstance()
       }
     }
   }
 
-  async getProposal(id) {
-    const contract = await this.switchContract();
-    const result = await contract.instance.methods.proposals(id).call();
-    return result;
+  async getProposal (id) {
+    const contract = await this.switchContract()
+    const result = await contract.instance.methods.proposals(id).call()
+    return result
   }
 
-  async getProposalStatus(id) {
-    const contract = await this.switchContract();
-    const result = await contract.getStatus(id);
-    return result;
+  async getProposalStatus (id) {
+    const contract = await this.switchContract()
+    const result = await contract.getStatus(id)
+    return result
   }
 
-  async getProposalStats(id) {
-    const contract = await this.switchContract();
-    const result = await contract.getProposalStats(id);
-    return result;
+  async getProposalStats (id) {
+    const contract = await this.switchContract()
+    const result = await contract.getProposalStats(id)
+    return result
   }
 
-  async getVetoesNumber(id) {
-    const contract = await this.switchContract();
+  async getVetoesNumber (id) {
+    const contract = await this.switchContract()
     try {
       if (contract.instance.methods.getVetosNumber) {
-        const result = await contract.instance.methods.getVetosNumber(id).call();
-        return result;
+        const result = await contract.instance.methods.getVetosNumber(id).call()
+        return result
       } else {
-        return 0;
+        return 0
       }
     } catch (err) {
-      return 0;
+      return 0
     }
   }
 
-  async getVetoesPercentage(id) {
-    const contract = await this.switchContract();
-    const result = await contract.getVetosPercentage(id);
-    return result;
+  async getVetoesPercentage (id) {
+    const contract = await this.switchContract()
+    const result = await contract.getVetosPercentage(id)
+    return result
   }
 
-  async voteAgainst(id, userAddress) {
-    const contract = await this.switchContract();
-    const result = await contract.voteAgainst(id, { from: userAddress });
-    return result;
+  async voteAgainst (id, userAddress) {
+    const contract = await this.switchContract()
+    const result = await contract.voteAgainst(id, { from: userAddress })
+    return result
   }
 
-  async voteFor(id, userAddress) {
-    const contract = await this.switchContract();
-    const result = await contract.voteFor(id, { from: userAddress });
-    return result;
+  async voteFor (id, userAddress) {
+    const contract = await this.switchContract()
+    const result = await contract.voteFor(id, { from: userAddress })
+    return result
   }
 
-  async veto(id, userAddress) {
-    const contract = await this.switchContract();
-    const result = await contract.veto(id, { from: userAddress });
-    return result;
+  async veto (id, userAddress) {
+    const contract = await this.switchContract()
+    const result = await contract.veto(id, { from: userAddress })
+    return result
   }
 
-  async execute(id, userAddress) {
-    const promiseStatus = await this.getProposalStatus(id);
-    const contract = await this.switchContract();
+  async execute (id, userAddress) {
+    const promiseStatus = await this.getProposalStatus(id)
+    const contract = await this.switchContract()
 
-    let result = null;
-    if (promiseStatus === "4") {
-      result = await contract.execute(id, { from: userAddress });
+    let result = null
+    if (promiseStatus === '4') {
+      result = await contract.execute(id, { from: userAddress })
     }
-    return result;
+    return result
   }
 
-  async getOneProposal(id) {
+  async getOneProposal (id) {
     if (id) {
-      let objRes = null;
-      const promiseStatus = await this.getProposalStatus(id);
-      if (promiseStatus === "1" || promiseStatus === "3" || promiseStatus === "4" || promiseStatus === "5") {
-        const promiseRes = await this.getProposal(id);
+      let objRes = null
+      const promiseStatus = await this.getProposalStatus(id)
+      if (promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4' || promiseStatus === '5') {
+        const promiseRes = await this.getProposal(id)
         if (promiseRes) {
-          objRes = await this.getProposalData(promiseRes, id, promiseStatus);
+          objRes = await this.getProposalData(promiseRes, id, promiseStatus)
         }
       } else {
-        return objRes;
+        return objRes
       }
-      return [objRes];
+      return [objRes]
     }
   }
 
-  async getProposalWithoutStatusChecked(id) {
+  async getProposalWithoutStatusChecked (id) {
     if (id) {
-      let objRes = null;
-      const promiseStatus = await this.getProposalStatus(id);
-      const promiseRes = await this.getProposal(id);
+      let objRes = null
+      const promiseStatus = await this.getProposalStatus(id)
+      const promiseRes = await this.getProposal(id)
       if (promiseRes) {
-        objRes = await this.getProposalData(promiseRes, id, promiseStatus);
+        objRes = await this.getProposalData(promiseRes, id, promiseStatus)
       }
-      return [objRes];
+      return [objRes]
     }
   }
 
-  async getProposals() {
-    const contract = await this.switchContract();
+  async getProposals () {
+    const contract = await this.switchContract()
 
-    const latestProposals = await contract.getProposalIds("500000", "latest");
+    const latestProposals = await contract.getProposalIds('500000', 'latest')
     if (!latestProposals.length) {
-      return [];
+      return []
     } else {
-      const allLatestProposals = await contract.getProposals(...latestProposals);
+      const allLatestProposals = await contract.getProposals(...latestProposals)
       const activeProposals = allLatestProposals.filter(
-        (obj) => obj.status === "1" || obj.status === "3" || obj.status === "4"
-      );
-      const proposals = [];
+        (obj) => obj.status === '1' || obj.status === '3' || obj.status === '4'
+      )
+      const proposals = []
       for (const prop of activeProposals) {
-        const result = await this.getProposalData(prop, prop.id, prop.status);
-        proposals.push(result);
+        const result = await this.getProposalData(prop, prop.id, prop.status)
+        proposals.push(result)
       }
-      return proposals;
+      return proposals
     }
   }
 
-  async getEndedProposals(range) {
-    const contract = await this.switchContract();
-    const proposalIds = await contract.getProposalIds("500000", "latest");
+  async getEndedProposals (range) {
+    const contract = await this.switchContract()
+    const proposalIds = await contract.getProposalIds('500000', 'latest')
 
-    const proposalsRange = [...proposalIds].reverse().slice(...range);
+    const proposalsRange = [...proposalIds].reverse().slice(...range)
     if (!proposalsRange.length) {
-      return [];
+      return []
     } else {
-      const allProposals = await contract.getProposals(...proposalsRange);
+      const allProposals = await contract.getProposals(...proposalsRange)
       const endedProposals = allProposals.filter(
-        (obj) => obj.status !== "1" && obj.status !== "3" && obj.status !== "4"
-      );
-      const proposals = [];
+        (obj) => obj.status !== '1' && obj.status !== '3' && obj.status !== '4'
+      )
+      const proposals = []
       for (const prop of endedProposals) {
-        const result = await this.getProposalData(prop, prop.id, prop.status);
-        proposals.push(result);
+        const result = await this.getProposalData(prop, prop.id, prop.status)
+        proposals.push(result)
       }
-      return proposals;
+      return proposals
     }
   }
 
-  async getRootNodesNumber() {
-    const contract = await getRootNodesInstance();
-    return await contract.getSize();
+  async getRootNodesNumber () {
+    const contract = await getRootNodesInstance()
+    return await contract.getSize()
   }
 
-  async getProposalStatsData(id) {
-    const objRes = {};
-    const proposalStats = await this.getProposalStats(id);
-    const getVetoesNumber = await this.getVetoesNumber(id);
-    const rootNodesNumber = await this.getRootNodesNumber();
-    objRes.vetoesNumber = getVetoesNumber;
-    objRes.noVote = rootNodesNumber - getVetoesNumber;
-    objRes.vetoesPercentage = (getVetoesNumber * 100) / rootNodesNumber;
-    objRes.currentMajority = transformToPercentage(proposalStats.currentMajority);
-    objRes.currentQuorum = transformToPercentage(proposalStats.currentQuorum);
-    objRes.requiredMajority = transformToPercentage(proposalStats.requiredMajority);
-    objRes.requiredQuorum = transformToPercentage(proposalStats.requiredQuorum);
-    objRes.vetoThreshold = "50";
-    return objRes;
+  async getProposalStatsData (id) {
+    const objRes = {}
+    const proposalStats = await this.getProposalStats(id)
+    const getVetoesNumber = await this.getVetoesNumber(id)
+    const rootNodesNumber = await this.getRootNodesNumber()
+    objRes.vetoesNumber = getVetoesNumber
+    objRes.noVote = rootNodesNumber - getVetoesNumber
+    objRes.vetoesPercentage = (getVetoesNumber * 100) / rootNodesNumber
+    objRes.currentMajority = transformToPercentage(proposalStats.currentMajority)
+    objRes.currentQuorum = transformToPercentage(proposalStats.currentQuorum)
+    objRes.requiredMajority = transformToPercentage(proposalStats.requiredMajority)
+    objRes.requiredQuorum = transformToPercentage(proposalStats.requiredQuorum)
+    objRes.vetoThreshold = '50'
+    return objRes
   }
 
-  async getProposalsCount() {
-    const contract = await this.switchContract();
+  async getProposalsCount () {
+    const contract = await this.switchContract()
 
-    const allProposalIds = await contract.getProposalIds("0", "latest");
-    const latestProposalsIds = await contract.getProposalIds("500000", "latest");
+    const allProposalIds = await contract.getProposalIds('0', 'latest')
+    const latestProposalsIds = await contract.getProposalIds('500000', 'latest')
 
-    const allProposalsWithStatus = [];
+    const allProposalsWithStatus = []
     for (const id of latestProposalsIds) {
-      const result = await this.getProposalStatus(id);
-      allProposalsWithStatus.push(result);
+      const result = await this.getProposalStatus(id)
+      allProposalsWithStatus.push(result)
     }
     const activeProposals = allProposalsWithStatus.filter(
-      (promiseStatus) => promiseStatus === "1" || promiseStatus === "3" || promiseStatus === "4"
-    );
+      (promiseStatus) => promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4'
+    )
 
-    return { ended: allProposalIds.length - activeProposals.length, active: activeProposals.length };
+    return { ended: allProposalIds.length - activeProposals.length, active: activeProposals.length }
   }
 
-  transformParameterType(id) {
-    const type = ["None", "Address", "Uint", "String", "Byte", "Boolean"];
-    return type[Number(id)];
+  transformParameterType (id) {
+    const type = ['None', 'Address', 'Uint', 'String', 'Byte', 'Boolean']
+    return type[Number(id)]
   }
 
-  async getParametersArr(id) {
-    const contract = await this.switchContract();
-    const result = await contract.getParametersArr(id);
-    return result;
+  async getParametersArr (id) {
+    const contract = await this.switchContract()
+    const result = await contract.getParametersArr(id)
+    return result
   }
 
-  async getProposalParametersData(id) {
-    const parameters = await this.getParametersArr(id);
+  async getProposalParametersData (id) {
+    const parameters = await this.getParametersArr(id)
     return parameters.map((item) => {
-      let value = null;
+      let value = null
       switch (item.paramType) {
         case ParameterType.ADDRESS:
-          value = item.addrValue;
-          break;
+          value = item.addrValue
+          break
         case ParameterType.BOOL:
-          value = item.boolValue;
-          break;
+          value = item.boolValue
+          break
         case ParameterType.STRING:
-          value = item.strValue;
-          break;
+          value = item.strValue
+          break
         case ParameterType.UINT:
-          value = item.uintValue;
-          break;
+          value = item.uintValue
+          break
         case ParameterType.BYTE:
-          value = item.bytes32Value;
-          break;
+          value = item.bytes32Value
+          break
       }
       return {
         parameterType: item.paramType,
         parameterValue: value,
-        parameterKey: item.paramKey,
-      };
-    });
+        parameterKey: item.paramKey
+      }
+    })
   }
 }
