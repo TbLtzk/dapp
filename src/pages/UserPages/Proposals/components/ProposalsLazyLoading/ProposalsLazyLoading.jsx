@@ -22,15 +22,15 @@ function ProposalsLazyLoading({ proposals, proposalsKind, loading, errorMessage,
 
     function getNextProposals() {
         const newIndex = index + LIMIT;
-        console.log('new index', newIndex)
-      
+
         const showMore = newIndex < allProposals.length - 1;
         const newList = concat(list, slice(allProposals, index, newIndex));
-        console.log('new list', newList)
+
         setIndex(newIndex);
         setList(newList);
-        if (!showMore) {
-            console.log('going to fetch proposals')
+        console.log(allProposals.length);
+        console.log(newList.length);
+        if (allProposals.length === newList.length) {
             fetchNextProposals();
         }
     }
@@ -44,20 +44,22 @@ function ProposalsLazyLoading({ proposals, proposalsKind, loading, errorMessage,
     }
 
     function getProposals() {
-        if (!(proposals.length === allProposals.length)) {
-            if (!list.length) {
-                // console.log("first time");
-                setList(slice(proposals, 0, LIMIT));
-                setAllProposals([...allProposals, ...proposals]);
-            } else {
-                const arrivedProposals = slice(proposals, allProposals.length);
-                // console.log("else", arrivedProposals);
-                setAllProposals([...allProposals, ...arrivedProposals]);
-                getNextProposals();
-            }
-        }
-    }
+        // if (!(proposals.length === allProposals.length)) {
 
+        if (!list.length) {
+            setList(slice(proposals, 0, LIMIT));
+            setAllProposals([...allProposals, ...proposals]);
+        } else {
+            const arrivedProposals = slice(proposals, allProposals.length);
+             setAllProposals([...allProposals, ...arrivedProposals]);
+        }
+
+        // } else {
+        //     // console.log("else", arrivedProposals);
+        //     getNextProposals();
+        // }
+        // }
+    }
     useEffect(() => {
         dispatch(getProposalsList(proposalsKind, types, blocks));
     }, [dispatch]);

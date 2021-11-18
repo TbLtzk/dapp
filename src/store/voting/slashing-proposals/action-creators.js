@@ -9,21 +9,45 @@ export const setSlashingProposalsCount = (result) => ({
   result
 })
 
-export const getSlashingProposalsList = (proposalStatusType, range) => ({
-  type: actionTypes.GET_SLASHING_PROPOSALS_LIST,
+// proposals
+export const getSlashingProposals = (proposalStatusType, blocksRange) => ({
+  type: actionTypes.GET_SLASHING_PROPOSALS,
   proposalStatusType,
-  range
+  blocksRange
 })
 
-export const getSlashingProposalsListSuccess = (result) => ({
-  type: actionTypes.GET_SLASHING_PROPOSALS_LIST_SUCCESS,
+// active proposals
+export const setSlashingActiveProposals = (result) => ({
+  type: actionTypes.SET_SLASHING_ACTIVE_PROPOSALS,
   result
 })
 
-export const getSlashingProposalsListError = (result) => ({
-  type: actionTypes.GET_SLASHING_PROPOSALS_LIST_ERROR,
+export const setSlashingActiveProposalsError = (result) => ({
+  type: actionTypes.SET_SLASHING_ACTIVE_PROPOSALS_ERROR,
   result
 })
+
+export const setSlashingActiveProposalsLoading = (result) => ({
+  type: actionTypes.SET_SLASHING_ACTIVE_PROPOSALS_LOADING,
+  result
+})
+
+// ended proposals
+
+export const setSlashingEndedProposals = (result) => ({
+  type: actionTypes.SET_SLASHING_ENDED_PROPOSALS,
+  result
+})
+export const setSlashingEndedProposalsError = (result) => ({
+  type: actionTypes.SET_SLASHING_ENDED_PROPOSALS_ERROR,
+  result
+})
+
+export const setSlashingEndedProposalsLoading = (result) => ({
+  type: actionTypes.SET_SLASHING_ENDED_PROPOSALS_LOADING,
+  result
+})
+/// //////////////////////////////////////////////////////////////////////////
 
 export const getProposalSlashing = (contractName, id, activeProposal) => ({
   type: actionTypes.GET_SLASHING_PROPOSAL,
@@ -95,14 +119,6 @@ export const onEscrowConfirmDecision = (contractName, proposalId) => ({
   type: actionTypes.ESCROW_CONFIRM_DECISION,
   contractName,
   proposalId
-})
-export const getSlashingEndedProposalsSuccess = (result) => ({
-  type: actionTypes.GET_SLASHING_ENDED_PROPOSALS_SUCCESS,
-  result
-})
-export const getSlashingEndedProposalsError = (result) => ({
-  type: actionTypes.GET_SLASHING_ENDED_PROPOSALS_ERROR,
-  result
 })
 
 export const getOneProposalSuccess = (result) => ({

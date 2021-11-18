@@ -1,14 +1,5 @@
 import * as actionTypes from './action-types'
 
-export const getExpertEndedProposalsSuccess = (result) => ({
-  type: actionTypes.GET_EXPERT_ENDED_PROPOSALS_SUCCESS,
-  result
-})
-export const getExpertEndedProposalsError = (result) => ({
-  type: actionTypes.GET_EXPERT_ENDED_PROPOSALS_ERROR,
-  result
-})
-
 export const getExpertProposalsCount = () => ({
   type: actionTypes.GET_EXPERT_PROPOSALS_COUNT
 })
@@ -18,21 +9,45 @@ export const setExpertProposalsCount = (result) => ({
   result
 })
 
-export const getExpertProposalsList = (proposalStatusType, range) => ({
-  type: actionTypes.GET_EXPERT_PROPOSALS_LIST,
+// proposals
+export const getExpertProposals = (proposalStatusType, blocksRange) => ({
+  type: actionTypes.GET_EXPERT_PROPOSALS,
   proposalStatusType,
-  range
+  blocksRange
 })
 
-export const getExpertProposalsListSuccess = (result) => ({
-  type: actionTypes.GET_EXPERT_PROPOSALS_LIST_SUCCESS,
+// active proposals
+export const setExpertActiveProposals = (result) => ({
+  type: actionTypes.SET_EXPERT_ACTIVE_PROPOSALS,
   result
 })
 
-export const getExpertProposalsListError = (result) => ({
-  type: actionTypes.GET_EXPERT_PROPOSALS_LIST_ERROR,
+export const setExpertActiveProposalsError = (result) => ({
+  type: actionTypes.SET_EXPERT_ACTIVE_PROPOSALS_ERROR,
   result
 })
+
+export const setExpertActiveProposalsLoading = (result) => ({
+  type: actionTypes.SET_EXPERT_ACTIVE_PROPOSALS_LOADING,
+  result
+})
+
+// ended proposals
+
+export const setExpertEndedProposals = (result) => ({
+  type: actionTypes.SET_EXPERT_ENDED_PROPOSALS,
+  result
+})
+export const setExpertEndedProposalsError = (result) => ({
+  type: actionTypes.SET_EXPERT_ENDED_PROPOSALS_ERROR,
+  result
+})
+
+export const setExpertEndedProposalsLoading = (result) => ({
+  type: actionTypes.SET_EXPERT_ENDED_PROPOSALS_LOADING,
+  result
+})
+/// //////////////////////////////////////////////////////////////////////////
 
 export const getProposalExpert = (contractName, id, activeProposal) => ({
   type: actionTypes.GET_EXPERT_PROPOSAL,

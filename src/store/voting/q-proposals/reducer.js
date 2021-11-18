@@ -23,18 +23,18 @@ const initialState = {
 
 export default function qProposals(state = initialState, action) {
   switch (action.type) {
-    case actionTypes.SET_Q_PROPOSALS_LIST:
+    case actionTypes.SET_Q_ACTIVE_PROPOSALS:
       return {
         ...state,
-        activeProposals: [...state.activeProposals, ...action.result],
+        activeProposals: action.result.reset ? [] : [...state.activeProposals, ...action.result],
         loadingActiveProposals: false,
       };
-    case actionTypes.SET_Q_PROPOSALS_LIST_LOADING:
+    case actionTypes.SET_Q_ACTIVE_PROPOSALS_LOADING:
       return {
         ...state,
         loadingActiveProposals: true,
       };
-    case actionTypes.SET_Q_PROPOSALS_LIST_ERROR:
+    case actionTypes.SET_Q_ACTIVE_PROPOSALS_ERROR:
       return {
         ...state,
         activeProposals: [],

@@ -180,7 +180,6 @@ export default class VotingService {
   async getEndedProposals (blocksRange) {
     const contract = await this.switchContract()
     const proposalIds = await contract.getProposalIds(...blocksRange)
-
     if (!proposalIds.length) {
       return []
     } else {

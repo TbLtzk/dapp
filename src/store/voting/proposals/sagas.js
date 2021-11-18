@@ -14,21 +14,21 @@ import {
   getConstitutionHashSuccess,
   setBaseVotingWeightInfo
 } from 'store/voting/proposals/action-creators'
-import { getProposalQ, getQProposalsCount, getQProposalsList } from 'store/voting/q-proposals/action-creators'
+import { getProposalQ, getQProposals, getQProposalsCount } from 'store/voting/q-proposals/action-creators'
 import {
   getProposalRootNode,
-  getRootNodeProposalsList,
+  getRootProposals,
   getRootProposalsCount
 } from 'store/voting/root-node-proposals/action-creators'
 import {
   getProposalExpert,
-  getExpertProposalsList,
-  getExpertProposalsCount
+  getExpertProposalsCount,
+  getExpertProposals
 } from 'store/voting/expert-proposals/action-creators'
 import {
   getProposalSlashing,
-  getSlashingProposalsCount,
-  getSlashingProposalsList
+  getSlashingProposals,
+  getSlashingProposalsCount
 } from 'store/voting/slashing-proposals/action-creators'
 
 import { creationQContractObj } from 'contracts/helpers/voting-helpers/base-voting-helper'
@@ -202,22 +202,22 @@ function * getProposalsListGenerator ({ proposalType, proposalStatusType, blocks
   try {
     switch (proposalType) {
       case PROPOSALS_TYPES.proposals: {
-        yield put(getQProposalsList(proposalStatusType, blocksRange))
+        yield put(getQProposals(proposalStatusType, blocksRange))
         yield put(getQProposalsCount())
         break
       }
       case PROPOSALS_TYPES.rootNodePanel: {
-        yield put(getRootNodeProposalsList(proposalStatusType))
+        yield put(getRootProposals(proposalStatusType, blocksRange))
         yield put(getRootProposalsCount())
         break
       }
       case PROPOSALS_TYPES.slashingProposals: {
-        yield put(getSlashingProposalsList(proposalStatusType))
+        yield put(getSlashingProposals(proposalStatusType, blocksRange))
         yield put(getSlashingProposalsCount())
         break
       }
       case PROPOSALS_TYPES.expertProposals: {
-        yield put(getExpertProposalsList(proposalStatusType))
+        yield put(getExpertProposals(proposalStatusType, blocksRange))
         yield put(getExpertProposalsCount())
         break
       }

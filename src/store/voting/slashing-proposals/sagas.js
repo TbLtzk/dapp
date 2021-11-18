@@ -4,13 +4,15 @@ import * as actionTypes from 'store/voting/slashing-proposals/action-types'
 import { setErrorMessage, setTransactionCounter } from 'store/transaction-handler/action-creators'
 
 import {
-  getSlashingProposalsListSuccess,
-  getSlashingProposalsListError,
-  getSlashingEndedProposalsSuccess,
-  getSlashingEndedProposalsError,
   getProposalError,
   getOneProposalSuccess,
-  setSlashingProposalsCount
+  setSlashingProposalsCount,
+  setSlashingEndedProposalsLoading,
+  setSlashingEndedProposals,
+  setSlashingEndedProposalsError,
+  setSlashingActiveProposals,
+  setSlashingActiveProposalsError,
+  setSlashingActiveProposalsLoading
 } from 'store/voting/slashing-proposals/action-creators'
 import {
   creationSlashingContractObj,
@@ -20,9 +22,8 @@ import {
 import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-helper'
 
 import ErrorHandler from 'func/ErrorHandler'
-import { PROPOSAL_STATUS_TYPES, PROPOSALS_TYPES } from 'constants/statuses'
+import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
 import { CONTRACTS_NAMES } from 'constants/contracts'
-import { sortByVotingEndTime } from 'func/useful'
 
 function * getSlashingProposalsCountGenerator () {
   try {
@@ -48,32 +49,37 @@ function * getSlashingProposalsCountGenerator () {
   }
 }
 
-function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, range = [0, 3] }) {
+function * getSlashingProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, blocksRange }) {
   try {
     const contracts = creationSlashingContractsObjArray()
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
-        yield put(getSlashingProposalsListSuccess({ proposalsArr: [], loading: true }))
-        const active = yield Promise.all(contracts.map((contract) => contract.getProposals()))
-        yield put(getSlashingProposalsListSuccess({ proposalsArr: sortByVotingEndTime(active), loading: false }))
+        yield put(setSlashingActiveProposalsLoading())
+        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(blocksRange)))
+        yield put(setSlashingActiveProposals(activeProposals.flat()))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
-        yield put(getSlashingEndedProposalsSuccess({ endedProposals: [], loading: true, reset: !range[0] }))
-        const ended = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(range)))
-        yield put(getSlashingEndedProposalsSuccess({ endedProposals: sortByVotingEndTime(ended), loading: false }))
+        yield put(setSlashingEndedProposalsLoading())
+        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(blocksRange)))
+        yield put(setSlashingEndedProposals(endedProposals.flat()))
         break
+      }
+      case PROPOSAL_STATUS_TYPES.reset: {
+        yield put(setSlashingActiveProposals({ reset: true }))
+        yield put(setSlashingEndedProposals({ reset: true }))
       }
     }
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
     switch (proposalStatusType) {
-      case PROPOSAL_STATUS_TYPES.active:
-        yield put(getSlashingProposalsListError(error))
+      case PROPOSAL_STATUS_TYPES.active: {
+        yield put(setSlashingActiveProposalsError(error))
         break
-      case PROPOSAL_STATUS_TYPES.ended:
-        yield put(getSlashingEndedProposalsError(error))
+      }
+      case PROPOSAL_STATUS_TYPES.ended: {
+        yield put(setSlashingEndedProposalsError(error))
         break
+      }
     }
   }
 }
@@ -109,7 +115,7 @@ function * onEscrowCastObjectionGenerator ({ data, contractName, proposalId }) {
     if (result) {
       yield call(() => {}, contractName, {}, proposalId, false)
     }
-    yield put(getProposalsListGenerator(PROPOSALS_TYPES))
+    // yield put(getProposalsGenerator(PROPOSALS_TYPES))
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
@@ -209,7 +215,7 @@ function * onEscrowConfirmProposeDecisionGenerator ({ contractName, proposalId }
 }
 
 export default [
-  takeEvery(actionTypes.GET_SLASHING_PROPOSALS_LIST, getProposalsListGenerator),
+  takeEvery(actionTypes.GET_SLASHING_PROPOSALS, getSlashingProposalsGenerator),
   takeEvery(actionTypes.GET_SLASHING_PROPOSAL, getProposalGenerator),
 
   takeEvery(actionTypes.ESCROW_CAST_OBJECTION, onEscrowCastObjectionGenerator),

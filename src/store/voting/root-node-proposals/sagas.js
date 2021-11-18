@@ -3,18 +3,19 @@ import { put, takeEvery } from 'redux-saga/effects'
 import * as actionTypes from './action-types'
 
 import {
-  getRootNodeProposalsListError,
-  getRootNodeProposalsListSuccess,
-  getRootNodeEndedProposalsSuccess,
   getProposalError,
   getOneProposalSuccess,
-  getRootNodeEndedProposalsError,
-  setRootProposalsCount
+  setRootProposalsCount,
+  setRootEndedProposalsLoading,
+  setRootEndedProposalsError,
+  setRootEndedProposals,
+  setRootActiveProposalsLoading,
+  setRootActiveProposals,
+  setRootActiveProposalsError
 } from './action-creators'
 import { creationRootContractObj } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import ErrorHandler from 'func/ErrorHandler'
 import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
-import { sortByVotingEndTime } from 'func/useful'
 
 function * getRootProposalsCountGenerator () {
   try {
@@ -26,35 +27,37 @@ function * getRootProposalsCountGenerator () {
   }
 }
 
-function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, range = [0, 3] }) {
+function * getRootProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, blocksRange }) {
   try {
-    const contracts = creationRootContractObj()
-    const newRange = [range[0] * 3, range[1] * 3]
+    const contract = creationRootContractObj()
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
-        yield put(getRootNodeProposalsListSuccess({ proposalsArr: [], loading: true }))
-        const active = yield contracts?.getProposals()
-        yield put(getRootNodeProposalsListSuccess({ proposalsArr: sortByVotingEndTime(active), loading: false, reset: true }))
+        yield put(setRootActiveProposalsLoading())
+        const activeProposals = yield contract.getProposals(blocksRange)
+        yield put(setRootActiveProposals(activeProposals))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
-        yield put(
-          getRootNodeEndedProposalsSuccess({ endedProposals: [], loading: true, reset: !range[0] })
-        )
-        const ended = yield contracts?.getEndedProposals(newRange)
-        yield put(getRootNodeEndedProposalsSuccess({ endedProposals: sortByVotingEndTime(ended), loading: false }))
+        yield put(setRootEndedProposalsLoading())
+        const endedProposals = yield contract.getEndedProposals(blocksRange)
+        yield put(setRootEndedProposals(endedProposals))
         break
+      }
+      case PROPOSAL_STATUS_TYPES.reset: {
+        yield put(setRootActiveProposals({ reset: true }))
+        yield put(setRootEndedProposals({ reset: true }))
       }
     }
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
     switch (proposalStatusType) {
-      case PROPOSAL_STATUS_TYPES.active:
-        yield put(getRootNodeProposalsListError(error))
+      case PROPOSAL_STATUS_TYPES.active: {
+        yield put(setRootActiveProposalsError(error))
         break
-      case PROPOSAL_STATUS_TYPES.ended:
-        yield put(getRootNodeEndedProposalsError(error.message))
+      }
+      case PROPOSAL_STATUS_TYPES.ended: {
+        yield put(setRootEndedProposalsError(error))
         break
+      }
     }
   }
 }
@@ -79,7 +82,7 @@ function * getRootNodeProposalGenerator ({ id, activeProposal }) {
 }
 
 export default [
-  takeEvery(actionTypes.GET_ROOT_NODE_PROPOSALS_LIST, getProposalsListGenerator),
+  takeEvery(actionTypes.GET_ROOT_PROPOSALS, getRootProposalsGenerator),
   takeEvery(actionTypes.GET_ROOT_NODE_PROPOSAL, getRootNodeProposalGenerator),
   takeEvery(actionTypes.GET_ROOT_PROPOSALS_COUNT, getRootProposalsCountGenerator)
 ]

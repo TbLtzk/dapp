@@ -7,12 +7,12 @@ import {
   getProposalError,
   getOneProposalSuccess,
   setQProposalsCount,
-  setQProposalsList,
-  setQProposalsListError,
   setQEndedProposalsError,
   setQEndedProposals,
-  setQProposalsListLoading,
-  setQEndedProposalsLoading
+  setQEndedProposalsLoading,
+  setQActiveProposalsLoading,
+  setQActiveProposals,
+  setQActiveProposalsError
 } from './action-creators'
 import { creationQContractObj, creationQContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper'
 
@@ -40,31 +40,31 @@ function * getQProposalsCountGenerator () {
   }
 }
 
-function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, blocksRange }) {
+function * getQProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, blocksRange }) {
   try {
     const contracts = creationQContractsObjArray()
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
-        yield put(setQProposalsListLoading())
+        yield put(setQActiveProposalsLoading())
         const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(blocksRange)))
-        yield put(setQProposalsList(activeProposals.flat()))
+        yield put(setQActiveProposals(activeProposals.flat()))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
         yield put(setQEndedProposalsLoading())
-        const ended = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(blocksRange)))
-        yield put(setQEndedProposals(ended.flat()))
+        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(blocksRange)))
+        yield put(setQEndedProposals(endedProposals.flat()))
         break
       }
       case PROPOSAL_STATUS_TYPES.reset: {
-        yield put(setQProposalsList({ reset: true }))
+        yield put(setQActiveProposals({ reset: true }))
         yield put(setQEndedProposals({ reset: true }))
       }
     }
   } catch (error) {
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
-        yield put(setQProposalsListError(error))
+        yield put(setQActiveProposalsError(error))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
@@ -94,7 +94,7 @@ function * getQProposalGenerator ({ contractName, id, activeProposal }) {
 }
 
 export default [
-  takeEvery(actionTypes.GET_Q_PROPOSALS_LIST, getProposalsListGenerator),
+  takeEvery(actionTypes.GET_Q_PROPOSALS, getQProposalsGenerator),
   takeEvery(actionTypes.GET_Q_PROPOSAL, getQProposalGenerator),
   takeEvery(actionTypes.GET_Q_PROPOSALS_COUNT, getQProposalsCountGenerator)
 ]

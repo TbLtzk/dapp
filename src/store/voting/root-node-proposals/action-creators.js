@@ -9,30 +9,45 @@ export const setRootProposalsCount = (result) => ({
   result
 })
 
-export const getRootNodeEndedProposalsSuccess = (result) => ({
-  type: actionTypes.GET_ROOT_NODE_ENDED_PROPOSALS_SUCCESS,
-  result
-})
-export const getRootNodeEndedProposalsError = (result) => ({
-  type: actionTypes.GET_ROOT_NODE_ENDED_PROPOSALS_ERROR,
-  result
-})
-
-export const getRootNodeProposalsList = (proposalStatusType, range) => ({
-  type: actionTypes.GET_ROOT_NODE_PROPOSALS_LIST,
+// proposals
+export const getRootProposals = (proposalStatusType, blocksRange) => ({
+  type: actionTypes.GET_ROOT_PROPOSALS,
   proposalStatusType,
-  range
+  blocksRange
 })
 
-export const getRootNodeProposalsListSuccess = (result) => ({
-  type: actionTypes.GET_ROOT_NODE_PROPOSALS_LIST_SUCCESS,
+// active proposals
+export const setRootActiveProposals = (result) => ({
+  type: actionTypes.SET_ROOT_ACTIVE_PROPOSALS,
   result
 })
 
-export const getRootNodeProposalsListError = (result) => ({
-  type: actionTypes.GET_ROOT_NODE_PROPOSALS_LIST_ERROR,
+export const setRootActiveProposalsError = (result) => ({
+  type: actionTypes.SET_ROOT_ACTIVE_PROPOSALS_ERROR,
   result
 })
+
+export const setRootActiveProposalsLoading = (result) => ({
+  type: actionTypes.SET_ROOT_ACTIVE_PROPOSALS_LOADING,
+  result
+})
+
+// ended proposals
+
+export const setRootEndedProposals = (result) => ({
+  type: actionTypes.SET_ROOT_ENDED_PROPOSALS,
+  result
+})
+export const setRootEndedProposalsError = (result) => ({
+  type: actionTypes.SET_ROOT_ENDED_PROPOSALS_ERROR,
+  result
+})
+
+export const setRootEndedProposalsLoading = (result) => ({
+  type: actionTypes.SET_ROOT_ENDED_PROPOSALS_LOADING,
+  result
+})
+/// //////////////////////////////////////////////////////////////////////////
 
 export const getProposalRootNode = (contractName, id, activeProposal) => ({
   type: actionTypes.GET_ROOT_NODE_PROPOSAL,

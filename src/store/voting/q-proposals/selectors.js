@@ -5,7 +5,7 @@ export const qActiveProposalsSelector = (state) => state.qProposals.activePropos
 export const qLoadingActiveProposalsSelector = (state) => state.qProposals.loadingActiveProposals
 export const qActiveProposalsErrorSelector = (state) => state.qProposals.activeProposalsError
 
-/* ended proposals staff */
+/* get list of ended proposals */
 export const qEndedProposalsSelector = (state) => state.qProposals.endedProposals
 export const qLoadingEndedProposalsSelector = (state) => state.qProposals.loadingEndedProposals
 export const qEndedProposalsErrorSelector = (state) => state.qProposals.endedProposalsError

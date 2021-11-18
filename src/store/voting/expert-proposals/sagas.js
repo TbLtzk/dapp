@@ -3,13 +3,15 @@ import { put, takeEvery } from 'redux-saga/effects'
 import * as actionTypes from './action-types'
 
 import {
-  getExpertEndedProposalsError,
-  getExpertEndedProposalsSuccess,
-  getExpertProposalsListError,
-  getExpertProposalsListSuccess,
   getProposalError,
   getOneProposalSuccess,
-  setExpertProposalsCount
+  setExpertProposalsCount,
+  setExpertEndedProposalsLoading,
+  setExpertEndedProposals,
+  setExpertEndedProposalsError,
+  setExpertActiveProposalsLoading,
+  setExpertActiveProposals,
+  setExpertActiveProposalsError
 } from './action-creators'
 import {
   creationExpertContractObj,
@@ -17,7 +19,6 @@ import {
 } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import ErrorHandler from 'func/ErrorHandler'
 import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
-import { sortByVotingEndTime } from 'func/useful'
 
 function * getExpertProposalsCountGenerator () {
   try {
@@ -44,33 +45,37 @@ function * getExpertProposalsCountGenerator () {
   }
 }
 
-function * getProposalsListGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, range = [0, 3] }) {
+function * getExpertProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, blocksRange }) {
   try {
     const contracts = creationExpertContractsObjArray()
-
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
-        yield put(getExpertProposalsListSuccess({ proposalsArr: [], loading: true }))
-        const active = yield Promise.all(contracts.map((contract) => contract.getProposals()))
-        yield put(getExpertProposalsListSuccess({ proposalsArr: sortByVotingEndTime(active), loading: false }))
+        yield put(setExpertActiveProposalsLoading())
+        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(blocksRange)))
+        yield put(setExpertActiveProposals(activeProposals.flat()))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
-        yield put(getExpertEndedProposalsSuccess({ endedProposals: [], loading: true, reset: !range[0] }))
-        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(range)))
-        yield put(getExpertEndedProposalsSuccess({ endedProposals: sortByVotingEndTime(endedProposals), loading: false }))
+        yield put(setExpertEndedProposalsLoading())
+        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(blocksRange)))
+        yield put(setExpertEndedProposals(endedProposals.flat()))
         break
+      }
+      case PROPOSAL_STATUS_TYPES.reset: {
+        yield put(setExpertActiveProposals({ reset: true }))
+        yield put(setExpertEndedProposals({ reset: true }))
       }
     }
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
     switch (proposalStatusType) {
-      case PROPOSAL_STATUS_TYPES.active:
-        yield put(getExpertProposalsListError(error))
+      case PROPOSAL_STATUS_TYPES.active: {
+        yield put(setExpertActiveProposalsError(error))
         break
-      case PROPOSAL_STATUS_TYPES.ended:
-        yield put(getExpertEndedProposalsError(error.message))
+      }
+      case PROPOSAL_STATUS_TYPES.ended: {
+        yield put(setExpertEndedProposalsError(error))
         break
+      }
     }
   }
 }
@@ -94,7 +99,7 @@ function * getProposalGenerator ({ contractName, id, activeProposal }) {
 }
 
 export default [
-  takeEvery(actionTypes.GET_EXPERT_PROPOSALS_LIST, getProposalsListGenerator),
+  takeEvery(actionTypes.GET_EXPERT_PROPOSALS, getExpertProposalsGenerator),
   takeEvery(actionTypes.GET_EXPERT_PROPOSAL, getProposalGenerator),
   takeEvery(actionTypes.GET_EXPERT_PROPOSALS_COUNT, getExpertProposalsCountGenerator)
 ]
