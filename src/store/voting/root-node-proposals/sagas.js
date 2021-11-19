@@ -34,6 +34,7 @@ function * getRootProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYP
       case PROPOSAL_STATUS_TYPES.active: {
         yield put(setRootActiveProposalsLoading())
         const activeProposals = yield contract.getProposals(blocksRange)
+        console.log(activeProposals)
         yield put(setRootActiveProposals(activeProposals))
         break
       }

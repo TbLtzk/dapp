@@ -33,6 +33,11 @@ export const getUniqueProposals = (array) => {
   )
 }
 
+export const getLatestBlockNumber = async () => {
+  const block = await window.web3.eth.getBlock('latest')
+  return block.number
+}
+
 export const fN = (number) => {
   if (number === undefined || isNaN(number) || number === null) return 0
   const maximumFractionDigits = 4

@@ -13,6 +13,7 @@ import {
   getEpqfiMembershipVotingInstance,
   getEpdrMembershipVotingInstance
 } from 'contracts/contract-instance'
+// import { getLatestBlockNumber } from 'func/useful'
 
 export default class VotingService {
   constructor (contractName) {
@@ -88,15 +89,10 @@ export default class VotingService {
     }
   }
 
-  async getLatestBlockNumber () {
-    const block = await window.web3.eth.getBlock('latest')
-    return block.number
-  }
-
   async getLatestProposalsIds () {
     const contract = await this.switchContract()
-    const latestBlockNumber = await this.getLatestBlockNumber()
-    return await contract.getProposalIds(latestBlockNumber - 50000, 'latest')
+    // const latestBlockNumber = await getLatestBlockNumber()
+    return await contract.getProposalIds(0, 'latest') // latestBlockNumber - 50000
   }
 
   async getVetoesPercentage (id) {
@@ -165,16 +161,20 @@ export default class VotingService {
   async getProposals (blocksRange) {
     const contract = await this.switchContract()
     const proposalIds = await contract.getProposalIds(...blocksRange)
-    const allProposals = await contract.getProposals(...proposalIds)
-    const activeProposals = allProposals.filter(
-      (obj) => obj.status === '1' || obj.status === '3' || obj.status === '4'
-    )
-    const proposals = []
-    for (const prop of activeProposals) {
-      const result = await this.getProposalData(prop, prop.id, prop.status)
-      proposals.push(result)
+    if (!proposalIds.length) {
+      return []
+    } else {
+      const allProposals = await contract.getProposals(...proposalIds)
+      const activeProposals = allProposals.filter(
+        (obj) => obj.status === '1' || obj.status === '3' || obj.status === '4'
+      )
+      const proposals = []
+      for (const prop of activeProposals) {
+        const result = await this.getProposalData(prop, prop.id, prop.status)
+        proposals.push(result)
+      }
+      return [...proposals].reverse()
     }
-    return [...proposals].reverse()
   }
 
   async getEndedProposals (blocksRange) {

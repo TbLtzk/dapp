@@ -25,7 +25,7 @@ export default function expertProposals (state = initialState, action) {
     case actionTypes.SET_EXPERT_ACTIVE_PROPOSALS:
       return {
         ...state,
-        activeProposals: [...state.activeProposals, ...action.result],
+        activeProposals: action.result.reset ? [] : [...state.activeProposals, ...action.result],
         loadingActiveProposals: false
       }
     case actionTypes.SET_EXPERT_ACTIVE_PROPOSALS_LOADING:

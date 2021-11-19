@@ -49,7 +49,7 @@ function * getSlashingProposalsCountGenerator () {
   }
 }
 
-function * getSlashingProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, blocksRange }) {
+function * getSlashingProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, blocksRange = [550000, 'latest'] }) {
   try {
     const contracts = creationSlashingContractsObjArray()
     switch (proposalStatusType) {

@@ -40,7 +40,7 @@ function * getQProposalsCountGenerator () {
   }
 }
 
-function * getQProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, blocksRange }) {
+function * getQProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, blocksRange = [550000, 'latest'] }) {
   try {
     const contracts = creationQContractsObjArray()
     switch (proposalStatusType) {

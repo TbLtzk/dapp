@@ -130,6 +130,8 @@ function Proposals ({ proposalsType }) {
 
   function resetProposals () {
     dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.reset))
+    dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.active))
+    dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.ended))
   }
 
   const tabsItems = [

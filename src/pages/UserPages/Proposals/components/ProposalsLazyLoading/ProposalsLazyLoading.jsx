@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { getProposalsList } from "store/voting/proposals/action-creators";
 import Button from "components/Base/Buttons/Button";
 import { slice, concat } from "lodash";
+import { PROPOSAL_STATUS_TYPES } from "constants/statuses";
+import { getLatestBlockNumber } from "func/useful";
 
 const LIMIT = 10;
 
@@ -16,9 +18,28 @@ function ProposalsLazyLoading({ proposals, proposalsKind, loading, errorMessage,
 
     const [list, setList] = useState([]);
     const [index, setIndex] = useState(LIMIT);
+    const [disableButton, setDisableButton] = useState(false);
 
-    const [blocks, setBlocks] = useState([550000, "latest"]); // [500000, "latest"], [400000, 500000]
     const [allProposals, setAllProposals] = useState([]);
+
+    const [blocks, setBlocks] = useState(null); // [500000, "latest"], [400000, 500000]
+
+    useEffect(() => {
+        getLatestBLocks();
+        return () => dispatch(getProposalsList(proposalsKind, PROPOSAL_STATUS_TYPES.reset));
+    }, [dispatch]);
+
+    const getLatestBLocks = async () => {
+        const latestBlockNumber = await getLatestBlockNumber();
+        const blocks = [latestBlockNumber - 50000, "latest"];
+        setBlocks(blocks);
+        if (proposalsCount < LIMIT) {
+            dispatch(getProposalsList(proposalsKind, types, [0, "latest"]));
+            setDisableButton(true);
+        } else {
+            dispatch(getProposalsList(proposalsKind, types, blocks));
+        }
+    };
 
     function getNextProposals() {
         const newIndex = index + LIMIT;
@@ -28,45 +49,37 @@ function ProposalsLazyLoading({ proposals, proposalsKind, loading, errorMessage,
 
         setIndex(newIndex);
         setList(newList);
-        console.log(allProposals.length);
-        console.log(newList.length);
-        if (allProposals.length === newList.length) {
-            fetchNextProposals();
-        }
     }
 
     function fetchNextProposals() {
-        if (blocks[0]) {
-            const newBlocks = [blocks[0] - 50000, blocks[0]];
-            setBlocks(newBlocks);
-            dispatch(getProposalsList(proposalsKind, types, newBlocks));
-        }
+        const newBlocks = [blocks[0] - 50000 < 0 ? 0 : blocks[0] - 50000, blocks[0]];
+        setBlocks(newBlocks);
+        dispatch(getProposalsList(proposalsKind, types, newBlocks));
     }
 
     function getProposals() {
-        // if (!(proposals.length === allProposals.length)) {
-
         if (!list.length) {
             setList(slice(proposals, 0, LIMIT));
-            setAllProposals([...allProposals, ...proposals]);
-        } else {
-            const arrivedProposals = slice(proposals, allProposals.length);
-             setAllProposals([...allProposals, ...arrivedProposals]);
         }
-
-        // } else {
-        //     // console.log("else", arrivedProposals);
-        //     getNextProposals();
-        // }
+        if (proposals.length < index && blocks[0] > 0) {
+            fetchNextProposals();
+        }
+        // else {
+        //     const arrivedProposals = slice(proposals, allProposals.length);
+        //     setAllProposals([...allProposals, ...arrivedProposals]);
         // }
     }
-    useEffect(() => {
-        dispatch(getProposalsList(proposalsKind, types, blocks));
-    }, [dispatch]);
 
     useEffect(() => {
-        getProposals();
+        setList(slice(proposals, 0, LIMIT));
     }, [proposals]);
+
+    // useEffect(() => {
+    //     if (!!blocks) {
+    //         getProposals();
+    //     }
+    //     setAllProposals([allProposals, ...proposals]);
+    // }, [proposals]);
 
     return (
         <div>
@@ -82,7 +95,7 @@ function ProposalsLazyLoading({ proposals, proposalsKind, loading, errorMessage,
                             <LoadingSpinner />
                         </LoadingWrap>
                     ) : null}
-                    {proposals.length === proposalsCount || loading ? null : (
+                    {disableButton ? null : (
                         <LoadingWrap>
                             <Button title="Show more" handleButton={getNextProposals} />
                         </LoadingWrap>

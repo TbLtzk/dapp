@@ -45,7 +45,7 @@ function * getExpertProposalsCountGenerator () {
   }
 }
 
-function * getExpertProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, blocksRange }) {
+function * getExpertProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, blocksRange = [550000, 'latest'] }) {
   try {
     const contracts = creationExpertContractsObjArray()
     switch (proposalStatusType) {
