@@ -3,10 +3,7 @@ import { call, put, takeEvery, select } from 'redux-saga/effects'
 import { PROPOSALS_TYPES } from 'constants/statuses'
 
 import * as actionTypes from 'store/voting/proposals/action-types'
-import {
-  setErrorMessage,
-  setTransactionCounter
-} from 'store/transaction-handler/action-creators'
+import { setErrorMessage, setTransactionCounter } from 'store/transaction-handler/action-creators'
 
 import { getLockedAssets } from 'store/q-vault/action-creators'
 
@@ -14,7 +11,6 @@ import {
   createProposalSuccess,
   voteForProposalSuccess,
   executeProposalSuccess,
-  getNumberAllProposalsSuccess,
   getConstitutionHashSuccess,
   setBaseVotingWeightInfo
 } from 'store/voting/proposals/action-creators'
@@ -35,13 +31,7 @@ import {
   getSlashingProposalsList
 } from 'store/voting/slashing-proposals/action-creators'
 
-import {
-  creationQContractObj,
-  creationRootContractObj,
-  creationQContractsObjArray,
-  creationSlashingContractsObjArray,
-  creationExpertContractsObjArray
-} from 'contracts/helpers/voting-helpers/base-voting-helper'
+import { creationQContractObj } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import { chooseSlashingContractDependsOnType } from 'contracts/handler/SlashingVotingHandler'
 import { chooseExpertContractDependsOnType } from 'contracts/handler/QExpertVotingHandler'
 
@@ -85,7 +75,7 @@ function * createProposalGenerator ({ data }) {
           break
         case CONTRACT_TYPES.addAnewRootNode:
         case CONTRACT_TYPES.removeACurrentRootNode:
-          const rootsVoting = new RootsVotingService()
+          const rootsVoting = new RootsVotingService(CONTRACTS_NAMES.rootsVoting)
           result = yield rootsVoting.createProposal(data, userAddress)
           contractName = CONTRACTS_NAMES.rootsVoting
           idProposal = result?.events?.ProposalCreated?.returnValues?._id
@@ -141,8 +131,6 @@ function * voteForProposalGenerator ({ data }) {
         }
       } else if (data?.first === 'constitution-check') {
         result = yield contract.veto(data?.idProposal, userAddress)
-      } else if (data?.first === 'q-community-veto') {
-        // TODO: when backenders do it
       }
     }
     yield call(getProposalDependsOnTypeGenerator, data?.contract, data, data?.idProposal, true)
@@ -240,32 +228,10 @@ function * getProposalsListGenerator ({ proposalType, proposalStatusType, range 
 }
 
 function * getNumberAllProposalsGenerator () {
-  try {
-    const contracts = [
-      ...creationQContractsObjArray(),
-      creationRootContractObj(),
-      ...creationExpertContractsObjArray(),
-      ...creationSlashingContractsObjArray()
-    ]
-    const result = {
-      ended: 0,
-      active: 0
-    }
-
-    const proposals = yield Promise.all(contracts.map((contract) => contract.getProposalsCount()))
-
-    proposals.forEach((proposal) => {
-      if (proposal.ended) {
-        result.ended += proposal.ended
-      }
-      if (proposal.active) {
-        result.active += proposal.active
-      }
-    })
-    yield put(getNumberAllProposalsSuccess(result))
-  } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-  }
+  yield put(getQProposalsCount())
+  yield put(getExpertProposalsCount())
+  yield put(getRootProposalsCount())
+  yield put(getSlashingProposalsCount())
 }
 
 function * getConstitutionHashGenerator () {

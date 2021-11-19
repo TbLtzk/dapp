@@ -12,8 +12,6 @@ const initialState = {
   formObjectVoteProposal: {},
   stepVoteCounter: 1,
 
-  numberOfAllProposals: 0,
-  loadingNumberAll: true,
   constitutionHash: '...',
   baseVotingWeightInfo: {}
 }
@@ -49,17 +47,6 @@ export default function proposals (state = initialState, action) {
       return {
         ...state,
         stepVoteCounter: action.result
-      }
-    case actionTypes.GET_NUMBER_ALL_PROPOSALS:
-      return {
-        ...state,
-        loadingNumberAll: true
-      }
-    case actionTypes.GET_NUMBER_ALL_PROPOSALS_SUCCESS:
-      return {
-        ...state,
-        numberOfAllProposals: action.result,
-        loadingNumberAll: false
       }
     case actionTypes.GET_CONSTITUTION_HASH_SUCCESS:
       return {

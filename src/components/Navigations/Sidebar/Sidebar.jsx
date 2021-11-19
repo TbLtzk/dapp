@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 
 import { Accordion } from 'react-bootstrap'
 
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/user-inf/selectors'
-import { qProposalsArr } from 'store/voting/q-proposals/selectors'
-import { rootNodeProposalsArr } from 'store/voting/root-node-proposals/selectors'
-import { expertProposalsArr } from 'store/voting/expert-proposals/selectors'
-import { slashingProposalsArr } from 'store/voting/slashing-proposals/selectors'
+import { qActiveProposalsCountSelector } from 'store/voting/q-proposals/selectors'
+import { rootActiveProposalsCountSelector } from 'store/voting/root-node-proposals/selectors'
+import { expertActiveProposalsCountSelector } from 'store/voting/expert-proposals/selectors'
+import { slashingActiveProposalsCountSelector } from 'store/voting/slashing-proposals/selectors'
 import { liquidationAuctions, systemDebtAuctions, systemSurplusAuctions } from 'store/auctions/selectors'
 
 import Button from 'components/Base/Buttons/Button'
@@ -35,20 +35,24 @@ import {
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
+import { getNumberAllProposals } from 'store/voting/proposals/action-creators'
+import { getAuctionsList } from 'store/auctions/action-creators'
+import { AUCTIONS_TYPES } from 'constants/statuses'
 
 function Sidebar () {
   const history = useHistory()
-
+  const dispatch = useDispatch()
   const userAddress = useSelector(userAddressMetamask)
-  const qProposals = useSelector(qProposalsArr)
-  const rootNodeProposals = useSelector(rootNodeProposalsArr)
-  const expertProposals = useSelector(expertProposalsArr)
-  const slashingProposals = useSelector(slashingProposalsArr)
   const appMode = useSelector(mode)
 
   const liquidations = useSelector(liquidationAuctions)
   const systemDebts = useSelector(systemDebtAuctions)
   const systemSurplus = useSelector(systemSurplusAuctions)
+
+  const qActiveProposalsCount = useSelector(qActiveProposalsCountSelector)
+  const rootActiveProposalsCount = useSelector(rootActiveProposalsCountSelector)
+  const expertActiveProposalsCount = useSelector(expertActiveProposalsCountSelector)
+  const slashingActiveProposalsCount = useSelector(slashingActiveProposalsCountSelector)
 
   const [isGovernanceAccordionOpened, setIsGovernanceAccordionOpened] = useState('1')
   const [isAuctionAccordionOpened, setIsAuctionAccordionOpened] = useState('1')
@@ -56,6 +60,13 @@ function Sidebar () {
   function highlight (location) {
     return Number(history.location.pathname === '/' + location)
   }
+
+  useEffect(() => {
+    dispatch(getNumberAllProposals())
+    for (const item in AUCTIONS_TYPES) {
+      dispatch(getAuctionsList(AUCTIONS_TYPES[item], true))
+    }
+  }, [])
 
   return (
         <header>
@@ -105,10 +116,10 @@ function Sidebar () {
                                         >
                                             – Q Proposals
                                         </LinkStyle>
-                                        {qProposals.length
+                                        {qActiveProposalsCount
                                           ? (
                                             <AccordionLbl highlight={highlight('q-proposals')}>
-                                                {qProposals.length}
+                                                {qActiveProposalsCount}
                                             </AccordionLbl>
                                             )
                                           : null}
@@ -121,10 +132,10 @@ function Sidebar () {
                                         >
                                             – Root Node Panel
                                         </LinkStyle>
-                                        {rootNodeProposals.length
+                                        {rootActiveProposalsCount
                                           ? (
                                             <AccordionLbl highlight={highlight('q-root-node-panel')}>
-                                                {rootNodeProposals.length}
+                                                {rootActiveProposalsCount}
                                             </AccordionLbl>
                                             )
                                           : null}
@@ -140,10 +151,10 @@ function Sidebar () {
                                                 >
                                                     – Expert Proposals
                                                 </LinkStyle>
-                                                {expertProposals.length
+                                                {expertActiveProposalsCount
                                                   ? (
                                                     <AccordionLbl highlight={highlight('q-expert-proposals')}>
-                                                        {expertProposals.length}
+                                                        {expertActiveProposalsCount}
                                                     </AccordionLbl>
                                                     )
                                                   : null}
@@ -156,10 +167,10 @@ function Sidebar () {
                                                 >
                                                     – Slashing Proposals
                                                 </LinkStyle>
-                                                {slashingProposals.length
+                                                {slashingActiveProposalsCount
                                                   ? (
                                                     <AccordionLbl highlight={highlight('slashing-proposals')}>
-                                                        {slashingProposals.length}
+                                                        {slashingActiveProposalsCount}
                                                     </AccordionLbl>
                                                     )
                                                   : null}

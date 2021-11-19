@@ -86,7 +86,6 @@ export default class ParametersVoting extends VotingService {
         break
       }
       default: {
-        console.error('Unknown type')
         return null
       }
     }

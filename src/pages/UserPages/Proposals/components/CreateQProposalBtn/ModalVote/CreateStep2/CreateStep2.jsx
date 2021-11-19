@@ -1,83 +1,48 @@
 import React, { useCallback } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux'
-import { votingLockingEnd } from 'store/q-vault/selectors'
+import { useSelector } from 'react-redux'
 import { formVoteObject } from 'store/voting/proposals/selectors'
+import { CONTRACTS_NAMES } from 'constants/contracts'
 
-import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
-
-import { basicVote, constitutionCheck, communityVeto } from './constants'
-
-function CreateStep2 (props) {
-  const {
-    activeTab,
-    register,
-    errors
-  } = props
+function CreateStep2 ({ activeTab, register, errors, proposalContract }) {
   const formData = useSelector(formVoteObject)
-  const userLockingEnd = useSelector(votingLockingEnd)
-  const dispatch = useDispatch()
+
+  const showCommonData = (answer) => {
+    return (
+            <div>
+                <h2>Chosen Data:</h2>
+                <h5>Type</h5>
+                <p>{formData?.first?.replace(/-/g, ' ')}</p>
+                <h5>Answer</h5>
+                <p>{answer}</p>
+                {proposalContract === CONTRACTS_NAMES.constitutionVoting ||
+                proposalContract === CONTRACTS_NAMES.generalUpdateVoting ||
+                proposalContract === CONTRACTS_NAMES.ePDRMembershipVoting ||
+                proposalContract === CONTRACTS_NAMES.ePQFIMembershipVoting ||
+                proposalContract === CONTRACTS_NAMES.rootsVoting
+                  ? (
+                    <h2>
+                        Notice: Your currently locked amount of Q inside the Q Vault will be extended until the end of
+                        this Proposal.
+                    </h2>
+                    )
+                  : null}
+            </div>
+    )
+  }
 
   const contentSwitcher = useCallback(() => {
     switch (formData?.first) {
       case 'basic-vote-on-proposal':
-        return (
-          <>
-            <h2>{basicVote.subtitle}</h2>
-            <h2>{basicVote.radioBtnDescr}</h2>
-            <RadioBtnGroup
-              formData={formData}
-              radioArr={basicVote.radioBtn}
-              register={register}
-              errors={errors}
-              nameArr={basicVote.radioBtnName}
-              handleChange={(value) => {
-              }}
-            />
-          </>
-        )
+        return showCommonData(formData['vote-proposal'])
       case 'constitution-check':
-        return (
-          <>
-            <h2>{constitutionCheck.subtitle}</h2>
-            <h2>{constitutionCheck.radioBtnDescr}</h2>
-            <RadioBtnGroup
-              formData={formData}
-              radioArr={constitutionCheck.radioBtn}
-              register={register}
-              errors={errors}
-              nameArr={constitutionCheck.radioBtnName}
-              handleChange={(value) => {
-              }}
-            />
-          </>
-        )
-      case 'q-community-veto':
-        return (
-          <>
-            <h2>{communityVeto.subtitle}</h2>
-            <h2>{communityVeto.radioBtnDescr}</h2>
-            <RadioBtnGroup
-              formData={formData}
-              radioArr={communityVeto.radioBtn}
-              register={register}
-              errors={errors}
-              nameArr={communityVeto.radioBtnName}
-              handleChange={(value) => {
-              }}
-            />
-          </>
-        )
+        return showCommonData(formData['constitution-check'])
       default:
         return null
     }
-  }, [activeTab, register, errors, userLockingEnd, dispatch])
+  }, [activeTab, register, errors])
 
-  return (
-    <>
-      {contentSwitcher()}
-    </>
-  )
+  return <>{contentSwitcher()}</>
 }
 
 export default CreateStep2

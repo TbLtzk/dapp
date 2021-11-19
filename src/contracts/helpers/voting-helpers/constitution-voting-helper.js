@@ -108,20 +108,11 @@ export default class ConstitutionVoting extends VotingService {
           return types
         }, [])
     if (paramInputs.length !== 0) {
-      try {
-        result = await contract.createProposal(link, classification, hash, paramInputs, {
-          from: userAddress
-        })
-      } catch (e) {
-        console.error(e)
-        console.error('Please provide a valid input')
-      }
+      result = await contract.createProposal(link, classification, hash, paramInputs, {
+        from: userAddress
+      })
     } else {
-      try {
-        result = await contract.createProposal(link, classification, hash, [], { from: userAddress })
-      } catch (e) {
-        console.error('Please provide a valid hash')
-      }
+      result = await contract.createProposal(link, classification, hash, [], { from: userAddress })
     }
     return result
   }

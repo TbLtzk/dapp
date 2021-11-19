@@ -137,6 +137,17 @@ export default class VotingService {
     }
   }
 
+  async getLatestBlockNumber () {
+    const block = await window.web3.eth.getBlock('latest')
+    return block.number
+  }
+
+  async getLatestProposalsIds () {
+    const contract = await this.switchContract()
+    const latestBlockNumber = await this.getLatestBlockNumber()
+    return await contract.getProposalIds(latestBlockNumber - 50000, 'latest')
+  }
+
   async getProposalWithoutStatusChecked (id) {
     if (id) {
       let objRes = null
@@ -151,23 +162,28 @@ export default class VotingService {
 
   async getProposals () {
     const contract = await this.switchContract()
-    const proposalIds = await contract.getProposalIds('0', 'latest')
-    const proposalsRange = [...proposalIds].reverse()
-    const allProposals = await contract.getProposals(...proposalsRange)
-    const activeProposals = allProposals.filter(
-      (obj) => obj.status === '1' || obj.status === '3' || obj.status === '4'
-    )
-    const proposals = []
-    for (const prop of activeProposals) {
-      const result = await this.getProposalData(prop, prop.id, prop.status)
-      proposals.push(result)
+    const latestProposalsIds = await this.getLatestProposalsIds()
+
+    if (!latestProposalsIds.length) {
+      return []
+    } else {
+      const allLatestProposals = await contract.getProposals(...latestProposalsIds)
+      const activeProposals = allLatestProposals.filter(
+        (obj) => obj.status === '1' || obj.status === '3' || obj.status === '4'
+      )
+      const proposals = []
+      for (const prop of activeProposals) {
+        const result = await this.getProposalData(prop, prop.id, prop.status)
+        proposals.push(result)
+      }
+      return proposals
     }
-    return proposals
   }
 
   async getEndedProposals (range) {
     const contract = await this.switchContract()
     const proposalIds = await contract.getProposalIds('0', 'latest')
+
     const proposalsRange = [...proposalIds].reverse().slice(...range)
     if (!proposalsRange.length) {
       return []
@@ -208,17 +224,19 @@ export default class VotingService {
 
   async getProposalsCount () {
     const contract = await this.switchContract()
-    const proposalIds = await contract.getProposalIds('0', 'latest')
-    const proposals = []
-    for (const id of proposalIds) {
+    const latestProposalsIds = await this.getLatestProposalsIds()
+    const allProposalIds = await contract.getProposalIds('0', 'latest')
+
+    const allProposalsWithStatus = []
+    for (const id of latestProposalsIds) {
       const result = await this.getProposalStatus(id)
-      proposals.push(result)
+      allProposalsWithStatus.push(result)
     }
-    const activeProposals = proposals.filter(
+    const activeProposals = allProposalsWithStatus.filter(
       (promiseStatus) => promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4'
     )
 
-    return { ended: proposals.length - activeProposals.length, active: activeProposals.length }
+    return { ended: allProposalIds.length - activeProposals.length, active: activeProposals.length }
   }
 
   transformParameterType (id) {

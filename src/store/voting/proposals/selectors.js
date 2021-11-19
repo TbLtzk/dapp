@@ -9,7 +9,5 @@ export const formVoteObject = (state) => state.proposals.formObjectVoteProposal
 export const stepVoteCounterModal = (state) => state.proposals.stepVoteCounter
 
 /* for dashboard */
-export const numberOfAllProposals = (state) => state.proposals.numberOfAllProposals
-export const loadingNumberAll = (state) => state.proposals.loadingNumberAll
 export const constitutionHash = (state) => state.proposals.constitutionHash
 export const baseVotingWeightInfoSelector = (state) => state.proposals.baseVotingWeightInfo
