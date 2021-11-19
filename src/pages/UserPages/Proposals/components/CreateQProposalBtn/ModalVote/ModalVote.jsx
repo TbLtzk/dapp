@@ -98,14 +98,3 @@ function ModalVote ({ modalShow, onHide, activeTab, proposalId, proposalContract
 }
 
 export default ModalVote
-
-// useEffect(() => {
-//   switch (proposalContract) {
-//     case CONTRACTS_NAMES.validatorsSlashingVoting:
-//     case CONTRACTS_NAMES.emergencyUpdateVoting:
-//       setVoteTypes([
-//         'Basic Vote on Proposal',
-//         'Q Community Veto'
-//       ])
-//   }
-// }, [proposalContract])
