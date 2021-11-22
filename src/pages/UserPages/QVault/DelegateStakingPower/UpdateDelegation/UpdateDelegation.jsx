@@ -8,7 +8,7 @@ import { setDelegateStake } from 'store/q-vault/action-creators'
 import FormInput from 'components/Base/Form/FormInput'
 import Button from 'components/Base/Buttons/Button'
 import { toWei } from 'func/balance'
-import { isAddress } from 'func/useful'
+import { fillArray, isAddress } from 'func/useful'
 
 export default function UpdateDelegation () {
   const { register, handleSubmit, setValue } = useForm()
@@ -58,37 +58,35 @@ export default function UpdateDelegation () {
                     <p style={{ fontSize: '10px', position: 'absolute', top: '18px' }}>0 will remove delegation </p>
                 </div>
             </div>
-            {Array(items)
-              .fill()
-              .map((_, idx) => (
-                    <div key={idx + 'input_address'} className="card__one-line-form-2-2-1">
-                        <FormInput
-                            color={true}
-                            name={'address' + idx}
-                            type="text"
-                            placeholder="0x000"
-                            ref={register({
-                              required: 'Field is required!',
-                              validate: (address) => isAddress(address)
-                            })}
-                        />
-                        <FormInput
-                            color={true}
-                            name={'share' + idx}
-                            type="number"
-                            lbl="Q"
-                            placeholder="0.00"
-                            ref={register({
-                              required: 'Field is required!',
-                              pattern: /[0-9]/i
-                            })}
-                        />
-                        <div className="card__one-line-form-2-2-1-action">
-                            <Button type="outline" icon="plus" width="37px" handleButton={addInputContainer} />
-                            <Button type="outline" icon="minus" width="37px" handleButton={removeInputContainer} />
-                        </div>
+            {fillArray(items).map((_, idx) => (
+                <div key={idx + 'input_address'} className="card__one-line-form-2-2-1">
+                    <FormInput
+                        color={true}
+                        name={'address' + idx}
+                        type="text"
+                        placeholder="0x000"
+                        ref={register({
+                          required: 'Field is required!',
+                          validate: (address) => isAddress(address)
+                        })}
+                    />
+                    <FormInput
+                        color={true}
+                        name={'share' + idx}
+                        type="number"
+                        lbl="Q"
+                        placeholder="0.00"
+                        ref={register({
+                          required: 'Field is required!',
+                          pattern: /[0-9]/i
+                        })}
+                    />
+                    <div className="card__one-line-form-2-2-1-action">
+                        <Button type="outline" icon="plus" width="37px" handleButton={addInputContainer} />
+                        <Button type="outline" icon="minus" width="37px" handleButton={removeInputContainer} />
                     </div>
-              ))}
+                </div>
+            ))}
             <div className="card__actions" style={{ marginBottom: '30px' }}>
                 <Button
                     icon="cached"
