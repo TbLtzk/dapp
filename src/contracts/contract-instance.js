@@ -28,8 +28,9 @@ export const getValidatorMetricsInstance = async () => {
   return validatorMetricsInstance
 }
 
+const cache = {}
+
 function getInstance (instance, QUSD) {
-  const cache = {}
   return async () => {
     if (!cache[instance]) {
       cache[instance] = await contractRegistryInstance[instance](QUSD ? 'QUSD' : null)
