@@ -7,6 +7,8 @@ import ContractBalance from 'contracts/handler/ContractBalance'
 
 import { remainDateTimeSince } from 'func/convertDate'
 import { fromWei } from 'func/balance'
+import { getSystemReserveInstance, getValidationRewardPoolsInstance } from 'contracts/contract-instance'
+import { BN, fN } from 'func/useful'
 
 export default class Handler {
   constructor (userAddress) {
@@ -70,12 +72,10 @@ export default class Handler {
               stateLoading(false)
             })
             .catch((e) => {
-              console.error('e', e)
               stateLoading(false)
             })
         })
         .catch((e) => {
-          console.error('e', e)
           stateLoading(false)
         })
     } else {
@@ -93,19 +93,28 @@ export default class Handler {
     }
   }
 
-  getQHolderRewardPool (stateSetter) {
+  async getQHolderRewardPool (stateSetter) {
     this.ContractBalance.getBalanceValue('QHolderRewardPool', stateSetter)
   }
 
-  getSystemReserve (stateSetter) {
-    this.ContractBalance.getBalanceValue('SystemReserve', stateSetter)
+  async getSystemReserve (setSystemReserve) {
+    const contract = await getSystemReserveInstance()
+    const amount = await contract.getBalance()
+    setSystemReserve(this.transformValue(amount))
   }
 
-  getValidationRewardPools (stateSetter) {
-    this.ContractBalance.getBalanceValue('ValidationRewardPools', stateSetter)
+  async getValidationRewardPools (setValidationRewardPools) {
+    const contract = await getValidationRewardPoolsInstance()
+    const amount = await contract.getBalance()
+    setValidationRewardPools(this.transformValue(amount))
   }
 
-  getTimeSinceQHolderRewardUpdate (stateSetter, stateSetterUnixTimestamp) {
+  transformValue (value) {
+    const transformed = BN(value).toFixed()
+    return fN(transformed)
+  }
+
+  async getTimeSinceQHolderRewardUpdate (stateSetter, stateSetterUnixTimestamp) {
     this.CompoundRateKeeperQVault.getLastUpdate()
       .then((res) => {
         stateSetterUnixTimestamp(res)

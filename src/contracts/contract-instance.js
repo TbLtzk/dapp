@@ -1,11 +1,22 @@
-import { contractRegistryInstance } from 'contracts/contracts'
 import { contractsToAbi } from 'contracts/mapping/contract-to-abi'
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { ValidatorMetrics } from '@q-dev/q-js-sdk/lib/utils/validator-metrics'
+import { ContractRegistryInstance } from '@q-dev/q-js-sdk'
+
+export const CONTRACT_REGISTRY_ADDRESS = '0xc3E589056Ece16BCB88c6f9318e9a7343b663522'
+
+export let contractRegistryInstance = null
 
 let qVaultContract = null
 let validatorsContract = null
 let validatorMetricsInstance = null
+
+export const getContractREgistryInstance = async () => {
+  if (!contractRegistryInstance) {
+    contractRegistryInstance = new ContractRegistryInstance(window.web3, CONTRACT_REGISTRY_ADDRESS)
+  }
+  return contractRegistryInstance
+}
 
 export const getQVaultContract = async () => {
   if (qVaultContract === null) {
