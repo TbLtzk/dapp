@@ -39,7 +39,7 @@ export default function LockCoin () {
   return (
         <CustomBlock>
             <h1>Delegate Voting Power</h1>
-            <h5>Received weight</h5>
+            <h5>Total Voting Weight</h5>
             <h4>{fromWei(weight)}</h4>
             <h5>Current agent</h5>
             <h4>

@@ -15,8 +15,36 @@ import CardDropdownItems from './components/CardDropdownItems'
 import CardCollapsedContent from './components/CardCollapsedContent'
 
 import { convertToMonthDayYear, remainDate } from 'func/convertDate'
-import { CONTRACTS_NAMES } from 'constants/contracts'
 import { getUniqueProposals } from 'func/useful'
+import Tooltip from 'components/Base/Tooltip'
+import { CONTRACTS_NAMES } from 'constants/contracts'
+
+function getVetoInfo (proposal) {
+  const opacity = proposal.status === 'Pending' ? '0.4' : '1'
+
+  switch (proposal.contract) {
+    case CONTRACTS_NAMES.validatorsSlashingVoting:
+    case CONTRACTS_NAMES.emergencyUpdateVoting:
+      return null
+    default:
+      return (
+                <>
+                    <Tooltip
+                        additionalInfo={
+                            <div>
+                                Remaining Time for Veto <br /> {remainDate(proposal.vetoEndTime)}
+                            </div>
+                        }
+                    >
+                        <div style={{ opacity: opacity }}>
+                            <h5>Veto Ends</h5>
+                            <p>{convertToMonthDayYear(proposal.vetoEndTime)}</p>
+                        </div>
+                    </Tooltip>
+                </>
+      )
+  }
+}
 
 const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentProposals }, ref) => {
   const dispatch = useDispatch()
@@ -33,15 +61,6 @@ const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentPropo
     setVetoEndTime(vetoEndTime)
     setProposalContract(contract)
     setModalShow(true)
-  }
-
-  function getProposalOpenUntil (proposal) {
-    switch (proposal.contract) {
-      case CONTRACTS_NAMES.validatorsSlashingVoting:
-      case CONTRACTS_NAMES.emergencyUpdateVoting:
-        return proposal.votingEndTime
-    }
-    return proposal.vetoEndTime
   }
 
   const onProposalExecute = (id, contract) => {
@@ -103,14 +122,19 @@ const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentPropo
                                     <h5>Proposal Id</h5>
                                     <p>{proposal.id}</p>
                                 </div>
-                                <div>
-                                    <h5>Proposal Open Until</h5>
-                                    <p>{convertToMonthDayYear(getProposalOpenUntil(proposal))}</p>
-                                </div>
-                                <div>
-                                    <h5>Remaining Time for Voting</h5>
-                                    <p>{remainDate(proposal.votingEndTime)}</p>
-                                </div>
+                                <Tooltip
+                                    additionalInfo={
+                                        <div>
+                                            Remaining Time for Voting <br /> {remainDate(proposal.votingEndTime)}
+                                        </div>
+                                    }
+                                >
+                                    <>
+                                        <h5>Voting Ends</h5>
+                                        <p>{convertToMonthDayYear(proposal.votingEndTime)}</p>
+                                    </>
+                                </Tooltip>
+                                {getVetoInfo(proposal)}
                             </div>
                         }
                     />
