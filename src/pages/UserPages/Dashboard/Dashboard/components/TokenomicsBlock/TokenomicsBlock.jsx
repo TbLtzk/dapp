@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState, useMemo } from 'react'
+import React, { useCallback, useEffect, useState, useMemo, Fragment } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { balance } from 'store/validation-reward-pools/selectors'
 import { userAddressMetamask } from 'store/user-inf/selectors'
-import { updateCompoundRate } from 'store/q-vault/selectors'
-import { getUpdateCompoundRate } from 'store/q-vault/action-creators'
+import { qvBalance, updateCompoundRate } from 'store/q-vault/selectors'
+import { getQVBalance, getUpdateCompoundRate } from 'store/q-vault/action-creators'
 
 import Handler from './handler'
 
@@ -12,7 +12,8 @@ import CardBlock from 'components/Base/CardBlock'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 
 import { remainDateTimeSince } from 'func/convertDate'
-import { fN } from 'func/useful'
+import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
+import { setErrorMessage } from 'store/transaction-handler/action-creators'
 
 const BTN_TYPES = {
   defaultAllocation: 'default-allocation',
@@ -25,25 +26,26 @@ function TokenomicsBlock () {
   const dispatch = useDispatch()
   const userAddress = useSelector(userAddressMetamask)
   const isUpdateCompoundRate = useSelector(updateCompoundRate)
+  const balanceDetails = useSelector(qvBalance)
 
-  const [defaultAllocationProxy, setDefaultAllocationProxy] = useState('0')
+  const [defaultAllocationProxy, setDefaultAllocationProxy] = useState('...')
   const [loadingDefaultAllocation, setLoadingDefaultAllocation] = useState(false)
 
-  const [rootNodeRewardProxy, setRootNodeRewardProxy] = useState('0')
+  const [rootNodeRewardProxy, setRootNodeRewardProxy] = useState('...')
   const [loadingRootNodeReward, setLoadingRootNodeReward] = useState(false)
 
-  const [validationRewardProxy, setValidationRewardProxy] = useState('0')
+  const [validationRewardProxy, setValidationRewardProxy] = useState('...')
   const [loadingValidationReward, setLoadingValidationReward] = useState(false)
 
-  const [systemReserve, setSystemReserve] = useState('0')
-  const [validationRewardPools, setValidationRewardPools] = useState('0')
-  const [QHolderRewardPool, setQHolderRewardPool] = useState('0')
+  const [systemReserve, setSystemReserve] = useState('...')
+  const [validationRewardPools, setValidationRewardPools] = useState('...')
+  const [QHolderRewardPool, setQHolderRewardPool] = useState('...')
 
-  const [timeSinceQHolderRewardUpdate, setTimeSinceQHolderRewardUpdate] = useState('0')
-  const [timeSinceUnixTimestamp, setTimeSinceUnixTimestamp] = useState('0')
+  const [timeSinceQHolderRewardUpdate, setTimeSinceQHolderRewardUpdate] = useState('...')
+  const [timeSinceUnixTimestamp, setTimeSinceUnixTimestamp] = useState('...')
 
   const balanceVRP = useSelector(balance)
-  const handler = new Handler(userAddress)
+  const handler = new Handler(userAddress, dispatch, setErrorMessage)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -54,34 +56,11 @@ function TokenomicsBlock () {
     }
   }, [timeSinceUnixTimestamp])
 
-  useEffect(async () => {
-    setDefaultAllocationProxy('...')
-    setRootNodeRewardProxy('...')
-    setValidationRewardProxy('...')
-    setQHolderRewardPool('...')
-    setSystemReserve('...')
-    setValidationRewardPools('...')
-
-    handler.getDefaultAllocationProxy(setDefaultAllocationProxy, () => {}, false, null)
-    handler.getRootNodeRewardProxy(setRootNodeRewardProxy, () => {}, false)
-    handler.getValidationRewardProxy(setValidationRewardProxy, () => {}, false)
-
-    handler.getQHolderRewardPool(setQHolderRewardPool)
-    handler.getSystemReserve(setSystemReserve)
-    handler.getValidationRewardPools(setValidationRewardPools)
-  }, [])
-
-  useEffect(async () => {
-    setQHolderRewardPool('...')
+  useEffect(() => {
     handler.getQHolderRewardPool(setQHolderRewardPool)
   }, [timeSinceQHolderRewardUpdate])
 
   useEffect(() => {
-    setRootNodeRewardProxy('...')
-    setValidationRewardProxy('...')
-    setQHolderRewardPool('...')
-    setSystemReserve('...')
-
     handler.getValidationRewardProxy(setValidationRewardProxy, () => {}, false)
     handler.getRootNodeRewardProxy(setRootNodeRewardProxy, () => {}, false)
 
@@ -90,14 +69,26 @@ function TokenomicsBlock () {
   }, [defaultAllocationProxy])
 
   useEffect(() => {
-    setTimeSinceQHolderRewardUpdate('...')
-    handler.getTimeSinceQHolderRewardUpdate(setTimeSinceQHolderRewardUpdate, setTimeSinceUnixTimestamp)
-  }, [])
-
-  useEffect(() => {
-    setValidationRewardPools('...')
     handler.getValidationRewardPools(setValidationRewardPools)
   }, [validationRewardProxy])
+
+  useEffect(() => {
+    if (isUpdateCompoundRate === 'updated') {
+      handler.getTimeSinceQHolderRewardUpdate(setTimeSinceQHolderRewardUpdate, setTimeSinceUnixTimestamp)
+    }
+  }, [isUpdateCompoundRate])
+
+  useEffect(() => {
+    dispatch(getQVBalance())
+    handler.getTimeSinceQHolderRewardUpdate(setTimeSinceQHolderRewardUpdate, setTimeSinceUnixTimestamp)
+    handler.getDefaultAllocationProxy(setDefaultAllocationProxy, () => {}, false, null)
+    handler.getRootNodeRewardProxy(setRootNodeRewardProxy, () => {}, false)
+    handler.getValidationRewardProxy(setValidationRewardProxy, () => {}, false)
+
+    handler.getQHolderRewardPool(setQHolderRewardPool)
+    handler.getSystemReserve(setSystemReserve)
+    handler.getValidationRewardPools(setValidationRewardPools)
+  }, [])
 
   const onAllocate = useCallback((type) => {
     switch (type) {
@@ -112,6 +103,25 @@ function TokenomicsBlock () {
         break
     }
   }, [])
+
+  const onRefresh = () => {
+    dispatch(getUpdateCompoundRate(userAddress))
+  }
+
+  const getIsLoading = (type) => {
+    switch (type) {
+      case BTN_TYPES.defaultAllocation:
+        return loadingDefaultAllocation
+      case BTN_TYPES.validationRewardAllocation:
+        return loadingRootNodeReward
+      case BTN_TYPES.rootNodeAllocation:
+        return loadingValidationReward
+      case BTN_TYPES.timeSinceHolder:
+        return isUpdateCompoundRate
+      default:
+        return false
+    }
+  }
 
   const dataArr = useMemo(() => {
     return [
@@ -130,25 +140,21 @@ function TokenomicsBlock () {
         btnType: BTN_TYPES.validationRewardAllocation
       },
       {
+        title: 'Root Node Reward Proxy',
+        firstContent: rootNodeRewardProxy + ' Q',
+        btnTitle: 'Allocate',
+        btnIcon: 'cube-outline',
+        btnType: BTN_TYPES.rootNodeAllocation,
+        brakeLine: true
+      },
+      {
         title: 'Q Token Holder Reward Pool',
         firstContent: QHolderRewardPool + ' Q',
         btnTitle: null
       },
       {
-        title: 'Q System Reserve',
-        firstContent: systemReserve + ' Q',
-        btnTitle: null
-      },
-      {
-        title: 'Root Node Reward Proxy',
-        firstContent: rootNodeRewardProxy + ' Q',
-        btnTitle: 'Allocate',
-        btnIcon: 'cube-outline',
-        btnType: BTN_TYPES.rootNodeAllocation
-      },
-      {
-        title: 'Validation Reward Pools',
-        firstContent: validationRewardPools + ' Q',
+        title: 'Q Token Holder Reward Rate (p.a.)',
+        firstContent: fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate)) + ' %',
         btnTitle: null
       },
       {
@@ -156,7 +162,18 @@ function TokenomicsBlock () {
         firstContent: timeSinceQHolderRewardUpdate,
         btnIcon: 'cached',
         iconFontSize: '20px',
-        btnType: BTN_TYPES.timeSinceHolder
+        btnType: BTN_TYPES.timeSinceHolder,
+        brakeLine: true
+      },
+      {
+        title: 'Q System Reserve',
+        firstContent: systemReserve + ' Q',
+        btnTitle: null
+      },
+      {
+        title: 'Validation Reward Pools',
+        firstContent: validationRewardPools + ' Q',
+        btnTitle: null
       }
     ]
   }, [
@@ -167,40 +184,16 @@ function TokenomicsBlock () {
     balanceVRP,
     rootNodeRewardProxy,
     QHolderRewardPool,
-    timeSinceQHolderRewardUpdate
+    timeSinceQHolderRewardUpdate,
+    balanceDetails
   ])
 
-  const onRefresh = () => {
-    dispatch(getUpdateCompoundRate(userAddress))
-  }
-
-  useEffect(() => {
-    if (isUpdateCompoundRate === 'updated') {
-      handler.getTimeSinceQHolderRewardUpdate(setTimeSinceQHolderRewardUpdate, setTimeSinceUnixTimestamp)
-    }
-  }, [isUpdateCompoundRate])
-
-  const getIsLoading = (type) => {
-    switch (type) {
-      case BTN_TYPES.defaultAllocation:
-        return loadingDefaultAllocation
-      case BTN_TYPES.validationRewardAllocation:
-        return loadingRootNodeReward
-      case BTN_TYPES.rootNodeAllocation:
-        return loadingValidationReward
-      case BTN_TYPES.timeSinceHolder:
-        return isUpdateCompoundRate
-      default:
-        return false
-    }
-  }
   return (
         <CustomBlock>
             <h1>Tokenomics</h1>
-            {dataArr?.map((el) => {
-              return (
+            {dataArr.map((el) => (
+                <Fragment key={el.title.replace(' ', '-')}>
                     <CardBlock
-                        key={el.title.replace(' ', '-')}
                         btnDisabled={getIsLoading(el.btnType)}
                         title={el.title}
                         firstContent={el.firstContent}
@@ -219,8 +212,9 @@ function TokenomicsBlock () {
                                 }
                         }
                     />
-              )
-            })}
+                    {el.brakeLine ? <div style={{ margin: '10px 0px 20px 0px' }} className="card__line" /> : null}
+                </Fragment>
+            ))}
         </CustomBlock>
   )
 }

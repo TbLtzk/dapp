@@ -1,8 +1,4 @@
 import { put, takeEvery } from 'redux-saga/effects'
-import ConstitutionParameters from 'contracts/src/parameters/ConstitutionParameters'
-import EPQFIParameters from 'contracts/src/parameters/EPQFI_Parameters'
-import EPDRParameters from 'contracts/src/parameters/EPDR_Parameters'
-import { ContractRegistry } from 'contracts/src/ContractRegistry'
 import {
   getContractRegistryKVSuccess,
   getContractRegistryKVError,
@@ -15,13 +11,13 @@ import {
 } from './action-creators'
 import * as actionTypes from './action-types'
 import { loadKVParameters } from 'func/contractHelpers'
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import ErrorHandler from 'func/ErrorHandler'
+import { contractRegistryInstance, getConstitutionInstance, getEpdrParametersInstance, getEpqfiParametersInstance } from 'contracts/contract-instance'
 
 function * getContractRegistryKV () {
   try {
-    const contract = new ContractRegistry()
-    const data = yield contract.getContracts()
+    const contract = contractRegistryInstance
+    const data = yield contract.instance.methods.getContracts().call()
     yield put(getContractRegistryKVSuccess(
       data.map(i => {
         return {
@@ -37,7 +33,7 @@ function * getContractRegistryKV () {
 
 function * getConstitutionParametersKV () {
   try {
-    const contract = new ConstitutionParameters()
+    const contract = yield getConstitutionInstance()
     const data = yield loadKVParameters(contract)
     yield put(getConstitutionParametersKVSuccess(data))
   } catch (error) {
@@ -48,7 +44,7 @@ function * getConstitutionParametersKV () {
 
 function * getFeesIncentivesExpertPanelParametersKV () {
   try {
-    const contract = new EPQFIParameters()
+    const contract = yield getEpqfiParametersInstance()
     const data = yield loadKVParameters(contract)
     yield put(getFeesIncentivesExpertPanelParametersKVSuccess(data))
   } catch (error) {
@@ -61,7 +57,7 @@ function * getFeesIncentivesExpertPanelParametersKV () {
 
 function * getEPDRParametersKV () {
   try {
-    const contract = new EPDRParameters(contractsToAddresses.EPDRParameters)
+    const contract = yield getEpdrParametersInstance()
     const data = yield loadKVParameters(contract)
     yield put(getEPDRParametersKVSuccess(data))
   } catch (error) {

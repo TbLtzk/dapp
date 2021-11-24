@@ -16,10 +16,10 @@ export async function loadKVParameters (contract) {
 }
 
 export async function loadUintsKeys (contract) {
-  const uintKeys = await contract.getUintKeys()
+  const uintKeys = await contract.instance.methods.getUintKeys().call()
 
   async function getUint (i) {
-    const value = await contract.getUint(i)
+    const value = await contract.instance.methods.getUint(i).call()
     return {
       key: i,
       value: value
@@ -32,10 +32,10 @@ export async function loadUintsKeys (contract) {
 }
 
 export async function loadAddrsKeys (contract) {
-  const keys = await contract.getAddrKeys()
+  const keys = await contract.instance.methods.getAddrKeys().call()
 
   async function getValue (i) {
-    const value = await contract.getAddr(i)
+    const value = await contract.instance.methods.getAddr(i).call()
     return {
       key: i,
       value: value
@@ -48,10 +48,10 @@ export async function loadAddrsKeys (contract) {
 }
 
 export async function loadStringsKeys (contract) {
-  const keys = await contract.getStringKeys()
+  const keys = await contract.instance.methods.getStringKeys().call()
 
   async function getValue (i) {
-    const value = await contract.getString(i)
+    const value = await contract.instance.methods.getString(i).call()
     return {
       key: i,
       value: value
@@ -64,10 +64,10 @@ export async function loadStringsKeys (contract) {
 }
 
 export async function loadBytes32sKeys (contract) {
-  const keys = await contract.getBytes32Keys()
+  const keys = await contract.instance.methods.getBytes32Keys().call()
 
   async function getValue (i) {
-    const value = await contract.getBytes(i)
+    const value = await contract.instance.methods.getBytes(i).call()
     return {
       key: i,
       value: value
@@ -80,10 +80,10 @@ export async function loadBytes32sKeys (contract) {
 }
 
 export async function loadBoolsKeys (contract) {
-  const keys = await contract.getBoolKeys()
+  const keys = await contract.instance.methods.getBoolKeys().call()
 
   async function getValue (i) {
-    const value = await contract.getBool(i)
+    const value = await contract.instance.methods.getBool(i).call()
     return {
       key: i,
       value: value

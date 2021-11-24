@@ -18,8 +18,12 @@ class ErrorHandler {
       header: 'Unknown type of error',
       details: 'No additional info'
     }
-
-    if (errorObj.code === 3) {
+    if (errorObj.code === 4001) {
+      const infoArray = errorObj.message.split(':')
+      errorTemplate.header = capitalize(infoArray[0])
+      errorTemplate.details = capitalize(infoArray[1])
+      return errorTemplate
+    } else if (errorObj.code === 3) {
       errorTemplate.header = capitalize(errorObj.message.split(':')[0])
       errorTemplate.details = capitalize(errorObj.message.split(']-')[1])
       return errorTemplate
