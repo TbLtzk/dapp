@@ -32,7 +32,6 @@ export async function initAddresses () {
       .getAddress(contToKey[objectKey])
       .call()
   }
-
   await Promise.all(Object.keys(contToKey).map((i) => getAddress(i)))
 
   // EPDRParameters

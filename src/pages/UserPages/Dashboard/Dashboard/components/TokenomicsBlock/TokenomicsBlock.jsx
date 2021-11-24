@@ -13,6 +13,7 @@ import LoadingSpinner from 'components/Base/LoadingSpinner'
 
 import { remainDateTimeSince } from 'func/convertDate'
 import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
+import { setErrorMessage } from 'store/transaction-handler/action-creators'
 
 const BTN_TYPES = {
   defaultAllocation: 'default-allocation',
@@ -44,7 +45,7 @@ function TokenomicsBlock () {
   const [timeSinceUnixTimestamp, setTimeSinceUnixTimestamp] = useState('...')
 
   const balanceVRP = useSelector(balance)
-  const handler = new Handler(userAddress)
+  const handler = new Handler(userAddress, dispatch, setErrorMessage)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -55,17 +56,7 @@ function TokenomicsBlock () {
     }
   }, [timeSinceUnixTimestamp])
 
-  useEffect(async () => {
-    handler.getDefaultAllocationProxy(setDefaultAllocationProxy, () => {}, false, null)
-    handler.getRootNodeRewardProxy(setRootNodeRewardProxy, () => {}, false)
-    handler.getValidationRewardProxy(setValidationRewardProxy, () => {}, false)
-
-    handler.getQHolderRewardPool(setQHolderRewardPool)
-    handler.getSystemReserve(setSystemReserve)
-    handler.getValidationRewardPools(setValidationRewardPools)
-  }, [])
-
-  useEffect(async () => {
+  useEffect(() => {
     handler.getQHolderRewardPool(setQHolderRewardPool)
   }, [timeSinceQHolderRewardUpdate])
 
@@ -78,13 +69,26 @@ function TokenomicsBlock () {
   }, [defaultAllocationProxy])
 
   useEffect(() => {
-    dispatch(getQVBalance())
-    handler.getTimeSinceQHolderRewardUpdate(setTimeSinceQHolderRewardUpdate, setTimeSinceUnixTimestamp)
-  }, [])
-
-  useEffect(() => {
     handler.getValidationRewardPools(setValidationRewardPools)
   }, [validationRewardProxy])
+
+  useEffect(() => {
+    if (isUpdateCompoundRate === 'updated') {
+      handler.getTimeSinceQHolderRewardUpdate(setTimeSinceQHolderRewardUpdate, setTimeSinceUnixTimestamp)
+    }
+  }, [isUpdateCompoundRate])
+
+  useEffect(() => {
+    dispatch(getQVBalance())
+    handler.getTimeSinceQHolderRewardUpdate(setTimeSinceQHolderRewardUpdate, setTimeSinceUnixTimestamp)
+    handler.getDefaultAllocationProxy(setDefaultAllocationProxy, () => {}, false, null)
+    handler.getRootNodeRewardProxy(setRootNodeRewardProxy, () => {}, false)
+    handler.getValidationRewardProxy(setValidationRewardProxy, () => {}, false)
+
+    handler.getQHolderRewardPool(setQHolderRewardPool)
+    handler.getSystemReserve(setSystemReserve)
+    handler.getValidationRewardPools(setValidationRewardPools)
+  }, [])
 
   const onAllocate = useCallback((type) => {
     switch (type) {
@@ -99,6 +103,25 @@ function TokenomicsBlock () {
         break
     }
   }, [])
+
+  const onRefresh = () => {
+    dispatch(getUpdateCompoundRate(userAddress))
+  }
+
+  const getIsLoading = (type) => {
+    switch (type) {
+      case BTN_TYPES.defaultAllocation:
+        return loadingDefaultAllocation
+      case BTN_TYPES.validationRewardAllocation:
+        return loadingRootNodeReward
+      case BTN_TYPES.rootNodeAllocation:
+        return loadingValidationReward
+      case BTN_TYPES.timeSinceHolder:
+        return isUpdateCompoundRate
+      default:
+        return false
+    }
+  }
 
   const dataArr = useMemo(() => {
     return [
@@ -165,30 +188,6 @@ function TokenomicsBlock () {
     balanceDetails
   ])
 
-  const onRefresh = () => {
-    dispatch(getUpdateCompoundRate(userAddress))
-  }
-
-  useEffect(() => {
-    if (isUpdateCompoundRate === 'updated') {
-      handler.getTimeSinceQHolderRewardUpdate(setTimeSinceQHolderRewardUpdate, setTimeSinceUnixTimestamp)
-    }
-  }, [isUpdateCompoundRate])
-
-  const getIsLoading = (type) => {
-    switch (type) {
-      case BTN_TYPES.defaultAllocation:
-        return loadingDefaultAllocation
-      case BTN_TYPES.validationRewardAllocation:
-        return loadingRootNodeReward
-      case BTN_TYPES.rootNodeAllocation:
-        return loadingValidationReward
-      case BTN_TYPES.timeSinceHolder:
-        return isUpdateCompoundRate
-      default:
-        return false
-    }
-  }
   return (
         <CustomBlock>
             <h1>Tokenomics</h1>

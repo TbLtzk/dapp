@@ -5,7 +5,7 @@ import { initAddresses } from 'contracts/mapping/contract-to-address'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 
 import { WrapContainer } from './styles'
-import { getContractREgistryInstance } from 'contracts/contract-instance'
+import { getContractRegistryInstance } from 'contracts/contract-instance'
 
 const STATES = {
   loading: 'loading',
@@ -20,7 +20,7 @@ function InitApp () {
 
   useEffect(async () => {
     try {
-      await Promise.all([getContractREgistryInstance(), initAddresses()])
+      await Promise.all([getContractRegistryInstance(), initAddresses()])
       setAppComponent(await import('components/Base/App'))
       setAppState(STATES.loaded)
     } catch (e) {
