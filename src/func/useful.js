@@ -53,6 +53,18 @@ export const uintPercentToNumber = (num) => {
   return num / 10 ** 27
 }
 
+export const fillArray = (length) => {
+  const array = []
+  for (let i = 0; i < length; i++) {
+    array[i] = i
+  }
+  return array
+}
+
+export const isAddress = (address) => {
+  return window.web3.utils.isAddress(address)
+}
+
 export const uintPerSecondToPerYearNumber = (num) => {
   const numL = num
 

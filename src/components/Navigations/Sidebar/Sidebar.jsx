@@ -36,6 +36,8 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
 import { getNumberAllProposals } from 'store/voting/proposals/action-creators'
+import { getAuctionsList } from 'store/auctions/action-creators'
+import { AUCTIONS_TYPES } from 'constants/statuses'
 
 function Sidebar () {
   const history = useHistory()
@@ -61,6 +63,9 @@ function Sidebar () {
 
   useEffect(() => {
     dispatch(getNumberAllProposals())
+    for (const item in AUCTIONS_TYPES) {
+      dispatch(getAuctionsList(AUCTIONS_TYPES[item], true))
+    }
   }, [])
 
   return (

@@ -8,16 +8,14 @@ export default class ContractBalance {
   }
 
   getBalanceValue (contract, stateSetter) {
-    window.web3.eth.getBalance(contractsToAddresses[contract])
-      .then(
-        res => {
-          let transf = fromWei(res)
-          transf = fN(BN(transf)
-            .toFixed())
-          stateSetter(transf)
-        }
-      )
-      .catch(e => {
+    window.web3.eth
+      .getBalance(contractsToAddresses[contract])
+      .then((res) => {
+        let transf = fromWei(res)
+        transf = fN(BN(transf).toFixed())
+        stateSetter(transf)
+      })
+      .catch((e) => {
         stateSetter(0)
       })
   }

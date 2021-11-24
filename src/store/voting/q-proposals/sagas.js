@@ -40,19 +40,19 @@ function * getQProposalsCountGenerator () {
   }
 }
 
-function * getQProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, blocksRange = [550000, 'latest'] }) {
+function * getQProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, range }) {
   try {
     const contracts = creationQContractsObjArray()
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
         yield put(setQActiveProposalsLoading())
-        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(blocksRange)))
+        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(range)))
         yield put(setQActiveProposals(activeProposals.flat()))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
         yield put(setQEndedProposalsLoading())
-        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(blocksRange)))
+        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(range)))
         yield put(setQEndedProposals(endedProposals.flat()))
         break
       }

@@ -9,15 +9,14 @@ import { useDispatch } from "react-redux";
 import { getProposalsList } from "store/voting/proposals/action-creators";
 import ProposalsList from "./ProposalsList";
 import { slice, concat } from "lodash";
-import { getLatestBlockNumber } from "func/useful";
 
-const LIMIT = 10;
-const BLOCKS_LIMIT = 100000;
+const LIMIT = 9;
+const PROPOSALS_LIMIT = 18;
 
 function ProposalsLazyLoading({ proposals, proposalsKind, loading, errorMessage, activeTab, proposalsCount, types }) {
     const dispatch = useDispatch();
 
-    const [blocks, setBlocks] = useState(null);
+    const [range, setRange] = useState([0, 6]);
     const [index, setIndex] = useState(LIMIT);
     const [count, setCount] = useState(20);
     const [disableButton, setDisableButton] = useState(false);
@@ -25,25 +24,16 @@ function ProposalsLazyLoading({ proposals, proposalsKind, loading, errorMessage,
     const [loadingSpinner, setLoadingSpinner] = useState(true);
 
     useEffect(() => {
-        getLatestBLocks();
+        dispatch(getProposalsList(proposalsKind, types, range));
         return () => dispatch(getProposalsList(proposalsKind, PROPOSAL_STATUS_TYPES.reset));
     }, [dispatch]);
-
-    const getLatestBLocks = async () => {
-        const latestBlockNumber = await getLatestBlockNumber();
-        const blocks = [latestBlockNumber - BLOCKS_LIMIT, "latest"];
-        setBlocks(blocks);
-        dispatch(getProposalsList(proposalsKind, types, blocks));
-    };
 
     function handleNextProposals() {
         const newIndex = index + LIMIT;
         const newList = concat(currentProposals, slice(proposals, index, newIndex));
-        if (newIndex + LIMIT > proposals.length) {
-            setCount(newIndex + LIMIT);
-            if (proposals.length < proposalsCount) {
-                fetchNextProposals();
-            }
+        if (newIndex + PROPOSALS_LIMIT > proposals.length) {
+            setCount(newIndex + PROPOSALS_LIMIT);
+            fetchNextProposals();
         }
         if (currentProposals.length === proposals.length) {
             setDisableButton(false);
@@ -53,29 +43,23 @@ function ProposalsLazyLoading({ proposals, proposalsKind, loading, errorMessage,
     }
 
     function fetchNextProposals() {
-        const newBlocks = [blocks[0] - BLOCKS_LIMIT < 0 ? 0 : blocks[0] - BLOCKS_LIMIT, blocks[0]];
-        setBlocks(newBlocks);
-        dispatch(getProposalsList(proposalsKind, types, newBlocks));
+        const newRange = [range[0] + 6, range[1] + 6];
+        setRange(newRange);
+        dispatch(getProposalsList(proposalsKind, types, newRange));
     }
 
     function getProposals() {
-        if (!currentProposals.length && !(proposals.length < count)) {
+        if (index === LIMIT) {
             setCurrentProposals(slice(proposals, 0, LIMIT));
+        }
+        if (proposals.length) {
             setDisableButton(true);
             setLoadingSpinner(false);
-        }
-        if (!proposalsCount) {
-            setLoadingSpinner(false);
-        }
-        if (proposals.length < count && blocks[0] > 0) {
-            fetchNextProposals();
         }
     }
 
     useEffect(() => {
-        if (blocks) {
-            getProposals();
-        }
+        getProposals();
     }, [proposals]);
 
     return (
@@ -104,7 +88,5 @@ function ProposalsLazyLoading({ proposals, proposalsKind, loading, errorMessage,
         </div>
     );
 }
-
-//types === "active"
 
 export default ProposalsLazyLoading;

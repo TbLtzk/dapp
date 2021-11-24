@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useCallback } from 'react'
 
 import { initAddresses } from 'contracts/mapping/contract-to-address'
-import { initInstances } from 'contracts/contracts'
 
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 
 import { WrapContainer } from './styles'
+import { getContractRegistryInstance } from 'contracts/contract-instance'
 
 const STATES = {
   loading: 'loading',
@@ -20,7 +20,7 @@ function InitApp () {
 
   useEffect(async () => {
     try {
-      await Promise.all([initInstances(), initAddresses()])
+      await Promise.all([getContractRegistryInstance(), initAddresses()])
       setAppComponent(await import('components/Base/App'))
       setAppState(STATES.loaded)
     } catch (e) {

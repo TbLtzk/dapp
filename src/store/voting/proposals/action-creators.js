@@ -74,11 +74,11 @@ export const getOneProposal = (data) => ({
   data
 })
 
-export const getProposalsList = (proposalType, proposalStatusType, blocksRange) => ({
+export const getProposalsList = (proposalType, proposalStatusType, range) => ({
   type: actionTypes.GET_PROPOSALS_LIST,
   proposalType,
   proposalStatusType,
-  blocksRange
+  range
 })
 
 // dashboard

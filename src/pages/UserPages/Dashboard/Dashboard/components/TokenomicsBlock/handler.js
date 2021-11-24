@@ -1,119 +1,128 @@
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
-import DefaultAllocationProxy from 'contracts/src/proxy/DefaultAllocationProxy'
-import RootNodeRewardProxy from 'contracts/src/proxy/RootNodeRewardProxy'
-import ValidationRewardProxy from 'contracts/src/proxy/ValidationRewardProxy'
-import CompoundRateKeeper from 'contracts/src/CompoundRateKeeper'
-import ContractBalance from 'contracts/handler/ContractBalance'
-
 import { remainDateTimeSince } from 'func/convertDate'
 import { fromWei } from 'func/balance'
+import {
+  getSystemReserveInstance,
+  getValidationRewardPoolsInstance,
+  getCompoundRateKeeperQVaultInstance,
+  getValidationRewardProxyInstance,
+  getDefaultAllocationProxyInstance,
+  getRootNodeRewardProxyInstance,
+  contractRegistryInstance
+} from 'contracts/contract-instance'
+import { BN, fN } from 'func/useful'
+import ErrorHandler from 'func/ErrorHandler'
+import { setErrorMessage } from 'store/transaction-handler/action-creators'
 
 export default class Handler {
-  constructor (userAddress) {
+  constructor (userAddress, dispatch) {
     this.userAddress = userAddress
-    this.DefaultAllocationProxy = new DefaultAllocationProxy('DefaultAllocationProxy')
-    this.RootNodeRewardProxy = new RootNodeRewardProxy('RootNodeRewardProxy')
-    this.ValidationRewardProxy = new ValidationRewardProxy('ValidationRewardProxy')
-    this.CompoundRateKeeperQVault = new CompoundRateKeeper('CompoundRateKeeperQVault')
-    this.ContractBalance = new ContractBalance(this.userAddress)
+    this.dispatch = dispatch
   }
 
-  allocateValue (contract, stateSetter, stateLoading) {
-    contract
-      .allocate(this.userAddress)
-      .then((val) => {
-        this.ContractBalance.getBalanceValue(contract.contractName, stateSetter)
-        stateLoading(false)
-      })
-      .catch((e) => {
-        console.error('e', e)
-        stateLoading(false)
-      })
-  }
-
-  getDefaultAllocationProxy (stateSetter, stateLoading, isAllocate, allocateStateSetters) {
-    stateLoading(true)
-    try {
-      if (isAllocate) {
-        this.allocateValue(this.DefaultAllocationProxy, stateSetter, stateLoading)
-      } else {
-        this.ContractBalance.getBalanceValue('DefaultAllocationProxy', stateSetter)
-      }
-    } catch {
-      stateLoading(false)
-    }
-  }
-
-  getRootNodeRewardProxy (stateSetter, stateLoading, isAllocate) {
+  async allocateValue (contract, stateSetter, stateLoading) {
     try {
       stateLoading(true)
-      if (isAllocate) {
-        this.allocateValue(this.RootNodeRewardProxy, stateSetter, stateLoading)
-      } else {
-        this.ContractBalance.getBalanceValue('RootNodeRewardProxy', stateSetter)
-      }
-    } catch {
+      await contract.allocate({ from: this.userAddress })
+      const balance = await contract.getBalance()
+      stateSetter(fN(balance))
+    } catch (error) {
+      const errorMsg = ErrorHandler.process(error)
+      this.dispatch(setErrorMessage(errorMsg))
+    } finally {
       stateLoading(false)
     }
   }
 
-  getValidationRewardProxy (stateSetter, stateLoading, isAllocate) {
-    stateLoading(true)
-    if (isAllocate) {
-      this.ValidationRewardProxy.allocate(this.userAddress)
-        .then((val) => {
-          window.web3.eth
-            .getBalance(contractsToAddresses.ValidationRewardProxy)
-            .then((res) => {
-              const transf = fromWei(res)
-              stateSetter(transf)
-              stateLoading(false)
-            })
-            .catch((e) => {
-              console.error('e', e)
-              stateLoading(false)
-            })
-        })
-        .catch((e) => {
-          console.error('e', e)
-          stateLoading(false)
-        })
-    } else {
-      window.web3.eth
-        .getBalance(contractsToAddresses.ValidationRewardProxy)
-        .then((res) => {
-          const transf = fromWei(res)
-          stateSetter(transf)
-          stateLoading(false)
-        })
-        .catch((e) => {
-          console.error('e', e)
-          stateLoading(false)
-        })
+  async getDefaultAllocationProxy (stateSetter, stateLoading, isAllocate, allocateStateSetters) {
+    try {
+      stateLoading(true)
+      const contract = await getDefaultAllocationProxyInstance()
+      if (isAllocate) {
+        await this.allocateValue(contract, stateSetter, stateLoading)
+      } else {
+        const balance = await contract.getBalance()
+        stateSetter(fN(balance))
+      }
+    } catch (error) {
+      const errorMsg = ErrorHandler.process(error)
+      this.dispatch(setErrorMessage(errorMsg))
+    } finally {
+      stateLoading(false)
     }
   }
 
-  getQHolderRewardPool (stateSetter) {
-    this.ContractBalance.getBalanceValue('QHolderRewardPool', stateSetter)
+  async getRootNodeRewardProxy (stateSetter, stateLoading, isAllocate) {
+    try {
+      stateLoading(true)
+      const contract = await getRootNodeRewardProxyInstance()
+      if (isAllocate) {
+        await this.allocateValue(contract, stateSetter, stateLoading)
+      } else {
+        const balance = await contract.getBalance()
+        stateSetter(fN(balance))
+      }
+    } catch (error) {
+      const errorMsg = ErrorHandler.process(error)
+      this.dispatch(setErrorMessage(errorMsg))
+    } finally {
+      stateLoading(false)
+    }
   }
 
-  getSystemReserve (stateSetter) {
-    this.ContractBalance.getBalanceValue('SystemReserve', stateSetter)
+  async getValidationRewardProxy (stateSetter, stateLoading, isAllocate) {
+    try {
+      stateLoading(true)
+      const contract = await getValidationRewardProxyInstance()
+      if (isAllocate) {
+        await contract.allocate({ from: this.userAddress })
+        const balance = await contract.getBalance()
+        stateSetter(fN(balance))
+      } else {
+        const balance = await contract.getBalance()
+        stateSetter(fN(balance))
+      }
+    } catch (error) {
+      const errorMsg = ErrorHandler.process(error)
+      this.dispatch(setErrorMessage(errorMsg))
+    } finally {
+      stateLoading(false)
+    }
   }
 
-  getValidationRewardPools (stateSetter) {
-    this.ContractBalance.getBalanceValue('ValidationRewardPools', stateSetter)
+  async getQHolderRewardPool (stateSetter) {
+    const address = await contractRegistryInstance.instance.methods
+      .getAddress('tokeneconomics.qHolderRewardPool')
+      .call()
+    const balance = await window.web3.eth.getBalance(address)
+    stateSetter(this.transformValue(fromWei(balance)))
   }
 
-  getTimeSinceQHolderRewardUpdate (stateSetter, stateSetterUnixTimestamp) {
-    this.CompoundRateKeeperQVault.getLastUpdate()
-      .then((res) => {
-        stateSetterUnixTimestamp(res)
-        const transformTime = remainDateTimeSince(res)
-        stateSetter(transformTime)
-      })
-      .catch((e) => {
-        stateSetterUnixTimestamp(0)
-      })
+  async getSystemReserve (setSystemReserve) {
+    const contract = await getSystemReserveInstance()
+    const amount = await contract.getBalance()
+    setSystemReserve(this.transformValue(amount))
+  }
+
+  async getValidationRewardPools (setValidationRewardPools) {
+    const contract = await getValidationRewardPoolsInstance()
+    const amount = await contract.getBalance()
+    setValidationRewardPools(this.transformValue(amount))
+  }
+
+  transformValue (value) {
+    const transformed = BN(value).toFixed()
+    return fN(transformed)
+  }
+
+  async getTimeSinceQHolderRewardUpdate (stateSetter, stateSetterUnixTimestamp) {
+    try {
+      const contract = await getCompoundRateKeeperQVaultInstance()
+      const result = await contract.getLastUpdate()
+      stateSetterUnixTimestamp(result)
+      const transformTime = remainDateTimeSince(result)
+      stateSetter(transformTime)
+    } catch {
+      stateSetterUnixTimestamp(0)
+    }
   }
 }

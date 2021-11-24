@@ -45,19 +45,19 @@ function * getExpertProposalsCountGenerator () {
   }
 }
 
-function * getExpertProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, blocksRange = [550000, 'latest'] }) {
+function * getExpertProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, range }) {
   try {
     const contracts = creationExpertContractsObjArray()
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
         yield put(setExpertActiveProposalsLoading())
-        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(blocksRange)))
+        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(range)))
         yield put(setExpertActiveProposals(activeProposals.flat()))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
         yield put(setExpertEndedProposalsLoading())
-        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(blocksRange)))
+        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(range)))
         yield put(setExpertEndedProposals(endedProposals.flat()))
         break
       }

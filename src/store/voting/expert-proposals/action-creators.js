@@ -10,10 +10,10 @@ export const setExpertProposalsCount = (result) => ({
 })
 
 // proposals
-export const getExpertProposals = (proposalStatusType, blocksRange) => ({
+export const getExpertProposals = (proposalStatusType, range) => ({
   type: actionTypes.GET_EXPERT_PROPOSALS,
   proposalStatusType,
-  blocksRange
+  range
 })
 
 // active proposals

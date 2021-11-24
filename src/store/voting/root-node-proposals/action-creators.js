@@ -10,10 +10,10 @@ export const setRootProposalsCount = (result) => ({
 })
 
 // proposals
-export const getRootProposals = (proposalStatusType, blocksRange) => ({
+export const getRootProposals = (proposalStatusType, range) => ({
   type: actionTypes.GET_ROOT_PROPOSALS,
   proposalStatusType,
-  blocksRange
+  range
 })
 
 // active proposals

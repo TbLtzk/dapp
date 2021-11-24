@@ -25,8 +25,9 @@ const calculateRemainDate = (currentDate, dataDate) => {
 }
 
 export const remainDate = (unixTimestamp) => {
+  const timestampInMs = Number(unixTimestamp) * 1000
   const currentDate = new Date()
-  const vetoDate = new Date(unixTimestamp * 1000)
+  const vetoDate = new Date(timestampInMs)
   if (currentDate > vetoDate) {
     return 0
   } else {
@@ -48,7 +49,7 @@ export const dateToTimestamp = (value) => {
 }
 
 export const getNowTimestamp = () => {
-  return Math.floor(new Date().getTime() / 1000)
+  return Math.floor(new Date().getTime() / 1000).toString()
 }
 
 export const getNowTimeWithGMT = () => {

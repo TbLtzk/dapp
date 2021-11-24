@@ -10,10 +10,10 @@ export const setSlashingProposalsCount = (result) => ({
 })
 
 // proposals
-export const getSlashingProposals = (proposalStatusType, blocksRange) => ({
+export const getSlashingProposals = (proposalStatusType, range) => ({
   type: actionTypes.GET_SLASHING_PROPOSALS,
   proposalStatusType,
-  blocksRange
+  range
 })
 
 // active proposals

@@ -49,19 +49,19 @@ function * getSlashingProposalsCountGenerator () {
   }
 }
 
-function * getSlashingProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, blocksRange = [550000, 'latest'] }) {
+function * getSlashingProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, rannge }) {
   try {
     const contracts = creationSlashingContractsObjArray()
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
         yield put(setSlashingActiveProposalsLoading())
-        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(blocksRange)))
+        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(rannge)))
         yield put(setSlashingActiveProposals(activeProposals.flat()))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
         yield put(setSlashingEndedProposalsLoading())
-        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(blocksRange)))
+        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(rannge)))
         yield put(setSlashingEndedProposals(endedProposals.flat()))
         break
       }

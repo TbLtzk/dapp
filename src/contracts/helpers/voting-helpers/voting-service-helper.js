@@ -89,12 +89,6 @@ export default class VotingService {
     }
   }
 
-  async getLatestProposalsIds () {
-    const contract = await this.switchContract()
-    // const latestBlockNumber = await getLatestBlockNumber()
-    return await contract.getProposalIds(0, 'latest') // latestBlockNumber - 50000
-  }
-
   async getVetoesPercentage (id) {
     const contract = await this.switchContract()
     const result = await contract.getVetosPercentage(id)
@@ -146,6 +140,12 @@ export default class VotingService {
     }
   }
 
+  async getLatestProposalsIds () {
+    const contract = await this.switchContract()
+    const latestBlockNumber = await this.getLatestBlockNumber()
+    return await contract.getProposalIds(latestBlockNumber - 50000, 'latest')
+  }
+
   async getProposalWithoutStatusChecked (id) {
     if (id) {
       let objRes = null
@@ -158,13 +158,14 @@ export default class VotingService {
     }
   }
 
-  async getProposals (blocksRange) {
+  async getProposals (range) {
     const contract = await this.switchContract()
-    const proposalIds = await contract.getProposalIds(...blocksRange)
+    const proposalIds = await contract.getProposalIds(0, 'latest')
+    const sliceProposals = [...proposalIds].reverse().slice(...range)
     if (!proposalIds.length) {
       return []
     } else {
-      const allProposals = await contract.getProposals(...proposalIds)
+      const allProposals = await contract.getProposals(...sliceProposals)
       const activeProposals = allProposals.filter(
         (obj) => obj.status === '1' || obj.status === '3' || obj.status === '4'
       )
@@ -173,17 +174,18 @@ export default class VotingService {
         const result = await this.getProposalData(prop, prop.id, prop.status)
         proposals.push(result)
       }
-      return [...proposals].reverse()
+      return [...proposals]
     }
   }
 
-  async getEndedProposals (blocksRange) {
+  async getEndedProposals (range) {
     const contract = await this.switchContract()
-    const proposalIds = await contract.getProposalIds(...blocksRange)
+    const proposalIds = await contract.getProposalIds(0, 'latest')
+    const sliceProposals = [...proposalIds].reverse().slice(...range)
     if (!proposalIds.length) {
       return []
     } else {
-      const allProposals = await contract.getProposals(...proposalIds)
+      const allProposals = await contract.getProposals(...sliceProposals)
       const endedProposals = allProposals.filter(
         (obj) => obj.status !== '1' && obj.status !== '3' && obj.status !== '4'
       )

@@ -52,10 +52,10 @@ export const getProposalEndedError = (result) => ({
 })
 
 // proposals
-export const getQProposals = (proposalStatusType, blocksRange) => ({
+export const getQProposals = (proposalStatusType, range) => ({
   type: actionTypes.GET_Q_PROPOSALS,
   proposalStatusType,
-  blocksRange
+  range
 })
 
 // active proposals

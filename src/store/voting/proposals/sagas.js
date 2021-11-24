@@ -198,26 +198,26 @@ function * getOneProposalSharedGenerator ({ data }) {
   yield call(getProposalDependsOnTypeGenerator, data?.contract, data, data?.id, false)
 }
 
-function * getProposalsListGenerator ({ proposalType, proposalStatusType, blocksRange }) {
+function * getProposalsListGenerator ({ proposalType, proposalStatusType, range }) {
   try {
     switch (proposalType) {
       case PROPOSALS_TYPES.proposals: {
-        yield put(getQProposals(proposalStatusType, blocksRange))
+        yield put(getQProposals(proposalStatusType, range))
         yield put(getQProposalsCount())
         break
       }
       case PROPOSALS_TYPES.rootNodePanel: {
-        yield put(getRootProposals(proposalStatusType, blocksRange))
+        yield put(getRootProposals(proposalStatusType, range))
         yield put(getRootProposalsCount())
         break
       }
       case PROPOSALS_TYPES.slashingProposals: {
-        yield put(getSlashingProposals(proposalStatusType, blocksRange))
+        yield put(getSlashingProposals(proposalStatusType, range))
         yield put(getSlashingProposalsCount())
         break
       }
       case PROPOSALS_TYPES.expertProposals: {
-        yield put(getExpertProposals(proposalStatusType, blocksRange))
+        yield put(getExpertProposals(proposalStatusType, range))
         yield put(getExpertProposalsCount())
         break
       }

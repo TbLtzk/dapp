@@ -1,31 +1,17 @@
-import { contractRegistryInstance } from 'contracts/contracts'
 import { contractsToAbi } from 'contracts/mapping/contract-to-abi'
 import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { ValidatorMetrics } from '@q-dev/q-js-sdk/lib/utils/validator-metrics'
+import { ContractRegistryInstance } from '@q-dev/q-js-sdk'
 
-let qVaultContract = null
-let validatorsContract = null
-let validatorMetricsInstance = null
+export const CONTRACT_REGISTRY_ADDRESS = '0xc3E589056Ece16BCB88c6f9318e9a7343b663522'
 
-export const getQVaultContract = async () => {
-  if (qVaultContract === null) {
-    qVaultContract = new window.web3.eth.Contract(contractsToAbi.QVault, contractsToAddresses.QVault)
+export let contractRegistryInstance = null
+
+export const getContractRegistryInstance = async () => {
+  if (!contractRegistryInstance) {
+    contractRegistryInstance = new ContractRegistryInstance(window.web3, CONTRACT_REGISTRY_ADDRESS)
   }
-  return qVaultContract
-}
-
-export const getValidatorsContract = async () => {
-  if (validatorsContract === null) {
-    validatorsContract = new window.web3.eth.Contract(contractsToAbi.Validators, contractsToAddresses.Validators)
-  }
-  return validatorsContract
-}
-
-export const getValidatorMetricsInstance = async () => {
-  if (validatorMetricsInstance === null) {
-    validatorMetricsInstance = new ValidatorMetrics()
-  }
-  return validatorMetricsInstance
+  return contractRegistryInstance
 }
 
 const cache = {}
@@ -75,3 +61,54 @@ export const getEpqfiMembershipInstance = getInstance('epqfiMembership')
 export const getDefaultAllocationProxyInstance = getInstance('defaultAllocationProxy')
 export const getEpdrMembershipVotingInstance = getInstance('epdrMembershipVoting')
 export const getEpdrMembershipInstance = getInstance('epdrMembership')
+
+let qVaultContract = null
+let validatorsContract = null
+let validatorMetricsInstance = null
+let compoundRateKeeperBorrowingInstance = null
+let compoundRateKeeperSavingInstance = null
+let compoundRateKeeperQVaultInstance = null
+
+export async function getCompoundRateKeeperBorrowingInstance () {
+  if (!compoundRateKeeperBorrowingInstance) {
+    const contract = await getBorrowingCoreInstance()
+    compoundRateKeeperBorrowingInstance = await contract.getCompoundRateKeeper('QBTC')
+  }
+  return compoundRateKeeperBorrowingInstance
+}
+
+export async function getCompoundRateKeeperSavingInstance () {
+  if (!compoundRateKeeperSavingInstance) {
+    const contract = await getSavingInstance()
+    compoundRateKeeperSavingInstance = await contract.getCompoundRateKeeper()
+  }
+  return compoundRateKeeperSavingInstance
+}
+export async function getCompoundRateKeeperQVaultInstance () {
+  if (!compoundRateKeeperQVaultInstance) {
+    const contract = await getQVaultInstance()
+    compoundRateKeeperQVaultInstance = await contract.getCompoundRateKeeper()
+  }
+  return compoundRateKeeperQVaultInstance
+}
+
+export const getQVaultContract = async () => {
+  if (!qVaultContract) {
+    qVaultContract = new window.web3.eth.Contract(contractsToAbi.QVault, contractsToAddresses.QVault)
+  }
+  return qVaultContract
+}
+
+export const getValidatorsContract = async () => {
+  if (!validatorsContract) {
+    validatorsContract = new window.web3.eth.Contract(contractsToAbi.Validators, contractsToAddresses.Validators)
+  }
+  return validatorsContract
+}
+
+export const getValidatorMetricsInstance = async () => {
+  if (!validatorMetricsInstance) {
+    validatorMetricsInstance = new ValidatorMetrics()
+  }
+  return validatorMetricsInstance
+}
