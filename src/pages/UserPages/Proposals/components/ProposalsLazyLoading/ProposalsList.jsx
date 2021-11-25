@@ -18,34 +18,56 @@ import { getUniqueProposals } from 'func/useful'
 import Tooltip from 'components/Base/Tooltip'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 
-function getVetoInfo (proposal) {
+function ProposalContent ({ proposal }) {
   const opacity = proposal.status === 'Pending' ? '0.4' : '1'
 
-  switch (proposal.contract) {
-    case CONTRACTS_NAMES.validatorsSlashingVoting:
-    case CONTRACTS_NAMES.emergencyUpdateVoting:
-      return null
-    default:
-      return (
-                <>
-                    <Tooltip
-                        additionalInfo={
-                            <div>
-                                Remaining Time for Veto <br /> {remainDate(proposal.vetoEndTime)}
-                            </div>
-                        }
-                    >
-                        <div style={{ opacity: opacity }}>
-                            <h5>Veto Ends</h5>
-                            <p>{convertToMonthDayYear(proposal.vetoEndTime)}</p>
+  const vetoInfo =
+        proposal.contract === CONTRACTS_NAMES.validatorsSlashingVoting ||
+        proposal.contract === CONTRACTS_NAMES.emergencyUpdateVoting
+          ? null
+          : (
+            <>
+                <Tooltip
+                    disabled={false}
+                    additionalInfo={
+                        <div>
+                            Remaining Time for Veto <br /> {remainDate(proposal.vetoEndTime)}
                         </div>
-                    </Tooltip>
+                    }
+                >
+                    <div style={{ opacity: opacity }}>
+                        <h5>Veto Ends</h5>
+                        <p>{convertToMonthDayYear(proposal.vetoEndTime)}</p>
+                    </div>
+                </Tooltip>
+            </>
+            )
+
+  return (
+        <div className="list-card__three-colm">
+            <div>
+                <h5>Proposal Id</h5>
+                <p>{proposal.id}</p>
+            </div>
+            <Tooltip
+                disabled={false}
+                additionalInfo={
+                    <div>
+                        Remaining Time for Voting <br /> {remainDate(proposal.votingEndTime)}
+                    </div>
+                }
+            >
+                <>
+                    <h5>Voting Ends</h5>
+                    <p>{convertToMonthDayYear(proposal.votingEndTime)}</p>
                 </>
-      )
-  }
+            </Tooltip>
+            {vetoInfo}
+        </div>
+  )
 }
 
-const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentProposals }, ref) => {
+const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentProposals, proposalStatus }, ref) => {
   const dispatch = useDispatch()
   const [modalShow, setModalShow] = useState(false)
   const [proposalId, setProposalId] = useState(null)
@@ -101,6 +123,7 @@ const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentPropo
                                 proposalID={proposal.id}
                                 status={proposal.status}
                                 vetoTime={proposal.vetoEndTime}
+                                proposalStatus={proposalStatus}
                                 handleVote={() => {
                                   onProposalVote(proposal.id, proposal.contract, proposal.vetoEndTime)
                                   onChooseTypeOfVoting(proposal.status)
@@ -110,27 +133,7 @@ const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentPropo
                                 }}
                             />
                         }
-                        content={
-                            <div className="list-card__three-colm">
-                                <div>
-                                    <h5>Proposal Id</h5>
-                                    <p>{proposal.id}</p>
-                                </div>
-                                <Tooltip
-                                    additionalInfo={
-                                        <div>
-                                            Remaining Time for Voting <br /> {remainDate(proposal.votingEndTime)}
-                                        </div>
-                                    }
-                                >
-                                    <>
-                                        <h5>Voting Ends</h5>
-                                        <p>{convertToMonthDayYear(proposal.votingEndTime)}</p>
-                                    </>
-                                </Tooltip>
-                                {getVetoInfo(proposal)}
-                            </div>
-                        }
+                        content={<ProposalContent proposalStatus={proposalStatus} proposal={proposal} />}
                     />
               )
             })}

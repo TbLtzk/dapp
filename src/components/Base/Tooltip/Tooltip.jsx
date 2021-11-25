@@ -1,14 +1,19 @@
 import colors from 'constants/colors'
 import React from 'react'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
+import { ChildrenWrapper } from './styles'
 
-function Tooltip ({ additionalInfo, children, cursor }) {
-  return (
+function Tooltip ({ additionalInfo, children, cursor, disabled }) {
+  return disabled
+    ? (
+        <div>{children}</div>
+      )
+    : (
         <OverlayTrigger
             key="top"
             placement="top"
             overlay={
-                <Popover id="popover-basic">
+                <Popover>
                     <Popover.Content
                         style={{
                           fontSize: '12px',
@@ -21,9 +26,11 @@ function Tooltip ({ additionalInfo, children, cursor }) {
                 </Popover>
             }
         >
-            <div style={{ cursor: cursor }}> {children} </div>
+            <ChildrenWrapper>
+                <span /> {children}
+            </ChildrenWrapper>
         </OverlayTrigger>
-  )
+      )
 }
 
 export default Tooltip

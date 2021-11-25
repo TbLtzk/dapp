@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import { getProposalsList } from 'store/voting/proposals/action-creators'
 import { useInView } from 'react-intersection-observer'
 
-function ProposalsLazyLoading ({ proposals, proposalsKind, loading, errorMessage, activeTab, proposalsCount, types }) {
+function ProposalsLazyLoading ({ proposals, proposalsKind, loading, errorMessage, activeTab, proposalsCount, proposalStatus }) {
   const dispatch = useDispatch()
   const [state, setState] = useState([0, 3])
 
@@ -15,10 +15,10 @@ function ProposalsLazyLoading ({ proposals, proposalsKind, loading, errorMessage
 
   function getNextProposals (isVisible) {
     if (proposalsCount !== proposals.length) {
-      if (!loading && isVisible && types !== 'active' && !!types) {
+      if (!loading && isVisible && proposalStatus !== 'active' && !!proposalStatus) {
         const range = [state[0] + 3, state[1] + 3]
         setState(range)
-        dispatch(getProposalsList(proposalsKind, types, range))
+        dispatch(getProposalsList(proposalsKind, proposalStatus, range))
       }
     }
   }
@@ -41,6 +41,7 @@ function ProposalsLazyLoading ({ proposals, proposalsKind, loading, errorMessage
                 <div>
                     <ProposalsList
                         ref={ref}
+                        proposalStatus={proposalStatus}
                         currentProposals={proposals}
                         proposalsKind={proposalsKind}
                         activeTab={activeTab}
