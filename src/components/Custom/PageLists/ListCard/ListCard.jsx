@@ -1,42 +1,33 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { ListCardWrp, ListCardHeader, ListCardBody } from './styles'
-import { Accordion, useAccordionToggle } from 'react-bootstrap'
+import { Accordion, useAccordionToggle, DropdownButton } from 'react-bootstrap'
 
 import { theme } from 'store/theme/selectors'
-import Button from 'components/Base/Buttons/Button'
-import Tooltip from 'components/Base/Tooltip'
+import CustomHeaderButtons from 'pages/UserPages/Proposals/components/ProposalsLazyLoading/components/CustomHeaderButtons/CustomHeaderButtons'
 
-function CustomButtons ({ eventKey, shareText }) {
+export function CustomToggle ({ eventKey }) {
   const decoratedOnClick = useAccordionToggle(eventKey, () => {})
-  const [copy, setCopy] = useState(false)
-  const [open, setOpen] = useState(false)
-
-  function handleOpen () {
-    decoratedOnClick()
-    setOpen(!open)
-  }
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(shareText)
-    setCopy(true)
-    const timer = setTimeout(() => {
-      setCopy(false)
-      clearTimeout(timer)
-    }, 3000)
-  }
 
   return (
-        <>
-            <Tooltip additionalInfo={`${copy ? 'Copied!' : 'Copy'}`}>
-                <Button handleButton={handleCopy} title="Share" icon="share" margin="0 20px 0 0" />
-            </Tooltip>
-            <Button iconFontSize="16px" handleButton={handleOpen} icon={`chevron-${open ? 'up' : 'down'}`} />
-        </>
+        <a className="dropdown-item" onClick={decoratedOnClick}>
+            <i className={'mdi mdi-eye-outline btn-icon'} />
+            View details
+        </a>
   )
 }
 
-function ListCard ({ headerLeftSide, id, content, collapsedContent, shareText }) {
+function ListCard ({
+  headerLeftSide,
+  headerRightSide,
+  id,
+  content,
+  shareText,
+  collapsedContent,
+  dropdownButtonTitle,
+  dropdownItems,
+  customHeaderButtons
+}) {
   const currentTheme = useSelector(theme)
 
   return (
@@ -45,7 +36,22 @@ function ListCard ({ headerLeftSide, id, content, collapsedContent, shareText })
                 <ListCardHeader>
                     <div>{headerLeftSide}</div>
                     <div>
-                        <CustomButtons shareText={shareText} eventKey={id} />
+                        {!customHeaderButtons
+                          ? (
+                              headerRightSide || (
+                                <DropdownButton
+                                    menuAlign="right"
+                                    title={dropdownButtonTitle || 'Actions'}
+                                    id="dropdown-menu-align-right"
+                                >
+                                    {dropdownItems}
+                                    <CustomToggle eventKey={id} />
+                                </DropdownButton>
+                              )
+                            )
+                          : (
+                            <CustomHeaderButtons eventKey={id} shareText={shareText} />
+                            )}
                     </div>
                 </ListCardHeader>
                 <ListCardBody>

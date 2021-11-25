@@ -2,32 +2,48 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import Button from 'components/Base/Buttons/Button'
 import { isUserRootNode } from 'store/root-node/selectors'
-// import { isUserEPDRMembership, isUserEPQFIMembership } from 'store/membership/selectors'
 import Tooltip from 'components/Base/Tooltip'
 import { CONTRACTS_NAMES } from 'constants/contracts'
+import { isUserEPDRMembership, isUserEPQFIMembership } from 'store/membership/selectors'
 
 const TOOLTIP_INFO = {
-  votePeriod: 'Vote period already gone',
-  vetoPeriod: 'Veto period has not started',
-  isNotRootNode: 'User is not Root Node'
+  votePeriod: 'Voting period has ended.',
+  vetoPeriod: 'Veto period not started or ended.',
+  isNotRootNode: 'User is not root node.',
+  isDeFiExpert: 'User is not member of DeFi risk expert panel.',
+  isFeesExpert: 'User is not member of Q fees & incentives expert panel.'
 }
 
 function VotingItems ({ status, handleVote, handleExecute, contract, proposalStatus }) {
   const isRootNode = useSelector(isUserRootNode)
+  const isEPDRMembership = useSelector(isUserEPDRMembership) // DeFi risk expert EPDRParametersVoting  EPDRMembershipVoting
+  const isEPQFIMembership = useSelector(isUserEPQFIMembership) // Fees & Incentive expert EPQFIParametersVoting EPQFIMembershipVoting
 
-//   const isEPDRMembership = useSelector(isUserEPDRMembership)
-//   const isEPQFIMembership = useSelector(isUserEPQFIMembership)
-  
   const contractsWithoutVeto =
         contract === CONTRACTS_NAMES.validatorsSlashingVoting || contract === CONTRACTS_NAMES.emergencyUpdateVoting
+  const epdrContract =
+        contract === CONTRACTS_NAMES.ePDRParametersVoting || contract === CONTRACTS_NAMES.ePDRMembershipVoting
+  const epqfiContract =
+        contract === CONTRACTS_NAMES.ePQFIParametersVoting || contract === CONTRACTS_NAMES.ePQFIMembershipVoting
 
   function checkVoteUser () {
-    if (contractsWithoutVeto) {
-      return { disabled: !isRootNode, info: isRootNode ? TOOLTIP_INFO.votePeriod : TOOLTIP_INFO.isNotRootNode }
-    } else if (status === 'Accepted') {
+    if (status === 'Accepted') {
       return { disabled: true, info: TOOLTIP_INFO.votePeriod }
+    } else if (contractsWithoutVeto) {
+      return { disabled: !isRootNode, info: isRootNode ? TOOLTIP_INFO.votePeriod : TOOLTIP_INFO.isNotRootNode }
+    } else if (epdrContract) {
+      return {
+        disabled: !isEPDRMembership,
+        info: isEPDRMembership ? TOOLTIP_INFO.isDeFiExpert : TOOLTIP_INFO.isDeFiExpert
+      }
+    } else if (epqfiContract) {
+      return {
+        disabled: !isEPQFIMembership,
+        info: isEPQFIMembership ? TOOLTIP_INFO.isFeesExpert : TOOLTIP_INFO.isFeesExpert
+      }
+    } else {
+      return { disabled: false, info: '' }
     }
-    return { disabled: false, info: '' }
   }
 
   function checkVetoUser () {

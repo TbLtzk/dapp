@@ -3,7 +3,7 @@ import React from 'react'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { ChildrenWrapper } from './styles'
 
-function Tooltip ({ additionalInfo, children, cursor, disabled }) {
+function Tooltip ({ additionalInfo, children, disabled, copy }) {
   return disabled
     ? (
         <div>{children}</div>
@@ -27,7 +27,15 @@ function Tooltip ({ additionalInfo, children, cursor, disabled }) {
             }
         >
             <ChildrenWrapper>
-                <span /> {children}
+                {copy
+                  ? (
+                      children
+                    )
+                  : (
+                    <>
+                        <span /> {children}
+                    </>
+                    )}
             </ChildrenWrapper>
         </OverlayTrigger>
       )

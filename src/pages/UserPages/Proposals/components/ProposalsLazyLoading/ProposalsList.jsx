@@ -112,6 +112,7 @@ const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentPropo
                                 {proposal.status ? <div className="list-card__status">{proposal.status}</div> : null}
                             </>
                         }
+                        customHeaderButtons={true}
                         shareText={`${window.location.origin}/q-governance/proposal/${proposal.contract}/${proposal.id}`}
                         collapsedContent={
                             <CardCollapsedContent
