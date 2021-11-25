@@ -1,7 +1,7 @@
+import Button from 'components/Base/Buttons/Button'
 import React from 'react'
 
 import { Dropdown } from 'react-bootstrap'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 function CardDropdownItems ({ status, handleVote, handleExecute, shareText }) {
   return (
@@ -10,17 +10,14 @@ function CardDropdownItems ({ status, handleVote, handleExecute, shareText }) {
             {status === 'Pending' || status === 'Accepted'
               ? (
                 <Dropdown.Item onClick={handleVote}>
-                    <i className={'mdi mdi-checkbox-marked-outline btn-icon'} />
+                    <i className="mdi mdi-checkbox-marked-outline btn-icon" />
+                    <Button handleButton={() => console.log('vote')} />
+                    <Button handleButton={() => console.log('veto')} />
+
                     {status === 'Pending' ? 'Vote' : 'Veto'}
                 </Dropdown.Item>
                 )
               : null}
-            <CopyToClipboard text={shareText}>
-                <Dropdown.Item>
-                    <i className={'mdi mdi-share-variant btn-icon'} />
-                    Share
-                </Dropdown.Item>
-            </CopyToClipboard>
         </>
   )
 }

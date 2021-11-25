@@ -2,7 +2,7 @@ import colors from 'constants/colors'
 import React from 'react'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 
-function Tooltip ({ additionalInfo, children }) {
+function Tooltip ({ additionalInfo, children, cursor }) {
   return (
         <OverlayTrigger
             key="top"
@@ -21,7 +21,7 @@ function Tooltip ({ additionalInfo, children }) {
                 </Popover>
             }
         >
-            <div style={{ cursor: 'help' }}> {children} </div>
+            <div style={{ cursor: cursor }}> {children} </div>
         </OverlayTrigger>
   )
 }

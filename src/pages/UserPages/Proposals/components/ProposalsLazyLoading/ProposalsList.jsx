@@ -11,7 +11,6 @@ import {
 import ModalVote from '../CreateQProposalBtn/ModalVote'
 
 import ListCard from 'components/Custom/PageLists/ListCard'
-import CardDropdownItems from './components/CardDropdownItems'
 import CardCollapsedContent from './components/CardCollapsedContent'
 
 import { convertToMonthDayYear, remainDate } from 'func/convertDate'
@@ -91,19 +90,7 @@ const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentPropo
                                 {proposal.status ? <div className="list-card__status">{proposal.status}</div> : null}
                             </>
                         }
-                        dropdownItems={
-                            <CardDropdownItems
-                                status={proposal.status}
-                                handleVote={() => {
-                                  onProposalVote(proposal.id, proposal.contract, proposal.vetoEndTime)
-                                  onChooseTypeOfVoting(proposal.status)
-                                }}
-                                handleExecute={() => {
-                                  onProposalExecute(proposal.id, proposal.contract)
-                                }}
-                                shareText={`${window.location.origin}/q-governance/proposal/${proposal.contract}/${proposal.id}`}
-                            />
-                        }
+                        shareText={`${window.location.origin}/q-governance/proposal/${proposal.contract}/${proposal.id}`}
                         collapsedContent={
                             <CardCollapsedContent
                                 proposalType={proposal?.type}
@@ -112,8 +99,15 @@ const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentPropo
                                 proposalsKind={proposalsKind}
                                 contract={proposal.contract}
                                 proposalID={proposal.id}
-                                objData={proposal.status}
+                                status={proposal.status}
                                 vetoTime={proposal.vetoEndTime}
+                                handleVote={() => {
+                                  onProposalVote(proposal.id, proposal.contract, proposal.vetoEndTime)
+                                  onChooseTypeOfVoting(proposal.status)
+                                }}
+                                handleExecute={() => {
+                                  onProposalExecute(proposal.id, proposal.contract)
+                                }}
                             />
                         }
                         content={

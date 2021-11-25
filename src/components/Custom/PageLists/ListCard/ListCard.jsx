@@ -1,59 +1,59 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { ListCardWrp, ListCardHeader, ListCardBody } from './styles'
-import { Accordion, useAccordionToggle, DropdownButton } from 'react-bootstrap'
+import { Accordion, useAccordionToggle } from 'react-bootstrap'
 
 import { theme } from 'store/theme/selectors'
+import Button from 'components/Base/Buttons/Button'
+import Tooltip from 'components/Base/Tooltip'
 
-export function CustomToggle ({ eventKey }) {
-  const decoratedOnClick = useAccordionToggle(eventKey, () => {
-  })
+function CustomButtons ({ eventKey, shareText }) {
+  const decoratedOnClick = useAccordionToggle(eventKey, () => {})
+  const [copy, setCopy] = useState(false)
+  const [open, setOpen] = useState(false)
+
+  function handleOpen () {
+    decoratedOnClick()
+    setOpen(!open)
+  }
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(shareText)
+    setCopy(true)
+    const timer = setTimeout(() => {
+      setCopy(false)
+      clearTimeout(timer)
+    }, 3000)
+  }
 
   return (
-    <a className="dropdown-item" onClick={decoratedOnClick}>
-      <i className={'mdi mdi-eye-outline btn-icon'}/>View details
-    </a>
+        <>
+            <Tooltip additionalInfo={`${copy ? 'Copied!' : 'Copy'}`}>
+                <Button handleButton={handleCopy} title="Share" icon="share" margin="0 20px 0 0" />
+            </Tooltip>
+            <Button iconFontSize="16px" handleButton={handleOpen} icon={`chevron-${open ? 'up' : 'down'}`} />
+        </>
   )
 }
 
-function ListCard (props) {
+function ListCard ({ headerLeftSide, id, content, collapsedContent, shareText }) {
   const currentTheme = useSelector(theme)
-  const {
-    headerLeftSide,
-    headerRightSide,
-    id,
-    content,
-    collapsedContent,
 
-    dropdownButtonTitle,
-    dropdownItems
-
-  } = props
   return (
-    <ListCardWrp palette={currentTheme}>
-      <Accordion defaultActiveKey="0">
-        <ListCardHeader>
-          <div>{headerLeftSide}</div>
-          <div>
-            {headerRightSide || <DropdownButton
-                menuAlign="right"
-                title={dropdownButtonTitle || 'Actions'}
-                id="dropdown-menu-align-right"
-              >
-                {dropdownItems}
-                <CustomToggle eventKey={id}/>
-              </DropdownButton>
-            }
-          </div>
-        </ListCardHeader>
-        <ListCardBody>
-          {content}
-          <Accordion.Collapse eventKey={id}>
-            {collapsedContent}
-          </Accordion.Collapse>
-        </ListCardBody>
-      </Accordion>
-    </ListCardWrp>
+        <ListCardWrp palette={currentTheme}>
+            <Accordion defaultActiveKey="0">
+                <ListCardHeader>
+                    <div>{headerLeftSide}</div>
+                    <div>
+                        <CustomButtons shareText={shareText} eventKey={id} />
+                    </div>
+                </ListCardHeader>
+                <ListCardBody>
+                    {content}
+                    <Accordion.Collapse eventKey={id}>{collapsedContent}</Accordion.Collapse>
+                </ListCardBody>
+            </Accordion>
+        </ListCardWrp>
   )
 }
 
