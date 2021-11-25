@@ -1,7 +1,6 @@
 import * as actionTypes from './action-types'
 
 const initialState = {
-
   delegatorsShare: 0,
   totalStake: 0,
   ownStake: 0,
@@ -18,7 +17,9 @@ const initialState = {
   isUserValidator: false,
 
   validatorsTimeLocks: null,
-  validatorsMinimumTimeLock: null
+  validatorsMinimumTimeLock: null,
+
+  compoundRateKeeperExists: false
 }
 
 export default function index (state = initialState, action) {
@@ -96,6 +97,12 @@ export default function index (state = initialState, action) {
       return {
         ...state,
         validatorShortlist: action.payload
+      }
+    }
+    case actionTypes.SET_COMPOUND_RATE_KEEPER_EXISTS: {
+      return {
+        ...state,
+        compoundRateKeeperExists: action.payload
       }
     }
     case actionTypes.SET_VALIDATORS_WITHDRAWAL_INFO: {

@@ -165,3 +165,12 @@ export const setValidatorWithdrawalInfo = (data) => ({
   type: actionTypes.SET_VALIDATORS_WITHDRAWAL_INFO,
   payload: data
 })
+
+export const getCompoundRateKeeperExists = () => ({
+  type: actionTypes.GET_COMPOUND_RATE_KEEPER_EXISTS
+})
+
+export const setCompoundRateKeeperExists = (data) => ({
+  type: actionTypes.SET_COMPOUND_RATE_KEEPER_EXISTS,
+  payload: data
+})
