@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 import { LoadingWrap } from 'constants/style'
-import ProposalsList from './ProposalsList'
+import ProposalsList from './components/ProposalsList/ProposalsList'
 import { useDispatch } from 'react-redux'
 import { getProposalsList } from 'store/voting/proposals/action-creators'
 import { useInView } from 'react-intersection-observer'

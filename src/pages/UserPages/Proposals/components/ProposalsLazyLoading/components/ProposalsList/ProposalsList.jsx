@@ -8,63 +8,12 @@ import {
   executeProposal
 } from 'store/voting/proposals/action-creators'
 
-import ModalVote from '../CreateQProposalBtn/ModalVote'
+import ModalVote from '../../../CreateQProposalBtn/ModalVote'
 
 import ListCard from 'components/Custom/PageLists/ListCard'
-import CardCollapsedContent from './components/CardCollapsedContent'
-
-import { convertToMonthDayYear, remainDate } from 'func/convertDate'
+import CardCollapsedContent from '../CardCollapsedContent'
+import ProposalContent from '../ProposalContent'
 import { getUniqueProposals } from 'func/useful'
-import Tooltip from 'components/Base/Tooltip'
-import { CONTRACTS_NAMES } from 'constants/contracts'
-
-function ProposalContent ({ proposal }) {
-  const voteOpacity = proposal.status !== 'Pending' ? '0.4' : '1'
-  const vetoOpacity = proposal.status === 'Accepted' ? '1' : '0.4'
-
-  const contractsWithoutVeto =
-        proposal.contract === CONTRACTS_NAMES.validatorsSlashingVoting ||
-        proposal.contract === CONTRACTS_NAMES.emergencyUpdateVoting
-
-  return (
-        <div className="list-card__three-colm">
-            <div>
-                <h5>Proposal Id</h5>
-                <p>{proposal.id}</p>
-            </div>
-            <Tooltip
-                disabled={false}
-                additionalInfo={
-                    <div>
-                        Remaining Time for Voting <br /> {remainDate(proposal.votingEndTime)}
-                    </div>
-                }
-            >
-                <div style={{ opacity: voteOpacity }}>
-                    <h5>Voting Ends</h5>
-                    <p>{convertToMonthDayYear(proposal.votingEndTime)}</p>
-                </div>
-            </Tooltip>
-            {contractsWithoutVeto
-              ? null
-              : (
-                <Tooltip
-                    disabled={false}
-                    additionalInfo={
-                        <div>
-                            Remaining Time for Veto <br /> {remainDate(proposal.vetoEndTime)}
-                        </div>
-                    }
-                >
-                    <div style={{ opacity: vetoOpacity }}>
-                        <h5>Veto Ends</h5>
-                        <p>{convertToMonthDayYear(proposal.vetoEndTime)}</p>
-                    </div>
-                </Tooltip>
-                )}
-        </div>
-  )
-}
 
 const ProposalsList = React.forwardRef(({ proposalsKind, activeTab, currentProposals, proposalStatus }, ref) => {
   const dispatch = useDispatch()

@@ -49,11 +49,9 @@ function VoterStatus () {
     } else {
       return arrStatus.join(', ')
     }
-  }, [isRootNode, isValidator, userQVBalance])
+  }, [isRootNode, isValidator, userQVBalance, isEPDRMembership, isEPQFIMembership])
 
-  return (
-    <>{showStatus}</>
-  )
+  return <>{showStatus}</>
 }
 
 export default VoterStatus
