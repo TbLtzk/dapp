@@ -34,13 +34,12 @@ function ProposalContent ({ proposal }) {
                     </div>
                 </Tooltip>
             </ContentWrapper>
-
             {contractsWithoutVeto
               ? null
               : (
                 <ContentWrapper opacity={vetoOpacity}>
                     <Tooltip
-                        disabled={false}
+                        disabled={proposal.status === 'Pending'}
                         additionalInfo={
                             <div>
                                 Remaining Time for Veto <br /> {remainDate(proposal.vetoEndTime)}

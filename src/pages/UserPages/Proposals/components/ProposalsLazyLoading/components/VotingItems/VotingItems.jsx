@@ -16,8 +16,8 @@ const TOOLTIP_INFO = {
 
 function VotingItems ({ status, handleVote, handleExecute, contract, proposalStatus }) {
   const isRootNode = useSelector(isUserRootNode)
-  const isEPDRMembership = useSelector(isUserEPDRMembership) // DeFi risk expert EPDRParametersVoting  EPDRMembershipVoting
-  const isEPQFIMembership = useSelector(isUserEPQFIMembership) // Fees & Incentive expert EPQFIParametersVoting EPQFIMembershipVoting
+  const isEPDRMembership = useSelector(isUserEPDRMembership)
+  const isEPQFIMembership = useSelector(isUserEPQFIMembership)
 
   const contractsWithoutVeto =
         contract === CONTRACTS_NAMES.validatorsSlashingVoting || contract === CONTRACTS_NAMES.emergencyUpdateVoting
@@ -74,6 +74,7 @@ function VotingItems ({ status, handleVote, handleExecute, contract, proposalSta
                                 handleButton={handleVote}
                             />
                         </Tooltip>
+                        <div style={{ width: '20px' }} />
                         {contractsWithoutVeto
                           ? null
                           : (
@@ -81,7 +82,6 @@ function VotingItems ({ status, handleVote, handleExecute, contract, proposalSta
                                 <Button
                                     icon="window-close"
                                     width="75px"
-                                    margin="0 0 0 20px"
                                     title="Veto"
                                     disabled={!isUserCanVeto.disabled}
                                     handleButton={handleVote}

@@ -25,8 +25,9 @@ function CustomHeaderButtons ({ eventKey, shareText }) {
   return (
         <>
             <Tooltip copy={true} disabled={false} additionalInfo={`${copy ? 'Copied!' : 'Copy'}`}>
-                <Button handleButton={handleCopy} title="Share" icon="share" margin="0 20px 0 0" />
+                <Button handleButton={handleCopy} title="Share" icon="share" />
             </Tooltip>
+            <div style={{ width: '20px' }} />
             <Button iconFontSize="16px" handleButton={handleOpen} icon={`chevron-${open ? 'up' : 'down'}`} />
         </>
   )
