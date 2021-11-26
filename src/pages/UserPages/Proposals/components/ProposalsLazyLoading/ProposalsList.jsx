@@ -19,29 +19,12 @@ import Tooltip from 'components/Base/Tooltip'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 
 function ProposalContent ({ proposal }) {
-  const opacity = proposal.status === 'Pending' ? '0.4' : '1'
+  const voteOpacity = proposal.status !== 'Pending' ? '0.4' : '1'
+  const vetoOpacity = proposal.status === 'Accepted' ? '1' : '0.4'
 
-  const vetoInfo =
+  const contractsWithoutVeto =
         proposal.contract === CONTRACTS_NAMES.validatorsSlashingVoting ||
         proposal.contract === CONTRACTS_NAMES.emergencyUpdateVoting
-          ? null
-          : (
-            <>
-                <Tooltip
-                    disabled={false}
-                    additionalInfo={
-                        <div>
-                            Remaining Time for Veto <br /> {remainDate(proposal.vetoEndTime)}
-                        </div>
-                    }
-                >
-                    <div style={{ opacity: opacity }}>
-                        <h5>Veto Ends</h5>
-                        <p>{convertToMonthDayYear(proposal.vetoEndTime)}</p>
-                    </div>
-                </Tooltip>
-            </>
-            )
 
   return (
         <div className="list-card__three-colm">
@@ -57,12 +40,28 @@ function ProposalContent ({ proposal }) {
                     </div>
                 }
             >
-                <>
+                <div style={{ opacity: voteOpacity }}>
                     <h5>Voting Ends</h5>
                     <p>{convertToMonthDayYear(proposal.votingEndTime)}</p>
-                </>
+                </div>
             </Tooltip>
-            {vetoInfo}
+            {contractsWithoutVeto
+              ? null
+              : (
+                <Tooltip
+                    disabled={false}
+                    additionalInfo={
+                        <div>
+                            Remaining Time for Veto <br /> {remainDate(proposal.vetoEndTime)}
+                        </div>
+                    }
+                >
+                    <div style={{ opacity: vetoOpacity }}>
+                        <h5>Veto Ends</h5>
+                        <p>{convertToMonthDayYear(proposal.vetoEndTime)}</p>
+                    </div>
+                </Tooltip>
+                )}
         </div>
   )
 }
