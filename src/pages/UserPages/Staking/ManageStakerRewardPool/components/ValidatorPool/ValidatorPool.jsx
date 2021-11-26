@@ -19,6 +19,7 @@ import {
 
 import { fN } from 'func/useful'
 import { setErrorMessage } from 'store/transaction-handler/action-creators'
+import { getVRPLastUpdateOfCompoundRate } from 'store/validation-reward-pools/action-creators'
 
 const message = { header: 'Notice', details: 'Stake amount below minimum to apply new rate, old rate applied.' }
 
@@ -40,6 +41,7 @@ export default function ValidatorPool ({ modalShow }) {
 
   useEffect(() => {
     if (modalShow) {
+      dispatch(getVRPLastUpdateOfCompoundRate())
       dispatch(getTotalStake(address))
       dispatch(getOwnStake(address))
       dispatch(getDelegatedStake(address))

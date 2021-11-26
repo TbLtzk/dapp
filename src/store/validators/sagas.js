@@ -1,4 +1,4 @@
-import { put, takeEvery, call } from 'redux-saga/effects'
+import { put, takeEvery, call, select } from 'redux-saga/effects'
 import * as actionTypes from './action-types'
 
 import {
@@ -19,14 +19,20 @@ import {
   getValidatorWithdrawalInfo,
   getValidatorMembers,
   getValidatorShortList,
-  getAccountableTotalStake
+  getAccountableTotalStake,
+  setCompoundRateKeeperExists,
+  getCompoundRateKeeperExists
 } from './action-creators'
 
 import { fromWei, toWei } from 'func/balance'
 import { addIndex } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
 
-import { getValidatorsInstance, getValidatorsContract } from 'contracts/contract-instance'
+import {
+  getValidatorsInstance,
+  getValidatorsContract,
+  getValidationRewardPoolsInstance
+} from 'contracts/contract-instance'
 
 import {
   getMembersList,
@@ -161,6 +167,7 @@ function * setValidatorsInterestRateGenerator ({ address, uintPercent }) {
     const data = yield contract.setInterestRate(address, uintPercent)
     if (data.status) {
       yield put(getInterestRate(address))
+      yield put(getCompoundRateKeeperExists())
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -185,6 +192,7 @@ function * setValidatorsCommitStakeGenerator ({ address, amountQ }) {
       yield put(getValidatorShortList())
       yield put(getAccountBalance(address))
       yield put(getValidatorMembers())
+      yield put(getCompoundRateKeeperExists())
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -202,6 +210,7 @@ function * setValidatorsEnterShortListGenerator ({ address }) {
     yield contract.enterShortList({ from: address })
     yield put(getIsUserValidator(address))
     yield put(getValidatorMembers())
+    yield put(getCompoundRateKeeperExists())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
@@ -223,6 +232,7 @@ function * setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
       yield put(getValidatorShortList())
       yield put(getAccountBalance(address))
       yield put(getValidatorMembers())
+      yield put(getCompoundRateKeeperExists())
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -245,12 +255,24 @@ function * setValidatorsWithdrawGenerator ({ address, amountQ }) {
       yield put(getAccountBalance(address))
       yield put(getValidatorMembers())
       yield put(getValidatorWithdrawalInfo(address))
+      yield put(getCompoundRateKeeperExists())
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
     yield put(setTransactionLoading())
+  }
+}
+
+function * getCompoundRateKeeperExistsGenerator () {
+  try {
+    const { userAddress } = yield select((state) => state.userInf)
+    const contract = yield call(getValidationRewardPoolsInstance)
+    const compoundRateKeeperExists = yield contract.compoundRateKeeperExists(userAddress)
+    yield put(setCompoundRateKeeperExists(compoundRateKeeperExists))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
@@ -274,5 +296,6 @@ export default [
   takeEvery(actionTypes.GET_IS_USER_VALIDATOR, getIsUserValidatorGenerator),
 
   takeEvery(actionTypes.GET_VALIDATORS_MINIMUM_TIME_LOCK, getValidatorsMinimumTimeLockGenerator),
-  takeEvery(actionTypes.GET_VALIDATORS_TIME_LOCKS, getValidatorsTimeLocksGenerator)
+  takeEvery(actionTypes.GET_VALIDATORS_TIME_LOCKS, getValidatorsTimeLocksGenerator),
+  takeEvery(actionTypes.GET_COMPOUND_RATE_KEEPER_EXISTS, getCompoundRateKeeperExistsGenerator)
 ]
