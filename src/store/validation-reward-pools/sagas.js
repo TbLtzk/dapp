@@ -16,7 +16,7 @@ import {
 
 import { SET_TRANSACTION_COUNTER } from "store/transaction-handler/action-types";
 
-import { getValidationRewardPoolsInstance } from "contracts/contract-instance";
+import { getValidationRewardPoolsInstance, getValidatorsInstance } from "contracts/contract-instance";
 import { setErrorMessage } from "store/transaction-handler/action-creators";
 import { getPercentageFormat, uintPercentToNumber } from "func/useful";
 import ErrorHandler from "func/ErrorHandler";
@@ -106,10 +106,11 @@ function* getPoolInfoGenerator({ address }) {
   }
 }
 
-function* getLastUpdateOfCompoundRateGenerator({ address }) {
+function* getLastUpdateOfCompoundRateGenerator() {
   try {
-    const contract = yield call(getValidationRewardPoolsInstance);
-    const data = yield contract.getLastUpdateOfCompoundRate(address);
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = yield call(getValidationRewardPoolsInstance);    
+    const data = yield contract.getLastUpdateOfCompoundRate(userAddress)
     yield put(setVRPLastUpdateOfCompoundRateData(data));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);

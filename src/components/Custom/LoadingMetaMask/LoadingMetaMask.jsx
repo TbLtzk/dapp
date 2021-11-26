@@ -31,7 +31,7 @@ function LoadingMetaMask () {
     ethereum?.on('accountsChanged', function (accounts) {
       window.location.reload()
     })
-    ethereum?.on('networkChanged', networkId => {
+    ethereum?.on('networkChanged', (networkId) => {
       window.location.reload()
     })
     web3.eth.net.getNetworkType((err, netId) => {
@@ -61,20 +61,20 @@ function LoadingMetaMask () {
       case 'logged':
         return <InitApp />
       case 'not-logged':
-        return <StartConfigurations error={'Waiting for login in MetaMask!'}/>
+        return <StartConfigurations error={'Waiting for login in MetaMask!'} />
       case 'error':
-        return <StartConfigurations error={errorMessage}/>
+        return <StartConfigurations error={errorMessage} />
       case 'loading':
         return (
-          <WrapContainer>
-            <LoadingSpinner/>
-          </WrapContainer>
+                    <WrapContainer>
+                        <LoadingSpinner />
+                    </WrapContainer>
         )
       default:
         return (
-          <WrapContainer>
-            <LoadingSpinner/>
-          </WrapContainer>
+                    <WrapContainer>
+                        <LoadingSpinner />
+                    </WrapContainer>
         )
     }
   }, [isMetaMask])
