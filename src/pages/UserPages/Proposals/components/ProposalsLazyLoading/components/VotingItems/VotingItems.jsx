@@ -51,6 +51,8 @@ function VotingItems ({ status, handleVote, handleExecute, contract, proposalSta
       return { disabled: false, info: isRootNode ? TOOLTIP_INFO.vetoPeriod : TOOLTIP_INFO.isNotRootNode }
     } else if (status === 'Accepted') {
       return { disabled: isRootNode, info: isRootNode ? TOOLTIP_INFO.vetoPeriod : TOOLTIP_INFO.isNotRootNode }
+    } else {
+      return { disabled: false, info: '' }
     }
   }
 
