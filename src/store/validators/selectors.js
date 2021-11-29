@@ -18,3 +18,5 @@ export const validatorsTimeLocks = (state) => state.validators.validatorsTimeLoc
 
 export const validatorShortList = (state) => state.validators.validatorShortlist
 export const validatorWithdrawalInfo = (state) => state.validators.validatorWithdrawalInfo
+
+export const compoundRateKeeperExistsSelector = (state) => state.validators.compoundRateKeeperExists

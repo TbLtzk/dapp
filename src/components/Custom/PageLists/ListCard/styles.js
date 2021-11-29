@@ -4,39 +4,39 @@ import { indents } from 'constants/style'
 
 export const ListCardWrp = styled(Card)`
   border: 0;
-  background: ${props => props.theme.colors.oxfordBlueTint1};
+  background: ${(props) => props.theme.colors.oxfordBlueTint1};
   margin-bottom: 16px;
 
   h1 {
-    color: ${props => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.white};
     font-size: 20px;
     line-height: 35px;
     margin-bottom: 0;
-    font-family: 'Lora', sans-serif;
+    font-family: "Lora", sans-serif;
   }
 
   h3 {
-    color: ${props => props.theme.colors.oxfordBlueTint3};
+    color: ${(props) => props.theme.colors.oxfordBlueTint3};
     font-size: 16px;
     line-height: 17px;
-    font-family: 'OpenSans', sans-serif;
+    font-family: "OpenSans", sans-serif;
     margin-bottom: 15px;
   }
 
   h4 {
-    color: ${props => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.white};
     font-size: 12px;
     line-height: 17px;
-    font-family: 'OpenSans', sans-serif;
+    font-family: "OpenSans", sans-serif;
     margin-bottom: 10px;
   }
 
   h5 {
-    color: ${props => props.theme.colors.oxfordBlueTint3};
+    color: ${(props) => props.theme.colors.oxfordBlueTint3};
     font-size: 13px;
     line-height: 17px;
     font-weight: 600;
-    font-family: 'OpenSans', sans-serif;
+    font-family: "OpenSans", sans-serif;
     margin-bottom: 2px;
   }
 
@@ -51,11 +51,11 @@ export const ListCardWrp = styled(Card)`
     padding-left: 0;
     font-size: 13px;
     line-height: 17px;
-    color: ${props => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.white};
     margin-bottom: 15px;
 
     :hover {
-      color: ${props => props.theme.colors.white};
+      color: ${(props) => props.theme.colors.white};
       text-decoration: underline;
     }
   }
@@ -65,8 +65,8 @@ export const ListCardWrp = styled(Card)`
     align-items: center;
     font-size: 13px;
     line-height: 18px;
-    color: ${props => props.theme.colors.oxfordBlueTint3};
-    border: 1px solid ${props => props.theme.colors.oxfordBlueTint3};
+    color: ${(props) => props.theme.colors.oxfordBlueTint3};
+    border: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
     border-radius: 13px;
     padding: 1px 9px;
     margin-left: 10px;
@@ -91,19 +91,19 @@ export const ListCardWrp = styled(Card)`
     line-height: 18px;
     border-color: ${(props) => props.theme.colors.oxfordBlueTint2};
     background-color: ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.oxfordBlueTint2
-    } else {
-      return props.theme.colors.oxfordBlueTint5
-    }
-  }};
+      if (props.palette === 'dark') {
+        return props.theme.colors.oxfordBlueTint2
+      } else {
+        return props.theme.colors.oxfordBlueTint5
+      }
+    }};
     color: ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.white
-    } else {
-      return props.theme.colors.oxfordBlue
-    }
-  }};
+      if (props.palette === 'dark') {
+        return props.theme.colors.white
+      } else {
+        return props.theme.colors.oxfordBlue
+      }
+    }};
     border-radius: 3px;
 
     &:disabled {
@@ -139,56 +139,60 @@ export const ListCardWrp = styled(Card)`
     &:focus {
       box-shadow: ${(props) => (props.palette === 'light' ? 'none !important' : 'auto')};
       color: ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.white
-    } else {
-      return props.theme.colors.oxfordBlue
-    }
-  }}!important;
+        if (props.palette === 'dark') {
+          return props.theme.colors.white
+        } else {
+          return props.theme.colors.oxfordBlue
+        }
+      }}!important;
       background-color: ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.oxfordBlueTint2
-    } else {
-      return props.theme.colors.oxfordBlueTint5
-    }
-  }}!important;
+        if (props.palette === 'dark') {
+          return props.theme.colors.oxfordBlueTint2
+        } else {
+          return props.theme.colors.oxfordBlueTint5
+        }
+      }}!important;
       border-color: ${(props) => props.theme.colors.oxfordBlueTint2};
 
       :after {
-        border-left: 1px solid ${(props) => {
-          if (props.palette === 'dark') {
-            return props.theme.colors.white
-          } else {
-            return props.theme.colors.oxfordBlue
-          }
-        }};
-        border-top: 1px solid ${(props) => {
-          if (props.palette === 'dark') {
-            return props.theme.colors.white
-          } else {
-            return props.theme.colors.oxfordBlue
-          }
-        }};
+        border-left: 1px solid
+          ${(props) => {
+            if (props.palette === 'dark') {
+              return props.theme.colors.white
+            } else {
+              return props.theme.colors.oxfordBlue
+            }
+          }};
+        border-top: 1px solid
+          ${(props) => {
+            if (props.palette === 'dark') {
+              return props.theme.colors.white
+            } else {
+              return props.theme.colors.oxfordBlue
+            }
+          }};
       }
     }
 
     :after {
       border-radius: 0;
       margin-left: 10px;
-      border-left: 1px solid ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.white
-    } else {
-      return props.theme.colors.oxfordBlue
-    }
-  }};
-      border-top: 1px solid ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.white
-    } else {
-      return props.theme.colors.oxfordBlue
-    }
-  }};
+      border-left: 1px solid
+        ${(props) => {
+          if (props.palette === 'dark') {
+            return props.theme.colors.white
+          } else {
+            return props.theme.colors.oxfordBlue
+          }
+        }};
+      border-top: 1px solid
+        ${(props) => {
+          if (props.palette === 'dark') {
+            return props.theme.colors.white
+          } else {
+            return props.theme.colors.oxfordBlue
+          }
+        }};
       border-right: none;
       width: 6px;
       height: 6px;
@@ -321,7 +325,7 @@ export const ListCardWrp = styled(Card)`
     height: 1px;
     margin-top: 15px;
     margin-bottom: 30px;
-    border-bottom: 1px solid ${props => props.theme.colors.oxfordBlueTint3};
+    border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
   }
 
   .list-card__actions {
@@ -337,7 +341,7 @@ export const ListCardWrp = styled(Card)`
 
 export const ListCardHeader = styled(Card.Header)`
   padding: 20px 20px 0 20px;
-  background: ${props => props.theme.colors.oxfordBlueTint1};
+  background: ${(props) => props.theme.colors.oxfordBlueTint1};
   border-radius: 3px 3px 0 0;
   display: flex;
   align-items: center;
@@ -368,7 +372,7 @@ export const ListCardHeader = styled(Card.Header)`
 `
 
 export const ListCardBody = styled(Card.Body)`
-  background-color: ${props => props.theme.colors.oxfordBlueTint1};
+  background-color: ${(props) => props.theme.colors.oxfordBlueTint1};
   border-radius: 0 0 3px 3px;
   padding: 20px;
   margin-bottom: 16px;

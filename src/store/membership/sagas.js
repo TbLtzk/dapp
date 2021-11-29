@@ -1,4 +1,4 @@
-import { put, takeEvery } from 'redux-saga/effects'
+import { put, takeEvery, call } from 'redux-saga/effects'
 import * as actionTypes from './action-types'
 import {
   getIsUserEPDRMemberSuccess,
@@ -9,21 +9,12 @@ import {
   getEPQFIMembersSuccess
 } from 'store/membership/action-creators'
 
-import EPDRMembership from 'contracts/src/membership/EPDR_Membership'
-import EPQFIMembership from 'contracts/src/membership/EPQFI_Membership'
 import ErrorHandler from 'func/ErrorHandler'
-
-function getContractEPDRMembership () {
-  return new EPDRMembership()
-}
-
-function getContractEPQFIMembership () {
-  return new EPQFIMembership()
-}
+import { getEpdrMembershipInstance, getEpqfiMembershipInstance } from 'contracts/contract-instance'
 
 function * isUserEPDRMember ({ address }) {
   try {
-    const contract = getContractEPDRMembership()
+    const contract = yield call(getEpdrMembershipInstance)
     const data = yield contract.isMember(address)
     yield put(getIsUserEPDRMemberSuccess(data))
   } catch (error) {
@@ -33,7 +24,7 @@ function * isUserEPDRMember ({ address }) {
 
 function * isUserEPQFIMember ({ address }) {
   try {
-    const contract = getContractEPQFIMembership()
+    const contract = yield call(getEpqfiMembershipInstance)
     const data = yield contract.isMember(address)
     yield put(getIsUserEPQFIMemberSuccess(data))
   } catch (error) {
@@ -43,7 +34,7 @@ function * isUserEPQFIMember ({ address }) {
 
 function * getEPDRMembers () {
   try {
-    const contract = getContractEPDRMembership()
+    const contract = yield call(getEpdrMembershipInstance)
     const data = yield contract.getMembers()
     yield put(getEPDRMembersSuccess(data))
   } catch (error) {
@@ -54,7 +45,7 @@ function * getEPDRMembers () {
 
 function * getEPQFIMembers () {
   try {
-    const contract = getContractEPQFIMembership()
+    const contract = yield call(getEpqfiMembershipInstance)
     const data = yield contract.getMembers()
     yield put(getEPQFIMembersSuccess(data))
   } catch (error) {

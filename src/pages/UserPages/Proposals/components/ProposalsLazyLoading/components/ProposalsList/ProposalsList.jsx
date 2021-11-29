@@ -9,43 +9,12 @@ import {
   executeProposal
 } from 'store/voting/proposals/action-creators'
 
-import ModalVote from '../CreateQProposalBtn/ModalVote'
+import ModalVote from '../../../CreateQProposalBtn/ModalVote'
 
 import ListCard from 'components/Custom/PageLists/ListCard'
-import CardDropdownItems from './components/CardDropdownItems'
-import CardCollapsedContent from './components/CardCollapsedContent'
-
-import { convertToMonthDayYear, remainDate } from 'func/convertDate'
+import CardCollapsedContent from '../CardCollapsedContent'
+import ProposalContent from '../ProposalContent'
 import { getUniqueProposals } from 'func/useful'
-import Tooltip from 'components/Base/Tooltip'
-import { CONTRACTS_NAMES } from 'constants/contracts'
-
-function getVetoInfo (proposal) {
-  const opacity = proposal.status === 'Pending' ? '0.4' : '1'
-
-  switch (proposal.contract) {
-    case CONTRACTS_NAMES.validatorsSlashingVoting:
-    case CONTRACTS_NAMES.emergencyUpdateVoting:
-      return null
-    default:
-      return (
-                <>
-                    <Tooltip
-                        additionalInfo={
-                            <div>
-                                Remaining Time for Veto <br /> {remainDate(proposal.vetoEndTime)}
-                            </div>
-                        }
-                    >
-                        <div style={{ opacity: opacity }}>
-                            <h5>Veto Ends</h5>
-                            <p>{convertToMonthDayYear(proposal.vetoEndTime)}</p>
-                        </div>
-                    </Tooltip>
-                </>
-      )
-  }
-}
 
 const ProposalsList = ({ proposalsKind, activeTab, currentProposals }) => {
   const dispatch = useDispatch()
@@ -92,19 +61,8 @@ const ProposalsList = ({ proposalsKind, activeTab, currentProposals }) => {
                                 {proposal.status ? <div className="list-card__status">{proposal.status}</div> : null}
                             </>
                         }
-                        dropdownItems={
-                            <CardDropdownItems
-                                status={proposal.status}
-                                handleVote={() => {
-                                  onProposalVote(proposal.id, proposal.contract, proposal.vetoEndTime)
-                                  onChooseTypeOfVoting(proposal.status)
-                                }}
-                                handleExecute={() => {
-                                  onProposalExecute(proposal.id, proposal.contract)
-                                }}
-                                shareText={`${window.location.origin}/q-governance/proposal/${proposal.contract}/${proposal.id}`}
-                            />
-                        }
+                        customHeaderButtons={true}
+                        shareText={`${window.location.origin}/q-governance/proposal/${proposal.contract}/${proposal.id}`}
                         collapsedContent={
                             <CardCollapsedContent
                                 proposalType={proposal?.type}
@@ -113,31 +71,19 @@ const ProposalsList = ({ proposalsKind, activeTab, currentProposals }) => {
                                 proposalsKind={proposalsKind}
                                 contract={proposal.contract}
                                 proposalID={proposal.id}
-                                objData={proposal.status}
+                                status={proposal.status}
                                 vetoTime={proposal.vetoEndTime}
+                                proposalStatus={proposalStatus}
+                                handleVote={() => {
+                                  onProposalVote(proposal.id, proposal.contract, proposal.vetoEndTime)
+                                  onChooseTypeOfVoting(proposal.status)
+                                }}
+                                handleExecute={() => {
+                                  onProposalExecute(proposal.id, proposal.contract)
+                                }}
                             />
                         }
-                        content={
-                            <div className="list-card__three-colm">
-                                <div>
-                                    <h5>Proposal Id</h5>
-                                    <p>{proposal.id}</p>
-                                </div>
-                                <Tooltip
-                                    additionalInfo={
-                                        <div>
-                                            Remaining Time for Voting <br /> {remainDate(proposal.votingEndTime)}
-                                        </div>
-                                    }
-                                >
-                                    <>
-                                        <h5>Voting Ends</h5>
-                                        <p>{convertToMonthDayYear(proposal.votingEndTime)}</p>
-                                    </>
-                                </Tooltip>
-                                {getVetoInfo(proposal)}
-                            </div>
-                        }
+                        content={<ProposalContent proposalStatus={proposalStatus} proposal={proposal} />}
                     />
               )
             })}
