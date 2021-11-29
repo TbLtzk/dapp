@@ -3,7 +3,7 @@ import VotingStats from 'components/Custom/VotingStats'
 import ProposalsLazyLoading from '../ProposalsLazyLoading'
 import { ProposalsTabWrp } from './styles'
 
-function ProposalsTab ({ proposalsType, isLoading, proposals, errorMessage, proposalsCount, types }) {
+function ProposalsTab ({ proposalsType, isLoading, proposals, errorMessage, proposalsCount, proposalStatus }) {
   return (
         <ProposalsTabWrp>
             <ProposalsLazyLoading
@@ -13,7 +13,7 @@ function ProposalsTab ({ proposalsType, isLoading, proposals, errorMessage, prop
                 errorMessage={errorMessage}
                 proposalsKind={proposalsType}
                 proposalsCount={proposalsCount}
-                types={types}
+                proposalStatus={proposalStatus}
             />
             <VotingStats />
         </ProposalsTabWrp>

@@ -16,7 +16,6 @@ export default class EmergencyUpdateVoting extends VotingService {
     // number of voting people for
     const weightFor = promiseRes.counters.weightFor
     objRes.votesFor = weightFor
-
     objRes.vetosCount = promiseRes.counters.vetosCount
     objRes.votingEndTime = promiseRes.params.votingEndTime
     objRes.vetoEndTime = promiseRes.params.vetoEndTime

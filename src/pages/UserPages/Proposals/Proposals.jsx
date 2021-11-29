@@ -158,8 +158,8 @@ function Proposals ({ proposalsType }) {
                     proposals={proposals}
                     proposalsType={proposalsType}
                     errorMessage={error}
-                    types={PROPOSAL_STATUS_TYPES.active}
                     proposalsCount={activeProposalsCount}
+                    proposalStatus={PROPOSAL_STATUS_TYPES.active}
                 />
       )
     },
@@ -172,8 +172,8 @@ function Proposals ({ proposalsType }) {
                     proposals={endedProposals}
                     proposalsType={proposalsType}
                     errorMessage={endedError}
-                    types={PROPOSAL_STATUS_TYPES.ended}
                     proposalsCount={endedProposalsCount}
+                    proposalStatus={PROPOSAL_STATUS_TYPES.ended}
                 />
       )
     },
