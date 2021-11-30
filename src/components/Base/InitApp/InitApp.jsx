@@ -5,7 +5,7 @@ import { initAddresses } from 'contracts/mapping/contract-to-address'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 
 import { WrapContainer } from './styles'
-import { getContractRegistryInstance } from 'contracts/contract-instance'
+import { getContractRegistryInstance, initGovernenceInstances } from 'contracts/contract-instance'
 
 const STATES = {
   loading: 'loading',
@@ -15,12 +15,12 @@ const STATES = {
 
 function InitApp () {
   const [appState, setAppState] = useState(STATES.loading)
-  const [errorMessage] = useState('Can\'t load addresses. Please reload app')
+  const [errorMessage] = useState("Can't load addresses. Please reload app")
   const [appComponent, setAppComponent] = useState({})
 
   useEffect(async () => {
     try {
-      await Promise.all([getContractRegistryInstance(), initAddresses()])
+      await Promise.all([getContractRegistryInstance(), initAddresses(), initGovernenceInstances()])
       setAppComponent(await import('components/Base/App'))
       setAppState(STATES.loaded)
     } catch (e) {
@@ -34,29 +34,23 @@ function InitApp () {
       case STATES.loaded:
         return appComponent.default()
       case 'error':
-        return (
-          <WrapContainer>
-            {errorMessage}
-          </WrapContainer>
-        )
+        return <WrapContainer>{errorMessage}</WrapContainer>
       case 'loading':
         return (
-          <WrapContainer>
-            <LoadingSpinner/>
-          </WrapContainer>
+                    <WrapContainer>
+                        <LoadingSpinner />
+                    </WrapContainer>
         )
       default:
         return (
-          <WrapContainer>
-            <LoadingSpinner/>
-          </WrapContainer>
+                    <WrapContainer>
+                        <LoadingSpinner />
+                    </WrapContainer>
         )
     }
   }, [appState])
 
-  return <>
-    {accountHandler()}
-  </>
+  return <>{accountHandler()}</>
 }
 
 export default InitApp

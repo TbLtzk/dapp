@@ -5,10 +5,9 @@ import { getStatusTransformation } from './base-voting-helper'
 import { fromWei } from 'func/balance'
 
 export default class GeneralUpdateVoting extends VotingService {
-  async getProposalData (promiseRes, id, promiseStatus) {
+  async getProposalAdditionalData (promiseRes, id) {
     const objRes = {}
     let objStats = {}
-    objRes.id = id
     objRes.remark = promiseRes.remark
     const weightAgainst = promiseRes.counters.weightAgainst
     objRes.votesAgainst = fromWei(weightAgainst)
@@ -16,12 +15,7 @@ export default class GeneralUpdateVoting extends VotingService {
     objRes.votesFor = fromWei(weightFor)
 
     objRes.vetosCount = promiseRes.counters.vetosCount
-    objRes.votingEndTime = promiseRes.params.votingEndTime
-    objRes.vetoEndTime = promiseRes.params.vetoEndTime
     objRes.proposalExecutionP = promiseRes.params.proposalExecutionP
-    objRes.status = getStatusTransformation(promiseStatus)
-    objRes.title = 'General update proposal'
-    objRes.contract = CONTRACTS_NAMES.generalUpdateVoting
     objStats = await this.getProposalStatsData(id)
 
     if (weightFor > 0 || weightAgainst > 0) {
@@ -34,10 +28,21 @@ export default class GeneralUpdateVoting extends VotingService {
     return { ...objRes, ...objStats }
   }
 
+  getProposalData (promiseRes, id, promiseStatus) {
+    const objRes = {}
+    objRes.status = getStatusTransformation(promiseStatus)
+    objRes.title = 'General update proposal'
+    objRes.contract = CONTRACTS_NAMES.generalUpdateVoting
+    objRes.votingEndTime = promiseRes.params.votingEndTime
+    objRes.vetoEndTime = promiseRes.params.vetoEndTime
+    objRes.id = id
+
+    return objRes
+  }
+
   async createProposal (data, userAddress) {
     const link = data['external-link']
-    const contract = await this.switchContract()
-    const result = await contract.createProposal(link, { from: userAddress })
+    const result = await this.contract.createProposal(link, { from: userAddress })
     return result
   }
 }

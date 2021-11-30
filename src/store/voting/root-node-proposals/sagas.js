@@ -84,6 +84,7 @@ function * getRootNodeProposalGenerator ({ id, activeProposal }) {
 
 export default [
   takeEvery(actionTypes.GET_ROOT_PROPOSALS, getRootProposalsGenerator),
+
   takeEvery(actionTypes.GET_ROOT_NODE_PROPOSAL, getRootNodeProposalGenerator),
   takeEvery(actionTypes.GET_ROOT_PROPOSALS_COUNT, getRootProposalsCountGenerator)
 ]

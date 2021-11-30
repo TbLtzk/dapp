@@ -13,11 +13,18 @@ const initialState = {
   stepVoteCounter: 1,
 
   constitutionHash: '...',
-  baseVotingWeightInfo: {}
+  baseVotingWeightInfo: {},
+
+  proposal: null
 }
 
 export default function proposals (state = initialState, action) {
   switch (action.type) {
+    case actionTypes.SET_PROPOSAL:
+      return {
+        ...state,
+        proposal: action.result
+      }
     case actionTypes.SET_CREATED_PROPOSAL_OBJECT:
       return {
         ...state,

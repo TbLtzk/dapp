@@ -1,7 +1,6 @@
-/* eslint-disable */
 import React, { useState } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import {
   setVoteProposalObj,
   setStepVoteCounter,
@@ -11,19 +10,16 @@ import {
 
 import ModalVote from '../../../CreateQProposalBtn/ModalVote'
 
-import ListCard from 'components/Custom/PageLists/ListCard'
+import ListCard from '../ListCard'
 import CardCollapsedContent from '../CardCollapsedContent'
 import ProposalContent from '../ProposalContent'
-import { getUniqueProposals } from 'func/useful'
 
-const ProposalsList = ({ proposalsKind, activeTab, currentProposals }) => {
+const ProposalsList = ({ proposalsKind, activeTab, currentProposals, proposalStatus }) => {
   const dispatch = useDispatch()
   const [modalShow, setModalShow] = useState(false)
   const [proposalId, setProposalId] = useState(null)
   const [vetoEndTime, setVetoEndTime] = useState(null)
   const [proposalContract, setProposalContract] = useState(null)
-
-  const proposals = getUniqueProposals(currentProposals)
 
   const onProposalVote = (id, contract, vetoEndTime) => {
     dispatch(setDisabledCreatedProposalBtn(true))
@@ -50,43 +46,27 @@ const ProposalsList = ({ proposalsKind, activeTab, currentProposals }) => {
 
   return (
         <div>
-            {proposals.map((proposal) => {
-              return (
-                    <ListCard
-                        key={proposal.id + proposal?.contract}
-                        id={proposal.id + proposal?.contract}
-                        headerLeftSide={
-                            <>
-                                <h1> {proposal.title}</h1>
-                                {proposal.status ? <div className="list-card__status">{proposal.status}</div> : null}
-                            </>
-                        }
-                        customHeaderButtons={true}
-                        shareText={`${window.location.origin}/q-governance/proposal/${proposal.contract}/${proposal.id}`}
-                        collapsedContent={
-                            <CardCollapsedContent
-                                proposalType={proposal?.type}
-                                proposal={proposal}
-                                voteBreakdown={proposal}
-                                proposalsKind={proposalsKind}
-                                contract={proposal.contract}
-                                proposalID={proposal.id}
-                                status={proposal.status}
-                                vetoTime={proposal.vetoEndTime}
-                                proposalStatus={proposalStatus}
-                                handleVote={() => {
-                                  onProposalVote(proposal.id, proposal.contract, proposal.vetoEndTime)
-                                  onChooseTypeOfVoting(proposal.status)
-                                }}
-                                handleExecute={() => {
-                                  onProposalExecute(proposal.id, proposal.contract)
-                                }}
-                            />
-                        }
-                        content={<ProposalContent proposalStatus={proposalStatus} proposal={proposal} />}
-                    />
-              )
-            })}
+            {currentProposals.map((proposal) => (
+                <ListCard
+                    key={proposal.id + proposal?.contract}
+                    id={proposal.id + proposal?.contract}
+                    proposal={proposal}
+                    content={<ProposalContent proposal={proposal} />}
+                    collapsedContent={
+                        <CardCollapsedContent
+                        proposalStatus={proposal.status}
+                        proposalsKind={proposalsKind}
+                            contract={proposal.contract}
+                            proposalId={proposal.id}
+                            handleVote={() => {
+                              onProposalVote(proposal.id, proposal.contract, proposal.vetoEndTime)
+                              onChooseTypeOfVoting(proposal.status)
+                            }}
+                            handleExecute={() => onProposalExecute(proposal.id, proposal.contract)}
+                        />
+                    }
+                />
+            ))}
             {modalShow
               ? (
                 <ModalVote

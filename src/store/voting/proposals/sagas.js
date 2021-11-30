@@ -12,7 +12,8 @@ import {
   voteForProposalSuccess,
   executeProposalSuccess,
   getConstitutionHashSuccess,
-  setBaseVotingWeightInfo
+  setBaseVotingWeightInfo,
+  setProposal
 } from 'store/voting/proposals/action-creators'
 import { getProposalQ, getQProposals, getQProposalsCount } from 'store/voting/q-proposals/action-creators'
 import {
@@ -31,7 +32,12 @@ import {
   getSlashingProposalsCount
 } from 'store/voting/slashing-proposals/action-creators'
 
-import { creationQContractObj } from 'contracts/helpers/voting-helpers/base-voting-helper'
+import {
+  creationExpertContractObj,
+  creationQContractObj,
+  creationRootContractObj,
+  creationSlashingContractObj
+} from 'contracts/helpers/voting-helpers/base-voting-helper'
 import { chooseSlashingContractDependsOnType } from 'contracts/handler/SlashingVotingHandler'
 import { chooseExpertContractDependsOnType } from 'contracts/handler/QExpertVotingHandler'
 
@@ -257,6 +263,47 @@ function * getBaseVotingWeightInfoGenerator () {
   }
 }
 
+function * getProposalGenerator ({ contractName, id }) {
+  try {
+    console.log(contractName)
+    switch (contractName) {
+      case CONTRACTS_NAMES.constitutionVoting:
+      case CONTRACTS_NAMES.emergencyUpdateVoting:
+      case CONTRACTS_NAMES.generalUpdateVoting: {
+        const contract = creationQContractObj(contractName)
+        const proposal = yield contract.getProposal(id)
+        yield put(setProposal(proposal))
+        break
+      }
+      case CONTRACTS_NAMES.rootsVoting: {
+        const contract = creationRootContractObj()
+        const proposal = yield contract.getProposal(id)
+        yield put(setProposal(proposal))
+        break
+      }
+      case CONTRACTS_NAMES.rootNodesSlashingVoting:
+      case CONTRACTS_NAMES.validatorsSlashingVoting: {
+        const contract = creationSlashingContractObj(contractName)
+        console.log(contract)
+        const proposal = yield contract.getProposal(id)
+        yield put(setProposal(proposal))
+        break
+      }
+      case CONTRACTS_NAMES.ePQFIMembershipVoting:
+      case CONTRACTS_NAMES.ePDRMembershipVoting:
+      case CONTRACTS_NAMES.ePQFIParametersVoting:
+      case CONTRACTS_NAMES.ePDRParametersVoting: {
+        const contract = creationExpertContractObj(contractName)
+        const proposal = yield contract.getProposal(id)
+        yield put(setProposal(proposal))
+        break
+      }
+    }
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+  }
+}
+
 export default [
   takeEvery(actionTypes.CREATE_PROPOSAL, createProposalGenerator),
   takeEvery(actionTypes.VOTE_FOR_PROPOSAL, voteForProposalGenerator),
@@ -264,6 +311,9 @@ export default [
   takeEvery(actionTypes.UPDATE_PROPOSAL, updateProposal),
 
   takeEvery(actionTypes.GET_ONE_PROPOSAL, getOneProposalSharedGenerator),
+
+  takeEvery(actionTypes.GET_PROPOSAL, getProposalGenerator),
+
   takeEvery(actionTypes.GET_PROPOSALS_LIST, getProposalsListGenerator),
 
   takeEvery(actionTypes.GET_NUMBER_ALL_PROPOSALS, getNumberAllProposalsGenerator),

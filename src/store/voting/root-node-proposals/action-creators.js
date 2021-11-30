@@ -8,7 +8,6 @@ export const setRootProposalsCount = (result) => ({
   type: actionTypes.SET_ROOT_PROPOSALS_COUNT,
   result
 })
-
 // proposals
 export const getRootProposals = (proposalStatusType, range) => ({
   type: actionTypes.GET_ROOT_PROPOSALS,

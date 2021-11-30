@@ -14,7 +14,7 @@ const TOOLTIP_INFO = {
   isFeesExpert: 'User is not member of Q fees & incentives expert panel.'
 }
 
-function VotingItems ({ status, handleVote, handleExecute, contract, proposalStatus }) {
+function VotingItems ({ handleVote, handleExecute, contract, proposalStatus }) {
   const isRootNode = useSelector(isUserRootNode)
   const isEPDRMembership = useSelector(isUserEPDRMembership)
   const isEPQFIMembership = useSelector(isUserEPQFIMembership)
@@ -27,7 +27,7 @@ function VotingItems ({ status, handleVote, handleExecute, contract, proposalSta
         contract === CONTRACTS_NAMES.ePQFIParametersVoting || contract === CONTRACTS_NAMES.ePQFIMembershipVoting
 
   function checkVoteUser () {
-    if (status === 'Accepted') {
+    if (proposalStatus === 'Accepted') {
       return { disabled: true, info: TOOLTIP_INFO.votePeriod }
     } else if (contractsWithoutVeto) {
       return { disabled: !isRootNode, info: isRootNode ? TOOLTIP_INFO.votePeriod : TOOLTIP_INFO.isNotRootNode }
@@ -47,9 +47,9 @@ function VotingItems ({ status, handleVote, handleExecute, contract, proposalSta
   }
 
   function checkVetoUser () {
-    if (status === 'Pending') {
+    if (proposalStatus === 'Pending') {
       return { disabled: false, info: isRootNode ? TOOLTIP_INFO.vetoPeriod : TOOLTIP_INFO.isNotRootNode }
-    } else if (status === 'Accepted') {
+    } else if (proposalStatus === 'Accepted') {
       return { disabled: isRootNode, info: isRootNode ? TOOLTIP_INFO.vetoPeriod : TOOLTIP_INFO.isNotRootNode }
     } else {
       return { disabled: false, info: '' }
@@ -63,8 +63,8 @@ function VotingItems ({ status, handleVote, handleExecute, contract, proposalSta
         <>
             {proposalStatus === 'ended' ? null : <div className="list-card__line" />}
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                {status === 'Passed' ? <Button handleButton={handleExecute} title="Execute" /> : null}
-                {status === 'Pending' || status === 'Accepted'
+                {proposalStatus === 'Passed' ? <Button handleButton={handleExecute} title="Execute" /> : null}
+                {proposalStatus === 'Pending' || proposalStatus === 'Accepted'
                   ? (
                     <>
                         <Tooltip disabled={!isUserCanVote.disabled} additionalInfo={isUserCanVote.info}>
