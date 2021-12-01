@@ -8,6 +8,7 @@ import ParametersVoting from './parameters-voting-helper'
 import { PROPOSALS_TYPES } from 'constants/statuses'
 import { BN } from 'func/useful'
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts'
+import ErrorHandler from 'func/ErrorHandler'
 
 export const getStatusTransformation = (statusId) => {
   const status = ['None', 'Pending', 'Rejected', 'Accepted', 'Passed', 'Executed', 'Obsolete', 'Expired']
@@ -148,5 +149,40 @@ export function changeProposalsArrIfEmptyResult (proposalsArr, data) {
         return { ...element }
       }
     })
+  }
+}
+
+export async function getProposal (contractName, id) {
+  try {
+    switch (contractName) {
+      case CONTRACTS_NAMES.constitutionVoting:
+      case CONTRACTS_NAMES.emergencyUpdateVoting:
+      case CONTRACTS_NAMES.generalUpdateVoting: {
+        const contract = creationQContractObj(contractName)
+        const proposal = await contract.getProposal(id)
+        return proposal
+      }
+      case CONTRACTS_NAMES.rootsVoting: {
+        const contract = creationRootContractObj()
+        const proposal = await contract.getProposal(id)
+        return proposal
+      }
+      case CONTRACTS_NAMES.rootNodesSlashingVoting:
+      case CONTRACTS_NAMES.validatorsSlashingVoting: {
+        const contract = creationSlashingContractObj(contractName)
+        const proposal = await contract.getProposal(id)
+        return proposal
+      }
+      case CONTRACTS_NAMES.ePQFIMembershipVoting:
+      case CONTRACTS_NAMES.ePDRMembershipVoting:
+      case CONTRACTS_NAMES.ePQFIParametersVoting:
+      case CONTRACTS_NAMES.ePDRParametersVoting: {
+        const contract = creationExpertContractObj(contractName)
+        const proposal = await contract.getProposal(id)
+        return proposal
+      }
+    }
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }

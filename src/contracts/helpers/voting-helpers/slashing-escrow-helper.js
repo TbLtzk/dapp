@@ -5,9 +5,9 @@ import { CONTRACTS_NAMES } from 'constants/contracts'
 
 async function switchInstance (contractName) {
   switch (contractName) {
-    case CONTRACTS_NAMES.RootNodesSlashingEscrow:
+    case CONTRACTS_NAMES.rootNodesSlashingEscrow:
       return await getRootNodeSlashingEscrowInstance()
-    case CONTRACTS_NAMES.ValidatorsSlashingEscrow:
+    case CONTRACTS_NAMES.validatorsSlashingEscrow:
       return await getValidatorSlashingEscrowInstance()
     default:
       return {}

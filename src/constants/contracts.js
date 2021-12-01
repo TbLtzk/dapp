@@ -34,6 +34,6 @@ export const CONTRACTS_NAMES = {
   systemSurplusAuction: 'systemSurplusAuction',
   liquidationAuction: 'liquidationAuction',
   systemDebtAuction: 'systemDebtAuction',
-  RootNodesSlashingEscrow: 'rootNodesSlashingEscrow',
-  ValidatorsSlashingEscrow: 'validatorsSlashingEscrow'
+  rootNodesSlashingEscrow: 'rootNodesSlashingEscrow',
+  validatorsSlashingEscrow: 'validatorsSlashingEscrow'
 }

@@ -68,9 +68,15 @@ export default class VotingService {
   }
 
   async getProposal (id) {
-    const proposal = await this.contract.getProposalWithStatus(id)
-    const result = await this.getProposalAdditionalData(proposal, id)
-    return result
+    const proposals = await this.contract.getProposalIds()
+    if (proposals.includes(id.toString())) {
+      const proposal = await this.contract.getProposalWithStatus(id)
+      const info = this.getProposalData(proposal, proposal.id, proposal.status)
+      const additionalInfo = await this.getProposalAdditionalData(proposal, id)
+      return { ...info, ...additionalInfo, error: false }
+    } else {
+      return { error: true }
+    }
   }
 
   async getProposals (range) {

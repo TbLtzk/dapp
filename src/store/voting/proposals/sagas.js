@@ -265,7 +265,6 @@ function * getBaseVotingWeightInfoGenerator () {
 
 function * getProposalGenerator ({ contractName, id }) {
   try {
-    console.log(contractName)
     switch (contractName) {
       case CONTRACTS_NAMES.constitutionVoting:
       case CONTRACTS_NAMES.emergencyUpdateVoting:
@@ -284,7 +283,6 @@ function * getProposalGenerator ({ contractName, id }) {
       case CONTRACTS_NAMES.rootNodesSlashingVoting:
       case CONTRACTS_NAMES.validatorsSlashingVoting: {
         const contract = creationSlashingContractObj(contractName)
-        console.log(contract)
         const proposal = yield contract.getProposal(id)
         yield put(setProposal(proposal))
         break

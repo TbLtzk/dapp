@@ -4,8 +4,9 @@ import { Accordion } from 'react-bootstrap'
 import { ListCardWrp, ListCardHeader, ListCardBody } from './styles'
 import CustomHeaderButtons from '../CustomHeaderButtons'
 import { theme } from 'store/theme/selectors'
+import CardCollapsedContent from '../CardCollapsedContent'
 
-function ListCard ({ proposal, id, content, collapsedContent }) {
+function ListCard ({ proposal, id, content, proposalsKind, oneProposalPage }) {
   const currentTheme = useSelector(theme)
   const [open, setOpen] = useState(false)
   const [collapsedContentOpen, setCollapsedContentOpen] = useState(false)
@@ -21,6 +22,7 @@ function ListCard ({ proposal, id, content, collapsedContent }) {
                     <div>
                         <CustomHeaderButtons
                             open={open}
+                            oneProposalPage={oneProposalPage}
                             setOpen={() => {
                               setOpen(!open)
                               setCollapsedContentOpen(true)
@@ -33,7 +35,18 @@ function ListCard ({ proposal, id, content, collapsedContent }) {
                 <ListCardBody>
                     {content}
                     <Accordion.Collapse eventKey={id}>
-                        {collapsedContentOpen ? collapsedContent : <div />}
+                        {collapsedContentOpen
+                          ? (
+                            <CardCollapsedContent
+                                proposalStatus={proposal.status}
+                                proposalsKind={proposalsKind}
+                                contract={proposal.contract}
+                                proposalId={proposal.id}
+                            />
+                            )
+                          : (
+                            <div />
+                            )}
                     </Accordion.Collapse>
                 </ListCardBody>
             </Accordion>

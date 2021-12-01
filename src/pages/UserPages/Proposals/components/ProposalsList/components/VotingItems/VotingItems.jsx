@@ -1,10 +1,17 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Button from 'components/Base/Buttons/Button'
 import { isUserRootNode } from 'store/root-node/selectors'
 import Tooltip from 'components/Base/Tooltip'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 import { isUserEPDRMembership, isUserEPQFIMembership } from 'store/membership/selectors'
+import {
+  executeProposal,
+  setDisabledCreatedProposalBtn,
+  setStepVoteCounter,
+  setVoteProposalObj
+} from 'store/voting/proposals/action-creators'
+import ModalVote from '../../../CreateQProposalBtn/ModalVote'
 
 const TOOLTIP_INFO = {
   votePeriod: 'Voting period has ended.',
@@ -14,20 +21,29 @@ const TOOLTIP_INFO = {
   isFeesExpert: 'User is not member of Q fees & incentives expert panel.'
 }
 
-function VotingItems ({ handleVote, handleExecute, contract, proposalStatus }) {
+function VotingItems ({ proposal }) {
+  const dispatch = useDispatch()
+  const [modalShow, setModalShow] = useState(false)
+  const [proposalId, setProposalId] = useState(null)
+  const [vetoEndTime, setVetoEndTime] = useState(null)
+  const [proposalContract, setProposalContract] = useState(null)
+
   const isRootNode = useSelector(isUserRootNode)
   const isEPDRMembership = useSelector(isUserEPDRMembership)
   const isEPQFIMembership = useSelector(isUserEPQFIMembership)
 
   const contractsWithoutVeto =
-        contract === CONTRACTS_NAMES.validatorsSlashingVoting || contract === CONTRACTS_NAMES.emergencyUpdateVoting
+        proposal.contract === CONTRACTS_NAMES.validatorsSlashingVoting ||
+        proposal.contract === CONTRACTS_NAMES.emergencyUpdateVoting
   const epdrContract =
-        contract === CONTRACTS_NAMES.ePDRParametersVoting || contract === CONTRACTS_NAMES.ePDRMembershipVoting
+        proposal.contract === CONTRACTS_NAMES.ePDRParametersVoting ||
+        proposal.contract === CONTRACTS_NAMES.ePDRMembershipVoting
   const epqfiContract =
-        contract === CONTRACTS_NAMES.ePQFIParametersVoting || contract === CONTRACTS_NAMES.ePQFIMembershipVoting
+        proposal.contract === CONTRACTS_NAMES.ePQFIParametersVoting ||
+        proposal.contract === CONTRACTS_NAMES.ePQFIMembershipVoting
 
   function checkVoteUser () {
-    if (proposalStatus === 'Accepted') {
+    if (proposal.status === 'Accepted') {
       return { disabled: true, info: TOOLTIP_INFO.votePeriod }
     } else if (contractsWithoutVeto) {
       return { disabled: !isRootNode, info: isRootNode ? TOOLTIP_INFO.votePeriod : TOOLTIP_INFO.isNotRootNode }
@@ -47,9 +63,9 @@ function VotingItems ({ handleVote, handleExecute, contract, proposalStatus }) {
   }
 
   function checkVetoUser () {
-    if (proposalStatus === 'Pending') {
+    if (proposal.status === 'Pending') {
       return { disabled: false, info: isRootNode ? TOOLTIP_INFO.vetoPeriod : TOOLTIP_INFO.isNotRootNode }
-    } else if (proposalStatus === 'Accepted') {
+    } else if (proposal.status === 'Accepted') {
       return { disabled: isRootNode, info: isRootNode ? TOOLTIP_INFO.vetoPeriod : TOOLTIP_INFO.isNotRootNode }
     } else {
       return { disabled: false, info: '' }
@@ -59,12 +75,40 @@ function VotingItems ({ handleVote, handleExecute, contract, proposalStatus }) {
   const isUserCanVote = checkVoteUser()
   const isUserCanVeto = checkVetoUser()
 
+  const onProposalVote = () => {
+    dispatch(setDisabledCreatedProposalBtn(true))
+    setProposalId(proposal.id)
+    setVetoEndTime(proposal.vetoEndTime)
+    setProposalContract(proposal.contract)
+    setModalShow(true)
+  }
+
+  const onProposalExecute = () => {
+    dispatch(
+      executeProposal({
+        idProposal: proposal.id,
+        contract: proposal.contract
+      })
+    )
+  }
+
+  const onChooseTypeOfVoting = () => {
+    const type = proposal.status === 'Pending' ? 'basic-vote-on-proposal' : 'constitution-check'
+    dispatch(setVoteProposalObj({ first: type }))
+    dispatch(setDisabledCreatedProposalBtn(false))
+  }
+
+  const handleVote = () => {
+    onProposalVote()
+    onChooseTypeOfVoting()
+  }
+
   return (
         <>
-            {proposalStatus === 'ended' ? null : <div className="list-card__line" />}
+            {proposal.status === 'ended' ? null : <div className="list-card__line" />}
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                {proposalStatus === 'Passed' ? <Button handleButton={handleExecute} title="Execute" /> : null}
-                {proposalStatus === 'Pending' || proposalStatus === 'Accepted'
+                {proposal.status === 'Passed' ? <Button handleButton={onProposalExecute} title="Execute" /> : null}
+                {proposal.status === 'Pending' || proposal.status === 'Accepted'
                   ? (
                     <>
                         <Tooltip disabled={!isUserCanVote.disabled} additionalInfo={isUserCanVote.info}>
@@ -94,6 +138,23 @@ function VotingItems ({ handleVote, handleExecute, contract, proposalStatus }) {
                     )
                   : null}
             </div>
+            {modalShow
+              ? (
+                <ModalVote
+                    proposalContract={proposalContract}
+                    proposalId={proposalId}
+                    vetoEndTime={vetoEndTime}
+                    activeTab={0}
+                    modalShow={modalShow}
+                    onHide={() => {
+                      setModalShow(false)
+                      dispatch(setVoteProposalObj({}))
+                      dispatch(setStepVoteCounter(1))
+                      dispatch(setDisabledCreatedProposalBtn(true))
+                    }}
+                />
+                )
+              : null}
         </>
   )
 }

@@ -4,34 +4,28 @@ import PollDetail from '../PollDetail'
 import VoteBreakdown from '../VoteBreakdown'
 import SlashingObjection from '../SlashingObjection'
 import VotingItems from '../VotingItems'
-import { useDispatch, useSelector } from 'react-redux'
 import { LoadingWrap } from 'constants/style'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
-import { getProposal, setProposal } from 'store/voting/proposals/action-creators'
-import { proposalSelector } from 'store/voting/proposals/selectors'
+import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper'
+// import { useSelector } from 'react-redux'
+// import { transactionCounter } from 'store/transaction-handler/selectors'
 
-function CardCollapsedContent ({ contract, proposalId, handleVote, handleExecute, proposalsKind, proposalStatus }) {
-  const dispatch = useDispatch()
-  const proposal = useSelector(proposalSelector)
-
-  const [proposalInfo, setProposalInfo] = useState({})
-  const [loading, setLoading] = useState(true)
+function CardCollapsedContent ({ contract, proposalId, proposalsKind, proposalStatus }) {
+  const [proposalInfo, setProposalInfo] = useState(null)
 
   useEffect(() => {
-    dispatch(getProposal(contract, proposalId))
+    handleGetProposal()
+    return () => setProposalInfo(null)
   }, [])
 
-  useEffect(() => {
-    if (proposal && loading) {
-      setLoading(false)
-      setProposalInfo(proposal)
-      dispatch(setProposal(null))
-    }
-  }, [proposal])
+  async function handleGetProposal () {
+    const result = await getProposal(contract, proposalId)
+    setProposalInfo(result)
+  }
 
   return (
         <>
-            {loading
+            {!proposalInfo
               ? (
                 <LoadingWrap>
                     <LoadingSpinner />
@@ -43,13 +37,7 @@ function CardCollapsedContent ({ contract, proposalId, handleVote, handleExecute
                     <PollDetail pollDetail={proposalInfo} proposalsKind={proposalsKind} />
                     <div className="list-card__line" />
                     <VoteBreakdown voteBreakdown={proposalInfo} />
-                    <VotingItems
-                        proposalStatus={proposalStatus}
-                        contract={contract}
-                        status={proposalInfo.status}
-                        handleVote={handleVote}
-                        handleExecute={handleExecute}
-                    />
+                    <VotingItems proposal={proposalInfo} />
                     {proposalsKind === PROPOSALS_TYPES.slashingProposals && proposalStatus === STATUSES.executed
                       ? (
                         <>

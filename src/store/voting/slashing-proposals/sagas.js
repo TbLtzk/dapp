@@ -108,8 +108,8 @@ function * onEscrowCastObjectionGenerator ({ data, contractName, proposalId }) {
     const { userAddress } = yield select((state) => state.userInf)
     const SlashingEscrowContractName =
       contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-        ? 'ValidatorsSlashingEscrow'
-        : 'RootNodesSlashingEscrow'
+        ? CONTRACTS_NAMES.validatorsSlashingEscrow
+        : CONTRACTS_NAMES.rootNodesSlashingEscrow
     const contract = new SlashingEscrow(SlashingEscrowContractName)
     const result = yield contract.castObjection(proposalId, data['external-link'], userAddress)
     if (result) {
@@ -130,8 +130,8 @@ function * onEscrowProposeDecisionGenerator ({ data, contractName, proposalId })
     const { userAddress } = yield select((state) => state.userInf)
     const SlashingEscrowContractName =
       contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-        ? 'ValidatorsSlashingEscrow'
-        : 'RootNodesSlashingEscrow'
+        ? CONTRACTS_NAMES.validatorsSlashingEscrow
+        : CONTRACTS_NAMES.rootNodesSlashingEscrow
     const contract = new SlashingEscrow(SlashingEscrowContractName)
     const notAppealed = data['target-slashing-appeal'] === 'yes'
     const result = yield contract.proposeDecision(
@@ -158,8 +158,8 @@ function * onEscrowProposerRemarkGenerator ({ data, contractName, proposalId }) 
     const { userAddress } = yield select((state) => state.userInf)
     const SlashingEscrowContractName =
       contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-        ? 'ValidatorsSlashingEscrow'
-        : 'RootNodesSlashingEscrow'
+        ? CONTRACTS_NAMES.validatorsSlashingEscrow
+        : CONTRACTS_NAMES.rootNodesSlashingEscrow
     const contract = new SlashingEscrow(SlashingEscrowContractName)
     const appealConfirmed = data.appealConfirmed === 'yes'
     const result = yield contract.setProposerRemark(proposalId, data['proposer-remark'], appealConfirmed, userAddress)
@@ -180,8 +180,8 @@ function * onEscrowRecallProposeDecisionGenerator ({ contractName, proposalId })
     const { userAddress } = yield select((state) => state.userInf)
     const SlashingEscrowContractName =
       contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-        ? 'ValidatorsSlashingEscrow'
-        : 'RootNodesSlashingEscrow'
+        ? CONTRACTS_NAMES.validatorsSlashingEscrow
+        : CONTRACTS_NAMES.rootNodesSlashingEscrow
     const contract = new SlashingEscrow(SlashingEscrowContractName)
     const result = yield contract.recallProposedDecision(proposalId, userAddress)
     if (result) {
@@ -201,8 +201,8 @@ function * onEscrowConfirmProposeDecisionGenerator ({ contractName, proposalId }
     const { userAddress } = yield select((state) => state.userInf)
     const SlashingEscrowContractName =
       contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-        ? 'ValidatorsSlashingEscrow'
-        : 'RootNodesSlashingEscrow'
+        ? CONTRACTS_NAMES.validatorsSlashingEscrow
+        : CONTRACTS_NAMES.rootNodesSlashingEscrow
     const contract = new SlashingEscrow(SlashingEscrowContractName)
     yield contract.confirmDecision(proposalId, userAddress)
     yield call(() => {}, contractName, {}, proposalId, false)

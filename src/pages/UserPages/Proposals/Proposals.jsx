@@ -3,10 +3,9 @@ import PageWrap from 'components/Base/PageWrap'
 import BigTabsView from 'components/Base/Tabs/BigTabsView'
 import ProposalsTab from './components/ProposalsTab'
 import CreateQProposalBtn from './components/CreateQProposalBtn'
-import Button from 'components/Base/Buttons/Button'
 
 import { PROPOSALS_TYPES, PROPOSAL_STATUS_TYPES } from 'constants/statuses'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import {
   qActiveProposalsCountSelector,
   qActiveProposalsErrorSelector,
@@ -47,11 +46,8 @@ import {
   slashingLoadingActiveProposalsSelector,
   slashingLoadingEndedProposalsSelector
 } from 'store/voting/slashing-proposals/selectors'
-import { getProposalsList } from 'store/voting/proposals/action-creators'
 
 function Proposals ({ proposalsType }) {
-  const dispatch = useDispatch()
-
   const {
     proposals,
     endedProposals,
@@ -128,12 +124,6 @@ function Proposals ({ proposalsType }) {
     }
   }
 
-  function resetProposals () {
-    dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.reset))
-    dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.active))
-    dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.ended))
-  }
-
   const tabsItems = [
     {
       label: 'active-proposals',
@@ -160,19 +150,6 @@ function Proposals ({ proposalsType }) {
                     errorMessage={endedError}
                     proposalsCount={endedProposalsCount}
                     proposalStatus={PROPOSAL_STATUS_TYPES.ended}
-                />
-      )
-    },
-    {
-      title: (
-                <Button
-                    title="Refresh"
-                    handleButton={resetProposals}
-                    type="button"
-                    width="100px"
-                    position="absolute"
-                    right="70px"
-                    top="108px"
                 />
       )
     }

@@ -1,12 +1,12 @@
 import React from 'react'
 import VotingStats from 'components/Custom/VotingStats'
-import ProposalsLazyLoading from '../ProposalsLazyLoading'
+import ProposalsList from '../ProposalsList'
 import { ProposalsTabWrp } from './styles'
 
 function ProposalsTab ({ proposalsType, isLoading, proposals, errorMessage, proposalsCount, proposalStatus }) {
   return (
         <ProposalsTabWrp>
-            <ProposalsLazyLoading
+            <ProposalsList
                 activeTab={proposalsType}
                 proposals={proposals}
                 loading={isLoading}
