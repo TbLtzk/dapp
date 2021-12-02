@@ -3,7 +3,7 @@ import Tooltip from 'components/Base/Tooltip'
 import { useAccordionToggle } from 'react-bootstrap'
 import Button from 'components/Base/Buttons/Button'
 
-function CustomHeaderButtons ({ eventKey, shareText, open, setOpen, oneProposalPage }) {
+function CustomHeaderButtons ({ eventKey, shareText, open, setOpen = () => {}, oneProposalPage }) {
   const decoratedOnClick = useAccordionToggle(eventKey, () => {})
   const [copy, setCopy] = useState(false)
 

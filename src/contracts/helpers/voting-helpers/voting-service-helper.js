@@ -61,16 +61,21 @@ export default class VotingService {
     return result
   }
 
-  async getProposal (id) {
-    const proposals = await this.contract.getProposalIds()
-    if (proposals.includes(id.toString())) {
-      const proposal = await this.contract.getProposalWithStatus(id)
-      const info = this.getProposalData(proposal, proposal.id, proposal.status)
-      const additionalInfo = await this.getProposalAdditionalData(proposal, id)
-      return { ...info, ...additionalInfo, error: false }
-    } else {
-      return { error: true }
+  async getProposal (id, type) {
+    let additionalInfo = {}
+    let headerInfo = {}
+    const proposal = await this.contract.getProposalWithStatus(id)
+    if (type === 'additional') {
+      additionalInfo = await this.getProposalAdditionalData(proposal, id)
     }
+    if (type === 'header') {
+      headerInfo = this.getProposalData(proposal, proposal.id, proposal.status)
+    }
+    if (type === 'full') {
+      additionalInfo = await this.getProposalAdditionalData(proposal, id)
+      headerInfo = this.getProposalData(proposal, proposal.id, proposal.status)
+    }
+    return { ...headerInfo, ...additionalInfo, error: false }
   }
 
   async getProposals (range, latestBlockNumber) {
@@ -89,9 +94,7 @@ export default class VotingService {
 
   async getEndedProposals (range) {
     const proposalIds = await this.contract.getProposalIds(0, 'latest')
-    console.log(proposalIds)
     const sliceProposals = [...proposalIds].slice(...range)
-    console.log(sliceProposals)
     if (!sliceProposals.length) {
       return []
     } else {
@@ -128,7 +131,7 @@ export default class VotingService {
     const latestProposalsIds = await this.contract.getProposalIds(latestBlockNumber - 200000, 'latest')
     const allProposals = await this.contract.getProposalIds(0, 'latest')
     if (!latestProposalsIds.length) {
-      return { ended: allProposals.length, active: 0 }
+      return { contract: this.contractName, ended: allProposals.length, active: 0 }
     } else {
       const proposals = []
       for (const id of latestProposalsIds) {
@@ -139,7 +142,11 @@ export default class VotingService {
         (promiseStatus) => promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4'
       )
 
-      return { ended: allProposals.length - activeProposals.length, active: activeProposals.length }
+      return {
+        contract: this.contractName,
+        ended: allProposals.length - activeProposals.length,
+        active: activeProposals.length
+      }
     }
   }
 

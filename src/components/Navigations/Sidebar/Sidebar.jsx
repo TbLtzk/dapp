@@ -116,13 +116,13 @@ function Sidebar () {
                                         >
                                             – Q Proposals
                                         </LinkStyle>
-                                        {qActiveProposalsCount
-                                          ? (
+                                        {qActiveProposalsCount <= 0
+                                          ? null
+                                          : (
                                             <AccordionLbl highlight={highlight('q-proposals')}>
                                                 {qActiveProposalsCount}
                                             </AccordionLbl>
-                                            )
-                                          : null}
+                                            )}
                                     </LinkGroup>
                                     <LinkGroup>
                                         <LinkStyle
@@ -132,13 +132,13 @@ function Sidebar () {
                                         >
                                             – Root Node Panel
                                         </LinkStyle>
-                                        {rootActiveProposalsCount
-                                          ? (
+                                        {rootActiveProposalsCount <= 0
+                                          ? null
+                                          : (
                                             <AccordionLbl highlight={highlight('q-root-node-panel')}>
                                                 {rootActiveProposalsCount}
                                             </AccordionLbl>
-                                            )
-                                          : null}
+                                            )}
                                     </LinkGroup>
                                     {appMode === MODE.advanced
                                       ? (
@@ -151,13 +151,13 @@ function Sidebar () {
                                                 >
                                                     – Expert Proposals
                                                 </LinkStyle>
-                                                {expertActiveProposalsCount
-                                                  ? (
+                                                {expertActiveProposalsCount <= 0
+                                                  ? null
+                                                  : (
                                                     <AccordionLbl highlight={highlight('q-expert-proposals')}>
                                                         {expertActiveProposalsCount}
                                                     </AccordionLbl>
-                                                    )
-                                                  : null}
+                                                    )}
                                             </LinkGroup>
                                             <LinkGroup>
                                                 <LinkStyle
@@ -167,13 +167,13 @@ function Sidebar () {
                                                 >
                                                     – Slashing Proposals
                                                 </LinkStyle>
-                                                {slashingActiveProposalsCount
-                                                  ? (
+                                                {slashingActiveProposalsCount <= 0
+                                                  ? null
+                                                  : (
                                                     <AccordionLbl highlight={highlight('slashing-proposals')}>
                                                         {slashingActiveProposalsCount}
                                                     </AccordionLbl>
-                                                    )
-                                                  : null}
+                                                    )}
                                             </LinkGroup>
                                         </>
                                         )

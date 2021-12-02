@@ -15,8 +15,8 @@ const initialState = {
   loadingEndedProposals: true,
   endedProposalsError: null,
 
-  slashingActiveProposalsCount: 0,
-  slashingEndedProposalsCount: 0,
+  slashingActiveProposalsCount: -1,
+  slashingEndedProposalsCount: -1,
   slashingLoadingProposalsCount: true
 }
 
@@ -25,7 +25,7 @@ export default function slashingProposals (state = initialState, action) {
     case actionTypes.SET_SLASHING_ACTIVE_PROPOSALS:
       return {
         ...state,
-        activeProposals: action.result.reset ? [] : [...state.activeProposals, ...action.result],
+        activeProposals: action.result,
         loadingActiveProposals: false
       }
     case actionTypes.SET_SLASHING_ACTIVE_PROPOSALS_LOADING:
@@ -43,7 +43,7 @@ export default function slashingProposals (state = initialState, action) {
     case actionTypes.SET_SLASHING_ENDED_PROPOSALS:
       return {
         ...state,
-        endedProposals: action.result.reset ? [] : [...state.endedProposals, ...action.result],
+        endedProposals: action.result,
         loadingEndedProposals: false
       }
     case actionTypes.SET_SLASHING_ENDED_PROPOSALS_LOADING:

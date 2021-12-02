@@ -22,10 +22,19 @@ function * getRootProposalsCountGenerator () {
   try {
     const contract = creationRootContractObj()
     const latestBlockNumber = yield getLatestBlockNumber()
-
     const result = yield contract.getProposalsCount(latestBlockNumber)
-    console.log(result)
     yield put(setRootProposalsCount(result))
+
+    const active = []
+    const ended = []
+
+    const add = (_, id) => ({ contract: result.contract, id })
+
+    active.push(Array(result.active).fill().map(add))
+    ended.push(Array(result.ended).fill().map(add))
+
+    yield put(setRootActiveProposals(active.flat()))
+    yield put(setRootEndedProposals(ended.flat()))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }

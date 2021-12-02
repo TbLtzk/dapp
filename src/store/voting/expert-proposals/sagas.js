@@ -41,6 +41,18 @@ function * getExpertProposalsCountGenerator () {
         result.active += proposal.active
       }
     })
+
+    const active = []
+    const ended = []
+
+    proposals.forEach((prop) => {
+      const add = (_, id) => ({ contract: prop.contract, id })
+      active.push(Array(prop.active).fill().map(add))
+      ended.push(Array(prop.ended).fill().map(add))
+    })
+    yield put(setExpertActiveProposals(active.flat()))
+    yield put(setExpertEndedProposals(ended.flat()))
+
     yield put(setExpertProposalsCount(result))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)

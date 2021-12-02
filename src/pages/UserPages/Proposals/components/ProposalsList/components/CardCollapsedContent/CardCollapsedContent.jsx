@@ -7,8 +7,6 @@ import VotingItems from '../VotingItems'
 import { LoadingWrap } from 'constants/style'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper'
-// import { useSelector } from 'react-redux'
-// import { transactionCounter } from 'store/transaction-handler/selectors'
 
 function CardCollapsedContent ({ contract, proposalId, proposalsKind, proposalStatus }) {
   const [proposalInfo, setProposalInfo] = useState(null)
@@ -19,7 +17,7 @@ function CardCollapsedContent ({ contract, proposalId, proposalsKind, proposalSt
   }, [])
 
   async function handleGetProposal () {
-    const result = await getProposal(contract, proposalId)
+    const result = await getProposal(contract, proposalId, 'additional')
     setProposalInfo(result)
   }
 

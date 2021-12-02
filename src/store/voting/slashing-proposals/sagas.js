@@ -36,6 +36,7 @@ function * getSlashingProposalsCountGenerator () {
     const latestBlockNumber = yield getLatestBlockNumber()
 
     const proposals = yield Promise.all(contracts.map((contract) => contract.getProposalsCount(latestBlockNumber)))
+
     proposals.forEach((proposal) => {
       if (proposal.ended) {
         result.ended += proposal.ended
@@ -46,6 +47,18 @@ function * getSlashingProposalsCountGenerator () {
     })
 
     yield put(setSlashingProposalsCount(result))
+
+    const active = []
+    const ended = []
+
+    proposals.forEach((prop) => {
+      const add = (_, id) => ({ contract: prop.contract, id })
+      active.push(Array(prop.active).fill().map(add))
+      ended.push(Array(prop.ended).fill().map(add))
+    })
+
+    yield put(setSlashingActiveProposals(active.flat()))
+    yield put(setSlashingEndedProposals(ended.flat()))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }
@@ -59,7 +72,9 @@ function * getSlashingProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
         yield put(setSlashingActiveProposalsLoading())
-        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(range, latestBlockNumber)))
+        const activeProposals = yield Promise.all(
+          contracts.map((contract) => contract.getProposals(range, latestBlockNumber))
+        )
         yield put(setSlashingActiveProposals(activeProposals.flat()))
         break
       }

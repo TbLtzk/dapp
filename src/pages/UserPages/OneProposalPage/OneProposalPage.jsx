@@ -3,21 +3,15 @@ import React, { useEffect, useState } from 'react'
 import PageWrap from 'components/Base/PageWrap'
 import VotingStats from 'components/Custom/VotingStats'
 import { CONTRACTS_NAMES } from 'constants/contracts'
-import { PROPOSALS_TYPES, STATUSES } from 'constants/statuses'
+import { PROPOSALS_TYPES } from 'constants/statuses'
 import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper'
-import ListCard from '../Proposals/components/ProposalsList/components/ListCard'
-import ProposalContent from '../Proposals/components/ProposalsList/components/ProposalContent'
-import PollDetail from '../Proposals/components/ProposalsList/components/PollDetail/PollDetail'
-import VoteBreakdown from '../Proposals/components/ProposalsList/components/VoteBreakdown/VoteBreakdown'
-import VotingItems from '../Proposals/components/ProposalsList/components/VotingItems/VotingItems'
-import SlashingObjection from '../Proposals/components/ProposalsList/components/SlashingObjection/SlashingObjection'
-import { LoadingWrap } from 'constants/style'
-import LoadingSpinner from 'components/Base/LoadingSpinner'
 import { transactionCounter } from 'store/transaction-handler/selectors'
 import { useSelector } from 'react-redux'
+import ProposalCard from './ProposalCard'
+import { ProposalLoader } from '../Proposals/components/ProposalsList/components/ListCard/ListCard'
 
 function OneProposalPage ({ match }) {
-  const updateProposal = useSelector(transactionCounter) // add icon refresh???
+  const updateProposal = useSelector(transactionCounter)
 
   const [proposal, setProposal] = useState(null)
   const [error, setError] = useState(null)
@@ -32,8 +26,7 @@ function OneProposalPage ({ match }) {
   }, [updateProposal, proposalKind])
 
   async function handleGetProposal () {
-    const data = await getProposal(match.params.contract, match.params.id)
-
+    const data = await getProposal(match.params.contract, match.params.id, 'full')
     if (data?.error) {
       setError(true)
     } else {
@@ -75,39 +68,10 @@ function OneProposalPage ({ match }) {
                 )
               : !proposal
                   ? (
-                <LoadingWrap>
-                    <LoadingSpinner />
-                </LoadingWrap>
+                <ProposalLoader />
                     )
                   : (
-                <ListCard
-                    id={proposal.id + proposal?.contract}
-                    proposal={proposal}
-                    oneProposalPage={true}
-                    content={
-                        <>
-                            <ProposalContent proposal={proposal} />
-                            <div className="list-card__line" />
-                            <PollDetail pollDetail={proposal} proposalsKind={proposalKind} />
-                            <div className="list-card__line" />
-                            <VoteBreakdown voteBreakdown={proposal} />
-                            <VotingItems proposal={proposal} />
-                            {proposalKind === PROPOSALS_TYPES.slashingProposals &&
-                            proposal.status === STATUSES.executed
-                              ? (
-                                <>
-                                    <div className="list-card__line" />
-                                    <SlashingObjection
-                                        contract={proposal.contract}
-                                        proposalId={proposal.id}
-                                        objData={proposal.objEscrow}
-                                    />
-                                </>
-                                )
-                              : null}
-                        </>
-                    }
-                />
+                <ProposalCard proposalKind={proposalKind} proposal={proposal} />
                     )}
             <VotingStats />
         </PageWrap>

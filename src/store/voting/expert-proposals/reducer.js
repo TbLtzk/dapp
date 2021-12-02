@@ -15,8 +15,8 @@ const initialState = {
   loadingEndedProposals: true,
   endedProposalsError: null,
 
-  expertActiveProposalsCount: 0,
-  expertEndedProposalsCount: 0,
+  expertActiveProposalsCount: -1,
+  expertEndedProposalsCount: -1,
   expertLoadingProposalsCount: true
 }
 
@@ -25,7 +25,7 @@ export default function expertProposals (state = initialState, action) {
     case actionTypes.SET_EXPERT_ACTIVE_PROPOSALS:
       return {
         ...state,
-        activeProposals: action.result.reset ? [] : [...state.activeProposals, ...action.result],
+        activeProposals: action.result,
         loadingActiveProposals: false
       }
     case actionTypes.SET_EXPERT_ACTIVE_PROPOSALS_LOADING:
@@ -43,7 +43,7 @@ export default function expertProposals (state = initialState, action) {
     case actionTypes.SET_EXPERT_ENDED_PROPOSALS:
       return {
         ...state,
-        endedProposals: action.result.reset ? [] : [...state.endedProposals, ...action.result],
+        endedProposals: action.result,
         loadingEndedProposals: false
       }
     case actionTypes.SET_EXPERT_ENDED_PROPOSALS_LOADING:

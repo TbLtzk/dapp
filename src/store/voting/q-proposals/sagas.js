@@ -38,6 +38,18 @@ function * getQProposalsCountGenerator () {
       }
     })
     yield put(setQProposalsCount(result))
+
+    const active = []
+    const ended = []
+
+    proposals.forEach((prop) => {
+      const add = (_, id) => ({ contract: prop.contract, id })
+      active.push(Array(prop.active).fill().map(add))
+      ended.push(Array(prop.ended).fill().map(add))
+    })
+
+    yield put(setQActiveProposals(active.flat()))
+    yield put(setQEndedProposals(ended.flat()))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }
@@ -50,13 +62,17 @@ function * getQProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
         yield put(setQActiveProposalsLoading())
-        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(range, latestBlockNumber)))
+        const activeProposals = yield Promise.all(
+          contracts.map((contract) => contract.getProposals(range, latestBlockNumber))
+        )
         yield put(setQActiveProposals(activeProposals.flat()))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
         yield put(setQEndedProposalsLoading())
-        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(range, latestBlockNumber)))
+        const endedProposals = yield Promise.all(
+          contracts.map((contract) => contract.getEndedProposals(range, latestBlockNumber))
+        )
         yield put(setQEndedProposals(endedProposals.flat()))
         break
       }

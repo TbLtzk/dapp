@@ -152,25 +152,25 @@ export function changeProposalsArrIfEmptyResult (proposalsArr, data) {
   }
 }
 
-export async function getProposal (contractName, id) {
+export async function getProposal (contractName, id, type) {
   try {
     switch (contractName) {
       case CONTRACTS_NAMES.constitutionVoting:
       case CONTRACTS_NAMES.emergencyUpdateVoting:
       case CONTRACTS_NAMES.generalUpdateVoting: {
         const contract = creationQContractObj(contractName)
-        const proposal = await contract.getProposal(id)
+        const proposal = await contract.getProposal(id, type)
         return proposal
       }
       case CONTRACTS_NAMES.rootsVoting: {
         const contract = creationRootContractObj()
-        const proposal = await contract.getProposal(id)
+        const proposal = await contract.getProposal(id, type)
         return proposal
       }
       case CONTRACTS_NAMES.rootNodesSlashingVoting:
       case CONTRACTS_NAMES.validatorsSlashingVoting: {
         const contract = creationSlashingContractObj(contractName)
-        const proposal = await contract.getProposal(id)
+        const proposal = await contract.getProposal(id, type)
         return proposal
       }
       case CONTRACTS_NAMES.ePQFIMembershipVoting:
@@ -178,7 +178,7 @@ export async function getProposal (contractName, id) {
       case CONTRACTS_NAMES.ePQFIParametersVoting:
       case CONTRACTS_NAMES.ePDRParametersVoting: {
         const contract = creationExpertContractObj(contractName)
-        const proposal = await contract.getProposal(id)
+        const proposal = await contract.getProposal(id, type)
         return proposal
       }
     }
