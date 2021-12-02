@@ -19,6 +19,7 @@ import {
 } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import ErrorHandler from 'func/ErrorHandler'
 import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
+import { getLatestBlockNumber } from 'func/useful'
 
 function * getExpertProposalsCountGenerator () {
   try {
@@ -28,8 +29,9 @@ function * getExpertProposalsCountGenerator () {
       active: 0,
       ended: 0
     }
+    const latestBlockNumber = yield getLatestBlockNumber()
 
-    const proposals = yield Promise.all(contracts.map((contract) => contract.getProposalsCount()))
+    const proposals = yield Promise.all(contracts.map((contract) => contract.getProposalsCount(latestBlockNumber)))
 
     proposals.forEach((proposal) => {
       if (proposal.ended) {
@@ -48,16 +50,22 @@ function * getExpertProposalsCountGenerator () {
 function * getExpertProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, range }) {
   try {
     const contracts = creationExpertContractsObjArray()
+    const latestBlockNumber = yield getLatestBlockNumber()
+
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
         yield put(setExpertActiveProposalsLoading())
-        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(range)))
+        const activeProposals = yield Promise.all(
+          contracts.map((contract) => contract.getProposals(range, latestBlockNumber))
+        )
         yield put(setExpertActiveProposals(activeProposals.flat()))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
         yield put(setExpertEndedProposalsLoading())
-        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(range)))
+        const endedProposals = yield Promise.all(
+          contracts.map((contract) => contract.getEndedProposals(range, latestBlockNumber))
+        )
         yield put(setExpertEndedProposals(endedProposals.flat()))
         break
       }

@@ -1,7 +1,6 @@
 import { transformToPercentage } from './base-voting-helper'
 import { ParameterType } from '@q-dev/q-js-sdk'
 import { getRootNodesInstance, cache } from 'contracts/contract-instance'
-import { getLatestBlockNumber } from 'func/useful'
 
 export default class VotingService {
   constructor (contractName) {
@@ -62,11 +61,6 @@ export default class VotingService {
     return result
   }
 
-  async getLatestProposalsIds () {
-    const latestBlockNumber = await getLatestBlockNumber()
-    return await this.contract.getProposalIds(latestBlockNumber - 150000, 'latest')
-  }
-
   async getProposal (id) {
     const proposals = await this.contract.getProposalIds()
     if (proposals.includes(id.toString())) {
@@ -79,8 +73,8 @@ export default class VotingService {
     }
   }
 
-  async getProposals (range) {
-    const latestProposalsIds = await this.getLatestProposalsIds()
+  async getProposals (range, latestBlockNumber) {
+    const latestProposalsIds = await this.contract.getProposalIds(latestBlockNumber - 200000, 'latest')
     const rangeProposalsIds = [...latestProposalsIds].reverse().slice(...range)
     if (!latestProposalsIds.length) {
       return []
@@ -95,7 +89,9 @@ export default class VotingService {
 
   async getEndedProposals (range) {
     const proposalIds = await this.contract.getProposalIds(0, 'latest')
-    const sliceProposals = [...proposalIds].reverse().slice(...range)
+    console.log(proposalIds)
+    const sliceProposals = [...proposalIds].slice(...range)
+    console.log(sliceProposals)
     if (!sliceProposals.length) {
       return []
     } else {
@@ -128,14 +124,23 @@ export default class VotingService {
     return objRes
   }
 
-  async getProposalsCount () {
-    const latestProposalsIds = await this.getLatestProposalsIds()
-    const allProposalsId = await this.contract.getProposalIds(0, 'latest')
-    const proposals = await Promise.all(latestProposalsIds.map((id) => this.contract.getStatus(id)))
-    const activeProposals = proposals.filter(
-      (promiseStatus) => promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4'
-    )
-    return { ended: allProposalsId.length - activeProposals.length, active: activeProposals.length }
+  async getProposalsCount (latestBlockNumber) {
+    const latestProposalsIds = await this.contract.getProposalIds(latestBlockNumber - 200000, 'latest')
+    const allProposals = await this.contract.getProposalIds(0, 'latest')
+    if (!latestProposalsIds.length) {
+      return { ended: allProposals.length, active: 0 }
+    } else {
+      const proposals = []
+      for (const id of latestProposalsIds) {
+        const promiseStatus = await this.contract.getStatus(id)
+        proposals.push(promiseStatus)
+      }
+      const activeProposals = proposals.filter(
+        (promiseStatus) => promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4'
+      )
+
+      return { ended: allProposals.length - activeProposals.length, active: activeProposals.length }
+    }
   }
 
   transformParameterType (id) {

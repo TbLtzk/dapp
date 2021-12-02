@@ -14,11 +14,15 @@ const STATES = {
 
 function LoadingAccount ({ children }) {
   const [loadingStatus, setLoadingStatus] = useState(STATES.loading)
-  const [errorMessage] = useState('Can\'t load account data. Please reload app')
+  const [errorMessage] = useState("Can't load account data. Please reload app")
 
   const dispatch = useDispatch()
 
-  useEffect(async () => {
+  useEffect(() => {
+    handleLoadAccount()
+  }, [])
+
+  async function handleLoadAccount () {
     try {
       const accounts = await window.web3.eth.getAccounts()
       const addressId = accounts[0]
@@ -28,7 +32,7 @@ function LoadingAccount ({ children }) {
       console.error(e)
       setLoadingStatus(STATES.error)
     }
-  }, [])
+  }
 
   const accountHandler = useCallback(() => {
     switch (loadingStatus) {
@@ -36,21 +40,17 @@ function LoadingAccount ({ children }) {
         return children
       case STATES.loading:
         return (
-          <WrapContainer>
-            <LoadingSpinner/>
-          </WrapContainer>
+                    <WrapContainer>
+                        <LoadingSpinner />
+                    </WrapContainer>
         )
       case 'error':
-        return (
-          <WrapContainer>
-            {errorMessage}
-          </WrapContainer>
-        )
+        return <WrapContainer>{errorMessage}</WrapContainer>
       default:
         return (
-          <WrapContainer>
-            <LoadingSpinner/>
-          </WrapContainer>
+                    <WrapContainer>
+                        <LoadingSpinner />
+                    </WrapContainer>
         )
     }
   }, [loadingStatus])

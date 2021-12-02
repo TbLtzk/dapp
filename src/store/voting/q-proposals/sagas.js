@@ -17,6 +17,7 @@ import {
 import { creationQContractObj, creationQContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper'
 
 import ErrorHandler from 'func/ErrorHandler'
+import { getLatestBlockNumber } from 'func/useful'
 
 function * getQProposalsCountGenerator () {
   try {
@@ -25,7 +26,9 @@ function * getQProposalsCountGenerator () {
       active: 0,
       ended: 0
     }
-    const proposals = yield Promise.all(contracts.map((contract) => contract.getProposalsCount()))
+    const latestBlockNumber = yield getLatestBlockNumber()
+
+    const proposals = yield Promise.all(contracts.map((contract) => contract.getProposalsCount(latestBlockNumber)))
     proposals.forEach((proposal) => {
       if (proposal.ended) {
         result.ended += proposal.ended
@@ -43,16 +46,17 @@ function * getQProposalsCountGenerator () {
 function * getQProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, range }) {
   try {
     const contracts = creationQContractsObjArray()
+    const latestBlockNumber = yield getLatestBlockNumber()
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
         yield put(setQActiveProposalsLoading())
-        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(range)))
+        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(range, latestBlockNumber)))
         yield put(setQActiveProposals(activeProposals.flat()))
         break
       }
       case PROPOSAL_STATUS_TYPES.ended: {
         yield put(setQEndedProposalsLoading())
-        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(range)))
+        const endedProposals = yield Promise.all(contracts.map((contract) => contract.getEndedProposals(range, latestBlockNumber)))
         yield put(setQEndedProposals(endedProposals.flat()))
         break
       }

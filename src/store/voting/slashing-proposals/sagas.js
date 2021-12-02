@@ -24,6 +24,7 @@ import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-hel
 import ErrorHandler from 'func/ErrorHandler'
 import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
 import { CONTRACTS_NAMES } from 'constants/contracts'
+import { getLatestBlockNumber } from 'func/useful'
 
 function * getSlashingProposalsCountGenerator () {
   try {
@@ -32,8 +33,9 @@ function * getSlashingProposalsCountGenerator () {
       active: 0,
       ended: 0
     }
+    const latestBlockNumber = yield getLatestBlockNumber()
 
-    const proposals = yield Promise.all(contracts.map((contract) => contract.getProposalsCount()))
+    const proposals = yield Promise.all(contracts.map((contract) => contract.getProposalsCount(latestBlockNumber)))
     proposals.forEach((proposal) => {
       if (proposal.ended) {
         result.ended += proposal.ended
@@ -52,10 +54,12 @@ function * getSlashingProposalsCountGenerator () {
 function * getSlashingProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, range }) {
   try {
     const contracts = creationSlashingContractsObjArray()
+    const latestBlockNumber = yield getLatestBlockNumber()
+
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
         yield put(setSlashingActiveProposalsLoading())
-        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(range)))
+        const activeProposals = yield Promise.all(contracts.map((contract) => contract.getProposals(range, latestBlockNumber)))
         yield put(setSlashingActiveProposals(activeProposals.flat()))
         break
       }

@@ -16,11 +16,15 @@ import {
 import { creationRootContractObj } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import ErrorHandler from 'func/ErrorHandler'
 import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
+import { getLatestBlockNumber } from 'func/useful'
 
 function * getRootProposalsCountGenerator () {
   try {
     const contract = creationRootContractObj()
-    const result = yield contract.getProposalsCount()
+    const latestBlockNumber = yield getLatestBlockNumber()
+
+    const result = yield contract.getProposalsCount(latestBlockNumber)
+    console.log(result)
     yield put(setRootProposalsCount(result))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
@@ -29,12 +33,13 @@ function * getRootProposalsCountGenerator () {
 
 function * getRootProposalsGenerator ({ proposalStatusType = PROPOSAL_STATUS_TYPES.active, range }) {
   try {
-    range = [range[0] + 6, range[1] + 6]
     const contract = creationRootContractObj()
+    const latestBlockNumber = yield getLatestBlockNumber()
+
     switch (proposalStatusType) {
       case PROPOSAL_STATUS_TYPES.active: {
         yield put(setRootActiveProposalsLoading())
-        const activeProposals = yield contract.getProposals(range)
+        const activeProposals = yield contract.getProposals(range, latestBlockNumber)
         yield put(setRootActiveProposals(activeProposals))
         break
       }
