@@ -40,7 +40,7 @@ export default class SlashingVoting extends VotingService {
     if (promiseRes.status === '5') {
       const SlashingEscrowContractName = isValidatorSlashingMode
         ? CONTRACTS_NAMES.validatorsSlashingEscrow
-        : CONTRACTS_NAMES.rootNodesSlashingVoting
+        : CONTRACTS_NAMES.rootNodesSlashingEscrow
       const SlashingEscrowContract = new SlashingEscrow(SlashingEscrowContractName)
       objEscrow.objEscrow.objection.statusObjection = SlashingEscrowContract.getTitleStatus(
         await SlashingEscrowContract.getStatus(id)

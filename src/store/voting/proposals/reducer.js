@@ -15,7 +15,8 @@ const initialState = {
   constitutionHash: '...',
   baseVotingWeightInfo: {},
 
-  proposal: null
+  proposal: null,
+  executedProposal: null
 }
 
 export default function proposals (state = initialState, action) {
@@ -24,6 +25,11 @@ export default function proposals (state = initialState, action) {
       return {
         ...state,
         proposal: action.result
+      }
+    case actionTypes.SET_EXECUTED_PROPOSAL:
+      return {
+        ...state,
+        executedProposal: action.result
       }
     case actionTypes.SET_CREATED_PROPOSAL_OBJECT:
       return {

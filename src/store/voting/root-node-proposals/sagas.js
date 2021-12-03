@@ -16,25 +16,18 @@ import {
 import { creationRootContractObj } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import ErrorHandler from 'func/ErrorHandler'
 import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
-import { getLatestBlockNumber } from 'func/useful'
+import { getLatestBlockNumber, sortAndCountProposals } from 'func/useful'
 
 function * getRootProposalsCountGenerator () {
   try {
     const contract = creationRootContractObj()
     const latestBlockNumber = yield getLatestBlockNumber()
-    const result = yield contract.getProposalsCount(latestBlockNumber)
-    yield put(setRootProposalsCount(result))
+    const proposals = yield contract.getProposalsCount(latestBlockNumber)
+    const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposals([proposals])
 
-    const active = []
-    const ended = []
-
-    const add = (_, id) => ({ contract: result.contract, id })
-
-    active.push(Array(result.active).fill().map(add))
-    ended.push(Array(result.ended).fill().map(add))
-
-    yield put(setRootActiveProposals(active.flat()))
-    yield put(setRootEndedProposals(ended.flat()))
+    yield put(setRootProposalsCount(proposalsCount))
+    yield put(setRootActiveProposals(activeProposalsIds))
+    yield put(setRootEndedProposals(endedProposalsIds))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }

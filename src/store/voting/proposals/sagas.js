@@ -8,12 +8,10 @@ import { setErrorMessage, setTransactionCounter } from 'store/transaction-handle
 import { getLockedAssets } from 'store/q-vault/action-creators'
 
 import {
-  createProposalSuccess,
-  voteForProposalSuccess,
-  executeProposalSuccess,
   getConstitutionHashSuccess,
   setBaseVotingWeightInfo,
-  setProposal
+  getProposal,
+  setExecutedProposal
 } from 'store/voting/proposals/action-creators'
 import { getProposalQ, getQProposals, getQProposalsCount } from 'store/voting/q-proposals/action-creators'
 import {
@@ -32,12 +30,7 @@ import {
   getSlashingProposalsCount
 } from 'store/voting/slashing-proposals/action-creators'
 
-import {
-  creationExpertContractObj,
-  creationQContractObj,
-  creationRootContractObj,
-  creationSlashingContractObj
-} from 'contracts/helpers/voting-helpers/base-voting-helper'
+import { creationQContractObj } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import { chooseSlashingContractDependsOnType } from 'contracts/handler/SlashingVotingHandler'
 import { chooseExpertContractDependsOnType } from 'contracts/handler/QExpertVotingHandler'
 
@@ -55,47 +48,40 @@ function * createProposalGenerator ({ data }) {
   try {
     yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
-    let result = null
-    let idProposal = null
     let contractName = null
     if (data) {
       const type = data?.first
       switch (type) {
         case CONTRACT_TYPES.constitutionUpdate:
           const constitutionVoting = new ConstitutionVotingService(CONTRACTS_NAMES.constitutionVoting)
-          result = yield constitutionVoting.createProposal(data, userAddress)
+          yield constitutionVoting.createProposal(data, userAddress)
           contractName = CONTRACTS_NAMES.constitutionVoting
-          idProposal = result?.events?.ProposalCreated?.returnValues?._id
           break
         case CONTRACT_TYPES.generalQUpdate:
           const generalUpdateVoting = new GeneralUpdateVotingService(CONTRACTS_NAMES.generalUpdateVoting)
-          result = yield generalUpdateVoting.createProposal(data, userAddress)
+          yield generalUpdateVoting.createProposal(data, userAddress)
           contractName = CONTRACTS_NAMES.generalUpdateVoting
-          idProposal = result?.events?.ProposalCreated?.returnValues?._id
           break
         case CONTRACT_TYPES.emergencyUpdate:
           const emergencyUpdateVoting = new EmergencyUpdateVotingService(CONTRACTS_NAMES.emergencyUpdateVoting)
-          result = yield emergencyUpdateVoting.createProposal(data, userAddress)
+          yield emergencyUpdateVoting.createProposal(data, userAddress)
           contractName = CONTRACTS_NAMES.emergencyUpdateVoting
-          idProposal = result?.events?.ProposalCreated?.returnValues?._id
           break
         case CONTRACT_TYPES.addAnewRootNode:
         case CONTRACT_TYPES.removeACurrentRootNode:
           const rootsVoting = new RootsVotingService(CONTRACTS_NAMES.rootsVoting)
-          result = yield rootsVoting.createProposal(data, userAddress)
+          yield rootsVoting.createProposal(data, userAddress)
           contractName = CONTRACTS_NAMES.rootsVoting
-          idProposal = result?.events?.ProposalCreated?.returnValues?._id
           break
         case CONTRACT_TYPES.rootNodeSlashing:
         case CONTRACT_TYPES.validatorNodeSlashing:
           const chosenContract = chooseSlashingContractDependsOnType(type)
-          result = yield chosenContract.createProposal(data, userAddress)
+          yield chosenContract.createProposal(data, userAddress)
           if (type === CONTRACT_TYPES.rootNodeSlashing) {
             contractName = CONTRACTS_NAMES.rootNodesSlashingVoting
           } else if (type === CONTRACT_TYPES.validatorNodeSlashing) {
             contractName = CONTRACTS_NAMES.validatorsSlashingVoting
           }
-          idProposal = result?.events?.ProposalCreated?.returnValues?._id
           break
         case CONTRACT_TYPES.addNewExpert:
         case CONTRACT_TYPES.removeCurrentExpert:
@@ -104,15 +90,13 @@ function * createProposalGenerator ({ data }) {
             data.first !== CONTRACT_TYPES.parameterVote ? CONTRACT_TYPES.member : CONTRACT_TYPES.parameters
           const contract = chooseExpertContractDependsOnType(typeContract, data['type-proposal'])
           contractName = contract.contractName
-          result = yield contract.createProposal(data, userAddress)
-          idProposal = result?.events?.ProposalCreated?.returnValues?._id
+          yield contract.createProposal(data, userAddress)
           break
         default:
           return null
       }
     }
-    yield call(getProposalDependsOnTypeGenerator, contractName, data, idProposal, true)
-    yield put(createProposalSuccess(result))
+    yield put(getProposal(contractName))
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
@@ -125,22 +109,18 @@ function * voteForProposalGenerator ({ data }) {
   try {
     yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
-
-    let result = null
     if (data) {
       const contract = new VotingService(data?.contract)
       if (data?.first === 'basic-vote-on-proposal') {
         if (data['vote-proposal'] === 'yes') {
-          result = yield contract.voteFor(data?.idProposal, userAddress)
+          yield contract.voteFor(data?.idProposal, userAddress)
         } else if (data['vote-proposal'] === 'no') {
-          result = yield contract.voteAgainst(data?.idProposal, userAddress)
+          yield contract.voteAgainst(data?.idProposal, userAddress)
         }
       } else if (data?.first === 'constitution-check') {
-        result = yield contract.veto(data?.idProposal, userAddress)
+        yield contract.veto(data?.idProposal, userAddress)
       }
     }
-    yield call(getProposalDependsOnTypeGenerator, data?.contract, data, data?.idProposal, true)
-    yield put(voteForProposalSuccess(result))
     yield put(getLockedAssets(userAddress))
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -153,20 +133,54 @@ function * voteForProposalGenerator ({ data }) {
 function * executeProposalGenerator ({ data }) {
   try {
     yield put(setTransactionCounter(1))
+
     const { userAddress } = yield select((state) => state.userInf)
-    const result = null
     if (data) {
       const contract = new VotingService(data?.contract)
       yield contract.execute(data?.idProposal, userAddress)
     }
-    yield call(getProposalDependsOnTypeGenerator, data?.contract, data, data?.idProposal, false)
-    yield put(executeProposalSuccess(result))
+    yield put(getProposal(data.contract))
+    yield put(setExecutedProposal(data))
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
     yield put(setTransactionCounter(-1))
   }
+}
+
+function * getProposalGenerator ({ contractName, id }) {
+  switch (contractName) {
+    case CONTRACTS_NAMES.constitutionVoting:
+    case CONTRACTS_NAMES.emergencyUpdateVoting:
+    case CONTRACTS_NAMES.generalUpdateVoting: {
+      yield put(getQProposalsCount())
+      break
+    }
+    case CONTRACTS_NAMES.rootsVoting: {
+      yield put(getRootProposalsCount())
+      break
+    }
+    case CONTRACTS_NAMES.rootNodesSlashingVoting:
+    case CONTRACTS_NAMES.validatorsSlashingVoting: {
+      yield put(getSlashingProposalsCount())
+      break
+    }
+    case CONTRACTS_NAMES.ePQFIMembershipVoting:
+    case CONTRACTS_NAMES.ePDRMembershipVoting:
+    case CONTRACTS_NAMES.ePQFIParametersVoting:
+    case CONTRACTS_NAMES.ePDRParametersVoting: {
+      yield put(getExpertProposalsCount())
+      break
+    }
+  }
+}
+
+function * getNumberAllProposalsGenerator () {
+  yield put(getQProposalsCount())
+  yield put(getExpertProposalsCount())
+  yield put(getRootProposalsCount())
+  yield put(getSlashingProposalsCount())
 }
 
 function * updateProposal ({ data }) {
@@ -229,13 +243,6 @@ function * getProposalsListGenerator ({ proposalType, proposalStatusType, range 
   }
 }
 
-function * getNumberAllProposalsGenerator () {
-  yield put(getQProposalsCount())
-  yield put(getExpertProposalsCount())
-  yield put(getRootProposalsCount())
-  yield put(getSlashingProposalsCount())
-}
-
 function * getConstitutionHashGenerator () {
   try {
     const contract = creationQContractObj(CONTRACTS_NAMES.constitutionVoting)
@@ -254,45 +261,6 @@ function * getBaseVotingWeightInfoGenerator () {
     const timeStamp = getNowTimestamp()
     const result = yield contract.getBaseVotingWeightInfo(userAddress, timeStamp)
     yield put(setBaseVotingWeightInfo(result))
-  } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-  }
-}
-
-function * getProposalGenerator ({ contractName, id }) {
-  try {
-    switch (contractName) {
-      case CONTRACTS_NAMES.constitutionVoting:
-      case CONTRACTS_NAMES.emergencyUpdateVoting:
-      case CONTRACTS_NAMES.generalUpdateVoting: {
-        const contract = creationQContractObj(contractName)
-        const proposal = yield contract.getProposal(id)
-        yield put(setProposal(proposal))
-        break
-      }
-      case CONTRACTS_NAMES.rootsVoting: {
-        const contract = creationRootContractObj()
-        const proposal = yield contract.getProposal(id)
-        yield put(setProposal(proposal))
-        break
-      }
-      case CONTRACTS_NAMES.rootNodesSlashingVoting:
-      case CONTRACTS_NAMES.validatorsSlashingVoting: {
-        const contract = creationSlashingContractObj(contractName)
-        const proposal = yield contract.getProposal(id)
-        yield put(setProposal(proposal))
-        break
-      }
-      case CONTRACTS_NAMES.ePQFIMembershipVoting:
-      case CONTRACTS_NAMES.ePDRMembershipVoting:
-      case CONTRACTS_NAMES.ePQFIParametersVoting:
-      case CONTRACTS_NAMES.ePDRParametersVoting: {
-        const contract = creationExpertContractObj(contractName)
-        const proposal = yield contract.getProposal(id)
-        yield put(setProposal(proposal))
-        break
-      }
-    }
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }

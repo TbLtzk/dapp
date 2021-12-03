@@ -94,7 +94,7 @@ function VotingItems ({ proposal }) {
 
   const onChooseTypeOfVoting = () => {
     const type = proposal.status === 'Pending' ? 'basic-vote-on-proposal' : 'constitution-check'
-    dispatch(setVoteProposalObj({ first: type }))
+    dispatch(setVoteProposalObj({ first: type, contract: proposal.contract, id: proposal.id }))
     dispatch(setDisabledCreatedProposalBtn(false))
   }
 
@@ -105,7 +105,6 @@ function VotingItems ({ proposal }) {
 
   return (
         <>
-            {proposal.status === 'ended' ? null : <div className="list-card__line" />}
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 {proposal.status === 'Passed' ? <Button handleButton={onProposalExecute} title="Execute" /> : null}
                 {proposal.status === 'Pending' || proposal.status === 'Accepted'
@@ -148,7 +147,6 @@ function VotingItems ({ proposal }) {
                     modalShow={modalShow}
                     onHide={() => {
                       setModalShow(false)
-                      dispatch(setVoteProposalObj({}))
                       dispatch(setStepVoteCounter(1))
                       dispatch(setDisabledCreatedProposalBtn(true))
                     }}

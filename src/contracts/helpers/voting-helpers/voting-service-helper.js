@@ -1,6 +1,7 @@
 import { transformToPercentage } from './base-voting-helper'
 import { ParameterType } from '@q-dev/q-js-sdk'
 import { getRootNodesInstance, cache } from 'contracts/contract-instance'
+import { values, keys } from 'lodash'
 
 export default class VotingService {
   constructor (contractName) {
@@ -65,9 +66,6 @@ export default class VotingService {
     let additionalInfo = {}
     let headerInfo = {}
     const proposal = await this.contract.getProposalWithStatus(id)
-    if (type === 'additional') {
-      additionalInfo = await this.getProposalAdditionalData(proposal, id)
-    }
     if (type === 'header') {
       headerInfo = this.getProposalData(proposal, proposal.id, proposal.status)
     }
@@ -79,7 +77,7 @@ export default class VotingService {
   }
 
   async getProposals (range, latestBlockNumber) {
-    const latestProposalsIds = await this.contract.getProposalIds(latestBlockNumber - 200000, 'latest')
+    const latestProposalsIds = await this.contract.getProposalIds(latestBlockNumber - 10000, 'latest')
     const rangeProposalsIds = [...latestProposalsIds].reverse().slice(...range)
     if (!latestProposalsIds.length) {
       return []
@@ -128,25 +126,25 @@ export default class VotingService {
   }
 
   async getProposalsCount (latestBlockNumber) {
-    const latestProposalsIds = await this.contract.getProposalIds(latestBlockNumber - 200000, 'latest')
-    const allProposals = await this.contract.getProposalIds(0, 'latest')
-    if (!latestProposalsIds.length) {
-      return { contract: this.contractName, ended: allProposals.length, active: 0 }
-    } else {
-      const proposals = []
-      for (const id of latestProposalsIds) {
-        const promiseStatus = await this.contract.getStatus(id)
-        proposals.push(promiseStatus)
-      }
-      const activeProposals = proposals.filter(
-        (promiseStatus) => promiseStatus === '1' || promiseStatus === '3' || promiseStatus === '4'
-      )
+    const latestIds = await this.contract.getProposalIds(latestBlockNumber - 250000, 'latest')
+    const allIds = await this.contract.getProposalIds(0, 'latest')
+    const statuses = []
 
-      return {
-        contract: this.contractName,
-        ended: allProposals.length - activeProposals.length,
-        active: activeProposals.length
-      }
+    for (const id of latestIds) {
+      const status = await this.contract.getStatus(id)
+      statuses.push({ [id]: status })
+    }
+
+    const activeIds = statuses
+      .filter((status) => values(status)[0] === '1' || values(status)[0] === '3' || values(status)[0] === '4')
+      .map((item) => keys(item)[0])
+
+    const endedIds = allIds.filter((id) => activeIds.indexOf(id))
+
+    return {
+      contract: this.contractName,
+      activeIds,
+      endedIds
     }
   }
 

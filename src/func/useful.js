@@ -53,6 +53,33 @@ export const uintPercentToNumber = (num) => {
   return num / 10 ** 27
 }
 
+export function sortByIdAndFlat (array) {
+  return array.flat().sort((a, b) => b.id - a.id)
+}
+
+export const sortAndCountProposals = (proposals) => {
+  const proposalsCount = {
+    active: 0,
+    ended: 0
+  }
+
+  const activeProposalsIds = []
+  const endedProposalsIds = []
+
+  proposals.forEach((proposal) => {
+    if (proposal.endedIds) {
+      proposalsCount.ended += proposal.endedIds.length
+      endedProposalsIds.push(proposal.endedIds.map((item) => ({ id: item, contract: proposal.contract })))
+    }
+    if (proposal.activeIds) {
+      proposalsCount.active += proposal.activeIds.length
+      activeProposalsIds.push(proposal.activeIds.map((item) => ({ id: item, contract: proposal.contract })))
+    }
+  })
+  console.log(endedProposalsIds)
+  return [proposalsCount, activeProposalsIds.flat(), endedProposalsIds.flat()]
+}
+
 export const fillArray = (length) => {
   const array = []
   for (let i = 0; i < length; i++) {

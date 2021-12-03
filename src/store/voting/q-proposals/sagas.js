@@ -17,39 +17,19 @@ import {
 import { creationQContractObj, creationQContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper'
 
 import ErrorHandler from 'func/ErrorHandler'
-import { getLatestBlockNumber } from 'func/useful'
+import { getLatestBlockNumber, sortAndCountProposals } from 'func/useful'
 
 function * getQProposalsCountGenerator () {
   try {
     const contracts = creationQContractsObjArray()
-    const result = {
-      active: 0,
-      ended: 0
-    }
     const latestBlockNumber = yield getLatestBlockNumber()
-
     const proposals = yield Promise.all(contracts.map((contract) => contract.getProposalsCount(latestBlockNumber)))
-    proposals.forEach((proposal) => {
-      if (proposal.ended) {
-        result.ended += proposal.ended
-      }
-      if (proposal.active) {
-        result.active += proposal.active
-      }
-    })
-    yield put(setQProposalsCount(result))
 
-    const active = []
-    const ended = []
+    const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposals(proposals)
 
-    proposals.forEach((prop) => {
-      const add = (_, id) => ({ contract: prop.contract, id })
-      active.push(Array(prop.active).fill().map(add))
-      ended.push(Array(prop.ended).fill().map(add))
-    })
-
-    yield put(setQActiveProposals(active.flat()))
-    yield put(setQEndedProposals(ended.flat()))
+    yield put(setQProposalsCount(proposalsCount))
+    yield put(setQActiveProposals(activeProposalsIds))
+    yield put(setQEndedProposals(endedProposalsIds))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }

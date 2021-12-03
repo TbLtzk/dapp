@@ -124,3 +124,9 @@ export const setProposal = (result) => ({
   type: actionTypes.SET_PROPOSAL,
   result
 })
+
+// executed
+export const setExecutedProposal = result => ({
+  type: actionTypes.SET_EXECUTED_PROPOSAL,
+  result
+})

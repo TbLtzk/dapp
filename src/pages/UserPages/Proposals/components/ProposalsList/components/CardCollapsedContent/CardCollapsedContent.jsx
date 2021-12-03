@@ -7,17 +7,26 @@ import VotingItems from '../VotingItems'
 import { LoadingWrap } from 'constants/style'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper'
+import { useDispatch } from 'react-redux'
+import { setVoteProposalObj } from 'store/voting/proposals/action-creators'
 
-function CardCollapsedContent ({ contract, proposalId, proposalsKind, proposalStatus }) {
+function CardCollapsedContent ({ contract, proposalId, proposalsKind, proposalStatus, reloadProposal }) {
+  const dispatch = useDispatch()
   const [proposalInfo, setProposalInfo] = useState(null)
 
   useEffect(() => {
     handleGetProposal()
-    return () => setProposalInfo(null)
   }, [])
 
+  useEffect(() => {
+    if (reloadProposal) {
+      handleGetProposal()
+      dispatch(setVoteProposalObj({}))
+    }
+  }, [reloadProposal])
+
   async function handleGetProposal () {
-    const result = await getProposal(contract, proposalId, 'additional')
+    const result = await getProposal(contract, proposalId, 'full')
     setProposalInfo(result)
   }
 
@@ -35,13 +44,14 @@ function CardCollapsedContent ({ contract, proposalId, proposalsKind, proposalSt
                     <PollDetail pollDetail={proposalInfo} proposalsKind={proposalsKind} />
                     <div className="list-card__line" />
                     <VoteBreakdown voteBreakdown={proposalInfo} />
+                    <div className="list-card__line" />
                     <VotingItems proposal={proposalInfo} />
                     {proposalsKind === PROPOSALS_TYPES.slashingProposals && proposalStatus === STATUSES.executed
                       ? (
                         <>
-                            <div className="list-card__line" />
                             <SlashingObjection
                                 contract={contract}
+                                proposal={proposalInfo}
                                 proposalId={proposalId}
                                 objData={proposalInfo.objEscrow}
                             />

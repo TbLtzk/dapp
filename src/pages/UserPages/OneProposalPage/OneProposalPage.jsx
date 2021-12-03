@@ -8,7 +8,7 @@ import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper
 import { transactionCounter } from 'store/transaction-handler/selectors'
 import { useSelector } from 'react-redux'
 import ProposalCard from './ProposalCard'
-import { ProposalLoader } from '../Proposals/components/ProposalsList/components/ListCard/ListCard'
+import SkeletonLoading from 'components/Base/SkeletonLoading'
 
 function OneProposalPage ({ match }) {
   const updateProposal = useSelector(transactionCounter)
@@ -68,7 +68,7 @@ function OneProposalPage ({ match }) {
                 )
               : !proposal
                   ? (
-                <ProposalLoader />
+                <SkeletonLoading />
                     )
                   : (
                 <ProposalCard proposalKind={proposalKind} proposal={proposal} />

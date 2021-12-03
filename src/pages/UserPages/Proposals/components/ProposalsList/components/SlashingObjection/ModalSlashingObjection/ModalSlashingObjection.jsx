@@ -8,31 +8,18 @@ import {
   onEscrowProposeDecision,
   onEscrowProposerRemark
 } from 'store/voting/slashing-proposals/action-creators'
-import {
-  createdStepsLimit,
-  formObject,
-  stepCounterModal
-} from 'store/modal-handler/selectors'
+import { createdStepsLimit, formObject, stepCounterModal } from 'store/modal-handler/selectors'
 
 import ModalWindow from 'components/Base/ModalWindow'
 import CreateStep1 from './CreateStep1'
 import CreateStep2 from './CreateStep2'
 
 import { ProgressBar } from 'react-bootstrap'
+import { setVoteProposalObj } from 'store/voting/proposals/action-creators'
 
 function ModalSlashingObjection (props) {
-  const {
-    modalShow,
-    onHide,
-    activeTab,
-    contract,
-    proposalId
-  } = props
-  const {
-    register,
-    errors,
-    handleSubmit
-  } = useForm()
+  const { modalShow, onHide, activeTab, contract, proposalId } = props
+  const { register, errors, handleSubmit } = useForm()
   const dispatch = useDispatch()
 
   const formData = useSelector(formObject)
@@ -42,23 +29,9 @@ function ModalSlashingObjection (props) {
   const switchContentDependsOnType = useCallback(() => {
     switch (stepCounter) {
       case 1:
-        return (
-          <CreateStep1
-            formData={formData}
-            activeTab={activeTab}
-            register={register}
-            errors={errors}
-          />
-        )
+        return <CreateStep1 formData={formData} activeTab={activeTab} register={register} errors={errors} />
       case 2:
-        return (
-          <CreateStep2
-            formData={formData}
-            activeTab={activeTab}
-            register={register}
-            errors={errors}
-          />
-        )
+        return <CreateStep2 formData={formData} activeTab={activeTab} register={register} errors={errors} />
 
       default:
         return null
@@ -77,40 +50,36 @@ function ModalSlashingObjection (props) {
       } else if (activeTab === 'proposer-remark') {
         dispatch(onEscrowProposerRemark({ ...formData, ...data }, contract, proposalId))
       }
+      dispatch(setVoteProposalObj({ contract, id: proposalId }))
       onHide()
     }
   }
 
   return (
-    <>
-      <ModalWindow
-        show={modalShow}
-        onHide={onHide}
-        backBtnTitle={
-          stepCounter !== 1 ? 'Back' : null
-        }
-        backBtnHandler={() => {
-          dispatch(setStepCounter(stepCounter - 1))
-        }}
-        continueBtnTitle={
-          stepLimit !== stepCounter ? 'Next' : 'Confirm'
-        }
-        continueBtnHandler={handleSubmit(onNext)}
-        modalTitle={activeTab?.replace(/-/g, ' ')
-          .charAt(0)
-          .toUpperCase() + activeTab?.replace(/-/g, ' ')
-          .slice(1)}
-        content={
-          <>
-            <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)}/>
-            <div className="modal__steps">Step {stepCounter} of {stepLimit}</div>
-            <form>
-              {switchContentDependsOnType()}
-            </form>
-          </>
-        }
-      />
-    </>
+        <>
+            <ModalWindow
+                show={modalShow}
+                onHide={onHide}
+                backBtnTitle={stepCounter !== 1 ? 'Back' : null}
+                backBtnHandler={() => {
+                  dispatch(setStepCounter(stepCounter - 1))
+                }}
+                continueBtnTitle={stepLimit !== stepCounter ? 'Next' : 'Confirm'}
+                continueBtnHandler={handleSubmit(onNext)}
+                modalTitle={
+                    activeTab?.replace(/-/g, ' ').charAt(0).toUpperCase() + activeTab?.replace(/-/g, ' ').slice(1)
+                }
+                content={
+                    <>
+                        <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)} />
+                        <div className="modal__steps">
+                            Step {stepCounter} of {stepLimit}
+                        </div>
+                        <form>{switchContentDependsOnType()}</form>
+                    </>
+                }
+            />
+        </>
   )
 }
 
