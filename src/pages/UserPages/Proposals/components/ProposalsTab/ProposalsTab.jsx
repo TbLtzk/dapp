@@ -3,14 +3,12 @@ import VotingStats from 'components/Custom/VotingStats'
 import ProposalsList from '../ProposalsList'
 import { ProposalsTabWrp } from './styles'
 
-function ProposalsTab ({ proposalsType, isLoading, proposals, errorMessage, proposalsCount, proposalStatus }) {
+function ProposalsTab ({ proposalsType, proposals, proposalsCount, proposalStatus }) {
   return (
         <ProposalsTabWrp>
             <ProposalsList
                 activeTab={proposalsType}
                 proposals={proposals}
-                loading={isLoading}
-                errorMessage={errorMessage}
                 proposalsKind={proposalsType}
                 proposalsCount={proposalsCount}
                 proposalStatus={proposalStatus}

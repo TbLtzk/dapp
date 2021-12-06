@@ -71,7 +71,9 @@ function OneProposalPage ({ match }) {
                 <SkeletonLoading />
                     )
                   : (
-                <ProposalCard proposalKind={proposalKind} proposal={proposal} />
+                <div>
+                    <ProposalCard proposalKind={proposalKind} proposal={proposal} />
+                </div>
                     )}
             <VotingStats />
         </PageWrap>

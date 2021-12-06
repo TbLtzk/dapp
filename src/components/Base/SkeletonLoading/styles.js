@@ -5,4 +5,5 @@ export const SkeletonLoadingWrapper = styled.div`
   border-radius: 6px;
   display: block;
   margin-bottom: 16px;
+  max-height: 800px;
 `

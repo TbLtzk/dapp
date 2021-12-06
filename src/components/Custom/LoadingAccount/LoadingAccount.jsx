@@ -5,6 +5,7 @@ import { setUserAddress } from 'store/user-inf/action-creators'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 
 import { WrapContainer } from './styles'
+import { getNumberAllProposals } from 'store/voting/proposals/action-creators'
 
 const STATES = {
   loading: 'loading',
@@ -27,6 +28,7 @@ function LoadingAccount ({ children }) {
       const accounts = await window.web3.eth.getAccounts()
       const addressId = accounts[0]
       dispatch(setUserAddress(addressId))
+      dispatch(getNumberAllProposals())
       setLoadingStatus(STATES.loaded)
     } catch (e) {
       console.error(e)

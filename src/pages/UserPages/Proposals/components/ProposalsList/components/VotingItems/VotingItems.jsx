@@ -103,8 +103,11 @@ function VotingItems ({ proposal }) {
     onChooseTypeOfVoting()
   }
 
+  const addCardLine = proposal.status === 'Passed' || proposal.status === 'Pending' || proposal.status === 'Accepted'
+
   return (
-        <>
+        <div>
+            {addCardLine ? <div className="list-card__line" /> : null}
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 {proposal.status === 'Passed' ? <Button handleButton={onProposalExecute} title="Execute" /> : null}
                 {proposal.status === 'Pending' || proposal.status === 'Accepted'
@@ -153,7 +156,7 @@ function VotingItems ({ proposal }) {
                 />
                 )
               : null}
-        </>
+        </div>
   )
 }
 

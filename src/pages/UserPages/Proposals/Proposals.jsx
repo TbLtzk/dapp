@@ -8,56 +8,32 @@ import { PROPOSALS_TYPES, PROPOSAL_STATUS_TYPES } from 'constants/statuses'
 import { useSelector } from 'react-redux'
 import {
   qActiveProposalsCountSelector,
-  qActiveProposalsErrorSelector,
   qActiveProposalsSelector,
   qEndedProposalsCountSelector,
-  qEndedProposalsErrorSelector,
-  qEndedProposalsSelector,
-  qLoadingActiveProposalsSelector,
-  qLoadingEndedProposalsSelector
+  qEndedProposalsSelector
 } from 'store/voting/q-proposals/selectors'
 import {
   rootActiveProposalsCountSelector,
-  rootActiveProposalsErrorSelector,
   rootActiveProposalsSelector,
   rootEndedProposalsCountSelector,
-  rootEndedProposalsErrorSelector,
-  rootEndedProposalsSelector,
-  rootLoadingActiveProposalsSelector,
-  rootLoadingEndedProposalsSelector
+  rootEndedProposalsSelector
 } from 'store/voting/root-node-proposals/selectors'
 import {
   expertActiveProposalsCountSelector,
-  expertActiveProposalsErrorSelector,
   expertActiveProposalsSelector,
   expertEndedProposalsCountSelector,
-  expertEndedProposalsErrorSelector,
-  expertEndedProposalsSelector,
-  expertLoadingActiveProposalsSelector,
-  expertLoadingEndedProposalsSelector
+  expertEndedProposalsSelector
 } from 'store/voting/expert-proposals/selectors'
 import {
   slashingActiveProposalsCountSelector,
-  slashingActiveProposalsErrorSelector,
   slashingActiveProposalsSelector,
   slashingEndedProposalsCountSelector,
-  slashingEndedProposalsErrorSelector,
-  slashingEndedProposalsSelector,
-  slashingLoadingActiveProposalsSelector,
-  slashingLoadingEndedProposalsSelector
+  slashingEndedProposalsSelector
 } from 'store/voting/slashing-proposals/selectors'
 
 function Proposals ({ proposalsType }) {
-  const {
-    proposals,
-    endedProposals,
-    isLoading,
-    isEndedLoading,
-    error,
-    endedError,
-    activeProposalsCount,
-    endedProposalsCount
-  } = getProposalsSelector(proposalsType)
+  const { proposals, endedProposals, activeProposalsCount, endedProposalsCount } =
+        getProposalsSelector(proposalsType)
 
   const name = getPageName(proposalsType)
 
@@ -81,10 +57,6 @@ function Proposals ({ proposalsType }) {
         return {
           proposals: useSelector(qActiveProposalsSelector),
           endedProposals: useSelector(qEndedProposalsSelector),
-          isLoading: useSelector(qLoadingActiveProposalsSelector),
-          isEndedLoading: useSelector(qLoadingEndedProposalsSelector),
-          error: useSelector(qActiveProposalsErrorSelector),
-          endedError: useSelector(qEndedProposalsErrorSelector),
           activeProposalsCount: useSelector(qActiveProposalsCountSelector),
           endedProposalsCount: useSelector(qEndedProposalsCountSelector)
         }
@@ -92,10 +64,6 @@ function Proposals ({ proposalsType }) {
         return {
           proposals: useSelector(rootActiveProposalsSelector),
           endedProposals: useSelector(rootEndedProposalsSelector),
-          isLoading: useSelector(rootLoadingActiveProposalsSelector),
-          isEndedLoading: useSelector(rootLoadingEndedProposalsSelector),
-          error: useSelector(rootActiveProposalsErrorSelector),
-          endedError: useSelector(rootEndedProposalsErrorSelector),
           activeProposalsCount: useSelector(rootActiveProposalsCountSelector),
           endedProposalsCount: useSelector(rootEndedProposalsCountSelector)
         }
@@ -103,10 +71,6 @@ function Proposals ({ proposalsType }) {
         return {
           proposals: useSelector(expertActiveProposalsSelector),
           endedProposals: useSelector(expertEndedProposalsSelector),
-          isLoading: useSelector(expertLoadingActiveProposalsSelector),
-          isEndedLoading: useSelector(expertLoadingEndedProposalsSelector),
-          error: useSelector(expertActiveProposalsErrorSelector),
-          endedError: useSelector(expertEndedProposalsErrorSelector),
           activeProposalsCount: useSelector(expertActiveProposalsCountSelector),
           endedProposalsCount: useSelector(expertEndedProposalsCountSelector)
         }
@@ -114,10 +78,6 @@ function Proposals ({ proposalsType }) {
         return {
           proposals: useSelector(slashingActiveProposalsSelector),
           endedProposals: useSelector(slashingEndedProposalsSelector),
-          isLoading: useSelector(slashingLoadingActiveProposalsSelector),
-          isEndedLoading: useSelector(slashingLoadingEndedProposalsSelector),
-          error: useSelector(slashingActiveProposalsErrorSelector),
-          endedError: useSelector(slashingEndedProposalsErrorSelector),
           activeProposalsCount: useSelector(slashingActiveProposalsCountSelector),
           endedProposalsCount: useSelector(slashingEndedProposalsCountSelector)
         }
@@ -130,10 +90,8 @@ function Proposals ({ proposalsType }) {
       title: 'Active Proposals',
       content: (
                 <ProposalsTab
-                    isLoading={isLoading}
                     proposals={proposals}
                     proposalsType={proposalsType}
-                    errorMessage={error}
                     proposalsCount={activeProposalsCount}
                     proposalStatus={PROPOSAL_STATUS_TYPES.active}
                 />
@@ -144,10 +102,8 @@ function Proposals ({ proposalsType }) {
       title: 'Ended Proposals',
       content: (
                 <ProposalsTab
-                    isLoading={isEndedLoading}
                     proposals={endedProposals}
                     proposalsType={proposalsType}
-                    errorMessage={endedError}
                     proposalsCount={endedProposalsCount}
                     proposalStatus={PROPOSAL_STATUS_TYPES.ended}
                 />

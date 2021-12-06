@@ -1,6 +1,4 @@
-import { call, put, takeEvery, select } from 'redux-saga/effects'
-
-import { PROPOSALS_TYPES } from 'constants/statuses'
+import { delay, call, put, takeEvery, select } from 'redux-saga/effects'
 
 import * as actionTypes from 'store/voting/proposals/action-types'
 import { setErrorMessage, setTransactionCounter } from 'store/transaction-handler/action-creators'
@@ -13,22 +11,10 @@ import {
   getProposal,
   setExecutedProposal
 } from 'store/voting/proposals/action-creators'
-import { getProposalQ, getQProposals, getQProposalsCount } from 'store/voting/q-proposals/action-creators'
-import {
-  getProposalRootNode,
-  getRootProposals,
-  getRootProposalsCount
-} from 'store/voting/root-node-proposals/action-creators'
-import {
-  getProposalExpert,
-  getExpertProposalsCount,
-  getExpertProposals
-} from 'store/voting/expert-proposals/action-creators'
-import {
-  getProposalSlashing,
-  getSlashingProposals,
-  getSlashingProposalsCount
-} from 'store/voting/slashing-proposals/action-creators'
+import { getQProposalsCount } from 'store/voting/q-proposals/action-creators'
+import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-creators'
+import { getExpertProposalsCount } from 'store/voting/expert-proposals/action-creators'
+import { getSlashingProposalsCount } from 'store/voting/slashing-proposals/action-creators'
 
 import { creationQContractObj } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import { chooseSlashingContractDependsOnType } from 'contracts/handler/SlashingVotingHandler'
@@ -181,66 +167,8 @@ function * getNumberAllProposalsGenerator () {
   yield put(getExpertProposalsCount())
   yield put(getRootProposalsCount())
   yield put(getSlashingProposalsCount())
-}
-
-function * updateProposal ({ data }) {
-  yield call(getProposalDependsOnTypeGenerator, data?.contract, data, data?.idProposal, false)
-}
-
-function * getProposalDependsOnTypeGenerator (contractName, data, id, activeProposal) {
-  try {
-    switch (contractName) {
-      case CONTRACTS_NAMES.constitutionVoting:
-      case CONTRACTS_NAMES.emergencyUpdateVoting:
-      case CONTRACTS_NAMES.generalUpdateVoting:
-        yield put(getProposalQ(contractName, id, activeProposal))
-        break
-      case CONTRACTS_NAMES.rootsVoting:
-        yield put(getProposalRootNode(contractName, id, activeProposal))
-        break
-      case CONTRACTS_NAMES.rootNodesSlashingVoting:
-      case CONTRACTS_NAMES.validatorsSlashingVoting:
-        yield put(getProposalSlashing(contractName, id, activeProposal))
-        break
-      case CONTRACTS_NAMES.ePQFIMembershipVoting:
-      case CONTRACTS_NAMES.ePDRMembershipVoting:
-      case CONTRACTS_NAMES.ePQFIParametersVoting:
-      case CONTRACTS_NAMES.ePDRParametersVoting:
-        yield put(getProposalExpert(contractName, id, activeProposal))
-        break
-    }
-  } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-  }
-}
-
-function * getOneProposalSharedGenerator ({ data }) {
-  yield call(getProposalDependsOnTypeGenerator, data?.contract, data, data?.id, false)
-}
-
-function * getProposalsListGenerator ({ proposalType, proposalStatusType, range = [0, 3] }) {
-  try {
-    switch (proposalType) {
-      case PROPOSALS_TYPES.proposals: {
-        yield put(getQProposals(proposalStatusType, range))
-        break
-      }
-      case PROPOSALS_TYPES.rootNodePanel: {
-        yield put(getRootProposals(proposalStatusType, range))
-        break
-      }
-      case PROPOSALS_TYPES.slashingProposals: {
-        yield put(getSlashingProposals(proposalStatusType, range))
-        break
-      }
-      case PROPOSALS_TYPES.expertProposals: {
-        yield put(getExpertProposals(proposalStatusType, range))
-        break
-      }
-    }
-  } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-  }
+  yield delay(120000)
+  yield call(getNumberAllProposalsGenerator)
 }
 
 function * getConstitutionHashGenerator () {
@@ -270,14 +198,7 @@ export default [
   takeEvery(actionTypes.CREATE_PROPOSAL, createProposalGenerator),
   takeEvery(actionTypes.VOTE_FOR_PROPOSAL, voteForProposalGenerator),
   takeEvery(actionTypes.EXECUTE_PROPOSAL, executeProposalGenerator),
-  takeEvery(actionTypes.UPDATE_PROPOSAL, updateProposal),
-
-  takeEvery(actionTypes.GET_ONE_PROPOSAL, getOneProposalSharedGenerator),
-
   takeEvery(actionTypes.GET_PROPOSAL, getProposalGenerator),
-
-  takeEvery(actionTypes.GET_PROPOSALS_LIST, getProposalsListGenerator),
-
   takeEvery(actionTypes.GET_NUMBER_ALL_PROPOSALS, getNumberAllProposalsGenerator),
   takeEvery(actionTypes.GET_CONSTITUTION_HASH, getConstitutionHashGenerator),
   takeEvery(actionTypes.GET_BASE_VOTING_WEIGHT_INFO, getBaseVotingWeightInfoGenerator)

@@ -76,8 +76,11 @@ export const sortAndCountProposals = (proposals) => {
       activeProposalsIds.push(proposal.activeIds.map((item) => ({ id: item, contract: proposal.contract })))
     }
   })
-  console.log(endedProposalsIds)
-  return [proposalsCount, activeProposalsIds.flat(), endedProposalsIds.flat()]
+  return [proposalsCount, groupProposals(activeProposalsIds), groupProposals(endedProposalsIds)]
+}
+
+const groupProposals = (array) => {
+  return array.flat().sort((a, b) => Number(b.id) - Number(a.id))
 }
 
 export const fillArray = (length) => {

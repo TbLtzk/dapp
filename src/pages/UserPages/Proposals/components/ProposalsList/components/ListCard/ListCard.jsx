@@ -65,7 +65,7 @@ function ListCard ({ proposal, id, proposalsKind, oneProposalPage }) {
                     </div>
                 </ListCardHeader>
                 <ListCardBody>
-                    {oneProposalPage || (!proposalInfo ? null : <ProposalContent proposal={proposalInfo} />)}
+                    <ProposalContent proposal={proposalInfo} />
                     <Accordion.Collapse eventKey={id}>
                         {collapsedContentOpen
                           ? (

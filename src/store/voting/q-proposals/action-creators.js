@@ -9,83 +9,18 @@ export const setQProposalsCount = (result) => ({
   result
 })
 
-export const getProposalQ = (contractName, id, activeProposal) => ({
-  type: actionTypes.GET_Q_PROPOSAL,
-  contractName,
-  id,
-  activeProposal
-})
-
-export const getProposalSuccess = (result) => ({
-  type: actionTypes.GET_Q_PROPOSAL_SUCCESS,
-  result
-})
-export const getOneProposalSuccess = (result) => ({
-  type: actionTypes.GET_Q_ONE_PROPOSAL_SUCCESS,
-  result
-})
-export const getEmptyProposalSuccess = (result) => ({
-  type: actionTypes.GET_Q_EMPTY_PROPOSAL_SUCCESS,
-  result
-})
-
-export const getProposalError = (result) => ({
-  type: actionTypes.GET_Q_PROPOSAL_ERROR,
-  result
-})
-
-export const getQProposalEnded = () => ({
-  type: actionTypes.GET_Q_PROPOSAL_ENDED
-})
-export const getProposalEndedSuccess = (result) => ({
-  type: actionTypes.GET_Q_PROPOSAL_ENDED_SUCCESS,
-  result
-})
-export const getEmptyProposalEndedSuccess = (result) => ({
-  type: actionTypes.GET_Q_EMPTY_PROPOSAL_ENDED_SUCCESS,
-  result
-})
-
-export const getProposalEndedError = (result) => ({
-  type: actionTypes.GET_Q_PROPOSAL_ENDED_ERROR,
-  result
-})
-
-// proposals
 export const getQProposals = (proposalStatusType, range) => ({
   type: actionTypes.GET_Q_PROPOSALS,
   proposalStatusType,
   range
 })
 
-// active proposals
 export const setQActiveProposals = (result) => ({
   type: actionTypes.SET_Q_ACTIVE_PROPOSALS,
   result
 })
 
-export const setQActiveProposalsError = (result) => ({
-  type: actionTypes.SET_Q_ACTIVE_PROPOSALS_ERROR,
-  result
-})
-
-export const setQActiveProposalsLoading = (result) => ({
-  type: actionTypes.SET_Q_ACTIVE_PROPOSALS_LOADING,
-  result
-})
-
-// ended proposals
-
 export const setQEndedProposals = (result) => ({
   type: actionTypes.SET_Q_ENDED_PROPOSALS,
-  result
-})
-export const setQEndedProposalsError = (result) => ({
-  type: actionTypes.SET_Q_ENDED_PROPOSALS_ERROR,
-  result
-})
-
-export const setQEndedProposalsLoading = (result) => ({
-  type: actionTypes.SET_Q_ENDED_PROPOSALS_LOADING,
   result
 })

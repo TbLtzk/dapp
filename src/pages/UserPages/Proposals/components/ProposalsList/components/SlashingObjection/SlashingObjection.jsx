@@ -129,11 +129,7 @@ function SlashingObjection ({ contract, proposalId, objData }) {
         ? CONTRACTS_NAMES.validatorsSlashingEscrow
         : CONTRACTS_NAMES.rootNodesSlashingEscrow
     )
-    try {
-      await slashingEscrowContract.execute(proposalId, userAddress)
-    } catch (e) {
-      console.error(e)
-    }
+    await slashingEscrowContract.execute(proposalId, userAddress)
     setIsPending(false)
   }
 

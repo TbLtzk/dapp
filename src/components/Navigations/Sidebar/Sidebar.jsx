@@ -35,9 +35,13 @@ import {
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
-import { getNumberAllProposals } from 'store/voting/proposals/action-creators'
 import { getAuctionsList } from 'store/auctions/action-creators'
 import { AUCTIONS_TYPES } from 'constants/statuses'
+import { getQProposalsCount } from 'store/voting/q-proposals/action-creators'
+import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-creators'
+import { getSlashingProposalsCount } from 'store/voting/slashing-proposals/action-creators'
+import { getExpertProposalsCount } from 'store/voting/expert-proposals/action-creators'
+import { getNumberAllProposals } from 'store/voting/proposals/action-creators'
 
 function Sidebar () {
   const history = useHistory()
@@ -62,7 +66,6 @@ function Sidebar () {
   }
 
   useEffect(() => {
-    dispatch(getNumberAllProposals())
     for (const item in AUCTIONS_TYPES) {
       dispatch(getAuctionsList(AUCTIONS_TYPES[item], true))
     }
@@ -94,6 +97,7 @@ function Sidebar () {
                         >
                             <LinkGroup>
                                 <LinkStyle
+                                    onClick={() => dispatch(getNumberAllProposals())}
                                     to={'/q-governance'}
                                     className="nav-link"
                                     highlight={highlight('q-governance')}
@@ -110,6 +114,7 @@ function Sidebar () {
                                 <div>
                                     <LinkGroup>
                                         <LinkStyle
+                                            onClick={() => dispatch(getQProposalsCount())}
                                             to={'/q-proposals'}
                                             className="nav-link"
                                             highlight={highlight('q-proposals')}
@@ -126,6 +131,7 @@ function Sidebar () {
                                     </LinkGroup>
                                     <LinkGroup>
                                         <LinkStyle
+                                            onClick={() => dispatch(getRootProposalsCount())}
                                             to={'/q-root-node-panel'}
                                             className="nav-link"
                                             highlight={highlight('q-root-node-panel')}
@@ -145,6 +151,7 @@ function Sidebar () {
                                         <>
                                             <LinkGroup>
                                                 <LinkStyle
+                                                    onClick={() => dispatch(getExpertProposalsCount())}
                                                     to={'/q-expert-proposals'}
                                                     className="nav-link"
                                                     highlight={highlight('q-expert-proposals')}
@@ -161,6 +168,7 @@ function Sidebar () {
                                             </LinkGroup>
                                             <LinkGroup>
                                                 <LinkStyle
+                                                    onClick={() => dispatch(getSlashingProposalsCount())}
                                                     to={'/slashing-proposals'}
                                                     className="nav-link"
                                                     highlight={highlight('slashing-proposals')}

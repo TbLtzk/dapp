@@ -1,7 +1,6 @@
 import { transformToPercentage } from './base-voting-helper'
 import { ParameterType } from '@q-dev/q-js-sdk'
 import { getRootNodesInstance, cache } from 'contracts/contract-instance'
-import { values, keys } from 'lodash'
 
 export default class VotingService {
   constructor (contractName) {
@@ -63,44 +62,22 @@ export default class VotingService {
   }
 
   async getProposal (id, type) {
-    let additionalInfo = {}
-    let headerInfo = {}
-    const proposal = await this.contract.getProposalWithStatus(id)
-    if (type === 'header') {
-      headerInfo = this.getProposalData(proposal, proposal.id, proposal.status)
-    }
-    if (type === 'full') {
-      additionalInfo = await this.getProposalAdditionalData(proposal, id)
-      headerInfo = this.getProposalData(proposal, proposal.id, proposal.status)
-    }
-    return { ...headerInfo, ...additionalInfo, error: false }
-  }
-
-  async getProposals (range, latestBlockNumber) {
-    const latestProposalsIds = await this.contract.getProposalIds(latestBlockNumber - 10000, 'latest')
-    const rangeProposalsIds = [...latestProposalsIds].reverse().slice(...range)
-    if (!latestProposalsIds.length) {
-      return []
+    const ids = await this.contract.getProposalIds(0, 'latest')
+    const includeInIds = ids.includes(id)
+    if (includeInIds) {
+      let additionalInfo = {}
+      let headerInfo = {}
+      const proposal = await this.contract.getProposalWithStatus(id)
+      if (type === 'header') {
+        headerInfo = this.getProposalData(proposal, proposal.id, proposal.status)
+      }
+      if (type === 'full') {
+        additionalInfo = await this.getProposalAdditionalData(proposal, id)
+        headerInfo = this.getProposalData(proposal, proposal.id, proposal.status)
+      }
+      return { ...headerInfo, ...additionalInfo, error: false }
     } else {
-      const allProposals = await this.contract.getProposals(...rangeProposalsIds)
-      const activeProposals = allProposals.filter(
-        (obj) => obj.status === '1' || obj.status === '3' || obj.status === '4'
-      )
-      return activeProposals.map((prop) => this.getProposalData(prop, prop.id, prop.status))
-    }
-  }
-
-  async getEndedProposals (range) {
-    const proposalIds = await this.contract.getProposalIds(0, 'latest')
-    const sliceProposals = [...proposalIds].slice(...range)
-    if (!sliceProposals.length) {
-      return []
-    } else {
-      const allProposals = await this.contract.getProposals(...sliceProposals)
-      const endedProposals = allProposals.filter(
-        (obj) => obj.status !== '1' && obj.status !== '3' && obj.status !== '4'
-      )
-      return endedProposals.map((prop) => this.getProposalData(prop, prop.id, prop.status))
+      return { error: true }
     }
   }
 
@@ -125,21 +102,21 @@ export default class VotingService {
     return objRes
   }
 
-  async getProposalsCount (latestBlockNumber) {
-    const latestIds = await this.contract.getProposalIds(latestBlockNumber - 250000, 'latest')
+  async getProposalsCount (latestBlocks) {
+    const latestIds = await this.contract.getProposalIds(latestBlocks, 'latest')
     const allIds = await this.contract.getProposalIds(0, 'latest')
     const statuses = []
 
     for (const id of latestIds) {
       const status = await this.contract.getStatus(id)
-      statuses.push({ [id]: status })
+      statuses.push({ id, status })
     }
 
     const activeIds = statuses
-      .filter((status) => values(status)[0] === '1' || values(status)[0] === '3' || values(status)[0] === '4')
-      .map((item) => keys(item)[0])
+      .filter((prop) => prop.status === '1' || prop.status === '3' || prop.status === '4')
+      .map((prop) => prop.id)
 
-    const endedIds = allIds.filter((id) => activeIds.indexOf(id))
+    const endedIds = allIds.filter((id) => !activeIds.includes(id))
 
     return {
       contract: this.contractName,

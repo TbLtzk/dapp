@@ -6,6 +6,7 @@ export const ListCardWrp = styled(Card)`
   border: 0;
   background: ${(props) => props.theme.colors.oxfordBlueTint1};
   margin-bottom: 16px;
+  height: ${(p) => (p.onePage ? 'auto' : 'auto')};
 
   h1 {
     color: ${(props) => props.theme.colors.white};

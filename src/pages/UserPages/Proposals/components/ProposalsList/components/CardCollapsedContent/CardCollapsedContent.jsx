@@ -44,11 +44,11 @@ function CardCollapsedContent ({ contract, proposalId, proposalsKind, proposalSt
                     <PollDetail pollDetail={proposalInfo} proposalsKind={proposalsKind} />
                     <div className="list-card__line" />
                     <VoteBreakdown voteBreakdown={proposalInfo} />
-                    <div className="list-card__line" />
                     <VotingItems proposal={proposalInfo} />
                     {proposalsKind === PROPOSALS_TYPES.slashingProposals && proposalStatus === STATUSES.executed
                       ? (
                         <>
+                            <div className="list-card__line" />
                             <SlashingObjection
                                 contract={contract}
                                 proposal={proposalInfo}
