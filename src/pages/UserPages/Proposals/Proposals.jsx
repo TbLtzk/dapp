@@ -1,71 +1,39 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import PageWrap from 'components/Base/PageWrap'
 import BigTabsView from 'components/Base/Tabs/BigTabsView'
 import ProposalsTab from './components/ProposalsTab'
 import CreateQProposalBtn from './components/CreateQProposalBtn'
-import Button from 'components/Base/Buttons/Button'
 
 import { PROPOSALS_TYPES, PROPOSAL_STATUS_TYPES } from 'constants/statuses'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import {
   qActiveProposalsCountSelector,
-  qEndedProposals,
+  qActiveProposalsSelector,
   qEndedProposalsCountSelector,
-  qErrorEnded,
-  qErrorM,
-  qLoadingEndedProposals,
-  qLoadingProposals,
-  qProposalsArr
+  qEndedProposalsSelector
 } from 'store/voting/q-proposals/selectors'
 import {
   rootActiveProposalsCountSelector,
+  rootActiveProposalsSelector,
   rootEndedProposalsCountSelector,
-  rootNodeEndedProposals,
-  rootNodeErrorEnded,
-  rootNodeErrorM,
-  rootNodeLoadingEndedProposals,
-  rootNodeLoadingProposals,
-  rootNodeProposalsArr
+  rootEndedProposalsSelector
 } from 'store/voting/root-node-proposals/selectors'
 import {
   expertActiveProposalsCountSelector,
-  expertEndedProposals,
+  expertActiveProposalsSelector,
   expertEndedProposalsCountSelector,
-  expertErrorEnded,
-  expertErrorM,
-  expertLoadingEndedProposals,
-  expertProposalsArr,
-  loadingExpertProposals
+  expertEndedProposalsSelector
 } from 'store/voting/expert-proposals/selectors'
 import {
   slashingActiveProposalsCountSelector,
-  slashingEndedProposals,
+  slashingActiveProposalsSelector,
   slashingEndedProposalsCountSelector,
-  slashingErrorEnded,
-  slashingErrorM,
-  slashingLoadingEndedProposals,
-  slashingLoadingProposals,
-  slashingProposalsArr
+  slashingEndedProposalsSelector
 } from 'store/voting/slashing-proposals/selectors'
-import { getProposalsList } from 'store/voting/proposals/action-creators'
-import { getLockedAssets } from 'store/q-vault/action-creators'
-import { userAddressMetamask } from 'store/user-inf/selectors'
-import { transactionCounter } from 'store/transaction-handler/selectors'
 
 function Proposals ({ proposalsType }) {
-  const dispatch = useDispatch()
-  const address = useSelector(userAddressMetamask)
-  const transaction = useSelector(transactionCounter)
-  const {
-    proposals,
-    endedProposals,
-    isLoading,
-    isEndedLoading,
-    error,
-    endedError,
-    activeProposalsCount,
-    endedProposalsCount
-  } = getProposalsSelector(proposalsType)
+  const { proposals, endedProposals, activeProposalsCount, endedProposalsCount } =
+        getProposalsSelector(proposalsType)
 
   const name = getPageName(proposalsType)
 
@@ -87,66 +55,34 @@ function Proposals ({ proposalsType }) {
     switch (type) {
       case PROPOSALS_TYPES.proposals:
         return {
-          proposals: useSelector(qProposalsArr),
-          endedProposals: useSelector(qEndedProposals),
-          isLoading: useSelector(qLoadingProposals),
-          isEndedLoading: useSelector(qLoadingEndedProposals),
-          error: useSelector(qErrorM),
-          endedError: useSelector(qErrorEnded),
+          proposals: useSelector(qActiveProposalsSelector),
+          endedProposals: useSelector(qEndedProposalsSelector),
           activeProposalsCount: useSelector(qActiveProposalsCountSelector),
           endedProposalsCount: useSelector(qEndedProposalsCountSelector)
         }
       case PROPOSALS_TYPES.rootNodePanel:
         return {
-          proposals: useSelector(rootNodeProposalsArr),
-          endedProposals: useSelector(rootNodeEndedProposals),
-          isLoading: useSelector(rootNodeLoadingProposals),
-          isEndedLoading: useSelector(rootNodeLoadingEndedProposals),
-          error: useSelector(rootNodeErrorM),
-          endedError: useSelector(rootNodeErrorEnded),
+          proposals: useSelector(rootActiveProposalsSelector),
+          endedProposals: useSelector(rootEndedProposalsSelector),
           activeProposalsCount: useSelector(rootActiveProposalsCountSelector),
           endedProposalsCount: useSelector(rootEndedProposalsCountSelector)
         }
       case PROPOSALS_TYPES.expertProposals:
         return {
-          proposals: useSelector(expertProposalsArr),
-          endedProposals: useSelector(expertEndedProposals),
-          isLoading: useSelector(loadingExpertProposals),
-          isEndedLoading: useSelector(expertLoadingEndedProposals),
-          error: useSelector(expertErrorM),
-          endedError: useSelector(expertErrorEnded),
+          proposals: useSelector(expertActiveProposalsSelector),
+          endedProposals: useSelector(expertEndedProposalsSelector),
           activeProposalsCount: useSelector(expertActiveProposalsCountSelector),
           endedProposalsCount: useSelector(expertEndedProposalsCountSelector)
         }
       case PROPOSALS_TYPES.slashingProposals:
         return {
-          proposals: useSelector(slashingProposalsArr),
-          endedProposals: useSelector(slashingEndedProposals),
-          isLoading: useSelector(slashingLoadingProposals),
-          isEndedLoading: useSelector(slashingLoadingEndedProposals),
-          error: useSelector(slashingErrorM),
-          endedError: useSelector(slashingErrorEnded),
+          proposals: useSelector(slashingActiveProposalsSelector),
+          endedProposals: useSelector(slashingEndedProposalsSelector),
           activeProposalsCount: useSelector(slashingActiveProposalsCountSelector),
           endedProposalsCount: useSelector(slashingEndedProposalsCountSelector)
         }
     }
   }
-
-  function uploadProposals () {
-    dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.active))
-  }
-
-  function uploadEndedProposals () {
-    dispatch(getProposalsList(proposalsType, PROPOSAL_STATUS_TYPES.ended))
-  }
-
-  useEffect(() => {
-    if (!transaction) {
-      uploadEndedProposals()
-      uploadProposals()
-      dispatch(getLockedAssets(address))
-    }
-  }, [transaction])
 
   const tabsItems = [
     {
@@ -154,10 +90,8 @@ function Proposals ({ proposalsType }) {
       title: 'Active Proposals',
       content: (
                 <ProposalsTab
-                    isLoading={isLoading}
                     proposals={proposals}
                     proposalsType={proposalsType}
-                    errorMessage={error}
                     proposalsCount={activeProposalsCount}
                     proposalStatus={PROPOSAL_STATUS_TYPES.active}
                 />
@@ -168,28 +102,10 @@ function Proposals ({ proposalsType }) {
       title: 'Ended Proposals',
       content: (
                 <ProposalsTab
-                    isLoading={isEndedLoading}
                     proposals={endedProposals}
                     proposalsType={proposalsType}
-                    errorMessage={endedError}
                     proposalsCount={endedProposalsCount}
                     proposalStatus={PROPOSAL_STATUS_TYPES.ended}
-                />
-      )
-    },
-    {
-      title: (
-                <Button
-                    title="Refresh"
-                    handleButton={() => {
-                      uploadProposals()
-                      uploadEndedProposals()
-                    }}
-                    type="button"
-                    width="100px"
-                    position="absolute"
-                    right="70px"
-                    top="108px"
                 />
       )
     }

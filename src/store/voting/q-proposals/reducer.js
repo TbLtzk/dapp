@@ -1,116 +1,25 @@
 import * as actionTypes from './action-types'
-import {
-  changeProposalsArrIfExist,
-  changeProposalsArrIfEmptyResult
-} from 'contracts/helpers/voting-helpers/base-voting-helper'
-import { PROPOSAL_STATUS_TYPES } from 'constants/statuses'
-import { removeCurrentProposals } from 'func/useful'
 
 const initialState = {
-  oneProposal: [],
-  proposalsArr: [],
-  loadingProposals: true,
-  errorM: null,
-
+  activeProposals: [],
   endedProposals: [],
-  loadingEndedProposals: true,
-  errorEnded: null,
 
-  qActiveProposalsCount: 0,
-  qEndedProposalsCount: 0,
+  qActiveProposalsCount: -1,
+  qEndedProposalsCount: -1,
   qLoadingProposalsCount: true
 }
 
 export default function qProposals (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.GET_Q_ENDED_PROPOSALS_SUCCESS:
+    case actionTypes.SET_Q_ACTIVE_PROPOSALS:
       return {
         ...state,
-        endedProposals: removeCurrentProposals(state.endedProposals, action.result.endedProposals, action.result.reset),
-        loadingEndedProposals: action.result.loading,
-        errorEnded: null
+        activeProposals: action.result
       }
-    case actionTypes.GET_Q_ENDED_PROPOSALS_ERROR:
+    case actionTypes.SET_Q_ENDED_PROPOSALS:
       return {
         ...state,
-        endedProposals: [],
-        loadingEndedProposals: false,
-        errorEnded: action.result
-      }
-    case actionTypes.GET_Q_PROPOSALS_LIST:
-      return {
-        ...state,
-        loadingProposals: action.proposalStatusType === PROPOSAL_STATUS_TYPES.active ? true : state.loadingProposals,
-        loadingEndedProposals:
-          action.proposalStatusType === PROPOSAL_STATUS_TYPES.ended ? true : state.loadingEndedProposals
-      }
-    case actionTypes.GET_Q_PROPOSALS_LIST_SUCCESS:
-      return {
-        ...state,
-        proposalsArr: removeCurrentProposals(state.proposalsArr, action.result.proposalsArr, action.result.loading),
-        loadingProposals: action.result.loading,
-        errorM: null
-      }
-    case actionTypes.GET_Q_PROPOSALS_LIST_ERROR:
-      return {
-        ...state,
-        proposalsArr: [],
-        loadingProposals: false,
-        errorM: action.result
-      }
-    case actionTypes.GET_Q_PROPOSAL:
-      return {
-        ...state,
-        loadingProposals: true
-      }
-    case actionTypes.GET_Q_PROPOSAL_SUCCESS:
-      return {
-        ...state,
-        proposalsArr: changeProposalsArrIfExist(state.proposalsArr, action),
-        loadingProposals: false
-      }
-
-    case actionTypes.GET_Q_ONE_PROPOSAL_SUCCESS:
-      return {
-        ...state,
-        oneProposal: action.result,
-        loadingProposals: false
-      }
-    case actionTypes.GET_Q_PROPOSAL_ENDED_SUCCESS:
-      return {
-        ...state,
-        endedProposals: changeProposalsArrIfExist(state.endedProposals, action),
-        // proposalsArr: [...state.proposalsArr, ...action.result],
-        loadingEndedProposals: false
-      }
-    case actionTypes.GET_Q_PROPOSAL_ERROR:
-      return {
-        ...state,
-        proposalsArr: [...state.proposalsArr],
-        loadingProposals: false
-      }
-    case actionTypes.GET_Q_EMPTY_PROPOSAL_SUCCESS:
-      return {
-        ...state,
-        proposalsArr: changeProposalsArrIfEmptyResult(state.proposalsArr, action),
-        loadingProposals: false
-      }
-    case actionTypes.GET_Q_EMPTY_PROPOSAL_ENDED_SUCCESS:
-      return {
-        ...state,
-        endedProposals: changeProposalsArrIfEmptyResult(state.endedProposals, action),
-        loadingEndedProposals: false
-      }
-    case actionTypes.GET_Q_PROPOSAL_ENDED:
-      return {
-        ...state,
-        loadingEndedProposals: true
-      }
-    case actionTypes.GET_Q_PROPOSAL_ENDED_ERROR:
-      return {
-        ...state,
-        endedProposals: [...state.endedProposals],
-        loadingEndedProposals: false
+        endedProposals: action.result
       }
     case actionTypes.SET_Q_PROPOSALS_COUNT: {
       return {

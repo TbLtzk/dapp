@@ -1,12 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { STATUSES } from 'constants/statuses'
+import { setCreatedStepsLimit, setCreateObj, setStepCounter } from 'store/modal-handler/action-creators'
 import {
-  setCreatedStepsLimit, setCreateObj,
-  setStepCounter
-} from 'store/modal-handler/action-creators'
-import {
-  onEscrowRecallProposeDecision, onEscrowConfirmDecision
+  onEscrowRecallProposeDecision,
+  onEscrowConfirmDecision
 } from 'store/voting/slashing-proposals/action-creators'
 
 import { userAddressMetamask } from 'store/user-inf/selectors'
@@ -19,12 +17,7 @@ import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-hel
 import { Dropdown, DropdownButton } from 'react-bootstrap'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 
-function SlashingObjection (props) {
-  const {
-    contract,
-    proposalId,
-    objData
-  } = props
+function SlashingObjection ({ contract, proposalId, objData }) {
   const [modalShow, setModalShow] = useState(false)
   const [isPending, setIsPending] = useState(false)
   const [activeModal, setActiveModal] = useState('')
@@ -32,7 +25,7 @@ function SlashingObjection (props) {
   const userAddress = useSelector(userAddressMetamask)
 
   const objectionData = useMemo(() => {
-    return ([
+    return [
       {
         title: 'Status',
         value: objData.objection.statusObjection
@@ -65,11 +58,11 @@ function SlashingObjection (props) {
         title: 'Appeal End Time',
         value: objData.objection.appealEndTime
       }
-    ])
+    ]
   }, [objData?.objection])
 
   const decisionData = useMemo(() => {
-    return ([
+    return [
       {
         title: 'Current Decision Proposer',
         value: objData.decision.proposer
@@ -98,7 +91,7 @@ function SlashingObjection (props) {
         title: 'Current Confirmation Percentage',
         value: objData.decision.currentConfirmationPercentage + ' %'
       }
-    ])
+    ]
   }, [objData?.decision])
 
   const onRecallCurrentDecision = useCallback(() => {
@@ -133,70 +126,78 @@ function SlashingObjection (props) {
     setIsPending(true)
     const slashingEscrowContract = new SlashingEscrow(
       contract === CONTRACTS_NAMES.validatorsSlashingVoting
-        ? 'ValidatorsSlashingEscrow'
-        : 'RootNodesSlashingEscrow'
+        ? CONTRACTS_NAMES.validatorsSlashingEscrow
+        : CONTRACTS_NAMES.rootNodesSlashingEscrow
     )
-    try {
-      await slashingEscrowContract.execute(proposalId, userAddress)
-    } catch (e) {
-      console.error(e)
-    }
+    await slashingEscrowContract.execute(proposalId, userAddress)
     setIsPending(false)
   }
 
-  const executeDecisionBTN = <Dropdown.Item onClick={executeDecision}>
-    {isPending ? <LoadingSpinner/> : <><i className={'mdi mdi-play btn-icon'}/>Execute Decision</>}
-  </Dropdown.Item>
+  const executeDecisionBTN = (
+        <Dropdown.Item onClick={executeDecision}>
+            {isPending
+              ? (
+                <LoadingSpinner />
+                )
+              : (
+                <>
+                    <i className={'mdi mdi-play btn-icon'} />
+                    Execute Decision
+                </>
+                )}
+        </Dropdown.Item>
+  )
   return (
-    <div>
-      <div className="list-card__tow-colm" style={{ marginBottom: '20px' }}>
-        <h3>Slashing Objection</h3>
-        <div style={{ textAlign: 'right' }}>
-          <DropdownButton
-            menuAlign="right"
-            title="Actions"
-            id="dropdown-menu-align-right"
-          >
-            <Dropdown.Item onClick={onCastObjection}>
-              <i className={'mdi mdi-cast btn-icon'}/>Cast Objection
-            </Dropdown.Item>
-            <Dropdown.Item onClick={onConfirmAppeal}>
-              <i className={'mdi mdi-cast btn-icon'}/>Confirm Appeal initiated by Slashing Candidate
-            </Dropdown.Item>
-            <Dropdown.Item onClick={onProposeDecision}>
-              <i className={'mdi mdi-arrow-decision btn-icon'}/>Propose Decision
-            </Dropdown.Item>
-            <Dropdown.Item onClick={onConfirmCurrentDecision}>
-              <i className={'mdi mdi-vote btn-icon'}/>Vote to confirm Decision
-            </Dropdown.Item>
-            <Dropdown.Item onClick={onRecallCurrentDecision}>
-              <i className={'mdi mdi-repeat btn-icon'}/>Recall Decision
-            </Dropdown.Item>
-            {objData.objection.statusObjection === STATUSES.decided && executeDecisionBTN}
-          </DropdownButton>
-        </div>
-      </div>
-      <div className="list-card__tow-colm">
         <div>
-          <h4>Objection</h4>
-          <ListDetails list={objectionData}/>
+            <div className="list-card__tow-colm" style={{ marginBottom: '20px' }}>
+                <h3>Slashing Objection</h3>
+                <div style={{ textAlign: 'right' }}>
+                    <DropdownButton menuAlign="right" title="Actions" id="dropdown-menu-align-right">
+                        <Dropdown.Item onClick={onCastObjection}>
+                            <i className={'mdi mdi-cast btn-icon'} />
+                            Cast Objection
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={onConfirmAppeal}>
+                            <i className={'mdi mdi-cast btn-icon'} />
+                            Confirm Appeal initiated by Slashing Candidate
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={onProposeDecision}>
+                            <i className={'mdi mdi-arrow-decision btn-icon'} />
+                            Propose Decision
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={onConfirmCurrentDecision}>
+                            <i className={'mdi mdi-vote btn-icon'} />
+                            Vote to confirm Decision
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={onRecallCurrentDecision}>
+                            <i className={'mdi mdi-repeat btn-icon'} />
+                            Recall Decision
+                        </Dropdown.Item>
+                        {objData.objection.statusObjection === STATUSES.decided && executeDecisionBTN}
+                    </DropdownButton>
+                </div>
+            </div>
+            <div className="list-card__tow-colm">
+                <div>
+                    <h4>Objection</h4>
+                    <ListDetails list={objectionData} />
+                </div>
+                <div>
+                    <h4>Decision</h4>
+                    <ListDetails list={decisionData} />
+                </div>
+            </div>
+            <ModalSlashingObjection
+                contract={contract}
+                proposalId={proposalId}
+                activeTab={activeModal}
+                modalShow={modalShow}
+                onHide={() => {
+                  setModalShow(false)
+                  dispatch(setCreateObj({}))
+                }}
+            />
         </div>
-        <div>
-          <h4>Decision</h4>
-          <ListDetails list={decisionData}/>
-        </div>
-      </div>
-      <ModalSlashingObjection
-        contract={contract}
-        proposalId={proposalId}
-        activeTab={activeModal}
-        modalShow={modalShow}
-        onHide={() => {
-          setModalShow(false)
-          dispatch(setCreateObj({}))
-        }}
-      />
-    </div>
   )
 }
 

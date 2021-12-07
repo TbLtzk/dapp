@@ -14,7 +14,7 @@ export const getContractRegistryInstance = async () => {
   return contractRegistryInstance
 }
 
-const cache = {}
+export const cache = {}
 
 function getInstance (instance, QUSD) {
   return async () => {
@@ -111,4 +111,17 @@ export const getValidatorMetricsInstance = async () => {
     validatorMetricsInstance = new ValidatorMetrics()
   }
   return validatorMetricsInstance
+}
+
+export async function initGovernenceInstances () {
+  await getGeneralUpdateVotingInstance()
+  await getConstitutionVotingInstance()
+  await getEmergencyUpdateVotingInstance()
+  await getValidatorsSlashingVotingInstance()
+  await getRootNodesSlashingVotingInstance()
+  await getRootNodesMembershipVotingInstance()
+  await getEpqfiParametersVotingInstance()
+  await getEpdrParametersVotingInstance()
+  await getEpqfiMembershipVotingInstance()
+  await getEpdrMembershipVotingInstance()
 }

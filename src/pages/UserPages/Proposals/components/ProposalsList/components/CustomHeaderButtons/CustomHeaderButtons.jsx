@@ -2,19 +2,18 @@ import React, { useState } from 'react'
 import Tooltip from 'components/Base/Tooltip'
 import { useAccordionToggle } from 'react-bootstrap'
 import Button from 'components/Base/Buttons/Button'
+import CopyToClipboard from 'react-copy-to-clipboard'
 
-function CustomHeaderButtons ({ eventKey, shareText }) {
+function CustomHeaderButtons ({ eventKey, shareText, open, setOpen = () => {}, oneProposalPage }) {
   const decoratedOnClick = useAccordionToggle(eventKey, () => {})
   const [copy, setCopy] = useState(false)
-  const [open, setOpen] = useState(false)
 
   function handleOpen () {
     decoratedOnClick()
-    setOpen(!open)
+    setOpen()
   }
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(shareText)
     setCopy(true)
     const timer = setTimeout(() => {
       setCopy(false)
@@ -25,10 +24,18 @@ function CustomHeaderButtons ({ eventKey, shareText }) {
   return (
         <>
             <Tooltip copy={true} disabled={false} additionalInfo={`${copy ? 'Copied!' : 'Copy'}`}>
-                <Button handleButton={handleCopy} title="Share" icon="share" />
+                <CopyToClipboard onCopy={handleCopy} text={shareText}>
+                    <div>
+                        <Button title="Share" icon="share" />
+                    </div>
+                </CopyToClipboard>
             </Tooltip>
-            <div style={{ width: '20px' }} />
-            <Button iconFontSize="16px" handleButton={handleOpen} icon={`chevron-${open ? 'up' : 'down'}`} />
+            {oneProposalPage ? null : <div style={{ width: '20px' }} />}
+            {oneProposalPage
+              ? null
+              : (
+                <Button iconFontSize="16px" handleButton={handleOpen} icon={`chevron-${open ? 'up' : 'down'}`} />
+                )}
         </>
   )
 }

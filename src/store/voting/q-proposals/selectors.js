@@ -1,15 +1,6 @@
-/* ended proposals staff */
-export const qEndedProposals = state => state.qProposals.endedProposals
-export const qLoadingEndedProposals = state => state.qProposals.loadingEndedProposals
-export const qErrorEnded = state => state.qProposals.errorEnded
+export const qActiveProposalsSelector = (state) => state.qProposals.activeProposals
+export const qEndedProposalsSelector = (state) => state.qProposals.endedProposals
 
-export const oneQProposal = state => state.qProposals.oneProposal
-
-/* get list of proposals */
-export const qProposalsArr = state => state.qProposals.proposalsArr
-export const qLoadingProposals = state => state.qProposals.loadingProposals
-export const qErrorM = state => state.qProposals.errorM
-
-export const qEndedProposalsCountSelector = state => state.qProposals.qEndedProposalsCount
-export const qActiveProposalsCountSelector = state => state.qProposals.qActiveProposalsCount
-export const qLoadingProposalsCountSelector = state => state.qProposals.qLoadingProposalsCount
+export const qEndedProposalsCountSelector = (state) => state.qProposals.qEndedProposalsCount
+export const qActiveProposalsCountSelector = (state) => state.qProposals.qActiveProposalsCount
+export const qLoadingProposalsCountSelector = (state) => state.qProposals.qLoadingProposalsCount

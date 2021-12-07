@@ -5,48 +5,57 @@ import PropTypes from 'prop-types'
 import { ButtonCustom } from './styles'
 import { theme } from 'store/theme/selectors'
 
-function Button (props) {
+function Button ({
+  title,
+  type,
+  position,
+  right,
+  top,
+  margin,
+  width,
+  disabled,
+  handleButton,
+  icon,
+  iconFontSize,
+  isIconPositionRight
+}) {
   const currentTheme = useSelector(theme)
-  const {
-    title,
-    type,
-    position,
-    right,
-    top,
-    margin,
-    width,
-    disabled,
-    handleButton,
-    icon,
-    iconFontSize,
-    isIconPositionRight
-  } = props
 
   return (
-    <ButtonCustom
-      palette={currentTheme}
-      disabled={disabled}
-      type={type}
-      width={width}
-      position={position}
-      right={right}
-      top={top}
-      margin={margin}
-      onClick={handleButton}
-      title={title}
-      iconfontsize={iconFontSize}
-      isiconpositionright={isIconPositionRight ? '1' : ''}
-    >
-      {icon
-        ? isIconPositionRight
-          ? (<>
-          {title}<i className={`mdi mdi-${icon} btn-icon`}/>
-        </>)
-          : (<>
-          <i className={`mdi mdi-${icon} btn-icon`}/>{title}
-        </>)
-        : title}
-    </ButtonCustom>
+        <ButtonCustom
+            palette={currentTheme}
+            disabled={disabled}
+            type={type}
+            width={width}
+            position={position}
+            right={right}
+            top={top}
+            margin={margin}
+            onClick={handleButton}
+            title={title}
+            iconfontsize={iconFontSize}
+            isiconpositionright={isIconPositionRight ? '1' : ''}
+        >
+            {icon
+              ? (
+                  isIconPositionRight
+                    ? (
+                    <>
+                        {title}
+                        <i className={`mdi mdi-${icon} btn-icon`} />
+                    </>
+                      )
+                    : (
+                    <>
+                        <i className={`mdi mdi-${icon} btn-icon`} />
+                        {title}
+                    </>
+                      )
+                )
+              : (
+                  title
+                )}
+        </ButtonCustom>
   )
 }
 

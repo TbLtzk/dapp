@@ -33,6 +33,11 @@ export const getUniqueProposals = (array) => {
   )
 }
 
+export const getLatestBlockNumber = async () => {
+  const block = await window.web3.eth.getBlock('latest')
+  return block.number
+}
+
 export const fN = (number) => {
   if (number === undefined || isNaN(number) || number === null) return 0
   const maximumFractionDigits = 4
@@ -46,6 +51,36 @@ export const uintPercentToNumber = (num) => {
   if (num >= 10 ** 27) return 100
 
   return num / 10 ** 27
+}
+
+export function sortByIdAndFlat (array) {
+  return array.flat().sort((a, b) => b.id - a.id)
+}
+
+export const sortAndCountProposals = (proposals) => {
+  const proposalsCount = {
+    active: 0,
+    ended: 0
+  }
+
+  const activeProposalsIds = []
+  const endedProposalsIds = []
+
+  proposals.forEach((proposal) => {
+    if (proposal.endedIds) {
+      proposalsCount.ended += proposal.endedIds.length
+      endedProposalsIds.push(proposal.endedIds.map((item) => ({ id: item, contract: proposal.contract })))
+    }
+    if (proposal.activeIds) {
+      proposalsCount.active += proposal.activeIds.length
+      activeProposalsIds.push(proposal.activeIds.map((item) => ({ id: item, contract: proposal.contract })))
+    }
+  })
+  return [proposalsCount, groupProposals(activeProposalsIds), groupProposals(endedProposalsIds)]
+}
+
+const groupProposals = (array) => {
+  return array.flat().sort((a, b) => Number(b.id) - Number(a.id))
 }
 
 export const fillArray = (length) => {

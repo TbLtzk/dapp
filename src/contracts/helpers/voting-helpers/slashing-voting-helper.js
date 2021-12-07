@@ -7,8 +7,9 @@ import { fromSolDateFormattingT1 } from 'func/date'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 
 export default class SlashingVoting extends VotingService {
-  async getProposalData (promiseRes, id, promiseStatus) {
+  async getProposalAdditionalData (promiseRes, id) {
     const objRes = {}
+
     let objStats = {}
     const objEscrow = {
       objEscrow: {
@@ -19,7 +20,6 @@ export default class SlashingVoting extends VotingService {
 
     const isValidatorSlashingMode = this.contractName === CONTRACTS_NAMES.validatorsSlashingVoting
 
-    objRes.id = id
     objRes.remark = promiseRes.base.remark
     objRes.candidate = promiseRes.candidate
     objRes.amountToSlash = fromWei(promiseRes.amountToSlash)
@@ -35,18 +35,12 @@ export default class SlashingVoting extends VotingService {
       }
     }
 
-    objRes.vetoEndTime = promiseRes.base.params.vetoEndTime
-    objRes.votingEndTime = promiseRes.base.params.votingEndTime
-
-    objRes.status = getStatusTransformation(promiseStatus)
-    objRes.title = isValidatorSlashingMode ? 'Validator slashing proposals' : 'Root Nodes slashing proposals'
     objRes.type = isValidatorSlashingMode ? 'validator slashing' : 'root nodes slashing'
     objStats = await this.getProposalStatsData(id)
-    objRes.contract = this.contractName
-    if (promiseStatus === '5') {
+    if (promiseRes.status === '5') {
       const SlashingEscrowContractName = isValidatorSlashingMode
-        ? 'ValidatorsSlashingEscrow'
-        : 'RootNodesSlashingEscrow'
+        ? CONTRACTS_NAMES.validatorsSlashingEscrow
+        : CONTRACTS_NAMES.rootNodesSlashingEscrow
       const SlashingEscrowContract = new SlashingEscrow(SlashingEscrowContractName)
       objEscrow.objEscrow.objection.statusObjection = SlashingEscrowContract.getTitleStatus(
         await SlashingEscrowContract.getStatus(id)
@@ -78,13 +72,25 @@ export default class SlashingVoting extends VotingService {
     return { ...objRes, ...objStats, ...objEscrow }
   }
 
+  getProposalData (promiseRes, id, promiseStatus) {
+    const objRes = {}
+    objRes.id = id
+    objRes.contract = this.contractName
+    objRes.vetoEndTime = promiseRes.base.params.vetoEndTime
+    objRes.votingEndTime = promiseRes.base.params.votingEndTime
+    objRes.status = getStatusTransformation(promiseStatus)
+    const isValidatorSlashingMode = this.contractName === CONTRACTS_NAMES.validatorsSlashingVoting
+    objRes.title = isValidatorSlashingMode ? 'Validator slashing proposals' : 'Root Nodes slashing proposals'
+
+    return objRes
+  }
+
   async createProposal (data, userAddress) {
-    const contract = await this.switchContract()
     const link = data['external-link']
     let percentageStake = data['%-value']
     percentageStake = getPercentageFormat(percentageStake)
     const candidate = data.address
-    const result = await contract.createProposal(link, candidate, percentageStake, { from: userAddress })
+    const result = await this.contract.createProposal(link, candidate, percentageStake, { from: userAddress })
     return result
   }
 }

@@ -21,19 +21,19 @@ export const CONTRACT_TYPES = {
 }
 
 export const CONTRACTS_NAMES = {
-  constitutionVoting: 'ConstitutionVoting',
-  emergencyUpdateVoting: 'EmergencyUpdateVoting',
-  generalUpdateVoting: 'GeneralUpdateVoting',
-  rootsVoting: 'RootsVoting',
-  rootNodesSlashingVoting: 'RootNodesSlashingVoting',
-  validatorsSlashingVoting: 'ValidatorsSlashingVoting',
-  ePQFIMembershipVoting: 'EPQFIMembershipVoting',
-  ePDRMembershipVoting: 'EPDRMembershipVoting',
-  ePQFIParametersVoting: 'EPQFIParametersVoting',
-  ePDRParametersVoting: 'EPDRParametersVoting',
-  systemSurplusAuction: 'SystemSurplusAuction',
-  liquidationAuction: 'LiquidationAuction',
-  systemDebtAuction: 'SystemDebtAuction',
-  RootNodesSlashingEscrow: 'RootNodesSlashingEscrow',
-  ValidatorsSlashingEscrow: 'ValidatorsSlashingEscrow'
+  constitutionVoting: 'constitutionVoting',
+  emergencyUpdateVoting: 'emergencyUpdateVoting',
+  generalUpdateVoting: 'generalUpdateVoting',
+  rootsVoting: 'rootNodesMembershipVoting',
+  rootNodesSlashingVoting: 'rootNodesSlashingVoting',
+  validatorsSlashingVoting: 'validatorsSlashingVoting',
+  ePQFIMembershipVoting: 'epqfiMembershipVoting',
+  ePDRMembershipVoting: 'epdrMembershipVoting',
+  ePQFIParametersVoting: 'epqfiParametersVoting',
+  ePDRParametersVoting: 'epdrParametersVoting',
+  systemSurplusAuction: 'systemSurplusAuction',
+  liquidationAuction: 'liquidationAuction',
+  systemDebtAuction: 'systemDebtAuction',
+  rootNodesSlashingEscrow: 'rootNodesSlashingEscrow',
+  validatorsSlashingEscrow: 'validatorsSlashingEscrow'
 }

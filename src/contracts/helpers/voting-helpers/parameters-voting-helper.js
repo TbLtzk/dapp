@@ -8,11 +8,10 @@ import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts'
 import { getEpdrParametersVotingInstance, getEpqfiParametersVotingInstance } from 'contracts/contract-instance'
 
 export default class ParametersVoting extends VotingService {
-  async getProposalData (promiseRes, id, promiseStatus) {
+  async getProposalAdditionalData (promiseRes, id) {
     const objRes = {}
     let objStats = {}
     let parameters = []
-    objRes.id = id
     objRes.remark = promiseRes.base.remark
     objRes.vetosCount = promiseRes.base.counters.vetosCount
     const weightAgainst = promiseRes.base.counters.weightAgainst
@@ -21,22 +20,12 @@ export default class ParametersVoting extends VotingService {
     const weightFor = promiseRes.base.counters.weightFor
     objRes.votesFor = weightFor
 
-    objRes.vetoEndTime = promiseRes.base.params.vetoEndTime
-
-    objRes.votingEndTime = promiseRes.base.params.votingEndTime
-
-    objRes.status = getStatusTransformation(promiseStatus)
-    objRes.title =
-      this.contractName === CONTRACTS_NAMES.ePDRParametersVoting
-        ? 'DeFi Risk Expert parameter voting proposals'
-        : 'Fees & Incentives Experts parameter voting proposals'
     objRes.type =
       this.contractName === CONTRACTS_NAMES.ePDRParametersVoting
         ? 'DeFi Risk Expert Parameters Proposals'
         : 'Fees & Incentives Experts Parameters Proposals'
     objRes.kindVoting = CONTRACT_TYPES.parameters
     objStats = await this.getProposalStatsData(id)
-    objRes.contract = this.contractName
     const parametersSize = promiseRes.parametersSize
     if (parametersSize >= '1') {
       parameters = await this.getProposalParametersData(id)
@@ -52,6 +41,20 @@ export default class ParametersVoting extends VotingService {
       ...objStats,
       parameters: parameters
     }
+  }
+
+  getProposalData (promiseRes, id, promiseStatus) {
+    const objRes = {}
+    objRes.id = id
+    objRes.vetoEndTime = promiseRes.base.params.vetoEndTime
+    objRes.votingEndTime = promiseRes.base.params.votingEndTime
+    objRes.status = getStatusTransformation(promiseStatus)
+    objRes.title =
+      this.contractName === CONTRACTS_NAMES.ePDRParametersVoting
+        ? 'DeFi Risk Expert parameter voting proposals'
+        : 'Fees & Incentives Experts parameter voting proposals'
+    objRes.contract = this.contractName
+    return objRes
   }
 
   async createProposal (data) {
@@ -84,9 +87,6 @@ export default class ParametersVoting extends VotingService {
         const contract = await getEpdrParametersVotingInstance()
         result = contract.createProposal(link, paramInputs)
         break
-      }
-      default: {
-        return null
       }
     }
     return result

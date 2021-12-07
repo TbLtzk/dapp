@@ -21,11 +21,10 @@ export default class ConstitutionVoting extends VotingService {
     }
   }
 
-  async getProposalData (promiseRes, id, promiseStatus) {
+  async getProposalAdditionalData (promiseRes, id) {
     const objRes = {}
     let objStats = {}
     let parameters = []
-    objRes.id = id
     objRes.remark = promiseRes.base.remark
     const proposalType = this.getProposalStringType(promiseRes.classification)
     objRes.type = proposalType
@@ -40,13 +39,8 @@ export default class ConstitutionVoting extends VotingService {
     const weightFor = promiseRes.base.counters.weightFor
     objRes.votesFor = fromWei(weightFor)
     objRes.vetosCount = promiseRes.base.counters.vetosCount
-    objRes.votingEndTime = promiseRes.base.params.votingEndTime
-    objRes.vetoEndTime = promiseRes.base.params.vetoEndTime
 
-    objRes.status = getStatusTransformation(promiseStatus)
-    objRes.title = `${proposalType} constitution proposal`
     objStats = await this.getProposalStatsData(id)
-    objRes.contract = CONTRACTS_NAMES.constitutionVoting
 
     if (weightFor > 0 || weightAgainst > 0) {
       objRes.numberProposalVotes = {
@@ -60,6 +54,18 @@ export default class ConstitutionVoting extends VotingService {
       ...objStats,
       parameters: parameters
     }
+  }
+
+  getProposalData (promiseRes, id, promiseStatus) {
+    const objRes = {}
+    objRes.contract = CONTRACTS_NAMES.constitutionVoting
+    const proposalType = this.getProposalStringType(promiseRes.classification)
+    objRes.status = getStatusTransformation(promiseStatus)
+    objRes.title = `${proposalType} constitution proposal`
+    objRes.id = id
+    objRes.votingEndTime = promiseRes.base.params.votingEndTime
+    objRes.vetoEndTime = promiseRes.base.params.vetoEndTime
+    return objRes
   }
 
   /**
@@ -81,8 +87,6 @@ export default class ConstitutionVoting extends VotingService {
   }
 
   async createProposal (data, userAddress) {
-    const contract = await getConstitutionVotingInstance()
-
     let result = null
     const classification = this.getProposalNumberType(data?.classification)
     const hash = data.hash
@@ -108,11 +112,11 @@ export default class ConstitutionVoting extends VotingService {
           return types
         }, [])
     if (paramInputs.length !== 0) {
-      result = await contract.createProposal(link, classification, hash, paramInputs, {
+      result = await this.contract.createProposal(link, classification, hash, paramInputs, {
         from: userAddress
       })
     } else {
-      result = await contract.createProposal(link, classification, hash, [], { from: userAddress })
+      result = await this.contract.createProposal(link, classification, hash, [], { from: userAddress })
     }
     return result
   }

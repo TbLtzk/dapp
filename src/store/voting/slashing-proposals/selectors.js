@@ -1,14 +1,5 @@
-/* ended proposals staff */
-export const slashingEndedProposals = (state) => state.slashingProposals.endedProposals
-export const slashingLoadingEndedProposals = (state) => state.slashingProposals.loadingEndedProposals
-export const slashingErrorEnded = (state) => state.slashingProposals.errorEnded
-
-export const oneSlashingProposal = (state) => state.slashingProposals.oneProposal
-
-/* get list of proposals */
-export const slashingProposalsArr = (state) => state.slashingProposals.proposalsArr
-export const slashingLoadingProposals = (state) => state.slashingProposals.loadingProposals
-export const slashingErrorM = (state) => state.slashingProposals.errorM
+export const slashingActiveProposalsSelector = (state) => state.slashingProposals.activeProposals
+export const slashingEndedProposalsSelector = (state) => state.slashingProposals.endedProposals
 
 export const slashingEndedProposalsCountSelector = (state) => state.slashingProposals.slashingEndedProposalsCount
 export const slashingActiveProposalsCountSelector = (state) => state.slashingProposals.slashingActiveProposalsCount
