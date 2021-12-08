@@ -95,7 +95,7 @@ export function creationExpertContractObj (contractName) {
       return new MembershipVoting(contractName)
     case CONTRACTS_NAMES.ePQFIParametersVoting:
     case CONTRACTS_NAMES.ePDRParametersVoting:
-      return new MembershipVoting(contractName)
+      return new ParametersVoting(contractName)
   }
 }
 
