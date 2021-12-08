@@ -87,6 +87,8 @@ export default class ConstitutionVoting extends VotingService {
   }
 
   async createProposal (data, userAddress) {
+    const contract = await this.getContractInstance()
+
     let result = null
     const classification = this.getProposalNumberType(data?.classification)
     const hash = data.hash
@@ -112,11 +114,11 @@ export default class ConstitutionVoting extends VotingService {
           return types
         }, [])
     if (paramInputs.length !== 0) {
-      result = await this.contract.createProposal(link, classification, hash, paramInputs, {
+      result = await contract.createProposal(link, classification, hash, paramInputs, {
         from: userAddress
       })
     } else {
-      result = await this.contract.createProposal(link, classification, hash, [], { from: userAddress })
+      result = await contract.createProposal(link, classification, hash, [], { from: userAddress })
     }
     return result
   }

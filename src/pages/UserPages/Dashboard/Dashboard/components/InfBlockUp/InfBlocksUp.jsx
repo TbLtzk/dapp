@@ -6,11 +6,10 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import colors from 'constants/colors'
 
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { useDispatch, useSelector } from 'react-redux'
 import { constitutionHash } from 'store/voting/proposals/selectors'
 import { getConstitutionHash } from 'store/voting/proposals/action-creators'
-import { latestConstitution, archiveConstitution } from 'contracts/handler/ConstitutionHandler'
+import { latestConstitution, archiveConstitution } from 'constants/constitution'
 import { Link } from 'react-router-dom'
 import {
   qActiveProposalsCountSelector,
@@ -32,8 +31,11 @@ import {
   slashingEndedProposalsCountSelector,
   slashingLoadingProposalsCountSelector
 } from 'store/voting/slashing-proposals/selectors'
+import { getContractRegistryInstance } from 'contracts/contract-instance'
 
 function InfBlocksUp () {
+  const [contractRegistryAddress, setContractRegistryAddress] = useState('0x00')
+
   const [blockNumber, setBlockNumber] = useState('0')
 
   window.web3.eth.getBlock('latest').then((response) => {
@@ -84,6 +86,7 @@ function InfBlocksUp () {
 
   useEffect(() => {
     dispatch(getConstitutionHash())
+    getContractRegistryInstance().then((contract) => setContractRegistryAddress(contract.address))
   }, [dispatch])
 
   return (
@@ -95,8 +98,8 @@ function InfBlocksUp () {
                 firstContent={<p> {blockNumber}</p>}
                 secondContent={
                     <OverlayTrigger key="top" placement="top" overlay={popover}>
-                        <CopyToClipboard text={contractsToAddresses.ContractRegistry}>
-                            <p>{contractsToAddresses.ContractRegistry}</p>
+                        <CopyToClipboard text={contractRegistryAddress}>
+                            <p>{contractRegistryAddress}</p>
                         </CopyToClipboard>
                     </OverlayTrigger>
                 }

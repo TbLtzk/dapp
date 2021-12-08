@@ -1,4 +1,5 @@
-import { latestConstitution } from 'contracts/handler/ConstitutionHandler'
+const baseUrl = 'http://54.214.137.92:8999/'
+const latestConstitution = `${baseUrl}constitution/latest`
 
 export const referencesItems = [
   {

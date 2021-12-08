@@ -16,9 +16,11 @@ import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-c
 import { getExpertProposalsCount } from 'store/voting/expert-proposals/action-creators'
 import { getSlashingProposalsCount } from 'store/voting/slashing-proposals/action-creators'
 
-import { creationQContractObj } from 'contracts/helpers/voting-helpers/base-voting-helper'
-import { chooseSlashingContractDependsOnType } from 'contracts/handler/SlashingVotingHandler'
-import { chooseExpertContractDependsOnType } from 'contracts/handler/QExpertVotingHandler'
+import {
+  creationQContractObj,
+  chooseSlashingContractDependsOnType,
+  chooseExpertContractDependsOnType
+} from 'contracts/helpers/voting-helpers/base-voting-helper'
 
 import ConstitutionVotingService from 'contracts/helpers/voting-helpers/constitution-voting-helper'
 import EmergencyUpdateVotingService from 'contracts/helpers/voting-helpers/emergency-update-voting-helper'

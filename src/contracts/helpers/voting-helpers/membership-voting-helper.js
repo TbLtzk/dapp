@@ -6,7 +6,6 @@ import { fromWei } from 'func/balance'
 import { CONTRACTS_NAMES, CONTRACT_TYPES } from 'constants/contracts'
 
 export default class MembershipVoting extends VotingService {
-  // proposal.contract proposal.status proposal.title proposal.id proposal.votingEndTime proposal.vetoEndTime
   async getProposalAdditionalData (promiseRes, id) {
     const objRes = {}
     let objStats = {}
@@ -52,13 +51,15 @@ export default class MembershipVoting extends VotingService {
   }
 
   async createProposal (data, userAddress) {
+    const contract = await this.getContractInstance()
+
     let result = null
     const link = data['external-link']
     const candidate = data.address
     if (data?.first === CONTRACT_TYPES.addNewExpert) {
-      result = await this.contract.createAddExpertProposal(link, candidate, { from: userAddress })
+      result = await contract.createAddExpertProposal(link, candidate, { from: userAddress })
     } else if (data?.first === CONTRACT_TYPES.removeCurrentExpert) {
-      result = await this.contract.createRemoveExpertProposal(link, candidate, { from: userAddress })
+      result = await contract.createRemoveExpertProposal(link, candidate, { from: userAddress })
     }
     return result
   }

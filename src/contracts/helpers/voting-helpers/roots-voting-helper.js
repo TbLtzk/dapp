@@ -59,11 +59,15 @@ export default class RootsVoting extends VotingService {
   }
 
   async isUserVote (id, address) {
-    const result = await this.contract.votes(id, address)
+    const contract = await this.getContractInstance()
+
+    const result = await contract.votes(id, address)
     return result
   }
 
   async createProposal (data, userAddress) {
+    const contract = await this.getContractInstance()
+
     let result = null
     const hash = data.hash ?? '0x00'
     const link = data['external-link']
@@ -71,12 +75,12 @@ export default class RootsVoting extends VotingService {
     if (data.first === CONTRACT_TYPES.addAnewRootNode) {
       const removeCurrent = data['remove-current']
       if (removeCurrent === 'no') {
-        result = await this.contract.createProposal(link, userAddress, EMPTY_ADDR, hash, { from: userAddress })
+        result = await contract.createProposal(link, userAddress, EMPTY_ADDR, hash, { from: userAddress })
       } else {
-        result = await this.contract.createProposal(link, userAddress, addressToRemove, hash, { from: userAddress })
+        result = await contract.createProposal(link, userAddress, addressToRemove, hash, { from: userAddress })
       }
     } else if (data.first === CONTRACT_TYPES.removeACurrentRootNode) {
-      result = await this.contract.createProposal(link, EMPTY_ADDR, addressToRemove, hash, { from: userAddress })
+      result = await contract.createProposal(link, EMPTY_ADDR, addressToRemove, hash, { from: userAddress })
     }
     return result
   }

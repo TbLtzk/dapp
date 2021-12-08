@@ -4,12 +4,24 @@ import ModalWindow from 'components/Base/ModalWindow'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 import FormInput from 'components/Base/Form/FormInput'
 
-import Handler from './handler'
-
 import { fN, errorHandler } from 'func/useful'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
-import { userAddressMetamask } from 'store/user-inf/selectors'
+import {
+  allowanceDepositSelector,
+  allowanceRepaySelector,
+  borrowVaultInfoSelector
+} from 'store/borrow-assets/selectors'
+import {
+  getBorrowAllowance,
+  getBorrowVaultInfo,
+  setBorrowAprove,
+  setBorrowAsBorrow,
+  setBorrowDeposit,
+  setBorrowRepay,
+  setBorrowWithdraw
+} from 'store/borrow-assets/action-creators'
+import { WrapSpinner } from 'pages/UserPages/styles'
 
 const BTN_LENGTH = '100px'
 
@@ -19,53 +31,54 @@ const DEPOSIT_BTN_TEXT = {
   add: 'Add'
 }
 
-function BorrowManageAsset (props) {
-  const { borrowingAsset, vault } = props
+const TYPE = {
+  deposit: 'deposit',
+  repay: 'repay'
+}
 
+function BorrowManageAsset ({ borrowingAsset, vault }) {
   const { register: register1, handleSubmit: handleSubmit1, errors: errors1, setValue: setBorrowMax } = useForm()
   const { register: register2, handleSubmit: handleSubmit2, errors: errors2, setValue: setRepayMax } = useForm()
   const { register: register3, handleSubmit: handleSubmit3, errors: errors3, setValue: setDepositMax } = useForm()
   const { register: register4, handleSubmit: handleSubmit4, errors: errors4, setValue: setWithdrawMax } = useForm()
 
-  const address = useSelector(userAddressMetamask)
+  const dispatch = useDispatch()
 
   const [isModalShown, setIsModalShown] = useState(false)
-  const [loadingInf, setLoadingInf] = useState(false)
-  const [actCardDataInf] = useState({
+
+  const actCardDataInf = {
     type: 'borrow',
     collateral: vault.colKey,
     borrow: borrowingAsset,
     vault
-  })
-
-  const handler = new Handler(address, actCardDataInf?.vault?.colKey, useDispatch(), actCardDataInf?.vault?.vaultNum)
-
-  const [collateralInf, setCollateralInf] = useState({})
-  const [borrowingInf, setBorrowingInf] = useState({})
-  const [allowanceDeposit, setAllowanceDeposit] = useState(0)
-  const [allowanceRepay, setAllowanceRepay] = useState(0)
+  }
 
   const [repayBtnTitle, setRepayBtnTitle] = useState(DEPOSIT_BTN_TEXT.repay)
   const [depositBtnTitle, setDepositBtnTitle] = useState(DEPOSIT_BTN_TEXT.add)
 
-  useEffect(async () => {
-    if (actCardDataInf?.collateral === 'QBTC') {
-      await handler.setVaultStats(setCollateralInf, setBorrowingInf, setLoadingInf)
-      handler.allowanceSwitcher(setAllowanceDeposit, 'deposit')
-      handler.allowanceSwitcher(setAllowanceRepay, 'repay')
+  const allowanceDeposit = useSelector(allowanceDepositSelector)
+  const allowanceRepay = useSelector(allowanceRepaySelector)
+  const borrowVaultInfo = useSelector(borrowVaultInfoSelector)
+
+  const { collateralDetails, borrowingDetails } = !borrowVaultInfo ? {} : borrowVaultInfo
+
+  useEffect(() => {
+    if (isModalShown) {
+      dispatch(getBorrowAllowance(TYPE.deposit))
+      dispatch(getBorrowAllowance(TYPE.repay))
+      dispatch(getBorrowVaultInfo(actCardDataInf?.vault?.vaultNum))
     }
-  }, [])
+  }, [isModalShown])
 
   function onChangeValueBtnSlide (type, value) {
     const inputValue = value.target.value
-
-    if (type === 'deposit') {
+    if (type === TYPE.deposit) {
       if (Number(allowanceDeposit) < Number(inputValue)) {
         setDepositBtnTitle(DEPOSIT_BTN_TEXT.approve)
       } else {
         setDepositBtnTitle(DEPOSIT_BTN_TEXT.add)
       }
-    } else if (type === 'repay') {
+    } else if (type === TYPE.repay) {
       if (Number(allowanceRepay) < Number(inputValue)) {
         setRepayBtnTitle(DEPOSIT_BTN_TEXT.approve)
       } else {
@@ -74,86 +87,71 @@ function BorrowManageAsset (props) {
     }
   }
 
-  async function repay (formData) {
-    if (repayBtnTitle === DEPOSIT_BTN_TEXT.approve) {
-      await handler.approveSwitcher('repay')
-      handler.allowanceSwitcher(setAllowanceRepay, 'repay')
-      setRepayBtnTitle(DEPOSIT_BTN_TEXT.repay)
-    } else {
-      await handler.repay(
-        formData.field,
-        actCardDataInf.vault.vaultNum,
-        setCollateralInf,
-        setBorrowingInf,
-        setLoadingInf
-      )
-    }
-  }
-
-  async function borrow (formData) {
-    await handler.borrow(
-      formData.field,
-      actCardDataInf.vault.vaultNum,
-      setCollateralInf,
-      setBorrowingInf,
-      setLoadingInf
-    )
-  }
-
-  async function addDeposit (formData) {
+  useEffect(() => {
     if (depositBtnTitle === DEPOSIT_BTN_TEXT.approve) {
-      await handler.approveSwitcher('deposit')
-      handler.allowanceSwitcher(setAllowanceDeposit, 'deposit')
       setDepositBtnTitle(DEPOSIT_BTN_TEXT.add)
-    } else {
-      await handler.addDeposit(
-        formData.field,
-        actCardDataInf.vault.vaultNum,
-        setCollateralInf,
-        setBorrowingInf,
-        setLoadingInf
-      )
     }
-  }
-
-  async function withdraw (formData) {
-    await handler.withdraw(
-      formData.field,
-      actCardDataInf.vault.vaultNum,
-      setCollateralInf,
-      setBorrowingInf,
-      setLoadingInf
-    )
-  }
+    if (repayBtnTitle === DEPOSIT_BTN_TEXT.approve) {
+      setRepayBtnTitle(DEPOSIT_BTN_TEXT.repay)
+    }
+  }, [allowanceRepay, allowanceDeposit])
 
   function handleMaxRepay () {
-    if (Number(borrowingInf?.availableRepay) > 0) {
-      if (Number(allowanceRepay) < Number(borrowingInf?.availableRepay)) {
+    if (Number(borrowingDetails?.availableRepay) > 0) {
+      if (Number(allowanceRepay) < Number(borrowingDetails?.availableRepay)) {
         setRepayBtnTitle(DEPOSIT_BTN_TEXT.approve)
       }
-      setRepayMax('field', borrowingInf?.availableRepay)
+      setRepayMax('field', borrowingDetails?.availableRepay)
     }
   }
 
   function handleMaxDeposit () {
-    if (Number(collateralInf?.availableDeposit) > 0) {
-      if (Number(allowanceDeposit) < Number(collateralInf?.availableDeposit)) {
+    if (Number(collateralDetails?.availableDeposit) > 0) {
+      if (Number(allowanceDeposit) < Number(collateralDetails?.availableDeposit)) {
         setDepositBtnTitle(DEPOSIT_BTN_TEXT.approve)
       }
-      setDepositMax('field', collateralInf?.availableDeposit)
+      setDepositMax('field', collateralDetails?.availableDeposit)
     }
   }
 
   function handleMaxBorrow () {
-    if (Number(borrowingInf?.availableBorrow) > 0) {
-      setBorrowMax('field', Number(borrowingInf?.availableBorrow).toFixed(3))
+    if (Number(borrowingDetails?.availableBorrow) > 0) {
+      setBorrowMax('field', borrowingDetails?.availableBorrow)
     }
   }
 
   function handleMaxWithdraw () {
-    if (Number(collateralInf?.availableWithdraw) > 0) {
-      setWithdrawMax('field', collateralInf?.availableWithdraw)
+    if (Number(collateralDetails?.availableWithdraw) > 0) {
+      setWithdrawMax('field', collateralDetails?.availableWithdraw)
     }
+  }
+
+  function repay (formData) {
+    if (repayBtnTitle === DEPOSIT_BTN_TEXT.approve) {
+      dispatch(setBorrowAprove(TYPE.repay))
+    } else {
+      dispatch(setBorrowRepay(formData.field, actCardDataInf.vault.vaultNum))
+      setRepayMax('field', null)
+    }
+  }
+
+  function addDeposit (formData) {
+    if (depositBtnTitle === DEPOSIT_BTN_TEXT.approve) {
+      dispatch(setBorrowAprove(TYPE.deposit))
+    } else {
+      dispatch(setBorrowDeposit(formData.field, actCardDataInf.vault.vaultNum))
+      setDepositMax('field', null)
+    }
+  }
+
+  function borrow (formData) {
+    dispatch(setBorrowAsBorrow(formData.field, actCardDataInf.vault.vaultNum))
+    setBorrowMax('field', null)
+  }
+
+  function withdraw (formData) {
+    dispatch(setBorrowWithdraw(formData.field, actCardDataInf.vault.vaultNum))
+    setWithdrawMax('field', null)
   }
 
   return (
@@ -167,6 +165,7 @@ function BorrowManageAsset (props) {
                   setIsModalShown(true)
                 }}
             />
+
             <ModalWindow
                 show={isModalShown}
                 onHide={() => {
@@ -174,9 +173,11 @@ function BorrowManageAsset (props) {
                 }}
                 modalTitle={'Borrowing ' + borrowingAsset}
                 content={
-                    loadingInf
+                    !borrowVaultInfo
                       ? (
-                        <LoadingSpinner />
+                        <WrapSpinner>
+                            <LoadingSpinner />
+                        </WrapSpinner>
                         )
                       : (
                         <>
@@ -185,21 +186,21 @@ function BorrowManageAsset (props) {
                             <div className="modal__three-colm">
                                 <div>
                                     <h5>Asset</h5>
-                                    <p>{collateralInf?.assets || '-'}</p>
+                                    <p>{collateralDetails?.assets || '-'}</p>
                                     <h5>Locked Collateral</h5>
-                                    <p>{fN(collateralInf?.lockedCol) || 0}</p>
+                                    <p>{fN(collateralDetails?.lockedCol) || 0}</p>
                                 </div>
                                 <div>
                                     <h5>Asset Price</h5>
-                                    <p>{fN(collateralInf?.assetPrice) || 0}</p>
+                                    <p>{fN(collateralDetails?.assetPrice) || 0}</p>
                                     <h5>Available to Deposit</h5>
-                                    <p>{fN(collateralInf?.availableDeposit) || 0}</p>
+                                    <p>{fN(collateralDetails?.availableDeposit) || 0}</p>
                                 </div>
                                 <div>
                                     <h5>Available to Withdraw</h5>
-                                    <p>{fN(collateralInf?.availableWithdraw) || 0}</p>
+                                    <p>{fN(collateralDetails?.availableWithdraw) || 0}</p>
                                     <h5>Liquidation Price</h5>
-                                    <p>{fN(collateralInf?.liquidationPrice) || 0}</p>
+                                    <p>{fN(collateralDetails?.liquidationPrice) || 0}</p>
                                 </div>
                             </div>
                             <div className="modal__line" />
@@ -207,25 +208,25 @@ function BorrowManageAsset (props) {
                             <div className="modal__three-colm">
                                 <div>
                                     <h5>Asset</h5>
-                                    <p>{borrowingInf?.assets || '-'}</p>
+                                    <p>{borrowingDetails?.assets || '-'}</p>
                                     <h5>Collateral Value</h5>
-                                    <p>{fN(borrowingInf?.collateralValue) || 0}</p>
+                                    <p>{fN(borrowingDetails?.collateralValue) || 0}</p>
                                     <h5>Liquidation Limit</h5>
-                                    <p>{fN(borrowingInf?.liquidationLimit) || 0}</p>
+                                    <p>{fN(borrowingDetails?.liquidationLimit) || 0}</p>
                                 </div>
                                 <div>
                                     <h5>Borrowing Limit</h5>
-                                    <p>{fN(borrowingInf?.borrowingLimit) || 0}</p>
+                                    <p>{fN(borrowingDetails?.borrowingLimit) || 0}</p>
                                     <h5>Available to Borrow</h5>
-                                    <p>{fN(borrowingInf?.availableBorrow) || 0}</p>
+                                    <p>{fN(borrowingDetails?.availableBorrow) || 0}</p>
                                     <h5>Borrowing Fee (p.a.)</h5>
-                                    <p>{(fN(borrowingInf?.borrowingFee) || 0) + ' %'}</p>
+                                    <p>{(fN(borrowingDetails?.borrowingFee) || 0) + ' %'}</p>
                                 </div>
                                 <div>
                                     <h5>Available to Repay</h5>
-                                    <p>{fN(borrowingInf?.availableRepay) || 0}</p>
+                                    <p>{fN(borrowingDetails?.availableRepay) || 0}</p>
                                     <h5>Outstanding Debt</h5>
-                                    <p>{fN(borrowingInf?.outstandingDebt) || 0}</p>
+                                    <p>{fN(borrowingDetails?.outstandingDebt) || 0}</p>
                                 </div>
                             </div>
 
@@ -233,9 +234,8 @@ function BorrowManageAsset (props) {
                             <div className="modal__one-line-form">
                                 <FormInput
                                     palette="dark"
-                                    lbl={borrowingInf?.assets}
+                                    lbl={borrowingDetails?.assets}
                                     min={0}
-                                    modal
                                     name="field"
                                     type="number"
                                     placeholder="0.00"
@@ -254,9 +254,8 @@ function BorrowManageAsset (props) {
                             <div className="modal__one-line-form">
                                 <FormInput
                                     palette="dark"
-                                    lbl={borrowingInf?.assets}
+                                    lbl={borrowingDetails?.assets}
                                     min={0}
-                                    modal
                                     name="field"
                                     type="number"
                                     placeholder="0.00"
@@ -264,7 +263,7 @@ function BorrowManageAsset (props) {
                                     ref={register2({ required: true })}
                                     valid={errorHandler(errors2, 'field')}
                                     onChange={(value) => {
-                                      onChangeValueBtnSlide('repay', value)
+                                      onChangeValueBtnSlide(TYPE.repay, value)
                                     }}
                                 />
                                 <Button
@@ -278,9 +277,8 @@ function BorrowManageAsset (props) {
                             <div className="modal__one-line-form">
                                 <FormInput
                                     palette="dark"
-                                    lbl={collateralInf?.assets}
+                                    lbl={collateralDetails?.assets}
                                     min={0}
-                                    modal
                                     name="field"
                                     type="number"
                                     placeholder="0.00"
@@ -288,7 +286,7 @@ function BorrowManageAsset (props) {
                                     ref={register3({ required: true })}
                                     valid={errorHandler(errors3, 'field')}
                                     onChange={(value) => {
-                                      onChangeValueBtnSlide('deposit', value)
+                                      onChangeValueBtnSlide(TYPE.deposit, value)
                                     }}
                                 />
                                 <Button
@@ -302,13 +300,12 @@ function BorrowManageAsset (props) {
                             <div className="modal__one-line-form">
                                 <FormInput
                                     palette="dark"
-                                    lbl={collateralInf?.assets}
+                                    lbl={collateralDetails?.assets}
                                     min={0}
-                                    modal
                                     name="field"
                                     type="number"
-                                    onMaxClick={handleMaxWithdraw}
                                     placeholder="0.00"
+                                    onMaxClick={handleMaxWithdraw}
                                     ref={register4({ required: true })}
                                     valid={errorHandler(errors4, 'field')}
                                 />

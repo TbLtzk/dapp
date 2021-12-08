@@ -1,7 +1,16 @@
 import * as actionTypes from './action-types'
 
 const initialState = {
-  shouldAddCoins: !localStorage.getItem('shouldAddCoins') || Boolean(JSON.parse(localStorage.getItem('shouldAddCoins')))
+  shouldAddCoins:
+    !localStorage.getItem('shouldAddCoins') || Boolean(JSON.parse(localStorage.getItem('shouldAddCoins'))),
+  totalCollateralLocked: null,
+  totalSavingBalance: null,
+  outstandingDebt: null,
+  savingAssets: null,
+  borrowingVaults: null,
+  totalSupply: null,
+  interestRate: null,
+  savingRate: null
 }
 
 export default function index (state = initialState, action) {
@@ -11,6 +20,46 @@ export default function index (state = initialState, action) {
       return {
         ...state,
         shouldAddCoins: false
+      }
+    case actionTypes.SET_TOTAL_COLLATERAL_LOCKED:
+      return {
+        ...state,
+        totalCollateralLocked: action.payload
+      }
+    case actionTypes.SET_TOTAL_SAVING_BALANCE:
+      return {
+        ...state,
+        totalSavingBalance: action.payload
+      }
+    case actionTypes.SET_OUTSTANDING_DEBT:
+      return {
+        ...state,
+        outstandingDebt: action.payload
+      }
+    case actionTypes.SET_SAVING_ASSETS:
+      return {
+        ...state,
+        savingAssets: action.payload
+      }
+    case actionTypes.SET_BORROWING_VAULTS:
+      return {
+        ...state,
+        borrowingVaults: action.payload
+      }
+    case actionTypes.SET_TOTAL_SUPPLY:
+      return {
+        ...state,
+        totalSupply: action.payload
+      }
+    case actionTypes.SET_INTEREST_RATE:
+      return {
+        ...state,
+        interestRate: action.payload
+      }
+    case actionTypes.SET_SAVING_RATE:
+      return {
+        ...state,
+        savingRate: action.payload
       }
     default:
       return state

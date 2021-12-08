@@ -186,3 +186,40 @@ export async function getProposal (contractName, id, type) {
     ErrorHandler.processWithoutFeedback(error)
   }
 }
+
+export const chooseSlashingContractDependsOnType = (type) => {
+  let contractName = null
+  if (type === CONTRACT_TYPES.rootNodeSlashing) {
+    contractName = CONTRACTS_NAMES.rootNodesSlashingVoting
+  } else if (type === CONTRACT_TYPES.validatorNodeSlashing) {
+    contractName = CONTRACTS_NAMES.validatorsSlashingVoting
+  }
+
+  return new SlashingVotingService(contractName)
+}
+
+export const chooseExpertContractDependsOnType = (typeContract, type) => {
+  let contract = null
+  let contractName = null
+  switch (type) {
+    case CONTRACT_TYPES.qFee:
+      if (typeContract === CONTRACT_TYPES.member) {
+        contractName = CONTRACTS_NAMES.ePQFIMembershipVoting
+        contract = new MembershipVoting(contractName)
+      } else if (typeContract === CONTRACT_TYPES.parameters) {
+        contractName = CONTRACTS_NAMES.ePQFIParametersVoting
+        contract = new ParametersVoting(contractName)
+      }
+      break
+    case CONTRACT_TYPES.qDefi:
+      if (typeContract === CONTRACT_TYPES.member) {
+        contractName = CONTRACTS_NAMES.ePDRMembershipVoting
+        contract = new MembershipVoting(contractName)
+      } else if (typeContract === CONTRACT_TYPES.parameters) {
+        contractName = CONTRACTS_NAMES.ePDRParametersVoting
+        contract = new ParametersVoting(contractName)
+      }
+      break
+  }
+  return contract
+}

@@ -3,7 +3,7 @@ import * as actionTypes from './action-types'
 
 import { detectEthereumProviderSuccess, detectEthereumProviderError } from './action-creators'
 
-import { detectMetamask } from 'contracts/handler/metamaskAccount'
+import { detectMetamask } from 'contracts/helpers/metamask-account'
 import ErrorHandler from 'func/ErrorHandler'
 
 function * detectEthereumProviderRequest () {

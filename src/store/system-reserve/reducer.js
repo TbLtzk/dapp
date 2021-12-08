@@ -1,7 +1,8 @@
 import * as actionTypes from './action-types'
 
 const initialState = {
-  availableAmount: 0
+  availableAmount: 0,
+  reserveBalance: 0
 }
 
 export default function systemReserve (state = initialState, action) {
@@ -15,6 +16,11 @@ export default function systemReserve (state = initialState, action) {
       return {
         ...state,
         availableAmount: action.result
+      }
+    case actionTypes.SET_SYSTEM_RESERVE_BALANCE:
+      return {
+        ...state,
+        reserveBalance: action.payload
       }
     default:
       return state

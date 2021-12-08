@@ -17,7 +17,10 @@ export const CONTRACT_TYPES = {
   removeCurrentExpert: 'remove-a-current-expert',
   parameterVote: 'parameter-vote',
   member: 'member',
-  parameters: 'parameters'
+  parameters: 'parameters',
+  systemSurplusAuction: 'SystemSurplusAuction',
+  systemDebtAuction: 'SystemDebtAuction',
+  liquidationAuction: 'LiquidationAuction'
 }
 
 export const CONTRACTS_NAMES = {

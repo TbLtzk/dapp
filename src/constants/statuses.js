@@ -26,4 +26,11 @@ export const PROPOSAL_STATUS_TYPES = {
   reset: 'reset'
 }
 
+export const LOAD_TYPES = {
+  notLogged: 'not-logged',
+  error: 'error',
+  initError: 'init-error',
+  loaded: 'loaded'
+}
+
 export const WARNING_MAX_NUMBER = 'Warning: No Q left on sender wallet for future transactions (gas)'

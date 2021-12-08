@@ -2,9 +2,7 @@ import React from 'react'
 import { remainDate } from 'func/convertDate'
 
 function Status (props) {
-  const {
-    auction
-  } = props
+  const { auction } = props
 
   function getStatus () {
     switch (auction.contract) {
@@ -19,9 +17,7 @@ function Status (props) {
     }
   }
 
-  return (
-    <div className="list-card__status">{getStatus()}</div>
-  )
+  return <div className="list-card__status">{getStatus()}</div>
 }
 
 export default Status

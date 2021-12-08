@@ -4,52 +4,42 @@ import { useDispatch, useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/user-inf/selectors'
 import { debtSB, loadingPerformNetting, surplusSB, systemBalanceSB } from 'store/system-balance/selectors'
 import { lastAuctionModification } from 'store/auctions/selectors'
-import { availableAmountSR } from 'store/system-reserve/selectors'
-import { userBalance } from 'store/q-vault/selectors'
+import { availableAmountSR, reserveBalanceSelector } from 'store/system-reserve/selectors'
+import { accountBalance, userBalance } from 'store/q-vault/selectors'
 
 import { getDebt, getSurplus, getSystemBalance } from 'store/system-balance/action-creators'
-import { getAvailableAmount } from 'store/system-reserve/action-creators'
-import { getUserBalance } from 'store/q-vault/action-creators'
-import { getEPDRUint } from 'contracts/handler/ContractsEPDR'
+import { getAvailableAmount, getSystemReserveBalance } from 'store/system-reserve/action-creators'
+import { getAccountBalance, getUserBalance } from 'store/q-vault/action-creators'
+import { getEPDRUint } from 'contracts/helpers/epdr-param-helper'
 
 import Stats from 'components/Custom/PageLists/SidebarCards/Stats'
 import SystemCard from 'components/Custom/PageLists/SidebarCards/SystemCard'
 
-import ContractBalance from 'contracts/handler/ContractBalance'
-import { StableCoinQUSD } from 'contracts/src/StableCoin'
-
 import { fN } from 'func/useful'
-import { fromWei } from 'func/balance'
+import { getSavingAviableToDeposit } from 'store/saving-assets/action-creators'
+import { savingAviableToDepositSelector } from 'store/saving-assets/selectors'
 
 function SidebarCards () {
   const dispatch = useDispatch()
 
   const userAddress = useSelector(userAddressMetamask)
-  const [userBalanceQ, setUserBalanceQ] = useState(null)
-  const [QUSDUserBalance, setQUSDUserBalance] = useState(0)
-
-  const contractBalance = new ContractBalance(userAddress)
-  const contractStableCoinQUSD = new StableCoinQUSD()
-
+  const userBalanceQ = useSelector(accountBalance)
   const surplus = fN(useSelector(surplusSB))
   const debt = fN(useSelector(debtSB))
+  const QUSDUserBalanceAmount = useSelector(savingAviableToDepositSelector)
+
   const systemBalanceResult = fN(useSelector(systemBalanceSB))
   const availableAmount = fN(useSelector(availableAmountSR))
   const userQVBalance = fN(useSelector(userBalance))
   const loadingPerfNetting = useSelector(loadingPerformNetting)
   const isAuctionModified = useSelector(lastAuctionModification)
+  const reserveBalance = useSelector(reserveBalanceSelector)
 
-  const [reserveBalance, setReserveBalance] = useState('0')
   const [surplusLot, setSurplusLot] = useState('0')
   const [reserveLot, setReserveLot] = useState('0')
 
   useEffect(() => {
-    window.web3.eth.getBalance(userAddress, (err, balance) => {
-      if (err) {
-        console.error(err)
-      }
-      setUserBalanceQ(fN(fromWei(balance)))
-    })
+    dispatch(getAccountBalance(userAddress))
   }, [isAuctionModified])
 
   useEffect(() => {
@@ -57,23 +47,14 @@ function SidebarCards () {
     dispatch(getDebt())
     dispatch(getSystemBalance())
     dispatch(getAvailableAmount())
-    // stats
+    dispatch(getSavingAviableToDeposit())
     dispatch(getUserBalance(userAddress))
   }, [dispatch, loadingPerfNetting, isAuctionModified])
 
   useEffect(() => {
-    contractBalance.getBalanceValue('SystemReserve', setReserveBalance)
+    dispatch(getSystemReserveBalance())
     getEPDRUint('governed.EPDR.QUSD_surplusLot', setSurplusLot)
     getEPDRUint('governed.EPDR.reserveLot', setReserveLot)
-    contractStableCoinQUSD
-      .balanceOf(userAddress)
-      .then((res) => {
-        setQUSDUserBalance(fromWei(res))
-      })
-      .catch((e) => {
-        setQUSDUserBalance(0)
-        console.error(e)
-      })
   }, [loadingPerfNetting, isAuctionModified])
 
   const statsData = useMemo(() => {
@@ -88,10 +69,10 @@ function SidebarCards () {
       },
       {
         title: 'QUSD Balance',
-        value: fN(QUSDUserBalance) + ' QUSD'
+        value: fN(QUSDUserBalanceAmount) + ' QUSD'
       }
     ]
-  }, [userQVBalance, userBalanceQ, QUSDUserBalance])
+  }, [userQVBalance, userBalanceQ, QUSDUserBalanceAmount])
 
   const systemBalance = useMemo(() => {
     return [
