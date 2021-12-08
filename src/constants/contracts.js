@@ -18,9 +18,9 @@ export const CONTRACT_TYPES = {
   parameterVote: 'parameter-vote',
   member: 'member',
   parameters: 'parameters',
-  systemSurplusAuction: 'SystemSurplusAuction',
-  systemDebtAuction: 'SystemDebtAuction',
-  liquidationAuction: 'LiquidationAuction'
+  systemSurplusAuction: 'systemSurplusAuction',
+  systemDebtAuction: 'systemDebtAuction',
+  liquidationAuction: 'liquidationAuction'
 }
 
 export const CONTRACTS_NAMES = {

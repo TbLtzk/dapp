@@ -11,13 +11,10 @@ import Status from './components/Status'
 import ModalBid from '../CreateAuctionBtn/ModalBid'
 import { convertToMonthDayYear, remainDate } from 'func/convertDate'
 import { executeAuction } from 'store/auctions/action-creators'
-import {
-  setCreatedStepsLimit,
-  setCreateObj,
-  setStepCounter
-} from 'store/modal-handler/action-creators'
+import { setCreatedStepsLimit, setCreateObj, setStepCounter } from 'store/modal-handler/action-creators'
 import CardDropdownItems from './components/CardDropdownItems'
 import ListCard from 'components/Custom/PageLists/ListCard'
+import { CONTRACTS_NAMES } from 'constants/contracts'
 
 function AuctionsList (props) {
   const { auctions, loading, errorMessage, activeTab } = props
@@ -70,8 +67,8 @@ function AuctionsList (props) {
                     {auctions.map((auction, i) => {
                       return (
                             <ListCard
-                                key={auction?.contract === 'SystemSurplusAuction' ? auction.id : i + auction?.contract}
-                                id={auction?.contract === 'SystemSurplusAuction' ? auction.id : i + auction?.contract}
+                                key={auction?.contract === CONTRACTS_NAMES.systemSurplusAuction ? auction.id : i + auction?.contract}
+                                id={auction?.contract === CONTRACTS_NAMES.systemSurplusAuction ? auction.id : i + auction?.contract}
                                 headerLeftSide={
                                     <>
                                         <h1>{auction?.title}</h1>
@@ -112,7 +109,7 @@ function AuctionsList (props) {
                                             <p>{remainDate(auction.endTime)}</p>
                                         </div>
                                         <div>
-                                            {auction.contract === 'LiquidationAuction'
+                                            {auction.contract === CONTRACTS_NAMES.liquidationAuction
                                               ? (
                                                 <>
                                                     <h5>Vault Owner</h5>

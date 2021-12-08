@@ -2,14 +2,13 @@ import React from 'react'
 
 import { Dropdown } from 'react-bootstrap'
 import { remainDate } from 'func/convertDate'
+import { CONTRACTS_NAMES } from 'constants/contracts'
 
-function CardDropdownItems (props) {
-  const { auction, handleExecute, handleBid } = props
-
+function CardDropdownItems ({ auction, handleExecute, handleBid }) {
   function getActions () {
     switch (auction.contract) {
-      case 'SystemDebtAuction':
-      case 'LiquidationAuction':
+      case CONTRACTS_NAMES.systemDebtAuction:
+      case CONTRACTS_NAMES.liquidationAuction:
         if (auction?.status === 'Active') {
           if (remainDate(auction.endTime) === 0) {
             return (
@@ -30,7 +29,7 @@ function CardDropdownItems (props) {
           return null
         }
         return null
-      case 'SystemSurplusAuction':
+      case CONTRACTS_NAMES.systemSurplusAuction:
         let status = ''
         if (auction.endTime === 0 || remainDate(auction.endTime) !== 0) status = 'Pending'
         if (auction.isExecuted) status = 'Executed'

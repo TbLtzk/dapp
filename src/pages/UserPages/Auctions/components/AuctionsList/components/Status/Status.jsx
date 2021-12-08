@@ -1,15 +1,14 @@
 import React from 'react'
 import { remainDate } from 'func/convertDate'
+import { CONTRACT_TYPES } from 'constants/contracts'
 
-function Status (props) {
-  const { auction } = props
-
+function Status ({ auction }) {
   function getStatus () {
     switch (auction.contract) {
-      case 'SystemDebtAuction':
-      case 'LiquidationAuction':
+      case CONTRACT_TYPES.liquidationAuction:
+      case CONTRACT_TYPES.systemDebtAuction:
         return auction?.status
-      case 'SystemSurplusAuction':
+      case CONTRACT_TYPES.systemSurplusAuction:
         if (auction.endTime === 0 || remainDate(auction.endTime) !== 0) return 'Pending'
         if (auction.isExecuted) return 'Executed'
         if (!auction.isExecuted && remainDate(auction.endTime) === 0) return 'Accepted'

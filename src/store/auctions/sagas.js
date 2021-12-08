@@ -24,7 +24,7 @@ import {
   creationLiquidationContractObj,
   creationSystemDebtContractObj,
   creationSystemSurplusContractObj
-} from 'contracts/helpers/auction-helper'
+} from 'contracts/helpers/auctions-helpers/auction-helper'
 import { AUCTIONS_TYPES } from 'constants/statuses'
 import { CONTRACT_TYPES } from 'constants/contracts'
 import ErrorHandler from 'func/ErrorHandler'
@@ -118,6 +118,7 @@ function * getOneAuction ({ contractName, inf, activeTab, activeAuction }) {
 }
 
 function * getAuctionsList ({ activeTab, activeAuction }) {
+  yield call(getAuctionsCountGenerator)
   try {
     let contract = null
     switch (activeTab) {
@@ -133,7 +134,6 @@ function * getAuctionsList ({ activeTab, activeAuction }) {
     }
     let result = []
     result = yield contract?.getAuctions(activeAuction)
-
     yield put(
       getAuctionsListSuccess({
         result,
@@ -231,6 +231,20 @@ function * executeAuctionHandler ({ data }) {
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
+  }
+}
+
+function * getAuctionsCountGenerator () {
+  try {
+    const liquidationAuctionInstance = creationLiquidationContractObj()
+    const systemSurplusAuctionInstance = creationSystemDebtContractObj()
+    const systemDebtAuctionInstance = creationSystemSurplusContractObj()
+    const contracts = [liquidationAuctionInstance, systemSurplusAuctionInstance, systemDebtAuctionInstance]
+
+    const auctions = yield Promise.all(contracts.map((contract) => contract.getAuctionsCount()))
+    console.log(auctions)
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 

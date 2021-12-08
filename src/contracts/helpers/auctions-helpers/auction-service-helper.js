@@ -1,6 +1,7 @@
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers'
 import { CONTRACT_TYPES } from 'constants/contracts'
 import {
+  getInstance,
   getLiquidationAuctionInstance,
   getStableCoinInstance,
   getSystemDebtAuctionInstance,
@@ -33,6 +34,11 @@ export async function switchContract (contractName) {
 export default class AuctionService {
   constructor (contractName) {
     this.contractName = contractName
+  }
+
+  async getContractInstance () {
+    const initInstance = getInstance(this.contractName, true)
+    return initInstance()
   }
 
   async getAuctionsEvent () {

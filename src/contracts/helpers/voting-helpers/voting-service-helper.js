@@ -116,20 +116,25 @@ export default class VotingService {
 
   async getProposalsCount (latestBlocks) {
     const contract = await this.getContractInstance()
-    const latestIds = await contract.getProposalIds(latestBlocks, 'latest')
-    const allIds = await contract.getProposalIds(0, 'latest')
-    const statuses = []
+    const pastEvents = await contract.instance.getPastEvents('ProposalCreated', { fromBlock: 0, toBlock: 'latest' })
+    const latestPastEvents = pastEvents.filter((evt) => evt.blockNumber >= latestBlocks)
 
-    for (const id of latestIds) {
-      const status = await contract.getStatus(id)
-      statuses.push({ id, status })
+    const latestProposals = []
+
+    for (const pastEvent of latestPastEvents) {
+      const id = pastEvent.returnValues._id
+      const { blockNumber } = pastEvent
+      const status = await contract.getStatus(pastEvent.returnValues._id)
+      latestProposals.push({ id, status, blockNumber })
     }
 
-    const activeIds = statuses
-      .filter((prop) => prop.status === '1' || prop.status === '3' || prop.status === '4')
-      .map((prop) => prop.id)
+    const activeIds = latestProposals.filter(
+      (prop) => prop.status === '1' || prop.status === '3' || prop.status === '4'
+    )
 
-    const endedIds = allIds.filter((id) => !activeIds.includes(id))
+    const endedIds = pastEvents
+      .map((evt) => ({ blockNumber: evt.blockNumber, id: evt.returnValues._id }))
+      .filter((id) => !activeIds.includes(id))
 
     return {
       contract: this.contractName,

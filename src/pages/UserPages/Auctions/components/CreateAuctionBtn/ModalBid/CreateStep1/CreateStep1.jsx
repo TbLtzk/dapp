@@ -13,7 +13,7 @@ import { liquidation, systemSurplus, systemDebt } from './constants'
 
 import { checkTabContract } from '../constants'
 import { symbol } from 'store/stable-coin/selectors'
-import { switchContract } from 'contracts/helpers/auction-service-helper'
+import { switchContract } from 'contracts/helpers/auctions-helpers/auction-service-helper'
 import { getStableCoinInstance } from 'contracts/contract-instance'
 
 function CreateStep1 (props) {

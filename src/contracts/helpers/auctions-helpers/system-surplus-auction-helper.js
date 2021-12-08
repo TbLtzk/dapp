@@ -32,6 +32,7 @@ export default class SystemSurplusAuction extends AuctionService {
   }
 
   async getAuctions (activeAuction) {
+    this.getAuctionsCount()
     const auctionEvents = await this.getAuctionsEvent()
     const auctionInf = auctionEvents?.map((evt) => ({
       id: evt.returnValues._auctionId,
@@ -50,6 +51,41 @@ export default class SystemSurplusAuction extends AuctionService {
       }
     }
     return []
+  }
+
+  async getAuctionsEvents () {
+    const contract = await this.getContractInstance(this.contractName)
+    const pastEvents = await contract.instance.getPastEvents('AuctionStarted', { fromBlock: 0, toBlock: 'latest' })
+
+    if (!pastEvents.length) {
+      return []
+    } else {
+      const auctionInfo = pastEvents.map((event) => ({
+        id: event.returnValues._auctionId,
+        bidder: event.returnValues._bidder,
+        bid: event.returnValues._bid,
+        blockNumber: event.blockNumber
+      }))
+      return auctionInfo
+    }
+  }
+
+  async getAuctionsCount () {
+    const auctionsInfo = await this.getAuctionsEvents()
+    if (!auctionsInfo.length) {
+      return []
+    } else {
+      const allAuctions = await Promise.all(auctionsInfo.map((evt) => this.getAuction(evt)))
+
+      const activeAuctions = allAuctions.filter((auction) => !auction.data.isExecuted)
+      const endedAuctions = allAuctions.filter((auction) => auction.data.isExecuted)
+
+      return {
+        contract: this.contractName,
+        activeAuctions,
+        endedAuctions
+      }
+    }
   }
 
   async getOneAuction (inf, active) {

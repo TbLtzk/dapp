@@ -17,7 +17,7 @@ import { MAX_APPROVE_AMOUNT } from 'constants/numbers'
 import { checkTabContract } from './constants'
 import { ProgressBar } from 'react-bootstrap'
 import { getStableCoinInstance } from 'contracts/contract-instance'
-import { switchContract } from 'contracts/helpers/auction-service-helper'
+import { switchContract } from 'contracts/helpers/auctions-helpers/auction-service-helper'
 import { setTransactionCounter } from 'store/transaction-handler/action-creators'
 
 function ModalBid (props) {

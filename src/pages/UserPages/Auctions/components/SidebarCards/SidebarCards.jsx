@@ -24,13 +24,13 @@ function SidebarCards () {
 
   const userAddress = useSelector(userAddressMetamask)
   const userBalanceQ = useSelector(accountBalance)
-  const surplus = fN(useSelector(surplusSB))
-  const debt = fN(useSelector(debtSB))
+  const surplus = useSelector(surplusSB)
+  const debt = useSelector(debtSB)
   const QUSDUserBalanceAmount = useSelector(savingAviableToDepositSelector)
 
-  const systemBalanceResult = fN(useSelector(systemBalanceSB))
-  const availableAmount = fN(useSelector(availableAmountSR))
-  const userQVBalance = fN(useSelector(userBalance))
+  const systemBalanceResult = useSelector(systemBalanceSB)
+  const availableAmount = useSelector(availableAmountSR)
+  const userQVBalance = useSelector(userBalance)
   const loadingPerfNetting = useSelector(loadingPerformNetting)
   const isAuctionModified = useSelector(lastAuctionModification)
   const reserveBalance = useSelector(reserveBalanceSelector)
@@ -61,11 +61,11 @@ function SidebarCards () {
     return [
       {
         title: 'Available Q Balance',
-        value: userBalanceQ + ' Q'
+        value: fN(userBalanceQ) + ' Q'
       },
       {
         title: 'Q Balance in Q Vault',
-        value: userQVBalance + ' Q'
+        value: fN(userQVBalance) + ' Q'
       },
       {
         title: 'QUSD Balance',
@@ -78,19 +78,19 @@ function SidebarCards () {
     return [
       {
         title: 'Collected Surplus',
-        value: surplus + ' QUSD'
+        value: fN(surplus) + ' QUSD'
       },
       {
         title: 'Open Debt',
-        value: debt + ' QUSD'
+        value: fN(debt) + ' QUSD'
       },
       {
         title: 'Balance',
-        value: systemBalanceResult + ' QUSD'
+        value: fN(systemBalanceResult) + ' QUSD'
       },
       {
         title: 'Surplus Auction Lot',
-        value: surplusLot + ' QUSD'
+        value: fN(surplusLot) + ' QUSD'
       }
     ]
   }, [surplus, debt, systemBalanceResult, surplusLot])
@@ -99,15 +99,15 @@ function SidebarCards () {
     return [
       {
         title: 'Reserve Balance',
-        value: reserveBalance + ' Q'
+        value: fN(reserveBalance) + ' Q'
       },
       {
         title: 'Immediately Available',
-        value: availableAmount + ' Q'
+        value: fN(availableAmount) + ' Q'
       },
       {
         title: 'Debt Auction Lot',
-        value: reserveLot + ' Q'
+        value: fN(reserveLot) + ' Q'
       }
     ]
   }, [availableAmount, reserveBalance, reserveLot])

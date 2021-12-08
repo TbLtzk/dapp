@@ -59,6 +59,7 @@ export default class LiquidationAuction extends AuctionService {
 
       if (activeAuction) {
         const active = auctions.filter((proposal) => proposal.data.status === '1')
+
         return await Promise.all(active.map((auction) => this.getAuctionData(auction.data, auction.inf)))
       } else {
         const ended = auctions.filter((auction) => auction.data.status !== '1')
@@ -66,6 +67,40 @@ export default class LiquidationAuction extends AuctionService {
       }
     }
     return []
+  }
+
+  async getAuctionsEvents () {
+    const contract = await this.getContractInstance(this.contractName)
+    const pastEvents = await contract.instance.getPastEvents('AuctionStarted', { fromBlock: 0, toBlock: 'latest' })
+
+    if (!pastEvents.length) {
+      return []
+    } else {
+      const auctionInfo = pastEvents.map((event) => ({
+        user: event?.returnValues?._user,
+        vaultId: event.returnValues._vaultId,
+        blockNumber: event.blockNumber
+      }))
+      return auctionInfo
+    }
+  }
+
+  async getAuctionsCount () {
+    const auctionsInfo = await this.getAuctionsEvents()
+    if (!auctionsInfo.length) {
+      return []
+    } else {
+      const allAuctions = await Promise.all(auctionsInfo.map((evt) => this.getAuction(evt, evt?.vaultId)))
+
+      const activeAuctions = allAuctions.filter((auction) => auction.data.status === '1')
+      const endedAuctions = allAuctions.filter((auction) => auction.data.status !== '1')
+
+      return {
+        contract: this.contractName,
+        activeAuctions,
+        endedAuctions
+      }
+    }
   }
 
   async getOneAuction (inf, active) {

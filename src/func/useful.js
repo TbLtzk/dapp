@@ -69,18 +69,22 @@ export const sortAndCountProposals = (proposals) => {
   proposals.forEach((proposal) => {
     if (proposal.endedIds) {
       proposalsCount.ended += proposal.endedIds.length
-      endedProposalsIds.push(proposal.endedIds.map((item) => ({ id: item, contract: proposal.contract })))
+      endedProposalsIds.push(
+        proposal.endedIds.map(({ id, blockNumber }) => ({ id, blockNumber, contract: proposal.contract }))
+      )
     }
     if (proposal.activeIds) {
       proposalsCount.active += proposal.activeIds.length
-      activeProposalsIds.push(proposal.activeIds.map((item) => ({ id: item, contract: proposal.contract })))
+      activeProposalsIds.push(
+        proposal.activeIds.map(({ id, blockNumber }) => ({ id, blockNumber, contract: proposal.contract }))
+      )
     }
   })
   return [proposalsCount, groupProposals(activeProposalsIds), groupProposals(endedProposalsIds)]
 }
 
 const groupProposals = (array) => {
-  return array.flat().sort((a, b) => Number(b.id) - Number(a.id))
+  return array.flat().sort((a, b) => Number(b.blockNumber) - Number(a.blockNumber))
 }
 
 export const fillArray = (length) => {
