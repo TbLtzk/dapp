@@ -16,7 +16,8 @@ import ErrorHandler from 'func/ErrorHandler'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 import { getLatestBlockNumber, sortAndCountProposals } from 'func/useful'
 
-let block = 50000
+let block = 300000
+
 function * getSlashingProposalsCountGenerator () {
   try {
     const contracts = creationSlashingContractsObjArray()
@@ -28,7 +29,7 @@ function * getSlashingProposalsCountGenerator () {
     yield put(setSlashingProposalsCount(proposalsCount))
     yield put(setSlashingActiveProposals(activeProposalsIds))
     yield put(setSlashingEndedProposals(endedProposalsIds))
-    block = 2000
+    block = 20000
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }

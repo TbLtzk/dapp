@@ -7,7 +7,7 @@ import { creationExpertContractsObjArray } from 'contracts/helpers/voting-helper
 import ErrorHandler from 'func/ErrorHandler'
 import { getLatestBlockNumber, sortAndCountProposals } from 'func/useful'
 
-let block = 50000
+let block = 300000
 
 function * getExpertProposalsCountGenerator () {
   try {
@@ -22,7 +22,7 @@ function * getExpertProposalsCountGenerator () {
     yield put(setExpertProposalsCount(proposalsCount))
     yield put(setExpertActiveProposals(activeProposalsIds))
     yield put(setExpertEndedProposals(endedProposalsIds))
-    block = 2000
+    block = 20000
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }

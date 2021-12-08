@@ -8,7 +8,7 @@ import { creationQContractsObjArray } from 'contracts/helpers/voting-helpers/bas
 import ErrorHandler from 'func/ErrorHandler'
 import { getLatestBlockNumber, sortAndCountProposals } from 'func/useful'
 
-let block = 50000
+let block = 300000
 
 function * getQProposalsCountGenerator () {
   try {
@@ -23,7 +23,7 @@ function * getQProposalsCountGenerator () {
     yield put(setQProposalsCount(proposalsCount))
     yield put(setQActiveProposals(activeProposalsIds))
     yield put(setQEndedProposals(endedProposalsIds))
-    block = 2000
+    block = 20000
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }

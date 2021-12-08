@@ -6,7 +6,8 @@ import { setRootProposalsCount, setRootEndedProposals, setRootActiveProposals } 
 import { creationRootContractObj } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import ErrorHandler from 'func/ErrorHandler'
 import { getLatestBlockNumber, sortAndCountProposals } from 'func/useful'
-let block = 50000
+
+let block = 300000
 
 function * getRootProposalsCountGenerator () {
   try {
@@ -17,7 +18,7 @@ function * getRootProposalsCountGenerator () {
     yield put(setRootProposalsCount(proposalsCount))
     yield put(setRootActiveProposals(activeProposalsIds))
     yield put(setRootEndedProposals(endedProposalsIds))
-    block = 2000
+    block = 20000
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }
