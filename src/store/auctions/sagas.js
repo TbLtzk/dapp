@@ -1,4 +1,4 @@
-import { call, put, takeEvery, select } from 'redux-saga/effects'
+import { call, put, takeEvery, select, delay } from 'redux-saga/effects'
 
 import * as actionTypes from './action-types'
 import {
@@ -18,7 +18,10 @@ import {
   getEmptyAuctionSuccess,
   createAuctionSuccess,
   bidForAuctionSuccess,
-  executeAuctionSuccess
+  executeAuctionSuccess,
+  setLiquidationAuctionCount,
+  setSystemDebtAuctionCount,
+  setSystemSurplusAuctionCount
 } from './action-creators'
 import {
   creationLiquidationContractObj,
@@ -118,7 +121,6 @@ function * getOneAuction ({ contractName, inf, activeTab, activeAuction }) {
 }
 
 function * getAuctionsList ({ activeTab, activeAuction }) {
-  yield call(getAuctionsCountGenerator)
   try {
     let contract = null
     switch (activeTab) {
@@ -234,15 +236,46 @@ function * executeAuctionHandler ({ data }) {
   }
 }
 
-function * getAuctionsCountGenerator () {
+function * getAuctionsCountGenerator ({ data }) {
   try {
     const liquidationAuctionInstance = creationLiquidationContractObj()
     const systemSurplusAuctionInstance = creationSystemDebtContractObj()
     const systemDebtAuctionInstance = creationSystemSurplusContractObj()
-    const contracts = [liquidationAuctionInstance, systemSurplusAuctionInstance, systemDebtAuctionInstance]
 
-    const auctions = yield Promise.all(contracts.map((contract) => contract.getAuctionsCount()))
-    console.log(auctions)
+    switch (data?.contract) {
+      case CONTRACT_TYPES.liquidationAuction: {
+        const result = yield liquidationAuctionInstance.getAuctionsCount()
+        yield put(setLiquidationAuctionCount(result))
+        break
+      }
+      case CONTRACT_TYPES.systemDebtAuction: {
+        const result = yield systemSurplusAuctionInstance.getAuctionsCount()
+        yield put(setSystemDebtAuctionCount(result))
+        break
+      }
+      case CONTRACT_TYPES.systemSurplusAuction: {
+        const result = yield systemDebtAuctionInstance.getAuctionsCount()
+        yield put(setSystemSurplusAuctionCount(result))
+        break
+      }
+      default: {
+        const contracts = [liquidationAuctionInstance, systemSurplusAuctionInstance, systemDebtAuctionInstance]
+        const auctions = yield Promise.all(contracts.map((contract) => contract.getAuctionsCount()))
+        const auctionCount = {}
+        auctions.forEach((auction) => {
+          auctionCount[auction.contract] = {
+            activeAuctions: auction.activeAuctions.length,
+            endedAuctions: auction.endedAuctions.length
+          }
+        })
+        yield put(setSystemSurplusAuctionCount(auctionCount.systemSurplusAuction))
+        yield put(setSystemDebtAuctionCount(auctionCount.systemDebtAuction))
+        yield put(setLiquidationAuctionCount(auctionCount.liquidationAuction))
+      }
+    }
+
+    yield delay(800000)
+    yield call(getAuctionsCountGenerator)
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }
@@ -254,5 +287,7 @@ export default [
   takeEvery(actionTypes.GET_ENDED_AUCTIONS_LIST, getEndedAuctionsList),
   takeEvery(actionTypes.GET_AUCTION, getOneAuction),
   takeEvery(actionTypes.BID_FOR_AUCTION, bidForAuctionHandler),
-  takeEvery(actionTypes.EXECUTE_AUCTION, executeAuctionHandler)
+  takeEvery(actionTypes.EXECUTE_AUCTION, executeAuctionHandler),
+
+  takeEvery(actionTypes.GET_AUCTIONS_COUNT, getAuctionsCountGenerator)
 ]

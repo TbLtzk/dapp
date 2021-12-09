@@ -28,17 +28,9 @@ import { fromWei, toWei } from 'func/balance'
 import { addIndex } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
 
-import {
-  getValidatorsInstance,
-  getValidatorsContract,
-  getValidationRewardPoolsInstance
-} from 'contracts/contract-instance'
+import { getValidatorsInstance, getValidationRewardPoolsInstance } from 'contracts/contract-instance'
 
-import {
-  getMembersList,
-  getValidatorDelegatedStake,
-  getAccountableTotalStakeFunction
-} from 'contracts/helpers/validators-helper'
+import { getMembersList } from 'contracts/helpers/validators-helper'
 import { getAccountBalance } from 'store/q-vault/action-creators'
 import ErrorHandler from 'func/ErrorHandler'
 import { setErrorMessage, setTransactionLoading } from 'store/transaction-handler/action-creators'
@@ -90,7 +82,8 @@ function * getValidatorsOwnStakeGenerator ({ address }) {
 }
 function * getValidatorsDelegatedStakeGenerator ({ address }) {
   try {
-    let data = yield call(getValidatorDelegatedStake, address)
+    const contract = yield call(getValidatorsInstance)
+    let data = yield contract.instance.methods.getValidatorDelegatedStake(address).call()
     data = fromWei(data)
     yield put(setDelegatedStake(data))
   } catch (error) {
@@ -100,7 +93,8 @@ function * getValidatorsDelegatedStakeGenerator ({ address }) {
 
 function * getValidatorsAccountableTotalStakeGenerator ({ address }) {
   try {
-    let data = yield call(getAccountableTotalStakeFunction, address)
+    const contract = yield call(getValidatorsInstance)
+    let data = yield contract.getAccountableTotalStake(address)
     data = fromWei(data)
     yield put(setAccountableTotalStake(data))
   } catch (error) {
@@ -163,7 +157,7 @@ function * setValidatorsInterestRateGenerator ({ address, uintPercent }) {
   try {
     yield put(setTransactionLoading())
 
-    const contract = yield call(getValidatorsContract)
+    const contract = yield call(getValidatorsInstance)
     const data = yield contract.setInterestRate(address, uintPercent)
     if (data.status) {
       yield put(getInterestRate(address))

@@ -17,9 +17,9 @@ export const cache = {}
 export function getInstance (instance, QUSD) {
   return async () => {
     if (!cache[instance]) {
-      cache[instance] = await contractRegistryInstance[instance](QUSD ? 'QUSD' : null)
+      cache[instance] = contractRegistryInstance[instance](QUSD ? 'QUSD' : null)
     }
-    return cache[instance]
+    return await cache[instance]
   }
 }
 
@@ -60,12 +60,11 @@ export const getDefaultAllocationProxyInstance = getInstance('defaultAllocationP
 export const getEpdrMembershipVotingInstance = getInstance('epdrMembershipVoting')
 export const getEpdrMembershipInstance = getInstance('epdrMembership')
 
-let qVaultContract = null
-let validatorsContract = null
 let validatorMetricsInstance = null
 let compoundRateKeeperBorrowingInstance = null
 let compoundRateKeeperSavingInstance = null
 let compoundRateKeeperQVaultInstance = null
+let governedEpdrQbtcAddressInstace = null
 
 export async function getCompoundRateKeeperBorrowingInstance () {
   if (!compoundRateKeeperBorrowingInstance) {
@@ -90,30 +89,12 @@ export async function getCompoundRateKeeperQVaultInstance () {
   return compoundRateKeeperQVaultInstance
 }
 
-export const getQVaultContract = async () => {
-  if (!qVaultContract) {
-    const contract = await getQVaultInstance()
-    qVaultContract = new window.web3.eth.Contract(contract.instance._jsonInterface, contract.address)
-  }
-  return qVaultContract
-}
-
-export const getValidatorsContract = async () => {
-  if (!validatorsContract) {
-    const contract = await getValidatorsInstance()
-    validatorsContract = new window.web3.eth.Contract(contract.instance._jsonInterface, contract.address)
-  }
-  return validatorsContract
-}
-
 export const getValidatorMetricsInstance = async () => {
   if (!validatorMetricsInstance) {
     validatorMetricsInstance = new ValidatorMetrics()
   }
   return validatorMetricsInstance
 }
-
-let governedEpdrQbtcAddressInstace = null
 
 export async function getGovernedEpdrQbtcAddressInstance () {
   if (!governedEpdrQbtcAddressInstace) {

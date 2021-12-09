@@ -1,7 +1,6 @@
 import {
   getValidatorsInstance,
   getValidationRewardPoolsInstance,
-  getValidatorsContract,
   getValidatorMetricsInstance
   , contractRegistryInstance
 } from 'contracts/contract-instance'
@@ -9,23 +8,13 @@ import { transformToPercentage } from './voting-helpers/base-voting-helper'
 import { fromWei } from 'func/balance'
 import { uintPerSecondToPerYearNumber } from 'func/useful'
 
-export const getAccountableTotalStakeFunction = async (address) => {
-  const contract = await getValidatorsContract()
-  return await contract.methods.getAccountableTotalStake(address).call()
-}
-
-export const getValidatorDelegatedStake = async (address) => {
-  const contract = await getValidatorsContract()
-  return await contract.methods.getValidatorDelegatedStake(address).call()
-}
-
 export const getMembersList = async () => {
   const validatorsInstance = await getValidatorsInstance()
   const validatorsArr = await validatorsInstance.instance.methods.getValidatorShortList().call()
   const delegationSaturationAndEfficiency = await getDelegationEfficiencyAndEfficiency()
 
   const validators = await mergeArrays(validatorsArr, delegationSaturationAndEfficiency)
-  if (validatorsArr?.length === 0) {
+  if (!validatorsArr.length) {
     return []
   } else {
     return await Promise.all(validators.map((i, index) => getValidator(i, index)))

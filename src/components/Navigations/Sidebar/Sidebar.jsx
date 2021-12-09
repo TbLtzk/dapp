@@ -9,7 +9,11 @@ import { qActiveProposalsCountSelector } from 'store/voting/q-proposals/selector
 import { rootActiveProposalsCountSelector } from 'store/voting/root-node-proposals/selectors'
 import { expertActiveProposalsCountSelector } from 'store/voting/expert-proposals/selectors'
 import { slashingActiveProposalsCountSelector } from 'store/voting/slashing-proposals/selectors'
-import { liquidationAuctions, systemDebtAuctions, systemSurplusAuctions } from 'store/auctions/selectors'
+import {
+  liquidationAuctionsCountSelector,
+  systemDebtAuctionsCountSelector,
+  systemSurplusAuctionsCountSelector
+} from 'store/auctions/selectors'
 
 import Button from 'components/Base/Buttons/Button'
 import LogoImg from 'components/Base/LogoImg'
@@ -47,14 +51,14 @@ function Sidebar () {
   const userAddress = useSelector(userAddressMetamask)
   const appMode = useSelector(mode)
 
-  const liquidations = useSelector(liquidationAuctions)
-  const systemDebts = useSelector(systemDebtAuctions)
-  const systemSurplus = useSelector(systemSurplusAuctions)
-
   const qActiveProposalsCount = useSelector(qActiveProposalsCountSelector)
   const rootActiveProposalsCount = useSelector(rootActiveProposalsCountSelector)
   const expertActiveProposalsCount = useSelector(expertActiveProposalsCountSelector)
   const slashingActiveProposalsCount = useSelector(slashingActiveProposalsCountSelector)
+
+  const liquidationAuctionsCount = useSelector(liquidationAuctionsCountSelector)
+  const systemDebtAuctionsCount = useSelector(systemDebtAuctionsCountSelector)
+  const systemSurplusAuctionsCount = useSelector(systemSurplusAuctionsCountSelector)
 
   const [isGovernanceAccordionOpened, setIsGovernanceAccordionOpened] = useState('1')
   const [isAuctionAccordionOpened, setIsAuctionAccordionOpened] = useState('1')
@@ -231,10 +235,10 @@ function Sidebar () {
                                             >
                                                 – Liquidation
                                             </LinkStyle>
-                                            {liquidations.length
+                                            {liquidationAuctionsCount.activeAuctions
                                               ? (
                                                 <AccordionLbl highlight={highlight('liquidation')}>
-                                                    {liquidations.length}
+                                                    {liquidationAuctionsCount.activeAuctions}
                                                 </AccordionLbl>
                                                 )
                                               : null}
@@ -247,10 +251,10 @@ function Sidebar () {
                                             >
                                                 – System Debt
                                             </LinkStyle>
-                                            {systemDebts.length
+                                            {systemDebtAuctionsCount.activeAuctions
                                               ? (
                                                 <AccordionLbl highlight={highlight('system-debt')}>
-                                                    {systemDebts.length}
+                                                    {systemDebtAuctionsCount.activeAuctions}
                                                 </AccordionLbl>
                                                 )
                                               : null}
@@ -263,10 +267,10 @@ function Sidebar () {
                                             >
                                                 – System Surplus
                                             </LinkStyle>
-                                            {systemSurplus.length
+                                            {systemSurplusAuctionsCount.activeAuctions
                                               ? (
                                                 <AccordionLbl highlight={highlight('system-surplus')}>
-                                                    {systemSurplus.length}
+                                                    {systemSurplusAuctionsCount.activeAuctions}
                                                 </AccordionLbl>
                                                 )
                                               : null}

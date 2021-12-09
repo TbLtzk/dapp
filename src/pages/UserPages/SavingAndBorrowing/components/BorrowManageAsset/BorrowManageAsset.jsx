@@ -19,6 +19,7 @@ import {
   setBorrowAsBorrow,
   setBorrowDeposit,
   setBorrowRepay,
+  setBorrowVaultInfo,
   setBorrowWithdraw
 } from 'store/borrow-assets/action-creators'
 import { WrapSpinner } from 'pages/UserPages/styles'
@@ -64,6 +65,7 @@ function BorrowManageAsset ({ borrowingAsset, vault }) {
 
   useEffect(() => {
     if (isModalShown) {
+      dispatch(setBorrowVaultInfo(null))
       dispatch(getBorrowAllowance(TYPE.deposit))
       dispatch(getBorrowAllowance(TYPE.repay))
       dispatch(getBorrowVaultInfo(actCardDataInf?.vault?.vaultNum))

@@ -14,6 +14,6 @@ export const endedErrorM = (state) => state.auctions.endedErrorM
 export const approveModalBtn = (state) => state.auctions.approveModalBtn
 export const lastAuctionModification = (state) => state.auctions.lastAuctionModification
 
-// auction count
-export const activeAuctionCountSelector = (state) => state.auctions.activeAuctionCount
-export const endedAuctionCountSelector = (state) => state.auctions.endedAuctionCount
+export const systemSurplusAuctionsCountSelector = (state) => state.auctions.systemSurplusAuctionsCount
+export const systemDebtAuctionsCountSelector = (state) => state.auctions.systemDebtAuctionsCount
+export const liquidationAuctionsCountSelector = (state) => state.auctions.liquidationAuctionsCount

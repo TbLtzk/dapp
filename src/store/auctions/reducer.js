@@ -12,11 +12,33 @@ const initialState = {
   endedLoadingAuctions: true,
   endedErrorM: null,
   approveModalBtn: false,
-  lastAuctionModification: 0
+  lastAuctionModification: 0,
+
+  systemSurplusAuctionsCount: {},
+  systemDebtAuctionsCount: {},
+  liquidationAuctionsCount: {}
 }
 
 export default function auctions (state = initialState, action) {
   switch (action.type) {
+    case actionTypes.SET_SYSTEM_SURPLUS_AUCTIONS_COUNT: {
+      return {
+        ...state,
+        systemSurplusAuctionsCount: action.result
+      }
+    }
+    case actionTypes.SET_SYSTEM_DEBT_AUCTIONS_COUNT: {
+      return {
+        ...state,
+        systemDebtAuctionsCount: action.result
+      }
+    }
+    case actionTypes.SET_LIQUIDATION_AUCTIONS_COUNT: {
+      return {
+        ...state,
+        liquidationAuctionsCount: action.result
+      }
+    }
     case actionTypes.GET_AUCTIONS_LIST:
       return {
         ...state,
@@ -76,10 +98,13 @@ export default function auctions (state = initialState, action) {
       return {
         ...state,
         auctionsArr: (() => {
-          const findElem = state.auctionsArr?.find(element => {
+          const findElem = state.auctionsArr?.find((element) => {
             if (action.result[0].contract === 'LiquidationAuction') {
               return element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user
-            } else if (action.result[0].contract === 'SystemSurplusAuction' || action.result[0].contract === 'SystemDebtAuction') {
+            } else if (
+              action.result[0].contract === 'SystemSurplusAuction' ||
+              action.result[0].contract === 'SystemDebtAuction'
+            ) {
               return element.id === action.result[0].id
             } else {
               return false
@@ -87,9 +112,14 @@ export default function auctions (state = initialState, action) {
           })
           if (findElem) {
             return state.auctionsArr?.map((element) => {
-              if (element.userVaultId === action.result[0].userVaultId && element.user === action.result[0].user && element.contract === 'LiquidationAuction') {
+              if (
+                element.userVaultId === action.result[0].userVaultId &&
+                element.user === action.result[0].user &&
+                element.contract === 'LiquidationAuction'
+              ) {
                 return { ...action.result[0] }
-              } else if ((element.id === action.result[0].id && action.result[0].contract === 'SystemSurplusAuction') ||
+              } else if (
+                (element.id === action.result[0].id && action.result[0].contract === 'SystemSurplusAuction') ||
                 (element.id === action.result[0].id && action.result[0].contract === 'SystemDebtAuction')
               ) {
                 return { ...action.result[0] }

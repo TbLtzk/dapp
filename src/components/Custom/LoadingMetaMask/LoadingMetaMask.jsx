@@ -12,6 +12,7 @@ import App from 'components/Base/App'
 import { setUserAddress } from 'store/user-inf/action-creators'
 import { LOAD_TYPES } from 'constants/statuses'
 import { getNumberAllProposals } from 'store/voting/proposals/action-creators'
+import { getAuctionsCount } from 'store/auctions/action-creators'
 
 const web3 = new Web3(Web3.givenProvider)
 
@@ -71,6 +72,7 @@ function LoadingMetaMask () {
       const addressId = accounts[0]
       dispatch(setUserAddress(addressId))
       dispatch(getNumberAllProposals())
+      dispatch(getAuctionsCount())
       setIsMetaMask(LOAD_TYPES.loaded)
     } catch {
       setIsMetaMask(LOAD_TYPES.initError)

@@ -31,22 +31,20 @@ function SavingCryptoAssets () {
                 <TableView
                     type="with-action"
                     header={HEADERS}
-                    body={savingAssets.map((item) => {
-                      return (
-                            <tr key={item.depositAsset + '-' + item.interestAsset + item.rate}>
-                                <td>{item.depositAsset}</td>
-                                <td>{item.interestAsset}</td>
-                                <td>{fN(item.rate)} %</td>
-                                <td>
-                                    <SaveManageAsset
-                                        depositAsset={item.depositAsset}
-                                        interestAsset={item.interestAsset}
-                                        rate={item.rate}
-                                    />
-                                </td>
-                            </tr>
-                      )
-                    })}
+                    body={savingAssets.map((item) => (
+                        <tr key={item.depositAsset + '-' + item.interestAsset + item.rate}>
+                            <td>{item.depositAsset}</td>
+                            <td>{item.interestAsset}</td>
+                            <td>{fN(item.rate)} %</td>
+                            <td>
+                                <SaveManageAsset
+                                    depositAsset={item.depositAsset}
+                                    interestAsset={item.interestAsset}
+                                    rate={item.rate}
+                                />
+                            </td>
+                        </tr>
+                    ))}
                 />
                   )
                 : (
