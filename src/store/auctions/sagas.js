@@ -236,13 +236,13 @@ function * executeAuctionHandler ({ data }) {
   }
 }
 
-function * getAuctionsCountGenerator ({ data }) {
+function * getAuctionsCountGenerator () {
   try {
     const liquidationAuctionInstance = creationLiquidationContractObj()
     const systemSurplusAuctionInstance = creationSystemDebtContractObj()
     const systemDebtAuctionInstance = creationSystemSurplusContractObj()
 
-    switch (data?.contract) {
+    switch ('Auction') {
       case CONTRACT_TYPES.liquidationAuction: {
         const result = yield liquidationAuctionInstance.getAuctionsCount()
         yield put(setLiquidationAuctionCount(result))

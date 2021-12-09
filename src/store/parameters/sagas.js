@@ -151,19 +151,19 @@ function * getParameterKeysByType ({ typeContract, typeParameter }) {
       let data = null
       switch (typeParameter) {
         case ParameterType.ADDRESS:
-          data = yield contract.getAddrKeys()
+          data = yield contract.instance.methods.getAddrKeys().call()
           break
         case ParameterType.BOOL:
-          data = yield contract.getBoolKeys()
+          data = yield contract.instance.methods.getBoolKeys().call()
           break
         case ParameterType.STRING:
-          data = yield contract.getStringKeys()
+          data = yield contract.instance.methods.getStringKeys().call()
           break
         case ParameterType.BYTE:
-          data = yield contract.getBytesKeys()
+          data = yield contract.instance.methods.getBytesKeys().call()
           break
         case ParameterType.UINT:
-          data = yield contract.getUintKeys()
+          data = yield contract.instance.methods.getUintKeys().call()
           break
       }
       if (data) {
