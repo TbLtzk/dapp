@@ -87,19 +87,15 @@ export default class LiquidationAuction extends AuctionService {
 
   async getAuctionsCount () {
     const auctionsInfo = await this.getAuctionsEvents()
-    if (!auctionsInfo.length) {
-      return []
-    } else {
-      const allAuctions = await Promise.all(auctionsInfo.map((evt) => this.getAuction(evt, evt?.vaultId)))
+    const allAuctions = await Promise.all(auctionsInfo.map((evt) => this.getAuction(evt, evt?.vaultId)))
 
-      const activeAuctions = allAuctions.filter((auction) => auction.data.status === '1')
-      const endedAuctions = allAuctions.filter((auction) => auction.data.status !== '1')
+    const activeAuctions = allAuctions.filter((auction) => auction.data.status === '1')
+    const endedAuctions = allAuctions.filter((auction) => auction.data.status !== '1')
 
-      return {
-        contract: this.contractName,
-        activeAuctions,
-        endedAuctions
-      }
+    return {
+      contract: this.contractName,
+      activeAuctions,
+      endedAuctions
     }
   }
 

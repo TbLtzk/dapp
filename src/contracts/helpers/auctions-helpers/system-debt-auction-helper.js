@@ -70,19 +70,15 @@ export default class SystemDebtAuction extends AuctionService {
 
   async getAuctionsCount () {
     const auctionsInfo = await this.getAuctionsEvents()
-    if (!auctionsInfo.length) {
-      return []
-    } else {
-      const allAuctions = await Promise.all(auctionsInfo.map((evt) => this.getAuction(evt)))
+    const allAuctions = await Promise.all(auctionsInfo.map((evt) => this.getAuction(evt)))
 
-      const activeAuctions = allAuctions.filter((auction) => auction.data.status === '1')
-      const endedAuctions = allAuctions.filter((auction) => auction.data.status === '2' || auction.data.status === '0')
+    const activeAuctions = allAuctions.filter((auction) => auction.data.status === '1')
+    const endedAuctions = allAuctions.filter((auction) => auction.data.status === '2' || auction.data.status === '0')
 
-      return {
-        contract: this.contractName,
-        activeAuctions,
-        endedAuctions
-      }
+    return {
+      contract: this.contractName,
+      activeAuctions,
+      endedAuctions
     }
   }
 

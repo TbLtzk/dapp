@@ -1,4 +1,5 @@
 import { BigNumber } from 'bignumber.js'
+import { orderBy } from 'lodash'
 
 export const errorHandler = (error, field, min = 0, max = 100) => {
   if (undefined === error[field]) return ''
@@ -84,7 +85,7 @@ export const sortAndCountProposals = (proposals) => {
 }
 
 const groupProposals = (array) => {
-  return array.flat().sort((a, b) => Number(b.blockNumber) - Number(a.blockNumber))
+  return orderBy(array.flat(), ['blockNumber'], ['desc', 'asc'])
 }
 
 export const fillArray = (length) => {

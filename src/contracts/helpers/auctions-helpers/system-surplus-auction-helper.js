@@ -72,19 +72,15 @@ export default class SystemSurplusAuction extends AuctionService {
 
   async getAuctionsCount () {
     const auctionsInfo = await this.getAuctionsEvents()
-    if (!auctionsInfo.length) {
-      return []
-    } else {
-      const allAuctions = await Promise.all(auctionsInfo.map((evt) => this.getAuction(evt)))
 
-      const activeAuctions = allAuctions.filter((auction) => !auction.data.isExecuted)
-      const endedAuctions = allAuctions.filter((auction) => auction.data.isExecuted)
+    const allAuctions = await Promise.all(auctionsInfo.map((evt) => this.getAuction(evt)))
+    const activeAuctions = allAuctions.filter((auction) => !auction.data.isExecuted)
+    const endedAuctions = allAuctions.filter((auction) => auction.data.isExecuted)
 
-      return {
-        contract: this.contractName,
-        activeAuctions,
-        endedAuctions
-      }
+    return {
+      contract: this.contractName,
+      activeAuctions,
+      endedAuctions
     }
   }
 
