@@ -7,18 +7,15 @@ import { creationRootContractObj } from 'contracts/helpers/voting-helpers/base-v
 import ErrorHandler from 'func/ErrorHandler'
 import { getLatestBlockNumber, sortAndCountProposals } from 'func/useful'
 
-let block = 300000
-
 function * getRootProposalsCountGenerator () {
   try {
     const contract = creationRootContractObj()
     const latestBlockNumber = yield getLatestBlockNumber()
-    const proposals = yield contract.getProposalsCount(latestBlockNumber - block)
+    const proposals = yield contract.getProposalsCount(latestBlockNumber)
     const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposals([proposals])
     yield put(setRootProposalsCount(proposalsCount))
     yield put(setRootActiveProposals(activeProposalsIds))
     yield put(setRootEndedProposals(endedProposalsIds))
-    block = 20000
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }

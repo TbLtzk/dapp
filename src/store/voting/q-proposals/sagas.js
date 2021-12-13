@@ -8,14 +8,13 @@ import { creationQContractsObjArray } from 'contracts/helpers/voting-helpers/bas
 import ErrorHandler from 'func/ErrorHandler'
 import { getLatestBlockNumber, sortAndCountProposals } from 'func/useful'
 
-let block = 300000
 
 function * getQProposalsCountGenerator () {
   try {
     const contracts = creationQContractsObjArray()
     const latestBlockNumber = yield getLatestBlockNumber()
     const proposals = yield Promise.all(
-      contracts.map((contract) => contract.getProposalsCount(latestBlockNumber - block))
+      contracts.map((contract) => contract.getProposalsCount(latestBlockNumber))
     )
 
     const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposals(proposals)
@@ -23,7 +22,6 @@ function * getQProposalsCountGenerator () {
     yield put(setQProposalsCount(proposalsCount))
     yield put(setQActiveProposals(activeProposalsIds))
     yield put(setQEndedProposals(endedProposalsIds))
-    block = 20000
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }
