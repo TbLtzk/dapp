@@ -17,13 +17,14 @@ import CreateStep3 from './CreateStep2'
 
 import { ProgressBar } from 'react-bootstrap'
 
-function ModalVote ({ modalShow, onHide, activeTab, proposalId, proposalContract, vetoEndTime }) {
+function ModalVote ({ modalShow, onHide, activeTab, proposalId, proposalContract, vetoEndTime, proposalStatus }) {
   const { register, errors, handleSubmit } = useForm()
   const dispatch = useDispatch()
 
   const formData = useSelector(formVoteObject)
   const stepCounter = useSelector(stepVoteCounterModal)
   const stepLimit = 2
+  const checkTitleName = proposalStatus === 'Pending' ? 'Vote' : 'Veto'
 
   const switchProposalContentDependsOnType = useCallback(() => {
     switch (stepCounter) {
@@ -82,7 +83,7 @@ function ModalVote ({ modalShow, onHide, activeTab, proposalId, proposalContract
               dispatch(setDisabledCreatedProposalBtn(false))
             }}
             continueBtnTitle={stepLimit !== stepCounter ? 'Next' : 'Confirm'}
-            modalTitle={'Vote for Proposal'}
+            modalTitle={`${checkTitleName} for proposal`}
             continueBtnHandler={handleSubmit(onNext)}
             content={
                 <>

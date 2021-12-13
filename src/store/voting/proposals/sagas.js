@@ -3,13 +3,14 @@ import { delay, call, put, takeEvery, select } from 'redux-saga/effects'
 import * as actionTypes from 'store/voting/proposals/action-types'
 import { setErrorMessage, setTransactionCounter } from 'store/transaction-handler/action-creators'
 
-import { getLockedAssets } from 'store/q-vault/action-creators'
+import { getDelegationInfo, getLockedAssets } from 'store/q-vault/action-creators'
 
 import {
   getConstitutionHashSuccess,
   setBaseVotingWeightInfo,
   getProposal,
-  setExecutedProposal
+  setExecutedProposal,
+  getBaseVotingWeightInfo
 } from 'store/voting/proposals/action-creators'
 import { getQProposalsCount } from 'store/voting/q-proposals/action-creators'
 import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-creators'
@@ -84,6 +85,8 @@ function * createProposalGenerator ({ data }) {
           return null
       }
     }
+    yield put(getBaseVotingWeightInfo())
+    yield put(getDelegationInfo(userAddress))
     yield put(getProposal(contractName))
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -109,6 +112,8 @@ function * voteForProposalGenerator ({ data }) {
         yield contract.veto(data?.idProposal, userAddress)
       }
     }
+    yield put(getBaseVotingWeightInfo())
+    yield put(getDelegationInfo(userAddress))
     yield put(getLockedAssets(userAddress))
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -128,6 +133,8 @@ function * executeProposalGenerator ({ data }) {
       yield contract.execute(data?.idProposal, userAddress)
     }
     yield put(getProposal(data.contract))
+    yield put(getBaseVotingWeightInfo())
+    yield put(getDelegationInfo(userAddress))
     yield put(setExecutedProposal(data))
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -177,7 +184,6 @@ function * getConstitutionHashGenerator () {
   try {
     const contract = creationQContractObj(CONTRACTS_NAMES.constitutionVoting)
     const data = yield contract.getConstitutionHash()
-
     yield put(getConstitutionHashSuccess(data))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)

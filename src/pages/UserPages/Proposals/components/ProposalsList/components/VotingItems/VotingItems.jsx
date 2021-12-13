@@ -143,6 +143,7 @@ function VotingItems ({ proposal }) {
             {modalShow
               ? (
                 <ModalVote
+                    proposalStatus={proposal.status}
                     proposalContract={proposalContract}
                     proposalId={proposalId}
                     vetoEndTime={vetoEndTime}
