@@ -8,7 +8,6 @@ import { creationQContractsObjArray } from 'contracts/helpers/voting-helpers/bas
 import ErrorHandler from 'func/ErrorHandler'
 import { getLatestBlockNumber, sortAndCountProposals } from 'func/useful'
 
-
 function * getQProposalsCountGenerator () {
   try {
     const contracts = creationQContractsObjArray()

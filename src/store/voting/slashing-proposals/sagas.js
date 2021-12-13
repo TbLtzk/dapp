@@ -16,7 +16,6 @@ import ErrorHandler from 'func/ErrorHandler'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 import { getLatestBlockNumber, sortAndCountProposals } from 'func/useful'
 
-
 function * getSlashingProposalsCountGenerator () {
   try {
     const contracts = creationSlashingContractsObjArray()
