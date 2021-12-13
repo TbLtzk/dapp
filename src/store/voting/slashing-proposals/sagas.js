@@ -14,12 +14,12 @@ import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-hel
 
 import ErrorHandler from 'func/ErrorHandler'
 import { CONTRACTS_NAMES } from 'constants/contracts'
-import { getLatestBlockNumber, sortAndCountProposals } from 'func/useful'
+import { getMinimalActiveBlockHeight, sortAndCountProposals } from 'func/useful'
 
 function * getSlashingProposalsCountGenerator () {
   try {
     const contracts = creationSlashingContractsObjArray()
-    const latestBlockNumber = yield getLatestBlockNumber()
+    const latestBlockNumber = yield getMinimalActiveBlockHeight()
     const proposals = yield Promise.all(
       contracts.map((contract) => contract.getProposalsCount(latestBlockNumber))
     )
