@@ -114,6 +114,8 @@ export function BN (value) {
   return new BigNumber(value)
 }
 
+export const toNumber = (value) => Number(value.toString().replace(/[Q,%]/g, ''))
+
 export const getPercentageFormat = (number) => {
   return BN('1e+25').multipliedBy(number).toFixed()
 }

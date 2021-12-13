@@ -10,13 +10,12 @@ import MemberTables from 'components/Custom/MemberTables'
 
 import TABLE_TYPES from 'constants/tableTypes'
 
-function RootNodePanel (props) {
-  const { type } = props
+function RootNodePanel ({ type }) {
+  const dispatch = useDispatch()
 
   const userAddress = useSelector(userAddressMetamask)
   const rootMembersArray = useSelector(rootMembersData)
   const loading = !rootMembersArray?.rootNodeData?.length
-  const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(getRootMembersData())

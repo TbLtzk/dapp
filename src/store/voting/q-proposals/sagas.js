@@ -1,4 +1,4 @@
-import { put, takeEvery } from 'redux-saga/effects'
+import { put, takeEvery, all } from 'redux-saga/effects'
 
 import * as actionTypes from './action-types'
 
@@ -11,13 +11,9 @@ import { getMinimalActiveBlockHeight, sortAndCountProposals } from 'func/useful'
 function * getQProposalsCountGenerator () {
   try {
     const contracts = creationQContractsObjArray()
-    const latestBlockNumber = yield getMinimalActiveBlockHeight()
-    const proposals = yield Promise.all(
-      contracts.map((contract) => contract.getProposalsCount(latestBlockNumber))
-    )
-
+    const minimalActiveBlockHeight = yield getMinimalActiveBlockHeight()
+    const proposals = yield all(contracts.map((contract) => contract.getProposalsCount(minimalActiveBlockHeight)))
     const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposals(proposals)
-
     yield put(setQProposalsCount(proposalsCount))
     yield put(setQActiveProposals(activeProposalsIds))
     yield put(setQEndedProposals(endedProposalsIds))

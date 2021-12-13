@@ -1,4 +1,4 @@
-import { put, takeEvery, call, select } from 'redux-saga/effects'
+import { put, takeEvery, call, select, all } from 'redux-saga/effects'
 import * as actionTypes from './action-types'
 
 import {
@@ -30,7 +30,7 @@ import { getNowTimestamp } from 'func/convertDate'
 
 import { getValidatorsInstance, getValidationRewardPoolsInstance } from 'contracts/contract-instance'
 
-import { getMembersList } from 'contracts/helpers/validators-helper'
+import { getValidator, getValidators } from 'contracts/helpers/validators-helper'
 import { getAccountBalance } from 'store/q-vault/action-creators'
 import ErrorHandler from 'func/ErrorHandler'
 import { setErrorMessage, setTransactionLoading } from 'store/transaction-handler/action-creators'
@@ -114,8 +114,15 @@ function * getValidatorsAccountableSelfStake ({ address }) {
 
 function * getValidatorsMembersGenerator () {
   try {
-    const data = yield call(getMembersList)
-    yield put(getValidatorMembersSuccess(data))
+    const validatorsInstance = yield call(getValidatorsInstance)
+    const validationRewardPoolsInstance = yield call(getValidationRewardPoolsInstance)
+    const validators = yield getValidators(validatorsInstance)
+    const result = yield all(
+      validators.map((validator, idx) =>
+        getValidator(validator, idx, validatorsInstance, validationRewardPoolsInstance)
+      )
+    )
+    yield put(getValidatorMembersSuccess(result))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
     yield put(getValidatorMembersError(error.message))

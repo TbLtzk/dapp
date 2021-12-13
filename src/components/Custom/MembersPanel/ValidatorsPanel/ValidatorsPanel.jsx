@@ -1,22 +1,21 @@
 import React, { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 
 import CustomBlock from 'components/Base/CustomBlock'
 import Button from 'components/Base/Buttons/Button'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { getValidatorMembers } from 'store/validators/action-creators'
-import { useHistory } from 'react-router-dom'
 import { loadingMembers, validatorMembers } from 'store/validators/selectors'
 import MemberTables from 'components/Custom/MemberTables'
 import TABLE_TYPES from 'constants/tableTypes'
 
-function ValidatorsPanel (props) {
-  const { bottom, widened } = props
+function ValidatorsPanel ({ bottom, widened }) {
+  const dispatch = useDispatch()
 
   const loading = useSelector(loadingMembers)
   const validators = useSelector(validatorMembers)
 
-  const dispatch = useDispatch()
   const history = useHistory()
 
   useEffect(() => {
@@ -37,11 +36,11 @@ function ValidatorsPanel (props) {
                 />
                 {!bottom
                   ? (
-                    <div className='card__actions'>
+                    <div className="card__actions">
                         <Button
-                            type='white'
+                            type="white"
                             icon="arrow-right"
-                            title='See more details'
+                            title="See more details"
                             handleButton={() =>
                               history.push({
                                 pathname: '/staking',
@@ -54,11 +53,11 @@ function ValidatorsPanel (props) {
                     </div>
                     )
                   : (
-                    <div className='card__actions'>
+                    <div className="card__actions">
                         <Button
-                            type='white'
+                            type="white"
                             icon="arrow-right"
-                            title='Go to Q Vault'
+                            title="Go to Q Vault"
                             handleButton={() =>
                               history.push({
                                 pathname: '/q-vault'

@@ -1,4 +1,4 @@
-import { call, put, takeEvery, select, delay } from 'redux-saga/effects'
+import { call, put, takeEvery, select, delay, all } from 'redux-saga/effects'
 
 import * as actionTypes from './action-types'
 import {
@@ -260,7 +260,7 @@ function * getAuctionsCountGenerator () {
       }
       default: {
         const contracts = [liquidationAuctionInstance, systemSurplusAuctionInstance, systemDebtAuctionInstance]
-        const auctions = yield Promise.all(contracts.map((contract) => contract.getAuctionsCount()))
+        const auctions = yield all(contracts.map((contract) => contract.getAuctionsCount()))
         const auctionCount = {}
         auctions.forEach((auction) => {
           auctionCount[auction.contract] = {

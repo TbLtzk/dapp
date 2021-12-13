@@ -1,4 +1,4 @@
-import { put, takeEvery, select } from 'redux-saga/effects'
+import { put, takeEvery, select, all } from 'redux-saga/effects'
 
 import * as actionTypes from 'store/voting/slashing-proposals/action-types'
 import { setErrorMessage, setTransactionCounter } from 'store/transaction-handler/action-creators'
@@ -19,10 +19,8 @@ import { getMinimalActiveBlockHeight, sortAndCountProposals } from 'func/useful'
 function * getSlashingProposalsCountGenerator () {
   try {
     const contracts = creationSlashingContractsObjArray()
-    const latestBlockNumber = yield getMinimalActiveBlockHeight()
-    const proposals = yield Promise.all(
-      contracts.map((contract) => contract.getProposalsCount(latestBlockNumber))
-    )
+    const minimalActiveBlockHeight = yield getMinimalActiveBlockHeight()
+    const proposals = yield all(contracts.map((contract) => contract.getProposalsCount(minimalActiveBlockHeight)))
     const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposals(proposals)
     yield put(setSlashingProposalsCount(proposalsCount))
     yield put(setSlashingActiveProposals(activeProposalsIds))
