@@ -33,9 +33,10 @@ export const getUniqueProposals = (array) => {
   )
 }
 
-export const getLatestBlockNumber = async () => {
+export const getMinimalActiveBlockHeight = async () => {
+  const blocksDependsOnVersion = window.ethereum.networkVersion === '35442' ? 40000 : 300000
   const block = await window.web3.eth.getBlock('latest')
-  return block.number
+  return Math.max(0, Number(block.number) - Number(blocksDependsOnVersion))
 }
 
 export const fN = (number) => {
