@@ -3,7 +3,7 @@ import { fromWei } from 'func/balance'
 import { fN } from 'func/useful'
 import ProgressBar from 'components/Base/ProgressBar'
 import { convertToMonthDayYear } from 'func/convertDate'
-import CopyAddress from '../components/Custom/MemberTables/CopyAddress/index'
+import CopyToClipboard from 'components/Base/CopyToClipboard'
 
 export const tableLockAmount = (tableArray) =>
   tableArray.map((lock) => ({
@@ -17,7 +17,7 @@ export const tableRootNode = (tableArray) =>
   tableArray.map((rootNode, idx) => ({
     id: idx,
     rank: rootNode.rank,
-    address: <CopyAddress address={rootNode.address} />,
+    address: <CopyToClipboard valueToCopy={rootNode.address}>{rootNode.address}</CopyToClipboard>,
     amount: fN(rootNode.stakeAmount) + ' Q',
     share: rootNode.share + ' %'
   }))
@@ -26,7 +26,7 @@ export const tableValidatorsShort = (tableArray) =>
   tableArray.map((validator, idx) => ({
     id: idx,
     rank: validator.rank,
-    validator: <CopyAddress address={validator.validator} />,
+    validator: <CopyToClipboard valueToCopy={validator.validator}>{validator.validator}</CopyToClipboard>,
     amount: fN(fromWei(validator.amount)) + ' Q'
   }))
 
@@ -34,7 +34,7 @@ export const tableValidatorsWidened = (tableArray) =>
   tableArray.map((validator, idx) => ({
     id: idx,
     rank: validator.rank,
-    validator: <CopyAddress address={validator.validator} />,
+    validator: <CopyToClipboard valueToCopy={validator.validator}>{validator.validator}</CopyToClipboard>,
     amount: fN(fromWei(validator.amount)) + ' Q',
     selfStake: fN(validator.selfStake) + ' Q',
     delegatedStake: fN(validator.delegatedStake) + ' Q',
@@ -47,19 +47,19 @@ export const tableValidatorsWidened = (tableArray) =>
 export const tableDefiRisks = (tableArray) =>
   tableArray.map((member, idx) => ({
     id: idx,
-    member: <CopyAddress address={member} />
+    member: <CopyToClipboard valueToCopy={member}>{member}</CopyToClipboard>
   }))
 
 export const tableQFees = (tableArray) =>
   tableArray.map((member, idx) => ({
     id: idx,
-    member: <CopyAddress address={member} />
+    member: <CopyToClipboard valueToCopy={member}>{member}</CopyToClipboard>
   }))
 
 export const tableDelegations = (tableArray) =>
   tableArray.map((member, idx) => ({
     id: idx,
-    address: <CopyAddress address={member.validator} />,
+    address: <CopyToClipboard valueToCopy={member.validator}>{member.validator}</CopyToClipboard>,
     amount: fN(fromWei(member.actualStake)) + ' Q',
     reward: fN(fromWei(member.claimableReward)) + ' Q'
   }))

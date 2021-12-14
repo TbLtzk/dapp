@@ -146,11 +146,18 @@ export const columnsValidatorsWidened = [
   {
     headerStyle: () => ({ minWidth: '100px' }),
     dataField: 'delegationEfficiency',
-    text: 'Delegation Efficiency'
+    text: 'Delegation Efficiency',
+    sort: true,
+    sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
   },
   {
     headerStyle: () => ({ minWidth: '165px' }),
     dataField: 'delegationSaturation',
-    text: 'Delegation Saturation'
+    text: 'Delegation Saturation',
+    sort: true,
+    sortFunc: (a, b, order) =>
+      order === 'asc'
+        ? toNumber(b.props.value) - toNumber(a.props.value)
+        : toNumber(a.props.value) - toNumber(b.props.value)
   }
 ]

@@ -1,5 +1,14 @@
+import React from 'react'
+import LoadingSpinner from 'components/Base/LoadingSpinner'
+import { LoadingWrap } from 'components/Custom/MemberTables/styles'
 import { createGlobalStyle } from 'styled-components'
 import '../../node_modules/@mdi/font/css/materialdesignicons.min.css'
+
+export const fallback = (
+  <LoadingWrap>
+    <LoadingSpinner />
+  </LoadingWrap>
+)
 
 export const GlobalStyle = createGlobalStyle`
   body {

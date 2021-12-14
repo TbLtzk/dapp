@@ -36,7 +36,7 @@ function LoadingMetaMask () {
         window.web3.eth.handleRevert = true
         const addresses = await window.web3.eth.getAccounts()
         dispatch(setUserAddress(addresses[0]))
-        await initAccount()
+        initAccount()
       }
     })
     ethereum?.on('accountsChanged', (accounts) => {
@@ -60,7 +60,7 @@ function LoadingMetaMask () {
           ethereum.enable()
         })
       } catch (error) {
-        console.error('error', error)
+        setIsMetaMask(LOAD_TYPES.initError)
       }
     }
   }
@@ -68,9 +68,6 @@ function LoadingMetaMask () {
   const initAccount = async () => {
     try {
       await getContractRegistryInstance()
-      const accounts = await window.web3.eth.getAccounts()
-      const addressId = accounts[0]
-      dispatch(setUserAddress(addressId))
       dispatch(getNumberAllProposals())
       dispatch(getAuctionsCount())
       setIsMetaMask(LOAD_TYPES.loaded)

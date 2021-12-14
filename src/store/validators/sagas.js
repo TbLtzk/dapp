@@ -39,9 +39,7 @@ function * getValidatorsShortListGenerator () {
   try {
     const contract = yield call(getValidatorsInstance)
     const data = yield contract.instance.methods.getValidatorShortList().call()
-    if (data) {
-      yield put(setValidatorShortList(data))
-    }
+    yield put(setValidatorShortList(data))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }

@@ -2,14 +2,14 @@ import React, { useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { getEPQFIMembers } from 'store/membership/action-creators'
-import { EPQFIMembers, EPQFIMembersError } from 'store/membership/selectors'
+import { EPQFIMembers, EPQFIMembersLoading } from 'store/membership/selectors'
 
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock'
 import MemberTables from 'components/Custom/MemberTables'
 import TABLE_TYPES from 'constants/tableTypes'
 
 function QFeesMembersPanel () {
-  const loading = useSelector(EPQFIMembersError)
+  const loading = useSelector(EPQFIMembersLoading)
   const members = useSelector(EPQFIMembers)
 
   const dispatch = useDispatch()

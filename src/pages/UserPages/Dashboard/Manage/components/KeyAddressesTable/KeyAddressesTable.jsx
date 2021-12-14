@@ -1,57 +1,33 @@
 import React from 'react'
 import TableView from 'components/Base/TableView'
-import colors from 'constants/colors'
 import { KeyAddressesTableWrap } from './style'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { OverlayTrigger, Popover } from 'react-bootstrap'
+import CopyToClipboard from 'components/Base/CopyToClipboard'
 
-function KeyAddressesTable (props) {
-  const {
-    tableData,
-    tableHeaders
-  } = props
-  const popover = (
-    <Popover id="popover-basic">
-      <Popover.Content style={{
-        background: colors.neonGreen
-      }}>
-        Copy
-      </Popover.Content>
-    </Popover>
-  )
-
+function KeyAddressesTable ({ tableData, tableHeaders }) {
   return (
-    <KeyAddressesTableWrap>
-      <TableView
-        body={
-          <>
-            <tr>
-              {tableHeaders.map(i => <th key={i}>{i}</th>)}
-            </tr>
-            {tableData.map((i, index) => {
-              return (
-                <tr key={index}>
-                  <td>
-                    {i.key}
-                  </td>
-                  <td>
-                    <OverlayTrigger
-                      key="top"
-                      placement="top"
-                      overlay={popover}
-                    >
-                      <CopyToClipboard text={i.value}>
-                        <span>{i.value}</span>
-                      </CopyToClipboard>
-                    </OverlayTrigger>
-                  </td>
-                </tr>
-              )
-            })}
-          </>
-        }
-      />
-    </KeyAddressesTableWrap>
+        <KeyAddressesTableWrap>
+            <TableView
+                body={
+                    <>
+                        <tr>
+                            {tableHeaders.map((item, index) => (
+                                <th key={item + index}>{item}</th>
+                            ))}
+                        </tr>
+                        {tableData.map((item, index) => (
+                            <tr key={index}>
+                                <td>{item.key}</td>
+                                <td>
+                                    <CopyToClipboard valueToCopy={item.value}>
+                                        <span>{item.value}</span>
+                                    </CopyToClipboard>
+                                </td>
+                            </tr>
+                        ))}
+                    </>
+                }
+            />
+        </KeyAddressesTableWrap>
   )
 }
 
