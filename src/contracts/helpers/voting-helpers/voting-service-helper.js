@@ -114,18 +114,10 @@ export default class VotingService {
     return objRes
   }
 
-  async test (pastEvent, contract) {
-    const id = pastEvent.returnValues._id
-    const { blockNumber } = pastEvent
-    const status = await contract.getStatus(pastEvent.returnValues._id)
-    return { id, status, blockNumber }
-  }
-
   async getProposalsCount (minimalActiveBlockHeight) {
     const contract = await this.getContractInstance()
     const pastEvents = await contract.instance.getPastEvents('ProposalCreated', { fromBlock: 0, toBlock: 'latest' })
     const latestPastEvents = pastEvents.filter((evt) => evt.blockNumber >= minimalActiveBlockHeight)
-    // const latestProposals = await Promise.all(pastEvents.map((pastEvent) => this.test(pastEvent, contract)));
 
     const latestProposals = []
     for (const pastEvent of latestPastEvents) {

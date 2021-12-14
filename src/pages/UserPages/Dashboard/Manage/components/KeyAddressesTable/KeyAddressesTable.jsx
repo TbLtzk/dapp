@@ -16,7 +16,12 @@ function KeyAddressesTable ({ tableData, tableHeaders }) {
                         </tr>
                         {tableData.map((item, index) => (
                             <tr key={index}>
-                                <td>{item.key}</td>
+                                <td>
+                                    <CopyToClipboard valueToCopy={item.key}>
+                                        <span>{item.key}</span>
+                                    </CopyToClipboard>
+                                </td>
+
                                 <td>
                                     <CopyToClipboard valueToCopy={item.value}>
                                         <span>{item.value}</span>
