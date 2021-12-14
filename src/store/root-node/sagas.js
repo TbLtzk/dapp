@@ -1,4 +1,4 @@
-import { put, takeEvery, call, select } from 'redux-saga/effects'
+import { put, takeEvery, call, select, all } from 'redux-saga/effects'
 
 import * as actionTypes from './action-types'
 
@@ -21,7 +21,7 @@ import { addIndex } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
 import { fromWei } from 'func/balance'
 import ErrorHandler from 'func/ErrorHandler'
-import { getRootCalc } from 'contracts/helpers/root-node-helper'
+import { getMemberStake, getRootCalc } from 'contracts/helpers/root-node-helper'
 import { getRootNodesInstance } from 'contracts/contract-instance'
 import { getAccountBalance } from 'store/q-vault/action-creators'
 
@@ -116,8 +116,10 @@ function * setRootWithdrawGenerator ({ amount, payTo, paymentInf }) {
 
 function * getRootMembersGenerator () {
   try {
-    const data = yield call(getRootCalc)
-    yield put(setRootMembersData(data))
+    const contract = yield call(getRootNodesInstance)
+    const members = yield contract.getMembers()
+    const rootStakes = yield all(members.map((member) => getMemberStake(contract, member)))
+    yield put(setRootMembersData(getRootCalc(rootStakes)))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }

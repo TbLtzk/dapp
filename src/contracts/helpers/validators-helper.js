@@ -20,7 +20,6 @@ export const getValidators = async (validatorsInstance) => {
 export const getValidator = async (validator, index, validatorsInstance, validationRewardPoolsInstance) => {
   const validatorInfo = await validatorsInstance.getValidatorInfo(validator.validator)
   const poolInfo = await validationRewardPoolsInstance.getPoolInfo(validator.validator)
-
   const selfStake = validatorInfo.selfStake
   const delegatedStake = validatorInfo.delegatedStake
   const delegatorShare = transformToPercentage(poolInfo.delegatorsShare)

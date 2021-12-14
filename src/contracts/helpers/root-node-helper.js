@@ -1,23 +1,14 @@
-import { getRootNodesInstance } from 'contracts/contract-instance'
 import { fromWei } from 'func/balance'
 
-const getRootNodeAllData = async () => {
-  const contract = await getRootNodesInstance()
-  const members = await contract.getMembers()
-  const rootStakes = []
-  for (const member of members) {
-    const rootNodeStake = await contract.getRootNodeStake(member)
-    rootStakes.push({
-      address: member,
-      stakeAmount: Number(fromWei(rootNodeStake))
-    })
+export const getMemberStake = async (contract, member) => {
+  const rootNodeStake = await contract.getRootNodeStake(member)
+  return {
+    address: member,
+    stakeAmount: Number(fromWei(rootNodeStake))
   }
-  return rootStakes
 }
 
-export const getRootCalc = async () => {
-  const rootStakes = await getRootNodeAllData()
-
+export const getRootCalc = (rootStakes) => {
   const totalStakes = rootStakes.reduce((sum, current) => sum + current.stakeAmount, 0)
   const rootNodeData = rootStakes.map((member, idx) => ({
     ...member,
