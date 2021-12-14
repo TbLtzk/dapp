@@ -5,11 +5,11 @@ const initialState = {
   isUserEPDRMembership: false,
 
   EPQFIMembers: [],
-  EPQFIMembersLoading: false,
+  EPQFIMembersLoading: true,
   EPQFIMembersError: null,
 
   EPDRMembers: [],
-  EPDRMembersLoading: false,
+  EPDRMembersLoading: true,
   EPDRMembersError: null
 }
 
@@ -25,11 +25,6 @@ export default function membership (state = initialState, action) {
         ...state,
         isUserEPDRMembership: action.result
       }
-    case actionTypes.GET_EPQFI_MEMBERS:
-      return {
-        ...state,
-        EPQFIMembersLoading: true
-      }
     case actionTypes.GET_EPQFI_MEMBERS_SUCCESS:
       return {
         ...state,
@@ -43,12 +38,6 @@ export default function membership (state = initialState, action) {
         EPQFIMembersLoading: false,
         EPQFIMembers: [],
         EPQFIMembersError: action.result
-      }
-
-    case actionTypes.GET_EPDR_MEMBERS:
-      return {
-        ...state,
-        EPDRMembersLoading: true
       }
     case actionTypes.GET_EPDR_MEMBERS_SUCCESS:
       return {

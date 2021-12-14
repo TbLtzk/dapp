@@ -12,19 +12,25 @@ import {
 import * as actionTypes from './action-types'
 import { loadKVParameters } from 'func/contractHelpers'
 import ErrorHandler from 'func/ErrorHandler'
-import { contractRegistryInstance, getConstitutionInstance, getEpdrParametersInstance, getEpqfiParametersInstance } from 'contracts/contract-instance'
+import {
+  contractRegistryInstance,
+  getConstitutionInstance,
+  getEpdrParametersInstance,
+  getEpqfiParametersInstance
+} from 'contracts/contract-instance'
 
 function * getContractRegistryKV () {
   try {
     const contract = contractRegistryInstance
     const data = yield contract.instance.methods.getContracts().call()
-    yield put(getContractRegistryKVSuccess(
-      data.map(i => {
-        return {
+    yield put(
+      getContractRegistryKVSuccess(
+        data.map((i) => ({
           key: i.key,
           value: i.addr
-        }
-      })))
+        }))
+      )
+    )
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
     yield put(getContractRegistryKVError('There was an error while loading Contract Registry data'))
@@ -49,9 +55,7 @@ function * getFeesIncentivesExpertPanelParametersKV () {
     yield put(getFeesIncentivesExpertPanelParametersKVSuccess(data))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
-    yield put(getFeesIncentivesExpertPanelParametersKVError(
-      'There was an error while loading EPQFI Parameters data'
-    ))
+    yield put(getFeesIncentivesExpertPanelParametersKVError('There was an error while loading EPQFI Parameters data'))
   }
 }
 
