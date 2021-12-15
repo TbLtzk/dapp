@@ -31,12 +31,13 @@ function LoadingMetaMask () {
       } else if (!accounts.length) {
         setIsMetaMask(LOAD_TYPES.notLogged)
       } else {
-        const { ethereum } = window
         window.web3 = new Web3(ethereum)
         window.web3.eth.handleRevert = true
-        const addresses = await window.web3.eth.getAccounts()
-        dispatch(setUserAddress(addresses[0]))
-        initAccount()
+        dispatch(setUserAddress(ethereum.selectedAddress))
+        await getContractRegistryInstance()
+        dispatch(getNumberAllProposals())
+        dispatch(getAuctionsCount())
+        setIsMetaMask(LOAD_TYPES.loaded)
       }
     })
     ethereum?.on('accountsChanged', (accounts) => {
@@ -47,7 +48,7 @@ function LoadingMetaMask () {
     })
     web3.eth.net.getNetworkType((err, netId) => {
       if (err) {
-        console.error(err)
+        setIsMetaMask(LOAD_TYPES.initError)
       }
       if (netId !== 'private') {
         setErrorMessage('Choose the correct network!')
@@ -62,17 +63,6 @@ function LoadingMetaMask () {
       } catch (error) {
         setIsMetaMask(LOAD_TYPES.initError)
       }
-    }
-  }
-
-  const initAccount = async () => {
-    try {
-      await getContractRegistryInstance()
-      dispatch(getNumberAllProposals())
-      dispatch(getAuctionsCount())
-      setIsMetaMask(LOAD_TYPES.loaded)
-    } catch {
-      setIsMetaMask(LOAD_TYPES.initError)
     }
   }
 
