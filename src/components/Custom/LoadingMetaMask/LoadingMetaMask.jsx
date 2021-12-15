@@ -24,6 +24,15 @@ function LoadingMetaMask () {
   const ethereum = window.ethereum
 
   const initMetamask = async () => {
+    web3.eth.net.getNetworkType((err, netId) => {
+      if (err) {
+        setIsMetaMask(LOAD_TYPES.initError)
+      }
+      if (netId !== 'private') {
+        setErrorMessage('Choose the correct network!')
+        setIsMetaMask(LOAD_TYPES.error)
+      }
+    })
     web3.eth.getAccounts(async (err, accounts) => {
       if (err != null) {
         setIsMetaMask(LOAD_TYPES.error)
@@ -33,7 +42,7 @@ function LoadingMetaMask () {
       } else {
         window.web3 = new Web3(ethereum)
         window.web3.eth.handleRevert = true
-        dispatch(setUserAddress(ethereum.selectedAddress))
+        dispatch(setUserAddress(accounts[0]))
         await getContractRegistryInstance()
         dispatch(getNumberAllProposals())
         dispatch(getAuctionsCount())
@@ -46,15 +55,7 @@ function LoadingMetaMask () {
     ethereum?.on('chainChanged', (networkId) => {
       window.location.reload()
     })
-    web3.eth.net.getNetworkType((err, netId) => {
-      if (err) {
-        setIsMetaMask(LOAD_TYPES.initError)
-      }
-      if (netId !== 'private') {
-        setErrorMessage('Choose the correct network!')
-        setIsMetaMask(LOAD_TYPES.error)
-      }
-    })
+
     if (ethereum?.isMetaMask) {
       try {
         await new Promise((resolve, reject) => {
