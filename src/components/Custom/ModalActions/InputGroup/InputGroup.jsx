@@ -3,10 +3,7 @@ import { fields } from 'constants/fieldsNaming'
 import FormInput from 'components/Base/Form/FormInput'
 
 function InputGroup (props) {
-  const {
-    register, errors, inputArr, inputsObj, labelsArr, formData,
-    onChangeInput, min, max, type
-  } = props
+  const { register, errors, inputArr, inputsObj, labelsArr, formData, onChangeInput, min, max, type } = props
   const [valueInput, changeValueInput] = useState(() => {
     if (formData) {
       if (Object.prototype.hasOwnProperty.call(formData, inputArr[0]?.replace(/ /g, '-').toLowerCase())) {
@@ -24,7 +21,7 @@ function InputGroup (props) {
       if (nameField === fields.bid && valueInput.bid.length === 0) {
         return register({ required: 'Field is required!' })
       }
-      if (nameField === fields.bid && (Object.values(valueInput)[1]?.length > 0)) {
+      if (nameField === fields.bid && Object.values(valueInput)[1]?.length > 0) {
         return
       }
       return register({ required: 'Field is required!' })
@@ -33,7 +30,8 @@ function InputGroup (props) {
 
       if (nameField === fields.externalLink) {
         /* eslint-disable-next-line no-useless-escape */
-        valueValid = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+        valueValid =
+                    /(https?:\/\)[a-zA-Z0-9äöü][a-zA-Zäöü0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zäöüA-Z0-9-]+[a-zA-Zäöü0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zäöüA-Z0-9]+\.[^\s]{2,}|www\.[a-zäöüA-Z0-9]+\.[^\s]{2,})/gm
       } else if (nameField === 'address') {
         valueValid = /^(0x)?[0-9a-f]{40}$/i
       }
@@ -48,34 +46,33 @@ function InputGroup (props) {
   }, [])
 
   return (
-    <div>
-      {inputArr?.map((label, i) => {
-        const nameField = label.replace(/ /g, '-')
-          .toLowerCase()
-        const val = valueInput[nameField]
-        return (
-          <Fragment key={i}>
-            {labelsArr ? <h4>{labelsArr[i]}</h4> : null}
-              <FormInput
-              palette={'dark'}
-              name={nameField}
-              onChange={(value) => {
-                const valObg = { [nameField]: value.target.value }
-                changeValueInput({ ...valueInput, ...valObg })
-                if (onChangeInput) onChangeInput(value.target.value)
-              }}
-              value={val}
-              placeholder={label}
-              ref={refType(nameField, valueInput)}
-              valid={errors[nameField]?.message}
-              min={min}
-              max={max}
-              type={type}
-            />
-          </Fragment>
-        )
-      })}
-    </div>
+        <div>
+            {inputArr?.map((label, i) => {
+              const nameField = label.replace(/ /g, '-').toLowerCase()
+              const val = valueInput[nameField]
+              return (
+                    <Fragment key={i}>
+                        {labelsArr ? <h4>{labelsArr[i]}</h4> : null}
+                        <FormInput
+                            palette={'dark'}
+                            name={nameField}
+                            onChange={(value) => {
+                              const valObg = { [nameField]: value.target.value }
+                              changeValueInput({ ...valueInput, ...valObg })
+                              if (onChangeInput) onChangeInput(value.target.value)
+                            }}
+                            value={val}
+                            placeholder={label}
+                            ref={refType(nameField, valueInput)}
+                            valid={errors[nameField]?.message}
+                            min={min}
+                            max={max}
+                            type={type}
+                        />
+                    </Fragment>
+              )
+            })}
+        </div>
   )
 }
 
