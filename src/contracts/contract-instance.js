@@ -1,5 +1,3 @@
-import { contractsToAbi } from 'contracts/mapping/contract-to-abi'
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { ValidatorMetrics } from '@q-dev/q-js-sdk/lib/utils/validator-metrics'
 import { ContractRegistryInstance } from '@q-dev/q-js-sdk'
 
@@ -16,12 +14,12 @@ export const getContractRegistryInstance = async () => {
 
 export const cache = {}
 
-function getInstance (instance, QUSD) {
+export function getInstance (instance, QUSD) {
   return async () => {
     if (!cache[instance]) {
-      cache[instance] = await contractRegistryInstance[instance](QUSD ? 'QUSD' : null)
+      cache[instance] = contractRegistryInstance[instance](QUSD ? 'QUSD' : null)
     }
-    return cache[instance]
+    return await cache[instance]
   }
 }
 
@@ -30,7 +28,7 @@ export const getEmergencyUpdateVotingInstance = getInstance('emergencyUpdateVoti
 export const getPiggyBankInstance = getInstance('piggyBank')
 export const getVotingWeightProxyInstance = getInstance('votingWeightProxy')
 export const getValidationRewardProxyInstance = getInstance('validationRewardProxy')
-export const getSystemSurplusAuctionInstance = getInstance('systemSurplusAuctionInstance', true)
+export const getSystemSurplusAuctionInstance = getInstance('systemSurplusAuction', true)
 export const getSystemDebtAuctionInstance = getInstance('systemDebtAuction', true)
 export const getSystemBalanceInstance = getInstance('systemBalance', true)
 export const getStableCoinInstance = getInstance('stableCoin', true)
@@ -62,12 +60,11 @@ export const getDefaultAllocationProxyInstance = getInstance('defaultAllocationP
 export const getEpdrMembershipVotingInstance = getInstance('epdrMembershipVoting')
 export const getEpdrMembershipInstance = getInstance('epdrMembership')
 
-let qVaultContract = null
-let validatorsContract = null
 let validatorMetricsInstance = null
 let compoundRateKeeperBorrowingInstance = null
 let compoundRateKeeperSavingInstance = null
 let compoundRateKeeperQVaultInstance = null
+let governedEpdrQbtcAddressInstace = null
 
 export async function getCompoundRateKeeperBorrowingInstance () {
   if (!compoundRateKeeperBorrowingInstance) {
@@ -92,20 +89,6 @@ export async function getCompoundRateKeeperQVaultInstance () {
   return compoundRateKeeperQVaultInstance
 }
 
-export const getQVaultContract = async () => {
-  if (!qVaultContract) {
-    qVaultContract = new window.web3.eth.Contract(contractsToAbi.QVault, contractsToAddresses.QVault)
-  }
-  return qVaultContract
-}
-
-export const getValidatorsContract = async () => {
-  if (!validatorsContract) {
-    validatorsContract = new window.web3.eth.Contract(contractsToAbi.Validators, contractsToAddresses.Validators)
-  }
-  return validatorsContract
-}
-
 export const getValidatorMetricsInstance = async () => {
   if (!validatorMetricsInstance) {
     validatorMetricsInstance = new ValidatorMetrics()
@@ -113,15 +96,12 @@ export const getValidatorMetricsInstance = async () => {
   return validatorMetricsInstance
 }
 
-export async function initGovernenceInstances () {
-  await getGeneralUpdateVotingInstance()
-  await getConstitutionVotingInstance()
-  await getEmergencyUpdateVotingInstance()
-  await getValidatorsSlashingVotingInstance()
-  await getRootNodesSlashingVotingInstance()
-  await getRootNodesMembershipVotingInstance()
-  await getEpqfiParametersVotingInstance()
-  await getEpdrParametersVotingInstance()
-  await getEpqfiMembershipVotingInstance()
-  await getEpdrMembershipVotingInstance()
+export async function getGovernedEpdrQbtcAddressInstance () {
+  if (!governedEpdrQbtcAddressInstace) {
+    const contract = await getEpdrParametersInstance()
+    const stableCoinInstance = await getStableCoinInstance()
+    const address = await contract.getAddr('governed.EPDR.QBTC_address')
+    governedEpdrQbtcAddressInstace = new window.web3.eth.Contract(stableCoinInstance.instance._jsonInterface, address)
+  }
+  return governedEpdrQbtcAddressInstace
 }

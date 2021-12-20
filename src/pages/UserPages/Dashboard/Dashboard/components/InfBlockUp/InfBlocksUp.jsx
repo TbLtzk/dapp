@@ -2,15 +2,12 @@ import React, { useEffect, useState } from 'react'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 import SmallBlock from './SmallBlock'
 import Button from 'components/Base/Buttons/Button'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { OverlayTrigger, Popover } from 'react-bootstrap'
-import colors from 'constants/colors'
+import CopyToClipboard from 'components/Base/CopyToClipboard'
 
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { useDispatch, useSelector } from 'react-redux'
 import { constitutionHash } from 'store/voting/proposals/selectors'
 import { getConstitutionHash } from 'store/voting/proposals/action-creators'
-import { latestConstitution, archiveConstitution } from 'contracts/handler/ConstitutionHandler'
+import { latestConstitution, archiveConstitution } from 'constants/constitution'
 import { Link } from 'react-router-dom'
 import {
   qActiveProposalsCountSelector,
@@ -32,8 +29,11 @@ import {
   slashingEndedProposalsCountSelector,
   slashingLoadingProposalsCountSelector
 } from 'store/voting/slashing-proposals/selectors'
+import { getContractRegistryInstance } from 'contracts/contract-instance'
 
 function InfBlocksUp () {
+  const [contractRegistryAddress, setContractRegistryAddress] = useState('0x00')
+
   const [blockNumber, setBlockNumber] = useState('0')
 
   window.web3.eth.getBlock('latest').then((response) => {
@@ -70,20 +70,9 @@ function InfBlocksUp () {
         expertLoadingProposalsCount ||
         slashingLoadingProposalsCount
 
-  const popover = (
-        <Popover id="popover-basic">
-            <Popover.Content
-                style={{
-                  background: colors.neonGreen
-                }}
-            >
-                Copy
-            </Popover.Content>
-        </Popover>
-  )
-
   useEffect(() => {
     dispatch(getConstitutionHash())
+    getContractRegistryInstance().then((contract) => setContractRegistryAddress(contract.address))
   }, [dispatch])
 
   return (
@@ -94,11 +83,9 @@ function InfBlocksUp () {
                 secondSubtitle="System Contract Registry:"
                 firstContent={<p> {blockNumber}</p>}
                 secondContent={
-                    <OverlayTrigger key="top" placement="top" overlay={popover}>
-                        <CopyToClipboard text={contractsToAddresses.ContractRegistry}>
-                            <p>{contractsToAddresses.ContractRegistry}</p>
-                        </CopyToClipboard>
-                    </OverlayTrigger>
+                    <CopyToClipboard valueToCopy={contractRegistryAddress}>
+                        <p>{contractRegistryAddress}</p>
+                    </CopyToClipboard>
                 }
             />
             <SmallBlock
@@ -106,14 +93,12 @@ function InfBlocksUp () {
                 firstSubtitle="Hash:"
                 secondSubtitle={null}
                 firstContent={
-                    <OverlayTrigger key="top" placement="top" overlay={popover}>
-                        <CopyToClipboard text={constitutionHashShow}>
-                            <p>{constitutionHashShow}</p>
-                        </CopyToClipboard>
-                    </OverlayTrigger>
+                    <CopyToClipboard valueToCopy={constitutionHashShow}>
+                        <p>{constitutionHashShow}</p>
+                    </CopyToClipboard>
                 }
                 secondContent={
-                    <div className={'card__actions'}>
+                    <div className="card__actions">
                         <a href={latestConstitution} target="_blank" rel="noreferrer">
                             <Button icon="download" title={'Download Latest'} handleButton={() => {}} />
                         </a>
@@ -124,24 +109,24 @@ function InfBlocksUp () {
                 }
             />
             <SmallBlock
-                display={'columns'}
+                display="columns"
                 title="Governance"
                 firstSubtitle="Active Proposals"
                 secondSubtitle="Past Proposals"
                 firstContent={
                     loadingProposals
                       ? (
-                        <LoadingSpinner className={'card__spinner'} />
+                        <LoadingSpinner className="card__spinner" />
                         )
                       : (
                         <>
                             <p>{activeProposals}</p>
-                            <div className={'card__actions'}>
-                                <Link to={'/q-governance'}>
+                            <div className="card__actions">
+                                <Link to="/q-governance">
                                     <Button
-                                        type={'white'}
+                                        type="white"
                                         icon="arrow-right"
-                                        title={'Go to Governance'}
+                                        title="Go to Governance"
                                         handleButton={() => {}}
                                     />
                                 </Link>
@@ -152,7 +137,7 @@ function InfBlocksUp () {
                 secondContent={
                     loadingProposals
                       ? (
-                        <LoadingSpinner className={'card__spinner'} />
+                        <LoadingSpinner className="card__spinner" />
                         )
                       : (
                         <>

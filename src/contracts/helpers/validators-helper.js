@@ -1,59 +1,25 @@
-import {
-  getValidatorsInstance,
-  getValidationRewardPoolsInstance,
-  getValidatorsContract,
-  getValidatorMetricsInstance
-  , contractRegistryInstance
-} from 'contracts/contract-instance'
+import { getValidatorMetricsInstance, contractRegistryInstance } from 'contracts/contract-instance'
 import { transformToPercentage } from './voting-helpers/base-voting-helper'
 import { fromWei } from 'func/balance'
 import { uintPerSecondToPerYearNumber } from 'func/useful'
 
-export const getAccountableTotalStakeFunction = async (address) => {
-  const contract = await getValidatorsContract()
-  return await contract.methods.getAccountableTotalStake(address).call()
-}
-
-export const getValidatorDelegatedStake = async (address) => {
-  const contract = await getValidatorsContract()
-  return await contract.methods.getValidatorDelegatedStake(address).call()
-}
-
-export const getMembersList = async () => {
-  const validatorsInstance = await getValidatorsInstance()
-  const validatorsArr = await validatorsInstance.instance.methods.getValidatorShortList().call()
-  const delegationSaturationAndEfficiency = await getDelegationEfficiencyAndEfficiency()
-
-  const validators = await mergeArrays(validatorsArr, delegationSaturationAndEfficiency)
-  if (validatorsArr?.length === 0) {
-    return []
-  } else {
-    return await Promise.all(validators.map((i, index) => getValidator(i, index)))
-  }
-}
-
-const mergeArrays = async (arr1, arr2) => {
-  return arr1.map((obj, idx) => ({
-    ...obj,
-    ...arr2[idx]
-  }))
-}
-
-const getDelegationEfficiencyAndEfficiency = async () => {
+export const getValidators = async (validatorsInstance) => {
   const util = await getValidatorMetricsInstance()
   await util.takeSnapshotFromNetwork(contractRegistryInstance)
   const efficiency = await util.getDelegationEfficiency()
   const saturation = await util.getDelegationSaturation()
-  return await efficiency.map((item, idx) => ({ ...item, delegationSaturation: saturation[idx] }))
+  const validatorShortList = await validatorsInstance.instance.methods.getValidatorShortList().call()
+  const validators = efficiency.map((item, idx) => ({
+    ...item,
+    delegationSaturation: saturation[idx],
+    ...validatorShortList[idx]
+  }))
+  return validators
 }
 
-const getValidator = async (validator, index) => {
-  const validatorsInstance = await getValidatorsInstance()
-  const validationRewardPoolsInstance = await getValidationRewardPoolsInstance()
-
+export const getValidator = async (validator, index, validatorsInstance, validationRewardPoolsInstance) => {
   const validatorInfo = await validatorsInstance.getValidatorInfo(validator.validator)
   const poolInfo = await validationRewardPoolsInstance.getPoolInfo(validator.validator)
-
   const selfStake = validatorInfo.selfStake
   const delegatedStake = validatorInfo.delegatedStake
   const delegatorShare = transformToPercentage(poolInfo.delegatorsShare)

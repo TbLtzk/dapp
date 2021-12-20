@@ -73,6 +73,9 @@ export const TableWrapper = styled.span`
       }
     }};
   }
+  .row {
+    margin-right: 0px;
+  }
 `
 
 export const PagesItemWrapper = styled.li`
@@ -95,4 +98,6 @@ export const PagesItemWrapper = styled.li`
     color: ${(props) => props.theme.colors.white};
     margin-right: 10px;
   }
+
+ 
 `

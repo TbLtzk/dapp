@@ -26,6 +26,8 @@ import dashboardMode from './dashboard-mode/reducer'
 import borrowingCore from './borrowing-core/reducer'
 
 import transactionHandler from './transaction-handler/reducer'
+import borrowAssets from './borrow-assets/reducer'
+import savingAssets from './saving-assets/reducer'
 
 const RootReducer = combineReducers({
   userAuth: UserAuth,
@@ -34,6 +36,8 @@ const RootReducer = combineReducers({
   qVault,
   vesting,
   borrowingCore,
+  borrowAssets,
+  savingAssets,
 
   proposals,
   qProposals,

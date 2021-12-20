@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 
 import { Accordion } from 'react-bootstrap'
@@ -9,7 +9,11 @@ import { qActiveProposalsCountSelector } from 'store/voting/q-proposals/selector
 import { rootActiveProposalsCountSelector } from 'store/voting/root-node-proposals/selectors'
 import { expertActiveProposalsCountSelector } from 'store/voting/expert-proposals/selectors'
 import { slashingActiveProposalsCountSelector } from 'store/voting/slashing-proposals/selectors'
-import { liquidationAuctions, systemDebtAuctions, systemSurplusAuctions } from 'store/auctions/selectors'
+import {
+  liquidationAuctionsCountSelector,
+  systemDebtAuctionsCountSelector,
+  systemSurplusAuctionsCountSelector
+} from 'store/auctions/selectors'
 
 import Button from 'components/Base/Buttons/Button'
 import LogoImg from 'components/Base/LogoImg'
@@ -35,8 +39,6 @@ import {
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
-import { getAuctionsList } from 'store/auctions/action-creators'
-import { AUCTIONS_TYPES } from 'constants/statuses'
 import { getQProposalsCount } from 'store/voting/q-proposals/action-creators'
 import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-creators'
 import { getSlashingProposalsCount } from 'store/voting/slashing-proposals/action-creators'
@@ -49,14 +51,14 @@ function Sidebar () {
   const userAddress = useSelector(userAddressMetamask)
   const appMode = useSelector(mode)
 
-  const liquidations = useSelector(liquidationAuctions)
-  const systemDebts = useSelector(systemDebtAuctions)
-  const systemSurplus = useSelector(systemSurplusAuctions)
-
   const qActiveProposalsCount = useSelector(qActiveProposalsCountSelector)
   const rootActiveProposalsCount = useSelector(rootActiveProposalsCountSelector)
   const expertActiveProposalsCount = useSelector(expertActiveProposalsCountSelector)
   const slashingActiveProposalsCount = useSelector(slashingActiveProposalsCountSelector)
+
+  const liquidationAuctionsCount = useSelector(liquidationAuctionsCountSelector)
+  const systemDebtAuctionsCount = useSelector(systemDebtAuctionsCountSelector)
+  const systemSurplusAuctionsCount = useSelector(systemSurplusAuctionsCountSelector)
 
   const [isGovernanceAccordionOpened, setIsGovernanceAccordionOpened] = useState('1')
   const [isAuctionAccordionOpened, setIsAuctionAccordionOpened] = useState('1')
@@ -64,12 +66,6 @@ function Sidebar () {
   function highlight (location) {
     return Number(history.location.pathname === '/' + location)
   }
-
-  useEffect(() => {
-    for (const item in AUCTIONS_TYPES) {
-      dispatch(getAuctionsList(AUCTIONS_TYPES[item], true))
-    }
-  }, [])
 
   return (
         <header>
@@ -239,10 +235,10 @@ function Sidebar () {
                                             >
                                                 – Liquidation
                                             </LinkStyle>
-                                            {liquidations.length
+                                            {liquidationAuctionsCount.activeAuctions
                                               ? (
                                                 <AccordionLbl highlight={highlight('liquidation')}>
-                                                    {liquidations.length}
+                                                    {liquidationAuctionsCount.activeAuctions}
                                                 </AccordionLbl>
                                                 )
                                               : null}
@@ -255,10 +251,10 @@ function Sidebar () {
                                             >
                                                 – System Debt
                                             </LinkStyle>
-                                            {systemDebts.length
+                                            {systemDebtAuctionsCount.activeAuctions
                                               ? (
                                                 <AccordionLbl highlight={highlight('system-debt')}>
-                                                    {systemDebts.length}
+                                                    {systemDebtAuctionsCount.activeAuctions}
                                                 </AccordionLbl>
                                                 )
                                               : null}
@@ -271,10 +267,10 @@ function Sidebar () {
                                             >
                                                 – System Surplus
                                             </LinkStyle>
-                                            {systemSurplus.length
+                                            {systemSurplusAuctionsCount.activeAuctions
                                               ? (
                                                 <AccordionLbl highlight={highlight('system-surplus')}>
-                                                    {systemSurplus.length}
+                                                    {systemSurplusAuctionsCount.activeAuctions}
                                                 </AccordionLbl>
                                                 )
                                               : null}

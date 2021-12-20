@@ -4,12 +4,23 @@ import ModalWindow from 'components/Base/ModalWindow'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 import FormInput from 'components/Base/Form/FormInput'
 
-import Handler from './handler'
-
 import { fN, errorHandler } from 'func/useful'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
-import { userAddressMetamask } from 'store/user-inf/selectors'
+import {
+  getSavingAllowance,
+  getSavingAviableToDeposit,
+  getSavingBalanceDetails,
+  setSavingAprove,
+  setSavingDeposit,
+  setSavingWithdraw
+} from 'store/saving-assets/action-creators'
+import {
+  savingAllowanceSelector,
+  savingAviableToDepositSelector,
+  savingBalanceDetailsSelector
+} from 'store/saving-assets/selectors'
+import { WrapSpinner } from 'pages/UserPages/styles'
 
 const DEPOSIT_BTN_TEXT = {
   deposit: 'Deposit',
@@ -21,83 +32,74 @@ const BTN_LENGTH = '100px'
 function SaveManageAsset (props) {
   const { depositAsset, interestAsset, rate } = props
 
-  const { register: register1, handleSubmit: handleSubmit1, errors: errors1, setValue: setDepositMax } = useForm()
+  const dispatch = useDispatch()
 
+  const { register: register1, handleSubmit: handleSubmit1, errors: errors1, setValue: setDepositMax } = useForm()
   const { register: register2, handleSubmit: handleSubmit2, errors: errors2, setValue: setWithdrawMax } = useForm()
 
   const [depositBtnTitle, setDepositBtnTitle] = useState(DEPOSIT_BTN_TEXT.deposit)
 
   const [isModalShown, setIsModalShown] = useState(false)
-  const [avToDeposit, setAvToDeposit] = useState(0)
-  const [savingBalance, setSavingBalance] = useState(0)
-  const [interestRate, setInterestRate] = useState('-')
-  const [estInterest, setEstInterest] = useState(0)
-  const [loadingInf, setLoadingInf] = useState(true)
-  const [allowance, setAllowance] = useState(0)
 
-  const address = useSelector(userAddressMetamask)
-  const handler = new Handler(address, useDispatch())
+  const savingBalanceDetails = useSelector(savingBalanceDetailsSelector)
+  const savingAviableToDeposit = useSelector(savingAviableToDepositSelector)
+  const savingAllowance = useSelector(savingAllowanceSelector)
 
-  async function deposit (formData) {
+  const { interestRate, currentBalance, estimatedInterest } = savingBalanceDetails
+
+  useEffect(() => {
+    if (isModalShown) {
+      dispatch(getSavingAllowance())
+      dispatch(getSavingBalanceDetails())
+      dispatch(getSavingAviableToDeposit())
+    }
+  }, [depositAsset, interestAsset, rate, dispatch, isModalShown])
+
+  function handleMaxDeposit () {
+    if (Number(savingAviableToDeposit) > 0) {
+      if (Number(savingAllowance) < Number(savingAviableToDeposit)) {
+        setDepositBtnTitle(DEPOSIT_BTN_TEXT.approve)
+      }
+      setDepositMax('amount', savingAviableToDeposit)
+    }
+  }
+
+  function handleMaxWithdraw () {
+    if (Number(currentBalance) > 0) {
+      setWithdrawMax('amount', currentBalance)
+    }
+  }
+
+  function deposit (formData) {
     if (depositBtnTitle === DEPOSIT_BTN_TEXT.approve) {
-      await handler.approve()
-      handler.allowance(setAllowance)
+      dispatch(setSavingAprove())
+      dispatch(getSavingAllowance())
       setDepositBtnTitle(DEPOSIT_BTN_TEXT.deposit)
     } else {
-      await handler.deposit(
-        formData.amount,
-        setSavingBalance,
-        setAvToDeposit,
-        setInterestRate,
-        setEstInterest,
-        setLoadingInf
-      )
+      dispatch(setSavingDeposit(formData.amount))
       setDepositMax('amount', null)
     }
   }
 
-  async function withdraw (formData) {
-    await handler.withdraw(
-      formData.amount,
-      setSavingBalance,
-      setAvToDeposit,
-      setInterestRate,
-      setEstInterest,
-      setLoadingInf
-    )
+  function withdraw (formData) {
+    dispatch(setSavingWithdraw(formData.amount))
     setWithdrawMax('amount', null)
   }
 
-  const updateAllData = async () => {
-    handler.setAvailableToDeposit(setAvToDeposit)
-    handler.setSavingBalanceIntRateEstInterest(setSavingBalance, setInterestRate, setEstInterest, setLoadingInf)
-    handler.allowance(setAllowance)
-  }
-
-  function handleMaxDeposit () {
-    if (Number(avToDeposit) > 0) {
-      if (Number(allowance) < Number(avToDeposit)) {
-        setDepositBtnTitle(DEPOSIT_BTN_TEXT.approve)
-      }
-      setDepositMax('amount', avToDeposit)
+  function handleDepositAllow (value) {
+    if (Number(savingAllowance) < Number(value.target.value)) {
+      setDepositBtnTitle(DEPOSIT_BTN_TEXT.approve)
+    } else {
+      setDepositBtnTitle(DEPOSIT_BTN_TEXT.deposit)
     }
   }
-  function handleMaxWithdraw () {
-    if (Number(savingBalance) > 0) {
-      setWithdrawMax('amount', savingBalance)
-    }
-  }
-
-  useEffect(() => {
-    updateAllData()
-  }, [depositAsset, interestAsset, rate])
 
   return (
         <>
             <Button
                 isIconPositionRight
                 icon="arrow-top-right"
-                title={'Manage'}
+                title="Manage"
                 type="transparent"
                 handleButton={() => {
                   setIsModalShown(true)
@@ -110,9 +112,11 @@ function SaveManageAsset (props) {
                 }}
                 modalTitle={'Saving ' + depositAsset}
                 content={
-                    loadingInf
+                    !savingAviableToDeposit && !savingAllowance
                       ? (
-                        <LoadingSpinner />
+                        <WrapSpinner>
+                            <LoadingSpinner />
+                        </WrapSpinner>
                         )
                       : (
                         <>
@@ -125,11 +129,11 @@ function SaveManageAsset (props) {
                                 </div>
                                 <div>
                                     <h5>Saving Balance</h5>
-                                    <p>{fN(savingBalance)}</p>
+                                    <p>{fN(currentBalance)}</p>
                                 </div>
                                 <div>
                                     <h5>Available to Deposit</h5>
-                                    <p>{fN(avToDeposit)}</p>
+                                    <p>{fN(savingAviableToDeposit)}</p>
                                 </div>
                             </div>
                             <div className="modal__line" />
@@ -141,7 +145,7 @@ function SaveManageAsset (props) {
                                 </div>
                                 <div>
                                     <h5>Yearly Expected Reward</h5>
-                                    <p>{fN(estInterest)}</p>
+                                    <p>{fN(estimatedInterest)}</p>
                                 </div>
                                 <div>
                                     <h5>Saving Reward (p.a)</h5>
@@ -156,18 +160,11 @@ function SaveManageAsset (props) {
                                     min={0}
                                     name="amount"
                                     type="number"
-                                    modal
-                                    onMaxClick={handleMaxDeposit}
                                     placeholder="0.00"
                                     ref={register1({ required: true })}
                                     valid={errorHandler(errors1, 'field')}
-                                    onChange={(value) => {
-                                      if (Number(allowance) < Number(value.target.value)) {
-                                        setDepositBtnTitle(DEPOSIT_BTN_TEXT.approve)
-                                      } else {
-                                        setDepositBtnTitle(DEPOSIT_BTN_TEXT.deposit)
-                                      }
-                                    }}
+                                    onMaxClick={handleMaxDeposit}
+                                    onChange={handleDepositAllow}
                                 />
                                 <Button
                                     type="outline"
@@ -182,7 +179,6 @@ function SaveManageAsset (props) {
                                     palette="dark"
                                     lbl={interestAsset}
                                     min={0}
-                                    modal
                                     name="amount"
                                     type="number"
                                     onMaxClick={handleMaxWithdraw}

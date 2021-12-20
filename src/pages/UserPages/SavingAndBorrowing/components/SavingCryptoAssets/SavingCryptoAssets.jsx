@@ -1,71 +1,55 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import CustomBlock from 'components/Base/CustomBlock'
 import TableView from 'components/Base/TableView'
 import SaveManageAsset from '../SaveManageAsset'
 
-import { SavingQUSD } from 'contracts/src/Saving'
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
-import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
-import { useSelector } from 'react-redux'
-import { userAddressMetamask } from 'store/user-inf/selectors'
-import { transactionCounter } from 'store/transaction-handler/selectors'
+import { fN } from 'func/useful'
+import { useDispatch, useSelector } from 'react-redux'
+import { savingAssetsSelector } from 'store/borrowing-core/selectors'
+import { getSavingAssets } from 'store/borrowing-core/action-creators'
+import LoadingSpinner from 'components/Base/LoadingSpinner'
 
 const HEADERS = ['Deposit asset', 'Interest asset', 'Interest rate (p.a.)', '']
 
 function SavingCryptoAssets () {
-  const myAddress = useSelector(userAddressMetamask)
-  const trCounter = useSelector(transactionCounter)
-
-  const [assets, setAssets] = useState([])
-
-  const fetchAssets = async () => {
-    const contractSavingQUSD = new SavingQUSD(contractsToAddresses.SavingQUSD)
-    const BalanceDetails = await contractSavingQUSD.getBalanceDetails(myAddress).catch(() => {})
-    const intRateL = uintPerSecondToPerYearNumber(BalanceDetails.interestRate)
-    setAssets([
-      {
-        depositAsset: 'QUSD',
-        interestAsset: 'QUSD',
-        rate: intRateL
-      }
-    ])
-  }
+  const dispatch = useDispatch()
+  const savingAssets = useSelector(savingAssetsSelector)
 
   useEffect(() => {
-    if (!trCounter) {
-      fetchAssets()
-    }
-  }, [trCounter])
+    dispatch(getSavingAssets())
+  }, [])
 
   return (
         <CustomBlock>
             <h1>Saving Crypto Assets</h1>
-            {assets.length
+            {!savingAssets
               ? (
+                <LoadingSpinner />
+                )
+              : savingAssets.length
+                ? (
                 <TableView
                     type="with-action"
                     header={HEADERS}
-                    body={assets.map((item) => {
-                      return (
-                            <tr key={item.depositAsset + '-' + item.interestAsset + item.rate}>
-                                <td>{item.depositAsset}</td>
-                                <td>{item.interestAsset}</td>
-                                <td>{fN(item.rate)} %</td>
-                                <td>
-                                    <SaveManageAsset
-                                        depositAsset={item.depositAsset}
-                                        interestAsset={item.interestAsset}
-                                        rate={item.rate}
-                                    />
-                                </td>
-                            </tr>
-                      )
-                    })}
+                    body={savingAssets.map((item) => (
+                        <tr key={item.depositAsset + '-' + item.interestAsset + item.rate}>
+                            <td>{item.depositAsset}</td>
+                            <td>{item.interestAsset}</td>
+                            <td>{fN(item.rate)} %</td>
+                            <td>
+                                <SaveManageAsset
+                                    depositAsset={item.depositAsset}
+                                    interestAsset={item.interestAsset}
+                                    rate={item.rate}
+                                />
+                            </td>
+                        </tr>
+                    ))}
                 />
-                )
-              : (
-                  'No saving assets'
-                )}
+                  )
+                : (
+                <p>No saving assets</p>
+                  )}
         </CustomBlock>
   )
 }

@@ -7,18 +7,18 @@ import BorrowCryptoAssets from './components/BorrowCryptoAssets'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { setAddCoinsToMetamask, setCreateQBTCVault } from 'store/borrowing-core/action-creators'
-import { shouldAddCoins } from 'store/borrowing-core/selectors'
+import { shouldAddCoinsSelector } from 'store/borrowing-core/selectors'
 
 function SavingAndBorrowing () {
   const dispatch = useDispatch()
-  const shouldAddCoinsToMetamask = useSelector(shouldAddCoins)
+  const shouldAddCoins = useSelector(shouldAddCoinsSelector)
 
-  const createVault = () => {
+  function createVault () {
     dispatch(setCreateQBTCVault())
   }
 
   useEffect(() => {
-    if (shouldAddCoinsToMetamask) {
+    if (shouldAddCoins) {
       dispatch(setAddCoinsToMetamask())
     }
   }, [])

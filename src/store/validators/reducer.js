@@ -59,11 +59,6 @@ export default function index (state = initialState, action) {
         ...state,
         interestRate: action.payload
       }
-    case actionTypes.GET_VALIDATORS_MEMBERS:
-      return {
-        ...state,
-        loadingMembers: true
-      }
     case actionTypes.GET_VALIDATORS_MEMBERS_SUCCESS:
       return {
         ...state,

@@ -1,85 +1,92 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import Web3 from 'web3'
 
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 import StartConfigurations from 'pages/StartConfigurations'
-import InitApp from 'components/Base/InitApp'
 
 import { WrapContainer } from './styles'
+
+import { getContractRegistryInstance } from 'contracts/contract-instance'
+import { useDispatch } from 'react-redux'
+import App from 'components/Base/App'
+import { setUserAddress } from 'store/user-inf/action-creators'
+import { LOAD_TYPES } from 'constants/statuses'
+import { getNumberAllProposals } from 'store/voting/proposals/action-creators'
+import { getAuctionsCount } from 'store/auctions/action-creators'
 
 const web3 = new Web3(Web3.givenProvider)
 
 function LoadingMetaMask () {
   const [isMetaMask, setIsMetaMask] = useState('loading')
   const [errorMessage, setErrorMessage] = useState('Please install MetaMask!')
+  const dispatch = useDispatch()
+
   const ethereum = window.ethereum
 
-  useEffect(async () => {
-    web3.eth.getAccounts(function (err, accounts) {
-      if (err != null) {
-        setIsMetaMask('error')
-        setErrorMessage('Please install MetaMask!')
-      } else if (!accounts.length) {
-        setIsMetaMask('not-logged')
-      } else {
-        const { ethereum } = window
-        window.web3 = new Web3(ethereum)
-        window.web3.eth.handleRevert = true
-        setIsMetaMask('logged')
-      }
-    })
-    ethereum?.on('accountsChanged', function (accounts) {
-      window.location.reload()
-    })
-    ethereum?.on('networkChanged', (networkId) => {
-      window.location.reload()
-    })
+  const initMetamask = async () => {
     web3.eth.net.getNetworkType((err, netId) => {
       if (err) {
-        console.error(err)
+        setIsMetaMask(LOAD_TYPES.initError)
       }
       if (netId !== 'private') {
         setErrorMessage('Choose the correct network!')
-        setIsMetaMask('error')
+        setIsMetaMask(LOAD_TYPES.error)
       }
     })
+    web3.eth.getAccounts(async (err, accounts) => {
+      if (err != null) {
+        setIsMetaMask(LOAD_TYPES.error)
+        setErrorMessage('Please install MetaMask!')
+      } else if (!accounts.length) {
+        setIsMetaMask(LOAD_TYPES.notLogged)
+      } else {
+        window.web3 = new Web3(ethereum)
+        window.web3.eth.handleRevert = true
+        dispatch(setUserAddress(accounts[0]))
+        await getContractRegistryInstance()
+        dispatch(getNumberAllProposals())
+        dispatch(getAuctionsCount())
+        setIsMetaMask(LOAD_TYPES.loaded)
+      }
+    })
+    ethereum?.on('accountsChanged', (accounts) => {
+      window.location.reload()
+    })
+    ethereum?.on('chainChanged', (networkId) => {
+      window.location.reload()
+    })
+
     if (ethereum?.isMetaMask) {
       try {
-        await new Promise(function (resolve, reject) {
-          window.ethereum.enable()
+        await new Promise((resolve, reject) => {
+          ethereum.enable()
         })
       } catch (error) {
-        console.error('error', error)
+        setIsMetaMask(LOAD_TYPES.initError)
       }
-    } else {
-      setIsMetaMask('loading')
     }
+  }
+
+  useEffect(() => {
+    initMetamask()
   }, [web3, ethereum])
 
-  const accountHandler = useCallback(() => {
-    switch (isMetaMask) {
-      case 'logged':
-        return <InitApp />
-      case 'not-logged':
-        return <StartConfigurations error={'Waiting for login in MetaMask!'} />
-      case 'error':
-        return <StartConfigurations error={errorMessage} />
-      case 'loading':
-        return (
-                    <WrapContainer>
-                        <LoadingSpinner />
-                    </WrapContainer>
-        )
-      default:
-        return (
-                    <WrapContainer>
-                        <LoadingSpinner />
-                    </WrapContainer>
-        )
-    }
-  }, [isMetaMask])
-
-  return accountHandler()
+  switch (isMetaMask) {
+    case LOAD_TYPES.notLogged:
+      return <StartConfigurations error="Waiting for login in MetaMask!" />
+    case LOAD_TYPES.error:
+      return <StartConfigurations error={errorMessage} />
+    case LOAD_TYPES.initError:
+      return <WrapContainer>Can\'t load account data. Please reload app</WrapContainer>
+    case LOAD_TYPES.loaded:
+      return <App />
+    default:
+      return (
+                <WrapContainer>
+                    <LoadingSpinner type="light" />
+                </WrapContainer>
+      )
+  }
 }
 
 export default LoadingMetaMask

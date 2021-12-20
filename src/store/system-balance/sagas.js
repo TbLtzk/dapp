@@ -1,15 +1,22 @@
 import { put, select, takeEvery, call } from 'redux-saga/effects'
-
 import * as actionTypes from './action-types'
 import {
-  getDebtError, getDebtSuccess,
-  getSurplusError, getSurplusSuccess,
-  getSystemBalanceError, getSystemBalanceSuccess,
-  onPerformNettingSuccess, onPerformNettingError
+  getDebtError,
+  getDebtSuccess,
+  getSurplusError,
+  getSurplusSuccess,
+  getSystemBalanceError,
+  getSystemBalanceSuccess,
+  onPerformNettingSuccess,
+  onPerformNettingError,
+  getSystemBalance,
+  getDebt,
+  getSurplus
 } from './action-creators'
 import { getSystemBalanceInstance } from 'contracts/contract-instance'
 import ErrorHandler from 'func/ErrorHandler'
 import { fromWei } from 'func/balance'
+import { setErrorMessage } from 'store/transaction-handler/action-creators'
 
 function * getSurplusGenerator () {
   try {
@@ -46,12 +53,16 @@ function * getSystemBalanceGenerator () {
 
 function * onPerformNettingGenerator () {
   try {
-    const { userAddress } = yield select(state => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf)
     const contract = yield call(getSystemBalanceInstance)
-    const data = yield contract.instance.methods.performNetting().send({ from: userAddress })
+    const data = yield contract.performNetting({ from: userAddress })
     yield put(onPerformNettingSuccess(data))
+    yield put(getSystemBalance())
+    yield put(getDebt())
+    yield put(getSurplus())
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
     yield put(onPerformNettingError(error))
   }
 }

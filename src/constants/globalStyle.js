@@ -1,5 +1,14 @@
+import React from 'react'
+import LoadingSpinner from 'components/Base/LoadingSpinner'
+import { LoadingWrap } from 'components/Custom/MemberTables/styles'
 import { createGlobalStyle } from 'styled-components'
 import '../../node_modules/@mdi/font/css/materialdesignicons.min.css'
+
+export const fallback = (
+  <LoadingWrap>
+    <LoadingSpinner />
+  </LoadingWrap>
+)
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -16,13 +25,31 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-appearance: none;
     margin: 0; 
   }
+  .popover-body {
+    font-size: "12px";
+    text-align: "center";
+    background-color: ${(props) => props.theme.colors.neonGreen};
+    border-radius: 4px;
+  }
+  
+  .bs-popover-left .arrow::after {
+    border-left-color: ${(props) => props.theme.colors.neonGreen} !important;
+  }
+
+  .bs-popover-right .arrow::after {
+    border-right-color: ${(props) => props.theme.colors.neonGreen} !important;
+  }
+
+  .bs-popover-top .arrow::after {
+    border-top-color: ${(props) => props.theme.colors.neonGreen} !important;
+  }
+
+  .bs-popover-bottom .arrow::after {
+    border-bottom-color: ${(props) => props.theme.colors.neonGreen} !important;
+  }
 
   input[type=number] {
     -moz-appearance:textfield; 
-  }
-  
-  .arrow::after {
-    border-top-color: #87FF65 !important;
   }
 
   .modal-backdrop {

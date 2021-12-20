@@ -1,60 +1,33 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import CustomBlock from 'components/Base/CustomBlock'
 import TableView from 'components/Base/TableView'
 import BorrowManageAsset from '../BorrowManageAsset'
 
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
-import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
-import { BorrowingCoreQUSD } from 'contracts/src/BorrowingCore'
-import { useSelector } from 'react-redux'
-import { userAddressMetamask } from 'store/user-inf/selectors'
-import { transactionCounter } from 'store/transaction-handler/selectors'
+import { fN } from 'func/useful'
+import { useDispatch, useSelector } from 'react-redux'
+import { getBorrowingVaults } from 'store/borrowing-core/action-creators'
+import { borrowingVaultsSelector } from 'store/borrowing-core/selectors'
+import LoadingSpinner from 'components/Base/LoadingSpinner'
 
 const HEADERS = ['Collateral Asset', 'Borrowing Asset', 'Borrowing Fee (p.a.)', '']
 
 function BorrowCryptoAssets () {
-  const myAddress = useSelector(userAddressMetamask)
-  const trCounter = useSelector(transactionCounter)
-
-  const contract = new BorrowingCoreQUSD(contractsToAddresses.BorrowingCoreQUSD)
-  const [assets, setAssets] = useState([])
-
-  const fetchBorrowAssets = async () => {
-    const userVaultsCount = await contract.userVaultsCount(myAddress)
-
-    const count = new Array(+userVaultsCount)
-    count.fill('')
-
-    async function getAdditionalData (index) {
-      const res = await Promise.all([
-        await contract.userVaults(myAddress, index),
-        await contract.getVaultStats(myAddress, index)
-      ])
-      const fee = res[1]?.stcStats?.borrowingFee
-        ? uintPerSecondToPerYearNumber(res[1]?.stcStats?.borrowingFee)
-        : 0
-      const vaultInfo = res[0]
-      vaultInfo.borrowingFee = fee
-      vaultInfo.vaultNum = index
-      return vaultInfo
-    }
-
-    const vaultsLoc = await Promise.all(count.map((i, index) => getAdditionalData(index)))
-
-    setAssets(vaultsLoc)
-  }
+  const dispatch = useDispatch()
+  const assets = useSelector(borrowingVaultsSelector)
 
   useEffect(() => {
-    if (!trCounter) {
-      fetchBorrowAssets()
-    }
-  }, [trCounter])
+    dispatch(getBorrowingVaults())
+  }, [])
 
   return (
         <CustomBlock>
             <h1>Borrow Crypto Assets</h1>
-            {assets.length
+            {!assets
               ? (
+                <LoadingSpinner />
+                )
+              : assets.length
+                ? (
                 <TableView
                     type="with-action"
                     header={HEADERS}
@@ -71,10 +44,10 @@ function BorrowCryptoAssets () {
                       )
                     })}
                 />
-                )
-              : (
-                  'No vaults created'
-                )}
+                  )
+                : (
+                <p>No vaults created</p>
+                  )}
         </CustomBlock>
   )
 }

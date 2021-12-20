@@ -22,9 +22,7 @@ import { getSymbol } from 'store/stable-coin/action-creators'
 import { transactionLoading } from 'store/transaction-handler/selectors'
 
 function Auctions (props) {
-  const {
-    auctionsType
-  } = props
+  const { auctionsType } = props
   const dispatch = useDispatch()
 
   const auctions = getAuctions(auctionsType)
@@ -73,36 +71,34 @@ function Auctions (props) {
     {
       label: 'active-auctions',
       title: 'Active auctions',
-      content: <AuctionsTab
-        isLoading={isLoading}
-        auctions={auctions}
-        auctionsType={auctionsType}
-        errorMessage={error}
-      />
+      content: (
+                <AuctionsTab
+                    isLoading={isLoading}
+                    auctions={auctions}
+                    auctionsType={auctionsType}
+                    errorMessage={error}
+                />
+      )
     },
     {
       label: 'ended-auctions',
       title: 'Ended auctions',
-      content: <AuctionsTab
-        isLoading={isEndedLoading}
-        auctions={endedAuctions}
-        auctionsType={auctionsType}
-        errorMessage={endedError}
-      />
+      content: (
+                <AuctionsTab
+                    isLoading={isEndedLoading}
+                    auctions={endedAuctions}
+                    auctionsType={auctionsType}
+                    errorMessage={endedError}
+                />
+      )
     }
   ]
 
   return (
-    <PageWrap
-      headerTitle={name}
-      headerExtra={<CreateAuctionBtn activeTab={auctionsType}/>}
-    >
-      <BigTabsView
-        tabsItems={tabsItems}
-        active={tabsItems[0]?.label}
-      />
-    </PageWrap>
+        <PageWrap headerTitle={name} headerExtra={<CreateAuctionBtn activeTab={auctionsType} />}>
+            <BigTabsView tabsItems={tabsItems} active={tabsItems[0]?.label} />
+        </PageWrap>
   )
-};
+}
 
 export default Auctions

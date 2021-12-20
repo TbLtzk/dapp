@@ -98,6 +98,7 @@ export const InputWrapper = styled(Form.Group)`
       }};
     }
   }
+
   .input_maxbtn {
     right: 8px;
     top: 4px;
@@ -106,28 +107,27 @@ export const InputWrapper = styled(Form.Group)`
     line-height: 24px;
   }
 
-  .input_maxbtn:hover {
-    cursor: pointer;
-  }
-
   ${(p) =>
     p.palette === 'dark'
       ? css`
-          .input_maxbtn {
-            color: ${(p) => (p.modal ? p.theme.colors.oxfordBlueTint3 : p.theme.colors.white)};
+      .input_maxbtn {
+            color: ${(p) => p.theme.colors.oxfordBlueTint4};
           }
           .input_maxbtn:hover {
-            color: ${(p) => (p.modal ? p.theme.colors.oxfordBlueTint1 : p.theme.colors.neonGreen)};
+            cursor: pointer;
+            color: ${(p) => p.theme.colors.oxfordBlueTint1};
           }
         `
       : css`
           .input_maxbtn {
-            color: ${(p) => p.theme.colors.oxfordBlueTint4};
+            color: ${(p) => p.theme.colors.oxfordBlueTint2};
           }
           .input_maxbtn:hover {
+            cursor: pointer;
             color: ${(p) => p.theme.colors.oxfordBlueTint6};
           }
         `}
+
 
   .input_lbl {
     display: flex;

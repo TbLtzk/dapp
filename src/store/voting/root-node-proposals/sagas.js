@@ -10,8 +10,8 @@ import { getMinimalActiveBlockHeight, sortAndCountProposals } from 'func/useful'
 function * getRootProposalsCountGenerator () {
   try {
     const contract = creationRootContractObj()
-    const latestBlockNumber = yield getMinimalActiveBlockHeight()
-    const proposals = yield contract.getProposalsCount(latestBlockNumber)
+    const minimalActiveBlockHeight = yield getMinimalActiveBlockHeight()
+    const proposals = yield contract.getProposalsCount(minimalActiveBlockHeight)
     const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposals([proposals])
     yield put(setRootProposalsCount(proposalsCount))
     yield put(setRootActiveProposals(activeProposalsIds))

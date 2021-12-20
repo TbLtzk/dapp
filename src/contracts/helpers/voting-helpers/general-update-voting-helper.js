@@ -41,8 +41,10 @@ export default class GeneralUpdateVoting extends VotingService {
   }
 
   async createProposal (data, userAddress) {
+    const contract = await this.getContractInstance()
+
     const link = data['external-link']
-    const result = await this.contract.createProposal(link, { from: userAddress })
+    const result = await contract.createProposal(link, { from: userAddress })
     return result
   }
 }

@@ -21,6 +21,8 @@ import parametersAddresses from './parameters-addresses/sagas'
 import lockedAmount from './locked-amount/sagas'
 import vesting from './vesting/sagas'
 import borrowingCore from './borrowing-core/sagas'
+import savingAssets from './saving-assets/sagas'
+import borrowingAssets from './borrow-assets/sagas'
 
 export default function * rootSaga () {
   yield all([
@@ -43,6 +45,8 @@ export default function * rootSaga () {
     ...systemReserve,
     ...parametersAddresses,
     ...lockedAmount,
-    ...vesting
+    ...vesting,
+    ...savingAssets,
+    ...borrowingAssets
   ])
 }

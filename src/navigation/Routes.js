@@ -21,7 +21,7 @@ import AlertTemplate from 'components/Custom/Alerts/AlertTemplate'
 function Routes () {
   const options = {
     position: positions.TOP_RIGHT,
-    timeout: 10000,
+    timeout: 5000,
     offset: '10px',
     transition: transitions.SCALE,
     containerStyle: {

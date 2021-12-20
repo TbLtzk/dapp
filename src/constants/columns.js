@@ -1,3 +1,5 @@
+import { toNumber } from 'func/useful'
+
 export const columnsDeFiRisk = [
   {
     dataField: 'member',
@@ -72,19 +74,24 @@ export const columnsRootNode = [
     sort: true
   },
   {
+    headerStyle: () => ({ minWidth: '350px' }),
     dataField: 'address',
     text: 'Root Node Address',
     sort: true
   },
   {
+    headerStyle: () => ({ minWidth: '110px' }),
     dataField: 'amount',
     text: 'Staked Amount',
-    sort: true
+    sort: true,
+    sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
   },
   {
+    headerStyle: () => ({ minWidth: '70px' }),
     dataField: 'share',
     text: 'Share',
-    sort: true
+    sort: true,
+    sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
   }
 ]
 
@@ -105,42 +112,52 @@ export const columnsValidatorsWidened = [
     headerStyle: () => ({ minWidth: '150px' }),
     dataField: 'amount',
     text: 'Total Accountable Stake',
-    sort: true
+    sort: true,
+    sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
   },
   {
     headerStyle: () => ({ minWidth: '150px' }),
     dataField: 'selfStake',
     text: 'Self Stake',
-    sort: true
+    sort: true,
+    sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
   },
   {
     headerStyle: () => ({ minWidth: '150px' }),
     dataField: 'delegatedStake',
     text: 'Total Delegated Stake',
-    sort: true
+    sort: true,
+    sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
   },
   {
     headerStyle: () => ({ minWidth: '100px' }),
     dataField: 'validatorShare',
     text: 'Validator Share',
-    sort: true
+    sort: true,
+    sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
   },
   {
     headerStyle: () => ({ minWidth: '100px' }),
     dataField: 'delegatorShare',
     text: 'Delegator Share',
-    sort: true
+    sort: true,
+    sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
   },
   {
     headerStyle: () => ({ minWidth: '100px' }),
     dataField: 'delegationEfficiency',
     text: 'Delegation Efficiency',
-    sort: true
+    sort: true,
+    sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
   },
   {
     headerStyle: () => ({ minWidth: '165px' }),
     dataField: 'delegationSaturation',
     text: 'Delegation Saturation',
-    sort: true
+    sort: true,
+    sortFunc: (a, b, order) =>
+      order === 'asc'
+        ? toNumber(b.props.value) - toNumber(a.props.value)
+        : toNumber(a.props.value) - toNumber(b.props.value)
   }
 ]

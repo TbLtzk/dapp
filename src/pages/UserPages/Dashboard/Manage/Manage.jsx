@@ -1,113 +1,26 @@
-import React, { useEffect } from 'react'
-import KeyAddressViewer from './components/KeyAddressViewer'
-
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  getContractRegistryKV,
-  getConstitutionParametersKV,
-  getFeesIncentivesExpertPanelParametersKV,
-  getEPDRParametersKV
-} from 'store/parameters-addresses/action-creators'
-import {
-  contractRegistryKV,
-  contractRegistryKVLoading,
-  contractRegistryKVError,
-
-  constitutionParametersKVLoading,
-  constitutionParametersKVError,
-  constitutionParametersKV,
-
-  feesIncentivesExpertPanelParametersKV,
-  feesIncentivesExpertPanelParametersKVLoading,
-  feesIncentivesExpertPanelParametersKVError,
-
-  ePDRParametersKV,
-  ePDRParametersKVLoading,
-  ePDRParametersKVError
-} from 'store/parameters-addresses/selectors'
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
-import Button from 'components/Base/Buttons/Button'
-import PageWrap from 'components/Base/PageWrap'
+import React, { Suspense, lazy } from 'react'
 import { Link } from 'react-router-dom'
 
+import Button from 'components/Base/Buttons/Button'
+import PageWrap from 'components/Base/PageWrap'
+import { fallback } from 'constants/globalStyle'
+const QParameters = lazy(() => import('./components/QParameters/QParameters'))
+
 function Manage () {
-  const loadingCR = useSelector(contractRegistryKVLoading)
-  const errorMessageCR = useSelector(contractRegistryKVError)
-  const kvCR = useSelector(contractRegistryKV)
-
-  const loadingCP = useSelector(constitutionParametersKVLoading)
-  const errorMessageCP = useSelector(constitutionParametersKVError)
-  const kvCP = useSelector(constitutionParametersKV)
-
-  const loadingFI = useSelector(feesIncentivesExpertPanelParametersKVLoading)
-  const errorMessageFI = useSelector(feesIncentivesExpertPanelParametersKVError)
-  const kvFI = useSelector(feesIncentivesExpertPanelParametersKV)
-
-  const loadingEPDRP = useSelector(ePDRParametersKVLoading)
-  const errorMessageEPDRP = useSelector(ePDRParametersKVError)
-  const kvEPDRP = useSelector(ePDRParametersKV)
-
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(getContractRegistryKV())
-    dispatch(getConstitutionParametersKV())
-    dispatch(getFeesIncentivesExpertPanelParametersKV())
-    dispatch(getEPDRParametersKV())
-  }, [dispatch])
-
   return (
-    <PageWrap
-      wrapContentClasses={'wrap-content__tow-colm'}
-      headerTitle={'Q Parameters'}
-      headerExtra={(
-        <Link to={'/'}>
-          <Button
-            type={'white'}
-            title={'Dashboard'}
-            handleButton={() => {
-            }}
-          />
-        </Link>
-      )}
-    >
-      <div>
-        <KeyAddressViewer
-          tableData={kvCR}
-          loading={loadingCR}
-          errorMsg={errorMessageCR}
-          subHeader={`(${contractsToAddresses.ContractRegistry})`}
-          header={'Q Contract Registry'}
-          emptyMsg={'No addresses'}
-        />
-        <KeyAddressViewer
-          tableData={kvFI}
-          loading={loadingFI}
-          errorMsg={errorMessageFI}
-          subHeader={`(${contractsToAddresses.EPQFIParameters})`}
-          header={'Q Fees & Incentives Expert Panel Parameters'}
-          emptyMsg={'No data'}
-        />
-      </div>
-      <div>
-        <KeyAddressViewer
-          tableData={kvCP}
-          loading={loadingCP}
-          errorMsg={errorMessageCP}
-          subHeader={`(${contractsToAddresses.ConstitutionParameters})`}
-          header={'Q Constitution Parameters'}
-          emptyMsg={'No data'}
-        />
-        <KeyAddressViewer
-          tableData={kvEPDRP}
-          loading={loadingEPDRP}
-          errorMsg={errorMessageEPDRP}
-          subHeader={`(${contractsToAddresses.EPDRParameters})`}
-          header={'Q DeFi Risk Expert Panel Parameters'}
-          emptyMsg={'No addresses'}
-        />
-      </div>
-    </PageWrap>
+        <PageWrap
+            wrapContentClasses="wrap-content__tow-colm"
+            headerTitle="Q Parameters"
+            headerExtra={
+                <Link to="/">
+                    <Button type="white" title="Dashboard" handleButton={() => {}} />
+                </Link>
+            }
+        >
+            <Suspense fallback={fallback}>
+                <QParameters />
+            </Suspense>
+        </PageWrap>
   )
 }
 

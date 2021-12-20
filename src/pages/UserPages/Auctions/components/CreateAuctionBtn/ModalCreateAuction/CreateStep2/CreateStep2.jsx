@@ -3,7 +3,7 @@ import React, { useCallback, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { formObject } from 'store/modal-handler/selectors'
 import { AUCTIONS_TYPES } from 'constants/statuses'
-import { getEPDRUint } from 'contracts/handler/ContractsEPDR'
+import { getEPDRUint } from 'contracts/helpers/epdr-param-helper'
 
 function CreateStep2 (props) {
   const {

@@ -10,22 +10,22 @@ import {
   getParameterKeysByTypeSuccess
 } from './action-creators'
 import { ParameterType } from '@q-dev/q-js-sdk'
-
-import EPQFIParameters from 'contracts/src/parameters/EPQFI_Parameters'
-import EPDRParameters from 'contracts/src/parameters/EPDR_Parameters'
-import ConstitutionParameters from 'contracts/src/parameters/ConstitutionParameters'
-import { contractsToAddresses } from 'contracts/mapping/contract-to-address'
 import { CONTRACT_TYPES } from 'constants/contracts'
 import { getContractTypeKey } from 'func/contractHelpers'
 import ErrorHandler from 'func/ErrorHandler'
+import {
+  getConstitutionInstance,
+  getEpdrParametersInstance,
+  getEpqfiParametersInstance
+} from 'contracts/contract-instance'
 
 function * getAddressParameter ({ value, typeContract }) {
   try {
     let contract = null
     if (typeContract === 'EPQFI') {
-      contract = new EPQFIParameters('EPQFIParameters')
+      contract = yield getEpqfiParametersInstance()
     } else if (typeContract === 'EPDR') {
-      contract = new EPDRParameters(contractsToAddresses.EPDRParameters)
+      contract = yield getEpdrParametersInstance()
     }
     const data = yield contract.getAddr(value)
     yield put(getAddressParameterSuccess(data))
@@ -38,9 +38,9 @@ function * getStringParameter ({ value, typeContract }) {
   try {
     let contract = null
     if (typeContract === 'EPQFI') {
-      contract = new EPQFIParameters('EPQFIParameters')
+      contract = yield getEpqfiParametersInstance()
     } else if (typeContract === 'EPDR') {
-      contract = new EPDRParameters(contractsToAddresses.EPDRParameters)
+      contract = yield getEpdrParametersInstance()
     }
     const data = yield contract.getString(value)
     yield put(getStringParameterSuccess(data))
@@ -53,9 +53,9 @@ function * getBytesParameter ({ value, typeContract }) {
   try {
     let contract = null
     if (typeContract === 'EPQFI') {
-      contract = new EPQFIParameters('EPQFIParameters')
+      contract = yield getEpqfiParametersInstance()
     } else if (typeContract === 'EPDR') {
-      contract = new EPDRParameters(contractsToAddresses.EPDRParameters)
+      contract = yield getEpdrParametersInstance()
     }
     const data = yield contract.getBytes(value)
     yield put(getBytesParameterSuccess(data))
@@ -68,9 +68,9 @@ function * getUintParameter ({ value, typeContract }) {
   try {
     let contract = null
     if (typeContract === 'EPQFI') {
-      contract = new EPQFIParameters('EPQFIParameters')
+      contract = yield getEpqfiParametersInstance()
     } else if (typeContract === 'EPDR') {
-      contract = new EPDRParameters(contractsToAddresses.EPDRParameters)
+      contract = yield getEpdrParametersInstance()
     }
     const data = yield contract.getUint(value)
     yield put(getUintParameterSuccess(data))
@@ -83,9 +83,9 @@ function * getBooleanParameter ({ value, typeContract }) {
   try {
     let contract = null
     if (typeContract === 'EPQFI') {
-      contract = new EPQFIParameters('EPQFIParameters')
+      contract = yield getEpqfiParametersInstance()
     } else if (typeContract === 'EPDR') {
-      contract = new EPDRParameters(contractsToAddresses.EPDRParameters)
+      contract = yield getEpdrParametersInstance()
     }
     const data = yield contract.getBool(value)
     yield put(getBoolParameterSuccess(data))
@@ -94,13 +94,13 @@ function * getBooleanParameter ({ value, typeContract }) {
   }
 }
 
-function getContract (typeContract) {
+async function getContract (typeContract) {
   if (typeContract === CONTRACT_TYPES.qFee) {
-    return new EPQFIParameters('EPQFIParameters')
+    return await getEpqfiParametersInstance()
   } else if (typeContract === CONTRACT_TYPES.qDefi) {
-    return new EPDRParameters(contractsToAddresses.EPDRParameters)
+    return await getEpdrParametersInstance()
   } else if (typeContract === CONTRACT_TYPES.constitution) {
-    return new ConstitutionParameters('ConstitutionParameters')
+    return await getConstitutionInstance()
   } else {
     return null
   }
@@ -109,7 +109,7 @@ function getContract (typeContract) {
 function * getParameterValueByKey ({ typeContract, typeParameter, parameterKey }) {
   try {
     if (typeContract && typeParameter && parameterKey) {
-      const contract = getContract(typeContract)
+      const contract = yield getContract(typeContract)
       let data = null
       switch (typeParameter) {
         case ParameterType.ADDRESS:
@@ -147,23 +147,23 @@ function * getParameterValueByKey ({ typeContract, typeParameter, parameterKey }
 function * getParameterKeysByType ({ typeContract, typeParameter }) {
   try {
     if (typeContract && typeParameter) {
-      const contract = getContract(typeContract)
+      const contract = yield getContract(typeContract)
       let data = null
       switch (typeParameter) {
         case ParameterType.ADDRESS:
-          data = yield contract.getAddrKeys()
+          data = yield contract.instance.methods.getAddrKeys().call()
           break
         case ParameterType.BOOL:
-          data = yield contract.getBoolKeys()
+          data = yield contract.instance.methods.getBoolKeys().call()
           break
         case ParameterType.STRING:
-          data = yield contract.getStringKeys()
+          data = yield contract.instance.methods.getStringKeys().call()
           break
         case ParameterType.BYTE:
-          data = yield contract.getBytesKeys()
+          data = yield contract.instance.methods.getBytesKeys().call()
           break
         case ParameterType.UINT:
-          data = yield contract.getUintKeys()
+          data = yield contract.instance.methods.getUintKeys().call()
           break
       }
       if (data) {

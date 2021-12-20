@@ -1,28 +1,19 @@
-import colors from 'constants/colors'
 import React from 'react'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { ChildrenWrapper } from './styles'
 
-function Tooltip ({ additionalInfo, children, disabled, copy }) {
+function Tooltip ({ additionalInfo, children, disabled, copy, placement = 'top' }) {
   return disabled
     ? (
         <div>{children}</div>
       )
     : (
         <OverlayTrigger
-            key="top"
-            placement="top"
+            key={placement}
+            placement={placement}
             overlay={
-                <Popover>
-                    <Popover.Content
-                        style={{
-                          fontSize: '12px',
-                          textAlign: 'center',
-                          backgroundColor: colors.neonGreen
-                        }}
-                    >
-                        {additionalInfo}
-                    </Popover.Content>
+                <Popover data-placement={placement}>
+                    <Popover.Content>{additionalInfo}</Popover.Content>
                 </Popover>
             }
         >

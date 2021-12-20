@@ -1,27 +1,34 @@
 import { transformToPercentage } from './base-voting-helper'
 import { ParameterType } from '@q-dev/q-js-sdk'
-import { getRootNodesInstance, cache } from 'contracts/contract-instance'
+import { getRootNodesInstance, getInstance } from 'contracts/contract-instance'
 
 export default class VotingService {
   constructor (contractName) {
     this.contractName = contractName
-    this.contract = cache[contractName]
+  }
+
+  async getContractInstance () {
+    const initInstance = getInstance(this.contractName)
+    return initInstance()
   }
 
   async getProposalStatus (id) {
-    const result = await this.contract.getStatus(id)
+    const contract = await this.getContractInstance()
+    const result = await contract.getStatus(id)
     return result
   }
 
   async getProposalStats (id) {
-    const result = await this.contract.getProposalStats(id)
+    const contract = await this.getContractInstance()
+    const result = await contract.getProposalStats(id)
     return result
   }
 
   async getVetoesNumber (id) {
     try {
+      const contract = await this.getContractInstance()
       if (this.contract.instance.methods.getVetosNumber) {
-        const result = await this.contract.instance.methods.getVetosNumber(id).call()
+        const result = await contract.instance.methods.getVetosNumber(id).call()
         return result
       } else {
         return 0
@@ -32,42 +39,47 @@ export default class VotingService {
   }
 
   async getVetoesPercentage (id) {
-    const result = await this.contract.getVetosPercentage(id)
+    const contract = await this.getContractInstance()
+    const result = await contract.getVetosPercentage(id)
     return result
   }
 
   async voteAgainst (id, userAddress) {
-    const result = await this.contract.voteAgainst(id, { from: userAddress })
+    const contract = await this.getContractInstance()
+    const result = await contract.voteAgainst(id, { from: userAddress })
     return result
   }
 
   async voteFor (id, userAddress) {
-    const result = await this.contract.voteFor(id, { from: userAddress })
+    const contract = await this.getContractInstance()
+    const result = await contract.voteFor(id, { from: userAddress })
     return result
   }
 
   async veto (id, userAddress) {
-    const result = await this.contract.veto(id, { from: userAddress })
+    const contract = await this.getContractInstance()
+    const result = await contract.veto(id, { from: userAddress })
     return result
   }
 
   async execute (id, userAddress) {
+    const contract = await this.getContractInstance()
     const promiseStatus = await this.getProposalStatus(id)
-
     let result = null
     if (promiseStatus === '4') {
-      result = await this.contract.execute(id, { from: userAddress })
+      result = await contract.execute(id, { from: userAddress })
     }
     return result
   }
 
   async getProposal (id, type) {
-    const ids = await this.contract.getProposalIds(0, 'latest')
+    const contract = await this.getContractInstance()
+    const ids = await contract.getProposalIds(0, 'latest')
     const includeInIds = ids.includes(id)
     if (includeInIds) {
       let additionalInfo = {}
       let headerInfo = {}
-      const proposal = await this.contract.getProposalWithStatus(id)
+      const proposal = await contract.getProposalWithStatus(id)
       if (type === 'header') {
         headerInfo = this.getProposalData(proposal, proposal.id, proposal.status)
       }
@@ -102,21 +114,26 @@ export default class VotingService {
     return objRes
   }
 
-  async getProposalsCount (latestBlocks) {
-    const latestIds = await this.contract.getProposalIds(latestBlocks, 'latest')
-    const allIds = await this.contract.getProposalIds(0, 'latest')
-    const statuses = []
+  async getProposalsCount (minimalActiveBlockHeight) {
+    const contract = await this.getContractInstance()
+    const pastEvents = await contract.instance.getPastEvents('ProposalCreated', { fromBlock: 0, toBlock: 'latest' })
+    const latestPastEvents = pastEvents.filter((evt) => evt.blockNumber >= minimalActiveBlockHeight)
 
-    for (const id of latestIds) {
-      const status = await this.contract.getStatus(id)
-      statuses.push({ id, status })
+    const latestProposals = []
+    for (const pastEvent of latestPastEvents) {
+      const id = pastEvent.returnValues._id
+      const { blockNumber } = pastEvent
+      const status = await contract.getStatus(pastEvent.returnValues._id)
+      latestProposals.push({ id, status, blockNumber })
     }
 
-    const activeIds = statuses
-      .filter((prop) => prop.status === '1' || prop.status === '3' || prop.status === '4')
-      .map((prop) => prop.id)
+    const activeIds = latestProposals.filter(
+      (prop) => prop.status === '1' || prop.status === '3' || prop.status === '4'
+    )
 
-    const endedIds = allIds.filter((id) => !activeIds.includes(id))
+    const endedIds = pastEvents
+      .map((evt) => ({ blockNumber: evt.blockNumber, id: evt.returnValues._id }))
+      .filter((id) => !activeIds.includes(id))
 
     return {
       contract: this.contractName,
@@ -131,7 +148,8 @@ export default class VotingService {
   }
 
   async getParametersArr (id) {
-    const result = await this.contract.getParametersArr(id)
+    const contract = await this.getContractInstance()
+    const result = await contract.getParametersArr(id)
     return result
   }
 

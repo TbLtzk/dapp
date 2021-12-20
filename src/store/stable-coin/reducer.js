@@ -2,7 +2,7 @@ import * as actionTypes from './action-types'
 
 const initialState = {
   balance: 0,
-  symbol: null
+  symbol: 0
 }
 
 export default function stableCoin (state = initialState, action) {

@@ -1,14 +1,15 @@
-import { call, put, takeEvery, select } from 'redux-saga/effects'
+import { call, put, takeEvery, select, delay, all } from 'redux-saga/effects'
 
 import * as actionTypes from './action-types'
 import {
-  setTransactionLoading, setTransactionLoadingError, setTransactionLoadingSuccess
+  setErrorMessage,
+  setTransactionLoading,
+  setTransactionLoadingSuccess
 } from 'store/transaction-handler/action-creators'
 
 import {
   getEndedAuctionsListSuccess,
   getEndedAuctionsListError,
-
   getAuctionsListError,
   getAuctionsListSuccess,
   getAuction,
@@ -17,21 +18,24 @@ import {
   getEmptyAuctionSuccess,
   createAuctionSuccess,
   bidForAuctionSuccess,
-  executeAuctionSuccess
+  executeAuctionSuccess,
+  setLiquidationAuctionCount,
+  setSystemDebtAuctionCount,
+  setSystemSurplusAuctionCount
 } from './action-creators'
 import {
   creationLiquidationContractObj,
   creationSystemDebtContractObj,
   creationSystemSurplusContractObj
-} from 'contracts/handler/AuctionHandler'
+} from 'contracts/helpers/auctions-helpers/auction-helper'
 import { AUCTIONS_TYPES } from 'constants/statuses'
+import { CONTRACT_TYPES } from 'constants/contracts'
 import ErrorHandler from 'func/ErrorHandler'
 
 function * createAuction ({ data }) {
   try {
-    yield put(setTransactionLoading())
-    const { userAddress } = yield select(state => state.userInf)
-
+    yield put(setTransactionLoading(1))
+    const { userAddress } = yield select((state) => state.userInf)
     let result = null
     if (data) {
       let contract = null
@@ -61,21 +65,21 @@ function * createAuction ({ data }) {
     yield put(createAuctionSuccess(result))
     yield put(setTransactionLoadingSuccess())
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(setTransactionLoadingError(error.message))
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   }
 }
 
 function * getAuctionDependsOnType (contractName, inf, activeAuction) {
   try {
     switch (contractName) {
-      case 'LiquidationAuction':
+      case CONTRACT_TYPES.liquidationAuction:
         yield put(getAuction(contractName, inf, AUCTIONS_TYPES.liquidation, activeAuction))
         break
-      case 'SystemDebtAuction':
+      case CONTRACT_TYPES.systemDebtAuction:
         yield put(getAuction(contractName, inf, AUCTIONS_TYPES.systemDebt, activeAuction))
         break
-      case 'SystemSurplusAuction':
+      case CONTRACT_TYPES.systemSurplusAuction:
         yield put(getAuction(contractName, inf, AUCTIONS_TYPES.systemSurplus, activeAuction))
         break
       default:
@@ -86,12 +90,7 @@ function * getAuctionDependsOnType (contractName, inf, activeAuction) {
   }
 }
 
-function * getOneAuction ({
-  contractName,
-  inf,
-  activeTab,
-  activeAuction
-}) {
+function * getOneAuction ({ contractName, inf, activeTab, activeAuction }) {
   try {
     let contract = null
     switch (activeTab) {
@@ -100,6 +99,7 @@ function * getOneAuction ({
         break
       case AUCTIONS_TYPES.systemDebt:
         contract = creationSystemDebtContractObj()
+
         break
       case AUCTIONS_TYPES.systemSurplus:
         contract = creationSystemSurplusContractObj(contractName)
@@ -120,10 +120,7 @@ function * getOneAuction ({
   }
 }
 
-function * getAuctionsList ({
-  activeTab,
-  activeAuction
-}) {
+function * getAuctionsList ({ activeTab, activeAuction }) {
   try {
     let contract = null
     switch (activeTab) {
@@ -139,21 +136,19 @@ function * getAuctionsList ({
     }
     let result = []
     result = yield contract?.getAuctions(activeAuction)
-
-    yield put(getAuctionsListSuccess({
-      result,
-      activeTab: activeTab
-    }))
+    yield put(
+      getAuctionsListSuccess({
+        result,
+        activeTab: activeTab
+      })
+    )
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
     yield put(getAuctionsListError(error))
   }
 }
 
-function * getEndedAuctionsList ({
-  activeTab,
-  activeAuction
-}) {
+function * getEndedAuctionsList ({ activeTab, activeAuction }) {
   try {
     let contract = null
     switch (activeTab) {
@@ -180,19 +175,19 @@ function * getEndedAuctionsList ({
 function * bidForAuctionHandler ({ data }) {
   try {
     yield put(setTransactionLoading())
-    const { userAddress } = yield select(state => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf)
     let contract = null
     let result = null
     switch (data?.contract) {
-      case 'LiquidationAuction':
+      case CONTRACT_TYPES.liquidationAuction:
         contract = creationLiquidationContractObj()
         result = yield contract.bid(data.user, data.vaultId, data.bid, userAddress)
         break
-      case 'SystemDebtAuction':
+      case CONTRACT_TYPES.systemDebtAuction:
         contract = creationSystemDebtContractObj()
         result = yield contract.bid(data.bid, userAddress)
         break
-      case 'SystemSurplusAuction':
+      case CONTRACT_TYPES.systemSurplusAuction:
         contract = creationSystemSurplusContractObj()
         result = yield contract.bid(data.id, data.bid, userAddress)
         break
@@ -204,27 +199,27 @@ function * bidForAuctionHandler ({ data }) {
     yield put(bidForAuctionSuccess(result))
     yield put(setTransactionLoadingSuccess())
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(setTransactionLoadingError(error.message))
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
   }
 }
 
 function * executeAuctionHandler ({ data }) {
   try {
     yield put(setTransactionLoading())
-    const { userAddress } = yield select(state => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf)
     let contract = null
     let result = null
     switch (data?.contract) {
-      case 'LiquidationAuction':
+      case CONTRACT_TYPES.liquidationAuction:
         contract = creationLiquidationContractObj()
         result = yield contract.execute(data.user, data.vaultId, userAddress)
         break
-      case 'SystemDebtAuction':
+      case CONTRACT_TYPES.systemDebtAuction:
         contract = creationSystemDebtContractObj()
         result = yield contract.execute(userAddress)
         break
-      case 'SystemSurplusAuction':
+      case CONTRACT_TYPES.systemSurplusAuction:
         contract = creationSystemSurplusContractObj()
         result = yield contract.execute(data.id, userAddress)
         break
@@ -236,8 +231,53 @@ function * executeAuctionHandler ({ data }) {
     yield put(executeAuctionSuccess(result))
     yield put(setTransactionLoadingSuccess())
   } catch (error) {
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
+  }
+}
+
+function * getAuctionsCountGenerator () {
+  try {
+    const liquidationAuctionInstance = creationLiquidationContractObj()
+    const systemSurplusAuctionInstance = creationSystemDebtContractObj()
+    const systemDebtAuctionInstance = creationSystemSurplusContractObj()
+
+    switch ('Auction') {
+      case CONTRACT_TYPES.liquidationAuction: {
+        const result = yield liquidationAuctionInstance.getAuctionsCount()
+        yield put(setLiquidationAuctionCount(result))
+        break
+      }
+      case CONTRACT_TYPES.systemDebtAuction: {
+        const result = yield systemSurplusAuctionInstance.getAuctionsCount()
+        yield put(setSystemDebtAuctionCount(result))
+        break
+      }
+      case CONTRACT_TYPES.systemSurplusAuction: {
+        const result = yield systemDebtAuctionInstance.getAuctionsCount()
+        yield put(setSystemSurplusAuctionCount(result))
+        break
+      }
+      default: {
+        const contracts = [liquidationAuctionInstance, systemSurplusAuctionInstance, systemDebtAuctionInstance]
+        const auctions = yield all(contracts.map((contract) => contract.getAuctionsCount()))
+        const auctionCount = {}
+        auctions.forEach((auction) => {
+          auctionCount[auction.contract] = {
+            activeAuctions: auction.activeAuctions.length,
+            endedAuctions: auction.endedAuctions.length
+          }
+        })
+        yield put(setSystemSurplusAuctionCount(auctionCount.systemSurplusAuction))
+        yield put(setSystemDebtAuctionCount(auctionCount.systemDebtAuction))
+        yield put(setLiquidationAuctionCount(auctionCount.liquidationAuction))
+      }
+    }
+
+    yield delay(800000)
+    yield call(getAuctionsCountGenerator)
+  } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
-    yield put(setTransactionLoadingError(error.message))
   }
 }
 
@@ -247,5 +287,7 @@ export default [
   takeEvery(actionTypes.GET_ENDED_AUCTIONS_LIST, getEndedAuctionsList),
   takeEvery(actionTypes.GET_AUCTION, getOneAuction),
   takeEvery(actionTypes.BID_FOR_AUCTION, bidForAuctionHandler),
-  takeEvery(actionTypes.EXECUTE_AUCTION, executeAuctionHandler)
+  takeEvery(actionTypes.EXECUTE_AUCTION, executeAuctionHandler),
+
+  takeEvery(actionTypes.GET_AUCTIONS_COUNT, getAuctionsCountGenerator)
 ]

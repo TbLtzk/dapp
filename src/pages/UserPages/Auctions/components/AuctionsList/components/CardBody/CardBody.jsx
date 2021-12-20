@@ -1,10 +1,10 @@
-import React from 'react'
 import { CONTRACTS_NAMES } from 'constants/contracts'
+import React from 'react'
+
 import { useSelector } from 'react-redux'
 import { symbol } from 'store/stable-coin/selectors'
 
-function CardBody (props) {
-  const { data } = props
+function CardBody ({ data }) {
   const symbolType = useSelector(symbol)
 
   return (

@@ -1,20 +1,6 @@
 import { ParameterType } from '@q-dev/q-js-sdk'
 import { CONTRACT_TYPES } from 'constants/contracts'
 
-/**
- * @contract {contract} ConstitutionParameters or EPQFIParameters or EPDRParameters
- * or other which extends ParametersService
- */
-export async function loadKVParameters (contract) {
-  return await Promise.all([
-    ...await loadUintsKeys(contract),
-    ...await loadAddrsKeys(contract),
-    ...await loadStringsKeys(contract),
-    ...await loadBytes32sKeys(contract),
-    ...await loadBoolsKeys(contract)
-  ])
-}
-
 export async function loadUintsKeys (contract) {
   const uintKeys = await contract.instance.methods.getUintKeys().call()
 
