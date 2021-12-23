@@ -2,6 +2,8 @@ import * as actionTypes from './action-types'
 
 const initialState = {
   rootMembersData: [],
+  loadingRootMembersData: true,
+
   isUserRootNode: false,
   rootNodeStake: 0,
   withdrawals: 0,
@@ -15,7 +17,8 @@ export default function rootContract (state = initialState, action) {
     case actionTypes.SET_ROOT_MEMBERS_DATA:
       return {
         ...state,
-        rootMembersData: action.result
+        rootMembersData: action.result,
+        loadingRootMembersData: false
       }
     case actionTypes.SET_CHECK_IS_USER_ROOT_NODE:
       return {

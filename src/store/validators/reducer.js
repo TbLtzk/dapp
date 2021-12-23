@@ -14,7 +14,7 @@ const initialState = {
   validatorMembers: [],
   loadingMembers: true,
   errorMembers: null,
-  isUserValidator: false,
+  isUserValidator: true,
 
   validatorsTimeLocks: null,
   validatorsMinimumTimeLock: null,

@@ -7,7 +7,7 @@ import { userAddressMetamask } from 'store/user-inf/selectors'
 import { useForm } from 'react-hook-form'
 import { errorHandler, fN } from 'func/useful'
 import { fromSolDateFormattingT1 } from 'func/date'
-import { AccountStatusForm, AccountStatusInfo } from '../../styles'
+import { AccountStatusForm, AccountStatusInfo } from '../../../RootNodeStaking/styles'
 import {
   getAccountableTotalStake,
   getMinimumValidatorsTimeLock,
@@ -30,7 +30,7 @@ import { getAccountBalance } from 'store/q-vault/action-creators'
 import { accountBalance } from 'store/q-vault/selectors'
 import { fromWei } from 'func/balance'
 
-export default function AccountStatus () {
+function ManageValidatorBalance () {
   const { register: reg, handleSubmit: submit, errors } = useForm()
 
   const dispatch = useDispatch()
@@ -39,6 +39,7 @@ export default function AccountStatus () {
 
   const userAccountBalance = useSelector(accountBalance)
   const isThisUserValidator = useSelector(isUserValidator)
+
   const userAccountableTotalStake = useSelector(accountableTotalStake)
   const userValidatorShortList = useSelector(validatorShortList)
   const userValidatorWithdrawalInfo = useSelector(validatorWithdrawalInfo)
@@ -176,3 +177,5 @@ export default function AccountStatus () {
         </CustomBlock>
   )
 }
+
+export default ManageValidatorBalance

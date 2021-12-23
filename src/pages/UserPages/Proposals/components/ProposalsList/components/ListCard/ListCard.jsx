@@ -7,7 +7,7 @@ import { theme } from 'store/theme/selectors'
 import CardCollapsedContent from '../CardCollapsedContent'
 import ProposalContent from '../ProposalContent'
 import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper'
-import SkeletonLoading from 'components/Base/SkeletonLoading'
+import SkeletonProposalsLoading from 'components/Base/SkeletonLoading'
 import { transactionCounter } from 'store/transaction-handler/selectors'
 import { formVoteObject } from 'store/voting/proposals/selectors'
 
@@ -41,7 +41,7 @@ function ListCard ({ proposal, id, proposalsKind, oneProposalPage }) {
 
   return !proposalInfo
     ? (
-        <SkeletonLoading />
+        <SkeletonProposalsLoading />
       )
     : (
         <ListCardWrp palette={currentTheme}>

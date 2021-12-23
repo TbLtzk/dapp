@@ -5,7 +5,7 @@ import Button from 'components/Base/Buttons/Button'
 import { slice, concat } from 'lodash'
 import ListCard from './components/ListCard'
 import { fillArray } from 'func/useful'
-import SkeletonLoading from 'components/Base/SkeletonLoading'
+import SkeletonProposalsLoading from 'components/Base/SkeletonLoading'
 import { useDispatch, useSelector } from 'react-redux'
 import { executedProposalSelector } from 'store/voting/proposals/selectors'
 import { setExecutedProposal } from 'store/voting/proposals/action-creators'
@@ -93,7 +93,7 @@ function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
       return (
                 <div>
                     {fillArray(9).map((id) => (
-                        <SkeletonLoading key={id} />
+                        <SkeletonProposalsLoading key={id} />
                     ))}
                 </div>
       )

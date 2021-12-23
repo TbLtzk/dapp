@@ -1,7 +1,5 @@
-import React, { Suspense } from 'react'
-import LoadingSpinner from 'components/Base/LoadingSpinner'
+import React from 'react'
 import Table from 'components/Base/Table'
-import { LoadingWrap } from 'constants/style'
 import {
   columnsQFees,
   columnsDelegations,
@@ -20,6 +18,7 @@ import {
   tableValidatorsShort
 } from 'constants/tables'
 import TABLE_TYPES from 'constants/tableTypes'
+import { SceletonTableLoading } from 'components/Base/SkeletonLoading/SkeletonLoading'
 
 const MemberTables = ({
   tableType,
@@ -67,18 +66,11 @@ const MemberTables = ({
   return (
         <>
             {!title ? null : <h1>{title}</h1>}
-            <Suspense
-                fallback={
-                    <LoadingWrap>
-                        <LoadingSpinner />
-                    </LoadingWrap>
-                }
-            >
+
+            <div>
                 {loading
                   ? (
-                    <LoadingWrap>
-                        <LoadingSpinner />
-                    </LoadingWrap>
+                    <SceletonTableLoading />
                     )
                   : tableArray.length === 0
                     ? (
@@ -107,7 +99,7 @@ const MemberTables = ({
                         sorting={sorting}
                     />
                       )}
-            </Suspense>
+            </div>
         </>
   )
 }
