@@ -3,7 +3,7 @@ import ContentLoader from 'react-content-loader'
 import { SkeletonLoadingWrapper } from './styles'
 import { darkColors } from 'constants/colors'
 
-export function SceletonTableLoading () {
+export function SkeletonTableLoading () {
   return (
         <SkeletonLoadingWrapper>
             <ContentLoader

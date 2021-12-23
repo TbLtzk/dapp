@@ -18,7 +18,7 @@ import {
   tableValidatorsShort
 } from 'constants/tables'
 import TABLE_TYPES from 'constants/tableTypes'
-import { SceletonTableLoading } from 'components/Base/SkeletonLoading/SkeletonLoading'
+import { SkeletonTableLoading } from 'components/Base/SkeletonLoading/SkeletonLoading'
 
 const MemberTables = ({
   tableType,
@@ -70,7 +70,7 @@ const MemberTables = ({
             <div>
                 {loading
                   ? (
-                    <SceletonTableLoading />
+                    <SkeletonTableLoading />
                     )
                   : tableArray.length === 0
                     ? (
