@@ -62,6 +62,7 @@ function Sidebar () {
 
   const [isGovernanceAccordionOpened, setIsGovernanceAccordionOpened] = useState('1')
   const [isAuctionAccordionOpened, setIsAuctionAccordionOpened] = useState('1')
+  const [isConsensusAccordionOpened, setIsConsensusAccordionOpened] = useState('1')
 
   function highlight (location) {
     return Number(history.location.pathname === '/' + location)
@@ -83,13 +84,9 @@ function Sidebar () {
                         <Accordion
                             defaultActiveKey="0"
                             style={{ width: '100%' }}
-                            onSelect={(state) => {
-                              if (state) {
-                                setIsGovernanceAccordionOpened('1')
-                              } else {
-                                setIsGovernanceAccordionOpened('')
-                              }
-                            }}
+                            onSelect={(state) =>
+                              state ? setIsGovernanceAccordionOpened('1') : setIsGovernanceAccordionOpened('')
+                            }
                         >
                             <LinkGroup>
                                 <LinkStyle
@@ -190,9 +187,46 @@ function Sidebar () {
                         </LinkStyle>
                         {appMode === MODE.advanced
                           ? (
-                            <LinkStyle to={'/staking'} className="nav-link" highlight={highlight('staking')}>
-                                Consensus Services
-                            </LinkStyle>
+                            <Accordion
+                                defaultActiveKey="0"
+                                style={{ width: '100%' }}
+                                onSelect={(state) =>
+                                  state ? setIsConsensusAccordionOpened('1') : setIsConsensusAccordionOpened('')
+                                }
+                            >
+                                <LinkGroup>
+                                    <LinkStyle to="/root-node-staking" className="nav-link">
+                                        Consensus Services
+                                    </LinkStyle>
+                                    <Accordion.Toggle eventKey="0">
+                                        <AccordionIcon state={isConsensusAccordionOpened}>
+                                            <i className="mdi mdi-chevron-down" />
+                                        </AccordionIcon>
+                                    </Accordion.Toggle>
+                                </LinkGroup>
+                                <Accordion.Collapse eventKey="0">
+                                    <div>
+                                        <LinkGroup>
+                                            <LinkStyle
+                                                to="/root-node-staking"
+                                                className="nav-link"
+                                                highlight={highlight('root-node-staking')}
+                                            >
+                                                – Root Node Staking
+                                            </LinkStyle>
+                                        </LinkGroup>
+                                        <LinkGroup>
+                                            <LinkStyle
+                                                to="/validator-staking"
+                                                className="nav-link"
+                                                highlight={highlight('validator-staking')}
+                                            >
+                                                – Validator Staking
+                                            </LinkStyle>
+                                        </LinkGroup>
+                                    </div>
+                                </Accordion.Collapse>
+                            </Accordion>
                             )
                           : null}
                         <LinkStyle
@@ -207,13 +241,9 @@ function Sidebar () {
                             <Accordion
                                 defaultActiveKey="0"
                                 style={{ width: '100%' }}
-                                onSelect={(state) => {
-                                  if (state) {
-                                    setIsAuctionAccordionOpened('1')
-                                  } else {
-                                    setIsAuctionAccordionOpened('')
-                                  }
-                                }}
+                                onSelect={(state) =>
+                                  state ? setIsAuctionAccordionOpened('1') : setIsAuctionAccordionOpened('')
+                                }
                             >
                                 <LinkGroup>
                                     <LinkStyle to={'/liquidation'} className="nav-link">
@@ -290,18 +320,16 @@ function Sidebar () {
                     </ListContainer>
                     <ListTitle>References</ListTitle>
                     <ListContainer>
-                        {referencesItems.map((value, key) => {
-                          return (
-                                <ALinkStyle
-                                    key={'references' + key}
-                                    className="nav-link"
-                                    href={value.location}
-                                    target="_blank"
-                                >
-                                    {value.label}
-                                </ALinkStyle>
-                          )
-                        })}
+                        {referencesItems.map((value, key) => (
+                            <ALinkStyle
+                                key={'references' + key}
+                                className="nav-link"
+                                href={value.location}
+                                target="_blank"
+                            >
+                                {value.label}
+                            </ALinkStyle>
+                        ))}
                     </ListContainer>
                 </LinksContainer>
                 <FooterContainer>

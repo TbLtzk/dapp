@@ -26,11 +26,11 @@ import CustomBlock from 'components/Base/CustomBlock'
 import FormInput from 'components/Base/Form/FormInput'
 import Button from 'components/Base/Buttons/Button'
 import { fromSolDateFormattingT1 } from 'func/date'
-import { AccountStatusInfo, AccountStatusForm } from '../styles'
+import { AccountStatusInfo, AccountStatusForm } from '../../styles'
 import { accountBalance } from 'store/q-vault/selectors'
 import { getAccountBalance } from 'store/q-vault/action-creators'
 
-function FormStaking () {
+function ManageRootNodeBalance () {
   const { register, errors, handleSubmit } = useForm()
   const dispatch = useDispatch()
 
@@ -152,4 +152,4 @@ function FormStaking () {
   )
 }
 
-export default FormStaking
+export default ManageRootNodeBalance

@@ -11,12 +11,13 @@ import Governance from '../pages/UserPages/Governance'
 import Proposals from '../pages/UserPages/Proposals'
 import Auctions from '../pages/UserPages/Auctions'
 import QVault from '../pages/UserPages/QVault'
-import Staking from '../pages/UserPages/Staking'
 import OneProposalPage from '../pages/UserPages/OneProposalPage'
 import SavingAndBorrowing from '../pages/UserPages/SavingAndBorrowing'
 import TimeLocks from '../pages/UserPages/TimeLocks'
 
 import AlertTemplate from 'components/Custom/Alerts/AlertTemplate'
+import RootNodeStaking from 'pages/UserPages/RootNodeStaking'
+import ValidatorStaking from 'pages/UserPages/ValidatorStaking'
 
 function Routes () {
   const options = {
@@ -75,7 +76,9 @@ function Routes () {
           component={AuthProtect(Auctions, { auctionsType: AUCTIONS_TYPES.systemSurplus })}
         />
         <Route exact path="/q-vault" component={AuthProtect(QVault)} />
-        <Route exact path="/staking" component={AuthProtect(Staking)} />
+        <Route exact path="/root-node-staking" component={AuthProtect(RootNodeStaking)} />
+        <Route exact path="/validator-staking" component={AuthProtect(ValidatorStaking)} />
+
         <Route exact path="/saving-and-borrowing" component={AuthProtect(SavingAndBorrowing)} />
         <Route exact path="/time-locks" component={AuthProtect(TimeLocks)} />
         <Route exact path="/q-governance/proposal/:contract?/:id?" component={AuthProtect(OneProposalPage)} />

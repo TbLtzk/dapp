@@ -2,10 +2,9 @@ import React, { useEffect } from 'react'
 
 import CustomBlock from 'components/Base/CustomBlock'
 
-import { userAddressMetamask } from 'store/user-inf/selectors'
 import { useDispatch, useSelector } from 'react-redux'
-import { getRootMembersData, getRootNodeStakes } from 'store/root-node/action-creators'
-import { rootMembersData } from 'store/root-node/selectors'
+import { getRootMembersData } from 'store/root-node/action-creators'
+import { loadingRootMembersDataSelector, rootMembersData } from 'store/root-node/selectors'
 import MemberTables from 'components/Custom/MemberTables'
 
 import TABLE_TYPES from 'constants/tableTypes'
@@ -13,13 +12,11 @@ import TABLE_TYPES from 'constants/tableTypes'
 function RootNodePanel ({ type }) {
   const dispatch = useDispatch()
 
-  const userAddress = useSelector(userAddressMetamask)
   const rootMembersArray = useSelector(rootMembersData)
-  const loading = !rootMembersArray?.rootNodeData?.length
+  const loading = useSelector(loadingRootMembersDataSelector)
 
   useEffect(() => {
     dispatch(getRootMembersData())
-    dispatch(getRootNodeStakes(userAddress))
   }, [])
 
   return (

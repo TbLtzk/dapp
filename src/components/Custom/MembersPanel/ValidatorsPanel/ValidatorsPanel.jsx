@@ -43,10 +43,7 @@ function ValidatorsPanel ({ bottom, widened }) {
                             title="See more details"
                             handleButton={() =>
                               history.push({
-                                pathname: '/staking',
-                                state: {
-                                  activeTab: 'validator-staking'
-                                }
+                                pathname: '/validator-staking'
                               })
                             }
                         />

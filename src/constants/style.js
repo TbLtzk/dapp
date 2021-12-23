@@ -29,7 +29,7 @@ export const Circle = styled.div`
       default:
         return props.theme.colors.circleWhite
     }
-  }};;
+  }};
   border-radius: 50%;
   margin-right: 7px;
 `
@@ -37,21 +37,7 @@ export const Circle = styled.div`
 const theme = {
   fonts,
   fontSizes: ['12px', '16px', '18px', '20px', '24px', '32px', '36px', '40px', '48px'],
-  spaces: [
-    '4px',
-    '8px',
-    '12px',
-    '16px',
-    '20px',
-    '24px',
-    '32px',
-    '40px',
-    '48px',
-    '56px',
-    '64px',
-    '72px',
-    '80px'
-  ],
+  spaces: ['4px', '8px', '12px', '16px', '20px', '24px', '32px', '40px', '48px', '56px', '64px', '72px', '80px'],
   borderRadius: ['3px', '12px']
 }
 export default theme

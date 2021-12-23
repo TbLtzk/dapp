@@ -3,7 +3,54 @@ import ContentLoader from 'react-content-loader'
 import { SkeletonLoadingWrapper } from './styles'
 import { darkColors } from 'constants/colors'
 
-function SkeletonLoading () {
+export function SkeletonTableLoading () {
+  return (
+        <SkeletonLoadingWrapper>
+            <ContentLoader
+                width="100%"
+                height={260}
+                speed={2}
+                backgroundColor={darkColors.oxfordBlue}
+                foregroundColor={darkColors.oxfordBlueTint3}
+            >
+                <rect x="0" y="0" rx="2" ry="2" width="10" height="10" />
+                <rect x="30" y="0" rx="4" ry="10" width="95%" height="10" />
+
+                <rect x="0" y="30" rx="2" ry="2" width="10" height="10" />
+                <rect x="30" y="30" rx="4" ry="10" width="95%" height="10" />
+
+                <rect x="0" y="60" rx="2" ry="2" width="10" height="10" />
+                <rect x="30" y="60" rx="4" ry="10" width="95%" height="10" />
+
+                <rect x="0" y="90" rx="2" ry="2" width="10" height="10" />
+                <rect x="30" y="90" rx="4" ry="10" width="95%" height="10" />
+
+                <rect x="0" y="120" rx="2" ry="2" width="10" height="10" />
+                <rect x="30" y="120" rx="4" ry="10" width="95%" height="10" />
+
+                <rect x="0" y="150" rx="2" ry="2" width="10" height="10" />
+                <rect x="30" y="150" rx="4" ry="10" width="95%" height="10" />
+
+                <rect x="0" y="180" rx="2" ry="2" width="10" height="10" />
+                <rect x="30" y="180" rx="4" ry="10" width="95%" height="10" />
+
+                <rect x="0" y="210" rx="2" ry="2" width="10" height="10" />
+                <rect x="30" y="210" rx="4" ry="10" width="95%" height="10" />
+
+                <rect x="0" y="240" rx="2" ry="2" width="10" height="10" />
+                <rect x="30" y="240" rx="4" ry="10" width="95%" height="10" />
+
+                <rect x="0" y="270" rx="2" ry="2" width="10" height="10" />
+                <rect x="30" y="270" rx="4" ry="10" width="95%" height="10" />
+
+                <rect x="0" y="300" rx="2" ry="2" width="10" height="10" />
+                <rect x="30" y="300" rx="4" ry="10" width="95%" height="10" />
+            </ContentLoader>
+        </SkeletonLoadingWrapper>
+  )
+}
+
+function SkeletonProposalsLoading () {
   return (
         <SkeletonLoadingWrapper>
             <ContentLoader
@@ -28,4 +75,4 @@ function SkeletonLoading () {
   )
 }
 
-export default SkeletonLoading
+export default SkeletonProposalsLoading
