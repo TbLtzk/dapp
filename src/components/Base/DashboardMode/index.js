@@ -1,1 +1,1 @@
-export { default } from './dashboarModeButton'
+export { default } from './DashboardMode'

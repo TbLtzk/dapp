@@ -13,7 +13,7 @@ export const NavbarContainer = styled(Navbar)`
   align-items: flex-start;
   justify-content: space-between;
   padding: ${indents['40']};
-  border-right: 1px solid ${props => props.theme.colors.oxfordBlueTint2};
+  border-right: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
 
   .header__logo {
     margin-bottom: 54px;
@@ -39,9 +39,8 @@ export const ListContainer = styled.div`
 
 export const ListTitle = styled.div`
   display: block;
-  color: ${props => props.theme.colors.oxfordBlueTint3};
+  color: ${(props) => props.theme.colors.oxfordBlueTint3};
   font-size: 12px;
-  margin-top: 34px;
 `
 
 export const LinkGroup = styled.div`
@@ -52,14 +51,14 @@ export const LinkGroup = styled.div`
   padding: 0 14px 0 0;
 
   :hover {
-    background: ${props => props.theme.colors.oxfordBlueTint1};
+    background: ${(props) => props.theme.colors.oxfordBlueTint1};
   }
 
   button {
     margin: 0;
     padding: 0;
     background: transparent;
-    color: ${props => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.white};
     border: none;
   }
 `
@@ -67,20 +66,21 @@ export const LinkGroup = styled.div`
 export const LinkStyle = styled(Link)`
   padding: 6px 12px;
   font-size: 15px;
-  color: ${props => props.highlight === 1 ? props => props.theme.colors.activeLinks : props => props.theme.colors.white} !important;
+  color: ${(props) =>
+    props.highlight === 1 ? (props) => props.theme.colors.activeLinks : (props) => props.theme.colors.white} !important;
 
   :hover {
-    background: ${props => props.theme.colors.oxfordBlueTint1};
+    background: ${(props) => props.theme.colors.oxfordBlueTint1};
   }
 `
 
 export const ALinkStyle = styled.a`
   padding-left: 0;
   font-size: 15px;
-  color: ${props => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.white};
 
   :hover {
-    color: ${props => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.white};
     text-decoration: underline;
   }
 `
@@ -104,7 +104,7 @@ export const Footer = styled.div`
 
 export const AccordionIcon = styled.div`
   font-size: 20px;
-  transform: rotate(${props => props.state ? '180deg' : '0'});
+  transform: rotate(${(props) => (props.state ? '180deg' : '0')});
   transition-duration: 0.1s;
   transition-property: transform;
 `
@@ -115,7 +115,7 @@ export const AccordionLbl = styled.div`
   font-size: 13px;
   line-height: 18px;
   padding: 0 12px;
-  color: ${(props) => props.highlight === 1 ? props.theme.colors.activeLinks : props.theme.colors.white};
-  border: 1px solid ${(props) => props.highlight === 1 ? props.theme.colors.activeLinks : props.theme.colors.white};
+  color: ${(props) => (props.highlight === 1 ? props.theme.colors.activeLinks : props.theme.colors.white)};
+  border: 1px solid ${(props) => (props.highlight === 1 ? props.theme.colors.activeLinks : props.theme.colors.white)};
   border-radius: 13px;
 `

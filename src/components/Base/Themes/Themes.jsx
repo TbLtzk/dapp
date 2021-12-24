@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setThem } from 'store/theme/action-creators'
 import { THEMES } from 'constants/colors'
 import { theme } from 'store/theme/selectors'
-import FormSwithch from '../Form/FormSwithch'
+import FormSwitch from '../Form/FormSwitch'
 
 function Themes () {
   const dispatch = useDispatch()
@@ -19,14 +19,7 @@ function Themes () {
     }
   }
 
-  return (
-    <FormSwithch
-      onChange={changeThemes}
-      id="theme-switcher"
-      checked={isSwitchOn}
-      label="Dark theme"
-    />
-  )
+  return <FormSwitch onChange={changeThemes} id="theme-switcher" checked={isSwitchOn} label="Dark theme" />
 }
 
 export default Themes
