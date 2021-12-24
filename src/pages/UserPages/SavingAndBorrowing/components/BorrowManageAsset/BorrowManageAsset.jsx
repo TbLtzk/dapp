@@ -37,7 +37,7 @@ const TYPE = {
   repay: 'repay'
 }
 
-function BorrowManageAsset ({ borrowingAsset, vault }) {
+function BorrowManageAsset ({ vault }) {
   const { register: register1, handleSubmit: handleSubmit1, errors: errors1, setValue: setBorrowMax } = useForm()
   const { register: register2, handleSubmit: handleSubmit2, errors: errors2, setValue: setRepayMax } = useForm()
   const { register: register3, handleSubmit: handleSubmit3, errors: errors3, setValue: setDepositMax } = useForm()
@@ -50,7 +50,7 @@ function BorrowManageAsset ({ borrowingAsset, vault }) {
   const actCardDataInf = {
     type: 'borrow',
     collateral: vault.colKey,
-    borrow: borrowingAsset,
+    borrow: 'QUSD',
     vault
   }
 
@@ -162,6 +162,7 @@ function BorrowManageAsset ({ borrowingAsset, vault }) {
                 isIconPositionRight
                 icon="arrow-top-right"
                 title="Manage"
+                disabled={vault.isLiquidated}
                 type="transparent"
                 handleButton={() => {
                   setIsModalShown(true)
@@ -173,7 +174,7 @@ function BorrowManageAsset ({ borrowingAsset, vault }) {
                 onHide={() => {
                   setIsModalShown(false)
                 }}
-                modalTitle={'Borrowing ' + borrowingAsset}
+                modalTitle="Borrowing QUSD"
                 content={
                     !borrowVaultInfo
                       ? (

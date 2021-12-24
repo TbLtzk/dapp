@@ -7,7 +7,10 @@ const initialState = {
   totalSavingBalance: null,
   outstandingDebt: null,
   savingAssets: null,
-  borrowingVaults: null,
+
+  borrowingVaults: [],
+  loadingBorrowingVaults: true,
+
   totalSupply: null,
   interestRate: null,
   savingRate: null
@@ -44,7 +47,8 @@ export default function index (state = initialState, action) {
     case actionTypes.SET_BORROWING_VAULTS:
       return {
         ...state,
-        borrowingVaults: action.payload
+        borrowingVaults: action.payload,
+        loadingBorrowingVaults: false
       }
     case actionTypes.SET_TOTAL_SUPPLY:
       return {

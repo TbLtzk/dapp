@@ -20,8 +20,7 @@ import {
 import { getBorrowVaultInfoHelper } from 'contracts/helpers/borrow-assets-helper'
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers'
 import {
-  getOutstandingDebt,
-  getTotalCollateralLocked,
+  getTotalCollateralLockedAndOutstandingDebt,
   getTotalSavingBalance
 } from 'store/borrowing-core/action-creators'
 
@@ -94,9 +93,8 @@ function * setBorrowAproveGenerator ({ borrowType }) {
     }
     if (result) {
       yield put(getBorrowAllowance(borrowType))
-      yield put(getOutstandingDebt())
       yield put(getTotalSavingBalance())
-      yield put(getTotalCollateralLocked())
+      yield put(getTotalCollateralLockedAndOutstandingDebt())
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -114,9 +112,8 @@ function * setBorrowDepositGenerator ({ amount, vaultId }) {
     const result = yield contract.depositCol(vaultId, toBtcBlockchain(amount), { from: userAddress })
     if (result) {
       yield put(getBorrowVaultInfo(vaultId))
-      yield put(getOutstandingDebt())
+      yield put(getTotalCollateralLockedAndOutstandingDebt())
       yield put(getTotalSavingBalance())
-      yield put(getTotalCollateralLocked())
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -135,9 +132,8 @@ function * setBorrowAsBorrowGenerator ({ amount, vaultId }) {
 
     if (result) {
       yield put(getBorrowVaultInfo(vaultId))
-      yield put(getOutstandingDebt())
+      yield put(getTotalCollateralLockedAndOutstandingDebt())
       yield put(getTotalSavingBalance())
-      yield put(getTotalCollateralLocked())
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -156,9 +152,8 @@ function * setBorrowRepayGenerator ({ amount, vaultId }) {
 
     if (result) {
       yield put(getBorrowVaultInfo(vaultId))
-      yield put(getOutstandingDebt())
+      yield put(getTotalCollateralLockedAndOutstandingDebt())
       yield put(getTotalSavingBalance())
-      yield put(getTotalCollateralLocked())
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -178,9 +173,8 @@ function * setBorrowWithdrawGenerator ({ amount, vaultId }) {
 
     if (result) {
       yield put(getBorrowVaultInfo(vaultId))
-      yield put(getOutstandingDebt())
       yield put(getTotalSavingBalance())
-      yield put(getTotalCollateralLocked())
+      yield put(getTotalCollateralLockedAndOutstandingDebt())
     }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
