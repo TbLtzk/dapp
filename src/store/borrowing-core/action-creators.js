@@ -12,12 +12,17 @@ export const setShoulAddCoins = () => ({
   type: actionTypes.SET_SHOULD_ADD_COINS
 })
 
-export const getOutstandingDebt = () => ({
-  type: actionTypes.GET_OUTSTANDING_DEBT
+export const getTotalCollateralLockedAndOutstandingDebt = () => ({
+  type: actionTypes.GET_TOTAL_COLLATERAL_LOCKED_AND_OUTSTANDING_DEBT
 })
 
 export const setOutstandingDebt = (data) => ({
   type: actionTypes.SET_OUTSTANDING_DEBT,
+  payload: data
+})
+
+export const setTotalCollateralLocked = (data) => ({
+  type: actionTypes.SET_TOTAL_COLLATERAL_LOCKED,
   payload: data
 })
 
@@ -27,15 +32,6 @@ export const getTotalSavingBalance = () => ({
 
 export const setTotalSavingBalance = (data) => ({
   type: actionTypes.SET_TOTAL_SAVING_BALANCE,
-  payload: data
-})
-
-export const getTotalCollateralLocked = () => ({
-  type: actionTypes.GET_TOTAL_COLLATERAL_LOCKED
-})
-
-export const setTotalCollateralLocked = (data) => ({
-  type: actionTypes.SET_TOTAL_COLLATERAL_LOCKED,
   payload: data
 })
 

@@ -6,14 +6,15 @@ import BorrowManageAsset from '../BorrowManageAsset'
 import { fN } from 'func/useful'
 import { useDispatch, useSelector } from 'react-redux'
 import { getBorrowingVaults } from 'store/borrowing-core/action-creators'
-import { borrowingVaultsSelector } from 'store/borrowing-core/selectors'
+import { borrowingVaultsSelector, loadingBorrowingVaultsSelector } from 'store/borrowing-core/selectors'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 
 const HEADERS = ['Collateral Asset', 'Borrowing Asset', 'Borrowing Fee (p.a.)', '']
 
 function BorrowCryptoAssets () {
   const dispatch = useDispatch()
-  const assets = useSelector(borrowingVaultsSelector)
+  const vaults = useSelector(borrowingVaultsSelector)
+  const loadingVaults = useSelector(loadingBorrowingVaultsSelector)
 
   useEffect(() => {
     dispatch(getBorrowingVaults())
@@ -22,27 +23,31 @@ function BorrowCryptoAssets () {
   return (
         <CustomBlock>
             <h1>Borrow Crypto Assets</h1>
-            {!assets
+            {loadingVaults
               ? (
                 <LoadingSpinner />
                 )
-              : assets.length
+              : vaults.length
                 ? (
                 <TableView
                     type="with-action"
                     header={HEADERS}
-                    body={assets.map((item, index) => {
-                      return (
-                            <tr key={item.colKey + '-' + item.borrowingFee + index}>
-                                <td>{item.colKey}</td>
-                                <td>QUSD</td>
-                                <td>{fN(item.borrowingFee)} %</td>
-                                <td>
-                                    <BorrowManageAsset borrowingAsset="QUSD" vault={item} />
-                                </td>
-                            </tr>
-                      )
-                    })}
+                    body={vaults.map((vault, index) => (
+                        <tr key={vault.colKey + '-' + vault.borrowingFee + index}>
+                            <td>{vault.colKey}</td>
+                            <td>QUSD</td>
+                            <td>{fN(vault.borrowingFee)} %</td>
+                            <td>
+                                {vault.isLiquidated
+                                  ? (
+                                      'Vault is Liquidated'
+                                    )
+                                  : (
+                                    <BorrowManageAsset vault={vault} />
+                                    )}
+                            </td>
+                        </tr>
+                    ))}
                 />
                   )
                 : (

@@ -1,5 +1,7 @@
 import {
-  getBorrowingCoreInstance, getSavingInstance, getStableCoinInstance,
+  getBorrowingCoreInstance,
+  getSavingInstance,
+  getStableCoinInstance,
   getCompoundRateKeeperBorrowingInstance,
   getCompoundRateKeeperSavingInstance,
   getGovernedEpdrQbtcAddressInstance
@@ -46,38 +48,27 @@ export async function addCoinsToMetamask () {
   return Promise.all([QUSD, QBTC])
 }
 
-export async function getOutstandingDebtHelper (userAddress, userVaultsCount, contract) {
-  const promises = []
-
-  for (let i = 0; i < Number(userVaultsCount); i++) {
-    promises[i] = await contract.getVaultStats(userAddress, i)
-  }
-
-  const vaultStats = await Promise.all(promises)
-
-  const amount = vaultStats.reduce((sum, item) => sum.plus(BN(item?.stcStats?.outstandingDebt)), BN(0))
-
+export function getOutstandingDebtHelper (vaultsStats) {
+  const amount = vaultsStats.reduce((sum, item) => sum.plus(BN(item?.stcStats?.outstandingDebt)), BN(0))
   return fromWei(amount.toFixed())
 }
 
-export async function getTotalCollateralLockedHelper (userAddress, userVaultsCount, contract) {
-  const vaultsLoc = []
-  if (userVaultsCount > 0) {
-    for (let i = 0; i < userVaultsCount; i += 1) {
-      const vaultInfo = await contract.getVaultStats(userAddress, i)
+export function getTotalCollateralLockedHelper (vaultsStats) {
+  if (!vaultsStats.length) {
+    return '0'
+  } else {
+    const vaultsLoc = vaultsStats.map((vaultInfo) => {
       const balance = vaultInfo?.colStats?.balance ? vaultInfo.colStats.balance / 10 ** 8 : 0
       const price = vaultInfo?.colStats?.price ? fromWei(vaultInfo.colStats.price) : 0
       const collLock = balance * price
-      vaultsLoc.push(collLock)
-    }
+      return collLock
+    })
     if (vaultsLoc.length > 0) {
       const totalValue = vaultsLoc.reduce((acc, curr) => acc + curr)
-      return totalValue
+      return totalValue.toString()
     } else {
-      return 0
+      return '0'
     }
-  } else {
-    return 0
   }
 }
 
@@ -93,22 +84,10 @@ export function getBalanceDetailsHelper (balanceDetails) {
   ]
 }
 
-export async function getBorrowingVaultsHelper (userAddress, userVaultsCount, contract) {
-  const count = new Array(Number(userVaultsCount)).fill('')
-  const vaults = await Promise.all(count.map((i, index) => getAdditionalData(index, contract, userAddress)))
-  return vaults
-}
-
-async function getAdditionalData (index, contract, userAddress) {
-  const res = await Promise.all([
-    await contract.userVaults(userAddress, index),
-    await contract.getVaultStats(userAddress, index)
-  ])
-  const fee = res[1]?.stcStats?.borrowingFee ? uintPerSecondToPerYearNumber(res[1]?.stcStats?.borrowingFee) : 0
-  const vaultInfo = res[0]
-  vaultInfo.borrowingFee = fee
-  vaultInfo.vaultNum = index
-  return vaultInfo
+export async function generateVaultData (contract, userAddress, vault, vaultNum) {
+  const vaultStats = await contract.getVaultStats(userAddress, vaultNum)
+  const borrowingFee = uintPerSecondToPerYearNumber(vaultStats.stcStats.borrowingFee)
+  return { ...vault, vaultNum, borrowingFee }
 }
 
 export async function getTimeSinceRefreshBalance (setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance) {
@@ -133,10 +112,8 @@ export async function refreshTimeSinceRefreshBalance (
   try {
     setLoading(true)
     const contract = await getSavingInstance()
-    const res = await contract.updateCompoundRate({ from: userAddress, gasBuffer: 1.2 })
-    if (res) {
-      getTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance)
-    }
+    await contract.updateCompoundRate({ from: userAddress, gasBuffer: 1.2 })
+    getTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance)
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     dispatch(setErrorMessage(errorMsg))
@@ -167,10 +144,8 @@ export async function refreshTimeSinceOutstandingDebt (
   try {
     setLoading(true)
     const contract = await getBorrowingCoreInstance()
-    const res = await contract.updateCompoundRate('QBTC', { from: userAddress, gasBuffer: 1.2 })
-    if (res) {
-      getTimeSinceOutstandingDebt(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance)
-    }
+    await contract.updateCompoundRate('QBTC', { from: userAddress, gasBuffer: 1.2 })
+    getTimeSinceOutstandingDebt(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance)
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     dispatch(setErrorMessage(errorMsg))

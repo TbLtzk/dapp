@@ -16,9 +16,8 @@ import {
   setSavingBalanceDetails
 } from './action-creators'
 import {
-  getOutstandingDebt,
   getSavingAssets,
-  getTotalCollateralLocked,
+  getTotalCollateralLockedAndOutstandingDebt,
   getTotalSavingBalance
 } from '../borrowing-core/action-creators'
 
@@ -67,16 +66,14 @@ function * setSavingDepositGenerator ({ amount }) {
   try {
     yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
-
     const contract = yield call(getSavingInstance)
     const result = yield contract.deposit(toWei(amount), { from: userAddress })
     if (result) {
       yield put(getSavingBalanceDetails())
       yield put(getSavingAviableToDeposit())
       yield put(getSavingAllowance())
-      yield put(getOutstandingDebt())
       yield put(getTotalSavingBalance())
-      yield put(getTotalCollateralLocked())
+      yield put(getTotalCollateralLockedAndOutstandingDebt())
       yield put(getSavingAssets())
     }
   } catch (error) {
@@ -98,9 +95,8 @@ function * setSavingWithdrawGenerator ({ amount }) {
       yield put(getSavingBalanceDetails())
       yield put(getSavingAviableToDeposit())
       yield put(getSavingAllowance())
-      yield put(getOutstandingDebt())
       yield put(getTotalSavingBalance())
-      yield put(getTotalCollateralLocked())
+      yield put(getTotalCollateralLockedAndOutstandingDebt())
       yield put(getSavingAssets())
     }
   } catch (error) {

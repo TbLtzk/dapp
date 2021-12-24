@@ -11,8 +11,7 @@ import {
   totalSavingBalanceSelector
 } from 'store/borrowing-core/selectors'
 import {
-  getOutstandingDebt,
-  getTotalCollateralLocked,
+  getTotalCollateralLockedAndOutstandingDebt,
   getTotalSavingBalance
 } from 'store/borrowing-core/action-creators'
 
@@ -24,9 +23,8 @@ function Overview () {
   const totalCollateralLocked = useSelector(totalCollateralLockedSelector)
 
   useEffect(() => {
-    dispatch(getOutstandingDebt())
     dispatch(getTotalSavingBalance())
-    dispatch(getTotalCollateralLocked())
+    dispatch(getTotalCollateralLockedAndOutstandingDebt())
   }, [])
 
   return (

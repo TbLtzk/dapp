@@ -5,7 +5,9 @@ export const totalSavingBalanceSelector = (state) => state.borrowingCore.totalSa
 export const totalCollateralLockedSelector = (state) => state.borrowingCore.totalCollateralLocked
 
 export const savingAssetsSelector = (state) => state.borrowingCore.savingAssets
+
 export const borrowingVaultsSelector = (state) => state.borrowingCore.borrowingVaults
+export const loadingBorrowingVaultsSelector = (state) => state.borrowingCore.loadingBorrowingVaults
 
 export const totalSupplySelector = (state) => state.borrowingCore.totalSupply
 
