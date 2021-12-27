@@ -2,7 +2,6 @@ import React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { userAddressMetamask } from 'store/user-inf/selectors'
 import { qActiveProposalsCountSelector } from 'store/voting/q-proposals/selectors'
 import { rootActiveProposalsCountSelector } from 'store/voting/root-node-proposals/selectors'
 import { expertActiveProposalsCountSelector } from 'store/voting/expert-proposals/selectors'
@@ -13,7 +12,6 @@ import {
   systemSurplusAuctionsCountSelector
 } from 'store/auctions/selectors'
 
-import Button from 'components/Base/Buttons/Button'
 import LogoImg from 'components/Base/LogoImg'
 import Version from './components/Version'
 
@@ -28,7 +26,6 @@ import {
   FooterContainer,
   Footer
 } from './styles'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboardMode'
 import { getQProposalsCount } from 'store/voting/q-proposals/action-creators'
@@ -41,11 +38,11 @@ import AccordionLinks from './components/AccordionLinks'
 import DashboardMode from 'components/Base/DashboardMode'
 import Themes from 'components/Base/Themes'
 import AccordionElements from './components/AccordionElements'
+import CopyAddress from './components/CopyAddress'
 
 function Sidebar () {
   const history = useHistory()
   const dispatch = useDispatch()
-  const userAddress = useSelector(userAddressMetamask)
   const appMode = useSelector(mode)
 
   const qActiveProposalsCount = useSelector(qActiveProposalsCountSelector)
@@ -208,17 +205,7 @@ function Sidebar () {
                         <Themes />
                     </AccordionElements>
 
-                    <CopyToClipboard text={userAddress}>
-                        <span title={userAddress}>
-                            <Button
-                                width="100%"
-                                type="white"
-                                title={userAddress}
-                                icon="content-copy"
-                                handleButton={() => {}}
-                            />
-                        </span>
-                    </CopyToClipboard>
+                    <CopyAddress/>
                     <Footer>
                         <Version />
                     </Footer>
