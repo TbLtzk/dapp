@@ -50,6 +50,31 @@ export function SkeletonTableLoading () {
   )
 }
 
+export function SkeletonAuctionLoading () {
+  return (
+        <SkeletonLoadingWrapper>
+            <ContentLoader
+                speed={2}
+                width="100%"
+                height={164}
+                backgroundColor={darkColors.oxfordBlue}
+                foregroundColor={darkColors.oxfordBlueTint3}
+            >
+                <rect x="20" y="25" rx="3" ry="3" width="51%" height="20" />
+                <rect x="78%" y="25" rx="3" ry="3" width="20%" height="20" />
+
+                <rect x="20" y="80" rx="3" ry="3" width="10%" height="10" />
+                <rect x="35%" y="80" rx="3" ry="3" width="18%" height="10" />
+                <rect x="65%" y="80" rx="3" ry="3" width="18%" height="10" />
+
+                <rect x="20" y="100" rx="3" ry="3" width="15%" height="8" />
+                <rect x="35%" y="100" rx="3" ry="3" width="10%" height="8" />
+                <rect x="65%" y="100" rx="3" ry="3" width="10%" height="8" />
+            </ContentLoader>
+        </SkeletonLoadingWrapper>
+  )
+}
+
 function SkeletonProposalsLoading () {
   return (
         <SkeletonLoadingWrapper>

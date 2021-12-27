@@ -17,7 +17,8 @@ export const PROPOSALS_TYPES = {
 export const AUCTIONS_TYPES = {
   liquidation: 'liquidation',
   systemDebt: 'system-debt',
-  systemSurplus: 'system-surplus'
+  systemSurplus: 'system-surplus',
+  all: 'all'
 }
 
 export const PROPOSAL_STATUS_TYPES = {

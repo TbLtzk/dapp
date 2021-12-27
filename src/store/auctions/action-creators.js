@@ -105,8 +105,9 @@ export const setApproveModalBtn = (result) => ({
   result
 })
 /// ////////////////////////
-export const getAuctionsCount = () => ({
-  type: actionTypes.GET_AUCTIONS_COUNT
+export const getAuctions = (auctionTypes) => ({
+  type: actionTypes.GET_AUCTIONS,
+  auctionTypes
 })
 
 export const setSystemDebtAuctionCount = (result) => ({
@@ -120,5 +121,19 @@ export const setLiquidationAuctionCount = (result) => ({
 })
 export const setSystemSurplusAuctionCount = (result) => ({
   type: actionTypes.SET_SYSTEM_SURPLUS_AUCTIONS_COUNT,
+  result
+})
+
+export const setSystemDebtAuctions = (result) => ({
+  type: actionTypes.SET_SYSTEM_DEBT_AUCTIONS,
+  result
+})
+
+export const setLiquidationAuctions = (result) => ({
+  type: actionTypes.SET_LIQUIDATION_AUCTIONS,
+  result
+})
+export const setSystemSurplusAuctions = (result) => ({
+  type: actionTypes.SET_SYSTEM_SURPLUS_AUCTIONS,
   result
 })

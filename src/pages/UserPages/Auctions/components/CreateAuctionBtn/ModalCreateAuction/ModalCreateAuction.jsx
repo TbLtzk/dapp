@@ -13,8 +13,7 @@ import ModalWindow from 'components/Base/ModalWindow'
 import CreateStep1 from './CreateStep1'
 import CreateStep2 from './CreateStep2'
 
-function ModalCreateAuction (props) {
-  const { modalShow, onHide, activeTab } = props
+function ModalCreateAuction ({ modalShow, onHide, activeTab }) {
   const { register, errors, handleSubmit } = useForm()
   const dispatch = useDispatch()
 

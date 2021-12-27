@@ -39,6 +39,8 @@ import DashboardMode from 'components/Base/DashboardMode'
 import Themes from 'components/Base/Themes'
 import AccordionElements from './components/AccordionElements'
 import CopyAddress from './components/CopyAddress'
+import { getAuctions } from 'store/auctions/action-creators'
+import { AUCTIONS_TYPES } from 'constants/statuses'
 
 function Sidebar () {
   const history = useHistory()
@@ -154,6 +156,7 @@ function Sidebar () {
                                 >
                                     <div>
                                         <CommonLinks
+                                            onClick={() => dispatch(getAuctions(AUCTIONS_TYPES.liquidation))}
                                             highlight={highlight('liquidation')}
                                             linkTo="/liquidation"
                                             count={liquidationAuctionsCount.activeAuctions}
@@ -161,6 +164,7 @@ function Sidebar () {
                                         />
 
                                         <CommonLinks
+                                            onClick={() => dispatch(getAuctions(AUCTIONS_TYPES.systemDebt))}
                                             highlight={highlight('system-debt')}
                                             linkTo="/system-debt"
                                             count={systemDebtAuctionsCount.activeAuctions}
@@ -168,6 +172,7 @@ function Sidebar () {
                                         />
 
                                         <CommonLinks
+                                            onClick={() => dispatch(getAuctions(AUCTIONS_TYPES.systemSurplus))}
                                             highlight={highlight('system-surplus')}
                                             linkTo="/system-surplus"
                                             count={systemSurplusAuctionsCount.activeAuctions}
@@ -205,7 +210,7 @@ function Sidebar () {
                         <Themes />
                     </AccordionElements>
 
-                    <CopyAddress/>
+                    <CopyAddress />
                     <Footer>
                         <Version />
                     </Footer>

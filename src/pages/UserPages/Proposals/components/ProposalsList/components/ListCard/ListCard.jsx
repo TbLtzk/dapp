@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Accordion } from 'react-bootstrap'
 import { ListCardWrp, ListCardHeader, ListCardBody } from './styles'
-import CustomHeaderButtons from '../CustomHeaderButtons'
+import CustomCardButtons from 'components/Custom/CustomCardButtons'
 import { theme } from 'store/theme/selectors'
 import CardCollapsedContent from '../CardCollapsedContent'
 import ProposalContent from '../ProposalContent'
@@ -11,7 +11,7 @@ import SkeletonProposalsLoading from 'components/Base/SkeletonLoading'
 import { transactionCounter } from 'store/transaction-handler/selectors'
 import { formVoteObject } from 'store/voting/proposals/selectors'
 
-function ListCard ({ proposal, id, proposalsKind, oneProposalPage }) {
+function ListCard ({ proposal, id, proposalsKind, onePage }) {
   const currentTheme = useSelector(theme)
   const updateProposal = useSelector(transactionCounter)
 
@@ -52,9 +52,9 @@ function ListCard ({ proposal, id, proposalsKind, oneProposalPage }) {
                         {proposalInfo?.status ? <div className="list-card__status">{proposalInfo?.status}</div> : null}
                     </div>
                     <div>
-                        <CustomHeaderButtons
+                        <CustomCardButtons
                             open={open}
-                            oneProposalPage={oneProposalPage}
+                            onePage={onePage}
                             setOpen={() => {
                               setOpen(!open)
                               setCollapsedContentOpen(true)

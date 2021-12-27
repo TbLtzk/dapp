@@ -10,9 +10,9 @@ import { getContractRegistryInstance } from 'contracts/contract-instance'
 import { useDispatch } from 'react-redux'
 import App from 'components/Base/App'
 import { setUserAddress } from 'store/user-inf/action-creators'
-import { LOAD_TYPES } from 'constants/statuses'
+import { AUCTIONS_TYPES, LOAD_TYPES } from 'constants/statuses'
 import { getNumberAllProposals } from 'store/voting/proposals/action-creators'
-import { getAuctionsCount } from 'store/auctions/action-creators'
+import { getAuctions } from 'store/auctions/action-creators'
 
 const web3 = new Web3(Web3.givenProvider)
 
@@ -45,7 +45,7 @@ function LoadingMetaMask () {
         dispatch(setUserAddress(accounts[0]))
         await getContractRegistryInstance()
         dispatch(getNumberAllProposals())
-        dispatch(getAuctionsCount())
+        dispatch(getAuctions(AUCTIONS_TYPES.all))
         setIsMetaMask(LOAD_TYPES.loaded)
       }
     })

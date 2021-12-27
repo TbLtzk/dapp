@@ -55,15 +55,15 @@ export default class AuctionService {
     }
   }
 
-  async getAuction (inf, vaultId) {
-    const { id, user } = inf
-    const contract = await switchContract(this.contractName)
+  async getAuction (info, vaultId) {
+    const { id, user } = info
+    const contract = await this.getContractInstance()
     if (vaultId) {
       const data = await contract.instance.methods.auctions(user, vaultId).call()
-      return { data, inf }
+      return { data, info }
     } else {
       const data = await contract.instance.methods.auctions(id).call()
-      return { data, inf }
+      return { data, info }
     }
   }
 

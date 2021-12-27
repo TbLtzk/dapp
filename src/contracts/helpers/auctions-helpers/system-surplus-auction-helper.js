@@ -3,6 +3,7 @@ import { CONTRACT_TYPES } from 'constants/contracts'
 
 import { fromWei } from 'func/balance'
 import { getSystemSurplusAuctionInstance } from 'contracts/contract-instance'
+import { remainDate } from 'func/convertDate'
 
 export default class SystemSurplusAuction extends AuctionService {
   constructor () {
@@ -10,47 +11,37 @@ export default class SystemSurplusAuction extends AuctionService {
     this.contractName = CONTRACT_TYPES.systemSurplusAuction
   }
 
-  async createAuction (data, userAddress) {
-    const contract = await getSystemSurplusAuctionInstance()
-    await this.getAllowance(userAddress, contract.address, data?.bid)
-    return await contract.startAuction({ qAmount: data?.bid })
-  }
-
-  async getAuctionData (promiseRes, inf) {
-    const objRes = {}
-    objRes.bidder = promiseRes.bidder
-    objRes.user = inf?.bidder || inf?.user
-    objRes.id = inf.id
-    objRes.endTime = promiseRes.endTime
-    objRes.isExecuted = promiseRes.isExecuted
-    objRes.lot = fromWei(promiseRes.lot)
-    const highestBid = promiseRes.highestBid
-    objRes.highestBid = fromWei(highestBid)
-    objRes.title = 'System Surplus Auction'
-    objRes.contract = this.contractName
-    return { ...objRes }
-  }
-
-  async getAuctions (activeAuction) {
-    this.getAuctionsCount()
-    const auctionEvents = await this.getAuctionsEvent()
-    const auctionInf = auctionEvents?.map((evt) => ({
-      id: evt.returnValues._auctionId,
-      bidder: evt.returnValues._bidder,
-      bid: evt.returnValues._bid
-    }))
-
-    if (auctionEvents.length > 0) {
-      const auctions = await Promise.all(auctionInf.map((inf) => this.getAuction(inf)))
-      if (activeAuction) {
-        const active = auctions.filter((auction) => !auction.data.isExecuted)
-        return await Promise.all(active.map((item) => this.getAuctionData(item.data, item.inf)))
-      } else {
-        const ended = auctions.filter((auctin) => auctin.data.isExecuted)
-        return await Promise.all(ended.map((item) => this.getAuctionData(item.data, item.inf)))
-      }
+  checkSystemSurplusStatus (endTime, isExecuted) {
+    if (endTime === 0 || remainDate(endTime) !== 0) {
+      return 'Pending'
     }
-    return []
+    if (isExecuted) {
+      return 'Executed'
+    }
+    if (!isExecuted && remainDate(endTime) === 0) {
+      return 'Accepted'
+    }
+  }
+
+  prepareAuctionData (data, info) {
+    const status = this.checkSystemSurplusStatus(data.endTime, data.isExecuted)
+
+    const completedInfo = {}
+    completedInfo.bidder = data.bidder
+    completedInfo.user = info?.bidder || info?.user
+    completedInfo.id = info.id
+    completedInfo.endTime = data.endTime
+    completedInfo.isExecuted = data.isExecuted
+    completedInfo.highestBid = fromWei(data.highestBid)
+    completedInfo.lot = fromWei(data.lot)
+    completedInfo.title = 'System Surplus Auction'
+    completedInfo.status = status
+
+    completedInfo.disableBidButton = status === 'Accepted'
+    completedInfo.disableExecuteButton = status === 'Pending'
+
+    completedInfo.contract = this.contractName
+    return completedInfo
   }
 
   async getAuctionsEvents () {
@@ -70,18 +61,26 @@ export default class SystemSurplusAuction extends AuctionService {
     }
   }
 
-  async getAuctionsCount () {
+  async getAuctions () {
     const auctionsInfo = await this.getAuctionsEvents()
 
-    const allAuctions = await Promise.all(auctionsInfo.map((evt) => this.getAuction(evt)))
-    const activeAuctions = allAuctions.filter((auction) => !auction.data.isExecuted)
-    const endedAuctions = allAuctions.filter((auction) => auction.data.isExecuted)
+    const allAuctionsData = await Promise.all(auctionsInfo.map((event) => this.getAuction(event)))
+    const preparedAuctionsData = allAuctionsData.map((auction) => this.prepareAuctionData(auction.data, auction.info))
+
+    const activeAuctions = preparedAuctionsData.filter((auction) => !auction.isExecuted)
+    const endedAuctions = preparedAuctionsData.filter((auction) => auction.isExecuted)
 
     return {
       contract: this.contractName,
       activeAuctions,
       endedAuctions
     }
+  }
+
+  async createAuction (data, userAddress) {
+    const contract = await getSystemSurplusAuctionInstance()
+    await this.getAllowance(userAddress, contract.address, data?.bid)
+    return await contract.startAuction({ qAmount: data?.bid })
   }
 
   async getOneAuction (inf, active) {
