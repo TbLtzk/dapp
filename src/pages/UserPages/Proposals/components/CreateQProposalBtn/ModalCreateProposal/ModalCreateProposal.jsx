@@ -27,7 +27,7 @@ import CreateStep4 from './CreateStep4'
 import { arrExpert, arrQProposal, arrQProposalAdvanced, arrQRootNode, arrSlashing } from './constants'
 
 import { mode } from 'store/dashboard-mode/selectors'
-import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
+import { MODE } from 'components/Base/DashboardMode/DashboardMode'
 
 function ModalCreateProposal (props) {
   const {

@@ -1,8 +1,10 @@
 import styled from 'styled-components'
 
-import { Form } from 'react-bootstrap'
+export const SwitcherWrapper = styled.div`
+  display: flex;
+  font-size: 15px;
+  padding-top: 0.5rem;
 
-export const SwitcherWrapper = styled(Form.Group)`
   .custom-control-input:checked ~ .custom-control-label::before {
     border-color: ${(props) => {
       if (props.palette === 'dark') {
@@ -29,4 +31,5 @@ export const SwitcherWrapper = styled(Form.Group)`
       }
     }};
   }
+  
 `

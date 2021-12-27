@@ -15,7 +15,7 @@ import PageWrap from 'components/Base/PageWrap'
 import { Link } from 'react-router-dom'
 
 import { mode } from 'store/dashboard-mode/selectors'
-import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
+import { MODE } from 'components/Base/DashboardMode/DashboardMode'
 
 function Dashboard () {
   const appMode = useSelector(mode)

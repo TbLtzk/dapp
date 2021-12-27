@@ -1,4 +1,4 @@
-import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
+import { MODE } from 'components/Base/DashboardMode/DashboardMode'
 import * as actionTypes from './action-types'
 
 const initialState = {

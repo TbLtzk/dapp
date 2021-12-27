@@ -26,7 +26,7 @@ import {
 } from 'store/voting/slashing-proposals/selectors'
 
 import { mode } from 'store/dashboard-mode/selectors'
-import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
+import { MODE } from 'components/Base/DashboardMode/DashboardMode'
 
 function Governance () {
   const appMode = useSelector(mode)

@@ -8,7 +8,7 @@ import DelegateStakingPower from './DelegateStakingPower'
 import PageWrap from 'components/Base/PageWrap'
 import { useSelector } from 'react-redux'
 import { mode } from 'store/dashboard-mode/selectors'
-import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
+import { MODE } from 'components/Base/DashboardMode/DashboardMode'
 import { qVaultMinimumTimeLock, userBalance, votingWeight } from 'store/q-vault/selectors'
 import { subtractAmount } from 'func/balance'
 

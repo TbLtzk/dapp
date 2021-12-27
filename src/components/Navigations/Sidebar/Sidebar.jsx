@@ -1,10 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 
-import { Accordion } from 'react-bootstrap'
-
 import { useDispatch, useSelector } from 'react-redux'
-import { userAddressMetamask } from 'store/user-inf/selectors'
 import { qActiveProposalsCountSelector } from 'store/voting/q-proposals/selectors'
 import { rootActiveProposalsCountSelector } from 'store/voting/root-node-proposals/selectors'
 import { expertActiveProposalsCountSelector } from 'store/voting/expert-proposals/selectors'
@@ -15,40 +12,37 @@ import {
   systemSurplusAuctionsCountSelector
 } from 'store/auctions/selectors'
 
-import Button from 'components/Base/Buttons/Button'
 import LogoImg from 'components/Base/LogoImg'
 import Version from './components/Version'
-import Settings from './components/Settings'
 
 import { referencesItems } from './constants'
 
 import {
   NavbarContainer,
   ListContainer,
-  LinkStyle,
   WrapLogo,
-  ListTitle,
   ALinkStyle,
   LinksContainer,
   FooterContainer,
-  LinkGroup,
-  AccordionIcon,
-  AccordionLbl,
   Footer
 } from './styles'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { mode } from 'store/dashboard-mode/selectors'
-import { MODE } from 'components/Base/DashboardMode/DashboarModeButton'
+import { MODE } from 'components/Base/DashboardMode/DashboardMode'
 import { getQProposalsCount } from 'store/voting/q-proposals/action-creators'
 import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-creators'
 import { getSlashingProposalsCount } from 'store/voting/slashing-proposals/action-creators'
 import { getExpertProposalsCount } from 'store/voting/expert-proposals/action-creators'
 import { getNumberAllProposals } from 'store/voting/proposals/action-creators'
+import CommonLinks from './components/CommonLinks'
+import AccordionLinks from './components/AccordionLinks'
+import DashboardMode from 'components/Base/DashboardMode'
+import Themes from 'components/Base/Themes'
+import AccordionElements from './components/AccordionElements'
+import CopyAddress from './components/CopyAddress'
 
 function Sidebar () {
   const history = useHistory()
   const dispatch = useDispatch()
-  const userAddress = useSelector(userAddressMetamask)
   const appMode = useSelector(mode)
 
   const qActiveProposalsCount = useSelector(qActiveProposalsCountSelector)
@@ -60,266 +54,140 @@ function Sidebar () {
   const systemDebtAuctionsCount = useSelector(systemDebtAuctionsCountSelector)
   const systemSurplusAuctionsCount = useSelector(systemSurplusAuctionsCountSelector)
 
-  const [isGovernanceAccordionOpened, setIsGovernanceAccordionOpened] = useState('1')
-  const [isAuctionAccordionOpened, setIsAuctionAccordionOpened] = useState('1')
-  const [isConsensusAccordionOpened, setIsConsensusAccordionOpened] = useState('1')
-
-  function highlight (location) {
-    return Number(history.location.pathname === '/' + location)
-  }
+  const highlight = (location) => Number(history.location.pathname === '/' + location)
 
   return (
         <header>
             <NavbarContainer expand="lg">
                 <LinksContainer>
                     <WrapLogo>
-                        <Link to={'/'}>
+                        <Link to="/">
                             <LogoImg />
                         </Link>
                     </WrapLogo>
                     <ListContainer id="basic-navbar-nav">
-                        <LinkStyle to={'/'} className="nav-link" highlight={highlight('')}>
-                            Dashboard
-                        </LinkStyle>
-                        <Accordion
-                            defaultActiveKey="0"
-                            style={{ width: '100%' }}
-                            onSelect={(state) =>
-                              state ? setIsGovernanceAccordionOpened('1') : setIsGovernanceAccordionOpened('')
+                        <CommonLinks highlight={highlight('')} linkTo="/" linkTitle="Dashboard" />
+                        <AccordionLinks
+                            headerLink={
+                                <CommonLinks
+                                    onClick={() => dispatch(getNumberAllProposals())}
+                                    highlight={highlight('q-governance')}
+                                    linkTo="/q-governance"
+                                    linkTitle="Governance"
+                                />
                             }
                         >
-                            <LinkGroup>
-                                <LinkStyle
-                                    onClick={() => dispatch(getNumberAllProposals())}
-                                    to={'/q-governance'}
-                                    className="nav-link"
-                                    highlight={highlight('q-governance')}
-                                >
-                                    Governance
-                                </LinkStyle>
-                                <Accordion.Toggle eventKey="0">
-                                    <AccordionIcon state={isGovernanceAccordionOpened}>
-                                        <i className={'mdi mdi-chevron-down'} />
-                                    </AccordionIcon>
-                                </Accordion.Toggle>
-                            </LinkGroup>
-                            <Accordion.Collapse eventKey="0">
+                            <div>
+                                <CommonLinks
+                                    onClick={() => dispatch(getQProposalsCount())}
+                                    highlight={highlight('q-proposals')}
+                                    linkTo="/q-proposals"
+                                    count={qActiveProposalsCount}
+                                    linkTitle="– Q Proposals"
+                                />
+
+                                <CommonLinks
+                                    onClick={() => dispatch(getRootProposalsCount())}
+                                    highlight={highlight('q-root-node-panel')}
+                                    linkTo="/q-root-node-panel"
+                                    count={rootActiveProposalsCount}
+                                    linkTitle="– Root Node Panel"
+                                />
+
+                                {appMode === MODE.advanced
+                                  ? (
+                                    <>
+                                        <CommonLinks
+                                            onClick={() => dispatch(getExpertProposalsCount())}
+                                            highlight={highlight('q-expert-proposals')}
+                                            linkTo="/q-expert-proposals"
+                                            count={expertActiveProposalsCount}
+                                            linkTitle="– Expert Proposals"
+                                        />
+                                        <CommonLinks
+                                            onClick={() => dispatch(getSlashingProposalsCount())}
+                                            highlight={highlight('slashing-proposals')}
+                                            linkTo="/slashing-proposals"
+                                            count={slashingActiveProposalsCount}
+                                            linkTitle="– Slashing Proposals"
+                                        />
+                                    </>
+                                    )
+                                  : null}
+                            </div>
+                        </AccordionLinks>
+
+                        <CommonLinks highlight={highlight('q-vault')} linkTo="/q-vault" linkTitle="Q Vault" />
+
+                        {appMode === MODE.advanced
+                          ? (
+                            <AccordionLinks
+                                headerLink={<CommonLinks linkTo="/root-node-staking" linkTitle="Consensus Services" />}
+                            >
                                 <div>
-                                    <LinkGroup>
-                                        <LinkStyle
-                                            onClick={() => dispatch(getQProposalsCount())}
-                                            to={'/q-proposals'}
-                                            className="nav-link"
-                                            highlight={highlight('q-proposals')}
-                                        >
-                                            – Q Proposals
-                                        </LinkStyle>
-                                        {qActiveProposalsCount <= 0
-                                          ? null
-                                          : (
-                                            <AccordionLbl highlight={highlight('q-proposals')}>
-                                                {qActiveProposalsCount}
-                                            </AccordionLbl>
-                                            )}
-                                    </LinkGroup>
-                                    <LinkGroup>
-                                        <LinkStyle
-                                            onClick={() => dispatch(getRootProposalsCount())}
-                                            to={'/q-root-node-panel'}
-                                            className="nav-link"
-                                            highlight={highlight('q-root-node-panel')}
-                                        >
-                                            – Root Node Panel
-                                        </LinkStyle>
-                                        {rootActiveProposalsCount <= 0
-                                          ? null
-                                          : (
-                                            <AccordionLbl highlight={highlight('q-root-node-panel')}>
-                                                {rootActiveProposalsCount}
-                                            </AccordionLbl>
-                                            )}
-                                    </LinkGroup>
-                                    {appMode === MODE.advanced
-                                      ? (
-                                        <>
-                                            <LinkGroup>
-                                                <LinkStyle
-                                                    onClick={() => dispatch(getExpertProposalsCount())}
-                                                    to={'/q-expert-proposals'}
-                                                    className="nav-link"
-                                                    highlight={highlight('q-expert-proposals')}
-                                                >
-                                                    – Expert Proposals
-                                                </LinkStyle>
-                                                {expertActiveProposalsCount <= 0
-                                                  ? null
-                                                  : (
-                                                    <AccordionLbl highlight={highlight('q-expert-proposals')}>
-                                                        {expertActiveProposalsCount}
-                                                    </AccordionLbl>
-                                                    )}
-                                            </LinkGroup>
-                                            <LinkGroup>
-                                                <LinkStyle
-                                                    onClick={() => dispatch(getSlashingProposalsCount())}
-                                                    to={'/slashing-proposals'}
-                                                    className="nav-link"
-                                                    highlight={highlight('slashing-proposals')}
-                                                >
-                                                    – Slashing Proposals
-                                                </LinkStyle>
-                                                {slashingActiveProposalsCount <= 0
-                                                  ? null
-                                                  : (
-                                                    <AccordionLbl highlight={highlight('slashing-proposals')}>
-                                                        {slashingActiveProposalsCount}
-                                                    </AccordionLbl>
-                                                    )}
-                                            </LinkGroup>
-                                        </>
-                                        )
-                                      : null}
+                                    <CommonLinks
+                                        highlight={highlight('root-node-staking')}
+                                        linkTo="/root-node-staking"
+                                        linkTitle="– Root Node Staking"
+                                    />
+                                    <CommonLinks
+                                        highlight={highlight('validator-staking')}
+                                        linkTo="/validator-staking"
+                                        linkTitle="– Validator Staking"
+                                    />
                                 </div>
-                            </Accordion.Collapse>
-                        </Accordion>
-                        <LinkStyle to={'/q-vault'} className="nav-link" highlight={highlight('q-vault')}>
-                            Q Vault
-                        </LinkStyle>
-                        {appMode === MODE.advanced
-                          ? (
-                            <Accordion
-                                defaultActiveKey="0"
-                                style={{ width: '100%' }}
-                                onSelect={(state) =>
-                                  state ? setIsConsensusAccordionOpened('1') : setIsConsensusAccordionOpened('')
-                                }
-                            >
-                                <LinkGroup>
-                                    <LinkStyle to="/root-node-staking" className="nav-link">
-                                        Consensus Services
-                                    </LinkStyle>
-                                    <Accordion.Toggle eventKey="0">
-                                        <AccordionIcon state={isConsensusAccordionOpened}>
-                                            <i className="mdi mdi-chevron-down" />
-                                        </AccordionIcon>
-                                    </Accordion.Toggle>
-                                </LinkGroup>
-                                <Accordion.Collapse eventKey="0">
-                                    <div>
-                                        <LinkGroup>
-                                            <LinkStyle
-                                                to="/root-node-staking"
-                                                className="nav-link"
-                                                highlight={highlight('root-node-staking')}
-                                            >
-                                                – Root Node Staking
-                                            </LinkStyle>
-                                        </LinkGroup>
-                                        <LinkGroup>
-                                            <LinkStyle
-                                                to="/validator-staking"
-                                                className="nav-link"
-                                                highlight={highlight('validator-staking')}
-                                            >
-                                                – Validator Staking
-                                            </LinkStyle>
-                                        </LinkGroup>
-                                    </div>
-                                </Accordion.Collapse>
-                            </Accordion>
+                            </AccordionLinks>
                             )
                           : null}
-                        <LinkStyle
-                            to={'/saving-and-borrowing'}
-                            className="nav-link"
+                        <CommonLinks
                             highlight={highlight('saving-and-borrowing')}
-                        >
-                            Saving & Borrowing
-                        </LinkStyle>
+                            linkTo="/saving-and-borrowing"
+                            linkTitle="Saving & Borrowing"
+                        />
                         {appMode === MODE.advanced
                           ? (
-                            <Accordion
-                                defaultActiveKey="0"
-                                style={{ width: '100%' }}
-                                onSelect={(state) =>
-                                  state ? setIsAuctionAccordionOpened('1') : setIsAuctionAccordionOpened('')
-                                }
-                            >
-                                <LinkGroup>
-                                    <LinkStyle to={'/liquidation'} className="nav-link">
-                                        Decentralized Auctions
-                                    </LinkStyle>
-                                    <Accordion.Toggle eventKey="0">
-                                        <AccordionIcon state={isAuctionAccordionOpened}>
-                                            <i className={'mdi mdi-chevron-down'} />
-                                        </AccordionIcon>
-                                    </Accordion.Toggle>
-                                </LinkGroup>
-                                <Accordion.Collapse eventKey="0">
+                            <>
+                                <AccordionLinks
+                                    headerLink={
+                                        <CommonLinks linkTo="/liquidation" linkTitle="Decentralized Auctions" />
+                                    }
+                                >
                                     <div>
-                                        <LinkGroup>
-                                            <LinkStyle
-                                                to={'/liquidation'}
-                                                className="nav-link"
-                                                highlight={highlight('liquidation')}
-                                            >
-                                                – Liquidation
-                                            </LinkStyle>
-                                            {liquidationAuctionsCount.activeAuctions
-                                              ? (
-                                                <AccordionLbl highlight={highlight('liquidation')}>
-                                                    {liquidationAuctionsCount.activeAuctions}
-                                                </AccordionLbl>
-                                                )
-                                              : null}
-                                        </LinkGroup>
-                                        <LinkGroup>
-                                            <LinkStyle
-                                                to={'/system-debt'}
-                                                className="nav-link"
-                                                highlight={highlight('system-debt')}
-                                            >
-                                                – System Debt
-                                            </LinkStyle>
-                                            {systemDebtAuctionsCount.activeAuctions
-                                              ? (
-                                                <AccordionLbl highlight={highlight('system-debt')}>
-                                                    {systemDebtAuctionsCount.activeAuctions}
-                                                </AccordionLbl>
-                                                )
-                                              : null}
-                                        </LinkGroup>
-                                        <LinkGroup>
-                                            <LinkStyle
-                                                to={'/system-surplus'}
-                                                className="nav-link"
-                                                highlight={highlight('system-surplus')}
-                                            >
-                                                – System Surplus
-                                            </LinkStyle>
-                                            {systemSurplusAuctionsCount.activeAuctions
-                                              ? (
-                                                <AccordionLbl highlight={highlight('system-surplus')}>
-                                                    {systemSurplusAuctionsCount.activeAuctions}
-                                                </AccordionLbl>
-                                                )
-                                              : null}
-                                        </LinkGroup>
+                                        <CommonLinks
+                                            highlight={highlight('liquidation')}
+                                            linkTo="/liquidation"
+                                            count={liquidationAuctionsCount.activeAuctions}
+                                            linkTitle="– Liquidation"
+                                        />
+
+                                        <CommonLinks
+                                            highlight={highlight('system-debt')}
+                                            linkTo="/system-debt"
+                                            count={systemDebtAuctionsCount.activeAuctions}
+                                            linkTitle="– System Debt"
+                                        />
+
+                                        <CommonLinks
+                                            highlight={highlight('system-surplus')}
+                                            linkTo="/system-surplus"
+                                            count={systemSurplusAuctionsCount.activeAuctions}
+                                            linkTitle="– System Surplus"
+                                        />
                                     </div>
-                                </Accordion.Collapse>
-                            </Accordion>
-                            )
-                          : null}
-                        {appMode === MODE.advanced
-                          ? (
-                            <LinkStyle to={'/time-locks'} className="nav-link" highlight={highlight('time-locks')}>
-                                Time Locks
-                            </LinkStyle>
+                                </AccordionLinks>
+                                <CommonLinks
+                                    highlight={highlight('time-locks')}
+                                    linkTo="/time-locks"
+                                    linkTitle="Time Locks"
+                                />
+                            </>
                             )
                           : null}
                     </ListContainer>
-                    <ListTitle>References</ListTitle>
-                    <ListContainer>
+                </LinksContainer>
+
+                <FooterContainer>
+                    <AccordionElements margin="24px 0 0 0" title="References">
                         {referencesItems.map((value, key) => (
                             <ALinkStyle
                                 key={'references' + key}
@@ -330,22 +198,15 @@ function Sidebar () {
                                 {value.label}
                             </ALinkStyle>
                         ))}
-                    </ListContainer>
-                </LinksContainer>
-                <FooterContainer>
-                    <CopyToClipboard text={userAddress}>
-                        <span title={userAddress}>
-                            <Button
-                                width={'100%'}
-                                type={'white'}
-                                title={userAddress}
-                                icon={'content-copy'}
-                                handleButton={() => {}}
-                            />
-                        </span>
-                    </CopyToClipboard>
+                    </AccordionElements>
+
+                    <AccordionElements margin="24px 0 24px 0" title="Settings">
+                        <DashboardMode />
+                        <Themes />
+                    </AccordionElements>
+
+                    <CopyAddress/>
                     <Footer>
-                        <Settings />
                         <Version />
                     </Footer>
                 </FooterContainer>
