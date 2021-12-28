@@ -18,6 +18,7 @@ import SystemCard from 'components/Custom/PageLists/SidebarCards/SystemCard'
 import { fN } from 'func/useful'
 import { getSavingAviableToDeposit } from 'store/saving-assets/action-creators'
 import { savingAviableToDepositSelector } from 'store/saving-assets/selectors'
+import { getSymbol } from 'store/stable-coin/action-creators'
 
 function SidebarCards () {
   const dispatch = useDispatch()
@@ -49,6 +50,7 @@ function SidebarCards () {
     dispatch(getAvailableAmount())
     dispatch(getSavingAviableToDeposit())
     dispatch(getUserBalance(userAddress))
+    dispatch(getSymbol())
   }, [dispatch, loadingPerfNetting, isAuctionModified])
 
   useEffect(() => {

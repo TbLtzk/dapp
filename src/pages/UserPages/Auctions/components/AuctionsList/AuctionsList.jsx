@@ -43,7 +43,7 @@ function AuctionsList ({ auctions, loadingAuctions }) {
 
   switch (state) {
     case LOAD_TYPES.empty:
-      return <p>No proposals</p>
+      return <p>No Auctions</p>
     case LOAD_TYPES.loaded: {
       return (
                 <div>
@@ -77,16 +77,3 @@ function AuctionsList ({ auctions, loadingAuctions }) {
 }
 
 export default AuctionsList
-
-//     {/* {loadingAuctions ? (
-//     <LoadingWrap>
-//         <LoadingSpinner />
-//     </LoadingWrap>
-// ) : !auctions.length ? (
-//     <p>No auctions</p>
-// ) : (
-
-// )} */}
-// <LoadingWrap>
-//     <LoadingSpinner />
-// </LoadingWrap>

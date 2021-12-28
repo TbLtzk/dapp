@@ -5,14 +5,20 @@ import { Accordion } from 'react-bootstrap'
 
 import { theme } from 'store/theme/selectors'
 import CustomCardButtons from 'components/Custom/CustomCardButtons'
-import Status from '../Status'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 import { convertToMonthDayYear, remainDate } from 'func/convertDate'
 import CardBody from '../CardBody'
+import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper'
 
 function AuctionCard ({ auction, id }) {
   const currentTheme = useSelector(theme)
   const [open, setOpen] = useState(false)
+
+  const checkContract = `${auction.contract === CONTRACTS_NAMES.liquidationAuction ? '+' + auction.user : ''}`
+
+  const shareText = `${window.location.origin}/auction/${transformAuctionNameToAuctionType(auction.contract)}/${
+        auction.id + checkContract
+    }`
 
   return (
         <ListCardWrp palette={currentTheme}>
@@ -20,14 +26,14 @@ function AuctionCard ({ auction, id }) {
                 <ListCardHeader>
                     <div>
                         <h1>{auction.title}</h1>
-                        <Status auction={auction} />
+                        <div className="list-card__status">{auction.status}</div>
                     </div>
                     <div>
                         <CustomCardButtons
                             setOpen={() => setOpen(!open)}
                             open={open}
                             eventKey={id}
-                            shareText={'kikiki'}
+                            shareText={shareText}
                         />
                     </div>
                 </ListCardHeader>

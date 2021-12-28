@@ -1,4 +1,5 @@
 import Button from 'components/Base/Buttons/Button'
+import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { executeAuction } from 'store/auctions/action-creators'
@@ -11,13 +12,13 @@ function AuctionActions ({ auction }) {
   const [modalShow, setModalShow] = useState(false)
   const [inf, setInf] = useState(null)
 
-  function onAuctionBid (user, vaultId, contract, id) {
+  function onAuctionBid () {
     setModalShow(true)
     setInf({
-      user,
-      vaultId,
-      contract,
-      id: id
+      user: auction.user,
+      vaultId: auction.vaultId,
+      contract: auction.contract,
+      id: auction.id
     })
     dispatch(setStepCounter(1))
     dispatch(setCreatedStepsLimit(2))
@@ -34,6 +35,8 @@ function AuctionActions ({ auction }) {
       })
     )
   }
+
+  const auctionType = transformAuctionNameToAuctionType(auction.contract)
 
   return auction.status === 'Active'
     ? (
@@ -54,16 +57,20 @@ function AuctionActions ({ auction }) {
                     handleButton={onAuctionExecute}
                 />
             </div>
-            <ModalBid
-                inf={inf}
-                auctionType={auction.contract}
-                modalShow={modalShow}
-                onHide={() => {
-                  setModalShow(false)
-                  dispatch(setCreateObj({}))
-                  dispatch(setStepCounter(1))
-                }}
-            />
+            {!inf
+              ? null
+              : (
+                <ModalBid
+                    inf={inf}
+                    activeTab={auctionType}
+                    modalShow={modalShow}
+                    onHide={() => {
+                      setModalShow(false)
+                      dispatch(setCreateObj({}))
+                      dispatch(setStepCounter(1))
+                    }}
+                />
+                )}
         </div>
       )
     : null

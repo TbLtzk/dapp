@@ -6,7 +6,8 @@ const initialState = {
   liquidationAuctionsCount: {},
   liquidationAuctions: {},
   systemDebtAuctions: {},
-  systemSurplusAuctions: {}
+  systemSurplusAuctions: {},
+  oneAuction: null
 }
 
 export default function auctions (state = initialState, action) {
@@ -45,6 +46,12 @@ export default function auctions (state = initialState, action) {
       return {
         ...state,
         systemSurplusAuctions: action.result
+      }
+    }
+    case actionTypes.SET_ONE_AUCTION: {
+      return {
+        ...state,
+        oneAuction: action.auction
       }
     }
     default:

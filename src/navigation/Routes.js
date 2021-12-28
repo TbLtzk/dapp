@@ -18,6 +18,7 @@ import TimeLocks from '../pages/UserPages/TimeLocks'
 import AlertTemplate from 'components/Custom/Alerts/AlertTemplate'
 import RootNodeStaking from 'pages/UserPages/RootNodeStaking'
 import ValidatorStaking from 'pages/UserPages/ValidatorStaking'
+import OneAuctionPage from 'pages/UserPages/OneAuctionPage'
 
 function Routes () {
   const options = {
@@ -81,7 +82,9 @@ function Routes () {
 
         <Route exact path="/saving-and-borrowing" component={AuthProtect(SavingAndBorrowing)} />
         <Route exact path="/time-locks" component={AuthProtect(TimeLocks)} />
+        <Route exact path="/auction/:contract?/:id?" component={AuthProtect(OneAuctionPage)} />
         <Route exact path="/q-governance/proposal/:contract?/:id?" component={AuthProtect(OneProposalPage)} />
+
       </Switch>
     </AlertProvider>
   )

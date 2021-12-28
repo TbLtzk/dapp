@@ -5,6 +5,10 @@ import { fromWei } from 'func/balance'
 import { getSystemSurplusAuctionInstance } from 'contracts/contract-instance'
 import { remainDate } from 'func/convertDate'
 
+export function creationSystemSurplusContractObj () {
+  return new SystemSurplusAuction()
+}
+
 export default class SystemSurplusAuction extends AuctionService {
   constructor () {
     super()
@@ -25,7 +29,6 @@ export default class SystemSurplusAuction extends AuctionService {
 
   prepareAuctionData (data, info) {
     const status = this.checkSystemSurplusStatus(data.endTime, data.isExecuted)
-
     const completedInfo = {}
     completedInfo.bidder = data.bidder
     completedInfo.user = info?.bidder || info?.user
@@ -47,7 +50,6 @@ export default class SystemSurplusAuction extends AuctionService {
   async getAuctionsEvents () {
     const contract = await this.getContractInstance(this.contractName)
     const pastEvents = await contract.instance.getPastEvents('AuctionStarted', { fromBlock: 0, toBlock: 'latest' })
-
     if (!pastEvents.length) {
       return []
     } else {
@@ -77,18 +79,18 @@ export default class SystemSurplusAuction extends AuctionService {
     }
   }
 
+  async getOneAuction (id) {
+    const contract = await this.getContractInstance()
+    const data = await contract.instance.methods.auctions(id).call()
+    const pastEvents = await this.getAuctionsEvents()
+    const event = pastEvents.find((event) => event.id === id)
+    return this.prepareAuctionData(data, event)
+  }
+
   async createAuction (data, userAddress) {
     const contract = await getSystemSurplusAuctionInstance()
     await this.getAllowance(userAddress, contract.address, data?.bid)
     return await contract.startAuction({ qAmount: data?.bid })
-  }
-
-  async getOneAuction (inf, active) {
-    if (inf.id) {
-      const promiseRes = await this.getOneAuctionData(inf.id, null)
-      const result = await this.getAuctionData(promiseRes, inf)
-      return [result]
-    }
   }
 
   async bid (auctionId, bid, userAddress) {

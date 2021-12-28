@@ -62,14 +62,6 @@ export const executeAuctionError = (result) => ({
   result
 })
 
-export const getAuction = (contractName, inf, activeTab, activeAuction) => ({
-  type: actionTypes.GET_AUCTION,
-  contractName,
-  inf,
-  activeTab,
-  activeAuction
-})
-
 export const getAuctionSuccess = (result) => ({
   type: actionTypes.GET_AUCTION_SUCCESS,
   result
@@ -136,4 +128,17 @@ export const setLiquidationAuctions = (result) => ({
 export const setSystemSurplusAuctions = (result) => ({
   type: actionTypes.SET_SYSTEM_SURPLUS_AUCTIONS,
   result
+})
+
+export const getOneAuction = (auctionType, auctionId, onePage) => ({
+  type: actionTypes.GET_ONE_AUCTION,
+  auctionType,
+  auctionId,
+  onePage
+})
+
+export const setOneAuction = (auctionType, auction) => ({
+  type: actionTypes.SET_ONE_AUCTION,
+  auctionType,
+  auction
 })
