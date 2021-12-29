@@ -123,17 +123,18 @@ export default class VotingService {
     for (const pastEvent of latestPastEvents) {
       const id = pastEvent.returnValues._id
       const { blockNumber } = pastEvent
-      const status = await contract.getStatus(pastEvent.returnValues._id)
+      const status = await contract.getStatus(id)
       latestProposals.push({ id, status, blockNumber })
     }
 
     const activeIds = latestProposals.filter(
       (prop) => prop.status === '1' || prop.status === '3' || prop.status === '4'
     )
+    const transformToId = activeIds.map((item) => item.id)
 
     const endedIds = pastEvents
       .map((evt) => ({ blockNumber: evt.blockNumber, id: evt.returnValues._id }))
-      .filter((id) => !activeIds.includes(id))
+      .filter(({ id }) => !transformToId.includes(id))
 
     return {
       contract: this.contractName,

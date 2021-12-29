@@ -87,7 +87,7 @@ function ModalBid ({ modalShow, onHide, activeTab, inf }) {
             }}
             continueBtnTitle={stepLimit !== stepCounter ? (approveBtn ? 'Approve' : 'Next') : 'Confirm'}
             continueBtnHandler={handleSubmit(onNext)}
-            modalTitle={`Bid for ${activeTab?.replace(/-/g, ' ')} Auction`}
+            modalTitle={`Bid for ${activeTab?.replace(/-/g, ' ')} auction`}
             content={
                 <>
                     <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)} />

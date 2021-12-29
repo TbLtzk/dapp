@@ -1,10 +1,11 @@
-import AuctionService, { getStatusTransformation } from './auction-service-helper'
+import AuctionService, { ERROR_TYPES, getStatusTransformation } from './auction-service-helper'
 import { CONTRACT_TYPES } from 'constants/contracts'
 
 import { fromBtcBlockchain, toWei, fromWei } from 'func/balance'
 
 import { getBorrowingCoreInstance, getLiquidationAuctionInstance } from 'contracts/contract-instance'
 import { remainDate } from 'func/convertDate'
+import { groupArrayByBlockNumber } from 'func/useful'
 
 export function creationLiquidationContractObj () {
   return new LiquidationAuction()
@@ -30,6 +31,7 @@ export default class LiquidationAuction extends AuctionService {
     completedInfo.title = 'Liquidation Auction'
     completedInfo.contract = CONTRACT_TYPES.liquidationAuction
     completedInfo.highestBid = fromWei(data.highestBid)
+    completedInfo.blockNumber = info.blockNumber
     completedInfo.status = getStatusTransformation(data.status)
     completedInfo.colAsset = fromBtcBlockchain(vault.colAsset)
     completedInfo.disableBidButton = !remainDate(data.endTime)
@@ -63,8 +65,10 @@ export default class LiquidationAuction extends AuctionService {
       allAuctionsData.map((auction) => this.prepareAuctionData(auction.data, auction.info, borrowingCoreInstance))
     )
 
-    const activeAuctions = preparedAuctionsData.filter((auction) => auction.statusNumber === '1')
-    const endedAuctions = preparedAuctionsData.filter((auction) => auction.statusNumber !== '1')
+    const groupedAuctionsByBlockNumber = groupArrayByBlockNumber(preparedAuctionsData)
+
+    const activeAuctions = groupedAuctionsByBlockNumber.filter((auction) => auction.statusNumber === '1')
+    const endedAuctions = groupedAuctionsByBlockNumber.filter((auction) => auction.statusNumber !== '1')
 
     return {
       contract: this.contractName,
@@ -73,15 +77,21 @@ export default class LiquidationAuction extends AuctionService {
     }
   }
 
-  async getOneAuction (vaultId) {
-    const contract = await this.getContractInstance()
-    const borrowingCoreInstance = await getBorrowingCoreInstance()
-
-    const pastEvents = await this.getAuctionsEvents()
-    const info = pastEvents.find(event => event.vaultId === vaultId)
-    const data = await contract.getAuctionInfo(info.user, vaultId)
-
-    return this.prepareAuctionData(data, info, borrowingCoreInstance)
+  async getOneAuction (vaultId, address) {
+    try {
+      const contract = await this.getContractInstance()
+      const info = await contract.getAuctionInfo(address, vaultId)
+      if (!Number(info.endTime)) {
+        return { error: ERROR_TYPES.notExist }
+      } else {
+        const pastEvents = await this.getAuctionsEvents()
+        const event = pastEvents.find((event) => event.vaultId === vaultId && event.user === address)
+        const borrowingCoreInstance = await getBorrowingCoreInstance()
+        return this.prepareAuctionData(info, event, borrowingCoreInstance)
+      }
+    } catch (error) {
+      return { error: ERROR_TYPES.wrongLink }
+    }
   }
 
   async bid (user, vaultId, bid, userAddress) {

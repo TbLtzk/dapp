@@ -1,9 +1,10 @@
-import AuctionService from './auction-service-helper'
+import AuctionService, { ERROR_TYPES } from './auction-service-helper'
 import { CONTRACT_TYPES } from 'constants/contracts'
 
 import { fromWei } from 'func/balance'
 import { getSystemSurplusAuctionInstance } from 'contracts/contract-instance'
 import { remainDate } from 'func/convertDate'
+import { groupArrayByBlockNumber } from 'func/useful'
 
 export function creationSystemSurplusContractObj () {
   return new SystemSurplusAuction()
@@ -39,7 +40,7 @@ export default class SystemSurplusAuction extends AuctionService {
     completedInfo.lot = fromWei(data.lot)
     completedInfo.title = 'System Surplus Auction'
     completedInfo.status = status
-
+    completedInfo.blockNumber = info.blockNumber
     completedInfo.disableBidButton = status === 'Accepted'
     completedInfo.disableExecuteButton = status === 'Pending'
 
@@ -68,9 +69,10 @@ export default class SystemSurplusAuction extends AuctionService {
 
     const allAuctionsData = await Promise.all(auctionsInfo.map((event) => this.getAuction(event)))
     const preparedAuctionsData = allAuctionsData.map((auction) => this.prepareAuctionData(auction.data, auction.info))
+    const groupedAuctionsByBlockNumber = groupArrayByBlockNumber(preparedAuctionsData)
 
-    const activeAuctions = preparedAuctionsData.filter((auction) => !auction.isExecuted)
-    const endedAuctions = preparedAuctionsData.filter((auction) => auction.isExecuted)
+    const activeAuctions = groupedAuctionsByBlockNumber.filter((auction) => !auction.isExecuted)
+    const endedAuctions = groupedAuctionsByBlockNumber.filter((auction) => auction.isExecuted)
 
     return {
       contract: this.contractName,
@@ -80,11 +82,19 @@ export default class SystemSurplusAuction extends AuctionService {
   }
 
   async getOneAuction (id) {
-    const contract = await this.getContractInstance()
-    const data = await contract.instance.methods.auctions(id).call()
-    const pastEvents = await this.getAuctionsEvents()
-    const event = pastEvents.find((event) => event.id === id)
-    return this.prepareAuctionData(data, event)
+    try {
+      const contract = await this.getContractInstance()
+      const info = await contract.instance.methods.auctions(id).call()
+      if (!Number(info.endTime)) {
+        return { error: ERROR_TYPES.notExist }
+      } else {
+        const pastEvents = await this.getAuctionsEvents()
+        const event = pastEvents.find((event) => event.id === id)
+        return this.prepareAuctionData(info, event)
+      }
+    } catch (error) {
+      return { error: ERROR_TYPES.wrongLink }
+    }
   }
 
   async createAuction (data, userAddress) {

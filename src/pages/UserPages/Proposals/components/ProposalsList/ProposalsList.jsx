@@ -82,8 +82,8 @@ function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
                       ? (
                         <LoadingWrap>
                             <Button
-                                margin="0 0 15px 0"
-                                width="100px"
+                                margin="0 0 5% 0"
+                                width="140px"
                                 title="Show more"
                                 handleButton={handleNextProposals}
                             />

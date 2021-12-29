@@ -9,13 +9,9 @@ import {
 } from 'contracts/contract-instance'
 import { AUCTIONS_TYPES } from 'constants/statuses'
 
-const getPastEvents = async (contract, event) => {
-  const eventOptions = {
-    fromBlock: 0,
-    toBlock: 'latest'
-  }
-  const result = await contract.getPastEvents(event, eventOptions)
-  return result
+export const ERROR_TYPES = {
+  notExist: 'Auction do not exist',
+  wrongLink: 'Wrong link'
 }
 
 export async function switchContract (contractName) {
@@ -62,11 +58,6 @@ export default class AuctionService {
   async getContractInstance () {
     const initInstance = getInstance(this.contractName, true)
     return initInstance()
-  }
-
-  async getAuctionsEvent () {
-    const contract = await switchContract(this.contractName)
-    return await getPastEvents(contract.instance, 'AuctionStarted')
   }
 
   async getOneAuctionData (userAddress, vaultId) {

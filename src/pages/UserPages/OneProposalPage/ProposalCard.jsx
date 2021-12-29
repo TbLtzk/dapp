@@ -13,6 +13,7 @@ import VotingItems from '../Proposals/components/ProposalsList/components/Voting
 import { theme } from 'store/theme/selectors'
 import { useSelector } from 'react-redux'
 import { PROPOSALS_TYPES, STATUSES } from 'constants/statuses'
+import { createShareText } from 'func/useful'
 
 function ProposalCard ({ proposal, proposalKind }) {
   const currentTheme = useSelector(theme)
@@ -26,7 +27,7 @@ function ProposalCard ({ proposal, proposalKind }) {
                 <div>
                     <CustomCardButtons
                         onePage={true}
-                        shareText={`${window.location.origin}/q-governance/proposal/${proposal?.contract}/${proposal?.id}`}
+                        shareText={createShareText('proposal', proposal.contract, proposal.id)}
                     />
                 </div>
             </ListCardHeader>

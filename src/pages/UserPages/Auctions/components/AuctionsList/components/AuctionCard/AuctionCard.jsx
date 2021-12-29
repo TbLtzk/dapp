@@ -8,17 +8,11 @@ import CustomCardButtons from 'components/Custom/CustomCardButtons'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 import { convertToMonthDayYear, remainDate } from 'func/convertDate'
 import CardBody from '../CardBody'
-import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper'
+import { createShareText } from 'func/useful'
 
 function AuctionCard ({ auction, id }) {
   const currentTheme = useSelector(theme)
   const [open, setOpen] = useState(false)
-
-  const checkContract = `${auction.contract === CONTRACTS_NAMES.liquidationAuction ? '+' + auction.user : ''}`
-
-  const shareText = `${window.location.origin}/auction/${transformAuctionNameToAuctionType(auction.contract)}/${
-        auction.id + checkContract
-    }`
 
   return (
         <ListCardWrp palette={currentTheme}>
@@ -33,7 +27,7 @@ function AuctionCard ({ auction, id }) {
                             setOpen={() => setOpen(!open)}
                             open={open}
                             eventKey={id}
-                            shareText={shareText}
+                            shareText={createShareText('auction', auction.contract, auction.id, auction.user)}
                         />
                     </div>
                 </ListCardHeader>

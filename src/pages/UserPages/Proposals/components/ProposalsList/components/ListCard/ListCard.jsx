@@ -10,6 +10,7 @@ import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading'
 import { transactionCounter } from 'store/transaction-handler/selectors'
 import { formVoteObject } from 'store/voting/proposals/selectors'
+import { createShareText } from 'func/useful'
 
 function ListCard ({ proposal, id, proposalsKind, onePage }) {
   const currentTheme = useSelector(theme)
@@ -60,7 +61,7 @@ function ListCard ({ proposal, id, proposalsKind, onePage }) {
                               setCollapsedContentOpen(true)
                             }}
                             eventKey={id}
-                            shareText={`${window.location.origin}/q-governance/proposal/${proposalInfo?.contract}/${proposalInfo?.id}`}
+                            shareText={createShareText('proposal', proposalInfo.contract, proposalInfo.id)}
                         />
                     </div>
                 </ListCardHeader>

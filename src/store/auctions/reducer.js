@@ -7,7 +7,7 @@ const initialState = {
   liquidationAuctions: {},
   systemDebtAuctions: {},
   systemSurplusAuctions: {},
-  oneAuction: null
+  oneAuction: {}
 }
 
 export default function auctions (state = initialState, action) {

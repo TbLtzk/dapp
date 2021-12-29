@@ -130,15 +130,14 @@ export const setSystemSurplusAuctions = (result) => ({
   result
 })
 
-export const getOneAuction = (auctionType, auctionId, onePage) => ({
+export const getOneAuction = (auctionType, auctionId, address) => ({
   type: actionTypes.GET_ONE_AUCTION,
   auctionType,
   auctionId,
-  onePage
+  address
 })
 
-export const setOneAuction = (auctionType, auction) => ({
+export const setOneAuction = (auction) => ({
   type: actionTypes.SET_ONE_AUCTION,
-  auctionType,
   auction
 })

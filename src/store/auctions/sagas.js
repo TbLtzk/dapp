@@ -1,10 +1,9 @@
-import { put, takeEvery, select, all } from 'redux-saga/effects'
+import { put, takeEvery, select, all, call } from 'redux-saga/effects'
 
 import * as actionTypes from './action-types'
-import { setErrorMessage, setTransactionLoading } from 'store/transaction-handler/action-creators'
+import { setErrorMessage, setTransactionCounter } from 'store/transaction-handler/action-creators'
 
 import {
-  getAuctionError,
   setLiquidationAuctionCount,
   setSystemDebtAuctionCount,
   setSystemSurplusAuctionCount,
@@ -25,6 +24,14 @@ import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-he
 import { getDebt, getSurplus, getSystemBalance } from 'store/system-balance/action-creators'
 import { getAvailableAmount } from 'store/system-reserve/action-creators'
 import { getSavingAviableToDeposit } from 'store/saving-assets/action-creators'
+
+function * updateValuesGenerator () {
+  yield put(getSurplus())
+  yield put(getDebt())
+  yield put(getSystemBalance())
+  yield put(getAvailableAmount())
+  yield put(getSavingAviableToDeposit())
+}
 
 function * getAuctionsGenerator ({ auctionTypes = '' }) {
   try {
@@ -98,7 +105,7 @@ function * getAuctionsGenerator ({ auctionTypes = '' }) {
 
 function * createAuction ({ data }) {
   try {
-    yield put(setTransactionLoading(1))
+    yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
     let contract
     let auctionType
@@ -124,20 +131,16 @@ function * createAuction ({ data }) {
     }
     yield contract.createAuction(data, userAddress)
     yield put(getAuctions(auctionType))
-    yield put(getSurplus())
-    yield put(getDebt())
-    yield put(getSystemBalance())
-    yield put(getAvailableAmount())
-    yield put(getSavingAviableToDeposit())
+    yield call(updateValuesGenerator)
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put(setTransactionLoading(-1))
+    yield put(setTransactionCounter(-1))
   }
 }
 
-function * getOneAuctionGenerator ({ auctionType, auctionId }) {
+function * getOneAuctionGenerator ({ auctionType, auctionId, address }) {
   try {
     let contract
     switch (auctionType) {
@@ -151,22 +154,17 @@ function * getOneAuctionGenerator ({ auctionType, auctionId }) {
         contract = creationSystemSurplusContractObj()
         break
     }
-    const auction = yield contract.getOneAuction(auctionId)
-    yield put(setOneAuction(auctionType, auction))
-    yield put(getSurplus())
-    yield put(getDebt())
-    yield put(getSystemBalance())
-    yield put(getAvailableAmount())
-    yield put(getSavingAviableToDeposit())
+    const auction = yield contract.getOneAuction(auctionId, address)
+    yield put(setOneAuction(auction))
+    yield call(updateValuesGenerator)
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
-    yield put(getAuctionError())
   }
 }
 
 function * bidForAuctionGenerator ({ data }) {
   try {
-    yield put(setTransactionLoading(1))
+    yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
     const contractType = transformAuctionNameToAuctionType(data.contract)
     switch (contractType) {
@@ -191,22 +189,18 @@ function * bidForAuctionGenerator ({ data }) {
       default:
         return null
     }
-    yield put(getSurplus())
-    yield put(getDebt())
-    yield put(getSystemBalance())
-    yield put(getAvailableAmount())
-    yield put(getSavingAviableToDeposit())
+    yield call(updateValuesGenerator)
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put(setTransactionLoading(-1))
+    yield put(setTransactionCounter(-1))
   }
 }
 
 function * executeAuctionHandler ({ data }) {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionCounter())
     const { userAddress } = yield select((state) => state.userInf)
     const contractType = transformAuctionNameToAuctionType(data.contract)
 
@@ -232,16 +226,12 @@ function * executeAuctionHandler ({ data }) {
       default:
         return null
     }
-    yield put(getSurplus())
-    yield put(getDebt())
-    yield put(getSystemBalance())
-    yield put(getAvailableAmount())
-    yield put(getSavingAviableToDeposit())
+    yield call(updateValuesGenerator)
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put(setTransactionLoading(-1))
+    yield put(setTransactionCounter(-1))
   }
 }
 
