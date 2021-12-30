@@ -40,8 +40,6 @@ function Routes () {
         <Route exact path="/" component={AuthProtect(Dashboard)} />
         <Route exact path="/q-parameters" component={AuthProtect(Manage)} />
         <Route exact path="/start-configurations" component={StartConfigurations} />
-      </Switch>
-      <Switch>
         <Route exact path="/q-governance" component={AuthProtect(Governance)} />
         <Route
           exact

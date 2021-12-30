@@ -200,7 +200,7 @@ function * bidForAuctionGenerator ({ data }) {
 
 function * executeAuctionHandler ({ data }) {
   try {
-    yield put(setTransactionCounter())
+    yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
     const contractType = transformAuctionNameToAuctionType(data.contract)
 

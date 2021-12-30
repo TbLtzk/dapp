@@ -2,7 +2,11 @@ import React from 'react'
 import PageWrap from 'components/Base/PageWrap'
 import CreateAuctionBtn from './components/CreateAuctionBtn'
 
-import { liquidationAuctions, systemDebtAuctions, systemSurplusAuctions } from 'store/auctions/selectors'
+import {
+  liquidationAuctionsSelector,
+  systemDebtAuctionsSelector,
+  systemSurplusAuctionsSelector
+} from 'store/auctions/selectors'
 
 import { AUCTIONS_TYPES } from 'constants/statuses'
 import { useSelector } from 'react-redux'
@@ -32,11 +36,11 @@ function Auctions ({ auctionsType }) {
   function getAuctions (type) {
     switch (type) {
       case AUCTIONS_TYPES.liquidation:
-        return useSelector(liquidationAuctions)
+        return useSelector(liquidationAuctionsSelector)
       case AUCTIONS_TYPES.systemDebt:
-        return useSelector(systemDebtAuctions)
+        return useSelector(systemDebtAuctionsSelector)
       case AUCTIONS_TYPES.systemSurplus:
-        return useSelector(systemSurplusAuctions)
+        return useSelector(systemSurplusAuctionsSelector)
     }
   }
 

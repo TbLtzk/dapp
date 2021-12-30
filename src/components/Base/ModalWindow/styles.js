@@ -5,10 +5,10 @@ import { Modal } from 'react-bootstrap'
 import { indents } from 'constants/style'
 
 export const Header = styled(Modal.Header)`
-  background: ${props => props.theme.colors.oxfordBlueTint6};
+  background: ${(props) => props.theme.colors.oxfordBlueTint6};
   border-bottom: 0;
   & .close {
-    color: ${props => props.theme.colors.oxfordBlueTint2};
+    color: ${(props) => props.theme.colors.oxfordBlueTint2};
   }!important;
 }
 `
@@ -21,14 +21,14 @@ export const Body = styled(Modal.Body)`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-  background: ${props => props.theme.colors.oxfordBlueTint6};
-  color: ${props => props.theme.colors.oxfordBlue};
+  background: ${(props) => props.theme.colors.oxfordBlueTint6};
+  color: ${(props) => props.theme.colors.oxfordBlue};
   hyphens: auto;
 `
 
 export const Footer = styled(Modal.Footer)`
   border-top: 0;
-  background: ${props => props.theme.colors.oxfordBlueTint6};
+  background: ${(props) => props.theme.colors.oxfordBlueTint6};
 `
 
 export const ModalW = styled(Modal)`
@@ -37,10 +37,10 @@ export const ModalW = styled(Modal)`
   }
 
   .modal-title {
-    color: ${props => props.theme.colors.oxfordBlue};
+    color: ${(props) => props.theme.colors.oxfordBlue};
     font-size: 20px;
     line-height: 35px;
-    font-family: 'Lora', sans-serif;
+    font-family: "Lora", sans-serif;
   }
 
   .modal-body {
@@ -51,12 +51,11 @@ export const ModalW = styled(Modal)`
     width: 100%;
     height: 1px;
     margin-bottom: 10px;
-    border-bottom: 1px solid ${props => props.theme.colors.oxfordBlueTint3};
+    border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
   }
 
-
   .modal-footer {
-    justify-content: ${props => props.backbtntitle ? 'space-between' : null};
+    justify-content: ${(props) => (props.backbtntitle ? 'space-between' : null)};
   }
 
   h2 {
@@ -64,37 +63,37 @@ export const ModalW = styled(Modal)`
     line-height: 20px;
     font-weight: 600;
     margin-bottom: 15px;
-    color: ${props => props.theme.colors.oxfordBlue};
-    font-family: 'OpenSans', sans-serif;
+    color: ${(props) => props.theme.colors.oxfordBlue};
+    font-family: "OpenSans", sans-serif;
   }
 
   h3 {
-    color: ${props => props.theme.colors.oxfordBlueTint3};
+    color: ${(props) => props.theme.colors.oxfordBlueTint3};
     font-size: 16px;
     line-height: 17px;
-    font-family: 'OpenSans', sans-serif;
+    font-family: "OpenSans", sans-serif;
     margin-bottom: 15px;
   }
 
   h4 {
-    color: ${props => props.theme.colors.oxfordBlue};
+    color: ${(props) => props.theme.colors.oxfordBlue};
     font-size: 13px;
     line-height: 18px;
-    font-family: 'OpenSans', sans-serif;
+    font-family: "OpenSans", sans-serif;
     margin-bottom: 10px;
   }
 
   h5 {
-    color: ${props => props.theme.colors.oxfordBlueTint3};
+    color: ${(props) => props.theme.colors.oxfordBlueTint3};
     font-size: 13px;
     line-height: 17px;
     font-weight: 600;
-    font-family: 'OpenSans', sans-serif;
+    font-family: "OpenSans", sans-serif;
     margin-bottom: 2px;
   }
 
   p {
-    color: ${props => props.theme.colors.oxfordBlue};
+    color: ${(props) => props.theme.colors.oxfordBlue};
     font-size: 13px;
     margin-bottom: 15px;
   }
@@ -112,11 +111,11 @@ export const ModalW = styled(Modal)`
 
   .progress {
     height: 1px;
-    background-color: ${props => props.theme.colors.oxfordBlueTint5};
+    background-color: ${(props) => props.theme.colors.oxfordBlueTint5};
   }
 
   .progress-bar {
-    background-color: ${props => props.theme.colors.oxfordBlue};
+    background-color: ${(props) => props.theme.colors.oxfordBlue};
   }
 
   .modal__steps {
@@ -125,14 +124,14 @@ export const ModalW = styled(Modal)`
     font-weight: 600;
     margin-top: 10px;
     margin-bottom: 30px;
-    color: ${props => props.theme.colors.oxfordBlue};
+    color: ${(props) => props.theme.colors.oxfordBlue};
   }
 
   .modal__line {
     width: 100%;
     height: 1px;
     margin-bottom: 10px;
-    border-bottom: 1px solid ${props => props.theme.colors.oxfordBlueTint3};
+    border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
   }
 
   .modal__three-colm {
@@ -165,7 +164,7 @@ export const ModalW = styled(Modal)`
 
   .modal__text-btn {
     display: flex;
-    color: ${props => props.theme.colors.oxfordBlue};
+    color: ${(props) => props.theme.colors.oxfordBlue};
     font-size: 15px;
     font-weight: 600;
     margin-bottom: 15px;

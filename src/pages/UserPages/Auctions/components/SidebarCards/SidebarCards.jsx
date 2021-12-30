@@ -3,7 +3,6 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/user-inf/selectors'
 import { debtSB, loadingPerformNetting, surplusSB, systemBalanceSB } from 'store/system-balance/selectors'
-import { lastAuctionModification } from 'store/auctions/selectors'
 import { availableAmountSR, reserveBalanceSelector } from 'store/system-reserve/selectors'
 import { accountBalance, userBalance } from 'store/q-vault/selectors'
 
@@ -33,7 +32,6 @@ function SidebarCards () {
   const availableAmount = useSelector(availableAmountSR)
   const userQVBalance = useSelector(userBalance)
   const loadingPerfNetting = useSelector(loadingPerformNetting)
-  const isAuctionModified = useSelector(lastAuctionModification)
   const reserveBalance = useSelector(reserveBalanceSelector)
 
   const [surplusLot, setSurplusLot] = useState('0')
@@ -41,7 +39,7 @@ function SidebarCards () {
 
   useEffect(() => {
     dispatch(getAccountBalance(userAddress))
-  }, [isAuctionModified])
+  }, [])
 
   useEffect(() => {
     dispatch(getSurplus())
@@ -51,13 +49,13 @@ function SidebarCards () {
     dispatch(getSavingAviableToDeposit())
     dispatch(getUserBalance(userAddress))
     dispatch(getSymbol())
-  }, [dispatch, loadingPerfNetting, isAuctionModified])
+  }, [dispatch, loadingPerfNetting])
 
   useEffect(() => {
     dispatch(getSystemReserveBalance())
     getEPDRUint('governed.EPDR.QUSD_surplusLot', setSurplusLot)
     getEPDRUint('governed.EPDR.reserveLot', setReserveLot)
-  }, [loadingPerfNetting, isAuctionModified])
+  }, [loadingPerfNetting])
 
   const statsData = useMemo(() => {
     return [
