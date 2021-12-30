@@ -29,7 +29,7 @@ import { getNowTimestamp } from 'func/convertDate'
 
 import { getQVaultInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance'
 
-import { handleLockedAssetsResponse, getOutstandingDelegationRewardsList } from 'contracts/helpers/q-vault-helper'
+import { getOutstandingDelegationRewardsList } from 'contracts/helpers/q-vault-helper'
 import ErrorHandler from 'func/ErrorHandler'
 
 function * getAccountBalanceGenerator ({ address }) {
@@ -55,17 +55,13 @@ function * getLockedAssetsGenerator ({ address }) {
   try {
     const contract = yield call(getQVaultInstance)
     const data = yield contract.getLockInfo(address)
-    const objectResult = handleLockedAssetsResponse(data)
-    yield put(setLockedAssets(objectResult.votingWeight, objectResult.votingLockingEnd))
+    yield put(setLockedAssets(fromWei(data.lockedAmount), data.lockedUntil))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }
 }
 
-function * setDepositGenerator ({
-  address,
-  amountQ
-}) {
+function * setDepositGenerator ({ address, amountQ }) {
   try {
     yield put(setTransactionLoading(1))
 
@@ -86,14 +82,11 @@ function * setDepositGenerator ({
   }
 }
 
-function * setSendGenerator ({
-  address,
-  amount
-}) {
+function * setSendGenerator ({ address, amount }) {
   try {
     yield put(setTransactionLoading(1))
 
-    const { userAddress } = yield select(state => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf)
 
     const contract = yield call(getQVaultInstance)
     const data = yield contract.transfer(address, toWei(amount))
@@ -109,10 +102,7 @@ function * setSendGenerator ({
   }
 }
 
-function * setWithdrawGenerator ({
-  address,
-  amountQ
-}) {
+function * setWithdrawGenerator ({ address, amountQ }) {
   try {
     yield put(setTransactionLoading(1))
 
@@ -131,11 +121,7 @@ function * setWithdrawGenerator ({
   }
 }
 
-function * setDelegateStakeGenerator ({
-  address,
-  delegateAddresses,
-  stakes
-}) {
+function * setDelegateStakeGenerator ({ address, delegateAddresses, stakes }) {
   try {
     yield put(setTransactionLoading(1))
 
@@ -158,10 +144,7 @@ function * setDelegateStakeGenerator ({
   }
 }
 
-function * setLockAmountGenerator ({
-  address,
-  amountQ
-}) {
+function * setLockAmountGenerator ({ address, amountQ }) {
   try {
     yield put(setTransactionLoading(1))
 
@@ -184,10 +167,7 @@ function * setLockAmountGenerator ({
   }
 }
 
-function * setUnlockAmountGenerator ({
-  address,
-  amountQ
-}) {
+function * setUnlockAmountGenerator ({ address, amountQ }) {
   try {
     yield put(setTransactionLoading(1))
 

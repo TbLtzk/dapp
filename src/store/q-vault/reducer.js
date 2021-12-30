@@ -16,7 +16,7 @@ const initialState = {
   loadingDelegationList: false,
   errorDelegationList: null,
   receivedWeight: 0,
-  votingAgent: '0x0000000000000000000000000000000000000000',
+  votingAgent: null,
   isPendingDelegation: false,
   votingAgentPassOverTime: 0,
 

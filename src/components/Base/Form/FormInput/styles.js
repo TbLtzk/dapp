@@ -110,12 +110,12 @@ export const InputWrapper = styled(Form.Group)`
   ${(p) =>
     p.palette === 'dark'
       ? css`
-      .input_maxbtn {
+          .input_maxbtn {
             color: ${(p) => p.theme.colors.oxfordBlueTint4};
           }
           .input_maxbtn:hover {
             cursor: pointer;
-            color: ${(p) => p.theme.colors.oxfordBlueTint1};
+            color: ${(p) => (p.modal ? p.theme.colors.oxfordBlueTint1 : p.theme.colors.neonGreen)};
           }
         `
       : css`
@@ -127,7 +127,6 @@ export const InputWrapper = styled(Form.Group)`
             color: ${(p) => p.theme.colors.oxfordBlueTint6};
           }
         `}
-
 
   .input_lbl {
     display: flex;

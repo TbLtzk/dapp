@@ -40,6 +40,6 @@ export function calculateGas (data) {
 }
 
 export function subtractAmount (value = 0, value2 = 0) {
-  const result = BN(toWei(value)).minus(toWei(value2)).toString()
+  const result = BN(toWei(value)).minus(toWei(value2)).toFixed()
   return fromWei(result)
 }

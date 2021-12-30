@@ -44,7 +44,7 @@ function VoterStatus () {
     if (isEPQFIMembership) {
       arrStatus.push('Fees & Incentive expert')
     }
-    if (arrStatus.length === 0) {
+    if (!arrStatus.length) {
       return 'None'
     } else {
       return arrStatus.join(', ')
