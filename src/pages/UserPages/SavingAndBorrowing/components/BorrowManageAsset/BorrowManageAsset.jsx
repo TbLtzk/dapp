@@ -240,6 +240,7 @@ function BorrowManageAsset ({ vault }) {
                                     lbl={borrowingDetails?.assets}
                                     min={0}
                                     name="field"
+                                    modal={true}
                                     type="number"
                                     placeholder="0.00"
                                     onMaxClick={handleMaxBorrow}
@@ -261,6 +262,7 @@ function BorrowManageAsset ({ vault }) {
                                     min={0}
                                     name="field"
                                     type="number"
+                                    modal={true}
                                     placeholder="0.00"
                                     onMaxClick={handleMaxRepay}
                                     ref={register2({ required: true })}
@@ -284,6 +286,7 @@ function BorrowManageAsset ({ vault }) {
                                     min={0}
                                     name="field"
                                     type="number"
+                                    modal={true}
                                     placeholder="0.00"
                                     onMaxClick={handleMaxDeposit}
                                     ref={register3({ required: true })}
@@ -307,6 +310,7 @@ function BorrowManageAsset ({ vault }) {
                                     min={0}
                                     name="field"
                                     type="number"
+                                    modal={true}
                                     placeholder="0.00"
                                     onMaxClick={handleMaxWithdraw}
                                     ref={register4({ required: true })}

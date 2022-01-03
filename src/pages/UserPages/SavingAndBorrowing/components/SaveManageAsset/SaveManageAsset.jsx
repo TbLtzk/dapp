@@ -160,6 +160,7 @@ function SaveManageAsset (props) {
                                     min={0}
                                     name="amount"
                                     type="number"
+                                    modal={true}
                                     placeholder="0.00"
                                     ref={register1({ required: true })}
                                     valid={errorHandler(errors1, 'field')}
@@ -181,6 +182,7 @@ function SaveManageAsset (props) {
                                     min={0}
                                     name="amount"
                                     type="number"
+                                    modal={true}
                                     onMaxClick={handleMaxWithdraw}
                                     placeholder="0.00"
                                     ref={register2({ required: true })}

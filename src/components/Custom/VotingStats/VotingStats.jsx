@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import Stats from 'components/Custom/PageLists/SidebarCards/Stats'
 import VoterStatus from 'components/Custom/PageLists/VoterStatus'
 
@@ -20,6 +20,18 @@ function VotingStats () {
 
   const { ownWeight, lockedUntil } = useSelector(baseVotingWeightInfoSelector)
 
+  const checkVoteDelegations = useMemo(() => {
+    if (!agent) {
+      return '...'
+    } else if (agent !== address) {
+      return `Your voting agent is ${agent}`
+    } else if (!Number(ownWeight)) {
+      return 'You currently have no voting weight & rights'
+    } else {
+      return 'You vote for yourself'
+    }
+  }, [ownWeight, agent])
+
   useEffect(() => {
     dispatch(getBaseVotingWeightInfo())
     dispatch(getDelegationInfo(address))
@@ -40,7 +52,7 @@ function VotingStats () {
     },
     {
       title: 'Vote Delegation',
-      value: agent === address ? 'You vote for yourself' : `Your voting agent is ${agent}`
+      value: checkVoteDelegations
     }
   ]
   return <Stats statsData={statsData} type="Voting" />

@@ -7,16 +7,6 @@ export async function getQVaultCompoundRateKeeper () {
   return await contract.instance.methods.compoundRateKeeper().call()
 }
 
-export function handleLockedAssetsResponse (data) {
-  const resp = {
-    votingWeight: 0,
-    votingLockingEnd: 0
-  }
-  resp.votingWeight = data.lockedAmount ? Number(fromWei(data.lockedAmount)) : 0
-  resp.votingLockingEnd = data.lockedUntil ? data.lockedUntil : 0
-  return resp
-}
-
 export function handleDelegationsList (delegationsList) {
   const resultArr = []
   if (delegationsList === 0) {

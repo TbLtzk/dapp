@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/user-inf/selectors'
 import {
@@ -16,7 +16,8 @@ import {
   qvBalance,
   lastClaim,
   qVaultMinimumTimeLock,
-  votingAgent
+  votingAgent,
+  receivedWeight
 } from 'store/q-vault/selectors'
 
 import VoterStatus from 'components/Custom/PageLists/VoterStatus'
@@ -35,6 +36,7 @@ export default function Panel () {
   const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd))
   const updateOnClaim = useSelector(lastClaim)
   const agent = useSelector(votingAgent)
+  const weight = useSelector(receivedWeight)
 
   const [yearlyExpectedEarnings, setYearlyExpectedEarnings] = useState(0)
 
@@ -48,6 +50,18 @@ export default function Panel () {
     dispatch(getQVBalance())
   }, [dispatch, updateOnClaim])
 
+  const checkVoteDelegations = useMemo(() => {
+    if (!agent) {
+      return '...'
+    } else if (agent !== userAddress) {
+      return `Your voting agent is ${agent}`
+    } else if (!Number(weight)) {
+      return 'You currently have no voting weight & rights'
+    } else {
+      return 'You vote for yourself'
+    }
+  }, [weight, agent])
+
   useEffect(() => {
     const interestRate = balanceDetails?.interestRate
       ? uintPerSecondToPerYearNumber(balanceDetails.interestRate)
@@ -60,45 +74,43 @@ export default function Panel () {
   }, [balanceDetails, userQVBalanceL])
 
   return (
-    <CustomBlock>
-      <h1>Overview</h1>
-      <div>
-        <h5>Q Vault Balance</h5>
-        <p>{fN(userQVBalanceL) + ' Q'}</p>
-        {Number(qVaultLockedAmount) > 0
-          ? (
-            <>
-              <h5>Time Locked Amount</h5>
-              <p>{fN(qVaultLockedAmount) + ' Q'}</p>
-            </>
-            )
-          : null}
-        <h5>Q Token Holder Reward Rate (p.a.)</h5>
-        <p>
-          {(balanceDetails?.interestRate
-            ? fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate))
-            : 0) + ' %'}
-        </p>
-        <h5>Yearly Expected Reward</h5>
-        <p>{fN(yearlyExpectedEarnings) + ' Q'}</p>
-        <h5>Q Address Balance</h5>
-        <p>{fN(userAccountBalance) + ' Q'}</p>
+        <CustomBlock>
+            <h1>Overview</h1>
+            <div>
+                <h5>Q Vault Balance</h5>
+                <p>{fN(userQVBalanceL) + ' Q'}</p>
+                {Number(qVaultLockedAmount) > 0
+                  ? (
+                    <>
+                        <h5>Time Locked Amount</h5>
+                        <p>{fN(qVaultLockedAmount) + ' Q'}</p>
+                    </>
+                    )
+                  : null}
+                <h5>Q Token Holder Reward Rate (p.a.)</h5>
+                <p>
+                    {(balanceDetails?.interestRate
+                      ? fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate))
+                      : 0) + ' %'}
+                </p>
+                <h5>Yearly Expected Reward</h5>
+                <p>{fN(yearlyExpectedEarnings) + ' Q'}</p>
+                <h5>Q Address Balance</h5>
+                <p>{fN(userAccountBalance) + ' Q'}</p>
 
-        <div className="card__line"/>
+                <div className="card__line" />
 
-        <h5>Voting Weight from Q Vault</h5>
-        <p>{fN(userVotingWeight) + ' Q'}</p>
-        <h5>Voting Locking End</h5>
-        <p>{userLockingEnd}</p>
-        <h5>Voting Status</h5>
-        <p><VoterStatus/></p>
-        <h5>Vote Delegation</h5>
-        {
-          agent === userAddress
-            ? <p>You vote for yourself</p>
-            : <p>Your voting agent is <span title={agent}>{agent}</span></p>
-        }
-      </div>
-    </CustomBlock>
+                <h5>Voting Weight from Q Vault</h5>
+                <p>{fN(userVotingWeight) + ' Q'}</p>
+                <h5>Voting Locking End</h5>
+                <p>{userLockingEnd}</p>
+                <h5>Voting Status</h5>
+                <p>
+                    <VoterStatus />
+                </p>
+                <h5>Vote Delegation</h5>
+                <p>{checkVoteDelegations}</p>
+            </div>
+        </CustomBlock>
   )
 }
