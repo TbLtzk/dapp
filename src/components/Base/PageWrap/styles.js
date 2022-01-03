@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 import { indents } from 'constants/style'
 import { Container } from 'react-bootstrap'
+import { scrollbarStyle } from 'constants/globalStyle'
 
 export const WrapContainer = styled(Container)`
   height: 100%;
@@ -22,7 +23,7 @@ export const WrapContent = styled.div`
   max-width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  
+  ${scrollbarStyle}
   &.wrap-content__tow-colm {
     display: grid;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);

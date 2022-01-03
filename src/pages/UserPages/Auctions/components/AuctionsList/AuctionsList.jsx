@@ -1,147 +1,79 @@
-import React, { useState } from 'react'
-
-import LoadingSpinner from 'components/Base/LoadingSpinner'
-import CardBody from './components/CardBody'
+import React, { useEffect, useState } from 'react'
 
 import { LoadingWrap } from 'constants/style'
+import AuctionCard from './components/AuctionCard'
+import { SkeletonAuctionLoading } from 'components/Base/SkeletonLoading'
+import { fillArray } from 'func/useful'
+import Button from 'components/Base/Buttons/Button'
+import { concat, slice } from 'lodash'
 
-import { useDispatch } from 'react-redux'
+const LOAD_TYPES = { load: 'load', empty: 'empty', error: 'error', loaded: 'loaded' }
 
-import Status from './components/Status'
-import ModalBid from '../CreateAuctionBtn/ModalBid'
-import { convertToMonthDayYear, remainDate } from 'func/convertDate'
-import { executeAuction } from 'store/auctions/action-creators'
-import { setCreatedStepsLimit, setCreateObj, setStepCounter } from 'store/modal-handler/action-creators'
-import CardDropdownItems from './components/CardDropdownItems'
-import ListCard from 'components/Custom/PageLists/ListCard'
-import { CONTRACTS_NAMES } from 'constants/contracts'
+function AuctionsList ({ auctions, loadingAuctions }) {
+  const LIMIT = 9
+  const LENGTH = auctions?.length
 
-function AuctionsList (props) {
-  const { auctions, loading, errorMessage, activeTab } = props
-  const dispatch = useDispatch()
-  const [modalShow, setModalShow] = useState(false)
-  const [inf, setInf] = useState(null)
+  const [state, setState] = useState(LOAD_TYPES.load)
 
-  const onAuctionBid = (user, vaultId, contract, id, bid) => {
-    setInf({
-      user,
-      vaultId,
-      contract,
-      id: id
-    })
-    dispatch(setStepCounter(1))
-    dispatch(setCreatedStepsLimit(2))
-    setModalShow(true)
-    dispatch(setCreateObj({ first: activeTab }))
+  const [showMore, setShowMore] = useState(false)
+  const [list, setList] = useState([])
+  const [index, setIndex] = useState(LIMIT)
+
+  const handleNextProposals = () => {
+    const newIndex = index + LIMIT
+    const newShowMore = newIndex < LENGTH - 1
+    const newList = concat(list, slice(auctions, index, newIndex))
+    setIndex(newIndex)
+    setList(newList)
+    setShowMore(newShowMore)
   }
 
-  const onAuctionExecute = (user, vaultId, contract, id) => {
-    dispatch(
-      executeAuction({
-        user,
-        vaultId,
-        contract,
-        id: id
-      })
-    )
-  }
+  useEffect(() => {
+    if (!auctions?.length && !loadingAuctions) {
+      setState(LOAD_TYPES.empty)
+    }
+    if (auctions?.length) {
+      setList(slice(auctions, 0, LIMIT))
+      setState(LOAD_TYPES.loaded)
+      if (auctions.length > LIMIT) {
+        setShowMore(true)
+      }
+    }
+  }, [loadingAuctions, auctions])
 
-  return (
-        <>
-            {loading
-              ? (
-                <LoadingWrap>
-                    <LoadingSpinner />
-                </LoadingWrap>
-                )
-              : errorMessage
-                ? (
-                <p>No auctions</p>
-                  )
-                : auctions.length === 0
-                  ? (
-                <p>No auctions</p>
-                    )
-                  : (
+  switch (state) {
+    case LOAD_TYPES.empty:
+      return <p>No Auctions</p>
+    case LOAD_TYPES.loaded: {
+      return (
                 <div>
-                    {auctions.map((auction, i) => {
-                      return (
-                            <ListCard
-                                key={auction?.contract === CONTRACTS_NAMES.systemSurplusAuction ? auction.id : i + auction?.contract}
-                                id={auction?.contract === CONTRACTS_NAMES.systemSurplusAuction ? auction.id : i + auction?.contract}
-                                headerLeftSide={
-                                    <>
-                                        <h1>{auction?.title}</h1>
-                                        <Status auction={auction} />
-                                    </>
-                                }
-                                dropdownItems={
-                                    <CardDropdownItems
-                                        auction={auction}
-                                        handleExecute={() => {
-                                          onAuctionExecute(
-                                            auction.user,
-                                            auction.userVaultId,
-                                            auction.contract,
-                                            auction?.id
-                                          )
-                                        }}
-                                        handleBid={() => {
-                                          onAuctionBid(
-                                            auction.user,
-                                            auction.userVaultId,
-                                            auction.contract,
-                                            auction?.id
-                                          )
-                                        }}
-                                        shareText={`${window.location.origin}/q-governance/proposal/${auction.contract}/${auction.id}`}
-                                    />
-                                }
-                                collapsedContent={<CardBody data={auction} />}
-                                content={
-                                    <div className="list-card__three-colm">
-                                        <div>
-                                            <h5>Bid Until</h5>
-                                            <p>{convertToMonthDayYear(auction.endTime)}</p>
-                                        </div>
-                                        <div>
-                                            <h5>Remaining Time for Bid</h5>
-                                            <p>{remainDate(auction.endTime)}</p>
-                                        </div>
-                                        <div>
-                                            {auction.contract === CONTRACTS_NAMES.liquidationAuction
-                                              ? (
-                                                <>
-                                                    <h5>Vault Owner</h5>
-                                                    <p>{auction.user}</p>
-                                                </>
-                                                )
-                                              : (
-                                                <>
-                                                    <h5>Auction Id</h5>
-                                                    <p>{auction.id}</p>
-                                                </>
-                                                )}
-                                        </div>
-                                    </div>
-                                }
+                    {list.map((auction, i) => (
+                        <AuctionCard auction={auction} key={i + auction.contract} id={auction.id + auction.contract} />
+                    ))}
+                    {showMore
+                      ? (
+                        <LoadingWrap>
+                            <Button
+                                margin="0 0 5% 0"
+                                width="140px"
+                                title="Show more"
+                                handleButton={handleNextProposals}
                             />
-                      )
-                    })}
+                        </LoadingWrap>
+                        )
+                      : null}
                 </div>
-                    )}
-            <ModalBid
-                inf={inf}
-                activeTab={activeTab}
-                modalShow={modalShow}
-                onHide={() => {
-                  setModalShow(false)
-                  dispatch(setCreateObj({}))
-                  dispatch(setStepCounter(1))
-                }}
-            />
-        </>
-  )
+      )
+    }
+    default:
+      return (
+                <div>
+                    {fillArray(5).map((id) => (
+                        <SkeletonAuctionLoading key={id} />
+                    ))}
+                </div>
+      )
+  }
 }
 
 export default AuctionsList

@@ -5,6 +5,7 @@ import { Redirect } from 'react-router'
 import { detectEthereumProvider } from 'store/user-auth/action-creators'
 import { getCheckIsUserRootNode } from 'store/root-node/action-creators'
 import { userAddressMetamask } from 'store/user-inf/selectors'
+import ErrorBoundary from 'components/Custom/ErrorBoundary'
 
 export function AuthProtect (ProtectComponent, additionalProps = {}) {
   function ProtectRoute (props) {
@@ -29,15 +30,20 @@ export function AuthProtect (ProtectComponent, additionalProps = {}) {
 
     const prop = { ...props, ...additionalProps }
     if (!ethereum) {
-      return <Redirect
-        to="/start-configurations"
-      >
-        <ProtectComponent {...prop} />
-      </Redirect>
+      return (
+        <ErrorBoundary>
+          <Redirect to="/start-configurations">
+            <ProtectComponent {...prop} />
+          </Redirect>
+        </ErrorBoundary>
+      )
     } else {
-      return <ProtectComponent {...prop} />
+      return (
+        <ErrorBoundary>
+          <ProtectComponent {...prop} />
+        </ErrorBoundary>
+      )
     }
   }
-
   return ProtectRoute
 }

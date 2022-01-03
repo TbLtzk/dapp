@@ -1,3 +1,4 @@
+import { scrollbarStyle } from 'constants/globalStyle'
 import styled, { css } from 'styled-components'
 
 export const TableWrapper = styled.span`
@@ -6,6 +7,8 @@ export const TableWrapper = styled.span`
   max-width: 100%;
   overflow-x: auto;
   margin-bottom: 10px;
+
+  ${scrollbarStyle}
 
   .react-bootstrap-table-pagination {
     > div:first-of-type {
@@ -98,6 +101,4 @@ export const PagesItemWrapper = styled.li`
     color: ${(props) => props.theme.colors.white};
     margin-right: 10px;
   }
-
- 
 `

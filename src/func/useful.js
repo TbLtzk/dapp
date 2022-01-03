@@ -1,4 +1,6 @@
 import { BigNumber } from 'bignumber.js'
+import { CONTRACTS_NAMES } from 'constants/contracts'
+import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper'
 import { orderBy } from 'lodash'
 
 export const errorHandler = (error, field, min = 0, max = 100) => {
@@ -15,25 +17,6 @@ export const errorHandler = (error, field, min = 0, max = 100) => {
       return 'Validation error!'
   }
 }
-
-export const removeCurrentProposals = (arr1, arr2, removeCurrProp) => {
-  if (removeCurrProp) {
-    return arr2
-  } else {
-    return [...arr1, ...arr2]
-  }
-}
-
-export const sortByVotingEndTime = (array) => {
-  return [...array].flat().sort((a, b) => Number(b.votingEndTime - Number(a.votingEndTime)))
-}
-
-export const getUniqueProposals = (array) => {
-  return array.filter(
-    (elem, index, self) => self.findIndex((t) => t.id === elem.id && t.contract === elem.contract) === index
-  )
-}
-
 export const getMinimalActiveBlockHeight = async () => {
   const blocksDependsOnVersion = window.ethereum.networkVersion === '35442' ? 40000 : 300000
   const block = await window.web3.eth.getBlock('latest')
@@ -53,10 +36,6 @@ export const uintPercentToNumber = (num) => {
   if (num >= 10 ** 27) return 100
 
   return num / 10 ** 27
-}
-
-export function sortByIdAndFlat (array) {
-  return array.flat().sort((a, b) => b.id - a.id)
 }
 
 export const sortAndCountProposals = (proposals) => {
@@ -82,10 +61,10 @@ export const sortAndCountProposals = (proposals) => {
       )
     }
   })
-  return [proposalsCount, groupProposals(activeProposalsIds), groupProposals(endedProposalsIds)]
+  return [proposalsCount, groupArrayByBlockNumber(activeProposalsIds), groupArrayByBlockNumber(endedProposalsIds)]
 }
 
-const groupProposals = (array) => {
+export const groupArrayByBlockNumber = (array) => {
   return orderBy(array.flat(), ['blockNumber'], ['desc', 'asc'])
 }
 
@@ -122,4 +101,21 @@ export const getPercentageFormat = (number) => {
 
 export const addIndex = (array) => {
   return array.map((item, idx) => ({ id: idx + 1, ...item }))
+}
+
+export const createShareText = (type, contract, id, user) => {
+  const link = `${window.location.origin}`
+  switch (type) {
+    case 'proposal': {
+      return link + `/q-governance/proposal/${contract}/${id}`
+    }
+    case 'auction': {
+      const auctionPart = `/auction/${transformAuctionNameToAuctionType(contract)}/${id}`
+      if (contract === CONTRACTS_NAMES.liquidationAuction) {
+        return link + auctionPart + '+' + user
+      } else {
+        return link + auctionPart
+      }
+    }
+  }
 }

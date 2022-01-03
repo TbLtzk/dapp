@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { executedProposalSelector } from 'store/voting/proposals/selectors'
 import { setExecutedProposal } from 'store/voting/proposals/action-creators'
 
-const LOAD_TYPES = { load: 'load', empty: 'empty', error: 'error', loaded: 'loaded' }
+const LOAD_TYPES = { load: 'load', empty: 'empty', loaded: 'loaded' }
 
 function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
   const executedProposal = useSelector(executedProposalSelector)
@@ -64,8 +64,6 @@ function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
   }
 
   switch (state) {
-    case LOAD_TYPES.error:
-      return <p>Error loaded proposals</p>
     case LOAD_TYPES.empty:
       return <p>No proposals</p>
     case LOAD_TYPES.loaded:
@@ -76,14 +74,19 @@ function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
                             key={proposal.id + proposal?.contract}
                             id={proposal.id + proposal?.contract}
                             proposal={proposal}
-                            oneProposalPage={false}
+                            onePage={false}
                             proposalsKind={proposalsKind}
                         />
                     ))}
                     {showMore
                       ? (
                         <LoadingWrap>
-                            <Button margin='0 0 15px 0' width="100px" title="Show more" handleButton={handleNextProposals} />
+                            <Button
+                                margin="0 0 5% 0"
+                                width="140px"
+                                title="Show more"
+                                handleButton={handleNextProposals}
+                            />
                         </LoadingWrap>
                         )
                       : null}

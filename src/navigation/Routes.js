@@ -18,6 +18,8 @@ import TimeLocks from '../pages/UserPages/TimeLocks'
 import AlertTemplate from 'components/Custom/Alerts/AlertTemplate'
 import RootNodeStaking from 'pages/UserPages/RootNodeStaking'
 import ValidatorStaking from 'pages/UserPages/ValidatorStaking'
+import OneAuctionPage from 'pages/UserPages/OneAuctionPage'
+import NotFound from 'pages/UserPages/NotFound'
 
 function Routes () {
   const options = {
@@ -31,14 +33,13 @@ function Routes () {
   }
 
   return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
+  // eslint-disable-next-line react/jsx-props-no-spreading
+
     <AlertProvider template={AlertTemplate} {...options}>
       <Switch>
         <Route exact path="/" component={AuthProtect(Dashboard)} />
         <Route exact path="/q-parameters" component={AuthProtect(Manage)} />
         <Route exact path="/start-configurations" component={StartConfigurations} />
-      </Switch>
-      <Switch>
         <Route exact path="/q-governance" component={AuthProtect(Governance)} />
         <Route
           exact
@@ -81,7 +82,9 @@ function Routes () {
 
         <Route exact path="/saving-and-borrowing" component={AuthProtect(SavingAndBorrowing)} />
         <Route exact path="/time-locks" component={AuthProtect(TimeLocks)} />
+        <Route exact path="/auction/:contract?/:id?" component={AuthProtect(OneAuctionPage)} />
         <Route exact path="/q-governance/proposal/:contract?/:id?" component={AuthProtect(OneProposalPage)} />
+        <Route component={NotFound} />
       </Switch>
     </AlertProvider>
   )

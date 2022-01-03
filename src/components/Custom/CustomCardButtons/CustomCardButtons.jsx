@@ -4,7 +4,7 @@ import { useAccordionToggle } from 'react-bootstrap'
 import Button from 'components/Base/Buttons/Button'
 import CopyToClipboard from 'react-copy-to-clipboard'
 
-function CustomHeaderButtons ({ eventKey, shareText, open, setOpen = () => {}, oneProposalPage }) {
+function CustomCardButtons ({ eventKey, shareText, open, setOpen = () => {}, onePage }) {
   const decoratedOnClick = useAccordionToggle(eventKey, () => {})
   const [copy, setCopy] = useState(false)
 
@@ -30,8 +30,8 @@ function CustomHeaderButtons ({ eventKey, shareText, open, setOpen = () => {}, o
                     </div>
                 </CopyToClipboard>
             </Tooltip>
-            {oneProposalPage ? null : <div style={{ width: '20px' }} />}
-            {oneProposalPage
+            {onePage ? null : <div style={{ width: '20px' }} />}
+            {onePage
               ? null
               : (
                 <Button iconFontSize="16px" handleButton={handleOpen} icon={`chevron-${open ? 'up' : 'down'}`} />
@@ -40,4 +40,4 @@ function CustomHeaderButtons ({ eventKey, shareText, open, setOpen = () => {}, o
   )
 }
 
-export default CustomHeaderButtons
+export default CustomCardButtons

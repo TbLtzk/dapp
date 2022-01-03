@@ -1,9 +1,14 @@
-import AuctionService from './auction-service-helper'
+import AuctionService, { ERROR_TYPES, getStatusTransformation } from './auction-service-helper'
 import { CONTRACT_TYPES } from 'constants/contracts'
 
-import { getStatusTransformation } from './auction-helper'
 import { toWei, fromWei } from 'func/balance'
 import { getSystemDebtAuctionInstance } from 'contracts/contract-instance'
+import { remainDate } from 'func/convertDate'
+import { groupArrayByBlockNumber } from 'func/useful'
+
+export function creationSystemDebtContractObj () {
+  return new SystemDebtAuction()
+}
 
 export default class SystemDebtAuction extends AuctionService {
   constructor () {
@@ -11,50 +16,27 @@ export default class SystemDebtAuction extends AuctionService {
     this.contractName = CONTRACT_TYPES.systemDebtAuction
   }
 
-  async getAuctionData (promiseRes, inf) {
-    const objRes = {}
-    objRes.status = getStatusTransformation(promiseRes.status)
-    objRes.bidder = promiseRes.bidder
-    objRes.bid = inf.bid
-    objRes.id = inf.id
-    objRes.endTime = promiseRes.endTime
-    const highestBid = promiseRes.highestBid
-    const reserveLot = promiseRes.reserveLot
-    objRes.highestBid = fromWei(highestBid)
-    objRes.reserveLot = fromWei(reserveLot)
-    objRes.title = 'System Debt Auction'
-    objRes.contract = CONTRACT_TYPES.systemDebtAuction
-    return { ...objRes }
+  prepareAuctionData (data, info) {
+    const completedInfo = {}
+    completedInfo.status = getStatusTransformation(data.status)
+    completedInfo.statusNumber = data.status
+    completedInfo.bidder = data.bidder
+    completedInfo.bid = data.highestBid
+    completedInfo.id = info.id
+    completedInfo.endTime = data.endTime
+    completedInfo.highestBid = fromWei(data.highestBid)
+    completedInfo.reserveLot = fromWei(data.reserveLot)
+    completedInfo.title = 'System Debt Auction'
+    completedInfo.contract = CONTRACT_TYPES.systemDebtAuction
+    completedInfo.blockNumber = info.blockNumber
+    completedInfo.disableBidButton = !remainDate(data.endTime)
+    completedInfo.disableExecuteButton = !!remainDate(data.endTime)
+
+    return completedInfo
   }
 
-  async getAuctions (activeAuction) {
-    this.getAuctionsCount()
-
-    const auctionEvents = await this.getAuctionsEvent()
-    const auctionInf = auctionEvents?.map((evt) => ({
-      bidder: evt.returnValues._bidder,
-      bid: evt.returnValues._bid,
-      id: evt.returnValues._auctionId
-    }))
-
-    if (auctionInf.length > 0) {
-      const auction = await Promise.all(auctionInf.map((inf) => this.getAuction(inf)))
-
-      if (activeAuction) {
-        const active = auction.filter((auction) => auction.data.status === '1')
-        return await Promise.all(active.map((active) => this.getAuctionData(active.data, active.inf)))
-      } else {
-        const ended = auction.filter((auction) => auction.data.status === '2' || auction.data.status === '0')
-        return await Promise.all(ended.map((auction) => this.getAuctionData(auction.data, auction.inf)))
-      }
-    }
-    return []
-  }
-
-  async getAuctionsEvents () {
-    const contract = await this.getContractInstance(this.contractName)
+  async getAuctionsEvents (contract) {
     const pastEvents = await contract.instance.getPastEvents('AuctionStarted', { fromBlock: 0, toBlock: 'latest' })
-
     if (!pastEvents.length) {
       return []
     } else {
@@ -68,12 +50,20 @@ export default class SystemDebtAuction extends AuctionService {
     }
   }
 
-  async getAuctionsCount () {
-    const auctionsInfo = await this.getAuctionsEvents()
-    const allAuctions = await Promise.all(auctionsInfo.map((evt) => this.getAuction(evt)))
+  async getAuctions () {
+    const contract = await this.getContractInstance()
 
-    const activeAuctions = allAuctions.filter((auction) => auction.data.status === '1')
-    const endedAuctions = allAuctions.filter((auction) => auction.data.status === '2' || auction.data.status === '0')
+    const auctionsInfo = await this.getAuctionsEvents(contract)
+    const allAuctionsData = await Promise.all(auctionsInfo.map((event) => this.getAuction(event)))
+
+    const preparedAuctionsData = allAuctionsData.map((auction) => this.prepareAuctionData(auction.data, auction.info))
+
+    const groupedAuctionsByBlockNumber = groupArrayByBlockNumber(preparedAuctionsData)
+
+    const activeAuctions = groupedAuctionsByBlockNumber.filter((auction) => auction.statusNumber === '1')
+    const endedAuctions = groupedAuctionsByBlockNumber.filter(
+      (auction) => auction.statusNumber === '2' || auction.statusNumber === '0'
+    )
 
     return {
       contract: this.contractName,
@@ -82,11 +72,17 @@ export default class SystemDebtAuction extends AuctionService {
     }
   }
 
-  async getOneAuction (inf, active) {
-    if (inf.id) {
-      const promiseRes = await this.getOneAuctionData(inf.id, null)
-      const result = await this.getAuctionData(promiseRes, inf)
-      return [result]
+  async getOneAuction (id) {
+    try {
+      const contract = await this.getContractInstance()
+      const info = await contract.instance.methods.auctions(id).call()
+      if (!Number(info.endTime)) {
+        return { error: ERROR_TYPES.notExist }
+      } else {
+        return this.prepareAuctionData(info, { id })
+      }
+    } catch (error) {
+      return { error: ERROR_TYPES.wrongLink }
     }
   }
 

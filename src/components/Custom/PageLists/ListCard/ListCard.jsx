@@ -4,7 +4,7 @@ import { ListCardWrp, ListCardHeader, ListCardBody } from './styles'
 import { Accordion, useAccordionToggle, DropdownButton } from 'react-bootstrap'
 
 import { theme } from 'store/theme/selectors'
-import CustomHeaderButtons from 'pages/UserPages/Proposals/components/ProposalsList/components/CustomHeaderButtons'
+import CustomHeaderButtons from 'components/Custom/CustomCardButtons'
 
 export function CustomToggle ({ eventKey }) {
   const decoratedOnClick = useAccordionToggle(eventKey, () => {})

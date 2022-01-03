@@ -14,14 +14,12 @@ import CreateStep1 from './CreateStep1'
 import CreateStep2 from './CreateStep2'
 
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers'
-import { checkTabContract } from './constants'
 import { ProgressBar } from 'react-bootstrap'
 import { getStableCoinInstance } from 'contracts/contract-instance'
 import { switchContract } from 'contracts/helpers/auctions-helpers/auction-service-helper'
 import { setTransactionCounter } from 'store/transaction-handler/action-creators'
 
-function ModalBid (props) {
-  const { modalShow, onHide, activeTab, inf } = props
+function ModalBid ({ modalShow, onHide, activeTab, inf }) {
   const { register, errors, handleSubmit } = useForm()
   const dispatch = useDispatch()
 
@@ -34,17 +32,28 @@ function ModalBid (props) {
   const switchProposalContentDependsOnType = useCallback(() => {
     switch (stepCounter) {
       case 1:
-        return <CreateStep1 activeTab={activeTab} register={register} errors={errors} />
+        return (
+                    <CreateStep1 activeTab={activeTab} contract={inf?.contract} register={register} errors={errors} />
+        )
       case 2:
-        return <CreateStep2 formData={formData} activeTab={activeTab} register={register} errors={errors} />
+        return (
+                    <CreateStep2
+                        formData={formData}
+                        contract={inf?.contract}
+                        activeTab={activeTab}
+                        register={register}
+                        errors={errors}
+                    />
+        )
       default:
         return null
     }
   }, [activeTab, stepCounter, register, errors, stepLimit, dispatch])
-  const onNext = async (data) => {
+
+  async function onNext (data) {
     const stableCoin = await getStableCoinInstance()
-    const contractName = await checkTabContract(activeTab)
-    const { address } = await switchContract(contractName)
+    const { address } = await switchContract(inf.contract)
+
     dispatch(setCreateObj({ ...formData, ...data }))
     if (approveBtn) {
       dispatch(setTransactionCounter(1))
@@ -78,7 +87,7 @@ function ModalBid (props) {
             }}
             continueBtnTitle={stepLimit !== stepCounter ? (approveBtn ? 'Approve' : 'Next') : 'Confirm'}
             continueBtnHandler={handleSubmit(onNext)}
-            modalTitle={`Bid for ${activeTab?.replace(/-/g, ' ')} Auction`}
+            modalTitle={`Bid for ${activeTab?.replace(/-/g, ' ')} auction`}
             content={
                 <>
                     <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)} />

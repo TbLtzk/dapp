@@ -3,7 +3,6 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/user-inf/selectors'
 import { debtSB, loadingPerformNetting, surplusSB, systemBalanceSB } from 'store/system-balance/selectors'
-import { lastAuctionModification } from 'store/auctions/selectors'
 import { availableAmountSR, reserveBalanceSelector } from 'store/system-reserve/selectors'
 import { accountBalance, userBalance } from 'store/q-vault/selectors'
 
@@ -18,6 +17,7 @@ import SystemCard from 'components/Custom/PageLists/SidebarCards/SystemCard'
 import { fN } from 'func/useful'
 import { getSavingAviableToDeposit } from 'store/saving-assets/action-creators'
 import { savingAviableToDepositSelector } from 'store/saving-assets/selectors'
+import { getSymbol } from 'store/stable-coin/action-creators'
 
 function SidebarCards () {
   const dispatch = useDispatch()
@@ -32,7 +32,6 @@ function SidebarCards () {
   const availableAmount = useSelector(availableAmountSR)
   const userQVBalance = useSelector(userBalance)
   const loadingPerfNetting = useSelector(loadingPerformNetting)
-  const isAuctionModified = useSelector(lastAuctionModification)
   const reserveBalance = useSelector(reserveBalanceSelector)
 
   const [surplusLot, setSurplusLot] = useState('0')
@@ -40,7 +39,7 @@ function SidebarCards () {
 
   useEffect(() => {
     dispatch(getAccountBalance(userAddress))
-  }, [isAuctionModified])
+  }, [])
 
   useEffect(() => {
     dispatch(getSurplus())
@@ -49,13 +48,14 @@ function SidebarCards () {
     dispatch(getAvailableAmount())
     dispatch(getSavingAviableToDeposit())
     dispatch(getUserBalance(userAddress))
-  }, [dispatch, loadingPerfNetting, isAuctionModified])
+    dispatch(getSymbol())
+  }, [dispatch, loadingPerfNetting])
 
   useEffect(() => {
     dispatch(getSystemReserveBalance())
     getEPDRUint('governed.EPDR.QUSD_surplusLot', setSurplusLot)
     getEPDRUint('governed.EPDR.reserveLot', setReserveLot)
-  }, [loadingPerfNetting, isAuctionModified])
+  }, [loadingPerfNetting])
 
   const statsData = useMemo(() => {
     return [

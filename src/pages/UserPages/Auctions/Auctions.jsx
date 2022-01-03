@@ -1,38 +1,23 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import PageWrap from 'components/Base/PageWrap'
-import BigTabsView from 'components/Base/Tabs/BigTabsView'
-import AuctionsTab from './components/AuctionsTab'
 import CreateAuctionBtn from './components/CreateAuctionBtn'
 
 import {
-  liquidationAuctions,
-  systemDebtAuctions,
-  systemSurplusAuctions,
-  errorM,
-  loadingAuctions,
-  endedAuctionsArr,
-  endedLoadingAuctions,
-  endedErrorM
+  liquidationAuctionsSelector,
+  systemDebtAuctionsSelector,
+  systemSurplusAuctionsSelector
 } from 'store/auctions/selectors'
-import { getAuctionsList, getEndedAuctionsList } from 'store/auctions/action-creators'
 
 import { AUCTIONS_TYPES } from 'constants/statuses'
-import { useDispatch, useSelector } from 'react-redux'
-import { getSymbol } from 'store/stable-coin/action-creators'
-import { transactionLoading } from 'store/transaction-handler/selectors'
+import { useSelector } from 'react-redux'
+import { isEmpty } from 'lodash'
+import { AuctionsTabWrp } from './styles'
+import AuctionsList from './components/AuctionsList'
+import BigTabsView from 'components/Base/Tabs/BigTabsView'
+import SidebarCards from './components/SidebarCards'
 
-function Auctions (props) {
-  const { auctionsType } = props
-  const dispatch = useDispatch()
-
+function Auctions ({ auctionsType }) {
   const auctions = getAuctions(auctionsType)
-  const endedAuctions = useSelector(endedAuctionsArr)
-  const isLoading = useSelector(loadingAuctions)
-  const isEndedLoading = useSelector(endedLoadingAuctions)
-  const error = useSelector(errorM)
-  const endedError = useSelector(endedErrorM)
-  const loadingTransaction = useSelector(transactionLoading)
-
   const name = getPageName(auctionsType)
 
   function getPageName (type) {
@@ -51,51 +36,39 @@ function Auctions (props) {
   function getAuctions (type) {
     switch (type) {
       case AUCTIONS_TYPES.liquidation:
-        return useSelector(liquidationAuctions)
+        return useSelector(liquidationAuctionsSelector)
       case AUCTIONS_TYPES.systemDebt:
-        return useSelector(systemDebtAuctions)
+        return useSelector(systemDebtAuctionsSelector)
       case AUCTIONS_TYPES.systemSurplus:
-        return useSelector(systemSurplusAuctions)
+        return useSelector(systemSurplusAuctionsSelector)
     }
   }
-
-  useEffect(() => {
-    if (!loadingTransaction) {
-      dispatch(getAuctionsList(auctionsType, true))
-      dispatch(getEndedAuctionsList(auctionsType, false))
-      dispatch(getSymbol())
-    }
-  }, [loadingTransaction])
 
   const tabsItems = [
     {
       label: 'active-auctions',
       title: 'Active auctions',
       content: (
-                <AuctionsTab
-                    isLoading={isLoading}
-                    auctions={auctions}
-                    auctionsType={auctionsType}
-                    errorMessage={error}
-                />
+                <AuctionsTabWrp>
+                    <AuctionsList auctions={auctions?.activeAuctions} loadingAuctions={isEmpty(auctions)} />
+                    <SidebarCards />
+                </AuctionsTabWrp>
       )
     },
     {
       label: 'ended-auctions',
       title: 'Ended auctions',
       content: (
-                <AuctionsTab
-                    isLoading={isEndedLoading}
-                    auctions={endedAuctions}
-                    auctionsType={auctionsType}
-                    errorMessage={endedError}
-                />
+                <AuctionsTabWrp>
+                    <AuctionsList auctions={auctions?.endedAuctions} loadingAuctions={isEmpty(auctions)} />
+                    <SidebarCards />
+                </AuctionsTabWrp>
       )
     }
   ]
 
   return (
-        <PageWrap headerTitle={name} headerExtra={<CreateAuctionBtn activeTab={auctionsType} />}>
+        <PageWrap headerTitle={name} headerExtra={<CreateAuctionBtn auctionsType={auctionsType} />}>
             <BigTabsView tabsItems={tabsItems} active={tabsItems[0]?.label} />
         </PageWrap>
   )

@@ -11,13 +11,11 @@ import InputGroup from 'components/Custom/ModalActions/InputGroup'
 
 import { liquidation, systemSurplus, systemDebt } from './constants'
 
-import { checkTabContract } from '../constants'
 import { symbol } from 'store/stable-coin/selectors'
 import { switchContract } from 'contracts/helpers/auctions-helpers/auction-service-helper'
 import { getStableCoinInstance } from 'contracts/contract-instance'
 
-function CreateStep1 (props) {
-  const { activeTab, register, errors } = props
+function CreateStep1 ({ activeTab, register, errors, contract }) {
   const formData = useSelector(formObject)
   const userAddress = useSelector(userAddressMetamask)
   const dispatch = useDispatch()
@@ -25,8 +23,7 @@ function CreateStep1 (props) {
 
   const onChangeInput = async (value) => {
     const stableCoin = await getStableCoinInstance()
-    const contractName = await checkTabContract(activeTab)
-    const { address } = await switchContract(contractName)
+    const { address } = await switchContract(contract)
     const allowance = await stableCoin.allowance(userAddress, address)
     if (Number(value) > allowance) {
       dispatch(setApproveModalBtn(true))
