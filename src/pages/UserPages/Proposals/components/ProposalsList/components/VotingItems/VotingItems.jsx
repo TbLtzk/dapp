@@ -15,7 +15,9 @@ import ModalVote from '../../../CreateQProposalBtn/ModalVote'
 
 const TOOLTIP_INFO = {
   votePeriod: 'Voting period has ended.',
+  userVoted: 'User already voted.',
   vetoPeriod: 'Veto period not started or ended.',
+  userVetoed: 'User already vetoed.',
   isNotRootNode: 'User is not root node.',
   isDeFiExpert: 'User is not member of DeFi risk expert panel.',
   isFeesExpert: 'User is not member of Q fees & incentives expert panel.'
@@ -45,6 +47,8 @@ function VotingItems ({ proposal }) {
   function checkVoteUser () {
     if (proposal.status === 'Accepted') {
       return { disabled: true, info: TOOLTIP_INFO.votePeriod }
+    } else if (proposal.userVoted) {
+      return { disabled: proposal.userVoted, info: TOOLTIP_INFO.userVoted }
     } else if (contractsWithoutVeto) {
       return { disabled: !isRootNode, info: isRootNode ? TOOLTIP_INFO.votePeriod : TOOLTIP_INFO.isNotRootNode }
     } else if (epdrContract) {
@@ -63,12 +67,14 @@ function VotingItems ({ proposal }) {
   }
 
   function checkVetoUser () {
-    if (proposal.status === 'Pending') {
-      return { disabled: false, info: isRootNode ? TOOLTIP_INFO.vetoPeriod : TOOLTIP_INFO.isNotRootNode }
+    if (proposal.userVetoed) {
+      return { disabled: true, info: TOOLTIP_INFO.userVetoed }
+    } else if (proposal.status === 'Pending') {
+      return { disabled: true, info: isRootNode ? TOOLTIP_INFO.vetoPeriod : TOOLTIP_INFO.isNotRootNode }
     } else if (proposal.status === 'Accepted') {
-      return { disabled: isRootNode, info: isRootNode ? TOOLTIP_INFO.vetoPeriod : TOOLTIP_INFO.isNotRootNode }
+      return { disabled: !isRootNode, info: isRootNode ? TOOLTIP_INFO.vetoPeriod : TOOLTIP_INFO.isNotRootNode }
     } else {
-      return { disabled: false, info: '' }
+      return { disabled: true, info: '' }
     }
   }
 
@@ -126,12 +132,12 @@ function VotingItems ({ proposal }) {
                         {contractsWithoutVeto
                           ? null
                           : (
-                            <Tooltip disabled={isUserCanVeto.disabled} additionalInfo={isUserCanVeto.info}>
+                            <Tooltip disabled={!isUserCanVeto.disabled} additionalInfo={isUserCanVeto.info}>
                                 <Button
                                     icon="window-close"
                                     width="75px"
                                     title="Veto"
-                                    disabled={!isUserCanVeto.disabled}
+                                    disabled={isUserCanVeto.disabled}
                                     handleButton={handleVote}
                                 />
                             </Tooltip>
