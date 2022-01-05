@@ -6,15 +6,10 @@ import { slice, concat } from 'lodash'
 import ListCard from './components/ListCard'
 import { fillArray } from 'func/useful'
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading'
-import { useDispatch, useSelector } from 'react-redux'
-import { executedProposalSelector } from 'store/voting/proposals/selectors'
-import { setExecutedProposal } from 'store/voting/proposals/action-creators'
 
 const LOAD_TYPES = { load: 'load', empty: 'empty', loaded: 'loaded' }
 
 function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
-  const executedProposal = useSelector(executedProposalSelector)
-  const dispatch = useDispatch()
   const [state, setState] = useState(LOAD_TYPES.load)
 
   const LENGTH = proposals.length
@@ -37,21 +32,7 @@ function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
     checkProposals()
   }, [proposals, proposalsCount])
 
-  useEffect(() => {
-    if (executedProposal) {
-      const newList = list.filter(
-        (proposal) =>
-          !(proposal.id === executedProposal.idProposal && proposal.contract === executedProposal.contract)
-      )
-      setList(newList)
-      if (!newList.length) {
-        setState(LOAD_TYPES.empty)
-      }
-      dispatch(setExecutedProposal(null))
-    }
-  }, [executedProposal, dispatch, list])
-
-  function checkProposals () {
+  const checkProposals = () => {
     if (proposals.length) {
       setList(slice(proposals, 0, LIMIT))
       setState(LOAD_TYPES.loaded)

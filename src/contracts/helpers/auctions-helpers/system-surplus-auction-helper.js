@@ -97,9 +97,8 @@ export default class SystemSurplusAuction extends AuctionService {
     }
   }
 
-  async createAuction (data, userAddress) {
+  async createAuction (data) {
     const contract = await getSystemSurplusAuctionInstance()
-    await this.getAllowance(userAddress, contract.address, data?.bid)
     return await contract.startAuction({ qAmount: data?.bid })
   }
 

@@ -18,54 +18,53 @@ const web3 = new Web3(Web3.givenProvider)
 export let address = ''
 
 function LoadingMetaMask () {
-  const [isMetaMask, setIsMetaMask] = useState('loading')
+  const [isMetaMask, setIsMetaMask] = useState(LOAD_TYPES.loading)
   const [errorMessage, setErrorMessage] = useState('Please install MetaMask!')
   const dispatch = useDispatch()
 
-  const ethereum = window.ethereum
+  const { ethereum } = window
 
   const initMetamask = async () => {
-    web3.eth.net.getNetworkType((err, netId) => {
-      if (err) {
-        setIsMetaMask(LOAD_TYPES.initError)
-      }
-      if (netId !== 'private') {
-        setErrorMessage('Choose the correct network!')
-        setIsMetaMask(LOAD_TYPES.error)
-      }
-    })
-    web3.eth.getAccounts(async (err, accounts) => {
-      if (err != null) {
-        setIsMetaMask(LOAD_TYPES.error)
+    try {
+      const networks = ['35443', '35442', '35441']
+      if (!ethereum) {
         setErrorMessage('Please install MetaMask!')
-      } else if (!accounts.length) {
-        setIsMetaMask(LOAD_TYPES.notLogged)
+        setIsMetaMask(LOAD_TYPES.error)
       } else {
-        window.web3 = new Web3(ethereum)
-        window.web3.eth.handleRevert = true
-        dispatch(setUserAddress(accounts[0]))
-        address = accounts[0]
-        await getContractRegistryInstance()
-        dispatch(getNumberAllProposals())
-        dispatch(getAuctions(AUCTIONS_TYPES.all))
-        setIsMetaMask(LOAD_TYPES.loaded)
+        const networkId = await ethereum.request({ method: 'net_version' })
+        if (!networks.includes(networkId)) {
+          setErrorMessage('Choose the correct network!')
+          setIsMetaMask(LOAD_TYPES.error)
+        } else {
+          const accounts = await web3.eth.getAccounts()
+          if (accounts.length) {
+            window.web3 = new Web3(ethereum)
+            window.web3.eth.handleRevert = true
+            dispatch(setUserAddress(accounts[0]))
+            address = accounts[0]
+            await getContractRegistryInstance()
+            dispatch(getNumberAllProposals())
+            dispatch(getAuctions(AUCTIONS_TYPES.all))
+            setIsMetaMask(LOAD_TYPES.loaded)
+          } else {
+            setErrorMessage('Waiting for login in MetaMask!')
+            setIsMetaMask(LOAD_TYPES.notLogged)
+            await ethereum.request({ method: 'eth_requestAccounts' })
+            window.location.reload()
+          }
+        }
       }
-    })
-    ethereum?.on('accountsChanged', (accounts) => {
-      window.location.reload()
-    })
-    ethereum?.on('chainChanged', (networkId) => {
-      window.location.reload()
-    })
 
-    if (ethereum?.isMetaMask) {
-      try {
-        await new Promise((resolve, reject) => {
-          ethereum.enable()
-        })
-      } catch (error) {
-        setIsMetaMask(LOAD_TYPES.initError)
-      }
+      ethereum?.on('accountsChanged', () => {
+        window.location.reload()
+      })
+
+      ethereum?.on('chainChanged', () => {
+        window.location.reload()
+      })
+    } catch (err) {
+      setIsMetaMask(LOAD_TYPES.initError)
+      console.error(err)
     }
   }
 
@@ -75,7 +74,7 @@ function LoadingMetaMask () {
 
   switch (isMetaMask) {
     case LOAD_TYPES.notLogged:
-      return <StartConfigurations error="Waiting for login in MetaMask!" />
+      return <StartConfigurations error={errorMessage} />
     case LOAD_TYPES.error:
       return <StartConfigurations error={errorMessage} />
     case LOAD_TYPES.initError:

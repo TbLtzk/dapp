@@ -11,7 +11,3 @@ export const stepVoteCounterModal = (state) => state.proposals.stepVoteCounter
 /* for dashboard */
 export const constitutionHash = (state) => state.proposals.constitutionHash
 export const baseVotingWeightInfoSelector = (state) => state.proposals.baseVotingWeightInfo
-export const proposalSelector = (state) => state.proposals.proposal
-
-// exeuted one
-export const executedProposalSelector = (state) => state.proposals.executedProposal

@@ -7,9 +7,9 @@ import { rootActiveProposalsCountSelector } from 'store/voting/root-node-proposa
 import { expertActiveProposalsCountSelector } from 'store/voting/expert-proposals/selectors'
 import { slashingActiveProposalsCountSelector } from 'store/voting/slashing-proposals/selectors'
 import {
-  liquidationAuctionsCountSelector,
-  systemDebtAuctionsCountSelector,
-  systemSurplusAuctionsCountSelector
+  liquidationAuctionsSelector,
+  systemDebtAuctionsSelector,
+  systemSurplusAuctionsSelector
 } from 'store/auctions/selectors'
 
 import LogoImg from 'components/Base/LogoImg'
@@ -52,9 +52,14 @@ function Sidebar () {
   const expertActiveProposalsCount = useSelector(expertActiveProposalsCountSelector)
   const slashingActiveProposalsCount = useSelector(slashingActiveProposalsCountSelector)
 
-  const liquidationAuctionsCount = useSelector(liquidationAuctionsCountSelector)
-  const systemDebtAuctionsCount = useSelector(systemDebtAuctionsCountSelector)
-  const systemSurplusAuctionsCount = useSelector(systemSurplusAuctionsCountSelector)
+  const liquidationAuctions = useSelector(liquidationAuctionsSelector)
+  const liquidationActiveAuctionsCount = liquidationAuctions?.activeAuctions?.length
+
+  const systemDebtAuctions = useSelector(systemDebtAuctionsSelector)
+  const systemDebtActiveAuctionsCount = systemDebtAuctions?.activeAuctions?.length
+
+  const systemSurplusAuction = useSelector(systemSurplusAuctionsSelector)
+  const systemSurplusActiveAuctionsCount = systemSurplusAuction?.activeAuctions?.length
 
   const highlight = (location) => Number(history.location.pathname === '/' + location)
 
@@ -159,7 +164,7 @@ function Sidebar () {
                                             onClick={() => dispatch(getAuctions(AUCTIONS_TYPES.liquidation))}
                                             highlight={highlight('liquidation')}
                                             linkTo="/liquidation"
-                                            count={liquidationAuctionsCount.activeAuctions}
+                                            count={liquidationActiveAuctionsCount}
                                             linkTitle="– Liquidation"
                                         />
 
@@ -167,7 +172,7 @@ function Sidebar () {
                                             onClick={() => dispatch(getAuctions(AUCTIONS_TYPES.systemDebt))}
                                             highlight={highlight('system-debt')}
                                             linkTo="/system-debt"
-                                            count={systemDebtAuctionsCount.activeAuctions}
+                                            count={systemDebtActiveAuctionsCount}
                                             linkTitle="– System Debt"
                                         />
 
@@ -175,7 +180,7 @@ function Sidebar () {
                                             onClick={() => dispatch(getAuctions(AUCTIONS_TYPES.systemSurplus))}
                                             highlight={highlight('system-surplus')}
                                             linkTo="/system-surplus"
-                                            count={systemSurplusAuctionsCount.activeAuctions}
+                                            count={systemSurplusActiveAuctionsCount}
                                             linkTitle="– System Surplus"
                                         />
                                     </div>

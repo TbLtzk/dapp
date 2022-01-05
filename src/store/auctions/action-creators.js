@@ -25,20 +25,6 @@ export const getAuctions = (auctionTypes) => ({
   auctionTypes
 })
 
-export const setSystemDebtAuctionCount = (result) => ({
-  type: actionTypes.SET_SYSTEM_DEBT_AUCTIONS_COUNT,
-  result
-})
-
-export const setLiquidationAuctionCount = (result) => ({
-  type: actionTypes.SET_LIQUIDATION_AUCTIONS_COUNT,
-  result
-})
-export const setSystemSurplusAuctionCount = (result) => ({
-  type: actionTypes.SET_SYSTEM_SURPLUS_AUCTIONS_COUNT,
-  result
-})
-
 export const setSystemDebtAuctions = (result) => ({
   type: actionTypes.SET_SYSTEM_DEBT_AUCTIONS,
   result

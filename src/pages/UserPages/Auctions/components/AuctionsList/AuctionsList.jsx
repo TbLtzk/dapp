@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-
+import { concat, slice } from 'lodash'
 import { LoadingWrap } from 'constants/style'
 import AuctionCard from './components/AuctionCard'
+import Button from 'components/Base/Buttons/Button'
 import { SkeletonAuctionLoading } from 'components/Base/SkeletonLoading'
 import { fillArray } from 'func/useful'
-import Button from 'components/Base/Buttons/Button'
-import { concat, slice } from 'lodash'
 
 const LOAD_TYPES = { load: 'load', empty: 'empty', error: 'error', loaded: 'loaded' }
 
@@ -19,7 +18,7 @@ function AuctionsList ({ auctions, loadingAuctions }) {
   const [list, setList] = useState([])
   const [index, setIndex] = useState(LIMIT)
 
-  const handleNextProposals = () => {
+  const handleNextAuctions = () => {
     const newIndex = index + LIMIT
     const newShowMore = newIndex < LENGTH - 1
     const newList = concat(list, slice(auctions, index, newIndex))
@@ -28,7 +27,7 @@ function AuctionsList ({ auctions, loadingAuctions }) {
     setShowMore(newShowMore)
   }
 
-  useEffect(() => {
+  const handleGetAuctions = () => {
     if (!auctions?.length && !loadingAuctions) {
       setState(LOAD_TYPES.empty)
     }
@@ -39,6 +38,10 @@ function AuctionsList ({ auctions, loadingAuctions }) {
         setShowMore(true)
       }
     }
+  }
+
+  useEffect(() => {
+    handleGetAuctions()
   }, [loadingAuctions, auctions])
 
   switch (state) {
@@ -57,7 +60,7 @@ function AuctionsList ({ auctions, loadingAuctions }) {
                                 margin="0 0 5% 0"
                                 width="140px"
                                 title="Show more"
-                                handleButton={handleNextProposals}
+                                handleButton={handleNextAuctions}
                             />
                         </LoadingWrap>
                         )

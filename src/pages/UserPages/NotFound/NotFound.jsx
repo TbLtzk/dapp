@@ -7,8 +7,8 @@ function NotFound () {
   const history = useHistory()
   return (
         <WrapContainer direction="column">
-            <h5>Page do not exist</h5>
-            <Button title="Go home" handleButton={() => history.push('/')} />
+            <h5>Page does not exist</h5>
+            <Button title="Home" icon='home' handleButton={() => history.push('/')} />
         </WrapContainer>
   )
 }
