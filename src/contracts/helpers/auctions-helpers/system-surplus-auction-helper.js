@@ -104,7 +104,6 @@ export default class SystemSurplusAuction extends AuctionService {
 
   async bid (auctionId, bid, userAddress) {
     const contract = await getSystemSurplusAuctionInstance()
-    await this.getAllowance(userAddress, contract.address, bid)
     const result = await contract.bid(auctionId, {
       from: userAddress,
       qAmount: bid

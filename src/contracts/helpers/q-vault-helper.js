@@ -1,4 +1,4 @@
-import { getQVaultInstance } from 'contracts/contract-instance'
+import { contractRegistryInstance, getQVaultInstance } from 'contracts/contract-instance'
 import { calculateGas, fromWei, toWei } from 'func/balance'
 import { BN } from 'func/useful'
 
@@ -7,6 +7,11 @@ export async function getQVaultCompoundRateKeeper () {
   return await contract.instance.methods.compoundRateKeeper().call()
 }
 
+export async function getQHolderRewardPool () {
+  const address = await contractRegistryInstance.instance.methods.getAddress('tokeneconomics.qHolderRewardPool').call()
+  const balance = await window.web3.eth.getBalance(address)
+  return fromWei(balance)
+}
 export function handleDelegationsList (delegationsList) {
   const resultArr = []
   if (delegationsList === 0) {

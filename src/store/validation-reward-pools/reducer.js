@@ -6,7 +6,8 @@ const initialState = {
   balance: 0,
   lastUpdateOfCompoundRate: 0,
   loadingUpdateOfCompoundRate: false,
-  isStakerRewardPoolMsgDisplayed: false
+  isStakerRewardPoolMsgDisplayed: false,
+  rewardPoolsBalance: 0
 }
 
 export default function index (state = initialState, action) {
@@ -21,6 +22,12 @@ export default function index (state = initialState, action) {
         ...state,
         poolInfo: action.payload
       }
+    case actionTypes.SET_REWARD_POOLS_BALANCE: {
+      return {
+        ...state,
+        rewardPoolsBalance: action.payload
+      }
+    }
     case actionTypes.SET_VRP_DELEGATOR_SHARE_DATA:
       return {
         ...state,

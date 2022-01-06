@@ -29,7 +29,7 @@ import { getNowTimestamp } from 'func/convertDate'
 
 import { getQVaultInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance'
 
-import { getOutstandingDelegationRewardsList } from 'contracts/helpers/q-vault-helper'
+import { getOutstandingDelegationRewardsList, getQHolderRewardPool } from 'contracts/helpers/q-vault-helper'
 import ErrorHandler from 'func/ErrorHandler'
 
 function * getAccountBalanceGenerator ({ address }) {
@@ -240,13 +240,11 @@ function * getUpdateCompoundRateGenerator ({ address }) {
   try {
     yield put(setUpdateCompoundRate(true))
     const contract = yield call(getQVaultInstance)
-    const data = yield contract.updateCompoundRate({
+    yield contract.updateCompoundRate({
       from: address,
       gasBuffer: 1.2
     })
-    if (data) {
-      yield put(setUpdateCompoundRate('updated'))
-    }
+    yield put(setUpdateCompoundRate(false))
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
@@ -280,7 +278,8 @@ function * getBalanceDetailsGenerator () {
   try {
     const contract = yield call(getQVaultInstance)
     const data = yield contract.getBalanceDetails()
-    yield put(getQVBalanceSuccess(data))
+    const qHolderRewardPool = yield getQHolderRewardPool()
+    yield put(getQVBalanceSuccess({ ...data, qHolderRewardPool }))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }

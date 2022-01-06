@@ -12,13 +12,14 @@ import {
   setVRPLoadingValidatorsCompoundRate,
   getVRPBalance,
   setIsStakerRewardPoolMsgDisplayed,
+  setRewardPoolsBalance,
 } from "./action-creators";
 
 import { SET_TRANSACTION_COUNTER } from "store/transaction-handler/action-types";
 
-import { getValidationRewardPoolsInstance, getValidatorsInstance } from "contracts/contract-instance";
+import { getValidationRewardPoolsInstance } from "contracts/contract-instance";
 import { setErrorMessage } from "store/transaction-handler/action-creators";
-import { getPercentageFormat, uintPercentToNumber } from "func/useful";
+import { BN, fN, getPercentageFormat, uintPercentToNumber } from "func/useful";
 import ErrorHandler from "func/ErrorHandler";
 import { fromWei } from "func/balance";
 
@@ -96,6 +97,7 @@ function* getBalanceGenerator({ address }) {
   }
 }
 
+
 function* getPoolInfoGenerator({ address }) {
   try {
     const contract = yield call(getValidationRewardPoolsInstance);
@@ -117,6 +119,17 @@ function* getLastUpdateOfCompoundRateGenerator() {
   }
 }
 
+function* getRewardPoolsBalanceGenerator() {
+  try {
+    const contract = yield call(getValidationRewardPoolsInstance);
+    const amount = yield contract.getBalance()
+    yield put(setRewardPoolsBalance(fN(BN(amount).toFixed())));
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error);
+  }
+}
+
+
 export default [
   takeEvery(actionTypes.SET_VRP_DELEGATOR_SHARE, setDelegatorsShareGenerator),
   takeEvery(actionTypes.SET_VRP_UPDATE_VALIDATORS_COMPOUND_RATE, setUpdateValidatorsCompoundRateGenerator),
@@ -125,4 +138,6 @@ export default [
   takeEvery(actionTypes.GET_VRP_DELEGATOR_SHARE, getDelegatorsShareGenerator),
   takeEvery(actionTypes.GET_VRP_POOL_INFO, getPoolInfoGenerator),
   takeEvery(actionTypes.GET_VRP_BALANCE, getBalanceGenerator),
+  takeEvery(actionTypes.GET_REWARD_POOLS_BALANCE, getRewardPoolsBalanceGenerator),
+
 ];

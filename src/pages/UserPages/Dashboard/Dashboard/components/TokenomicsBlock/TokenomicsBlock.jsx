@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState, useMemo, Fragment } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { balance } from 'store/validation-reward-pools/selectors'
+import { rewardPoolsBalanceSelector } from 'store/validation-reward-pools/selectors'
 import { userAddressMetamask } from 'store/user-inf/selectors'
 import { qvBalance, updateCompoundRate } from 'store/q-vault/selectors'
 import { getQVBalance, getUpdateCompoundRate } from 'store/q-vault/action-creators'
@@ -14,6 +14,9 @@ import LoadingSpinner from 'components/Base/LoadingSpinner'
 import { remainDateTimeSince } from 'func/convertDate'
 import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
 import { setErrorMessage } from 'store/transaction-handler/action-creators'
+import { reserveBalanceSelector } from 'store/system-reserve/selectors'
+import { getSystemReserveBalance } from 'store/system-reserve/action-creators'
+import { getRewardPoolsBalance } from 'store/validation-reward-pools/action-creators'
 
 const BTN_TYPES = {
   defaultAllocation: 'default-allocation',
@@ -27,6 +30,8 @@ function TokenomicsBlock () {
   const userAddress = useSelector(userAddressMetamask)
   const isUpdateCompoundRate = useSelector(updateCompoundRate)
   const balanceDetails = useSelector(qvBalance)
+  const reserveBalance = useSelector(reserveBalanceSelector)
+  const rewardPoolsBalance = useSelector(rewardPoolsBalanceSelector)
 
   const [defaultAllocationProxy, setDefaultAllocationProxy] = useState('...')
   const [loadingDefaultAllocation, setLoadingDefaultAllocation] = useState(false)
@@ -37,15 +42,31 @@ function TokenomicsBlock () {
   const [validationRewardProxy, setValidationRewardProxy] = useState('...')
   const [loadingValidationReward, setLoadingValidationReward] = useState(false)
 
-  const [systemReserve, setSystemReserve] = useState('...')
-  const [validationRewardPools, setValidationRewardPools] = useState('...')
-  const [QHolderRewardPool, setQHolderRewardPool] = useState('...')
-
   const [timeSinceQHolderRewardUpdate, setTimeSinceQHolderRewardUpdate] = useState('...')
   const [timeSinceUnixTimestamp, setTimeSinceUnixTimestamp] = useState('...')
 
-  const balanceVRP = useSelector(balance)
   const handler = new Handler(userAddress, dispatch, setErrorMessage)
+
+  useEffect(() => {
+    handler.getValidationRewardProxy(setValidationRewardProxy, () => {}, false)
+    handler.getRootNodeRewardProxy(setRootNodeRewardProxy, () => {}, false)
+  }, [defaultAllocationProxy])
+
+  useEffect(() => {
+    if (!isUpdateCompoundRate) {
+      handler.getTimeSinceQHolderRewardUpdate(setTimeSinceQHolderRewardUpdate, setTimeSinceUnixTimestamp)
+    }
+  }, [isUpdateCompoundRate])
+
+  useEffect(() => {
+    dispatch(getQVBalance())
+    dispatch(getSystemReserveBalance())
+    dispatch(getRewardPoolsBalance())
+    handler.getTimeSinceQHolderRewardUpdate(setTimeSinceQHolderRewardUpdate, setTimeSinceUnixTimestamp)
+    handler.getDefaultAllocationProxy(setDefaultAllocationProxy, () => {}, false)
+    handler.getRootNodeRewardProxy(setRootNodeRewardProxy, () => {}, false)
+    handler.getValidationRewardProxy(setValidationRewardProxy, () => {}, false)
+  }, [])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -56,44 +77,10 @@ function TokenomicsBlock () {
     }
   }, [timeSinceUnixTimestamp])
 
-  useEffect(() => {
-    handler.getQHolderRewardPool(setQHolderRewardPool)
-  }, [timeSinceQHolderRewardUpdate])
-
-  useEffect(() => {
-    handler.getValidationRewardProxy(setValidationRewardProxy, () => {}, false)
-    handler.getRootNodeRewardProxy(setRootNodeRewardProxy, () => {}, false)
-
-    handler.getQHolderRewardPool(setQHolderRewardPool)
-    handler.getSystemReserve(setSystemReserve)
-  }, [defaultAllocationProxy])
-
-  useEffect(() => {
-    handler.getValidationRewardPools(setValidationRewardPools)
-  }, [validationRewardProxy])
-
-  useEffect(() => {
-    if (isUpdateCompoundRate === 'updated') {
-      handler.getTimeSinceQHolderRewardUpdate(setTimeSinceQHolderRewardUpdate, setTimeSinceUnixTimestamp)
-    }
-  }, [isUpdateCompoundRate])
-
-  useEffect(() => {
-    dispatch(getQVBalance())
-    handler.getTimeSinceQHolderRewardUpdate(setTimeSinceQHolderRewardUpdate, setTimeSinceUnixTimestamp)
-    handler.getDefaultAllocationProxy(setDefaultAllocationProxy, () => {}, false, null)
-    handler.getRootNodeRewardProxy(setRootNodeRewardProxy, () => {}, false)
-    handler.getValidationRewardProxy(setValidationRewardProxy, () => {}, false)
-
-    handler.getQHolderRewardPool(setQHolderRewardPool)
-    handler.getSystemReserve(setSystemReserve)
-    handler.getValidationRewardPools(setValidationRewardPools)
-  }, [])
-
   const onAllocate = useCallback((type) => {
     switch (type) {
       case BTN_TYPES.defaultAllocation:
-        handler.getDefaultAllocationProxy(setDefaultAllocationProxy, setLoadingDefaultAllocation, true, null)
+        handler.getDefaultAllocationProxy(setDefaultAllocationProxy, setLoadingDefaultAllocation, true)
         break
       case BTN_TYPES.validationRewardAllocation:
         handler.getValidationRewardProxy(setValidationRewardProxy, setLoadingRootNodeReward, true)
@@ -149,7 +136,7 @@ function TokenomicsBlock () {
       },
       {
         title: 'Q Token Holder Reward Pool',
-        firstContent: QHolderRewardPool + ' Q',
+        firstContent: fN(balanceDetails.qHolderRewardPool) + ' Q',
         btnTitle: null
       },
       {
@@ -167,25 +154,23 @@ function TokenomicsBlock () {
       },
       {
         title: 'Q System Reserve',
-        firstContent: systemReserve + ' Q',
+        firstContent: reserveBalance + ' Q',
         btnTitle: null
       },
       {
         title: 'Validation Reward Pools',
-        firstContent: validationRewardPools + ' Q',
+        firstContent: rewardPoolsBalance + ' Q',
         btnTitle: null
       }
     ]
   }, [
     defaultAllocationProxy,
-    validationRewardPools,
     validationRewardProxy,
-    systemReserve,
-    balanceVRP,
     rootNodeRewardProxy,
-    QHolderRewardPool,
     timeSinceQHolderRewardUpdate,
-    balanceDetails
+    balanceDetails,
+    reserveBalance,
+    rewardPoolsBalance
   ])
 
   return (
