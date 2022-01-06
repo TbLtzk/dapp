@@ -120,38 +120,6 @@ export function tabSwitcher (activeTab, qProp, rootNodeProp, expertProp, slashin
   }
 }
 
-export function changeProposalsArrIfExist (proposalsArr, data) {
-  const findElem = proposalsArr?.find((element) => {
-    return element.id === data.result[0].id && element.contract === data.result[0].contract
-  })
-  if (findElem) {
-    return proposalsArr?.map((element) => {
-      if (element.id === data.result[0].id && element.contract === data.result[0].contract) {
-        return { ...data.result[0] }
-      } else {
-        return { ...element }
-      }
-    })
-  } else {
-    return [...proposalsArr, ...data.result]
-  }
-}
-
-export function changeProposalsArrIfEmptyResult (proposalsArr, data) {
-  const findElem = proposalsArr?.find((element) => {
-    return element.id === data.result.id && element.contract === data.result.contractName
-  })
-  if (findElem) {
-    return proposalsArr?.filter((element) => {
-      if (element.id === data.result.id && element.contract === data.result.contractName) {
-        return false
-      } else {
-        return { ...element }
-      }
-    })
-  }
-}
-
 export async function getProposal (contractName, id, type) {
   try {
     switch (contractName) {

@@ -1,6 +1,7 @@
 import { transformToPercentage } from './base-voting-helper'
 import { ParameterType } from '@q-dev/q-js-sdk'
 import { getRootNodesInstance, getInstance } from 'contracts/contract-instance'
+import { address } from 'components/Custom/LoadingMetaMask/LoadingMetaMask'
 
 export default class VotingService {
   constructor (contractName) {
@@ -18,6 +19,13 @@ export default class VotingService {
     return result
   }
 
+  async hasUserVotedVetoed (id) {
+    const contract = await this.getContractInstance()
+    const userVetoed = await contract.hasRootVetoed(id, address)
+    const userVoted = await contract.hasUserVoted(id, address)
+    return { userVetoed, userVoted }
+  }
+
   async getProposalStats (id) {
     const contract = await this.getContractInstance()
     const result = await contract.getProposalStats(id)
@@ -27,7 +35,7 @@ export default class VotingService {
   async getVetoesNumber (id) {
     try {
       const contract = await this.getContractInstance()
-      if (this.contract.instance.methods.getVetosNumber) {
+      if (contract.instance.methods.getVetosNumber) {
         const result = await contract.instance.methods.getVetosNumber(id).call()
         return result
       } else {
@@ -79,6 +87,7 @@ export default class VotingService {
     if (includeInIds) {
       let additionalInfo = {}
       let headerInfo = {}
+      let userVotedVetoed = {}
       const proposal = await contract.getProposalWithStatus(id)
       if (type === 'header') {
         headerInfo = this.getProposalData(proposal, proposal.id, proposal.status)
@@ -86,8 +95,9 @@ export default class VotingService {
       if (type === 'full') {
         additionalInfo = await this.getProposalAdditionalData(proposal, id)
         headerInfo = this.getProposalData(proposal, proposal.id, proposal.status)
+        userVotedVetoed = await this.hasUserVotedVetoed(id)
       }
-      return { ...headerInfo, ...additionalInfo, error: false }
+      return { ...headerInfo, ...additionalInfo, ...userVotedVetoed, error: false }
     } else {
       return { error: true }
     }

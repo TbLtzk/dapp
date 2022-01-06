@@ -15,6 +15,7 @@ import { getNumberAllProposals } from 'store/voting/proposals/action-creators'
 import { getAuctions } from 'store/auctions/action-creators'
 
 const web3 = new Web3(Web3.givenProvider)
+export let address = ''
 
 function LoadingMetaMask () {
   const [isMetaMask, setIsMetaMask] = useState('loading')
@@ -43,6 +44,7 @@ function LoadingMetaMask () {
         window.web3 = new Web3(ethereum)
         window.web3.eth.handleRevert = true
         dispatch(setUserAddress(accounts[0]))
+        address = accounts[0]
         await getContractRegistryInstance()
         dispatch(getNumberAllProposals())
         dispatch(getAuctions(AUCTIONS_TYPES.all))
