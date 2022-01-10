@@ -52,10 +52,7 @@ export default class Handler {
   async getValidationRewardProxy (stateSetter, stateLoading, isAllocate) {
     const contract = await getValidationRewardProxyInstance()
     if (isAllocate) {
-      await contract.allocate({ from: this.userAddress })
-      const balance = await contract.getBalance()
-      console.log(balance)
-      stateSetter(fN(balance))
+      await this.allocateValue(contract, stateSetter, stateLoading)
     } else {
       const balance = await contract.getBalance()
       stateSetter(fN(balance))

@@ -121,7 +121,7 @@ function TokenomicsBlock () {
       },
       {
         title: 'Validation Reward Proxy',
-        firstContent: fN(validationRewardProxy) + ' Q',
+        firstContent: validationRewardProxy + ' Q',
         btnTitle: 'Allocate',
         btnIcon: 'cube-outline',
         btnType: BTN_TYPES.validationRewardAllocation
@@ -165,8 +165,8 @@ function TokenomicsBlock () {
     ]
   }, [
     defaultAllocationProxy,
-    validationRewardProxy,
     rootNodeRewardProxy,
+    validationRewardProxy,
     timeSinceQHolderRewardUpdate,
     balanceDetails,
     reserveBalance,
