@@ -30,10 +30,5 @@ export const setVRPLoadingValidatorsCompoundRate = (data) => ({
   payload: data
 })
 
-export const setIsStakerRewardPoolMsgDisplayed = (data) => ({
-  type: actionTypes.SET_IS_STAKER_REWARD_POOL_MSG_DISPLAYED,
-  payload: data
-})
-
 export const getRewardPoolsBalance = () => ({ type: actionTypes.GET_REWARD_POOLS_BALANCE })
 export const setRewardPoolsBalance = (data) => ({ type: actionTypes.SET_REWARD_POOLS_BALANCE, payload: data })

@@ -8,7 +8,6 @@ import {
   getOwnStake,
   getTotalStake
 } from 'store/validators/action-creators'
-import { isStakerRewardPoolMsgDisplayed } from 'store/validation-reward-pools/selectors'
 import { userAddressMetamask } from 'store/user-inf/selectors'
 import {
   accountableTotalStake,
@@ -18,10 +17,7 @@ import {
 } from 'store/validators/selectors'
 
 import { fN } from 'func/useful'
-import { setErrorMessage } from 'store/transaction-handler/action-creators'
 import { getVRPLastUpdateOfCompoundRate } from 'store/validation-reward-pools/action-creators'
-
-const message = { header: 'Notice', details: 'Stake amount below minimum to apply new rate, old rate applied.' }
 
 export default function ValidatorPool ({ modalShow }) {
   const dispatch = useDispatch()
@@ -31,13 +27,6 @@ export default function ValidatorPool ({ modalShow }) {
   const ownStake = useSelector(ownStakeSelector)
   const delegatedStake = useSelector(delegatedStakeSelector)
   const accTotalStake = useSelector(accountableTotalStake)
-  const isMsgDisplayed = useSelector(isStakerRewardPoolMsgDisplayed)
-
-  useEffect(() => {
-    if (isMsgDisplayed) {
-      dispatch(setErrorMessage(message))
-    }
-  }, [dispatch, isMsgDisplayed])
 
   useEffect(() => {
     if (modalShow) {
@@ -77,20 +66,16 @@ export default function ValidatorPool ({ modalShow }) {
   return (
         <div>
             <h3>Validator Pool</h3>
-            {validatorPoolInfArr?.map((line, index) => {
-              return (
-                    <div key={index + '-validator-line'} style={{ display: 'flex' }}>
-                        {line.map((el) => {
-                          return (
-                                <div key={el.label + '-validator-pool'} style={{ width: '50%' }}>
-                                    <h5>{el.label}</h5>
-                                    <p>{el.value}</p>
-                                </div>
-                          )
-                        })}
-                    </div>
-              )
-            })}
+            {validatorPoolInfArr?.map((line, index) => (
+                <div key={index + '-validator-line'} style={{ display: 'flex' }}>
+                    {line.map((el) => (
+                        <div key={el.label + '-validator-pool'} style={{ width: '50%' }}>
+                            <h5>{el.label}</h5>
+                            <p>{el.value}</p>
+                        </div>
+                    ))}
+                </div>
+            ))}
             <RefreshDelegationUpdate />
         </div>
   )

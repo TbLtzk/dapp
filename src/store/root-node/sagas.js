@@ -64,15 +64,12 @@ function * setRootAnnounceWithdrawalGenerator ({ amount, paymentInf }) {
     const contract = yield call(getRootNodesInstance)
     const { userAddress } = yield select((state) => state.userInf)
 
-    const data = yield contract.announceWithdrawal(amount, paymentInf)
-
-    if (data) {
-      yield put(getAccountBalance(userAddress))
-      yield put(getRootNodeStakes(userAddress))
-      yield put(getRootWithdrawals(userAddress))
-      yield put(getMinimumRootTimeLock(userAddress))
-      yield put(getRootMembersData())
-    }
+    yield contract.announceWithdrawal(amount, paymentInf)
+    yield put(getAccountBalance(userAddress))
+    yield put(getRootNodeStakes(userAddress))
+    yield put(getRootWithdrawals(userAddress))
+    yield put(getMinimumRootTimeLock(userAddress))
+    yield put(getRootMembersData())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))

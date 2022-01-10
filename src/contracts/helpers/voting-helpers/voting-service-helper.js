@@ -21,7 +21,10 @@ export default class VotingService {
 
   async hasUserVotedVetoed (id) {
     const contract = await this.getContractInstance()
-    const userVetoed = await contract.hasRootVetoed(id, address)
+    let userVetoed
+    if (contract.hasRootVetoed) {
+      userVetoed = await contract.hasRootVetoed(id, address)
+    }
     const userVoted = await contract.hasUserVoted(id, address)
     return { userVetoed, userVoted }
   }

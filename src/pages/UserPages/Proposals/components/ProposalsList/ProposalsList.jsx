@@ -34,7 +34,7 @@ function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
 
   const checkProposals = () => {
     if (proposals.length) {
-      setList(slice(proposals, 0, LIMIT))
+      setList(slice(proposals, 0, index))
       setState(LOAD_TYPES.loaded)
       if (proposals.length > LIMIT) {
         setShowMore(true)
@@ -73,6 +73,7 @@ function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
                       : null}
                 </div>
       )
+    case LOAD_TYPES.load:
     default:
       return (
                 <div>
