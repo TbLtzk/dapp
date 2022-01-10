@@ -90,7 +90,7 @@ function SidebarCards () {
       },
       {
         title: 'Surplus Auction Lot',
-        value: fN(surplusLot) + ' QUSD'
+        value: surplusLot + ' QUSD'
       }
     ]
   }, [surplus, debt, systemBalanceResult, surplusLot])
@@ -99,15 +99,15 @@ function SidebarCards () {
     return [
       {
         title: 'Reserve Balance',
-        value: fN(reserveBalance) + ' Q'
+        value: reserveBalance + ' Q'
       },
       {
         title: 'Immediately Available',
-        value: fN(availableAmount) + ' Q'
+        value: availableAmount + ' Q'
       },
       {
         title: 'Debt Auction Lot',
-        value: fN(reserveLot) + ' Q'
+        value: reserveLot + ' Q'
       }
     ]
   }, [availableAmount, reserveBalance, reserveLot])
