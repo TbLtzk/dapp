@@ -32,7 +32,7 @@ function AuctionsList ({ auctions, loadingAuctions }) {
       setState(LOAD_TYPES.empty)
     }
     if (auctions?.length) {
-      setList(slice(auctions, 0, LIMIT))
+      setList(slice(auctions, 0, index))
       setState(LOAD_TYPES.loaded)
       if (auctions.length > LIMIT) {
         setShowMore(true)
