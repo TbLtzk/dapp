@@ -5,13 +5,7 @@ import { formObject } from 'store/modal-handler/selectors'
 import { AUCTIONS_TYPES } from 'constants/statuses'
 import { getEPDRUint } from 'contracts/helpers/epdr-param-helper'
 
-function CreateStep2 (props) {
-  const {
-    activeTab,
-    register,
-    errors
-  } = props
-
+function CreateStep2 ({ activeTab, register, errors }) {
   const formData = useSelector(formObject)
   const [surplusLot, setSurplusLot] = useState('0')
   const [reserveLot, setReserveLot] = useState('0')
@@ -23,14 +17,16 @@ function CreateStep2 (props) {
 
   const showCommonData = (children) => {
     return (
-      <div>
-        <h2>Chosen Data</h2>
-        <h5>Type</h5>
-        <p> {formData?.first?.replace(/-/g, ' ')}</p>
-        {children}
-        <h5>Bid</h5>
-        <p>{formData.bid}</p>
-      </div>
+            <div>
+                <h2>Chosen Data</h2>
+                <h5>Type</h5>
+                <p> {formData?.first?.replace(/-/g, ' ')}</p>
+                {children}
+                <h5>Bid</h5>
+                <p>
+                    {formData.bid}{' '}{activeTab === AUCTIONS_TYPES.systemSurplus ? 'Q' : 'QUSD'}
+                </p>
+            </div>
     )
   }
 
@@ -38,33 +34,33 @@ function CreateStep2 (props) {
     switch (activeTab) {
       case AUCTIONS_TYPES.liquidation:
         return showCommonData(
-          <>
-            <h5>Address of Vault Holder, which shall be Liquidated</h5>
-            <p>{formData.address}</p>
-            <h5>The Vault ID to be Liquidated</h5>
-            <p>{formData['vault-id']}</p>
-          </>
+                    <>
+                        <h5>Address of Vault Holder, which shall be Liquidated</h5>
+                        <p>{formData.address}</p>
+                        <h5>The Vault ID to be Liquidated</h5>
+                        <p>{formData['vault-id']}</p>
+                    </>
         )
       case AUCTIONS_TYPES.systemDebt:
-        return showCommonData(<>
-          <h5>Auction Lot</h5>
-          <p>{reserveLot} Q</p>
-        </>)
+        return showCommonData(
+                    <>
+                        <h5>Auction Lot</h5>
+                        <p>{reserveLot} Q</p>
+                    </>
+        )
       case AUCTIONS_TYPES.systemSurplus:
-        return showCommonData(<>
-          <h5>Auction Lot</h5>
-          <p>{surplusLot} QUSD</p>
-        </>)
+        return showCommonData(
+                    <>
+                        <h5>Auction Lot</h5>
+                        <p>{surplusLot} QUSD</p>
+                    </>
+        )
       default:
         return null
     }
   }, [activeTab, register, surplusLot, reserveLot, errors])
 
-  return (
-    <>
-      {contentSwitcher()}
-    </>
-  )
+  return <>{contentSwitcher()}</>
 }
 
 export default CreateStep2

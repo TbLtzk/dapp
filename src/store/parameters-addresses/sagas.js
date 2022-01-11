@@ -66,6 +66,8 @@ function * getFeesIncentivesExpertPanelParametersKV () {
 function * getEPDRParametersKV () {
   try {
     const contract = yield getEpdrParametersInstance()
+    console.log(yield contract.getUint('governed.EPDR.debtAuctionP'))
+
     const data = yield all(kVParametersArray.map((fnc) => fnc(contract)))
     yield put(getEPDRParametersKVSuccess(data.flat()))
   } catch (error) {

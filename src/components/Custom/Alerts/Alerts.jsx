@@ -13,7 +13,7 @@ function Alert () {
   const alert = useAlert()
 
   const errorHandler = () => {
-    if (error !== null) {
+    if (error) {
       alert.error(error)
       dispatch(setErrorMessage(null))
       dispatch(setTransactionLoadingError(null))

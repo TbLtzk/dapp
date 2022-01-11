@@ -6,7 +6,6 @@ import { indents } from 'constants/style'
 
 export const WrapContainer = styled(Container)`
   background: ${props => props.theme.colors.main};
-  padding: ${indents['30']};
 
   h3 {
     color: ${props => props.theme.colors.white};
@@ -16,6 +15,7 @@ export const WrapContainer = styled(Container)`
 export const WrapBlock = styled.div`
   height: ${props => props.block ? '100%' : '100vh'};
   display: flex;
+  padding-top: ${indents['30']};
   flex-direction: column;
   align-items: center;
 `

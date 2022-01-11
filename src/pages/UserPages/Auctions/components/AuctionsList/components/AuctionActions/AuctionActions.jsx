@@ -44,7 +44,9 @@ function AuctionActions ({ auction }) {
 
   const auctionType = transformAuctionNameToAuctionType(auction.contract)
 
-  return auction.status === 'Active'
+  const showActionButtons = auction.status === 'Executed' || auction.status === 'Closed'
+
+  return !showActionButtons
     ? (
         <div>
             <div className="list-card__line" />

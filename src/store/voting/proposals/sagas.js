@@ -8,9 +8,8 @@ import { getDelegationInfo, getLockedAssets } from 'store/q-vault/action-creator
 import {
   getConstitutionHashSuccess,
   setBaseVotingWeightInfo,
-  getProposal,
-  setExecutedProposal,
-  getBaseVotingWeightInfo
+  getBaseVotingWeightInfo,
+  getProposalsByType
 } from 'store/voting/proposals/action-creators'
 import { getQProposalsCount } from 'store/voting/q-proposals/action-creators'
 import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-creators'
@@ -87,7 +86,7 @@ function * createProposalGenerator ({ data }) {
     }
     yield put(getBaseVotingWeightInfo())
     yield put(getDelegationInfo(userAddress))
-    yield put(getProposal(contractName))
+    yield put(getProposalsByType(contractName))
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
@@ -126,16 +125,12 @@ function * voteForProposalGenerator ({ data }) {
 function * executeProposalGenerator ({ data }) {
   try {
     yield put(setTransactionCounter(1))
-
     const { userAddress } = yield select((state) => state.userInf)
-    if (data) {
-      const contract = new VotingService(data?.contract)
-      yield contract.execute(data?.idProposal, userAddress)
-    }
-    yield put(getProposal(data.contract))
+    const contract = new VotingService(data?.contract)
+    yield contract.execute(data?.idProposal, userAddress)
+    yield put(getProposalsByType(data.contract))
     yield put(getBaseVotingWeightInfo())
     yield put(getDelegationInfo(userAddress))
-    yield put(setExecutedProposal(data))
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
@@ -144,7 +139,7 @@ function * executeProposalGenerator ({ data }) {
   }
 }
 
-function * getProposalGenerator ({ contractName, id }) {
+function * getProposalsByTypeGenerator ({ contractName }) {
   switch (contractName) {
     case CONTRACTS_NAMES.constitutionVoting:
     case CONTRACTS_NAMES.emergencyUpdateVoting:
@@ -206,7 +201,7 @@ export default [
   takeEvery(actionTypes.CREATE_PROPOSAL, createProposalGenerator),
   takeEvery(actionTypes.VOTE_FOR_PROPOSAL, voteForProposalGenerator),
   takeEvery(actionTypes.EXECUTE_PROPOSAL, executeProposalGenerator),
-  takeEvery(actionTypes.GET_PROPOSAL, getProposalGenerator),
+  takeEvery(actionTypes.GET_PROPOSALS_BY_TYPE, getProposalsByTypeGenerator),
   takeEvery(actionTypes.GET_NUMBER_ALL_PROPOSALS, getNumberAllProposalsGenerator),
   takeEvery(actionTypes.GET_CONSTITUTION_HASH, getConstitutionHashGenerator),
   takeEvery(actionTypes.GET_BASE_VOTING_WEIGHT_INFO, getBaseVotingWeightInfoGenerator)

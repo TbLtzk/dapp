@@ -4,9 +4,6 @@ import * as actionTypes from './action-types'
 import { setErrorMessage, setTransactionCounter } from 'store/transaction-handler/action-creators'
 
 import {
-  setLiquidationAuctionCount,
-  setSystemDebtAuctionCount,
-  setSystemSurplusAuctionCount,
   setSystemDebtAuctions,
   setSystemSurplusAuctions,
   setLiquidationAuctions,
@@ -42,51 +39,22 @@ function * getAuctionsGenerator ({ auctionTypes = '' }) {
     switch (auctionTypes) {
       case AUCTIONS_TYPES.liquidation: {
         const auctions = yield liquidationAuctionInstance.getAuctions()
-        yield put(
-          setLiquidationAuctionCount({
-            endedAuctions: auctions.endedAuctions.length,
-            activeAuctions: auctions.activeAuctions.length
-          })
-        )
         yield put(setLiquidationAuctions(auctions))
         break
       }
       case AUCTIONS_TYPES.systemDebt: {
         const auctions = yield systemSurplusAuctionInstance.getAuctions()
-        yield put(
-          setSystemDebtAuctionCount({
-            endedAuctions: auctions.endedAuctions.length,
-            activeAuctions: auctions.activeAuctions.length
-          })
-        )
         yield put(setSystemDebtAuctions(auctions))
         break
       }
       case AUCTIONS_TYPES.systemSurplus: {
         const auctions = yield systemDebtAuctionInstance.getAuctions()
-        yield put(
-          setSystemSurplusAuctionCount({
-            endedAuctions: auctions.endedAuctions.length,
-            activeAuctions: auctions.activeAuctions.length
-          })
-        )
         yield put(setSystemSurplusAuctions(auctions))
         break
       }
       default: {
         const contracts = [liquidationAuctionInstance, systemSurplusAuctionInstance, systemDebtAuctionInstance]
         const auctions = yield all(contracts.map((contract) => contract.getAuctions()))
-        const auctionCount = {}
-        auctions.forEach((auction) => {
-          auctionCount[auction.contract] = {
-            activeAuctions: auction.activeAuctions.length,
-            endedAuctions: auction.endedAuctions.length
-          }
-        })
-        yield put(setSystemSurplusAuctionCount(auctionCount.systemSurplusAuction))
-        yield put(setSystemDebtAuctionCount(auctionCount.systemDebtAuction))
-        yield put(setLiquidationAuctionCount(auctionCount.liquidationAuction))
-
         yield put(
           setSystemSurplusAuctions(auctions.find((auction) => auction.contract === CONTRACT_TYPES.systemSurplusAuction))
         )

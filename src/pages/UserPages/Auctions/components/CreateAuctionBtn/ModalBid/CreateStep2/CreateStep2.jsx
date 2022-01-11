@@ -1,3 +1,4 @@
+import { AUCTIONS_TYPES } from 'constants/statuses'
 import React, { useCallback } from 'react'
 
 import { useSelector } from 'react-redux'
@@ -13,7 +14,7 @@ function CreateStep2 ({ activeTab, register, errors }) {
                 <h5>Type</h5>
                 <p>{activeTab.replace('-', ' ')}</p>
                 <h5>Bid</h5>
-                <p>{formData?.bid}</p>
+                <p>{formData?.bid}{' '}{activeTab === AUCTIONS_TYPES.systemSurplus ? 'Q' : 'QUSD'}</p>
             </div>
     )
   }, [activeTab, register, errors])

@@ -23,7 +23,7 @@ function * getAvailableAmountGenerator () {
   try {
     const contract = yield call(getSystemReserveInstance)
     const data = yield contract.availableAmount()
-    yield put(getAvailableAmountSuccess(fromWei(data)))
+    yield put(getAvailableAmountSuccess(fN(fromWei(data))))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
     yield put(getAvailableAmountError(0))

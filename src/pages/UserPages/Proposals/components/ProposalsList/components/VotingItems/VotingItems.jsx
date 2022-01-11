@@ -13,6 +13,12 @@ import {
 } from 'store/voting/proposals/action-creators'
 import ModalVote from '../../../CreateQProposalBtn/ModalVote'
 
+const PROPOSAL_STATUS = {
+  passed: 'Passed',
+  pending: 'Pending',
+  accepted: 'Accepted'
+}
+
 const TOOLTIP_INFO = {
   votePeriod: 'Voting period has ended.',
   userVoted: 'User already voted.',
@@ -37,44 +43,41 @@ function VotingItems ({ proposal }) {
   const contractsWithoutVeto =
         proposal.contract === CONTRACTS_NAMES.validatorsSlashingVoting ||
         proposal.contract === CONTRACTS_NAMES.emergencyUpdateVoting
-  const epdrContract =
-        proposal.contract === CONTRACTS_NAMES.ePDRParametersVoting ||
-        proposal.contract === CONTRACTS_NAMES.ePDRMembershipVoting
-  const epqfiContract =
-        proposal.contract === CONTRACTS_NAMES.ePQFIParametersVoting ||
-        proposal.contract === CONTRACTS_NAMES.ePQFIMembershipVoting
+
+  const epqfiParametersVoting = proposal.contract === CONTRACTS_NAMES.ePQFIParametersVoting
+  const epdrParametersVoting = proposal.contract === CONTRACTS_NAMES.ePDRParametersVoting
 
   function checkVoteUser () {
-    if (proposal.status === 'Accepted') {
-      return { disabled: true, info: TOOLTIP_INFO.votePeriod }
-    } else if (proposal.userVoted) {
-      return { disabled: proposal.userVoted, info: TOOLTIP_INFO.userVoted }
-    } else if (contractsWithoutVeto) {
-      return { disabled: !isRootNode, info: isRootNode ? TOOLTIP_INFO.votePeriod : TOOLTIP_INFO.isNotRootNode }
-    } else if (epdrContract) {
-      return {
-        disabled: !isEPDRMembership,
-        info: isEPDRMembership ? TOOLTIP_INFO.isDeFiExpert : TOOLTIP_INFO.isDeFiExpert
-      }
-    } else if (epqfiContract) {
-      return {
-        disabled: !isEPQFIMembership,
-        info: isEPQFIMembership ? TOOLTIP_INFO.isFeesExpert : TOOLTIP_INFO.isFeesExpert
-      }
-    } else {
-      return { disabled: false, info: '' }
+    switch (true) {
+      case proposal.status === PROPOSAL_STATUS.accepted:
+        return { disabled: true, info: TOOLTIP_INFO.votePeriod }
+      case proposal.userVoted:
+        return { disabled: proposal.userVoted, info: TOOLTIP_INFO.userVoted }
+      case contractsWithoutVeto:
+        return {
+          disabled: !isRootNode,
+          info: isRootNode ? TOOLTIP_INFO.votePeriod : TOOLTIP_INFO.isNotRootNode
+        }
+      case epdrParametersVoting:
+        return { disabled: !isEPDRMembership, info: TOOLTIP_INFO.isDeFiExpert }
+      case epqfiParametersVoting:
+        return { disabled: !isEPQFIMembership, info: TOOLTIP_INFO.isFeesExpert }
+      default:
+        return { disabled: false, info: '' }
     }
   }
 
   function checkVetoUser () {
-    if (proposal.userVetoed) {
-      return { disabled: true, info: TOOLTIP_INFO.userVetoed }
-    } else if (proposal.status === 'Pending') {
-      return { disabled: true, info: isRootNode ? TOOLTIP_INFO.vetoPeriod : TOOLTIP_INFO.isNotRootNode }
-    } else if (proposal.status === 'Accepted') {
-      return { disabled: !isRootNode, info: isRootNode ? TOOLTIP_INFO.vetoPeriod : TOOLTIP_INFO.isNotRootNode }
-    } else {
-      return { disabled: true, info: '' }
+    const info = isRootNode ? TOOLTIP_INFO.vetoPeriod : TOOLTIP_INFO.isNotRootNode
+    switch (true) {
+      case proposal.userVetoed:
+        return { disabled: true, info: TOOLTIP_INFO.userVetoed }
+      case proposal.status === PROPOSAL_STATUS.pending:
+        return { disabled: true, info }
+      case proposal.status === PROPOSAL_STATUS.accepted:
+        return { disabled: !isRootNode, info }
+      default:
+        return { disabled: true, info: '' }
     }
   }
 

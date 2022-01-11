@@ -6,6 +6,7 @@ import { LoadingWrap } from 'components/Custom/MemberTables/styles'
 
 function KeyAddressViewer (props) {
   const { tableData, loading, errorMsg, header, subHeader, tableHeaders = [], emptyMsg } = props
+
   return (
         <CustomBlock>
             <h1>{header}</h1>

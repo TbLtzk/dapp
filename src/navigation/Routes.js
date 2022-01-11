@@ -34,7 +34,6 @@ function Routes () {
 
   return (
   // eslint-disable-next-line react/jsx-props-no-spreading
-
     <AlertProvider template={AlertTemplate} {...options}>
       <Switch>
         <Route exact path="/" component={AuthProtect(Dashboard)} />

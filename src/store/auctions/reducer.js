@@ -1,35 +1,14 @@
 import * as actionTypes from './action-types'
 
 const initialState = {
-  systemSurplusAuctionsCount: {},
-  systemDebtAuctionsCount: {},
-  liquidationAuctionsCount: {},
-  liquidationAuctions: {},
-  systemDebtAuctions: {},
-  systemSurplusAuctions: {},
+  liquidationAuctions: { activeAuctions: [], endedAuctions: [] },
+  systemDebtAuctions: { activeAuctions: [], endedAuctions: [] },
+  systemSurplusAuctions: { activeAuctions: [], endedAuctions: [] },
   oneAuction: {}
 }
 
 export default function auctions (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.SET_SYSTEM_SURPLUS_AUCTIONS_COUNT: {
-      return {
-        ...state,
-        systemSurplusAuctionsCount: action.result
-      }
-    }
-    case actionTypes.SET_SYSTEM_DEBT_AUCTIONS_COUNT: {
-      return {
-        ...state,
-        systemDebtAuctionsCount: action.result
-      }
-    }
-    case actionTypes.SET_LIQUIDATION_AUCTIONS_COUNT: {
-      return {
-        ...state,
-        liquidationAuctionsCount: action.result
-      }
-    }
     case actionTypes.SET_LIQUIDATION_AUCTIONS: {
       return {
         ...state,

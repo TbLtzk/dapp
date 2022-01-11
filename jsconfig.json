@@ -4,6 +4,5 @@
   },
   "include": [
     "src",
-    "fonts"
-, "../../GitHub/galleria/store-old", "../qusd-next/voting"  ]
+    "fonts" ]
 }

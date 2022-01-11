@@ -163,11 +163,10 @@ function * setValidatorsInterestRateGenerator ({ address, uintPercent }) {
     yield put(setTransactionLoading())
 
     const contract = yield call(getValidatorsInstance)
-    const data = yield contract.setInterestRate(address, uintPercent)
-    if (data.status) {
-      yield put(getInterestRate(address))
-      yield put(getCompoundRateKeeperExists())
-    }
+    yield contract.setInterestRate(address, uintPercent)
+
+    yield put(getInterestRate(address))
+    yield put(getCompoundRateKeeperExists())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
@@ -180,19 +179,17 @@ function * setValidatorsCommitStakeGenerator ({ address, amountQ }) {
     yield put(setTransactionLoading())
 
     const contract = yield call(getValidatorsInstance)
-    const data = yield contract.commitStake({
+    yield contract.commitStake({
       from: address,
       value: toWei(amountQ)
     })
 
-    if (data.status) {
-      yield put(getIsUserValidator(address))
-      yield put(getAccountableTotalStake(address))
-      yield put(getValidatorShortList())
-      yield put(getAccountBalance(address))
-      yield put(getValidatorMembers())
-      yield put(getCompoundRateKeeperExists())
-    }
+    yield put(getIsUserValidator(address))
+    yield put(getAccountableTotalStake(address))
+    yield put(getValidatorShortList())
+    yield put(getAccountBalance(address))
+    yield put(getValidatorMembers())
+    yield put(getCompoundRateKeeperExists())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
@@ -223,16 +220,15 @@ function * setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
     yield put(setTransactionLoading())
 
     const contract = yield call(getValidatorsInstance)
-    const data = yield contract.announceWithdrawal(toWei(amountQ), { from: address })
 
-    if (data) {
-      yield put(getValidatorWithdrawalInfo(address))
-      yield put(getAccountableTotalStake(address))
-      yield put(getValidatorShortList())
-      yield put(getAccountBalance(address))
-      yield put(getValidatorMembers())
-      yield put(getCompoundRateKeeperExists())
-    }
+    yield contract.announceWithdrawal(toWei(amountQ), { from: address })
+
+    yield put(getValidatorWithdrawalInfo(address))
+    yield put(getAccountableTotalStake(address))
+    yield put(getValidatorShortList())
+    yield put(getAccountBalance(address))
+    yield put(getValidatorMembers())
+    yield put(getCompoundRateKeeperExists())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
@@ -246,16 +242,15 @@ function * setValidatorsWithdrawGenerator ({ address, amountQ }) {
     yield put(setTransactionLoading())
 
     const contract = yield call(getValidatorsInstance)
-    const data = yield contract.withdraw(toWei(amountQ), address)
-    if (data) {
-      yield put(getIsUserValidator(address))
-      yield put(getAccountableTotalStake(address))
-      yield put(getValidatorShortList())
-      yield put(getAccountBalance(address))
-      yield put(getValidatorMembers())
-      yield put(getValidatorWithdrawalInfo(address))
-      yield put(getCompoundRateKeeperExists())
-    }
+    yield contract.withdraw(toWei(amountQ), address)
+
+    yield put(getIsUserValidator(address))
+    yield put(getAccountableTotalStake(address))
+    yield put(getValidatorShortList())
+    yield put(getAccountBalance(address))
+    yield put(getValidatorMembers())
+    yield put(getValidatorWithdrawalInfo(address))
+    yield put(getCompoundRateKeeperExists())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))

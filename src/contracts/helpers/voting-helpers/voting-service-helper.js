@@ -21,7 +21,10 @@ export default class VotingService {
 
   async hasUserVotedVetoed (id) {
     const contract = await this.getContractInstance()
-    const userVetoed = await contract.hasRootVetoed(id, address)
+    let userVetoed
+    if (contract.hasRootVetoed) {
+      userVetoed = await contract.hasRootVetoed(id, address)
+    }
     const userVoted = await contract.hasUserVoted(id, address)
     return { userVetoed, userVoted }
   }
@@ -126,7 +129,11 @@ export default class VotingService {
 
   async getProposalsCount (minimalActiveBlockHeight) {
     const contract = await this.getContractInstance()
-    const pastEvents = await contract.instance.getPastEvents('ProposalCreated', { fromBlock: 0, toBlock: 'latest' })
+
+    const pastEvents = await contract.instance.getPastEvents('ProposalCreated', {
+      fromBlock: 0,
+      toBlock: 'latest'
+    })
     const latestPastEvents = pastEvents.filter((evt) => evt.blockNumber >= minimalActiveBlockHeight)
 
     const latestProposals = []

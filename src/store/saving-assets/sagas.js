@@ -40,8 +40,7 @@ function * getSavingBalanceDetailsGenerator () {
     const { userAddress } = yield select((state) => state.userInf)
 
     const contract = yield call(getSavingInstance)
-    const balanceDetails = yield contract.getBalanceDetails(userAddress)
-
+    const balanceDetails = yield contract.instance.methods.getBalanceDetails().call({ from: userAddress })
     const result = yield call(getSavingBalanceDetailsHelper, balanceDetails)
     yield put(setSavingBalanceDetails(result))
   } catch (error) {

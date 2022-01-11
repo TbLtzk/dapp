@@ -10,7 +10,6 @@ import {
 
 import { AUCTIONS_TYPES } from 'constants/statuses'
 import { useSelector } from 'react-redux'
-import { isEmpty } from 'lodash'
 import { AuctionsTabWrp } from './styles'
 import AuctionsList from './components/AuctionsList'
 import BigTabsView from 'components/Base/Tabs/BigTabsView'
@@ -50,7 +49,7 @@ function Auctions ({ auctionsType }) {
       title: 'Active auctions',
       content: (
                 <AuctionsTabWrp>
-                    <AuctionsList auctions={auctions?.activeAuctions} loadingAuctions={isEmpty(auctions)} />
+                    <AuctionsList auctions={auctions.activeAuctions} loadingAuctions={!auctions?.contract} />
                     <SidebarCards />
                 </AuctionsTabWrp>
       )
@@ -60,7 +59,7 @@ function Auctions ({ auctionsType }) {
       title: 'Ended auctions',
       content: (
                 <AuctionsTabWrp>
-                    <AuctionsList auctions={auctions?.endedAuctions} loadingAuctions={isEmpty(auctions)} />
+                    <AuctionsList auctions={auctions.endedAuctions} loadingAuctions={!auctions?.contract} />
                     <SidebarCards />
                 </AuctionsTabWrp>
       )

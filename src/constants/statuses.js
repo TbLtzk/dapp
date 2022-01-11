@@ -31,7 +31,8 @@ export const LOAD_TYPES = {
   notLogged: 'not-logged',
   error: 'error',
   initError: 'init-error',
-  loaded: 'loaded'
+  loaded: 'loaded',
+  loading: 'loading'
 }
 
 export const WARNING_MAX_NUMBER = 'Warning: No Q left on sender wallet for future transactions (gas)'

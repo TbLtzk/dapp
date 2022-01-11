@@ -113,20 +113,7 @@ export const setBaseVotingWeightInfo = (data) => ({
   payload: data
 })
 
-// one proposal
-export const getProposal = (contractName, id) => ({
-  type: actionTypes.GET_PROPOSAL,
-  contractName,
-  id
-})
-
-export const setProposal = (result) => ({
-  type: actionTypes.SET_PROPOSAL,
-  result
-})
-
-// executed
-export const setExecutedProposal = result => ({
-  type: actionTypes.SET_EXECUTED_PROPOSAL,
-  result
+export const getProposalsByType = (contractName) => ({
+  type: actionTypes.GET_PROPOSALS_BY_TYPE,
+  contractName
 })
