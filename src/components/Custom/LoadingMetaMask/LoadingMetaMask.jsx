@@ -7,12 +7,16 @@ import StartConfigurations from 'pages/StartConfigurations'
 import { WrapContainer } from './styles'
 
 import { getContractRegistryInstance } from 'contracts/contract-instance'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import App from 'components/Base/App'
 import { setUserAddress } from 'store/user-inf/action-creators'
 import { AUCTIONS_TYPES, LOAD_TYPES } from 'constants/statuses'
 import { getNumberAllProposals } from 'store/voting/proposals/action-creators'
 import { getAuctions } from 'store/auctions/action-creators'
+import { mode } from 'store/dashboard-mode/selectors'
+import { MODE } from 'components/Base/DashboardMode/DashboardMode'
+import { getQProposalsCount } from 'store/voting/q-proposals/action-creators'
+import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-creators'
 
 const web3 = new Web3(Web3.givenProvider)
 export let address = ''
@@ -21,8 +25,18 @@ function LoadingMetaMask () {
   const [isMetaMask, setIsMetaMask] = useState(LOAD_TYPES.loading)
   const [errorMessage, setErrorMessage] = useState('Please install MetaMask!')
   const dispatch = useDispatch()
-
+  const appMode = useSelector(mode)
   const { ethereum } = window
+
+  const loadAdditionalInfo = () => {
+    if (appMode === MODE.basic) {
+      dispatch(getQProposalsCount())
+      dispatch(getRootProposalsCount())
+    } else {
+      dispatch(getNumberAllProposals())
+      dispatch(getAuctions(AUCTIONS_TYPES.all))
+    }
+  }
 
   const initMetamask = async () => {
     try {
@@ -43,8 +57,7 @@ function LoadingMetaMask () {
             dispatch(setUserAddress(accounts[0]))
             address = accounts[0]
             await getContractRegistryInstance()
-            dispatch(getNumberAllProposals())
-            dispatch(getAuctions(AUCTIONS_TYPES.all))
+            loadAdditionalInfo()
             setIsMetaMask(LOAD_TYPES.loaded)
           } else {
             setErrorMessage('Waiting for login in MetaMask!')

@@ -1,14 +1,5 @@
-import React from 'react'
-import LoadingSpinner from 'components/Base/LoadingSpinner'
-import { LoadingWrap } from 'components/Custom/MemberTables/styles'
 import { createGlobalStyle, css } from 'styled-components'
 import '../../node_modules/@mdi/font/css/materialdesignicons.min.css'
-
-export const fallback = (
-  <LoadingWrap>
-    <LoadingSpinner />
-  </LoadingWrap>
-)
 
 export const scrollbarStyle = css`
   scrollbar-color: ${(props) => props.theme.colors.oxfordBlueTint5};

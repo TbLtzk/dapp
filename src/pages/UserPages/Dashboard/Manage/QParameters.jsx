@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import KeyAddressViewer from '../KeyAddressViewer'
+import KeyAddressViewer from './components/KeyAddressViewer'
 
 import { useDispatch, useSelector } from 'react-redux'
 import {

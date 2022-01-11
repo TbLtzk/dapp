@@ -30,8 +30,11 @@ import {
   slashingLoadingProposalsCountSelector
 } from 'store/voting/slashing-proposals/selectors'
 import { getContractRegistryInstance } from 'contracts/contract-instance'
+import { mode } from 'store/dashboard-mode/selectors'
+import { MODE } from 'components/Base/DashboardMode/DashboardMode'
 
 function InfBlocksUp () {
+  const appMode = useSelector(mode)
   const [contractRegistryAddress, setContractRegistryAddress] = useState('0x00')
 
   const [blockNumber, setBlockNumber] = useState('0')
@@ -51,13 +54,15 @@ function InfBlocksUp () {
   const rootEndedProposalsCount = useSelector(rootEndedProposalsCountSelector)
   const rootLoadingProposalsCount = useSelector(rootLoadingProposalsCountSelector)
 
-  const expertActiveProposalsCount = useSelector(expertActiveProposalsCountSelector)
-  const expertEndedProposalsCount = useSelector(expertEndedProposalsCountSelector)
-  const expertLoadingProposalsCount = useSelector(expertLoadingProposalsCountSelector)
+  const expertActiveProposalsCount = appMode === MODE.basic ? 0 : useSelector(expertActiveProposalsCountSelector)
+  const expertEndedProposalsCount = appMode === MODE.basic ? 0 : useSelector(expertEndedProposalsCountSelector)
+  const expertLoadingProposalsCount =
+        appMode === MODE.basic ? false : useSelector(expertLoadingProposalsCountSelector)
 
-  const slashingActiveProposalsCount = useSelector(slashingActiveProposalsCountSelector)
-  const slashingEndedProposalsCount = useSelector(slashingEndedProposalsCountSelector)
-  const slashingLoadingProposalsCount = useSelector(slashingLoadingProposalsCountSelector)
+  const slashingActiveProposalsCount = appMode === MODE.basic ? 0 : useSelector(slashingActiveProposalsCountSelector)
+  const slashingEndedProposalsCount = appMode === MODE.basic ? 0 : useSelector(slashingEndedProposalsCountSelector)
+  const slashingLoadingProposalsCount =
+        appMode === MODE.basic ? false : useSelector(slashingLoadingProposalsCountSelector)
 
   const activeProposals =
         qActiveProposalsCount + rootActiveProposalsCount + expertActiveProposalsCount + slashingActiveProposalsCount
