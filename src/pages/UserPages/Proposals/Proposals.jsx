@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PageWrap from 'components/Base/PageWrap'
 import BigTabsView from 'components/Base/Tabs/BigTabsView'
 import ProposalsTab from './components/ProposalsTab'
 import CreateQProposalBtn from './components/CreateQProposalBtn'
 
 import { PROPOSALS_TYPES, PROPOSAL_STATUS_TYPES } from 'constants/statuses'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   qActiveProposalsCountSelector,
   qActiveProposalsSelector,
@@ -30,31 +30,21 @@ import {
   slashingEndedProposalsCountSelector,
   slashingEndedProposalsSelector
 } from 'store/voting/slashing-proposals/selectors'
+import { getProposalsByType } from 'store/voting/proposals/action-creators'
+import { CONTRACTS_NAMES } from 'constants/contracts'
 
 function Proposals ({ proposalsType }) {
-  const { proposals, endedProposals, activeProposalsCount, endedProposalsCount } =
-        getProposalsSelector(proposalsType)
+  const { proposals, endedProposals, activeProposalsCount, endedProposalsCount, oneContractName, title } =
+        getProposalsData(proposalsType)
 
-  const name = getPageName(proposalsType)
+  const dispatch = useDispatch()
 
-  function getPageName (type) {
-    switch (type) {
-      case PROPOSALS_TYPES.proposals:
-        return 'Q Proposals'
-      case PROPOSALS_TYPES.rootNodePanel:
-        return 'Root Node Panel'
-      case PROPOSALS_TYPES.expertProposals:
-        return 'Expert Proposals'
-      case PROPOSALS_TYPES.slashingProposals:
-      default:
-        return 'Slashing Proposals'
-    }
-  }
-
-  function getProposalsSelector (type) {
+  function getProposalsData (type) {
     switch (type) {
       case PROPOSALS_TYPES.proposals:
         return {
+          title: 'Q Proposals',
+          oneContractName: CONTRACTS_NAMES.constitutionVoting,
           proposals: useSelector(qActiveProposalsSelector),
           endedProposals: useSelector(qEndedProposalsSelector),
           activeProposalsCount: useSelector(qActiveProposalsCountSelector),
@@ -62,6 +52,8 @@ function Proposals ({ proposalsType }) {
         }
       case PROPOSALS_TYPES.rootNodePanel:
         return {
+          title: 'Root Node Panel',
+          oneContractName: CONTRACTS_NAMES.rootsVoting,
           proposals: useSelector(rootActiveProposalsSelector),
           endedProposals: useSelector(rootEndedProposalsSelector),
           activeProposalsCount: useSelector(rootActiveProposalsCountSelector),
@@ -69,6 +61,8 @@ function Proposals ({ proposalsType }) {
         }
       case PROPOSALS_TYPES.expertProposals:
         return {
+          title: 'Expert Proposals',
+          oneContractName: CONTRACTS_NAMES.ePQFIMembershipVoting,
           proposals: useSelector(expertActiveProposalsSelector),
           endedProposals: useSelector(expertEndedProposalsSelector),
           activeProposalsCount: useSelector(expertActiveProposalsCountSelector),
@@ -76,6 +70,8 @@ function Proposals ({ proposalsType }) {
         }
       case PROPOSALS_TYPES.slashingProposals:
         return {
+          title: 'Slashing Proposals',
+          oneContractName: CONTRACTS_NAMES.rootNodesSlashingVoting,
           proposals: useSelector(slashingActiveProposalsSelector),
           endedProposals: useSelector(slashingEndedProposalsSelector),
           activeProposalsCount: useSelector(slashingActiveProposalsCountSelector),
@@ -83,6 +79,10 @@ function Proposals ({ proposalsType }) {
         }
     }
   }
+
+  useEffect(() => {
+    dispatch(getProposalsByType(oneContractName))
+  }, [dispatch, proposalsType])
 
   const tabsItems = [
     {
@@ -112,7 +112,7 @@ function Proposals ({ proposalsType }) {
   ]
 
   return (
-        <PageWrap headerTitle={name} headerExtra={<CreateQProposalBtn activeTab={proposalsType} />}>
+        <PageWrap headerTitle={title} headerExtra={<CreateQProposalBtn activeTab={proposalsType} />}>
             <BigTabsView tabsItems={tabsItems} active={tabsItems[0]?.label} />
         </PageWrap>
   )

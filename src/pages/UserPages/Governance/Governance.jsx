@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PageWrap from 'components/Base/PageWrap'
 import InfoBlock from './components/InfoBlock'
 import VotingStats from 'components/Custom/VotingStats'
 
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   qActiveProposalsCountSelector,
   qEndedProposalsCountSelector,
@@ -27,8 +27,12 @@ import {
 
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboardMode'
+import { getNumberAllProposals } from 'store/voting/proposals/action-creators'
+import { getQProposalsCount } from 'store/voting/q-proposals/action-creators'
+import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-creators'
 
 function Governance () {
+  const dispatch = useDispatch()
   const appMode = useSelector(mode)
 
   const qActiveProposalsCount = useSelector(qActiveProposalsCountSelector)
@@ -46,6 +50,15 @@ function Governance () {
   const slashingActiveProposalsCount = useSelector(slashingActiveProposalsCountSelector)
   const slashingEndedProposalsCount = useSelector(slashingEndedProposalsCountSelector)
   const slashingLoadingProposalsCount = useSelector(slashingLoadingProposalsCountSelector)
+
+  useEffect(() => {
+    if (appMode === MODE.basic) {
+      dispatch(getQProposalsCount())
+      dispatch(getRootProposalsCount())
+    } else {
+      dispatch(getNumberAllProposals())
+    }
+  }, [dispatch, appMode])
 
   return (
         <PageWrap wrapContentClasses="wrap-content__three-colm" headerTitle="Governance">

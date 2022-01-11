@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import PageWrap from 'components/Base/PageWrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/user-inf/selectors'
 
@@ -7,25 +6,11 @@ import AddressForm from './components/AddressForm'
 import { InfoWrap } from './styles'
 import BalanceCard from './components/BalanceCard'
 import { fN } from 'func/useful'
+
 import { getUserBalance, getMinimumQVaultTimeLock, getQVaultTimeLocks } from 'store/q-vault/action-creators'
-
-import {
-  getRootNodeStakes,
-  getMinimumRootTimeLock,
-  getRootTimeLocks
-} from 'store/root-node/action-creators'
-
-import {
-  getSelfStake,
-  getMinimumValidatorsTimeLock,
-  getValidatorsTimeLocks
-} from 'store/validators/action-creators'
-
-import {
-  getVestingBalance,
-  getMinimumVestingTimeLock,
-  getVestingTimeLocks
-} from 'store/vesting/action-creators'
+import { getRootNodeStakes, getMinimumRootTimeLock, getRootTimeLocks } from 'store/root-node/action-creators'
+import { getSelfStake, getMinimumValidatorsTimeLock, getValidatorsTimeLocks } from 'store/validators/action-creators'
+import { getVestingBalance, getMinimumVestingTimeLock, getVestingTimeLocks } from 'store/vesting/action-creators'
 
 import { userBalance, qVaultMinimumTimeLock, qVaultTimeLocks } from 'store/q-vault/selectors'
 import { rootNodeStake, rootMinimumTimeLock, rootTimeLocks } from 'store/root-node/selectors'
@@ -113,23 +98,21 @@ function TimeLocks () {
   ]
 
   return (
-        <PageWrap headerTitle="Time Locks">
-            <InfoWrap>
-                <AddressForm setAddressRefresh={handleRefresh} userAddress={currentAddress} />
-                {cardsData.map((card) => (
-                    <BalanceCard
-                        key={card.contract}
-                        address={currentAddress.address}
-                        timeLockBalance={card.timeLockBalance}
-                        balance={card.balance}
-                        contract={card.contract}
-                        modalTitle={card.modalTitle}
-                        title={card.title}
-                        lockAmountData={card.lockAmountData}
-                    />
-                ))}
-            </InfoWrap>
-        </PageWrap>
+        <InfoWrap>
+            <AddressForm setAddressRefresh={handleRefresh} userAddress={currentAddress} />
+            {cardsData.map((card) => (
+                <BalanceCard
+                    key={card.contract}
+                    address={currentAddress.address}
+                    timeLockBalance={card.timeLockBalance}
+                    balance={card.balance}
+                    contract={card.contract}
+                    modalTitle={card.modalTitle}
+                    title={card.title}
+                    lockAmountData={card.lockAmountData}
+                />
+            ))}
+        </InfoWrap>
   )
 }
 

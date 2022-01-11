@@ -17,9 +17,8 @@ import {
   getEpdrParametersInstance,
   getEpqfiParametersInstance
 } from 'contracts/contract-instance'
-import { loadAddrsKeys, loadBoolsKeys, loadBytes32sKeys, loadStringsKeys, loadUintsKeys } from 'func/contractHelpers'
 
-const kVParametersArray = [loadUintsKeys, loadAddrsKeys, loadStringsKeys, loadBytes32sKeys, loadBoolsKeys]
+const TYPES = ['Uint', 'String', 'Bool', 'Addr', 'Bytes32']
 
 function * getContractRegistryKV () {
   try {
@@ -41,10 +40,8 @@ function * getContractRegistryKV () {
 
 function * getConstitutionParametersKV () {
   try {
-    const kVParametersArray = [loadUintsKeys, loadAddrsKeys, loadStringsKeys, loadBytes32sKeys, loadBoolsKeys]
-
     const contract = yield getConstitutionInstance()
-    const data = yield all(kVParametersArray.map((fnc) => fnc(contract)))
+    const data = yield all(TYPES.map((type) => contract.getParameters(type)))
     yield put(getConstitutionParametersKVSuccess(data.flat()))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
@@ -55,7 +52,7 @@ function * getConstitutionParametersKV () {
 function * getFeesIncentivesExpertPanelParametersKV () {
   try {
     const contract = yield getEpqfiParametersInstance()
-    const data = yield all(kVParametersArray.map((fnc) => fnc(contract)))
+    const data = yield all(TYPES.map((type) => contract.getParameters(type)))
     yield put(getFeesIncentivesExpertPanelParametersKVSuccess(data.flat()))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
@@ -66,9 +63,7 @@ function * getFeesIncentivesExpertPanelParametersKV () {
 function * getEPDRParametersKV () {
   try {
     const contract = yield getEpdrParametersInstance()
-    console.log(yield contract.getUint('governed.EPDR.debtAuctionP'))
-
-    const data = yield all(kVParametersArray.map((fnc) => fnc(contract)))
+    const data = yield all(TYPES.map((type) => contract.getParameters(type)))
     yield put(getEPDRParametersKVSuccess(data.flat()))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)

@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { mode } from 'store/dashboard-mode/selectors'
 import { setDashboardMode } from 'store/dashboard-mode/action-creators'
 import FormSwitch from 'components/Base/Form/FormSwitch'
+import { getNumberAllProposals } from 'store/voting/proposals/action-creators'
+import { getAuctions } from 'store/auctions/action-creators'
+import { AUCTIONS_TYPES } from 'constants/statuses'
 
 export const MODE = {
   basic: 'basic',
@@ -17,6 +20,8 @@ function DashboardMode () {
   function changeMode () {
     setIsSwitchOn(!isSwitchOn)
     if (appMode === MODE.basic) {
+      dispatch(getNumberAllProposals())
+      dispatch(getAuctions(AUCTIONS_TYPES.all))
       dispatch(setDashboardMode(MODE.advanced))
     } else {
       dispatch(setDashboardMode(MODE.basic))
