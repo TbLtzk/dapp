@@ -14,17 +14,47 @@ import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-hel
 
 import ErrorHandler from 'func/ErrorHandler'
 import { CONTRACTS_NAMES } from 'constants/contracts'
-import { getMinimalActiveBlockHeight, sortAndCountProposals } from 'func/useful'
+import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/useful'
+
+let lastActiveBlock
 
 function * getSlashingProposalsCountGenerator () {
   try {
     const contracts = creationSlashingContractsObjArray()
-    const minimalActiveBlockHeight = yield getMinimalActiveBlockHeight()
-    const proposals = yield all(contracts.map((contract) => contract.getProposalsCount(minimalActiveBlockHeight)))
-    const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposals(proposals)
-    yield put(setSlashingProposalsCount(proposalsCount))
-    yield put(setSlashingActiveProposals(activeProposalsIds))
-    yield put(setSlashingEndedProposals(endedProposalsIds))
+    const { minimalActiveBlockHeight, lastBlockHeight } = yield getMinimalActiveBlockHeight()
+
+    let proposalsCounter
+    let activeProposalsArray
+    let endedProposalsArray
+
+    if (lastActiveBlock) {
+      const { activeProposals, endedProposals, slashingEndedProposalsCount } = yield select(
+        (state) => state.slashingProposals
+      )
+      const proposals = yield all(
+        contracts.map((contract) => contract.getNewProposalsAndCheckActive(activeProposals, lastActiveBlock))
+      )
+      const [newProposalsCount, newActiveProposals, newEndedProposalsIds] = sortAndCountProposalsByType(proposals)
+
+      proposalsCounter = {
+        active: newProposalsCount.active,
+        ended: slashingEndedProposalsCount + newProposalsCount.ended
+      }
+      activeProposalsArray = newActiveProposals
+      endedProposalsArray = [...endedProposals, ...newEndedProposalsIds]
+      lastActiveBlock = lastBlockHeight
+    } else {
+      const proposals = yield all(contracts.map((contract) => contract.getProposalsCount(minimalActiveBlockHeight)))
+      const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposalsByType(proposals)
+      proposalsCounter = proposalsCount
+      activeProposalsArray = activeProposalsIds
+      endedProposalsArray = endedProposalsIds
+      lastActiveBlock = lastBlockHeight
+    }
+
+    yield put(setSlashingProposalsCount(proposalsCounter))
+    yield put(setSlashingActiveProposals(activeProposalsArray))
+    yield put(setSlashingEndedProposals(endedProposalsArray))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }

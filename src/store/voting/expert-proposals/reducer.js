@@ -1,3 +1,4 @@
+import { groupArrayByBlockNumber } from 'func/useful'
 import * as actionTypes from './action-types'
 
 const initialState = {
@@ -23,12 +24,12 @@ export default function expertProposals (state = initialState, action) {
     case actionTypes.SET_EXPERT_ACTIVE_PROPOSALS:
       return {
         ...state,
-        activeProposals: action.result
+        activeProposals: groupArrayByBlockNumber(action.result)
       }
     case actionTypes.SET_EXPERT_ENDED_PROPOSALS:
       return {
         ...state,
-        endedProposals: action.result
+        endedProposals: groupArrayByBlockNumber(action.result)
       }
     default:
       return state

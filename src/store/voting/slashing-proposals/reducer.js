@@ -1,3 +1,4 @@
+import { groupArrayByBlockNumber } from 'func/useful'
 import * as actionTypes from './action-types'
 
 const initialState = {
@@ -14,14 +15,12 @@ export default function slashingProposals (state = initialState, action) {
     case actionTypes.SET_SLASHING_ACTIVE_PROPOSALS:
       return {
         ...state,
-        activeProposals: action.result,
-        loadingActiveProposals: false
+        activeProposals: groupArrayByBlockNumber(action.result)
       }
     case actionTypes.SET_SLASHING_ENDED_PROPOSALS:
       return {
         ...state,
-        endedProposals: action.result,
-        loadingEndedProposals: false
+        endedProposals: groupArrayByBlockNumber(action.result)
       }
     case actionTypes.SET_SLASHING_PROPOSALS_COUNT: {
       return {

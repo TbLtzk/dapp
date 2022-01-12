@@ -1,3 +1,4 @@
+import { groupArrayByBlockNumber } from 'func/useful'
 import * as actionTypes from './action-types'
 
 const initialState = {
@@ -14,12 +15,12 @@ export default function rootNodeProposals (state = initialState, action) {
     case actionTypes.SET_ROOT_ACTIVE_PROPOSALS:
       return {
         ...state,
-        activeProposals: action.result
+        activeProposals: groupArrayByBlockNumber(action.result)
       }
     case actionTypes.SET_ROOT_ENDED_PROPOSALS:
       return {
         ...state,
-        endedProposals: action.result
+        endedProposals: groupArrayByBlockNumber(action.result)
       }
     case actionTypes.SET_ROOT_PROPOSALS_COUNT: {
       return {
