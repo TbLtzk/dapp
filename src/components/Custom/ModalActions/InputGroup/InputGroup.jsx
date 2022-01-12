@@ -31,7 +31,7 @@ function InputGroup (props) {
       if (nameField === fields.externalLink) {
         /* eslint-disable-next-line no-useless-escape */
         valueValid =
-                    /(https?:\/\)[a-zA-Z0-9äöü][a-zA-Zäöü0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zäöüA-Z0-9-]+[a-zA-Zäöü0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zäöüA-Z0-9]+\.[^\s]{2,}|www\.[a-zäöüA-Z0-9]+\.[^\s]{2,})/gm
+                    /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9äöü][äöüa-zA-Z0-9-_]+[äöüa-zA-Z0-9]\.[^\s]{2,}|www\.[äöüa-zA-Z0-9][a-zA-Z0-9-]+[äöüaa-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[äöüa-zA-Z0-9]+\.[^\s]{2,}|www\.[äöüa-zA-Z0-9]+\.[^\s]{2,})/gm
       } else if (nameField === 'address') {
         valueValid = /^(0x)?[0-9a-f]{40}$/i
       }
