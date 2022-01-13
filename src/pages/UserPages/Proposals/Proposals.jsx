@@ -48,7 +48,7 @@ function Proposals ({ proposalsType }) {
           proposals: useSelector(qActiveProposalsSelector),
           endedProposals: useSelector(qEndedProposalsSelector),
           activeProposalsCount: useSelector(qActiveProposalsCountSelector),
-          endedProposalsCount: useSelector(qEndedProposalsCountSelector)
+          endedProposalsCount: useSelector(qEndedProposalsCountSelector),
         }
       case PROPOSALS_TYPES.rootNodePanel:
         return {
