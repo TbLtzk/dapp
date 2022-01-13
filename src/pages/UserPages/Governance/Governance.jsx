@@ -27,9 +27,10 @@ import {
 
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboardMode'
-import { getNumberAllProposals } from 'store/voting/proposals/action-creators'
 import { getQProposalsCount } from 'store/voting/q-proposals/action-creators'
 import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-creators'
+import { getExpertProposalsCount } from 'store/voting/expert-proposals/action-creators'
+import { getSlashingProposalsCount } from 'store/voting/slashing-proposals/action-creators'
 
 function Governance () {
   const dispatch = useDispatch()
@@ -56,7 +57,10 @@ function Governance () {
       dispatch(getQProposalsCount())
       dispatch(getRootProposalsCount())
     } else {
-      dispatch(getNumberAllProposals())
+      dispatch(getQProposalsCount())
+      dispatch(getRootProposalsCount())
+      dispatch(getExpertProposalsCount())
+      dispatch(getSlashingProposalsCount())
     }
   }, [dispatch, appMode])
 

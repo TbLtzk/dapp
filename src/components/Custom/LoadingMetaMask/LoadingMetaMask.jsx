@@ -15,8 +15,6 @@ import { getNumberAllProposals } from 'store/voting/proposals/action-creators'
 import { getAuctions } from 'store/auctions/action-creators'
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboardMode'
-import { getQProposalsCount } from 'store/voting/q-proposals/action-creators'
-import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-creators'
 
 const web3 = new Web3(Web3.givenProvider)
 export let address = ''
@@ -29,13 +27,10 @@ function LoadingMetaMask () {
   const { ethereum } = window
 
   const loadAdditionalInfo = () => {
-    if (appMode === MODE.basic) {
-      dispatch(getQProposalsCount())
-      dispatch(getRootProposalsCount())
-    } else {
-      dispatch(getNumberAllProposals())
+    if (appMode === MODE.advanced) {
       dispatch(getAuctions(AUCTIONS_TYPES.all))
     }
+    dispatch(getNumberAllProposals())
   }
 
   const initMetamask = async () => {
