@@ -23,7 +23,7 @@ function * getQProposalsCountGenerator () {
       const proposals = yield all(
         contracts.map((contract) => contract.getNewProposalsAndCheckActive(activeProposals, lastActiveBlock))
       )
-      const [newProposalsCount, newActiveProposals, newEndedProposalsIds] = sortAndCountProposalsByType(proposals)  
+      const [newProposalsCount, newActiveProposals, newEndedProposalsIds] = sortAndCountProposalsByType(proposals)
       proposalsCounter = {
         active: newProposalsCount.active,
         ended: qEndedProposalsCount + newProposalsCount.ended

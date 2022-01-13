@@ -1,125 +1,126 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Button from "components/Base/Buttons/Button";
-import { isUserRootNode } from "store/root-node/selectors";
-import Tooltip from "components/Base/Tooltip";
-import { CONTRACTS_NAMES } from "constants/contracts";
-import { isUserEPDRMembership, isUserEPQFIMembership } from "store/membership/selectors";
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import Button from 'components/Base/Buttons/Button'
+import { isUserRootNode } from 'store/root-node/selectors'
+import Tooltip from 'components/Base/Tooltip'
+import { CONTRACTS_NAMES } from 'constants/contracts'
+import { isUserEPDRMembership, isUserEPQFIMembership } from 'store/membership/selectors'
 import {
-    executeProposal,
-    setDisabledCreatedProposalBtn,
-    setStepVoteCounter,
-    setVoteProposalObj,
-} from "store/voting/proposals/action-creators";
-import ModalVote from "../../../CreateQProposalBtn/ModalVote";
+  executeProposal,
+  setDisabledCreatedProposalBtn,
+  setStepVoteCounter,
+  setVoteProposalObj
+} from 'store/voting/proposals/action-creators'
+import ModalVote from '../../../CreateQProposalBtn/ModalVote'
 
 const PROPOSAL_STATUS = {
-    passed: "Passed",
-    pending: "Pending",
-    accepted: "Accepted",
-};
+  passed: 'Passed',
+  pending: 'Pending',
+  accepted: 'Accepted'
+}
 
 const TOOLTIP_INFO = {
-    votePeriod: "Voting period has ended.",
-    userVoted: "User already voted.",
-    vetoPeriod: "Veto period not started or ended.",
-    userVetoed: "User already vetoed.",
-    isNotRootNode: "User is not root node.",
-    isDeFiExpert: "User is not member of DeFi risk expert panel.",
-    isFeesExpert: "User is not member of Q fees & incentives expert panel.",
-};
+  votePeriod: 'Voting period has ended.',
+  userVoted: 'User already voted.',
+  vetoPeriod: 'Veto period not started or ended.',
+  userVetoed: 'User already vetoed.',
+  isNotRootNode: 'User is not root node.',
+  isDeFiExpert: 'User is not member of DeFi risk expert panel.',
+  isFeesExpert: 'User is not member of Q fees & incentives expert panel.'
+}
 
-function VotingItems({ proposal }) {
-    const dispatch = useDispatch();
-    const [modalShow, setModalShow] = useState(false);
-    const [proposalId, setProposalId] = useState(null);
-    const [vetoEndTime, setVetoEndTime] = useState(null);
-    const [proposalContract, setProposalContract] = useState(null);
+function VotingItems ({ proposal }) {
+  const dispatch = useDispatch()
+  const [modalShow, setModalShow] = useState(false)
+  const [proposalId, setProposalId] = useState(null)
+  const [vetoEndTime, setVetoEndTime] = useState(null)
+  const [proposalContract, setProposalContract] = useState(null)
 
-    const isRootNode = useSelector(isUserRootNode);
-    const isEPDRMembership = useSelector(isUserEPDRMembership);
-    const isEPQFIMembership = useSelector(isUserEPQFIMembership);
+  const isRootNode = useSelector(isUserRootNode)
+  const isEPDRMembership = useSelector(isUserEPDRMembership)
+  const isEPQFIMembership = useSelector(isUserEPQFIMembership)
 
-    const contractsWithoutVeto =
+  const contractsWithoutVeto =
         proposal.contract === CONTRACTS_NAMES.validatorsSlashingVoting ||
-        proposal.contract === CONTRACTS_NAMES.emergencyUpdateVoting;
+        proposal.contract === CONTRACTS_NAMES.emergencyUpdateVoting
 
-    const epqfiParametersVoting = proposal.contract === CONTRACTS_NAMES.ePQFIParametersVoting;
-    const epdrParametersVoting = proposal.contract === CONTRACTS_NAMES.ePDRParametersVoting;
+  const epqfiParametersVoting = proposal.contract === CONTRACTS_NAMES.ePQFIParametersVoting
+  const epdrParametersVoting = proposal.contract === CONTRACTS_NAMES.ePDRParametersVoting
 
-    function checkVoteUser() {
-        switch (true) {
-            case proposal.status === PROPOSAL_STATUS.accepted:
-                return { disabled: true, info: TOOLTIP_INFO.votePeriod };
-            case proposal.userVoted:
-                return { disabled: proposal.userVoted, info: TOOLTIP_INFO.userVoted };
-            case contractsWithoutVeto:
-                return {
-                    disabled: !isRootNode,
-                    info: isRootNode ? TOOLTIP_INFO.votePeriod : TOOLTIP_INFO.isNotRootNode,
-                };
-            case epdrParametersVoting:
-                return { disabled: !isEPDRMembership, info: TOOLTIP_INFO.isDeFiExpert };
-            case epqfiParametersVoting:
-                return { disabled: !isEPQFIMembership, info: TOOLTIP_INFO.isFeesExpert };
-            default:
-                return { disabled: false, info: "" };
+  function checkVoteUser () {
+    switch (true) {
+      case proposal.status === PROPOSAL_STATUS.accepted:
+        return { disabled: true, info: TOOLTIP_INFO.votePeriod }
+      case proposal.userVoted:
+        return { disabled: proposal.userVoted, info: TOOLTIP_INFO.userVoted }
+      case contractsWithoutVeto:
+        return {
+          disabled: !isRootNode,
+          info: isRootNode ? TOOLTIP_INFO.votePeriod : TOOLTIP_INFO.isNotRootNode
         }
+      case epdrParametersVoting:
+        return { disabled: !isEPDRMembership, info: TOOLTIP_INFO.isDeFiExpert }
+      case epqfiParametersVoting:
+        return { disabled: !isEPQFIMembership, info: TOOLTIP_INFO.isFeesExpert }
+      default:
+        return { disabled: false, info: '' }
     }
+  }
 
-    function checkVetoUser() {
-        const info = isRootNode ? TOOLTIP_INFO.vetoPeriod : TOOLTIP_INFO.isNotRootNode;
-        switch (true) {
-            case proposal.userVetoed:
-                return { disabled: true, info: TOOLTIP_INFO.userVetoed };
-            case proposal.status === PROPOSAL_STATUS.pending:
-                return { disabled: true, info };
-            case proposal.status === PROPOSAL_STATUS.accepted:
-                return { disabled: !isRootNode, info };
-            default:
-                return { disabled: true, info: "" };
-        }
+  function checkVetoUser () {
+    const info = isRootNode ? TOOLTIP_INFO.vetoPeriod : TOOLTIP_INFO.isNotRootNode
+    switch (true) {
+      case proposal.userVetoed:
+        return { disabled: true, info: TOOLTIP_INFO.userVetoed }
+      case proposal.status === PROPOSAL_STATUS.pending:
+        return { disabled: true, info }
+      case proposal.status === PROPOSAL_STATUS.accepted:
+        return { disabled: !isRootNode, info }
+      default:
+        return { disabled: true, info: '' }
     }
+  }
 
-    const isUserCanVote = checkVoteUser();
-    const isUserCanVeto = checkVetoUser();
+  const isUserCanVote = checkVoteUser()
+  const isUserCanVeto = checkVetoUser()
 
-    const onProposalVote = () => {
-        dispatch(setDisabledCreatedProposalBtn(true));
-        setProposalId(proposal.id);
-        setVetoEndTime(proposal.vetoEndTime);
-        setProposalContract(proposal.contract);
-        setModalShow(true);
-    };
+  const onProposalVote = () => {
+    dispatch(setDisabledCreatedProposalBtn(true))
+    setProposalId(proposal.id)
+    setVetoEndTime(proposal.vetoEndTime)
+    setProposalContract(proposal.contract)
+    setModalShow(true)
+  }
 
-    const onProposalExecute = () => {
-        dispatch(
-            executeProposal({
-                idProposal: proposal.id,
-                contract: proposal.contract,
-            })
-        );
-    };
+  const onProposalExecute = () => {
+    dispatch(
+      executeProposal({
+        idProposal: proposal.id,
+        contract: proposal.contract
+      })
+    )
+  }
 
-    const onChooseTypeOfVoting = () => {
-        const type = proposal.status === "Pending" ? "basic-vote-on-proposal" : "constitution-check";
-        dispatch(setVoteProposalObj({ first: type, contract: proposal.contract, id: proposal.id }));
-        dispatch(setDisabledCreatedProposalBtn(false));
-    };
+  const onChooseTypeOfVoting = () => {
+    const type = proposal.status === 'Pending' ? 'basic-vote-on-proposal' : 'constitution-check'
+    dispatch(setVoteProposalObj({ first: type, contract: proposal.contract, id: proposal.id }))
+    dispatch(setDisabledCreatedProposalBtn(false))
+  }
 
-    const handleVote = () => {
-        onProposalVote();
-        onChooseTypeOfVoting();
-    };
+  const handleVote = () => {
+    onProposalVote()
+    onChooseTypeOfVoting()
+  }
 
-    const addCardLine = proposal.status === "Passed" || proposal.status === "Pending" || proposal.status === "Accepted";
+  const addCardLine = proposal.status === 'Passed' || proposal.status === 'Pending' || proposal.status === 'Accepted'
 
-    return (
+  return (
         <div>
             {addCardLine ? <div className="list-card__line" /> : null}
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                {proposal.status === "Passed" ? <Button handleButton={onProposalExecute} title="Execute" /> : null}
-                {proposal.status === "Pending" || proposal.status === "Accepted" ? (
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                {proposal.status === 'Passed' ? <Button handleButton={onProposalExecute} title="Execute" /> : null}
+                {proposal.status === 'Pending' || proposal.status === 'Accepted'
+                  ? (
                     <>
                         <Tooltip disabled={!isUserCanVote.disabled} additionalInfo={isUserCanVote.info}>
                             <Button
@@ -130,9 +131,11 @@ function VotingItems({ proposal }) {
                                 handleButton={handleVote}
                             />
                         </Tooltip>
-                        {contractsWithoutVeto ? null : (
+                        {contractsWithoutVeto
+                          ? null
+                          : (
                             <>
-                                <div style={{ width: "20px" }} />
+                                <div style={{ width: '20px' }} />
 
                                 <Tooltip disabled={!isUserCanVeto.disabled} additionalInfo={isUserCanVeto.info}>
                                     <Button
@@ -144,11 +147,13 @@ function VotingItems({ proposal }) {
                                     />
                                 </Tooltip>
                             </>
-                        )}
+                            )}
                     </>
-                ) : null}
+                    )
+                  : null}
             </div>
-            {modalShow ? (
+            {modalShow
+              ? (
                 <ModalVote
                     proposalStatus={proposal.status}
                     proposalContract={proposalContract}
@@ -157,14 +162,15 @@ function VotingItems({ proposal }) {
                     activeTab={0}
                     modalShow={modalShow}
                     onHide={() => {
-                        setModalShow(false);
-                        dispatch(setStepVoteCounter(1));
-                        dispatch(setDisabledCreatedProposalBtn(true));
+                      setModalShow(false)
+                      dispatch(setStepVoteCounter(1))
+                      dispatch(setDisabledCreatedProposalBtn(true))
                     }}
                 />
-            ) : null}
+                )
+              : null}
         </div>
-    );
+  )
 }
 
-export default VotingItems;
+export default VotingItems
