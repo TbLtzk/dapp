@@ -1,21 +1,51 @@
-import { put, takeEvery } from 'redux-saga/effects'
+import { put, takeEvery, select } from 'redux-saga/effects'
 
 import * as actionTypes from './action-types'
 
 import { setRootProposalsCount, setRootEndedProposals, setRootActiveProposals } from './action-creators'
 import { creationRootContractObj } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import ErrorHandler from 'func/ErrorHandler'
-import { getMinimalActiveBlockHeight, sortAndCountProposals } from 'func/useful'
+import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/useful'
+
+let lastActiveBlock
 
 function * getRootProposalsCountGenerator () {
   try {
     const contract = creationRootContractObj()
-    const minimalActiveBlockHeight = yield getMinimalActiveBlockHeight()
-    const proposals = yield contract.getProposalsCount(minimalActiveBlockHeight)
-    const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposals([proposals])
-    yield put(setRootProposalsCount(proposalsCount))
-    yield put(setRootActiveProposals(activeProposalsIds))
-    yield put(setRootEndedProposals(endedProposalsIds))
+    const { minimalActiveBlockHeight, lastBlockHeight } = yield getMinimalActiveBlockHeight()
+
+    let proposalsCounter
+    let activeProposalsArray
+    let endedProposalsArray
+
+    if (lastActiveBlock) {
+      const { activeProposals, endedProposals, rootEndedProposalsCount } = yield select(
+        (state) => state.rootNodeProposals
+      )
+
+      const proposals = yield contract.getNewProposalsAndCheckActive(activeProposals, lastActiveBlock)
+
+      const [newProposalsCount, newActiveProposals, newEndedProposalsIds] = sortAndCountProposalsByType([proposals])
+      proposalsCounter = {
+        active: newProposalsCount.active,
+        ended: rootEndedProposalsCount + newProposalsCount.ended
+      }
+      activeProposalsArray = newActiveProposals
+      endedProposalsArray = [...endedProposals, ...newEndedProposalsIds]
+      lastActiveBlock = lastBlockHeight
+    } else {
+      const proposals = yield contract.getProposalsCount(minimalActiveBlockHeight)
+      const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposalsByType([proposals])
+
+      proposalsCounter = proposalsCount
+      activeProposalsArray = activeProposalsIds
+      endedProposalsArray = endedProposalsIds
+      lastActiveBlock = lastBlockHeight
+    }
+
+    yield put(setRootProposalsCount(proposalsCounter))
+    yield put(setRootActiveProposals(activeProposalsArray))
+    yield put(setRootEndedProposals(endedProposalsArray))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }

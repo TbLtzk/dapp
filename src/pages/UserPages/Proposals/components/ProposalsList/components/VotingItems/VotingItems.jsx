@@ -131,19 +131,22 @@ function VotingItems ({ proposal }) {
                                 handleButton={handleVote}
                             />
                         </Tooltip>
-                        <div style={{ width: '20px' }} />
                         {contractsWithoutVeto
                           ? null
                           : (
-                            <Tooltip disabled={!isUserCanVeto.disabled} additionalInfo={isUserCanVeto.info}>
-                                <Button
-                                    icon="window-close"
-                                    width="75px"
-                                    title="Veto"
-                                    disabled={isUserCanVeto.disabled}
-                                    handleButton={handleVote}
-                                />
-                            </Tooltip>
+                            <>
+                                <div style={{ width: '20px' }} />
+
+                                <Tooltip disabled={!isUserCanVeto.disabled} additionalInfo={isUserCanVeto.info}>
+                                    <Button
+                                        icon="window-close"
+                                        width="75px"
+                                        title="Veto"
+                                        disabled={isUserCanVeto.disabled}
+                                        handleButton={handleVote}
+                                    />
+                                </Tooltip>
+                            </>
                             )}
                     </>
                     )

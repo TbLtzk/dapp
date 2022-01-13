@@ -93,8 +93,6 @@ function VoteBreakdown ({ voteBreakdown }) {
                 <div>
                     <h5>Quorum</h5>
                     <p>{voteBreakdown.requiredQuorum} %</p>
-                </div>
-                <div>
                     <h5>Current Quorum</h5>
                     <p>{voteBreakdown.currentQuorum} %</p>
                 </div>

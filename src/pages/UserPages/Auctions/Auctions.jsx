@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PageWrap from 'components/Base/PageWrap'
 import CreateAuctionBtn from './components/CreateAuctionBtn'
 
@@ -9,39 +9,31 @@ import {
 } from 'store/auctions/selectors'
 
 import { AUCTIONS_TYPES } from 'constants/statuses'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { AuctionsTabWrp } from './styles'
 import AuctionsList from './components/AuctionsList'
 import BigTabsView from 'components/Base/Tabs/BigTabsView'
 import SidebarCards from './components/SidebarCards'
+import { getAuctions } from 'store/auctions/action-creators'
 
 function Auctions ({ auctionsType }) {
-  const auctions = getAuctions(auctionsType)
-  const name = getPageName(auctionsType)
+  const { auctions, title } = getAuctionsData(auctionsType)
+  const dispatch = useDispatch()
 
-  function getPageName (type) {
+  function getAuctionsData (type) {
     switch (type) {
       case AUCTIONS_TYPES.liquidation:
-        return 'Liquidation'
+        return { auctions: useSelector(liquidationAuctionsSelector), title: 'Liquidation' }
       case AUCTIONS_TYPES.systemDebt:
-        return 'System Debt'
+        return { auctions: useSelector(systemDebtAuctionsSelector), title: 'System Debt' }
       case AUCTIONS_TYPES.systemSurplus:
-        return 'System Surplus'
-      default:
-        return 'AUCTIONS'
+        return { auctions: useSelector(systemSurplusAuctionsSelector), title: 'System Surplus' }
     }
   }
 
-  function getAuctions (type) {
-    switch (type) {
-      case AUCTIONS_TYPES.liquidation:
-        return useSelector(liquidationAuctionsSelector)
-      case AUCTIONS_TYPES.systemDebt:
-        return useSelector(systemDebtAuctionsSelector)
-      case AUCTIONS_TYPES.systemSurplus:
-        return useSelector(systemSurplusAuctionsSelector)
-    }
-  }
+  useEffect(() => {
+    dispatch(getAuctions(auctionsType))
+  }, [])
 
   const tabsItems = [
     {
@@ -67,7 +59,7 @@ function Auctions ({ auctionsType }) {
   ]
 
   return (
-        <PageWrap headerTitle={name} headerExtra={<CreateAuctionBtn auctionsType={auctionsType} />}>
+        <PageWrap headerTitle={title} headerExtra={<CreateAuctionBtn auctionsType={auctionsType} />}>
             <BigTabsView tabsItems={tabsItems} active={tabsItems[0]?.label} />
         </PageWrap>
   )

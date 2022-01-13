@@ -31,6 +31,7 @@ import ErrorHandler from 'func/ErrorHandler'
 import { CONTRACTS_NAMES, CONTRACT_TYPES } from 'constants/contracts'
 import { getVotingWeightProxyInstance } from 'contracts/contract-instance'
 import { getNowTimestamp } from 'func/convertDate'
+import { MODE } from 'components/Base/DashboardMode/DashboardMode'
 
 function * createProposalGenerator ({ data }) {
   try {
@@ -167,11 +168,14 @@ function * getProposalsByTypeGenerator ({ contractName }) {
 }
 
 function * getNumberAllProposalsGenerator () {
+  const { appMode } = yield select((state) => state.dashboardMode)
   yield put(getQProposalsCount())
-  yield put(getExpertProposalsCount())
   yield put(getRootProposalsCount())
-  yield put(getSlashingProposalsCount())
-  yield delay(120000)
+  if (appMode === MODE.advanced) {
+    yield put(getExpertProposalsCount())
+    yield put(getSlashingProposalsCount())
+  }
+  yield delay(240000)
   yield call(getNumberAllProposalsGenerator)
 }
 

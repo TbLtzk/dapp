@@ -38,9 +38,8 @@ function * getSavingAllowanceGenerator () {
 function * getSavingBalanceDetailsGenerator () {
   try {
     const { userAddress } = yield select((state) => state.userInf)
-
     const contract = yield call(getSavingInstance)
-    const balanceDetails = yield contract.instance.methods.getBalanceDetails().call({ from: userAddress })
+    const balanceDetails = yield contract.getBalanceDetails(userAddress)
     const result = yield call(getSavingBalanceDetailsHelper, balanceDetails)
     yield put(setSavingBalanceDetails(result))
   } catch (error) {
@@ -53,7 +52,6 @@ function * getSavingAviableToDepositGenerator () {
     const { userAddress } = yield select((state) => state.userInf)
 
     const contract = yield call(getStableCoinInstance)
-
     const result = yield contract.balanceOf(userAddress)
     yield put(setSavingAviableToDeposit(fromWei(result)))
   } catch (error) {

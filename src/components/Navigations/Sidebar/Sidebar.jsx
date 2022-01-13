@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { qActiveProposalsCountSelector } from 'store/voting/q-proposals/selectors'
 import { rootActiveProposalsCountSelector } from 'store/voting/root-node-proposals/selectors'
 import { expertActiveProposalsCountSelector } from 'store/voting/expert-proposals/selectors'
@@ -28,23 +28,15 @@ import {
 } from './styles'
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboardMode'
-import { getQProposalsCount } from 'store/voting/q-proposals/action-creators'
-import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-creators'
-import { getSlashingProposalsCount } from 'store/voting/slashing-proposals/action-creators'
-import { getExpertProposalsCount } from 'store/voting/expert-proposals/action-creators'
-import { getNumberAllProposals } from 'store/voting/proposals/action-creators'
 import CommonLinks from './components/CommonLinks'
 import AccordionLinks from './components/AccordionLinks'
 import DashboardMode from 'components/Base/DashboardMode'
 import Themes from 'components/Base/Themes'
 import AccordionElements from './components/AccordionElements'
 import CopyAddress from './components/CopyAddress'
-import { getAuctions } from 'store/auctions/action-creators'
-import { AUCTIONS_TYPES } from 'constants/statuses'
 
 function Sidebar () {
   const history = useHistory()
-  const dispatch = useDispatch()
   const appMode = useSelector(mode)
 
   const qActiveProposalsCount = useSelector(qActiveProposalsCountSelector)
@@ -77,7 +69,6 @@ function Sidebar () {
                         <AccordionLinks
                             headerLink={
                                 <CommonLinks
-                                    onClick={() => dispatch(getNumberAllProposals())}
                                     highlight={highlight('q-governance')}
                                     linkTo="/q-governance"
                                     linkTitle="Governance"
@@ -86,7 +77,6 @@ function Sidebar () {
                         >
                             <div>
                                 <CommonLinks
-                                    onClick={() => dispatch(getQProposalsCount())}
                                     highlight={highlight('q-proposals')}
                                     linkTo="/q-proposals"
                                     count={qActiveProposalsCount}
@@ -94,7 +84,6 @@ function Sidebar () {
                                 />
 
                                 <CommonLinks
-                                    onClick={() => dispatch(getRootProposalsCount())}
                                     highlight={highlight('q-root-node-panel')}
                                     linkTo="/q-root-node-panel"
                                     count={rootActiveProposalsCount}
@@ -105,14 +94,12 @@ function Sidebar () {
                                   ? (
                                     <>
                                         <CommonLinks
-                                            onClick={() => dispatch(getExpertProposalsCount())}
                                             highlight={highlight('q-expert-proposals')}
                                             linkTo="/q-expert-proposals"
                                             count={expertActiveProposalsCount}
                                             linkTitle="– Expert Proposals"
                                         />
                                         <CommonLinks
-                                            onClick={() => dispatch(getSlashingProposalsCount())}
                                             highlight={highlight('slashing-proposals')}
                                             linkTo="/slashing-proposals"
                                             count={slashingActiveProposalsCount}
@@ -161,7 +148,6 @@ function Sidebar () {
                                 >
                                     <div>
                                         <CommonLinks
-                                            onClick={() => dispatch(getAuctions(AUCTIONS_TYPES.liquidation))}
                                             highlight={highlight('liquidation')}
                                             linkTo="/liquidation"
                                             count={liquidationActiveAuctionsCount}
@@ -169,7 +155,6 @@ function Sidebar () {
                                         />
 
                                         <CommonLinks
-                                            onClick={() => dispatch(getAuctions(AUCTIONS_TYPES.systemDebt))}
                                             highlight={highlight('system-debt')}
                                             linkTo="/system-debt"
                                             count={systemDebtActiveAuctionsCount}
@@ -177,7 +162,6 @@ function Sidebar () {
                                         />
 
                                         <CommonLinks
-                                            onClick={() => dispatch(getAuctions(AUCTIONS_TYPES.systemSurplus))}
                                             highlight={highlight('system-surplus')}
                                             linkTo="/system-surplus"
                                             count={systemSurplusActiveAuctionsCount}

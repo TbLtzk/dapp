@@ -48,6 +48,7 @@ function TokenomicsBlock () {
   const handler = new Handler(userAddress, dispatch, setErrorMessage)
 
   useEffect(() => {
+    dispatch(getQVBalance())
     handler.getValidationRewardProxy(setValidationRewardProxy, () => {}, false)
     handler.getRootNodeRewardProxy(setRootNodeRewardProxy, () => {}, false)
   }, [defaultAllocationProxy])

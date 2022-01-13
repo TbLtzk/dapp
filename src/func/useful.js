@@ -20,7 +20,10 @@ export const errorHandler = (error, field, min = 0, max = 100) => {
 export const getMinimalActiveBlockHeight = async () => {
   const blocksDependsOnVersion = window.ethereum.networkVersion === '35442' ? 40000 : 300000
   const block = await window.web3.eth.getBlock('latest')
-  return Math.max(0, Number(block.number) - Number(blocksDependsOnVersion))
+  return {
+    minimalActiveBlockHeight: Math.max(0, Number(block.number) - Number(blocksDependsOnVersion)),
+    lastBlockHeight: block.number
+  }
 }
 
 export const fN = (number) => {
@@ -38,34 +41,27 @@ export const uintPercentToNumber = (num) => {
   return num / 10 ** 27
 }
 
-export const sortAndCountProposals = (proposals) => {
+export const sortAndCountProposalsByType = (proposals) => {
+  const active = []
+  const ended = []
+
   const proposalsCount = {
     active: 0,
     ended: 0
   }
 
-  const activeProposalsIds = []
-  const endedProposalsIds = []
-
-  proposals.forEach((proposal) => {
-    if (proposal.endedIds) {
-      proposalsCount.ended += proposal.endedIds.length
-      endedProposalsIds.push(
-        proposal.endedIds.map(({ id, blockNumber }) => ({ id, blockNumber, contract: proposal.contract }))
-      )
-    }
-    if (proposal.activeIds) {
-      proposalsCount.active += proposal.activeIds.length
-      activeProposalsIds.push(
-        proposal.activeIds.map(({ id, blockNumber }) => ({ id, blockNumber, contract: proposal.contract }))
-      )
-    }
+  proposals.forEach((array) => {
+    proposalsCount.active += array[0].length
+    active.push(...array[0])
+    proposalsCount.ended += array[1].length
+    ended.push(...array[1])
   })
-  return [proposalsCount, groupArrayByBlockNumber(activeProposalsIds), groupArrayByBlockNumber(endedProposalsIds)]
+
+  return [proposalsCount, active, ended]
 }
 
 export const groupArrayByBlockNumber = (array) => {
-  return orderBy(array.flat(), ['blockNumber'], ['desc', 'asc'])
+  return orderBy(array, ['blockNumber'], ['desc', 'asc'])
 }
 
 export const fillArray = (length) => {

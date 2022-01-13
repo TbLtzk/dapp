@@ -2,6 +2,7 @@ import { transformToPercentage } from './base-voting-helper'
 import { ParameterType } from '@q-dev/q-js-sdk'
 import { getRootNodesInstance, getInstance } from 'contracts/contract-instance'
 import { address } from 'components/Custom/LoadingMetaMask/LoadingMetaMask'
+import { includes, uniqBy } from 'lodash'
 
 export default class VotingService {
   constructor (contractName) {
@@ -127,37 +128,56 @@ export default class VotingService {
     return objRes
   }
 
-  async getProposalsCount (minimalActiveBlockHeight) {
+  async getPastEvents (fromBlock = 0, toBlock = 'latest') {
     const contract = await this.getContractInstance()
 
     const pastEvents = await contract.instance.getPastEvents('ProposalCreated', {
-      fromBlock: 0,
-      toBlock: 'latest'
+      fromBlock,
+      toBlock
     })
-    const latestPastEvents = pastEvents.filter((evt) => evt.blockNumber >= minimalActiveBlockHeight)
 
-    const latestProposals = []
-    for (const pastEvent of latestPastEvents) {
-      const id = pastEvent.returnValues._id
-      const { blockNumber } = pastEvent
-      const status = await contract.getStatus(id)
-      latestProposals.push({ id, status, blockNumber })
+    return pastEvents.map((evt) => ({
+      blockNumber: evt.blockNumber,
+      id: evt.returnValues._id,
+      contract: this.contractName
+    }))
+  }
+
+  async checkProposalsByStatus (proposals) {
+    const contract = await this.getContractInstance()
+    const activeIds = []
+    const endedIds = []
+
+    for (const proposal of proposals) {
+      const status = await contract.getStatus(proposal.id)
+      if (status === '0') {
+        return
+      } else if (status === '1' || status === '3' || status === '4') {
+        activeIds.push({ ...proposal, status })
+      } else {
+        endedIds.push({ ...proposal, status })
+      }
     }
 
-    const activeIds = latestProposals.filter(
-      (prop) => prop.status === '1' || prop.status === '3' || prop.status === '4'
+    return [activeIds, endedIds]
+  }
+
+  async getNewProposalsAndCheckActive (activeProposals, lastActiveBlock) {
+    const activeProposalsByContract = activeProposals.filter((proposal) => proposal.contract === this.contractName)
+    const newProposals = await this.getPastEvents(lastActiveBlock)
+    const proposals = uniqBy([...newProposals, ...activeProposalsByContract], 'id')
+    return await this.checkProposalsByStatus(proposals)
+  }
+
+  async getProposalsCount (minimalActiveBlockHeight) {
+    const allProposals = await this.getPastEvents()
+    const [activeIds] = await this.checkProposalsByStatus(
+      allProposals.filter((proposals) => proposals.blockNumber >= minimalActiveBlockHeight)
     )
+
     const transformToId = activeIds.map((item) => item.id)
-
-    const endedIds = pastEvents
-      .map((evt) => ({ blockNumber: evt.blockNumber, id: evt.returnValues._id }))
-      .filter(({ id }) => !transformToId.includes(id))
-
-    return {
-      contract: this.contractName,
-      activeIds,
-      endedIds
-    }
+    const endedIds = allProposals.filter(({ id }) => !includes(transformToId, id))
+    return [activeIds, endedIds]
   }
 
   transformParameterType (id) {
