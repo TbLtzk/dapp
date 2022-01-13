@@ -150,10 +150,12 @@ export default class VotingService {
 
     for (const proposal of proposals) {
       const status = await contract.getStatus(proposal.id)
-      if (status === '1' || status === '3' || status === '4') {
-        activeIds.push(proposal)
+      if (status === '0') {
+        return
+      } else if (status === '1' || status === '3' || status === '4') {
+        activeIds.push({ ...proposal, status })
       } else {
-        endedIds.push(proposal)
+        endedIds.push({ ...proposal, status })
       }
     }
 
@@ -161,9 +163,8 @@ export default class VotingService {
   }
 
   async getNewProposalsAndCheckActive (activeProposals, lastActiveBlock) {
-    const activeProposalsByContract = activeProposals.filter((proposals) => proposals.contract === this.contractName)
+    const activeProposalsByContract = activeProposals.filter((proposal) => proposal.contract === this.contractName)
     const newProposals = await this.getPastEvents(lastActiveBlock)
-
     const proposals = uniqBy([...newProposals, ...activeProposalsByContract], 'id')
     return await this.checkProposalsByStatus(proposals)
   }
