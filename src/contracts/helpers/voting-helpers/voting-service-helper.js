@@ -84,6 +84,12 @@ export default class VotingService {
     return result
   }
 
+  async approve (id, userAddress) {
+    const contract = await this.getContractInstance()
+    const result = await contract.execute(id, { from: userAddress })
+    return result
+  }
+
   async getProposal (id, type) {
     const contract = await this.getContractInstance()
     const ids = await contract.getProposalIds(0, 'latest')

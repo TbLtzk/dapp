@@ -106,7 +106,22 @@ export function creationExpertContractsObjArray () {
   const ePDRparametersVoting = new ParametersVoting(CONTRACTS_NAMES.ePDRParametersVoting)
   return [ePQFImembershipVoting, ePDRmembershipVoting, ePQFIparametersVoting, ePDRparametersVoting]
 }
+/// /////////////////////////////////////////////////////////////////////////////////
+export function creationUpdatesContractObjArray () {
+  const contractRegistryAddressVoting = ''
+  const contractRegistryUpgradeVoting = ''
+  return [contractRegistryAddressVoting, contractRegistryUpgradeVoting]
+}
 
+export function creationUpdatesContractObj (contractName) {
+  switch (contractName) {
+    case CONTRACTS_NAMES.contractRegistryAddressVoting:
+      return ''
+    case CONTRACTS_NAMES.contractRegistryUpgradeVoting:
+      return ''
+  }
+}
+/// ////////////////////////////////////////////////////////////////////////////////
 export function tabSwitcher (activeTab, qProp, rootNodeProp, expertProp, slashingProp) {
   switch (activeTab) {
     case PROPOSALS_TYPES.proposals:

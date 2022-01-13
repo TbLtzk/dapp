@@ -12,24 +12,15 @@ const initialState = {
 
 export default function rootNodeProposals (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.SET_ROOT_ACTIVE_PROPOSALS:
+    case actionTypes.SET_ROOT_PROPOSALS:
       return {
         ...state,
-        activeProposals: groupArrayByBlockNumber(action.result)
-      }
-    case actionTypes.SET_ROOT_ENDED_PROPOSALS:
-      return {
-        ...state,
-        endedProposals: groupArrayByBlockNumber(action.result)
-      }
-    case actionTypes.SET_ROOT_PROPOSALS_COUNT: {
-      return {
-        ...state,
-        rootEndedProposalsCount: action.result.ended,
-        rootActiveProposalsCount: action.result.active,
+        activeProposals: groupArrayByBlockNumber(action.activeProposalsArray),
+        endedProposals: groupArrayByBlockNumber(action.endedProposalsArray),
+        rootEndedProposalsCount: action.proposalsCounter.ended,
+        rootActiveProposalsCount: action.proposalsCounter.active,
         rootLoadingProposalsCount: false
       }
-    }
     default:
       return state
   }

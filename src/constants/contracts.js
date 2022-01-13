@@ -24,6 +24,8 @@ export const CONTRACT_TYPES = {
 }
 
 export const CONTRACTS_NAMES = {
+  contractRegistryAddressVoting: 'contractRegistryAddressVoting',
+  contractRegistryUpgradeVoting: 'contractRegistryUpgradeVoting',
   constitutionVoting: 'constitutionVoting',
   emergencyUpdateVoting: 'emergencyUpdateVoting',
   generalUpdateVoting: 'generalUpdateVoting',

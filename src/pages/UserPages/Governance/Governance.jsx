@@ -27,10 +27,16 @@ import {
 
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboardMode'
-import { getQProposalsCount } from 'store/voting/q-proposals/action-creators'
-import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-creators'
-import { getExpertProposalsCount } from 'store/voting/expert-proposals/action-creators'
-import { getSlashingProposalsCount } from 'store/voting/slashing-proposals/action-creators'
+import { getQProposals } from 'store/voting/q-proposals/action-creators'
+import { getRootProposals } from 'store/voting/root-node-proposals/action-creators'
+import { getExpertProposals } from 'store/voting/expert-proposals/action-creators'
+import { getSlashingProposals } from 'store/voting/slashing-proposals/action-creators'
+import {
+  contractUpdatesActiveProposalsCountSelector,
+  contractUpdatesEndedProposalsCountSelector,
+  contractUpdatesLoadingProposalsCountSelector
+} from 'store/voting/contract-updates/selectors'
+import { getContractUpdatesProposals } from 'store/voting/contract-updates/action-creators'
 
 function Governance () {
   const dispatch = useDispatch()
@@ -52,15 +58,20 @@ function Governance () {
   const slashingEndedProposalsCount = useSelector(slashingEndedProposalsCountSelector)
   const slashingLoadingProposalsCount = useSelector(slashingLoadingProposalsCountSelector)
 
+  const contractUpdatesActiveProposalsCount = useSelector(contractUpdatesActiveProposalsCountSelector)
+  const contractUpdatesEndedProposalsCount = useSelector(contractUpdatesEndedProposalsCountSelector)
+  const contractUpdatesLoadingProposalsCount = useSelector(contractUpdatesLoadingProposalsCountSelector)
+
   useEffect(() => {
     if (appMode === MODE.basic) {
-      dispatch(getQProposalsCount())
-      dispatch(getRootProposalsCount())
+      dispatch(getQProposals())
+      dispatch(getRootProposals())
     } else {
-      dispatch(getQProposalsCount())
-      dispatch(getRootProposalsCount())
-      dispatch(getExpertProposalsCount())
-      dispatch(getSlashingProposalsCount())
+      dispatch(getQProposals())
+      dispatch(getRootProposals())
+      dispatch(getExpertProposals())
+      dispatch(getSlashingProposals())
+      //   dispatch(getContractUpdatesProposals())
     }
   }, [dispatch, appMode])
 
@@ -82,6 +93,17 @@ function Governance () {
                         endedProposalsNumber={expertEndedProposalsCount}
                         detailsLink="q-expert-proposals"
                         isLoading={expertLoadingProposalsCount}
+                    />
+                    )
+                  : null}
+                {appMode === MODE.advanced
+                  ? (
+                    <InfoBlock
+                        header="Contract Updates"
+                        activeProposalsNumber={contractUpdatesActiveProposalsCount}
+                        endedProposalsNumber={contractUpdatesEndedProposalsCount}
+                        detailsLink="contract-updates"
+                        isLoading={contractUpdatesLoadingProposalsCount}
                     />
                     )
                   : null}

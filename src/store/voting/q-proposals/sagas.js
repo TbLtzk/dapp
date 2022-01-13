@@ -1,14 +1,14 @@
 import { put, takeEvery, all, select } from 'redux-saga/effects'
 
 import * as actionTypes from './action-types'
-import { setQProposalsCount, setQEndedProposals, setQActiveProposals } from './action-creators'
+import { setQProposals } from './action-creators'
 import { creationQContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import ErrorHandler from 'func/ErrorHandler'
 import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/useful'
 
 let lastActiveBlock
 
-function * getQProposalsCountGenerator () {
+function * getQProposalsGenerator () {
   try {
     const contracts = creationQContractsObjArray()
     const { minimalActiveBlockHeight, lastBlockHeight } = yield getMinimalActiveBlockHeight()
@@ -40,12 +40,10 @@ function * getQProposalsCountGenerator () {
       lastActiveBlock = lastBlockHeight
     }
 
-    yield put(setQProposalsCount(proposalsCounter))
-    yield put(setQActiveProposals(activeProposalsArray))
-    yield put(setQEndedProposals(endedProposalsArray))
+    yield put(setQProposals(activeProposalsArray, endedProposalsArray, proposalsCounter))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }
 }
 
-export default [takeEvery(actionTypes.GET_Q_PROPOSALS_COUNT, getQProposalsCountGenerator)]
+export default [takeEvery(actionTypes.GET_Q_PROPOSALS, getQProposalsGenerator)]

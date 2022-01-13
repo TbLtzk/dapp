@@ -23,6 +23,7 @@ import vesting from './vesting/sagas'
 import borrowingCore from './borrowing-core/sagas'
 import savingAssets from './saving-assets/sagas'
 import borrowingAssets from './borrow-assets/sagas'
+import contractUpdatesProposals from './voting/contract-updates/sagas'
 
 export default function * rootSaga () {
   yield all([
@@ -32,6 +33,7 @@ export default function * rootSaga () {
     ...borrowingCore,
     ...proposals,
     ...qProposals,
+    ...contractUpdatesProposals,
     ...rootNodeProposals,
     ...expertProposals,
     ...slashingProposals,

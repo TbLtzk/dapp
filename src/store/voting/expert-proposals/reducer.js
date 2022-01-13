@@ -13,24 +13,16 @@ const initialState = {
 
 export default function expertProposals (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.SET_EXPERT_PROPOSALS_COUNT: {
+    case actionTypes.SET_EXPERT_PROPOSALS:
       return {
         ...state,
-        expertEndedProposalsCount: action.result.ended,
-        expertActiveProposalsCount: action.result.active,
+        activeProposals: groupArrayByBlockNumber(action.activeProposalsArray),
+        endedProposals: groupArrayByBlockNumber(action.endedProposalsArray),
+        expertEndedProposalsCount: action.proposalsCounter.ended,
+        expertActiveProposalsCount: action.proposalsCounter.active,
         expertLoadingProposalsCount: false
       }
-    }
-    case actionTypes.SET_EXPERT_ACTIVE_PROPOSALS:
-      return {
-        ...state,
-        activeProposals: groupArrayByBlockNumber(action.result)
-      }
-    case actionTypes.SET_EXPERT_ENDED_PROPOSALS:
-      return {
-        ...state,
-        endedProposals: groupArrayByBlockNumber(action.result)
-      }
+
     default:
       return state
   }

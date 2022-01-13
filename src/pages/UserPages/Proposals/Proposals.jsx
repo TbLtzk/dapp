@@ -32,6 +32,12 @@ import {
 } from 'store/voting/slashing-proposals/selectors'
 import { getProposalsByType } from 'store/voting/proposals/action-creators'
 import { CONTRACTS_NAMES } from 'constants/contracts'
+import {
+  contractUpdatesActiveProposalsCountSelector,
+  contractUpdatesActiveProposalsSelector,
+  contractUpdatesEndedProposalsCountSelector,
+  contractUpdatesEndedProposalsSelector
+} from 'store/voting/contract-updates/selectors'
 
 function Proposals ({ proposalsType }) {
   const { proposals, endedProposals, activeProposalsCount, endedProposalsCount, oneContractName, title } =
@@ -77,6 +83,15 @@ function Proposals ({ proposalsType }) {
           activeProposalsCount: useSelector(slashingActiveProposalsCountSelector),
           endedProposalsCount: useSelector(slashingEndedProposalsCountSelector)
         }
+      case PROPOSALS_TYPES.contractUpdates:
+        return {
+          title: 'Contract Updates',
+          oneContractName: CONTRACTS_NAMES.contractRegistryAddressVoting,
+          proposals: useSelector(contractUpdatesActiveProposalsSelector),
+          endedProposals: useSelector(contractUpdatesEndedProposalsSelector),
+          activeProposalsCount: useSelector(contractUpdatesActiveProposalsCountSelector),
+          endedProposalsCount: useSelector(contractUpdatesEndedProposalsCountSelector)
+        }
     }
   }
 
@@ -111,8 +126,11 @@ function Proposals ({ proposalsType }) {
     }
   ]
 
+  const createProposal =
+        proposalsType !== PROPOSALS_TYPES.contractUpdates ? <CreateQProposalBtn activeTab={proposalsType} /> : null
+
   return (
-        <PageWrap headerTitle={title} headerExtra={<CreateQProposalBtn activeTab={proposalsType} />}>
+        <PageWrap headerTitle={title} headerExtra={createProposal}>
             <BigTabsView tabsItems={tabsItems} active={tabsItems[0]?.label} />
         </PageWrap>
   )

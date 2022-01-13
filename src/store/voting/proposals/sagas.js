@@ -11,10 +11,10 @@ import {
   getBaseVotingWeightInfo,
   getProposalsByType
 } from 'store/voting/proposals/action-creators'
-import { getQProposalsCount } from 'store/voting/q-proposals/action-creators'
-import { getRootProposalsCount } from 'store/voting/root-node-proposals/action-creators'
-import { getExpertProposalsCount } from 'store/voting/expert-proposals/action-creators'
-import { getSlashingProposalsCount } from 'store/voting/slashing-proposals/action-creators'
+import { getQProposals } from 'store/voting/q-proposals/action-creators'
+import { getRootProposals } from 'store/voting/root-node-proposals/action-creators'
+import { getExpertProposals } from 'store/voting/expert-proposals/action-creators'
+import { getSlashingProposals } from 'store/voting/slashing-proposals/action-creators'
 
 import {
   creationQContractObj,
@@ -32,6 +32,7 @@ import { CONTRACTS_NAMES, CONTRACT_TYPES } from 'constants/contracts'
 import { getVotingWeightProxyInstance } from 'contracts/contract-instance'
 import { getNowTimestamp } from 'func/convertDate'
 import { MODE } from 'components/Base/DashboardMode/DashboardMode'
+import { getContractUpdatesProposals } from '../contract-updates/action-creators'
 
 function * createProposalGenerator ({ data }) {
   try {
@@ -145,35 +146,59 @@ function * getProposalsByTypeGenerator ({ contractName }) {
     case CONTRACTS_NAMES.constitutionVoting:
     case CONTRACTS_NAMES.emergencyUpdateVoting:
     case CONTRACTS_NAMES.generalUpdateVoting: {
-      yield put(getQProposalsCount())
+      yield put(getQProposals())
       break
     }
     case CONTRACTS_NAMES.rootsVoting: {
-      yield put(getRootProposalsCount())
+      yield put(getRootProposals())
       break
     }
     case CONTRACTS_NAMES.rootNodesSlashingVoting:
     case CONTRACTS_NAMES.validatorsSlashingVoting: {
-      yield put(getSlashingProposalsCount())
+      yield put(getSlashingProposals())
       break
     }
     case CONTRACTS_NAMES.ePQFIMembershipVoting:
     case CONTRACTS_NAMES.ePDRMembershipVoting:
     case CONTRACTS_NAMES.ePQFIParametersVoting:
     case CONTRACTS_NAMES.ePDRParametersVoting: {
-      yield put(getExpertProposalsCount())
+      yield put(getExpertProposals())
       break
     }
+    // case CONTRACTS_NAMES.contractRegistryAddressVoting:
+    // case CONTRACTS_NAMES.contractRegistryUpgradeVoting: {
+    //   yield put(getContractUpdatesProposals());
+    //   break;
+    // }
+  }
+}
+
+function * approveProposalGenerator ({ data }) {
+  try {
+    yield put(setTransactionCounter(1))
+    const { userAddress } = yield select((state) => state.userInf)
+    const contract = new VotingService(data?.contract)
+    yield contract.approve(data?.idProposal, userAddress)
+
+    yield put(getProposalsByType(data.contract))
+    yield put(getBaseVotingWeightInfo())
+    yield put(getDelegationInfo(userAddress))
+  } catch (error) {
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put(setTransactionCounter(-1))
   }
 }
 
 function * getNumberAllProposalsGenerator () {
   const { appMode } = yield select((state) => state.dashboardMode)
-  yield put(getQProposalsCount())
-  yield put(getRootProposalsCount())
+  yield put(getQProposals())
+  yield put(getRootProposals())
   if (appMode === MODE.advanced) {
-    yield put(getExpertProposalsCount())
-    yield put(getSlashingProposalsCount())
+    yield put(getExpertProposals())
+    yield put(getSlashingProposals())
+    // yield put(getContractUpdatesProposals());
   }
   yield delay(240000)
   yield call(getNumberAllProposalsGenerator)
