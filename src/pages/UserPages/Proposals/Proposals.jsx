@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import PageWrap from 'components/Base/PageWrap'
 import BigTabsView from 'components/Base/Tabs/BigTabsView'
-import ProposalsTab from './components/ProposalsTab'
 import CreateQProposalBtn from './components/CreateQProposalBtn'
+import VotingStats from 'components/Custom/VotingStats'
 
-import { PROPOSALS_TYPES, PROPOSAL_STATUS_TYPES } from 'constants/statuses'
+import { PROPOSALS_TYPES } from 'constants/statuses'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   qActiveProposalsCountSelector,
@@ -38,6 +38,8 @@ import {
   contractUpdatesEndedProposalsCountSelector,
   contractUpdatesEndedProposalsSelector
 } from 'store/voting/contract-updates/selectors'
+import { ProposalsTabWrp } from './styles'
+import ProposalsList from './components/ProposalsList/ProposalsList'
 
 function Proposals ({ proposalsType }) {
   const { proposals, endedProposals, activeProposalsCount, endedProposalsCount, oneContractName, title } =
@@ -104,24 +106,28 @@ function Proposals ({ proposalsType }) {
       label: 'active-proposals',
       title: 'Active Proposals',
       content: (
-                <ProposalsTab
-                    proposals={proposals}
-                    proposalsType={proposalsType}
-                    proposalsCount={activeProposalsCount}
-                    proposalStatus={PROPOSAL_STATUS_TYPES.active}
-                />
+                <ProposalsTabWrp>
+                    <ProposalsList
+                        proposals={proposals}
+                        proposalsKind={proposalsType}
+                        proposalsCount={activeProposalsCount}
+                    />
+                    <VotingStats />
+                </ProposalsTabWrp>
       )
     },
     {
       label: 'ended-proposals',
       title: 'Ended Proposals',
       content: (
-                <ProposalsTab
-                    proposals={endedProposals}
-                    proposalsType={proposalsType}
-                    proposalsCount={endedProposalsCount}
-                    proposalStatus={PROPOSAL_STATUS_TYPES.ended}
-                />
+                <ProposalsTabWrp>
+                    <ProposalsList
+                        proposals={endedProposals}
+                        proposalsKind={proposalsType}
+                        proposalsCount={endedProposalsCount}
+                    />
+                    <VotingStats />
+                </ProposalsTabWrp>
       )
     }
   ]
