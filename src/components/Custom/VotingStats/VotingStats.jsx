@@ -23,10 +23,10 @@ function VotingStats () {
   const checkVoteDelegations = useMemo(() => {
     if (!agent) {
       return '...'
-    } else if (agent !== address) {
-      return `Your voting agent is ${agent}`
     } else if (!Number(ownWeight)) {
       return 'You currently have no voting weight & rights'
+    } else if (agent !== address) {
+      return `Your voting agent is ${agent}`
     } else {
       return 'You vote for yourself'
     }

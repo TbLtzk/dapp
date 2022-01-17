@@ -43,6 +43,16 @@ export const ListTitle = styled.div`
   font-size: 12px;
 `
 
+export const CopyAddressContainer = styled.span`
+  display: flex;
+  justify-content: space-between;
+
+  .copied {
+    position: relative;
+    left: 40%;
+  }
+`
+
 export const LinkGroup = styled.div`
   display: flex;
   align-items: center;

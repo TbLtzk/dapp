@@ -48,11 +48,14 @@ export function getOutstandingDelegationRewardsList (delegationsList) {
 }
 
 export async function getQVaultDepositAmount (address, transferMax) {
-  const contract = await getQVaultInstance()
+  if (!Number(transferMax)) {
+    return 0
+  } else {
+    const contract = await getQVaultInstance()
+    const fee = await contract.instance.methods.deposit().estimateGas({ value: toWei(transferMax), from: address })
+    const gas = calculateGas(fee)
+    const result = BN(toWei(transferMax)).minus(toWei(gas)).toString()
 
-  const fee = await contract.instance.methods.deposit().estimateGas({ value: toWei(transferMax), from: address })
-  const gas = calculateGas(fee)
-  const result = BN(toWei(transferMax)).minus(toWei(gas)).toString()
-
-  return fromWei(result)
+    return fromWei(result)
+  }
 }
