@@ -32,7 +32,7 @@ function Button ({
             top={top}
             margin={margin}
             onClick={handleButton}
-            title={title}
+            title={icon === 'copy' ? null : title}
             iconfontsize={iconFontSize}
             isiconpositionright={isIconPositionRight ? '1' : ''}
         >

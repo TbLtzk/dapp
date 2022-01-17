@@ -1,13 +1,16 @@
 import * as actionTypes from './action-types'
 
-/* set user address from metamask */
 export const setUserAddress = (address) => ({
   type: actionTypes.SET_USER_ADDRESS,
   address
 })
 
-/* set user balance from metamask */
 export const setUserBalance = (balance) => ({
   type: actionTypes.SET_USER_BALANCE,
   balance
+})
+
+export const setNetwork = (network) => ({
+  type: actionTypes.SET_NETWORK,
+  network
 })

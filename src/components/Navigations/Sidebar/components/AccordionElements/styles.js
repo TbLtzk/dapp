@@ -18,6 +18,7 @@ export const AccordionElementsWrapper = styled.div`
       transition-duration: 0.1s;
       transition-property: transform;
     }
+    
   }
 
   button {

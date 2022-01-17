@@ -53,10 +53,10 @@ export default function Panel () {
   const checkVoteDelegations = useMemo(() => {
     if (!agent) {
       return '...'
-    } else if (agent !== userAddress) {
-      return `Your voting agent is ${agent}`
     } else if (!Number(weight)) {
       return 'You currently have no voting weight & rights'
+    } else if (agent !== userAddress) {
+      return `Your voting agent is ${agent}`
     } else {
       return 'You vote for yourself'
     }

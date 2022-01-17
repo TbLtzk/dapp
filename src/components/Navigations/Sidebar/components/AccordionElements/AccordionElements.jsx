@@ -25,7 +25,6 @@ function AccordionElements ({ title, children, margin }) {
                 <Accordion.Toggle eventKey="0">
                     <div className="accordion__header">
                         <div className="accordion__title">{title}</div>
-
                         <div className="accordion__icon">
                             <i className="mdi mdi-chevron-down" />
                         </div>

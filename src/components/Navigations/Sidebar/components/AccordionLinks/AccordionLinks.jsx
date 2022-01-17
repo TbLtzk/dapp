@@ -5,12 +5,15 @@ import { AccordionIcon, LinkGroup } from '../../styles'
 function AccordionLinks ({ children, headerLink }) {
   const [isOpen, setIsOpen] = useState(true)
 
+  const handleOpen = (state) => {
+    if (state) {
+      setIsOpen(true)
+    } else {
+      setIsOpen(false)
+    }
+  }
   return (
-        <Accordion
-            defaultActiveKey="0"
-            style={{ width: '100%' }}
-            onSelect={(state) => (state ? setIsOpen(true) : setIsOpen(false))}
-        >
+        <Accordion activeKey={isOpen ? '0' : '1'} style={{ width: '100%' }} onSelect={handleOpen}>
             <LinkGroup>
                 {headerLink}
                 <Accordion.Toggle eventKey="0">
