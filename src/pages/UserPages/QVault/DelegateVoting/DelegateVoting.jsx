@@ -13,6 +13,7 @@ import CardBlock from 'components/Base/CardBlock'
 import FormInput from 'components/Base/Form/FormInput'
 import Button from 'components/Base/Buttons/Button'
 import { useForm } from 'react-hook-form'
+import { getVoteDelegation } from 'contracts/helpers/voting-helpers/base-voting-helper'
 
 export default function LockCoin () {
   const dispatch = useDispatch()
@@ -36,17 +37,15 @@ export default function LockCoin () {
     dispatch(setNewVotingAgent())
   }
 
+  const { delegateInfo } = getVoteDelegation(agent, weight, address)
+
   return (
         <CustomBlock>
             <h1>Delegate Voting Power</h1>
             <h5>Total Voting Weight</h5>
             <h4>{fromWei(weight)}</h4>
             <h5>Current agent</h5>
-            <h4>
-                {agent === address
-                  ? 'You exercise your voting right yourself'
-                  : `You delegated your voting rights to ${agent}`}
-            </h4>
+            <h4>{delegateInfo}</h4>
             {!isPending
               ? null
               : time - getNowTimestamp() > 0

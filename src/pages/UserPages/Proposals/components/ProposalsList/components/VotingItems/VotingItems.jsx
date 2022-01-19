@@ -46,6 +46,8 @@ function VotingItems ({ proposal }) {
 
   const epqfiParametersVoting = proposal.contract === CONTRACTS_NAMES.ePQFIParametersVoting
   const epdrParametersVoting = proposal.contract === CONTRACTS_NAMES.ePDRParametersVoting
+  const approvalContracts =
+        proposal.contract === CONTRACTS_NAMES.addressVoting || proposal.contract === CONTRACTS_NAMES.upgradeVoting
 
   function checkVoteUser () {
     switch (true) {
@@ -53,6 +55,9 @@ function VotingItems ({ proposal }) {
         return { disabled: true, info: TOOLTIP_INFO.votePeriod }
       case proposal.userVoted:
         return { disabled: proposal.userVoted, info: TOOLTIP_INFO.userVoted }
+      case approvalContracts: {
+        return { disabled: !isRootNode, info: TOOLTIP_INFO.isNotRootNode }
+      }
       case contractsWithoutVeto:
         return {
           disabled: !isRootNode,
@@ -126,7 +131,7 @@ function VotingItems ({ proposal }) {
                             <Button
                                 icon="checkbox-marked-outline"
                                 width="75px"
-                                title="Vote"
+                                title={approvalContracts ? 'Approve' : 'Vote'}
                                 disabled={isUserCanVote.disabled}
                                 handleButton={handleVote}
                             />

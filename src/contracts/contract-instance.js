@@ -23,7 +23,11 @@ export function getInstance (instance, QUSD) {
   }
 }
 
+export const getUpgradeVotingInstance = getInstance('upgradeVoting')
+export const getAddressVotingInstance = getInstance('addressVoting')
+
 export const getGeneralUpdateVotingInstance = getInstance('generalUpdateVoting')
+
 export const getEmergencyUpdateVotingInstance = getInstance('emergencyUpdateVoting')
 export const getPiggyBankInstance = getInstance('piggyBank')
 export const getVotingWeightProxyInstance = getInstance('votingWeightProxy')

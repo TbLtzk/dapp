@@ -101,18 +101,20 @@ function * voteForProposalGenerator ({ data }) {
   try {
     yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
-    if (data) {
-      const contract = new VotingService(data?.contract)
-      if (data?.first === 'basic-vote-on-proposal') {
-        if (data['vote-proposal'] === 'yes') {
-          yield contract.voteFor(data?.idProposal, userAddress)
-        } else if (data['vote-proposal'] === 'no') {
-          yield contract.voteAgainst(data?.idProposal, userAddress)
-        }
-      } else if (data?.first === 'constitution-check') {
-        yield contract.veto(data?.idProposal, userAddress)
+    const contract = new VotingService(data?.contract)
+
+    if (data.contract === CONTRACTS_NAMES.addressVoting || data.contract === CONTRACTS_NAMES.upgradeVoting) {
+      yield contract.approve(data.idProposal, userAddress)
+    } else if (data?.first === 'basic-vote-on-proposal') {
+      if (data['vote-proposal'] === 'yes') {
+        yield contract.voteFor(data?.idProposal, userAddress)
+      } else if (data['vote-proposal'] === 'no') {
+        yield contract.voteAgainst(data?.idProposal, userAddress)
       }
+    } else if (data?.first === 'constitution-check') {
+      yield contract.veto(data?.idProposal, userAddress)
     }
+
     yield put(getBaseVotingWeightInfo())
     yield put(getDelegationInfo(userAddress))
     yield put(getLockedAssets(userAddress))
@@ -165,29 +167,11 @@ function * getProposalsByTypeGenerator ({ contractName }) {
       yield put(getExpertProposals())
       break
     }
-    // case CONTRACTS_NAMES.contractRegistryAddressVoting:
-    // case CONTRACTS_NAMES.contractRegistryUpgradeVoting: {
-    //   yield put(getContractUpdatesProposals());
-    //   break;
-    // }
-  }
-}
-
-function * approveProposalGenerator ({ data }) {
-  try {
-    yield put(setTransactionCounter(1))
-    const { userAddress } = yield select((state) => state.userInf)
-    const contract = new VotingService(data?.contract)
-    yield contract.approve(data?.idProposal, userAddress)
-
-    yield put(getProposalsByType(data.contract))
-    yield put(getBaseVotingWeightInfo())
-    yield put(getDelegationInfo(userAddress))
-  } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    case CONTRACTS_NAMES.addressVoting:
+    case CONTRACTS_NAMES.upgradeVoting: {
+      yield put(getContractUpdatesProposals())
+      break
+    }
   }
 }
 
@@ -195,10 +179,11 @@ function * getNumberAllProposalsGenerator () {
   const { appMode } = yield select((state) => state.dashboardMode)
   yield put(getQProposals())
   yield put(getRootProposals())
+
   if (appMode === MODE.advanced) {
     yield put(getExpertProposals())
     yield put(getSlashingProposals())
-    // yield put(getContractUpdatesProposals());
+    yield put(getContractUpdatesProposals())
   }
   yield delay(240000)
   yield call(getNumberAllProposalsGenerator)

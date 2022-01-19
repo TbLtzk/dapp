@@ -1,3 +1,5 @@
+import * as actionTypes from './action-types'
+
 export const getContractUpdatesProposals = () => ({
   type: actionTypes.GET_CONTRACT_UPDATES_PROPOSALS
 })

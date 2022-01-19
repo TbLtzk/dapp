@@ -5,6 +5,7 @@ import qProposals from './voting/q-proposals/sagas'
 import rootNodeProposals from './voting/root-node-proposals/sagas'
 import expertProposals from './voting/expert-proposals/sagas'
 import slashingProposals from './voting/slashing-proposals/sagas'
+import contractUpdatesProposals from './voting/contract-updates/sagas'
 
 import userAuth from './user-auth/sagas'
 import rootContract from './root-node/sagas'
@@ -23,7 +24,6 @@ import vesting from './vesting/sagas'
 import borrowingCore from './borrowing-core/sagas'
 import savingAssets from './saving-assets/sagas'
 import borrowingAssets from './borrow-assets/sagas'
-import contractUpdatesProposals from './voting/contract-updates/sagas'
 
 export default function * rootSaga () {
   yield all([

@@ -12,7 +12,6 @@ function * getContractUpdatesProposalsGenerator () {
   try {
     const contracts = creationUpdatesContractObjArray()
     const { minimalActiveBlockHeight, lastBlockHeight } = yield getMinimalActiveBlockHeight()
-
     let proposalsCounter
     let activeProposalsArray
     let endedProposalsArray

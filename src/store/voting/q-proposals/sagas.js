@@ -5,7 +5,6 @@ import { setQProposals } from './action-creators'
 import { creationQContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import ErrorHandler from 'func/ErrorHandler'
 import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/useful'
-
 let lastActiveBlock
 
 function * getQProposalsGenerator () {

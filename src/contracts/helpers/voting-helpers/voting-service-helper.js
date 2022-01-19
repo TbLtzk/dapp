@@ -90,27 +90,20 @@ export default class VotingService {
     return result
   }
 
-  async getProposal (id, type) {
-    const contract = await this.getContractInstance()
-    const ids = await contract.getProposalIds(0, 'latest')
-    const includeInIds = ids.includes(id)
-    if (includeInIds) {
-      let additionalInfo = {}
-      let headerInfo = {}
-      let userVotedVetoed = {}
-      const proposal = await contract.getProposalWithStatus(id)
-      if (type === 'header') {
-        headerInfo = this.getProposalData(proposal, proposal.id, proposal.status)
+  async getProposal (id, oneProposal) {
+    if (oneProposal) {
+      const pastEvents = await this.getPastEvents()
+      const propIds = pastEvents.map(({ id }) => id)
+      if (!propIds.includes(id)) {
+        return { error: true }
       }
-      if (type === 'full') {
-        additionalInfo = await this.getProposalAdditionalData(proposal, id)
-        headerInfo = this.getProposalData(proposal, proposal.id, proposal.status)
-        userVotedVetoed = await this.hasUserVotedVetoed(id)
-      }
-      return { ...headerInfo, ...additionalInfo, ...userVotedVetoed, error: false }
-    } else {
-      return { error: true }
     }
+    const contract = await this.getContractInstance()
+    const proposal = await contract.getProposalWithStatus(id)
+    const headerInfo = this.getProposalData(proposal, proposal.id, proposal.status)
+    const additionalInfo = await this.getProposalAdditionalData(proposal, id)
+    const userVotedVetoed = await this.hasUserVotedVetoed(id)
+    return { ...headerInfo, ...additionalInfo, ...userVotedVetoed }
   }
 
   async getRootNodesNumber () {
@@ -144,7 +137,7 @@ export default class VotingService {
 
     return pastEvents.map((evt) => ({
       blockNumber: evt.blockNumber,
-      id: evt.returnValues._id,
+      id: evt.returnValues._id || evt.returnValues._proposalId,
       contract: this.contractName
     }))
   }

@@ -1,15 +1,11 @@
 import React, { useCallback, useMemo } from 'react'
 import { PROPOSALS_TYPES } from 'constants/statuses'
 import { getTypeName } from 'func/contractHelpers'
+import { CONTRACTS_NAMES } from 'constants/contracts'
 
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000'
 
-function PollDetail (props) {
-  const {
-    pollDetail,
-    proposalsKind
-  } = props
-
+function PollDetail ({ pollDetail, proposalsKind, contract }) {
   function getParametersInfo (parameters) {
     return parameters.map((item, index) => {
       return [
@@ -92,18 +88,31 @@ function PollDetail (props) {
             value: pollDetail?.amountToSlash + ' Q'
           }
         ]
+      case PROPOSALS_TYPES.contractUpdates:
+        const checkContract = contract === CONTRACTS_NAMES.addressVoting
+        return [
+          {
+            label: checkContract ? 'Key' : 'Implementation',
+            value: checkContract ? pollDetail.key : pollDetail.implementation
+          },
+          {
+            label: 'Proxy',
+            value: pollDetail.proxy
+          }
+        ]
     }
   }, [pollDetail])
 
   const printValues = (label, value, key) => {
-    const keyId = key + label.replace(/ /g, '-')
-      .toLowerCase() + +new Date()
+    const keyId = key + label.replace(/ /g, '-').toLowerCase() + +new Date()
     return !value || value === 'undefined'
       ? null
-      : <div key={keyId}>
-          <h5>{label}</h5>
-          <p title={value}>{value}</p>
-        </div>
+      : (
+            <div key={keyId}>
+                <h5>{label}</h5>
+                <p title={value}>{value}</p>
+            </div>
+        )
   }
 
   const showContent = useCallback(() => {
@@ -112,11 +121,11 @@ function PollDetail (props) {
         return printValues(el.label, el.value, i)
       } else {
         return (
-          <div className="list-card__column-1-2-2" key={+new Date() + i}>
-            {el.map((item, index) => {
-              return printValues(item.label, item.value, i + '-' + index + +new Date())
-            })}
-          </div>
+                    <div className="list-card__column-1-2-2" key={+new Date() + i}>
+                        {el.map((item, index) => {
+                          return printValues(item.label, item.value, i + '-' + index + +new Date())
+                        })}
+                    </div>
         )
       }
     })
@@ -129,16 +138,20 @@ function PollDetail (props) {
     } else {
       hrefValue = '//' + pollDetail.remark
     }
-    return <a href={hrefValue} target="_blank" rel="noreferrer">{pollDetail.remark}</a>
+    return (
+            <a href={hrefValue} target="_blank" rel="noreferrer">
+                {pollDetail.remark}
+            </a>
+    )
   }
 
   return (
-    <div>
-      <h3>Proposal Details</h3>
-      {showContent()}
-      <h5>External Reference</h5>
-      {checkLinkAndPrint()}
-    </div>
+        <div>
+            <h3>Proposal Details</h3>
+            {showContent()}
+            <h5>External Reference</h5>
+            {checkLinkAndPrint()}
+        </div>
   )
 }
 

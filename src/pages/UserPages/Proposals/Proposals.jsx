@@ -88,7 +88,7 @@ function Proposals ({ proposalsType }) {
       case PROPOSALS_TYPES.contractUpdates:
         return {
           title: 'Contract Updates',
-          oneContractName: CONTRACTS_NAMES.contractRegistryAddressVoting,
+          oneContractName: CONTRACTS_NAMES.upgradeVoting,
           proposals: useSelector(contractUpdatesActiveProposalsSelector),
           endedProposals: useSelector(contractUpdatesEndedProposalsSelector),
           activeProposalsCount: useSelector(contractUpdatesActiveProposalsCountSelector),

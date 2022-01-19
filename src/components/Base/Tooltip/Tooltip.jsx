@@ -13,7 +13,7 @@ function Tooltip ({ additionalInfo, children, disabled, copy, placement = 'top' 
             placement={placement}
             overlay={
                 <Popover data-placement={placement}>
-                    <Popover.Content>{additionalInfo}</Popover.Content>
+                    <Popover.Content style={{ textAlign: 'center' }}>{additionalInfo}</Popover.Content>
                 </Popover>
             }
         >
