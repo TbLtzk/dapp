@@ -102,8 +102,7 @@ function * voteForProposalGenerator ({ data }) {
     yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
     const contract = new VotingService(data?.contract)
-
-    if (data.contract === CONTRACTS_NAMES.addressVoting || data.contract === CONTRACTS_NAMES.upgradeVoting) {
+    if (data.first === 'approve') {
       yield contract.approve(data.id, userAddress)
     } else if (data?.first === 'basic-vote-on-proposal') {
       if (data['vote-proposal'] === 'yes') {

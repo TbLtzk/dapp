@@ -119,7 +119,8 @@ function VotingItems ({ proposal }) {
   }
 
   const handleApprove = () => {
-    dispatch(voteForProposal({ contract: proposal.contract, id: proposal.id }))
+    dispatch(setVoteProposalObj({ contract: proposal.contract, id: proposal.id }))
+    dispatch(voteForProposal({ contract: proposal.contract, id: proposal.id, first: 'approve' }))
   }
 
   const addCardLine = proposal.status === 'Passed' || proposal.status === 'Pending' || proposal.status === 'Accepted'

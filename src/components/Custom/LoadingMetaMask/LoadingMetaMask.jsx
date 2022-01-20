@@ -31,49 +31,6 @@ function LoadingMetaMask () {
       dispatch(getAuctions(AUCTIONS_TYPES.all))
     }
     dispatch(getNumberAllProposals())
-    // web3.eth
-    //     .subscribe(
-    //         "logs",
-    //         {
-    //             address: "0x64413736830F490d4FDbc96f6A84b83F7e2c66AA",
-    //         },
-    //         (error, result) => {
-    //             if (error) {
-    //                 console.log(error);
-    //             }
-    //         }
-    //     )
-    //     .on("connected", (subscriptionId) => {
-    //         console.log("connected1");
-    //     })
-    //     .on("data", (log) => {
-    //         console.log(log);
-    //     })
-    //     .on("changed", (log) => {
-    //         console.log("changed");
-    //     });
-
-    // web3.eth
-    //     .subscribe(
-    //         "logs",
-    //         {
-    //             address: "0x5EeE3DbEDdaEC08f8E73a05B8cf5AeaD62366025",
-    //         },
-    //         (error, result) => {
-    //             if (error) {
-    //                 console.log(error);
-    //             }
-    //         }
-    //     )
-    //     .on("connected", (subscriptionId) => {
-    //         console.log("connected2");
-    //     })
-    //     .on("data", (log) => {
-    //         console.log(log);
-    //     })
-    //     .on("changed", (log) => {
-    //         console.log("changed");
-    //     });
   }
 
   const initMetamask = async () => {
