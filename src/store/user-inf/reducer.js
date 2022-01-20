@@ -2,7 +2,8 @@ import * as actionTypes from './action-types'
 
 const initialState = {
   userAddress: null,
-  balance: null
+  balance: null,
+  network: null
 }
 
 export default function userAuth (state = initialState, action) {
@@ -11,6 +12,11 @@ export default function userAuth (state = initialState, action) {
       return {
         ...state,
         userAddress: action.address
+      }
+    case actionTypes.SET_NETWORK:
+      return {
+        ...state,
+        network: action.network
       }
     case actionTypes.SET_USER_BALANCE:
       return {

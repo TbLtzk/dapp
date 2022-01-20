@@ -9,7 +9,7 @@ import { WrapContainer } from './styles'
 import { getContractRegistryInstance } from 'contracts/contract-instance'
 import { useDispatch, useSelector } from 'react-redux'
 import App from 'components/Base/App'
-import { setUserAddress } from 'store/user-inf/action-creators'
+import { setNetwork, setUserAddress } from 'store/user-inf/action-creators'
 import { AUCTIONS_TYPES, LOAD_TYPES } from 'constants/statuses'
 import { getNumberAllProposals } from 'store/voting/proposals/action-creators'
 import { getAuctions } from 'store/auctions/action-creators'
@@ -93,6 +93,7 @@ function LoadingMetaMask () {
             window.web3 = new Web3(ethereum)
             window.web3.eth.handleRevert = true
             dispatch(setUserAddress(accounts[0]))
+            dispatch(setNetwork(networkId))
             address = accounts[0]
             await getContractRegistryInstance()
             loadAdditionalInfo()
