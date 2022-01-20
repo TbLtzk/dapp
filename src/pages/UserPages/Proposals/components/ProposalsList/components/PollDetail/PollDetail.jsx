@@ -6,6 +6,8 @@ import { CONTRACTS_NAMES } from 'constants/contracts'
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000'
 
 function PollDetail ({ pollDetail, proposalsKind, contract }) {
+  const approvalContracts = contract === CONTRACTS_NAMES.addressVoting || contract === CONTRACTS_NAMES.upgradeVoting
+
   function getParametersInfo (parameters) {
     return parameters.map((item, index) => {
       return [
@@ -149,8 +151,14 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
         <div>
             <h3>Proposal Details</h3>
             {showContent()}
-            <h5>External Reference</h5>
-            {checkLinkAndPrint()}
+            {approvalContracts
+              ? null
+              : (
+                <>
+                    <h5>External Reference</h5>
+                    {checkLinkAndPrint()}
+                </>
+                )}
         </div>
   )
 }

@@ -32,6 +32,11 @@ import {
 import { getContractRegistryInstance } from 'contracts/contract-instance'
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboardMode'
+import {
+  contractUpdatesActiveProposalsCountSelector,
+  contractUpdatesEndedProposalsCountSelector,
+  contractUpdatesLoadingProposalsCountSelector
+} from 'store/voting/contract-updates/selectors'
 
 function InfBlocksUp () {
   const appMode = useSelector(mode)
@@ -64,16 +69,33 @@ function InfBlocksUp () {
   const slashingLoadingProposalsCount =
         appMode === MODE.basic ? false : useSelector(slashingLoadingProposalsCountSelector)
 
+  const contractUpdatesActiveProposalsCount =
+        appMode === MODE.basic ? 0 : useSelector(contractUpdatesActiveProposalsCountSelector)
+  const contractUpdatesEndedProposalsCount =
+        appMode === MODE.basic ? 0 : useSelector(contractUpdatesEndedProposalsCountSelector)
+  const contractUpdatesLoadingProposalsCount =
+        appMode === MODE.basic ? false : useSelector(contractUpdatesLoadingProposalsCountSelector)
+
   const activeProposals =
-        qActiveProposalsCount + rootActiveProposalsCount + expertActiveProposalsCount + slashingActiveProposalsCount
+        qActiveProposalsCount +
+        rootActiveProposalsCount +
+        expertActiveProposalsCount +
+        slashingActiveProposalsCount +
+        contractUpdatesActiveProposalsCount
+
   const endedProposals =
-        rootEndedProposalsCount + qEndedProposalsCount + expertEndedProposalsCount + slashingEndedProposalsCount
+        rootEndedProposalsCount +
+        qEndedProposalsCount +
+        expertEndedProposalsCount +
+        slashingEndedProposalsCount +
+        contractUpdatesEndedProposalsCount
 
   const loadingProposals =
         qLoadingProposalsCount ||
         rootLoadingProposalsCount ||
         expertLoadingProposalsCount ||
-        slashingLoadingProposalsCount
+        slashingLoadingProposalsCount ||
+        contractUpdatesLoadingProposalsCount
 
   useEffect(() => {
     dispatch(getConstitutionHash())

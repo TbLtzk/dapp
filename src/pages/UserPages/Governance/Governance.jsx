@@ -36,6 +36,7 @@ import {
   contractUpdatesEndedProposalsCountSelector,
   contractUpdatesLoadingProposalsCountSelector
 } from 'store/voting/contract-updates/selectors'
+import { getContractUpdatesProposals } from 'store/voting/contract-updates/action-creators'
 
 function Governance () {
   const dispatch = useDispatch()
@@ -70,7 +71,7 @@ function Governance () {
       dispatch(getRootProposals())
       dispatch(getExpertProposals())
       dispatch(getSlashingProposals())
-      //   dispatch(getContractUpdatesProposals())
+      dispatch(getContractUpdatesProposals())
     }
   }, [dispatch, appMode])
 

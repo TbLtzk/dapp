@@ -9,7 +9,8 @@ import {
   executeProposal,
   setDisabledCreatedProposalBtn,
   setStepVoteCounter,
-  setVoteProposalObj
+  setVoteProposalObj,
+  voteForProposal
 } from 'store/voting/proposals/action-creators'
 import ModalVote from '../../../CreateQProposalBtn/ModalVote'
 
@@ -117,6 +118,10 @@ function VotingItems ({ proposal }) {
     onChooseTypeOfVoting()
   }
 
+  const handleApprove = () => {
+    dispatch(voteForProposal({ contract: proposal.contract, id: proposal.id }))
+  }
+
   const addCardLine = proposal.status === 'Passed' || proposal.status === 'Pending' || proposal.status === 'Accepted'
 
   return (
@@ -130,22 +135,21 @@ function VotingItems ({ proposal }) {
                         <Tooltip disabled={!isUserCanVote.disabled} additionalInfo={isUserCanVote.info}>
                             <Button
                                 icon="checkbox-marked-outline"
-                                width="75px"
+                                width="100px"
                                 title={approvalContracts ? 'Approve' : 'Vote'}
                                 disabled={isUserCanVote.disabled}
-                                handleButton={handleVote}
+                                handleButton={approvalContracts ? handleApprove : handleVote}
                             />
                         </Tooltip>
-                        {contractsWithoutVeto
+                        {contractsWithoutVeto || approvalContracts
                           ? null
                           : (
                             <>
                                 <div style={{ width: '20px' }} />
-
                                 <Tooltip disabled={!isUserCanVeto.disabled} additionalInfo={isUserCanVeto.info}>
                                     <Button
                                         icon="window-close"
-                                        width="75px"
+                                        width="100px"
                                         title="Veto"
                                         disabled={isUserCanVeto.disabled}
                                         handleButton={handleVote}
