@@ -11,6 +11,7 @@ import qProposals from './voting/q-proposals/reducer'
 import rootNodeProposals from './voting/root-node-proposals/reducer'
 import expertProposals from './voting/expert-proposals/reducer'
 import slashingProposals from './voting/slashing-proposals/reducer'
+import contractUpdatesProposals from './voting/contract-updates/reducer'
 
 import validationRewardPools from './validation-reward-pools/reducer'
 import auctions from './auctions/reducer'
@@ -44,6 +45,7 @@ const RootReducer = combineReducers({
   rootNodeProposals,
   expertProposals,
   slashingProposals,
+  contractUpdatesProposals,
 
   auctions,
   modalHandler,

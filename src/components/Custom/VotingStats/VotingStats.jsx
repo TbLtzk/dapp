@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import Stats from 'components/Custom/PageLists/SidebarCards/Stats'
 import VoterStatus from 'components/Custom/PageLists/VoterStatus'
 
@@ -11,6 +11,7 @@ import { getBaseVotingWeightInfo } from 'store/voting/proposals/action-creators'
 import { userAddressMetamask } from 'store/user-inf/selectors'
 import { fromWei } from 'func/balance'
 import { votingAgent } from 'store/q-vault/selectors'
+import { getVoteDelegation } from 'contracts/helpers/voting-helpers/base-voting-helper'
 
 function VotingStats () {
   const address = useSelector(userAddressMetamask)
@@ -20,17 +21,7 @@ function VotingStats () {
 
   const { ownWeight, lockedUntil } = useSelector(baseVotingWeightInfoSelector)
 
-  const checkVoteDelegations = useMemo(() => {
-    if (!agent) {
-      return '...'
-    } else if (!Number(ownWeight)) {
-      return 'You currently have no voting weight & rights'
-    } else if (agent !== address) {
-      return `Your voting agent is ${agent}`
-    } else {
-      return 'You vote for yourself'
-    }
-  }, [ownWeight, agent])
+  const { votingInfo } = getVoteDelegation(agent, ownWeight, agent)
 
   useEffect(() => {
     dispatch(getBaseVotingWeightInfo())
@@ -52,7 +43,7 @@ function VotingStats () {
     },
     {
       title: 'Vote Delegation',
-      value: checkVoteDelegations
+      value: votingInfo
     }
   ]
   return <Stats statsData={statsData} type="Voting" />

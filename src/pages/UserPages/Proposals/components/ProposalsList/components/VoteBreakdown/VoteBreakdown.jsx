@@ -9,6 +9,9 @@ function VoteBreakdown ({ voteBreakdown }) {
   const contractsWithoutVeto =
         voteBreakdown.contract === CONTRACTS_NAMES.validatorsSlashingVoting ||
         voteBreakdown.contract === CONTRACTS_NAMES.emergencyUpdateVoting
+  const approveContract =
+        voteBreakdown.contract === CONTRACTS_NAMES.addressVoting ||
+        voteBreakdown.contract === CONTRACTS_NAMES.upgradeVoting
 
   return (
         <div>
@@ -43,16 +46,17 @@ function VoteBreakdown ({ voteBreakdown }) {
                             </ColorTitle>
                             <ColorTitle color="dark">
                                 <Circle color="circle-dark" />
-                                Against:{' '}
+                                {approveContract ? 'No vote:' : 'Against: '}{' '}
                                 {voteBreakdown?.numberProposalVotes
                                   ? voteBreakdown.numberProposalVotes.votesAgainst
                                   : 0}
                             </ColorTitle>
                         </div>
                     </div>
+                    <h5>Current Majority: {voteBreakdown.currentMajority} %</h5>
                     <h5>Majority Requirement: {voteBreakdown.requiredMajority} %</h5>
                 </div>
-                {contractsWithoutVeto
+                {contractsWithoutVeto || approveContract
                   ? null
                   : (
                     <div>
@@ -88,23 +92,29 @@ function VoteBreakdown ({ voteBreakdown }) {
                     </div>
                     )}
             </div>
-            <h3 style={{ marginTop: '20px' }}>Vote Requirements</h3>
-            <div className="list-card__three-colm">
-                <div>
-                    <h5>Quorum</h5>
-                    <p>{voteBreakdown.requiredQuorum} %</p>
-                    <h5>Current Quorum</h5>
-                    <p>{voteBreakdown.currentQuorum} %</p>
-                </div>
-                {contractsWithoutVeto
-                  ? null
-                  : (
-                    <div>
-                        <h5>Current Root Node Objection</h5>
-                        <p>{voteBreakdown.vetoesPercentage} %</p>
+            {approveContract
+              ? null
+              : (
+                <>
+                    <h3 style={{ marginTop: '20px' }}>Vote Requirements</h3>
+                    <div className="list-card__three-colm">
+                        <div>
+                            <h5>Quorum</h5>
+                            <p>{voteBreakdown.requiredQuorum} %</p>
+                            <h5>Current Quorum</h5>
+                            <p>{voteBreakdown.currentQuorum} %</p>
+                        </div>
+                        {contractsWithoutVeto
+                          ? null
+                          : (
+                            <div>
+                                <h5>Current Root Node Objection</h5>
+                                <p>{voteBreakdown.vetoesPercentage} %</p>
+                            </div>
+                            )}
                     </div>
-                    )}
-            </div>
+                </>
+                )}
         </div>
   )
 }

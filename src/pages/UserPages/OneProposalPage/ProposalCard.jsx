@@ -34,7 +34,7 @@ function ProposalCard ({ proposal, proposalKind }) {
             <ListCardBody>
                 <ProposalContent proposal={proposal} />
                 <div className="list-card__line" />
-                <PollDetail pollDetail={proposal} proposalsKind={proposalKind} />
+                <PollDetail pollDetail={proposal} proposalsKind={proposalKind} contract={proposal.contract} />
                 <div className="list-card__line" />
                 <VoteBreakdown voteBreakdown={proposal} />
                 <VotingItems proposal={proposal} />

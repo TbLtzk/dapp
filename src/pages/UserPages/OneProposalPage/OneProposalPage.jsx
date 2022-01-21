@@ -26,7 +26,7 @@ function OneProposalPage ({ match }) {
   }, [updateProposal, proposalKind])
 
   async function handleGetProposal () {
-    const data = await getProposal(match.params.contract, match.params.id, 'full')
+    const data = await getProposal(match.params.contract, match.params.id, true)
     if (data?.error) {
       setError(true)
     } else {
@@ -53,6 +53,10 @@ function OneProposalPage ({ match }) {
       case CONTRACTS_NAMES.rootNodesSlashingVoting:
       case CONTRACTS_NAMES.validatorsSlashingVoting: {
         return PROPOSALS_TYPES.slashingProposals
+      }
+      case CONTRACTS_NAMES.upgradeVoting:
+      case CONTRACTS_NAMES.addressVoting: {
+        return PROPOSALS_TYPES.contractUpdates
       }
       default: {
         return 'error'

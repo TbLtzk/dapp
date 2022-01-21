@@ -5,6 +5,7 @@ import qProposals from './voting/q-proposals/sagas'
 import rootNodeProposals from './voting/root-node-proposals/sagas'
 import expertProposals from './voting/expert-proposals/sagas'
 import slashingProposals from './voting/slashing-proposals/sagas'
+import contractUpdatesProposals from './voting/contract-updates/sagas'
 
 import userAuth from './user-auth/sagas'
 import rootContract from './root-node/sagas'
@@ -32,6 +33,7 @@ export default function * rootSaga () {
     ...borrowingCore,
     ...proposals,
     ...qProposals,
+    ...contractUpdatesProposals,
     ...rootNodeProposals,
     ...expertProposals,
     ...slashingProposals,

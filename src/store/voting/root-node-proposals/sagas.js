@@ -2,14 +2,14 @@ import { put, takeEvery, select } from 'redux-saga/effects'
 
 import * as actionTypes from './action-types'
 
-import { setRootProposalsCount, setRootEndedProposals, setRootActiveProposals } from './action-creators'
+import { setRootProposals } from './action-creators'
 import { creationRootContractObj } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import ErrorHandler from 'func/ErrorHandler'
 import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/useful'
 
 let lastActiveBlock
 
-function * getRootProposalsCountGenerator () {
+function * getRootProposalsGenerator () {
   try {
     const contract = creationRootContractObj()
     const { minimalActiveBlockHeight, lastBlockHeight } = yield getMinimalActiveBlockHeight()
@@ -43,12 +43,10 @@ function * getRootProposalsCountGenerator () {
       lastActiveBlock = lastBlockHeight
     }
 
-    yield put(setRootProposalsCount(proposalsCounter))
-    yield put(setRootActiveProposals(activeProposalsArray))
-    yield put(setRootEndedProposals(endedProposalsArray))
+    yield put(setRootProposals(activeProposalsArray, endedProposalsArray, proposalsCounter))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }
 }
 
-export default [takeEvery(actionTypes.GET_ROOT_PROPOSALS_COUNT, getRootProposalsCountGenerator)]
+export default [takeEvery(actionTypes.GET_ROOT_PROPOSALS, getRootProposalsGenerator)]

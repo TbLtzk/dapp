@@ -9,6 +9,7 @@ import { PROPOSALS_TYPES } from 'constants/statuses'
 import { BN } from 'func/useful'
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts'
 import ErrorHandler from 'func/ErrorHandler'
+import ContractUpdates from './contract-updates'
 
 export const getStatusTransformation = (statusId) => {
   const status = ['None', 'Pending', 'Rejected', 'Accepted', 'Passed', 'Executed', 'Obsolete', 'Expired']
@@ -107,6 +108,20 @@ export function creationExpertContractsObjArray () {
   return [ePQFImembershipVoting, ePDRmembershipVoting, ePQFIparametersVoting, ePDRparametersVoting]
 }
 
+export function creationUpdatesContractObjArray () {
+  const upgradeVoting = new ContractUpdates(CONTRACTS_NAMES.upgradeVoting)
+  const addressVoting = new ContractUpdates(CONTRACTS_NAMES.addressVoting)
+  return [upgradeVoting, addressVoting]
+}
+
+export function creationUpdatesContractObj (contractName) {
+  switch (contractName) {
+    case CONTRACTS_NAMES.addressVoting:
+      return new ContractUpdates(CONTRACTS_NAMES.addressVoting)
+    case CONTRACTS_NAMES.upgradeVoting:
+      return new ContractUpdates(CONTRACTS_NAMES.upgradeVoting)
+  }
+}
 export function tabSwitcher (activeTab, qProp, rootNodeProp, expertProp, slashingProp) {
   switch (activeTab) {
     case PROPOSALS_TYPES.proposals:
@@ -120,25 +135,25 @@ export function tabSwitcher (activeTab, qProp, rootNodeProp, expertProp, slashin
   }
 }
 
-export async function getProposal (contractName, id, type) {
+export async function getProposal (contractName, id, oneProposal) {
   try {
     switch (contractName) {
       case CONTRACTS_NAMES.constitutionVoting:
       case CONTRACTS_NAMES.emergencyUpdateVoting:
       case CONTRACTS_NAMES.generalUpdateVoting: {
         const contract = creationQContractObj(contractName)
-        const proposal = await contract.getProposal(id, type)
+        const proposal = await contract.getProposal(id, oneProposal)
         return proposal
       }
       case CONTRACTS_NAMES.rootsVoting: {
         const contract = creationRootContractObj()
-        const proposal = await contract.getProposal(id, type)
+        const proposal = await contract.getProposal(id, oneProposal)
         return proposal
       }
       case CONTRACTS_NAMES.rootNodesSlashingVoting:
       case CONTRACTS_NAMES.validatorsSlashingVoting: {
         const contract = creationSlashingContractObj(contractName)
-        const proposal = await contract.getProposal(id, type)
+        const proposal = await contract.getProposal(id, oneProposal)
         return proposal
       }
       case CONTRACTS_NAMES.ePQFIMembershipVoting:
@@ -146,7 +161,13 @@ export async function getProposal (contractName, id, type) {
       case CONTRACTS_NAMES.ePQFIParametersVoting:
       case CONTRACTS_NAMES.ePDRParametersVoting: {
         const contract = creationExpertContractObj(contractName)
-        const proposal = await contract.getProposal(id, type)
+        const proposal = await contract.getProposal(id, oneProposal)
+        return proposal
+      }
+      case CONTRACTS_NAMES.addressVoting:
+      case CONTRACTS_NAMES.upgradeVoting: {
+        const contract = creationUpdatesContractObj(contractName)
+        const proposal = await contract.getProposal(id, oneProposal)
         return proposal
       }
     }
@@ -190,4 +211,33 @@ export const chooseExpertContractDependsOnType = (typeContract, type) => {
       break
   }
   return contract
+}
+
+export function getVoteDelegation (agent, ownWeight, address) {
+  const zeroAddress = '0x0000000000000000000000000000000000000000'
+  const info = {}
+
+  switch (true) {
+    case !agent: {
+      info.delegateInfo = '...'
+      info.votingInfo = '...'
+      break
+    }
+    case agent !== address && agent !== zeroAddress: {
+      info.delegateInfo = `You delegated your voting rights to ${agent}`
+      info.votingInfo = `Your voting agent is ${agent}`
+      break
+    }
+    case Number(ownWeight) && agent === address: {
+      info.delegateInfo = 'You exercise your voting right yourself'
+      info.votingInfo = 'You vote for yourself'
+      break
+    }
+    default: {
+      const title = 'You currently have no voting weight & rights'
+      info.delegateInfo = title
+      info.votingInfo = title
+    }
+  }
+  return info
 }

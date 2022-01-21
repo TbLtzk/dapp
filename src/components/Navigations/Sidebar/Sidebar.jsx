@@ -34,6 +34,7 @@ import DashboardMode from 'components/Base/DashboardMode'
 import Themes from 'components/Base/Themes'
 import AccordionElements from './components/AccordionElements'
 import CopyAddress from './components/CopyAddress'
+import { contractUpdatesActiveProposalsCountSelector } from 'store/voting/contract-updates/selectors'
 
 function Sidebar () {
   const history = useHistory()
@@ -43,6 +44,7 @@ function Sidebar () {
   const rootActiveProposalsCount = useSelector(rootActiveProposalsCountSelector)
   const expertActiveProposalsCount = useSelector(expertActiveProposalsCountSelector)
   const slashingActiveProposalsCount = useSelector(slashingActiveProposalsCountSelector)
+  const contractUpdatesActiveProposalsCount = useSelector(contractUpdatesActiveProposalsCountSelector)
 
   const liquidationAuctions = useSelector(liquidationAuctionsSelector)
   const liquidationActiveAuctionsCount = liquidationAuctions?.activeAuctions?.length
@@ -104,6 +106,12 @@ function Sidebar () {
                                             linkTo="/slashing-proposals"
                                             count={slashingActiveProposalsCount}
                                             linkTitle="– Slashing Proposals"
+                                        />
+                                         <CommonLinks
+                                            highlight={highlight('contract-updates')}
+                                            linkTo="/contract-updates"
+                                            count={contractUpdatesActiveProposalsCount}
+                                            linkTitle="– Contract Updates"
                                         />
                                     </>
                                     )

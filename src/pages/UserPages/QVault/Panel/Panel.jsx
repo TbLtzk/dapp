@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/user-inf/selectors'
 import {
@@ -25,6 +25,7 @@ import CustomBlock from 'components/Base/CustomBlock'
 
 import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
 import { fromSolDateFormattingT1 } from 'func/date'
+import { getVoteDelegation } from 'contracts/helpers/voting-helpers/base-voting-helper'
 
 export default function Panel () {
   const userAddress = useSelector(userAddressMetamask)
@@ -50,17 +51,7 @@ export default function Panel () {
     dispatch(getQVBalance())
   }, [dispatch, updateOnClaim])
 
-  const checkVoteDelegations = useMemo(() => {
-    if (!agent) {
-      return '...'
-    } else if (!Number(weight)) {
-      return 'You currently have no voting weight & rights'
-    } else if (agent !== userAddress) {
-      return `Your voting agent is ${agent}`
-    } else {
-      return 'You vote for yourself'
-    }
-  }, [weight, agent])
+  const { votingInfo } = getVoteDelegation(agent, weight, userAddress)
 
   useEffect(() => {
     const interestRate = balanceDetails?.interestRate
@@ -109,7 +100,7 @@ export default function Panel () {
                     <VoterStatus />
                 </p>
                 <h5>Vote Delegation</h5>
-                <p>{checkVoteDelegations}</p>
+                <p>{votingInfo}</p>
             </div>
         </CustomBlock>
   )

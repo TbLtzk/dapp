@@ -9,6 +9,9 @@ function ProposalContent ({ proposal }) {
   const voteOpacity = proposal.status !== 'Pending' ? '0.4' : '1'
   const vetoOpacity = proposal.status === 'Accepted' ? '1' : '0.4'
 
+  const approvalContracts =
+        proposal.contract === CONTRACTS_NAMES.addressVoting || proposal.contract === CONTRACTS_NAMES.upgradeVoting
+
   const contractsWithoutVeto =
         proposal.contract === CONTRACTS_NAMES.validatorsSlashingVoting ||
         proposal.contract === CONTRACTS_NAMES.emergencyUpdateVoting
@@ -19,6 +22,7 @@ function ProposalContent ({ proposal }) {
                 <h5>Proposal Id</h5>
                 <p>{proposal.id}</p>
             </div>
+
             <ContentWrapper opacity={voteOpacity}>
                 <Tooltip
                     disabled={false}
@@ -34,7 +38,8 @@ function ProposalContent ({ proposal }) {
                     </div>
                 </Tooltip>
             </ContentWrapper>
-            {contractsWithoutVeto
+
+            {approvalContracts || contractsWithoutVeto
               ? null
               : (
                 <ContentWrapper opacity={vetoOpacity}>
@@ -53,6 +58,7 @@ function ProposalContent ({ proposal }) {
                     </Tooltip>
                 </ContentWrapper>
                 )}
+
         </div>
   )
 }

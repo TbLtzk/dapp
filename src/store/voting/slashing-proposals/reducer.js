@@ -12,24 +12,15 @@ const initialState = {
 
 export default function slashingProposals (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.SET_SLASHING_ACTIVE_PROPOSALS:
+    case actionTypes.SET_SLASHING_PROPOSALS:
       return {
         ...state,
-        activeProposals: groupArrayByBlockNumber(action.result)
-      }
-    case actionTypes.SET_SLASHING_ENDED_PROPOSALS:
-      return {
-        ...state,
-        endedProposals: groupArrayByBlockNumber(action.result)
-      }
-    case actionTypes.SET_SLASHING_PROPOSALS_COUNT: {
-      return {
-        ...state,
-        slashingEndedProposalsCount: action.result.ended,
-        slashingActiveProposalsCount: action.result.active,
+        activeProposals: groupArrayByBlockNumber(action.activeProposalsArray),
+        endedProposals: groupArrayByBlockNumber(action.endedProposalsArray),
+        slashingEndedProposalsCount: action.proposalsCounter.ended,
+        slashingActiveProposalsCount: action.proposalsCounter.active,
         slashingLoadingProposalsCount: false
       }
-    }
     default:
       return state
   }

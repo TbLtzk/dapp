@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Accordion } from 'react-bootstrap'
 import { ListCardWrp, ListCardHeader, ListCardBody } from './styles'
 import CustomCardButtons from 'components/Custom/CustomCardButtons'
@@ -12,12 +12,15 @@ import { transactionCounter } from 'store/transaction-handler/selectors'
 import { formVoteObject } from 'store/voting/proposals/selectors'
 import { createShareText } from 'func/useful'
 
+import { setVoteProposalObj } from 'store/voting/proposals/action-creators'
+
 function ListCard ({ proposal, id, proposalsKind, onePage }) {
+  const dispatch = useDispatch()
+
   const currentTheme = useSelector(theme)
   const updateProposal = useSelector(transactionCounter)
 
   const [open, setOpen] = useState(false)
-  const [reloadProposal, setReloadProposal] = useState(false)
   const [collapsedContentOpen, setCollapsedContentOpen] = useState(false)
 
   const [proposalInfo, setProposalInfo] = useState(null)
@@ -26,6 +29,7 @@ function ListCard ({ proposal, id, proposalsKind, onePage }) {
   useEffect(() => {
     if (!updateProposal && proposal.contract === obj.contract && proposal.id === obj.id) {
       handleGetProposal()
+      dispatch(setVoteProposalObj({}))
     }
   }, [updateProposal])
 
@@ -34,10 +38,8 @@ function ListCard ({ proposal, id, proposalsKind, onePage }) {
   }, [])
 
   async function handleGetProposal () {
-    setReloadProposal(true)
-    const result = await getProposal(proposal.contract, proposal.id, 'header')
+    const result = await getProposal(proposal.contract, proposal.id)
     setProposalInfo(result)
-    setReloadProposal(false)
   }
 
   return !proposalInfo
@@ -71,8 +73,7 @@ function ListCard ({ proposal, id, proposalsKind, onePage }) {
                         {collapsedContentOpen
                           ? (
                             <CardCollapsedContent
-                                reloadProposal={reloadProposal}
-                                proposalStatus={proposalInfo.status}
+                                proposalInfo={proposalInfo}
                                 proposalsKind={proposalsKind}
                                 contract={proposal.contract}
                                 proposalId={proposal.id}

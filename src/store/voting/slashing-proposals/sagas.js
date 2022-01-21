@@ -3,11 +3,7 @@ import { put, takeEvery, select, all } from 'redux-saga/effects'
 import * as actionTypes from 'store/voting/slashing-proposals/action-types'
 import { setErrorMessage, setTransactionCounter } from 'store/transaction-handler/action-creators'
 
-import {
-  setSlashingProposalsCount,
-  setSlashingEndedProposals,
-  setSlashingActiveProposals
-} from 'store/voting/slashing-proposals/action-creators'
+import { setSlashingProposals } from 'store/voting/slashing-proposals/action-creators'
 import { creationSlashingContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper'
 
 import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-helper'
@@ -18,7 +14,7 @@ import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/u
 
 let lastActiveBlock
 
-function * getSlashingProposalsCountGenerator () {
+function * getSlashingProposalsGenerator () {
   try {
     const contracts = creationSlashingContractsObjArray()
     const { minimalActiveBlockHeight, lastBlockHeight } = yield getMinimalActiveBlockHeight()
@@ -51,10 +47,7 @@ function * getSlashingProposalsCountGenerator () {
       endedProposalsArray = endedProposalsIds
       lastActiveBlock = lastBlockHeight
     }
-
-    yield put(setSlashingProposalsCount(proposalsCounter))
-    yield put(setSlashingActiveProposals(activeProposalsArray))
-    yield put(setSlashingEndedProposals(endedProposalsArray))
+    yield put(setSlashingProposals(activeProposalsArray, endedProposalsArray, proposalsCounter))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }
@@ -158,5 +151,5 @@ export default [
   takeEvery(actionTypes.ESCROW_RECALL_PROPOSE_DECISION, onEscrowRecallProposeDecisionGenerator),
   takeEvery(actionTypes.ESCROW_CONFIRM_DECISION, onEscrowConfirmProposeDecisionGenerator),
   takeEvery(actionTypes.ESCROW_PROPOSER_REMARK, onEscrowProposerRemarkGenerator),
-  takeEvery(actionTypes.GET_SLASHING_PROPOSALS_COUNT, getSlashingProposalsCountGenerator)
+  takeEvery(actionTypes.GET_SLASHING_PROPOSALS, getSlashingProposalsGenerator)
 ]

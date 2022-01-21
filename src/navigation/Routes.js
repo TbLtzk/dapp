@@ -33,7 +33,7 @@ function Routes () {
   }
 
   return (
-  // eslint-disable-next-line react/jsx-props-no-spreading
+    // eslint-disable-next-line react/jsx-props-no-spreading
     <AlertProvider template={AlertTemplate} {...options}>
       <Switch>
         <Route exact path="/" component={AuthProtect(Dashboard)} />
@@ -59,6 +59,11 @@ function Routes () {
           exact
           path="/slashing-proposals"
           component={AuthProtect(Proposals, { proposalsType: PROPOSALS_TYPES.slashingProposals })}
+        />
+        <Route
+          exact
+          path="/contract-updates"
+          component={AuthProtect(Proposals, { proposalsType: PROPOSALS_TYPES.contractUpdates })}
         />
         <Route
           exact

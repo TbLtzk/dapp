@@ -9,5 +9,5 @@ export const constitutionCheck = {
   subtitle: 'Only Root Node Eligible.',
   radioBtnDescr: 'Do you consider this proposal breaches constitution?',
   radioBtnName: 'constitution-check',
-  radioBtn: ['No', 'Yes']
+  radioBtn: ['Yes']
 }
