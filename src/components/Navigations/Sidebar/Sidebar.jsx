@@ -56,6 +56,7 @@ function Sidebar () {
   const systemSurplusActiveAuctionsCount = systemSurplusAuction?.activeAuctions?.length
 
   const highlight = (location) => Number(history.location.pathname === '/' + location)
+  const dashboard = <CommonLinks highlight={highlight('')} linkTo="/" linkTitle="Dashboard" />
 
   return (
         <header>
@@ -67,7 +68,20 @@ function Sidebar () {
                         </Link>
                     </WrapLogo>
                     <ListContainer id="basic-navbar-nav">
-                        <CommonLinks highlight={highlight('')} linkTo="/" linkTitle="Dashboard" />
+                        {appMode === MODE.advanced
+                          ? (
+                            <AccordionLinks headerLink={dashboard}>
+                                <CommonLinks
+                                    highlight={highlight('monitoring')}
+                                    linkTo="/monitoring"
+                                    linkTitle="– Monitoring"
+                                />
+                            </AccordionLinks>
+                            )
+                          : (
+                              dashboard
+                            )}
+
                         <AccordionLinks
                             headerLink={
                                 <CommonLinks
@@ -107,7 +121,7 @@ function Sidebar () {
                                             count={slashingActiveProposalsCount}
                                             linkTitle="– Slashing Proposals"
                                         />
-                                         <CommonLinks
+                                        <CommonLinks
                                             highlight={highlight('contract-updates')}
                                             linkTo="/contract-updates"
                                             count={contractUpdatesActiveProposalsCount}

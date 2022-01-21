@@ -24,6 +24,7 @@ export const WrapContent = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
   ${scrollbarStyle}
+
   &.wrap-content__tow-colm {
     display: grid;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
@@ -38,6 +39,12 @@ export const WrapContent = styled.div`
 
   &.wrap-content__three-colm {
     display: grid;
+    grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
+    grid-column-gap: ${indents['15']};
+  }
+
+  .wrap-content__colm-3 {
+    display: flex;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
     grid-column-gap: ${indents['15']};
   }

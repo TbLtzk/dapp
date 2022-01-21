@@ -3,33 +3,59 @@ import React, { useEffect } from 'react'
 import CustomBlock from 'components/Base/CustomBlock'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { getRootMembersData } from 'store/root-node/action-creators'
-import { loadingRootMembersDataSelector, rootMembersData } from 'store/root-node/selectors'
+import { getRootMembers } from 'store/root-node/action-creators'
+import {
+  loadingRootMembersMonitoringSelector,
+  loadingRootMembersSelector,
+  rootMembersMonitoringSelector,
+  rootMembersSelector,
+  rootMemebersTotalStakeSelector
+} from 'store/root-node/selectors'
 import MemberTables from 'components/Custom/MemberTables'
 
 import TABLE_TYPES from 'constants/tableTypes'
 
-function RootNodePanel ({ type }) {
-  const dispatch = useDispatch()
+function RootNodePanel ({ tableType }) {
+  const { table, tableLoading } = getRootNodesData()
 
-  const rootMembersArray = useSelector(rootMembersData)
-  const loading = useSelector(loadingRootMembersDataSelector)
+  const dispatch = useDispatch()
+  const rootMemebersTotalStake = useSelector(rootMemebersTotalStakeSelector)
+
+  function getRootNodesData () {
+    switch (tableType) {
+      case TABLE_TYPES.rootNodesShort:
+      case TABLE_TYPES.rootNodesWidened:
+        return {
+          table: useSelector(rootMembersSelector),
+          tableLoading: useSelector(loadingRootMembersSelector)
+        }
+      case TABLE_TYPES.rootNodesMonitoring:
+        return {
+          table: useSelector(rootMembersMonitoringSelector),
+          tableLoading: useSelector(loadingRootMembersMonitoringSelector)
+        }
+    }
+  }
 
   useEffect(() => {
-    dispatch(getRootMembersData())
+    dispatch(getRootMembers(tableType))
   }, [])
 
   return (
         <CustomBlock>
             <h1>Root Node Panel</h1>
-            {type !== 'with-total' || loading ? null : <p>Total Stake: {rootMembersArray.totalStakes + ' Q'}</p>}
+            {tableType === TABLE_TYPES.rootNodesWidened && !tableLoading
+              ? (
+                <p>Total Stake: {rootMemebersTotalStake + ' Q'}</p>
+                )
+              : null}
             <MemberTables
-                tableType={TABLE_TYPES.rootNode}
+                tableType={tableType}
                 perPageLength={10}
-                tableArray={rootMembersArray.rootNodeData}
+                tableArray={table}
                 title={null}
-                loading={loading}
-                emptyTable="No in root node panel"
+                loading={tableLoading}
+                emptyTable="No Root Nodes"
             />
         </CustomBlock>
   )

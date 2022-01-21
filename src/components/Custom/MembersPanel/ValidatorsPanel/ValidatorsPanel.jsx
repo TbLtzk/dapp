@@ -6,37 +6,53 @@ import Button from 'components/Base/Buttons/Button'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { getValidatorMembers } from 'store/validators/action-creators'
-import { loadingMembers, validatorMembers } from 'store/validators/selectors'
+import {
+  loadingValidatorsMonitoringSelector,
+  loadingValidatorsShortSelector,
+  loadingValidatorsWidenedSelector,
+  validatorsMonitoringSelector,
+  validatorsShortSelector,
+  validatorsWidenedSelector
+} from 'store/validators/selectors'
 import MemberTables from 'components/Custom/MemberTables'
 import TABLE_TYPES from 'constants/tableTypes'
 
-function ValidatorsPanel ({ bottom, widened }) {
+const buttonsType = { qVault: 'q-vault', details: 'details', none: 'none' }
+
+function ValidatorsPanel ({ buttons, tableType }) {
+  const { table, tableLoading } = getValidatorsTableData()
   const dispatch = useDispatch()
-
-  const loading = useSelector(loadingMembers)
-  const validators = useSelector(validatorMembers)
-
   const history = useHistory()
 
+  function getValidatorsTableData () {
+    switch (tableType) {
+      case TABLE_TYPES.validatorsWidened:
+        return {
+          table: useSelector(validatorsWidenedSelector),
+          tableLoading: useSelector(loadingValidatorsWidenedSelector)
+        }
+      case TABLE_TYPES.validatorsShort:
+        return {
+          table: useSelector(validatorsShortSelector),
+          tableLoading: useSelector(loadingValidatorsShortSelector)
+        }
+      case TABLE_TYPES.validatorsMonitoring:
+        return {
+          table: useSelector(validatorsMonitoringSelector),
+          tableLoading: useSelector(loadingValidatorsMonitoringSelector)
+        }
+    }
+  }
+
   useEffect(() => {
-    dispatch(getValidatorMembers())
+    dispatch(getValidatorMembers(tableType))
   }, [])
 
-  return (
-        <>
-            <CustomBlock>
-                <MemberTables
-                    tableType={TABLE_TYPES.validators}
-                    perPageLength={10}
-                    tableArray={validators}
-                    title="Validator Ranking"
-                    loading={loading}
-                    widened={widened}
-                    emptyTable="No validators"
-                />
-                {!bottom
-                  ? (
-                    <div className="card__actions">
+  const renderButtons = () => {
+    switch (buttons) {
+      case buttonsType.details:
+        return (
+                    <div className="card__actions__between">
                         <Button
                             type="white"
                             icon="arrow-right"
@@ -47,9 +63,20 @@ function ValidatorsPanel ({ bottom, widened }) {
                               })
                             }
                         />
+                        <Button
+                            type="white"
+                            icon="arrow-right"
+                            title="Monitoring"
+                            handleButton={() =>
+                              history.push({
+                                pathname: '/monitoring'
+                              })
+                            }
+                        />
                     </div>
-                    )
-                  : (
+        )
+      case buttonsType.qVault:
+        return (
                     <div className="card__actions">
                         <Button
                             type="white"
@@ -62,7 +89,24 @@ function ValidatorsPanel ({ bottom, widened }) {
                             }
                         />
                     </div>
-                    )}
+        )
+      case buttonsType.none:
+        return null
+    }
+  }
+
+  return (
+        <>
+            <CustomBlock>
+                <MemberTables
+                    title="Validator Ranking"
+                    emptyTable="No validators"
+                    tableArray={table}
+                    tableType={tableType}
+                    loading={tableLoading}
+                    perPageLength={10}
+                />
+                {renderButtons()}
             </CustomBlock>
         </>
   )

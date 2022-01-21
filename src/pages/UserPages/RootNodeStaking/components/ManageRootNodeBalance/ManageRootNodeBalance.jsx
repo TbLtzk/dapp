@@ -9,13 +9,7 @@ import {
   setRootAnnounceWithdrawal
 } from 'store/root-node/action-creators'
 
-import {
-  isUserRootNode,
-  rootNodeStake,
-  withdrawals,
-  rootMinimumTimeLock,
-  rootMembersData
-} from 'store/root-node/selectors'
+import { isUserRootNode, rootNodeStake, withdrawals, rootMinimumTimeLock } from 'store/root-node/selectors'
 
 import { userAddressMetamask } from 'store/user-inf/selectors'
 import { useForm } from 'react-hook-form'
@@ -41,7 +35,6 @@ function ManageRootNodeBalance () {
   const amountNodeStake = useSelector(rootNodeStake)
   const withdrawalsData = useSelector(withdrawals)
   const rootTimeLockMinimumBalance = useSelector(rootMinimumTimeLock)
-  const rootMembersArray = useSelector(rootMembersData)
 
   useEffect(() => {
     dispatch(getAccountBalance(userAddress))
@@ -68,19 +61,6 @@ function ManageRootNodeBalance () {
                 <h5>Status</h5>
                 {isUserRoot ? <p>Member of root node panel</p> : <p>Not a member of root node panel</p>}
             </div>
-            {isUserRoot
-              ? (
-                <div>
-                    <h5>Current Rank</h5>
-                    <p>
-                        {!rootMembersArray?.rootNodeData?.length
-                          ? '0 #'
-                          : rootMembersArray?.rootNodeData?.find((user) => user.address === userAddress).rank +
-                              ' #'}
-                    </p>
-                </div>
-                )
-              : null}
         </>
   )
 

@@ -19,11 +19,11 @@ function Version () {
   const [mainVersionInfo, setMainVersionInfo] = useState([])
   const [modulesVersionInfo, setModulesVersionInfo] = useState([])
   const [clientVersionInfo, setClientVersionInfo] = useState([])
-  const [time, setTime] = useState(getNowTimeWithGMT())
+  const [time, setTime] = useState(getNowTimeWithGMT('DD.MM.YYYY HH:mm'))
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTime(getNowTimeWithGMT())
+      setTime(getNowTimeWithGMT('DD.MM.YYYY HH:mm'))
     }, 50000)
     return () => clearInterval(timer)
   }, [time])

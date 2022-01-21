@@ -6,7 +6,9 @@ import {
   columnsRootNode,
   columnsValidatorsWidened,
   columnsDeFiRisk,
-  columnnsLockAmount
+  columnnsLockAmount,
+  columnsValidatorsMonitoring,
+  columnsRootNodeMonitoring
 } from 'constants/columns'
 import {
   tableRootNode,
@@ -15,32 +17,41 @@ import {
   tableDelegations,
   tableQFees,
   tableValidatorsWidened,
-  tableValidatorsShort
+  tableValidatorsShort,
+  tableValidatorsMonitoring,
+  tableRootNodeMonitoring
 } from 'constants/tables'
 import TABLE_TYPES from 'constants/tableTypes'
 import { SkeletonTableLoading } from 'components/Base/SkeletonLoading/SkeletonLoading'
 
-const MemberTables = ({
-  tableType,
-  perPageLength,
-  emptyTable,
-  tableArray,
-  title,
-  widened,
-  loading = false,
-  sorting = true
-}) => {
+const MemberTables = ({ tableType, perPageLength, emptyTable, tableArray, title, loading = false, sorting = true }) => {
   const getTableOnType = () => {
     switch (tableType) {
-      case TABLE_TYPES.validators:
+      case TABLE_TYPES.validatorsShort:
         return {
-          table: widened ? tableValidatorsWidened(tableArray) : tableValidatorsShort(tableArray),
-          columns: widened ? columnsValidatorsWidened : columnsValidatorsWidened.slice(0, 3)
+          table: tableValidatorsShort(tableArray),
+          columns: columnsValidatorsWidened.slice(0, 3)
         }
-      case TABLE_TYPES.rootNode:
+      case TABLE_TYPES.validatorsMonitoring:
+        return {
+          table: tableValidatorsMonitoring(tableArray),
+          columns: columnsValidatorsMonitoring
+        }
+      case TABLE_TYPES.validatorsWidened:
+        return {
+          table: tableValidatorsWidened(tableArray),
+          columns: columnsValidatorsWidened
+        }
+      case TABLE_TYPES.rootNodesShort:
+      case TABLE_TYPES.rootNodesWidened:
         return {
           table: tableRootNode(tableArray),
           columns: columnsRootNode
+        }
+      case TABLE_TYPES.rootNodesMonitoring:
+        return {
+          table: tableRootNodeMonitoring(tableArray),
+          columns: columnsRootNodeMonitoring
         }
       case TABLE_TYPES.qDefi:
         return {
@@ -72,25 +83,11 @@ const MemberTables = ({
                   ? (
                     <SkeletonTableLoading />
                     )
-                  : tableArray.length === 0
-                    ? (
-                        emptyTable
-                          ? (
-                        <p>{emptyTable}</p>
-                            )
-                          : (
-                        <>
-                            <Table
-                                keyField="id"
-                                columns={getTableOnType().columns}
-                                perPage={perPageLength}
-                                tableBody={getTableOnType().table}
-                                sorting={sorting}
-                            />
-                        </>
-                            )
-                      )
-                    : (
+                  : !tableArray.length
+                      ? (
+                    <p>{emptyTable}</p>
+                        )
+                      : (
                     <Table
                         keyField="id"
                         columns={getTableOnType().columns}
@@ -98,7 +95,7 @@ const MemberTables = ({
                         tableBody={getTableOnType().table}
                         sorting={sorting}
                     />
-                      )}
+                        )}
             </div>
         </>
   )

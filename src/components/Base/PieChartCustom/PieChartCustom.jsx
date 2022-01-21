@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { rootMembersData } from 'store/root-node/selectors'
+import { rootMembersSelector } from 'store/root-node/selectors'
 
 import { PieChart, Pie, Cell } from 'recharts'
 
@@ -8,7 +8,7 @@ import colors from 'constants/colors'
 import { WrapChart } from './styles'
 
 function PieChartCustom () {
-  const rootMembersArray = useSelector(rootMembersData)
+  const rootMembersArray = useSelector(rootMembersSelector)
   const [transformData, setTransformData] = useState(null)
   const [maxValue, setMaxValue] = useState(null)
 
