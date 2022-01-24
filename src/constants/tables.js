@@ -26,8 +26,8 @@ export const tableRootNodeMonitoring = (tableArray) =>
     id: idx,
     address: <CopyToClipboard valueToCopy={rootNode.address}>{rootNode.address}</CopyToClipboard>,
     amount: fN(rootNode.stakeAmount) + ' Q',
-    offChain: 'offChain',
-    onChain: 'onChain'
+    offChain: 'n/a',
+    onChain: 'n/a'
   }))
 
 export const tableValidatorsShort = (tableArray) =>
@@ -44,9 +44,9 @@ export const tableValidatorsMonitoring = (tableArray) =>
     rank: idx + 1,
     validator: <CopyToClipboard valueToCopy={validator.validator}>{validator.validator}</CopyToClipboard>,
     amount: fN(validator.amount) + ' Q',
-    lastBlock: 'lastBlock',
-    timestamp: 'timestamp',
-    average: 'average'
+    lastBlock: 'n/a',
+    timestamp: 'n/a',
+    average: '0,00 %'
   }))
 
 export const tableValidatorsWidened = (tableArray) =>

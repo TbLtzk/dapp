@@ -2,23 +2,30 @@ import { fromWei } from 'func/balance'
 import { orderBy } from 'lodash'
 
 export const prepareRootMembersTable = (members, membersWithStakes) => {
-  const convertStake = membersWithStakes.map((member) => ({
-    address: member.root,
-    stakeAmount: Number(fromWei(member.value))
+  let totalStake = 0
+
+  const membersWithAmount = members.map((member) => {
+    const memberWithStake = membersWithStakes.find((mbr) => mbr.root === member)
+    if (memberWithStake) {
+      const stakeAmount = Number(fromWei(memberWithStake.value))
+      totalStake += stakeAmount
+      return {
+        address: member,
+        stakeAmount
+      }
+    } else {
+      return {
+        address: member,
+        stakeAmount: 0
+      }
+    }
+  })
+
+  const membersWithShare = membersWithAmount.map(({ address, stakeAmount }) => ({
+    address,
+    stakeAmount,
+    share: totalStake ? Math.round(((stakeAmount * 100) / totalStake + Number.EPSILON) * 100) / 100 : 0
   }))
 
-  const totalStake = convertStake.reduce((sum, current) => sum + current.stakeAmount, 0)
-
-  const arrayAddresses = membersWithStakes.map((member) => member.root)
-
-  const membersWithoutStakes = members
-    .filter((address) => !arrayAddresses.includes(address))
-    .map((address) => ({ address, stakeAmount: 0 }))
-
-  const addShare = [...convertStake, ...membersWithoutStakes].map((member) => ({
-    ...member,
-    share: totalStake ? Math.round(((member.stakeAmount * 100) / totalStake + Number.EPSILON) * 100) / 100 : 0
-  }))
-
-  return { table: orderBy(addShare, ['stakeAmount'], ['desc', 'asc']), totalStake }
+  return { table: orderBy(membersWithShare, ['stakeAmount'], ['desc', 'asc']), totalStake }
 }

@@ -12,11 +12,12 @@ import {
   rootMemebersTotalStakeSelector
 } from 'store/root-node/selectors'
 import MemberTables from 'components/Custom/MemberTables'
-
+import { columnsRootNode, columnsRootNodeMonitoring } from 'constants/columns'
+import { tableRootNode, tableRootNodeMonitoring } from 'constants/tables'
 import TABLE_TYPES from 'constants/tableTypes'
 
 function RootNodePanel ({ tableType }) {
-  const { table, tableLoading } = getRootNodesData()
+  const { table, tableLoading, columns } = getRootNodesData()
 
   const dispatch = useDispatch()
   const rootMemebersTotalStake = useSelector(rootMemebersTotalStakeSelector)
@@ -26,13 +27,15 @@ function RootNodePanel ({ tableType }) {
       case TABLE_TYPES.rootNodesShort:
       case TABLE_TYPES.rootNodesWidened:
         return {
-          table: useSelector(rootMembersSelector),
-          tableLoading: useSelector(loadingRootMembersSelector)
+          table: tableRootNode(useSelector(rootMembersSelector)),
+          tableLoading: useSelector(loadingRootMembersSelector),
+          columns: columnsRootNode
         }
       case TABLE_TYPES.rootNodesMonitoring:
         return {
-          table: useSelector(rootMembersMonitoringSelector),
-          tableLoading: useSelector(loadingRootMembersMonitoringSelector)
+          table: tableRootNodeMonitoring(useSelector(rootMembersMonitoringSelector)),
+          tableLoading: useSelector(loadingRootMembersMonitoringSelector),
+          columns: columnsRootNodeMonitoring
         }
     }
   }
@@ -50,12 +53,13 @@ function RootNodePanel ({ tableType }) {
                 )
               : null}
             <MemberTables
-                tableType={tableType}
                 perPageLength={10}
-                tableArray={table}
+                table={table}
                 title={null}
+                sorting
+                columns={columns}
                 loading={tableLoading}
-                emptyTable="No Root Nodes"
+                emptyTableMessage="No Root Nodes"
             />
         </CustomBlock>
   )

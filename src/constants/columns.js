@@ -70,8 +70,7 @@ export const timeLocksColumnns = [
 export const columnsRootNode = [
   {
     dataField: 'address',
-    text: 'Root Node Address',
-    sort: true
+    text: 'Root Node Address'
   },
   {
     headerStyle: () => ({ minWidth: '110px' }),
@@ -92,8 +91,7 @@ export const columnsRootNode = [
 export const columnsRootNodeMonitoring = [
   {
     dataField: 'address',
-    text: 'Root Node Address',
-    sort: true
+    text: 'Root Node Address'
   },
   {
     headerStyle: () => ({ minWidth: '110px' }),

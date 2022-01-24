@@ -16,11 +16,22 @@ import {
 } from 'store/validators/selectors'
 import MemberTables from 'components/Custom/MemberTables'
 import TABLE_TYPES from 'constants/tableTypes'
+import {
+  columnsValidatorsWidened,
+  columnsValidatorsMonitoring
+} from 'constants/columns'
+
+import {
+
+  tableValidatorsWidened,
+  tableValidatorsShort,
+  tableValidatorsMonitoring
+} from 'constants/tables'
 
 const buttonsType = { qVault: 'q-vault', details: 'details', none: 'none' }
 
 function ValidatorsPanel ({ buttons, tableType }) {
-  const { table, tableLoading } = getValidatorsTableData()
+  const { table, tableLoading, columns } = getValidatorsTableData()
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -28,18 +39,21 @@ function ValidatorsPanel ({ buttons, tableType }) {
     switch (tableType) {
       case TABLE_TYPES.validatorsWidened:
         return {
-          table: useSelector(validatorsWidenedSelector),
-          tableLoading: useSelector(loadingValidatorsWidenedSelector)
+          table: tableValidatorsWidened(useSelector(validatorsWidenedSelector)),
+          tableLoading: useSelector(loadingValidatorsWidenedSelector),
+          columns: columnsValidatorsWidened
         }
       case TABLE_TYPES.validatorsShort:
         return {
-          table: useSelector(validatorsShortSelector),
-          tableLoading: useSelector(loadingValidatorsShortSelector)
+          table: tableValidatorsShort(useSelector(validatorsShortSelector)),
+          tableLoading: useSelector(loadingValidatorsShortSelector),
+          columns: columnsValidatorsWidened.slice(0, 3)
         }
       case TABLE_TYPES.validatorsMonitoring:
         return {
-          table: useSelector(validatorsMonitoringSelector),
-          tableLoading: useSelector(loadingValidatorsMonitoringSelector)
+          table: tableValidatorsMonitoring(useSelector(validatorsMonitoringSelector)),
+          tableLoading: useSelector(loadingValidatorsMonitoringSelector),
+          columns: columnsValidatorsMonitoring
         }
     }
   }
@@ -100,8 +114,10 @@ function ValidatorsPanel ({ buttons, tableType }) {
             <CustomBlock>
                 <MemberTables
                     title="Validator Ranking"
-                    emptyTable="No validators"
-                    tableArray={table}
+                    emptyTableMessage="No validators"
+                    table={table}
+                    sorting
+                    columns={columns}
                     tableType={tableType}
                     loading={tableLoading}
                     perPageLength={10}
