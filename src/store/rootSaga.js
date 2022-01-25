@@ -15,7 +15,6 @@ import validationRewardPools from './validation-reward-pools/sagas'
 import auctions from './auctions/sagas'
 import stableCoin from './stable-coin/sagas'
 import membership from './membership/sagas'
-import parameters from './parameters/sagas'
 import systemBalance from './system-balance/sagas'
 import systemReserve from './system-reserve/sagas'
 import parametersAddresses from './parameters-addresses/sagas'
@@ -42,7 +41,6 @@ export default function * rootSaga () {
     ...auctions,
     ...stableCoin,
     ...membership,
-    ...parameters,
     ...systemBalance,
     ...systemReserve,
     ...parametersAddresses,

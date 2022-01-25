@@ -27,6 +27,9 @@ function KeyAddressesTable ({ tableData, tableHeaders }) {
                                         <span>{item.value}</span>
                                     </CopyToClipboard>
                                 </td>
+                                <td>
+                                    <span>{item.type}</span>
+                                </td>
                             </tr>
                         ))}
                     </>

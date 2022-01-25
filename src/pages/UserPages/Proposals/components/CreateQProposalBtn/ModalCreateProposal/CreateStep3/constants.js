@@ -7,7 +7,7 @@ export const constUpdate = {
   inputsSecond: ['Value'],
   inputsObjSecond: 'parameter-value',
   radioBtnTitle: 'Parameter',
-  radioBtnName: 'type-proposal',
+  radioBtnName: 'parameter-type',
   radioBtn: [
     {
       lbl: 'Address',

@@ -35,6 +35,12 @@ function ListCard ({ proposal, id, proposalsKind, onePage }) {
 
   useEffect(() => {
     handleGetProposal()
+
+    return () => {
+      setOpen(false)
+      setCollapsedContentOpen(false)
+      setProposalInfo(null)
+    }
   }, [])
 
   async function handleGetProposal () {

@@ -146,18 +146,16 @@ export default class VotingService {
     const contract = await this.getContractInstance()
     const activeIds = []
     const endedIds = []
-
     for (const proposal of proposals) {
       const status = await contract.getStatus(proposal.id)
       if (status === '0') {
-        return
+        continue
       } else if (status === '1' || status === '3' || status === '4') {
         activeIds.push({ ...proposal, status })
       } else {
         endedIds.push({ ...proposal, status })
       }
     }
-
     return [activeIds, endedIds]
   }
 
@@ -165,7 +163,8 @@ export default class VotingService {
     const activeProposalsByContract = activeProposals.filter((proposal) => proposal.contract === this.contractName)
     const newProposals = await this.getPastEvents(lastActiveBlock)
     const proposals = uniqBy([...newProposals, ...activeProposalsByContract], 'id')
-    return await this.checkProposalsByStatus(proposals)
+    const proposalsWithStatus = await this.checkProposalsByStatus(proposals)
+    return proposalsWithStatus
   }
 
   async getProposalsCount (minimalActiveBlockHeight) {

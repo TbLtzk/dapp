@@ -20,6 +20,12 @@ import {
 
 const TYPES = ['Uint', 'String', 'Bool', 'Addr', 'Bytes32']
 
+async function getParameters (type, contract) {
+  const parameters = await contract.getParameters(type)
+  type = type.toUpperCase()
+  return parameters.map((data) => ({ type, ...data }))
+}
+
 function * getContractRegistryKV () {
   try {
     const contract = contractRegistryInstance
@@ -41,7 +47,7 @@ function * getContractRegistryKV () {
 function * getConstitutionParametersKV () {
   try {
     const contract = yield getConstitutionInstance()
-    const data = yield all(TYPES.map((type) => contract.getParameters(type)))
+    const data = yield all(TYPES.map((type) => getParameters(type, contract)))
     yield put(getConstitutionParametersKVSuccess(data.flat()))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
@@ -52,7 +58,7 @@ function * getConstitutionParametersKV () {
 function * getFeesIncentivesExpertPanelParametersKV () {
   try {
     const contract = yield getEpqfiParametersInstance()
-    const data = yield all(TYPES.map((type) => contract.getParameters(type)))
+    const data = yield all(TYPES.map((type) => getParameters(type, contract)))
     yield put(getFeesIncentivesExpertPanelParametersKVSuccess(data.flat()))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
@@ -63,7 +69,7 @@ function * getFeesIncentivesExpertPanelParametersKV () {
 function * getEPDRParametersKV () {
   try {
     const contract = yield getEpdrParametersInstance()
-    const data = yield all(TYPES.map((type) => contract.getParameters(type)))
+    const data = yield all(TYPES.map((type) => getParameters(type, contract)))
     yield put(getEPDRParametersKVSuccess(data.flat()))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)

@@ -27,9 +27,16 @@ function ProposalContent ({ proposal }) {
                 <Tooltip
                     disabled={false}
                     additionalInfo={
-                        <div>
-                            Remaining Time for Voting <br /> {remainDate(proposal.votingEndTime)}
-                        </div>
+                        proposal.status === 'Pending'
+                          ? (
+                            <div>
+                                Remaining Time for Voting <br />
+                                {remainDate(proposal.votingEndTime)}
+                            </div>
+                            )
+                          : (
+                              'Proposal ' + proposal.status
+                            )
                     }
                 >
                     <div className="content__item">
@@ -46,9 +53,15 @@ function ProposalContent ({ proposal }) {
                     <Tooltip
                         disabled={proposal.status === 'Pending'}
                         additionalInfo={
-                            <div>
-                                Remaining Time for Veto <br /> {remainDate(proposal.vetoEndTime)}
-                            </div>
+                            proposal.status === 'Accepted'
+                              ? (
+                                <div>
+                                    Remaining Time for Veto <br /> {remainDate(proposal.vetoEndTime)}
+                                </div>
+                                )
+                              : (
+                                  'Proposal ' + proposal.status
+                                )
                         }
                     >
                         <div className="content__item">
@@ -58,7 +71,6 @@ function ProposalContent ({ proposal }) {
                     </Tooltip>
                 </ContentWrapper>
                 )}
-
         </div>
   )
 }

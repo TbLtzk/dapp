@@ -4,29 +4,22 @@ import { useSelector } from 'react-redux'
 import { formObject } from 'store/voting/proposals/selectors'
 import { PROPOSALS_TYPES } from 'constants/statuses'
 import { getTypeName } from 'func/contractHelpers'
-import { constUpdate } from '../CreateStep3/constants'
+import { transformToParams } from 'contracts/helpers/parameters-helper'
 
-function CreateStep4 (props) {
-  const { activeTab } = props
+function CreateStep4 ({ activeTab }) {
   const formData = useSelector(formObject)
-  const [params, setParams] = useState([{
-    type: '',
-    key: '',
-    value: ''
-  }])
+
+  const [params, setParams] = useState([
+    {
+      type: '',
+      key: '',
+      value: ''
+    }
+  ])
 
   useEffect(() => {
-    if (formData[constUpdate.radioBtnName]) {
-      setParams(
-        formData[constUpdate.radioBtnName].reduce((types, item, index) => {
-          types.push({
-            type: item,
-            key: formData[constUpdate.inputsObjFirst][index],
-            value: formData[constUpdate.inputsObjSecond][index]
-          })
-          return types
-        }, [])
-      )
+    if (formData['parameter-type']?.length) {
+      setParams(transformToParams(formData))
     }
   }, [])
 
@@ -35,38 +28,38 @@ function CreateStep4 (props) {
       case PROPOSALS_TYPES.proposals:
         if (formData['change-constitution-parameter'] === 'yes') {
           return (
-            <div>
-              <h2>Chosen Aata</h2>
-              <h5>Type</h5>
-              <p>{formData?.first?.replace(/-/g, ' ')}</p>
-              <h5>Classification</h5>
-              <p>{formData?.classification?.replace(/-/g, ' ')}</p>
-              <h5>External Link</h5>
-              <p>{formData['external-link']}</p>
-              <h5>Hash</h5>
-              <p>{formData.hash}</p>
-              <h5>Change Constitution Parameter</h5>
-              <p>{formData['change-constitution-parameter']}</p>
-              {params.map((item, index) => {
-                return <Fragment key={index + 'param'}>
-                  <h4>Parameter #{index + 1}</h4>
-                  <div className="modal__three-colm">
-                    <div>
-                      <h5>Type</h5>
-                      <p title={getTypeName(item.type)}>{getTypeName(item.type)}</p>
-                    </div>
-                    <div>
-                      <h5>Key</h5>
-                      <p title={item.key}>{item.key}</p>
-                    </div>
-                    <div>
-                      <h5>Value</h5>
-                      <p title={item.value}>{item.value}</p>
-                    </div>
-                  </div>
-                </Fragment>
-              })}
-            </div>
+                        <div>
+                            <h2>Chosen Aata</h2>
+                            <h5>Type</h5>
+                            <p>{formData?.first?.replace(/-/g, ' ')}</p>
+                            <h5>Classification</h5>
+                            <p>{formData?.classification?.replace(/-/g, ' ')}</p>
+                            <h5>External Link</h5>
+                            <p>{formData['external-link']}</p>
+                            <h5>Hash</h5>
+                            <p>{formData.hash}</p>
+                            <h5>Change Constitution Parameter</h5>
+                            <p>{formData['change-constitution-parameter']}</p>
+                            {params.map((item, index) => (
+                                <Fragment key={index + 'param'}>
+                                    <h4>Parameter #{index + 1}</h4>
+                                    <div className="modal__three-colm">
+                                        <div>
+                                            <h5>Type</h5>
+                                            <p title={getTypeName(item.type)}>{getTypeName(item.type)}</p>
+                                        </div>
+                                        <div>
+                                            <h5>Key</h5>
+                                            <p title={item.key}>{item.key}</p>
+                                        </div>
+                                        <div>
+                                            <h5>Value</h5>
+                                            <p title={item.value}>{item.value}</p>
+                                        </div>
+                                    </div>
+                                </Fragment>
+                            ))}
+                        </div>
           )
         }
         break
@@ -75,11 +68,7 @@ function CreateStep4 (props) {
     }
   }, [activeTab, params])
 
-  return (
-    <>
-      {contentSwitcher()}
-    </>
-  )
+  return <>{contentSwitcher()}</>
 }
 
 export default CreateStep4

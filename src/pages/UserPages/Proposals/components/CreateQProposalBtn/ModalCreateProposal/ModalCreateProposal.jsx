@@ -29,21 +29,12 @@ import { arrExpert, arrQProposal, arrQProposalAdvanced, arrQRootNode, arrSlashin
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboardMode'
 
-function ModalCreateProposal (props) {
-  const {
-    modalShow,
-    onHide,
-    activeTab,
-    activeTabTitle
-  } = props
-  const {
-    register,
-    errors,
-    handleSubmit
-  } = useForm()
+function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) {
+  const { register, errors, handleSubmit } = useForm()
   const dispatch = useDispatch()
 
   const formData = useSelector(formObject)
+
   const stepLimit = useSelector(createdStepsLimit)
   const stepCounter = useSelector(stepCounterModal)
   const disabledContinueBtn = useSelector(disabledContinueProposalBtn)
@@ -68,42 +59,34 @@ function ModalCreateProposal (props) {
     switch (stepCounter) {
       case 1:
         return (
-          <CreateStep1
-            formData={formData}
-            activeTab={activeTab}
-            activeTabTitle={activeTabTitle}
-            register={register}
-            errors={errors}
-            radioArr={radioArrFirstStep}
-          />
+                    <CreateStep1
+                        activeTab={activeTab}
+                        activeTabTitle={activeTabTitle}
+                        register={register}
+                        errors={errors}
+                        radioArr={radioArrFirstStep}
+                    />
         )
       case 2:
         return (
-          <CreateStep2
-            formData={formData}
-            activeTab={activeTab}
-            activeTabTitle={activeTabTitle}
-            register={register}
-            errors={errors}
-          />
+                    <CreateStep2
+                        activeTab={activeTab}
+                        activeTabTitle={activeTabTitle}
+                        register={register}
+                        errors={errors}
+                    />
         )
       case 3:
         return (
-          <CreateStep3
-            formData={formData}
-            activeTab={activeTab}
-            activeTabTitle={activeTabTitle}
-            register={register}
-            errors={errors}
-          />
+                    <CreateStep3
+                        activeTab={activeTab}
+                        activeTabTitle={activeTabTitle}
+                        register={register}
+                        errors={errors}
+                    />
         )
       case 4:
-        return (
-          <CreateStep4
-            formData={formData}
-            activeTab={activeTab}
-          />
-        )
+        return <CreateStep4 activeTab={activeTab} />
       default:
         return null
     }
@@ -120,32 +103,28 @@ function ModalCreateProposal (props) {
   }
 
   return (
-    <ModalWindow
-      show={modalShow}
-      onHide={onHide}
-      modalTitle={activeTabTitle}
-      backBtnTitle={
-        stepCounter !== 1 ? 'Back' : null
-      }
-      backBtnHandler={() => {
-        dispatch(setStepCounter(stepCounter - 1))
-        dispatch(setDisabledCreatedProposalBtn(false))
-      }}
-      continueBtnTitle={
-        stepLimit !== stepCounter ? 'Next' : 'Confirm'
-      }
-      disabled={disabledContinueBtn}
-      continueBtnHandler={handleSubmit(onNext)}
-      content={
-        <>
-          <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)}/>
-          <div className="modal__steps">Step {stepCounter} of {stepLimit}</div>
-          <form>
-            {switchProposalContentDependsOnType}
-          </form>
-        </>
-      }
-    />
+        <ModalWindow
+            show={modalShow}
+            onHide={onHide}
+            modalTitle={activeTabTitle}
+            backBtnTitle={stepCounter !== 1 ? 'Back' : null}
+            backBtnHandler={() => {
+              dispatch(setStepCounter(stepCounter - 1))
+              dispatch(setDisabledCreatedProposalBtn(false))
+            }}
+            continueBtnTitle={stepLimit !== stepCounter ? 'Next' : 'Confirm'}
+            disabled={disabledContinueBtn}
+            continueBtnHandler={handleSubmit(onNext)}
+            content={
+                <>
+                    <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)} />
+                    <div className="modal__steps">
+                        Step {stepCounter} of {stepLimit}
+                    </div>
+                    <form>{switchProposalContentDependsOnType}</form>
+                </>
+            }
+        />
   )
 }
 
