@@ -6,11 +6,12 @@ import { EPQFIMembers, EPQFIMembersLoading } from 'store/membership/selectors'
 
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock'
 import MemberTables from 'components/Custom/MemberTables'
-import TABLE_TYPES from 'constants/tableTypes'
+import { tableQFees } from 'constants/tables'
+import { columnsQFees } from 'constants/columns'
 
 function QFeesMembersPanel () {
-  const loading = useSelector(EPQFIMembersLoading)
-  const members = useSelector(EPQFIMembers)
+  const qFeesMembersTableLoading = useSelector(EPQFIMembersLoading)
+  const qFeesMembersTable = tableQFees(useSelector(EPQFIMembers))
 
   const dispatch = useDispatch()
 
@@ -21,13 +22,12 @@ function QFeesMembersPanel () {
   return (
         <CustomBlock>
             <MemberTables
-                tableType={TABLE_TYPES.qFees}
-                perPageLength={members.length}
-                tableArray={members}
+                table={qFeesMembersTable}
                 title="List of Q Fees & Incentives Experts"
-                loading={loading}
-                emptyTable="Emty list"
-                sorting={false}
+                loading={qFeesMembersTableLoading}
+                columns={columnsQFees}
+                emptyTableMessage="Emty list"
+                perPageLength={qFeesMembersTable.length}
             />
         </CustomBlock>
   )

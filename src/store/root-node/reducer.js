@@ -1,30 +1,51 @@
+import TABLE_TYPES from 'constants/tableTypes'
 import * as actionTypes from './action-types'
 
 const initialState = {
-  rootMembersData: [],
-  loadingRootMembersData: true,
+  rootMembers: [],
+  loadingRootMembers: true,
+
+  rootMembersMonitoring: [],
+  loadingRootMembersMonitoring: true,
+
+  rootMemebersTotalStake: 0,
 
   isUserRootNode: false,
   rootNodeStake: 0,
   withdrawals: 0,
 
-  qVaultMinimumTimeLock: 0,
-  qVaultTimeLocks: null
+  rootMinimumTimeLock: 0,
+  rootTimeLocks: null
 }
 
 export default function rootContract (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.SET_ROOT_MEMBERS_DATA:
-      return {
-        ...state,
-        rootMembersData: action.result,
-        loadingRootMembersData: false
+    case actionTypes.SET_ROOT_MEMBERS:
+      switch (action.tableType) {
+        case TABLE_TYPES.rootNodesShort:
+        case TABLE_TYPES.rootNodesWidened: {
+          return {
+            ...state,
+            rootMembers: action.table,
+            rootMemebersTotalStake: action.totalStake,
+            loadingRootMembers: false
+          }
+        }
+        case TABLE_TYPES.rootNodesMonitoring: {
+          return {
+            ...state,
+            rootMembersMonitoring: action.table,
+            loadingRootMembersMonitoring: false
+          }
+        }
       }
+      break
     case actionTypes.SET_CHECK_IS_USER_ROOT_NODE:
       return {
         ...state,
         isUserRootNode: action.result
       }
+
     case actionTypes.SET_ROOT_NODE_STAKES:
       return {
         ...state,

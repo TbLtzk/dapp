@@ -67,6 +67,12 @@ export const Block = styled.div`
     }
   }
 
+  .card__actions__between {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+
   .card__spinner {
     display: flex;
     align-items: flex-start;

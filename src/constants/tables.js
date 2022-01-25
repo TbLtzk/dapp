@@ -16,18 +16,37 @@ export const tableLockAmount = (tableArray) =>
 export const tableRootNode = (tableArray) =>
   tableArray.map((rootNode, idx) => ({
     id: idx,
-    rank: rootNode.rank,
     address: <CopyToClipboard valueToCopy={rootNode.address}>{rootNode.address}</CopyToClipboard>,
     amount: fN(rootNode.stakeAmount) + ' Q',
     share: rootNode.share + ' %'
   }))
 
+export const tableRootNodeMonitoring = (tableArray) =>
+  tableArray.map((rootNode, idx) => ({
+    id: idx,
+    address: <CopyToClipboard valueToCopy={rootNode.address}>{rootNode.address}</CopyToClipboard>,
+    amount: fN(rootNode.stakeAmount) + ' Q',
+    offChain: 'n/a',
+    onChain: 'n/a'
+  }))
+
 export const tableValidatorsShort = (tableArray) =>
   tableArray.map((validator, idx) => ({
     id: idx,
-    rank: validator.rank,
+    rank: idx + 1,
     validator: <CopyToClipboard valueToCopy={validator.validator}>{validator.validator}</CopyToClipboard>,
-    amount: fN(fromWei(validator.amount)) + ' Q'
+    amount: fN(validator.amount) + ' Q'
+  }))
+
+export const tableValidatorsMonitoring = (tableArray) =>
+  tableArray.map((validator, idx) => ({
+    id: idx,
+    rank: idx + 1,
+    validator: <CopyToClipboard valueToCopy={validator.validator}>{validator.validator}</CopyToClipboard>,
+    amount: fN(validator.amount) + ' Q',
+    lastBlock: 'n/a',
+    timestamp: 'n/a',
+    average: '0,00 %'
   }))
 
 export const tableValidatorsWidened = (tableArray) =>

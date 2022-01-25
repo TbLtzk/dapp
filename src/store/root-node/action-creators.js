@@ -18,13 +18,16 @@ export const setRootWithdraw = (amount, payTo, paymentInf) => ({
   paymentInf
 })
 
-export const getRootMembersData = () => ({
-  type: actionTypes.GET_ROOT_MEMBERS_DATA
+export const getRootMembers = (tableType) => ({
+  type: actionTypes.GET_ROOT_MEMBERS,
+  tableType
 })
 
-export const setRootMembersData = (result) => ({
-  type: actionTypes.SET_ROOT_MEMBERS_DATA,
-  result
+export const setRootMembers = (tableType, table, totalStake) => ({
+  type: actionTypes.SET_ROOT_MEMBERS,
+  tableType,
+  table,
+  totalStake
 })
 
 export const getCheckIsUserRootNode = (address) => ({

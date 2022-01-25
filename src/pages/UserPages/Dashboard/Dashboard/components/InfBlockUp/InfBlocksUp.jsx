@@ -146,7 +146,7 @@ function InfBlocksUp () {
                         <LoadingSpinner className="card__spinner" />
                         )
                       : (
-                        <>
+                        <div>
                             <p>{activeProposals}</p>
                             <div className="card__actions">
                                 <Link to="/q-governance">
@@ -158,7 +158,7 @@ function InfBlocksUp () {
                                     />
                                 </Link>
                             </div>
-                        </>
+                        </div>
                         )
                 }
                 secondContent={

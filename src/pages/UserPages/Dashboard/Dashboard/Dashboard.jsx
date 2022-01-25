@@ -16,39 +16,36 @@ import { Link } from 'react-router-dom'
 
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboardMode'
+import TABLE_TYPES from 'constants/tableTypes'
 
 function Dashboard () {
   const appMode = useSelector(mode)
   return (
-    <PageWrap
-      wrapContentClasses='wrap-content__tow-colm'
-      headerTitle='Dashboard'
-      headerExtra={appMode === MODE.advanced
-        ? (
-        <Link to={'/q-parameters'}>
-          <Button
-            type='white'
-            title='Q Parameters'
-            handleButton={() => {
-            }}
-          />
-          </Link>
-          )
-        : null
-      }
-    >
-      <div>
-        <InfBlock/>
-        {appMode === MODE.advanced ? <TokenomicsBlock/> : null}
-        <SavingBorrowingBlock />
-      </div>
-      <div>
-        <RootNodePanel/>
-        <ValidatorsPanel/>
-        {appMode === MODE.advanced ? <DefiMembersPanel /> : null}
-        {appMode === MODE.advanced ? <QFeesMembersPanel /> : null}
-      </div>
-    </PageWrap>
+        <PageWrap
+            wrapContentClasses="wrap-content__tow-colm"
+            headerTitle="Dashboard"
+            headerExtra={
+                appMode === MODE.advanced
+                  ? (
+                    <Link to={'/q-parameters'}>
+                        <Button type="white" title="Q Parameters" handleButton={() => {}} />
+                    </Link>
+                    )
+                  : null
+            }
+        >
+            <div>
+                <InfBlock />
+                {appMode === MODE.advanced ? <TokenomicsBlock /> : null}
+                <SavingBorrowingBlock />
+            </div>
+            <div>
+                <RootNodePanel tableType={TABLE_TYPES.rootNodesShort}/>
+                <ValidatorsPanel buttons='details' tableType={TABLE_TYPES.validatorsShort} />
+                {appMode === MODE.advanced ? <DefiMembersPanel /> : null}
+                {appMode === MODE.advanced ? <QFeesMembersPanel /> : null}
+            </div>
+        </PageWrap>
   )
 }
 

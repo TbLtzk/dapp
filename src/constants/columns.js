@@ -69,15 +69,8 @@ export const timeLocksColumnns = [
 
 export const columnsRootNode = [
   {
-    dataField: 'rank',
-    text: 'Rank',
-    sort: true
-  },
-  {
-    headerStyle: () => ({ minWidth: '350px' }),
     dataField: 'address',
-    text: 'Root Node Address',
-    sort: true
+    text: 'Root Node Address'
   },
   {
     headerStyle: () => ({ minWidth: '110px' }),
@@ -92,6 +85,30 @@ export const columnsRootNode = [
     text: 'Share',
     sort: true,
     sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
+  }
+]
+
+export const columnsRootNodeMonitoring = [
+  {
+    dataField: 'address',
+    text: 'Root Node Address'
+  },
+  {
+    headerStyle: () => ({ minWidth: '110px' }),
+    dataField: 'amount',
+    text: 'Staked Amount',
+    sort: true,
+    sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
+  },
+  {
+    headerStyle: () => ({ minWidth: '110px' }),
+    dataField: 'offChain',
+    text: 'Last off-chain activity'
+  },
+  {
+    headerStyle: () => ({ minWidth: '110px' }),
+    dataField: 'onChain',
+    text: 'Last on-chain activity'
   }
 ]
 
@@ -159,5 +176,50 @@ export const columnsValidatorsWidened = [
       order === 'asc'
         ? toNumber(b.props.value) - toNumber(a.props.value)
         : toNumber(a.props.value) - toNumber(b.props.value)
+  }
+]
+
+export const columnsValidatorsMonitoring = [
+  {
+    headerStyle: () => ({ minWidth: '20px' }),
+    dataField: 'rank',
+    text: 'Rank',
+    sort: true
+  },
+  {
+    headerStyle: () => ({ minWidth: '350px' }),
+    dataField: 'validator',
+    text: 'Validator Address',
+    sort: true
+  },
+  {
+    headerStyle: () => ({ minWidth: '150px' }),
+    dataField: 'amount',
+    text: 'Total Accountable Stake',
+    sort: true,
+    sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
+  },
+  {
+    headerStyle: () => ({ minWidth: '150px' }),
+    dataField: 'lastBlock',
+    text: 'Last Block validated',
+    sort: true,
+    sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
+  },
+
+  {
+    headerStyle: () => ({ minWidth: '150px' }),
+    dataField: 'timestamp',
+    text: 'Timestamp of last block validated',
+    sort: true,
+    sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
+  },
+
+  {
+    headerStyle: () => ({ minWidth: '150px' }),
+    dataField: 'average',
+    text: 'Average Aviability last 1000 blocks cycles',
+    sort: true,
+    sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
   }
 ]

@@ -1,23 +1,31 @@
 import { fromWei } from 'func/balance'
+import { orderBy } from 'lodash'
 
-export const getMemberStake = async (contract, member) => {
-  const rootNodeStake = await contract.getRootNodeStake(member)
-  return {
-    address: member,
-    stakeAmount: Number(fromWei(rootNodeStake))
-  }
-}
+export const prepareRootMembersTable = (members, membersWithStakes) => {
+  let totalStake = 0
 
-export const getRootCalc = (rootStakes) => {
-  const totalStakes = rootStakes.reduce((sum, current) => sum + current.stakeAmount, 0)
-  const rootNodeData = rootStakes.map((member, idx) => ({
-    ...member,
-    rank: idx + 1,
-    share: totalStakes ? Math.round(((member.stakeAmount * 100) / totalStakes + Number.EPSILON) * 100) / 100 : 0
+  const membersWithAmount = members.map((member) => {
+    const memberWithStake = membersWithStakes.find((mbr) => mbr.root === member)
+    if (memberWithStake) {
+      const stakeAmount = Number(fromWei(memberWithStake.value))
+      totalStake += stakeAmount
+      return {
+        address: member,
+        stakeAmount
+      }
+    } else {
+      return {
+        address: member,
+        stakeAmount: 0
+      }
+    }
+  })
+
+  const membersWithShare = membersWithAmount.map(({ address, stakeAmount }) => ({
+    address,
+    stakeAmount,
+    share: totalStake ? Math.round(((stakeAmount * 100) / totalStake + Number.EPSILON) * 100) / 100 : 0
   }))
 
-  return {
-    rootNodeData,
-    totalStakes
-  }
+  return { table: orderBy(membersWithShare, ['stakeAmount'], ['desc', 'asc']), totalStake }
 }

@@ -5,11 +5,12 @@ import { getDelegationsList } from 'store/q-vault/action-creators'
 import { loadingDelegationList, delegationList } from 'store/q-vault/selectors'
 
 import MemberTables from 'components/Custom/MemberTables/MemberTables'
-import TABLE_TYPES from 'constants/tableTypes'
+import { columnsDelegations } from 'constants/columns'
+import { tableDelegations } from 'constants/tables'
 
 function DelegatedValidatorsPanel () {
   const loading = useSelector(loadingDelegationList)
-  const delegations = useSelector(delegationList)
+  const delegations = tableDelegations(useSelector(delegationList))
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -19,13 +20,12 @@ function DelegatedValidatorsPanel () {
   return (
         <>
             <MemberTables
-                tableType={TABLE_TYPES.delegations}
                 perPageLength={delegations.length}
-                tableArray={delegations}
+                table={delegations}
                 title="Your Current Delegations"
                 loading={loading}
-                emptyTable="No delegations"
-                sorting={false}
+                emptyTableMessage="No delegations"
+                columns={columnsDelegations}
             />
         </>
   )

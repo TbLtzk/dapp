@@ -1,9 +1,17 @@
 const TABLE_TYPES = {
+
   qFees: 'qfees',
   qDefi: 'defi',
   timeLocks: 'timeLocks',
-  rootNode: 'rootNode',
-  validators: 'validators',
+
+  rootNodesShort: 'rootNodesShort',
+  rootNodesWidened: 'rootNodesWidened',
+  rootNodesMonitoring: 'rootNodesMonitoring',
+
+  validatorsShort: 'validators-short',
+  validatorsWidened: 'validators-widened',
+  validatorsMonitoring: 'validators-monitoring',
+
   delegations: 'delegations'
 }
 

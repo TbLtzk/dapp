@@ -57,7 +57,7 @@ export const getNowTimestamp = () => {
   return Math.floor(new Date().getTime() / 1000).toString()
 }
 
-export const getNowTimeWithGMT = () => {
+export const getNowTimeWithGMT = (format) => {
   const offset = new Date().getTimezoneOffset() / -60
-  return moment().format('DD.MM.YYYY HH:mm') + ` GMT+${offset}`
+  return moment().format(format) + ` GMT+${offset}`
 }

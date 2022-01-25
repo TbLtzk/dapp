@@ -20,6 +20,7 @@ import RootNodeStaking from 'pages/UserPages/RootNodeStaking'
 import ValidatorStaking from 'pages/UserPages/ValidatorStaking'
 import OneAuctionPage from 'pages/UserPages/OneAuctionPage'
 import NotFound from 'pages/UserPages/NotFound'
+import Monitoring from 'pages/UserPages/Monitoring'
 
 function Routes () {
   const options = {
@@ -40,6 +41,7 @@ function Routes () {
         <Route exact path="/q-parameters" component={AuthProtect(Manage)} />
         <Route exact path="/start-configurations" component={StartConfigurations} />
         <Route exact path="/q-governance" component={AuthProtect(Governance)} />
+        <Route exact path="/monitoring" component={AuthProtect(Monitoring)} />
         <Route
           exact
           path="/q-proposals"

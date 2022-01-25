@@ -6,7 +6,8 @@ import MemberTables from 'components/Custom/MemberTables'
 import CustomBlock from 'components/Base/CustomBlock'
 import ModalButton from 'components/Base/Buttons/Button'
 import ModalManage from './ModalManage'
-import TABLE_TYPES from 'constants/tableTypes'
+import { columnnsLockAmount } from 'constants/columns'
+import { tableLockAmount } from 'constants/tables'
 
 function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contract, address }) {
   const dispatch = useDispatch()
@@ -29,11 +30,10 @@ function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contrac
             <h5>Time Locked Balance</h5>
             <p>{timeLockBalance} Q</p>
             <MemberTables
-                tableType={TABLE_TYPES.timeLocks}
                 perPageLength={4}
-                tableArray={lockAmountData}
-                title={null}
-                sorting={false}
+                emptyTableMessage="No Time Locks"
+                table={tableLockAmount(lockAmountData)}
+                columns={columnnsLockAmount}
             />
             <ModalManage
                 address={address}

@@ -86,18 +86,15 @@ export const setAccountableTotalStake = (data) => ({
   payload: data
 })
 
-export const getValidatorMembers = () => ({
-  type: actionTypes.GET_VALIDATORS_MEMBERS
+export const getValidatorMembers = (tableType) => ({
+  type: actionTypes.GET_VALIDATORS_MEMBERS,
+  tableType
 })
 
-export const getValidatorMembersSuccess = (data) => ({
-  type: actionTypes.GET_VALIDATORS_MEMBERS_SUCCESS,
-  data: data
-})
-
-export const getValidatorMembersError = (error) => ({
-  type: actionTypes.GET_VALIDATORS_MEMBERS_ERROR,
-  error: error
+export const setValidatorMembers = (tableType, data) => ({
+  type: actionTypes.SET_VALIDATORS_MEMBERS,
+  tableType,
+  payload: data
 })
 
 // Action without write to Store
@@ -145,15 +142,6 @@ export const setValidatorsTimeLocks = (data) => ({
 export const setValidatorsEnterShortList = (address) => ({
   type: actionTypes.SET_VALIDATORS_ENTER_SHORT_LIST,
   address
-})
-
-export const setValidatorShortList = (data) => ({
-  type: actionTypes.SET_VALIDATORS_SHORT_LIST,
-  payload: data
-})
-
-export const getValidatorShortList = () => ({
-  type: actionTypes.GET_VALIDATORS_SHORT_LIST
 })
 
 export const getValidatorWithdrawalInfo = (address) => ({

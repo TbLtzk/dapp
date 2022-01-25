@@ -1,3 +1,4 @@
+import TABLE_TYPES from 'constants/tableTypes'
 import * as actionTypes from './action-types'
 
 const initialState = {
@@ -8,11 +9,18 @@ const initialState = {
   accountableTotalStake: 0,
   interestRate: 0,
   selfStake: 0,
-  validatorShortlist: [],
+
+  validatorsShort: [],
+  loadingValidatorsShort: true,
+
+  validatorsWidened: [],
+  loadingValidatorsWidened: true,
+
+  validatorsMonitoring: [],
+  loadingValidatorsMonitoring: true,
+
   validatorWithdrawalInfo: [],
 
-  validatorMembers: [],
-  loadingMembers: true,
   errorMembers: null,
   isUserValidator: true,
 
@@ -24,6 +32,28 @@ const initialState = {
 
 export default function index (state = initialState, action) {
   switch (action.type) {
+    case actionTypes.SET_VALIDATORS_MEMBERS:
+      switch (action.tableType) {
+        case TABLE_TYPES.validatorsWidened:
+          return {
+            ...state,
+            validatorsWidened: action.payload,
+            loadingValidatorsWidened: false
+          }
+        case TABLE_TYPES.validatorsShort:
+          return {
+            ...state,
+            validatorsShort: action.payload,
+            loadingValidatorsShort: false
+          }
+        case TABLE_TYPES.validatorsMonitoring:
+          return {
+            ...state,
+            validatorsMonitoring: action.payload,
+            loadingValidatorsMonitoring: false
+          }
+      }
+      break
     case actionTypes.SET_VALIDATORS_DELEGATORS_SHARE:
       return {
         ...state,
@@ -59,20 +89,6 @@ export default function index (state = initialState, action) {
         ...state,
         interestRate: action.payload
       }
-    case actionTypes.GET_VALIDATORS_MEMBERS_SUCCESS:
-      return {
-        ...state,
-        loadingMembers: false,
-        validatorMembers: action.data,
-        errorMembers: null
-      }
-    case actionTypes.GET_VALIDATORS_MEMBERS_ERROR:
-      return {
-        ...state,
-        loadingMembers: false,
-        validatorMembers: [],
-        errorMembers: action.error
-      }
     case actionTypes.SET_IS_USER_VALIDATOR:
       return {
         ...state,
@@ -88,12 +104,6 @@ export default function index (state = initialState, action) {
         ...state,
         validatorsTimeLocks: action.payload
       }
-    case actionTypes.SET_VALIDATORS_SHORT_LIST: {
-      return {
-        ...state,
-        validatorShortlist: action.payload
-      }
-    }
     case actionTypes.SET_COMPOUND_RATE_KEEPER_EXISTS: {
       return {
         ...state,
@@ -107,9 +117,6 @@ export default function index (state = initialState, action) {
       }
     }
     default:
-      return {
-        ...state,
-        lastUpdate: Date.now()
-      }
+      return state
   }
 }

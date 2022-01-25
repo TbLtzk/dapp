@@ -6,11 +6,12 @@ import { EPDRMembers, EPDRMembersLoading } from 'store/membership/selectors'
 
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock'
 import MemberTables from 'components/Custom/MemberTables/MemberTables'
-import TABLE_TYPES from 'constants/tableTypes'
+import { columnsDeFiRisk } from 'constants/columns'
+import { tableDefiRisks } from 'constants/tables'
 
 function DefiMembersPanel () {
-  const loading = useSelector(EPDRMembersLoading)
-  const members = useSelector(EPDRMembers)
+  const defiMembersTableLoading = useSelector(EPDRMembersLoading)
+  const defiMembersTable = tableDefiRisks(useSelector(EPDRMembers))
 
   const dispatch = useDispatch()
 
@@ -21,13 +22,13 @@ function DefiMembersPanel () {
   return (
         <CustomBlock>
             <MemberTables
-                tableType={TABLE_TYPES.qDefi}
-                perPageLength={members.length}
-                tableArray={members}
+                perPageLength={defiMembersTable.length}
+                table={defiMembersTable}
                 title="List of DeFi Experts"
-                loading={loading}
-                emptyTable="No DeFi members"
+                loading={defiMembersTableLoading}
+                emptyTableMessage="No DeFi members"
                 sorting={false}
+                columns={columnsDeFiRisk}
             />
         </CustomBlock>
   )

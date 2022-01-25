@@ -1,10 +1,8 @@
-import { put, takeEvery, call, select, all } from 'redux-saga/effects'
+import { put, takeEvery, call, select } from 'redux-saga/effects'
 
 import * as actionTypes from './action-types'
 
 import {
-  getRootMembersData,
-  setRootMembersData,
   setCheckIsUserRootNode,
   getRootNodeStakes,
   setRootNodeStakes,
@@ -12,55 +10,47 @@ import {
   setRootWithdrawals,
   getMinimumRootTimeLock,
   setMinimumRootTimeLock,
-  setRootTimeLocks
+  setRootTimeLocks,
+  setRootMembers,
+  getRootMembers
 } from './action-creators'
-import { setErrorMessage } from 'store/transaction-handler/action-creators'
-import { SET_TRANSACTION_COUNTER } from 'store/transaction-handler/action-types'
+import { setErrorMessage, setTransactionLoading } from 'store/transaction-handler/action-creators'
 
 import { addIndex } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
 import { fromWei } from 'func/balance'
 import ErrorHandler from 'func/ErrorHandler'
-import { getMemberStake, getRootCalc } from 'contracts/helpers/root-node-helper'
+import { prepareRootMembersTable } from 'contracts/helpers/root-node-helper'
 import { getRootNodesInstance } from 'contracts/contract-instance'
 import { getAccountBalance } from 'store/q-vault/action-creators'
+import TABLE_TYPES from 'constants/tableTypes'
 
 function * setRootStakeToPanelGenerator ({ data }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading(1))
 
     const { userAddress } = yield select((state) => state.userInf)
 
     const contract = yield call(getRootNodesInstance)
-    const res = yield contract.commitStake(data)
+    yield contract.commitStake(data)
 
-    if (res) {
-      yield put(getAccountBalance(userAddress))
-      yield put(getRootNodeStakes(userAddress))
-      yield put(getRootWithdrawals(userAddress))
-      yield put(getMinimumRootTimeLock(userAddress))
-      yield put(getRootMembersData())
-    }
+    yield put(getAccountBalance(userAddress))
+    yield put(getRootNodeStakes(userAddress))
+    yield put(getRootWithdrawals(userAddress))
+    yield put(getMinimumRootTimeLock(userAddress))
+    yield put(getRootMembers())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading(-1))
   }
 }
 
 function * setRootAnnounceWithdrawalGenerator ({ amount, paymentInf }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading(1))
+
     const contract = yield call(getRootNodesInstance)
     const { userAddress } = yield select((state) => state.userInf)
 
@@ -69,54 +59,58 @@ function * setRootAnnounceWithdrawalGenerator ({ amount, paymentInf }) {
     yield put(getRootNodeStakes(userAddress))
     yield put(getRootWithdrawals(userAddress))
     yield put(getMinimumRootTimeLock(userAddress))
-    yield put(getRootMembersData())
+    yield put(getRootMembers())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading(-1))
   }
 }
 
 function * setRootWithdrawGenerator ({ amount, payTo, paymentInf }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading(1))
+
     const { userAddress } = yield select((state) => state.userInf)
 
     const contract = yield call(getRootNodesInstance)
 
-    const data = yield contract.withdraw(amount, payTo, paymentInf)
+    yield contract.withdraw(amount, payTo, paymentInf)
 
-    if (data) {
-      yield put(getAccountBalance(userAddress))
-      yield put(getRootNodeStakes(userAddress))
-      yield put(getRootWithdrawals(userAddress))
-      yield put(getMinimumRootTimeLock(userAddress))
-      yield put(getRootMembersData())
-    }
+    yield put(getAccountBalance(userAddress))
+    yield put(getRootNodeStakes(userAddress))
+    yield put(getRootWithdrawals(userAddress))
+    yield put(getMinimumRootTimeLock(userAddress))
+    yield put(getRootMembers())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
   } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoading(-1))
   }
 }
 
-function * getRootMembersGenerator () {
+function * getRootMembersGenerator ({ tableType = TABLE_TYPES.rootNodesWidened }) {
   try {
     const contract = yield call(getRootNodesInstance)
-    const members = yield contract.getMembers()
-    const rootStakes = yield all(members.map((member) => getMemberStake(contract, member)))
-    yield put(setRootMembersData(getRootCalc(rootStakes)))
+    switch (tableType) {
+      case TABLE_TYPES.rootNodesShort:
+      case TABLE_TYPES.rootNodesWidened: {
+        const members = yield contract.getMembers()
+        const membersWithStakes = yield contract.getStakes()
+        const { table, totalStake } = prepareRootMembersTable(members, membersWithStakes)
+        yield put(setRootMembers(tableType, table, totalStake))
+        break
+      }
+      case TABLE_TYPES.rootNodesMonitoring: {
+        const members = yield contract.getMembers()
+        const membersWithStakes = yield contract.getStakes()
+        const { table } = prepareRootMembersTable(members, membersWithStakes)
+        yield put(setRootMembers(tableType, table))
+        break
+      }
+    }
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }
@@ -177,7 +171,7 @@ export default [
   takeEvery(actionTypes.SET_ROOT_ANNOUNCE_WITHDRAWAL, setRootAnnounceWithdrawalGenerator),
   takeEvery(actionTypes.SET_ROOT_WITHDRAW, setRootWithdrawGenerator),
 
-  takeEvery(actionTypes.GET_ROOT_MEMBERS_DATA, getRootMembersGenerator),
+  takeEvery(actionTypes.GET_ROOT_MEMBERS, getRootMembersGenerator),
   takeEvery(actionTypes.GET_CHECK_IS_USER_ROOT_NODE, getCheckIsUserRootNodeGenerator),
   takeEvery(actionTypes.GET_ROOT_NODE_STAKES, getRootNodeStakesGenerator),
   takeEvery(actionTypes.GET_ROOT_WITHDRAWALS, getRootWithdrawalsGenerator),

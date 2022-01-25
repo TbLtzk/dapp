@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Button from 'components/Base/Buttons/Button'
 import CustomBlock from 'components/Base/CustomBlock'
 import FormInput from 'components/Base/Form/FormInput'
@@ -16,15 +16,14 @@ import {
   setValidatorsWithdraw,
   setValidatorsAnnounceWithdrawal,
   setValidatorsCommitStake,
-  getValidatorShortList,
   getValidatorWithdrawalInfo
 } from 'store/validators/action-creators'
 import {
   validatorsMinimumTimeLock,
   isUserValidator,
   accountableTotalStake,
-  validatorShortList,
-  validatorWithdrawalInfo
+  validatorWithdrawalInfo,
+  validatorsWidenedSelector
 } from 'store/validators/selectors'
 import { getAccountBalance } from 'store/q-vault/action-creators'
 import { accountBalance } from 'store/q-vault/selectors'
@@ -41,30 +40,17 @@ function ManageValidatorBalance () {
   const isThisUserValidator = useSelector(isUserValidator)
 
   const userAccountableTotalStake = useSelector(accountableTotalStake)
-  const userValidatorShortList = useSelector(validatorShortList)
   const userValidatorWithdrawalInfo = useSelector(validatorWithdrawalInfo)
   const validatorLockedAmount = useSelector(validatorsMinimumTimeLock)
-
-  const [validatorRank, setValidatorRank] = useState(0)
+  const memberTable = useSelector(validatorsWidenedSelector)
 
   useEffect(() => {
     dispatch(getAccountBalance(address))
     dispatch(getIsUserValidator(address))
     dispatch(getMinimumValidatorsTimeLock(address))
     dispatch(getAccountableTotalStake(address))
-    dispatch(getValidatorShortList())
     dispatch(getValidatorWithdrawalInfo(address))
   }, [])
-
-  useEffect(() => {
-    if (Array.isArray(userValidatorShortList) && userValidatorShortList.length > 0) {
-      userValidatorShortList.forEach((el, key) => {
-        if (address === el.validator) {
-          setValidatorRank(key + 1)
-        }
-      })
-    }
-  }, [userValidatorShortList, isThisUserValidator])
 
   const stakeToRanking = (formData) => {
     dispatch(setValidatorsCommitStake(address, formData.amount))
@@ -90,20 +76,19 @@ function ManageValidatorBalance () {
       )
     : null
 
+  const userRank = memberTable.find((member) => member.address === address)?.rank
+
   const checkIsUserValidator = (
         <>
             <div>
                 <h5>Status</h5>
                 {isThisUserValidator ? <p>Active validator</p> : <p>Not a validator</p>}
             </div>
-            {isThisUserValidator
-              ? (
-                <div>
-                    <h5>Current Rank</h5>
-                    <p>{validatorRank} #</p>
-                </div>
-                )
-              : null}
+
+            <div>
+                <h5>Current Rank</h5>
+                <p>{!userRank ? '-' : userRank + ' #'}</p>
+            </div>
         </>
   )
 
