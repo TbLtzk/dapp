@@ -88,39 +88,31 @@ export default class ConstitutionVoting extends VotingService {
 
   async createProposal (data, userAddress) {
     const contract = await this.getContractInstance()
-
-    let result = null
     const classification = this.getProposalNumberType(data?.classification)
     const hash = data.hash
     const link = data['external-link']
-    const paramInputs =
-      data['type-proposal'] === undefined
-        ? []
-        : data['type-proposal'].reduce((types, item, index) => {
-          let inputValue = data['parameter-value'][index]
-          switch (+item) {
-            case ParameterType.BOOL:
-              inputValue = inputValue.toLowerCase() === 'true'
-              break
-            case ParameterType.UINT:
-              inputValue = BN(inputValue).toFixed()
-              break
-          }
-          types.push({
-            paramType: item,
-            paramKey: data['parameter-key'][index],
-            paramValue: inputValue
-          })
-          return types
-        }, [])
-    if (paramInputs.length !== 0) {
-      result = await contract.createProposal(link, classification, hash, paramInputs, {
-        from: userAddress
-      })
-    } else {
-      result = await contract.createProposal(link, classification, hash, [], { from: userAddress })
-    }
-    return result
+    const paramInputs = !data['parameter-type']
+      ? []
+      : data['parameter-type'].reduce((types, item, index) => {
+        let inputValue = data['parameter-value'][index]
+        switch (Number(item)) {
+          case ParameterType.BOOL:
+            inputValue = inputValue.toLowerCase() === 'true'
+            break
+          case ParameterType.UINT:
+            inputValue = BN(inputValue).toFixed()
+            break
+        }
+        types.push({
+          paramType: item,
+          paramKey: data['parameter-key'][index],
+          paramValue: inputValue
+        })
+        return types
+      }, [])
+    return await contract.createProposal(link, classification, hash, paramInputs, {
+      from: userAddress
+    })
   }
 
   async getConstitutionHash () {

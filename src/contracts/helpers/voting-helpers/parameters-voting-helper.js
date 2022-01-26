@@ -1,11 +1,11 @@
 import VotingService from './voting-service-helper'
 
 import { getStatusTransformation } from './base-voting-helper'
-import { BN } from 'func/useful'
-import { ParameterType } from '@q-dev/q-js-sdk'
 import { parameterVote } from 'pages/UserPages/Proposals/components/CreateQProposalBtn/ModalCreateProposal/CreateStep2/QExpertS2/constants'
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts'
 import { getEpdrParametersVotingInstance, getEpqfiParametersVotingInstance } from 'contracts/contract-instance'
+import { ParameterType } from '@q-dev/q-js-sdk'
+import { BN } from 'func/useful'
 
 export default class ParametersVoting extends VotingService {
   async getProposalAdditionalData (promiseRes, id) {
@@ -57,12 +57,11 @@ export default class ParametersVoting extends VotingService {
     return objRes
   }
 
-  async createProposal (data) {
-    let result = {}
+  async createProposal (data, userAddress) {
     const link = data['external-link']
     const paramInputs = data[parameterVote.parameterType].reduce((types, item, index) => {
-      let inputValue = data[parameterVote.parameterValue][index]
-      switch (+item) {
+      let inputValue = data['parameter-value'][index]
+      switch (Number(item)) {
         case ParameterType.BOOL:
           inputValue = inputValue.toLowerCase() === 'true'
           break
@@ -80,15 +79,12 @@ export default class ParametersVoting extends VotingService {
     switch (data[parameterVote.radioBtnName]) {
       case CONTRACT_TYPES.qFee: {
         const contract = await getEpqfiParametersVotingInstance()
-        result = contract.createProposal(link, paramInputs)
-        break
+        return await contract.createProposal(link, paramInputs, { from: userAddress })
       }
       case CONTRACT_TYPES.qDefi: {
         const contract = await getEpdrParametersVotingInstance()
-        result = contract.createProposal(link, paramInputs)
-        break
+        return await contract.createProposal(link, paramInputs)
       }
     }
-    return result
   }
 }

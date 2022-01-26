@@ -5,7 +5,7 @@ import { PROPOSALS_TYPES } from 'constants/statuses'
 import { formObject, newParameterSelector } from 'store/voting/proposals/selectors'
 import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue'
 
-import { constUpdate } from './constants'
+import { constUpdate, warning } from './constants'
 import FormSelect from 'components/Base/Form/FormSelect'
 import FormInput from 'components/Base/Form/FormInput'
 import { ParameterType } from '@q-dev/q-js-sdk'
@@ -13,9 +13,6 @@ import { getTypeName } from 'func/contractHelpers'
 
 import { CONTRACT_TYPES } from 'constants/contracts'
 import { transformToParams } from 'contracts/helpers/parameters-helper'
-
-const warning =
-    'Warning: This proposal will be about creating and adding a NEW parameter. Please check combination of expert panel, type and key if you want to change an existing parameter instead.'
 
 const DEFAULT_PARAMS = {
   type: ParameterType.ADDRESS,
@@ -208,7 +205,11 @@ function CreateStep3 ({ activeTab, register, errors }) {
       case PROPOSALS_TYPES.expertProposals:
         return showCommonData(
                     <>
-                        <p style={{ color: '#FF8550' }}>{newParameter ? warning : null}</p>
+                        {formData.first === 'parameter-vote'
+                          ? (
+                            <p style={{ color: '#FF8550' }}>{newParameter ? warning : null}</p>
+                            )
+                          : null}
                         <h5>{formData.first === 'parameter-vote' ? 'Add Parameter' : 'Panel to Add an Expert'}</h5>
                         <p>{formData['type-proposal']?.replace(/-/g, ' ')}</p>
                         <h5>External link loolo</h5>

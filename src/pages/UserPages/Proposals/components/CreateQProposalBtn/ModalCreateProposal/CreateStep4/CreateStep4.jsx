@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useState, Fragment } from 'react'
 
 import { useSelector } from 'react-redux'
-import { formObject } from 'store/voting/proposals/selectors'
+import { formObject, newParameterSelector } from 'store/voting/proposals/selectors'
 import { PROPOSALS_TYPES } from 'constants/statuses'
 import { getTypeName } from 'func/contractHelpers'
 import { transformToParams } from 'contracts/helpers/parameters-helper'
+import { warning } from '../CreateStep3/constants'
 
 function CreateStep4 ({ activeTab }) {
   const formData = useSelector(formObject)
+  const newParameter = useSelector(newParameterSelector)
 
   const [params, setParams] = useState([
     {
@@ -29,7 +31,7 @@ function CreateStep4 ({ activeTab }) {
         if (formData['change-constitution-parameter'] === 'yes') {
           return (
                         <div>
-                            <h2>Chosen Aata</h2>
+                            <h2>Chosen data</h2>
                             <h5>Type</h5>
                             <p>{formData?.first?.replace(/-/g, ' ')}</p>
                             <h5>Classification</h5>
@@ -40,6 +42,7 @@ function CreateStep4 ({ activeTab }) {
                             <p>{formData.hash}</p>
                             <h5>Change Constitution Parameter</h5>
                             <p>{formData['change-constitution-parameter']}</p>
+                            <p style={{ color: '#FF8550' }}>{newParameter ? warning : null}</p>
                             {params.map((item, index) => (
                                 <Fragment key={index + 'param'}>
                                     <h4>Parameter #{index + 1}</h4>

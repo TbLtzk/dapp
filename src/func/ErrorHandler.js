@@ -1,4 +1,3 @@
-
 const errorTemplate = {
   header: 'Unknown type of error',
   details: 'No additional info'
@@ -9,11 +8,11 @@ function capitalize (string = '') {
 }
 
 function createErrorObject (error) {
-  if (error.message.includes('Internal JSON-RPC error.')) {
+  if (error?.message?.includes('Internal JSON-RPC error.')) {
     const obj = error.message.match(/[^{]({[^}]*?})/gm, '') || {}
     return JSON.parse(obj)
   }
-  return error
+  return JSON.stringify(error)
 }
 
 function findMessage (message) {
@@ -35,26 +34,24 @@ function findMessage (message) {
 class ErrorHandler {
   static process (error) {
     const errorObj = createErrorObject(error)
-
     if (errorObj.code === 4001) {
       const infoArray = errorObj.message.split(':')
       errorTemplate.header = capitalize(infoArray[0])
       errorTemplate.details = capitalize(infoArray[1])
       return errorTemplate
-    } else if (errorObj.code === 3) {
-      return findMessage(errorObj.message)
-    } else if (errorObj.code === -32000) {
+    } else if (errorObj.code === 3 || errorObj.code === -32000) {
       return findMessage(errorObj.message)
     } else if (errorObj.stack) {
       errorTemplate.header = capitalize(errorObj.stack.split(':')[1])
       errorTemplate.details = capitalize(errorObj.stack.split(':')[2].trim())
-      return JSON.stringify(errorTemplate)
-    } else if (!errorObj.status) {
+      return errorTemplate
+    } else if (errorObj.status) {
       errorTemplate.header = 'Error'
       errorTemplate.details = 'Not enough balance on wallet account'
-      return JSON.stringify(errorTemplate)
+      return errorTemplate
+    } else {
+      return errorTemplate
     }
-    return errorTemplate
   }
 
   static processWithoutFeedback (error, msg) {

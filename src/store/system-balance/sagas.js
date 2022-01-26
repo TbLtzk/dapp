@@ -42,9 +42,10 @@ function * getDebtGenerator () {
 
 function * getSystemBalanceGenerator () {
   try {
-    const contract = yield call(getSystemBalanceInstance)
-    const data = yield contract.getBalance()
-    yield put(getSystemBalanceSuccess(fromWei(data)))
+    // const contract = yield call(getSystemBalanceInstance)
+    // const data = yield contract.getBalance()
+    // yield put(getSystemBalanceSuccess(fromWei(data)))
+    yield put(getSystemBalanceSuccess(0))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
     yield put(getSystemBalanceError(0))
