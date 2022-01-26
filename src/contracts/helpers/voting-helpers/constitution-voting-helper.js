@@ -91,7 +91,8 @@ export default class ConstitutionVoting extends VotingService {
     const classification = this.getProposalNumberType(data?.classification)
     const hash = data.hash
     const link = data['external-link']
-    const paramInputs = !data['parameter-type']
+    const changeParams = data['change-constitution-parameter'] === 'no'
+    const paramInputs = changeParams
       ? []
       : data['parameter-type'].reduce((types, item, index) => {
         let inputValue = data['parameter-value'][index]

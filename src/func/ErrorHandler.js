@@ -1,8 +1,3 @@
-const errorTemplate = {
-  header: 'Unknown type of error',
-  details: 'No additional info'
-}
-
 function capitalize (string = '') {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
@@ -12,7 +7,7 @@ function createErrorObject (error) {
     const obj = error.message.match(/[^{]({[^}]*?})/gm, '') || {}
     return JSON.parse(obj)
   }
-  return JSON.stringify(error)
+  return JSON.parse(JSON.stringify(error))
 }
 
 function findMessage (message) {
@@ -28,7 +23,10 @@ function findMessage (message) {
         header: capitalize(array[0]),
         details: capitalize(array[1])
       }
-    : errorTemplate
+    : {
+        header: 'Unknown type of error',
+        details: 'No additional info'
+      }
 }
 
 class ErrorHandler {
@@ -36,21 +34,21 @@ class ErrorHandler {
     const errorObj = createErrorObject(error)
     if (errorObj.code === 4001) {
       const infoArray = errorObj.message.split(':')
-      errorTemplate.header = capitalize(infoArray[0])
-      errorTemplate.details = capitalize(infoArray[1])
-      return errorTemplate
+      return { header: capitalize(infoArray[0]), details: capitalize(infoArray[1]) }
     } else if (errorObj.code === 3 || errorObj.code === -32000) {
       return findMessage(errorObj.message)
     } else if (errorObj.stack) {
-      errorTemplate.header = capitalize(errorObj.stack.split(':')[1])
-      errorTemplate.details = capitalize(errorObj.stack.split(':')[2].trim())
-      return errorTemplate
+      return {
+        header: capitalize(errorObj.stack.split(':')[1]),
+        details: capitalize(errorObj.stack.split(':')[2].trim())
+      }
     } else if (errorObj.status) {
-      errorTemplate.header = 'Error'
-      errorTemplate.details = 'Not enough balance on wallet account'
-      return errorTemplate
+      return { header: 'Error', details: 'Not enough balance on wallet account' }
     } else {
-      return errorTemplate
+      return {
+        header: 'Unknown type of error',
+        details: 'No additional info'
+      }
     }
   }
 
