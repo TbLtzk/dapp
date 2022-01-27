@@ -1,19 +1,13 @@
-
-const errorTemplate = {
-  header: 'Unknown type of error',
-  details: 'No additional info'
-}
-
 function capitalize (string = '') {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 function createErrorObject (error) {
-  if (error.message.includes('Internal JSON-RPC error.')) {
+  if (error?.message?.includes('Internal JSON-RPC error.')) {
     const obj = error.message.match(/[^{]({[^}]*?})/gm, '') || {}
     return JSON.parse(obj)
   }
-  return error
+  return JSON.parse(JSON.stringify(error))
 }
 
 function findMessage (message) {
@@ -29,32 +23,33 @@ function findMessage (message) {
         header: capitalize(array[0]),
         details: capitalize(array[1])
       }
-    : errorTemplate
+    : {
+        header: 'Unknown type of error',
+        details: 'No additional info'
+      }
 }
 
 class ErrorHandler {
   static process (error) {
     const errorObj = createErrorObject(error)
-
     if (errorObj.code === 4001) {
       const infoArray = errorObj.message.split(':')
-      errorTemplate.header = capitalize(infoArray[0])
-      errorTemplate.details = capitalize(infoArray[1])
-      return errorTemplate
-    } else if (errorObj.code === 3) {
-      return findMessage(errorObj.message)
-    } else if (errorObj.code === -32000) {
+      return { header: capitalize(infoArray[0]), details: capitalize(infoArray[1]) }
+    } else if (errorObj.code === 3 || errorObj.code === -32000) {
       return findMessage(errorObj.message)
     } else if (errorObj.stack) {
-      errorTemplate.header = capitalize(errorObj.stack.split(':')[1])
-      errorTemplate.details = capitalize(errorObj.stack.split(':')[2].trim())
-      return JSON.stringify(errorTemplate)
-    } else if (!errorObj.status) {
-      errorTemplate.header = 'Error'
-      errorTemplate.details = 'Not enough balance on wallet account'
-      return JSON.stringify(errorTemplate)
+      return {
+        header: capitalize(errorObj.stack.split(':')[1]),
+        details: capitalize(errorObj.stack.split(':')[2].trim())
+      }
+    } else if (errorObj.status) {
+      return { header: 'Error', details: 'Not enough balance on wallet account' }
+    } else {
+      return {
+        header: 'Unknown type of error',
+        details: 'No additional info'
+      }
     }
-    return errorTemplate
   }
 
   static processWithoutFeedback (error, msg) {

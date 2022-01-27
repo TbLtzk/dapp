@@ -19,7 +19,6 @@ import modalHandler from './modal-handler/reducer'
 import stableCoin from './stable-coin/reducer'
 import membership from './membership/reducer'
 import parametersAddresses from './parameters-addresses/reducer'
-import parameters from './parameters/reducer'
 import systemBalance from './system-balance/reducer'
 import systemReserve from './system-reserve/reducer'
 import theme from './theme/reducer'
@@ -53,7 +52,6 @@ const RootReducer = combineReducers({
   transactionHandler,
 
   membership,
-  parameters,
   validators,
   validationRewardPools,
   stableCoin,

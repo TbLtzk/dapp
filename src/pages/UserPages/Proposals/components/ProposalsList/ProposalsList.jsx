@@ -30,6 +30,9 @@ function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
 
   useEffect(() => {
     checkProposals()
+    return () => {
+      setState(LOAD_TYPES.load)
+    }
   }, [proposals, proposalsCount])
 
   const checkProposals = () => {

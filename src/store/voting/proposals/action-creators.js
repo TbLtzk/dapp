@@ -117,3 +117,8 @@ export const getProposalsByType = (contractName) => ({
   type: actionTypes.GET_PROPOSALS_BY_TYPE,
   contractName
 })
+
+export const setNewParameter = (result) => ({
+  type: actionTypes.SET_NEW_PARAMETER,
+  result
+})

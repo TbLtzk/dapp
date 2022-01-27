@@ -6,33 +6,23 @@ import QRootNodeS2 from './QRootNodeS2'
 import QExpertS2 from './QExpertS2'
 import SlashingS2 from './SlashingS2'
 
-function CreateStep2 (props) {
-  const {
-    activeTab,
-    register,
-    errors
-  } = props
-
+function CreateStep2 ({ activeTab, register, errors }) {
   const contentSwitcher = useCallback(() => {
     switch (activeTab) {
       case PROPOSALS_TYPES.proposals:
-        return <QProposalS2 register={register} errors={errors}/>
+        return <QProposalS2 register={register} errors={errors} />
       case PROPOSALS_TYPES.rootNodePanel:
-        return <QRootNodeS2 register={register} errors={errors}/>
+        return <QRootNodeS2 register={register} errors={errors} />
       case PROPOSALS_TYPES.expertProposals:
-        return <QExpertS2 register={register} errors={errors}/>
+        return <QExpertS2 register={register} errors={errors} />
       case PROPOSALS_TYPES.slashingProposals:
-        return <SlashingS2 register={register} errors={errors}/>
+        return <SlashingS2 register={register} errors={errors} />
       default:
         return null
     }
   }, [activeTab, register, errors])
 
-  return (
-    <>
-      {contentSwitcher()}
-    </>
-  )
+  return <>{contentSwitcher()}</>
 }
 
 export default CreateStep2

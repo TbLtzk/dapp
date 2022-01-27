@@ -15,7 +15,8 @@ const initialState = {
   constitutionHash: '...',
   baseVotingWeightInfo: {},
 
-  proposal: null
+  proposal: null,
+  newParameter: false
 }
 
 export default function proposals (state = initialState, action) {
@@ -64,6 +65,11 @@ export default function proposals (state = initialState, action) {
       return {
         ...state,
         baseVotingWeightInfo: action.payload
+      }
+    case actionTypes.SET_NEW_PARAMETER:
+      return {
+        ...state,
+        newParameter: action.result
       }
     default:
       return state

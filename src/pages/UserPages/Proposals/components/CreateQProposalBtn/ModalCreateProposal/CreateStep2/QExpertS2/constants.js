@@ -62,11 +62,13 @@ export const parameterVote = {
     {
       lbl: 'Uint',
       value: ParameterType.UINT
-    }],
+    }
+  ],
   subtitleInputDown: 'Provide a reference link to external source',
   inputDown: ['External Link'],
   inputDownObj: { 'external-link': '' },
   parameterKey: 'parameter-key',
   parameterValue: 'parameter-value',
-  parameterType: 'parameter-type'
+  parameterType: 'parameter-type',
+  parameterNotExist: 'parameter-not-exist'
 }

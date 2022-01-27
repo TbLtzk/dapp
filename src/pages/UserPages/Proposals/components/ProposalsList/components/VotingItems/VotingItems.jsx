@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from 'components/Base/Buttons/Button'
 import { isUserRootNode } from 'store/root-node/selectors'
@@ -40,6 +40,15 @@ function VotingItems ({ proposal }) {
   const isRootNode = useSelector(isUserRootNode)
   const isEPDRMembership = useSelector(isUserEPDRMembership)
   const isEPQFIMembership = useSelector(isUserEPQFIMembership)
+
+  useEffect(() => {
+    return () => {
+      setModalShow(false)
+      setProposalId(null)
+      setVetoEndTime(null)
+      setProposalContract(null)
+    }
+  }, [])
 
   const contractsWithoutVeto =
         proposal.contract === CONTRACTS_NAMES.validatorsSlashingVoting ||
