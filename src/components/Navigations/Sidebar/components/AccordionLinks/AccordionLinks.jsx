@@ -1,19 +1,21 @@
-import React, { useState } from 'react'
-import { Accordion } from 'react-bootstrap'
-import { AccordionIcon, LinkGroup } from '../../styles'
+import React, { useState } from "react";
+import { Accordion } from "react-bootstrap";
+import { AccordionIcon, LinkGroup } from "../../styles";
 
-function AccordionLinks ({ children, headerLink }) {
-  const [isOpen, setIsOpen] = useState(true)
+function AccordionLinks({ children, headerLink, type }) {
+    const [isOpen, setIsOpen] = useState(localStorage.getItem(type) ? "" : "0");
 
-  const handleOpen = (state) => {
-    if (state) {
-      setIsOpen(true)
-    } else {
-      setIsOpen(false)
-    }
-  }
-  return (
-        <Accordion activeKey={isOpen ? '0' : '1'} style={{ width: '100%' }} onSelect={handleOpen}>
+    const handleOpen = (state) => {
+        if (state) {
+            setIsOpen("0");
+            localStorage.setItem(type, "");
+        } else {
+            setIsOpen("");
+            localStorage.setItem(type, "0");
+        }
+    };
+    return (
+        <Accordion activeKey={isOpen ? "0" : "1"} style={{ width: "100%" }} onSelect={handleOpen}>
             <LinkGroup>
                 {headerLink}
                 <Accordion.Toggle eventKey="0">
@@ -24,7 +26,7 @@ function AccordionLinks ({ children, headerLink }) {
             </LinkGroup>
             <Accordion.Collapse eventKey="0">{children}</Accordion.Collapse>
         </Accordion>
-  )
+    );
 }
 
-export default AccordionLinks
+export default AccordionLinks;
