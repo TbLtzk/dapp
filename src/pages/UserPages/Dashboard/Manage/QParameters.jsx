@@ -54,31 +54,21 @@ function QParameters () {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    getAddresses()
+    dispatch(getContractRegistryKV())
+    dispatch(getConstitutionParametersKV())
+    dispatch(getFeesIncentivesExpertPanelParametersKV())
+    dispatch(getEPDRParametersKV())
+
+    getContractRegistryInstance().then((contract) => setContractRegistryAddress(contract.address))
+    getConstitutionInstance().then((contract) => setConstitutionParametersAddress(contract.address))
+    getEpdrParametersInstance().then((contract) => setEPDRParametersAddress(contract.address))
+    getEpqfiParametersInstance().then((contract) => setEPQFIParametersAddress(contract.address))
     return () => {
       setContractRegistryAddress('0x00')
       setConstitutionParametersAddress('0x00')
       setEPDRParametersAddress('0x00')
       setEPQFIParametersAddress('0x00')
     }
-  }, [])
-
-  async function getAddresses () {
-    const contractRegistryInstance = await getContractRegistryInstance()
-    const constitutionParameters = await getConstitutionInstance()
-    const epdrParametersInstance = await getEpdrParametersInstance()
-    const epqfiParametersInstance = await getEpqfiParametersInstance()
-    setConstitutionParametersAddress(contractRegistryInstance.address)
-    setContractRegistryAddress(constitutionParameters.address)
-    setEPDRParametersAddress(epdrParametersInstance.address)
-    setEPQFIParametersAddress(epqfiParametersInstance.address)
-  }
-
-  useEffect(() => {
-    dispatch(getContractRegistryKV())
-    dispatch(getConstitutionParametersKV())
-    dispatch(getFeesIncentivesExpertPanelParametersKV())
-    dispatch(getEPDRParametersKV())
   }, [dispatch])
 
   return (

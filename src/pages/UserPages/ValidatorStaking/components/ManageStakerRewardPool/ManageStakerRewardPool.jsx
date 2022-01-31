@@ -19,22 +19,22 @@ function ManageStakerRewardPool () {
 
   return (
         <>
-            <Tooltip placement='left' additionalInfo="Only available for Validators" disabled={compoundRateKeeperExists}>
+            <Tooltip
+                placement="left"
+                additionalInfo="Only available for Validators"
+                disabled={compoundRateKeeperExists}
+            >
                 <Button
                     disabled={!compoundRateKeeperExists}
                     type="white"
                     title="Manage Staker Reward Pool"
-                    handleButton={() => {
-                      setModalShow(true)
-                    }}
+                    handleButton={() => setModalShow(true)}
                 />
             </Tooltip>
 
             <ModalWindow
                 show={modalShow}
-                onHide={() => {
-                  setModalShow(false)
-                }}
+                onHide={() => setModalShow(false)}
                 modalTitle="Manage Staker Reward Pool"
                 content={
                     <>
