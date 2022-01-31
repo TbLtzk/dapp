@@ -3,19 +3,19 @@ import { Accordion } from 'react-bootstrap'
 import { AccordionIcon, LinkGroup } from '../../styles'
 
 function AccordionLinks ({ children, headerLink, type }) {
-  const [isOpen, setIsOpen] = useState(localStorage.getItem(type) ? '' : '0')
+  const [isOpen, setIsOpen] = useState(localStorage.getItem(type))
 
   const handleOpen = (state) => {
     if (state) {
       setIsOpen('0')
-      localStorage.setItem(type, '')
+      localStorage.setItem(type, '0')
     } else {
       setIsOpen('')
-      localStorage.setItem(type, '0')
+      localStorage.setItem(type, '')
     }
   }
   return (
-        <Accordion activeKey={isOpen ? '0' : '1'} style={{ width: '100%' }} onSelect={handleOpen}>
+        <Accordion activeKey={isOpen} style={{ width: '100%' }} onSelect={handleOpen}>
             <LinkGroup>
                 {headerLink}
                 <Accordion.Toggle eventKey="0">
