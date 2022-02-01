@@ -2,18 +2,20 @@ import React, { useState } from 'react'
 import { Accordion } from 'react-bootstrap'
 import { AccordionIcon, LinkGroup } from '../../styles'
 
-function AccordionLinks ({ children, headerLink }) {
-  const [isOpen, setIsOpen] = useState(true)
+function AccordionLinks ({ children, headerLink, type }) {
+  const [isOpen, setIsOpen] = useState(localStorage.getItem(type))
 
   const handleOpen = (state) => {
     if (state) {
-      setIsOpen(true)
+      setIsOpen('0')
+      localStorage.setItem(type, '0')
     } else {
-      setIsOpen(false)
+      setIsOpen('')
+      localStorage.setItem(type, '')
     }
   }
   return (
-        <Accordion activeKey={isOpen ? '0' : '1'} style={{ width: '100%' }} onSelect={handleOpen}>
+        <Accordion activeKey={isOpen} style={{ width: '100%' }} onSelect={handleOpen}>
             <LinkGroup>
                 {headerLink}
                 <Accordion.Toggle eventKey="0">

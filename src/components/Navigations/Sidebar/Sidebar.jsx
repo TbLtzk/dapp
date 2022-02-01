@@ -70,7 +70,7 @@ function Sidebar () {
                     <ListContainer id="basic-navbar-nav">
                         {appMode === MODE.advanced
                           ? (
-                            <AccordionLinks headerLink={dashboard}>
+                            <AccordionLinks type="dashboard-toggle" headerLink={dashboard}>
                                 <CommonLinks
                                     highlight={highlight('monitoring')}
                                     linkTo="/monitoring"
@@ -83,6 +83,7 @@ function Sidebar () {
                             )}
 
                         <AccordionLinks
+                            type="governance-toggle"
                             headerLink={
                                 <CommonLinks
                                     highlight={highlight('q-governance')}
@@ -138,6 +139,7 @@ function Sidebar () {
                         {appMode === MODE.advanced
                           ? (
                             <AccordionLinks
+                                type="consensus-toggle"
                                 headerLink={<CommonLinks linkTo="/root-node-staking" linkTitle="Consensus Services" />}
                             >
                                 <div>
@@ -164,6 +166,7 @@ function Sidebar () {
                           ? (
                             <>
                                 <AccordionLinks
+                                    type="auctions-toggle"
                                     headerLink={
                                         <CommonLinks linkTo="/liquidation" linkTitle="Decentralized Auctions" />
                                     }
