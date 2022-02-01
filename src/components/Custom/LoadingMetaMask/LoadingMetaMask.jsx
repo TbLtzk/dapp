@@ -17,14 +17,16 @@ import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboardMode'
 
 const web3 = new Web3(Web3.givenProvider)
+const { ethereum } = window
+
 export let address = ''
 
 function LoadingMetaMask () {
-  const [isMetaMask, setIsMetaMask] = useState(LOAD_TYPES.loading)
-  const [errorMessage, setErrorMessage] = useState('Please install MetaMask!')
   const dispatch = useDispatch()
   const appMode = useSelector(mode)
-  const { ethereum } = window
+
+  const [isMetaMask, setIsMetaMask] = useState(LOAD_TYPES.loading)
+  const [errorMessage, setErrorMessage] = useState('Please install MetaMask!')
 
   const loadAdditionalInfo = () => {
     if (appMode === MODE.advanced) {
@@ -40,7 +42,15 @@ function LoadingMetaMask () {
         setErrorMessage('Please install MetaMask!')
         setIsMetaMask(LOAD_TYPES.error)
       } else {
-        const networkId = await ethereum.request({ method: 'net_version' })
+        const networkId = await new Promise((resolve, reject) => {
+          const timeout = setTimeout(() => {
+            window.location.reload()
+          }, 5000)
+          ethereum.request({ method: 'net_version' }).then((netId) => {
+            clearTimeout(timeout)
+            resolve(netId)
+          })
+        })
         if (!networks.includes(networkId)) {
           setErrorMessage('Choose the correct network!')
           setIsMetaMask(LOAD_TYPES.error)
@@ -87,7 +97,7 @@ function LoadingMetaMask () {
     case LOAD_TYPES.error:
       return <StartConfigurations error={errorMessage} />
     case LOAD_TYPES.initError:
-      return <WrapContainer>Can\'t load account data. Please reload app</WrapContainer>
+      return <WrapContainer>Can\'t load account data. Please reload app</WrapContainer> // can add refresh after 5 seconds
     case LOAD_TYPES.loaded:
       return <App />
     default:
