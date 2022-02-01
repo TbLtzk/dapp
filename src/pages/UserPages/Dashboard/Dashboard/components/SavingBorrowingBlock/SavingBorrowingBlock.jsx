@@ -36,11 +36,6 @@ function SavingBorrowingBlock () {
 
   const [stableCoinAddress, setStableCoinAddress] = useState('...')
 
-  async function getStableCoinAddress () {
-    const contract = await getStableCoinInstance()
-    setStableCoinAddress(contract.address)
-  }
-
   const [timeSinceRefreshBalance, setTimeSinceRefreshBalance] = useState('0')
   const [timeSinceUnixTimestampRefreshBalance, setTimeSinceUnixTimestampRefreshBalance] = useState('0')
   const [loadingTimeSinceRefreshBalance, setLoadingTimeSinceRefreshBalance] = useState(false)
@@ -53,9 +48,19 @@ function SavingBorrowingBlock () {
     dispatch(getSavingAndInterestRate())
     dispatch(getSystemBalance())
     dispatch(getTotalSupply())
-    getStableCoinAddress()
+    getStableCoinInstance().then((contract) => setStableCoinAddress(contract.address))
     getTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance)
     getTimeSinceOutstandingDebt(setTimeSinceOutstandingDeb, setTimeSinceUnixTimestampOutstandingDeb)
+
+    return () => {
+      setStableCoinAddress('...')
+      setTimeSinceRefreshBalance('0')
+      setTimeSinceUnixTimestampRefreshBalance('0')
+      setLoadingTimeSinceRefreshBalance(false)
+      setTimeSinceOutstandingDeb('0')
+      setTimeSinceUnixTimestampOutstandingDeb('0')
+      setLoadingTimeSinceOutstandingDeb(false)
+    }
   }, [])
 
   useEffect(() => {
@@ -164,26 +169,24 @@ function SavingBorrowingBlock () {
   return (
         <CustomBlock>
             <h1>Saving & Borrowing</h1>
-            {dataArr.map((item) => {
-              return (
-                    <CardBlock
-                        key={item.title.replace(' ', '-')}
-                        btnDisabled={getIsLoading(item.btnType)}
-                        title={item.title}
-                        iconFontSize={item.iconFontSize}
-                        btnIcon={getIsLoading(item.btnType) ? null : item.btnIcon}
-                        firstContent={item.firstContent}
-                        btnTitle={getIsLoading(item.btnType) ? <LoadingSpinner /> : item.btnTitle}
-                        btnHandler={
-                            !item.btnTitle && !item.btnIcon
-                              ? null
-                              : () => {
-                                  onRefresh(item.btnType)
-                                }
-                        }
-                    />
-              )
-            })}
+            {dataArr.map((item) => (
+                <CardBlock
+                    key={item.title.replace(' ', '-')}
+                    btnDisabled={getIsLoading(item.btnType)}
+                    title={item.title}
+                    iconFontSize={item.iconFontSize}
+                    btnIcon={getIsLoading(item.btnType) ? null : item.btnIcon}
+                    firstContent={item.firstContent}
+                    btnTitle={getIsLoading(item.btnType) ? <LoadingSpinner /> : item.btnTitle}
+                    btnHandler={
+                        !item.btnTitle && !item.btnIcon
+                          ? null
+                          : () => {
+                              onRefresh(item.btnType)
+                            }
+                    }
+                />
+            ))}
         </CustomBlock>
   )
 }

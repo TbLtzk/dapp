@@ -59,9 +59,12 @@ export default function Panel () {
       : 0
     let yearlyExpectedEarningsCalc = 0
     if (userQVBalanceL) {
-      yearlyExpectedEarningsCalc = userQVBalanceL * ((1 + interestRate) / 100)
+      yearlyExpectedEarningsCalc = userQVBalanceL * (interestRate / 100)
     }
     setYearlyExpectedEarnings(yearlyExpectedEarningsCalc)
+    return () => {
+      setYearlyExpectedEarnings(0)
+    }
   }, [balanceDetails, userQVBalanceL])
 
   return (
