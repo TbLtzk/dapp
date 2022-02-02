@@ -15,7 +15,7 @@ import { symbol } from 'store/stable-coin/selectors'
 import { switchContract } from 'contracts/helpers/auctions-helpers/auction-service-helper'
 import { getStableCoinInstance } from 'contracts/contract-instance'
 
-function CreateStep1 ({ activeTab, register, errors, contract }) {
+function CreateStep1 ({ activeTab, register, errors, contract, raisingBid }) {
   const formData = useSelector(formObject)
   const userAddress = useSelector(userAddressMetamask)
   const dispatch = useDispatch()
@@ -36,6 +36,9 @@ function CreateStep1 ({ activeTab, register, errors, contract }) {
     return (
             <>
                 <h4>{data.subtitleInput + symbol}</h4>
+                <h4>
+                    Raising Bid: {raisingBid} {symbol || data.symbol}
+                </h4>
                 <InputGroup
                     onChangeInput={onChangeInput}
                     formData={formData}

@@ -28,12 +28,13 @@ export default class SystemSurplusAuction extends AuctionService {
     }
   }
 
-  prepareAuctionData (data, info) {
+  prepareAuctionData (data, info, raisingBid) {
     const status = this.checkSystemSurplusStatus(data.endTime, data.isExecuted)
     const completedInfo = {}
     completedInfo.bidder = data.bidder
     completedInfo.user = info?.bidder || info?.user
     completedInfo.id = info.id
+    completedInfo.raisingBid = fromWei(raisingBid)
     completedInfo.endTime = data.endTime
     completedInfo.isExecuted = data.isExecuted
     completedInfo.highestBid = fromWei(data.highestBid)
@@ -68,7 +69,9 @@ export default class SystemSurplusAuction extends AuctionService {
     const auctionsInfo = await this.getAuctionsEvents()
 
     const allAuctionsData = await Promise.all(auctionsInfo.map((event) => this.getAuction(event)))
-    const preparedAuctionsData = allAuctionsData.map((auction) => this.prepareAuctionData(auction.data, auction.info))
+    const preparedAuctionsData = allAuctionsData.map((auction) =>
+      this.prepareAuctionData(auction.data, auction.info, auction.raisingBid)
+    )
     const groupedAuctionsByBlockNumber = groupArrayByBlockNumber(preparedAuctionsData)
 
     const activeAuctions = groupedAuctionsByBlockNumber.filter((auction) => !auction.isExecuted)
@@ -84,13 +87,14 @@ export default class SystemSurplusAuction extends AuctionService {
   async getOneAuction (id) {
     try {
       const contract = await this.getContractInstance()
+      const raisingBid = await contract.getRaisingBid(id)
       const info = await contract.instance.methods.auctions(id).call()
       if (!Number(info.endTime)) {
         return { error: ERROR_TYPES.notExist }
       } else {
         const pastEvents = await this.getAuctionsEvents()
         const event = pastEvents.find((event) => event.id === id)
-        return this.prepareAuctionData(info, event)
+        return this.prepareAuctionData(info, event, raisingBid)
       }
     } catch (error) {
       return { error: ERROR_TYPES.wrongLink }

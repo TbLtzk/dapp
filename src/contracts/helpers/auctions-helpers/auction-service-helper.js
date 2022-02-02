@@ -61,7 +61,7 @@ export default class AuctionService {
   }
 
   async getOneAuctionData (userAddress, vaultId) {
-    const contract = await switchContract(this.contractName)
+    const contract = await this.getContractInstance()
     if (vaultId) {
       return await contract.instance.methods.auctions(userAddress, vaultId).call()
     } else {
@@ -72,12 +72,13 @@ export default class AuctionService {
   async getAuction (info, vaultId) {
     const { id, user } = info
     const contract = await this.getContractInstance()
+    const raisingBid = await contract.getRaisingBid(info.id || vaultId)
     if (vaultId) {
       const data = await contract.instance.methods.auctions(user, vaultId).call()
-      return { data, info }
+      return { data, info, raisingBid }
     } else {
       const data = await contract.instance.methods.auctions(id).call()
-      return { data, info }
+      return { data, info, raisingBid }
     }
   }
 

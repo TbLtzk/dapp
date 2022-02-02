@@ -35,6 +35,10 @@ function CardBody ({ auction }) {
                       : null}
                 </div>
                 <div>
+                    <>
+                        <h5>Raising Bid</h5>
+                        <p>{auction.raisingBid} Q</p>
+                    </>
                     <h5>Bidder</h5>
                     <p>{auction.bidder}</p>
                     {auction.contract === CONTRACTS_NAMES.liquidationAuction
