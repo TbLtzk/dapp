@@ -42,7 +42,7 @@ function LoadingMetaMask () {
         setErrorMessage('Please install MetaMask!')
         setIsMetaMask(LOAD_TYPES.error)
       } else {
-        const networkId = await new Promise((resolve, reject) => {
+        const networkId = await new Promise((resolve) => { /* Fix issue with first Metamask launch. */
           const timeout = setTimeout(() => {
             window.location.reload()
           }, 5000)
