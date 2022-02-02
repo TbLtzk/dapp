@@ -14,6 +14,7 @@ import { liquidation, systemSurplus, systemDebt } from './constants'
 import { symbol } from 'store/stable-coin/selectors'
 import { switchContract } from 'contracts/helpers/auctions-helpers/auction-service-helper'
 import { getStableCoinInstance } from 'contracts/contract-instance'
+import CopyToClipboard from 'components/Base/CopyToClipboard'
 
 function CreateStep1 ({ activeTab, register, errors, contract, raisingBid }) {
   const formData = useSelector(formObject)
@@ -37,7 +38,8 @@ function CreateStep1 ({ activeTab, register, errors, contract, raisingBid }) {
             <>
                 <h4>{data.subtitleInput + symbol}</h4>
                 <h4>
-                    Raising Bid: {raisingBid} {symbol || data.symbol}
+                    Minimum bid: <CopyToClipboard valueToCopy={raisingBid}>{raisingBid}</CopyToClipboard>{' '}
+                    {symbol || data.symbol}
                 </h4>
                 <InputGroup
                     onChangeInput={onChangeInput}

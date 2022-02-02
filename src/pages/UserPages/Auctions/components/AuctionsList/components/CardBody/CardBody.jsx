@@ -17,28 +17,14 @@ function CardBody ({ auction }) {
                         {auction.highestBid}
                         {auction.contract === CONTRACTS_NAMES.systemSurplusAuction ? ' Q' : ' ' + symbolType}
                     </p>
-                    {auction.contract === CONTRACTS_NAMES.liquidationAuction
-                      ? (
-                        <>
-                            <h5>Vault ID</h5>
-                            <p>{auction.userVaultId}</p>
-                        </>
-                        )
-                      : null}
-                    {auction.contract === CONTRACTS_NAMES.systemSurplusAuction
-                      ? (
-                        <>
-                            <h5>Lot</h5>
-                            <p>{auction.lot} QUSD</p>
-                        </>
-                        )
-                      : null}
-                </div>
-                <div>
+
                     <>
-                        <h5>Raising Bid</h5>
+                        <h5>Minimum Bid</h5>
                         <p>{auction.raisingBid} Q</p>
                     </>
+                </div>
+                <div>
+
                     <h5>Bidder</h5>
                     <p>{auction.bidder}</p>
                     {auction.contract === CONTRACTS_NAMES.liquidationAuction
@@ -46,6 +32,22 @@ function CardBody ({ auction }) {
                         <>
                             <h5>Auctioned Collateral</h5>
                             <p>{`${auction.colAsset} ${auction.colKey}`}</p>
+                        </>
+                        )
+                      : null}
+                      {auction.contract === CONTRACTS_NAMES.liquidationAuction
+                        ? (
+                        <>
+                            <h5>Vault ID</h5>
+                            <p>{auction.userVaultId}</p>
+                        </>
+                          )
+                        : null}
+                    {auction.contract === CONTRACTS_NAMES.systemSurplusAuction
+                      ? (
+                        <>
+                            <h5>Lot</h5>
+                            <p>{auction.lot} QUSD</p>
                         </>
                         )
                       : null}
