@@ -10,7 +10,7 @@ import {
 import { AUCTIONS_TYPES } from 'constants/statuses'
 
 export const ERROR_TYPES = {
-  notExist: 'Auction do not exist',
+  notExist: 'Auction not found',
   wrongLink: 'Wrong link'
 }
 
@@ -72,11 +72,12 @@ export default class AuctionService {
   async getAuction (info, vaultId) {
     const { id, user } = info
     const contract = await this.getContractInstance()
-    const raisingBid = await contract.getRaisingBid(info.id || vaultId)
     if (vaultId) {
+      const raisingBid = await contract.getRaisingBid(user, vaultId)
       const data = await contract.instance.methods.auctions(user, vaultId).call()
       return { data, info, raisingBid }
     } else {
+      const raisingBid = await contract.getRaisingBid(info.id)
       const data = await contract.instance.methods.auctions(id).call()
       return { data, info, raisingBid }
     }

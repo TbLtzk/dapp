@@ -17,7 +17,7 @@ export default class LiquidationAuction extends AuctionService {
     this.contractName = CONTRACT_TYPES.liquidationAuction
   }
 
-  async prepareAuctionData (data, info, contract) {
+  async prepareAuctionData (data, info, contract, raisingBid) {
     const vault = await contract.userVaults(info.user, info.vaultId)
 
     const completedInfo = {}
@@ -30,6 +30,7 @@ export default class LiquidationAuction extends AuctionService {
     completedInfo.statusNumber = data.status
     completedInfo.title = 'Liquidation Auction'
     completedInfo.contract = CONTRACT_TYPES.liquidationAuction
+    completedInfo.raisingBid = fromWei(raisingBid)
     completedInfo.highestBid = fromWei(data.highestBid)
     completedInfo.blockNumber = info.blockNumber
     completedInfo.status = getStatusTransformation(data.status)
@@ -59,10 +60,11 @@ export default class LiquidationAuction extends AuctionService {
   async getAuctions () {
     const auctionsInfo = await this.getAuctionsEvents()
     const borrowingCoreInstance = await getBorrowingCoreInstance()
-
     const allAuctionsData = await Promise.all(auctionsInfo.map((evt) => this.getAuction(evt, evt?.vaultId)))
     const preparedAuctionsData = await Promise.all(
-      allAuctionsData.map((auction) => this.prepareAuctionData(auction.data, auction.info, borrowingCoreInstance))
+      allAuctionsData.map((auction) =>
+        this.prepareAuctionData(auction.data, auction.info, borrowingCoreInstance, auction.raisingBid)
+      )
     )
 
     const groupedAuctionsByBlockNumber = groupArrayByBlockNumber(preparedAuctionsData)
@@ -86,8 +88,9 @@ export default class LiquidationAuction extends AuctionService {
       } else {
         const pastEvents = await this.getAuctionsEvents()
         const event = pastEvents.find((event) => event.vaultId === vaultId && event.user === address)
+        const raisingBid = await contract.getRaisingBid(address, vaultId)
         const borrowingCoreInstance = await getBorrowingCoreInstance()
-        return this.prepareAuctionData(info, event, borrowingCoreInstance)
+        return this.prepareAuctionData(info, event, borrowingCoreInstance, raisingBid)
       }
     } catch (error) {
       return { error: ERROR_TYPES.wrongLink }
