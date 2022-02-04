@@ -4,7 +4,6 @@ import { CONTRACT_TYPES } from 'constants/contracts'
 import { fromBtcBlockchain, toWei, fromWei } from 'func/balance'
 
 import { getBorrowingCoreInstance, getLiquidationAuctionInstance } from 'contracts/contract-instance'
-import { remainDate } from 'func/convertDate'
 import { groupArrayByBlockNumber } from 'func/useful'
 
 export function creationLiquidationContractObj () {
@@ -19,7 +18,6 @@ export default class LiquidationAuction extends AuctionService {
 
   async prepareAuctionData (data, info, contract, raisingBid) {
     const vault = await contract.userVaults(info.user, info.vaultId)
-
     const completedInfo = {}
     completedInfo.bidder = data.bidder
     completedInfo.user = info.user
@@ -27,16 +25,16 @@ export default class LiquidationAuction extends AuctionService {
     completedInfo.id = info.vaultId
     completedInfo.colKey = vault.colKey
     completedInfo.endTime = data.endTime
-    completedInfo.statusNumber = data.status
     completedInfo.title = 'Liquidation Auction'
     completedInfo.contract = CONTRACT_TYPES.liquidationAuction
-    completedInfo.raisingBid = fromWei(raisingBid)
+    completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0
     completedInfo.highestBid = fromWei(data.highestBid)
     completedInfo.blockNumber = info.blockNumber
+    completedInfo.statusNumber = data.status
     completedInfo.status = getStatusTransformation(data.status)
     completedInfo.colAsset = fromBtcBlockchain(vault.colAsset)
-    completedInfo.disableBidButton = !remainDate(data.endTime)
-    completedInfo.disableExecuteButton = !!remainDate(data.endTime)
+    completedInfo.disableBidButton = data.status === '2'
+    completedInfo.disableExecuteButton = data.status === '1'
 
     return completedInfo
   }
@@ -88,7 +86,10 @@ export default class LiquidationAuction extends AuctionService {
       } else {
         const pastEvents = await this.getAuctionsEvents()
         const event = pastEvents.find((event) => event.vaultId === vaultId && event.user === address)
-        const raisingBid = await contract.getRaisingBid(address, vaultId)
+        let raisingBid = null
+        if (info.status === '1') {
+          raisingBid = await contract.getRaisingBid(address, vaultId)
+        }
         const borrowingCoreInstance = await getBorrowingCoreInstance()
         return this.prepareAuctionData(info, event, borrowingCoreInstance, raisingBid)
       }

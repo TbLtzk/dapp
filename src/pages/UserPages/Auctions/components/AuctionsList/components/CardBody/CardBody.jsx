@@ -18,13 +18,17 @@ function CardBody ({ auction }) {
                         {getSymbol}
                     </p>
 
-                    <>
-                        <h5>Minimum Bid</h5>
-                        <p>
-                            {auction.raisingBid}
-                            {getSymbol}
-                        </p>
-                    </>
+                    {auction.raisingBid
+                      ? (
+                        <>
+                            <h5>Minimum Bid</h5>
+                            <p>
+                                {auction.raisingBid}
+                                {getSymbol}
+                            </p>
+                        </>
+                        )
+                      : null}
                 </div>
                 <div>
                     {auction.contract === CONTRACTS_NAMES.systemDebtAuction

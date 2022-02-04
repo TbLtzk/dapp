@@ -1,9 +1,9 @@
-import AuctionService, { ERROR_TYPES } from './auction-service-helper'
+import AuctionService, { ERROR_TYPES, getStatusTransformation } from './auction-service-helper'
 import { CONTRACT_TYPES } from 'constants/contracts'
 
 import { fromWei } from 'func/balance'
 import { getSystemSurplusAuctionInstance } from 'contracts/contract-instance'
-import { remainDate } from 'func/convertDate'
+import { dateToTimestamp } from 'func/convertDate'
 import { groupArrayByBlockNumber } from 'func/useful'
 
 export function creationSystemSurplusContractObj () {
@@ -16,34 +16,22 @@ export default class SystemSurplusAuction extends AuctionService {
     this.contractName = CONTRACT_TYPES.systemSurplusAuction
   }
 
-  checkSystemSurplusStatus (endTime, isExecuted) {
-    if (endTime === 0 || remainDate(endTime) !== 0) {
-      return 'Pending'
-    }
-    if (isExecuted) {
-      return 'Executed'
-    }
-    if (!isExecuted && remainDate(endTime) === 0) {
-      return 'Accepted'
-    }
-  }
-
   prepareAuctionData (data, info, raisingBid) {
-    const status = this.checkSystemSurplusStatus(data.endTime, data.isExecuted)
     const completedInfo = {}
     completedInfo.bidder = data.bidder
     completedInfo.user = info?.bidder || info?.user
     completedInfo.id = info.id
-    completedInfo.raisingBid = fromWei(raisingBid)
-    completedInfo.endTime = data.endTime
+    completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0
+    completedInfo.endTime = dateToTimestamp(data.endTime)
     completedInfo.isExecuted = data.isExecuted
     completedInfo.highestBid = fromWei(data.highestBid)
     completedInfo.lot = fromWei(data.lot)
     completedInfo.title = 'System Surplus Auction'
-    completedInfo.status = status
+    completedInfo.status = getStatusTransformation(data.status)
+    completedInfo.statusNumber = data.status
     completedInfo.blockNumber = info.blockNumber
-    completedInfo.disableBidButton = status === 'Accepted'
-    completedInfo.disableExecuteButton = status === 'Pending'
+    completedInfo.disableBidButton = data.status === '2'
+    completedInfo.disableExecuteButton = data.status === '1'
 
     completedInfo.contract = this.contractName
     return completedInfo
@@ -74,8 +62,8 @@ export default class SystemSurplusAuction extends AuctionService {
     )
     const groupedAuctionsByBlockNumber = groupArrayByBlockNumber(preparedAuctionsData)
 
-    const activeAuctions = groupedAuctionsByBlockNumber.filter((auction) => !auction.isExecuted)
-    const endedAuctions = groupedAuctionsByBlockNumber.filter((auction) => auction.isExecuted)
+    const activeAuctions = groupedAuctionsByBlockNumber.filter((auction) => auction.statusNumber === '1')
+    const endedAuctions = groupedAuctionsByBlockNumber.filter((auction) => auction.statusNumber !== '1')
 
     return {
       contract: this.contractName,
@@ -87,13 +75,16 @@ export default class SystemSurplusAuction extends AuctionService {
   async getOneAuction (id) {
     try {
       const contract = await this.getContractInstance()
-      const raisingBid = await contract.getRaisingBid(id)
-      const info = await contract.instance.methods.auctions(id).call()
+      const info = await contract.getAuctionInfo(id)
       if (!Number(info.endTime)) {
         return { error: ERROR_TYPES.notExist }
       } else {
         const pastEvents = await this.getAuctionsEvents()
         const event = pastEvents.find((event) => event.id === id)
+        let raisingBid = null
+        if (info.status === '1') {
+          raisingBid = await contract.getRaisingBid(id)
+        }
         return this.prepareAuctionData(info, event, raisingBid)
       }
     } catch (error) {

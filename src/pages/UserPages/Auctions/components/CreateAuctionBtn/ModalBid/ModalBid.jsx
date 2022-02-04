@@ -57,7 +57,6 @@ function ModalBid ({ modalShow, onHide, activeTab, inf }) {
   }, [activeTab, stepCounter, register, errors, stepLimit, dispatch, inf])
 
   async function onNext (data) {
-    console.log(data)
     const stableCoin = await getStableCoinInstance()
     const { address } = await switchContract(inf.contract)
     dispatch(setCreateObj({ ...formData, ...data }))
@@ -70,8 +69,6 @@ function ModalBid ({ modalShow, onHide, activeTab, inf }) {
       if (stepCounter < stepLimit) {
         dispatch(setStepCounter(stepCounter + 1))
       } else {
-        console.log({ ...formData })
-        console.log({ ...data })
         dispatch(
           bidForAuction({
             contract: inf.contract,

@@ -3,7 +3,7 @@ import { CONTRACT_TYPES } from 'constants/contracts'
 
 import { toWei, fromWei } from 'func/balance'
 import { getSystemDebtAuctionInstance } from 'contracts/contract-instance'
-import { remainDate } from 'func/convertDate'
+import { dateToTimestamp } from 'func/convertDate'
 import { groupArrayByBlockNumber } from 'func/useful'
 
 export function creationSystemDebtContractObj () {
@@ -23,16 +23,17 @@ export default class SystemDebtAuction extends AuctionService {
     completedInfo.bidder = data.bidder
     completedInfo.bid = data.highestBid
     completedInfo.id = info.id
-    completedInfo.endTime = data.endTime
+    completedInfo.endTime = dateToTimestamp(data.endTime)
+
     completedInfo.highestBid = fromWei(data.highestBid)
-    completedInfo.raisingBid = fromWei(raisingBid)
+    completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0
 
     completedInfo.reserveLot = fromWei(data.reserveLot)
     completedInfo.title = 'System Debt Auction'
     completedInfo.contract = CONTRACT_TYPES.systemDebtAuction
     completedInfo.blockNumber = info.blockNumber
-    completedInfo.disableBidButton = !remainDate(data.endTime)
-    completedInfo.disableExecuteButton = !!remainDate(data.endTime)
+    completedInfo.disableBidButton = data.status === '2'
+    completedInfo.disableExecuteButton = data.status === '1'
 
     return completedInfo
   }
@@ -65,9 +66,7 @@ export default class SystemDebtAuction extends AuctionService {
     const groupedAuctionsByBlockNumber = groupArrayByBlockNumber(preparedAuctionsData)
 
     const activeAuctions = groupedAuctionsByBlockNumber.filter((auction) => auction.statusNumber === '1')
-    const endedAuctions = groupedAuctionsByBlockNumber.filter(
-      (auction) => auction.statusNumber === '2' || auction.statusNumber === '0'
-    )
+    const endedAuctions = groupedAuctionsByBlockNumber.filter((auction) => auction.statusNumber !== '1')
 
     return {
       contract: this.contractName,
@@ -83,7 +82,10 @@ export default class SystemDebtAuction extends AuctionService {
       if (!Number(info.endTime)) {
         return { error: ERROR_TYPES.notExist }
       } else {
-        const raisingBid = await contract.getRaisingBid(id)
+        let raisingBid = null
+        if (info.status === '1') {
+          raisingBid = await contract.getRaisingBid(id)
+        }
         return this.prepareAuctionData(info, { id }, raisingBid)
       }
     } catch (error) {
@@ -100,7 +102,6 @@ export default class SystemDebtAuction extends AuctionService {
   async bid (bid, userAddress) {
     const contract = await getSystemDebtAuctionInstance()
     await this.getAllowance(userAddress, contract.address, bid)
-    console.log(bid)
     const result = await contract.bid(toWei(bid), { from: userAddress })
     return result
   }
