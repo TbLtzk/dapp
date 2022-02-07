@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import { useSelector } from 'react-redux'
 import { qActiveProposalsCountSelector } from 'store/voting/q-proposals/selectors'
@@ -12,7 +12,6 @@ import {
   systemSurplusAuctionsSelector
 } from 'store/auctions/selectors'
 
-import LogoImg from 'components/Base/LogoImg'
 import Version from './components/Version'
 
 import { referencesItems } from './constants'
@@ -20,11 +19,9 @@ import { referencesItems } from './constants'
 import {
   NavbarContainer,
   ListContainer,
-  WrapLogo,
   ALinkStyle,
   LinksContainer,
-  FooterContainer,
-  Footer
+  FooterContainer
 } from './styles'
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboardMode'
@@ -33,7 +30,6 @@ import AccordionLinks from './components/AccordionLinks'
 import DashboardMode from 'components/Base/DashboardMode'
 import Themes from 'components/Base/Themes'
 import AccordionElements from './components/AccordionElements'
-import CopyAddress from './components/CopyAddress'
 import { contractUpdatesActiveProposalsCountSelector } from 'store/voting/contract-updates/selectors'
 
 function Sidebar () {
@@ -62,11 +58,6 @@ function Sidebar () {
         <header>
             <NavbarContainer expand="lg">
                 <LinksContainer>
-                    <WrapLogo>
-                        <Link to="/">
-                            <LogoImg />
-                        </Link>
-                    </WrapLogo>
                     <ListContainer id="basic-navbar-nav">
                         {appMode === MODE.advanced
                           ? (
@@ -223,11 +214,7 @@ function Sidebar () {
                         <DashboardMode />
                         <Themes />
                     </AccordionElements>
-
-                    <CopyAddress />
-                    <Footer>
-                        <Version />
-                    </Footer>
+                    <Version />
                 </FooterContainer>
             </NavbarContainer>
         </header>

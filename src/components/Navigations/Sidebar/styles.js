@@ -1,13 +1,14 @@
-import styled from 'styled-components'
-
+import { indents } from 'constants/style'
 import { Navbar } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-
-import { indents } from 'constants/style'
+import styled from 'styled-components'
 
 export const NavbarContainer = styled(Navbar)`
-  width: 348px;
-  height: 100%;
+  width: 330px;
+  height: calc(100vh - 80px);
+  overflow-x: hidden;
+  overflow-y: auto;
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -92,14 +93,6 @@ export const ALinkStyle = styled.a`
   :hover {
     color: ${(props) => props.theme.colors.white};
     text-decoration: underline;
-  }
-`
-
-export const WrapLogo = styled.div`
-  margin-bottom: 54px;
-
-  img {
-    width: 53px;
   }
 `
 

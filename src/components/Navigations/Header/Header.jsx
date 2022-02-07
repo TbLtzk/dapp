@@ -1,29 +1,23 @@
+import LogoImg from 'components/Base/LogoImg'
 import React from 'react'
-import Alert from '../../Custom/Alerts'
+import { Link } from 'react-router-dom'
+import Address from './components/Address'
+import Network from './components/Network'
+import { WrapLogo, HeaderWrapper, ElementsWrapper } from './styles'
 
-import {
-  HeaderWrp,
-  HeaderTitle,
-  HeaderActions
-} from './styles'
-
-function Header (props) {
-  const {
-    header,
-    extra,
-    extraButton
-  } = props
+function Header () {
   return (
-    <HeaderWrp>
-      <HeaderTitle>
-        {header}
-      </HeaderTitle>
-      <HeaderActions>
-      {extraButton}
-        {extra}
-      </HeaderActions>
-      <Alert/>
-    </HeaderWrp>
+        <HeaderWrapper>
+            <WrapLogo>
+                <Link to="/">
+                    <LogoImg />
+                </Link>
+            </WrapLogo>
+            <ElementsWrapper>
+                <Network />
+                <Address />
+            </ElementsWrapper>
+        </HeaderWrapper>
   )
 }
 

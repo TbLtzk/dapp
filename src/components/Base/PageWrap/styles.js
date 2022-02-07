@@ -5,24 +5,25 @@ import { Container } from 'react-bootstrap'
 import { scrollbarStyle } from 'constants/globalStyle'
 
 export const WrapContainer = styled(Container)`
-  height: 100%;
-  overflow: hidden;
   position: relative;
+  height: calc(100vh - 80px);
+  overflow-x: hidden;
+  overflow-y: auto;
+
   background: ${(props) => props.theme.colors.oxfordBlue};
   padding: 0 ${indents['45']} 0 ${indents['40']};
 `
 
 export const Page = styled.div`
-  display: flex;
   height: 100%;
+  .page__elements {
+    display: flex;
+  }
 `
 
 export const WrapContent = styled.div`
-  height: calc(100vh - 108px);
   min-height: 490px;
   max-width: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
   ${scrollbarStyle}
 
   &.wrap-content__tow-colm {
