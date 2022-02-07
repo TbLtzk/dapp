@@ -50,7 +50,7 @@ export const remainDateTimeSince = (unixTimestamp) => {
 }
 
 export const dateToTimestamp = (value) => {
-  return Math.floor(new Date(value).getTime() / 1000).toString()
+  return Math.floor(new Date(Number(value)).getTime() / 1000).toString()
 }
 
 export const getNowTimestamp = () => {

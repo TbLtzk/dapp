@@ -5,6 +5,7 @@ import { fromBtcBlockchain, toWei, fromWei } from 'func/balance'
 
 import { getBorrowingCoreInstance, getLiquidationAuctionInstance } from 'contracts/contract-instance'
 import { groupArrayByBlockNumber } from 'func/useful'
+import { dateToTimestamp, getNowTimestamp } from 'func/convertDate'
 
 export function creationLiquidationContractObj () {
   return new LiquidationAuction()
@@ -33,8 +34,9 @@ export default class LiquidationAuction extends AuctionService {
     completedInfo.statusNumber = data.status
     completedInfo.status = getStatusTransformation(data.status)
     completedInfo.colAsset = fromBtcBlockchain(vault.colAsset)
-    completedInfo.disableBidButton = data.status === '2'
-    completedInfo.disableExecuteButton = data.status === '1'
+    const disabledButtons = Number(dateToTimestamp(data.endTime)) <= Number(getNowTimestamp())
+    completedInfo.disableBidButton = disabledButtons
+    completedInfo.disableExecuteButton = !disabledButtons
 
     return completedInfo
   }

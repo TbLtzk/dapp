@@ -3,7 +3,7 @@ import { CONTRACT_TYPES } from 'constants/contracts'
 
 import { toWei, fromWei } from 'func/balance'
 import { getSystemDebtAuctionInstance } from 'contracts/contract-instance'
-import { dateToTimestamp } from 'func/convertDate'
+import { dateToTimestamp, getNowTimestamp } from 'func/convertDate'
 import { groupArrayByBlockNumber } from 'func/useful'
 
 export function creationSystemDebtContractObj () {
@@ -32,8 +32,9 @@ export default class SystemDebtAuction extends AuctionService {
     completedInfo.title = 'System Debt Auction'
     completedInfo.contract = CONTRACT_TYPES.systemDebtAuction
     completedInfo.blockNumber = info.blockNumber
-    completedInfo.disableBidButton = data.status === '2'
-    completedInfo.disableExecuteButton = data.status === '1'
+    const disabledButtons = Number(dateToTimestamp(data.endTime)) <= Number(getNowTimestamp())
+    completedInfo.disableBidButton = disabledButtons
+    completedInfo.disableExecuteButton = !disabledButtons
 
     return completedInfo
   }

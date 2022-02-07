@@ -3,7 +3,7 @@ import { CONTRACT_TYPES } from 'constants/contracts'
 
 import { fromWei } from 'func/balance'
 import { getSystemSurplusAuctionInstance } from 'contracts/contract-instance'
-import { dateToTimestamp } from 'func/convertDate'
+import { dateToTimestamp, getNowTimestamp } from 'func/convertDate'
 import { groupArrayByBlockNumber } from 'func/useful'
 
 export function creationSystemSurplusContractObj () {
@@ -30,8 +30,9 @@ export default class SystemSurplusAuction extends AuctionService {
     completedInfo.status = getStatusTransformation(data.status)
     completedInfo.statusNumber = data.status
     completedInfo.blockNumber = info.blockNumber
-    completedInfo.disableBidButton = data.status === '2'
-    completedInfo.disableExecuteButton = data.status === '1'
+    const disabledButtons = Number(dateToTimestamp(data.endTime)) <= Number(getNowTimestamp())
+    completedInfo.disableBidButton = disabledButtons
+    completedInfo.disableExecuteButton = !disabledButtons
 
     completedInfo.contract = this.contractName
     return completedInfo
