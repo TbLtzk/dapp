@@ -139,24 +139,22 @@ function * bidForAuctionGenerator ({ data }) {
       case AUCTIONS_TYPES.liquidation: {
         const contract = creationLiquidationContractObj()
         yield contract.bid(data.user, data.id, data.bid, userAddress)
-        yield put(getAuctions(contractType))
         break
       }
       case AUCTIONS_TYPES.systemDebt: {
         const contract = creationSystemDebtContractObj()
         yield contract.bid(data.bid, userAddress)
-        yield put(getAuctions(contractType))
         break
       }
       case AUCTIONS_TYPES.systemSurplus: {
         const contract = creationSystemSurplusContractObj()
         yield contract.bid(data.id, data.bid, userAddress)
-        yield put(getAuctions(contractType))
         break
       }
       default:
         return null
     }
+    yield put(getAuctions(contractType))
     yield call(updateValuesGenerator)
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -176,24 +174,22 @@ function * executeAuctionHandler ({ data }) {
       case AUCTIONS_TYPES.liquidation: {
         const contract = creationLiquidationContractObj()
         yield contract.execute(data.user, data.id, userAddress)
-        yield put(getAuctions(contractType))
         break
       }
       case AUCTIONS_TYPES.systemDebt: {
         const contract = creationSystemDebtContractObj()
         yield contract.execute(userAddress)
-        yield put(getAuctions(contractType))
         break
       }
       case AUCTIONS_TYPES.systemSurplus: {
         const contract = creationSystemSurplusContractObj()
         yield contract.execute(data.id, userAddress)
-        yield put(getAuctions(contractType))
         break
       }
       default:
         return null
     }
+    yield put(getAuctions(contractType))
     yield call(updateValuesGenerator)
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)

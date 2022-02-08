@@ -33,7 +33,13 @@ function ModalBid ({ modalShow, onHide, activeTab, inf }) {
     switch (stepCounter) {
       case 1:
         return (
-                    <CreateStep1 activeTab={activeTab} contract={inf?.contract} register={register} errors={errors} />
+                    <CreateStep1
+                        activeTab={activeTab}
+                        raisingBid={inf.raisingBid}
+                        contract={inf?.contract}
+                        register={register}
+                        errors={errors}
+                    />
         )
       case 2:
         return (
@@ -48,12 +54,11 @@ function ModalBid ({ modalShow, onHide, activeTab, inf }) {
       default:
         return null
     }
-  }, [activeTab, stepCounter, register, errors, stepLimit, dispatch])
+  }, [activeTab, stepCounter, register, errors, stepLimit, dispatch, inf])
 
   async function onNext (data) {
     const stableCoin = await getStableCoinInstance()
     const { address } = await switchContract(inf.contract)
-
     dispatch(setCreateObj({ ...formData, ...data }))
     if (approveBtn) {
       dispatch(setTransactionCounter(1))
@@ -66,9 +71,11 @@ function ModalBid ({ modalShow, onHide, activeTab, inf }) {
       } else {
         dispatch(
           bidForAuction({
+            contract: inf.contract,
+            user: inf.user,
+            id: inf.id,
             ...formData,
-            ...data,
-            ...inf
+            ...data
           })
         )
         onHide()

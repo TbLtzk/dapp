@@ -16,19 +16,18 @@ const TOOLTIP_INFO = {
 function AuctionActions ({ auction }) {
   const dispatch = useDispatch()
   const [modalShow, setModalShow] = useState(false)
-  const [inf, setInf] = useState(null)
 
-  function onAuctionBid () {
+  function onOpenModal () {
     setModalShow(true)
-    setInf({
-      user: auction.user,
-      vaultId: auction.vaultId,
-      contract: auction.contract,
-      id: auction.id
-    })
     dispatch(setStepCounter(1))
     dispatch(setCreatedStepsLimit(2))
     dispatch(setCreateObj({ first: auction.contract }))
+  }
+
+  function onHideModal () {
+    setModalShow(false)
+    dispatch(setCreateObj({}))
+    dispatch(setStepCounter(1))
   }
 
   function onAuctionExecute () {
@@ -56,7 +55,7 @@ function AuctionActions ({ auction }) {
                         disabled={auction.disableBidButton}
                         title="Bid"
                         icon="mdi mdi-shape-circle-plus btn-icon"
-                        handleButton={onAuctionBid}
+                        handleButton={onOpenModal}
                     />
                 </Tooltip>
 
@@ -70,20 +69,7 @@ function AuctionActions ({ auction }) {
                     />
                 </Tooltip>
             </div>
-            {!inf
-              ? null
-              : (
-                <ModalBid
-                    inf={inf}
-                    activeTab={auctionType}
-                    modalShow={modalShow}
-                    onHide={() => {
-                      setModalShow(false)
-                      dispatch(setCreateObj({}))
-                      dispatch(setStepCounter(1))
-                    }}
-                />
-                )}
+            <ModalBid inf={auction} activeTab={auctionType} modalShow={modalShow} onHide={onHideModal} />
         </div>
       )
     : null

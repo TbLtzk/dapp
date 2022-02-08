@@ -10,7 +10,7 @@ import {
 import { AUCTIONS_TYPES } from 'constants/statuses'
 
 export const ERROR_TYPES = {
-  notExist: 'Auction do not exist',
+  notExist: 'Auction not found',
   wrongLink: 'Wrong link'
 }
 
@@ -60,25 +60,16 @@ export default class AuctionService {
     return initInstance()
   }
 
-  async getOneAuctionData (userAddress, vaultId) {
-    const contract = await switchContract(this.contractName)
-    if (vaultId) {
-      return await contract.instance.methods.auctions(userAddress, vaultId).call()
-    } else {
-      return await contract.instance.methods.auctions(userAddress).call()
-    }
-  }
-
   async getAuction (info, vaultId) {
     const { id, user } = info
     const contract = await this.getContractInstance()
-    if (vaultId) {
-      const data = await contract.instance.methods.auctions(user, vaultId).call()
-      return { data, info }
-    } else {
-      const data = await contract.instance.methods.auctions(id).call()
-      return { data, info }
+    const switchData = vaultId ? [user, vaultId] : [id]
+    const data = await contract.getAuctionInfo(...switchData)
+    let raisingBid = null
+    if (data.status === '1') {
+      raisingBid = await contract.getRaisingBid(...switchData)
     }
+    return { data, info, raisingBid }
   }
 
   async getAllowance (userAddress, contractAddress, value) {

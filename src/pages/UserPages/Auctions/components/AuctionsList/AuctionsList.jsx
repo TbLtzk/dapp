@@ -51,7 +51,11 @@ function AuctionsList ({ auctions, loadingAuctions }) {
       return (
                 <div>
                     {list.map((auction, i) => (
-                        <AuctionCard auction={auction} key={i + auction.contract} id={auction.id + auction.contract} />
+                        <AuctionCard
+                            auction={auction}
+                            key={auction.id + auction.contract + auction.user}
+                            id={auction.id + auction.contract}
+                        />
                     ))}
                     {showMore
                       ? (
