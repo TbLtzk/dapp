@@ -20,30 +20,60 @@ import TABLE_TYPES from 'constants/tableTypes'
 
 function Dashboard () {
   const appMode = useSelector(mode)
+
+  const advancedMode = appMode === MODE.advanced
+
+  const parametersButton = advancedMode
+    ? (
+        <Link to="/q-parameters">
+            <Button type="white" title="Q Parameters" handleButton={() => {}} />
+        </Link>
+      )
+    : null
+
+  const infoBlock = <InfBlock />
+  const tokenomiks = advancedMode ? <TokenomicsBlock /> : null
+  const savingAndBorrowing = <SavingBorrowingBlock />
+
+  const rootAndValidatorsPanels = (
+        <>
+            <RootNodePanel tableType={TABLE_TYPES.rootNodesShort} />
+            <ValidatorsPanel buttons="details" tableType={TABLE_TYPES.validatorsShort} />
+        </>
+  )
+
+  const defiAndQFeesPanels = (
+        <>
+            {advancedMode
+              ? (
+                <>
+                    <DefiMembersPanel />
+                    <QFeesMembersPanel />
+                </>
+                )
+              : null}
+        </>
+  )
+
   return (
-        <PageWrap
-            wrapContentClasses="wrap-content__tow-colm"
-            headerTitle="Dashboard"
-            headerExtra={
-                appMode === MODE.advanced
-                  ? (
-                    <Link to={'/q-parameters'}>
-                        <Button type="white" title="Q Parameters" handleButton={() => {}} />
-                    </Link>
-                    )
-                  : null
-            }
-        >
-            <div>
-                <InfBlock />
-                {appMode === MODE.advanced ? <TokenomicsBlock /> : null}
-                <SavingBorrowingBlock />
+        <PageWrap headerTitle="Dashboard" headerExtra={parametersButton}>
+            <div className="content__colm-1">
+                {infoBlock}
+                {rootAndValidatorsPanels}
+                {tokenomiks}
+                {rootAndValidatorsPanels}
+                {defiAndQFeesPanels}
             </div>
-            <div>
-                <RootNodePanel tableType={TABLE_TYPES.rootNodesShort}/>
-                <ValidatorsPanel buttons='details' tableType={TABLE_TYPES.validatorsShort} />
-                {appMode === MODE.advanced ? <DefiMembersPanel /> : null}
-                {appMode === MODE.advanced ? <QFeesMembersPanel /> : null}
+            <div className="content__colm-2">
+                <div>
+                    {infoBlock}
+                    {tokenomiks}
+                    {savingAndBorrowing}
+                </div>
+                <div>
+                    {rootAndValidatorsPanels}
+                    {defiAndQFeesPanels}
+                </div>
             </div>
         </PageWrap>
   )

@@ -216,6 +216,7 @@ function Sidebar () {
                     </AccordionElements>
                     <Version />
                 </FooterContainer>
+
             </NavbarContainer>
         </header>
   )

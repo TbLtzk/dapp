@@ -4,9 +4,7 @@ import LoadingSpinner from 'components/Base/LoadingSpinner'
 import KeyAddressesTable from '../KeyAddressesTable'
 import { LoadingWrap } from 'components/Custom/MemberTables/styles'
 
-function KeyAddressViewer (props) {
-  const { tableData, loading, errorMsg, header, subHeader, tableHeaders = [], emptyMsg } = props
-
+function KeyAddressViewer ({ tableData, loading, errorMsg, header, subHeader, tableHeaders = [], emptyMsg }) {
   return (
         <CustomBlock>
             <h1>{header}</h1>

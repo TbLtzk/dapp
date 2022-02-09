@@ -1,18 +1,14 @@
 import { indents } from 'constants/style'
-import { Navbar } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-export const NavbarContainer = styled(Navbar)`
+export const NavbarContainer = styled.div`
   width: 330px;
   height: calc(100vh - 80px);
   overflow-x: hidden;
   overflow-y: auto;
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
+  display: grid;
+  align-content: space-between;
   padding: ${indents['40']};
   border-right: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
 
@@ -28,9 +24,7 @@ export const LinksContainer = styled.div`
 `
 
 export const FooterContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+  margin-top: 20px;
 `
 
 export const ListContainer = styled.div`

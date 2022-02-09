@@ -26,7 +26,6 @@ const handleColorTheme = (props) => {
 export const ElementsWrapper = styled.div`
   display: flex;
   justify-content: space-around;
-  margin-right: 60px;
 `
 
 export const HeaderWrapper = styled.div`
@@ -34,12 +33,12 @@ export const HeaderWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding: 0 60px 0 40px;
   border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
   height: 70px;
 `
 
 export const WrapLogo = styled.div`
-  margin-left: 40px;
   img {
     width: 53px;
   }
