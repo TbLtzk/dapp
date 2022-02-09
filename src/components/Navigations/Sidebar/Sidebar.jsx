@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { useSelector } from 'react-redux'
@@ -16,13 +16,7 @@ import Version from './components/Version'
 
 import { referencesItems } from './constants'
 
-import {
-  NavbarContainer,
-  ListContainer,
-  ALinkStyle,
-  LinksContainer,
-  FooterContainer
-} from './styles'
+import { NavbarContainer, ListContainer, ALinkStyle, FooterContainer, Header } from './styles'
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboardMode'
 import CommonLinks from './components/CommonLinks'
@@ -31,6 +25,7 @@ import DashboardMode from 'components/Base/DashboardMode'
 import Themes from 'components/Base/Themes'
 import AccordionElements from './components/AccordionElements'
 import { contractUpdatesActiveProposalsCountSelector } from 'store/voting/contract-updates/selectors'
+import ToggleSidebar from './components/ToggleSidebar'
 
 function Sidebar () {
   const history = useHistory()
@@ -52,12 +47,22 @@ function Sidebar () {
   const systemSurplusActiveAuctionsCount = systemSurplusAuction?.activeAuctions?.length
 
   const highlight = (location) => Number(history.location.pathname === '/' + location)
-  const dashboard = <CommonLinks highlight={highlight('')} linkTo="/" linkTitle="Dashboard" />
+
+  const [openSidebar, setOpenSidebar] = useState(true)
+  const dashboard = (
+        <CommonLinks
+            icon="view-dashboard-variant"
+            openSidebar={openSidebar}
+            highlight={highlight('')}
+            linkTo="/"
+            linkTitle="Dashboard"
+        />
+  )
 
   return (
-        <header>
-            <NavbarContainer expand="lg">
-                <LinksContainer>
+        <Header>
+            <NavbarContainer openSidebar={openSidebar}>
+                    <ToggleSidebar setOpenSidebar={setOpenSidebar} openSidebar={openSidebar} />
                     <ListContainer id="basic-navbar-nav">
                         {appMode === MODE.advanced
                           ? (
@@ -77,6 +82,8 @@ function Sidebar () {
                             type="governance-toggle"
                             headerLink={
                                 <CommonLinks
+                                    openSidebar={openSidebar}
+                                    icon="vote"
                                     highlight={highlight('q-governance')}
                                     linkTo="/q-governance"
                                     linkTitle="Governance"
@@ -125,13 +132,26 @@ function Sidebar () {
                             </div>
                         </AccordionLinks>
 
-                        <CommonLinks highlight={highlight('q-vault')} linkTo="/q-vault" linkTitle="Q Vault" />
+                        <CommonLinks
+                            openSidebar={openSidebar}
+                            icon="safe"
+                            highlight={highlight('q-vault')}
+                            linkTo="/q-vault"
+                            linkTitle="Q Vault"
+                        />
 
                         {appMode === MODE.advanced
                           ? (
                             <AccordionLinks
                                 type="consensus-toggle"
-                                headerLink={<CommonLinks linkTo="/root-node-staking" linkTitle="Consensus Services" />}
+                                headerLink={
+                                    <CommonLinks
+                                        openSidebar={openSidebar}
+                                        icon="account-group"
+                                        linkTo="/root-node-staking"
+                                        linkTitle="Consensus Services"
+                                    />
+                                }
                             >
                                 <div>
                                     <CommonLinks
@@ -149,6 +169,8 @@ function Sidebar () {
                             )
                           : null}
                         <CommonLinks
+                            openSidebar={openSidebar}
+                            icon="handshake"
                             highlight={highlight('saving-and-borrowing')}
                             linkTo="/saving-and-borrowing"
                             linkTitle="Saving & Borrowing"
@@ -159,7 +181,12 @@ function Sidebar () {
                                 <AccordionLinks
                                     type="auctions-toggle"
                                     headerLink={
-                                        <CommonLinks linkTo="/liquidation" linkTitle="Decentralized Auctions" />
+                                        <CommonLinks
+                                            openSidebar={openSidebar}
+                                            icon="gavel"
+                                            linkTo="/liquidation"
+                                            linkTitle="Decentralized Auctions"
+                                        />
                                     }
                                 >
                                     <div>
@@ -186,6 +213,8 @@ function Sidebar () {
                                     </div>
                                 </AccordionLinks>
                                 <CommonLinks
+                                    openSidebar={openSidebar}
+                                    icon="timetable"
                                     highlight={highlight('time-locks')}
                                     linkTo="/time-locks"
                                     linkTitle="Time Locks"
@@ -194,31 +223,28 @@ function Sidebar () {
                             )
                           : null}
                     </ListContainer>
-                </LinksContainer>
+                    <FooterContainer>
+                        <AccordionElements margin="24px 0 0 0" title="References">
+                            {referencesItems.map((value, key) => (
+                                <ALinkStyle
+                                    key={'references' + key}
+                                    className="nav-link"
+                                    href={value.location}
+                                    target="_blank"
+                                >
+                                    {value.label}
+                                </ALinkStyle>
+                            ))}
+                        </AccordionElements>
 
-                <FooterContainer>
-                    <AccordionElements margin="24px 0 0 0" title="References">
-                        {referencesItems.map((value, key) => (
-                            <ALinkStyle
-                                key={'references' + key}
-                                className="nav-link"
-                                href={value.location}
-                                target="_blank"
-                            >
-                                {value.label}
-                            </ALinkStyle>
-                        ))}
-                    </AccordionElements>
-
-                    <AccordionElements margin="24px 0 24px 0" title="Settings">
-                        <DashboardMode />
-                        <Themes />
-                    </AccordionElements>
-                    <Version />
-                </FooterContainer>
-
+                        <AccordionElements margin="24px 0 24px 0" title="Settings">
+                            <DashboardMode />
+                            <Themes />
+                        </AccordionElements>
+                        <Version />
+                    </FooterContainer>
             </NavbarContainer>
-        </header>
+        </Header>
   )
 }
 

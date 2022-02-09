@@ -1,35 +1,62 @@
 import { indents } from 'constants/style'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+
+const handleSidebarOpen = (p) =>
+  p.openSidebar
+    ? null
+    : css`
+        visibility: hidden;
+        width: 30px;
+        padding: 0;
+        .toggle-sidebar {
+          color: ${(props) => props.theme.colors.oxfordBlueTint3};
+          visibility: visible;
+        }
+      `
 
 export const NavbarContainer = styled.div`
-  width: 330px;
-  height: calc(100vh - 80px);
-  overflow-x: hidden;
-  overflow-y: auto;
+  width: 300px;
   display: grid;
+  height: 100%;
+  position: relative;
   align-content: space-between;
-  padding: ${indents['40']};
-  border-right: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
+  padding: ${indents['30']};
+  transition: all 0.5s ease-in-out;
 
-  .header__logo {
-    margin-bottom: 54px;
+  ${(p) => handleSidebarOpen(p)}
+
+  &:hover .toggle-sidebar {
+    color: ${(props) => props.theme.colors.oxfordBlueTint3};
   }
-`
 
-export const LinksContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+  @media screen and (max-width: 1450px) {
+    padding: ${indents['15']};
+    width: 270px;
+
+    ${(p) => handleSidebarOpen(p)}
+
+    &:hover .toggle-sidebar {
+      color: ${(props) => props.theme.colors.oxfordBlueTint3};
+
+    }
+  }
 `
 
 export const FooterContainer = styled.div`
   margin-top: 20px;
 `
 
+export const Header = styled.div`
+  border-right: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
+  height: calc(100vh - 70px);
+`
+
 export const ListContainer = styled.div`
-  display: block;
-  width: 100%;
+  display: inline;
+
+  overflow-x: hidden;
+  overflow-y: auto;
 `
 
 export const ListTitle = styled.div`
@@ -52,8 +79,7 @@ export const LinkGroup = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  padding: 0 14px 0 0;
+  width: 220px;
 
   :hover {
     background: ${(props) => props.theme.colors.oxfordBlueTint1};
@@ -61,7 +87,7 @@ export const LinkGroup = styled.div`
 
   button {
     margin: 0;
-    padding: 0;
+    padding-right: 4px;
     background: transparent;
     color: ${(props) => props.theme.colors.white};
     border: none;
