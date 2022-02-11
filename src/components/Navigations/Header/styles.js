@@ -36,6 +36,10 @@ export const HeaderWrapper = styled.div`
   padding: 0 60px 0 40px;
   border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
   height: 70px;
+
+  @media screen and (max-width: 1450px) {
+    padding: 0 30px 0 20px;
+  }
 `
 
 export const WrapLogo = styled.div`

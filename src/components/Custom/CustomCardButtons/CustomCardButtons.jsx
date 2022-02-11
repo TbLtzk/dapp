@@ -30,11 +30,15 @@ function CustomCardButtons ({ eventKey, shareText, open, setOpen = () => {}, one
                     </div>
                 </CopyToClipboard>
             </Tooltip>
-            {onePage ? null : <div style={{ width: '20px' }} />}
             {onePage
               ? null
               : (
-                <Button iconFontSize="16px" handleButton={handleOpen} icon={`chevron-${open ? 'up' : 'down'}`} />
+                <Button
+                    iconFontSize="16px"
+                    margin="0 0 0 20px"
+                    handleButton={handleOpen}
+                    icon={`chevron-${open ? 'up' : 'down'}`}
+                />
                 )}
         </>
   )

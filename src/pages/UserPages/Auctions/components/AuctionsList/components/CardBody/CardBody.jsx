@@ -1,4 +1,5 @@
 import { CONTRACTS_NAMES } from 'constants/contracts'
+import { AuctionCardBodyContainer } from 'pages/UserPages/Auctions/styles'
 import React from 'react'
 
 import { useSelector } from 'react-redux'
@@ -9,8 +10,8 @@ function CardBody ({ auction }) {
   const symbolType = useSelector(symbol)
 
   return (
-        <div>
-            <div className="list-card__three-colm">
+        <AuctionCardBodyContainer>
+            <div className="auction-card_elements">
                 <div>
                     <h5>Highest Bid</h5>
                     <p>
@@ -66,7 +67,7 @@ function CardBody ({ auction }) {
                 </div>
             </div>
             <AuctionActions auction={auction} />
-        </div>
+        </AuctionCardBodyContainer>
   )
 }
 

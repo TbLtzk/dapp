@@ -377,4 +377,11 @@ export const ListCardBody = styled(Card.Body)`
   padding: 20px;
   margin-bottom: 16px;
   border: none;
+
+  @media screen and (max-width: 1150px) {
+    .list-card__three-colm {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+  }
 `

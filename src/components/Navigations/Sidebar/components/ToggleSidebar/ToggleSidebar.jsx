@@ -3,11 +3,10 @@ import styled, { css } from 'styled-components'
 
 const ToggleSidebarWrapper = styled.div`
     position: absolute;
-    right: -14px;
-
-    top: 5px;
-    z-index: 40;
+    right: ${(p) => p.right};
     color: transparent;
+    top: 5px;
+    z-index: 12;
 
     ${(p) =>
         p.openSidebar
@@ -16,6 +15,7 @@ const ToggleSidebarWrapper = styled.div`
               `
             : css`
                   transform: rotate(180deg);
+                  color: ${(p) => p.theme.colors.oxfordBlueTint3};
               `}
     i {
         cursor: pointer;
@@ -27,14 +27,20 @@ const ToggleSidebarWrapper = styled.div`
     }
 `
 
-function ToggleSidebar ({ openSidebar, setOpenSidebar }) {
+function ToggleSidebar ({ openSidebar, setOpenSidebar, right }) {
   const handleClick = () => {
-    setOpenSidebar(!openSidebar)
+    if (openSidebar) {
+      setOpenSidebar('')
+      localStorage.setItem('sidebar-toggle', '0')
+    } else {
+      setOpenSidebar('0')
+      localStorage.setItem('sidebar-toggle', '')
+    }
   }
 
   return (
-        <ToggleSidebarWrapper className="toggle-sidebar" openSidebar={openSidebar} onClick={handleClick}>
-            <i className="mdi mdi-arrow-left-drop-circle" />
+        <ToggleSidebarWrapper right={right} className="sidebar_toggle" openSidebar={openSidebar} onClick={handleClick}>
+            <i className="mdi mdi-arrow-left-bold-box" />
         </ToggleSidebarWrapper>
   )
 }

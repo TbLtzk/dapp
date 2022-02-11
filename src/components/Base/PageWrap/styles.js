@@ -6,12 +6,16 @@ import { scrollbarStyle } from 'constants/globalStyle'
 
 export const WrapContainer = styled(Container)`
   position: relative;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 70px);
   overflow-x: hidden;
   overflow-y: auto;
 
   background: ${(props) => props.theme.colors.oxfordBlue};
   padding: 0 ${indents['45']} 0 ${indents['40']};
+
+  @media screen and (max-width: 1550px) {
+    padding: 0 ${indents['15']} 0 ${indents['15']};
+  }
 `
 
 export const Page = styled.div`

@@ -11,13 +11,13 @@ import {
   systemDebtAuctionsSelector,
   systemSurplusAuctionsSelector
 } from 'store/auctions/selectors'
+import { mode } from 'store/dashboard-mode/selectors'
 
 import Version from './components/Version'
 
 import { referencesItems } from './constants'
 
-import { NavbarContainer, ListContainer, ALinkStyle, FooterContainer, Header } from './styles'
-import { mode } from 'store/dashboard-mode/selectors'
+import { LinksContainer, ALinkStyle, FooterContainer, SidebarContainer } from './styles'
 import { MODE } from 'components/Base/DashboardMode/DashboardMode'
 import CommonLinks from './components/CommonLinks'
 import AccordionLinks from './components/AccordionLinks'
@@ -47,204 +47,193 @@ function Sidebar () {
   const systemSurplusActiveAuctionsCount = systemSurplusAuction?.activeAuctions?.length
 
   const highlight = (location) => Number(history.location.pathname === '/' + location)
+  const [openSidebar, setOpenSidebar] = useState(localStorage.getItem('sidebar-toggle') ? '' : '0')
 
-  const [openSidebar, setOpenSidebar] = useState(true)
   const dashboard = (
-        <CommonLinks
-            icon="view-dashboard-variant"
-            openSidebar={openSidebar}
-            highlight={highlight('')}
-            linkTo="/"
-            linkTitle="Dashboard"
-        />
+        <CommonLinks openSidebar={openSidebar} highlight={highlight('')} linkTo="/" linkTitle="Dashboard" />
   )
 
   return (
-        <Header>
-            <NavbarContainer openSidebar={openSidebar}>
-                    <ToggleSidebar setOpenSidebar={setOpenSidebar} openSidebar={openSidebar} />
-                    <ListContainer id="basic-navbar-nav">
-                        {appMode === MODE.advanced
-                          ? (
-                            <AccordionLinks type="dashboard-toggle" headerLink={dashboard}>
-                                <CommonLinks
-                                    highlight={highlight('monitoring')}
-                                    linkTo="/monitoring"
-                                    linkTitle="– Monitoring"
-                                />
-                            </AccordionLinks>
-                            )
-                          : (
-                              dashboard
-                            )}
+        <SidebarContainer openSidebar={openSidebar}>
+            <div className="sidebar_container">
+                <ToggleSidebar right="-15px" openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
+                <LinksContainer className="sidebar_links">
+                    {appMode === MODE.advanced
+                      ? (
+                        <AccordionLinks type="dashboard-toggle" headerLink={dashboard}>
+                            <CommonLinks
+                                highlight={highlight('monitoring')}
+                                linkTo="/monitoring"
+                                linkTitle="– Monitoring"
+                            />
+                        </AccordionLinks>
+                        )
+                      : (
+                          dashboard
+                        )}
 
+                    <AccordionLinks
+                        type="governance-toggle"
+                        headerLink={
+                            <CommonLinks
+                                openSidebar={openSidebar}
+                                highlight={highlight('q-governance')}
+                                linkTo="/q-governance"
+                                linkTitle="Governance"
+                            />
+                        }
+                    >
+                        <div>
+                            <CommonLinks
+                                highlight={highlight('q-proposals')}
+                                linkTo="/q-proposals"
+                                count={qActiveProposalsCount}
+                                linkTitle="– Q Proposals"
+                            />
+
+                            <CommonLinks
+                                highlight={highlight('q-root-node-panel')}
+                                linkTo="/q-root-node-panel"
+                                count={rootActiveProposalsCount}
+                                linkTitle="– Root Node Panel"
+                            />
+
+                            {appMode === MODE.advanced
+                              ? (
+                                <>
+                                    <CommonLinks
+                                        highlight={highlight('q-expert-proposals')}
+                                        linkTo="/q-expert-proposals"
+                                        count={expertActiveProposalsCount}
+                                        linkTitle="– Expert Proposals"
+                                    />
+                                    <CommonLinks
+                                        highlight={highlight('slashing-proposals')}
+                                        linkTo="/slashing-proposals"
+                                        count={slashingActiveProposalsCount}
+                                        linkTitle="– Slashing Proposals"
+                                    />
+                                    <CommonLinks
+                                        highlight={highlight('contract-updates')}
+                                        linkTo="/contract-updates"
+                                        count={contractUpdatesActiveProposalsCount}
+                                        linkTitle="– Contract Updates"
+                                    />
+                                </>
+                                )
+                              : null}
+                        </div>
+                    </AccordionLinks>
+
+                    <CommonLinks
+                        openSidebar={openSidebar}
+                        highlight={highlight('q-vault')}
+                        linkTo="/q-vault"
+                        linkTitle="Q Vault"
+                    />
+
+                    {appMode === MODE.advanced
+                      ? (
                         <AccordionLinks
-                            type="governance-toggle"
+                            type="consensus-toggle"
                             headerLink={
                                 <CommonLinks
                                     openSidebar={openSidebar}
-                                    icon="vote"
-                                    highlight={highlight('q-governance')}
-                                    linkTo="/q-governance"
-                                    linkTitle="Governance"
+                                    icon="account-group"
+                                    linkTo="/root-node-staking"
+                                    linkTitle="Consensus Services"
                                 />
                             }
                         >
                             <div>
                                 <CommonLinks
-                                    highlight={highlight('q-proposals')}
-                                    linkTo="/q-proposals"
-                                    count={qActiveProposalsCount}
-                                    linkTitle="– Q Proposals"
+                                    highlight={highlight('root-node-staking')}
+                                    linkTo="/root-node-staking"
+                                    linkTitle="– Root Node Staking"
                                 />
-
                                 <CommonLinks
-                                    highlight={highlight('q-root-node-panel')}
-                                    linkTo="/q-root-node-panel"
-                                    count={rootActiveProposalsCount}
-                                    linkTitle="– Root Node Panel"
+                                    highlight={highlight('validator-staking')}
+                                    linkTo="/validator-staking"
+                                    linkTitle="– Validator Staking"
                                 />
-
-                                {appMode === MODE.advanced
-                                  ? (
-                                    <>
-                                        <CommonLinks
-                                            highlight={highlight('q-expert-proposals')}
-                                            linkTo="/q-expert-proposals"
-                                            count={expertActiveProposalsCount}
-                                            linkTitle="– Expert Proposals"
-                                        />
-                                        <CommonLinks
-                                            highlight={highlight('slashing-proposals')}
-                                            linkTo="/slashing-proposals"
-                                            count={slashingActiveProposalsCount}
-                                            linkTitle="– Slashing Proposals"
-                                        />
-                                        <CommonLinks
-                                            highlight={highlight('contract-updates')}
-                                            linkTo="/contract-updates"
-                                            count={contractUpdatesActiveProposalsCount}
-                                            linkTitle="– Contract Updates"
-                                        />
-                                    </>
-                                    )
-                                  : null}
                             </div>
                         </AccordionLinks>
-
-                        <CommonLinks
-                            openSidebar={openSidebar}
-                            icon="safe"
-                            highlight={highlight('q-vault')}
-                            linkTo="/q-vault"
-                            linkTitle="Q Vault"
-                        />
-
-                        {appMode === MODE.advanced
-                          ? (
+                        )
+                      : null}
+                    <CommonLinks
+                        openSidebar={openSidebar}
+                        highlight={highlight('saving-and-borrowing')}
+                        linkTo="/saving-and-borrowing"
+                        linkTitle="Saving & Borrowing"
+                    />
+                    {appMode === MODE.advanced
+                      ? (
+                        <>
                             <AccordionLinks
-                                type="consensus-toggle"
+                                type="auctions-toggle"
                                 headerLink={
                                     <CommonLinks
                                         openSidebar={openSidebar}
-                                        icon="account-group"
-                                        linkTo="/root-node-staking"
-                                        linkTitle="Consensus Services"
+                                        linkTo="/liquidation"
+                                        linkTitle="Decentralized Auctions"
                                     />
                                 }
                             >
                                 <div>
                                     <CommonLinks
-                                        highlight={highlight('root-node-staking')}
-                                        linkTo="/root-node-staking"
-                                        linkTitle="– Root Node Staking"
+                                        highlight={highlight('liquidation')}
+                                        linkTo="/liquidation"
+                                        count={liquidationActiveAuctionsCount}
+                                        linkTitle="– Liquidation"
                                     />
+
                                     <CommonLinks
-                                        highlight={highlight('validator-staking')}
-                                        linkTo="/validator-staking"
-                                        linkTitle="– Validator Staking"
+                                        highlight={highlight('system-debt')}
+                                        linkTo="/system-debt"
+                                        count={systemDebtActiveAuctionsCount}
+                                        linkTitle="– System Debt"
+                                    />
+
+                                    <CommonLinks
+                                        highlight={highlight('system-surplus')}
+                                        linkTo="/system-surplus"
+                                        count={systemSurplusActiveAuctionsCount}
+                                        linkTitle="– System Surplus"
                                     />
                                 </div>
                             </AccordionLinks>
-                            )
-                          : null}
-                        <CommonLinks
-                            openSidebar={openSidebar}
-                            icon="handshake"
-                            highlight={highlight('saving-and-borrowing')}
-                            linkTo="/saving-and-borrowing"
-                            linkTitle="Saving & Borrowing"
-                        />
-                        {appMode === MODE.advanced
-                          ? (
-                            <>
-                                <AccordionLinks
-                                    type="auctions-toggle"
-                                    headerLink={
-                                        <CommonLinks
-                                            openSidebar={openSidebar}
-                                            icon="gavel"
-                                            linkTo="/liquidation"
-                                            linkTitle="Decentralized Auctions"
-                                        />
-                                    }
-                                >
-                                    <div>
-                                        <CommonLinks
-                                            highlight={highlight('liquidation')}
-                                            linkTo="/liquidation"
-                                            count={liquidationActiveAuctionsCount}
-                                            linkTitle="– Liquidation"
-                                        />
+                            <CommonLinks
+                                openSidebar={openSidebar}
+                                highlight={highlight('time-locks')}
+                                linkTo="/time-locks"
+                                linkTitle="Time Locks"
+                            />
+                        </>
+                        )
+                      : null}
+                </LinksContainer>
+                <FooterContainer>
+                    <AccordionElements margin="24px 0 0 0" title="References">
+                        {referencesItems.map((value, key) => (
+                            <ALinkStyle
+                                key={'references' + key}
+                                className="nav-link"
+                                href={value.location}
+                                target="_blank"
+                            >
+                                {value.label}
+                            </ALinkStyle>
+                        ))}
+                    </AccordionElements>
 
-                                        <CommonLinks
-                                            highlight={highlight('system-debt')}
-                                            linkTo="/system-debt"
-                                            count={systemDebtActiveAuctionsCount}
-                                            linkTitle="– System Debt"
-                                        />
-
-                                        <CommonLinks
-                                            highlight={highlight('system-surplus')}
-                                            linkTo="/system-surplus"
-                                            count={systemSurplusActiveAuctionsCount}
-                                            linkTitle="– System Surplus"
-                                        />
-                                    </div>
-                                </AccordionLinks>
-                                <CommonLinks
-                                    openSidebar={openSidebar}
-                                    icon="timetable"
-                                    highlight={highlight('time-locks')}
-                                    linkTo="/time-locks"
-                                    linkTitle="Time Locks"
-                                />
-                            </>
-                            )
-                          : null}
-                    </ListContainer>
-                    <FooterContainer>
-                        <AccordionElements margin="24px 0 0 0" title="References">
-                            {referencesItems.map((value, key) => (
-                                <ALinkStyle
-                                    key={'references' + key}
-                                    className="nav-link"
-                                    href={value.location}
-                                    target="_blank"
-                                >
-                                    {value.label}
-                                </ALinkStyle>
-                            ))}
-                        </AccordionElements>
-
-                        <AccordionElements margin="24px 0 24px 0" title="Settings">
-                            <DashboardMode />
-                            <Themes />
-                        </AccordionElements>
-                        <Version />
-                    </FooterContainer>
-            </NavbarContainer>
-        </Header>
+                    <AccordionElements margin="24px 0 24px 0" title="Settings">
+                        <DashboardMode />
+                        <Themes />
+                    </AccordionElements>
+                    <Version />
+                </FooterContainer>
+            </div>
+        </SidebarContainer>
   )
 }
 

@@ -2,61 +2,74 @@ import { indents } from 'constants/style'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
-const handleSidebarOpen = (p) =>
-  p.openSidebar
-    ? null
-    : css`
-        visibility: hidden;
-        width: 30px;
+function handleSidebarOpen (p, width, padding, left) {
+  if (!p.openSidebar) {
+    return css`
+      margin-right: ${indents['30']};
+      .sidebar_container {
+        position: absolute;
         padding: 0;
-        .toggle-sidebar {
-          color: ${(props) => props.theme.colors.oxfordBlueTint3};
+        left: ${left};
+        .sidebar_links {
+          transition: all 0.3s ease-in-out;
+          visibility: hidden;
+        }
+      }
+      .sidebar_container:hover {
+        transition-delay: 0.3s;
+        padding: ${padding};
+        width: ${width};
+        left: 0;
+        background-color: ${(props) => props.theme.colors.oxfordBlue};
+        .sidebar_links {
+          transition-delay: 0.3s;
           visibility: visible;
         }
-      `
-
-export const NavbarContainer = styled.div`
-  width: 300px;
-  display: grid;
-  height: 100%;
-  position: relative;
-  align-content: space-between;
-  padding: ${indents['30']};
-  transition: all 0.5s ease-in-out;
-
-  ${(p) => handleSidebarOpen(p)}
-
-  &:hover .toggle-sidebar {
-    color: ${(props) => props.theme.colors.oxfordBlueTint3};
+      }
+    `
   }
-
-  @media screen and (max-width: 1450px) {
-    padding: ${indents['15']};
-    width: 270px;
-
-    ${(p) => handleSidebarOpen(p)}
-
-    &:hover .toggle-sidebar {
-      color: ${(props) => props.theme.colors.oxfordBlueTint3};
-
-    }
-  }
-`
+  return null
+}
 
 export const FooterContainer = styled.div`
   margin-top: 20px;
 `
 
-export const Header = styled.div`
-  border-right: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
+export const SidebarContainer = styled.div`
   height: calc(100vh - 70px);
+  position: relative;
+  .sidebar_container {
+    display: grid;
+    width: 310px;
+    position: relative;
+    height: 100%;
+    transition: all 0.3s ease-in-out;
+    align-content: space-between;
+    padding: ${indents['30']};
+    background-color: ${(props) => props.theme.colors.oxfordBlue};
+    z-index: 10;
+
+    border-right: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
+  }
+  ${(p) => handleSidebarOpen(p, '310px', indents['30'], '-280px')}
+
+  &:hover .sidebar_toggle {
+    color: ${(props) => props.theme.colors.oxfordBlueTint3};
+  }
+
+  @media screen and (max-width: 1550px) {
+    .sidebar_container {
+      padding: ${indents['15']};
+      width: 280px;
+    }
+    ${(p) => handleSidebarOpen(p, '280px', indents['15'], '-250px')}
+  }
 `
 
-export const ListContainer = styled.div`
+export const LinksContainer = styled.div`
   display: inline;
-
-  overflow-x: hidden;
   overflow-y: auto;
+  overflow-x: hidden;
 `
 
 export const ListTitle = styled.div`
@@ -79,7 +92,9 @@ export const LinkGroup = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 220px;
+  width: 230px;
+  border-radius: 4px;
+  padding-right: 5px;
 
   :hover {
     background: ${(props) => props.theme.colors.oxfordBlueTint1};
@@ -91,6 +106,9 @@ export const LinkGroup = styled.div`
     background: transparent;
     color: ${(props) => props.theme.colors.white};
     border: none;
+    &:hover {
+      color: ${(props) => props.theme.colors.neonGreen};
+    }
   }
 `
 

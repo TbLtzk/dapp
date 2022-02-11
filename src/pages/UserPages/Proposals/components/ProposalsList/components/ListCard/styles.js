@@ -340,20 +340,16 @@ export const ListCardWrp = styled(Card)`
   }
 `
 
-export const ListCardHeader = styled(Card.Header)`
+export const ListCardHeader = styled.div`
   padding: 20px 20px 0 20px;
   background: ${(props) => props.theme.colors.oxfordBlueTint1};
   border-radius: 3px 3px 0 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   border: none;
+  display: flex;
+  justify-content: space-between;
 
-  & > *:not(:first-child) {
-    text-align: right;
-  }
-
-  & > *:first-child {
+  .card__title {
+    display: flex;
     align-items: center;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -365,10 +361,35 @@ export const ListCardHeader = styled(Card.Header)`
       text-overflow: ellipsis;
       overflow: hidden;
     }
+    .list-card__status {
+      height: 20px;
+    }
+  }
+  .card__buttons {
+    width: 150px;
+    display: flex;
+    justify-content: flex-end;
   }
 
-  & > * {
-    display: flex;
+  @media screen and (max-width: 1150px) {
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+
+    .card__title {
+      align-self: flex-start;
+    }
+
+    .card__buttons {
+      flex-direction: column-reverse;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 40px;
+      position: absolute;
+      top: 20px;
+      right: 10px;
+      height: 90px;
+    }
   }
 `
 
@@ -378,4 +399,9 @@ export const ListCardBody = styled(Card.Body)`
   padding: 20px;
   margin-bottom: 16px;
   border: none;
+
+  @media screen and (max-width: 1150px) {
+    display: flex;
+    flex-direction: column;
+  }
 `
