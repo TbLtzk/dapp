@@ -56,21 +56,21 @@ function VoteBreakdown ({ voteBreakdown }) {
                     <h5>Current Majority: {voteBreakdown.currentMajority} %</h5>
                     <h5>Majority Requirement: {voteBreakdown.requiredMajority} %</h5>
 
-                    <div className="list-card__line" />
-
-                    <h3>Vote Requirements</h3>
-
                     {approveContract
                       ? null
                       : (
-                        <div className="vote-breakdown__requirement-quorum">
-                            <div>
-                                <h5>Quorum</h5>
-                                <p>{voteBreakdown.requiredQuorum} %</p>
-                                <h5>Current Quorum</h5>
-                                <p>{voteBreakdown.currentQuorum} %</p>
+                        <>
+                            <div className="list-card__line" />
+                            <h3>Vote Requirements</h3>
+                            <div className="vote-breakdown__requirement-quorum">
+                                <div>
+                                    <h5>Quorum</h5>
+                                    <p>{voteBreakdown.requiredQuorum} %</p>
+                                    <h5>Current Quorum</h5>
+                                    <p>{voteBreakdown.currentQuorum} %</p>
+                                </div>
                             </div>
-                        </div>
+                        </>
                         )}
                 </div>
 

@@ -1,13 +1,13 @@
 import React from 'react'
 import { AccordionLbl, LinkGroup, LinkStyle } from '../../styles'
 
-function CommonLinks ({ linkTo, count = 0, linkTitle, highlight }) {
+function CommonLinks ({ linkTo, count = 0, linkTitle }) {
   return (
         <LinkGroup>
-            <LinkStyle to={linkTo} className="nav-link" highlight={highlight}>
+            <LinkStyle exact activeClassName="highlight" to={linkTo}>
                 {linkTitle}
             </LinkStyle>
-            {count <= 0 ? null : <AccordionLbl highlight={highlight}>{count}</AccordionLbl>}
+            {count <= 0 ? null : <AccordionLbl activeClassName="highlight">{count}</AccordionLbl>}
         </LinkGroup>
   )
 }

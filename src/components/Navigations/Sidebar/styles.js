@@ -1,6 +1,6 @@
-import { indents } from 'constants/style'
-import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
+import { indents } from 'constants/style'
+import { NavLink } from 'react-router-dom'
 
 function handleSidebarOpen (p, width, padding, left) {
   if (!p.openSidebar) {
@@ -47,6 +47,7 @@ function handleSidebarOpen (p, width, padding, left) {
 
 export const FooterContainer = styled.div`
   margin-top: 20px;
+  margin-left: 12px;
 `
 
 export const SidebarContainer = styled.div`
@@ -114,6 +115,7 @@ export const LinkGroup = styled.div`
   width: 230px;
   border-radius: 4px;
   padding-right: 5px;
+  color: ${(props) => props.theme.colors.white};
 
   :hover {
     background: ${(props) => props.theme.colors.oxfordBlueTint1};
@@ -131,13 +133,22 @@ export const LinkGroup = styled.div`
   }
 `
 
-export const LinkStyle = styled(Link)`
+export const LinkStyle = styled(NavLink)`
   padding: 6px 12px;
   font-size: 15px;
-  color: ${(props) =>
-    props.highlight === 1 ? (props) => props.theme.colors.activeLinks : (props) => props.theme.colors.white} !important;
+  color: ${(p) => p.theme.colors.white};
+
+  &.${(props) => props.activeClassName} {
+    color: ${(p) => p.theme.colors.activeLinks};
+  }
 
   :hover {
+    cursor: pointer;
+    text-decoration: none;
+    color: ${(p) => p.theme.colors.white};
+    &.${(props) => props.activeClassName} {
+      color: ${(p) => p.theme.colors.activeLinks};
+    }
     background: ${(props) => props.theme.colors.oxfordBlueTint1};
   }
 `
@@ -167,6 +178,9 @@ export const AccordionIcon = styled.div`
   transform: rotate(${(props) => (props.state ? '180deg' : '0')});
   transition-duration: 0.1s;
   transition-property: transform;
+  &.${(props) => props.activeClassName} {
+    color: ${(p) => p.theme.colors.activeLinks};
+  }
 `
 
 export const AccordionLbl = styled.div`

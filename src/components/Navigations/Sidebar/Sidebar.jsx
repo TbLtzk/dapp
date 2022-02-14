@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
-
 import { useSelector } from 'react-redux'
+
 import { qActiveProposalsCountSelector } from 'store/voting/q-proposals/selectors'
 import { rootActiveProposalsCountSelector } from 'store/voting/root-node-proposals/selectors'
 import { expertActiveProposalsCountSelector } from 'store/voting/expert-proposals/selectors'
@@ -11,24 +10,22 @@ import {
   systemDebtAuctionsSelector,
   systemSurplusAuctionsSelector
 } from 'store/auctions/selectors'
+import { contractUpdatesActiveProposalsCountSelector } from 'store/voting/contract-updates/selectors'
 import { mode } from 'store/dashboard-mode/selectors'
 
-import Version from './components/Version'
-
-import { referencesItems } from './constants'
-
-import { LinksContainer, ALinkStyle, FooterContainer, SidebarContainer } from './styles'
 import { MODE } from 'components/Base/DashboardMode/DashboardMode'
 import CommonLinks from './components/CommonLinks'
 import AccordionLinks from './components/AccordionLinks'
 import DashboardMode from 'components/Base/DashboardMode'
 import Themes from 'components/Base/Themes'
 import AccordionElements from './components/AccordionElements'
-import { contractUpdatesActiveProposalsCountSelector } from 'store/voting/contract-updates/selectors'
 import ToggleSidebar from './components/ToggleSidebar'
+import Version from './components/Version'
+
+import { LinksContainer, ALinkStyle, FooterContainer, SidebarContainer } from './styles'
+import { referencesItems } from './constants'
 
 function Sidebar () {
-  const history = useHistory()
   const appMode = useSelector(mode)
 
   const qActiveProposalsCount = useSelector(qActiveProposalsCountSelector)
@@ -46,13 +43,12 @@ function Sidebar () {
   const systemSurplusAuction = useSelector(systemSurplusAuctionsSelector)
   const systemSurplusActiveAuctionsCount = systemSurplusAuction?.activeAuctions?.length
 
-  const highlight = (location) => Number(history.location.pathname === '/' + location)
   const [openSidebar, setOpenSidebar] = useState(localStorage.getItem('sidebar-toggle') ? '' : '0')
 
   const dashboard = (
-        <CommonLinks openSidebar={openSidebar} highlight={highlight('')} linkTo="/" linkTitle="Dashboard" />
+        <CommonLinks openSidebar={openSidebar} linkTo="/" linkTitle="Dashboard" />
   )
-  console.log('render')
+
   return (
         <SidebarContainer openSidebar={openSidebar}>
             <div className="sidebar_container">
@@ -61,11 +57,7 @@ function Sidebar () {
                     {appMode === MODE.advanced
                       ? (
                         <AccordionLinks type="dashboard-toggle" headerLink={dashboard}>
-                            <CommonLinks
-                                highlight={highlight('monitoring')}
-                                linkTo="/monitoring"
-                                linkTitle="– Monitoring"
-                            />
+                            <CommonLinks linkTo="/monitoring" linkTitle="– Monitoring" />
                         </AccordionLinks>
                         )
                       : (
@@ -75,24 +67,17 @@ function Sidebar () {
                     <AccordionLinks
                         type="governance-toggle"
                         headerLink={
-                            <CommonLinks
-                                openSidebar={openSidebar}
-                                highlight={highlight('q-governance')}
-                                linkTo="/q-governance"
-                                linkTitle="Governance"
-                            />
+                            <CommonLinks openSidebar={openSidebar} linkTo="/q-governance" linkTitle="Governance" />
                         }
                     >
                         <div>
                             <CommonLinks
-                                highlight={highlight('q-proposals')}
                                 linkTo="/q-proposals"
                                 count={qActiveProposalsCount}
                                 linkTitle="– Q Proposals"
                             />
 
                             <CommonLinks
-                                highlight={highlight('q-root-node-panel')}
                                 linkTo="/q-root-node-panel"
                                 count={rootActiveProposalsCount}
                                 linkTitle="– Root Node Panel"
@@ -102,19 +87,16 @@ function Sidebar () {
                               ? (
                                 <>
                                     <CommonLinks
-                                        highlight={highlight('q-expert-proposals')}
                                         linkTo="/q-expert-proposals"
                                         count={expertActiveProposalsCount}
                                         linkTitle="– Expert Proposals"
                                     />
                                     <CommonLinks
-                                        highlight={highlight('slashing-proposals')}
                                         linkTo="/slashing-proposals"
                                         count={slashingActiveProposalsCount}
                                         linkTitle="– Slashing Proposals"
                                     />
                                     <CommonLinks
-                                        highlight={highlight('contract-updates')}
                                         linkTo="/contract-updates"
                                         count={contractUpdatesActiveProposalsCount}
                                         linkTitle="– Contract Updates"
@@ -125,12 +107,7 @@ function Sidebar () {
                         </div>
                     </AccordionLinks>
 
-                    <CommonLinks
-                        openSidebar={openSidebar}
-                        highlight={highlight('q-vault')}
-                        linkTo="/q-vault"
-                        linkTitle="Q Vault"
-                    />
+                    <CommonLinks openSidebar={openSidebar} linkTo="/q-vault" linkTitle="Q Vault" />
 
                     {appMode === MODE.advanced
                       ? (
@@ -146,23 +123,14 @@ function Sidebar () {
                             }
                         >
                             <div>
-                                <CommonLinks
-                                    highlight={highlight('root-node-staking')}
-                                    linkTo="/root-node-staking"
-                                    linkTitle="– Root Node Staking"
-                                />
-                                <CommonLinks
-                                    highlight={highlight('validator-staking')}
-                                    linkTo="/validator-staking"
-                                    linkTitle="– Validator Staking"
-                                />
+                                <CommonLinks linkTo="/root-node-staking" linkTitle="– Root Node Staking" />
+                                <CommonLinks linkTo="/validator-staking" linkTitle="– Validator Staking" />
                             </div>
                         </AccordionLinks>
                         )
                       : null}
                     <CommonLinks
                         openSidebar={openSidebar}
-                        highlight={highlight('saving-and-borrowing')}
                         linkTo="/saving-and-borrowing"
                         linkTitle="Saving & Borrowing"
                     />
@@ -181,33 +149,25 @@ function Sidebar () {
                             >
                                 <div>
                                     <CommonLinks
-                                        highlight={highlight('liquidation')}
                                         linkTo="/liquidation"
                                         count={liquidationActiveAuctionsCount}
                                         linkTitle="– Liquidation"
                                     />
 
                                     <CommonLinks
-                                        highlight={highlight('system-debt')}
                                         linkTo="/system-debt"
                                         count={systemDebtActiveAuctionsCount}
                                         linkTitle="– System Debt"
                                     />
 
                                     <CommonLinks
-                                        highlight={highlight('system-surplus')}
                                         linkTo="/system-surplus"
                                         count={systemSurplusActiveAuctionsCount}
                                         linkTitle="– System Surplus"
                                     />
                                 </div>
                             </AccordionLinks>
-                            <CommonLinks
-                                openSidebar={openSidebar}
-                                highlight={highlight('time-locks')}
-                                linkTo="/time-locks"
-                                linkTitle="Time Locks"
-                            />
+                            <CommonLinks openSidebar={openSidebar} linkTo="/time-locks" linkTitle="Time Locks" />
                         </>
                         )
                       : null}
@@ -238,4 +198,4 @@ function Sidebar () {
   )
 }
 
-export default React.memo(Sidebar)
+export default Sidebar

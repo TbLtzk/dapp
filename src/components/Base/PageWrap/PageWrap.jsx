@@ -11,4 +11,4 @@ function PageWrap ({ children, headerTitle, headerExtra, wrapContentClasses }) {
   )
 }
 
-export default React.memo(PageWrap)
+export default PageWrap

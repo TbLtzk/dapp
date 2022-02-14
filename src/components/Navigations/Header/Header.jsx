@@ -6,7 +6,6 @@ import Network from './components/Network'
 import { WrapLogo, HeaderWrapper, ElementsWrapper } from './styles'
 
 function Header () {
-  console.log('render header')
   return (
         <HeaderWrapper>
             <WrapLogo>
