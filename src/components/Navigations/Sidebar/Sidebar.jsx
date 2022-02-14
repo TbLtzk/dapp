@@ -52,11 +52,11 @@ function Sidebar () {
   const dashboard = (
         <CommonLinks openSidebar={openSidebar} highlight={highlight('')} linkTo="/" linkTitle="Dashboard" />
   )
-
+  console.log('render')
   return (
         <SidebarContainer openSidebar={openSidebar}>
             <div className="sidebar_container">
-                <ToggleSidebar right="-15px" openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
+                <i className="mdi mdi-chevron-right" />
                 <LinksContainer className="sidebar_links">
                     {appMode === MODE.advanced
                       ? (
@@ -229,6 +229,7 @@ function Sidebar () {
                     <AccordionElements margin="24px 0 24px 0" title="Settings">
                         <DashboardMode />
                         <Themes />
+                        <ToggleSidebar openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
                     </AccordionElements>
                     <Version />
                 </FooterContainer>
@@ -237,4 +238,4 @@ function Sidebar () {
   )
 }
 
-export default Sidebar
+export default React.memo(Sidebar)

@@ -6,8 +6,8 @@ export const PageTitleWrp = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding-bottom: ${indents['20']};
-  padding-top: ${indents['20']};
+  padding-bottom: ${indents['15']};
+  padding-top: ${indents['15']};
 
   a {
     text-decoration: none;

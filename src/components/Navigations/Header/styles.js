@@ -37,7 +37,7 @@ export const HeaderWrapper = styled.div`
   border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
   height: 70px;
 
-  @media screen and (max-width: 1450px) {
+  @media screen and (max-width: 1550px) {
     padding: 0 30px 0 20px;
   }
 `

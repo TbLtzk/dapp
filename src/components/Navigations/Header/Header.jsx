@@ -6,6 +6,7 @@ import Network from './components/Network'
 import { WrapLogo, HeaderWrapper, ElementsWrapper } from './styles'
 
 function Header () {
+  console.log('render header')
   return (
         <HeaderWrapper>
             <WrapLogo>
@@ -21,4 +22,4 @@ function Header () {
   )
 }
 
-export default Header
+export default React.memo(Header)

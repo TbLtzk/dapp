@@ -14,6 +14,16 @@ function handleSidebarOpen (p, width, padding, left) {
           transition: all 0.3s ease-in-out;
           visibility: hidden;
         }
+        .mdi-chevron-right {
+          font-size: 40px;
+          position: absolute;
+          transition: all 0.3s ease-in-out;
+          top: 40%;
+          display: block;
+          right: -5px;
+          visibility: visible;
+          color: ${(props) => props.theme.colors.oxfordBlueTint3};
+        }
       }
       .sidebar_container:hover {
         transition-delay: 0.3s;
@@ -24,6 +34,10 @@ function handleSidebarOpen (p, width, padding, left) {
         .sidebar_links {
           transition-delay: 0.3s;
           visibility: visible;
+        }
+        .mdi-chevron-right {
+          visibility: hidden;
+          transition-delay: 0.2s;
         }
       }
     `
@@ -38,6 +52,7 @@ export const FooterContainer = styled.div`
 export const SidebarContainer = styled.div`
   height: calc(100vh - 70px);
   position: relative;
+
   .sidebar_container {
     display: grid;
     width: 310px;
@@ -45,11 +60,15 @@ export const SidebarContainer = styled.div`
     height: 100%;
     transition: all 0.3s ease-in-out;
     align-content: space-between;
+
     padding: ${indents['30']};
     background-color: ${(props) => props.theme.colors.oxfordBlue};
     z-index: 10;
 
     border-right: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
+    .mdi-chevron-right {
+      display: none;
+    }
   }
   ${(p) => handleSidebarOpen(p, '310px', indents['30'], '-280px')}
 

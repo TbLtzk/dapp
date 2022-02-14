@@ -6,11 +6,11 @@ import Routes from '../../../navigation/Routes'
 
 function App () {
   return (
-        <StyleLayout>
-            <BrowserRouter>
+        <BrowserRouter>
+            <StyleLayout>
                 <Routes />
-            </BrowserRouter>
-        </StyleLayout>
+            </StyleLayout>
+        </BrowserRouter>
   )
 }
 

@@ -30,3 +30,17 @@ function DashboardMode () {
 }
 
 export default DashboardMode
+
+export function SidebarTg ({ openSidebar, setOpenSidebar }) {
+  function changeMode () {
+    if (openSidebar) {
+      setOpenSidebar('')
+      localStorage.setItem('sidebar-toggle', '0')
+    } else {
+      setOpenSidebar('0')
+      localStorage.setItem('sidebar-toggle', '')
+    }
+  }
+
+  return <FormSwitch onChange={changeMode} id="sidebar-switcher" checked={!openSidebar} label="Hide sidebar" />
+}

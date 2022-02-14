@@ -18,13 +18,6 @@ export const WrapContainer = styled(Container)`
   }
 `
 
-export const Page = styled.div`
-  height: 100%;
-  .page__elements {
-    display: flex;
-  }
-`
-
 export const WrapContent = styled.div`
   min-height: 490px;
   max-width: 100%;
