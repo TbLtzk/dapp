@@ -354,14 +354,15 @@ export const ListCardHeader = styled.div`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    max-width: 85%;
 
     h1 {
-      max-width: 290px;
       align-items: center;
       text-overflow: ellipsis;
       overflow: hidden;
     }
     .list-card__status {
+      margin-right: 10px;
       height: 20px;
     }
   }
@@ -378,6 +379,7 @@ export const ListCardHeader = styled.div`
 
     .card__title {
       align-self: flex-start;
+      max-width: 85%;
     }
 
     .card__buttons {

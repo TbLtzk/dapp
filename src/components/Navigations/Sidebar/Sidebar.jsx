@@ -45,9 +45,7 @@ function Sidebar () {
 
   const [openSidebar, setOpenSidebar] = useState(localStorage.getItem('sidebar-toggle') ? '' : '0')
 
-  const dashboard = (
-        <CommonLinks openSidebar={openSidebar} linkTo="/" linkTitle="Dashboard" />
-  )
+  const dashboard = <CommonLinks openSidebar={openSidebar} linkTo="/" linkTitle="Dashboard" />
 
   return (
         <SidebarContainer openSidebar={openSidebar}>
@@ -66,11 +64,9 @@ function Sidebar () {
 
                     <AccordionLinks
                         type="governance-toggle"
-                        headerLink={
-                            <CommonLinks openSidebar={openSidebar} linkTo="/q-governance" linkTitle="Governance" />
-                        }
+                        headerLink={<CommonLinks linkTo="/q-governance" linkTitle="Governance" />}
                     >
-                        <div>
+                        <>
                             <CommonLinks
                                 linkTo="/q-proposals"
                                 count={qActiveProposalsCount}
@@ -104,10 +100,10 @@ function Sidebar () {
                                 </>
                                 )
                               : null}
-                        </div>
+                        </>
                     </AccordionLinks>
 
-                    <CommonLinks openSidebar={openSidebar} linkTo="/q-vault" linkTitle="Q Vault" />
+                    <CommonLinks linkTo="/q-vault" linkTitle="Q Vault" />
 
                     {appMode === MODE.advanced
                       ? (
@@ -115,25 +111,20 @@ function Sidebar () {
                             type="consensus-toggle"
                             headerLink={
                                 <CommonLinks
-                                    openSidebar={openSidebar}
-                                    icon="account-group"
+                                    type="accordion"
                                     linkTo="/root-node-staking"
                                     linkTitle="Consensus Services"
                                 />
                             }
                         >
-                            <div>
+                            <>
                                 <CommonLinks linkTo="/root-node-staking" linkTitle="– Root Node Staking" />
                                 <CommonLinks linkTo="/validator-staking" linkTitle="– Validator Staking" />
-                            </div>
+                            </>
                         </AccordionLinks>
                         )
                       : null}
-                    <CommonLinks
-                        openSidebar={openSidebar}
-                        linkTo="/saving-and-borrowing"
-                        linkTitle="Saving & Borrowing"
-                    />
+                    <CommonLinks linkTo="/saving-and-borrowing" linkTitle="Saving & Borrowing" />
                     {appMode === MODE.advanced
                       ? (
                         <>
@@ -141,13 +132,13 @@ function Sidebar () {
                                 type="auctions-toggle"
                                 headerLink={
                                     <CommonLinks
-                                        openSidebar={openSidebar}
+                                        type="accordion"
                                         linkTo="/liquidation"
                                         linkTitle="Decentralized Auctions"
                                     />
                                 }
                             >
-                                <div>
+                                <>
                                     <CommonLinks
                                         linkTo="/liquidation"
                                         count={liquidationActiveAuctionsCount}
@@ -165,7 +156,7 @@ function Sidebar () {
                                         count={systemSurplusActiveAuctionsCount}
                                         linkTitle="– System Surplus"
                                     />
-                                </div>
+                                </>
                             </AccordionLinks>
                             <CommonLinks openSidebar={openSidebar} linkTo="/time-locks" linkTitle="Time Locks" />
                         </>
