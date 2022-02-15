@@ -44,10 +44,6 @@ function InfBlocksUp () {
 
   const [blockNumber, setBlockNumber] = useState('0')
 
-  window.web3.eth.getBlock('latest').then((response) => {
-    setBlockNumber(response.number || 0)
-  })
-
   const dispatch = useDispatch()
   const constitutionHashShow = useSelector(constitutionHash)
 
@@ -59,47 +55,43 @@ function InfBlocksUp () {
   const rootEndedProposalsCount = useSelector(rootEndedProposalsCountSelector)
   const rootLoadingProposalsCount = useSelector(rootLoadingProposalsCountSelector)
 
-  const expertActiveProposalsCount = appMode === MODE.basic ? 0 : useSelector(expertActiveProposalsCountSelector)
-  const expertEndedProposalsCount = appMode === MODE.basic ? 0 : useSelector(expertEndedProposalsCountSelector)
-  const expertLoadingProposalsCount =
-        appMode === MODE.basic ? false : useSelector(expertLoadingProposalsCountSelector)
+  const expertActiveProposalsCount = useSelector(expertActiveProposalsCountSelector)
+  const expertEndedProposalsCount = useSelector(expertEndedProposalsCountSelector)
+  const expertLoadingProposalsCount = useSelector(expertLoadingProposalsCountSelector)
 
-  const slashingActiveProposalsCount = appMode === MODE.basic ? 0 : useSelector(slashingActiveProposalsCountSelector)
-  const slashingEndedProposalsCount = appMode === MODE.basic ? 0 : useSelector(slashingEndedProposalsCountSelector)
-  const slashingLoadingProposalsCount =
-        appMode === MODE.basic ? false : useSelector(slashingLoadingProposalsCountSelector)
+  const slashingActiveProposalsCount = useSelector(slashingActiveProposalsCountSelector)
+  const slashingEndedProposalsCount = useSelector(slashingEndedProposalsCountSelector)
+  const slashingLoadingProposalsCount = useSelector(slashingLoadingProposalsCountSelector)
 
-  const contractUpdatesActiveProposalsCount =
-        appMode === MODE.basic ? 0 : useSelector(contractUpdatesActiveProposalsCountSelector)
-  const contractUpdatesEndedProposalsCount =
-        appMode === MODE.basic ? 0 : useSelector(contractUpdatesEndedProposalsCountSelector)
-  const contractUpdatesLoadingProposalsCount =
-        appMode === MODE.basic ? false : useSelector(contractUpdatesLoadingProposalsCountSelector)
+  const contractUpdatesActiveProposalsCount = useSelector(contractUpdatesActiveProposalsCountSelector)
+  const contractUpdatesEndedProposalsCount = useSelector(contractUpdatesEndedProposalsCountSelector)
+  const contractUpdatesLoadingProposalsCount = useSelector(contractUpdatesLoadingProposalsCountSelector)
 
-  const activeProposals =
-        qActiveProposalsCount +
-        rootActiveProposalsCount +
-        expertActiveProposalsCount +
-        slashingActiveProposalsCount +
-        contractUpdatesActiveProposalsCount
+  const activeAdvancedProposals =
+        appMode === MODE.basic
+          ? 0
+          : expertActiveProposalsCount + slashingActiveProposalsCount + contractUpdatesActiveProposalsCount
 
-  const endedProposals =
-        rootEndedProposalsCount +
-        qEndedProposalsCount +
-        expertEndedProposalsCount +
-        slashingEndedProposalsCount +
-        contractUpdatesEndedProposalsCount
+  const activeProposals = qActiveProposalsCount + rootActiveProposalsCount + activeAdvancedProposals
 
-  const loadingProposals =
-        qLoadingProposalsCount ||
-        rootLoadingProposalsCount ||
-        expertLoadingProposalsCount ||
-        slashingLoadingProposalsCount ||
-        contractUpdatesLoadingProposalsCount
+  const endedAdvancedProposals =
+        appMode === MODE.basic
+          ? 0
+          : expertEndedProposalsCount + slashingEndedProposalsCount + contractUpdatesEndedProposalsCount
+
+  const endedProposals = rootEndedProposalsCount + qEndedProposalsCount + endedAdvancedProposals
+
+  const loadingAdvancedProposals =
+        appMode === MODE.basic
+          ? false
+          : expertLoadingProposalsCount || slashingLoadingProposalsCount || contractUpdatesLoadingProposalsCount
+
+  const loadingProposals = qLoadingProposalsCount || rootLoadingProposalsCount || loadingAdvancedProposals
 
   useEffect(() => {
     dispatch(getConstitutionHash())
     getContractRegistryInstance().then((contract) => setContractRegistryAddress(contract.address))
+    window.web3.eth.getBlock('latest').then((response) => setBlockNumber(response.number || 0))
   }, [dispatch])
 
   return (

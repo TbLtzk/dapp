@@ -17,8 +17,9 @@ import { tableRootNode, tableRootNodeMonitoring } from 'constants/tables'
 import TABLE_TYPES from 'constants/tableTypes'
 
 function RootNodePanel ({ tableType }) {
-  const { table, tableLoading, columns } = getRootNodesData()
-
+  const { tableSelector, tableLoadingSelector, columns, tableWrapper } = getRootNodesData()
+  const table = tableWrapper(useSelector(tableSelector))
+  const tableLoading = useSelector(tableLoadingSelector)
   const dispatch = useDispatch()
   const rootMemebersTotalStake = useSelector(rootMemebersTotalStakeSelector)
 
@@ -27,22 +28,24 @@ function RootNodePanel ({ tableType }) {
       case TABLE_TYPES.rootNodesShort:
       case TABLE_TYPES.rootNodesWidened:
         return {
-          table: tableRootNode(useSelector(rootMembersSelector)),
-          tableLoading: useSelector(loadingRootMembersSelector),
-          columns: columnsRootNode
+          tableSelector: rootMembersSelector,
+          tableLoadingSelector: loadingRootMembersSelector,
+          columns: columnsRootNode,
+          tableWrapper: tableRootNode
         }
       case TABLE_TYPES.rootNodesMonitoring:
         return {
-          table: tableRootNodeMonitoring(useSelector(rootMembersMonitoringSelector)),
-          tableLoading: useSelector(loadingRootMembersMonitoringSelector),
-          columns: columnsRootNodeMonitoring
+          tableSelector: rootMembersMonitoringSelector,
+          tableLoadingSelector: loadingRootMembersMonitoringSelector,
+          columns: columnsRootNodeMonitoring,
+          tableWrapper: tableRootNodeMonitoring
         }
     }
   }
 
   useEffect(() => {
     dispatch(getRootMembers(tableType))
-  }, [])
+  }, [dispatch])
 
   return (
         <CustomBlock>

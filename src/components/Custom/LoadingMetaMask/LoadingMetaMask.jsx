@@ -42,7 +42,8 @@ function LoadingMetaMask () {
         setErrorMessage('Please install MetaMask!')
         setIsMetaMask(LOAD_TYPES.error)
       } else {
-        const networkId = await new Promise((resolve) => { /* Fix issue with first Metamask launch. */
+        const networkId = await new Promise((resolve) => {
+          /* Fix issue with first Metamask launch. */
           const timeout = setTimeout(() => {
             window.location.reload()
           }, 5000)
@@ -68,8 +69,13 @@ function LoadingMetaMask () {
           } else {
             setErrorMessage('Waiting for login in MetaMask!')
             setIsMetaMask(LOAD_TYPES.notLogged)
-            await ethereum.request({ method: 'eth_requestAccounts' })
-            window.location.reload()
+            try {
+              await ethereum.request({ method: 'eth_requestAccounts' })
+              window.location.reload()
+            } catch (err) {
+              setIsMetaMask(LOAD_TYPES.notLogged)
+              console.error(err)
+            }
           }
         }
       }
@@ -89,7 +95,7 @@ function LoadingMetaMask () {
 
   useEffect(() => {
     initMetamask()
-  }, [web3, ethereum])
+  }, [dispatch, web3, ethereum])
 
   switch (isMetaMask) {
     case LOAD_TYPES.notLogged:
@@ -97,7 +103,7 @@ function LoadingMetaMask () {
     case LOAD_TYPES.error:
       return <StartConfigurations error={errorMessage} />
     case LOAD_TYPES.initError:
-      return <WrapContainer>Can\'t load account data. Please reload app</WrapContainer> // can add refresh after 5 seconds
+      return <WrapContainer>Can\'t load account data. Please reload app</WrapContainer>
     case LOAD_TYPES.loaded:
       return <App />
     default:

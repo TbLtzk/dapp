@@ -36,7 +36,7 @@ export default function ValidatorPool ({ modalShow }) {
       dispatch(getDelegatedStake(address))
       dispatch(getAccountableTotalStake(address))
     }
-  }, [modalShow])
+  }, [modalShow, dispatch])
 
   const validatorPoolInfArr = useMemo(() => {
     return [

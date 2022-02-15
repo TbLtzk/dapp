@@ -15,7 +15,7 @@ function DelegatedValidatorsPanel () {
 
   useEffect(() => {
     dispatch(getDelegationsList())
-  }, [])
+  }, [dispatch])
 
   return (
         <>

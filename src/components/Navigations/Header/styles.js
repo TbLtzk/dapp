@@ -49,15 +49,14 @@ export const WrapLogo = styled.div`
 `
 
 export const NetworkWrapper = styled.div`
-  padding: 7px 11px;
-  text-overflow: ellipsis;
-  text-align: center;
-  overflow: hidden;
-  white-space: nowrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-right: 20px;
   font-size: 15px;
   line-height: 18px;
   border-radius: 3px;
-  width: 150px;
+  width: 160px; 
+
   ${(props) => handleColorTheme(props)}
 `

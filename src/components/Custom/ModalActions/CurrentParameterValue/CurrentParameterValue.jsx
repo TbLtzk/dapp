@@ -30,7 +30,7 @@ function CurrentParameterValue ({ typeContract, params, setCurrentValue }) {
     } else {
       setCurrentValue('')
     }
-  }, [key, keys])
+  }, [key, keys, dispatch])
 
   return <h4 style={{ marginBottom: '20px' }}>{`Current value: ${currentValue}`} </h4>
 }

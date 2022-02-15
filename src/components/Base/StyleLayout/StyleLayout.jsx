@@ -28,7 +28,7 @@ function StyleLayout ({ children }) {
       default:
         dispatch(setThem(THEMES.dark))
     }
-  }, [])
+  }, [dispatch])
 
   function getColors (theme) {
     let generalColors = {}

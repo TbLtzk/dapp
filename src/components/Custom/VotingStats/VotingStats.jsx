@@ -26,7 +26,7 @@ function VotingStats () {
   useEffect(() => {
     dispatch(getBaseVotingWeightInfo())
     dispatch(getDelegationInfo(address))
-  }, [])
+  }, [dispatch])
 
   const statsData = [
     {
