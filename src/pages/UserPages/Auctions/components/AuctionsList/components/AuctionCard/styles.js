@@ -288,7 +288,6 @@ export const ListCardWrp = styled(Card)`
   .list-card__three-colm {
     display: grid;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
-    grid-column-gap: ${indents['15']};
 
     & > * {
       text-overflow: ellipsis;
@@ -365,7 +364,9 @@ export const ListCardHeader = styled(Card.Header)`
       overflow: hidden;
     }
   }
-
+  .list-card__status {
+    margin-right: 10px;
+  }
   & > * {
     display: flex;
   }
@@ -377,4 +378,18 @@ export const ListCardBody = styled(Card.Body)`
   padding: 20px;
   margin-bottom: 16px;
   border: none;
+  .list-card__three-colm {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    div {
+      width: 100%
+    }
+  }
+
+  @media screen and (max-width: 1150px) {
+    .list-card__three-colm {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+  }
 `

@@ -7,12 +7,10 @@ import TABLE_TYPES from 'constants/tableTypes'
 
 function ValidatorStaking () {
   return (
-        <div>
-            <PageWrap headerTitle="Validator Staking" headerExtra={<ManageStakerRewardPool />}>
-                <ManageValidatorBalance />
-                <ValidatorsPanel buttons='q-vault' type="with-total" bottom tableType={TABLE_TYPES.validatorsWidened} />
-            </PageWrap>
-        </div>
+        <PageWrap headerTitle="Validator Staking" headerExtra={<ManageStakerRewardPool />}>
+            <ManageValidatorBalance />
+            <ValidatorsPanel buttons="q-vault" type="with-total" bottom tableType={TABLE_TYPES.validatorsWidened} />
+        </PageWrap>
   )
 }
 

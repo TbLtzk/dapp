@@ -14,13 +14,13 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch () {
-    // const timeout = setTimeout(() => {
-    //   this.props.history.push({
-    //     pathname: '/'
-    //   })
-    //   window.location.reload()
-    //   clearTimeout(timeout)
-    // }, 5000)
+    const timeout = setTimeout(() => {
+      this.props.history.push({
+        pathname: '/'
+      })
+      window.location.reload()
+      clearTimeout(timeout)
+    }, 5000)
   }
 
   render () {
@@ -28,7 +28,7 @@ class ErrorBoundary extends React.Component {
       return (
                 <WrapContainer direction="column">
                     <p>Something went wrong</p>
-                    <Button title="Home" icon='home' handleButton={() => history.push('/')} />
+                    <Button title="Home" icon="home" handleButton={() => history.push('/')} />
                 </WrapContainer>
       )
     } else {

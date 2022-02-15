@@ -29,7 +29,7 @@ function CurrentInfo () {
   }, [])
 
   return (
-        <div className="wrap-content__colm-3">
+        <div className="content__colm-3">
             <CustomBlock>
                 <h1>Validators</h1>
                 <h5>Inactive Validators</h5>

@@ -1,16 +1,12 @@
 import Button from 'components/Base/Buttons/Button'
+import { CopyAddressContainer } from 'components/Navigations/Sidebar/styles'
 import React, { useState } from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import { useSelector } from 'react-redux'
-import { networkSelector, userAddressMetamask } from 'store/user-inf/selectors'
-import { CopyAddressContainer } from '../../styles'
+import { userAddressMetamask } from 'store/user-inf/selectors'
 
-const networks = { 35443: 'Testnet', 35442: 'Devnet', 35441: 'Mainnet' }
-
-function CopyAddress () {
+function Address () {
   const userAddress = useSelector(userAddressMetamask)
-  const network = useSelector(networkSelector)
-
   const [copy, setCopy] = useState(false)
 
   function handleCopy () {
@@ -30,20 +26,19 @@ function CopyAddress () {
                 )
               : (
                 <span>
-                    <i className="mdi mdi-content-copy" /> {userAddress.substring(0, 22) + '...'}
+                    <i className="mdi mdi-content-copy" /> {userAddress.substring(0, 30) + '...'}
                 </span>
                 )}
-            <span className="network">{networks[network]}</span>
         </CopyAddressContainer>
   )
 
   return (
         <CopyToClipboard text={userAddress}>
             <div title={userAddress}>
-                <Button icon="copy" width="100%" type="white" title={title} handleButton={handleCopy} />
+                <Button icon="copy" width="270px" type="white" title={title} handleButton={handleCopy} />
             </div>
         </CopyToClipboard>
   )
 }
 
-export default CopyAddress
+export default Address

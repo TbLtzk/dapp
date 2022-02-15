@@ -1,32 +1,63 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-import { indents } from 'constants/style'
+const handleColorTheme = (props) => {
+  switch (props.network) {
+    case '35441': {
+      return css`
+        color: ${props.theme.colors.oxfordBlue};
+        background: ${props.theme.colors.neonGreen};
+      `
+    }
+    case '35442': {
+      return css`
+        color: ${props.theme.colors.white};
+        background: ${props.theme.colors.red};
+      `
+    }
+    case '35443': {
+      return css`
+        color: ${props.theme.colors.oxfordBlue};
+        background: ${props.theme.colors.validationError};
+      `
+    }
+  }
+}
 
-export const HeaderWrp = styled.div`
-  width: 100%;
+export const ElementsWrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+`
+
+export const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  padding-bottom: ${indents['30']};
-  padding-top: ${indents['40']};
+  align-items: center;
+  width: 100%;
+  padding: 0 60px 0 40px;
+  border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
+  height: 70px;
 
-  a {
-    text-decoration: none;
+  @media screen and (max-width: 1550px) {
+    padding: 0 30px 0 20px;
   }
-  `
+`
 
-export const HeaderTitle = styled.div`
-  max-width: 50%;
-  display: flex;
-  font-size: 30px;
-  line-height: 38px;
-  overflow: hidden;
-  align-items: flex-start;
-  font-family: 'Lora', sans-serif;
-  text-transform: capitalize;
-  `
+export const WrapLogo = styled.div`
+  img {
+    width: 53px;
+  }
+`
 
-export const HeaderActions = styled.div`
-  display: flex;
+export const NetworkWrapper = styled.div`
+  padding: 7px 11px;
+  text-overflow: ellipsis;
+  text-align: center;
   overflow: hidden;
-  align-items: flex-end;
-  `
+  white-space: nowrap;
+  margin-right: 20px;
+  font-size: 15px;
+  line-height: 18px;
+  border-radius: 3px;
+  width: 150px;
+  ${(props) => handleColorTheme(props)}
+`

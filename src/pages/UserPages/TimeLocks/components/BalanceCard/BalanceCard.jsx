@@ -45,14 +45,7 @@ function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contrac
                 setModalShow={(value) => setModalShow(value)}
             />
             <div className="button__bottom">
-                <ModalButton
-                    type="outline"
-                    title="Manage"
-                    width="80px"
-                    handleButton={() => {
-                      setModalShow(true)
-                    }}
-                />
+                <ModalButton type="outline" title="Manage" width="80px" handleButton={() => setModalShow(true)} />
             </div>
             <div style={{ height: '30px' }} />
         </CustomBlock>

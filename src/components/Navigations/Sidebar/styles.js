@@ -1,40 +1,95 @@
-import styled from 'styled-components'
-
-import { Navbar } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-
+import styled, { css } from 'styled-components'
 import { indents } from 'constants/style'
+import { NavLink } from 'react-router-dom'
 
-export const NavbarContainer = styled(Navbar)`
-  width: 348px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: ${indents['40']};
-  border-right: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
+function handleSidebarOpen (p, width, padding, left) {
+  if (!p.openSidebar) {
+    return css`
+      margin-right: ${indents['30']};
+      .sidebar_container {
+        position: absolute;
+        padding: 0;
+        left: ${left};
+        .sidebar_links {
+          transition: all 0.3s ease-in-out;
+          visibility: hidden;
+        }
+        .mdi-chevron-right {
+          font-size: 40px;
+          position: absolute;
+          transition: all 0.3s ease-in-out;
+          top: 40%;
+          display: block;
+          right: -5px;
+          visibility: visible;
+          color: ${(props) => props.theme.colors.oxfordBlueTint3};
+        }
+      }
+      .sidebar_container:hover {
+        transition-delay: 0.3s;
+        padding: ${padding};
+        width: ${width};
+        left: 0;
+        background-color: ${(props) => props.theme.colors.oxfordBlue};
+        .sidebar_links {
+          transition-delay: 0.3s;
+          visibility: visible;
+        }
+        .mdi-chevron-right {
+          visibility: hidden;
+          transition-delay: 0.2s;
+        }
+      }
+    `
+  }
+  return null
+}
 
-  .header__logo {
-    margin-bottom: 54px;
+export const FooterContainer = styled.div`
+  margin-top: 20px;
+  margin-left: 12px;
+`
+
+export const SidebarContainer = styled.div`
+  height: calc(100vh - 70px);
+  position: relative;
+
+  .sidebar_container {
+    display: grid;
+    width: 310px;
+    position: relative;
+    height: 100%;
+    transition: all 0.3s ease-in-out;
+    align-content: space-between;
+
+    padding: ${indents['30']};
+    background-color: ${(props) => props.theme.colors.oxfordBlue};
+    z-index: 10;
+
+    border-right: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
+    .mdi-chevron-right {
+      display: none;
+    }
+  }
+  ${(p) => handleSidebarOpen(p, '310px', indents['30'], '-280px')}
+
+  &:hover .sidebar_toggle {
+    color: ${(props) => props.theme.colors.oxfordBlueTint3};
+  }
+
+  @media screen and (max-width: 1550px) {
+    .sidebar_container {
+      padding: ${indents['15']};
+      width: 280px;
+    }
+    ${(p) => handleSidebarOpen(p, '280px', indents['15'], '-250px')}
   }
 `
 
 export const LinksContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`
-
-export const FooterContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`
-
-export const ListContainer = styled.div`
-  display: block;
-  width: 100%;
+  display: inline;
+  overflow-y: auto;
+  overflow-x: hidden;
 `
 
 export const ListTitle = styled.div`
@@ -57,8 +112,10 @@ export const LinkGroup = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  padding: 0 14px 0 0;
+  width: 230px;
+  border-radius: 4px;
+  padding-right: 5px;
+  color: ${(props) => props.theme.colors.white};
 
   :hover {
     background: ${(props) => props.theme.colors.oxfordBlueTint1};
@@ -66,20 +123,32 @@ export const LinkGroup = styled.div`
 
   button {
     margin: 0;
-    padding: 0;
+    padding-right: 4px;
     background: transparent;
     color: ${(props) => props.theme.colors.white};
     border: none;
+    &:hover {
+      color: ${(props) => props.theme.colors.neonGreen};
+    }
   }
 `
 
-export const LinkStyle = styled(Link)`
+export const LinkStyle = styled(NavLink)`
   padding: 6px 12px;
   font-size: 15px;
-  color: ${(props) =>
-    props.highlight === 1 ? (props) => props.theme.colors.activeLinks : (props) => props.theme.colors.white} !important;
+  color: ${(p) => p.theme.colors.white};
+
+  &.${(props) => props.activeClassName} {
+    color: ${(p) => p.theme.colors.activeLinks};
+  }
 
   :hover {
+    cursor: pointer;
+    text-decoration: none;
+    color: ${(p) => p.theme.colors.white};
+    &.${(props) => props.activeClassName} {
+      color: ${(p) => p.theme.colors.activeLinks};
+    }
     background: ${(props) => props.theme.colors.oxfordBlueTint1};
   }
 `
@@ -92,14 +161,6 @@ export const ALinkStyle = styled.a`
   :hover {
     color: ${(props) => props.theme.colors.white};
     text-decoration: underline;
-  }
-`
-
-export const WrapLogo = styled.div`
-  margin-bottom: 54px;
-
-  img {
-    width: 53px;
   }
 `
 
@@ -117,6 +178,9 @@ export const AccordionIcon = styled.div`
   transform: rotate(${(props) => (props.state ? '180deg' : '0')});
   transition-duration: 0.1s;
   transition-property: transform;
+  &.${(props) => props.activeClassName} {
+    color: ${(p) => p.theme.colors.activeLinks};
+  }
 `
 
 export const AccordionLbl = styled.div`

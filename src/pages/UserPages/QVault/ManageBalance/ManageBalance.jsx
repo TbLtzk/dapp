@@ -38,11 +38,11 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
 
   async function fetchQVaultTransferAmount () {
     const amount = await getQVaultDepositAmount(address, transferMax)
-    setMaxQVaultTransferAmount(amount)
+    setMaxQVaultTransferAmount(Number(amount))
   }
 
   async function handleTransferMax () {
-    if (Number(maxQVaultTransferAmount) > 0) {
+    if (maxQVaultTransferAmount > 0) {
       setTransferMax('amountQ', maxQVaultTransferAmount)
       setTransferMaxError('amountQ', {
         message: WARNING_MAX_NUMBER
@@ -51,7 +51,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
   }
 
   function handleChangeTransferAmount (event) {
-    if (Number(event.target.value) === Number(maxQVaultTransferAmount)) {
+    if (Number(event.target.value) === maxQVaultTransferAmount) {
       setTransferMaxError('amountQ', {
         message: WARNING_MAX_NUMBER
       })

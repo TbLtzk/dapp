@@ -22,19 +22,18 @@ import OneAuctionPage from 'pages/UserPages/OneAuctionPage'
 import NotFound from 'pages/UserPages/NotFound'
 import Monitoring from 'pages/UserPages/Monitoring'
 
-function Routes () {
-  const options = {
-    position: positions.TOP_RIGHT,
-    timeout: 5000,
-    offset: '10px',
-    transition: transitions.SCALE,
-    containerStyle: {
-      zIndex: 9999
-    }
+const options = {
+  position: positions.TOP_RIGHT,
+  timeout: 5000,
+  offset: '10px',
+  transition: transitions.SCALE,
+  containerStyle: {
+    zIndex: 9999
   }
+}
 
+function Routes () {
   return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
     <AlertProvider template={AlertTemplate} {...options}>
       <Switch>
         <Route exact path="/" component={AuthProtect(Dashboard)} />

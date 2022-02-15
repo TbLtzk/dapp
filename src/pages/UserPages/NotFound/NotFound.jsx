@@ -1,15 +1,15 @@
-import Button from 'components/Base/Buttons/Button'
-import { WrapContainer } from 'components/Custom/LoadingMetaMask/styles'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
+import { NotFoundContainer } from './styles'
+import Button from 'components/Base/Buttons/Button'
 
 function NotFound () {
   const history = useHistory()
   return (
-        <WrapContainer direction="column">
+        <NotFoundContainer>
             <h5>Page does not exist</h5>
-            <Button title="Home" icon='home' handleButton={() => history.push('/')} />
-        </WrapContainer>
+            <Button title="Home" icon="home" handleButton={() => history.push('/')} />
+        </NotFoundContainer>
   )
 }
 

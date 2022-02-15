@@ -21,7 +21,6 @@ function ListCard ({ proposal, id, proposalsKind, onePage }) {
   const updateProposal = useSelector(transactionCounter)
 
   const [open, setOpen] = useState(false)
-  const [collapsedContentOpen, setCollapsedContentOpen] = useState(false)
 
   const [proposalInfo, setProposalInfo] = useState(null)
   const obj = useSelector(formVoteObject)
@@ -38,7 +37,6 @@ function ListCard ({ proposal, id, proposalsKind, onePage }) {
 
     return () => {
       setOpen(false)
-      setCollapsedContentOpen(false)
       setProposalInfo(null)
     }
   }, [])
@@ -56,18 +54,15 @@ function ListCard ({ proposal, id, proposalsKind, onePage }) {
         <ListCardWrp palette={currentTheme}>
             <Accordion defaultActiveKey="0">
                 <ListCardHeader>
-                    <div>
+                    <div className="card__title">
                         <h1> {proposalInfo?.title}</h1>
                         {proposalInfo?.status ? <div className="list-card__status">{proposalInfo?.status}</div> : null}
                     </div>
-                    <div>
+                    <div className="card__buttons">
                         <CustomCardButtons
                             open={open}
                             onePage={onePage}
-                            setOpen={() => {
-                              setOpen(!open)
-                              setCollapsedContentOpen(true)
-                            }}
+                            setOpen={() => setOpen(!open)}
                             eventKey={id}
                             shareText={createShareText('proposal', proposalInfo.contract, proposalInfo.id)}
                         />
@@ -76,18 +71,12 @@ function ListCard ({ proposal, id, proposalsKind, onePage }) {
                 <ListCardBody>
                     <ProposalContent proposal={proposalInfo} />
                     <Accordion.Collapse eventKey={id}>
-                        {collapsedContentOpen
-                          ? (
-                            <CardCollapsedContent
-                                proposalInfo={proposalInfo}
-                                proposalsKind={proposalsKind}
-                                contract={proposal.contract}
-                                proposalId={proposal.id}
-                            />
-                            )
-                          : (
-                            <div />
-                            )}
+                        <CardCollapsedContent
+                            proposalInfo={proposalInfo}
+                            proposalsKind={proposalsKind}
+                            contract={proposal.contract}
+                            proposalId={proposal.id}
+                        />
                     </Accordion.Collapse>
                 </ListCardBody>
             </Accordion>

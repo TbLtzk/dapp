@@ -4,8 +4,8 @@ import { CONTRACT_TYPES } from 'constants/contracts'
 import { fromBtcBlockchain, toWei, fromWei } from 'func/balance'
 
 import { getBorrowingCoreInstance, getLiquidationAuctionInstance } from 'contracts/contract-instance'
-import { remainDate } from 'func/convertDate'
 import { groupArrayByBlockNumber } from 'func/useful'
+import { dateToTimestamp, getNowTimestamp } from 'func/convertDate'
 
 export function creationLiquidationContractObj () {
   return new LiquidationAuction()
@@ -17,9 +17,8 @@ export default class LiquidationAuction extends AuctionService {
     this.contractName = CONTRACT_TYPES.liquidationAuction
   }
 
-  async prepareAuctionData (data, info, contract) {
+  async prepareAuctionData (data, info, contract, raisingBid) {
     const vault = await contract.userVaults(info.user, info.vaultId)
-
     const completedInfo = {}
     completedInfo.bidder = data.bidder
     completedInfo.user = info.user
@@ -27,15 +26,17 @@ export default class LiquidationAuction extends AuctionService {
     completedInfo.id = info.vaultId
     completedInfo.colKey = vault.colKey
     completedInfo.endTime = data.endTime
-    completedInfo.statusNumber = data.status
     completedInfo.title = 'Liquidation Auction'
     completedInfo.contract = CONTRACT_TYPES.liquidationAuction
+    completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0
     completedInfo.highestBid = fromWei(data.highestBid)
     completedInfo.blockNumber = info.blockNumber
+    completedInfo.statusNumber = data.status
     completedInfo.status = getStatusTransformation(data.status)
     completedInfo.colAsset = fromBtcBlockchain(vault.colAsset)
-    completedInfo.disableBidButton = !remainDate(data.endTime)
-    completedInfo.disableExecuteButton = !!remainDate(data.endTime)
+    const disabledButtons = Number(dateToTimestamp(data.endTime)) <= Number(getNowTimestamp())
+    completedInfo.disableBidButton = disabledButtons
+    completedInfo.disableExecuteButton = !disabledButtons
 
     return completedInfo
   }
@@ -59,10 +60,11 @@ export default class LiquidationAuction extends AuctionService {
   async getAuctions () {
     const auctionsInfo = await this.getAuctionsEvents()
     const borrowingCoreInstance = await getBorrowingCoreInstance()
-
     const allAuctionsData = await Promise.all(auctionsInfo.map((evt) => this.getAuction(evt, evt?.vaultId)))
     const preparedAuctionsData = await Promise.all(
-      allAuctionsData.map((auction) => this.prepareAuctionData(auction.data, auction.info, borrowingCoreInstance))
+      allAuctionsData.map((auction) =>
+        this.prepareAuctionData(auction.data, auction.info, borrowingCoreInstance, auction.raisingBid)
+      )
     )
 
     const groupedAuctionsByBlockNumber = groupArrayByBlockNumber(preparedAuctionsData)
@@ -86,8 +88,12 @@ export default class LiquidationAuction extends AuctionService {
       } else {
         const pastEvents = await this.getAuctionsEvents()
         const event = pastEvents.find((event) => event.vaultId === vaultId && event.user === address)
+        let raisingBid = null
+        if (info.status === '1') {
+          raisingBid = await contract.getRaisingBid(address, vaultId)
+        }
         const borrowingCoreInstance = await getBorrowingCoreInstance()
-        return this.prepareAuctionData(info, event, borrowingCoreInstance)
+        return this.prepareAuctionData(info, event, borrowingCoreInstance, raisingBid)
       }
     } catch (error) {
       return { error: ERROR_TYPES.wrongLink }

@@ -5,28 +5,16 @@ export const WrapContainer = styled.div`
   margin-top: 5px;
   align-items: center;
   max-width: 70%;
+
   & input {
     margin-right: 30px;
   }
   & button {
     margin-bottom: 20px;
   }
-`
 
-export const InfoWrap = styled.div`
-  display: grid;
-  grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
-  grid-auto-rows: auto;
-
-  & > div:first-child {
-    grid-column-start: 1;
-    grid-column-end: 3;
-    width: 99%;
-    height: 95%
-  }
-  & > div {
-    width: 98%;
-    height: 97%;
+  @media screen and (max-width: 1600px) {
+    max-width: 100%;
   }
 `
 

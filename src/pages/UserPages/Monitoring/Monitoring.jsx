@@ -7,15 +7,13 @@ import CurrentInfo from './components/CurrentInfo'
 
 function Monitoring () {
   return (
-        <div>
-            <PageWrap headerTitle="Monitoring">
-                <CurrentInfo />
-                <div>
-                    <ValidatorsPanel buttons="none" tableType={TABLE_TYPES.validatorsMonitoring} />
-                    <RootNodePanel tableType={TABLE_TYPES.rootNodesMonitoring} />
-                </div>
-            </PageWrap>
-        </div>
+        <PageWrap headerTitle="Monitoring">
+            <CurrentInfo />
+            <div>
+                <ValidatorsPanel buttons="none" tableType={TABLE_TYPES.validatorsMonitoring} />
+                <RootNodePanel tableType={TABLE_TYPES.rootNodesMonitoring} />
+            </div>
+        </PageWrap>
   )
 }
 

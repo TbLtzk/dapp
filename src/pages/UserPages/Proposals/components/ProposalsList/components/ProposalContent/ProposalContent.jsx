@@ -3,7 +3,7 @@ import React from 'react'
 import { convertToMonthDayYear, remainDate } from 'func/convertDate'
 import Tooltip from 'components/Base/Tooltip'
 import { CONTRACTS_NAMES } from 'constants/contracts'
-import { ContentWrapper } from './styles'
+import { ContentWrapper, ProposalContainer } from './styles'
 
 function ProposalContent ({ proposal }) {
   const voteOpacity = proposal.status !== 'Pending' ? '0.4' : '1'
@@ -17,7 +17,7 @@ function ProposalContent ({ proposal }) {
         proposal.contract === CONTRACTS_NAMES.emergencyUpdateVoting
 
   return (
-        <div className="list-card__three-colm">
+        <ProposalContainer>
             <div>
                 <h5>Proposal Id</h5>
                 <p>{proposal.id}</p>
@@ -71,7 +71,7 @@ function ProposalContent ({ proposal }) {
                     </Tooltip>
                 </ContentWrapper>
                 )}
-        </div>
+        </ProposalContainer>
   )
 }
 

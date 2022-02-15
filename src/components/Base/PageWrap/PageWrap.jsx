@@ -1,26 +1,14 @@
 import React from 'react'
+import PageTitle from 'components/Navigations/PageTitle'
+import { WrapContainer, WrapContent } from './styles'
 
-import Sidebar from 'components/Navigations/Sidebar'
-import LoadingTransaction from 'components/Custom/LoadingTransaction'
-import Header from 'components/Navigations/Header'
-
-import { WrapContainer, Page, WrapContent } from './styles'
-
-function PageWrap (props) {
-  const { children, headerTitle, headerExtra, wrapContentClasses } = props
-
+function PageWrap ({ children, headerTitle, headerExtra, wrapContentClasses }) {
   return (
-        <Page>
-            <Sidebar />
-            <WrapContainer fluid>
-                <Header header={headerTitle} extra={headerExtra} />
-                <WrapContent className={wrapContentClasses}>{children}</WrapContent>
-            </WrapContainer>
-            <LoadingTransaction />
-        </Page>
+        <WrapContainer fluid>
+            <PageTitle header={headerTitle} extra={headerExtra} />
+            <WrapContent className={wrapContentClasses}>{children}</WrapContent>
+        </WrapContainer>
   )
 }
-
-PageWrap.propTypes = {}
 
 export default PageWrap

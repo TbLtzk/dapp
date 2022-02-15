@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { PROPOSALS_TYPES } from 'constants/statuses'
 import { getTypeName } from 'func/contractHelpers'
 import { CONTRACTS_NAMES } from 'constants/contracts'
+import { PollDetailContainer } from './styles'
 
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000'
 
@@ -148,7 +149,7 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
   }
 
   return (
-        <div>
+        <PollDetailContainer>
             <h3>Proposal Details</h3>
             {showContent()}
             {approvalContracts
@@ -159,7 +160,7 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
                     {checkLinkAndPrint()}
                 </>
                 )}
-        </div>
+        </PollDetailContainer>
   )
 }
 

@@ -15,7 +15,7 @@ function AccordionLinks ({ children, headerLink, type }) {
     }
   }
   return (
-        <Accordion activeKey={isOpen} style={{ width: '100%' }} onSelect={handleOpen}>
+        <Accordion activeKey={isOpen} style={{ width: '240px' }} onSelect={handleOpen}>
             <LinkGroup>
                 {headerLink}
                 <Accordion.Toggle eventKey="0">

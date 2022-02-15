@@ -12,6 +12,7 @@ export const systemDebt = {
 
 export const systemSurplus = {
   subtitleInput: 'Provide a Bid for this auction in Q',
+  symbol: 'Q',
   inputPlaceholder: ['Bid'],
   inputObj: { bid: '' }
 }

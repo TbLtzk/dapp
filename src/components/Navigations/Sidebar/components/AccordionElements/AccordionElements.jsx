@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Accordion } from 'react-bootstrap'
 
-import { ListContainer } from '../../styles'
+import { LinksContainer } from '../../styles'
 import { AccordionElementsWrapper } from './styles'
 
 function AccordionElements ({ title, children, margin }) {
@@ -31,7 +31,7 @@ function AccordionElements ({ title, children, margin }) {
                     </div>
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0">
-                    <ListContainer>{children}</ListContainer>
+                    <LinksContainer>{children}</LinksContainer>
                 </Accordion.Collapse>
             </Accordion>
         </AccordionElementsWrapper>
