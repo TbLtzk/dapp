@@ -38,24 +38,18 @@ function SidebarCards () {
   const [reserveLot, setReserveLot] = useState('0')
 
   useEffect(() => {
-    dispatch(getAccountBalance(userAddress))
-  }, [])
-
-  useEffect(() => {
     dispatch(getSurplus())
     dispatch(getDebt())
+    dispatch(getAccountBalance(userAddress))
     dispatch(getSystemBalance())
     dispatch(getAvailableAmount())
     dispatch(getSavingAviableToDeposit())
     dispatch(getUserBalance(userAddress))
     dispatch(getSymbol())
-  }, [dispatch, loadingPerfNetting])
-
-  useEffect(() => {
     dispatch(getSystemReserveBalance())
     getEPDRUint('governed.EPDR.QUSD_surplusLot', setSurplusLot)
     getEPDRUint('governed.EPDR.reserveLot', setReserveLot)
-  }, [loadingPerfNetting])
+  }, [dispatch, loadingPerfNetting])
 
   const statsData = useMemo(() => {
     return [

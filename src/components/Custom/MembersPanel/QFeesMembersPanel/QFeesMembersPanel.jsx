@@ -17,7 +17,7 @@ function QFeesMembersPanel () {
 
   useEffect(() => {
     dispatch(getEPQFIMembers())
-  }, [])
+  }, [dispatch])
 
   return (
         <CustomBlock>

@@ -50,7 +50,7 @@ function ManageValidatorBalance () {
     dispatch(getMinimumValidatorsTimeLock(address))
     dispatch(getAccountableTotalStake(address))
     dispatch(getValidatorWithdrawalInfo(address))
-  }, [])
+  }, [dispatch])
 
   const stakeToRanking = (formData) => {
     dispatch(setValidatorsCommitStake(address, formData.amount))

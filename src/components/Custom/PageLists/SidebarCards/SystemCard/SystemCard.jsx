@@ -11,9 +11,10 @@ import LoadingSpinner from 'components/Base/LoadingSpinner'
 function SystemCard ({ data, title }) {
   const dispatch = useDispatch()
   const loadingPerfNetting = useSelector(loadingPerformNetting)
+
   const onHandlePerformNetting = useCallback(() => {
     dispatch(onPerformNetting())
-  }, [])
+  }, [dispatch])
 
   return (
         <CustomBlock>
@@ -30,7 +31,7 @@ function SystemCard ({ data, title }) {
                     <Button
                         title={!loadingPerfNetting ? 'Perform Netting' : <LoadingSpinner />}
                         type="white"
-                        width='140px'
+                        width="140px"
                         handleButton={onHandlePerformNetting}
                     />
                 </div>

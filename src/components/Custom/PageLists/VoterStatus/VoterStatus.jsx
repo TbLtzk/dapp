@@ -25,7 +25,7 @@ function VoterStatus () {
     dispatch(getUserBalance(userAddress))
     dispatch(getIsUserEPDRMember(userAddress))
     dispatch(getIsUserEPQFIMember(userAddress))
-  }, [])
+  }, [dispatch, userAddress])
 
   const showStatus = useMemo(() => {
     const arrStatus = []

@@ -36,7 +36,7 @@ export default function RewardStats ({ modalShow }) {
       dispatch(getVRPBalance(address))
       dispatch(getVRPPoolInfo(address))
     }
-  }, [modalShow])
+  }, [modalShow, dispatch])
 
   const setDelegatorShareFunc = (formData) => {
     dispatch(setVRPDelegatorsShare(formData.amount))

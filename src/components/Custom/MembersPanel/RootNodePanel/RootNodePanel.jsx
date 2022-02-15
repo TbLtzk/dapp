@@ -45,7 +45,7 @@ function RootNodePanel ({ tableType }) {
 
   useEffect(() => {
     dispatch(getRootMembers(tableType))
-  }, [])
+  }, [dispatch])
 
   return (
         <CustomBlock>

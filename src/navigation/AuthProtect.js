@@ -26,7 +26,7 @@ export function AuthProtect (ProtectComponent, additionalProps = {}) {
           dispatch(detectEthereumProvider())
         })
       }
-    }, [ethereum])
+    }, [ethereum, dispatch])
 
     const prop = { ...props, ...additionalProps }
     if (!ethereum) {

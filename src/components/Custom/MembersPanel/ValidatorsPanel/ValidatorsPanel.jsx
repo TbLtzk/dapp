@@ -58,7 +58,7 @@ function ValidatorsPanel ({ buttons, tableType }) {
 
   useEffect(() => {
     dispatch(getValidatorMembers(tableType))
-  }, [])
+  }, [dispatch])
 
   const renderButtons = () => {
     switch (buttons) {

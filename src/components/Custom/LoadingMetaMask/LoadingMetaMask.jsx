@@ -89,7 +89,7 @@ function LoadingMetaMask () {
 
   useEffect(() => {
     initMetamask()
-  }, [web3, ethereum])
+  }, [web3, ethereum, dispatch])
 
   switch (isMetaMask) {
     case LOAD_TYPES.notLogged:

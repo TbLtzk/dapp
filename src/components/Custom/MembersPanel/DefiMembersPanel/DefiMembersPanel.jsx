@@ -17,7 +17,7 @@ function DefiMembersPanel () {
 
   useEffect(() => {
     dispatch(getEPDRMembers())
-  }, [])
+  }, [dispatch])
 
   return (
         <CustomBlock>
