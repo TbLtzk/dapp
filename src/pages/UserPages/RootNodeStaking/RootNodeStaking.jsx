@@ -6,12 +6,10 @@ import TABLE_TYPES from 'constants/tableTypes'
 
 function RootNodeStaking () {
   return (
-        <div>
-            <PageWrap headerTitle="Root Node Staking">
-                <ManageRootNodeBalance />
-                <RootNodePanel tableType={TABLE_TYPES.rootNodesWidened} bottom />
-            </PageWrap>
-        </div>
+        <PageWrap headerTitle="Root Node Staking">
+            <ManageRootNodeBalance />
+            <RootNodePanel tableType={TABLE_TYPES.rootNodesWidened} bottom />
+        </PageWrap>
   )
 }
 

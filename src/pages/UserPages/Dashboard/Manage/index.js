@@ -9,7 +9,6 @@ const QParameters = lazy(() => import('./QParameters'))
 export default function index () {
   return (
     <PageWrap
-      wrapContentClasses="wrap-content__tow-colm"
       headerTitle="Q Parameters"
       headerExtra={
         <Link to="/">

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/user-inf/selectors'
 
 import AddressForm from './components/AddressForm'
-import { InfoWrap } from './styles'
 import BalanceCard from './components/BalanceCard'
 import { fN } from 'func/useful'
 
@@ -98,21 +97,14 @@ function TimeLocks () {
   ]
 
   return (
-        <InfoWrap>
+        <>
             <AddressForm setAddressRefresh={handleRefresh} userAddress={currentAddress} />
-            {cardsData.map((card) => (
-                <BalanceCard
-                    key={card.contract}
-                    address={currentAddress.address}
-                    timeLockBalance={card.timeLockBalance}
-                    balance={card.balance}
-                    contract={card.contract}
-                    modalTitle={card.modalTitle}
-                    title={card.title}
-                    lockAmountData={card.lockAmountData}
-                />
-            ))}
-        </InfoWrap>
+            <div className="content__colm-2 content__time-locks">
+                {cardsData.map((card) => (
+                    <BalanceCard key={card.contract} address={currentAddress.address} {...card} />
+                ))}
+            </div>
+        </>
   )
 }
 

@@ -76,14 +76,21 @@ function Governance () {
   }, [dispatch, appMode])
 
   return (
-        <PageWrap wrapContentClasses="wrap-content__three-colm" headerTitle="Governance">
-            <div>
+        <PageWrap wrapContentClasses="wrap-content__colm-2" headerTitle="Governance">
+            <div className="content__colm-2">
                 <InfoBlock
                     header="Q Proposals"
                     detailsLink="q-proposals"
                     activeProposalsNumber={qActiveProposalsCount}
                     endedProposalsNumber={qEndedProposalsCount}
                     isLoading={qLoadingProposalsCount}
+                />
+                <InfoBlock
+                    header="Root Node Panel"
+                    activeProposalsNumber={rootActiveProposalsCount}
+                    endedProposalsNumber={rootEndedProposalsCount}
+                    detailsLink="q-root-node-panel"
+                    isLoading={rootLoadingProposalsCount}
                 />
                 {appMode === MODE.advanced
                   ? (
@@ -99,31 +106,22 @@ function Governance () {
                 {appMode === MODE.advanced
                   ? (
                     <InfoBlock
-                        header="Contract Updates"
-                        activeProposalsNumber={contractUpdatesActiveProposalsCount}
-                        endedProposalsNumber={contractUpdatesEndedProposalsCount}
-                        detailsLink="contract-updates"
-                        isLoading={contractUpdatesLoadingProposalsCount}
-                    />
-                    )
-                  : null}
-            </div>
-            <div>
-                <InfoBlock
-                    header="Root Node Panel"
-                    activeProposalsNumber={rootActiveProposalsCount}
-                    endedProposalsNumber={rootEndedProposalsCount}
-                    detailsLink="q-root-node-panel"
-                    isLoading={rootLoadingProposalsCount}
-                />
-                {appMode === MODE.advanced
-                  ? (
-                    <InfoBlock
                         header="Slashing Proposals"
                         activeProposalsNumber={slashingActiveProposalsCount}
                         endedProposalsNumber={slashingEndedProposalsCount}
                         detailsLink="slashing-proposals"
                         isLoading={slashingLoadingProposalsCount}
+                    />
+                    )
+                  : null}
+                {appMode === MODE.advanced
+                  ? (
+                    <InfoBlock
+                        header="Contract Updates"
+                        activeProposalsNumber={contractUpdatesActiveProposalsCount}
+                        endedProposalsNumber={contractUpdatesEndedProposalsCount}
+                        detailsLink="contract-updates"
+                        isLoading={contractUpdatesLoadingProposalsCount}
                     />
                     )
                   : null}

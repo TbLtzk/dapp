@@ -20,11 +20,11 @@ function ProposalCard ({ proposal, proposalKind }) {
   return (
         <ListCardWrp palette={currentTheme}>
             <ListCardHeader>
-                <div>
+                <div className="card__title">
                     <h1> {proposal.title}</h1>
                     {proposal.status ? <div className="list-card__status">{proposal.status}</div> : null}
                 </div>
-                <div>
+                <div className="card__buttons">
                     <CustomCardButtons
                         onePage={true}
                         shareText={createShareText('proposal', proposal.contract, proposal.id)}

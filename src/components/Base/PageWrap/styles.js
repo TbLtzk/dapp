@@ -5,24 +5,23 @@ import { Container } from 'react-bootstrap'
 import { scrollbarStyle } from 'constants/globalStyle'
 
 export const WrapContainer = styled(Container)`
-  height: 100%;
-  overflow: hidden;
   position: relative;
+  height: calc(100vh - 70px);
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+
   background: ${(props) => props.theme.colors.oxfordBlue};
   padding: 0 ${indents['45']} 0 ${indents['40']};
-`
 
-export const Page = styled.div`
-  display: flex;
-  height: 100%;
+  @media screen and (max-width: 1550px) {
+    padding: 0 ${indents['15']} 0 ${indents['15']};
+  }
 `
 
 export const WrapContent = styled.div`
-  height: calc(100vh - 108px);
   min-height: 490px;
   max-width: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
   ${scrollbarStyle}
 
   &.wrap-content__tow-colm {
@@ -43,9 +42,48 @@ export const WrapContent = styled.div`
     grid-column-gap: ${indents['15']};
   }
 
-  .wrap-content__colm-3 {
+  &.wrap-content__colm-2 {
+    display: grid;
+    grid-template-columns: minmax(100px, 2fr) minmax(100px, 1fr);
+    grid-column-gap: ${indents['15']};
+  }
+
+  .content__colm-1 {
+    display: none;
+  }
+
+  .content__colm-2 {
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
+    grid-column-gap: ${indents['15']};
+  }
+
+  .content__time-locks {
+    & > div {
+      height: 97%;
+    }
+  }
+
+  .content__colm-3 {
     display: flex;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
     grid-column-gap: ${indents['15']};
+
+    @media screen and (max-width: 1100px) {
+      flex-direction: column;
+    }
+  }
+
+  @media screen and (max-width: 1250px) {
+    .wrap-content__colm-1 {
+      display: block;
+      width: 100%;
+    }
+    .wrap-content__colm-2 {
+      display: none;
+    }
+    .content__colm-2 {
+      grid-template-columns: minmax(100px, 1fr);
+    }
   }
 `

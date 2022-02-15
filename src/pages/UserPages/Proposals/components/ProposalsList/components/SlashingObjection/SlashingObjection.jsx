@@ -16,6 +16,7 @@ import LoadingSpinner from 'components/Base/LoadingSpinner'
 import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-helper'
 import { Dropdown, DropdownButton } from 'react-bootstrap'
 import { CONTRACTS_NAMES } from 'constants/contracts'
+import { SlashingObjectionContainer } from './ModalSlashingObjection/styles'
 
 function SlashingObjection ({ contract, proposalId, objData }) {
   const [modalShow, setModalShow] = useState(false)
@@ -148,8 +149,8 @@ function SlashingObjection ({ contract, proposalId, objData }) {
         </Dropdown.Item>
   )
   return (
-        <div>
-            <div className="list-card__tow-colm" style={{ marginBottom: '20px' }}>
+        <SlashingObjectionContainer>
+            <div>
                 <h3>Slashing Objection</h3>
                 <div style={{ textAlign: 'right' }}>
                     <DropdownButton menuAlign="right" title="Actions" id="dropdown-menu-align-right">
@@ -171,7 +172,7 @@ function SlashingObjection ({ contract, proposalId, objData }) {
                         </Dropdown.Item>
                         <Dropdown.Item onClick={onRecallCurrentDecision}>
                             <i className={'mdi mdi-repeat btn-icon'} />
-                            Recall Decision
+                        div    Recall Decision
                         </Dropdown.Item>
                         {objData.objection.statusObjection === STATUSES.decided && executeDecisionBTN}
                     </DropdownButton>
@@ -197,7 +198,7 @@ function SlashingObjection ({ contract, proposalId, objData }) {
                   dispatch(setCreateObj({}))
                 }}
             />
-        </div>
+        </SlashingObjectionContainer>
   )
 }
 

@@ -1,12 +1,19 @@
 import React, { useEffect } from 'react'
 import { GlobalStyle } from 'constants/globalStyle'
-import { ThemeProvider } from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 import themeStyles from 'constants/style'
 import { darkColors, lightColors, THEMES } from 'constants/colors'
 import { theme } from 'store/theme/selectors'
 import { setThem } from 'store/theme/action-creators'
 
 import { useDispatch, useSelector } from 'react-redux'
+import Header from 'components/Navigations/Header'
+import Sidebar from 'components/Navigations/Sidebar'
+import LoadingTransaction from 'components/Custom/LoadingTransaction'
+
+const PageContainer = styled.div`
+    display: flex;
+`
 
 function StyleLayout ({ children }) {
   const dispatch = useDispatch()
@@ -49,16 +56,22 @@ function StyleLayout ({ children }) {
     }
   }
 
-  return <ThemeProvider theme={
-    {
-      ...themeStyles,
-      colors: getColors(currentTheme)
-    }
-  }
-  >
-    <GlobalStyle/>
-    {children}
-  </ThemeProvider>
+  return (
+        <ThemeProvider
+            theme={{
+              ...themeStyles,
+              colors: getColors(currentTheme)
+            }}
+        >
+            <GlobalStyle />
+            <Header />
+            <PageContainer>
+                <Sidebar />
+                {children}
+            </PageContainer>
+            <LoadingTransaction />
+        </ThemeProvider>
+  )
 }
 
 export default StyleLayout
