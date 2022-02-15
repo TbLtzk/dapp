@@ -16,44 +16,42 @@ import {
 } from 'store/validators/selectors'
 import MemberTables from 'components/Custom/MemberTables'
 import TABLE_TYPES from 'constants/tableTypes'
-import {
-  columnsValidatorsWidened,
-  columnsValidatorsMonitoring
-} from 'constants/columns'
+import { columnsValidatorsWidened, columnsValidatorsMonitoring } from 'constants/columns'
 
-import {
-
-  tableValidatorsWidened,
-  tableValidatorsShort,
-  tableValidatorsMonitoring
-} from 'constants/tables'
+import { tableValidatorsWidened, tableValidatorsShort, tableValidatorsMonitoring } from 'constants/tables'
 
 const buttonsType = { qVault: 'q-vault', details: 'details', none: 'none' }
 
 function ValidatorsPanel ({ buttons, tableType }) {
-  const { table, tableLoading, columns } = getValidatorsTableData()
+  const { tableSelector, tableLoadingSelector, columns, tableWrapper } = getValidatorsTableData()
   const dispatch = useDispatch()
+  const table = tableWrapper(useSelector(tableSelector))
+  const tableLoading = useSelector(tableLoadingSelector)
+
   const history = useHistory()
 
   function getValidatorsTableData () {
     switch (tableType) {
       case TABLE_TYPES.validatorsWidened:
         return {
-          table: tableValidatorsWidened(useSelector(validatorsWidenedSelector)),
-          tableLoading: useSelector(loadingValidatorsWidenedSelector),
-          columns: columnsValidatorsWidened
+          tableSelector: validatorsWidenedSelector,
+          tableLoadingSelector: loadingValidatorsWidenedSelector,
+          columns: columnsValidatorsWidened,
+          tableWrapper: tableValidatorsWidened
         }
       case TABLE_TYPES.validatorsShort:
         return {
-          table: tableValidatorsShort(useSelector(validatorsShortSelector)),
-          tableLoading: useSelector(loadingValidatorsShortSelector),
-          columns: columnsValidatorsWidened.slice(0, 3)
+          tableSelector: validatorsShortSelector,
+          tableLoadingSelector: loadingValidatorsShortSelector,
+          columns: columnsValidatorsWidened.slice(0, 3),
+          tableWrapper: tableValidatorsShort
         }
       case TABLE_TYPES.validatorsMonitoring:
         return {
-          table: tableValidatorsMonitoring(useSelector(validatorsMonitoringSelector)),
-          tableLoading: useSelector(loadingValidatorsMonitoringSelector),
-          columns: columnsValidatorsMonitoring
+          tableSelector: validatorsMonitoringSelector,
+          tableLoadingSelector: loadingValidatorsMonitoringSelector,
+          columns: columnsValidatorsMonitoring,
+          tableWrapper: tableValidatorsMonitoring
         }
     }
   }

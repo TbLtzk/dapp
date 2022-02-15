@@ -11,12 +11,13 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module'
   },
-  plugins: ['react'],
+  plugins: ['react', 'react-hooks'],
   rules: {
     'no-case-declarations': 'off',
     'react/no-unescaped-entities': 'off',
     'react/prop-types': 'off',
     'prefer-destructuring': 'off',
-    'react/display-name': 'off'
+    'react/display-name': 'off',
+    'react-hooks/rules-of-hooks': 'error'
   }
 }

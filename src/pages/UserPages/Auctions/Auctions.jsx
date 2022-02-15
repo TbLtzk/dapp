@@ -17,23 +17,24 @@ import SidebarCards from './components/SidebarCards'
 import { getAuctions } from 'store/auctions/action-creators'
 
 function Auctions ({ auctionsType }) {
-  const { auctions, title } = getAuctionsData(auctionsType)
+  const { auctionsSelector, title } = getAuctionsData(auctionsType)
   const dispatch = useDispatch()
+  const auctions = useSelector(auctionsSelector)
 
   function getAuctionsData (type) {
     switch (type) {
       case AUCTIONS_TYPES.liquidation:
-        return { auctions: useSelector(liquidationAuctionsSelector), title: 'Liquidation' }
+        return { auctionsSelector: liquidationAuctionsSelector, title: 'Liquidation' }
       case AUCTIONS_TYPES.systemDebt:
-        return { auctions: useSelector(systemDebtAuctionsSelector), title: 'System Debt' }
+        return { auctionsSelector: systemDebtAuctionsSelector, title: 'System Debt' }
       case AUCTIONS_TYPES.systemSurplus:
-        return { auctions: useSelector(systemSurplusAuctionsSelector), title: 'System Surplus' }
+        return { auctionsSelector: systemSurplusAuctionsSelector, title: 'System Surplus' }
     }
   }
 
   useEffect(() => {
     dispatch(getAuctions(auctionsType))
-  }, [])
+  }, [dispatch, auctionsType])
 
   const tabsItems = [
     {

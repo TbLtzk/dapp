@@ -42,10 +42,14 @@ import { ProposalsTabWrp } from './styles'
 import ProposalsList from './components/ProposalsList/ProposalsList'
 
 function Proposals ({ proposalsType }) {
-  const { proposals, endedProposals, activeProposalsCount, endedProposalsCount, oneContractName, title } =
+  const { proposalsSelector, endedProposalsSelector, activeProposalsCountSelector, endedProposalsCountSelector, oneContractName, title } =
         getProposalsData(proposalsType)
 
   const dispatch = useDispatch()
+  const proposals = useSelector(proposalsSelector)
+  const endedProposals = useSelector(endedProposalsSelector)
+  const activeProposalsCount = useSelector(activeProposalsCountSelector)
+  const endedProposalsCount = useSelector(endedProposalsCountSelector)
 
   function getProposalsData (type) {
     switch (type) {
@@ -53,46 +57,46 @@ function Proposals ({ proposalsType }) {
         return {
           title: 'Q Proposals',
           oneContractName: CONTRACTS_NAMES.constitutionVoting,
-          proposals: useSelector(qActiveProposalsSelector),
-          endedProposals: useSelector(qEndedProposalsSelector),
-          activeProposalsCount: useSelector(qActiveProposalsCountSelector),
-          endedProposalsCount: useSelector(qEndedProposalsCountSelector)
+          proposalsSelector: qActiveProposalsSelector,
+          endedProposalsSelector: qEndedProposalsSelector,
+          activeProposalsCountSelector: qActiveProposalsCountSelector,
+          endedProposalsCountSelector: qEndedProposalsCountSelector
         }
       case PROPOSALS_TYPES.rootNodePanel:
         return {
           title: 'Root Node Panel',
           oneContractName: CONTRACTS_NAMES.rootsVoting,
-          proposals: useSelector(rootActiveProposalsSelector),
-          endedProposals: useSelector(rootEndedProposalsSelector),
-          activeProposalsCount: useSelector(rootActiveProposalsCountSelector),
-          endedProposalsCount: useSelector(rootEndedProposalsCountSelector)
+          proposalsSelector: rootActiveProposalsSelector,
+          endedProposalsSelector: rootEndedProposalsSelector,
+          activeProposalsCountSelector: rootActiveProposalsCountSelector,
+          endedProposalsCountSelector: rootEndedProposalsCountSelector
         }
       case PROPOSALS_TYPES.expertProposals:
         return {
           title: 'Expert Proposals',
           oneContractName: CONTRACTS_NAMES.ePQFIMembershipVoting,
-          proposals: useSelector(expertActiveProposalsSelector),
-          endedProposals: useSelector(expertEndedProposalsSelector),
-          activeProposalsCount: useSelector(expertActiveProposalsCountSelector),
-          endedProposalsCount: useSelector(expertEndedProposalsCountSelector)
+          proposalsSelector: expertActiveProposalsSelector,
+          endedProposalsSelector: expertEndedProposalsSelector,
+          activeProposalsCountSelector: expertActiveProposalsCountSelector,
+          endedProposalsCountSelector: expertEndedProposalsCountSelector
         }
       case PROPOSALS_TYPES.slashingProposals:
         return {
           title: 'Slashing Proposals',
           oneContractName: CONTRACTS_NAMES.rootNodesSlashingVoting,
-          proposals: useSelector(slashingActiveProposalsSelector),
-          endedProposals: useSelector(slashingEndedProposalsSelector),
-          activeProposalsCount: useSelector(slashingActiveProposalsCountSelector),
-          endedProposalsCount: useSelector(slashingEndedProposalsCountSelector)
+          proposalsSelector: slashingActiveProposalsSelector,
+          endedProposalsSelector: slashingEndedProposalsSelector,
+          activeProposalsCountSelector: slashingActiveProposalsCountSelector,
+          endedProposalsCountSelector: slashingEndedProposalsCountSelector
         }
       case PROPOSALS_TYPES.contractUpdates:
         return {
           title: 'Contract Updates',
           oneContractName: CONTRACTS_NAMES.upgradeVoting,
-          proposals: useSelector(contractUpdatesActiveProposalsSelector),
-          endedProposals: useSelector(contractUpdatesEndedProposalsSelector),
-          activeProposalsCount: useSelector(contractUpdatesActiveProposalsCountSelector),
-          endedProposalsCount: useSelector(contractUpdatesEndedProposalsCountSelector)
+          proposalsSelector: contractUpdatesActiveProposalsSelector,
+          endedProposalsSelector: contractUpdatesEndedProposalsSelector,
+          activeProposalsCountSelector: contractUpdatesActiveProposalsCountSelector,
+          endedProposalsCountSelector: contractUpdatesEndedProposalsCountSelector
         }
     }
   }
