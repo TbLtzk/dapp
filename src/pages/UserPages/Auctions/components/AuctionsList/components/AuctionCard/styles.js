@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import { Card } from 'react-bootstrap'
-import { indents } from 'constants/style'
+import styled from "styled-components";
+import { Card } from "react-bootstrap";
+import { indents } from "constants/style";
 
 export const ListCardWrp = styled(Card)`
   border: 0;
@@ -80,9 +80,9 @@ export const ListCardWrp = styled(Card)`
 
   .dropdown-toggle {
     align-items: center;
-    width: ${(props) => (!props.width ? 'auto' : props.width)};
-    max-width: ${(props) => (!props.width ? 'auto' : props.width)};
-    min-width: ${(props) => (!props.width ? 'auto' : props.width)};
+    width: ${(props) => (!props.width ? "auto" : props.width)};
+    max-width: ${(props) => (!props.width ? "auto" : props.width)};
+    min-width: ${(props) => (!props.width ? "auto" : props.width)};
     padding: 7px 11px;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -91,17 +91,17 @@ export const ListCardWrp = styled(Card)`
     line-height: 18px;
     border-color: ${(props) => props.theme.colors.oxfordBlueTint2};
     background-color: ${(props) => {
-      if (props.palette === 'dark') {
-        return props.theme.colors.oxfordBlueTint2
+      if (props.palette === "dark") {
+        return props.theme.colors.oxfordBlueTint2;
       } else {
-        return props.theme.colors.oxfordBlueTint5
+        return props.theme.colors.oxfordBlueTint5;
       }
     }};
     color: ${(props) => {
-      if (props.palette === 'dark') {
-        return props.theme.colors.white
+      if (props.palette === "dark") {
+        return props.theme.colors.white;
       } else {
-        return props.theme.colors.oxfordBlue
+        return props.theme.colors.oxfordBlue;
       }
     }};
     border-radius: 3px;
@@ -137,19 +137,19 @@ export const ListCardWrp = styled(Card)`
     }
 
     &:focus {
-      box-shadow: ${(props) => (props.palette === 'light' ? 'none !important' : 'auto')};
+      box-shadow: ${(props) => (props.palette === "light" ? "none !important" : "auto")};
       color: ${(props) => {
-        if (props.palette === 'dark') {
-          return props.theme.colors.white
+        if (props.palette === "dark") {
+          return props.theme.colors.white;
         } else {
-          return props.theme.colors.oxfordBlue
+          return props.theme.colors.oxfordBlue;
         }
       }}!important;
       background-color: ${(props) => {
-        if (props.palette === 'dark') {
-          return props.theme.colors.oxfordBlueTint2
+        if (props.palette === "dark") {
+          return props.theme.colors.oxfordBlueTint2;
         } else {
-          return props.theme.colors.oxfordBlueTint5
+          return props.theme.colors.oxfordBlueTint5;
         }
       }}!important;
       border-color: ${(props) => props.theme.colors.oxfordBlueTint2};
@@ -157,18 +157,18 @@ export const ListCardWrp = styled(Card)`
       :after {
         border-left: 1px solid
           ${(props) => {
-            if (props.palette === 'dark') {
-              return props.theme.colors.white
+            if (props.palette === "dark") {
+              return props.theme.colors.white;
             } else {
-              return props.theme.colors.oxfordBlue
+              return props.theme.colors.oxfordBlue;
             }
           }};
         border-top: 1px solid
           ${(props) => {
-            if (props.palette === 'dark') {
-              return props.theme.colors.white
+            if (props.palette === "dark") {
+              return props.theme.colors.white;
             } else {
-              return props.theme.colors.oxfordBlue
+              return props.theme.colors.oxfordBlue;
             }
           }};
       }
@@ -179,18 +179,18 @@ export const ListCardWrp = styled(Card)`
       margin-left: 10px;
       border-left: 1px solid
         ${(props) => {
-          if (props.palette === 'dark') {
-            return props.theme.colors.white
+          if (props.palette === "dark") {
+            return props.theme.colors.white;
           } else {
-            return props.theme.colors.oxfordBlue
+            return props.theme.colors.oxfordBlue;
           }
         }};
       border-top: 1px solid
         ${(props) => {
-          if (props.palette === 'dark') {
-            return props.theme.colors.white
+          if (props.palette === "dark") {
+            return props.theme.colors.white;
           } else {
-            return props.theme.colors.oxfordBlue
+            return props.theme.colors.oxfordBlue;
           }
         }};
       border-right: none;
@@ -208,9 +208,9 @@ export const ListCardWrp = styled(Card)`
 
   .dropdown-item {
     align-items: center;
-    width: ${(props) => (!props.width ? 'auto' : props.width)};
-    max-width: ${(props) => (!props.width ? 'auto' : props.width)};
-    min-width: ${(props) => (!props.width ? 'auto' : props.width)};
+    width: ${(props) => (!props.width ? "auto" : props.width)};
+    max-width: ${(props) => (!props.width ? "auto" : props.width)};
+    min-width: ${(props) => (!props.width ? "auto" : props.width)};
     padding: 7px 11px;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -275,7 +275,7 @@ export const ListCardWrp = styled(Card)`
     width: 100%;
     display: grid;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
-    grid-column-gap: ${indents['15']};
+    grid-column-gap: ${indents["15"]};
 
     & > * {
       width: 100%;
@@ -288,7 +288,6 @@ export const ListCardWrp = styled(Card)`
   .list-card__three-colm {
     display: grid;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
-    grid-column-gap: ${indents['15']};
 
     & > * {
       text-overflow: ellipsis;
@@ -300,7 +299,7 @@ export const ListCardWrp = styled(Card)`
   .list-card__column-1-2-2 {
     display: grid;
     grid-template-columns: minmax(100px, 120px) minmax(100px, 2fr) minmax(100px, 2fr);
-    grid-column-gap: ${indents['15']};
+    grid-column-gap: ${indents["15"]};
 
     & > * {
       text-overflow: ellipsis;
@@ -337,7 +336,7 @@ export const ListCardWrp = styled(Card)`
       margin-left: 10px;
     }
   }
-`
+`;
 
 export const ListCardHeader = styled(Card.Header)`
   padding: 20px 20px 0 20px;
@@ -365,11 +364,13 @@ export const ListCardHeader = styled(Card.Header)`
       overflow: hidden;
     }
   }
-
+  .list-card__status {
+    margin-right: 10px;
+  }
   & > * {
     display: flex;
   }
-`
+`;
 
 export const ListCardBody = styled(Card.Body)`
   background-color: ${(props) => props.theme.colors.oxfordBlueTint1};
@@ -377,6 +378,13 @@ export const ListCardBody = styled(Card.Body)`
   padding: 20px;
   margin-bottom: 16px;
   border: none;
+  .list-card__three-colm {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    div {
+      width: 100%
+    }
+  }
 
   @media screen and (max-width: 1150px) {
     .list-card__three-colm {
@@ -384,4 +392,4 @@ export const ListCardBody = styled(Card.Body)`
       grid-template-columns: 1fr;
     }
   }
-`
+`;
