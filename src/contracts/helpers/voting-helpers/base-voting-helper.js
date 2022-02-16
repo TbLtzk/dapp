@@ -80,8 +80,16 @@ export const arrContractsExpert = [
     type: CONTRACT_TYPES.qDefi
   },
   {
+    typeContract: CONTRACT_TYPES.member,
+    type: CONTRACT_TYPES.qEprs
+  },
+  {
     typeContract: CONTRACT_TYPES.parameters,
     type: CONTRACT_TYPES.qFee
+  },
+  {
+    typeContract: CONTRACT_TYPES.parameters,
+    type: CONTRACT_TYPES.qEprs
   },
   {
     typeContract: CONTRACT_TYPES.parameters,
@@ -93,9 +101,11 @@ export function creationExpertContractObj (contractName) {
   switch (contractName) {
     case CONTRACTS_NAMES.ePQFIMembershipVoting:
     case CONTRACTS_NAMES.ePDRMembershipVoting:
+    case CONTRACTS_NAMES.ePRSMembershipVoting:
       return new MembershipVoting(contractName)
     case CONTRACTS_NAMES.ePQFIParametersVoting:
     case CONTRACTS_NAMES.ePDRParametersVoting:
+    case CONTRACTS_NAMES.ePRSParametersVoting:
       return new ParametersVoting(contractName)
   }
 }
@@ -103,9 +113,21 @@ export function creationExpertContractObj (contractName) {
 export function creationExpertContractsObjArray () {
   const ePQFImembershipVoting = new MembershipVoting(CONTRACTS_NAMES.ePQFIMembershipVoting)
   const ePDRmembershipVoting = new MembershipVoting(CONTRACTS_NAMES.ePDRMembershipVoting)
+
   const ePQFIparametersVoting = new ParametersVoting(CONTRACTS_NAMES.ePQFIParametersVoting)
   const ePDRparametersVoting = new ParametersVoting(CONTRACTS_NAMES.ePDRParametersVoting)
-  return [ePQFImembershipVoting, ePDRmembershipVoting, ePQFIparametersVoting, ePDRparametersVoting]
+
+  // const ePRSparametersVoting = new ParametersVoting(CONTRACTS_NAMES.ePRSParametersVoting);
+  // const ePRSmembershipVoting = new MembershipVoting(CONTRACTS_NAMES.ePRSMembershipVoting);
+
+  return [
+    ePQFImembershipVoting,
+    ePDRmembershipVoting,
+    ePQFIparametersVoting,
+    ePDRparametersVoting
+    // ePRSparametersVoting,
+    // ePRSmembershipVoting,
+  ]
 }
 
 export function creationUpdatesContractObjArray () {
@@ -159,7 +181,9 @@ export async function getProposal (contractName, id, oneProposal) {
       case CONTRACTS_NAMES.ePQFIMembershipVoting:
       case CONTRACTS_NAMES.ePDRMembershipVoting:
       case CONTRACTS_NAMES.ePQFIParametersVoting:
-      case CONTRACTS_NAMES.ePDRParametersVoting: {
+      case CONTRACTS_NAMES.ePDRParametersVoting:
+      case CONTRACTS_NAMES.ePRSParametersVoting:
+      case CONTRACTS_NAMES.ePRSMembershipVoting: {
         const contract = creationExpertContractObj(contractName)
         const proposal = await contract.getProposal(id, oneProposal)
         return proposal
@@ -188,29 +212,29 @@ export const chooseSlashingContractDependsOnType = (type) => {
 }
 
 export const chooseExpertContractDependsOnType = (typeContract, type) => {
-  let contract = null
-  let contractName = null
   switch (type) {
     case CONTRACT_TYPES.qFee:
       if (typeContract === CONTRACT_TYPES.member) {
-        contractName = CONTRACTS_NAMES.ePQFIMembershipVoting
-        contract = new MembershipVoting(contractName)
+        return new MembershipVoting(CONTRACTS_NAMES.ePQFIMembershipVoting)
       } else if (typeContract === CONTRACT_TYPES.parameters) {
-        contractName = CONTRACTS_NAMES.ePQFIParametersVoting
-        contract = new ParametersVoting(contractName)
+        return new ParametersVoting(CONTRACTS_NAMES.ePQFIParametersVoting)
       }
       break
     case CONTRACT_TYPES.qDefi:
       if (typeContract === CONTRACT_TYPES.member) {
-        contractName = CONTRACTS_NAMES.ePDRMembershipVoting
-        contract = new MembershipVoting(contractName)
+        return new MembershipVoting(CONTRACTS_NAMES.ePDRMembershipVoting)
       } else if (typeContract === CONTRACT_TYPES.parameters) {
-        contractName = CONTRACTS_NAMES.ePDRParametersVoting
-        contract = new ParametersVoting(contractName)
+        return new ParametersVoting(CONTRACTS_NAMES.ePDRParametersVoting)
+      }
+      break
+    case CONTRACT_TYPES.qEprs:
+      if (typeContract === CONTRACT_TYPES.member) {
+        return new MembershipVoting(CONTRACTS_NAMES.ePRSMembershipVoting)
+      } else if (typeContract === CONTRACT_TYPES.parameters) {
+        return new ParametersVoting(CONTRACTS_NAMES.ePRSParametersVoting)
       }
       break
   }
-  return contract
 }
 
 export function getVoteDelegation (agent, ownWeight, address) {

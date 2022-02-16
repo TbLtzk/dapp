@@ -34,7 +34,6 @@ function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) 
   const dispatch = useDispatch()
 
   const formData = useSelector(formObject)
-
   const stepLimit = useSelector(createdStepsLimit)
   const stepCounter = useSelector(stepCounterModal)
   const disabledContinueBtn = useSelector(disabledContinueProposalBtn)
@@ -92,6 +91,21 @@ function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) 
     }
   }, [activeTab, stepCounter, register, errors, stepLimit])
 
+  const content = (
+        <>
+            <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)} />
+            <div className="modal__steps">
+                Step {stepCounter} of {stepLimit}
+            </div>
+            <form>{switchProposalContentDependsOnType}</form>
+        </>
+  )
+
+  const backBtnHandler = () => {
+    dispatch(setStepCounter(stepCounter - 1))
+    dispatch(setDisabledCreatedProposalBtn(false))
+  }
+
   const onNext = (data) => {
     dispatch(setCreateProposalObj({ ...formData, ...data }))
     if (stepCounter < stepLimit) {
@@ -108,22 +122,11 @@ function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) 
             onHide={onHide}
             modalTitle={activeTabTitle}
             backBtnTitle={stepCounter !== 1 ? 'Back' : null}
-            backBtnHandler={() => {
-              dispatch(setStepCounter(stepCounter - 1))
-              dispatch(setDisabledCreatedProposalBtn(false))
-            }}
+            backBtnHandler={backBtnHandler}
+            content={content}
             continueBtnTitle={stepLimit !== stepCounter ? 'Next' : 'Confirm'}
             disabled={disabledContinueBtn}
             continueBtnHandler={handleSubmit(onNext)}
-            content={
-                <>
-                    <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)} />
-                    <div className="modal__steps">
-                        Step {stepCounter} of {stepLimit}
-                    </div>
-                    <form>{switchProposalContentDependsOnType}</form>
-                </>
-            }
         />
   )
 }

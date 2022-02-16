@@ -2,20 +2,22 @@ import { ParameterType } from '@q-dev/q-js-sdk'
 import {
   getEpqfiParametersInstance,
   getEpdrParametersInstance,
-  getConstitutionInstance
+  getConstitutionInstance,
+  getEprsParametersInstance
 } from 'contracts/contract-instance'
 import ErrorHandler from 'func/ErrorHandler'
 import { CONTRACT_TYPES } from 'constants/contracts'
 
 async function getContract (typeContract) {
-  if (typeContract === CONTRACT_TYPES.qFee) {
-    return await getEpqfiParametersInstance()
-  } else if (typeContract === CONTRACT_TYPES.qDefi) {
-    return await getEpdrParametersInstance()
-  } else if (typeContract === CONTRACT_TYPES.constitution) {
-    return await getConstitutionInstance()
-  } else {
-    return null
+  switch (typeContract) {
+    case CONTRACT_TYPES.qFee:
+      return await getEpqfiParametersInstance()
+    case CONTRACT_TYPES.qDefi:
+      return await getEpdrParametersInstance()
+    case CONTRACT_TYPES.constitution:
+      return await getConstitutionInstance()
+    case CONTRACT_TYPES.qEprs:
+      return await getEprsParametersInstance()
   }
 }
 
@@ -43,6 +45,7 @@ export async function getParameterKeysByType (typeContract, typeParameter) {
     return data
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
+    return null
   }
 }
 
@@ -70,7 +73,7 @@ export async function getParameterValueByKey (typeContract, typeParameter, param
     return data
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
-    return ''
+    return null
   }
 }
 

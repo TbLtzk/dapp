@@ -18,6 +18,7 @@ function CreateStep2 ({ activeTab, register, errors, proposalContract }) {
                 {proposalContract === CONTRACTS_NAMES.constitutionVoting ||
                 proposalContract === CONTRACTS_NAMES.generalUpdateVoting ||
                 proposalContract === CONTRACTS_NAMES.ePDRMembershipVoting ||
+                proposalContract === CONTRACTS_NAMES.ePRSMembershipVoting ||
                 proposalContract === CONTRACTS_NAMES.ePQFIMembershipVoting ||
                 proposalContract === CONTRACTS_NAMES.rootsVoting
                   ? (

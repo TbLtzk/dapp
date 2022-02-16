@@ -54,6 +54,10 @@ function ModalVote ({ modalShow, onHide, activeTab, proposalId, proposalContract
     }
   }, [activeTab, stepCounter, register, errors, stepLimit, dispatch])
 
+  const backBtnHandler = () => {
+    dispatch(setStepVoteCounter(stepCounter - 1))
+    dispatch(setDisabledCreatedProposalBtn(false))
+  }
   const onNext = (data) => {
     dispatch(setVoteProposalObj({ ...formData, ...data }))
     if (stepCounter < stepLimit) {
@@ -73,27 +77,25 @@ function ModalVote ({ modalShow, onHide, activeTab, proposalId, proposalContract
     }
   }
 
+  const content = (
+        <>
+            <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)} />
+            <div className="modal__steps">
+                Step {stepCounter} of {stepLimit}
+            </div>
+            <form>{switchProposalContentDependsOnType()}</form>
+        </>
+  )
   return (
         <ModalWindow
             show={modalShow}
             onHide={onHide}
             backBtnTitle={stepCounter !== 1 ? 'Back' : null}
-            backBtnHandler={() => {
-              dispatch(setStepVoteCounter(stepCounter - 1))
-              dispatch(setDisabledCreatedProposalBtn(false))
-            }}
+            backBtnHandler={backBtnHandler}
             continueBtnTitle={stepLimit !== stepCounter ? 'Next' : 'Confirm'}
             modalTitle={`${checkTitleName} for proposal`}
             continueBtnHandler={handleSubmit(onNext)}
-            content={
-                <>
-                    <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)} />
-                    <div className="modal__steps">
-                        Step {stepCounter} of {stepLimit}
-                    </div>
-                    <form>{switchProposalContentDependsOnType()}</form>
-                </>
-            }
+            content={content}
         />
   )
 }

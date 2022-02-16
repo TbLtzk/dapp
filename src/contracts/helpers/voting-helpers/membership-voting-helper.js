@@ -5,62 +5,57 @@ import { getStatusTransformation } from './base-voting-helper'
 import { fromWei } from 'func/balance'
 import { CONTRACTS_NAMES, CONTRACT_TYPES } from 'constants/contracts'
 
+const proposalTitle = {
+  [CONTRACTS_NAMES.ePRSMembershipVoting]: 'Q Root Node Selection Expert Panel',
+  [CONTRACTS_NAMES.ePDRMembershipVoting]: 'DeFi Risk Expert membership',
+  [CONTRACTS_NAMES.ePQFIMembershipVoting]: 'Fees & Incentives Experts membership'
+}
+
 export default class MembershipVoting extends VotingService {
-  async getProposalAdditionalData (promiseRes, id) {
-    const objRes = {}
-    let objStats = {}
-    objRes.remark = promiseRes.base.remark
-    objRes.addressToAdd = promiseRes.proposalDetails.addressToAdd
-    objRes.addressToRemove = promiseRes.proposalDetails.addressToRemove
-    objRes.vetosCount = promiseRes.base.counters.vetosCount
-    const weightAgainst = promiseRes.base.counters.weightAgainst
-    objRes.votesAgainst = fromWei(weightAgainst)
-    const weightFor = promiseRes.base.counters.weightFor
-    objRes.votesFor = fromWei(weightFor)
-
-    objRes.type =
-      this.contractName === CONTRACTS_NAMES.ePDRMembershipVoting
-        ? 'DeFi Risk Expert membership'
-        : 'Fees & Incentives Experts membership'
-    objRes.kindVoting = 'membership'
-    objStats = await this.getProposalStatsData(id)
-
-    if (weightFor > 0 || weightAgainst > 0) {
-      objRes.numberProposalVotes = {
-        votesFor: Number(objRes.votesFor),
-        votesAgainst: Number(objRes.votesAgainst)
-      }
-    }
-    return { ...objRes, ...objStats }
+  getProposalData (promiseRes, id, promiseStatus) {
+    const info = {}
+    info.vetoEndTime = promiseRes.base.params.vetoEndTime
+    info.votingEndTime = promiseRes.base.params.votingEndTime
+    info.title = proposalTitle[this.contractName]
+    info.status = getStatusTransformation(promiseStatus)
+    info.contract = this.contractName
+    info.id = id
+    return info
   }
 
-  getProposalData (promiseRes, id, promiseStatus) {
-    const objRes = {}
+  async getProposalAdditionalData (promiseRes, id) {
+    const info = {}
+    const statsInfo = await this.getProposalStatsData(id)
+    const weightFor = promiseRes.base.counters.weightFor
+    const weightAgainst = promiseRes.base.counters.weightAgainst
 
-    objRes.vetoEndTime = promiseRes.base.params.vetoEndTime
-    objRes.votingEndTime = promiseRes.base.params.votingEndTime
-    objRes.title =
-      this.contractName === CONTRACTS_NAMES.ePDRMembershipVoting
-        ? 'DeFi Risk Expert membership proposals'
-        : 'Fees & Incentives Experts membership proposals'
-    objRes.status = getStatusTransformation(promiseStatus)
-    objRes.contract = this.contractName
-    objRes.id = id
+    info.remark = promiseRes.base.remark
+    info.addressToAdd = promiseRes.proposalDetails.addressToAdd
+    info.addressToRemove = promiseRes.proposalDetails.addressToRemove
+    info.vetosCount = promiseRes.base.counters.vetosCount
+    info.votesFor = fromWei(weightFor)
+    info.votesAgainst = fromWei(weightAgainst)
+    info.type = proposalTitle[this.contractName]
+    info.kindVoting = 'membership'
 
-    return objRes
+    if (weightFor > 0 || weightAgainst > 0) {
+      info.numberProposalVotes = {
+        votesFor: Number(info.votesFor),
+        votesAgainst: Number(info.votesAgainst)
+      }
+    }
+    return { ...info, ...statsInfo }
   }
 
   async createProposal (data, userAddress) {
     const contract = await this.getContractInstance()
-
-    let result = null
     const link = data['external-link']
     const candidate = data.address
     if (data?.first === CONTRACT_TYPES.addNewExpert) {
-      result = await contract.createAddExpertProposal(link, candidate, { from: userAddress })
+      console.log(link, candidate, { from: userAddress })
+      return await contract.createAddExpertProposal(link, candidate, { from: userAddress })
     } else if (data?.first === CONTRACT_TYPES.removeCurrentExpert) {
-      result = await contract.createRemoveExpertProposal(link, candidate, { from: userAddress })
+      return await contract.createRemoveExpertProposal(link, candidate, { from: userAddress })
     }
-    return result
   }
 }

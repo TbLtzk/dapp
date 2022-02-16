@@ -212,7 +212,7 @@ function CreateStep3 ({ activeTab, register, errors }) {
                           : null}
                         <h5>{formData.first === 'parameter-vote' ? 'Add Parameter' : 'Panel to Add an Expert'}</h5>
                         <p>{formData['type-proposal']?.replace(/-/g, ' ')}</p>
-                        <h5>External link loolo</h5>
+                        <h5>External link</h5>
                         <p>{formData['external-link']}</p>
                         {formData?.first !== CONTRACT_TYPES.parameterVote
                           ? (

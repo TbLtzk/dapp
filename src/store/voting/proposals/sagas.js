@@ -35,6 +35,7 @@ import { MODE } from 'components/Base/DashboardMode/DashboardMode'
 import { getContractUpdatesProposals } from '../contract-updates/action-creators'
 
 function * createProposalGenerator ({ data }) {
+  console.log(data)
   try {
     yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
@@ -78,7 +79,10 @@ function * createProposalGenerator ({ data }) {
         case CONTRACT_TYPES.parameterVote:
           const typeContract =
             data.first !== CONTRACT_TYPES.parameterVote ? CONTRACT_TYPES.member : CONTRACT_TYPES.parameters
+          console.log(typeContract)
           const contract = chooseExpertContractDependsOnType(typeContract, data['type-proposal'])
+          console.log(contract)
+          console.log(contract.contractName)
           contractName = contract.contractName
           yield contract.createProposal(data, userAddress)
           break
@@ -162,7 +166,9 @@ function * getProposalsByTypeGenerator ({ contractName }) {
     case CONTRACTS_NAMES.ePQFIMembershipVoting:
     case CONTRACTS_NAMES.ePDRMembershipVoting:
     case CONTRACTS_NAMES.ePQFIParametersVoting:
-    case CONTRACTS_NAMES.ePDRParametersVoting: {
+    case CONTRACTS_NAMES.ePDRParametersVoting:
+    case CONTRACTS_NAMES.ePRSMembershipVoting:
+    case CONTRACTS_NAMES.ePRSParametersVoting: {
       yield put(getExpertProposals())
       break
     }

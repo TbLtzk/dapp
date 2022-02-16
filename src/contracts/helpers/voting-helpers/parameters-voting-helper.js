@@ -3,62 +3,67 @@ import VotingService from './voting-service-helper'
 import { getStatusTransformation } from './base-voting-helper'
 import { parameterVote } from 'pages/UserPages/Proposals/components/CreateQProposalBtn/ModalCreateProposal/CreateStep2/QExpertS2/constants'
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts'
-import { getEpdrParametersVotingInstance, getEpqfiParametersVotingInstance } from 'contracts/contract-instance'
+import {
+  getEpdrParametersVotingInstance,
+  getEpqfiParametersVotingInstance,
+  getEprsParametersVotingInstance
+} from 'contracts/contract-instance'
 import { ParameterType } from '@q-dev/q-js-sdk'
 import { BN } from 'func/useful'
 
+const proposalTitle = {
+  [CONTRACTS_NAMES.ePRSParametersVoting]: 'Q Root Node Selection Expert Panel Parameters',
+  [CONTRACTS_NAMES.ePDRParametersVoting]: 'DeFi Risk Expert Parameters Proposals',
+  [CONTRACTS_NAMES.ePQFIParametersVoting]: 'Fees & Incentives Experts Parameters Proposals'
+}
+
 export default class ParametersVoting extends VotingService {
-  async getProposalAdditionalData (promiseRes, id) {
-    const objRes = {}
-    let objStats = {}
-    let parameters = []
-    objRes.remark = promiseRes.base.remark
-    objRes.vetosCount = promiseRes.base.counters.vetosCount
-    const weightAgainst = promiseRes.base.counters.weightAgainst
-    objRes.votesAgainst = weightAgainst
+  async getProposalAdditionalData (data, id) {
+    const info = {}
+    const statsInfo = await this.getProposalStatsData(id)
+    const weightAgainst = data.base.counters.weightAgainst
+    const weightFor = data.base.counters.weightFor
+    const parameters = []
 
-    const weightFor = promiseRes.base.counters.weightFor
-    objRes.votesFor = weightFor
+    info.remark = data.base.remark
+    info.vetosCount = data.base.counters.vetosCount
+    info.votesAgainst = weightAgainst
+    info.votesFor = weightFor
+    info.type = proposalTitle[this.contractName]
+    info.kindVoting = CONTRACT_TYPES.parameters
 
-    objRes.type =
-      this.contractName === CONTRACTS_NAMES.ePDRParametersVoting
-        ? 'DeFi Risk Expert Parameters Proposals'
-        : 'Fees & Incentives Experts Parameters Proposals'
-    objRes.kindVoting = CONTRACT_TYPES.parameters
-    objStats = await this.getProposalStatsData(id)
-    const parametersSize = promiseRes.parametersSize
-    if (parametersSize >= '1') {
-      parameters = await this.getProposalParametersData(id)
+    if (data.parametersSize >= '1') {
+      const proposalParametersData = await this.getProposalParametersData(id)
+      parameters.push(proposalParametersData)
     }
+
     if (weightFor > 0 || weightAgainst > 0) {
-      objRes.numberProposalVotes = {
-        votesFor: Number(objRes.votesFor),
-        votesAgainst: Number(objRes.votesAgainst)
+      info.numberProposalVotes = {
+        votesFor: Number(info.votesFor),
+        votesAgainst: Number(info.votesAgainst)
       }
     }
     return {
-      ...objRes,
-      ...objStats,
-      parameters: parameters
+      ...info,
+      ...statsInfo,
+      parameters
     }
   }
 
-  getProposalData (promiseRes, id, promiseStatus) {
-    const objRes = {}
-    objRes.id = id
-    objRes.vetoEndTime = promiseRes.base.params.vetoEndTime
-    objRes.votingEndTime = promiseRes.base.params.votingEndTime
-    objRes.status = getStatusTransformation(promiseStatus)
-    objRes.title =
-      this.contractName === CONTRACTS_NAMES.ePDRParametersVoting
-        ? 'DeFi Risk Expert parameter voting proposals'
-        : 'Fees & Incentives Experts parameter voting proposals'
-    objRes.contract = this.contractName
-    return objRes
+  getProposalData (data, id, status) {
+    const info = {}
+    info.id = id
+    info.vetoEndTime = data.base.params.vetoEndTime
+    info.votingEndTime = data.base.params.votingEndTime
+    info.status = getStatusTransformation(status)
+    info.title = proposalTitle[this.contractName]
+    info.contract = this.contractName
+    return info
   }
 
   async createProposal (data, userAddress) {
     const link = data['external-link']
+
     const paramInputs = data[parameterVote.parameterType].reduce((types, item, index) => {
       let inputValue = data['parameter-value'][index]
       switch (Number(item)) {
@@ -76,6 +81,7 @@ export default class ParametersVoting extends VotingService {
       })
       return types
     }, [])
+
     switch (data[parameterVote.radioBtnName]) {
       case CONTRACT_TYPES.qFee: {
         const contract = await getEpqfiParametersVotingInstance()
@@ -83,7 +89,11 @@ export default class ParametersVoting extends VotingService {
       }
       case CONTRACT_TYPES.qDefi: {
         const contract = await getEpdrParametersVotingInstance()
-        return await contract.createProposal(link, paramInputs)
+        return await contract.createProposal(link, paramInputs, { from: userAddress })
+      }
+      case CONTRACT_TYPES.qEprs: {
+        const contract = await getEprsParametersVotingInstance()
+        return await contract.createProposal(link, paramInputs, { from: userAddress })
       }
     }
   }
