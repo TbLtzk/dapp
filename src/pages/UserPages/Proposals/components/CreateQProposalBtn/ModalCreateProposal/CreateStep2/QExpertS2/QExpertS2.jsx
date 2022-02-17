@@ -58,7 +58,7 @@ function QExpertS2 ({ activeTab, register, errors }) {
     const { value } = event.target
     setTypePanel(value)
   }
-  console.log(typePanel)
+
   const switchContentOnTypeProposal = useCallback(() => {
     switch (formData?.first) {
       case CONTRACT_TYPES.addNewExpert:

@@ -4,7 +4,11 @@ import Button from 'components/Base/Buttons/Button'
 import { isUserRootNode } from 'store/root-node/selectors'
 import Tooltip from 'components/Base/Tooltip'
 import { CONTRACTS_NAMES } from 'constants/contracts'
-import { isUserEPDRMembership, isUserEPQFIMembership } from 'store/membership/selectors'
+import {
+  isUserEPDRMembershipSelector,
+  isUserEPQFIMembershipSelector,
+  isUserEPRSMembershipSelector
+} from 'store/membership/selectors'
 import {
   executeProposal,
   setDisabledCreatedProposalBtn,
@@ -27,7 +31,8 @@ const TOOLTIP_INFO = {
   userVetoed: 'User already vetoed.',
   isNotRootNode: 'User is not root node.',
   isDeFiExpert: 'User is not member of DeFi risk expert panel.',
-  isFeesExpert: 'User is not member of Q fees & incentives expert panel.'
+  isFeesExpert: 'User is not member of Q fees & incentives expert panel.',
+  isEprsExpert: 'User is not member of Q Root Node selection expert panel.'
 }
 
 function VotingItems ({ proposal }) {
@@ -38,8 +43,9 @@ function VotingItems ({ proposal }) {
   const [proposalContract, setProposalContract] = useState(null)
 
   const isRootNode = useSelector(isUserRootNode)
-  const isEPDRMembership = useSelector(isUserEPDRMembership)
-  const isEPQFIMembership = useSelector(isUserEPQFIMembership)
+  const isEPDRMembership = useSelector(isUserEPDRMembershipSelector)
+  const isEPQFIMembership = useSelector(isUserEPQFIMembershipSelector)
+  const isEPRSMembership = useSelector(isUserEPRSMembershipSelector)
 
   useEffect(() => {
     return () => {
@@ -55,6 +61,8 @@ function VotingItems ({ proposal }) {
         proposal.contract === CONTRACTS_NAMES.emergencyUpdateVoting
 
   const epqfiParametersVoting = proposal.contract === CONTRACTS_NAMES.ePQFIParametersVoting
+  const eprsParametersVoting = proposal.contract === CONTRACTS_NAMES.ePRSParametersVoting
+
   const epdrParametersVoting = proposal.contract === CONTRACTS_NAMES.ePDRParametersVoting
   const approvalContracts =
         proposal.contract === CONTRACTS_NAMES.addressVoting || proposal.contract === CONTRACTS_NAMES.upgradeVoting
@@ -70,9 +78,11 @@ function VotingItems ({ proposal }) {
       }
       case contractsWithoutVeto:
         return {
-          disabled: !isRootNode,
+          disabled: !isEPRSMembership,
           info: isRootNode ? TOOLTIP_INFO.votePeriod : TOOLTIP_INFO.isNotRootNode
         }
+      case eprsParametersVoting:
+        return { disabled: !eprsParametersVoting, info: TOOLTIP_INFO.isEprsExpert }
       case epdrParametersVoting:
         return { disabled: !isEPDRMembership, info: TOOLTIP_INFO.isDeFiExpert }
       case epqfiParametersVoting:

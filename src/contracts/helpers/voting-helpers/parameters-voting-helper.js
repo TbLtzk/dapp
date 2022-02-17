@@ -32,9 +32,9 @@ export default class ParametersVoting extends VotingService {
     info.type = proposalTitle[this.contractName]
     info.kindVoting = CONTRACT_TYPES.parameters
 
-    if (data.parametersSize >= '1') {
+    if (Number(data.parametersSize) >= 1) {
       const proposalParametersData = await this.getProposalParametersData(id)
-      parameters.push(proposalParametersData)
+      parameters.push(...proposalParametersData)
     }
 
     if (weightFor > 0 || weightAgainst > 0) {
@@ -43,6 +43,7 @@ export default class ParametersVoting extends VotingService {
         votesAgainst: Number(info.votesAgainst)
       }
     }
+
     return {
       ...info,
       ...statsInfo,

@@ -5,6 +5,7 @@ import RootNodePanel from 'components/Custom/MembersPanel/RootNodePanel'
 import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel'
 import DefiMembersPanel from 'components/Custom/MembersPanel/DefiMembersPanel'
 import QFeesMembersPanel from 'components/Custom/MembersPanel/QFeesMembersPanel'
+import EprsMembersPanel from 'components/Custom/MembersPanel/EprsMembersPanel'
 
 import InfBlock from './components/InfBlockUp'
 import TokenomicsBlock from './components/TokenomicsBlock'
@@ -49,6 +50,7 @@ function Dashboard () {
                 <>
                     <DefiMembersPanel />
                     <QFeesMembersPanel />
+                    <EprsMembersPanel />
                 </>
                 )
               : null}

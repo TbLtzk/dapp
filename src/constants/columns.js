@@ -7,6 +7,13 @@ export const columnsDeFiRisk = [
   }
 ]
 
+export const columnsEprs = [
+  {
+    dataField: 'member',
+    text: 'Member Address'
+  }
+]
+
 export const columnnsLockAmount = [
   {
     dataField: 'id',

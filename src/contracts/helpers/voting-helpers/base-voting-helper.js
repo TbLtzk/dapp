@@ -117,16 +117,16 @@ export function creationExpertContractsObjArray () {
   const ePQFIparametersVoting = new ParametersVoting(CONTRACTS_NAMES.ePQFIParametersVoting)
   const ePDRparametersVoting = new ParametersVoting(CONTRACTS_NAMES.ePDRParametersVoting)
 
-  // const ePRSparametersVoting = new ParametersVoting(CONTRACTS_NAMES.ePRSParametersVoting);
-  // const ePRSmembershipVoting = new MembershipVoting(CONTRACTS_NAMES.ePRSMembershipVoting);
+  const ePRSparametersVoting = new ParametersVoting(CONTRACTS_NAMES.ePRSParametersVoting)
+  const ePRSmembershipVoting = new MembershipVoting(CONTRACTS_NAMES.ePRSMembershipVoting)
 
   return [
     ePQFImembershipVoting,
     ePDRmembershipVoting,
     ePQFIparametersVoting,
-    ePDRparametersVoting
-    // ePRSparametersVoting,
-    // ePRSmembershipVoting,
+    ePDRparametersVoting,
+    ePRSparametersVoting,
+    ePRSmembershipVoting
   ]
 }
 
