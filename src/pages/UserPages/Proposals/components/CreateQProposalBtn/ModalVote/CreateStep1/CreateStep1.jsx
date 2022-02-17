@@ -8,7 +8,7 @@ import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
 
 import { basicVote, constitutionCheck } from './constants'
 
-function CreateStep1 ({ activeTab, register, errors }) {
+function CreateStep1 ({ register, errors }) {
   const formData = useSelector(formVoteObject)
   const userLockingEnd = useSelector(votingLockingEnd)
   const dispatch = useDispatch()
@@ -49,7 +49,7 @@ function CreateStep1 ({ activeTab, register, errors }) {
       default:
         return null
     }
-  }, [activeTab, register, errors, userLockingEnd, dispatch])
+  }, [register, errors, userLockingEnd, dispatch])
 
   return <>{contentSwitcher()}</>
 }

@@ -12,12 +12,12 @@ import { stepVoteCounterModal, formVoteObject } from 'store/voting/proposals/sel
 import { useForm } from 'react-hook-form'
 
 import ModalWindow from 'components/Base/ModalWindow'
-import CreateStep2 from './CreateStep1'
-import CreateStep3 from './CreateStep2'
+import CreateStep1 from './CreateStep1'
+import CreateStep2 from './CreateStep2'
 
 import { ProgressBar } from 'react-bootstrap'
 
-function ModalVote ({ modalShow, onHide, activeTab, proposalId, proposalContract, vetoEndTime, proposalStatus }) {
+function ModalVote ({ modalShow, onHide, proposalId, proposalContract, vetoEndTime, proposalStatus }) {
   const { register, errors, handleSubmit } = useForm()
   const dispatch = useDispatch()
 
@@ -30,20 +30,18 @@ function ModalVote ({ modalShow, onHide, activeTab, proposalId, proposalContract
     switch (stepCounter) {
       case 1:
         return (
-                    <CreateStep2
+                    <CreateStep1
                         proposalContract={proposalContract}
                         vetoEndTime={vetoEndTime}
                         formData={formData}
-                        activeTab={activeTab}
                         register={register}
                         errors={errors}
                     />
         )
       case 2:
         return (
-                    <CreateStep3
+                    <CreateStep2
                         formData={formData}
-                        activeTab={activeTab}
                         register={register}
                         errors={errors}
                         proposalContract={proposalContract}
@@ -52,7 +50,7 @@ function ModalVote ({ modalShow, onHide, activeTab, proposalId, proposalContract
       default:
         return null
     }
-  }, [activeTab, stepCounter, register, errors, stepLimit, dispatch])
+  }, [stepCounter, register, errors, stepLimit, dispatch])
 
   const backBtnHandler = () => {
     dispatch(setStepVoteCounter(stepCounter - 1))
