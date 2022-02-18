@@ -1,4 +1,4 @@
-import React, { useCallback, useState, Fragment, useEffect } from 'react'
+import React, { useCallback, useState, Fragment } from 'react'
 
 import { useSelector } from 'react-redux'
 import { PROPOSALS_TYPES } from 'constants/statuses'
@@ -8,25 +8,31 @@ import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParamet
 import { constUpdate, warning } from './constants'
 import FormSelect from 'components/Base/Form/FormSelect'
 import FormInput from 'components/Base/Form/FormInput'
-import { ParameterType } from '@q-dev/q-js-sdk'
 import { getTypeName } from 'func/contractHelpers'
 
 import { CONTRACT_TYPES } from 'constants/contracts'
+import { fillArray } from 'func/useful'
 import { transformToParams } from 'contracts/helpers/parameters-helper'
 
-const DEFAULT_PARAMS = {
-  type: ParameterType.ADDRESS,
-  key: '',
-  value: '',
-  currentValue: ''
-}
-
-function CreateStep3 ({ activeTab, register, errors }) {
+function CreateStep3 ({ activeTab, register, errors, watch }) {
   const formData = useSelector(formObject)
-
   const newParameter = useSelector(newParameterSelector)
 
-  const [params, setParams] = useState([{ ...DEFAULT_PARAMS }])
+  const [params, setParams] = useState(formData['parameter-type']?.length || 1)
+
+  function handleParams (value) {
+    switch (value) {
+      case -1: {
+        setParams(params - 1)
+        break
+      }
+      default: {
+        if (params < 100) {
+          setParams(params + 1)
+        }
+      }
+    }
+  }
 
   function showCommonData (children) {
     return (
@@ -37,34 +43,6 @@ function CreateStep3 ({ activeTab, register, errors }) {
                 {children}
             </div>
     )
-  }
-
-  function changeTypesCapacity (action) {
-    const newCapacity = 0
-    switch (action) {
-      case -1:
-        if (params.length - 1 < 1) return
-        const newParams = [...params]
-        newParams.pop()
-        setParams(newParams)
-        break
-      case 1:
-        if (newCapacity > 100) return
-        setParams([...params, { ...DEFAULT_PARAMS }])
-        break
-    }
-  }
-
-  useEffect(() => {
-    if (formData['parameter-type']?.length) {
-      setParams(transformToParams(formData))
-    }
-  }, [])
-
-  function setNewValue (index, key, newType) {
-    const newParams = [...params]
-    newParams[index][key] = newType
-    setParams(newParams)
   }
 
   const contentSwitcher = useCallback(() => {
@@ -98,7 +76,7 @@ function CreateStep3 ({ activeTab, register, errors }) {
             return (
                             <div>
                                 <h2>{constUpdate.inputTitle}</h2>
-                                {params.map((_, index) => (
+                                {fillArray(params).map((_, index) => (
                                     <Fragment key={index}>
                                         <h2>
                                             {constUpdate.radioBtnTitle} #{index + 1}
@@ -106,49 +84,43 @@ function CreateStep3 ({ activeTab, register, errors }) {
                                         <div className="modal__one-line-form" style={{ marginBottom: 0 }}>
                                             <FormSelect
                                                 width="40%"
+                                                palette="dark"
                                                 name={`${constUpdate.radioBtnName}[${index}]`}
                                                 register={register}
-                                                palette={'dark'}
-                                                value={params[index].type}
-                                                onChange={(value) => setNewValue(index, 'type', value.target.value)}
                                                 ref={register({ required: 'Choose one option!' })}
                                                 optionValues={constUpdate.radioBtn}
                                             />
                                             <FormInput
-                                                name={`${constUpdate.inputsObjFirst}[${index}]`}
                                                 type="string"
-                                                palette={'dark'}
-                                                value={params[index].key}
+                                                palette="dark"
+                                                name={`${constUpdate.inputsObjFirst}[${index}]`}
                                                 placeholder={constUpdate.inputsFirst}
                                                 ref={register({ required: 'Field is required!' })}
                                                 valid={errors[constUpdate.inputsObjFirst]?.[index]?.message}
-                                                onChange={(value) => setNewValue(index, 'key', value.target.value)}
                                             />
                                         </div>
                                         <FormInput
-                                            name={`${constUpdate.inputsObjSecond}[${index}]`}
                                             type="string"
-                                            palette={'dark'}
-                                            value={params[index].value}
+                                            palette="dark"
+                                            name={`${constUpdate.inputsObjSecond}[${index}]`}
                                             placeholder={constUpdate.inputsSecond}
                                             ref={register({ required: 'Field is required!' })}
                                             valid={errors[constUpdate.inputsObjSecond]?.[index]?.message}
-                                            onChange={(value) => setNewValue(index, 'value', value.target.value)}
                                         />
                                         <CurrentParameterValue
-                                            setCurrentValue={(value) => setNewValue(index, 'currentValue', value)}
                                             typeContract={CONTRACT_TYPES.constitution}
-                                            params={params[index]}
+                                            parameterType={watch(`${constUpdate.radioBtnName}[${index}]`)}
+                                            parameterKey={watch(`${constUpdate.inputsObjFirst}[${index}]`)}
                                         />
                                     </Fragment>
                                 ))}
                                 <div className="modal__text-wrp">
-                                    <div className="modal__text-btn" onClick={() => changeTypesCapacity(1)}>
+                                    <div className="modal__text-btn" onClick={() => handleParams(1)}>
                                         Add parameter
                                     </div>
-                                    {params.length > 1
+                                    {params > 1
                                       ? (
-                                        <div className="modal__text-btn" onClick={() => changeTypesCapacity(-1)}>
+                                        <div className="modal__text-btn" onClick={() => handleParams(-1)}>
                                             Remove parameter
                                         </div>
                                         )
@@ -223,7 +195,7 @@ function CreateStep3 ({ activeTab, register, errors }) {
                             )
                           : (
                             <>
-                                {params.map((item, index) => (
+                                {transformToParams(formData).map((item, index) => (
                                     <Fragment key={index + 'param'}>
                                         <h4>Parameter #{index + 1}</h4>
                                         <div className="modal__column-1-2-2">
@@ -249,7 +221,7 @@ function CreateStep3 ({ activeTab, register, errors }) {
       default:
         return null
     }
-  }, [activeTab, register, errors, params])
+  }, [activeTab, register, errors, params, watch])
 
   return <>{contentSwitcher()}</>
 }

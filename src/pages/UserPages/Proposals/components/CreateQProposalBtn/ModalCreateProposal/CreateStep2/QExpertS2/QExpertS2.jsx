@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import React, { Fragment, useCallback, useState } from 'react'
 
 import { useSelector } from 'react-redux'
 import { formObject } from 'store/voting/proposals/selectors'
@@ -10,53 +10,29 @@ import { addNewExpert, removeExpert, parameterVote } from './constants'
 import { CONTRACT_TYPES } from 'constants/contracts'
 import FormSelect from 'components/Base/Form/FormSelect'
 import FormInput from 'components/Base/Form/FormInput'
-import { transformToParams } from 'contracts/helpers/parameters-helper'
+import { fillArray } from 'func/useful'
 
-const DEFAULT_PARAMS = {
-  type: '1',
-  key: '',
-  value: '',
-  currentValue: ''
-}
-
-function QExpertS2 ({ activeTab, register, errors }) {
+function QExpertS2 ({ activeTab, register, errors, watch }) {
   const formData = useSelector(formObject)
-  const [typePanel, setTypePanel] = useState(null)
+  const [typePanel, setTypePanel] = useState(formData['type-proposal'] || null)
+  const [params, setParams] = useState(formData['parameter-type']?.length || 1)
 
-  const [params, setParams] = useState([{ ...DEFAULT_PARAMS }])
-
-  useEffect(() => {
-    if (formData['parameter-type']?.length) {
-      setParams(transformToParams(formData))
-      setTypePanel(formData['type-proposal'])
-    }
-  }, [])
-
-  function setNewValue (index, key, newType) {
-    const newParams = [...params]
-    newParams[index][key] = newType
-    setParams(newParams)
-  }
-
-  function changeTypesCapacity (action) {
-    const newCapacity = 0
-    switch (action) {
-      case -1:
-        if (params.length - 1 < 1) return
-        const newParams = [...params]
-        newParams.pop()
-        setParams(newParams)
+  function handleParams (value) {
+    switch (value) {
+      case -1: {
+        setParams(params - 1)
         break
-      case 1:
-        if (newCapacity > 100) return
-        setParams([...params, { ...DEFAULT_PARAMS }])
-        break
+      }
+      default: {
+        if (params < 100) {
+          setParams(params + 1)
+        }
+      }
     }
   }
 
   function changePanel (event) {
-    const { value } = event.target
-    setTypePanel(value)
+    setTypePanel(event.target.value)
   }
 
   const switchContentOnTypeProposal = useCallback(() => {
@@ -137,7 +113,7 @@ function QExpertS2 ({ activeTab, register, errors }) {
                             handleChange={changePanel}
                         />
                         <h2>{parameterVote.subtitleInputUp}</h2>
-                        {params.map((_, index) => (
+                        {fillArray(params).map((_, index) => (
                             <Fragment key={index}>
                                 <h2>
                                     {parameterVote.radioBtnTitleDown} #{index + 1}
@@ -148,8 +124,6 @@ function QExpertS2 ({ activeTab, register, errors }) {
                                         name={`${parameterVote.parameterType}[${index}]`}
                                         register={register}
                                         palette="dark"
-                                        value={params[index].type}
-                                        onChange={(value) => setNewValue(index, 'type', value.target.value)}
                                         ref={register({ required: 'Choose one option!' })}
                                         optionValues={parameterVote.radioBtnDown}
                                     />
@@ -157,38 +131,34 @@ function QExpertS2 ({ activeTab, register, errors }) {
                                         name={`${parameterVote.parameterKey}[${index}]`}
                                         type="string"
                                         palette="dark"
-                                        value={params[index].key}
                                         placeholder={parameterVote.labelsArr}
                                         ref={register({ required: 'Field is required!' })}
                                         valid={errors[parameterVote.parameterKey]?.[index]?.message}
-                                        onChange={(value) => setNewValue(index, 'key', value.target.value)}
                                     />
                                 </div>
                                 <FormInput
                                     name={`${parameterVote.parameterValue}[${index}]`}
                                     type="string"
                                     palette="dark"
-                                    value={params[index].value}
                                     placeholder={parameterVote.inputUpSecond}
                                     ref={register({ required: 'Field is required!' })}
                                     valid={errors[parameterVote.parameterValue]?.[index]?.message}
-                                    onChange={(value) => setNewValue(index, 'value', value.target.value)}
                                 />
 
                                 <CurrentParameterValue
-                                    setCurrentValue={(value) => setNewValue(index, 'currentValue', value)}
                                     typeContract={typePanel}
-                                    params={params[index]}
+                                    parameterType={watch(`${parameterVote.parameterType}[${index}]`)}
+                                    parameterKey={watch(`${parameterVote.parameterKey}[${index}]`)}
                                 />
                             </Fragment>
                         ))}
                         <div className="modal__text-wrp">
-                            <div className="modal__text-btn" onClick={() => changeTypesCapacity(1)}>
+                            <div className="modal__text-btn" onClick={() => handleParams(1)}>
                                 Add Parameter
                             </div>
-                            {params.length > 1
+                            {params > 1
                               ? (
-                                <div className="modal__text-btn" onClick={() => changeTypesCapacity(-1)}>
+                                <div className="modal__text-btn" onClick={() => handleParams(-1)}>
                                     Remove Parameter
                                 </div>
                                 )

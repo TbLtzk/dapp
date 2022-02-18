@@ -7,6 +7,7 @@ import {
 } from 'contracts/contract-instance'
 import ErrorHandler from 'func/ErrorHandler'
 import { CONTRACT_TYPES } from 'constants/contracts'
+import { isEmpty } from 'lodash'
 
 async function getContract (typeContract) {
   switch (typeContract) {
@@ -78,12 +79,16 @@ export async function getParameterValueByKey (typeContract, typeParameter, param
 }
 
 export const transformToParams = (formData) => {
-  return formData['parameter-type'].reduce((types, item, idx) => {
-    types.push({
-      type: item,
-      key: formData['parameter-key'][idx],
-      value: formData['parameter-value'][idx]
-    })
-    return types
-  }, [])
+  if (isEmpty(formData)) {
+    return []
+  } else {
+    return formData['parameter-type'].reduce((types, item, idx) => {
+      types.push({
+        type: item,
+        key: formData['parameter-key'][idx],
+        value: formData['parameter-value'][idx]
+      })
+      return types
+    }, [])
+  }
 }

@@ -6,14 +6,14 @@ import QRootNodeS2 from './QRootNodeS2'
 import QExpertS2 from './QExpertS2'
 import SlashingS2 from './SlashingS2'
 
-function CreateStep2 ({ activeTab, register, errors }) {
+function CreateStep2 ({ activeTab, register, errors, watch }) {
   switch (activeTab) {
     case PROPOSALS_TYPES.proposals:
       return <QProposalS2 register={register} errors={errors} />
     case PROPOSALS_TYPES.rootNodePanel:
       return <QRootNodeS2 register={register} errors={errors} />
     case PROPOSALS_TYPES.expertProposals:
-      return <QExpertS2 register={register} errors={errors} />
+      return <QExpertS2 watch={watch} register={register} errors={errors} />
     case PROPOSALS_TYPES.slashingProposals:
       return <SlashingS2 register={register} errors={errors} />
     default:
