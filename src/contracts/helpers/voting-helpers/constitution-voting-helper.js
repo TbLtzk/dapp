@@ -2,8 +2,6 @@ import VotingService from './voting-service-helper'
 
 import { getStatusTransformation } from './base-voting-helper'
 import { fromWei } from 'func/balance'
-import { BN } from 'func/useful'
-import { ParameterType } from '@q-dev/q-js-sdk'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 import { getConstitutionVotingInstance } from 'contracts/contract-instance'
 
@@ -68,11 +66,6 @@ export default class ConstitutionVoting extends VotingService {
     return objRes
   }
 
-  /**
-   * get proposal number type
-   * @param type
-   * @return number
-   */
   getProposalNumberType (type) {
     switch (type) {
       case 'basic-part':
@@ -91,27 +84,20 @@ export default class ConstitutionVoting extends VotingService {
     const classification = this.getProposalNumberType(data?.classification)
     const hash = data.hash
     const link = data['external-link']
-    const changeParams = data['change-constitution-parameter'] === 'no'
-    const paramInputs = changeParams
-      ? []
-      : data['parameter-type'].reduce((types, item, index) => {
-        let inputValue = data['parameter-value'][index]
-        switch (Number(item)) {
-          case ParameterType.BOOL:
-            inputValue = inputValue.toLowerCase() === 'true'
-            break
-          case ParameterType.UINT:
-            inputValue = BN(inputValue).toFixed()
-            break
-        }
+    const changeParams = data['change-constitution-parameter'] === 'yes'
+    const params = []
+    if (changeParams) {
+      const paramsArray = data['parameter-type'].reduce((types, item, index) => {
         types.push({
           paramType: item,
           paramKey: data['parameter-key'][index],
-          paramValue: inputValue
+          paramValue: data['parameter-value'][index]
         })
         return types
       }, [])
-    return await contract.createProposal(link, classification, hash, paramInputs, {
+      params.push(...paramsArray)
+    }
+    return await contract.createProposal(link, classification, hash, params, {
       from: userAddress
     })
   }
