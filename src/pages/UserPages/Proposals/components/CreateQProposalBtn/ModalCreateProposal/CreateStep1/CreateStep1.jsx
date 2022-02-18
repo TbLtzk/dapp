@@ -14,14 +14,15 @@ import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
 function CreateStep1 ({ activeTab, activeTabTitle, register, errors, radioArr }) {
   const dispatch = useDispatch()
   const formData = useSelector(formObject)
-  const onChooseProposal = useCallback((value) => {
-    const radioVal = value.target.value
-    dispatch(setCreateProposalObj({ first: radioVal }))
+
+  const onChooseProposal = useCallback((event) => {
+    const { value } = event.target
+    dispatch(setCreateProposalObj({ first: value }))
     dispatch(setDisabledCreatedProposalBtn(false))
 
     switch (activeTab) {
       case 'q-proposals':
-        switch (radioVal) {
+        switch (value) {
           case CONTRACT_TYPES.constitutionUpdate:
             dispatch(setCreatedStepsLimit(4))
             break
@@ -40,10 +41,10 @@ function CreateStep1 ({ activeTab, activeTabTitle, register, errors, radioArr })
         <div>
             <h2>Please select type of {activeTabTitle}</h2>
             <RadioBtnGroup
+                nameArr="first"
                 formData={formData}
                 register={register}
                 errors={errors}
-                nameArr="first"
                 radioArr={radioArr}
                 handleChange={onChooseProposal}
             />

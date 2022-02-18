@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { approveModalBtn } from 'store/auctions/selectors'
@@ -18,9 +18,9 @@ import { ProgressBar } from 'react-bootstrap'
 import { getStableCoinInstance } from 'contracts/contract-instance'
 import { switchContract } from 'contracts/helpers/auctions-helpers/auction-service-helper'
 import { setTransactionCounter } from 'store/transaction-handler/action-creators'
+import { fields } from 'constants/fieldsNaming'
 
 function ModalBid ({ modalShow, onHide, activeTab, inf }) {
-  const { register, errors, handleSubmit } = useForm()
   const dispatch = useDispatch()
 
   const formData = useSelector(formObject)
@@ -28,6 +28,8 @@ function ModalBid ({ modalShow, onHide, activeTab, inf }) {
   const stepLimit = useSelector(createdStepsLimit)
   const approveBtn = useSelector(approveModalBtn)
   const userAddress = useSelector(userAddressMetamask)
+
+  const { register, errors, handleSubmit, setValue } = useForm()
 
   const switchProposalContentDependsOnType = useCallback(() => {
     switch (stepCounter) {
@@ -56,6 +58,19 @@ function ModalBid ({ modalShow, onHide, activeTab, inf }) {
     }
   }, [activeTab, stepCounter, register, errors, stepLimit, dispatch, inf])
 
+  useEffect(() => {
+    Object.values(fields).forEach((value) => {
+      if (formData[value]) {
+        setValue(value, formData[value])
+      }
+    })
+  }, [stepCounter])
+
+  function backBtnHandler () {
+    dispatch(setStepCounter(stepCounter - 1))
+    dispatch(setDisabledCreatedObjBtn(false))
+  }
+
   async function onNext (data) {
     const stableCoin = await getStableCoinInstance()
     const { address } = await switchContract(inf.contract)
@@ -83,27 +98,29 @@ function ModalBid ({ modalShow, onHide, activeTab, inf }) {
     }
   }
 
+  const continueBtnTitle = stepLimit !== stepCounter ? (approveBtn ? 'Approve' : 'Next') : 'Confirm'
+  const modalTitle = `Bid for ${activeTab?.replace(/-/g, ' ')} auction`
+  const backBtnTitle = stepCounter !== 1 ? 'Back' : null
+  const content = (
+        <>
+            <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)} />
+            <div className="modal__steps">
+                Step {stepCounter} of {stepLimit}
+            </div>
+            <form>{switchProposalContentDependsOnType()}</form>
+        </>
+  )
+
   return (
         <ModalWindow
             show={modalShow}
             onHide={onHide}
-            backBtnTitle={stepCounter !== 1 ? 'Back' : null}
-            backBtnHandler={() => {
-              dispatch(setStepCounter(stepCounter - 1))
-              dispatch(setDisabledCreatedObjBtn(false))
-            }}
-            continueBtnTitle={stepLimit !== stepCounter ? (approveBtn ? 'Approve' : 'Next') : 'Confirm'}
+            backBtnTitle={backBtnTitle}
+            backBtnHandler={backBtnHandler}
+            continueBtnTitle={continueBtnTitle}
             continueBtnHandler={handleSubmit(onNext)}
-            modalTitle={`Bid for ${activeTab?.replace(/-/g, ' ')} auction`}
-            content={
-                <>
-                    <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)} />
-                    <div className="modal__steps">
-                        Step {stepCounter} of {stepLimit}
-                    </div>
-                    <form>{switchProposalContentDependsOnType()}</form>
-                </>
-            }
+            modalTitle={modalTitle}
+            content={content}
         />
   )
 }

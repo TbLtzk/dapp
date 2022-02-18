@@ -10,9 +10,7 @@ import { getEPDRUint } from 'contracts/helpers/epdr-param-helper'
 import { liquidation, systemDebt, systemSurplus } from './constants'
 import { AUCTIONS_TYPES } from 'constants/statuses'
 
-function CreateStep1 (props) {
-  const { activeTab, register, errors, onChangeInput } = props
-
+function CreateStep1 ({ activeTab, register, errors }) {
   const formData = useSelector(formObject)
   const symbolType = useSelector(symbol)
   const [surplusLot, setSurplusLot] = useState('0')
@@ -51,7 +49,6 @@ function CreateStep1 (props) {
                             inputsObj={liquidation.inputDownObj}
                             register={register}
                             errors={errors}
-                            onChangeInput={onChangeInput}
                         />
                     </>
         )
@@ -68,7 +65,6 @@ function CreateStep1 (props) {
                             inputsObj={systemDebt.inputObj}
                             register={register}
                             errors={errors}
-                            onChangeInput={onChangeInput}
                         />
                     </>
         )
@@ -85,7 +81,6 @@ function CreateStep1 (props) {
                             inputsObj={systemSurplus.inputObj}
                             register={register}
                             errors={errors}
-                            onChangeInput={onChangeInput}
                         />
                     </>
         )

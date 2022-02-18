@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 
 import { ProgressBar } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -28,9 +28,10 @@ import { arrExpert, arrQProposal, arrQProposalAdvanced, arrQRootNode, arrSlashin
 
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboardMode'
+import { fields } from 'constants/fieldsNaming'
 
 function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) {
-  const { register, errors, handleSubmit } = useForm()
+  const { register, errors, handleSubmit, setValue } = useForm()
   const dispatch = useDispatch()
 
   const formData = useSelector(formObject)
@@ -54,7 +55,7 @@ function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) 
     }
   }, [activeTab])
 
-  const switchProposalContentDependsOnType = useMemo(() => {
+  const switchProposalContentDependsOnType = () => {
     switch (stepCounter) {
       case 1:
         return (
@@ -89,7 +90,15 @@ function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) 
       default:
         return null
     }
-  }, [activeTab, stepCounter, register, errors, stepLimit])
+  }
+
+  useEffect(() => {
+    Object.values(fields).forEach((value) => {
+      if (formData[value]) {
+        setValue(value, formData[value])
+      }
+    })
+  }, [stepCounter])
 
   const content = (
         <>
@@ -97,7 +106,7 @@ function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) 
             <div className="modal__steps">
                 Step {stepCounter} of {stepLimit}
             </div>
-            <form>{switchProposalContentDependsOnType}</form>
+            <form>{switchProposalContentDependsOnType()}</form>
         </>
   )
 
