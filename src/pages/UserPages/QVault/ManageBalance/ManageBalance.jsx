@@ -11,80 +11,96 @@ import { userAddressMetamask } from 'store/user-inf/selectors'
 import { accountBalance } from 'store/q-vault/selectors'
 import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper'
 import { WARNING_MAX_NUMBER } from 'constants/statuses'
+import { isAddress } from 'func/useful'
 
 export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
-  const { register: reg1, handleSubmit: submit1, errors: err1, setValue: setSendMax } = useForm()
-  const {
-    register: reg2,
-    handleSubmit: submit2,
-    errors: err2,
-    setValue: setTransferMax,
-    setError: setTransferMaxError,
-    clearErrors: clearTransferMaxError
-  } = useForm()
-  const { register: reg3, handleSubmit: submit3, errors: err3, setValue: setWithdrawMax } = useForm()
-
-  const [maxQVaultTransferAmount, setMaxQVaultTransferAmount] = useState(null)
-
   const dispatch = useDispatch()
   const address = useSelector(userAddressMetamask)
-  const transferMax = useSelector(accountBalance)
+  const depositMax = useSelector(accountBalance)
+
+  const {
+    register: registerSend,
+    handleSubmit: submitSend,
+    errors: errorsSend,
+    setValue: setSendValue,
+    clearErrors: clearSendErrors
+  } = useForm()
+
+  const {
+    register: registerDeposit,
+    handleSubmit: submitDeposit,
+    errors: errorsDeposit,
+    setValue: setDepositValue,
+    setError: setDepositError,
+    clearErrors: clearDepositErrors
+  } = useForm()
+
+  const {
+    register: registerWithdraw,
+    handleSubmit: submitWithdraw,
+    errors: errorsWithdraw,
+    setValue: setWithdrawValue,
+    clearErrors: clearWithdrawErrors
+  } = useForm()
+
+  const [maxQVaultDepositAmount, setMaxQVaultDepositAmount] = useState(null)
 
   useEffect(() => {
-    if (transferMax) {
-      fetchQVaultTransferAmount()
+    if (depositMax) {
+      fetchQVaultDepositAmount()
     }
-  }, [transferMax])
+  }, [depositMax])
 
-  async function fetchQVaultTransferAmount () {
-    const amount = await getQVaultDepositAmount(address, transferMax)
-    setMaxQVaultTransferAmount(Number(amount))
+  async function fetchQVaultDepositAmount () {
+    const amount = await getQVaultDepositAmount(address, depositMax)
+    setMaxQVaultDepositAmount(amount)
   }
 
-  async function handleTransferMax () {
-    if (maxQVaultTransferAmount > 0) {
-      setTransferMax('amountQ', maxQVaultTransferAmount)
-      setTransferMaxError('amountQ', {
+  async function handleDepositMax () {
+    if (maxQVaultDepositAmount > 0) {
+      setDepositValue('amount', maxQVaultDepositAmount)
+      setDepositError('amount', {
         message: WARNING_MAX_NUMBER
       })
-    }
-  }
-
-  function handleChangeTransferAmount (event) {
-    if (Number(event.target.value) === maxQVaultTransferAmount) {
-      setTransferMaxError('amountQ', {
-        message: WARNING_MAX_NUMBER
-      })
-    } else {
-      clearTransferMaxError()
     }
   }
 
   function handleWithdrawMax () {
     if (Number(maxQVaultWithdrawAmount) > 0) {
-      setWithdrawMax('amountQ', maxQVaultWithdrawAmount)
+      setWithdrawValue('amount', maxQVaultWithdrawAmount)
     }
   }
 
   function handleSendMax () {
     if (Number(maxQVaultWithdrawAmount) > 0) {
-      setSendMax('amountQ', maxQVaultWithdrawAmount)
+      setSendValue('amount', maxQVaultWithdrawAmount)
     }
   }
 
-  function setDepositL (formData) {
-    dispatch(setDepositCall(address, formData.amountQ))
-    setTransferMax('amountQ', null)
+  function handleChangeDepositAmount (event) {
+    if (Number(event.target.value) === maxQVaultDepositAmount) {
+      setDepositError('amount', {
+        message: WARNING_MAX_NUMBER
+      })
+    } else {
+      clearDepositErrors()
+    }
   }
 
-  function send (formData) {
-    dispatch(setSendCall(formData.address, formData.amountQ))
-    setSendMax('amountQ', null)
+  function setDepositAmount (formData) {
+    dispatch(setDepositCall(address, formData.amount))
+    setDepositValue('amount', null)
   }
 
-  function withdrawL (formData) {
-    dispatch(setWithdrawCall(address, formData.amountQ))
-    setWithdrawMax('amountQ', null)
+  function setSendAmount (formData) {
+    dispatch(setSendCall(formData.address, formData.amount))
+    setSendValue('amount', null)
+    setSendValue('address', null)
+  }
+
+  function setWithdrawAmount (formData) {
+    dispatch(setWithdrawCall(address, formData.amount))
+    setWithdrawValue('amount', null)
   }
 
   return (
@@ -96,33 +112,38 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
                     lbl="Q"
                     min={0}
                     color={true}
-                    name="amountQ"
+                    name="amount"
                     type="number"
                     placeholder="0.0"
-                    onMaxClick={handleTransferMax}
-                    onChange={handleChangeTransferAmount}
-                    ref={reg2({
+                    onMaxClick={handleDepositMax}
+                    onClick={() => clearDepositErrors('amount')}
+                    onChange={handleChangeDepositAmount}
+                    ref={registerDeposit({
                       required: 'Field is required!',
-                      pattern: /[0-9]/i
+                      validate: (value) => (/[0-9]/i.test(value) ? true : 'Wrong amount')
                     })}
-                    valid={err2.amountQ?.message}
+                    valid={errorsDeposit.amount?.message}
                 />
-                <Button type="outline" title="Transfer" width="90px" handleButton={submit2(setDepositL)} />
+                <Button type="outline" title="Transfer" width="90px" handleButton={submitDeposit(setDepositAmount)} />
             </div>
             <h4>Withdraw from Q Vault</h4>
             <div className="card__one-line-simple-form">
                 <FormInput
                     min={0}
-                    name="amountQ"
+                    lbl="Q"
+                    name="amount"
                     color={true}
                     type="number"
-                    onMaxClick={handleWithdrawMax}
-                    lbl="Q"
                     placeholder="0.0"
-                    ref={reg3({ required: 'Field is required!' })}
-                    valid={err3.amountQ?.message}
+                    onMaxClick={handleWithdrawMax}
+                    onClick={() => clearWithdrawErrors('amount')}
+                    ref={registerWithdraw({
+                      required: 'Field is required!',
+                      validate: (value) => (/[0-9]/i.test(value) ? true : 'Wrong amount')
+                    })}
+                    valid={errorsWithdraw.amount?.message}
                 />
-                <Button type="outline" title="Withdraw" width="90px" handleButton={submit3(withdrawL)} />
+                <Button type="outline" title="Withdraw" width="90px" handleButton={submitWithdraw(setWithdrawAmount)} />
             </div>
             <h4>Send to foreign QVault account</h4>
             <div className="card__one-line-form-2-2-1">
@@ -131,30 +152,35 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
             </div>
             <div className="card__one-line-form-2-2-1">
                 <FormInput
-                    color={true}
                     name="address"
                     type="text"
                     placeholder="0x000"
-                    ref={reg1({
+                    color={true}
+                    valid={errorsSend.address?.message}
+                    onClick={() => clearSendErrors('address')}
+                    ref={registerSend({
                       required: 'Field is required!',
-                      pattern: /[0-9]/i
+                      validate: (address) => (isAddress(address) ? true : 'Incorrect address')
                     })}
-                    valid={err1.address?.message}
                 />
+
                 <FormInput
                     color={true}
-                    name="amountQ"
+                    min={0}
+                    name="amount"
                     type="number"
                     lbl="Q"
                     placeholder="0.00"
                     onMaxClick={handleSendMax}
-                    ref={reg1({
-                      required: 'Field is required!'
+                    onClick={() => clearSendErrors('amount')}
+                    ref={registerSend({
+                      required: 'Field is required!',
+                      validate: (value) => (/[0-9]/i.test(value) ? true : 'Wrong amount')
                     })}
-                    valid={err1.amount?.message}
+                    valid={errorsSend.amount?.message}
                 />
                 <div className="card__one-line-form-2-2-1-action">
-                    <Button width="90px" title="Send" type="outline" handleButton={submit1(send)} />
+                    <Button width="90px" title="Send" type="outline" handleButton={submitSend(setSendAmount)} />
                 </div>
             </div>
         </CustomBlock>

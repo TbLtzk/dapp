@@ -185,7 +185,7 @@ function VotingItems ({ proposal }) {
                       dispatch(setStepVoteCounter(1))
                       dispatch(setDisabledCreatedProposalBtn(true))
                     }}
-                />
+              />
                 )
               : null}
         </div>
