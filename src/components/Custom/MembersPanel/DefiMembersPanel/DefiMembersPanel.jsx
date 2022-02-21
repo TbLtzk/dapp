@@ -2,7 +2,11 @@ import React, { useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { getEPDRMembers } from 'store/membership/action-creators'
-import { EPDRMembers, EPDRMembersLoading } from 'store/membership/selectors'
+import {
+  EPDRMembersErrorSelector,
+  EPDRMembersLoadingSelector,
+  EPDRMembersSelector
+} from 'store/membership/selectors'
 
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock'
 import MemberTables from 'components/Custom/MemberTables/MemberTables'
@@ -10,10 +14,11 @@ import { columnsDeFiRisk } from 'constants/columns'
 import { tableDefiRisks } from 'constants/tables'
 
 function DefiMembersPanel () {
-  const defiMembersTableLoading = useSelector(EPDRMembersLoading)
-  const defiMembersTable = tableDefiRisks(useSelector(EPDRMembers))
-
   const dispatch = useDispatch()
+
+  const defiMembersTable = tableDefiRisks(useSelector(EPDRMembersSelector))
+  const defiMembersTableLoading = useSelector(EPDRMembersLoadingSelector)
+  const defiMembersTableError = useSelector(EPDRMembersErrorSelector)
 
   useEffect(() => {
     dispatch(getEPDRMembers())
@@ -22,13 +27,13 @@ function DefiMembersPanel () {
   return (
         <CustomBlock>
             <MemberTables
-                perPageLength={defiMembersTable.length}
-                table={defiMembersTable}
                 title="List of DeFi Experts"
-                loading={defiMembersTableLoading}
                 emptyTableMessage="No DeFi members"
-                sorting={false}
+                table={defiMembersTable}
+                loading={defiMembersTableLoading}
+                error={defiMembersTableError}
                 columns={columnsDeFiRisk}
+                perPageLength={defiMembersTable.length}
             />
         </CustomBlock>
   )

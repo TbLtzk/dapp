@@ -3,19 +3,23 @@ import * as actionTypes from './action-types'
 const initialState = {
   contractRegistryKV: [],
   contractRegistryKVLoading: false,
-  contractRegistryKVError: '',
+  contractRegistryKVError: null,
 
   constitutionParametersKV: [],
   constitutionParametersKVLoading: false,
-  constitutionParametersKVError: '',
+  constitutionParametersKVError: null,
 
   feesIncentivesExpertPanelParametersKV: [],
   feesIncentivesExpertPanelParametersKVLoading: false,
-  feesIncentivesExpertPanelParametersKVError: '',
+  feesIncentivesExpertPanelParametersKVError: null,
 
   ePDRParametersKV: [],
   ePDRParametersKVLoading: false,
-  ePDRParametersKVError: ''
+  ePDRParametersKVError: null,
+
+  ePRSParametersKV: [],
+  ePRSParametersKVLoading: false,
+  ePRSParametersKVError: null
 }
 
 export default function membership (state = initialState, action) {
@@ -29,8 +33,7 @@ export default function membership (state = initialState, action) {
       return {
         ...state,
         contractRegistryKVLoading: false,
-        contractRegistryKV: action.result,
-        contractRegistryKVError: null
+        contractRegistryKV: action.result
       }
     case actionTypes.GET_CONTRACT_REGISTRY_KV_ERROR:
       return {
@@ -49,8 +52,7 @@ export default function membership (state = initialState, action) {
       return {
         ...state,
         constitutionParametersKVLoading: false,
-        constitutionParametersKV: action.result,
-        constitutionParametersKVError: null
+        constitutionParametersKV: action.result
       }
     case actionTypes.GET_CONSTITUTION_PARAMETERS_KV_ERROR:
       return {
@@ -69,8 +71,7 @@ export default function membership (state = initialState, action) {
       return {
         ...state,
         feesIncentivesExpertPanelParametersKVLoading: false,
-        feesIncentivesExpertPanelParametersKV: action.result,
-        feesIncentivesExpertPanelParametersKVError: null
+        feesIncentivesExpertPanelParametersKV: action.result
       }
     case actionTypes.GET_FEES_INCENTIVES_EXPERT_PANEL_PARAMETERS_KV_ERROR:
       return {
@@ -89,8 +90,7 @@ export default function membership (state = initialState, action) {
       return {
         ...state,
         ePDRParametersKVLoading: false,
-        ePDRParametersKV: action.result,
-        ePDRParametersKVError: null
+        ePDRParametersKV: action.result
       }
     case actionTypes.GET_EPDR_PARAMETERS_KV_ERROR:
       return {
@@ -98,6 +98,24 @@ export default function membership (state = initialState, action) {
         ePDRParametersKVLoading: false,
         ePDRParametersKV: [],
         ePDRParametersKVError: action.result
+      }
+    case actionTypes.GET_EPRS_PARAMETERS_KV:
+      return {
+        ...state,
+        ePRSParametersKVLoading: true
+      }
+    case actionTypes.GET_EPRS_PARAMETERS_KV_SUCCESS:
+      return {
+        ...state,
+        ePRSParametersKVLoading: false,
+        ePRSParametersKV: action.result
+      }
+    case actionTypes.GET_EPRS_PARAMETERS_KV_ERROR:
+      return {
+        ...state,
+        ePRSParametersKVLoading: false,
+        ePRSParametersKV: [],
+        ePRSParametersKVError: action.result
       }
     default:
       return state

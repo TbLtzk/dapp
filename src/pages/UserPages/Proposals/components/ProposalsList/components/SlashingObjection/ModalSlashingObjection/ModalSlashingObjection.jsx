@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,10 +16,11 @@ import CreateStep2 from './CreateStep2'
 
 import { ProgressBar } from 'react-bootstrap'
 import { setVoteProposalObj } from 'store/voting/proposals/action-creators'
+import { fields } from 'constants/fieldsNaming'
 
 function ModalSlashingObjection (props) {
   const { modalShow, onHide, activeTab, contract, proposalId } = props
-  const { register, errors, handleSubmit } = useForm()
+  const { register, errors, handleSubmit, setValue } = useForm()
   const dispatch = useDispatch()
 
   const formData = useSelector(formObject)
@@ -37,6 +38,14 @@ function ModalSlashingObjection (props) {
         return null
     }
   }, [activeTab, stepCounter, register, errors, stepLimit])
+
+  useEffect(() => {
+    Object.values(fields).forEach((value) => {
+      if (formData[value]) {
+        setValue(value, formData[value])
+      }
+    })
+  }, [stepCounter])
 
   const onNext = (data) => {
     dispatch(setCreateObj({ ...formData, ...data }))

@@ -40,10 +40,7 @@ export const getSavingInstance = getInstance('saving', true)
 export const getRootNodesMembershipVotingInstance = getInstance('rootNodesMembershipVoting')
 export const getLiquidationAuctionInstance = getInstance('liquidationAuction', true)
 export const getRootNodeRewardProxyInstance = getInstance('rootNodeRewardProxy')
-export const getEpqfiParametersVotingInstance = getInstance('epqfiParametersVoting')
-export const getEpqfiParametersInstance = getInstance('epqfiParameters')
-export const getEpdrParametersVotingInstance = getInstance('epdrParametersVoting')
-export const getEpdrParametersInstance = getInstance('epdrParameters')
+
 export const getConstitutionVotingInstance = getInstance('constitutionVoting')
 export const getConstitutionInstance = getInstance('constitution')
 export const getBorrowingCoreInstance = getInstance('borrowingCore', true)
@@ -58,11 +55,22 @@ export const getSystemReserveInstance = getInstance('systemReserve')
 export const getRootNodesSlashingVotingInstance = getInstance('rootNodesSlashingVoting')
 export const getRootNodeSlashingEscrowInstance = getInstance('rootNodeSlashingEscrow')
 export const getGetSystemContractsAndBalances = getInstance('getSystemContractsAndBalances')
+export const getDefaultAllocationProxyInstance = getInstance('defaultAllocationProxy')
+
 export const getEpqfiMembershipVotingInstance = getInstance('epqfiMembershipVoting')
 export const getEpqfiMembershipInstance = getInstance('epqfiMembership')
-export const getDefaultAllocationProxyInstance = getInstance('defaultAllocationProxy')
+export const getEpqfiParametersVotingInstance = getInstance('epqfiParametersVoting')
+export const getEpqfiParametersInstance = getInstance('epqfiParameters')
+
+export const getEpdrParametersVotingInstance = getInstance('epdrParametersVoting')
+export const getEpdrParametersInstance = getInstance('epdrParameters')
 export const getEpdrMembershipVotingInstance = getInstance('epdrMembershipVoting')
 export const getEpdrMembershipInstance = getInstance('epdrMembership')
+
+export const getEprsParametersInstance = getInstance('eprsParameters')
+export const getEprsMembershipInstance = getInstance('eprsMembership')
+export const getEprsMembershipVotingInstance = getInstance('eprsMembershipVoting')
+export const getEprsParametersVotingInstance = getInstance('eprsParametersVoting')
 
 let validatorMetricsInstance = null
 let compoundRateKeeperBorrowingInstance = null

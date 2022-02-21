@@ -3,6 +3,7 @@ import * as actionTypes from './action-types'
 const initialState = {
   isUserEPQFIMembership: false,
   isUserEPDRMembership: false,
+  isUserEPRSMembership: false,
 
   EPQFIMembers: [],
   EPQFIMembersLoading: true,
@@ -10,7 +11,11 @@ const initialState = {
 
   EPDRMembers: [],
   EPDRMembersLoading: true,
-  EPDRMembersError: null
+  EPDRMembersError: null,
+
+  EPRSMembers: [],
+  EPRSMembersLoading: true,
+  EPRSMembersError: null
 }
 
 export default function membership (state = initialState, action) {
@@ -19,6 +24,11 @@ export default function membership (state = initialState, action) {
       return {
         ...state,
         isUserEPQFIMembership: action.result
+      }
+    case actionTypes.IS_USER_EPRS_MEMBER_SUCCESS:
+      return {
+        ...state,
+        isUserEPRSMembership: action.result
       }
     case actionTypes.IS_USER_EPDR_MEMBER_SUCCESS:
       return {
@@ -29,29 +39,38 @@ export default function membership (state = initialState, action) {
       return {
         ...state,
         EPQFIMembersLoading: false,
-        EPQFIMembers: action.result,
-        EPQFIMembersError: null
+        EPQFIMembers: action.result
       }
     case actionTypes.GET_EPQFI_MEMBERS_ERROR:
       return {
         ...state,
         EPQFIMembersLoading: false,
-        EPQFIMembers: [],
         EPQFIMembersError: action.result
       }
     case actionTypes.GET_EPDR_MEMBERS_SUCCESS:
       return {
         ...state,
         EPDRMembersLoading: false,
-        EPDRMembers: action.result,
-        EPDRMembersError: null
+        EPDRMembers: action.result
       }
     case actionTypes.GET_EPDR_MEMBERS_ERROR:
       return {
         ...state,
         EPDRMembersLoading: false,
-        EPDRMembers: [],
         EPDRMembersError: action.result
+      }
+
+    case actionTypes.GET_EPRS_MEMBERS_SUCCESS:
+      return {
+        ...state,
+        EPRSMembersLoading: false,
+        EPRSMembers: action.result
+      }
+    case actionTypes.GET_EPRS_MEMBERS_ERROR:
+      return {
+        ...state,
+        EPRSMembersLoading: false,
+        EPRSMembersError: action.result
       }
     default:
       return state

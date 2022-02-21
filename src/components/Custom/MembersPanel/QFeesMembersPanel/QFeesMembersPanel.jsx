@@ -2,7 +2,11 @@ import React, { useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { getEPQFIMembers } from 'store/membership/action-creators'
-import { EPQFIMembers, EPQFIMembersLoading } from 'store/membership/selectors'
+import {
+  EPQFIMembersErrorSelector,
+  EPQFIMembersLoadingSelector,
+  EPQFIMembersSelector
+} from 'store/membership/selectors'
 
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock'
 import MemberTables from 'components/Custom/MemberTables'
@@ -10,10 +14,11 @@ import { tableQFees } from 'constants/tables'
 import { columnsQFees } from 'constants/columns'
 
 function QFeesMembersPanel () {
-  const qFeesMembersTableLoading = useSelector(EPQFIMembersLoading)
-  const qFeesMembersTable = tableQFees(useSelector(EPQFIMembers))
-
   const dispatch = useDispatch()
+
+  const qFeesMembersTable = tableQFees(useSelector(EPQFIMembersSelector))
+  const qFeesMembersTableLoading = useSelector(EPQFIMembersLoadingSelector)
+  const qFeesMembersTableError = useSelector(EPQFIMembersErrorSelector)
 
   useEffect(() => {
     dispatch(getEPQFIMembers())
@@ -22,11 +27,12 @@ function QFeesMembersPanel () {
   return (
         <CustomBlock>
             <MemberTables
-                table={qFeesMembersTable}
+                emptyTableMessage="Empty list"
                 title="List of Q Fees & Incentives Experts"
+                table={qFeesMembersTable}
                 loading={qFeesMembersTableLoading}
+                error={qFeesMembersTableError}
                 columns={columnsQFees}
-                emptyTableMessage="Emty list"
                 perPageLength={qFeesMembersTable.length}
             />
         </CustomBlock>

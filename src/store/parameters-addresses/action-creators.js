@@ -51,3 +51,16 @@ export const getEPDRParametersKVError = (result) => ({
   type: actionTypes.GET_EPDR_PARAMETERS_KV_ERROR,
   result
 })
+
+export const getEPRSParametersKV = () => ({
+  type: actionTypes.GET_EPRS_PARAMETERS_KV
+})
+
+export const getEPRSParametersKVSuccess = (result) => ({
+  type: actionTypes.GET_EPRS_PARAMETERS_KV_SUCCESS,
+  result
+})
+export const getEPRSParametersKVError = (result) => ({
+  type: actionTypes.GET_EPRS_PARAMETERS_KV_ERROR,
+  result
+})

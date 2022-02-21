@@ -7,7 +7,9 @@ import {
   getFeesIncentivesExpertPanelParametersKVSuccess,
   getFeesIncentivesExpertPanelParametersKVError,
   getEPDRParametersKVSuccess,
-  getEPDRParametersKVError
+  getEPDRParametersKVError,
+  getEPRSParametersKVSuccess,
+  getEPRSParametersKVError
 } from './action-creators'
 import * as actionTypes from './action-types'
 import ErrorHandler from 'func/ErrorHandler'
@@ -15,7 +17,8 @@ import {
   contractRegistryInstance,
   getConstitutionInstance,
   getEpdrParametersInstance,
-  getEpqfiParametersInstance
+  getEpqfiParametersInstance,
+  getEprsParametersInstance
 } from 'contracts/contract-instance'
 
 const TYPES = ['Uint', 'String', 'Bool', 'Addr', 'Bytes32']
@@ -77,9 +80,21 @@ function * getEPDRParametersKV () {
   }
 }
 
+function * getEPRSParametersKV () {
+  try {
+    const contract = yield getEprsParametersInstance()
+    const data = yield all(TYPES.map((type) => getParameters(type, contract)))
+    yield put(getEPRSParametersKVSuccess(data.flat()))
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    yield put(getEPRSParametersKVError('There was an error while loading EPRS Parameters data'))
+  }
+}
+
 export default [
   takeEvery(actionTypes.GET_CONTRACT_REGISTRY_KV, getContractRegistryKV),
   takeEvery(actionTypes.GET_CONSTITUTION_PARAMETERS_KV, getConstitutionParametersKV),
   takeEvery(actionTypes.GET_FEES_INCENTIVES_EXPERT_PANEL_PARAMETERS_KV, getFeesIncentivesExpertPanelParametersKV),
-  takeEvery(actionTypes.GET_FEES_INCENTIVES_EXPERT_PANEL_PARAMETERS_KV, getEPDRParametersKV)
+  takeEvery(actionTypes.GET_EPDR_PARAMETERS_KV, getEPDRParametersKV),
+  takeEvery(actionTypes.GET_EPRS_PARAMETERS_KV, getEPRSParametersKV)
 ]

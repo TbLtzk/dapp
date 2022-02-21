@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { formVoteObject } from 'store/voting/proposals/selectors'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 
-function CreateStep2 ({ activeTab, register, errors, proposalContract }) {
+function CreateStep2 ({ register, errors, proposalContract }) {
   const formData = useSelector(formVoteObject)
 
   const showCommonData = (answer) => {
@@ -18,6 +18,7 @@ function CreateStep2 ({ activeTab, register, errors, proposalContract }) {
                 {proposalContract === CONTRACTS_NAMES.constitutionVoting ||
                 proposalContract === CONTRACTS_NAMES.generalUpdateVoting ||
                 proposalContract === CONTRACTS_NAMES.ePDRMembershipVoting ||
+                proposalContract === CONTRACTS_NAMES.ePRSMembershipVoting ||
                 proposalContract === CONTRACTS_NAMES.ePQFIMembershipVoting ||
                 proposalContract === CONTRACTS_NAMES.rootsVoting
                   ? (
@@ -40,7 +41,7 @@ function CreateStep2 ({ activeTab, register, errors, proposalContract }) {
       default:
         return null
     }
-  }, [activeTab, register, errors])
+  }, [register, errors])
 
   return <>{contentSwitcher()}</>
 }

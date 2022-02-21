@@ -3,6 +3,7 @@ import CustomBlock from 'components/Base/CustomBlock'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 import KeyAddressesTable from '../KeyAddressesTable'
 import { LoadingWrap } from 'components/Custom/MemberTables/styles'
+import { QParametersTextContainer } from '../../styles'
 
 function KeyAddressViewer ({ tableData, loading, errorMsg, header, subHeader, tableHeaders = [], emptyMsg }) {
   return (
@@ -17,11 +18,11 @@ function KeyAddressViewer ({ tableData, loading, errorMsg, header, subHeader, ta
                 )
               : errorMsg
                 ? (
-                <p>{errorMsg}</p>
+                <QParametersTextContainer>{errorMsg}</QParametersTextContainer>
                   )
                 : !tableData?.length
                     ? (
-                <p>{emptyMsg}</p>
+                <QParametersTextContainer>{emptyMsg}</QParametersTextContainer>
                       )
                     : (
                 <KeyAddressesTable tableData={tableData} tableHeaders={tableHeaders} />

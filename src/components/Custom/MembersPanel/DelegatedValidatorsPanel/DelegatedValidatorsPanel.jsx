@@ -20,11 +20,11 @@ function DelegatedValidatorsPanel () {
   return (
         <>
             <MemberTables
+                title="Your Current Delegations"
+                emptyTableMessage="No delegations"
                 perPageLength={delegations.length}
                 table={delegations}
-                title="Your Current Delegations"
                 loading={loading}
-                emptyTableMessage="No delegations"
                 columns={columnsDelegations}
             />
         </>

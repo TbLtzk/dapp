@@ -42,8 +42,14 @@ import { ProposalsTabWrp } from './styles'
 import ProposalsList from './components/ProposalsList/ProposalsList'
 
 function Proposals ({ proposalsType }) {
-  const { proposalsSelector, endedProposalsSelector, activeProposalsCountSelector, endedProposalsCountSelector, oneContractName, title } =
-        getProposalsData(proposalsType)
+  const {
+    proposalsSelector,
+    endedProposalsSelector,
+    activeProposalsCountSelector,
+    endedProposalsCountSelector,
+    oneContractName,
+    title
+  } = getProposalsData(proposalsType)
 
   const dispatch = useDispatch()
   const proposals = useSelector(proposalsSelector)

@@ -5,22 +5,25 @@ import { setNewParameter } from 'store/voting/proposals/action-creators'
 
 const keyNotFound = 'No value found. Please check or proceed to create a new parameter.'
 
-function CurrentParameterValue ({ typeContract, params, setCurrentValue }) {
-  const dispatch = useDispatch()
-  const { key, type, currentValue } = params
+function CurrentParameterValue ({ typeContract, parameterType, parameterKey }) {
+  const [currentValue, setCurrentValue] = useState(null)
   const [keys, setKeys] = useState(null)
 
+  const dispatch = useDispatch()
+
   useEffect(() => {
-    if (typeContract && type) {
-      getParameterKeysByType(typeContract, type).then((data) => setKeys(data))
+    if (typeContract && parameterType) {
+      getParameterKeysByType(typeContract, parameterType).then((data) => setKeys(data))
     }
-  }, [typeContract, type])
+  }, [typeContract, parameterType])
 
   useEffect(() => {
     if (keys) {
-      if (typeContract && type && key) {
-        if (keys.includes(key)) {
-          getParameterValueByKey(typeContract, type, key).then((data) => setCurrentValue(data))
+      if (typeContract && parameterType && parameterKey) {
+        if (keys.includes(parameterKey)) {
+          getParameterValueByKey(typeContract, parameterType, parameterKey).then((data) =>
+            setCurrentValue(data)
+          )
           dispatch(setNewParameter(false))
         } else {
           setCurrentValue(keyNotFound)
@@ -30,7 +33,7 @@ function CurrentParameterValue ({ typeContract, params, setCurrentValue }) {
     } else {
       setCurrentValue('')
     }
-  }, [key, keys, dispatch])
+  }, [parameterKey, keys, dispatch])
 
   return <h4 style={{ marginBottom: '20px' }}>{`Current value: ${currentValue}`} </h4>
 }

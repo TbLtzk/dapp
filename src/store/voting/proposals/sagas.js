@@ -162,7 +162,9 @@ function * getProposalsByTypeGenerator ({ contractName }) {
     case CONTRACTS_NAMES.ePQFIMembershipVoting:
     case CONTRACTS_NAMES.ePDRMembershipVoting:
     case CONTRACTS_NAMES.ePQFIParametersVoting:
-    case CONTRACTS_NAMES.ePDRParametersVoting: {
+    case CONTRACTS_NAMES.ePDRParametersVoting:
+    case CONTRACTS_NAMES.ePRSMembershipVoting:
+    case CONTRACTS_NAMES.ePRSParametersVoting: {
       yield put(getExpertProposals())
       break
     }

@@ -1,3 +1,4 @@
+import { ParameterType } from '@q-dev/q-js-sdk'
 import { BigNumber } from 'bignumber.js'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper'
@@ -112,6 +113,27 @@ export const createShareText = (type, contract, id, user) => {
       } else {
         return link + auctionPart
       }
+    }
+  }
+}
+
+const stringRegex = /^[a-zA-Z]+$/gm
+const booleanValues = ['true', 'false', 'True', 'False', 'TRUE', 'FALSE', '1', '0']
+const unitRegex = /^[1-9]+[0-9]*$/
+
+export function validatePattern (value, type) {
+  switch (type) {
+    case ParameterType.ADDRESS: {
+      return isAddress(value) ? true : 'Address not valid'
+    }
+    case ParameterType.BOOL: {
+      return booleanValues.includes(value) ? true : 'Boolean not valid'
+    }
+    case ParameterType.STRING: {
+      return value.match(stringRegex) ? true : 'String not valid'
+    }
+    case ParameterType.UINT: {
+      return value.match(unitRegex) ? true : 'Unit not valid'
     }
   }
 }
