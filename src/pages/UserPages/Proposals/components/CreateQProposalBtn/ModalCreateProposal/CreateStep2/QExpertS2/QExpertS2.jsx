@@ -10,7 +10,7 @@ import { addNewExpert, removeExpert, parameterVote } from './constants'
 import { CONTRACT_TYPES } from 'constants/contracts'
 import FormSelect from 'components/Base/Form/FormSelect'
 import FormInput from 'components/Base/Form/FormInput'
-import { fillArray } from 'func/useful'
+import { fillArray, validatePattern } from 'func/useful'
 
 function QExpertS2 ({ activeTab, register, errors, watch }) {
   const formData = useSelector(formObject)
@@ -137,7 +137,11 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                                     type="string"
                                     palette="dark"
                                     placeholder={parameterVote.inputUpSecond}
-                                    ref={register({ required: 'Field is required!' })}
+                                    ref={register({
+                                      required: 'Field is required!',
+                                      validate: (value) =>
+                                        validatePattern(value, watch(`${parameterVote.parameterType}[${index}]`))
+                                    })}
                                     valid={errors[parameterVote.parameterValue]?.[index]?.message}
                                 />
 

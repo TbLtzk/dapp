@@ -5,6 +5,7 @@ import { isAddress } from 'func/useful'
 
 const linkRegex =
     /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9äöü][äöüa-zA-Z0-9-_]+[äöüa-zA-Z0-9]\.[^\s]{2,100}|www\.[äöüa-zA-Z0-9][a-zA-Z0-9-]+[äöüaa-zA-Z0-9]\.[^\s]{2,100}|https?:\/\/(?:www\.|(?!www))[äöüa-zA-Z0-9]+\.[^\s]{2,100}|www\.[äöüa-zA-Z0-9]+\.[^\s]{2,100})/gm
+const hashRegex = /^0x[a-fA-F0-9]{64}$/gm
 
 function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type }) {
   const getRefType = useCallback((inputType) => {
@@ -23,6 +24,12 @@ function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type }) 
       }
       case fields.bid: {
         return register({ required: 'Field is required!' })
+      }
+      case fields.hash: {
+        return register({
+          required: 'Field is required!',
+          validate: (hash) => (hash.match(hashRegex) ? true : 'Hash not valid')
+        })
       }
       default: {
         return register({ required: 'Field is required!' })
