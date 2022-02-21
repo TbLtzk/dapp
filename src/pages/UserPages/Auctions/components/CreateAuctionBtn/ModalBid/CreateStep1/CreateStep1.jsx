@@ -15,7 +15,6 @@ function CreateStep1 ({ activeTab, register, errors, raisingBid, watch, allowanc
 
   const onChangeInput = async (value) => {
     const moreThanAllowance = BN(value).comparedTo(allowance) === 1
-    console.log(moreThanAllowance)
     if (moreThanAllowance) {
       setApproveButton(true)
     } else {
