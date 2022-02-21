@@ -22,7 +22,7 @@ const initialState = {
   validatorWithdrawalInfo: [],
 
   errorMembers: null,
-  isUserValidator: true,
+  isUserValidator: false,
 
   validatorsTimeLocks: null,
   validatorsMinimumTimeLock: null,

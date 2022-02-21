@@ -13,3 +13,7 @@ export const feesIncentivesExpertPanelParametersKVError = (state) => state.param
 export const ePDRParametersKV = (state) => state.parametersAddresses.ePDRParametersKV
 export const ePDRParametersKVLoading = (state) => state.parametersAddresses.ePDRParametersKVLoading
 export const ePDRParametersKVError = (state) => state.parametersAddresses.ePDRParametersKVError
+
+export const ePRSParametersKV = (state) => state.parametersAddresses.ePRSParametersKV
+export const ePRSParametersKVLoading = (state) => state.parametersAddresses.ePRSParametersKVLoading
+export const ePRSParametersKVError = (state) => state.parametersAddresses.ePRSParametersKVError

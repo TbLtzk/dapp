@@ -1,9 +1,13 @@
 export const fields = {
   bid: 'bid',
   externalLink: 'external-link',
+  hash: 'hash',
   address: 'address',
   deposit: 'deposit',
-  repay: 'repay'
+  repay: 'repay',
+  value: '%-value',
+  remark: 'proposer-remark',
+  vault: 'vault-id'
 }
 
 export const titles = {

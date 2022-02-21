@@ -1,6 +1,7 @@
 export const CONTRACT_TYPES = {
   qFee: 'q-fees-&-incentives-membership-panel',
   qDefi: 'q-defi-(decentralized-finance)-membership-panel',
+  qEprs: 'q-root-node-selection-expert-panel',
   constitution: 'constitution',
   qVault: 'qVault',
   root: 'root',
@@ -32,10 +33,16 @@ export const CONTRACTS_NAMES = {
   rootsVoting: 'rootNodesMembershipVoting',
   rootNodesSlashingVoting: 'rootNodesSlashingVoting',
   validatorsSlashingVoting: 'validatorsSlashingVoting',
+
   ePQFIMembershipVoting: 'epqfiMembershipVoting',
   ePDRMembershipVoting: 'epdrMembershipVoting',
+
   ePQFIParametersVoting: 'epqfiParametersVoting',
   ePDRParametersVoting: 'epdrParametersVoting',
+
+  ePRSMembershipVoting: 'eprsMembershipVoting',
+  ePRSParametersVoting: 'eprsParametersVoting',
+
   rootNodesSlashingEscrow: 'rootNodesSlashingEscrow',
   validatorsSlashingEscrow: 'validatorsSlashingEscrow',
   systemSurplusAuction: 'systemSurplusAuction',

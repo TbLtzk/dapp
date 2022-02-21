@@ -6,7 +6,8 @@ import {
   getContractRegistryKV,
   getConstitutionParametersKV,
   getFeesIncentivesExpertPanelParametersKV,
-  getEPDRParametersKV
+  getEPDRParametersKV,
+  getEPRSParametersKV
 } from 'store/parameters-addresses/action-creators'
 import {
   contractRegistryKV,
@@ -20,13 +21,17 @@ import {
   feesIncentivesExpertPanelParametersKVError,
   ePDRParametersKV,
   ePDRParametersKVLoading,
-  ePDRParametersKVError
+  ePDRParametersKVError,
+  ePRSParametersKVLoading,
+  ePRSParametersKVError,
+  ePRSParametersKV
 } from 'store/parameters-addresses/selectors'
 import {
+  contractRegistryInstance,
   getConstitutionInstance,
-  getContractRegistryInstance,
   getEpdrParametersInstance,
-  getEpqfiParametersInstance
+  getEpqfiParametersInstance,
+  getEprsParametersInstance
 } from 'contracts/contract-instance'
 import { QParametersWrapper } from './styles'
 
@@ -35,6 +40,7 @@ function QParameters () {
   const [constitutionParametersAddress, setConstitutionParametersAddress] = useState('0x00')
   const [ePDRParametersAddress, setEPDRParametersAddress] = useState('0x00')
   const [ePQFIParametersAddress, setEPQFIParametersAddress] = useState('0x00')
+  const [ePRSParametersAddress, setEPRSParametersAddress] = useState('0x00')
 
   const loadingCR = useSelector(contractRegistryKVLoading)
   const errorMessageCR = useSelector(contractRegistryKVError)
@@ -52,6 +58,10 @@ function QParameters () {
   const errorMessageEPDRP = useSelector(ePDRParametersKVError)
   const kvEPDRP = useSelector(ePDRParametersKV)
 
+  const loadingEPRS = useSelector(ePRSParametersKVLoading)
+  const errorMessageEPRS = useSelector(ePRSParametersKVError)
+  const kvEPRS = useSelector(ePRSParametersKV)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -59,53 +69,71 @@ function QParameters () {
     dispatch(getConstitutionParametersKV())
     dispatch(getFeesIncentivesExpertPanelParametersKV())
     dispatch(getEPDRParametersKV())
+    dispatch(getEPRSParametersKV())
 
-    getContractRegistryInstance().then((contract) => setContractRegistryAddress(contract.address))
+    setContractRegistryAddress(contractRegistryInstance.address)
     getConstitutionInstance().then((contract) => setConstitutionParametersAddress(contract.address))
     getEpdrParametersInstance().then((contract) => setEPDRParametersAddress(contract.address))
     getEpqfiParametersInstance().then((contract) => setEPQFIParametersAddress(contract.address))
+    getEprsParametersInstance().then((contract) => setEPRSParametersAddress(contract.address))
+
     return () => {
       setContractRegistryAddress('0x00')
       setConstitutionParametersAddress('0x00')
       setEPDRParametersAddress('0x00')
       setEPQFIParametersAddress('0x00')
+      setEPRSParametersAddress('0x00')
     }
   }, [dispatch])
 
   return (
         <QParametersWrapper>
-            <KeyAddressViewer
-                tableData={kvCR}
-                loading={loadingCR}
-                errorMsg={errorMessageCR}
-                subHeader={`(${contractRegistryAddress})`}
-                header="Q Contract Registry"
-                emptyMsg="No addresses"
-            />
-            <KeyAddressViewer
-                tableData={kvCP}
-                loading={loadingCP}
-                errorMsg={errorMessageCP}
-                subHeader={`(${constitutionParametersAddress})`}
-                header="Q Constitution Parameters"
-                emptyMsg="No data"
-            />
-            <KeyAddressViewer
-                tableData={kvFI}
-                loading={loadingFI}
-                errorMsg={errorMessageFI}
-                subHeader={`(${ePQFIParametersAddress})`}
-                header="Q Fees & Incentives Expert Panel Parameters"
-                emptyMsg="No data"
-            />
-            <KeyAddressViewer
-                tableData={kvEPDRP}
-                loading={loadingEPDRP}
-                errorMsg={errorMessageEPDRP}
-                subHeader={`(${ePDRParametersAddress})`}
-                header="Q DeFi Risk Expert Panel Parameters"
-                emptyMsg="No addresses"
-            />
+            <div>
+                <KeyAddressViewer
+                    tableData={kvCR}
+                    loading={loadingCR}
+                    errorMsg={errorMessageCR}
+                    subHeader={`(${contractRegistryAddress})`}
+                    header="Q Contract Registry"
+                    emptyMsg="No addresses"
+                />
+                <KeyAddressViewer
+                    tableData={kvFI}
+                    loading={loadingFI}
+                    errorMsg={errorMessageFI}
+                    subHeader={`(${ePQFIParametersAddress})`}
+                    header="Q Fees & Incentives Expert Panel Parameters"
+                    emptyMsg="No parameters"
+                />
+
+                <KeyAddressViewer
+                    tableData={kvEPDRP}
+                    loading={loadingEPDRP}
+                    errorMsg={errorMessageEPDRP}
+                    subHeader={`(${ePDRParametersAddress})`}
+                    header="Q DeFi Risk Expert Panel Parameters"
+                    emptyMsg="No parameters"
+                />
+            </div>
+            <div>
+                <KeyAddressViewer
+                    tableData={kvCP}
+                    loading={loadingCP}
+                    errorMsg={errorMessageCP}
+                    subHeader={`(${constitutionParametersAddress})`}
+                    header="Q Constitution Parameters"
+                    emptyMsg="No parameters"
+                />
+
+                <KeyAddressViewer
+                    tableData={kvEPRS}
+                    loading={loadingEPRS}
+                    errorMsg={errorMessageEPRS}
+                    subHeader={`(${ePRSParametersAddress})`}
+                    header="Q Root Node Selection Expert Panel Parameters"
+                    emptyMsg="No parameters"
+                />
+            </div>
         </QParametersWrapper>
   )
 }

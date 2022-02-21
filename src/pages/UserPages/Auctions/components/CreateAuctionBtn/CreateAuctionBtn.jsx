@@ -6,8 +6,10 @@ import ModalCreateAuction from './ModalCreateAuction'
 import Button from 'components/Base/Buttons/Button'
 
 function CreateAuctionBtn ({ auctionsType }) {
-  const [modalShow, setModalShow] = useState(false)
   const dispatch = useDispatch()
+
+  const [modalShow, setModalShow] = useState(false)
+  const title = `Create ${auctionsType.replace(/-/g, ' ') + ' Auction'}`
 
   const onCreateAuction = async () => {
     dispatch(setStepCounter(1))
@@ -16,21 +18,15 @@ function CreateAuctionBtn ({ auctionsType }) {
     dispatch(setCreateObj({ contract: auctionsType }))
   }
 
+  const onHide = () => {
+    setModalShow(false)
+    dispatch(setCreateObj({}))
+  }
+
   return (
         <>
-            <Button
-                icon="plus-circle-outline"
-                handleButton={onCreateAuction}
-                title={`Create ${auctionsType.replace(/-/g, ' ') + ' Auction'}`}
-            />
-            <ModalCreateAuction
-                activeTab={auctionsType}
-                modalShow={modalShow}
-                onHide={() => {
-                  setModalShow(false)
-                  dispatch(setCreateObj({}))
-                }}
-            />
+            <Button icon="plus-circle-outline" handleButton={onCreateAuction} title={title} />
+            <ModalCreateAuction activeTab={auctionsType} modalShow={modalShow} onHide={onHide} />
         </>
   )
 }

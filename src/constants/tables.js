@@ -75,6 +75,12 @@ export const tableQFees = (tableArray) =>
     member: <CopyToClipboard valueToCopy={member}>{member}</CopyToClipboard>
   }))
 
+export const tableEprs = (tableArray) =>
+  tableArray.map((member, idx) => ({
+    id: idx,
+    member: <CopyToClipboard valueToCopy={member}>{member}</CopyToClipboard>
+  }))
+
 export const tableDelegations = (tableArray) =>
   tableArray.map((member, idx) => ({
     id: idx,

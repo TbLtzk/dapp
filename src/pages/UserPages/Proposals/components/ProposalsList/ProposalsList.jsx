@@ -7,17 +7,16 @@ import ListCard from './components/ListCard'
 import { fillArray } from 'func/useful'
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading'
 
+const LIMIT = 9
 const LOAD_TYPES = { load: 'load', empty: 'empty', loaded: 'loaded' }
 
 function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
   const [state, setState] = useState(LOAD_TYPES.load)
-
-  const LENGTH = proposals.length
-  const LIMIT = 9
-
   const [showMore, setShowMore] = useState(false)
   const [list, setList] = useState([])
   const [index, setIndex] = useState(LIMIT)
+
+  const LENGTH = proposals.length
 
   const handleNextProposals = () => {
     const newIndex = index + LIMIT
@@ -36,10 +35,10 @@ function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
   }, [proposals, proposalsCount])
 
   const checkProposals = () => {
-    if (proposals.length > LIMIT) {
+    if (LENGTH > LIMIT) {
       setShowMore(true)
     }
-    if (proposals.length) {
+    if (LENGTH) {
       setList(slice(proposals, 0, index))
       setState(LOAD_TYPES.loaded)
     } else if (!proposalsCount) {

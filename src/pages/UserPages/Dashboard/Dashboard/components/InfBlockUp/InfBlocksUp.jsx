@@ -29,7 +29,7 @@ import {
   slashingEndedProposalsCountSelector,
   slashingLoadingProposalsCountSelector
 } from 'store/voting/slashing-proposals/selectors'
-import { getContractRegistryInstance } from 'contracts/contract-instance'
+import { contractRegistryInstance } from 'contracts/contract-instance'
 import { mode } from 'store/dashboard-mode/selectors'
 import { MODE } from 'components/Base/DashboardMode/DashboardMode'
 import {
@@ -90,7 +90,7 @@ function InfBlocksUp () {
 
   useEffect(() => {
     dispatch(getConstitutionHash())
-    getContractRegistryInstance().then((contract) => setContractRegistryAddress(contract.address))
+    setContractRegistryAddress(contractRegistryInstance.address)
     window.web3.eth.getBlock('latest').then((response) => setBlockNumber(response.number || 0))
   }, [dispatch])
 
