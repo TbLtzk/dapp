@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 import { useSelector } from 'react-redux'
-import { formObject } from 'store/modal-handler/selectors'
 import { symbol } from 'store/stable-coin/selectors'
 
 import InputGroup from 'components/Custom/ModalActions/InputGroup'
@@ -11,7 +10,6 @@ import { liquidation, systemDebt, systemSurplus } from './constants'
 import { AUCTIONS_TYPES } from 'constants/statuses'
 
 function CreateStep1 ({ activeTab, register, errors }) {
-  const formData = useSelector(formObject)
   const symbolType = useSelector(symbol)
   const [surplusLot, setSurplusLot] = useState('0')
   const [reserveLot, setReserveLot] = useState('0')
@@ -28,7 +26,6 @@ function CreateStep1 ({ activeTab, register, errors }) {
                     <>
                         <h4>{liquidation.subtitleInputUp}</h4>
                         <InputGroup
-                            formData={formData}
                             inputArr={liquidation.inputPlaceholderUp}
                             inputsObj={liquidation.inputUpObj}
                             register={register}
@@ -36,7 +33,6 @@ function CreateStep1 ({ activeTab, register, errors }) {
                         />
                         <h4>{liquidation.subtitleInputMiddle}</h4>
                         <InputGroup
-                            formData={formData}
                             inputArr={liquidation.inputPlaceholderMiddle}
                             inputsObj={liquidation.inputMiddleObj}
                             register={register}
@@ -44,7 +40,6 @@ function CreateStep1 ({ activeTab, register, errors }) {
                         />
                         <h4>{liquidation.subtitleInputDown + symbolType}</h4>
                         <InputGroup
-                            formData={formData}
                             inputArr={liquidation.inputPlaceholderDown}
                             inputsObj={liquidation.inputDownObj}
                             register={register}
@@ -60,7 +55,6 @@ function CreateStep1 ({ activeTab, register, errors }) {
 
                         <h4>{systemDebt.subtitleInputDown + symbolType}</h4>
                         <InputGroup
-                            formData={formData}
                             inputArr={systemDebt.inputPlaceholder}
                             inputsObj={systemDebt.inputObj}
                             register={register}
@@ -76,7 +70,6 @@ function CreateStep1 ({ activeTab, register, errors }) {
 
                         <h4>{systemSurplus.subtitleInputDown}</h4>
                         <InputGroup
-                            formData={formData}
                             inputArr={systemSurplus.inputPlaceholder}
                             inputsObj={systemSurplus.inputObj}
                             register={register}

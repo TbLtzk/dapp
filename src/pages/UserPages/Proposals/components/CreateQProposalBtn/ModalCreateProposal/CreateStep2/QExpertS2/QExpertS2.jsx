@@ -52,7 +52,6 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                         />
                         <h4>{addNewExpert.subtitleInputUp}</h4>
                         <InputGroup
-                            formData={formData}
                             inputArr={addNewExpert.inputUp}
                             inputsObj={addNewExpert.inputUpObj}
                             register={register}
@@ -60,7 +59,6 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                         />
                         <h4>{addNewExpert.subtitleInputDown}</h4>
                         <InputGroup
-                            formData={formData}
                             inputArr={addNewExpert.inputDown}
                             inputsObj={addNewExpert.inputDownObj}
                             register={register}
@@ -83,7 +81,6 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                         />
                         <h4>{removeExpert.subtitleInputUp}</h4>
                         <InputGroup
-                            formData={formData}
                             inputArr={removeExpert.inputUp}
                             inputsObj={removeExpert.inputUpObj}
                             register={register}
@@ -91,7 +88,6 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                         />
                         <h4>{removeExpert.subtitleInputDown}</h4>
                         <InputGroup
-                            formData={formData}
                             inputArr={removeExpert.inputDown}
                             inputsObj={removeExpert.inputDownObj}
                             register={register}
@@ -166,7 +162,6 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                         </div>
                         <h4>{parameterVote.subtitleInputDown}</h4>
                         <InputGroup
-                            formData={formData}
                             inputArr={parameterVote.inputDown}
                             inputsObj={parameterVote.inputDownObj}
                             register={register}

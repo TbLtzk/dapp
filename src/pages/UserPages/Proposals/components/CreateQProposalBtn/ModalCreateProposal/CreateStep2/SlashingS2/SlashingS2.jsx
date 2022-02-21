@@ -17,7 +17,6 @@ function SlashingS2 ({ register, errors }) {
                 <>
                     <h2>{rootSlashing.subtitle}</h2>
                     <InputGroup
-                        formData={formData}
                         labelsArr={rootSlashing.inputTitleDescr}
                         inputArr={rootSlashing.inputs}
                         inputsObj={rootSlashing.inputsObj}
@@ -26,7 +25,6 @@ function SlashingS2 ({ register, errors }) {
                     />
                     <h4>{rootSlashing.inputTitleDown}</h4>
                     <InputGroup
-                        formData={formData}
                         inputArr={rootSlashing.inputDown}
                         inputsObj={rootSlashing.inputDownObj}
                         register={register}
@@ -39,7 +37,6 @@ function SlashingS2 ({ register, errors }) {
                 <>
                     <h2>{validatorSlashing.subtitle}</h2>
                     <InputGroup
-                        formData={formData}
                         labelsArr={validatorSlashing.inputTitleDescr}
                         inputArr={validatorSlashing.inputs}
                         inputsObj={validatorSlashing.inputsObj}
@@ -48,7 +45,6 @@ function SlashingS2 ({ register, errors }) {
                     />
                     <h4>{validatorSlashing.inputTitleDown}</h4>
                     <InputGroup
-                        formData={formData}
                         inputArr={validatorSlashing.inputDown}
                         inputsObj={validatorSlashing.inputDownObj}
                         register={register}

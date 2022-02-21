@@ -71,12 +71,12 @@ function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) 
 
   const radioArrFirstStep = radioArrFirstStepObject[activeTab]
 
-  const backBtnHandler = () => {
+  function backBtnHandler () {
     dispatch(setStepCounter(stepCounter - 1))
     dispatch(setDisabledCreatedProposalBtn(false))
   }
 
-  const onNext = (data) => {
+  function onNext (data) {
     dispatch(setCreateProposalObj({ ...formData, ...data }))
     if (stepCounter < stepLimit) {
       dispatch(setStepCounter(stepCounter + 1))

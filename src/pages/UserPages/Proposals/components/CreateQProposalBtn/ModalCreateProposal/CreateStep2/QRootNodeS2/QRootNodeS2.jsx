@@ -28,7 +28,6 @@ function QRootNodeS2 ({ register, errors }) {
                 <>
                     <h2>{addRootNode.subtitle}</h2>
                     <InputGroup
-                        formData={formData}
                         labelsArr={addRootNode.inputTitleDescr}
                         inputArr={addRootNode.inputs}
                         inputsObj={addRootNode.inputsObj}
@@ -50,7 +49,6 @@ function QRootNodeS2 ({ register, errors }) {
                         <>
                             <h4>{addRootNode.inputTitleDown}</h4>
                             <InputGroup
-                                formData={formData}
                                 inputArr={addRootNode.inputDown}
                                 inputsObj={addRootNode.inputDownObj}
                                 register={register}
@@ -65,7 +63,6 @@ function QRootNodeS2 ({ register, errors }) {
                 <>
                     <h2>{removeRootNode.subtitle}</h2>
                     <InputGroup
-                        formData={formData}
                         labelsArr={removeRootNode.inputTitleDescr}
                         inputArr={removeRootNode.inputs}
                         inputsObj={removeRootNode.inputsObj}

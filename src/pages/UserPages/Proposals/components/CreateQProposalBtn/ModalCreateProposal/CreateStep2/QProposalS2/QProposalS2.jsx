@@ -10,7 +10,7 @@ import InputGroup from 'components/Custom/ModalActions/InputGroup'
 import { constUpdate, generalUpdate, emergencyUpdate } from './constants'
 import { CONTRACT_TYPES } from 'constants/contracts'
 
-function QProposalS2 ({ register, errors, setValue }) {
+function QProposalS2 ({ register, errors }) {
   const formData = useSelector(formObject)
   const dispatch = useDispatch()
 
@@ -38,7 +38,6 @@ function QProposalS2 ({ register, errors, setValue }) {
                     />
                     <InputGroup
                         labelsArr={constUpdate.inputTitle}
-                        formData={formData}
                         inputArr={constUpdate.inputs}
                         inputsObj={constUpdate.inputsObj}
                         register={register}
@@ -66,8 +65,6 @@ function QProposalS2 ({ register, errors, setValue }) {
                     </h2>
                     <h4>{generalUpdate.inputTitleDescr}</h4>
                     <InputGroup
-                        setValue={setValue}
-                        formData={formData}
                         inputArr={generalUpdate.inputs}
                         inputsObj={generalUpdate.inputsObj}
                         register={register}

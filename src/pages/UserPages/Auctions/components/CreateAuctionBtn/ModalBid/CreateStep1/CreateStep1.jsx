@@ -1,57 +1,47 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux'
-import { formObject } from 'store/modal-handler/selectors'
-import { userAddressMetamask } from 'store/user-inf/selectors'
-import { setApproveModalBtn } from 'store/auctions/action-creators'
+import { useSelector } from 'react-redux'
 
 import { AUCTIONS_TYPES } from 'constants/statuses'
-
 import InputGroup from 'components/Custom/ModalActions/InputGroup'
-
 import { liquidation, systemSurplus, systemDebt } from './constants'
 
 import { symbol } from 'store/stable-coin/selectors'
-import { switchContract } from 'contracts/helpers/auctions-helpers/auction-service-helper'
-import { getStableCoinInstance } from 'contracts/contract-instance'
 import CopyToClipboard from 'components/Base/CopyToClipboard'
+import { BN } from 'func/useful'
 
-function CreateStep1 ({ activeTab, register, errors, contract, raisingBid }) {
-  const formData = useSelector(formObject)
-  const userAddress = useSelector(userAddressMetamask)
-  const dispatch = useDispatch()
+function CreateStep1 ({ activeTab, register, errors, raisingBid, watch, allowance, setApproveButton }) {
   const symbolType = useSelector(symbol)
 
   const onChangeInput = async (value) => {
-    const stableCoin = await getStableCoinInstance()
-    const { address } = await switchContract(contract)
-    const allowance = await stableCoin.allowance(userAddress, address)
-    if (Number(value) > allowance) {
-      dispatch(setApproveModalBtn(true))
+    const moreThanAllowance = BN(value).comparedTo(allowance) === 1
+    console.log(moreThanAllowance)
+    if (moreThanAllowance) {
+      setApproveButton(true)
     } else {
-      dispatch(setApproveModalBtn(false))
+      setApproveButton(false)
     }
   }
 
-  const showData = (data, symbol = '') => {
-    return (
-            <>
-                <h4>{data.subtitleInput + symbol}</h4>
-                <h4>
-                    Minimum bid: <CopyToClipboard valueToCopy={raisingBid}>{raisingBid}</CopyToClipboard>{' '}
-                    {symbol || data.symbol}
-                </h4>
-                <InputGroup
-                    onChangeInput={onChangeInput}
-                    formData={formData}
-                    inputArr={data.inputPlaceholder}
-                    inputsObj={data.inputObj}
-                    register={register}
-                    errors={errors}
-                />
-            </>
-    )
-  }
+  useEffect(() => {
+    onChangeInput(watch('bid'))
+  }, [watch])
+
+  const showData = (data, symbol = '') => (
+        <>
+            <h4>{data.subtitleInput + symbol}</h4>
+            <h4>
+                Minimum bid: <CopyToClipboard valueToCopy={raisingBid}>{raisingBid}</CopyToClipboard>{' '}
+                {symbol || data.symbol}
+            </h4>
+            <InputGroup
+                inputArr={data.inputPlaceholder}
+                inputsObj={data.inputObj}
+                register={register}
+                errors={errors}
+            />
+        </>
+  )
 
   const switchContentOnTypeProposal = useCallback(() => {
     switch (activeTab) {

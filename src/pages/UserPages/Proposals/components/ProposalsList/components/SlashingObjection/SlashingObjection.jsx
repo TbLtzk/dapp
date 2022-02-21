@@ -172,7 +172,7 @@ function SlashingObjection ({ contract, proposalId, objData }) {
                         </Dropdown.Item>
                         <Dropdown.Item onClick={onRecallCurrentDecision}>
                             <i className={'mdi mdi-repeat btn-icon'} />
-                        div    Recall Decision
+                            Recall Decision
                         </Dropdown.Item>
                         {objData.objection.statusObjection === STATUSES.decided && executeDecisionBTN}
                     </DropdownButton>
