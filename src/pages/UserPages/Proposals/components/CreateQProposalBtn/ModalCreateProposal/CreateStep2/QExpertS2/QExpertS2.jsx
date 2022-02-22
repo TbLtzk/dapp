@@ -128,7 +128,10 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                                         type="string"
                                         palette="dark"
                                         placeholder={parameterVote.labelsArr}
-                                        ref={register({ required: 'Field is required!' })}
+                                        ref={register({
+                                          required: 'Field is required!',
+                                          validate: (value) => (value.length >= 70 ? 'Maximum length reached' : true)
+                                        })}
                                         valid={errors[parameterVote.parameterKey]?.[index]?.message}
                                     />
                                 </div>

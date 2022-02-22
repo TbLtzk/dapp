@@ -22,7 +22,7 @@ import AccordionElements from './components/AccordionElements'
 import ToggleSidebar from './components/ToggleSidebar'
 import Version from './components/Version'
 
-import { LinksContainer, ALinkStyle, FooterContainer, SidebarContainer } from './styles'
+import { ALinkStyle, FooterContainer, SidebarContainer } from './styles'
 import { referencesItems } from './constants'
 
 function Sidebar () {
@@ -51,7 +51,7 @@ function Sidebar () {
         <SidebarContainer openSidebar={openSidebar}>
             <div className="sidebar_container">
                 <i className="mdi mdi-chevron-right" />
-                <LinksContainer className="sidebar_links">
+                <div className="sidebar_links">
                     {appMode === MODE.advanced
                       ? (
                         <AccordionLinks type="dashboard-toggle" headerLink={dashboard}>
@@ -162,7 +162,7 @@ function Sidebar () {
                         </>
                         )
                       : null}
-                </LinksContainer>
+                </div>
                 <FooterContainer>
                     <AccordionElements margin="24px 0 0 0" title="References">
                         {referencesItems.map((value, key) => (

@@ -55,7 +55,6 @@ export async function getQVaultDepositAmount (address, transferMax) {
     const fee = await contract.instance.methods.deposit().estimateGas({ value: toWei(transferMax), from: address })
     const gas = calculateGas(fee)
     const result = BN(toWei(transferMax)).minus(toWei(gas)).toString()
-
     return fromWei(result)
   }
 }

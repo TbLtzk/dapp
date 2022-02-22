@@ -95,7 +95,11 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
                                                 palette="dark"
                                                 name={`${constUpdate.inputsObjFirst}[${index}]`}
                                                 placeholder={constUpdate.inputsFirst}
-                                                ref={register({ required: 'Field is required!' })}
+                                                ref={register({
+                                                  required: 'Field is required!',
+                                                  validate: (value) =>
+                                                    value.length >= 70 ? 'Maximum length reached' : true
+                                                })}
                                                 valid={errors[constUpdate.inputsObjFirst]?.[index]?.message}
                                             />
                                         </div>

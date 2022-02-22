@@ -71,6 +71,12 @@ export const SidebarContainer = styled.div`
       display: none;
     }
   }
+  .sidebar_links {
+    display: inline;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
   ${(p) => handleSidebarOpen(p, '310px', indents['30'], '-280px')}
 
   &:hover .sidebar_toggle {
@@ -84,12 +90,17 @@ export const SidebarContainer = styled.div`
     }
     ${(p) => handleSidebarOpen(p, '280px', indents['15'], '-250px')}
   }
-`
 
-export const LinksContainer = styled.div`
-  display: inline;
-  overflow-y: auto;
-  overflow-x: hidden;
+  @media screen and (max-height: 400px) {
+    .sidebar_container {
+      overflow-x: hidden;
+
+      .sidebar_links {
+        display: block;
+        overflow: visible;
+      }
+    }
+  }
 `
 
 export const ListTitle = styled.div`

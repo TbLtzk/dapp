@@ -89,9 +89,9 @@ export default class SlashingVoting extends VotingService {
     const contract = await this.getContractInstance()
 
     const link = data['external-link']
-    let percentageStake = data['%-value']
-    percentageStake = getPercentageFormat(percentageStake)
+    const percentageStake = getPercentageFormat(data['%-value'])
     const candidate = data.address
+
     const result = await contract.createProposal(link, candidate, percentageStake, { from: userAddress })
     return result
   }
