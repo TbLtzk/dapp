@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -18,8 +18,7 @@ import { ProgressBar } from 'react-bootstrap'
 import { setVoteProposalObj } from 'store/voting/proposals/action-creators'
 import { fields } from 'constants/fieldsNaming'
 
-function ModalSlashingObjection (props) {
-  const { modalShow, onHide, activeTab, contract, proposalId } = props
+function ModalSlashingObjection ({ modalShow, onHide, activeTab, contract, proposalId }) {
   const { register, errors, handleSubmit, setValue } = useForm()
   const dispatch = useDispatch()
 
@@ -27,17 +26,25 @@ function ModalSlashingObjection (props) {
   const stepLimit = useSelector(createdStepsLimit)
   const stepCounter = useSelector(stepCounterModal)
 
-  const switchContentDependsOnType = useCallback(() => {
+  const switchContentDependsOnType = () => {
     switch (stepCounter) {
       case 1:
-        return <CreateStep1 formData={formData} activeTab={activeTab} register={register} errors={errors} />
+        return (
+                    <CreateStep1
+                        formData={formData}
+                        activeTab={activeTab}
+                        register={register}
+                        errors={errors}
+                        setValue={setValue}
+                    />
+        )
       case 2:
         return <CreateStep2 formData={formData} activeTab={activeTab} register={register} errors={errors} />
 
       default:
         return null
     }
-  }, [activeTab, stepCounter, register, errors, stepLimit])
+  }
 
   useEffect(() => {
     Object.values(fields).forEach((value) => {

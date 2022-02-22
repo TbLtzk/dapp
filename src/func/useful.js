@@ -1,6 +1,7 @@
 import { ParameterType } from '@q-dev/q-js-sdk'
 import { BigNumber } from 'bignumber.js'
 import { CONTRACTS_NAMES } from 'constants/contracts'
+import { keyRegex } from 'constants/regex'
 import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper'
 import { orderBy } from 'lodash'
 
@@ -136,4 +137,8 @@ export function validatePattern (value, type) {
       return value.match(unitRegex) && value.length <= 70 ? true : 'Unit not valid'
     }
   }
+}
+
+export function parameterKeyValidation (key) {
+  return key.length <= 70 && key.match(keyRegex) ? true : 'Parameter key not valid'
 }

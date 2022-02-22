@@ -24,7 +24,7 @@ function KeyAddressesTable ({ tableData, tableHeaders }) {
 
                                 <td>
                                     <CopyToClipboard valueToCopy={item.value}>
-                                        <span>{item.value}</span>
+                                        <span>{String(item.value)}</span>
                                     </CopyToClipboard>
                                 </td>
                                 <td>

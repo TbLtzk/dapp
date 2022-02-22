@@ -8,10 +8,9 @@ import InputGroup from 'components/Custom/ModalActions/InputGroup'
 import { rootSlashing, validatorSlashing } from './constants'
 import { CONTRACT_TYPES } from 'constants/contracts'
 
-function SlashingS2 ({ register, errors }) {
+function SlashingS2 ({ register, errors, setValue }) {
   const formData = useSelector(formObject)
-
-  switch (formData?.first) {
+  switch (formData.first) {
     case CONTRACT_TYPES.rootNodeSlashing:
       return (
                 <>
@@ -20,6 +19,7 @@ function SlashingS2 ({ register, errors }) {
                         labelsArr={rootSlashing.inputTitleDescr}
                         inputArr={rootSlashing.inputs}
                         inputsObj={rootSlashing.inputsObj}
+                        setValue={setValue}
                         register={register}
                         errors={errors}
                     />
@@ -40,6 +40,7 @@ function SlashingS2 ({ register, errors }) {
                         labelsArr={validatorSlashing.inputTitleDescr}
                         inputArr={validatorSlashing.inputs}
                         inputsObj={validatorSlashing.inputsObj}
+                        setValue={setValue}
                         register={register}
                         errors={errors}
                     />

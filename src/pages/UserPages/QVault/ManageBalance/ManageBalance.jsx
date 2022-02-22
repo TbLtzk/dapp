@@ -12,6 +12,7 @@ import { accountBalance } from 'store/q-vault/selectors'
 import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper'
 import { WARNING_MAX_NUMBER } from 'constants/statuses'
 import { BN, isAddress } from 'func/useful'
+import { numberRegex } from 'constants/regex'
 
 export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
   const dispatch = useDispatch()
@@ -98,6 +99,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
   }
 
   function setDepositAmount (formData) {
+    console.log(formData)
     dispatch(setDepositCall(address, formData.amount))
     setDepositValue('amount', null)
   }
@@ -129,7 +131,8 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
                     onClick={() => clearDepositErrors('amount')}
                     onChange={handleChangeDepositAmount}
                     ref={registerDeposit({
-                      required: 'Field is required!'
+                      required: 'Field is required!',
+                      validate: (value) => (value.match(numberRegex) ? true : 'Amount not valid')
                     })}
                     valid={errorsDeposit.amount?.message}
                 />

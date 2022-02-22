@@ -2,13 +2,9 @@ import React, { Fragment, useCallback } from 'react'
 import { fields } from 'constants/fieldsNaming'
 import FormInput from 'components/Base/Form/FormInput'
 import { isAddress } from 'func/useful'
+import { from1to100Regex, hashRegex, linkRegex } from 'constants/regex'
 
-const linkRegex =
-    /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9äöü][äöüa-zA-Z0-9-_]+[äöüa-zA-Z0-9]\.[^\s]{2,100}|www\.[äöüa-zA-Z0-9][a-zA-Z0-9-]+[äöüaa-zA-Z0-9]\.[^\s]{2,100}|https?:\/\/(?:www\.|(?!www))[äöüa-zA-Z0-9]+\.[^\s]{2,100}|www\.[äöüa-zA-Z0-9]+\.[^\s]{2,100})/gm
-
-const hashRegex = /^0x[a-fA-F0-9]{64}$/gm
-
-function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type }) {
+function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type, setValue }) {
   const getRefType = useCallback((inputType) => {
     switch (inputType) {
       case fields.externalLink: {
@@ -38,7 +34,15 @@ function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type }) 
       case fields.value: {
         return register({
           required: 'Field is required!',
-          validate: (value) => Number(value) < 100 && Number(value) >= 0.1 ? true : 'Percentage value not valid'
+          validate: (value) => {
+            console.log(value)
+            if (Number(value) > 100) {
+              setValue(fields.value, '100')
+              return true
+            } else {
+              return value.match(from1to100Regex) ? true : 'Percentage value not valid'
+            }
+          }
         })
       }
       default: {

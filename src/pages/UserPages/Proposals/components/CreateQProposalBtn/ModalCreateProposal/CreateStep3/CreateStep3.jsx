@@ -11,7 +11,7 @@ import FormInput from 'components/Base/Form/FormInput'
 import { getTypeName } from 'func/contractHelpers'
 
 import { CONTRACT_TYPES } from 'constants/contracts'
-import { fillArray, validatePattern } from 'func/useful'
+import { fillArray, parameterKeyValidation, validatePattern } from 'func/useful'
 import { transformToParams } from 'contracts/helpers/parameters-helper'
 
 function CreateStep3 ({ activeTab, register, errors, watch }) {
@@ -97,8 +97,7 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
                                                 placeholder={constUpdate.inputsFirst}
                                                 ref={register({
                                                   required: 'Field is required!',
-                                                  validate: (value) =>
-                                                    value.length >= 70 ? 'Maximum length reached' : true
+                                                  validate: (key) => parameterKeyValidation(key)
                                                 })}
                                                 valid={errors[constUpdate.inputsObjFirst]?.[index]?.message}
                                             />

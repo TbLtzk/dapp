@@ -9,7 +9,3 @@ export const fields = {
   remark: 'proposer-remark',
   vault: 'vault-id'
 }
-
-export const titles = {
-  qusdSystemBalance: 'QUSD System Balance'
-}

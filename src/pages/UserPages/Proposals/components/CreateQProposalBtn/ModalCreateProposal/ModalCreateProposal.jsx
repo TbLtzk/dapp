@@ -39,7 +39,7 @@ function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) 
   const disabledContinueBtn = useSelector(disabledContinueProposalBtn)
   const appMode = useSelector(mode)
 
-  const { register, errors, handleSubmit, setValue, watch } = useForm()
+  const { register, errors, handleSubmit, setValue, watch, clearErrors } = useForm()
 
   const radioArrFirstStepObject = {
     [PROPOSALS_TYPES.proposals]: appMode === MODE.advanced ? arrQProposalAdvanced : arrQProposal,
@@ -105,7 +105,9 @@ function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) 
                         activeTab={activeTab}
                         activeTabTitle={activeTabTitle}
                         register={register}
+                        setValue={setValue}
                         errors={errors}
+                        clearErrors={clearErrors}
                     />
         )
       case 3:
