@@ -27,6 +27,7 @@ const FormInput = forwardRef((props, ref) => {
   } = props
 
   const [isFocus, setIsFocus] = useState('')
+
   const currentTheme = useSelector(theme)
 
   return (
@@ -41,15 +42,11 @@ const FormInput = forwardRef((props, ref) => {
             isdisabled={disabled ? '1' : ''}
             modal={modal ? 1 : 0}
         >
-            <div style={{ display: 'flex' }}>
-                {lbl ? <div className={'input_lbl'}>{lbl}</div> : null}
+            <div>
+                {lbl ? <div className="input_lbl">{lbl}</div> : null}
                 <Form.Control
-                    onFocus={() => {
-                      setIsFocus('1')
-                    }}
-                    onBlur={() => {
-                      setIsFocus('')
-                    }}
+                    onFocus={() => setIsFocus('1')}
+                    onBlur={() => setIsFocus('')}
                     min={min}
                     type={type}
                     autoComplete="off"
@@ -57,14 +54,18 @@ const FormInput = forwardRef((props, ref) => {
                     placeholder={placeholder}
                     name={name}
                     ref={ref}
-                    onKeyPress={(e) => {
-                      e.key === 'Enter' && e.preventDefault()
-                    }}
+                    onKeyPress={(e) => e.key === 'Enter' && e.preventDefault()}
                     onChange={onChange}
                     value={value}
                     disabled={disabled}
                 />
-                {!onMaxClick ? null : <div onClick={onMaxClick} className='input_maxbtn'>Max</div>}
+                {onMaxClick
+                  ? (
+                    <div onClick={onMaxClick} className="input_maxbtn">
+                        Max
+                    </div>
+                    )
+                  : null}
             </div>
             <ErrorInputMessage message={valid} />
         </InputWrapper>

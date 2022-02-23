@@ -8,7 +8,10 @@ export const InputWrapper = styled(Form.Group)`
   margin-bottom: 0;
   width: 100%;
   position: relative;
-
+  div {
+    display: flex;
+  }
+  
   input {
     font-size: 14px;
     line-height: 20px;

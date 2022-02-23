@@ -1,6 +1,7 @@
 import { ParameterType } from '@q-dev/q-js-sdk'
 import { BigNumber } from 'bignumber.js'
 import { CONTRACTS_NAMES } from 'constants/contracts'
+import { keyRegex } from 'constants/regex'
 import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper'
 import { orderBy } from 'lodash'
 
@@ -117,9 +118,9 @@ export const createShareText = (type, contract, id, user) => {
   }
 }
 
-const stringRegex = /^[a-zA-Z]+$/gm
+const stringRegex = /^[äöüa-zA-Z0-9]+$/gm
 const booleanValues = ['true', 'false', 'True', 'False', 'TRUE', 'FALSE', '1', '0']
-const unitRegex = /^[1-9]+[0-9]*$/
+export const unitRegex = /^[1-9]+[0-9]*$/
 
 export function validatePattern (value, type) {
   switch (type) {
@@ -130,10 +131,14 @@ export function validatePattern (value, type) {
       return booleanValues.includes(value) ? true : 'Boolean not valid'
     }
     case ParameterType.STRING: {
-      return value.match(stringRegex) ? true : 'String not valid'
+      return value.match(stringRegex) && value.length <= 70 ? true : 'String not valid'
     }
     case ParameterType.UINT: {
-      return value.match(unitRegex) ? true : 'Unit not valid'
+      return value.match(unitRegex) && value.length <= 70 ? true : 'Unit not valid'
     }
   }
+}
+
+export function parameterKeyValidation (key) {
+  return key.length <= 70 && key.match(keyRegex) ? true : 'Parameter key not valid'
 }

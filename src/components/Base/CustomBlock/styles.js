@@ -56,7 +56,12 @@ export const Block = styled.div`
     font-size: 13px;
     margin-bottom: 15px;
   }
-
+  .card__hash {
+    width: 95%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .card__actions {
     display: flex;
     align-items: flex-start;
@@ -71,6 +76,12 @@ export const Block = styled.div`
     display: flex;
     justify-content: space-between;
     margin-top: 15px;
+  }
+
+  .card__two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 15px;
   }
 
   .card__spinner {

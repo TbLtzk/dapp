@@ -2,12 +2,9 @@ import React, { Fragment, useCallback } from 'react'
 import { fields } from 'constants/fieldsNaming'
 import FormInput from 'components/Base/Form/FormInput'
 import { isAddress } from 'func/useful'
+import { from1to100Regex, hashRegex, linkRegex } from 'constants/regex'
 
-const linkRegex =
-    /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9äöü][äöüa-zA-Z0-9-_]+[äöüa-zA-Z0-9]\.[^\s]{2,100}|www\.[äöüa-zA-Z0-9][a-zA-Z0-9-]+[äöüaa-zA-Z0-9]\.[^\s]{2,100}|https?:\/\/(?:www\.|(?!www))[äöüa-zA-Z0-9]+\.[^\s]{2,100}|www\.[äöüa-zA-Z0-9]+\.[^\s]{2,100})/gm
-const hashRegex = /^0x[a-fA-F0-9]{64}$/gm
-
-function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type }) {
+function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type, setValue, trigger = () => {} }) {
   const getRefType = useCallback((inputType) => {
     switch (inputType) {
       case fields.externalLink: {
@@ -23,7 +20,10 @@ function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type }) 
         })
       }
       case fields.bid: {
-        return register({ required: 'Field is required!' })
+        return register({
+          required: 'Field is required!',
+          validate: (value) => (value.match(hashRegex) ? true : 'Hash not valid')
+        })
       }
       case fields.hash: {
         return register({
@@ -31,8 +31,24 @@ function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type }) 
           validate: (hash) => (hash.match(hashRegex) ? true : 'Hash not valid')
         })
       }
+      case fields.value: {
+        return register({
+          required: 'Field is required!',
+          validate: (value) => {
+            if (Number(value) > 100) {
+              setValue(fields.value, '100')
+              return true
+            } else {
+              return value.match(from1to100Regex) ? true : 'Percentage value not valid'
+            }
+          }
+        })
+      }
       default: {
-        return register({ required: 'Field is required!' })
+        return register({
+          required: 'Field is required!',
+          validate: (value) => (value.length >= 70 ? 'Maximum length reached' : true)
+        })
       }
     }
   }, [])
@@ -41,6 +57,7 @@ function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type }) 
         <div>
             {inputArr?.map((label, i) => {
               const nameField = label.replace(/ /g, '-').toLowerCase()
+
               return (
                     <Fragment key={label}>
                         {labelsArr ? <h4>{labelsArr[i]}</h4> : null}
@@ -48,6 +65,7 @@ function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type }) 
                             palette="dark"
                             min={min}
                             max={max}
+                            onChange={() => trigger(nameField)}
                             type={type}
                             placeholder={label}
                             name={nameField}

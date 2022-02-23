@@ -11,7 +11,7 @@ import FormInput from 'components/Base/Form/FormInput'
 import { getTypeName } from 'func/contractHelpers'
 
 import { CONTRACT_TYPES } from 'constants/contracts'
-import { fillArray, validatePattern } from 'func/useful'
+import { fillArray, parameterKeyValidation, validatePattern } from 'func/useful'
 import { transformToParams } from 'contracts/helpers/parameters-helper'
 
 function CreateStep3 ({ activeTab, register, errors, watch }) {
@@ -95,7 +95,10 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
                                                 palette="dark"
                                                 name={`${constUpdate.inputsObjFirst}[${index}]`}
                                                 placeholder={constUpdate.inputsFirst}
-                                                ref={register({ required: 'Field is required!' })}
+                                                ref={register({
+                                                  required: 'Field is required!',
+                                                  validate: (key) => parameterKeyValidation(key)
+                                                })}
                                                 valid={errors[constUpdate.inputsObjFirst]?.[index]?.message}
                                             />
                                         </div>

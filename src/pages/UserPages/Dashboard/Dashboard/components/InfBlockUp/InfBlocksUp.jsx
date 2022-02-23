@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
-import SmallBlock from './SmallBlock'
+import CustomBlock from 'components/Base/CustomBlock'
 import Button from 'components/Base/Buttons/Button'
 import CopyToClipboard from 'components/Base/CopyToClipboard'
 
@@ -96,75 +96,49 @@ function InfBlocksUp () {
 
   return (
         <>
-            <SmallBlock
-                title="Blockchain"
-                firstSubtitle="Block Height"
-                secondSubtitle="System Contract Registry:"
-                firstContent={<p> {blockNumber}</p>}
-                secondContent={
-                    <CopyToClipboard valueToCopy={contractRegistryAddress}>
-                        <p>{contractRegistryAddress}</p>
-                    </CopyToClipboard>
-                }
-            />
-            <SmallBlock
-                title="Constitution"
-                firstSubtitle="Hash:"
-                secondSubtitle={null}
-                firstContent={
-                    <CopyToClipboard valueToCopy={constitutionHashShow}>
-                        <p>{constitutionHashShow}</p>
-                    </CopyToClipboard>
-                }
-                secondContent={
-                    <div className="card__actions">
-                        <a href={latestConstitution} target="_blank" rel="noreferrer">
-                            <Button icon="download" title={'Download Latest'} handleButton={() => {}} />
-                        </a>
-                        <a href={archiveConstitution} target="_blank" rel="noreferrer">
-                            <Button icon="archive-outline" title={'Check Archive'} handleButton={() => {}} />
-                        </a>
+            <CustomBlock>
+                <h1>Blockchain</h1>
+                <h5>Block Height:</h5>
+                <p> {blockNumber}</p>
+                <h5>System Contract Registry:</h5>
+                <CopyToClipboard valueToCopy={contractRegistryAddress}>
+                    <p>{contractRegistryAddress}</p>
+                </CopyToClipboard>
+            </CustomBlock>
+
+            <CustomBlock title="Constitution">
+                <h1>Constitution</h1>
+                <h5>Hash:</h5>
+                <CopyToClipboard valueToCopy={constitutionHashShow}>
+                    <p className="card__hash">{constitutionHashShow}</p>
+                </CopyToClipboard>
+                <div className="card__actions">
+                    <a href={latestConstitution} target="_blank" rel="noreferrer">
+                        <Button icon="download" title="Download Latest" handleButton={() => {}} />
+                    </a>
+                    <a href={archiveConstitution} target="_blank" rel="noreferrer">
+                        <Button icon="archive-outline" title="Check Archive" handleButton={() => {}} />
+                    </a>
+                </div>
+            </CustomBlock>
+
+            <CustomBlock title="Governance">
+                <h1>Governance</h1>
+
+                <div className="card__two-columns">
+                    <div>
+                        <h5>Active Proposals</h5>
+                        {loadingProposals ? <LoadingSpinner className="card__spinner" /> : <p>{activeProposals}</p>}
                     </div>
-                }
-            />
-            <SmallBlock
-                display="columns"
-                title="Governance"
-                firstSubtitle="Active Proposals"
-                secondSubtitle="Past Proposals"
-                firstContent={
-                    loadingProposals
-                      ? (
-                        <LoadingSpinner className="card__spinner" />
-                        )
-                      : (
-                        <div>
-                            <p>{activeProposals}</p>
-                            <div className="card__actions">
-                                <Link to="/q-governance">
-                                    <Button
-                                        type="white"
-                                        icon="arrow-right"
-                                        title="Go to Governance"
-                                        handleButton={() => {}}
-                                    />
-                                </Link>
-                            </div>
-                        </div>
-                        )
-                }
-                secondContent={
-                    loadingProposals
-                      ? (
-                        <LoadingSpinner className="card__spinner" />
-                        )
-                      : (
-                        <>
-                            <p>{endedProposals}</p>
-                        </>
-                        )
-                }
-            />
+                    <div>
+                        <h5>Past Proposals</h5>
+                        {loadingProposals ? <LoadingSpinner className="card__spinner" /> : <p>{endedProposals}</p>}
+                    </div>
+                </div>
+                <Link to="/q-governance">
+                    <Button type="white" icon="arrow-right" title="Go to Governance" handleButton={() => {}} />
+                </Link>
+            </CustomBlock>
         </>
   )
 }
