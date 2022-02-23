@@ -19,32 +19,13 @@ import { setVoteProposalObj } from 'store/voting/proposals/action-creators'
 import { fields } from 'constants/fieldsNaming'
 
 function ModalSlashingObjection ({ modalShow, onHide, activeTab, contract, proposalId }) {
-  const { register, errors, handleSubmit, setValue } = useForm()
   const dispatch = useDispatch()
 
   const formData = useSelector(formObject)
   const stepLimit = useSelector(createdStepsLimit)
   const stepCounter = useSelector(stepCounterModal)
 
-  const switchContentDependsOnType = () => {
-    switch (stepCounter) {
-      case 1:
-        return (
-                    <CreateStep1
-                        formData={formData}
-                        activeTab={activeTab}
-                        register={register}
-                        errors={errors}
-                        setValue={setValue}
-                    />
-        )
-      case 2:
-        return <CreateStep2 formData={formData} activeTab={activeTab} register={register} errors={errors} />
-
-      default:
-        return null
-    }
-  }
+  const { register, errors, handleSubmit, setValue, trigger } = useForm()
 
   useEffect(() => {
     Object.values(fields).forEach((value) => {
@@ -54,7 +35,7 @@ function ModalSlashingObjection ({ modalShow, onHide, activeTab, contract, propo
     })
   }, [stepCounter])
 
-  const onNext = (data) => {
+  function onNext (data) {
     dispatch(setCreateObj({ ...formData, ...data }))
     if (stepCounter < stepLimit) {
       dispatch(setStepCounter(stepCounter + 1))
@@ -71,29 +52,55 @@ function ModalSlashingObjection ({ modalShow, onHide, activeTab, contract, propo
     }
   }
 
+  function backBtnHandler () {
+    dispatch(setStepCounter(stepCounter - 1))
+  }
+
+  function switchContentDependsOnType () {
+    switch (stepCounter) {
+      case 1:
+        return (
+                    <CreateStep1
+                        activeTab={activeTab}
+                        register={register}
+                        trigger={trigger}
+                        errors={errors}
+                        setValue={setValue}
+                    />
+        )
+      case 2:
+        return <CreateStep2 activeTab={activeTab} register={register} errors={errors} />
+
+      default:
+        return null
+    }
+  }
+
+  const continueBtnTitle = stepLimit !== stepCounter ? 'Next' : 'Confirm'
+  const modalTitle = activeTab?.replace(/-/g, ' ').charAt(0).toUpperCase() + activeTab?.replace(/-/g, ' ').slice(1)
+  const backBtnTitle = stepCounter !== 1 ? 'Back' : null
+
+  const content = (
+        <>
+            <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)} />
+            <div className="modal__steps">
+                Step {stepCounter} of {stepLimit}
+            </div>
+            <form>{switchContentDependsOnType()}</form>
+        </>
+  )
+
   return (
         <>
             <ModalWindow
                 show={modalShow}
                 onHide={onHide}
-                backBtnTitle={stepCounter !== 1 ? 'Back' : null}
-                backBtnHandler={() => {
-                  dispatch(setStepCounter(stepCounter - 1))
-                }}
-                continueBtnTitle={stepLimit !== stepCounter ? 'Next' : 'Confirm'}
+                backBtnTitle={backBtnTitle}
+                backBtnHandler={backBtnHandler}
+                continueBtnTitle={continueBtnTitle}
                 continueBtnHandler={handleSubmit(onNext)}
-                modalTitle={
-                    activeTab?.replace(/-/g, ' ').charAt(0).toUpperCase() + activeTab?.replace(/-/g, ' ').slice(1)
-                }
-                content={
-                    <>
-                        <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)} />
-                        <div className="modal__steps">
-                            Step {stepCounter} of {stepLimit}
-                        </div>
-                        <form>{switchContentDependsOnType()}</form>
-                    </>
-                }
+                modalTitle={modalTitle}
+                content={content}
             />
         </>
   )

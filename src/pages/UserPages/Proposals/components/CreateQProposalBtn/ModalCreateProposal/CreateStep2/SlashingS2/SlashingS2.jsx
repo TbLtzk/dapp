@@ -10,6 +10,7 @@ import { CONTRACT_TYPES } from 'constants/contracts'
 
 function SlashingS2 ({ register, errors, setValue }) {
   const formData = useSelector(formObject)
+
   switch (formData.first) {
     case CONTRACT_TYPES.rootNodeSlashing:
       return (

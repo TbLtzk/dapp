@@ -8,7 +8,7 @@ import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
 
 import { castObjection, proposeDecision, proposerRemark } from './constants'
 
-function CreateStep1 ({ activeTab, register, errors, setValue }) {
+function CreateStep1 ({ activeTab, register, errors, setValue, trigger }) {
   const formData = useSelector(formObject)
 
   switch (activeTab) {
@@ -22,6 +22,7 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
                         inputsObj={castObjection.inputUpObj}
                         register={register}
                         errors={errors}
+                        trigger={trigger}
                         setValue={setValue}
                     />
                 </div>
@@ -36,6 +37,7 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
                         inputsObj={proposerRemark.inputUpObj}
                         register={register}
                         errors={errors}
+                        trigger={trigger}
                         setValue={setValue}
                     />
                 </div>
@@ -49,6 +51,7 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
                         inputArr={proposeDecision.inputPlaceholder}
                         inputsObj={proposeDecision.inputObj}
                         register={register}
+                        trigger={trigger}
                         errors={errors}
                         setValue={setValue}
                     />
@@ -58,6 +61,7 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
                         inputsObj={proposeDecision.inputObjTwo}
                         register={register}
                         errors={errors}
+                        trigger={trigger}
                         setValue={setValue}
                     />
                     <h2>{proposeDecision.radioLabel}</h2>

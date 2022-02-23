@@ -188,6 +188,7 @@ function SlashingObjection ({ contract, proposalId, objData }) {
                     <ListDetails list={decisionData} />
                 </div>
             </div>
+
             <ModalSlashingObjection
                 contract={contract}
                 proposalId={proposalId}

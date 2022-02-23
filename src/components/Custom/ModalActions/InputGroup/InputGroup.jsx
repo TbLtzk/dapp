@@ -4,7 +4,7 @@ import FormInput from 'components/Base/Form/FormInput'
 import { isAddress } from 'func/useful'
 import { from1to100Regex, hashRegex, linkRegex } from 'constants/regex'
 
-function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type, setValue }) {
+function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type, setValue, trigger = () => {} }) {
   const getRefType = useCallback((inputType) => {
     switch (inputType) {
       case fields.externalLink: {
@@ -35,7 +35,6 @@ function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type, se
         return register({
           required: 'Field is required!',
           validate: (value) => {
-            console.log(value)
             if (Number(value) > 100) {
               setValue(fields.value, '100')
               return true
@@ -66,6 +65,7 @@ function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type, se
                             palette="dark"
                             min={min}
                             max={max}
+                            onChange={() => trigger(nameField)}
                             type={type}
                             placeholder={label}
                             name={nameField}

@@ -12,7 +12,6 @@ import { accountBalance } from 'store/q-vault/selectors'
 import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper'
 import { WARNING_MAX_NUMBER } from 'constants/statuses'
 import { BN, isAddress } from 'func/useful'
-import { numberRegex } from 'constants/regex'
 
 export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
   const dispatch = useDispatch()
@@ -99,7 +98,6 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
   }
 
   function setDepositAmount (formData) {
-    console.log(formData)
     dispatch(setDepositCall(address, formData.amount))
     setDepositValue('amount', null)
   }
@@ -114,6 +112,8 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
     dispatch(setWithdrawCall(address, formData.amount))
     setWithdrawValue('amount', null)
   }
+
+  console.log('true')
 
   return (
         <CustomBlock>
@@ -132,7 +132,10 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
                     onChange={handleChangeDepositAmount}
                     ref={registerDeposit({
                       required: 'Field is required!',
-                      validate: (value) => (value.match(numberRegex) ? true : 'Amount not valid')
+                      pattern: {
+                        value: /[0-9.]/gim,
+                        message: 'Invalid amount'
+                      }
                     })}
                     valid={errorsDeposit.amount?.message}
                 />
@@ -150,7 +153,11 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
                     onMaxClick={handleWithdrawMax}
                     onClick={() => clearWithdrawErrors('amount')}
                     ref={registerWithdraw({
-                      required: 'Field is required!'
+                      required: 'Field is required!',
+                      pattern: {
+                        value: /[0-9.]/gim,
+                        message: 'Invalid amount'
+                      }
                     })}
                     valid={errorsWithdraw.amount?.message}
                 />
@@ -185,7 +192,11 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
                     onMaxClick={handleSendMax}
                     onClick={() => clearSendErrors('amount')}
                     ref={registerSend({
-                      required: 'Field is required!'
+                      required: 'Field is required!',
+                      pattern: {
+                        value: /[0-9.]/gim,
+                        message: 'Invalid amount'
+                      }
                     })}
                     valid={errorsSend.amount?.message}
                 />
