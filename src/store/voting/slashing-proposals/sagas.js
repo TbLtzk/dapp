@@ -9,8 +9,8 @@ import { creationSlashingContractsObjArray } from 'contracts/helpers/voting-help
 import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-helper'
 
 import ErrorHandler from 'func/ErrorHandler'
-import { CONTRACTS_NAMES } from 'constants/contracts'
 import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/useful'
+import { escrowTypes } from 'pages/UserPages/Proposals/components/ProposalsList/components/SlashingObjection/ModalSlashingObjection/CreateStep1/constants'
 
 let lastActiveBlock
 
@@ -57,11 +57,8 @@ function * onEscrowCastObjectionGenerator ({ data, contractName, proposalId }) {
   try {
     yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
-    const SlashingEscrowContractName =
-      contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-        ? CONTRACTS_NAMES.validatorsSlashingEscrow
-        : CONTRACTS_NAMES.rootNodesSlashingEscrow
-    const contract = new SlashingEscrow(SlashingEscrowContractName)
+
+    const contract = new SlashingEscrow(contractName)
     yield contract.castObjection(proposalId, data['external-link'], userAddress)
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
@@ -75,11 +72,7 @@ function * onEscrowProposeDecisionGenerator ({ data, contractName, proposalId })
   try {
     yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
-    const SlashingEscrowContractName =
-      contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-        ? CONTRACTS_NAMES.validatorsSlashingEscrow
-        : CONTRACTS_NAMES.rootNodesSlashingEscrow
-    const contract = new SlashingEscrow(SlashingEscrowContractName)
+    const contract = new SlashingEscrow(contractName)
     const notAppealed = data['target-slashing-appeal'] === 'yes'
     yield contract.proposeDecision(proposalId, data['%-value'], notAppealed, data['external-link'], userAddress)
   } catch (error) {
@@ -94,11 +87,7 @@ function * onEscrowProposerRemarkGenerator ({ data, contractName, proposalId }) 
   try {
     yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
-    const SlashingEscrowContractName =
-      contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-        ? CONTRACTS_NAMES.validatorsSlashingEscrow
-        : CONTRACTS_NAMES.rootNodesSlashingEscrow
-    const contract = new SlashingEscrow(SlashingEscrowContractName)
+    const contract = new SlashingEscrow(contractName)
     const appealConfirmed = data.appealConfirmed === 'yes'
     yield contract.setProposerRemark(proposalId, data['proposer-remark'], appealConfirmed, userAddress)
   } catch (error) {
@@ -109,34 +98,26 @@ function * onEscrowProposerRemarkGenerator ({ data, contractName, proposalId }) 
   }
 }
 
-function * onEscrowRecallProposeDecisionGenerator ({ contractName, proposalId }) {
+function * setEscrowActionGenerator ({ contractName, proposalId, escrowType }) {
   try {
     yield put(setTransactionCounter(1))
     const { userAddress } = yield select((state) => state.userInf)
-    const SlashingEscrowContractName =
-      contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-        ? CONTRACTS_NAMES.validatorsSlashingEscrow
-        : CONTRACTS_NAMES.rootNodesSlashingEscrow
-    const contract = new SlashingEscrow(SlashingEscrowContractName)
-    yield contract.recallProposedDecision(proposalId, userAddress)
-  } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
-  }
-}
+    const contract = new SlashingEscrow(contractName)
 
-function * onEscrowConfirmProposeDecisionGenerator ({ contractName, proposalId }) {
-  try {
-    yield put(setTransactionCounter(1))
-    const { userAddress } = yield select((state) => state.userInf)
-    const SlashingEscrowContractName =
-      contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-        ? CONTRACTS_NAMES.validatorsSlashingEscrow
-        : CONTRACTS_NAMES.rootNodesSlashingEscrow
-    const contract = new SlashingEscrow(SlashingEscrowContractName)
-    yield contract.confirmDecision(proposalId, userAddress)
+    switch (escrowType) {
+      case escrowTypes.confirm: {
+        yield contract.confirmDecision(proposalId, userAddress)
+        break
+      }
+      case escrowTypes.recall: {
+        yield contract.recallProposedDecision(proposalId, userAddress)
+        break
+      }
+      case escrowTypes.execute: {
+        yield contract.execute(proposalId, userAddress)
+        break
+      }
+    }
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
     yield put(setErrorMessage(errorMsg))
@@ -148,8 +129,8 @@ function * onEscrowConfirmProposeDecisionGenerator ({ contractName, proposalId }
 export default [
   takeEvery(actionTypes.ESCROW_CAST_OBJECTION, onEscrowCastObjectionGenerator),
   takeEvery(actionTypes.ESCROW_PROPOSE_DECISION, onEscrowProposeDecisionGenerator),
-  takeEvery(actionTypes.ESCROW_RECALL_PROPOSE_DECISION, onEscrowRecallProposeDecisionGenerator),
-  takeEvery(actionTypes.ESCROW_CONFIRM_DECISION, onEscrowConfirmProposeDecisionGenerator),
   takeEvery(actionTypes.ESCROW_PROPOSER_REMARK, onEscrowProposerRemarkGenerator),
-  takeEvery(actionTypes.GET_SLASHING_PROPOSALS, getSlashingProposalsGenerator)
+  takeEvery(actionTypes.GET_SLASHING_PROPOSALS, getSlashingProposalsGenerator),
+
+  takeEvery(actionTypes.SET_ESCROW_ACTION, setEscrowActionGenerator)
 ]

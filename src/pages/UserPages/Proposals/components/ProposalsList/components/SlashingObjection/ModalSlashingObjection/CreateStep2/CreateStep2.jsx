@@ -1,9 +1,10 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 
 import { useSelector } from 'react-redux'
 import { formObject } from 'store/modal-handler/selectors'
+import { slashingTypes } from '../CreateStep1/constants'
 
-function CreateStep2 ({ activeTab, register, errors }) {
+function CreateStep2 ({ activeTab }) {
   const formData = useSelector(formObject)
 
   const showCommonData = (children) => (
@@ -15,39 +16,33 @@ function CreateStep2 ({ activeTab, register, errors }) {
         </div>
   )
 
-  const contentSwitcher = useCallback(() => {
-    switch (activeTab) {
-      case 'cast-objection':
-        return showCommonData(
-                    <>
-                        <h5>External Link</h5>
-                        <p>{formData['external-link']}</p>
-                    </>
-        )
-      case 'proposer-remark':
-        return showCommonData(
-                    <>
-                        <h5>Proposer Remark</h5>
-                        <p>{formData['proposer-remark']}</p>
-                    </>
-        )
-      case 'propose-decision':
-        return showCommonData(
-                    <>
-                        <h5>External Link</h5>
-                        <p>{formData['external-link']}</p>
-                        <h5>Adjusted Percentage for Slashing</h5>
-                        <p>{formData['%-value']}</p>
-                        <h5>Did the Target of the Slashing Neglect a Formal Appeal?</h5>
-                        <p>{formData['target-slashing-appeal']}</p>
-                    </>
-        )
-      default:
-        return null
-    }
-  }, [activeTab, register, errors])
-
-  return <>{contentSwitcher()}</>
+  switch (activeTab) {
+    case slashingTypes.castObjection:
+      return showCommonData(
+                <>
+                    <h5>External Link</h5>
+                    <p>{formData['external-link']}</p>
+                </>
+      )
+    case slashingTypes.proposerRemark:
+      return showCommonData(
+                <>
+                    <h5>Proposer Remark</h5>
+                    <p>{formData['proposer-remark']}</p>
+                </>
+      )
+    case slashingTypes.proposeDecision:
+      return showCommonData(
+                <>
+                    <h5>External Link</h5>
+                    <p>{formData['external-link']}</p>
+                    <h5>Adjusted Percentage for Slashing</h5>
+                    <p>{formData['%-value']}</p>
+                    <h5>Did the Target of the Slashing Neglect a Formal Appeal?</h5>
+                    <p>{formData['target-slashing-appeal']}</p>
+                </>
+      )
+  }
 }
 
 export default CreateStep2

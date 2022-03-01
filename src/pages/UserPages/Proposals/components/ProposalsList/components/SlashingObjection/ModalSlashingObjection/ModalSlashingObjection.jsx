@@ -17,6 +17,8 @@ import CreateStep2 from './CreateStep2'
 import { ProgressBar } from 'react-bootstrap'
 import { setVoteProposalObj } from 'store/voting/proposals/action-creators'
 import { fields } from 'constants/fieldsNaming'
+import { slashingTypes } from './CreateStep1/constants'
+import { CONTRACTS_NAMES } from 'constants/contracts'
 
 function ModalSlashingObjection ({ modalShow, onHide, activeTab, contract, proposalId }) {
   const dispatch = useDispatch()
@@ -25,7 +27,12 @@ function ModalSlashingObjection ({ modalShow, onHide, activeTab, contract, propo
   const stepLimit = useSelector(createdStepsLimit)
   const stepCounter = useSelector(stepCounterModal)
 
-  const { register, errors, handleSubmit, setValue, trigger } = useForm()
+  const contractName =
+        contract === CONTRACTS_NAMES.validatorsSlashingVoting
+          ? CONTRACTS_NAMES.validatorsSlashingEscrow
+          : CONTRACTS_NAMES.rootNodesSlashingEscrow
+
+  const { register, errors, handleSubmit, setValue } = useForm({ mode: 'onChange' })
 
   useEffect(() => {
     Object.values(fields).forEach((value) => {
@@ -40,14 +47,21 @@ function ModalSlashingObjection ({ modalShow, onHide, activeTab, contract, propo
     if (stepCounter < stepLimit) {
       dispatch(setStepCounter(stepCounter + 1))
     } else {
-      if (activeTab === 'cast-objection') {
-        dispatch(onEscrowCastObjection({ ...formData, ...data }, contract, proposalId))
-      } else if (activeTab === 'propose-decision') {
-        dispatch(onEscrowProposeDecision({ ...formData, ...data }, contract, proposalId))
-      } else if (activeTab === 'proposer-remark') {
-        dispatch(onEscrowProposerRemark({ ...formData, ...data }, contract, proposalId))
+      dispatch(setVoteProposalObj({ contractName, id: proposalId }))
+      switch (activeTab) {
+        case slashingTypes.castObjection: {
+          dispatch(onEscrowCastObjection({ ...formData, ...data }, contractName, proposalId))
+          break
+        }
+        case slashingTypes.proposeDecision: {
+          dispatch(onEscrowProposeDecision({ ...formData, ...data }, contractName, proposalId))
+          break
+        }
+        case slashingTypes.proposerRemark: {
+          dispatch(onEscrowProposerRemark({ ...formData, ...data }, contractName, proposalId))
+          break
+        }
       }
-      dispatch(setVoteProposalObj({ contract, id: proposalId }))
       onHide()
     }
   }
@@ -59,15 +73,7 @@ function ModalSlashingObjection ({ modalShow, onHide, activeTab, contract, propo
   function switchContentDependsOnType () {
     switch (stepCounter) {
       case 1:
-        return (
-                    <CreateStep1
-                        activeTab={activeTab}
-                        register={register}
-                        trigger={trigger}
-                        errors={errors}
-                        setValue={setValue}
-                    />
-        )
+        return <CreateStep1 activeTab={activeTab} register={register} errors={errors} setValue={setValue} />
       case 2:
         return <CreateStep2 activeTab={activeTab} register={register} errors={errors} />
 

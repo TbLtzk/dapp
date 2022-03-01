@@ -17,7 +17,8 @@ function Button ({
   handleButton,
   icon,
   iconFontSize,
-  isIconPositionRight
+  isIconPositionRight,
+  whiteSpace
 }) {
   const currentTheme = useSelector(theme)
 
@@ -29,6 +30,7 @@ function Button ({
             width={width}
             position={position}
             right={right}
+            whiteSpace={whiteSpace}
             top={top}
             margin={margin}
             onClick={handleButton}

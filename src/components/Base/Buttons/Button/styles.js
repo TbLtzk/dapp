@@ -13,9 +13,10 @@ export const ButtonCustom = styled(Button)`
   padding: 7px 11px;
   text-overflow: ellipsis;
   overflow: hidden;
-  white-space: nowrap;
+  white-space: ${p => !p.whiteSpace ? 'nowrap' : p.whiteSpace};
   font-size: 13px;
   line-height: 18px;
+  height: 100%; //? 
 
   border-color: ${(props) => {
     if (props.palette === 'dark') {
