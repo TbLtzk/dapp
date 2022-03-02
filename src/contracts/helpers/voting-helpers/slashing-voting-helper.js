@@ -5,6 +5,8 @@ import { getStatusTransformation, getPercentageFormat, transformToPercentage } f
 import { fromWei } from 'func/balance'
 import { fromSolDateFormattingT1 } from 'func/date'
 import { CONTRACTS_NAMES } from 'constants/contracts'
+import { address } from 'components/Custom/LoadingMetaMask/LoadingMetaMask'
+import { getRootNodesInstance } from 'contracts/contract-instance'
 
 export default class SlashingVoting extends VotingService {
   async getProposalAdditionalData (promiseRes, id) {
@@ -14,7 +16,8 @@ export default class SlashingVoting extends VotingService {
     const objEscrow = {
       objEscrow: {
         objection: {},
-        decision: {}
+        decision: {},
+        buttons: {}
       }
     }
 
@@ -34,7 +37,7 @@ export default class SlashingVoting extends VotingService {
         votesAgainst: Number(objRes.votesAgainst)
       }
     }
-
+    const rootNodesInstance = await getRootNodesInstance()
     objRes.type = isValidatorSlashingMode ? 'validator slashing' : 'root nodes slashing'
     objStats = await this.getProposalStatsData(id)
     if (promiseRes.status === '5') {
@@ -62,27 +65,33 @@ export default class SlashingVoting extends VotingService {
       objEscrow.objEscrow.decision.notAppealed = escrowArbitrationInfo.decision.notAppealed
       objEscrow.objEscrow.decision.percentage = transformToPercentage(escrowArbitrationInfo.decision.percentage)
       objEscrow.objEscrow.decision.proposer = escrowArbitrationInfo.decision.proposer
+
       objEscrow.objEscrow.decision.confirmationCount = escrowDecisionStats.confirmationCount
       objEscrow.objEscrow.decision.currentConfirmationPercentage = transformToPercentage(
         escrowDecisionStats.currentConfirmationPercentage
       )
       objEscrow.objEscrow.decision.requiredConfirmations = escrowDecisionStats.requiredConfirmations
+
+      objEscrow.objEscrow.buttons.voteProposeDecision = await rootNodesInstance.isMember(address)
+      objEscrow.objEscrow.buttons.recallDecision = escrowArbitrationInfo.decision.proposer === address
     }
 
     return { ...objRes, ...objStats, ...objEscrow }
   }
 
   getProposalData (promiseRes, id, promiseStatus) {
-    const objRes = {}
-    objRes.id = id
-    objRes.contract = this.contractName
-    objRes.vetoEndTime = promiseRes.base.params.vetoEndTime
-    objRes.votingEndTime = promiseRes.base.params.votingEndTime
-    objRes.status = getStatusTransformation(promiseStatus)
-    const isValidatorSlashingMode = this.contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-    objRes.title = isValidatorSlashingMode ? 'Validator slashing proposals' : 'Root Nodes slashing proposals'
+    const info = {}
+    info.id = id
+    info.contract = this.contractName
+    info.vetoEndTime = promiseRes.base.params.vetoEndTime
+    info.votingEndTime = promiseRes.base.params.votingEndTime
+    info.status = getStatusTransformation(promiseStatus)
+    info.title =
+      this.contractName === CONTRACTS_NAMES.validatorsSlashingVoting
+        ? 'Validator slashing proposals'
+        : 'Root Nodes slashing proposals'
 
-    return objRes
+    return info
   }
 
   async createProposal (data, userAddress) {

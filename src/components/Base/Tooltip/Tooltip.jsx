@@ -2,7 +2,7 @@ import React from 'react'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { ChildrenWrapper } from './styles'
 
-function Tooltip ({ additionalInfo, children, disabled, copy, placement = 'top' }) {
+function Tooltip ({ additionalInfo, children, disabled, copy, shown, placement = 'top' }) {
   return disabled
     ? (
         <div>{children}</div>
@@ -18,7 +18,7 @@ function Tooltip ({ additionalInfo, children, disabled, copy, placement = 'top' 
             }
         >
             <ChildrenWrapper>
-                {copy
+                {copy || shown
                   ? (
                       children
                     )

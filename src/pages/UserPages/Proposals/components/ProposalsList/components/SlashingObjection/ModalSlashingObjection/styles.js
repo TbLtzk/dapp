@@ -15,14 +15,19 @@ export const SlashingObjectionContainer = styled.div`
     grid-template-columns: 1fr 1fr;
     margin-bottom: 20px;
   }
-  @media screen and (max-width: 1150px) {
+  @media screen and (max-width: 1200px) {
     .list-card__tow-colm {
       grid-template-columns: 1fr;
     }
     .action__buttons {
-      float: left;
+      float: none;
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 50%;
+
       div {
-        float: left;
+        display: grid;
+        grid-template-columns: 1fr;
       }
     }
   }

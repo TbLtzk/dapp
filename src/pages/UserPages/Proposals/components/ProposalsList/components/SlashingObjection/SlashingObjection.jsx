@@ -9,6 +9,12 @@ import Button from 'components/Base/Buttons/Button'
 import { escrowTypes, slashingTypes } from './ModalSlashingObjection/CreateStep1/constants'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 import { setVoteProposalObj } from 'store/voting/proposals/action-creators'
+import Tooltip from 'components/Base/Tooltip'
+
+const INFO = {
+  castObjection: 'Slashing proposer must confirm that slashed party has formally appealed at court',
+  notRootNode: 'User is not a Root Node'
+}
 
 function SlashingObjection ({ contract, proposalId, objData }) {
   const dispatch = useDispatch()
@@ -86,7 +92,6 @@ function SlashingObjection ({ contract, proposalId, objData }) {
     const contractName = CONTRACTS_NAMES.validatorsSlashingVoting
       ? CONTRACTS_NAMES.validatorsSlashingEscrow
       : CONTRACTS_NAMES.rootNodesSlashingEscrow
-
     dispatch(setEscrowAction(contractName, proposalId, escrowType))
     dispatch(setVoteProposalObj({ contract, id: proposalId }))
   }
@@ -121,44 +126,66 @@ function SlashingObjection ({ contract, proposalId, objData }) {
 
             <div className="action__buttons">
                 <div>
-                    <Button
-                        margin="10px 10px 10px 10px"
-                        handleButton={() => onShowModal(slashingTypes.castObjection)}
-                        title="Cast Objection"
-                    />
-                    <Button
-                        margin="10px 10px 10px 10px"
-                        whiteSpace="normal"
-                        handleButton={() => onShowModal(slashingTypes.proposerRemark)}
-                        width="120px"
-                        title="Confirm appeal"
-                    />
-
-                    <Button
-                        margin="10px 10px 10px 10px"
-                        handleButton={() => onShowModal(slashingTypes.proposeDecision)}
-                        width="140px"
-                        title="Propose Decision"
-                    />
+                    <Tooltip
+                        shown={objData.buttons.voteProposeDecision}
+                        disabled={objData.buttons.voteProposeDecision}
+                        additionalInfo={INFO.notRootNode}
+                    >
+                        <Button
+                            margin="10px 10px 10px 10px"
+                            handleButton={() => onShowModal(slashingTypes.proposeDecision)}
+                            width="175px"
+                            title="Propose Decision"
+                        />
+                    </Tooltip>
+                    <Tooltip shown={true} additionalInfo={INFO.castObjection}>
+                        <Button
+                            margin="10px 10px 10px 10px"
+                            width="150px"
+                            handleButton={() => onShowModal(slashingTypes.castObjection)}
+                            title="Cast Objection"
+                        />
+                    </Tooltip>
+                    <Tooltip disabled={true}>
+                        <Button
+                            margin="10px 10px 10px 10px"
+                            handleButton={() => onShowModal(slashingTypes.proposerRemark)}
+                            width="140px"
+                            title="Confirm appeal"
+                        />
+                    </Tooltip>
                 </div>
                 <div>
-                    <Button
-                        margin="10px 10px 10px 10px"
-                        handleButton={() => onEscrowAction(escrowTypes.confirm)}
-                        title="Vote to confirm Decision"
-                    />
-                    <Button
-                        margin="10px 10px 10px 10px"
-                        handleButton={() => onEscrowAction(escrowTypes.recall)}
-                        width="120px"
-                        title="Recall Decision"
-                    />
-                    <Button
-                        margin="10px 10px 10px 10px"
-                        width="140px"
-                        handleButton={() => onEscrowAction(escrowTypes.execute)}
-                        title="Execute Decision"
-                    />
+                    <Tooltip
+                        shown={objData.buttons.voteProposeDecision}
+                        disabled={objData.buttons.voteProposeDecision}
+                        additionalInfo={INFO.notRootNode}
+                    >
+                        <Button
+                            margin="10px 10px 10px 10px"
+                            handleButton={() => onEscrowAction(escrowTypes.confirm)}
+                            width="175px"
+                            title="Vote to confirm Decision"
+                        />
+                    </Tooltip>
+
+                    <Tooltip disabled={true}>
+                        <Button
+                            margin="10px 10px 10px 10px"
+                            handleButton={() => onEscrowAction(escrowTypes.recall)}
+                            width="150px"
+                            title="Recall Decision"
+                        />
+                    </Tooltip>
+
+                    <Tooltip disabled={true}>
+                        <Button
+                            margin="10px 10px 10px 10px"
+                            width="140px"
+                            handleButton={() => onEscrowAction(escrowTypes.execute)}
+                            title="Execute Decision"
+                        />
+                    </Tooltip>
                 </div>
             </div>
 

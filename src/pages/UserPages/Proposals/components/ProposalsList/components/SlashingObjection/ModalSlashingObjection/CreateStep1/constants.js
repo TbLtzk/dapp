@@ -20,7 +20,7 @@ export const proposeDecision = {
 
 export const proposerRemark = {
   subtitleOne: 'As the slashing objection proposer please provide a valid reason.',
-  subtitleTwo: 'Please provide a remark about the objection. Appeal Initiated by Slashing Candidate',
+  subtitleTwo: 'Please provide a remark about the objection.',
   inputPlaceholderUp: ['Proposer remark'],
   inputUpObj: { 'proposer-remark': '' }
 }
