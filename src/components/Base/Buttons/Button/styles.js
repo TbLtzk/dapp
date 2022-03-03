@@ -1,7 +1,6 @@
 import styled from 'styled-components'
-import { Button } from 'react-bootstrap'
 
-export const ButtonCustom = styled(Button)`
+export const ButtonCustom = styled.button`
   align-items: center;
   width: ${(props) => (!props.width ? 'auto' : props.width)};
   max-width: ${(props) => (!props.width ? 'auto' : props.width)};
@@ -16,6 +15,9 @@ export const ButtonCustom = styled(Button)`
   white-space: nowrap;
   font-size: 13px;
   line-height: 18px;
+  transition: 0.2s;
+  border: 2px solid black;
+  outline: none;
 
   border-color: ${(props) => {
     if (props.palette === 'dark') {

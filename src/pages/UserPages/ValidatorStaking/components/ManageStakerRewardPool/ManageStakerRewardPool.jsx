@@ -20,7 +20,7 @@ function ManageStakerRewardPool () {
   return (
         <>
             <Tooltip
-                placement="left"
+                position="left"
                 additionalInfo="Only available for Validators"
                 disabled={compoundRateKeeperExists}
             >

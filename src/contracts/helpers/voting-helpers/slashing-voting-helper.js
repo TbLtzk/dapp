@@ -17,7 +17,7 @@ export default class SlashingVoting extends VotingService {
       objEscrow: {
         objection: {},
         decision: {},
-        buttons: {}
+        types: {}
       }
     }
 
@@ -72,8 +72,12 @@ export default class SlashingVoting extends VotingService {
       )
       objEscrow.objEscrow.decision.requiredConfirmations = escrowDecisionStats.requiredConfirmations
 
-      objEscrow.objEscrow.buttons.voteProposeDecision = await rootNodesInstance.isMember(address)
-      objEscrow.objEscrow.buttons.recallDecision = escrowArbitrationInfo.decision.proposer === address
+      objEscrow.objEscrow.types.objection = promiseRes.candidate === address
+      objEscrow.objEscrow.types.isRootNode = await rootNodesInstance.isMember(address)
+
+      objEscrow.objEscrow.types.recallDecision = escrowArbitrationInfo.decision.proposer.startsWith('0x00')
+        ? false
+        : escrowArbitrationInfo.decision.proposer === address
     }
 
     return { ...objRes, ...objStats, ...objEscrow }

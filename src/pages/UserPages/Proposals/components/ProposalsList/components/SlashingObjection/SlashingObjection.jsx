@@ -12,7 +12,16 @@ import { setVoteProposalObj } from 'store/voting/proposals/action-creators'
 import Tooltip from 'components/Base/Tooltip'
 
 const INFO = {
-  castObjection: 'Slashing proposer must confirm that slashed party has formally appealed at court',
+  castObjection: 'The slashed party can object to this executed slashing proposal and seek for an arbitral award.',
+  confirmApeal:
+        'Slashing proposer confirms that a slashed node has initiated a court appeal to receive an arbitral award.',
+  proposeDecision:
+        'Any Root Node can propose a decision that is based on an arbitral award or the explicit lack of such.',
+  voteToConfirmDecision: 'Any Root Node is obliged to vote and confirm proposed decision.',
+  recallDecision: 'The proposer of the current proposed decision may take back the decision from voting.',
+  executeDecision:
+        'Any Root Node can execute a Decision, clearing the escrow and distributing slashed amounts according final confirmed decision.',
+
   notRootNode: 'User is not a Root Node'
 }
 
@@ -108,6 +117,11 @@ function SlashingObjection ({ contract, proposalId, objData }) {
     setModalShow(false)
     dispatch(setCreateObj({}))
   }
+  const { isRootNode, recallDecision, objection } = objData.types
+
+  const voteToConfirmDecitionButton = isRootNode ? INFO.voteToConfirmDecision : INFO.notRootNode
+  const executeDecisionButton = isRootNode ? INFO.executeDecision : INFO.notRootNode
+  const proposeDecisionButton = isRootNode ? INFO.proposeDecision : INFO.notRootNode
 
   return (
         <SlashingObjectionContainer>
@@ -123,45 +137,52 @@ function SlashingObjection ({ contract, proposalId, objData }) {
                     <ListDetails list={decisionData} />
                 </div>
             </div>
+            <div className="list-card__line" />
 
             <div className="action__buttons">
                 <div>
-                    <Tooltip
-                        shown={objData.buttons.voteProposeDecision}
-                        disabled={objData.buttons.voteProposeDecision}
-                        additionalInfo={INFO.notRootNode}
-                    >
+                    <Tooltip shown={true} additionalInfo={INFO.castObjection}>
                         <Button
+                            disabled={!objection}
+                            margin="10px 10px 10px 10px"
+                            width="175px"
+                            handleButton={() => onShowModal(slashingTypes.castObjection)}
+                            title="Cast Objection"
+                        />
+                    </Tooltip>
+
+                    <Tooltip shown={true} additionalInfo={INFO.confirmApeal}>
+                        <Button
+                            margin="10px 10px 10px 10px"
+                            handleButton={() => onShowModal(slashingTypes.proposerRemark)}
+                            width="175px"
+                            title="Confirm appeal"
+                        />
+                    </Tooltip>
+
+                    <Tooltip shown={true} additionalInfo={proposeDecisionButton}>
+                        <Button
+                            disabled={!isRootNode}
                             margin="10px 10px 10px 10px"
                             handleButton={() => onShowModal(slashingTypes.proposeDecision)}
                             width="175px"
                             title="Propose Decision"
                         />
                     </Tooltip>
-                    <Tooltip shown={true} additionalInfo={INFO.castObjection}>
-                        <Button
-                            margin="10px 10px 10px 10px"
-                            width="150px"
-                            handleButton={() => onShowModal(slashingTypes.castObjection)}
-                            title="Cast Objection"
-                        />
-                    </Tooltip>
-                    <Tooltip disabled={true}>
-                        <Button
-                            margin="10px 10px 10px 10px"
-                            handleButton={() => onShowModal(slashingTypes.proposerRemark)}
-                            width="140px"
-                            title="Confirm appeal"
-                        />
-                    </Tooltip>
                 </div>
                 <div>
-                    <Tooltip
-                        shown={objData.buttons.voteProposeDecision}
-                        disabled={objData.buttons.voteProposeDecision}
-                        additionalInfo={INFO.notRootNode}
-                    >
+                    <Tooltip shown={true} additionalInfo={INFO.recallDecision}>
                         <Button
+                            disabled={!recallDecision}
+                            margin="10px 10px 10px 10px"
+                            handleButton={() => onEscrowAction(escrowTypes.recall)}
+                            width="175px"
+                            title="Recall Decision"
+                        />
+                    </Tooltip>
+                    <Tooltip shown={true} additionalInfo={voteToConfirmDecitionButton}>
+                        <Button
+                            disabled={!isRootNode}
                             margin="10px 10px 10px 10px"
                             handleButton={() => onEscrowAction(escrowTypes.confirm)}
                             width="175px"
@@ -169,19 +190,11 @@ function SlashingObjection ({ contract, proposalId, objData }) {
                         />
                     </Tooltip>
 
-                    <Tooltip disabled={true}>
+                    <Tooltip shown={true} additionalInfo={executeDecisionButton}>
                         <Button
+                            disabled={!isRootNode}
                             margin="10px 10px 10px 10px"
-                            handleButton={() => onEscrowAction(escrowTypes.recall)}
-                            width="150px"
-                            title="Recall Decision"
-                        />
-                    </Tooltip>
-
-                    <Tooltip disabled={true}>
-                        <Button
-                            margin="10px 10px 10px 10px"
-                            width="140px"
+                            width="175px"
                             handleButton={() => onEscrowAction(escrowTypes.execute)}
                             title="Execute Decision"
                         />
