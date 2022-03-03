@@ -38,63 +38,49 @@ export default function LockCoin ({ maxQVaultVotingWeight }) {
     dispatch(setLockAmount(address, formData.amountQ))
     setLockMax('amountQ', null)
   }
-
   function unlockCoinL (formData) {
     dispatch(setUnlockAmount(address, formData.amountQ))
     setUnlockMax('amountQ', null)
   }
 
   return (
-    <CustomBlock>
-      <h1>Lock Your Q Tokens for Voting</h1>
-      <h5 style={{ marginBottom: '15px' }}>Participate in Q Governance with your Locked Amount</h5>
-      <h4>Increase Voting Weight by</h4>
-      <div className={'card__one-line-simple-form'}>
-        <FormInput
-          color={true}
-          min={0}
-          lbl={'Q'}
-          name="amountQ"
-          type="number"
-          placeholder="0.0"
-          onMaxClick={handleLockMax}
-          ref={reg1({ required: 'Field is required!' })}
-          valid={err1.amountQ?.message}
-        />
-        <Button
-          type="outline"
-          title="Increase"
-          width="90px"
-          handleButton={submit1(lockCoinL)}
-        />
-      </div>
+        <CustomBlock>
+            <h1>Lock Your Q Tokens for Voting</h1>
+            <h5 style={{ marginBottom: '15px' }}>Participate in Q Governance with your Locked Amount</h5>
+            <h4>Increase Voting Weight by</h4>
+            <div className={'card__one-line-simple-form'}>
+                <FormInput
+                    color={true}
+                    min={0}
+                    lbl={'Q'}
+                    name="amountQ"
+                    type="number"
+                    placeholder="0.0"
+                    onMaxClick={handleLockMax}
+                    ref={reg1({ required: 'Field is required!' })}
+                    valid={err1.amountQ?.message}
+                />
+                <Button type="outline" title="Increase" width="90px" handleButton={submit1(lockCoinL)} />
+            </div>
 
-      <h4>Reduce Voting Weight by</h4>
-      <div className={'card__one-line-simple-form'}>
-        <FormInput
-          color={true}
-          min={0}
-          name="amountQ"
-          type="number"
-          lbl={'Q'}
-          onMaxClick={handleUnlockMax}
-          placeholder="0.0"
-          ref={reg3({ required: 'Field is required!' })}
-          valid={err3.amountQ?.message}
-        />
-        <Button
-          type="outline"
-          title="Reduce"
-          width="90px"
-          handleButton={submit3(unlockCoinL)}
-        />
-      </div>
-      <div className="card__actions">
-        <ButtonLinkArrow
-          title="Go to Governance"
-          path="/q-governance"
-        />
-      </div>
-    </CustomBlock>
+            <h4>Reduce Voting Weight by</h4>
+            <div className={'card__one-line-simple-form'}>
+                <FormInput
+                    color={true}
+                    min={0}
+                    name="amountQ"
+                    type="number"
+                    lbl={'Q'}
+                    onMaxClick={handleUnlockMax}
+                    placeholder="0.0"
+                    ref={reg3({ required: 'Field is required!' })}
+                    valid={err3.amountQ?.message}
+                />
+                <Button type="outline" title="Reduce" width="90px" handleButton={submit3(unlockCoinL)} />
+            </div>
+            <div className="card__actions">
+                <ButtonLinkArrow title="Go to Governance" path="/q-governance" />
+            </div>
+        </CustomBlock>
   )
 }

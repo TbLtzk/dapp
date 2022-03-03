@@ -20,7 +20,19 @@ export const proposeDecision = {
 
 export const proposerRemark = {
   subtitleOne: 'As the slashing objection proposer please provide a valid reason.',
-  subtitleTwo: 'Please provide a remark about the objection',
+  subtitleTwo: 'Please provide a remark about the objection.',
   inputPlaceholderUp: ['Proposer remark'],
   inputUpObj: { 'proposer-remark': '' }
+}
+
+export const slashingTypes = {
+  castObjection: 'cast-objection',
+  proposerRemark: 'proposer-remark',
+  proposeDecision: 'propose-decision'
+}
+
+export const escrowTypes = {
+  confirm: 'confirm',
+  recall: 'recall',
+  execute: 'execute'
 }

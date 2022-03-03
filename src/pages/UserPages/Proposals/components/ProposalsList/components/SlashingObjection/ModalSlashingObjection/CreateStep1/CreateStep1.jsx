@@ -6,13 +6,13 @@ import { formObject } from 'store/modal-handler/selectors'
 import InputGroup from 'components/Custom/ModalActions/InputGroup'
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
 
-import { castObjection, proposeDecision, proposerRemark } from './constants'
+import { castObjection, proposeDecision, proposerRemark, slashingTypes } from './constants'
 
-function CreateStep1 ({ activeTab, register, errors, setValue, trigger }) {
+function CreateStep1 ({ activeTab, register, errors, setValue }) {
   const formData = useSelector(formObject)
 
   switch (activeTab) {
-    case 'cast-objection':
+    case slashingTypes.castObjection:
       return (
                 <div>
                     <h2>{castObjection.subtitleOne}</h2>
@@ -22,12 +22,11 @@ function CreateStep1 ({ activeTab, register, errors, setValue, trigger }) {
                         inputsObj={castObjection.inputUpObj}
                         register={register}
                         errors={errors}
-                        trigger={trigger}
                         setValue={setValue}
                     />
                 </div>
       )
-    case 'proposer-remark':
+    case slashingTypes.proposerRemark:
       return (
                 <div>
                     <h2>{proposerRemark.subtitleOne}</h2>
@@ -37,12 +36,11 @@ function CreateStep1 ({ activeTab, register, errors, setValue, trigger }) {
                         inputsObj={proposerRemark.inputUpObj}
                         register={register}
                         errors={errors}
-                        trigger={trigger}
                         setValue={setValue}
                     />
                 </div>
       )
-    case 'propose-decision':
+    case slashingTypes.proposeDecision:
       return (
                 <div>
                     <h2>{proposeDecision.subtitleOne}</h2>
@@ -51,7 +49,6 @@ function CreateStep1 ({ activeTab, register, errors, setValue, trigger }) {
                         inputArr={proposeDecision.inputPlaceholder}
                         inputsObj={proposeDecision.inputObj}
                         register={register}
-                        trigger={trigger}
                         errors={errors}
                         setValue={setValue}
                     />
@@ -61,7 +58,6 @@ function CreateStep1 ({ activeTab, register, errors, setValue, trigger }) {
                         inputsObj={proposeDecision.inputObjTwo}
                         register={register}
                         errors={errors}
-                        trigger={trigger}
                         setValue={setValue}
                     />
                     <h2>{proposeDecision.radioLabel}</h2>

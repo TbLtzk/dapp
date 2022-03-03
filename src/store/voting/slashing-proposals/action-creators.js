@@ -42,3 +42,10 @@ export const onEscrowConfirmDecision = (contractName, proposalId) => ({
   contractName,
   proposalId
 })
+
+export const setEscrowAction = (contractName, proposalId, escrowType) => ({
+  type: actionTypes.SET_ESCROW_ACTION,
+  contractName,
+  proposalId,
+  escrowType
+})

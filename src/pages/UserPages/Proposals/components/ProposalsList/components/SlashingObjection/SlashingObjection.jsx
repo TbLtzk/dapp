@@ -1,191 +1,204 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { STATUSES } from 'constants/statuses'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { setCreatedStepsLimit, setCreateObj, setStepCounter } from 'store/modal-handler/action-creators'
-import {
-  onEscrowRecallProposeDecision,
-  onEscrowConfirmDecision
-} from 'store/voting/slashing-proposals/action-creators'
-
-import { userAddressMetamask } from 'store/user-inf/selectors'
-
+import { setEscrowAction } from 'store/voting/slashing-proposals/action-creators'
 import ListDetails from './ListDetails'
 import ModalSlashingObjection from './ModalSlashingObjection'
-import LoadingSpinner from 'components/Base/LoadingSpinner'
-
-import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-helper'
-import { Dropdown, DropdownButton } from 'react-bootstrap'
-import { CONTRACTS_NAMES } from 'constants/contracts'
 import { SlashingObjectionContainer } from './ModalSlashingObjection/styles'
+import Button from 'components/Base/Buttons/Button'
+import { escrowTypes, slashingTypes } from './ModalSlashingObjection/CreateStep1/constants'
+import { CONTRACTS_NAMES } from 'constants/contracts'
+import { setVoteProposalObj } from 'store/voting/proposals/action-creators'
+import Tooltip from 'components/Base/Tooltip'
+
+const INFO = {
+  castObjection: 'The slashed party can object to this executed slashing proposal and seek for an arbitral award.',
+  confirmApeal:
+        'Slashing proposer confirms that a slashed node has initiated a court appeal to receive an arbitral award.',
+  proposeDecision:
+        'Any Root Node can propose a decision that is based on an arbitral award or the explicit lack of such.',
+  voteToConfirmDecision: 'Any Root Node is obliged to vote and confirm proposed decision.',
+  recallDecision: 'The proposer of the current proposed decision may take back the decision from voting.',
+  executeDecision:
+        'Any Root Node can execute a Decision, clearing the escrow and distributing slashed amounts according final confirmed decision.',
+
+  notRootNode: 'User is not a Root Node'
+}
 
 function SlashingObjection ({ contract, proposalId, objData }) {
-  const [modalShow, setModalShow] = useState(false)
-  const [isPending, setIsPending] = useState(false)
-  const [activeModal, setActiveModal] = useState('')
   const dispatch = useDispatch()
-  const userAddress = useSelector(userAddressMetamask)
 
-  const objectionData = useMemo(() => {
-    return [
-      {
-        title: 'Status',
-        value: objData.objection.statusObjection
-      },
-      {
-        title: 'Remark',
-        value: objData.objection.remark
-      },
-      {
-        title: 'Proposer Remark',
-        value: String(objData.objection.proposerRemark)
-      },
-      {
-        title: 'Candidate Appeal Confirmation',
-        value: String(objData.objection.appealConfirmed)
-      },
-      {
-        title: 'Executed',
-        value: String(objData.objection.executed)
-      },
-      {
-        title: 'Slashed Amount',
-        value: objData.objection.slashedAmount + ' Q'
-      },
-      {
-        title: 'Objection End Time',
-        value: objData.objection.objectionEndTime
-      },
-      {
-        title: 'Appeal End Time',
-        value: objData.objection.appealEndTime
-      }
-    ]
-  }, [objData?.objection])
+  const [modalShow, setModalShow] = useState(false)
+  const [activeModal, setActiveModal] = useState('')
 
-  const decisionData = useMemo(() => {
-    return [
-      {
-        title: 'Current Decision Proposer',
-        value: objData.decision.proposer
-      },
-      {
-        title: 'Current Decision End Time',
-        value: objData.decision.endDate
-      },
-      {
-        title: 'Remark',
-        value: objData.decision.externalReference
-      },
-      {
-        title: 'Adjusted Slashing Percentage',
-        value: objData.decision.percentage + ' %'
-      },
-      {
-        title: 'Current Confirmation Count',
-        value: objData.decision.confirmationCount
-      },
-      {
-        title: 'Required Confirmations',
-        value: objData.decision.requiredConfirmations
-      },
-      {
-        title: 'Current Confirmation Percentage',
-        value: objData.decision.currentConfirmationPercentage + ' %'
-      }
-    ]
-  }, [objData?.decision])
+  const objectionData = [
+    {
+      title: 'Status',
+      value: objData.objection.statusObjection
+    },
+    {
+      title: 'Remark',
+      value: objData.objection.remark
+    },
+    {
+      title: 'Proposer Remark',
+      value: String(objData.objection.proposerRemark)
+    },
+    {
+      title: 'Candidate Appeal Confirmation',
+      value: String(objData.objection.appealConfirmed)
+    },
+    {
+      title: 'Executed',
+      value: String(objData.objection.executed)
+    },
+    {
+      title: 'Slashed Amount',
+      value: objData.objection.slashedAmount + ' Q'
+    },
+    {
+      title: 'Objection End Time',
+      value: objData.objection.objectionEndTime
+    },
+    {
+      title: 'Appeal End Time',
+      value: objData.objection.appealEndTime
+    }
+  ]
 
-  const onRecallCurrentDecision = useCallback(() => {
-    dispatch(onEscrowRecallProposeDecision(contract, proposalId))
-  }, [dispatch])
+  const decisionData = [
+    {
+      title: 'Current Decision Proposer',
+      value: objData.decision.proposer
+    },
+    {
+      title: 'Current Decision End Time',
+      value: objData.decision.endDate
+    },
+    {
+      title: 'Remark',
+      value: objData.decision.externalReference
+    },
+    {
+      title: 'Adjusted Slashing Percentage',
+      value: objData.decision.percentage + ' %'
+    },
+    {
+      title: 'Current Confirmation Count',
+      value: objData.decision.confirmationCount
+    },
+    {
+      title: 'Required Confirmations',
+      value: objData.decision.requiredConfirmations
+    },
+    {
+      title: 'Current Confirmation Percentage',
+      value: objData.decision.currentConfirmationPercentage + ' %'
+    }
+  ]
 
-  const onConfirmCurrentDecision = useCallback(() => {
-    dispatch(onEscrowConfirmDecision(contract, proposalId))
-  }, [dispatch])
+  const onEscrowAction = (escrowType) => {
+    const contractName = CONTRACTS_NAMES.validatorsSlashingVoting
+      ? CONTRACTS_NAMES.validatorsSlashingEscrow
+      : CONTRACTS_NAMES.rootNodesSlashingEscrow
+    dispatch(setEscrowAction(contractName, proposalId, escrowType))
+    dispatch(setVoteProposalObj({ contract, id: proposalId }))
+  }
 
   const onShowModal = (activeTab) => {
+    setModalShow(true)
+    setActiveModal(activeTab)
     dispatch(setStepCounter(1))
     dispatch(setCreatedStepsLimit(2))
-    setActiveModal(activeTab)
-    setModalShow(true)
     dispatch(setCreateObj({ first: activeTab }))
   }
 
-  const onCastObjection = () => {
-    onShowModal('cast-objection')
+  const onHide = () => {
+    setModalShow(false)
+    dispatch(setCreateObj({}))
   }
+  const { isRootNode, recallDecision, objection } = objData.types
 
-  const onProposeDecision = () => {
-    onShowModal('propose-decision')
-  }
+  const voteToConfirmDecitionButton = isRootNode ? INFO.voteToConfirmDecision : INFO.notRootNode
+  const executeDecisionButton = isRootNode ? INFO.executeDecision : INFO.notRootNode
+  const proposeDecisionButton = isRootNode ? INFO.proposeDecision : INFO.notRootNode
 
-  const onConfirmAppeal = () => {
-    onShowModal('proposer-remark')
-  }
-
-  const executeDecision = async () => {
-    setIsPending(true)
-    const slashingEscrowContract = new SlashingEscrow(
-      contract === CONTRACTS_NAMES.validatorsSlashingVoting
-        ? CONTRACTS_NAMES.validatorsSlashingEscrow
-        : CONTRACTS_NAMES.rootNodesSlashingEscrow
-    )
-    await slashingEscrowContract.execute(proposalId, userAddress)
-    setIsPending(false)
-  }
-
-  const executeDecisionBTN = (
-        <Dropdown.Item onClick={executeDecision}>
-            {isPending
-              ? (
-                <LoadingSpinner />
-                )
-              : (
-                <>
-                    <i className={'mdi mdi-play btn-icon'} />
-                    Execute Decision
-                </>
-                )}
-        </Dropdown.Item>
-  )
   return (
         <SlashingObjectionContainer>
-            <div>
-                <h3>Slashing Objection</h3>
-                <div style={{ textAlign: 'right' }}>
-                    <DropdownButton menuAlign="right" title="Actions" id="dropdown-menu-align-right">
-                        <Dropdown.Item onClick={onCastObjection}>
-                            <i className={'mdi mdi-cast btn-icon'} />
-                            Cast Objection
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={onConfirmAppeal}>
-                            <i className={'mdi mdi-cast btn-icon'} />
-                            Confirm Appeal initiated by Slashing Candidate
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={onProposeDecision}>
-                            <i className={'mdi mdi-arrow-decision btn-icon'} />
-                            Propose Decision
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={onConfirmCurrentDecision}>
-                            <i className={'mdi mdi-vote btn-icon'} />
-                            Vote to confirm Decision
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={onRecallCurrentDecision}>
-                            <i className={'mdi mdi-repeat btn-icon'} />
-                            Recall Decision
-                        </Dropdown.Item>
-                        {objData.objection.statusObjection === STATUSES.decided && executeDecisionBTN}
-                    </DropdownButton>
-                </div>
-            </div>
+            <h3>Slashing Objection</h3>
+
             <div className="list-card__tow-colm">
                 <div>
-                    <h4>Objection</h4>
+                    <h6>Objection</h6>
                     <ListDetails list={objectionData} />
                 </div>
                 <div>
-                    <h4>Decision</h4>
+                    <h6>Decision</h6>
                     <ListDetails list={decisionData} />
+                </div>
+            </div>
+            <div className="list-card__line" />
+
+            <div className="action__buttons">
+                <div>
+                    <Tooltip shown={true} additionalInfo={INFO.castObjection}>
+                        <Button
+                            disabled={!objection}
+                            margin="10px 10px 10px 10px"
+                            width="175px"
+                            handleButton={() => onShowModal(slashingTypes.castObjection)}
+                            title="Cast Objection"
+                        />
+                    </Tooltip>
+
+                    <Tooltip shown={true} additionalInfo={INFO.confirmApeal}>
+                        <Button
+                            margin="10px 10px 10px 10px"
+                            handleButton={() => onShowModal(slashingTypes.proposerRemark)}
+                            width="175px"
+                            title="Confirm appeal"
+                        />
+                    </Tooltip>
+
+                    <Tooltip shown={true} additionalInfo={proposeDecisionButton}>
+                        <Button
+                            disabled={!isRootNode}
+                            margin="10px 10px 10px 10px"
+                            handleButton={() => onShowModal(slashingTypes.proposeDecision)}
+                            width="175px"
+                            title="Propose Decision"
+                        />
+                    </Tooltip>
+                </div>
+                <div>
+                    <Tooltip shown={true} additionalInfo={INFO.recallDecision}>
+                        <Button
+                            disabled={!recallDecision}
+                            margin="10px 10px 10px 10px"
+                            handleButton={() => onEscrowAction(escrowTypes.recall)}
+                            width="175px"
+                            title="Recall Decision"
+                        />
+                    </Tooltip>
+                    <Tooltip shown={true} additionalInfo={voteToConfirmDecitionButton}>
+                        <Button
+                            disabled={!isRootNode}
+                            margin="10px 10px 10px 10px"
+                            handleButton={() => onEscrowAction(escrowTypes.confirm)}
+                            width="175px"
+                            title="Vote to confirm Decision"
+                        />
+                    </Tooltip>
+
+                    <Tooltip shown={true} additionalInfo={executeDecisionButton}>
+                        <Button
+                            disabled={!isRootNode}
+                            margin="10px 10px 10px 10px"
+                            width="175px"
+                            handleButton={() => onEscrowAction(escrowTypes.execute)}
+                            title="Execute Decision"
+                        />
+                    </Tooltip>
                 </div>
             </div>
 
@@ -194,10 +207,7 @@ function SlashingObjection ({ contract, proposalId, objData }) {
                 proposalId={proposalId}
                 activeTab={activeModal}
                 modalShow={modalShow}
-                onHide={() => {
-                  setModalShow(false)
-                  dispatch(setCreateObj({}))
-                }}
+                onHide={onHide}
             />
         </SlashingObjectionContainer>
   )

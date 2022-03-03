@@ -18,6 +18,7 @@ function Button ({
   icon,
   iconFontSize,
   isIconPositionRight
+
 }) {
   const currentTheme = useSelector(theme)
 

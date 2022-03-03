@@ -113,8 +113,6 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
     setWithdrawValue('amount', null)
   }
 
-  console.log('true')
-
   return (
         <CustomBlock>
             <h1>Manage Balance</h1>

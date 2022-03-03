@@ -4,7 +4,7 @@ import FormInput from 'components/Base/Form/FormInput'
 import { isAddress } from 'func/useful'
 import { from1to100Regex, hashRegex, linkRegex } from 'constants/regex'
 
-function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type, setValue, trigger = () => {} }) {
+function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type, setValue }) {
   const getRefType = useCallback((inputType) => {
     switch (inputType) {
       case fields.externalLink: {
@@ -65,7 +65,6 @@ function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type, se
                             palette="dark"
                             min={min}
                             max={max}
-                            onChange={() => trigger(nameField)}
                             type={type}
                             placeholder={label}
                             name={nameField}
