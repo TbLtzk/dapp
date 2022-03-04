@@ -54,7 +54,6 @@ function getTooltipPosition (positon) {
 export const TooltipContainer = styled.div`
   position: relative;
   display: block;
-  border-bottom: 1px dotted black;
   width: available;
 
   .tooltip {

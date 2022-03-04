@@ -16,7 +16,7 @@ export const ButtonCustom = styled.button`
   font-size: 13px;
   line-height: 18px;
   transition: 0.2s;
-  border: 2px solid black;
+  border: 1px solid black;
   outline: none;
 
   border-color: ${(props) => {
