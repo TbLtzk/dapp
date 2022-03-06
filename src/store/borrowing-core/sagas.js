@@ -3,7 +3,6 @@ import ErrorHandler from 'func/ErrorHandler'
 import * as actionTypes from './action-types'
 import { setErrorMessage, setTransactionCounter } from 'store/transaction-handler/action-creators'
 import {
-  addCoinsToMetamask,
   generateVaultData,
   getBalanceDetailsHelper,
   getOutstandingDebtHelper,
@@ -22,26 +21,12 @@ import {
   setOutstandingDebt,
   setSavingAssets,
   setSavingRate,
-  setShoulAddCoins,
   setTotalCollateralLocked,
   setTotalSavingBalance,
   setTotalSupply
 } from './action-creators'
 import { fromWei } from 'func/balance'
 import { fillArray, fN, uintPerSecondToPerYearNumber } from 'func/useful'
-
-function * setAddCoinsToMetamaskGenerator () {
-  try {
-    yield put(setTransactionCounter(1))
-    yield call(addCoinsToMetamask)
-    yield put(setShoulAddCoins())
-  } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
-  }
-}
 
 function * setCreateQBTCVaultGenerator () {
   try {
@@ -145,7 +130,6 @@ function * getSavingAndInterestRateGenerator () {
 
 export default [
   takeEvery(actionTypes.SET_CREATE_QBTC_VAULT, setCreateQBTCVaultGenerator),
-  takeEvery(actionTypes.SET_ADD_COINS_TO_METAMASK, setAddCoinsToMetamaskGenerator),
 
   takeEvery(actionTypes.GET_TOTAL_SAVING_BALANCE, getTotalSavingBalanceGenerator),
   takeEvery(actionTypes.GET_TOTAL_SUPPLY, getTotalSupplyGenerator),

@@ -14,3 +14,8 @@ export const setNetwork = (network) => ({
   type: actionTypes.SET_NETWORK,
   network
 })
+
+export const setLoadType = (loadType) => ({
+  type: actionTypes.SET_LOAD_TYPE,
+  loadType
+})

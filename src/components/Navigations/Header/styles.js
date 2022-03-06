@@ -20,6 +20,13 @@ const handleColorTheme = (props) => {
         background: ${props.theme.colors.validationError};
       `
     }
+    case 'unknown':
+    default: {
+      return css`
+        color: ${props.theme.colors.white};
+        background: ${props.theme.colors.oxfordBlueTint2};
+      `
+    }
   }
 }
 
@@ -56,7 +63,7 @@ export const NetworkWrapper = styled.div`
   font-size: 15px;
   line-height: 18px;
   border-radius: 3px;
-  width: 160px; 
+  width: 160px;
 
   ${(props) => handleColorTheme(props)}
 `

@@ -4,14 +4,6 @@ export const setCreateQBTCVault = () => ({
   type: actionTypes.SET_CREATE_QBTC_VAULT
 })
 
-export const setAddCoinsToMetamask = () => ({
-  type: actionTypes.SET_ADD_COINS_TO_METAMASK
-})
-
-export const setShoulAddCoins = () => ({
-  type: actionTypes.SET_SHOULD_ADD_COINS
-})
-
 export const getTotalCollateralLockedAndOutstandingDebt = () => ({
   type: actionTypes.GET_TOTAL_COLLATERAL_LOCKED_AND_OUTSTANDING_DEBT
 })

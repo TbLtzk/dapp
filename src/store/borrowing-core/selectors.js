@@ -1,4 +1,3 @@
-export const shouldAddCoinsSelector = (state) => state.borrowingCore.shouldAddCoins
 
 export const outstandingDebtSelector = (state) => state.borrowingCore.outstandingDebt
 export const totalSavingBalanceSelector = (state) => state.borrowingCore.totalSavingBalance

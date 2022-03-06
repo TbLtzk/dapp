@@ -2,6 +2,7 @@ import LogoImg from 'components/Base/LogoImg'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Address from './components/Address'
+import ConnectButton from './components/ConnectButton'
 import Network from './components/Network'
 import { WrapLogo, HeaderWrapper, ElementsWrapper } from './styles'
 
@@ -14,6 +15,7 @@ function Header () {
                 </Link>
             </WrapLogo>
             <ElementsWrapper>
+                <ConnectButton />
                 <Network />
                 <Address />
             </ElementsWrapper>
