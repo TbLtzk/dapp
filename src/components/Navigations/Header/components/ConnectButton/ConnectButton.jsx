@@ -1,5 +1,4 @@
-import React from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useState } from 'react'
 import Button from 'components/Base/Buttons/Button'
 import { LOAD_TYPES } from 'constants/statuses'
 import { networkParameters } from 'constants/config'
@@ -8,8 +7,10 @@ import { getParametersDependsOnUrl } from 'func/useful'
 import { useSelector } from 'react-redux'
 import { loadTypeSelector } from 'store/user-inf/selectors'
 import { ethereum } from 'components/Custom/LoadingMetaMask/LoadingMetaMask'
+import InstallMetamask from './InstallMetamask'
 
 async function requestConnect (params) {
+  params = networkParameters[params.name]
   try {
     await ethereum.request({
       method: 'wallet_switchEthereumChain',
@@ -30,49 +31,26 @@ async function requestConnect (params) {
 }
 
 function ConnectButton () {
-  const history = useHistory()
   const loadType = useSelector(loadTypeSelector)
-  const parameters = getParametersDependsOnUrl()
-  const params = networkParameters[parameters.name]
+  const params = getParametersDependsOnUrl()
+  const [modalShow, setModalShow] = useState(false)
 
-  async function handleLoginToMetamask () {
-    await ethereum.request({ method: 'eth_requestAccounts' })
+  function handleModalShow () {
+    setModalShow(!modalShow)
   }
-
   switch (loadType) {
-    case LOAD_TYPES.notInstalled: {
-      return (
-                <Button
-                    handleButton={() => history.push('/start-configurations')}
-                    title={'Install Metamask'}
-                    margin="0 20px 0 0"
-                />
-      )
-    }
-
-    case LOAD_TYPES.wrongNetwork: {
-      return (
-                <Button
-                    handleButton={async () => await requestConnect(params)}
-                    title={`Connect to ${parameters.name}`}
-                    margin="0 20px 0 0"
-                />
-      )
-    }
-    case LOAD_TYPES.notLogged: {
+    case LOAD_TYPES.loaded:
+      return null
+    case LOAD_TYPES.wrongNetwork:
+    case LOAD_TYPES.notLogged:
+      return <Button handleButton={() => requestConnect(params)} title="Connect to wallet" margin="0 0 0 20px" />
+    default:
       return (
                 <>
-                    <Button
-                        handleButton={() => requestConnect(params)}
-                        title={`Connect to ${parameters.name}`}
-                        margin="0 20px 0 0"
-                    />
-                    <Button handleButton={handleLoginToMetamask} title="Login in" margin="0 20px 0 0" />
+                    <Button handleButton={handleModalShow} title="Install Metamask" margin="0 0 0 20px" />
+                    <InstallMetamask modalShow={modalShow} setModalShow={handleModalShow} />
                 </>
       )
-    }
-    default:
-      return null
   }
 }
 

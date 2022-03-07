@@ -4,6 +4,8 @@ import firefox from 'assets/img/firefox.png'
 import chrome from 'assets/img/chrome.png'
 
 import { WrapContainer, WrapImgs, Image } from 'pages/StartConfigurations/InstructionMetamask/styles'
+const metamaskIcon =
+    'https://images.ctfassets.net/9sy2a0egs6zh/4zJfzJbG3kTDSk5Wo4RJI1/1b363263141cf629b28155e2625b56c9/mm-logo.svg'
 
 function InstructionMetamask () {
   return (
@@ -12,7 +14,10 @@ function InstructionMetamask () {
                 MetaMask is a browser plugin that allows users to make Ethereum transactions through regular websites.
             </p>
             <h4>To get started you need:</h4>
-            <p>1. Install MetaMask for your browser (Supported Browsers: Chrome, Firefox)</p>
+            <p>1. Install MetaMask for your browser (Supported Browsers: Chrome, Firefox, Brave, Edge)</p>
+            <img src={metamaskIcon} alt="metamask logo" />
+            <a href="https://metamask.io/download/">Install MetaMask for your browser</a>
+
             <WrapImgs>
                 <a
                     href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn"

@@ -1,11 +1,8 @@
-import React, { useLayoutEffect } from 'react'
-import { Route, Switch, useHistory } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import React from 'react'
+import { Route, Switch } from 'react-router-dom'
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
-import { PROPOSALS_TYPES, AUCTIONS_TYPES, LOAD_TYPES } from 'constants/statuses'
-import { loadTypeSelector } from 'store/user-inf/selectors'
+import { PROPOSALS_TYPES, AUCTIONS_TYPES } from 'constants/statuses'
 
-import StartConfigurations from 'pages/StartConfigurations'
 import Dashboard from '../pages/UserPages/Dashboard/Dashboard'
 import Manage from '../pages/UserPages/Dashboard/Manage'
 import Governance from '../pages/UserPages/Governance'
@@ -36,15 +33,6 @@ const options = {
 }
 
 function Routes () {
-  const history = useHistory()
-  const loadType = useSelector(loadTypeSelector)
-
-  useLayoutEffect(() => {
-    if (loadType !== LOAD_TYPES.loaded) {
-      history.push('/start-configurations')
-    }
-  }, [history, loadType])
-
   return (
     <StyleLayout>
       <ErrorBoundary>
@@ -52,7 +40,6 @@ function Routes () {
           <Switch>
             <Route exact path="/" component={() => <Dashboard />} />
             <Route exact path="/q-parameters" component={() => <Manage />} />
-            <Route exact path="/start-configurations" component={() => <StartConfigurations />} />
             <Route exact path="/q-governance" component={() => <Governance />} />
             <Route exact path="/monitoring" component={() => <Monitoring />} />
             <Route

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Web3 from 'web3'
-import { useHistory } from 'react-router-dom'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 
 import { WrapContainer } from './styles'
@@ -25,7 +24,6 @@ export let address = '0x0000000000000000000000000000000000000000'
 
 function LoadingMetaMask () {
   const dispatch = useDispatch()
-  const history = useHistory()
   const appMode = useSelector(mode)
   const networkParams = getParametersDependsOnUrl()
   const [isMetaMask, setIsMetaMask] = useState(LOAD_TYPES.loading)
@@ -51,7 +49,6 @@ function LoadingMetaMask () {
         })
 
         ethereum?.on('chainChanged', () => {
-          history.push('/')
           window.location.reload()
         })
 
@@ -73,18 +70,19 @@ function LoadingMetaMask () {
         } else {
           // right network
           const accounts = await web3.eth.getAccounts()
+
           if (accounts.length) {
             // logged in
             address = accounts[0]
             window.web3 = new Web3(ethereum)
             dispatch(setUserAddress(accounts[0]))
-            dispatch(setNetwork(networkId))
             dispatch(setLoadType(LOAD_TYPES.loaded))
           } else {
             // not logged
             window.web3 = new Web3(ethereum)
             dispatch(setLoadType(LOAD_TYPES.notLogged))
           }
+          dispatch(setNetwork(networkId))
         }
       }
       await getContractRegistryInstance()

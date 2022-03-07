@@ -91,7 +91,7 @@ export const SidebarContainer = styled.div`
     ${(p) => handleSidebarOpen(p, '280px', indents['15'], '-250px')}
   }
 
-  @media screen and (max-height: 400px) {
+  @media screen and (max-height: 650px) {
     .sidebar_container {
       overflow-x: hidden;
 
