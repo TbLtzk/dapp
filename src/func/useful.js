@@ -1,9 +1,18 @@
 import { ParameterType } from '@q-dev/q-js-sdk'
 import { BigNumber } from 'bignumber.js'
+import { URLS } from 'constants/config'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 import { keyRegex } from 'constants/regex'
 import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper'
 import { orderBy } from 'lodash'
+
+export const getParametersDependsOnUrl = () => {
+  return URLS[window.location.origin]
+}
+
+export const transformToHex = (value) => {
+  return window.web3.utils.toHex(value)
+}
 
 export const errorHandler = (error, field, min = 0, max = 100) => {
   if (undefined === error[field]) return ''
@@ -19,8 +28,9 @@ export const errorHandler = (error, field, min = 0, max = 100) => {
       return 'Validation error!'
   }
 }
+
 export const getMinimalActiveBlockHeight = async () => {
-  const blocksDependsOnVersion = window.ethereum.networkVersion === '35442' ? 40000 : 300000
+  const blocksDependsOnVersion = window?.ethereum?.networkVersion === '35442' ? 40000 : 300000
   const block = await window.web3.eth.getBlock('latest')
   return {
     minimalActiveBlockHeight: Math.max(0, Number(block.number) - Number(blocksDependsOnVersion)),

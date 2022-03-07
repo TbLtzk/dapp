@@ -20,6 +20,13 @@ const handleColorTheme = (props) => {
         background: ${props.theme.colors.validationError};
       `
     }
+    case 'unknown':
+    default: {
+      return css`
+        color: ${props.theme.colors.white};
+        background: ${props.theme.colors.oxfordBlueTint2};
+      `
+    }
   }
 }
 
@@ -52,11 +59,39 @@ export const NetworkWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 20px;
-  font-size: 15px;
+  font-size: 13px;
   line-height: 18px;
   border-radius: 3px;
-  width: 160px; 
+  width: 150px;
 
   ${(props) => handleColorTheme(props)}
+`
+
+export const InstallMetamaskContainer = styled.div`
+  .list-card__line {
+    width: 100%;
+    height: 1px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
+  }
+  .install-metamask__info {
+    font-weight: bold;
+  }
+  .install-metamask__download {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    text-align: center;
+    margin-bottom: 10px;
+    a {
+      color: ${(p) => p.theme.colors.oxfordBlueTint2};
+      text-decoration: underline;
+
+      &:hover {
+        color: ${(p) => p.theme.colors.validationError};
+        text-decoration: none;
+      }
+    }
+  }
 `

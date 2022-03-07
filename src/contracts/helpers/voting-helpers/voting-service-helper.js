@@ -21,13 +21,17 @@ export default class VotingService {
   }
 
   async hasUserVotedVetoed (id) {
-    const contract = await this.getContractInstance()
-    let userVetoed
-    if (contract.hasRootVetoed) {
-      userVetoed = await contract.hasRootVetoed(id, address)
+    if (address.startsWith('0x0000')) {
+      return { userVetoed: false, userVoted: false }
+    } else {
+      const contract = await this.getContractInstance()
+      let userVetoed
+      if (contract.hasRootVetoed) {
+        userVetoed = await contract.hasRootVetoed(id, address)
+      }
+      const userVoted = await contract.hasUserVoted(id, address)
+      return { userVetoed, userVoted }
     }
-    const userVoted = await contract.hasUserVoted(id, address)
-    return { userVetoed, userVoted }
   }
 
   async getProposalStats (id) {
@@ -57,37 +61,57 @@ export default class VotingService {
   }
 
   async voteAgainst (id, userAddress) {
-    const contract = await this.getContractInstance()
-    const result = await contract.voteAgainst(id, { from: userAddress })
-    return result
+    if (userAddress.startsWith('0x0000')) {
+      return true
+    } else {
+      const contract = await this.getContractInstance()
+      const result = await contract.voteAgainst(id, { from: userAddress })
+      return result
+    }
   }
 
   async voteFor (id, userAddress) {
-    const contract = await this.getContractInstance()
-    const result = await contract.voteFor(id, { from: userAddress })
-    return result
+    if (userAddress.startsWith('0x0000')) {
+      return true
+    } else {
+      const contract = await this.getContractInstance()
+      const result = await contract.voteFor(id, { from: userAddress })
+      return result
+    }
   }
 
   async veto (id, userAddress) {
-    const contract = await this.getContractInstance()
-    const result = await contract.veto(id, { from: userAddress })
-    return result
+    if (userAddress.startsWith('0x0000')) {
+      return true
+    } else {
+      const contract = await this.getContractInstance()
+      const result = await contract.veto(id, { from: userAddress })
+      return result
+    }
   }
 
   async execute (id, userAddress) {
-    const contract = await this.getContractInstance()
-    const promiseStatus = await this.getProposalStatus(id)
-    let result = null
-    if (promiseStatus === '4') {
-      result = await contract.execute(id, { from: userAddress })
+    if (userAddress.startsWith('0x0000')) {
+      return true
+    } else {
+      const contract = await this.getContractInstance()
+      const promiseStatus = await this.getProposalStatus(id)
+      let result = null
+      if (promiseStatus === '4') {
+        result = await contract.execute(id, { from: userAddress })
+      }
+      return result
     }
-    return result
   }
 
   async approve (id, userAddress) {
-    const contract = await this.getContractInstance()
-    const result = await contract.aprove(id, { from: userAddress })
-    return result
+    if (userAddress.startsWith('0x0000')) {
+      return null
+    } else {
+      const contract = await this.getContractInstance()
+      const result = await contract.aprove(id, { from: userAddress })
+      return result
+    }
   }
 
   async getProposal (id, oneProposal) {

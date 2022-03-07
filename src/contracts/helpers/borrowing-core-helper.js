@@ -1,3 +1,4 @@
+import { ethereum } from 'components/Custom/LoadingMetaMask/LoadingMetaMask'
 import {
   getBorrowingCoreInstance,
   getSavingInstance,
@@ -13,39 +14,49 @@ import ErrorHandler from 'func/ErrorHandler'
 import { BN, uintPerSecondToPerYearNumber } from 'func/useful'
 import { setErrorMessage } from 'store/transaction-handler/action-creators'
 
-export async function addCoinsToMetamask () {
-  const getAddressQUSD = await getStableCoinInstance()
-  const getAddressQBTC = await getGovernedEpdrQbtcAddressInstance()
-  const tokenAddressQUSD = getAddressQUSD.address
-
-  const tokenSymbolQUSD = 'QUSD'
-  const tokenAddressQBTC = getAddressQBTC._address
-  const tokenSymbolQBTC = 'QBTC'
-  const tokenDecimals = 18
-
-  const QUSD = await window.ethereum.request({
-    method: 'wallet_watchAsset',
-    params: {
-      type: 'ERC20',
-      options: {
-        address: tokenAddressQUSD,
-        symbol: tokenSymbolQUSD,
-        decimals: tokenDecimals
+export async function addQBTCToken (setQbtcToken) {
+  const { _address } = await getGovernedEpdrQbtcAddressInstance()
+  ethereum
+    .request({
+      method: 'wallet_watchAsset',
+      params: {
+        type: 'ERC20',
+        options: {
+          address: _address,
+          symbol: 'QBTC',
+          decimals: 18
+        }
       }
-    }
-  })
-  const QBTC = await window.ethereum.request({
-    method: 'wallet_watchAsset',
-    params: {
-      type: 'ERC20',
-      options: {
-        address: tokenAddressQBTC,
-        symbol: tokenSymbolQBTC,
-        decimals: tokenDecimals
+    })
+    .then((result) => {
+      if (result) {
+        localStorage.setItem('qbtcTokenAdded', '0')
+        setQbtcToken('0')
       }
-    }
-  })
-  return Promise.all([QUSD, QBTC])
+    })
+}
+
+export async function addQUSDToken (setQusdToken) {
+  const { address } = await getStableCoinInstance()
+
+  ethereum
+    .request({
+      method: 'wallet_watchAsset',
+      params: {
+        type: 'ERC20',
+        options: {
+          address: address,
+          symbol: 'QUSD',
+          decimals: 18
+        }
+      }
+    })
+    .then((result) => {
+      if (result) {
+        localStorage.setItem('qusdTokenAdded', '0')
+        setQusdToken('0')
+      }
+    })
 }
 
 export function getOutstandingDebtHelper (vaultsStats) {

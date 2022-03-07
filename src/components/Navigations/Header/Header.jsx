@@ -1,11 +1,17 @@
 import LogoImg from 'components/Base/LogoImg'
+import { LOAD_TYPES } from 'constants/statuses'
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { loadTypeSelector } from 'store/user-inf/selectors'
 import Address from './components/Address'
+import ConnectButton from './components/ConnectButton'
 import Network from './components/Network'
 import { WrapLogo, HeaderWrapper, ElementsWrapper } from './styles'
 
 function Header () {
+  const loadType = useSelector(loadTypeSelector)
+
   return (
         <HeaderWrapper>
             <WrapLogo>
@@ -15,7 +21,8 @@ function Header () {
             </WrapLogo>
             <ElementsWrapper>
                 <Network />
-                <Address />
+                <ConnectButton />
+                {loadType === LOAD_TYPES.loaded ? <Address /> : null}
             </ElementsWrapper>
         </HeaderWrapper>
   )

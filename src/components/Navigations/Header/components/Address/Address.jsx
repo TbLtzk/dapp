@@ -35,7 +35,14 @@ function Address () {
   return (
         <CopyToClipboard text={userAddress}>
             <div title={userAddress}>
-                <Button icon="copy" width="270px" type="white" title={title} handleButton={handleCopy} />
+                <Button
+                    icon="copy"
+                    margin="0 0 0 20px"
+                    width="270px"
+                    type="white"
+                    title={title}
+                    handleButton={handleCopy}
+                />
             </div>
         </CopyToClipboard>
   )

@@ -7,61 +7,54 @@ import Button from 'components/Base/Buttons/Button'
 
 import { Header, Body, Footer, ModalW } from './styles'
 
-function ModalWindow (props) {
-  const {
-    disabled,
-    show,
-    onHide,
-    backBtnTitle,
-    backBtnHandler,
-    continueBtnTitle,
-    continueBtnHandler,
-    content,
-    modalTitle
-  } = props
-
+function ModalWindow ({
+  disabled,
+  show,
+  onHide,
+  backBtnTitle,
+  backBtnHandler,
+  continueBtnTitle,
+  continueBtnHandler,
+  content,
+  modalTitle,
+  iconRight
+}) {
   return (
-    <ModalW
-      show={show}
-      onHide={onHide}
-      size="md"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-      backbtntitle={backBtnTitle}
-    >
-      <Header closeButton>
-        <Modal.Title>
-          {modalTitle}
-        </Modal.Title>
-      </Header>
-      <Body>
-        {content}
-      </Body>
-      {(!backBtnTitle && !continueBtnTitle)
-        ? null
-        : <Footer>
-          {!backBtnTitle
-            ? null
-            : <Button
-              type='white'
-              icon="arrow-left"
-              title={backBtnTitle}
-              handleButton={backBtnHandler}
-            />
-          }
-          {!continueBtnTitle
-            ? null
-            : <Button
-              icon="arrow-right"
-              isIconPositionRight={true}
-              disabled={disabled}
-              title={continueBtnTitle}
-              handleButton={continueBtnHandler}
-            />
-          }
-        </Footer>
-      }
-    </ModalW>
+        <ModalW
+            show={show}
+            onHide={onHide}
+            size="md"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+            backbtntitle={backBtnTitle}
+        >
+            <Header closeButton>
+                <Modal.Title>{modalTitle}</Modal.Title>
+            </Header>
+            <Body>{content}</Body>
+            {!backBtnTitle && !continueBtnTitle
+              ? null
+              : (
+                <Footer>
+                    {!backBtnTitle
+                      ? null
+                      : (
+                        <Button type="white" icon="arrow-left" title={backBtnTitle} handleButton={backBtnHandler} />
+                        )}
+                    {!continueBtnTitle
+                      ? null
+                      : (
+                        <Button
+                            icon={iconRight || 'arrow-right'}
+                            isIconPositionRight={true}
+                            disabled={disabled}
+                            title={continueBtnTitle}
+                            handleButton={continueBtnHandler}
+                        />
+                        )}
+                </Footer>
+                )}
+        </ModalW>
   )
 }
 

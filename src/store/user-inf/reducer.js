@@ -1,7 +1,8 @@
 import * as actionTypes from './action-types'
 
 const initialState = {
-  userAddress: null,
+  userAddress: '0x0000000000000000000000000000000000000000',
+  loadType: null,
   balance: null,
   network: null
 }
@@ -12,6 +13,11 @@ export default function userAuth (state = initialState, action) {
       return {
         ...state,
         userAddress: action.address
+      }
+    case actionTypes.SET_LOAD_TYPE:
+      return {
+        ...state,
+        loadType: action.loadType
       }
     case actionTypes.SET_NETWORK:
       return {

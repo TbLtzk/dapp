@@ -1,11 +1,13 @@
 import styled from 'styled-components'
 
 export const WrapContainer = styled.div`
-  background-color: #07172b;
-  color: #ffffff;
+  background-color: ${(props) => props?.theme?.colors?.oxfordBlue || '#07172B'};
+  color: ${(props) => props?.theme?.colors?.white || '#FFFFF'};
+  flex-direction: ${(p) => p?.direction};
   display: flex;
-  flex-direction: ${(p) => p.direction};
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  margin-left: auto;
+  margin-right: auto;
+  height: ${(p) => p?.height ? p.height : 'calc(100vh - 70px)'} ;
 `

@@ -28,20 +28,17 @@ function Version () {
     return () => clearInterval(timer)
   }, [time])
 
-  useEffect(async () => {
-    if (!web3Adapter) return [] // not initialized
-
-    const connectionInfo = await web3Adapter.getConnectionInfo()
-
+  async function getVersionInfo () {
+    const connectionInfo = await web3Adapter?.getConnectionInfo()
     setMainVersionInfo([
       [
         {
-          group: versionInfoGroups.main,
+          group: versionInfoGroups?.main,
           name: 'dApp',
           value: pkg.version
         },
         {
-          group: versionInfoGroups.main,
+          group: versionInfoGroups?.main,
           name: 'Your Current Time',
           value: time
         }
@@ -50,65 +47,68 @@ function Version () {
     setModulesVersionInfo([
       [
         {
-          group: versionInfoGroups.modules,
+          group: versionInfoGroups?.modules,
           name: 'Web3.js',
-          value: web3Adapter.web3.version
+          value: web3Adapter?.web3.version
         },
         {
-          group: versionInfoGroups.modules,
+          group: versionInfoGroups?.modules,
           name: 'Q.js SDK',
-          value: web3Adapter.SDK_VERSION
+          value: web3Adapter?.SDK_VERSION
         }
       ]
     ])
     setClientVersionInfo([
       [
         {
-          group: versionInfoGroups.client,
+          group: versionInfoGroups?.client,
           name: 'RPC URL',
           value: connectionInfo.rpcUrl
         },
         {
-          group: versionInfoGroups.client,
+          group: versionInfoGroups?.client,
           name: 'Network ID',
           value: connectionInfo.networkId
         }
       ],
       [
         {
-          group: versionInfoGroups.client,
+          group: versionInfoGroups?.client,
           name: 'Node Info',
-          value: connectionInfo.nodeInfo
+          value: connectionInfo?.nodeInfo
         }
       ]
     ])
-  }, [])
+  }
 
+  useEffect(() => {
+    if (web3Adapter) {
+      getVersionInfo()
+    }
+    return () => {
+      setMainVersionInfo([])
+      setClientVersionInfo([])
+      setModulesVersionInfo([])
+    }
+  }, [])
+  const content = (
+        <>
+            <div className="modal-line" />
+            <VersionsTable data={mainVersionInfo} header={versionInfoGroups.main} />
+            <div className="modal-line" />
+            <VersionsTable data={modulesVersionInfo} header={versionInfoGroups.modules} />
+            <div className="modal-line" />
+            <VersionsTable data={clientVersionInfo} header={versionInfoGroups.client} />
+        </>
+  )
   return (
         <>
-            <WrpVersion
-                onClick={() => {
-                  setModalShow(true)
-                }}
-            >
-                {pkg.version}
-            </WrpVersion>
+            <WrpVersion onClick={() => setModalShow(true)}>{pkg.version}</WrpVersion>
             <ModalWindow
                 show={modalShow}
-                onHide={() => {
-                  setModalShow(false)
-                }}
+                onHide={() => setModalShow(false)}
                 modalTitle="Version Information"
-                content={
-                    <>
-                        <div className="modal-line" />
-                        <VersionsTable data={mainVersionInfo} header={versionInfoGroups.main} />
-                        <div className="modal-line" />
-                        <VersionsTable data={modulesVersionInfo} header={versionInfoGroups.modules} />
-                        <div className="modal-line" />
-                        <VersionsTable data={clientVersionInfo} header={versionInfoGroups.client} />
-                    </>
-                }
+                content={content}
             />
         </>
   )
