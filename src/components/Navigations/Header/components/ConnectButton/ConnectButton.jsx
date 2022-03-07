@@ -38,6 +38,7 @@ function ConnectButton () {
   function handleModalShow () {
     setModalShow(!modalShow)
   }
+
   switch (loadType) {
     case LOAD_TYPES.loaded:
       return null

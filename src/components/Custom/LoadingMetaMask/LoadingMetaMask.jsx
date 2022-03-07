@@ -100,13 +100,13 @@ function LoadingMetaMask () {
 
   switch (isMetaMask) {
     case LOAD_TYPES.initError:
-      return <WrapContainer>Can\'t load account data. Please reload app</WrapContainer>
+      return <WrapContainer height='100vh'>Can\'t load account data. Please reload app</WrapContainer>
     case LOAD_TYPES.loaded:
       return <Routes />
     case LOAD_TYPES.loading:
     default:
       return (
-                <WrapContainer>
+                <WrapContainer height='100vh'>
                     <LoadingSpinner type="light" />
                 </WrapContainer>
       )
