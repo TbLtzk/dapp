@@ -6,7 +6,13 @@ export const networks = {
 
 export const URLS = {
   'http://35.161.73.158:8000': {
-    name: 'Devnet',
+    name: 'TestNet',
+    chainId: 35443,
+    webSocket: 'ws://18.158.7.68:8546',
+    rpc: 'https://rpc.qtestnet.org'
+  },
+  'not possible because http (not https)': {
+    name: 'DevNet',
     chainId: 35442,
     webSocket: 'ws://35.161.73.158:8546',
     rpc: 'http://35.161.73.158:8545'
