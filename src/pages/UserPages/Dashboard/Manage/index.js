@@ -12,7 +12,7 @@ export default function index () {
       headerTitle="Q Parameters"
       headerExtra={
         <Link to="/">
-          <Button type="white" title="Dashboard" handleButton={() => {}} />
+          <Button alwaysEnabled type="white" title="Dashboard" handleButton={() => {}} />
         </Link>
       }
     >

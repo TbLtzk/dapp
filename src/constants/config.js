@@ -3,6 +3,7 @@ export const networks = {
   35442: 'Devnet',
   35441: 'Mainnet'
 }
+export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export const URLS = {
   'http://35.161.73.158:8000': {

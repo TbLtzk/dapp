@@ -1,55 +1,32 @@
 import React, { useEffect } from 'react'
 import CustomBlock from 'components/Base/CustomBlock'
-import TableView from 'components/Base/TableView'
-import SaveManageAsset from '../SaveManageAsset'
 
-import { fN } from 'func/useful'
 import { useDispatch, useSelector } from 'react-redux'
 import { savingAssetsSelector } from 'store/borrowing-core/selectors'
 import { getSavingAssets } from 'store/borrowing-core/action-creators'
-import LoadingSpinner from 'components/Base/LoadingSpinner'
-
-const HEADERS = ['Deposit asset', 'Interest asset', 'Interest rate (p.a.)', '']
+import { savingCryptoAssetsColumnns } from 'constants/columns'
+import { savingCryptoAssets } from 'constants/tables'
+import MemberTables from 'components/Custom/MemberTables/MemberTables'
 
 function SavingCryptoAssets () {
   const dispatch = useDispatch()
   const savingAssets = useSelector(savingAssetsSelector)
-
+  const savingAssetsTable = savingCryptoAssets(savingAssets || [])
   useEffect(() => {
     dispatch(getSavingAssets())
   }, [])
 
   return (
         <CustomBlock>
-            <h1>Saving Crypto Assets</h1>
-            {!savingAssets
-              ? (
-                <LoadingSpinner />
-                )
-              : savingAssets.length
-                ? (
-                <TableView
-                    type="with-action"
-                    header={HEADERS}
-                    body={savingAssets.map((item) => (
-                        <tr key={item.depositAsset + '-' + item.interestAsset + item.rate}>
-                            <td>{item.depositAsset}</td>
-                            <td>{item.interestAsset}</td>
-                            <td>{fN(item.rate)} %</td>
-                            <td>
-                                <SaveManageAsset
-                                    depositAsset={item.depositAsset}
-                                    interestAsset={item.interestAsset}
-                                    rate={item.rate}
-                                />
-                            </td>
-                        </tr>
-                    ))}
-                />
-                  )
-                : (
-                <p>No saving assets</p>
-                  )}
+            <MemberTables
+                lineForEach={true}
+                title="Saving Crypto Assets"
+                emptyTableMessage="No Saving Assets"
+                table={savingAssetsTable}
+                loading={!savingAssets}
+                columns={savingCryptoAssetsColumnns}
+                perPageLength={savingAssets?.length}
+            />
         </CustomBlock>
   )
 }

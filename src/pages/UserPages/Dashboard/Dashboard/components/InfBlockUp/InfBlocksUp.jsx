@@ -136,7 +136,7 @@ function InfBlocksUp () {
                     </div>
                 </div>
                 <Link to="/q-governance">
-                    <Button type="white" icon="arrow-right" title="Go to Governance" handleButton={() => {}} />
+                    <Button alwaysEnabled type="white" icon="arrow-right" title="Go to Governance" handleButton={() => {}} />
                 </Link>
             </CustomBlock>
         </>

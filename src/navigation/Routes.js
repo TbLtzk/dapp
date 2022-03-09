@@ -38,50 +38,62 @@ function Routes () {
       <ErrorBoundary>
         <AlertProvider template={AlertTemplate} {...options}>
           <Switch>
-            <Route exact path="/" component={() => <Dashboard />} />
-            <Route exact path="/q-parameters" component={() => <Manage />} />
-            <Route exact path="/q-governance" component={() => <Governance />} />
-            <Route exact path="/monitoring" component={() => <Monitoring />} />
+            <Route exact path="/" component={(props) => <Dashboard {...props} />} />
+            <Route exact path="/q-parameters" component={(props) => <Manage {...props} />} />
+            <Route exact path="/q-governance" component={(props) => <Governance {...props} />} />
+            <Route exact path="/monitoring" component={(props) => <Monitoring {...props} />} />
             <Route
               exact
               path="/q-proposals"
-              component={() => <Proposals proposalsType={PROPOSALS_TYPES.proposals} />}
+              component={(props) => <Proposals proposalsType={PROPOSALS_TYPES.proposals} {...props} />}
             />
             <Route
               exact
               path="/q-root-node-panel"
-              component={() => <Proposals proposalsType={PROPOSALS_TYPES.rootNodePanel} />}
+              component={(props) => <Proposals proposalsType={PROPOSALS_TYPES.rootNodePanel} {...props} />}
             />
             <Route
               exact
               path="/q-expert-proposals"
-              component={() => <Proposals proposalsType={PROPOSALS_TYPES.expertProposals} />}
+              component={(props) => <Proposals proposalsType={PROPOSALS_TYPES.expertProposals} {...props} />}
             />
             <Route
               exact
               path="/slashing-proposals"
-              component={() => <Proposals proposalsType={PROPOSALS_TYPES.slashingProposals} />}
+              component={(props) => <Proposals proposalsType={PROPOSALS_TYPES.slashingProposals} {...props} />}
             />
             <Route
               exact
               path="/contract-updates"
-              component={() => <Proposals proposalsType={PROPOSALS_TYPES.contractUpdates} />}
+              component={(props) => <Proposals proposalsType={PROPOSALS_TYPES.contractUpdates} {...props} />}
             />
-            <Route exact path="/liquidation" component={() => <Auctions auctionsType={AUCTIONS_TYPES.liquidation} />} />
-            <Route exact path="/system-debt" component={() => <Auctions auctionsType={AUCTIONS_TYPES.systemDebt} />} />
+            <Route
+              exact
+              path="/liquidation"
+              component={(props) => <Auctions auctionsType={AUCTIONS_TYPES.liquidation} {...props} />}
+            />
+            <Route
+              exact
+              path="/system-debt"
+              component={(props) => <Auctions auctionsType={AUCTIONS_TYPES.systemDebt} {...props} />}
+            />
             <Route
               exact
               path="/system-surplus"
-              component={() => <Auctions auctionsType={AUCTIONS_TYPES.systemSurplus} />}
+              component={(props) => <Auctions auctionsType={AUCTIONS_TYPES.systemSurplus} {...props} />}
             />
-            <Route exact path="/q-vault" component={() => <QVault />} />
-            <Route exact path="/root-node-staking" component={() => <RootNodeStaking />} />
-            <Route exact path="/validator-staking" component={() => <ValidatorStaking />} />
+            <Route exact path="/q-vault" component={(props) => <QVault {...props} />} />
+            <Route exact path="/root-node-staking" component={(props) => <RootNodeStaking {...props} />} />
+            <Route exact path="/validator-staking" component={(props) => <ValidatorStaking {...props} />} />
 
-            <Route exact path="/saving-and-borrowing" component={() => <SavingAndBorrowing />} />
-            <Route exact path="/time-locks" component={() => <TimeLocks />} />
-            <Route exact path="/auction/:contract?/:id?" component={() => <OneAuctionPage />} />
-            <Route exact path="/q-governance/proposal/:contract?/:id?" component={() => <OneProposalPage />} />
+            <Route exact path="/saving-and-borrowing" component={(props) => <SavingAndBorrowing {...props} />} />
+            <Route exact path="/time-locks" component={(props) => <TimeLocks {...props} />} />
+            <Route exact path="/auction/:contract?/:id?" component={(props) => <OneAuctionPage {...props} />} />
+            <Route
+              exact
+              path="/q-governance/proposal/:contract?/:id?"
+              component={(props) => <OneProposalPage {...props} />}
+            />
             <Route component={NotFound} />
           </Switch>
         </AlertProvider>

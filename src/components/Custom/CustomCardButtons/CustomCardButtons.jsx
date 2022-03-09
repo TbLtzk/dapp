@@ -26,14 +26,15 @@ function CustomCardButtons ({ eventKey, shareText, open, setOpen = () => {}, one
             <Tooltip copy={true} disabled={false} additionalInfo={`${copy ? 'Copied!' : 'Copy'}`}>
                 <CopyToClipboard onCopy={handleCopy} text={shareText}>
                     <div>
-                        <Button title="Share" icon="share" />
+                        <Button alwaysEnabled title="Share" icon="share" />
                     </div>
-                </CopyToClipboard>
+              </CopyToClipboard>
             </Tooltip>
             {onePage
               ? null
               : (
                 <Button
+                alwaysEnabled
                     iconFontSize="16px"
                     margin="0 0 0 20px"
                     handleButton={handleOpen}

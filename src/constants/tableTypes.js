@@ -1,5 +1,4 @@
 const TABLE_TYPES = {
-
   qFees: 'qfees',
   qDefi: 'defi',
   timeLocks: 'timeLocks',
@@ -12,7 +11,10 @@ const TABLE_TYPES = {
   validatorsWidened: 'validators-widened',
   validatorsMonitoring: 'validators-monitoring',
 
-  delegations: 'delegations'
+  delegations: 'delegations',
+
+  savingCryptoAssets: 'saving-crypto-assets',
+  borrowCryptoAssets: 'borrow-crypto-assets'
 }
 
 export default TABLE_TYPES

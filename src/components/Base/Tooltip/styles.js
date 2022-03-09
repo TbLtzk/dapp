@@ -59,15 +59,21 @@ export const TooltipContainer = styled.div`
   .tooltip {
     visibility: hidden;
     position: absolute;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     text-align: center;
+
     background-color: ${(p) => p.theme.colors.neonGreen};
     color: #000000;
     font-size: 13px;
     max-width: 200px;
-    pointer-events: none;
+    min-width: 80px;
 
+    min-height: 40px;
     border-radius: 3px;
+
     opacity: 0;
     transition: opacity 0.3s;
     line-height: 20px;

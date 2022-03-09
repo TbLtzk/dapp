@@ -20,7 +20,7 @@ const pageButtonRenderer = ({ page, active, disable, title, onPageChange }) => {
   )
 }
 
-const Table = ({ tableBody, columns, perPage, keyField, sorting }) => {
+const Table = ({ tableBody, columns, perPage, keyField, sorting, lineForEach }) => {
   const currentTheme = useSelector(theme)
 
   const options = {
@@ -35,7 +35,7 @@ const Table = ({ tableBody, columns, perPage, keyField, sorting }) => {
 
   return (
         <>
-            <TableWrapper sorting={sorting} bottomLine={perPage < tableBody.length} palette={currentTheme}>
+            <TableWrapper lineForEach={lineForEach} sorting={sorting} bottomLine={perPage < tableBody.length} palette={currentTheme}>
                 <BootstrapTable
                     keyField={keyField}
                     data={tableBody}

@@ -14,12 +14,14 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch () {
-    const timeout = setTimeout(() => {
-      this.props.history.push({
-        pathname: '/'
-      })
-      clearTimeout(timeout)
-    }, 5000)
+    if (process.env.NODE_ENV !== 'development') {
+      const timeout = setTimeout(() => {
+        this.props.history.push({
+          pathname: '/'
+        })
+        clearTimeout(timeout)
+      }, 5000)
+    }
   }
 
   render () {

@@ -24,7 +24,7 @@ function InfoBlock ({ header, activeProposalsNumber, endedProposalsNumber, detai
                 </>
                 )}
             <div className="card__actions">
-                <Button title="View Page" handleButton={() => history.push(detailsLink)} />
+                <Button alwaysEnabled title="View Page" handleButton={() => history.push(detailsLink)} />
             </div>
         </CustomBlock>
   )

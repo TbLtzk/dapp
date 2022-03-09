@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 
 import { ButtonCustom } from './styles'
 import { theme } from 'store/theme/selectors'
+import { loadTypeSelector } from 'store/user-inf/selectors'
+import { LOAD_TYPES } from 'constants/statuses'
 
 function Button ({
   title,
@@ -17,15 +19,20 @@ function Button ({
   handleButton,
   icon,
   iconFontSize,
-  isIconPositionRight
-
+  isIconPositionRight,
+  alwaysEnabled
 }) {
   const currentTheme = useSelector(theme)
+  const loadType = useSelector(loadTypeSelector)
+
+  const isUserLoggedIn = loadType === LOAD_TYPES.loaded ? disabled : true
+
+  const shouldDisable = alwaysEnabled ? false : isUserLoggedIn
 
   return (
         <ButtonCustom
             palette={currentTheme}
-            disabled={disabled}
+            disabled={shouldDisable}
             type={type}
             width={width}
             position={position}

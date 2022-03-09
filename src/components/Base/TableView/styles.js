@@ -1,11 +1,10 @@
 import styled from 'styled-components'
 
-import { Table } from 'react-bootstrap'
-
-export const TableStyle = styled(Table)`
+export const TableStyle = styled.div`
   margin-bottom: 10px;
   max-width: 100%;
   width: 100%;
+  overflow-x: auto;
 
   thead th {
     border-top: 0;
@@ -24,6 +23,7 @@ export const TableStyle = styled(Table)`
   }
 
   td {
+    width: 50%;
     vertical-align: ${(props) => {
       if (props.type === 'with-action') {
         return 'baseline'

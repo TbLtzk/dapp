@@ -8,7 +8,7 @@ function NotFound () {
   return (
         <NotFoundContainer>
             <h5>Page does not exist</h5>
-            <Button title="Home" icon="home" handleButton={() => history.push('/')} />
+            <Button alwaysEnabled title="Home" icon="home" handleButton={() => history.push('/')} />
         </NotFoundContainer>
   )
 }

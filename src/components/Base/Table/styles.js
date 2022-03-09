@@ -7,7 +7,6 @@ export const TableWrapper = styled.span`
   max-width: 100%;
   overflow-x: auto;
   margin-bottom: 10px;
-
   ${scrollbarStyle}
 
   .react-bootstrap-table-pagination {
@@ -40,6 +39,14 @@ export const TableWrapper = styled.span`
   }
 
   .table td {
+    ${(props) =>
+      props.lineForEach
+        ? css`
+            vertical-align: middle;
+            padding-bottom: 10px;
+            border-bottom: 1px solid ${(props) => props.theme.colors.th};
+          `
+        : null}
     border-top: transparent;
   }
 

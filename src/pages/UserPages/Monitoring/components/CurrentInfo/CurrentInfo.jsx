@@ -20,10 +20,10 @@ function CurrentInfo () {
   }, [time])
 
   useEffect(() => {
-    window.web3.eth.getBlock('latest').then((data) => setBlockHeight(data.number))
-    const subscription = window.web3.eth.subscribe('newBlockHeaders', (_, result) => setBlockHeight(result.number))
+    window?.web3?.eth.getBlock('latest').then((data) => setBlockHeight(data.number))
+    const subscription = window?.web3?.eth.subscribe('newBlockHeaders', (_, result) => setBlockHeight(result?.number))
     return () => {
-      subscription.unsubscribe()
+      subscription?.unsubscribe()
       setBlockHeight('...')
     }
   }, [])

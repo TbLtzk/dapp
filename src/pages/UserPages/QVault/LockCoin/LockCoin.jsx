@@ -79,7 +79,7 @@ export default function LockCoin ({ maxQVaultVotingWeight }) {
                 <Button type="outline" title="Reduce" width="90px" handleButton={submit3(unlockCoinL)} />
             </div>
             <div className="card__actions">
-                <ButtonLinkArrow title="Go to Governance" path="/q-governance" />
+                <ButtonLinkArrow alwaysEnabled title="Go to Governance" path="/q-governance" />
             </div>
         </CustomBlock>
   )

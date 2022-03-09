@@ -3,9 +3,7 @@ import PropTypes from 'prop-types'
 
 import { LinkCustom } from './styles'
 
-function LinkLikeBtn (props) {
-  const { title, type, path } = props
-
+function LinkLikeBtn ({ title, type, path }) {
   return (
         <LinkCustom
             href={path}
