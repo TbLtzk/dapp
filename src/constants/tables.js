@@ -4,6 +4,8 @@ import { fN } from 'func/useful'
 import ProgressBar from 'components/Base/ProgressBar'
 import { convertToMonthDayYear } from 'func/convertDate'
 import CopyToClipboard from 'components/Base/CopyToClipboard'
+import SaveManageAsset from 'pages/UserPages/SavingAndBorrowing/components/SaveManageAsset'
+import BorrowManageAsset from 'pages/UserPages/SavingAndBorrowing/components/BorrowManageAsset/BorrowManageAsset'
 
 export const tableLockAmount = (tableArray) =>
   tableArray.map((lock) => ({
@@ -87,4 +89,22 @@ export const tableDelegations = (tableArray) =>
     address: <CopyToClipboard valueToCopy={member.validator}>{member.validator}</CopyToClipboard>,
     amount: fN(fromWei(member.actualStake)) + ' Q',
     reward: fN(fromWei(member.claimableReward)) + ' Q'
+  }))
+
+export const savingCryptoAssets = (tableArray) =>
+  tableArray.map((value, idx) => ({
+    id: idx,
+    depositAsset: value.depositAsset,
+    interestAsset: value.interestAsset,
+    rate: fN(value.rate) + ' %',
+    button: <SaveManageAsset depositAsset={value.depositAsset} interestAsset={value.interestAsset} rate={value.rate} />
+  }))
+
+export const borrowCryptoAssets = (tableArray) =>
+  tableArray.map((vault, idx) => ({
+    id: idx,
+    depositAsset: vault.colKey,
+    asset: 'QUSD',
+    interestAsset: fN(vault.borrowingFee) + '%',
+    button: vault.isLiquidated ? 'Vault is Liquidated' : <BorrowManageAsset vault={vault} />
   }))

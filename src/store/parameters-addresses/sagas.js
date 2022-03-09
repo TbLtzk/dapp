@@ -37,7 +37,8 @@ function * getContractRegistryKV () {
       getContractRegistryKVSuccess(
         data.map((i) => ({
           key: i.key,
-          value: i.addr
+          value: i.addr,
+          type: 'ADDR'
         }))
       )
     )

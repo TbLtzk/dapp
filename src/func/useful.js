@@ -14,6 +14,13 @@ export const transformToHex = (value) => {
   return window.web3.utils.toHex(value)
 }
 
+export const toTitleCase = (phrase = '') =>
+  phrase
+    .toLowerCase()
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+
 export const errorHandler = (error, field, min = 0, max = 100) => {
   if (undefined === error[field]) return ''
 

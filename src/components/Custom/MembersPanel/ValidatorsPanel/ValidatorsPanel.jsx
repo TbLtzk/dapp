@@ -66,6 +66,7 @@ function ValidatorsPanel ({ buttons, tableType }) {
         return (
                     <div className="card__actions__between">
                         <Button
+                            alwaysEnabled
                             type="white"
                             icon="arrow-right"
                             title="See more details"
@@ -76,6 +77,7 @@ function ValidatorsPanel ({ buttons, tableType }) {
                             }
                         />
                         <Button
+                            alwaysEnabled
                             type="white"
                             icon="arrow-right"
                             title="Monitoring"
@@ -91,6 +93,7 @@ function ValidatorsPanel ({ buttons, tableType }) {
         return (
                     <div className="card__actions">
                         <Button
+                            alwaysEnabled
                             type="white"
                             icon="arrow-right"
                             title="Go to Q Vault"

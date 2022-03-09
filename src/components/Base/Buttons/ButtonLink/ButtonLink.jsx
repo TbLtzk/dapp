@@ -2,16 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Button from 'components/Base/Buttons/Button'
 
-export default function ButtonLink (props) {
-  const { title, width, handleLink } = props
-  return (
-    <Button
-      title={title || ''}
-      type={'transparent'}
-      width={width}
-      handleButton={handleLink}
-    />
-  )
+export default function ButtonLink ({ title, width, handleLink, alwaysEnabled }) {
+  return <Button alwaysEnabled title={title || ''} type={'transparent'} width={width} handleButton={handleLink} />
 }
 
 ButtonLink.propTypes = {

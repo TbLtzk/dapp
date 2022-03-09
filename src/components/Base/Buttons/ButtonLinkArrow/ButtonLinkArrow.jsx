@@ -7,23 +7,25 @@ import ButtonLink from 'components/Base/Buttons/ButtonLink'
 
 import { WrapTitle } from './styles'
 
-export default function ButtonLinkArrow (props) {
-  const { title, path, stateHistory } = props
+export default function ButtonLinkArrow ({ title, path, stateHistory, alwaysEnabled }) {
   const history = useHistory()
 
   return (
-    <ButtonLink
-      title={(
-        <>
-          <WrapTitle>{title}</WrapTitle>
-          <FontAwesomeIcon icon={faArrowRight}/>
-        </>
-      )}
-      handleLink={() => history.push({
-        pathname: path,
-        state: stateHistory
-      })}
-    />
+        <ButtonLink
+            alwaysEnabled
+            title={
+                <>
+                    <WrapTitle>{title}</WrapTitle>
+                    <FontAwesomeIcon icon={faArrowRight} />
+                </>
+            }
+            handleLink={() =>
+              history.push({
+                pathname: path,
+                state: stateHistory
+              })
+            }
+        />
   )
 }
 

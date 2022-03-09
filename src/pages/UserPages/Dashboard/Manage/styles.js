@@ -9,7 +9,7 @@ export const QParametersWrapper = styled.div`
 
   @media screen and (max-width: 1420px) {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(100px, 1fr);
     padding-right: 0;
   }
 `

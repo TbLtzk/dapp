@@ -27,7 +27,7 @@ function Dashboard () {
   const parametersButton = advancedMode
     ? (
         <Link to="/q-parameters">
-            <Button type="white" title="Q Parameters" handleButton={() => {}} />
+            <Button alwaysEnabled type="white" title="Q Parameters" handleButton={() => {}} />
         </Link>
       )
     : null

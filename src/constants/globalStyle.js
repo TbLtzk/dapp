@@ -4,7 +4,6 @@ import '../../node_modules/@mdi/font/css/materialdesignicons.min.css'
 export const scrollbarStyle = css`
   scrollbar-color: ${(props) => props.theme.colors.oxfordBlueTint5};
   scrollbar-width: thin;
-
   ::-webkit-scrollbar-track {
     background-color: ${(props) => props.theme.colors.oxfordBlueTint2};
     border-radius: 10px;
@@ -22,6 +21,7 @@ export const scrollbarStyle = css`
 `
 
 export const GlobalStyle = createGlobalStyle`
+
   body {
     color: ${(props) => props.theme.colors.white};
     background: ${(props) => props.theme.colors.oxfordBlue};

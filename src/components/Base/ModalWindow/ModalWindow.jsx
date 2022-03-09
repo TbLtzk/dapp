@@ -45,6 +45,7 @@ function ModalWindow ({
                       ? null
                       : (
                         <Button
+                            alwaysEnabled
                             icon={iconRight || 'arrow-right'}
                             isIconPositionRight={true}
                             disabled={disabled}

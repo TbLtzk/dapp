@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import Alert from '../../Custom/Alerts'
 
 import { PageTitleWrp, PageTitleName, PageTitleActions } from './styles'
 
-function PageTitle ({ header, extra, extraButton }) {
+const PageTitle = forwardRef(({ header, extra, extraButton }, ref) => {
   return (
         <PageTitleWrp>
-            <PageTitleName>{header}</PageTitleName>
+            <PageTitleName ref={ref}>{header}</PageTitleName>
             <PageTitleActions>
                 {extraButton}
                 {extra}
@@ -14,6 +14,6 @@ function PageTitle ({ header, extra, extraButton }) {
             <Alert />
         </PageTitleWrp>
   )
-}
+})
 
 export default PageTitle

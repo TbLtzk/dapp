@@ -45,11 +45,18 @@ function ConnectButton () {
       return null
     case LOAD_TYPES.wrongNetwork:
     case LOAD_TYPES.notLogged:
-      return <Button handleButton={() => requestConnect(params)} title="Connect to wallet" margin="0 0 0 20px" />
+      return (
+                <Button
+                    alwaysEnabled
+                    handleButton={() => requestConnect(params)}
+                    title="Connect to wallet"
+                    margin="0 0 0 20px"
+                />
+      )
     default:
       return (
                 <>
-                    <Button handleButton={handleModalShow} title="Install Metamask" margin="0 0 0 20px" />
+                    <Button alwaysEnabled handleButton={handleModalShow} title="Install Metamask" margin="0 0 0 20px" />
                     <InstallMetamask modalShow={modalShow} setModalShow={handleModalShow} />
                 </>
       )

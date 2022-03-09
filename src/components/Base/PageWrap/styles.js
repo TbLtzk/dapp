@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import { indents } from 'constants/style'
 import { Container } from 'react-bootstrap'
@@ -86,4 +86,31 @@ export const WrapContent = styled.div`
       grid-template-columns: minmax(100px, 1fr);
     }
   }
+`
+
+export const ToTopContainer = styled.div`
+  position: fixed;
+  bottom: 10px;
+  right: 55px;
+
+  transition: all 0.3s ease-in-out;
+  transition-delay: 0.2s;
+
+  i {
+    cursor: pointer;
+    opacity: 0.33;
+    font-size: 40px;
+  }
+
+  i:hover {
+    opacity: 1;
+    color: ${(props) => props.theme.colors.white};
+  }
+
+  ${(p) =>
+    p.isVisible
+      ? css`
+          right: -50px;
+        `
+      : css``};
 `

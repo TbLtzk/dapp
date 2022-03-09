@@ -61,6 +61,7 @@ function AuctionsList ({ auctions, loadingAuctions }) {
                       ? (
                         <LoadingWrap>
                             <Button
+                                alwaysEnabled
                                 margin="0 0 5% 0"
                                 width="140px"
                                 title="Show more"
