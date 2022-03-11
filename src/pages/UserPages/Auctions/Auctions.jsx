@@ -10,11 +10,10 @@ import {
 
 import { AUCTIONS_TYPES } from 'constants/statuses'
 import { useDispatch, useSelector } from 'react-redux'
-import { AuctionsTabWrp } from './styles'
 import AuctionsList from './components/AuctionsList'
-import BigTabsView from 'components/Base/Tabs/BigTabsView'
 import SidebarCards from './components/SidebarCards'
 import { getAuctions } from 'store/auctions/action-creators'
+import Tabs from 'components/Base/Tabs'
 
 function Auctions ({ auctionsType }) {
   const { auctionsSelector, title } = getAuctionsData(auctionsType)
@@ -36,32 +35,22 @@ function Auctions ({ auctionsType }) {
     dispatch(getAuctions(auctionsType))
   }, [dispatch, auctionsType])
 
-  const tabsItems = [
+  const tabs = [
     {
-      label: 'active-auctions',
+      id: 'active-auctions',
       title: 'Active auctions',
-      content: (
-                <AuctionsTabWrp>
-                    <AuctionsList auctions={auctions.activeAuctions} loadingAuctions={!auctions?.contract} />
-                    <SidebarCards />
-                </AuctionsTabWrp>
-      )
+      content: <AuctionsList auctions={auctions.activeAuctions} loadingAuctions={!auctions?.contract} />
     },
     {
-      label: 'ended-auctions',
+      id: 'ended-auctions',
       title: 'Ended auctions',
-      content: (
-                <AuctionsTabWrp>
-                    <AuctionsList auctions={auctions.endedAuctions} loadingAuctions={!auctions?.contract} />
-                    <SidebarCards />
-                </AuctionsTabWrp>
-      )
+      content: <AuctionsList auctions={auctions.endedAuctions} loadingAuctions={!auctions?.contract} />
     }
   ]
 
   return (
         <PageWrap headerTitle={title} headerExtra={<CreateAuctionBtn auctionsType={auctionsType} />}>
-            <BigTabsView tabsItems={tabsItems} active={tabsItems[0]?.label} />
+            <Tabs tabs={tabs} additionalBlock={<SidebarCards />} />
         </PageWrap>
   )
 }

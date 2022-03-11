@@ -6,6 +6,7 @@ export const CONTRACT_TYPES = {
   qVault: 'qVault',
   root: 'root',
   validators: 'validators',
+  rootNodes: 'rootNodes',
   vesting: 'vesting',
   rootNodeSlashing: 'root-node-slashing',
   validatorNodeSlashing: 'validator-node-slashing',
@@ -45,6 +46,7 @@ export const CONTRACTS_NAMES = {
 
   rootNodesSlashingEscrow: 'rootNodesSlashingEscrow',
   validatorsSlashingEscrow: 'validatorsSlashingEscrow',
+
   systemSurplusAuction: 'systemSurplusAuction',
   liquidationAuction: 'liquidationAuction',
   systemDebtAuction: 'systemDebtAuction'

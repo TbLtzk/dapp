@@ -49,3 +49,9 @@ export const setEscrowAction = (contractName, proposalId, escrowType) => ({
   proposalId,
   escrowType
 })
+
+export const setPurgeSlashing = (slashingAddress, contractType) => ({
+  type: actionTypes.SET_PURGE_SLASHING,
+  slashingAddress,
+  contractType
+})

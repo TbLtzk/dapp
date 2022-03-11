@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
 import PageWrap from 'components/Base/PageWrap'
-import BigTabsView from 'components/Base/Tabs/BigTabsView'
 import CreateQProposalBtn from './components/CreateQProposalBtn'
 import VotingStats from 'components/Custom/VotingStats'
+import ProposalsList from './components/ProposalsList/ProposalsList'
+import PurgeSlashing from './components/PurgeSlashing'
+import Tabs from 'components/Base/Tabs'
 
 import { PROPOSALS_TYPES } from 'constants/statuses'
 import { useDispatch, useSelector } from 'react-redux'
@@ -38,8 +40,6 @@ import {
   contractUpdatesEndedProposalsCountSelector,
   contractUpdatesEndedProposalsSelector
 } from 'store/voting/contract-updates/selectors'
-import { ProposalsTabWrp } from './styles'
-import ProposalsList from './components/ProposalsList/ProposalsList'
 
 function Proposals ({ proposalsType }) {
   const {
@@ -111,43 +111,44 @@ function Proposals ({ proposalsType }) {
     dispatch(getProposalsByType(oneContractName))
   }, [dispatch, proposalsType])
 
-  const tabsItems = [
+  const tabs = [
     {
-      label: 'active-proposals',
+      id: 'active-proposals',
       title: 'Active Proposals',
       content: (
-                <ProposalsTabWrp>
-                    <ProposalsList
-                        proposals={proposals}
-                        proposalsKind={proposalsType}
-                        proposalsCount={activeProposalsCount}
-                    />
-                    <VotingStats />
-                </ProposalsTabWrp>
+                <ProposalsList
+                    proposals={proposals}
+                    proposalsKind={proposalsType}
+                    proposalsCount={activeProposalsCount}
+                />
       )
     },
     {
-      label: 'ended-proposals',
+      id: 'ended-proposals',
       title: 'Ended Proposals',
       content: (
-                <ProposalsTabWrp>
-                    <ProposalsList
-                        proposals={endedProposals}
-                        proposalsKind={proposalsType}
-                        proposalsCount={endedProposalsCount}
-                    />
-                    <VotingStats />
-                </ProposalsTabWrp>
+                <ProposalsList
+                    proposals={endedProposals}
+                    proposalsKind={proposalsType}
+                    proposalsCount={endedProposalsCount}
+                />
       )
     }
   ]
+
+  const additionalBlock = (
+        <div>
+            <VotingStats />
+            {proposalsType === PROPOSALS_TYPES.slashingProposals ? <PurgeSlashing /> : null}
+        </div>
+  )
 
   const createProposal =
         proposalsType !== PROPOSALS_TYPES.contractUpdates ? <CreateQProposalBtn activeTab={proposalsType} /> : null
 
   return (
         <PageWrap headerTitle={title} headerExtra={createProposal}>
-            <BigTabsView tabsItems={tabsItems} active={tabsItems[0]?.label} />
+            <Tabs tabs={tabs} additionalBlock={additionalBlock} />
         </PageWrap>
   )
 }

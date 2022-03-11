@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux'
 
 import validators from './validators/reducer'
-import UserAuth from './user-auth/reducer'
 import userInf from './user-inf/reducer'
 import rootContract from './root-node/reducer'
 import qVault from './q-vault/reducer'
@@ -30,7 +29,6 @@ import borrowAssets from './borrow-assets/reducer'
 import savingAssets from './saving-assets/reducer'
 
 const RootReducer = combineReducers({
-  userAuth: UserAuth,
   userInf,
   rootContract,
   qVault,

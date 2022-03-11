@@ -5,7 +5,7 @@ import { networkParameters } from 'constants/config'
 
 import { getParametersDependsOnUrl } from 'func/useful'
 import { useSelector } from 'react-redux'
-import { loadTypeSelector } from 'store/user-inf/selectors'
+import { loadTypeSelector, networkSelector } from 'store/user-inf/selectors'
 import { ethereum } from 'components/Custom/LoadingMetaMask/LoadingMetaMask'
 import InstallMetamask from './InstallMetamask'
 
@@ -31,14 +31,22 @@ async function requestConnect (params) {
   }
 }
 
+async function requestLogin () {
+  await ethereum.request({ method: 'eth_requestAccounts' })
+}
+
 function ConnectButton () {
   const loadType = useSelector(loadTypeSelector)
+  const network = useSelector(networkSelector)
   const params = getParametersDependsOnUrl()
+
   const [modalShow, setModalShow] = useState(false)
 
   function handleModalShow () {
     setModalShow(!modalShow)
   }
+
+  const isSameNetwork = Number(network) === params.chainId
 
   switch (loadType) {
     case LOAD_TYPES.loaded:
@@ -48,7 +56,7 @@ function ConnectButton () {
       return (
                 <Button
                     alwaysEnabled
-                    handleButton={() => requestConnect(params)}
+                    handleButton={() => (isSameNetwork ? requestLogin() : requestConnect(params))}
                     title="Connect to wallet"
                     margin="0 0 0 20px"
                 />
