@@ -1,7 +1,7 @@
 import VotingService from './voting-service-helper'
 
 import { getStatusTransformation } from './base-voting-helper'
-import { parameterVote } from 'pages/UserPages/Proposals/components/CreateQProposalBtn/ModalCreateProposal/CreateStep2/QExpertS2/constants'
+import { parameterVote } from 'pages/Proposals/components/CreateQProposalBtn/ModalCreateProposal/CreateStep2/QExpertS2/constants'
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts'
 import {
   getEpdrParametersVotingInstance,

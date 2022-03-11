@@ -20,7 +20,7 @@ import {
   savingAviableToDepositSelector,
   savingBalanceDetailsSelector
 } from 'store/saving-assets/selectors'
-import { WrapSpinner } from 'pages/UserPages/styles'
+import { WrapSpinner } from 'pages/styles'
 
 const DEPOSIT_BTN_TEXT = {
   deposit: 'Deposit',

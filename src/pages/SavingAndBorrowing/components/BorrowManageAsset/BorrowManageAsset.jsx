@@ -22,7 +22,7 @@ import {
   setBorrowVaultInfo,
   setBorrowWithdraw
 } from 'store/borrow-assets/action-creators'
-import { WrapSpinner } from 'pages/UserPages/styles'
+import { WrapSpinner } from 'pages/styles'
 
 const BTN_LENGTH = '100px'
 

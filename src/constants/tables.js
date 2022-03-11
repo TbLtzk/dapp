@@ -4,8 +4,8 @@ import { fN } from 'func/useful'
 import ProgressBar from 'components/Base/ProgressBar'
 import { convertToMonthDayYear } from 'func/convertDate'
 import CopyToClipboard from 'components/Base/CopyToClipboard'
-import SaveManageAsset from 'pages/UserPages/SavingAndBorrowing/components/SaveManageAsset'
-import BorrowManageAsset from 'pages/UserPages/SavingAndBorrowing/components/BorrowManageAsset/BorrowManageAsset'
+import SaveManageAsset from 'pages/SavingAndBorrowing/components/SaveManageAsset'
+import BorrowManageAsset from 'pages/SavingAndBorrowing/components/BorrowManageAsset/BorrowManageAsset'
 
 export const tableLockAmount = (tableArray) =>
   tableArray.map((lock) => ({
