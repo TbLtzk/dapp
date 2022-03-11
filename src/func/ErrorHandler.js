@@ -1,3 +1,10 @@
+import { isEmpty } from 'lodash'
+
+const DEFAULT_ERROR = {
+  header: 'Unknown type of error',
+  details: 'No additional info'
+}
+
 function capitalize (string = '') {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
@@ -23,16 +30,15 @@ function findMessage (message) {
         header: capitalize(array[0]),
         details: capitalize(array[1])
       }
-    : {
-        header: 'Unknown type of error',
-        details: 'No additional info'
-      }
+    : DEFAULT_ERROR
 }
 
 class ErrorHandler {
   static process (error) {
     const errorObj = createErrorObject(error)
-    if (errorObj.code === 4001) {
+    if (isEmpty(errorObj)) {
+      return DEFAULT_ERROR
+    } else if (errorObj.code === 4001) {
       const infoArray = errorObj.message.split(':')
       return { header: capitalize(infoArray[0]), details: capitalize(infoArray[1]) }
     } else if (errorObj.code === 3 || errorObj.code === -32000) {
@@ -42,13 +48,8 @@ class ErrorHandler {
         header: capitalize(errorObj.stack.split(':')[1]),
         details: capitalize(errorObj.stack.split(':')[2].trim())
       }
-    } else if (errorObj.status) {
-      return { header: 'Error', details: 'Not enough balance on wallet account' }
     } else {
-      return {
-        header: 'Unknown type of error',
-        details: 'No additional info'
-      }
+      return DEFAULT_ERROR
     }
   }
 
