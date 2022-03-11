@@ -89,7 +89,7 @@ function LoadingMetaMask () {
       await loadAdditionalInfo()
       setIsMetaMask(LOAD_TYPES.loaded)
     } catch (error) {
-      console.error(error)
+      console.log(error)
       setIsMetaMask(LOAD_TYPES.initError)
     }
   }

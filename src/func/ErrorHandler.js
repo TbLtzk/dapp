@@ -36,6 +36,7 @@ function findMessage (message) {
 class ErrorHandler {
   static process (error) {
     const errorObj = createErrorObject(error)
+
     if (isEmpty(errorObj)) {
       return DEFAULT_ERROR
     } else if (errorObj.code === 4001) {

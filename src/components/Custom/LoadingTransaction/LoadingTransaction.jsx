@@ -1,18 +1,17 @@
 import React from 'react'
 
 import { useSelector } from 'react-redux'
-import { transactionLoading, errorMessage, transactionCounter } from 'store/transaction-handler/selectors'
+import { transactionLoading, transactionCounter } from 'store/transaction-handler/selectors'
 
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 
 import { Wrap, Shadow, WrapLoading, WrapText } from './styles'
 
-function LoadingTransaction ({ isLoading }) {
+function LoadingTransaction () {
   const loading = useSelector(transactionLoading)
-  const error = useSelector(errorMessage)
   const trCounter = useSelector(transactionCounter)
 
-  if (loading || trCounter || isLoading) {
+  if (loading || trCounter) {
     return (
             <Wrap>
                 <WrapLoading>
@@ -25,11 +24,6 @@ function LoadingTransaction ({ isLoading }) {
             </Wrap>
     )
   }
-
-  if (error) {
-    return <p>{error}</p>
-  }
-
   return null
 }
 
