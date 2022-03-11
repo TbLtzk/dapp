@@ -10,7 +10,7 @@ import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-hel
 
 import ErrorHandler from 'func/ErrorHandler'
 import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/useful'
-import { escrowTypes } from 'pages/UserPages/Proposals/components/ProposalsList/components/SlashingObjection/ModalSlashingObjection/CreateStep1/constants'
+import { escrowTypes } from 'pages/Proposals/components/ProposalsList/components/SlashingObjection/ModalSlashingObjection/CreateStep1/constants'
 import { getRootNodesInstance, getValidatorsInstance } from 'contracts/contract-instance'
 import { CONTRACT_TYPES } from 'constants/contracts'
 

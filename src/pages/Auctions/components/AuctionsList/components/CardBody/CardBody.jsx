@@ -1,5 +1,5 @@
 import { CONTRACTS_NAMES } from 'constants/contracts'
-import { AuctionCardBodyContainer } from 'pages/UserPages/Auctions/styles'
+import { AuctionCardBodyContainer } from 'pages/Auctions/styles'
 import React from 'react'
 
 import { useSelector } from 'react-redux'
