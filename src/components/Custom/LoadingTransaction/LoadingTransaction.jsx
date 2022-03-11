@@ -12,29 +12,25 @@ function LoadingTransaction ({ isLoading }) {
   const error = useSelector(errorMessage)
   const trCounter = useSelector(transactionCounter)
 
-  const render = () => {
-    if (loading || trCounter || isLoading) {
-      return (
-                <Wrap>
-                    <WrapLoading>
-                        <WrapText>
-                            <p>Loading</p>
-                            <LoadingSpinner type="light" />
-                        </WrapText>
-                    </WrapLoading>
-                    <Shadow />
-                </Wrap>
-      )
-    }
-
-    if (error === true) {
-      return <p>{error}</p>
-    }
-
-    return ''
+  if (loading || trCounter || isLoading) {
+    return (
+            <Wrap>
+                <WrapLoading>
+                    <WrapText>
+                        <p>Loading</p>
+                        <LoadingSpinner type="light" />
+                    </WrapText>
+                </WrapLoading>
+                <Shadow />
+            </Wrap>
+    )
   }
 
-  return render()
+  if (error) {
+    return <p>{error}</p>
+  }
+
+  return null
 }
 
 export default LoadingTransaction

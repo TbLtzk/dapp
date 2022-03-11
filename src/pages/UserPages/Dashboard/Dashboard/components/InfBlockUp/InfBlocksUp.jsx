@@ -114,10 +114,10 @@ function InfBlocksUp () {
                 </CopyToClipboard>
                 <div className="card__actions">
                     <a href={latestConstitution} target="_blank" rel="noreferrer">
-                        <Button icon="download" title="Download Latest" handleButton={() => {}} />
+                        <Button alwaysEnabled icon="download" title="Download Latest" handleButton={() => {}} />
                     </a>
                     <a href={archiveConstitution} target="_blank" rel="noreferrer">
-                        <Button icon="archive-outline" title="Check Archive" handleButton={() => {}} />
+                        <Button alwaysEnabled icon="archive-outline" title="Check Archive" handleButton={() => {}} />
                     </a>
                 </div>
             </CustomBlock>
@@ -136,7 +136,13 @@ function InfBlocksUp () {
                     </div>
                 </div>
                 <Link to="/q-governance">
-                    <Button alwaysEnabled type="white" icon="arrow-right" title="Go to Governance" handleButton={() => {}} />
+                    <Button
+                        alwaysEnabled
+                        type="white"
+                        icon="arrow-right"
+                        title="Go to Governance"
+                        handleButton={() => {}}
+                    />
                 </Link>
             </CustomBlock>
         </>

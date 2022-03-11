@@ -3,6 +3,7 @@ import { PROPOSALS_TYPES } from 'constants/statuses'
 import { getTypeName } from 'func/contractHelpers'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 import { PollDetailContainer } from './styles'
+import CopyToClipboard from 'components/Base/CopyToClipboard'
 
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000'
 
@@ -84,7 +85,11 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
         return [
           {
             label: 'Candidate',
-            value: pollDetail?.candidate
+            value: (
+                            <CopyToClipboard valueToCopy={pollDetail?.candidate}>
+                                {pollDetail?.candidate}
+                            </CopyToClipboard>
+            )
           },
           {
             label: 'Amount to Slash',

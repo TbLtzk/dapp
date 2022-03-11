@@ -1,15 +1,10 @@
 import React from 'react'
-
 import { Block } from './styles'
-import PropTypes from 'prop-types'
-import Button from '../Buttons/Button'
 
-function CustomBlock ({ children, style }) {
-  return <Block style={style}>{children}</Block>
-}
-
-Button.propTypes = {
-  style: PropTypes.string
-}
+const CustomBlock = ({ children, style, onClick }) => (
+    <Block onClick={onClick} style={style}>
+        {children}
+    </Block>
+)
 
 export default CustomBlock

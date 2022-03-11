@@ -11,6 +11,8 @@ import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-hel
 import ErrorHandler from 'func/ErrorHandler'
 import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/useful'
 import { escrowTypes } from 'pages/UserPages/Proposals/components/ProposalsList/components/SlashingObjection/ModalSlashingObjection/CreateStep1/constants'
+import { getRootNodesInstance, getValidatorsInstance } from 'contracts/contract-instance'
+import { CONTRACT_TYPES } from 'constants/contracts'
 
 let lastActiveBlock
 
@@ -126,11 +128,27 @@ function * setEscrowActionGenerator ({ contractName, proposalId, escrowType }) {
   }
 }
 
+function * setPurgeSlashingGenerator ({ slashingAddress, contractType }) {
+  try {
+    yield put(setTransactionCounter(1))
+    const { userAddress } = yield select((state) => state.userInf)
+    const contract =
+      contractType === CONTRACT_TYPES.rootNodes ? yield getRootNodesInstance() : yield getValidatorsInstance()
+    yield contract.purgePendingSlashings(slashingAddress, { from: userAddress })
+  } catch (error) {
+    const errorMsg = ErrorHandler.process(error)
+    yield put(setErrorMessage(errorMsg))
+  } finally {
+    yield put(setTransactionCounter(-1))
+  }
+}
+
 export default [
   takeEvery(actionTypes.ESCROW_CAST_OBJECTION, onEscrowCastObjectionGenerator),
   takeEvery(actionTypes.ESCROW_PROPOSE_DECISION, onEscrowProposeDecisionGenerator),
   takeEvery(actionTypes.ESCROW_PROPOSER_REMARK, onEscrowProposerRemarkGenerator),
   takeEvery(actionTypes.GET_SLASHING_PROPOSALS, getSlashingProposalsGenerator),
 
-  takeEvery(actionTypes.SET_ESCROW_ACTION, setEscrowActionGenerator)
+  takeEvery(actionTypes.SET_ESCROW_ACTION, setEscrowActionGenerator),
+  takeEvery(actionTypes.SET_PURGE_SLASHING, setPurgeSlashingGenerator)
 ]
