@@ -11,7 +11,6 @@ import InstallMetamask from './InstallMetamask'
 
 async function requestConnect (params) {
   params = networkParameters[params.name]
-
   try {
     await ethereum.request({
       method: 'wallet_switchEthereumChain',
