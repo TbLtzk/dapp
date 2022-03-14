@@ -40,7 +40,7 @@ function LoadingMetaMask () {
     try {
       if (!ethereum) {
         // user withoout metamask
-        window.web3 = new Web3(new Web3.providers.HttpProvider(networkParams.rpc))
+        window.web3 = new Web3(new Web3.providers.HttpProvider(networkParams?.rpc || 'https://rpc.qtestnet.org'))
         dispatch(setLoadType(LOAD_TYPES.notInstalled))
       } else {
         // user with metamask

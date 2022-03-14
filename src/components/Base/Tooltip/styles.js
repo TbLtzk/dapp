@@ -19,7 +19,7 @@ function getTooltipPosition (positon) {
     }
     case 'left': {
       return css`
-        top: 3px;
+        top: -2px;
         right: 101%;
         white-space: nowrap;
         &:after {
