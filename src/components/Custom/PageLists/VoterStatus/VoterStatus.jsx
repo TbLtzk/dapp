@@ -14,6 +14,7 @@ import {
   isUserEPQFIMembershipSelector,
   isUserEPRSMembershipSelector
 } from 'store/membership/selectors'
+import { getCheckIsUserRootNode } from 'store/root-node/action-creators'
 
 function VoterStatus () {
   const dispatch = useDispatch()
@@ -28,6 +29,7 @@ function VoterStatus () {
   useEffect(() => {
     dispatch(getIsUserValidator(userAddress))
     dispatch(getUserBalance(userAddress))
+    dispatch(getCheckIsUserRootNode(userAddress))
     dispatch(getIsUserEPDRMember())
     dispatch(getIsUserEPQFIMember())
     dispatch(getIsUserEPRSMember())

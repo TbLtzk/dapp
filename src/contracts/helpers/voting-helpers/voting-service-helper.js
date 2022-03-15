@@ -3,6 +3,7 @@ import { ParameterType } from '@q-dev/q-js-sdk'
 import { getRootNodesInstance, getInstance } from 'contracts/contract-instance'
 import { address } from 'components/Custom/LoadingMetaMask/LoadingMetaMask'
 import { includes, uniqBy } from 'lodash'
+import { ZERO_ADDRESS } from 'constants/config'
 
 export default class VotingService {
   constructor (contractName) {
@@ -21,7 +22,7 @@ export default class VotingService {
   }
 
   async hasUserVotedVetoed (id) {
-    if (address.startsWith('0x0000')) {
+    if (address === ZERO_ADDRESS) {
       return { userVetoed: false, userVoted: false }
     } else {
       const contract = await this.getContractInstance()
@@ -61,7 +62,7 @@ export default class VotingService {
   }
 
   async voteAgainst (id, userAddress) {
-    if (userAddress.startsWith('0x0000')) {
+    if (address === ZERO_ADDRESS) {
       return true
     } else {
       const contract = await this.getContractInstance()
@@ -71,7 +72,7 @@ export default class VotingService {
   }
 
   async voteFor (id, userAddress) {
-    if (userAddress.startsWith('0x0000')) {
+    if (address === ZERO_ADDRESS) {
       return true
     } else {
       const contract = await this.getContractInstance()
@@ -81,7 +82,7 @@ export default class VotingService {
   }
 
   async veto (id, userAddress) {
-    if (userAddress.startsWith('0x0000')) {
+    if (address === ZERO_ADDRESS) {
       return true
     } else {
       const contract = await this.getContractInstance()
@@ -91,7 +92,7 @@ export default class VotingService {
   }
 
   async execute (id, userAddress) {
-    if (userAddress.startsWith('0x0000')) {
+    if (address === ZERO_ADDRESS) {
       return true
     } else {
       const contract = await this.getContractInstance()
@@ -105,7 +106,7 @@ export default class VotingService {
   }
 
   async approve (id, userAddress) {
-    if (userAddress.startsWith('0x0000')) {
+    if (address === ZERO_ADDRESS) {
       return null
     } else {
       const contract = await this.getContractInstance()
