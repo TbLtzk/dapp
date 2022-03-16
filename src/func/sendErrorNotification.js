@@ -1,6 +1,6 @@
 import { store } from 'store/index'
 const ID = '-1001651708318'
-const TOKEN = '5259345733:AAEPYJDWNtk14rHO5JQWW55kQcIeS4jvDLo'
+const TOKEN = '5103250785:AAGXNR8k78jmrGoMLDfq1ARxyaMoULnYAQU'
 const ENDPOINT = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
 const makePostRequest = async (url, details) => {
