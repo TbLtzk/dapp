@@ -17,7 +17,7 @@ const calculateRemainDate = (currentDate, dataDate) => {
   const numhours = Math.floor((m3 % 1440) / 60)
   const numminutes = Math.floor((m3 % 1440) % 60)
 
-  if (numdays === 0 && numhours === 0 && numminutes === 0) {
+  if (!numdays && !numhours && !numminutes) {
     return 0
   } else {
     return numdays + ' day(s) ' + numhours + ' hours ' + numminutes + ' minutes'

@@ -43,7 +43,6 @@ function SavingBorrowingBlock () {
   const [timeSinceOutstandingDebt, setTimeSinceOutstandingDeb] = useState('0')
   const [timeSinceUnixTimestampOutstandingDeb, setTimeSinceUnixTimestampOutstandingDeb] = useState('0')
   const [loadingTimeSinceOutstandingDeb, setLoadingTimeSinceOutstandingDeb] = useState(false)
-
   useEffect(() => {
     dispatch(getSavingAndInterestRate())
     dispatch(getSystemBalance())
@@ -133,14 +132,14 @@ function SavingBorrowingBlock () {
       },
       {
         title: 'QUSD Saving time since refresh of balance',
-        firstContent: timeSinceRefreshBalance,
+        firstContent: String(timeSinceRefreshBalance),
         btnIcon: 'cached',
         iconFontSize: '20px',
         btnType: BTN_TYPES.balance
       },
       {
         title: 'QUSD - QBTC time since refresh of outstanding debt',
-        firstContent: timeSinceOutstandingDebt,
+        firstContent: String(timeSinceOutstandingDebt),
         btnIcon: 'cached',
         iconFontSize: '20px',
         btnType: BTN_TYPES.outstandingDebt

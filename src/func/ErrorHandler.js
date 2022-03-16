@@ -1,4 +1,5 @@
 import { isEmpty } from 'lodash'
+import { sendErrorNotification } from './sendErrorNotification'
 
 const DEFAULT_ERROR = {
   header: 'Unknown type of error',
@@ -36,26 +37,42 @@ function findMessage (message) {
 class ErrorHandler {
   static process (error) {
     const errorObj = createErrorObject(error)
+    let message = DEFAULT_ERROR
 
     if (isEmpty(errorObj)) {
-      return DEFAULT_ERROR
+      message = DEFAULT_ERROR
     } else if (errorObj.code === 4001) {
       const infoArray = errorObj.message.split(':')
-      return { header: capitalize(infoArray[0]), details: capitalize(infoArray[1]) }
+      message = { header: capitalize(infoArray[0]), details: capitalize(infoArray[1]) }
     } else if (errorObj.code === 3 || errorObj.code === -32000) {
-      return findMessage(errorObj.message)
+      message = findMessage(errorObj.message)
     } else if (errorObj.stack) {
-      return {
+      message = {
         header: capitalize(errorObj.stack.split(':')[1]),
         details: capitalize(errorObj.stack.split(':')[2].trim())
       }
-    } else {
-      return DEFAULT_ERROR
     }
+
+    if (process.env.NODE_ENV !== 'development') {
+      this.sendErrorAlert(message)
+    }
+
+    return message
   }
 
   static processWithoutFeedback (error, msg) {
-    console.error(error, msg)
+    if (process.env.NODE_ENV !== 'development') {
+      this.sendErrorAlert(error.message)
+    }
+    console.error(error.message)
+  }
+
+  static sendErrorAlert (message) {
+    try {
+      sendErrorNotification(message)
+    } catch (error) {
+      console.error(error)
+    }
   }
 }
 
