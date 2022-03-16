@@ -2,6 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { WrapContainer } from 'components/Custom/LoadingMetaMask/styles'
 import Button from 'components/Base/Buttons/Button'
+import { sendErrorNotification } from 'func/sendErrorNotification'
 
 class ErrorBoundary extends React.Component {
   constructor (props) {
@@ -9,7 +10,10 @@ class ErrorBoundary extends React.Component {
     this.state = { hasError: false }
   }
 
-  static getDerivedStateFromError () {
+  static getDerivedStateFromError (error) {
+    if (process.env.NODE_ENV !== 'development') {
+      sendErrorNotification(error.message)
+    }
     return { hasError: true }
   }
 
