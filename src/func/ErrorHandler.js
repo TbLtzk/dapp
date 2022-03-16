@@ -71,7 +71,7 @@ class ErrorHandler {
     try {
       sendErrorNotification(message)
     } catch (error) {
-      console.error(error)
+      return error
     }
   }
 }

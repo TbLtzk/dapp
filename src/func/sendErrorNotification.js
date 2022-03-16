@@ -14,7 +14,7 @@ const makePostRequest = async (url, details) => {
     })
     return await response.json()
   } catch (error) {
-    console.error(error)
+    return error
   }
 }
 
@@ -31,6 +31,6 @@ export const sendErrorNotification = async (text) => {
       chat_id: ID
     })
   } catch (error) {
-    console.error(error)
+    return error
   }
 }
