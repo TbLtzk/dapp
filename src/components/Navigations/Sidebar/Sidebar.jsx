@@ -22,8 +22,8 @@ import AccordionElements from './components/AccordionElements'
 import ToggleSidebar from './components/ToggleSidebar'
 import Version from './components/Version'
 
-import { ALinkStyle, FooterContainer, SidebarContainer } from './styles'
-import { referencesItems } from './constants'
+import { FooterContainer, SidebarContainer } from './styles'
+import References from './components/References'
 
 function Sidebar () {
   const appMode = useSelector(mode)
@@ -164,18 +164,7 @@ function Sidebar () {
                       : null}
                 </div>
                 <FooterContainer>
-                    <AccordionElements margin="24px 0 0 0" title="References">
-                        {referencesItems.map((value, key) => (
-                            <ALinkStyle
-                                key={'references' + key}
-                                className="nav-link"
-                                href={value.location}
-                                target="_blank"
-                            >
-                                {value.label}
-                            </ALinkStyle>
-                        ))}
-                    </AccordionElements>
+                    <References />
 
                     <AccordionElements margin="24px 0 24px 0" title="Settings">
                         <DashboardMode />
