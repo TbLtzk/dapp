@@ -46,6 +46,7 @@ export const networkParameters = {
     chainId: '0x8a72',
     chainName: 'Q DevNet',
     rpcUrls: ['http://35.161.73.158:8545'],
+    blockExplorerUrls: ['http://52.35.57.176:8080/'],
     nativeCurrency: {
       name: 'Q ',
       symbol: 'Q ',
@@ -56,6 +57,7 @@ export const networkParameters = {
     chainId: '0x8a73',
     chainName: 'Q TestNet',
     rpcUrls: ['https://rpc.qtestnet.org'],
+    blockExplorerUrls: ['https://explorer.qtestnet.org/'],
     nativeCurrency: {
       name: 'Q ',
       symbol: 'Q ',
@@ -66,6 +68,7 @@ export const networkParameters = {
     chainId: '0x8a71',
     chainName: 'Q MainNet',
     rpcUrls: ['https://rpc.q.org'],
+    blockExplorerUrls: ['https://explorer.q.org'],
     nativeCurrency: {
       name: 'Q ',
       symbol: 'Q ',
