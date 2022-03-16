@@ -1,5 +1,4 @@
 import { isEmpty } from 'lodash'
-import { sendErrorNotification } from './sendErrorNotification'
 
 const DEFAULT_ERROR = {
   header: 'Unknown type of error',
@@ -52,27 +51,11 @@ class ErrorHandler {
         details: capitalize(errorObj.stack.split(':')[2].trim())
       }
     }
-
-    if (process.env.NODE_ENV !== 'development') {
-      this.sendErrorAlert(message)
-    }
-
     return message
   }
 
-  static processWithoutFeedback (error, msg) {
-    if (process.env.NODE_ENV !== 'development') {
-      this.sendErrorAlert(error.message)
-    }
+  static processWithoutFeedback (error) {
     console.error(error.message)
-  }
-
-  static sendErrorAlert (message) {
-    try {
-      sendErrorNotification(message)
-    } catch (error) {
-      return error
-    }
   }
 }
 
