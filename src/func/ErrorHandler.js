@@ -1,4 +1,5 @@
 import { isEmpty } from 'lodash'
+import * as Sentry from '@sentry/react'
 
 const DEFAULT_ERROR = {
   header: 'Unknown type of error',
@@ -51,10 +52,12 @@ class ErrorHandler {
         details: capitalize(errorObj.stack.split(':')[2].trim())
       }
     }
+    Sentry.captureMessage(message)
     return message
   }
 
   static processWithoutFeedback (error) {
+    Sentry.captureMessage(error.message)
     console.error(error.message)
   }
 }

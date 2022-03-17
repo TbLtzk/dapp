@@ -1,4 +1,5 @@
 import React from 'react'
+import * as Sentry from '@sentry/react'
 import { withRouter } from 'react-router-dom'
 import { WrapContainer } from 'components/Custom/LoadingMetaMask/styles'
 import Button from 'components/Base/Buttons/Button'
@@ -9,7 +10,8 @@ class ErrorBoundary extends React.Component {
     this.state = { hasError: false }
   }
 
-  static getDerivedStateFromError () {
+  static getDerivedStateFromError (error) {
+    Sentry.captureMessage(error)
     return { hasError: true }
   }
 
