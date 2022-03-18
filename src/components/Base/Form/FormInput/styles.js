@@ -115,20 +115,21 @@ export const InputWrapper = styled(Form.Group)`
       if (p.isdisabled) {
         return css`
           cursor: default;
+          color: ${p.theme.colors.oxfordBlueTint2};
         `
       } else {
         if (p.palette === 'dark') {
           return css`
-            color: ${(p) => p.theme.colors.oxfordBlueTint4};
+            color: ${p.theme.colors.oxfordBlueTint4};
             &:hover {
-              color: ${(p) => (p.modal ? p.theme.colors.oxfordBlueTint1 : p.theme.colors.neonGreen)};
+              color: ${(p.modal ? p.theme.colors.oxfordBlueTint1 : p.theme.colors.neonGreen)};
             }
           `
         } else {
           return css`
-            color: ${(p) => p.theme.colors.oxfordBlueTint2};
+            color: ${p.theme.colors.oxfordBlueTint2};
             &:hover {
-              color: ${(p) => p.theme.colors.oxfordBlueTint6};
+              color: ${p.theme.colors.oxfordBlueTint6};
             }
           `
         }
@@ -148,7 +149,7 @@ export const InputWrapper = styled(Form.Group)`
     white-space: nowrap;
     color: ${(p) => {
       if (p.palette === 'dark') {
-        if (!p.isDisabled) {
+        if (p.isdisabled) {
           return p.theme.colors.oxfordBlueTint1
         }
         return p.theme.colors.white
@@ -163,11 +164,7 @@ export const InputWrapper = styled(Form.Group)`
           return p.theme.colors.white
         }
       } else if (p.isdisabled) {
-        if (p.palette === 'dark') {
-          return p.theme.colors.oxfordBlueTint5
-        } else {
           return p.theme.colors.oxfordBlueTint2
-        }
       } else {
         if (p.palette === 'dark') {
           return p.type === 'error' ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint2
