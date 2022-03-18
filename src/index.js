@@ -1,22 +1,22 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
 
-import * as Sentry from "@sentry/react";
-import { BrowserTracing } from "@sentry/tracing";
+import * as Sentry from '@sentry/react'
+import { BrowserTracing } from '@sentry/tracing'
 
-import LoadingMetaMask from "components/Custom/LoadingMetaMask";
-import { store } from "./store";
-import "assets/fonts/fonts.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+import LoadingMetaMask from 'components/Custom/LoadingMetaMask'
+import { store } from './store'
+import 'assets/fonts/fonts.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 Sentry.init({
-  dsn: "https://55eac6f20f434cc2b23b93499ac31111@o1170264.ingest.sentry.io/6263659",
+  dsn: 'https://55eac6f20f434cc2b23b93499ac31111@o1170264.ingest.sentry.io/6263659',
   integrations: [new BrowserTracing()],
   tracesSampleRate: 1.0,
-  enabled: process.env.NODE_ENV !== "development",
-});
+  enabled: process.env.NODE_ENV !== 'development'
+})
 
 ReactDOM.render(
   <Provider store={store}>
@@ -25,5 +25,5 @@ ReactDOM.render(
     </BrowserRouter>
   </Provider>,
 
-  document.getElementById("root")
-);
+  document.getElementById('root')
+)
