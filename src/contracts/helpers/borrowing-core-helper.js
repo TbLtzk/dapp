@@ -1,119 +1,122 @@
-import { ethereum } from 'components/Custom/LoadingMetaMask/LoadingMetaMask'
+import { ethereum } from "components/Custom/LoadingMetaMask/LoadingMetaMask";
 import {
   getBorrowingCoreInstance,
   getSavingInstance,
   getStableCoinInstance,
   getCompoundRateKeeperBorrowingInstance,
   getCompoundRateKeeperSavingInstance,
-  getGovernedEpdrQbtcAddressInstance
-} from 'contracts/contract-instance'
+  getGovernedEpdrQbtcAddressInstance,
+} from "contracts/contract-instance";
 
-import { fromWei } from 'func/balance'
-import { remainDateTimeSince } from 'func/convertDate'
-import ErrorHandler from 'func/ErrorHandler'
-import { BN, uintPerSecondToPerYearNumber } from 'func/useful'
-import { setErrorMessage } from 'store/transaction-handler/action-creators'
+import { fromWei } from "func/balance";
+import { remainDateTimeSince } from "func/convertDate";
+import ErrorHandler from "func/ErrorHandler";
+import { BN, uintPerSecondToPerYearNumber } from "func/useful";
+import { setErrorMessage } from "store/transaction-handler/action-creators";
 
-export async function addQBTCToken (setQbtcToken) {
-  const { _address } = await getGovernedEpdrQbtcAddressInstance()
-  ethereum
-    .request({
-      method: 'wallet_watchAsset',
+async function addToken(contract, address) {
+  try {
+    const [decimals, symbol] = await Promise.all([
+      contract.methods.decimals().call(),
+      contract.methods.symbol().call(),
+    ]);
+
+    const response = await ethereum.request({
+      method: "wallet_watchAsset",
       params: {
-        type: 'ERC20',
+        type: "ERC20",
         options: {
-          address: _address,
-          symbol: 'QBTC',
-          decimals: 18
-        }
-      }
-    })
-    .then((result) => {
-      if (result) {
-        localStorage.setItem('qbtcTokenAdded', '0')
-        setQbtcToken('0')
-      }
-    })
+          address,
+          symbol,
+          decimals,
+        },
+      },
+    });
+    return response;
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error);
+    return null;
+  }
 }
 
-export async function addQUSDToken (setQusdToken) {
-  const { address } = await getStableCoinInstance()
-
-  ethereum
-    .request({
-      method: 'wallet_watchAsset',
-      params: {
-        type: 'ERC20',
-        options: {
-          address: address,
-          symbol: 'QUSD',
-          decimals: 18
-        }
-      }
-    })
-    .then((result) => {
-      if (result) {
-        localStorage.setItem('qusdTokenAdded', '0')
-        setQusdToken('0')
-      }
-    })
+export async function addQBTCToken(setQbtcToken) {
+  const contract = await getGovernedEpdrQbtcAddressInstance();
+  const response = await addToken(contract, contract._address);
+  if (response) {
+    localStorage.setItem("qbtcTokenAdded", "0");
+    setQbtcToken("0");
+  } else {
+    setQbtcToken("");
+  }
 }
 
-export function getOutstandingDebtHelper (vaultsStats) {
-  const amount = vaultsStats.reduce((sum, item) => sum.plus(BN(item?.stcStats?.outstandingDebt)), BN(0))
-  return fromWei(amount.toFixed())
+export async function addQUSDToken(setQusdToken) {
+  const contract = await getStableCoinInstance();
+  const response = await addToken(contract.instance, contract.address);
+
+  if (response) {
+    localStorage.setItem("qusdTokenAdded", "0");
+    setQusdToken("0");
+  } else {
+    setQusdToken("");
+  }
 }
 
-export function getTotalCollateralLockedHelper (vaultsStats) {
+export function getOutstandingDebtHelper(vaultsStats) {
+  const amount = vaultsStats.reduce((sum, item) => sum.plus(BN(item?.stcStats?.outstandingDebt)), BN(0));
+  return fromWei(amount.toFixed());
+}
+
+export function getTotalCollateralLockedHelper(vaultsStats) {
   if (!vaultsStats.length) {
-    return '0'
+    return "0";
   } else {
     const vaultsLoc = vaultsStats.map((vaultInfo) => {
-      const balance = vaultInfo?.colStats?.balance ? vaultInfo.colStats.balance / 10 ** 8 : 0
-      const price = vaultInfo?.colStats?.price ? fromWei(vaultInfo.colStats.price) : 0
-      const collLock = balance * price
-      return collLock
-    })
+      const balance = vaultInfo?.colStats?.balance ? vaultInfo.colStats.balance / 10 ** 8 : 0;
+      const price = vaultInfo?.colStats?.price ? fromWei(vaultInfo.colStats.price) : 0;
+      const collLock = balance * price;
+      return collLock;
+    });
     if (vaultsLoc.length > 0) {
-      const totalValue = vaultsLoc.reduce((acc, curr) => acc + curr)
-      return totalValue.toString()
+      const totalValue = vaultsLoc.reduce((acc, curr) => acc + curr);
+      return totalValue.toString();
     } else {
-      return '0'
+      return "0";
     }
   }
 }
 
-export function getBalanceDetailsHelper (balanceDetails) {
-  const rate = uintPerSecondToPerYearNumber(balanceDetails.interestRate)
+export function getBalanceDetailsHelper(balanceDetails) {
+  const rate = uintPerSecondToPerYearNumber(balanceDetails.interestRate);
 
   return [
     {
-      depositAsset: 'QUSD',
-      interestAsset: 'QUSD',
-      rate: rate
-    }
-  ]
+      depositAsset: "QUSD",
+      interestAsset: "QUSD",
+      rate: rate,
+    },
+  ];
 }
 
-export async function generateVaultData (contract, userAddress, vault, vaultNum) {
-  const vaultStats = await contract.getVaultStats(userAddress, vaultNum)
-  const borrowingFee = uintPerSecondToPerYearNumber(vaultStats.stcStats.borrowingFee)
-  return { ...vault, vaultNum, borrowingFee }
+export async function generateVaultData(contract, userAddress, vault, vaultNum) {
+  const vaultStats = await contract.getVaultStats(userAddress, vaultNum);
+  const borrowingFee = uintPerSecondToPerYearNumber(vaultStats.stcStats.borrowingFee);
+  return { ...vault, vaultNum, borrowingFee };
 }
 
-export async function getTimeSinceRefreshBalance (setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance) {
+export async function getTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance) {
   try {
-    const contract = await getCompoundRateKeeperSavingInstance()
-    const res = await contract.getLastUpdate()
-    setTimeSinceUnixTimestampRefreshBalance(res)
-    const transformTime = remainDateTimeSince(res)
-    setTimeSinceRefreshBalance(transformTime)
+    const contract = await getCompoundRateKeeperSavingInstance();
+    const res = await contract.getLastUpdate();
+    setTimeSinceUnixTimestampRefreshBalance(res);
+    const transformTime = remainDateTimeSince(res);
+    setTimeSinceRefreshBalance(transformTime);
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
-export async function refreshTimeSinceRefreshBalance (
+export async function refreshTimeSinceRefreshBalance(
   setTimeSinceRefreshBalance,
   setLoading,
   setTimeSinceUnixTimestampRefreshBalance,
@@ -121,31 +124,31 @@ export async function refreshTimeSinceRefreshBalance (
   dispatch
 ) {
   try {
-    setLoading(true)
-    const contract = await getSavingInstance()
-    await contract.updateCompoundRate({ from: userAddress, gasBuffer: 1.2 })
-    getTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance)
+    setLoading(true);
+    const contract = await getSavingInstance();
+    await contract.updateCompoundRate({ from: userAddress, gasBuffer: 1.2 });
+    getTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance);
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    dispatch(setErrorMessage(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    dispatch(setErrorMessage(errorMsg));
   } finally {
-    setLoading(false)
+    setLoading(false);
   }
 }
 
-export async function getTimeSinceOutstandingDebt (setTimeSinceOutstandingDeb, setTimeSinceUnixTimestampOutstandingDeb) {
+export async function getTimeSinceOutstandingDebt(setTimeSinceOutstandingDeb, setTimeSinceUnixTimestampOutstandingDeb) {
   try {
-    const contract = await getCompoundRateKeeperBorrowingInstance()
-    const res = await contract.getLastUpdate()
-    setTimeSinceUnixTimestampOutstandingDeb(res)
-    const transformTime = remainDateTimeSince(res)
-    setTimeSinceOutstandingDeb(transformTime)
+    const contract = await getCompoundRateKeeperBorrowingInstance();
+    const res = await contract.getLastUpdate();
+    setTimeSinceUnixTimestampOutstandingDeb(res);
+    const transformTime = remainDateTimeSince(res);
+    setTimeSinceOutstandingDeb(transformTime);
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
-export async function refreshTimeSinceOutstandingDebt (
+export async function refreshTimeSinceOutstandingDebt(
   setTimeSinceRefreshBalance,
   setLoading,
   setTimeSinceUnixTimestampRefreshBalance,
@@ -153,14 +156,14 @@ export async function refreshTimeSinceOutstandingDebt (
   dispatch
 ) {
   try {
-    setLoading(true)
-    const contract = await getBorrowingCoreInstance()
-    await contract.updateCompoundRate('QBTC', { from: userAddress, gasBuffer: 1.2 })
-    getTimeSinceOutstandingDebt(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance)
+    setLoading(true);
+    const contract = await getBorrowingCoreInstance();
+    await contract.updateCompoundRate("QBTC", { from: userAddress, gasBuffer: 1.2 });
+    getTimeSinceOutstandingDebt(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance);
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    dispatch(setErrorMessage(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    dispatch(setErrorMessage(errorMsg));
   } finally {
-    setLoading(false)
+    setLoading(false);
   }
 }

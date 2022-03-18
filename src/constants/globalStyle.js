@@ -1,5 +1,5 @@
-import { createGlobalStyle, css } from 'styled-components'
-import '../../node_modules/@mdi/font/css/materialdesignicons.min.css'
+import { createGlobalStyle, css } from "styled-components";
+import "../../node_modules/@mdi/font/css/materialdesignicons.min.css";
 
 export const scrollbarStyle = css`
   scrollbar-color: ${(props) => props.theme.colors.oxfordBlueTint5};
@@ -18,7 +18,7 @@ export const scrollbarStyle = css`
     border-radius: 10px;
     background-color: ${(props) => props.theme.colors.oxfordBlueTint5};
   }
-`
+`;
 
 export const GlobalStyle = createGlobalStyle`
 
@@ -69,4 +69,4 @@ export const GlobalStyle = createGlobalStyle`
     backdrop-filter: blur(3px);
     -webkit-backdrop-filter: blur(3px);
   }
-`
+`;
