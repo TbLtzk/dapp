@@ -1,8 +1,8 @@
-import styled, { css } from 'styled-components'
+import styled, { css } from "styled-components";
 
-import { Form } from 'react-bootstrap'
+import { Form } from "react-bootstrap";
 
-const inputMinHeight = '10px'
+const inputMinHeight = "10px";
 
 export const InputWrapper = styled(Form.Group)`
   margin-bottom: 0;
@@ -18,36 +18,36 @@ export const InputWrapper = styled(Form.Group)`
     line-height: 20px;
     padding: 6px 11px;
     background: ${(p) => {
-      if (p.palette === 'dark') {
-        return p.color ? p.theme.colors.oxfordBlueTint1 : 'transparent'
+      if (p.palette === "dark") {
+        return p.color ? p.theme.colors.oxfordBlueTint1 : "transparent";
       } else {
-        return p.theme.colors.blue
+        return p.theme.colors.blue;
       }
     }};
     border: 1px solid
       ${(p) => {
-        if (p.palette === 'dark') {
-          return p.type === 'error' ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint2
+        if (p.palette === "dark") {
+          return p.type === "error" ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint2;
         } else {
-          return p.type === 'error' ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint4
+          return p.type === "error" ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint4;
         }
       }};
     box-sizing: border-box;
 
     border-radius: ${(p) => {
       if (p.lbl) {
-        return '0 3px 3px 0'
+        return "0 3px 3px 0";
       } else {
-        return '3px'
+        return "3px";
       }
     }};
     min-height: ${inputMinHeight};
-    text-align: ${(p) => (p.align ? p.align : 'left')};
+    text-align: ${(p) => (p.align ? p.align : "left")};
     color: ${(p) => {
-      if (p.palette === 'dark') {
-        return p.type === 'error' ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint2
+      if (p.palette === "dark") {
+        return p.type === "error" ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint2;
       } else {
-        return p.type === 'error' ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint4
+        return p.type === "error" ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint4;
       }
     }};
 
@@ -56,49 +56,49 @@ export const InputWrapper = styled(Form.Group)`
       box-shadow: none !important;
       outline: none;
       background: ${(p) => {
-        if (p.palette === 'dark') {
-          return p.color ? p.theme.colors.oxfordBlueTint1 : 'transparent'
+        if (p.palette === "dark") {
+          return p.color ? p.theme.colors.oxfordBlueTint1 : "transparent";
         } else {
-          return p.theme.colors.blue
+          return p.theme.colors.blue;
         }
       }};
       border-color: ${(p) => {
-        if (p.palette === 'dark') {
-          return p.color ? p.theme.colors.oxfordBlueTint2 : 'transparent'
+        if (p.palette === "dark") {
+          return p.color ? p.theme.colors.oxfordBlueTint2 : "transparent";
         } else {
-          return p.theme.colors.oxfordBlueTint4
+          return p.theme.colors.oxfordBlueTint4;
         }
       }};
       color: ${(p) => {
-        if (p.palette === 'dark') {
-          return p.color ? p.theme.colors.white : p.theme.colors.oxfordBlueTint1
+        if (p.palette === "dark") {
+          return p.color ? p.theme.colors.white : p.theme.colors.oxfordBlueTint1;
         } else {
-          return p.theme.colors.white
+          return p.theme.colors.white;
         }
       }};
     }
 
     &:disabled {
       background: ${(p) => {
-        if (p.palette === 'dark') {
-          return 'transparent'
+        if (p.palette === "dark") {
+          return "transparent";
         } else {
-          return p.theme.colors.blue
+          return p.theme.colors.blue;
         }
       }};
       border: 1px solid
         ${(p) => {
-          if (p.palette === 'dark') {
-            return p.theme.colors.oxfordBlueTint2
+          if (p.palette === "dark") {
+            return p.theme.colors.oxfordBlueTint2;
           } else {
-            return p.theme.colors.oxfordBlueTint2
+            return p.theme.colors.oxfordBlueTint2;
           }
         }};
       color: ${(p) => {
-        if (p.palette === 'dark') {
-          return p.theme.colors.oxfordBlueTint5
+        if (p.palette === "dark") {
+          return p.theme.colors.oxfordBlueTint5;
         } else {
-          return p.theme.colors.oxfordBlueTint2
+          return p.theme.colors.oxfordBlueTint2;
         }
       }};
     }
@@ -115,25 +115,22 @@ export const InputWrapper = styled(Form.Group)`
       if (p.isdisabled) {
         return css`
           cursor: default;
-        `
+        `;
       } else {
-        if (p.palette === 'dark') {
-          console.log('jere')
+        if (p.palette === "dark") {
           return css`
             color: ${(p) => p.theme.colors.oxfordBlueTint4};
             &:hover {
               color: ${(p) => (p.modal ? p.theme.colors.oxfordBlueTint1 : p.theme.colors.neonGreen)};
             }
-          `
+          `;
         } else {
-          console.log('jere')
-
           return css`
             color: ${(p) => p.theme.colors.oxfordBlueTint2};
             &:hover {
               color: ${(p) => p.theme.colors.oxfordBlueTint6};
             }
-          `
+          `;
         }
       }
     }}
@@ -150,34 +147,34 @@ export const InputWrapper = styled(Form.Group)`
     padding: 6px 10px;
     white-space: nowrap;
     color: ${(p) => {
-      if (p.palette === 'dark') {
+      if (p.palette === "dark") {
         if (!p.isDisabled) {
-          return p.theme.colors.oxfordBlueTint1
+          return p.theme.colors.oxfordBlueTint1;
         }
-        return p.theme.colors.white
+        return p.theme.colors.white;
       }
-      return p.theme.colors.oxfordBlueTint1
+      return p.theme.colors.oxfordBlueTint1;
     }};
     background: ${(p) => {
       if (p.isfocus) {
-        if (p.palette === 'dark') {
-          return p.theme.colors.neonGreen
+        if (p.palette === "dark") {
+          return p.theme.colors.neonGreen;
         } else {
-          return p.theme.colors.white
+          return p.theme.colors.white;
         }
       } else if (p.isdisabled) {
-        if (p.palette === 'dark') {
-          return p.theme.colors.oxfordBlueTint5
+        if (p.palette === "dark") {
+          return p.theme.colors.oxfordBlueTint5;
         } else {
-          return p.theme.colors.oxfordBlueTint2
+          return p.theme.colors.oxfordBlueTint2;
         }
       } else {
-        if (p.palette === 'dark') {
-          return p.type === 'error' ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint2
+        if (p.palette === "dark") {
+          return p.type === "error" ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint2;
         } else {
-          return p.type === 'error' ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint4
+          return p.type === "error" ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint4;
         }
       }
     }};
   }
-`
+`;
