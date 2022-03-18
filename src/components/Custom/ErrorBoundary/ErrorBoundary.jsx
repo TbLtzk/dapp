@@ -11,7 +11,9 @@ class ErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError (error) {
-    Sentry.captureMessage(error)
+    if (process.env.NODE_ENV !== 'development') {
+      Sentry.captureMessage(error)
+    }
     return { hasError: true }
   }
 

@@ -52,12 +52,16 @@ class ErrorHandler {
         details: capitalize(errorObj.stack.split(':')[2].trim())
       }
     }
-    Sentry.captureMessage(message)
+    if (process.env.NODE_ENV !== 'development') {
+      Sentry.captureMessage(error.message)
+    }
     return message
   }
 
   static processWithoutFeedback (error) {
-    Sentry.captureMessage(error.message)
+    if (process.env.NODE_ENV !== 'development') {
+      Sentry.captureMessage(error.message)
+    }
     console.error(error.message)
   }
 }

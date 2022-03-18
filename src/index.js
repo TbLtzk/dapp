@@ -14,7 +14,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 Sentry.init({
   dsn: 'https://55eac6f20f434cc2b23b93499ac31111@o1170264.ingest.sentry.io/6263659',
   integrations: [new BrowserTracing()],
-  tracesSampleRate: 1.0
+  tracesSampleRate: 1.0,
+  enabled: process.env.NODE_ENV !== 'development'
 })
 
 ReactDOM.render(

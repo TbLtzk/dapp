@@ -14,49 +14,52 @@ import ErrorHandler from 'func/ErrorHandler'
 import { BN, uintPerSecondToPerYearNumber } from 'func/useful'
 import { setErrorMessage } from 'store/transaction-handler/action-creators'
 
-export async function addQBTCToken (setQbtcToken) {
-  const { _address } = await getGovernedEpdrQbtcAddressInstance()
-  ethereum
-    .request({
+async function addToken (contract, address) {
+  try {
+    const [decimals, symbol] = await Promise.all([
+      contract.methods.decimals().call(),
+      contract.methods.symbol().call()
+    ])
+
+    const response = await ethereum.request({
       method: 'wallet_watchAsset',
       params: {
         type: 'ERC20',
         options: {
-          address: _address,
-          symbol: 'QBTC',
-          decimals: 18
+          address,
+          symbol,
+          decimals
         }
       }
     })
-    .then((result) => {
-      if (result) {
-        localStorage.setItem('qbtcTokenAdded', '0')
-        setQbtcToken('0')
-      }
-    })
+    return response
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    return null
+  }
+}
+
+export async function addQBTCToken (setQbtcToken) {
+  const contract = await getGovernedEpdrQbtcAddressInstance()
+  const response = await addToken(contract, contract._address)
+  if (response) {
+    localStorage.setItem('qbtcTokenAdded', '0')
+    setQbtcToken('0')
+  } else {
+    setQbtcToken('')
+  }
 }
 
 export async function addQUSDToken (setQusdToken) {
-  const { address } = await getStableCoinInstance()
+  const contract = await getStableCoinInstance()
+  const response = await addToken(contract.instance, contract.address)
 
-  ethereum
-    .request({
-      method: 'wallet_watchAsset',
-      params: {
-        type: 'ERC20',
-        options: {
-          address: address,
-          symbol: 'QUSD',
-          decimals: 18
-        }
-      }
-    })
-    .then((result) => {
-      if (result) {
-        localStorage.setItem('qusdTokenAdded', '0')
-        setQusdToken('0')
-      }
-    })
+  if (response) {
+    localStorage.setItem('qusdTokenAdded', '0')
+    setQusdToken('0')
+  } else {
+    setQusdToken('')
+  }
 }
 
 export function getOutstandingDebtHelper (vaultsStats) {
