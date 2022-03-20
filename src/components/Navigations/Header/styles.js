@@ -20,6 +20,12 @@ const handleColorTheme = (props) => {
         background: ${props.theme.colors.validationError};
       `
     }
+    case '35444': {
+      return css`
+        color: ${props.theme.colors.white};
+        background: ${props.theme.colors.red};
+      `
+    }
     case 'unknown':
     default: {
       return css`

@@ -2,6 +2,7 @@ export const testnetDocsUrl = 'https://docs.qtestnet.org'
 export const mainnetDocsUrl = 'https://docs.q.org'
 
 export const networks = {
+  35444: 'Localnet',
   35443: 'Testnet',
   35442: 'Devnet',
   35441: 'Mainnet'
