@@ -15,27 +15,29 @@ function CopyToClipboard ({ valueToCopy, children }) {
   }
 
   return (
-        <OverlayTrigger
-            key="top"
-            placement="top"
-            overlay={
-                <Popover id="popover-basic">
-                    <Popover.Content
-                        style={{
-                          background: colors.neonGreen
-                        }}
-                    >
-                        {copy ? 'Copied!' : 'Copy'}
-                    </Popover.Content>
-                </Popover>
-            }
-        >
-            <Copy text={valueToCopy}>
-                <span onClick={handleCopy} style={{ cursor: 'pointer' }}>
-                    {children}
-                </span>
-            </Copy>
-        </OverlayTrigger>
+        <div className="card__copy">
+            <OverlayTrigger
+                key="top"
+                placement="top"
+                overlay={
+                    <Popover id="popover-basic">
+                        <Popover.Content
+                            style={{
+                              background: colors.neonGreen
+                            }}
+                        >
+                            {copy ? 'Copied!' : 'Copy'}
+                        </Popover.Content>
+                    </Popover>
+                }
+            >
+                <Copy text={valueToCopy}>
+                    <span onClick={handleCopy} style={{ cursor: 'pointer' }}>
+                        {children}
+                    </span>
+                </Copy>
+            </OverlayTrigger>
+        </div>
   )
 }
 

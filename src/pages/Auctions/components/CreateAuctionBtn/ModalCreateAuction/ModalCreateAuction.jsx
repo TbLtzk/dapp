@@ -21,7 +21,9 @@ function ModalCreateAuction ({ modalShow, onHide, activeTab }) {
   const stepLimit = useSelector(createdStepsLimit)
   const stepCounter = useSelector(stepCounterModal)
 
-  const { register, errors, handleSubmit, setValue } = useForm()
+  const { register, errors, handleSubmit, setValue } = useForm({
+    mode: 'onChange'
+  })
 
   useEffect(() => {
     Object.values(fields).forEach((value) => {

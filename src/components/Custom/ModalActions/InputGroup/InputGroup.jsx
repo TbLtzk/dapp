@@ -2,7 +2,7 @@ import React, { Fragment, useCallback } from 'react'
 import { fields } from 'constants/fieldsNaming'
 import FormInput from 'components/Base/Form/FormInput'
 import { isAddress } from 'func/useful'
-import { from1to100Regex, hashRegex, linkRegex } from 'constants/regex'
+import { from1to100Regex, hashRegex, linkRegex, numberRegex, vaultID } from 'constants/regex'
 
 function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type, setValue }) {
   const getRefType = useCallback((inputType) => {
@@ -19,10 +19,16 @@ function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type, se
           validate: (address) => (isAddress(address) ? true : 'Address not valid')
         })
       }
+      case fields.vault: {
+        return register({
+          required: 'Field is required!',
+          validate: (value) => (value.match(vaultID) ? true : 'Vault ID not valid')
+        })
+      }
       case fields.bid: {
         return register({
           required: 'Field is required!',
-          validate: (value) => (value.match(hashRegex) ? true : 'Hash not valid')
+          validate: (value) => (value.match(numberRegex) ? true : 'Bid not valid')
         })
       }
       case fields.hash: {

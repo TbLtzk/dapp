@@ -112,6 +112,7 @@ function InfBlocksUp () {
                 <CopyToClipboard valueToCopy={constitutionHashShow}>
                     <p className="card__hash">{constitutionHashShow}</p>
                 </CopyToClipboard>
+
                 <div className="card__actions">
                     <a href={latestConstitution} target="_blank" rel="noreferrer">
                         <Button alwaysEnabled icon="download" title="Download Latest" handleButton={() => {}} />
