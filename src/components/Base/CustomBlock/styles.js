@@ -56,12 +56,7 @@ export const Block = styled.div`
     font-size: 13px;
     margin-bottom: 15px;
   }
-  .card__hash {
-    width: 95%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+
   .card__actions {
     display: flex;
     align-items: flex-start;
@@ -88,6 +83,14 @@ export const Block = styled.div`
     display: flex;
     align-items: flex-start;
     margin: 15px 0;
+  }
+
+  .card__copy {
+    max-width: 100%;
+    width: min-content;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .card__one-line-simple-form {

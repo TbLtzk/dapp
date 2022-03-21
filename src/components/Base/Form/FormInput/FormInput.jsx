@@ -43,7 +43,7 @@ const FormInput = forwardRef((props, ref) => {
             palette={currentTheme}
             color={color ? 1 : 0}
             lbl={lbl}
-            isfocus={isFocus}
+            isfocus={isValid === 'error' ? '' : isFocus}
             isdisabled={isDisabled}
             modal={modal ? 1 : 0}
         >
