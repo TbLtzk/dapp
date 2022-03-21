@@ -1,112 +1,112 @@
-import React, { useEffect, useState } from "react";
-import CustomBlock from "components/Base/CustomBlock";
-import FormInput from "components/Base/Form/FormInput";
-import Button from "components/Base/Buttons/Button";
+import React, { useEffect, useState } from 'react'
+import CustomBlock from 'components/Base/CustomBlock'
+import FormInput from 'components/Base/Form/FormInput'
+import Button from 'components/Base/Buttons/Button'
 
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form'
 
-import { useDispatch, useSelector } from "react-redux";
-import { setDepositCall, setWithdrawCall, setSendCall } from "store/q-vault/action-creators";
-import { userAddressMetamask } from "store/user-inf/selectors";
-import { accountBalance } from "store/q-vault/selectors";
-import { getQVaultDepositAmount } from "contracts/helpers/q-vault-helper";
-import { WARNING_MAX_NUMBER } from "constants/statuses";
-import { BN, isAddress } from "func/useful";
+import { useDispatch, useSelector } from 'react-redux'
+import { setDepositCall, setWithdrawCall, setSendCall } from 'store/q-vault/action-creators'
+import { userAddressMetamask } from 'store/user-inf/selectors'
+import { accountBalance } from 'store/q-vault/selectors'
+import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper'
+import { WARNING_MAX_NUMBER } from 'constants/statuses'
+import { BN, isAddress } from 'func/useful'
 
-export default function ManageBalance({ maxQVaultWithdrawAmount }) {
-    const dispatch = useDispatch();
-    const address = useSelector(userAddressMetamask);
-    const depositMax = useSelector(accountBalance);
+export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
+  const dispatch = useDispatch()
+  const address = useSelector(userAddressMetamask)
+  const depositMax = useSelector(accountBalance)
 
-    const { register: registerSend, handleSubmit: submitSend, errors: errorsSend, setValue: setSendValue } = useForm();
+  const { register: registerSend, handleSubmit: submitSend, errors: errorsSend, setValue: setSendValue } = useForm()
 
-    const {
-        register: registerDeposit,
-        handleSubmit: submitDeposit,
-        errors: errorsDeposit,
-        setValue: setDepositValue,
-        setError: setDepositError,
-        clearErrors: clearDepositErrors,
-    } = useForm();
+  const {
+    register: registerDeposit,
+    handleSubmit: submitDeposit,
+    errors: errorsDeposit,
+    setValue: setDepositValue,
+    setError: setDepositError,
+    clearErrors: clearDepositErrors
+  } = useForm()
 
-    const {
-        register: registerWithdraw,
-        handleSubmit: submitWithdraw,
-        errors: errorsWithdraw,
-        setValue: setWithdrawValue,
-    } = useForm();
+  const {
+    register: registerWithdraw,
+    handleSubmit: submitWithdraw,
+    errors: errorsWithdraw,
+    setValue: setWithdrawValue
+  } = useForm()
 
-    const [maxQVaultDepositAmount, setMaxQVaultDepositAmount] = useState(null);
+  const [maxQVaultDepositAmount, setMaxQVaultDepositAmount] = useState(null)
 
-    useEffect(() => {
-        if (depositMax) {
-            fetchQVaultDepositAmount();
-        }
-    }, [depositMax]);
-
-    async function fetchQVaultDepositAmount() {
-        const amount = await getQVaultDepositAmount(address, depositMax);
-        setMaxQVaultDepositAmount(amount);
+  useEffect(() => {
+    if (depositMax) {
+      fetchQVaultDepositAmount()
     }
+  }, [depositMax])
 
-    async function handleDepositMax() {
-        if (maxQVaultDepositAmount > 0) {
-            setDepositValue("amount", maxQVaultDepositAmount);
-            setDepositError("amount", {
-                message: WARNING_MAX_NUMBER,
-            });
-        }
+  async function fetchQVaultDepositAmount () {
+    const amount = await getQVaultDepositAmount(address, depositMax)
+    setMaxQVaultDepositAmount(amount)
+  }
+
+  async function handleDepositMax () {
+    if (maxQVaultDepositAmount > 0) {
+      setDepositValue('amount', maxQVaultDepositAmount)
+      setDepositError('amount', {
+        message: WARNING_MAX_NUMBER
+      })
     }
+  }
 
-    function handleWithdrawMax() {
-        if (Number(maxQVaultWithdrawAmount) > 0) {
-            setWithdrawValue("amount", maxQVaultWithdrawAmount);
-        }
+  function handleWithdrawMax () {
+    if (Number(maxQVaultWithdrawAmount) > 0) {
+      setWithdrawValue('amount', maxQVaultWithdrawAmount)
     }
+  }
 
-    function handleSendMax() {
-        if (Number(maxQVaultWithdrawAmount) > 0) {
-            setSendValue("amount", maxQVaultWithdrawAmount);
-        }
+  function handleSendMax () {
+    if (Number(maxQVaultWithdrawAmount) > 0) {
+      setSendValue('amount', maxQVaultWithdrawAmount)
     }
+  }
 
-    function handleChangeDepositAmount(event) {
-        const { value } = event.target;
-        const moreThanMaxAmount = BN(value).comparedTo(BN(maxQVaultDepositAmount));
+  function handleChangeDepositAmount (event) {
+    const { value } = event.target
+    const moreThanMaxAmount = BN(value).comparedTo(BN(maxQVaultDepositAmount))
 
-        if (moreThanMaxAmount === 0) {
-            setDepositError("amount", {
-                message: WARNING_MAX_NUMBER,
-            });
-        } else {
-            if (moreThanMaxAmount === 1) {
-                setDepositValue("amount", maxQVaultDepositAmount);
-                setDepositError("amount", {
-                    message: WARNING_MAX_NUMBER,
-                });
-            } else {
-                clearDepositErrors();
-            }
-        }
+    if (moreThanMaxAmount === 0) {
+      setDepositError('amount', {
+        message: WARNING_MAX_NUMBER
+      })
+    } else {
+      if (moreThanMaxAmount === 1) {
+        setDepositValue('amount', maxQVaultDepositAmount)
+        setDepositError('amount', {
+          message: WARNING_MAX_NUMBER
+        })
+      } else {
+        clearDepositErrors()
+      }
     }
+  }
 
-    function setDepositAmount(formData) {
-        dispatch(setDepositCall(address, formData.amount));
-        setDepositValue("amount", null);
-    }
+  function setDepositAmount (formData) {
+    dispatch(setDepositCall(address, formData.amount))
+    setDepositValue('amount', null)
+  }
 
-    function setSendAmount(formData) {
-        dispatch(setSendCall(formData.address, formData.amount));
-        setSendValue("amount", null);
-        setSendValue("address", null);
-    }
+  function setSendAmount (formData) {
+    dispatch(setSendCall(formData.address, formData.amount))
+    setSendValue('amount', null)
+    setSendValue('address', null)
+  }
 
-    function setWithdrawAmount(formData) {
-        dispatch(setWithdrawCall(address, formData.amount));
-        setWithdrawValue("amount", null);
-    }
+  function setWithdrawAmount (formData) {
+    dispatch(setWithdrawCall(address, formData.amount))
+    setWithdrawValue('amount', null)
+  }
 
-    return (
+  return (
         <CustomBlock>
             <h1>Manage Balance</h1>
             <h4>Transfer Into Q Vault</h4>
@@ -121,11 +121,11 @@ export default function ManageBalance({ maxQVaultWithdrawAmount }) {
                     onMaxClick={handleDepositMax}
                     onChange={handleChangeDepositAmount}
                     ref={registerDeposit({
-                        required: "Field is required!",
-                        pattern: {
-                            value: /[0-9.]/gim,
-                            message: "Invalid amount",
-                        },
+                      required: 'Field is required!',
+                      pattern: {
+                        value: /[0-9.]/gim,
+                        message: 'Invalid amount'
+                      }
                     })}
                     valid={errorsDeposit.amount?.message}
                 />
@@ -142,11 +142,11 @@ export default function ManageBalance({ maxQVaultWithdrawAmount }) {
                     placeholder="0.0"
                     onMaxClick={handleWithdrawMax}
                     ref={registerWithdraw({
-                        required: "Field is required!",
-                        pattern: {
-                            value: /[0-9.]/gim,
-                            message: "Invalid amount",
-                        },
+                      required: 'Field is required!',
+                      pattern: {
+                        value: /[0-9.]/gim,
+                        message: 'Invalid amount'
+                      }
                     })}
                     valid={errorsWithdraw.amount?.message}
                 />
@@ -165,8 +165,8 @@ export default function ManageBalance({ maxQVaultWithdrawAmount }) {
                     color={true}
                     valid={errorsSend.address?.message}
                     ref={registerSend({
-                        required: "Field is required!",
-                        validate: (address) => (isAddress(address) ? true : "Incorrect address"),
+                      required: 'Field is required!',
+                      validate: (address) => (isAddress(address) ? true : 'Incorrect address')
                     })}
                 />
 
@@ -179,11 +179,11 @@ export default function ManageBalance({ maxQVaultWithdrawAmount }) {
                     placeholder="0.00"
                     onMaxClick={handleSendMax}
                     ref={registerSend({
-                        required: "Field is required!",
-                        pattern: {
-                            value: /[0-9.]/gim,
-                            message: "Invalid amount",
-                        },
+                      required: 'Field is required!',
+                      pattern: {
+                        value: /[0-9.]/gim,
+                        message: 'Invalid amount'
+                      }
                     })}
                     valid={errorsSend.amount?.message}
                 />
@@ -192,5 +192,5 @@ export default function ManageBalance({ maxQVaultWithdrawAmount }) {
                 </div>
             </div>
         </CustomBlock>
-    );
+  )
 }
