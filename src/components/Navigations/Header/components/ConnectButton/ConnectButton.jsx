@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import { loadTypeSelector, networkSelector } from 'store/user-inf/selectors'
 import { ethereum } from 'components/Custom/LoadingMetaMask/LoadingMetaMask'
 import InstallMetamask from './InstallMetamask'
+import ErrorHandler from 'func/ErrorHandler'
 
 async function requestConnect (params) {
   params = networkParameters[params.name]
@@ -24,14 +25,19 @@ async function requestConnect (params) {
           params: [params]
         })
       } catch (error) {
-        console.error(error)
+        ErrorHandler.processWithoutFeedback(error)
       }
     }
+    ErrorHandler.processWithoutFeedback(error)
   }
 }
 
 async function requestLogin () {
-  await ethereum.request({ method: 'eth_requestAccounts' })
+  try {
+    await ethereum.request({ method: 'eth_requestAccounts' })
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+  }
 }
 
 function ConnectButton () {

@@ -1,4 +1,5 @@
 import { ethereum } from 'components/Custom/LoadingMetaMask/LoadingMetaMask'
+
 import {
   getBorrowingCoreInstance,
   getSavingInstance,
@@ -41,25 +42,16 @@ async function addToken (contract, address) {
 
 export async function addQBTCToken (setQbtcToken) {
   const contract = await getGovernedEpdrQbtcAddressInstance()
-  const response = await addToken(contract, contract._address)
-  if (response) {
-    localStorage.setItem('qbtcTokenAdded', '0')
-    setQbtcToken('0')
-  } else {
-    setQbtcToken('')
-  }
+  addToken(contract, contract._address)
+  localStorage.setItem('qbtcTokenAdded', '0')
+  setQbtcToken('0')
 }
 
 export async function addQUSDToken (setQusdToken) {
   const contract = await getStableCoinInstance()
-  const response = await addToken(contract.instance, contract.address)
-
-  if (response) {
-    localStorage.setItem('qusdTokenAdded', '0')
-    setQusdToken('0')
-  } else {
-    setQusdToken('')
-  }
+  addToken(contract.instance, contract.address)
+  localStorage.setItem('qusdTokenAdded', '0')
+  setQusdToken('0')
 }
 
 export function getOutstandingDebtHelper (vaultsStats) {

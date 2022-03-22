@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
-import { PROPOSALS_TYPES, AUCTIONS_TYPES } from 'constants/statuses'
+import * as Sentry from '@sentry/react'
 
+import { PROPOSALS_TYPES, AUCTIONS_TYPES } from 'constants/statuses'
 import Dashboard from '../pages/Dashboard/Dashboard'
 import Manage from '../pages/Dashboard/Manage'
 import Governance from '../pages/Governance'
@@ -21,6 +22,8 @@ import NotFound from 'pages/NotFound'
 import Monitoring from 'pages/Monitoring'
 import ErrorBoundary from 'components/Custom/ErrorBoundary'
 import StyleLayout from 'components/Base/StyleLayout'
+import { store } from 'store/index'
+import ErrorHandler from 'func/ErrorHandler'
 
 const options = {
   position: positions.TOP_RIGHT,
@@ -32,7 +35,23 @@ const options = {
   }
 }
 
+function addSentryContext () {
+  try {
+    const { network, loadType } = store.getState().userInf
+    Sentry.setContext('additional', {
+      network,
+      loadType
+    })
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+  }
+}
+
 function Routes () {
+  useEffect(() => {
+    addSentryContext()
+  }, [])
+
   return (
     <StyleLayout>
       <ErrorBoundary>

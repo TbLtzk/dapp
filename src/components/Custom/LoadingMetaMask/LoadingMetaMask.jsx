@@ -16,6 +16,7 @@ import { getCheckIsUserRootNode } from 'store/root-node/action-creators'
 import { getParametersDependsOnUrl } from 'func/useful'
 import Routes from 'navigation/Routes'
 import { networks } from 'constants/config'
+import ErrorHandler from 'func/ErrorHandler'
 
 const web3 = new Web3(Web3.givenProvider)
 
@@ -40,7 +41,9 @@ function LoadingMetaMask () {
     try {
       if (!ethereum) {
         // user withoout metamask
-        window.web3 = new Web3(new Web3.providers.HttpProvider(networkParams?.rpc || 'https://rpc.qtestnet.org'))
+        window.web3 = new Web3(
+          new Web3.providers.HttpProvider(networkParams?.rpc || 'https://rpc.qtestnet.org')
+        )
         dispatch(setLoadType(LOAD_TYPES.notInstalled))
       } else {
         // user with metamask
@@ -89,7 +92,7 @@ function LoadingMetaMask () {
       await loadAdditionalInfo()
       setIsMetaMask(LOAD_TYPES.loaded)
     } catch (error) {
-      console.error(error)
+      ErrorHandler.processWithoutFeedback(error)
       setIsMetaMask(LOAD_TYPES.initError)
     }
   }
@@ -100,13 +103,13 @@ function LoadingMetaMask () {
 
   switch (isMetaMask) {
     case LOAD_TYPES.initError:
-      return <WrapContainer height='100vh'>Can\'t load account data. Please reload app</WrapContainer>
+      return <WrapContainer height="100vh">Can\'t load account data. Please reload app</WrapContainer>
     case LOAD_TYPES.loaded:
       return <Routes />
     case LOAD_TYPES.loading:
     default:
       return (
-                <WrapContainer height='100vh'>
+                <WrapContainer height="100vh">
                     <LoadingSpinner type="light" />
                 </WrapContainer>
       )

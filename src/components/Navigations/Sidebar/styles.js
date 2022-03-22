@@ -99,6 +99,10 @@ export const SidebarContainer = styled.div`
         display: block;
         overflow: visible;
       }
+
+      .mdi-chevron-right {
+        right: -10px;
+      }
     }
   }
 `

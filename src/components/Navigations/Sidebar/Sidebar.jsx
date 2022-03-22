@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { qActiveProposalsCountSelector } from 'store/voting/q-proposals/selectors'
@@ -24,9 +24,11 @@ import Version from './components/Version'
 
 import { FooterContainer, SidebarContainer } from './styles'
 import References from './components/References'
+import useWindowSize from 'hooks/useWindowSize'
 
 function Sidebar () {
   const appMode = useSelector(mode)
+  const windowSize = useWindowSize()
 
   const qActiveProposalsCount = useSelector(qActiveProposalsCountSelector)
   const rootActiveProposalsCount = useSelector(rootActiveProposalsCountSelector)
@@ -44,6 +46,12 @@ function Sidebar () {
   const systemSurplusActiveAuctionsCount = systemSurplusAuction?.activeAuctions?.length
 
   const [openSidebar, setOpenSidebar] = useState(localStorage.getItem('sidebar-toggle') ? '' : '0')
+
+  useEffect(() => {
+    if (windowSize.width < 700) {
+      setOpenSidebar('')
+    }
+  }, [windowSize.width])
 
   const dashboard = <CommonLinks openSidebar={openSidebar} linkTo="/" linkTitle="Dashboard" />
 

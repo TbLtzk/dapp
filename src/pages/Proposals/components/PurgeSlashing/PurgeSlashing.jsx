@@ -17,7 +17,7 @@ function PurgeSlashing () {
   const dispatch = useDispatch()
   const isRootNode = useSelector(isUserRootNode)
 
-  const { register, handleSubmit, errors, setValue, clearErrors } = useForm({ mode: 'onChange' })
+  const { register, handleSubmit, errors, setValue } = useForm({ mode: 'onChange' })
 
   function handlePurge (formData, contractType) {
     dispatch(setPurgeSlashing(formData.slashingAddress, contractType))
@@ -25,7 +25,7 @@ function PurgeSlashing () {
   }
 
   return (
-        <CustomBlock onClick={() => clearErrors()}>
+        <CustomBlock>
             <h1>Purge Slashing</h1>
             <FormInput
                 color={true}

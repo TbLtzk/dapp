@@ -18,13 +18,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
   const address = useSelector(userAddressMetamask)
   const depositMax = useSelector(accountBalance)
 
-  const {
-    register: registerSend,
-    handleSubmit: submitSend,
-    errors: errorsSend,
-    setValue: setSendValue,
-    clearErrors: clearSendErrors
-  } = useForm()
+  const { register: registerSend, handleSubmit: submitSend, errors: errorsSend, setValue: setSendValue } = useForm()
 
   const {
     register: registerDeposit,
@@ -39,8 +33,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
     register: registerWithdraw,
     handleSubmit: submitWithdraw,
     errors: errorsWithdraw,
-    setValue: setWithdrawValue,
-    clearErrors: clearWithdrawErrors
+    setValue: setWithdrawValue
   } = useForm()
 
   const [maxQVaultDepositAmount, setMaxQVaultDepositAmount] = useState(null)
@@ -126,7 +119,6 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
                     type="number"
                     placeholder="0.0"
                     onMaxClick={handleDepositMax}
-                    onClick={() => clearDepositErrors('amount')}
                     onChange={handleChangeDepositAmount}
                     ref={registerDeposit({
                       required: 'Field is required!',
@@ -149,7 +141,6 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
                     type="number"
                     placeholder="0.0"
                     onMaxClick={handleWithdrawMax}
-                    onClick={() => clearWithdrawErrors('amount')}
                     ref={registerWithdraw({
                       required: 'Field is required!',
                       pattern: {
@@ -173,7 +164,6 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
                     placeholder="0x000"
                     color={true}
                     valid={errorsSend.address?.message}
-                    onClick={() => clearSendErrors('address')}
                     ref={registerSend({
                       required: 'Field is required!',
                       validate: (address) => (isAddress(address) ? true : 'Incorrect address')
@@ -188,7 +178,6 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
                     lbl="Q"
                     placeholder="0.00"
                     onMaxClick={handleSendMax}
-                    onClick={() => clearSendErrors('amount')}
                     ref={registerSend({
                       required: 'Field is required!',
                       pattern: {
