@@ -1,7 +1,7 @@
 import { ValidatorMetrics } from '@q-dev/q-js-sdk/lib/utils/validator-metrics'
 import { ContractRegistryInstance } from '@q-dev/q-js-sdk'
 
-export const CONTRACT_REGISTRY_ADDRESS = '0x92C35a964624D9cbF90c2A0525e116093FAF867E'
+export const CONTRACT_REGISTRY_ADDRESS = '0xc3E589056Ece16BCB88c6f9318e9a7343b663522'
 
 export let contractRegistryInstance = null
 
