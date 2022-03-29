@@ -5,6 +5,7 @@ import { userAddressMetamask } from 'store/user-inf/selectors'
 import AddressForm from './components/AddressForm'
 import BalanceCard from './components/BalanceCard'
 import { fN } from 'func/useful'
+import PageWrap from 'components/Base/PageWrap'
 
 import { getUserBalance, getMinimumQVaultTimeLock, getQVaultTimeLocks } from 'store/q-vault/action-creators'
 import { getRootNodeStakes, getMinimumRootTimeLock, getRootTimeLocks } from 'store/root-node/action-creators'
@@ -97,14 +98,14 @@ function TimeLocks () {
   ]
 
   return (
-        <>
+        <PageWrap headerTitle="Time Locks">
             <AddressForm setAddressRefresh={handleRefresh} userAddress={currentAddress} />
             <div className="content__colm-2 content__time-locks">
                 {cardsData.map((card) => (
                     <BalanceCard key={card.contract} address={currentAddress.address} {...card} />
                 ))}
             </div>
-        </>
+        </PageWrap>
   )
 }
 
