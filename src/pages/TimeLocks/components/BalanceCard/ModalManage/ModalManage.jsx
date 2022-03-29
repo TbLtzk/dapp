@@ -22,7 +22,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
   }, [startDate, endDate])
 
   const checkCorrectDate = () => {
-    if (startDate === null || endDate === null) {
+    if (!startDate || !endDate) {
       return
     }
     if (dateToTimestamp(startDate) >= dateToTimestamp(endDate)) {
@@ -34,7 +34,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
 
   const handleSetDeposit = () => {
     const values = getValues()
-    const isFull = Object.values(values).every((x) => x !== null && x.length !== 0)
+    const isFull = Object.values(values).every((value) => value !== null && value.length !== 0)
     if (isFull && isCorrectDate.length === 0) {
       handleSubmit(setDeposit)()
       setModalShow(false)
@@ -43,15 +43,17 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
     }
   }
 
+  const handleHideModal = () => {
+    setModalShow(false)
+    setStartDate(null)
+    setEndDate(null)
+    reset()
+  }
+
   return (
         <ModalWindow
             show={modalShow}
-            onHide={() => {
-              setModalShow(false)
-              setStartDate(null)
-              setEndDate(null)
-              reset()
-            }}
+            onHide={handleHideModal}
             modalTitle={modalTitle}
             content={
                 <>
