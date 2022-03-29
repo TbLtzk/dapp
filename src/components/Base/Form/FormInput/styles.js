@@ -79,6 +79,7 @@ export const InputWrapper = styled(Form.Group)`
     }
 
     &:disabled {
+      cursor: not-allowed;
       background: ${(p) => {
         if (p.palette === 'dark') {
           return 'transparent'

@@ -54,7 +54,7 @@ function Calendar ({
                         dateFormat="h:mm, MMMM d, yyyy aa"
                         showTimeSelect
                         timeFormat="HH:mm"
-                        timeIntervals={15}
+                        timeIntervals={1}
                         customInput={<CustomInput />}
                     />
                 )}
