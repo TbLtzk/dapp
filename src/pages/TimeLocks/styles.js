@@ -3,14 +3,10 @@ import styled from 'styled-components'
 export const WrapContainer = styled.div`
   display: flex;
   margin-top: 5px;
-  align-items: center;
   max-width: 70%;
 
   & input {
     margin-right: 30px;
-  }
-  & button {
-    margin-bottom: 20px;
   }
 
   @media screen and (max-width: 1600px) {

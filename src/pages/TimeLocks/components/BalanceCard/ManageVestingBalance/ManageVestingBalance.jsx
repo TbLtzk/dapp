@@ -34,6 +34,8 @@ function ManageVestingBalance ({ setModalShow }) {
                 valid={errors.amountQ?.message}
             />
             <Button
+              position='relative'
+                right="-367px"
                 type="outline"
                 margin="0px 0px 12px 0px"
                 title="Withdraw"

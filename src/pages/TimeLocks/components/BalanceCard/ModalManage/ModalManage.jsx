@@ -92,7 +92,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
                     </CalendarWraper>
                     <h4>Amount</h4>
                     <FormInput
-                        lbl={'Q'}
+                        lbl="Q"
                         min={0}
                         name="amountQ"
                         type="number"
@@ -100,20 +100,28 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
                         ref={register({ required: 'Field is required!', pattern: /[0-9]/i })}
                         valid={errors.amountQ?.message}
                     />
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <div>
                         <Button
+                            position="relative"
+                            right="-380px"
                             type="outline"
                             title="Deposit"
                             width="80px"
-                            margin="0 0 20px 0"
+                            margin="-5px 0 10px 0"
                             handleButton={handleSetDeposit}
                         />
+                        <div className="modal-line" />
                         <Button
+                            position="relative"
+                            right="-270px"
                             type="outline"
                             title="Purge Expired Time Locks"
-                            width="200px"
-                            margin="0 0 20px 0"
-                            handleButton={setPurge}
+                            width="190px"
+                            margin="3px 0 20px 0"
+                            handleButton={() => {
+                              setPurge()
+                              handleHideModal()
+                            }}
                         />
                     </div>
                 </>

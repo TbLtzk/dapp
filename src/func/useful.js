@@ -5,6 +5,7 @@ import { CONTRACTS_NAMES } from 'constants/contracts'
 import { keyRegex } from 'constants/regex'
 import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper'
 import { orderBy } from 'lodash'
+import ErrorHandler from './ErrorHandler'
 
 export const getParametersDependsOnUrl = () => {
   return URLS[window.location.origin]
@@ -158,4 +159,14 @@ export function validatePattern (value, type) {
 
 export function parameterKeyValidation (key) {
   return key.length <= 70 && key.match(keyRegex) ? true : 'Parameter key not valid'
+}
+
+export async function fetchBlockNumber (block = 'latest') {
+  try {
+    const blockNumber = await window?.web3?.eth.getBlock(block)
+    return blockNumber.number
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    return 0
+  }
 }
