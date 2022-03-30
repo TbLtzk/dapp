@@ -4,6 +4,7 @@ import { getNowTimeWithGMT } from 'func/convertDate'
 import { useSelector } from 'react-redux'
 import { rootMembersMonitoringSelector } from 'store/root-node/selectors'
 import { validatorsMonitoringSelector } from 'store/validators/selectors'
+import { fetchBlockNumber } from 'func/useful'
 
 function CurrentInfo () {
   const [blockHeight, setBlockHeight] = useState('...')
@@ -20,8 +21,10 @@ function CurrentInfo () {
   }, [time])
 
   useEffect(() => {
-    window?.web3?.eth.getBlock('latest').then((data) => setBlockHeight(data.number))
-    const subscription = window?.web3?.eth.subscribe('newBlockHeaders', (_, result) => setBlockHeight(result?.number))
+    fetchBlockNumber('latest').then((blockNumber) => setBlockHeight(blockNumber))
+    const subscription = window?.web3?.eth.subscribe('newBlockHeaders', (_, result) =>
+      setBlockHeight(result?.number)
+    )
     return () => {
       subscription?.unsubscribe()
       setBlockHeight('...')

@@ -37,6 +37,7 @@ import {
   contractUpdatesEndedProposalsCountSelector,
   contractUpdatesLoadingProposalsCountSelector
 } from 'store/voting/contract-updates/selectors'
+import { fetchBlockNumber } from 'func/useful'
 
 function InfBlocksUp () {
   const appMode = useSelector(mode)
@@ -91,7 +92,7 @@ function InfBlocksUp () {
   useEffect(() => {
     dispatch(getConstitutionHash())
     setContractRegistryAddress(contractRegistryInstance.address)
-    window.web3.eth.getBlock('latest').then((response) => setBlockNumber(response.number || 0))
+    fetchBlockNumber('latest').then((blockNumber) => setBlockNumber(blockNumber))
   }, [dispatch])
 
   return (
