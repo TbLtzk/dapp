@@ -1,33 +1,35 @@
-import React, { useState } from 'react'
-import FormInput from 'components/Base/Form/FormInput'
-import Button from 'components/Base/Buttons/Button'
+import React from "react";
+import FormInput from "components/Base/Form/FormInput";
+import Button from "components/Base/Buttons/Button";
 
-import { useForm } from 'react-hook-form'
-import { WrapContainer } from '../../styles'
-import CustomBlock from 'components/Base/CustomBlock/CustomBlock'
-import { isAddress } from 'func/useful'
+import { useForm } from "react-hook-form";
+import { WrapContainer } from "../../styles";
+import CustomBlock from "components/Base/CustomBlock/CustomBlock";
+import { isAddress } from "func/useful";
 
-function AddressForm ({ setAddressRefresh, userAddress }) {
-  const [inputAddress, setInputAddress] = useState(userAddress.address)
-  const { register, handleSubmit, errors } = useForm({ mode: 'onChange' })
+function AddressForm({ setAddressRefresh, userAddress }) {
+    const { register, handleSubmit, errors } = useForm({
+        mode: "onChange",
+        defaultValues: {
+            address: userAddress.address,
+        },
+    });
 
-  return (
+    return (
         <CustomBlock>
             <h5>Current Address:</h5>
             <h4>{userAddress.address}</h4>
-            <h5>Write address:</h5>
+            <h5>Update address:</h5>
             <WrapContainer>
                 <FormInput
                     name="address"
                     type="string"
                     color={true}
-                    value={inputAddress}
                     ref={register({
-                      required: 'Address required!',
-                      validate: (address) => (isAddress(address) ? true : 'Incorrect address')
+                        required: "Address required!",
+                        validate: (address) => (isAddress(address) ? true : "Incorrect address"),
                     })}
                     valid={errors?.address?.message}
-                    onChange={(value) => setInputAddress(value.target.value.trim())}
                 />
                 <div>
                     <Button
@@ -41,7 +43,7 @@ function AddressForm ({ setAddressRefresh, userAddress }) {
                 </div>
             </WrapContainer>
         </CustomBlock>
-  )
+    );
 }
 
-export default AddressForm
+export default AddressForm;
