@@ -4,6 +4,12 @@ import DatePicker from 'react-datepicker'
 import { Controller } from 'react-hook-form'
 import FormInput from '../Form/FormInput'
 
+const filterPassedTime = (time) => {
+  const currentDate = new Date()
+  const selectedDate = new Date(time)
+  return currentDate.getTime() < selectedDate.getTime()
+}
+
 function Calendar ({
   title,
   control,
@@ -47,12 +53,13 @@ function Calendar ({
                         selectsStart={selectsStart}
                         selectsEnd={selectsEnd}
                         onBlur={onBlur}
+                        minDate={minDate}
                         selected={selected}
                         startDate={startDate}
                         endDate={endDate}
-                        minDate={minDate}
                         dateFormat="h:mm, MMMM d, yyyy aa"
                         showTimeSelect
+                        filterTime={filterPassedTime}
                         timeFormat="HH:mm"
                         timeIntervals={1}
                         customInput={<CustomInput />}
