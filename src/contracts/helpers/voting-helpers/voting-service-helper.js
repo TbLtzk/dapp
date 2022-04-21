@@ -148,7 +148,7 @@ export default class VotingService {
     objRes.currentQuorum = transformToPercentage(proposalStats.currentQuorum)
     objRes.requiredMajority = transformToPercentage(proposalStats.requiredMajority)
     objRes.requiredQuorum = transformToPercentage(proposalStats.requiredQuorum)
-    objRes.vetoThreshold = '50'
+    objRes.vetoThreshold = '50.00'
     return objRes
   }
 
