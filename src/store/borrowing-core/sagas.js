@@ -120,7 +120,6 @@ function * getSavingAndInterestRateGenerator () {
 
     const interestRate = yield contract.getUint('governed.EPDR.QBTC_QUSD_interestRate')
     const savingRate = yield contract.getUint('governed.EPDR.QUSD_savingRate')
-
     yield put(setInterestRate(fN(uintPerSecondToPerYearNumber(interestRate))))
     yield put(setSavingRate(fN(uintPerSecondToPerYearNumber(savingRate))))
   } catch (error) {
@@ -138,7 +137,6 @@ export default [
     actionTypes.GET_TOTAL_COLLATERAL_LOCKED_AND_OUTSTANDING_DEBT,
     getTotalCollateralLockedAndOutstandingDebtGenerator
   ),
-
   takeEvery(actionTypes.GET_SAVING_ASSETS, getSavingAssetsGenerator),
   takeEvery(actionTypes.GET_BORROWING_VAULTS, getBorrowingVaultsGenerator)
 ]

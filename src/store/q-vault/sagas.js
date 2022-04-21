@@ -23,7 +23,7 @@ import {
   getDelegationInfo
 } from './action-creators'
 
-import { toWei, fromWei } from 'func/balance'
+import { toWei, fromWei, prepareBalanceDetails } from 'func/balance'
 import { addIndex } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
 
@@ -31,6 +31,7 @@ import { getQVaultInstance, getVotingWeightProxyInstance } from 'contracts/contr
 
 import { getOutstandingDelegationRewardsList, getQHolderRewardPool } from 'contracts/helpers/q-vault-helper'
 import ErrorHandler from 'func/ErrorHandler'
+import { userBalance } from './selectors'
 
 function * getAccountBalanceGenerator ({ address }) {
   try {
@@ -277,9 +278,11 @@ function * setOnClaimStakeDelegatorRewardGenerator () {
 function * getBalanceDetailsGenerator () {
   try {
     const contract = yield call(getQVaultInstance)
-    const data = yield contract.getBalanceDetails()
+    const balanceDetailsData = yield contract.getBalanceDetails()
     const qHolderRewardPool = yield getQHolderRewardPool()
-    yield put(getQVBalanceSuccess({ ...data, qHolderRewardPool }))
+    const userQVBalance = yield select(userBalance)
+    const balanceDetails = prepareBalanceDetails(balanceDetailsData, userQVBalance)
+    yield put(getQVBalanceSuccess({ ...balanceDetails, qHolderRewardPool }))
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error)
   }

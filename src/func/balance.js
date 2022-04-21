@@ -1,4 +1,4 @@
-import { BN } from './useful'
+import { BN, fN, uintPerSecondToPerYearNumber } from './useful'
 
 export function fromBtcBlockchain (value) {
   return BN(value).dividedBy(1e8).toFixed()
@@ -42,4 +42,13 @@ export function calculateGas (value) {
 export function subtractAmount (value = 0, value2 = 0) {
   const result = BN(toWei(value)).minus(toWei(value2)).toFixed()
   return fromWei(result)
+}
+
+export function prepareBalanceDetails (balanceDetails, userBalance) {
+  const yearlyExpectedEarnings = userBalance
+    ? userBalance * (uintPerSecondToPerYearNumber(balanceDetails.interestRate) / 100)
+    : 0
+  const interestRatePercentage = fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate))
+
+  return { ...balanceDetails, yearlyExpectedEarnings: fN(yearlyExpectedEarnings), interestRatePercentage }
 }

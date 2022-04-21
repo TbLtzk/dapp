@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/user-inf/selectors'
 import {
@@ -23,11 +23,14 @@ import {
 import VoterStatus from 'components/Custom/PageLists/VoterStatus'
 import CustomBlock from 'components/Base/CustomBlock'
 
-import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
+import { fN } from 'func/useful'
 import { fromSolDateFormattingT1 } from 'func/date'
 import { getVoteDelegation } from 'contracts/helpers/voting-helpers/base-voting-helper'
+import { isEmpty } from 'lodash'
 
 export default function Panel () {
+  const dispatch = useDispatch()
+
   const userAddress = useSelector(userAddressMetamask)
   const qVaultLockedAmount = useSelector(qVaultMinimumTimeLock)
   const balanceDetails = useSelector(qvBalance)
@@ -39,9 +42,7 @@ export default function Panel () {
   const agent = useSelector(votingAgent)
   const weight = useSelector(receivedWeight)
 
-  const [yearlyExpectedEarnings, setYearlyExpectedEarnings] = useState(0)
-
-  const dispatch = useDispatch()
+  const { votingInfo } = getVoteDelegation(agent, weight, userAddress)
 
   useEffect(() => {
     dispatch(getAccountBalance(userAddress))
@@ -50,22 +51,6 @@ export default function Panel () {
     dispatch(getMinimumQVaultTimeLock(userAddress))
     dispatch(getQVBalance())
   }, [dispatch, updateOnClaim])
-
-  const { votingInfo } = getVoteDelegation(agent, weight, userAddress)
-
-  useEffect(() => {
-    const interestRate = balanceDetails?.interestRate
-      ? uintPerSecondToPerYearNumber(balanceDetails.interestRate)
-      : 0
-    let yearlyExpectedEarningsCalc = 0
-    if (userQVBalanceL) {
-      yearlyExpectedEarningsCalc = userQVBalanceL * (interestRate / 100)
-    }
-    setYearlyExpectedEarnings(yearlyExpectedEarningsCalc)
-    return () => {
-      setYearlyExpectedEarnings(0)
-    }
-  }, [balanceDetails, userQVBalanceL])
 
   return (
         <CustomBlock>
@@ -82,13 +67,9 @@ export default function Panel () {
                     )
                   : null}
                 <h5>Q Token Holder Reward Rate (p.a.)</h5>
-                <p>
-                    {(balanceDetails?.interestRate
-                      ? fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate))
-                      : 0) + ' %'}
-                </p>
+                <p>{isEmpty(balanceDetails) ? '0 %' : balanceDetails?.interestRatePercentage + ' %'}</p>
                 <h5>Yearly Expected Reward</h5>
-                <p>{fN(yearlyExpectedEarnings) + ' Q'}</p>
+                <p>{isEmpty(balanceDetails) ? '0 Q' : balanceDetails?.yearlyExpectedEarnings + ' Q'}</p>
                 <h5>Q Address Balance</h5>
                 <p>{fN(userAccountBalance) + ' Q'}</p>
 
