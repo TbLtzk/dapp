@@ -17,7 +17,8 @@ function ModalWindow ({
   continueBtnHandler,
   content,
   modalTitle,
-  iconRight
+  iconRight,
+  closeButton = true
 }) {
   return (
         <ModalW
@@ -28,7 +29,7 @@ function ModalWindow ({
             centered
             backbtntitle={backBtnTitle}
         >
-            <Header closeButton>
+            <Header closeButton={closeButton}>
                 <Modal.Title>{modalTitle}</Modal.Title>
             </Header>
             <Body>{content}</Body>

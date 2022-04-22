@@ -208,3 +208,26 @@ export const AccordionLbl = styled.div`
   border: 1px solid ${(props) => (props.highlight === 1 ? props.theme.colors.activeLinks : props.theme.colors.white)};
   border-radius: 13px;
 `
+
+export const FooterDataContaier = styled.div`
+  display: flex;
+  align-items: center;
+
+  span {
+    color: ${(props) => props.theme.colors.oxfordBlueTint3};
+  }
+
+  p {
+    display: flex;
+    color: ${(props) => props.theme.colors.oxfordBlueTint3};
+    font-size: 12px;
+    cursor: pointer;
+    margin: 0;
+  }
+
+  .policy_container {
+    display: flex;
+    align-items: center;
+  }
+`
+export const SidebarFooterText = styled.div``
