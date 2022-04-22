@@ -30,10 +30,10 @@ function QProposalS2 ({ register, errors }) {
                     <h2>{constUpdate.radioBtnUpTitle}</h2>
                     <RadioBtnGroup
                         formData={formData}
-                        radioArr={constUpdate.radioBtnUp}
+                        values={constUpdate.radioBtnUp}
                         register={register}
                         errors={errors}
-                        nameArr="classification"
+                        name="classification"
                         handleChange={() => {}}
                     />
                     <InputGroup
@@ -46,10 +46,10 @@ function QProposalS2 ({ register, errors }) {
                     <h2>{constUpdate.radioBtnDownTitle}</h2>
                     <RadioBtnGroup
                         formData={formData}
-                        radioArr={constUpdate.radioBtnDown}
+                        values={constUpdate.radioBtnDown}
                         register={register}
                         errors={errors}
-                        nameArr={constUpdate.radioBtnDownName}
+                        name={constUpdate.radioBtnDownName}
                         handleChange={handleChange}
                     />
                 </div>

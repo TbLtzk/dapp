@@ -3,37 +3,44 @@ import React, { useEffect, useState } from 'react'
 import InputRadio from 'components/Base/Form/InputRadio'
 import ErrorInputMessage from 'components/Base/ErrorInputMessage'
 
-function RadioBtnGroup ({ nameArr, handleChange, register, errors, radioArr, formData }) {
-  const [activeRadioBtn, setActiveRadioBtn] = useState('')
+function RadioBtnGroup ({
+  name,
+  values = [],
+  labels = [],
+  formData,
+  errors,
+  register,
+  handleChange
+}) {
+  const [activeValue, setActiveValue] = useState('')
 
   useEffect(() => {
     if (formData) {
-      setActiveRadioBtn(formData[nameArr])
+      setActiveValue(formData[name])
     }
-  }, [formData, nameArr])
+  }, [formData, name])
 
   return (
         <div>
-            {radioArr?.map((value, i) => {
+            {values.map((value, i) => {
               const valueField = value.replace(/ /g, '-').toLowerCase()
-              const name = nameArr + '[]'
               return (
                     <InputRadio
                         key={i}
                         name={name}
-                        active={activeRadioBtn === valueField}
-                        checked={activeRadioBtn === valueField}
-                        handleChange={(value) => {
-                          setActiveRadioBtn(value.target.value)
-                          handleChange(value)
+                        active={activeValue === valueField}
+                        checked={activeValue === valueField}
+                        handleChange={(event) => {
+                          setActiveValue(event.target.value)
+                          handleChange(event)
                         }}
-                        label={value}
+                        label={labels[i] || value}
                         value={valueField}
                         ref={register({ required: 'Choose one option!' })}
                     />
               )
             })}
-            <ErrorInputMessage message={errors[nameArr]?.message} />
+            <ErrorInputMessage message={errors[name]?.message} />
         </div>
   )
 }
