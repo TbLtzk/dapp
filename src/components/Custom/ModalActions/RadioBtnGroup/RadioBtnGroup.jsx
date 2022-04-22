@@ -11,7 +11,6 @@ function RadioBtnGroup ({ nameArr, handleChange, register, errors, radioArr, for
       setActiveRadioBtn(formData[nameArr])
     }
   }, [formData, nameArr])
-  console.log()
 
   return (
         <div>

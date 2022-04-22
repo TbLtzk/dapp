@@ -3,7 +3,7 @@ export const constUpdate = {
   radioBtnUpTitle: 'Which part of the Constitution is affected',
   radioBtnUp: [
     'Basic Part | Preamble',
-    'Fundamental Part | Main Body and Defenitions',
+    'Fundamental Part | Main Body and Definitions',
     'Detailed Part | Selected Appendices'
   ],
   inputTitle: ['Please provide the new constitution Hash', 'Provide a reference link to external source'],
