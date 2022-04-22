@@ -85,14 +85,6 @@ export const Block = styled.div`
     margin: 15px 0;
   }
 
-  .card__copy {
-    max-width: 100%;
-    width: min-content;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
   .card__one-line-simple-form {
     display: grid;
     grid-template-columns: minmax(80px, 1fr) minmax(76px, 90px);

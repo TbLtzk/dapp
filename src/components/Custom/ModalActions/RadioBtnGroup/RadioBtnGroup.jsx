@@ -3,15 +3,7 @@ import React, { useEffect, useState } from 'react'
 import InputRadio from 'components/Base/Form/InputRadio'
 import ErrorInputMessage from 'components/Base/ErrorInputMessage'
 
-function RadioBtnGroup (props) {
-  const {
-    nameArr,
-    handleChange,
-    register,
-    errors,
-    radioArr,
-    formData
-  } = props
+function RadioBtnGroup ({ nameArr, handleChange, register, errors, radioArr, formData }) {
   const [activeRadioBtn, setActiveRadioBtn] = useState('')
 
   useEffect(() => {
@@ -21,29 +13,28 @@ function RadioBtnGroup (props) {
   }, [formData, nameArr])
 
   return (
-    <div>
-      {radioArr?.map((value, i) => {
-        const valueField = value.replace(/ /g, '-')
-          .toLowerCase()
-        const name = nameArr + '[]'
-        return (
-          <InputRadio
-            key={i}
-            name={name}
-            active={activeRadioBtn === valueField}
-            checked={activeRadioBtn === valueField}
-            handleChange={(value) => {
-              setActiveRadioBtn(value.target.value)
-              handleChange(value)
-            }}
-            label={value}
-            value={valueField}
-            ref={register({ required: 'Choose one option!' })}
-          />
-        )
-      })}
-      <ErrorInputMessage message={errors[nameArr]?.message}/>
-    </div>
+        <div>
+            {radioArr?.map((value, i) => {
+              const valueField = value.replace(/ /g, '-').toLowerCase()
+              const name = nameArr + '[]'
+              return (
+                    <InputRadio
+                        key={i}
+                        name={name}
+                        active={activeRadioBtn === valueField}
+                        checked={activeRadioBtn === valueField}
+                        handleChange={(value) => {
+                          setActiveRadioBtn(value.target.value)
+                          handleChange(value)
+                        }}
+                        label={value}
+                        value={valueField}
+                        ref={register({ required: 'Choose one option!' })}
+                    />
+              )
+            })}
+            <ErrorInputMessage message={errors[nameArr]?.message} />
+        </div>
   )
 }
 

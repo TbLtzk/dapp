@@ -1,7 +1,11 @@
 export const constUpdate = {
   subtitle: 'Constitution Updates change the underlying agreement upon which the Q system operates.',
   radioBtnUpTitle: 'Which part of the Constitution is affected',
-  radioBtnUp: ['Basic Part', 'Fundamental Part', 'Detailed Part'],
+  radioBtnUp: [
+    'Basic Part | Preamble',
+    'Fundamental Part | Main Body and Definitions',
+    'Detailed Part | Selected Appendices'
+  ],
   inputTitle: ['Please provide the new constitution Hash', 'Provide a reference link to external source'],
   inputs: ['Hash', 'External Link'],
   inputsObj: { hash: '', 'external-link': '' },
