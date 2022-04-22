@@ -22,10 +22,10 @@ function CreateStep1 ({ register, errors }) {
                         <h2>{basicVote.radioBtnDescr}</h2>
                         <RadioBtnGroup
                             formData={formData}
-                            radioArr={basicVote.radioBtn}
+                            values={basicVote.radioBtn}
                             register={register}
                             errors={errors}
-                            nameArr={basicVote.radioBtnName}
+                            name={basicVote.radioBtnName}
                             handleChange={(value) => {}}
                         />
                     </>
@@ -37,10 +37,10 @@ function CreateStep1 ({ register, errors }) {
                         <h2>{constitutionCheck.radioBtnDescr}</h2>
                         <RadioBtnGroup
                             formData={formData}
-                            radioArr={constitutionCheck.radioBtn}
+                            values={constitutionCheck.radioBtn}
                             register={register}
                             errors={errors}
-                            nameArr={constitutionCheck.radioBtnName}
+                            name={constitutionCheck.radioBtnName}
                             handleChange={(value) => {}}
                         />
                     </>

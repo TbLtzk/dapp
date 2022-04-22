@@ -37,10 +37,10 @@ function QRootNodeS2 ({ register, errors }) {
                     <h2>{addRootNode.radioBtnTitle}</h2>
                     <RadioBtnGroup
                         formData={formData}
-                        radioArr={addRootNode.radioBtnDown}
+                        values={addRootNode.radioBtnDown}
                         register={register}
                         errors={errors}
-                        nameArr={addRootNode.radioBtnDownName}
+                        name={addRootNode.radioBtnDownName}
                         handleChange={handleChange}
                     />
                     {!showAddress

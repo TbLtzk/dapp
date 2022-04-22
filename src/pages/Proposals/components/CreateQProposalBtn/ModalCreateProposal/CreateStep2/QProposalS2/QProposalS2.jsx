@@ -27,13 +27,14 @@ function QProposalS2 ({ register, errors }) {
       return (
                 <div>
                     <h2>{constUpdate.subtitle}</h2>
-                    <h2>{constUpdate.radioBtnUpTitle}</h2>
+                    <h2>{constUpdate.classificationTitle}</h2>
                     <RadioBtnGroup
                         formData={formData}
-                        radioArr={constUpdate.radioBtnUp}
+                        values={constUpdate.classificationValues}
+                        labels={constUpdate.classificationLabels}
                         register={register}
                         errors={errors}
-                        nameArr="classification"
+                        name="classification"
                         handleChange={() => {}}
                     />
                     <InputGroup
@@ -46,10 +47,10 @@ function QProposalS2 ({ register, errors }) {
                     <h2>{constUpdate.radioBtnDownTitle}</h2>
                     <RadioBtnGroup
                         formData={formData}
-                        radioArr={constUpdate.radioBtnDown}
+                        values={constUpdate.radioBtnDown}
                         register={register}
                         errors={errors}
-                        nameArr={constUpdate.radioBtnDownName}
+                        name={constUpdate.radioBtnDownName}
                         handleChange={handleChange}
                     />
                 </div>
