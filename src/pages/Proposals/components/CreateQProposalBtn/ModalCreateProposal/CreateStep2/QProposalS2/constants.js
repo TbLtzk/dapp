@@ -1,7 +1,8 @@
 export const constUpdate = {
   subtitle: 'Constitution Updates change the underlying agreement upon which the Q system operates.',
-  radioBtnUpTitle: 'Which part of the Constitution is affected',
-  radioBtnUp: [
+  classificationTitle: 'Which part of the Constitution is affected',
+  classificationValues: ['fundamental-part', 'basic-part', 'detailed-part'],
+  classificationLabels: [
     'Fundamental Part | Preamble',
     'Basic Part | Main Body and Definitions',
     'Detailed Part | Selected Appendices'

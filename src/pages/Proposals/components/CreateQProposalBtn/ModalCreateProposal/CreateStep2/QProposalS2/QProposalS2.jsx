@@ -27,10 +27,11 @@ function QProposalS2 ({ register, errors }) {
       return (
                 <div>
                     <h2>{constUpdate.subtitle}</h2>
-                    <h2>{constUpdate.radioBtnUpTitle}</h2>
+                    <h2>{constUpdate.classificationTitle}</h2>
                     <RadioBtnGroup
                         formData={formData}
-                        values={constUpdate.radioBtnUp}
+                        values={constUpdate.classificationValues}
+                        labels={constUpdate.classificationLabels}
                         register={register}
                         errors={errors}
                         name="classification"
