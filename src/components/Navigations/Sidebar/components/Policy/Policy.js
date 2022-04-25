@@ -1,48 +1,9 @@
-import React, { useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import ModalWindow from 'components/Base/ModalWindow'
-
-const imprintContent = (
-  <>
-    <div className="modal-line" />
-    <h5>Responsible for the content of the website:</h5>
-
-    <h3>Q Development AG</h3>
-    <>Landstrasse 40</>
-    <>9495 Triesen</>
-    <>Liechtenstein</>
-
-    <>FL-Nummer: FL-000.2.643.198-4</>
-    <>(Commercial Register of Liechtenstein)</>
-
-    <>Supervisory Authority: Amt für Volkswirtschaft, Vaduz</>
-
-    <h3>Contact us</h3>
-    <>Email: info@qdev.li</>
-    <>Phone: +423 230 00 72</>
-
-    <h3>Disclaimer (limitation of liability)</h3>
-
-    <>
-      The information provided on this website has been carefully checked and is regularly updated. However, no
-      guarantee can be given that all information is complete, correct and up-to-date at all times. This applies in
-      particular to links to other websites to which direct or indirect reference is made. Q Development AG does not
-      accept any liability for damages or consequential damages arising out of access to its website or parts thereof.
-      All information can be supplemented, removed or changed without prior notice.
-    </>
-
-    <div className="modal-line" />
-  </>
-)
-
-const privacyContent = (
-  <>
-    <div className="modal-line" />
-    <div className="modal-line" />
-    <div className="modal-line" />
-  </>
-)
+import { easterEggImg, imprintContent, privacyContent } from './policy-text'
 
 function Policy () {
+  const [easterEgg, setEasterEgg] = useState(0)
   const [privacyModalOpen, setPrivacyModalOpen] = useState(!localStorage.getItem('pravicy-policy'))
   const [imprintModalOpen, setImprintModalOpen] = useState(false)
 
@@ -64,11 +25,15 @@ function Policy () {
       </div>
       <ModalWindow
         iconRight="check-all"
-        modalTitle="Data Privacy"
+        modalTitle={<div onClick={() => setEasterEgg((val) => val + 1)}>Data Privacy</div>}
         continueBtnTitle="Agreed"
         closeButton={false}
         show={privacyModalOpen}
-        content={privacyContent}
+        content={
+          <>
+            {privacyContent} {easterEgg > 10 && easterEggImg}
+          </>
+        }
         continueBtnHandler={handlePrivacyModal}
       />
       <ModalWindow

@@ -24,6 +24,7 @@ function ModalWindow ({
         <ModalW
             show={show}
             onHide={onHide}
+            scrollable
             size="md"
             aria-labelledby="contained-modal-title-vcenter"
             centered
