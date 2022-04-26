@@ -1,6 +1,11 @@
 export const testnetDocsUrl = 'https://docs.qtestnet.org'
 export const mainnetDocsUrl = 'https://docs.q.org'
 
+export const CHAIN_IDS = {
+  mainnet: '35441',
+  testnet: '35443',
+  devnet: '35442'
+}
 export const networks = {
   35444: 'Localnet',
   35443: 'Testnet',
@@ -59,6 +64,7 @@ export const networkParameters = {
     chainName: 'Q TestNet',
     rpcUrls: ['https://rpc.qtestnet.org'],
     blockExplorerUrls: ['https://explorer.qtestnet.org/'],
+
     nativeCurrency: {
       name: 'Q ',
       symbol: 'Q ',

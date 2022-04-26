@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import Button from 'components/Base/Buttons/Button'
 import { LOAD_TYPES } from 'constants/statuses'
-import { networkParameters } from 'constants/config'
+import { CHAIN_IDS, networkParameters } from 'constants/config'
 
-import { getParametersDependsOnUrl } from 'func/useful'
 import { useSelector } from 'react-redux'
 import { loadTypeSelector, networkSelector } from 'store/user-inf/selectors'
 import { ethereum } from 'components/Custom/LoadingMetaMask/LoadingMetaMask'
@@ -11,7 +10,6 @@ import InstallMetamask from './InstallMetamask'
 import ErrorHandler from 'func/ErrorHandler'
 
 async function requestConnect (params) {
-  params = networkParameters[params.name]
   try {
     await ethereum.request({
       method: 'wallet_switchEthereumChain',
@@ -40,10 +38,13 @@ async function requestLogin () {
   }
 }
 
-function ConnectButton () {
+const ConnectButton = ({ handleButton, title }) => (
+    <Button alwaysEnabled handleButton={handleButton} title={title} margin="0 0 0 20px" />
+)
+
+function ConnectButtons () {
   const loadType = useSelector(loadTypeSelector)
   const network = useSelector(networkSelector)
-  const params = getParametersDependsOnUrl()
 
   const [modalShow, setModalShow] = useState(false)
 
@@ -51,7 +52,9 @@ function ConnectButton () {
     setModalShow(!modalShow)
   }
 
-  const isSameNetwork = Number(network) === params.chainId
+  function handleRequest (chainId, networkParam) {
+    network === chainId ? requestLogin() : requestConnect(networkParam)
+  }
 
   switch (loadType) {
     case LOAD_TYPES.loaded:
@@ -59,21 +62,25 @@ function ConnectButton () {
     case LOAD_TYPES.wrongNetwork:
     case LOAD_TYPES.notLogged:
       return (
-                <Button
-                    alwaysEnabled
-                    handleButton={() => (isSameNetwork ? requestLogin() : requestConnect(params))}
-                    title="Connect to wallet"
-                    margin="0 0 0 20px"
-                />
+                <>
+                    <ConnectButton
+                        title="Connect to Mainnet"
+                        handleButton={() => handleRequest(CHAIN_IDS.mainnet, networkParameters.MainNet)}
+                    />
+                    <ConnectButton
+                        title="Connect to Testnet"
+                        handleButton={() => handleRequest(CHAIN_IDS.testnet, networkParameters.TestNet)}
+                    />
+                </>
       )
     default:
       return (
                 <>
-                    <Button alwaysEnabled handleButton={handleModalShow} title="Install Metamask" margin="0 0 0 20px" />
+                    <ConnectButton title="Install Metamask" handleButton={handleModalShow} />
                     <InstallMetamask modalShow={modalShow} setModalShow={handleModalShow} />
                 </>
       )
   }
 }
 
-export default ConnectButton
+export default ConnectButtons
