@@ -9,7 +9,7 @@ function Policy () {
 
   const handlePrivacyModal = () => {
     setPrivacyModalOpen(false)
-    localStorage.setItem('pravicy-policy', '0')
+    localStorage.setItem('privacy-policy', '0')
   }
 
   const handleImprintModal = () => {
