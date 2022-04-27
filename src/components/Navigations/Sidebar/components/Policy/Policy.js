@@ -4,12 +4,12 @@ import { easterEggImg, imprintContent, privacyContent } from './policy-text'
 
 function Policy () {
   const [easterEgg, setEasterEgg] = useState(0)
-  const [privacyModalOpen, setPrivacyModalOpen] = useState(!localStorage.getItem('pravicy-policy'))
+  const [privacyModalOpen, setPrivacyModalOpen] = useState(!localStorage.getItem('privacy-policy'))
   const [imprintModalOpen, setImprintModalOpen] = useState(false)
 
   const handlePrivacyModal = () => {
     setPrivacyModalOpen(false)
-    localStorage.setItem('pravicy-policy', '0')
+    localStorage.setItem('privacy-policy', '0')
   }
 
   const handleImprintModal = () => {
