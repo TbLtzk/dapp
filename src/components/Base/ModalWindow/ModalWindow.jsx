@@ -17,18 +17,20 @@ function ModalWindow ({
   continueBtnHandler,
   content,
   modalTitle,
-  iconRight
+  iconRight,
+  closeButton = true
 }) {
   return (
         <ModalW
             show={show}
             onHide={onHide}
+            scrollable
             size="md"
             aria-labelledby="contained-modal-title-vcenter"
             centered
             backbtntitle={backBtnTitle}
         >
-            <Header closeButton>
+            <Header closeButton={closeButton}>
                 <Modal.Title>{modalTitle}</Modal.Title>
             </Header>
             <Body>{content}</Body>

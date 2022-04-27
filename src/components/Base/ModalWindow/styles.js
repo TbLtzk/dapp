@@ -7,10 +7,10 @@ import { indents } from 'constants/style'
 export const Header = styled(Modal.Header)`
   background: ${(props) => props.theme.colors.oxfordBlueTint6};
   border-bottom: 0;
+
   & .close {
-    color: ${(props) => props.theme.colors.oxfordBlueTint2};
-  }!important;
-}
+    color: ${(props) => props.theme.colors.oxfordBlueTint2} !important;
+  }
 `
 
 export const Body = styled(Modal.Body)`

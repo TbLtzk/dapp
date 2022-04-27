@@ -22,9 +22,10 @@ import AccordionElements from './components/AccordionElements'
 import ToggleSidebar from './components/ToggleSidebar'
 import Version from './components/Version'
 
-import { FooterContainer, SidebarContainer } from './styles'
+import { FooterContainer, FooterDataContaier, SidebarContainer } from './styles'
 import References from './components/References'
 import useWindowSize from 'hooks/useWindowSize'
+import Policy from './components/Policy'
 
 function Sidebar () {
   const appMode = useSelector(mode)
@@ -179,7 +180,12 @@ function Sidebar () {
                         <Themes />
                         <ToggleSidebar openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
                     </AccordionElements>
-                    <Version />
+
+                    <FooterDataContaier>
+                        <Version />
+                        <Policy />
+                    </FooterDataContaier>
+
                 </FooterContainer>
             </div>
         </SidebarContainer>
