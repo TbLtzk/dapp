@@ -64,11 +64,11 @@ function ConnectButtons () {
       return (
                 <>
                     <ConnectButton
-                        title="Connect to Mainnet"
+                        title="Connect to Q Mainnet"
                         handleButton={() => handleRequest(CHAIN_IDS.mainnet, networkParameters.MainNet)}
                     />
                     <ConnectButton
-                        title="Connect to Testnet"
+                        title="Connect to Q Testnet"
                         handleButton={() => handleRequest(CHAIN_IDS.testnet, networkParameters.TestNet)}
                     />
                 </>
