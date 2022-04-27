@@ -230,4 +230,3 @@ export const FooterDataContaier = styled.div`
     align-items: center;
   }
 `
-export const SidebarFooterText = styled.div``

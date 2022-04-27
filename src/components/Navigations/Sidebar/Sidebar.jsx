@@ -180,11 +180,12 @@ function Sidebar () {
                         <Themes />
                         <ToggleSidebar openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
                     </AccordionElements>
+
                     <FooterDataContaier>
                         <Version />
-
                         <Policy />
                     </FooterDataContaier>
+                    
                 </FooterContainer>
             </div>
         </SidebarContainer>
