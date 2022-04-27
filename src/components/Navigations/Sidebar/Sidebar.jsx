@@ -185,7 +185,7 @@ function Sidebar () {
                         <Version />
                         <Policy />
                     </FooterDataContaier>
-                    
+
                 </FooterContainer>
             </div>
         </SidebarContainer>

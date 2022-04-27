@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import ModalWindow from "components/Base/ModalWindow";
-import { easterEggImg, imprintContent, privacyContent } from "./policy-text";
+import React, { useState } from 'react'
+import ModalWindow from 'components/Base/ModalWindow'
+import { easterEggImg, imprintContent, privacyContent } from './policy-text'
 
-function Policy() {
-  const [easterEgg, setEasterEgg] = useState(0);
-  const [privacyModalOpen, setPrivacyModalOpen] = useState(!localStorage.getItem("pravicy-policy"));
-  const [imprintModalOpen, setImprintModalOpen] = useState(false);
+function Policy () {
+  const [easterEgg, setEasterEgg] = useState(0)
+  const [privacyModalOpen, setPrivacyModalOpen] = useState(!localStorage.getItem('pravicy-policy'))
+  const [imprintModalOpen, setImprintModalOpen] = useState(false)
 
   const handlePrivacyModal = () => {
-    setPrivacyModalOpen(false);
-    localStorage.setItem("pravicy-policy", "0");
-  };
+    setPrivacyModalOpen(false)
+    localStorage.setItem('pravicy-policy', '0')
+  }
 
   const handleImprintModal = () => {
-    setImprintModalOpen(false);
-  };
+    setImprintModalOpen(false)
+  }
 
   return (
     <>
@@ -47,7 +47,7 @@ function Policy() {
         continueBtnHandler={handleImprintModal}
       />
     </>
-  );
+  )
 }
 
-export default Policy;
+export default Policy
