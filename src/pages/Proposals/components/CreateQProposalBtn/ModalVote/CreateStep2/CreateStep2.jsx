@@ -12,7 +12,9 @@ function CreateStep2 ({ register, errors, proposalContract }) {
             <div>
                 <h2>Chosen Data:</h2>
                 <h5>Type</h5>
-                <p>{formData?.first?.replace(/-/g, ' ')}</p>
+                <p className="text-capitalize">
+                  {formData?.first?.replace(/-/g, ' ')}
+                </p>
                 <h5>Answer</h5>
                 <p>{answer}</p>
                 {proposalContract === CONTRACTS_NAMES.constitutionVoting ||

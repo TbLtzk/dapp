@@ -11,7 +11,9 @@ function CreateStep2 ({ activeTab }) {
         <div>
             <h2>Chosen Data:</h2>
             <h5>Type:</h5>
-            <p>{formData?.first?.replace(/-/g, ' ')}</p>
+            <p className="text-capitalize">
+              {formData?.first?.replace(/-/g, ' ')}
+            </p>
             {children}
         </div>
   )
