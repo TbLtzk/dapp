@@ -56,14 +56,21 @@ function ValidatorsPanel ({ buttons, tableType }) {
     }
   }
 
+  const fetchTableData = () => {
+    dispatch(getValidatorMembers(tableType))
+  }
+
   useEffect(() => {
+    let monitoringInterval
+
+    fetchTableData()
+
     if (tableType === TABLE_TYPES.validatorsMonitoring) {
-      setInterval(() => {
-        dispatch(getValidatorMembers(tableType))
+      monitoringInterval = setInterval(() => {
+        fetchTableData()
       }, 60000)
-    } else {
-      dispatch(getValidatorMembers(tableType))
     }
+    return () => clearInterval(monitoringInterval)
   }, [dispatch, tableType])
 
   const renderButtons = () => {

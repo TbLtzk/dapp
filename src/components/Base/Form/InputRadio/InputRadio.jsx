@@ -3,8 +3,7 @@ import { Form } from 'react-bootstrap'
 
 import { RadioBtn } from './styles'
 
-const InputRadio = forwardRef((props, ref) => {
-  const { active, label, name, value, checked, handleChange } = props
+const InputRadio = forwardRef(({ active, label, name, value, checked, handleChange }, ref) => {
   return (
         <Form.Group controlId={value} style={{ padding: 0 }}>
             <RadioBtn

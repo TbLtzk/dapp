@@ -3,6 +3,12 @@ export const mainnetDocsUrl = 'https://docs.q.org'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
+export const chainIds = {
+  mainnet: '35441',
+  testnet: '35443',
+  devnet: '35442'
+}
+
 export const networks = {
   35443: 'testnet',
   35442: 'devnet',
@@ -13,6 +19,43 @@ export const indexersUrls = {
   devnet: 'http://35.161.73.158:4000',
   mainnet: 'https://indexer.q.org',
   testnet: 'https://indexer.qtestnet.org'
+}
+
+export const networkParameters = {
+  devnet: {
+    chainId: '0x8a72',
+    chainName: 'Q Devnet',
+    rpcUrls: ['http://35.161.73.158:8545'],
+    blockExplorerUrls: ['http://52.35.57.176:8080/'],
+    nativeCurrency: {
+      name: 'Q ',
+      symbol: 'Q ',
+      decimals: 18
+    }
+  },
+  testnet: {
+    chainId: '0x8a73',
+    chainName: 'Q Testnet',
+    rpcUrls: ['https://rpc.qtestnet.org'],
+    blockExplorerUrls: ['https://explorer.qtestnet.org/'],
+
+    nativeCurrency: {
+      name: 'Q ',
+      symbol: 'Q ',
+      decimals: 18
+    }
+  },
+  mainnet: {
+    chainId: '0x8a71',
+    chainName: 'Q Mainnet',
+    rpcUrls: ['https://rpc.q.org'],
+    blockExplorerUrls: ['https://explorer.q.org'],
+    nativeCurrency: {
+      name: 'Q ',
+      symbol: 'Q ',
+      decimals: 18
+    }
+  }
 }
 
 export const URLS = {
@@ -55,41 +98,5 @@ export const URLS = {
     webSocket: 'wss://rpc-ws.q.org',
     rpc: 'https://rpc.q.org',
     indexer: indexersUrls.mainnet
-  }
-}
-
-export const networkParameters = {
-  devnet: {
-    chainId: '0x8a72',
-    chainName: 'Q Devnet',
-    rpcUrls: ['http://35.161.73.158:8545'],
-    blockExplorerUrls: ['http://52.35.57.176:8080/'],
-    nativeCurrency: {
-      name: 'Q ',
-      symbol: 'Q ',
-      decimals: 18
-    }
-  },
-  testnet: {
-    chainId: '0x8a73',
-    chainName: 'Q Testnet',
-    rpcUrls: ['https://rpc.qtestnet.org'],
-    blockExplorerUrls: ['https://explorer.qtestnet.org/'],
-    nativeCurrency: {
-      name: 'Q ',
-      symbol: 'Q ',
-      decimals: 18
-    }
-  },
-  mainnet: {
-    chainId: '0x8a71',
-    chainName: 'Q Mainnet',
-    rpcUrls: ['https://rpc.q.org'],
-    blockExplorerUrls: ['https://explorer.q.org'],
-    nativeCurrency: {
-      name: 'Q ',
-      symbol: 'Q ',
-      decimals: 18
-    }
   }
 }

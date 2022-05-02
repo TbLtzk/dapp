@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { loadTypeSelector } from 'store/user-inf/selectors'
 import Address from './components/Address'
-import ConnectButton from './components/ConnectButton'
+import ConnectButtons from './components/ConnectButtons'
 import Network from './components/Network'
 import { WrapLogo, HeaderWrapper, ElementsWrapper } from './styles'
 
@@ -21,7 +21,7 @@ function Header () {
             </WrapLogo>
             <ElementsWrapper>
                 <Network />
-                <ConnectButton />
+                <ConnectButtons />
                 {loadType === LOAD_TYPES.loaded ? <Address /> : null}
             </ElementsWrapper>
         </HeaderWrapper>

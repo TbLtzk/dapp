@@ -22,7 +22,7 @@ import {
 } from './action-creators'
 
 import { fromWei, toWei } from 'func/balance'
-import { addIndex } from 'func/useful'
+import { addIndex, getIndexerUrlDependsOnChainId } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
 
 import {
@@ -36,6 +36,7 @@ import { getAccountBalance } from 'store/q-vault/action-creators'
 import ErrorHandler from 'func/ErrorHandler'
 import { setErrorMessage, setTransactionLoading } from 'store/transaction-handler/action-creators'
 import TABLE_TYPES from 'constants/tableTypes'
+import { networkSelector } from 'store/user-inf/selectors'
 
 function * getValidatorsWithdrawalInfoGenerator ({ address }) {
   try {
@@ -120,14 +121,14 @@ function * getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWi
         break
       }
       case TABLE_TYPES.validatorsMonitoring: {
-        // const
-        // const indexerUrl = ''
-        const indexer = yield getIndexerInstance()
+        const network = yield select(networkSelector)
+        const indexerUrl = getIndexerUrlDependsOnChainId(network)
+        const indexer = yield getIndexerInstance(indexerUrl)
+
         const shortList = yield validatorsInstance.getShortList()
         const preparedShortList = yield all(
           shortList.map((member) => prepareValidatorsMonitoringData(indexer, member))
         )
-        console.log(preparedShortList)
         yield put(setValidatorMembers(tableType, preparedShortList))
         break
       }

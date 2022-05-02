@@ -51,10 +51,14 @@ function getTooltipPosition (positon) {
   }
 }
 
-export const TooltipContainer = styled.div`
+export const TooltipContainer = styled.span`
   position: relative;
   display: block;
-  width: available;
+  max-width: 100%;
+  width: min-content;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
 
   .tooltip {
     visibility: hidden;
@@ -67,12 +71,13 @@ export const TooltipContainer = styled.div`
 
     background-color: ${(p) => p.theme.colors.neonGreen};
     color: #000000;
-    font-size: 13px;
+    font-size: 14px;
     max-width: 200px;
-    min-width: 80px;
+    min-width: 60px;
+    pointer-events: none;
 
     min-height: 40px;
-    border-radius: 3px;
+    border-radius: 4px;
 
     opacity: 0;
     transition: opacity 0.3s;

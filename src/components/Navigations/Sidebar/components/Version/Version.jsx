@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ModalWindow from 'components/Base/ModalWindow'
 import VersionsTable from '../VersionsTable'
-
-import { WrpVersion } from './styles'
 import { Web3Adapter } from '@q-dev/q-js-sdk'
 import pkg from '../../../../../../package.json'
 import { getNowTimeWithGMT } from 'func/convertDate'
@@ -103,7 +101,7 @@ function Version () {
   )
   return (
         <>
-            <WrpVersion onClick={() => setModalShow(true)}>{pkg.version}</WrpVersion>
+            <p onClick={() => setModalShow(true)}>{pkg.version}</p>
             <ModalWindow
                 show={modalShow}
                 onHide={() => setModalShow(false)}

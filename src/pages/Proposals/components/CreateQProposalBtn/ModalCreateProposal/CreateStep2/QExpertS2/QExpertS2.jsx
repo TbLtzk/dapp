@@ -44,10 +44,10 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                         <h2>{addNewExpert.radioDescr}</h2>
                         <RadioBtnGroup
                             formData={formData}
-                            radioArr={addNewExpert.radioBtn}
+                            values={addNewExpert.radioBtn}
                             register={register}
                             errors={errors}
-                            nameArr={addNewExpert.radioBtnName}
+                            name={addNewExpert.radioBtnName}
                             handleChange={changePanel}
                         />
                         <h4>{addNewExpert.subtitleInputUp}</h4>
@@ -73,10 +73,10 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                         <h2>{removeExpert.radioDescr}</h2>
                         <RadioBtnGroup
                             formData={formData}
-                            radioArr={removeExpert.radioBtn}
+                            values={removeExpert.radioBtn}
                             register={register}
                             errors={errors}
-                            nameArr={removeExpert.radioBtnName}
+                            name={removeExpert.radioBtnName}
                             handleChange={changePanel}
                         />
                         <h4>{removeExpert.subtitleInputUp}</h4>
@@ -102,10 +102,10 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                         <h2>{parameterVote.radioDescr}</h2>
                         <RadioBtnGroup
                             formData={formData}
-                            radioArr={parameterVote.radioBtn}
+                            values={parameterVote.radioBtn}
                             register={register}
                             errors={errors}
-                            nameArr={parameterVote.radioBtnName}
+                            name={parameterVote.radioBtnName}
                             handleChange={changePanel}
                         />
                         <h2>{parameterVote.subtitleInputUp}</h2>

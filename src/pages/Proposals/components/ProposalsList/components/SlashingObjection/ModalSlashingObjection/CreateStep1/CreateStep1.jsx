@@ -63,10 +63,10 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
                     <h2>{proposeDecision.radioLabel}</h2>
                     <RadioBtnGroup
                         formData={formData}
-                        radioArr={proposeDecision.radioBtn}
+                        values={proposeDecision.radioBtn}
                         register={register}
                         errors={errors}
-                        nameArr={proposeDecision.radioName}
+                        name={proposeDecision.radioName}
                         handleChange={() => {}}
                     />
                 </div>

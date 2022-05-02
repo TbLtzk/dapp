@@ -44,7 +44,6 @@ export const ListCardWrp = styled(Card)`
   p {
     font-size: 13px;
     margin-bottom: 15px;
-    overflow: hidden;
     text-overflow: ellipsis;
   }
 
@@ -386,7 +385,6 @@ export const ListCardHeader = styled.div`
       flex-direction: column-reverse;
       justify-content: space-between;
       align-items: flex-end;
-      width: 40px;
       position: absolute;
       top: 20px;
       right: 10px;

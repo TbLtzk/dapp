@@ -20,7 +20,7 @@ const initialState = {
   isPendingDelegation: false,
   votingAgentPassOverTime: 0,
 
-  qvBalance: 0,
+  qvBalance: {},
   outstandingDelegationRewards: 0,
 
   qVaultMinimumTimeLock: 0,

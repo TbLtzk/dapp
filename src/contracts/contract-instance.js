@@ -1,6 +1,7 @@
 import { Indexer } from '@q-dev/q-js-sdk/lib/indexer/indexer'
 import { ValidatorMetrics } from '@q-dev/q-js-sdk/lib/utils/validator-metrics'
 import { ContractRegistryInstance } from '@q-dev/q-js-sdk'
+import { indexersUrls } from 'constants/config'
 
 export const CONTRACT_REGISTRY_ADDRESS = '0xc3E589056Ece16BCB88c6f9318e9a7343b663522'
 
@@ -110,9 +111,9 @@ export const getValidatorMetricsInstance = async () => {
   return validatorMetricsInstance
 }
 
-export const getIndexerInstance = async (indexerUrl = 'http://35.161.73.158:4000/blocks') => {
+export const getIndexerInstance = async (indexerUrl = indexersUrls.testnet) => {
   if (!indexerInstance) {
-    indexerInstance = new Indexer(indexerUrl, { web3: window.web3 })
+    indexerInstance = new Indexer(indexerUrl + '/blocks', { web3: window.web3 })
   }
   return indexerInstance
 }

@@ -41,11 +41,11 @@ function CreateStep1 ({ activeTab, activeTabTitle, register, errors, radioArr })
         <div>
             <h2>Please select type of {activeTabTitle}</h2>
             <RadioBtnGroup
-                nameArr="first"
+                name="first"
                 formData={formData}
                 register={register}
                 errors={errors}
-                radioArr={radioArr}
+                values={radioArr}
                 handleChange={onChooseProposal}
             />
         </div>

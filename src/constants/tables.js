@@ -47,15 +47,9 @@ export const tableValidatorsMonitoring = (tableArray) =>
     rank: idx + 1,
     validator: <CopyToClipboard valueToCopy={validator.validator}>{validator.validator}</CopyToClipboard>,
     amount: fN(validator.amount) + ' Q',
-    lastBlock: validator.lastBlockValidated,
-    timestamp: !Number(validator.lastBlockValidated)
-      ? (
-          'n/a'
-        )
-      : (
-      <Tooltip additionalInfo={validator.timeStamp}>{convertToMonthDayYear(validator.timeStamp)}</Tooltip>
-        ),
-    average: validator.lastAvailability + ' %'
+    lastBlock: validator.lastBlock,
+    timestamp: <Tooltip additionalInfo={validator.timestamp}>{validator.monthDayYear}</Tooltip>,
+    average: validator.average
   }))
 
 export const tableValidatorsWidened = (tableArray) =>

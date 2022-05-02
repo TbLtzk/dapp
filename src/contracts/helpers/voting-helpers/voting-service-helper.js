@@ -143,12 +143,12 @@ export default class VotingService {
     const rootNodesNumber = await this.getRootNodesNumber()
     objRes.vetoesNumber = getVetoesNumber
     objRes.noVote = rootNodesNumber - getVetoesNumber
-    objRes.vetoesPercentage = ((getVetoesNumber * 100) / rootNodesNumber).toFixed(3)
+    objRes.vetoesPercentage = ((getVetoesNumber * 100) / rootNodesNumber).toFixed(2)
     objRes.currentMajority = transformToPercentage(proposalStats.currentMajority)
     objRes.currentQuorum = transformToPercentage(proposalStats.currentQuorum)
     objRes.requiredMajority = transformToPercentage(proposalStats.requiredMajority)
     objRes.requiredQuorum = transformToPercentage(proposalStats.requiredQuorum)
-    objRes.vetoThreshold = '50'
+    objRes.vetoThreshold = '50.00'
     return objRes
   }
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { CopyToClipboard as Copy } from 'react-copy-to-clipboard'
-import colors from 'constants/colors'
+import Tooltip from '../Tooltip'
 
 function CopyToClipboard ({ valueToCopy, children }) {
   const [copy, setCopy] = useState(false)
@@ -15,29 +14,13 @@ function CopyToClipboard ({ valueToCopy, children }) {
   }
 
   return (
-        <div className="card__copy">
-            <OverlayTrigger
-                key="top"
-                placement="top"
-                overlay={
-                    <Popover id="popover-basic">
-                        <Popover.Content
-                            style={{
-                              background: colors.neonGreen
-                            }}
-                        >
-                            {copy ? 'Copied!' : 'Copy'}
-                        </Popover.Content>
-                    </Popover>
-                }
-            >
-                <Copy text={valueToCopy}>
-                    <span onClick={handleCopy} style={{ cursor: 'pointer' }}>
-                        {children}
-                    </span>
-                </Copy>
-            </OverlayTrigger>
-        </div>
+        <Tooltip additionalInfo={copy ? 'Copied!' : 'Copy'}>
+            <Copy text={valueToCopy}>
+                <span onClick={handleCopy} style={{ cursor: 'pointer', maxWidth: 'min-content' }}>
+                    {children}
+                </span>
+            </Copy>
+        </Tooltip>
   )
 }
 

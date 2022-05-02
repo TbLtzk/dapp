@@ -28,13 +28,7 @@ export const getPercentageFormat = (number) => {
 }
 
 export const transformToPercentage = (number) => {
-  const amount = '10000000000000000000000000'
-  let convertedNumber = BN(number).dividedBy(amount)
-  if (convertedNumber?.e < 0) {
-    convertedNumber = convertedNumber.toFixed(10)
-  } else {
-    convertedNumber = Math.round(convertedNumber?.c[0])
-  }
+  const convertedNumber = BN(number).dividedBy('10000000000000000000000000').toFixed(2)
   return convertedNumber
 }
 
