@@ -57,8 +57,14 @@ function ValidatorsPanel ({ buttons, tableType }) {
   }
 
   useEffect(() => {
-    dispatch(getValidatorMembers(tableType))
-  }, [dispatch])
+    if (tableType === TABLE_TYPES.validatorsMonitoring) {
+      setInterval(() => {
+        dispatch(getValidatorMembers(tableType))
+      }, 60000)
+    } else {
+      dispatch(getValidatorMembers(tableType))
+    }
+  }, [dispatch, tableType])
 
   const renderButtons = () => {
     switch (buttons) {
@@ -106,6 +112,7 @@ function ValidatorsPanel ({ buttons, tableType }) {
                     </div>
         )
       case buttonsType.none:
+      default:
         return null
     }
   }

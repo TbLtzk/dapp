@@ -8,7 +8,7 @@
     "@fortawesome/react-fontawesome": "^0.1.17",
     "@mdi/font": "^6.5.95",
     "@metamask/detect-provider": "^1.2.0",
-    "@q-dev/q-js-sdk": "^1.1.6",
+    "@q-dev/q-js-sdk": "^1.1.9",
     "@sentry/react": "^6.19.1",
     "@sentry/tracing": "^6.19.1",
     "@testing-library/jest-dom": "^5.11.4",

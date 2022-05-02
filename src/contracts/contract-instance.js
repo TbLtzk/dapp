@@ -1,3 +1,4 @@
+import { Indexer } from '@q-dev/q-js-sdk/lib/indexer/indexer'
 import { ValidatorMetrics } from '@q-dev/q-js-sdk/lib/utils/validator-metrics'
 import { ContractRegistryInstance } from '@q-dev/q-js-sdk'
 
@@ -77,6 +78,7 @@ let compoundRateKeeperBorrowingInstance = null
 let compoundRateKeeperSavingInstance = null
 let compoundRateKeeperQVaultInstance = null
 let governedEpdrQbtcAddressInstace = null
+let indexerInstance = null
 
 export async function getCompoundRateKeeperBorrowingInstance () {
   if (!compoundRateKeeperBorrowingInstance) {
@@ -106,6 +108,13 @@ export const getValidatorMetricsInstance = async () => {
     validatorMetricsInstance = new ValidatorMetrics()
   }
   return validatorMetricsInstance
+}
+
+export const getIndexerInstance = async (indexerUrl = 'http://35.161.73.158:4000/blocks') => {
+  if (!indexerInstance) {
+    indexerInstance = new Indexer(indexerUrl, { web3: window.web3 })
+  }
+  return indexerInstance
 }
 
 export async function getGovernedEpdrQbtcAddressInstance () {

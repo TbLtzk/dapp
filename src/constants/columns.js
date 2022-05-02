@@ -257,7 +257,7 @@ export const columnsValidatorsMonitoring = [
   },
 
   {
-    headerStyle: () => ({ minWidth: '150px' }),
+    headerStyle: () => ({ minWidth: '170px' }),
     dataField: 'timestamp',
     text: 'Timestamp of last block validated',
     sort: true,
