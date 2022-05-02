@@ -39,7 +39,9 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
             <div>
                 <h2>Chosen data:</h2>
                 <h5>Type</h5>
-                <p> {formData?.first?.replace(/-/g, ' ')}</p>
+                <p className="text-capitalize">
+                  {formData?.first?.replace(/-/g, ' ')}
+                </p>
                 {children}
             </div>
     )
@@ -63,13 +65,17 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
             return showCommonData(
                             <>
                                 <h5>Classification</h5>
-                                <p>{formData?.classification?.replace(/-/g, ' ')}</p>
+                                <p className="text-capitalize">
+                                  {formData?.classification?.replace(/-/g, ' ')}
+                                </p>
                                 <h5>External Link</h5>
                                 <p>{formData['external-link']}</p>
                                 <h5>Hash</h5>
                                 <p>{formData.hash}</p>
                                 <h5>Change Constitution Parameter</h5>
-                                <p>{formData['change-constitution-parameter']}</p>
+                                <p className="text-capitalize">
+                                  {formData['change-constitution-parameter']}
+                                </p>
                             </>
             )
           } else {
@@ -152,7 +158,9 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
                                 <h5>Hash</h5>
                                 <p>{formData.hash}</p>
                                 <h5>Remove a Current Root Node</h5>
-                                <p>{formData['remove-current']}</p>
+                                <p className="text-capitalize">
+                                  {formData['remove-current']}
+                                </p>
                                 {formData['remove-current'] === 'no'
                                   ? null
                                   : (
@@ -193,7 +201,9 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
                             )
                           : null}
                         <h5>{formData.first === 'parameter-vote' ? 'Add Parameter' : 'Panel to Add an Expert'}</h5>
-                        <p>{formData['type-proposal']?.replace(/-/g, ' ')}</p>
+                        <p className="text-capitalize">
+                          {formData['type-proposal']?.replace(/-/g, ' ')}
+                        </p>
                         <h5>External link</h5>
                         <p>{formData['external-link']}</p>
                         {formData?.first !== CONTRACT_TYPES.parameterVote
