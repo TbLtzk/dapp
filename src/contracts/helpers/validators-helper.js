@@ -2,6 +2,8 @@ import { getValidatorMetricsInstance, contractRegistryInstance } from 'contracts
 import { transformToPercentage } from './voting-helpers/base-voting-helper'
 import { fromWei } from 'func/balance'
 import { uintPerSecondToPerYearNumber } from 'func/useful'
+import { dateToTimestamp, convertToMonthDayYear } from 'func/convertDate'
+import ErrorHandler from 'func/ErrorHandler'
 
 export const getValidators = async (validatorsInstance) => {
   const util = await getValidatorMetricsInstance()
@@ -36,5 +38,35 @@ export const getValidator = async (validator, index, validatorsInstance, validat
     validatorShare,
     validatorPoolBalance,
     poolinterestRate
+  }
+}
+
+export async function prepareValidatorsMonitoringData (indexer, member) {
+  const monitoringData = {
+    lastBlock: 'n/a',
+    timestamp: 0,
+    average: 'n/a',
+    monthDayYear: 'n/a',
+    lastBlockValidated: 'n/a'
+  }
+
+  try {
+    const [validatorStats] = await indexer.getValidatorStats([member.address])
+
+    if (Number(validatorStats.lastBlockValidated) > 0) {
+      monitoringData.average = validatorStats.lastAvailability + ' %'
+      monitoringData.lastBlock = validatorStats.lastBlockValidated
+      monitoringData.timestamp = dateToTimestamp(validatorStats.lastBlockValidatedTime)
+      monitoringData.monthDayYear = convertToMonthDayYear(monitoringData.timestamp)
+    }
+
+    return {
+      ...monitoringData,
+      validator: member.address,
+      amount: member.balance
+    }
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    return { ...monitoringData, validator: member.address, amount: member.balance }
   }
 }

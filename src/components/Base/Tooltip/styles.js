@@ -57,8 +57,8 @@ export const TooltipContainer = styled.span`
   max-width: 100%;
   width: min-content;
   white-space: nowrap;
-
   text-overflow: ellipsis;
+  cursor: pointer;
 
   .tooltip {
     visibility: hidden;

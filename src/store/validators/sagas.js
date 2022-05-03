@@ -22,16 +22,21 @@ import {
 } from './action-creators'
 
 import { fromWei, toWei } from 'func/balance'
-import { addIndex } from 'func/useful'
+import { addIndex, getIndexerUrlDependsOnChainId } from 'func/useful'
 import { getNowTimestamp } from 'func/convertDate'
 
-import { getValidatorsInstance, getValidationRewardPoolsInstance } from 'contracts/contract-instance'
+import {
+  getValidatorsInstance,
+  getValidationRewardPoolsInstance,
+  getIndexerInstance
+} from 'contracts/contract-instance'
 
-import { getValidator, getValidators } from 'contracts/helpers/validators-helper'
+import { getValidator, getValidators, prepareValidatorsMonitoringData } from 'contracts/helpers/validators-helper'
 import { getAccountBalance } from 'store/q-vault/action-creators'
 import ErrorHandler from 'func/ErrorHandler'
 import { setErrorMessage, setTransactionLoading } from 'store/transaction-handler/action-creators'
 import TABLE_TYPES from 'constants/tableTypes'
+import { networkSelector } from 'store/user-inf/selectors'
 
 function * getValidatorsWithdrawalInfoGenerator ({ address }) {
   try {
@@ -116,8 +121,14 @@ function * getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWi
         break
       }
       case TABLE_TYPES.validatorsMonitoring: {
+        const network = yield select(networkSelector)
+        const indexerUrl = getIndexerUrlDependsOnChainId(network)
+        const indexer = yield getIndexerInstance(indexerUrl)
+
         const shortList = yield validatorsInstance.getShortList()
-        const preparedShortList = shortList.map((user) => ({ validator: user.address, amount: user.balance }))
+        const preparedShortList = yield all(
+          shortList.map((member) => prepareValidatorsMonitoringData(indexer, member))
+        )
         yield put(setValidatorMembers(tableType, preparedShortList))
         break
       }

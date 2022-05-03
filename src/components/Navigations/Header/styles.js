@@ -69,7 +69,7 @@ export const NetworkWrapper = styled.div`
   line-height: 18px;
   border-radius: 3px;
   width: 150px;
-
+  text-transform: capitalize;
   ${(props) => handleColorTheme(props)}
 `
 

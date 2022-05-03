@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Button from 'components/Base/Buttons/Button'
 import { LOAD_TYPES } from 'constants/statuses'
-import { CHAIN_IDS, networkParameters } from 'constants/config'
+import { chainIds, networkParameters } from 'constants/config'
 
 import { useSelector } from 'react-redux'
 import { loadTypeSelector, networkSelector } from 'store/user-inf/selectors'
@@ -65,11 +65,11 @@ function ConnectButtons () {
                 <>
                     <ConnectButton
                         title="Connect to Q Mainnet"
-                        handleButton={() => handleRequest(CHAIN_IDS.mainnet, networkParameters.MainNet)}
+                        handleButton={() => handleRequest(chainIds.mainnet, networkParameters.mainnet)}
                     />
                     <ConnectButton
                         title="Connect to Q Testnet"
-                        handleButton={() => handleRequest(CHAIN_IDS.testnet, networkParameters.TestNet)}
+                        handleButton={() => handleRequest(chainIds.testnet, networkParameters.testnet)}
                     />
                 </>
       )

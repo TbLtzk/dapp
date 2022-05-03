@@ -6,6 +6,7 @@ import { convertToMonthDayYear } from 'func/convertDate'
 import CopyToClipboard from 'components/Base/CopyToClipboard'
 import SaveManageAsset from 'pages/SavingAndBorrowing/components/SaveManageAsset'
 import BorrowManageAsset from 'pages/SavingAndBorrowing/components/BorrowManageAsset/BorrowManageAsset'
+import Tooltip from 'components/Base/Tooltip'
 
 export const tableLockAmount = (tableArray) =>
   tableArray.map((lock) => ({
@@ -46,9 +47,9 @@ export const tableValidatorsMonitoring = (tableArray) =>
     rank: idx + 1,
     validator: <CopyToClipboard valueToCopy={validator.validator}>{validator.validator}</CopyToClipboard>,
     amount: fN(validator.amount) + ' Q',
-    lastBlock: 'n/a',
-    timestamp: 'n/a',
-    average: '0,00 %'
+    lastBlock: validator.lastBlock,
+    timestamp: <Tooltip additionalInfo={validator.timestamp}>{validator.monthDayYear}</Tooltip>,
+    average: validator.average
   }))
 
 export const tableValidatorsWidened = (tableArray) =>

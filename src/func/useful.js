@@ -1,6 +1,6 @@
 import { ParameterType } from '@q-dev/q-js-sdk'
 import { BigNumber } from 'bignumber.js'
-import { URLS } from 'constants/config'
+import { indexersUrls, networks, URLS } from 'constants/config'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 import { keyRegex } from 'constants/regex'
 import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper'
@@ -9,6 +9,16 @@ import ErrorHandler from './ErrorHandler'
 
 export const getParametersDependsOnUrl = () => {
   return URLS[window.location.origin]
+}
+
+export const getIndexerUrlDependsOnChainId = (chainId) => {
+  const network = networks[chainId]
+  if (network) {
+    return indexersUrls[network]
+  } else {
+    const data = getParametersDependsOnUrl()
+    return data.indexer
+  }
 }
 
 export const transformToHex = (value) => {
