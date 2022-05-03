@@ -1,6 +1,6 @@
 import { ParameterType } from '@q-dev/q-js-sdk'
 import { BigNumber } from 'bignumber.js'
-import { indexersUrls, networks, URLS } from 'constants/config'
+import { indexersUrls, networks, URLS, blockCountDependOnChainId } from 'constants/config'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 import { keyRegex } from 'constants/regex'
 import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper'
@@ -48,11 +48,23 @@ export const errorHandler = (error, field, min = 0, max = 100) => {
 }
 
 export const getMinimalActiveBlockHeight = async () => {
-  const blocksDependsOnVersion = window?.ethereum?.networkVersion === '35442' ? 40000 : 300000
-  const block = await window.web3.eth.getBlock('latest')
-  return {
-    minimalActiveBlockHeight: Math.max(0, Number(block.number) - Number(blocksDependsOnVersion)),
-    lastBlockHeight: block.number
+  try {
+    const networkVersion = window?.ethereum?.networkVersion
+
+    const latestBlock = await fetchBlockNumber('latest')
+    const blocksDependOnVersion = blockCountDependOnChainId[networkVersion] || 1000000
+    const minimalActiveBlockHeight = Math.max(0, Number(latestBlock) - Number(blocksDependOnVersion))
+
+    return {
+      minimalActiveBlockHeight,
+      lastBlockHeight: latestBlock
+    }
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error)
+    return {
+      minimalActiveBlockHeight: 0,
+      lastBlockHeight: 'latest'
+    }
   }
 }
 

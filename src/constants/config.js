@@ -15,6 +15,12 @@ export const networks = {
   35441: 'mainnet'
 }
 
+export const blockCountDependOnChainId = {
+  35443: 300000,
+  35442: 40000,
+  35441: 500000
+}
+
 export const indexersUrls = {
   devnet: 'http://35.161.73.158:4000',
   mainnet: 'https://indexer.q.org',

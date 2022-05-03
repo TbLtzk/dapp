@@ -72,6 +72,7 @@ function LoadingMetaMask () {
           dispatch(setLoadType(LOAD_TYPES.wrongNetwork))
         } else {
           // right network
+
           const accounts = await web3.eth.getAccounts()
 
           if (accounts.length) {
