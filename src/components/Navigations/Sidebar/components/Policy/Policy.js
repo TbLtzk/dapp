@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import ModalWindow from 'components/Base/ModalWindow'
 import { easterEggImg, imprintContent, privacyContent } from './policy-text'
+import { PolicyContainer } from './styles'
 
 function Policy () {
   const [easterEgg, setEasterEgg] = useState(0)
@@ -30,18 +31,18 @@ function Policy () {
         closeButton={false}
         show={privacyModalOpen}
         content={
-          <>
+          <PolicyContainer>
             {privacyContent} {easterEgg > 10 && easterEggImg}
-          </>
+          </PolicyContainer>
         }
         continueBtnHandler={handlePrivacyModal}
       />
       <ModalWindow
-        iconRight="check"
+        iconRight="close"
         modalTitle="Imprint"
         continueBtnTitle="Close"
         closeButton={false}
-        content={imprintContent}
+        content={<PolicyContainer>{imprintContent}</PolicyContainer>}
         show={imprintModalOpen}
         onHide={handleImprintModal}
         continueBtnHandler={handleImprintModal}
