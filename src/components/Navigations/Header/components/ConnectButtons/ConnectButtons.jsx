@@ -11,6 +11,7 @@ import ErrorHandler from 'func/ErrorHandler'
 
 async function requestConnect (params) {
   try {
+    await ethereum.request({ method: 'eth_requestAccounts' })
     await ethereum.request({
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: params.chainId }]
