@@ -23,7 +23,7 @@ function CreateStep2 ({ activeTab }) {
       return showCommonData(
                 <>
                     <h5>External Link</h5>
-                    <p>{formData['external-link']}</p>
+                    <p>{formData['external-link'] || '–'}</p>
                 </>
       )
     case slashingTypes.proposerRemark:

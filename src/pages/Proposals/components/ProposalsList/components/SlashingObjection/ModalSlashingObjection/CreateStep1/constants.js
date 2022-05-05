@@ -2,6 +2,7 @@ export const castObjection = {
   subtitleOne: 'The target of a slashing proposal has the right tp object the slashing.',
   subtitleTwo: 'Please provide a reference link to external source giving details of your objection',
   inputPlaceholderUp: ['External link'],
+  inputTypes: ['external-link-optional'],
   inputUpObj: { 'external-link': '' }
 }
 

@@ -20,6 +20,7 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
                     <InputGroup
                         inputArr={castObjection.inputPlaceholderUp}
                         inputsObj={castObjection.inputUpObj}
+                        typesArr={castObjection.inputTypes}
                         register={register}
                         errors={errors}
                         setValue={setValue}
