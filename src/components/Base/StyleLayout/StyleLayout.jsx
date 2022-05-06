@@ -4,7 +4,7 @@ import styled, { ThemeProvider } from 'styled-components'
 import themeStyles from 'constants/style'
 import { darkColors, lightColors, THEMES } from 'constants/colors'
 import { theme } from 'store/theme/selectors'
-import { setThem } from 'store/theme/action-creators'
+import { setTheme } from 'store/theme/action-creators'
 
 import { useDispatch, useSelector } from 'react-redux'
 import Header from 'components/Navigations/Header'
@@ -23,10 +23,10 @@ function StyleLayout ({ children }) {
     switch (localStorage['theme-mode']) {
       case THEMES.light:
       case THEMES.dark:
-        dispatch(setThem(localStorage['theme-mode'] || THEMES.dark))
+        dispatch(setTheme(localStorage['theme-mode'] || THEMES.dark))
         break
       default:
-        dispatch(setThem(THEMES.dark))
+        dispatch(setTheme(THEMES.dark))
     }
   }, [dispatch])
 

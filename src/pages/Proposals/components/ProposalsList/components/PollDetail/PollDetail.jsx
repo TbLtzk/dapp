@@ -1,9 +1,11 @@
 import React, { useCallback, useMemo } from 'react'
-import { PROPOSALS_TYPES } from 'constants/statuses'
-import { getTypeName } from 'func/contractHelpers'
-import { CONTRACTS_NAMES } from 'constants/contracts'
 import { PollDetailContainer } from './styles'
-import CopyToClipboard from 'components/Base/CopyToClipboard'
+import ExplorerAddress from 'components/Custom/ExplorerAddress'
+
+import { PROPOSALS_TYPES } from 'constants/statuses'
+import { CONTRACTS_NAMES } from 'constants/contracts'
+
+import { getTypeName } from 'func/contractHelpers'
 
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000'
 
@@ -52,13 +54,15 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
         if (pollDetail.candidate && pollDetail.candidate !== EMPTY_ADDR) {
           rootNodeArr.push({
             label: 'Proposal to Add Root Node',
-            value: pollDetail.candidate
+            value: pollDetail.candidate,
+            formatter: val => (<ExplorerAddress address={val} />)
           })
         }
         if (pollDetail.replaceDest && pollDetail.replaceDest !== EMPTY_ADDR) {
           rootNodeArr.push({
             label: 'Proposal to Remove Root Node',
-            value: pollDetail.replaceDest
+            value: pollDetail.replaceDest,
+            formatter: val => (<ExplorerAddress address={val} />)
           })
         }
         return rootNodeArr
@@ -68,13 +72,15 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
           if (pollDetail.addressToAdd && pollDetail.addressToAdd !== EMPTY_ADDR) {
             membershipArr.push({
               label: 'Address to Add',
-              value: pollDetail.addressToAdd
+              value: pollDetail.addressToAdd,
+              formatter: val => (<ExplorerAddress address={val} />)
             })
           }
           if (pollDetail.addressToRemove && pollDetail.addressToRemove !== EMPTY_ADDR) {
             membershipArr.push({
               label: 'Address to Remove',
-              value: pollDetail.addressToRemove
+              value: pollDetail.addressToRemove,
+              formatter: val => (<ExplorerAddress address={val} />)
             })
           }
           return membershipArr
@@ -85,11 +91,8 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
         return [
           {
             label: 'Candidate',
-            value: (
-                            <CopyToClipboard valueToCopy={pollDetail?.candidate}>
-                                {pollDetail?.candidate}
-                            </CopyToClipboard>
-            )
+            value: pollDetail?.candidate,
+            formatter: val => (<ExplorerAddress address={val} />)
           },
           {
             label: 'Amount to Slash',
@@ -101,24 +104,28 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
         return [
           {
             label: checkContract ? 'Key' : 'Implementation',
-            value: checkContract ? pollDetail.key : pollDetail.implementation
+            value: checkContract ? pollDetail.key : pollDetail.implementation,
+            formatter: val => (<ExplorerAddress address={val} />)
           },
           {
             label: 'Proxy',
-            value: pollDetail.proxy
+            value: pollDetail.proxy,
+            formatter: val => (<ExplorerAddress address={val} />)
           }
         ]
     }
   }, [pollDetail])
 
-  const printValues = (label, value, key) => {
+  const printValues = ({ label, value, formatter }, key) => {
     const keyId = key + label.replace(/ /g, '-').toLowerCase() + +new Date()
     return !value || value === 'undefined'
       ? null
       : (
             <div key={keyId}>
                 <h5>{label}</h5>
-                <p title={value}>{value}</p>
+                <p title={value}>
+                  {formatter ? formatter(value) : value}
+                </p>
             </div>
         )
   }
@@ -126,12 +133,12 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
   const showContent = useCallback(() => {
     return showDataArr.map((el, i) => {
       if (!Array.isArray(el)) {
-        return printValues(el.label, el.value, i)
+        return printValues(el, i)
       } else {
         return (
                     <div className="list-card__column-1-2-2" key={+new Date() + i}>
                         {el.map((item, index) => {
-                          return printValues(item.label, item.value, i + '-' + index + +new Date())
+                          return printValues(item, i + '-' + index + +new Date())
                         })}
                     </div>
         )

@@ -1,6 +1,8 @@
 import React from 'react'
+
 import CopyToClipboard from 'components/Base/CopyToClipboard'
 import { TableStyle } from 'components/Base/TableView/styles'
+import ExplorerAddress from 'components/Custom/ExplorerAddress'
 
 function KeyAddressesTable ({ tableData, tableHeaders }) {
   return (
@@ -21,9 +23,14 @@ function KeyAddressesTable ({ tableData, tableHeaders }) {
                             </td>
 
                             <td>
-                                <CopyToClipboard valueToCopy={item.value}>
-                                    <span>{String(item.value)}</span>
-                                </CopyToClipboard>
+                                {item.type === 'ADDR'
+                                  ? <ExplorerAddress address={item.value} />
+                                  : (
+                                        <CopyToClipboard valueToCopy={item.value}>
+                                            {item.value}
+                                        </CopyToClipboard>
+                                    )
+                                }
                             </td>
                             <td>
                                 <span>{item.type}</span>

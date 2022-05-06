@@ -1,25 +1,29 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setThem } from 'store/theme/action-creators'
-import { THEMES } from 'constants/colors'
-import { theme } from 'store/theme/selectors'
+
 import FormSwitch from '../Form/FormSwitch'
+import { THEMES } from 'constants/colors'
+
+import { setTheme } from 'store/theme/action-creators'
+import { theme } from 'store/theme/selectors'
 
 function Themes () {
   const dispatch = useDispatch()
   const currentTheme = useSelector(theme)
-  const [isSwitchOn, setIsSwitchOn] = useState(currentTheme === THEMES.dark)
 
-  function changeThemes () {
-    setIsSwitchOn(!isSwitchOn)
-    if (currentTheme === THEMES.light) {
-      dispatch(setThem(THEMES.dark))
-    } else {
-      dispatch(setThem(THEMES.light))
-    }
+  function changeTheme () {
+    const newTheme = currentTheme === THEMES.light ? THEMES.dark : THEMES.light
+    dispatch(setTheme(newTheme))
   }
 
-  return <FormSwitch onChange={changeThemes} id="theme-switcher" checked={isSwitchOn} label="Dark theme" />
+  return (
+    <FormSwitch
+      id="theme-switcher"
+      checked={currentTheme === THEMES.dark}
+      label="Dark theme"
+      onChange={changeTheme}
+    />
+  )
 }
 
 export default Themes
