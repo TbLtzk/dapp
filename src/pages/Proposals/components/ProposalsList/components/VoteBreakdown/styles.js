@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const ColorTitle = styled.div`
   font-size: 13px;
@@ -6,14 +6,14 @@ export const ColorTitle = styled.div`
   color: ${(props) => {
     switch (props.color) {
       case 'white':
-        return props.theme.colors.circleWhite
+        return props.theme.colors.circleWhite;
       case 'dark':
-        return props.theme.colors.circleDark
+        return props.theme.colors.circleDark;
       default:
-        return props.theme.colors.circleWhite
+        return props.theme.colors.circleWhite;
     }
   }};
-`
+`;
 
 export const VoteBreakdownContainer = styled.div`
   position: relative;
@@ -55,4 +55,4 @@ export const VoteBreakdownContainer = styled.div`
       display: none;
     }
   }
-`
+`;

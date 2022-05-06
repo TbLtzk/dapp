@@ -1,15 +1,17 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React from 'react';
+import { useSelector } from 'react-redux';
 
-import CopyToClipboard from 'components/Base/CopyToClipboard'
-import { AddressWrapper } from './styles'
+import CopyToClipboard from 'components/Base/CopyToClipboard';
 
-import { networkSelector } from 'store/user-inf/selectors'
-import { getExplorerUrlByChainId } from 'func/useful'
+import { AddressWrapper } from './styles';
+
+import { networkSelector } from 'store/user-inf/selectors';
+
+import { getExplorerUrlByChainId } from 'func/useful';
 
 function ExplorerAddress ({ address }) {
-  const network = useSelector(networkSelector)
-  const explorerUrl = getExplorerUrlByChainId(network)
+  const network = useSelector(networkSelector);
+  const explorerUrl = getExplorerUrlByChainId(network);
 
   return (
     <AddressWrapper>
@@ -29,7 +31,7 @@ function ExplorerAddress ({ address }) {
         <i className="mdi mdi-content-copy" />
       </CopyToClipboard>
     </AddressWrapper>
-  )
+  );
 }
 
-export default ExplorerAddress
+export default ExplorerAddress;

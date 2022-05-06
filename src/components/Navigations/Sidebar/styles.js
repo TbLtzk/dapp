@@ -1,6 +1,8 @@
-import styled, { css } from 'styled-components'
-import { indents } from 'constants/style'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
+
+import styled, { css } from 'styled-components';
+
+import { indents } from 'constants/style';
 
 function handleSidebarOpen (p, width, padding, left) {
   if (!p.openSidebar) {
@@ -40,15 +42,15 @@ function handleSidebarOpen (p, width, padding, left) {
           transition-delay: 0.2s;
         }
       }
-    `
+    `;
   }
-  return null
+  return null;
 }
 
 export const FooterContainer = styled.div`
   margin-top: 20px;
   margin-left: 12px;
-`
+`;
 
 export const SidebarContainer = styled.div`
   height: calc(100vh - 70px);
@@ -105,13 +107,13 @@ export const SidebarContainer = styled.div`
       }
     }
   }
-`
+`;
 
 export const ListTitle = styled.div`
   display: block;
   color: ${(props) => props.theme.colors.oxfordBlueTint3};
   font-size: 12px;
-`
+`;
 
 export const CopyAddressContainer = styled.span`
   display: flex;
@@ -121,7 +123,7 @@ export const CopyAddressContainer = styled.span`
     position: relative;
     left: 40%;
   }
-`
+`;
 
 export const LinkGroup = styled.div`
   display: flex;
@@ -146,7 +148,7 @@ export const LinkGroup = styled.div`
       color: ${(props) => props.theme.colors.neonGreen};
     }
   }
-`
+`;
 
 export const LinkStyle = styled(NavLink)`
   padding: 6px 12px;
@@ -166,7 +168,7 @@ export const LinkStyle = styled(NavLink)`
     }
     background: ${(props) => props.theme.colors.oxfordBlueTint1};
   }
-`
+`;
 
 export const ALinkStyle = styled.a`
   padding-left: 0;
@@ -177,7 +179,7 @@ export const ALinkStyle = styled.a`
     color: ${(props) => props.theme.colors.white};
     text-decoration: underline;
   }
-`
+`;
 
 export const Footer = styled.div`
   display: flex;
@@ -186,7 +188,7 @@ export const Footer = styled.div`
   & > :first-child {
     margin-right: 10px;
   }
-`
+`;
 
 export const AccordionIcon = styled.div`
   font-size: 20px;
@@ -196,7 +198,7 @@ export const AccordionIcon = styled.div`
   &.${(props) => props.activeClassName} {
     color: ${(p) => p.theme.colors.activeLinks};
   }
-`
+`;
 
 export const AccordionLbl = styled.div`
   display: flex;
@@ -207,7 +209,7 @@ export const AccordionLbl = styled.div`
   color: ${(props) => (props.highlight === 1 ? props.theme.colors.activeLinks : props.theme.colors.white)};
   border: 1px solid ${(props) => (props.highlight === 1 ? props.theme.colors.activeLinks : props.theme.colors.white)};
   border-radius: 13px;
-`
+`;
 
 export const FooterDataContaier = styled.div`
   display: flex;
@@ -229,4 +231,4 @@ export const FooterDataContaier = styled.div`
     display: flex;
     align-items: center;
   }
-`
+`;

@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components';
 
 const handleColorTheme = (props) => {
   switch (props.network) {
@@ -6,40 +6,40 @@ const handleColorTheme = (props) => {
       return css`
         color: ${props.theme.colors.oxfordBlue};
         background: ${props.theme.colors.neonGreen};
-      `
+      `;
     }
     case '35442': {
       return css`
         color: ${props.theme.colors.white};
         background: ${props.theme.colors.red};
-      `
+      `;
     }
     case '35443': {
       return css`
         color: ${props.theme.colors.oxfordBlue};
         background: ${props.theme.colors.validationError};
-      `
+      `;
     }
     case '35444': {
       return css`
         color: ${props.theme.colors.white};
         background: ${props.theme.colors.red};
-      `
+      `;
     }
     case 'unknown':
     default: {
       return css`
         color: ${props.theme.colors.white};
         background: ${props.theme.colors.oxfordBlueTint2};
-      `
+      `;
     }
   }
-}
+};
 
 export const ElementsWrapper = styled.div`
   display: flex;
   justify-content: space-around;
-`
+`;
 
 export const HeaderWrapper = styled.div`
   display: flex;
@@ -53,13 +53,13 @@ export const HeaderWrapper = styled.div`
   @media screen and (max-width: 1550px) {
     padding: 0 30px 0 20px;
   }
-`
+`;
 
 export const WrapLogo = styled.div`
   img {
     width: 53px;
   }
-`
+`;
 
 export const NetworkWrapper = styled.div`
   display: flex;
@@ -71,7 +71,7 @@ export const NetworkWrapper = styled.div`
   width: 150px;
   text-transform: capitalize;
   ${(props) => handleColorTheme(props)}
-`
+`;
 
 export const InstallMetamaskContainer = styled.div`
   .list-card__line {
@@ -100,4 +100,4 @@ export const InstallMetamaskContainer = styled.div`
       }
     }
   }
-`
+`;

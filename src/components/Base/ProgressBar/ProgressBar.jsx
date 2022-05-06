@@ -1,13 +1,14 @@
-import React from 'react'
-import { ProgressBarWrapper } from './styles'
+import React from 'react';
+
+import { ProgressBarWrapper } from './styles';
 
 const ProgressBar = ({ value }) => {
   return (
-        <ProgressBarWrapper value={value}>
-            <span> </span>
-            {value} %
-        </ProgressBarWrapper>
-  )
-}
+    <ProgressBarWrapper value={value}>
+      <span> </span>
+      {value} %
+    </ProgressBarWrapper>
+  );
+};
 
-export default ProgressBar
+export default ProgressBar;

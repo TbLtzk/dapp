@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const SlashingObjectionContainer = styled.div`
   .list-card__tow-colm {
@@ -46,4 +46,4 @@ export const SlashingObjectionContainer = styled.div`
       }
     }
   }
-`
+`;

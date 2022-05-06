@@ -1,25 +1,25 @@
-import React from 'react'
+import React from 'react';
 
-import DelegatedValidatorsPanel from 'components/Custom/MembersPanel/DelegatedValidatorsPanel'
-import CustomBlock from 'components/Base/CustomBlock'
+import CustomBlock from 'components/Base/CustomBlock';
+import DelegatedValidatorsPanel from 'components/Custom/MembersPanel/DelegatedValidatorsPanel';
 
-import UpdateDelegation from './UpdateDelegation'
-import DelegationRewards from './DelegationRewards'
+import DelegationRewards from './DelegationRewards';
+import UpdateDelegation from './UpdateDelegation';
 
 function DelegateStakingPower () {
   return (
-        <>
-            <CustomBlock>
-                <h1>Delegate Staking Power</h1>
-                <DelegationRewards />
-                <div className="card__line" />
-                <UpdateDelegation />
-            </CustomBlock>
-            <CustomBlock>
-                <DelegatedValidatorsPanel />
-            </CustomBlock>
-        </>
-  )
+    <>
+      <CustomBlock>
+        <h1>Delegate Staking Power</h1>
+        <DelegationRewards />
+        <div className="card__line" />
+        <UpdateDelegation />
+      </CustomBlock>
+      <CustomBlock>
+        <DelegatedValidatorsPanel />
+      </CustomBlock>
+    </>
+  );
 }
 
-export default DelegateStakingPower
+export default DelegateStakingPower;

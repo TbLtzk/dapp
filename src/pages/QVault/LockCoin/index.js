@@ -1,1 +1,1 @@
-export { default } from './LockCoin'
+export { default } from './LockCoin';

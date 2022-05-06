@@ -1,1 +1,1 @@
-export { default } from './VotingItems'
+export { default } from './VotingItems';

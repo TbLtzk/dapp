@@ -1,5 +1,6 @@
-import styled from 'styled-components'
-import { ButtonCustom } from 'components/Base/Buttons/Button/styles'
+import styled from 'styled-components';
+
+import { ButtonCustom } from 'components/Base/Buttons/Button/styles';
 
 export const ButtonSlideForm = styled.form`
 position: relative;
@@ -10,7 +11,7 @@ position: relative;
     height: 46px;
   }
 }
-`
+`;
 
 export const BtnSlide = styled(ButtonCustom)`
 height: 46px;
@@ -25,4 +26,4 @@ font-size: 14px;
   width: auto;
   min-width: 100px;
 }
-`
+`;

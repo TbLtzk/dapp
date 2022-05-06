@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import { getParameterKeysByType, getParameterValueByKey } from 'contracts/helpers/parameters-helper'
-import { useDispatch } from 'react-redux'
-import { setNewParameter } from 'store/voting/proposals/action-creators'
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-const keyNotFound = 'No value found. Please check or proceed to create a new parameter.'
+import { setNewParameter } from 'store/voting/proposals/action-creators';
+
+import { getParameterKeysByType, getParameterValueByKey } from 'contracts/helpers/parameters-helper';
+
+const keyNotFound = 'No value found. Please check or proceed to create a new parameter.';
 
 function CurrentParameterValue ({ typeContract, parameterType, parameterKey }) {
-  const [currentValue, setCurrentValue] = useState(null)
-  const [keys, setKeys] = useState(null)
+  const [currentValue, setCurrentValue] = useState(null);
+  const [keys, setKeys] = useState(null);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (typeContract && parameterType) {
-      getParameterKeysByType(typeContract, parameterType).then((data) => setKeys(data))
+      getParameterKeysByType(typeContract, parameterType).then((data) => setKeys(data));
     }
-  }, [typeContract, parameterType])
+  }, [typeContract, parameterType]);
 
   useEffect(() => {
     if (keys) {
@@ -23,19 +25,19 @@ function CurrentParameterValue ({ typeContract, parameterType, parameterKey }) {
         if (keys.includes(parameterKey)) {
           getParameterValueByKey(typeContract, parameterType, parameterKey).then((data) =>
             setCurrentValue(data)
-          )
-          dispatch(setNewParameter(false))
+          );
+          dispatch(setNewParameter(false));
         } else {
-          setCurrentValue(keyNotFound)
-          dispatch(setNewParameter(true))
+          setCurrentValue(keyNotFound);
+          dispatch(setNewParameter(true));
         }
       }
     } else {
-      setCurrentValue('')
+      setCurrentValue('');
     }
-  }, [parameterKey, keys, dispatch])
+  }, [parameterKey, keys, dispatch]);
 
-  return <h4 style={{ marginBottom: '20px' }}>{`Current value: ${currentValue}`} </h4>
+  return <h4 style={{ marginBottom: '20px' }}>{`Current value: ${currentValue}`} </h4>;
 }
 
-export default CurrentParameterValue
+export default CurrentParameterValue;

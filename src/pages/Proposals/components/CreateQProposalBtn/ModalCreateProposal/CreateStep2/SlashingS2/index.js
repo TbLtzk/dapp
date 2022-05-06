@@ -1,1 +1,1 @@
-export { default } from './SlashingS2'
+export { default } from './SlashingS2';

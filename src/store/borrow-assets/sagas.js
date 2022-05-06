@@ -1,181 +1,183 @@
-import { put, select, takeEvery, call } from 'redux-saga/effects'
-import {
-  getStableCoinInstance,
-  getBorrowingCoreInstance,
-  getGovernedEpdrQbtcAddressInstance
-} from 'contracts/contract-instance'
+import { call, put, select, takeEvery } from 'redux-saga/effects';
 
-import * as actionTypes from './action-types'
 import {
   setTransactionLoading,
   setTransactionLoadingError,
   setTransactionLoadingSuccess
-} from '../transaction-handler/action-creators'
+} from '../transaction-handler/action-creators';
 
-import ErrorHandler from 'func/ErrorHandler'
-import { fromWei, toBtcBlockchain, toWei } from 'func/balance'
 import {
   getBorrowAllowance,
   getBorrowVaultInfo,
   setBorrowAllowanceDeposit,
   setBorrowAllowanceRepay,
   setBorrowVaultInfo
-} from './action-creators'
-import { getBorrowVaultInfoHelper } from 'contracts/helpers/borrow-assets-helper'
-import { MAX_APPROVE_AMOUNT } from 'constants/numbers'
+} from './action-creators';
+import * as actionTypes from './action-types';
+
 import {
   getTotalCollateralLockedAndOutstandingDebt,
   getTotalSavingBalance
-} from 'store/borrowing-core/action-creators'
+} from 'store/borrowing-core/action-creators';
 
-import { fields } from 'constants/fieldsNaming'
+import {
+  getBorrowingCoreInstance,
+  getGovernedEpdrQbtcAddressInstance,
+  getStableCoinInstance
+} from 'contracts/contract-instance';
+import { getBorrowVaultInfoHelper } from 'contracts/helpers/borrow-assets-helper';
+
+import { fields } from 'constants/fieldsNaming';
+import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
+import { fromWei, toBtcBlockchain, toWei } from 'func/balance';
+import ErrorHandler from 'func/ErrorHandler';
 
 const getContractWithTypeAndKey = async (type) => {
   switch (type) {
     case fields.deposit: {
-      const contract = await getGovernedEpdrQbtcAddressInstance()
-      return contract.methods
+      const contract = await getGovernedEpdrQbtcAddressInstance();
+      return contract.methods;
     }
     case fields.repay: {
-      const contract = await getStableCoinInstance()
-      return contract
+      const contract = await getStableCoinInstance();
+      return contract;
     }
     default: {
-      return null
+      return null;
     }
   }
-}
+};
 
 function * getBorrowAllowanceGenerator ({ borrowType }) {
   try {
-    const { userAddress } = yield select((state) => state.userInf)
-    const contract = yield call(getContractWithTypeAndKey, borrowType)
-    const borrowingContract = yield call(getBorrowingCoreInstance)
-    const allowance = yield contract.allowance(userAddress, borrowingContract.address)
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = yield call(getContractWithTypeAndKey, borrowType);
+    const borrowingContract = yield call(getBorrowingCoreInstance);
+    const allowance = yield contract.allowance(userAddress, borrowingContract.address);
     if (borrowType === 'deposit') {
-      const allow = yield allowance.call()
-      yield put(setBorrowAllowanceDeposit(fromWei(allow)))
+      const allow = yield allowance.call();
+      yield put(setBorrowAllowanceDeposit(fromWei(allow)));
     } else if (borrowType === 'repay') {
-      yield put(setBorrowAllowanceRepay(fromWei(allowance)))
+      yield put(setBorrowAllowanceRepay(fromWei(allowance)));
     }
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
 function * getBorrowVaultInfoGenerator ({ vaultId }) {
   try {
-    const { userAddress } = yield select((state) => state.userInf)
-    const contract = yield call(getBorrowingCoreInstance)
-    const vaultStats = yield contract.getVaultStats(userAddress, vaultId)
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = yield call(getBorrowingCoreInstance);
+    const vaultStats = yield contract.getVaultStats(userAddress, vaultId);
 
-    const depositContract = yield call(getContractWithTypeAndKey, 'deposit')
-    const repayContract = yield call(getContractWithTypeAndKey, 'repay')
+    const depositContract = yield call(getContractWithTypeAndKey, 'deposit');
+    const repayContract = yield call(getContractWithTypeAndKey, 'repay');
 
-    const availableDeposit = yield depositContract.balanceOf(userAddress).call()
-    const availableRepay = yield repayContract.balanceOf(userAddress)
+    const availableDeposit = yield depositContract.balanceOf(userAddress).call();
+    const availableRepay = yield repayContract.balanceOf(userAddress);
 
-    const result = yield call(getBorrowVaultInfoHelper, availableRepay, availableDeposit, vaultStats)
-    yield put(setBorrowVaultInfo(result))
+    const result = yield call(getBorrowVaultInfoHelper, availableRepay, availableDeposit, vaultStats);
+    yield put(setBorrowVaultInfo(result));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
 function * setBorrowAproveGenerator ({ borrowType }) {
   try {
-    yield put(setTransactionLoading())
-    const { userAddress } = yield select((state) => state.userInf)
-    const borrowingContract = yield call(getBorrowingCoreInstance)
+    yield put(setTransactionLoading());
+    const { userAddress } = yield select((state) => state.userInf);
+    const borrowingContract = yield call(getBorrowingCoreInstance);
 
-    const contract = yield call(getContractWithTypeAndKey, borrowType)
+    const contract = yield call(getContractWithTypeAndKey, borrowType);
     if (borrowType === fields.deposit) {
-      yield contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT).send({ from: userAddress })
+      yield contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT).send({ from: userAddress });
     } else {
-      yield contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT, { from: userAddress })
+      yield contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT, { from: userAddress });
     }
 
-    yield put(getBorrowAllowance(borrowType))
-    yield put(getTotalSavingBalance())
-    yield put(getTotalCollateralLockedAndOutstandingDebt())
+    yield put(getBorrowAllowance(borrowType));
+    yield put(getTotalSavingBalance());
+    yield put(getTotalCollateralLockedAndOutstandingDebt());
 
-    yield put(setTransactionLoadingSuccess())
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setTransactionLoadingError(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
 function * setBorrowDepositGenerator ({ amount, vaultId }) {
   try {
-    yield put(setTransactionLoading())
-    const { userAddress } = yield select((state) => state.userInf)
-    const contract = yield call(getBorrowingCoreInstance)
-    yield contract.depositCol(vaultId, toBtcBlockchain(amount), { from: userAddress })
+    yield put(setTransactionLoading());
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = yield call(getBorrowingCoreInstance);
+    yield contract.depositCol(vaultId, toBtcBlockchain(amount), { from: userAddress });
 
-    yield put(getBorrowVaultInfo(vaultId))
-    yield put(getTotalCollateralLockedAndOutstandingDebt())
-    yield put(getTotalSavingBalance())
+    yield put(getBorrowVaultInfo(vaultId));
+    yield put(getTotalCollateralLockedAndOutstandingDebt());
+    yield put(getTotalSavingBalance());
 
-    yield put(setTransactionLoadingSuccess())
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setTransactionLoadingError(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
 function * setBorrowAsBorrowGenerator ({ amount, vaultId }) {
   try {
-    yield put(setTransactionLoading())
-    const { userAddress } = yield select((state) => state.userInf)
-    const contract = yield call(getBorrowingCoreInstance)
-    yield contract.generateStc(vaultId, toWei(amount), { from: userAddress })
+    yield put(setTransactionLoading());
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = yield call(getBorrowingCoreInstance);
+    yield contract.generateStc(vaultId, toWei(amount), { from: userAddress });
 
-    yield put(getBorrowVaultInfo(vaultId))
-    yield put(getTotalCollateralLockedAndOutstandingDebt())
-    yield put(getTotalSavingBalance())
+    yield put(getBorrowVaultInfo(vaultId));
+    yield put(getTotalCollateralLockedAndOutstandingDebt());
+    yield put(getTotalSavingBalance());
 
-    yield put(setTransactionLoadingSuccess())
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setTransactionLoadingError(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
 function * setBorrowRepayGenerator ({ amount, vaultId }) {
   try {
-    yield put(setTransactionLoading())
-    const { userAddress } = yield select((state) => state.userInf)
-    const contract = yield call(getBorrowingCoreInstance)
-    yield contract.payBackStc(vaultId, toWei(amount), { from: userAddress })
+    yield put(setTransactionLoading());
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = yield call(getBorrowingCoreInstance);
+    yield contract.payBackStc(vaultId, toWei(amount), { from: userAddress });
 
-    yield put(getBorrowVaultInfo(vaultId))
-    yield put(getTotalCollateralLockedAndOutstandingDebt())
-    yield put(getTotalSavingBalance())
+    yield put(getBorrowVaultInfo(vaultId));
+    yield put(getTotalCollateralLockedAndOutstandingDebt());
+    yield put(getTotalSavingBalance());
 
-    yield put(setTransactionLoadingSuccess())
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setTransactionLoadingError(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
 function * setBorrowWithdrawGenerator ({ amount, vaultId }) {
   try {
-    yield put(setTransactionLoading())
-    const { userAddress } = yield select((state) => state.userInf)
-    const contract = yield call(getBorrowingCoreInstance)
+    yield put(setTransactionLoading());
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = yield call(getBorrowingCoreInstance);
 
-    yield contract.withdrawCol(vaultId, toBtcBlockchain(amount), { from: userAddress })
+    yield contract.withdrawCol(vaultId, toBtcBlockchain(amount), { from: userAddress });
 
-    yield put(getBorrowVaultInfo(vaultId))
-    yield put(getTotalSavingBalance())
-    yield put(getTotalCollateralLockedAndOutstandingDebt())
+    yield put(getBorrowVaultInfo(vaultId));
+    yield put(getTotalSavingBalance());
+    yield put(getTotalCollateralLockedAndOutstandingDebt());
 
-    yield put(setTransactionLoadingSuccess())
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setTransactionLoadingError(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
@@ -189,4 +191,4 @@ export default [
   takeEvery(actionTypes.SET_BORROW_AS_BORROW, setBorrowAsBorrowGenerator),
   takeEvery(actionTypes.SET_BORROW_REPAY, setBorrowRepayGenerator),
   takeEvery(actionTypes.SET_BORROW_WITHDRAW, setBorrowWithdrawGenerator)
-]
+];

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const Block = styled.div`
   width: 100%;
@@ -124,4 +124,4 @@ export const Block = styled.div`
     position: absolute;
     bottom: 15px;
   }
-`
+`;

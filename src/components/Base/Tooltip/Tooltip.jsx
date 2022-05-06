@@ -1,26 +1,27 @@
-import React from 'react'
-import { TooltipContainer } from './styles'
+import React from 'react';
+
+import { TooltipContainer } from './styles';
 
 function Tooltip ({ additionalInfo, children, disabled, copy, shown, position = 'top' }) {
   if (disabled) {
-    return children
+    return children;
   }
   return (
-        <>
-            <TooltipContainer position={position}>
-                {copy || shown
-                  ? (
-                      children
-                    )
-                  : (
-                    <>
-                        <span /> {children}
-                    </>
-                    )}
-                <span className="tooltip">{additionalInfo}</span>
-            </TooltipContainer>
-        </>
-  )
+    <>
+      <TooltipContainer position={position}>
+        {copy || shown
+          ? (
+            children
+          )
+          : (
+            <>
+              <span /> {children}
+            </>
+          )}
+        <span className="tooltip">{additionalInfo}</span>
+      </TooltipContainer>
+    </>
+  );
 }
 
-export default Tooltip
+export default Tooltip;

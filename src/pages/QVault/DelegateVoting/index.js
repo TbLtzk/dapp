@@ -1,1 +1,1 @@
-export { default } from './DelegateVoting'
+export { default } from './DelegateVoting';

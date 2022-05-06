@@ -1,1 +1,1 @@
-export { default } from './CustomBlock'
+export { default } from './CustomBlock';

@@ -1,1 +1,1 @@
-export { default } from './CurrentParameterValue'
+export { default } from './CurrentParameterValue';

@@ -1,87 +1,90 @@
-import { put, takeEvery, call, select } from 'redux-saga/effects'
-import * as actionTypes from './action-types'
+import { call, put, select, takeEvery } from 'redux-saga/effects';
+
+import * as actionTypes from './action-types';
+
 import {
-  getIsUserEPDRMemberSuccess,
-  getIsUserEPQFIMemberSuccess,
   getEPDRMembersError,
   getEPDRMembersSuccess,
   getEPQFIMembersError,
   getEPQFIMembersSuccess,
-  getIsUserEPRSMemberSuccess,
   getEPRSMembersError,
-  getEPRSMembersSuccess
-} from 'store/membership/action-creators'
+  getEPRSMembersSuccess,
+  getIsUserEPDRMemberSuccess,
+  getIsUserEPQFIMemberSuccess,
+  getIsUserEPRSMemberSuccess
+} from 'store/membership/action-creators';
 
-import ErrorHandler from 'func/ErrorHandler'
 import {
   getEpdrMembershipInstance,
   getEpqfiMembershipInstance,
   getEprsMembershipInstance
-} from 'contracts/contract-instance'
+} from 'contracts/contract-instance';
+
+import ErrorHandler from 'func/ErrorHandler';
 
 function * isUserEPDRMember () {
   try {
-    const { userAddress } = yield select((state) => state.userInf)
-    const contract = yield call(getEpdrMembershipInstance)
-    const data = yield contract.isMember(userAddress)
-    yield put(getIsUserEPDRMemberSuccess(data))
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = yield call(getEpdrMembershipInstance);
+    const data = yield contract.isMember(userAddress);
+    yield put(getIsUserEPDRMemberSuccess(data));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
 function * isUserEPQFIMember () {
   try {
-    const { userAddress } = yield select((state) => state.userInf)
-    const contract = yield call(getEpqfiMembershipInstance)
-    const data = yield contract.isMember(userAddress)
-    yield put(getIsUserEPQFIMemberSuccess(data))
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = yield call(getEpqfiMembershipInstance);
+    const data = yield contract.isMember(userAddress);
+    yield put(getIsUserEPQFIMemberSuccess(data));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
 function * isUserEPRSMember () {
   try {
-    const { userAddress } = yield select((state) => state.userInf)
-    const contract = yield call(getEprsMembershipInstance)
-    const data = yield contract.isMember(userAddress)
-    yield put(getIsUserEPRSMemberSuccess(data))
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = yield call(getEprsMembershipInstance);
+    const data = yield contract.isMember(userAddress);
+    yield put(getIsUserEPRSMemberSuccess(data));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
 function * getEPRSMembers () {
   try {
-    const contract = yield call(getEprsMembershipInstance)
-    const data = yield contract.getMembers()
-    yield put(getEPRSMembersSuccess(data))
+    const contract = yield call(getEprsMembershipInstance);
+    const data = yield contract.getMembers();
+    yield put(getEPRSMembersSuccess(data));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(getEPRSMembersError(error.message))
+    ErrorHandler.processWithoutFeedback(error);
+    yield put(getEPRSMembersError(error.message));
   }
 }
 
 function * getEPDRMembers () {
   try {
-    const contract = yield call(getEpdrMembershipInstance)
-    const data = yield contract.getMembers()
-    yield put(getEPDRMembersSuccess(data))
+    const contract = yield call(getEpdrMembershipInstance);
+    const data = yield contract.getMembers();
+    yield put(getEPDRMembersSuccess(data));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(getEPDRMembersError(error.message))
+    ErrorHandler.processWithoutFeedback(error);
+    yield put(getEPDRMembersError(error.message));
   }
 }
 
 function * getEPQFIMembers () {
   try {
-    const contract = yield call(getEpqfiMembershipInstance)
-    const data = yield contract.getMembers()
-    yield put(getEPQFIMembersSuccess(data))
+    const contract = yield call(getEpqfiMembershipInstance);
+    const data = yield contract.getMembers();
+    yield put(getEPQFIMembersSuccess(data));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(getEPQFIMembersError(error.message))
+    ErrorHandler.processWithoutFeedback(error);
+    yield put(getEPQFIMembersError(error.message));
   }
 }
 
@@ -93,4 +96,4 @@ export default [
   takeEvery(actionTypes.GET_EPDR_MEMBERS, getEPDRMembers),
   takeEvery(actionTypes.GET_EPQFI_MEMBERS, getEPQFIMembers),
   takeEvery(actionTypes.GET_EPRS_MEMBERS, getEPRSMembers)
-]
+];

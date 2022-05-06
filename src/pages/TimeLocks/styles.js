@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const WrapContainer = styled.div`
   display: flex;
@@ -12,17 +12,17 @@ export const WrapContainer = styled.div`
   @media screen and (max-width: 1600px) {
     max-width: 100%;
   }
-`
+`;
 
 export const BlockWrap = styled.div`
   padding-bottom: 10px;
-`
+`;
 
 export const ValueWrap = styled.h4`
   width: ${(props) => props.width};
-`
+`;
 
 export const CalendarWraper = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;

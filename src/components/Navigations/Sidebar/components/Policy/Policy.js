@@ -1,21 +1,23 @@
-import React, { useState } from 'react'
-import ModalWindow from 'components/Base/ModalWindow'
-import { easterEggImg, imprintContent, privacyContent } from './policy-text'
-import { PolicyContainer } from './styles'
+import React, { useState } from 'react';
+
+import ModalWindow from 'components/Base/ModalWindow';
+
+import { easterEggImg, imprintContent, privacyContent } from './policy-text';
+import { PolicyContainer } from './styles';
 
 function Policy () {
-  const [easterEgg, setEasterEgg] = useState(0)
-  const [privacyModalOpen, setPrivacyModalOpen] = useState(!localStorage.getItem('privacy-policy'))
-  const [imprintModalOpen, setImprintModalOpen] = useState(false)
+  const [easterEgg, setEasterEgg] = useState(0);
+  const [privacyModalOpen, setPrivacyModalOpen] = useState(!localStorage.getItem('privacy-policy'));
+  const [imprintModalOpen, setImprintModalOpen] = useState(false);
 
   const handlePrivacyModal = () => {
-    setPrivacyModalOpen(false)
-    localStorage.setItem('privacy-policy', '0')
-  }
+    setPrivacyModalOpen(false);
+    localStorage.setItem('privacy-policy', '0');
+  };
 
   const handleImprintModal = () => {
-    setImprintModalOpen(false)
-  }
+    setImprintModalOpen(false);
+  };
 
   return (
     <>
@@ -44,11 +46,11 @@ function Policy () {
         closeButton={false}
         content={<PolicyContainer>{imprintContent}</PolicyContainer>}
         show={imprintModalOpen}
-        onHide={handleImprintModal}
         continueBtnHandler={handleImprintModal}
+        onHide={handleImprintModal}
       />
     </>
-  )
+  );
 }
 
-export default Policy
+export default Policy;

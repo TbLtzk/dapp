@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const NotFoundContainer = styled.div`
   height: calc(100vh - 70px);
@@ -6,4 +6,4 @@ export const NotFoundContainer = styled.div`
   display: grid;
   justify-content: center;
   align-content: center;
-`
+`;

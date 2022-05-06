@@ -1,1 +1,1 @@
-export { default } from './ManageValidatorBalance'
+export { default } from './ManageValidatorBalance';

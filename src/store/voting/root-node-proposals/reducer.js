@@ -1,5 +1,6 @@
-import { groupArrayByBlockNumber } from 'func/useful'
-import * as actionTypes from './action-types'
+import * as actionTypes from './action-types';
+
+import { groupArrayByBlockNumber } from 'func/useful';
 
 const initialState = {
   activeProposals: [],
@@ -8,7 +9,7 @@ const initialState = {
   rootActiveProposalsCount: -1,
   rootEndedProposalsCount: -1,
   rootLoadingProposalsCount: true
-}
+};
 
 export default function rootNodeProposals (state = initialState, action) {
   switch (action.type) {
@@ -20,8 +21,8 @@ export default function rootNodeProposals (state = initialState, action) {
         rootEndedProposalsCount: action.proposalsCounter.ended,
         rootActiveProposalsCount: action.proposalsCounter.active,
         rootLoadingProposalsCount: false
-      }
+      };
     default:
-      return state
+      return state;
   }
 }

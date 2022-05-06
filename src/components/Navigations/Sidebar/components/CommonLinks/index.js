@@ -1,1 +1,1 @@
-export { default } from './CommonLinks'
+export { default } from './CommonLinks';

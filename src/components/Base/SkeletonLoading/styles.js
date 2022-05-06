@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const SkeletonLoadingWrapper = styled.div`
   background-color: ${(p) => p.theme.colors.oxfordBlueTint1};
@@ -6,4 +6,4 @@ export const SkeletonLoadingWrapper = styled.div`
   display: block;
   margin-bottom: 16px;
   max-height: 800px;
-`
+`;

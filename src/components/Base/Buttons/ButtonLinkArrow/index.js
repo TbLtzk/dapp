@@ -1,1 +1,1 @@
-export { default } from './ButtonLinkArrow'
+export { default } from './ButtonLinkArrow';

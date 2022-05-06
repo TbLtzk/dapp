@@ -1,16 +1,17 @@
-import React, { useCallback, useMemo } from 'react'
-import { PollDetailContainer } from './styles'
-import ExplorerAddress from 'components/Custom/ExplorerAddress'
+import React, { useCallback, useMemo } from 'react';
 
-import { PROPOSALS_TYPES } from 'constants/statuses'
-import { CONTRACTS_NAMES } from 'constants/contracts'
+import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
-import { getTypeName } from 'func/contractHelpers'
+import { PollDetailContainer } from './styles';
 
-const EMPTY_ADDR = '0x0000000000000000000000000000000000000000'
+import { CONTRACTS_NAMES } from 'constants/contracts';
+import { PROPOSALS_TYPES } from 'constants/statuses';
+import { getTypeName } from 'func/contractHelpers';
+
+const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
 
 function PollDetail ({ pollDetail, proposalsKind, contract }) {
-  const approvalContracts = contract === CONTRACTS_NAMES.addressVoting || contract === CONTRACTS_NAMES.upgradeVoting
+  const approvalContracts = contract === CONTRACTS_NAMES.addressVoting || contract === CONTRACTS_NAMES.upgradeVoting;
 
   function getParametersInfo (parameters) {
     return parameters.map((item, index) => {
@@ -27,14 +28,14 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
           label: `Parameter value #${index + 1}`,
           value: item.parameterValue + ''
         }
-      ]
-    })
+      ];
+    });
   }
 
   const showDataArr = useMemo(() => {
     switch (proposalsKind) {
       case PROPOSALS_TYPES.proposals:
-        let oneLineInfos = []
+        let oneLineInfos = [];
         const defaultInfo = [
           {
             label: 'Current Constitution Hash',
@@ -44,48 +45,48 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
             label: 'New Constitution Hash',
             value: pollDetail?.newConstitutionHash
           }
-        ]
+        ];
         if (pollDetail.parameters) {
-          oneLineInfos = getParametersInfo(pollDetail.parameters)
+          oneLineInfos = getParametersInfo(pollDetail.parameters);
         }
-        return [...defaultInfo, ...oneLineInfos]
+        return [...defaultInfo, ...oneLineInfos];
       case PROPOSALS_TYPES.rootNodePanel:
-        const rootNodeArr = []
+        const rootNodeArr = [];
         if (pollDetail.candidate && pollDetail.candidate !== EMPTY_ADDR) {
           rootNodeArr.push({
             label: 'Proposal to Add Root Node',
             value: pollDetail.candidate,
             formatter: val => (<ExplorerAddress address={val} />)
-          })
+          });
         }
         if (pollDetail.replaceDest && pollDetail.replaceDest !== EMPTY_ADDR) {
           rootNodeArr.push({
             label: 'Proposal to Remove Root Node',
             value: pollDetail.replaceDest,
             formatter: val => (<ExplorerAddress address={val} />)
-          })
+          });
         }
-        return rootNodeArr
+        return rootNodeArr;
       case PROPOSALS_TYPES.expertProposals:
         if (pollDetail.kindVoting === 'membership') {
-          const membershipArr = []
+          const membershipArr = [];
           if (pollDetail.addressToAdd && pollDetail.addressToAdd !== EMPTY_ADDR) {
             membershipArr.push({
               label: 'Address to Add',
               value: pollDetail.addressToAdd,
               formatter: val => (<ExplorerAddress address={val} />)
-            })
+            });
           }
           if (pollDetail.addressToRemove && pollDetail.addressToRemove !== EMPTY_ADDR) {
             membershipArr.push({
               label: 'Address to Remove',
               value: pollDetail.addressToRemove,
               formatter: val => (<ExplorerAddress address={val} />)
-            })
+            });
           }
-          return membershipArr
+          return membershipArr;
         } else {
-          return getParametersInfo(pollDetail.parameters)
+          return getParametersInfo(pollDetail.parameters);
         }
       case PROPOSALS_TYPES.slashingProposals:
         return [
@@ -98,9 +99,9 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
             label: 'Amount to Slash',
             value: pollDetail?.amountToSlash + ' Q'
           }
-        ]
+        ];
       case PROPOSALS_TYPES.contractUpdates:
-        const checkContract = contract === CONTRACTS_NAMES.addressVoting
+        const checkContract = contract === CONTRACTS_NAMES.addressVoting;
         return [
           {
             label: checkContract ? 'Key' : 'Implementation',
@@ -112,68 +113,72 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
             value: pollDetail.proxy,
             formatter: val => (<ExplorerAddress address={val} />)
           }
-        ]
+        ];
     }
-  }, [pollDetail])
+  }, [pollDetail]);
 
   const printValues = ({ label, value, formatter }, key) => {
-    const keyId = key + label.replace(/ /g, '-').toLowerCase() + +new Date()
+    const keyId = key + label.replace(/ /g, '-').toLowerCase() + +new Date();
     return !value || value === 'undefined'
       ? null
       : (
-            <div key={keyId}>
-                <h5>{label}</h5>
-                <p title={value}>
-                  {formatter ? formatter(value) : value}
-                </p>
-            </div>
-        )
-  }
+        <div key={keyId}>
+          <h5>{label}</h5>
+          <p title={value}>
+            {formatter ? formatter(value) : value}
+          </p>
+        </div>
+      );
+  };
 
   const showContent = useCallback(() => {
     return showDataArr.map((el, i) => {
       if (!Array.isArray(el)) {
-        return printValues(el, i)
+        return printValues(el, i);
       } else {
         return (
-                    <div className="list-card__column-1-2-2" key={+new Date() + i}>
-                        {el.map((item, index) => {
-                          return printValues(item, i + '-' + index + +new Date())
-                        })}
-                    </div>
-        )
+          <div key={+new Date() + i} className="list-card__column-1-2-2">
+            {el.map((item, index) => {
+              return printValues(item, i + '-' + index + +new Date());
+            })}
+          </div>
+        );
       }
-    })
-  }, [showDataArr])
+    });
+  }, [showDataArr]);
 
   const checkLinkAndPrint = () => {
-    let hrefValue = ''
+    let hrefValue = '';
     if (pollDetail?.remark?.includes('http') || pollDetail?.remark?.includes('https')) {
-      hrefValue = pollDetail.remark
+      hrefValue = pollDetail.remark;
     } else {
-      hrefValue = '//' + pollDetail.remark
+      hrefValue = '//' + pollDetail.remark;
     }
     return (
-            <a href={hrefValue} target="_blank" rel="noreferrer">
-                {pollDetail.remark}
-            </a>
-    )
-  }
+      <a
+        href={hrefValue}
+        target="_blank"
+        rel="noreferrer"
+      >
+        {pollDetail.remark}
+      </a>
+    );
+  };
 
   return (
-        <PollDetailContainer>
-            <h3>Proposal Details</h3>
-            {showContent()}
-            {approvalContracts
-              ? null
-              : (
-                <>
-                    <h5>External Reference</h5>
-                    {checkLinkAndPrint()}
-                </>
-                )}
-        </PollDetailContainer>
-  )
+    <PollDetailContainer>
+      <h3>Proposal Details</h3>
+      {showContent()}
+      {approvalContracts
+        ? null
+        : (
+          <>
+            <h5>External Reference</h5>
+            {checkLinkAndPrint()}
+          </>
+        )}
+    </PollDetailContainer>
+  );
 }
 
-export default PollDetail
+export default PollDetail;

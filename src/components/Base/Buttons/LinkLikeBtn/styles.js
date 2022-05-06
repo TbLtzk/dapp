@@ -1,8 +1,8 @@
-import styled from 'styled-components'
+import { Button } from 'react-bootstrap';
 
-import { Button } from 'react-bootstrap'
+import styled from 'styled-components';
 
-import { indents } from 'constants/style'
+import { indents } from 'constants/style';
 
 export const LinkCustom = styled(Button)`
   padding-left: ${indents['20']};
@@ -10,4 +10,4 @@ export const LinkCustom = styled(Button)`
   border-color: ${props => props.type === 'white' ? props => props.theme.colors.white : props => props.theme.colors.main};
   background-color: ${props => props.type === 'white' ? props => props.theme.colors.white : props => props.theme.colors.main};
   color: ${props => props.type === 'white' ? props => props.theme.colors.main : props => props.theme.colors.white};
-`
+`;

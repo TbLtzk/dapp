@@ -1,28 +1,28 @@
-import { put, takeEvery, call } from 'redux-saga/effects'
+import { call, put, takeEvery } from 'redux-saga/effects';
 
-import * as actionTypes from './action-types'
+import * as actionTypes from './action-types';
+
+import { getMinimumQVaultTimeLock, getQVaultTimeLocks, getUserBalance } from 'store/q-vault/action-creators';
+import { getMinimumRootTimeLock, getRootNodeStakes, getRootTimeLocks } from 'store/root-node/action-creators';
 import {
   setTransactionLoading,
   setTransactionLoadingError,
   setTransactionLoadingSuccess
-} from 'store/transaction-handler/action-creators'
-
-import { getUserBalance, getMinimumQVaultTimeLock, getQVaultTimeLocks } from 'store/q-vault/action-creators'
-import { getRootNodeStakes, getMinimumRootTimeLock, getRootTimeLocks } from 'store/root-node/action-creators'
-import { getSelfStake, getMinimumValidatorsTimeLock, getValidatorsTimeLocks } from 'store/validators/action-creators'
-import { getMinimumVestingTimeLock, getVestingBalance, getVestingTimeLocks } from 'store/vesting/action-creators'
-
-import { toWei } from 'func/balance'
-import { CONTRACT_TYPES } from 'constants/contracts'
+} from 'store/transaction-handler/action-creators';
+import { getMinimumValidatorsTimeLock, getSelfStake, getValidatorsTimeLocks } from 'store/validators/action-creators';
+import { getMinimumVestingTimeLock, getVestingBalance, getVestingTimeLocks } from 'store/vesting/action-creators';
 
 import {
   getQVaultInstance,
   getRootNodesInstance,
   getValidatorsInstance,
   getVestingInstance
-} from 'contracts/contract-instance'
-import { dateToTimestamp } from 'func/convertDate'
-import ErrorHandler from 'func/ErrorHandler'
+} from 'contracts/contract-instance';
+
+import { CONTRACT_TYPES } from 'constants/contracts';
+import { toWei } from 'func/balance';
+import { dateToTimestamp } from 'func/convertDate';
+import ErrorHandler from 'func/ErrorHandler';
 
 /* eslint-disable */
 async function getContractInstance(instanceType) {

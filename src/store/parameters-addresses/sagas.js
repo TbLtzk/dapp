@@ -1,38 +1,41 @@
-import { put, takeEvery, all } from 'redux-saga/effects'
+import { all, put, takeEvery } from 'redux-saga/effects';
+
 import {
-  getContractRegistryKVSuccess,
-  getContractRegistryKVError,
-  getConstitutionParametersKVSuccess,
   getConstitutionParametersKVError,
-  getFeesIncentivesExpertPanelParametersKVSuccess,
-  getFeesIncentivesExpertPanelParametersKVError,
-  getEPDRParametersKVSuccess,
+  getConstitutionParametersKVSuccess,
+  getContractRegistryKVError,
+  getContractRegistryKVSuccess,
   getEPDRParametersKVError,
+  getEPDRParametersKVSuccess,
+  getEPRSParametersKVError,
   getEPRSParametersKVSuccess,
-  getEPRSParametersKVError
-} from './action-creators'
-import * as actionTypes from './action-types'
-import ErrorHandler from 'func/ErrorHandler'
+  getFeesIncentivesExpertPanelParametersKVError,
+  getFeesIncentivesExpertPanelParametersKVSuccess
+} from './action-creators';
+import * as actionTypes from './action-types';
+
 import {
   contractRegistryInstance,
   getConstitutionInstance,
   getEpdrParametersInstance,
   getEpqfiParametersInstance,
   getEprsParametersInstance
-} from 'contracts/contract-instance'
+} from 'contracts/contract-instance';
 
-const TYPES = ['Uint', 'String', 'Bool', 'Addr', 'Bytes32']
+import ErrorHandler from 'func/ErrorHandler';
+
+const TYPES = ['Uint', 'String', 'Bool', 'Addr', 'Bytes32'];
 
 async function getParameters (type, contract) {
-  const parameters = await contract.getParameters(type)
-  type = type.toUpperCase()
-  return parameters.map((data) => ({ type, ...data }))
+  const parameters = await contract.getParameters(type);
+  type = type.toUpperCase();
+  return parameters.map((data) => ({ type, ...data }));
 }
 
 function * getContractRegistryKV () {
   try {
-    const contract = contractRegistryInstance
-    const data = yield contract.instance.methods.getContracts().call()
+    const contract = contractRegistryInstance;
+    const data = yield contract.instance.methods.getContracts().call();
     yield put(
       getContractRegistryKVSuccess(
         data.map((i) => ({
@@ -41,54 +44,54 @@ function * getContractRegistryKV () {
           type: 'ADDR'
         }))
       )
-    )
+    );
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(getContractRegistryKVError('There was an error while loading Contract Registry data'))
+    ErrorHandler.processWithoutFeedback(error);
+    yield put(getContractRegistryKVError('There was an error while loading Contract Registry data'));
   }
 }
 
 function * getConstitutionParametersKV () {
   try {
-    const contract = yield getConstitutionInstance()
-    const data = yield all(TYPES.map((type) => getParameters(type, contract)))
-    yield put(getConstitutionParametersKVSuccess(data.flat()))
+    const contract = yield getConstitutionInstance();
+    const data = yield all(TYPES.map((type) => getParameters(type, contract)));
+    yield put(getConstitutionParametersKVSuccess(data.flat()));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(getConstitutionParametersKVError('There was an error while loading Constitution Parameters data'))
+    ErrorHandler.processWithoutFeedback(error);
+    yield put(getConstitutionParametersKVError('There was an error while loading Constitution Parameters data'));
   }
 }
 
 function * getFeesIncentivesExpertPanelParametersKV () {
   try {
-    const contract = yield getEpqfiParametersInstance()
-    const data = yield all(TYPES.map((type) => getParameters(type, contract)))
-    yield put(getFeesIncentivesExpertPanelParametersKVSuccess(data.flat()))
+    const contract = yield getEpqfiParametersInstance();
+    const data = yield all(TYPES.map((type) => getParameters(type, contract)));
+    yield put(getFeesIncentivesExpertPanelParametersKVSuccess(data.flat()));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(getFeesIncentivesExpertPanelParametersKVError('There was an error while loading EPQFI Parameters data'))
+    ErrorHandler.processWithoutFeedback(error);
+    yield put(getFeesIncentivesExpertPanelParametersKVError('There was an error while loading EPQFI Parameters data'));
   }
 }
 
 function * getEPDRParametersKV () {
   try {
-    const contract = yield getEpdrParametersInstance()
-    const data = yield all(TYPES.map((type) => getParameters(type, contract)))
-    yield put(getEPDRParametersKVSuccess(data.flat()))
+    const contract = yield getEpdrParametersInstance();
+    const data = yield all(TYPES.map((type) => getParameters(type, contract)));
+    yield put(getEPDRParametersKVSuccess(data.flat()));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(getEPDRParametersKVError('There was an error while loading EPDR Parameters data'))
+    ErrorHandler.processWithoutFeedback(error);
+    yield put(getEPDRParametersKVError('There was an error while loading EPDR Parameters data'));
   }
 }
 
 function * getEPRSParametersKV () {
   try {
-    const contract = yield getEprsParametersInstance()
-    const data = yield all(TYPES.map((type) => getParameters(type, contract)))
-    yield put(getEPRSParametersKVSuccess(data.flat()))
+    const contract = yield getEprsParametersInstance();
+    const data = yield all(TYPES.map((type) => getParameters(type, contract)));
+    yield put(getEPRSParametersKVSuccess(data.flat()));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    yield put(getEPRSParametersKVError('There was an error while loading EPRS Parameters data'))
+    ErrorHandler.processWithoutFeedback(error);
+    yield put(getEPRSParametersKVError('There was an error while loading EPRS Parameters data'));
   }
 }
 
@@ -98,4 +101,4 @@ export default [
   takeEvery(actionTypes.GET_FEES_INCENTIVES_EXPERT_PANEL_PARAMETERS_KV, getFeesIncentivesExpertPanelParametersKV),
   takeEvery(actionTypes.GET_EPDR_PARAMETERS_KV, getEPDRParametersKV),
   takeEvery(actionTypes.GET_EPRS_PARAMETERS_KV, getEPRSParametersKV)
-]
+];

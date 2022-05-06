@@ -8,18 +8,18 @@ export const liquidation = {
   subtitleInputDown: 'Provide your initial Bid in ',
   inputPlaceholderDown: ['Bid'],
   inputDownObj: { bid: '' }
-}
+};
 
 export const systemDebt = {
   subtitleInputUp: 'Debt Auction Lot',
   subtitleInputDown: 'Provide your initial Bid in ',
   inputPlaceholder: ['Bid'],
   inputObj: { bid: '' }
-}
+};
 
 export const systemSurplus = {
   subtitleInputUp: 'Surplus Auction Lot: ',
   subtitleInputDown: 'Provide your initial Bid in Q',
   inputPlaceholder: ['Bid'],
   inputObj: { bid: '' }
-}
+};

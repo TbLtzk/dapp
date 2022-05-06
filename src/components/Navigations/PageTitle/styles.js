@@ -1,6 +1,6 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-import { indents } from 'constants/style'
+import { indents } from 'constants/style';
 
 export const PageTitleWrp = styled.div`
   width: 100%;
@@ -12,7 +12,7 @@ export const PageTitleWrp = styled.div`
   a {
     text-decoration: none;
   }
-`
+`;
 
 export const PageTitleName = styled.div`
   max-width: 50%;
@@ -23,9 +23,9 @@ export const PageTitleName = styled.div`
   align-items: flex-start;
   font-family: "Lora", sans-serif;
   text-transform: capitalize;
-`
+`;
 
 export const PageTitleActions = styled.div`
   display: flex;
   align-items: flex-end;
-`
+`;

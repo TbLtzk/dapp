@@ -1,1 +1,1 @@
-export { default } from './BorrowAsset'
+export { default } from './BorrowAsset';

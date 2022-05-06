@@ -1,84 +1,86 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { userAddressMetamask } from 'store/user-inf/selectors'
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import CustomBlock from 'components/Base/CustomBlock'
-import CardBlock from 'components/Base/CardBlock'
-import LoadingSpinner from 'components/Base/LoadingSpinner'
+import CardBlock from 'components/Base/CardBlock';
+import CustomBlock from 'components/Base/CustomBlock';
+import LoadingSpinner from 'components/Base/LoadingSpinner';
 
-import { remainDateTimeSince } from 'func/convertDate'
-import { getSavingAndInterestRate, getTotalSupply } from 'store/borrowing-core/action-creators'
-import { interestRateSelector, savingRateSelector, totalSupplySelector } from 'store/borrowing-core/selectors'
-import { fN } from 'func/useful'
-import { getStableCoinInstance } from 'contracts/contract-instance'
-import { getSystemBalance } from 'store/system-balance/action-creators'
-import { systemBalanceSB } from 'store/system-balance/selectors'
+import { getSavingAndInterestRate, getTotalSupply } from 'store/borrowing-core/action-creators';
+import { interestRateSelector, savingRateSelector, totalSupplySelector } from 'store/borrowing-core/selectors';
+import { getSystemBalance } from 'store/system-balance/action-creators';
+import { systemBalanceSB } from 'store/system-balance/selectors';
+import { userAddressMetamask } from 'store/user-inf/selectors';
+
+import { getStableCoinInstance } from 'contracts/contract-instance';
 import {
   getTimeSinceOutstandingDebt,
   getTimeSinceRefreshBalance,
   refreshTimeSinceOutstandingDebt,
   refreshTimeSinceRefreshBalance
-} from 'contracts/helpers/borrowing-core-helper'
+} from 'contracts/helpers/borrowing-core-helper';
+
+import { remainDateTimeSince } from 'func/convertDate';
+import { fN } from 'func/useful';
 
 const BTN_TYPES = {
   balance: 'of-balance',
   outstandingDebt: 'of-outstanding-debt'
-}
+};
 
 function SavingBorrowingBlock () {
-  const dispatch = useDispatch()
-  const userAddress = useSelector(userAddressMetamask)
-  const interestRate = useSelector(interestRateSelector)
-  const savingRate = useSelector(savingRateSelector)
+  const dispatch = useDispatch();
+  const userAddress = useSelector(userAddressMetamask);
+  const interestRate = useSelector(interestRateSelector);
+  const savingRate = useSelector(savingRateSelector);
 
-  const systemBalance = fN(useSelector(systemBalanceSB))
-  const totalSupply = useSelector(totalSupplySelector)
+  const systemBalance = fN(useSelector(systemBalanceSB));
+  const totalSupply = useSelector(totalSupplySelector);
 
-  const [stableCoinAddress, setStableCoinAddress] = useState('...')
+  const [stableCoinAddress, setStableCoinAddress] = useState('...');
 
-  const [timeSinceRefreshBalance, setTimeSinceRefreshBalance] = useState('0')
-  const [timeSinceUnixTimestampRefreshBalance, setTimeSinceUnixTimestampRefreshBalance] = useState('0')
-  const [loadingTimeSinceRefreshBalance, setLoadingTimeSinceRefreshBalance] = useState(false)
+  const [timeSinceRefreshBalance, setTimeSinceRefreshBalance] = useState('0');
+  const [timeSinceUnixTimestampRefreshBalance, setTimeSinceUnixTimestampRefreshBalance] = useState('0');
+  const [loadingTimeSinceRefreshBalance, setLoadingTimeSinceRefreshBalance] = useState(false);
 
-  const [timeSinceOutstandingDebt, setTimeSinceOutstandingDeb] = useState('0')
-  const [timeSinceUnixTimestampOutstandingDeb, setTimeSinceUnixTimestampOutstandingDeb] = useState('0')
-  const [loadingTimeSinceOutstandingDeb, setLoadingTimeSinceOutstandingDeb] = useState(false)
+  const [timeSinceOutstandingDebt, setTimeSinceOutstandingDebt] = useState('0');
+  const [timeSinceUnixTimestampOutstandingDeb, setTimeSinceUnixTimestampOutstandingDeb] = useState('0');
+  const [loadingTimeSinceOutstandingDeb, setLoadingTimeSinceOutstandingDeb] = useState(false);
   useEffect(() => {
-    dispatch(getSavingAndInterestRate())
-    dispatch(getSystemBalance())
-    dispatch(getTotalSupply())
-    getStableCoinInstance().then((contract) => setStableCoinAddress(contract.address))
-    getTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance)
-    getTimeSinceOutstandingDebt(setTimeSinceOutstandingDeb, setTimeSinceUnixTimestampOutstandingDeb)
+    dispatch(getSavingAndInterestRate());
+    dispatch(getSystemBalance());
+    dispatch(getTotalSupply());
+    getStableCoinInstance().then((contract) => setStableCoinAddress(contract.address));
+    getTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance);
+    getTimeSinceOutstandingDebt(setTimeSinceOutstandingDebt, setTimeSinceUnixTimestampOutstandingDeb);
 
     return () => {
-      setStableCoinAddress('...')
-      setTimeSinceRefreshBalance('0')
-      setTimeSinceUnixTimestampRefreshBalance('0')
-      setLoadingTimeSinceRefreshBalance(false)
-      setTimeSinceOutstandingDeb('0')
-      setTimeSinceUnixTimestampOutstandingDeb('0')
-      setLoadingTimeSinceOutstandingDeb(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeSinceRefreshBalance(remainDateTimeSince(timeSinceUnixTimestampRefreshBalance))
-    }, 60000)
-    return () => {
-      clearInterval(interval)
-    }
-  }, [timeSinceUnixTimestampRefreshBalance])
+      setStableCoinAddress('...');
+      setTimeSinceRefreshBalance('0');
+      setTimeSinceUnixTimestampRefreshBalance('0');
+      setLoadingTimeSinceRefreshBalance(false);
+      setTimeSinceOutstandingDebt('0');
+      setTimeSinceUnixTimestampOutstandingDeb('0');
+      setLoadingTimeSinceOutstandingDeb(false);
+    };
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeSinceOutstandingDeb(remainDateTimeSince(timeSinceUnixTimestampOutstandingDeb))
-    }, 60000)
+      setTimeSinceRefreshBalance(remainDateTimeSince(timeSinceUnixTimestampRefreshBalance));
+    }, 60000);
     return () => {
-      clearInterval(interval)
-    }
-  }, [timeSinceUnixTimestampOutstandingDeb])
+      clearInterval(interval);
+    };
+  }, [timeSinceUnixTimestampRefreshBalance]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeSinceOutstandingDebt(remainDateTimeSince(timeSinceUnixTimestampOutstandingDeb));
+    }, 60000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [timeSinceUnixTimestampOutstandingDeb]);
 
   const onRefresh = useCallback((type) => {
     switch (type) {
@@ -89,19 +91,19 @@ function SavingBorrowingBlock () {
           setTimeSinceUnixTimestampRefreshBalance,
           userAddress,
           dispatch
-        )
-        break
+        );
+        break;
       case BTN_TYPES.outstandingDebt:
         refreshTimeSinceOutstandingDebt(
-          setTimeSinceOutstandingDeb,
+          setTimeSinceOutstandingDebt,
           setLoadingTimeSinceOutstandingDeb,
           setTimeSinceUnixTimestampOutstandingDeb,
           userAddress,
           dispatch
-        )
-        break
+        );
+        break;
     }
-  }, [])
+  }, []);
 
   const dataArr = useMemo(() => {
     return [
@@ -144,7 +146,7 @@ function SavingBorrowingBlock () {
         iconFontSize: '20px',
         btnType: BTN_TYPES.outstandingDebt
       }
-    ]
+    ];
   }, [
     totalSupply,
     systemBalance,
@@ -153,41 +155,41 @@ function SavingBorrowingBlock () {
     stableCoinAddress,
     interestRate,
     savingRate
-  ])
+  ]);
 
   function getIsLoading (type) {
     switch (type) {
       case BTN_TYPES.balance:
-        return loadingTimeSinceRefreshBalance
+        return loadingTimeSinceRefreshBalance;
       case BTN_TYPES.outstandingDebt:
-        return loadingTimeSinceOutstandingDeb
+        return loadingTimeSinceOutstandingDeb;
       default:
-        return false
+        return false;
     }
   }
   return (
-        <CustomBlock>
-            <h1>Saving & Borrowing</h1>
-            {dataArr.map((item) => (
-                <CardBlock
-                    key={item.title.replace(' ', '-')}
-                    btnDisabled={getIsLoading(item.btnType)}
-                    title={item.title}
-                    iconFontSize={item.iconFontSize}
-                    btnIcon={getIsLoading(item.btnType) ? null : item.btnIcon}
-                    firstContent={item.firstContent}
-                    btnTitle={getIsLoading(item.btnType) ? <LoadingSpinner /> : item.btnTitle}
-                    btnHandler={
-                        !item.btnTitle && !item.btnIcon
-                          ? null
-                          : () => {
-                              onRefresh(item.btnType)
-                            }
-                    }
-                />
-            ))}
-        </CustomBlock>
-  )
+    <CustomBlock>
+      <h1>Saving & Borrowing</h1>
+      {dataArr.map((item) => (
+        <CardBlock
+          key={item.title.replace(' ', '-')}
+          btnDisabled={getIsLoading(item.btnType)}
+          title={item.title}
+          iconFontSize={item.iconFontSize}
+          btnIcon={getIsLoading(item.btnType) ? null : item.btnIcon}
+          firstContent={item.firstContent}
+          btnTitle={getIsLoading(item.btnType) ? <LoadingSpinner /> : item.btnTitle}
+          btnHandler={
+            !item.btnTitle && !item.btnIcon
+              ? null
+              : () => {
+                onRefresh(item.btnType);
+              }
+          }
+        />
+      ))}
+    </CustomBlock>
+  );
 }
 
-export default SavingBorrowingBlock
+export default SavingBorrowingBlock;

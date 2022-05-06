@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const LazyLoadingWrapper = styled.div`
   position: absolute;
@@ -6,4 +6,4 @@ export const LazyLoadingWrapper = styled.div`
   display: flex;
   align-items: center;
   height: calc(100vh - 108px);
-`
+`;

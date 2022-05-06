@@ -1,1 +1,1 @@
-export { default } from './RootNodeStaking'
+export { default } from './RootNodeStaking';

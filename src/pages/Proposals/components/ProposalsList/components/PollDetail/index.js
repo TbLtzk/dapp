@@ -1,1 +1,1 @@
-export { default } from './PollDetail'
+export { default } from './PollDetail';

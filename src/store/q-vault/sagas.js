@@ -1,329 +1,329 @@
-import { put, select, takeEvery, call } from 'redux-saga/effects'
+import { call, put, select, takeEvery } from 'redux-saga/effects';
 
-import * as actionTypes from './action-types'
 import {
-  setTransactionLoadingError,
-  setTransactionLoading,
-  setTransactionLoadingSuccess
-} from 'store/transaction-handler/action-creators'
-import {
-  setUserBalance,
+  getAccountBalance,
+  getDelegationInfo,
+  getDelegationsList,
+  getDelegationsListError,
+  getDelegationsListSuccess,
+  getLockedAssets,
+  getOutstandingDelegationRewards,
+  getOutstandingDelegationRewardsError,
+  getOutstandingDelegationRewardsSuccess,
+  getQVBalanceSuccess,
+  getUserBalance,
   setAccountBalance,
+  setDelegationInfo,
   setLockedAssets,
   setMinimumQVaultTimeLock,
   setQVaultTimeLocks,
   setUpdateCompoundRate,
-  getAccountBalance,
-  getUserBalance,
-  getLockedAssets,
-  getDelegationsListError,
-  getDelegationsListSuccess,
-  getQVBalanceSuccess,
-  getOutstandingDelegationRewardsSuccess,
-  getOutstandingDelegationRewardsError,
-  getOutstandingDelegationRewards,
-  getDelegationsList,
-  setDelegationInfo,
-  getDelegationInfo
-} from './action-creators'
+  setUserBalance
+} from './action-creators';
+import * as actionTypes from './action-types';
+import { userBalance } from './selectors';
 
-import { toWei, fromWei, prepareBalanceDetails } from 'func/balance'
-import { addIndex } from 'func/useful'
-import { getNowTimestamp } from 'func/convertDate'
+import {
+  setTransactionLoading,
+  setTransactionLoadingError,
+  setTransactionLoadingSuccess
+} from 'store/transaction-handler/action-creators';
 
-import { getQVaultInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance'
+import { getQVaultInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance';
+import { getOutstandingDelegationRewardsList, getQHolderRewardPool } from 'contracts/helpers/q-vault-helper';
 
-import { getOutstandingDelegationRewardsList, getQHolderRewardPool } from 'contracts/helpers/q-vault-helper'
-import ErrorHandler from 'func/ErrorHandler'
-import { userBalance } from './selectors'
+import { fromWei, prepareBalanceDetails, toWei } from 'func/balance';
+import { getNowTimestamp } from 'func/convertDate';
+import ErrorHandler from 'func/ErrorHandler';
+import { addIndex } from 'func/useful';
 
 function * getAccountBalanceGenerator ({ address }) {
   try {
-    const data = yield window.web3.eth.getBalance(address)
-    yield put(setAccountBalance(fromWei(data)))
+    const data = yield window.web3.eth.getBalance(address);
+    yield put(setAccountBalance(fromWei(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
 function * getUserBalanceGenerator ({ address }) {
   try {
-    const contract = yield call(getQVaultInstance)
-    const data = yield contract.getUserBalance(address)
-    yield put(setUserBalance(fromWei(data)))
+    const contract = yield call(getQVaultInstance);
+    const data = yield contract.getUserBalance(address);
+    yield put(setUserBalance(fromWei(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
 function * getLockedAssetsGenerator ({ address }) {
   try {
-    const contract = yield call(getQVaultInstance)
-    const data = yield contract.getLockInfo(address)
-    yield put(setLockedAssets(fromWei(data.lockedAmount), data.lockedUntil))
+    const contract = yield call(getQVaultInstance);
+    const data = yield contract.getLockInfo(address);
+    yield put(setLockedAssets(fromWei(data.lockedAmount), data.lockedUntil));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
 function * setDepositGenerator ({ address, amountQ }) {
   try {
-    yield put(setTransactionLoading(1))
+    yield put(setTransactionLoading(1));
 
-    const contract = yield call(getQVaultInstance)
+    const contract = yield call(getQVaultInstance);
     yield contract.deposit({
       value: toWei(amountQ),
       from: address
-    })
+    });
 
-    yield put(getUserBalance(address))
-    yield put(getAccountBalance(address))
+    yield put(getUserBalance(address));
+    yield put(getAccountBalance(address));
 
-    yield put(setTransactionLoadingSuccess())
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setTransactionLoadingError(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
 function * setSendGenerator ({ address, amount }) {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading());
 
-    const { userAddress } = yield select((state) => state.userInf)
-    const contract = yield call(getQVaultInstance)
-    yield contract.transfer(address, toWei(amount))
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = yield call(getQVaultInstance);
+    yield contract.transfer(address, toWei(amount));
 
-    yield put(getUserBalance(userAddress))
-    yield put(getAccountBalance(userAddress))
-    yield put(setTransactionLoadingSuccess())
+    yield put(getUserBalance(userAddress));
+    yield put(getAccountBalance(userAddress));
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setTransactionLoadingError(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
 function * setWithdrawGenerator ({ address, amountQ }) {
   try {
-    yield put(setTransactionLoading(1))
+    yield put(setTransactionLoading(1));
 
-    const contract = yield call(getQVaultInstance)
-    yield contract.withdraw(toWei(amountQ), { from: address })
+    const contract = yield call(getQVaultInstance);
+    yield contract.withdraw(toWei(amountQ), { from: address });
 
-    yield put(getUserBalance(address))
-    yield put(getAccountBalance(address))
+    yield put(getUserBalance(address));
+    yield put(getAccountBalance(address));
 
-    yield put(setTransactionLoadingSuccess())
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setTransactionLoadingError(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
 function * setDelegateStakeGenerator ({ address, delegateAddresses, stakes }) {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading());
 
-    const { userAddress } = yield select((state) => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf);
 
-    const contract = yield call(getQVaultInstance)
-    yield contract.delegateStake(delegateAddresses, stakes, { from: address })
+    const contract = yield call(getQVaultInstance);
+    yield contract.delegateStake(delegateAddresses, stakes, { from: address });
 
-    yield put(getOutstandingDelegationRewards())
-    yield put(getDelegationsList())
-    yield put(getAccountBalance(userAddress))
-    yield put(getDelegationInfo(userAddress))
+    yield put(getOutstandingDelegationRewards());
+    yield put(getDelegationsList());
+    yield put(getAccountBalance(userAddress));
+    yield put(getDelegationInfo(userAddress));
 
-    yield put(setTransactionLoadingSuccess())
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setTransactionLoadingError(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
 function * setLockAmountGenerator ({ address, amountQ }) {
   try {
-    yield put(setTransactionLoading(1))
+    yield put(setTransactionLoading(1));
 
-    const { userAddress } = yield select((state) => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf);
 
-    const contract = yield call(getQVaultInstance)
-    yield contract.lock(toWei(amountQ), { from: address })
+    const contract = yield call(getQVaultInstance);
+    yield contract.lock(toWei(amountQ), { from: address });
 
-    yield put(getUserBalance(address))
-    yield put(getAccountBalance(address))
-    yield put(getLockedAssets(address))
-    yield put(getDelegationInfo(userAddress))
+    yield put(getUserBalance(address));
+    yield put(getAccountBalance(address));
+    yield put(getLockedAssets(address));
+    yield put(getDelegationInfo(userAddress));
 
-    yield put(setTransactionLoadingSuccess())
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setTransactionLoadingError(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
 function * setUnlockAmountGenerator ({ address, amountQ }) {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading());
 
-    const { userAddress } = yield select((state) => state.userInf)
-    const contract = yield call(getQVaultInstance)
-    yield contract.unlock(toWei(amountQ), { from: address })
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = yield call(getQVaultInstance);
+    yield contract.unlock(toWei(amountQ), { from: address });
 
-    yield put(getUserBalance(address))
-    yield put(getAccountBalance(address))
-    yield put(getLockedAssets(address))
-    yield put(getDelegationInfo(userAddress))
+    yield put(getUserBalance(address));
+    yield put(getAccountBalance(address));
+    yield put(getLockedAssets(address));
+    yield put(getDelegationInfo(userAddress));
 
-    yield put(setTransactionLoadingSuccess())
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setTransactionLoadingError(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
 function * getDelegationListGenerator () {
   try {
-    const { userAddress } = yield select((state) => state.userInf)
-    const contract = yield call(getQVaultInstance)
-    const data = yield contract.getDelegationsList(userAddress)
-    yield put(getDelegationsListSuccess(data))
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = yield call(getQVaultInstance);
+    const data = yield contract.getDelegationsList(userAddress);
+    yield put(getDelegationsListSuccess(data));
   } catch (error) {
-    ErrorHandler.process(error)
-    yield put(getDelegationsListError(error.message))
+    ErrorHandler.process(error);
+    yield put(getDelegationsListError(error.message));
   }
 }
 
 function * getOutstandingDelegationRewardsValueGenerator () {
   try {
-    const { userAddress } = yield select((state) => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf);
 
-    const contract = yield call(getQVaultInstance)
-    const data = yield contract.getDelegationsList(userAddress)
-    const result = getOutstandingDelegationRewardsList(data)
-    yield put(getOutstandingDelegationRewardsSuccess(result))
+    const contract = yield call(getQVaultInstance);
+    const data = yield contract.getDelegationsList(userAddress);
+    const result = getOutstandingDelegationRewardsList(data);
+    yield put(getOutstandingDelegationRewardsSuccess(result));
   } catch (error) {
-    yield put(getOutstandingDelegationRewardsError(error))
-    ErrorHandler.processWithoutFeedback(error)
+    yield put(getOutstandingDelegationRewardsError(error));
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
 function * getMinimumQVaultTimeLockGenerator ({ address }) {
   try {
-    const contract = yield call(getQVaultInstance)
-    const data = yield contract.getMinimumBalance(address, getNowTimestamp())
-    yield put(setMinimumQVaultTimeLock(fromWei(data)))
+    const contract = yield call(getQVaultInstance);
+    const data = yield contract.getMinimumBalance(address, getNowTimestamp());
+    yield put(setMinimumQVaultTimeLock(fromWei(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
 function * getQVaultTimeLocksGenerator ({ address }) {
   try {
-    const contract = yield call(getQVaultInstance)
-    const data = yield contract.getTimeLocks(address)
+    const contract = yield call(getQVaultInstance);
+    const data = yield contract.getTimeLocks(address);
 
-    yield put(setQVaultTimeLocks(addIndex(data)))
+    yield put(setQVaultTimeLocks(addIndex(data)));
   } catch (error) {
-    ErrorHandler.process(error)
+    ErrorHandler.process(error);
   }
 }
 
 function * getUpdateCompoundRateGenerator ({ address }) {
   try {
-    yield put(setUpdateCompoundRate(true))
-    const contract = yield call(getQVaultInstance)
+    yield put(setUpdateCompoundRate(true));
+    const contract = yield call(getQVaultInstance);
     yield contract.updateCompoundRate({
       from: address,
       gasBuffer: 1.2
-    })
-    yield put(setUpdateCompoundRate(false))
+    });
+    yield put(setUpdateCompoundRate(false));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setTransactionLoadingError(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   } finally {
-    yield put(setUpdateCompoundRate(false))
+    yield put(setUpdateCompoundRate(false));
   }
 }
 
 function * setOnClaimStakeDelegatorRewardGenerator () {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading());
 
-    const { userAddress } = yield select((state) => state.userInf)
-    const contract = yield call(getQVaultInstance)
-    yield contract.claimStakeDelegatorReward({ from: userAddress })
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = yield call(getQVaultInstance);
+    yield contract.claimStakeDelegatorReward({ from: userAddress });
 
-    yield put(getOutstandingDelegationRewards())
-    yield put(getDelegationsList())
-    yield put(getAccountBalance(userAddress))
+    yield put(getOutstandingDelegationRewards());
+    yield put(getDelegationsList());
+    yield put(getAccountBalance(userAddress));
 
-    yield put(setTransactionLoadingSuccess())
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setTransactionLoadingError(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
 function * getBalanceDetailsGenerator () {
   try {
-    const contract = yield call(getQVaultInstance)
-    const balanceDetailsData = yield contract.getBalanceDetails()
-    const qHolderRewardPool = yield getQHolderRewardPool()
-    const userQVBalance = yield select(userBalance)
-    const balanceDetails = prepareBalanceDetails(balanceDetailsData, userQVBalance)
-    yield put(getQVBalanceSuccess({ ...balanceDetails, qHolderRewardPool }))
+    const contract = yield call(getQVaultInstance);
+    const balanceDetailsData = yield contract.getBalanceDetails();
+    const qHolderRewardPool = yield getQHolderRewardPool();
+    const userQVBalance = yield select(userBalance);
+    const balanceDetails = prepareBalanceDetails(balanceDetailsData, userQVBalance);
+    yield put(getQVBalanceSuccess({ ...balanceDetails, qHolderRewardPool }));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
 function * getDelegationInfoGenerator ({ address }) {
   try {
-    const contract = yield call(getVotingWeightProxyInstance)
-    const data = yield contract.getDelegationInfo(address)
-    yield put(setDelegationInfo(data))
+    const contract = yield call(getVotingWeightProxyInstance);
+    const data = yield contract.getDelegationInfo(address);
+    yield put(setDelegationInfo(data));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setTransactionLoadingError(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
 function * setAnnounceNewVotingAgentGenerator ({ address }) {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading());
 
-    const { userAddress } = yield select((state) => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf);
 
-    const contract = yield call(getVotingWeightProxyInstance)
-    yield contract.announceNewVotingAgent(address)
+    const contract = yield call(getVotingWeightProxyInstance);
+    yield contract.announceNewVotingAgent(address);
 
-    yield put(getDelegationInfo(userAddress))
-    yield put(getAccountBalance(userAddress))
+    yield put(getDelegationInfo(userAddress));
+    yield put(getAccountBalance(userAddress));
 
-    yield put(setTransactionLoadingSuccess())
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setTransactionLoadingError(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
 function * setNewVotingAgentGenerator () {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading());
 
-    const { userAddress } = yield select((state) => state.userInf)
+    const { userAddress } = yield select((state) => state.userInf);
 
-    const contract = yield call(getVotingWeightProxyInstance)
-    yield contract.setNewVotingAgent()
+    const contract = yield call(getVotingWeightProxyInstance);
+    yield contract.setNewVotingAgent();
 
-    yield put(getDelegationInfo(userAddress))
-    yield put(getAccountBalance(userAddress))
+    yield put(getDelegationInfo(userAddress));
+    yield put(getAccountBalance(userAddress));
 
-    yield put(setTransactionLoadingSuccess())
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setTransactionLoadingError(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
@@ -351,4 +351,4 @@ export default [
   takeEvery(actionTypes.ON_CLAIM_STAKE_DELEGATOR_REWARD, setOnClaimStakeDelegatorRewardGenerator),
   takeEvery(actionTypes.GET_QVAULT_MINIMUM_TIME_LOCK, getMinimumQVaultTimeLockGenerator),
   takeEvery(actionTypes.GET_QVAULT_TIME_LOCKS, getQVaultTimeLocksGenerator)
-]
+];

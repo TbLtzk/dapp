@@ -1,1 +1,1 @@
-export { default } from './BorrowInfo'
+export { default } from './BorrowInfo';

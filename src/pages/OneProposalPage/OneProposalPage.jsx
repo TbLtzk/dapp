@@ -1,36 +1,40 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-import PageWrap from 'components/Base/PageWrap'
-import VotingStats from 'components/Custom/VotingStats'
-import { CONTRACTS_NAMES } from 'constants/contracts'
-import { PROPOSALS_TYPES } from 'constants/statuses'
-import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper'
-import { transactionLoadingSelector } from 'store/transaction-handler/selectors'
-import { useSelector } from 'react-redux'
-import ProposalCard from './ProposalCard'
-import SkeletonProposalsLoading from 'components/Base/SkeletonLoading'
+import PageWrap from 'components/Base/PageWrap';
+import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
+import VotingStats from 'components/Custom/VotingStats';
+
+import ProposalCard from './ProposalCard';
+
+import { transactionLoadingSelector } from 'store/transaction-handler/selectors';
+
+import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper';
+
+import { CONTRACTS_NAMES } from 'constants/contracts';
+import { PROPOSALS_TYPES } from 'constants/statuses';
 
 function OneProposalPage ({ match }) {
-  const transactionLoading = useSelector(transactionLoadingSelector)
+  const transactionLoading = useSelector(transactionLoadingSelector);
 
-  const [proposal, setProposal] = useState(null)
-  const [error, setError] = useState(null)
-  const proposalKind = checkActiveTabByContract(match.params.contract)
+  const [proposal, setProposal] = useState(null);
+  const [error, setError] = useState(null);
+  const proposalKind = checkActiveTabByContract(match.params.contract);
 
   useEffect(() => {
     if (proposalKind === 'error') {
-      setError(true)
+      setError(true);
     } else if (!transactionLoading) {
-      handleGetProposal()
+      handleGetProposal();
     }
-  }, [transactionLoading, proposalKind])
+  }, [transactionLoading, proposalKind]);
 
   async function handleGetProposal () {
-    const data = await getProposal(match.params.contract, match.params.id, true)
+    const data = await getProposal(match.params.contract, match.params.id, true);
     if (data?.error) {
-      setError(true)
+      setError(true);
     } else {
-      setProposal(data)
+      setProposal(data);
     }
   }
 
@@ -39,10 +43,10 @@ function OneProposalPage ({ match }) {
       case CONTRACTS_NAMES.constitutionVoting:
       case CONTRACTS_NAMES.emergencyUpdateVoting:
       case CONTRACTS_NAMES.generalUpdateVoting: {
-        return PROPOSALS_TYPES.proposals
+        return PROPOSALS_TYPES.proposals;
       }
       case CONTRACTS_NAMES.rootsVoting: {
-        return PROPOSALS_TYPES.rootNodePanel
+        return PROPOSALS_TYPES.rootNodePanel;
       }
       case CONTRACTS_NAMES.ePQFIMembershipVoting:
       case CONTRACTS_NAMES.ePDRMembershipVoting:
@@ -50,40 +54,40 @@ function OneProposalPage ({ match }) {
       case CONTRACTS_NAMES.ePDRParametersVoting:
       case CONTRACTS_NAMES.ePRSMembershipVoting:
       case CONTRACTS_NAMES.ePRSParametersVoting: {
-        return PROPOSALS_TYPES.expertProposals
+        return PROPOSALS_TYPES.expertProposals;
       }
       case CONTRACTS_NAMES.rootNodesSlashingVoting:
       case CONTRACTS_NAMES.validatorsSlashingVoting: {
-        return PROPOSALS_TYPES.slashingProposals
+        return PROPOSALS_TYPES.slashingProposals;
       }
       case CONTRACTS_NAMES.upgradeVoting:
       case CONTRACTS_NAMES.addressVoting: {
-        return PROPOSALS_TYPES.contractUpdates
+        return PROPOSALS_TYPES.contractUpdates;
       }
       default: {
-        return 'error'
+        return 'error';
       }
     }
   }
 
   return (
-        <PageWrap wrapContentClasses="wrap-content__column-2-1" headerTitle={proposalKind.replace(/-/g, ' ')}>
-            {error
-              ? (
-                <p>Wrong link</p>
-                )
-              : !proposal
-                  ? (
-                <SkeletonProposalsLoading />
-                    )
-                  : (
-                <div>
-                    <ProposalCard proposalKind={proposalKind} proposal={proposal} />
-                </div>
-                    )}
-            <VotingStats />
-        </PageWrap>
-  )
+    <PageWrap wrapContentClasses="wrap-content__column-2-1" headerTitle={proposalKind.replace(/-/g, ' ')}>
+      {error
+        ? (
+          <p>Wrong link</p>
+        )
+        : !proposal
+          ? (
+            <SkeletonProposalsLoading />
+          )
+          : (
+            <div>
+              <ProposalCard proposalKind={proposalKind} proposal={proposal} />
+            </div>
+          )}
+      <VotingStats />
+    </PageWrap>
+  );
 }
 
-export default OneProposalPage
+export default OneProposalPage;

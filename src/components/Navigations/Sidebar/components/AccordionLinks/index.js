@@ -1,1 +1,1 @@
-export { default } from './AccordionLinks'
+export { default } from './AccordionLinks';

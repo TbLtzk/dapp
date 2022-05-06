@@ -1,44 +1,44 @@
-import React, { useCallback } from 'react'
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { useDispatch, useSelector } from 'react-redux'
-import { loadingPerformNetting } from 'store/system-balance/selectors'
-import { onPerformNetting } from 'store/system-balance/action-creators'
+import Button from 'components/Base/Buttons/Button';
+import CustomBlock from 'components/Base/CustomBlock';
+import LoadingSpinner from 'components/Base/LoadingSpinner';
 
-import CustomBlock from 'components/Base/CustomBlock'
-import Button from 'components/Base/Buttons/Button'
-import LoadingSpinner from 'components/Base/LoadingSpinner'
+import { onPerformNetting } from 'store/system-balance/action-creators';
+import { loadingPerformNetting } from 'store/system-balance/selectors';
 
 function SystemCard ({ data, title }) {
-  const dispatch = useDispatch()
-  const loadingPerfNetting = useSelector(loadingPerformNetting)
+  const dispatch = useDispatch();
+  const loadingPerfNetting = useSelector(loadingPerformNetting);
 
   const onHandlePerformNetting = useCallback(() => {
-    dispatch(onPerformNetting())
-  }, [dispatch])
+    dispatch(onPerformNetting());
+  }, [dispatch]);
 
   return (
-        <CustomBlock>
-            <h1>{title}</h1>
-            {data.map((elem) => (
-                <div key={elem.title}>
-                    <h5>{elem.title}</h5>
-                    <p>{elem.value}</p>
-                </div>
-            ))}
-            {title === 'QUSD System Balance'
-              ? (
-                <div className="card__actions">
-                    <Button
-                        title={!loadingPerfNetting ? 'Perform Netting' : <LoadingSpinner />}
-                        type="white"
-                        width="140px"
-                        handleButton={onHandlePerformNetting}
-                    />
-                </div>
-                )
-              : null}
-        </CustomBlock>
-  )
+    <CustomBlock>
+      <h1>{title}</h1>
+      {data.map((elem) => (
+        <div key={elem.title}>
+          <h5>{elem.title}</h5>
+          <p>{elem.value}</p>
+        </div>
+      ))}
+      {title === 'QUSD System Balance'
+        ? (
+          <div className="card__actions">
+            <Button
+              title={!loadingPerfNetting ? 'Perform Netting' : <LoadingSpinner />}
+              type="white"
+              width="140px"
+              handleButton={onHandlePerformNetting}
+            />
+          </div>
+        )
+        : null}
+    </CustomBlock>
+  );
 }
 
-export default SystemCard
+export default SystemCard;

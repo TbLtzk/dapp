@@ -1,1 +1,1 @@
-export { default } from './ModalCreateProposal'
+export { default } from './ModalCreateProposal';

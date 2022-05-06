@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const ButtonCustom = styled.button`
   align-items: center;
@@ -23,20 +23,20 @@ export const ButtonCustom = styled.button`
     if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint5
+          return props.theme.colors.oxfordBlueTint5;
         case 'transparent':
-          return 'transparent'
+          return 'transparent';
         default:
-          return props.theme.colors.oxfordBlueTint2
+          return props.theme.colors.oxfordBlueTint2;
       }
     } else {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint5
+          return props.theme.colors.oxfordBlueTint5;
         case 'transparent':
-          return 'transparent'
+          return 'transparent';
         default:
-          return props.theme.colors.oxfordBlueTint2
+          return props.theme.colors.oxfordBlueTint2;
       }
     }
   }};
@@ -44,20 +44,20 @@ export const ButtonCustom = styled.button`
     if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
-          return 'transparent'
+          return 'transparent';
         case 'transparent':
-          return 'transparent'
+          return 'transparent';
         default:
-          return props.theme.colors.oxfordBlueTint2
+          return props.theme.colors.oxfordBlueTint2;
       }
     } else {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint5
+          return props.theme.colors.oxfordBlueTint5;
         case 'transparent':
-          return props.theme.colors.oxfordBlueTint5
+          return props.theme.colors.oxfordBlueTint5;
         default:
-          return props.theme.colors.oxfordBlueTint5
+          return props.theme.colors.oxfordBlueTint5;
       }
     }
   }};
@@ -65,20 +65,20 @@ export const ButtonCustom = styled.button`
     if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlueTint5
+          return props.theme.colors.oxfordBlueTint5;
         case 'transparent':
-          return props.theme.colors.oxfordBlueTint5
+          return props.theme.colors.oxfordBlueTint5;
         default:
-          return props.theme.colors.white
+          return props.theme.colors.white;
       }
     } else {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlue
+          return props.theme.colors.oxfordBlue;
         case 'transparent':
-          return props.theme.colors.oxfordBlue
+          return props.theme.colors.oxfordBlue;
         default:
-          return props.theme.colors.oxfordBlue
+          return props.theme.colors.oxfordBlue;
       }
     }
   }};
@@ -86,273 +86,273 @@ export const ButtonCustom = styled.button`
 
   &:disabled {
     color: ${(props) => {
-      if (props.palette === 'dark') {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.oxfordBlue
-          case 'transparent':
-            return props.theme.colors.oxfordBlueTint2
-          default:
-            return props.theme.colors.oxfordBlue
-        }
-      } else {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.oxfordBlue
-          case 'transparent':
-            return props.theme.colors.oxfordBlue
-          default:
-            return props.theme.colors.oxfordBlue
-        }
+    if (props.palette === 'dark') {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.oxfordBlue;
+        case 'transparent':
+          return props.theme.colors.oxfordBlueTint2;
+        default:
+          return props.theme.colors.oxfordBlue;
       }
-    }};
+    } else {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.oxfordBlue;
+        case 'transparent':
+          return props.theme.colors.oxfordBlue;
+        default:
+          return props.theme.colors.oxfordBlue;
+      }
+    }
+  }};
     background-color: ${(props) => {
-      if (props.palette === 'dark') {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.oxfordBlueTint2
-          case 'transparent':
-            return 'transparent'
-          default:
-            return props.theme.colors.circleDark
-        }
-      } else {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.circleDark
-          case 'transparent':
-            return props.theme.colors.circleDark
-          default:
-            return props.theme.colors.circleDark
-        }
+    if (props.palette === 'dark') {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.oxfordBlueTint2;
+        case 'transparent':
+          return 'transparent';
+        default:
+          return props.theme.colors.circleDark;
       }
-    }};
+    } else {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.circleDark;
+        case 'transparent':
+          return props.theme.colors.circleDark;
+        default:
+          return props.theme.colors.circleDark;
+      }
+    }
+  }};
     border-color: ${(props) => {
-      if (props.palette === 'dark') {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.oxfordBlueTint2
-          case 'transparent':
-            return 'transparent'
-          default:
-            return props.theme.colors.oxfordBlueTint2
-        }
-      } else {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.circleDark
-          case 'transparent':
-            return 'transparent'
-          default:
-            return props.theme.colors.circleDark
-        }
+    if (props.palette === 'dark') {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.oxfordBlueTint2;
+        case 'transparent':
+          return 'transparent';
+        default:
+          return props.theme.colors.oxfordBlueTint2;
       }
-    }};
+    } else {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.circleDark;
+        case 'transparent':
+          return 'transparent';
+        default:
+          return props.theme.colors.circleDark;
+      }
+    }
+  }};
     opacity: 1;
     box-shadow: none;
   }
 
   &:hover {
     color: ${(props) => {
+    switch (props.type) {
+      case 'white':
+        return props.theme.colors.oxfordBlue;
+      case 'transparent':
+        return props.theme.colors.oxfordBlue;
+      default:
+        return props.theme.colors.oxfordBlue;
+    }
+  }};
+    background-color: ${(props) => {
+    if (props.palette === 'dark') {
       switch (props.type) {
         case 'white':
-          return props.theme.colors.oxfordBlue
+          return props.theme.colors.oxfordBlueTint5;
         case 'transparent':
-          return props.theme.colors.oxfordBlue
+          return props.theme.colors.oxfordBlueTint5;
         default:
-          return props.theme.colors.oxfordBlue
+          return props.theme.colors.neonGreen;
       }
-    }};
-    background-color: ${(props) => {
-      if (props.palette === 'dark') {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.oxfordBlueTint5
-          case 'transparent':
-            return props.theme.colors.oxfordBlueTint5
-          default:
-            return props.theme.colors.neonGreen
-        }
-      } else {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.oxfordBlueTint4
-          case 'transparent':
-            return props.theme.colors.oxfordBlueTint4
-          default:
-            return props.theme.colors.oxfordBlueTint4
-        }
+    } else {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.oxfordBlueTint4;
+        case 'transparent':
+          return props.theme.colors.oxfordBlueTint4;
+        default:
+          return props.theme.colors.oxfordBlueTint4;
       }
-    }};
+    }
+  }};
     border-color: ${(props) => {
-      if (props.palette === 'dark') {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.oxfordBlueTint5
-          case 'transparent':
-            return props.theme.colors.oxfordBlueTint5
-          default:
-            return props.theme.colors.neonGreen
-        }
-      } else {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.oxfordBlueTint4
-          case 'transparent':
-            return props.theme.colors.oxfordBlueTint4
-          default:
-            return props.theme.colors.oxfordBlueTint4
-        }
+    if (props.palette === 'dark') {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.oxfordBlueTint5;
+        case 'transparent':
+          return props.theme.colors.oxfordBlueTint5;
+        default:
+          return props.theme.colors.neonGreen;
       }
-    }};
+    } else {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.oxfordBlueTint4;
+        case 'transparent':
+          return props.theme.colors.oxfordBlueTint4;
+        default:
+          return props.theme.colors.oxfordBlueTint4;
+      }
+    }
+  }};
   }
 
   /* &:focus {
     box-shadow: ${(props) => (props.palette === 'light' ? 'none !important' : 'auto')};
     color: ${(props) => {
-      if (props.palette === 'dark') {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.oxfordBlueTint5
-          case 'transparent':
-            return props.theme.colors.oxfordBlueTint5
-          default:
-            return props.theme.colors.white
-        }
-      } else {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.oxfordBlue
-          case 'transparent':
-            return props.theme.colors.oxfordBlue
-          default:
-            return props.theme.colors.oxfordBlue
-        }
+    if (props.palette === 'dark') {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.oxfordBlueTint5;
+        case 'transparent':
+          return props.theme.colors.oxfordBlueTint5;
+        default:
+          return props.theme.colors.white;
       }
-    }};
+    } else {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.oxfordBlue;
+        case 'transparent':
+          return props.theme.colors.oxfordBlue;
+        default:
+          return props.theme.colors.oxfordBlue;
+      }
+    }
+  }};
     background-color: ${(props) => {
-      if (props.palette === 'dark') {
-        switch (props.type) {
-          case 'white':
-            return 'transparent'
-          case 'transparent':
-            return 'transparent'
-          default:
-            return props.theme.colors.oxfordBlueTint2
-        }
-      } else {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.oxfordBlueTint5
-          case 'transparent':
-            return props.theme.colors.oxfordBlueTint5
-          default:
-            return props.theme.colors.oxfordBlueTint5
-        }
+    if (props.palette === 'dark') {
+      switch (props.type) {
+        case 'white':
+          return 'transparent';
+        case 'transparent':
+          return 'transparent';
+        default:
+          return props.theme.colors.oxfordBlueTint2;
       }
-    }};
+    } else {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.oxfordBlueTint5;
+        case 'transparent':
+          return props.theme.colors.oxfordBlueTint5;
+        default:
+          return props.theme.colors.oxfordBlueTint5;
+      }
+    }
+  }};
     border-color: ${(props) => {
-      if (props.palette === 'dark') {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.oxfordBlueTint5
-          case 'transparent':
-            return 'transparent'
-          default:
-            return props.theme.colors.oxfordBlueTint2
-        }
-      } else {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.activeLinks
-          case 'transparent':
-            return props.theme.colors.activeLinks
-          default:
-            return props.theme.colors.activeLinks
-        }
+    if (props.palette === 'dark') {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.oxfordBlueTint5;
+        case 'transparent':
+          return 'transparent';
+        default:
+          return props.theme.colors.oxfordBlueTint2;
       }
-    }};
+    } else {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.activeLinks;
+        case 'transparent':
+          return props.theme.colors.activeLinks;
+        default:
+          return props.theme.colors.activeLinks;
+      }
+    }
+  }};
   } */
 
   /* &:active {
     box-shadow: none !important;
     color: ${(props) => {
-      if (props.palette === 'dark') {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.oxfordBlueTint5
-          case 'transparent':
-            return props.theme.colors.oxfordBlueTint5
-          default:
-            return props.theme.colors.white
-        }
-      } else {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.oxfordBlue
-          case 'transparent':
-            return props.theme.colors.oxfordBlue
-          default:
-            return props.theme.colors.oxfordBlue
-        }
+    if (props.palette === 'dark') {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.oxfordBlueTint5;
+        case 'transparent':
+          return props.theme.colors.oxfordBlueTint5;
+        default:
+          return props.theme.colors.white;
       }
-    }} !important;
+    } else {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.oxfordBlue;
+        case 'transparent':
+          return props.theme.colors.oxfordBlue;
+        default:
+          return props.theme.colors.oxfordBlue;
+      }
+    }
+  }} !important;
     background-color: ${(props) => {
-      if (props.palette === 'dark') {
-        switch (props.type) {
-          case 'white':
-            return 'transparent'
-          case 'transparent':
-            return 'transparent'
-          default:
-            return props.theme.colors.oxfordBlueTint2
-        }
-      } else {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.oxfordBlueTint6
-          case 'transparent':
-            return props.theme.colors.oxfordBlueTint6
-          default:
-            return props.theme.colors.oxfordBlueTint6
-        }
+    if (props.palette === 'dark') {
+      switch (props.type) {
+        case 'white':
+          return 'transparent';
+        case 'transparent':
+          return 'transparent';
+        default:
+          return props.theme.colors.oxfordBlueTint2;
       }
-    }} !important;
+    } else {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.oxfordBlueTint6;
+        case 'transparent':
+          return props.theme.colors.oxfordBlueTint6;
+        default:
+          return props.theme.colors.oxfordBlueTint6;
+      }
+    }
+  }} !important;
     border-color: ${(props) => {
-      if (props.palette === 'dark') {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.oxfordBlueTint5
-          case 'transparent':
-            return 'transparent'
-          default:
-            return props.theme.colors.oxfordBlueTint2
-        }
-      } else {
-        switch (props.type) {
-          case 'white':
-            return props.theme.colors.oxfordBlueTint6
-          case 'transparent':
-            return props.theme.colors.oxfordBlueTint6
-          default:
-            return props.theme.colors.oxfordBlueTint6
-        }
+    if (props.palette === 'dark') {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.oxfordBlueTint5;
+        case 'transparent':
+          return 'transparent';
+        default:
+          return props.theme.colors.oxfordBlueTint2;
       }
-    }}!important;
+    } else {
+      switch (props.type) {
+        case 'white':
+          return props.theme.colors.oxfordBlueTint6;
+        case 'transparent':
+          return props.theme.colors.oxfordBlueTint6;
+        default:
+          return props.theme.colors.oxfordBlueTint6;
+      }
+    }
+  }}!important;
   } */
 
   .btn-icon {
     margin: ${(props) => {
-      if (props.title) {
-        if (props.isiconpositionright) {
-          return '0 0 0 10px'
-        } else {
-          return '0 10px 0 0'
-        }
+    if (props.title) {
+      if (props.isiconpositionright) {
+        return '0 0 0 10px';
       } else {
-        return '0'
+        return '0 10px 0 0';
       }
-    }};
+    } else {
+      return '0';
+    }
+  }};
     font-size: ${(props) => (props.iconfontsize ? props.iconfontsize : undefined)};
   }
-`
+`;

@@ -15,6 +15,6 @@ const TABLE_TYPES = {
 
   savingCryptoAssets: 'saving-crypto-assets',
   borrowCryptoAssets: 'borrow-crypto-assets'
-}
+};
 
-export default TABLE_TYPES
+export default TABLE_TYPES;

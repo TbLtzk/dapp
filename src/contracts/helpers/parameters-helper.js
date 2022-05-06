@@ -1,94 +1,96 @@
-import { ParameterType } from '@q-dev/q-js-sdk'
+import { ParameterType } from '@q-dev/q-js-sdk';
+import { isEmpty } from 'lodash';
+
 import {
-  getEpqfiParametersInstance,
-  getEpdrParametersInstance,
   getConstitutionInstance,
+  getEpdrParametersInstance,
+  getEpqfiParametersInstance,
   getEprsParametersInstance
-} from 'contracts/contract-instance'
-import ErrorHandler from 'func/ErrorHandler'
-import { CONTRACT_TYPES } from 'constants/contracts'
-import { isEmpty } from 'lodash'
+} from 'contracts/contract-instance';
+
+import { CONTRACT_TYPES } from 'constants/contracts';
+import ErrorHandler from 'func/ErrorHandler';
 
 async function getContract (typeContract) {
   switch (typeContract) {
     case CONTRACT_TYPES.qFee:
-      return await getEpqfiParametersInstance()
+      return await getEpqfiParametersInstance();
     case CONTRACT_TYPES.qDefi:
-      return await getEpdrParametersInstance()
+      return await getEpdrParametersInstance();
     case CONTRACT_TYPES.constitution:
-      return await getConstitutionInstance()
+      return await getConstitutionInstance();
     case CONTRACT_TYPES.qEprs:
-      return await getEprsParametersInstance()
+      return await getEprsParametersInstance();
   }
 }
 
 export async function getParameterKeysByType (typeContract, typeParameter) {
   try {
-    const contract = await getContract(typeContract)
-    let data
+    const contract = await getContract(typeContract);
+    let data;
     switch (typeParameter) {
       case ParameterType.ADDRESS:
-        data = await contract.instance.methods.getAddrKeys().call()
-        break
+        data = await contract.instance.methods.getAddrKeys().call();
+        break;
       case ParameterType.BOOL:
-        data = await contract.instance.methods.getBoolKeys().call()
-        break
+        data = await contract.instance.methods.getBoolKeys().call();
+        break;
       case ParameterType.STRING:
-        data = await contract.instance.methods.getStringKeys().call()
-        break
+        data = await contract.instance.methods.getStringKeys().call();
+        break;
       case ParameterType.BYTE:
-        data = await contract.instance.methods.getBytesKeys().call()
-        break
+        data = await contract.instance.methods.getBytesKeys().call();
+        break;
       case ParameterType.UINT:
-        data = await contract.instance.methods.getUintKeys().call()
-        break
+        data = await contract.instance.methods.getUintKeys().call();
+        break;
     }
-    return data
+    return data;
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    return null
+    ErrorHandler.processWithoutFeedback(error);
+    return null;
   }
 }
 
 export async function getParameterValueByKey (typeContract, typeParameter, parameterKey) {
   try {
-    const contract = await getContract(typeContract)
-    let data
+    const contract = await getContract(typeContract);
+    let data;
     switch (typeParameter) {
       case ParameterType.ADDRESS:
-        data = await contract.getAddr(parameterKey)
-        break
+        data = await contract.getAddr(parameterKey);
+        break;
       case ParameterType.BOOL:
-        data = await contract.getBool(parameterKey)
-        break
+        data = await contract.getBool(parameterKey);
+        break;
       case ParameterType.STRING:
-        data = await contract.getString(parameterKey)
-        break
+        data = await contract.getString(parameterKey);
+        break;
       case ParameterType.BYTE:
-        data = await contract.getBytes(parameterKey)
-        break
+        data = await contract.getBytes(parameterKey);
+        break;
       case ParameterType.UINT:
-        data = await contract.getUint(parameterKey)
-        break
+        data = await contract.getUint(parameterKey);
+        break;
     }
-    return data
+    return data;
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
-    return null
+    ErrorHandler.processWithoutFeedback(error);
+    return null;
   }
 }
 
 export const transformToParams = (formData) => {
   if (isEmpty(formData)) {
-    return []
+    return [];
   } else {
     return formData['parameter-type'].reduce((types, item, idx) => {
       types.push({
         type: item,
         key: formData['parameter-key'][idx],
         value: formData['parameter-value'][idx]
-      })
-      return types
-    }, [])
+      });
+      return types;
+    }, []);
   }
-}
+};

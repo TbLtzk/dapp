@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export const privacyContent = (
   <>
@@ -83,14 +83,22 @@ export const privacyContent = (
     <p>The Data Processing Addendum, which corresponds to the standard contractual clauses, can be found at:</p>
     <p>
       —{' '}
-      <a href="https://sentry.io/legal/dpa/" target="_blank" rel="noreferrer">
+      <a
+        href="https://sentry.io/legal/dpa/"
+        target="_blank"
+        rel="noreferrer"
+      >
         https://sentry.io/legal/dpa/
       </a>
     </p>
     <p> To learn more about the data processed by using Sentry, see below at:</p>
     <p>
       —{' '}
-      <a href="https://sentry.io/privacy/" target="_blank" rel="noreferrer">
+      <a
+        href="https://sentry.io/privacy/"
+        target="_blank"
+        rel="noreferrer"
+      >
         https://sentry.io/privacy/
       </a>
     </p>
@@ -122,7 +130,7 @@ export const privacyContent = (
     </p>
     <div className="modal-line" />
   </>
-)
+);
 
 export const imprintContent = (
   <>
@@ -155,7 +163,7 @@ export const imprintContent = (
     </p>
     <div className="modal-line" />
   </>
-)
+);
 
 export const easterEggImg = (
   <div>
@@ -164,4 +172,4 @@ export const easterEggImg = (
       style={{ width: '450px' }}
     />
   </div>
-)
+);

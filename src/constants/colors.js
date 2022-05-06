@@ -1,7 +1,7 @@
 export const THEMES = {
   light: 'light',
   dark: 'dark'
-}
+};
 
 export const darkColors = {
   oxfordBlue: '#0B2545',
@@ -15,7 +15,7 @@ export const darkColors = {
   neonGreen: '#87FF65',
   validationError: '#FF8550',
   red: '#FC4136'
-}
+};
 
 export const lightColors = {
   oxfordBlueTint1: '#E4EAF2',
@@ -29,7 +29,7 @@ export const lightColors = {
   neonGreen: '#67c54d',
   validationError: '#FF8550',
   red: '#FC4136'
-}
+};
 
 const colors = {
   white: '#FFFFFF',
@@ -38,6 +38,6 @@ const colors = {
   oxfordBlueTint2: '#3C516A',
   oxfordBlueTint1: '#07172B',
   oxfordBlueTint3: '#6D7C8F'
-}
+};
 
-export default colors
+export default colors;
