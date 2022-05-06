@@ -5,7 +5,7 @@ import Tooltip from 'components/Base/Tooltip'
 import { CONTRACT_TYPES } from 'constants/contracts'
 import { isAddress } from 'func/useful'
 import React from 'react'
-import { useForm } from 'react-hook-form'
+import useInputForm from 'hooks/useInputForm'
 import { useDispatch, useSelector } from 'react-redux'
 import { isUserRootNode } from 'store/root-node/selectors'
 import { setPurgeSlashing } from 'store/voting/slashing-proposals/action-creators'
@@ -17,11 +17,11 @@ function PurgeSlashing () {
   const dispatch = useDispatch()
   const isRootNode = useSelector(isUserRootNode)
 
-  const { register, handleSubmit, errors, setValue } = useForm({ mode: 'onChange' })
+  const { register, handleSubmit, errors, setCurrentType } = useInputForm('purge-slashing', { mode: 'onChange' })
 
   function handlePurge (formData, contractType) {
+    setCurrentType('purge-slashing')
     dispatch(setPurgeSlashing(formData.slashingAddress, contractType))
-    setValue('slashingAddress', null)
   }
 
   return (

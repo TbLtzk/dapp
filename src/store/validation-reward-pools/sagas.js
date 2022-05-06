@@ -14,15 +14,13 @@ import {
   getVRPPoolInfo
 } from './action-creators'
 
-import { SET_TRANSACTION_COUNTER } from 'store/transaction-handler/action-types'
-
 import { getValidationRewardPoolsInstance } from 'contracts/contract-instance'
-import { setErrorMessage } from 'store/transaction-handler/action-creators'
+import { setTransactionLoading, setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/action-creators'
 import { BN, fN, getPercentageFormat, uintPercentToNumber } from 'func/useful'
 import ErrorHandler from 'func/ErrorHandler'
 import { fromWei } from 'func/balance'
-const message = { header: 'Notice', details: 'Stake amount below minimum to apply new rate, old rate applied.' }
 
+const message = { header: 'Notice', details: 'Stake amount below minimum to apply new rate, old rate applied.' }
 function * setUpdateValidatorsCompoundRateGenerator ({ address }) {
   try {
     const { lastUpdateOfCompoundRate } = yield select((state) => state.validationRewardPools)
@@ -33,16 +31,17 @@ function * setUpdateValidatorsCompoundRateGenerator ({ address }) {
     const nextUpdateCompoundRate = yield contract.getLastUpdateOfCompoundRate(address)
 
     if (lastUpdateOfCompoundRate === nextUpdateCompoundRate) {
-      yield put(setErrorMessage(message))
+      yield put(setTransactionLoadingError(message))
     }
 
     yield put(getVRPLastUpdateOfCompoundRate(address))
     yield put(getVRPDelegatorsShare(address))
     yield put(getVRPBalance(address))
     yield put(getVRPPoolInfo(address))
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
+    yield put(setTransactionLoadingError(errorMsg))
   } finally {
     yield put(setVRPLoadingValidatorsCompoundRate(false))
   }
@@ -50,23 +49,18 @@ function * setUpdateValidatorsCompoundRateGenerator ({ address }) {
 
 function * setDelegatorsShareGenerator ({ amount }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    })
+    yield put(setTransactionLoading())
+
     const { userAddress } = yield select((state) => state.userInf)
 
     const contract = yield call(getValidationRewardPoolsInstance)
     yield contract.setDelegatorsShare(getPercentageFormat(amount))
     yield put(getVRPDelegatorsShare(userAddress))
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    })
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 

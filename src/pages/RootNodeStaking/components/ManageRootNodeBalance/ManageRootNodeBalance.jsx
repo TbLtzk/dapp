@@ -12,7 +12,6 @@ import {
 import { isUserRootNode, rootNodeStake, withdrawals, rootMinimumTimeLock } from 'store/root-node/selectors'
 
 import { userAddressMetamask } from 'store/user-inf/selectors'
-import { useForm } from 'react-hook-form'
 
 import { fN } from 'func/useful'
 import { fromWei, toWei } from 'func/balance'
@@ -23,52 +22,49 @@ import { fromSolDateFormattingT1 } from 'func/date'
 import { AccountStatusInfo, AccountStatusForm } from '../../styles'
 import { accountBalance } from 'store/q-vault/selectors'
 import { getAccountBalance } from 'store/q-vault/action-creators'
+import useInputForm from 'hooks/useInputForm'
 
 function ManageRootNodeBalance () {
-  const { register, errors, handleSubmit } = useForm()
   const dispatch = useDispatch()
 
   const userAccountBalance = useSelector(accountBalance)
-
   const isUserRoot = useSelector(isUserRootNode)
   const userAddress = useSelector(userAddressMetamask)
   const amountNodeStake = useSelector(rootNodeStake)
   const withdrawalsData = useSelector(withdrawals)
   const rootTimeLockMinimumBalance = useSelector(rootMinimumTimeLock)
 
+  const { register, errors, handleSubmit, setCurrentType } = useInputForm('root-node-balance')
+
   useEffect(() => {
+    setCurrentType('root-node-balance')
+
     dispatch(getAccountBalance(userAddress))
     dispatch(getRootNodeStakes(userAddress))
     dispatch(getRootWithdrawals(userAddress))
     dispatch(getMinimumRootTimeLock(userAddress))
   }, [])
 
-  const onStakeToPanel = (formData) => {
+  const handleStake = (formData) => {
     dispatch(setRootStakeToPanel({ from: userAddress, value: toWei(formData?.amount) }))
   }
 
-  const onWithdrawFromPanel = (formData) => {
+  const handleWithdraw = (formData) => {
     dispatch(setRootWithdraw(toWei(formData?.amount), userAddress, { from: userAddress }))
   }
 
-  const onAnnounce = (formData) => {
+  const handleAnnounce = (formData) => {
     dispatch(setRootAnnounceWithdrawal(toWei(formData?.amount), { from: userAddress }))
   }
-
-  const checkIsUserRootMember = (
-        <>
-            <div>
-                <h5>Status</h5>
-                {isUserRoot ? <p>Member of root node panel</p> : <p>Not a member of root node panel</p>}
-            </div>
-        </>
-  )
 
   return (
         <CustomBlock>
             <h1>Manage Balance</h1>
             <AccountStatusInfo>
-                {checkIsUserRootMember}
+                <div>
+                    <h5>Status</h5>
+                    {isUserRoot ? <p>Member of root node panel</p> : <p>Not a member of root node panel</p>}
+                </div>
                 <div>
                     <h5>Stake in Root Node Ranking</h5>
                     <p>{fN(amountNodeStake) + ' Q'}</p>
@@ -115,17 +111,12 @@ function ManageRootNodeBalance () {
                         placeholder="0.00"
                         ref={register({ required: 'Field is required!' })}
                         valid={errors?.amount?.message}
-                        onChange={() => {}}
                     />
                 </div>
                 <div className="account-status__form-actions">
-                    <Button type="default" title="Stake to Panel" handleButton={handleSubmit(onStakeToPanel)} />
-                    <Button type="default" title="Announce Withdrawal" handleButton={handleSubmit(onAnnounce)} />
-                    <Button
-                        type="default"
-                        title="Withdraw from Panel"
-                        handleButton={handleSubmit(onWithdrawFromPanel)}
-                    />
+                    <Button type="default" title="Stake to Panel" handleButton={handleSubmit(handleStake)} />
+                    <Button type="default" title="Announce Withdrawal" handleButton={handleSubmit(handleAnnounce)} />
+                    <Button type="default" title="Withdraw from Panel" handleButton={handleSubmit(handleWithdraw)} />
                 </div>
             </AccountStatusForm>
         </CustomBlock>

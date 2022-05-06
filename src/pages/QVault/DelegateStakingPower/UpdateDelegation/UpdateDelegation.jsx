@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 
-import { useForm } from 'react-hook-form'
-
 import { useDispatch, useSelector } from 'react-redux'
 import { userAddressMetamask } from 'store/user-inf/selectors'
 import { setDelegateStake } from 'store/q-vault/action-creators'
@@ -9,24 +7,25 @@ import FormInput from 'components/Base/Form/FormInput'
 import Button from 'components/Base/Buttons/Button'
 import { toWei } from 'func/balance'
 import { fillArray, isAddress } from 'func/useful'
+import useInputForm from 'hooks/useInputForm'
 
-export default function UpdateDelegation () {
-  const { register, handleSubmit, setValue } = useForm()
-
+function UpdateDelegation () {
   const dispatch = useDispatch()
   const address = useSelector(userAddressMetamask)
 
-  const [items, setItems] = useState(1)
+  const { register, handleSubmit, setCurrentType } = useInputForm('delegation')
 
-  function addInputContainer () {
-    if (items < 30) {
-      setItems(items + 1)
+  const [inputs, setInputs] = useState(1)
+
+  function addInputField () {
+    if (inputs < 30) {
+      setInputs(inputs + 1)
     }
   }
 
-  function removeInputContainer () {
-    if (items > 1) {
-      setItems(items - 1)
+  function removeInputField () {
+    if (inputs > 1) {
+      setInputs(inputs - 1)
     }
   }
 
@@ -41,11 +40,8 @@ export default function UpdateDelegation () {
 
   function updateDelegations (formData) {
     const [delegatedTo, stakes] = trasformFormData(formData)
+    setCurrentType('delegation')
     dispatch(setDelegateStake(address, delegatedTo, stakes))
-    delegatedTo.forEach((_, idx) => {
-      setValue(`address${idx}`, null)
-      setValue(`share${idx}`, null)
-    })
   }
 
   return (
@@ -58,7 +54,7 @@ export default function UpdateDelegation () {
                     <p style={{ fontSize: '10px', position: 'absolute', top: '18px' }}>0 will remove delegation </p>
                 </div>
             </div>
-            {fillArray(items).map((_, idx) => (
+            {fillArray(inputs).map((_, idx) => (
                 <div key={idx + 'input_address'} className="card__one-line-form-2-2-1">
                     <FormInput
                         color={true}
@@ -67,7 +63,7 @@ export default function UpdateDelegation () {
                         placeholder="0x000"
                         ref={register({
                           required: 'Field is required!',
-                          validate: (address) => isAddress(address)
+                          validate: (address) => (isAddress(address) ? true : 'Incorrect address')
                         })}
                     />
                     <FormInput
@@ -82,12 +78,12 @@ export default function UpdateDelegation () {
                         })}
                     />
                     <div className="card__one-line-form-2-2-1-action">
-                        <Button type="outline" icon="plus" width="37px" handleButton={addInputContainer} />
-                        <Button type="outline" icon="minus" width="37px" handleButton={removeInputContainer} />
+                        <Button type="outline" icon="plus" width="37px" handleButton={addInputField} />
+                        <Button type="outline" icon="minus" width="37px" handleButton={removeInputField} />
                     </div>
                 </div>
             ))}
-            <div className="card__actions" style={{ marginBottom: '30px' }}>
+            <div className="card__actions" style={{ marginBottom: '10px' }}>
                 <Button
                     icon="cached"
                     type="outline"
@@ -98,3 +94,5 @@ export default function UpdateDelegation () {
         </>
   )
 }
+
+export default UpdateDelegation

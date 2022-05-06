@@ -6,7 +6,6 @@ import FormInput from 'components/Base/Form/FormInput'
 
 import { fN, errorHandler } from 'func/useful'
 import { useDispatch, useSelector } from 'react-redux'
-import { useForm } from 'react-hook-form'
 import {
   getSavingAllowance,
   getSavingAviableToDeposit,
@@ -21,6 +20,7 @@ import {
   savingBalanceDetailsSelector
 } from 'store/saving-assets/selectors'
 import { WrapSpinner } from 'pages/styles'
+import useInputForm from 'hooks/useInputForm'
 
 const DEPOSIT_BTN_TEXT = {
   deposit: 'Deposit',
@@ -29,21 +29,31 @@ const DEPOSIT_BTN_TEXT = {
 
 const BTN_LENGTH = '100px'
 
-function SaveManageAsset (props) {
-  const { depositAsset, interestAsset, rate } = props
-
+function SaveManageAsset ({ depositAsset, interestAsset, rate }) {
   const dispatch = useDispatch()
-
-  const { register: register1, handleSubmit: handleSubmit1, errors: errors1, setValue: setDepositMax } = useForm()
-  const { register: register2, handleSubmit: handleSubmit2, errors: errors2, setValue: setWithdrawMax } = useForm()
-
-  const [depositBtnTitle, setDepositBtnTitle] = useState(DEPOSIT_BTN_TEXT.deposit)
-
-  const [isModalShown, setIsModalShown] = useState(false)
 
   const savingBalanceDetails = useSelector(savingBalanceDetailsSelector)
   const savingAviableToDeposit = useSelector(savingAviableToDepositSelector)
   const savingAllowance = useSelector(savingAllowanceSelector)
+
+  const {
+    register: registerDeposit,
+    handleSubmit: depositSubmit,
+    errors: errorsDeposit,
+    setValue: setDepositMax,
+    setCurrentType: setDepositType
+  } = useInputForm('deposit-asset')
+
+  const {
+    register: registerWithdraw,
+    handleSubmit: withdrawSubmit,
+    errors: errorsWidthdraw,
+    setValue: setWithdrawMax,
+    setCurrentType: setWithdrawType
+  } = useInputForm('withdraw-asset')
+
+  const [depositBtnTitle, setDepositBtnTitle] = useState(DEPOSIT_BTN_TEXT.deposit)
+  const [isModalShown, setIsModalShown] = useState(false)
 
   const { interestRate, currentBalance, estimatedInterest } = savingBalanceDetails
 
@@ -70,20 +80,20 @@ function SaveManageAsset (props) {
     }
   }
 
-  function deposit (formData) {
+  function handleDepositSubmit (formData) {
     if (depositBtnTitle === DEPOSIT_BTN_TEXT.approve) {
       dispatch(setSavingAprove())
       dispatch(getSavingAllowance())
       setDepositBtnTitle(DEPOSIT_BTN_TEXT.deposit)
     } else {
+      setDepositType('deposit-asset')
       dispatch(setSavingDeposit(formData.amount))
-      setDepositMax('amount', null)
     }
   }
 
-  function withdraw (formData) {
+  function handleWithdrawSubmit (formData) {
+    setWithdrawType('withdraw-asset')
     dispatch(setSavingWithdraw(formData.amount))
-    setWithdrawMax('amount', null)
   }
 
   function handleDepositAllow (value) {
@@ -101,15 +111,11 @@ function SaveManageAsset (props) {
                 icon="arrow-top-right"
                 title="Manage"
                 type="transparent"
-                handleButton={() => {
-                  setIsModalShown(true)
-                }}
+                handleButton={() => setIsModalShown(true)}
             />
             <ModalWindow
                 show={isModalShown}
-                onHide={() => {
-                  setIsModalShown(false)
-                }}
+                onHide={() => setIsModalShown(false)}
                 modalTitle={'Saving ' + depositAsset}
                 content={
                     !savingAviableToDeposit && !savingAllowance
@@ -162,8 +168,8 @@ function SaveManageAsset (props) {
                                     type="number"
                                     modal={true}
                                     placeholder="0.00"
-                                    ref={register1({ required: true })}
-                                    valid={errorHandler(errors1, 'field')}
+                                    ref={registerDeposit({ required: true })}
+                                    valid={errorHandler(errorsDeposit, 'field')}
                                     onMaxClick={handleMaxDeposit}
                                     onChange={handleDepositAllow}
                                 />
@@ -171,7 +177,7 @@ function SaveManageAsset (props) {
                                     type="outline"
                                     title={depositBtnTitle}
                                     width={BTN_LENGTH}
-                                    handleButton={handleSubmit1(deposit)}
+                                    handleButton={depositSubmit(handleDepositSubmit)}
                                 />
                             </div>
                             <h4>Withdraw Saving Asset</h4>
@@ -185,14 +191,14 @@ function SaveManageAsset (props) {
                                     modal={true}
                                     onMaxClick={handleMaxWithdraw}
                                     placeholder="0.00"
-                                    ref={register2({ required: true })}
-                                    valid={errorHandler(errors2, 'field')}
+                                    ref={registerWithdraw({ required: true })}
+                                    valid={errorHandler(errorsWidthdraw, 'field')}
                                 />
                                 <Button
                                     type="outline"
                                     title="Withdraw"
                                     width={BTN_LENGTH}
-                                    handleButton={handleSubmit2(withdraw)}
+                                    handleButton={withdrawSubmit(handleWithdrawSubmit)}
                                 />
                             </div>
                         </>

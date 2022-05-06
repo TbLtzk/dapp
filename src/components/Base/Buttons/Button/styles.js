@@ -207,7 +207,7 @@ export const ButtonCustom = styled.button`
     }};
   }
 
-  &:focus {
+  /* &:focus {
     box-shadow: ${(props) => (props.palette === 'light' ? 'none !important' : 'auto')};
     color: ${(props) => {
       if (props.palette === 'dark') {
@@ -272,9 +272,9 @@ export const ButtonCustom = styled.button`
         }
       }
     }};
-  }
+  } */
 
-  &:active {
+  /* &:active {
     box-shadow: none !important;
     color: ${(props) => {
       if (props.palette === 'dark') {
@@ -339,7 +339,7 @@ export const ButtonCustom = styled.button`
         }
       }
     }}!important;
-  }
+  } */
 
   .btn-icon {
     margin: ${(props) => {

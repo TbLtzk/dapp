@@ -1,7 +1,11 @@
 import { put, takeEvery, select, all, call } from 'redux-saga/effects'
 
 import * as actionTypes from './action-types'
-import { setErrorMessage, setTransactionCounter } from 'store/transaction-handler/action-creators'
+import {
+  setTransactionLoading,
+  setTransactionLoadingError,
+  setTransactionLoadingSuccess
+} from 'store/transaction-handler/action-creators'
 
 import {
   setSystemDebtAuctions,
@@ -73,7 +77,7 @@ function * getAuctionsGenerator ({ auctionTypes = '' }) {
 
 function * createAuction ({ data }) {
   try {
-    yield put(setTransactionCounter(1))
+    yield put(setTransactionLoading())
     const { userAddress } = yield select((state) => state.userInf)
     let contract
     let auctionType
@@ -100,11 +104,10 @@ function * createAuction ({ data }) {
     yield contract.createAuction(data, userAddress)
     yield put(getAuctions(auctionType))
     yield call(updateValuesGenerator)
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 
@@ -132,7 +135,7 @@ function * getOneAuctionGenerator ({ auctionType, auctionId, address }) {
 
 function * bidForAuctionGenerator ({ data }) {
   try {
-    yield put(setTransactionCounter(1))
+    yield put(setTransactionLoading())
     const { userAddress } = yield select((state) => state.userInf)
     const contractType = transformAuctionNameToAuctionType(data.contract)
     switch (contractType) {
@@ -156,17 +159,17 @@ function * bidForAuctionGenerator ({ data }) {
     }
     yield put(getAuctions(contractType))
     yield call(updateValuesGenerator)
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 
 function * executeAuctionHandler ({ data }) {
   try {
-    yield put(setTransactionCounter(1))
+    yield put(setTransactionLoading())
     const { userAddress } = yield select((state) => state.userInf)
     const contractType = transformAuctionNameToAuctionType(data.contract)
 
@@ -191,11 +194,10 @@ function * executeAuctionHandler ({ data }) {
     }
     yield put(getAuctions(contractType))
     yield call(updateValuesGenerator)
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 

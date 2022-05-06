@@ -13,7 +13,7 @@ import { fromWei } from 'func/balance'
 import { remainDateTimeSince } from 'func/convertDate'
 import ErrorHandler from 'func/ErrorHandler'
 import { BN, uintPerSecondToPerYearNumber } from 'func/useful'
-import { setErrorMessage } from 'store/transaction-handler/action-creators'
+import { setTransactionLoadingError } from 'store/transaction-handler/action-creators'
 
 async function addToken (contract, address) {
   try {
@@ -122,7 +122,7 @@ export async function refreshTimeSinceRefreshBalance (
     getTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance)
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    dispatch(setErrorMessage(errorMsg))
+    dispatch(setTransactionLoadingError(errorMsg))
   } finally {
     setLoading(false)
   }
@@ -154,7 +154,7 @@ export async function refreshTimeSinceOutstandingDebt (
     getTimeSinceOutstandingDebt(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance)
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    dispatch(setErrorMessage(errorMsg))
+    dispatch(setTransactionLoadingError(errorMsg))
   } finally {
     setLoading(false)
   }

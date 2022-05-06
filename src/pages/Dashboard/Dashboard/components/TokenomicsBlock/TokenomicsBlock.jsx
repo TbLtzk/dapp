@@ -13,7 +13,7 @@ import LoadingSpinner from 'components/Base/LoadingSpinner'
 
 import { remainDateTimeSince } from 'func/convertDate'
 import { fN, uintPerSecondToPerYearNumber } from 'func/useful'
-import { setErrorMessage } from 'store/transaction-handler/action-creators'
+import { setTransactionLoadingError } from 'store/transaction-handler/action-creators'
 import { reserveBalanceSelector } from 'store/system-reserve/selectors'
 import { getSystemReserveBalance } from 'store/system-reserve/action-creators'
 import { getRewardPoolsBalance } from 'store/validation-reward-pools/action-creators'
@@ -45,7 +45,7 @@ function TokenomicsBlock () {
   const [timeSinceQHolderRewardUpdate, setTimeSinceQHolderRewardUpdate] = useState('...')
   const [timeSinceUnixTimestamp, setTimeSinceUnixTimestamp] = useState('...')
 
-  const handler = new Handler(userAddress, dispatch, setErrorMessage)
+  const handler = new Handler(userAddress, dispatch, setTransactionLoadingError)
 
   useEffect(() => {
     dispatch(getQVBalance())

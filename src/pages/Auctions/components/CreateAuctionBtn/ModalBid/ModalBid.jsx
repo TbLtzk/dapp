@@ -17,7 +17,7 @@ import { MAX_APPROVE_AMOUNT } from 'constants/numbers'
 import { ProgressBar } from 'react-bootstrap'
 import { getStableCoinInstance } from 'contracts/contract-instance'
 import { switchContract } from 'contracts/helpers/auctions-helpers/auction-service-helper'
-import { setTransactionCounter } from 'store/transaction-handler/action-creators'
+import { setTransactionLoading } from 'store/transaction-handler/action-creators'
 import { fields } from 'constants/fieldsNaming'
 
 function ModalBid ({ modalShow, onHide, activeTab, inf }) {
@@ -90,13 +90,13 @@ function ModalBid ({ modalShow, onHide, activeTab, inf }) {
 
   async function confirmAllowance (contract, address) {
     try {
-      dispatch(setTransactionCounter(1))
+      dispatch(setTransactionLoading(1))
       await contract.approve(address, MAX_APPROVE_AMOUNT, { from: userAddress })
       setApproveButton(false)
     } catch {
       setApproveButton(true)
     } finally {
-      dispatch(setTransactionCounter(-1))
+      dispatch(setTransactionLoading(-1))
     }
   }
 

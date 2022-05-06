@@ -7,7 +7,7 @@ import {
 } from 'contracts/contract-instance'
 import { fN } from 'func/useful'
 import ErrorHandler from 'func/ErrorHandler'
-import { setErrorMessage } from 'store/transaction-handler/action-creators'
+import { setTransactionLoadingError } from 'store/transaction-handler/action-creators'
 
 export default class Handler {
   constructor (userAddress, dispatch) {
@@ -23,7 +23,7 @@ export default class Handler {
       stateSetter(fN(balance))
     } catch (error) {
       const errorMsg = ErrorHandler.process(error)
-      this.dispatch(setErrorMessage(errorMsg))
+      this.dispatch(setTransactionLoadingError(errorMsg))
     } finally {
       stateLoading(false)
     }

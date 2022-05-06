@@ -8,7 +8,7 @@ import CardCollapsedContent from '../CardCollapsedContent'
 import ProposalContent from '../ProposalContent'
 import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper'
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading'
-import { transactionCounter } from 'store/transaction-handler/selectors'
+import { transactionLoadingSelector } from 'store/transaction-handler/selectors'
 import { formVoteObject } from 'store/voting/proposals/selectors'
 import { createShareText } from 'func/useful'
 
@@ -18,7 +18,7 @@ function ListCard ({ proposal, id, proposalsKind, onePage }) {
   const dispatch = useDispatch()
 
   const currentTheme = useSelector(theme)
-  const updateProposal = useSelector(transactionCounter)
+  const transactionLoading = useSelector(transactionLoadingSelector)
 
   const [open, setOpen] = useState(false)
 
@@ -26,11 +26,11 @@ function ListCard ({ proposal, id, proposalsKind, onePage }) {
   const obj = useSelector(formVoteObject)
 
   useEffect(() => {
-    if (!updateProposal && proposal.contract === obj.contract && proposal.id === obj.id) {
+    if (!transactionLoading && proposal.contract === obj.contract && proposal.id === obj.id) {
       handleGetProposal()
       dispatch(setVoteProposalObj({}))
     }
-  }, [updateProposal])
+  }, [transactionLoading])
 
   useEffect(() => {
     handleGetProposal()

@@ -1,20 +1,17 @@
 import React from 'react'
 import FormInput from 'components/Base/Form/FormInput'
 import Button from 'components/Base/Buttons/Button'
-
-import { useForm } from 'react-hook-form'
-
 import { useDispatch } from 'react-redux'
-
 import { setVestingWithdraw } from 'store/vesting/action-creators'
+import useInputForm from 'hooks/useInputForm'
 
-function ManageVestingBalance ({ setModalShow }) {
+function ManageVestingBalance () {
   const dispatch = useDispatch()
 
-  const { register, handleSubmit, errors } = useForm()
+  const { register, handleSubmit, errors, setCurrentType } = useInputForm('withdraw-vesting')
 
-  const setWithdrawVesting = (formData) => {
-    setModalShow(false)
+  const handleWithdrawVesting = (formData) => {
+    setCurrentType('withdraw-vesting')
     dispatch(setVestingWithdraw(formData.amountQ))
   }
 
@@ -34,13 +31,13 @@ function ManageVestingBalance ({ setModalShow }) {
                 valid={errors.amountQ?.message}
             />
             <Button
-              position='relative'
+                position="relative"
                 right="-367px"
                 type="outline"
                 margin="0px 0px 12px 0px"
                 title="Withdraw"
                 width="90px"
-                handleButton={handleSubmit(setWithdrawVesting)}
+                handleButton={handleSubmit(handleWithdrawVesting)}
             />
             <div className="modal-line" />
         </>

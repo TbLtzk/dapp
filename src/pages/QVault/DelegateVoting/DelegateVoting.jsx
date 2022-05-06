@@ -14,26 +14,29 @@ import FormInput from 'components/Base/Form/FormInput'
 import Button from 'components/Base/Buttons/Button'
 import { useForm } from 'react-hook-form'
 import { getVoteDelegation } from 'contracts/helpers/voting-helpers/base-voting-helper'
+import { isAddress } from 'func/useful'
 
-export default function LockCoin () {
+function DelegateVoting () {
   const dispatch = useDispatch()
+
   const address = useSelector(userAddressMetamask)
   const weight = useSelector(receivedWeight)
   const agent = useSelector(votingAgent)
   const isPending = useSelector(isPendingDelegation)
   const time = useSelector(votingAgentPassOverTime)
 
-  const { register: reg1, handleSubmit: submit1, errors: err1 } = useForm()
+  const { register, handleSubmit, errors, setCurrentType } = useForm('announce')
 
   useEffect(() => {
     dispatch(getDelegationInfo(address))
   }, [])
 
-  async function announce (formData) {
+  async function handleAnnounce (formData) {
+    setCurrentType('announce')
     dispatch(setAnnounceNewVotingAgent(formData.address))
   }
 
-  async function btnHandler () {
+  async function handleDelegate () {
     dispatch(setNewVotingAgent())
   }
 
@@ -63,27 +66,29 @@ export default function LockCoin () {
                     firstContent="This delegation info is currently pending. Need to confirm."
                     iconFontSize="20px"
                     btnTitle="Confirm"
-                    btnHandler={btnHandler}
+                    btnHandler={handleDelegate}
                 />
                   )}
             <div className="card__line" />
             <h3>Announce new voting agent</h3>
             <h4>Address</h4>
-            <div className={'card__one-line-simple-form'}>
+            <div className="card__one-line-simple-form">
                 <FormInput
                     color={true}
                     name="address"
                     placeholder="0x000"
                     type="text"
-                    ref={reg1({
+                    ref={register({
                       required: 'Field is required!',
-                      pattern: /[0-9]/i
+                      validate: (address) => (isAddress(address) ? true : 'Incorrect address')
                     })}
-                    valid={err1.address?.message}
+                    valid={errors?.address?.message}
                 />
-                <Button type="outline" title="Announce" width="90px" handleButton={submit1(announce)} />
+                <Button type="outline" title="Announce" width="90px" handleButton={handleSubmit(handleAnnounce)} />
             </div>
             <h4>This will immediately reduce the voting weight of your voting agent for new voting</h4>
         </CustomBlock>
   )
 }
+
+export default DelegateVoting

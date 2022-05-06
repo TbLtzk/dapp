@@ -1,5 +1,4 @@
 import React from 'react'
-import { useForm } from 'react-hook-form'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { setLockAmount, setUnlockAmount } from 'store/q-vault/action-creators'
@@ -12,35 +11,49 @@ import Button from 'components/Base/Buttons/Button'
 
 import 'react-datepicker/dist/react-datepicker.css'
 import { votingWeight } from 'store/q-vault/selectors'
+import useInputForm from 'hooks/useInputForm'
 
-export default function LockCoin ({ maxQVaultVotingWeight }) {
-  const { register: reg1, handleSubmit: submit1, errors: err1, setValue: setLockMax } = useForm()
-  const { register: reg3, handleSubmit: submit3, errors: err3, setValue: setUnlockMax } = useForm()
-
+function LockCoin ({ maxQVaultVotingWeight }) {
   const dispatch = useDispatch()
 
-  const userVotingWeight = useSelector(votingWeight)
+  const userVotingWeight = Number(useSelector(votingWeight))
   const address = useSelector(userAddressMetamask)
 
+  const {
+    register: registerLock,
+    handleSubmit: submitLock,
+    errors: errorLock,
+    setValue: setLockMax,
+    setCurrentType: setLockType
+  } = useInputForm('lock')
+
+  const {
+    register: registerUnlock,
+    handleSubmit: submitUnlock,
+    errors: errorUnlock,
+    setValue: setUnlockMax,
+    setCurrentType: setUnlockType
+  } = useInputForm('unlock')
+
   function handleUnlockMax () {
-    if (Number(userVotingWeight) > 0) {
+    if (userVotingWeight > 0) {
       setUnlockMax('amountQ', userVotingWeight)
     }
   }
 
   function handleLockMax () {
-    if (Number(maxQVaultVotingWeight) > 0) {
+    if (maxQVaultVotingWeight > 0) {
       setLockMax('amountQ', maxQVaultVotingWeight)
     }
   }
 
-  function lockCoinL (formData) {
+  function handleLock (formData) {
+    setLockType('lock')
     dispatch(setLockAmount(address, formData.amountQ))
-    setLockMax('amountQ', null)
   }
-  function unlockCoinL (formData) {
+  function handleUnlock (formData) {
+    setUnlockType('unlock')
     dispatch(setUnlockAmount(address, formData.amountQ))
-    setUnlockMax('amountQ', null)
   }
 
   return (
@@ -57,10 +70,10 @@ export default function LockCoin ({ maxQVaultVotingWeight }) {
                     type="number"
                     placeholder="0.0"
                     onMaxClick={handleLockMax}
-                    ref={reg1({ required: 'Field is required!' })}
-                    valid={err1.amountQ?.message}
+                    ref={registerLock({ required: 'Field is required!' })}
+                    valid={errorLock.amountQ?.message}
                 />
-                <Button type="outline" title="Increase" width="90px" handleButton={submit1(lockCoinL)} />
+                <Button type="outline" title="Increase" width="90px" handleButton={submitLock(handleLock)} />
             </div>
 
             <h4>Reduce Voting Weight by</h4>
@@ -73,10 +86,10 @@ export default function LockCoin ({ maxQVaultVotingWeight }) {
                     lbl={'Q'}
                     onMaxClick={handleUnlockMax}
                     placeholder="0.0"
-                    ref={reg3({ required: 'Field is required!' })}
-                    valid={err3.amountQ?.message}
+                    ref={registerUnlock({ required: 'Field is required!' })}
+                    valid={errorUnlock.amountQ?.message}
                 />
-                <Button type="outline" title="Reduce" width="90px" handleButton={submit3(unlockCoinL)} />
+                <Button type="outline" title="Reduce" width="90px" handleButton={submitUnlock(handleUnlock)} />
             </div>
             <div className="card__actions">
                 <ButtonLinkArrow alwaysEnabled title="Go to Governance" path="/q-governance" />
@@ -84,3 +97,5 @@ export default function LockCoin ({ maxQVaultVotingWeight }) {
         </CustomBlock>
   )
 }
+
+export default LockCoin

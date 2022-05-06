@@ -20,7 +20,6 @@ function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contrac
 
   const setPurge = () => {
     dispatch(setPurgeTimeLocksAmount({ contract, address }))
-    setModalShow(false)
   }
 
   return (

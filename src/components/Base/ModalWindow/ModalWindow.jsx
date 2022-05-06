@@ -1,8 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-
 import { Modal } from 'react-bootstrap'
-
 import Button from 'components/Base/Buttons/Button'
 
 import { Header, Body, Footer, ModalW } from './styles'
@@ -18,13 +15,14 @@ function ModalWindow ({
   content,
   modalTitle,
   iconRight,
-  closeButton = true
+  closeButton = true,
+  scrollable = true
 }) {
   return (
         <ModalW
             show={show}
             onHide={onHide}
-            scrollable
+            scrollable={scrollable}
             size="md"
             aria-labelledby="contained-modal-title-vcenter"
             centered
@@ -59,13 +57,6 @@ function ModalWindow ({
                 )}
         </ModalW>
   )
-}
-
-ModalWindow.propTypes = {
-  continueBtnTitle: PropTypes.string,
-  show: PropTypes.bool,
-  content: PropTypes.object,
-  onHide: PropTypes.func
 }
 
 export default ModalWindow

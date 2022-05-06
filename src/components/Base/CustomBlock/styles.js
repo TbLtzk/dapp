@@ -60,7 +60,7 @@ export const Block = styled.div`
   .card__actions {
     display: flex;
     align-items: flex-start;
-    margin-top: 30px;
+    margin-top: 10px;
 
     & > *:not(:first-child) {
       margin-left: 10px;

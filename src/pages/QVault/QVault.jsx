@@ -19,8 +19,8 @@ function QVault () {
   const userQVaultBalance = useSelector(userBalance)
   const qVaultLockedAmount = useSelector(qVaultMinimumTimeLock)
 
-  const maxQVaultWithdrawAmount = subtractAmount(userQVaultBalance, qVaultLockedAmount)
-  const maxQVaultVotingWeight = subtractAmount(userQVaultBalance, userVotingWeight)
+  const maxQVaultWithdrawAmount = Number(subtractAmount(userQVaultBalance, qVaultLockedAmount))
+  const maxQVaultVotingWeight = Number(subtractAmount(userQVaultBalance, userVotingWeight))
 
   return (
         <PageWrap wrapContentClasses="wrap-content__column-2-1" headerTitle="Q Vault">

@@ -1,7 +1,11 @@
 import { put, takeEvery, call, select, all } from 'redux-saga/effects'
 import ErrorHandler from 'func/ErrorHandler'
 import * as actionTypes from './action-types'
-import { setErrorMessage, setTransactionCounter } from 'store/transaction-handler/action-creators'
+import {
+  setTransactionLoadingError,
+  setTransactionLoading,
+  setTransactionLoadingSuccess
+} from 'store/transaction-handler/action-creators'
 import {
   generateVaultData,
   getBalanceDetailsHelper,
@@ -30,16 +34,16 @@ import { fillArray, fN, uintPerSecondToPerYearNumber } from 'func/useful'
 
 function * setCreateQBTCVaultGenerator () {
   try {
-    yield put(setTransactionCounter(1))
+    yield put(setTransactionLoading())
     const { userAddress } = yield select((state) => state.userInf)
     const contract = yield call(getBorrowingCoreInstance)
     yield contract.createVault('QBTC', { from: userAddress })
     yield put(getBorrowingVaults())
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 

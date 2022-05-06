@@ -1,7 +1,11 @@
 import { delay, call, put, takeEvery, select } from 'redux-saga/effects'
 
 import * as actionTypes from 'store/voting/proposals/action-types'
-import { setErrorMessage, setTransactionCounter } from 'store/transaction-handler/action-creators'
+import {
+  setTransactionLoadingError,
+  setTransactionLoading,
+  setTransactionLoadingSuccess
+} from 'store/transaction-handler/action-creators'
 
 import { getDelegationInfo, getLockedAssets } from 'store/q-vault/action-creators'
 
@@ -36,7 +40,7 @@ import { getContractUpdatesProposals } from '../contract-updates/action-creators
 
 function * createProposalGenerator ({ data }) {
   try {
-    yield put(setTransactionCounter(1))
+    yield put(setTransactionLoading())
     const { userAddress } = yield select((state) => state.userInf)
     let contractName = null
     if (data) {
@@ -89,17 +93,17 @@ function * createProposalGenerator ({ data }) {
     yield put(getBaseVotingWeightInfo())
     yield put(getDelegationInfo(userAddress))
     yield put(getProposalsByType(contractName))
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 
 function * voteForProposalGenerator ({ data }) {
   try {
-    yield put(setTransactionCounter(1))
+    yield put(setTransactionLoading())
     const { userAddress } = yield select((state) => state.userInf)
     const contract = new VotingService(data?.contract)
     if (data.first === 'approve') {
@@ -117,28 +121,29 @@ function * voteForProposalGenerator ({ data }) {
     yield put(getBaseVotingWeightInfo())
     yield put(getDelegationInfo(userAddress))
     yield put(getLockedAssets(userAddress))
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 
 function * executeProposalGenerator ({ data }) {
   try {
-    yield put(setTransactionCounter(1))
+    yield put(setTransactionLoading())
+
     const { userAddress } = yield select((state) => state.userInf)
     const contract = new VotingService(data?.contract)
     yield contract.execute(data?.idProposal, userAddress)
     yield put(getProposalsByType(data.contract))
     yield put(getBaseVotingWeightInfo())
     yield put(getDelegationInfo(userAddress))
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 

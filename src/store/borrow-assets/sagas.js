@@ -6,7 +6,11 @@ import {
 } from 'contracts/contract-instance'
 
 import * as actionTypes from './action-types'
-import { setErrorMessage, setTransactionCounter } from '../transaction-handler/action-creators'
+import {
+  setTransactionLoading,
+  setTransactionLoadingError,
+  setTransactionLoadingSuccess
+} from '../transaction-handler/action-creators'
 
 import ErrorHandler from 'func/ErrorHandler'
 import { fromWei, toBtcBlockchain, toWei } from 'func/balance'
@@ -80,107 +84,98 @@ function * getBorrowVaultInfoGenerator ({ vaultId }) {
 
 function * setBorrowAproveGenerator ({ borrowType }) {
   try {
-    yield put(setTransactionCounter(1))
+    yield put(setTransactionLoading())
     const { userAddress } = yield select((state) => state.userInf)
     const borrowingContract = yield call(getBorrowingCoreInstance)
 
     const contract = yield call(getContractWithTypeAndKey, borrowType)
-    let result
     if (borrowType === fields.deposit) {
-      result = yield contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT).send({ from: userAddress })
+      yield contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT).send({ from: userAddress })
     } else {
-      result = yield contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT, { from: userAddress })
+      yield contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT, { from: userAddress })
     }
-    if (result) {
-      yield put(getBorrowAllowance(borrowType))
-      yield put(getTotalSavingBalance())
-      yield put(getTotalCollateralLockedAndOutstandingDebt())
-    }
+
+    yield put(getBorrowAllowance(borrowType))
+    yield put(getTotalSavingBalance())
+    yield put(getTotalCollateralLockedAndOutstandingDebt())
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 
 function * setBorrowDepositGenerator ({ amount, vaultId }) {
   try {
-    yield put(setTransactionCounter(1))
+    yield put(setTransactionLoading())
     const { userAddress } = yield select((state) => state.userInf)
     const contract = yield call(getBorrowingCoreInstance)
-    const result = yield contract.depositCol(vaultId, toBtcBlockchain(amount), { from: userAddress })
-    if (result) {
-      yield put(getBorrowVaultInfo(vaultId))
-      yield put(getTotalCollateralLockedAndOutstandingDebt())
-      yield put(getTotalSavingBalance())
-    }
+    yield contract.depositCol(vaultId, toBtcBlockchain(amount), { from: userAddress })
+
+    yield put(getBorrowVaultInfo(vaultId))
+    yield put(getTotalCollateralLockedAndOutstandingDebt())
+    yield put(getTotalSavingBalance())
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 
 function * setBorrowAsBorrowGenerator ({ amount, vaultId }) {
   try {
-    yield put(setTransactionCounter(1))
+    yield put(setTransactionLoading())
     const { userAddress } = yield select((state) => state.userInf)
     const contract = yield call(getBorrowingCoreInstance)
-    const result = yield contract.generateStc(vaultId, toWei(amount), { from: userAddress })
+    yield contract.generateStc(vaultId, toWei(amount), { from: userAddress })
 
-    if (result) {
-      yield put(getBorrowVaultInfo(vaultId))
-      yield put(getTotalCollateralLockedAndOutstandingDebt())
-      yield put(getTotalSavingBalance())
-    }
+    yield put(getBorrowVaultInfo(vaultId))
+    yield put(getTotalCollateralLockedAndOutstandingDebt())
+    yield put(getTotalSavingBalance())
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 
 function * setBorrowRepayGenerator ({ amount, vaultId }) {
   try {
-    yield put(setTransactionCounter(1))
+    yield put(setTransactionLoading())
     const { userAddress } = yield select((state) => state.userInf)
     const contract = yield call(getBorrowingCoreInstance)
-    const result = yield contract.payBackStc(vaultId, toWei(amount), { from: userAddress })
+    yield contract.payBackStc(vaultId, toWei(amount), { from: userAddress })
 
-    if (result) {
-      yield put(getBorrowVaultInfo(vaultId))
-      yield put(getTotalCollateralLockedAndOutstandingDebt())
-      yield put(getTotalSavingBalance())
-    }
+    yield put(getBorrowVaultInfo(vaultId))
+    yield put(getTotalCollateralLockedAndOutstandingDebt())
+    yield put(getTotalSavingBalance())
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 
 function * setBorrowWithdrawGenerator ({ amount, vaultId }) {
   try {
-    yield put(setTransactionCounter(1))
+    yield put(setTransactionLoading())
     const { userAddress } = yield select((state) => state.userInf)
     const contract = yield call(getBorrowingCoreInstance)
 
-    const result = yield contract.withdrawCol(vaultId, toBtcBlockchain(amount), { from: userAddress })
+    yield contract.withdrawCol(vaultId, toBtcBlockchain(amount), { from: userAddress })
 
-    if (result) {
-      yield put(getBorrowVaultInfo(vaultId))
-      yield put(getTotalSavingBalance())
-      yield put(getTotalCollateralLockedAndOutstandingDebt())
-    }
+    yield put(getBorrowVaultInfo(vaultId))
+    yield put(getTotalSavingBalance())
+    yield put(getTotalCollateralLockedAndOutstandingDebt())
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 

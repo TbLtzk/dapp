@@ -1,7 +1,11 @@
 import { put, takeEvery, select, all } from 'redux-saga/effects'
 
 import * as actionTypes from 'store/voting/slashing-proposals/action-types'
-import { setErrorMessage, setTransactionCounter } from 'store/transaction-handler/action-creators'
+import {
+  setTransactionLoadingError,
+  setTransactionLoading,
+  setTransactionLoadingSuccess
+} from 'store/transaction-handler/action-creators'
 
 import { setSlashingProposals } from 'store/voting/slashing-proposals/action-creators'
 import { creationSlashingContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper'
@@ -57,52 +61,52 @@ function * getSlashingProposalsGenerator () {
 
 function * onEscrowCastObjectionGenerator ({ data, contractName, proposalId }) {
   try {
-    yield put(setTransactionCounter(1))
+    yield put(setTransactionLoading(1))
     const { userAddress } = yield select((state) => state.userInf)
 
     const contract = new SlashingEscrow(contractName)
     yield contract.castObjection(proposalId, data['external-link'], userAddress)
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 
 function * onEscrowProposeDecisionGenerator ({ data, contractName, proposalId }) {
   try {
-    yield put(setTransactionCounter(1))
+    yield put(setTransactionLoading())
     const { userAddress } = yield select((state) => state.userInf)
     const contract = new SlashingEscrow(contractName)
     const notAppealed = data['target-slashing-appeal'] === 'yes'
+
     yield contract.proposeDecision(proposalId, data['%-value'], notAppealed, data['external-link'], userAddress)
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 
 function * onEscrowProposerRemarkGenerator ({ data, contractName, proposalId }) {
   try {
-    yield put(setTransactionCounter(1))
+    yield put(setTransactionLoading(1))
     const { userAddress } = yield select((state) => state.userInf)
     const contract = new SlashingEscrow(contractName)
     const appealConfirmed = data.appealConfirmed === 'yes'
     yield contract.setProposerRemark(proposalId, data['proposer-remark'], appealConfirmed, userAddress)
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 
 function * setEscrowActionGenerator ({ contractName, proposalId, escrowType }) {
   try {
-    yield put(setTransactionCounter(1))
+    yield put(setTransactionLoading())
     const { userAddress } = yield select((state) => state.userInf)
     const contract = new SlashingEscrow(contractName)
 
@@ -120,26 +124,25 @@ function * setEscrowActionGenerator ({ contractName, proposalId, escrowType }) {
         break
       }
     }
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 
 function * setPurgeSlashingGenerator ({ slashingAddress, contractType }) {
   try {
-    yield put(setTransactionCounter(1))
+    yield put(setTransactionLoading(1))
     const { userAddress } = yield select((state) => state.userInf)
     const contract =
       contractType === CONTRACT_TYPES.rootNodes ? yield getRootNodesInstance() : yield getValidatorsInstance()
     yield contract.purgePendingSlashings(slashingAddress, { from: userAddress })
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionCounter(-1))
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 

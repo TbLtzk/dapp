@@ -1,30 +1,27 @@
 import React from 'react'
-
 import { useSelector } from 'react-redux'
-import { transactionLoading, transactionCounter } from 'store/transaction-handler/selectors'
 
+import { transactionLoadingSelector } from 'store/transaction-handler/selectors'
 import LoadingSpinner from 'components/Base/LoadingSpinner'
 
 import { Wrap, Shadow, WrapLoading, WrapText } from './styles'
 
 function LoadingTransaction () {
-  const loading = useSelector(transactionLoading)
-  const trCounter = useSelector(transactionCounter)
+  const transactionLoading = useSelector(transactionLoadingSelector)
 
-  if (loading || trCounter) {
-    return (
-            <Wrap>
-                <WrapLoading>
-                    <WrapText>
-                        <p>Loading</p>
-                        <LoadingSpinner type="light" />
-                    </WrapText>
-                </WrapLoading>
-                <Shadow />
-            </Wrap>
-    )
-  }
-  return null
+  return transactionLoading
+    ? (
+        <Wrap>
+            <WrapLoading>
+                <WrapText>
+                    <p>Loading</p>
+                    <LoadingSpinner type="light" />
+                </WrapText>
+            </WrapLoading>
+            <Shadow />
+        </Wrap>
+      )
+    : null
 }
 
 export default LoadingTransaction

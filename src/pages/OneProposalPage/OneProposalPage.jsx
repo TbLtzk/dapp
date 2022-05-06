@@ -5,13 +5,13 @@ import VotingStats from 'components/Custom/VotingStats'
 import { CONTRACTS_NAMES } from 'constants/contracts'
 import { PROPOSALS_TYPES } from 'constants/statuses'
 import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper'
-import { transactionCounter } from 'store/transaction-handler/selectors'
+import { transactionLoadingSelector } from 'store/transaction-handler/selectors'
 import { useSelector } from 'react-redux'
 import ProposalCard from './ProposalCard'
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading'
 
 function OneProposalPage ({ match }) {
-  const updateProposal = useSelector(transactionCounter)
+  const transactionLoading = useSelector(transactionLoadingSelector)
 
   const [proposal, setProposal] = useState(null)
   const [error, setError] = useState(null)
@@ -20,10 +20,10 @@ function OneProposalPage ({ match }) {
   useEffect(() => {
     if (proposalKind === 'error') {
       setError(true)
-    } else if (!updateProposal) {
+    } else if (!transactionLoading) {
       handleGetProposal()
     }
-  }, [updateProposal, proposalKind])
+  }, [transactionLoading, proposalKind])
 
   async function handleGetProposal () {
     const data = await getProposal(match.params.contract, match.params.id, true)

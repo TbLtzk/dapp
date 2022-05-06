@@ -34,7 +34,11 @@ import {
 import { getValidator, getValidators, prepareValidatorsMonitoringData } from 'contracts/helpers/validators-helper'
 import { getAccountBalance } from 'store/q-vault/action-creators'
 import ErrorHandler from 'func/ErrorHandler'
-import { setErrorMessage, setTransactionLoading } from 'store/transaction-handler/action-creators'
+import {
+  setTransactionLoadingError,
+  setTransactionLoading,
+  setTransactionLoadingSuccess
+} from 'store/transaction-handler/action-creators'
 import TABLE_TYPES from 'constants/tableTypes'
 import { networkSelector } from 'store/user-inf/selectors'
 
@@ -178,11 +182,11 @@ function * setValidatorsInterestRateGenerator ({ address, uintPercent }) {
 
     yield put(getInterestRate(address))
     yield put(getCompoundRateKeeperExists())
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 function * setValidatorsCommitStakeGenerator ({ address, amountQ }) {
@@ -200,11 +204,11 @@ function * setValidatorsCommitStakeGenerator ({ address, amountQ }) {
     yield put(getAccountableTotalStake(address))
     yield put(getAccountBalance(address))
     yield put(getCompoundRateKeeperExists())
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 
@@ -217,11 +221,11 @@ function * setValidatorsEnterShortListGenerator ({ address }) {
     yield put(getIsUserValidator(address))
     yield put(getValidatorMembers())
     yield put(getCompoundRateKeeperExists())
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 
@@ -238,11 +242,11 @@ function * setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
     yield put(getAccountBalance(address))
     yield put(getValidatorMembers())
     yield put(getCompoundRateKeeperExists())
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 
@@ -259,11 +263,11 @@ function * setValidatorsWithdrawGenerator ({ address, amountQ }) {
     yield put(getValidatorMembers())
     yield put(getValidatorWithdrawalInfo(address))
     yield put(getCompoundRateKeeperExists())
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
-  } finally {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoadingError(errorMsg))
   }
 }
 

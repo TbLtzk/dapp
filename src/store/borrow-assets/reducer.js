@@ -3,7 +3,7 @@ import * as actionTypes from './action-types'
 const initialState = {
   allowanceDeposit: null,
   allowanceRepay: null,
-  borrowVaultInfo: null
+  borrowVaultInfo: {}
 }
 
 export default function index (state = initialState, action) {

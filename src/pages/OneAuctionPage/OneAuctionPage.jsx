@@ -11,7 +11,7 @@ import {
   ListCardBody
 } from '../Auctions/components/AuctionsList/components/AuctionCard/styles'
 import CardBody from '../Auctions/components/AuctionsList/components/CardBody'
-import { transactionCounter } from 'store/transaction-handler/selectors'
+import { transactionLoadingSelector } from 'store/transaction-handler/selectors'
 
 import CustomCardButtons from 'components/Custom/CustomCardButtons'
 import { theme } from 'store/theme/selectors'
@@ -25,7 +25,7 @@ import { ERROR_TYPES } from 'contracts/helpers/auctions-helpers/auction-service-
 function OneAuctionPage ({ match }) {
   const dispatch = useDispatch()
   const currentTheme = useSelector(theme)
-  const update = useSelector(transactionCounter)
+  const transactionLoading = useSelector(transactionLoadingSelector)
   const pageName = getPageName(match.params.contract)
 
   const [errorMessage, setErrorMessage] = useState(null)
@@ -54,10 +54,10 @@ function OneAuctionPage ({ match }) {
   }
 
   useEffect(() => {
-    if (!update) {
+    if (!transactionLoading) {
       getAuction()
     }
-  }, [update])
+  }, [transactionLoading])
 
   const card = (
         <ListCardWrp palette={currentTheme}>
@@ -107,17 +107,7 @@ function OneAuctionPage ({ match }) {
   return (
         <PageWrap wrapContentClasses="wrap-content__column-2-1" headerTitle={pageName}>
             <div>
-                {errorMessage || (isEmpty(auction)
-                  ? (
-                    <SkeletonAuctionLoading />
-                    )
-                  : auction.error
-                    ? (
-                        auction.error
-                      )
-                    : (
-                        card
-                      ))}
+                {errorMessage || (isEmpty(auction) ? <SkeletonAuctionLoading /> : auction.error ? auction.error : card)}
             </div>
             <SidebarCards />
         </PageWrap>

@@ -16,7 +16,7 @@ import {
 import { getSystemBalanceInstance } from 'contracts/contract-instance'
 import ErrorHandler from 'func/ErrorHandler'
 import { fromWei } from 'func/balance'
-import { setErrorMessage } from 'store/transaction-handler/action-creators'
+import { setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/action-creators'
 
 function * getSurplusGenerator () {
   try {
@@ -60,9 +60,11 @@ function * onPerformNettingGenerator () {
     yield put(getSystemBalance())
     yield put(getDebt())
     yield put(getSurplus())
+
+    yield put(setTransactionLoadingSuccess())
   } catch (error) {
     const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
+    yield put(setTransactionLoadingError(errorMsg))
     yield put(onPerformNettingError(error))
   }
 }
