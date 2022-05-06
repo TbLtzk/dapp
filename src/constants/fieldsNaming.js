@@ -1,6 +1,7 @@
 export const fields = {
   bid: 'bid',
   externalLink: 'external-link',
+  externalLinkOptional: 'external-link-optional',
   hash: 'hash',
   address: 'address',
   deposit: 'deposit',

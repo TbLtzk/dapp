@@ -27,6 +27,12 @@ export const indexersUrls = {
   testnet: 'https://indexer.qtestnet.org'
 }
 
+export const explorerUrls = {
+  devnet: 'http://52.35.57.176:8080',
+  mainnet: 'https://explorer.q.org',
+  testnet: 'https://explorer.qtestnet.org/'
+}
+
 export const networkParameters = {
   devnet: {
     chainId: '0x8a72',
@@ -71,7 +77,8 @@ export const URLS = {
     chainId: 35443,
     webSocket: 'ws://18.158.7.68:8546',
     rpc: 'https://rpc.qtestnet.org',
-    indexer: indexersUrls.testnet
+    indexer: indexersUrls.testnet,
+    explorer: explorerUrls.testnet
   },
   'not possible because of http (not https)': {
     id: 'devnet',
@@ -79,7 +86,8 @@ export const URLS = {
     chainId: 35442,
     webSocket: 'ws://35.161.73.158:8546',
     rpc: 'http://35.161.73.158:8545',
-    indexer: indexersUrls.devnet
+    indexer: indexersUrls.devnet,
+    explorer: explorerUrls.devnet
   },
   'http://35.161.73.158:8000': {
     id: 'testnet',
@@ -87,7 +95,8 @@ export const URLS = {
     chainId: 35443,
     webSocket: 'ws://18.158.7.68:8546',
     rpc: 'https://rpc.qtestnet.org',
-    indexer: indexersUrls.testnet
+    indexer: indexersUrls.testnet,
+    explorer: explorerUrls.testnet
   },
   'https://hq.qtestnet.org': {
     id: 'testnet',
@@ -95,7 +104,8 @@ export const URLS = {
     chainId: 35443,
     webSocket: 'ws://18.158.7.68:8546',
     rpc: 'https://rpc.qtestnet.org',
-    indexer: indexersUrls.testnet
+    indexer: indexersUrls.testnet,
+    explorer: explorerUrls.testnet
   },
   'https://hq.q.org': {
     id: 'mainnet',
@@ -103,6 +113,7 @@ export const URLS = {
     chainId: 35441,
     webSocket: 'wss://rpc-ws.q.org',
     rpc: 'https://rpc.q.org',
-    indexer: indexersUrls.mainnet
+    indexer: indexersUrls.mainnet,
+    explorer: explorerUrls.mainnet
   }
 }

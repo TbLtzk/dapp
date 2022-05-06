@@ -1,10 +1,12 @@
 import React from 'react'
-import FormInput from 'components/Base/Form/FormInput'
-import Button from 'components/Base/Buttons/Button'
-
 import { useForm } from 'react-hook-form'
 import { WrapContainer } from '../../styles'
+
+import FormInput from 'components/Base/Form/FormInput'
+import Button from 'components/Base/Buttons/Button'
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock'
+import ExplorerAddress from 'components/Custom/ExplorerAddress'
+
 import { isAddress } from 'func/useful'
 
 function AddressForm ({ setAddressRefresh, userAddress }) {
@@ -18,7 +20,9 @@ function AddressForm ({ setAddressRefresh, userAddress }) {
   return (
         <CustomBlock>
             <h5>Current Address:</h5>
-            <h4>{userAddress.address}</h4>
+            <h4>
+              <ExplorerAddress address={userAddress.address} />
+            </h4>
             <h5>Update address:</h5>
             <WrapContainer>
                 <FormInput

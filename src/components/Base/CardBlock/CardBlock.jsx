@@ -1,23 +1,20 @@
 import React from 'react'
-
 import { BlockAlignBlock } from './styles'
+
 import Button from 'components/Base/Buttons/Button'
-import CopyToClipboard from '../CopyToClipboard'
+import ExplorerAddress from 'components/Custom/ExplorerAddress'
 
 function CardBlock ({ title, firstContent, btnTitle, btnHandler, btnIcon, iconFontSize, btnDisabled }) {
   return (
         <BlockAlignBlock>
             <div>
                 {title && <h5>{title}</h5>}
-                {firstContent && title === 'QUSD Contract'
-                  ? (
-                    <CopyToClipboard valueToCopy={firstContent}>
-                        <p>{firstContent}</p>
-                    </CopyToClipboard>
-                    )
-                  : (
-                    <p>{firstContent}</p>
-                    )}
+                <p>
+                  {firstContent && title === 'QUSD Contract'
+                    ? <ExplorerAddress address={firstContent} />
+                    : firstContent
+                  }
+                </p>
             </div>
 
             {!btnTitle && !btnIcon

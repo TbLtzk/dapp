@@ -4,13 +4,28 @@ import FormInput from 'components/Base/Form/FormInput'
 import { isAddress } from 'func/useful'
 import { from1to100Regex, hashRegex, linkRegex, numberRegex, vaultID } from 'constants/regex'
 
-function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type, setValue }) {
+function InputGroup ({
+  register,
+  errors,
+  inputArr,
+  labelsArr,
+  typesArr = [],
+  min,
+  max,
+  type,
+  setValue
+}) {
   const getRefType = useCallback((inputType) => {
     switch (inputType) {
       case fields.externalLink: {
         return register({
           required: 'Field is required!',
           validate: (link) => (link.match(linkRegex) ? true : 'Link not valid')
+        })
+      }
+      case fields.externalLinkOptional: {
+        return register({
+          validate: (link) => (!link || link.match(linkRegex) ? true : 'Link not valid')
         })
       }
       case fields.address: {
@@ -75,7 +90,7 @@ function InputGroup ({ register, errors, inputArr, labelsArr, min, max, type, se
                             placeholder={label}
                             name={nameField}
                             valid={errors[nameField]?.message}
-                            ref={getRefType(nameField)}
+                            ref={getRefType(typesArr[i] || nameField)}
                         />
                     </Fragment>
               )
