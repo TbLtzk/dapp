@@ -1,8 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 
 import ButtonLink from 'components/Base/Buttons/ButtonLink';
@@ -18,7 +16,7 @@ export default function ButtonLinkArrow ({ title, path, stateHistory, alwaysEnab
       title={
         <>
           <WrapTitle>{title}</WrapTitle>
-          <FontAwesomeIcon icon={faArrowRight} />
+          <i className="mdi mdi-arrow-right" />
         </>
       }
       handleLink={() =>

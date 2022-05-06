@@ -17,15 +17,11 @@ import { CONTRACTS_NAMES } from 'constants/contracts';
 
 const INFO = {
   castObjection: 'The slashed party can object to this executed slashing proposal and seek for an arbitral award.',
-  confirmApeal:
-        'Slashing proposer confirms that a slashed node has initiated a court appeal to receive an arbitral award.',
-  proposeDecision:
-        'Any Root Node can propose a decision that is based on an arbitral award or the explicit lack of such.',
+  confirmApeal: 'Slashing proposer confirms that a slashed node has initiated a court appeal to receive an arbitral award.',
+  proposeDecision: 'Any Root Node can propose a decision that is based on an arbitral award or the explicit lack of such.',
   voteToConfirmDecision: 'Any Root Node is obliged to vote and confirm proposed decision.',
   recallDecision: 'The proposer of the current proposed decision may take back the decision from voting.',
-  executeDecision:
-        'Any Root Node can execute a Decision, clearing the escrow and distributing slashed amounts according final confirmed decision.',
-
+  executeDecision: 'Any Root Node can execute a Decision, clearing the escrow and distributing slashed amounts according final confirmed decision.',
   notRootNode: 'User is not a Root Node'
 };
 

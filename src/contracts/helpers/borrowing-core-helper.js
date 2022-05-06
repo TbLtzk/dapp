@@ -86,7 +86,7 @@ export function getBalanceDetailsHelper (balanceDetails) {
     {
       depositAsset: 'QUSD',
       interestAsset: 'QUSD',
-      rate: rate
+      rate
     }
   ];
 }

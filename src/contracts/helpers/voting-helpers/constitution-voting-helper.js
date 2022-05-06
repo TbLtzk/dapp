@@ -51,7 +51,7 @@ export default class ConstitutionVoting extends VotingService {
     return {
       ...objRes,
       ...objStats,
-      parameters: parameters
+      parameters
     };
   }
 
