@@ -48,19 +48,15 @@ function Dashboard () {
     </>
   );
 
-  const defiAndQFeesPanels = (
-    <>
-      {advancedMode
-        ? (
-          <>
-            <DefiMembersPanel />
-            <QFeesMembersPanel />
-            <EprsMembersPanel />
-          </>
-        )
-        : null}
-    </>
-  );
+  const defiAndQFeesPanels = advancedMode
+    ? (
+      <>
+        <DefiMembersPanel />
+        <QFeesMembersPanel />
+        <EprsMembersPanel />
+      </>
+    )
+    : null;
 
   return (
     <PageWrap headerTitle="Dashboard" headerExtra={parametersButton}>

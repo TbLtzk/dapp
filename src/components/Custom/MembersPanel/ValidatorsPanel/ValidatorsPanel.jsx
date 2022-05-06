@@ -13,7 +13,7 @@ import {
   loadingValidatorsWidenedSelector,
   validatorsMonitoringSelector,
   validatorsShortSelector,
-  validatorsWidenedSelector
+  validatorsWidenedSelector,
 } from 'store/validators/selectors';
 
 import { columnsValidatorsMonitoring, columnsValidatorsWidened } from 'constants/columns';
@@ -37,21 +37,21 @@ function ValidatorsPanel ({ buttons, tableType }) {
           tableSelector: validatorsWidenedSelector,
           tableLoadingSelector: loadingValidatorsWidenedSelector,
           columns: columnsValidatorsWidened,
-          tableWrapper: tableValidatorsWidened
+          tableWrapper: tableValidatorsWidened,
         };
       case TABLE_TYPES.validatorsShort:
         return {
           tableSelector: validatorsShortSelector,
           tableLoadingSelector: loadingValidatorsShortSelector,
           columns: columnsValidatorsWidened.slice(0, 3),
-          tableWrapper: tableValidatorsShort
+          tableWrapper: tableValidatorsShort,
         };
       case TABLE_TYPES.validatorsMonitoring:
         return {
           tableSelector: validatorsMonitoringSelector,
           tableLoadingSelector: loadingValidatorsMonitoringSelector,
           columns: columnsValidatorsMonitoring,
-          tableWrapper: tableValidatorsMonitoring
+          tableWrapper: tableValidatorsMonitoring,
         };
     }
   }
@@ -85,7 +85,7 @@ function ValidatorsPanel ({ buttons, tableType }) {
               title="See more details"
               handleButton={() =>
                 history.push({
-                  pathname: '/validator-staking'
+                  pathname: '/validator-staking',
                 })
               }
             />
@@ -96,7 +96,7 @@ function ValidatorsPanel ({ buttons, tableType }) {
               title="Monitoring"
               handleButton={() =>
                 history.push({
-                  pathname: '/monitoring'
+                  pathname: '/monitoring',
                 })
               }
             />
@@ -112,7 +112,7 @@ function ValidatorsPanel ({ buttons, tableType }) {
               title="Go to Q Vault"
               handleButton={() =>
                 history.push({
-                  pathname: '/q-vault'
+                  pathname: '/q-vault',
                 })
               }
             />
@@ -125,21 +125,19 @@ function ValidatorsPanel ({ buttons, tableType }) {
   };
 
   return (
-    <>
-      <CustomBlock>
-        <MemberTables
-          sorting
-          title="Validator Ranking"
-          emptyTableMessage="No validators"
-          table={table}
-          columns={columns}
-          tableType={tableType}
-          loading={tableLoading}
-          perPageLength={10}
-        />
-        {renderButtons()}
-      </CustomBlock>
-    </>
+    <CustomBlock>
+      <MemberTables
+        sorting
+        title="Validator Ranking"
+        emptyTableMessage="No validators"
+        table={table}
+        columns={columns}
+        tableType={tableType}
+        loading={tableLoading}
+        perPageLength={10}
+      />
+      {renderButtons()}
+    </CustomBlock>
   );
 }
 

@@ -107,18 +107,16 @@ function ModalSlashingObjection ({ modalShow, onHide, activeTab, contract, propo
   );
 
   return (
-    <>
-      <ModalWindow
-        show={modalShow}
-        backBtnTitle={backBtnTitle}
-        backBtnHandler={backBtnHandler}
-        continueBtnTitle={continueBtnTitle}
-        continueBtnHandler={handleSubmit(onNext)}
-        modalTitle={modalTitle}
-        content={content}
-        onHide={onHide}
-      />
-    </>
+    <ModalWindow
+      show={modalShow}
+      backBtnTitle={backBtnTitle}
+      backBtnHandler={backBtnHandler}
+      continueBtnTitle={continueBtnTitle}
+      continueBtnHandler={handleSubmit(onNext)}
+      modalTitle={modalTitle}
+      content={content}
+      onHide={onHide}
+    />
   );
 }
 
