@@ -1,18 +1,18 @@
-import { toNumber } from 'func/useful'
+import { toNumber } from 'func/useful';
 
 export const columnsDeFiRisk = [
   {
     dataField: 'member',
     text: 'Member Address'
   }
-]
+];
 
 export const columnsEprs = [
   {
     dataField: 'member',
     text: 'Member Address'
   }
-]
+];
 
 export const columnnsLockAmount = [
   {
@@ -31,14 +31,14 @@ export const columnnsLockAmount = [
     dataField: 'releaseEnd',
     text: 'End Date'
   }
-]
+];
 
 export const columnsQFees = [
   {
     dataField: 'member',
     text: 'Member Address'
   }
-]
+];
 
 export const columnsDelegations = [
   {
@@ -53,7 +53,7 @@ export const columnsDelegations = [
     dataField: 'reward',
     text: 'Claimable Reward'
   }
-]
+];
 
 export const timeLocksColumnns = [
   {
@@ -72,7 +72,7 @@ export const timeLocksColumnns = [
     dataField: 'releaseEnd',
     text: 'End Date'
   }
-]
+];
 
 export const savingCryptoAssetsColumnns = [
   {
@@ -91,7 +91,7 @@ export const savingCryptoAssetsColumnns = [
     dataField: 'button',
     text: ''
   }
-]
+];
 
 export const borrowCryptoAssetsColumnns = [
   {
@@ -114,7 +114,7 @@ export const borrowCryptoAssetsColumnns = [
     dataField: 'button',
     text: ''
   }
-]
+];
 
 export const columnsRootNode = [
   {
@@ -135,7 +135,7 @@ export const columnsRootNode = [
     sort: true,
     sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
   }
-]
+];
 
 export const columnsRootNodeMonitoring = [
   {
@@ -159,7 +159,7 @@ export const columnsRootNodeMonitoring = [
     dataField: 'onChain',
     text: 'Last on-chain activity'
   }
-]
+];
 
 export const columnsValidatorsWidened = [
   {
@@ -226,7 +226,7 @@ export const columnsValidatorsWidened = [
         ? toNumber(b.props.value) - toNumber(a.props.value)
         : toNumber(a.props.value) - toNumber(b.props.value)
   }
-]
+];
 
 export const columnsValidatorsMonitoring = [
   {
@@ -271,4 +271,4 @@ export const columnsValidatorsMonitoring = [
     sort: true,
     sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
   }
-]
+];

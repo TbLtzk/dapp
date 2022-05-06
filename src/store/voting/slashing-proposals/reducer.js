@@ -1,5 +1,6 @@
-import { groupArrayByBlockNumber } from 'func/useful'
-import * as actionTypes from './action-types'
+import * as actionTypes from './action-types';
+
+import { groupArrayByBlockNumber } from 'func/useful';
 
 const initialState = {
   activeProposals: [],
@@ -8,7 +9,7 @@ const initialState = {
   slashingActiveProposalsCount: -1,
   slashingEndedProposalsCount: -1,
   slashingLoadingProposalsCount: true
-}
+};
 
 export default function slashingProposals (state = initialState, action) {
   switch (action.type) {
@@ -20,8 +21,8 @@ export default function slashingProposals (state = initialState, action) {
         slashingEndedProposalsCount: action.proposalsCounter.ended,
         slashingActiveProposalsCount: action.proposalsCounter.active,
         slashingLoadingProposalsCount: false
-      }
+      };
     default:
-      return state
+      return state;
   }
 }

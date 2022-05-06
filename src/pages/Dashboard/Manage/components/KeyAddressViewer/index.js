@@ -1,1 +1,1 @@
-export { default } from './KeyAddressViewer'
+export { default } from './KeyAddressViewer';

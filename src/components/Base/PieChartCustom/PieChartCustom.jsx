@@ -1,22 +1,24 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { rootMembersSelector } from 'store/root-node/selectors'
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-import { PieChart, Pie, Cell } from 'recharts'
+import { Cell, Pie, PieChart } from 'recharts';
 
-import colors from 'constants/colors'
-import { WrapChart } from './styles'
+import { WrapChart } from './styles';
+
+import { rootMembersSelector } from 'store/root-node/selectors';
+
+import colors from 'constants/colors';
 
 function PieChartCustom () {
-  const rootMembersArray = useSelector(rootMembersSelector)
-  const [transformData, setTransformData] = useState(null)
-  const [maxValue, setMaxValue] = useState(null)
+  const rootMembersArray = useSelector(rootMembersSelector);
+  const [transformData, setTransformData] = useState(null);
+  const [maxValue, setMaxValue] = useState(null);
 
   const arrayMax = (arr) => {
     return arr.reduce(function (p, v) {
-      return (p > v?.share ? p : v?.share)
-    }, 0)
-  }
+      return (p > v?.share ? p : v?.share);
+    }, 0);
+  };
 
   useEffect(() => {
     if (rootMembersArray) {
@@ -24,12 +26,12 @@ function PieChartCustom () {
         return {
           name: i,
           value: member?.share
-        }
-      }))
-      const resMax = arrayMax(rootMembersArray)
-      setMaxValue(resMax)
+        };
+      }));
+      const resMax = arrayMax(rootMembersArray);
+      setMaxValue(resMax);
     }
-  }, [rootMembersArray])
+  }, [rootMembersArray]);
 
   return (
     <WrapChart>
@@ -37,10 +39,14 @@ function PieChartCustom () {
         !transformData || maxValue === 0
           ? null
           : <PieChart width={200} height={200}>
-            <text x={'40%'} y={'50%'} dy={8} textAnchor="middle"
-                  fill={colors.white}
-                  fontSize="24"
-                  fontWeight="bold"
+            <text
+              x={'40%'}
+              y={'50%'}
+              dy={8}
+              textAnchor="middle"
+              fill={colors.white}
+              fontSize="24"
+              fontWeight="bold"
             >
               {maxValue + '%'}
             </text>
@@ -67,7 +73,10 @@ function PieChartCustom () {
         : <div>
           <PieChart width={200} height={200}>
             <text
-              x={'40%'} y={'50%'} dy={8} textAnchor="middle"
+              x={'40%'}
+              y={'50%'}
+              dy={8}
+              textAnchor="middle"
               fill={colors.oxfordBlueTint1}
               fontSize="24"
               fontWeight="bold"
@@ -90,7 +99,7 @@ function PieChartCustom () {
         </div>
       }
     </WrapChart>
-  )
+  );
 }
 
-export default PieChartCustom
+export default PieChartCustom;

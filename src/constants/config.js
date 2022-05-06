@@ -1,37 +1,37 @@
-export const testnetDocsUrl = 'https://docs.qtestnet.org'
-export const mainnetDocsUrl = 'https://docs.q.org'
+export const testnetDocsUrl = 'https://docs.qtestnet.org';
+export const mainnetDocsUrl = 'https://docs.q.org';
 
-export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
+export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 export const chainIds = {
   mainnet: '35441',
   testnet: '35443',
   devnet: '35442'
-}
+};
 
 export const networks = {
   35443: 'testnet',
   35442: 'devnet',
   35441: 'mainnet'
-}
+};
 
 export const blockCountDependOnChainId = {
   35443: 300000,
   35442: 40000,
   35441: 500000
-}
+};
 
 export const indexersUrls = {
   devnet: 'http://35.161.73.158:4000',
   mainnet: 'https://indexer.q.org',
   testnet: 'https://indexer.qtestnet.org'
-}
+};
 
 export const explorerUrls = {
   devnet: 'http://52.35.57.176:8080',
   mainnet: 'https://explorer.q.org',
   testnet: 'https://explorer.qtestnet.org/'
-}
+};
 
 export const networkParameters = {
   devnet: {
@@ -68,7 +68,7 @@ export const networkParameters = {
       decimals: 18
     }
   }
-}
+};
 
 export const URLS = {
   'http://localhost:3000': {
@@ -116,4 +116,4 @@ export const URLS = {
     indexer: indexersUrls.mainnet,
     explorer: explorerUrls.mainnet
   }
-}
+};

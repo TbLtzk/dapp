@@ -1,14 +1,14 @@
-import { AUCTIONS_TYPES } from 'constants/statuses'
+import { AUCTIONS_TYPES } from 'constants/statuses';
 
 export async function checkTabContract (activeTab) {
   switch (activeTab) {
     case AUCTIONS_TYPES.liquidation:
-      return 'LiquidationAuction'
+      return 'LiquidationAuction';
     case AUCTIONS_TYPES.systemDebt:
-      return 'SystemDebtAuction'
+      return 'SystemDebtAuction';
     case AUCTIONS_TYPES.systemSurplus:
-      return 'SystemSurplusAuction'
+      return 'SystemSurplusAuction';
     default:
-      return null
+      return null;
   }
 }

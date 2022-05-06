@@ -1,5 +1,6 @@
-import { groupArrayByBlockNumber } from 'func/useful'
-import * as actionTypes from './action-types'
+import * as actionTypes from './action-types';
+
+import { groupArrayByBlockNumber } from 'func/useful';
 
 const initialState = {
   activeProposals: [],
@@ -9,7 +10,7 @@ const initialState = {
   expertEndedProposalsCount: -1,
 
   expertLoadingProposalsCount: true
-}
+};
 
 export default function expertProposals (state = initialState, action) {
   switch (action.type) {
@@ -21,9 +22,9 @@ export default function expertProposals (state = initialState, action) {
         expertEndedProposalsCount: action.proposalsCounter.ended,
         expertActiveProposalsCount: action.proposalsCounter.active,
         expertLoadingProposalsCount: false
-      }
+      };
 
     default:
-      return state
+      return state;
   }
 }

@@ -1,1 +1,1 @@
-export { default } from './QProposalS2'
+export { default } from './QProposalS2';

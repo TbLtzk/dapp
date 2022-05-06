@@ -1,1 +1,1 @@
-export { default } from './ValidatorPool'
+export { default } from './ValidatorPool';

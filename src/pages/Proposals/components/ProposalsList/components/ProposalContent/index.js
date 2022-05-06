@@ -1,1 +1,1 @@
-export { default } from './ProposalContent'
+export { default } from './ProposalContent';

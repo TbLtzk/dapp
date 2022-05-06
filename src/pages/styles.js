@@ -1,8 +1,8 @@
-import styled from 'styled-components'
+import { Container } from 'react-bootstrap';
 
-import { Container } from 'react-bootstrap'
+import styled from 'styled-components';
 
-import { indents } from 'constants/style'
+import { indents } from 'constants/style';
 
 export const WrapContainer = styled(Container)`
   background: ${(props) => props.theme.colors.oxfordBlue};
@@ -10,11 +10,11 @@ export const WrapContainer = styled(Container)`
   padding-left: ${indents['30']};
   padding-right: ${indents['30']};
   padding-bottom: 50px;
-`
+`;
 
 export const WrapSpinner = styled.div`
   display: flex;
   height: 260px;
   align-items: center;
   justify-content: center;
-`
+`;

@@ -1,1 +1,1 @@
-export { default } from './DashboardMode'
+export { default } from './DashboardMode';

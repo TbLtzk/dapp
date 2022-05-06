@@ -1,1 +1,1 @@
-export { default } from 'components/Base/CardBlock/CardBlock'
+export { default } from './CardBlock';

@@ -1,1 +1,1 @@
-export { default } from './ExplorerAddress'
+export { default } from './ExplorerAddress';

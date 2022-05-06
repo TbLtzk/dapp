@@ -1,1 +1,1 @@
-export { default } from './AccordionElements'
+export { default } from './AccordionElements';

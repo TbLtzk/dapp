@@ -1,33 +1,37 @@
-import Button from 'components/Base/Buttons/Button'
-import Tooltip from 'components/Base/Tooltip'
-import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper'
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { executeAuction } from 'store/auctions/action-creators'
-import { setCreateObj } from 'store/modal-handler/action-creators'
-import { setCreatedStepsLimit, setStepCounter } from 'store/voting/proposals/action-creators'
-import ModalBid from '../../../CreateAuctionBtn/ModalBid'
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import Button from 'components/Base/Buttons/Button';
+import Tooltip from 'components/Base/Tooltip';
+
+import ModalBid from '../../../CreateAuctionBtn/ModalBid';
+
+import { executeAuction } from 'store/auctions/action-creators';
+import { setCreateObj } from 'store/modal-handler/action-creators';
+import { setCreatedStepsLimit, setStepCounter } from 'store/voting/proposals/action-creators';
+
+import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper';
 
 const TOOLTIP_INFO = {
   bidPeriod: 'Bid period has ended.',
   executePeriod: 'Execute period not started or ended.'
-}
+};
 
 function AuctionActions ({ auction }) {
-  const dispatch = useDispatch()
-  const [modalShow, setModalShow] = useState(false)
+  const dispatch = useDispatch();
+  const [modalShow, setModalShow] = useState(false);
 
   function onOpenModal () {
-    setModalShow(true)
-    dispatch(setStepCounter(1))
-    dispatch(setCreatedStepsLimit(2))
-    dispatch(setCreateObj({ first: auction.contract }))
+    setModalShow(true);
+    dispatch(setStepCounter(1));
+    dispatch(setCreatedStepsLimit(2));
+    dispatch(setCreateObj({ first: auction.contract }));
   }
 
   function onHideModal () {
-    setModalShow(false)
-    dispatch(setCreateObj({}))
-    dispatch(setStepCounter(1))
+    setModalShow(false);
+    dispatch(setCreateObj({}));
+    dispatch(setStepCounter(1));
   }
 
   function onAuctionExecute () {
@@ -38,41 +42,46 @@ function AuctionActions ({ auction }) {
         contract: auction.contract,
         id: auction.id
       })
-    )
+    );
   }
 
-  const auctionType = transformAuctionNameToAuctionType(auction.contract)
+  const auctionType = transformAuctionNameToAuctionType(auction.contract);
 
-  const showActionButtons = auction.status === 'Executed' || auction.status === 'Closed'
+  const showActionButtons = auction.status === 'Executed' || auction.status === 'Closed';
 
   return !showActionButtons
     ? (
-        <div>
-            <div className="list-card__line" />
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Tooltip disabled={!auction.disableBidButton} additionalInfo={TOOLTIP_INFO.bidPeriod}>
-                    <Button
-                        disabled={auction.disableBidButton}
-                        title="Bid"
-                        icon="mdi mdi-shape-circle-plus btn-icon"
-                        handleButton={onOpenModal}
-                    />
-                </Tooltip>
+      <div>
+        <div className="list-card__line" />
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Tooltip disabled={!auction.disableBidButton} additionalInfo={TOOLTIP_INFO.bidPeriod}>
+            <Button
+              disabled={auction.disableBidButton}
+              title="Bid"
+              icon="mdi mdi-shape-circle-plus btn-icon"
+              handleButton={onOpenModal}
+            />
+          </Tooltip>
 
-                <div style={{ width: '20px' }} />
-                <Tooltip disabled={!auction.disableExecuteButton} additionalInfo={TOOLTIP_INFO.executePeriod}>
-                    <Button
-                        disabled={auction.disableExecuteButton}
-                        title="Execute"
-                        icon="mdi mdi-play btn-icon"
-                        handleButton={onAuctionExecute}
-                    />
-                </Tooltip>
-            </div>
-            <ModalBid inf={auction} activeTab={auctionType} modalShow={modalShow} onHide={onHideModal} />
+          <div style={{ width: '20px' }} />
+          <Tooltip disabled={!auction.disableExecuteButton} additionalInfo={TOOLTIP_INFO.executePeriod}>
+            <Button
+              disabled={auction.disableExecuteButton}
+              title="Execute"
+              icon="mdi mdi-play btn-icon"
+              handleButton={onAuctionExecute}
+            />
+          </Tooltip>
         </div>
-      )
-    : null
+        <ModalBid
+          inf={auction}
+          activeTab={auctionType}
+          modalShow={modalShow}
+          onHide={onHideModal}
+        />
+      </div>
+    )
+    : null;
 }
 
-export default AuctionActions
+export default AuctionActions;

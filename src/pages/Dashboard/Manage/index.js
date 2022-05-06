@@ -1,10 +1,11 @@
-import React, { lazy } from 'react'
-import { Link } from 'react-router-dom'
-import LazyLoading from 'components/Base/LazyLoading'
-import PageWrap from 'components/Base/PageWrap'
-import Button from 'components/Base/Buttons/Button'
+import React, { lazy } from 'react';
+import { Link } from 'react-router-dom';
 
-const QParameters = lazy(() => import('./QParameters'))
+import Button from 'components/Base/Buttons/Button';
+import LazyLoading from 'components/Base/LazyLoading';
+import PageWrap from 'components/Base/PageWrap';
+
+const QParameters = lazy(() => import('./QParameters'));
 
 export default function index () {
   return (
@@ -12,7 +13,12 @@ export default function index () {
       headerTitle="Q Parameters"
       headerExtra={
         <Link to="/">
-          <Button alwaysEnabled type="white" title="Dashboard" handleButton={() => {}} />
+          <Button
+            alwaysEnabled
+            type="white"
+            title="Dashboard"
+            handleButton={() => {}}
+          />
         </Link>
       }
     >
@@ -20,5 +26,5 @@ export default function index () {
         <QParameters />
       </LazyLoading>
     </PageWrap>
-  )
+  );
 }

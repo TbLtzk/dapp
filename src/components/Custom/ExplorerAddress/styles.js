@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const AddressWrapper = styled.div`
   display: flex;
@@ -25,4 +25,4 @@ export const AddressWrapper = styled.div`
     margin-left: 4px;
     font-size: 12px;
   }
-`
+`;

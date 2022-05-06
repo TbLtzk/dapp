@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const AccordionElementsWrapper = styled.div`
   margin: ${(p) => p.margin};
@@ -28,4 +28,4 @@ export const AccordionElementsWrapper = styled.div`
     color: ${(props) => props.theme.colors.white};
     border: none;
   }
-`
+`;

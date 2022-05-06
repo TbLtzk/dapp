@@ -1,1 +1,1 @@
-export { default } from './QExpertS2'
+export { default } from './QExpertS2';

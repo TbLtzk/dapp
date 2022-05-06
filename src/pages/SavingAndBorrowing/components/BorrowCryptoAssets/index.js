@@ -1,1 +1,1 @@
-export { default } from './BorrowCryptoAssets'
+export { default } from './BorrowCryptoAssets';

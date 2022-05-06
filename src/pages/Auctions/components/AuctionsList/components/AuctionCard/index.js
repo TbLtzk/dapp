@@ -1,1 +1,1 @@
-export { default } from './AuctionCard'
+export { default } from './AuctionCard';

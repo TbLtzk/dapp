@@ -1,49 +1,51 @@
-import { put, takeEvery, all, select } from 'redux-saga/effects'
+import { all, put, select, takeEvery } from 'redux-saga/effects';
 
-import * as actionTypes from './action-types'
-import { setQProposals } from './action-creators'
-import { creationQContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper'
-import ErrorHandler from 'func/ErrorHandler'
-import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/useful'
+import { setQProposals } from './action-creators';
+import * as actionTypes from './action-types';
 
-let lastActiveBlock
+import { creationQContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper';
+
+import ErrorHandler from 'func/ErrorHandler';
+import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/useful';
+
+let lastActiveBlock;
 
 function * getQProposalsGenerator () {
   try {
-    const contracts = creationQContractsObjArray()
-    const { minimalActiveBlockHeight, lastBlockHeight } = yield getMinimalActiveBlockHeight()
+    const contracts = creationQContractsObjArray();
+    const { minimalActiveBlockHeight, lastBlockHeight } = yield getMinimalActiveBlockHeight();
 
-    let proposalsCounter
-    let activeProposalsArray
-    let endedProposalsArray
+    let proposalsCounter;
+    let activeProposalsArray;
+    let endedProposalsArray;
 
     if (lastActiveBlock) {
-      const { activeProposals, endedProposals, qEndedProposalsCount } = yield select((state) => state.qProposals)
+      const { activeProposals, endedProposals, qEndedProposalsCount } = yield select((state) => state.qProposals);
 
       const proposals = yield all(
         contracts.map((contract) => contract.getNewProposalsAndCheckActive(activeProposals, lastActiveBlock))
-      )
-      const [newProposalsCount, newActiveProposals, newEndedProposalsIds] = sortAndCountProposalsByType(proposals)
+      );
+      const [newProposalsCount, newActiveProposals, newEndedProposalsIds] = sortAndCountProposalsByType(proposals);
       proposalsCounter = {
         active: newProposalsCount.active,
         ended: qEndedProposalsCount + newProposalsCount.ended
-      }
-      activeProposalsArray = newActiveProposals
-      endedProposalsArray = [...endedProposals, ...newEndedProposalsIds]
-      lastActiveBlock = lastBlockHeight
+      };
+      activeProposalsArray = newActiveProposals;
+      endedProposalsArray = [...endedProposals, ...newEndedProposalsIds];
+      lastActiveBlock = lastBlockHeight;
     } else {
-      const proposals = yield all(contracts.map((contract) => contract.getProposalsCount(minimalActiveBlockHeight)))
-      const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposalsByType(proposals)
-      proposalsCounter = proposalsCount
-      activeProposalsArray = activeProposalsIds
-      endedProposalsArray = endedProposalsIds
-      lastActiveBlock = lastBlockHeight
+      const proposals = yield all(contracts.map((contract) => contract.getProposalsCount(minimalActiveBlockHeight)));
+      const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposalsByType(proposals);
+      proposalsCounter = proposalsCount;
+      activeProposalsArray = activeProposalsIds;
+      endedProposalsArray = endedProposalsIds;
+      lastActiveBlock = lastBlockHeight;
     }
 
-    yield put(setQProposals(activeProposalsArray, endedProposalsArray, proposalsCounter))
+    yield put(setQProposals(activeProposalsArray, endedProposalsArray, proposalsCounter));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
-export default [takeEvery(actionTypes.GET_Q_PROPOSALS, getQProposalsGenerator)]
+export default [takeEvery(actionTypes.GET_Q_PROPOSALS, getQProposalsGenerator)];

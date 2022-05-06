@@ -9,11 +9,11 @@ export const addRootNode = {
   inputTitleDown: 'Root Node to Remove',
   inputDown: ['Address'],
   inputDownObj: { address: '' }
-}
+};
 
 export const removeRootNode = {
   subtitle: 'Nominate a Root Node to Remove',
   inputTitleDescr: ['Root Node to Remove', 'Provide a reference link to external source'],
   inputs: ['Address', 'External Link'],
   inputsObj: { address: '', 'external-link': '' }
-}
+};

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
-import InputRadio from 'components/Base/Form/InputRadio'
-import ErrorInputMessage from 'components/Base/ErrorInputMessage'
+import ErrorInputMessage from 'components/Base/ErrorInputMessage';
+import InputRadio from 'components/Base/Form/InputRadio';
 
 function RadioBtnGroup ({
   name,
@@ -12,37 +12,37 @@ function RadioBtnGroup ({
   register,
   handleChange
 }) {
-  const [activeValue, setActiveValue] = useState('')
+  const [activeValue, setActiveValue] = useState('');
 
   useEffect(() => {
     if (formData) {
-      setActiveValue(formData[name])
+      setActiveValue(formData[name]);
     }
-  }, [formData, name])
+  }, [formData, name]);
 
   return (
-        <div>
-            {values.map((value, i) => {
-              const valueField = value.replace(/ /g, '-').toLowerCase()
-              return (
-                    <InputRadio
-                        key={i}
-                        name={name}
-                        active={activeValue === valueField}
-                        checked={activeValue === valueField}
-                        handleChange={(event) => {
-                          setActiveValue(event.target.value)
-                          handleChange(event)
-                        }}
-                        label={labels[i] || value}
-                        value={valueField}
-                        ref={register({ required: 'Choose one option!' })}
-                    />
-              )
-            })}
-            <ErrorInputMessage message={errors[name]?.message} />
-        </div>
-  )
+    <div>
+      {values.map((value, i) => {
+        const valueField = value.replace(/ /g, '-').toLowerCase();
+        return (
+          <InputRadio
+            key={i}
+            ref={register({ required: 'Choose one option!' })}
+            name={name}
+            active={activeValue === valueField}
+            checked={activeValue === valueField}
+            handleChange={(event) => {
+              setActiveValue(event.target.value);
+              handleChange(event);
+            }}
+            label={labels[i] || value}
+            value={valueField}
+          />
+        );
+      })}
+      <ErrorInputMessage message={errors[name]?.message} />
+    </div>
+  );
 }
 
-export default RadioBtnGroup
+export default RadioBtnGroup;

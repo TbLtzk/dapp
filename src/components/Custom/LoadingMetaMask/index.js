@@ -1,1 +1,1 @@
-export { default } from './LoadingMetaMask'
+export { default } from './LoadingMetaMask';

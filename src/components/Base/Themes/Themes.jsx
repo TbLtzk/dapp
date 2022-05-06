@@ -1,19 +1,20 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import FormSwitch from '../Form/FormSwitch'
-import { THEMES } from 'constants/colors'
+import FormSwitch from '../Form/FormSwitch';
 
-import { setTheme } from 'store/theme/action-creators'
-import { theme } from 'store/theme/selectors'
+import { setTheme } from 'store/theme/action-creators';
+import { theme } from 'store/theme/selectors';
+
+import { THEMES } from 'constants/colors';
 
 function Themes () {
-  const dispatch = useDispatch()
-  const currentTheme = useSelector(theme)
+  const dispatch = useDispatch();
+  const currentTheme = useSelector(theme);
 
   function changeTheme () {
-    const newTheme = currentTheme === THEMES.light ? THEMES.dark : THEMES.light
-    dispatch(setTheme(newTheme))
+    const newTheme = currentTheme === THEMES.light ? THEMES.dark : THEMES.light;
+    dispatch(setTheme(newTheme));
   }
 
   return (
@@ -23,7 +24,7 @@ function Themes () {
       label="Dark theme"
       onChange={changeTheme}
     />
-  )
+  );
 }
 
-export default Themes
+export default Themes;

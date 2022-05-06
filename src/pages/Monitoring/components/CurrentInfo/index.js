@@ -1,1 +1,1 @@
-export { default } from './CurrentInfo'
+export { default } from './CurrentInfo';

@@ -1,3 +1,2 @@
-export { default } from './SkeletonLoading'
-
-export { SkeletonAuctionLoading } from './SkeletonLoading'
+export { default } from './SkeletonLoading';
+export { SkeletonAuctionLoading } from './SkeletonLoading';

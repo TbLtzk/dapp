@@ -1,4 +1,4 @@
-import { ParameterType } from '@q-dev/q-js-sdk'
+import { ParameterType } from '@q-dev/q-js-sdk';
 
 export const addNewExpert = {
   subtitle: 'Nominate an Expert to add to an Expert Panel',
@@ -16,7 +16,7 @@ export const addNewExpert = {
   subtitleInputDown: 'Provide a reference link to external source',
   inputDown: ['External Link'],
   inputDownObj: { 'external-link': '' }
-}
+};
 
 export const removeExpert = {
   subtitle: 'Nominate an Expert to Remove from an Expert Panel',
@@ -34,7 +34,7 @@ export const removeExpert = {
   subtitleInputDown: 'Provide a reference link to external source',
   inputDown: ['External Link'],
   inputDownObj: { 'external-link': '' }
-}
+};
 
 export const parameterVote = {
   subtitle: 'Create a Proposal to Change a Q System Parameter.',
@@ -83,4 +83,4 @@ export const parameterVote = {
   parameterValue: 'parameter-value',
   parameterType: 'parameter-type',
   parameterNotExist: 'parameter-not-exist'
-}
+};

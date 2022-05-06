@@ -1,1 +1,1 @@
-export { default } from './InfBlocksUp'
+export { default } from './InfBlocksUp';

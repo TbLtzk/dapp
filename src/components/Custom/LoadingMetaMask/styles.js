@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const WrapContainer = styled.div`
   background-color: ${(props) => props?.theme?.colors?.oxfordBlue || '#07172B'};
@@ -10,4 +10,4 @@ export const WrapContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   height: ${(p) => p?.height ? p.height : 'calc(100vh - 70px)'} ;
-`
+`;

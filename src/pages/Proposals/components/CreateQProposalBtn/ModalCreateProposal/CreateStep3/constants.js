@@ -1,7 +1,7 @@
-import { ParameterType } from '@q-dev/q-js-sdk'
+import { ParameterType } from '@q-dev/q-js-sdk';
 
 export const warning =
-  'Warning: This proposal will be about creating and adding a NEW parameter. Please check combination of expert panel, type and key if you want to change an existing parameter instead.'
+  'Warning: This proposal will be about creating and adding a NEW parameter. Please check combination of expert panel, type and key if you want to change an existing parameter instead.';
 
 export const constUpdate = {
   inputTitle: 'Please provide exact Key-Name, Type and new Value for Parameter',
@@ -29,4 +29,4 @@ export const constUpdate = {
       value: ParameterType.UINT
     }
   ]
-}
+};

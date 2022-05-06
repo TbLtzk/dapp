@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const AlertWrapper = styled.div`
   background: ${(props) => props.theme.colors.oxfordBlueTint6};
@@ -35,4 +35,4 @@ export const AlertWrapper = styled.div`
   & .close {
     color: ${(props) => props.theme.colors.oxfordBlueTint2} !important;
   }
-`
+`;

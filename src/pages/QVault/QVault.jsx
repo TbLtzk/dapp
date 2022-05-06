@@ -1,40 +1,43 @@
-import React from 'react'
+import React from 'react';
+import { useSelector } from 'react-redux';
 
-import ManageBalance from './ManageBalance'
-import LockCoin from './LockCoin'
-import DelegateVoting from './DelegateVoting'
-import Panel from './Panel/Panel'
-import DelegateStakingPower from './DelegateStakingPower'
-import PageWrap from 'components/Base/PageWrap'
-import { useSelector } from 'react-redux'
-import { mode } from 'store/dashboard-mode/selectors'
-import { MODE } from 'components/Base/DashboardMode/DashboardMode'
-import { qVaultMinimumTimeLock, userBalance, votingWeight } from 'store/q-vault/selectors'
-import { subtractAmount } from 'func/balance'
+import { MODE } from 'components/Base/DashboardMode/DashboardMode';
+import PageWrap from 'components/Base/PageWrap';
+
+import Panel from './Panel/Panel';
+import DelegateStakingPower from './DelegateStakingPower';
+import DelegateVoting from './DelegateVoting';
+import LockCoin from './LockCoin';
+import ManageBalance from './ManageBalance';
+
+import { mode } from 'store/dashboard-mode/selectors';
+import { qVaultMinimumTimeLock, userBalance, votingWeight } from 'store/q-vault/selectors';
+
+import { subtractAmount } from 'func/balance';
 
 function QVault () {
-  const appMode = useSelector(mode)
+  const appMode = useSelector(mode);
 
-  const userVotingWeight = useSelector(votingWeight)
-  const userQVaultBalance = useSelector(userBalance)
-  const qVaultLockedAmount = useSelector(qVaultMinimumTimeLock)
+  const userVotingWeight = useSelector(votingWeight);
+  const userQVaultBalance = useSelector(userBalance);
+  const qVaultLockedAmount = useSelector(qVaultMinimumTimeLock);
 
-  const maxQVaultWithdrawAmount = subtractAmount(userQVaultBalance, qVaultLockedAmount)
-  const maxQVaultVotingWeight = subtractAmount(userQVaultBalance, userVotingWeight)
+  const maxQVaultWithdrawAmount = subtractAmount(userQVaultBalance, qVaultLockedAmount);
+  const maxQVaultVotingWeight = subtractAmount(userQVaultBalance, userVotingWeight);
 
   return (
-        <PageWrap wrapContentClasses="wrap-content__column-2-1" headerTitle="Q Vault">
-            <div>
-                <ManageBalance maxQVaultWithdrawAmount={maxQVaultWithdrawAmount} />
-                <LockCoin maxQVaultVotingWeight={maxQVaultVotingWeight} />
-                <DelegateVoting />
-                {appMode === MODE.advanced ? <DelegateStakingPower /> : null}
-            </div>
-            <div>
-                <Panel />
-            </div>
-        </PageWrap>
-  )
+    <PageWrap wrapContentClasses="wrap-content__column-2-1" headerTitle="Q Vault">
+      <div>
+        <ManageBalance maxQVaultWithdrawAmount={maxQVaultWithdrawAmount} />
+        <LockCoin maxQVaultVotingWeight={maxQVaultVotingWeight} />
+        <DelegateVoting />
+        {appMode === MODE.advanced ? <DelegateStakingPower /> : null}
+      </div>
+      <div>
+        <Panel />
+      </div>
+    </PageWrap>
+  );
 }
 
-export default QVault
+export default QVault;

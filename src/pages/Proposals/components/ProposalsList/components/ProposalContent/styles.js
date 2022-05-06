@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const ProposalContainer = styled.div`
   display: grid;
@@ -9,7 +9,7 @@ export const ProposalContainer = styled.div`
     flex-direction: column;
     align-self: flex-start;
   }
-`
+`;
 
 export const ContentWrapper = styled.div`
   text-align: center;
@@ -22,4 +22,4 @@ export const ContentWrapper = styled.div`
       cursor: "pointer";
     }
   }
-`
+`;

@@ -9,4 +9,4 @@ export const fields = {
   value: '%-value',
   remark: 'proposer-remark',
   vault: 'vault-id'
-}
+};

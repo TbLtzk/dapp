@@ -1,12 +1,12 @@
-import React from 'react'
-import { OverlayTrigger, Tooltip } from 'react-bootstrap'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
+import React from 'react';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 function VersionsTable (props) {
   const {
     data,
     header
-  } = props
+  } = props;
   return (
     <>
       <h3>{header}</h3>
@@ -15,7 +15,7 @@ function VersionsTable (props) {
           <div key={index + '-validator-line'} style={{ display: 'flex' }}>
             {
               line.map(item => {
-                const text = item.name + '-' + item.value
+                const text = item.name + '-' + item.value;
                 return (
                   <div key={item.name + '-validator-pool'} style={{ width: '50%' }}>
                     <h5>{item.name}</h5>
@@ -33,14 +33,14 @@ function VersionsTable (props) {
                       </CopyToClipboard>
                     </OverlayTrigger>
                   </div>
-                )
+                );
               })
             }
           </div>
-        )
+        );
       })}
     </>
-  )
+  );
 }
 
-export default VersionsTable
+export default VersionsTable;
