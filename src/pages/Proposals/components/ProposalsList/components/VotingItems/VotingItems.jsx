@@ -15,7 +15,7 @@ import {
   setVoteProposalObj,
   voteForProposal
 } from 'store/voting/proposals/action-creators'
-import ModalVote from '../../../CreateQProposalBtn/ModalVote'
+import ModalVote from '../ModalVote'
 
 const PROPOSAL_STATUS = {
   passed: 'Passed',

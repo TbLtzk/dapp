@@ -84,7 +84,6 @@ function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) 
       dispatch(setStepCounter(stepCounter + 1))
     } else {
       dispatch(createProposal({ ...formData, ...data }))
-      onHide()
     }
   }
 

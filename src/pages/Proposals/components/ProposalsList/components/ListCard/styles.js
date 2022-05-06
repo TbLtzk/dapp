@@ -52,7 +52,6 @@ export const ListCardWrp = styled(Card)`
     font-size: 13px;
     line-height: 17px;
     color: ${(props) => props.theme.colors.white};
-    margin-bottom: 15px;
 
     :hover {
       color: ${(props) => props.theme.colors.white};

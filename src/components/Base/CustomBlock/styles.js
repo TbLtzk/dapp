@@ -57,6 +57,11 @@ export const Block = styled.div`
     margin-bottom: 15px;
   }
 
+  .card_text {
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+
   .card__actions {
     display: flex;
     align-items: flex-start;

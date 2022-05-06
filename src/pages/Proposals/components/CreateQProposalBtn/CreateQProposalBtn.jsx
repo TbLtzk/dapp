@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { PROPOSALS_TYPES } from 'constants/statuses'
 import { setCreatedStepsLimit, setCreateProposalObj, setStepCounter } from 'store/voting/proposals/action-creators'
 
@@ -8,10 +8,13 @@ import ModalCreateProposal from './ModalCreateProposal'
 import Button from 'components/Base/Buttons/Button'
 
 import { QExpert, QProposal, QRootNode, QSlashing } from './constants'
+import { successMessageSelector } from 'store/transaction-handler/selectors'
 
 function CreateQProposalBtn ({ activeTab }) {
-  const [modalShow, setModalShow] = useState(false)
   const dispatch = useDispatch()
+  const shouldCloseModal = useSelector(successMessageSelector)
+
+  const [modalShow, setModalShow] = useState(false)
 
   const activeTabTitle = useMemo(() => {
     switch (activeTab) {
@@ -28,9 +31,9 @@ function CreateQProposalBtn ({ activeTab }) {
     }
   }, [activeTab])
 
-  const onCreateProposal = async () => {
-    dispatch(setStepCounter(1))
+  const onCreateProposal = () => {
     setModalShow(true)
+    dispatch(setStepCounter(1))
     switch (activeTab) {
       case PROPOSALS_TYPES.proposals:
         dispatch(setCreatedStepsLimit(4))
@@ -53,6 +56,12 @@ function CreateQProposalBtn ({ activeTab }) {
     setModalShow(false)
     dispatch(setCreateProposalObj({}))
   }
+
+  useEffect(() => {
+    if (shouldCloseModal) {
+      onHide()
+    }
+  }, [shouldCloseModal])
 
   return (
         <>

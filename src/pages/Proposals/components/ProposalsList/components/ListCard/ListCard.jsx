@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Accordion } from 'react-bootstrap'
 import { ListCardWrp, ListCardHeader, ListCardBody } from './styles'
 import CustomCardButtons from 'components/Custom/CustomCardButtons'
@@ -12,11 +12,7 @@ import { transactionLoadingSelector } from 'store/transaction-handler/selectors'
 import { formVoteObject } from 'store/voting/proposals/selectors'
 import { createShareText } from 'func/useful'
 
-import { setVoteProposalObj } from 'store/voting/proposals/action-creators'
-
 function ListCard ({ proposal, id, proposalsKind, onePage }) {
-  const dispatch = useDispatch()
-
   const currentTheme = useSelector(theme)
   const transactionLoading = useSelector(transactionLoadingSelector)
 
@@ -28,7 +24,6 @@ function ListCard ({ proposal, id, proposalsKind, onePage }) {
   useEffect(() => {
     if (!transactionLoading && proposal.contract === obj.contract && proposal.id === obj.id) {
       handleGetProposal()
-      dispatch(setVoteProposalObj({}))
     }
   }, [transactionLoading])
 
