@@ -3,6 +3,7 @@ import LoadingSpinner from 'components/Base/LoadingSpinner'
 import CustomBlock from 'components/Base/CustomBlock'
 import Button from 'components/Base/Buttons/Button'
 import CopyToClipboard from 'components/Base/CopyToClipboard'
+import ExplorerAddress from 'components/Custom/ExplorerAddress'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { constitutionHash } from 'store/voting/proposals/selectors'
@@ -102,9 +103,7 @@ function InfBlocksUp () {
                 <h5>Block Height:</h5>
                 <p> {blockNumber}</p>
                 <h5>System Contract Registry:</h5>
-                <CopyToClipboard valueToCopy={contractRegistryAddress}>
-                    <p>{contractRegistryAddress}</p>
-                </CopyToClipboard>
+                <ExplorerAddress address={contractRegistryAddress} />
             </CustomBlock>
 
             <CustomBlock title="Constitution">

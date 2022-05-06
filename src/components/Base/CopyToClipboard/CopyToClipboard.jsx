@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { CopyToClipboard as Copy } from 'react-copy-to-clipboard'
 import Tooltip from '../Tooltip'
 
-function CopyToClipboard ({ valueToCopy, children }) {
+function CopyToClipboard ({ valueToCopy, title, children }) {
   const [copy, setCopy] = useState(false)
 
   const handleCopy = () => {
@@ -14,7 +14,7 @@ function CopyToClipboard ({ valueToCopy, children }) {
   }
 
   return (
-        <Tooltip additionalInfo={copy ? 'Copied!' : 'Copy'}>
+        <Tooltip additionalInfo={copy ? 'Copied!' : title || 'Copy'}>
             <Copy text={valueToCopy}>
                 <span onClick={handleCopy} style={{ cursor: 'pointer', maxWidth: 'min-content' }}>
                     {children}
