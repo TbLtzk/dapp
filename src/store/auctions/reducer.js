@@ -1,4 +1,4 @@
-import * as actionTypes from './action-types'
+import * as actionTypes from './action-types';
 
 const initialState = {
   liquidationAuctions: { activeAuctions: [], endedAuctions: [] },
@@ -6,7 +6,7 @@ const initialState = {
   systemSurplusAuctions: { activeAuctions: [], endedAuctions: [] },
   approveModalBtn: false,
   oneAuction: {}
-}
+};
 
 export default function auctions (state = initialState, action) {
   switch (action.type) {
@@ -14,33 +14,33 @@ export default function auctions (state = initialState, action) {
       return {
         ...state,
         approveModalBtn: action.result
-      }
+      };
     }
     case actionTypes.SET_LIQUIDATION_AUCTIONS: {
       return {
         ...state,
         liquidationAuctions: action.result
-      }
+      };
     }
     case actionTypes.SET_SYSTEM_DEBT_AUCTIONS: {
       return {
         ...state,
         systemDebtAuctions: action.result
-      }
+      };
     }
     case actionTypes.SET_SYSTEM_SURPLUS_AUCTIONS: {
       return {
         ...state,
         systemSurplusAuctions: action.result
-      }
+      };
     }
     case actionTypes.SET_ONE_AUCTION: {
       return {
         ...state,
         oneAuction: action.auction
-      }
+      };
     }
     default:
-      return state
+      return state;
   }
 }

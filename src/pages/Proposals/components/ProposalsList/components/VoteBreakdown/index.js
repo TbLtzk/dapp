@@ -1,1 +1,1 @@
-export { default } from './VoteBreakdown'
+export { default } from './VoteBreakdown';

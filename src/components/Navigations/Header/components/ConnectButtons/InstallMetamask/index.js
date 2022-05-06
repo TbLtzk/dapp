@@ -1,1 +1,1 @@
-export { default } from './InstallMetamask'
+export { default } from './InstallMetamask';

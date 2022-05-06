@@ -1,5 +1,6 @@
-import { scrollbarStyle } from 'constants/globalStyle'
-import styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components';
+
+import { scrollbarStyle } from 'constants/globalStyle';
 
 export const TableWrapper = styled.span`
   display: block;
@@ -22,14 +23,14 @@ export const TableWrapper = styled.span`
     line-height: 17px;
     color: ${(props) => props.theme.colors.th};
     ${(props) =>
-      props.sorting
-        ? css`
+    props.sorting
+      ? css`
             cursor: pointer;
             :hover {
               color: ${props.theme.colors.neonGreen};
             }
           `
-        : null}
+      : null}
   }
 
   tbody {
@@ -40,13 +41,13 @@ export const TableWrapper = styled.span`
 
   .table td {
     ${(props) =>
-      props.lineForEach
-        ? css`
+    props.lineForEach
+      ? css`
             vertical-align: middle;
             padding-bottom: 10px;
             border-bottom: 1px solid ${(props) => props.theme.colors.th};
           `
-        : null}
+      : null}
     border-top: transparent;
   }
 
@@ -58,35 +59,35 @@ export const TableWrapper = styled.span`
 
   td {
     vertical-align: ${(props) => {
-      if (props.type === 'with-action') {
-        return 'baseline'
-      } else {
-        return 'top'
-      }
-    }};
+    if (props.type === 'with-action') {
+      return 'baseline';
+    } else {
+      return 'top';
+    }
+  }};
     color: ${(props) => props.theme.colors.td};
     font-size: 13px;
     line-height: 17px;
     padding: ${(props) => {
-      if (props.type === 'with-action') {
-        return '15px 5px'
-      } else {
-        return '5px'
-      }
-    }};
+    if (props.type === 'with-action') {
+      return '15px 5px';
+    } else {
+      return '5px';
+    }
+  }};
 
     border-bottom: ${(props) => {
-      if (props.type === 'with-action') {
-        return '1px solid ' + props.theme.colors.th
-      } else {
-        return null
-      }
-    }};
+    if (props.type === 'with-action') {
+      return '1px solid ' + props.theme.colors.th;
+    } else {
+      return null;
+    }
+  }};
   }
   .row {
     margin-right: 0px;
   }
-`
+`;
 
 export const PagesItemWrapper = styled.li`
   background-color: transparent;
@@ -96,16 +97,16 @@ export const PagesItemWrapper = styled.li`
     display: ${(props) => (props.isDisplayNone ? 'none' : '')};
     margin-right: 10px;
     color: ${(props) => {
-      if (props.palette === 'dark') {
-        return props.active ? props.theme.colors.white : props.theme.colors.oxfordBlueTint3
-      } else {
-        return props.active ? props.theme.colors.white : props.theme.colors.oxfordBlueTint4
-      }
-    }};
+    if (props.palette === 'dark') {
+      return props.active ? props.theme.colors.white : props.theme.colors.oxfordBlueTint3;
+    } else {
+      return props.active ? props.theme.colors.white : props.theme.colors.oxfordBlueTint4;
+    }
+  }};
   }
 
   .page-item__title {
     color: ${(props) => props.theme.colors.white};
     margin-right: 10px;
   }
-`
+`;

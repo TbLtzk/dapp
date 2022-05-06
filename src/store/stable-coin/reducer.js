@@ -1,9 +1,9 @@
-import * as actionTypes from './action-types'
+import * as actionTypes from './action-types';
 
 const initialState = {
   balance: 0,
   symbol: 0
-}
+};
 
 export default function stableCoin (state = initialState, action) {
   switch (action.type) {
@@ -11,13 +11,13 @@ export default function stableCoin (state = initialState, action) {
       return {
         ...state,
         balance: action.result
-      }
+      };
     case actionTypes.GET_SYMBOL_SUCCESS:
       return {
         ...state,
         symbol: action.result
-      }
+      };
     default:
-      return state
+      return state;
   }
 }

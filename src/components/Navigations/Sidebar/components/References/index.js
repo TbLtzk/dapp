@@ -1,1 +1,1 @@
-export { default } from './References'
+export { default } from './References';

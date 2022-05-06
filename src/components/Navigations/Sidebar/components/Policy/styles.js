@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const PolicyContainer = styled.div`
   h3 {
@@ -22,4 +22,4 @@ export const PolicyContainer = styled.div`
   ul {
     font-size: 13px;
   }
-`
+`;

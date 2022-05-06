@@ -1,14 +1,14 @@
-import React from 'react'
+import React from 'react';
 
-import { Header, CardTitle, WrapBtnHeader } from './styles'
+import { CardTitle, Header, WrapBtnHeader } from './styles';
 
 function ListCardHeader ({ title, data }) {
   return (
-        <Header>
-            <CardTitle>{title}</CardTitle>
-            <WrapBtnHeader>{data}</WrapBtnHeader>
-        </Header>
-  )
+    <Header>
+      <CardTitle>{title}</CardTitle>
+      <WrapBtnHeader>{data}</WrapBtnHeader>
+    </Header>
+  );
 }
 
-export default ListCardHeader
+export default ListCardHeader;

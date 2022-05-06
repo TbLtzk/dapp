@@ -1,121 +1,121 @@
-import AuctionService, { ERROR_TYPES, getStatusTransformation } from './auction-service-helper'
-import { CONTRACT_TYPES } from 'constants/contracts'
+import AuctionService, { ERROR_TYPES, getStatusTransformation } from './auction-service-helper';
 
-import { fromBtcBlockchain, toWei, fromWei } from 'func/balance'
+import { getBorrowingCoreInstance, getLiquidationAuctionInstance } from 'contracts/contract-instance';
 
-import { getBorrowingCoreInstance, getLiquidationAuctionInstance } from 'contracts/contract-instance'
-import { groupArrayByBlockNumber } from 'func/useful'
-import { dateToTimestamp, getNowTimestamp } from 'func/convertDate'
+import { CONTRACT_TYPES } from 'constants/contracts';
+import { fromBtcBlockchain, fromWei, toWei } from 'func/balance';
+import { dateToTimestamp, getNowTimestamp } from 'func/convertDate';
+import { groupArrayByBlockNumber } from 'func/useful';
 
 export function creationLiquidationContractObj () {
-  return new LiquidationAuction()
+  return new LiquidationAuction();
 }
 
 export default class LiquidationAuction extends AuctionService {
   constructor () {
-    super()
-    this.contractName = CONTRACT_TYPES.liquidationAuction
+    super();
+    this.contractName = CONTRACT_TYPES.liquidationAuction;
   }
 
   async prepareAuctionData (data, info, contract, raisingBid) {
-    const vault = await contract.userVaults(info.user, info.vaultId)
-    const completedInfo = {}
-    completedInfo.bidder = data.bidder
-    completedInfo.user = info.user
-    completedInfo.userVaultId = info.vaultId
-    completedInfo.id = info.vaultId
-    completedInfo.colKey = vault.colKey
-    completedInfo.endTime = data.endTime
-    completedInfo.title = 'Liquidation Auction'
-    completedInfo.contract = CONTRACT_TYPES.liquidationAuction
-    completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0
-    completedInfo.highestBid = fromWei(data.highestBid)
-    completedInfo.blockNumber = info.blockNumber
-    completedInfo.statusNumber = data.status
-    completedInfo.status = getStatusTransformation(data.status)
-    completedInfo.colAsset = fromBtcBlockchain(vault.colAsset)
-    const disabledButtons = Number(dateToTimestamp(data.endTime)) <= Number(getNowTimestamp())
-    completedInfo.disableBidButton = disabledButtons
-    completedInfo.disableExecuteButton = !disabledButtons
+    const vault = await contract.userVaults(info.user, info.vaultId);
+    const completedInfo = {};
+    completedInfo.bidder = data.bidder;
+    completedInfo.user = info.user;
+    completedInfo.userVaultId = info.vaultId;
+    completedInfo.id = info.vaultId;
+    completedInfo.colKey = vault.colKey;
+    completedInfo.endTime = data.endTime;
+    completedInfo.title = 'Liquidation Auction';
+    completedInfo.contract = CONTRACT_TYPES.liquidationAuction;
+    completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0;
+    completedInfo.highestBid = fromWei(data.highestBid);
+    completedInfo.blockNumber = info.blockNumber;
+    completedInfo.statusNumber = data.status;
+    completedInfo.status = getStatusTransformation(data.status);
+    completedInfo.colAsset = fromBtcBlockchain(vault.colAsset);
+    const disabledButtons = Number(dateToTimestamp(data.endTime)) <= Number(getNowTimestamp());
+    completedInfo.disableBidButton = disabledButtons;
+    completedInfo.disableExecuteButton = !disabledButtons;
 
-    return completedInfo
+    return completedInfo;
   }
 
   async getAuctionsEvents () {
-    const contract = await this.getContractInstance(this.contractName)
-    const pastEvents = await contract.instance.getPastEvents('AuctionStarted', { fromBlock: 0, toBlock: 'latest' })
+    const contract = await this.getContractInstance(this.contractName);
+    const pastEvents = await contract.instance.getPastEvents('AuctionStarted', { fromBlock: 0, toBlock: 'latest' });
 
     if (!pastEvents.length) {
-      return []
+      return [];
     } else {
       const auctionInfo = pastEvents.map((event) => ({
         user: event?.returnValues?._user,
         vaultId: event.returnValues._vaultId,
         blockNumber: event.blockNumber
-      }))
-      return auctionInfo
+      }));
+      return auctionInfo;
     }
   }
 
   async getAuctions () {
-    const auctionsInfo = await this.getAuctionsEvents()
-    const borrowingCoreInstance = await getBorrowingCoreInstance()
-    const allAuctionsData = await Promise.all(auctionsInfo.map((evt) => this.getAuction(evt, evt?.vaultId)))
+    const auctionsInfo = await this.getAuctionsEvents();
+    const borrowingCoreInstance = await getBorrowingCoreInstance();
+    const allAuctionsData = await Promise.all(auctionsInfo.map((evt) => this.getAuction(evt, evt?.vaultId)));
     const preparedAuctionsData = await Promise.all(
       allAuctionsData.map((auction) =>
         this.prepareAuctionData(auction.data, auction.info, borrowingCoreInstance, auction.raisingBid)
       )
-    )
+    );
 
-    const groupedAuctionsByBlockNumber = groupArrayByBlockNumber(preparedAuctionsData)
+    const groupedAuctionsByBlockNumber = groupArrayByBlockNumber(preparedAuctionsData);
 
-    const activeAuctions = groupedAuctionsByBlockNumber.filter((auction) => auction.statusNumber === '1')
-    const endedAuctions = groupedAuctionsByBlockNumber.filter((auction) => auction.statusNumber !== '1')
+    const activeAuctions = groupedAuctionsByBlockNumber.filter((auction) => auction.statusNumber === '1');
+    const endedAuctions = groupedAuctionsByBlockNumber.filter((auction) => auction.statusNumber !== '1');
 
     return {
       contract: this.contractName,
       activeAuctions,
       endedAuctions
-    }
+    };
   }
 
   async getOneAuction (vaultId, address) {
     try {
-      const contract = await this.getContractInstance()
-      const info = await contract.getAuctionInfo(address, vaultId)
+      const contract = await this.getContractInstance();
+      const info = await contract.getAuctionInfo(address, vaultId);
       if (!Number(info.endTime)) {
-        return { error: ERROR_TYPES.notExist }
+        return { error: ERROR_TYPES.notExist };
       } else {
-        const pastEvents = await this.getAuctionsEvents()
-        const event = pastEvents.find((event) => event.vaultId === vaultId && event.user === address)
-        let raisingBid = null
+        const pastEvents = await this.getAuctionsEvents();
+        const event = pastEvents.find((event) => event.vaultId === vaultId && event.user === address);
+        let raisingBid = null;
         if (info.status === '1') {
-          raisingBid = await contract.getRaisingBid(address, vaultId)
+          raisingBid = await contract.getRaisingBid(address, vaultId);
         }
-        const borrowingCoreInstance = await getBorrowingCoreInstance()
-        return this.prepareAuctionData(info, event, borrowingCoreInstance, raisingBid)
+        const borrowingCoreInstance = await getBorrowingCoreInstance();
+        return this.prepareAuctionData(info, event, borrowingCoreInstance, raisingBid);
       }
     } catch (error) {
-      return { error: ERROR_TYPES.wrongLink }
+      return { error: ERROR_TYPES.wrongLink };
     }
   }
 
   async bid (user, vaultId, bid, userAddress) {
-    const contract = await getLiquidationAuctionInstance()
-    await this.getAllowance(userAddress, contract.address, bid)
-    const result = await contract.bid(user, vaultId, toWei(bid), { from: userAddress })
-    return result
+    const contract = await getLiquidationAuctionInstance();
+    await this.getAllowance(userAddress, contract.address, bid);
+    const result = await contract.bid(user, vaultId, toWei(bid), { from: userAddress });
+    return result;
   }
 
   async execute (user, vaultId, userAddress) {
-    const contract = await getLiquidationAuctionInstance()
-    const result = await contract.execute(user, vaultId, { from: userAddress })
-    return result
+    const contract = await getLiquidationAuctionInstance();
+    const result = await contract.execute(user, vaultId, { from: userAddress });
+    return result;
   }
 
   async createAuction (data, userAddress) {
-    const contract = await getLiquidationAuctionInstance()
-    await this.getAllowance(userAddress, contract.address, data?.bid)
-    return await contract.startAuction(data?.address, data['vault-id'], toWei(data?.bid), { from: userAddress })
+    const contract = await getLiquidationAuctionInstance();
+    await this.getAllowance(userAddress, contract.address, data?.bid);
+    return await contract.startAuction(data?.address, data['vault-id'], toWei(data?.bid), { from: userAddress });
   }
 }

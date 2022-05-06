@@ -8,6 +8,7 @@ services:
   - docker:stable-dind
 
 stages:
+  - test
   - build
   - deploy
 
@@ -40,6 +41,17 @@ compile:
     - npm config set '//gitlab.com/api/v4/packages/npm/:_authToken' $NPM_TOKEN
     - npm ci
     - npm run build
+
+lint:
+  image: node:lts
+  stage: test
+  only:
+    - master
+    - merge_request
+  script:
+    - npm config set '//gitlab.com/api/v4/packages/npm/:_authToken' $NPM_TOKEN
+    - npm ci
+    - npm run lint
 
 build:
   <<: [*docker-login]

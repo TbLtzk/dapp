@@ -1,5 +1,6 @@
-import { indents } from 'constants/style'
-import styled from 'styled-components'
+import styled from 'styled-components';
+
+import { indents } from 'constants/style';
 
 export const QParametersWrapper = styled.div`
   display: grid;
@@ -12,8 +13,8 @@ export const QParametersWrapper = styled.div`
     grid-template-columns: minmax(100px, 1fr);
     padding-right: 0;
   }
-`
+`;
 
 export const QParametersTextContainer = styled.p`
   margin-top: 20px;
-`
+`;

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const PollDetailContainer = styled.div`
   @media screen and (max-width: 1150px) {
@@ -7,4 +7,4 @@ export const PollDetailContainer = styled.div`
       grid-template-columns: 1fr;
     }
   }
-`
+`;

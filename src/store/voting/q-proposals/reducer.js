@@ -1,5 +1,6 @@
-import { groupArrayByBlockNumber } from 'func/useful'
-import * as actionTypes from './action-types'
+import * as actionTypes from './action-types';
+
+import { groupArrayByBlockNumber } from 'func/useful';
 
 const initialState = {
   activeProposals: [],
@@ -8,7 +9,7 @@ const initialState = {
   qActiveProposalsCount: -1,
   qEndedProposalsCount: -1,
   qLoadingProposalsCount: true
-}
+};
 
 export default function qProposals (state = initialState, action) {
   switch (action.type) {
@@ -20,8 +21,8 @@ export default function qProposals (state = initialState, action) {
         qEndedProposalsCount: action.proposalsCounter.ended,
         qActiveProposalsCount: action.proposalsCounter.active,
         qLoadingProposalsCount: false
-      }
+      };
     default:
-      return state
+      return state;
   }
 }

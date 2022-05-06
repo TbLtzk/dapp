@@ -1,8 +1,9 @@
-import styled, { css } from 'styled-components'
+import { Container } from 'react-bootstrap';
 
-import { indents } from 'constants/style'
-import { Container } from 'react-bootstrap'
-import { scrollbarStyle } from 'constants/globalStyle'
+import styled, { css } from 'styled-components';
+
+import { scrollbarStyle } from 'constants/globalStyle';
+import { indents } from 'constants/style';
 
 export const WrapContainer = styled(Container)`
   position: relative;
@@ -17,7 +18,7 @@ export const WrapContainer = styled(Container)`
   @media screen and (max-width: 1550px) {
     padding: 0 ${indents['15']} 0 ${indents['15']};
   }
-`
+`;
 
 export const WrapContent = styled.div`
   min-height: 490px;
@@ -86,7 +87,7 @@ export const WrapContent = styled.div`
       grid-template-columns: minmax(100px, 1fr);
     }
   }
-`
+`;
 
 export const ToTopContainer = styled.div`
   position: fixed;
@@ -113,4 +114,4 @@ export const ToTopContainer = styled.div`
           right: -50px;
         `
       : css``};
-`
+`;

@@ -1,33 +1,37 @@
-import React, { useEffect, useState } from 'react'
-import ModalWindow from 'components/Base/ModalWindow'
-import VersionsTable from '../VersionsTable'
-import { Web3Adapter } from '@q-dev/q-js-sdk'
-import pkg from '../../../../../../package.json'
-import { getNowTimeWithGMT } from 'func/convertDate'
+import React, { useEffect, useState } from 'react';
+
+import { Web3Adapter } from '@q-dev/q-js-sdk';
+
+import ModalWindow from 'components/Base/ModalWindow';
+
+import pkg from '../../../../../../package.json';
+import VersionsTable from '../VersionsTable';
+
+import { getNowTimeWithGMT } from 'func/convertDate';
 
 function Version () {
-  const web3Adapter = new Web3Adapter(window.web3)
+  const web3Adapter = new Web3Adapter(window.web3);
   const versionInfoGroups = {
     main: 'Main',
     modules: 'Modules',
     client: 'Q client'
-  }
+  };
 
-  const [modalShow, setModalShow] = useState(false)
-  const [mainVersionInfo, setMainVersionInfo] = useState([])
-  const [modulesVersionInfo, setModulesVersionInfo] = useState([])
-  const [clientVersionInfo, setClientVersionInfo] = useState([])
-  const [time, setTime] = useState(getNowTimeWithGMT('DD.MM.YYYY HH:mm'))
+  const [modalShow, setModalShow] = useState(false);
+  const [mainVersionInfo, setMainVersionInfo] = useState([]);
+  const [modulesVersionInfo, setModulesVersionInfo] = useState([]);
+  const [clientVersionInfo, setClientVersionInfo] = useState([]);
+  const [time, setTime] = useState(getNowTimeWithGMT('DD.MM.YYYY HH:mm'));
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTime(getNowTimeWithGMT('DD.MM.YYYY HH:mm'))
-    }, 50000)
-    return () => clearInterval(timer)
-  }, [time])
+      setTime(getNowTimeWithGMT('DD.MM.YYYY HH:mm'));
+    }, 50000);
+    return () => clearInterval(timer);
+  }, [time]);
 
   async function getVersionInfo () {
-    const connectionInfo = await web3Adapter?.getConnectionInfo()
+    const connectionInfo = await web3Adapter?.getConnectionInfo();
     setMainVersionInfo([
       [
         {
@@ -41,7 +45,7 @@ function Version () {
           value: time
         }
       ]
-    ])
+    ]);
     setModulesVersionInfo([
       [
         {
@@ -55,7 +59,7 @@ function Version () {
           value: web3Adapter?.SDK_VERSION
         }
       ]
-    ])
+    ]);
     setClientVersionInfo([
       [
         {
@@ -76,40 +80,40 @@ function Version () {
           value: connectionInfo?.nodeInfo
         }
       ]
-    ])
+    ]);
   }
 
   useEffect(() => {
     if (web3Adapter) {
-      getVersionInfo()
+      getVersionInfo();
     }
     return () => {
-      setMainVersionInfo([])
-      setClientVersionInfo([])
-      setModulesVersionInfo([])
-    }
-  }, [])
+      setMainVersionInfo([]);
+      setClientVersionInfo([]);
+      setModulesVersionInfo([]);
+    };
+  }, []);
   const content = (
-        <>
-            <div className="modal-line" />
-            <VersionsTable data={mainVersionInfo} header={versionInfoGroups.main} />
-            <div className="modal-line" />
-            <VersionsTable data={modulesVersionInfo} header={versionInfoGroups.modules} />
-            <div className="modal-line" />
-            <VersionsTable data={clientVersionInfo} header={versionInfoGroups.client} />
-        </>
-  )
+    <>
+      <div className="modal-line" />
+      <VersionsTable data={mainVersionInfo} header={versionInfoGroups.main} />
+      <div className="modal-line" />
+      <VersionsTable data={modulesVersionInfo} header={versionInfoGroups.modules} />
+      <div className="modal-line" />
+      <VersionsTable data={clientVersionInfo} header={versionInfoGroups.client} />
+    </>
+  );
   return (
-        <>
-            <p onClick={() => setModalShow(true)}>{pkg.version}</p>
-            <ModalWindow
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-                modalTitle="Version Information"
-                content={content}
-            />
-        </>
-  )
+    <>
+      <p onClick={() => setModalShow(true)}>{pkg.version}</p>
+      <ModalWindow
+        show={modalShow}
+        modalTitle="Version Information"
+        content={content}
+        onHide={() => setModalShow(false)}
+      />
+    </>
+  );
 }
 
-export default Version
+export default Version;

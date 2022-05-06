@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const SwitcherWrapper = styled.div`
   display: flex;
@@ -7,29 +7,29 @@ export const SwitcherWrapper = styled.div`
 
   .custom-control-input:checked ~ .custom-control-label::before {
     border-color: ${(props) => {
-      if (props.palette === 'dark') {
-        return props.theme.colors.white
-      } else {
-        return props.theme.colors.oxfordBlueTint1
-      }
-    }};
+    if (props.palette === 'dark') {
+      return props.theme.colors.white;
+    } else {
+      return props.theme.colors.oxfordBlueTint1;
+    }
+  }};
     background-color: ${(props) => {
-      if (props.palette === 'dark') {
-        return props.theme.colors.white
-      } else {
-        return props.theme.colors.oxfordBlueTint1
-      }
-    }};
+    if (props.palette === 'dark') {
+      return props.theme.colors.white;
+    } else {
+      return props.theme.colors.oxfordBlueTint1;
+    }
+  }};
   }
 
   .custom-switch .custom-control-input:checked ~ .custom-control-label::after {
     background-color: ${(props) => {
-      if (props.palette === 'dark') {
-        return props.theme.colors.oxfordBlueTint1
-      } else {
-        return props.theme.colors.white
-      }
-    }};
+    if (props.palette === 'dark') {
+      return props.theme.colors.oxfordBlueTint1;
+    } else {
+      return props.theme.colors.white;
+    }
+  }};
   }
   
-`
+`;

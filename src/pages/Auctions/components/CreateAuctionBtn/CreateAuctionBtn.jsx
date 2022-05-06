@@ -1,34 +1,44 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { setCreatedStepsLimit, setCreateObj, setStepCounter } from 'store/modal-handler/action-creators'
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-import ModalCreateAuction from './ModalCreateAuction'
-import Button from 'components/Base/Buttons/Button'
+import Button from 'components/Base/Buttons/Button';
+
+import ModalCreateAuction from './ModalCreateAuction';
+
+import { setCreatedStepsLimit, setCreateObj, setStepCounter } from 'store/modal-handler/action-creators';
 
 function CreateAuctionBtn ({ auctionsType }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const [modalShow, setModalShow] = useState(false)
-  const title = `Create ${auctionsType.replace(/-/g, ' ') + ' Auction'}`
+  const [modalShow, setModalShow] = useState(false);
+  const title = `Create ${auctionsType.replace(/-/g, ' ') + ' Auction'}`;
 
   const onCreateAuction = async () => {
-    dispatch(setStepCounter(1))
-    dispatch(setCreatedStepsLimit(2))
-    setModalShow(true)
-    dispatch(setCreateObj({ contract: auctionsType }))
-  }
+    dispatch(setStepCounter(1));
+    dispatch(setCreatedStepsLimit(2));
+    setModalShow(true);
+    dispatch(setCreateObj({ contract: auctionsType }));
+  };
 
   const onHide = () => {
-    setModalShow(false)
-    dispatch(setCreateObj({}))
-  }
+    setModalShow(false);
+    dispatch(setCreateObj({}));
+  };
 
   return (
-        <>
-            <Button icon="plus-circle-outline" handleButton={onCreateAuction} title={title} />
-            <ModalCreateAuction activeTab={auctionsType} modalShow={modalShow} onHide={onHide} />
-        </>
-  )
+    <>
+      <Button
+        icon="plus-circle-outline"
+        handleButton={onCreateAuction}
+        title={title}
+      />
+      <ModalCreateAuction
+        activeTab={auctionsType}
+        modalShow={modalShow}
+        onHide={onHide}
+      />
+    </>
+  );
 }
 
-export default CreateAuctionBtn
+export default CreateAuctionBtn;

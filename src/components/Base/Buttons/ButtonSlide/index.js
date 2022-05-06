@@ -1,1 +1,1 @@
-export { default } from './ButtonSlide'
+export { default } from './ButtonSlide';

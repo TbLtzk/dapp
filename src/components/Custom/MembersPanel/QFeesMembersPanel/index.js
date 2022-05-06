@@ -1,1 +1,1 @@
-export { default } from './QFeesMembersPanel'
+export { default } from './QFeesMembersPanel';

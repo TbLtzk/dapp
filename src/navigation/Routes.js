@@ -1,29 +1,32 @@
-import React, { useEffect } from 'react'
-import { Route, Switch } from 'react-router-dom'
-import { transitions, positions, Provider as AlertProvider } from 'react-alert'
-import * as Sentry from '@sentry/react'
+import React, { useEffect } from 'react';
+import { positions, Provider as AlertProvider, transitions } from 'react-alert';
+import { Route, Switch } from 'react-router-dom';
 
-import { PROPOSALS_TYPES, AUCTIONS_TYPES } from 'constants/statuses'
-import Dashboard from '../pages/Dashboard/Dashboard'
-import Manage from '../pages/Dashboard/Manage'
-import Governance from '../pages/Governance'
-import Proposals from '../pages/Proposals'
-import Auctions from '../pages/Auctions'
-import QVault from '../pages/QVault'
-import OneProposalPage from '../pages/OneProposalPage'
-import SavingAndBorrowing from '../pages/SavingAndBorrowing'
-import TimeLocks from '../pages/TimeLocks'
+import * as Sentry from '@sentry/react';
 
-import AlertTemplate from 'components/Custom/Alerts/AlertTemplate'
-import RootNodeStaking from 'pages/RootNodeStaking'
-import ValidatorStaking from 'pages/ValidatorStaking'
-import OneAuctionPage from 'pages/OneAuctionPage'
-import NotFound from 'pages/NotFound'
-import Monitoring from 'pages/Monitoring'
-import ErrorBoundary from 'components/Custom/ErrorBoundary'
-import StyleLayout from 'components/Base/StyleLayout'
-import { store } from 'store/index'
-import ErrorHandler from 'func/ErrorHandler'
+import StyleLayout from 'components/Base/StyleLayout';
+import AlertTemplate from 'components/Custom/Alerts/AlertTemplate';
+import ErrorBoundary from 'components/Custom/ErrorBoundary';
+import Monitoring from 'pages/Monitoring';
+import NotFound from 'pages/NotFound';
+import OneAuctionPage from 'pages/OneAuctionPage';
+import RootNodeStaking from 'pages/RootNodeStaking';
+import ValidatorStaking from 'pages/ValidatorStaking';
+
+import Auctions from '../pages/Auctions';
+import Dashboard from '../pages/Dashboard/Dashboard';
+import Manage from '../pages/Dashboard/Manage';
+import Governance from '../pages/Governance';
+import OneProposalPage from '../pages/OneProposalPage';
+import Proposals from '../pages/Proposals';
+import QVault from '../pages/QVault';
+import SavingAndBorrowing from '../pages/SavingAndBorrowing';
+import TimeLocks from '../pages/TimeLocks';
+
+import { store } from 'store/index';
+
+import { AUCTIONS_TYPES, PROPOSALS_TYPES } from 'constants/statuses';
+import ErrorHandler from 'func/ErrorHandler';
 
 const options = {
   position: positions.TOP_RIGHT,
@@ -33,34 +36,50 @@ const options = {
   containerStyle: {
     zIndex: 9999
   }
-}
+};
 
 function addSentryContext () {
   try {
-    const { network, loadType } = store.getState().userInf
+    const { network, loadType } = store.getState().userInf;
     Sentry.setContext('additional', {
       network,
       loadType
-    })
+    });
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
 function Routes () {
   useEffect(() => {
-    addSentryContext()
-  }, [])
+    addSentryContext();
+  }, []);
 
   return (
     <StyleLayout>
       <ErrorBoundary>
         <AlertProvider template={AlertTemplate} {...options}>
           <Switch>
-            <Route exact path="/" component={(props) => <Dashboard {...props} />} />
-            <Route exact path="/q-parameters" component={(props) => <Manage {...props} />} />
-            <Route exact path="/q-governance" component={(props) => <Governance {...props} />} />
-            <Route exact path="/monitoring" component={(props) => <Monitoring {...props} />} />
+            <Route
+              exact
+              path="/"
+              component={(props) => <Dashboard {...props} />}
+            />
+            <Route
+              exact
+              path="/q-parameters"
+              component={(props) => <Manage {...props} />}
+            />
+            <Route
+              exact
+              path="/q-governance"
+              component={(props) => <Governance {...props} />}
+            />
+            <Route
+              exact
+              path="/monitoring"
+              component={(props) => <Monitoring {...props} />}
+            />
             <Route
               exact
               path="/q-proposals"
@@ -101,13 +120,37 @@ function Routes () {
               path="/system-surplus"
               component={(props) => <Auctions auctionsType={AUCTIONS_TYPES.systemSurplus} {...props} />}
             />
-            <Route exact path="/q-vault" component={(props) => <QVault {...props} />} />
-            <Route exact path="/root-node-staking" component={(props) => <RootNodeStaking {...props} />} />
-            <Route exact path="/validator-staking" component={(props) => <ValidatorStaking {...props} />} />
+            <Route
+              exact
+              path="/q-vault"
+              component={(props) => <QVault {...props} />}
+            />
+            <Route
+              exact
+              path="/root-node-staking"
+              component={(props) => <RootNodeStaking {...props} />}
+            />
+            <Route
+              exact
+              path="/validator-staking"
+              component={(props) => <ValidatorStaking {...props} />}
+            />
 
-            <Route exact path="/saving-and-borrowing" component={(props) => <SavingAndBorrowing {...props} />} />
-            <Route exact path="/time-locks" component={(props) => <TimeLocks {...props} />} />
-            <Route exact path="/auction/:contract?/:id?" component={(props) => <OneAuctionPage {...props} />} />
+            <Route
+              exact
+              path="/saving-and-borrowing"
+              component={(props) => <SavingAndBorrowing {...props} />}
+            />
+            <Route
+              exact
+              path="/time-locks"
+              component={(props) => <TimeLocks {...props} />}
+            />
+            <Route
+              exact
+              path="/auction/:contract?/:id?"
+              component={(props) => <OneAuctionPage {...props} />}
+            />
             <Route
               exact
               path="/q-governance/proposal/:contract?/:id?"
@@ -118,7 +161,7 @@ function Routes () {
         </AlertProvider>
       </ErrorBoundary>
     </StyleLayout>
-  )
+  );
 }
 
-export default Routes
+export default Routes;

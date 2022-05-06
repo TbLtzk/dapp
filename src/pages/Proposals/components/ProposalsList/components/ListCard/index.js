@@ -1,1 +1,1 @@
-export { default } from './ListCard'
+export { default } from './ListCard';

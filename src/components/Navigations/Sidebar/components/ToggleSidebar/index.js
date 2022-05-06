@@ -1,1 +1,1 @@
-export { default } from './ToggleSidebar'
+export { default } from './ToggleSidebar';

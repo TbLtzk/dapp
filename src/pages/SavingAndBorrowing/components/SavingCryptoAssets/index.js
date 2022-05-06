@@ -1,1 +1,1 @@
-export { default } from './SavingCryptoAssets'
+export { default } from './SavingCryptoAssets';

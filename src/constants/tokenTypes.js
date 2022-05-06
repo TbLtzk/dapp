@@ -1,2 +1,2 @@
-export const qbtcToken = 'qbtcToken'
-export const qusdToken = 'qusdToken'
+export const qbtcToken = 'qbtcToken';
+export const qusdToken = 'qusdToken';

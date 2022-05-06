@@ -1,1 +1,1 @@
-export { default } from './ValidatorStaking'
+export { default } from './ValidatorStaking';

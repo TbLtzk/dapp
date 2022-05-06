@@ -1,50 +1,49 @@
-import React from 'react'
-import FormInput from 'components/Base/Form/FormInput'
-import Button from 'components/Base/Buttons/Button'
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 
-import { useForm } from 'react-hook-form'
+import Button from 'components/Base/Buttons/Button';
+import FormInput from 'components/Base/Form/FormInput';
 
-import { useDispatch } from 'react-redux'
-
-import { setVestingWithdraw } from 'store/vesting/action-creators'
+import { setVestingWithdraw } from 'store/vesting/action-creators';
 
 function ManageVestingBalance ({ setModalShow }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const { register, handleSubmit, errors } = useForm()
+  const { register, handleSubmit, errors } = useForm();
 
   const setWithdrawVesting = (formData) => {
-    setModalShow(false)
-    dispatch(setVestingWithdraw(formData.amountQ))
-  }
+    setModalShow(false);
+    dispatch(setVestingWithdraw(formData.amountQ));
+  };
 
   return (
-        <>
-            <h4>Amount</h4>
-            <FormInput
-                lbl={'Q'}
-                min={0}
-                name="amountQ"
-                type="number"
-                placeholder="0.0"
-                ref={register({
-                  required: 'Field is required!',
-                  pattern: /[0-9]/i
-                })}
-                valid={errors.amountQ?.message}
-            />
-            <Button
-              position='relative'
-                right="-367px"
-                type="outline"
-                margin="0px 0px 12px 0px"
-                title="Withdraw"
-                width="90px"
-                handleButton={handleSubmit(setWithdrawVesting)}
-            />
-            <div className="modal-line" />
-        </>
-  )
+    <>
+      <h4>Amount</h4>
+      <FormInput
+        ref={register({
+          required: 'Field is required!',
+          pattern: /[0-9]/i
+        })}
+        lbl={'Q'}
+        min={0}
+        name="amountQ"
+        type="number"
+        placeholder="0.0"
+        valid={errors.amountQ?.message}
+      />
+      <Button
+        position="relative"
+        right="-367px"
+        type="outline"
+        margin="0px 0px 12px 0px"
+        title="Withdraw"
+        width="90px"
+        handleButton={handleSubmit(setWithdrawVesting)}
+      />
+      <div className="modal-line" />
+    </>
+  );
 }
 
-export default ManageVestingBalance
+export default ManageVestingBalance;

@@ -1,2 +1,2 @@
-export const GET_Q_PROPOSALS = 'GET_Q_PROPOSALS'
-export const SET_Q_PROPOSALS = 'SET_Q_PROPOSALS'
+export const GET_Q_PROPOSALS = 'GET_Q_PROPOSALS';
+export const SET_Q_PROPOSALS = 'SET_Q_PROPOSALS';

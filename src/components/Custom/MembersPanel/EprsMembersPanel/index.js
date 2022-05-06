@@ -1,1 +1,1 @@
-export { default } from './EprsMembersPanel'
+export { default } from './EprsMembersPanel';

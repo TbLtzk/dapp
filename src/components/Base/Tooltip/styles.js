@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components';
 
 export const ChildrenWrapper = styled.div`
   position: relative;
@@ -7,7 +7,7 @@ export const ChildrenWrapper = styled.div`
     width: 100%;
     height: 100%;
   }
-`
+`;
 
 function getTooltipPosition (positon) {
   switch (positon) {
@@ -15,7 +15,7 @@ function getTooltipPosition (positon) {
       return css`
         top: -5px;
         left: 105%;
-      `
+      `;
     }
     case 'left': {
       return css`
@@ -25,7 +25,7 @@ function getTooltipPosition (positon) {
         &:after {
           display: none;
         }
-      `
+      `;
     }
 
     case 'bottom': {
@@ -37,7 +37,7 @@ function getTooltipPosition (positon) {
         &:after {
           display: none;
         }
-      `
+      `;
     }
     case 'top':
     default: {
@@ -46,7 +46,7 @@ function getTooltipPosition (positon) {
         bottom: 110%;
         left: 50%;
         transform: translate(-50%, 0);
-      `
+      `;
     }
   }
 }
@@ -104,4 +104,4 @@ export const TooltipContainer = styled.span`
     visibility: visible;
     opacity: 1;
   }
-`
+`;

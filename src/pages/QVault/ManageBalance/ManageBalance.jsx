@@ -1,24 +1,26 @@
-import React, { useEffect, useState } from 'react'
-import CustomBlock from 'components/Base/CustomBlock'
-import FormInput from 'components/Base/Form/FormInput'
-import Button from 'components/Base/Buttons/Button'
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { useForm } from 'react-hook-form'
+import Button from 'components/Base/Buttons/Button';
+import CustomBlock from 'components/Base/CustomBlock';
+import FormInput from 'components/Base/Form/FormInput';
 
-import { useDispatch, useSelector } from 'react-redux'
-import { setDepositCall, setWithdrawCall, setSendCall } from 'store/q-vault/action-creators'
-import { userAddressMetamask } from 'store/user-inf/selectors'
-import { accountBalance } from 'store/q-vault/selectors'
-import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper'
-import { WARNING_MAX_NUMBER } from 'constants/statuses'
-import { BN, isAddress } from 'func/useful'
+import { setDepositCall, setSendCall, setWithdrawCall } from 'store/q-vault/action-creators';
+import { accountBalance } from 'store/q-vault/selectors';
+import { userAddressMetamask } from 'store/user-inf/selectors';
+
+import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper';
+
+import { WARNING_MAX_NUMBER } from 'constants/statuses';
+import { BN, isAddress } from 'func/useful';
 
 export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
-  const dispatch = useDispatch()
-  const address = useSelector(userAddressMetamask)
-  const depositMax = useSelector(accountBalance)
+  const dispatch = useDispatch();
+  const address = useSelector(userAddressMetamask);
+  const depositMax = useSelector(accountBalance);
 
-  const { register: registerSend, handleSubmit: submitSend, errors: errorsSend, setValue: setSendValue } = useForm()
+  const { register: registerSend, handleSubmit: submitSend, errors: errorsSend, setValue: setSendValue } = useForm();
 
   const {
     register: registerDeposit,
@@ -27,170 +29,185 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
     setValue: setDepositValue,
     setError: setDepositError,
     clearErrors: clearDepositErrors
-  } = useForm()
+  } = useForm();
 
   const {
     register: registerWithdraw,
     handleSubmit: submitWithdraw,
     errors: errorsWithdraw,
     setValue: setWithdrawValue
-  } = useForm()
+  } = useForm();
 
-  const [maxQVaultDepositAmount, setMaxQVaultDepositAmount] = useState(null)
+  const [maxQVaultDepositAmount, setMaxQVaultDepositAmount] = useState(null);
 
   useEffect(() => {
     if (depositMax) {
-      fetchQVaultDepositAmount()
+      fetchQVaultDepositAmount();
     }
-  }, [depositMax])
+  }, [depositMax]);
 
   async function fetchQVaultDepositAmount () {
-    const amount = await getQVaultDepositAmount(address, depositMax)
-    setMaxQVaultDepositAmount(amount)
+    const amount = await getQVaultDepositAmount(address, depositMax);
+    setMaxQVaultDepositAmount(amount);
   }
 
   async function handleDepositMax () {
     if (maxQVaultDepositAmount > 0) {
-      setDepositValue('amount', maxQVaultDepositAmount)
+      setDepositValue('amount', maxQVaultDepositAmount);
       setDepositError('amount', {
         message: WARNING_MAX_NUMBER
-      })
+      });
     }
   }
 
   function handleWithdrawMax () {
     if (Number(maxQVaultWithdrawAmount) > 0) {
-      setWithdrawValue('amount', maxQVaultWithdrawAmount)
+      setWithdrawValue('amount', maxQVaultWithdrawAmount);
     }
   }
 
   function handleSendMax () {
     if (Number(maxQVaultWithdrawAmount) > 0) {
-      setSendValue('amount', maxQVaultWithdrawAmount)
+      setSendValue('amount', maxQVaultWithdrawAmount);
     }
   }
 
   function handleChangeDepositAmount (event) {
-    const { value } = event.target
-    const moreThanMaxAmount = BN(value).comparedTo(BN(maxQVaultDepositAmount))
+    const { value } = event.target;
+    const moreThanMaxAmount = BN(value).comparedTo(BN(maxQVaultDepositAmount));
 
     if (moreThanMaxAmount === 0) {
       setDepositError('amount', {
         message: WARNING_MAX_NUMBER
-      })
+      });
     } else {
       if (moreThanMaxAmount === 1) {
-        setDepositValue('amount', maxQVaultDepositAmount)
+        setDepositValue('amount', maxQVaultDepositAmount);
         setDepositError('amount', {
           message: WARNING_MAX_NUMBER
-        })
+        });
       } else {
-        clearDepositErrors()
+        clearDepositErrors();
       }
     }
   }
 
   function setDepositAmount (formData) {
-    dispatch(setDepositCall(address, formData.amount))
-    setDepositValue('amount', null)
+    dispatch(setDepositCall(address, formData.amount));
+    setDepositValue('amount', null);
   }
 
   function setSendAmount (formData) {
-    dispatch(setSendCall(formData.address, formData.amount))
-    setSendValue('amount', null)
-    setSendValue('address', null)
+    dispatch(setSendCall(formData.address, formData.amount));
+    setSendValue('amount', null);
+    setSendValue('address', null);
   }
 
   function setWithdrawAmount (formData) {
-    dispatch(setWithdrawCall(address, formData.amount))
-    setWithdrawValue('amount', null)
+    dispatch(setWithdrawCall(address, formData.amount));
+    setWithdrawValue('amount', null);
   }
 
   return (
-        <CustomBlock>
-            <h1>Manage Balance</h1>
-            <h4>Transfer Into Q Vault</h4>
-            <div className="card__one-line-simple-form">
-                <FormInput
-                    lbl="Q"
-                    min={0}
-                    color={true}
-                    name="amount"
-                    type="number"
-                    placeholder="0.0"
-                    onMaxClick={handleDepositMax}
-                    onChange={handleChangeDepositAmount}
-                    ref={registerDeposit({
-                      required: 'Field is required!',
-                      pattern: {
-                        value: /[0-9.]/gim,
-                        message: 'Invalid amount'
-                      }
-                    })}
-                    valid={errorsDeposit.amount?.message}
-                />
-                <Button type="outline" title="Transfer" width="90px" handleButton={submitDeposit(setDepositAmount)} />
-            </div>
-            <h4>Withdraw from Q Vault</h4>
-            <div className="card__one-line-simple-form">
-                <FormInput
-                    min={0}
-                    lbl="Q"
-                    name="amount"
-                    color={true}
-                    type="number"
-                    placeholder="0.0"
-                    onMaxClick={handleWithdrawMax}
-                    ref={registerWithdraw({
-                      required: 'Field is required!',
-                      pattern: {
-                        value: /[0-9.]/gim,
-                        message: 'Invalid amount'
-                      }
-                    })}
-                    valid={errorsWithdraw.amount?.message}
-                />
-                <Button type="outline" title="Withdraw" width="90px" handleButton={submitWithdraw(setWithdrawAmount)} />
-            </div>
-            <h4>Send to foreign QVault account</h4>
-            <div className="card__one-line-form-2-2-1">
-                <h4>Address</h4>
-                <h4>Amount</h4>
-            </div>
-            <div className="card__one-line-form-2-2-1">
-                <FormInput
-                    name="address"
-                    type="text"
-                    placeholder="0x000"
-                    color={true}
-                    valid={errorsSend.address?.message}
-                    ref={registerSend({
-                      required: 'Field is required!',
-                      validate: (address) => (isAddress(address) ? true : 'Incorrect address')
-                    })}
-                />
+    <CustomBlock>
+      <h1>Manage Balance</h1>
+      <h4>Transfer Into Q Vault</h4>
+      <div className="card__one-line-simple-form">
+        <FormInput
+          ref={registerDeposit({
+            required: 'Field is required!',
+            pattern: {
+              value: /[0-9.]/gim,
+              message: 'Invalid amount'
+            }
+          })}
+          lbl="Q"
+          min={0}
+          color={true}
+          name="amount"
+          type="number"
+          placeholder="0.0"
+          valid={errorsDeposit.amount?.message}
+          onMaxClick={handleDepositMax}
+          onChange={handleChangeDepositAmount}
+        />
+        <Button
+          type="outline"
+          title="Transfer"
+          width="90px"
+          handleButton={submitDeposit(setDepositAmount)}
+        />
+      </div>
+      <h4>Withdraw from Q Vault</h4>
+      <div className="card__one-line-simple-form">
+        <FormInput
+          ref={registerWithdraw({
+            required: 'Field is required!',
+            pattern: {
+              value: /[0-9.]/gim,
+              message: 'Invalid amount'
+            }
+          })}
+          min={0}
+          lbl="Q"
+          name="amount"
+          color={true}
+          type="number"
+          placeholder="0.0"
+          valid={errorsWithdraw.amount?.message}
+          onMaxClick={handleWithdrawMax}
+        />
+        <Button
+          type="outline"
+          title="Withdraw"
+          width="90px"
+          handleButton={submitWithdraw(setWithdrawAmount)}
+        />
+      </div>
+      <h4>Send to foreign QVault account</h4>
+      <div className="card__one-line-form-2-2-1">
+        <h4>Address</h4>
+        <h4>Amount</h4>
+      </div>
+      <div className="card__one-line-form-2-2-1">
+        <FormInput
+          ref={registerSend({
+            required: 'Field is required!',
+            validate: (address) => (isAddress(address) ? true : 'Incorrect address')
+          })}
+          name="address"
+          type="text"
+          placeholder="0x000"
+          color={true}
+          valid={errorsSend.address?.message}
+        />
 
-                <FormInput
-                    color={true}
-                    min={0}
-                    name="amount"
-                    type="number"
-                    lbl="Q"
-                    placeholder="0.00"
-                    onMaxClick={handleSendMax}
-                    ref={registerSend({
-                      required: 'Field is required!',
-                      pattern: {
-                        value: /[0-9.]/gim,
-                        message: 'Invalid amount'
-                      }
-                    })}
-                    valid={errorsSend.amount?.message}
-                />
-                <div className="card__one-line-form-2-2-1-action">
-                    <Button width="90px" title="Send" type="outline" handleButton={submitSend(setSendAmount)} />
-                </div>
-            </div>
-        </CustomBlock>
-  )
+        <FormInput
+          ref={registerSend({
+            required: 'Field is required!',
+            pattern: {
+              value: /[0-9.]/gim,
+              message: 'Invalid amount'
+            }
+          })}
+          color={true}
+          min={0}
+          name="amount"
+          type="number"
+          lbl="Q"
+          placeholder="0.00"
+          valid={errorsSend.amount?.message}
+          onMaxClick={handleSendMax}
+        />
+        <div className="card__one-line-form-2-2-1-action">
+          <Button
+            width="90px"
+            title="Send"
+            type="outline"
+            handleButton={submitSend(setSendAmount)}
+          />
+        </div>
+      </div>
+    </CustomBlock>
+  );
 }

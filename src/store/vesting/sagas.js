@@ -1,80 +1,80 @@
-import { put, takeEvery, call, select } from 'redux-saga/effects'
-
-import * as actionTypes from './action-types'
+import { call, put, select, takeEvery } from 'redux-saga/effects';
 
 import {
-  setVestingBalance,
   setMinimumVestingTimeLock,
+  setVestingBalance,
   setVestingTimeLocks
-} from './action-creators'
+} from './action-creators';
+import * as actionTypes from './action-types';
 
-import { toWei, fromWei } from 'func/balance'
-import { addIndex } from 'func/useful'
-import { getNowTimestamp } from 'func/convertDate'
-import { getVestingInstance } from 'contracts/contract-instance'
+import { getAmountOnContract } from 'store/locked-amount/sagas';
+import { setErrorMessage, setTransactionLoading } from 'store/transaction-handler/action-creators';
 
-import { setErrorMessage, setTransactionLoading } from 'store/transaction-handler/action-creators'
-import ErrorHandler from 'func/ErrorHandler'
-import { getAmountOnContract } from 'store/locked-amount/sagas'
-import { CONTRACT_TYPES } from 'constants/contracts'
+import { getVestingInstance } from 'contracts/contract-instance';
+
+import { CONTRACT_TYPES } from 'constants/contracts';
+import { fromWei, toWei } from 'func/balance';
+import { getNowTimestamp } from 'func/convertDate';
+import ErrorHandler from 'func/ErrorHandler';
+import { addIndex } from 'func/useful';
 
 function * getVestingBalanceGenerator ({ address }) {
   try {
-    const contract = yield call(getVestingInstance)
-    const data = yield contract.balanceOf(address)
-    yield put(setVestingBalance(fromWei(data)))
+    const contract = yield call(getVestingInstance);
+    const data = yield contract.balanceOf(address);
+    yield put(setVestingBalance(fromWei(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
 function * getMinimumVestingTimeLockGenerator ({ address }) {
   try {
-    const contract = yield call(getVestingInstance)
-    const data = yield contract.getMinimumBalance(address, getNowTimestamp())
-    yield put(setMinimumVestingTimeLock(Number(fromWei(data))))
+    const contract = yield call(getVestingInstance);
+    const data = yield contract.getMinimumBalance(address, getNowTimestamp());
+    yield put(setMinimumVestingTimeLock(Number(fromWei(data))));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
 function * getVestingTimeLocksGenerator ({ address }) {
   try {
-    const contract = yield call(getVestingInstance)
-    const data = yield contract.getTimeLocks(address)
-    yield put(setVestingTimeLocks(addIndex(data)))
+    const contract = yield call(getVestingInstance);
+    const data = yield contract.getTimeLocks(address);
+    yield put(setVestingTimeLocks(addIndex(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error)
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
 function * setVestingDepositGenerator ({ address, amountQ }) {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading());
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setErrorMessage(errorMsg));
   } finally {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading());
   }
 }
 
 function * setVestingWithdrawGenerator ({ amountQ }) {
   try {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading());
 
-    const { userAddress } = yield select((state) => state.userInf)
-    const contract = yield call(getVestingInstance)
-    const data = yield contract.withdraw(toWei(amountQ), { from: userAddress })
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = yield call(getVestingInstance);
+    const data = yield contract.withdraw(toWei(amountQ), { from: userAddress });
 
     if (data.status) {
-      yield call(getAmountOnContract, CONTRACT_TYPES.vesting, userAddress)
+      yield call(getAmountOnContract, CONTRACT_TYPES.vesting, userAddress);
     }
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error)
-    yield put(setErrorMessage(errorMsg))
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setErrorMessage(errorMsg));
   } finally {
-    yield put(setTransactionLoading())
+    yield put(setTransactionLoading());
   }
 }
 
@@ -85,4 +85,4 @@ export default [
 
   takeEvery(actionTypes.SET_VESTING_WITHDRAW, setVestingWithdrawGenerator),
   takeEvery(actionTypes.SET_VESTING_DEPOSIT, setVestingDepositGenerator)
-]
+];

@@ -1,57 +1,57 @@
-import React, { useCallback } from 'react'
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { useDispatch, useSelector } from 'react-redux'
-import { votingLockingEnd } from 'store/q-vault/selectors'
-import { formVoteObject } from 'store/voting/proposals/selectors'
+import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
 
-import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup'
+import { basicVote, constitutionCheck } from './constants';
 
-import { basicVote, constitutionCheck } from './constants'
+import { votingLockingEnd } from 'store/q-vault/selectors';
+import { formVoteObject } from 'store/voting/proposals/selectors';
 
 function CreateStep1 ({ register, errors }) {
-  const formData = useSelector(formVoteObject)
-  const userLockingEnd = useSelector(votingLockingEnd)
-  const dispatch = useDispatch()
+  const formData = useSelector(formVoteObject);
+  const userLockingEnd = useSelector(votingLockingEnd);
+  const dispatch = useDispatch();
 
   const contentSwitcher = useCallback(() => {
     switch (formData?.first) {
       case 'basic-vote-on-proposal':
         return (
-                    <>
-                        <h2>{basicVote.subtitle}</h2>
-                        <h2>{basicVote.radioBtnDescr}</h2>
-                        <RadioBtnGroup
-                            formData={formData}
-                            values={basicVote.radioBtn}
-                            register={register}
-                            errors={errors}
-                            name={basicVote.radioBtnName}
-                            handleChange={(value) => {}}
-                        />
-                    </>
-        )
+          <>
+            <h2>{basicVote.subtitle}</h2>
+            <h2>{basicVote.radioBtnDescr}</h2>
+            <RadioBtnGroup
+              formData={formData}
+              values={basicVote.radioBtn}
+              register={register}
+              errors={errors}
+              name={basicVote.radioBtnName}
+              handleChange={(value) => {}}
+            />
+          </>
+        );
       case 'constitution-check':
         return (
-                    <>
-                        <h2>{constitutionCheck.subtitle}</h2>
-                        <h2>{constitutionCheck.radioBtnDescr}</h2>
-                        <RadioBtnGroup
-                            formData={formData}
-                            values={constitutionCheck.radioBtn}
-                            register={register}
-                            errors={errors}
-                            name={constitutionCheck.radioBtnName}
-                            handleChange={(value) => {}}
-                        />
-                    </>
-        )
+          <>
+            <h2>{constitutionCheck.subtitle}</h2>
+            <h2>{constitutionCheck.radioBtnDescr}</h2>
+            <RadioBtnGroup
+              formData={formData}
+              values={constitutionCheck.radioBtn}
+              register={register}
+              errors={errors}
+              name={constitutionCheck.radioBtnName}
+              handleChange={(value) => {}}
+            />
+          </>
+        );
 
       default:
-        return null
+        return null;
     }
-  }, [register, errors, userLockingEnd, dispatch])
+  }, [register, errors, userLockingEnd, dispatch]);
 
-  return <>{contentSwitcher()}</>
+  return <>{contentSwitcher()}</>;
 }
 
-export default CreateStep1
+export default CreateStep1;

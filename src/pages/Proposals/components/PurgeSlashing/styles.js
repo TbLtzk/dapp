@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const PurgeSlashingContainer = styled.div`
   display: flex;
@@ -20,4 +20,4 @@ export const PurgeSlashingContainer = styled.div`
       margin-right: 15px;
     }
   }
-`
+`;

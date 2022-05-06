@@ -1,30 +1,33 @@
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import PropTypes from 'prop-types'
-import { errorHandler } from 'func/useful'
-import FormInput from '../../Form/FormInput'
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-import { ButtonSlideForm, BtnSlide } from './styles'
+import PropTypes from 'prop-types';
+
+import FormInput from '../../Form/FormInput';
+
+import { BtnSlide, ButtonSlideForm } from './styles';
+
+import { errorHandler } from 'func/useful';
 
 export default function ButtonSlide (props) {
-  const { btnTxt, btnShortTxt, onclick, inpType, inpPlaceholder, inpRules, disabled, onChange } = props
-  const { register, handleSubmit, errors } = useForm()
-  const [isClickedOnce, setIsClickedOnce] = useState(false)
+  const { btnTxt, btnShortTxt, onclick, inpType, inpPlaceholder, inpRules, disabled, onChange } = props;
+  const { register, handleSubmit, errors } = useForm();
+  const [isClickedOnce, setIsClickedOnce] = useState(false);
 
   const clickBtn = (e) => {
     if (isClickedOnce === false) {
-      e.preventDefault()
-      setIsClickedOnce(true)
+      e.preventDefault();
+      setIsClickedOnce(true);
     }
-  }
+  };
 
   return (
     <ButtonSlideForm onSubmit={handleSubmit(onclick)}>
       <FormInput
+        ref={register(inpRules)}
         name="field"
         type={inpType}
         placeholder={inpPlaceholder}
-        ref={register(inpRules)}
         valid={errorHandler(errors, 'field')}
         disabled={disabled}
         onChange={onChange}
@@ -37,7 +40,7 @@ export default function ButtonSlide (props) {
         {isClickedOnce ? btnShortTxt : btnTxt}
       </BtnSlide>
     </ButtonSlideForm>
-  )
+  );
 }
 
 ButtonSlide.propTypes = {
@@ -48,8 +51,8 @@ ButtonSlide.propTypes = {
   inpPlaceholder: PropTypes.string.isRequired,
   inpRules: PropTypes.object.isRequired,
   disabled: PropTypes.bool
-}
+};
 
 ButtonSlide.defaultProps = {
   disabled: false
-}
+};

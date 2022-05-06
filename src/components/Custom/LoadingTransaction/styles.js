@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const Wrap = styled.div`
   position: fixed;
@@ -10,19 +10,19 @@ export const Wrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 export const Shadow = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgb(0 0 0 / 54%);
-`
+`;
 
 export const WrapLoading = styled.div`
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 export const WrapText = styled.div`
   display: flex;
@@ -32,4 +32,4 @@ export const WrapText = styled.div`
   p {
     color: #FFFFFF;
   }
-`
+`;

@@ -1,6 +1,6 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-import { indents } from 'constants/style'
+import { indents } from 'constants/style';
 
 export const TabsStyle = styled.div`
   .tabs__titles {
@@ -32,4 +32,4 @@ export const TabsStyle = styled.div`
       display: block;
     }
   }
-`
+`;

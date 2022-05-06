@@ -23,7 +23,7 @@ export const CONTRACT_TYPES = {
   systemSurplusAuction: 'systemSurplusAuction',
   systemDebtAuction: 'systemDebtAuction',
   liquidationAuction: 'liquidationAuction'
-}
+};
 
 export const CONTRACTS_NAMES = {
   addressVoting: 'addressVoting',
@@ -50,4 +50,4 @@ export const CONTRACTS_NAMES = {
   systemSurplusAuction: 'systemSurplusAuction',
   liquidationAuction: 'liquidationAuction',
   systemDebtAuction: 'systemDebtAuction'
-}
+};

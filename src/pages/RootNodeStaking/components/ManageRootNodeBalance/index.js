@@ -1,1 +1,1 @@
-export { default } from './ManageRootNodeBalance'
+export { default } from './ManageRootNodeBalance';

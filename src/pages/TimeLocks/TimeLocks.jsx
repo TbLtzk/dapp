@@ -1,66 +1,67 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { userAddressMetamask } from 'store/user-inf/selectors'
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import AddressForm from './components/AddressForm'
-import BalanceCard from './components/BalanceCard'
-import { fN } from 'func/useful'
-import PageWrap from 'components/Base/PageWrap'
+import PageWrap from 'components/Base/PageWrap';
 
-import { getUserBalance, getMinimumQVaultTimeLock, getQVaultTimeLocks } from 'store/q-vault/action-creators'
-import { getRootNodeStakes, getMinimumRootTimeLock, getRootTimeLocks } from 'store/root-node/action-creators'
-import { getSelfStake, getMinimumValidatorsTimeLock, getValidatorsTimeLocks } from 'store/validators/action-creators'
-import { getVestingBalance, getMinimumVestingTimeLock, getVestingTimeLocks } from 'store/vesting/action-creators'
+import AddressForm from './components/AddressForm';
+import BalanceCard from './components/BalanceCard';
 
-import { userBalance, qVaultMinimumTimeLock, qVaultTimeLocks } from 'store/q-vault/selectors'
-import { rootNodeStake, rootMinimumTimeLock, rootTimeLocks } from 'store/root-node/selectors'
-import { selfStake, validatorsMinimumTimeLock, validatorsTimeLocks } from 'store/validators/selectors'
-import { vestingBalance, vestingMinimumTimeLock, vestingTimeLocks } from 'store/vesting/selectors'
+import { getMinimumQVaultTimeLock, getQVaultTimeLocks, getUserBalance } from 'store/q-vault/action-creators';
+import { qVaultMinimumTimeLock, qVaultTimeLocks, userBalance } from 'store/q-vault/selectors';
+import { getMinimumRootTimeLock, getRootNodeStakes, getRootTimeLocks } from 'store/root-node/action-creators';
+import { rootMinimumTimeLock, rootNodeStake, rootTimeLocks } from 'store/root-node/selectors';
+import { userAddressMetamask } from 'store/user-inf/selectors';
+import { getMinimumValidatorsTimeLock, getSelfStake, getValidatorsTimeLocks } from 'store/validators/action-creators';
+import { selfStake, validatorsMinimumTimeLock, validatorsTimeLocks } from 'store/validators/selectors';
+import { getMinimumVestingTimeLock, getVestingBalance, getVestingTimeLocks } from 'store/vesting/action-creators';
+import { vestingBalance, vestingMinimumTimeLock, vestingTimeLocks } from 'store/vesting/selectors';
+
+import { fN } from 'func/useful';
 
 function TimeLocks () {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const userAddress = useSelector(userAddressMetamask)
+  const userAddress = useSelector(userAddressMetamask);
 
-  const [currentAddress, setCurrentAddress] = useState({ address: userAddress })
+  const [currentAddress, setCurrentAddress] = useState({ address: userAddress });
 
-  const qVaultStakeBalance = useSelector(userBalance)
-  const qVaultTimeLockMinimumBalance = useSelector(qVaultMinimumTimeLock)
-  const qVaultTimeLocksArray = useSelector(qVaultTimeLocks)
+  const qVaultStakeBalance = useSelector(userBalance);
+  const qVaultTimeLockMinimumBalance = useSelector(qVaultMinimumTimeLock);
+  const qVaultTimeLocksArray = useSelector(qVaultTimeLocks);
 
-  const rootStakeBalance = useSelector(rootNodeStake)
-  const rootTimeLockMinimumBalance = useSelector(rootMinimumTimeLock)
-  const rootTimeLocksArray = useSelector(rootTimeLocks)
+  const rootStakeBalance = useSelector(rootNodeStake);
+  const rootTimeLockMinimumBalance = useSelector(rootMinimumTimeLock);
+  const rootTimeLocksArray = useSelector(rootTimeLocks);
 
-  const validatorSelfStake = useSelector(selfStake)
-  const validatorsTimeLockMinimumBalance = useSelector(validatorsMinimumTimeLock)
-  const validatorsTimeLocksArray = useSelector(validatorsTimeLocks)
+  const validatorSelfStake = useSelector(selfStake);
+  const validatorsTimeLockMinimumBalance = useSelector(validatorsMinimumTimeLock);
+  const validatorsTimeLocksArray = useSelector(validatorsTimeLocks);
 
-  const vestingStakeBalance = useSelector(vestingBalance)
-  const vestingTimeLockMinimumBalance = useSelector(vestingMinimumTimeLock)
-  const vestingTimeLocksArray = useSelector(vestingTimeLocks)
+  const vestingStakeBalance = useSelector(vestingBalance);
+  const vestingTimeLockMinimumBalance = useSelector(vestingMinimumTimeLock);
+  const vestingTimeLocksArray = useSelector(vestingTimeLocks);
 
   useEffect(() => {
-    dispatch(getUserBalance(currentAddress.address))
-    dispatch(getMinimumQVaultTimeLock(currentAddress.address))
-    dispatch(getQVaultTimeLocks(currentAddress.address))
+    dispatch(getUserBalance(currentAddress.address));
+    dispatch(getMinimumQVaultTimeLock(currentAddress.address));
+    dispatch(getQVaultTimeLocks(currentAddress.address));
 
-    dispatch(getRootNodeStakes(currentAddress.address))
-    dispatch(getMinimumRootTimeLock(currentAddress.address))
-    dispatch(getRootTimeLocks(currentAddress.address))
+    dispatch(getRootNodeStakes(currentAddress.address));
+    dispatch(getMinimumRootTimeLock(currentAddress.address));
+    dispatch(getRootTimeLocks(currentAddress.address));
 
-    dispatch(getSelfStake(currentAddress.address))
-    dispatch(getMinimumValidatorsTimeLock(currentAddress.address))
-    dispatch(getValidatorsTimeLocks(currentAddress.address))
+    dispatch(getSelfStake(currentAddress.address));
+    dispatch(getMinimumValidatorsTimeLock(currentAddress.address));
+    dispatch(getValidatorsTimeLocks(currentAddress.address));
 
-    dispatch(getVestingBalance(currentAddress.address))
-    dispatch(getMinimumVestingTimeLock(currentAddress.address))
-    dispatch(getVestingTimeLocks(currentAddress.address))
-  }, [dispatch, currentAddress])
+    dispatch(getVestingBalance(currentAddress.address));
+    dispatch(getMinimumVestingTimeLock(currentAddress.address));
+    dispatch(getVestingTimeLocks(currentAddress.address));
+  }, [dispatch, currentAddress]);
 
   const handleRefresh = (userAddress) => {
-    setCurrentAddress(userAddress)
-  }
+    setCurrentAddress(userAddress);
+  };
 
   const cardsData = [
     {
@@ -95,18 +96,22 @@ function TimeLocks () {
       modalTitle: 'Deposit, Withdraw & Purge',
       title: 'Vesting Account Balance'
     }
-  ]
+  ];
 
   return (
-        <PageWrap headerTitle="Time Locks">
-            <AddressForm setAddressRefresh={handleRefresh} userAddress={currentAddress} />
-            <div className="content__colm-2 content__time-locks">
-                {cardsData.map((card) => (
-                    <BalanceCard key={card.contract} address={currentAddress.address} {...card} />
-                ))}
-            </div>
-        </PageWrap>
-  )
+    <PageWrap headerTitle="Time Locks">
+      <AddressForm setAddressRefresh={handleRefresh} userAddress={currentAddress} />
+      <div className="content__colm-2 content__time-locks">
+        {cardsData.map((card) => (
+          <BalanceCard
+            key={card.contract}
+            address={currentAddress.address}
+            {...card}
+          />
+        ))}
+      </div>
+    </PageWrap>
+  );
 }
 
-export default TimeLocks
+export default TimeLocks;

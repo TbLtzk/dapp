@@ -1,1 +1,1 @@
-export { default } from './CustomCardButtons'
+export { default } from './CustomCardButtons';

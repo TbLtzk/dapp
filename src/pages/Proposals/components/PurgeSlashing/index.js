@@ -1,1 +1,1 @@
-export { default } from './PurgeSlashing'
+export { default } from './PurgeSlashing';

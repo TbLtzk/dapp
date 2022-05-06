@@ -1,45 +1,46 @@
-import { ParameterType } from '@q-dev/q-js-sdk'
-import { CONTRACT_TYPES } from 'constants/contracts'
+import { ParameterType } from '@q-dev/q-js-sdk';
+
+import { CONTRACT_TYPES } from 'constants/contracts';
 
 export function getTypeName (typeId) {
   switch (typeId) {
     case ParameterType.ADDRESS:
-      return 'Address'
+      return 'Address';
     case ParameterType.BOOL:
-      return 'Boolean'
+      return 'Boolean';
     case ParameterType.STRING:
-      return 'String'
+      return 'String';
     case ParameterType.UINT:
-      return 'Uint'
+      return 'Uint';
   }
 }
 
 export function getTypeKey (typeId) {
   switch (typeId) {
     case ParameterType.ADDRESS:
-      return 'address'
+      return 'address';
     case ParameterType.BOOL:
-      return 'boolean'
+      return 'boolean';
     case ParameterType.STRING:
-      return 'string'
+      return 'string';
     case ParameterType.UINT:
-      return 'uint'
+      return 'uint';
     case ParameterType.BYTE:
-      return 'byte'
+      return 'byte';
     default:
-      return ''
+      return '';
   }
 }
 
 export function getContractTypeKey (typeId) {
   switch (typeId) {
     case CONTRACT_TYPES.constitution:
-      return 'constitution'
+      return 'constitution';
     case CONTRACT_TYPES.qDefi:
-      return 'qDefi'
+      return 'qDefi';
     case CONTRACT_TYPES.qFee:
-      return 'qFee'
+      return 'qFee';
     default:
-      return ''
+      return '';
   }
 }

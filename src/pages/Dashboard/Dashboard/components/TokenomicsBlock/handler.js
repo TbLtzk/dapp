@@ -1,73 +1,75 @@
-import { remainDateTimeSince } from 'func/convertDate'
+import { setErrorMessage } from 'store/transaction-handler/action-creators';
+
 import {
   getCompoundRateKeeperQVaultInstance,
-  getValidationRewardProxyInstance,
   getDefaultAllocationProxyInstance,
-  getRootNodeRewardProxyInstance
-} from 'contracts/contract-instance'
-import { fN } from 'func/useful'
-import ErrorHandler from 'func/ErrorHandler'
-import { setErrorMessage } from 'store/transaction-handler/action-creators'
+  getRootNodeRewardProxyInstance,
+  getValidationRewardProxyInstance
+} from 'contracts/contract-instance';
+
+import { remainDateTimeSince } from 'func/convertDate';
+import ErrorHandler from 'func/ErrorHandler';
+import { fN } from 'func/useful';
 
 export default class Handler {
   constructor (userAddress, dispatch) {
-    this.userAddress = userAddress
-    this.dispatch = dispatch
+    this.userAddress = userAddress;
+    this.dispatch = dispatch;
   }
 
   async allocateValue (contract, stateSetter, stateLoading) {
     try {
-      stateLoading(true)
-      await contract.allocate({ from: this.userAddress })
-      const balance = await contract.getBalance()
-      stateSetter(fN(balance))
+      stateLoading(true);
+      await contract.allocate({ from: this.userAddress });
+      const balance = await contract.getBalance();
+      stateSetter(fN(balance));
     } catch (error) {
-      const errorMsg = ErrorHandler.process(error)
-      this.dispatch(setErrorMessage(errorMsg))
+      const errorMsg = ErrorHandler.process(error);
+      this.dispatch(setErrorMessage(errorMsg));
     } finally {
-      stateLoading(false)
+      stateLoading(false);
     }
   }
 
   async getDefaultAllocationProxy (stateSetter, stateLoading, isAllocate) {
-    const contract = await getDefaultAllocationProxyInstance()
+    const contract = await getDefaultAllocationProxyInstance();
     if (isAllocate) {
-      await this.allocateValue(contract, stateSetter, stateLoading)
+      await this.allocateValue(contract, stateSetter, stateLoading);
     } else {
-      const balance = await contract.getBalance()
-      stateSetter(fN(balance))
+      const balance = await contract.getBalance();
+      stateSetter(fN(balance));
     }
   }
 
   async getRootNodeRewardProxy (stateSetter, stateLoading, isAllocate) {
-    const contract = await getRootNodeRewardProxyInstance()
+    const contract = await getRootNodeRewardProxyInstance();
     if (isAllocate) {
-      await this.allocateValue(contract, stateSetter, stateLoading)
+      await this.allocateValue(contract, stateSetter, stateLoading);
     } else {
-      const balance = await contract.getBalance()
-      stateSetter(fN(balance))
+      const balance = await contract.getBalance();
+      stateSetter(fN(balance));
     }
   }
 
   async getValidationRewardProxy (stateSetter, stateLoading, isAllocate) {
-    const contract = await getValidationRewardProxyInstance()
+    const contract = await getValidationRewardProxyInstance();
     if (isAllocate) {
-      await this.allocateValue(contract, stateSetter, stateLoading)
+      await this.allocateValue(contract, stateSetter, stateLoading);
     } else {
-      const balance = await contract.getBalance()
-      stateSetter(fN(balance))
+      const balance = await contract.getBalance();
+      stateSetter(fN(balance));
     }
   }
 
   async getTimeSinceQHolderRewardUpdate (stateSetter, stateSetterUnixTimestamp) {
     try {
-      const contract = await getCompoundRateKeeperQVaultInstance()
-      const result = await contract.getLastUpdate()
-      stateSetterUnixTimestamp(result)
-      const transformTime = remainDateTimeSince(result)
-      stateSetter(transformTime)
+      const contract = await getCompoundRateKeeperQVaultInstance();
+      const result = await contract.getLastUpdate();
+      stateSetterUnixTimestamp(result);
+      const transformTime = remainDateTimeSince(result);
+      stateSetter(transformTime);
     } catch {
-      stateSetterUnixTimestamp(0)
+      stateSetterUnixTimestamp(0);
     }
   }
 }

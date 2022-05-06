@@ -1,90 +1,93 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
-import { LoadingWrap } from 'constants/style'
-import Button from 'components/Base/Buttons/Button'
-import { slice, concat } from 'lodash'
-import ListCard from './components/ListCard'
-import { fillArray } from 'func/useful'
-import SkeletonProposalsLoading from 'components/Base/SkeletonLoading'
+import { concat, slice } from 'lodash';
 
-const LIMIT = 9
-const LOAD_TYPES = { load: 'load', empty: 'empty', loaded: 'loaded' }
+import Button from 'components/Base/Buttons/Button';
+import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
+
+import ListCard from './components/ListCard';
+
+import { LoadingWrap } from 'constants/style';
+import { fillArray } from 'func/useful';
+
+const LIMIT = 9;
+const LOAD_TYPES = { load: 'load', empty: 'empty', loaded: 'loaded' };
 
 function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
-  const [state, setState] = useState(LOAD_TYPES.load)
-  const [showMore, setShowMore] = useState(false)
-  const [list, setList] = useState([])
-  const [index, setIndex] = useState(LIMIT)
+  const [state, setState] = useState(LOAD_TYPES.load);
+  const [showMore, setShowMore] = useState(false);
+  const [list, setList] = useState([]);
+  const [index, setIndex] = useState(LIMIT);
 
-  const LENGTH = proposals.length
+  const LENGTH = proposals.length;
 
   const handleNextProposals = () => {
-    const newIndex = index + LIMIT
-    const newShowMore = newIndex < LENGTH - 1
-    const newList = concat(list, slice(proposals, index, newIndex))
-    setIndex(newIndex)
-    setList(newList)
-    setShowMore(newShowMore)
-  }
+    const newIndex = index + LIMIT;
+    const newShowMore = newIndex < LENGTH - 1;
+    const newList = concat(list, slice(proposals, index, newIndex));
+    setIndex(newIndex);
+    setList(newList);
+    setShowMore(newShowMore);
+  };
 
   useEffect(() => {
-    checkProposals()
+    checkProposals();
     return () => {
-      setState(LOAD_TYPES.load)
-    }
-  }, [proposals, proposalsCount])
+      setState(LOAD_TYPES.load);
+    };
+  }, [proposals, proposalsCount]);
 
   const checkProposals = () => {
     if (LENGTH > LIMIT) {
-      setShowMore(true)
+      setShowMore(true);
     }
     if (LENGTH) {
-      setList(slice(proposals, 0, index))
-      setState(LOAD_TYPES.loaded)
+      setList(slice(proposals, 0, index));
+      setState(LOAD_TYPES.loaded);
     } else if (!proposalsCount) {
-      setState(LOAD_TYPES.empty)
+      setState(LOAD_TYPES.empty);
     }
-  }
+  };
 
   switch (state) {
     case LOAD_TYPES.empty:
-      return <p>No proposals</p>
+      return <p>No proposals</p>;
     case LOAD_TYPES.loaded:
       return (
-                <div>
-                    {list.map((proposal) => (
-                        <ListCard
-                            key={proposal.id + proposal?.contract}
-                            id={proposal.id + proposal?.contract}
-                            proposal={proposal}
-                            onePage={false}
-                            proposalsKind={proposalsKind}
-                        />
-                    ))}
-                    {showMore
-                      ? (
-                        <LoadingWrap>
-                            <Button
-                                margin="0 0 5% 0"
-                                width="140px"
-                                title="Show more"
-                                handleButton={handleNextProposals}
-                            />
-                        </LoadingWrap>
-                        )
-                      : null}
-                </div>
-      )
+        <div>
+          {list.map((proposal) => (
+            <ListCard
+              key={proposal.id + proposal?.contract}
+              id={proposal.id + proposal?.contract}
+              proposal={proposal}
+              onePage={false}
+              proposalsKind={proposalsKind}
+            />
+          ))}
+          {showMore
+            ? (
+              <LoadingWrap>
+                <Button
+                  margin="0 0 5% 0"
+                  width="140px"
+                  title="Show more"
+                  handleButton={handleNextProposals}
+                />
+              </LoadingWrap>
+            )
+            : null}
+        </div>
+      );
     case LOAD_TYPES.load:
     default:
       return (
-                <div>
-                    {fillArray(9).map((id) => (
-                        <SkeletonProposalsLoading key={id} />
-                    ))}
-                </div>
-      )
+        <div>
+          {fillArray(9).map((id) => (
+            <SkeletonProposalsLoading key={id} />
+          ))}
+        </div>
+      );
   }
 }
 
-export default ProposalsList
+export default ProposalsList;

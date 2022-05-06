@@ -1,1 +1,1 @@
-export { default } from './LazyLoading'
+export { default } from './LazyLoading';
