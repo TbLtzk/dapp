@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { slashingTypes } from '../CreateStep1/constants';
-
 import { formObject } from 'store/modal-handler/selectors';
+
+import { slashingTypes } from 'constants/slashingTypes';
 
 function CreateStep2 ({ activeTab }) {
   const formData = useSelector(formObject);

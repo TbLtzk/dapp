@@ -134,12 +134,12 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
                 ))}
                 <div className="modal__text-wrp">
                   <div className="modal__text-btn" onClick={() => handleParams(1)}>
-                                        Add parameter
+                    Add parameter
                   </div>
                   {params > 1
                     ? (
                       <div className="modal__text-btn" onClick={() => handleParams(-1)}>
-                                            Remove parameter
+                        Remove parameter
                       </div>
                     )
                     : null}

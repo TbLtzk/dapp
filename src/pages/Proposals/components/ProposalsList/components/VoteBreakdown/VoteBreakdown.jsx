@@ -8,11 +8,11 @@ import { Circle } from 'constants/style';
 
 function VoteBreakdown ({ voteBreakdown }) {
   const contractsWithoutVeto =
-        voteBreakdown.contract === CONTRACTS_NAMES.validatorsSlashingVoting ||
-        voteBreakdown.contract === CONTRACTS_NAMES.emergencyUpdateVoting;
+    voteBreakdown.contract === CONTRACTS_NAMES.validatorsSlashingVoting ||
+    voteBreakdown.contract === CONTRACTS_NAMES.emergencyUpdateVoting;
   const approveContract =
-        voteBreakdown.contract === CONTRACTS_NAMES.addressVoting ||
-        voteBreakdown.contract === CONTRACTS_NAMES.upgradeVoting;
+    voteBreakdown.contract === CONTRACTS_NAMES.addressVoting ||
+    voteBreakdown.contract === CONTRACTS_NAMES.upgradeVoting;
 
   return (
     <VoteBreakdownContainer>
@@ -42,7 +42,7 @@ function VoteBreakdown ({ voteBreakdown }) {
             <div>
               <ColorTitle color="white">
                 <Circle color="circle-white" />
-                                For:{' '}
+                For:{' '}
                 {voteBreakdown?.numberProposalVotes ? voteBreakdown.numberProposalVotes.votesFor : 0}
               </ColorTitle>
               <ColorTitle color="dark">
@@ -96,17 +96,17 @@ function VoteBreakdown ({ voteBreakdown }) {
                 <div>
                   <ColorTitle color="white">
                     <Circle color="circle-white" />
-                                    Objection: {voteBreakdown.vetoesNumber}
+                    Objection: {voteBreakdown.vetoesNumber}
                   </ColorTitle>
                   <ColorTitle color="dark">
                     <Circle color="circle-dark" />
-                                    No Vote: {voteBreakdown.noVote}
+                    No Vote: {voteBreakdown.noVote}
                   </ColorTitle>
                 </div>
               </div>
 
               <h5>
-                            Objection Requirement: {'> '}
+                Objection Requirement: {'> '}
                 {voteBreakdown.vetoThreshold} %
               </h5>
 

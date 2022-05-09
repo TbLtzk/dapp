@@ -1,7 +1,5 @@
 import { all, put, select, takeEvery } from 'redux-saga/effects';
 
-import { escrowTypes } from 'pages/Proposals/components/ProposalsList/components/SlashingObjection/ModalSlashingObjection/CreateStep1/constants';
-
 import { setErrorMessage, setTransactionCounter } from 'store/transaction-handler/action-creators';
 import { setSlashingProposals } from 'store/voting/slashing-proposals/action-creators';
 import * as actionTypes from 'store/voting/slashing-proposals/action-types';
@@ -11,6 +9,7 @@ import { creationSlashingContractsObjArray } from 'contracts/helpers/voting-help
 import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-helper';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
+import { escrowTypes } from 'constants/escrowTypes';
 import ErrorHandler from 'func/ErrorHandler';
 import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/useful';
 

@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useCallback, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
@@ -8,28 +8,32 @@ import { InputWrapper } from 'components/Base/Form/FormInput/styles';
 import { theme } from 'store/theme/selectors';
 import { loadTypeSelector } from 'store/user-inf/selectors';
 
+import { fields } from 'constants/fieldsNaming';
+import { from1to100Regex, hashRegex, linkRegex, numberRegex, vaultID } from 'constants/regex';
 import { LOAD_TYPES } from 'constants/statuses';
+import { isAddress } from 'func/useful';
 
-const FormInput = forwardRef((props, ref) => {
-  // eslint-disable-next-line react/prop-types
-  const {
-    name,
-    type,
-    placeholder,
-    valid,
-    onClick = () => {},
-    align,
-    onChange,
-    value,
-    disabled,
-    min,
-    color,
-    onMaxClick = null,
-    modal,
-    lbl,
-    controlId = 'formBasicEmail'
-  } = props;
-
+const FormInput = forwardRef(({
+  refType,
+  register,
+  setValue,
+  name,
+  type = 'text',
+  placeholder,
+  valid,
+  onClick = () => {},
+  align,
+  onChange,
+  value,
+  disabled,
+  min,
+  color,
+  onMaxClick = null,
+  modal,
+  lbl,
+  label,
+  controlId = 'formBasicEmail',
+}, ref) => {
   const [isFocus, setIsFocus] = useState('');
 
   const currentTheme = useSelector(theme);
@@ -37,45 +41,107 @@ const FormInput = forwardRef((props, ref) => {
   const isDisabled = loadType !== LOAD_TYPES.loaded ? '1' : disabled ? '1' : '';
   const isValid = valid ? 'error' : '';
 
+  const getTypeRef = useCallback(() => {
+    switch (refType) {
+      case fields.externalLink: {
+        return register({
+          required: 'Field is required!',
+          validate: (link) => (link.match(linkRegex) ? true : 'Link not valid')
+        });
+      }
+      case fields.externalLinkOptional: {
+        return register({
+          validate: (link) => (!link || link.match(linkRegex) ? true : 'Link not valid')
+        });
+      }
+      case fields.address: {
+        return register({
+          required: 'Field is required!',
+          validate: (address) => (isAddress(address) ? true : 'Address not valid')
+        });
+      }
+      case fields.vault: {
+        return register({
+          required: 'Field is required!',
+          validate: (value) => (value.match(vaultID) ? true : 'Vault ID not valid')
+        });
+      }
+      case fields.bid: {
+        return register({
+          required: 'Field is required!',
+          validate: (value) => (value.match(numberRegex) ? true : 'Bid not valid')
+        });
+      }
+      case fields.hash: {
+        return register({
+          required: 'Field is required!',
+          validate: (hash) => (hash.match(hashRegex) ? true : 'Hash not valid')
+        });
+      }
+      case fields.value: {
+        return register({
+          required: 'Field is required!',
+          validate: (value) => {
+            if (Number(value) > 100) {
+              setValue(fields.value, '100');
+              return true;
+            } else {
+              return value.match(from1to100Regex) ? true : 'Percentage value not valid';
+            }
+          }
+        });
+      }
+      default: {
+        return register({
+          required: 'Field is required!',
+          validate: (value) => (value.length >= 70 ? 'Maximum length reached' : true)
+        });
+      }
+    }
+  }, []);
+
   return (
-    <InputWrapper
-      controlId={controlId}
-      align={align}
-      type={isValid}
-      palette={currentTheme}
-      color={color ? 1 : 0}
-      lbl={lbl}
-      isfocus={isValid === 'error' ? '' : isFocus}
-      isdisabled={isDisabled}
-      modal={modal ? 1 : 0}
-    >
-      <div>
-        {lbl ? <div className="input_lbl">{lbl}</div> : null}
-        <Form.Control
-          ref={ref}
-          min={min}
-          type={type}
-          autoComplete="off"
-          placeholder={placeholder}
-          name={name}
-          value={value}
-          disabled={isDisabled}
-          onFocus={() => setIsFocus('1')}
-          onBlur={() => setIsFocus('')}
-          onClick={onClick}
-          onKeyPress={(e) => e.key === 'Enter' && e.preventDefault()}
-          onChange={onChange}
-        />
-        {onMaxClick
-          ? (
-            <div className="input_maxbtn" onClick={onMaxClick}>
-                        Max
-            </div>
-          )
-          : null}
-      </div>
-      <ErrorInputMessage message={valid} />
-    </InputWrapper>
+    <>
+      {label ? <h4>{label}</h4> : null}
+      <InputWrapper
+        controlId={controlId}
+        align={align}
+        type={isValid}
+        palette={currentTheme}
+        color={color ? 1 : 0}
+        lbl={lbl}
+        isfocus={isValid === 'error' ? '' : isFocus}
+        isdisabled={isDisabled}
+        modal={modal ? 1 : 0}
+      >
+        <div>
+          {lbl ? <div className="input_lbl">{lbl}</div> : null}
+          <Form.Control
+            ref={ref || getTypeRef()}
+            min={min}
+            type={type}
+            autoComplete="off"
+            placeholder={placeholder}
+            name={name}
+            value={value}
+            disabled={isDisabled}
+            onFocus={() => setIsFocus('1')}
+            onBlur={() => setIsFocus('')}
+            onClick={onClick}
+            onKeyPress={(e) => e.key === 'Enter' && e.preventDefault()}
+            onChange={onChange}
+          />
+          {onMaxClick
+            ? (
+              <div className="input_maxbtn" onClick={onMaxClick}>
+                Max
+              </div>
+            )
+            : null}
+        </div>
+        <ErrorInputMessage message={valid} />
+      </InputWrapper>
+    </>
   );
 });
 

@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import ModalWindow from 'components/Base/ModalWindow';
 
-import { parameterVote } from './CreateStep2/QExpertS2/constants';
 import { arrExpert, arrQProposal, arrQProposalAdvanced, arrQRootNode, arrSlashing } from './constants';
 import CreateStep1 from './CreateStep1';
 import CreateStep2 from './CreateStep2';
@@ -57,15 +56,15 @@ function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) 
       }
     });
     if (formData?.first === 'parameter-vote' || formData['change-constitution-parameter'] === 'yes') {
-      const paramLength = formData[parameterVote.parameterType]?.length;
+      const paramLength = formData['parameter-type']?.length;
       if (paramLength) {
-        formData[parameterVote.parameterType].forEach((type, index) => {
-          setValue(`${parameterVote.parameterKey}[${index}]`, formData[parameterVote.parameterKey][index]);
+        formData['parameter-type'].forEach((type, index) => {
+          setValue(`${'parameter-key'}[${index}]`, formData['parameter-key'][index]);
           setValue(
-            `${parameterVote.parameterValue}[${index}]`,
-            formData[parameterVote.parameterValue][index]
+            `${'parameter-value'}[${index}]`,
+            formData['parameter-value'][index]
           );
-          setValue(`${parameterVote.parameterType}[${index}]`, type);
+          setValue(`${'parameter-type'}[${index}]`, type);
         });
       }
     }
@@ -134,7 +133,7 @@ function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) 
     <>
       <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)} />
       <div className="modal__steps">
-                Step {stepCounter} of {stepLimit}
+        Step {stepCounter} of {stepLimit}
       </div>
       <form>{switchProposalContentDependsOnType()}</form>
     </>

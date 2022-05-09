@@ -14,7 +14,7 @@ export function CustomToggle ({ eventKey }) {
   return (
     <a className="dropdown-item" onClick={decoratedOnClick}>
       <i className={'mdi mdi-eye-outline btn-icon'} />
-            View details
+      View details
     </a>
   );
 }

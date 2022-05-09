@@ -1,9 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import InputGroup from 'components/Custom/ModalActions/InputGroup';
-
-import { rootSlashing, validatorSlashing } from './constants';
+import FormInput from 'components/Base/Form/FormInput';
 
 import { formObject } from 'store/voting/proposals/selectors';
 
@@ -16,42 +14,62 @@ function SlashingS2 ({ register, errors, setValue }) {
     case CONTRACT_TYPES.rootNodeSlashing:
       return (
         <>
-          <h2>{rootSlashing.subtitle}</h2>
-          <InputGroup
-            labelsArr={rootSlashing.inputTitleDescr}
-            inputArr={rootSlashing.inputs}
-            inputsObj={rootSlashing.inputsObj}
-            setValue={setValue}
+          <h2>Nominate a Root Node to be slashed</h2>
+          <FormInput
+            refType="address"
+            name="address"
+            placeholder="Address"
+            label="Provide Slashing Details. Candidate to Slash"
+            valid={errors.address?.message}
             register={register}
-            errors={errors}
           />
-          <h4>{rootSlashing.inputTitleDown}</h4>
-          <InputGroup
-            inputArr={rootSlashing.inputDown}
-            inputsObj={rootSlashing.inputDownObj}
+          <FormInput
+            refType="%-value"
+            name="%-value"
+            placeholder="%-Value"
+            label="Root Node Stake Amount to slash (%)"
+            valid={errors['%-value']?.message}
             register={register}
-            errors={errors}
+            setValue={setValue}
+          />
+          <FormInput
+            refType="external-link"
+            name="external-link"
+            placeholder="External Link"
+            label="Provide a reference link to external source"
+            valid={errors['external-link']?.message}
+            register={register}
           />
         </>
       );
     case CONTRACT_TYPES.validatorNodeSlashing:
       return (
         <>
-          <h2>{validatorSlashing.subtitle}</h2>
-          <InputGroup
-            labelsArr={validatorSlashing.inputTitleDescr}
-            inputArr={validatorSlashing.inputs}
-            inputsObj={validatorSlashing.inputsObj}
-            setValue={setValue}
+          <h2>Nominate a Validator Node to be slashed</h2>
+          <FormInput
+            refType="address"
+            name="address"
+            placeholder="Address"
+            label="Provide Slashing Details. Candidate to Slash"
+            valid={errors.address?.message}
             register={register}
-            errors={errors}
           />
-          <h4>{validatorSlashing.inputTitleDown}</h4>
-          <InputGroup
-            inputArr={validatorSlashing.inputDown}
-            inputsObj={validatorSlashing.inputDownObj}
+          <FormInput
+            refType="%-value"
+            name="%-value"
+            placeholder="%-Value"
+            label="Validator Node Stake and Pool Amount to slash (%)"
+            valid={errors['%-value']?.message}
             register={register}
-            errors={errors}
+            setValue={setValue}
+          />
+          <FormInput
+            refType="external-link"
+            name="external-link"
+            placeholder="External Link"
+            label="Provide a reference link to external source"
+            valid={errors['external-link']?.message}
+            register={register}
           />
         </>
       );
