@@ -18,12 +18,12 @@ function InstallMetamask ({ modalShow, setModalShow }) {
     <InstallMetamaskContainer>
       <div className="list-card__line" />
       <p className="install-metamask__info">
-                MetaMask is a browser plugin that allows users to make EVM compatible transactions through regular
-                websites.
+        MetaMask is a browser plugin that allows users to make EVM compatible transactions through regular
+        websites.
       </p>
       <h4>Get started:</h4>
       <p>
-                1. Install <strong>MetaMask</strong> for your browser (Supported Browsers: Chrome, Firefox, Brave, Edge)
+        1. Install <strong>MetaMask</strong> for your browser (Supported Browsers: Chrome, Firefox, Brave, Edge)
       </p>
       <div className="install-metamask__download">
         <img src={metamaskIcon} alt="metamask logo" />
@@ -33,14 +33,14 @@ function InstallMetamask ({ modalShow, setModalShow }) {
             href="https://metamask.io/download/"
             rel="noreferrer"
           >
-                        Install MetaMask
+            Install MetaMask
           </a>
         </div>
       </div>
       <p>2. Follow instructions.</p>
       <p>3. Refresh the page.</p>
       <p>
-                4. Click <strong>"Connect wallet"</strong>
+        4. Click <strong>"Connect wallet"</strong>
       </p>
     </InstallMetamaskContainer>
   );

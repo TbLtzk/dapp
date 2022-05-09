@@ -78,7 +78,7 @@ function ModalVote ({ modalShow, onHide, proposalId, proposalContract, vetoEndTi
     <>
       <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)} />
       <div className="modal__steps">
-                Step {stepCounter} of {stepLimit}
+        Step {stepCounter} of {stepLimit}
       </div>
       <form>{switchProposalContentDependsOnType()}</form>
     </>

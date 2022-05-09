@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import InputGroup from 'components/Custom/ModalActions/InputGroup';
+import FormInput from 'components/Base/Form/FormInput';
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
 
-import { castObjection, proposeDecision, proposerRemark, slashingTypes } from './constants';
-
 import { formObject } from 'store/modal-handler/selectors';
+
+import { slashingTypes } from 'constants/slashingTypes';
 
 function CreateStep1 ({ activeTab, register, errors, setValue }) {
   const formData = useSelector(formObject);
@@ -15,59 +15,59 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
     case slashingTypes.castObjection:
       return (
         <div>
-          <h2>{castObjection.subtitleOne}</h2>
-          <p>{castObjection.subtitleTwo}</p>
-          <InputGroup
-            inputArr={castObjection.inputPlaceholderUp}
-            inputsObj={castObjection.inputUpObj}
-            typesArr={castObjection.inputTypes}
+          <h2>The target of a slashing proposal has the right tp object the slashing.</h2>
+          <FormInput
+            refType="external-link-optional"
+            name="external-link"
+            placeholder="External Link"
+            label="Please provide a reference link to external source giving details of your objection"
+            valid={errors['external-link']?.message}
             register={register}
-            errors={errors}
-            setValue={setValue}
           />
         </div>
       );
     case slashingTypes.proposerRemark:
       return (
         <div>
-          <h2>{proposerRemark.subtitleOne}</h2>
-          <p>{proposerRemark.subtitleTwo}</p>
-          <InputGroup
-            inputArr={proposerRemark.inputPlaceholderUp}
-            inputsObj={proposerRemark.inputUpObj}
+          <h2>As the slashing objection proposer please provide a valid reason.</h2>
+          <FormInput
+            refType="proposer-remark"
+            name="proposer-remark"
+            placeholder="Proposer remark"
+            label="Please provide a remark about the objection"
+            valid={errors['proposer-remark']?.message}
             register={register}
-            errors={errors}
-            setValue={setValue}
           />
         </div>
       );
     case slashingTypes.proposeDecision:
       return (
         <div>
-          <h2>{proposeDecision.subtitleOne}</h2>
-          <h4>{proposeDecision.subtitleTwo}</h4>
-          <InputGroup
-            inputArr={proposeDecision.inputPlaceholder}
-            inputsObj={proposeDecision.inputObj}
+          <h2>Members of the Root Node Panel check the objection and propose decision to confirm.</h2>
+          <FormInput
+            refType="external-link"
+            name="external-link"
+            placeholder="External Link"
+            label="Please provide a reference link to external source giving details of your decision"
+            valid={errors['external-link']?.message}
             register={register}
-            errors={errors}
+          />
+          <FormInput
+            refType="%-value"
+            name="%-value"
+            placeholder="%-Value"
+            label="Please provide the adjusted percentage for slashing"
+            valid={errors['%-value']?.message}
+            register={register}
             setValue={setValue}
           />
-          <h4>{proposeDecision.inputLabelTwo}</h4>
-          <InputGroup
-            inputArr={proposeDecision.inputPlaceholderTwo}
-            inputsObj={proposeDecision.inputObjTwo}
-            register={register}
-            errors={errors}
-            setValue={setValue}
-          />
-          <h2>{proposeDecision.radioLabel}</h2>
+          <h2>Did the target of the slashing neglect a formal appeal?</h2>
           <RadioBtnGroup
             formData={formData}
-            values={proposeDecision.radioBtn}
+            values={['Yes', 'No']}
             register={register}
             errors={errors}
-            name={proposeDecision.radioName}
+            name="target-slashing-appeal"
             handleChange={() => {}}
           />
         </div>

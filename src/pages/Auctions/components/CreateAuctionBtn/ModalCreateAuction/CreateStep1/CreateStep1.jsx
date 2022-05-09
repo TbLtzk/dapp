@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import InputGroup from 'components/Custom/ModalActions/InputGroup';
-
-import { liquidation, systemDebt, systemSurplus } from './constants';
+import FormInput from 'components/Base/Form/FormInput';
 
 import { symbol } from 'store/stable-coin/selectors';
 
@@ -26,56 +24,59 @@ function CreateStep1 ({ activeTab, register, errors }) {
       case AUCTIONS_TYPES.liquidation:
         return (
           <>
-            <h4>{liquidation.subtitleInputUp}</h4>
-            <InputGroup
-              inputArr={liquidation.inputPlaceholderUp}
-              inputsObj={liquidation.inputUpObj}
+            <FormInput
+              refType="address"
+              name="address"
+              placeholder="Address"
+              label="Provide user address of vault holder, which shall be liquidated"
+              valid={errors.address?.message}
               register={register}
-              errors={errors}
             />
-            <h4>{liquidation.subtitleInputMiddle}</h4>
-            <InputGroup
-              inputArr={liquidation.inputPlaceholderMiddle}
-              inputsObj={liquidation.inputMiddleObj}
+            <FormInput
+              refType="vault-id"
+              name="vault-id"
+              placeholder="Vault ID"
+              label="Provide the Vault ID to be liquidated"
+              valid={errors['vault-id']?.message}
               register={register}
-              errors={errors}
             />
-            <h4>{liquidation.subtitleInputDown + symbolType}</h4>
-            <InputGroup
-              inputArr={liquidation.inputPlaceholderDown}
-              inputsObj={liquidation.inputDownObj}
+            <FormInput
+              refType="bid"
+              name="bid"
+              placeholder="Bid"
+              label={`Provide your initial Bid in ${symbolType}`}
+              valid={errors.bid?.message}
               register={register}
-              errors={errors}
             />
           </>
         );
       case AUCTIONS_TYPES.systemDebt:
         return (
           <>
-            <h5>{systemDebt.subtitleInputUp}</h5>
+            <h5>Debt Auction Lot</h5>
             <p>{reserveLot + 'Q'}</p>
-
-            <h4>{systemDebt.subtitleInputDown + symbolType}</h4>
-            <InputGroup
-              inputArr={systemDebt.inputPlaceholder}
-              inputsObj={systemDebt.inputObj}
+            <FormInput
+              refType="bid"
+              name="bid"
+              placeholder="Bid"
+              label={`Provide your initial Bid in ${symbolType}`}
+              valid={errors.bid?.message}
               register={register}
-              errors={errors}
             />
           </>
         );
       case AUCTIONS_TYPES.systemSurplus:
         return (
           <>
-            <h5>{systemSurplus.subtitleInputUp}</h5>
+            <h5>Surplus Auction Lot: </h5>
             <p>{surplusLot + ' ' + symbolType}</p>
-
-            <h4>{systemSurplus.subtitleInputDown}</h4>
-            <InputGroup
-              inputArr={systemSurplus.inputPlaceholder}
-              inputsObj={systemSurplus.inputObj}
+            <FormInput
+              refType="bid"
+              name="bid"
+              placeholder="Bid"
+              label="Provide your initial Bid in Q"
+              valid={errors.bid?.message}
               register={register}
-              errors={errors}
             />
           </>
         );

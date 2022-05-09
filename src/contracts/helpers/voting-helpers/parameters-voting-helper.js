@@ -1,7 +1,5 @@
 import { ParameterType } from '@q-dev/q-js-sdk';
 
-import { parameterVote } from 'pages/Proposals/components/CreateQProposalBtn/ModalCreateProposal/CreateStep2/QExpertS2/constants';
-
 import { getStatusTransformation } from './base-voting-helper';
 import VotingService from './voting-service-helper';
 
@@ -68,7 +66,7 @@ export default class ParametersVoting extends VotingService {
   async createProposal (data, userAddress) {
     const link = data['external-link'];
 
-    const paramInputs = data[parameterVote.parameterType].reduce((types, item, index) => {
+    const paramInputs = data['parameter-type'].reduce((types, item, index) => {
       let inputValue = data['parameter-value'][index];
       switch (Number(item)) {
         case ParameterType.BOOL:
@@ -80,13 +78,13 @@ export default class ParametersVoting extends VotingService {
       }
       types.push({
         paramType: item,
-        paramKey: data[parameterVote.parameterKey][index],
+        paramKey: data['parameter-key'][index],
         paramValue: inputValue
       });
       return types;
     }, []);
 
-    switch (data[parameterVote.radioBtnName]) {
+    switch (data['type-proposal']) {
       case CONTRACT_TYPES.qFee: {
         const contract = await getEpqfiParametersVotingInstance();
         return await contract.createProposal(link, paramInputs, { from: userAddress });

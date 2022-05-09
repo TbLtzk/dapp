@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import Button from 'components/Base/Buttons/Button';
 import Tooltip from 'components/Base/Tooltip';
 
-import { escrowTypes, slashingTypes } from './ModalSlashingObjection/CreateStep1/constants';
 import { SlashingObjectionContainer } from './ModalSlashingObjection/styles';
 import ListDetails from './ListDetails';
 import ModalSlashingObjection from './ModalSlashingObjection';
@@ -14,6 +13,8 @@ import { setVoteProposalObj } from 'store/voting/proposals/action-creators';
 import { setEscrowAction } from 'store/voting/slashing-proposals/action-creators';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
+import { escrowTypes } from 'constants/escrowTypes';
+import { slashingTypes } from 'constants/slashingTypes';
 
 const INFO = {
   castObjection: 'The slashed party can object to this executed slashing proposal and seek for an arbitral award.',
