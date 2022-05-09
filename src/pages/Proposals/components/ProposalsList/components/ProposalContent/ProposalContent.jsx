@@ -32,7 +32,7 @@ function ProposalContent ({ proposal }) {
             proposal.status === 'Pending'
               ? (
                 <div>
-                                Remaining Time for Voting <br />
+                  Remaining Time for Voting <br />
                   {remainDate(proposal.votingEndTime)}
                 </div>
               )
@@ -58,7 +58,7 @@ function ProposalContent ({ proposal }) {
                 proposal.status === 'Accepted'
                   ? (
                     <div>
-                                    Remaining Time for Veto <br /> {remainDate(proposal.vetoEndTime)}
+                      Remaining Time for Veto <br /> {remainDate(proposal.vetoEndTime)}
                     </div>
                   )
                   : (

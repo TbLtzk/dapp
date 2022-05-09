@@ -61,6 +61,7 @@
     "react/jsx-equals-spacing": ["warn", "never"],
     "react/jsx-first-prop-new-line": ["warn", "multiline"],
     "react/jsx-fragments": ["warn", "syntax"],
+    "react/jsx-indent": ["warn", 2],
     "react/jsx-max-props-per-line": ["warn", {
       "maximum": { "single": 2, "multi": 1 }
     }],

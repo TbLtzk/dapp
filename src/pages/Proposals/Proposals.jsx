@@ -6,7 +6,7 @@ import Tabs from 'components/Base/Tabs';
 import VotingStats from 'components/Custom/VotingStats';
 
 import CreateQProposalBtn from './components/CreateQProposalBtn';
-import ProposalsList from './components/ProposalsList/ProposalsList';
+import ProposalsList from './components/ProposalsList';
 import PurgeSlashing from './components/PurgeSlashing';
 
 import {

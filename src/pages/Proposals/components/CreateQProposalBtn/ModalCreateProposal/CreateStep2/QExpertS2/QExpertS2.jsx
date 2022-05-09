@@ -1,13 +1,12 @@
 import React, { Fragment, useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import { ParameterType } from '@q-dev/q-js-sdk';
+
 import FormInput from 'components/Base/Form/FormInput';
 import FormSelect from 'components/Base/Form/FormSelect';
 import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue';
-import InputGroup from 'components/Custom/ModalActions/InputGroup';
 import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
-
-import { addNewExpert, parameterVote, removeExpert } from './constants';
 
 import { formObject } from 'store/voting/proposals/selectors';
 
@@ -42,139 +41,171 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
       case CONTRACT_TYPES.addNewExpert:
         return (
           <>
-            <h2>{addNewExpert.subtitle}</h2>
-            <h2>{addNewExpert.radioDescr}</h2>
+            <h2>Nominate an Expert to add to an Expert Panel</h2>
+            <h2>Select the Panel to which you want to add an Expert</h2>
             <RadioBtnGroup
               formData={formData}
-              values={addNewExpert.radioBtn}
+              values={[
+                'Q Fees & Incentives Membership Panel',
+                'Q DeFi (Decentralized Finance) Membership Panel',
+                'Q Root Node Selection Expert Panel'
+              ]}
               register={register}
               errors={errors}
-              name={addNewExpert.radioBtnName}
+              name="type-proposal"
               handleChange={changePanel}
             />
-            <h4>{addNewExpert.subtitleInputUp}</h4>
-            <InputGroup
-              inputArr={addNewExpert.inputUp}
-              inputsObj={addNewExpert.inputUpObj}
+            <FormInput
+              refType="address"
+              name="address"
+              placeholder="Address"
+              label="Provide Candidate Q Address"
+              valid={errors.address?.message}
               register={register}
-              errors={errors}
             />
-            <h4>{addNewExpert.subtitleInputDown}</h4>
-            <InputGroup
-              inputArr={addNewExpert.inputDown}
-              inputsObj={addNewExpert.inputDownObj}
+            <FormInput
+              refType="external-link"
+              name="external-link"
+              placeholder="External Link"
+              label="Provide a reference link to external source"
+              valid={errors['external-link']?.message}
               register={register}
-              errors={errors}
             />
           </>
         );
       case CONTRACT_TYPES.removeCurrentExpert:
         return (
           <>
-            <h2>{removeExpert.subtitle}</h2>
-            <h2>{removeExpert.radioDescr}</h2>
+            <h2>Nominate an Expert to Remove from an Expert Panel</h2>
+            <h2>Select the Panel to which you want to remove an Expert</h2>
             <RadioBtnGroup
               formData={formData}
-              values={removeExpert.radioBtn}
+              values={[
+                'Q Fees & Incentives Membership Panel',
+                'Q DeFi (Decentralized Finance) Membership Panel',
+                'Q Root Node Selection Expert Panel'
+              ]}
               register={register}
               errors={errors}
-              name={removeExpert.radioBtnName}
+              name="type-proposal"
               handleChange={changePanel}
             />
-            <h4>{removeExpert.subtitleInputUp}</h4>
-            <InputGroup
-              inputArr={removeExpert.inputUp}
-              inputsObj={removeExpert.inputUpObj}
+            <FormInput
+              refType="address"
+              name="address"
+              placeholder="Address"
+              label="Provide Candidate Q Address"
+              valid={errors.address?.message}
               register={register}
-              errors={errors}
             />
-            <h4>{removeExpert.subtitleInputDown}</h4>
-            <InputGroup
-              inputArr={removeExpert.inputDown}
-              inputsObj={removeExpert.inputDownObj}
+            <FormInput
+              refType="external-link"
+              name="external-link"
+              placeholder="External Link"
+              label="Provide a reference link to external source"
+              valid={errors['external-link']?.message}
               register={register}
-              errors={errors}
             />
           </>
         );
       case CONTRACT_TYPES.parameterVote:
         return (
           <>
-            <h2>{parameterVote.subtitle}</h2>
-            <h2>{parameterVote.radioDescr}</h2>
+            <h2>Create a Proposal to Change a Q System Parameter.</h2>
+            <h2>Select the Panel which governs the parameter</h2>
             <RadioBtnGroup
               formData={formData}
-              values={parameterVote.radioBtn}
+              values={[
+                'Q Fees & Incentives Membership Panel',
+                'Q DeFi (Decentralized Finance) Membership Panel',
+                'Q Root Node Selection Expert Panel'
+              ]}
               register={register}
               errors={errors}
-              name={parameterVote.radioBtnName}
+              name="type-proposal"
               handleChange={changePanel}
             />
-            <h2>{parameterVote.subtitleInputUp}</h2>
+            <h2>Please provide exact Key-Name, Type and new Value for Parameter</h2>
             {fillArray(params).map((_, index) => (
               <Fragment key={index}>
-                <h2>
-                  {parameterVote.radioBtnTitleDown} #{index + 1}
-                </h2>
+                <h2>Choose type #{index + 1}</h2>
                 <div className="modal__one-line-form" style={{ marginBottom: 0 }}>
                   <FormSelect
                     ref={register({ required: 'Choose one option!' })}
                     width="40%"
-                    name={`${parameterVote.parameterType}[${index}]`}
+                    name={`parameter-type[${index}]`}
                     register={register}
                     palette="dark"
-                    optionValues={parameterVote.radioBtnDown}
+                    optionValues={[
+                      {
+                        lbl: 'Address',
+                        value: ParameterType.ADDRESS
+                      },
+                      {
+                        lbl: 'Boolean',
+                        value: ParameterType.BOOL
+                      },
+                      {
+                        lbl: 'String',
+                        value: ParameterType.STRING
+                      },
+                      {
+                        lbl: 'Uint',
+                        value: ParameterType.UINT
+                      }
+                    ]}
                   />
                   <FormInput
                     ref={register({
                       required: 'Field is required!',
                       validate: (key) => parameterKeyValidation(key)
                     })}
-                    name={`${parameterVote.parameterKey}[${index}]`}
+                    name={`parameter-key[${index}]`}
                     type="string"
                     palette="dark"
-                    placeholder={parameterVote.labelsArr}
-                    valid={errors[parameterVote.parameterKey]?.[index]?.message}
+                    placeholder={['Key']}
+                    valid={errors['parameter-key']?.[index]?.message}
                   />
                 </div>
                 <FormInput
                   ref={register({
                     required: 'Field is required!',
                     validate: (value) =>
-                      validatePattern(value, watch(`${parameterVote.parameterType}[${index}]`))
+                      validatePattern(value, watch(`parameter-type[${index}]`))
                   })}
-                  name={`${parameterVote.parameterValue}[${index}]`}
+                  name={`parameter-value[${index}]`}
                   type="string"
                   palette="dark"
-                  placeholder={parameterVote.inputUpSecond}
-                  valid={errors[parameterVote.parameterValue]?.[index]?.message}
+                  placeholder="Value"
+                  valid={errors['parameter-value']?.[index]?.message}
                 />
 
                 <CurrentParameterValue
                   typeContract={typePanel}
-                  parameterType={watch(`${parameterVote.parameterType}[${index}]`)}
-                  parameterKey={watch(`${parameterVote.parameterKey}[${index}]`)}
+                  parameterType={watch(`parameter-type[${index}]`)}
+                  parameterKey={watch(`parameter-key[${index}]`)}
                 />
               </Fragment>
             ))}
             <div className="modal__text-wrp">
               <div className="modal__text-btn" onClick={() => handleParams(1)}>
-                                Add Parameter
+                Add Parameter
               </div>
               {params > 1
                 ? (
                   <div className="modal__text-btn" onClick={() => handleParams(-1)}>
-                                    Remove Parameter
+                    Remove Parameter
                   </div>
                 )
                 : null}
             </div>
-            <h4>{parameterVote.subtitleInputDown}</h4>
-            <InputGroup
-              inputArr={parameterVote.inputDown}
-              inputsObj={parameterVote.inputDownObj}
+            <FormInput
+              refType="external-link"
+              name="external-link"
+              placeholder="External Link"
+              label="Provide a reference link to external source"
+              valid={errors['external-link']?.message}
               register={register}
-              errors={errors}
             />
           </>
         );

@@ -24,8 +24,8 @@ function CreateStep2 ({ proposalContract }) {
                 proposalContract === CONTRACTS_NAMES.rootsVoting
           ? (
             <h2>
-                        Notice: Your currently locked amount of Q inside the Q Vault will be extended until the end of
-                        this Proposal.
+              Notice: Your currently locked amount of Q inside the Q Vault will be extended until the end of
+              this Proposal.
             </h2>
           )
           : null}

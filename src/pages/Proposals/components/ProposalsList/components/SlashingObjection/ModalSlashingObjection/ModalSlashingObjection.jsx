@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import ModalWindow from 'components/Base/ModalWindow';
 
-import { slashingTypes } from './CreateStep1/constants';
 import CreateStep1 from './CreateStep1';
 import CreateStep2 from './CreateStep2';
 
@@ -20,6 +19,7 @@ import {
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import { fields } from 'constants/fieldsNaming';
+import { slashingTypes } from 'constants/slashingTypes';
 
 function ModalSlashingObjection ({ modalShow, onHide, activeTab, contract, proposalId }) {
   const dispatch = useDispatch();
@@ -100,7 +100,7 @@ function ModalSlashingObjection ({ modalShow, onHide, activeTab, contract, propo
     <>
       <ProgressBar now={((stepCounter / stepLimit) * 100).toFixed(3)} />
       <div className="modal__steps">
-                Step {stepCounter} of {stepLimit}
+        Step {stepCounter} of {stepLimit}
       </div>
       <form>{switchContentDependsOnType()}</form>
     </>

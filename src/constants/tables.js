@@ -3,7 +3,7 @@ import React from 'react';
 import ProgressBar from 'components/Base/ProgressBar';
 import Tooltip from 'components/Base/Tooltip';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import BorrowManageAsset from 'pages/SavingAndBorrowing/components/BorrowManageAsset/BorrowManageAsset';
+import BorrowManageAsset from 'pages/SavingAndBorrowing/components/BorrowManageAsset';
 import SaveManageAsset from 'pages/SavingAndBorrowing/components/SaveManageAsset';
 
 import { fromWei } from 'func/balance';

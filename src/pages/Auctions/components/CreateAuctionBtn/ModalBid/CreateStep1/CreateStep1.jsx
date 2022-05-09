@@ -2,9 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import CopyToClipboard from 'components/Base/CopyToClipboard';
-import InputGroup from 'components/Custom/ModalActions/InputGroup';
-
-import { liquidation, systemDebt, systemSurplus } from './constants';
+import FormInput from 'components/Base/Form/FormInput';
 
 import { symbol } from 'store/stable-coin/selectors';
 
@@ -27,33 +25,36 @@ function CreateStep1 ({ activeTab, register, errors, raisingBid, watch, allowanc
     onChangeInput(watch('bid'));
   }, [watch]);
 
-  const showData = (data, symbol = '') => (
-    <>
-      <h4>{data.subtitleInput + symbol}</h4>
-      <h4>
-                Minimum bid: <CopyToClipboard valueToCopy={raisingBid}>{raisingBid}</CopyToClipboard>{' '}
-        {symbol || data.symbol}
-      </h4>
-      <InputGroup
-        inputArr={data.inputPlaceholder}
-        inputsObj={data.inputObj}
-        register={register}
-        errors={errors}
-      />
-    </>
-  );
-
   const switchContentOnTypeProposal = useCallback(() => {
-    switch (activeTab) {
-      case AUCTIONS_TYPES.liquidation:
-        return showData(liquidation, symbolType);
-      case AUCTIONS_TYPES.systemDebt:
-        return showData(systemDebt, symbolType);
-      case AUCTIONS_TYPES.systemSurplus:
-        return showData(systemSurplus);
-      default:
-        return null;
-    }
+    const symbol = activeTab === AUCTIONS_TYPES.systemSurplus ? 'Q' : symbolType;
+    const tabLabel = {
+      [AUCTIONS_TYPES.liquidation]: `Provide a Bid for this auction in ${symbol}`,
+      [AUCTIONS_TYPES.systemDebt]: `Provide your Bid in ${symbol}`,
+      [AUCTIONS_TYPES.systemSurplus]: `Provide a Bid for this auction in ${symbol}`
+    }[activeTab];
+
+    if (!tabLabel) return null;
+
+    return (
+      <>
+        <h4>{tabLabel}</h4>
+        <h4>
+          Minimum bid:
+          <CopyToClipboard valueToCopy={raisingBid}>
+            {raisingBid}
+          </CopyToClipboard>
+          {' '}
+          {symbol}
+        </h4>
+        <FormInput
+          refType="bid"
+          name="bid"
+          placeholder="Bid"
+          valid={errors.bid?.message}
+          register={register}
+        />
+      </>
+    );
   }, [activeTab, register, errors]);
 
   return <div>{switchContentOnTypeProposal()}</div>;
