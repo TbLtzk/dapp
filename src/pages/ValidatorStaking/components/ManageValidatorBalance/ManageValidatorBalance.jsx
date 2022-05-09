@@ -149,7 +149,7 @@ function ManageValidatorBalance () {
         <div className="account-status__form-input">
           <FormInput
             ref={reg({
-              required: 'Field is required!',
+              required: 'Please, fill the field',
               min: 0
             })}
             color={true}

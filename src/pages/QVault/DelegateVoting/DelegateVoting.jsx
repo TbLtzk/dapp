@@ -73,7 +73,7 @@ export default function LockCoin () {
       <div className={'card__one-line-simple-form'}>
         <FormInput
           ref={reg1({
-            required: 'Field is required!',
+            required: 'Please, fill the field',
             pattern: /[0-9]/i
           })}
           color={true}

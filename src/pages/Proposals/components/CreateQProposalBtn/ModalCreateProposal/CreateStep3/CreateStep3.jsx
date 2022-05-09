@@ -115,7 +115,7 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
                       />
                       <FormInput
                         ref={register({
-                          required: 'Field is required!',
+                          required: 'Please, fill the field',
                           validate: (key) => parameterKeyValidation(key)
                         })}
                         type="string"
@@ -127,7 +127,7 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
                     </div>
                     <FormInput
                       ref={register({
-                        required: 'Field is required!',
+                        required: 'Please, fill the field',
                         validate: (value) =>
                           validatePattern(
                             value,

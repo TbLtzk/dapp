@@ -50,7 +50,7 @@ export default function LockCoin ({ maxQVaultVotingWeight }) {
       <h4>Increase Voting Weight by</h4>
       <div className={'card__one-line-simple-form'}>
         <FormInput
-          ref={reg1({ required: 'Field is required!' })}
+          ref={reg1({ required: 'Please, fill the field' })}
           color={true}
           min={0}
           prefix="Q"
@@ -71,7 +71,7 @@ export default function LockCoin ({ maxQVaultVotingWeight }) {
       <h4>Reduce Voting Weight by</h4>
       <div className={'card__one-line-simple-form'}>
         <FormInput
-          ref={reg3({ required: 'Field is required!' })}
+          ref={reg3({ required: 'Please, fill the field' })}
           color={true}
           min={0}
           name="amountQ"

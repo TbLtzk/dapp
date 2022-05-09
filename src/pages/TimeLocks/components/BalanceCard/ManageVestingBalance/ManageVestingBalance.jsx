@@ -22,7 +22,7 @@ function ManageVestingBalance ({ setModalShow }) {
       <h4>Amount</h4>
       <FormInput
         ref={register({
-          required: 'Field is required!',
+          required: 'Please, fill the field',
           pattern: /[0-9]/i
         })}
         prefix="Q"

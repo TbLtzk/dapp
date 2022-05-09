@@ -63,7 +63,7 @@ export default function UpdateDelegation () {
         <div key={idx + 'input_address'} className="card__one-line-form-2-2-1">
           <FormInput
             ref={register({
-              required: 'Field is required!',
+              required: 'Please, fill the field',
               validate: (address) => isAddress(address)
             })}
             color={true}
@@ -73,7 +73,7 @@ export default function UpdateDelegation () {
           />
           <FormInput
             ref={register({
-              required: 'Field is required!',
+              required: 'Please, fill the field',
               pattern: /[0-9]/i
             })}
             color={true}

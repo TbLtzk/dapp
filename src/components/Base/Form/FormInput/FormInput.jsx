@@ -43,55 +43,55 @@ const FormInput = forwardRef(({
     switch (refType) {
       case fieldTypes.externalLink: {
         return register({
-          required: 'Field is required!',
-          validate: (link) => (link.match(linkRegex) ? true : 'Link not valid')
+          required: 'Please, fill the field',
+          validate: (link) => (link.match(linkRegex) ? true : 'Invalid link URL')
         });
       }
       case fieldTypes.externalLinkOptional: {
         return register({
-          validate: (link) => (!link || link.match(linkRegex) ? true : 'Link not valid')
+          validate: (link) => (!link || link.match(linkRegex) ? true : 'Invalid link URL')
         });
       }
       case fieldTypes.address: {
         return register({
-          required: 'Field is required!',
-          validate: (address) => (isAddress(address) ? true : 'Address not valid')
+          required: 'Please, fill the field',
+          validate: (address) => (isAddress(address) ? true : 'Invalid address')
         });
       }
       case fieldTypes.vaultId: {
         return register({
-          required: 'Field is required!',
-          validate: (value) => (value.match(vaultID) ? true : 'Vault ID not valid')
+          required: 'Please, fill the field',
+          validate: (value) => (value.match(vaultID) ? true : 'Invalid vault ID')
         });
       }
       case fieldTypes.bid: {
         return register({
-          required: 'Field is required!',
-          validate: (value) => (value.match(numberRegex) ? true : 'Bid not valid')
+          required: 'Please, fill the field',
+          validate: (value) => (value.match(numberRegex) ? true : 'Invalid bid')
         });
       }
       case fieldTypes.hash: {
         return register({
-          required: 'Field is required!',
-          validate: (hash) => (hash.match(hashRegex) ? true : 'Hash not valid')
+          required: 'Please, fill the field',
+          validate: (hash) => (hash.match(hashRegex) ? true : 'Invalid hash')
         });
       }
       case fieldTypes.percentValue: {
         return register({
-          required: 'Field is required!',
+          required: 'Please, fill the field',
           validate: (value) => {
             if (Number(value) > 100) {
               setValue(fieldTypes.percentValue, '100');
               return true;
             } else {
-              return value.match(from1to100Regex) ? true : 'Percentage value not valid';
+              return value.match(from1to100Regex) ? true : 'Invalid percentage value';
             }
           }
         });
       }
       default: {
         return register({
-          required: 'Field is required!',
+          required: 'Please, fill the field',
           validate: (value) => (value.length >= 70 ? 'Maximum length reached' : true)
         });
       }

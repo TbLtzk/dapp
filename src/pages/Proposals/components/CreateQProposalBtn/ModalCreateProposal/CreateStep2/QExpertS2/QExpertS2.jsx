@@ -157,7 +157,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                   />
                   <FormInput
                     ref={register({
-                      required: 'Field is required!',
+                      required: 'Please, fill the field',
                       validate: (key) => parameterKeyValidation(key)
                     })}
                     name={`parameter-key[${index}]`}
@@ -169,7 +169,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                 </div>
                 <FormInput
                   ref={register({
-                    required: 'Field is required!',
+                    required: 'Please, fill the field',
                     validate: (value) =>
                       validatePattern(value, watch(`parameter-type[${index}]`))
                   })}

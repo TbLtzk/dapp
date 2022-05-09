@@ -115,7 +115,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
       <div className="card__one-line-simple-form">
         <FormInput
           ref={registerDeposit({
-            required: 'Field is required!',
+            required: 'Please, fill the field',
             pattern: {
               value: /[0-9.]/gim,
               message: 'Invalid amount'
@@ -142,7 +142,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
       <div className="card__one-line-simple-form">
         <FormInput
           ref={registerWithdraw({
-            required: 'Field is required!',
+            required: 'Please, fill the field',
             pattern: {
               value: /[0-9.]/gim,
               message: 'Invalid amount'
@@ -172,7 +172,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
       <div className="card__one-line-form-2-2-1">
         <FormInput
           ref={registerSend({
-            required: 'Field is required!',
+            required: 'Please, fill the field',
             validate: (address) => (isAddress(address) ? true : 'Incorrect address')
           })}
           name="address"
@@ -184,7 +184,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
 
         <FormInput
           ref={registerSend({
-            required: 'Field is required!',
+            required: 'Please, fill the field',
             pattern: {
               value: /[0-9.]/gim,
               message: 'Invalid amount'
