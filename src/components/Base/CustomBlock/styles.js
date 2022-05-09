@@ -15,7 +15,7 @@ export const Block = styled.div`
     font-size: 20px;
     line-height: 35px;
     margin-bottom: 15px;
-    font-family: "Lora", sans-serif;
+    font-family: 'Lora', sans-serif;
   }
 
   h2 {
@@ -24,14 +24,14 @@ export const Block = styled.div`
     line-height: 45px;
     font-weight: 300;
     margin-bottom: 15px;
-    font-family: "OpenSans", sans-serif;
+    font-family: 'OpenSans', sans-serif;
   }
 
   h3 {
     color: ${(props) => props.theme.colors.oxfordBlueTint3};
     font-size: 16px;
     line-height: 17px;
-    font-family: "OpenSans", sans-serif;
+    font-family: 'OpenSans', sans-serif;
     margin-bottom: 15px;
   }
 
@@ -39,7 +39,7 @@ export const Block = styled.div`
     color: ${(props) => props.theme.colors.white};
     font-size: 12px;
     line-height: 17px;
-    font-family: "OpenSans", sans-serif;
+    font-family: 'OpenSans', sans-serif;
     margin-bottom: 10px;
   }
 
@@ -48,7 +48,7 @@ export const Block = styled.div`
     font-size: 13px;
     line-height: 17px;
     font-weight: 600;
-    font-family: "OpenSans", sans-serif;
+    font-family: 'OpenSans', sans-serif;
     margin-bottom: 2px;
   }
 
@@ -106,6 +106,13 @@ export const Block = styled.div`
     grid-column-gap: 14px;
   }
 
+  .card__send-form {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(80px, 2fr) minmax(80px, 2fr) minmax(70px, 90px);
+    grid-column-gap: 14px;
+  }
+
   .card__one-line-form-2-2-1-action {
     justify-content: space-between;
     display: flex;
@@ -123,5 +130,12 @@ export const Block = styled.div`
   .button__bottom {
     position: absolute;
     bottom: 15px;
+  }
+
+  @media screen and (max-width: 1000px) {
+    .card__send-form {
+      grid-template-columns: minmax(80px, 1fr);
+      grid-column-gap: 14px;
+    }
   }
 `;

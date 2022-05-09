@@ -28,6 +28,7 @@ import {
 import { getBorrowVaultInfoHelper } from 'contracts/helpers/borrow-assets-helper';
 
 import { fields } from 'constants/fieldsNaming';
+import formTypes from 'constants/form-types';
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 import { fromWei, toBtcBlockchain, toWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
@@ -119,7 +120,7 @@ function * setBorrowDepositGenerator ({ amount, vaultId }) {
     yield put(getTotalCollateralLockedAndOutstandingDebt());
     yield put(getTotalSavingBalance());
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.borrowAssetDeposit }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -137,7 +138,7 @@ function * setBorrowAsBorrowGenerator ({ amount, vaultId }) {
     yield put(getTotalCollateralLockedAndOutstandingDebt());
     yield put(getTotalSavingBalance());
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.borrowAssetBorrow }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -155,7 +156,7 @@ function * setBorrowRepayGenerator ({ amount, vaultId }) {
     yield put(getTotalCollateralLockedAndOutstandingDebt());
     yield put(getTotalSavingBalance());
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.borrowAssetRepay }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -174,7 +175,7 @@ function * setBorrowWithdrawGenerator ({ amount, vaultId }) {
     yield put(getTotalSavingBalance());
     yield put(getTotalCollateralLockedAndOutstandingDebt());
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.borrowAssetWithdraw }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

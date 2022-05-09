@@ -6,8 +6,8 @@ import DelegatedValidatorsPanel from 'components/Custom/MembersPanel/DelegatedVa
 import DelegationRewards from './DelegationRewards';
 import UpdateDelegation from './UpdateDelegation';
 
-function DelegateStakingPower () {
-  return (
+const DelegateStakingPower = () =>
+  (
     <>
       <CustomBlock>
         <h1>Delegate Staking Power</h1>
@@ -20,6 +20,5 @@ function DelegateStakingPower () {
       </CustomBlock>
     </>
   );
-}
 
 export default DelegateStakingPower;

@@ -12,9 +12,12 @@ function CardBlock ({ title, firstContent, btnTitle, btnHandler, btnIcon, iconFo
         {title && <h5>{title}</h5>}
         <div className="card_text">
           {firstContent && title === 'QUSD Contract'
-            ? <ExplorerAddress address={firstContent} />
-            : firstContent
-          }
+            ? (
+              <ExplorerAddress address={firstContent} />
+            )
+            : (
+              <p>{firstContent}</p>
+            )}
         </div>
       </div>
 

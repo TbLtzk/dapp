@@ -8,15 +8,22 @@ import useInputForm from 'hooks/useInputForm';
 
 import { TYPE } from '../../BorrowManageAsset';
 
-import { setBorrowAprove, setBorrowAsBorrow, setBorrowDeposit, setBorrowRepay, setBorrowWithdraw } from 'store/borrow-assets/action-creators';
+import {
+  setBorrowAprove,
+  setBorrowAsBorrow,
+  setBorrowDeposit,
+  setBorrowRepay,
+  setBorrowWithdraw,
+} from 'store/borrow-assets/action-creators';
 import { allowanceDepositSelector, allowanceRepaySelector } from 'store/borrow-assets/selectors';
 
+import formTypes from 'constants/form-types';
 import { errorHandler } from 'func/useful';
 
 const DEPOSIT_BTN_TEXT = {
   approve: 'Approve',
   repay: 'Repay',
-  add: 'Add'
+  deposit: 'Deposit',
 };
 
 function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
@@ -30,61 +37,52 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
     handleSubmit: borrowSubmit,
     errors: errorsBorrow,
     setValue: setBorrowMax,
-    setCurrentType: setBorrowType
-  } = useInputForm('borrow-type');
-
-  const {
-    register: registerRepay,
-    handleSubmit: repaySubmit,
-    errors: errorsRepay,
-    setValue: setRepayMax,
-    setCurrentType: setRepayType
-  } = useInputForm('repay-type');
-
-  const {
-    register: registerDeposit,
-    handleSubmit: depositSubmit,
-    errors: errorsDeposit,
-    setValue: setDepositMax,
-    setCurrentType: setDepositType
-  } = useInputForm('deposit-type');
+  } = useInputForm(formTypes.borrowAssetBorrow);
 
   const {
     register: registerWithdraw,
     handleSubmit: withdrawSubmit,
     errors: errorsWithdraw,
     setValue: setWithdrawMax,
-    setCurrentType: setWithdrawType
-  } = useInputForm('withdraw-type');
+  } = useInputForm(formTypes.borrowAssetWithdraw);
+
+  const {
+    register: registerRepay,
+    handleSubmit: repaySubmit,
+    errors: errorsRepay,
+    setValue: setRepayMax,
+    watch: watchRepay,
+  } = useInputForm(formTypes.borrowAssetRepay);
+
+  const {
+    register: registerDeposit,
+    handleSubmit: depositSubmit,
+    errors: errorsDeposit,
+    setValue: setDepositMax,
+    watch: watchDeposit,
+  } = useInputForm(formTypes.borrowAssetDeposit);
 
   const [repayBtnTitle, setRepayBtnTitle] = useState(DEPOSIT_BTN_TEXT.repay);
-  const [depositBtnTitle, setDepositBtnTitle] = useState(DEPOSIT_BTN_TEXT.add);
+  const [depositBtnTitle, setDepositBtnTitle] = useState(DEPOSIT_BTN_TEXT.deposit);
 
-  function onChangeValueBtnSlide (type, value) {
-    const inputValue = value.target.value;
-    if (type === TYPE.deposit) {
-      if (Number(allowanceDeposit) < Number(inputValue)) {
-        setDepositBtnTitle(DEPOSIT_BTN_TEXT.approve);
-      } else {
-        setDepositBtnTitle(DEPOSIT_BTN_TEXT.add);
-      }
-    } else if (type === TYPE.repay) {
-      if (Number(allowanceRepay) < Number(inputValue)) {
-        setRepayBtnTitle(DEPOSIT_BTN_TEXT.approve);
-      } else {
-        setRepayBtnTitle(DEPOSIT_BTN_TEXT.repay);
-      }
-    }
-  }
+  const repayInput = watchRepay('field');
+  const depositInput = watchDeposit('field');
 
   useEffect(() => {
-    if (depositBtnTitle === DEPOSIT_BTN_TEXT.approve) {
-      setDepositBtnTitle(DEPOSIT_BTN_TEXT.add);
+    if (Number(allowanceDeposit) < Number(depositInput)) {
+      setDepositBtnTitle(DEPOSIT_BTN_TEXT.approve);
+    } else {
+      setDepositBtnTitle(DEPOSIT_BTN_TEXT.deposit);
     }
-    if (repayBtnTitle === DEPOSIT_BTN_TEXT.approve) {
+  }, [allowanceDeposit, depositInput]);
+
+  useEffect(() => {
+    if (Number(allowanceRepay) < Number(repayInput)) {
+      setRepayBtnTitle(DEPOSIT_BTN_TEXT.approve);
+    } else {
       setRepayBtnTitle(DEPOSIT_BTN_TEXT.repay);
     }
-  }, [allowanceRepay, allowanceDeposit]);
+  }, [allowanceRepay, repayInput]);
 
   function handleMaxRepay () {
     if (Number(borrowingDetails?.availableRepay) > 0) {
@@ -120,7 +118,6 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
     if (repayBtnTitle === DEPOSIT_BTN_TEXT.approve) {
       dispatch(setBorrowAprove(TYPE.repay));
     } else {
-      setRepayType('repay-type');
       dispatch(setBorrowRepay(formData.field, vaultData.vault.vaultNum));
     }
   }
@@ -129,18 +126,15 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
     if (depositBtnTitle === DEPOSIT_BTN_TEXT.approve) {
       dispatch(setBorrowAprove(TYPE.deposit));
     } else {
-      setDepositType('deposit-type');
       dispatch(setBorrowDeposit(formData.field, vaultData.vault.vaultNum));
     }
   }
 
   function handleBorrow (formData) {
-    setBorrowType('borrow-type');
     dispatch(setBorrowAsBorrow(formData.field, vaultData.vault.vaultNum));
   }
 
   function handleWithdraw (formData) {
-    setWithdrawType('withdraw-type');
     dispatch(setBorrowWithdraw(formData.field, vaultData.vault.vaultNum));
   }
 
@@ -180,9 +174,6 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           placeholder="0.00"
           valid={errorHandler(errorsRepay, 'field')}
           onMaxClick={handleMaxRepay}
-          onChange={(value) => {
-            onChangeValueBtnSlide(TYPE.repay, value);
-          }}
         />
         <Button
           type="outline"
@@ -205,9 +196,6 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           placeholder="0.00"
           valid={errorHandler(errorsDeposit, 'field')}
           onMaxClick={handleMaxDeposit}
-          onChange={(value) => {
-            onChangeValueBtnSlide(TYPE.deposit, value);
-          }}
         />
         <Button
           type="outline"

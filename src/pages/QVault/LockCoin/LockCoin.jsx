@@ -12,6 +12,8 @@ import { setLockAmount, setUnlockAmount } from 'store/q-vault/action-creators';
 import { votingWeight } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
+import formTypes from 'constants/form-types';
+
 import 'react-datepicker/dist/react-datepicker.css';
 
 function LockCoin ({ maxQVaultVotingWeight }) {
@@ -25,16 +27,14 @@ function LockCoin ({ maxQVaultVotingWeight }) {
     handleSubmit: submitLock,
     errors: errorLock,
     setValue: setLockMax,
-    setCurrentType: setLockType
-  } = useInputForm('lock');
+  } = useInputForm(formTypes.qVaultLock);
 
   const {
     register: registerUnlock,
     handleSubmit: submitUnlock,
     errors: errorUnlock,
     setValue: setUnlockMax,
-    setCurrentType: setUnlockType
-  } = useInputForm('unlock');
+  } = useInputForm(formTypes.qVaultUnlock);
 
   function handleUnlockMax () {
     if (userVotingWeight > 0) {
@@ -49,11 +49,9 @@ function LockCoin ({ maxQVaultVotingWeight }) {
   }
 
   function handleLock (formData) {
-    setLockType('lock');
     dispatch(setLockAmount(address, formData.amountQ));
   }
   function handleUnlock (formData) {
-    setUnlockType('unlock');
     dispatch(setUnlockAmount(address, formData.amountQ));
   }
 

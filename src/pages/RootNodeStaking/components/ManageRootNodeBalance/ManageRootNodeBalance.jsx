@@ -17,11 +17,12 @@ import {
   getRootWithdrawals,
   setRootAnnounceWithdrawal,
   setRootStakeToPanel,
-  setRootWithdraw
+  setRootWithdraw,
 } from 'store/root-node/action-creators';
 import { isUserRootNode, rootMinimumTimeLock, rootNodeStake, withdrawals } from 'store/root-node/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
+import formTypes from 'constants/form-types.js';
 import { fromWei, toWei } from 'func/balance';
 import { fromSolDateFormattingT1 } from 'func/date';
 import { fN } from 'func/useful';
@@ -36,11 +37,9 @@ function ManageRootNodeBalance () {
   const withdrawalsData = useSelector(withdrawals);
   const rootTimeLockMinimumBalance = useSelector(rootMinimumTimeLock);
 
-  const { register, errors, handleSubmit, setCurrentType } = useInputForm('root-node-balance');
+  const { register, errors, handleSubmit } = useInputForm(formTypes.rootNodeStaking);
 
   useEffect(() => {
-    setCurrentType('root-node-balance');
-
     dispatch(getAccountBalance(userAddress));
     dispatch(getRootNodeStakes(userAddress));
     dispatch(getRootWithdrawals(userAddress));

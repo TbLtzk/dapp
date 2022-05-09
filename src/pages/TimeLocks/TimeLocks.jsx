@@ -23,7 +23,7 @@ function TimeLocks () {
 
   const userAddress = useSelector(userAddressMetamask);
 
-  const [currentAddress, setCurrentAddress] = useState({ address: userAddress });
+  const [currentAddress, setCurrentAddress] = useState(userAddress);
 
   const qVaultStakeBalance = useSelector(userBalance);
   const qVaultTimeLockMinimumBalance = useSelector(qVaultMinimumTimeLock);
@@ -42,25 +42,25 @@ function TimeLocks () {
   const vestingTimeLocksArray = useSelector(vestingTimeLocks);
 
   useEffect(() => {
-    dispatch(getUserBalance(currentAddress.address));
-    dispatch(getMinimumQVaultTimeLock(currentAddress.address));
-    dispatch(getQVaultTimeLocks(currentAddress.address));
+    dispatch(getUserBalance(currentAddress));
+    dispatch(getMinimumQVaultTimeLock(currentAddress));
+    dispatch(getQVaultTimeLocks(currentAddress));
 
-    dispatch(getRootNodeStakes(currentAddress.address));
-    dispatch(getMinimumRootTimeLock(currentAddress.address));
-    dispatch(getRootTimeLocks(currentAddress.address));
+    dispatch(getRootNodeStakes(currentAddress));
+    dispatch(getMinimumRootTimeLock(currentAddress));
+    dispatch(getRootTimeLocks(currentAddress));
 
-    dispatch(getSelfStake(currentAddress.address));
-    dispatch(getMinimumValidatorsTimeLock(currentAddress.address));
-    dispatch(getValidatorsTimeLocks(currentAddress.address));
+    dispatch(getSelfStake(currentAddress));
+    dispatch(getMinimumValidatorsTimeLock(currentAddress));
+    dispatch(getValidatorsTimeLocks(currentAddress));
 
-    dispatch(getVestingBalance(currentAddress.address));
-    dispatch(getMinimumVestingTimeLock(currentAddress.address));
-    dispatch(getVestingTimeLocks(currentAddress.address));
+    dispatch(getVestingBalance(currentAddress));
+    dispatch(getMinimumVestingTimeLock(currentAddress));
+    dispatch(getVestingTimeLocks(currentAddress));
   }, [dispatch, currentAddress]);
 
-  const handleRefresh = (userAddress) => {
-    setCurrentAddress(userAddress);
+  const handleRefresh = (form) => {
+    setCurrentAddress(form.address);
   };
 
   const cardsData = [

@@ -18,7 +18,7 @@ import { dateToTimestamp } from 'func/convertDate';
 import 'react-datepicker/dist/react-datepicker.css';
 
 function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitle, contract, address }) {
-  const shouldCloseModal = useSelector(successMessageSelector);
+  const shouldResetData = useSelector(successMessageSelector);
 
   const { register, control, handleSubmit, errors, getValues, reset } = useInputForm();
 
@@ -49,7 +49,6 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
     setModalShow(false);
     setStartDate(null);
     setEndDate(null);
-    reset();
   };
 
   useEffect(() => {
@@ -57,10 +56,12 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
   }, [startDate, endDate]);
 
   useEffect(() => {
-    if (shouldCloseModal) {
-      handleHideModal();
+    if (shouldResetData) {
+      setStartDate(null);
+      setEndDate(null);
+      reset({ amountQ: '' });
     }
-  }, [shouldCloseModal]);
+  }, [shouldResetData]);
 
   return (
     <ModalWindow

@@ -25,6 +25,7 @@ import {
 import { getSavingInstance, getStableCoinInstance } from 'contracts/contract-instance';
 import { getSavingBalanceDetailsHelper } from 'contracts/helpers/saving-assets-helper';
 
+import formTypes from 'constants/form-types';
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 import { fromWei, toWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
@@ -81,7 +82,7 @@ function * setSavingDepositGenerator ({ amount }) {
     yield put(getTotalCollateralLockedAndOutstandingDebt());
     yield put(getSavingAssets());
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.savingAssetDeposit }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -103,7 +104,7 @@ function * setSavingWithdrawGenerator ({ amount }) {
     yield put(getTotalCollateralLockedAndOutstandingDebt());
     yield put(getSavingAssets());
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.savingAssetWithdraw }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -117,6 +118,13 @@ function * setSavingAproveGenerator () {
     const contract = yield call(getStableCoinInstance);
     const contractSaving = yield call(getSavingInstance);
     yield contract.approve(contractSaving.address, MAX_APPROVE_AMOUNT, { from: userAddress });
+
+    yield put(getSavingBalanceDetails());
+    yield put(getSavingAviableToDeposit());
+    yield put(getSavingAllowance());
+    yield put(getTotalSavingBalance());
+    yield put(getTotalCollateralLockedAndOutstandingDebt());
+    yield put(getSavingAssets());
 
     yield put(setTransactionLoadingSuccess());
   } catch (error) {

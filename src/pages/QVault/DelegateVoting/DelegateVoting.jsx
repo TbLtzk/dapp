@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'components/Base/Buttons/Button';
@@ -7,12 +6,15 @@ import CardBlock from 'components/Base/CardBlock';
 import CustomBlock from 'components/Base/CustomBlock';
 import FormInput from 'components/Base/Form/FormInput';
 
+import useInputForm from 'hooks/useInputForm';
+
 import { getDelegationInfo, setAnnounceNewVotingAgent, setNewVotingAgent } from 'store/q-vault/action-creators';
 import { isPendingDelegation, receivedWeight, votingAgent, votingAgentPassOverTime } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import { getVoteDelegation } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
+import formTypes from 'constants/form-types';
 import { fromWei } from 'func/balance';
 import { getNowTimestamp, remainDate } from 'func/convertDate';
 import { isAddress } from 'func/useful';
@@ -26,14 +28,13 @@ function DelegateVoting () {
   const isPending = useSelector(isPendingDelegation);
   const time = useSelector(votingAgentPassOverTime);
 
-  const { register, handleSubmit, errors, setCurrentType } = useForm('announce');
+  const { register, handleSubmit, errors } = useInputForm(formTypes.qVaultAnnounce);
 
   useEffect(() => {
     dispatch(getDelegationInfo(address));
   }, []);
 
   async function handleAnnounce (formData) {
-    setCurrentType('announce');
     dispatch(setAnnounceNewVotingAgent(formData.address));
   }
 

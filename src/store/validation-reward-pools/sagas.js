@@ -18,11 +18,13 @@ import { setTransactionLoading, setTransactionLoadingError, setTransactionLoadin
 
 import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
 
+import formTypes from 'constants/form-types';
 import { fromWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
 import { BN, fN, getPercentageFormat, uintPercentToNumber } from 'func/useful';
 
 const message = { header: 'Notice', details: 'Stake amount below minimum to apply new rate, old rate applied.' };
+
 function * setUpdateValidatorsCompoundRateGenerator ({ address }) {
   try {
     const { lastUpdateOfCompoundRate } = yield select((state) => state.validationRewardPools);
@@ -59,7 +61,7 @@ function * setDelegatorsShareGenerator ({ amount }) {
     yield contract.setDelegatorsShare(getPercentageFormat(amount));
     yield put(getVRPDelegatorsShare(userAddress));
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.validatorsPool }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

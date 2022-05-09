@@ -20,23 +20,22 @@ import {
   setValidatorsAnnounceWithdrawal,
   setValidatorsCommitStake,
   setValidatorsEnterShortList,
-  setValidatorsWithdraw
+  setValidatorsWithdraw,
 } from 'store/validators/action-creators';
 import {
   accountableTotalStake,
   isUserValidator,
   validatorsMinimumTimeLock,
   validatorsWidenedSelector,
-  validatorWithdrawalInfo
+  validatorWithdrawalInfo,
 } from 'store/validators/selectors';
 
+import formTypes from 'constants/form-types';
 import { fromWei } from 'func/balance';
 import { fromSolDateFormattingT1 } from 'func/date';
 import { errorHandler, fN } from 'func/useful';
 
 function ManageValidatorBalance () {
-  const { register, handleSubmit, errors, setCurrentType } = useInputForm('manage-validator-balance');
-
   const dispatch = useDispatch();
 
   const address = useSelector(userAddressMetamask);
@@ -49,9 +48,9 @@ function ManageValidatorBalance () {
   const validatorLockedAmount = useSelector(validatorsMinimumTimeLock);
   const memberTable = useSelector(validatorsWidenedSelector);
 
-  useEffect(() => {
-    setCurrentType('setCurrentType');
+  const { register, handleSubmit, errors } = useInputForm(formTypes.validatorsStaking);
 
+  useEffect(() => {
     dispatch(getAccountBalance(address));
     dispatch(getIsUserValidator(address));
     dispatch(getMinimumValidatorsTimeLock(address));
@@ -133,11 +132,7 @@ function ManageValidatorBalance () {
               <p>-</p>
             )
             : (
-              <p>
-                {userValidatorWithdrawalInfo
-                  ? fromSolDateFormattingT1(userValidatorWithdrawalInfo.endTime)
-                  : '-'}
-              </p>
+              <p>{userValidatorWithdrawalInfo ? fromSolDateFormattingT1(userValidatorWithdrawalInfo.endTime) : '-'}</p>
             )}
         </div>
       </AccountStatusInfo>
@@ -147,7 +142,7 @@ function ManageValidatorBalance () {
           <FormInput
             ref={register({
               required: 'Field is required!',
-              min: 0
+              min: 0,
             })}
             color={true}
             name="amount"

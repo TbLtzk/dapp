@@ -17,7 +17,7 @@ import {
   setTotalStake,
   setValidatorMembers,
   setValidatorsTimeLocks,
-  setValidatorWithdrawalInfo
+  setValidatorWithdrawalInfo,
 } from './action-creators';
 import * as actionTypes from './action-types';
 
@@ -25,17 +25,18 @@ import { getAccountBalance } from 'store/q-vault/action-creators';
 import {
   setTransactionLoading,
   setTransactionLoadingError,
-  setTransactionLoadingSuccess
+  setTransactionLoadingSuccess,
 } from 'store/transaction-handler/action-creators';
 import { networkSelector } from 'store/user-inf/selectors';
 
 import {
   getIndexerInstance,
   getValidationRewardPoolsInstance,
-  getValidatorsInstance
+  getValidatorsInstance,
 } from 'contracts/contract-instance';
 import { getValidator, getValidators, prepareValidatorsMonitoringData } from 'contracts/helpers/validators-helper';
 
+import formTypes from 'constants/form-types';
 import TABLE_TYPES from 'constants/tableTypes';
 import { fromWei, toWei } from 'func/balance';
 import { getNowTimestamp } from 'func/convertDate';
@@ -172,6 +173,16 @@ function * getValidatorsTimeLocksGenerator ({ address }) {
     ErrorHandler.processWithoutFeedback(error);
   }
 }
+function * getCompoundRateKeeperExistsGenerator () {
+  try {
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = yield call(getValidationRewardPoolsInstance);
+    const compoundRateKeeperExists = yield contract.compoundRateKeeperExists(userAddress);
+    yield put(setCompoundRateKeeperExists(compoundRateKeeperExists));
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error);
+  }
+}
 
 function * setValidatorsInterestRateGenerator ({ address, uintPercent }) {
   try {
@@ -196,7 +207,7 @@ function * setValidatorsCommitStakeGenerator ({ address, amountQ }) {
     const contract = yield call(getValidatorsInstance);
     yield contract.commitStake({
       from: address,
-      value: toWei(amountQ)
+      value: toWei(amountQ),
     });
 
     yield put(getValidatorMembers());
@@ -205,24 +216,7 @@ function * setValidatorsCommitStakeGenerator ({ address, amountQ }) {
     yield put(getAccountBalance(address));
     yield put(getCompoundRateKeeperExists());
 
-    yield put(setTransactionLoadingSuccess());
-  } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
-  }
-}
-
-function * setValidatorsEnterShortListGenerator ({ address }) {
-  try {
-    yield put(setTransactionLoading());
-
-    const contract = yield call(getValidatorsInstance);
-    yield contract.enterShortList({ from: address });
-    yield put(getIsUserValidator(address));
-    yield put(getValidatorMembers());
-    yield put(getCompoundRateKeeperExists());
-
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.validatorsStaking }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -243,7 +237,7 @@ function * setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
     yield put(getValidatorMembers());
     yield put(getCompoundRateKeeperExists());
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.validatorsStaking }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -264,21 +258,27 @@ function * setValidatorsWithdrawGenerator ({ address, amountQ }) {
     yield put(getValidatorWithdrawalInfo(address));
     yield put(getCompoundRateKeeperExists());
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.validatorsStaking }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
-function * getCompoundRateKeeperExistsGenerator () {
+function * setValidatorsEnterShortListGenerator ({ address }) {
   try {
-    const { userAddress } = yield select((state) => state.userInf);
-    const contract = yield call(getValidationRewardPoolsInstance);
-    const compoundRateKeeperExists = yield contract.compoundRateKeeperExists(userAddress);
-    yield put(setCompoundRateKeeperExists(compoundRateKeeperExists));
+    yield put(setTransactionLoading());
+
+    const contract = yield call(getValidatorsInstance);
+    yield contract.enterShortList({ from: address });
+    yield put(getIsUserValidator(address));
+    yield put(getValidatorMembers());
+    yield put(getCompoundRateKeeperExists());
+
+    yield put(setTransactionLoadingSuccess({ message: 'Success!' }));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
@@ -302,5 +302,5 @@ export default [
 
   takeEvery(actionTypes.GET_VALIDATORS_MINIMUM_TIME_LOCK, getValidatorsMinimumTimeLockGenerator),
   takeEvery(actionTypes.GET_VALIDATORS_TIME_LOCKS, getValidatorsTimeLocksGenerator),
-  takeEvery(actionTypes.GET_COMPOUND_RATE_KEEPER_EXISTS, getCompoundRateKeeperExistsGenerator)
+  takeEvery(actionTypes.GET_COMPOUND_RATE_KEEPER_EXISTS, getCompoundRateKeeperExistsGenerator),
 ];

@@ -13,6 +13,7 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper';
 
+import formTypes from 'constants/form-types';
 import { WARNING_MAX_NUMBER } from 'constants/statuses';
 import { BN, isAddress } from 'func/useful';
 
@@ -28,24 +29,21 @@ function ManageBalance ({ maxQVaultWithdrawAmount }) {
     setValue: setDepositValue,
     setError: setDepositError,
     clearErrors: clearDepositErrors,
-    setCurrentType: setDepositType
-  } = useInputForm('deposit');
+  } = useInputForm(formTypes.qVaultDeposit);
 
   const {
     register: registerSend,
     handleSubmit: submitSend,
     errors: errorsSend,
     setValue: setSendValue,
-    setCurrentType: setSendType
-  } = useInputForm('send');
+  } = useInputForm(formTypes.qVaultSend);
 
   const {
     register: registerWithdraw,
     handleSubmit: submitWithdraw,
     errors: errorsWithdraw,
     setValue: setWithdrawValue,
-    setCurrentType: setWithdrawType
-  } = useInputForm('withdraw');
+  } = useInputForm(formTypes.qVaultWithdraw);
 
   const [maxQVaultDepositAmount, setMaxQVaultDepositAmount] = useState(null);
 
@@ -64,7 +62,7 @@ function ManageBalance ({ maxQVaultWithdrawAmount }) {
     if (maxQVaultDepositAmount > 0) {
       setDepositValue('amount', maxQVaultDepositAmount);
       setDepositError('amount', {
-        message: WARNING_MAX_NUMBER
+        message: WARNING_MAX_NUMBER,
       });
     }
   }
@@ -87,13 +85,13 @@ function ManageBalance ({ maxQVaultWithdrawAmount }) {
 
     if (moreThanMaxAmount === 0) {
       setDepositError('amount', {
-        message: WARNING_MAX_NUMBER
+        message: WARNING_MAX_NUMBER,
       });
     } else {
       if (moreThanMaxAmount === 1) {
         setDepositValue('amount', maxQVaultDepositAmount);
         setDepositError('amount', {
-          message: WARNING_MAX_NUMBER
+          message: WARNING_MAX_NUMBER,
         });
       } else {
         clearDepositErrors();
@@ -102,17 +100,14 @@ function ManageBalance ({ maxQVaultWithdrawAmount }) {
   }
 
   function setDepositAmount (formData) {
-    setDepositType('deposit');
     dispatch(setDepositCall(address, formData.amount));
   }
 
   function setSendAmount (formData) {
-    setSendType('send');
     dispatch(setSendCall(formData.address, formData.amount));
   }
 
   function setWithdrawAmount (formData) {
-    setWithdrawType('withdraw');
     dispatch(setWithdrawCall(address, formData.amount));
   }
 
@@ -126,8 +121,8 @@ function ManageBalance ({ maxQVaultWithdrawAmount }) {
             required: 'Field is required!',
             pattern: {
               value: /[0-9.]/gim,
-              message: 'Invalid amount'
-            }
+              message: 'Invalid amount',
+            },
           })}
           lbl="Q"
           min={0}
@@ -153,8 +148,8 @@ function ManageBalance ({ maxQVaultWithdrawAmount }) {
             required: 'Field is required!',
             pattern: {
               value: /[0-9.]/gim,
-              message: 'Invalid amount'
-            }
+              message: 'Invalid amount',
+            },
           })}
           min={0}
           lbl="Q"
@@ -173,16 +168,13 @@ function ManageBalance ({ maxQVaultWithdrawAmount }) {
         />
       </div>
       <h4>Send to foreign QVault account</h4>
-      <div className="card__one-line-form-2-2-1">
-        <h4>Address</h4>
-        <h4>Amount</h4>
-      </div>
-      <div className="card__one-line-form-2-2-1">
+      <div className="card__send-form">
         <FormInput
           ref={registerSend({
             required: 'Field is required!',
-            validate: (address) => (isAddress(address) ? true : 'Incorrect address')
+            validate: (address) => (isAddress(address) ? true : 'Incorrect address'),
           })}
+          lbl={ <i className={'mdi mdi-wallet-outline btn-icon'} />}
           name="address"
           type="text"
           placeholder="0x000"
@@ -194,8 +186,8 @@ function ManageBalance ({ maxQVaultWithdrawAmount }) {
             required: 'Field is required!',
             pattern: {
               value: /[0-9.]/gim,
-              message: 'Invalid amount'
-            }
+              message: 'Invalid amount',
+            },
           })}
           color={true}
           min={0}

@@ -9,6 +9,7 @@ import useInputForm from 'hooks/useInputForm';
 import { setDelegateStake } from 'store/q-vault/action-creators';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
+import formTypes from 'constants/form-types';
 import { toWei } from 'func/balance';
 import { fillArray, isAddress } from 'func/useful';
 
@@ -16,7 +17,7 @@ function UpdateDelegation () {
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
 
-  const { register, handleSubmit, setCurrentType } = useInputForm('delegation');
+  const { register, handleSubmit } = useInputForm(formTypes.qVaultDelegation);
 
   const [inputs, setInputs] = useState(1);
 
@@ -43,7 +44,6 @@ function UpdateDelegation () {
 
   function updateDelegations (formData) {
     const [delegatedTo, stakes] = trasformFormData(formData);
-    setCurrentType('delegation');
     dispatch(setDelegateStake(address, delegatedTo, stakes));
   }
 
