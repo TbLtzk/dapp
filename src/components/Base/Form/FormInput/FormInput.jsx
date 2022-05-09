@@ -8,7 +8,7 @@ import { InputWrapper } from 'components/Base/Form/FormInput/styles';
 import { theme } from 'store/theme/selectors';
 import { loadTypeSelector } from 'store/user-inf/selectors';
 
-import { fields } from 'constants/fieldsNaming';
+import { fieldTypes } from 'constants/fieldTypes';
 import { from1to100Regex, hashRegex, linkRegex, numberRegex, vaultID } from 'constants/regex';
 import { LOAD_TYPES } from 'constants/statuses';
 import { isAddress } from 'func/useful';
@@ -22,17 +22,15 @@ const FormInput = forwardRef(({
   placeholder,
   valid,
   onClick = () => {},
-  align,
-  onChange,
   value,
   disabled,
   min,
   color,
   onMaxClick = null,
   modal,
-  lbl,
+  prefix,
   label,
-  controlId = 'formBasicEmail',
+  onChange,
 }, ref) => {
   const [isFocus, setIsFocus] = useState('');
 
@@ -43,47 +41,47 @@ const FormInput = forwardRef(({
 
   const getTypeRef = useCallback(() => {
     switch (refType) {
-      case fields.externalLink: {
+      case fieldTypes.externalLink: {
         return register({
           required: 'Field is required!',
           validate: (link) => (link.match(linkRegex) ? true : 'Link not valid')
         });
       }
-      case fields.externalLinkOptional: {
+      case fieldTypes.externalLinkOptional: {
         return register({
           validate: (link) => (!link || link.match(linkRegex) ? true : 'Link not valid')
         });
       }
-      case fields.address: {
+      case fieldTypes.address: {
         return register({
           required: 'Field is required!',
           validate: (address) => (isAddress(address) ? true : 'Address not valid')
         });
       }
-      case fields.vault: {
+      case fieldTypes.vaultId: {
         return register({
           required: 'Field is required!',
           validate: (value) => (value.match(vaultID) ? true : 'Vault ID not valid')
         });
       }
-      case fields.bid: {
+      case fieldTypes.bid: {
         return register({
           required: 'Field is required!',
           validate: (value) => (value.match(numberRegex) ? true : 'Bid not valid')
         });
       }
-      case fields.hash: {
+      case fieldTypes.hash: {
         return register({
           required: 'Field is required!',
           validate: (hash) => (hash.match(hashRegex) ? true : 'Hash not valid')
         });
       }
-      case fields.value: {
+      case fieldTypes.percentValue: {
         return register({
           required: 'Field is required!',
           validate: (value) => {
             if (Number(value) > 100) {
-              setValue(fields.value, '100');
+              setValue(fieldTypes.percentValue, '100');
               return true;
             } else {
               return value.match(from1to100Regex) ? true : 'Percentage value not valid';
@@ -104,18 +102,16 @@ const FormInput = forwardRef(({
     <>
       {label ? <h4>{label}</h4> : null}
       <InputWrapper
-        controlId={controlId}
-        align={align}
         type={isValid}
         palette={currentTheme}
         color={color ? 1 : 0}
-        lbl={lbl}
-        isfocus={isValid === 'error' ? '' : isFocus}
+        prefix={prefix}
+        isfocus={valid ? '' : isFocus}
         isdisabled={isDisabled}
         modal={modal ? 1 : 0}
       >
         <div>
-          {lbl ? <div className="input_lbl">{lbl}</div> : null}
+          {prefix ? <div className="input__prefix">{prefix}</div> : null}
           <Form.Control
             ref={ref || getTypeRef()}
             min={min}
@@ -133,7 +129,7 @@ const FormInput = forwardRef(({
           />
           {onMaxClick
             ? (
-              <div className="input_maxbtn" onClick={onMaxClick}>
+              <div className="input__max" onClick={onMaxClick}>
                 Max
               </div>
             )

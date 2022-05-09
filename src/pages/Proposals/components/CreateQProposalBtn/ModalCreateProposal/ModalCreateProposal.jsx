@@ -25,7 +25,7 @@ import {
   stepCounterModal
 } from 'store/voting/proposals/selectors';
 
-import { fields } from 'constants/fieldsNaming';
+import { fieldTypes } from 'constants/fieldTypes';
 import { PROPOSALS_TYPES } from 'constants/statuses';
 
 function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) {
@@ -51,7 +51,7 @@ function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) 
   };
 
   useEffect(() => {
-    Object.values(fields).forEach((value) => {
+    Object.values(fieldTypes).forEach((value) => {
       if (formData[value]) {
         setValue(value, formData[value]);
       }

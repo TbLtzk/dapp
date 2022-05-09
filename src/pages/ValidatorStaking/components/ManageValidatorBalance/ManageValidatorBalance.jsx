@@ -155,7 +155,7 @@ function ManageValidatorBalance () {
             color={true}
             name="amount"
             type="number"
-            lbl="Q"
+            prefix="Q"
             placeholder="0.00"
             valid={errorHandler(errors, 'amount')}
           />

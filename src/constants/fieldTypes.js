@@ -1,4 +1,4 @@
-export const fields = {
+export const fieldTypes = {
   bid: 'bid',
   externalLink: 'external-link',
   externalLinkOptional: 'external-link-optional',
@@ -6,7 +6,7 @@ export const fields = {
   address: 'address',
   deposit: 'deposit',
   repay: 'repay',
-  value: '%-value',
-  remark: 'proposer-remark',
-  vault: 'vault-id'
+  percentValue: '%-value',
+  proposerRemark: 'proposer-remark',
+  vaultId: 'vault-id'
 };

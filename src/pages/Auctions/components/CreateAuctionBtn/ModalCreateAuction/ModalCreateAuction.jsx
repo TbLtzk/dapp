@@ -12,7 +12,7 @@ import { setCreateObj, setStepCounter } from 'store//modal-handler/action-creato
 import { createAuction } from 'store/auctions/action-creators';
 import { createdStepsLimit, formObject, stepCounterModal } from 'store/modal-handler/selectors';
 
-import { fields } from 'constants/fieldsNaming';
+import { fieldTypes } from 'constants/fieldTypes';
 
 function ModalCreateAuction ({ modalShow, onHide, activeTab }) {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ function ModalCreateAuction ({ modalShow, onHide, activeTab }) {
   });
 
   useEffect(() => {
-    Object.values(fields).forEach((value) => {
+    Object.values(fieldTypes).forEach((value) => {
       if (formData[value]) {
         setValue(value, formData[value]);
       }

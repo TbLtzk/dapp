@@ -156,7 +156,7 @@ function SaveManageAsset (props) {
                   <FormInput
                     ref={register1({ required: true })}
                     palette="dark"
-                    lbl={depositAsset}
+                    prefix={depositAsset}
                     min={0}
                     name="amount"
                     type="number"
@@ -178,7 +178,7 @@ function SaveManageAsset (props) {
                   <FormInput
                     ref={register2({ required: true })}
                     palette="dark"
-                    lbl={interestAsset}
+                    prefix={interestAsset}
                     min={0}
                     name="amount"
                     type="number"

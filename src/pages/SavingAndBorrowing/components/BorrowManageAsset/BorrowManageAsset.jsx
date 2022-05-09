@@ -237,7 +237,7 @@ function BorrowManageAsset ({ vault }) {
                   <FormInput
                     ref={register1({ required: true })}
                     palette="dark"
-                    lbl={borrowingDetails?.assets}
+                    prefix={borrowingDetails?.assets}
                     min={0}
                     name="field"
                     modal={true}
@@ -258,7 +258,7 @@ function BorrowManageAsset ({ vault }) {
                   <FormInput
                     ref={register2({ required: true })}
                     palette="dark"
-                    lbl={borrowingDetails?.assets}
+                    prefix={borrowingDetails?.assets}
                     min={0}
                     name="field"
                     type="number"
@@ -282,7 +282,7 @@ function BorrowManageAsset ({ vault }) {
                   <FormInput
                     ref={register3({ required: true })}
                     palette="dark"
-                    lbl={collateralDetails?.assets}
+                    prefix={collateralDetails?.assets}
                     min={0}
                     name="field"
                     type="number"
@@ -306,7 +306,7 @@ function BorrowManageAsset ({ vault }) {
                   <FormInput
                     ref={register4({ required: true })}
                     palette="dark"
-                    lbl={collateralDetails?.assets}
+                    prefix={collateralDetails?.assets}
                     min={0}
                     name="field"
                     type="number"

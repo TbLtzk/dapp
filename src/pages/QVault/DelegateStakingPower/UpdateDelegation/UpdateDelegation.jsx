@@ -79,7 +79,7 @@ export default function UpdateDelegation () {
             color={true}
             name={'share' + idx}
             type="number"
-            lbl="Q"
+            prefix="Q"
             placeholder="0.00"
           />
           <div className="card__one-line-form-2-2-1-action">

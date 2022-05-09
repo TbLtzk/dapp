@@ -110,7 +110,7 @@ function ManageRootNodeBalance () {
             ref={register({ required: 'Field is required!' })}
             color={true}
             name="amount"
-            lbl="Q"
+            prefix="Q"
             type="number"
             placeholder="0.00"
             valid={errors?.amount?.message}

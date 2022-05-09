@@ -53,7 +53,7 @@ export default function LockCoin ({ maxQVaultVotingWeight }) {
           ref={reg1({ required: 'Field is required!' })}
           color={true}
           min={0}
-          lbl={'Q'}
+          prefix="Q"
           name="amountQ"
           type="number"
           placeholder="0.0"
@@ -76,7 +76,7 @@ export default function LockCoin ({ maxQVaultVotingWeight }) {
           min={0}
           name="amountQ"
           type="number"
-          lbl={'Q'}
+          prefix="Q"
           placeholder="0.0"
           valid={err3.amountQ?.message}
           onMaxClick={handleUnlockMax}

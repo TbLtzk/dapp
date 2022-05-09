@@ -25,7 +25,7 @@ function ManageVestingBalance ({ setModalShow }) {
           required: 'Field is required!',
           pattern: /[0-9]/i
         })}
-        lbl={'Q'}
+        prefix="Q"
         min={0}
         name="amountQ"
         type="number"

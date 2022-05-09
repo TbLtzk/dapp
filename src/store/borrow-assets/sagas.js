@@ -23,18 +23,18 @@ import {
 } from 'contracts/contract-instance';
 import { getBorrowVaultInfoHelper } from 'contracts/helpers/borrow-assets-helper';
 
-import { fields } from 'constants/fieldsNaming';
+import { fieldTypes } from 'constants/fieldTypes';
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 import { fromWei, toBtcBlockchain, toWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
 
 const getContractWithTypeAndKey = async (type) => {
   switch (type) {
-    case fields.deposit: {
+    case fieldTypes.deposit: {
       const contract = await getGovernedEpdrQbtcAddressInstance();
       return contract.methods;
     }
-    case fields.repay: {
+    case fieldTypes.repay: {
       const contract = await getStableCoinInstance();
       return contract;
     }
@@ -88,7 +88,7 @@ function * setBorrowAproveGenerator ({ borrowType }) {
 
     const contract = yield call(getContractWithTypeAndKey, borrowType);
     let result;
-    if (borrowType === fields.deposit) {
+    if (borrowType === fieldTypes.deposit) {
       result = yield contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT).send({ from: userAddress });
     } else {
       result = yield contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT, { from: userAddress });

@@ -121,7 +121,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
               message: 'Invalid amount'
             }
           })}
-          lbl="Q"
+          prefix="Q"
           min={0}
           color={true}
           name="amount"
@@ -149,7 +149,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
             }
           })}
           min={0}
-          lbl="Q"
+          prefix="Q"
           name="amount"
           color={true}
           type="number"
@@ -194,7 +194,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
           min={0}
           name="amount"
           type="number"
-          lbl="Q"
+          prefix="Q"
           placeholder="0.00"
           valid={errorsSend.amount?.message}
           onMaxClick={handleSendMax}

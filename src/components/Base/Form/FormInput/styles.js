@@ -42,7 +42,7 @@ export const InputWrapper = styled(Form.Group)`
     }
   }};
     min-height: ${inputMinHeight};
-    text-align: ${(p) => (p.align ? p.align : 'left')};
+    text-align: 'left';
     color: ${(p) => {
     if (p.palette === 'dark') {
       return p.type === 'error' ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint2;
@@ -105,7 +105,7 @@ export const InputWrapper = styled(Form.Group)`
     }
   }
 
-  .input_maxbtn {
+  .input__max {
     right: 8px;
     top: 4px;
     position: absolute;
@@ -138,7 +138,7 @@ export const InputWrapper = styled(Form.Group)`
   }}
   }
 
-  .input_lbl {
+  .input__prefix {
     display: flex;
     align-items: center;
     justify-content: center;
