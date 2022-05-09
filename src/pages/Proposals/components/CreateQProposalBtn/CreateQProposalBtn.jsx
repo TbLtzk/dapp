@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 
 import Button from 'components/Base/Buttons/Button';
 
-import { QExpert, QProposal, QRootNode, QSlashing } from './constants';
 import ModalCreateProposal from './ModalCreateProposal';
 
 import { setCreatedStepsLimit, setCreateProposalObj, setStepCounter } from 'store/voting/proposals/action-creators';
@@ -16,16 +15,15 @@ function CreateQProposalBtn ({ activeTab }) {
 
   const activeTabTitle = useMemo(() => {
     switch (activeTab) {
-      case PROPOSALS_TYPES.proposals:
-        return QProposal;
       case PROPOSALS_TYPES.rootNodePanel:
-        return QRootNode;
+        return 'Q Root Node Panel Proposal';
       case PROPOSALS_TYPES.expertProposals:
-        return QExpert;
+        return 'Q Expert Proposal';
       case PROPOSALS_TYPES.slashingProposals:
-        return QSlashing;
+        return 'Q Slashing Proposal';
+      case PROPOSALS_TYPES.proposals:
       default:
-        return QProposal;
+        return 'Q Proposal';
     }
   }, [activeTab]);
 
@@ -46,7 +44,7 @@ function CreateQProposalBtn ({ activeTab }) {
         dispatch(setCreatedStepsLimit(3));
         break;
       default:
-        return QProposal;
+        break;
     }
   };
 

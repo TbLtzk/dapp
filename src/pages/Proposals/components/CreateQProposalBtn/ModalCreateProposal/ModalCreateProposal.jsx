@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import ModalWindow from 'components/Base/ModalWindow';
 
-import { arrExpert, arrQProposal, arrQProposalAdvanced, arrQRootNode, arrSlashing } from './constants';
 import CreateStep1 from './CreateStep1';
 import CreateStep2 from './CreateStep2';
 import CreateStep3 from './CreateStep3';
@@ -43,10 +42,12 @@ function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) 
   });
 
   const radioArrFirstStepObject = {
-    [PROPOSALS_TYPES.proposals]: appMode === MODE.advanced ? arrQProposalAdvanced : arrQProposal,
-    [PROPOSALS_TYPES.rootNodePanel]: arrQRootNode,
-    [PROPOSALS_TYPES.expertProposals]: arrExpert,
-    [PROPOSALS_TYPES.slashingProposals]: arrSlashing
+    [PROPOSALS_TYPES.proposals]: appMode === MODE.advanced
+      ? ['Constitution Update', 'General Q Update', 'Emergency Update']
+      : ['Constitution Update', 'General Q Update'],
+    [PROPOSALS_TYPES.rootNodePanel]: ['Add a new Root Node', 'Remove a current Root Node'],
+    [PROPOSALS_TYPES.expertProposals]: ['Add a new Expert', 'Remove a current Expert', 'Parameter Vote'],
+    [PROPOSALS_TYPES.slashingProposals]: ['Root Node Slashing', 'Validator Node Slashing']
   };
 
   useEffect(() => {

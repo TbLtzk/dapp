@@ -1,11 +1,11 @@
 import React, { Fragment, useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import { ParameterType } from '@q-dev/q-js-sdk';
+
 import FormInput from 'components/Base/Form/FormInput';
 import FormSelect from 'components/Base/Form/FormSelect';
 import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue';
-
-import { constUpdate, warning } from './constants';
 
 import { formObject, newParameterSelector } from 'store/voting/proposals/selectors';
 
@@ -83,20 +83,35 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
           } else {
             return (
               <div>
-                <h2>{constUpdate.inputTitle}</h2>
+                <h2>Please provide exact Key-Name, Type and new Value for Parameter</h2>
                 {fillArray(params).map((_, index) => (
                   <Fragment key={index}>
-                    <h2>
-                      {constUpdate.radioBtnTitle} #{index + 1}
-                    </h2>
+                    <h2>Parameter #{index + 1}</h2>
                     <div className="modal__one-line-form" style={{ marginBottom: 0 }}>
                       <FormSelect
                         ref={register({ required: 'Choose one option!' })}
                         width="40%"
                         palette="dark"
-                        name={`${constUpdate.radioBtnName}[${index}]`}
+                        name={`parameter-type[${index}]`}
                         register={register}
-                        optionValues={constUpdate.radioBtn}
+                        optionValues={[
+                          {
+                            lbl: 'Address',
+                            value: ParameterType.ADDRESS
+                          },
+                          {
+                            lbl: 'Boolean',
+                            value: ParameterType.BOOL
+                          },
+                          {
+                            lbl: 'String',
+                            value: ParameterType.STRING
+                          },
+                          {
+                            lbl: 'Uint',
+                            value: ParameterType.UINT
+                          }
+                        ]}
                       />
                       <FormInput
                         ref={register({
@@ -105,9 +120,9 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
                         })}
                         type="string"
                         palette="dark"
-                        name={`${constUpdate.inputsObjFirst}[${index}]`}
-                        placeholder={constUpdate.inputsFirst}
-                        valid={errors[constUpdate.inputsObjFirst]?.[index]?.message}
+                        name={`parameter-key[${index}]`}
+                        placeholder="Parameter Key"
+                        valid={errors['parameter-key']?.[index]?.message}
                       />
                     </div>
                     <FormInput
@@ -116,19 +131,19 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
                         validate: (value) =>
                           validatePattern(
                             value,
-                            watch(`${constUpdate.radioBtnName}[${index}]`)
+                            watch(`parameter-type[${index}]`)
                           )
                       })}
                       type="string"
                       palette="dark"
-                      name={`${constUpdate.inputsObjSecond}[${index}]`}
-                      placeholder={constUpdate.inputsSecond}
-                      valid={errors[constUpdate.inputsObjSecond]?.[index]?.message}
+                      name={`parameter-value[${index}]`}
+                      placeholder="Value"
+                      valid={errors['parameter-value']?.[index]?.message}
                     />
                     <CurrentParameterValue
                       typeContract={CONTRACT_TYPES.constitution}
-                      parameterType={watch(`${constUpdate.radioBtnName}[${index}]`)}
-                      parameterKey={watch(`${constUpdate.inputsObjFirst}[${index}]`)}
+                      parameterType={watch(`${'parameter-type'}[${index}]`)}
+                      parameterKey={watch(`${'parameter-key'}[${index}]`)}
                     />
                   </Fragment>
                 ))}
@@ -199,7 +214,12 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
           <>
             {formData.first === 'parameter-vote'
               ? (
-                <p style={{ color: '#FF8550' }}>{newParameter ? warning : null}</p>
+                <p style={{ color: '#FF8550' }}>
+                  {newParameter
+                    ? 'Warning: This proposal will be about creating and adding a NEW parameter. Please check combination of expert panel, type and key if you want to change an existing parameter instead.'
+                    : null
+                  }
+                </p>
               )
               : null}
             <h5>{formData.first === 'parameter-vote' ? 'Add Parameter' : 'Panel to Add an Expert'}</h5>
