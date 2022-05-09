@@ -1,8 +1,9 @@
 import React from 'react';
 
 import CopyToClipboard from 'components/Base/CopyToClipboard';
-import { TableStyle } from 'components/Base/TableView/styles';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+
+import { TableStyle } from './styles';
 
 function KeyAddressesTable ({ tableData, tableHeaders }) {
   return (

@@ -4,11 +4,11 @@ import { useSelector } from 'react-redux';
 import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import PageWrap from 'components/Base/PageWrap';
 
-import Panel from './Panel/Panel';
 import DelegateStakingPower from './DelegateStakingPower';
 import DelegateVoting from './DelegateVoting';
 import LockCoin from './LockCoin';
 import ManageBalance from './ManageBalance';
+import Panel from './Panel';
 
 import { mode } from 'store/dashboard-mode/selectors';
 import { qVaultMinimumTimeLock, userBalance, votingWeight } from 'store/q-vault/selectors';
