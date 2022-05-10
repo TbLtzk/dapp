@@ -17,7 +17,7 @@ export default function transactionHandler (state = initialState, action) {
       return {
         ...state,
         transactionLoading: false,
-        successMessage: action.successMessage || 'Sucess'
+        successMessage: action.successMessage || 'Success'
       };
     case actionTypes.SET_TRANSACTION_LOADING_ERROR:
       return {
