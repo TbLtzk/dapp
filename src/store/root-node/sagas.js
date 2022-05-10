@@ -46,7 +46,7 @@ function * setRootStakeToPanelGenerator ({ data }) {
     yield put(getMinimumRootTimeLock(userAddress));
     yield put(getRootMembers());
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.rootNodeStaking }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.rootNodeStaking }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -67,7 +67,7 @@ function * setRootAnnounceWithdrawalGenerator ({ amount, paymentInf }) {
     yield put(getMinimumRootTimeLock(userAddress));
     yield put(getRootMembers());
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.rootNodeStaking }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.rootNodeStaking }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -90,7 +90,7 @@ function * setRootWithdrawGenerator ({ amount, payTo, paymentInf }) {
     yield put(getMinimumRootTimeLock(userAddress));
     yield put(getRootMembers());
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.rootNodeStaking }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.rootNodeStaking }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

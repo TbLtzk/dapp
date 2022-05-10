@@ -216,7 +216,7 @@ function * setValidatorsCommitStakeGenerator ({ address, amountQ }) {
     yield put(getAccountBalance(address));
     yield put(getCompoundRateKeeperExists());
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.validatorsStaking }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.validatorsStaking }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -237,7 +237,7 @@ function * setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
     yield put(getValidatorMembers());
     yield put(getCompoundRateKeeperExists());
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.validatorsStaking }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.validatorsStaking }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -258,7 +258,7 @@ function * setValidatorsWithdrawGenerator ({ address, amountQ }) {
     yield put(getValidatorWithdrawalInfo(address));
     yield put(getCompoundRateKeeperExists());
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.validatorsStaking }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.validatorsStaking }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

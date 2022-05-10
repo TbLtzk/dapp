@@ -82,7 +82,7 @@ function * setSavingDepositGenerator ({ amount }) {
     yield put(getTotalCollateralLockedAndOutstandingDebt());
     yield put(getSavingAssets());
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.savingAssetDeposit }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.savingAssetDeposit }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -104,7 +104,7 @@ function * setSavingWithdrawGenerator ({ amount }) {
     yield put(getTotalCollateralLockedAndOutstandingDebt());
     yield put(getSavingAssets());
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.savingAssetWithdraw }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.savingAssetWithdraw }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

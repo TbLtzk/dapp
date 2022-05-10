@@ -120,7 +120,7 @@ function * setBorrowDepositGenerator ({ amount, vaultId }) {
     yield put(getTotalCollateralLockedAndOutstandingDebt());
     yield put(getTotalSavingBalance());
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.borrowAssetDeposit }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.borrowAssetDeposit }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -138,7 +138,7 @@ function * setBorrowAsBorrowGenerator ({ amount, vaultId }) {
     yield put(getTotalCollateralLockedAndOutstandingDebt());
     yield put(getTotalSavingBalance());
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.borrowAssetBorrow }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.borrowAssetBorrow }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -156,7 +156,7 @@ function * setBorrowRepayGenerator ({ amount, vaultId }) {
     yield put(getTotalCollateralLockedAndOutstandingDebt());
     yield put(getTotalSavingBalance());
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.borrowAssetRepay }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.borrowAssetRepay }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -175,7 +175,7 @@ function * setBorrowWithdrawGenerator ({ amount, vaultId }) {
     yield put(getTotalSavingBalance());
     yield put(getTotalCollateralLockedAndOutstandingDebt());
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.borrowAssetWithdraw }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.borrowAssetWithdraw }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

@@ -61,7 +61,7 @@ function * setDelegatorsShareGenerator ({ amount }) {
     yield contract.setDelegatorsShare(getPercentageFormat(amount));
     yield put(getVRPDelegatorsShare(userAddress));
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.validatorsPool }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.validatorsPool }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

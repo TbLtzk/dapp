@@ -139,7 +139,7 @@ function * setPurgeSlashingGenerator ({ slashingAddress, contractType }) {
       contractType === CONTRACT_TYPES.rootNodes ? yield getRootNodesInstance() : yield getValidatorsInstance();
     yield contract.purgePendingSlashings(slashingAddress, { from: userAddress });
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.purgeSlashing }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.purgeSlashing }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

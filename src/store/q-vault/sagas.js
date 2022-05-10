@@ -80,7 +80,7 @@ function * setDepositGenerator ({ address, amountQ }) {
     yield put(getUserBalance(address));
     yield put(getAccountBalance(address));
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.qVaultDeposit }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultDeposit }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -97,7 +97,7 @@ function * setSendGenerator ({ address, amount }) {
 
     yield put(getUserBalance(userAddress));
     yield put(getAccountBalance(userAddress));
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.qVaultSend }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultSend }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -114,7 +114,7 @@ function * setWithdrawGenerator ({ address, amountQ }) {
     yield put(getUserBalance(address));
     yield put(getAccountBalance(address));
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.qVaultWithdraw }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultWithdraw }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -135,7 +135,7 @@ function * setDelegateStakeGenerator ({ address, delegateAddresses, stakes }) {
     yield put(getAccountBalance(userAddress));
     yield put(getDelegationInfo(userAddress));
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.qVaultDelegation }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultDelegation }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -156,7 +156,7 @@ function * setLockAmountGenerator ({ address, amountQ }) {
     yield put(getLockedAssets(address));
     yield put(getDelegationInfo(userAddress));
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.qVaultLock }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultLock }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -176,7 +176,7 @@ function * setUnlockAmountGenerator ({ address, amountQ }) {
     yield put(getLockedAssets(address));
     yield put(getDelegationInfo(userAddress));
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.qVaultUnlock }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultUnlock }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -302,7 +302,7 @@ function * setAnnounceNewVotingAgentGenerator ({ address }) {
     yield put(getDelegationInfo(userAddress));
     yield put(getAccountBalance(userAddress));
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.qVaultAnnounce }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultAnnounce }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
