@@ -20,7 +20,9 @@ const formTypes = {
   borrowAssetDeposit: 'borrow-asset-deposit',
   borrowAssetWithdraw: 'borrow-asset-withdraw',
 
-  purgeSlashing: 'purge-slashing'
+  purgeSlashing: 'purge-slashing',
+  vestingWithdraw: 'vesting-withdraw',
+  timeLocksAmount: 'time-locks-amount'
 };
 
 export default formTypes;

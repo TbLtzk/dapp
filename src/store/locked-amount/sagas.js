@@ -7,7 +7,7 @@ import { getMinimumRootTimeLock, getRootNodeStakes, getRootTimeLocks } from 'sto
 import {
   setTransactionLoading,
   setTransactionLoadingError,
-  setTransactionLoadingSuccess
+  setTransactionLoadingSuccess,
 } from 'store/transaction-handler/action-creators';
 import { getMinimumValidatorsTimeLock, getSelfStake, getValidatorsTimeLocks } from 'store/validators/action-creators';
 import { getMinimumVestingTimeLock, getVestingBalance, getVestingTimeLocks } from 'store/vesting/action-creators';
@@ -16,10 +16,11 @@ import {
   getQVaultInstance,
   getRootNodesInstance,
   getValidatorsInstance,
-  getVestingInstance
+  getVestingInstance,
 } from 'contracts/contract-instance';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
+import formTypes from 'constants/form-types';
 import { toWei } from 'func/balance';
 import { dateToTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
@@ -97,7 +98,7 @@ function* setDepositLockedAmount({ payload }) {
     );
 
     yield call(getAmountOnContract, payload.contract, payload.address);
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ type: formTypes.timeLocksAmount }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

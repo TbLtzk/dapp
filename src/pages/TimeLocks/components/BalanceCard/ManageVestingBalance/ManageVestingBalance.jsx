@@ -8,13 +8,14 @@ import useInputForm from 'hooks/useInputForm';
 
 import { setVestingWithdraw } from 'store/vesting/action-creators';
 
+import formTypes from 'constants/form-types';
+
 function ManageVestingBalance () {
   const dispatch = useDispatch();
 
-  const { register, handleSubmit, errors, setCurrentType } = useInputForm('withdraw-vesting');
+  const { register, handleSubmit, errors } = useInputForm(formTypes.vestingWithdraw);
 
   const handleWithdrawVesting = (formData) => {
-    setCurrentType('withdraw-vesting');
     dispatch(setVestingWithdraw(formData.amountQ));
   };
 

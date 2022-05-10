@@ -6,15 +6,15 @@ import { successMessageSelector } from 'store/transaction-handler/selectors';
 
 function useInputForm (formType = '', params = {}) {
   const form = useForm(params);
-  const metamaskSucess = useSelector(successMessageSelector);
+  const metamaskSuccess = useSelector(successMessageSelector);
 
   useEffect(() => {
-    if (metamaskSucess?.type === formType) {
+    if (metamaskSuccess?.type === formType) {
       const values = form.getValues();
       const emptyForm = Object.fromEntries(Object.entries(values).map(([key, _]) => [key, '']));
       form.reset(emptyForm);
     }
-  }, [metamaskSucess]);
+  }, [metamaskSuccess]);
 
   return form;
 }

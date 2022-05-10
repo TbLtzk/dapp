@@ -13,6 +13,7 @@ import {
 import { getVestingInstance } from 'contracts/contract-instance';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
+import formTypes from 'constants/form-types';
 import { fromWei, toWei } from 'func/balance';
 import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
@@ -68,7 +69,7 @@ function * setVestingWithdrawGenerator ({ amountQ }) {
     yield contract.withdraw(toWei(amountQ), { from: userAddress });
 
     yield call(getAmountOnContract, CONTRACT_TYPES.vesting, userAddress);
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ type: formTypes.vestingWithdraw }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

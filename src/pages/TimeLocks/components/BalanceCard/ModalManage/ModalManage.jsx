@@ -13,6 +13,7 @@ import ManageVestingBalance from '../ManageVestingBalance';
 
 import { successMessageSelector } from 'store/transaction-handler/selectors';
 
+import formTypes from 'constants/form-types';
 import { dateToTimestamp } from 'func/convertDate';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -20,7 +21,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitle, contract, address }) {
   const shouldResetData = useSelector(successMessageSelector);
 
-  const { register, control, handleSubmit, errors, getValues, reset } = useInputForm();
+  const { register, control, handleSubmit, errors, getValues } = useInputForm(formTypes.timeLocksAmount);
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -59,7 +60,6 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
     if (shouldResetData) {
       setStartDate(null);
       setEndDate(null);
-      reset({ amountQ: '' });
     }
   }, [shouldResetData]);
 
