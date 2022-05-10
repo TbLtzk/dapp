@@ -16,7 +16,7 @@ function useInputForm (formType = '', params = {}) {
     }
   }, [metamaskSucess]);
 
-  return { ...form };
+  return form;
 }
 
 export default useInputForm;
