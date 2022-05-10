@@ -105,7 +105,6 @@ export default function RewardStats ({ modalShow }) {
           type="number"
           prefix="%"
           placeholder="0"
-          palette="dark"
           valid={errorHandler(err1, 'amount')}
         />
         <Button

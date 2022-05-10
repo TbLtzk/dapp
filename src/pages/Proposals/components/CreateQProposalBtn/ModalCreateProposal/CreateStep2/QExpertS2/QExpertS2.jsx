@@ -162,7 +162,6 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                     })}
                     name={`parameter-key[${index}]`}
                     type="string"
-                    palette="dark"
                     placeholder={['Key']}
                     valid={errors['parameter-key']?.[index]?.message}
                   />
@@ -175,7 +174,6 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                   })}
                   name={`parameter-value[${index}]`}
                   type="string"
-                  palette="dark"
                   placeholder="Value"
                   valid={errors['parameter-value']?.[index]?.message}
                 />

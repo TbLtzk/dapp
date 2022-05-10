@@ -236,7 +236,6 @@ function BorrowManageAsset ({ vault }) {
                 <div className="modal__one-line-form">
                   <FormInput
                     ref={register1({ required: true })}
-                    palette="dark"
                     prefix={borrowingDetails?.assets}
                     min={0}
                     name="field"
@@ -257,7 +256,6 @@ function BorrowManageAsset ({ vault }) {
                 <div className="modal__one-line-form">
                   <FormInput
                     ref={register2({ required: true })}
-                    palette="dark"
                     prefix={borrowingDetails?.assets}
                     min={0}
                     name="field"
@@ -281,7 +279,6 @@ function BorrowManageAsset ({ vault }) {
                 <div className="modal__one-line-form">
                   <FormInput
                     ref={register3({ required: true })}
-                    palette="dark"
                     prefix={collateralDetails?.assets}
                     min={0}
                     name="field"
@@ -305,7 +302,6 @@ function BorrowManageAsset ({ vault }) {
                 <div className="modal__one-line-form">
                   <FormInput
                     ref={register4({ required: true })}
-                    palette="dark"
                     prefix={collateralDetails?.assets}
                     min={0}
                     name="field"

@@ -119,7 +119,6 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
                           validate: (key) => parameterKeyValidation(key)
                         })}
                         type="string"
-                        palette="dark"
                         name={`parameter-key[${index}]`}
                         placeholder="Parameter Key"
                         valid={errors['parameter-key']?.[index]?.message}
@@ -135,7 +134,6 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
                           )
                       })}
                       type="string"
-                      palette="dark"
                       name={`parameter-value[${index}]`}
                       placeholder="Value"
                       valid={errors['parameter-value']?.[index]?.message}

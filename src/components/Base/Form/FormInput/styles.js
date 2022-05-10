@@ -17,13 +17,12 @@ export const InputWrapper = styled(Form.Group)`
     font-size: 14px;
     line-height: 20px;
     padding: 6px 11px;
+    box-sizing: border-box;
+    text-align: 'left';
+    min-height: ${inputMinHeight};
+    border-radius: ${(props) => props.$prefix ? '0 3px 3px 0' : '3px'};
     background: ${getBackgroundColor};
     border: 1px solid ${getInputColor};
-    box-sizing: border-box;
-
-    border-radius: ${(props) => props.prefix ? '0 3px 3px 0' : '3px'};
-    min-height: ${inputMinHeight};
-    text-align: 'left';
     color: ${getInputColor};
 
     &:focus,
@@ -33,7 +32,7 @@ export const InputWrapper = styled(Form.Group)`
       background: ${getBackgroundColor};
       border-color: ${getMainColor};
       color: ${(props) => {
-        return props.palette === 'dark' && !props.color
+        return props.theme.palette === 'dark' && !props.$color
           ? props.theme.colors.oxfordBlueTint1
           : props.theme.colors.white;
       }};
@@ -41,10 +40,10 @@ export const InputWrapper = styled(Form.Group)`
 
     &:disabled {
       cursor: not-allowed;
-      background: ${(props) => props.palette === 'dark' ? 'transparent' : props.theme.colors.blue};
+      background: ${(props) => props.theme.palette === 'dark' ? 'transparent' : props.theme.colors.blue};
       border: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
       color: ${(props) => {
-        return props.palette === 'dark'
+        return props.theme.palette === 'dark'
           ? props.theme.colors.oxfordBlueTint5
           : props.theme.colors.oxfordBlueTint2;
       }};
@@ -52,12 +51,16 @@ export const InputWrapper = styled(Form.Group)`
   }
 
   .input__max {
+    position: absolute;
     right: 8px;
     top: 4px;
-    position: absolute;
     font-size: 14px;
     line-height: 24px;
     cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
     ${getMaxButtonStyle}
   }
 
@@ -71,18 +74,31 @@ export const InputWrapper = styled(Form.Group)`
     border-radius: 3px 0 0 3px;
     padding: 6px 10px;
     white-space: nowrap;
+    background-color: ${(props) => {
+      return props.$disabled
+        ? props.theme.colors.oxfordBlueTint2
+        : getInputColor(props);
+    }};
     color: ${(props) => {
-      return props.palette === 'dark' && !(props.isdisabled || props.isfocus)
+      return props.theme.palette === 'dark' && !props.$disabled
         ? props.theme.colors.white
         : props.theme.colors.oxfordBlueTint1;
     }};
-    background: ${getPrefixBackground};
+  }
+
+  div:focus-within .input__prefix {
+    color: ${(props) => props.theme.colors.oxfordBlueTint1};
+    background-color: ${(props) => {
+      return props.theme.palette === 'dark'
+        ? props.theme.colors.neonGreen
+        : props.theme.colors.white;
+    }};
   }
 `;
 
 function getBackgroundColor (props) {
-  if (props.palette === 'dark') {
-    return props.color
+  if (props.theme.palette === 'dark') {
+    return props.$color
       ? props.theme.colors.oxfordBlueTint1
       : 'transparent';
   }
@@ -91,42 +107,30 @@ function getBackgroundColor (props) {
 }
 
 function getMainColor (props) {
-  return props.palette === 'dark'
+  return props.theme.palette === 'dark'
     ? props.theme.colors.oxfordBlueTint2
     : props.theme.colors.oxfordBlueTint4;
 }
 
 function getInputColor (props) {
-  return props.type === 'error'
+  return props.$error
     ? props.theme.colors.validationError
     : getMainColor(props);
 }
 
-function getPrefixBackground (props) {
-  if (props.isfocus) {
-    return props.palette === 'dark'
-      ? props.theme.colors.neonGreen
-      : props.theme.colors.white;
-  }
-
-  return props.isdisabled
-    ? props.theme.colors.oxfordBlueTint2
-    : getInputColor(props);
-}
-
 function getMaxButtonStyle (props) {
-  if (props.isdisabled) {
+  if (props.$disabled) {
     return css`
       cursor: default;
       color: ${props.theme.colors.oxfordBlueTint2};
     `;
   }
 
-  if (props.palette === 'dark') {
+  if (props.theme.palette === 'dark') {
     return css`
       color: ${props.theme.colors.oxfordBlueTint4};
       &:hover {
-        color: ${props.modal ? props.theme.colors.oxfordBlueTint1 : props.theme.colors.neonGreen};
+        color: ${props.$modal ? props.theme.colors.oxfordBlueTint1 : props.theme.colors.neonGreen};
       }
     `;
   }

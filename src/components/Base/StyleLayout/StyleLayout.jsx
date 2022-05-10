@@ -63,6 +63,7 @@ function StyleLayout ({ children }) {
     <ThemeProvider
       theme={{
         ...themeStyles,
+        palette: currentTheme,
         colors: getColors(currentTheme)
       }}
     >

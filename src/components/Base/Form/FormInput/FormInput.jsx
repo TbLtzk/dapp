@@ -1,11 +1,10 @@
-import React, { forwardRef, useCallback, useState } from 'react';
+import React, { forwardRef, useCallback } from 'react';
 import { Form } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
 import ErrorInputMessage from 'components/Base/ErrorInputMessage';
 import { InputWrapper } from 'components/Base/Form/FormInput/styles';
 
-import { theme } from 'store/theme/selectors';
 import { loadTypeSelector } from 'store/user-inf/selectors';
 
 import { fieldTypes } from 'constants/fieldTypes';
@@ -26,18 +25,14 @@ const FormInput = forwardRef(({
   disabled,
   min,
   color,
-  onMaxClick = null,
   modal,
   prefix,
   label,
   onChange,
+  onMaxClick = null,
 }, ref) => {
-  const [isFocus, setIsFocus] = useState('');
-
-  const currentTheme = useSelector(theme);
   const loadType = useSelector(loadTypeSelector);
-  const isDisabled = loadType !== LOAD_TYPES.loaded ? '1' : disabled ? '1' : '';
-  const isValid = valid ? 'error' : '';
+  const isDisabled = disabled || loadType !== LOAD_TYPES.loaded;
 
   const getTypeRef = useCallback(() => {
     switch (refType) {
@@ -99,45 +94,39 @@ const FormInput = forwardRef(({
   }, []);
 
   return (
-    <>
+    <InputWrapper
+      $color={color}
+      $prefix={prefix}
+      $error={valid}
+      $disabled={isDisabled}
+      $modal={modal}
+    >
       {label ? <h4>{label}</h4> : null}
-      <InputWrapper
-        type={isValid}
-        palette={currentTheme}
-        color={color ? 1 : 0}
-        prefix={prefix}
-        isfocus={valid ? '' : isFocus}
-        isdisabled={isDisabled}
-        modal={modal ? 1 : 0}
-      >
-        <div>
-          {prefix ? <div className="input__prefix">{prefix}</div> : null}
-          <Form.Control
-            ref={ref || getTypeRef()}
-            min={min}
-            type={type}
-            autoComplete="off"
-            placeholder={placeholder}
-            name={name}
-            value={value}
-            disabled={isDisabled}
-            onFocus={() => setIsFocus('1')}
-            onBlur={() => setIsFocus('')}
-            onClick={onClick}
-            onKeyPress={(e) => e.key === 'Enter' && e.preventDefault()}
-            onChange={onChange}
-          />
-          {onMaxClick
-            ? (
-              <div className="input__max" onClick={onMaxClick}>
-                Max
-              </div>
-            )
-            : null}
-        </div>
-        <ErrorInputMessage message={valid} />
-      </InputWrapper>
-    </>
+      <div>
+        {prefix ? <div className="input__prefix">{prefix}</div> : null}
+        <Form.Control
+          ref={ref || getTypeRef()}
+          min={min}
+          type={type}
+          autoComplete="off"
+          placeholder={placeholder}
+          name={name}
+          value={value}
+          disabled={isDisabled}
+          onClick={onClick}
+          onKeyPress={(e) => e.key === 'Enter' && e.preventDefault()}
+          onChange={onChange}
+        />
+        {onMaxClick
+          ? (
+            <button className="input__max" onClick={onMaxClick}>
+              Max
+            </button>
+          )
+          : null}
+      </div>
+      <ErrorInputMessage message={valid} />
+    </InputWrapper>
   );
 });
 

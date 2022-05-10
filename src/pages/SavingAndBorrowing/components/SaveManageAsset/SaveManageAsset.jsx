@@ -155,7 +155,6 @@ function SaveManageAsset (props) {
                 <div className="modal__one-line-form">
                   <FormInput
                     ref={register1({ required: true })}
-                    palette="dark"
                     prefix={depositAsset}
                     min={0}
                     name="amount"
@@ -177,7 +176,6 @@ function SaveManageAsset (props) {
                 <div className="modal__one-line-form">
                   <FormInput
                     ref={register2({ required: true })}
-                    palette="dark"
                     prefix={interestAsset}
                     min={0}
                     name="amount"
