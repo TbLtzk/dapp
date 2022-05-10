@@ -114,7 +114,6 @@ function ManageRootNodeBalance () {
             type="number"
             placeholder="0.00"
             error={errors?.amount?.message}
-            onChange={() => {}}
           />
         </div>
         <div className="account-status__form-actions">

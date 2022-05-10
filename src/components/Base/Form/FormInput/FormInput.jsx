@@ -14,21 +14,20 @@ import { isAddress } from 'func/useful';
 
 const FormInput = forwardRef(({
   refType,
-  register,
-  setValue,
-  name,
   type = 'text',
+  name,
+  value,
+  label,
   placeholder,
   error,
-  onClick = () => {},
-  value,
   disabled,
-  min,
-  color,
-  modal,
   prefix,
-  label,
-  onChange,
+  min,
+  invertedColors,
+  register,
+  setValue,
+  onClick = () => {},
+  onChange = () => {},
   onMaxClick = null,
 }, ref) => {
   const loadType = useSelector(loadTypeSelector);
@@ -95,23 +94,22 @@ const FormInput = forwardRef(({
 
   return (
     <InputWrapper
-      $color={color}
       $prefix={prefix}
       $error={error}
       $disabled={isDisabled}
-      $modal={modal}
+      $invertedColors={invertedColors}
     >
       {label ? <h4>{label}</h4> : null}
       <div>
         {prefix ? <div className="input__prefix">{prefix}</div> : null}
         <Form.Control
           ref={ref || getTypeRef()}
-          min={min}
           type={type}
           autoComplete="off"
           placeholder={placeholder}
           name={name}
           value={value}
+          min={min}
           disabled={isDisabled}
           onClick={onClick}
           onKeyPress={(e) => e.key === 'Enter' && e.preventDefault()}

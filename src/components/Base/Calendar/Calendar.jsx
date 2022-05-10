@@ -29,12 +29,10 @@ function Calendar ({
   const CustomInput = forwardRef(({ value, onClick }, ref) => (
     <FormInput
       ref={ref}
-      controlId={title}
       error={isCorrectDate}
       name={name}
       value={value}
       disabled={disabled}
-      onChange={() => {}}
       onClick={onClick}
     />
   ));

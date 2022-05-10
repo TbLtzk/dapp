@@ -159,7 +159,7 @@ function SaveManageAsset (props) {
                     min={0}
                     name="amount"
                     type="number"
-                    modal={true}
+                    invertedColors={true}
                     placeholder="0.00"
                     error={errorHandler(errors1, 'field')}
                     onMaxClick={handleMaxDeposit}
@@ -180,7 +180,7 @@ function SaveManageAsset (props) {
                     min={0}
                     name="amount"
                     type="number"
-                    modal={true}
+                    invertedColors={true}
                     placeholder="0.00"
                     error={errorHandler(errors2, 'field')}
                     onMaxClick={handleMaxWithdraw}

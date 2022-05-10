@@ -32,7 +32,7 @@ export const InputWrapper = styled(Form.Group)`
       background: ${getBackgroundColor};
       border-color: ${getMainColor};
       color: ${(props) => {
-        return props.theme.palette === 'dark' && !props.$color
+        return props.theme.palette === 'dark' && props.$invertedColors
           ? props.theme.colors.oxfordBlueTint1
           : props.theme.colors.white;
       }};
@@ -86,24 +86,22 @@ export const InputWrapper = styled(Form.Group)`
     }};
   }
 
-  div:focus-within .input__prefix {
-    color: ${(props) => props.theme.colors.oxfordBlueTint1};
-    background-color: ${(props) => {
-      return props.theme.palette === 'dark'
-        ? props.theme.colors.neonGreen
-        : props.theme.colors.white;
-    }};
-  }
+  ${(props) => !props.$error && css`
+    div:focus-within .input__prefix {
+      color: ${props.theme.colors.oxfordBlueTint1};
+      background-color: ${
+        props.theme.palette === 'dark'
+          ? props.theme.colors.neonGreen
+          : props.theme.colors.white
+      };
+    }
+  `}
 `;
 
 function getBackgroundColor (props) {
-  if (props.theme.palette === 'dark') {
-    return props.$color
-      ? props.theme.colors.oxfordBlueTint1
-      : 'transparent';
-  }
-
-  return props.theme.colors.blue;
+  return props.theme.palette === 'dark'
+    ? 'transparent'
+    : props.theme.colors.blue;
 }
 
 function getMainColor (props) {
@@ -130,7 +128,7 @@ function getMaxButtonStyle (props) {
     return css`
       color: ${props.theme.colors.oxfordBlueTint4};
       &:hover {
-        color: ${props.$modal ? props.theme.colors.oxfordBlueTint1 : props.theme.colors.neonGreen};
+        color: ${props.$invertedColors ? props.theme.colors.oxfordBlueTint1 : props.theme.colors.neonGreen};
       }
     `;
   }

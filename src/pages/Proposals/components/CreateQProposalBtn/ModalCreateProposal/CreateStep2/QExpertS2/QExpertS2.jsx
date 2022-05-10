@@ -162,7 +162,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                     })}
                     name={`parameter-key[${index}]`}
                     type="string"
-                    placeholder={['Key']}
+                    placeholder="Key"
                     error={errors['parameter-key']?.[index]?.message}
                   />
                 </div>
