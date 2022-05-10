@@ -7,6 +7,7 @@ import { symbol } from 'store/stable-coin/selectors';
 
 import { getEPDRUint } from 'contracts/helpers/epdr-param-helper';
 
+import { fieldTypes } from 'constants/fieldTypes';
 import { AUCTIONS_TYPES } from 'constants/statuses';
 
 function CreateStep1 ({ activeTab, register, errors }) {
@@ -25,7 +26,7 @@ function CreateStep1 ({ activeTab, register, errors }) {
         return (
           <>
             <FormInput
-              refType="address"
+              refType={fieldTypes.address}
               name="address"
               placeholder="Address"
               label="Provide user address of vault holder, which shall be liquidated"
@@ -33,7 +34,7 @@ function CreateStep1 ({ activeTab, register, errors }) {
               register={register}
             />
             <FormInput
-              refType="vault-id"
+              refType={fieldTypes.vaultId}
               name="vault-id"
               placeholder="Vault ID"
               label="Provide the Vault ID to be liquidated"
@@ -41,7 +42,7 @@ function CreateStep1 ({ activeTab, register, errors }) {
               register={register}
             />
             <FormInput
-              refType="bid"
+              refType={fieldTypes.bid}
               name="bid"
               placeholder="Bid"
               label={`Provide your initial Bid in ${symbolType}`}
@@ -56,7 +57,7 @@ function CreateStep1 ({ activeTab, register, errors }) {
             <h5>Debt Auction Lot</h5>
             <p>{reserveLot + 'Q'}</p>
             <FormInput
-              refType="bid"
+              refType={fieldTypes.bid}
               name="bid"
               placeholder="Bid"
               label={`Provide your initial Bid in ${symbolType}`}
@@ -71,7 +72,7 @@ function CreateStep1 ({ activeTab, register, errors }) {
             <h5>Surplus Auction Lot: </h5>
             <p>{surplusLot + ' ' + symbolType}</p>
             <FormInput
-              refType="bid"
+              refType={fieldTypes.bid}
               name="bid"
               placeholder="Bid"
               label="Provide your initial Bid in Q"

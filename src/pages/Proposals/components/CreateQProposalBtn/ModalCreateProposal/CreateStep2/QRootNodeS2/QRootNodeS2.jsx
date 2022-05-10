@@ -7,6 +7,7 @@ import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
 import { formObject } from 'store/voting/proposals/selectors';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
+import { fieldTypes } from 'constants/fieldTypes';
 
 function QRootNodeS2 ({ register, errors }) {
   const formData = useSelector(formObject);
@@ -26,7 +27,7 @@ function QRootNodeS2 ({ register, errors }) {
         <>
           <h2>Add Your account as a Candidate for the Root Node Panel. Optionally provide a Root Node to Remove.</h2>
           <FormInput
-            refType="hash"
+            refType={fieldTypes.hash}
             name="hash"
             placeholder="Hash"
             label="Provide current constitution Hash to declare your consent"
@@ -34,7 +35,7 @@ function QRootNodeS2 ({ register, errors }) {
             register={register}
           />
           <FormInput
-            refType="external-link"
+            refType={fieldTypes.externalLink}
             name="external-link"
             placeholder="External Link"
             label="Provide a reference link to external source"
@@ -54,7 +55,7 @@ function QRootNodeS2 ({ register, errors }) {
             ? null
             : (
               <FormInput
-                refType="address"
+                refType={fieldTypes.address}
                 name="address"
                 placeholder="Address"
                 label="Root Node to Remove"
@@ -69,7 +70,7 @@ function QRootNodeS2 ({ register, errors }) {
         <>
           <h2>Nominate a Root Node to Remove</h2>
           <FormInput
-            refType="address"
+            refType={fieldTypes.address}
             name="address"
             placeholder="Address"
             label="Root Node to Remove"
@@ -77,7 +78,7 @@ function QRootNodeS2 ({ register, errors }) {
             register={register}
           />
           <FormInput
-            refType="external-link"
+            refType={fieldTypes.externalLink}
             name="external-link"
             placeholder="External Link"
             label="Provide a reference link to external source"

@@ -11,6 +11,7 @@ import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
 import { formObject } from 'store/voting/proposals/selectors';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
+import { fieldTypes } from 'constants/fieldTypes';
 import { fillArray, parameterKeyValidation, validatePattern } from 'func/useful';
 
 function QExpertS2 ({ activeTab, register, errors, watch }) {
@@ -56,7 +57,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
               handleChange={changePanel}
             />
             <FormInput
-              refType="address"
+              refType={fieldTypes.address}
               name="address"
               placeholder="Address"
               label="Provide Candidate Q Address"
@@ -64,7 +65,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
               register={register}
             />
             <FormInput
-              refType="external-link"
+              refType={fieldTypes.externalLink}
               name="external-link"
               placeholder="External Link"
               label="Provide a reference link to external source"
@@ -91,7 +92,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
               handleChange={changePanel}
             />
             <FormInput
-              refType="address"
+              refType={fieldTypes.address}
               name="address"
               placeholder="Address"
               label="Provide Candidate Q Address"
@@ -99,7 +100,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
               register={register}
             />
             <FormInput
-              refType="external-link"
+              refType={fieldTypes.externalLink}
               name="external-link"
               placeholder="External Link"
               label="Provide a reference link to external source"
@@ -198,7 +199,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                 : null}
             </div>
             <FormInput
-              refType="external-link"
+              refType={fieldTypes.externalLink}
               name="external-link"
               placeholder="External Link"
               label="Provide a reference link to external source"

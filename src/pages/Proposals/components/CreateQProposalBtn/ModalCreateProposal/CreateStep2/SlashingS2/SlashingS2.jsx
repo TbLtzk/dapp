@@ -6,6 +6,7 @@ import FormInput from 'components/Base/Form/FormInput';
 import { formObject } from 'store/voting/proposals/selectors';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
+import { fieldTypes } from 'constants/fieldTypes';
 
 function SlashingS2 ({ register, errors, setValue }) {
   const formData = useSelector(formObject);
@@ -16,7 +17,7 @@ function SlashingS2 ({ register, errors, setValue }) {
         <>
           <h2>Nominate a Root Node to be slashed</h2>
           <FormInput
-            refType="address"
+            refType={fieldTypes.address}
             name="address"
             placeholder="Address"
             label="Provide Slashing Details. Candidate to Slash"
@@ -24,7 +25,7 @@ function SlashingS2 ({ register, errors, setValue }) {
             register={register}
           />
           <FormInput
-            refType="%-value"
+            refType={fieldTypes.percentValue}
             name="%-value"
             placeholder="%-Value"
             label="Root Node Stake Amount to slash (%)"
@@ -33,7 +34,7 @@ function SlashingS2 ({ register, errors, setValue }) {
             setValue={setValue}
           />
           <FormInput
-            refType="external-link"
+            refType={fieldTypes.externalLink}
             name="external-link"
             placeholder="External Link"
             label="Provide a reference link to external source"
@@ -47,7 +48,7 @@ function SlashingS2 ({ register, errors, setValue }) {
         <>
           <h2>Nominate a Validator Node to be slashed</h2>
           <FormInput
-            refType="address"
+            refType={fieldTypes.address}
             name="address"
             placeholder="Address"
             label="Provide Slashing Details. Candidate to Slash"
@@ -55,7 +56,7 @@ function SlashingS2 ({ register, errors, setValue }) {
             register={register}
           />
           <FormInput
-            refType="%-value"
+            refType={fieldTypes.percentValue}
             name="%-value"
             placeholder="%-Value"
             label="Validator Node Stake and Pool Amount to slash (%)"
@@ -64,7 +65,7 @@ function SlashingS2 ({ register, errors, setValue }) {
             setValue={setValue}
           />
           <FormInput
-            refType="external-link"
+            refType={fieldTypes.externalLink}
             name="external-link"
             placeholder="External Link"
             label="Provide a reference link to external source"
