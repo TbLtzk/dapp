@@ -119,14 +119,13 @@ function SaveAsset ({
       <div className="modal__one-line-form">
         <FormInput
           ref={registerDeposit({ required: true })}
-          palette="dark"
-          lbl={depositAsset}
+          prefix={depositAsset}
           min={0}
           name="amount"
           type="number"
-          modal={true}
+          invertedColors={true}
           placeholder="0.00"
-          valid={errorHandler(errorsDeposit, 'field')}
+          error={errorHandler(errorsDeposit, 'field')}
           onMaxClick={handleMaxDeposit}
         />
         <Button
@@ -140,14 +139,13 @@ function SaveAsset ({
       <div className="modal__one-line-form">
         <FormInput
           ref={registerWithdraw({ required: true })}
-          palette="dark"
-          lbl={interestAsset}
+          prefix={interestAsset}
           min={0}
           name="amount"
           type="number"
-          modal={true}
+          invertedColors={true}
           placeholder="0.00"
-          valid={errorHandler(errorsWidthdraw, 'field')}
+          error={errorHandler(errorsWidthdraw, 'field')}
           onMaxClick={handleMaxWithdraw}
         />
         <Button

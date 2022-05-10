@@ -144,14 +144,13 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
       <div className="modal__one-line-form">
         <FormInput
           ref={registerBorrow({ required: true })}
-          palette="dark"
-          lbl={borrowingDetails?.assets}
+          prefix={borrowingDetails?.assets}
           min={0}
           name="field"
-          modal={true}
           type="number"
           placeholder="0.00"
-          valid={errorHandler(errorsBorrow, 'field')}
+          invertedColors={true}
+          error={errorHandler(errorsBorrow, 'field')}
           onMaxClick={handleMaxBorrow}
         />
         <Button
@@ -165,14 +164,13 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
       <div className="modal__one-line-form">
         <FormInput
           ref={registerRepay({ required: true })}
-          palette="dark"
-          lbl={borrowingDetails?.assets}
+          prefix={borrowingDetails?.assets}
           min={0}
           name="field"
           type="number"
-          modal={true}
+          invertedColors={true}
           placeholder="0.00"
-          valid={errorHandler(errorsRepay, 'field')}
+          error={errorHandler(errorsRepay, 'field')}
           onMaxClick={handleMaxRepay}
         />
         <Button
@@ -187,14 +185,13 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
       <div className="modal__one-line-form">
         <FormInput
           ref={registerDeposit({ required: true })}
-          palette="dark"
-          lbl={collateralDetails?.assets}
+          prefix={collateralDetails?.assets}
           min={0}
           name="field"
           type="number"
-          modal={true}
+          invertedColors={true}
           placeholder="0.00"
-          valid={errorHandler(errorsDeposit, 'field')}
+          error={errorHandler(errorsDeposit, 'field')}
           onMaxClick={handleMaxDeposit}
         />
         <Button
@@ -208,14 +205,13 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
       <div className="modal__one-line-form">
         <FormInput
           ref={registerWithdraw({ required: true })}
-          palette="dark"
-          lbl={collateralDetails?.assets}
+          prefix={collateralDetails?.assets}
           min={0}
           name="field"
           type="number"
-          modal={true}
+          invertedColors={true}
           placeholder="0.00"
-          valid={errorHandler(errorsWithdraw, 'field')}
+          error={errorHandler(errorsWithdraw, 'field')}
           onMaxClick={handleMaxWithdraw}
         />
         <Button
