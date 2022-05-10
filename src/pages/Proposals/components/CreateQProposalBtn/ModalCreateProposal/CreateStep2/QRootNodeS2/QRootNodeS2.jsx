@@ -30,7 +30,7 @@ function QRootNodeS2 ({ register, errors }) {
             name="hash"
             placeholder="Hash"
             label="Provide current constitution Hash to declare your consent"
-            valid={errors.hash?.message}
+            error={errors.hash?.message}
             register={register}
           />
           <FormInput
@@ -38,7 +38,7 @@ function QRootNodeS2 ({ register, errors }) {
             name="external-link"
             placeholder="External Link"
             label="Provide a reference link to external source"
-            valid={errors['external-link']?.message}
+            error={errors['external-link']?.message}
             register={register}
           />
           <h2>Do you want to remove a current Root Node</h2>
@@ -58,7 +58,7 @@ function QRootNodeS2 ({ register, errors }) {
                 name="address"
                 placeholder="Address"
                 label="Root Node to Remove"
-                valid={errors.address?.message}
+                error={errors.address?.message}
                 register={register}
               />
             )}
@@ -73,7 +73,7 @@ function QRootNodeS2 ({ register, errors }) {
             name="address"
             placeholder="Address"
             label="Root Node to Remove"
-            valid={errors.address?.message}
+            error={errors.address?.message}
             register={register}
           />
           <FormInput
@@ -81,7 +81,7 @@ function QRootNodeS2 ({ register, errors }) {
             name="external-link"
             placeholder="External Link"
             label="Provide a reference link to external source"
-            valid={errors['external-link']?.message}
+            error={errors['external-link']?.message}
             register={register}
           />
         </>

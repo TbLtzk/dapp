@@ -121,7 +121,7 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
                         type="string"
                         name={`parameter-key[${index}]`}
                         placeholder="Parameter Key"
-                        valid={errors['parameter-key']?.[index]?.message}
+                        error={errors['parameter-key']?.[index]?.message}
                       />
                     </div>
                     <FormInput
@@ -136,7 +136,7 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
                       type="string"
                       name={`parameter-value[${index}]`}
                       placeholder="Value"
-                      valid={errors['parameter-value']?.[index]?.message}
+                      error={errors['parameter-value']?.[index]?.message}
                     />
                     <CurrentParameterValue
                       typeContract={CONTRACT_TYPES.constitution}

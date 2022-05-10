@@ -19,7 +19,7 @@ const FormInput = forwardRef(({
   name,
   type = 'text',
   placeholder,
-  valid,
+  error,
   onClick = () => {},
   value,
   disabled,
@@ -97,7 +97,7 @@ const FormInput = forwardRef(({
     <InputWrapper
       $color={color}
       $prefix={prefix}
-      $error={valid}
+      $error={error}
       $disabled={isDisabled}
       $modal={modal}
     >
@@ -125,7 +125,7 @@ const FormInput = forwardRef(({
           )
           : null}
       </div>
-      <ErrorInputMessage message={valid} />
+      <ErrorInputMessage message={error} />
     </InputWrapper>
   );
 });

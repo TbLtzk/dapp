@@ -45,7 +45,7 @@ function QProposalS2 ({ register, errors }) {
             name="hash"
             placeholder="Hash"
             label="Please provide the new constitution Hash"
-            valid={errors.hash?.message}
+            error={errors.hash?.message}
             register={register}
           />
           <FormInput
@@ -53,7 +53,7 @@ function QProposalS2 ({ register, errors }) {
             name="external-link"
             placeholder="External Link"
             label="Provide a reference link to external source"
-            valid={errors['external-link']?.message}
+            error={errors['external-link']?.message}
             register={register}
           />
           <h2>Does Your Proposal include a Change of a Constitution Parameter?</h2>
@@ -83,7 +83,7 @@ function QProposalS2 ({ register, errors }) {
             name="external-link"
             placeholder="External Link"
             label="Provide a reference link to external source"
-            valid={errors['external-link']?.message}
+            error={errors['external-link']?.message}
             register={register}
           />
         </div>

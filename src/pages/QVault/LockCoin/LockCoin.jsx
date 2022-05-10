@@ -57,7 +57,7 @@ export default function LockCoin ({ maxQVaultVotingWeight }) {
           name="amountQ"
           type="number"
           placeholder="0.0"
-          valid={err1.amountQ?.message}
+          error={err1.amountQ?.message}
           onMaxClick={handleLockMax}
         />
         <Button
@@ -78,7 +78,7 @@ export default function LockCoin ({ maxQVaultVotingWeight }) {
           type="number"
           prefix="Q"
           placeholder="0.0"
-          valid={err3.amountQ?.message}
+          error={err3.amountQ?.message}
           onMaxClick={handleUnlockMax}
         />
         <Button

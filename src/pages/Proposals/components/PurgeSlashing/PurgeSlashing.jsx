@@ -40,7 +40,7 @@ function PurgeSlashing () {
         name="slashingAddress"
         type="text"
         placeholder="Candidate address"
-        valid={errors.slashingAddress?.message}
+        error={errors.slashingAddress?.message}
       />
       <PurgeSlashingContainer>
         <Tooltip disabled={isRootNode} additionalInfo={USER_NOT_ROOT_NODE}>

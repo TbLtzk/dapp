@@ -30,7 +30,7 @@ function Calendar ({
     <FormInput
       ref={ref}
       controlId={title}
-      valid={isCorrectDate}
+      error={isCorrectDate}
       name={name}
       value={value}
       disabled={disabled}

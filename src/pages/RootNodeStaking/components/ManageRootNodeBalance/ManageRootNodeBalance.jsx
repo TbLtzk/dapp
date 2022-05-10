@@ -113,7 +113,7 @@ function ManageRootNodeBalance () {
             prefix="Q"
             type="number"
             placeholder="0.00"
-            valid={errors?.amount?.message}
+            error={errors?.amount?.message}
             onChange={() => {}}
           />
         </div>

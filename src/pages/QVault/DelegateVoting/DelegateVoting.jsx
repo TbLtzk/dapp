@@ -80,7 +80,7 @@ export default function LockCoin () {
           name="address"
           placeholder="0x000"
           type="text"
-          valid={err1.address?.message}
+          error={err1.address?.message}
         />
         <Button
           type="outline"

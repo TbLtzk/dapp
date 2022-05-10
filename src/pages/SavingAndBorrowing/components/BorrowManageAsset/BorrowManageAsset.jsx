@@ -242,7 +242,7 @@ function BorrowManageAsset ({ vault }) {
                     modal={true}
                     type="number"
                     placeholder="0.00"
-                    valid={errorHandler(errors1, 'field')}
+                    error={errorHandler(errors1, 'field')}
                     onMaxClick={handleMaxBorrow}
                   />
                   <Button
@@ -262,7 +262,7 @@ function BorrowManageAsset ({ vault }) {
                     type="number"
                     modal={true}
                     placeholder="0.00"
-                    valid={errorHandler(errors2, 'field')}
+                    error={errorHandler(errors2, 'field')}
                     onMaxClick={handleMaxRepay}
                     onChange={(value) => {
                       onChangeValueBtnSlide(TYPE.repay, value);
@@ -285,7 +285,7 @@ function BorrowManageAsset ({ vault }) {
                     type="number"
                     modal={true}
                     placeholder="0.00"
-                    valid={errorHandler(errors3, 'field')}
+                    error={errorHandler(errors3, 'field')}
                     onMaxClick={handleMaxDeposit}
                     onChange={(value) => {
                       onChangeValueBtnSlide(TYPE.deposit, value);
@@ -308,7 +308,7 @@ function BorrowManageAsset ({ vault }) {
                     type="number"
                     modal={true}
                     placeholder="0.00"
-                    valid={errorHandler(errors4, 'field')}
+                    error={errorHandler(errors4, 'field')}
                     onMaxClick={handleMaxWithdraw}
                   />
                   <Button

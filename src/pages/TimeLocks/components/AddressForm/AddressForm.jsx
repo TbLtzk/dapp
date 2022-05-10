@@ -34,7 +34,7 @@ function AddressForm ({ setAddressRefresh, userAddress }) {
           name="address"
           type="string"
           color={true}
-          valid={errors?.address?.message}
+          error={errors?.address?.message}
         />
         <div>
           <Button

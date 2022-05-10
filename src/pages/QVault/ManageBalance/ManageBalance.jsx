@@ -127,7 +127,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
           name="amount"
           type="number"
           placeholder="0.0"
-          valid={errorsDeposit.amount?.message}
+          error={errorsDeposit.amount?.message}
           onMaxClick={handleDepositMax}
           onChange={handleChangeDepositAmount}
         />
@@ -154,7 +154,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
           color={true}
           type="number"
           placeholder="0.0"
-          valid={errorsWithdraw.amount?.message}
+          error={errorsWithdraw.amount?.message}
           onMaxClick={handleWithdrawMax}
         />
         <Button
@@ -179,7 +179,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
           type="text"
           placeholder="0x000"
           color={true}
-          valid={errorsSend.address?.message}
+          error={errorsSend.address?.message}
         />
 
         <FormInput
@@ -196,7 +196,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
           type="number"
           prefix="Q"
           placeholder="0.00"
-          valid={errorsSend.amount?.message}
+          error={errorsSend.amount?.message}
           onMaxClick={handleSendMax}
         />
         <div className="card__one-line-form-2-2-1-action">

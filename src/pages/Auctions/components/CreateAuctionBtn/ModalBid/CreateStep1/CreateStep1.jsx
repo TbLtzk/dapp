@@ -50,7 +50,7 @@ function CreateStep1 ({ activeTab, register, errors, raisingBid, watch, allowanc
           refType="bid"
           name="bid"
           placeholder="Bid"
-          valid={errors.bid?.message}
+          error={errors.bid?.message}
           register={register}
         />
       </>

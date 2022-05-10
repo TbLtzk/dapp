@@ -29,7 +29,7 @@ function CreateStep1 ({ activeTab, register, errors }) {
               name="address"
               placeholder="Address"
               label="Provide user address of vault holder, which shall be liquidated"
-              valid={errors.address?.message}
+              error={errors.address?.message}
               register={register}
             />
             <FormInput
@@ -37,7 +37,7 @@ function CreateStep1 ({ activeTab, register, errors }) {
               name="vault-id"
               placeholder="Vault ID"
               label="Provide the Vault ID to be liquidated"
-              valid={errors['vault-id']?.message}
+              error={errors['vault-id']?.message}
               register={register}
             />
             <FormInput
@@ -45,7 +45,7 @@ function CreateStep1 ({ activeTab, register, errors }) {
               name="bid"
               placeholder="Bid"
               label={`Provide your initial Bid in ${symbolType}`}
-              valid={errors.bid?.message}
+              error={errors.bid?.message}
               register={register}
             />
           </>
@@ -60,7 +60,7 @@ function CreateStep1 ({ activeTab, register, errors }) {
               name="bid"
               placeholder="Bid"
               label={`Provide your initial Bid in ${symbolType}`}
-              valid={errors.bid?.message}
+              error={errors.bid?.message}
               register={register}
             />
           </>
@@ -75,7 +75,7 @@ function CreateStep1 ({ activeTab, register, errors }) {
               name="bid"
               placeholder="Bid"
               label="Provide your initial Bid in Q"
-              valid={errors.bid?.message}
+              error={errors.bid?.message}
               register={register}
             />
           </>

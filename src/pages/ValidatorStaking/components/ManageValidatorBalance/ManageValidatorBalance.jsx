@@ -157,7 +157,7 @@ function ManageValidatorBalance () {
             type="number"
             prefix="Q"
             placeholder="0.00"
-            valid={errorHandler(errors, 'amount')}
+            error={errorHandler(errors, 'amount')}
           />
         </div>
         <div className="account-status__form-actions">

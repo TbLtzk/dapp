@@ -60,7 +60,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
               name="address"
               placeholder="Address"
               label="Provide Candidate Q Address"
-              valid={errors.address?.message}
+              error={errors.address?.message}
               register={register}
             />
             <FormInput
@@ -68,7 +68,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
               name="external-link"
               placeholder="External Link"
               label="Provide a reference link to external source"
-              valid={errors['external-link']?.message}
+              error={errors['external-link']?.message}
               register={register}
             />
           </>
@@ -95,7 +95,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
               name="address"
               placeholder="Address"
               label="Provide Candidate Q Address"
-              valid={errors.address?.message}
+              error={errors.address?.message}
               register={register}
             />
             <FormInput
@@ -103,7 +103,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
               name="external-link"
               placeholder="External Link"
               label="Provide a reference link to external source"
-              valid={errors['external-link']?.message}
+              error={errors['external-link']?.message}
               register={register}
             />
           </>
@@ -163,7 +163,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                     name={`parameter-key[${index}]`}
                     type="string"
                     placeholder={['Key']}
-                    valid={errors['parameter-key']?.[index]?.message}
+                    error={errors['parameter-key']?.[index]?.message}
                   />
                 </div>
                 <FormInput
@@ -175,7 +175,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                   name={`parameter-value[${index}]`}
                   type="string"
                   placeholder="Value"
-                  valid={errors['parameter-value']?.[index]?.message}
+                  error={errors['parameter-value']?.[index]?.message}
                 />
 
                 <CurrentParameterValue
@@ -202,7 +202,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
               name="external-link"
               placeholder="External Link"
               label="Provide a reference link to external source"
-              valid={errors['external-link']?.message}
+              error={errors['external-link']?.message}
               register={register}
             />
           </>

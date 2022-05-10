@@ -100,7 +100,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
             name="amountQ"
             type="number"
             placeholder="0.0"
-            valid={errors.amountQ?.message}
+            error={errors.amountQ?.message}
           />
           <div>
             <Button

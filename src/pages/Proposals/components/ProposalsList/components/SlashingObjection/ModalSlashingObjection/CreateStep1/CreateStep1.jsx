@@ -21,7 +21,7 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
             name="external-link"
             placeholder="External Link"
             label="Please provide a reference link to external source giving details of your objection"
-            valid={errors['external-link']?.message}
+            error={errors['external-link']?.message}
             register={register}
           />
         </div>
@@ -35,7 +35,7 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
             name="proposer-remark"
             placeholder="Proposer remark"
             label="Please provide a remark about the objection"
-            valid={errors['proposer-remark']?.message}
+            error={errors['proposer-remark']?.message}
             register={register}
           />
         </div>
@@ -49,7 +49,7 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
             name="external-link"
             placeholder="External Link"
             label="Please provide a reference link to external source giving details of your decision"
-            valid={errors['external-link']?.message}
+            error={errors['external-link']?.message}
             register={register}
           />
           <FormInput
@@ -57,7 +57,7 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
             name="%-value"
             placeholder="%-Value"
             label="Please provide the adjusted percentage for slashing"
-            valid={errors['%-value']?.message}
+            error={errors['%-value']?.message}
             register={register}
             setValue={setValue}
           />

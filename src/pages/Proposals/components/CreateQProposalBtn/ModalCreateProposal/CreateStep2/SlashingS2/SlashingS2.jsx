@@ -20,7 +20,7 @@ function SlashingS2 ({ register, errors, setValue }) {
             name="address"
             placeholder="Address"
             label="Provide Slashing Details. Candidate to Slash"
-            valid={errors.address?.message}
+            error={errors.address?.message}
             register={register}
           />
           <FormInput
@@ -28,7 +28,7 @@ function SlashingS2 ({ register, errors, setValue }) {
             name="%-value"
             placeholder="%-Value"
             label="Root Node Stake Amount to slash (%)"
-            valid={errors['%-value']?.message}
+            error={errors['%-value']?.message}
             register={register}
             setValue={setValue}
           />
@@ -37,7 +37,7 @@ function SlashingS2 ({ register, errors, setValue }) {
             name="external-link"
             placeholder="External Link"
             label="Provide a reference link to external source"
-            valid={errors['external-link']?.message}
+            error={errors['external-link']?.message}
             register={register}
           />
         </>
@@ -51,7 +51,7 @@ function SlashingS2 ({ register, errors, setValue }) {
             name="address"
             placeholder="Address"
             label="Provide Slashing Details. Candidate to Slash"
-            valid={errors.address?.message}
+            error={errors.address?.message}
             register={register}
           />
           <FormInput
@@ -59,7 +59,7 @@ function SlashingS2 ({ register, errors, setValue }) {
             name="%-value"
             placeholder="%-Value"
             label="Validator Node Stake and Pool Amount to slash (%)"
-            valid={errors['%-value']?.message}
+            error={errors['%-value']?.message}
             register={register}
             setValue={setValue}
           />
@@ -68,7 +68,7 @@ function SlashingS2 ({ register, errors, setValue }) {
             name="external-link"
             placeholder="External Link"
             label="Provide a reference link to external source"
-            valid={errors['external-link']?.message}
+            error={errors['external-link']?.message}
             register={register}
           />
         </>

@@ -161,7 +161,7 @@ function SaveManageAsset (props) {
                     type="number"
                     modal={true}
                     placeholder="0.00"
-                    valid={errorHandler(errors1, 'field')}
+                    error={errorHandler(errors1, 'field')}
                     onMaxClick={handleMaxDeposit}
                     onChange={handleDepositAllow}
                   />
@@ -182,7 +182,7 @@ function SaveManageAsset (props) {
                     type="number"
                     modal={true}
                     placeholder="0.00"
-                    valid={errorHandler(errors2, 'field')}
+                    error={errorHandler(errors2, 'field')}
                     onMaxClick={handleMaxWithdraw}
                   />
                   <Button
