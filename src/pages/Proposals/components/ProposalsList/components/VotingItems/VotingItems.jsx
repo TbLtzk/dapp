@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from 'components/Base/Buttons/Button';
 import Tooltip from 'components/Base/Tooltip';
 
-import ModalVote from '../../../CreateQProposalBtn/ModalVote';
+import ModalVote from '../ModalVote';
 
 import {
   isUserEPDRMembershipSelector,

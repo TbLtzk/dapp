@@ -1,6 +1,6 @@
 import { ethereum } from 'components/Custom/LoadingMetaMask/LoadingMetaMask';
 
-import { setErrorMessage } from 'store/transaction-handler/action-creators';
+import { setTransactionLoadingError } from 'store/transaction-handler/action-creators';
 
 import {
   getBorrowingCoreInstance,
@@ -123,16 +123,14 @@ export async function refreshTimeSinceRefreshBalance (
     getTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance);
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    dispatch(setErrorMessage(errorMsg));
+    dispatch(setTransactionLoadingError(errorMsg));
   } finally {
     setLoading(false);
   }
 }
 
-export async function getTimeSinceOutstandingDebt (
-  setTimeSinceOutstandingDeb,
-  setTimeSinceUnixTimestampOutstandingDeb
-) {
+// eslint-disable-next-line max-len
+export async function getTimeSinceOutstandingDebt (setTimeSinceOutstandingDeb, setTimeSinceUnixTimestampOutstandingDeb) {
   try {
     const contract = await getCompoundRateKeeperBorrowingInstance();
     const res = await contract.getLastUpdate();
@@ -158,7 +156,7 @@ export async function refreshTimeSinceOutstandingDebt (
     getTimeSinceOutstandingDebt(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance);
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    dispatch(setErrorMessage(errorMsg));
+    dispatch(setTransactionLoadingError(errorMsg));
   } finally {
     setLoading(false);
   }

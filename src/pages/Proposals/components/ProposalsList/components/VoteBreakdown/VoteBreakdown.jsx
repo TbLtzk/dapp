@@ -65,7 +65,7 @@ function VoteBreakdown ({ voteBreakdown }) {
                 <h3>Vote Requirements</h3>
                 <div className="vote-breakdown__requirement-quorum">
                   <div>
-                    <h5>Quorum (Requirement)</h5>
+                    <h5>Quorum Requirement</h5>
                     <p>{voteBreakdown.requiredQuorum} %</p>
                     <h5>Current Quorum</h5>
                     <p>{voteBreakdown.currentQuorum} %</p>

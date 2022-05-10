@@ -15,7 +15,7 @@ import {
 } from './action-creators';
 import * as actionTypes from './action-types';
 
-import { setErrorMessage } from 'store/transaction-handler/action-creators';
+import { setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/action-creators';
 
 import { getSystemBalanceInstance } from 'contracts/contract-instance';
 
@@ -64,9 +64,11 @@ function * onPerformNettingGenerator () {
     yield put(getSystemBalance());
     yield put(getDebt());
     yield put(getSurplus());
+
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    yield put(setErrorMessage(errorMsg));
+    yield put(setTransactionLoadingError(errorMsg));
     yield put(onPerformNettingError(error));
   }
 }

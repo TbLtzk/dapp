@@ -7,18 +7,20 @@ function Tooltip ({ additionalInfo, children, disabled, copy, shown, position = 
     return children;
   }
   return (
-    <TooltipContainer position={position}>
-      {copy || shown
-        ? (
-          children
-        )
-        : (
-          <>
-            <span /> {children}
-          </>
-        )}
-      <span className="tooltip">{additionalInfo}</span>
-    </TooltipContainer>
+    <>
+      <TooltipContainer position={position}>
+        {copy || shown
+          ? (
+            children
+          )
+          : (
+            <>
+              <span /> {children}
+            </>
+          )}
+        <span className="tooltip">{additionalInfo}</span>
+      </TooltipContainer>
+    </>
   );
 }
 

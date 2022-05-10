@@ -105,7 +105,7 @@ function SavingBorrowingBlock () {
     }
   }, []);
 
-  const dataArr = useMemo(() => {
+  const savingAndBorrowingInfo = useMemo(() => {
     return [
       {
         title: 'QUSD Contract',
@@ -170,7 +170,7 @@ function SavingBorrowingBlock () {
   return (
     <CustomBlock>
       <h1>Saving & Borrowing</h1>
-      {dataArr.map((item) => (
+      {savingAndBorrowingInfo.map((item) => (
         <CardBlock
           key={item.title.replace(' ', '-')}
           btnDisabled={getIsLoading(item.btnType)}

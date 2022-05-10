@@ -100,13 +100,11 @@ export const savingCryptoAssets = (tableArray) =>
     depositAsset: value.depositAsset,
     interestAsset: value.interestAsset,
     rate: fN(value.rate) + ' %',
-    button: (
-      <SaveManageAsset
-        depositAsset={value.depositAsset}
-        interestAsset={value.interestAsset}
-        rate={value.rate}
-      />
-    )
+    button: <SaveManageAsset
+      depositAsset={value.depositAsset}
+      interestAsset={value.interestAsset}
+      rate={value.rate}
+    />
   }));
 
 export const borrowCryptoAssets = (tableArray) =>

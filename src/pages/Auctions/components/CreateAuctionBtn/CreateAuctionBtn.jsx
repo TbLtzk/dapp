@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'components/Base/Buttons/Button';
 
 import ModalCreateAuction from './ModalCreateAuction';
 
 import { setCreatedStepsLimit, setCreateObj, setStepCounter } from 'store/modal-handler/action-creators';
+import { successMessageSelector } from 'store/transaction-handler/selectors';
 
 function CreateAuctionBtn ({ auctionsType }) {
+  const shouldCloseModal = useSelector(successMessageSelector);
   const dispatch = useDispatch();
 
   const [modalShow, setModalShow] = useState(false);
@@ -24,6 +26,13 @@ function CreateAuctionBtn ({ auctionsType }) {
     setModalShow(false);
     dispatch(setCreateObj({}));
   };
+
+  useEffect(() => {
+    if (shouldCloseModal) {
+      setModalShow(false);
+      dispatch(setCreateObj({}));
+    }
+  }, []);
 
   return (
     <>

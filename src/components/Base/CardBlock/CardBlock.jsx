@@ -10,12 +10,15 @@ function CardBlock ({ title, firstContent, btnTitle, btnHandler, btnIcon, iconFo
     <BlockAlignBlock>
       <div>
         {title && <h5>{title}</h5>}
-        <p>
+        <div className="card_text">
           {firstContent && title === 'QUSD Contract'
-            ? <ExplorerAddress address={firstContent} />
-            : firstContent
-          }
-        </p>
+            ? (
+              <ExplorerAddress address={firstContent} />
+            )
+            : (
+              <p>{firstContent}</p>
+            )}
+        </div>
       </div>
 
       {!btnTitle && !btnIcon

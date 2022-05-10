@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { ProgressBar } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,7 +25,7 @@ function ModalVote ({ modalShow, onHide, proposalId, proposalContract, vetoEndTi
   const stepLimit = 2;
   const checkTitleName = proposalStatus === 'Pending' ? 'Vote' : 'Veto';
 
-  const switchProposalContentDependsOnType = useCallback(() => {
+  const switchProposalContentDependsOnType = () => {
     switch (stepCounter) {
       case 1:
         return (
@@ -49,27 +49,26 @@ function ModalVote ({ modalShow, onHide, proposalId, proposalContract, vetoEndTi
       default:
         return null;
     }
-  }, [stepCounter, register, errors, stepLimit, dispatch]);
+  };
 
   const backBtnHandler = () => {
     dispatch(setStepVoteCounter(stepCounter - 1));
     dispatch(setDisabledCreatedProposalBtn(false));
   };
+
   const onNext = (data) => {
     dispatch(setVoteProposalObj({ ...formData, ...data }));
     if (stepCounter < stepLimit) {
       dispatch(setStepVoteCounter(stepCounter + 1));
     } else {
-      if (formData['constitution-check'] !== 'no') {
-        dispatch(
-          voteForProposal({
-            ...formData,
-            ...data,
-            idProposal: proposalId,
-            contract: proposalContract
-          })
-        );
-      }
+      dispatch(
+        voteForProposal({
+          ...formData,
+          ...data,
+          idProposal: proposalId,
+          contract: proposalContract
+        })
+      );
       onHide();
     }
   };

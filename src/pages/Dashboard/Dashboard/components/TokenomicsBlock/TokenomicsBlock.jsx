@@ -1,7 +1,7 @@
-import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import CardBlock from 'components/Base/CardBlock';
+import Button from 'components/Base/Buttons/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 
@@ -11,7 +11,7 @@ import { getQVBalance, getUpdateCompoundRate } from 'store/q-vault/action-creato
 import { qvBalance, updateCompoundRate } from 'store/q-vault/selectors';
 import { getSystemReserveBalance } from 'store/system-reserve/action-creators';
 import { reserveBalanceSelector } from 'store/system-reserve/selectors';
-import { setErrorMessage } from 'store/transaction-handler/action-creators';
+import { setTransactionLoadingError } from 'store/transaction-handler/action-creators';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 import { getRewardPoolsBalance } from 'store/validation-reward-pools/action-creators';
 import { rewardPoolsBalanceSelector } from 'store/validation-reward-pools/selectors';
@@ -23,7 +23,7 @@ const BTN_TYPES = {
   defaultAllocation: 'default-allocation',
   validationRewardAllocation: 'validation-reward-allocation',
   rootNodeAllocation: 'root-node-allocation',
-  timeSinceHolder: 'time-since-q-holder'
+  timeSinceHolder: 'time-since-q-holder',
 };
 
 function TokenomicsBlock () {
@@ -46,7 +46,7 @@ function TokenomicsBlock () {
   const [timeSinceQHolderRewardUpdate, setTimeSinceQHolderRewardUpdate] = useState('...');
   const [timeSinceUnixTimestamp, setTimeSinceUnixTimestamp] = useState('...');
 
-  const handler = new Handler(userAddress, dispatch, setErrorMessage);
+  const handler = new Handler(userAddress, dispatch, setTransactionLoadingError);
 
   useEffect(() => {
     dispatch(getQVBalance());
@@ -79,7 +79,7 @@ function TokenomicsBlock () {
     };
   }, [timeSinceUnixTimestamp]);
 
-  const onAllocate = useCallback((type) => {
+  const onAllocate = (type) => {
     switch (type) {
       case BTN_TYPES.defaultAllocation:
         handler.getDefaultAllocationProxy(setDefaultAllocationProxy, setLoadingDefaultAllocation, true);
@@ -91,7 +91,7 @@ function TokenomicsBlock () {
         handler.getRootNodeRewardProxy(setRootNodeRewardProxy, setLoadingValidationReward, true);
         break;
     }
-  }, []);
+  };
 
   const onRefresh = () => {
     dispatch(getUpdateCompoundRate(userAddress));
@@ -112,94 +112,102 @@ function TokenomicsBlock () {
     }
   };
 
-  const dataArr = useMemo(() => {
-    return [
-      {
-        title: 'Default Allocation Proxy',
-        firstContent: defaultAllocationProxy + ' Q',
-        btnTitle: 'Allocate',
-        btnType: BTN_TYPES.defaultAllocation,
-        btnIcon: 'cube-outline'
-      },
-      {
-        title: 'Validation Reward Proxy',
-        firstContent: validationRewardProxy + ' Q',
-        btnTitle: 'Allocate',
-        btnIcon: 'cube-outline',
-        btnType: BTN_TYPES.validationRewardAllocation
-      },
-      {
-        title: 'Root Node Reward Proxy',
-        firstContent: rootNodeRewardProxy + ' Q',
-        btnTitle: 'Allocate',
-        btnIcon: 'cube-outline',
-        btnType: BTN_TYPES.rootNodeAllocation,
-        brakeLine: true
-      },
-      {
-        title: 'Q Token Holder Reward Pool',
-        firstContent: fN(balanceDetails.qHolderRewardPool) + ' Q',
-        btnTitle: null
-      },
-      {
-        title: 'Q Token Holder Reward Rate (p.a.)',
-        firstContent: fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate)) + ' %',
-        btnTitle: null
-      },
-      {
-        title: 'Time since Q Token holder reward update',
-        firstContent: timeSinceQHolderRewardUpdate,
-        btnIcon: 'cached',
-        iconFontSize: '20px',
-        btnType: BTN_TYPES.timeSinceHolder,
-        brakeLine: true
-      },
-      {
-        title: 'Q System Reserve',
-        firstContent: reserveBalance + ' Q',
-        btnTitle: null
-      },
-      {
-        title: 'Validation Reward Pools',
-        firstContent: rewardPoolsBalance + ' Q',
-        btnTitle: null
-      }
-    ];
-  }, [
-    defaultAllocationProxy,
-    rootNodeRewardProxy,
-    validationRewardProxy,
-    timeSinceQHolderRewardUpdate,
-    balanceDetails,
-    reserveBalance,
-    rewardPoolsBalance
-  ]);
+  const tokenimicsInfo = [
+    {
+      title: 'Default Allocation Proxy',
+      content: defaultAllocationProxy + ' Q',
+      btnTitle: 'Allocate',
+      btnType: BTN_TYPES.defaultAllocation,
+      btnIcon: 'cube-outline',
+      loadingSpinner: <LoadingSpinner size="sm" className="mr-2" />,
+      handleButton: () => onAllocate(BTN_TYPES.defaultAllocation),
+    },
+    {
+      title: 'Validation Reward Proxy',
+      content: validationRewardProxy + ' Q',
+      btnTitle: 'Allocate',
+      btnIcon: 'cube-outline',
+      btnType: BTN_TYPES.validationRewardAllocation,
+      loadingSpinner: <LoadingSpinner size="sm" className="mr-2" />,
+      handleButton: () => onAllocate(BTN_TYPES.validationRewardAllocation),
+    },
+    {
+      title: 'Root Node Reward Proxy',
+      content: rootNodeRewardProxy + ' Q',
+      btnTitle: 'Allocate',
+      btnIcon: 'cube-outline',
+      btnType: BTN_TYPES.rootNodeAllocation,
+      brakeLine: true,
+      loadingSpinner: <LoadingSpinner size="sm" className="mr-2" />,
+      handleButton: () => onAllocate(BTN_TYPES.rootNodeAllocation),
+    },
+    {
+      title: 'Q Token Holder Reward Pool',
+      content: fN(balanceDetails.qHolderRewardPool) + ' Q',
+      btnTitle: null,
+    },
+    {
+      title: 'Q Token Holder Reward Rate (p.a.)',
+      content: fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate)) + ' %',
+      btnTitle: null,
+    },
+    {
+      title: 'Time since Q Token holder reward update',
+      content: timeSinceQHolderRewardUpdate,
+      btnIcon: 'cached',
+      iconFontSize: '20px',
+      btnType: BTN_TYPES.timeSinceHolder,
+      brakeLine: true,
+      loadingSpinner: <LoadingSpinner size="sm" className="m-1" />,
+      handleButton: () => onRefresh(),
+    },
+    {
+      title: 'Q System Reserve',
+      content: reserveBalance + ' Q',
+      btnTitle: null,
+    },
+    {
+      title: 'Validation Reward Pools',
+      content: rewardPoolsBalance + ' Q',
+      btnTitle: null,
+    },
+  ];
 
   return (
     <CustomBlock>
       <h1>Tokenomics</h1>
-      {dataArr.map((el) => (
-        <Fragment key={el.title.replace(' ', '-')}>
-          <CardBlock
-            btnDisabled={getIsLoading(el.btnType)}
-            title={el.title}
-            firstContent={el.firstContent}
-            btnIcon={getIsLoading(el.btnType) ? null : el.btnIcon}
-            iconFontSize={el.iconFontSize}
-            btnTitle={getIsLoading(el.btnType) ? <LoadingSpinner /> : el.btnTitle}
-            btnHandler={
-              !el.btnTitle && !el.btnIcon
-                ? null
-                : () => {
-                  if (el.btnTitle === 'Allocate') {
-                    onAllocate(el.btnType);
-                  } else if (el.btnTitle === 'Refresh' || el.btnIcon === 'cached') {
-                    onRefresh();
+      {tokenimicsInfo.map((item) => (
+        <Fragment key={item.title.replace(' ', '-')}>
+          <div className="card_block">
+            <div>
+              <h5>{item.title}</h5>
+              <p>{item.content}</p>
+            </div>
+            <div>
+              {item?.btnType && (
+                <Button
+                  disabled={getIsLoading(item?.btnType)}
+                  icon={!getIsLoading(item?.btnType) && item.btnIcon}
+                  title={
+                    getIsLoading(item?.btnType)
+                      ? (
+                        <>
+                          {item.loadingSpinner}
+                          {item.btnTitle}
+                        </>
+                      )
+                      : (
+                        item.btnTitle
+                      )
                   }
-                }
-            }
-          />
-          {el.brakeLine ? <div style={{ margin: '10px 0px 20px 0px' }} className="card__line" /> : null}
+                  width="100%"
+                  handleButton={item.handleButton}
+                  iconFontSize={item.iconFontSize}
+                />
+              )}
+            </div>
+          </div>
+          {item.brakeLine ? <div style={{ margin: '10px 0px 20px 0px' }} className="card__line" /> : null}
         </Fragment>
       ))}
     </CustomBlock>

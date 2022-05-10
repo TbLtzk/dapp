@@ -1,18 +1,19 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 
-import {
-  setMinimumVestingTimeLock,
-  setVestingBalance,
-  setVestingTimeLocks
-} from './action-creators';
+import { setMinimumVestingTimeLock, setVestingBalance, setVestingTimeLocks } from './action-creators';
 import * as actionTypes from './action-types';
 
 import { getAmountOnContract } from 'store/locked-amount/sagas';
-import { setErrorMessage, setTransactionLoading } from 'store/transaction-handler/action-creators';
+import {
+  setTransactionLoading,
+  setTransactionLoadingError,
+  setTransactionLoadingSuccess
+} from 'store/transaction-handler/action-creators';
 
 import { getVestingInstance } from 'contracts/contract-instance';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
+import formTypes from 'constants/form-types';
 import { fromWei, toWei } from 'func/balance';
 import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
@@ -51,11 +52,10 @@ function * getVestingTimeLocksGenerator ({ address }) {
 function * setVestingDepositGenerator ({ address, amountQ }) {
   try {
     yield put(setTransactionLoading());
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    yield put(setErrorMessage(errorMsg));
-  } finally {
-    yield put(setTransactionLoading());
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
@@ -65,16 +65,14 @@ function * setVestingWithdrawGenerator ({ amountQ }) {
 
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getVestingInstance);
-    const data = yield contract.withdraw(toWei(amountQ), { from: userAddress });
 
-    if (data.status) {
-      yield call(getAmountOnContract, CONTRACT_TYPES.vesting, userAddress);
-    }
+    yield contract.withdraw(toWei(amountQ), { from: userAddress });
+
+    yield call(getAmountOnContract, CONTRACT_TYPES.vesting, userAddress);
+    yield put(setTransactionLoadingSuccess({ type: formTypes.vestingWithdraw }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    yield put(setErrorMessage(errorMsg));
-  } finally {
-    yield put(setTransactionLoading());
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 

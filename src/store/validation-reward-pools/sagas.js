@@ -14,11 +14,11 @@ import {
 } from './action-creators';
 import * as actionTypes from './action-types';
 
-import { setErrorMessage } from 'store/transaction-handler/action-creators';
-import { SET_TRANSACTION_COUNTER } from 'store/transaction-handler/action-types';
+import { setTransactionLoading, setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/action-creators';
 
 import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
 
+import formTypes from 'constants/form-types';
 import { fromWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
 import { BN, fN, getPercentageFormat, uintPercentToNumber } from 'func/useful';
@@ -35,16 +35,17 @@ function * setUpdateValidatorsCompoundRateGenerator ({ address }) {
     const nextUpdateCompoundRate = yield contract.getLastUpdateOfCompoundRate(address);
 
     if (lastUpdateOfCompoundRate === nextUpdateCompoundRate) {
-      yield put(setErrorMessage(message));
+      yield put(setTransactionLoadingError(message));
     }
 
     yield put(getVRPLastUpdateOfCompoundRate(address));
     yield put(getVRPDelegatorsShare(address));
     yield put(getVRPBalance(address));
     yield put(getVRPPoolInfo(address));
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    yield put(setErrorMessage(errorMsg));
+    yield put(setTransactionLoadingError(errorMsg));
   } finally {
     yield put(setVRPLoadingValidatorsCompoundRate(false));
   }
@@ -52,23 +53,18 @@ function * setUpdateValidatorsCompoundRateGenerator ({ address }) {
 
 function * setDelegatorsShareGenerator ({ amount }) {
   try {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: 1
-    });
+    yield put(setTransactionLoading());
+
     const { userAddress } = yield select((state) => state.userInf);
 
     const contract = yield call(getValidationRewardPoolsInstance);
     yield contract.setDelegatorsShare(getPercentageFormat(amount));
     yield put(getVRPDelegatorsShare(userAddress));
+
+    yield put(setTransactionLoadingSuccess({ type: formTypes.validatorsPool }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    yield put(setErrorMessage(errorMsg));
-  } finally {
-    yield put({
-      type: SET_TRANSACTION_COUNTER,
-      payload: -1
-    });
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 

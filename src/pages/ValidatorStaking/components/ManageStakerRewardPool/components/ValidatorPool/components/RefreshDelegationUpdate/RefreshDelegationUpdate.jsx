@@ -10,7 +10,7 @@ import { lastUpdateOfCompoundRate, loadingUpdateOfCompoundRate } from 'store/val
 
 import { remainDateTimeSince } from 'func/convertDate';
 
-export default function RefreshDelegationUpdate () {
+function RefreshDelegationUpdate () {
   const dispatch = useDispatch();
 
   const userAddress = useSelector(userAddressMetamask);
@@ -27,9 +27,8 @@ export default function RefreshDelegationUpdate () {
     const interval = setInterval(() => {
       setTimeDelegationUpdate(remainDateTimeSince(lastUpdateCompoundRate));
     }, 60000);
-    return () => {
+    return () =>
       clearInterval(interval);
-    };
   }, [timeDelegationUpdate]);
 
   const btnHandler = () => {
@@ -48,3 +47,5 @@ export default function RefreshDelegationUpdate () {
     />
   );
 }
+
+export default RefreshDelegationUpdate;

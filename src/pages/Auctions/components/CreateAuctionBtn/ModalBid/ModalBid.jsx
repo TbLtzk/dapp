@@ -12,7 +12,7 @@ import { bidForAuction } from 'store/auctions/action-creators';
 import { approveModalBtn } from 'store/auctions/selectors';
 import { setCreateObj, setDisabledCreatedObjBtn, setStepCounter } from 'store/modal-handler/action-creators';
 import { createdStepsLimit, formObject, stepCounterModal } from 'store/modal-handler/selectors';
-import { setTransactionCounter } from 'store/transaction-handler/action-creators';
+import { setTransactionLoading, setTransactionLoadingSuccess } from 'store/transaction-handler/action-creators';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import { getStableCoinInstance } from 'contracts/contract-instance';
@@ -91,13 +91,13 @@ function ModalBid ({ modalShow, onHide, activeTab, inf }) {
 
   async function confirmAllowance (contract, address) {
     try {
-      dispatch(setTransactionCounter(1));
+      dispatch(setTransactionLoading());
       await contract.approve(address, MAX_APPROVE_AMOUNT, { from: userAddress });
       setApproveButton(false);
     } catch {
       setApproveButton(true);
     } finally {
-      dispatch(setTransactionCounter(-1));
+      dispatch(setTransactionLoadingSuccess());
     }
   }
 
