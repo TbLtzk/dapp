@@ -37,6 +37,7 @@
       "allow": ["warn", "error"]
     }],
     "no-trailing-spaces": "warn",
+    "object-curly-spacing": "warn",
     "no-multiple-empty-lines": ["warn", { "max": 1, "maxEOF": 0 }],
     "eol-last": "warn",
     "no-case-declarations": "off",

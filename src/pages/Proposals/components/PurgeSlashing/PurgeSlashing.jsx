@@ -14,6 +14,7 @@ import { isUserRootNode } from 'store/root-node/selectors';
 import { setPurgeSlashing } from 'store/voting/slashing-proposals/action-creators';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
+import formTypes from 'constants/form-types';
 import { isAddress } from 'func/useful';
 
 const USER_NOT_ROOT_NODE = 'User is not root node';
@@ -22,10 +23,9 @@ function PurgeSlashing () {
   const dispatch = useDispatch();
   const isRootNode = useSelector(isUserRootNode);
 
-  const { register, handleSubmit, errors, setCurrentType } = useInputForm('purge-slashing', { mode: 'onChange' });
+  const { register, handleSubmit, errors } = useInputForm(formTypes.purgeSlashing, { mode: 'onChange' });
 
   function handlePurge (formData, contractType) {
-    setCurrentType('purge-slashing');
     dispatch(setPurgeSlashing(formData.slashingAddress, contractType));
   }
 
@@ -43,6 +43,7 @@ function PurgeSlashing () {
         placeholder="Candidate address"
         valid={errors.slashingAddress?.message}
       />
+
       <PurgeSlashingContainer>
         <Tooltip disabled={isRootNode} additionalInfo={USER_NOT_ROOT_NODE}>
           <Button

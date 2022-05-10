@@ -33,7 +33,6 @@ function CreateQProposalBtn ({ activeTab }) {
   }, [activeTab]);
 
   const onCreateProposal = () => {
-    setModalShow(true);
     dispatch(setStepCounter(1));
     switch (activeTab) {
       case PROPOSALS_TYPES.proposals:
@@ -51,6 +50,7 @@ function CreateQProposalBtn ({ activeTab }) {
       default:
         return QProposal;
     }
+    setModalShow(true);
   };
 
   const onHide = () => {

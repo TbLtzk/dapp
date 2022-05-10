@@ -19,6 +19,8 @@ const formTypes = {
   borrowAssetRepay: 'borrow-asset-repay',
   borrowAssetDeposit: 'borrow-asset-deposit',
   borrowAssetWithdraw: 'borrow-asset-withdraw',
+
+  purgeSlashing: 'purge-slashing'
 };
 
 export default formTypes;

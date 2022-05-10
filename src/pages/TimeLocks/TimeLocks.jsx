@@ -105,7 +105,7 @@ function TimeLocks () {
         {cardsData.map((card) => (
           <BalanceCard
             key={card.contract}
-            address={currentAddress.address}
+            address={currentAddress}
             {...card}
           />
         ))}

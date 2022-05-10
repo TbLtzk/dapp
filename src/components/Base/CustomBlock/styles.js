@@ -132,6 +132,13 @@ export const Block = styled.div`
     bottom: 15px;
   }
 
+  .card_block {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
   @media screen and (max-width: 1000px) {
     .card__send-form {
       grid-template-columns: minmax(80px, 1fr);

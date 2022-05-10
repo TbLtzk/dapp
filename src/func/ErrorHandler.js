@@ -36,6 +36,7 @@ function findMessage (message) {
 
 class ErrorHandler {
   static process (error) {
+    console.error(error);
     const errorObj = createErrorObject(error);
     let message = DEFAULT_ERROR;
 

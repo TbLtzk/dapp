@@ -1,7 +1,5 @@
 import { all, put, select, takeEvery } from 'redux-saga/effects';
 
-import { escrowTypes } from 'pages/Proposals/components/ProposalsList/components/SlashingObjection/ModalSlashingObjection/CreateStep1/constants';
-
 import {
   setTransactionLoading,
   setTransactionLoadingError,
@@ -15,6 +13,8 @@ import { creationSlashingContractsObjArray } from 'contracts/helpers/voting-help
 import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-helper';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
+import { escrowTypes } from 'constants/escrowTypes';
+import formTypes from 'constants/form-types';
 import ErrorHandler from 'func/ErrorHandler';
 import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/useful';
 
@@ -139,7 +139,7 @@ function * setPurgeSlashingGenerator ({ slashingAddress, contractType }) {
       contractType === CONTRACT_TYPES.rootNodes ? yield getRootNodesInstance() : yield getValidatorsInstance();
     yield contract.purgePendingSlashings(slashingAddress, { from: userAddress });
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ message: 'Success!', type: formTypes.purgeSlashing }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
