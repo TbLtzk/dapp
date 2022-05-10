@@ -119,11 +119,11 @@ function SaveAsset ({
       <div className="modal__one-line-form">
         <FormInput
           ref={registerDeposit({ required: true })}
+          invertedColors
           prefix={depositAsset}
           min={0}
           name="amount"
           type="number"
-          invertedColors={true}
           placeholder="0.00"
           error={errorHandler(errorsDeposit, 'field')}
           onMaxClick={handleMaxDeposit}
@@ -139,11 +139,11 @@ function SaveAsset ({
       <div className="modal__one-line-form">
         <FormInput
           ref={registerWithdraw({ required: true })}
+          invertedColors
           prefix={interestAsset}
           min={0}
           name="amount"
           type="number"
-          invertedColors={true}
           placeholder="0.00"
           error={errorHandler(errorsWidthdraw, 'field')}
           onMaxClick={handleMaxWithdraw}

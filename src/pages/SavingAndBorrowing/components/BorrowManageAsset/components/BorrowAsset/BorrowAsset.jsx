@@ -144,12 +144,12 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
       <div className="modal__one-line-form">
         <FormInput
           ref={registerBorrow({ required: true })}
+          invertedColors
           prefix={borrowingDetails?.assets}
           min={0}
           name="field"
           type="number"
           placeholder="0.00"
-          invertedColors={true}
           error={errorHandler(errorsBorrow, 'field')}
           onMaxClick={handleMaxBorrow}
         />
@@ -164,11 +164,11 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
       <div className="modal__one-line-form">
         <FormInput
           ref={registerRepay({ required: true })}
+          invertedColors
           prefix={borrowingDetails?.assets}
           min={0}
           name="field"
           type="number"
-          invertedColors={true}
           placeholder="0.00"
           error={errorHandler(errorsRepay, 'field')}
           onMaxClick={handleMaxRepay}
@@ -185,11 +185,11 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
       <div className="modal__one-line-form">
         <FormInput
           ref={registerDeposit({ required: true })}
+          invertedColors
           prefix={collateralDetails?.assets}
           min={0}
           name="field"
           type="number"
-          invertedColors={true}
           placeholder="0.00"
           error={errorHandler(errorsDeposit, 'field')}
           onMaxClick={handleMaxDeposit}
@@ -205,11 +205,11 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
       <div className="modal__one-line-form">
         <FormInput
           ref={registerWithdraw({ required: true })}
+          invertedColors
           prefix={collateralDetails?.assets}
           min={0}
           name="field"
           type="number"
-          invertedColors={true}
           placeholder="0.00"
           error={errorHandler(errorsWithdraw, 'field')}
           onMaxClick={handleMaxWithdraw}

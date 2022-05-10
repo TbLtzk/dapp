@@ -20,7 +20,7 @@ export const InputWrapper = styled(Form.Group)`
     box-sizing: border-box;
     text-align: 'left';
     min-height: ${inputMinHeight};
-    border-radius: ${(props) => props.$prefix ? '0 3px 3px 0' : '3px'};
+    border-radius: ${(p) => p.$prefix ? '0 3px 3px 0' : '3px'};
     background: ${getBackgroundColor};
     border: 1px solid ${getInputColor};
     color: ${getInputColor};
@@ -31,21 +31,21 @@ export const InputWrapper = styled(Form.Group)`
       outline: none;
       background: ${getBackgroundColor};
       border-color: ${getMainColor};
-      color: ${(props) => {
-        return props.theme.palette === 'dark' && props.$invertedColors
-          ? props.theme.colors.oxfordBlueTint1
-          : props.theme.colors.white;
+      color: ${(p) => {
+        return p.theme.palette === 'dark' && p.$invertedColors
+          ? p.theme.colors.oxfordBlueTint1
+          : p.theme.colors.white;
       }};
     }
 
     &:disabled {
       cursor: not-allowed;
-      background: ${(props) => props.theme.palette === 'dark' ? 'transparent' : props.theme.colors.blue};
-      border: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
-      color: ${(props) => {
-        return props.theme.palette === 'dark'
-          ? props.theme.colors.oxfordBlueTint5
-          : props.theme.colors.oxfordBlueTint2;
+      background: ${(p) => p.theme.palette === 'dark' ? 'transparent' : p.theme.colors.blue};
+      border: 1px solid ${(p) => p.theme.colors.oxfordBlueTint2};
+      color: ${(p) => {
+        return p.theme.palette === 'dark'
+          ? p.theme.colors.oxfordBlueTint5
+          : p.theme.colors.oxfordBlueTint2;
       }};
     }
   }
@@ -74,69 +74,69 @@ export const InputWrapper = styled(Form.Group)`
     border-radius: 3px 0 0 3px;
     padding: 6px 10px;
     white-space: nowrap;
-    background-color: ${(props) => {
-      return props.$disabled
-        ? props.theme.colors.oxfordBlueTint2
-        : getInputColor(props);
+    background-color: ${(p) => {
+      return p.$disabled
+        ? p.theme.colors.oxfordBlueTint2
+        : getInputColor(p);
     }};
-    color: ${(props) => {
-      return props.theme.palette === 'dark' && !props.$disabled
-        ? props.theme.colors.white
-        : props.theme.colors.oxfordBlueTint1;
+    color: ${(p) => {
+      return p.theme.palette === 'dark' && !p.$disabled
+        ? p.theme.colors.white
+        : p.theme.colors.oxfordBlueTint1;
     }};
   }
 
-  ${(props) => !props.$error && css`
+  ${(p) => !p.$error && css`
     div:focus-within .input__prefix {
-      color: ${props.theme.colors.oxfordBlueTint1};
+      color: ${p.theme.colors.oxfordBlueTint1};
       background-color: ${
-        props.theme.palette === 'dark'
-          ? props.theme.colors.neonGreen
-          : props.theme.colors.white
+        p.theme.palette === 'dark'
+          ? p.theme.colors.neonGreen
+          : p.theme.colors.white
       };
     }
   `}
 `;
 
-function getBackgroundColor (props) {
-  return props.theme.palette === 'dark'
+function getBackgroundColor (p) {
+  return p.theme.palette === 'dark'
     ? 'transparent'
-    : props.theme.colors.blue;
+    : p.theme.colors.blue;
 }
 
-function getMainColor (props) {
-  return props.theme.palette === 'dark'
-    ? props.theme.colors.oxfordBlueTint2
-    : props.theme.colors.oxfordBlueTint4;
+function getMainColor (p) {
+  return p.theme.palette === 'dark'
+    ? p.theme.colors.oxfordBlueTint2
+    : p.theme.colors.oxfordBlueTint4;
 }
 
-function getInputColor (props) {
-  return props.$error
-    ? props.theme.colors.validationError
-    : getMainColor(props);
+function getInputColor (p) {
+  return p.$error
+    ? p.theme.colors.validationError
+    : getMainColor(p);
 }
 
-function getMaxButtonStyle (props) {
-  if (props.$disabled) {
+function getMaxButtonStyle (p) {
+  if (p.$disabled) {
     return css`
       cursor: default;
-      color: ${props.theme.colors.oxfordBlueTint2};
+      color: ${p.theme.colors.oxfordBlueTint2};
     `;
   }
 
-  if (props.theme.palette === 'dark') {
+  if (p.theme.palette === 'dark') {
     return css`
-      color: ${props.theme.colors.oxfordBlueTint4};
+      color: ${p.theme.colors.oxfordBlueTint4};
       &:hover {
-        color: ${props.$invertedColors ? props.theme.colors.oxfordBlueTint1 : props.theme.colors.neonGreen};
+        color: ${p.$invertedColors ? p.theme.colors.oxfordBlueTint1 : p.theme.colors.neonGreen};
       }
     `;
   }
 
   return css`
-    color: ${props.theme.colors.oxfordBlueTint2};
+    color: ${p.theme.colors.oxfordBlueTint2};
     &:hover {
-      color: ${props.theme.colors.oxfordBlueTint6};
+      color: ${p.theme.colors.oxfordBlueTint6};
     }
   `;
 }
