@@ -1,11 +1,11 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { formVoteObject } from 'store/voting/proposals/selectors';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
 
-function CreateStep2 ({ register, errors, proposalContract }) {
+function CreateStep2 ({ proposalContract }) {
   const formData = useSelector(formVoteObject);
 
   const showCommonData = (answer) => {
@@ -13,9 +13,7 @@ function CreateStep2 ({ register, errors, proposalContract }) {
       <div>
         <h2>Chosen Data:</h2>
         <h5>Type</h5>
-        <p className="text-capitalize">
-          {formData?.first?.replace(/-/g, ' ')}
-        </p>
+        <p className="text-capitalize">{formData?.first?.replace(/-/g, ' ')}</p>
         <h5>Answer</h5>
         <p>{answer}</p>
         {proposalContract === CONTRACTS_NAMES.constitutionVoting ||
@@ -35,18 +33,14 @@ function CreateStep2 ({ register, errors, proposalContract }) {
     );
   };
 
-  const contentSwitcher = useCallback(() => {
-    switch (formData?.first) {
-      case 'basic-vote-on-proposal':
-        return showCommonData(formData['vote-proposal']);
-      case 'constitution-check':
-        return showCommonData(formData['constitution-check']);
-      default:
-        return null;
-    }
-  }, [register, errors]);
-
-  return <>{contentSwitcher()}</>;
+  switch (formData?.first) {
+    case 'basic-vote-on-proposal':
+      return showCommonData(formData['vote-proposal']);
+    case 'constitution-check':
+      return showCommonData(formData['constitution-check']);
+    default:
+      return null;
+  }
 }
 
 export default CreateStep2;

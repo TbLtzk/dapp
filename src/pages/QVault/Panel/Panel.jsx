@@ -11,7 +11,7 @@ import {
   getLockedAssets,
   getMinimumQVaultTimeLock,
   getQVBalance,
-  getUserBalance
+  getUserBalance,
 } from 'store/q-vault/action-creators';
 import {
   accountBalance,
@@ -22,7 +22,7 @@ import {
   userBalance,
   votingAgent,
   votingLockingEnd,
-  votingWeight
+  votingWeight,
 } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
@@ -31,7 +31,7 @@ import { getVoteDelegation } from 'contracts/helpers/voting-helpers/base-voting-
 import { fromSolDateFormattingT1 } from 'func/date';
 import { fN } from 'func/useful';
 
-export default function Panel () {
+function Panel () {
   const dispatch = useDispatch();
 
   const userAddress = useSelector(userAddressMetamask);
@@ -92,3 +92,5 @@ export default function Panel () {
     </CustomBlock>
   );
 }
+
+export default Panel;

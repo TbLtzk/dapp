@@ -1,29 +1,28 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAlert } from 'react-alert';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setErrorMessage, setTransactionLoadingError } from 'store/transaction-handler/action-creators';
-import { errorMessage } from 'store/transaction-handler/selectors';
+import { setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/action-creators';
+import { errorMessageSelector, successMessageSelector } from 'store/transaction-handler/selectors';
 
 function Alert () {
   const dispatch = useDispatch();
 
-  const error = useSelector(errorMessage);
+  const errorMessage = useSelector(errorMessageSelector);
+  const successMessage = useSelector(successMessageSelector);
   const alert = useAlert();
 
-  const errorHandler = () => {
-    if (error) {
-      alert.error(error);
-      dispatch(setErrorMessage(null));
+  useEffect(() => {
+    if (errorMessage) {
+      alert.error(errorMessage);
       dispatch(setTransactionLoadingError(null));
     }
-  };
+    if (successMessage) {
+      dispatch(setTransactionLoadingSuccess(null));
+    }
+  }, [errorMessage, successMessage, dispatch]);
 
-  useEffect(() => {
-    errorHandler();
-  }, [error, dispatch]);
-
-  return <></>;
+  return null;
 }
 
 export default Alert;

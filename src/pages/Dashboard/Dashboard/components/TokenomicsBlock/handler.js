@@ -1,4 +1,4 @@
-import { setErrorMessage } from 'store/transaction-handler/action-creators';
+import { setTransactionLoadingError } from 'store/transaction-handler/action-creators';
 
 import {
   getCompoundRateKeeperQVaultInstance,
@@ -25,7 +25,7 @@ export default class Handler {
       stateSetter(fN(balance));
     } catch (error) {
       const errorMsg = ErrorHandler.process(error);
-      this.dispatch(setErrorMessage(errorMsg));
+      this.dispatch(setTransactionLoadingError(errorMsg));
     } finally {
       stateLoading(false);
     }

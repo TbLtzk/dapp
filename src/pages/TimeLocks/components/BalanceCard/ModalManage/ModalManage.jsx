@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 
 import Button from 'components/Base/Buttons/Button';
 import Calendar from 'components/Base/Calendar';
 import FormInput from 'components/Base/Form/FormInput';
 import ModalWindow from 'components/Base/ModalWindow';
 
+import useInputForm from 'hooks/useInputForm';
+
 import { CalendarWraper } from '../../../styles';
 import ManageVestingBalance from '../ManageVestingBalance';
 
+import { successMessageSelector } from 'store/transaction-handler/selectors';
+
+import formTypes from 'constants/form-types';
 import { dateToTimestamp } from 'func/convertDate';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
 function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitle, contract, address }) {
+  const shouldResetData = useSelector(successMessageSelector);
+
+  const { register, control, handleSubmit, errors, getValues } = useInputForm(formTypes.timeLocksAmount);
+
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [isCorrectDate, setIsCorrectDate] = useState('');
-
-  const { register, control, handleSubmit, errors, getValues, reset } = useForm();
-
-  useEffect(() => {
-    checkCorrectDate();
-  }, [startDate, endDate]);
 
   const checkCorrectDate = () => {
     if (!startDate || !endDate) {
@@ -35,14 +38,11 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
     }
   };
 
-  const handleSetDeposit = () => {
+  const handleDeposit = () => {
     const values = getValues();
     const isFull = Object.values(values).every((value) => value !== null && value.length !== 0);
-    if (isFull && isCorrectDate.length === 0) {
+    if (isFull && !isCorrectDate.length) {
       handleSubmit(setDeposit)();
-      setModalShow(false);
-      setStartDate(null);
-      setEndDate(null);
     }
   };
 
@@ -50,11 +50,22 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
     setModalShow(false);
     setStartDate(null);
     setEndDate(null);
-    reset();
   };
+
+  useEffect(() => {
+    checkCorrectDate();
+  }, [startDate, endDate]);
+
+  useEffect(() => {
+    if (shouldResetData) {
+      setStartDate(null);
+      setEndDate(null);
+    }
+  }, [shouldResetData]);
 
   return (
     <ModalWindow
+      scrollable={false}
       show={modalShow}
       modalTitle={modalTitle}
       content={
@@ -83,7 +94,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
               selectsEnd={true}
               control={control}
               name="endDate"
-              disabled={startDate === null}
+              disabled={!startDate}
               setDate={setEndDate}
               selected={endDate}
               startDate={startDate}
@@ -110,7 +121,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
               title="Deposit"
               width="80px"
               margin="-5px 0 10px 0"
-              handleButton={handleSetDeposit}
+              handleButton={handleDeposit}
             />
             <div className="modal-line" />
             <Button
@@ -120,10 +131,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
               title="Purge Expired Time Locks"
               width="190px"
               margin="3px 0 20px 0"
-              handleButton={() => {
-                setPurge();
-                handleHideModal();
-              }}
+              handleButton={setPurge}
             />
           </div>
         </>

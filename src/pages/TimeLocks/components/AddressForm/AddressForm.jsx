@@ -10,26 +10,26 @@ import { WrapContainer } from '../../styles';
 
 import { isAddress } from 'func/useful';
 
-function AddressForm ({ setAddressRefresh, userAddress }) {
+function AddressForm ({ userAddress, setAddressRefresh }) {
   const { register, handleSubmit, errors } = useForm({
     mode: 'onChange',
     defaultValues: {
-      address: userAddress.address
-    }
+      address: userAddress,
+    },
   });
 
   return (
     <CustomBlock>
       <h5>Current Address:</h5>
       <h4>
-        <ExplorerAddress address={userAddress.address} />
+        <ExplorerAddress address={userAddress} />
       </h4>
       <h5>Update address:</h5>
       <WrapContainer>
         <FormInput
           ref={register({
             required: 'Address required!',
-            validate: (address) => (isAddress(address) ? true : 'Incorrect address')
+            validate: (address) => (isAddress(address) ? true : 'Incorrect address'),
           })}
           name="address"
           type="string"

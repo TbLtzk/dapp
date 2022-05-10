@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'components/Base/Buttons/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import FormInput from 'components/Base/Form/FormInput';
+
+import useInputForm from 'hooks/useInputForm';
 
 import { AccountStatusForm, AccountStatusInfo } from '../../styles';
 
@@ -16,26 +17,27 @@ import {
   getRootWithdrawals,
   setRootAnnounceWithdrawal,
   setRootStakeToPanel,
-  setRootWithdraw
+  setRootWithdraw,
 } from 'store/root-node/action-creators';
 import { isUserRootNode, rootMinimumTimeLock, rootNodeStake, withdrawals } from 'store/root-node/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
+import formTypes from 'constants/form-types.js';
 import { fromWei, toWei } from 'func/balance';
 import { fromSolDateFormattingT1 } from 'func/date';
 import { fN } from 'func/useful';
 
 function ManageRootNodeBalance () {
-  const { register, errors, handleSubmit } = useForm();
   const dispatch = useDispatch();
 
   const userAccountBalance = useSelector(accountBalance);
-
   const isUserRoot = useSelector(isUserRootNode);
   const userAddress = useSelector(userAddressMetamask);
   const amountNodeStake = useSelector(rootNodeStake);
   const withdrawalsData = useSelector(withdrawals);
   const rootTimeLockMinimumBalance = useSelector(rootMinimumTimeLock);
+
+  const { register, errors, handleSubmit } = useInputForm(formTypes.rootNodeStaking);
 
   useEffect(() => {
     dispatch(getAccountBalance(userAddress));
@@ -44,30 +46,26 @@ function ManageRootNodeBalance () {
     dispatch(getMinimumRootTimeLock(userAddress));
   }, []);
 
-  const onStakeToPanel = (formData) => {
+  const handleStake = (formData) => {
     dispatch(setRootStakeToPanel({ from: userAddress, value: toWei(formData?.amount) }));
   };
 
-  const onWithdrawFromPanel = (formData) => {
+  const handleWithdraw = (formData) => {
     dispatch(setRootWithdraw(toWei(formData?.amount), userAddress, { from: userAddress }));
   };
 
-  const onAnnounce = (formData) => {
+  const handleAnnounce = (formData) => {
     dispatch(setRootAnnounceWithdrawal(toWei(formData?.amount), { from: userAddress }));
   };
-
-  const checkIsUserRootMember = (
-    <div>
-      <h5>Status</h5>
-      {isUserRoot ? <p>Member of root node panel</p> : <p>Not a member of root node panel</p>}
-    </div>
-  );
 
   return (
     <CustomBlock>
       <h1>Manage Balance</h1>
       <AccountStatusInfo>
-        {checkIsUserRootMember}
+        <div>
+          <h5>Status</h5>
+          {isUserRoot ? <p>Member of root node panel</p> : <p>Not a member of root node panel</p>}
+        </div>
         <div>
           <h5>Stake in Root Node Ranking</h5>
           <p>{fN(amountNodeStake) + ' Q'}</p>
@@ -114,24 +112,23 @@ function ManageRootNodeBalance () {
             type="number"
             placeholder="0.00"
             valid={errors?.amount?.message}
-            onChange={() => {}}
           />
         </div>
         <div className="account-status__form-actions">
           <Button
             type="default"
             title="Stake to Panel"
-            handleButton={handleSubmit(onStakeToPanel)}
+            handleButton={handleSubmit(handleStake)}
           />
           <Button
             type="default"
             title="Announce Withdrawal"
-            handleButton={handleSubmit(onAnnounce)}
+            handleButton={handleSubmit(handleAnnounce)}
           />
           <Button
             type="default"
             title="Withdraw from Panel"
-            handleButton={handleSubmit(onWithdrawFromPanel)}
+            handleButton={handleSubmit(handleWithdraw)}
           />
         </div>
       </AccountStatusForm>

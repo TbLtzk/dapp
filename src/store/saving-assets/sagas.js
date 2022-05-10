@@ -16,11 +16,16 @@ import {
 } from './action-creators';
 import * as actionTypes from './action-types';
 
-import { setErrorMessage, setTransactionCounter } from 'store/transaction-handler/action-creators';
+import {
+  setTransactionLoading,
+  setTransactionLoadingError,
+  setTransactionLoadingSuccess
+} from 'store/transaction-handler/action-creators';
 
 import { getSavingInstance, getStableCoinInstance } from 'contracts/contract-instance';
 import { getSavingBalanceDetailsHelper } from 'contracts/helpers/saving-assets-helper';
 
+import formTypes from 'constants/form-types';
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 import { fromWei, toWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
@@ -65,61 +70,66 @@ function * getSavingAviableToDepositGenerator () {
 
 function * setSavingDepositGenerator ({ amount }) {
   try {
-    yield put(setTransactionCounter(1));
+    yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getSavingInstance);
-    const result = yield contract.deposit(toWei(amount), { from: userAddress });
-    if (result) {
-      yield put(getSavingBalanceDetails());
-      yield put(getSavingAviableToDeposit());
-      yield put(getSavingAllowance());
-      yield put(getTotalSavingBalance());
-      yield put(getTotalCollateralLockedAndOutstandingDebt());
-      yield put(getSavingAssets());
-    }
+    yield contract.deposit(toWei(amount), { from: userAddress });
+
+    yield put(getSavingBalanceDetails());
+    yield put(getSavingAviableToDeposit());
+    yield put(getSavingAllowance());
+    yield put(getTotalSavingBalance());
+    yield put(getTotalCollateralLockedAndOutstandingDebt());
+    yield put(getSavingAssets());
+
+    yield put(setTransactionLoadingSuccess({ type: formTypes.savingAssetDeposit }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    yield put(setErrorMessage(errorMsg));
-  } finally {
-    yield put(setTransactionCounter(-1));
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
 function * setSavingWithdrawGenerator ({ amount }) {
   try {
-    yield put(setTransactionCounter(1));
+    yield put(setTransactionLoading());
 
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getSavingInstance);
-    const result = yield contract.withdraw(toWei(amount), { from: userAddress });
-    if (result) {
-      yield put(getSavingBalanceDetails());
-      yield put(getSavingAviableToDeposit());
-      yield put(getSavingAllowance());
-      yield put(getTotalSavingBalance());
-      yield put(getTotalCollateralLockedAndOutstandingDebt());
-      yield put(getSavingAssets());
-    }
+    yield contract.withdraw(toWei(amount), { from: userAddress });
+
+    yield put(getSavingBalanceDetails());
+    yield put(getSavingAviableToDeposit());
+    yield put(getSavingAllowance());
+    yield put(getTotalSavingBalance());
+    yield put(getTotalCollateralLockedAndOutstandingDebt());
+    yield put(getSavingAssets());
+
+    yield put(setTransactionLoadingSuccess({ type: formTypes.savingAssetWithdraw }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    yield put(setErrorMessage(errorMsg));
-  } finally {
-    yield put(setTransactionCounter(-1));
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
 function * setSavingAproveGenerator () {
   try {
-    yield put(setTransactionCounter(1));
+    yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getStableCoinInstance);
     const contractSaving = yield call(getSavingInstance);
     yield contract.approve(contractSaving.address, MAX_APPROVE_AMOUNT, { from: userAddress });
+
+    yield put(getSavingBalanceDetails());
+    yield put(getSavingAviableToDeposit());
+    yield put(getSavingAllowance());
+    yield put(getTotalSavingBalance());
+    yield put(getTotalCollateralLockedAndOutstandingDebt());
+    yield put(getSavingAssets());
+
+    yield put(setTransactionLoadingSuccess());
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    yield put(setErrorMessage(errorMsg));
-  } finally {
-    yield put(setTransactionCounter(-1));
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 

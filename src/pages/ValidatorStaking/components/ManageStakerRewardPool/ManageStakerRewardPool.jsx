@@ -8,17 +8,55 @@ import Tooltip from 'components/Base/Tooltip';
 import RewardStats from './components/RewardStats';
 import ValidatorPool from './components/ValidatorPool';
 
-import { getCompoundRateKeeperExists } from 'store/validators/action-creators';
+import { userAddressMetamask } from 'store/user-inf/selectors';
+import {
+  getVRPBalance,
+  getVRPDelegatorsShare,
+  getVRPLastUpdateOfCompoundRate,
+  getVRPPoolInfo,
+} from 'store/validation-reward-pools/action-creators';
+import {
+  getAccountableTotalStake,
+  getCompoundRateKeeperExists,
+  getDelegatedStake,
+  getOwnStake,
+  getTotalStake,
+} from 'store/validators/action-creators';
 import { compoundRateKeeperExistsSelector } from 'store/validators/selectors';
 
 function ManageStakerRewardPool () {
   const dispatch = useDispatch();
-  const [modalShow, setModalShow] = useState(false);
+  const address = useSelector(userAddressMetamask);
   const compoundRateKeeperExists = useSelector(compoundRateKeeperExistsSelector);
+
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(getCompoundRateKeeperExists());
   }, [dispatch]);
+
+  const handleModalOpen = () => {
+    setModalOpen(true);
+
+    dispatch(getVRPDelegatorsShare(address));
+    dispatch(getVRPBalance(address));
+    dispatch(getVRPPoolInfo(address));
+
+    dispatch(getTotalStake(address));
+    dispatch(getOwnStake(address));
+    dispatch(getDelegatedStake(address));
+    dispatch(getAccountableTotalStake(address));
+    dispatch(getVRPLastUpdateOfCompoundRate());
+  };
+
+  const content = (
+    <>
+      <div className="modal-line" />
+      <ValidatorPool />
+      <div className="modal-line" />
+      <RewardStats />
+    </>
+  );
 
   return (
     <>
@@ -31,22 +69,15 @@ function ManageStakerRewardPool () {
           disabled={!compoundRateKeeperExists}
           type="white"
           title="Manage Staker Reward Pool"
-          handleButton={() => setModalShow(true)}
+          handleButton={handleModalOpen}
         />
       </Tooltip>
 
       <ModalWindow
-        show={modalShow}
+        show={modalOpen}
         modalTitle="Manage Staker Reward Pool"
-        content={
-          <>
-            <div className="modal-line" />
-            <ValidatorPool modalShow={modalShow} />
-            <div className="modal-line" />
-            <RewardStats modalShow={modalShow} />
-          </>
-        }
-        onHide={() => setModalShow(false)}
+        content={content}
+        onHide={() => setModalOpen(false)}
       />
     </>
   );

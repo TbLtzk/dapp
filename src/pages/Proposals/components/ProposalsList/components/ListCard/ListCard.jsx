@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Accordion } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 import CustomCardButtons from 'components/Custom/CustomCardButtons';
@@ -11,8 +11,7 @@ import ProposalContent from '../ProposalContent';
 import { ListCardBody, ListCardHeader, ListCardWrp } from './styles';
 
 import { theme } from 'store/theme/selectors';
-import { transactionCounter } from 'store/transaction-handler/selectors';
-import { setVoteProposalObj } from 'store/voting/proposals/action-creators';
+import { transactionLoadingSelector } from 'store/transaction-handler/selectors';
 import { formVoteObject } from 'store/voting/proposals/selectors';
 
 import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper';
@@ -20,10 +19,8 @@ import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper
 import { createShareText } from 'func/useful';
 
 function ListCard ({ proposal, id, proposalsKind, onePage }) {
-  const dispatch = useDispatch();
-
   const currentTheme = useSelector(theme);
-  const updateProposal = useSelector(transactionCounter);
+  const transactionLoading = useSelector(transactionLoadingSelector);
 
   const [open, setOpen] = useState(false);
 
@@ -31,11 +28,10 @@ function ListCard ({ proposal, id, proposalsKind, onePage }) {
   const obj = useSelector(formVoteObject);
 
   useEffect(() => {
-    if (!updateProposal && proposal.contract === obj.contract && proposal.id === obj.id) {
+    if (!transactionLoading && proposal.contract === obj.contract && proposal.id === obj.id) {
       handleGetProposal();
-      dispatch(setVoteProposalObj({}));
     }
-  }, [updateProposal]);
+  }, [transactionLoading]);
 
   useEffect(() => {
     handleGetProposal();

@@ -5,14 +5,13 @@ import LoadingSpinner from 'components/Base/LoadingSpinner';
 
 import { Shadow, Wrap, WrapLoading, WrapText } from './styles';
 
-import { transactionCounter, transactionLoading } from 'store/transaction-handler/selectors';
+import { transactionLoadingSelector } from 'store/transaction-handler/selectors';
 
 function LoadingTransaction () {
-  const loading = useSelector(transactionLoading);
-  const trCounter = useSelector(transactionCounter);
+  const transactionLoading = useSelector(transactionLoadingSelector);
 
-  if (loading || trCounter) {
-    return (
+  return transactionLoading
+    ? (
       <Wrap>
         <WrapLoading>
           <WrapText>
@@ -22,9 +21,8 @@ function LoadingTransaction () {
         </WrapLoading>
         <Shadow />
       </Wrap>
-    );
-  }
-  return null;
+    )
+    : null;
 }
 
 export default LoadingTransaction;

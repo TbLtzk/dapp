@@ -96,6 +96,7 @@ export const PagesItemWrapper = styled.li`
   .page-item__link {
     display: ${(props) => (props.isDisplayNone ? 'none' : '')};
     margin-right: 10px;
+    font-size: 14px;
     color: ${(props) => {
     if (props.palette === 'dark') {
       return props.active ? props.theme.colors.white : props.theme.colors.oxfordBlueTint3;
@@ -106,6 +107,7 @@ export const PagesItemWrapper = styled.li`
   }
 
   .page-item__title {
+    font-size: 14px;
     color: ${(props) => props.theme.colors.white};
     margin-right: 10px;
   }

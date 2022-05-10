@@ -1,5 +1,4 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'components/Base/Buttons/Button';
@@ -7,12 +6,15 @@ import CustomBlock from 'components/Base/CustomBlock';
 import FormInput from 'components/Base/Form/FormInput';
 import Tooltip from 'components/Base/Tooltip';
 
+import useInputForm from 'hooks/useInputForm';
+
 import { PurgeSlashingContainer } from './styles';
 
 import { isUserRootNode } from 'store/root-node/selectors';
 import { setPurgeSlashing } from 'store/voting/slashing-proposals/action-creators';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
+import formTypes from 'constants/form-types';
 import { isAddress } from 'func/useful';
 
 const USER_NOT_ROOT_NODE = 'User is not root node';
@@ -21,11 +23,10 @@ function PurgeSlashing () {
   const dispatch = useDispatch();
   const isRootNode = useSelector(isUserRootNode);
 
-  const { register, handleSubmit, errors, setValue } = useForm({ mode: 'onChange' });
+  const { register, handleSubmit, errors } = useInputForm(formTypes.purgeSlashing, { mode: 'onChange' });
 
   function handlePurge (formData, contractType) {
     dispatch(setPurgeSlashing(formData.slashingAddress, contractType));
-    setValue('slashingAddress', null);
   }
 
   return (
@@ -42,6 +43,7 @@ function PurgeSlashing () {
         placeholder="Candidate address"
         valid={errors.slashingAddress?.message}
       />
+
       <PurgeSlashingContainer>
         <Tooltip disabled={isRootNode} additionalInfo={USER_NOT_ROOT_NODE}>
           <Button

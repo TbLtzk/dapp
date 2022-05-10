@@ -44,20 +44,22 @@ const Table = ({ tableBody, columns, perPage, keyField, sorting, lineForEach }) 
   };
 
   return (
-    <TableWrapper
-      lineForEach={lineForEach}
-      sorting={sorting}
-      bottomLine={perPage < tableBody.length}
-      palette={currentTheme}
-    >
-      <BootstrapTable
-        keyField={keyField}
-        data={tableBody}
-        pagination={tableBody.length > perPage ? paginationFactory(options) : null}
-        columns={columns}
-        bordered={false}
-      />
-    </TableWrapper>
+    <>
+      <TableWrapper
+        lineForEach={lineForEach}
+        sorting={sorting}
+        bottomLine={perPage < tableBody.length}
+        palette={currentTheme}
+      >
+        <BootstrapTable
+          keyField={keyField}
+          data={tableBody}
+          pagination={tableBody.length > perPage ? paginationFactory(options) : null}
+          columns={columns}
+          bordered={false}
+        />
+      </TableWrapper>
+    </>
   );
 };
 

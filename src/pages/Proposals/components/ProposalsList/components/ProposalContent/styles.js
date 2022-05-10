@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ProposalContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 2fr 2fr;
+  grid-template-columns: 1fr 1fr 1fr;
 
   @media screen and (max-width: 1150px) {
     display: flex;
