@@ -39,7 +39,10 @@
     "no-multiple-empty-lines": ["warn", { "max": 1, "maxEOF": 0 }],
     "eol-last": "warn",
     "no-case-declarations": "off",
-    "indent": ["warn", 2, { "SwitchCase": 1 }],
+    "indent": ["warn", 2, {
+      "SwitchCase": 1,
+      "ignoredNodes": ["TaggedTemplateExpression *"]
+    }],
     "semi": ["warn", "always"],
     "quotes": ["warn", "single"],
     "space-before-function-paren": ["warn", "always"],
