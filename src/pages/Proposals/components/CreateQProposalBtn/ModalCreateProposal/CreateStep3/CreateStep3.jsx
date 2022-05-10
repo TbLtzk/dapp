@@ -118,7 +118,6 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
                           required: 'Please, fill the field',
                           validate: (key) => parameterKeyValidation(key)
                         })}
-                        type="string"
                         name={`parameter-key[${index}]`}
                         placeholder="Parameter Key"
                         error={errors['parameter-key']?.[index]?.message}
@@ -133,7 +132,6 @@ function CreateStep3 ({ activeTab, register, errors, watch }) {
                             watch(`parameter-type[${index}]`)
                           )
                       })}
-                      type="string"
                       name={`parameter-value[${index}]`}
                       placeholder="Value"
                       error={errors['parameter-value']?.[index]?.message}

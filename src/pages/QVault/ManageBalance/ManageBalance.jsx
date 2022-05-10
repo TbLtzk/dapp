@@ -123,7 +123,6 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
           })}
           prefix="Q"
           min={0}
-          color={true}
           name="amount"
           type="number"
           placeholder="0.0"
@@ -151,7 +150,6 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
           min={0}
           prefix="Q"
           name="amount"
-          color={true}
           type="number"
           placeholder="0.0"
           error={errorsWithdraw.amount?.message}
@@ -176,9 +174,7 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
             validate: (address) => (isAddress(address) ? true : 'Incorrect address')
           })}
           name="address"
-          type="text"
           placeholder="0x000"
-          color={true}
           error={errorsSend.address?.message}
         />
 
@@ -190,7 +186,6 @@ export default function ManageBalance ({ maxQVaultWithdrawAmount }) {
               message: 'Invalid amount'
             }
           })}
-          color={true}
           min={0}
           name="amount"
           type="number"

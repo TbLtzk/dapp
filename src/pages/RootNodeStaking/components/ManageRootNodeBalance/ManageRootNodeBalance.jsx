@@ -108,7 +108,6 @@ function ManageRootNodeBalance () {
         <div className="account-status__form-input">
           <FormInput
             ref={register({ required: 'Please, fill the field' })}
-            color={true}
             name="amount"
             prefix="Q"
             type="number"

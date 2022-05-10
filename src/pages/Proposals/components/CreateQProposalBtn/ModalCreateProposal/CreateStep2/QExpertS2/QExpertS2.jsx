@@ -162,7 +162,6 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                       validate: (key) => parameterKeyValidation(key)
                     })}
                     name={`parameter-key[${index}]`}
-                    type="string"
                     placeholder="Key"
                     error={errors['parameter-key']?.[index]?.message}
                   />
@@ -174,7 +173,6 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                       validatePattern(value, watch(`parameter-type[${index}]`))
                   })}
                   name={`parameter-value[${index}]`}
-                  type="string"
                   placeholder="Value"
                   error={errors['parameter-value']?.[index]?.message}
                 />

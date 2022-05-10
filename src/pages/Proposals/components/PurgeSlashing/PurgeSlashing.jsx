@@ -36,9 +36,7 @@ function PurgeSlashing () {
           required: 'Please, fill the field',
           validate: (address) => (isAddress(address) ? true : 'Incorrect address')
         })}
-        color={true}
         name="slashingAddress"
-        type="text"
         placeholder="Candidate address"
         error={errors.slashingAddress?.message}
       />

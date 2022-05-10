@@ -152,7 +152,6 @@ function ManageValidatorBalance () {
               required: 'Please, fill the field',
               min: 0
             })}
-            color={true}
             name="amount"
             type="number"
             prefix="Q"

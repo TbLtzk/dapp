@@ -32,8 +32,6 @@ function AddressForm ({ setAddressRefresh, userAddress }) {
             validate: (address) => (isAddress(address) ? true : 'Incorrect address')
           })}
           name="address"
-          type="string"
-          color={true}
           error={errors?.address?.message}
         />
         <div>

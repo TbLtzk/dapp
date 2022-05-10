@@ -66,9 +66,7 @@ export default function UpdateDelegation () {
               required: 'Please, fill the field',
               validate: (address) => isAddress(address)
             })}
-            color={true}
             name={'address' + idx}
-            type="text"
             placeholder="0x000"
           />
           <FormInput
@@ -76,7 +74,6 @@ export default function UpdateDelegation () {
               required: 'Please, fill the field',
               pattern: /[0-9]/i
             })}
-            color={true}
             name={'share' + idx}
             type="number"
             prefix="Q"

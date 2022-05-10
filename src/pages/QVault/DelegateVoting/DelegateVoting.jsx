@@ -76,10 +76,8 @@ export default function LockCoin () {
             required: 'Please, fill the field',
             pattern: /[0-9]/i
           })}
-          color={true}
           name="address"
           placeholder="0x000"
-          type="text"
           error={err1.address?.message}
         />
         <Button
