@@ -35,42 +35,36 @@ const FormInput = forwardRef(({
 
   const getTypeRef = useCallback(() => {
     switch (refType) {
-      case fieldTypes.externalLink: {
+      case fieldTypes.externalLink:
         return register({
           required: 'Please, fill the field',
           validate: (link) => (link.match(linkRegex) ? true : 'Invalid link URL')
         });
-      }
-      case fieldTypes.externalLinkOptional: {
+      case fieldTypes.externalLinkOptional:
         return register({
           validate: (link) => (!link || link.match(linkRegex) ? true : 'Invalid link URL')
         });
-      }
-      case fieldTypes.address: {
+      case fieldTypes.address:
         return register({
           required: 'Please, fill the field',
           validate: (address) => (isAddress(address) ? true : 'Invalid address')
         });
-      }
-      case fieldTypes.vaultId: {
+      case fieldTypes.vaultId:
         return register({
           required: 'Please, fill the field',
           validate: (value) => (value.match(vaultID) ? true : 'Invalid vault ID')
         });
-      }
-      case fieldTypes.bid: {
+      case fieldTypes.bid:
         return register({
           required: 'Please, fill the field',
           validate: (value) => (value.match(numberRegex) ? true : 'Invalid bid')
         });
-      }
-      case fieldTypes.hash: {
+      case fieldTypes.hash:
         return register({
           required: 'Please, fill the field',
           validate: (hash) => (hash.match(hashRegex) ? true : 'Invalid hash')
         });
-      }
-      case fieldTypes.percentValue: {
+      case fieldTypes.percentValue:
         return register({
           required: 'Please, fill the field',
           validate: (value) => {
@@ -82,13 +76,11 @@ const FormInput = forwardRef(({
             }
           }
         });
-      }
-      default: {
+      default:
         return register({
           required: 'Please, fill the field',
           validate: (value) => (value.length >= 70 ? 'Maximum length reached' : true)
         });
-      }
     }
   }, []);
 
