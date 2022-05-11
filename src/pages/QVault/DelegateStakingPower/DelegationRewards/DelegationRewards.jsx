@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import CardBlock from 'components/Base/CardBlock';
+import Button from 'components/Base/Buttons/Button';
 
 import { getOutstandingDelegationRewards, onClaimStakeDelegatorReward } from 'store/q-vault/action-creators';
 import { outstandingDelegationRewards } from 'store/q-vault/selectors';
@@ -21,12 +21,19 @@ function DelegationRewards () {
   }
 
   return (
-    <CardBlock
-      title="Outstanding Delegation Rewards"
-      firstContent={fN(outstandingDelegationRewardsValue) + ' Q'}
-      btnTitle="Claim Delegation Reward"
-      btnHandler={handleClaim}
-    />
+    <div className="card_block">
+      <div>
+        <h5>Outstanding Delegation Rewards</h5>
+        <p>{fN(outstandingDelegationRewardsValue) + ' Q'}</p>
+      </div>
+      <div>
+        <Button
+          icon="chart-pie"
+          title={'Claim Delegation Reward'}
+          handleButton={handleClaim}
+        />
+      </div>
+    </div>
   );
 }
 
