@@ -5,6 +5,8 @@ import Button from 'components/Base/Buttons/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 
+import useInterval from 'hooks/useInterval';
+
 import Handler from './handler';
 
 import { getQVBalance, getUpdateCompoundRate } from 'store/q-vault/action-creators';
@@ -70,47 +72,9 @@ function TokenomicsBlock () {
     handler.getValidationRewardProxy(setValidationRewardProxy, () => {}, false);
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeSinceQHolderRewardUpdate(remainDateTimeSince(timeSinceUnixTimestamp));
-    }, 60000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [timeSinceUnixTimestamp]);
-
-  const onAllocate = (type) => {
-    switch (type) {
-      case BTN_TYPES.defaultAllocation:
-        handler.getDefaultAllocationProxy(setDefaultAllocationProxy, setLoadingDefaultAllocation, true);
-        break;
-      case BTN_TYPES.validationRewardAllocation:
-        handler.getValidationRewardProxy(setValidationRewardProxy, setLoadingRootNodeReward, true);
-        break;
-      case BTN_TYPES.rootNodeAllocation:
-        handler.getRootNodeRewardProxy(setRootNodeRewardProxy, setLoadingValidationReward, true);
-        break;
-    }
-  };
-
-  const onRefresh = () => {
-    dispatch(getUpdateCompoundRate(userAddress));
-  };
-
-  const getIsLoading = (type) => {
-    switch (type) {
-      case BTN_TYPES.defaultAllocation:
-        return loadingDefaultAllocation;
-      case BTN_TYPES.validationRewardAllocation:
-        return loadingRootNodeReward;
-      case BTN_TYPES.rootNodeAllocation:
-        return loadingValidationReward;
-      case BTN_TYPES.timeSinceHolder:
-        return isUpdateCompoundRate;
-      default:
-        return false;
-    }
-  };
+  useInterval(() => {
+    setTimeSinceQHolderRewardUpdate(remainDateTimeSince(timeSinceUnixTimestamp));
+  }, 60000);
 
   const tokenimicsInfo = [
     {
@@ -119,17 +83,20 @@ function TokenomicsBlock () {
       btnTitle: 'Allocate',
       btnType: BTN_TYPES.defaultAllocation,
       btnIcon: 'cube-outline',
+      loading: loadingDefaultAllocation,
       loadingSpinner: <LoadingSpinner size="sm" className="mr-2" />,
-      handleButton: () => onAllocate(BTN_TYPES.defaultAllocation),
+      handleButton: () =>
+        handler.getDefaultAllocationProxy(setDefaultAllocationProxy, setLoadingDefaultAllocation, true),
     },
     {
       title: 'Validation Reward Proxy',
       content: validationRewardProxy + ' Q',
       btnTitle: 'Allocate',
       btnIcon: 'cube-outline',
+      loading: loadingValidationReward,
       btnType: BTN_TYPES.validationRewardAllocation,
       loadingSpinner: <LoadingSpinner size="sm" className="mr-2" />,
-      handleButton: () => onAllocate(BTN_TYPES.validationRewardAllocation),
+      handleButton: () => handler.getValidationRewardProxy(setValidationRewardProxy, setLoadingValidationReward, true),
     },
     {
       title: 'Root Node Reward Proxy',
@@ -138,8 +105,9 @@ function TokenomicsBlock () {
       btnIcon: 'cube-outline',
       btnType: BTN_TYPES.rootNodeAllocation,
       brakeLine: true,
+      loading: loadingRootNodeReward,
       loadingSpinner: <LoadingSpinner size="sm" className="mr-2" />,
-      handleButton: () => onAllocate(BTN_TYPES.rootNodeAllocation),
+      handleButton: () => handler.getRootNodeRewardProxy(setRootNodeRewardProxy, setLoadingRootNodeReward, true),
     },
     {
       title: 'Q Token Holder Reward Pool',
@@ -153,13 +121,14 @@ function TokenomicsBlock () {
     },
     {
       title: 'Time since Q Token holder reward update',
-      content: timeSinceQHolderRewardUpdate,
+      content: timeSinceQHolderRewardUpdate || '0 day(s) 0 hours 0 minutes',
       btnIcon: 'cached',
       iconFontSize: '20px',
       btnType: BTN_TYPES.timeSinceHolder,
       brakeLine: true,
+      loading: isUpdateCompoundRate,
       loadingSpinner: <LoadingSpinner size="sm" className="m-1" />,
-      handleButton: () => onRefresh(),
+      handleButton: () => dispatch(getUpdateCompoundRate(userAddress)),
     },
     {
       title: 'Q System Reserve',
@@ -186,10 +155,10 @@ function TokenomicsBlock () {
             <div>
               {item?.btnType && (
                 <Button
-                  disabled={getIsLoading(item?.btnType)}
-                  icon={!getIsLoading(item?.btnType) && item.btnIcon}
+                  disabled={item.loading}
+                  icon={!item.loading && item.btnIcon}
                   title={
-                    getIsLoading(item?.btnType)
+                    item.loading
                       ? (
                         <>
                           {item.loadingSpinner}
