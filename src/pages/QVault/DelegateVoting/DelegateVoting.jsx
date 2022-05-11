@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'components/Base/Buttons/Button';
-import CardBlock from 'components/Base/CardBlock';
 import CustomBlock from 'components/Base/CustomBlock';
 import FormInput from 'components/Base/Form/FormInput';
 
@@ -57,19 +56,24 @@ function DelegateVoting () {
           ? (
             <>
               <h5>Delegation info</h5>
-              <h4>{`This delegation info is currently pending. It can be finalized after ${remainDate(
-                time
-              )}`}</h4>
+              <h4>{`This delegation info is currently pending. It can be finalized after ${remainDate(time)}`}</h4>
             </>
           )
           : (
-            <CardBlock
-              title="Confirm announced voting agent"
-              firstContent="This delegation info is currently pending. Need to confirm."
-              iconFontSize="20px"
-              btnTitle="Confirm"
-              btnHandler={handleDelegate}
-            />
+            <div className="card_block">
+              <div>
+                <h5>Confirm announced voting agent</h5>
+                <p>This delegation info is currently pending. Need to confirm.</p>
+              </div>
+              <div>
+                <Button
+                  icon="chart-pie"
+                  iconFontSize="20px"
+                  title="Confirm"
+                  handleButton={handleDelegate}
+                />
+              </div>
+            </div>
           )}
       <div className="card__line" />
       <h3>Announce new voting agent</h3>
@@ -78,7 +82,7 @@ function DelegateVoting () {
         <FormInput
           ref={register({
             required: 'Please, fill the field',
-            validate: (address) => (isAddress(address) ? true : 'Incorrect address')
+            validate: (address) => (isAddress(address) ? true : 'Incorrect address'),
           })}
           name="address"
           placeholder="0x000"

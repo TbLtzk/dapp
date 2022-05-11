@@ -5,6 +5,8 @@ import Button from 'components/Base/Buttons/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 
+import useInterval from 'hooks/useInterval';
+
 import Handler from './handler';
 
 import { getQVBalance, getUpdateCompoundRate } from 'store/q-vault/action-creators';
@@ -70,103 +72,100 @@ function TokenomicsBlock () {
     handler.getValidationRewardProxy(setValidationRewardProxy, () => {}, false);
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeSinceQHolderRewardUpdate(remainDateTimeSince(timeSinceUnixTimestamp));
-    }, 60000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [timeSinceUnixTimestamp]);
-
-  const onAllocate = (type) => {
-    switch (type) {
-      case BTN_TYPES.defaultAllocation:
-        handler.getDefaultAllocationProxy(setDefaultAllocationProxy, setLoadingDefaultAllocation, true);
-        break;
-      case BTN_TYPES.validationRewardAllocation:
-        handler.getValidationRewardProxy(setValidationRewardProxy, setLoadingRootNodeReward, true);
-        break;
-      case BTN_TYPES.rootNodeAllocation:
-        handler.getRootNodeRewardProxy(setRootNodeRewardProxy, setLoadingValidationReward, true);
-        break;
-    }
-  };
-
-  const onRefresh = () => {
-    dispatch(getUpdateCompoundRate(userAddress));
-  };
-
-  const getIsLoading = (type) => {
-    switch (type) {
-      case BTN_TYPES.defaultAllocation:
-        return loadingDefaultAllocation;
-      case BTN_TYPES.validationRewardAllocation:
-        return loadingRootNodeReward;
-      case BTN_TYPES.rootNodeAllocation:
-        return loadingValidationReward;
-      case BTN_TYPES.timeSinceHolder:
-        return isUpdateCompoundRate;
-      default:
-        return false;
-    }
-  };
+  useInterval(() => {
+    setTimeSinceQHolderRewardUpdate(remainDateTimeSince(timeSinceUnixTimestamp));
+  }, 60000);
 
   const tokenimicsInfo = [
     {
+      id: 'default-allocation',
       title: 'Default Allocation Proxy',
       content: defaultAllocationProxy + ' Q',
       btnTitle: 'Allocate',
       btnType: BTN_TYPES.defaultAllocation,
       btnIcon: 'cube-outline',
-      loadingSpinner: <LoadingSpinner size="sm" className="mr-2" />,
-      handleButton: () => onAllocate(BTN_TYPES.defaultAllocation),
+      loading: loadingDefaultAllocation,
+      loadingSpinner: <LoadingSpinner
+        size="sm"
+        className="mr-2"
+        type="light"
+      />,
+      handleButton: () =>
+        handler.getDefaultAllocationProxy(setDefaultAllocationProxy, setLoadingDefaultAllocation, true),
     },
     {
+      id: 'validation-proxy',
       title: 'Validation Reward Proxy',
       content: validationRewardProxy + ' Q',
       btnTitle: 'Allocate',
       btnIcon: 'cube-outline',
+      loading: loadingValidationReward,
       btnType: BTN_TYPES.validationRewardAllocation,
-      loadingSpinner: <LoadingSpinner size="sm" className="mr-2" />,
-      handleButton: () => onAllocate(BTN_TYPES.validationRewardAllocation),
+      loadingSpinner: <LoadingSpinner
+        size="sm"
+        className="mr-2"
+        type="light"
+      />,
+      handleButton: () => handler.getValidationRewardProxy(setValidationRewardProxy, setLoadingValidationReward, true),
     },
     {
+      id: 'root-proxy',
+
       title: 'Root Node Reward Proxy',
       content: rootNodeRewardProxy + ' Q',
       btnTitle: 'Allocate',
       btnIcon: 'cube-outline',
       btnType: BTN_TYPES.rootNodeAllocation,
       brakeLine: true,
-      loadingSpinner: <LoadingSpinner size="sm" className="mr-2" />,
-      handleButton: () => onAllocate(BTN_TYPES.rootNodeAllocation),
+      loading: loadingRootNodeReward,
+      loadingSpinner: <LoadingSpinner
+        size="sm"
+        className="mr-2"
+        type="light"
+      />,
+      handleButton: () => handler.getRootNodeRewardProxy(setRootNodeRewardProxy, setLoadingRootNodeReward, true),
     },
     {
+      id: 'reward-pool',
+
       title: 'Q Token Holder Reward Pool',
       content: fN(balanceDetails.qHolderRewardPool) + ' Q',
       btnTitle: null,
     },
     {
+      id: 'reward-rate',
+
       title: 'Q Token Holder Reward Rate (p.a.)',
       content: fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate)) + ' %',
       btnTitle: null,
     },
     {
+      id: 'reward-update',
+
       title: 'Time since Q Token holder reward update',
-      content: timeSinceQHolderRewardUpdate,
+      content: timeSinceQHolderRewardUpdate || '0 day(s) 0 hours 0 minutes',
       btnIcon: 'cached',
-      iconFontSize: '20px',
+      iconFontSize: '23px',
       btnType: BTN_TYPES.timeSinceHolder,
       brakeLine: true,
-      loadingSpinner: <LoadingSpinner size="sm" className="m-1" />,
-      handleButton: () => onRefresh(),
+      loading: isUpdateCompoundRate,
+      loadingSpinner: <LoadingSpinner
+        size="sm"
+        className="m-1"
+        type="light"
+      />,
+      handleButton: () => dispatch(getUpdateCompoundRate(userAddress)),
     },
     {
+      id: 'system-reserve',
+
       title: 'Q System Reserve',
       content: reserveBalance + ' Q',
       btnTitle: null,
     },
     {
+      id: 'reward-pools',
+
       title: 'Validation Reward Pools',
       content: rewardPoolsBalance + ' Q',
       btnTitle: null,
@@ -177,7 +176,7 @@ function TokenomicsBlock () {
     <CustomBlock>
       <h1>Tokenomics</h1>
       {tokenimicsInfo.map((item) => (
-        <Fragment key={item.title.replace(' ', '-')}>
+        <Fragment key={item.id}>
           <div className="card_block">
             <div>
               <h5>{item.title}</h5>
@@ -186,10 +185,10 @@ function TokenomicsBlock () {
             <div>
               {item?.btnType && (
                 <Button
-                  disabled={getIsLoading(item?.btnType)}
-                  icon={!getIsLoading(item?.btnType) && item.btnIcon}
+                  disabled={item.loading}
+                  icon={!item.loading && item.btnIcon}
                   title={
-                    getIsLoading(item?.btnType)
+                    item.loading
                       ? (
                         <>
                           {item.loadingSpinner}

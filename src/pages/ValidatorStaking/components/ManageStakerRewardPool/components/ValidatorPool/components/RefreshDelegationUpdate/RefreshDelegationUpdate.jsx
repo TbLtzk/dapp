@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import CardBlock from 'components/Base/CardBlock';
+import Button from 'components/Base/Buttons/Button';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
+
+import useInterval from 'hooks/useInterval';
 
 import { userAddressMetamask } from 'store/user-inf/selectors';
 import { setVRPUpdateValidatorsCompoundRate } from 'store/validation-reward-pools/action-creators';
@@ -16,35 +18,43 @@ function RefreshDelegationUpdate () {
   const userAddress = useSelector(userAddressMetamask);
   const lastUpdateCompoundRate = useSelector(lastUpdateOfCompoundRate);
   const loadingUpdateCompoundRate = useSelector(loadingUpdateOfCompoundRate);
+
   const [timeDelegationUpdate, setTimeDelegationUpdate] = useState(0);
-  const title = 'Time Since Last Refresh of User Delegations';
 
   useEffect(() => {
     setTimeDelegationUpdate(remainDateTimeSince(lastUpdateCompoundRate));
   }, [lastUpdateCompoundRate]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeDelegationUpdate(remainDateTimeSince(lastUpdateCompoundRate));
-    }, 60000);
-    return () =>
-      clearInterval(interval);
-  }, [timeDelegationUpdate]);
+  useInterval(() => {
+    setTimeDelegationUpdate(remainDateTimeSince(lastUpdateCompoundRate));
+  }, 30000);
 
   const btnHandler = () => {
     dispatch(setVRPUpdateValidatorsCompoundRate(userAddress));
   };
 
   return (
-    <CardBlock
-      title={title}
-      firstContent={timeDelegationUpdate}
-      btnTitle={loadingUpdateCompoundRate ? <LoadingSpinner /> : ''}
-      btnHandler={btnHandler}
-      btnDisabled={loadingUpdateCompoundRate}
-      btnIcon={loadingUpdateCompoundRate ? '' : 'cached'}
-      iconFontSize="20px"
-    />
+    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div>
+        <h5>Time Since Last Refresh of User Delegations</h5>
+        <p>{timeDelegationUpdate || '0 day(s) 0 hours 0 minutes'}</p>
+      </div>
+      <div>
+        <Button
+          disabled={loadingUpdateCompoundRate}
+          icon={loadingUpdateCompoundRate ? null : 'cached'}
+          title={loadingUpdateCompoundRate
+            ? <LoadingSpinner
+              size="sm"
+              className="m-1"
+              type="light"
+            />
+            : null}
+          handleButton={btnHandler}
+          iconFontSize="23px"
+        />
+      </div>
+    </div>
   );
 }
 

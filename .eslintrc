@@ -36,10 +36,12 @@
     "no-console": ["warn", {
       "allow": ["warn", "error"]
     }],
+    "padded-blocks": "warn",
     "no-trailing-spaces": "warn",
     "object-curly-spacing": "warn",
     "no-multiple-empty-lines": ["warn", { "max": 1, "maxEOF": 0 }],
     "eol-last": "warn",
+    "multiline-ternary":"warn",
     "no-case-declarations": "off",
     "indent": ["warn", 2, {
       "SwitchCase": 1,

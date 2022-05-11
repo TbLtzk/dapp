@@ -36,11 +36,11 @@ function VoterStatus () {
 
   const status = useMemo(() => {
     const status = [
-      { title: 'Root node', isTrue: isRootNode },
+      { title: 'Root Node', isTrue: isRootNode },
       { title: 'Validator', isTrue: isValidator },
-      { title: 'Q token holder', isTrue: Boolean(Number(isQTokenHolder)) },
-      { title: 'DeFi risk expert', isTrue: isEPDRMembership },
-      { title: 'Fees & Incentive expert', isTrue: isEPQFIMembership },
+      { title: 'Q Token Holder', isTrue: Boolean(Number(isQTokenHolder)) },
+      { title: 'DeFi Risk Expert', isTrue: isEPDRMembership },
+      { title: 'Fees & Incentive Expert', isTrue: isEPQFIMembership },
       { title: 'Q Root Node Selection Expert', isTrue: isEPRSMembership }
     ];
     const statuses = status.filter((value) => value.isTrue);
