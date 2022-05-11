@@ -45,7 +45,7 @@ export const errorHandler = (error, field, min = 0, max = 100) => {
 
   switch (error[field].type) {
     case 'required':
-      return 'Field is required!';
+      return 'Please, fill the field';
     case 'min':
       return `Value must be more than ${min}`;
     case 'max':
@@ -173,16 +173,16 @@ export const unitRegex = /^[1-9]+[0-9]*$/;
 export function validatePattern (value, type) {
   switch (type) {
     case ParameterType.ADDRESS: {
-      return isAddress(value) ? true : 'Address not valid';
+      return isAddress(value) ? true : 'Invalid address';
     }
     case ParameterType.BOOL: {
-      return booleanValues.includes(value) ? true : 'Boolean not valid';
+      return booleanValues.includes(value) ? true : 'Invalid boolean value';
     }
     case ParameterType.STRING: {
-      return value.match(stringRegex) && value.length <= 70 ? true : 'String not valid';
+      return value.match(stringRegex) && value.length <= 70 ? true : 'Invalid string value';
     }
     case ParameterType.UINT: {
-      return value.match(unitRegex) && value.length <= 70 ? true : 'Unit not valid';
+      return value.match(unitRegex) && value.length <= 70 ? true : 'Invalid uint value';
     }
   }
 }

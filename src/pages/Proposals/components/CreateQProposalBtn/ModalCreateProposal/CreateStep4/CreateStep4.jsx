@@ -1,8 +1,6 @@
 import React, { Fragment } from 'react';
 import { useSelector } from 'react-redux';
 
-import { warning } from '../CreateStep3/constants';
-
 import { formObject, newParameterSelector } from 'store/voting/proposals/selectors';
 
 import { transformToParams } from 'contracts/helpers/parameters-helper';
@@ -32,7 +30,12 @@ function CreateStep4 () {
       <p className="text-capitalize">
         {formData['change-constitution-parameter']}
       </p>
-      <p style={{ color: '#FF8550' }}>{newParameter ? warning : null}</p>
+      <p style={{ color: '#FF8550' }}>
+        {newParameter
+          ? 'Warning: This proposal will be about creating and adding a NEW parameter. Please check combination of expert panel, type and key if you want to change an existing parameter instead.'
+          : null
+        }
+      </p>
       {transformToParams(formData).map((item, index) => (
         <Fragment key={index + 'param'}>
           <h4>Parameter #{index + 1}</h4>

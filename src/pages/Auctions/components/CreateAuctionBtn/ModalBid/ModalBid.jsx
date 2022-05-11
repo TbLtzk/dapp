@@ -18,7 +18,7 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 import { getStableCoinInstance } from 'contracts/contract-instance';
 import { switchContract } from 'contracts/helpers/auctions-helpers/auction-service-helper';
 
-import { fields } from 'constants/fieldsNaming';
+import { fieldTypes } from 'constants/fieldTypes';
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 
 function ModalBid ({ modalShow, onHide, activeTab, inf }) {
@@ -77,7 +77,7 @@ function ModalBid ({ modalShow, onHide, activeTab, inf }) {
   }, [activeTab, stepCounter, register, errors, stepLimit, dispatch, inf, watch, allowance, setApproveButton]);
 
   useEffect(() => {
-    Object.values(fields).forEach((value) => {
+    Object.values(fieldTypes).forEach((value) => {
       if (formData[value]) {
         setValue(value, formData[value]);
       }

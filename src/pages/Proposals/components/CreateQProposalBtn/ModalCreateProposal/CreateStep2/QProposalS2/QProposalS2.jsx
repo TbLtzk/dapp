@@ -8,6 +8,7 @@ import { setCreatedStepsLimit } from 'store/voting/proposals/action-creators';
 import { formObject } from 'store/voting/proposals/selectors';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
+import { fieldTypes } from 'constants/fieldTypes';
 
 function QProposalS2 ({ register, errors }) {
   const formData = useSelector(formObject);
@@ -41,19 +42,19 @@ function QProposalS2 ({ register, errors }) {
             handleChange={() => {}}
           />
           <FormInput
-            refType="hash"
+            refType={fieldTypes.hash}
             name="hash"
             placeholder="Hash"
             label="Please provide the new constitution Hash"
-            valid={errors.hash?.message}
+            error={errors.hash?.message}
             register={register}
           />
           <FormInput
-            refType="external-link"
+            refType={fieldTypes.externalLink}
             name="external-link"
             placeholder="External Link"
             label="Provide a reference link to external source"
-            valid={errors['external-link']?.message}
+            error={errors['external-link']?.message}
             register={register}
           />
           <h2>Does Your Proposal include a Change of a Constitution Parameter?</h2>
@@ -79,11 +80,11 @@ function QProposalS2 ({ register, errors }) {
           </h2>
           <h4>Provide a reference link to external source</h4>
           <FormInput
-            refType="external-link"
+            refType={fieldTypes.externalLink}
             name="external-link"
             placeholder="External Link"
             label="Provide a reference link to external source"
-            valid={errors['external-link']?.message}
+            error={errors['external-link']?.message}
             register={register}
           />
         </div>

@@ -141,15 +141,14 @@ function ManageValidatorBalance () {
         <div className="account-status__form-input">
           <FormInput
             ref={register({
-              required: 'Field is required!',
+              required: 'Please, fill the field',
               min: 0,
             })}
-            color={true}
             name="amount"
             type="number"
-            lbl="Q"
+            prefix="Q"
             placeholder="0.00"
-            valid={errorHandler(errors, 'amount')}
+            error={errorHandler(errors, 'amount')}
           />
         </div>
         <div className="account-status__form-actions">

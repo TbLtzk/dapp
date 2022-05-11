@@ -77,13 +77,11 @@ function DelegateVoting () {
       <div className="card__one-line-simple-form">
         <FormInput
           ref={register({
-            required: 'Field is required!',
+            required: 'Please, fill the field',
             validate: (address) => (isAddress(address) ? true : 'Incorrect address')
           })}
-          color={true}
           name="address"
           placeholder="0x000"
-          type="text"
           valid={errors?.address?.message}
         />
         <Button

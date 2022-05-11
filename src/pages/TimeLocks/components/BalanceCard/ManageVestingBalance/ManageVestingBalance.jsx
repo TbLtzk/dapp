@@ -24,15 +24,15 @@ function ManageVestingBalance () {
       <h4>Amount</h4>
       <FormInput
         ref={register({
-          required: 'Field is required!',
+          required: 'Please, fill the field',
           pattern: /[0-9]/i
         })}
-        lbl={'Q'}
+        prefix="Q"
         min={0}
         name="amountQ"
         type="number"
         placeholder="0.0"
-        valid={errors.amountQ?.message}
+        error={errors.amountQ?.message}
       />
       <Button
         position="relative"

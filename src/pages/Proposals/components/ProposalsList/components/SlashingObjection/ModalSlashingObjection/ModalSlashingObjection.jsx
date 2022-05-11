@@ -18,7 +18,7 @@ import {
 } from 'store/voting/slashing-proposals/action-creators';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-import { fields } from 'constants/fieldsNaming';
+import { fieldTypes } from 'constants/fieldTypes';
 import { slashingTypes } from 'constants/slashingTypes';
 
 function ModalSlashingObjection ({ modalShow, onHide, activeTab, contract, proposalId }) {
@@ -28,15 +28,14 @@ function ModalSlashingObjection ({ modalShow, onHide, activeTab, contract, propo
   const stepLimit = useSelector(createdStepsLimit);
   const stepCounter = useSelector(stepCounterModal);
 
-  const contractName =
-        contract === CONTRACTS_NAMES.validatorsSlashingVoting
-          ? CONTRACTS_NAMES.validatorsSlashingEscrow
-          : CONTRACTS_NAMES.rootNodesSlashingEscrow;
+  const contractName = contract === CONTRACTS_NAMES.validatorsSlashingVoting
+    ? CONTRACTS_NAMES.validatorsSlashingEscrow
+    : CONTRACTS_NAMES.rootNodesSlashingEscrow;
 
   const { register, errors, handleSubmit, setValue } = useForm({ mode: 'onChange' });
 
   useEffect(() => {
-    Object.values(fields).forEach((value) => {
+    Object.values(fieldTypes).forEach((value) => {
       if (formData[value]) {
         setValue(value, formData[value]);
       }
