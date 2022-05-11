@@ -6,6 +6,7 @@ import FormInput from 'components/Base/Form/FormInput';
 
 import { symbol } from 'store/stable-coin/selectors';
 
+import { fieldTypes } from 'constants/fieldTypes';
 import { AUCTIONS_TYPES } from 'constants/statuses';
 import { BN } from 'func/useful';
 
@@ -47,10 +48,10 @@ function CreateStep1 ({ activeTab, register, errors, raisingBid, watch, allowanc
           {symbol}
         </h4>
         <FormInput
-          refType="bid"
+          refType={fieldTypes.bid}
           name="bid"
           placeholder="Bid"
-          valid={errors.bid?.message}
+          error={errors.bid?.message}
           register={register}
         />
       </>

@@ -1,147 +1,122 @@
-import React, { forwardRef, useCallback, useState } from 'react';
+import React, { forwardRef, useCallback } from 'react';
 import { Form } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
 import ErrorInputMessage from 'components/Base/ErrorInputMessage';
 import { InputWrapper } from 'components/Base/Form/FormInput/styles';
 
-import { theme } from 'store/theme/selectors';
 import { loadTypeSelector } from 'store/user-inf/selectors';
 
-import { fields } from 'constants/fieldsNaming';
+import { fieldTypes } from 'constants/fieldTypes';
 import { from1to100Regex, hashRegex, linkRegex, numberRegex, vaultID } from 'constants/regex';
 import { LOAD_TYPES } from 'constants/statuses';
 import { isAddress } from 'func/useful';
 
 const FormInput = forwardRef(({
   refType,
+  type = 'text',
+  name,
+  value,
+  label,
+  placeholder,
+  error,
+  disabled,
+  prefix,
+  min,
+  invertedColors,
   register,
   setValue,
-  name,
-  type = 'text',
-  placeholder,
-  valid,
   onClick = () => {},
-  align,
-  onChange,
-  value,
-  disabled,
-  min,
-  color,
+  onChange = () => {},
   onMaxClick = null,
-  modal,
-  lbl,
-  label,
-  controlId = 'formBasicEmail',
 }, ref) => {
-  const [isFocus, setIsFocus] = useState('');
-
-  const currentTheme = useSelector(theme);
   const loadType = useSelector(loadTypeSelector);
-  const isDisabled = loadType !== LOAD_TYPES.loaded ? '1' : disabled ? '1' : '';
-  const isValid = valid ? 'error' : '';
+  const isDisabled = disabled || loadType !== LOAD_TYPES.loaded;
 
   const getTypeRef = useCallback(() => {
     switch (refType) {
-      case fields.externalLink: {
+      case fieldTypes.externalLink:
         return register({
-          required: 'Field is required!',
-          validate: (link) => (link.match(linkRegex) ? true : 'Link not valid')
+          required: 'Please, fill the field',
+          validate: (link) => (link.match(linkRegex) ? true : 'Invalid link URL')
         });
-      }
-      case fields.externalLinkOptional: {
+      case fieldTypes.externalLinkOptional:
         return register({
-          validate: (link) => (!link || link.match(linkRegex) ? true : 'Link not valid')
+          validate: (link) => (!link || link.match(linkRegex) ? true : 'Invalid link URL')
         });
-      }
-      case fields.address: {
+      case fieldTypes.address:
         return register({
-          required: 'Field is required!',
-          validate: (address) => (isAddress(address) ? true : 'Address not valid')
+          required: 'Please, fill the field',
+          validate: (address) => (isAddress(address) ? true : 'Invalid address')
         });
-      }
-      case fields.vault: {
+      case fieldTypes.vaultId:
         return register({
-          required: 'Field is required!',
-          validate: (value) => (value.match(vaultID) ? true : 'Vault ID not valid')
+          required: 'Please, fill the field',
+          validate: (value) => (value.match(vaultID) ? true : 'Invalid vault ID')
         });
-      }
-      case fields.bid: {
+      case fieldTypes.bid:
         return register({
-          required: 'Field is required!',
-          validate: (value) => (value.match(numberRegex) ? true : 'Bid not valid')
+          required: 'Please, fill the field',
+          validate: (value) => (value.match(numberRegex) ? true : 'Invalid bid')
         });
-      }
-      case fields.hash: {
+      case fieldTypes.hash:
         return register({
-          required: 'Field is required!',
-          validate: (hash) => (hash.match(hashRegex) ? true : 'Hash not valid')
+          required: 'Please, fill the field',
+          validate: (hash) => (hash.match(hashRegex) ? true : 'Invalid hash')
         });
-      }
-      case fields.value: {
+      case fieldTypes.percentValue:
         return register({
-          required: 'Field is required!',
+          required: 'Please, fill the field',
           validate: (value) => {
             if (Number(value) > 100) {
-              setValue(fields.value, '100');
+              setValue(fieldTypes.percentValue, '100');
               return true;
             } else {
-              return value.match(from1to100Regex) ? true : 'Percentage value not valid';
+              return value.match(from1to100Regex) ? true : 'Invalid percentage value';
             }
           }
         });
-      }
-      default: {
+      default:
         return register({
-          required: 'Field is required!',
+          required: 'Please, fill the field',
           validate: (value) => (value.length >= 70 ? 'Maximum length reached' : true)
         });
-      }
     }
   }, []);
 
   return (
-    <>
+    <InputWrapper
+      $prefix={prefix}
+      $error={error}
+      $disabled={isDisabled}
+      $invertedColors={invertedColors}
+    >
       {label ? <h4>{label}</h4> : null}
-      <InputWrapper
-        controlId={controlId}
-        align={align}
-        type={isValid}
-        palette={currentTheme}
-        color={color ? 1 : 0}
-        lbl={lbl}
-        isfocus={isValid === 'error' ? '' : isFocus}
-        isdisabled={isDisabled}
-        modal={modal ? 1 : 0}
-      >
-        <div>
-          {lbl ? <div className="input_lbl">{lbl}</div> : null}
-          <Form.Control
-            ref={ref || getTypeRef()}
-            min={min}
-            type={type}
-            autoComplete="off"
-            placeholder={placeholder}
-            name={name}
-            value={value}
-            disabled={isDisabled}
-            onFocus={() => setIsFocus('1')}
-            onBlur={() => setIsFocus('')}
-            onClick={onClick}
-            onKeyPress={(e) => e.key === 'Enter' && e.preventDefault()}
-            onChange={onChange}
-          />
-          {onMaxClick
-            ? (
-              <div className="input_maxbtn" onClick={onMaxClick}>
-                Max
-              </div>
-            )
-            : null}
-        </div>
-        <ErrorInputMessage message={valid} />
-      </InputWrapper>
-    </>
+      <div>
+        {prefix ? <div className="input__prefix">{prefix}</div> : null}
+        <Form.Control
+          ref={ref || getTypeRef()}
+          type={type}
+          autoComplete="off"
+          placeholder={placeholder}
+          name={name}
+          value={value}
+          min={min}
+          disabled={isDisabled}
+          onClick={onClick}
+          onKeyPress={(e) => e.key === 'Enter' && e.preventDefault()}
+          onChange={onChange}
+        />
+        {onMaxClick
+          ? (
+            <button className="input__max" onClick={onMaxClick}>
+              Max
+            </button>
+          )
+          : null}
+      </div>
+      <ErrorInputMessage message={error} />
+    </InputWrapper>
   );
 });
 

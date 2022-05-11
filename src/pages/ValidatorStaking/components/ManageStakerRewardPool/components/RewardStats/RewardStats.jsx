@@ -84,10 +84,9 @@ function RewardStats () {
           })}
           name="amount"
           type="number"
-          lbl="%"
+          prefix="%"
           placeholder="0"
-          palette="dark"
-          valid={errorHandler(errors, 'amount')}
+          error={errorHandler(errors, 'amount')}
         />
         <Button
           type="outline"

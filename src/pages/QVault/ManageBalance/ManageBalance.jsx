@@ -119,19 +119,18 @@ function ManageBalance ({ maxQVaultWithdrawAmount }) {
       <div className="card__one-line-simple-form">
         <FormInput
           ref={registerDeposit({
-            required: 'Field is required!',
+            required: 'Please, fill the field',
             pattern: {
               value: /[0-9.]/gim,
               message: 'Invalid amount',
             },
           })}
-          lbl="Q"
+          prefix="Q"
           min={0}
-          color={true}
           name="amount"
           type="number"
           placeholder="0.0"
-          valid={errorsDeposit.amount?.message}
+          error={errorsDeposit.amount?.message}
           onMaxClick={handleDepositMax}
           onChange={handleChangeDepositAmount}
         />
@@ -146,19 +145,18 @@ function ManageBalance ({ maxQVaultWithdrawAmount }) {
       <div className="card__one-line-simple-form">
         <FormInput
           ref={registerWithdraw({
-            required: 'Field is required!',
+            required: 'Please, fill the field',
             pattern: {
               value: /[0-9.]/gim,
               message: 'Invalid amount',
             },
           })}
           min={0}
-          lbl="Q"
+          prefix="Q"
           name="amount"
-          color={true}
           type="number"
           placeholder="0.0"
-          valid={errorsWithdraw.amount?.message}
+          error={errorsWithdraw.amount?.message}
           onMaxClick={handleWithdrawMax}
         />
         <Button
@@ -172,31 +170,28 @@ function ManageBalance ({ maxQVaultWithdrawAmount }) {
       <div className="card__send-form">
         <FormInput
           ref={registerSend({
-            required: 'Field is required!',
+            required: 'Please, fill the field',
             validate: (address) => (isAddress(address) ? true : 'Incorrect address'),
           })}
           lbl={<i className={'mdi mdi-wallet-outline btn-icon'} />}
           name="address"
-          type="text"
           placeholder="0x000"
-          color={true}
-          valid={errorsSend.address?.message}
+          error={errorsSend.address?.message}
         />
         <FormInput
           ref={registerSend({
-            required: 'Field is required!',
+            required: 'Please, fill the field',
             pattern: {
               value: /[0-9.]/gim,
               message: 'Invalid amount',
             },
           })}
-          color={true}
           min={0}
           name="amount"
           type="number"
-          lbl="Q"
+          prefix="Q"
           placeholder="0.00"
-          valid={errorsSend.amount?.message}
+          error={errorsSend.amount?.message}
           onMaxClick={handleSendMax}
         />
         <div className="card__one-line-form-2-2-1-action">

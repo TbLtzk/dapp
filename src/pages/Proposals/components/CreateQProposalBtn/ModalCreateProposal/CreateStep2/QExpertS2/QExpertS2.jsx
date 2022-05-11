@@ -11,6 +11,7 @@ import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
 import { formObject } from 'store/voting/proposals/selectors';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
+import { fieldTypes } from 'constants/fieldTypes';
 import { fillArray, parameterKeyValidation, validatePattern } from 'func/useful';
 
 function QExpertS2 ({ activeTab, register, errors, watch }) {
@@ -56,19 +57,19 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
               handleChange={changePanel}
             />
             <FormInput
-              refType="address"
+              refType={fieldTypes.address}
               name="address"
               placeholder="Address"
               label="Provide Candidate Q Address"
-              valid={errors.address?.message}
+              error={errors.address?.message}
               register={register}
             />
             <FormInput
-              refType="external-link"
+              refType={fieldTypes.externalLink}
               name="external-link"
               placeholder="External Link"
               label="Provide a reference link to external source"
-              valid={errors['external-link']?.message}
+              error={errors['external-link']?.message}
               register={register}
             />
           </>
@@ -91,19 +92,19 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
               handleChange={changePanel}
             />
             <FormInput
-              refType="address"
+              refType={fieldTypes.address}
               name="address"
               placeholder="Address"
               label="Provide Candidate Q Address"
-              valid={errors.address?.message}
+              error={errors.address?.message}
               register={register}
             />
             <FormInput
-              refType="external-link"
+              refType={fieldTypes.externalLink}
               name="external-link"
               placeholder="External Link"
               label="Provide a reference link to external source"
-              valid={errors['external-link']?.message}
+              error={errors['external-link']?.message}
               register={register}
             />
           </>
@@ -157,27 +158,23 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                   />
                   <FormInput
                     ref={register({
-                      required: 'Field is required!',
+                      required: 'Please, fill the field',
                       validate: (key) => parameterKeyValidation(key)
                     })}
                     name={`parameter-key[${index}]`}
-                    type="string"
-                    palette="dark"
-                    placeholder={['Key']}
-                    valid={errors['parameter-key']?.[index]?.message}
+                    placeholder="Key"
+                    error={errors['parameter-key']?.[index]?.message}
                   />
                 </div>
                 <FormInput
                   ref={register({
-                    required: 'Field is required!',
+                    required: 'Please, fill the field',
                     validate: (value) =>
                       validatePattern(value, watch(`parameter-type[${index}]`))
                   })}
                   name={`parameter-value[${index}]`}
-                  type="string"
-                  palette="dark"
                   placeholder="Value"
-                  valid={errors['parameter-value']?.[index]?.message}
+                  error={errors['parameter-value']?.[index]?.message}
                 />
 
                 <CurrentParameterValue
@@ -200,11 +197,11 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                 : null}
             </div>
             <FormInput
-              refType="external-link"
+              refType={fieldTypes.externalLink}
               name="external-link"
               placeholder="External Link"
               label="Provide a reference link to external source"
-              valid={errors['external-link']?.message}
+              error={errors['external-link']?.message}
               register={register}
             />
           </>

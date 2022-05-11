@@ -34,14 +34,12 @@ function PurgeSlashing () {
       <h1>Purge Slashing</h1>
       <FormInput
         ref={register({
-          required: 'Field is required!',
+          required: 'Please, fill the field',
           validate: (address) => (isAddress(address) ? true : 'Incorrect address')
         })}
-        color={true}
         name="slashingAddress"
-        type="text"
         placeholder="Candidate address"
-        valid={errors.slashingAddress?.message}
+        error={errors.slashingAddress?.message}
       />
 
       <PurgeSlashingContainer>

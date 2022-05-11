@@ -61,23 +61,20 @@ function UpdateDelegation () {
         <div key={idx + 'input_address'} className="card__one-line-form-2-2-1">
           <FormInput
             ref={register({
-              required: 'Field is required!',
+              required: 'Please, fill the field',
               validate: (address) => (isAddress(address) ? true : 'Incorrect address')
             })}
-            color={true}
             name={'address' + idx}
-            type="text"
             placeholder="0x000"
           />
           <FormInput
             ref={register({
-              required: 'Field is required!',
+              required: 'Please, fill the field',
               pattern: /[0-9]/i
             })}
-            color={true}
             name={'share' + idx}
             type="number"
-            lbl="Q"
+            prefix="Q"
             placeholder="0.00"
           />
           <div className="card__one-line-form-2-2-1-action">

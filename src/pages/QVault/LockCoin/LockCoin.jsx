@@ -62,14 +62,14 @@ function LockCoin ({ maxQVaultVotingWeight }) {
       <h4>Increase Voting Weight by</h4>
       <div className={'card__one-line-simple-form'}>
         <FormInput
-          ref={registerLock({ required: 'Field is required!' })}
+          ref={registerLock({ required: 'Please, fill the field' })}
           color={true}
           min={0}
-          lbl={'Q'}
+          prefix="Q"
           name="amountQ"
           type="number"
           placeholder="0.0"
-          valid={errorLock.amountQ?.message}
+          error={errorLock.amountQ?.message}
           onMaxClick={handleLockMax}
         />
         <Button
@@ -83,14 +83,13 @@ function LockCoin ({ maxQVaultVotingWeight }) {
       <h4>Reduce Voting Weight by</h4>
       <div className={'card__one-line-simple-form'}>
         <FormInput
-          ref={registerUnlock({ required: 'Field is required!' })}
-          color={true}
+          ref={registerUnlock({ required: 'Please, fill the field' })}
           min={0}
           name="amountQ"
           type="number"
-          lbl={'Q'}
+          prefix="Q"
           placeholder="0.0"
-          valid={errorUnlock.amountQ?.message}
+          error={errorUnlock.amountQ?.message}
           onMaxClick={handleUnlockMax}
         />
         <Button

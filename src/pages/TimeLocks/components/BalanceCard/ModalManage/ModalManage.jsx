@@ -105,13 +105,13 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
           </CalendarWraper>
           <h4>Amount</h4>
           <FormInput
-            ref={register({ required: 'Field is required!', pattern: /[0-9]/i })}
-            lbl="Q"
+            ref={register({ required: 'Please, fill the field', pattern: /[0-9]/i })}
+            prefix="Q"
             min={0}
             name="amountQ"
             type="number"
             placeholder="0.0"
-            valid={errors.amountQ?.message}
+            error={errors.amountQ?.message}
           />
           <div>
             <Button

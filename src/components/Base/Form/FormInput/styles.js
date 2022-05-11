@@ -5,9 +5,9 @@ import styled, { css } from 'styled-components';
 const inputMinHeight = '10px';
 
 export const InputWrapper = styled(Form.Group)`
+  position: relative;
   margin-bottom: 0;
   width: 100%;
-  position: relative;
 
   div {
     display: flex;
@@ -17,128 +17,54 @@ export const InputWrapper = styled(Form.Group)`
     font-size: 14px;
     line-height: 20px;
     padding: 6px 11px;
-    background: ${(p) => {
-    if (p.palette === 'dark') {
-      return p.color ? p.theme.colors.oxfordBlueTint1 : 'transparent';
-    } else {
-      return p.theme.colors.blue;
-    }
-  }};
-    border: 1px solid
-      ${(p) => {
-    if (p.palette === 'dark') {
-      return p.type === 'error' ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint2;
-    } else {
-      return p.type === 'error' ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint4;
-    }
-  }};
     box-sizing: border-box;
-
-    border-radius: ${(p) => {
-    if (p.lbl) {
-      return '0 3px 3px 0';
-    } else {
-      return '3px';
-    }
-  }};
+    text-align: 'left';
     min-height: ${inputMinHeight};
-    text-align: ${(p) => (p.align ? p.align : 'left')};
-    color: ${(p) => {
-    if (p.palette === 'dark') {
-      return p.type === 'error' ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint2;
-    } else {
-      return p.type === 'error' ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint4;
-    }
-  }};
+    border-radius: ${(p) => p.$prefix ? '0 3px 3px 0' : '3px'};
+    background: ${getBackgroundColor};
+    border: 1px solid ${getInputColor};
+    color: ${getInputColor};
 
     &:focus,
     .form-control:focus {
       box-shadow: none !important;
       outline: none;
-      background: ${(p) => {
-    if (p.palette === 'dark') {
-      return p.color ? p.theme.colors.oxfordBlueTint1 : 'transparent';
-    } else {
-      return p.theme.colors.blue;
-    }
-  }};
-      border-color: ${(p) => {
-    if (p.palette === 'dark') {
-      return p.theme.colors.oxfordBlueTint2;
-    } else {
-      return p.theme.colors.oxfordBlueTint4;
-    }
-  }};
+      background: ${getBackgroundColor};
+      border-color: ${getMainColor};
       color: ${(p) => {
-    if (p.palette === 'dark') {
-      return p.color ? p.theme.colors.white : p.theme.colors.oxfordBlueTint1;
-    } else {
-      return p.theme.colors.white;
-    }
-  }};
+        return p.theme.palette === 'dark' && p.$invertedColors
+          ? p.theme.colors.oxfordBlueTint1
+          : p.theme.colors.white;
+      }};
     }
 
     &:disabled {
       cursor: not-allowed;
-      background: ${(p) => {
-    if (p.palette === 'dark') {
-      return 'transparent';
-    } else {
-      return p.theme.colors.blue;
-    }
-  }};
-      border: 1px solid
-        ${(p) => {
-    if (p.palette === 'dark') {
-      return p.theme.colors.oxfordBlueTint2;
-    } else {
-      return p.theme.colors.oxfordBlueTint2;
-    }
-  }};
+      background: ${(p) => p.theme.palette === 'dark' ? 'transparent' : p.theme.colors.blue};
+      border: 1px solid ${(p) => p.theme.colors.oxfordBlueTint2};
       color: ${(p) => {
-    if (p.palette === 'dark') {
-      return p.theme.colors.oxfordBlueTint5;
-    } else {
-      return p.theme.colors.oxfordBlueTint2;
-    }
-  }};
+        return p.theme.palette === 'dark'
+          ? p.theme.colors.oxfordBlueTint5
+          : p.theme.colors.oxfordBlueTint2;
+      }};
     }
   }
 
-  .input_maxbtn {
+  .input__max {
+    position: absolute;
     right: 8px;
     top: 4px;
-    position: absolute;
     font-size: 14px;
     line-height: 24px;
     cursor: pointer;
-    ${(p) => {
-    if (p.isdisabled) {
-      return css`
-          cursor: default;
-          color: ${p.theme.colors.oxfordBlueTint2};
-        `;
-    } else {
-      if (p.palette === 'dark') {
-        return css`
-            color: ${p.theme.colors.oxfordBlueTint4};
-            &:hover {
-              color: ${p.modal ? p.theme.colors.oxfordBlueTint1 : p.theme.colors.neonGreen};
-            }
-          `;
-      } else {
-        return css`
-            color: ${p.theme.colors.oxfordBlueTint2};
-            &:hover {
-              color: ${p.theme.colors.oxfordBlueTint6};
-            }
-          `;
-      }
-    }
-  }}
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    ${getMaxButtonStyle}
   }
 
-  .input_lbl {
+  .input__prefix {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -148,31 +74,69 @@ export const InputWrapper = styled(Form.Group)`
     border-radius: 3px 0 0 3px;
     padding: 6px 10px;
     white-space: nowrap;
+    background-color: ${(p) => {
+      return p.$disabled
+        ? p.theme.colors.oxfordBlueTint2
+        : getInputColor(p);
+    }};
     color: ${(p) => {
-    if (p.palette === 'dark') {
-      if (p.isdisabled || p.isfocus) {
-        return p.theme.colors.oxfordBlueTint1;
-      }
-      return p.theme.colors.white;
-    }
-    return p.theme.colors.oxfordBlueTint1;
-  }};
-    background: ${(p) => {
-    if (p.isfocus) {
-      if (p.palette === 'dark') {
-        return p.theme.colors.neonGreen;
-      } else {
-        return p.theme.colors.white;
-      }
-    } else if (p.isdisabled) {
-      return p.theme.colors.oxfordBlueTint2;
-    } else {
-      if (p.palette === 'dark') {
-        return p.type === 'error' ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint2;
-      } else {
-        return p.type === 'error' ? p.theme.colors.validationError : p.theme.colors.oxfordBlueTint4;
-      }
-    }
-  }};
+      return p.theme.palette === 'dark' && !p.$disabled
+        ? p.theme.colors.white
+        : p.theme.colors.oxfordBlueTint1;
+    }};
   }
+
+  ${(p) => !p.$error && css`
+    div:focus-within .input__prefix {
+      color: ${p.theme.colors.oxfordBlueTint1};
+      background-color: ${
+        p.theme.palette === 'dark'
+          ? p.theme.colors.neonGreen
+          : p.theme.colors.white
+      };
+    }
+  `}
 `;
+
+function getBackgroundColor (p) {
+  return p.theme.palette === 'dark'
+    ? 'transparent'
+    : p.theme.colors.blue;
+}
+
+function getMainColor (p) {
+  return p.theme.palette === 'dark'
+    ? p.theme.colors.oxfordBlueTint2
+    : p.theme.colors.oxfordBlueTint4;
+}
+
+function getInputColor (p) {
+  return p.$error
+    ? p.theme.colors.validationError
+    : getMainColor(p);
+}
+
+function getMaxButtonStyle (p) {
+  if (p.$disabled) {
+    return css`
+      cursor: default;
+      color: ${p.theme.colors.oxfordBlueTint2};
+    `;
+  }
+
+  if (p.theme.palette === 'dark') {
+    return css`
+      color: ${p.theme.colors.oxfordBlueTint4};
+      &:hover {
+        color: ${p.$invertedColors ? p.theme.colors.oxfordBlueTint1 : p.theme.colors.neonGreen};
+      }
+    `;
+  }
+
+  return css`
+    color: ${p.theme.colors.oxfordBlueTint2};
+    &:hover {
+      color: ${p.theme.colors.oxfordBlueTint6};
+    }
+  `;
+}

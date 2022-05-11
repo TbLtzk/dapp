@@ -6,6 +6,7 @@ import RadioBtnGroup from 'components/Custom/ModalActions/RadioBtnGroup';
 
 import { formObject } from 'store/modal-handler/selectors';
 
+import { fieldTypes } from 'constants/fieldTypes';
 import { slashingTypes } from 'constants/slashingTypes';
 
 function CreateStep1 ({ activeTab, register, errors, setValue }) {
@@ -17,11 +18,11 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
         <div>
           <h2>The target of a slashing proposal has the right tp object the slashing.</h2>
           <FormInput
-            refType="external-link-optional"
+            refType={fieldTypes.externalLinkOptional}
             name="external-link"
             placeholder="External Link"
             label="Please provide a reference link to external source giving details of your objection"
-            valid={errors['external-link']?.message}
+            error={errors['external-link']?.message}
             register={register}
           />
         </div>
@@ -31,11 +32,11 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
         <div>
           <h2>As the slashing objection proposer please provide a valid reason.</h2>
           <FormInput
-            refType="proposer-remark"
+            refType={fieldTypes.proposerRemark}
             name="proposer-remark"
             placeholder="Proposer remark"
             label="Please provide a remark about the objection"
-            valid={errors['proposer-remark']?.message}
+            error={errors['proposer-remark']?.message}
             register={register}
           />
         </div>
@@ -45,19 +46,19 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
         <div>
           <h2>Members of the Root Node Panel check the objection and propose decision to confirm.</h2>
           <FormInput
-            refType="external-link"
+            refType={fieldTypes.externalLink}
             name="external-link"
             placeholder="External Link"
             label="Please provide a reference link to external source giving details of your decision"
-            valid={errors['external-link']?.message}
+            error={errors['external-link']?.message}
             register={register}
           />
           <FormInput
-            refType="%-value"
+            refType={fieldTypes.percentValue}
             name="%-value"
             placeholder="%-Value"
             label="Please provide the adjusted percentage for slashing"
-            valid={errors['%-value']?.message}
+            error={errors['%-value']?.message}
             register={register}
             setValue={setValue}
           />
