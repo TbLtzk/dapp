@@ -4,11 +4,11 @@ import { useSelector } from 'react-redux';
 import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import PageWrap from 'components/Base/PageWrap';
 
-import DelegateStakingPower from './DelegateStakingPower';
-import DelegateVoting from './DelegateVoting';
-import LockCoin from './LockCoin';
-import ManageBalance from './ManageBalance';
-import VaultOverview from './VaultOverview';
+import DelegateStakingPower from './components/DelegateStakingPower';
+import DelegateVoting from './components/DelegateVoting';
+import LockCoin from './components/LockCoin';
+import ManageBalance from './components/ManageBalance';
+import VaultOverview from './components/VaultOverview';
 
 import { mode } from 'store/dashboard-mode/selectors';
 
