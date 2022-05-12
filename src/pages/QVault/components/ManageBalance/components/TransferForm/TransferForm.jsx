@@ -26,9 +26,7 @@ function TransferForm () {
   const [maxAmount, setMaxAmount] = useState('0');
   const form = useForm({
     initialValues: { amount: '' },
-    validators: {
-      amount: [required, amount(maxAmount)],
-    },
+    validators: { amount: [required, amount(maxAmount)] },
     onSubmit: (form) => {
       dispatch(setDepositCall(address, form.amount));
     }

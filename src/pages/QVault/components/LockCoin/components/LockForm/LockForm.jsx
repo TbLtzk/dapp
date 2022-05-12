@@ -25,9 +25,7 @@ function LockForm () {
   const maxAmount = subtractAmount(userQVaultBalance, userVotingWeight);
   const form = useForm({
     initialValues: { amount: '' },
-    validators: {
-      amount: [required, amount(maxAmount)],
-    },
+    validators: { amount: [required, amount(maxAmount)] },
     onSubmit: (form) => {
       dispatch(setLockAmount(userAddress, form.amount));
     }

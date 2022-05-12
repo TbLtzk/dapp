@@ -25,9 +25,7 @@ function WithdrawForm () {
   const maxAmount = subtractAmount(userQVaultBalance, qVaultLockedAmount);
   const form = useForm({
     initialValues: { amount: '' },
-    validators: {
-      amount: [required, amount(maxAmount)],
-    },
+    validators: { amount: [required, amount(maxAmount)] },
     onSubmit: (form) => {
       dispatch(setWithdrawCall(address, form.amount));
     }

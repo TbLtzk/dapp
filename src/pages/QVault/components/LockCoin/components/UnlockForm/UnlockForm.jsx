@@ -22,9 +22,7 @@ function UnlockForm () {
 
   const form = useForm({
     initialValues: { amount: '' },
-    validators: {
-      amount: [required, amount(userVotingWeight)],
-    },
+    validators: { amount: [required, amount(userVotingWeight)] },
     onSubmit: (form) => {
       dispatch(setUnlockAmount(userAddress, form.amount));
     }
