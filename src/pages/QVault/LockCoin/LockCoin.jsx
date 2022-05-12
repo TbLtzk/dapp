@@ -16,8 +16,10 @@ function LockCoin () {
       <h5 style={{ marginBottom: '15px' }}>
         Participate in Q Governance with your Locked Amount
       </h5>
-      <LockForm />
-      <UnlockForm />
+      <div style={{ display: 'grid', gap: '15px' }}>
+        <LockForm />
+        <UnlockForm />
+      </div>
       <div className="card__actions">
         <Button
           alwaysEnabled

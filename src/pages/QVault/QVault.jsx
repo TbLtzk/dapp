@@ -8,7 +8,7 @@ import DelegateStakingPower from './DelegateStakingPower';
 import DelegateVoting from './DelegateVoting';
 import LockCoin from './LockCoin';
 import ManageBalance from './ManageBalance';
-import Panel from './Panel';
+import VaultOverview from './VaultOverview';
 
 import { mode } from 'store/dashboard-mode/selectors';
 
@@ -21,11 +21,9 @@ function QVault () {
         <ManageBalance />
         <LockCoin />
         <DelegateVoting />
-        {appMode === MODE.advanced ? <DelegateStakingPower /> : null}
+        {appMode === MODE.advanced && <DelegateStakingPower />}
       </div>
-      <div>
-        <Panel />
-      </div>
+      <VaultOverview />
     </PageWrap>
   );
 }
