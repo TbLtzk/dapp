@@ -36,12 +36,12 @@ function LockForm () {
 
   return (
     <form noValidate onSubmit={form.submit}>
+      <h4>Increase Voting Weight by</h4>
       <div className="card__one-line-simple-form">
         <Input
           {...form.fields.amount}
           max={maxAmount}
           type="number"
-          label="Increase Voting Weight by"
           prefix="Q"
           placeholder="0.0"
         />

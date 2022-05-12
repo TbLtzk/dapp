@@ -94,7 +94,7 @@ export const Block = styled.div`
     display: grid;
     grid-template-columns: minmax(80px, 1fr) minmax(76px, 90px);
     grid-column-gap: 14px;
-    align-items: flex-end;
+    align-items: flex-start;
     width: 100%;
     margin-bottom: 15px;
   }
@@ -111,7 +111,7 @@ export const Block = styled.div`
     display: grid;
     grid-template-columns: minmax(80px, 2fr) minmax(80px, 2fr) minmax(70px, 90px);
     grid-column-gap: 14px;
-    align-items: flex-end;
+    align-items: flex-start;
   }
 
   .card__one-line-form-2-2-1-action {

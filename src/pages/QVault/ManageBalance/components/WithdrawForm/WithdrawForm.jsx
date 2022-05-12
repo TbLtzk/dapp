@@ -37,11 +37,11 @@ function WithdrawForm () {
 
   return (
     <form noValidate onSubmit={form.submit}>
+      <h4>Withdraw from Q Vault</h4>
       <div className="card__one-line-simple-form">
         <Input
           {...form.fields.amount}
           type="number"
-          label="Withdraw from Q Vault"
           prefix="Q"
           max={maxAmount}
           placeholder="0.0"
