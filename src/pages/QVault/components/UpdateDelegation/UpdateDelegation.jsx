@@ -18,7 +18,7 @@ function UpdateDelegation () {
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
 
-  const formEntries = useFormArray({
+  const formArray = useFormArray({
     minCount: 1,
     maxCount: 30,
     onSubmit: (forms) => {
@@ -27,7 +27,7 @@ function UpdateDelegation () {
       dispatch(setDelegateStake(address, delegatedTo, stakes));
     }
   });
-  useMetamaskReset(formTypes.qVaultDelegation, formEntries.reset);
+  useMetamaskReset(formTypes.qVaultDelegation, formArray.reset);
 
   return (
     <>
@@ -43,11 +43,11 @@ function UpdateDelegation () {
       </div>
 
       <div style={{ display: 'grid', gap: '15px' }}>
-        {formEntries.forms.map((form) => (
+        {formArray.forms.map((form) => (
           <DelegationForm
             key={form.id}
-            onAdd={formEntries.append}
-            onRemove={() => formEntries.remove(form.id)}
+            onAdd={formArray.appendForm}
+            onRemove={() => formArray.removeForm(form.id)}
             onChange={form.onChange}
           />
         ))}
@@ -58,8 +58,8 @@ function UpdateDelegation () {
           icon="cached"
           type="outline"
           title="Update Delegation"
-          disabled={!formEntries.isValid}
-          handleButton={formEntries.submit}
+          disabled={!formArray.isValid}
+          handleButton={formArray.submit}
         />
       </div>
     </>

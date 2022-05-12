@@ -7,31 +7,23 @@ function useFormArray ({
   maxCount = Infinity,
   onSubmit = () => {},
 }) {
-  const createForm = () => {
-    const id = uniqueId();
-    return {
-      id,
-      onChange: (form) => {
-        setForms((prev) => prev.map(e => {
-          return e.id === id ? { ...e, ...form } : e;
-        }));
-      }
-    };
-  };
-
-  const getInitialForms = () => {
-    if (minCount === 0) return [];
-
-    const result = [];
-    for (let i = 0; i < minCount; i++) {
-      result.push(createForm());
-    }
-
-    return result;
-  };
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [forms, setForms] = useState(getInitialForms());
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  function getInitialForms () {
+    return new Array(minCount).fill(null).map(createForm);
+  };
+
+  function createForm () {
+    const id = uniqueId();
+    const onChange = (form) => {
+      setForms((prev) => prev.map(e => {
+        return e.id === id ? { ...e, ...form } : e;
+      }));
+    };
+
+    return { id, onChange };
+  };
 
   const validate = () => {
     return forms
@@ -52,12 +44,12 @@ function useFormArray ({
     setForms(getInitialForms());
   };
 
-  const append = () => {
+  const appendForm = () => {
     if (forms.length >= maxCount) return;
     setForms((prev) => [...prev, createForm()]);
   };
 
-  const remove = (id) => {
+  const removeForm = (id) => {
     if (forms.length <= minCount) return;
     setForms((prev) => prev.filter(e => e.id !== id));
   };
@@ -73,8 +65,8 @@ function useFormArray ({
     submit: useCallback(submit, [forms]),
     reset: useCallback(reset, [forms]),
 
-    append: useCallback(append, [forms]),
-    remove: useCallback(remove, [forms]),
+    appendForm: useCallback(appendForm, [forms]),
+    removeForm: useCallback(removeForm, [forms]),
   };
 }
 
