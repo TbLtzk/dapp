@@ -22,7 +22,7 @@ function AnnounceForm () {
       dispatch(setAnnounceNewVotingAgent(form.address));
     }
   });
-  useMetamaskReset(formTypes.qVaultAnnounce, form);
+  useMetamaskReset(formTypes.qVaultAnnounce, form.reset);
 
   return (
     <form noValidate onSubmit={form.submit}>

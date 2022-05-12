@@ -30,7 +30,7 @@ function LockForm () {
       dispatch(setLockAmount(userAddress, form.amount));
     }
   });
-  useMetamaskReset(formTypes.qVaultLock, form);
+  useMetamaskReset(formTypes.qVaultLock, form.reset);
 
   return (
     <form noValidate onSubmit={form.submit}>

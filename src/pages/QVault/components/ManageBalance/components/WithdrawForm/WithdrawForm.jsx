@@ -31,7 +31,7 @@ function WithdrawForm () {
     }
   });
 
-  useMetamaskReset(formTypes.qVaultWithdraw, form);
+  useMetamaskReset(formTypes.qVaultWithdraw, form.reset);
 
   return (
     <form noValidate onSubmit={form.submit}>

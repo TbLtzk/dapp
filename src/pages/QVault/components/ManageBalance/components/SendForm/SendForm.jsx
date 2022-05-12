@@ -32,7 +32,7 @@ function SendForm () {
     }
   });
 
-  useMetamaskReset(formTypes.qVaultSend, form);
+  useMetamaskReset(formTypes.qVaultSend, form.reset);
 
   return (
     <form noValidate onSubmit={form.submit}>

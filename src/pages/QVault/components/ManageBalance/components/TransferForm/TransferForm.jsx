@@ -31,7 +31,7 @@ function TransferForm () {
       dispatch(setDepositCall(address, form.amount));
     }
   });
-  useMetamaskReset(formTypes.qVaultDeposit, form);
+  useMetamaskReset(formTypes.qVaultDeposit, form.reset);
 
   const updateMaxAmount = async () => {
     const depositAmount = await getQVaultDepositAmount(address, balance);

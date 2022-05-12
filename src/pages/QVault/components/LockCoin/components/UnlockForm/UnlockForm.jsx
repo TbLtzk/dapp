@@ -27,7 +27,7 @@ function UnlockForm () {
       dispatch(setUnlockAmount(userAddress, form.amount));
     }
   });
-  useMetamaskReset(formTypes.qVaultUnlock, form);
+  useMetamaskReset(formTypes.qVaultUnlock, form.reset);
 
   return (
     <form noValidate onSubmit={form.submit}>
