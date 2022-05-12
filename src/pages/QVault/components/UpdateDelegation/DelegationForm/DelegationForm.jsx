@@ -5,25 +5,24 @@ import Input from 'components/Base/Form/Input';
 
 import useForm from 'hooks/useForm';
 
-import { address, amount, required } from 'func/validators';
+import { address, required } from 'func/validators';
 
 function DelegationForm ({
-  isSubmitting,
   onAdd,
   onRemove,
-  onSubmit
+  onChange
 }) {
   const form = useForm({
     initialValues: { address: '', amount: '' },
     validators: {
       address: [required, address],
-      amount: [required, amount(1000)],
+      amount: [required],
     },
   });
 
   useEffect(() => {
-    if (isSubmitting) onSubmit(form);
-  }, [isSubmitting]);
+    onChange(form);
+  }, [form.values, onChange]);
 
   return (
     <form

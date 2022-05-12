@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { uniqueId } from 'lodash';
 
 import Button from 'components/Base/Buttons/Button';
 
+import useFormArray from 'hooks/useFormArray';
 import useMetamaskReset from 'hooks/useMetamaskReset';
 
 import DelegationForm from './DelegationForm';
@@ -19,44 +18,16 @@ function UpdateDelegation () {
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
 
-  const [forms, setForms] = useState([uniqueId()]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useMetamaskReset(formTypes.qVaultDelegation, () => {
-    setForms([uniqueId()]);
+  const formEntries = useFormArray({
+    minCount: 1,
+    maxCount: 30,
+    onSubmit: (forms) => {
+      const delegatedTo = forms.map((f) => f.address);
+      const stakes = forms.map((f) => toWei(f.amount));
+      dispatch(setDelegateStake(address, delegatedTo, stakes));
+    }
   });
-
-  function addForm () {
-    if (forms.length >= 30) return;
-    setForms(prev => [...prev, uniqueId()]);
-  }
-
-  function removeForm (id) {
-    if (forms.length === 1) return;
-    setForms(prev => prev.filter(form => form !== id));
-  }
-
-  const handleSubmit = () => {
-    setIsSubmitting(true);
-  };
-
-  function trasformFormData (formData) {
-    const delegatedTo = [];
-    const stakes = [];
-    Object.values(formData).forEach((item) =>
-      item.startsWith('0x') ? delegatedTo.push(item) : stakes.push(toWei(Number(item)))
-    );
-    return [delegatedTo, stakes];
-  }
-
-  function updateDelegations (formData) {
-    const [delegatedTo, stakes] = trasformFormData(formData);
-    dispatch(setDelegateStake(address, delegatedTo, stakes));
-  }
-
-  const handleFormSubmit = (id, form) => {
-    console.log(id, form);
-  };
+  useMetamaskReset(formTypes.qVaultDelegation, formEntries.reset);
 
   return (
     <>
@@ -72,13 +43,12 @@ function UpdateDelegation () {
       </div>
 
       <div style={{ display: 'grid', gap: '15px' }}>
-        {forms.map(id => (
+        {formEntries.forms.map((form) => (
           <DelegationForm
-            key={id}
-            isSubmitting={isSubmitting}
-            onAdd={addForm}
-            onRemove={() => removeForm(id)}
-            onSubmit={form => handleFormSubmit(id, form)}
+            key={form.id}
+            onAdd={formEntries.append}
+            onRemove={() => formEntries.remove(form.id)}
+            onChange={form.onChange}
           />
         ))}
       </div>
@@ -88,7 +58,8 @@ function UpdateDelegation () {
           icon="cached"
           type="outline"
           title="Update Delegation"
-          handleButton={handleSubmit}
+          disabled={!formEntries.isValid}
+          handleButton={formEntries.submit}
         />
       </div>
     </>
