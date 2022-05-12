@@ -145,54 +145,60 @@ function SlashingObjection ({ contract, proposalId, objData }) {
           <Tooltip shown={true} additionalInfo={INFO.castObjection}>
             <Button
               disabled={!objection}
-              title="Cast Objection"
               style={{ margin: '10px', width: '175px' }}
               onClick={() => onShowModal(slashingTypes.castObjection)}
-            />
+            >
+              Cast Objection
+            </Button>
           </Tooltip>
 
           <Tooltip shown={true} additionalInfo={INFO.confirmApeal}>
             <Button
-              title="Confirm appeal"
               style={{ margin: '10px', width: '175px' }}
               onClick={() => onShowModal(slashingTypes.proposerRemark)}
-            />
+            >
+              Confirm appeal
+            </Button>
           </Tooltip>
 
           <Tooltip shown={true} additionalInfo={proposeDecisionButton}>
             <Button
               disabled={!isRootNode}
-              title="Propose Decision"
               style={{ margin: '10px', width: '175px' }}
               onClick={() => onShowModal(slashingTypes.proposeDecision)}
-            />
+            >
+              Propose Decision
+            </Button>
           </Tooltip>
         </div>
         <div>
           <Tooltip shown={true} additionalInfo={INFO.recallDecision}>
             <Button
               disabled={!recallDecision}
-              title="Recall Decision"
               style={{ margin: '10px', width: '175px' }}
               onClick={() => onEscrowAction(escrowTypes.recall)}
-            />
+            >
+              Recall Decision
+            </Button>
           </Tooltip>
           <Tooltip shown={true} additionalInfo={voteToConfirmDecitionButton}>
             <Button
               disabled={!isRootNode}
-              title="Vote to confirm Decision"
               style={{ margin: '10px', width: '175px' }}
               onClick={() => onEscrowAction(escrowTypes.confirm)}
-            />
+            >
+              Vote to confirm Decision
+            </Button>
           </Tooltip>
 
           <Tooltip shown={true} additionalInfo={executeDecisionButton}>
             <Button
               disabled={!isRootNode}
-              title="Execute Decision"
               style={{ margin: '10px', width: '175px' }}
               onClick={() => onEscrowAction(escrowTypes.execute)}
-            />
+            >
+              Execute Decision
+            </Button>
           </Tooltip>
         </div>
       </div>

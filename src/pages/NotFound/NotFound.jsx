@@ -12,10 +12,11 @@ function NotFound () {
       <h5>Page does not exist</h5>
       <Button
         alwaysEnabled
-        title="Home"
-        icon="home"
         onClick={() => history.push('/')}
-      />
+      >
+        <i className="mdi mdi-home" />
+        <span>Home</span>
+      </Button>
     </NotFoundContainer>
   );
 }

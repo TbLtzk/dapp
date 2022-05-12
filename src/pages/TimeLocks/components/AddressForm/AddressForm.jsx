@@ -36,12 +36,15 @@ function AddressForm ({ userAddress, setAddressRefresh }) {
         />
         <div>
           <Button
-            icon="cached"
             disabled={Boolean(errors?.address?.message)}
-            iconFontSize="20px"
             style={{ width: '50px' }}
             onClick={handleSubmit(setAddressRefresh)}
-          />
+          >
+            <i
+              className="mdi mdi-cached"
+              style={{ fontSize: '20px' }}
+            />
+          </Button>
         </div>
       </WrapContainer>
     </CustomBlock>

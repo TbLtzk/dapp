@@ -27,11 +27,9 @@ function Dashboard () {
   const parametersButton = advancedMode
     ? (
       <Link to="/q-parameters">
-        <Button
-          alwaysEnabled
-          look="white"
-          title="Q Parameters"
-        />
+        <Button alwaysEnabled look="white">
+          Q Parameters
+        </Button>
       </Link>
     )
     : null;

@@ -27,11 +27,10 @@ function DelegationRewards () {
         <p>{fN(outstandingDelegationRewardsValue) + ' Q'}</p>
       </div>
       <div>
-        <Button
-          icon="chart-pie"
-          title={'Claim Delegation Reward'}
-          onClick={handleClaim}
-        />
+        <Button onClick={handleClaim}>
+          <i className="mdi mdi-chart-pie" />
+          <span>Claim Delegation Reward</span>
+        </Button>
       </div>
     </div>
   );

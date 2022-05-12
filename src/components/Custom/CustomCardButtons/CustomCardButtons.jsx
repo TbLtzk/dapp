@@ -31,11 +31,10 @@ function CustomCardButtons ({ eventKey, shareText, open, setOpen = () => {}, one
       >
         <CopyToClipboard text={shareText} onCopy={handleCopy}>
           <div>
-            <Button
-              alwaysEnabled
-              title="Share"
-              icon="share"
-            />
+            <Button alwaysEnabled>
+              <i className="mdi mdi-share" />
+              <span>Share</span>
+            </Button>
           </div>
         </CopyToClipboard>
       </Tooltip>
@@ -44,11 +43,14 @@ function CustomCardButtons ({ eventKey, shareText, open, setOpen = () => {}, one
         : (
           <Button
             alwaysEnabled
-            iconFontSize="16px"
-            icon={`chevron-${open ? 'up' : 'down'}`}
             style={{ margin: '0 0 0 20px' }}
             onClick={handleOpen}
-          />
+          >
+            <i
+              className={`mdi mdi-chevron-${open ? 'up' : 'down'}`}
+              style={{ fontSize: '16px' }}
+            />
+          </Button>
         )}
     </>
   );

@@ -48,10 +48,11 @@ function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contrac
       />
       <div className="button__bottom">
         <Button
-          title="Manage"
           style={{ width: '80px' }}
           onClick={() => setModalShow(true)}
-        />
+        >
+          Manage
+        </Button>
       </div>
       <div style={{ height: '30px' }} />
     </CustomBlock>

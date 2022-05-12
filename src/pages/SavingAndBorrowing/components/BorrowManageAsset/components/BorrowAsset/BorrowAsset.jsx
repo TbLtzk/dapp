@@ -154,10 +154,11 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           onMaxClick={handleMaxBorrow}
         />
         <Button
-          title="Borrow"
           style={{ width: '100px' }}
           onClick={borrowSubmit(handleBorrow)}
-        />
+        >
+          Borrow
+        </Button>
       </div>
       <h4>Repay Borrowed Asset</h4>
       <div className="modal__one-line-form">
@@ -173,10 +174,11 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           onMaxClick={handleMaxRepay}
         />
         <Button
-          title={repayBtnTitle}
           style={{ width: '100px' }}
           onClick={repaySubmit(handleRepay)}
-        />
+        >
+          {repayBtnTitle}
+        </Button>
       </div>
 
       <h4>Deposit Collateral</h4>
@@ -193,10 +195,11 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           onMaxClick={handleMaxDeposit}
         />
         <Button
-          title={depositBtnTitle}
           style={{ width: '100px' }}
           onClick={depositSubmit(handleDeposit)}
-        />
+        >
+          {depositBtnTitle}
+        </Button>
       </div>
       <h4>Withdraw Collateral</h4>
       <div className="modal__one-line-form">
@@ -212,10 +215,11 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           onMaxClick={handleMaxWithdraw}
         />
         <Button
-          title="Withdraw"
           style={{ width: '100px' }}
           onClick={withdrawSubmit(handleWithdraw)}
-        />
+        >
+          Withdraw
+        </Button>
       </div>
     </>
   );

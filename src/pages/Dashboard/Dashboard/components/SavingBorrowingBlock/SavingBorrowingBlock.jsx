@@ -98,14 +98,7 @@ function SavingBorrowingBlock () {
       id: 'saving-time',
       title: 'QUSD Saving time since refresh of balance',
       content: timeSinceRefreshBalance || '0 day(s) 0 hours 0 minutes',
-      btnIcon: 'cached',
-      iconFontSize: '23px',
       loading: loadingTimeSinceRefreshBalance,
-      loadingSpinner: <LoadingSpinner
-        size="sm"
-        className="m-1"
-        type="light"
-      />,
       handleClick: () =>
         refreshTimeSinceRefreshBalance(
           setTimeSinceRefreshBalance,
@@ -119,14 +112,7 @@ function SavingBorrowingBlock () {
       id: 'outstanding-debt',
       title: 'QUSD - QBTC time since refresh of outstanding debt',
       content: timeSinceOutstandingDebt || '0 day(s) 0 hours 0 minutes',
-      btnIcon: 'cached',
-      iconFontSize: '23px',
       loading: loadingTimeSinceOutstandingDeb,
-      loadingSpinner: <LoadingSpinner
-        size="sm"
-        className="m-1"
-        type="light"
-      />,
       handleClick: () =>
         refreshTimeSinceOutstandingDebt(
           setTimeSinceOutstandingDebt,
@@ -152,23 +138,25 @@ function SavingBorrowingBlock () {
               {item?.handleClick && (
                 <Button
                   disabled={item.loading}
-                  icon={!item.loading && item.btnIcon}
-                  title={
-                    item.loading
-                      ? (
-                        <>
-                          {item.loadingSpinner}
-                          {item.btnTitle}
-                        </>
-                      )
-                      : (
-                        item.btnTitle
-                      )
-                  }
                   style={{ width: '100%' }}
-                  iconFontSize={item.iconFontSize}
                   onClick={item.handleClick}
-                />
+                >
+                  {item.loading
+                    ? (
+                      <LoadingSpinner
+                        size="sm"
+                        className="m-1"
+                        type="light"
+                      />
+                    )
+                    : (
+                      <i
+                        className="mdi mdi-cached"
+                        style={{ fontSize: '23px' }}
+                      />
+                    )
+                  }
+                </Button>
               )}
             </div>
           </div>

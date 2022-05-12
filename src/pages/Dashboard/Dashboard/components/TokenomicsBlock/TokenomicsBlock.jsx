@@ -110,7 +110,6 @@ function TokenomicsBlock () {
     },
     {
       id: 'root-proxy',
-
       title: 'Root Node Reward Proxy',
       content: rootNodeRewardProxy + ' Q',
       btnTitle: 'Allocate',
@@ -127,25 +126,21 @@ function TokenomicsBlock () {
     },
     {
       id: 'reward-pool',
-
       title: 'Q Token Holder Reward Pool',
       content: fN(balanceDetails.qHolderRewardPool) + ' Q',
       btnTitle: null,
     },
     {
       id: 'reward-rate',
-
       title: 'Q Token Holder Reward Rate (p.a.)',
       content: fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate)) + ' %',
       btnTitle: null,
     },
     {
       id: 'reward-update',
-
       title: 'Time since Q Token holder reward update',
       content: timeSinceQHolderRewardUpdate || '0 day(s) 0 hours 0 minutes',
       btnIcon: 'cached',
-      iconFontSize: '23px',
       btnType: BTN_TYPES.timeSinceHolder,
       brakeLine: true,
       loading: isUpdateCompoundRate,
@@ -158,7 +153,6 @@ function TokenomicsBlock () {
     },
     {
       id: 'system-reserve',
-
       title: 'Q System Reserve',
       content: reserveBalance + ' Q',
       btnTitle: null,
@@ -186,23 +180,20 @@ function TokenomicsBlock () {
               {item?.btnType && (
                 <Button
                   disabled={item.loading}
-                  icon={!item.loading && item.btnIcon}
-                  title={
-                    item.loading
-                      ? (
-                        <>
-                          {item.loadingSpinner}
-                          {item.btnTitle}
-                        </>
-                      )
-                      : (
-                        item.btnTitle
-                      )
-                  }
                   style={{ width: '100%' }}
-                  iconFontSize={item.iconFontSize}
                   onClick={item.handleClick}
-                />
+                >
+                  {item.loading
+                    ? item.loadingSpinner
+                    : (
+                      <i
+                        className={`mdi mdi-${item.btnIcon}`}
+                        style={{ fontSize: '23px' }}
+                      />
+                    )
+                  }
+                  <span>{item.btnTitle}</span>
+                </Button>
               )}
             </div>
           </div>

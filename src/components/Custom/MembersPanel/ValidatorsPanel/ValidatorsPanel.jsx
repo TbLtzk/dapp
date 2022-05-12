@@ -81,25 +81,19 @@ function ValidatorsPanel ({ buttons, tableType }) {
             <Button
               alwaysEnabled
               look="white"
-              icon="arrow-right"
-              title="See more details"
-              onClick={() =>
-                history.push({
-                  pathname: '/validator-staking',
-                })
-              }
-            />
+              onClick={() => history.push({ pathname: '/validator-staking' })}
+            >
+              <i className="mdi mdi-arrow-right" />
+              <span>See more details</span>
+            </Button>
             <Button
               alwaysEnabled
               look="white"
-              icon="arrow-right"
-              title="Monitoring"
-              onClick={() =>
-                history.push({
-                  pathname: '/monitoring',
-                })
-              }
-            />
+              onClick={() => history.push({ pathname: '/monitoring' })}
+            >
+              <i className="mdi mdi-arrow-right" />
+              <span>Monitoring</span>
+            </Button>
           </div>
         );
       case buttonsType.qVault:
@@ -108,14 +102,11 @@ function ValidatorsPanel ({ buttons, tableType }) {
             <Button
               alwaysEnabled
               look="white"
-              icon="arrow-right"
-              title="Go to Q Vault"
-              onClick={() =>
-                history.push({
-                  pathname: '/q-vault',
-                })
-              }
-            />
+              onClick={() => history.push({ pathname: '/q-vault' })}
+            >
+              <i className="mdi mdi-arrow-right" />
+              <span>Go to Q Vault</span>
+            </Button>
           </div>
         );
       case buttonsType.none:

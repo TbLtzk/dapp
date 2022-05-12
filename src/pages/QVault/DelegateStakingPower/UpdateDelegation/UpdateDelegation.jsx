@@ -79,24 +79,25 @@ function UpdateDelegation () {
           />
           <div className="card__one-line-form-2-2-1-action">
             <Button
-              icon="plus"
               style={{ width: '37px' }}
               onClick={addInputField}
-            />
+            >
+              <i className="mdi mdi-plus" />
+            </Button>
             <Button
-              icon="minus"
               style={{ width: '37px' }}
               onClick={removeInputField}
-            />
+            >
+              <i className="mdi mdi-minus" />
+            </Button>
           </div>
         </div>
       ))}
       <div className="card__actions" style={{ marginBottom: '10px' }}>
-        <Button
-          icon="cached"
-          title="Update Delegation"
-          onClick={handleSubmit(updateDelegations)}
-        />
+        <Button onClick={handleSubmit(updateDelegations)}>
+          <i className="mdi mdi-cached" />
+          <span>Update Delegation</span>
+        </Button>
       </div>
     </>
   );

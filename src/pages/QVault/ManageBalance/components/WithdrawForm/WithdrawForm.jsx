@@ -48,10 +48,11 @@ function WithdrawForm () {
         />
         <Button
           type="submit"
-          title="Withdraw"
           style={{ width: '90px' }}
           disabled={!form.isValid}
-        />
+        >
+          Withdraw
+        </Button>
       </div>
     </form>
   );

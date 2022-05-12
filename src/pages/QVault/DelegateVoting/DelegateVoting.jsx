@@ -66,12 +66,13 @@ function DelegateVoting () {
                 <p>This delegation info is currently pending. Need to confirm.</p>
               </div>
               <div>
-                <Button
-                  icon="chart-pie"
-                  iconFontSize="20px"
-                  title="Confirm"
-                  onClick={handleDelegate}
-                />
+                <Button onClick={handleDelegate}>
+                  <i
+                    className="mdi mdi-chart-pie"
+                    style={{ fontSize: '20px' }}
+                  />
+                  <span>Confirm</span>
+                </Button>
               </div>
             </div>
           )}
@@ -89,10 +90,11 @@ function DelegateVoting () {
           valid={errors?.address?.message}
         />
         <Button
-          title="Announce"
           style={{ width: '90px' }}
           onClick={handleSubmit(handleAnnounce)}
-        />
+        >
+          Announce
+        </Button>
       </div>
       <h4>This will immediately reduce the voting weight of your voting agent for new voting</h4>
     </CustomBlock>

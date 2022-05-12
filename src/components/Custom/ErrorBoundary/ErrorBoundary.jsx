@@ -35,11 +35,10 @@ class ErrorBoundary extends React.Component {
       return (
         <WrapContainer direction="column">
           <p>Something went wrong</p>
-          <Button
-            title="Home"
-            icon="home"
-            onClick={() => history.push('/')}
-          />
+          <Button onClick={() => history.push('/')}>
+            <i className="mdi mdi-home" />
+            <span>Home</span>
+          </Button>
         </WrapContainer>
       );
     } else {

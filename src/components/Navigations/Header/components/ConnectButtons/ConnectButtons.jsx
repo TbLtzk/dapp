@@ -42,15 +42,6 @@ async function requestLogin () {
   }
 }
 
-const ConnectButton = ({ onClick, title }) => (
-  <Button
-    alwaysEnabled
-    title={title}
-    style={{ margin: '0 0 0 20px' }}
-    onClick={onClick}
-  />
-);
-
 function ConnectButtons () {
   const loadType = useSelector(loadTypeSelector);
   const network = useSelector(networkSelector);
@@ -72,20 +63,32 @@ function ConnectButtons () {
     case LOAD_TYPES.notLogged:
       return (
         <>
-          <ConnectButton
-            title="Connect to Q Mainnet"
+          <Button
+            alwaysEnabled
+            style={{ margin: '0 0 0 20px' }}
             onClick={() => handleRequest(chainIds.mainnet, networkParameters.mainnet)}
-          />
-          <ConnectButton
-            title="Connect to Q Testnet"
+          >
+            Connect to Q Mainnet
+          </Button>
+          <Button
+            alwaysEnabled
+            style={{ margin: '0 0 0 20px' }}
             onClick={() => handleRequest(chainIds.testnet, networkParameters.testnet)}
-          />
+          >
+            Connect to Q Testnet
+          </Button>
         </>
       );
     default:
       return (
         <>
-          <ConnectButton title="Install Metamask" onClick={handleModalShow} />
+          <Button
+            alwaysEnabled
+            style={{ margin: '0 0 0 20px' }}
+            onClick={handleModalShow}
+          >
+            Install Metamask
+          </Button>
           <InstallMetamask modalShow={modalShow} setModalShow={handleModalShow} />
         </>
       );

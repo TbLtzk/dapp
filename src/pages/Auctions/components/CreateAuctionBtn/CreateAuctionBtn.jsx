@@ -36,11 +36,10 @@ function CreateAuctionBtn ({ auctionsType }) {
 
   return (
     <>
-      <Button
-        icon="plus-circle-outline"
-        title={title}
-        onClick={onCreateAuction}
-      />
+      <Button onClick={onCreateAuction}>
+        <i className="mdi mdi-plus-circle-outline" />
+        <span>{title}</span>
+      </Button>
       <ModalCreateAuction
         activeTab={auctionsType}
         modalShow={modalShow}

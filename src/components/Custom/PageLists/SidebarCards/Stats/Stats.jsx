@@ -19,10 +19,11 @@ function Stats ({ statsData, type }) {
       <div className="card__actions">
         <Button
           alwaysEnabled
-          title="Manage vault"
           look="white"
           onClick={() => history.push('q-vault')}
-        />
+        >
+          Manage vault
+        </Button>
       </div>
     </CustomBlock>
   );

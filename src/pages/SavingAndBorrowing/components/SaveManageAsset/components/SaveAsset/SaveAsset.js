@@ -129,10 +129,11 @@ function SaveAsset ({
           onMaxClick={handleMaxDeposit}
         />
         <Button
-          title={depositBtnTitle}
           style={{ width: '100px' }}
           onClick={depositSubmit(handleDepositSubmit)}
-        />
+        >
+          {depositBtnTitle}
+        </Button>
       </div>
       <h4>Withdraw Saving Asset</h4>
       <div className="modal__one-line-form">
@@ -148,10 +149,11 @@ function SaveAsset ({
           onMaxClick={handleMaxWithdraw}
         />
         <Button
-          title="Withdraw"
           style={{ width: '100px' }}
           onClick={withdrawSubmit(handleWithdrawSubmit)}
-        />
+        >
+          Withdraw
+        </Button>
       </div>
     </>
   );

@@ -4,7 +4,6 @@ export const ButtonCustom = styled.button`
   position: relative;
   display: inline-flex;
   gap: 10px;
-  flex-direction: ${(p) => p.$iconRight ? 'row-reverse' : 'row'};
   align-items: center;
   justify-content: center;
   padding: 7px 11px;
@@ -31,15 +30,6 @@ export const ButtonCustom = styled.button`
   &:disabled {
     opacity: 1;
     box-shadow: none;
-  }
-
-  .btn-icon {
-    font-size: ${(p) => p.$iconFontSize || ''};
-  }
-
-  span {
-    text-overflow: ellipsis;
-    overflow: hidden;
   }
 
   ${(p) =>

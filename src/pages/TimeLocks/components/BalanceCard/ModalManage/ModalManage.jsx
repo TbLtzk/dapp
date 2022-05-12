@@ -115,24 +115,26 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
           />
           <div>
             <Button
-              title="Deposit"
               style={{
                 width: '80px',
                 right: '-380px',
                 margin: '-5px 0 10px 0'
               }}
               onClick={handleDeposit}
-            />
+            >
+              Deposit
+            </Button>
             <div className="modal-line" />
             <Button
-              title="Purge Expired Time Locks"
               style={{
                 width: '190px',
                 right: '-270px',
                 margin: '3px 0 20px 0'
               }}
               onClick={setPurge}
-            />
+            >
+              Purge Expired Time Locks
+            </Button>
           </div>
         </>
       }

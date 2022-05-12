@@ -18,18 +18,10 @@ function LockCoin () {
       <UnlockForm />
       <div className="card__actions">
         <Link to="/q-governance">
-          <Button
-            alwaysEnabled
-            look="transparent"
-            title={
-              <>
-                <span style={{ marginRight: '5px' }}>
-                  Go to Governance
-                </span>
-                <i className="mdi mdi-arrow-right" />
-              </>
-            }
-          />
+          <Button alwaysEnabled look="transparent">
+            <span>Go to Governance</span>
+            <i className="mdi mdi-arrow-right" />
+          </Button>
         </Link>
       </div>
     </CustomBlock>

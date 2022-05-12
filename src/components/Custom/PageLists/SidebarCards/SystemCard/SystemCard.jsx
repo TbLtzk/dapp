@@ -29,11 +29,12 @@ function SystemCard ({ data, title }) {
         ? (
           <div className="card__actions">
             <Button
-              title={!loadingPerfNetting ? 'Perform Netting' : <LoadingSpinner />}
               look="white"
               style={{ width: '140px' }}
               onClick={onHandlePerformNetting}
-            />
+            >
+              {!loadingPerfNetting ? 'Perform Netting' : <LoadingSpinner />}
+            </Button>
           </div>
         )
         : null}

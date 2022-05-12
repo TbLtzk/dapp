@@ -64,11 +64,10 @@ function CreateQProposalBtn ({ activeTab }) {
 
   return (
     <>
-      <Button
-        icon="plus-circle-outline"
-        title={`Create ${activeTabTitle}`}
-        onClick={onCreateProposal}
-      />
+      <Button onClick={onCreateProposal}>
+        <i className="mdi mdi-plus-circle-outline" />
+        <span>{`Create ${activeTabTitle}`}</span>
+      </Button>
       <ModalCreateProposal
         activeTab={activeTab}
         activeTabTitle={activeTabTitle}

@@ -68,9 +68,10 @@ function ManageStakerRewardPool () {
         <Button
           disabled={!compoundRateKeeperExists}
           look="white"
-          title="Manage Staker Reward Pool"
           onClick={handleModalOpen}
-        />
+        >
+          Manage Staker Reward Pool
+        </Button>
       </Tooltip>
 
       <ModalWindow

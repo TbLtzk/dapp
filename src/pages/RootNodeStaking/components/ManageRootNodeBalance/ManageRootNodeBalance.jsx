@@ -114,18 +114,15 @@ function ManageRootNodeBalance () {
           />
         </div>
         <div className="account-status__form-actions">
-          <Button
-            title="Stake to Panel"
-            onClick={handleSubmit(handleStake)}
-          />
-          <Button
-            title="Announce Withdrawal"
-            onClick={handleSubmit(handleAnnounce)}
-          />
-          <Button
-            title="Withdraw from Panel"
-            onClick={handleSubmit(handleWithdraw)}
-          />
+          <Button onClick={handleSubmit(handleStake)}>
+            Stake to Panel
+          </Button>
+          <Button onClick={handleSubmit(handleAnnounce)}>
+            Announce Withdrawal
+          </Button>
+          <Button onClick={handleSubmit(handleWithdraw)}>
+            Withdraw from Panel
+          </Button>
         </div>
       </AccountStatusForm>
     </CustomBlock>

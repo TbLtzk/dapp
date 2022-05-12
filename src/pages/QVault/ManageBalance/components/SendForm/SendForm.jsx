@@ -41,7 +41,7 @@ function SendForm () {
         <Input
           {...form.fields.address}
           label="Address"
-          prefix={<i className="mdi mdi-wallet-outline btn-icon" />}
+          prefix={<i className="mdi mdi-wallet-outline" />}
           placeholder="0x000"
         />
         <Input
@@ -55,10 +55,11 @@ function SendForm () {
         <div className="card__one-line-form-2-2-1-action">
           <Button
             type="submit"
-            title="Send"
             style={{ width: '90px' }}
             disabled={!form.isValid}
-          />
+          >
+            Send
+          </Button>
         </div>
       </div>
     </form>

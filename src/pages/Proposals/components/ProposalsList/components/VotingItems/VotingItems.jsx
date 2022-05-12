@@ -140,18 +140,19 @@ function VotingItems ({ proposal }) {
     <div>
       {addCardLine ? <div className="list-card__line" /> : null}
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        {proposal.status === 'Passed' ? <Button title="Execute" onClick={onProposalExecute} /> : null}
+        {proposal.status === 'Passed' && <Button onClick={onProposalExecute}>Execute</Button>}
         {proposal.status === 'Pending' || proposal.status === 'Accepted'
           ? (
             <>
               <Tooltip disabled={!isUserCanVote.disabled} additionalInfo={isUserCanVote.info}>
                 <Button
-                  icon="checkbox-marked-outline"
                   style={{ width: '100px' }}
-                  title={approvalContracts ? 'Approve' : 'Vote'}
                   disabled={isUserCanVote.disabled}
                   onClick={approvalContracts ? handleApprove : handleVote}
-                />
+                >
+                  <i className="mdi mdi-checkbox-marked-outline" />
+                  <span>{approvalContracts ? 'Approve' : 'Vote'}</span>
+                </Button>
               </Tooltip>
               {contractsWithoutVeto || approvalContracts
                 ? null
@@ -160,12 +161,13 @@ function VotingItems ({ proposal }) {
                     <div style={{ width: '20px' }} />
                     <Tooltip disabled={!isUserCanVeto.disabled} additionalInfo={isUserCanVeto.info}>
                       <Button
-                        icon="window-close"
                         style={{ width: '100px' }}
-                        title="Veto"
                         disabled={isUserCanVeto.disabled}
                         onClick={handleVote}
-                      />
+                      >
+                        <i className="mdi mdi-window-close" />
+                        <span>Veto</span>
+                      </Button>
                     </Tooltip>
                   </>
                 )}

@@ -42,17 +42,24 @@ function RefreshDelegationUpdate () {
       <div>
         <Button
           disabled={loadingUpdateCompoundRate}
-          icon={loadingUpdateCompoundRate ? null : 'cached'}
-          title={loadingUpdateCompoundRate
-            ? <LoadingSpinner
-              size="sm"
-              className="m-1"
-              type="light"
-            />
-            : null}
-          iconFontSize="23px"
           onClick={btnHandler}
-        />
+        >
+          {loadingUpdateCompoundRate
+            ? (
+              <LoadingSpinner
+                size="sm"
+                className="m-1"
+                type="light"
+              />
+            )
+            : (
+              <i
+                className="mdi mdi-cached"
+                style={{ fontSize: '23px' }}
+              />
+            )
+          }
+        </Button>
       </div>
     </div>
   );

@@ -66,13 +66,14 @@ function AuctionsList ({ auctions, loadingAuctions }) {
               <LoadingWrap>
                 <Button
                   alwaysEnabled
-                  title="Show more"
                   style={{
                     margin: '0 0 5% 0',
                     width: '140px'
                   }}
                   onClick={handleNextAuctions}
-                />
+                >
+                  Show more
+                </Button>
               </LoadingWrap>
             )
             : null}

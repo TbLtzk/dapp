@@ -50,25 +50,26 @@ function SavingAndBorrowing () {
         <>
           {!qusdTokenAdded && (
             <Button
-              title="Add QUSD token"
               style={{ margin: '0 20px 0 0' }}
               onClick={() => handleAddToken(qusdToken)}
-            />
+            >
+              Add QUSD token
+            </Button>
           )}
           {!qbtcTokenAdded && (
             <Button
-              title="Add QBTC token"
               style={{ margin: '0 20px 0 0' }}
               onClick={() => handleAddToken(qbtcToken)}
-            />
+            >
+              Add QBTC token
+            </Button>
           )}
         </>
       )}
-      <Button
-        icon="plus-circle-outline"
-        title="Create QBTC Vault"
-        onClick={createVault}
-      />
+      <Button onClick={createVault}>
+        <i className="mdi mdi-plus-circle-outline" />
+        <span>Create QBTC Vault</span>
+      </Button>
     </>
   );
   return (

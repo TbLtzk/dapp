@@ -40,24 +40,22 @@ function ModalWindow ({
             {!backBtnTitle
               ? null
               : (
-                <Button
-                  look="white"
-                  icon="arrow-left"
-                  title={backBtnTitle}
-                  onClick={backBtnHandler}
-                />
+                <Button look="white" onClick={backBtnHandler}>
+                  <i className="mdi mdi-arrow-left" />
+                  <span>{backBtnTitle}</span>
+                </Button>
               )}
             {!continueBtnTitle
               ? null
               : (
                 <Button
                   alwaysEnabled
-                  iconRight
-                  icon={iconRight || 'arrow-right'}
                   disabled={disabled}
-                  title={continueBtnTitle}
                   onClick={continueBtnHandler}
-                />
+                >
+                  <span>{continueBtnTitle}</span>
+                  <i className={`mdi mdi-${iconRight || 'arrow-right'}`} />
+                </Button>
               )}
           </Footer>
         )}

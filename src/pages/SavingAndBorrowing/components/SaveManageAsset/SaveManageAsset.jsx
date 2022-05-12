@@ -55,12 +55,12 @@ function SaveManageAsset (props) {
   return (
     <>
       <Button
-        iconRight
-        icon="arrow-top-right"
-        title="Manage"
         look="transparent"
         onClick={handleModalOpen}
-      />
+      >
+        <span>Manage</span>
+        <i className="mdi mdi-arrow-top-right" />
+      </Button>
       <ModalWindow
         show={modalOpen}
         modalTitle={'Saving ' + depositAsset}

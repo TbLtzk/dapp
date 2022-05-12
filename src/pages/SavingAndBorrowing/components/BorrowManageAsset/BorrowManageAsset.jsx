@@ -60,13 +60,13 @@ function BorrowManageAsset ({ vault }) {
   return (
     <>
       <Button
-        iconRight
-        icon="arrow-top-right"
-        title="Manage"
         disabled={vault.isLiquidated}
         look="transparent"
         onClick={handleOpenModal}
-      />
+      >
+        <span>Manage</span>
+        <i className="mdi mdi-arrow-top-right" />
+      </Button>
 
       <ModalWindow
         show={isModalOpen}

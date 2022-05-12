@@ -122,22 +122,20 @@ function InfBlocksUp () {
             target="_blank"
             rel="noreferrer"
           >
-            <Button
-              alwaysEnabled
-              icon="download"
-              title="Download Latest"
-            />
+            <Button alwaysEnabled>
+              <i className="mdi mdi-download" />
+              <span>Download Latest</span>
+            </Button>
           </a>
           <a
             href={archiveConstitution}
             target="_blank"
             rel="noreferrer"
           >
-            <Button
-              alwaysEnabled
-              icon="archive-outline"
-              title="Check Archive"
-            />
+            <Button alwaysEnabled>
+              <i className="mdi mdi-archive-outline" />
+              <span>Check Archive</span>
+            </Button>
           </a>
         </div>
       </CustomBlock>
@@ -159,9 +157,10 @@ function InfBlocksUp () {
           <Button
             alwaysEnabled
             look="white"
-            icon="arrow-right"
-            title="Go to Governance"
-          />
+          >
+            <i className="mdi mdi-arrow-right" />
+            <span>Go to Governance</span>
+          </Button>
         </Link>
       </CustomBlock>
     </>

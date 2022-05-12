@@ -47,10 +47,11 @@ function LockForm () {
         />
         <Button
           type="submit"
-          title="Increase"
           style={{ width: '90px' }}
           disabled={!form.isValid}
-        />
+        >
+          Increase
+        </Button>
       </div>
     </form>
   );

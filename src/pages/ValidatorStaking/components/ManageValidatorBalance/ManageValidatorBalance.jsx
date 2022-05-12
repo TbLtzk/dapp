@@ -79,10 +79,9 @@ function ManageValidatorBalance () {
   const confirmValidatorButton = !isThisUserValidator
     ? (
       <div className="card__actions">
-        <Button
-          title="Join Validator Ranking"
-          onClick={confirmValidation}
-        />
+        <Button onClick={confirmValidation}>
+          Join Validator Ranking
+        </Button>
       </div>
     )
     : null;
@@ -151,18 +150,15 @@ function ManageValidatorBalance () {
           />
         </div>
         <div className="account-status__form-actions">
-          <Button
-            title="Stake to Ranking"
-            onClick={handleSubmit(handleStakeToRanking)}
-          />
-          <Button
-            title="Announce Withdrawal"
-            onClick={handleSubmit(handleAnnounceWithdrawal)}
-          />
-          <Button
-            title="Withdraw from Ranking"
-            onClick={handleSubmit(handleWithdrawFromRanking)}
-          />
+          <Button onClick={handleSubmit(handleStakeToRanking)}>
+            Stake to Ranking
+          </Button>
+          <Button onClick={handleSubmit(handleAnnounceWithdrawal)}>
+            Announce Withdrawal
+          </Button>
+          <Button onClick={handleSubmit(handleWithdrawFromRanking)}>
+            Withdraw from Ranking
+          </Button>
         </div>
       </AccountStatusForm>
       {confirmValidatorButton}

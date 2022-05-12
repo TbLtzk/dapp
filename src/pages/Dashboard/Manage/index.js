@@ -16,8 +16,9 @@ export default function index () {
           <Button
             alwaysEnabled
             look="white"
-            title="Dashboard"
-          />
+          >
+            Dashboard
+          </Button>
         </Link>
       }
     >
