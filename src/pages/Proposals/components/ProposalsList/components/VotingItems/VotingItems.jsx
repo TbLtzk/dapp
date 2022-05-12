@@ -140,7 +140,7 @@ function VotingItems ({ proposal }) {
     <div>
       {addCardLine ? <div className="list-card__line" /> : null}
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        {proposal.status === 'Passed' ? <Button handleButton={onProposalExecute} title="Execute" /> : null}
+        {proposal.status === 'Passed' ? <Button title="Execute" onClick={onProposalExecute} /> : null}
         {proposal.status === 'Pending' || proposal.status === 'Accepted'
           ? (
             <>
@@ -150,7 +150,7 @@ function VotingItems ({ proposal }) {
                   width="100px"
                   title={approvalContracts ? 'Approve' : 'Vote'}
                   disabled={isUserCanVote.disabled}
-                  handleButton={approvalContracts ? handleApprove : handleVote}
+                  onClick={approvalContracts ? handleApprove : handleVote}
                 />
               </Tooltip>
               {contractsWithoutVeto || approvalContracts
@@ -164,7 +164,7 @@ function VotingItems ({ proposal }) {
                         width="100px"
                         title="Veto"
                         disabled={isUserCanVeto.disabled}
-                        handleButton={handleVote}
+                        onClick={handleVote}
                       />
                     </Tooltip>
                   </>

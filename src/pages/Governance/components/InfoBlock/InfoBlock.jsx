@@ -27,7 +27,7 @@ function InfoBlock ({ header, activeProposalsNumber, endedProposalsNumber, detai
         <Button
           alwaysEnabled
           title="View Page"
-          handleButton={() => history.push(detailsLink)}
+          onClick={() => history.push(detailsLink)}
         />
       </div>
     </CustomBlock>

@@ -43,7 +43,7 @@ function Address () {
           width="270px"
           type="white"
           title={title}
-          handleButton={handleCopy}
+          onClick={handleCopy}
         />
       </div>
     </CopyToClipboard>

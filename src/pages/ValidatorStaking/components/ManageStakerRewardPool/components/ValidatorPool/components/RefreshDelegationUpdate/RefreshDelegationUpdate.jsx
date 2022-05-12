@@ -50,8 +50,8 @@ function RefreshDelegationUpdate () {
               type="light"
             />
             : null}
-          handleButton={btnHandler}
           iconFontSize="23px"
+          onClick={btnHandler}
         />
       </div>
     </div>

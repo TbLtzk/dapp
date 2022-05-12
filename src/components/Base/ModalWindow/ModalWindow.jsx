@@ -44,7 +44,7 @@ function ModalWindow ({
                   type="white"
                   icon="arrow-left"
                   title={backBtnTitle}
-                  handleButton={backBtnHandler}
+                  onClick={backBtnHandler}
                 />
               )}
             {!continueBtnTitle
@@ -56,7 +56,7 @@ function ModalWindow ({
                   icon={iconRight || 'arrow-right'}
                   disabled={disabled}
                   title={continueBtnTitle}
-                  handleButton={continueBtnHandler}
+                  onClick={continueBtnHandler}
                 />
               )}
           </Footer>

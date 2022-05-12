@@ -35,7 +35,6 @@ function CustomCardButtons ({ eventKey, shareText, open, setOpen = () => {}, one
               alwaysEnabled
               title="Share"
               icon="share"
-              handleButton={() => {}}
             />
           </div>
         </CopyToClipboard>
@@ -47,8 +46,8 @@ function CustomCardButtons ({ eventKey, shareText, open, setOpen = () => {}, one
             alwaysEnabled
             iconFontSize="16px"
             margin="0 0 0 20px"
-            handleButton={handleOpen}
             icon={`chevron-${open ? 'up' : 'down'}`}
+            onClick={handleOpen}
           />
         )}
     </>

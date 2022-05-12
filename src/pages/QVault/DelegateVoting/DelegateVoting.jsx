@@ -70,7 +70,7 @@ function DelegateVoting () {
                   icon="chart-pie"
                   iconFontSize="20px"
                   title="Confirm"
-                  handleButton={handleDelegate}
+                  onClick={handleDelegate}
                 />
               </div>
             </div>
@@ -92,7 +92,7 @@ function DelegateVoting () {
           type="outline"
           title="Announce"
           width="90px"
-          handleButton={handleSubmit(handleAnnounce)}
+          onClick={handleSubmit(handleAnnounce)}
         />
       </div>
       <h4>This will immediately reduce the voting weight of your voting agent for new voting</h4>

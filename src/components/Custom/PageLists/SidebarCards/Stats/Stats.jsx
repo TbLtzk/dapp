@@ -21,7 +21,7 @@ function Stats ({ statsData, type }) {
           alwaysEnabled
           title="Manage vault"
           type="white"
-          handleButton={() => history.push('q-vault')}
+          onClick={() => history.push('q-vault')}
         />
       </div>
     </CustomBlock>

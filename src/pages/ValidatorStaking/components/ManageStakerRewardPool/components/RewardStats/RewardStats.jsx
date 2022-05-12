@@ -92,7 +92,7 @@ function RewardStats () {
           type="outline"
           title="Set"
           width="94px"
-          handleButton={handleSubmit(setDelegatorShareFunc)}
+          onClick={handleSubmit(setDelegatorShareFunc)}
         />
       </div>
     </>

@@ -82,7 +82,7 @@ function ManageValidatorBalance () {
         <Button
           type="default"
           title="Join Validator Ranking"
-          handleButton={confirmValidation}
+          onClick={confirmValidation}
         />
       </div>
     )
@@ -155,17 +155,17 @@ function ManageValidatorBalance () {
           <Button
             type="default"
             title="Stake to Ranking"
-            handleButton={handleSubmit(handleStakeToRanking)}
+            onClick={handleSubmit(handleStakeToRanking)}
           />
           <Button
             type="default"
             title="Announce Withdrawal"
-            handleButton={handleSubmit(handleAnnounceWithdrawal)}
+            onClick={handleSubmit(handleAnnounceWithdrawal)}
           />
           <Button
             type="default"
             title="Withdraw from Ranking"
-            handleButton={handleSubmit(handleWithdrawFromRanking)}
+            onClick={handleSubmit(handleWithdrawFromRanking)}
           />
         </div>
       </AccountStatusForm>

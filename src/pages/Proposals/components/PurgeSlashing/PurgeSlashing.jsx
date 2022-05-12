@@ -48,7 +48,7 @@ function PurgeSlashing () {
             disabled={!isRootNode}
             title="Purge Root Node"
             width="150px"
-            handleButton={handleSubmit((data) => handlePurge(data, CONTRACT_TYPES.rootNodes))}
+            onClick={handleSubmit((data) => handlePurge(data, CONTRACT_TYPES.rootNodes))}
           />
         </Tooltip>
         <Tooltip disabled={isRootNode} additionalInfo={USER_NOT_ROOT_NODE}>
@@ -56,7 +56,7 @@ function PurgeSlashing () {
             disabled={!isRootNode}
             width="150px"
             title="Purge Validator"
-            handleButton={handleSubmit((data) => handlePurge(data, CONTRACT_TYPES.validators))}
+            onClick={handleSubmit((data) => handlePurge(data, CONTRACT_TYPES.validators))}
           />
         </Tooltip>
       </PurgeSlashingContainer>

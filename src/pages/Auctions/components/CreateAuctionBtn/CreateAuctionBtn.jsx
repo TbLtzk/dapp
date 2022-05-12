@@ -38,8 +38,8 @@ function CreateAuctionBtn ({ auctionsType }) {
     <>
       <Button
         icon="plus-circle-outline"
-        handleButton={onCreateAuction}
         title={title}
+        onClick={onCreateAuction}
       />
       <ModalCreateAuction
         activeTab={auctionsType}

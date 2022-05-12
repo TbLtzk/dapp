@@ -41,7 +41,7 @@ function ManageVestingBalance () {
         margin="0px 0px 12px 0px"
         title="Withdraw"
         width="90px"
-        handleButton={handleSubmit(handleWithdrawVesting)}
+        onClick={handleSubmit(handleWithdrawVesting)}
       />
       <div className="modal-line" />
     </>

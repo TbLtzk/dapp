@@ -32,7 +32,7 @@ function SystemCard ({ data, title }) {
               title={!loadingPerfNetting ? 'Perform Netting' : <LoadingSpinner />}
               type="white"
               width="140px"
-              handleButton={onHandlePerformNetting}
+              onClick={onHandlePerformNetting}
             />
           </div>
         )

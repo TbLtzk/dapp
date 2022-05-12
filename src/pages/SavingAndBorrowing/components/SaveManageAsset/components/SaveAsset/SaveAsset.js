@@ -132,7 +132,7 @@ function SaveAsset ({
           type="outline"
           title={depositBtnTitle}
           width="100px"
-          handleButton={depositSubmit(handleDepositSubmit)}
+          onClick={depositSubmit(handleDepositSubmit)}
         />
       </div>
       <h4>Withdraw Saving Asset</h4>
@@ -152,7 +152,7 @@ function SaveAsset ({
           type="outline"
           title="Withdraw"
           width="100px"
-          handleButton={withdrawSubmit(handleWithdrawSubmit)}
+          onClick={withdrawSubmit(handleWithdrawSubmit)}
         />
       </div>
     </>

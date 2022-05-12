@@ -41,7 +41,7 @@ function AddressForm ({ userAddress, setAddressRefresh }) {
             disabled={Boolean(errors?.address?.message)}
             iconFontSize="20px"
             width="50px"
-            handleButton={handleSubmit(setAddressRefresh)}
+            onClick={handleSubmit(setAddressRefresh)}
           />
         </div>
       </WrapContainer>

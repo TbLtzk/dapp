@@ -14,7 +14,7 @@ function NotFound () {
         alwaysEnabled
         title="Home"
         icon="home"
-        handleButton={() => history.push('/')}
+        onClick={() => history.push('/')}
       />
     </NotFoundContainer>
   );

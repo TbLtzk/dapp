@@ -82,13 +82,13 @@ function UpdateDelegation () {
               type="outline"
               icon="plus"
               width="37px"
-              handleButton={addInputField}
+              onClick={addInputField}
             />
             <Button
               type="outline"
               icon="minus"
               width="37px"
-              handleButton={removeInputField}
+              onClick={removeInputField}
             />
           </div>
         </div>
@@ -98,7 +98,7 @@ function UpdateDelegation () {
           icon="cached"
           type="outline"
           title="Update Delegation"
-          handleButton={handleSubmit(updateDelegations)}
+          onClick={handleSubmit(updateDelegations)}
         />
       </div>
     </>

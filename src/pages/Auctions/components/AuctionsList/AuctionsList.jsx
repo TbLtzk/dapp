@@ -69,7 +69,7 @@ function AuctionsList ({ auctions, loadingAuctions }) {
                   margin="0 0 5% 0"
                   width="140px"
                   title="Show more"
-                  handleButton={handleNextAuctions}
+                  onClick={handleNextAuctions}
                 />
               </LoadingWrap>
             )

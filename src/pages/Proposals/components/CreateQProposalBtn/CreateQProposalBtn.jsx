@@ -66,8 +66,8 @@ function CreateQProposalBtn ({ activeTab }) {
     <>
       <Button
         icon="plus-circle-outline"
-        handleButton={onCreateProposal}
         title={`Create ${activeTabTitle}`}
+        onClick={onCreateProposal}
       />
       <ModalCreateProposal
         activeTab={activeTab}

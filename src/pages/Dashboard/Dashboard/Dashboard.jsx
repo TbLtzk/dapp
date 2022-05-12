@@ -31,7 +31,6 @@ function Dashboard () {
           alwaysEnabled
           type="white"
           title="Q Parameters"
-          handleButton={() => {}}
         />
       </Link>
     )

@@ -38,7 +38,7 @@ class ErrorBoundary extends React.Component {
           <Button
             title="Home"
             icon="home"
-            handleButton={() => history.push('/')}
+            onClick={() => history.push('/')}
           />
         </WrapContainer>
       );

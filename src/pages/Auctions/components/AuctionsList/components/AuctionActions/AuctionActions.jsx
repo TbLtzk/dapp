@@ -59,7 +59,7 @@ function AuctionActions ({ auction }) {
               disabled={auction.disableBidButton}
               title="Bid"
               icon="mdi mdi-shape-circle-plus btn-icon"
-              handleButton={onOpenModal}
+              onClick={onOpenModal}
             />
           </Tooltip>
 
@@ -69,7 +69,7 @@ function AuctionActions ({ auction }) {
               disabled={auction.disableExecuteButton}
               title="Execute"
               icon="mdi mdi-play btn-icon"
-              handleButton={onAuctionExecute}
+              onClick={onAuctionExecute}
             />
           </Tooltip>
         </div>

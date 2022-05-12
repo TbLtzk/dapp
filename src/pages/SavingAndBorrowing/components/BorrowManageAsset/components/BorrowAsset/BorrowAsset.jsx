@@ -157,7 +157,7 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           type="outline"
           title="Borrow"
           width="100px"
-          handleButton={borrowSubmit(handleBorrow)}
+          onClick={borrowSubmit(handleBorrow)}
         />
       </div>
       <h4>Repay Borrowed Asset</h4>
@@ -177,7 +177,7 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           type="outline"
           title={repayBtnTitle}
           width="100px"
-          handleButton={repaySubmit(handleRepay)}
+          onClick={repaySubmit(handleRepay)}
         />
       </div>
 
@@ -198,7 +198,7 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           type="outline"
           title={depositBtnTitle}
           width="100px"
-          handleButton={depositSubmit(handleDeposit)}
+          onClick={depositSubmit(handleDeposit)}
         />
       </div>
       <h4>Withdraw Collateral</h4>
@@ -218,7 +218,7 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           type="outline"
           title="Withdraw"
           width="100px"
-          handleButton={withdrawSubmit(handleWithdraw)}
+          onClick={withdrawSubmit(handleWithdraw)}
         />
       </div>
     </>

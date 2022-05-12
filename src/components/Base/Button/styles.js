@@ -41,7 +41,7 @@ export const ButtonCustom = styled.button`
   }
 
   ${(p) =>
-    p.palette === 'dark'
+    p.theme.palette === 'dark'
       ? css`
           background-color: ${p.type === 'white' || p.type === 'transparent'
             ? 'transparent'

@@ -106,7 +106,7 @@ function SavingBorrowingBlock () {
         className="m-1"
         type="light"
       />,
-      handleButton: () =>
+      handleClick: () =>
         refreshTimeSinceRefreshBalance(
           setTimeSinceRefreshBalance,
           setLoadingTimeSinceRefreshBalance,
@@ -127,7 +127,7 @@ function SavingBorrowingBlock () {
         className="m-1"
         type="light"
       />,
-      handleButton: () =>
+      handleClick: () =>
         refreshTimeSinceOutstandingDebt(
           setTimeSinceOutstandingDebt,
           setLoadingTimeSinceOutstandingDeb,
@@ -149,7 +149,7 @@ function SavingBorrowingBlock () {
               <div className="card_text">{item.content}</div>
             </div>
             <div>
-              {item?.handleButton && (
+              {item?.handleClick && (
                 <Button
                   disabled={item.loading}
                   icon={!item.loading && item.btnIcon}
@@ -166,8 +166,8 @@ function SavingBorrowingBlock () {
                       )
                   }
                   width="100%"
-                  handleButton={item.handleButton}
                   iconFontSize={item.iconFontSize}
+                  onClick={item.handleClick}
                 />
               )}
             </div>

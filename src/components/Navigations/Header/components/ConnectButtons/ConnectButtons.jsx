@@ -42,12 +42,12 @@ async function requestLogin () {
   }
 }
 
-const ConnectButton = ({ handleButton, title }) => (
+const ConnectButton = ({ onClick, title }) => (
   <Button
     alwaysEnabled
-    handleButton={handleButton}
     title={title}
     margin="0 0 0 20px"
+    onClick={onClick}
   />
 );
 
@@ -74,18 +74,18 @@ function ConnectButtons () {
         <>
           <ConnectButton
             title="Connect to Q Mainnet"
-            handleButton={() => handleRequest(chainIds.mainnet, networkParameters.mainnet)}
+            onClick={() => handleRequest(chainIds.mainnet, networkParameters.mainnet)}
           />
           <ConnectButton
             title="Connect to Q Testnet"
-            handleButton={() => handleRequest(chainIds.testnet, networkParameters.testnet)}
+            onClick={() => handleRequest(chainIds.testnet, networkParameters.testnet)}
           />
         </>
       );
     default:
       return (
         <>
-          <ConnectButton title="Install Metamask" handleButton={handleModalShow} />
+          <ConnectButton title="Install Metamask" onClick={handleModalShow} />
           <InstallMetamask modalShow={modalShow} setModalShow={handleModalShow} />
         </>
       );

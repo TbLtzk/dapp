@@ -90,7 +90,7 @@ function TokenomicsBlock () {
         className="mr-2"
         type="light"
       />,
-      handleButton: () =>
+      handleClick: () =>
         handler.getDefaultAllocationProxy(setDefaultAllocationProxy, setLoadingDefaultAllocation, true),
     },
     {
@@ -106,7 +106,7 @@ function TokenomicsBlock () {
         className="mr-2"
         type="light"
       />,
-      handleButton: () => handler.getValidationRewardProxy(setValidationRewardProxy, setLoadingValidationReward, true),
+      handleClick: () => handler.getValidationRewardProxy(setValidationRewardProxy, setLoadingValidationReward, true),
     },
     {
       id: 'root-proxy',
@@ -123,7 +123,7 @@ function TokenomicsBlock () {
         className="mr-2"
         type="light"
       />,
-      handleButton: () => handler.getRootNodeRewardProxy(setRootNodeRewardProxy, setLoadingRootNodeReward, true),
+      handleClick: () => handler.getRootNodeRewardProxy(setRootNodeRewardProxy, setLoadingRootNodeReward, true),
     },
     {
       id: 'reward-pool',
@@ -154,7 +154,7 @@ function TokenomicsBlock () {
         className="m-1"
         type="light"
       />,
-      handleButton: () => dispatch(getUpdateCompoundRate(userAddress)),
+      handleClick: () => dispatch(getUpdateCompoundRate(userAddress)),
     },
     {
       id: 'system-reserve',
@@ -200,8 +200,8 @@ function TokenomicsBlock () {
                       )
                   }
                   width="100%"
-                  handleButton={item.handleButton}
                   iconFontSize={item.iconFontSize}
+                  onClick={item.handleClick}
                 />
               )}
             </div>

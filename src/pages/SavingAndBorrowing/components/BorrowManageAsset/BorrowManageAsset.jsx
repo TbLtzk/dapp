@@ -65,7 +65,7 @@ function BorrowManageAsset ({ vault }) {
         title="Manage"
         disabled={vault.isLiquidated}
         type="transparent"
-        handleButton={handleOpenModal}
+        onClick={handleOpenModal}
       />
 
       <ModalWindow

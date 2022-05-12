@@ -52,21 +52,21 @@ function SavingAndBorrowing () {
             <Button
               title="Add QUSD token"
               margin="0 20px 0 0"
-              handleButton={() => handleAddToken(qusdToken)}
+              onClick={() => handleAddToken(qusdToken)}
             />
           )}
           {!qbtcTokenAdded && (
             <Button
               title="Add QBTC token"
               margin="0 20px 0 0"
-              handleButton={() => handleAddToken(qbtcToken)}
+              onClick={() => handleAddToken(qbtcToken)}
             />
           )}
         </>
       )}
       <Button
         icon="plus-circle-outline"
-        handleButton={createVault}
+        onClick={createVault}
         title="Create QBTC Vault"
       />
     </>

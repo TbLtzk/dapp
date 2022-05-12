@@ -71,7 +71,7 @@ function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
                   margin="0 0 5% 0"
                   width="140px"
                   title="Show more"
-                  handleButton={handleNextProposals}
+                  onClick={handleNextProposals}
                 />
               </LoadingWrap>
             )

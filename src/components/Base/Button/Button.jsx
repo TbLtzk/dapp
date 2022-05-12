@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 import { ButtonCustom } from './styles';
 
-import { theme } from 'store/theme/selectors';
 import { loadTypeSelector } from 'store/user-inf/selectors';
 
 import { LOAD_TYPES } from 'constants/statuses';
@@ -23,15 +22,13 @@ function Button ({
   iconFontSize,
   isIconPositionRight,
   alwaysEnabled,
-  handleButton = () => {},
+  onClick = () => {},
 }) {
-  const currentTheme = useSelector(theme);
   const loadType = useSelector(loadTypeSelector);
   const isDisabled = disabled || loadType !== LOAD_TYPES.loaded;
 
   return (
     <ButtonCustom
-      palette={currentTheme}
       disabled={!alwaysEnabled && isDisabled}
       type={type}
       width={width}
@@ -42,7 +39,7 @@ function Button ({
       title={icon === 'copy' ? null : title}
       iconfontsize={iconFontSize}
       isiconpositionright={isIconPositionRight ? '1' : ''}
-      onClick={handleButton}
+      onClick={onClick}
     >
       {icon
         ? (

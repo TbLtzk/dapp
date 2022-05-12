@@ -69,7 +69,7 @@ function ManageStakerRewardPool () {
           disabled={!compoundRateKeeperExists}
           type="white"
           title="Manage Staker Reward Pool"
-          handleButton={handleModalOpen}
+          onClick={handleModalOpen}
         />
       </Tooltip>
 

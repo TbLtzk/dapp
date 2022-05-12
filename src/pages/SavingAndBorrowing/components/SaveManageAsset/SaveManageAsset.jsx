@@ -59,7 +59,7 @@ function SaveManageAsset (props) {
         icon="arrow-top-right"
         title="Manage"
         type="transparent"
-        handleButton={handleModalOpen}
+        onClick={handleModalOpen}
       />
       <ModalWindow
         show={modalOpen}

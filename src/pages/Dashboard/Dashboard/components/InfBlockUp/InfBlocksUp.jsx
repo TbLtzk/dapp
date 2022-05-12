@@ -126,7 +126,6 @@ function InfBlocksUp () {
               alwaysEnabled
               icon="download"
               title="Download Latest"
-              handleButton={() => {}}
             />
           </a>
           <a
@@ -138,7 +137,6 @@ function InfBlocksUp () {
               alwaysEnabled
               icon="archive-outline"
               title="Check Archive"
-              handleButton={() => {}}
             />
           </a>
         </div>
@@ -163,7 +161,6 @@ function InfBlocksUp () {
             type="white"
             icon="arrow-right"
             title="Go to Governance"
-            handleButton={() => {}}
           />
         </Link>
       </CustomBlock>

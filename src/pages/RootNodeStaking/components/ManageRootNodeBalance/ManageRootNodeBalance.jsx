@@ -117,17 +117,17 @@ function ManageRootNodeBalance () {
           <Button
             type="default"
             title="Stake to Panel"
-            handleButton={handleSubmit(handleStake)}
+            onClick={handleSubmit(handleStake)}
           />
           <Button
             type="default"
             title="Announce Withdrawal"
-            handleButton={handleSubmit(handleAnnounce)}
+            onClick={handleSubmit(handleAnnounce)}
           />
           <Button
             type="default"
             title="Withdraw from Panel"
-            handleButton={handleSubmit(handleWithdraw)}
+            onClick={handleSubmit(handleWithdraw)}
           />
         </div>
       </AccountStatusForm>

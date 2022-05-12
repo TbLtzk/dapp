@@ -121,7 +121,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
               title="Deposit"
               width="80px"
               margin="-5px 0 10px 0"
-              handleButton={handleDeposit}
+              onClick={handleDeposit}
             />
             <div className="modal-line" />
             <Button
@@ -131,7 +131,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
               title="Purge Expired Time Locks"
               width="190px"
               margin="3px 0 20px 0"
-              handleButton={setPurge}
+              onClick={setPurge}
             />
           </div>
         </>

@@ -51,7 +51,7 @@ function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contrac
           type="outline"
           title="Manage"
           width="80px"
-          handleButton={() => setModalShow(true)}
+          onClick={() => setModalShow(true)}
         />
       </div>
       <div style={{ height: '30px' }} />

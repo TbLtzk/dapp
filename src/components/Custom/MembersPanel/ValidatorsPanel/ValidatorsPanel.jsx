@@ -83,7 +83,7 @@ function ValidatorsPanel ({ buttons, tableType }) {
               type="white"
               icon="arrow-right"
               title="See more details"
-              handleButton={() =>
+              onClick={() =>
                 history.push({
                   pathname: '/validator-staking',
                 })
@@ -94,7 +94,7 @@ function ValidatorsPanel ({ buttons, tableType }) {
               type="white"
               icon="arrow-right"
               title="Monitoring"
-              handleButton={() =>
+              onClick={() =>
                 history.push({
                   pathname: '/monitoring',
                 })
@@ -110,7 +110,7 @@ function ValidatorsPanel ({ buttons, tableType }) {
               type="white"
               icon="arrow-right"
               title="Go to Q Vault"
-              handleButton={() =>
+              onClick={() =>
                 history.push({
                   pathname: '/q-vault',
                 })

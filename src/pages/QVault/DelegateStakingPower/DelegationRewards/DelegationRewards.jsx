@@ -30,7 +30,7 @@ function DelegationRewards () {
         <Button
           icon="chart-pie"
           title={'Claim Delegation Reward'}
-          handleButton={handleClaim}
+          onClick={handleClaim}
         />
       </div>
     </div>
