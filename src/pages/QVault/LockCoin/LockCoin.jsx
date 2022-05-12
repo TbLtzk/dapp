@@ -8,26 +8,19 @@ import FormInput from 'components/Base/Form/FormInput';
 
 import useInputForm from 'hooks/useInputForm';
 
-import { setLockAmount, setUnlockAmount } from 'store/q-vault/action-creators';
+import LockForm from './components/LockForm';
+
+import { setUnlockAmount } from 'store/q-vault/action-creators';
 import { votingWeight } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import formTypes from 'constants/form-types';
 
-import 'react-datepicker/dist/react-datepicker.css';
-
-function LockCoin ({ maxQVaultVotingWeight }) {
+function LockCoin () {
   const dispatch = useDispatch();
 
   const userVotingWeight = Number(useSelector(votingWeight));
   const address = useSelector(userAddressMetamask);
-
-  const {
-    register: registerLock,
-    handleSubmit: submitLock,
-    errors: errorLock,
-    setValue: setLockMax,
-  } = useInputForm(formTypes.qVaultLock);
 
   const {
     register: registerUnlock,
@@ -42,15 +35,6 @@ function LockCoin ({ maxQVaultVotingWeight }) {
     }
   }
 
-  function handleLockMax () {
-    if (maxQVaultVotingWeight > 0) {
-      setLockMax('amountQ', maxQVaultVotingWeight);
-    }
-  }
-
-  function handleLock (formData) {
-    dispatch(setLockAmount(address, formData.amountQ));
-  }
   function handleUnlock (formData) {
     dispatch(setUnlockAmount(address, formData.amountQ));
   }
@@ -58,27 +42,10 @@ function LockCoin ({ maxQVaultVotingWeight }) {
   return (
     <CustomBlock>
       <h1>Lock Your Q Tokens for Voting</h1>
-      <h5 style={{ marginBottom: '15px' }}>Participate in Q Governance with your Locked Amount</h5>
-      <h4>Increase Voting Weight by</h4>
-      <div className={'card__one-line-simple-form'}>
-        <FormInput
-          ref={registerLock({ required: 'Please, fill the field' })}
-          color={true}
-          min={0}
-          prefix="Q"
-          name="amountQ"
-          type="number"
-          placeholder="0.0"
-          error={errorLock.amountQ?.message}
-          onMaxClick={handleLockMax}
-        />
-        <Button
-          type="outline"
-          title="Increase"
-          width="90px"
-          handleButton={submitLock(handleLock)}
-        />
-      </div>
+      <h5 style={{ marginBottom: '15px' }}>
+        Participate in Q Governance with your Locked Amount
+      </h5>
+      <LockForm />
 
       <h4>Reduce Voting Weight by</h4>
       <div className={'card__one-line-simple-form'}>

@@ -40,17 +40,17 @@ function SendForm () {
       <div className="card__send-form">
         <Input
           {...form.fields.address}
+          label="Address"
           prefix={<i className="mdi mdi-wallet-outline btn-icon" />}
           placeholder="0x000"
-          label="Address"
         />
         <Input
           {...form.fields.amount}
           type="number"
+          label="Amount"
           prefix="Q"
           max={maxAmount}
           placeholder="0.0"
-          label="Amount"
         />
         <div className="card__one-line-form-2-2-1-action">
           <Button

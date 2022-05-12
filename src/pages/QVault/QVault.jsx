@@ -11,22 +11,15 @@ import ManageBalance from './ManageBalance';
 import Panel from './Panel';
 
 import { mode } from 'store/dashboard-mode/selectors';
-import { userBalance, votingWeight } from 'store/q-vault/selectors';
-
-import { subtractAmount } from 'func/balance';
 
 function QVault () {
   const appMode = useSelector(mode);
-
-  const userVotingWeight = useSelector(votingWeight);
-  const userQVaultBalance = useSelector(userBalance);
-  const maxQVaultVotingWeight = Number(subtractAmount(userQVaultBalance, userVotingWeight));
 
   return (
     <PageWrap wrapContentClasses="wrap-content__column-2-1" headerTitle="Q Vault">
       <div>
         <ManageBalance />
-        <LockCoin maxQVaultVotingWeight={maxQVaultVotingWeight} />
+        <LockCoin />
         <DelegateVoting />
         {appMode === MODE.advanced ? <DelegateStakingPower /> : null}
       </div>

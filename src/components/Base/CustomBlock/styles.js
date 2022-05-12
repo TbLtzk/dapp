@@ -94,7 +94,7 @@ export const Block = styled.div`
     display: grid;
     grid-template-columns: minmax(80px, 1fr) minmax(76px, 90px);
     grid-column-gap: 14px;
-    align-items: flex-start;
+    align-items: flex-end;
     width: 100%;
     margin-bottom: 15px;
   }
