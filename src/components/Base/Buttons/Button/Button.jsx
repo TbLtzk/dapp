@@ -19,11 +19,11 @@ function Button ({
   margin,
   width,
   disabled,
-  handleButton,
   icon,
   iconFontSize,
   isIconPositionRight,
-  alwaysEnabled
+  alwaysEnabled,
+  handleButton = () => {},
 }) {
   const currentTheme = useSelector(theme);
   const loadType = useSelector(loadTypeSelector);
@@ -74,7 +74,6 @@ Button.propTypes = {
   type: PropTypes.string,
   width: PropTypes.string,
   disabled: PropTypes.bool,
-  handleButton: PropTypes.func.isRequired
 };
 
 Button.defaultProps = {

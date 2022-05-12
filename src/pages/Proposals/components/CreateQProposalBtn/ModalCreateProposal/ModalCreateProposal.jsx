@@ -135,7 +135,9 @@ function ModalCreateProposal ({ modalShow, onHide, activeTab, activeTabTitle }) 
       <div className="modal__steps">
         Step {stepCounter} of {stepLimit}
       </div>
-      <form>{switchProposalContentDependsOnType()}</form>
+      <form onSubmit={e => e.preventDefault()}>
+        {switchProposalContentDependsOnType()}
+      </form>
     </>
   );
 

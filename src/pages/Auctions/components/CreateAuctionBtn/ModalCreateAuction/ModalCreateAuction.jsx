@@ -76,7 +76,9 @@ function ModalCreateAuction ({ modalShow, onHide, activeTab }) {
       <div className="modal__steps">
         Step {stepCounter} of {stepLimit}
       </div>
-      <form>{switchContentDependsOnType()}</form>
+      <form onSubmit={e => e.preventDefault()}>
+        {switchContentDependsOnType()}
+      </form>
     </>
   );
 

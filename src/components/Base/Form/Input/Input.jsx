@@ -1,0 +1,70 @@
+import React from 'react';
+import { useSelector } from 'react-redux';
+
+import ErrorInputMessage from 'components/Base/ErrorInputMessage';
+
+import { InputWrapper } from './styles';
+
+import { loadTypeSelector } from 'store/user-inf/selectors';
+
+import { LOAD_TYPES } from 'constants/statuses';
+
+const Input = ({
+  value,
+  label,
+  error,
+  disabled,
+  prefix,
+  invertedColors,
+  type = 'text',
+  max,
+  onChange = () => {},
+  ...rest
+}) => {
+  const loadType = useSelector(loadTypeSelector);
+  const isDisabled = disabled || loadType !== LOAD_TYPES.loaded;
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    const isNumberValid = value === '' ||
+      /^[0-9]{1,50}[.,]?[0-9]{0,18}$/.test(value);
+    if (type === 'number' && !isNumberValid) return;
+
+    onChange(value);
+  };
+
+  return (
+    <InputWrapper
+      $prefix={prefix}
+      $error={error}
+      $disabled={isDisabled}
+      $invertedColors={invertedColors}
+    >
+      {label ? <h4>{label}</h4> : null}
+      <div className="input__container">
+        {prefix ? <div className="input__prefix">{prefix}</div> : null}
+        <input
+          className="form-control"
+          value={value}
+          type={type}
+          autoComplete="off"
+          disabled={isDisabled}
+          onChange={handleChange}
+          {...rest}
+        />
+        {max && (
+          <button
+            className="input__max"
+            type="button"
+            onClick={() => onChange(max)}
+          >
+            Max
+          </button>
+        )}
+      </div>
+      {error && <ErrorInputMessage message={error} />}
+    </InputWrapper>
+  );
+};
+
+export default Input;

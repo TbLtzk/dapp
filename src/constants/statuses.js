@@ -38,4 +38,4 @@ export const LOAD_TYPES = {
   wrongNetwork: 'wrong-network'
 };
 
-export const WARNING_MAX_NUMBER = 'Warning: No Q left on sender wallet for future transactions (gas)';
+export const WARNING_MAX_NUMBER = 'WARNING: No Q left on sender wallet for future transactions (gas)';
