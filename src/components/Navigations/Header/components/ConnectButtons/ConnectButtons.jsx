@@ -46,7 +46,7 @@ const ConnectButton = ({ onClick, title }) => (
   <Button
     alwaysEnabled
     title={title}
-    margin="0 0 0 20px"
+    style={{ margin: '0 0 0 20px' }}
     onClick={onClick}
   />
 );

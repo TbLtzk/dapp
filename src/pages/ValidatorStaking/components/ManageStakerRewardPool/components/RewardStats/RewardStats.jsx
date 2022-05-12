@@ -89,9 +89,8 @@ function RewardStats () {
           error={errorHandler(errors, 'amount')}
         />
         <Button
-          type="outline"
           title="Set"
-          width="94px"
+          style={{ width: '94px' }}
           onClick={handleSubmit(setDelegatorShareFunc)}
         />
       </div>

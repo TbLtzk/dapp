@@ -57,8 +57,8 @@ function TransferForm () {
         />
         <Button
           type="submit"
-          title="Transfer"
-          width="90px"
+          title="Transfer kek"
+          style={{ width: '90px' }}
           disabled={!form.isValid}
         />
         {Number(maxAmount) && form.values.amount === maxAmount

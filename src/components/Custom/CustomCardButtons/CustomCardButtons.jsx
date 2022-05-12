@@ -45,8 +45,8 @@ function CustomCardButtons ({ eventKey, shareText, open, setOpen = () => {}, one
           <Button
             alwaysEnabled
             iconFontSize="16px"
-            margin="0 0 0 20px"
             icon={`chevron-${open ? 'up' : 'down'}`}
+            style={{ margin: '0 0 0 20px' }}
             onClick={handleOpen}
           />
         )}

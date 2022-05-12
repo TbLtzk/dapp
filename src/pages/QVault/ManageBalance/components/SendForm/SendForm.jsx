@@ -56,7 +56,7 @@ function SendForm () {
           <Button
             type="submit"
             title="Send"
-            width="90px"
+            style={{ width: '90px' }}
             disabled={!form.isValid}
           />
         </div>

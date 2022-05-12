@@ -1,14 +1,12 @@
 import styled, { css } from 'styled-components';
 
 export const ButtonCustom = styled.button`
+  position: relative;
+  display: inline-flex;
+  gap: 10px;
+  flex-direction: ${(p) => p.$iconRight ? 'row-reverse' : 'row'};
   align-items: center;
-  width: ${(p) => (!p.width ? 'auto' : p.width)};
-  max-width: ${(p) => (!p.width ? 'auto' : p.width)};
-  min-width: ${(p) => (!p.width ? 'auto' : p.width)};
-  position: ${(p) => (!p.position ? '' : p.position)};
-  right: ${(p) => (!p.right ? '' : p.right)};
-  top: ${(p) => (!p.top ? '' : p.top)};
-  margin: ${(p) => (!p.margin ? '' : p.margin)};
+  justify-content: center;
   padding: 7px 11px;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -23,8 +21,8 @@ export const ButtonCustom = styled.button`
     p.type === 'white'
       ? p.theme.colors.oxfordBlueTint5
       : p.type === 'transparent'
-      ? 'transparent'
-      : p.theme.colors.oxfordBlueTint2};
+        ? 'transparent'
+        : p.theme.colors.oxfordBlueTint2};
 
   &:hover {
     color: ${(p) => p.theme.colors.oxfordBlue};
@@ -36,8 +34,12 @@ export const ButtonCustom = styled.button`
   }
 
   .btn-icon {
-    margin: ${(p) => (p.title ? (p.isiconpositionright ? '0 0 0 10px' : '0 10px 0 0') : '0')};
-    font-size: ${(p) => (p.iconfontsize ? p.iconfontsize : '')};
+    font-size: ${(p) => p.iconfontsize || ''};
+  }
+
+  span {
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   ${(p) =>

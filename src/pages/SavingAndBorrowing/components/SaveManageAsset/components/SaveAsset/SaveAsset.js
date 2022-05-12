@@ -129,9 +129,8 @@ function SaveAsset ({
           onMaxClick={handleMaxDeposit}
         />
         <Button
-          type="outline"
           title={depositBtnTitle}
-          width="100px"
+          style={{ width: '100px' }}
           onClick={depositSubmit(handleDepositSubmit)}
         />
       </div>
@@ -149,9 +148,8 @@ function SaveAsset ({
           onMaxClick={handleMaxWithdraw}
         />
         <Button
-          type="outline"
           title="Withdraw"
-          width="100px"
+          style={{ width: '100px' }}
           onClick={withdrawSubmit(handleWithdrawSubmit)}
         />
       </div>

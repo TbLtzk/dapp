@@ -79,15 +79,13 @@ function UpdateDelegation () {
           />
           <div className="card__one-line-form-2-2-1-action">
             <Button
-              type="outline"
               icon="plus"
-              width="37px"
+              style={{ width: '37px' }}
               onClick={addInputField}
             />
             <Button
-              type="outline"
               icon="minus"
-              width="37px"
+              style={{ width: '37px' }}
               onClick={removeInputField}
             />
           </div>
@@ -96,7 +94,6 @@ function UpdateDelegation () {
       <div className="card__actions" style={{ marginBottom: '10px' }}>
         <Button
           icon="cached"
-          type="outline"
           title="Update Delegation"
           onClick={handleSubmit(updateDelegations)}
         />

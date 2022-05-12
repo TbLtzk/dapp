@@ -68,9 +68,11 @@ function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
             ? (
               <LoadingWrap>
                 <Button
-                  margin="0 0 5% 0"
-                  width="140px"
                   title="Show more"
+                  style={{
+                    margin: '0 0 5% 0',
+                    width: '140px'
+                  }}
                   onClick={handleNextProposals}
                 />
               </LoadingWrap>

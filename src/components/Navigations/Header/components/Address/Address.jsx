@@ -39,10 +39,12 @@ function Address () {
       <div title={userAddress}>
         <Button
           icon="copy"
-          margin="0 0 0 20px"
-          width="270px"
           type="white"
           title={title}
+          style={{
+            width: '270px',
+            margin: '0 0 0 20px'
+          }}
           onClick={handleCopy}
         />
       </div>

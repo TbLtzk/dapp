@@ -145,18 +145,16 @@ function SlashingObjection ({ contract, proposalId, objData }) {
           <Tooltip shown={true} additionalInfo={INFO.castObjection}>
             <Button
               disabled={!objection}
-              margin="10px 10px 10px 10px"
-              width="175px"
               title="Cast Objection"
+              style={{ margin: '10px', width: '175px' }}
               onClick={() => onShowModal(slashingTypes.castObjection)}
             />
           </Tooltip>
 
           <Tooltip shown={true} additionalInfo={INFO.confirmApeal}>
             <Button
-              margin="10px 10px 10px 10px"
-              width="175px"
               title="Confirm appeal"
+              style={{ margin: '10px', width: '175px' }}
               onClick={() => onShowModal(slashingTypes.proposerRemark)}
             />
           </Tooltip>
@@ -164,9 +162,8 @@ function SlashingObjection ({ contract, proposalId, objData }) {
           <Tooltip shown={true} additionalInfo={proposeDecisionButton}>
             <Button
               disabled={!isRootNode}
-              margin="10px 10px 10px 10px"
-              width="175px"
               title="Propose Decision"
+              style={{ margin: '10px', width: '175px' }}
               onClick={() => onShowModal(slashingTypes.proposeDecision)}
             />
           </Tooltip>
@@ -175,18 +172,16 @@ function SlashingObjection ({ contract, proposalId, objData }) {
           <Tooltip shown={true} additionalInfo={INFO.recallDecision}>
             <Button
               disabled={!recallDecision}
-              margin="10px 10px 10px 10px"
-              width="175px"
               title="Recall Decision"
+              style={{ margin: '10px', width: '175px' }}
               onClick={() => onEscrowAction(escrowTypes.recall)}
             />
           </Tooltip>
           <Tooltip shown={true} additionalInfo={voteToConfirmDecitionButton}>
             <Button
               disabled={!isRootNode}
-              margin="10px 10px 10px 10px"
-              width="175px"
               title="Vote to confirm Decision"
+              style={{ margin: '10px', width: '175px' }}
               onClick={() => onEscrowAction(escrowTypes.confirm)}
             />
           </Tooltip>
@@ -194,9 +189,8 @@ function SlashingObjection ({ contract, proposalId, objData }) {
           <Tooltip shown={true} additionalInfo={executeDecisionButton}>
             <Button
               disabled={!isRootNode}
-              margin="10px 10px 10px 10px"
-              width="175px"
               title="Execute Decision"
+              style={{ margin: '10px', width: '175px' }}
               onClick={() => onEscrowAction(escrowTypes.execute)}
             />
           </Tooltip>

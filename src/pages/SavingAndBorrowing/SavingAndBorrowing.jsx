@@ -51,14 +51,14 @@ function SavingAndBorrowing () {
           {!qusdTokenAdded && (
             <Button
               title="Add QUSD token"
-              margin="0 20px 0 0"
+              style={{ margin: '0 20px 0 0' }}
               onClick={() => handleAddToken(qusdToken)}
             />
           )}
           {!qbtcTokenAdded && (
             <Button
               title="Add QBTC token"
-              margin="0 20px 0 0"
+              style={{ margin: '0 20px 0 0' }}
               onClick={() => handleAddToken(qbtcToken)}
             />
           )}
@@ -66,8 +66,8 @@ function SavingAndBorrowing () {
       )}
       <Button
         icon="plus-circle-outline"
-        onClick={createVault}
         title="Create QBTC Vault"
+        onClick={createVault}
       />
     </>
   );

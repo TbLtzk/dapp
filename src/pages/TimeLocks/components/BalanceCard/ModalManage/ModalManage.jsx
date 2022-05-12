@@ -115,22 +115,22 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
           />
           <div>
             <Button
-              position="relative"
-              right="-380px"
-              type="outline"
               title="Deposit"
-              width="80px"
-              margin="-5px 0 10px 0"
+              style={{
+                width: '80px',
+                right: '-380px',
+                margin: '-5px 0 10px 0'
+              }}
               onClick={handleDeposit}
             />
             <div className="modal-line" />
             <Button
-              position="relative"
-              right="-270px"
-              type="outline"
               title="Purge Expired Time Locks"
-              width="190px"
-              margin="3px 0 20px 0"
+              style={{
+                width: '190px',
+                right: '-270px',
+                margin: '3px 0 20px 0'
+              }}
               onClick={setPurge}
             />
           </div>

@@ -47,14 +47,14 @@ function PurgeSlashing () {
           <Button
             disabled={!isRootNode}
             title="Purge Root Node"
-            width="150px"
+            style={{ width: '150px' }}
             onClick={handleSubmit((data) => handlePurge(data, CONTRACT_TYPES.rootNodes))}
           />
         </Tooltip>
         <Tooltip disabled={isRootNode} additionalInfo={USER_NOT_ROOT_NODE}>
           <Button
             disabled={!isRootNode}
-            width="150px"
+            style={{ width: '150px' }}
             title="Purge Validator"
             onClick={handleSubmit((data) => handlePurge(data, CONTRACT_TYPES.validators))}
           />

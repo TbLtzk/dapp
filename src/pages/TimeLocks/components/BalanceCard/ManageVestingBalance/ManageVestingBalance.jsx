@@ -35,12 +35,12 @@ function ManageVestingBalance () {
         error={errors.amountQ?.message}
       />
       <Button
-        position="relative"
-        right="-367px"
-        type="outline"
-        margin="0px 0px 12px 0px"
         title="Withdraw"
-        width="90px"
+        style={{
+          right: '-367px',
+          margin: '0 0 12px 0',
+          width: '90px'
+        }}
         onClick={handleSubmit(handleWithdrawVesting)}
       />
       <div className="modal-line" />

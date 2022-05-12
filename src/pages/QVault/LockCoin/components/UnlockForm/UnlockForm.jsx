@@ -45,7 +45,7 @@ function UnlockForm () {
         <Button
           type="submit"
           title="Reduce"
-          width="90px"
+          style={{ width: '90px' }}
           disabled={!form.isValid}
         />
       </div>

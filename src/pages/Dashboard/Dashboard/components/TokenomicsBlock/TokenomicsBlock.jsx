@@ -199,7 +199,7 @@ function TokenomicsBlock () {
                         item.btnTitle
                       )
                   }
-                  width="100%"
+                  style={{ width: '100%' }}
                   iconFontSize={item.iconFontSize}
                   onClick={item.handleClick}
                 />

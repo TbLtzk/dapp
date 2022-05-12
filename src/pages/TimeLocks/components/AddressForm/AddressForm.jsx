@@ -36,11 +36,10 @@ function AddressForm ({ userAddress, setAddressRefresh }) {
         />
         <div>
           <Button
-            type="outline"
             icon="cached"
             disabled={Boolean(errors?.address?.message)}
             iconFontSize="20px"
-            width="50px"
+            style={{ width: '50px' }}
             onClick={handleSubmit(setAddressRefresh)}
           />
         </div>

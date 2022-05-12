@@ -147,7 +147,7 @@ function VotingItems ({ proposal }) {
               <Tooltip disabled={!isUserCanVote.disabled} additionalInfo={isUserCanVote.info}>
                 <Button
                   icon="checkbox-marked-outline"
-                  width="100px"
+                  style={{ width: '100px' }}
                   title={approvalContracts ? 'Approve' : 'Vote'}
                   disabled={isUserCanVote.disabled}
                   onClick={approvalContracts ? handleApprove : handleVote}
@@ -161,7 +161,7 @@ function VotingItems ({ proposal }) {
                     <Tooltip disabled={!isUserCanVeto.disabled} additionalInfo={isUserCanVeto.info}>
                       <Button
                         icon="window-close"
-                        width="100px"
+                        style={{ width: '100px' }}
                         title="Veto"
                         disabled={isUserCanVeto.disabled}
                         onClick={handleVote}

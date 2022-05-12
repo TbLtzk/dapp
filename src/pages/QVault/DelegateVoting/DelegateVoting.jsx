@@ -89,9 +89,8 @@ function DelegateVoting () {
           valid={errors?.address?.message}
         />
         <Button
-          type="outline"
           title="Announce"
-          width="90px"
+          style={{ width: '90px' }}
           onClick={handleSubmit(handleAnnounce)}
         />
       </div>

@@ -154,9 +154,8 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           onMaxClick={handleMaxBorrow}
         />
         <Button
-          type="outline"
           title="Borrow"
-          width="100px"
+          style={{ width: '100px' }}
           onClick={borrowSubmit(handleBorrow)}
         />
       </div>
@@ -174,9 +173,8 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           onMaxClick={handleMaxRepay}
         />
         <Button
-          type="outline"
           title={repayBtnTitle}
-          width="100px"
+          style={{ width: '100px' }}
           onClick={repaySubmit(handleRepay)}
         />
       </div>
@@ -195,9 +193,8 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           onMaxClick={handleMaxDeposit}
         />
         <Button
-          type="outline"
           title={depositBtnTitle}
-          width="100px"
+          style={{ width: '100px' }}
           onClick={depositSubmit(handleDeposit)}
         />
       </div>
@@ -215,9 +212,8 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           onMaxClick={handleMaxWithdraw}
         />
         <Button
-          type="outline"
           title="Withdraw"
-          width="100px"
+          style={{ width: '100px' }}
           onClick={withdrawSubmit(handleWithdraw)}
         />
       </div>

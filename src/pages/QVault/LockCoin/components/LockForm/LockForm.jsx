@@ -48,7 +48,7 @@ function LockForm () {
         <Button
           type="submit"
           title="Increase"
-          width="90px"
+          style={{ width: '90px' }}
           disabled={!form.isValid}
         />
       </div>
