@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 
 import * as Sentry from '@sentry/react';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import { WrapContainer } from 'components/Custom/LoadingMetaMask/styles';
 
 class ErrorBoundary extends React.Component {

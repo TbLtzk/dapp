@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import ModalButton from 'components/Base/Buttons/Button';
+import ModalButton from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import MemberTables from 'components/Custom/MemberTables';
 

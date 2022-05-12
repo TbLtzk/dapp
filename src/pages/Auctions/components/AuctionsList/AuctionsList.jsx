@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { concat, slice } from 'lodash';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import { SkeletonAuctionLoading } from 'components/Base/SkeletonLoading';
 
 import AuctionCard from './components/AuctionCard';

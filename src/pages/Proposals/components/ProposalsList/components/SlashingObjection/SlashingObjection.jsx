@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import Tooltip from 'components/Base/Tooltip';
 
 import { SlashingObjectionContainer } from './ModalSlashingObjection/styles';

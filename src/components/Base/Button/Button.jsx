@@ -27,15 +27,12 @@ function Button ({
 }) {
   const currentTheme = useSelector(theme);
   const loadType = useSelector(loadTypeSelector);
-
-  const isUserLoggedIn = loadType === LOAD_TYPES.loaded ? disabled : true;
-
-  const shouldDisable = alwaysEnabled ? false : isUserLoggedIn;
+  const isDisabled = disabled || loadType !== LOAD_TYPES.loaded;
 
   return (
     <ButtonCustom
       palette={currentTheme}
-      disabled={shouldDisable}
+      disabled={!alwaysEnabled && isDisabled}
       type={type}
       width={width}
       position={position}

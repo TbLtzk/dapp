@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 
 import { Body, Footer, Header, ModalW } from './styles';
 
@@ -52,8 +52,8 @@ function ModalWindow ({
               : (
                 <Button
                   alwaysEnabled
+                  isIconPositionRight
                   icon={iconRight || 'arrow-right'}
-                  isIconPositionRight={true}
                   disabled={disabled}
                   title={continueBtnTitle}
                   handleButton={continueBtnHandler}

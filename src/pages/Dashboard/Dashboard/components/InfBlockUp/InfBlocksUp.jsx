@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import CopyToClipboard from 'components/Base/CopyToClipboard';
 import CustomBlock from 'components/Base/CustomBlock';
 import { MODE } from 'components/Base/DashboardMode/DashboardMode';

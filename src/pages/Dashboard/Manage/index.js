@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 import { Link } from 'react-router-dom';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import LazyLoading from 'components/Base/LazyLoading';
 import PageWrap from 'components/Base/PageWrap';
 
@@ -17,7 +17,6 @@ export default function index () {
             alwaysEnabled
             type="white"
             title="Dashboard"
-            handleButton={() => {}}
           />
         </Link>
       }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import ModalWindow from 'components/Base/ModalWindow';
 import Tooltip from 'components/Base/Tooltip';
 

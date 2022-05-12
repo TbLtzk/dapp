@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import { CopyAddressContainer } from 'components/Navigations/Sidebar/styles';
 
 import { userAddressMetamask } from 'store/user-inf/selectors';

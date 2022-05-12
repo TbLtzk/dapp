@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 
 function Stats ({ statsData, type }) {

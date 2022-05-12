@@ -1,15 +1,13 @@
 import React from 'react';
-import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 
 import LockForm from './components/LockForm';
 import UnlockForm from './components/UnlockForm';
 
 function LockCoin () {
-  const history = useHistory();
-
   return (
     <CustomBlock>
       <h1>Lock Your Q Tokens for Voting</h1>
@@ -19,21 +17,20 @@ function LockCoin () {
       <LockForm />
       <UnlockForm />
       <div className="card__actions">
-        <Button
-          alwaysEnabled
-          type="transparent"
-          title={
-            <>
-              <span style={{ marginRight: '5px' }}>
-                Go to Governance
-              </span>
-              <i className="mdi mdi-arrow-right" />
-            </>
-          }
-          handleButton={() =>
-            history.push({ pathname: '/q-governance' })
-          }
-        />
+        <Link to="/q-governance">
+          <Button
+            alwaysEnabled
+            type="transparent"
+            title={
+              <>
+                <span style={{ marginRight: '5px' }}>
+                  Go to Governance
+                </span>
+                <i className="mdi mdi-arrow-right" />
+              </>
+            }
+          />
+        </Link>
       </div>
     </CustomBlock>
   );

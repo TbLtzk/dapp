@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
 import FormInput from 'components/Base/Form/FormInput';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAccordionToggle } from 'react-bootstrap';
 import CopyToClipboard from 'react-copy-to-clipboard';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import Tooltip from 'components/Base/Tooltip';
 
 function CustomCardButtons ({ eventKey, shareText, open, setOpen = () => {}, onePage }) {

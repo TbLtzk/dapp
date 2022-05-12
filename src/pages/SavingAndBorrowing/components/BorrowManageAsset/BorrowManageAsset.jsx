@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { isEmpty } from 'lodash';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import ModalWindow from 'components/Base/ModalWindow';
 import { WrapSpinner } from 'pages/styles';

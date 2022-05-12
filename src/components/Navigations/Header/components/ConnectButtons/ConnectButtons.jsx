@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import { ethereum } from 'components/Custom/LoadingMetaMask/LoadingMetaMask';
 
 import InstallMetamask from './InstallMetamask';
