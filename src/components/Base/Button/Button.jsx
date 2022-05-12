@@ -9,13 +9,14 @@ import { LOAD_TYPES } from 'constants/statuses';
 
 function Button ({
   title,
-  type = 'main',
-  style,
-  disabled = false,
   icon,
+  type = 'button',
+  look = '',
   iconFontSize,
-  isIconPositionRight,
-  alwaysEnabled,
+  iconRight = false,
+  disabled = false,
+  alwaysEnabled = false,
+  style,
   onClick = () => {},
 }) {
   const loadType = useSelector(loadTypeSelector);
@@ -25,13 +26,14 @@ function Button ({
     <ButtonCustom
       type={type}
       disabled={!alwaysEnabled && isDisabled}
-      iconfontsize={iconFontSize}
-      $iconRight={isIconPositionRight}
       style={style}
+      $look={look}
+      $iconRight={iconRight}
+      $iconFontSize={iconFontSize}
       onClick={onClick}
     >
       {icon && <i className={`mdi mdi-${icon} btn-icon`} />}
-      <span>{title}</span>
+      {title}
     </ButtonCustom>
   );
 }

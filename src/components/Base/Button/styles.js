@@ -18,9 +18,9 @@ export const ButtonCustom = styled.button`
   outline: none;
   border-radius: 3px;
   border-color: ${(p) =>
-    p.type === 'white'
+    p.$look === 'white'
       ? p.theme.colors.oxfordBlueTint5
-      : p.type === 'transparent'
+      : p.$look === 'transparent'
         ? 'transparent'
         : p.theme.colors.oxfordBlueTint2};
 
@@ -34,7 +34,7 @@ export const ButtonCustom = styled.button`
   }
 
   .btn-icon {
-    font-size: ${(p) => p.iconfontsize || ''};
+    font-size: ${(p) => p.$iconFontSize || ''};
   }
 
   span {
@@ -45,29 +45,29 @@ export const ButtonCustom = styled.button`
   ${(p) =>
     p.theme.palette === 'dark'
       ? css`
-          background-color: ${p.type === 'white' || p.type === 'transparent'
+          background-color: ${p.$look === 'white' || p.$look === 'transparent'
             ? 'transparent'
             : p.theme.colors.oxfordBlueTint2};
-          color: ${p.type === 'white' || p.type === 'transparent'
+          color: ${p.$look === 'white' || p.$look === 'transparent'
             ? p.theme.colors.oxfordBlueTint5
             : p.theme.colors.white};
           &:hover {
-            background-color: ${p.type === 'white' || p.type === 'transparent'
+            background-color: ${p.$look === 'white' || p.$look === 'transparent'
               ? p.theme.colors.oxfordBlueTint5
               : p.theme.colors.neonGreen};
-            border-color: ${p.type === 'white' || p.type === 'transparent'
+            border-color: ${p.$look === 'white' || p.$look === 'transparent'
               ? p.theme.colors.oxfordBlueTint5
               : p.theme.colors.neonGreen};
           }
 
           &:disabled {
-            color: ${p.type === 'transparent' ? p.theme.colors.oxfordBlueTint2 : p.theme.colors.oxfordBlue};
-            background-color: ${p.type === 'white'
+            color: ${p.$look === 'transparent' ? p.theme.colors.oxfordBlueTint2 : p.theme.colors.oxfordBlue};
+            background-color: ${p.$look === 'white'
               ? p.theme.colors.oxfordBlueTint2
-              : p.type === 'transparent'
+              : p.$look === 'transparent'
               ? 'transparent'
               : p.theme.colors.circleDark};
-            border-color: ${p.type === 'transparent' ? 'transparent' : p.theme.colors.oxfordBlueTint2};
+            border-color: ${p.$look === 'transparent' ? 'transparent' : p.theme.colors.oxfordBlueTint2};
           }
         `
       : css`
@@ -81,7 +81,7 @@ export const ButtonCustom = styled.button`
           &:disabled {
             color: ${p.theme.colors.oxfordBlue};
             background-color: ${p.theme.colors.circleDark};
-            border-color: ${p.type === 'transparent' ? 'transparent' : p.theme.colors.circleDark};
+            border-color: ${p.$look === 'transparent' ? 'transparent' : p.theme.colors.circleDark};
           }
         `}
 `;

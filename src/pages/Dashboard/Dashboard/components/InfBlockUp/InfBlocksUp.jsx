@@ -158,7 +158,7 @@ function InfBlocksUp () {
         <Link to="/q-governance">
           <Button
             alwaysEnabled
-            type="white"
+            look="white"
             icon="arrow-right"
             title="Go to Governance"
           />

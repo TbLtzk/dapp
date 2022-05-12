@@ -55,10 +55,10 @@ function SaveManageAsset (props) {
   return (
     <>
       <Button
-        isIconPositionRight
+        iconRight
         icon="arrow-top-right"
         title="Manage"
-        type="transparent"
+        look="transparent"
         onClick={handleModalOpen}
       />
       <ModalWindow

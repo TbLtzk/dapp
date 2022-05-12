@@ -29,7 +29,7 @@ function Dashboard () {
       <Link to="/q-parameters">
         <Button
           alwaysEnabled
-          type="white"
+          look="white"
           title="Q Parameters"
         />
       </Link>

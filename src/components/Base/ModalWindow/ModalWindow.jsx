@@ -41,7 +41,7 @@ function ModalWindow ({
               ? null
               : (
                 <Button
-                  type="white"
+                  look="white"
                   icon="arrow-left"
                   title={backBtnTitle}
                   onClick={backBtnHandler}
@@ -52,7 +52,7 @@ function ModalWindow ({
               : (
                 <Button
                   alwaysEnabled
-                  isIconPositionRight
+                  iconRight
                   icon={iconRight || 'arrow-right'}
                   disabled={disabled}
                   title={continueBtnTitle}

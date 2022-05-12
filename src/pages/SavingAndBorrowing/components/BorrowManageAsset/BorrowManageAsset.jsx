@@ -60,11 +60,11 @@ function BorrowManageAsset ({ vault }) {
   return (
     <>
       <Button
-        isIconPositionRight
+        iconRight
         icon="arrow-top-right"
         title="Manage"
         disabled={vault.isLiquidated}
-        type="transparent"
+        look="transparent"
         onClick={handleOpenModal}
       />
 

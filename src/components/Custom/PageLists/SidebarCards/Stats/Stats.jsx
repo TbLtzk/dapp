@@ -20,7 +20,7 @@ function Stats ({ statsData, type }) {
         <Button
           alwaysEnabled
           title="Manage vault"
-          type="white"
+          look="white"
           onClick={() => history.push('q-vault')}
         />
       </div>

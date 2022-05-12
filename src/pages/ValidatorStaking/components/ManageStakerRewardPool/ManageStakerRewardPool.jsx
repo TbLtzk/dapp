@@ -67,7 +67,7 @@ function ManageStakerRewardPool () {
       >
         <Button
           disabled={!compoundRateKeeperExists}
-          type="white"
+          look="white"
           title="Manage Staker Reward Pool"
           onClick={handleModalOpen}
         />

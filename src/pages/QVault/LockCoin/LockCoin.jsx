@@ -20,7 +20,7 @@ function LockCoin () {
         <Link to="/q-governance">
           <Button
             alwaysEnabled
-            type="transparent"
+            look="transparent"
             title={
               <>
                 <span style={{ marginRight: '5px' }}>

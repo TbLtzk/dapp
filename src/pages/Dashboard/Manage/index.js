@@ -15,7 +15,7 @@ export default function index () {
         <Link to="/">
           <Button
             alwaysEnabled
-            type="white"
+            look="white"
             title="Dashboard"
           />
         </Link>

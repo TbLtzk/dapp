@@ -80,7 +80,7 @@ function ValidatorsPanel ({ buttons, tableType }) {
           <div className="card__actions__between">
             <Button
               alwaysEnabled
-              type="white"
+              look="white"
               icon="arrow-right"
               title="See more details"
               onClick={() =>
@@ -91,7 +91,7 @@ function ValidatorsPanel ({ buttons, tableType }) {
             />
             <Button
               alwaysEnabled
-              type="white"
+              look="white"
               icon="arrow-right"
               title="Monitoring"
               onClick={() =>
@@ -107,7 +107,7 @@ function ValidatorsPanel ({ buttons, tableType }) {
           <div className="card__actions">
             <Button
               alwaysEnabled
-              type="white"
+              look="white"
               icon="arrow-right"
               title="Go to Q Vault"
               onClick={() =>

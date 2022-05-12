@@ -39,7 +39,7 @@ function Address () {
       <div title={userAddress}>
         <Button
           icon="copy"
-          type="white"
+          look="white"
           title={title}
           style={{
             width: '270px',

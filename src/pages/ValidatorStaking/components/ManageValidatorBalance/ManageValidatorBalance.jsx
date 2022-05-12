@@ -80,7 +80,6 @@ function ManageValidatorBalance () {
     ? (
       <div className="card__actions">
         <Button
-          type="default"
           title="Join Validator Ranking"
           onClick={confirmValidation}
         />
@@ -153,17 +152,14 @@ function ManageValidatorBalance () {
         </div>
         <div className="account-status__form-actions">
           <Button
-            type="default"
             title="Stake to Ranking"
             onClick={handleSubmit(handleStakeToRanking)}
           />
           <Button
-            type="default"
             title="Announce Withdrawal"
             onClick={handleSubmit(handleAnnounceWithdrawal)}
           />
           <Button
-            type="default"
             title="Withdraw from Ranking"
             onClick={handleSubmit(handleWithdrawFromRanking)}
           />
