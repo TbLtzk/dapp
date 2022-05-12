@@ -101,7 +101,9 @@ function ModalSlashingObjection ({ modalShow, onHide, activeTab, contract, propo
       <div className="modal__steps">
         Step {stepCounter} of {stepLimit}
       </div>
-      <form>{switchContentDependsOnType()}</form>
+      <form onSubmit={e => e.preventDefault()}>
+        {switchContentDependsOnType()}
+      </form>
     </>
   );
 

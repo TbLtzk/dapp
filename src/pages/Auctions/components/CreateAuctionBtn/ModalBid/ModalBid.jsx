@@ -134,7 +134,9 @@ function ModalBid ({ modalShow, onHide, activeTab, inf }) {
       <div className="modal__steps">
         Step {stepCounter} of {stepLimit}
       </div>
-      <form>{switchProposalContentDependsOnType()}</form>
+      <form onSubmit={e => e.preventDefault()}>
+        {switchProposalContentDependsOnType()}
+      </form>
     </>
   );
 

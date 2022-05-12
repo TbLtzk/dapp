@@ -26,13 +26,11 @@ export function toWei (value) {
 }
 
 export function fromWei (value) {
-  if (isNaN(Number(value))) {
-    return 0;
-  } else {
-    const amount = BN(value);
-    const a = BN(10 ** 18);
-    return amount.dividedBy(a).toFixed();
-  }
+  if (isNaN(Number(value))) return '0';
+
+  const amount = BN(value);
+  const a = BN(10 ** 18);
+  return amount.dividedBy(a).toFixed();
 }
 
 export function calculateGas (value) {

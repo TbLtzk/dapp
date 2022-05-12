@@ -18,7 +18,7 @@ export const InputWrapper = styled(Form.Group)`
     line-height: 20px;
     padding: 6px 11px;
     box-sizing: border-box;
-    text-align: 'left';
+    text-align: left;
     min-height: ${inputMinHeight};
     border-radius: ${(p) => p.$prefix ? '0 3px 3px 0' : '3px'};
     background: ${getBackgroundColor};
