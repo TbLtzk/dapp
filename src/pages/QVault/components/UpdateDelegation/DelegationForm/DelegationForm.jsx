@@ -7,11 +7,7 @@ import useForm from 'hooks/useForm';
 
 import { address, required } from 'func/validators';
 
-function DelegationForm ({
-  onAdd,
-  onRemove,
-  onChange
-}) {
+function DelegationForm ({ onAdd, onRemove, onChange }) {
   const form = useForm({
     initialValues: { address: '', amount: '' },
     validators: {
