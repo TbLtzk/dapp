@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 /**
  * @template FieldKey,FieldValue
@@ -16,13 +16,11 @@ import { useCallback, useState } from 'react';
  *   }>,
  *   values: Record<FieldKey, FieldValue>,
  *   errors: Record<FieldKey, string>,
- *
  *   isSubmitting: boolean,
  *   isValid: boolean,
- *
- *   submit(): Promise<void>,
- *   validate(): boolean,
- *   reset(): void,
+ *   submit: () => Promise<void>,
+ *   validate: () => boolean,
+ *   reset: () => void,
  * }}
  */
 function useForm ({
@@ -73,32 +71,33 @@ function useForm ({
     setErrors(getDefaultErrors());
   };
 
-  const getFields = useCallback(() => {
-    return Object.keys(values)
-      .reduce((acc, key) => ({
-        ...acc,
-        [key]: {
-          value: values[key],
-          error: errors[key],
-          onChange: (value) => {
-            setValues((prev) => ({ ...prev, [key]: value }));
-            validateField(key, value);
-          }
-        }
-      }), {});
-  }, [values, errors, validators]);
-
   return {
-    fields: getFields(),
+    fields: useMemo(() => {
+      return Object.keys(values)
+        .reduce((acc, key) => ({
+          ...acc,
+          [key]: {
+            value: values[key],
+            error: errors[key],
+            onChange: (value) => {
+              setValues((prev) => ({ ...prev, [key]: value }));
+              validateField(key, value);
+            }
+          }
+        }), {});
+    }, [values, errors, validators]),
+
     values,
     errors,
 
     isSubmitting,
-    isValid: Object.values(errors).every(val => val === ''),
+    isValid: useMemo(() => {
+      return Object.values(errors).every(val => val === '');
+    }, [errors]),
 
-    validate,
-    submit,
-    reset,
+    validate: useCallback(validate, [values, errors, validators]),
+    submit: useCallback(submit, [values]),
+    reset: useCallback(reset, [values]),
   };
 }
 

@@ -19,16 +19,14 @@ function DelegatedValidatorsPanel () {
   }, [dispatch]);
 
   return (
-    <>
-      <MemberTables
-        title="Your Current Delegations"
-        emptyTableMessage="No delegations"
-        perPageLength={delegations.length}
-        table={delegations}
-        loading={loading}
-        columns={columnsDelegations}
-      />
-    </>
+    <MemberTables
+      title="Your Current Delegations"
+      emptyTableMessage="No delegations"
+      perPageLength={delegations.length}
+      table={delegations}
+      loading={loading}
+      columns={columnsDelegations}
+    />
   );
 }
 

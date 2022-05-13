@@ -111,7 +111,7 @@ export const Block = styled.div`
     display: grid;
     grid-template-columns: minmax(80px, 2fr) minmax(80px, 2fr) minmax(70px, 90px);
     grid-column-gap: 14px;
-    align-items: flex-end;
+    align-items: flex-start;
   }
 
   .card__one-line-form-2-2-1-action {

@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux';
 
 import { successMessageSelector } from 'store/transaction-handler/selectors';
 
-function useMetamaskReset (formType = '', form) {
+function useMetamaskReset (formType = '', onReset) {
   const metamaskSuccess = useSelector(successMessageSelector);
 
   useEffect(() => {
     if (metamaskSuccess?.type === formType) {
-      form.reset();
+      onReset();
     }
   }, [metamaskSuccess]);
 }
