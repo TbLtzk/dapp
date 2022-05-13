@@ -31,12 +31,24 @@ function Overview () {
   return (
     <CustomBlock>
       <h1>Overview</h1>
+
       <h5>Total Saving Balance</h5>
-      {!totalSavingBalance ? <LoadingSpinner /> : <p>{fN(totalSavingBalance) + ' QUSD'}</p>}
+      {totalSavingBalance
+        ? <p>{fN(totalSavingBalance)} QUSD</p>
+        : <LoadingSpinner />
+      }
+
       <h5>Outstanding Debt</h5>
-      {!outstandingDebt ? <LoadingSpinner /> : <p>{fN(outstandingDebt) + ' USD'}</p>}
+      {outstandingDebt
+        ? <p>{fN(outstandingDebt)} USD</p>
+        : <LoadingSpinner />
+      }
+
       <h5>Total Collateral Locked</h5>
-      {!totalCollateralLocked ? <LoadingSpinner /> : <p>{fN(totalCollateralLocked) + ' USD'}</p>}
+      {totalCollateralLocked
+        ? <p>{fN(totalCollateralLocked)} USD</p>
+        : <LoadingSpinner />
+      }
     </CustomBlock>
   );
 }

@@ -6,7 +6,9 @@ import LoadingSpinner from 'components/Base/LoadingSpinner';
 import ModalWindow from 'components/Base/ModalWindow';
 import { WrapSpinner } from 'pages/styles';
 
-import SaveAsset from './components/SaveAsset';
+import DepositForm from './components/DepositForm';
+import SavingDetails from './components/SavingDetails';
+import WithdrawForm from './components/WithdrawForm';
 
 import {
   getSavingAllowance,
@@ -16,14 +18,11 @@ import {
 import {
   savingAllowanceSelector,
   savingAviableToDepositSelector,
-  savingBalanceDetailsSelector,
 } from 'store/saving-assets/selectors';
 
-function SaveManageAsset (props) {
-  const { depositAsset } = props;
+function SaveManageAsset ({ depositAsset, interestAsset }) {
   const dispatch = useDispatch();
 
-  const savingBalanceDetails = useSelector(savingBalanceDetailsSelector);
   const savingAviableToDeposit = useSelector(savingAviableToDepositSelector);
   const savingAllowance = useSelector(savingAllowanceSelector);
 
@@ -44,12 +43,14 @@ function SaveManageAsset (props) {
         </WrapSpinner>
       )
       : (
-        <SaveAsset
-          {...props}
-          savingBalanceDetails={savingBalanceDetails}
-          savingAviableToDeposit={savingAviableToDeposit}
-          savingAllowance={savingAllowance}
-        />
+        <>
+          <SavingDetails
+            depositAsset={depositAsset}
+            interestAsset={interestAsset}
+          />
+          <DepositForm asset={depositAsset} />
+          <WithdrawForm asset={interestAsset} />
+        </>
       );
 
   return (
@@ -63,7 +64,7 @@ function SaveManageAsset (props) {
       </Button>
       <ModalWindow
         show={modalOpen}
-        modalTitle={'Saving ' + depositAsset}
+        modalTitle={`Saving ${depositAsset}`}
         content={content}
         onHide={() => setModalOpen(false)}
       />
