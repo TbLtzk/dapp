@@ -82,6 +82,7 @@ function RewardStats () {
             min: 0,
             max: 100.0001,
           })}
+          invertedColors
           name="amount"
           type="number"
           prefix="%"

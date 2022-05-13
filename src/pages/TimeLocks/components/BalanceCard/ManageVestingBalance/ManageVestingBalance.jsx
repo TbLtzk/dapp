@@ -27,6 +27,7 @@ function ManageVestingBalance () {
           required: 'Please, fill the field',
           pattern: /[0-9]/i
         })}
+        invertedColors
         prefix="Q"
         min={0}
         name="amountQ"

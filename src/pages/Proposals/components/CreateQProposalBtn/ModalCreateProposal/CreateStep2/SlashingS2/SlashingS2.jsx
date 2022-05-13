@@ -17,6 +17,7 @@ function SlashingS2 ({ register, errors, setValue }) {
         <>
           <h2>Nominate a Root Node to be slashed</h2>
           <FormInput
+            invertedColors
             refType={fieldTypes.address}
             name="address"
             placeholder="Address"
@@ -25,6 +26,7 @@ function SlashingS2 ({ register, errors, setValue }) {
             register={register}
           />
           <FormInput
+            invertedColors
             refType={fieldTypes.percentValue}
             name="%-value"
             placeholder="%-Value"
@@ -34,6 +36,7 @@ function SlashingS2 ({ register, errors, setValue }) {
             setValue={setValue}
           />
           <FormInput
+            invertedColors
             refType={fieldTypes.externalLink}
             name="external-link"
             placeholder="External Link"
@@ -48,6 +51,7 @@ function SlashingS2 ({ register, errors, setValue }) {
         <>
           <h2>Nominate a Validator Node to be slashed</h2>
           <FormInput
+            invertedColors
             refType={fieldTypes.address}
             name="address"
             placeholder="Address"
@@ -56,6 +60,7 @@ function SlashingS2 ({ register, errors, setValue }) {
             register={register}
           />
           <FormInput
+            invertedColors
             refType={fieldTypes.percentValue}
             name="%-value"
             placeholder="%-Value"
@@ -65,6 +70,7 @@ function SlashingS2 ({ register, errors, setValue }) {
             setValue={setValue}
           />
           <FormInput
+            invertedColors
             refType={fieldTypes.externalLink}
             name="external-link"
             placeholder="External Link"

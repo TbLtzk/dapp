@@ -76,6 +76,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
           {contract === 'vesting' ? <ManageVestingBalance setModalShow={setModalShow} /> : null}
           <CalendarWraper>
             <Calendar
+              invertedColors
               selectsStart={true}
               selectsEnd={false}
               title="Start date"
@@ -89,6 +90,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
               isCorrectDate={isCorrectDate}
             />
             <Calendar
+              invertedColors
               title="End Date"
               selectsStart={false}
               selectsEnd={true}
