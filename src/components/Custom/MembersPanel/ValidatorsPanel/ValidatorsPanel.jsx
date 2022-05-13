@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
@@ -27,8 +27,6 @@ function ValidatorsPanel ({ buttons, tableType }) {
   const dispatch = useDispatch();
   const table = tableWrapper(useSelector(tableSelector));
   const tableLoading = useSelector(tableLoadingSelector);
-
-  const history = useHistory();
 
   function getValidatorsTableData () {
     switch (tableType) {
@@ -78,22 +76,18 @@ function ValidatorsPanel ({ buttons, tableType }) {
       case buttonsType.details:
         return (
           <div className="card__actions__between">
-            <Button
-              alwaysEnabled
-              look="white"
-              onClick={() => history.push({ pathname: '/validator-staking' })}
-            >
-              <i className="mdi mdi-arrow-right" />
-              <span>See more details</span>
-            </Button>
-            <Button
-              alwaysEnabled
-              look="white"
-              onClick={() => history.push({ pathname: '/monitoring' })}
-            >
-              <i className="mdi mdi-arrow-right" />
-              <span>Monitoring</span>
-            </Button>
+            <Link to="/validator-staking">
+              <Button alwaysEnabled look="white">
+                <i className="mdi mdi-arrow-right" />
+                <span>See more details</span>
+              </Button>
+            </Link>
+            <Link to="/monitoring">
+              <Button alwaysEnabled look="white">
+                <i className="mdi mdi-arrow-right" />
+                <span>Monitoring</span>
+              </Button>
+            </Link>
           </div>
         );
       case buttonsType.qVault:

@@ -25,12 +25,11 @@ function Address () {
           style={{
             width: '270px',
             margin: '0 0 0 20px',
-            gap: '5px'
           }}
           onClick={handleCopy}
         >
           <i className="mdi mdi-content-copy" />
-          <span>
+          <span style={{ marginLeft: '5px' }}>
             {isCopied ? 'Copied!' : userAddress.substring(0, 30) + '...'}
           </span>
         </Button>

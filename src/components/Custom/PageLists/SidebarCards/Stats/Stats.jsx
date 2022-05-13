@@ -1,12 +1,10 @@
 import React, { Fragment } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 
 function Stats ({ statsData, type }) {
-  const history = useHistory();
-
   return (
     <CustomBlock>
       <h1>{type} Stats</h1>
@@ -17,13 +15,11 @@ function Stats ({ statsData, type }) {
         </Fragment>
       ))}
       <div className="card__actions">
-        <Button
-          alwaysEnabled
-          look="white"
-          onClick={() => history.push('q-vault')}
-        >
-          Manage vault
-        </Button>
+        <Link to="/q-vault">
+          <Button alwaysEnabled look="white">
+            Manage vault
+          </Button>
+        </Link>
       </div>
     </CustomBlock>
   );
