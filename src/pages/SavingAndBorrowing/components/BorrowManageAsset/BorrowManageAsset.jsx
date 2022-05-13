@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { isEmpty } from 'lodash';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import ModalWindow from 'components/Base/ModalWindow';
 import { WrapSpinner } from 'pages/styles';
@@ -60,13 +60,13 @@ function BorrowManageAsset ({ vault }) {
   return (
     <>
       <Button
-        isIconPositionRight
-        icon="arrow-top-right"
-        title="Manage"
         disabled={vault.isLiquidated}
-        type="transparent"
-        handleButton={handleOpenModal}
-      />
+        look="transparent"
+        onClick={handleOpenModal}
+      >
+        <span>Manage</span>
+        <i className="mdi mdi-arrow-top-right" />
+      </Button>
 
       <ModalWindow
         show={isModalOpen}

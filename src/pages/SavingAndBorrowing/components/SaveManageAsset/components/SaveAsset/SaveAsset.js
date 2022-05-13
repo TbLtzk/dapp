@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import FormInput from 'components/Base/Form/FormInput';
 
 import useInputForm from 'hooks/useInputForm';
@@ -129,11 +129,11 @@ function SaveAsset ({
           onMaxClick={handleMaxDeposit}
         />
         <Button
-          type="outline"
-          title={depositBtnTitle}
-          width="100px"
-          handleButton={depositSubmit(handleDepositSubmit)}
-        />
+          style={{ width: '100px' }}
+          onClick={depositSubmit(handleDepositSubmit)}
+        >
+          {depositBtnTitle}
+        </Button>
       </div>
       <h4>Withdraw Saving Asset</h4>
       <div className="modal__one-line-form">
@@ -149,11 +149,11 @@ function SaveAsset ({
           onMaxClick={handleMaxWithdraw}
         />
         <Button
-          type="outline"
-          title="Withdraw"
-          width="100px"
-          handleButton={withdrawSubmit(handleWithdrawSubmit)}
-        />
+          style={{ width: '100px' }}
+          onClick={withdrawSubmit(handleWithdrawSubmit)}
+        >
+          Withdraw
+        </Button>
       </div>
     </>
   );

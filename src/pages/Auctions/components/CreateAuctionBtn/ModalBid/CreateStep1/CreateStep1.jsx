@@ -48,6 +48,7 @@ function CreateStep1 ({ activeTab, register, errors, raisingBid, watch, allowanc
           {symbol}
         </h4>
         <FormInput
+          invertedColors
           refType={fieldTypes.bid}
           name="bid"
           placeholder="Bid"

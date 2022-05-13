@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 
 import AnnounceForm from './components/AnnounceForm';
@@ -58,12 +58,13 @@ function DelegateVoting () {
                 <p>This delegation info is currently pending. Need to confirm.</p>
               </div>
               <div>
-                <Button
-                  icon="chart-pie"
-                  iconFontSize="20px"
-                  title="Confirm"
-                  handleButton={handleDelegate}
-                />
+                <Button onClick={handleDelegate}>
+                  <i
+                    className="mdi mdi-chart-pie"
+                    style={{ fontSize: '20px' }}
+                  />
+                  <span>Confirm</span>
+                </Button>
               </div>
             </div>
           )}

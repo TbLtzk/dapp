@@ -57,6 +57,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
               handleChange={changePanel}
             />
             <FormInput
+              invertedColors
               refType={fieldTypes.address}
               name="address"
               placeholder="Address"
@@ -65,6 +66,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
               register={register}
             />
             <FormInput
+              invertedColors
               refType={fieldTypes.externalLink}
               name="external-link"
               placeholder="External Link"
@@ -92,6 +94,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
               handleChange={changePanel}
             />
             <FormInput
+              invertedColors
               refType={fieldTypes.address}
               name="address"
               placeholder="Address"
@@ -100,6 +103,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
               register={register}
             />
             <FormInput
+              invertedColors
               refType={fieldTypes.externalLink}
               name="external-link"
               placeholder="External Link"
@@ -161,6 +165,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                       required: 'Please, fill the field',
                       validate: (key) => parameterKeyValidation(key)
                     })}
+                    invertedColors
                     name={`parameter-key[${index}]`}
                     placeholder="Key"
                     error={errors['parameter-key']?.[index]?.message}
@@ -172,6 +177,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                     validate: (value) =>
                       validatePattern(value, watch(`parameter-type[${index}]`))
                   })}
+                  invertedColors
                   name={`parameter-value[${index}]`}
                   placeholder="Value"
                   error={errors['parameter-value']?.[index]?.message}
@@ -197,6 +203,7 @@ function QExpertS2 ({ activeTab, register, errors, watch }) {
                 : null}
             </div>
             <FormInput
+              invertedColors
               refType={fieldTypes.externalLink}
               name="external-link"
               placeholder="External Link"

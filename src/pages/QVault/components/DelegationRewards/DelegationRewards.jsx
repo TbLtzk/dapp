@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 
 import { getOutstandingDelegationRewards, onClaimStakeDelegatorReward } from 'store/q-vault/action-creators';
 import { outstandingDelegationRewards } from 'store/q-vault/selectors';
@@ -26,11 +26,10 @@ function DelegationRewards () {
         <h5>Outstanding Delegation Rewards</h5>
         <p>{`${fN(outstandingDelegationRewardsValue)} Q`}</p>
       </div>
-      <Button
-        icon="chart-pie"
-        title="Claim Delegation Reward"
-        handleButton={handleClaim}
-      />
+      <Button onClick={handleClaim}>
+        <i className="mdi mdi-chart-pie" />
+        <span>Claim Delegation Reward</span>
+      </Button>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import ModalButton from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import MemberTables from 'components/Custom/MemberTables';
 
@@ -47,12 +47,12 @@ function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contrac
         setModalShow={(value) => setModalShow(value)}
       />
       <div className="button__bottom">
-        <ModalButton
-          type="outline"
-          title="Manage"
-          width="80px"
-          handleButton={() => setModalShow(true)}
-        />
+        <Button
+          style={{ width: '80px' }}
+          onClick={() => setModalShow(true)}
+        >
+          Manage
+        </Button>
       </div>
       <div style={{ height: '30px' }} />
     </CustomBlock>

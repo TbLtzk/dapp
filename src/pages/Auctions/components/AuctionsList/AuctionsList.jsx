@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { concat, slice } from 'lodash';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import { SkeletonAuctionLoading } from 'components/Base/SkeletonLoading';
 
 import AuctionCard from './components/AuctionCard';
@@ -66,11 +66,14 @@ function AuctionsList ({ auctions, loadingAuctions }) {
               <LoadingWrap>
                 <Button
                   alwaysEnabled
-                  margin="0 0 5% 0"
-                  width="140px"
-                  title="Show more"
-                  handleButton={handleNextAuctions}
-                />
+                  style={{
+                    margin: '0 0 5% 0',
+                    width: '140px'
+                  }}
+                  onClick={handleNextAuctions}
+                >
+                  Show more
+                </Button>
               </LoadingWrap>
             )
             : null}

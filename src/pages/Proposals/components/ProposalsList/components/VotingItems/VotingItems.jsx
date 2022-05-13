@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import Tooltip from 'components/Base/Tooltip';
 
 import ModalVote from '../ModalVote';
@@ -140,18 +140,19 @@ function VotingItems ({ proposal }) {
     <div>
       {addCardLine ? <div className="list-card__line" /> : null}
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        {proposal.status === 'Passed' ? <Button handleButton={onProposalExecute} title="Execute" /> : null}
+        {proposal.status === 'Passed' && <Button onClick={onProposalExecute}>Execute</Button>}
         {proposal.status === 'Pending' || proposal.status === 'Accepted'
           ? (
             <>
               <Tooltip disabled={!isUserCanVote.disabled} additionalInfo={isUserCanVote.info}>
                 <Button
-                  icon="checkbox-marked-outline"
-                  width="100px"
-                  title={approvalContracts ? 'Approve' : 'Vote'}
+                  style={{ width: '100px' }}
                   disabled={isUserCanVote.disabled}
-                  handleButton={approvalContracts ? handleApprove : handleVote}
-                />
+                  onClick={approvalContracts ? handleApprove : handleVote}
+                >
+                  <i className="mdi mdi-checkbox-marked-outline" />
+                  <span>{approvalContracts ? 'Approve' : 'Vote'}</span>
+                </Button>
               </Tooltip>
               {contractsWithoutVeto || approvalContracts
                 ? null
@@ -160,12 +161,13 @@ function VotingItems ({ proposal }) {
                     <div style={{ width: '20px' }} />
                     <Tooltip disabled={!isUserCanVeto.disabled} additionalInfo={isUserCanVeto.info}>
                       <Button
-                        icon="window-close"
-                        width="100px"
-                        title="Veto"
+                        style={{ width: '100px' }}
                         disabled={isUserCanVeto.disabled}
-                        handleButton={handleVote}
-                      />
+                        onClick={handleVote}
+                      >
+                        <i className="mdi mdi-window-close" />
+                        <span>Veto</span>
+                      </Button>
                     </Tooltip>
                   </>
                 )}

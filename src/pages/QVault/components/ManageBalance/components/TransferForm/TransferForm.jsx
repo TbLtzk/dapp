@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import ErrorInputMessage from 'components/Base/ErrorInputMessage';
 import Input from 'components/Base/Form/Input';
 
@@ -55,10 +55,11 @@ function TransferForm () {
         />
         <Button
           type="submit"
-          title="Transfer"
-          width="90px"
+          style={{ width: '90px' }}
           disabled={!form.isValid}
-        />
+        >
+          Transfer
+        </Button>
         {Number(maxAmount) && form.values.amount === maxAmount
           ? <ErrorInputMessage message={WARNING_MAX_NUMBER} />
           : null

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import Input from 'components/Base/Form/Input';
 
 import useForm from 'hooks/useForm';
@@ -57,10 +57,11 @@ function SendForm () {
         <div className="card__one-line-form-2-2-1-action">
           <Button
             type="submit"
-            title="Send"
-            width="90px"
+            style={{ width: '90px' }}
             disabled={!form.isValid}
-          />
+          >
+            Send
+          </Button>
         </div>
       </div>
     </form>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import ModalWindow from 'components/Base/ModalWindow';
 import { WrapSpinner } from 'pages/styles';
@@ -55,12 +55,12 @@ function SaveManageAsset (props) {
   return (
     <>
       <Button
-        isIconPositionRight
-        icon="arrow-top-right"
-        title="Manage"
-        type="transparent"
-        handleButton={handleModalOpen}
-      />
+        look="transparent"
+        onClick={handleModalOpen}
+      >
+        <span>Manage</span>
+        <i className="mdi mdi-arrow-top-right" />
+      </Button>
       <ModalWindow
         show={modalOpen}
         modalTitle={'Saving ' + depositAsset}

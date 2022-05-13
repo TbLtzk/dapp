@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import FormInput from 'components/Base/Form/FormInput';
 import Tooltip from 'components/Base/Tooltip';
@@ -46,18 +46,20 @@ function PurgeSlashing () {
         <Tooltip disabled={isRootNode} additionalInfo={USER_NOT_ROOT_NODE}>
           <Button
             disabled={!isRootNode}
-            title="Purge Root Node"
-            width="150px"
-            handleButton={handleSubmit((data) => handlePurge(data, CONTRACT_TYPES.rootNodes))}
-          />
+            style={{ width: '150px' }}
+            onClick={handleSubmit((data) => handlePurge(data, CONTRACT_TYPES.rootNodes))}
+          >
+            Purge Root Node
+          </Button>
         </Tooltip>
         <Tooltip disabled={isRootNode} additionalInfo={USER_NOT_ROOT_NODE}>
           <Button
             disabled={!isRootNode}
-            width="150px"
-            title="Purge Validator"
-            handleButton={handleSubmit((data) => handlePurge(data, CONTRACT_TYPES.validators))}
-          />
+            style={{ width: '150px' }}
+            onClick={handleSubmit((data) => handlePurge(data, CONTRACT_TYPES.validators))}
+          >
+            Purge Validator
+          </Button>
         </Tooltip>
       </PurgeSlashingContainer>
     </CustomBlock>

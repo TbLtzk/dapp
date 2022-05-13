@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 
 import useInterval from 'hooks/useInterval';
@@ -42,17 +42,24 @@ function RefreshDelegationUpdate () {
       <div>
         <Button
           disabled={loadingUpdateCompoundRate}
-          icon={loadingUpdateCompoundRate ? null : 'cached'}
-          title={loadingUpdateCompoundRate
-            ? <LoadingSpinner
-              size="sm"
-              className="m-1"
-              type="light"
-            />
-            : null}
-          handleButton={btnHandler}
-          iconFontSize="23px"
-        />
+          onClick={btnHandler}
+        >
+          {loadingUpdateCompoundRate
+            ? (
+              <LoadingSpinner
+                size="sm"
+                className="m-1"
+                type="light"
+              />
+            )
+            : (
+              <i
+                className="mdi mdi-cached"
+                style={{ fontSize: '20px' }}
+              />
+            )
+          }
+        </Button>
       </div>
     </div>
   );

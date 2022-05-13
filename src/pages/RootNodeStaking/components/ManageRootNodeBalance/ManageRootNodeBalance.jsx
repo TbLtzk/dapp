@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import FormInput from 'components/Base/Form/FormInput';
 
@@ -114,21 +114,15 @@ function ManageRootNodeBalance () {
           />
         </div>
         <div className="account-status__form-actions">
-          <Button
-            type="default"
-            title="Stake to Panel"
-            handleButton={handleSubmit(handleStake)}
-          />
-          <Button
-            type="default"
-            title="Announce Withdrawal"
-            handleButton={handleSubmit(handleAnnounce)}
-          />
-          <Button
-            type="default"
-            title="Withdraw from Panel"
-            handleButton={handleSubmit(handleWithdraw)}
-          />
+          <Button onClick={handleSubmit(handleStake)}>
+            Stake to Panel
+          </Button>
+          <Button onClick={handleSubmit(handleAnnounce)}>
+            Announce Withdrawal
+          </Button>
+          <Button onClick={handleSubmit(handleWithdraw)}>
+            Withdraw from Panel
+          </Button>
         </div>
       </AccountStatusForm>
     </CustomBlock>

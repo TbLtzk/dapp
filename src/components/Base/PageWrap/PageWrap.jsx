@@ -27,7 +27,7 @@ function PageWrap ({ children, headerTitle, headerExtra, wrapContentClasses }) {
       <WrapContent className={wrapContentClasses}>{children}</WrapContent>
       <ToTopContainer isVisible={isVisible}>
         <i
-          className="mdi mdi-arrow-up-bold-box btn-icon"
+          className="mdi mdi-arrow-up-bold-box"
           onClick={() => myRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })}
         />
       </ToTopContainer>

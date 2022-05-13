@@ -24,11 +24,13 @@ function Calendar ({
   selectsStart,
   selectsEnd,
   disabled,
-  isCorrectDate
+  isCorrectDate,
+  invertedColors
 }) {
   const CustomInput = forwardRef(({ value, onClick }, ref) => (
     <FormInput
       ref={ref}
+      invertedColors={invertedColors}
       error={isCorrectDate}
       name={name}
       value={value}

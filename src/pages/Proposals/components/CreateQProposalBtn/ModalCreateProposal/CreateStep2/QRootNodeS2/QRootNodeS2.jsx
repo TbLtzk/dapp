@@ -27,6 +27,7 @@ function QRootNodeS2 ({ register, errors }) {
         <>
           <h2>Add Your account as a Candidate for the Root Node Panel. Optionally provide a Root Node to Remove.</h2>
           <FormInput
+            invertedColors
             refType={fieldTypes.hash}
             name="hash"
             placeholder="Hash"
@@ -35,6 +36,7 @@ function QRootNodeS2 ({ register, errors }) {
             register={register}
           />
           <FormInput
+            invertedColors
             refType={fieldTypes.externalLink}
             name="external-link"
             placeholder="External Link"
@@ -55,6 +57,7 @@ function QRootNodeS2 ({ register, errors }) {
             ? null
             : (
               <FormInput
+                invertedColors
                 refType={fieldTypes.address}
                 name="address"
                 placeholder="Address"
@@ -70,6 +73,7 @@ function QRootNodeS2 ({ register, errors }) {
         <>
           <h2>Nominate a Root Node to Remove</h2>
           <FormInput
+            invertedColors
             refType={fieldTypes.address}
             name="address"
             placeholder="Address"
@@ -78,6 +82,7 @@ function QRootNodeS2 ({ register, errors }) {
             register={register}
           />
           <FormInput
+            invertedColors
             refType={fieldTypes.externalLink}
             name="external-link"
             placeholder="External Link"

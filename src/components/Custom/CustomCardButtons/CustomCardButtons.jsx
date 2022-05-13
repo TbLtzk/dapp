@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAccordionToggle } from 'react-bootstrap';
 import CopyToClipboard from 'react-copy-to-clipboard';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import Tooltip from 'components/Base/Tooltip';
 
 function CustomCardButtons ({ eventKey, shareText, open, setOpen = () => {}, onePage }) {
@@ -31,12 +31,10 @@ function CustomCardButtons ({ eventKey, shareText, open, setOpen = () => {}, one
       >
         <CopyToClipboard text={shareText} onCopy={handleCopy}>
           <div>
-            <Button
-              alwaysEnabled
-              title="Share"
-              icon="share"
-              handleButton={() => {}}
-            />
+            <Button alwaysEnabled>
+              <i className="mdi mdi-share" />
+              <span>Share</span>
+            </Button>
           </div>
         </CopyToClipboard>
       </Tooltip>
@@ -45,11 +43,14 @@ function CustomCardButtons ({ eventKey, shareText, open, setOpen = () => {}, one
         : (
           <Button
             alwaysEnabled
-            iconFontSize="16px"
-            margin="0 0 0 20px"
-            handleButton={handleOpen}
-            icon={`chevron-${open ? 'up' : 'down'}`}
-          />
+            style={{ margin: '0 0 0 20px' }}
+            onClick={handleOpen}
+          >
+            <i
+              className={`mdi mdi-chevron-${open ? 'up' : 'down'}`}
+              style={{ fontSize: '16px' }}
+            />
+          </Button>
         )}
     </>
   );

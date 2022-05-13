@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import Input from 'components/Base/Form/Input';
 
 import useForm from 'hooks/useForm';
@@ -35,10 +35,11 @@ function AnnounceForm () {
         />
         <Button
           type="submit"
-          title="Announce"
-          width="90px"
+          style={{ width: '90px' }}
           disabled={!form.isValid}
-        />
+        >
+          Announce
+        </Button>
       </div>
       <h4>This will immediately reduce the voting weight of your voting agent for new voting</h4>
     </form>

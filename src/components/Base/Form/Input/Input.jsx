@@ -27,7 +27,7 @@ const Input = ({
   const handleChange = (e) => {
     const value = e.target.value;
     const isNumberValid = value === '' ||
-      /^[0-9]{1,50}[.,]?[0-9]{0,18}$/.test(value);
+      /^[0-9]{1,50}[.]?[0-9]{0,18}$/.test(value);
     if (type === 'number' && !isNumberValid) return;
 
     onChange(value);
@@ -46,7 +46,8 @@ const Input = ({
         <input
           className="form-control"
           value={value}
-          type={type}
+          type="text"
+          inputMode={type === 'number' ? 'decimal' : 'text'}
           autoComplete="off"
           disabled={isDisabled}
           onChange={handleChange}

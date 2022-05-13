@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import FormInput from 'components/Base/Form/FormInput';
 
 import useInputForm from 'hooks/useInputForm';
@@ -82,6 +82,7 @@ function RewardStats () {
             min: 0,
             max: 100.0001,
           })}
+          invertedColors
           name="amount"
           type="number"
           prefix="%"
@@ -89,11 +90,11 @@ function RewardStats () {
           error={errorHandler(errors, 'amount')}
         />
         <Button
-          type="outline"
-          title="Set"
-          width="94px"
-          handleButton={handleSubmit(setDelegatorShareFunc)}
-        />
+          style={{ width: '94px' }}
+          onClick={handleSubmit(setDelegatorShareFunc)}
+        >
+          Set
+        </Button>
       </div>
     </>
   );

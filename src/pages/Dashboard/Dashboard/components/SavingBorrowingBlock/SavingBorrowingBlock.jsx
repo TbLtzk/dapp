@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
@@ -98,15 +98,8 @@ function SavingBorrowingBlock () {
       id: 'saving-time',
       title: 'QUSD Saving time since refresh of balance',
       content: timeSinceRefreshBalance || '0 day(s) 0 hours 0 minutes',
-      btnIcon: 'cached',
-      iconFontSize: '23px',
       loading: loadingTimeSinceRefreshBalance,
-      loadingSpinner: <LoadingSpinner
-        size="sm"
-        className="m-1"
-        type="light"
-      />,
-      handleButton: () =>
+      handleClick: () =>
         refreshTimeSinceRefreshBalance(
           setTimeSinceRefreshBalance,
           setLoadingTimeSinceRefreshBalance,
@@ -119,15 +112,8 @@ function SavingBorrowingBlock () {
       id: 'outstanding-debt',
       title: 'QUSD - QBTC time since refresh of outstanding debt',
       content: timeSinceOutstandingDebt || '0 day(s) 0 hours 0 minutes',
-      btnIcon: 'cached',
-      iconFontSize: '23px',
       loading: loadingTimeSinceOutstandingDeb,
-      loadingSpinner: <LoadingSpinner
-        size="sm"
-        className="m-1"
-        type="light"
-      />,
-      handleButton: () =>
+      handleClick: () =>
         refreshTimeSinceOutstandingDebt(
           setTimeSinceOutstandingDebt,
           setLoadingTimeSinceOutstandingDeb,
@@ -149,26 +135,28 @@ function SavingBorrowingBlock () {
               <div className="card_text">{item.content}</div>
             </div>
             <div>
-              {item?.handleButton && (
+              {item?.handleClick && (
                 <Button
                   disabled={item.loading}
-                  icon={!item.loading && item.btnIcon}
-                  title={
-                    item.loading
-                      ? (
-                        <>
-                          {item.loadingSpinner}
-                          {item.btnTitle}
-                        </>
-                      )
-                      : (
-                        item.btnTitle
-                      )
+                  style={{ width: '100%' }}
+                  onClick={item.handleClick}
+                >
+                  {item.loading
+                    ? (
+                      <LoadingSpinner
+                        size="sm"
+                        className="m-1"
+                        type="light"
+                      />
+                    )
+                    : (
+                      <i
+                        className="mdi mdi-cached"
+                        style={{ fontSize: '20px' }}
+                      />
+                    )
                   }
-                  width="100%"
-                  handleButton={item.handleButton}
-                  iconFontSize={item.iconFontSize}
-                />
+                </Button>
               )}
             </div>
           </div>

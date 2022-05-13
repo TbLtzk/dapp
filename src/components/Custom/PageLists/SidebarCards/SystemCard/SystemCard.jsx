@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 
@@ -29,11 +29,12 @@ function SystemCard ({ data, title }) {
         ? (
           <div className="card__actions">
             <Button
-              title={!loadingPerfNetting ? 'Perform Netting' : <LoadingSpinner />}
-              type="white"
-              width="140px"
-              handleButton={onHandlePerformNetting}
-            />
+              look="white"
+              style={{ width: '140px' }}
+              onClick={onHandlePerformNetting}
+            >
+              {!loadingPerfNetting ? 'Perform Netting' : <LoadingSpinner />}
+            </Button>
           </div>
         )
         : null}

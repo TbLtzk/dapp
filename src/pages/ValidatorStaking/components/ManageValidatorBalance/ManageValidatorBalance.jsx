@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import FormInput from 'components/Base/Form/FormInput';
 
@@ -79,11 +79,9 @@ function ManageValidatorBalance () {
   const confirmValidatorButton = !isThisUserValidator
     ? (
       <div className="card__actions">
-        <Button
-          type="default"
-          title="Join Validator Ranking"
-          handleButton={confirmValidation}
-        />
+        <Button onClick={confirmValidation}>
+          Join Validator Ranking
+        </Button>
       </div>
     )
     : null;
@@ -152,21 +150,15 @@ function ManageValidatorBalance () {
           />
         </div>
         <div className="account-status__form-actions">
-          <Button
-            type="default"
-            title="Stake to Ranking"
-            handleButton={handleSubmit(handleStakeToRanking)}
-          />
-          <Button
-            type="default"
-            title="Announce Withdrawal"
-            handleButton={handleSubmit(handleAnnounceWithdrawal)}
-          />
-          <Button
-            type="default"
-            title="Withdraw from Ranking"
-            handleButton={handleSubmit(handleWithdrawFromRanking)}
-          />
+          <Button onClick={handleSubmit(handleStakeToRanking)}>
+            Stake to Ranking
+          </Button>
+          <Button onClick={handleSubmit(handleAnnounceWithdrawal)}>
+            Announce Withdrawal
+          </Button>
+          <Button onClick={handleSubmit(handleWithdrawFromRanking)}>
+            Withdraw from Ranking
+          </Button>
         </div>
       </AccountStatusForm>
       {confirmValidatorButton}

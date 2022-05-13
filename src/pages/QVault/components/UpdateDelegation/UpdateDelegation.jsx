@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 
 import useFormArray from 'hooks/useFormArray';
 import useMetamaskReset from 'hooks/useMetamaskReset';
@@ -54,13 +54,10 @@ function UpdateDelegation () {
       </div>
 
       <div className="card__actions" style={{ marginBottom: '10px' }}>
-        <Button
-          icon="cached"
-          type="outline"
-          title="Update Delegation"
-          disabled={!formArray.isValid}
-          handleButton={formArray.submit}
-        />
+        <Button onClick={formArray.submit}>
+          <i className="mdi mdi-cached" />
+          <span>Update Delegation</span>
+        </Button>
       </div>
     </>
   );

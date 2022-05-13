@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import FormInput from 'components/Base/Form/FormInput';
 
 import useInputForm from 'hooks/useInputForm';
@@ -27,6 +27,7 @@ function ManageVestingBalance () {
           required: 'Please, fill the field',
           pattern: /[0-9]/i
         })}
+        invertedColors
         prefix="Q"
         min={0}
         name="amountQ"
@@ -35,14 +36,15 @@ function ManageVestingBalance () {
         error={errors.amountQ?.message}
       />
       <Button
-        position="relative"
-        right="-367px"
-        type="outline"
-        margin="0px 0px 12px 0px"
-        title="Withdraw"
-        width="90px"
-        handleButton={handleSubmit(handleWithdrawVesting)}
-      />
+        style={{
+          right: '-367px',
+          margin: '0 0 12px 0',
+          width: '90px'
+        }}
+        onClick={handleSubmit(handleWithdrawVesting)}
+      >
+        Withdraw
+      </Button>
       <div className="modal-line" />
     </>
   );

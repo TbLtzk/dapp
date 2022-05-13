@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import { ethereum } from 'components/Custom/LoadingMetaMask/LoadingMetaMask';
 
 import InstallMetamask from './InstallMetamask';
@@ -42,15 +42,6 @@ async function requestLogin () {
   }
 }
 
-const ConnectButton = ({ handleButton, title }) => (
-  <Button
-    alwaysEnabled
-    handleButton={handleButton}
-    title={title}
-    margin="0 0 0 20px"
-  />
-);
-
 function ConnectButtons () {
   const loadType = useSelector(loadTypeSelector);
   const network = useSelector(networkSelector);
@@ -72,20 +63,32 @@ function ConnectButtons () {
     case LOAD_TYPES.notLogged:
       return (
         <>
-          <ConnectButton
-            title="Connect to Q Mainnet"
-            handleButton={() => handleRequest(chainIds.mainnet, networkParameters.mainnet)}
-          />
-          <ConnectButton
-            title="Connect to Q Testnet"
-            handleButton={() => handleRequest(chainIds.testnet, networkParameters.testnet)}
-          />
+          <Button
+            alwaysEnabled
+            style={{ margin: '0 0 0 20px' }}
+            onClick={() => handleRequest(chainIds.mainnet, networkParameters.mainnet)}
+          >
+            Connect to Q Mainnet
+          </Button>
+          <Button
+            alwaysEnabled
+            style={{ margin: '0 0 0 20px' }}
+            onClick={() => handleRequest(chainIds.testnet, networkParameters.testnet)}
+          >
+            Connect to Q Testnet
+          </Button>
         </>
       );
     default:
       return (
         <>
-          <ConnectButton title="Install Metamask" handleButton={handleModalShow} />
+          <Button
+            alwaysEnabled
+            style={{ margin: '0 0 0 20px' }}
+            onClick={handleModalShow}
+          >
+            Install Metamask
+          </Button>
           <InstallMetamask modalShow={modalShow} setModalShow={handleModalShow} />
         </>
       );

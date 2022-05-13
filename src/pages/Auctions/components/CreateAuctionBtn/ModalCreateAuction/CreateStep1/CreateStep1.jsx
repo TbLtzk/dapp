@@ -26,6 +26,7 @@ function CreateStep1 ({ activeTab, register, errors }) {
         return (
           <>
             <FormInput
+              invertedColors
               refType={fieldTypes.address}
               name="address"
               placeholder="Address"
@@ -34,6 +35,7 @@ function CreateStep1 ({ activeTab, register, errors }) {
               register={register}
             />
             <FormInput
+              invertedColors
               refType={fieldTypes.vaultId}
               name="vault-id"
               placeholder="Vault ID"
@@ -42,6 +44,7 @@ function CreateStep1 ({ activeTab, register, errors }) {
               register={register}
             />
             <FormInput
+              invertedColors
               refType={fieldTypes.bid}
               name="bid"
               placeholder="Bid"
@@ -57,6 +60,7 @@ function CreateStep1 ({ activeTab, register, errors }) {
             <h5>Debt Auction Lot</h5>
             <p>{reserveLot + 'Q'}</p>
             <FormInput
+              invertedColors
               refType={fieldTypes.bid}
               name="bid"
               placeholder="Bid"
@@ -72,6 +76,7 @@ function CreateStep1 ({ activeTab, register, errors }) {
             <h5>Surplus Auction Lot: </h5>
             <p>{surplusLot + ' ' + symbolType}</p>
             <FormInput
+              invertedColors
               refType={fieldTypes.bid}
               name="bid"
               placeholder="Bid"

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import CopyToClipboard from 'components/Base/CopyToClipboard';
 import CustomBlock from 'components/Base/CustomBlock';
 import { MODE } from 'components/Base/DashboardMode/DashboardMode';
@@ -122,24 +122,20 @@ function InfBlocksUp () {
             target="_blank"
             rel="noreferrer"
           >
-            <Button
-              alwaysEnabled
-              icon="download"
-              title="Download Latest"
-              handleButton={() => {}}
-            />
+            <Button alwaysEnabled>
+              <i className="mdi mdi-download" />
+              <span>Download Latest</span>
+            </Button>
           </a>
           <a
             href={archiveConstitution}
             target="_blank"
             rel="noreferrer"
           >
-            <Button
-              alwaysEnabled
-              icon="archive-outline"
-              title="Check Archive"
-              handleButton={() => {}}
-            />
+            <Button alwaysEnabled>
+              <i className="mdi mdi-archive-outline" />
+              <span>Check Archive</span>
+            </Button>
           </a>
         </div>
       </CustomBlock>
@@ -160,11 +156,11 @@ function InfBlocksUp () {
         <Link to="/q-governance">
           <Button
             alwaysEnabled
-            type="white"
-            icon="arrow-right"
-            title="Go to Governance"
-            handleButton={() => {}}
-          />
+            look="white"
+          >
+            <i className="mdi mdi-arrow-right" />
+            <span>Go to Governance</span>
+          </Button>
         </Link>
       </CustomBlock>
     </>

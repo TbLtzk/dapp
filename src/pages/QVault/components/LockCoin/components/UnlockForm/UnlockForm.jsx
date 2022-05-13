@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import Input from 'components/Base/Form/Input';
 
 import useForm from 'hooks/useForm';
@@ -42,10 +42,11 @@ function UnlockForm () {
         />
         <Button
           type="submit"
-          title="Reduce"
-          width="90px"
+          style={{ width: '90px' }}
           disabled={!form.isValid}
-        />
+        >
+          Reduce
+        </Button>
       </div>
     </form>
   );

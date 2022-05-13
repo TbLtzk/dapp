@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import PageWrap from 'components/Base/PageWrap';
 
 import BorrowCryptoAssets from './components/BorrowCryptoAssets';
@@ -50,25 +50,26 @@ function SavingAndBorrowing () {
         <>
           {!qusdTokenAdded && (
             <Button
-              title="Add QUSD token"
-              margin="0 20px 0 0"
-              handleButton={() => handleAddToken(qusdToken)}
-            />
+              style={{ margin: '0 20px 0 0' }}
+              onClick={() => handleAddToken(qusdToken)}
+            >
+              Add QUSD token
+            </Button>
           )}
           {!qbtcTokenAdded && (
             <Button
-              title="Add QBTC token"
-              margin="0 20px 0 0"
-              handleButton={() => handleAddToken(qbtcToken)}
-            />
+              style={{ margin: '0 20px 0 0' }}
+              onClick={() => handleAddToken(qbtcToken)}
+            >
+              Add QBTC token
+            </Button>
           )}
         </>
       )}
-      <Button
-        icon="plus-circle-outline"
-        handleButton={createVault}
-        title="Create QBTC Vault"
-      />
+      <Button onClick={createVault}>
+        <i className="mdi mdi-plus-circle-outline" />
+        <span>Create QBTC Vault</span>
+      </Button>
     </>
   );
   return (

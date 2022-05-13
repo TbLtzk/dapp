@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import Tooltip from 'components/Base/Tooltip';
 
 import ModalBid from '../../../CreateAuctionBtn/ModalBid';
@@ -57,20 +57,22 @@ function AuctionActions ({ auction }) {
           <Tooltip disabled={!auction.disableBidButton} additionalInfo={TOOLTIP_INFO.bidPeriod}>
             <Button
               disabled={auction.disableBidButton}
-              title="Bid"
-              icon="mdi mdi-shape-circle-plus btn-icon"
-              handleButton={onOpenModal}
-            />
+              onClick={onOpenModal}
+            >
+              <i className="mdi mdi-shape-circle-plus" />
+              <span>Bid</span>
+            </Button>
           </Tooltip>
 
           <div style={{ width: '20px' }} />
           <Tooltip disabled={!auction.disableExecuteButton} additionalInfo={TOOLTIP_INFO.executePeriod}>
             <Button
               disabled={auction.disableExecuteButton}
-              title="Execute"
-              icon="mdi mdi-play btn-icon"
-              handleButton={onAuctionExecute}
-            />
+              onClick={onAuctionExecute}
+            >
+              <i className="mdi mdi-play" />
+              <span>Execute</span>
+            </Button>
           </Tooltip>
         </div>
         <ModalBid

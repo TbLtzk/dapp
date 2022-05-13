@@ -18,6 +18,7 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
         <div>
           <h2>The target of a slashing proposal has the right tp object the slashing.</h2>
           <FormInput
+            invertedColors
             refType={fieldTypes.externalLinkOptional}
             name="external-link"
             placeholder="External Link"
@@ -32,6 +33,7 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
         <div>
           <h2>As the slashing objection proposer please provide a valid reason.</h2>
           <FormInput
+            invertedColors
             refType={fieldTypes.proposerRemark}
             name="proposer-remark"
             placeholder="Proposer remark"
@@ -46,6 +48,7 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
         <div>
           <h2>Members of the Root Node Panel check the objection and propose decision to confirm.</h2>
           <FormInput
+            invertedColors
             refType={fieldTypes.externalLink}
             name="external-link"
             placeholder="External Link"
@@ -54,6 +57,7 @@ function CreateStep1 ({ activeTab, register, errors, setValue }) {
             register={register}
           />
           <FormInput
+            invertedColors
             refType={fieldTypes.percentValue}
             name="%-value"
             placeholder="%-Value"

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import PageWrap from 'components/Base/PageWrap';
 import DefiMembersPanel from 'components/Custom/MembersPanel/DefiMembersPanel';
@@ -27,12 +27,9 @@ function Dashboard () {
   const parametersButton = advancedMode
     ? (
       <Link to="/q-parameters">
-        <Button
-          alwaysEnabled
-          type="white"
-          title="Q Parameters"
-          handleButton={() => {}}
-        />
+        <Button alwaysEnabled look="white">
+          Q Parameters
+        </Button>
       </Link>
     )
     : null;

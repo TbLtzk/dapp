@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
 import FormInput from 'components/Base/Form/FormInput';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
@@ -36,13 +36,15 @@ function AddressForm ({ userAddress, setAddressRefresh }) {
         />
         <div>
           <Button
-            type="outline"
-            icon="cached"
             disabled={Boolean(errors?.address?.message)}
-            iconFontSize="20px"
-            width="50px"
-            handleButton={handleSubmit(setAddressRefresh)}
-          />
+            style={{ width: '50px' }}
+            onClick={handleSubmit(setAddressRefresh)}
+          >
+            <i
+              className="mdi mdi-cached"
+              style={{ fontSize: '20px' }}
+            />
+          </Button>
         </div>
       </WrapContainer>
     </CustomBlock>

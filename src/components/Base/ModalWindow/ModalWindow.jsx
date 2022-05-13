@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 
 import { Body, Footer, Header, ModalW } from './styles';
 
@@ -40,24 +40,22 @@ function ModalWindow ({
             {!backBtnTitle
               ? null
               : (
-                <Button
-                  type="white"
-                  icon="arrow-left"
-                  title={backBtnTitle}
-                  handleButton={backBtnHandler}
-                />
+                <Button look="white" onClick={backBtnHandler}>
+                  <i className="mdi mdi-arrow-left" />
+                  <span>{backBtnTitle}</span>
+                </Button>
               )}
             {!continueBtnTitle
               ? null
               : (
                 <Button
                   alwaysEnabled
-                  icon={iconRight || 'arrow-right'}
-                  isIconPositionRight={true}
                   disabled={disabled}
-                  title={continueBtnTitle}
-                  handleButton={continueBtnHandler}
-                />
+                  onClick={continueBtnHandler}
+                >
+                  <span>{continueBtnTitle}</span>
+                  <i className={`mdi mdi-${iconRight || 'arrow-right'}`} />
+                </Button>
               )}
           </Footer>
         )}

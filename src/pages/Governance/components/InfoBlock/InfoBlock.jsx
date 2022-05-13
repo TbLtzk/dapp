@@ -1,13 +1,11 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 
 function InfoBlock ({ header, activeProposalsNumber, endedProposalsNumber, detailsLink, isLoading }) {
-  const history = useHistory();
-
   return (
     <CustomBlock>
       <h1>{header}</h1>
@@ -24,11 +22,9 @@ function InfoBlock ({ header, activeProposalsNumber, endedProposalsNumber, detai
           </>
         )}
       <div className="card__actions">
-        <Button
-          alwaysEnabled
-          title="View Page"
-          handleButton={() => history.push(detailsLink)}
-        />
+        <Link to={detailsLink}>
+          <Button alwaysEnabled>View Page</Button>
+        </Link>
       </div>
     </CustomBlock>
   );

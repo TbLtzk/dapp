@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { concat, slice } from 'lodash';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
 import ListCard from './components/ListCard';
@@ -68,11 +68,14 @@ function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
             ? (
               <LoadingWrap>
                 <Button
-                  margin="0 0 5% 0"
-                  width="140px"
-                  title="Show more"
-                  handleButton={handleNextProposals}
-                />
+                  style={{
+                    margin: '0 0 5% 0',
+                    width: '140px'
+                  }}
+                  onClick={handleNextProposals}
+                >
+                  Show more
+                </Button>
               </LoadingWrap>
             )
             : null}

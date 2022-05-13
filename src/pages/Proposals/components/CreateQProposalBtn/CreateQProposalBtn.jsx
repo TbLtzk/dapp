@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 
 import ModalCreateProposal from './ModalCreateProposal';
 
@@ -64,11 +64,10 @@ function CreateQProposalBtn ({ activeTab }) {
 
   return (
     <>
-      <Button
-        icon="plus-circle-outline"
-        handleButton={onCreateProposal}
-        title={`Create ${activeTabTitle}`}
-      />
+      <Button onClick={onCreateProposal}>
+        <i className="mdi mdi-plus-circle-outline" />
+        <span>{`Create ${activeTabTitle}`}</span>
+      </Button>
       <ModalCreateProposal
         activeTab={activeTab}
         activeTabTitle={activeTabTitle}

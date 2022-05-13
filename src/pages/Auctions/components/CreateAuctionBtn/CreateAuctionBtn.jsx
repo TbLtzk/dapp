@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 
 import ModalCreateAuction from './ModalCreateAuction';
 
@@ -36,11 +36,10 @@ function CreateAuctionBtn ({ auctionsType }) {
 
   return (
     <>
-      <Button
-        icon="plus-circle-outline"
-        handleButton={onCreateAuction}
-        title={title}
-      />
+      <Button onClick={onCreateAuction}>
+        <i className="mdi mdi-plus-circle-outline" />
+        <span>{title}</span>
+      </Button>
       <ModalCreateAuction
         activeTab={auctionsType}
         modalShow={modalShow}

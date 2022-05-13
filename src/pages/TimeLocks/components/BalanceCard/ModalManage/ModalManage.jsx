@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import Calendar from 'components/Base/Calendar';
 import FormInput from 'components/Base/Form/FormInput';
 import ModalWindow from 'components/Base/ModalWindow';
@@ -76,6 +76,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
           {contract === 'vesting' ? <ManageVestingBalance setModalShow={setModalShow} /> : null}
           <CalendarWraper>
             <Calendar
+              invertedColors
               selectsStart={true}
               selectsEnd={false}
               title="Start date"
@@ -89,6 +90,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
               isCorrectDate={isCorrectDate}
             />
             <Calendar
+              invertedColors
               title="End Date"
               selectsStart={false}
               selectsEnd={true}
@@ -106,6 +108,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
           <h4>Amount</h4>
           <FormInput
             ref={register({ required: 'Please, fill the field', pattern: /[0-9]/i })}
+            invertedColors
             prefix="Q"
             min={0}
             name="amountQ"
@@ -115,24 +118,26 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
           />
           <div>
             <Button
-              position="relative"
-              right="-380px"
-              type="outline"
-              title="Deposit"
-              width="80px"
-              margin="-5px 0 10px 0"
-              handleButton={handleDeposit}
-            />
+              style={{
+                width: '80px',
+                right: '-380px',
+                margin: '-5px 0 10px 0'
+              }}
+              onClick={handleDeposit}
+            >
+              Deposit
+            </Button>
             <div className="modal-line" />
             <Button
-              position="relative"
-              right="-270px"
-              type="outline"
-              title="Purge Expired Time Locks"
-              width="190px"
-              margin="3px 0 20px 0"
-              handleButton={setPurge}
-            />
+              style={{
+                width: '190px',
+                right: '-270px',
+                margin: '3px 0 20px 0'
+              }}
+              onClick={setPurge}
+            >
+              Purge Expired Time Locks
+            </Button>
           </div>
         </>
       }

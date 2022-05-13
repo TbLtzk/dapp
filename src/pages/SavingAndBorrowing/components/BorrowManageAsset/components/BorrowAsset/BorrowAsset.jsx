@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import FormInput from 'components/Base/Form/FormInput';
 
 import useInputForm from 'hooks/useInputForm';
@@ -154,11 +154,11 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           onMaxClick={handleMaxBorrow}
         />
         <Button
-          type="outline"
-          title="Borrow"
-          width="100px"
-          handleButton={borrowSubmit(handleBorrow)}
-        />
+          style={{ width: '100px' }}
+          onClick={borrowSubmit(handleBorrow)}
+        >
+          Borrow
+        </Button>
       </div>
       <h4>Repay Borrowed Asset</h4>
       <div className="modal__one-line-form">
@@ -174,11 +174,11 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           onMaxClick={handleMaxRepay}
         />
         <Button
-          type="outline"
-          title={repayBtnTitle}
-          width="100px"
-          handleButton={repaySubmit(handleRepay)}
-        />
+          style={{ width: '100px' }}
+          onClick={repaySubmit(handleRepay)}
+        >
+          {repayBtnTitle}
+        </Button>
       </div>
 
       <h4>Deposit Collateral</h4>
@@ -195,11 +195,11 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           onMaxClick={handleMaxDeposit}
         />
         <Button
-          type="outline"
-          title={depositBtnTitle}
-          width="100px"
-          handleButton={depositSubmit(handleDeposit)}
-        />
+          style={{ width: '100px' }}
+          onClick={depositSubmit(handleDeposit)}
+        >
+          {depositBtnTitle}
+        </Button>
       </div>
       <h4>Withdraw Collateral</h4>
       <div className="modal__one-line-form">
@@ -215,11 +215,11 @@ function BorrowAsset ({ collateralDetails, borrowingDetails, vaultData }) {
           onMaxClick={handleMaxWithdraw}
         />
         <Button
-          type="outline"
-          title="Withdraw"
-          width="100px"
-          handleButton={withdrawSubmit(handleWithdraw)}
-        />
+          style={{ width: '100px' }}
+          onClick={withdrawSubmit(handleWithdraw)}
+        >
+          Withdraw
+        </Button>
       </div>
     </>
   );

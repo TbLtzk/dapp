@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 
@@ -90,7 +90,7 @@ function TokenomicsBlock () {
         className="mr-2"
         type="light"
       />,
-      handleButton: () =>
+      handleClick: () =>
         handler.getDefaultAllocationProxy(setDefaultAllocationProxy, setLoadingDefaultAllocation, true),
     },
     {
@@ -106,11 +106,10 @@ function TokenomicsBlock () {
         className="mr-2"
         type="light"
       />,
-      handleButton: () => handler.getValidationRewardProxy(setValidationRewardProxy, setLoadingValidationReward, true),
+      handleClick: () => handler.getValidationRewardProxy(setValidationRewardProxy, setLoadingValidationReward, true),
     },
     {
       id: 'root-proxy',
-
       title: 'Root Node Reward Proxy',
       content: rootNodeRewardProxy + ' Q',
       btnTitle: 'Allocate',
@@ -123,29 +122,26 @@ function TokenomicsBlock () {
         className="mr-2"
         type="light"
       />,
-      handleButton: () => handler.getRootNodeRewardProxy(setRootNodeRewardProxy, setLoadingRootNodeReward, true),
+      handleClick: () => handler.getRootNodeRewardProxy(setRootNodeRewardProxy, setLoadingRootNodeReward, true),
     },
     {
       id: 'reward-pool',
-
       title: 'Q Token Holder Reward Pool',
       content: fN(balanceDetails.qHolderRewardPool) + ' Q',
       btnTitle: null,
     },
     {
       id: 'reward-rate',
-
       title: 'Q Token Holder Reward Rate (p.a.)',
       content: fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate)) + ' %',
       btnTitle: null,
     },
     {
       id: 'reward-update',
-
       title: 'Time since Q Token holder reward update',
       content: timeSinceQHolderRewardUpdate || '0 day(s) 0 hours 0 minutes',
       btnIcon: 'cached',
-      iconFontSize: '23px',
+      iconFontSize: '20px',
       btnType: BTN_TYPES.timeSinceHolder,
       brakeLine: true,
       loading: isUpdateCompoundRate,
@@ -154,11 +150,10 @@ function TokenomicsBlock () {
         className="m-1"
         type="light"
       />,
-      handleButton: () => dispatch(getUpdateCompoundRate(userAddress)),
+      handleClick: () => dispatch(getUpdateCompoundRate(userAddress)),
     },
     {
       id: 'system-reserve',
-
       title: 'Q System Reserve',
       content: reserveBalance + ' Q',
       btnTitle: null,
@@ -186,23 +181,20 @@ function TokenomicsBlock () {
               {item?.btnType && (
                 <Button
                   disabled={item.loading}
-                  icon={!item.loading && item.btnIcon}
-                  title={
-                    item.loading
-                      ? (
-                        <>
-                          {item.loadingSpinner}
-                          {item.btnTitle}
-                        </>
-                      )
-                      : (
-                        item.btnTitle
-                      )
+                  style={{ width: '100%' }}
+                  onClick={item.handleClick}
+                >
+                  {item.loading
+                    ? item.loadingSpinner
+                    : (
+                      <i
+                        className={`mdi mdi-${item.btnIcon}`}
+                        style={{ fontSize: item.iconFontSize }}
+                      />
+                    )
                   }
-                  width="100%"
-                  handleButton={item.handleButton}
-                  iconFontSize={item.iconFontSize}
-                />
+                  {item.btnTitle && <span>{item.btnTitle}</span>}
+                </Button>
               )}
             </div>
           </div>

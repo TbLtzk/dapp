@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import Tooltip from 'components/Base/Tooltip';
 
 import { SlashingObjectionContainer } from './ModalSlashingObjection/styles';
@@ -145,60 +145,60 @@ function SlashingObjection ({ contract, proposalId, objData }) {
           <Tooltip shown={true} additionalInfo={INFO.castObjection}>
             <Button
               disabled={!objection}
-              margin="10px 10px 10px 10px"
-              width="175px"
-              handleButton={() => onShowModal(slashingTypes.castObjection)}
-              title="Cast Objection"
-            />
+              style={{ margin: '10px', width: '175px' }}
+              onClick={() => onShowModal(slashingTypes.castObjection)}
+            >
+              Cast Objection
+            </Button>
           </Tooltip>
 
           <Tooltip shown={true} additionalInfo={INFO.confirmApeal}>
             <Button
-              margin="10px 10px 10px 10px"
-              handleButton={() => onShowModal(slashingTypes.proposerRemark)}
-              width="175px"
-              title="Confirm appeal"
-            />
+              style={{ margin: '10px', width: '175px' }}
+              onClick={() => onShowModal(slashingTypes.proposerRemark)}
+            >
+              Confirm appeal
+            </Button>
           </Tooltip>
 
           <Tooltip shown={true} additionalInfo={proposeDecisionButton}>
             <Button
               disabled={!isRootNode}
-              margin="10px 10px 10px 10px"
-              handleButton={() => onShowModal(slashingTypes.proposeDecision)}
-              width="175px"
-              title="Propose Decision"
-            />
+              style={{ margin: '10px', width: '175px' }}
+              onClick={() => onShowModal(slashingTypes.proposeDecision)}
+            >
+              Propose Decision
+            </Button>
           </Tooltip>
         </div>
         <div>
           <Tooltip shown={true} additionalInfo={INFO.recallDecision}>
             <Button
               disabled={!recallDecision}
-              margin="10px 10px 10px 10px"
-              handleButton={() => onEscrowAction(escrowTypes.recall)}
-              width="175px"
-              title="Recall Decision"
-            />
+              style={{ margin: '10px', width: '175px' }}
+              onClick={() => onEscrowAction(escrowTypes.recall)}
+            >
+              Recall Decision
+            </Button>
           </Tooltip>
           <Tooltip shown={true} additionalInfo={voteToConfirmDecitionButton}>
             <Button
               disabled={!isRootNode}
-              margin="10px 10px 10px 10px"
-              handleButton={() => onEscrowAction(escrowTypes.confirm)}
-              width="175px"
-              title="Vote to confirm Decision"
-            />
+              style={{ margin: '10px', width: '175px' }}
+              onClick={() => onEscrowAction(escrowTypes.confirm)}
+            >
+              Vote to confirm Decision
+            </Button>
           </Tooltip>
 
           <Tooltip shown={true} additionalInfo={executeDecisionButton}>
             <Button
               disabled={!isRootNode}
-              margin="10px 10px 10px 10px"
-              width="175px"
-              handleButton={() => onEscrowAction(escrowTypes.execute)}
-              title="Execute Decision"
-            />
+              style={{ margin: '10px', width: '175px' }}
+              onClick={() => onEscrowAction(escrowTypes.execute)}
+            >
+              Execute Decision
+            </Button>
           </Tooltip>
         </div>
       </div>

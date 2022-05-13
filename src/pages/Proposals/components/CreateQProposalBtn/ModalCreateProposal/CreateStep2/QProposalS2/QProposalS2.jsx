@@ -42,6 +42,7 @@ function QProposalS2 ({ register, errors }) {
             handleChange={() => {}}
           />
           <FormInput
+            invertedColors
             refType={fieldTypes.hash}
             name="hash"
             placeholder="Hash"
@@ -50,6 +51,7 @@ function QProposalS2 ({ register, errors }) {
             register={register}
           />
           <FormInput
+            invertedColors
             refType={fieldTypes.externalLink}
             name="external-link"
             placeholder="External Link"
@@ -80,6 +82,7 @@ function QProposalS2 ({ register, errors }) {
           </h2>
           <h4>Provide a reference link to external source</h4>
           <FormInput
+            invertedColors
             refType={fieldTypes.externalLink}
             name="external-link"
             placeholder="External Link"

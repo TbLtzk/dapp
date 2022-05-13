@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import Button from 'components/Base/Buttons/Button';
+import Button from 'components/Base/Button';
 import Input from 'components/Base/Form/Input';
 
 import useForm from 'hooks/useForm';
@@ -38,17 +38,17 @@ function DelegationForm ({ onAdd, onRemove, onChange }) {
       />
       <div className="card__one-line-form-2-2-1-action">
         <Button
-          type="button"
-          icon="plus"
-          width="37px"
-          handleButton={onAdd}
-        />
+          style={{ width: '37px' }}
+          onClick={onAdd}
+        >
+          <i className="mdi mdi-plus" />
+        </Button>
         <Button
-          type="button"
-          icon="minus"
-          width="37px"
-          handleButton={onRemove}
-        />
+          style={{ width: '37px' }}
+          onClick={onRemove}
+        >
+          <i className="mdi mdi-minus" />
+        </Button>
       </div>
     </form>
   );
