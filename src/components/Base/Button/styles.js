@@ -52,7 +52,7 @@ export const ButtonCustom = styled.button`
           }
 
           &:disabled {
-            color: ${p.$look === 'transparent' ? p.theme.colors.oxfordBlueTint2 : p.theme.colors.oxfordBlue};
+            color: ${p.$look === 'transparent' ? p.theme.colors.oxfordBlueTint2 : p.theme.colors.oxfordBlueTint5};
             background-color: ${p.$look === 'white'
               ? p.theme.colors.oxfordBlueTint2
               : p.$look === 'transparent'

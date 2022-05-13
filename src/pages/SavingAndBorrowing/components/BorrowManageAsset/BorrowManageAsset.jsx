@@ -8,25 +8,18 @@ import LoadingSpinner from 'components/Base/LoadingSpinner';
 import ModalWindow from 'components/Base/ModalWindow';
 import { WrapSpinner } from 'pages/styles';
 
-import BorrowAsset from './components/BorrowAsset';
+import BorrowForm from './components/BorrowForm';
 import BorrowInfo from './components/BorrowInfo';
+import DepositForm from './components/DepositForm';
+import RepayForm from './components/RepayForm';
+import WithdrawForm from './components/WithdrawForm';
 
 import { getBorrowAllowance, getBorrowVaultInfo, setBorrowVaultInfo } from 'store/borrow-assets/action-creators';
 import { borrowVaultInfoSelector } from 'store/borrow-assets/selectors';
 
-export const TYPE = {
-  deposit: 'deposit',
-  repay: 'repay'
-};
+import { borrowTypes } from 'constants/borrowTypes';
 
 function BorrowManageAsset ({ vault }) {
-  const vaultData = {
-    type: 'borrow',
-    collateral: vault.colKey,
-    borrow: 'QUSD',
-    vault
-  };
-
   const dispatch = useDispatch();
   const borrowVaultInfo = useSelector(borrowVaultInfoSelector);
 
@@ -39,9 +32,9 @@ function BorrowManageAsset ({ vault }) {
   const handleOpenModal = () => {
     setIsModalOpen(true);
     dispatch(setBorrowVaultInfo({}));
-    dispatch(getBorrowAllowance(TYPE.deposit));
-    dispatch(getBorrowAllowance(TYPE.repay));
-    dispatch(getBorrowVaultInfo(vaultData?.vault?.vaultNum));
+    dispatch(getBorrowAllowance(borrowTypes.deposit));
+    dispatch(getBorrowAllowance(borrowTypes.repay));
+    dispatch(getBorrowVaultInfo(vault?.vaultNum));
   };
 
   const modalContent = isEmpty(borrowVaultInfo)
@@ -52,8 +45,11 @@ function BorrowManageAsset ({ vault }) {
     )
     : (
       <>
-        <BorrowInfo {...borrowVaultInfo} />
-        <BorrowAsset {...borrowVaultInfo} vaultData={vaultData} />
+        <BorrowInfo />
+        <BorrowForm vaultNum={vault?.vaultNum} />
+        <RepayForm vaultNum={vault?.vaultNum} />
+        <DepositForm vaultNum={vault?.vaultNum} />
+        <WithdrawForm vaultNum={vault?.vaultNum} />
       </>
     );
 

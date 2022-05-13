@@ -80,7 +80,6 @@ function QProposalS2 ({ register, errors }) {
               : 'Emergency Updates enable Root Nodes to agree on an immediate update for the Q system.'
             }
           </h2>
-          <h4>Provide a reference link to external source</h4>
           <FormInput
             invertedColors
             refType={fieldTypes.externalLink}
