@@ -106,6 +106,7 @@ function ModalManage ({ modalShow, setModalShow, setDeposit, setPurge, modalTitl
           <h4>Amount</h4>
           <FormInput
             ref={register({ required: 'Please, fill the field', pattern: /[0-9]/i })}
+            invertedColors
             prefix="Q"
             min={0}
             name="amountQ"

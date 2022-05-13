@@ -152,7 +152,7 @@ function SavingBorrowingBlock () {
                     : (
                       <i
                         className="mdi mdi-cached"
-                        style={{ fontSize: '23px' }}
+                        style={{ fontSize: '20px' }}
                       />
                     )
                   }

@@ -2,10 +2,7 @@ import styled, { css } from 'styled-components';
 
 export const ButtonCustom = styled.button`
   position: relative;
-  display: inline-flex;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
+  display: inline-block;
   padding: 7px 11px;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -30,6 +27,10 @@ export const ButtonCustom = styled.button`
   &:disabled {
     opacity: 1;
     box-shadow: none;
+  }
+
+  & > *:not(:first-child) {
+    margin-left: 10px;
   }
 
   ${(p) =>

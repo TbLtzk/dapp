@@ -141,6 +141,7 @@ function TokenomicsBlock () {
       title: 'Time since Q Token holder reward update',
       content: timeSinceQHolderRewardUpdate || '0 day(s) 0 hours 0 minutes',
       btnIcon: 'cached',
+      iconFontSize: '20px',
       btnType: BTN_TYPES.timeSinceHolder,
       brakeLine: true,
       loading: isUpdateCompoundRate,
@@ -188,11 +189,11 @@ function TokenomicsBlock () {
                     : (
                       <i
                         className={`mdi mdi-${item.btnIcon}`}
-                        style={{ fontSize: '23px' }}
+                        style={{ fontSize: item.iconFontSize }}
                       />
                     )
                   }
-                  <span>{item.btnTitle}</span>
+                  {item.btnTitle && <span>{item.btnTitle}</span>}
                 </Button>
               )}
             </div>

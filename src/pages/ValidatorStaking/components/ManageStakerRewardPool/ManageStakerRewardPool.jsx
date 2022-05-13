@@ -66,7 +66,6 @@ function ManageStakerRewardPool () {
         disabled={compoundRateKeeperExists}
       >
         <Button
-          disabled={!compoundRateKeeperExists}
           look="white"
           onClick={handleModalOpen}
         >
