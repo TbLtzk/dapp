@@ -7,55 +7,65 @@ import Input from 'components/Base/Form/Input';
 import useForm from 'hooks/useForm';
 import useMetamaskReset from 'hooks/useMetamaskReset';
 
-import { setWithdrawCall } from 'store/q-vault/action-creators';
+import { setSendCall } from 'store/q-vault/action-creators';
 import { qVaultMinimumTimeLock, userBalance } from 'store/q-vault/selectors';
-import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import formTypes from 'constants/form-types';
 import { subtractAmount } from 'func/balance';
-import { amount, required } from 'func/validators';
+import { address, amount, required } from 'func/validators';
 
-function WithdrawForm () {
+function SendForm () {
   const dispatch = useDispatch();
 
-  const address = useSelector(userAddressMetamask);
   const userQVaultBalance = useSelector(userBalance);
   const qVaultLockedAmount = useSelector(qVaultMinimumTimeLock);
 
   const maxAmount = subtractAmount(userQVaultBalance, qVaultLockedAmount);
   const form = useForm({
-    initialValues: { amount: '' },
+    initialValues: { address: '', amount: '' },
     validators: {
+      address: [required, address],
       amount: [required, amount(maxAmount)],
     },
     onSubmit: (form) => {
-      dispatch(setWithdrawCall(address, form.amount));
+      dispatch(setSendCall(form.address, form.amount));
     }
   });
 
-  useMetamaskReset(formTypes.qVaultWithdraw, form);
+  useMetamaskReset(formTypes.qVaultSend, form.reset);
 
   return (
     <form noValidate onSubmit={form.submit}>
-      <div className="card__one-line-simple-form">
+      <h4>Send to foreign QVault account</h4>
+      <div className="card__one-line-form-2-2-1">
+        <h4>Address</h4>
+        <h4>Amount</h4>
+      </div>
+      <div className="card__send-form">
+        <Input
+          {...form.fields.address}
+          prefix={<i className="mdi mdi-wallet-outline btn-icon" />}
+          placeholder="0x000"
+        />
         <Input
           {...form.fields.amount}
           type="number"
-          label="Withdraw from Q Vault"
           prefix="Q"
           max={maxAmount}
           placeholder="0.0"
         />
-        <Button
-          type="submit"
-          style={{ width: '90px' }}
-          disabled={!form.isValid}
-        >
-          Withdraw
-        </Button>
+        <div className="card__one-line-form-2-2-1-action">
+          <Button
+            type="submit"
+            style={{ width: '90px' }}
+            disabled={!form.isValid}
+          >
+            Send
+          </Button>
+        </div>
       </div>
     </form>
   );
 }
 
-export default WithdrawForm;
+export default SendForm;

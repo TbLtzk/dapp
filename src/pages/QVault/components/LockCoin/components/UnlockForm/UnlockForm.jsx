@@ -22,23 +22,21 @@ function UnlockForm () {
 
   const form = useForm({
     initialValues: { amount: '' },
-    validators: {
-      amount: [required, amount(userVotingWeight)],
-    },
+    validators: { amount: [required, amount(userVotingWeight)] },
     onSubmit: (form) => {
       dispatch(setUnlockAmount(userAddress, form.amount));
     }
   });
-  useMetamaskReset(formTypes.qVaultUnlock, form);
+  useMetamaskReset(formTypes.qVaultUnlock, form.reset);
 
   return (
     <form noValidate onSubmit={form.submit}>
+      <h4>Reduce Voting Weight by</h4>
       <div className="card__one-line-simple-form">
         <Input
           {...form.fields.amount}
           max={userVotingWeight}
           type="number"
-          label="Reduce Voting Weight by"
           prefix="Q"
           placeholder="0.0"
         />

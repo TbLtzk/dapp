@@ -122,14 +122,14 @@ export const columnsRootNode = [
     text: 'Root Node Address'
   },
   {
-    headerStyle: () => ({ minWidth: '110px' }),
+    headerStyle: () => ({ minWidth: '100px' }),
     dataField: 'amount',
     text: 'Staked Amount',
     sort: true,
     sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b))
   },
   {
-    headerStyle: () => ({ minWidth: '70px' }),
+    headerStyle: () => ({ minWidth: '60px' }),
     dataField: 'share',
     text: 'Share',
     sort: true,

@@ -24,14 +24,12 @@ function DelegationRewards () {
     <div className="card_block">
       <div>
         <h5>Outstanding Delegation Rewards</h5>
-        <p>{fN(outstandingDelegationRewardsValue) + ' Q'}</p>
+        <p>{`${fN(outstandingDelegationRewardsValue)} Q`}</p>
       </div>
-      <div>
-        <Button onClick={handleClaim}>
-          <i className="mdi mdi-chart-pie" />
-          <span>Claim Delegation Reward</span>
-        </Button>
-      </div>
+      <Button onClick={handleClaim}>
+        <i className="mdi mdi-chart-pie" />
+        <span>Claim Delegation Reward</span>
+      </Button>
     </div>
   );
 }

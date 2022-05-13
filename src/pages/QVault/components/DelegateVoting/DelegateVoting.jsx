@@ -3,20 +3,17 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
-import FormInput from 'components/Base/Form/FormInput';
 
-import useInputForm from 'hooks/useInputForm';
+import AnnounceForm from './components/AnnounceForm';
 
-import { getDelegationInfo, setAnnounceNewVotingAgent, setNewVotingAgent } from 'store/q-vault/action-creators';
+import { getDelegationInfo, setNewVotingAgent } from 'store/q-vault/action-creators';
 import { isPendingDelegation, receivedWeight, votingAgent, votingAgentPassOverTime } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import { getVoteDelegation } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
-import formTypes from 'constants/form-types';
 import { fromWei } from 'func/balance';
 import { getNowTimestamp, remainDate } from 'func/convertDate';
-import { isAddress } from 'func/useful';
 
 function DelegateVoting () {
   const dispatch = useDispatch();
@@ -27,15 +24,9 @@ function DelegateVoting () {
   const isPending = useSelector(isPendingDelegation);
   const time = useSelector(votingAgentPassOverTime);
 
-  const { register, handleSubmit, errors } = useInputForm(formTypes.qVaultAnnounce);
-
   useEffect(() => {
     dispatch(getDelegationInfo(address));
   }, []);
-
-  async function handleAnnounce (formData) {
-    dispatch(setAnnounceNewVotingAgent(formData.address));
-  }
 
   async function handleDelegate () {
     dispatch(setNewVotingAgent());
@@ -50,6 +41,7 @@ function DelegateVoting () {
       <h4>{fromWei(weight)}</h4>
       <h5>Current agent</h5>
       <h4>{delegateInfo}</h4>
+
       {!isPending
         ? null
         : time - getNowTimestamp() > 0
@@ -77,26 +69,7 @@ function DelegateVoting () {
             </div>
           )}
       <div className="card__line" />
-      <h3>Announce new voting agent</h3>
-      <h4>Address</h4>
-      <div className="card__one-line-simple-form">
-        <FormInput
-          ref={register({
-            required: 'Please, fill the field',
-            validate: (address) => (isAddress(address) ? true : 'Incorrect address'),
-          })}
-          name="address"
-          placeholder="0x000"
-          valid={errors?.address?.message}
-        />
-        <Button
-          style={{ width: '90px' }}
-          onClick={handleSubmit(handleAnnounce)}
-        >
-          Announce
-        </Button>
-      </div>
-      <h4>This will immediately reduce the voting weight of your voting agent for new voting</h4>
+      <AnnounceForm />
     </CustomBlock>
   );
 }
