@@ -1,55 +1,61 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
+import ModalWindow from 'components/Base/ModalWindow';
 import MemberTables from 'components/Custom/MemberTables';
 
-import ModalManage from './ModalManage';
-
-import { setDepositLockedAmount, setPurgeTimeLocksAmount } from 'store/locked-amount/action-creators';
+import ManageForm from '../ManageForm';
+import VestingWithdrawForm from '../VestingWithdrawForm';
 
 import { columnnsLockAmount } from 'constants/columns';
 import { tableLockAmount } from 'constants/tables';
 
-function BalanceCard ({ balance, title, lockAmountData, timeLockBalance, contract, address }) {
-  const dispatch = useDispatch();
-
-  const [modalShow, setModalShow] = useState(false);
-
-  const setDeposit = (data) => {
-    dispatch(setDepositLockedAmount({ contract, ...data, address }));
-  };
-
-  const setPurge = () => {
-    dispatch(setPurgeTimeLocksAmount({ contract, address }));
-  };
+function BalanceCard ({
+  title,
+  contract,
+  balance,
+  lockAmountData,
+  timeLockBalance,
+  address
+}) {
+  const [isModalShown, setIsModalShown] = useState(false);
 
   return (
     <CustomBlock>
       <h5>{title}</h5>
-      <p>{balance + ' Q'}</p>
+      <p>{balance} Q</p>
+
       <h5>Time Locked Balance</h5>
       <p>{timeLockBalance} Q</p>
+
       <MemberTables
         perPageLength={4}
         emptyTableMessage="No Time Locks"
         table={tableLockAmount(lockAmountData)}
         columns={columnnsLockAmount}
       />
-      <ModalManage
-        address={address}
+
+      <ModalWindow
+        scrollable={false}
+        show={isModalShown}
         modalTitle={contract === 'vesting' ? 'Deposit, withdraw & purge' : 'Deposit & purge'}
-        contract={contract}
-        setPurge={setPurge}
-        setDeposit={setDeposit}
-        modalShow={modalShow}
-        setModalShow={(value) => setModalShow(value)}
+        content={
+          <>
+            <div className="modal-line" />
+            <h5>Recipient Address</h5>
+            <h4>{address}</h4>
+            {contract === 'vesting' && <VestingWithdrawForm />}
+            <ManageForm contract={contract} address={address} />
+          </>
+        }
+        onHide={() => setIsModalShown(false)}
       />
+
       <div className="button__bottom">
         <Button
           style={{ width: '80px' }}
-          onClick={() => setModalShow(true)}
+          onClick={() => setIsModalShown(true)}
         >
           Manage
         </Button>

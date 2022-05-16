@@ -13,16 +13,3 @@ export const WrapContainer = styled.div`
     max-width: 100%;
   }
 `;
-
-export const BlockWrap = styled.div`
-  padding-bottom: 10px;
-`;
-
-export const ValueWrap = styled.h4`
-  width: ${(props) => props.width};
-`;
-
-export const CalendarWraper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;

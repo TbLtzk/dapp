@@ -14,10 +14,7 @@ export const Header = styled(Modal.Header)`
 `;
 
 export const Body = styled(Modal.Body)`
-  padding-left: ${indents['40']};
-  padding-right: ${indents['40']};
-  padding-top: 0;
-  min-height: 326px;
+  padding: 0 ${indents['20']} ${indents['20']};
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -41,10 +38,6 @@ export const ModalW = styled(Modal)`
     font-size: 20px;
     line-height: 35px;
     font-family: "Lora", sans-serif;
-  }
-
-  .modal-body {
-    padding: 0 ${indents['20']};
   }
 
   .modal-line {
