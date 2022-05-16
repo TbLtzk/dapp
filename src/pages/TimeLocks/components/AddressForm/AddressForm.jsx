@@ -1,53 +1,47 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
 
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
-import FormInput from 'components/Base/Form/FormInput';
+import Input from 'components/Base/Form/Input';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
-import { WrapContainer } from '../../styles';
+import useForm from 'hooks/useForm';
 
-import { isAddress } from 'func/useful';
+import { WrapContainer } from './styles';
 
-function AddressForm ({ userAddress, setAddressRefresh }) {
-  const { register, handleSubmit, errors } = useForm({
-    mode: 'onChange',
-    defaultValues: {
-      address: userAddress,
-    },
+import { address, required } from 'func/validators';
+
+function AddressForm ({ userAddress, onChange }) {
+  const form = useForm({
+    initialValues: { address: userAddress },
+    validators: { address: [required, address] },
+    onSubmit: (values) => {
+      onChange(values.address);
+    }
   });
 
   return (
-    <CustomBlock>
-      <h5>Current Address:</h5>
-      <h4>
-        <ExplorerAddress address={userAddress} />
-      </h4>
-      <h5>Update address:</h5>
-      <WrapContainer>
-        <FormInput
-          ref={register({
-            required: 'Address required!',
-            validate: (address) => (isAddress(address) ? true : 'Incorrect address'),
-          })}
-          name="address"
-          error={errors?.address?.message}
-        />
-        <div>
+    <form noValidate onSubmit={form.submit}>
+      <CustomBlock>
+        <h5>Current Address:</h5>
+        <h4><ExplorerAddress address={userAddress} /></h4>
+
+        <h5>Update address:</h5>
+        <WrapContainer>
+          <Input {...form.fields.address} />
           <Button
-            disabled={Boolean(errors?.address?.message)}
+            type="submit"
+            disabled={!form.isValid}
             style={{ width: '50px' }}
-            onClick={handleSubmit(setAddressRefresh)}
           >
             <i
               className="mdi mdi-cached"
               style={{ fontSize: '20px' }}
             />
           </Button>
-        </div>
-      </WrapContainer>
-    </CustomBlock>
+        </WrapContainer>
+      </CustomBlock>
+    </form>
   );
 }
 

@@ -92,9 +92,7 @@ function* setDepositLockedAmount({ payload }) {
       payload.address,
       dateToTimestamp(payload.startDate),
       dateToTimestamp(payload.endDate),
-      {
-        value: toWei(payload.amountQ),
-      }
+      { value: toWei(payload.amount) }
     );
 
     yield call(getAmountOnContract, payload.contract, payload.address);

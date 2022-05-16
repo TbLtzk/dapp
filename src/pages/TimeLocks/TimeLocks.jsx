@@ -59,48 +59,43 @@ function TimeLocks () {
     dispatch(getVestingTimeLocks(currentAddress));
   }, [dispatch, currentAddress]);
 
-  const handleRefresh = (form) => {
-    setCurrentAddress(form.address);
-  };
-
   const cardsData = [
     {
+      title: 'Q Vault Account Balance',
       contract: 'qVault',
-      timeLockBalance: fN(qVaultTimeLockMinimumBalance),
       balance: fN(qVaultStakeBalance),
+      timeLockBalance: fN(qVaultTimeLockMinimumBalance),
       lockAmountData: qVaultTimeLocksArray || [],
-      modalTitle: 'Deposit & purge',
-      title: 'Q Vault Account Balance'
     },
     {
+      title: 'Root Stake Balance',
       contract: 'root',
-      timeLockBalance: fN(rootTimeLockMinimumBalance),
       balance: fN(rootStakeBalance),
+      timeLockBalance: fN(rootTimeLockMinimumBalance),
       lockAmountData: rootTimeLocksArray || [],
-      modalTitle: 'Deposit & purge',
-      title: 'Root Stake Balance'
     },
     {
+      title: 'Validator Stake Balance',
       contract: 'validators',
-      timeLockBalance: fN(validatorsTimeLockMinimumBalance),
       balance: fN(validatorSelfStake),
+      timeLockBalance: fN(validatorsTimeLockMinimumBalance),
       lockAmountData: validatorsTimeLocksArray || [],
-      modalTitle: 'Deposit & Purge',
-      title: 'Validator Stake Balance'
     },
     {
+      title: 'Vesting Account Balance',
       contract: 'vesting',
-      timeLockBalance: fN(vestingTimeLockMinimumBalance),
       balance: fN(vestingStakeBalance),
+      timeLockBalance: fN(vestingTimeLockMinimumBalance),
       lockAmountData: vestingTimeLocksArray || [],
-      modalTitle: 'Deposit, Withdraw & Purge',
-      title: 'Vesting Account Balance'
     }
   ];
 
   return (
     <PageWrap headerTitle="Time Locks">
-      <AddressForm setAddressRefresh={handleRefresh} userAddress={currentAddress} />
+      <AddressForm
+        userAddress={currentAddress}
+        onChange={setCurrentAddress}
+      />
       <div className="content__colm-2 content__time-locks">
         {cardsData.map((card) => (
           <BalanceCard
