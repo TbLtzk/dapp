@@ -37,7 +37,7 @@ export const networkParameters = {
   devnet: {
     chainId: '0x8a72',
     chainName: 'Q Devnet',
-    rpcUrls: ['http://35.161.73.158:8545'],
+    rpcUrls: ['http://63.34.190.209:8545'],
     blockExplorerUrls: ['http://52.35.57.176:8080/'],
     nativeCurrency: {
       name: 'Q ',
@@ -85,11 +85,11 @@ export const URLS = {
     name: 'Devnet',
     chainId: 35442,
     webSocket: 'ws://35.161.73.158:8546',
-    rpc: 'http://35.161.73.158:8545',
+    rpc: 'http://63.34.190.209:8545',
     indexer: indexersUrls.devnet,
     explorer: explorerUrls.devnet
   },
-  'http://35.161.73.158:8000': {
+  'http://63.34.190.209:8000': {
     id: 'testnet',
     name: 'Testnet',
     chainId: 35443,
