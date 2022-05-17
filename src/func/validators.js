@@ -43,6 +43,16 @@ export const amount = max => (val, form) => {
   };
 };
 
+export const max = max => (val, form) => {
+  const value = BN(val);
+  const validatorValue = BN(getValidatorValue(max, form));
+
+  return {
+    isValid: value.comparedTo(validatorValue) <= 0,
+    message: `Maximum value is ${max}`
+  };
+};
+
 export const url = val => ({
   isValid: !val || linkRegex.test(String(val)),
   message: 'Please, enter a valid URL'

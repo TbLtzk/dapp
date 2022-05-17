@@ -29,20 +29,17 @@ function RefreshDelegationUpdate () {
     setTimeDelegationUpdate(remainDateTimeSince(lastUpdateCompoundRate));
   }, 30000);
 
-  const btnHandler = () => {
-    dispatch(setVRPUpdateValidatorsCompoundRate(userAddress));
-  };
-
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
       <div>
         <h5>Time Since Last Refresh of User Delegations</h5>
         <p>{timeDelegationUpdate || '0 day(s) 0 hours 0 minutes'}</p>
       </div>
+
       <div>
         <Button
           disabled={loadingUpdateCompoundRate}
-          onClick={btnHandler}
+          onClick={() => dispatch(setVRPUpdateValidatorsCompoundRate(userAddress))}
         >
           {loadingUpdateCompoundRate
             ? (

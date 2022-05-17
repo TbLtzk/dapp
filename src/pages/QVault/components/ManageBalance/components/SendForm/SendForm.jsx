@@ -57,8 +57,8 @@ function SendForm () {
         <div className="card__one-line-form-2-2-1-action">
           <Button
             type="submit"
-            style={{ width: '90px' }}
             disabled={!form.isValid}
+            style={{ width: '90px' }}
           >
             Send
           </Button>
