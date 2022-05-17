@@ -1,15 +1,14 @@
 import React, { forwardRef } from 'react';
 
-import Alert from '../../Custom/Alerts';
+import Alert from 'components/Custom/Alerts';
 
 import { PageTitleActions, PageTitleName, PageTitleWrp } from './styles';
 
-const PageTitle = forwardRef(({ header, extra, extraButton }, ref) => {
+const PageTitle = forwardRef(({ header, extra }, ref) => {
   return (
     <PageTitleWrp>
       <PageTitleName ref={ref}>{header}</PageTitleName>
       <PageTitleActions>
-        {extraButton}
         {extra}
       </PageTitleActions>
       <Alert />

@@ -5,8 +5,9 @@ import Button from 'components/Base/Button';
 import ModalWindow from 'components/Base/ModalWindow';
 import Tooltip from 'components/Base/Tooltip';
 
-import RewardStats from './components/RewardStats';
-import ValidatorPool from './components/ValidatorPool';
+import DelegatorShareForm from '../DelegatorShareForm';
+import RewardStats from '../RewardStats';
+import ValidatorPool from '../ValidatorPool';
 
 import { userAddressMetamask } from 'store/user-inf/selectors';
 import {
@@ -24,7 +25,7 @@ import {
 } from 'store/validators/action-creators';
 import { compoundRateKeeperExistsSelector } from 'store/validators/selectors';
 
-function ManageStakerRewardPool () {
+function StakerRewardPool () {
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
   const compoundRateKeeperExists = useSelector(compoundRateKeeperExistsSelector);
@@ -49,15 +50,6 @@ function ManageStakerRewardPool () {
     dispatch(getVRPLastUpdateOfCompoundRate());
   };
 
-  const content = (
-    <>
-      <div className="modal-line" />
-      <ValidatorPool />
-      <div className="modal-line" />
-      <RewardStats />
-    </>
-  );
-
   return (
     <>
       <Tooltip
@@ -77,11 +69,19 @@ function ManageStakerRewardPool () {
       <ModalWindow
         show={modalOpen}
         modalTitle="Manage Staker Reward Pool"
-        content={content}
+        content={(
+          <>
+            <div className="modal-line" />
+            <ValidatorPool />
+            <div className="modal-line" />
+            <RewardStats />
+            <DelegatorShareForm />
+          </>
+        )}
         onHide={() => setModalOpen(false)}
       />
     </>
   );
 }
 
-export default ManageStakerRewardPool;
+export default StakerRewardPool;

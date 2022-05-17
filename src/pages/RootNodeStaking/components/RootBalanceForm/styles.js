@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const AccountStatusForm = styled.div`
+export const FormWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -33,23 +33,6 @@ export const AccountStatusForm = styled.div`
       & > *:first-child {
         margin-left: 0;
       }
-    }
-  }
-`;
-
-export const AccountStatusInfo = styled.div`
-  width: 100%;
-  display: flex;
-
-  & > *:not(:first-child) {
-    margin-left: 38px;
-  }
-
-  @media screen and (max-width: 1200px) {
-    display: grid;
-
-    & > *:not(:first-child) {
-      margin-left: 0;
     }
   }
 `;

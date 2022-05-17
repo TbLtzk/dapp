@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import RefreshDelegationUpdate from './components/RefreshDelegationUpdate';
+import RefreshDelegationUpdate from '../RefreshDelegationUpdate';
 
 import {
   accountableTotalStake,
@@ -22,21 +22,21 @@ function ValidatorPool () {
     [
       {
         label: 'Total Stake:',
-        value: fN(totalStake) + ' Q'
+        value: `${fN(totalStake)} Q`
       },
       {
         label: 'Validator Own Stake:',
-        value: fN(ownStake) + ' Q'
+        value: `${fN(ownStake)} Q`
       }
     ],
     [
       {
         label: 'Delegated Stake:',
-        value: fN(delegatedStake) + ' Q'
+        value: `${fN(delegatedStake)} Q`
       },
       {
         label: 'Accountable Stake:',
-        value: fN(accTotalStake) + ' Q'
+        value: `${fN(accTotalStake)} Q`
       }
     ]
   ];
@@ -44,10 +44,16 @@ function ValidatorPool () {
   return (
     <div>
       <h3>Validator Pool</h3>
-      {validatorPoolData?.map((line, index) => (
-        <div key={index + '-validator-line'} style={{ display: 'flex' }}>
+      {validatorPoolData.map((line, index) => (
+        <div
+          key={`${index}-validator-line`}
+          style={{ display: 'flex' }}
+        >
           {line.map((el) => (
-            <div key={el.label + '-validator-pool'} style={{ width: '50%' }}>
+            <div
+              key={`${el.label}-validator-pool`}
+              style={{ width: '50%' }}
+            >
               <h5>{el.label}</h5>
               <p>{el.value}</p>
             </div>
