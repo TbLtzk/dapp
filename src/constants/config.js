@@ -89,7 +89,7 @@ export const URLS = {
     indexer: indexersUrls.devnet,
     explorer: explorerUrls.devnet,
   },
-  'http://63.34.190.209:8000/': {
+  'http://63.34.190.209:8000': {
     id: 'testnet',
     name: 'Testnet',
     chainId: 35443,
@@ -98,7 +98,7 @@ export const URLS = {
     indexer: indexersUrls.testnet,
     explorer: explorerUrls.testnet,
   },
-  'http://35.161.73.158:8000/': {
+  'http://35.161.73.158:8000': {
     id: 'testnet',
     name: 'Testnet',
     chainId: 35443,
