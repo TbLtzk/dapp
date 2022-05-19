@@ -32,7 +32,7 @@ function AddressForm ({ userAddress, onChange }) {
           <Button
             type="submit"
             disabled={!form.isValid}
-            style={{ width: '50px' }}
+            style={{ width: '50px', height: 'max-content' }}
           >
             <i
               className="mdi mdi-cached"

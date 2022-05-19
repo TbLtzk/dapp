@@ -44,37 +44,37 @@ export const SelectWrapper = styled(Form.Group)`
       outline: none;
       background: transparent;
       border: 1px solid ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.oxfordBlueTint1;
-    } else {
-      return props.theme.colors.white;
-    }
-  }};
+        if (props.palette === 'dark') {
+          return props.theme.colors.oxfordBlueTint1;
+        } else {
+          return props.theme.colors.white;
+        }
+      }};
       color: ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.oxfordBlueTint1;
-    } else {
-      return props.theme.colors.white;
-    }
-  }};
+        if (props.palette === 'dark') {
+          return props.theme.colors.oxfordBlueTint1;
+        } else {
+          return props.theme.colors.white;
+        }
+      }};
     }
 
     &:disabled {
       background: transparent;
       border: 1px solid ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.oxfordBlueTint5;
-    } else {
-      return props.theme.colors.oxfordBlueTint2;
-    }
-  }};
+        if (props.palette === 'dark') {
+          return props.theme.colors.oxfordBlueTint5;
+        } else {
+          return props.theme.colors.oxfordBlueTint2;
+        }
+      }};
       color: ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.oxfordBlueTint5;
-    } else {
-      return props.theme.colors.oxfordBlueTint2;
-    }
-  }};
+        if (props.palette === 'dark') {
+          return props.theme.colors.oxfordBlueTint5;
+        } else {
+          return props.theme.colors.oxfordBlueTint2;
+        }
+      }};
     }
 
     &:after {
@@ -85,5 +85,4 @@ export const SelectWrapper = styled(Form.Group)`
   option {
     color: #0B2545;
   }
-
 `;

@@ -21,9 +21,9 @@ export const setDisabledCreatedProposalBtn = (result) => ({
   result
 });
 
-export const createProposal = (data) => ({
+export const createProposal = (proposal) => ({
   type: actionTypes.CREATE_PROPOSAL,
-  data
+  proposal
 });
 
 export const createProposalSuccess = (result) => ({

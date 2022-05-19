@@ -124,9 +124,9 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
       : (
         <div key={keyId}>
           <h5>{label}</h5>
-          <p title={value}>
+          <div title={value}>
             {formatter ? formatter(value) : value}
-          </p>
+          </div>
         </div>
       );
   };
