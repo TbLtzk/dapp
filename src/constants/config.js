@@ -6,31 +6,31 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 export const chainIds = {
   mainnet: '35441',
   testnet: '35443',
-  devnet: '35442'
+  devnet: '35442',
 };
 
 export const networks = {
   35443: 'testnet',
   35442: 'devnet',
-  35441: 'mainnet'
+  35441: 'mainnet',
 };
 
 export const blockCountDependOnChainId = {
   35443: 300000,
   35442: 40000,
-  35441: 500000
+  35441: 500000,
 };
 
 export const indexersUrls = {
   devnet: 'http://35.161.73.158:4000',
   mainnet: 'https://indexer.q.org',
-  testnet: 'https://indexer.qtestnet.org'
+  testnet: 'https://indexer.qtestnet.org',
 };
 
 export const explorerUrls = {
   devnet: 'http://52.35.57.176:8080',
   mainnet: 'https://explorer.q.org',
-  testnet: 'https://explorer.qtestnet.org/'
+  testnet: 'https://explorer.qtestnet.org/',
 };
 
 export const networkParameters = {
@@ -42,8 +42,8 @@ export const networkParameters = {
     nativeCurrency: {
       name: 'Q ',
       symbol: 'Q ',
-      decimals: 18
-    }
+      decimals: 18,
+    },
   },
   testnet: {
     chainId: '0x8a73',
@@ -54,8 +54,8 @@ export const networkParameters = {
     nativeCurrency: {
       name: 'Q ',
       symbol: 'Q ',
-      decimals: 18
-    }
+      decimals: 18,
+    },
   },
   mainnet: {
     chainId: '0x8a71',
@@ -65,9 +65,9 @@ export const networkParameters = {
     nativeCurrency: {
       name: 'Q ',
       symbol: 'Q ',
-      decimals: 18
-    }
-  }
+      decimals: 18,
+    },
+  },
 };
 
 export const URLS = {
@@ -78,7 +78,7 @@ export const URLS = {
     webSocket: 'ws://18.158.7.68:8546',
     rpc: 'https://rpc.qtestnet.org',
     indexer: indexersUrls.testnet,
-    explorer: explorerUrls.testnet
+    explorer: explorerUrls.testnet,
   },
   'not possible because of http (not https)': {
     id: 'devnet',
@@ -87,7 +87,7 @@ export const URLS = {
     webSocket: 'ws://35.161.73.158:8546',
     rpc: 'http://63.34.190.209:8545',
     indexer: indexersUrls.devnet,
-    explorer: explorerUrls.devnet
+    explorer: explorerUrls.devnet,
   },
   'http://63.34.190.209:8000/': {
     id: 'testnet',
@@ -96,7 +96,16 @@ export const URLS = {
     webSocket: 'ws://18.158.7.68:8546',
     rpc: 'https://rpc.qtestnet.org',
     indexer: indexersUrls.testnet,
-    explorer: explorerUrls.testnet
+    explorer: explorerUrls.testnet,
+  },
+  'http://35.161.73.158:8000/': {
+    id: 'testnet',
+    name: 'Testnet',
+    chainId: 35443,
+    webSocket: 'ws://18.158.7.68:8546',
+    rpc: 'https://rpc.qtestnet.org',
+    indexer: indexersUrls.testnet,
+    explorer: explorerUrls.testnet,
   },
   'https://hq.qtestnet.org': {
     id: 'testnet',
@@ -105,7 +114,7 @@ export const URLS = {
     webSocket: 'ws://18.158.7.68:8546',
     rpc: 'https://rpc.qtestnet.org',
     indexer: indexersUrls.testnet,
-    explorer: explorerUrls.testnet
+    explorer: explorerUrls.testnet,
   },
   'https://hq.q.org': {
     id: 'mainnet',
@@ -114,6 +123,6 @@ export const URLS = {
     webSocket: 'wss://rpc-ws.q.org',
     rpc: 'https://rpc.q.org',
     indexer: indexersUrls.mainnet,
-    explorer: explorerUrls.mainnet
-  }
+    explorer: explorerUrls.mainnet,
+  },
 };
