@@ -114,7 +114,7 @@ export const getValidatorMetricsInstance = async () => {
 
 export const getIndexerInstance = async (indexerUrl = indexersUrls.testnet) => {
   if (!indexerInstance) {
-    indexerInstance = new Indexer(indexerUrl + '/blocks', { web3: window.web3 });
+    indexerInstance = new Indexer(indexerUrl + '/blocks');
   }
   return indexerInstance;
 };

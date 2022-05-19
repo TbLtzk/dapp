@@ -55,6 +55,7 @@ const Input = ({
         />
         {max && (
           <button
+            disabled={isDisabled}
             className="input__max"
             type="button"
             onClick={() => onChange(max)}

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
 
 import { rootMembersMonitoringSelector } from 'store/root-node/selectors';
-import { validatorsMonitoringSelector } from 'store/validators/selectors';
+import { inactiveValidatorsSelector, validatorsMonitoringSelector } from 'store/validators/selectors';
 
 import { getNowTimeWithGMT } from 'func/convertDate';
 import { fetchBlockNumber } from 'func/useful';
@@ -16,6 +16,8 @@ function CurrentInfo () {
   const rootNodes = useSelector(rootMembersMonitoringSelector);
   const validators = useSelector(validatorsMonitoringSelector);
 
+  const inactiveValidators = useSelector(inactiveValidatorsSelector);
+
   useEffect(() => {
     const timer = setInterval(() => {
       setTime(getNowTimeWithGMT('DD.MM.YYYY HH:mm:ss'));
@@ -25,9 +27,7 @@ function CurrentInfo () {
 
   useEffect(() => {
     fetchBlockNumber('latest').then((blockNumber) => setBlockHeight(blockNumber));
-    const subscription = window?.web3?.eth.subscribe('newBlockHeaders', (_, result) =>
-      setBlockHeight(result?.number)
-    );
+    const subscription = window?.web3?.eth.subscribe('newBlockHeaders', (_, result) => setBlockHeight(result?.number));
     return () => {
       subscription?.unsubscribe();
       setBlockHeight('...');
@@ -39,7 +39,7 @@ function CurrentInfo () {
       <CustomBlock>
         <h1>Validators</h1>
         <h5>Inactive Validators</h5>
-        <p>0</p>
+        <p>{inactiveValidators}</p>
         <h5>Validators in Ranking</h5>
         <p>{validators.length}</p>
       </CustomBlock>

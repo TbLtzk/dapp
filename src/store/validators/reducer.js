@@ -10,6 +10,7 @@ const initialState = {
   accountableTotalStake: 0,
   interestRate: 0,
   selfStake: 0,
+  inactiveValidators: 0,
 
   validatorsShort: [],
   loadingValidatorsShort: true,
@@ -28,7 +29,7 @@ const initialState = {
   validatorsTimeLocks: null,
   validatorsMinimumTimeLock: null,
 
-  compoundRateKeeperExists: false
+  compoundRateKeeperExists: false,
 };
 
 export default function index (state = initialState, action) {
@@ -39,82 +40,88 @@ export default function index (state = initialState, action) {
           return {
             ...state,
             validatorsWidened: action.payload,
-            loadingValidatorsWidened: false
+            loadingValidatorsWidened: false,
           };
         case TABLE_TYPES.validatorsShort:
           return {
             ...state,
             validatorsShort: action.payload,
-            loadingValidatorsShort: false
+            loadingValidatorsShort: false,
           };
         case TABLE_TYPES.validatorsMonitoring:
           return {
             ...state,
             validatorsMonitoring: action.payload,
-            loadingValidatorsMonitoring: false
+            loadingValidatorsMonitoring: false,
           };
       }
       break;
     case actionTypes.SET_VALIDATORS_DELEGATORS_SHARE:
       return {
         ...state,
-        delegatorsShare: action.payload
+        delegatorsShare: action.payload,
       };
     case actionTypes.SET_VALIDATORS_TOTAL_STAKE:
       return {
         ...state,
-        totalStake: action.payload
+        totalStake: action.payload,
       };
     case actionTypes.SET_VALIDATORS_OWN_STAKE:
       return {
         ...state,
-        ownStake: action.payload
+        ownStake: action.payload,
       };
+    case actionTypes.SET_INACTIVE_VALIDATORS: {
+      return {
+        ...state,
+        inactiveValidators: action.payload,
+      };
+    }
     case actionTypes.SET_VALIDATORS_SELF_STAKE:
       return {
         ...state,
-        selfStake: action.payload
+        selfStake: action.payload,
       };
     case actionTypes.SET_VALIDATORS_DELEGATED_STAKE:
       return {
         ...state,
-        delegatedStake: action.payload
+        delegatedStake: action.payload,
       };
     case actionTypes.SET_VALIDATORS_ACCOUNTABLE_TOTAL_STAKE:
       return {
         ...state,
-        accountableTotalStake: action.payload
+        accountableTotalStake: action.payload,
       };
     case actionTypes.SET_VALIDATORS_INTEREST_RATE:
       return {
         ...state,
-        interestRate: action.payload
+        interestRate: action.payload,
       };
     case actionTypes.SET_IS_USER_VALIDATOR:
       return {
         ...state,
-        isUserValidator: action.result
+        isUserValidator: action.result,
       };
     case actionTypes.SET_VALIDATORS_MINIMUM_TIME_LOCK:
       return {
         ...state,
-        validatorsMinimumTimeLock: action.payload
+        validatorsMinimumTimeLock: action.payload,
       };
     case actionTypes.SET_VALIDATORS_TIME_LOCKS:
       return {
         ...state,
-        validatorsTimeLocks: action.payload
+        validatorsTimeLocks: action.payload,
       };
     case actionTypes.SET_COMPOUND_RATE_KEEPER_EXISTS: {
       return {
         ...state,
-        compoundRateKeeperExists: action.payload
+        compoundRateKeeperExists: action.payload,
       };
     }
     case actionTypes.SET_VALIDATORS_WITHDRAWAL_INFO: {
       return {
         ...state,
-        validatorWithdrawalInfo: action.payload
+        validatorWithdrawalInfo: action.payload,
       };
     }
     default:
