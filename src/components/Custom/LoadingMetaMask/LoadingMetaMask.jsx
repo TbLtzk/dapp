@@ -72,7 +72,7 @@ function LoadingMetaMask () {
         });
         if (!networks[networkId]) {
           // wrong network
-          window.web3 = new Web3(new Web3.providers.HttpProvider(networkParams.rpc));
+          window.web3 = new Web3(new Web3.providers.HttpProvider(networkParams?.rpc || 'https://rpc.qtestnet.org'));
           dispatch(setLoadType(LOAD_TYPES.wrongNetwork));
         } else {
           // right network
