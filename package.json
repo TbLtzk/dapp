@@ -1,6 +1,6 @@
 {
   "name": "q-hq-dapp",
-  "version": "0.5.39",
+  "version": "0.5.40",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
