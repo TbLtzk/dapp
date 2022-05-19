@@ -9,7 +9,7 @@ import { inactiveValidatorsSelector, validatorsMonitoringSelector } from 'store/
 import { getNowTimeWithGMT } from 'func/convertDate';
 import { fetchBlockNumber } from 'func/useful';
 
-function CurrentInfo() {
+function CurrentInfo () {
   const [blockHeight, setBlockHeight] = useState('...');
   const [time, setTime] = useState(getNowTimeWithGMT('DD.MM.YYYY HH:mm:ss'));
 
