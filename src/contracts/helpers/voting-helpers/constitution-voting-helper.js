@@ -80,25 +80,22 @@ export default class ConstitutionVoting extends VotingService {
     }
   }
 
-  async createProposal (data, userAddress) {
+  async createProposal (proposal, userAddress) {
     const contract = await this.getContractInstance();
-    const classification = this.getProposalNumberType(data?.classification);
-    const hash = data.hash;
-    const link = data['external-link'];
-    const changeParams = data['change-constitution-parameter'] === 'yes';
+    const classification = this.getProposalNumberType(proposal.classification);
+    const hash = proposal.hash;
+    const link = proposal.externalLink;
     const params = [];
-    if (changeParams) {
-      const paramsArray = data['parameter-type'].reduce((types, item, index) => {
-        types.push({
-          paramType: item,
-          paramKey: data['parameter-key'][index],
-          paramValue: data['parameter-value'][index]
-        });
-        return types;
-      }, []);
+    if (proposal.isParamsChanged) {
+      const paramsArray = proposal.params.map((item) => ({
+        paramType: item.type,
+        paramKey: item.key,
+        paramValue: item.value
+      }));
       params.push(...paramsArray);
     }
-    return await contract.createProposal(link, classification, hash, params, {
+
+    return contract.createProposal(link, classification, hash, params, {
       from: userAddress
     });
   }

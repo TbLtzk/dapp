@@ -38,38 +38,38 @@ import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
 import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
 
-function * createProposalGenerator ({ data }) {
+function * createProposalGenerator ({ proposal }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);
     let contractName = null;
-    const type = data?.first;
+    const type = proposal.type;
     switch (type) {
       case CONTRACT_TYPES.constitutionUpdate:
         const constitutionVoting = new ConstitutionVotingService(CONTRACTS_NAMES.constitutionVoting);
-        yield constitutionVoting.createProposal(data, userAddress);
+        yield constitutionVoting.createProposal(proposal, userAddress);
         contractName = CONTRACTS_NAMES.constitutionVoting;
         break;
       case CONTRACT_TYPES.generalQUpdate:
         const generalUpdateVoting = new GeneralUpdateVotingService(CONTRACTS_NAMES.generalUpdateVoting);
-        yield generalUpdateVoting.createProposal(data, userAddress);
+        yield generalUpdateVoting.createProposal(proposal, userAddress);
         contractName = CONTRACTS_NAMES.generalUpdateVoting;
         break;
       case CONTRACT_TYPES.emergencyUpdate:
         const emergencyUpdateVoting = new EmergencyUpdateVotingService(CONTRACTS_NAMES.emergencyUpdateVoting);
-        yield emergencyUpdateVoting.createProposal(data, userAddress);
+        yield emergencyUpdateVoting.createProposal(proposal, userAddress);
         contractName = CONTRACTS_NAMES.emergencyUpdateVoting;
         break;
       case CONTRACT_TYPES.addAnewRootNode:
       case CONTRACT_TYPES.removeACurrentRootNode:
         const rootsVoting = new RootsVotingService(CONTRACTS_NAMES.rootsVoting);
-        yield rootsVoting.createProposal(data, userAddress);
+        yield rootsVoting.createProposal(proposal, userAddress);
         contractName = CONTRACTS_NAMES.rootsVoting;
         break;
       case CONTRACT_TYPES.rootNodeSlashing:
       case CONTRACT_TYPES.validatorNodeSlashing:
         const chosenContract = chooseSlashingContractDependsOnType(type);
-        yield chosenContract.createProposal(data, userAddress);
+        yield chosenContract.createProposal(proposal, userAddress);
         if (type === CONTRACT_TYPES.rootNodeSlashing) {
           contractName = CONTRACTS_NAMES.rootNodesSlashingVoting;
         } else if (type === CONTRACT_TYPES.validatorNodeSlashing) {
@@ -80,10 +80,10 @@ function * createProposalGenerator ({ data }) {
       case CONTRACT_TYPES.removeCurrentExpert:
       case CONTRACT_TYPES.parameterVote:
         const typeContract =
-          data.first !== CONTRACT_TYPES.parameterVote ? CONTRACT_TYPES.member : CONTRACT_TYPES.parameters;
-        const contract = chooseExpertContractDependsOnType(typeContract, data['type-proposal']);
+        proposal.type !== CONTRACT_TYPES.parameterVote ? CONTRACT_TYPES.member : CONTRACT_TYPES.parameters;
+        const contract = chooseExpertContractDependsOnType(typeContract, proposal.panelType);
         contractName = contract.contractName;
-        yield contract.createProposal(data, userAddress);
+        yield contract.createProposal(proposal, userAddress);
         break;
       default:
         return null;

@@ -18,6 +18,7 @@ async function getContract (typeContract) {
     case CONTRACT_TYPES.qDefi:
       return await getEpdrParametersInstance();
     case CONTRACT_TYPES.constitution:
+    case CONTRACT_TYPES.constitutionUpdate:
       return await getConstitutionInstance();
     case CONTRACT_TYPES.qEprs:
       return await getEprsParametersInstance();

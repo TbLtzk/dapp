@@ -64,27 +64,26 @@ export default class ParametersVoting extends VotingService {
   }
 
   async createProposal (data, userAddress) {
-    const link = data['external-link'];
-
-    const paramInputs = data['parameter-type'].reduce((types, item, index) => {
-      let inputValue = data['parameter-value'][index];
-      switch (Number(item)) {
+    const link = data.externalLink;
+    const paramInputs = data.params.map(item => {
+      let inputValue = String(item.value);
+      switch (Number(item.type)) {
         case ParameterType.BOOL:
-          inputValue = inputValue.toLowerCase() === 'true';
+          inputValue = item.value.toLowerCase() === 'true';
           break;
         case ParameterType.UINT:
-          inputValue = BN(inputValue).toFixed();
+          inputValue = BN(item.value).toFixed();
           break;
       }
-      types.push({
-        paramType: item,
-        paramKey: data['parameter-key'][index],
-        paramValue: inputValue
-      });
-      return types;
-    }, []);
 
-    switch (data['type-proposal']) {
+      return {
+        paramType: item.type,
+        paramKey: item.key,
+        paramValue: inputValue
+      };
+    });
+
+    switch (data.panelType) {
       case CONTRACT_TYPES.qFee: {
         const contract = await getEpqfiParametersVotingInstance();
         return await contract.createProposal(link, paramInputs, { from: userAddress });

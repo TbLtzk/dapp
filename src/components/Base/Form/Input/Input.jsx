@@ -26,8 +26,7 @@ const Input = ({
 
   const handleChange = (e) => {
     const value = e.target.value;
-    const isNumberValid = value === '' ||
-      /^[0-9]{1,50}[.]?[0-9]{0,18}$/.test(value);
+    const isNumberValid = value === '' || /^[0-9]{1,50}[.]?[0-9]{0,18}$/.test(value);
     if (type === 'number' && !isNumberValid) return;
 
     onChange(value);
@@ -39,14 +38,15 @@ const Input = ({
       $error={error}
       $disabled={isDisabled}
       $invertedColors={invertedColors}
+      $type={type}
     >
-      {label ? <h4>{label}</h4> : null}
+      {label && <h4>{label}</h4>}
       <div className="input__container">
-        {prefix ? <div className="input__prefix">{prefix}</div> : null}
+        {prefix && <div className="input__prefix">{prefix}</div>}
         <input
           className="form-control"
           value={value}
-          type="text"
+          type={type}
           inputMode={type === 'number' ? 'decimal' : 'text'}
           autoComplete="off"
           disabled={isDisabled}

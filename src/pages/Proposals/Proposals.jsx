@@ -5,7 +5,7 @@ import PageWrap from 'components/Base/PageWrap';
 import Tabs from 'components/Base/Tabs';
 import VotingStats from 'components/Custom/VotingStats';
 
-import CreateQProposalBtn from './components/CreateQProposalBtn';
+import CreateProposal from './components/CreateProposal';
 import ProposalsList from './components/ProposalsList';
 import PurgeSlashing from './components/PurgeSlashing';
 
@@ -44,7 +44,7 @@ import {
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import { PROPOSALS_TYPES } from 'constants/statuses';
 
-function Proposals ({ proposalsType }) {
+function Proposals ({ type }) {
   const {
     proposalsSelector,
     endedProposalsSelector,
@@ -52,7 +52,7 @@ function Proposals ({ proposalsType }) {
     endedProposalsCountSelector,
     oneContractName,
     title
-  } = getProposalsData(proposalsType);
+  } = getProposalsData(type);
 
   const dispatch = useDispatch();
   const proposals = useSelector(proposalsSelector);
@@ -112,7 +112,7 @@ function Proposals ({ proposalsType }) {
 
   useEffect(() => {
     dispatch(getProposalsByType(oneContractName));
-  }, [dispatch, proposalsType]);
+  }, [dispatch, type]);
 
   const tabs = [
     {
@@ -121,7 +121,7 @@ function Proposals ({ proposalsType }) {
       content: (
         <ProposalsList
           proposals={proposals}
-          proposalsKind={proposalsType}
+          proposalsKind={type}
           proposalsCount={activeProposalsCount}
         />
       )
@@ -132,7 +132,7 @@ function Proposals ({ proposalsType }) {
       content: (
         <ProposalsList
           proposals={endedProposals}
-          proposalsKind={proposalsType}
+          proposalsKind={type}
           proposalsCount={endedProposalsCount}
         />
       )
@@ -142,12 +142,12 @@ function Proposals ({ proposalsType }) {
   const additionalBlock = (
     <div>
       <VotingStats />
-      {proposalsType === PROPOSALS_TYPES.slashingProposals ? <PurgeSlashing /> : null}
+      {type === PROPOSALS_TYPES.slashingProposals && <PurgeSlashing />}
     </div>
   );
 
-  const createProposal =
-        proposalsType !== PROPOSALS_TYPES.contractUpdates ? <CreateQProposalBtn activeTab={proposalsType} /> : null;
+  const createProposal = type !== PROPOSALS_TYPES.contractUpdates &&
+    <CreateProposal type={type} />;
 
   return (
     <PageWrap headerTitle={title} headerExtra={createProposal}>

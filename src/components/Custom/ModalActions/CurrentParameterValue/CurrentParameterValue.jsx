@@ -15,7 +15,8 @@ function CurrentParameterValue ({ typeContract, parameterType, parameterKey }) {
 
   useEffect(() => {
     if (typeContract && parameterType) {
-      getParameterKeysByType(typeContract, parameterType).then((data) => setKeys(data));
+      getParameterKeysByType(typeContract, parameterType)
+        .then((data) => setKeys(data));
     }
   }, [typeContract, parameterType]);
 
@@ -23,9 +24,7 @@ function CurrentParameterValue ({ typeContract, parameterType, parameterKey }) {
     if (keys) {
       if (typeContract && parameterType && parameterKey) {
         if (keys.includes(parameterKey)) {
-          getParameterValueByKey(typeContract, parameterType, parameterKey).then((data) =>
-            setCurrentValue(data)
-          );
+          getParameterValueByKey(typeContract, parameterType, parameterKey).then((data) => setCurrentValue(data));
           dispatch(setNewParameter(false));
         } else {
           setCurrentValue(keyNotFound);
@@ -37,7 +36,7 @@ function CurrentParameterValue ({ typeContract, parameterType, parameterKey }) {
     }
   }, [parameterKey, keys, dispatch]);
 
-  return <h4 style={{ marginBottom: '20px' }}>{`Current value: ${currentValue}`} </h4>;
+  return <h4 style={{ margin: '10px 0 20px 0' }}>{`Current value: ${currentValue}`} </h4>;
 }
 
 export default CurrentParameterValue;

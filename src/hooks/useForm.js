@@ -58,7 +58,7 @@ function useForm ({
   };
 
   const submit = async (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);

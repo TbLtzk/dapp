@@ -3,7 +3,7 @@ import { Modal } from 'react-bootstrap';
 
 import Button from 'components/Base/Button';
 
-import { Body, Footer, Header, ModalW } from './styles';
+import { Body, Footer, Header, ModalContainer } from './styles';
 
 function ModalWindow ({
   disabled,
@@ -17,10 +17,10 @@ function ModalWindow ({
   modalTitle,
   iconRight,
   closeButton = true,
-  scrollable = true
+  scrollable = true,
 }) {
   return (
-    <ModalW
+    <ModalContainer
       centered
       show={show}
       scrollable={scrollable}
@@ -32,6 +32,7 @@ function ModalWindow ({
       <Header closeButton={closeButton}>
         <Modal.Title>{modalTitle}</Modal.Title>
       </Header>
+
       <Body>{content}</Body>
       {!backBtnTitle && !continueBtnTitle
         ? null
@@ -59,7 +60,7 @@ function ModalWindow ({
               )}
           </Footer>
         )}
-    </ModalW>
+    </ModalContainer>
   );
 }
 

@@ -7,7 +7,7 @@ const inputMinHeight = '10px';
 export const InputWrapper = styled(Form.Group)`
   margin-bottom: 0;
   width: 100%;
-  
+
   .input__container {
     display: flex;
     position: relative;
@@ -20,7 +20,7 @@ export const InputWrapper = styled(Form.Group)`
     box-sizing: border-box;
     text-align: left;
     min-height: ${inputMinHeight};
-    border-radius: ${(props) => props.$prefix ? '0 3px 3px 0' : '3px'};
+    border-radius: ${(props) => (props.$prefix ? '0 3px 3px 0' : '3px')};
     background: ${getBackgroundColor};
     border: 1px solid ${getInputColor};
     color: ${getInputColor};
@@ -40,12 +40,10 @@ export const InputWrapper = styled(Form.Group)`
 
     &:disabled {
       cursor: not-allowed;
-      background: ${(props) => props.theme.palette === 'dark' ? 'transparent' : props.theme.colors.blue};
+      background: ${(props) => (props.theme.palette === 'dark' ? 'transparent' : props.theme.colors.blue)};
       border: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
       color: ${(props) => {
-        return props.theme.palette === 'dark'
-          ? props.theme.colors.oxfordBlueTint5
-          : props.theme.colors.oxfordBlueTint2;
+        return props.theme.palette === 'dark' ? props.theme.colors.oxfordBlueTint5 : props.theme.colors.oxfordBlueTint2;
       }};
     }
   }
@@ -75,9 +73,7 @@ export const InputWrapper = styled(Form.Group)`
     padding: 6px 10px;
     white-space: nowrap;
     background-color: ${(props) => {
-      return props.$disabled
-        ? props.theme.colors.oxfordBlueTint2
-        : getInputColor(props);
+      return props.$disabled ? props.theme.colors.oxfordBlueTint2 : getInputColor(props);
     }};
     color: ${(props) => {
       return props.theme.palette === 'dark' && !props.$disabled
@@ -86,34 +82,26 @@ export const InputWrapper = styled(Form.Group)`
     }};
   }
 
-  ${(props) => !props.$error && css`
-    div:focus-within .input__prefix {
-      color: ${props.theme.colors.oxfordBlueTint1};
-      background-color: ${
-        props.theme.palette === 'dark'
-          ? props.theme.colors.neonGreen
-          : props.theme.colors.white
-      };
-    }
-  `}
+  ${(props) =>
+    !props.$error &&
+    css`
+      div:focus-within .input__prefix {
+        color: ${props.theme.colors.oxfordBlueTint1};
+        background-color: ${props.theme.palette === 'dark' ? props.theme.colors.neonGreen : props.theme.colors.white};
+      }
+    `}
 `;
 
 function getBackgroundColor (props) {
-  return props.theme.palette === 'dark'
-    ? 'transparent'
-    : props.theme.colors.blue;
+  return props.theme.palette === 'dark' ? 'transparent' : props.theme.colors.blue;
 }
 
 function getMainColor (props) {
-  return props.theme.palette === 'dark'
-    ? props.theme.colors.oxfordBlueTint2
-    : props.theme.colors.oxfordBlueTint4;
+  return props.theme.palette === 'dark' ? props.theme.colors.oxfordBlueTint2 : props.theme.colors.oxfordBlueTint4;
 }
 
 function getInputColor (props) {
-  return props.$error
-    ? props.theme.colors.validationError
-    : getMainColor(props);
+  return props.$error ? props.theme.colors.validationError : getMainColor(props);
 }
 
 function getMaxButtonStyle (props) {

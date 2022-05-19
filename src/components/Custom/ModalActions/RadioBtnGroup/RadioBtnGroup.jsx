@@ -3,15 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ErrorInputMessage from 'components/Base/ErrorInputMessage';
 import InputRadio from 'components/Base/Form/InputRadio';
 
-function RadioBtnGroup ({
-  name,
-  values = [],
-  labels = [],
-  formData,
-  errors,
-  register,
-  handleChange
-}) {
+function RadioBtnGroup ({ name, values = [], labels = [], formData, errors, register, handleChange }) {
   const [activeValue, setActiveValue] = useState('');
 
   useEffect(() => {

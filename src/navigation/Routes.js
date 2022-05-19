@@ -83,27 +83,27 @@ function Routes () {
             <Route
               exact
               path="/q-proposals"
-              component={(props) => <Proposals proposalsType={PROPOSALS_TYPES.proposals} {...props} />}
+              component={(props) => <Proposals type={PROPOSALS_TYPES.proposals} {...props} />}
             />
             <Route
               exact
               path="/q-root-node-panel"
-              component={(props) => <Proposals proposalsType={PROPOSALS_TYPES.rootNodePanel} {...props} />}
+              component={(props) => <Proposals type={PROPOSALS_TYPES.rootNodePanel} {...props} />}
             />
             <Route
               exact
               path="/q-expert-proposals"
-              component={(props) => <Proposals proposalsType={PROPOSALS_TYPES.expertProposals} {...props} />}
+              component={(props) => <Proposals type={PROPOSALS_TYPES.expertProposals} {...props} />}
             />
             <Route
               exact
               path="/slashing-proposals"
-              component={(props) => <Proposals proposalsType={PROPOSALS_TYPES.slashingProposals} {...props} />}
+              component={(props) => <Proposals type={PROPOSALS_TYPES.slashingProposals} {...props} />}
             />
             <Route
               exact
               path="/contract-updates"
-              component={(props) => <Proposals proposalsType={PROPOSALS_TYPES.contractUpdates} {...props} />}
+              component={(props) => <Proposals type={PROPOSALS_TYPES.contractUpdates} {...props} />}
             />
             <Route
               exact
