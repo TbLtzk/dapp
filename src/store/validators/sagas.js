@@ -10,6 +10,7 @@ import {
   setAccountableTotalStake,
   setCompoundRateKeeperExists,
   setDelegatedStake,
+  setInactiveValidators,
   setIsUserValidator,
   setMinimumValidatorsTimeLock,
   setOwnStake,
@@ -131,9 +132,12 @@ function * getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWi
         const indexer = yield getIndexerInstance(indexerUrl);
 
         const shortList = yield validatorsInstance.getShortList();
+        const inactiveValidators = yield indexer.getInactiveValidators(shortList.map((user) => user.address));
+
         const preparedShortList = yield all(
           shortList.map((member) => prepareValidatorsMonitoringData(indexer, member))
         );
+        yield put(setInactiveValidators(inactiveValidators));
         yield put(setValidatorMembers(tableType, preparedShortList));
         break;
       }

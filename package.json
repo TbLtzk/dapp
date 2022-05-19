@@ -16,7 +16,7 @@
   "dependencies": {
     "@mdi/font": "^6.5.95",
     "@metamask/detect-provider": "^1.2.0",
-    "@q-dev/q-js-sdk": "^1.1.9",
+    "@q-dev/q-js-sdk": "^1.2.0",
     "@sentry/react": "^6.19.1",
     "@sentry/tracing": "^6.19.1",
     "bignumber.js": "^9.0.1",

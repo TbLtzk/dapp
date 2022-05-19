@@ -20,3 +20,5 @@ export const loadingValidatorsWidenedSelector = (state) => state.validators.load
 
 export const validatorsMonitoringSelector = (state) => state.validators.validatorsMonitoring;
 export const loadingValidatorsMonitoringSelector = (state) => state.validators.loadingValidatorsMonitoring;
+
+export const inactiveValidatorsSelector = (state) => state.validators.inactiveValidators;

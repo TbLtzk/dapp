@@ -61,7 +61,7 @@
     "react/prop-types": "off",
     "react/display-name": "off",
     "react/hook-use-state": "warn",
-    
+    "generator-star-spacing":"warn",
     "jsx-quotes": ["warn", "prefer-double"],
     "react/jsx-closing-bracket-location": ["warn", "line-aligned"],
     "react/jsx-equals-spacing": ["warn", "never"],
