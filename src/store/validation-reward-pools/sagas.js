@@ -19,6 +19,7 @@ import { setTransactionLoading, setTransactionLoadingError, setTransactionLoadin
 import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
 
 import formTypes from 'constants/form-types';
+import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
 import { BN, fN, getPercentageFormat, uintPercentToNumber } from 'func/useful';
@@ -42,7 +43,7 @@ function * setUpdateValidatorsCompoundRateGenerator ({ address }) {
     yield put(getVRPDelegatorsShare(address));
     yield put(getVRPBalance(address));
     yield put(getVRPPoolInfo(address));
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

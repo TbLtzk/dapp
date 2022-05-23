@@ -8,14 +8,14 @@ import { getDelegationInfo, getLockedAssets } from 'store/q-vault/action-creator
 import {
   setTransactionLoading,
   setTransactionLoadingError,
-  setTransactionLoadingSuccess
+  setTransactionLoadingSuccess,
 } from 'store/transaction-handler/action-creators';
 import { getExpertProposals } from 'store/voting/expert-proposals/action-creators';
 import {
   getBaseVotingWeightInfo,
   getConstitutionHashSuccess,
   getProposalsByType,
-  setBaseVotingWeightInfo
+  setBaseVotingWeightInfo,
 } from 'store/voting/proposals/action-creators';
 import * as actionTypes from 'store/voting/proposals/action-types';
 import { getQProposals } from 'store/voting/q-proposals/action-creators';
@@ -26,7 +26,7 @@ import { getVotingWeightProxyInstance } from 'contracts/contract-instance';
 import {
   chooseExpertContractDependsOnType,
   chooseSlashingContractDependsOnType,
-  creationQContractObj
+  creationQContractObj,
 } from 'contracts/helpers/voting-helpers/base-voting-helper';
 import ConstitutionVotingService from 'contracts/helpers/voting-helpers/constitution-voting-helper';
 import EmergencyUpdateVotingService from 'contracts/helpers/voting-helpers/emergency-update-voting-helper';
@@ -35,6 +35,7 @@ import RootsVotingService from 'contracts/helpers/voting-helpers/roots-voting-he
 import VotingService from 'contracts/helpers/voting-helpers/voting-service-helper';
 
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
+import { TRANSACTION_TYPES } from 'constants/statuses';
 import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
 
@@ -80,7 +81,7 @@ function * createProposalGenerator ({ proposal }) {
       case CONTRACT_TYPES.removeCurrentExpert:
       case CONTRACT_TYPES.parameterVote:
         const typeContract =
-        proposal.type !== CONTRACT_TYPES.parameterVote ? CONTRACT_TYPES.member : CONTRACT_TYPES.parameters;
+          proposal.type !== CONTRACT_TYPES.parameterVote ? CONTRACT_TYPES.member : CONTRACT_TYPES.parameters;
         const contract = chooseExpertContractDependsOnType(typeContract, proposal.panelType);
         contractName = contract.contractName;
         yield contract.createProposal(proposal, userAddress);
@@ -93,7 +94,7 @@ function * createProposalGenerator ({ proposal }) {
     yield put(getDelegationInfo(userAddress));
     yield put(getProposalsByType(contractName));
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -121,7 +122,7 @@ function * voteForProposalGenerator ({ data }) {
     yield put(getDelegationInfo(userAddress));
     yield put(getLockedAssets(userAddress));
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -139,7 +140,7 @@ function * executeProposalGenerator ({ data }) {
     yield put(getBaseVotingWeightInfo());
     yield put(getDelegationInfo(userAddress));
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -223,5 +224,5 @@ export default [
   takeEvery(actionTypes.GET_PROPOSALS_BY_TYPE, getProposalsByTypeGenerator),
   takeEvery(actionTypes.GET_NUMBER_ALL_PROPOSALS, getNumberAllProposalsGenerator),
   takeEvery(actionTypes.GET_CONSTITUTION_HASH, getConstitutionHashGenerator),
-  takeEvery(actionTypes.GET_BASE_VOTING_WEIGHT_INFO, getBaseVotingWeightInfoGenerator)
+  takeEvery(actionTypes.GET_BASE_VOTING_WEIGHT_INFO, getBaseVotingWeightInfoGenerator),
 ];

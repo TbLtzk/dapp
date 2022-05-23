@@ -85,10 +85,12 @@ function VaultOverview () {
         <p>{userLockingEnd}</p>
 
         <h5>Voting Status</h5>
-        <p><VoterStatus /></p>
+        <p>
+          <VoterStatus />
+        </p>
 
         <h5>Vote Delegation</h5>
-        <p>{votingInfo}</p>
+        <p className="card_text">{votingInfo}</p>
       </div>
     </CustomBlock>
   );

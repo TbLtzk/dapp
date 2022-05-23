@@ -20,6 +20,7 @@ import { switchContract } from 'contracts/helpers/auctions-helpers/auction-servi
 
 import { fieldTypes } from 'constants/fieldTypes';
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
+import { TRANSACTION_TYPES } from 'constants/statuses';
 
 function ModalBid ({ modalShow, onHide, activeTab, inf }) {
   const dispatch = useDispatch();
@@ -97,7 +98,7 @@ function ModalBid ({ modalShow, onHide, activeTab, inf }) {
     } catch {
       setApproveButton(true);
     } finally {
-      dispatch(setTransactionLoadingSuccess());
+      dispatch(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
     }
   }
 

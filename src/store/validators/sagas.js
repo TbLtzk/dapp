@@ -38,6 +38,7 @@ import {
 import { getValidator, getValidators, prepareValidatorsMonitoringData } from 'contracts/helpers/validators-helper';
 
 import formTypes from 'constants/form-types';
+import { TRANSACTION_TYPES } from 'constants/statuses';
 import TABLE_TYPES from 'constants/tableTypes';
 import { fromWei, toWei } from 'func/balance';
 import { getNowTimestamp } from 'func/convertDate';
@@ -198,7 +199,7 @@ function * setValidatorsInterestRateGenerator ({ address, uintPercent }) {
     yield put(getInterestRate(address));
     yield put(getCompoundRateKeeperExists());
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

@@ -3,7 +3,7 @@ import { all, put, select, takeEvery } from 'redux-saga/effects';
 import {
   setTransactionLoading,
   setTransactionLoadingError,
-  setTransactionLoadingSuccess
+  setTransactionLoadingSuccess,
 } from 'store/transaction-handler/action-creators';
 import { setSlashingProposals } from 'store/voting/slashing-proposals/action-creators';
 import * as actionTypes from 'store/voting/slashing-proposals/action-types';
@@ -15,6 +15,7 @@ import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-hel
 import { CONTRACT_TYPES } from 'constants/contracts';
 import { escrowTypes } from 'constants/escrowTypes';
 import formTypes from 'constants/form-types';
+import { TRANSACTION_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
 import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/useful';
 
@@ -40,7 +41,7 @@ function * getSlashingProposalsGenerator () {
 
       proposalsCounter = {
         active: newProposalsCount.active,
-        ended: slashingEndedProposalsCount + newProposalsCount.ended
+        ended: slashingEndedProposalsCount + newProposalsCount.ended,
       };
       activeProposalsArray = newActiveProposals;
       endedProposalsArray = [...endedProposals, ...newEndedProposalsIds];
@@ -67,7 +68,7 @@ function * onEscrowCastObjectionGenerator ({ data, contractName, proposalId }) {
     const contract = new SlashingEscrow(contractName);
     yield contract.castObjection(proposalId, data['external-link'], userAddress);
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -82,7 +83,7 @@ function * onEscrowProposeDecisionGenerator ({ data, contractName, proposalId })
     const notAppealed = data['target-slashing-appeal'] === 'yes';
 
     yield contract.proposeDecision(proposalId, data['%-value'], notAppealed, data['external-link'], userAddress);
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -97,7 +98,7 @@ function * onEscrowProposerRemarkGenerator ({ data, contractName, proposalId }) 
     const appealConfirmed = data.appealConfirmed === 'yes';
     yield contract.setProposerRemark(proposalId, data['proposer-remark'], appealConfirmed, userAddress);
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -124,7 +125,7 @@ function * setEscrowActionGenerator ({ contractName, proposalId, escrowType }) {
         break;
       }
     }
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -153,5 +154,5 @@ export default [
   takeEvery(actionTypes.GET_SLASHING_PROPOSALS, getSlashingProposalsGenerator),
 
   takeEvery(actionTypes.SET_ESCROW_ACTION, setEscrowActionGenerator),
-  takeEvery(actionTypes.SET_PURGE_SLASHING, setPurgeSlashingGenerator)
+  takeEvery(actionTypes.SET_PURGE_SLASHING, setPurgeSlashingGenerator),
 ];

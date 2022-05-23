@@ -58,6 +58,7 @@ export const Block = styled.div`
   }
 
   .card_text {
+    word-wrap: break-word;
     font-size: 13px;
     margin-bottom: 15px;
   }
@@ -111,7 +112,7 @@ export const Block = styled.div`
     display: grid;
     grid-template-columns: minmax(80px, 2fr) minmax(80px, 2fr) minmax(70px, 90px);
     grid-column-gap: 14px;
-    align-items: flex-start;
+    align-items: end;
   }
 
   .card__one-line-form-2-2-1-action {
@@ -144,6 +145,13 @@ export const Block = styled.div`
     .card__send-form {
       grid-template-columns: minmax(80px, 1fr);
       grid-column-gap: 14px;
+      .card__one-line-form-2-2-1-action {
+        display: grid;
+        justify-content: flex-end;
+      }
+      div {
+        padding-bottom: 4px;
+      }
     }
   }
 `;

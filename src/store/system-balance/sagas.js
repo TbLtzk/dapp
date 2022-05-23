@@ -19,6 +19,7 @@ import { setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/
 
 import { getSystemBalanceInstance } from 'contracts/contract-instance';
 
+import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
 
@@ -65,7 +66,7 @@ function * onPerformNettingGenerator () {
     yield put(getDebt());
     yield put(getSurplus());
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

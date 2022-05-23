@@ -33,6 +33,7 @@ import { getQVaultInstance, getVotingWeightProxyInstance } from 'contracts/contr
 import { getOutstandingDelegationRewardsList, getQHolderRewardPool } from 'contracts/helpers/q-vault-helper';
 
 import formTypes from 'constants/form-types';
+import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei, prepareBalanceDetails, toWei } from 'func/balance';
 import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
@@ -259,7 +260,7 @@ function * setOnClaimStakeDelegatorRewardGenerator () {
     yield put(getDelegationsList());
     yield put(getAccountBalance(userAddress));
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -321,7 +322,7 @@ function * setNewVotingAgentGenerator () {
     yield put(getDelegationInfo(userAddress));
     yield put(getAccountBalance(userAddress));
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
