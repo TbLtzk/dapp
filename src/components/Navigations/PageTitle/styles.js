@@ -19,7 +19,6 @@ export const PageTitleName = styled.div`
   display: flex;
   font-size: 30px;
   line-height: 38px;
-  overflow: hidden;
   align-items: flex-start;
   font-family: "Lora", sans-serif;
   text-transform: capitalize;

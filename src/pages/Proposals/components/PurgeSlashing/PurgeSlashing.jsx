@@ -5,6 +5,7 @@ import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import FormInput from 'components/Base/Form/FormInput';
 import Tooltip from 'components/Base/Tooltip';
+import InfoTooltip from 'components/Custom/InfoTooltip';
 
 import useInputForm from 'hooks/useInputForm';
 
@@ -31,7 +32,10 @@ function PurgeSlashing () {
 
   return (
     <CustomBlock>
-      <h1>Purge Slashing</h1>
+      <h1>
+        <span>Purge Slashing</span>
+        <InfoTooltip topic="purge-slashing" />
+      </h1>
       <FormInput
         ref={register({
           required: 'Please, fill the field',
