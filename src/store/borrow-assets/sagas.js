@@ -30,6 +30,7 @@ import { getBorrowVaultInfoHelper } from 'contracts/helpers/borrow-assets-helper
 import { fieldTypes } from 'constants/fieldTypes';
 import formTypes from 'constants/form-types';
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
+import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei, toBtcBlockchain, toWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
 
@@ -102,7 +103,7 @@ function * setBorrowAproveGenerator ({ borrowType }) {
     yield put(getTotalSavingBalance());
     yield put(getTotalCollateralLockedAndOutstandingDebt());
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

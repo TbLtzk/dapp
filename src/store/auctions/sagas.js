@@ -5,7 +5,7 @@ import {
   setLiquidationAuctions,
   setOneAuction,
   setSystemDebtAuctions,
-  setSystemSurplusAuctions
+  setSystemSurplusAuctions,
 } from './action-creators';
 import * as actionTypes from './action-types';
 
@@ -15,7 +15,7 @@ import { getAvailableAmount } from 'store/system-reserve/action-creators';
 import {
   setTransactionLoading,
   setTransactionLoadingError,
-  setTransactionLoadingSuccess
+  setTransactionLoadingSuccess,
 } from 'store/transaction-handler/action-creators';
 
 import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper';
@@ -24,7 +24,7 @@ import { creationSystemDebtContractObj } from 'contracts/helpers/auctions-helper
 import { creationSystemSurplusContractObj } from 'contracts/helpers/auctions-helpers/system-surplus-auction-helper';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
-import { AUCTIONS_TYPES } from 'constants/statuses';
+import { AUCTIONS_TYPES, TRANSACTION_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
 
 function * updateValuesGenerator () {
@@ -105,7 +105,7 @@ function * createAuction ({ data }) {
     yield contract.createAuction(data, userAddress);
     yield put(getAuctions(auctionType));
     yield call(updateValuesGenerator);
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -161,7 +161,7 @@ function * bidForAuctionGenerator ({ data }) {
     yield put(getAuctions(contractType));
     yield call(updateValuesGenerator);
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -195,7 +195,7 @@ function * executeAuctionHandler ({ data }) {
     }
     yield put(getAuctions(contractType));
     yield call(updateValuesGenerator);
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -208,5 +208,5 @@ export default [
 
   takeEvery(actionTypes.CREATE_AUCTION, createAuction),
   takeEvery(actionTypes.BID_FOR_AUCTION, bidForAuctionGenerator),
-  takeEvery(actionTypes.EXECUTE_AUCTION, executeAuctionHandler)
+  takeEvery(actionTypes.EXECUTE_AUCTION, executeAuctionHandler),
 ];

@@ -27,6 +27,7 @@ import { getSavingBalanceDetailsHelper } from 'contracts/helpers/saving-assets-h
 
 import formTypes from 'constants/form-types';
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
+import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei, toWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
 
@@ -126,7 +127,7 @@ function * setSavingAproveGenerator () {
     yield put(getTotalCollateralLockedAndOutstandingDebt());
     yield put(getSavingAssets());
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

@@ -7,13 +7,14 @@ import { getAmountOnContract } from 'store/locked-amount/sagas';
 import {
   setTransactionLoading,
   setTransactionLoadingError,
-  setTransactionLoadingSuccess
+  setTransactionLoadingSuccess,
 } from 'store/transaction-handler/action-creators';
 
 import { getVestingInstance } from 'contracts/contract-instance';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
+import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei, toWei } from 'func/balance';
 import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
@@ -52,7 +53,7 @@ function * getVestingTimeLocksGenerator ({ address }) {
 function * setVestingDepositGenerator ({ address, amountQ }) {
   try {
     yield put(setTransactionLoading());
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -82,5 +83,5 @@ export default [
   takeEvery(actionTypes.GET_VESTING_TIME_LOCKS, getVestingTimeLocksGenerator),
 
   takeEvery(actionTypes.SET_VESTING_WITHDRAW, setVestingWithdrawGenerator),
-  takeEvery(actionTypes.SET_VESTING_DEPOSIT, setVestingDepositGenerator)
+  takeEvery(actionTypes.SET_VESTING_DEPOSIT, setVestingDepositGenerator),
 ];

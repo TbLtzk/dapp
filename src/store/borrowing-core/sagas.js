@@ -32,6 +32,7 @@ import {
   getTotalCollateralLockedHelper
 } from 'contracts/helpers/borrowing-core-helper';
 
+import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
 import { fillArray, fN, uintPerSecondToPerYearNumber } from 'func/useful';
@@ -44,7 +45,7 @@ function * setCreateQBTCVaultGenerator () {
     yield contract.createVault('QBTC', { from: userAddress });
     yield put(getBorrowingVaults());
 
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

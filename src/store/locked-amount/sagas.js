@@ -21,6 +21,7 @@ import {
 
 import { CONTRACT_TYPES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
+import { TRANSACTION_TYPES } from 'constants/statuses';
 import { toWei } from 'func/balance';
 import { dateToTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
@@ -76,7 +77,7 @@ function* setPurgeTimeLocksAmount({ payload }) {
     yield contract.purgeTimeLocks(payload.address);
 
     yield call(getAmountOnContract, payload.contract, payload.address);
-    yield put(setTransactionLoadingSuccess());
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
