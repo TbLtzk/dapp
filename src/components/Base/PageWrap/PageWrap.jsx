@@ -8,7 +8,13 @@ import { ToTopContainer, WrapContainer, WrapContent } from './styles';
 
 import { toTitleCase } from 'func/useful';
 
-function PageWrap ({ children, headerTitle, headerExtra, wrapContentClasses }) {
+function PageWrap ({
+  headerTitle,
+  titleExtra,
+  headerExtra,
+  wrapContentClasses,
+  children,
+}) {
   useEffect(() => {
     const title = headerTitle === 'Dashboard' ? 'Your HQ' : 'Your HQ - ' + toTitleCase(headerTitle);
     document.title = title;
@@ -21,7 +27,12 @@ function PageWrap ({ children, headerTitle, headerExtra, wrapContentClasses }) {
     <WrapContainer fluid>
       <PageTitle
         ref={myRef}
-        header={headerTitle}
+        header={(
+          <>
+            <span>{headerTitle}</span>
+            {titleExtra}
+          </>
+        )}
         extra={headerExtra}
       />
       <WrapContent className={wrapContentClasses}>{children}</WrapContent>

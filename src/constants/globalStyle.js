@@ -22,7 +22,6 @@ export const scrollbarStyle = css`
 `;
 
 export const GlobalStyle = createGlobalStyle`
-
   body {
     color: ${(props) => props.theme.colors.white};
     background: ${(props) => props.theme.colors.oxfordBlue};

@@ -1,0 +1,8 @@
+{
+  "tokenomics": "The Q network is stabilized by sophisticated economics that distribute token rewards through different pools and proxies to the according reward earner",
+  "purge-slashing": "In order to slash the same validator again, root node needs to purge all his slashing transactions",
+  "lock-tokens-for-voting": "Lock the number of tokens that you plan to vote with (the number of locked tokens will set your voting weight)",
+  "liquidation-auction": "Borrowing vault is free for liquidation due to price fluctuation of collateralized assets",
+  "system-debt": "System dept overpasses the threshold and netting is not possible",
+  "system-surplus": "System surplus overpasses the threshold and netting is not possible"
+}

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
+import InfoTooltip from 'components/Custom/InfoTooltip';
 
 import useInterval from 'hooks/useInterval';
 
@@ -169,7 +170,10 @@ function TokenomicsBlock () {
 
   return (
     <CustomBlock>
-      <h1>Tokenomics</h1>
+      <h1>
+        <span>Tokenomics</span>
+        <InfoTooltip topic="tokenomics" />
+      </h1>
       {tokenimicsInfo.map((item) => (
         <Fragment key={item.id}>
           <div className="card_block">
