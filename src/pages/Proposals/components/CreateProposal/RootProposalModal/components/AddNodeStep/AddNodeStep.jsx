@@ -48,7 +48,6 @@ function AddNodeStep () {
       onBack={goBack}
     >
       <h2>Add Your account as a Candidate for the Root Node Panel. Optionally provide a Root Node to Remove.</h2>
-      {JSON.stringify(form.errors)}
       <div style={{ display: 'grid', gap: '15px' }}>
         <Input
           {...form.fields.hash}

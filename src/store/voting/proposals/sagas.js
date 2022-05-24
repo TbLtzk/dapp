@@ -80,8 +80,9 @@ function * createProposalGenerator ({ proposal }) {
       case CONTRACT_TYPES.addNewExpert:
       case CONTRACT_TYPES.removeCurrentExpert:
       case CONTRACT_TYPES.parameterVote:
-        const typeContract =
-          proposal.type !== CONTRACT_TYPES.parameterVote ? CONTRACT_TYPES.member : CONTRACT_TYPES.parameters;
+        const typeContract = proposal.type !== CONTRACT_TYPES.parameterVote
+          ? CONTRACT_TYPES.member
+          : CONTRACT_TYPES.parameters;
         const contract = chooseExpertContractDependsOnType(typeContract, proposal.panelType);
         contractName = contract.contractName;
         yield contract.createProposal(proposal, userAddress);

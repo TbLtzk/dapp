@@ -48,11 +48,11 @@ export default class MembershipVoting extends VotingService {
 
   async createProposal (data, userAddress) {
     const contract = await this.getContractInstance();
-    const link = data['external-link'];
+    const link = data.externalLink;
     const candidate = data.address;
-    if (data?.first === CONTRACT_TYPES.addNewExpert) {
+    if (data?.type === CONTRACT_TYPES.addNewExpert) {
       return await contract.createAddExpertProposal(link, candidate, { from: userAddress });
-    } else if (data?.first === CONTRACT_TYPES.removeCurrentExpert) {
+    } else if (data?.type === CONTRACT_TYPES.removeCurrentExpert) {
       return await contract.createRemoveExpertProposal(link, candidate, { from: userAddress });
     }
   }
