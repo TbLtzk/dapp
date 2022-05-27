@@ -23,7 +23,10 @@ function ParameterVoteStep () {
       externalLink: [required, url],
     },
     onSubmit: (form) => {
-      goNext({ ...form, params: formArray.forms });
+      goNext({
+        ...form,
+        params: formArray.forms.map(e => e.values)
+      });
     },
   });
 

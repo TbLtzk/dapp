@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 
 import MultiStepModal from 'components/Base/MultiStepModal';
 
-import { useMultiStepForm } from 'hooks/useMultiStepForm';
+import useMetamaskReset from 'hooks/useMetamaskReset';
+import useMultiStepForm from 'hooks/useMultiStepForm';
 
 import ConfirmStep from './components/ConfirmStep';
 import ManageExpertStep from './components/ManageExpertStep';
@@ -13,6 +14,7 @@ import TypeStep from './components/TypeStep';
 import { createProposal } from 'store/voting/proposals/action-creators';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
+import formTypes from 'constants/form-types';
 
 const LocalStateContext = createContext();
 const LocalStateProvider = LocalStateContext.Provider;
@@ -39,6 +41,8 @@ function ExpertProposalModal ({ modalOpen, onHide }) {
     reset();
     onHide();
   };
+
+  useMetamaskReset(formTypes.expertProposal, handleHide);
 
   return (
     <LocalStateProvider value={{ values, goNext, goBack, confirm }}>

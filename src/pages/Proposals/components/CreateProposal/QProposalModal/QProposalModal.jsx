@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 
 import MultiStepModal from 'components/Base/MultiStepModal';
 
-import { useMultiStepForm } from 'hooks/useMultiStepForm';
+import useMetamaskReset from 'hooks/useMetamaskReset';
+import useMultiStepForm from 'hooks/useMultiStepForm';
 
 import ConfirmStep from './components/ConfirmStep';
 import ConstitutionStep from './components/ConstitutionStep';
@@ -14,6 +15,7 @@ import TypeStep from './components/TypeStep';
 import { createProposal } from 'store/voting/proposals/action-creators';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
+import formTypes from 'constants/form-types';
 
 const LocalStateContext = createContext();
 const LocalStateProvider = LocalStateContext.Provider;
@@ -41,6 +43,8 @@ function QProposalModal ({ modalOpen, onHide }) {
     reset();
     onHide();
   };
+
+  useMetamaskReset(formTypes.qProposal, handleHide);
 
   const isConstitutionType = values.type === CONTRACT_TYPES.constitutionUpdate;
   const shouldChangeParams = isConstitutionType && values.isParamsChanged;
