@@ -18,7 +18,8 @@
     "react",
     "react-hooks",
     "simple-import-sort",
-    "import"
+    "import",
+    "unused-imports"
   ],
   "settings": {
     "react": { "version": "detect" }
@@ -81,6 +82,7 @@
     "import/first": "warn",
     "import/newline-after-import": "warn",
     "import/no-duplicates": "warn",
+    "unused-imports/no-unused-imports": "warn",
     "simple-import-sort/exports": "warn",
     "simple-import-sort/imports": ["warn", {
       "groups": [

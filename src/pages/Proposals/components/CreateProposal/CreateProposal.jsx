@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
 
 import Button from 'components/Base/Button';
 
@@ -7,8 +6,6 @@ import ExpertProposalModal from './ExpertProposalModal';
 import QProposalModal from './QProposalModal';
 import RootProposalModal from './RootProposalModal';
 import SlashingProposalModal from './SlashingProposalModal';
-
-import { successMessageSelector } from 'store/transaction-handler/selectors';
 
 import { PROPOSALS_TYPES } from 'constants/statuses';
 
@@ -20,7 +17,6 @@ const proposalTitleMap = {
 };
 
 function CreateProposal ({ type }) {
-  const shouldCloseModal = useSelector(successMessageSelector);
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleCreateProposal = () => {
@@ -30,12 +26,6 @@ function CreateProposal ({ type }) {
   const handleHideModal = () => {
     setModalOpen(false);
   };
-
-  useEffect(() => {
-    if (shouldCloseModal) {
-      handleHideModal();
-    }
-  }, [shouldCloseModal]);
 
   const modalProps = { modalOpen, onHide: handleHideModal };
   const modalMap = {

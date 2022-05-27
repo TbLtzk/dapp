@@ -35,7 +35,7 @@ function TransferForm () {
 
   const updateMaxAmount = async () => {
     const depositAmount = await getQVaultDepositAmount(address, balance);
-    setMaxAmount(depositAmount);
+    setMaxAmount(Number(depositAmount) < 0 ? '0' : depositAmount);
   };
 
   useEffect(() => {

@@ -3,13 +3,16 @@ import { useDispatch } from 'react-redux';
 
 import MultiStepModal from 'components/Base/MultiStepModal';
 
-import { useMultiStepForm } from 'hooks/useMultiStepForm';
+import useMetamaskReset from 'hooks/useMetamaskReset';
+import useMultiStepForm from 'hooks/useMultiStepForm';
 
 import ConfirmStep from './components/ConfirmStep';
 import NominateStep from './components/NominateStep';
 import TypeStep from './components/TypeStep';
 
 import { createProposal } from 'store/voting/proposals/action-creators';
+
+import formTypes from 'constants/form-types';
 
 const LocalStateContext = createContext();
 const LocalStateProvider = LocalStateContext.Provider;
@@ -35,6 +38,8 @@ function SlashingProposalModal ({ modalOpen, onHide }) {
     reset();
     onHide();
   };
+
+  useMetamaskReset(formTypes.slashingProposal, handleHide);
 
   return (
     <LocalStateProvider value={{ values, goNext, goBack, confirm }}>

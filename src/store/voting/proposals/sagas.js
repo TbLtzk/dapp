@@ -35,6 +35,7 @@ import RootsVotingService from 'contracts/helpers/voting-helpers/roots-voting-he
 import VotingService from 'contracts/helpers/voting-helpers/voting-service-helper';
 
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
+import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
@@ -44,33 +45,39 @@ function * createProposalGenerator ({ proposal }) {
     yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);
     let contractName = null;
+    let formType = '';
     const type = proposal.type;
     switch (type) {
       case CONTRACT_TYPES.constitutionUpdate:
         const constitutionVoting = new ConstitutionVotingService(CONTRACTS_NAMES.constitutionVoting);
         yield constitutionVoting.createProposal(proposal, userAddress);
         contractName = CONTRACTS_NAMES.constitutionVoting;
+        formType = formTypes.qProposal;
         break;
       case CONTRACT_TYPES.generalQUpdate:
         const generalUpdateVoting = new GeneralUpdateVotingService(CONTRACTS_NAMES.generalUpdateVoting);
         yield generalUpdateVoting.createProposal(proposal, userAddress);
         contractName = CONTRACTS_NAMES.generalUpdateVoting;
+        formType = formTypes.qProposal;
         break;
       case CONTRACT_TYPES.emergencyUpdate:
         const emergencyUpdateVoting = new EmergencyUpdateVotingService(CONTRACTS_NAMES.emergencyUpdateVoting);
         yield emergencyUpdateVoting.createProposal(proposal, userAddress);
         contractName = CONTRACTS_NAMES.emergencyUpdateVoting;
+        formType = formTypes.qProposal;
         break;
       case CONTRACT_TYPES.addAnewRootNode:
       case CONTRACT_TYPES.removeACurrentRootNode:
         const rootsVoting = new RootsVotingService(CONTRACTS_NAMES.rootsVoting);
         yield rootsVoting.createProposal(proposal, userAddress);
         contractName = CONTRACTS_NAMES.rootsVoting;
+        formType = formTypes.rootNodeProposal;
         break;
       case CONTRACT_TYPES.rootNodeSlashing:
       case CONTRACT_TYPES.validatorNodeSlashing:
         const chosenContract = chooseSlashingContractDependsOnType(type);
         yield chosenContract.createProposal(proposal, userAddress);
+        formType = formTypes.slashingProposal;
         if (type === CONTRACT_TYPES.rootNodeSlashing) {
           contractName = CONTRACTS_NAMES.rootNodesSlashingVoting;
         } else if (type === CONTRACT_TYPES.validatorNodeSlashing) {
@@ -85,6 +92,7 @@ function * createProposalGenerator ({ proposal }) {
           : CONTRACT_TYPES.parameters;
         const contract = chooseExpertContractDependsOnType(typeContract, proposal.panelType);
         contractName = contract.contractName;
+        formType = formTypes.expertProposal;
         yield contract.createProposal(proposal, userAddress);
         break;
       default:
@@ -95,7 +103,7 @@ function * createProposalGenerator ({ proposal }) {
     yield put(getDelegationInfo(userAddress));
     yield put(getProposalsByType(contractName));
 
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+    yield put(setTransactionLoadingSuccess({ type: formType }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

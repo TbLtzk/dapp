@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-export function useMultiStepForm ({
+export default function useMultiStepForm ({
   initialValues = {},
   onConfirm = () => {}
 }) {

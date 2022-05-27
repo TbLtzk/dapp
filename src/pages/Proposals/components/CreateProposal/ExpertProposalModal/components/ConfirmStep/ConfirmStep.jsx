@@ -50,10 +50,12 @@ function ConfirmStep () {
                     <h5>Type</h5>
                     <p title={getTypeName(param.type)}>{getTypeName(param.type)}</p>
                   </div>
+
                   <div>
                     <h5>Key</h5>
                     <p title={param.key}>{param.key}</p>
                   </div>
+
                   <div>
                     <h5>Value</h5>
                     <p title={param.value}>{param.value}</p>

@@ -22,7 +22,12 @@ const formTypes = {
 
   purgeSlashing: 'purge-slashing',
   vestingWithdraw: 'vesting-withdraw',
-  timeLocksAmount: 'time-locks-amount'
+  timeLocksAmount: 'time-locks-amount',
+
+  qProposal: 'q-proposal',
+  rootNodeProposal: 'root-node-proposal',
+  expertProposal: 'expert-proposal',
+  slashingProposal: 'slashing-proposal',
 };
 
 export default formTypes;
