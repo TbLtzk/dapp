@@ -273,20 +273,6 @@ export const ListCardWrp = styled(Card)`
     }
   }
 
-  .list-card__tow-colm {
-    width: 100%;
-    display: grid;
-    grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
-    grid-column-gap: ${indents['15']};
-
-    & > * {
-      width: 100%;
-      max-width: 100%;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
-
   .list-card__three-colm {
     display: grid;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);

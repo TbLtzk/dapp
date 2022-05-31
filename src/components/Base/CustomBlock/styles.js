@@ -63,6 +63,11 @@ export const Block = styled.div`
     margin-bottom: 15px;
   }
 
+  .card__hash {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
   .card__actions {
     display: flex;
     align-items: flex-start;
@@ -112,7 +117,7 @@ export const Block = styled.div`
     display: grid;
     grid-template-columns: minmax(80px, 2fr) minmax(80px, 2fr) minmax(70px, 90px);
     grid-column-gap: 14px;
-    align-items: end;
+    align-items: start;
   }
 
   .card__one-line-form-2-2-1-action {
