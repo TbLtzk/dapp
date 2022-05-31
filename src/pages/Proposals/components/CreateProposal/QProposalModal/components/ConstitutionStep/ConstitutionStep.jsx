@@ -8,7 +8,7 @@ import useForm from 'hooks/useForm';
 
 import { useCreateProposal } from '../../QProposalModal';
 
-import { required } from 'func/validators';
+import { hash, required, url } from 'func/validators';
 
 function ConstitutionStep () {
   const { goNext, goBack } = useCreateProposal();
@@ -22,9 +22,9 @@ function ConstitutionStep () {
     },
     validators: {
       classification: [required],
-      hash: [required],
+      hash: [required, hash],
       isParamsChanged: [required],
-      externalLink: [required],
+      externalLink: [required, url],
     },
     onSubmit: (form) => {
       goNext({ ...form, params: [] });
@@ -34,7 +34,7 @@ function ConstitutionStep () {
   const partOptions = [
     {
       value: 'fundamental-part',
-      label: 'Fundamental Part \t\t\t| Main Body and Definitions'
+      label: 'Fundamental Part \t| Preamble'
     },
     {
       value: 'basic-part',

@@ -12,6 +12,10 @@ const ListDetails = ({ list }) =>
                 href={'//' + elem.value}
                 target="_blank"
                 rel="noreferrer"
+                style={{
+                  display: 'block',
+                  marginBottom: '15px'
+                }}
               >
                 {elem.value}
               </a>
