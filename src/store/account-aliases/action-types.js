@@ -1,0 +1,10 @@
+export const GET_ALIASES = 'GET_ALIASES';
+export const SET_ALIASES = 'SET_ALIASES';
+export const SET_ALIASES_LOADING = 'SET_ALIASES_LOADING';
+
+export const GET_ALIAS_EVENTS = 'GET_ALIAS_EVENTS';
+export const SET_ALIAS_EVENTS = 'SET_ALIAS_EVENTS';
+export const SET_EVENTS_LOADING = 'SET_EVENTS_LOADING';
+
+export const SET_ALIAS = 'SET_ALIAS';
+export const RESERVE_ALIAS = 'RESERVE_ALIAS';

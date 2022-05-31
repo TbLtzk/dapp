@@ -7,6 +7,7 @@ import * as Sentry from '@sentry/react';
 import StyleLayout from 'components/Base/StyleLayout';
 import AlertTemplate from 'components/Custom/Alerts/AlertTemplate';
 import ErrorBoundary from 'components/Custom/ErrorBoundary';
+import AccountAliasing from 'pages/AccountAliasing';
 import Monitoring from 'pages/Monitoring';
 import NotFound from 'pages/NotFound';
 import OneAuctionPage from 'pages/OneAuctionPage';
@@ -155,6 +156,11 @@ function Routes () {
               exact
               path="/q-governance/proposal/:contract?/:id?"
               component={(props) => <OneProposalPage {...props} />}
+            />
+            <Route
+              exact
+              path="/account-aliasing"
+              component={(props) => <AccountAliasing {...props} />}
             />
             <Route component={NotFound} />
           </Switch>

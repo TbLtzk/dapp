@@ -7,7 +7,7 @@ import { PagesItemWrapper, TableWrapper } from './styles';
 
 import { theme } from 'store/theme/selectors';
 
-const pageButtonRenderer = ({ page, active, disable, title, onPageChange }) => {
+const pageButtonRenderer = ({ page, active, onPageChange }) => {
   const handleClick = (e) => {
     e.preventDefault();
     onPageChange(page);

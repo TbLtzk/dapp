@@ -16,6 +16,7 @@ function ModalWindow ({
   content,
   modalTitle,
   iconRight,
+  width,
   closeButton = true,
   scrollable = true,
 }) {
@@ -27,6 +28,7 @@ function ModalWindow ({
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       backbtntitle={backBtnTitle}
+      $width={width}
       onHide={onHide}
     >
       <Header closeButton={closeButton}>

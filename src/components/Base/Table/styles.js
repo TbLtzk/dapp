@@ -44,6 +44,7 @@ export const TableWrapper = styled.span`
     props.lineForEach
       ? css`
             vertical-align: middle;
+            padding-top: 10px;
             padding-bottom: 10px;
             border-bottom: 1px solid ${(props) => props.theme.colors.th};
           `

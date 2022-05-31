@@ -15,7 +15,7 @@ const MemberTables = ({
   lineForEach
 }) => (
   <>
-    {!title ? null : <h1>{title}</h1>}
+    {title && <h1>{title}</h1>}
     <div>
       {loading
         ? (

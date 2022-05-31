@@ -3,7 +3,7 @@ import { CloseButton } from 'react-bootstrap';
 
 import { AlertWrapper } from './styles';
 
-const AlertTemplate = ({ style, options, message, close }) => {
+const AlertTemplate = ({ style, message, close }) => {
   return (
     <AlertWrapper style={style}>
       <div className="alert-template__header">

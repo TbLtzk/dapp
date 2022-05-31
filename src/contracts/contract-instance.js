@@ -6,6 +6,9 @@ import { indexersUrls } from 'constants/config';
 
 export const CONTRACT_REGISTRY_ADDRESS = '0xc3E589056Ece16BCB88c6f9318e9a7343b663522';
 
+/**
+ * @type {ContractRegistryInstance | null}
+ */
 export let contractRegistryInstance = null;
 
 export const getContractRegistryInstance = async () => {
@@ -17,6 +20,13 @@ export const getContractRegistryInstance = async () => {
 
 export const cache = {};
 
+/**
+ * @template {keyof ContractRegistryInstance} T
+ *
+ * @param {T} instance
+ * @param {boolean} [QUSD]
+ * @returns {ContractRegistryInstance[T]}
+ */
 export function getInstance (instance, QUSD) {
   return async () => {
     if (!cache[instance]) {
@@ -59,6 +69,7 @@ export const getRootNodesSlashingVotingInstance = getInstance('rootNodesSlashing
 export const getRootNodeSlashingEscrowInstance = getInstance('rootNodeSlashingEscrow');
 export const getGetSystemContractsAndBalances = getInstance('getSystemContractsAndBalances');
 export const getDefaultAllocationProxyInstance = getInstance('defaultAllocationProxy');
+export const getAccountAliasesInstance = getInstance('accountAliases');
 
 export const getEpqfiMembershipVotingInstance = getInstance('epqfiMembershipVoting');
 export const getEpqfiMembershipInstance = getInstance('epqfiMembership');
