@@ -2,11 +2,12 @@ import styled from 'styled-components';
 
 export const ParameterFormContainer = styled.div`
   width: 100%;
-  .select_contaier {
-    display: flex;
+
+  .type-fields {
+    display: grid;
+    grid-template-columns: auto 1fr;
     width: 100%;
-    select {
-      margin-right: 20px;
-    }
+    gap: 20px;
+    margin-bottom: 15px;
   }
 `;

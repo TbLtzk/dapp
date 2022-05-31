@@ -1,6 +1,6 @@
 import { Modal } from 'react-bootstrap';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { indents } from 'constants/style';
 
@@ -15,7 +15,7 @@ export const Header = styled(Modal.Header)`
 export const Body = styled(Modal.Body)`
   padding: 0 ${indents['20']} ${indents['20']};
   overflow-wrap: break-word;
-  min-height: 250px;
+  min-height: 200px;
   word-wrap: break-word;
   word-break: break-word;
   background: ${(props) => props.theme.colors.oxfordBlueTint6};
@@ -29,6 +29,14 @@ export const Footer = styled(Modal.Footer)`
 `;
 
 export const ModalContainer = styled(Modal)`
+  ${(p) => p.$width && css`
+    @media (min-width: 576px) {
+      .modal-dialog {
+        max-width: ${p.$width};
+      }
+    }
+  `}
+
   .modal-header {
     padding: ${indents['20']};
   }

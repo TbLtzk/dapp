@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 
+import accountAliases from './account-aliases/reducer';
 import auctions from './auctions/reducer';
 import borrowAssets from './borrow-assets/reducer';
 import borrowingCore from './borrowing-core/reducer';
@@ -34,6 +35,7 @@ const RootReducer = combineReducers({
   borrowingCore,
   borrowAssets,
   savingAssets,
+  accountAliases,
 
   proposals,
   qProposals,

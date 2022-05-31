@@ -6,6 +6,8 @@ import Button from 'components/Base/Button';
 
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
+import { trimAddress } from 'func/useful';
+
 function Address () {
   const userAddress = useSelector(userAddressMetamask);
   const [isCopied, setIsCopied] = useState(false);
@@ -19,18 +21,18 @@ function Address () {
 
   return (
     <CopyToClipboard text={userAddress}>
-      <div title={userAddress}>
+      <div
+        title={userAddress}
+        style={{ marginLeft: '20px' }}
+      >
         <Button
           look="white"
-          style={{
-            width: '270px',
-            margin: '0 0 0 20px',
-          }}
+          style={{ minWidth: '120px' }}
           onClick={handleCopy}
         >
           <i className="mdi mdi-content-copy" />
           <span style={{ marginLeft: '5px' }}>
-            {isCopied ? 'Copied!' : userAddress.substring(0, 30) + '...'}
+            {isCopied ? 'Copied!' : trimAddress(userAddress)}
           </span>
         </Button>
       </div>

@@ -1,5 +1,6 @@
 import { all } from 'redux-saga/effects';
 
+import accountAliases from './account-aliases/sagas';
 import auctions from './auctions/sagas';
 import borrowingAssets from './borrow-assets/sagas';
 import borrowingCore from './borrowing-core/sagas';
@@ -44,6 +45,7 @@ export default function * rootSaga () {
     ...lockedAmount,
     ...vesting,
     ...savingAssets,
-    ...borrowingAssets
+    ...borrowingAssets,
+    ...accountAliases
   ]);
 }

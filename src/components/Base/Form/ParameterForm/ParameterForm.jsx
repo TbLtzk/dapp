@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 
 import { ParameterType } from '@q-dev/q-js-sdk';
 
@@ -7,17 +6,14 @@ import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParamet
 
 import useForm from 'hooks/useForm';
 
-import { SelectWrapper } from '../FormSelect/styles';
 import Input from '../Input';
+import Select from '../Select';
 
 import { ParameterFormContainer } from './styles';
-
-import { theme } from 'store/theme/selectors';
 
 import { parameterType, required } from 'func/validators';
 
 function ParameterForm ({ onChange, typeContract }) {
-  const currentTheme = useSelector(theme);
   const form = useForm({
     initialValues: {
       key: '',
@@ -31,27 +27,23 @@ function ParameterForm ({ onChange, typeContract }) {
     },
   });
 
-  const handleSelectChange = (event) => {
-    form.fields.type.onChange(event.target.value);
-  };
-
   useEffect(() => {
     onChange(form);
   }, [form.values, onChange]);
 
   return (
     <ParameterFormContainer>
-      <div className="select_contaier">
-        <SelectWrapper width="auto" palette={currentTheme}>
-          <select value={form.values.type} onChange={handleSelectChange}>
-            <option defaultValue value={ParameterType.ADDRESS}>
-              Address
-            </option>
-            <option value={ParameterType.BOOL}>Boolean</option>
-            <option value={ParameterType.STRING}>String</option>
-            <option value={ParameterType.UINT}>Uint</option>
-          </select>
-        </SelectWrapper>
+      <div className="type-fields">
+        <Select
+          {...form.fields.type}
+          defaultValue={ParameterType.ADDRESS}
+          options={[
+            { value: ParameterType.ADDRESS, label: 'Address' },
+            { value: ParameterType.BOOL, label: 'Boolean' },
+            { value: ParameterType.STRING, label: 'String' },
+            { value: ParameterType.UINT, label: 'Uint' },
+          ]}
+        />
 
         <Input
           {...form.fields.key}
