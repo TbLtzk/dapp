@@ -7,7 +7,7 @@ import useForm from 'hooks/useForm';
 
 import { useCreateProposal } from '../../RootProposalModal';
 
-import { address, required } from 'func/validators';
+import { address, required, url } from 'func/validators';
 
 function RemoveNodeStep () {
   const { goNext, goBack } = useCreateProposal();
@@ -19,7 +19,7 @@ function RemoveNodeStep () {
     },
     validators: {
       address: [required, address],
-      externalLink: [required]
+      externalLink: [required, url]
     },
     onSubmit: goNext,
   });
