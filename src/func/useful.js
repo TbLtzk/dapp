@@ -58,9 +58,12 @@ export const errorHandler = (error, field, min = 0, max = 100) => {
 export const getMinimalActiveBlockHeight = async () => {
   try {
     const networkVersion = window?.ethereum?.networkVersion;
+    const params = getParametersDependsOnUrl();
 
     const latestBlock = await fetchBlockNumber('latest');
-    const blocksDependOnVersion = blockCountDependOnChainId[networkVersion] || 1000000;
+    const blocksDependOnVersion = blockCountDependOnChainId[networkVersion] ||
+      blockCountDependOnChainId[params?.chainId] ||
+      1_000_000;
     const minimalActiveBlockHeight = Math.max(0, Number(latestBlock) - Number(blocksDependOnVersion));
 
     return {
