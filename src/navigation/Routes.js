@@ -157,11 +157,13 @@ function Routes () {
               path="/q-governance/proposal/:contract?/:id?"
               component={(props) => <OneProposalPage {...props} />}
             />
-            <Route
-              exact
-              path="/account-aliasing"
-              component={(props) => <AccountAliasing {...props} />}
-            />
+            {process.env.REACT_APP_HIDE_ALIASES !== 'true' && (
+              <Route
+                exact
+                path="/account-aliasing"
+                component={(props) => <AccountAliasing {...props} />}
+              />
+            )}
             <Route component={NotFound} />
           </Switch>
         </AlertProvider>

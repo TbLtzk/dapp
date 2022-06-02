@@ -134,7 +134,9 @@ function Sidebar () {
                 <>
                   <CommonLinks linkTo="/root-node-staking" linkTitle="– Root Node Staking" />
                   <CommonLinks linkTo="/validator-staking" linkTitle="– Validator Staking" />
-                  <CommonLinks linkTo="/account-aliasing" linkTitle="– Account Aliasing" />
+                  {process.env.REACT_APP_HIDE_ALIASES !== 'true' && (
+                    <CommonLinks linkTo="/account-aliasing" linkTitle="– Account Aliasing" />
+                  )}
                 </>
               </AccordionLinks>
             )
