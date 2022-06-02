@@ -61,7 +61,7 @@ build:
   except:
     - branches
   script:
-    - docker build --build-arg NPM_TOKEN -t $IMAGE -t $IMAGE_LATEST .
+    - docker build --build-arg NPM_TOKEN --build-arg REACT_APP_HIDE_ALIASES="true" -t $IMAGE -t $IMAGE_LATEST .
     - docker push $IMAGE
     - docker push $IMAGE_LATEST
 
@@ -71,7 +71,7 @@ build-testnet:
   rules:
     - if: '$CI_COMMIT_TAG == "testnet"'
   script:
-    - docker build --build-arg NPM_TOKEN -t $IMAGE .
+    - docker build --build-arg NPM_TOKEN --build-arg REACT_APP_HIDE_ALIASES="true" -t $IMAGE .
     - docker push $IMAGE
 
 build-mainnet:
