@@ -35,6 +35,7 @@ import {
   getValidationRewardPoolsInstance,
   getValidatorsInstance,
 } from 'contracts/contract-instance';
+import { getBlockSealingAliasMap } from 'contracts/helpers/account-aliases-helper';
 import { getValidator, getValidators, prepareValidatorsMonitoringData } from 'contracts/helpers/validators-helper';
 
 import formTypes from 'constants/form-types';
@@ -113,17 +114,27 @@ function * getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWi
       case TABLE_TYPES.validatorsWidened: {
         const validationRewardPoolsInstance = yield call(getValidationRewardPoolsInstance);
         const validators = yield getValidators(validatorsInstance);
+        const aliasesMap = yield getBlockSealingAliasMap(validators.map(item => item.validator));
         const preparedData = yield all(
           validators.map((validator, idx) =>
             getValidator(validator, idx, validatorsInstance, validationRewardPoolsInstance)
           )
         );
-        yield put(setValidatorMembers(tableType, preparedData));
+        const members = preparedData.map((member) => ({
+          ...member,
+          alias: aliasesMap[member.validator],
+        }));
+        yield put(setValidatorMembers(tableType, members));
         break;
       }
       case TABLE_TYPES.validatorsShort: {
         const shortList = yield validatorsInstance.getShortList();
-        const preparedShortList = shortList.map((user) => ({ validator: user.address, amount: user.balance }));
+        const aliasesMap = yield getBlockSealingAliasMap(shortList.map(item => item.address));
+        const preparedShortList = shortList.map((user) => ({
+          validator: user.address,
+          alias: aliasesMap[user.address],
+          amount: user.balance
+        }));
         yield put(setValidatorMembers(tableType, preparedShortList));
         break;
       }
@@ -133,13 +144,22 @@ function * getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWi
         const indexer = yield getIndexerInstance(indexerUrl);
 
         const shortList = yield validatorsInstance.getShortList();
-        const inactiveValidators = yield indexer.getInactiveValidators(shortList.map((user) => user.address));
+        const validatorAdresses = shortList.map((user) => user.address);
+
+        const inactiveValidators = yield indexer.getInactiveValidators(validatorAdresses);
+        const aliasesMap = yield getBlockSealingAliasMap(validatorAdresses);
 
         const preparedShortList = yield all(
           shortList.map((member) => prepareValidatorsMonitoringData(indexer, member))
         );
+
+        const members = preparedShortList.map((member) => ({
+          ...member,
+          alias: aliasesMap[member.validator],
+        }));
+
         yield put(setInactiveValidators(inactiveValidators));
-        yield put(setValidatorMembers(tableType, preparedShortList));
+        yield put(setValidatorMembers(tableType, members));
         break;
       }
     }

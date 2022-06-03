@@ -12,7 +12,11 @@ function Network () {
   const network = useSelector(networkSelector);
   const parameters = getParametersDependsOnUrl();
 
-  return <NetworkWrapper network={network}>Network: Q {networks[network || parameters.chainId]}</NetworkWrapper>;
+  return (
+    <NetworkWrapper network={network}>
+      Network: Q {networks[network || parameters.chainId]}
+    </NetworkWrapper>
+  );
 }
 
 export default Network;

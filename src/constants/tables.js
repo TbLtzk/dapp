@@ -2,6 +2,7 @@ import React from 'react';
 
 import ProgressBar from 'components/Base/ProgressBar';
 import Tooltip from 'components/Base/Tooltip';
+import AliasTooltip from 'components/Custom/AliasTooltip';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import BorrowManageAsset from 'pages/SavingAndBorrowing/components/BorrowManageAsset';
 import SaveManageAsset from 'pages/SavingAndBorrowing/components/SaveManageAsset';
@@ -21,7 +22,13 @@ export const tableLockAmount = (tableArray) =>
 export const tableRootNode = (tableArray) =>
   tableArray.map((rootNode, idx) => ({
     id: idx,
-    address: <ExplorerAddress address={rootNode.address} />,
+    rank: idx + 1,
+    address: <ExplorerAddress
+      short
+      iconed
+      semibold
+      address={rootNode.address}
+    />,
     amount: fN(rootNode.stakeAmount) + ' Q',
     share: rootNode.share + ' %'
   }));
@@ -29,7 +36,13 @@ export const tableRootNode = (tableArray) =>
 export const tableRootNodeMonitoring = (tableArray) =>
   tableArray.map((rootNode, idx) => ({
     id: idx,
-    address: <ExplorerAddress address={rootNode.address} />,
+    rank: idx + 1,
+    address: <ExplorerAddress
+      short
+      iconed
+      semibold
+      address={rootNode.address}
+    />,
     amount: fN(rootNode.stakeAmount) + ' Q',
     offChain: 'n/a',
     onChain: 'n/a'
@@ -39,7 +52,17 @@ export const tableValidatorsShort = (tableArray) =>
   tableArray.map((validator, idx) => ({
     id: idx,
     rank: idx + 1,
-    validator: <ExplorerAddress address={validator.validator} />,
+    validator: (
+      <div style={{ display: 'flex' }}>
+        <ExplorerAddress
+          short
+          iconed
+          semibold
+          address={validator.validator}
+        />
+        <AliasTooltip alias={validator.alias} />
+      </div>
+    ),
     amount: fN(validator.amount) + ' Q'
   }));
 
@@ -47,7 +70,17 @@ export const tableValidatorsMonitoring = (tableArray) =>
   tableArray.map((validator, idx) => ({
     id: idx,
     rank: idx + 1,
-    validator: <ExplorerAddress address={validator.validator} />,
+    validator: (
+      <div style={{ display: 'flex' }}>
+        <ExplorerAddress
+          short
+          iconed
+          semibold
+          address={validator.validator}
+        />
+        <AliasTooltip alias={validator.alias} />
+      </div>
+    ),
     amount: fN(validator.amount) + ' Q',
     lastBlock: validator.lastBlock,
     timestamp: <Tooltip additionalInfo={validator.timestamp}>{validator.monthDayYear}</Tooltip>,
@@ -58,7 +91,17 @@ export const tableValidatorsWidened = (tableArray) =>
   tableArray.map((validator, idx) => ({
     id: idx,
     rank: validator.rank,
-    validator: <ExplorerAddress address={validator.validator} />,
+    validator: (
+      <div style={{ display: 'flex' }}>
+        <ExplorerAddress
+          short
+          iconed
+          semibold
+          address={validator.validator}
+        />
+        <AliasTooltip alias={validator.alias} />
+      </div>
+    ),
     amount: fN(fromWei(validator.amount)) + ' Q',
     selfStake: fN(validator.selfStake) + ' Q',
     delegatedStake: fN(validator.delegatedStake) + ' Q',

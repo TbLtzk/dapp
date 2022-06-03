@@ -2,12 +2,10 @@ import styled, { css } from 'styled-components';
 
 import { scrollbarStyle } from 'constants/globalStyle';
 
-export const TableWrapper = styled.span`
-  display: block;
+export const TableWrapper = styled.div`
   width: 100%;
   max-width: 100%;
   overflow-x: auto;
-  margin-bottom: 10px;
   ${scrollbarStyle}
 
   .react-bootstrap-table-pagination {

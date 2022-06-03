@@ -1,7 +1,9 @@
+import { AliasPurpose } from '@q-dev/q-js-sdk';
 import { orderBy } from 'lodash';
 
 import { getAccountAliasesInstance } from 'contracts/contract-instance';
 
+import { isAliasesEnabled } from 'constants/config';
 import { fetchBlockNumber, transformToHex } from 'func/useful';
 
 export async function getAliasEvents () {
@@ -20,8 +22,23 @@ export async function getAliasEvents () {
   return orderBy([...updatedEvents, ...reservedEvents], 'blockNumber', 'desc')
     .map(item => ({
       ...item,
-      address: item.returnValues._main,
-      alias: item.returnValues._alias,
-      role: transformToHex(item.returnValues.role)
+      address: item.returnValues[0],
+      alias: item.returnValues[1],
+      role: transformToHex(item.returnValues[2])
     }));
+}
+
+export async function getBlockSealingAliasMap (addresses = []) {
+  if (!isAliasesEnabled) return {};
+
+  const contract = await getAccountAliasesInstance();
+  const aliases = await contract.resolveBatch(
+    addresses,
+    addresses.map(() => AliasPurpose.BLOCK_SEALING)
+  );
+
+  return aliases.reduce((acc, alias, i) => {
+    acc[addresses[i]] = alias === addresses[i] ? '' : alias;
+    return acc;
+  }, {});
 }

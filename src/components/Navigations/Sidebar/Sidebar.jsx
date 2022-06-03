@@ -28,6 +28,8 @@ import { qActiveProposalsCountSelector } from 'store/voting/q-proposals/selector
 import { rootActiveProposalsCountSelector } from 'store/voting/root-node-proposals/selectors';
 import { slashingActiveProposalsCountSelector } from 'store/voting/slashing-proposals/selectors';
 
+import { isAliasesEnabled } from 'constants/config';
+
 function Sidebar () {
   const appMode = useSelector(mode);
   const windowSize = useWindowSize();
@@ -134,7 +136,7 @@ function Sidebar () {
                 <>
                   <CommonLinks linkTo="/root-node-staking" linkTitle="– Root Node Staking" />
                   <CommonLinks linkTo="/validator-staking" linkTitle="– Validator Staking" />
-                  {process.env.REACT_APP_HIDE_ALIASES !== 'true' && (
+                  {isAliasesEnabled && (
                     <CommonLinks linkTo="/account-aliasing" linkTitle="– Account Aliasing" />
                   )}
                 </>

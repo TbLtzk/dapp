@@ -26,6 +26,7 @@ import TimeLocks from '../pages/TimeLocks';
 
 import { store } from 'store/index';
 
+import { isAliasesEnabled } from 'constants/config';
 import { AUCTIONS_TYPES, PROPOSALS_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
 
@@ -157,7 +158,7 @@ function Routes () {
               path="/q-governance/proposal/:contract?/:id?"
               component={(props) => <OneProposalPage {...props} />}
             />
-            {process.env.REACT_APP_HIDE_ALIASES !== 'true' && (
+            {isAliasesEnabled && (
               <Route
                 exact
                 path="/account-aliasing"
