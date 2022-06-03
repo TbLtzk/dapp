@@ -22,7 +22,7 @@ export const blockCountDependOnChainId = {
 };
 
 export const indexersUrls = {
-  devnet: 'http://35.161.73.158:4000',
+  devnet: 'http://63.34.190.209:4000',
   mainnet: 'https://indexer.q.org',
   testnet: 'https://indexer.qtestnet.org',
 };
@@ -126,3 +126,5 @@ export const URLS = {
     explorer: explorerUrls.mainnet,
   },
 };
+
+export const isAliasesEnabled = process.env.REACT_APP_HIDE_ALIASES !== 'true';

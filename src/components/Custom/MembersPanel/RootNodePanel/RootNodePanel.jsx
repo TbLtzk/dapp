@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import CustomBlock from 'components/Base/CustomBlock';
 import MemberTables from 'components/Custom/MemberTables';
 
+import { TitleBlock } from './styles';
+
 import { getRootMembers } from 'store/root-node/action-creators';
 import {
   loadingRootMembersMonitoringSelector,
@@ -48,17 +50,22 @@ function RootNodePanel ({ tableType }) {
     dispatch(getRootMembers(tableType));
   }, [dispatch]);
 
+  const isTotalStakeShown = tableType === TABLE_TYPES.rootNodesWidened && !tableLoading;
+
   return (
     <CustomBlock>
-      <h1>Root Node Panel</h1>
-      {tableType === TABLE_TYPES.rootNodesWidened && !tableLoading
-        ? (
-          <p>Total Stake: {rootMemebersTotalStake + ' Q'}</p>
-        )
-        : null}
+      <TitleBlock>
+        <h1>Root Node Panel</h1>
+        {isTotalStakeShown && (
+          <p>
+            <strong>Total Stake: </strong>
+            {rootMemebersTotalStake} Q
+          </p>
+        )}
+      </TitleBlock>
       <MemberTables
         sorting
-        perPageLength={10}
+        perPageLength={9}
         table={table}
         title={null}
         columns={columns}

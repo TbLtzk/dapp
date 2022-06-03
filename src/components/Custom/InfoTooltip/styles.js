@@ -28,8 +28,8 @@ export const TooltipWrapper = styled.span`
     pointer-events: none;
     padding: 15px;
     transform: translateX(-50%);
-    background-color: ${(p) => p.theme.colors.oxfordBlue};
-    border: 1px solid ${(p) => p.theme.colors.oxfordBlueTint3};
+    background-color: ${(p) => p.theme.colors.oxfordBlueTint6};
+    color: ${(p) => p.theme.colors.oxfordBlue};
     max-width: 280px;
     width: max-content;
     font-family: "OpenSans", sans-serif;
@@ -38,46 +38,26 @@ export const TooltipWrapper = styled.span`
     border-radius: 5px;
     transition: all 200ms ease-out;
 
-    &::before,
-    &::after {
+    &::before {
       content: '';
       position: absolute;
       top: 100%;
       left: 50%;
-    }
-
-    &::before {
+      background-color: ${(p) => p.theme.colors.oxfordBlueTint6};
       width: 10px;
       height: 10px;
-      background-color: ${(p) => p.theme.colors.oxfordBlue};
-      border: 1px solid ${(p) => p.theme.colors.oxfordBlueTint3};
       border-radius: 0 0 3px 0;
       transform: translate(-50%, -50%) rotate(45deg);
-    }
-
-    &::after {
-      width: 15px;
-      height: 10px;
-      background-color: ${(p) => p.theme.colors.oxfordBlue};
-      transform: translate(-50%, -100%);
     }
 
     ${(p) => p.$bottom && css`
       top: 40px;
       bottom: unset;
 
-      &::before,
-      &::after {
+      &::before {
         top: unset;
         bottom: 100%;
-      }
-
-      &::before {
         transform: translate(-50%, 50%) rotate(225deg);
-      }
-
-      &::after {
-        transform: translate(-50%, 100%);
       }
     `}
   }

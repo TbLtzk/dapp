@@ -25,6 +25,8 @@ export const FormWrapper = styled.div`
 
   @media screen and (max-width: 1250px) {
     flex-direction: column;
+    gap: 15px;
+
     .account-status__form-input {
       width: 100%;
     }
