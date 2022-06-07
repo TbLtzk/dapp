@@ -6,7 +6,7 @@ COPY .npmrc jsconfig.json package.json package-lock.json ./
 ARG NPM_TOKEN
 ARG REACT_APP_HIDE_ALIASES
 RUN npm config set '//gitlab.com/api/v4/packages/npm/:_authToken' $NPM_TOKEN
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 
 COPY public/ public/
 COPY src/ src/

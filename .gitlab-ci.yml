@@ -39,7 +39,7 @@ compile:
     - merge_request
   script:
     - npm config set '//gitlab.com/api/v4/packages/npm/:_authToken' $NPM_TOKEN
-    - npm ci
+    - npm ci --legacy-peer-deps
     - npm run build
 
 lint:
@@ -50,7 +50,7 @@ lint:
     - merge_request
   script:
     - npm config set '//gitlab.com/api/v4/packages/npm/:_authToken' $NPM_TOKEN
-    - npm ci
+    - npm ci --legacy-peer-deps
     - npm run lint
 
 build:
