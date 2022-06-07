@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const TitleBlock = styled.p`
+export const TitleBlock = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;

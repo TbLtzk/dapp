@@ -15,12 +15,6 @@ export const networks = {
   35441: 'mainnet',
 };
 
-export const blockCountDependOnChainId = {
-  35443: 300000,
-  35442: 40000,
-  35441: 500000,
-};
-
 export const indexersUrls = {
   devnet: 'http://63.34.190.209:4000',
   mainnet: 'https://indexer.q.org',
@@ -70,17 +64,7 @@ export const networkParameters = {
   },
 };
 
-export const URLS = {
-  'http://localhost:3000': {
-    id: 'testnet',
-    name: 'Testnet',
-    chainId: 35443,
-    webSocket: 'ws://18.158.7.68:8546',
-    rpc: 'https://rpc.qtestnet.org',
-    indexer: indexersUrls.testnet,
-    explorer: explorerUrls.testnet,
-  },
-  'not possible because of http (not https)': {
+/* devnet: {
     id: 'devnet',
     name: 'Devnet',
     chainId: 35442,
@@ -88,17 +72,12 @@ export const URLS = {
     rpc: 'http://63.34.190.209:8545',
     indexer: indexersUrls.devnet,
     explorer: explorerUrls.devnet,
-  },
+  }
+*/
+
+export const PARAMS = {
+  // devnet url
   'http://63.34.190.209:8000': {
-    id: 'testnet',
-    name: 'Testnet',
-    chainId: 35443,
-    webSocket: 'ws://18.158.7.68:8546',
-    rpc: 'https://rpc.qtestnet.org',
-    indexer: indexersUrls.testnet,
-    explorer: explorerUrls.testnet,
-  },
-  'http://35.161.73.158:8000': {
     id: 'testnet',
     name: 'Testnet',
     chainId: 35443,

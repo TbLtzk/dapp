@@ -6,22 +6,18 @@ import ErrorHandler from './ErrorHandler';
 
 import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper';
 
-import { blockCountDependOnChainId, explorerUrls, indexersUrls, networks, URLS } from 'constants/config';
+import { explorerUrls, indexersUrls, networks, PARAMS } from 'constants/config';
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import { keyRegex } from 'constants/regex';
 
 export const getParametersDependsOnUrl = () => {
-  return URLS[window.location.origin];
+  const parameters = PARAMS[window.location.origin];
+  return parameters || PARAMS['https://hq.qtestnet.org'];
 };
 
 export const getIndexerUrlDependsOnChainId = (chainId) => {
   const network = networks[chainId];
-  if (network) {
-    return indexersUrls[network];
-  } else {
-    const data = getParametersDependsOnUrl();
-    return data.indexer;
-  }
+  return network ? indexersUrls[network] : getParametersDependsOnUrl().indexer;
 };
 
 export const getExplorerUrlByChainId = (chainId) => {
@@ -57,24 +53,19 @@ export const errorHandler = (error, field, min = 0, max = 100) => {
 
 export const getMinimalActiveBlockHeight = async () => {
   try {
-    const networkVersion = window?.ethereum?.networkVersion;
-    const params = getParametersDependsOnUrl();
-
     const latestBlock = await fetchBlockNumber('latest');
-    const blocksDependOnVersion = blockCountDependOnChainId[networkVersion] ||
-      blockCountDependOnChainId[params?.chainId] ||
-      1_000_000;
-    const minimalActiveBlockHeight = Math.max(0, Number(latestBlock) - Number(blocksDependOnVersion));
+    const blocks = 1_000_000;
+    const minimalActiveBlockHeight = Math.max(0, Number(latestBlock) - Number(blocks));
 
     return {
       minimalActiveBlockHeight,
-      lastBlockHeight: latestBlock
+      lastBlockHeight: latestBlock,
     };
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
     return {
       minimalActiveBlockHeight: 0,
-      lastBlockHeight: 'latest'
+      lastBlockHeight: 'latest',
     };
   }
 };
@@ -100,7 +91,7 @@ export const sortAndCountProposalsByType = (proposals) => {
 
   const proposalsCount = {
     active: 0,
-    ended: 0
+    ended: 0,
   };
 
   proposals.forEach((array) => {

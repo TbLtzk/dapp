@@ -45,9 +45,7 @@ function LoadingMetaMask () {
     try {
       if (!ethereum) {
         // user without metamask
-        window.web3 = new Web3(
-          new Web3.providers.HttpProvider(networkParams?.rpc || 'https://rpc.qtestnet.org')
-        );
+        window.web3 = new Web3(new Web3.providers.HttpProvider(networkParams.rpc));
         dispatch(setLoadType(LOAD_TYPES.notInstalled));
       } else {
         // user with metamask
@@ -72,11 +70,10 @@ function LoadingMetaMask () {
         });
         if (!networks[networkId]) {
           // wrong network
-          window.web3 = new Web3(new Web3.providers.HttpProvider(networkParams?.rpc || 'https://rpc.qtestnet.org'));
+          window.web3 = new Web3(new Web3.providers.HttpProvider(networkParams.rpc));
           dispatch(setLoadType(LOAD_TYPES.wrongNetwork));
         } else {
           // right network
-
           const accounts = await web3.eth.getAccounts();
 
           if (accounts.length) {

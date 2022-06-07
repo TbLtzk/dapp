@@ -141,6 +141,7 @@ function * getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWi
       case TABLE_TYPES.validatorsMonitoring: {
         const network = yield select(networkSelector);
         const indexerUrl = getIndexerUrlDependsOnChainId(network);
+
         const indexer = yield getIndexerInstance(indexerUrl);
 
         const shortList = yield validatorsInstance.getShortList();
