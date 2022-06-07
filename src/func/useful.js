@@ -12,7 +12,7 @@ import { keyRegex } from 'constants/regex';
 
 export const getParametersDependsOnUrl = () => {
   const parameters = PARAMS[window.location.origin];
-  return !parameters ? PARAMS['https://hq.qtestnet.org'] : parameters;
+  return parameters || PARAMS['https://hq.qtestnet.org'];
 };
 
 export const getIndexerUrlDependsOnChainId = (chainId) => {
