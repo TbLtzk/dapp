@@ -17,12 +17,12 @@ export const getParametersDependsOnUrl = () => {
 
 export const getIndexerUrlDependsOnChainId = (chainId) => {
   const network = networks[chainId];
-  return !network ? getParametersDependsOnUrl().indexer : indexersUrls[network];
+  return network ? indexersUrls[network] : getParametersDependsOnUrl().indexer;
 };
 
 export const getExplorerUrlByChainId = (chainId) => {
   const network = networks[chainId];
-  return !network ? getParametersDependsOnUrl().explorer : explorerUrls[network];
+  return network ? explorerUrls[network] : getParametersDependsOnUrl().explorer;
 };
 
 export const transformToHex = (value) => {
