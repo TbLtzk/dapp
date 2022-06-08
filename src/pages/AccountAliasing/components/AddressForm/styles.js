@@ -5,14 +5,14 @@ export const WrapContainer = styled.div`
   display: grid;
   align-items: flex-start;
   width: 100%;
-  grid-template-columns: 480px 100px;
+  grid-template-columns: 480px max-content;
   gap: 15px;
 
   @media screen and (max-width: 1000px) {
     grid-template-columns: 1fr;
 
     button {
-      width: 100px;
+      width: max-content;
     }
   }
 `;

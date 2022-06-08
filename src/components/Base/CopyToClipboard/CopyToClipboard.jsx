@@ -1,41 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CopyToClipboard as Copy } from 'react-copy-to-clipboard';
 
 import Tooltip from '../Tooltip';
 
 function CopyToClipboard ({
-  valueToCopy,
+  value,
   title,
   hideTooltip = false,
   children,
-  onCopy,
+  onCopy = () => {},
 }) {
   const [copy, setCopy] = useState(false);
 
-  const handleCopy = () => {
-    setCopy(true);
-    onCopy(true);
+  useEffect(() => {
+    if (!copy) return;
 
-    setTimeout(() => {
+    onCopy(copy);
+    const timeout = setTimeout(() => {
       setCopy(false);
       onCopy(false);
     }, 3000);
-  };
+
+    return () => clearTimeout(timeout);
+  }, [copy, onCopy]);
 
   return (
     <Tooltip
       disabled={hideTooltip}
       additionalInfo={copy ? 'Copied!' : title || 'Copy'}
     >
-      <Copy text={valueToCopy}>
+      <Copy text={value}>
         <span
           style={{
             cursor: 'pointer',
             maxWidth: 'min-content'
           }}
-          onClick={handleCopy}
+          onClick={() => setCopy(true)}
         >
-          {children}
+          {children || value}
         </span>
       </Copy>
     </Tooltip>

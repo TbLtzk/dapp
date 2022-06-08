@@ -1,19 +1,22 @@
 import React from 'react';
-import { Form } from 'react-bootstrap';
 
-import { SwitcherWrapper } from './styles';
+import { StyledSwitch } from './styles';
 
-const FormSwitch = ({ label, checked, onChange, id }) => {
+const FormSwitch = ({
+  label,
+  checked,
+  id,
+  onChange,
+  ...rest
+}) => {
   return (
-    <SwitcherWrapper>
-      <Form.Check
-        type="switch"
-        id={id}
-        checked={checked}
-        onChange={onChange}
-      />
-      <div>{label}</div>
-    </SwitcherWrapper>
+    <StyledSwitch
+      id={id}
+      label={label}
+      checked={checked}
+      {...rest}
+      onChange={onChange}
+    />
   );
 };
 
