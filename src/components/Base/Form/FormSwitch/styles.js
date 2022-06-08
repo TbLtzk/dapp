@@ -1,35 +1,16 @@
+import { Form } from 'react-bootstrap';
+
 import styled from 'styled-components';
 
-export const SwitcherWrapper = styled.div`
-  display: flex;
+export const StyledSwitch = styled(Form.Switch)`
   font-size: 15px;
-  padding-top: 0.5rem;
 
   .custom-control-input:checked ~ .custom-control-label::before {
-    border-color: ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.white;
-    } else {
-      return props.theme.colors.oxfordBlueTint1;
-    }
-  }};
-    background-color: ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.white;
-    } else {
-      return props.theme.colors.oxfordBlueTint1;
-    }
-  }};
+    border-color: ${({ theme }) => theme.colors.oxfordBlueTint1};
+    background-color: ${({ theme }) => theme.colors.oxfordBlueTint1};
   }
 
-  .custom-switch .custom-control-input:checked ~ .custom-control-label::after {
-    background-color: ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.oxfordBlueTint1;
-    } else {
-      return props.theme.colors.white;
-    }
-  }};
+  .custom-control-input:checked ~ .custom-control-label::after {
+    background-color: ${({ theme }) => theme.colors.white};
   }
-  
 `;

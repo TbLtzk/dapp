@@ -26,5 +26,5 @@ export const PageTitleName = styled.div`
 
 export const PageTitleActions = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
 `;

@@ -24,26 +24,26 @@ function AccountAliasing () {
   const [selectedAlias, setSelectedAlias] = useState(null);
   const [isReserveModalShown, setIsReserveModalShown] = useState(false);
 
-  const loadAliases = () => {
-    dispatch(getAliases(currentAddress));
-    dispatch(getAliasEvents(currentAddress));
+  const loadAliases = (address) => {
+    dispatch(getAliases(address));
+    dispatch(getAliasEvents(address));
   };
 
   const refreshAddress = (address) => {
     setCurrentAddress(address);
-    loadAliases();
+    loadAliases(address);
   };
 
   useEffect(() => {
-    loadAliases();
-  }, [currentAddress, dispatch]);
+    loadAliases(currentAddress);
+  }, []);
 
   useEffect(() => {
     if (!successMessage) return;
 
     setSelectedAlias(null);
     setIsReserveModalShown(false);
-    loadAliases();
+    loadAliases(currentAddress);
   }, [successMessage]);
 
   return (
