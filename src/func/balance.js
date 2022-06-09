@@ -32,7 +32,7 @@ export function fromWei(value) {
 
   const amount = BN(value);
   const a = BN(10 ** 18);
-  return amount.dividedBy(a).toFixed();
+  return Number(amount.dividedBy(a).toFixed());
 }
 
 export function calculateGas(value) {

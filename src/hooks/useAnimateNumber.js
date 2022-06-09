@@ -11,10 +11,15 @@ const useAnimateNumber = (to, text = ' Q', duration = 3) => {
       const node = animateRef.current;
       const controls = animate(lastNumber.current || 0, to, {
         duration,
-        onUpdate(value) {
+        stiffness: 1,
+        onUpdate (value) {
           node.textContent = value.toFixed(4) + text;
         },
+        onComplete () {
+          node.textContent = to + text;
+        },
       });
+
       lastNumber.current = to;
       return () => controls.stop();
     }
