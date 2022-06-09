@@ -112,7 +112,7 @@ function InfBlocksUp () {
       <CustomBlock title="Constitution">
         <h1>Constitution</h1>
         <h5>Hash:</h5>
-        <CopyToClipboard valueToCopy={constitutionHashShow}>
+        <CopyToClipboard value={constitutionHashShow}>
           <p className="card__hash">{constitutionHashShow}</p>
         </CopyToClipboard>
 

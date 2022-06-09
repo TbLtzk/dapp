@@ -1,0 +1,20 @@
+import styled from 'styled-components';
+
+export const TableWrapper = styled.div`
+  overflow-x: auto;
+  
+  table {
+    width: 100%;
+  }
+
+  tr {
+    border-bottom: 1px solid ${({ theme }) => theme.colors.oxfordBlueTint2};
+  }
+
+  td {
+    color: ${(props) => props.theme.colors.td};
+    font-size: 13px;
+    line-height: 18px;
+    padding: 7px 5px;
+  }
+`;

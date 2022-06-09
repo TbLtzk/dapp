@@ -189,10 +189,12 @@ function Sidebar () {
         <FooterContainer>
           <References />
 
-          <AccordionElements margin="24px 0 24px 0" title="Settings">
-            <DashboardMode />
-            <Themes />
-            <ToggleSidebar openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
+          <AccordionElements title="Settings" margin="24px 0 24px 0">
+            <div style={{ display: 'grid', gap: '8px', marginTop: '8px' }}>
+              <DashboardMode />
+              <Themes />
+              <ToggleSidebar openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
+            </div>
           </AccordionElements>
 
           <FooterDataContaier>

@@ -48,8 +48,8 @@ function ExplorerAddress ({
       </a>
 
       <CopyToClipboard
-        title="Copy address"
-        valueToCopy={address}
+        title="Copy"
+        value={address}
         hideTooltip={hideTooltip}
         onCopy={setIsCopied}
       >

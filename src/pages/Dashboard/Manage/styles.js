@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 
+import FormSwitch from 'components/Base/Form/FormSwitch';
+
 import { indents } from 'constants/style';
 
-export const QParametersWrapper = styled.div`
+export const ParametersWrapper = styled.div`
   display: grid;
   grid-template-columns: 50% 50%;
   grid-column-gap: ${indents['15']};
@@ -15,6 +17,6 @@ export const QParametersWrapper = styled.div`
   }
 `;
 
-export const QParametersTextContainer = styled.p`
-  margin-top: 20px;
+export const ParametersSwitch = styled(FormSwitch)`
+  margin-right: 20px;
 `;
