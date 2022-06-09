@@ -108,13 +108,14 @@ function * getValidatorsAccountableSelfStake ({ address }) {
 }
 
 function * getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWidened }) {
+  const network = yield select(networkSelector);
   try {
     const validatorsInstance = yield call(getValidatorsInstance);
     switch (tableType) {
       case TABLE_TYPES.validatorsWidened: {
         const validationRewardPoolsInstance = yield call(getValidationRewardPoolsInstance);
         const validators = yield getValidators(validatorsInstance);
-        const aliasesMap = yield getBlockSealingAliasMap(validators.map(item => item.validator));
+        const aliasesMap = yield getBlockSealingAliasMap(validators.map(item => item.validator), network);
         const preparedData = yield all(
           validators.map((validator, idx) =>
             getValidator(validator, idx, validatorsInstance, validationRewardPoolsInstance)
@@ -129,7 +130,7 @@ function * getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWi
       }
       case TABLE_TYPES.validatorsShort: {
         const shortList = yield validatorsInstance.getShortList();
-        const aliasesMap = yield getBlockSealingAliasMap(shortList.map(item => item.address));
+        const aliasesMap = yield getBlockSealingAliasMap(shortList.map(item => item.address), network);
         const preparedShortList = shortList.map((user) => ({
           validator: user.address,
           alias: aliasesMap[user.address],
@@ -139,7 +140,6 @@ function * getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWi
         break;
       }
       case TABLE_TYPES.validatorsMonitoring: {
-        const network = yield select(networkSelector);
         const indexerUrl = getIndexerUrlDependsOnChainId(network);
 
         const indexer = yield getIndexerInstance(indexerUrl);
@@ -148,7 +148,7 @@ function * getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWi
         const validatorAdresses = shortList.map((user) => user.address);
 
         const inactiveValidators = yield indexer.getInactiveValidators(validatorAdresses);
-        const aliasesMap = yield getBlockSealingAliasMap(validatorAdresses);
+        const aliasesMap = yield getBlockSealingAliasMap(validatorAdresses, network);
 
         const preparedShortList = yield all(
           shortList.map((member) => prepareValidatorsMonitoringData(indexer, member))

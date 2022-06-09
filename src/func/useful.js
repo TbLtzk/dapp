@@ -6,7 +6,7 @@ import ErrorHandler from './ErrorHandler';
 
 import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper';
 
-import { explorerUrls, indexersUrls, networks, PARAMS } from 'constants/config';
+import { explorerUrls, indexersUrls, networkParameters, networks, PARAMS } from 'constants/config';
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import { keyRegex } from 'constants/regex';
 
@@ -23,6 +23,11 @@ export const getIndexerUrlDependsOnChainId = (chainId) => {
 export const getExplorerUrlByChainId = (chainId) => {
   const network = networks[chainId];
   return network ? explorerUrls[network] : getParametersDependsOnUrl().explorer;
+};
+
+export const isFeatureEnabled = (feature, chainId) => {
+  const networkParams = networkParameters[networks[chainId]];
+  return networkParams?.featureFlags?.[feature] ?? false;
 };
 
 export const transformToHex = (value) => {

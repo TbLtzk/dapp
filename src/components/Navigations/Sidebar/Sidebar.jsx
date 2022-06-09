@@ -5,6 +5,7 @@ import DashboardMode from 'components/Base/DashboardMode';
 import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import Themes from 'components/Base/Themes';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useWindowSize from 'hooks/useWindowSize';
 
 import AccordionElements from './components/AccordionElements';
@@ -28,11 +29,10 @@ import { qActiveProposalsCountSelector } from 'store/voting/q-proposals/selector
 import { rootActiveProposalsCountSelector } from 'store/voting/root-node-proposals/selectors';
 import { slashingActiveProposalsCountSelector } from 'store/voting/slashing-proposals/selectors';
 
-import { isAliasesEnabled } from 'constants/config';
-
 function Sidebar () {
   const appMode = useSelector(mode);
   const windowSize = useWindowSize();
+  const isAliasesEnabled = useFeatureFlag('aliases');
 
   const qActiveProposalsCount = useSelector(qActiveProposalsCountSelector);
   const rootActiveProposalsCount = useSelector(rootActiveProposalsCountSelector);
