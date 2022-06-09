@@ -10,19 +10,23 @@ import {
   setVRPDelegatorsShareData,
   setVRPLastUpdateOfCompoundRateData,
   setVRPLoadingValidatorsCompoundRate,
-  setVRPPoolInfo
+  setVRPPoolInfo,
 } from './action-creators';
 import * as actionTypes from './action-types';
 
-import { setTransactionLoading, setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/action-creators';
+import {
+  setTransactionLoading,
+  setTransactionLoadingError,
+  setTransactionLoadingSuccess,
+} from 'store/transaction-handler/action-creators';
 
 import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
 
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { fromWei } from 'func/balance';
+import { fromWei, trimNumber } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
-import { BN, fN, getPercentageFormat, uintPercentToNumber } from 'func/useful';
+import { getPercentageFormat, uintPercentToNumber } from 'func/useful';
 
 const message = { header: 'Notice', details: 'Stake amount below minimum to apply new rate, old rate applied.' };
 
@@ -115,7 +119,7 @@ function * getRewardPoolsBalanceGenerator () {
   try {
     const contract = yield call(getValidationRewardPoolsInstance);
     const amount = yield contract.getBalance();
-    yield put(setRewardPoolsBalance(fN(BN(amount).toFixed())));
+    yield put(setRewardPoolsBalance(trimNumber(amount)));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }
@@ -129,5 +133,5 @@ export default [
   takeEvery(actionTypes.GET_VRP_DELEGATOR_SHARE, getDelegatorsShareGenerator),
   takeEvery(actionTypes.GET_VRP_POOL_INFO, getPoolInfoGenerator),
   takeEvery(actionTypes.GET_VRP_BALANCE, getBalanceGenerator),
-  takeEvery(actionTypes.GET_REWARD_POOLS_BALANCE, getRewardPoolsBalanceGenerator)
+  takeEvery(actionTypes.GET_REWARD_POOLS_BALANCE, getRewardPoolsBalanceGenerator),
 ];

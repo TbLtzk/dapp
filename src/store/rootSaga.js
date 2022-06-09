@@ -13,6 +13,7 @@ import savingAssets from './saving-assets/sagas';
 import stableCoin from './stable-coin/sagas';
 import systemBalance from './system-balance/sagas';
 import systemReserve from './system-reserve/sagas';
+import tokenomics from './tokenomics/sagas';
 import validationRewardPools from './validation-reward-pools/sagas';
 import validators from './validators/sagas';
 import vesting from './vesting/sagas';
@@ -46,6 +47,7 @@ export default function * rootSaga () {
     ...vesting,
     ...savingAssets,
     ...borrowingAssets,
-    ...accountAliases
+    ...accountAliases,
+    ...tokenomics,
   ]);
 }

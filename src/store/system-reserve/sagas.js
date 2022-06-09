@@ -5,17 +5,15 @@ import * as actionTypes from './action-types';
 
 import { getSystemReserveInstance } from 'contracts/contract-instance';
 
-import { fromWei } from 'func/balance';
+import { fromWei, trimNumber } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
-import { BN, fN } from 'func/useful';
+import { fN } from 'func/useful';
 
 function * getSystemReserveBalanceGenerator () {
   try {
     const contract = yield call(getSystemReserveInstance);
     const balance = yield window.web3.eth.getBalance(contract.address);
-    let transf = fromWei(balance);
-    transf = fN(BN(transf).toFixed());
-    yield put(setSystemReserveBalance(transf));
+    yield put(setSystemReserveBalance(trimNumber(fromWei(balance))));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }
@@ -34,5 +32,5 @@ function * getAvailableAmountGenerator () {
 
 export default [
   takeEvery(actionTypes.GET_AVAILABLE_AMOUNT, getAvailableAmountGenerator),
-  takeEvery(actionTypes.GET_SYSTEM_RESERVE_BALANCE, getSystemReserveBalanceGenerator)
+  takeEvery(actionTypes.GET_SYSTEM_RESERVE_BALANCE, getSystemReserveBalanceGenerator),
 ];

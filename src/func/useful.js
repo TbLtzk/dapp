@@ -1,6 +1,6 @@
 import { ParameterType } from '@q-dev/q-js-sdk';
 import { BigNumber } from 'bignumber.js';
-import { orderBy } from 'lodash';
+import { isNumber, orderBy } from 'lodash';
 
 import ErrorHandler from './ErrorHandler';
 
@@ -121,15 +121,16 @@ export const isAddress = (address) => {
 };
 
 export const uintPerSecondToPerYearNumber = (num) => {
-  const numL = num;
-
-  if (numL === undefined || numL.isNaN === true) return undefined;
-
-  const perSec = uintPercentToNumber(numL);
-  return ((1 + perSec) ** (365 * 24 * 3600) - 1) * 100;
+  if (isNumber(Number(num))) {
+    const perSec = uintPercentToNumber(num);
+    const result = ((1 + perSec) ** (365 * 24 * 3600) - 1) * 100;
+    return Number(result);
+  } else {
+    return null;
+  }
 };
 
-export function BN (value) {
+export function BN(value) {
   return new BigNumber(value);
 }
 
@@ -164,7 +165,7 @@ const stringRegex = /^[äöüa-zA-Z0-9]+$/gm;
 const booleanValues = ['true', 'false', 'True', 'False', 'TRUE', 'FALSE', '1', '0'];
 export const unitRegex = /^[1-9]+[0-9]*$/;
 
-export function validatePattern (value, type) {
+export function validatePattern(value, type) {
   switch (type) {
     case ParameterType.ADDRESS: {
       return isAddress(value) ? true : 'Invalid address';
@@ -181,11 +182,11 @@ export function validatePattern (value, type) {
   }
 }
 
-export function parameterKeyValidation (key) {
+export function parameterKeyValidation(key) {
   return key.length <= 70 && key.match(keyRegex) ? true : 'Parameter key not valid';
 }
 
-export async function fetchBlockNumber (block = 'latest') {
+export async function fetchBlockNumber(block = 'latest') {
   try {
     const blockNumber = await window?.web3?.eth.getBlock(block);
     return blockNumber.number;
@@ -195,6 +196,6 @@ export async function fetchBlockNumber (block = 'latest') {
   }
 }
 
-export function trimAddress (address) {
+export function trimAddress(address) {
   return `${address.slice(0, 5)}...${address.slice(-4)}`;
 }

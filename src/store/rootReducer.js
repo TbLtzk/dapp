@@ -15,6 +15,7 @@ import stableCoin from './stable-coin/reducer';
 import systemBalance from './system-balance/reducer';
 import systemReserve from './system-reserve/reducer';
 import theme from './theme/reducer';
+import tokenomics from './tokenomics/reducer';
 import transactionHandler from './transaction-handler/reducer';
 import userInf from './user-inf/reducer';
 import validationRewardPools from './validation-reward-pools/reducer';
@@ -36,6 +37,7 @@ const RootReducer = combineReducers({
   borrowAssets,
   savingAssets,
   accountAliases,
+  tokenomics,
 
   proposals,
   qProposals,
