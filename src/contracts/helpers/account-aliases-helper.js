@@ -3,8 +3,7 @@ import { orderBy } from 'lodash';
 
 import { getAccountAliasesInstance } from 'contracts/contract-instance';
 
-import { isAliasesEnabled } from 'constants/config';
-import { fetchBlockNumber, transformToHex } from 'func/useful';
+import { fetchBlockNumber, isFeatureEnabled, transformToHex } from 'func/useful';
 
 export async function getAliasEvents () {
   const contract = await getAccountAliasesInstance();
@@ -28,8 +27,8 @@ export async function getAliasEvents () {
     }));
 }
 
-export async function getBlockSealingAliasMap (addresses = []) {
-  if (!isAliasesEnabled) return {};
+export async function getBlockSealingAliasMap (addresses = [], network) {
+  if (!isFeatureEnabled('aliases', network)) return {};
 
   const contract = await getAccountAliasesInstance();
   const aliases = await contract.resolveBatch(

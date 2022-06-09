@@ -14,6 +14,8 @@ import OneAuctionPage from 'pages/OneAuctionPage';
 import RootNodeStaking from 'pages/RootNodeStaking';
 import ValidatorStaking from 'pages/ValidatorStaking';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Auctions from '../pages/Auctions';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import Manage from '../pages/Dashboard/Manage';
@@ -26,7 +28,6 @@ import TimeLocks from '../pages/TimeLocks';
 
 import { store } from 'store/index';
 
-import { isAliasesEnabled } from 'constants/config';
 import { AUCTIONS_TYPES, PROPOSALS_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
 
@@ -53,6 +54,8 @@ function addSentryContext () {
 }
 
 function Routes () {
+  const isAliasesEnabled = useFeatureFlag('aliases');
+
   useEffect(() => {
     addSentryContext();
   }, []);
