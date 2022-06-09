@@ -23,12 +23,10 @@ function RepayForm ({ vaultNum }) {
     initialValues: { amount: '' },
     validators: { amount: [required, amount(borrowingDetails?.availableRepay)] },
     onSubmit: (form) => {
-      const action = isApproveMode
-        ? setBorrowAprove(borrowTypes.repay)
-        : setBorrowRepay(form.amount, vaultNum);
-      dispatch(action);
-    }
+      dispatch(setBorrowRepay(form.amount, vaultNum));
+    },
   });
+
   useMetamaskReset(formTypes.borrowAssetRepay, form.reset);
 
   const isApproveMode = useMemo(() => {
@@ -47,13 +45,25 @@ function RepayForm ({ vaultNum }) {
           max={borrowingDetails?.availableRepay}
           placeholder="0.00"
         />
-        <Button
-          type="submit"
-          disabled={!form.isValid}
-          style={{ width: '100px' }}
-        >
-          {isApproveMode ? 'Approve' : 'Repay'}
-        </Button>
+        {isApproveMode
+          ? (
+            <Button
+              type="submit"
+              style={{ width: '100px' }}
+              onClick={() => dispatch(setBorrowAprove(borrowTypes.repay))}
+            >
+              Approve
+            </Button>
+          )
+          : (
+            <Button
+              type="submit"
+              disabled={!form.isValid}
+              style={{ width: '100px' }}
+            >
+              Repay
+            </Button>
+          )}
       </div>
     </form>
   );
