@@ -41,7 +41,7 @@ function CreateStep1 ({ activeTab, register, errors, raisingBid, watch, allowanc
         <h4>{tabLabel}</h4>
         <h4>
           Minimum bid:
-          <CopyToClipboard valueToCopy={raisingBid}>
+          <CopyToClipboard value={raisingBid}>
             {raisingBid}
           </CopyToClipboard>
           {' '}

@@ -1,30 +1,52 @@
-import React, { lazy } from 'react';
+import React, { createContext, lazy, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Button from 'components/Base/Button';
 import LazyLoading from 'components/Base/LazyLoading';
 import PageWrap from 'components/Base/PageWrap';
 
-const QParameters = lazy(() => import('./QParameters'));
+import { ParametersSwitch } from './styles';
 
-export default function index () {
+const QParameters = lazy(() => import('./QParameters'));
+const ParametersContext = createContext();
+
+function ManageParameters () {
+  const [isSimplifiedMode, setIsSimplifiedMode] = useState(false);
+
   return (
     <PageWrap
       headerTitle="Q Parameters"
       headerExtra={
-        <Link to="/">
-          <Button
-            alwaysEnabled
-            look="white"
-          >
-            Dashboard
-          </Button>
-        </Link>
+        <>
+          <ParametersSwitch
+            id="parameters-switch"
+            checked={isSimplifiedMode}
+            label="Simplified view"
+            onChange={() => setIsSimplifiedMode(!isSimplifiedMode)}
+          />
+          <Link to="/">
+            <Button
+              alwaysEnabled
+              look="white"
+            >
+              Dashboard
+            </Button>
+          </Link>
+        </>
       }
     >
       <LazyLoading>
-        <QParameters />
+        <ParametersContext.Provider value={{ simplified: isSimplifiedMode }}>
+          <QParameters />
+        </ParametersContext.Provider>
       </LazyLoading>
     </PageWrap>
   );
 }
+
+/**
+ * @returns {{ simplified: boolean }}
+ */
+export const useParametersContext = () => useContext(ParametersContext);
+
+export default ManageParameters;

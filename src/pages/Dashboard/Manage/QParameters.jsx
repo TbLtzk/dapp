@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import KeyAddressViewer from './components/KeyAddressViewer';
-import { QParametersWrapper } from './styles';
+import ParametersBlock from './components/ParametersBlock';
+import { ParametersWrapper } from './styles';
 
 import {
   getConstitutionParametersKV,
@@ -89,54 +89,48 @@ function QParameters () {
   }, [dispatch]);
 
   return (
-    <QParametersWrapper>
+    <ParametersWrapper>
       <div>
-        <KeyAddressViewer
-          tableData={kvCR}
+        <ParametersBlock
+          title="Q Contract Registry"
+          subtitle={`(${contractRegistryAddress})`}
+          parameters={kvCR}
           loading={loadingCR}
           errorMsg={errorMessageCR}
-          subHeader={`(${contractRegistryAddress})`}
-          header="Q Contract Registry"
           emptyMsg="No addresses"
         />
-        <KeyAddressViewer
-          tableData={kvFI}
+        <ParametersBlock
+          title="Q Fees & Incentives Expert Panel Parameters"
+          subtitle={`(${ePQFIParametersAddress})`}
+          parameters={kvFI}
           loading={loadingFI}
           errorMsg={errorMessageFI}
-          subHeader={`(${ePQFIParametersAddress})`}
-          header="Q Fees & Incentives Expert Panel Parameters"
-          emptyMsg="No parameters"
         />
-
-        <KeyAddressViewer
-          tableData={kvEPDRP}
+        <ParametersBlock
+          title="Q DeFi Risk Expert Panel Parameters"
+          subtitle={`(${ePDRParametersAddress})`}
+          parameters={kvEPDRP}
           loading={loadingEPDRP}
           errorMsg={errorMessageEPDRP}
-          subHeader={`(${ePDRParametersAddress})`}
-          header="Q DeFi Risk Expert Panel Parameters"
-          emptyMsg="No parameters"
         />
       </div>
       <div>
-        <KeyAddressViewer
-          tableData={kvCP}
+        <ParametersBlock
+          title="Q Constitution Parameters"
+          subtitle={`(${constitutionParametersAddress})`}
+          parameters={kvCP}
           loading={loadingCP}
           errorMsg={errorMessageCP}
-          subHeader={`(${constitutionParametersAddress})`}
-          header="Q Constitution Parameters"
-          emptyMsg="No parameters"
         />
-
-        <KeyAddressViewer
-          tableData={kvEPRS}
+        <ParametersBlock
+          title="Q Root Node Selection Expert Panel Parameters"
+          subtitle={`(${ePRSParametersAddress})`}
+          parameters={kvEPRS}
           loading={loadingEPRS}
           errorMsg={errorMessageEPRS}
-          subHeader={`(${ePRSParametersAddress})`}
-          header="Q Root Node Selection Expert Panel Parameters"
-          emptyMsg="No parameters"
         />
       </div>
-    </QParametersWrapper>
+    </ParametersWrapper>
   );
 }
 
