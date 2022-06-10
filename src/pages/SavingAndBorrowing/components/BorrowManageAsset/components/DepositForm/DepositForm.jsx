@@ -48,7 +48,6 @@ function DepositForm ({ vaultNum }) {
         {isApproveMode
           ? (
             <Button
-              type="submit"
               style={{ width: '100px' }}
               onClick={() => dispatch(setBorrowAprove(borrowTypes.deposit))}
             >

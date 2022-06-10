@@ -23,12 +23,10 @@ function DepositForm ({ asset }) {
     initialValues: { amount: '' },
     validators: { amount: [required, amount(availableAmount)] },
     onSubmit: (form) => {
-      const action = isApproveMode
-        ? setSavingAprove()
-        : setSavingDeposit(form.amount);
-      dispatch(action);
-    }
+      dispatch(setSavingDeposit(form.amount));
+    },
   });
+
   useMetamaskReset(formTypes.savingAssetDeposit, form.reset);
 
   const isApproveMode = useMemo(() => {
@@ -47,13 +45,24 @@ function DepositForm ({ asset }) {
           max={availableAmount}
           placeholder="0.00"
         />
-        <Button
-          type="submit"
-          disabled={!form.isValid}
-          style={{ width: '100px' }}
-        >
-          {isApproveMode ? 'Approve' : 'Deposit'}
-        </Button>
+        {isApproveMode
+          ? (
+            <Button
+              style={{ width: '100px' }}
+              onClick={() => dispatch(setSavingAprove())}
+            >
+              Approve
+            </Button>
+          )
+          : (
+            <Button
+              type="submit"
+              disabled={!form.isValid}
+              style={{ width: '100px' }}
+            >
+              Deposit
+            </Button>
+          )}
       </div>
     </form>
   );
