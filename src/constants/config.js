@@ -38,18 +38,19 @@ export const networkParameters = {
       symbol: 'Q ',
       decimals: 18,
     },
+    featureFlags: { aliases: true }
   },
   testnet: {
     chainId: '0x8a73',
     chainName: 'Q Testnet',
     rpcUrls: ['https://rpc.qtestnet.org'],
     blockExplorerUrls: ['https://explorer.qtestnet.org/'],
-
     nativeCurrency: {
       name: 'Q ',
       symbol: 'Q ',
       decimals: 18,
     },
+    featureFlags: {}
   },
   mainnet: {
     chainId: '0x8a71',
@@ -61,6 +62,7 @@ export const networkParameters = {
       symbol: 'Q ',
       decimals: 18,
     },
+    featureFlags: {}
   },
 };
 
@@ -105,5 +107,3 @@ export const PARAMS = {
     explorer: explorerUrls.mainnet,
   },
 };
-
-export const isAliasesEnabled = process.env.REACT_APP_HIDE_ALIASES !== 'true';

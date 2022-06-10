@@ -71,7 +71,7 @@ build-testnet:
   rules:
     - if: '$CI_COMMIT_TAG == "testnet"'
   script:
-    - docker build --build-arg NPM_TOKEN --build-arg REACT_APP_HIDE_ALIASES="true" -t $IMAGE .
+    - docker build --build-arg NPM_TOKEN -t $IMAGE .
     - docker push $IMAGE
 
 build-mainnet:
@@ -80,7 +80,7 @@ build-mainnet:
   rules:
     - if: '$CI_COMMIT_TAG == "mainnet"'
   script:
-    - docker build --build-arg NPM_TOKEN --build-arg REACT_APP_HIDE_ALIASES="true" -t $IMAGE .
+    - docker build --build-arg NPM_TOKEN -t $IMAGE .
     - docker push $IMAGE
 
 deploy:

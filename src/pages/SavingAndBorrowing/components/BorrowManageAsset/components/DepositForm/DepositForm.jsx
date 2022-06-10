@@ -23,12 +23,10 @@ function DepositForm ({ vaultNum }) {
     initialValues: { amount: '' },
     validators: { amount: [required, amount(collateralDetails?.availableDeposit)] },
     onSubmit: (form) => {
-      const action = isApproveMode
-        ? setBorrowAprove(borrowTypes.deposit)
-        : setBorrowDeposit(form.amount, vaultNum);
-      dispatch(action);
-    }
+      dispatch(setBorrowDeposit(form.amount, vaultNum));
+    },
   });
+
   useMetamaskReset(formTypes.borrowAssetDeposit, form.reset);
 
   const isApproveMode = useMemo(() => {
@@ -47,13 +45,25 @@ function DepositForm ({ vaultNum }) {
           max={collateralDetails?.availableDeposit}
           placeholder="0.00"
         />
-        <Button
-          type="submit"
-          disabled={!form.isValid}
-          style={{ width: '100px' }}
-        >
-          {isApproveMode ? 'Approve' : 'Deposit'}
-        </Button>
+        {isApproveMode
+          ? (
+            <Button
+              type="submit"
+              style={{ width: '100px' }}
+              onClick={() => dispatch(setBorrowAprove(borrowTypes.deposit))}
+            >
+              Approve
+            </Button>
+          )
+          : (
+            <Button
+              type="submit"
+              style={{ width: '100px' }}
+              disabled={!form.isValid}
+            >
+              Deposit
+            </Button>
+          )}
       </div>
     </form>
   );

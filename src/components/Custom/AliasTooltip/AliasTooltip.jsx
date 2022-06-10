@@ -1,12 +1,14 @@
 import React from 'react';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import ExplorerAddress from '../ExplorerAddress';
 
 import { TooltipWrapper } from './styles';
 
-import { isAliasesEnabled } from 'constants/config';
-
 function AliasTooltip ({ alias = '' }) {
+  const isAliasesEnabled = useFeatureFlag('aliases');
+
   return isAliasesEnabled && alias && (
     <TooltipWrapper>
       <span className="alias-icon">A</span>

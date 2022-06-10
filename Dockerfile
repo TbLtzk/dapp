@@ -4,14 +4,13 @@ WORKDIR /app
 
 COPY .npmrc jsconfig.json package.json package-lock.json ./
 ARG NPM_TOKEN
-ARG REACT_APP_HIDE_ALIASES
 RUN npm config set '//gitlab.com/api/v4/packages/npm/:_authToken' $NPM_TOKEN
 RUN npm ci --legacy-peer-deps
 
 COPY public/ public/
 COPY src/ src/
 
-RUN REACT_APP_HIDE_ALIASES=$REACT_APP_HIDE_ALIASES npm run build
+RUN npm run build
 
 FROM nginx:stable-alpine
 
