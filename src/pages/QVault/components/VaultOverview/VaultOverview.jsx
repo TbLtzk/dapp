@@ -5,6 +5,7 @@ import CustomBlock from 'components/Base/CustomBlock';
 import VoterStatus from 'components/Custom/PageLists/VoterStatus';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
+import useInterval from 'hooks/useInterval';
 
 import {
   getAccountBalance,
@@ -42,7 +43,6 @@ function VaultOverview () {
   const qVaultLockedAmountRef = useAnimateNumber(qVaultLockedAmount);
 
   const balanceDetails = useSelector(qvBalance);
-
   const interestRatePercentageRef = useAnimateNumber(balanceDetails?.interestRatePercentage, ' %');
   const yearlyExpectedEarningsRef = useAnimateNumber(balanceDetails?.yearlyExpectedEarnings);
 
@@ -66,6 +66,10 @@ function VaultOverview () {
     dispatch(getMinimumQVaultTimeLock(userAddress));
     dispatch(getQVBalance());
   }, [dispatch, updateOnClaim]);
+
+  useInterval(() => {
+    dispatch(getMinimumQVaultTimeLock(userAddress));
+  }, 5000);
 
   return (
     <CustomBlock>
