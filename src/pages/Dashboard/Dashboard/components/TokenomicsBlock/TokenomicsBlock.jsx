@@ -16,7 +16,7 @@ import { reserveBalanceSelector } from 'store/system-reserve/selectors';
 import { getRewardPoolsBalance } from 'store/validation-reward-pools/action-creators';
 import { rewardPoolsBalanceSelector } from 'store/validation-reward-pools/selectors';
 
-function TokenomicsBlock() {
+function TokenomicsBlock () {
   const dispatch = useDispatch();
 
   const balanceDetails = useSelector(qvBalance);
@@ -72,16 +72,18 @@ function TokenomicsBlock() {
       </h1>
       {tokenimicsInfo.map((item) => (
         <Fragment key={item.id}>
-          {item.component ? (
-            item.component
-          ) : (
-            <div className="card_block">
-              <div>
-                <h5>{item.title}</h5>
-                {item.ref ? <p ref={item.ref}>0 Q</p> : <p>{item.content}</p>}
+          {item.component
+            ? (
+              item.component
+            )
+            : (
+              <div className="card_block">
+                <div>
+                  <h5>{item.title}</h5>
+                  {item.ref ? <p ref={item.ref}>0 Q</p> : <p>{item.content}</p>}
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </Fragment>
       ))}
     </CustomBlock>

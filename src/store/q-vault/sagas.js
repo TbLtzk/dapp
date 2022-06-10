@@ -230,7 +230,6 @@ function * getQVaultTimeLocksGenerator ({ address }) {
   }
 }
 
-
 function * setOnClaimStakeDelegatorRewardGenerator () {
   try {
     yield put(setTransactionLoading());

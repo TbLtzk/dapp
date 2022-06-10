@@ -134,7 +134,7 @@ export const uintPerSecondToPerYearNumber = (num) => {
   }
 };
 
-export function BN(value) {
+export function BN (value) {
   return new BigNumber(value);
 }
 
@@ -169,7 +169,7 @@ const stringRegex = /^[äöüa-zA-Z0-9]+$/gm;
 const booleanValues = ['true', 'false', 'True', 'False', 'TRUE', 'FALSE', '1', '0'];
 export const unitRegex = /^[1-9]+[0-9]*$/;
 
-export function validatePattern(value, type) {
+export function validatePattern (value, type) {
   switch (type) {
     case ParameterType.ADDRESS: {
       return isAddress(value) ? true : 'Invalid address';
@@ -186,11 +186,11 @@ export function validatePattern(value, type) {
   }
 }
 
-export function parameterKeyValidation(key) {
+export function parameterKeyValidation (key) {
   return key.length <= 70 && key.match(keyRegex) ? true : 'Parameter key not valid';
 }
 
-export async function fetchBlockNumber(block = 'latest') {
+export async function fetchBlockNumber (block = 'latest') {
   try {
     const blockNumber = await window?.web3?.eth.getBlock(block);
     return blockNumber.number;
@@ -200,6 +200,6 @@ export async function fetchBlockNumber(block = 'latest') {
   }
 }
 
-export function trimAddress(address) {
+export function trimAddress (address) {
   return `${address.slice(0, 5)}...${address.slice(-4)}`;
 }

@@ -14,7 +14,7 @@ const useAnimateNumber = (to, text = ' Q', formatter = fN, duration = 2) => {
       const controls = animate(lastNumber.current || 0, Number(to), {
         duration,
         stiffness: 1,
-        onUpdate(value) {
+        onUpdate (value) {
           node.textContent = formatter(value) + text;
         },
       });

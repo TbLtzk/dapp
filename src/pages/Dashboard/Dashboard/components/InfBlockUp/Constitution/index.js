@@ -1,1 +1,1 @@
-export {default} from './Constitution'
+export { default } from './Constitution';

@@ -10,7 +10,7 @@ import { constitutionHash } from 'store/voting/proposals/selectors';
 
 import { archiveConstitution, latestConstitution } from 'constants/constitution';
 
-function Constitution() {
+function Constitution () {
   const dispatch = useDispatch();
   const constitutionHashValue = useSelector(constitutionHash);
 
@@ -27,13 +27,21 @@ function Constitution() {
       </CopyToClipboard>
 
       <div className="card__actions">
-        <a href={latestConstitution} target="_blank" rel="noreferrer">
+        <a
+          href={latestConstitution}
+          target="_blank"
+          rel="noreferrer"
+        >
           <Button alwaysEnabled>
             <i className="mdi mdi-download" />
             <span>Download Latest</span>
           </Button>
         </a>
-        <a href={archiveConstitution} target="_blank" rel="noreferrer">
+        <a
+          href={archiveConstitution}
+          target="_blank"
+          rel="noreferrer"
+        >
           <Button alwaysEnabled>
             <i className="mdi mdi-archive-outline" />
             <span>Check Archive</span>

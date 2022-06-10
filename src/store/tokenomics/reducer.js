@@ -18,7 +18,7 @@ const initialState = {
   qHolderTimeUpdateLoading: false,
 };
 
-export default function index(state = initialState, action) {
+export default function index (state = initialState, action) {
   switch (action.type) {
     case actionTypes.GET_DEFAULT_ALLOCATION_PROXY:
       return {

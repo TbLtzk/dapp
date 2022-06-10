@@ -1,1 +1,1 @@
-export {default} from './SavingBorrowingUpdate'
+export { default } from './SavingBorrowingUpdate';

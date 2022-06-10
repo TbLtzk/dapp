@@ -29,7 +29,7 @@ function RepayForm ({ vaultNum }) {
       dispatch(action);
     }
   });
-  
+
   useMetamaskReset(formTypes.borrowAssetRepay, form.reset);
 
   const isApproveMode = useMemo(() => {

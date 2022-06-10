@@ -8,7 +8,6 @@ export const SET_QV_USER_BALANCE = 'SET_QV_USER_BALANCE';
 export const GET_QV_LOCKED_ASSETS = 'GET_QV_LOCKED_ASSETS';
 export const SET_QV_LOCKED_ASSETS = 'SET_QV_LOCKED_ASSETS';
 
-
 // Action without write to Store
 export const SET_QV_DEPOSIT_CALL = 'SET_QV_DEPOSIT_CALL';
 export const SET_SEND_CALL = 'SET_SEND_CALL';
