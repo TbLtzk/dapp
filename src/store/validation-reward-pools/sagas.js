@@ -24,7 +24,7 @@ import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
 
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { fromWei, trimNumber } from 'func/balance';
+import { fromWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
 import { getPercentageFormat, uintPercentToNumber } from 'func/useful';
 
@@ -119,7 +119,7 @@ function * getRewardPoolsBalanceGenerator () {
   try {
     const contract = yield call(getValidationRewardPoolsInstance);
     const amount = yield contract.getBalance();
-    yield put(setRewardPoolsBalance(trimNumber(amount)));
+    yield put(setRewardPoolsBalance(amount));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }

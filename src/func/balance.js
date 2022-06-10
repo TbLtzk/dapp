@@ -7,9 +7,6 @@ export function fromBtcBlockchain(value) {
 export function toBtcBlockchain(value) {
   return BN(value).multipliedBy(1e8).toFixed();
 }
-export function trimNumber(value) {
-  return Number(value) > 0 ? Number(BN(value).toFixed(4)) : value;
-}
 export function percentageToPercentPerSecond(number) {
   if (number) {
     const first = number / 100;
@@ -48,7 +45,7 @@ export function prepareBalanceDetails(balanceDetails, userBalance) {
   const yearlyExpectedEarnings = userBalance
     ? userBalance * (uintPerSecondToPerYearNumber(balanceDetails.interestRate) / 100)
     : 0;
-  const interestRatePercentage = fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate));
+  const interestRatePercentage = uintPerSecondToPerYearNumber(balanceDetails.interestRate);
 
-  return { ...balanceDetails, yearlyExpectedEarnings: fN(yearlyExpectedEarnings), interestRatePercentage };
+  return { ...balanceDetails, yearlyExpectedEarnings: yearlyExpectedEarnings, interestRatePercentage };
 }

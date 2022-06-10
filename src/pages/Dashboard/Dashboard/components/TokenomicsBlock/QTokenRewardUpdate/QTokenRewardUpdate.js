@@ -11,7 +11,7 @@ import { qHolderTimeUpdateLoadingSelector, qHolderTimeUpdateSelector } from 'sto
 
 import { remainDateTimeSince } from 'func/convertDate';
 
-function QTokenRewardUpdate() {
+function QTokenRewardUpdate () {
   const dispatch = useDispatch();
 
   const qHolderTimeUpdate = useSelector(qHolderTimeUpdateSelector);
@@ -47,7 +47,11 @@ function QTokenRewardUpdate() {
           <p>{qHolderTimeUpdateTime || '0 day(s) 0 hours 0 minutes'}</p>
         </div>
         <div>
-          <Button disabled={qHolderTimeUpdateLoading} style={{ width: '100%' }} onClick={handleQHolderTimeUpdate}>
+          <Button
+            disabled={qHolderTimeUpdateLoading}
+            style={{ width: '100%' }}
+            onClick={handleQHolderTimeUpdate}
+          >
             {qHolderTimeUpdateLoading ? spinner : <i className="mdi mdi-cube-outline" />}
             <span>Allocate</span>
           </Button>

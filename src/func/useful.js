@@ -77,6 +77,10 @@ export const fN = (number) => {
   return new Intl.NumberFormat('en-GB', { maximumFractionDigits }).format(truncated);
 };
 
+export const fixNumber = (number) => {
+  return Number(BN(number).toFixed(4));
+};
+
 export const uintPercentToNumber = (num) => {
   if (num === undefined || num.isNaN === true) return undefined;
   if (num <= 0) return 0;

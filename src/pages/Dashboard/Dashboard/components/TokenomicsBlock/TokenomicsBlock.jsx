@@ -16,19 +16,13 @@ import { reserveBalanceSelector } from 'store/system-reserve/selectors';
 import { getRewardPoolsBalance } from 'store/validation-reward-pools/action-creators';
 import { rewardPoolsBalanceSelector } from 'store/validation-reward-pools/selectors';
 
-import { trimNumber } from 'func/balance';
-import { uintPerSecondToPerYearNumber } from 'func/useful';
-
-function TokenomicsBlock () {
+function TokenomicsBlock() {
   const dispatch = useDispatch();
 
   const balanceDetails = useSelector(qvBalance);
-  const balanceRewardPoolRef = useAnimateNumber(trimNumber(balanceDetails?.qHolderRewardPool || 0));
-  
-  const balanceInterestRateRef = useAnimateNumber(
-    trimNumber(uintPerSecondToPerYearNumber(balanceDetails?.interestRate || 0)),
-    ' %'
-  );
+  const balanceRewardPoolRef = useAnimateNumber(balanceDetails?.qHolderRewardPool);
+
+  const balanceInterestRateRef = useAnimateNumber(balanceDetails?.interestRatePercentage, ' %');
 
   const reserveBalance = useSelector(reserveBalanceSelector);
   const reserveBalanceRef = useAnimateNumber(reserveBalance);
@@ -78,18 +72,16 @@ function TokenomicsBlock () {
       </h1>
       {tokenimicsInfo.map((item) => (
         <Fragment key={item.id}>
-          {item.component
-            ? (
-              item.component
-            )
-            : (
-              <div className="card_block">
-                <div>
-                  <h5>{item.title}</h5>
-                  {item.ref ? <p ref={item.ref}>0 Q</p> : <p>{item.content}</p>}
-                </div>
+          {item.component ? (
+            item.component
+          ) : (
+            <div className="card_block">
+              <div>
+                <h5>{item.title}</h5>
+                {item.ref ? <p ref={item.ref}>0 Q</p> : <p>{item.content}</p>}
               </div>
-            )}
+            </div>
+          )}
         </Fragment>
       ))}
     </CustomBlock>

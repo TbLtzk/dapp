@@ -9,39 +9,40 @@ import {
   setSavingRate,
   setTotalCollateralLocked,
   setTotalSavingBalance,
-  setTotalSupply
+  setTotalSupply,
 } from './action-creators';
 import * as actionTypes from './action-types';
 
 import {
   setTransactionLoading,
   setTransactionLoadingError,
-  setTransactionLoadingSuccess
+  setTransactionLoadingSuccess,
 } from 'store/transaction-handler/action-creators';
 
 import {
   getBorrowingCoreInstance,
   getEpdrParametersInstance,
   getSavingInstance,
-  getStableCoinInstance
+  getStableCoinInstance,
 } from 'contracts/contract-instance';
 import {
   generateVaultData,
   getBalanceDetailsHelper,
   getOutstandingDebtHelper,
-  getTotalCollateralLockedHelper
+  getTotalCollateralLockedHelper,
 } from 'contracts/helpers/borrowing-core-helper';
 
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
-import { fillArray, fN, uintPerSecondToPerYearNumber } from 'func/useful';
+import { fillArray, uintPerSecondToPerYearNumber } from 'func/useful';
 
 function * setCreateQBTCVaultGenerator () {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getBorrowingCoreInstance);
+
     yield contract.createVault('QBTC', { from: userAddress });
     yield put(getBorrowingVaults());
 
@@ -64,6 +65,7 @@ function * getTotalCollateralLockedAndOutstandingDebtGenerator () {
     );
     const outstandingDebt = getOutstandingDebtHelper(vaultsStats);
     const totalCollateralLocked = getTotalCollateralLockedHelper(vaultsStats);
+
     yield put(setTotalCollateralLocked(totalCollateralLocked));
     yield put(setOutstandingDebt(outstandingDebt));
   } catch (error) {
@@ -76,7 +78,7 @@ function * getTotalSavingBalanceGenerator () {
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getSavingInstance);
     const savingAmount = yield contract.instance.methods.getBalance().call({
-      from: userAddress
+      from: userAddress,
     });
     yield put(setTotalSavingBalance(fromWei(savingAmount)));
   } catch (error) {
@@ -117,7 +119,7 @@ function * getTotalSupplyGenerator () {
   try {
     const contract = yield call(getStableCoinInstance);
     const amount = yield contract.totalSupply();
-    yield put(setTotalSupply(fN(fromWei(amount))));
+    yield put(setTotalSupply(fromWei(amount)));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }
@@ -129,8 +131,8 @@ function * getSavingAndInterestRateGenerator () {
 
     const interestRate = yield contract.getUint('governed.EPDR.QBTC_QUSD_interestRate');
     const savingRate = yield contract.getUint('governed.EPDR.QUSD_savingRate');
-    yield put(setInterestRate(fN(uintPerSecondToPerYearNumber(interestRate))));
-    yield put(setSavingRate(fN(uintPerSecondToPerYearNumber(savingRate))));
+    yield put(setInterestRate(uintPerSecondToPerYearNumber(interestRate)));
+    yield put(setSavingRate(uintPerSecondToPerYearNumber(savingRate)));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }
@@ -147,5 +149,5 @@ export default [
     getTotalCollateralLockedAndOutstandingDebtGenerator
   ),
   takeEvery(actionTypes.GET_SAVING_ASSETS, getSavingAssetsGenerator),
-  takeEvery(actionTypes.GET_BORROWING_VAULTS, getBorrowingVaultsGenerator)
+  takeEvery(actionTypes.GET_BORROWING_VAULTS, getBorrowingVaultsGenerator),
 ];

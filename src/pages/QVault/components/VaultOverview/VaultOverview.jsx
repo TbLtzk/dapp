@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import CustomBlock from 'components/Base/CustomBlock';
 import VoterStatus from 'components/Custom/PageLists/VoterStatus';
 
+import useAnimateNumber from 'hooks/useAnimateNumber';
+
 import {
   getAccountBalance,
   getLockedAssets,
@@ -27,17 +29,29 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 import { getVoteDelegation } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
 import { fromSolDateFormattingT1 } from 'func/date';
-import { fN } from 'func/useful';
 
 function VaultOverview () {
   const dispatch = useDispatch();
 
   const userAddress = useSelector(userAddressMetamask);
-  const qVaultLockedAmount = useSelector(qVaultMinimumTimeLock);
+
+  const userQVBalance = useSelector(userBalance);
+  const userQVBalanceRef = useAnimateNumber(userQVBalance);
+
+  const qVaultLockedAmount = Number(useSelector(qVaultMinimumTimeLock));
+  const qVaultLockedAmountRef = useAnimateNumber(qVaultLockedAmount);
+
   const balanceDetails = useSelector(qvBalance);
-  const userQVBalanceL = useSelector(userBalance);
+
+  const interestRatePercentageRef = useAnimateNumber(balanceDetails?.interestRatePercentage, ' %');
+  const yearlyExpectedEarningsRef = useAnimateNumber(balanceDetails?.yearlyExpectedEarnings);
+
   const userAccountBalance = useSelector(accountBalance);
+  const userAccountBalanceRef = useAnimateNumber(userAccountBalance);
+
   const userVotingWeight = useSelector(votingWeight);
+  const userVotingWeightRef = useAnimateNumber(userVotingWeight);
+
   const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd));
   const updateOnClaim = useSelector(lastClaim);
   const agent = useSelector(votingAgent);
@@ -58,28 +72,24 @@ function VaultOverview () {
       <h1>Overview</h1>
       <div>
         <h5>Q Vault Balance</h5>
-        <p>{`${fN(userQVBalanceL)} Q`}</p>
+        <p ref={userQVBalanceRef}>0 Q</p>
 
-        {Number(qVaultLockedAmount) > 0 && (
-          <>
-            <h5>Time Locked Amount</h5>
-            <p>{`${fN(qVaultLockedAmount)} Q`}</p>
-          </>
-        )}
+        <h5>Time Locked Amount</h5>
+        <p ref={qVaultLockedAmountRef}>0 Q</p>
 
         <h5>Q Token Holder Reward Rate (p.a.)</h5>
-        <p>{`${balanceDetails?.interestRatePercentage || 0} %`}</p>
+        <p ref={interestRatePercentageRef}>0 %</p>
 
         <h5>Yearly Expected Reward</h5>
-        <p>{`${balanceDetails?.yearlyExpectedEarnings || 0} Q`}</p>
+        <p ref={yearlyExpectedEarningsRef}> 0 Q</p>
 
         <h5>Q Address Balance</h5>
-        <p>{`${fN(userAccountBalance)} Q`}</p>
+        <p ref={userAccountBalanceRef}>0 Q</p>
 
         <div className="card__line" />
 
         <h5>Voting Weight from Q Vault</h5>
-        <p>{`${fN(userVotingWeight)} Q`}</p>
+        <p ref={userVotingWeightRef}>0 Q</p>
 
         <h5>Voting Locking End</h5>
         <p>{userLockingEnd}</p>

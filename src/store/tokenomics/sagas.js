@@ -25,7 +25,7 @@ import {
 } from 'contracts/contract-instance';
 
 import ErrorHandler from 'func/ErrorHandler';
-import { trimNumber } from 'func/balance';
+import { fixNumber } from 'func/useful';
 
 async function allocateValue (contract, adddress) {
   await contract.allocate({ from: adddress });
@@ -45,7 +45,8 @@ function * getDefaultAllocationProxyGenerator ({ isAllocate }) {
       yield put(getValidationRewardProxy(false));
     }
     const value = yield contract.getBalance();
-    yield put(getDefaultAllocationProxySuccess(trimNumber(value)));
+
+    yield put(getDefaultAllocationProxySuccess(fixNumber(value)));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -63,7 +64,7 @@ function * getRootNodeRewardProxyGenerator ({ isAllocate }) {
       yield allocateValue(contract, userAddress);
     }
     const value = yield contract.getBalance();
-    yield put(getRootNodeRewardProxySuccess(trimNumber(value)));
+    yield put(getRootNodeRewardProxySuccess(fixNumber(value)));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -81,7 +82,8 @@ function * getValidationRewardProxyGenerator ({ isAllocate }) {
       yield allocateValue(contract, userAddress);
     }
     const value = yield contract.getBalance();
-    yield put(getValidationRewardProxyProxySuccess(trimNumber(value)));
+
+    yield put(getValidationRewardProxyProxySuccess(fixNumber(value)));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

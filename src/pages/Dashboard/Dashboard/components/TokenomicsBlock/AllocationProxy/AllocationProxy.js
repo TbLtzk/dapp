@@ -5,6 +5,7 @@ import Button from 'components/Base/Button';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
+import useInterval from 'hooks/useInterval';
 
 import {
   getDefaultAllocationProxy,
@@ -22,18 +23,24 @@ import {
 
 function AllocationProxy () {
   const dispatch = useDispatch();
+
   const defaultAllocationProxy = useSelector(defaultAllocationProxySelector);
   const defaultAllocationProxyLoading = useSelector(defaultAllocationProxyLoadingSelector);
   const defaultAllocationProxyRef = useAnimateNumber(defaultAllocationProxy);
 
   const validationRewardProxy = useSelector(validationRewardProxySelector);
-
   const loadingValidationRewardProxy = useSelector(validationRewardProxyLoadingSelector);
   const validationRewardProxyRef = useAnimateNumber(validationRewardProxy);
 
   const rootNodeRewardProxy = useSelector(rootNodeRewardProxySelector);
   const loadingRootNodeRewardProxy = useSelector(rootNodeRewardProxyLoadingSelector);
   const rootNodeRewardProxyRef = useAnimateNumber(rootNodeRewardProxy);
+
+  useInterval(() => {
+    if (!defaultAllocationProxyLoading) {
+      dispatch(getDefaultAllocationProxy(false));
+    }
+  }, 5000);
 
   useEffect(() => {
     dispatch(getDefaultAllocationProxy(false));

@@ -30,7 +30,7 @@ function SavingBorrowingBlock () {
   const totalSupply = useSelector(totalSupplySelector);
   const totalSupplyRef = useAnimateNumber(totalSupply, ' QUSD');
 
-  const [stableCoinAddress, setStableCoinAddress] = useState('...');
+  const [stableCoinAddress, setStableCoinAddress] = useState('0x0000');
 
   useEffect(() => {
     getStableCoinInstance().then((contract) => setStableCoinAddress(contract.address));
@@ -61,12 +61,12 @@ function SavingBorrowingBlock () {
     {
       id: 'system-balance',
       title: 'QUSD System Balance',
-      content: <p ref={systemBalanceRef}>0.00 QUSD</p>,
+      content: <p ref={systemBalanceRef}>0 QUSD</p>,
     },
     {
       id: 'total-supply',
       title: 'QUSD Total Supply',
-      content: <p ref={totalSupplyRef}>0.00 QUSD</p>,
+      content: <p ref={totalSupplyRef}>0 QUSD</p>,
     },
     {
       id: 'savingBorrowingUpdate',

@@ -24,6 +24,7 @@ function TransferForm () {
   const balance = useSelector(accountBalance);
 
   const [maxAmount, setMaxAmount] = useState('0');
+
   const form = useForm({
     initialValues: { amount: '' },
     validators: { amount: [required, amount(maxAmount)] },
@@ -31,10 +32,11 @@ function TransferForm () {
       dispatch(setDepositCall(address, form.amount));
     }
   });
+
   useMetamaskReset(formTypes.qVaultDeposit, form.reset);
 
   const updateMaxAmount = async () => {
-    const depositAmount = await getQVaultDepositAmount(address, balance);
+    const depositAmount = await getQVaultDepositAmount(address);
     setMaxAmount(Number(depositAmount) < 0 ? '0' : depositAmount);
   };
 
