@@ -75,9 +75,22 @@ export const getMinimalActiveBlockHeight = async () => {
   }
 };
 
+export const formatInfinityNumber = (number) => {
+  if (isNaN(number) || !number) {
+    return 0;
+  }
+
+  const maximumFractionDigits = 4;
+  const minimumFractionDigits = 4;
+
+  const truncated = BN(number).toFixed(maximumFractionDigits, BigNumber.ROUND_DOWN);
+  return new Intl.NumberFormat('en-GB', { maximumFractionDigits, minimumFractionDigits }).format(truncated);
+};
+
 export const fN = (number) => {
   if (number === undefined || isNaN(number) || number === null) return 0;
   const maximumFractionDigits = 4;
+
   const truncated = BN(number).toFixed(maximumFractionDigits, BigNumber.ROUND_DOWN);
   return new Intl.NumberFormat('en-GB', { maximumFractionDigits }).format(truncated);
 };

@@ -5,6 +5,7 @@ import CustomBlock from 'components/Base/CustomBlock';
 import InfoTooltip from 'components/Custom/InfoTooltip';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
+import useInfinityNumber from 'hooks/useInfinityNumber';
 
 import AllocationProxy from './AllocationProxy';
 import QTokenRewardUpdate from './QTokenRewardUpdate';
@@ -25,10 +26,10 @@ function TokenomicsBlock () {
   const balanceInterestRateRef = useAnimateNumber(balanceDetails?.interestRatePercentage, ' %');
 
   const reserveBalance = useSelector(reserveBalanceSelector);
-  const reserveBalanceRef = useAnimateNumber(reserveBalance);
+  const reserveBalanceRef = useInfinityNumber(reserveBalance, ' Q');
 
   const rewardPoolsBalance = useSelector(rewardPoolsBalanceSelector);
-  const rewardPoolsBalanceRef = useAnimateNumber(rewardPoolsBalance);
+  const rewardPoolsBalanceRef = useInfinityNumber(rewardPoolsBalance, ' Q');
 
   useEffect(() => {
     dispatch(getQVBalance());

@@ -4,7 +4,7 @@ import { animate } from 'framer-motion/dist/es/index';
 
 import { fN } from 'func/useful';
 
-const useAnimateNumber = (to, text = ' Q', formatter = fN, duration = 2) => {
+const useAnimateNumber = (to, text = ' Q', formatter = fN) => {
   const animateRef = useRef();
   const lastNumber = useRef();
 
@@ -12,8 +12,7 @@ const useAnimateNumber = (to, text = ' Q', formatter = fN, duration = 2) => {
     if (animateRef.current && !isNaN(to)) {
       const node = animateRef.current;
       const controls = animate(lastNumber.current || 0, Number(to), {
-        duration,
-        stiffness: 1,
+        duration: 2,
         onUpdate (value) {
           node.textContent = formatter(value) + text;
         },
