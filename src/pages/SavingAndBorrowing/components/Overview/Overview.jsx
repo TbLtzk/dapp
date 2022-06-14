@@ -2,26 +2,30 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
-import LoadingSpinner from 'components/Base/LoadingSpinner';
+
+import useAnimateNumber from 'hooks/useAnimateNumber';
 
 import {
   getTotalCollateralLockedAndOutstandingDebt,
-  getTotalSavingBalance
+  getTotalSavingBalance,
 } from 'store/borrowing-core/action-creators';
 import {
   outstandingDebtSelector,
   totalCollateralLockedSelector,
-  totalSavingBalanceSelector
+  totalSavingBalanceSelector,
 } from 'store/borrowing-core/selectors';
-
-import { fN } from 'func/useful';
 
 function Overview () {
   const dispatch = useDispatch();
 
   const outstandingDebt = useSelector(outstandingDebtSelector);
+  const outstandingDebtRef = useAnimateNumber(outstandingDebt, ' QUSD');
+
   const totalSavingBalance = useSelector(totalSavingBalanceSelector);
+  const totalSavingBalanceRef = useAnimateNumber(totalSavingBalance, ' QUSD');
+
   const totalCollateralLocked = useSelector(totalCollateralLockedSelector);
+  const totalCollateralLockedRef = useAnimateNumber(totalCollateralLocked, ' QUSD');
 
   useEffect(() => {
     dispatch(getTotalSavingBalance());
@@ -33,22 +37,13 @@ function Overview () {
       <h1>Overview</h1>
 
       <h5>Total Saving Balance</h5>
-      {totalSavingBalance
-        ? <p>{fN(totalSavingBalance)} QUSD</p>
-        : <LoadingSpinner />
-      }
+      <p ref={outstandingDebtRef}>0 QUSD</p>
 
       <h5>Outstanding Debt</h5>
-      {outstandingDebt
-        ? <p>{fN(outstandingDebt)} USD</p>
-        : <LoadingSpinner />
-      }
+      <p ref={totalSavingBalanceRef}>0 QUSD</p>
 
       <h5>Total Collateral Locked</h5>
-      {totalCollateralLocked
-        ? <p>{fN(totalCollateralLocked)} USD</p>
-        : <LoadingSpinner />
-      }
+      <p ref={totalCollateralLockedRef}>0 QUSD</p>
     </CustomBlock>
   );
 }
