@@ -136,7 +136,7 @@ function * getRootNodeStakesGenerator ({ address }) {
   try {
     const contract = yield call(getRootNodesInstance);
     const data = yield contract.getRootNodeStake(address);
-    yield put(setRootNodeStakes(Number(fromWei(data))));
+    yield put(setRootNodeStakes(fromWei(data)));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }

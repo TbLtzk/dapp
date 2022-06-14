@@ -1,6 +1,6 @@
 import { ParameterType } from '@q-dev/q-js-sdk';
 import { BigNumber } from 'bignumber.js';
-import { orderBy } from 'lodash';
+import { isNumber, orderBy } from 'lodash';
 
 import ErrorHandler from './ErrorHandler';
 
@@ -75,11 +75,28 @@ export const getMinimalActiveBlockHeight = async () => {
   }
 };
 
+export const formatInfinityNumber = (number) => {
+  if (isNaN(number) || !number) {
+    return 0;
+  }
+
+  const maximumFractionDigits = 4;
+  const minimumFractionDigits = 4;
+
+  const truncated = BN(number).toFixed(maximumFractionDigits, BigNumber.ROUND_DOWN);
+  return new Intl.NumberFormat('en-GB', { maximumFractionDigits, minimumFractionDigits }).format(truncated);
+};
+
 export const fN = (number) => {
   if (number === undefined || isNaN(number) || number === null) return 0;
   const maximumFractionDigits = 4;
+
   const truncated = BN(number).toFixed(maximumFractionDigits, BigNumber.ROUND_DOWN);
   return new Intl.NumberFormat('en-GB', { maximumFractionDigits }).format(truncated);
+};
+
+export const fixNumber = (number) => {
+  return Number(BN(number).toFixed(4));
 };
 
 export const uintPercentToNumber = (num) => {
@@ -126,12 +143,13 @@ export const isAddress = (address) => {
 };
 
 export const uintPerSecondToPerYearNumber = (num) => {
-  const numL = num;
-
-  if (numL === undefined || numL.isNaN === true) return undefined;
-
-  const perSec = uintPercentToNumber(numL);
-  return ((1 + perSec) ** (365 * 24 * 3600) - 1) * 100;
+  if (isNumber(Number(num))) {
+    const perSec = uintPercentToNumber(num);
+    const result = ((1 + perSec) ** (365 * 24 * 3600) - 1) * 100;
+    return Number(result);
+  } else {
+    return null;
+  }
 };
 
 export function BN (value) {

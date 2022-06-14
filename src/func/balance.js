@@ -1,4 +1,4 @@
-import { BN, fN, uintPerSecondToPerYearNumber } from './useful';
+import { BN, uintPerSecondToPerYearNumber } from './useful';
 
 export function fromBtcBlockchain (value) {
   return BN(value).dividedBy(1e8).toFixed();
@@ -7,7 +7,6 @@ export function fromBtcBlockchain (value) {
 export function toBtcBlockchain (value) {
   return BN(value).multipliedBy(1e8).toFixed();
 }
-
 export function percentageToPercentPerSecond (number) {
   if (number) {
     const first = number / 100;
@@ -30,7 +29,7 @@ export function fromWei (value) {
 
   const amount = BN(value);
   const a = BN(10 ** 18);
-  return amount.dividedBy(a).toFixed();
+  return Number(amount.dividedBy(a).toFixed());
 }
 
 export function calculateGas (value) {
@@ -46,7 +45,7 @@ export function prepareBalanceDetails (balanceDetails, userBalance) {
   const yearlyExpectedEarnings = userBalance
     ? userBalance * (uintPerSecondToPerYearNumber(balanceDetails.interestRate) / 100)
     : 0;
-  const interestRatePercentage = fN(uintPerSecondToPerYearNumber(balanceDetails.interestRate));
+  const interestRatePercentage = uintPerSecondToPerYearNumber(balanceDetails.interestRate);
 
-  return { ...balanceDetails, yearlyExpectedEarnings: fN(yearlyExpectedEarnings), interestRatePercentage };
+  return { ...balanceDetails, yearlyExpectedEarnings: yearlyExpectedEarnings, interestRatePercentage };
 }

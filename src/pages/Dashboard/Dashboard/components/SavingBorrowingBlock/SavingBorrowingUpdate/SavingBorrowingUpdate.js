@@ -1,0 +1,103 @@
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import Button from 'components/Base/Button/Button';
+import LoadingSpinner from 'components/Base/LoadingSpinner';
+
+import useInterval from 'hooks/useInterval';
+
+import { userAddressMetamask } from 'store/user-inf/selectors';
+
+import {
+  getTimeSinceOutstandingDebt,
+  getTimeSinceRefreshBalance,
+  refreshTimeSinceOutstandingDebt,
+  refreshTimeSinceRefreshBalance,
+} from 'contracts/helpers/borrowing-core-helper';
+
+import { remainDateTimeSince } from 'func/convertDate';
+
+function SavingBorrowingUpdate () {
+  const dispatch = useDispatch();
+  const userAddress = useSelector(userAddressMetamask);
+
+  const [timeSinceRefreshBalance, setTimeSinceRefreshBalance] = useState('0');
+  const [timeSinceUnixTimestampRefreshBalance, setTimeSinceUnixTimestampRefreshBalance] = useState('0');
+  const [loadingTimeSinceRefreshBalance, setLoadingTimeSinceRefreshBalance] = useState(false);
+
+  const [timeSinceOutstandingDebt, setTimeSinceOutstandingDebt] = useState('0');
+  const [timeSinceUnixTimestampOutstandingDeb, setTimeSinceUnixTimestampOutstandingDeb] = useState('0');
+  const [loadingTimeSinceOutstandingDeb, setLoadingTimeSinceOutstandingDeb] = useState(false);
+
+  useEffect(() => {
+    getTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance);
+    getTimeSinceOutstandingDebt(setTimeSinceOutstandingDebt, setTimeSinceUnixTimestampOutstandingDeb);
+  }, []);
+
+  useInterval(() => {
+    setTimeSinceRefreshBalance(remainDateTimeSince(timeSinceUnixTimestampRefreshBalance));
+    setTimeSinceOutstandingDebt(remainDateTimeSince(timeSinceUnixTimestampOutstandingDeb));
+  }, 30000);
+
+  const handleRefreshBalance = () => {
+    refreshTimeSinceRefreshBalance(
+      setTimeSinceRefreshBalance,
+      setLoadingTimeSinceRefreshBalance,
+      setTimeSinceUnixTimestampRefreshBalance,
+      userAddress,
+      dispatch
+    );
+  };
+
+  const handleRefreshDebt = () => {
+    refreshTimeSinceOutstandingDebt(
+      setTimeSinceOutstandingDebt,
+      setLoadingTimeSinceOutstandingDeb,
+      setTimeSinceUnixTimestampOutstandingDeb,
+      userAddress,
+      dispatch
+    );
+  };
+
+  const spinner = <LoadingSpinner size="sm" type="light" />;
+
+  return (
+    <div>
+      <div className="card_block">
+        <div>
+          <h5>QUSD Saving time since refresh of balance</h5>
+          <div className="card_text">{timeSinceRefreshBalance || '0 day(s) 0 hours 0 minutes'}</div>
+        </div>
+
+        <div>
+          <Button
+            disabled={loadingTimeSinceRefreshBalance}
+            style={{ width: '100%' }}
+            onClick={handleRefreshBalance}
+          >
+            {loadingTimeSinceRefreshBalance ? spinner : <i className="mdi mdi-cached" style={{ fontSize: '20px' }} />}
+          </Button>
+        </div>
+      </div>
+
+      <div className="card_block">
+        <div>
+          <h5>QUSD - QBTC time since refresh of outstanding debt</h5>
+          <div className="card_text">{timeSinceOutstandingDebt || '0 day(s) 0 hours 0 minutes'}</div>
+        </div>
+
+        <div>
+          <Button
+            disabled={loadingTimeSinceOutstandingDeb}
+            style={{ width: '100%' }}
+            onClick={handleRefreshDebt}
+          >
+            {loadingTimeSinceOutstandingDeb ? spinner : <i className="mdi mdi-cached" style={{ fontSize: '20px' }} />}
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default SavingBorrowingUpdate;

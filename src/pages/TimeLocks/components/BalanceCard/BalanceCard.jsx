@@ -11,23 +11,16 @@ import VestingWithdrawForm from '../VestingWithdrawForm';
 import { columnnsLockAmount } from 'constants/columns';
 import { tableLockAmount } from 'constants/tables';
 
-function BalanceCard ({
-  title,
-  contract,
-  balance,
-  lockAmountData,
-  timeLockBalance,
-  address
-}) {
+function BalanceCard ({ title, contract, balanceRef, lockAmountData, timeLockBalanceRef, address }) {
   const [isModalShown, setIsModalShown] = useState(false);
 
   return (
     <CustomBlock>
       <h5>{title}</h5>
-      <p>{balance} Q</p>
+      <p ref={balanceRef}>0 Q</p>
 
       <h5>Time Locked Balance</h5>
-      <p>{timeLockBalance} Q</p>
+      <p ref={timeLockBalanceRef}>0 Q</p>
 
       <MemberTables
         perPageLength={4}
@@ -53,10 +46,7 @@ function BalanceCard ({
       />
 
       <div className="button__bottom">
-        <Button
-          style={{ width: '80px' }}
-          onClick={() => setIsModalShown(true)}
-        >
+        <Button style={{ width: '80px' }} onClick={() => setIsModalShown(true)}>
           Manage
         </Button>
       </div>

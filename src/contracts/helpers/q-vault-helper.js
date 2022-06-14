@@ -10,20 +10,19 @@ export async function getQHolderRewardPool () {
 }
 
 export function getOutstandingDelegationRewardsList (delegationsList) {
-  return delegationsList
-    .map(member => Number(fromWei(member?.claimableReward)))
-    .reduce((acc, curr) => acc + curr, 0);
+  return delegationsList.map((member) => Number(fromWei(member?.claimableReward))).reduce((acc, curr) => acc + curr, 0);
 }
 
-export async function getQVaultDepositAmount (address, transferMax) {
-  if (!Number(transferMax)) return '0';
+export async function getQVaultDepositAmount (address) {
+  const amount = await window.web3.eth.getBalance(address);
+  if (Number(amount) <= 0) {
+    return '0';
+  }
 
   const contract = await getQVaultInstance();
-  const fee = await contract.instance.methods
-    .deposit()
-    .estimateGas({ value: toWei(transferMax), from: address });
+  const fee = await contract.instance.methods.deposit().estimateGas({ value: amount, from: address });
   const gas = calculateGas(fee);
 
-  const result = BN(toWei(transferMax)).minus(toWei(gas)).toString();
+  const result = BN(amount).minus(toWei(gas)).toString();
   return fromWei(result);
 }

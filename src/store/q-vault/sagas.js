@@ -17,7 +17,6 @@ import {
   setLockedAssets,
   setMinimumQVaultTimeLock,
   setQVaultTimeLocks,
-  setUpdateCompoundRate,
   setUserBalance,
 } from './action-creators';
 import * as actionTypes from './action-types';
@@ -231,23 +230,6 @@ function * getQVaultTimeLocksGenerator ({ address }) {
   }
 }
 
-function * getUpdateCompoundRateGenerator ({ address }) {
-  try {
-    yield put(setUpdateCompoundRate(true));
-    const contract = yield call(getQVaultInstance);
-    yield contract.updateCompoundRate({
-      from: address,
-      gasBuffer: 1.2,
-    });
-    yield put(setUpdateCompoundRate(false));
-  } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
-  } finally {
-    yield put(setUpdateCompoundRate(false));
-  }
-}
-
 function * setOnClaimStakeDelegatorRewardGenerator () {
   try {
     yield put(setTransactionLoading());
@@ -334,7 +316,6 @@ export default [
   takeEvery(actionTypes.GET_QV_USER_BALANCE, getUserBalanceGenerator),
   takeEvery(actionTypes.GET_QV_LOCKED_ASSETS, getLockedAssetsGenerator),
 
-  takeEvery(actionTypes.GET_UPDATE_COMPOUND_RATE, getUpdateCompoundRateGenerator),
   takeEvery(actionTypes.GET_DELEGATIONS_LIST, getDelegationListGenerator),
   takeEvery(actionTypes.GET_QV_BALANCE, getBalanceDetailsGenerator),
   takeEvery(actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS, getOutstandingDelegationRewardsValueGenerator),

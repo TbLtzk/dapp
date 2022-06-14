@@ -9,9 +9,9 @@ const initialState = {
   borrowingVaults: [],
   loadingBorrowingVaults: true,
 
-  totalSupply: null,
-  interestRate: null,
-  savingRate: null
+  totalSupply: 0,
+  interestRate: 0,
+  savingRate: 0
 };
 
 export default function index (state = initialState, action) {

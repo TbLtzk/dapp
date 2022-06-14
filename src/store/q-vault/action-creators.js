@@ -1,10 +1,5 @@
 import * as actionTypes from './action-types';
 
-export const setError = (data) => ({
-  type: actionTypes.SET_QV_ERROR,
-  error: data
-});
-
 export const getAccountBalance = (address) => ({
   type: actionTypes.GET_ACCOUNT_BALANCE,
   address
@@ -33,16 +28,6 @@ export const setLockedAssets = (votingWeight, votingLockingEnd) => ({
   type: actionTypes.SET_QV_LOCKED_ASSETS,
   votingWeight,
   votingLockingEnd
-});
-
-export const getUpdateCompoundRate = (address) => ({
-  type: actionTypes.GET_UPDATE_COMPOUND_RATE,
-  address
-});
-
-export const setUpdateCompoundRate = (data) => ({
-  type: actionTypes.SET_UPDATE_COMPOUND_RATE,
-  payload: data
 });
 
 // Action without write to Store

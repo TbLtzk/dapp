@@ -47,6 +47,7 @@ function SidebarCards () {
     dispatch(getUserBalance(userAddress));
     dispatch(getSymbol());
     dispatch(getSystemReserveBalance());
+
     getEPDRUint('governed.EPDR.QUSD_surplusLot', setSurplusLot);
     getEPDRUint('governed.EPDR.reserveLot', setReserveLot);
   }, [dispatch, loadingPerfNetting]);
@@ -84,7 +85,7 @@ function SidebarCards () {
       },
       {
         title: 'Surplus Auction Lot',
-        value: surplusLot + ' QUSD'
+        value: fN(surplusLot) + ' QUSD'
       }
     ];
   }, [surplus, debt, systemBalanceResult, surplusLot]);
@@ -93,15 +94,15 @@ function SidebarCards () {
     return [
       {
         title: 'Reserve Balance',
-        value: reserveBalance + ' Q'
+        value: fN(reserveBalance) + ' Q'
       },
       {
         title: 'Immediately Available',
-        value: availableAmount + ' Q'
+        value: fN(availableAmount) + ' Q'
       },
       {
         title: 'Debt Auction Lot',
-        value: reserveLot + ' Q'
+        value: fN(reserveLot) + ' Q'
       }
     ];
   }, [availableAmount, reserveBalance, reserveLot]);
