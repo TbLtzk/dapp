@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
 import jazzicon from '@metamask/jazzicon';
 
 import CopyToClipboard from 'components/Base/CopyToClipboard';
+import GnosisSafeTooltip from 'components/Custom/GnosisSafeTooltip';
 
 import { AddressWrapper } from './styles';
 
@@ -13,6 +14,7 @@ import { getExplorerUrlByChainId, trimAddress } from 'func/useful';
 
 function ExplorerAddress ({
   address,
+  gnosisSafeAddress = '',
   short = false,
   hideTooltip = false,
   iconed = false,
@@ -22,7 +24,6 @@ function ExplorerAddress ({
   const explorerUrl = getExplorerUrlByChainId(network);
 
   const iconRef = useRef();
-  const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
     if (!iconed) return;
@@ -48,13 +49,11 @@ function ExplorerAddress ({
       </a>
 
       <CopyToClipboard
-        title="Copy"
         value={address}
         hideTooltip={hideTooltip}
-        onCopy={setIsCopied}
-      >
-        <i className={`mdi mdi-${isCopied ? 'check-circle-outline' : 'content-copy'}`} />
-      </CopyToClipboard>
+      />
+
+      {gnosisSafeAddress && !hideTooltip && <GnosisSafeTooltip address={gnosisSafeAddress}/>}
     </AddressWrapper>
   );
 }

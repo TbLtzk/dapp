@@ -1,47 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { CopyToClipboard as Copy } from 'react-copy-to-clipboard';
 
-import Tooltip from '../Tooltip';
+import PopperTooltip from '../PopperTooltip';
+
+import { CopyTrigger, TooltipWrapper } from './styles';
 
 function CopyToClipboard ({
   value,
-  title,
   hideTooltip = false,
-  children,
-  onCopy = () => {},
 }) {
-  const [copy, setCopy] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
-    if (!copy) return;
+    if (!isCopied) return;
 
-    onCopy(copy);
     const timeout = setTimeout(() => {
-      setCopy(false);
-      onCopy(false);
+      setIsCopied(false);
     }, 3000);
 
     return () => clearTimeout(timeout);
-  }, [copy, onCopy]);
+  }, [isCopied]);
 
-  return (
-    <Tooltip
-      disabled={hideTooltip}
-      additionalInfo={copy ? 'Copied!' : title || 'Copy'}
-    >
-      <Copy text={value}>
-        <span
-          style={{
-            cursor: 'pointer',
-            maxWidth: 'min-content'
-          }}
-          onClick={() => setCopy(true)}
-        >
-          {children || value}
-        </span>
-      </Copy>
-    </Tooltip>
+  const copyTrigger = (
+    <Copy text={value}>
+      <CopyTrigger onClick={() => setIsCopied(true)}>
+        <i className={`mdi mdi-${isCopied ? 'check-circle-outline' : 'content-copy'}`} />
+      </CopyTrigger>
+    </Copy>
   );
+
+  return hideTooltip
+    ? copyTrigger
+    : (
+      <TooltipWrapper>
+        <PopperTooltip trigger={copyTrigger}>
+          <span className="copy-msg">
+            {isCopied ? 'Copied!' : 'Copy'}
+          </span>
+        </PopperTooltip>
+      </TooltipWrapper>
+    );
 }
 
 export default CopyToClipboard;

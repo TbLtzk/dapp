@@ -64,8 +64,10 @@ export const Block = styled.div`
   }
 
   .card__hash {
+    display: inline-flex;
     text-overflow: ellipsis;
     overflow: hidden;
+    margin-bottom: 5px;
   }
 
   .card__actions {

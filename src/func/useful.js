@@ -6,7 +6,7 @@ import ErrorHandler from './ErrorHandler';
 
 import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper';
 
-import { explorerUrls, indexersUrls, networkParameters, networks, PARAMS } from 'constants/config';
+import { explorerUrls, gnosisSafeUrls, indexersUrls, networkParameters, networks, PARAMS } from 'constants/config';
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import { keyRegex } from 'constants/regex';
 
@@ -17,12 +17,23 @@ export const getParametersDependsOnUrl = () => {
 
 export const getIndexerUrlDependsOnChainId = (chainId) => {
   const network = networks[chainId];
-  return network ? indexersUrls[network] : getParametersDependsOnUrl().indexer;
+  return network
+    ? indexersUrls[network]
+    : getParametersDependsOnUrl().indexer;
 };
 
 export const getExplorerUrlByChainId = (chainId) => {
   const network = networks[chainId];
-  return network ? explorerUrls[network] : getParametersDependsOnUrl().explorer;
+  return network
+    ? explorerUrls[network]
+    : getParametersDependsOnUrl().explorer;
+};
+
+export const getGnosisSafeUrlByChainId = (chainId) => {
+  const network = networks[chainId];
+  return network
+    ? gnosisSafeUrls[network]
+    : getParametersDependsOnUrl().gnosisSafe;
 };
 
 export const isFeatureEnabled = (feature, chainId) => {

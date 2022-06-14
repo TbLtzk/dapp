@@ -5,7 +5,8 @@ import {
   getConstitutionInstance,
   getEpdrParametersInstance,
   getEpqfiParametersInstance,
-  getEprsParametersInstance
+  getEprsParametersInstance,
+  getInstance
 } from 'contracts/contract-instance';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
@@ -95,3 +96,13 @@ export const transformToParams = (formData) => {
     }, []);
   }
 };
+
+/**
+ * @param {keyof import('@q-dev/q-js-sdk').ContractRegistryInstance} contractType
+ * @returns {Promise<string>}
+ */
+export async function getContractOwner (contractType) {
+  const contract = await getInstance(contractType)();
+  const owner = await contract.instance.methods.owner().call();
+  return owner || '';
+}

@@ -21,10 +21,12 @@ function Constitution () {
   return (
     <CustomBlock title="Constitution">
       <h1>Constitution</h1>
+
       <h5>Hash:</h5>
-      <CopyToClipboard value={constitutionHashValue}>
+      <div>
         <p className="card__hash">{constitutionHashValue}</p>
-      </CopyToClipboard>
+        <CopyToClipboard value={constitutionHashValue} />
+      </div>
 
       <div className="card__actions">
         <a

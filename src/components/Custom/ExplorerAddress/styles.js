@@ -27,9 +27,4 @@ export const AddressWrapper = styled.div`
       bottom: 120%;
     }
   }
-
-  i {
-    margin-left: 4px;
-    font-size: 12px;
-  }
 `;

@@ -18,17 +18,33 @@ function ParametersTable ({ parameters }) {
   const renderKey = (item) => {
     return simplified
       ? parametersDictionary[item.key]?.name || item.key
-      : <CopyToClipboard value={item.key} />;
+      : (
+        <div>
+          <span>{item.key}</span>
+          <CopyToClipboard value={item.key} />
+        </div>
+      );
   };
 
   const renderValue = (item) => {
     const type = parametersDictionary[item.key]?.type;
     if (type === 'address' || item.type === 'ADDR') {
-      return <ExplorerAddress short={simplified} address={item.value} />;
+      return (
+        <ExplorerAddress
+          short={simplified}
+          address={item.value}
+          gnosisSafeAddress={item.gnosisSafeAddress}
+        />
+      );
     }
 
     if (!simplified) {
-      return <CopyToClipboard value={item.value} />;
+      return (
+        <div>
+          <span>{item.value}</span>
+          <CopyToClipboard value={item.value} />
+        </div>
+      );
     }
 
     switch (type) {
@@ -53,7 +69,7 @@ function ParametersTable ({ parameters }) {
   };
 
   return (
-    <TableWrapper>
+    <TableWrapper $simplified={simplified}>
       <table>
         <tbody>
           {parameters.map((item, index) => (
