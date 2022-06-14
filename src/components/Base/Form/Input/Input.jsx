@@ -53,7 +53,7 @@ const Input = ({
           onChange={handleChange}
           {...rest}
         />
-        {max && (
+        {Boolean(max) && (
           <button
             disabled={isDisabled}
             className="input__max"
