@@ -1,18 +1,22 @@
 import React from 'react';
 
+import PopperTooltip from 'components/Base/PopperTooltip';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ExplorerAddress from '../ExplorerAddress';
 
-import { TooltipWrapper } from './styles';
+import { AliasIcon, TooltipContent } from './styles';
 
 function AliasTooltip ({ alias = '' }) {
   const isAliasesEnabled = useFeatureFlag('aliases');
 
   return isAliasesEnabled && alias && (
-    <TooltipWrapper>
-      <span className="alias-icon">A</span>
-      <div className="tooltip-content">
+    <PopperTooltip
+      trigger={<AliasIcon>A</AliasIcon>}
+      style={{ padding: '1px 5px' }}
+    >
+      <TooltipContent>
         <span>This validator uses alias</span>
         <br />
         <div className="tooltip-address">
@@ -23,8 +27,8 @@ function AliasTooltip ({ alias = '' }) {
           />
         </div>
         <span> for block sealing </span>
-      </div>
-    </TooltipWrapper>
+      </TooltipContent>
+    </PopperTooltip>
   );
 }
 

@@ -2,14 +2,18 @@ import React from 'react';
 
 import tooltips from 'json/tooltips.json';
 
-import { TooltipWrapper } from './styles';
+import PopperTooltip from 'components/Base/PopperTooltip';
 
-function InfoTooltip ({ topic, bottom }) {
+import { InfoIcon } from './styles';
+
+function InfoTooltip ({ topic, placement = 'top' }) {
   return (
-    <TooltipWrapper $bottom={bottom}>
-      <i className="mdi mdi-information" />
+    <PopperTooltip
+      placement={placement}
+      trigger={<InfoIcon className="mdi mdi-information" />}
+    >
       <span>{tooltips[topic]}</span>
-    </TooltipWrapper>
+    </PopperTooltip>
   );
 }
 

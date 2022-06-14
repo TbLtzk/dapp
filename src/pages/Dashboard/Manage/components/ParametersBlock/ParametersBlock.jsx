@@ -17,7 +17,7 @@ function ParametersBlock ({
   emptyMsg = 'No parameters',
 }) {
   const renderTable = () => {
-    if (loading) {
+    if (loading && !parameters.length) {
       return (
         <LoadingWrap>
           <LoadingSpinner />

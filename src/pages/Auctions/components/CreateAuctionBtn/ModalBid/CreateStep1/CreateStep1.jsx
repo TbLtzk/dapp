@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import CopyToClipboard from 'components/Base/CopyToClipboard';
 import FormInput from 'components/Base/Form/FormInput';
 
 import { symbol } from 'store/stable-coin/selectors';
@@ -40,12 +39,7 @@ function CreateStep1 ({ activeTab, register, errors, raisingBid, watch, allowanc
       <>
         <h4>{tabLabel}</h4>
         <h4>
-          Minimum bid:
-          <CopyToClipboard value={raisingBid}>
-            {raisingBid}
-          </CopyToClipboard>
-          {' '}
-          {symbol}
+          Minimum bid: {raisingBid} {symbol}
         </h4>
         <FormInput
           invertedColors

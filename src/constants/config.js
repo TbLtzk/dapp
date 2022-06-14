@@ -24,7 +24,13 @@ export const indexersUrls = {
 export const explorerUrls = {
   devnet: 'http://52.35.57.176:8080',
   mainnet: 'https://explorer.q.org',
-  testnet: 'https://explorer.qtestnet.org/',
+  testnet: 'https://explorer.qtestnet.org',
+};
+
+export const gnosisSafeUrls = {
+  devnet: 'http://63.34.190.209:8020',
+  mainnet: 'https://multisig-ui.q.org',
+  testnet: 'https://multisig-ui.qtestnet.org',
 };
 
 export const networkParameters = {
@@ -87,6 +93,7 @@ export const PARAMS = {
     rpc: 'https://rpc.qtestnet.org',
     indexer: indexersUrls.testnet,
     explorer: explorerUrls.testnet,
+    gnosisSafe: gnosisSafeUrls.testnet,
   },
   'https://hq.qtestnet.org': {
     id: 'testnet',
@@ -96,6 +103,7 @@ export const PARAMS = {
     rpc: 'https://rpc.qtestnet.org',
     indexer: indexersUrls.testnet,
     explorer: explorerUrls.testnet,
+    gnosisSafe: gnosisSafeUrls.testnet,
   },
   'https://hq.q.org': {
     id: 'mainnet',
@@ -105,5 +113,6 @@ export const PARAMS = {
     rpc: 'https://rpc.q.org',
     indexer: indexersUrls.mainnet,
     explorer: explorerUrls.mainnet,
+    gnosisSafe: gnosisSafeUrls.mainnet,
   },
 };

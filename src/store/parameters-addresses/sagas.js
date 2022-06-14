@@ -21,6 +21,7 @@ import {
   getEpqfiParametersInstance,
   getEprsParametersInstance
 } from 'contracts/contract-instance';
+import { getContractOwner } from 'contracts/helpers/parameters-helper';
 
 import ErrorHandler from 'func/ErrorHandler';
 
@@ -32,15 +33,29 @@ async function getParameters (type, contract) {
   return parameters.map((data) => ({ type, ...data }));
 }
 
+async function getGnosisSafesMap () {
+  const [upgradeSafe, tokenBridgeSafe] = await Promise.all([
+    getContractOwner('upgradeVoting'),
+    getContractOwner('tokenBridgeAdminProxy')
+  ]);
+
+  return {
+    'governance.upgrade.contractRegistryVoting': upgradeSafe,
+    'defi.tokenBridgeAdminProxy': tokenBridgeSafe
+  };
+}
+
 function * getContractRegistryKV () {
   try {
     const contract = contractRegistryInstance;
     const data = yield contract.instance.methods.getContracts().call();
+    const safesMap = yield getGnosisSafesMap();
     yield put(
       getContractRegistryKVSuccess(
         data.map((i) => ({
           key: i.key,
           value: i.addr,
+          gnosisSafeAddress: safesMap[i.key] || '',
           type: 'ADDR'
         }))
       )
