@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import { isNil } from 'lodash';
+
 import ErrorInputMessage from 'components/Base/ErrorInputMessage';
 
 import { InputWrapper } from './styles';
@@ -53,7 +55,7 @@ const Input = ({
           onChange={handleChange}
           {...rest}
         />
-        {Boolean(max) && (
+        {!isNil(max) && (
           <button
             disabled={isDisabled}
             className="input__max"
