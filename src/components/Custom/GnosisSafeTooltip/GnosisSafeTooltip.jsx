@@ -22,10 +22,7 @@ function GnosisSafeTooltip ({ address }) {
   );
 
   return (
-    <PopperTooltip
-      trigger={gnosisIcon}
-      style={{ marginLeft: '4px' }}
-    >
+    <PopperTooltip trigger={gnosisIcon}>
       <TooltipContent>
         <span>This address has a gnosis safe</span>
         <div className="tooltip-address">

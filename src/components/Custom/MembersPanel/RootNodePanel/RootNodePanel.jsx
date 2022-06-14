@@ -34,7 +34,7 @@ function RootNodePanel ({ tableType }) {
           tableSelector: rootMembersSelector,
           tableLoadingSelector: loadingRootMembersSelector,
           columns: columnsRootNode,
-          tableWrapper: tableRootNode
+          tableWrapper: (arr) => tableRootNode(arr, tableType === TABLE_TYPES.rootNodesShort)
         };
       case TABLE_TYPES.rootNodesMonitoring:
         return {

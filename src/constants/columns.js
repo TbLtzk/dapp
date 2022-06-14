@@ -118,12 +118,6 @@ export const borrowCryptoAssetsColumnns = [
 
 export const columnsRootNode = [
   {
-    headerStyle: () => ({ minWidth: '50px', width: '50px' }),
-    dataField: 'rank',
-    text: 'Rank',
-    sort: true
-  },
-  {
     headerStyle: () => ({ minWidth: '170px' }),
     dataField: 'address',
     text: 'Root Node Address'
@@ -145,12 +139,6 @@ export const columnsRootNode = [
 ];
 
 export const columnsRootNodeMonitoring = [
-  {
-    headerStyle: () => ({ minWidth: '50px', width: '50px' }),
-    dataField: 'rank',
-    text: 'Rank',
-    sort: true
-  },
   {
     headerStyle: () => ({ minWidth: '180px' }),
     dataField: 'address',
