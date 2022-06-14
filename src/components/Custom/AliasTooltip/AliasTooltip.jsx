@@ -12,10 +12,7 @@ function AliasTooltip ({ alias = '' }) {
   const isAliasesEnabled = useFeatureFlag('aliases');
 
   return isAliasesEnabled && alias && (
-    <PopperTooltip
-      trigger={<AliasIcon>A</AliasIcon>}
-      style={{ padding: '1px 5px' }}
-    >
+    <PopperTooltip trigger={<AliasIcon>A</AliasIcon>}>
       <TooltipContent>
         <span>This validator uses alias</span>
         <br />

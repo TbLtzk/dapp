@@ -19,14 +19,13 @@ export const tableLockAmount = (tableArray) =>
     releaseEnd: convertToMonthDayYear(lock.releaseEnd)
   }));
 
-export const tableRootNode = (tableArray) =>
+export const tableRootNode = (tableArray, short = false) =>
   tableArray.map((rootNode, idx) => ({
     id: idx,
-    rank: idx + 1,
     address: <ExplorerAddress
-      short
       iconed
       semibold
+      short={short}
       address={rootNode.address}
     />,
     amount: fN(rootNode.stakeAmount) + ' Q',
@@ -36,7 +35,6 @@ export const tableRootNode = (tableArray) =>
 export const tableRootNodeMonitoring = (tableArray) =>
   tableArray.map((rootNode, idx) => ({
     id: idx,
-    rank: idx + 1,
     address: <ExplorerAddress
       short
       iconed
