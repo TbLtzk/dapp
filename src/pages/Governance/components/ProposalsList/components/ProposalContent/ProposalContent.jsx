@@ -1,4 +1,5 @@
 
+import PopperTooltip from 'components/Base/PopperTooltip';
 import Tooltip from 'components/Base/Tooltip';
 
 import { ContentWrapper, ProposalContainer } from './styles';
@@ -26,26 +27,22 @@ function ProposalContent ({ proposal }) {
       </div>
 
       <ContentWrapper opacity={voteOpacity}>
-        <Tooltip
-          disabled={false}
-          additionalInfo={
-            proposal.status === STATUSES.pending
+        <div className="content__item">
+          <h5>Voting Ends</h5>
+          <PopperTooltip
+            trigger={<p>{convertToMonthDayYear(proposal.votingEndTime)}</p>}
+          >
+            {proposal.status === STATUSES.pending
               ? (
                 <div>
                   Remaining Time for Voting <br />
                   {remainDate(proposal.votingEndTime)}
                 </div>
               )
-              : (
-                'Proposal ' + proposal.status
-              )
-          }
-        >
-          <div className="content__item">
-            <h5>Voting Ends</h5>
-            <p>{convertToMonthDayYear(proposal.votingEndTime)}</p>
-          </div>
-        </Tooltip>
+              : 'Proposal ' + proposal.status
+            }
+          </PopperTooltip>
+        </div>
       </ContentWrapper>
 
       {approvalContracts || contractsWithoutVeto

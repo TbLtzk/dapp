@@ -21,6 +21,8 @@ export const PROPOSALS_TYPES = {
   contractUpdates: 'contract-updates',
 };
 
+export type ProposalType = keyof typeof PROPOSALS_TYPES;
+
 export const AUCTIONS_TYPES = {
   liquidation: 'liquidation',
   systemDebt: 'system-debt',

@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -32,4 +32,4 @@ function Header () {
   );
 }
 
-export default React.memo(Header);
+export default memo(Header);

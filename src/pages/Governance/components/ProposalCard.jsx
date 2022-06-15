@@ -6,12 +6,12 @@ import {
   ListCardBody,
   ListCardHeader,
   ListCardWrp
-} from './components/ProposalsList/components/ListCard/styles';
-import PollDetail from './components/ProposalsList/components/PollDetail';
-import ProposalContent from './components/ProposalsList/components/ProposalContent';
-import SlashingObjection from './components/ProposalsList/components/SlashingObjection';
-import VoteBreakdown from './components/ProposalsList/components/VoteBreakdown';
-import VotingItems from './components/ProposalsList/components/VotingItems';
+} from './ProposalsList/components/ListCard/styles';
+import PollDetail from './ProposalsList/components/PollDetail';
+import ProposalContent from './ProposalsList/components/ProposalContent';
+import SlashingObjection from './ProposalsList/components/SlashingObjection';
+import VoteBreakdown from './ProposalsList/components/VoteBreakdown';
+import VotingItems from './ProposalsList/components/VotingItems';
 
 import { theme } from 'store/theme/selectors';
 

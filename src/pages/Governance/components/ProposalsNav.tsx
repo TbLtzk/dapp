@@ -20,15 +20,15 @@ function ProposalsNav () {
   const dispatch = useDispatch();
   const appMode = useSelector(mode);
 
-  const qActiveProposalsCount = useSelector(qActiveProposalsCountSelector);
-  const rootActiveProposalsCount = useSelector(rootActiveProposalsCountSelector);
-  const expertActiveProposalsCount = useSelector(expertActiveProposalsCountSelector);
-  const slashingActiveProposalsCount = useSelector(slashingActiveProposalsCountSelector);
-  const contractUpdatesActiveProposalsCount = useSelector(contractUpdatesActiveProposalsCountSelector);
+  const qCount = useSelector(qActiveProposalsCountSelector);
+  const rootCount = useSelector(rootActiveProposalsCountSelector);
+  const expertCount = useSelector(expertActiveProposalsCountSelector);
+  const slashingCount = useSelector(slashingActiveProposalsCountSelector);
+  const contractCount = useSelector(contractUpdatesActiveProposalsCountSelector);
 
   useEffect(() => {
     dispatch(getQProposals());
-      dispatch(getRootProposals());
+    dispatch(getRootProposals());
 
     if (appMode === MODE.advanced) {
       dispatch(getExpertProposals());
@@ -37,31 +37,46 @@ function ProposalsNav () {
     }
   }, [dispatch, appMode]);
 
+  const tabs = [
+    {
+      label: 'Q Proposals',
+      count: qCount,
+      link: '/governance/q-proposals',
+    },
+    {
+      label: 'Root Node Panel',
+      count: rootCount,
+      link: '/governance/q-root-node-panel',
+    },
+    ...(appMode === MODE.advanced
+      ? [
+        {
+          label: 'Expert Proposals',
+          count: expertCount,
+          link: '/governance/q-expert-proposals',
+        },
+        {
+          label: 'Slashing Proposals',
+          count: slashingCount,
+          link: '/governance/slashing-proposals',
+        },
+        {
+          label: 'Contract Updates',
+          count: contractCount,
+          link: '/governance/contract-updates',
+        },
+      ]
+      : []
+    ),
+  ];
+
   return (
     <div style={{ display: 'flex', gap: '15px' }}>
-      <Link to="/governance/q-proposals">
-        Q Proposals
-      </Link>
-
-      <Link to="/governance/q-root-node-panel">
-        Root Node Panel
-      </Link>
-
-      {appMode === MODE.advanced && (
-        <>
-          <Link to="/governance/q-expert-proposals">
-            Expert Proposals
-          </Link>
-
-          <Link to="/governance/slashing-proposals">
-            Slashing Proposals
-          </Link>
-
-          <Link to="/governance/contract-updates">
-            Contract Updates
-          </Link>
-        </>
-      )}
+      {tabs.map(({ label, count, link }) => (
+        <Link key={label} to={link}>
+          {label} {count > 0 && count}
+        </Link>
+      ))}
     </div>
   );
 }

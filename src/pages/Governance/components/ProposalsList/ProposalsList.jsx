@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { concat, slice } from 'lodash';
 
@@ -7,13 +8,18 @@ import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
 import ListCard from './components/ListCard';
 
+import { qEndedProposalsCountSelector, qEndedProposalsSelector } from 'store/voting/q-proposals/selectors';
+
 import { LoadingWrap } from 'constants/style';
 import { fillArray } from 'func/useful';
 
 const LIMIT = 9;
 const LOAD_TYPES = { load: 'load', empty: 'empty', loaded: 'loaded' };
 
-function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
+function ProposalsList ({ type }) {
+  const proposals = useSelector(qEndedProposalsSelector);
+  const proposalsCount = useSelector(qEndedProposalsCountSelector);
+
   const [state, setState] = useState(LOAD_TYPES.load);
   const [showMore, setShowMore] = useState(false);
   const [list, setList] = useState([]);
@@ -54,14 +60,13 @@ function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
       return <p>No proposals</p>;
     case LOAD_TYPES.loaded:
       return (
-        <div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
           {list.map((proposal) => (
             <ListCard
               key={proposal.id + proposal?.contract}
               id={proposal.id + proposal?.contract}
               proposal={proposal}
-              onePage={true}
-              proposalsKind={proposalsKind}
+              proposalsKind={type}
             />
           ))}
           {showMore

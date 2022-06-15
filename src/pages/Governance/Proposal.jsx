@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 import PageWrap from 'components/Base/PageWrap';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
+import ProposalCard from './components/ProposalCard';
 import VotingStats from './components/VotingStats';
-import ProposalCard from './ProposalCard';
 
 import { transactionLoadingSelector } from 'store/transaction-handler/selectors';
 
@@ -14,7 +14,7 @@ import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import { PROPOSALS_TYPES } from 'constants/statuses';
 
-function OneProposalPage ({ match }) {
+function Proposal ({ match }) {
   const transactionLoading = useSelector(transactionLoadingSelector);
 
   const [proposal, setProposal] = useState(null);
@@ -65,23 +65,16 @@ function OneProposalPage ({ match }) {
   }
 
   return (
-    <PageWrap wrapContentClasses="wrap-content__column-2-1" headerTitle={proposalKind.replace(/-/g, ' ')}>
-      {error
-        ? (
-          <p>Wrong link</p>
-        )
-        : !proposal
-          ? (
-            <SkeletonProposalsLoading />
-          )
-          : (
-            <div>
-              <ProposalCard proposalKind={proposalKind} proposal={proposal} />
-            </div>
-          )}
+    <PageWrap headerTitle={proposalKind.replace(/-/g, ' ')}>
       <VotingStats />
+      {error
+        ? <p>Wrong link</p>
+        : proposal
+          ? <ProposalCard proposalKind={proposalKind} proposal={proposal} />
+          : <SkeletonProposalsLoading />
+      }
     </PageWrap>
   );
 }
 
-export default OneProposalPage;
+export default Proposal;

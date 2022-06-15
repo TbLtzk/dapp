@@ -1,13 +1,21 @@
 import { Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 
 import { indents } from 'constants/style';
 
+export const ProposalLink = styled(Link)`
+  &,
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+`;
+
 export const ListCardWrp = styled(Card)`
   border: 0;
   background: ${(props) => props.theme.colors.oxfordBlueTint1};
-  margin-bottom: 16px;
   height: ${(p) => (p.onePage ? 'auto' : 'auto')};
 
   h1 {

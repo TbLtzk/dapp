@@ -19,7 +19,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import Auctions from '../pages/Auctions';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import Manage from '../pages/Dashboard/Manage';
-import OneProposalPage from '../pages/Governance/OneProposalPage';
+import Proposal from '../pages/Governance/Proposal';
 import Proposals from '../pages/Governance/Proposals';
 import QVault from '../pages/QVault';
 import SavingAndBorrowing from '../pages/SavingAndBorrowing';
@@ -103,7 +103,7 @@ function Routes () {
             <Route
               exact
               path="/governance/proposal/:contract?/:id?"
-              component={(props) => <OneProposalPage {...props} />}
+              component={(props) => <Proposal {...props} />}
             />
 
             <Route exact path="/q-vault">
