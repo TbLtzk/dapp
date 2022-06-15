@@ -23,22 +23,11 @@ import {
   systemSurplusAuctionsSelector
 } from 'store/auctions/selectors';
 import { mode } from 'store/dashboard-mode/selectors';
-import { contractUpdatesActiveProposalsCountSelector } from 'store/voting/contract-updates/selectors';
-import { expertActiveProposalsCountSelector } from 'store/voting/expert-proposals/selectors';
-import { qActiveProposalsCountSelector } from 'store/voting/q-proposals/selectors';
-import { rootActiveProposalsCountSelector } from 'store/voting/root-node-proposals/selectors';
-import { slashingActiveProposalsCountSelector } from 'store/voting/slashing-proposals/selectors';
 
 function Sidebar () {
   const appMode = useSelector(mode);
   const windowSize = useWindowSize();
   const isAliasesEnabled = useFeatureFlag('aliases');
-
-  const qActiveProposalsCount = useSelector(qActiveProposalsCountSelector);
-  const rootActiveProposalsCount = useSelector(rootActiveProposalsCountSelector);
-  const expertActiveProposalsCount = useSelector(expertActiveProposalsCountSelector);
-  const slashingActiveProposalsCount = useSelector(slashingActiveProposalsCountSelector);
-  const contractUpdatesActiveProposalsCount = useSelector(contractUpdatesActiveProposalsCountSelector);
 
   const liquidationAuctions = useSelector(liquidationAuctionsSelector);
   const liquidationActiveAuctionsCount = liquidationAuctions?.activeAuctions?.length;
@@ -78,47 +67,11 @@ function Sidebar () {
               dashboard
             )}
 
-          <AccordionLinks
-            type="governance-toggle"
-            headerLink={<CommonLinks linkTo="/q-governance" linkTitle="Governance" />}
-          >
-            <>
-              <CommonLinks
-                linkTo="/q-proposals"
-                count={qActiveProposalsCount}
-                linkTitle="– Q Proposals"
-              />
-
-              <CommonLinks
-                linkTo="/q-root-node-panel"
-                count={rootActiveProposalsCount}
-                linkTitle="– Root Node Panel"
-              />
-
-              {appMode === MODE.advanced
-                ? (
-                  <>
-                    <CommonLinks
-                      linkTo="/q-expert-proposals"
-                      count={expertActiveProposalsCount}
-                      linkTitle="– Expert Proposals"
-                    />
-                    <CommonLinks
-                      linkTo="/slashing-proposals"
-                      count={slashingActiveProposalsCount}
-                      linkTitle="– Slashing Proposals"
-                    />
-                    <CommonLinks
-                      linkTo="/contract-updates"
-                      count={contractUpdatesActiveProposalsCount}
-                      linkTitle="– Contract Updates"
-                    />
-                  </>
-                )
-                : null}
-            </>
-          </AccordionLinks>
-
+          <CommonLinks
+            exact={false}
+            linkTo="/q-governance"
+            linkTitle="Governance"
+          />
           <CommonLinks linkTo="/q-vault" linkTitle="Q Vault" />
 
           {appMode === MODE.advanced

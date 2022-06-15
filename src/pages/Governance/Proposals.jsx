@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import PageWrap from 'components/Base/PageWrap';
-import Tabs from 'components/Base/Tabs';
 import VotingStats from 'components/Custom/VotingStats';
 
 import CreateProposal from './components/CreateProposal';
@@ -139,19 +138,21 @@ function Proposals ({ type }) {
     }
   ];
 
-  const additionalBlock = (
-    <div>
-      <VotingStats />
-      {type === PROPOSALS_TYPES.slashingProposals && <PurgeSlashing />}
-    </div>
-  );
-
   const createProposal = type !== PROPOSALS_TYPES.contractUpdates &&
     <CreateProposal type={type} />;
 
   return (
     <PageWrap headerTitle={title} headerExtra={createProposal}>
-      <Tabs tabs={tabs} additionalBlock={additionalBlock} />
+      <div>
+        <VotingStats />
+        {type === PROPOSALS_TYPES.slashingProposals && <PurgeSlashing />}
+      </div>
+
+      <ProposalsList
+        proposals={endedProposals}
+        proposalsKind={type}
+        proposalsCount={endedProposalsCount}
+      />
     </PageWrap>
   );
 }

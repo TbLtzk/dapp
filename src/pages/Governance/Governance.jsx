@@ -81,7 +81,7 @@ function Governance () {
       <div className="content__colm-2">
         <InfoBlock
           header="Q Proposals"
-          detailsLink="q-proposals"
+          detailsLink="/q-governance/q-proposals"
           activeProposalsNumber={qActiveProposalsCount}
           endedProposalsNumber={qEndedProposalsCount}
           isLoading={qLoadingProposalsCount}
