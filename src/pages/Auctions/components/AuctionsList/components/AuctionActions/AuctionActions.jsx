@@ -4,11 +4,9 @@ import { useDispatch } from 'react-redux';
 import Button from 'components/Base/Button';
 import Tooltip from 'components/Base/Tooltip';
 
-import ModalBid from '../../../CreateAuctionBtn/ModalBid';
+import BidModal from '../BidModal';
 
 import { executeAuction } from 'store/auctions/action-creators';
-import { setCreateObj } from 'store/modal-handler/action-creators';
-import { setCreatedStepsLimit, setStepCounter } from 'store/voting/proposals/action-creators';
 
 import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper';
 
@@ -23,15 +21,10 @@ function AuctionActions ({ auction }) {
 
   function onOpenModal () {
     setModalShow(true);
-    dispatch(setStepCounter(1));
-    dispatch(setCreatedStepsLimit(2));
-    dispatch(setCreateObj({ first: auction.contract }));
   }
 
   function onHideModal () {
     setModalShow(false);
-    dispatch(setCreateObj({}));
-    dispatch(setStepCounter(1));
   }
 
   function onAuctionExecute () {
@@ -75,10 +68,10 @@ function AuctionActions ({ auction }) {
             </Button>
           </Tooltip>
         </div>
-        <ModalBid
-          inf={auction}
-          activeTab={auctionType}
-          modalShow={modalShow}
+        <BidModal
+          modalOpen={modalShow}
+          type={auctionType}
+          auction={auction}
           onHide={onHideModal}
         />
       </div>

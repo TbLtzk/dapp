@@ -27,7 +27,7 @@ function ConfirmStep () {
       onConfirm={confirm}
       onBack={goBack}
     >
-      <h2>Chosen data</h2>
+      <h2>Chosen Data</h2>
 
       <h5>Type</h5>
       <p className="text-capitalize">{values.type.replace(/-/g, ' ')}</p>

@@ -16,6 +16,7 @@ import {
   getConstitutionHashSuccess,
   getProposalsByType,
   setBaseVotingWeightInfo,
+  setVoteDetails,
 } from 'store/voting/proposals/action-creators';
 import * as actionTypes from 'store/voting/proposals/action-types';
 import { getQProposals } from 'store/voting/q-proposals/action-creators';
@@ -37,6 +38,7 @@ import VotingService from 'contracts/helpers/voting-helpers/voting-service-helpe
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
+import { VOTING_TYPES } from 'constants/votingTypes';
 import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
 
@@ -113,25 +115,38 @@ function * createProposalGenerator ({ proposal }) {
 function * voteForProposalGenerator ({ data }) {
   try {
     yield put(setTransactionLoading());
+    yield put(setVoteDetails({
+      contract: data.contract,
+      proposalId: data.proposalId,
+    }));
+
     const { userAddress } = yield select((state) => state.userInf);
-    const contract = new VotingService(data?.contract);
-    if (data.first === 'approve') {
-      yield contract.approve(data.id, userAddress);
-    } else if (data?.first === 'basic-vote-on-proposal') {
-      if (data['vote-proposal'] === 'yes') {
-        yield contract.voteFor(data?.idProposal, userAddress);
-      } else if (data['vote-proposal'] === 'no') {
-        yield contract.voteAgainst(data?.idProposal, userAddress);
-      }
-    } else if (data?.first === 'constitution-check') {
-      yield contract.veto(data?.idProposal, userAddress);
+    const contract = new VotingService(data.contract);
+
+    switch (data.type) {
+      case VOTING_TYPES.approve:
+        yield contract.approve(data.proposalId, userAddress);
+        break;
+
+      case VOTING_TYPES.constitution:
+        yield contract.veto(data.proposalId, userAddress);
+        break;
+
+      case VOTING_TYPES.basic:
+        yield data.isVotedFor
+          ? contract.voteFor(data.proposalId, userAddress)
+          : contract.voteAgainst(data.proposalId, userAddress);
+        break;
     }
 
     yield put(getBaseVotingWeightInfo());
     yield put(getDelegationInfo(userAddress));
     yield put(getLockedAssets(userAddress));
 
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+    yield put(setTransactionLoadingSuccess({
+      type: formTypes.vote,
+      transactionType: TRANSACTION_TYPES.success,
+    }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

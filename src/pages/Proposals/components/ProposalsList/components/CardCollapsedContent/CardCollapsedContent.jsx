@@ -27,7 +27,6 @@ function CardCollapsedContent ({ contract, proposalId, proposalsKind, proposalIn
             <div className="list-card__line" />
             <SlashingObjection
               contract={contract}
-              proposal={proposalInfo}
               proposalId={proposalId}
               objData={proposalInfo.objEscrow}
             />

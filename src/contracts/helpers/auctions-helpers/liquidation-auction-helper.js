@@ -116,6 +116,6 @@ export default class LiquidationAuction extends AuctionService {
   async createAuction (data, userAddress) {
     const contract = await getLiquidationAuctionInstance();
     await this.getAllowance(userAddress, contract.address, data?.bid);
-    return await contract.startAuction(data?.address, data['vault-id'], toWei(data?.bid), { from: userAddress });
+    return await contract.startAuction(data?.address, data?.vaultId, toWei(data?.bid), { from: userAddress });
   }
 }

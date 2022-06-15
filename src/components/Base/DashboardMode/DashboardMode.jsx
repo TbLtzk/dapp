@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import FormSwitch from 'components/Base/Form/FormSwitch';
+import Switch from 'components/Base/Form/Switch';
 
 import { getAuctions } from 'store/auctions/action-creators';
 import { setDashboardMode } from 'store/dashboard-mode/action-creators';
@@ -39,7 +39,7 @@ function DashboardMode () {
     }
   }
 
-  return <FormSwitch
+  return <Switch
     id="mode-switcher"
     checked={isSwitchOn}
     label="Advanced mode"

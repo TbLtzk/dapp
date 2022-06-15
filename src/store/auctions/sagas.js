@@ -24,6 +24,7 @@ import { creationSystemDebtContractObj } from 'contracts/helpers/auctions-helper
 import { creationSystemSurplusContractObj } from 'contracts/helpers/auctions-helpers/system-surplus-auction-helper';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
+import formTypes from 'constants/form-types';
 import { AUCTIONS_TYPES, TRANSACTION_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
 
@@ -82,20 +83,24 @@ function * createAuction ({ data }) {
     const { userAddress } = yield select((state) => state.userInf);
     let contract;
     let auctionType;
+    let formType = '';
     switch (data.contract) {
       case AUCTIONS_TYPES.liquidation: {
         contract = creationLiquidationContractObj();
         auctionType = AUCTIONS_TYPES.liquidation;
+        formType = formTypes.liquidationAuction;
         break;
       }
       case AUCTIONS_TYPES.systemDebt: {
         contract = creationSystemDebtContractObj();
         auctionType = AUCTIONS_TYPES.systemDebt;
+        formType = formTypes.debtAuction;
         break;
       }
       case AUCTIONS_TYPES.systemSurplus: {
         contract = creationSystemSurplusContractObj();
         auctionType = AUCTIONS_TYPES.systemSurplus;
+        formType = formTypes.surplusAuction;
         break;
       }
       default: {
@@ -105,7 +110,8 @@ function * createAuction ({ data }) {
     yield contract.createAuction(data, userAddress);
     yield put(getAuctions(auctionType));
     yield call(updateValuesGenerator);
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+
+    yield put(setTransactionLoadingSuccess({ type: formType }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -161,7 +167,7 @@ function * bidForAuctionGenerator ({ data }) {
     yield put(getAuctions(contractType));
     yield call(updateValuesGenerator);
 
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+    yield put(setTransactionLoadingSuccess({ type: formTypes.bid }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

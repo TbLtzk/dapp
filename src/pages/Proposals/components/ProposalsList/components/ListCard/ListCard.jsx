@@ -12,7 +12,7 @@ import { ListCardBody, ListCardHeader, ListCardWrp } from './styles';
 
 import { theme } from 'store/theme/selectors';
 import { transactionLoadingSelector } from 'store/transaction-handler/selectors';
-import { formVoteObject } from 'store/voting/proposals/selectors';
+import { voteDetailsSelector } from 'store/voting/proposals/selectors';
 
 import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
@@ -21,20 +21,21 @@ import { createShareText } from 'func/useful';
 function ListCard ({ proposal, id, proposalsKind, onePage }) {
   const currentTheme = useSelector(theme);
   const transactionLoading = useSelector(transactionLoadingSelector);
-
   const [open, setOpen] = useState(false);
-
   const [proposalInfo, setProposalInfo] = useState(null);
-  const obj = useSelector(formVoteObject);
 
+  const voteDetails = useSelector(voteDetailsSelector);
   useEffect(() => {
-    if (!transactionLoading && proposal.contract === obj.contract && proposal.id === obj.id) {
-      handleGetProposal();
+    const isCurrentProposal = proposal.contract === voteDetails.contract &&
+      proposal.id === voteDetails.proposalId;
+
+    if (!transactionLoading && isCurrentProposal) {
+      loadProposal();
     }
   }, [transactionLoading]);
 
   useEffect(() => {
-    handleGetProposal();
+    loadProposal();
 
     return () => {
       setOpen(false);
@@ -42,15 +43,13 @@ function ListCard ({ proposal, id, proposalsKind, onePage }) {
     };
   }, []);
 
-  async function handleGetProposal () {
+  async function loadProposal () {
     const result = await getProposal(proposal.contract, proposal.id);
     setProposalInfo(result);
   }
 
   return !proposalInfo
-    ? (
-      <SkeletonProposalsLoading />
-    )
+    ? <SkeletonProposalsLoading />
     : (
       <ListCardWrp palette={currentTheme}>
         <Accordion defaultActiveKey="0">

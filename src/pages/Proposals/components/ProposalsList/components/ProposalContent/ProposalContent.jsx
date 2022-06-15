@@ -5,11 +5,12 @@ import Tooltip from 'components/Base/Tooltip';
 import { ContentWrapper, ProposalContainer } from './styles';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
+import { STATUSES } from 'constants/statuses';
 import { convertToMonthDayYear, remainDate } from 'func/convertDate';
 
 function ProposalContent ({ proposal }) {
-  const voteOpacity = proposal.status !== 'Pending' ? '0.4' : '1';
-  const vetoOpacity = proposal.status === 'Accepted' ? '1' : '0.4';
+  const voteOpacity = proposal.status === STATUSES.pending ? '1' : '0.4';
+  const vetoOpacity = proposal.status === STATUSES.accepted ? '1' : '0.4';
 
   const approvalContracts =
         proposal.contract === CONTRACTS_NAMES.addressVoting || proposal.contract === CONTRACTS_NAMES.upgradeVoting;
@@ -29,7 +30,7 @@ function ProposalContent ({ proposal }) {
         <Tooltip
           disabled={false}
           additionalInfo={
-            proposal.status === 'Pending'
+            proposal.status === STATUSES.pending
               ? (
                 <div>
                   Remaining Time for Voting <br />
@@ -53,9 +54,9 @@ function ProposalContent ({ proposal }) {
         : (
           <ContentWrapper opacity={vetoOpacity}>
             <Tooltip
-              disabled={proposal.status === 'Pending'}
+              disabled={proposal.status === STATUSES.pending}
               additionalInfo={
-                proposal.status === 'Accepted'
+                proposal.status === STATUSES.accepted
                   ? (
                     <div>
                       Remaining Time for Veto <br /> {remainDate(proposal.vetoEndTime)}

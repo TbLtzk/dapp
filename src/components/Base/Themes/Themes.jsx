@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import FormSwitch from '../Form/FormSwitch';
+import Switch from '../Form/Switch';
 
 import { setTheme } from 'store/theme/action-creators';
 import { theme } from 'store/theme/selectors';
@@ -18,7 +18,7 @@ function Themes () {
   }
 
   return (
-    <FormSwitch
+    <Switch
       id="theme-switcher"
       checked={currentTheme === THEMES.dark}
       label="Dark theme"
