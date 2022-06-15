@@ -1,4 +1,3 @@
-import React from 'react';
 
 import RadioGroup from 'components/Base/Form/RadioGroup';
 import ModalStep from 'components/Base/ModalStep';

@@ -1,4 +1,3 @@
-import React from 'react';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';

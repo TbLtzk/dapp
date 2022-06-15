@@ -78,6 +78,8 @@
       "noSortAlphabetically": true,
       "reservedFirst": true
     }],
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
 
     "import/first": "warn",
     "import/newline-after-import": "warn",

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { balance, delegatorShare, poolInfoSelector } from 'store/validation-reward-pools/selectors';

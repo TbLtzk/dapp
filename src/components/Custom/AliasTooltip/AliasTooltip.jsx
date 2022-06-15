@@ -1,4 +1,3 @@
-import React from 'react';
 
 import PopperTooltip from 'components/Base/PopperTooltip';
 

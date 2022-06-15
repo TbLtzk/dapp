@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';

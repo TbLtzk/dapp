@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -27,12 +27,10 @@ function ProposalsNav () {
   const contractUpdatesActiveProposalsCount = useSelector(contractUpdatesActiveProposalsCountSelector);
 
   useEffect(() => {
-    if (appMode === MODE.basic) {
-      dispatch(getQProposals());
+    dispatch(getQProposals());
       dispatch(getRootProposals());
-    } else {
-      dispatch(getQProposals());
-      dispatch(getRootProposals());
+
+    if (appMode === MODE.advanced) {
       dispatch(getExpertProposals());
       dispatch(getSlashingProposals());
       dispatch(getContractUpdatesProposals());

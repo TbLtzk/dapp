@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { positions, Provider as AlertProvider, transitions } from 'react-alert';
 import { Redirect, Route, Switch } from 'react-router-dom';
 

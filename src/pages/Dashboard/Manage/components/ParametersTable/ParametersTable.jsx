@@ -1,4 +1,3 @@
-import React from 'react';
 
 import parametersDictionary from 'json/parameters.json';
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import PageTitle from 'components/Navigations/PageTitle';
 
@@ -10,9 +10,9 @@ import { toTitleCase } from 'func/useful';
 
 function PageWrap ({
   headerTitle,
-  titleExtra,
-  headerExtra,
-  wrapContentClasses,
+  titleExtra = null,
+  headerExtra = null,
+  wrapContentClasses = '',
   children,
 }) {
   useEffect(() => {

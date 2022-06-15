@@ -1,4 +1,3 @@
-import React from 'react';
 
 import PollDetail from '../PollDetail';
 import SlashingObjection from '../SlashingObjection';

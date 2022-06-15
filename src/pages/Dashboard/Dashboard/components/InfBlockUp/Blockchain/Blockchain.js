@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';

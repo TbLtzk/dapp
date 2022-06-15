@@ -1,4 +1,3 @@
-import React from 'react';
 
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock';

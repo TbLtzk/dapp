@@ -1,4 +1,3 @@
-import React from 'react';
 
 import Button from '../Button';
 import { Body, Footer } from '../ModalWindow/styles';

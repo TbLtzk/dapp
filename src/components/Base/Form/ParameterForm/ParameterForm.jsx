@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { ParameterType } from '@q-dev/q-js-sdk';
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import PageWrap from 'components/Base/PageWrap';
@@ -52,7 +52,6 @@ function Proposals ({ type }) {
     activeProposalsCountSelector,
     endedProposalsCountSelector,
     oneContractName,
-    title
   } = getProposalsData(type);
 
   const dispatch = useDispatch();
@@ -65,7 +64,6 @@ function Proposals ({ type }) {
     switch (type) {
       case PROPOSALS_TYPES.proposals:
         return {
-          title: 'Q Proposals',
           oneContractName: CONTRACTS_NAMES.constitutionVoting,
           proposalsSelector: qActiveProposalsSelector,
           endedProposalsSelector: qEndedProposalsSelector,
@@ -74,7 +72,6 @@ function Proposals ({ type }) {
         };
       case PROPOSALS_TYPES.rootNodePanel:
         return {
-          title: 'Root Node Panel',
           oneContractName: CONTRACTS_NAMES.rootsVoting,
           proposalsSelector: rootActiveProposalsSelector,
           endedProposalsSelector: rootEndedProposalsSelector,
@@ -83,7 +80,6 @@ function Proposals ({ type }) {
         };
       case PROPOSALS_TYPES.expertProposals:
         return {
-          title: 'Expert Proposals',
           oneContractName: CONTRACTS_NAMES.ePQFIMembershipVoting,
           proposalsSelector: expertActiveProposalsSelector,
           endedProposalsSelector: expertEndedProposalsSelector,
@@ -92,7 +88,6 @@ function Proposals ({ type }) {
         };
       case PROPOSALS_TYPES.slashingProposals:
         return {
-          title: 'Slashing Proposals',
           oneContractName: CONTRACTS_NAMES.rootNodesSlashingVoting,
           proposalsSelector: slashingActiveProposalsSelector,
           endedProposalsSelector: slashingEndedProposalsSelector,
@@ -114,31 +109,6 @@ function Proposals ({ type }) {
   useEffect(() => {
     dispatch(getProposalsByType(oneContractName));
   }, [dispatch, type]);
-
-  const tabs = [
-    {
-      id: 'active-proposals',
-      title: 'Active Proposals',
-      content: (
-        <ProposalsList
-          proposals={proposals}
-          proposalsKind={type}
-          proposalsCount={activeProposalsCount}
-        />
-      )
-    },
-    {
-      id: 'ended-proposals',
-      title: 'Ended Proposals',
-      content: (
-        <ProposalsList
-          proposals={endedProposals}
-          proposalsKind={type}
-          proposalsCount={endedProposalsCount}
-        />
-      )
-    }
-  ];
 
   const createProposal = type !== PROPOSALS_TYPES.contractUpdates &&
     <CreateProposal type={type} />;

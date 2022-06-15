@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';

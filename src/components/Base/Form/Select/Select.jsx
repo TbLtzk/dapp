@@ -1,4 +1,3 @@
-import React from 'react';
 
 import ErrorInputMessage from 'components/Base/ErrorInputMessage';
 

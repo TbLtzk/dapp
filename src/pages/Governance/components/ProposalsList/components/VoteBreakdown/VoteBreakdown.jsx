@@ -1,4 +1,3 @@
-import React from 'react';
 
 import PieChartTwoItem from './PieChartTwoItem';
 import { ColorTitle, VoteBreakdownContainer } from './styles';

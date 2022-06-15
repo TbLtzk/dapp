@@ -1,4 +1,3 @@
-import React from 'react';
 
 import ModalWindow from 'components/Base/ModalWindow';
 import { InstallMetamaskContainer } from 'components/Navigations/Header/styles';

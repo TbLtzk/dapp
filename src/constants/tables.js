@@ -1,4 +1,3 @@
-import React from 'react';
 
 import ProgressBar from 'components/Base/ProgressBar';
 import Tooltip from 'components/Base/Tooltip';

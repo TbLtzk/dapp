@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import PageWrap from 'components/Base/PageWrap';
@@ -42,31 +42,25 @@ function OneProposalPage ({ match }) {
     switch (contract) {
       case CONTRACTS_NAMES.constitutionVoting:
       case CONTRACTS_NAMES.emergencyUpdateVoting:
-      case CONTRACTS_NAMES.generalUpdateVoting: {
+      case CONTRACTS_NAMES.generalUpdateVoting:
         return PROPOSALS_TYPES.proposals;
-      }
-      case CONTRACTS_NAMES.rootsVoting: {
+      case CONTRACTS_NAMES.rootsVoting:
         return PROPOSALS_TYPES.rootNodePanel;
-      }
       case CONTRACTS_NAMES.ePQFIMembershipVoting:
       case CONTRACTS_NAMES.ePDRMembershipVoting:
       case CONTRACTS_NAMES.ePQFIParametersVoting:
       case CONTRACTS_NAMES.ePDRParametersVoting:
       case CONTRACTS_NAMES.ePRSMembershipVoting:
-      case CONTRACTS_NAMES.ePRSParametersVoting: {
+      case CONTRACTS_NAMES.ePRSParametersVoting:
         return PROPOSALS_TYPES.expertProposals;
-      }
       case CONTRACTS_NAMES.rootNodesSlashingVoting:
-      case CONTRACTS_NAMES.validatorsSlashingVoting: {
+      case CONTRACTS_NAMES.validatorsSlashingVoting:
         return PROPOSALS_TYPES.slashingProposals;
-      }
       case CONTRACTS_NAMES.upgradeVoting:
-      case CONTRACTS_NAMES.addressVoting: {
+      case CONTRACTS_NAMES.addressVoting:
         return PROPOSALS_TYPES.contractUpdates;
-      }
-      default: {
+      default:
         return 'error';
-      }
     }
   }
 

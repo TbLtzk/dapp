@@ -1,4 +1,3 @@
-import React from 'react';
 import { ProgressBar } from 'react-bootstrap';
 
 import { Header, ModalContainer } from '../ModalWindow/styles';

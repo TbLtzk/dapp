@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 
 const ListDetails = ({ list }) => {
   return list.map((item) => Boolean(item.value) && (

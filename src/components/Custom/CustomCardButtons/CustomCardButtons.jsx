@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAccordionToggle } from 'react-bootstrap';
 import CopyToClipboard from 'react-copy-to-clipboard';
 
