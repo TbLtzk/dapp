@@ -5,6 +5,7 @@ export const STATUSES = {
   pending: 'Pending',
   decided: 'Decided',
   executed: 'Executed',
+  passed: 'Passed',
 };
 
 export const TRANSACTION_TYPES = {

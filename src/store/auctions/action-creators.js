@@ -15,11 +15,6 @@ export const createAuction = (data) => ({
   data
 });
 
-export const setApproveModalBtn = (result) => ({
-  type: actionTypes.SET_APPROVE_MODAL_BTN,
-  result
-});
-
 export const getAuctions = (auctionTypes) => ({
   type: actionTypes.GET_AUCTIONS,
   auctionTypes

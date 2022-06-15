@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import FormSwitch from 'components/Base/Form/FormSwitch';
+import Switch from 'components/Base/Form/Switch';
 
 import { indents } from 'constants/style';
 
@@ -17,6 +17,6 @@ export const ParametersWrapper = styled.div`
   }
 `;
 
-export const ParametersSwitch = styled(FormSwitch)`
+export const ParametersSwitch = styled(Switch)`
   margin-right: 20px;
 `;

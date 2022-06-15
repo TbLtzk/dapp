@@ -6,7 +6,7 @@ import Tabs from 'components/Base/Tabs';
 import InfoTooltip from 'components/Custom/InfoTooltip';
 
 import AuctionsList from './components/AuctionsList';
-import CreateAuctionBtn from './components/CreateAuctionBtn';
+import CreateAuction from './components/CreateAuction';
 import SidebarCards from './components/SidebarCards';
 
 import { getAuctions } from 'store/auctions/action-creators';
@@ -67,7 +67,7 @@ function Auctions ({ auctionsType }) {
     <PageWrap
       headerTitle={title}
       titleExtra={<InfoTooltip placement="bottom" topic={tooltipTopic} />}
-      headerExtra={<CreateAuctionBtn auctionsType={auctionsType} />}
+      headerExtra={<CreateAuction type={auctionsType} />}
     >
       <Tabs tabs={tabs} additionalBlock={<SidebarCards />} />
     </PageWrap>

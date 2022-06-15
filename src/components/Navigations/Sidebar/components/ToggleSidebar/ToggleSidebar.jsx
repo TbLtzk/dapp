@@ -1,6 +1,6 @@
 import React from 'react';
 
-import FormSwitch from 'components/Base/Form/FormSwitch';
+import Switch from 'components/Base/Form/Switch';
 
 function ToggleSidebar ({ openSidebar, setOpenSidebar }) {
   function handleToggle () {
@@ -13,7 +13,7 @@ function ToggleSidebar ({ openSidebar, setOpenSidebar }) {
     }
   }
 
-  return <FormSwitch
+  return <Switch
     id="sidebar-switcher"
     checked={!openSidebar}
     label="Hide sidebar"

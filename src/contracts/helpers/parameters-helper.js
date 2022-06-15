@@ -1,5 +1,4 @@
 import { ParameterType } from '@q-dev/q-js-sdk';
-import { isEmpty } from 'lodash';
 
 import {
   getConstitutionInstance,
@@ -81,21 +80,6 @@ export async function getParameterValueByKey (typeContract, typeParameter, param
     return null;
   }
 }
-
-export const transformToParams = (formData) => {
-  if (isEmpty(formData)) {
-    return [];
-  } else {
-    return formData['parameter-type'].reduce((types, item, idx) => {
-      types.push({
-        type: item,
-        key: formData['parameter-key'][idx],
-        value: formData['parameter-value'][idx]
-      });
-      return types;
-    }, []);
-  }
-};
 
 /**
  * @param {keyof import('@q-dev/q-js-sdk').ContractRegistryInstance} contractType

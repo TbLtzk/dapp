@@ -1,9 +1,7 @@
 import React from 'react';
 import { Spinner } from 'react-bootstrap';
 
-import PropTypes from 'prop-types';
-
-function LoadingSpinner ({ type, className, size }) {
+function LoadingSpinner ({ type = 'dark', className, size }) {
   return (
     <Spinner
       animation="border"
@@ -13,13 +11,5 @@ function LoadingSpinner ({ type, className, size }) {
     />
   );
 }
-
-LoadingSpinner.propTypes = {
-  type: PropTypes.string
-};
-
-LoadingSpinner.defaultProps = {
-  type: 'dark'
-};
 
 export default LoadingSpinner;

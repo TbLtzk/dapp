@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from 'components/Base/Button';
 import Tooltip from 'components/Base/Tooltip';
 
-import ModalVote from '../ModalVote';
+import VoteModal from '../VoteModal';
 
 import {
   isUserEPDRMembershipSelector,
@@ -14,18 +14,12 @@ import {
 import { isUserRootNode } from 'store/root-node/selectors';
 import {
   executeProposal,
-  setStepVoteCounter,
-  setVoteProposalObj,
   voteForProposal
 } from 'store/voting/proposals/action-creators';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-
-const PROPOSAL_STATUS = {
-  passed: 'Passed',
-  pending: 'Pending',
-  accepted: 'Accepted'
-};
+import { STATUSES } from 'constants/statuses';
+import { VOTING_TYPES } from 'constants/votingTypes';
 
 const TOOLTIP_INFO = {
   votePeriod: 'Voting period has ended.',
@@ -46,38 +40,36 @@ function VotingItems ({ proposal }) {
   const isEPQFIMembership = useSelector(isUserEPQFIMembershipSelector);
   const isEPRSMembership = useSelector(isUserEPRSMembershipSelector);
 
-  const [modalShow, setModalShow] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  const contractsWithoutVeto =
-        proposal.contract === CONTRACTS_NAMES.validatorsSlashingVoting ||
-        proposal.contract === CONTRACTS_NAMES.emergencyUpdateVoting;
+  const isContractWithoutVeto = [
+    CONTRACTS_NAMES.validatorsSlashingVoting,
+    CONTRACTS_NAMES.emergencyUpdateVoting
+  ].includes(proposal.contract);
 
-  const epqfiParametersVoting = proposal.contract === CONTRACTS_NAMES.ePQFIParametersVoting;
-  const eprsParametersVoting = proposal.contract === CONTRACTS_NAMES.ePRSParametersVoting;
-  const epdrParametersVoting = proposal.contract === CONTRACTS_NAMES.ePDRParametersVoting;
-
-  const approvalContracts =
-        proposal.contract === CONTRACTS_NAMES.addressVoting || proposal.contract === CONTRACTS_NAMES.upgradeVoting;
+  const isApprovalContract = [
+    CONTRACTS_NAMES.addressVoting,
+    CONTRACTS_NAMES.upgradeVoting
+  ].includes(proposal.contract);
 
   function checkVoteUser () {
     switch (true) {
-      case proposal.status === PROPOSAL_STATUS.accepted:
+      case proposal.status === STATUSES.accepted:
         return { disabled: true, info: TOOLTIP_INFO.votePeriod };
       case proposal.userVoted:
         return { disabled: proposal.userVoted, info: TOOLTIP_INFO.userVoted };
-      case approvalContracts: {
+      case isApprovalContract:
         return { disabled: !isRootNode, info: TOOLTIP_INFO.isNotRootNode };
-      }
-      case contractsWithoutVeto:
+      case isContractWithoutVeto:
         return {
           disabled: !isRootNode,
           info: isRootNode ? TOOLTIP_INFO.votePeriod : TOOLTIP_INFO.isNotRootNode
         };
-      case eprsParametersVoting:
+      case proposal.contract === CONTRACTS_NAMES.ePRSParametersVoting:
         return { disabled: !isEPRSMembership, info: TOOLTIP_INFO.isEprsExpert };
-      case epdrParametersVoting:
+      case proposal.contract === CONTRACTS_NAMES.ePDRParametersVoting:
         return { disabled: !isEPDRMembership, info: TOOLTIP_INFO.isDeFiExpert };
-      case epqfiParametersVoting:
+      case proposal.contract === CONTRACTS_NAMES.ePQFIParametersVoting:
         return { disabled: !isEPQFIMembership, info: TOOLTIP_INFO.isFeesExpert };
       default:
         return { disabled: false, info: '' };
@@ -89,21 +81,17 @@ function VotingItems ({ proposal }) {
     switch (true) {
       case proposal.userVetoed:
         return { disabled: true, info: TOOLTIP_INFO.userVetoed };
-      case proposal.status === PROPOSAL_STATUS.pending:
+      case proposal.status === STATUSES.pending:
         return { disabled: true, info };
-      case proposal.status === PROPOSAL_STATUS.accepted:
+      case proposal.status === STATUSES.accepted:
         return { disabled: !isRootNode, info };
       default:
         return { disabled: true, info: '' };
     }
   }
 
-  const isUserCanVote = checkVoteUser();
-  const isUserCanVeto = checkVetoUser();
-
-  const onProposalVote = () => {
-    setModalShow(true);
-  };
+  const userVote = checkVoteUser();
+  const userVeto = checkVetoUser();
 
   const onProposalExecute = () => {
     dispatch(
@@ -114,80 +102,70 @@ function VotingItems ({ proposal }) {
     );
   };
 
-  const onChooseTypeOfVoting = () => {
-    const type = proposal.status === 'Pending' ? 'basic-vote-on-proposal' : 'constitution-check';
-    dispatch(setVoteProposalObj({ first: type, contract: proposal.contract, id: proposal.id }));
-  };
-
   const handleVote = () => {
-    onProposalVote();
-    onChooseTypeOfVoting();
+    setModalOpen(true);
   };
 
   const handleApprove = () => {
-    dispatch(setVoteProposalObj({ contract: proposal.contract, id: proposal.id }));
-    dispatch(voteForProposal({ contract: proposal.contract, id: proposal.id, first: 'approve' }));
+    dispatch(voteForProposal({
+      type: VOTING_TYPES.approve,
+      contract: proposal.contract,
+      proposalId: proposal.id,
+    }));
   };
 
-  const handleHideModal = () => {
-    setModalShow(false);
-    dispatch(setStepVoteCounter(1));
-  };
-
-  const addCardLine = proposal.status === 'Passed' || proposal.status === 'Pending' || proposal.status === 'Accepted';
+  const isLineShown = [
+    STATUSES.passed,
+    STATUSES.pending,
+    STATUSES.accepted
+  ].includes(proposal.status);
 
   return (
     <div>
-      {addCardLine ? <div className="list-card__line" /> : null}
+      {isLineShown && <div className="list-card__line" />}
+
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        {proposal.status === 'Passed' && <Button onClick={onProposalExecute}>Execute</Button>}
-        {proposal.status === 'Pending' || proposal.status === 'Accepted'
-          ? (
-            <>
-              <Tooltip disabled={!isUserCanVote.disabled} additionalInfo={isUserCanVote.info}>
-                <Button
-                  style={{ width: '100px' }}
-                  disabled={isUserCanVote.disabled}
-                  onClick={approvalContracts ? handleApprove : handleVote}
-                >
-                  <i className="mdi mdi-checkbox-marked-outline" />
-                  <span>{approvalContracts ? 'Approve' : 'Vote'}</span>
-                </Button>
-              </Tooltip>
-              {contractsWithoutVeto || approvalContracts
-                ? null
-                : (
-                  <>
-                    <div style={{ width: '20px' }} />
-                    <Tooltip disabled={!isUserCanVeto.disabled} additionalInfo={isUserCanVeto.info}>
-                      <Button
-                        style={{ width: '100px' }}
-                        disabled={isUserCanVeto.disabled}
-                        onClick={handleVote}
-                      >
-                        <i className="mdi mdi-window-close" />
-                        <span>Veto</span>
-                      </Button>
-                    </Tooltip>
-                  </>
-                )}
-            </>
-          )
-          : null}
+        {proposal.status === STATUSES.passed && (
+          <Button onClick={onProposalExecute}>Execute</Button>
+        )}
+
+        {(proposal.status === STATUSES.pending || proposal.status === STATUSES.accepted) && (
+          <>
+            <Tooltip disabled={!userVote.disabled} additionalInfo={userVote.info}>
+              <Button
+                style={{ width: '100px' }}
+                disabled={userVote.disabled}
+                onClick={isApprovalContract ? handleApprove : handleVote}
+              >
+                <i className="mdi mdi-checkbox-marked-outline" />
+                <span>{isApprovalContract ? 'Approve' : 'Vote'}</span>
+              </Button>
+            </Tooltip>
+
+            {!isContractWithoutVeto && !isApprovalContract && (
+              <>
+                <div style={{ width: '20px' }} />
+                <Tooltip disabled={!userVeto.disabled} additionalInfo={userVeto.info}>
+                  <Button
+                    style={{ width: '100px' }}
+                    disabled={userVeto.disabled}
+                    onClick={handleVote}
+                  >
+                    <i className="mdi mdi-window-close" />
+                    <span>Veto</span>
+                  </Button>
+                </Tooltip>
+              </>
+            )}
+          </>
+        )}
       </div>
-      {modalShow
-        ? (
-          <ModalVote
-            proposalStatus={proposal.status}
-            proposalContract={proposal.contract}
-            proposalId={proposal.id}
-            vetoEndTime={proposal.vetoEndTime}
-            activeTab={0}
-            modalShow={modalShow}
-            onHide={handleHideModal}
-          />
-        )
-        : null}
+
+      <VoteModal
+        modalOpen={modalOpen}
+        proposal={proposal}
+        onHide={() => setModalOpen(false)}
+      />
     </div>
   );
 }

@@ -28,6 +28,16 @@ const formTypes = {
   rootNodeProposal: 'root-node-proposal',
   expertProposal: 'expert-proposal',
   slashingProposal: 'slashing-proposal',
+
+  vote: 'vote',
+  castObjection: 'cast-objection',
+  proposerRemark: 'proposer-remark',
+  proposeDecision: 'propose-decision',
+
+  liquidationAuction: 'liquidation-auction',
+  debtAuction: 'debt-auction',
+  surplusAuction: 'surplus-auction',
+  bid: 'bid',
 };
 
 export default formTypes;

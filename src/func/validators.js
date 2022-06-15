@@ -45,6 +45,16 @@ export const amount = max => (val, form) => {
   };
 };
 
+export const min = min => (val, form) => {
+  const value = BN(val);
+  const validatorValue = BN(getValidatorValue(min, form));
+
+  return {
+    isValid: value.comparedTo(validatorValue) >= 0,
+    message: `Minimum value is ${min}`
+  };
+};
+
 export const max = max => (val, form) => {
   const value = BN(val);
   const validatorValue = BN(getValidatorValue(max, form));

@@ -6,7 +6,6 @@ import borrowAssets from './borrow-assets/reducer';
 import borrowingCore from './borrowing-core/reducer';
 import dashboardMode from './dashboard-mode/reducer';
 import membership from './membership/reducer';
-import modalHandler from './modal-handler/reducer';
 import parametersAddresses from './parameters-addresses/reducer';
 import qVault from './q-vault/reducer';
 import rootContract from './root-node/reducer';
@@ -47,7 +46,6 @@ const RootReducer = combineReducers({
   contractUpdatesProposals,
 
   auctions,
-  modalHandler,
 
   transactionHandler,
 

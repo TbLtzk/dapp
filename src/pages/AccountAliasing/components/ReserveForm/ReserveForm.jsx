@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'components/Base/Button';
 import Input from 'components/Base/Form/Input';
+import InfoTip from 'components/Custom/InfoTip';
 
 import useForm from 'hooks/useForm';
-
-import { ReserveTip } from './styles';
 
 import { reserveAlias } from 'store/account-aliases/action-creators';
 import { userAddressMetamask } from 'store/user-inf/selectors';
@@ -32,10 +31,9 @@ function ReserveForm () {
       style={{ display: 'grid', gap: '20px' }}
       onSubmit={form.submit}
     >
-      <ReserveTip>
-        <i className="mdi mdi-information" />
+      <InfoTip>
         <p>{`You can reserve your current address (${trimAddress(userAddress)}) as an alias for some main account`}</p>
-      </ReserveTip>
+      </InfoTip>
 
       <Input
         {...form.fields.address}

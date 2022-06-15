@@ -1,5 +1,7 @@
 import { all, put, select, takeEvery } from 'redux-saga/effects';
 
+import { setVoteDetails } from '../proposals/action-creators';
+
 import {
   setTransactionLoading,
   setTransactionLoadingError,
@@ -12,7 +14,7 @@ import { getRootNodesInstance, getValidatorsInstance } from 'contracts/contract-
 import { creationSlashingContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper';
 import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-helper';
 
-import { CONTRACT_TYPES } from 'constants/contracts';
+import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
 import { escrowTypes } from 'constants/escrowTypes';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
@@ -63,12 +65,24 @@ function * getSlashingProposalsGenerator () {
 function * onEscrowCastObjectionGenerator ({ data, contractName, proposalId }) {
   try {
     yield put(setTransactionLoading(1));
+    yield put(setVoteDetails({
+      contract: contractName,
+      proposalId,
+    }));
+
     const { userAddress } = yield select((state) => state.userInf);
 
-    const contract = new SlashingEscrow(contractName);
-    yield contract.castObjection(proposalId, data['external-link'], userAddress);
+    const escrowContractName = contractName === CONTRACTS_NAMES.validatorsSlashingVoting
+      ? CONTRACTS_NAMES.validatorsSlashingEscrow
+      : CONTRACTS_NAMES.rootNodesSlashingEscrow;
 
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+    const contract = new SlashingEscrow(escrowContractName);
+    yield contract.castObjection(proposalId, data.externalLink, userAddress);
+
+    yield put(setTransactionLoadingSuccess({
+      type: formTypes.castObjection,
+      transactionType: TRANSACTION_TYPES.success,
+    }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -78,12 +92,26 @@ function * onEscrowCastObjectionGenerator ({ data, contractName, proposalId }) {
 function * onEscrowProposeDecisionGenerator ({ data, contractName, proposalId }) {
   try {
     yield put(setTransactionLoading());
-    const { userAddress } = yield select((state) => state.userInf);
-    const contract = new SlashingEscrow(contractName);
-    const notAppealed = data['target-slashing-appeal'] === 'yes';
+    yield put(setVoteDetails({ contract: contractName, proposalId }));
 
-    yield contract.proposeDecision(proposalId, data['%-value'], notAppealed, data['external-link'], userAddress);
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+    const escrowContractName = contractName === CONTRACTS_NAMES.validatorsSlashingVoting
+      ? CONTRACTS_NAMES.validatorsSlashingEscrow
+      : CONTRACTS_NAMES.rootNodesSlashingEscrow;
+
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = new SlashingEscrow(escrowContractName);
+    yield contract.proposeDecision(
+      proposalId,
+      data.percentage,
+      data.isAppealNeglected,
+      data.externalLink,
+      userAddress
+    );
+
+    yield put(setTransactionLoadingSuccess({
+      type: formTypes.proposeDecision,
+      transactionType: TRANSACTION_TYPES.success,
+    }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -93,12 +121,25 @@ function * onEscrowProposeDecisionGenerator ({ data, contractName, proposalId })
 function * onEscrowProposerRemarkGenerator ({ data, contractName, proposalId }) {
   try {
     yield put(setTransactionLoading(1));
-    const { userAddress } = yield select((state) => state.userInf);
-    const contract = new SlashingEscrow(contractName);
-    const appealConfirmed = data.appealConfirmed === 'yes';
-    yield contract.setProposerRemark(proposalId, data['proposer-remark'], appealConfirmed, userAddress);
+    yield put(setVoteDetails({ contract: contractName, proposalId }));
 
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+    const escrowContractName = contractName === CONTRACTS_NAMES.validatorsSlashingVoting
+      ? CONTRACTS_NAMES.validatorsSlashingEscrow
+      : CONTRACTS_NAMES.rootNodesSlashingEscrow;
+
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = new SlashingEscrow(escrowContractName);
+    yield contract.setProposerRemark(
+      proposalId,
+      data.proposerRemark,
+      data.isAppealConfirmed,
+      userAddress
+    );
+
+    yield put(setTransactionLoadingSuccess({
+      type: formTypes.proposerRemark,
+      transactionType: TRANSACTION_TYPES.success,
+    }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));
@@ -108,8 +149,14 @@ function * onEscrowProposerRemarkGenerator ({ data, contractName, proposalId }) 
 function * setEscrowActionGenerator ({ contractName, proposalId, escrowType }) {
   try {
     yield put(setTransactionLoading());
+    yield put(setVoteDetails({ contract: contractName, proposalId }));
+
+    const escrowContractName = contractName === CONTRACTS_NAMES.validatorsSlashingVoting
+      ? CONTRACTS_NAMES.validatorsSlashingEscrow
+      : CONTRACTS_NAMES.rootNodesSlashingEscrow;
+
     const { userAddress } = yield select((state) => state.userInf);
-    const contract = new SlashingEscrow(contractName);
+    const contract = new SlashingEscrow(escrowContractName);
 
     switch (escrowType) {
       case escrowTypes.confirm: {
@@ -125,7 +172,10 @@ function * setEscrowActionGenerator ({ contractName, proposalId, escrowType }) {
         break;
       }
     }
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+
+    yield put(setTransactionLoadingSuccess({
+      transactionType: TRANSACTION_TYPES.success,
+    }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield put(setTransactionLoadingError(errorMsg));

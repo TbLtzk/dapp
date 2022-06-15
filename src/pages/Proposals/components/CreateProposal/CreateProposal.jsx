@@ -9,13 +9,6 @@ import SlashingProposalModal from './SlashingProposalModal';
 
 import { PROPOSALS_TYPES } from 'constants/statuses';
 
-const proposalTitleMap = {
-  [PROPOSALS_TYPES.proposals]: 'Q Proposal',
-  [PROPOSALS_TYPES.slashingProposals]: 'Q Slashing Proposal',
-  [PROPOSALS_TYPES.rootNodePanel]: 'Q Root Node Panel Proposal',
-  [PROPOSALS_TYPES.expertProposals]: 'Q Expert Proposal',
-};
-
 function CreateProposal ({ type }) {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -25,6 +18,13 @@ function CreateProposal ({ type }) {
 
   const handleHideModal = () => {
     setModalOpen(false);
+  };
+
+  const proposalTitleMap = {
+    [PROPOSALS_TYPES.proposals]: 'Create Q Proposal',
+    [PROPOSALS_TYPES.slashingProposals]: 'Create Q Slashing Proposal',
+    [PROPOSALS_TYPES.rootNodePanel]: 'Create Q Root Node Panel Proposal',
+    [PROPOSALS_TYPES.expertProposals]: 'Create Q Expert Proposal',
   };
 
   const modalProps = { modalOpen, onHide: handleHideModal };
@@ -39,7 +39,7 @@ function CreateProposal ({ type }) {
     <>
       <Button onClick={handleCreateProposal}>
         <i className="mdi mdi-plus-circle-outline" />
-        <span>{`Create ${proposalTitleMap[type]}`}</span>
+        <span>{proposalTitleMap[type]}</span>
       </Button>
 
       {modalMap[type]}

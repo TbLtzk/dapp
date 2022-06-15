@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 
 import { ParameterType } from '@q-dev/q-js-sdk';
 
-import CurrentParameterValue from 'components/Custom/ModalActions/CurrentParameterValue';
-
 import useForm from 'hooks/useForm';
 
+import CurrentParameterValue from '../CurrentParameterValue';
 import Input from '../Input';
 import Select from '../Select';
 
