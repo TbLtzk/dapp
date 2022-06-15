@@ -144,7 +144,7 @@ function Proposals ({ type }) {
     <CreateProposal type={type} />;
 
   return (
-    <PageWrap headerTitle={title} headerExtra={createProposal}>
+    <PageWrap headerTitle="Governance" headerExtra={createProposal}>
       <div>
         <VotingStats />
         {type === PROPOSALS_TYPES.slashingProposals && <PurgeSlashing />}

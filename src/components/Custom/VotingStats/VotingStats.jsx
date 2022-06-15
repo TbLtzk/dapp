@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import Stats from 'components/Custom/PageLists/SidebarCards/Stats';
+import Button from 'components/Base/Button';
 import VoterStatus from 'components/Custom/PageLists/VoterStatus';
+
+import { StatsWrapper } from './styles';
 
 import { getDelegationInfo } from 'store/q-vault/action-creators';
 import { votingAgent } from 'store/q-vault/selectors';
@@ -31,14 +34,14 @@ function VotingStats () {
     dispatch(getDelegationInfo(address));
   }, [dispatch]);
 
-  const statsData = [
+  const statsList = [
     {
       title: 'Total Voting Weight',
-      value: !ownWeight ? '0 Q' : fN(fromWei(ownWeight)) + ' Q'
+      value: ownWeight ? `${fN(fromWei(ownWeight))} Q` : '0 Q'
     },
     {
       title: 'Voting Locking End',
-      value: !lockedUntil ? '0' : fromSolDateFormattingT1(lockedUntil)
+      value: lockedUntil ? fromSolDateFormattingT1(lockedUntil) : '0'
     },
     {
       title: 'Voting Status',
@@ -49,7 +52,28 @@ function VotingStats () {
       value: votingInfo
     }
   ];
-  return <Stats statsData={statsData} type="Voting" />;
+
+  return (
+    <StatsWrapper>
+      <div className="stats-head">
+        <h1>Voting Stats</h1>
+        <Link to="/q-vault">
+          <Button alwaysEnabled look="white">
+            Manage vault
+          </Button>
+        </Link>
+      </div>
+
+      <div className="stats-list">
+        {statsList.map((elem) => (
+          <div key={elem.title} className="stats-item">
+            <h5>{elem.title}</h5>
+            <p title={elem.value}>{elem.value}</p>
+          </div>
+        ))}
+      </div>
+    </StatsWrapper>
+  );
 }
 
 export default VotingStats;
