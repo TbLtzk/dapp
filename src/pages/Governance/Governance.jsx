@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import PageWrap from 'components/Base/PageWrap';
-import VotingStats from 'components/Custom/VotingStats';
 
 import InfoBlock from './components/InfoBlock';
+import VotingStats from './components/VotingStats';
 
 import { mode } from 'store/dashboard-mode/selectors';
 import { getContractUpdatesProposals } from 'store/voting/contract-updates/action-creators';

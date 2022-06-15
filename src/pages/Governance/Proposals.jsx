@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import PageWrap from 'components/Base/PageWrap';
-import VotingStats from 'components/Custom/VotingStats';
 
 import CreateProposal from './components/CreateProposal';
 import ProposalFilters from './components/ProposalFilters';
 import ProposalsList from './components/ProposalsList';
 import ProposalsNav from './components/ProposalsNav';
 import PurgeSlashing from './components/PurgeSlashing';
+import VotingStats from './components/VotingStats';
 
 import {
   contractUpdatesActiveProposalsCountSelector,

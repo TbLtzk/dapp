@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 
 import PageWrap from 'components/Base/PageWrap';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
-import VotingStats from 'components/Custom/VotingStats';
 
+import VotingStats from './components/VotingStats';
 import ProposalCard from './ProposalCard';
 
 import { transactionLoadingSelector } from 'store/transaction-handler/selectors';

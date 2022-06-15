@@ -7,12 +7,12 @@ import {
   ListCardBody,
   ListCardHeader,
   ListCardWrp
-} from '../Proposals/components/ProposalsList/components/ListCard/styles';
-import PollDetail from '../Proposals/components/ProposalsList/components/PollDetail';
-import ProposalContent from '../Proposals/components/ProposalsList/components/ProposalContent';
-import SlashingObjection from '../Proposals/components/ProposalsList/components/SlashingObjection';
-import VoteBreakdown from '../Proposals/components/ProposalsList/components/VoteBreakdown';
-import VotingItems from '../Proposals/components/ProposalsList/components/VotingItems';
+} from './components/ProposalsList/components/ListCard/styles';
+import PollDetail from './components/ProposalsList/components/PollDetail';
+import ProposalContent from './components/ProposalsList/components/ProposalContent';
+import SlashingObjection from './components/ProposalsList/components/SlashingObjection';
+import VoteBreakdown from './components/ProposalsList/components/VoteBreakdown';
+import VotingItems from './components/ProposalsList/components/VotingItems';
 
 import { theme } from 'store/theme/selectors';
 
