@@ -76,33 +76,33 @@ function Routes () {
               <Monitoring />
             </Route>
 
-            <Route exact path="/q-governance">
-              <Redirect to="/q-governance/q-proposals" />
+            <Route exact path="/governance">
+              <Redirect to="/governance/q-proposals" />
             </Route>
 
-            <Route exact path="/q-governance/q-proposals">
+            <Route exact path="/governance/q-proposals">
               <Proposals type={PROPOSALS_TYPES.proposals} />
             </Route>
 
-            <Route exact path="/q-root-node-panel">
+            <Route exact path="/governance/q-root-node-panel">
               <Proposals type={PROPOSALS_TYPES.rootNodePanel} />
             </Route>
 
-            <Route exact path="/q-expert-proposals">
+            <Route exact path="/governance/q-expert-proposals">
               <Proposals type={PROPOSALS_TYPES.expertProposals} />
             </Route>
 
-            <Route exact path="/slashing-proposals">
+            <Route exact path="/governance/slashing-proposals">
               <Proposals type={PROPOSALS_TYPES.slashingProposals} />
             </Route>
 
-            <Route exact path="/contract-updates">
+            <Route exact path="/governance/contract-updates">
               <Proposals type={PROPOSALS_TYPES.contractUpdates} />
             </Route>
 
             <Route
               exact
-              path="/q-governance/proposal/:contract?/:id?"
+              path="/governance/proposal/:contract?/:id?"
               component={(props) => <OneProposalPage {...props} />}
             />
 

@@ -98,7 +98,7 @@ function InfBlocksUp () {
             {loadingProposals ? <LoadingSpinner className="card__spinner" /> : <p>{endedProposals}</p>}
           </div>
         </div>
-        <Link to="/q-governance">
+        <Link to="/governance">
           <Button alwaysEnabled look="white">
             <i className="mdi mdi-arrow-right" />
             <span>Go to Governance</span>

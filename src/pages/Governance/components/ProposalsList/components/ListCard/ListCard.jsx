@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 import CustomCardButtons from 'components/Custom/CustomCardButtons';
 
-import CardCollapsedContent from '../CardCollapsedContent';
 import ProposalContent from '../ProposalContent';
 
 import { ListCardBody, ListCardHeader, ListCardWrp } from './styles';
@@ -18,7 +17,7 @@ import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper
 
 import { createShareText } from 'func/useful';
 
-function ListCard ({ proposal, id, proposalsKind, onePage }) {
+function ListCard ({ proposal, id, onePage }) {
   const currentTheme = useSelector(theme);
   const transactionLoading = useSelector(transactionLoadingSelector);
   const [open, setOpen] = useState(false);
@@ -70,14 +69,6 @@ function ListCard ({ proposal, id, proposalsKind, onePage }) {
           </ListCardHeader>
           <ListCardBody>
             <ProposalContent proposal={proposalInfo} />
-            <Accordion.Collapse eventKey={id}>
-              <CardCollapsedContent
-                proposalInfo={proposalInfo}
-                proposalsKind={proposalsKind}
-                contract={proposal.contract}
-                proposalId={proposal.id}
-              />
-            </Accordion.Collapse>
           </ListCardBody>
         </Accordion>
       </ListCardWrp>

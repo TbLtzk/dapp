@@ -69,7 +69,7 @@ function Sidebar () {
 
           <CommonLinks
             exact={false}
-            linkTo="/q-governance"
+            linkTo="/governance"
             linkTitle="Governance"
           />
           <CommonLinks linkTo="/q-vault" linkTitle="Q Vault" />

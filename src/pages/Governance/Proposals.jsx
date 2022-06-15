@@ -5,7 +5,9 @@ import PageWrap from 'components/Base/PageWrap';
 import VotingStats from 'components/Custom/VotingStats';
 
 import CreateProposal from './components/CreateProposal';
+import ProposalFilters from './components/ProposalFilters';
 import ProposalsList from './components/ProposalsList';
+import ProposalsNav from './components/ProposalsNav';
 import PurgeSlashing from './components/PurgeSlashing';
 
 import {
@@ -147,6 +149,9 @@ function Proposals ({ type }) {
         <VotingStats />
         {type === PROPOSALS_TYPES.slashingProposals && <PurgeSlashing />}
       </div>
+
+      <ProposalsNav />
+      <ProposalFilters />
 
       <ProposalsList
         proposals={endedProposals}

@@ -181,7 +181,7 @@ export const createShareText = (type, contract, id, user) => {
   const link = `${window.location.origin}`;
   switch (type) {
     case 'proposal': {
-      return link + `/q-governance/proposal/${contract}/${id}`;
+      return link + `/governance/proposal/${contract}/${id}`;
     }
     case 'auction': {
       const auctionPart = `/auction/${transformAuctionNameToAuctionType(contract)}/${id}`;

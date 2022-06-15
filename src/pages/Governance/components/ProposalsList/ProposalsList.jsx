@@ -60,7 +60,7 @@ function ProposalsList ({ proposals, proposalsKind, proposalsCount }) {
               key={proposal.id + proposal?.contract}
               id={proposal.id + proposal?.contract}
               proposal={proposal}
-              onePage={false}
+              onePage={true}
               proposalsKind={proposalsKind}
             />
           ))}
