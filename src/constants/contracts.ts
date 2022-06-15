@@ -51,3 +51,6 @@ export const CONTRACTS_NAMES = {
   liquidationAuction: 'liquidationAuction',
   systemDebtAuction: 'systemDebtAuction'
 };
+
+export type ContractType = keyof typeof CONTRACT_TYPES;
+export type ContractName = keyof typeof CONTRACTS_NAMES;

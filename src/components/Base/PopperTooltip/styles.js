@@ -15,7 +15,7 @@ export const TooltipWrapper = styled.div`
     opacity: 0;
     z-index: 9999;
     pointer-events: none;
-    padding: 15px;
+    padding: 12px;
     background-color: ${(p) => p.theme.colors.oxfordBlueTint6};
     color: ${(p) => p.theme.colors.oxfordBlueTint1};
     max-width: 280px;

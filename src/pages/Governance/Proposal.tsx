@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
 
 import PageWrap from 'components/Base/PageWrap';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
@@ -11,14 +12,17 @@ import { transactionLoadingSelector } from 'store/transaction-handler/selectors'
 
 import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
-import { CONTRACTS_NAMES } from 'constants/contracts';
+import { ContractName, CONTRACTS_NAMES } from 'constants/contracts';
 import { PROPOSALS_TYPES } from 'constants/statuses';
 
-function Proposal ({ match }) {
+function Proposal ({ match }: RouteComponentProps<{
+  id: string,
+  contract: ContractName
+}>) {
   const transactionLoading = useSelector(transactionLoadingSelector);
 
   const [proposal, setProposal] = useState(null);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
   const proposalKind = checkActiveTabByContract(match.params.contract);
 
   useEffect(() => {
@@ -38,7 +42,7 @@ function Proposal ({ match }) {
     }
   }
 
-  function checkActiveTabByContract (contract) {
+  function checkActiveTabByContract (contract: ContractName) {
     switch (contract) {
       case CONTRACTS_NAMES.constitutionVoting:
       case CONTRACTS_NAMES.emergencyUpdateVoting:

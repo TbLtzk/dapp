@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 
 import CustomCardButtons from 'components/Custom/CustomCardButtons';
 
@@ -6,34 +5,38 @@ import {
   ListCardBody,
   ListCardHeader,
   ListCardWrp
-} from './ProposalsList/components/ListCard/styles';
-import PollDetail from './ProposalsList/components/PollDetail';
-import ProposalContent from './ProposalsList/components/ProposalContent';
-import SlashingObjection from './ProposalsList/components/SlashingObjection';
-import VoteBreakdown from './ProposalsList/components/VoteBreakdown';
-import VotingItems from './ProposalsList/components/VotingItems';
-
-import { theme } from 'store/theme/selectors';
+} from './ListCard/styles';
+import PollDetail from './PollDetail';
+import ProposalContent from './ProposalContent';
+import SlashingObjection from './SlashingObjection';
+import VoteBreakdown from './VoteBreakdown';
+import VotingItems from './VotingItems';
 
 import { PROPOSALS_TYPES, STATUSES } from 'constants/statuses';
 import { createShareText } from 'func/useful';
 
 function ProposalCard ({ proposal, proposalKind }) {
-  const currentTheme = useSelector(theme);
   return (
-    <ListCardWrp palette={currentTheme}>
+    <ListCardWrp>
       <ListCardHeader>
-        <div className="card__title">
-          <h1> {proposal.title}</h1>
-          {proposal.status ? <div className="list-card__status">{proposal.status}</div> : null}
-        </div>
-        <div className="card__buttons">
-          <CustomCardButtons
-            onePage={true}
-            shareText={createShareText('proposal', proposal.contract, proposal.id)}
-          />
-        </div>
+        <p>Proposal ID: {proposal.id}</p>
+
+        {proposal.status && (
+          <p className="list-card__status">{proposal.status}</p>
+        )}
       </ListCardHeader>
+
+      <h1 className="card__title" title={proposal.title}>
+        {proposal.title}
+      </h1>
+
+      <div className="card__buttons">
+        <CustomCardButtons
+          onePage
+          shareText={createShareText('proposal', proposal.contract, proposal.id)}
+        />
+      </div>
+
       <ListCardBody>
         <ProposalContent proposal={proposal} />
         <div className="list-card__line" />

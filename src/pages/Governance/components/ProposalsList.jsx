@@ -6,14 +6,14 @@ import { concat, slice } from 'lodash';
 import Button from 'components/Base/Button';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
-import ListCard from './components/ListCard';
+import ListCard from './ListCard';
 
 import { qEndedProposalsCountSelector, qEndedProposalsSelector } from 'store/voting/q-proposals/selectors';
 
 import { LoadingWrap } from 'constants/style';
 import { fillArray } from 'func/useful';
 
-const LIMIT = 9;
+const LIMIT = 10;
 const LOAD_TYPES = { load: 'load', empty: 'empty', loaded: 'loaded' };
 
 function ProposalsList ({ type }) {
@@ -60,21 +60,23 @@ function ProposalsList ({ type }) {
       return <p>No proposals</p>;
     case LOAD_TYPES.loaded:
       return (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-          {list.map((proposal) => (
-            <ListCard
-              key={proposal.id + proposal?.contract}
-              id={proposal.id + proposal?.contract}
-              proposal={proposal}
-              proposalsKind={type}
-            />
-          ))}
+        <>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+            {list.map((proposal) => (
+              <ListCard
+                key={proposal.id + proposal?.contract}
+                id={proposal.id + proposal?.contract}
+                proposal={proposal}
+                proposalsKind={type}
+              />
+            ))}
+          </div>
           {showMore
             ? (
               <LoadingWrap>
                 <Button
                   style={{
-                    margin: '0 0 5% 0',
+                    margin: '15px auto',
                     width: '140px'
                   }}
                   onClick={handleNextProposals}
@@ -84,7 +86,7 @@ function ProposalsList ({ type }) {
               </LoadingWrap>
             )
             : null}
-        </div>
+        </>
       );
     case LOAD_TYPES.load:
     default:

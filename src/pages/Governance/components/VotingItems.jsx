@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from 'components/Base/Button';
 import Tooltip from 'components/Base/Tooltip';
 
-import VoteModal from '../VoteModal';
+import VoteModal from './VoteModal';
 
 import {
   isUserEPDRMembershipSelector,

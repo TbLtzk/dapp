@@ -7,6 +7,7 @@ import { TooltipWrapper } from './styles';
 function PopperTooltip ({
   placement = 'top',
   trigger,
+  disabled = false,
   style,
   children,
 }) {
@@ -17,12 +18,14 @@ function PopperTooltip ({
   const instance = useRef(null);
 
   useEffect(() => {
-    if (!instance.current) return;
+    if (!instance.current || disabled) return;
 
     instance.current.update();
   }, [children]);
 
   const showTooltip = () => {
+    if (disabled) return;
+
     instance.current = createPopper(triggerEl.current, popperEl.current, {
       placement,
       modifiers: [
