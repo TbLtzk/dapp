@@ -11,7 +11,7 @@ import { loadTypeSelector } from 'store/user-inf/selectors';
 
 import { LOAD_TYPES } from 'constants/statuses';
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+interface Props {
   value: string
   error?: string
   label?: string
@@ -34,7 +34,7 @@ const Input = ({
   max,
   onChange = () => {},
   ...rest
-}: Props) => {
+}: InputHTMLAttributes<HTMLInputElement> & Props) => {
   const loadType = useSelector(loadTypeSelector);
   const isDisabled = disabled || loadType !== LOAD_TYPES.loaded;
 

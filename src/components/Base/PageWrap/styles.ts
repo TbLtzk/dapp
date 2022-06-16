@@ -116,7 +116,7 @@ export const WrapContent = styled.div`
   }
 `;
 
-export const ToTopContainer = styled.div`
+export const ToTopContainer = styled.div<{ isVisible: boolean }>`
   position: fixed;
   bottom: 10px;
   right: 55px;

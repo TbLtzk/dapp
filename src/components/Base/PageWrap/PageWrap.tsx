@@ -23,7 +23,7 @@ function PageWrap ({
   wrapContentClasses = '',
   children,
 }: Props) {
-  const titleRef = useRef<HTMLElement>();
+  const titleRef = useRef<HTMLDivElement>(null);
   const isVisible = useOnScreen(titleRef);
 
   useEffect(() => {
