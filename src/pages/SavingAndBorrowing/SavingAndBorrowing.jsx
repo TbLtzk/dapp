@@ -76,8 +76,8 @@ function SavingAndBorrowing () {
   return (
     <PageWrap
       wrapContentClasses="wrap-content__column-2-1"
-      headerTitle="Saving & Borrowing"
-      headerExtra={buttons}
+      pageHeader="Saving & Borrowing"
+      pageButton={buttons}
     >
       <div>
         <SavingCryptoAssets />

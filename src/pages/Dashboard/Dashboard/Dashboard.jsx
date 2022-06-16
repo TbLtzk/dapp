@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -54,9 +55,12 @@ function Dashboard () {
       </>
     )
     : null;
-
+  const { t } = useTranslation();
   return (
-    <PageWrap headerTitle="Dashboard" headerExtra={parametersButton}>
+    <PageWrap
+      pageHeader={t('dashboard')}
+      pageButton={parametersButton}
+    >
       <div className="content__colm-1">
         {infoBlock}
         {rootAndValidatorsPanels}

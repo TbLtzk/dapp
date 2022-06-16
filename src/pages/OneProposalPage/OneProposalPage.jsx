@@ -71,7 +71,7 @@ function OneProposalPage ({ match }) {
   }
 
   return (
-    <PageWrap wrapContentClasses="wrap-content__column-2-1" headerTitle={proposalKind.replace(/-/g, ' ')}>
+    <PageWrap wrapContentClasses="wrap-content__column-2-1" pageHeader={proposalKind.replace(/-/g, ' ')}>
       {error
         ? (
           <p>Wrong link</p>

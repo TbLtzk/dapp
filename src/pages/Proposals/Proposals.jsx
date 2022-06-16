@@ -150,7 +150,7 @@ function Proposals ({ type }) {
     <CreateProposal type={type} />;
 
   return (
-    <PageWrap headerTitle={title} headerExtra={createProposal}>
+    <PageWrap pageHeader={title} pageButton={createProposal}>
       <Tabs tabs={tabs} additionalBlock={additionalBlock} />
     </PageWrap>
   );

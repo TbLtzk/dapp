@@ -77,7 +77,7 @@ function Governance () {
   }, [dispatch, appMode]);
 
   return (
-    <PageWrap wrapContentClasses="wrap-content__colm-2" headerTitle="Governance">
+    <PageWrap wrapContentClasses="wrap-content__colm-2" pageHeader="Governance">
       <div className="content__colm-2">
         <InfoBlock
           header="Q Proposals"

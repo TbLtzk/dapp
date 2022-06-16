@@ -19,7 +19,7 @@ function QVault () {
   const appMode = useSelector(mode);
 
   return (
-    <PageWrap wrapContentClasses="wrap-content__column-2-1" headerTitle="Q Vault">
+    <PageWrap wrapContentClasses="wrap-content__column-2-1" pageHeader="Q Vault">
       <div>
         <ManageBalance />
         <LockCoin />

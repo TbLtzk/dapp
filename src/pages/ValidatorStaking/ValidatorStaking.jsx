@@ -33,7 +33,7 @@ function ValidatorStaking () {
   }, [dispatch]);
 
   return (
-    <PageWrap headerTitle="Validator Staking" headerExtra={<StakerRewardPool />}>
+    <PageWrap pageHeader="Validator Staking" pageButton={<StakerRewardPool />}>
       <CustomBlock>
         <h1>Manage Balance</h1>
         <ValidatorBalanceInfo />

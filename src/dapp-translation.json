@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "dapp-translation",
+  "private_key_id": "a326736d74e74186654b2d4674b281e12a9036f4",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDlHipNL9s4MEk+\nI61M060iMpX/V373DZNiSg5/wqe79dnwdliKY7975/N9RjXEudurRQQt2dbE10ob\nPQl2vEv1mkQt5XmlMdC/VsXBVoP6pazjfsoe+dkVVa/Ren5q5ZnnTePXtX4c0Fmx\nOMlQgANr5g593CFuLbdXf6eSTG29pbYlvDOjwiiTjvPOO1mVQ9gpYHMA91KFJJd1\nVy163xYbgcIqsLmHxRj/PqpWdZziGt+Ir6JW5kj47dVvVDgj8yKsh8qwxt8gFlKr\nx7jxn1YtSYcusuwhdtQzl67Z6diGijTpS51X4/hbqVRRoi8zI+rsUZAaUVyhPcLo\n2OkZF4ExAgMBAAECgf9I69Z0jhSbt0gd+VMu3cDYsjXTqs2y9SS7yqmxTenR/x+g\n+YQTOcJT2dgqz08sQpb1kr75aZNgudbF9fUjZewVB4njPjEgNh7WFQrFcvA1cemr\nA9D3m5izoOsGiUP1zPEu2Zt+Fzp7gerHRUuVzdqW1dlt3F82yDSzjkaPgT40l8KO\nfvhFWkC20z9vgVublIXf61RAWnlN1+Z25682v/qyXdMLwjAg7wNKmsrG+hxJKmGI\nWb9DqTuDeecRhGOWPvOUFyF8tPnR71LGPjKtBsksmDXi8x1s3xwL98+h3txkPJHQ\n0UoF1A52Uf1Mnn11kFfj3lRP4attgR2DQeitVRkCgYEA+ITP/nEUO1oTtNl9tDNO\nqWC7B+MHMOTry6shmcLnum+da4HNQNyFTVUEfhoKV9B/2DfsZgFmCTgn11Ns0j8H\nv9UIR8VKbfutjq0fGwq68lZMimoxeKFZ9EkfbhRrtPm27csOAUTWmjG5aUNLylgo\nRg22O9lA4cu+MwnnwjoRuuMCgYEA7APXStTGPIUNiLlF8e/QKWSgixfU/YuNzl/b\nxMvpgBukaKAXDnh1lWh98LSJz/3AAMAe1tDwniVGUwGWC9EqciWkWiwzZ9YkJgkJ\njrhsgHFjMIhOOCDN4Ak8Ud+g7S1N74ae9CQIM3MRMneGUk3WA8ApQaetFoyv2opw\n64Q9q9sCgYEAgSY0GRyW0QlMuG1WYDFRrcAxMjYPZJ9y0pMKkSey2TZr7pS0IAL5\n22hVP1s1CNG3vpvBZHlRl3Txb3tRUCmlU1HYTcP/nAxw83aQdbMr2Ah1GnF5aCEh\n6Euf48sE9jXXlNgzXQFzLQquOj/YwTzzIQS7MXsDttP08f0xzcPzttUCgYEAgmEs\n0d3xFQW7kEgpZ5m/ON6qAazMsLQjRlqWIYU0HN0oWdP2aLwK2Nq8l/hkGU5ofwGj\nB7Cs+/BDhR9fMHAALsa0oEvCqh4WIhzj9r/S0LHSxcDG1SLqGFWByQjs8ZkRcLzB\nmsU88o8idOqqfVUaYUAKioaCi+50Rxorfy+ykfkCgYEAuBg1iofP9n/t7s7O7gKH\nK1JenDSxnO8d6ap9dBRj73RCjrXKr98U1MLJjzDo0HdyzupDPjDGLPkI9HU05xPy\ntUXC1sd+MoWAfxO2PcqXPm4msvwABqOdJmYQSKITDoQB75EVdN63D4pUcgvV1c6C\nQ6WtEdwEo4jDEvcjfjz4b18=\n-----END PRIVATE KEY-----\n",
+  "client_email": "q-dapp@dapp-translation.iam.gserviceaccount.com",
+  "client_id": "101165050864975039542",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/q-dapp%40dapp-translation.iam.gserviceaccount.com"
+}

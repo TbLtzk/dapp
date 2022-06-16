@@ -110,7 +110,7 @@ function OneAuctionPage ({ match }) {
   );
 
   return (
-    <PageWrap wrapContentClasses="wrap-content__column-2-1" headerTitle={pageName}>
+    <PageWrap wrapContentClasses="wrap-content__column-2-1" pageHeader={pageName}>
       <div>
         {errorMessage || (isEmpty(auction) ? <SkeletonAuctionLoading /> : auction.error ? auction.error : card)}
       </div>

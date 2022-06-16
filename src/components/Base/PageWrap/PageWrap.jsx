@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import PageTitle from 'components/Navigations/PageTitle';
 
@@ -8,32 +9,28 @@ import { ToTopContainer, WrapContainer, WrapContent } from './styles';
 
 import { toTitleCase } from 'func/useful';
 
-function PageWrap ({
-  headerTitle,
-  titleExtra,
-  headerExtra,
-  wrapContentClasses,
-  children,
-}) {
+function PageWrap ({ pageHeader, pageTooltip, pageButton, wrapContentClasses, children }) {
   useEffect(() => {
-    const title = headerTitle === 'Dashboard' ? 'Your HQ' : 'Your HQ - ' + toTitleCase(headerTitle);
+    const title = pageHeader === 'Dashboard' ? 'Your HQ' : 'Your HQ - ' + toTitleCase(pageHeader);
     document.title = title;
   }, [toTitleCase]);
+  const { t } = useTranslation();
 
   const myRef = useRef();
   const isVisible = useOnScreen(myRef);
+  const header = (
+    <>
+      <span>{t(pageHeader)}</span>
+      {pageTooltip}
+    </>
+  );
 
   return (
     <WrapContainer fluid>
       <PageTitle
         ref={myRef}
-        header={(
-          <>
-            <span>{headerTitle}</span>
-            {titleExtra}
-          </>
-        )}
-        extra={headerExtra}
+        header={header}
+        extra={pageButton}
       />
       <WrapContent className={wrapContentClasses}>{children}</WrapContent>
       <ToTopContainer isVisible={isVisible}>
