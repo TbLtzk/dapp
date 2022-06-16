@@ -5,14 +5,14 @@ export const getSlashingProposals = () => ({
 });
 
 export const setSlashingProposals = (
-  activeList: any[],
-  endedList: any[],
-  counter: { ended: number, active: number }
+  activeProposalsArray: any[],
+  endedProposalsArray: any[],
+  proposalsCounter: { ended: number, active: number }
 ) => ({
   type: actionTypes.SET_SLASHING_PROPOSALS,
-  activeProposalsArray: activeList,
-  endedProposalsArray: endedList,
-  proposalsCounter: counter
+  activeProposalsArray,
+  endedProposalsArray,
+  proposalsCounter
 });
 
 export const onEscrowCastObjection = (

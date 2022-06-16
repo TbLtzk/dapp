@@ -1,4 +1,5 @@
 import { SlashingProposalsAction } from './action-creators';
+import * as actionTypes from './action-types';
 
 import { groupArrayByBlockNumber } from 'func/useful';
 
@@ -22,7 +23,7 @@ const initialState: SlashingProposalsState = {
 
 export default function slashingProposals (state = initialState, action: SlashingProposalsAction) {
   switch (action.type) {
-    case 'SET_SLASHING_PROPOSALS':
+    case actionTypes.SET_SLASHING_PROPOSALS:
       return {
         ...state,
         activeProposals: groupArrayByBlockNumber(action.activeProposalsArray),

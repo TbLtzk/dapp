@@ -16,7 +16,7 @@ import { escrowTypes } from 'constants/escrowTypes';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
-import { getMinimalActiveBlockHeight } from 'func/useful';
+import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/useful';
 
 let lastActiveBlock: string | number;
 
@@ -36,28 +36,23 @@ function* getSlashingProposalsGenerator () {
       const proposals = yield* all(
         contracts.map((contract) => contract.getNewProposalsAndCheckActive(activeProposals, lastActiveBlock))
       );
-      const [activeList, endedList] = proposals as [any[], any[]];
-
+      const [newProposalsCount, newActiveProposals, newEndedProposalsIds] = sortAndCountProposalsByType(proposals);
       proposalsCounter = {
-        active: activeList.length,
-        ended: slashingEndedProposalsCount + endedList.length,
+        active: newProposalsCount.active,
+        ended: slashingEndedProposalsCount + newProposalsCount.ended
       };
-      activeProposalsArray = activeList;
-      endedProposalsArray = [...endedProposals, ...endedList];
+      activeProposalsArray = newActiveProposals;
+      endedProposalsArray = [...endedProposals, ...newEndedProposalsIds];
       lastActiveBlock = lastBlockHeight;
     } else {
       const proposals = yield* all(contracts.map((contract) => contract.getProposalsCount(minimalActiveBlockHeight)));
-      const [activeList, endedList] = proposals as [any[], any[]];
-
-      proposalsCounter = {
-        active: activeList.length,
-        ended: endedList.length,
-      };
-      activeProposalsArray = activeList;
-      endedProposalsArray = endedList;
+      const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposalsByType(proposals);
+      proposalsCounter = proposalsCount;
+      activeProposalsArray = activeProposalsIds;
+      endedProposalsArray = endedProposalsIds;
       lastActiveBlock = lastBlockHeight;
     }
-    yield* put(setSlashingProposals(activeProposalsArray as any[], endedProposalsArray as any[], proposalsCounter));
+    yield* put(setSlashingProposals(activeProposalsArray, endedProposalsArray, proposalsCounter));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }

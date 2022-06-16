@@ -118,6 +118,10 @@ export const uintPercentToNumber = (num) => {
   return num / 10 ** 27;
 };
 
+/**
+ *
+ * @returns {[{ active: number, ended: number }, any[], any[]]}
+ */
 export const sortAndCountProposalsByType = (proposals) => {
   const active = [];
   const ended = [];

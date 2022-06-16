@@ -21,7 +21,7 @@ function ProposalsList () {
 
   const [isLoading, setIsLoading] = useState(true);
   const [showMore, setShowMore] = useState(false);
-  const [list, setList] = useState([]);
+  const [list, setList] = useState<any>([]);
   const [index, setIndex] = useState(LIMIT);
 
   const LENGTH = proposals.length;

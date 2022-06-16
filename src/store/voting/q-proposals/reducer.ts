@@ -1,8 +1,18 @@
+import { QProposalsAction } from './action-creators';
 import * as actionTypes from './action-types';
 
 import { groupArrayByBlockNumber } from 'func/useful';
 
-const initialState = {
+export interface QProposalsState {
+  activeProposals: any[]
+  endedProposals: any[]
+
+  qActiveProposalsCount: number
+  qEndedProposalsCount: number
+  qLoadingProposalsCount: boolean
+}
+
+const initialState: QProposalsState = {
   activeProposals: [],
   endedProposals: [],
 
@@ -11,7 +21,7 @@ const initialState = {
   qLoadingProposalsCount: true
 };
 
-export default function qProposals (state = initialState, action) {
+export default function qProposals (state = initialState, action: QProposalsAction) {
   switch (action.type) {
     case actionTypes.SET_Q_PROPOSALS:
       return {
