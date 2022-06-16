@@ -42,7 +42,6 @@ function TimeLocks () {
   const vestingTimeLockMinimumBalanceRef = useAnimateNumber(useSelector(vestingMinimumTimeLock));
   const vestingTimeLocksArray = useSelector(vestingTimeLocks);
 
-  console.log(vestingTimeLocksArray, useSelector(vestingBalance))
   useInterval(() => {
     dispatch(getMinimumQVaultTimeLock(currentAddress));
     dispatch(getMinimumRootTimeLock(currentAddress));
