@@ -109,7 +109,6 @@ export const tableValidatorsWidened = (tableArray) =>
     delegationSaturation: <ProgressBar value={fN(validator.delegationSaturation)} />
   }));
 
-
 export const savingCryptoAssets = (tableArray) =>
   tableArray.map((value, idx) => ({
     id: idx,

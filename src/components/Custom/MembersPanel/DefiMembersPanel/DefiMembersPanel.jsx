@@ -9,7 +9,7 @@ import MemberTables from 'components/Custom/MemberTables';
 import { getEPDRMembers } from 'store/membership/action-creators';
 import { EPDRMembersErrorSelector, EPDRMembersLoadingSelector, EPDRMembersSelector } from 'store/membership/selectors';
 
-function DefiMembersPanel() {
+function DefiMembersPanel () {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
