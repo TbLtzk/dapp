@@ -10,7 +10,7 @@ import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/u
 
 let lastActiveBlock;
 
-function * getQProposalsGenerator () {
+function* getQProposalsGenerator () {
   try {
     const contracts = creationQContractsObjArray();
     const { minimalActiveBlockHeight, lastBlockHeight } = yield getMinimalActiveBlockHeight();

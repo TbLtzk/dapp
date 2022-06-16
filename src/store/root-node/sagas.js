@@ -31,7 +31,7 @@ import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
 import { addIndex } from 'func/useful';
 
-function * setRootStakeToPanelGenerator ({ data }) {
+function* setRootStakeToPanelGenerator ({ data }) {
   try {
     yield put(setTransactionLoading());
 
@@ -53,7 +53,7 @@ function * setRootStakeToPanelGenerator ({ data }) {
   }
 }
 
-function * setRootAnnounceWithdrawalGenerator ({ amount, paymentInf }) {
+function* setRootAnnounceWithdrawalGenerator ({ amount, paymentInf }) {
   try {
     yield put(setTransactionLoading());
 
@@ -74,7 +74,7 @@ function * setRootAnnounceWithdrawalGenerator ({ amount, paymentInf }) {
   }
 }
 
-function * setRootWithdrawGenerator ({ amount, payTo, paymentInf }) {
+function* setRootWithdrawGenerator ({ amount, payTo, paymentInf }) {
   try {
     yield put(setTransactionLoading());
 
@@ -97,7 +97,7 @@ function * setRootWithdrawGenerator ({ amount, payTo, paymentInf }) {
   }
 }
 
-function * getRootMembersGenerator ({ tableType = TABLE_TYPES.rootNodesWidened }) {
+function* getRootMembersGenerator ({ tableType = TABLE_TYPES.rootNodesWidened }) {
   try {
     const contract = yield call(getRootNodesInstance);
     switch (tableType) {
@@ -122,7 +122,7 @@ function * getRootMembersGenerator ({ tableType = TABLE_TYPES.rootNodesWidened }
   }
 }
 
-function * getCheckIsUserRootNodeGenerator ({ address }) {
+function* getCheckIsUserRootNodeGenerator ({ address }) {
   try {
     const contract = yield call(getRootNodesInstance);
     const data = yield contract.instance.methods.isMember(address).call();
@@ -132,7 +132,7 @@ function * getCheckIsUserRootNodeGenerator ({ address }) {
   }
 }
 
-function * getRootNodeStakesGenerator ({ address }) {
+function* getRootNodeStakesGenerator ({ address }) {
   try {
     const contract = yield call(getRootNodesInstance);
     const data = yield contract.getRootNodeStake(address);
@@ -142,7 +142,7 @@ function * getRootNodeStakesGenerator ({ address }) {
   }
 }
 
-function * getRootWithdrawalsGenerator ({ address }) {
+function* getRootWithdrawalsGenerator ({ address }) {
   try {
     const contract = yield call(getRootNodesInstance);
     const data = yield contract.getWithdrawalInfo(address);
@@ -152,7 +152,7 @@ function * getRootWithdrawalsGenerator ({ address }) {
   }
 }
 
-function * getMinimumRootTimeLockGenerator ({ address }) {
+function* getMinimumRootTimeLockGenerator ({ address }) {
   try {
     const contract = yield call(getRootNodesInstance);
     const data = yield contract.getMinimumBalance(address, getNowTimestamp());
@@ -162,7 +162,7 @@ function * getMinimumRootTimeLockGenerator ({ address }) {
   }
 }
 
-function * getRootTimeLocksGenerator ({ address }) {
+function* getRootTimeLocksGenerator ({ address }) {
   try {
     const contract = yield call(getRootNodesInstance);
     const data = yield contract.getTimeLocks(address);

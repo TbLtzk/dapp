@@ -24,7 +24,7 @@ import qProposals from './voting/q-proposals/sagas';
 import rootNodeProposals from './voting/root-node-proposals/sagas';
 import slashingProposals from './voting/slashing-proposals/sagas';
 
-export default function * rootSaga () {
+export default function* rootSaga () {
   yield all([
     ...qVault,
     ...rootContract,

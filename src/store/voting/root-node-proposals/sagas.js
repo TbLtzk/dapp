@@ -10,7 +10,7 @@ import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/u
 
 let lastActiveBlock;
 
-function * getRootProposalsGenerator () {
+function* getRootProposalsGenerator () {
   try {
     const contract = creationRootContractObj();
     const { minimalActiveBlockHeight, lastBlockHeight } = yield getMinimalActiveBlockHeight();

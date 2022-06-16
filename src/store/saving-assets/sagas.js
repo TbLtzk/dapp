@@ -31,7 +31,7 @@ import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei, toWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
 
-function * getSavingAllowanceGenerator () {
+function* getSavingAllowanceGenerator () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
 
@@ -45,7 +45,7 @@ function * getSavingAllowanceGenerator () {
   }
 }
 
-function * getSavingBalanceDetailsGenerator () {
+function* getSavingBalanceDetailsGenerator () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getSavingInstance);
@@ -57,7 +57,7 @@ function * getSavingBalanceDetailsGenerator () {
   }
 }
 
-function * getSavingAviableToDepositGenerator () {
+function* getSavingAviableToDepositGenerator () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
 
@@ -69,7 +69,7 @@ function * getSavingAviableToDepositGenerator () {
   }
 }
 
-function * setSavingDepositGenerator ({ amount }) {
+function* setSavingDepositGenerator ({ amount }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);
@@ -90,7 +90,7 @@ function * setSavingDepositGenerator ({ amount }) {
   }
 }
 
-function * setSavingWithdrawGenerator ({ amount }) {
+function* setSavingWithdrawGenerator ({ amount }) {
   try {
     yield put(setTransactionLoading());
 
@@ -112,7 +112,7 @@ function * setSavingWithdrawGenerator ({ amount }) {
   }
 }
 
-function * setSavingAproveGenerator () {
+function* setSavingAproveGenerator () {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);

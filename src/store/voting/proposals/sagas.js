@@ -42,7 +42,7 @@ import { VOTING_TYPES } from 'constants/votingTypes';
 import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
 
-function * createProposalGenerator ({ proposal }) {
+function* createProposalGenerator ({ proposal }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);
@@ -112,7 +112,7 @@ function * createProposalGenerator ({ proposal }) {
   }
 }
 
-function * voteForProposalGenerator ({ data }) {
+function* voteForProposalGenerator ({ data }) {
   try {
     yield put(setTransactionLoading());
     yield put(setVoteDetails({
@@ -153,7 +153,7 @@ function * voteForProposalGenerator ({ data }) {
   }
 }
 
-function * executeProposalGenerator ({ data }) {
+function* executeProposalGenerator ({ data }) {
   try {
     yield put(setTransactionLoading());
 
@@ -171,7 +171,7 @@ function * executeProposalGenerator ({ data }) {
   }
 }
 
-function * getProposalsByTypeGenerator ({ contractName }) {
+function* getProposalsByTypeGenerator ({ contractName }) {
   switch (contractName) {
     case CONTRACTS_NAMES.constitutionVoting:
     case CONTRACTS_NAMES.emergencyUpdateVoting:
@@ -205,7 +205,7 @@ function * getProposalsByTypeGenerator ({ contractName }) {
   }
 }
 
-function * getNumberAllProposalsGenerator () {
+function* getNumberAllProposalsGenerator () {
   const { appMode } = yield select((state) => state.dashboardMode);
   yield put(getQProposals());
   yield put(getRootProposals());
@@ -219,7 +219,7 @@ function * getNumberAllProposalsGenerator () {
   yield call(getNumberAllProposalsGenerator);
 }
 
-function * getConstitutionHashGenerator () {
+function* getConstitutionHashGenerator () {
   try {
     const contract = creationQContractObj(CONTRACTS_NAMES.constitutionVoting);
     const data = yield contract.getConstitutionHash();
@@ -229,7 +229,7 @@ function * getConstitutionHashGenerator () {
   }
 }
 
-function * getBaseVotingWeightInfoGenerator () {
+function* getBaseVotingWeightInfoGenerator () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getVotingWeightProxyInstance);

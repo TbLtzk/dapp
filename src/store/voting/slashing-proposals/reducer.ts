@@ -1,8 +1,17 @@
-import * as actionTypes from './action-types';
+import { SlashingProposalsAction } from './action-creators';
 
 import { groupArrayByBlockNumber } from 'func/useful';
 
-const initialState = {
+export interface SlashingProposalsState {
+  activeProposals: any[]
+  endedProposals: any[]
+
+  slashingActiveProposalsCount: number
+  slashingEndedProposalsCount: number
+  slashingLoadingProposalsCount: boolean
+}
+
+const initialState: SlashingProposalsState = {
   activeProposals: [],
   endedProposals: [],
 
@@ -11,9 +20,9 @@ const initialState = {
   slashingLoadingProposalsCount: true
 };
 
-export default function slashingProposals (state = initialState, action) {
+export default function slashingProposals (state = initialState, action: SlashingProposalsAction) {
   switch (action.type) {
-    case actionTypes.SET_SLASHING_PROPOSALS:
+    case 'SET_SLASHING_PROPOSALS':
       return {
         ...state,
         activeProposals: groupArrayByBlockNumber(action.activeProposalsArray),

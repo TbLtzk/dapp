@@ -32,7 +32,7 @@ type KeyOfType<T, U> = {
 
 type ContractPromise = Promise<BaseContractInstance<any> | SystemContractWithQBalance[]>
 type ContractKey = KeyOfType<ContractRegistryInstance, (val: string) => ContractPromise>;
-type ContractValue<T extends ContractKey> = Promise<ReturnType<ContractRegistryInstance[T]>>;
+type ContractValue<T extends ContractKey> = ReturnType<ContractRegistryInstance[T]>;
 
 const cache: Record<string, ContractValue<any>> = {};
 

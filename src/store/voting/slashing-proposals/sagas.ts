@@ -1,14 +1,11 @@
-import { all, put, select, takeEvery } from 'redux-saga/effects';
+import { all, call, put, select, takeEvery } from 'typed-redux-saga';
 
 import { setVoteDetails } from '../proposals/action-creators';
 
-import {
-  setTransactionLoading,
-  setTransactionLoadingError,
-  setTransactionLoadingSuccess,
-} from 'store/transaction-handler/action-creators';
-import { setSlashingProposals } from 'store/voting/slashing-proposals/action-creators';
-import * as actionTypes from 'store/voting/slashing-proposals/action-types';
+import { onEscrowCastObjection, onEscrowProposeDecision, onEscrowProposerRemark, setEscrowAction, setPurgeSlashing, setSlashingProposals } from './action-creators';
+import * as actionTypes from './action-types';
+
+import { setTransactionLoading, setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/action-creators';
 
 import { getRootNodesInstance, getValidatorsInstance } from 'contracts/contract-instance';
 import { creationSlashingContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper';
@@ -19,58 +16,66 @@ import { escrowTypes } from 'constants/escrowTypes';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
-import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/useful';
+import { getMinimalActiveBlockHeight } from 'func/useful';
 
-let lastActiveBlock;
+let lastActiveBlock: string | number;
 
-function * getSlashingProposalsGenerator () {
+function* getSlashingProposalsGenerator () {
   try {
     const contracts = creationSlashingContractsObjArray();
-    const { minimalActiveBlockHeight, lastBlockHeight } = yield getMinimalActiveBlockHeight();
+    const { minimalActiveBlockHeight, lastBlockHeight } = yield* call(getMinimalActiveBlockHeight);
 
     let proposalsCounter;
     let activeProposalsArray;
     let endedProposalsArray;
 
     if (lastActiveBlock) {
-      const { activeProposals, endedProposals, slashingEndedProposalsCount } = yield select(
+      const { activeProposals, endedProposals, slashingEndedProposalsCount } = yield* select(
         (state) => state.slashingProposals
       );
-      const proposals = yield all(
+      const proposals = yield* all(
         contracts.map((contract) => contract.getNewProposalsAndCheckActive(activeProposals, lastActiveBlock))
       );
-      const [newProposalsCount, newActiveProposals, newEndedProposalsIds] = sortAndCountProposalsByType(proposals);
+      const [activeList, endedList] = proposals as [any[], any[]];
 
       proposalsCounter = {
-        active: newProposalsCount.active,
-        ended: slashingEndedProposalsCount + newProposalsCount.ended,
+        active: activeList.length,
+        ended: slashingEndedProposalsCount + endedList.length,
       };
-      activeProposalsArray = newActiveProposals;
-      endedProposalsArray = [...endedProposals, ...newEndedProposalsIds];
+      activeProposalsArray = activeList;
+      endedProposalsArray = [...endedProposals, ...endedList];
       lastActiveBlock = lastBlockHeight;
     } else {
-      const proposals = yield all(contracts.map((contract) => contract.getProposalsCount(minimalActiveBlockHeight)));
-      const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposalsByType(proposals);
-      proposalsCounter = proposalsCount;
-      activeProposalsArray = activeProposalsIds;
-      endedProposalsArray = endedProposalsIds;
+      const proposals = yield* all(contracts.map((contract) => contract.getProposalsCount(minimalActiveBlockHeight)));
+      const [activeList, endedList] = proposals as [any[], any[]];
+
+      proposalsCounter = {
+        active: activeList.length,
+        ended: endedList.length,
+      };
+      activeProposalsArray = activeList;
+      endedProposalsArray = endedList;
       lastActiveBlock = lastBlockHeight;
     }
-    yield put(setSlashingProposals(activeProposalsArray, endedProposalsArray, proposalsCounter));
+    yield* put(setSlashingProposals(activeProposalsArray as any[], endedProposalsArray as any[], proposalsCounter));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }
 }
 
-function * onEscrowCastObjectionGenerator ({ data, contractName, proposalId }) {
+function* onEscrowCastObjectionGenerator ({
+  data,
+  contractName,
+  proposalId
+}: ReturnType<typeof onEscrowCastObjection>) {
   try {
-    yield put(setTransactionLoading(1));
-    yield put(setVoteDetails({
+    yield* put(setTransactionLoading());
+    yield* put(setVoteDetails({
       contract: contractName,
       proposalId,
     }));
 
-    const { userAddress } = yield select((state) => state.userInf);
+    const { userAddress } = yield* select((state) => state.userInf);
 
     const escrowContractName = contractName === CONTRACTS_NAMES.validatorsSlashingVoting
       ? CONTRACTS_NAMES.validatorsSlashingEscrow
@@ -79,26 +84,30 @@ function * onEscrowCastObjectionGenerator ({ data, contractName, proposalId }) {
     const contract = new SlashingEscrow(escrowContractName);
     yield contract.castObjection(proposalId, data.externalLink, userAddress);
 
-    yield put(setTransactionLoadingSuccess({
+    yield* put(setTransactionLoadingSuccess({
       type: formTypes.castObjection,
       transactionType: TRANSACTION_TYPES.success,
     }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    yield* put(setTransactionLoadingError(errorMsg));
   }
 }
 
-function * onEscrowProposeDecisionGenerator ({ data, contractName, proposalId }) {
+function* onEscrowProposeDecisionGenerator ({
+  data,
+  contractName,
+  proposalId
+}: ReturnType<typeof onEscrowProposeDecision>) {
   try {
-    yield put(setTransactionLoading());
-    yield put(setVoteDetails({ contract: contractName, proposalId }));
+    yield* put(setTransactionLoading());
+    yield* put(setVoteDetails({ contract: contractName, proposalId }));
 
     const escrowContractName = contractName === CONTRACTS_NAMES.validatorsSlashingVoting
       ? CONTRACTS_NAMES.validatorsSlashingEscrow
       : CONTRACTS_NAMES.rootNodesSlashingEscrow;
 
-    const { userAddress } = yield select((state) => state.userInf);
+    const { userAddress } = yield* select((state) => state.userInf);
     const contract = new SlashingEscrow(escrowContractName);
     yield contract.proposeDecision(
       proposalId,
@@ -108,26 +117,30 @@ function * onEscrowProposeDecisionGenerator ({ data, contractName, proposalId })
       userAddress
     );
 
-    yield put(setTransactionLoadingSuccess({
+    yield* put(setTransactionLoadingSuccess({
       type: formTypes.proposeDecision,
       transactionType: TRANSACTION_TYPES.success,
     }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    yield* put(setTransactionLoadingError(errorMsg));
   }
 }
 
-function * onEscrowProposerRemarkGenerator ({ data, contractName, proposalId }) {
+function* onEscrowProposerRemarkGenerator ({
+  data,
+  contractName,
+  proposalId
+}: ReturnType<typeof onEscrowProposerRemark>) {
   try {
-    yield put(setTransactionLoading(1));
-    yield put(setVoteDetails({ contract: contractName, proposalId }));
+    yield* put(setTransactionLoading());
+    yield* put(setVoteDetails({ contract: contractName, proposalId }));
 
     const escrowContractName = contractName === CONTRACTS_NAMES.validatorsSlashingVoting
       ? CONTRACTS_NAMES.validatorsSlashingEscrow
       : CONTRACTS_NAMES.rootNodesSlashingEscrow;
 
-    const { userAddress } = yield select((state) => state.userInf);
+    const { userAddress } = yield* select((state) => state.userInf);
     const contract = new SlashingEscrow(escrowContractName);
     yield contract.setProposerRemark(
       proposalId,
@@ -136,26 +149,30 @@ function * onEscrowProposerRemarkGenerator ({ data, contractName, proposalId }) 
       userAddress
     );
 
-    yield put(setTransactionLoadingSuccess({
+    yield* put(setTransactionLoadingSuccess({
       type: formTypes.proposerRemark,
       transactionType: TRANSACTION_TYPES.success,
     }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    yield* put(setTransactionLoadingError(errorMsg));
   }
 }
 
-function * setEscrowActionGenerator ({ contractName, proposalId, escrowType }) {
+function* setEscrowActionGenerator ({
+  contractName,
+  proposalId,
+  escrowType
+}: ReturnType<typeof setEscrowAction>) {
   try {
-    yield put(setTransactionLoading());
-    yield put(setVoteDetails({ contract: contractName, proposalId }));
+    yield* put(setTransactionLoading());
+    yield* put(setVoteDetails({ contract: contractName, proposalId }));
 
     const escrowContractName = contractName === CONTRACTS_NAMES.validatorsSlashingVoting
       ? CONTRACTS_NAMES.validatorsSlashingEscrow
       : CONTRACTS_NAMES.rootNodesSlashingEscrow;
 
-    const { userAddress } = yield select((state) => state.userInf);
+    const { userAddress } = yield* select((state) => state.userInf);
     const contract = new SlashingEscrow(escrowContractName);
 
     switch (escrowType) {
@@ -173,33 +190,38 @@ function * setEscrowActionGenerator ({ contractName, proposalId, escrowType }) {
       }
     }
 
-    yield put(setTransactionLoadingSuccess({
+    yield* put(setTransactionLoadingSuccess({
       transactionType: TRANSACTION_TYPES.success,
     }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    yield* put(setTransactionLoadingError(errorMsg));
   }
 }
 
-function * setPurgeSlashingGenerator ({ slashingAddress, contractType }) {
+function* setPurgeSlashingGenerator ({
+  slashingAddress,
+  contractType
+}: ReturnType<typeof setPurgeSlashing>) {
   try {
-    yield put(setTransactionLoading(1));
-    const { userAddress } = yield select((state) => state.userInf);
-    const contract =
-      contractType === CONTRACT_TYPES.rootNodes ? yield getRootNodesInstance() : yield getValidatorsInstance();
+    yield* put(setTransactionLoading());
+    const { userAddress } = yield* select((state) => state.userInf);
+    const contract = contractType === CONTRACT_TYPES.rootNodes
+      ? yield* call(getRootNodesInstance)
+      : yield* call(getValidatorsInstance);
+
     yield contract.purgePendingSlashings(slashingAddress, { from: userAddress });
 
-    yield put(setTransactionLoadingSuccess({ type: formTypes.purgeSlashing }));
+    yield* put(setTransactionLoadingSuccess({ type: formTypes.purgeSlashing }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    yield* put(setTransactionLoadingError(errorMsg));
   }
 }
 
 export default [
   takeEvery(actionTypes.ESCROW_CAST_OBJECTION, onEscrowCastObjectionGenerator),
-  takeEvery(actionTypes.ESCROW_PROPOSE_DECISION, onEscrowProposeDecisionGenerator),
+  takeEvery(actionTypes.ESCROW_PROPOSER_REMARK, onEscrowProposeDecisionGenerator),
   takeEvery(actionTypes.ESCROW_PROPOSER_REMARK, onEscrowProposerRemarkGenerator),
   takeEvery(actionTypes.GET_SLASHING_PROPOSALS, getSlashingProposalsGenerator),
 

@@ -10,7 +10,7 @@ import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/u
 
 let lastActiveBlock;
 
-function * getExpertProposalsGenerator () {
+function* getExpertProposalsGenerator () {
   try {
     const contracts = creationExpertContractsObjArray();
     const { minimalActiveBlockHeight, lastBlockHeight } = yield getMinimalActiveBlockHeight();

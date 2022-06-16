@@ -45,7 +45,7 @@ async function getGnosisSafesMap () {
   };
 }
 
-function * getContractRegistryKV () {
+function* getContractRegistryKV () {
   try {
     const contract = contractRegistryInstance;
     const data = yield contract.instance.methods.getContracts().call();
@@ -66,7 +66,7 @@ function * getContractRegistryKV () {
   }
 }
 
-function * getConstitutionParametersKV () {
+function* getConstitutionParametersKV () {
   try {
     const contract = yield getConstitutionInstance();
     const data = yield all(TYPES.map((type) => getParameters(type, contract)));
@@ -77,7 +77,7 @@ function * getConstitutionParametersKV () {
   }
 }
 
-function * getFeesIncentivesExpertPanelParametersKV () {
+function* getFeesIncentivesExpertPanelParametersKV () {
   try {
     const contract = yield getEpqfiParametersInstance();
     const data = yield all(TYPES.map((type) => getParameters(type, contract)));
@@ -88,7 +88,7 @@ function * getFeesIncentivesExpertPanelParametersKV () {
   }
 }
 
-function * getEPDRParametersKV () {
+function* getEPDRParametersKV () {
   try {
     const contract = yield getEpdrParametersInstance();
     const data = yield all(TYPES.map((type) => getParameters(type, contract)));
@@ -99,7 +99,7 @@ function * getEPDRParametersKV () {
   }
 }
 
-function * getEPRSParametersKV () {
+function* getEPRSParametersKV () {
   try {
     const contract = yield getEprsParametersInstance();
     const data = yield all(TYPES.map((type) => getParameters(type, contract)));

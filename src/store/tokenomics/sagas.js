@@ -33,7 +33,7 @@ async function allocateValue (contract, adddress) {
   return balance;
 }
 
-function * getDefaultAllocationProxyGenerator ({ isAllocate }) {
+function* getDefaultAllocationProxyGenerator ({ isAllocate }) {
   try {
     const { userAddress } = yield select((state) => state.userInf);
 
@@ -54,7 +54,7 @@ function * getDefaultAllocationProxyGenerator ({ isAllocate }) {
   }
 }
 
-function * getRootNodeRewardProxyGenerator ({ isAllocate }) {
+function* getRootNodeRewardProxyGenerator ({ isAllocate }) {
   try {
     const { userAddress } = yield select((state) => state.userInf);
 
@@ -72,7 +72,7 @@ function * getRootNodeRewardProxyGenerator ({ isAllocate }) {
   }
 }
 
-function * getValidationRewardProxyGenerator ({ isAllocate }) {
+function* getValidationRewardProxyGenerator ({ isAllocate }) {
   try {
     const { userAddress } = yield select((state) => state.userInf);
 
@@ -91,7 +91,7 @@ function * getValidationRewardProxyGenerator ({ isAllocate }) {
   }
 }
 
-function * getQHolderTimeUpdateGenerator ({ isUpdateTime }) {
+function* getQHolderTimeUpdateGenerator ({ isUpdateTime }) {
   try {
     const { userAddress } = yield select((state) => state.userInf);
     if (isUpdateTime) {

@@ -43,7 +43,7 @@ function Proposals ({ type }: { type: ProposalType }) {
 
       <ProposalsNav />
       <ProposalFilters />
-      <ProposalsList type={type} />
+      <ProposalsList />
     </PageWrap>
   );
 }

@@ -9,3 +9,5 @@ const sagaMiddleware = createSagaMiddleware();
 
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
 sagaMiddleware.run(rootSaga);
+
+export type RootState = ReturnType<typeof rootReducer>;

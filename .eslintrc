@@ -54,7 +54,7 @@
     "quotes": ["warn", "single"],
     "space-before-function-paren": ["warn", "always"],
     "comma-dangle": "off",
-    "no-unused-vars": ["warn"],
+    "no-unused-vars": "warn",
     "object-curly-newline": ["warn", {
       "ObjectPattern": { "multiline": true },
       "ImportDeclaration": { "multiline": true }
@@ -64,7 +64,8 @@
     "react/prop-types": "off",
     "react/display-name": "off",
     "react/hook-use-state": "warn",
-    "generator-star-spacing":"warn",
+    "generator-star-spacing": ["warn", "after"],
+    "yield-star-spacing": ["warn", "after"],
     "jsx-quotes": ["warn", "prefer-double"],
     "react/jsx-closing-bracket-location": ["warn", "line-aligned"],
     "react/jsx-equals-spacing": ["warn", "never"],
