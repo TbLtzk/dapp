@@ -21,19 +21,13 @@ export const PROPOSALS_TYPES = {
   contractUpdates: 'contract-updates',
 };
 
-export type ProposalType = keyof typeof PROPOSALS_TYPES;
+export type ProposalType = 'q-proposals' | 'q-root-node-panel' | 'q-expert-proposals' | 'slashing-proposals' | 'contract-updates';
 
 export const AUCTIONS_TYPES = {
   liquidation: 'liquidation',
   systemDebt: 'system-debt',
   systemSurplus: 'system-surplus',
   all: 'all',
-};
-
-export const PROPOSAL_STATUS_TYPES = {
-  active: 'active',
-  ended: 'ended',
-  reset: 'reset',
 };
 
 export const LOAD_TYPES = {
@@ -45,5 +39,3 @@ export const LOAD_TYPES = {
   notInstalled: 'not-installed',
   wrongNetwork: 'wrong-network',
 };
-
-export const WARNING_MAX_NUMBER = 'WARNING: No Q left on sender wallet for future transactions (gas)';

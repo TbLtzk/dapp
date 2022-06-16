@@ -13,24 +13,24 @@ import VotingStats from './components/VotingStats';
 import { getProposalsByType } from 'store/voting/proposals/action-creators';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-import { PROPOSALS_TYPES, ProposalType } from 'constants/statuses';
+import { ProposalType } from 'constants/statuses';
 
 function Proposals ({ type }: { type: ProposalType }) {
   const dispatch = useDispatch();
 
-  const contractName = {
-    [PROPOSALS_TYPES.proposals]: CONTRACTS_NAMES.constitutionVoting,
-    [PROPOSALS_TYPES.rootNodePanel]: CONTRACTS_NAMES.rootsVoting,
-    [PROPOSALS_TYPES.expertProposals]: CONTRACTS_NAMES.ePQFIMembershipVoting,
-    [PROPOSALS_TYPES.slashingProposals]: CONTRACTS_NAMES.rootNodesSlashingVoting,
-    [PROPOSALS_TYPES.contractUpdates]: CONTRACTS_NAMES.upgradeVoting,
-  }[type];
+  const proposalToContractMap: Record<ProposalType, string> = {
+    'q-proposals': CONTRACTS_NAMES.constitutionVoting,
+    'q-root-node-panel': CONTRACTS_NAMES.rootsVoting,
+    'q-expert-proposals': CONTRACTS_NAMES.ePQFIMembershipVoting,
+    'slashing-proposals': CONTRACTS_NAMES.rootNodesSlashingVoting,
+    'contract-updates': CONTRACTS_NAMES.upgradeVoting,
+  };
 
   useEffect(() => {
-    dispatch(getProposalsByType(contractName));
+    dispatch(getProposalsByType(proposalToContractMap[type]));
   }, [dispatch, type]);
 
-  const createProposal = type !== PROPOSALS_TYPES.contractUpdates &&
+  const createProposal = type !== 'contract-updates' &&
     <CreateProposal type={type} />;
 
   return (
@@ -39,7 +39,7 @@ function Proposals ({ type }: { type: ProposalType }) {
       headerExtra={createProposal}
     >
       <VotingStats />
-      {type === PROPOSALS_TYPES.slashingProposals && <PurgeSlashing />}
+      {type === 'slashing-proposals' && <PurgeSlashing />}
 
       <ProposalsNav />
       <ProposalFilters />

@@ -27,7 +27,7 @@ import TimeLocks from '../pages/TimeLocks';
 
 import { store } from 'store/index';
 
-import { AUCTIONS_TYPES, PROPOSALS_TYPES } from 'constants/statuses';
+import { AUCTIONS_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
 
 const options = {
@@ -81,23 +81,23 @@ function Routes () {
             </Route>
 
             <Route exact path="/governance/q-proposals">
-              <Proposals type={PROPOSALS_TYPES.proposals} />
+              <Proposals type="q-proposals" />
             </Route>
 
             <Route exact path="/governance/q-root-node-panel">
-              <Proposals type={PROPOSALS_TYPES.rootNodePanel} />
+              <Proposals type="q-root-node-panel" />
             </Route>
 
             <Route exact path="/governance/q-expert-proposals">
-              <Proposals type={PROPOSALS_TYPES.expertProposals} />
+              <Proposals type="q-expert-proposals" />
             </Route>
 
             <Route exact path="/governance/slashing-proposals">
-              <Proposals type={PROPOSALS_TYPES.slashingProposals} />
+              <Proposals type="slashing-proposals" />
             </Route>
 
             <Route exact path="/governance/contract-updates">
-              <Proposals type={PROPOSALS_TYPES.contractUpdates} />
+              <Proposals type="contract-updates" />
             </Route>
 
             <Route

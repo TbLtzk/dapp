@@ -13,7 +13,7 @@ import { transactionLoadingSelector } from 'store/transaction-handler/selectors'
 import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
 import { ContractName, CONTRACTS_NAMES } from 'constants/contracts';
-import { PROPOSALS_TYPES } from 'constants/statuses';
+import { ProposalType } from 'constants/statuses';
 
 function Proposal ({ match }: RouteComponentProps<{
   id: string,
@@ -42,27 +42,27 @@ function Proposal ({ match }: RouteComponentProps<{
     }
   }
 
-  function checkActiveTabByContract (contract: ContractName) {
+  function checkActiveTabByContract (contract: ContractName): ProposalType | 'error' {
     switch (contract) {
       case CONTRACTS_NAMES.constitutionVoting:
       case CONTRACTS_NAMES.emergencyUpdateVoting:
       case CONTRACTS_NAMES.generalUpdateVoting:
-        return PROPOSALS_TYPES.proposals;
+        return 'q-proposals';
       case CONTRACTS_NAMES.rootsVoting:
-        return PROPOSALS_TYPES.rootNodePanel;
+        return 'q-root-node-panel';
       case CONTRACTS_NAMES.ePQFIMembershipVoting:
       case CONTRACTS_NAMES.ePDRMembershipVoting:
       case CONTRACTS_NAMES.ePQFIParametersVoting:
       case CONTRACTS_NAMES.ePDRParametersVoting:
       case CONTRACTS_NAMES.ePRSMembershipVoting:
       case CONTRACTS_NAMES.ePRSParametersVoting:
-        return PROPOSALS_TYPES.expertProposals;
+        return 'q-expert-proposals';
       case CONTRACTS_NAMES.rootNodesSlashingVoting:
       case CONTRACTS_NAMES.validatorsSlashingVoting:
-        return PROPOSALS_TYPES.slashingProposals;
+        return 'slashing-proposals';
       case CONTRACTS_NAMES.upgradeVoting:
       case CONTRACTS_NAMES.addressVoting:
-        return PROPOSALS_TYPES.contractUpdates;
+        return 'contract-updates';
       default:
         return 'error';
     }
