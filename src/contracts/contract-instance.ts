@@ -1,38 +1,53 @@
-import { ContractRegistryInstance } from '@q-dev/q-js-sdk';
+import { ContractRegistryInstance, SystemContractWithQBalance } from '@q-dev/q-js-sdk';
+import { BaseContractInstance } from '@q-dev/q-js-sdk/lib/contracts/BaseContractInstance';
+import { CompoundRateKeeperInstance } from '@q-dev/q-js-sdk/lib/contracts/common/CompoundRateKeeperInstance';
 import { Indexer } from '@q-dev/q-js-sdk/lib/indexer/indexer';
 import { ValidatorMetrics } from '@q-dev/q-js-sdk/lib/utils/validator-metrics';
+import Web3 from 'web3';
+import { Contract } from 'web3-eth-contract';
 
 import { indexersUrls } from 'constants/config';
 
+declare global {
+  interface Window {
+    web3: Web3
+  }
+}
+
 export const CONTRACT_REGISTRY_ADDRESS = '0xc3E589056Ece16BCB88c6f9318e9a7343b663522';
 
-/**
- * @type {ContractRegistryInstance | null}
- */
-export let contractRegistryInstance = null;
+export let contractRegistryInstance: ContractRegistryInstance | null = null;
 
-export const getContractRegistryInstance = async () => {
+export const getContractRegistryInstance = () => {
   if (!contractRegistryInstance) {
-    contractRegistryInstance = new ContractRegistryInstance(window.web3, CONTRACT_REGISTRY_ADDRESS);
+    // TODO: Fix types in SDK
+    contractRegistryInstance = new ContractRegistryInstance(window.web3 as any, CONTRACT_REGISTRY_ADDRESS);
   }
   return contractRegistryInstance;
 };
 
-export const cache = {};
+type KeyOfType<T, U> = {
+  [P in keyof T]: T[P] extends U ? P: never
+}[keyof T]
 
-/**
- * @template {keyof ContractRegistryInstance} T
- *
- * @param {T} instance
- * @param {boolean} [QUSD]
- * @returns {ContractRegistryInstance[T]}
- */
-export function getInstance (instance, QUSD) {
-  return async () => {
+type ContractPromise = Promise<BaseContractInstance<any> | SystemContractWithQBalance[]>
+type ContractKey = KeyOfType<ContractRegistryInstance, (val: string) => ContractPromise>;
+type ContractValue<T extends ContractKey> = Promise<ReturnType<ContractRegistryInstance[T]>>;
+
+const cache: Record<string, ContractValue<any>> = {};
+
+export function getInstance<T extends ContractKey> (
+  instance: T,
+  QUSD?: boolean
+): () => ContractValue<T> {
+  return () => {
     if (!cache[instance]) {
-      cache[instance] = contractRegistryInstance[instance](QUSD ? 'QUSD' : null);
+      const contractRegistryInstance = getContractRegistryInstance();
+      const instanceFn = contractRegistryInstance[instance];
+      cache[instance] = instanceFn(QUSD ? 'QUSD' : '');
     }
-    return await cache[instance];
+
+    return cache[instance];
   };
 }
 
@@ -86,12 +101,12 @@ export const getEprsMembershipInstance = getInstance('eprsMembership');
 export const getEprsMembershipVotingInstance = getInstance('eprsMembershipVoting');
 export const getEprsParametersVotingInstance = getInstance('eprsParametersVoting');
 
-let validatorMetricsInstance = null;
-let compoundRateKeeperBorrowingInstance = null;
-let compoundRateKeeperSavingInstance = null;
-let compoundRateKeeperQVaultInstance = null;
-let governedEpdrQbtcAddressInstace = null;
-let indexerInstance = null;
+let validatorMetricsInstance: ValidatorMetrics | null = null;
+let compoundRateKeeperBorrowingInstance: CompoundRateKeeperInstance | null = null;
+let compoundRateKeeperSavingInstance: CompoundRateKeeperInstance | null = null;
+let compoundRateKeeperQVaultInstance: CompoundRateKeeperInstance | null = null;
+let governedEpdrQbtcAddressInstance: Contract | null = null;
+let indexerInstance: Indexer | null = null;
 
 export async function getCompoundRateKeeperBorrowingInstance () {
   if (!compoundRateKeeperBorrowingInstance) {
@@ -131,11 +146,14 @@ export const getIndexerInstance = async (indexerUrl = indexersUrls.testnet) => {
 };
 
 export async function getGovernedEpdrQbtcAddressInstance () {
-  if (!governedEpdrQbtcAddressInstace) {
+  if (!governedEpdrQbtcAddressInstance) {
     const contract = await getEpdrParametersInstance();
     const stableCoinInstance = await getStableCoinInstance();
     const address = await contract.getAddr('governed.EPDR.QBTC_address');
-    governedEpdrQbtcAddressInstace = new window.web3.eth.Contract(stableCoinInstance.instance._jsonInterface, address);
+    governedEpdrQbtcAddressInstance = new window.web3.eth.Contract(
+      stableCoinInstance.instance.options.jsonInterface,
+      address
+    );
   }
-  return governedEpdrQbtcAddressInstace;
+  return governedEpdrQbtcAddressInstance;
 }

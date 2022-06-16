@@ -9,7 +9,6 @@ import SlashingVotingService from './slashing-voting-helper';
 
 import { ZERO_ADDRESS } from 'constants/config';
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
-import { PROPOSALS_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
 import { BN } from 'func/useful';
 
@@ -138,18 +137,6 @@ export function creationUpdatesContractObj (contractName) {
       return new ContractUpdates(CONTRACTS_NAMES.addressVoting);
     case CONTRACTS_NAMES.upgradeVoting:
       return new ContractUpdates(CONTRACTS_NAMES.upgradeVoting);
-  }
-}
-export function tabSwitcher (activeTab, qProp, rootNodeProp, expertProp, slashingProp) {
-  switch (activeTab) {
-    case PROPOSALS_TYPES.proposals:
-      return qProp;
-    case PROPOSALS_TYPES.rootNodePanel:
-      return rootNodeProp;
-    case PROPOSALS_TYPES.expertProposals:
-      return expertProp;
-    case PROPOSALS_TYPES.slashingProposals:
-      return slashingProp;
   }
 }
 

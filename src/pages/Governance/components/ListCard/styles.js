@@ -28,7 +28,6 @@ export const ListCardWrp = styled.div`
     color: ${(props) => props.theme.colors.white};
     font-size: 20px;
     line-height: 35px;
-    margin-bottom: 0;
     font-family: "Lora", sans-serif;
   }
 
@@ -59,7 +58,7 @@ export const ListCardWrp = styled.div`
 
   p {
     font-size: 13px;
-    margin-bottom: 15px;
+    margin-bottom: 0;
     text-overflow: ellipsis;
   }
 
