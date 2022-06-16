@@ -10,14 +10,16 @@ import { ToTopContainer, WrapContainer, WrapContent } from './styles';
 import { toTitleCase } from 'func/useful';
 
 function PageWrap ({ pageHeader, pageTooltip, pageButton, wrapContentClasses, children }) {
-  useEffect(() => {
-    const title = pageHeader === 'Dashboard' ? 'Your HQ' : 'Your HQ - ' + toTitleCase(pageHeader);
-    document.title = title;
-  }, [toTitleCase]);
   const { t } = useTranslation();
 
   const myRef = useRef();
   const isVisible = useOnScreen(myRef);
+
+  useEffect(() => {
+    const title = pageHeader === 'Dashboard' ? 'Your HQ' : 'Your HQ - ' + toTitleCase(pageHeader);
+    document.title = title;
+  }, [toTitleCase]);
+
   const header = (
     <>
       <span>{t(pageHeader)}</span>

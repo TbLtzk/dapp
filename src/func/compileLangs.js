@@ -1,8 +1,8 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const fs = require('fs');
-const secret = require('../dapp-translation.json');
+const secret = require('../../translation-key.json');
 
-const doc = new GoogleSpreadsheet('14X3rNWtJxfVQqcaWra9cKL-F7BDe3LBNYhZnlfhtP6M');
+const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADS_SHEET_KEY);
 
 const read = async () => {
   await doc.loadInfo(); // loads document properties and worksheets
@@ -53,4 +53,4 @@ const init = async () => {
 init()
   .then(() => read())
   .then((data) => write(data))
-  .catch((err) => console.log('ERROR!!!!', err));
+  .catch((err) => console.error('ERROR!!!!', err));

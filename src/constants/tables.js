@@ -109,31 +109,6 @@ export const tableValidatorsWidened = (tableArray) =>
     delegationSaturation: <ProgressBar value={fN(validator.delegationSaturation)} />
   }));
 
-export const tableDefiRisks = (tableArray) =>
-  tableArray.map((member, idx) => ({
-    id: idx,
-    member: <ExplorerAddress address={member} />
-  }));
-
-export const tableQFees = (tableArray) =>
-  tableArray.map((member, idx) => ({
-    id: idx,
-    member: <ExplorerAddress address={member} />
-  }));
-
-export const tableEprs = (tableArray) =>
-  tableArray.map((member, idx) => ({
-    id: idx,
-    member: <ExplorerAddress address={member} />
-  }));
-
-export const tableDelegations = (tableArray) =>
-  tableArray.map((member, idx) => ({
-    id: idx,
-    address: <ExplorerAddress address={member.validator} />,
-    amount: fN(fromWei(member.actualStake)) + ' Q',
-    reward: fN(fromWei(member.claimableReward)) + ' Q'
-  }));
 
 export const savingCryptoAssets = (tableArray) =>
   tableArray.map((value, idx) => ({

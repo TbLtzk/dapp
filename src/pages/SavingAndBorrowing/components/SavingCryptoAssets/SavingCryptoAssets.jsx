@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
-import MemberTables from 'components/Custom/MemberTables/MemberTables';
+import MemberTables from 'components/Custom/MemberTables';
 
 import { getSavingAssets } from 'store/borrowing-core/action-creators';
 import { savingAssetsSelector } from 'store/borrowing-core/selectors';

@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import MemberTables from 'components/Custom/MemberTables';
 
+import { getColumnsRootNode, getColumnsRootNodeMonitoring } from './columnTypes';
 import { TitleBlock } from './styles';
 
 import { getRootMembers } from 'store/root-node/action-creators';
@@ -12,14 +14,15 @@ import {
   loadingRootMembersSelector,
   rootMembersMonitoringSelector,
   rootMembersSelector,
-  rootMemebersTotalStakeSelector
+  rootMemebersTotalStakeSelector,
 } from 'store/root-node/selectors';
 
-import { columnsRootNode, columnsRootNodeMonitoring } from 'constants/columns';
 import { tableRootNode, tableRootNodeMonitoring } from 'constants/tables';
 import TABLE_TYPES from 'constants/tableTypes';
 
 function RootNodePanel ({ tableType }) {
+  const { t } = useTranslation();
+
   const { tableSelector, tableLoadingSelector, columns, tableWrapper } = getRootNodesData();
   const table = tableWrapper(useSelector(tableSelector));
   const tableLoading = useSelector(tableLoadingSelector);
@@ -33,15 +36,15 @@ function RootNodePanel ({ tableType }) {
         return {
           tableSelector: rootMembersSelector,
           tableLoadingSelector: loadingRootMembersSelector,
-          columns: columnsRootNode,
-          tableWrapper: (arr) => tableRootNode(arr, tableType === TABLE_TYPES.rootNodesShort)
+          columns: getColumnsRootNode(t),
+          tableWrapper: (arr) => tableRootNode(arr, tableType === TABLE_TYPES.rootNodesShort),
         };
       case TABLE_TYPES.rootNodesMonitoring:
         return {
           tableSelector: rootMembersMonitoringSelector,
           tableLoadingSelector: loadingRootMembersMonitoringSelector,
-          columns: columnsRootNodeMonitoring,
-          tableWrapper: tableRootNodeMonitoring
+          columns: getColumnsRootNodeMonitoring(t),
+          tableWrapper: tableRootNodeMonitoring,
         };
     }
   }
@@ -55,10 +58,10 @@ function RootNodePanel ({ tableType }) {
   return (
     <CustomBlock>
       <TitleBlock>
-        <h1>Root Node Panel</h1>
+        <h1>{t('ROOT_NODE_PANEL')}</h1>
         {isTotalStakeShown && (
           <p>
-            <strong>Total Stake: </strong>
+            <strong>{t('TOTAL_STAKE')}</strong>
             {rootMemebersTotalStake} Q
           </p>
         )}
@@ -70,7 +73,7 @@ function RootNodePanel ({ tableType }) {
         title={null}
         columns={columns}
         loading={tableLoading}
-        emptyTableMessage="No Root Nodes"
+        emptyTableMessage={t('ROOT_NODES_LIST_EMPTY')}
       />
     </CustomBlock>
   );

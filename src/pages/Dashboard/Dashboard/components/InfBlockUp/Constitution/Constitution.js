@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'components/Base/Button';
@@ -11,18 +12,20 @@ import { constitutionHash } from 'store/voting/proposals/selectors';
 import { archiveConstitution, latestConstitution } from 'constants/constitution';
 
 function Constitution () {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const constitutionHashValue = useSelector(constitutionHash);
 
   useEffect(() => {
     dispatch(getConstitutionHash());
   }, [dispatch]);
-
+  // {t()}
   return (
     <CustomBlock title="Constitution">
-      <h1>Constitution</h1>
+      <h1>{t('CONSTITUTION')}</h1>
 
-      <h5>Hash:</h5>
+      <h5>{t('HASH')}</h5>
       <div>
         <p className="card__hash">{constitutionHashValue}</p>
         <CopyToClipboard value={constitutionHashValue} />
@@ -36,7 +39,7 @@ function Constitution () {
         >
           <Button alwaysEnabled>
             <i className="mdi mdi-download" />
-            <span>Download Latest</span>
+            <span>{t('DOWNLOAD_LATEST')}</span>
           </Button>
         </a>
         <a
@@ -46,7 +49,7 @@ function Constitution () {
         >
           <Button alwaysEnabled>
             <i className="mdi mdi-archive-outline" />
-            <span>Check Archive</span>
+            <span>{t('CHECK_ARCHIVE')}</span>
           </Button>
         </a>
       </div>

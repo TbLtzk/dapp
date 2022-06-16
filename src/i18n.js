@@ -29,7 +29,7 @@ function LanguageProvider ({ children }) {
     .use(initReactI18next)
     .init({
       resources,
-      fallbackLng: 'en',
+      fallbackLng: 'ua',
       interpolation: {
         escapeValue: false,
       },

@@ -22,6 +22,7 @@ import TABLE_TYPES from 'constants/tableTypes';
 
 function Dashboard () {
   const appMode = useSelector(mode);
+  const { t } = useTranslation();
 
   const advancedMode = appMode === MODE.advanced;
 
@@ -29,7 +30,7 @@ function Dashboard () {
     ? (
       <Link to="/q-parameters">
         <Button alwaysEnabled look="white">
-          Q Parameters
+          {t('Q_PARAMETERS')}
         </Button>
       </Link>
     )
@@ -55,12 +56,9 @@ function Dashboard () {
       </>
     )
     : null;
-  const { t } = useTranslation();
+
   return (
-    <PageWrap
-      pageHeader={t('dashboard')}
-      pageButton={parametersButton}
-    >
+    <PageWrap pageHeader={t('DASHBOARD')} pageButton={parametersButton}>
       <div className="content__colm-1">
         {infoBlock}
         {rootAndValidatorsPanels}

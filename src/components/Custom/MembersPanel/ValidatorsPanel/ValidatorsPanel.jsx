@@ -1,10 +1,16 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import MemberTables from 'components/Custom/MemberTables';
+
+import {
+  getColumnsValidatorsMonitoring,
+  getColumnsValidatorsWidened,
+} from './columnTypes';
 
 import { getValidatorMembers } from 'store/validators/action-creators';
 import {
@@ -16,13 +22,14 @@ import {
   validatorsWidenedSelector,
 } from 'store/validators/selectors';
 
-import { columnsValidatorsMonitoring, columnsValidatorsWidened } from 'constants/columns';
 import { tableValidatorsMonitoring, tableValidatorsShort, tableValidatorsWidened } from 'constants/tables';
 import TABLE_TYPES from 'constants/tableTypes';
 
 const buttonsType = { qVault: 'q-vault', details: 'details', none: 'none' };
 
 function ValidatorsPanel ({ buttons, tableType }) {
+  const { t } = useTranslation();
+
   const { tableSelector, tableLoadingSelector, columns, tableWrapper } = getValidatorsTableData();
   const dispatch = useDispatch();
   const table = tableWrapper(useSelector(tableSelector));
@@ -34,21 +41,21 @@ function ValidatorsPanel ({ buttons, tableType }) {
         return {
           tableSelector: validatorsWidenedSelector,
           tableLoadingSelector: loadingValidatorsWidenedSelector,
-          columns: columnsValidatorsWidened,
+          columns: getColumnsValidatorsWidened(t),
           tableWrapper: tableValidatorsWidened,
         };
       case TABLE_TYPES.validatorsShort:
         return {
           tableSelector: validatorsShortSelector,
           tableLoadingSelector: loadingValidatorsShortSelector,
-          columns: columnsValidatorsWidened.slice(0, 3),
+          columns: getColumnsValidatorsWidened(t).slice(0, 3),
           tableWrapper: tableValidatorsShort,
         };
       case TABLE_TYPES.validatorsMonitoring:
         return {
           tableSelector: validatorsMonitoringSelector,
           tableLoadingSelector: loadingValidatorsMonitoringSelector,
-          columns: columnsValidatorsMonitoring,
+          columns: getColumnsValidatorsMonitoring(t),
           tableWrapper: tableValidatorsMonitoring,
         };
     }
@@ -79,13 +86,13 @@ function ValidatorsPanel ({ buttons, tableType }) {
             <Link to="/validator-staking">
               <Button alwaysEnabled look="white">
                 <i className="mdi mdi-arrow-right" />
-                <span>See more details</span>
+                <span>{t('SEE_MORE_DETAILS')}</span>
               </Button>
             </Link>
             <Link to="/monitoring">
               <Button alwaysEnabled look="white">
                 <i className="mdi mdi-arrow-right" />
-                <span>Monitoring</span>
+                <span>{t('MONITORING')}</span>
               </Button>
             </Link>
           </div>
@@ -99,7 +106,7 @@ function ValidatorsPanel ({ buttons, tableType }) {
               onClick={() => history.push({ pathname: '/q-vault' })}
             >
               <i className="mdi mdi-arrow-right" />
-              <span>Go to Q Vault</span>
+              <span>{t('GO_TO_Q_VAULT')}</span>
             </Button>
           </div>
         );
@@ -113,8 +120,8 @@ function ValidatorsPanel ({ buttons, tableType }) {
     <CustomBlock>
       <MemberTables
         sorting
-        title="Validator Ranking"
-        emptyTableMessage="No validators"
+        title={t('VALIDATOR_RANKING')}
+        emptyTableMessage={t('NO_VALIDATORS')}
         table={table}
         columns={columns}
         tableType={tableType}
