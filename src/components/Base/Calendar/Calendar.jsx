@@ -21,7 +21,7 @@ function Calendar ({
       <DatePicker
         showTimeSelect
         selected={value}
-        dateFormat="mm/dd/yyyy, h:mm aa"
+        dateFormat="h:mm, MMMM d, yyyy aa"
         filterTime={d => new Date(d).getTime() > Date.now()}
         timeFormat="HH:mm"
         timeIntervals={1}
