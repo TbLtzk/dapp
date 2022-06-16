@@ -1,57 +1,10 @@
 import styled, { css } from 'styled-components';
 
-export const ChildrenWrapper = styled.div`
-  position: relative;
-  span {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
-`;
-
-function getTooltipPosition (positon) {
-  switch (positon) {
-    case 'right': {
-      return css`
-        top: -5px;
-        left: 105%;
-      `;
-    }
-    case 'left': {
-      return css`
-        top: -2px;
-        right: 101%;
-        white-space: nowrap;
-        &:after {
-          display: none;
-        }
-      `;
-    }
-
-    case 'bottom': {
-      return css`
-        width: max-content;
-        top: 10%;
-        left: 50%;
-        transform: translate(-50%, 0);
-        &:after {
-          display: none;
-        }
-      `;
-    }
-    case 'top':
-    default: {
-      return css`
-        width: max-content;
-        bottom: 110%;
-        left: 50%;
-        transform: translate(-50%, 0);
-      `;
-    }
-  }
+interface Props {
+  position: string;
 }
 
-export const TooltipContainer = styled.span`
+export const TooltipContainer = styled.span<Props>`
   position: relative;
   display: block;
   max-width: 100%;
@@ -105,3 +58,45 @@ export const TooltipContainer = styled.span`
     opacity: 1;
   }
 `;
+
+function getTooltipPosition (position: string) {
+  switch (position) {
+    case 'right': {
+      return css`
+        top: -5px;
+        left: 105%;
+      `;
+    }
+    case 'left': {
+      return css`
+        top: -2px;
+        right: 101%;
+        white-space: nowrap;
+        &:after {
+          display: none;
+        }
+      `;
+    }
+
+    case 'bottom': {
+      return css`
+        width: max-content;
+        top: 10%;
+        left: 50%;
+        transform: translate(-50%, 0);
+        &:after {
+          display: none;
+        }
+      `;
+    }
+    case 'top':
+    default: {
+      return css`
+        width: max-content;
+        bottom: 110%;
+        left: 50%;
+        transform: translate(-50%, 0);
+      `;
+    }
+  }
+}

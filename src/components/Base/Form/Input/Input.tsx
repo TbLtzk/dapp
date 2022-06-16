@@ -1,3 +1,4 @@
+import { ChangeEvent, HTMLInputTypeAttribute, InputHTMLAttributes, ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 
 import { isNil } from 'lodash';
@@ -10,6 +11,18 @@ import { loadTypeSelector } from 'store/user-inf/selectors';
 
 import { LOAD_TYPES } from 'constants/statuses';
 
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
+  value: string
+  error?: string
+  label?: string
+  disabled?: boolean
+  prefix?: ReactNode
+  invertedColors?: boolean
+  type?: HTMLInputTypeAttribute
+  max?: string
+  onChange: (val: string) => void
+}
+
 const Input = ({
   value,
   label,
@@ -21,12 +34,12 @@ const Input = ({
   max,
   onChange = () => {},
   ...rest
-}) => {
+}: Props) => {
   const loadType = useSelector(loadTypeSelector);
   const isDisabled = disabled || loadType !== LOAD_TYPES.loaded;
 
-  const handleChange = (e) => {
-    const value = e.target.value;
+  const handleChange = (e: ChangeEvent) => {
+    const value = (e.target as HTMLInputElement).value;
     const isNumberValid = value === '' || /^[0-9]{1,50}[.]?[0-9]{0,18}$/.test(value);
     if (type === 'number' && !isNumberValid) return;
 

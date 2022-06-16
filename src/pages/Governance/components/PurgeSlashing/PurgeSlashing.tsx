@@ -31,7 +31,7 @@ function PurgeSlashing () {
 
   useMetamaskReset(formTypes.purgeSlashing, form.reset);
 
-  function handlePurge (contractType) {
+  function handlePurge (contractType: string) {
     if (!form.validate()) return;
 
     dispatch(setPurgeSlashing(form.values.address, contractType));
