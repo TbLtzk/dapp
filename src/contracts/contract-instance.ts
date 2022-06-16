@@ -43,8 +43,7 @@ export function getInstance<T extends ContractKey> (
   return () => {
     if (!cache[instance]) {
       const contractRegistryInstance = getContractRegistryInstance();
-      const instanceFn = contractRegistryInstance[instance];
-      cache[instance] = instanceFn(QUSD ? 'QUSD' : '');
+      cache[instance] = contractRegistryInstance[instance](QUSD ? 'QUSD' : '');
     }
 
     return cache[instance];
