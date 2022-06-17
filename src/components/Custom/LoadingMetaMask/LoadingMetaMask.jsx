@@ -13,7 +13,7 @@ import { getAuctions } from 'store/auctions/action-creators';
 import { mode } from 'store/dashboard-mode/selectors';
 import { getCheckIsUserRootNode } from 'store/root-node/action-creators';
 import { setLoadType, setNetwork, setUserAddress } from 'store/user-inf/action-creators';
-import { getNumberAllProposals } from 'store/voting/proposals/action-creators';
+import { getNumberAllProposals } from 'store/voting/proposals/actions';
 
 import { getContractRegistryInstance } from 'contracts/contract-instance';
 

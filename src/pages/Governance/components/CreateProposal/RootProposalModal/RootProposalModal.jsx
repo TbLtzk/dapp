@@ -11,7 +11,7 @@ import ConfirmStep from './components/ConfirmStep';
 import RemoveNodeStep from './components/RemoveNodeStep';
 import TypeStep from './components/TypeStep';
 
-import { createProposal } from 'store/voting/proposals/action-creators';
+import { createProposal } from 'store/voting/proposals/actions';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
 import formTypes from 'constants/form-types';

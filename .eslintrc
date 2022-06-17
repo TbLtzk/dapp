@@ -46,7 +46,8 @@
     "eol-last": "warn",
     "multiline-ternary":"warn",
     "no-case-declarations": "off",
-    "indent": ["warn", 2, {
+    "indent": "off",
+    "@typescript-eslint/indent": ["warn", 2, {
       "SwitchCase": 1,
       "ignoredNodes": ["TaggedTemplateExpression *"]
     }],

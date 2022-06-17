@@ -10,7 +10,7 @@ import BasicVoteStep from './components/BasicVoteStep';
 import ConfirmStep from './components/ConfirmStep';
 import ConstitutionVoteStep from './components/ConstitutionVoteStep';
 
-import { voteForProposal } from 'store/voting/proposals/action-creators';
+import { voteForProposal } from 'store/voting/proposals/actions';
 
 import formTypes from 'constants/form-types';
 import { STATUSES } from 'constants/statuses';

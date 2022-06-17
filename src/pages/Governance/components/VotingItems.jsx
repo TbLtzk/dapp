@@ -15,7 +15,7 @@ import { isUserRootNode } from 'store/root-node/selectors';
 import {
   executeProposal,
   voteForProposal
-} from 'store/voting/proposals/action-creators';
+} from 'store/voting/proposals/actions';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import { STATUSES } from 'constants/statuses';

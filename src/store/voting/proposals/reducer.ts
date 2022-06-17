@@ -1,4 +1,11 @@
-import * as actionTypes from './action-types';
+import { ProposalsAction } from './types';
+
+export interface ProposalsState {
+  voteDetails: { contract: string, proposalId: string }
+  constitutionHash: string
+  baseVotingWeightInfo: Record<string, unknown>
+  newParameter: boolean
+}
 
 const initialState = {
   voteDetails: { contract: '', proposalId: '' },
@@ -7,24 +14,27 @@ const initialState = {
   newParameter: false
 };
 
-export default function proposals (state = initialState, action) {
+export default function proposals (
+  state = initialState,
+  action: ProposalsAction
+) {
   switch (action.type) {
-    case actionTypes.SET_VOTE_DETAILS:
+    case 'SET_VOTE_DETAILS':
       return {
         ...state,
         voteDetails: action.result
       };
-    case actionTypes.GET_CONSTITUTION_HASH_SUCCESS:
+    case 'GET_CONSTITUTION_HASH_SUCCESS':
       return {
         ...state,
         constitutionHash: action.result
       };
-    case actionTypes.SET_BASE_VOTING_WEIGHT_INFO:
+    case 'SET_BASE_VOTING_WEIGHT_INFO':
       return {
         ...state,
         baseVotingWeightInfo: action.payload
       };
-    case actionTypes.SET_NEW_PARAMETER:
+    case 'SET_NEW_PARAMETER':
       return {
         ...state,
         newParameter: action.result

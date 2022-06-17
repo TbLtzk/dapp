@@ -10,7 +10,7 @@ import ProposalsNav from './components/ProposalsNav';
 import PurgeSlashing from './components/PurgeSlashing';
 import VotingStats from './components/VotingStats';
 
-import { getProposalsByType } from 'store/voting/proposals/action-creators';
+import { getProposalsByType } from 'store/voting/proposals/actions';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import { ProposalType } from 'constants/statuses';

@@ -9,7 +9,7 @@ import { mode } from 'store/dashboard-mode/selectors';
 import { getContractUpdatesProposals } from 'store/voting/contract-updates/action-creators';
 import { getExpertProposals } from 'store/voting/expert-proposals/action-creators';
 import { getQProposals } from 'store/voting/q-proposals/action-creators';
-import { getRootProposals } from 'store/voting/root-node-proposals/action-creators';
+import { getRootProposals } from 'store/voting/root-node-proposals/actions';
 import { getSlashingProposals } from 'store/voting/slashing-proposals/action-creators';
 
 import { AUCTIONS_TYPES } from 'constants/statuses';

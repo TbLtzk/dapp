@@ -10,7 +10,7 @@ import ConfirmStep from './components/ConfirmStep';
 import NominateStep from './components/NominateStep';
 import TypeStep from './components/TypeStep';
 
-import { createProposal } from 'store/voting/proposals/action-creators';
+import { createProposal } from 'store/voting/proposals/actions';
 
 import formTypes from 'constants/form-types';
 

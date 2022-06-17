@@ -1,8 +1,17 @@
-import * as actionTypes from './action-types';
+import { RootNodeProposalsAction } from './types';
 
 import { groupArrayByBlockNumber } from 'func/useful';
 
-const initialState = {
+export interface RootNodeProposalsState {
+  activeProposals: any[]
+  endedProposals: any[]
+
+  rootActiveProposalsCount: number
+  rootEndedProposalsCount: number
+  rootLoadingProposalsCount: boolean
+}
+
+const initialState: RootNodeProposalsState = {
   activeProposals: [],
   endedProposals: [],
 
@@ -11,9 +20,12 @@ const initialState = {
   rootLoadingProposalsCount: true
 };
 
-export default function rootNodeProposals (state = initialState, action) {
+export default function rootNodeProposals (
+  state = initialState,
+  action: RootNodeProposalsAction
+) {
   switch (action.type) {
-    case actionTypes.SET_ROOT_PROPOSALS:
+    case 'SET_ROOT_PROPOSALS':
       return {
         ...state,
         activeProposals: groupArrayByBlockNumber(action.activeProposalsArray),

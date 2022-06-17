@@ -1,8 +1,18 @@
-import { call, delay, put, select, takeEvery } from 'redux-saga/effects';
+import { call, delay, put, select, takeEvery } from 'typed-redux-saga';
 
 import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 
 import { getContractUpdatesProposals } from '../contract-updates/action-creators';
+
+import {
+  getBaseVotingWeightInfo,
+  getConstitutionHashSuccess,
+  getNumberAllProposals,
+  getProposalsByType,
+  setBaseVotingWeightInfo,
+  setVoteDetails,
+} from './actions';
+import { CreateProposal, ExecuteProposal, GetBaseVotingWeightInfo, GetConstitutionHash, GetNumberAllProposals, GetProposalsByType, VoteForProposal } from './types';
 
 import { getDelegationInfo, getLockedAssets } from 'store/q-vault/action-creators';
 import {
@@ -11,16 +21,8 @@ import {
   setTransactionLoadingSuccess,
 } from 'store/transaction-handler/action-creators';
 import { getExpertProposals } from 'store/voting/expert-proposals/action-creators';
-import {
-  getBaseVotingWeightInfo,
-  getConstitutionHashSuccess,
-  getProposalsByType,
-  setBaseVotingWeightInfo,
-  setVoteDetails,
-} from 'store/voting/proposals/action-creators';
-import * as actionTypes from 'store/voting/proposals/action-types';
 import { getQProposals } from 'store/voting/q-proposals/action-creators';
-import { getRootProposals } from 'store/voting/root-node-proposals/action-creators';
+import { getRootProposals } from 'store/voting/root-node-proposals/actions';
 import { getSlashingProposals } from 'store/voting/slashing-proposals/action-creators';
 
 import { getVotingWeightProxyInstance } from 'contracts/contract-instance';
@@ -42,10 +44,21 @@ import { VOTING_TYPES } from 'constants/votingTypes';
 import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
 
-function* createProposalGenerator ({ proposal }) {
+export const onEscrowCastObjection = (
+  data: any,
+  contractName: string,
+  proposalId: string
+) => ({
+  type: 'kek',
+  data,
+  contractName,
+  proposalId
+});
+
+function* createProposalGenerator ({ proposal }: CreateProposal) {
   try {
-    yield put(setTransactionLoading());
-    const { userAddress } = yield select((state) => state.userInf);
+    yield* put(setTransactionLoading());
+    const { userAddress } = yield* select((state) => state.userInf);
     let contractName = null;
     let formType = '';
     const type = proposal.type;
@@ -93,34 +106,34 @@ function* createProposalGenerator ({ proposal }) {
           ? CONTRACT_TYPES.member
           : CONTRACT_TYPES.parameters;
         const contract = chooseExpertContractDependsOnType(typeContract, proposal.panelType);
-        contractName = contract.contractName;
+        contractName = contract?.contractName;
         formType = formTypes.expertProposal;
-        yield contract.createProposal(proposal, userAddress);
+        yield contract?.createProposal(proposal, userAddress);
         break;
       default:
         return null;
     }
 
-    yield put(getBaseVotingWeightInfo());
-    yield put(getDelegationInfo(userAddress));
-    yield put(getProposalsByType(contractName));
+    yield* put(getBaseVotingWeightInfo());
+    yield* put(getDelegationInfo(userAddress));
+    yield* put(getProposalsByType(contractName));
 
-    yield put(setTransactionLoadingSuccess({ type: formType }));
+    yield* put(setTransactionLoadingSuccess({ type: formType }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    yield* put(setTransactionLoadingError(errorMsg));
   }
 }
 
-function* voteForProposalGenerator ({ data }) {
+function* voteForProposalGenerator ({ data }: VoteForProposal) {
   try {
-    yield put(setTransactionLoading());
-    yield put(setVoteDetails({
+    yield* put(setTransactionLoading());
+    yield* put(setVoteDetails({
       contract: data.contract,
       proposalId: data.proposalId,
     }));
 
-    const { userAddress } = yield select((state) => state.userInf);
+    const { userAddress } = yield* select((state) => state.userInf);
     const contract = new VotingService(data.contract);
 
     switch (data.type) {
@@ -139,53 +152,53 @@ function* voteForProposalGenerator ({ data }) {
         break;
     }
 
-    yield put(getBaseVotingWeightInfo());
-    yield put(getDelegationInfo(userAddress));
-    yield put(getLockedAssets(userAddress));
+    yield* put(getBaseVotingWeightInfo());
+    yield* put(getDelegationInfo(userAddress));
+    yield* put(getLockedAssets(userAddress));
 
-    yield put(setTransactionLoadingSuccess({
+    yield* put(setTransactionLoadingSuccess({
       type: formTypes.vote,
       transactionType: TRANSACTION_TYPES.success,
     }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    yield* put(setTransactionLoadingError(errorMsg));
   }
 }
 
-function* executeProposalGenerator ({ data }) {
+function* executeProposalGenerator ({ data }: ExecuteProposal) {
   try {
-    yield put(setTransactionLoading());
+    yield* put(setTransactionLoading());
 
-    const { userAddress } = yield select((state) => state.userInf);
+    const { userAddress } = yield* select((state) => state.userInf);
     const contract = new VotingService(data?.contract);
     yield contract.execute(data?.idProposal, userAddress);
-    yield put(getProposalsByType(data.contract));
-    yield put(getBaseVotingWeightInfo());
-    yield put(getDelegationInfo(userAddress));
+    yield* put(getProposalsByType(data.contract));
+    yield* put(getBaseVotingWeightInfo());
+    yield* put(getDelegationInfo(userAddress));
 
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+    yield* put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    yield* put(setTransactionLoadingError(errorMsg));
   }
 }
 
-function* getProposalsByTypeGenerator ({ contractName }) {
+function* getProposalsByTypeGenerator ({ contractName }: GetProposalsByType) {
   switch (contractName) {
     case CONTRACTS_NAMES.constitutionVoting:
     case CONTRACTS_NAMES.emergencyUpdateVoting:
     case CONTRACTS_NAMES.generalUpdateVoting: {
-      yield put(getQProposals());
+      yield* put(getQProposals());
       break;
     }
     case CONTRACTS_NAMES.rootsVoting: {
-      yield put(getRootProposals());
+      yield* put(getRootProposals());
       break;
     }
     case CONTRACTS_NAMES.rootNodesSlashingVoting:
     case CONTRACTS_NAMES.validatorsSlashingVoting: {
-      yield put(getSlashingProposals());
+      yield* put(getSlashingProposals());
       break;
     }
     case CONTRACTS_NAMES.ePQFIMembershipVoting:
@@ -194,36 +207,36 @@ function* getProposalsByTypeGenerator ({ contractName }) {
     case CONTRACTS_NAMES.ePDRParametersVoting:
     case CONTRACTS_NAMES.ePRSMembershipVoting:
     case CONTRACTS_NAMES.ePRSParametersVoting: {
-      yield put(getExpertProposals());
+      yield* put(getExpertProposals());
       break;
     }
     case CONTRACTS_NAMES.addressVoting:
     case CONTRACTS_NAMES.upgradeVoting: {
-      yield put(getContractUpdatesProposals());
+      yield* put(getContractUpdatesProposals());
       break;
     }
   }
 }
 
 function* getNumberAllProposalsGenerator () {
-  const { appMode } = yield select((state) => state.dashboardMode);
-  yield put(getQProposals());
-  yield put(getRootProposals());
+  const { appMode } = yield* select((state) => state.dashboardMode);
+  yield* put(getQProposals());
+  yield* put(getRootProposals());
 
   if (appMode === MODE.advanced) {
-    yield put(getExpertProposals());
-    yield put(getSlashingProposals());
-    yield put(getContractUpdatesProposals());
+    yield* put(getExpertProposals());
+    yield* put(getSlashingProposals());
+    yield* put(getContractUpdatesProposals());
   }
-  yield delay(240000);
-  yield call(getNumberAllProposalsGenerator);
+  yield* delay(240000);
+  yield* put(getNumberAllProposals());
 }
 
 function* getConstitutionHashGenerator () {
   try {
-    const contract = creationQContractObj(CONTRACTS_NAMES.constitutionVoting);
-    const data = yield contract.getConstitutionHash();
-    yield put(getConstitutionHashSuccess(data));
+    const contract = creationQContractObj(CONTRACTS_NAMES.constitutionVoting) as ConstitutionVotingService;
+    const data = yield* call(contract.getConstitutionHash);
+    yield* put(getConstitutionHashSuccess(data));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }
@@ -231,22 +244,22 @@ function* getConstitutionHashGenerator () {
 
 function* getBaseVotingWeightInfoGenerator () {
   try {
-    const { userAddress } = yield select((state) => state.userInf);
-    const contract = yield call(getVotingWeightProxyInstance);
+    const { userAddress } = yield* select((state) => state.userInf);
+    const contract = yield* call(getVotingWeightProxyInstance);
     const timeStamp = getNowTimestamp();
-    const result = yield contract.getBaseVotingWeightInfo(userAddress, timeStamp);
-    yield put(setBaseVotingWeightInfo(result));
+    const result = yield* call(contract.getBaseVotingWeightInfo, userAddress, timeStamp);
+    yield* put(setBaseVotingWeightInfo(result));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }
 }
 
 export default [
-  takeEvery(actionTypes.CREATE_PROPOSAL, createProposalGenerator),
-  takeEvery(actionTypes.VOTE_FOR_PROPOSAL, voteForProposalGenerator),
-  takeEvery(actionTypes.EXECUTE_PROPOSAL, executeProposalGenerator),
-  takeEvery(actionTypes.GET_PROPOSALS_BY_TYPE, getProposalsByTypeGenerator),
-  takeEvery(actionTypes.GET_NUMBER_ALL_PROPOSALS, getNumberAllProposalsGenerator),
-  takeEvery(actionTypes.GET_CONSTITUTION_HASH, getConstitutionHashGenerator),
-  takeEvery(actionTypes.GET_BASE_VOTING_WEIGHT_INFO, getBaseVotingWeightInfoGenerator),
+  takeEvery<CreateProposal>('CREATE_PROPOSAL', createProposalGenerator),
+  takeEvery<VoteForProposal>('VOTE_FOR_PROPOSAL', voteForProposalGenerator),
+  takeEvery<ExecuteProposal>('EXECUTE_PROPOSAL', executeProposalGenerator),
+  takeEvery<GetProposalsByType>('GET_PROPOSALS_BY_TYPE', getProposalsByTypeGenerator),
+  takeEvery<GetNumberAllProposals>('GET_NUMBER_ALL_ENDED_PROPOSALS', getNumberAllProposalsGenerator),
+  takeEvery<GetConstitutionHash>('GET_CONSTITUTION_HASH', getConstitutionHashGenerator),
+  takeEvery<GetBaseVotingWeightInfo>('GET_BASE_VOTING_WEIGHT_INFO', getBaseVotingWeightInfoGenerator),
 ];

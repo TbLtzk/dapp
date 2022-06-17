@@ -1,14 +1,14 @@
-import { put, select, takeEvery } from 'redux-saga/effects';
+import { call, put, select, takeEvery } from 'typed-redux-saga';
 
-import { setRootProposals } from './action-creators';
-import * as actionTypes from './action-types';
+import { setRootProposals } from './actions';
+import { ActionType } from './types';
 
 import { creationRootContractObj } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
 import ErrorHandler from 'func/ErrorHandler';
 import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/useful';
 
-let lastActiveBlock;
+let lastActiveBlock: string | number;
 
 function* getRootProposalsGenerator () {
   try {
@@ -20,11 +20,11 @@ function* getRootProposalsGenerator () {
     let endedProposalsArray;
 
     if (lastActiveBlock) {
-      const { activeProposals, endedProposals, rootEndedProposalsCount } = yield select(
+      const { activeProposals, endedProposals, rootEndedProposalsCount } = yield* select(
         (state) => state.rootNodeProposals
       );
 
-      const proposals = yield contract.getNewProposalsAndCheckActive(activeProposals, lastActiveBlock);
+      const proposals = yield* call(contract.getNewProposalsAndCheckActive, activeProposals, lastActiveBlock);
 
       const [newProposalsCount, newActiveProposals, newEndedProposalsIds] = sortAndCountProposalsByType([proposals]);
       proposalsCounter = {
@@ -35,7 +35,7 @@ function* getRootProposalsGenerator () {
       endedProposalsArray = [...endedProposals, ...newEndedProposalsIds];
       lastActiveBlock = lastBlockHeight;
     } else {
-      const proposals = yield contract.getProposalsCount(minimalActiveBlockHeight);
+      const proposals = yield* call(contract.getProposalsCount, minimalActiveBlockHeight);
       const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposalsByType([proposals]);
 
       proposalsCounter = proposalsCount;
@@ -44,10 +44,12 @@ function* getRootProposalsGenerator () {
       lastActiveBlock = lastBlockHeight;
     }
 
-    yield put(setRootProposals(activeProposalsArray, endedProposalsArray, proposalsCounter));
+    yield* put(setRootProposals(activeProposalsArray, endedProposalsArray, proposalsCounter));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }
 }
 
-export default [takeEvery(actionTypes.GET_ROOT_PROPOSALS, getRootProposalsGenerator)];
+export default [
+  takeEvery<ActionType>('GET_ROOT_PROPOSALS', getRootProposalsGenerator)
+];

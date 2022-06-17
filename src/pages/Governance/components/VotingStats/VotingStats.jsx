@@ -10,7 +10,7 @@ import { StatsWrapper } from './styles';
 import { getDelegationInfo } from 'store/q-vault/action-creators';
 import { votingAgent } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
-import { getBaseVotingWeightInfo } from 'store/voting/proposals/action-creators';
+import { getBaseVotingWeightInfo } from 'store/voting/proposals/actions';
 import { baseVotingWeightInfoSelector } from 'store/voting/proposals/selectors';
 
 import { getVoteDelegation } from 'contracts/helpers/voting-helpers/base-voting-helper';

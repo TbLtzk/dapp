@@ -1,6 +1,6 @@
 import { all, call, put, select, takeEvery } from 'typed-redux-saga';
 
-import { setVoteDetails } from '../proposals/action-creators';
+import { setVoteDetails } from '../proposals/actions';
 
 import { onEscrowCastObjection, onEscrowProposeDecision, onEscrowProposerRemark, setEscrowAction, setPurgeSlashing, setSlashingProposals } from './action-creators';
 import * as actionTypes from './action-types';

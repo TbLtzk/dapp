@@ -11,7 +11,7 @@ import ManageExpertStep from './components/ManageExpertStep';
 import ParameterVoteStep from './components/ParameterVoteStep';
 import TypeStep from './components/TypeStep';
 
-import { createProposal } from 'store/voting/proposals/action-creators';
+import { createProposal } from 'store/voting/proposals/actions';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
 import formTypes from 'constants/form-types';

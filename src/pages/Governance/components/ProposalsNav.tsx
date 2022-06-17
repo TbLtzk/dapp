@@ -11,7 +11,7 @@ import { getExpertProposals } from 'store/voting/expert-proposals/action-creator
 import { expertActiveProposalsCountSelector } from 'store/voting/expert-proposals/selectors';
 import { getQProposals } from 'store/voting/q-proposals/action-creators';
 import { qActiveProposalsCountSelector } from 'store/voting/q-proposals/selectors';
-import { getRootProposals } from 'store/voting/root-node-proposals/action-creators';
+import { getRootProposals } from 'store/voting/root-node-proposals/actions';
 import { rootActiveProposalsCountSelector } from 'store/voting/root-node-proposals/selectors';
 import { getSlashingProposals } from 'store/voting/slashing-proposals/action-creators';
 import { slashingActiveProposalsCountSelector } from 'store/voting/slashing-proposals/selectors';
