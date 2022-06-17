@@ -12,7 +12,7 @@ import useMetamaskReset from 'hooks/useMetamaskReset';
 import { PurgeSlashingContainer } from './styles';
 
 import { isUserRootNode } from 'store/root-node/selectors';
-import { setPurgeSlashing } from 'store/voting/slashing-proposals/action-creators';
+import { setPurgeSlashing } from 'store/voting/slashing-proposals/actions';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
 import formTypes from 'constants/form-types';

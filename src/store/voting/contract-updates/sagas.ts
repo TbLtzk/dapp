@@ -1,7 +1,7 @@
-import { all, put, select, takeEvery } from 'typed-redux-saga';
+import { all, call, put, select, takeEvery } from 'typed-redux-saga';
 
-import { setContractUpdatesProposals } from './action-creators';
-import * as actionTypes from './action-types';
+import { setContractUpdatesProposals } from './actions';
+import { GetContractUpdatesProposals } from './types';
 
 import { creationUpdatesContractObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
@@ -13,7 +13,7 @@ let lastActiveBlock: string | number;
 function* getContractUpdatesProposalsGenerator () {
   try {
     const contracts = creationUpdatesContractObjArray();
-    const { minimalActiveBlockHeight, lastBlockHeight } = yield getMinimalActiveBlockHeight();
+    const { minimalActiveBlockHeight, lastBlockHeight } = yield* call(getMinimalActiveBlockHeight);
     let proposalsCounter;
     let activeProposalsArray;
     let endedProposalsArray;
@@ -49,4 +49,6 @@ function* getContractUpdatesProposalsGenerator () {
   }
 }
 
-export default [takeEvery(actionTypes.GET_CONTRACT_UPDATES_PROPOSALS, getContractUpdatesProposalsGenerator)];
+export default [
+  takeEvery<GetContractUpdatesProposals>('GET_CONTRACT_UPDATES_PROPOSALS', getContractUpdatesProposalsGenerator)
+];

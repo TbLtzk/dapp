@@ -1,20 +1,10 @@
-import { ContractUpdatesAction } from './action-creators';
-import * as actionTypes from './action-types';
+import { ContractUpdatesAction } from './types';
 
 import { groupArrayByBlockNumber } from 'func/useful';
 
-export interface ContractUpdatesState {
-  activeProposals: any[]
-  endedProposals: any[]
-
-  contractUpdatesActiveProposalsCount: number
-  contractUpdatesEndedProposalsCount: number
-  contractUpdatesLoadingProposalsCount: boolean
-}
-
-const initialState: ContractUpdatesState = {
-  activeProposals: [],
-  endedProposals: [],
+const initialState = {
+  activeProposals: [] as any[],
+  endedProposals: [] as any[],
 
   contractUpdatesActiveProposalsCount: -1,
   contractUpdatesEndedProposalsCount: -1,
@@ -26,7 +16,7 @@ export default function contractUpdatesProposals (
   action: ContractUpdatesAction
 ) {
   switch (action.type) {
-    case actionTypes.SET_CONTRACT_UPDATES_PROPOSALS:
+    case 'SET_CONTRACT_UPDATES_PROPOSALS':
       return {
         ...state,
         activeProposals: groupArrayByBlockNumber(action.activeProposalsArray),

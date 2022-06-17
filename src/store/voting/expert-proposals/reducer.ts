@@ -1,20 +1,10 @@
-import { ExpertProposalsAction } from './action-creators';
-import * as actionTypes from './action-types';
+import { ExpertProposalsAction } from './types';
 
 import { groupArrayByBlockNumber } from 'func/useful';
 
-export interface QProposalsState {
-  activeProposals: any[]
-  endedProposals: any[]
-
-  expertActiveProposalsCount: number
-  expertEndedProposalsCount: number
-  expertLoadingProposalsCount: boolean
-}
-
-const initialState: QProposalsState = {
-  activeProposals: [],
-  endedProposals: [],
+const initialState = {
+  activeProposals: [] as any[],
+  endedProposals: [] as any[],
 
   expertActiveProposalsCount: -1,
   expertEndedProposalsCount: -1,
@@ -27,7 +17,7 @@ export default function expertProposals (
   action: ExpertProposalsAction
 ) {
   switch (action.type) {
-    case actionTypes.SET_EXPERT_PROPOSALS:
+    case 'SET_EXPERT_PROPOSALS':
       return {
         ...state,
         activeProposals: groupArrayByBlockNumber(action.activeProposalsArray),

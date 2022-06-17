@@ -1,15 +1,15 @@
-import * as actionTypes from './action-types';
+import * as types from './types';
 
-export const getSlashingProposals = () => ({
-  type: actionTypes.GET_SLASHING_PROPOSALS
+export const getSlashingProposals = (): types.GetSlashingProposals => ({
+  type: 'GET_SLASHING_PROPOSALS'
 });
 
 export const setSlashingProposals = (
   activeProposalsArray: any[],
   endedProposalsArray: any[],
   proposalsCounter: { ended: number, active: number }
-) => ({
-  type: actionTypes.SET_SLASHING_PROPOSALS,
+): types.SetSlashingProposals => ({
+  type: 'SET_SLASHING_PROPOSALS',
   activeProposalsArray,
   endedProposalsArray,
   proposalsCounter
@@ -19,8 +19,8 @@ export const onEscrowCastObjection = (
   data: any,
   contractName: string,
   proposalId: string
-) => ({
-  type: actionTypes.ESCROW_CAST_OBJECTION,
+): types.OnEscrowCastObjection => ({
+  type: 'ESCROW_CAST_OBJECTION',
   data,
   contractName,
   proposalId
@@ -30,8 +30,8 @@ export const onEscrowProposeDecision = (
   data: any,
   contractName: string,
   proposalId: string
-) => ({
-  type: actionTypes.ESCROW_PROPOSE_DECISION,
+): types.OnEscrowProposeDecision => ({
+  type: 'ESCROW_PROPOSE_DECISION',
   data,
   contractName,
   proposalId
@@ -41,8 +41,8 @@ export const onEscrowProposerRemark = (
   data: any,
   contractName: string,
   proposalId: string
-) => ({
-  type: actionTypes.ESCROW_PROPOSER_REMARK,
+): types.OnEscrowProposerRemark => ({
+  type: 'ESCROW_PROPOSER_REMARK',
   data,
   contractName,
   proposalId
@@ -51,8 +51,8 @@ export const onEscrowProposerRemark = (
 export const onEscrowRecallProposeDecision = (
   contractName: string,
   proposalId: string
-) => ({
-  type: actionTypes.ESCROW_RECALL_PROPOSE_DECISION,
+): types.OnEscrowRecallProposeDecision => ({
+  type: 'ESCROW_RECALL_PROPOSE_DECISION',
   contractName,
   proposalId
 });
@@ -60,8 +60,8 @@ export const onEscrowRecallProposeDecision = (
 export const onEscrowConfirmDecision = (
   contractName: string,
   proposalId: string
-) => ({
-  type: actionTypes.ESCROW_CONFIRM_DECISION,
+): types.OnEscrowConfirmDecision => ({
+  type: 'ESCROW_CONFIRM_DECISION',
   contractName,
   proposalId
 });
@@ -70,8 +70,8 @@ export const setEscrowAction = (
   contractName: string,
   proposalId: string,
   escrowType: string
-) => ({
-  type: actionTypes.SET_ESCROW_ACTION,
+): types.SetEscrowAction => ({
+  type: 'SET_ESCROW_ACTION',
   contractName,
   proposalId,
   escrowType
@@ -80,10 +80,8 @@ export const setEscrowAction = (
 export const setPurgeSlashing = (
   slashingAddress: string,
   contractType: string
-) => ({
-  type: actionTypes.SET_PURGE_SLASHING,
+): types.SetPurgeSlashing => ({
+  type: 'SET_PURGE_SLASHING',
   slashingAddress,
   contractType
 });
-
-export type SlashingProposalsAction = ReturnType<typeof setSlashingProposals>

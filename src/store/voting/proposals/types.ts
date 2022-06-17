@@ -5,7 +5,7 @@ export interface CreateProposal {
 
 export interface SetVoteDetails {
   type: 'SET_VOTE_DETAILS'
-  result: any
+  result: { contract: string, proposalId: string }
 }
 
 export interface VoteForProposal {
@@ -28,7 +28,7 @@ export interface GetConstitutionHash {
 
 export interface GetConstitutionHashSuccess {
   type: 'GET_CONSTITUTION_HASH_SUCCESS'
-  result: any
+  result: string
 }
 
 export interface GetBaseVotingWeightInfo {
@@ -37,7 +37,7 @@ export interface GetBaseVotingWeightInfo {
 
 export interface SetBaseVotingWeightInfo {
   type: 'SET_BASE_VOTING_WEIGHT_INFO'
-  payload: any
+  payload: Record<string, unknown>
 }
 
 export interface GetProposalsByType {
@@ -47,7 +47,7 @@ export interface GetProposalsByType {
 
 export interface SetNewParameter {
   type: 'SET_NEW_PARAMETER'
-  result: any
+  result: boolean
 }
 
 export type ProposalsAction =

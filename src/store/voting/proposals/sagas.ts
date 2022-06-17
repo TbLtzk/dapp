@@ -2,7 +2,7 @@ import { call, delay, put, select, takeEvery } from 'typed-redux-saga';
 
 import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 
-import { getContractUpdatesProposals } from '../contract-updates/action-creators';
+import { getContractUpdatesProposals } from '../contract-updates/actions';
 
 import {
   getBaseVotingWeightInfo,
@@ -12,7 +12,7 @@ import {
   setBaseVotingWeightInfo,
   setVoteDetails,
 } from './actions';
-import { CreateProposal, ExecuteProposal, GetBaseVotingWeightInfo, GetConstitutionHash, GetNumberAllProposals, GetProposalsByType, VoteForProposal } from './types';
+import * as types from './types';
 
 import { getDelegationInfo, getLockedAssets } from 'store/q-vault/action-creators';
 import {
@@ -20,10 +20,10 @@ import {
   setTransactionLoadingError,
   setTransactionLoadingSuccess,
 } from 'store/transaction-handler/action-creators';
-import { getExpertProposals } from 'store/voting/expert-proposals/action-creators';
-import { getQProposals } from 'store/voting/q-proposals/action-creators';
+import { getExpertProposals } from 'store/voting/expert-proposals/actions';
+import { getQProposals } from 'store/voting/q-proposals/actions';
 import { getRootProposals } from 'store/voting/root-node-proposals/actions';
-import { getSlashingProposals } from 'store/voting/slashing-proposals/action-creators';
+import { getSlashingProposals } from 'store/voting/slashing-proposals/actions';
 
 import { getVotingWeightProxyInstance } from 'contracts/contract-instance';
 import {
@@ -55,7 +55,7 @@ export const onEscrowCastObjection = (
   proposalId
 });
 
-function* createProposalGenerator ({ proposal }: CreateProposal) {
+function* createProposalGenerator ({ proposal }: types.CreateProposal) {
   try {
     yield* put(setTransactionLoading());
     const { userAddress } = yield* select((state) => state.userInf);
@@ -125,7 +125,7 @@ function* createProposalGenerator ({ proposal }: CreateProposal) {
   }
 }
 
-function* voteForProposalGenerator ({ data }: VoteForProposal) {
+function* voteForProposalGenerator ({ data }: types.VoteForProposal) {
   try {
     yield* put(setTransactionLoading());
     yield* put(setVoteDetails({
@@ -166,7 +166,7 @@ function* voteForProposalGenerator ({ data }: VoteForProposal) {
   }
 }
 
-function* executeProposalGenerator ({ data }: ExecuteProposal) {
+function* executeProposalGenerator ({ data }: types.ExecuteProposal) {
   try {
     yield* put(setTransactionLoading());
 
@@ -184,7 +184,7 @@ function* executeProposalGenerator ({ data }: ExecuteProposal) {
   }
 }
 
-function* getProposalsByTypeGenerator ({ contractName }: GetProposalsByType) {
+function* getProposalsByTypeGenerator ({ contractName }: types.GetProposalsByType) {
   switch (contractName) {
     case CONTRACTS_NAMES.constitutionVoting:
     case CONTRACTS_NAMES.emergencyUpdateVoting:
@@ -255,11 +255,11 @@ function* getBaseVotingWeightInfoGenerator () {
 }
 
 export default [
-  takeEvery<CreateProposal>('CREATE_PROPOSAL', createProposalGenerator),
-  takeEvery<VoteForProposal>('VOTE_FOR_PROPOSAL', voteForProposalGenerator),
-  takeEvery<ExecuteProposal>('EXECUTE_PROPOSAL', executeProposalGenerator),
-  takeEvery<GetProposalsByType>('GET_PROPOSALS_BY_TYPE', getProposalsByTypeGenerator),
-  takeEvery<GetNumberAllProposals>('GET_NUMBER_ALL_ENDED_PROPOSALS', getNumberAllProposalsGenerator),
-  takeEvery<GetConstitutionHash>('GET_CONSTITUTION_HASH', getConstitutionHashGenerator),
-  takeEvery<GetBaseVotingWeightInfo>('GET_BASE_VOTING_WEIGHT_INFO', getBaseVotingWeightInfoGenerator),
+  takeEvery<types.CreateProposal>('CREATE_PROPOSAL', createProposalGenerator),
+  takeEvery<types.VoteForProposal>('VOTE_FOR_PROPOSAL', voteForProposalGenerator),
+  takeEvery<types.ExecuteProposal>('EXECUTE_PROPOSAL', executeProposalGenerator),
+  takeEvery<types.GetProposalsByType>('GET_PROPOSALS_BY_TYPE', getProposalsByTypeGenerator),
+  takeEvery<types.GetNumberAllProposals>('GET_NUMBER_ALL_ENDED_PROPOSALS', getNumberAllProposalsGenerator),
+  takeEvery<types.GetConstitutionHash>('GET_CONSTITUTION_HASH', getConstitutionHashGenerator),
+  takeEvery<types.GetBaseVotingWeightInfo>('GET_BASE_VOTING_WEIGHT_INFO', getBaseVotingWeightInfoGenerator),
 ];

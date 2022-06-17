@@ -2,18 +2,9 @@ import { RootNodeProposalsAction } from './types';
 
 import { groupArrayByBlockNumber } from 'func/useful';
 
-export interface RootNodeProposalsState {
-  activeProposals: any[]
-  endedProposals: any[]
-
-  rootActiveProposalsCount: number
-  rootEndedProposalsCount: number
-  rootLoadingProposalsCount: boolean
-}
-
-const initialState: RootNodeProposalsState = {
-  activeProposals: [],
-  endedProposals: [],
+const initialState = {
+  activeProposals: [] as any[],
+  endedProposals: [] as any[],
 
   rootActiveProposalsCount: -1,
   rootEndedProposalsCount: -1,

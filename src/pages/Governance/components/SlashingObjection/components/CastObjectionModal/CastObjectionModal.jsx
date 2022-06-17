@@ -9,7 +9,7 @@ import useMultiStepForm from 'hooks/useMultiStepForm';
 import ConfirmStep from './components/ConfirmStep';
 import LinkStep from './components/LinkStep';
 
-import { onEscrowCastObjection } from 'store/voting/slashing-proposals/action-creators';
+import { onEscrowCastObjection } from 'store/voting/slashing-proposals/actions';
 
 import formTypes from 'constants/form-types';
 

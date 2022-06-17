@@ -1,16 +1,9 @@
 import { ProposalsAction } from './types';
 
-export interface ProposalsState {
-  voteDetails: { contract: string, proposalId: string }
-  constitutionHash: string
-  baseVotingWeightInfo: Record<string, unknown>
-  newParameter: boolean
-}
-
 const initialState = {
   voteDetails: { contract: '', proposalId: '' },
   constitutionHash: '...',
-  baseVotingWeightInfo: {},
+  baseVotingWeightInfo: {} as Record<string, unknown>,
   newParameter: false
 };
 
@@ -37,7 +30,7 @@ export default function proposals (
     case 'SET_NEW_PARAMETER':
       return {
         ...state,
-        newParameter: action.result
+        newParameter: action.result,
       };
     default:
       return state;

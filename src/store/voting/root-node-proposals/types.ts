@@ -10,4 +10,3 @@ export interface SetRootProposals {
 }
 
 export type RootNodeProposalsAction = GetRootProposals | SetRootProposals
-export type ActionType = RootNodeProposalsAction['type']

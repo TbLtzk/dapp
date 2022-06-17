@@ -1,7 +1,7 @@
 import { call, put, select, takeEvery } from 'typed-redux-saga';
 
 import { setRootProposals } from './actions';
-import { ActionType } from './types';
+import { GetRootProposals } from './types';
 
 import { creationRootContractObj } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
@@ -13,7 +13,7 @@ let lastActiveBlock: string | number;
 function* getRootProposalsGenerator () {
   try {
     const contract = creationRootContractObj();
-    const { minimalActiveBlockHeight, lastBlockHeight } = yield getMinimalActiveBlockHeight();
+    const { minimalActiveBlockHeight, lastBlockHeight } = yield* call(getMinimalActiveBlockHeight);
 
     let proposalsCounter;
     let activeProposalsArray;
@@ -51,5 +51,5 @@ function* getRootProposalsGenerator () {
 }
 
 export default [
-  takeEvery<ActionType>('GET_ROOT_PROPOSALS', getRootProposalsGenerator)
+  takeEvery<GetRootProposals>('GET_ROOT_PROPOSALS', getRootProposalsGenerator)
 ];

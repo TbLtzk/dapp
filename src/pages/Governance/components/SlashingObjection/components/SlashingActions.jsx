@@ -13,7 +13,6 @@ function SlashingActions ({ objection, isRootNode, onAction }) {
     <div>
       <Tooltip shown additionalInfo="The slashed party can object to this executed slashing proposal and seek for an arbitral award.">
         <Button
-          disabled={!objection}
           style={{ margin: '10px', width: '175px' }}
           onClick={() => onAction(slashingTypes.castObjection)}
         >

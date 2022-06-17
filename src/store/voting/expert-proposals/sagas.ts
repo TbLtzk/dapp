@@ -1,7 +1,7 @@
-import { all, put, select, takeEvery } from 'typed-redux-saga';
+import { all, call, put, select, takeEvery } from 'typed-redux-saga';
 
-import { setExpertProposals } from './action-creators';
-import * as actionTypes from './action-types';
+import { setExpertProposals } from './actions';
+import { GetExpertProposals } from './types';
 
 import { creationExpertContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
@@ -13,7 +13,7 @@ let lastActiveBlock: string | number;
 function* getExpertProposalsGenerator () {
   try {
     const contracts = creationExpertContractsObjArray();
-    const { minimalActiveBlockHeight, lastBlockHeight } = yield getMinimalActiveBlockHeight();
+    const { minimalActiveBlockHeight, lastBlockHeight } = yield* call(getMinimalActiveBlockHeight);
 
     let proposalsCounter;
     let activeProposalsArray;
@@ -50,4 +50,6 @@ function* getExpertProposalsGenerator () {
   }
 }
 
-export default [takeEvery(actionTypes.GET_EXPERT_PROPOSALS, getExpertProposalsGenerator)];
+export default [
+  takeEvery<GetExpertProposals>('GET_EXPERT_PROPOSALS', getExpertProposalsGenerator)
+];

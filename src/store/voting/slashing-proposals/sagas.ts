@@ -2,8 +2,8 @@ import { all, call, put, select, takeEvery } from 'typed-redux-saga';
 
 import { setVoteDetails } from '../proposals/actions';
 
-import { onEscrowCastObjection, onEscrowProposeDecision, onEscrowProposerRemark, setEscrowAction, setPurgeSlashing, setSlashingProposals } from './action-creators';
-import * as actionTypes from './action-types';
+import { setSlashingProposals } from './actions';
+import * as types from './types';
 
 import { setTransactionLoading, setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/action-creators';
 
@@ -62,7 +62,7 @@ function* onEscrowCastObjectionGenerator ({
   data,
   contractName,
   proposalId
-}: ReturnType<typeof onEscrowCastObjection>) {
+}: types.OnEscrowCastObjection) {
   try {
     yield* put(setTransactionLoading());
     yield* put(setVoteDetails({
@@ -93,7 +93,7 @@ function* onEscrowProposeDecisionGenerator ({
   data,
   contractName,
   proposalId
-}: ReturnType<typeof onEscrowProposeDecision>) {
+}: types.OnEscrowProposeDecision) {
   try {
     yield* put(setTransactionLoading());
     yield* put(setVoteDetails({ contract: contractName, proposalId }));
@@ -126,7 +126,7 @@ function* onEscrowProposerRemarkGenerator ({
   data,
   contractName,
   proposalId
-}: ReturnType<typeof onEscrowProposerRemark>) {
+}: types.OnEscrowProposerRemark) {
   try {
     yield* put(setTransactionLoading());
     yield* put(setVoteDetails({ contract: contractName, proposalId }));
@@ -158,7 +158,7 @@ function* setEscrowActionGenerator ({
   contractName,
   proposalId,
   escrowType
-}: ReturnType<typeof setEscrowAction>) {
+}: types.SetEscrowAction) {
   try {
     yield* put(setTransactionLoading());
     yield* put(setVoteDetails({ contract: contractName, proposalId }));
@@ -197,7 +197,7 @@ function* setEscrowActionGenerator ({
 function* setPurgeSlashingGenerator ({
   slashingAddress,
   contractType
-}: ReturnType<typeof setPurgeSlashing>) {
+}: types.SetPurgeSlashing) {
   try {
     yield* put(setTransactionLoading());
     const { userAddress } = yield* select((state) => state.userInf);
@@ -215,11 +215,11 @@ function* setPurgeSlashingGenerator ({
 }
 
 export default [
-  takeEvery(actionTypes.ESCROW_CAST_OBJECTION, onEscrowCastObjectionGenerator),
-  takeEvery(actionTypes.ESCROW_PROPOSER_REMARK, onEscrowProposeDecisionGenerator),
-  takeEvery(actionTypes.ESCROW_PROPOSER_REMARK, onEscrowProposerRemarkGenerator),
-  takeEvery(actionTypes.GET_SLASHING_PROPOSALS, getSlashingProposalsGenerator),
+  takeEvery<types.OnEscrowCastObjection>('ESCROW_CAST_OBJECTION', onEscrowCastObjectionGenerator),
+  takeEvery<types.OnEscrowProposeDecision>('ESCROW_PROPOSE_DECISION', onEscrowProposeDecisionGenerator),
+  takeEvery<types.OnEscrowProposerRemark>('ESCROW_PROPOSER_REMARK', onEscrowProposerRemarkGenerator),
+  takeEvery<types.GetSlashingProposals>('GET_SLASHING_PROPOSALS', getSlashingProposalsGenerator),
 
-  takeEvery(actionTypes.SET_ESCROW_ACTION, setEscrowActionGenerator),
-  takeEvery(actionTypes.SET_PURGE_SLASHING, setPurgeSlashingGenerator),
+  takeEvery<types.SetEscrowAction>('SET_ESCROW_ACTION', setEscrowActionGenerator),
+  takeEvery<types.SetPurgeSlashing>('SET_PURGE_SLASHING', setPurgeSlashingGenerator),
 ];

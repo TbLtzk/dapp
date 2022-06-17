@@ -5,15 +5,15 @@ import { Link } from 'react-router-dom';
 import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 
 import { mode } from 'store/dashboard-mode/selectors';
-import { getContractUpdatesProposals } from 'store/voting/contract-updates/action-creators';
+import { getContractUpdatesProposals } from 'store/voting/contract-updates/actions';
 import { contractUpdatesActiveProposalsCountSelector } from 'store/voting/contract-updates/selectors';
-import { getExpertProposals } from 'store/voting/expert-proposals/action-creators';
+import { getExpertProposals } from 'store/voting/expert-proposals/actions';
 import { expertActiveProposalsCountSelector } from 'store/voting/expert-proposals/selectors';
-import { getQProposals } from 'store/voting/q-proposals/action-creators';
+import { getQProposals } from 'store/voting/q-proposals/actions';
 import { qActiveProposalsCountSelector } from 'store/voting/q-proposals/selectors';
 import { getRootProposals } from 'store/voting/root-node-proposals/actions';
 import { rootActiveProposalsCountSelector } from 'store/voting/root-node-proposals/selectors';
-import { getSlashingProposals } from 'store/voting/slashing-proposals/action-creators';
+import { getSlashingProposals } from 'store/voting/slashing-proposals/actions';
 import { slashingActiveProposalsCountSelector } from 'store/voting/slashing-proposals/selectors';
 
 function ProposalsNav () {

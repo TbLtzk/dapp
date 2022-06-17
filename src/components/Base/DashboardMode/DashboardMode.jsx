@@ -6,11 +6,11 @@ import Switch from 'components/Base/Form/Switch';
 import { getAuctions } from 'store/auctions/action-creators';
 import { setDashboardMode } from 'store/dashboard-mode/action-creators';
 import { mode } from 'store/dashboard-mode/selectors';
-import { getContractUpdatesProposals } from 'store/voting/contract-updates/action-creators';
-import { getExpertProposals } from 'store/voting/expert-proposals/action-creators';
-import { getQProposals } from 'store/voting/q-proposals/action-creators';
+import { getContractUpdatesProposals } from 'store/voting/contract-updates/actions';
+import { getExpertProposals } from 'store/voting/expert-proposals/actions';
+import { getQProposals } from 'store/voting/q-proposals/actions';
 import { getRootProposals } from 'store/voting/root-node-proposals/actions';
-import { getSlashingProposals } from 'store/voting/slashing-proposals/action-creators';
+import { getSlashingProposals } from 'store/voting/slashing-proposals/actions';
 
 import { AUCTIONS_TYPES } from 'constants/statuses';
 

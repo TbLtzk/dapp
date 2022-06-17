@@ -1,7 +1,7 @@
-import { all, put, select, takeEvery } from 'typed-redux-saga';
+import { all, call, put, select, takeEvery } from 'typed-redux-saga';
 
-import { setQProposals } from './action-creators';
-import * as actionTypes from './action-types';
+import { setQProposals } from './actions';
+import { GetQProposals } from './types';
 
 import { creationQContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
@@ -13,7 +13,7 @@ let lastActiveBlock: string | number;
 function* getQProposalsGenerator () {
   try {
     const contracts = creationQContractsObjArray();
-    const { minimalActiveBlockHeight, lastBlockHeight } = yield getMinimalActiveBlockHeight();
+    const { minimalActiveBlockHeight, lastBlockHeight } = yield* call(getMinimalActiveBlockHeight);
 
     let proposalsCounter;
     let activeProposalsArray;
@@ -49,4 +49,6 @@ function* getQProposalsGenerator () {
   }
 }
 
-export default [takeEvery(actionTypes.GET_Q_PROPOSALS, getQProposalsGenerator)];
+export default [
+  takeEvery<GetQProposals>('GET_Q_PROPOSALS', getQProposalsGenerator)
+];
