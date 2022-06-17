@@ -1,8 +1,9 @@
+import { HTMLAttributes } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { TabsStyle } from './styles';
 
-interface Props {
+interface Props extends HTMLAttributes<HTMLDivElement> {
   tabs: {
     label: string
     link: string
@@ -10,9 +11,9 @@ interface Props {
   }[]
 }
 
-function TabsPanel ({ tabs }: Props) {
+function TabsPanel ({ tabs, ...rest }: Props) {
   return (
-    <TabsStyle>
+    <TabsStyle {...rest}>
       {tabs.map(({ label, count, link }) => (
         <NavLink
           key={label}

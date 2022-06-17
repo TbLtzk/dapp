@@ -6,7 +6,6 @@ import PageWrap from 'components/Base/PageWrap';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
 import ProposalCard from './components/ProposalCard';
-import VotingStats from './components/VotingStats';
 
 import { transactionLoadingSelector } from 'store/transaction-handler/selectors';
 
@@ -70,7 +69,6 @@ function Proposal ({ match }: RouteComponentProps<{
 
   return (
     <PageWrap headerTitle={proposalKind.replace(/-/g, ' ')}>
-      <VotingStats />
       {error
         ? <p>Wrong link</p>
         : proposal

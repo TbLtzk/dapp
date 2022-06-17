@@ -70,7 +70,7 @@ function ProposalsNav () {
     ),
   ];
 
-  return <TabsPanel tabs={tabs} />;
+  return <TabsPanel tabs={tabs} style={{ marginTop: '24px' }} />;
 }
 
 export default ProposalsNav;

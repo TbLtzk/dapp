@@ -24,11 +24,9 @@ function ProposalsList () {
   const [list, setList] = useState<any>([]);
   const [index, setIndex] = useState(LIMIT);
 
-  const LENGTH = proposals.length;
-
   const handleNextProposals = () => {
     const newIndex = index + LIMIT;
-    const newShowMore = newIndex < LENGTH - 1;
+    const newShowMore = newIndex < proposals.length - 1;
     const newList = concat(list, slice(proposals, index, newIndex));
     setIndex(newIndex);
     setList(newList);
@@ -43,10 +41,11 @@ function ProposalsList () {
   }, [proposals, proposalsCount]);
 
   const checkProposals = () => {
-    if (LENGTH > LIMIT) {
+    if (proposals.length > LIMIT) {
       setShowMore(true);
     }
-    if (LENGTH) {
+
+    if (proposals.length) {
       setList(slice(proposals, 0, index));
       setIsLoading(false);
     } else if (!proposalsCount) {
@@ -78,21 +77,19 @@ function ProposalsList () {
           />
         ))}
       </div>
-      {showMore
-        ? (
-          <LoadingWrap>
-            <Button
-              style={{
-                margin: '15px auto',
-                width: '140px'
-              }}
-              onClick={handleNextProposals}
-            >
-              Show more
-            </Button>
-          </LoadingWrap>
-        )
-        : null}
+      {showMore && (
+        <LoadingWrap>
+          <Button
+            style={{
+              margin: '15px auto',
+              width: '140px'
+            }}
+            onClick={handleNextProposals}
+          >
+            Show more
+          </Button>
+        </LoadingWrap>
+      )}
     </>
   );
 }

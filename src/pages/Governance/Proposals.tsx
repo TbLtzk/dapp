@@ -1,14 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import PageWrap from 'components/Base/PageWrap';
 
 import CreateProposal from './components/CreateProposal';
-import ProposalFilters from './components/ProposalFilters';
+import ProposalFilters from './components/ProposalFilters/ProposalFilters';
 import ProposalsList from './components/ProposalsList';
 import ProposalsNav from './components/ProposalsNav';
 import PurgeSlashing from './components/PurgeSlashing';
 import VotingStats from './components/VotingStats';
+import { ProposalFilter } from './types';
 
 import { getProposalsByType } from 'store/voting/proposals/actions';
 
@@ -17,6 +18,10 @@ import { ProposalType } from 'constants/statuses';
 
 function Proposals ({ type }: { type: ProposalType }) {
   const dispatch = useDispatch();
+
+  const [filters, setFilters] = useState<ProposalFilter>({
+    status: 'all',
+  });
 
   const proposalToContractMap: Record<ProposalType, string> = {
     'q-proposals': CONTRACTS_NAMES.constitutionVoting,
@@ -27,6 +32,7 @@ function Proposals ({ type }: { type: ProposalType }) {
   };
 
   useEffect(() => {
+    setFilters({ status: 'all' });
     dispatch(getProposalsByType(proposalToContractMap[type]));
   }, [dispatch, type]);
 
@@ -42,7 +48,10 @@ function Proposals ({ type }: { type: ProposalType }) {
       {type === 'slashing-proposals' && <PurgeSlashing />}
 
       <ProposalsNav />
-      <ProposalFilters />
+      <ProposalFilters
+        filters={filters}
+        onChange={setFilters}
+      />
       <ProposalsList />
     </PageWrap>
   );

@@ -1,18 +1,31 @@
 
+import { SelectHTMLAttributes } from 'react';
+
 import ErrorInputMessage from 'components/Base/ErrorInputMessage';
 
 import { SelectWrapper } from './styles';
 
-function Select ({
+type SelectProps = SelectHTMLAttributes<HTMLSelectElement>
+interface Props<T extends string> extends Omit<SelectProps, 'onChange'> {
+  value: string
+  error?: string
+  label?: string
+  disabled?: boolean
+  defaultValue?: T
+  options: { value: T, label: string }[]
+  onChange: (val: T) => void
+}
+
+function Select<T extends string> ({
   value,
-  label,
   error,
+  label,
   disabled,
-  defaultValue = '',
+  defaultValue,
   options = [],
-  onChange = () => {},
+  onChange,
   ...rest
-}) {
+}: Props<T>) {
   return (
     <SelectWrapper
       $error={error}
@@ -25,13 +38,13 @@ function Select ({
           disabled={disabled}
           value={value}
           {...rest}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => onChange(e.target?.value as T)}
         >
           {options.map(item => (
             <option
               key={item.value}
               value={item.value}
-              defaultValue={item.value === defaultValue}
+              defaultValue={defaultValue}
             >
               {item.label}
             </option>
