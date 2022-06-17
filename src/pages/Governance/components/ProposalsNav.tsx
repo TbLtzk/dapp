@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { MODE } from 'components/Base/DashboardMode/DashboardMode';
+import TabsPanel from 'components/Base/TabsPanel';
 
 import { mode } from 'store/dashboard-mode/selectors';
 import { getContractUpdatesProposals } from 'store/voting/contract-updates/actions';
@@ -70,15 +70,7 @@ function ProposalsNav () {
     ),
   ];
 
-  return (
-    <div style={{ display: 'flex', gap: '15px' }}>
-      {tabs.map(({ label, count, link }) => (
-        <Link key={label} to={link}>
-          {label} {count > 0 && count}
-        </Link>
-      ))}
-    </div>
-  );
+  return <TabsPanel tabs={tabs} />;
 }
 
 export default ProposalsNav;

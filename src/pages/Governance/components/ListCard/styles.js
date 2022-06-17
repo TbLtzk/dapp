@@ -20,8 +20,7 @@ export const ListCardWrp = styled.div`
   transition: all 150ms ease-out;
 
   &:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
-    border-color: ${(props) => props.theme.colors.oxfordBlueTint2};
+    border-color: ${(props) => props.theme.colors.oxfordBlueTint4};
   }
 
   h1 {
