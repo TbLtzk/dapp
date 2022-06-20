@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { FormEvent, useCallback, useMemo, useState } from 'react';
 
 type Validator<K extends string, V> = (val: V, values: Record<K, V>) => { isValid: boolean, message: string }
 
@@ -40,7 +40,7 @@ function useForm<K extends string, V> ({
     return true;
   };
 
-  const submit = async (e?: Event) => {
+  const submit = async (e?: FormEvent) => {
     e?.preventDefault();
     if (!validate()) return;
 

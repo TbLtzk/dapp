@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import ModalStep from 'components/Base/ModalStep';
 
-import { useCreateProposal } from '../../ExpertProposalModal';
+import { useCreateProposal } from '../ExpertProposalModal';
 
 import { newParameterSelector } from 'store/voting/proposals/selectors';
 

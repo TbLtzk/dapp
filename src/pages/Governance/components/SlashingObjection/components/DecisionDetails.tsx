@@ -1,7 +1,7 @@
 
 import ListDetails from './ListDetails';
 
-function DecisionDetails ({ decision }) {
+function DecisionDetails ({ decision }: { decision: Record<string, string> }) {
   const list = [
     {
       title: 'Current Decision Proposer',

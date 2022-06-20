@@ -12,8 +12,8 @@ import { loadTypeSelector } from 'store/user-inf/selectors';
 import { LOAD_TYPES } from 'constants/statuses';
 
 type InputProps = InputHTMLAttributes<HTMLInputElement>
-interface Props extends Omit<InputProps, 'onChange' | 'prefix'> {
-  value: string | number | boolean;
+interface Props extends Omit<InputProps, 'onChange' | 'prefix' | 'value'> {
+  value: string | number | boolean
   error?: string
   label?: string
   disabled?: boolean
@@ -60,7 +60,7 @@ const Input = ({
         {prefix && <div className="input__prefix">{prefix}</div>}
         <input
           className="form-control"
-          value={value}
+          value={String(value)}
           type={type}
           inputMode={type === 'number' ? 'decimal' : 'text'}
           autoComplete="off"
