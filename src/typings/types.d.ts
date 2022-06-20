@@ -6,5 +6,4 @@ declare module 'typed-redux-saga' {
     pattern: A['type'],
     worker: (action: A) => any,
   )
-
 }

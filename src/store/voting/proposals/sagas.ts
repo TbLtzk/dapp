@@ -247,7 +247,7 @@ function* getBaseVotingWeightInfoGenerator () {
     const { userAddress } = yield* select((state) => state.userInf);
     const contract = yield* call(getVotingWeightProxyInstance);
     const timeStamp = getNowTimestamp();
-    const result = yield* call(contract.getBaseVotingWeightInfo, userAddress, timeStamp);
+    const result = yield* call(() => contract.getBaseVotingWeightInfo(userAddress, timeStamp));
     yield* put(setBaseVotingWeightInfo(result));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);

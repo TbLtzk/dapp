@@ -24,7 +24,7 @@ function* getRootProposalsGenerator () {
         (state) => state.rootNodeProposals
       );
 
-      const proposals = yield* call(contract.getNewProposalsAndCheckActive, activeProposals, lastActiveBlock);
+      const proposals = yield* call(() => contract.getNewProposalsAndCheckActive(activeProposals, lastActiveBlock));
 
       const [newProposalsCount, newActiveProposals, newEndedProposalsIds] = sortAndCountProposalsByType([proposals]);
       proposalsCounter = {
@@ -35,7 +35,7 @@ function* getRootProposalsGenerator () {
       endedProposalsArray = [...endedProposals, ...newEndedProposalsIds];
       lastActiveBlock = lastBlockHeight;
     } else {
-      const proposals = yield* call(contract.getProposalsCount, minimalActiveBlockHeight);
+      const proposals = yield* call(() => contract.getProposalsCount(minimalActiveBlockHeight));
       const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposalsByType([proposals]);
 
       proposalsCounter = proposalsCount;

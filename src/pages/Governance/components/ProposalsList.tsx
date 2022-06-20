@@ -8,7 +8,7 @@ import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
 import ListCard from './ListCard';
 
-import { qEndedProposalsCountSelector, qEndedProposalsSelector } from 'store/voting/q-proposals/selectors';
+import { qProposalsLoadingSelector, qProposalsSelector } from 'store/voting/q-proposals/selectors';
 
 import { LoadingWrap } from 'constants/style';
 import { fillArray } from 'func/useful';
@@ -16,47 +16,29 @@ import { fillArray } from 'func/useful';
 const LIMIT = 10;
 
 function ProposalsList () {
-  const proposals = useSelector(qEndedProposalsSelector);
-  const proposalsCount = useSelector(qEndedProposalsCountSelector);
+  const proposals = useSelector(qProposalsSelector);
+  const isLoading = useSelector(qProposalsLoadingSelector);
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [showMore, setShowMore] = useState(false);
   const [list, setList] = useState<any>([]);
   const [index, setIndex] = useState(LIMIT);
 
   const handleNextProposals = () => {
     const newIndex = index + LIMIT;
-    const newShowMore = newIndex < proposals.length - 1;
     const newList = concat(list, slice(proposals, index, newIndex));
     setIndex(newIndex);
     setList(newList);
-    setShowMore(newShowMore);
   };
 
   useEffect(() => {
-    checkProposals();
-    return () => {
-      setIsLoading(false);
-    };
-  }, [proposals, proposalsCount]);
-
-  const checkProposals = () => {
-    if (proposals.length > LIMIT) {
-      setShowMore(true);
-    }
-
     if (proposals.length) {
       setList(slice(proposals, 0, index));
-      setIsLoading(false);
-    } else if (!proposalsCount) {
-      setIsLoading(false);
     }
-  };
+  }, [proposals]);
 
   if (isLoading) {
     return (
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-        {fillArray(9).map((id) => (
+        {fillArray(10).map((id) => (
           <SkeletonProposalsLoading key={id} />
         ))}
       </div>
@@ -77,7 +59,7 @@ function ProposalsList () {
           />
         ))}
       </div>
-      {showMore && (
+      {proposals.length > list.length && (
         <LoadingWrap>
           <Button
             style={{

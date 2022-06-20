@@ -1,8 +1,24 @@
+import { createSelector } from 'reselect';
+
 import { RootState } from 'store';
 
-export const qActiveProposalsSelector = (state: RootState) => state.qProposals.activeProposals;
-export const qEndedProposalsSelector = (state: RootState) => state.qProposals.endedProposals;
+export const qProposalsSelector = (state: RootState) => state.qProposals.proposals;
 
-export const qEndedProposalsCountSelector = (state: RootState) => state.qProposals.qEndedProposalsCount;
-export const qActiveProposalsCountSelector = (state: RootState) => state.qProposals.qActiveProposalsCount;
-export const qLoadingProposalsCountSelector = (state: RootState) => state.qProposals.qLoadingProposalsCount;
+export const qActiveProposalsSelector = createSelector(
+  [qProposalsSelector], (proposals) =>
+    proposals.filter((proposal) => proposal.status === 'active')
+);
+export const qEndedProposalsSelector = createSelector(
+  [qProposalsSelector], (proposals) =>
+    proposals.filter((proposal) => proposal.status === 'ended')
+);
+
+export const qActiveProposalsCountSelector = createSelector(
+  [qActiveProposalsSelector], (proposals) => proposals.length
+);
+export const qEndedProposalsCountSelector = createSelector(
+  [qEndedProposalsSelector], (proposals) => proposals.length
+);
+
+export const qLoadingProposalsCountSelector = (state: RootState) => state.qProposals.isLoading;
+export const qProposalsLoadingSelector = (state: RootState) => state.qProposals.isLoading;
