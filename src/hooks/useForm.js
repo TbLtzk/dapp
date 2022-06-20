@@ -6,7 +6,7 @@ import { useCallback, useMemo, useState } from 'react';
  * @param {object} opts Options.
  * @param {Record<FieldKey, FieldValue>} [opts.initialValues] Form fields.
  * @param {Record<FieldKey, unknown[]>} [opts.validators] Form validators.
- * @param {(form: Record<FieldKey, FieldValue>) => Promise<void>} [opts.onSubmit] Submit handler.
+ * @param {(form: Record<FieldKey, FieldValue>) => void | Promise<void>} [opts.onSubmit] Submit handler.
  *
  * @returns {{
  *   fields: Record<FieldKey, {

@@ -8,7 +8,6 @@ import CreateProposal from './components/CreateProposal';
 import ProposalFilters from './components/ProposalFilters/ProposalFilters';
 import ProposalsList from './components/ProposalsList';
 import ProposalsNav from './components/ProposalsNav';
-import PurgeSlashing from './components/PurgeSlashing';
 import VotingStats from './components/VotingStats';
 import { ProposalFilter, ProposalFilterStatus } from './types';
 
@@ -40,8 +39,7 @@ function Proposals ({ type }: { type: ProposalType }) {
       headerTitle="Governance"
       headerExtra={createProposal}
     >
-      <VotingStats />
-      {type === 'slashing' && <PurgeSlashing />}
+      <VotingStats type={type} />
 
       <ProposalsNav />
       <ProposalFilters

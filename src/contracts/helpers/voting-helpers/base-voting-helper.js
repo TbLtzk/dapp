@@ -7,7 +7,6 @@ import ParametersVoting from './parameters-voting-helper';
 import RootsVotingService from './roots-voting-helper';
 import SlashingVotingService from './slashing-voting-helper';
 
-import { ZERO_ADDRESS } from 'constants/config';
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
 import ErrorHandler from 'func/ErrorHandler';
 
@@ -117,38 +116,3 @@ export const chooseExpertContractDependsOnType = (typeContract, type) => {
         : new ParametersVoting(CONTRACTS_NAMES.ePRSParametersVoting);
   }
 };
-
-export function getVoteDelegation (agent, ownWeight, address) {
-  switch (true) {
-    case !agent:
-      return {
-        delegateInfo: '...',
-        votingInfo: '...'
-      };
-
-    case agent !== address && agent !== ZERO_ADDRESS:
-      return {
-        delegateInfo: `You delegated your voting rights to ${agent}`,
-        votingInfo: `Your voting agent is ${agent}`
-      };
-
-    case Number(ownWeight) && agent === address:
-      return {
-        delegateInfo: 'You exercise your voting right yourself',
-        votingInfo: 'You vote for yourself'
-      };
-
-    case agent === address:
-      return {
-        delegateInfo: 'You delegated your voting rights to yourself',
-        votingInfo: 'You vote for yourself'
-      };
-
-    default:
-      const title = 'You currently have no voting weight & rights';
-      return {
-        delegateInfo: title,
-        votingInfo: title,
-      };
-  }
-}

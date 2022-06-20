@@ -1,3 +1,4 @@
+import { BaseVotingWeightInfo } from '@q-dev/q-js-sdk';
 import { ProposalEvent } from 'typings/contracts';
 
 import { ProposalType } from 'constants/statuses';
@@ -58,7 +59,7 @@ export interface GetBaseVotingWeightInfo {
 
 export interface SetBaseVotingWeightInfo {
   type: 'SET_BASE_VOTING_WEIGHT_INFO'
-  payload: Record<string, unknown>
+  payload: BaseVotingWeightInfo
 }
 
 export interface GetProposalsByType {

@@ -1,41 +1,40 @@
 
+import { Form } from 'react-bootstrap';
+
 import ErrorInputMessage from 'components/Base/ErrorInputMessage';
 
-import { GroupWrapper, RadioInput } from './styles';
+import { RadioGroupWrapper } from './styles';
 
 function RadioGroup ({
   name,
   value,
   options = [],
-  label,
+  label = '',
   error,
+  row = false,
   onChange = () => {},
 }) {
   return (
-    <div>
+    <RadioGroupWrapper $row={row}>
       {label && <h4>{label}</h4>}
-      {options.map((option) => {
-        return (
-          <GroupWrapper
+      <div className="radio-options">
+        {options.map((option) => (
+          <Form.Check
             key={option.value}
-            controlId={value}
-          >
-            <RadioInput
-              id={`${name}__${option.value}`}
-              type="radio"
-              label={option.label}
-              name={name}
-              value={value}
-              checked={option.value === value}
-              $checked={option.value === value}
-              onChange={() => onChange(option.value)}
-              onClick={() => onChange(option.value)}
-            />
-          </GroupWrapper>
-        );
-      })}
+            id={`${name}__${option.value}`}
+            type="radio"
+            label={option.label}
+            name={name}
+            value={value}
+            checked={option.value === value}
+            $checked={option.value === value}
+            onChange={() => onChange(option.value)}
+            onClick={() => onChange(option.value)}
+          />
+        ))}
+      </div>
       {error && <ErrorInputMessage message={error} />}
-    </div>
+    </RadioGroupWrapper>
   );
 }
 

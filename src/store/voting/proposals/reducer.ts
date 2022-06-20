@@ -1,3 +1,4 @@
+import { BaseVotingWeightInfo } from '@q-dev/q-js-sdk';
 import { ProposalEvent } from 'typings/contracts';
 
 import { ProposalsAction } from './types';
@@ -18,7 +19,7 @@ function getDefaultProposalItem () {
 const initialState = {
   voteDetails: { contract: '', proposalId: '' },
   constitutionHash: '...',
-  baseVotingWeightInfo: {} as Record<string, unknown>,
+  baseVotingWeightInfo: {} as BaseVotingWeightInfo,
   newParameter: false,
 
   minimalActiveBlock: 0,

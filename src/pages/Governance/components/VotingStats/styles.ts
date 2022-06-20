@@ -15,4 +15,10 @@ export const StatsWrapper = styled(CustomBlock)`
     grid-template-columns: repeat(4, 1fr);
     gap: 48px;
   }
+
+  .stats-actions {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 16px;
+  }
 `;

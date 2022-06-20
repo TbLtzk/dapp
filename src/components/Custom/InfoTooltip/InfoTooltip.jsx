@@ -5,11 +5,17 @@ import PopperTooltip from 'components/Base/PopperTooltip';
 
 import { InfoIcon } from './styles';
 
-function InfoTooltip ({ topic, placement = 'top' }) {
+function InfoTooltip ({ topic, invertedColors = false, ...rest }) {
   return (
     <PopperTooltip
-      placement={placement}
-      trigger={<InfoIcon className="mdi mdi-information" />}
+      trigger={(
+        <InfoIcon
+          $invertedColors={invertedColors}
+          className="mdi mdi-information"
+        />
+      )}
+      invertedColors={invertedColors}
+      {...rest}
     >
       <span>{tooltips[topic]}</span>
     </PopperTooltip>

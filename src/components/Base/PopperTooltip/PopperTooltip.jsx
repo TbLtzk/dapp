@@ -8,7 +8,8 @@ function PopperTooltip ({
   placement = 'top',
   trigger,
   disabled = false,
-  style,
+  invertedColors = false,
+  style = {},
   children,
 }) {
   const triggerEl = useRef(null);
@@ -44,8 +45,10 @@ function PopperTooltip ({
   return (
     <TooltipWrapper
       style={style}
+      $disabled={disabled}
+      $invertedColors={invertedColors}
       onMouseOver={showTooltip}
-      onMouseOut={hideTooltip}
+      onMouseLeave={hideTooltip}
     >
       <div
         ref={triggerEl}

@@ -5,19 +5,19 @@ import Button from 'components/Base/Button';
 import { Body, Footer, Header, ModalContainer } from './styles';
 
 function ModalWindow ({
-  disabled,
   show,
-  onHide,
-  backBtnTitle,
-  backBtnHandler,
-  continueBtnTitle,
-  continueBtnHandler,
   content,
   modalTitle,
-  iconRight,
-  width,
+  width = '',
+  iconRight = 'arrow-right',
+  disabled = false,
   closeButton = true,
   scrollable = true,
+  backBtnTitle = null,
+  backBtnHandler = null,
+  continueBtnTitle = null,
+  continueBtnHandler = null,
+  onHide,
 }) {
   return (
     <ModalContainer
@@ -56,7 +56,7 @@ function ModalWindow ({
                   onClick={continueBtnHandler}
                 >
                   <span>{continueBtnTitle}</span>
-                  <i className={`mdi mdi-${iconRight || 'arrow-right'}`} />
+                  <i className={`mdi mdi-${iconRight}`} />
                 </Button>
               )}
           </Footer>

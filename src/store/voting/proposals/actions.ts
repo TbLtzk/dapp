@@ -1,3 +1,4 @@
+import { BaseVotingWeightInfo } from '@q-dev/q-js-sdk';
 import { ProposalEvent } from 'typings/contracts';
 
 import * as types from './types';
@@ -62,7 +63,7 @@ export const getBaseVotingWeightInfo = (): types.GetBaseVotingWeightInfo => ({
   type: 'GET_BASE_VOTING_WEIGHT_INFO'
 });
 
-export const setBaseVotingWeightInfo = (data: any): types.SetBaseVotingWeightInfo => ({
+export const setBaseVotingWeightInfo = (data: BaseVotingWeightInfo): types.SetBaseVotingWeightInfo => ({
   type: 'SET_BASE_VOTING_WEIGHT_INFO',
   payload: data
 });
