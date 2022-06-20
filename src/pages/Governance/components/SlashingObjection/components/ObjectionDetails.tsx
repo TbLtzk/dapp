@@ -1,7 +1,7 @@
 
 import ListDetails from './ListDetails';
 
-function ObjectionDetails ({ objection }) {
+function ObjectionDetails ({ objection }: { objection: Record<string, string> }) {
   const list = [
     {
       title: 'Status',

@@ -16,12 +16,24 @@ import formTypes from 'constants/form-types';
 const DEFAULT_VALUES = {
   externalLink: '',
   percentage: '',
-  isAppealNeglected: false,
+  isAppealNeglected: false as string | boolean,
 };
 
-const LocalStateContext = createContext();
+const LocalStateContext = createContext({
+  values: DEFAULT_VALUES,
+  goNext: (_: Partial<typeof DEFAULT_VALUES>) => {},
+  goBack: () => {},
+  confirm: (_: typeof DEFAULT_VALUES) => {},
+});
 
-function ProposeDecisionModal ({ modalOpen, onHide, contract, proposalId }) {
+interface Props {
+  modalOpen: boolean
+  contract: string
+  proposalId: string
+  onHide: () => void
+}
+
+function ProposeDecisionModal ({ modalOpen, contract, proposalId, onHide }: Props) {
   const dispatch = useDispatch();
 
   const { values, stepIndex, goNext, goBack, confirm, reset } = useMultiStepForm({
@@ -53,15 +65,6 @@ function ProposeDecisionModal ({ modalOpen, onHide, contract, proposalId }) {
   );
 }
 
-/**
- *
- * @returns {{
- *  values: typeof DEFAULT_VALUES,
- *  goNext: (form: typeof DEFAULT_VALUES) => void,
- *  goBack: () => void,
- *  confirm: (form: typeof DEFAULT_VALUES) => void,
- * }}
- */
 export const useProposeDecision = () => useContext(LocalStateContext);
 
 export default ProposeDecisionModal;

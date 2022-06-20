@@ -17,9 +17,21 @@ const DEFAULT_VALUES = {
   externalLink: '',
 };
 
-const LocalStateContext = createContext();
+const LocalStateContext = createContext({
+  values: DEFAULT_VALUES,
+  goNext: (_: Partial<typeof DEFAULT_VALUES>) => {},
+  goBack: () => {},
+  confirm: (_: typeof DEFAULT_VALUES) => {},
+});
 
-function CastObjectionModal ({ modalOpen, onHide, contract, proposalId }) {
+interface Props {
+  modalOpen: boolean
+  contract: string
+  proposalId: string
+  onHide: () => void
+}
+
+function CastObjectionModal ({ modalOpen, contract, proposalId, onHide }: Props) {
   const dispatch = useDispatch();
 
   const { values, stepIndex, goNext, goBack, confirm, reset } = useMultiStepForm({
@@ -51,15 +63,6 @@ function CastObjectionModal ({ modalOpen, onHide, contract, proposalId }) {
   );
 }
 
-/**
- *
- * @returns {{
- *  values: typeof DEFAULT_VALUES,
- *  goNext: (form: typeof DEFAULT_VALUES) => void,
- *  goBack: () => void,
- *  confirm: (form: typeof DEFAULT_VALUES) => void,
- * }}
- */
 export const useCastObjection = () => useContext(LocalStateContext);
 
 export default CastObjectionModal;

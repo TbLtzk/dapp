@@ -23,7 +23,7 @@ function DecisionStep () {
       percentage: [required, percent],
       isAppealNeglected: [required],
     },
-    onSubmit: goNext,
+    onSubmit: goNext as () => void,
   });
 
   const appealNeglectedOptions = [

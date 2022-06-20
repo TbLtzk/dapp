@@ -4,7 +4,12 @@ import Tooltip from 'components/Base/Tooltip';
 
 import { slashingTypes } from 'constants/slashingTypes';
 
-function SlashingActions ({ objection, isRootNode, onAction }) {
+interface Props {
+  isRootNode: boolean
+  onAction: (action: string) => void
+}
+
+function SlashingActions ({ isRootNode, onAction }: Props) {
   const proposeDecisionButton = isRootNode
     ? 'Any Root Node can propose a decision that is based on an arbitral award or the explicit lack of such.'
     : 'User is not a Root Node';

@@ -17,7 +17,11 @@ import { slashingTypes } from 'constants/slashingTypes';
 interface Props {
   contract: string
   proposalId: string
-  objData: any
+  objData: {
+    objection: Record<string, string>
+    decision: Record<string, string>
+    types: Record<string, boolean>
+  }
 }
 
 function SlashingObjection ({ contract, proposalId, objData }: Props) {
@@ -66,7 +70,6 @@ function SlashingObjection ({ contract, proposalId, objData }: Props) {
 
       <div className="action__buttons">
         <SlashingActions
-          objection={objData.types.objection}
           isRootNode={objData.types.isRootNode}
           onAction={openModal}
         />

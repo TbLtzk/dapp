@@ -4,7 +4,13 @@ import Tooltip from 'components/Base/Tooltip';
 
 import { escrowTypes } from 'constants/escrowTypes';
 
-function DecisionActions ({ recallDecision, isRootNode, onAction }) {
+interface Props {
+  recallDecision: boolean
+  isRootNode: boolean
+  onAction: (action: string) => void
+}
+
+function DecisionActions ({ recallDecision, isRootNode, onAction }: Props) {
   const voteToConfirmDecitionButton = isRootNode
     ? 'Any Root Node is obliged to vote and confirm proposed decision.'
     : 'User is not a Root Node';

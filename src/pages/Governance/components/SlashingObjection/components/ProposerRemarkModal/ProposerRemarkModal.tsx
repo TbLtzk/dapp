@@ -17,9 +17,28 @@ const DEFAULT_VALUES = {
   proposerRemark: '',
 };
 
-const LocalStateContext = createContext();
+const LocalStateContext = createContext({
+  values: DEFAULT_VALUES,
+  goNext: (_: Partial<typeof DEFAULT_VALUES>) => {},
+  goBack: () => {},
+  confirm: (_: typeof DEFAULT_VALUES) => {},
+});
 
-function ProposerRemarkModal ({ modalOpen, onHide, objection, contract, proposalId }) {
+interface Props {
+  modalOpen: boolean
+  objection: Record<string, string>
+  contract: string
+  proposalId: string
+  onHide: () => void
+}
+
+function ProposerRemarkModal ({
+  modalOpen,
+  objection,
+  contract,
+  proposalId,
+  onHide
+}: Props) {
   const dispatch = useDispatch();
 
   const { values, stepIndex, goNext, goBack, confirm, reset } = useMultiStepForm({
@@ -57,15 +76,6 @@ function ProposerRemarkModal ({ modalOpen, onHide, objection, contract, proposal
   );
 }
 
-/**
- *
- * @returns {{
- *  values: typeof DEFAULT_VALUES,
- *  goNext: (form: typeof DEFAULT_VALUES) => void,
- *  goBack: () => void,
- *  confirm: (form: typeof DEFAULT_VALUES) => void,
- * }}
- */
 export const useProposerRemark = () => useContext(LocalStateContext);
 
 export default ProposerRemarkModal;
