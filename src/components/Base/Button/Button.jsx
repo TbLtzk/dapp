@@ -12,7 +12,7 @@ function Button ({
   disabled = false,
   alwaysEnabled = false,
   children,
-  onClick = () => {},
+  onClick = (..._) => {},
   ...rest
 }) {
   const loadType = useSelector(loadTypeSelector);

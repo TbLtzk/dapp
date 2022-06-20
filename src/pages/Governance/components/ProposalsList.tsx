@@ -26,17 +26,17 @@ function ProposalsList ({ type, status }: { type: ProposalType, status: Proposal
   const filteredProposals = getFilteredProposals();
 
   const [list, setList] = useState<ProposalEvent[]>([]);
-  const [index, setIndex] = useState(PAGE_LIMIT);
+  const [offset, setOffset] = useState(PAGE_LIMIT);
 
   useEffect(() => {
-    setIndex(PAGE_LIMIT);
+    setOffset(PAGE_LIMIT);
     setList(filteredProposals.slice(0, PAGE_LIMIT));
   }, [status, proposals]);
 
   const handleNextProposals = () => {
-    const newIndex = index + PAGE_LIMIT;
-    const newList = concat(list, filteredProposals.slice(index, newIndex));
-    setIndex(newIndex);
+    const newOffset = offset + PAGE_LIMIT;
+    const newList = concat(list, filteredProposals.slice(newOffset, PAGE_LIMIT));
+    setOffset(offset);
     setList(newList);
   };
 
@@ -75,6 +75,7 @@ function ProposalsList ({ type, status }: { type: ProposalType, status: Proposal
           />
         ))}
       </div>
+
       {filteredProposals.length > list.length && (
         <LoadingWrap>
           <Button

@@ -5,7 +5,7 @@ import colors from 'constants/colors';
 
 export const circles = [colors.white, colors.oxfordBlueTint2];
 
-const PieChartTwoItem = ({ data }) => (
+const PieChartTwoItem = ({ data }: { data: any[] | null }) => (
   <div>
     {data
       ? (
@@ -21,7 +21,7 @@ const PieChartTwoItem = ({ data }) => (
             stroke={0}
             dataKey="value"
           >
-            {data.map((entry, index) => (
+            {data.map((_, index) => (
               <Cell key={`cell-${index}`} fill={circles[index % circles.length]} />
             ))}
           </Pie>

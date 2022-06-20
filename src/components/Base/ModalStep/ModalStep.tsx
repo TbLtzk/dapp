@@ -1,14 +1,24 @@
 
+import { ReactNode } from 'react';
+
 import Button from '../Button';
 import { Body, Footer } from '../ModalWindow/styles';
 
-function ModalStep ({
-  disabled,
+interface Props<T> {
+  disabled?: boolean
+  children: ReactNode
+  onNext?: (values: T) => void
+  onBack?: () => void
+  onConfirm?: (values: T) => void
+}
+
+function ModalStep<T> ({
+  disabled = false,
   children,
   onNext,
   onBack,
   onConfirm
-}) {
+}: Props<T>) {
   const nextHandler = onNext || onConfirm;
 
   return (

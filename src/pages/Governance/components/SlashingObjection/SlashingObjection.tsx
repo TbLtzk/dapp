@@ -14,13 +14,19 @@ import { setEscrowAction } from 'store/voting/slashing/actions';
 
 import { slashingTypes } from 'constants/slashingTypes';
 
-function SlashingObjection ({ contract, proposalId, objData }) {
+interface Props {
+  contract: string
+  proposalId: string
+  objData: any
+}
+
+function SlashingObjection ({ contract, proposalId, objData }: Props) {
   const dispatch = useDispatch();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState('');
 
-  const openModal = (type) => {
+  const openModal = (type: string) => {
     setModalType(type);
     setModalOpen(true);
   };
@@ -29,7 +35,7 @@ function SlashingObjection ({ contract, proposalId, objData }) {
     setModalOpen(false);
   };
 
-  const handleEscrowAction = (type) => {
+  const handleEscrowAction = (type: string) => {
     dispatch(setEscrowAction(contract, proposalId, type));
   };
 

@@ -17,12 +17,23 @@ import { STATUSES } from 'constants/statuses';
 import { VOTING_TYPES } from 'constants/votingTypes';
 
 const DEFAULT_VALUES = {
-  isVotedFor: false,
+  isVotedFor: false as boolean | string,
 };
 
-const LocalStateContext = createContext();
+const LocalStateContext = createContext({
+  values: DEFAULT_VALUES,
+  goNext: (_: typeof DEFAULT_VALUES) => {},
+  goBack: () => {},
+  confirm: (_: typeof DEFAULT_VALUES) => {},
+});
 
-function VoteModal ({ modalOpen, proposal, onHide }) {
+interface Props {
+  modalOpen: boolean
+  proposal: any
+  onHide: () => void
+}
+
+function VoteModal ({ modalOpen, proposal, onHide }: Props) {
   const dispatch = useDispatch();
 
   const isPendingProposal = proposal.status === STATUSES.pending;

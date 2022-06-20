@@ -5,7 +5,7 @@ import { ColorTitle, VoteBreakdownContainer } from './styles';
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import { Circle } from 'constants/style';
 
-function VoteBreakdown ({ voteBreakdown }) {
+function VoteBreakdown ({ voteBreakdown }: { voteBreakdown: any }) {
   const contractsWithoutVeto =
     voteBreakdown.contract === CONTRACTS_NAMES.validatorsSlashingVoting ||
     voteBreakdown.contract === CONTRACTS_NAMES.emergencyUpdateVoting;

@@ -12,10 +12,10 @@ import SlashingObjection from './SlashingObjection';
 import VoteBreakdown from './VoteBreakdown';
 import VotingItems from './VotingItems';
 
-import { STATUSES } from 'constants/statuses';
+import { ProposalType, STATUSES } from 'constants/statuses';
 import { createShareText } from 'func/useful';
 
-function ProposalCard ({ proposal, proposalKind }) {
+function ProposalCard ({ proposal, type }: { proposal: any, type: ProposalType }) {
   return (
     <ListCardWrp>
       <ListCardHeader>
@@ -42,13 +42,13 @@ function ProposalCard ({ proposal, proposalKind }) {
         <div className="list-card__line" />
         <PollDetail
           pollDetail={proposal}
-          proposalsKind={proposalKind}
+          type={type}
           contract={proposal.contract}
         />
         <div className="list-card__line" />
         <VoteBreakdown voteBreakdown={proposal} />
         <VotingItems proposal={proposal} />
-        {proposalKind === 'slashing' && proposal.status === STATUSES.executed
+        {type === 'slashing' && proposal.status === STATUSES.executed
           ? (
             <>
               <div className="list-card__line" />

@@ -32,7 +32,7 @@ const TOOLTIP_INFO = {
   isEprsExpert: 'User is not member of Q Root Node selection expert panel.'
 };
 
-function VotingItems ({ proposal }) {
+function VotingItems ({ proposal }: { proposal: any }) {
   const dispatch = useDispatch();
 
   const isRootNode = useSelector(isUserRootNode);

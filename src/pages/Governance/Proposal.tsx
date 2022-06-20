@@ -22,15 +22,15 @@ function Proposal ({ match }: RouteComponentProps<{
 
   const [proposal, setProposal] = useState(null);
   const [error, setError] = useState(false);
-  const proposalKind = checkActiveTabByContract(match.params.contract);
+  const type = checkActiveTabByContract(match.params.contract);
 
   useEffect(() => {
-    if (proposalKind === 'error') {
+    if (type === 'error') {
       setError(true);
     } else if (!transactionLoading) {
       handleGetProposal();
     }
-  }, [transactionLoading, proposalKind]);
+  }, [transactionLoading, type]);
 
   async function handleGetProposal () {
     const data = await getProposal(match.params.contract, match.params.id, true);
@@ -68,11 +68,11 @@ function Proposal ({ match }: RouteComponentProps<{
   }
 
   return (
-    <PageWrap headerTitle={proposalKind.replace(/-/g, ' ')}>
-      {error
+    <PageWrap headerTitle={type.replace(/-/g, ' ')}>
+      {error || type === 'error'
         ? <p>Wrong link</p>
         : proposal
-          ? <ProposalCard proposalKind={proposalKind} proposal={proposal} />
+          ? <ProposalCard type={type} proposal={proposal} />
           : <SkeletonProposalsLoading />
       }
     </PageWrap>

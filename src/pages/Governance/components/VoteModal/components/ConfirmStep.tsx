@@ -5,7 +5,12 @@ import { useVote } from '../VoteModal';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
 
-function ConfirmStep ({ contract, type }) {
+interface Props {
+  contract: string
+  type: string
+}
+
+function ConfirmStep ({ contract, type }: Props) {
   const { values, goBack, confirm } = useVote();
 
   const isExtendNoteShown = [

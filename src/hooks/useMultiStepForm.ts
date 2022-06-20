@@ -1,9 +1,14 @@
 import { useCallback, useState } from 'react';
 
-export default function useMultiStepForm ({
-  initialValues = {},
-  onConfirm = () => {}
-}) {
+interface MultiStepFormProps<T extends Record<string, unknown>> {
+  initialValues?: T,
+  onConfirm?: (_: T) => void,
+}
+
+export default function useMultiStepForm<T extends Record<string, unknown>> ({
+  initialValues = {} as T,
+  onConfirm = (_: T) => {},
+}: MultiStepFormProps<T>) {
   const [stepIndex, setStepIndex] = useState(0);
   const [values, setValues] = useState({ ...initialValues });
 

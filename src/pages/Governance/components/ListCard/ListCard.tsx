@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import { ProposalEvent } from 'typings/contracts';
+
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
 import ProposalContent from '../ProposalContent';
@@ -12,9 +14,9 @@ import { voteDetailsSelector } from 'store/voting/proposals/selectors';
 
 import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
-function ListCard ({ proposal }) {
+function ListCard ({ proposal }: { proposal: ProposalEvent }) {
   const transactionLoading = useSelector(transactionLoadingSelector);
-  const [proposalInfo, setProposalInfo] = useState(null);
+  const [proposalInfo, setProposalInfo] = useState<any>(null);
 
   const voteDetails = useSelector(voteDetailsSelector);
   useEffect(() => {

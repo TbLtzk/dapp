@@ -5,14 +5,21 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import { PollDetailContainer } from './styles';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
+import { ProposalType } from 'constants/statuses';
 import { getTypeName } from 'func/contractHelpers';
 
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
 
-function PollDetail ({ pollDetail, proposalsKind, contract }) {
+interface Props {
+  pollDetail: any
+  type: ProposalType
+  contract: string
+}
+
+function PollDetail ({ pollDetail, type, contract }: Props) {
   const approvalContracts = contract === CONTRACTS_NAMES.addressVoting || contract === CONTRACTS_NAMES.upgradeVoting;
 
-  function getParametersInfo (parameters) {
+  function getParametersInfo (parameters: any[]) {
     return parameters.map((item, index) => {
       return [
         {
@@ -32,9 +39,9 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
   }
 
   const showDataArr = useMemo(() => {
-    switch (proposalsKind) {
+    switch (type) {
       case 'q':
-        let oneLineInfos = [];
+        let oneLineInfos: any[] = [];
         const defaultInfo = [
           {
             label: 'Current Constitution Hash',
@@ -55,14 +62,14 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
           rootNodeArr.push({
             label: 'Proposal to Add Root Node',
             value: pollDetail.candidate,
-            formatter: val => (<ExplorerAddress address={val} />)
+            formatter: (val: string) => (<ExplorerAddress address={val} />)
           });
         }
         if (pollDetail.replaceDest && pollDetail.replaceDest !== EMPTY_ADDR) {
           rootNodeArr.push({
             label: 'Proposal to Remove Root Node',
             value: pollDetail.replaceDest,
-            formatter: val => (<ExplorerAddress address={val} />)
+            formatter: (val: string) => (<ExplorerAddress address={val} />)
           });
         }
         return rootNodeArr;
@@ -73,14 +80,14 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
             membershipArr.push({
               label: 'Address to Add',
               value: pollDetail.addressToAdd,
-              formatter: val => (<ExplorerAddress address={val} />)
+              formatter: (val: string) => (<ExplorerAddress address={val} />)
             });
           }
           if (pollDetail.addressToRemove && pollDetail.addressToRemove !== EMPTY_ADDR) {
             membershipArr.push({
               label: 'Address to Remove',
               value: pollDetail.addressToRemove,
-              formatter: val => (<ExplorerAddress address={val} />)
+              formatter: (val: string) => (<ExplorerAddress address={val} />)
             });
           }
           return membershipArr;
@@ -92,7 +99,7 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
           {
             label: 'Candidate',
             value: pollDetail?.candidate,
-            formatter: val => (<ExplorerAddress address={val} />)
+            formatter: (val: string) => (<ExplorerAddress address={val} />)
           },
           {
             label: 'Amount to Slash',
@@ -105,18 +112,18 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
           {
             label: checkContract ? 'Key' : 'Implementation',
             value: checkContract ? pollDetail.key : pollDetail.implementation,
-            formatter: val => (<ExplorerAddress address={val} />)
+            formatter: (val: string) => (<ExplorerAddress address={val} />)
           },
           {
             label: 'Proxy',
             value: pollDetail.proxy,
-            formatter: val => (<ExplorerAddress address={val} />)
+            formatter: (val: string) => (<ExplorerAddress address={val} />)
           }
         ];
     }
   }, [pollDetail]);
 
-  const printValues = ({ label, value, formatter }, key) => {
+  const printValues = ({ label, value, formatter }: any, key: string | number) => {
     const keyId = key + label.replace(/ /g, '-').toLowerCase() + +new Date();
     return !value || value === 'undefined'
       ? null
@@ -131,7 +138,7 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
   };
 
   const showContent = useCallback(() => {
-    return showDataArr.map((el, i) => {
+    return showDataArr?.map((el, i) => {
       if (!Array.isArray(el)) {
         return printValues(el, i);
       } else {

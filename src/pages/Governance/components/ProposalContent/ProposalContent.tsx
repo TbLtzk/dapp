@@ -7,7 +7,7 @@ import { CONTRACTS_NAMES } from 'constants/contracts';
 import { STATUSES } from 'constants/statuses';
 import { convertToMonthDayYear, remainDate } from 'func/convertDate';
 
-function ProposalContent ({ proposal }) {
+function ProposalContent ({ proposal }: { proposal: any }) {
   const approvalContracts =
     proposal.contract === CONTRACTS_NAMES.addressVoting ||
     proposal.contract === CONTRACTS_NAMES.upgradeVoting;
