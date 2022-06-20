@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { concat, slice } from 'lodash';
+import { concat } from 'lodash';
 import { ProposalEvent } from 'typings/contracts';
 
 import Button from 'components/Base/Button';
@@ -23,18 +23,6 @@ function ProposalsList ({ type, status }: { type: ProposalType, status: Proposal
   const { proposals, isLoading } = useSelector(proposalsByTypeSelector(type));
   const activeProposals = useSelector(activeProposalsByTypeSelector(type));
   const endedProposals = useSelector(endedProposalsByTypeSelector(type));
-
-  const getFilteredProposals = () => {
-    switch (status) {
-      case 'active':
-        return activeProposals;
-      case 'ended':
-        return endedProposals;
-      default:
-        return proposals;
-    }
-  };
-
   const filteredProposals = getFilteredProposals();
 
   const [list, setList] = useState<ProposalEvent[]>([]);
@@ -43,13 +31,24 @@ function ProposalsList ({ type, status }: { type: ProposalType, status: Proposal
   useEffect(() => {
     setIndex(PAGE_LIMIT);
     setList(filteredProposals.slice(0, PAGE_LIMIT));
-  }, [filteredProposals, status]);
+  }, [status, proposals]);
 
   const handleNextProposals = () => {
     const newIndex = index + PAGE_LIMIT;
-    const newList = concat(list, slice(filteredProposals, index, newIndex));
+    const newList = concat(list, filteredProposals.slice(index, newIndex));
     setIndex(newIndex);
     setList(newList);
+  };
+
+  function getFilteredProposals () {
+    switch (status) {
+      case 'active':
+        return activeProposals;
+      case 'ended':
+        return endedProposals;
+      default:
+        return proposals;
+    }
   };
 
   if (isLoading) {
@@ -76,7 +75,7 @@ function ProposalsList ({ type, status }: { type: ProposalType, status: Proposal
           />
         ))}
       </div>
-      {proposals.length > list.length && (
+      {filteredProposals.length > list.length && (
         <LoadingWrap>
           <Button
             style={{
