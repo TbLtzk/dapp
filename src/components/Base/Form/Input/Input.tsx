@@ -13,7 +13,7 @@ import { LOAD_TYPES } from 'constants/statuses';
 
 type InputProps = InputHTMLAttributes<HTMLInputElement>
 interface Props extends Omit<InputProps, 'onChange' | 'prefix'> {
-  value: string
+  value: string | number | boolean;
   error?: string
   label?: string
   disabled?: boolean
