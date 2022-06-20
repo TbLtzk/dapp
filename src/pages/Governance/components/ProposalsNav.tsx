@@ -4,43 +4,43 @@ import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import TabsPanel from 'components/Base/TabsPanel';
 
 import { mode } from 'store/dashboard-mode/selectors';
-import { activeProposalsCountByTypeSelector } from 'store/voting/proposals/selectors';
+import { activeProposalsByTypeSelector } from 'store/voting/proposals/selectors';
 
 function ProposalsNav () {
   const appMode = useSelector(mode);
 
-  const qCount = useSelector(activeProposalsCountByTypeSelector('q'));
-  const rootCount = useSelector(activeProposalsCountByTypeSelector('rootNode'));
-  const expertCount = useSelector(activeProposalsCountByTypeSelector('expert'));
-  const slashingCount = useSelector(activeProposalsCountByTypeSelector('slashing'));
-  const contractCount = useSelector(activeProposalsCountByTypeSelector('contractUpdate'));
+  const qActiveProposals = useSelector(activeProposalsByTypeSelector('q'));
+  const rootActiveProposals = useSelector(activeProposalsByTypeSelector('rootNode'));
+  const expertActiveProposals = useSelector(activeProposalsByTypeSelector('expert'));
+  const slashingActiveProposals = useSelector(activeProposalsByTypeSelector('slashing'));
+  const contractActiveProposals = useSelector(activeProposalsByTypeSelector('contractUpdate'));
 
   const tabs = [
     {
       label: 'Q Proposals',
-      count: qCount,
+      count: qActiveProposals.length,
       link: '/governance/q-proposals',
     },
     {
       label: 'Root Node Panel',
-      count: rootCount,
+      count: rootActiveProposals.length,
       link: '/governance/q-root-node-panel',
     },
     ...(appMode === MODE.advanced
       ? [
         {
           label: 'Expert Proposals',
-          count: expertCount,
+          count: expertActiveProposals.length,
           link: '/governance/q-expert-proposals',
         },
         {
           label: 'Slashing Proposals',
-          count: slashingCount,
+          count: slashingActiveProposals.length,
           link: '/governance/slashing-proposals',
         },
         {
           label: 'Contract Updates',
-          count: contractCount,
+          count: contractActiveProposals.length,
           link: '/governance/contract-updates',
         },
       ]

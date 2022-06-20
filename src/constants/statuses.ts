@@ -13,14 +13,6 @@ export const TRANSACTION_TYPES = {
   rejected: 'Rejected',
 };
 
-export const PROPOSALS_TYPES = {
-  proposals: 'q',
-  rootNodePanel: 'root-node',
-  expertProposals: 'expert',
-  slashingProposals: 'slashing',
-  contractUpdates: 'contract-update',
-};
-
 export type ProposalType = 'q' | 'rootNode' | 'expert' | 'slashing' | 'contractUpdate';
 
 export const AUCTIONS_TYPES = {

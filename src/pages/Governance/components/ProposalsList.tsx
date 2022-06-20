@@ -2,38 +2,55 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { concat, slice } from 'lodash';
+import { ProposalEvent } from 'typings/contracts';
 
 import Button from 'components/Base/Button';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
+import { ProposalFilterStatus } from '../types';
+
 import ListCard from './ListCard';
 
-import { proposalsByTypeSelector } from 'store/voting/proposals/selectors';
+import { activeProposalsByTypeSelector, endedProposalsByTypeSelector, proposalsByTypeSelector } from 'store/voting/proposals/selectors';
 
 import { ProposalType } from 'constants/statuses';
 import { LoadingWrap } from 'constants/style';
 import { fillArray } from 'func/useful';
 
-const LIMIT = 10;
+const PAGE_LIMIT = 10;
 
-function ProposalsList ({ type }: { type: ProposalType }) {
+function ProposalsList ({ type, status }: { type: ProposalType, status: ProposalFilterStatus }) {
   const { proposals, isLoading } = useSelector(proposalsByTypeSelector(type));
+  const activeProposals = useSelector(activeProposalsByTypeSelector(type));
+  const endedProposals = useSelector(endedProposalsByTypeSelector(type));
 
-  const [list, setList] = useState<any>([]);
-  const [index, setIndex] = useState(LIMIT);
+  const getFilteredProposals = () => {
+    switch (status) {
+      case 'active':
+        return activeProposals;
+      case 'ended':
+        return endedProposals;
+      default:
+        return proposals;
+    }
+  };
+
+  const filteredProposals = getFilteredProposals();
+
+  const [list, setList] = useState<ProposalEvent[]>([]);
+  const [index, setIndex] = useState(PAGE_LIMIT);
+
+  useEffect(() => {
+    setIndex(PAGE_LIMIT);
+    setList(filteredProposals.slice(0, PAGE_LIMIT));
+  }, [filteredProposals, status]);
 
   const handleNextProposals = () => {
-    const newIndex = index + LIMIT;
-    const newList = concat(list, slice(proposals, index, newIndex));
+    const newIndex = index + PAGE_LIMIT;
+    const newList = concat(list, slice(filteredProposals, index, newIndex));
     setIndex(newIndex);
     setList(newList);
   };
-
-  useEffect(() => {
-    if (proposals.length) {
-      setList(slice(proposals, 0, index));
-    }
-  }, [proposals]);
 
   if (isLoading) {
     return (

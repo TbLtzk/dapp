@@ -15,9 +15,14 @@ export const minimalActiveBlockSelector = (state: RootState) => state.proposals.
 export const proposalsByTypeSelector = (type: ProposalType) => (state: RootState) =>
   state.proposals.proposalsMap[type];
 
-export const activeProposalsCountByTypeSelector = (type: ProposalType) => createSelector(
+export const activeProposalsByTypeSelector = (type: ProposalType) => createSelector(
   [proposalsByTypeSelector(type), minimalActiveBlockSelector], ({ proposals }, minBlock) =>
-    proposals.filter(item => isProposalActive(item, minBlock)).length
+    proposals.filter(item => isProposalActive(item, minBlock))
+);
+
+export const endedProposalsByTypeSelector = (type: ProposalType) => createSelector(
+  [proposalsByTypeSelector(type), minimalActiveBlockSelector], ({ proposals }, minBlock) =>
+    proposals.filter(item => !isProposalActive(item, minBlock))
 );
 
 export const allProposalsSelector = createSelector(

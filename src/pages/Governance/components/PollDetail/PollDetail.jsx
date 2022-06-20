@@ -5,7 +5,6 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import { PollDetailContainer } from './styles';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-import { PROPOSALS_TYPES } from 'constants/statuses';
 import { getTypeName } from 'func/contractHelpers';
 
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
@@ -34,7 +33,7 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
 
   const showDataArr = useMemo(() => {
     switch (proposalsKind) {
-      case PROPOSALS_TYPES.proposals:
+      case 'q':
         let oneLineInfos = [];
         const defaultInfo = [
           {
@@ -50,7 +49,7 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
           oneLineInfos = getParametersInfo(pollDetail.parameters);
         }
         return [...defaultInfo, ...oneLineInfos];
-      case PROPOSALS_TYPES.rootNodePanel:
+      case 'rootNode':
         const rootNodeArr = [];
         if (pollDetail.candidate && pollDetail.candidate !== EMPTY_ADDR) {
           rootNodeArr.push({
@@ -67,7 +66,7 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
           });
         }
         return rootNodeArr;
-      case PROPOSALS_TYPES.expertProposals:
+      case 'expert':
         if (pollDetail.kindVoting === 'membership') {
           const membershipArr = [];
           if (pollDetail.addressToAdd && pollDetail.addressToAdd !== EMPTY_ADDR) {
@@ -88,7 +87,7 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
         } else {
           return getParametersInfo(pollDetail.parameters);
         }
-      case PROPOSALS_TYPES.slashingProposals:
+      case 'slashing':
         return [
           {
             label: 'Candidate',
@@ -100,7 +99,7 @@ function PollDetail ({ pollDetail, proposalsKind, contract }) {
             value: pollDetail?.amountToSlash + ' Q'
           }
         ];
-      case PROPOSALS_TYPES.contractUpdates:
+      case 'contractUpdate':
         const checkContract = contract === CONTRACTS_NAMES.addressVoting;
         return [
           {

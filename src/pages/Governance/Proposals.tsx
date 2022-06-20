@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router';
 
 import PageWrap from 'components/Base/PageWrap';
 
@@ -9,7 +10,7 @@ import ProposalsList from './components/ProposalsList';
 import ProposalsNav from './components/ProposalsNav';
 import PurgeSlashing from './components/PurgeSlashing';
 import VotingStats from './components/VotingStats';
-import { ProposalFilter } from './types';
+import { ProposalFilter, ProposalFilterStatus } from './types';
 
 import { getProposals } from 'store/voting/proposals/actions';
 
@@ -17,15 +18,19 @@ import { ProposalType } from 'constants/statuses';
 
 function Proposals ({ type }: { type: ProposalType }) {
   const dispatch = useDispatch();
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
 
-  const [filters, setFilters] = useState<ProposalFilter>({
-    status: 'all',
-  });
+  const [filters, setFilters] = useState<ProposalFilter>(getDefaultFilters());
 
   useEffect(() => {
-    setFilters({ status: 'all' });
+    setFilters(getDefaultFilters());
     dispatch(getProposals(type));
   }, [dispatch, type]);
+
+  function getDefaultFilters () {
+    return { status: query.get('status') as ProposalFilterStatus || 'all' };
+  }
 
   const createProposal = type !== 'contractUpdate' &&
     <CreateProposal type={type} />;
@@ -43,7 +48,7 @@ function Proposals ({ type }: { type: ProposalType }) {
         filters={filters}
         onChange={setFilters}
       />
-      <ProposalsList type={type} />
+      <ProposalsList type={type} status={filters.status} />
     </PageWrap>
   );
 }
