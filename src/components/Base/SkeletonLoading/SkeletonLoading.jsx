@@ -292,20 +292,20 @@ function SkeletonProposalsLoading () {
       <ContentLoader
         speed={2}
         width="100%"
-        height={170}
+        height={165}
         backgroundColor={darkColors.oxfordBlue}
         foregroundColor={darkColors.oxfordBlueTint3}
       >
         <rect
           x="20"
-          y="20"
+          y="22"
           rx="3"
           ry="3"
-          width="60%"
-          height="20"
+          width="30%"
+          height="16"
         />
         <rect
-          x="75%"
+          x="80%"
           y="20"
           rx="3"
           ry="3"
@@ -315,23 +315,24 @@ function SkeletonProposalsLoading () {
 
         <rect
           x="20"
-          y="65"
+          y="60"
+          rx="3"
+          ry="3"
+          width="60%"
+          height="25"
+        />
+
+        <rect
+          x="20"
+          y="110"
           rx="3"
           ry="3"
           width="18%"
           height="10"
         />
         <rect
-          x="35%"
-          y="65"
-          rx="3"
-          ry="3"
-          width="18%"
-          height="10"
-        />
-        <rect
-          x="75%"
-          y="65"
+          x="50%"
+          y="110"
           rx="3"
           ry="3"
           width="18%"
@@ -340,27 +341,19 @@ function SkeletonProposalsLoading () {
 
         <rect
           x="20"
-          y="88"
+          y="130"
           rx="3"
           ry="3"
-          width="5%"
-          height="8"
+          width="25%"
+          height="12"
         />
         <rect
-          x="35%"
-          y="88"
+          x="50%"
+          y="130"
           rx="3"
           ry="3"
-          width="22%"
-          height="8"
-        />
-        <rect
-          x="75%"
-          y="88"
-          rx="3"
-          ry="3"
-          width="22%"
-          height="8"
+          width="25%"
+          height="12"
         />
       </ContentLoader>
     </SkeletonLoadingWrapper>
