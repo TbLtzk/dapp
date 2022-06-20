@@ -1,15 +1,16 @@
 import { address } from 'components/Custom/LoadingMetaMask/LoadingMetaMask';
 
-import { getPercentageFormat, getStatusTransformation, transformToPercentage } from './base-voting-helper';
-import SlashingEscrow from './slashing-escrow-helper';
+import { getPercentageFormat, getStatusTransformation } from './base-voting-helper';
 import VotingService from './voting-service-helper';
 
-import { getRootNodesInstance } from 'contracts/contract-instance';
+import { getRootNodesInstance, getRootNodeSlashingEscrowInstance, getValidatorSlashingEscrowInstance } from 'contracts/contract-instance';
 
 import { ZERO_ADDRESS } from 'constants/config';
 import { CONTRACTS_NAMES } from 'constants/contracts';
+import { STATUSES } from 'constants/statuses';
 import { fromWei } from 'func/balance';
 import { fromSolDateFormattingT1 } from 'func/date';
+import { transformToPercentage } from 'func/formatters';
 
 export default class SlashingVoting extends VotingService {
   async getProposalAdditionalData (promiseRes, id) {
@@ -110,6 +111,53 @@ export default class SlashingVoting extends VotingService {
     const candidate = data.address;
 
     const result = await contract.createProposal(link, candidate, percentageStake, { from: userAddress });
+    return result;
+  }
+}
+
+async function switchInstance (contractName) {
+  switch (contractName) {
+    case CONTRACTS_NAMES.rootNodesSlashingEscrow:
+      return await getRootNodeSlashingEscrowInstance();
+    case CONTRACTS_NAMES.validatorsSlashingEscrow:
+      return await getValidatorSlashingEscrowInstance();
+    default:
+      return {};
+  }
+}
+
+class SlashingEscrow {
+  constructor (contractName) {
+    this.contractName = contractName;
+  }
+
+  getTitleStatus (statusID) {
+    const status = [
+      STATUSES.none,
+      STATUSES.open,
+      STATUSES.accepted,
+      STATUSES.pending,
+      STATUSES.decided,
+      STATUSES.executed
+    ];
+    return status[Number(statusID)];
+  }
+
+  async getStatus (id) {
+    const contract = await switchInstance(this.contractName);
+    const result = await contract.instance.methods.getStatus(id).call();
+    return result;
+  }
+
+  async getDecisionStats (id) {
+    const contract = await switchInstance(this.contractName);
+    const result = await contract.instance.methods.getDecisionStats(id).call();
+    return result;
+  }
+
+  async getArbitrationInfos (id) {
+    const contract = await switchInstance(this.contractName);
+    const result = await contract.arbitrationInfos(id);
     return result;
   }
 }

@@ -1,10 +1,9 @@
-import { transformToPercentage } from './voting-helpers/base-voting-helper';
-
 import { contractRegistryInstance, getValidatorMetricsInstance } from 'contracts/contract-instance';
 
 import { fromWei } from 'func/balance';
 import { convertToMonthDayYear, dateToTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
+import { transformToPercentage } from 'func/formatters';
 import { uintPerSecondToPerYearNumber } from 'func/useful';
 
 export const getValidators = async (validatorsInstance) => {

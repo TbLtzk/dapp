@@ -1,9 +1,10 @@
 import { address } from 'components/Custom/LoadingMetaMask/LoadingMetaMask';
 
-import { getStatusTransformation, transformToPercentage } from './base-voting-helper';
+import { getStatusTransformation } from './base-voting-helper';
 import VotingService from './voting-service-helper';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
+import { transformToPercentage } from 'func/formatters';
 
 export default class ContractUpdates extends VotingService {
   async getProposal (id, oneProposal) {

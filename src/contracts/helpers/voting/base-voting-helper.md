@@ -1,34 +1,39 @@
-import ConstitutionVotingService from './constitution-voting-helper';
-import ContractUpdates from './contract-updates';
-import EmergencyUpdateVotingService from './emergency-update-voting-helper';
-import GeneralUpdateVotingService from './general-update-voting-helper';
-import MembershipVoting from './membership-voting-helper';
-import ParametersVoting from './parameters-voting-helper';
-import RootsVotingService from './roots-voting-helper';
-import SlashingVotingService from './slashing-voting-helper';
+import ConstitutionVotingService from '../voting-helpers/constitution-voting-helper';
+import ContractUpdates from '../voting-helpers/contract-updates';
+import EmergencyUpdateVotingService from '../voting-helpers/emergency-update-voting-helper';
+import GeneralUpdateVotingService from '../voting-helpers/general-update-voting-helper';
+import MembershipVoting from '../voting-helpers/membership-voting-helper';
+import ParametersVoting from '../voting-helpers/parameters-voting-helper';
+import RootsVotingService from '../voting-helpers/roots-voting-helper';
+import SlashingVotingService from '../voting-helpers/slashing-voting-helper';
 
 import { ZERO_ADDRESS } from 'constants/config';
-import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
+import { CONTRACT_TYPES, ContractName, CONTRACTS_NAMES, ContractType } from 'constants/contracts';
 import ErrorHandler from 'func/ErrorHandler';
 import { BN } from 'func/useful';
 
-export const getStatusTransformation = (statusId) => {
+export const getStatusTransformation = (statusId: number) => {
   const status = ['None', 'Pending', 'Rejected', 'Accepted', 'Passed', 'Executed', 'Obsolete', 'Expired'];
   return status[Number(statusId)];
 };
-export const getTypeParameter = (id) => {
+export const getTypeParameter = (id: number) => {
   const status = ['None', 'Pending', 'Rejected', 'Accepted', 'Passed', 'Boolean', 'Obsolete'];
   return status[Number(id)];
 };
 
-export const getPercentageFormat = (number) => {
+export const getPercentageFormat = (number: number) => {
   return BN(number)
     .multipliedBy(BN(10 ** 27))
     .dividedBy(100)
     .toFixed();
 };
 
-export function creationSlashingContractObj (contractName) {
+export const transformToPercentage = (number: number) => {
+  const convertedNumber = BN(number).dividedBy('10000000000000000000000000').toFixed(2);
+  return convertedNumber;
+};
+
+export function creationSlashingContractObj (contractName: ContractName) {
   return new SlashingVotingService(contractName);
 }
 
@@ -42,13 +47,14 @@ export function creationRootContractObj () {
   return new RootsVotingService(CONTRACTS_NAMES.rootsVoting);
 }
 
-export function creationQContractObj (contractName) {
+export function creationQContractObj<T extends ContractName> (contractName: T) {
   switch (contractName) {
     case CONTRACTS_NAMES.constitutionVoting:
-      return new ConstitutionVotingService(CONTRACTS_NAMES.constitutionVoting);
+      return new ConstitutionVotingService();
     case CONTRACTS_NAMES.emergencyUpdateVoting:
       return new EmergencyUpdateVotingService(CONTRACTS_NAMES.emergencyUpdateVoting);
     case CONTRACTS_NAMES.generalUpdateVoting:
+    default:
       return new GeneralUpdateVotingService(CONTRACTS_NAMES.generalUpdateVoting);
   }
 }
@@ -87,7 +93,7 @@ export const arrContractsExpert = [
   }
 ];
 
-export function creationExpertContractObj (contractName) {
+export function creationExpertContractObj (contractName: ContractName) {
   switch (contractName) {
     case CONTRACTS_NAMES.ePQFIMembershipVoting:
     case CONTRACTS_NAMES.ePDRMembershipVoting:
@@ -96,6 +102,7 @@ export function creationExpertContractObj (contractName) {
     case CONTRACTS_NAMES.ePQFIParametersVoting:
     case CONTRACTS_NAMES.ePDRParametersVoting:
     case CONTRACTS_NAMES.ePRSParametersVoting:
+    default:
       return new ParametersVoting(contractName);
   }
 }
@@ -126,16 +133,21 @@ export function creationUpdatesContractObjArray () {
   return [upgradeVoting, addressVoting];
 }
 
-export function creationUpdatesContractObj (contractName) {
+export function creationUpdatesContractObj (contractName: ContractName) {
   switch (contractName) {
     case CONTRACTS_NAMES.addressVoting:
       return new ContractUpdates(CONTRACTS_NAMES.addressVoting);
     case CONTRACTS_NAMES.upgradeVoting:
+    default:
       return new ContractUpdates(CONTRACTS_NAMES.upgradeVoting);
   }
 }
 
-export async function getProposal (contractName, id, oneProposal) {
+export async function getProposal<T extends ContractName> (
+  contractName: T,
+  id: string,
+  oneProposal: boolean
+) {
   try {
     switch (contractName) {
       case CONTRACTS_NAMES.constitutionVoting:
@@ -178,18 +190,14 @@ export async function getProposal (contractName, id, oneProposal) {
   }
 }
 
-export const chooseSlashingContractDependsOnType = (type) => {
-  let contractName = null;
-  if (type === CONTRACT_TYPES.rootNodeSlashing) {
-    contractName = CONTRACTS_NAMES.rootNodesSlashingVoting;
-  } else if (type === CONTRACT_TYPES.validatorNodeSlashing) {
-    contractName = CONTRACTS_NAMES.validatorsSlashingVoting;
-  }
-
+export const chooseSlashingContractDependsOnType = (type: ContractType) => {
+  const contractName = type === CONTRACT_TYPES.rootNodeSlashing
+    ? CONTRACTS_NAMES.rootNodesSlashingVoting
+    : CONTRACTS_NAMES.validatorsSlashingVoting;
   return new SlashingVotingService(contractName);
 };
 
-export const chooseExpertContractDependsOnType = (typeContract, type) => {
+export const chooseExpertContractDependsOnType = (typeContract: ContractType, type: ContractType) => {
   switch (type) {
     case CONTRACT_TYPES.qFee:
       if (typeContract === CONTRACT_TYPES.member) {
@@ -215,7 +223,7 @@ export const chooseExpertContractDependsOnType = (typeContract, type) => {
   }
 };
 
-export function getVoteDelegation (agent, ownWeight, address) {
+export function getVoteDelegation (agent: string, ownWeight: string, address: string) {
   switch (true) {
     case !agent:
       return {

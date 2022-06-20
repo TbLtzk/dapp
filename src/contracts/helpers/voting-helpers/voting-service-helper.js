@@ -3,11 +3,10 @@ import { includes, uniqBy } from 'lodash';
 
 import { address } from 'components/Custom/LoadingMetaMask/LoadingMetaMask';
 
-import { transformToPercentage } from './base-voting-helper';
-
 import { getInstance, getRootNodesInstance } from 'contracts/contract-instance';
 
 import { ZERO_ADDRESS } from 'constants/config';
+import { transformToPercentage } from 'func/formatters';
 
 export default class VotingService {
   constructor (contractName) {
