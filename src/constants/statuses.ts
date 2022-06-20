@@ -14,14 +14,14 @@ export const TRANSACTION_TYPES = {
 };
 
 export const PROPOSALS_TYPES = {
-  proposals: 'q-proposals',
-  rootNodePanel: 'q-root-node-panel',
-  expertProposals: 'q-expert-proposals',
-  slashingProposals: 'slashing-proposals',
-  contractUpdates: 'contract-updates',
+  proposals: 'q',
+  rootNodePanel: 'root-node',
+  expertProposals: 'expert',
+  slashingProposals: 'slashing',
+  contractUpdates: 'contract-update',
 };
 
-export type ProposalType = 'q-proposals' | 'q-root-node-panel' | 'q-expert-proposals' | 'slashing-proposals' | 'contract-updates';
+export type ProposalType = 'q' | 'rootNode' | 'expert' | 'slashing' | 'contractUpdate';
 
 export const AUCTIONS_TYPES = {
   liquidation: 'liquidation',

@@ -9,7 +9,7 @@ import useMultiStepForm from 'hooks/useMultiStepForm';
 import ConfirmStep from './components/ConfirmStep';
 import DecisionStep from './components/DecisionStep';
 
-import { onEscrowProposeDecision } from 'store/voting/slashing-proposals/actions';
+import { onEscrowProposeDecision } from 'store/voting/slashing/actions';
 
 import formTypes from 'constants/form-types';
 

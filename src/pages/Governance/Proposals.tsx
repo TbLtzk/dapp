@@ -24,11 +24,11 @@ function Proposals ({ type }: { type: ProposalType }) {
   });
 
   const proposalToContractMap: Record<ProposalType, string> = {
-    'q-proposals': CONTRACTS_NAMES.constitutionVoting,
-    'q-root-node-panel': CONTRACTS_NAMES.rootsVoting,
-    'q-expert-proposals': CONTRACTS_NAMES.ePQFIMembershipVoting,
-    'slashing-proposals': CONTRACTS_NAMES.rootNodesSlashingVoting,
-    'contract-updates': CONTRACTS_NAMES.upgradeVoting,
+    q: CONTRACTS_NAMES.constitutionVoting,
+    rootNode: CONTRACTS_NAMES.rootsVoting,
+    expert: CONTRACTS_NAMES.ePQFIMembershipVoting,
+    slashing: CONTRACTS_NAMES.rootNodesSlashingVoting,
+    contractUpdate: CONTRACTS_NAMES.upgradeVoting,
   };
 
   useEffect(() => {
@@ -36,7 +36,7 @@ function Proposals ({ type }: { type: ProposalType }) {
     dispatch(getProposalsByType(proposalToContractMap[type]));
   }, [dispatch, type]);
 
-  const createProposal = type !== 'contract-updates' &&
+  const createProposal = type !== 'contractUpdate' &&
     <CreateProposal type={type} />;
 
   return (
@@ -45,7 +45,7 @@ function Proposals ({ type }: { type: ProposalType }) {
       headerExtra={createProposal}
     >
       <VotingStats />
-      {type === 'slashing-proposals' && <PurgeSlashing />}
+      {type === 'slashing' && <PurgeSlashing />}
 
       <ProposalsNav />
       <ProposalFilters

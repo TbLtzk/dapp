@@ -17,12 +17,8 @@ import tokenomics from './tokenomics/sagas';
 import validationRewardPools from './validation-reward-pools/sagas';
 import validators from './validators/sagas';
 import vesting from './vesting/sagas';
-import contractUpdatesProposals from './voting/contract-updates/sagas';
-import expertProposals from './voting/expert-proposals/sagas';
 import proposals from './voting/proposals/sagas';
-import qProposals from './voting/q-proposals/sagas';
-import rootNodeProposals from './voting/root-node-proposals/sagas';
-import slashingProposals from './voting/slashing-proposals/sagas';
+import slashing from './voting/slashing/sagas';
 
 export default function* rootSaga () {
   yield all([
@@ -30,11 +26,7 @@ export default function* rootSaga () {
     ...rootContract,
     ...borrowingCore,
     ...proposals,
-    ...qProposals,
-    ...contractUpdatesProposals,
-    ...rootNodeProposals,
-    ...expertProposals,
-    ...slashingProposals,
+    ...slashing,
     ...validators,
     ...validationRewardPools,
     ...auctions,

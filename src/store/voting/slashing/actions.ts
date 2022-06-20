@@ -1,20 +1,5 @@
 import * as types from './types';
 
-export const getSlashingProposals = (): types.GetSlashingProposals => ({
-  type: 'GET_SLASHING_PROPOSALS'
-});
-
-export const setSlashingProposals = (
-  activeProposalsArray: any[],
-  endedProposalsArray: any[],
-  proposalsCounter: { ended: number, active: number }
-): types.SetSlashingProposals => ({
-  type: 'SET_SLASHING_PROPOSALS',
-  activeProposalsArray,
-  endedProposalsArray,
-  proposalsCounter
-});
-
 export const onEscrowCastObjection = (
   data: any,
   contractName: string,

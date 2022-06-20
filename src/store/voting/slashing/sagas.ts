@@ -1,14 +1,12 @@
-import { all, call, put, select, takeEvery } from 'typed-redux-saga';
+import { call, put, select, takeEvery } from 'typed-redux-saga';
 
 import { setVoteDetails } from '../proposals/actions';
 
-import { setSlashingProposals } from './actions';
 import * as types from './types';
 
 import { setTransactionLoading, setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/action-creators';
 
 import { getRootNodesInstance, getValidatorsInstance } from 'contracts/contract-instance';
-import { creationSlashingContractsObjArray } from 'contracts/helpers/voting-helpers/base-voting-helper';
 import SlashingEscrow from 'contracts/helpers/voting-helpers/slashing-escrow-helper';
 
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
@@ -16,47 +14,6 @@ import { escrowTypes } from 'constants/escrowTypes';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
-import { getMinimalActiveBlockHeight, sortAndCountProposalsByType } from 'func/useful';
-
-let lastActiveBlock: string | number;
-
-function* getSlashingProposalsGenerator () {
-  try {
-    const contracts = creationSlashingContractsObjArray();
-    const { minimalActiveBlockHeight, lastBlockHeight } = yield* call(getMinimalActiveBlockHeight);
-
-    let proposalsCounter;
-    let activeProposalsArray;
-    let endedProposalsArray;
-
-    if (lastActiveBlock) {
-      const { activeProposals, endedProposals, slashingEndedProposalsCount } = yield* select(
-        (state) => state.slashingProposals
-      );
-      const proposals = yield* all(
-        contracts.map((contract) => contract.getNewProposalsAndCheckActive(activeProposals, lastActiveBlock))
-      );
-      const [newProposalsCount, newActiveProposals, newEndedProposalsIds] = sortAndCountProposalsByType(proposals);
-      proposalsCounter = {
-        active: newProposalsCount.active,
-        ended: slashingEndedProposalsCount + newProposalsCount.ended
-      };
-      activeProposalsArray = newActiveProposals;
-      endedProposalsArray = [...endedProposals, ...newEndedProposalsIds];
-      lastActiveBlock = lastBlockHeight;
-    } else {
-      const proposals = yield* all(contracts.map((contract) => contract.getProposalsCount(minimalActiveBlockHeight)));
-      const [proposalsCount, activeProposalsIds, endedProposalsIds] = sortAndCountProposalsByType(proposals);
-      proposalsCounter = proposalsCount;
-      activeProposalsArray = activeProposalsIds;
-      endedProposalsArray = endedProposalsIds;
-      lastActiveBlock = lastBlockHeight;
-    }
-    yield* put(setSlashingProposals(activeProposalsArray, endedProposalsArray, proposalsCounter));
-  } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
-  }
-}
 
 function* onEscrowCastObjectionGenerator ({
   data,
@@ -218,7 +175,6 @@ export default [
   takeEvery<types.OnEscrowCastObjection>('ESCROW_CAST_OBJECTION', onEscrowCastObjectionGenerator),
   takeEvery<types.OnEscrowProposeDecision>('ESCROW_PROPOSE_DECISION', onEscrowProposeDecisionGenerator),
   takeEvery<types.OnEscrowProposerRemark>('ESCROW_PROPOSER_REMARK', onEscrowProposerRemarkGenerator),
-  takeEvery<types.GetSlashingProposals>('GET_SLASHING_PROPOSALS', getSlashingProposalsGenerator),
 
   takeEvery<types.SetEscrowAction>('SET_ESCROW_ACTION', setEscrowActionGenerator),
   takeEvery<types.SetPurgeSlashing>('SET_PURGE_SLASHING', setPurgeSlashingGenerator),

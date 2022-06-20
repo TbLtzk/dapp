@@ -1,3 +1,18 @@
+import { ProposalEvent } from 'typings/contracts';
+
+import { ProposalType } from 'constants/statuses';
+
+export interface GetProposals {
+  type: 'GET_PROPOSALS'
+  proposalType: ProposalType
+}
+
+export interface SetProposals {
+  type: 'SET_PROPOSALS'
+  proposalType: ProposalType
+  proposals: ProposalEvent[]
+}
+
 export interface CreateProposal {
   type: 'CREATE_PROPOSAL'
   proposal: any
@@ -51,6 +66,8 @@ export interface SetNewParameter {
 }
 
 export type ProposalsAction =
+  GetProposals |
+  SetProposals |
   CreateProposal |
   SetVoteDetails |
   VoteForProposal |
@@ -62,4 +79,3 @@ export type ProposalsAction =
   SetBaseVotingWeightInfo |
   GetProposalsByType |
   SetNewParameter
-export type ActionType = ProposalsAction['type']

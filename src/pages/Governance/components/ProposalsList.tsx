@@ -8,7 +8,7 @@ import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
 import ListCard from './ListCard';
 
-import { qProposalsLoadingSelector, qProposalsSelector } from 'store/voting/q-proposals/selectors';
+import { allProposalsSelector, isProposalsLoadingSelector } from 'store/voting/proposals/selectors';
 
 import { LoadingWrap } from 'constants/style';
 import { fillArray } from 'func/useful';
@@ -16,8 +16,8 @@ import { fillArray } from 'func/useful';
 const LIMIT = 10;
 
 function ProposalsList () {
-  const proposals = useSelector(qProposalsSelector);
-  const isLoading = useSelector(qProposalsLoadingSelector);
+  const proposals = useSelector(allProposalsSelector);
+  const isLoading = useSelector(isProposalsLoadingSelector);
 
   const [list, setList] = useState<any>([]);
   const [index, setIndex] = useState(LIMIT);

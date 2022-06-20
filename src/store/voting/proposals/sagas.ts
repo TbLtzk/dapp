@@ -2,14 +2,14 @@ import { call, delay, put, select, takeEvery } from 'typed-redux-saga';
 
 import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 
-import { getContractUpdatesProposals } from '../contract-updates/actions';
-
 import {
   getBaseVotingWeightInfo,
   getConstitutionHashSuccess,
   getNumberAllProposals,
+  getProposals,
   getProposalsByType,
   setBaseVotingWeightInfo,
+  setProposals,
   setVoteDetails,
 } from './actions';
 import * as types from './types';
@@ -20,12 +20,13 @@ import {
   setTransactionLoadingError,
   setTransactionLoadingSuccess,
 } from 'store/transaction-handler/action-creators';
-import { getExpertProposals } from 'store/voting/expert-proposals/actions';
-import { getQProposals } from 'store/voting/q-proposals/actions';
-import { getRootProposals } from 'store/voting/root-node-proposals/actions';
-import { getSlashingProposals } from 'store/voting/slashing-proposals/actions';
 
 import { getVotingWeightProxyInstance } from 'contracts/contract-instance';
+import { getQProposals } from 'contracts/helpers/voting/constitution';
+import { getContractUpdateProposals } from 'contracts/helpers/voting/contract-update';
+import { getExpertProposals } from 'contracts/helpers/voting/expert';
+import { getRootNodeProposals } from 'contracts/helpers/voting/root-node';
+import { getSlashingProposals } from 'contracts/helpers/voting/slashing';
 import {
   chooseExpertContractDependsOnType,
   chooseSlashingContractDependsOnType,
@@ -43,13 +44,39 @@ import { TRANSACTION_TYPES } from 'constants/statuses';
 import { VOTING_TYPES } from 'constants/votingTypes';
 import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
+import { getMinimalActiveBlockHeight } from 'func/useful';
+
+let lastActiveBlock: number;
+
+function* getProposalsGenerator ({ proposalType }: types.GetProposals) {
+  try {
+    const { minimalActiveBlockHeight, lastBlockHeight } = yield* call(getMinimalActiveBlockHeight);
+
+    const { proposals } = yield* select(state => state.proposals.proposalsMap[proposalType]);
+    const proposalFn = {
+      q: getQProposals,
+      rootNode: getRootNodeProposals,
+      expert: getExpertProposals,
+      slashing: getSlashingProposals,
+      contractUpdate: getContractUpdateProposals,
+    }[proposalType];
+
+    const newProposals = yield* call(
+      () => proposalFn(proposals, lastActiveBlock)
+    );
+
+    lastActiveBlock = Number(lastBlockHeight);
+    yield* put(setProposals(proposalType, newProposals));
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error);
+  }
+}
 
 export const onEscrowCastObjection = (
   data: any,
   contractName: string,
   proposalId: string
 ) => ({
-  type: 'kek',
   data,
   contractName,
   proposalId
@@ -189,16 +216,16 @@ function* getProposalsByTypeGenerator ({ contractName }: types.GetProposalsByTyp
     case CONTRACTS_NAMES.constitutionVoting:
     case CONTRACTS_NAMES.emergencyUpdateVoting:
     case CONTRACTS_NAMES.generalUpdateVoting: {
-      yield* put(getQProposals());
+      yield* put(getProposals('q'));
       break;
     }
     case CONTRACTS_NAMES.rootsVoting: {
-      yield* put(getRootProposals());
+      yield* put(getProposals('rootNode'));
       break;
     }
     case CONTRACTS_NAMES.rootNodesSlashingVoting:
     case CONTRACTS_NAMES.validatorsSlashingVoting: {
-      yield* put(getSlashingProposals());
+      yield* put(getProposals('slashing'));
       break;
     }
     case CONTRACTS_NAMES.ePQFIMembershipVoting:
@@ -207,12 +234,12 @@ function* getProposalsByTypeGenerator ({ contractName }: types.GetProposalsByTyp
     case CONTRACTS_NAMES.ePDRParametersVoting:
     case CONTRACTS_NAMES.ePRSMembershipVoting:
     case CONTRACTS_NAMES.ePRSParametersVoting: {
-      yield* put(getExpertProposals());
+      yield* put(getProposals('expert'));
       break;
     }
     case CONTRACTS_NAMES.addressVoting:
     case CONTRACTS_NAMES.upgradeVoting: {
-      yield* put(getContractUpdatesProposals());
+      yield* put(getProposals('contractUpdate'));
       break;
     }
   }
@@ -220,13 +247,13 @@ function* getProposalsByTypeGenerator ({ contractName }: types.GetProposalsByTyp
 
 function* getNumberAllProposalsGenerator () {
   const { appMode } = yield* select((state) => state.dashboardMode);
-  yield* put(getQProposals());
-  yield* put(getRootProposals());
+  yield* put(getProposals('q'));
+  yield* put(getProposals('rootNode'));
 
   if (appMode === MODE.advanced) {
-    yield* put(getExpertProposals());
-    yield* put(getSlashingProposals());
-    yield* put(getContractUpdatesProposals());
+    yield* put(getProposals('expert'));
+    yield* put(getProposals('slashing'));
+    yield* put(getProposals('contractUpdate'));
   }
   yield* delay(240000);
   yield* put(getNumberAllProposals());
@@ -255,6 +282,7 @@ function* getBaseVotingWeightInfoGenerator () {
 }
 
 export default [
+  takeEvery<types.GetProposals>('GET_PROPOSALS', getProposalsGenerator),
   takeEvery<types.CreateProposal>('CREATE_PROPOSAL', createProposalGenerator),
   takeEvery<types.VoteForProposal>('VOTE_FOR_PROPOSAL', voteForProposalGenerator),
   takeEvery<types.ExecuteProposal>('EXECUTE_PROPOSAL', executeProposalGenerator),

@@ -1,14 +1,3 @@
-export interface GetSlashingProposals {
-  type: 'GET_SLASHING_PROPOSALS'
-}
-
-export interface SetSlashingProposals {
-  type: 'SET_SLASHING_PROPOSALS'
-  activeProposalsArray: any[]
-  endedProposalsArray: any[]
-  proposalsCounter: { ended: number, active: number }
-}
-
 export interface OnEscrowCastObjection {
   type: 'ESCROW_CAST_OBJECTION'
   data: any
@@ -54,5 +43,3 @@ export interface SetPurgeSlashing {
   slashingAddress: string
   contractType: string
 }
-
-export type SlashingProposalsAction = SetSlashingProposals

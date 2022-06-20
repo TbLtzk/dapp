@@ -1,4 +1,22 @@
+import { ProposalEvent } from 'typings/contracts';
+
 import * as types from './types';
+
+import { ProposalType } from 'constants/statuses';
+
+export const getProposals = (proposalType: ProposalType): types.GetProposals => ({
+  type: 'GET_PROPOSALS',
+  proposalType
+});
+
+export const setProposals = (
+  proposalType: ProposalType,
+  proposals: ProposalEvent[]
+): types.SetProposals => ({
+  type: 'SET_PROPOSALS',
+  proposalType,
+  proposals
+});
 
 export const createProposal = (proposal: any): types.CreateProposal => ({
   type: 'CREATE_PROPOSAL',

@@ -46,22 +46,22 @@ function Proposal ({ match }: RouteComponentProps<{
       case CONTRACTS_NAMES.constitutionVoting:
       case CONTRACTS_NAMES.emergencyUpdateVoting:
       case CONTRACTS_NAMES.generalUpdateVoting:
-        return 'q-proposals';
+        return 'q';
       case CONTRACTS_NAMES.rootsVoting:
-        return 'q-root-node-panel';
+        return 'rootNode';
       case CONTRACTS_NAMES.ePQFIMembershipVoting:
       case CONTRACTS_NAMES.ePDRMembershipVoting:
       case CONTRACTS_NAMES.ePQFIParametersVoting:
       case CONTRACTS_NAMES.ePDRParametersVoting:
       case CONTRACTS_NAMES.ePRSMembershipVoting:
       case CONTRACTS_NAMES.ePRSParametersVoting:
-        return 'q-expert-proposals';
+        return 'expert';
       case CONTRACTS_NAMES.rootNodesSlashingVoting:
       case CONTRACTS_NAMES.validatorsSlashingVoting:
-        return 'slashing-proposals';
+        return 'slashing';
       case CONTRACTS_NAMES.upgradeVoting:
       case CONTRACTS_NAMES.addressVoting:
-        return 'contract-updates';
+        return 'contractUpdate';
       default:
         return 'error';
     }

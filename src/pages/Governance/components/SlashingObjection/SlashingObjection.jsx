@@ -10,7 +10,7 @@ import ProposerRemarkModal from './components/ProposerRemarkModal';
 import SlashingActions from './components/SlashingActions';
 import { SlashingObjectionContainer } from './styles';
 
-import { setEscrowAction } from 'store/voting/slashing-proposals/actions';
+import { setEscrowAction } from 'store/voting/slashing/actions';
 
 import { slashingTypes } from 'constants/slashingTypes';
 

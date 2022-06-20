@@ -6,11 +6,7 @@ import Switch from 'components/Base/Form/Switch';
 import { getAuctions } from 'store/auctions/action-creators';
 import { setDashboardMode } from 'store/dashboard-mode/action-creators';
 import { mode } from 'store/dashboard-mode/selectors';
-import { getContractUpdatesProposals } from 'store/voting/contract-updates/actions';
-import { getExpertProposals } from 'store/voting/expert-proposals/actions';
-import { getQProposals } from 'store/voting/q-proposals/actions';
-import { getRootProposals } from 'store/voting/root-node-proposals/actions';
-import { getSlashingProposals } from 'store/voting/slashing-proposals/actions';
+import { getProposals } from 'store/voting/proposals/actions';
 
 import { AUCTIONS_TYPES } from 'constants/statuses';
 
@@ -28,11 +24,11 @@ function DashboardMode () {
     setIsSwitchOn(!isSwitchOn);
     if (appMode === MODE.basic) {
       dispatch(getAuctions(AUCTIONS_TYPES.all));
-      dispatch(getQProposals());
-      dispatch(getRootProposals());
-      dispatch(getExpertProposals());
-      dispatch(getSlashingProposals());
-      dispatch(getContractUpdatesProposals());
+      dispatch(getProposals('q'));
+      dispatch(getProposals('rootNode'));
+      dispatch(getProposals('expert'));
+      dispatch(getProposals('slashing'));
+      dispatch(getProposals('contractUpdate'));
       dispatch(setDashboardMode(MODE.advanced));
     } else {
       dispatch(setDashboardMode(MODE.basic));

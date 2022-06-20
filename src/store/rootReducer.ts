@@ -20,12 +20,7 @@ import userInf from './user-inf/reducer';
 import validationRewardPools from './validation-reward-pools/reducer';
 import validators from './validators/reducer';
 import vesting from './vesting/reducer';
-import contractUpdatesProposals from './voting/contract-updates/reducer';
-import expertProposals from './voting/expert-proposals/reducer';
 import proposals from './voting/proposals/reducer';
-import qProposals from './voting/q-proposals/reducer';
-import rootNodeProposals from './voting/root-node-proposals/reducer';
-import slashingProposals from './voting/slashing-proposals/reducer';
 
 const RootReducer = combineReducers({
   userInf,
@@ -39,11 +34,6 @@ const RootReducer = combineReducers({
   tokenomics,
 
   proposals,
-  qProposals,
-  rootNodeProposals,
-  expertProposals,
-  slashingProposals,
-  contractUpdatesProposals,
 
   auctions,
 
