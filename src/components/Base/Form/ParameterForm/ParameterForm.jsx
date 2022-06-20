@@ -35,6 +35,7 @@ function ParameterForm ({ onChange, typeContract }) {
       <div className="type-fields">
         <Select
           {...form.fields.type}
+          invertedColors
           defaultValue={ParameterType.ADDRESS}
           options={[
             { value: ParameterType.ADDRESS, label: 'Address' },

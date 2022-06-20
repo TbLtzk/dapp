@@ -10,10 +10,16 @@ export const SelectWrapper = styled(Form.Group)`
     color: ${(p) => {
       if (p.$error) return p.theme.colors.validationError;
 
-      return p.theme.palette === 'dark'
+      return p.$disabled
         ? p.theme.colors.oxfordBlueTint2
         : p.theme.colors.oxfordBlueTint4;
     }};
+
+    &:focus-within {
+      ${(p) => !p.$error && css`  
+        color: ${p.$invertedColors ? p.theme.colors.oxfordBlue : p.theme.colors.white}; 
+      `}
+    }
   }
 
   .select-icon {
@@ -23,6 +29,7 @@ export const SelectWrapper = styled(Form.Group)`
     line-height: 1;
     transform: translateY(-50%);
     font-size: 20px;
+    color: inherit;
   }
 
   select {
@@ -36,42 +43,22 @@ export const SelectWrapper = styled(Form.Group)`
     appearance: none;
     color: inherit;
     border-radius: ${(p) => p.label ? '0 3px 3px 0' : '3px'};
-    border: 1px solid ${(p) => {
-      if (p.$error) return p.theme.colors.validationError;
-
-      return p.theme.palette === 'dark'
-        ? p.theme.colors.oxfordBlueTint2
-        : p.theme.colors.oxfordBlueTint4;
-    }};
+    border: 1px solid ${(p) => p.$error
+      ? p.theme.colors.validationError
+      : p.theme.colors.oxfordBlueTint4
+    };
 
     &:focus {
       outline: none;
       background: transparent;
-      ${(p) => {
-        if (p.$error) return;
-        return css`
-          border: 1px solid ${(p) => p.theme.palette === 'dark'
-            ? p.theme.colors.oxfordBlueTint1
-            : p.theme.colors.white
-          };
-          color: ${(p) => p.theme.palette === 'dark'
-            ? p.theme.colors.oxfordBlueTint1
-            : p.theme.colors.white
-          };
-        `;
-      }}
+      ${(p) => !p.$error && css`
+        border: 1px solid ${p.$invertedColors ? p.theme.colors.oxfordBlue : p.theme.colors.white};
+      `}
     }
 
     &:disabled {
       background: transparent;
-      border: 1px solid ${(p) => p.theme.palette === 'dark'
-        ? p.theme.colors.oxfordBlueTint5
-        : p.theme.colors.oxfordBlueTint2
-      };
-      color: ${(p) => p.theme.palette === 'dark'
-        ? p.theme.colors.oxfordBlueTint5
-        : p.theme.colors.oxfordBlueTint2
-      };
+      border: 1px solid ${(p) => p.theme.colors.oxfordBlueTint2};
     }
   }
 

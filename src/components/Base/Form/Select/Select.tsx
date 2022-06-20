@@ -11,6 +11,7 @@ interface Props<T extends string> extends Omit<SelectProps, 'onChange'> {
   error?: string
   label?: string
   disabled?: boolean
+  invertedColors?: boolean
   defaultValue?: T
   options: { value: T, label: string }[]
   onChange: (val: T) => void
@@ -22,6 +23,7 @@ function Select<T extends string> ({
   label,
   disabled,
   defaultValue,
+  invertedColors = false,
   options = [],
   onChange,
   ...rest
@@ -30,6 +32,7 @@ function Select<T extends string> ({
     <SelectWrapper
       $error={error}
       $disabled={disabled}
+      $invertedColors={invertedColors}
       disabled={disabled}
     >
       {label && <h4>{label}</h4>}

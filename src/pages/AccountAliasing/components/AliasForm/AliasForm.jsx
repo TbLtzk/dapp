@@ -36,6 +36,7 @@ function AliasForm ({ alias }) {
     >
       <Select
         {...form.fields.purpose}
+        invertedColors
         options={Object.entries(AliasPurpose).map(([label, value]) => ({ value, label }))}
         defaultValue={AliasPurpose.BLOCK_SEALING}
         label="Role"
