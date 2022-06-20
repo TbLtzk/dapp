@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const TabsStyle = styled.div`
   position: relative;
-  display: flex;
   overflow-x: auto;
   padding: 4px 0;
   margin-bottom: -3px;
@@ -11,14 +10,11 @@ export const TabsStyle = styled.div`
     display: none;
   }
 
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 3px;
+  .tabs-container {
+    display: flex;
+    min-width: max-content;
     width: 100%;
-    height: 1px;
-    background-color: ${({ theme }) => theme.colors.oxfordBlueTint2};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.oxfordBlueTint2};
   }
   
   .tab {

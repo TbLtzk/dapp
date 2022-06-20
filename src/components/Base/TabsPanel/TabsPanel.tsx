@@ -14,19 +14,21 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 function TabsPanel ({ tabs, ...rest }: Props) {
   return (
     <TabsStyle {...rest}>
-      {tabs.map(({ label, count, link }) => (
-        <NavLink
-          key={label}
-          className="tab"
-          activeClassName="active"
-          to={link}
-        >
-          <span className="tab-label">{label}</span>
-          {Number(count) > 0 && (
-            <span className="tab-count">{count}</span>
-          )}
-        </NavLink>
-      ))}
+      <div className="tabs-container">
+        {tabs.map(({ label, count, link }) => (
+          <NavLink
+            key={label}
+            className="tab"
+            activeClassName="active"
+            to={link}
+          >
+            <span className="tab-label">{label}</span>
+            {Number(count) > 0 && (
+              <span className="tab-count">{count}</span>
+            )}
+          </NavLink>
+        ))}
+      </div>
     </TabsStyle>
   );
 }
