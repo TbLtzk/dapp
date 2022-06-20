@@ -20,16 +20,16 @@ function CreateProposal ({ type }) {
 
   const proposalTitleMap = {
     q: 'Create Q Proposal',
-    slashing: 'Create Q Slashing Proposal',
     rootNode: 'Create Q Root Node Panel Proposal',
+    slashing: 'Create Q Slashing Proposal',
     expert: 'Create Q Expert Proposal',
   };
 
   const modalProps = { modalOpen, onHide: handleHideModal };
   const modalMap = {
     q: <QProposalModal {...modalProps} />,
-    slashing: <RootProposalModal {...modalProps} />,
-    rootNode: <SlashingProposalModal {...modalProps} />,
+    rootNode: <RootProposalModal {...modalProps} />,
+    slashing: <SlashingProposalModal {...modalProps} />,
     expert: <ExpertProposalModal {...modalProps} />,
   };
 

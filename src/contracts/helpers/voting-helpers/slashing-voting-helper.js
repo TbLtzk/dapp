@@ -109,8 +109,8 @@ export default class SlashingVoting extends VotingService {
       votingEndTime: response.base.params.votingEndTime,
       status: getStatusTransformation(promiseStatus),
       title: this.contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-        ? 'Validator slashing proposals'
-        : 'Root Nodes slashing proposals'
+        ? 'Validator slashing proposal'
+        : 'Root Node slashing proposal'
     };
   }
 

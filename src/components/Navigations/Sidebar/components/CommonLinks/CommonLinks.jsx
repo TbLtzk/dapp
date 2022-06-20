@@ -16,8 +16,8 @@ function CommonLinks ({
         to={linkTo}
       >
         {linkTitle}
+        {count > 0 && <AccordionLbl activeClassName="highlight">{count}</AccordionLbl>}
       </LinkStyle>
-      {count <= 0 ? null : <AccordionLbl activeClassName="highlight">{count}</AccordionLbl>}
     </LinkGroup>
   );
 }

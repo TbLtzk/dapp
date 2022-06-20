@@ -23,11 +23,14 @@ import {
   systemSurplusAuctionsSelector
 } from 'store/auctions/selectors';
 import { mode } from 'store/dashboard-mode/selectors';
+import { activeProposalsCountSelector } from 'store/voting/proposals/selectors';
 
 function Sidebar () {
   const appMode = useSelector(mode);
   const windowSize = useWindowSize();
   const isAliasesEnabled = useFeatureFlag('aliases');
+
+  const activeProposalsCount = useSelector(activeProposalsCountSelector);
 
   const liquidationAuctions = useSelector(liquidationAuctionsSelector);
   const liquidationActiveAuctionsCount = liquidationAuctions?.activeAuctions?.length;
@@ -71,6 +74,7 @@ function Sidebar () {
             exact={false}
             linkTo="/governance"
             linkTitle="Governance"
+            count={activeProposalsCount}
           />
           <CommonLinks linkTo="/q-vault" linkTitle="Q Vault" />
 
