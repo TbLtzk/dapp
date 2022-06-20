@@ -11,6 +11,12 @@ export interface SetProposals {
   type: 'SET_PROPOSALS'
   proposalType: ProposalType
   proposals: ProposalEvent[]
+  lastBlock: number
+}
+
+export interface SetMinimalActiveBlock {
+  type: 'SET_MINIMAL_ACTIVE_BLOCK'
+  block: number
 }
 
 export interface CreateProposal {
@@ -68,6 +74,7 @@ export interface SetNewParameter {
 export type ProposalsAction =
   GetProposals |
   SetProposals |
+  SetMinimalActiveBlock |
   CreateProposal |
   SetVoteDetails |
   VoteForProposal |

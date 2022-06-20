@@ -9,6 +9,7 @@ import {
   getProposals,
   getProposalsByType,
   setBaseVotingWeightInfo,
+  setMinimalActiveBlock,
   setProposals,
   setVoteDetails,
 } from './actions';
@@ -21,7 +22,7 @@ import {
   setTransactionLoadingSuccess,
 } from 'store/transaction-handler/action-creators';
 
-import { getVotingWeightProxyInstance } from 'contracts/contract-instance';
+import { getConstitutionVotingInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance';
 import { getQProposals } from 'contracts/helpers/voting/constitution';
 import { getContractUpdateProposals } from 'contracts/helpers/voting/contract-update';
 import { getExpertProposals } from 'contracts/helpers/voting/expert';
@@ -30,7 +31,6 @@ import { getSlashingProposals } from 'contracts/helpers/voting/slashing';
 import {
   chooseExpertContractDependsOnType,
   chooseSlashingContractDependsOnType,
-  creationQContractObj,
 } from 'contracts/helpers/voting-helpers/base-voting-helper';
 import ConstitutionVotingService from 'contracts/helpers/voting-helpers/constitution-voting-helper';
 import EmergencyUpdateVotingService from 'contracts/helpers/voting-helpers/emergency-update-voting-helper';
@@ -46,13 +46,11 @@ import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
 import { getMinimalActiveBlockHeight } from 'func/useful';
 
-let lastActiveBlock: number;
-
 function* getProposalsGenerator ({ proposalType }: types.GetProposals) {
   try {
     const { minimalActiveBlockHeight, lastBlockHeight } = yield* call(getMinimalActiveBlockHeight);
 
-    const { proposals } = yield* select(state => state.proposals.proposalsMap[proposalType]);
+    const { proposals, lastBlock } = yield* select(state => state.proposals.proposalsMap[proposalType]);
     const proposalFn = {
       q: getQProposals,
       rootNode: getRootNodeProposals,
@@ -62,11 +60,11 @@ function* getProposalsGenerator ({ proposalType }: types.GetProposals) {
     }[proposalType];
 
     const newProposals = yield* call(
-      () => proposalFn(proposals, lastActiveBlock)
+      () => proposalFn(proposals, lastBlock)
     );
 
-    lastActiveBlock = Number(lastBlockHeight);
-    yield* put(setProposals(proposalType, newProposals));
+    yield* put(setProposals(proposalType, newProposals, Number(lastBlockHeight)));
+    yield* put(setMinimalActiveBlock(minimalActiveBlockHeight));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }
@@ -261,9 +259,9 @@ function* getNumberAllProposalsGenerator () {
 
 function* getConstitutionHashGenerator () {
   try {
-    const contract = creationQContractObj(CONTRACTS_NAMES.constitutionVoting) as ConstitutionVotingService;
-    const data = yield* call(contract.getConstitutionHash);
-    yield* put(getConstitutionHashSuccess(data));
+    const contract = yield* call(() => getConstitutionVotingInstance());
+    const hash = yield* call(() => contract.constitutionHash());
+    yield* put(getConstitutionHashSuccess(hash));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }

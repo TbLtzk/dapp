@@ -8,6 +8,11 @@ import { groupArrayByBlockNumber } from 'func/useful';
 interface ProposalItem {
   proposals: ProposalEvent[]
   isLoading: boolean
+  lastBlock: number
+}
+
+function getDefaultProposalItem () {
+  return { proposals: [], isLoading: true, lastBlock: 0 };
 }
 
 const initialState = {
@@ -15,12 +20,14 @@ const initialState = {
   constitutionHash: '...',
   baseVotingWeightInfo: {} as Record<string, unknown>,
   newParameter: false,
+
+  minimalActiveBlock: 0,
   proposalsMap: {
-    q: { proposals: [], isLoading: true },
-    rootNode: { proposals: [], isLoading: true },
-    expert: { proposals: [], isLoading: true },
-    slashing: { proposals: [], isLoading: true },
-    contractUpdate: { proposals: [], isLoading: true }
+    q: getDefaultProposalItem(),
+    rootNode: getDefaultProposalItem(),
+    expert: getDefaultProposalItem(),
+    slashing: getDefaultProposalItem(),
+    contractUpdate: getDefaultProposalItem(),
   } as Record<ProposalType, ProposalItem>
 };
 
@@ -36,9 +43,15 @@ export default function proposals (
           ...state.proposalsMap,
           [action.proposalType]: {
             proposals: groupArrayByBlockNumber(action.proposals) as ProposalEvent[],
-            isLoading: false
+            isLoading: false,
+            lastBlock: action.lastBlock
           }
         }
+      };
+    case 'SET_MINIMAL_ACTIVE_BLOCK':
+      return {
+        ...state,
+        minimalActiveBlock: action.block
       };
     case 'SET_VOTE_DETAILS':
       return {

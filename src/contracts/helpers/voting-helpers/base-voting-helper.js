@@ -10,37 +10,11 @@ import SlashingVotingService from './slashing-voting-helper';
 import { ZERO_ADDRESS } from 'constants/config';
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
 import ErrorHandler from 'func/ErrorHandler';
-import { BN } from 'func/useful';
 
 export const getStatusTransformation = (statusId) => {
   const status = ['None', 'Pending', 'Rejected', 'Accepted', 'Passed', 'Executed', 'Obsolete', 'Expired'];
   return status[Number(statusId)];
 };
-export const getTypeParameter = (id) => {
-  const status = ['None', 'Pending', 'Rejected', 'Accepted', 'Passed', 'Boolean', 'Obsolete'];
-  return status[Number(id)];
-};
-
-export const getPercentageFormat = (number) => {
-  return BN(number)
-    .multipliedBy(BN(10 ** 27))
-    .dividedBy(100)
-    .toFixed();
-};
-
-export function creationSlashingContractObj (contractName) {
-  return new SlashingVotingService(contractName);
-}
-
-export function creationSlashingContractsObjArray () {
-  const validatorsSlashingVoting = new SlashingVotingService(CONTRACTS_NAMES.validatorsSlashingVoting);
-  const rootNodesSlashingVoting = new SlashingVotingService(CONTRACTS_NAMES.rootNodesSlashingVoting);
-  return [validatorsSlashingVoting, rootNodesSlashingVoting];
-}
-
-export function creationRootContractObj () {
-  return new RootsVotingService(CONTRACTS_NAMES.rootsVoting);
-}
 
 export function creationQContractObj (contractName) {
   switch (contractName) {
@@ -53,40 +27,6 @@ export function creationQContractObj (contractName) {
   }
 }
 
-export function creationQContractsObjArray () {
-  const constitutionVoting = new ConstitutionVotingService(CONTRACTS_NAMES.constitutionVoting);
-  const emergencyUpdateVoting = new EmergencyUpdateVotingService(CONTRACTS_NAMES.emergencyUpdateVoting);
-  const generalUpdateVoting = new GeneralUpdateVotingService(CONTRACTS_NAMES.generalUpdateVoting);
-  return [constitutionVoting, emergencyUpdateVoting, generalUpdateVoting];
-}
-
-export const arrContractsExpert = [
-  {
-    typeContract: CONTRACT_TYPES.member,
-    type: CONTRACT_TYPES.qFee
-  },
-  {
-    typeContract: CONTRACT_TYPES.member,
-    type: CONTRACT_TYPES.qDefi
-  },
-  {
-    typeContract: CONTRACT_TYPES.member,
-    type: CONTRACT_TYPES.qEprs
-  },
-  {
-    typeContract: CONTRACT_TYPES.parameters,
-    type: CONTRACT_TYPES.qFee
-  },
-  {
-    typeContract: CONTRACT_TYPES.parameters,
-    type: CONTRACT_TYPES.qEprs
-  },
-  {
-    typeContract: CONTRACT_TYPES.parameters,
-    type: CONTRACT_TYPES.qDefi
-  }
-];
-
 export function creationExpertContractObj (contractName) {
   switch (contractName) {
     case CONTRACTS_NAMES.ePQFIMembershipVoting:
@@ -98,32 +38,6 @@ export function creationExpertContractObj (contractName) {
     case CONTRACTS_NAMES.ePRSParametersVoting:
       return new ParametersVoting(contractName);
   }
-}
-
-export function creationExpertContractsObjArray () {
-  const ePQFImembershipVoting = new MembershipVoting(CONTRACTS_NAMES.ePQFIMembershipVoting);
-  const ePDRmembershipVoting = new MembershipVoting(CONTRACTS_NAMES.ePDRMembershipVoting);
-
-  const ePQFIparametersVoting = new ParametersVoting(CONTRACTS_NAMES.ePQFIParametersVoting);
-  const ePDRparametersVoting = new ParametersVoting(CONTRACTS_NAMES.ePDRParametersVoting);
-
-  const ePRSparametersVoting = new ParametersVoting(CONTRACTS_NAMES.ePRSParametersVoting);
-  const ePRSmembershipVoting = new MembershipVoting(CONTRACTS_NAMES.ePRSMembershipVoting);
-
-  return [
-    ePQFImembershipVoting,
-    ePDRmembershipVoting,
-    ePQFIparametersVoting,
-    ePDRparametersVoting,
-    ePRSparametersVoting,
-    ePRSmembershipVoting
-  ];
-}
-
-export function creationUpdatesContractObjArray () {
-  const upgradeVoting = new ContractUpdates(CONTRACTS_NAMES.upgradeVoting);
-  const addressVoting = new ContractUpdates(CONTRACTS_NAMES.addressVoting);
-  return [upgradeVoting, addressVoting];
 }
 
 export function creationUpdatesContractObj (contractName) {
@@ -146,13 +60,13 @@ export async function getProposal (contractName, id, oneProposal) {
         return proposal;
       }
       case CONTRACTS_NAMES.rootsVoting: {
-        const contract = creationRootContractObj();
+        const contract = new RootsVotingService(CONTRACTS_NAMES.rootsVoting);
         const proposal = await contract.getProposal(id, oneProposal);
         return proposal;
       }
       case CONTRACTS_NAMES.rootNodesSlashingVoting:
       case CONTRACTS_NAMES.validatorsSlashingVoting: {
-        const contract = creationSlashingContractObj(contractName);
+        const contract = new SlashingVotingService(contractName);
         const proposal = await contract.getProposal(id, oneProposal);
         return proposal;
       }
@@ -179,39 +93,28 @@ export async function getProposal (contractName, id, oneProposal) {
 }
 
 export const chooseSlashingContractDependsOnType = (type) => {
-  let contractName = null;
-  if (type === CONTRACT_TYPES.rootNodeSlashing) {
-    contractName = CONTRACTS_NAMES.rootNodesSlashingVoting;
-  } else if (type === CONTRACT_TYPES.validatorNodeSlashing) {
-    contractName = CONTRACTS_NAMES.validatorsSlashingVoting;
-  }
-
+  const contractName = type === CONTRACT_TYPES.rootNodeSlashing
+    ? CONTRACTS_NAMES.rootNodesSlashingVoting
+    : CONTRACTS_NAMES.validatorsSlashingVoting;
   return new SlashingVotingService(contractName);
 };
 
 export const chooseExpertContractDependsOnType = (typeContract, type) => {
   switch (type) {
     case CONTRACT_TYPES.qFee:
-      if (typeContract === CONTRACT_TYPES.member) {
-        return new MembershipVoting(CONTRACTS_NAMES.ePQFIMembershipVoting);
-      } else if (typeContract === CONTRACT_TYPES.parameters) {
-        return new ParametersVoting(CONTRACTS_NAMES.ePQFIParametersVoting);
-      }
-      break;
+      return typeContract === CONTRACT_TYPES.member
+        ? new MembershipVoting(CONTRACTS_NAMES.ePQFIMembershipVoting)
+        : new ParametersVoting(CONTRACTS_NAMES.ePQFIParametersVoting);
+
     case CONTRACT_TYPES.qDefi:
-      if (typeContract === CONTRACT_TYPES.member) {
-        return new MembershipVoting(CONTRACTS_NAMES.ePDRMembershipVoting);
-      } else if (typeContract === CONTRACT_TYPES.parameters) {
-        return new ParametersVoting(CONTRACTS_NAMES.ePDRParametersVoting);
-      }
-      break;
+      return typeContract === CONTRACT_TYPES.member
+        ? new MembershipVoting(CONTRACTS_NAMES.ePDRMembershipVoting)
+        : new ParametersVoting(CONTRACTS_NAMES.ePDRParametersVoting);
+
     case CONTRACT_TYPES.qEprs:
-      if (typeContract === CONTRACT_TYPES.member) {
-        return new MembershipVoting(CONTRACTS_NAMES.ePRSMembershipVoting);
-      } else if (typeContract === CONTRACT_TYPES.parameters) {
-        return new ParametersVoting(CONTRACTS_NAMES.ePRSParametersVoting);
-      }
-      break;
+      return typeContract === CONTRACT_TYPES.member
+        ? new MembershipVoting(CONTRACTS_NAMES.ePRSMembershipVoting)
+        : new ParametersVoting(CONTRACTS_NAMES.ePRSParametersVoting);
   }
 };
 

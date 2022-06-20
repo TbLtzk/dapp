@@ -11,11 +11,18 @@ export const getProposals = (proposalType: ProposalType): types.GetProposals => 
 
 export const setProposals = (
   proposalType: ProposalType,
-  proposals: ProposalEvent[]
+  proposals: ProposalEvent[],
+  lastBlock: number
 ): types.SetProposals => ({
   type: 'SET_PROPOSALS',
   proposalType,
-  proposals
+  proposals,
+  lastBlock
+});
+
+export const setMinimalActiveBlock = (block: number): types.SetMinimalActiveBlock => ({
+  type: 'SET_MINIMAL_ACTIVE_BLOCK',
+  block
 });
 
 export const createProposal = (proposal: any): types.CreateProposal => ({

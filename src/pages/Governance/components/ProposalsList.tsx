@@ -8,16 +8,16 @@ import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
 import ListCard from './ListCard';
 
-import { allProposalsSelector, isProposalsLoadingSelector } from 'store/voting/proposals/selectors';
+import { proposalsByTypeSelector } from 'store/voting/proposals/selectors';
 
+import { ProposalType } from 'constants/statuses';
 import { LoadingWrap } from 'constants/style';
 import { fillArray } from 'func/useful';
 
 const LIMIT = 10;
 
-function ProposalsList () {
-  const proposals = useSelector(allProposalsSelector);
-  const isLoading = useSelector(isProposalsLoadingSelector);
+function ProposalsList ({ type }: { type: ProposalType }) {
+  const { proposals, isLoading } = useSelector(proposalsByTypeSelector(type));
 
   const [list, setList] = useState<any>([]);
   const [index, setIndex] = useState(LIMIT);

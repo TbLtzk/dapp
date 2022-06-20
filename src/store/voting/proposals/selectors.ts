@@ -6,8 +6,19 @@ import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import { RootState } from 'store';
 import { mode } from 'store/dashboard-mode/selectors';
 
+import { ProposalType } from 'constants/statuses';
+
 export const proposalValuesSelector = (state: RootState) =>
   Object.values(state.proposals.proposalsMap);
+export const minimalActiveBlockSelector = (state: RootState) => state.proposals.minimalActiveBlock;
+
+export const proposalsByTypeSelector = (type: ProposalType) => (state: RootState) =>
+  state.proposals.proposalsMap[type];
+
+export const activeProposalsCountByTypeSelector = (type: ProposalType) => createSelector(
+  [proposalsByTypeSelector(type), minimalActiveBlockSelector], ({ proposals }, minBlock) =>
+    proposals.filter(item => isProposalActive(item, minBlock)).length
+);
 
 export const allProposalsSelector = createSelector(
   [proposalValuesSelector], (proposalValues) =>
@@ -34,14 +45,13 @@ export const modeProposalsSelector = createSelector(
 );
 
 export const activeProposalsCountSelector = createSelector(
-  [modeProposalsSelector], (proposals) => {
-    return proposals.filter((item) => item.status === 'active').length;
-  }
+  [modeProposalsSelector, minimalActiveBlockSelector], (proposals, minBlock) =>
+    proposals.filter(item => isProposalActive(item, minBlock)).length
 );
 
 export const endedProposalsCountSelector = createSelector(
-  [modeProposalsSelector], (proposals) =>
-    proposals.filter((item) => item.status === 'ended').length
+  [modeProposalsSelector, minimalActiveBlockSelector], (proposals, minBlock) =>
+    proposals.filter(item => !isProposalActive(item, minBlock)).length
 );
 
 export const newParameterSelector = (state: RootState) => state.proposals.newParameter;
@@ -49,3 +59,7 @@ export const voteDetailsSelector = (state: RootState) => state.proposals.voteDet
 
 export const constitutionHash = (state: RootState) => state.proposals.constitutionHash;
 export const baseVotingWeightInfoSelector = (state: RootState) => state.proposals.baseVotingWeightInfo;
+
+function isProposalActive (item: ProposalEvent, minBlock: number) {
+  return item.status === 'active' && item.blockNumber >= minBlock;
+}

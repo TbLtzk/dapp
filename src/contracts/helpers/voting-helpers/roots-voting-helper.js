@@ -10,9 +10,13 @@ export default class RootsVoting extends VotingService {
   checkProposalTitle (candidateAddress, replaceDestAddress) {
     if (candidateAddress !== EMPTY_ADDR && replaceDestAddress !== EMPTY_ADDR) {
       return 'Rode Node Swapping Proposal';
-    } else if (candidateAddress && replaceDestAddress === EMPTY_ADDR) {
+    }
+
+    if (candidateAddress && replaceDestAddress === EMPTY_ADDR) {
       return 'Root Node Adding Proposal';
-    } else if (candidateAddress === EMPTY_ADDR && replaceDestAddress) {
+    }
+
+    if (candidateAddress === EMPTY_ADDR && replaceDestAddress) {
       return 'Root Node Removing proposal';
     }
   }
@@ -61,9 +65,7 @@ export default class RootsVoting extends VotingService {
 
   async isUserVote (id, address) {
     const contract = await this.getContractInstance();
-
-    const result = await contract.votes(id, address);
-    return result;
+    return contract.votes(id, address);
   }
 
   async createProposal (data, userAddress) {

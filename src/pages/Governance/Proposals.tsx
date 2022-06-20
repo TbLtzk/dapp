@@ -11,9 +11,8 @@ import PurgeSlashing from './components/PurgeSlashing';
 import VotingStats from './components/VotingStats';
 import { ProposalFilter } from './types';
 
-import { getProposalsByType } from 'store/voting/proposals/actions';
+import { getProposals } from 'store/voting/proposals/actions';
 
-import { CONTRACTS_NAMES } from 'constants/contracts';
 import { ProposalType } from 'constants/statuses';
 
 function Proposals ({ type }: { type: ProposalType }) {
@@ -23,17 +22,9 @@ function Proposals ({ type }: { type: ProposalType }) {
     status: 'all',
   });
 
-  const proposalToContractMap: Record<ProposalType, string> = {
-    q: CONTRACTS_NAMES.constitutionVoting,
-    rootNode: CONTRACTS_NAMES.rootsVoting,
-    expert: CONTRACTS_NAMES.ePQFIMembershipVoting,
-    slashing: CONTRACTS_NAMES.rootNodesSlashingVoting,
-    contractUpdate: CONTRACTS_NAMES.upgradeVoting,
-  };
-
   useEffect(() => {
     setFilters({ status: 'all' });
-    dispatch(getProposalsByType(proposalToContractMap[type]));
+    dispatch(getProposals(type));
   }, [dispatch, type]);
 
   const createProposal = type !== 'contractUpdate' &&
@@ -52,7 +43,7 @@ function Proposals ({ type }: { type: ProposalType }) {
         filters={filters}
         onChange={setFilters}
       />
-      <ProposalsList />
+      <ProposalsList type={type} />
     </PageWrap>
   );
 }

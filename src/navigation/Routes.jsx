@@ -81,23 +81,23 @@ function Routes () {
             </Route>
 
             <Route exact path="/governance/q-proposals">
-              <Proposals type="q-proposals" />
+              <Proposals type="q" />
             </Route>
 
             <Route exact path="/governance/q-root-node-panel">
-              <Proposals type="q-root-node-panel" />
+              <Proposals type="rootNode" />
             </Route>
 
             <Route exact path="/governance/q-expert-proposals">
-              <Proposals type="q-expert-proposals" />
+              <Proposals type="expert" />
             </Route>
 
             <Route exact path="/governance/slashing-proposals">
-              <Proposals type="slashing-proposals" />
+              <Proposals type="slashing" />
             </Route>
 
             <Route exact path="/governance/contract-updates">
-              <Proposals type="contract-updates" />
+              <Proposals type="contractUpdate" />
             </Route>
 
             <Route

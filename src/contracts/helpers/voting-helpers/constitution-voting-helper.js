@@ -1,8 +1,6 @@
 import { getStatusTransformation } from './base-voting-helper';
 import VotingService from './voting-service-helper';
 
-import { getConstitutionVotingInstance } from 'contracts/contract-instance';
-
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import { fromWei } from 'func/balance';
 
@@ -82,27 +80,18 @@ export default class ConstitutionVoting extends VotingService {
 
   async createProposal (proposal, userAddress) {
     const contract = await this.getContractInstance();
-    const classification = this.getProposalNumberType(proposal.classification);
-    const hash = proposal.hash;
-    const link = proposal.externalLink;
-    const params = [];
-    if (proposal.isParamsChanged) {
-      const paramsArray = proposal.params.map((item) => ({
-        paramType: item.type,
-        paramKey: item.key,
-        paramValue: item.value
-      }));
-      params.push(...paramsArray);
-    }
-
-    return contract.createProposal(link, classification, hash, params, {
-      from: userAddress
-    });
-  }
-
-  async getConstitutionHash () {
-    const contract = await getConstitutionVotingInstance();
-    const result = await contract.constitutionHash();
-    return result;
+    return contract.createProposal(
+      proposal.externalLink,
+      this.getProposalNumberType(proposal.classification),
+      proposal.hash,
+      proposal.isParamsChanged
+        ? proposal.params.map((item) => ({
+          paramType: item.type,
+          paramKey: item.key,
+          paramValue: item.value
+        }))
+        : [],
+      { from: userAddress }
+    );
   }
 }

@@ -3,6 +3,8 @@ import { address } from 'components/Custom/LoadingMetaMask/LoadingMetaMask';
 import { getStatusTransformation } from './base-voting-helper';
 import VotingService from './voting-service-helper';
 
+import { getRootNodesInstance } from 'contracts/contract-instance';
+
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import { transformToPercentage } from 'func/formatters';
 
@@ -21,7 +23,8 @@ export default class ContractUpdates extends VotingService {
     const status = await contract.getStatus(id);
     const stats = await contract.getProposalStats(id);
     const info = {};
-    const rootNodesNumber = await this.getRootNodesNumber();
+    const rootContract = await getRootNodesInstance();
+    const rootNodesNumber = await rootContract.getSize();
     const voteCount = await contract.instance.methods.voteCount(id).call();
 
     info.id = id;
@@ -44,11 +47,5 @@ export default class ContractUpdates extends VotingService {
       info.key = proposal.key;
     }
     return info;
-  }
-
-  async getProposalsWithStatus (proposal) {
-    const contract = await this.getContractInstance();
-    const { executed } = await contract.getProposal(proposal.id);
-    return { status: executed, ...proposal };
   }
 }

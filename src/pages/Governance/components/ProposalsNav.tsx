@@ -1,25 +1,19 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import TabsPanel from 'components/Base/TabsPanel';
 
 import { mode } from 'store/dashboard-mode/selectors';
+import { activeProposalsCountByTypeSelector } from 'store/voting/proposals/selectors';
 
 function ProposalsNav () {
-  const dispatch = useDispatch();
   const appMode = useSelector(mode);
 
-  // const qCount = useSelector(qActiveProposalsCountSelector);
-  // const rootCount = useSelector(rootActiveProposalsCountSelector);
-  // const expertCount = useSelector(expertActiveProposalsCountSelector);
-  // const slashingCount = useSelector(slashingActiveProposalsCountSelector);
-  // const contractCount = useSelector(contractUpdatesActiveProposalsCountSelector);
-
-  const qCount = 2;
-  const rootCount = 2;
-  const expertCount = 2;
-  const slashingCount = 2;
-  const contractCount = 2;
+  const qCount = useSelector(activeProposalsCountByTypeSelector('q'));
+  const rootCount = useSelector(activeProposalsCountByTypeSelector('rootNode'));
+  const expertCount = useSelector(activeProposalsCountByTypeSelector('expert'));
+  const slashingCount = useSelector(activeProposalsCountByTypeSelector('slashing'));
+  const contractCount = useSelector(activeProposalsCountByTypeSelector('contractUpdate'));
 
   const tabs = [
     {
