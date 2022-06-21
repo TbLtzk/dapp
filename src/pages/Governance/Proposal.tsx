@@ -5,7 +5,8 @@ import Button from 'components/Base/Button';
 import PageWrap from 'components/Base/PageWrap';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
-import ProposalLayout from './components/ProposalLayout';
+import ProposalLayout from './components/ProposalLayout/ProposalLayout';
+import VotingStats from './components/VotingStats';
 
 import { getProposal, getProposalTypeByContract } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
@@ -64,10 +65,19 @@ function Proposal ({ match }: RouteComponentProps<{
         <span>Back to proposals</span>
       </Button>
 
-      {proposal
-        ? <ProposalLayout type={type} proposal={proposal} />
-        : <SkeletonProposalsLoading />
-      }
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '2fr 1fr',
+          gap: '15px',
+        }}
+      >
+        {proposal
+          ? <ProposalLayout type={type} proposal={proposal} />
+          : <SkeletonProposalsLoading />
+        }
+        <VotingStats row type={type} />
+      </div>
     </PageWrap>
   );
 }

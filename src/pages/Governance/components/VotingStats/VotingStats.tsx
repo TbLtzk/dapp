@@ -26,7 +26,7 @@ import { fromWei } from 'func/balance';
 import { fromSolDateFormattingT1 } from 'func/date';
 import { fN } from 'func/useful';
 
-function VotingStats ({ type }: { type: ProposalType }) {
+function VotingStats ({ type, row = false }: { type: ProposalType, row?: boolean }) {
   const dispatch = useDispatch();
 
   const address = useSelector(userAddressMetamask);
@@ -63,11 +63,11 @@ function VotingStats ({ type }: { type: ProposalType }) {
   ];
 
   return (
-    <StatsWrapper>
+    <StatsWrapper $row={row}>
       <div className="stats-head">
-        <h1>Voting Stats</h1>
+        <h1 className="stats-title">Voting Stats</h1>
         <div className="stats-actions">
-          {type === 'slashing' && (
+          {!row && type === 'slashing' && (
             <PopperTooltip
               disabled={isRootNode}
               trigger={

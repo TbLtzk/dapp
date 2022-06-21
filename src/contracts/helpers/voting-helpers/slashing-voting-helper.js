@@ -98,7 +98,7 @@ export default class SlashingVoting extends VotingService {
     }
 
     const proposalStats = await this.getProposalStatsData(id);
-    return { ...objRes, ...proposalStats, ...objEscrow };
+    return { ...objRes, ...proposalStats, objEscrow };
   }
 
   getProposalData (response, id, promiseStatus) {
