@@ -1,7 +1,7 @@
 import { flatten } from 'lodash';
 import { ProposalEvent } from 'typings/contracts';
 
-import { getContractProposals } from './common';
+import { getContractProposals } from '.';
 
 import { getAddressVotingInstance, getUpgradeVotingInstance } from 'contracts/contract-instance';
 

@@ -24,12 +24,7 @@ import {
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import { getConstitutionVotingInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance';
-import { createProposal } from 'contracts/helpers/voting/common';
-import { getQProposals } from 'contracts/helpers/voting/constitution';
-import { getContractUpdateProposals } from 'contracts/helpers/voting/contract-update';
-import { getExpertProposals } from 'contracts/helpers/voting/expert';
-import { getRootNodeProposals } from 'contracts/helpers/voting/root-node';
-import { getSlashingProposals } from 'contracts/helpers/voting/slashing';
+import { createProposal, getProposalEvents } from 'contracts/helpers/voting';
 import VotingService from 'contracts/helpers/voting-helpers/voting-service-helper';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
@@ -67,16 +62,8 @@ function* getProposalsGenerator ({ proposalType }: types.GetProposals) {
     const { minimalActiveBlockHeight, lastBlockHeight } = yield* call(getMinimalActiveBlockHeight);
 
     const { proposals, lastBlock } = yield* select(proposalsByTypeSelector(proposalType));
-    const proposalFn = {
-      q: getQProposals,
-      rootNode: getRootNodeProposals,
-      expert: getExpertProposals,
-      slashing: getSlashingProposals,
-      contractUpdate: getContractUpdateProposals,
-    }[proposalType];
-
     const newProposals = yield* call(
-      () => proposalFn(proposals, lastBlock)
+      () => getProposalEvents(proposalType, proposals, lastBlock)
     );
 
     yield* put(setProposals(proposalType, newProposals, Number(lastBlockHeight)));

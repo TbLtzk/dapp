@@ -1,7 +1,7 @@
 import { ProposalEvent } from 'typings/contracts';
 import { RootNodeProposalForm } from 'typings/forms';
 
-import { getContractProposals } from './common';
+import { getContractProposals } from '.';
 
 import { getRootNodesMembershipVotingInstance } from 'contracts/contract-instance';
 

@@ -2,7 +2,7 @@ import { flatten } from 'lodash';
 import { ProposalEvent } from 'typings/contracts';
 import { SlashingProposalForm } from 'typings/forms';
 
-import { getContractProposals } from './common';
+import { getContractProposals } from '.';
 
 import { getRootNodesSlashingVotingInstance, getValidatorsSlashingVotingInstance } from 'contracts/contract-instance';
 

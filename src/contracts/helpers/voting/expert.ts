@@ -2,7 +2,7 @@ import { flatten } from 'lodash';
 import { ProposalEvent } from 'typings/contracts';
 import { ExpertProposalForm, ExpertType } from 'typings/forms';
 
-import { getContractProposals } from './common';
+import { getContractProposals } from '.';
 
 import {
   getEpdrMembershipVotingInstance,
