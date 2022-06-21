@@ -85,7 +85,7 @@ function SavingBorrowingUpdate () {
 
       <div className="card_block">
         <div>
-          <h5>{t('QUSD_-_QBTC_TIME_SINCE_REFRESH_OF_OUTSTANDING_DEBT')}</h5>
+          <h5>{t('QUSD_QBTC_TIME_SINCE_REFRESH_OF_OUTSTANDING_DEBT')}</h5>
           <div className="card_text">{timeSinceOutstandingDebt || '0 day(s) 0 hours 0 minutes'}</div>
         </div>
 

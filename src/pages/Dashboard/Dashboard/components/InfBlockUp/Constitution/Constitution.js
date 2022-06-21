@@ -20,7 +20,7 @@ function Constitution () {
   useEffect(() => {
     dispatch(getConstitutionHash());
   }, [dispatch]);
-  // {t()}
+
   return (
     <CustomBlock title="Constitution">
       <h1>{t('CONSTITUTION')}</h1>

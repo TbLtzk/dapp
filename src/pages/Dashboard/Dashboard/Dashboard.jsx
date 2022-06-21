@@ -10,7 +10,7 @@ import EprsMembersPanel from 'components/Custom/MembersPanel/EprsMembersPanel';
 import QFeesMembersPanel from 'components/Custom/MembersPanel/QFeesMembersPanel';
 import RootNodePanel from 'components/Custom/MembersPanel/RootNodePanel';
 import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
-import { MODE } from 'components/Navigations/Header/components/Settings/components/DashboardModeSwitcher/DashboardModeSwitcher';
+import { MODE } from 'constants/config';
 
 import InfBlock from './components/InfBlockUp';
 import SavingBorrowingBlock from './components/SavingBorrowingBlock';

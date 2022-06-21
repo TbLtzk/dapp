@@ -6,19 +6,19 @@ import DashboardModeSwitcher from '../DashboardModeSwitcher/DashboardModeSwitche
 import LanguageSwitcher from '../LanguageSwitcher';
 import ThemeSwitcher from '../ThemeSwitcher';
 
-function SettingsMenu ({ handleClose, handleLanguageOpen }) {
+function SettingsMenu ({ onClose, onLanguageOpen }) {
   const ref = useRef();
 
-  useOnClickOutside(ref, () => handleClose());
+  useOnClickOutside(ref, () => onClose());
 
   return (
     <div ref={ref}>
       <div className="popup_title">
-        <h5>Settings</h5> <i className="mdi mdi-close" onClick={handleClose} />
+        <h5>Settings</h5> <i className="mdi mdi-close" onClick={onClose} />
       </div>
       <div style={{ borderBottom: '1px solid' }} />
       <div className="popup_menu">
-        <LanguageSwitcher handleLanguageOpen={handleLanguageOpen} />
+        <LanguageSwitcher onLanguageOpen={onLanguageOpen} />
         <ThemeSwitcher />
         <DashboardModeSwitcher />
       </div>

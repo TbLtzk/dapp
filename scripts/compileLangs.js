@@ -1,8 +1,8 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const fs = require('fs');
-const secret = require('../../translation-key.json');
+const secret = require('../translation-key.json');
 
-const doc = new GoogleSpreadsheet(process.env.REACT_APP_GOOGLE_SPREADS_SHEET_KEY || '');
+const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADS_SHEET_KEY || '14X3rNWtJxfVQqcaWra9cKL-F7BDe3LBNYhZnlfhtP6M');
 
 const read = async () => {
   await doc.loadInfo();

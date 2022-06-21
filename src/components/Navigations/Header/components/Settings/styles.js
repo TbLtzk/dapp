@@ -40,7 +40,7 @@ export const SettingsContainer = styled.div`
     }
   }
 
-  .langauge_container {
+  .language_container {
     display: flex;
     justify-content: space-between;
   }

@@ -1,26 +1,26 @@
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useLangauge } from 'i18n';
+import { useLanguage } from 'i18n';
 
 import useOnClickOutside from 'hooks/useOnClickOutside';
 
-function Languages ({ handleClose, handleBack }) {
+function Languages ({ onClose, onBack }) {
   const ref = useRef();
 
-  const { languages, changeLang } = useLangauge();
+  const { languages, changeLang } = useLanguage();
   const { i18n } = useTranslation();
 
-  useOnClickOutside(ref, () => handleClose());
+  useOnClickOutside(ref, () => onClose());
 
   return (
     <div ref={ref}>
       <div className="popup_title" >
         <h6>
-          <i className="mdi mdi-chevron-left" onClick={handleBack}/>
+          <i className="mdi mdi-chevron-left" onClick={onBack}/>
           Choose language
         </h6>
-        <i className="mdi mdi-close" onClick={handleClose} />
+        <i className="mdi mdi-close" onClick={onClose} />
       </div>
       <div style={{ borderBottom: '1px solid' }} />
 
@@ -28,7 +28,7 @@ function Languages ({ handleClose, handleBack }) {
         {languages.map(({ lang, title, img }) => (
           <div
             key={lang}
-            className="langauge_container"
+            className="language_container"
             onClick={() => changeLang(lang)}
           >
             <div className="language">

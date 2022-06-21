@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
-import { MODE } from 'components/Navigations/Header/components/Settings/components/DashboardModeSwitcher/DashboardModeSwitcher';
+import { MODE } from 'constants/config';
 
 import Blockchain from './Blockchain';
 import Constitution from './Constitution';

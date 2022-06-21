@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-export const ToggleContaier = styled.div`
+export const ToggleContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;

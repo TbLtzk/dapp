@@ -2,8 +2,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
-import { MODE } from 'components/Navigations/Header/components/Settings/components/DashboardModeSwitcher/DashboardModeSwitcher';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import AccordionLinks from './components/AccordionLinks';
@@ -24,6 +22,8 @@ import { expertActiveProposalsCountSelector } from 'store/voting/expert-proposal
 import { qActiveProposalsCountSelector } from 'store/voting/q-proposals/selectors';
 import { rootActiveProposalsCountSelector } from 'store/voting/root-node-proposals/selectors';
 import { slashingActiveProposalsCountSelector } from 'store/voting/slashing-proposals/selectors';
+
+import { MODE } from 'constants/config';
 
 function Sidebar () {
   const { t } = useTranslation();
@@ -58,7 +58,7 @@ function Sidebar () {
           {appMode === MODE.advanced
             ? (
               <AccordionLinks type="dashboard-toggle" headerLink={dashboard}>
-                <CommonLinks linkTo="/monitoring" linkTitle={t('MONITORING')} />
+                <CommonLinks linkTo="/monitoring" linkTitle={`- ${t('MONITORING')}`} />
               </AccordionLinks>
             )
             : (
@@ -73,13 +73,13 @@ function Sidebar () {
               <CommonLinks
                 linkTo="/q-proposals"
                 count={qActiveProposalsCount}
-                linkTitle={t('Q_PROPOSALS')}
+                linkTitle={`- ${t('Q_PROPOSALS')}`}
               />
 
               <CommonLinks
                 linkTo="/q-root-node-panel"
                 count={rootActiveProposalsCount}
-                linkTitle={t('ROOT_NODE_PANEL')}
+                linkTitle={`- ${t('ROOT_NODE_PANEL')}`}
               />
 
               {appMode === MODE.advanced
@@ -88,17 +88,17 @@ function Sidebar () {
                     <CommonLinks
                       linkTo="/q-expert-proposals"
                       count={expertActiveProposalsCount}
-                      linkTitle={t('EXPERT_PROPOSALS')}
+                      linkTitle={`- ${t('EXPERT_PROPOSALS')}`}
                     />
                     <CommonLinks
                       linkTo="/slashing-proposals"
                       count={slashingActiveProposalsCount}
-                      linkTitle={t('SLASHING_PROPOSALS')}
+                      linkTitle={`- ${t('SLASHING_PROPOSALS')}`}
                     />
                     <CommonLinks
                       linkTo="/contract-updates"
                       count={contractUpdatesActiveProposalsCount}
-                      linkTitle={t('CONTRACT_UPDATES')}
+                      linkTitle={`- ${t('CONTRACT_UPDATES')}`}
                     />
                   </>
                 )
@@ -121,9 +121,9 @@ function Sidebar () {
                 }
               >
                 <>
-                  <CommonLinks linkTo="/root-node-staking" linkTitle={t('ROOT_NODE_STAKING')} />
-                  <CommonLinks linkTo="/validator-staking" linkTitle={t('VALIDATOR_STAKING')} />
-                  {isAliasesEnabled && <CommonLinks linkTo="/account-aliasing" linkTitle={t('ACCOUNT_ALIASING')} />}
+                  <CommonLinks linkTo="/root-node-staking" linkTitle={`- ${t('ROOT_NODE_STAKING')}`} />
+                  <CommonLinks linkTo="/validator-staking" linkTitle={`- ${t('VALIDATOR_STAKING')}`} />
+                  {isAliasesEnabled && <CommonLinks linkTo="/account-aliasing" linkTitle={`- ${t('ACCOUNT_ALIASING')}`} />}
                 </>
               </AccordionLinks>
             )
@@ -146,19 +146,19 @@ function Sidebar () {
                     <CommonLinks
                       linkTo="/liquidation"
                       count={liquidationActiveAuctionsCount}
-                      linkTitle={t('LIQUIDATION')}
+                      linkTitle={`- ${t('LIQUIDATION')}`}
                     />
 
                     <CommonLinks
                       linkTo="/system-debt"
                       count={systemDebtActiveAuctionsCount}
-                      linkTitle={t('SYSTEM_DEBT')}
+                      linkTitle={`- ${t('SYSTEM_DEBT')}`}
                     />
 
                     <CommonLinks
                       linkTo="/system-surplus"
                       count={systemSurplusActiveAuctionsCount}
-                      linkTitle={t('SYSTEM_SURPLUS')}
+                      linkTitle={`- ${t('SYSTEM_SURPLUS')}`}
                     />
                   </>
                 </AccordionLinks>

@@ -1,15 +1,15 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useLangauge } from 'i18n';
+import { useLanguage } from 'i18n';
 
-function LanguageSwitcher ({ handleLanguageOpen }) {
+function LanguageSwitcher ({ onLanguageOpen }) {
   const { i18n } = useTranslation();
-  const { languages } = useLangauge();
+  const { languages } = useLanguage();
   const language = languages?.find(({ lang }) => lang === i18n.language);
 
   return (
-    <div className="langauge_container" onClick={handleLanguageOpen}>
+    <div className="language_container" onClick={onLanguageOpen}>
       <div>Language:</div>
 
       <div className="language">

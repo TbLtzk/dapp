@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import RadioGroup from 'components/Base/Form/RadioGroup';
 import ModalStep from 'components/Base/ModalStep';
-import { MODE } from 'components/Navigations/Header/components/Settings/components/DashboardModeSwitcher/DashboardModeSwitcher';
+import { MODE } from 'constants/config';
 
 import useForm from 'hooks/useForm';
 

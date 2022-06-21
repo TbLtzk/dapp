@@ -4,7 +4,7 @@ import { AnimatePresence as Transition, motion } from 'framer-motion';
 
 import useOnClickOutside from 'hooks/useOnClickOutside';
 
-function AnimatePresence ({ children, open, onClose, initial, animate, exit, rest }) {
+function AnimatePresence ({ children, open, onClose, initial, animate, exit, ...rest }) {
   const ref = useRef();
 
   useOnClickOutside(ref, () => onClose());

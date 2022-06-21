@@ -54,5 +54,5 @@ function LanguageProvider ({ children }) {
   );
 }
 
-export const useLangauge = () => useContext(LanguageContext);
+export const useLanguage = () => useContext(LanguageContext);
 export default LanguageProvider;

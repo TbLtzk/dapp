@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import PageWrap from 'components/Base/PageWrap';
 import VotingStats from 'components/Custom/VotingStats';
-import { MODE } from 'components/Navigations/Header/components/Settings/components/DashboardModeSwitcher/DashboardModeSwitcher';
+import { MODE } from 'constants/config';
 
 import InfoBlock from './components/InfoBlock';
 

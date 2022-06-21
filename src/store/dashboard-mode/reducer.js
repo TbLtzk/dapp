@@ -1,4 +1,4 @@
-import { MODE } from 'components/Navigations/Header/components/Settings/components/DashboardModeSwitcher/DashboardModeSwitcher';
+import { MODE } from 'constants/config';
 
 import * as actionTypes from './action-types';
 
