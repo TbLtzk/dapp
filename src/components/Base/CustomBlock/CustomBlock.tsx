@@ -1,4 +1,3 @@
-
 import { CSSProperties, ReactNode } from 'react';
 
 import { Block } from './styles';

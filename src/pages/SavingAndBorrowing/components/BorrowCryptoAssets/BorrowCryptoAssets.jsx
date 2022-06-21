@@ -1,19 +1,21 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import MemberTables from 'components/Custom/MemberTables';
 
+import BorrowManageAsset from '../BorrowManageAsset';
+
 import { getBorrowingVaults } from 'store/borrowing-core/action-creators';
 import { borrowingVaultsSelector, loadingBorrowingVaultsSelector } from 'store/borrowing-core/selectors';
 
-import { borrowCryptoAssetsColumnns } from 'constants/columns';
-import { borrowCryptoAssets } from 'constants/tables';
+import { fN } from 'func/useful';
 
 function BorrowCryptoAssets () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const vaults = useSelector(borrowingVaultsSelector);
-  const vaultsTable = borrowCryptoAssets(vaults);
   const loadingVaults = useSelector(loadingBorrowingVaultsSelector);
 
   useEffect(() => {
@@ -24,12 +26,39 @@ function BorrowCryptoAssets () {
     <CustomBlock>
       <MemberTables
         lineForEach={true}
-        title="Borrow Crypto Assets"
-        emptyTableMessage="No vaults created"
-        table={vaultsTable}
+        title={t('BORROW_CRYPTO_ASSETS')}
+        emptyTableMessage={t('NO_VAULTS_CREATED')}
         loading={loadingVaults}
-        columns={borrowCryptoAssetsColumnns}
         perPageLength={vaults?.length}
+        columns={[
+          {
+            dataField: 'id',
+            text: t('VAULT_ID'),
+          },
+          {
+            dataField: 'depositAsset',
+            text: t('COLLATERAL_ASSET'),
+          },
+          {
+            dataField: 'asset',
+            text: t('BORROWING_ASSET'),
+          },
+          {
+            dataField: 'interestAsset',
+            text: t('BORROWING_FEE'),
+          },
+          {
+            dataField: 'button',
+            text: '',
+          },
+        ]}
+        table={vaults.map((vault, idx) => ({
+          id: idx,
+          depositAsset: vault.colKey,
+          asset: 'QUSD',
+          interestAsset: fN(vault.borrowingFee) + '%',
+          button: vault.isLiquidated ? t('VAULT_IS_LIQUIDATED') : <BorrowManageAsset vault={vault} />,
+        }))}
       />
     </CustomBlock>
   );

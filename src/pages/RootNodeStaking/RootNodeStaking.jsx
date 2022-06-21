@@ -30,7 +30,7 @@ function RootNodeStaking () {
   }, []);
 
   return (
-    <PageWrap headerTitle="Root Node Staking">
+    <PageWrap pageHeader="Root Node Staking">
       <CustomBlock>
         <h1>Manage Balance</h1>
         <RootBalanceInfo />

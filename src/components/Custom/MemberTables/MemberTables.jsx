@@ -1,4 +1,3 @@
-
 import { SkeletonTableLoading } from 'components/Base/SkeletonLoading/SkeletonLoading';
 import Table from 'components/Base/Table';
 

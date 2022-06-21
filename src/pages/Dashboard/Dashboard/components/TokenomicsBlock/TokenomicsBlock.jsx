@@ -1,4 +1,5 @@
 import { Fragment, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
@@ -18,6 +19,7 @@ import { getRewardPoolsBalance } from 'store/validation-reward-pools/action-crea
 import { rewardPoolsBalanceSelector } from 'store/validation-reward-pools/selectors';
 
 function TokenomicsBlock () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const balanceDetails = useSelector(qvBalance);
@@ -44,23 +46,23 @@ function TokenomicsBlock () {
     },
     {
       id: 'reward-pool',
-      title: 'Q Token Holder Reward Pool',
+      title: t('Q_TOKEN_HOLDER_REWARD_POOL'),
       ref: balanceRewardPoolRef,
     },
     {
       id: 'reward-rate',
-      title: 'Q Token Holder Reward Rate (p.a.)',
+      title: t('Q_TOKEN_HOLDER_REWARD_RATE'),
       ref: balanceInterestRateRef,
     },
     { id: 'qTokenRewardUpdate', component: <QTokenRewardUpdate /> },
     {
       id: 'system-reserve',
-      title: 'Q System Reserve',
+      title: t('Q_SYSTEM_RESERVE'),
       ref: reserveBalanceRef,
     },
     {
       id: 'reward-pools',
-      title: 'Validation Reward Pools',
+      title: t('VALIDATION_REWARD_POOLS'),
       ref: rewardPoolsBalanceRef,
     },
   ];
@@ -68,7 +70,7 @@ function TokenomicsBlock () {
   return (
     <CustomBlock>
       <h1>
-        <span>Tokenomics</span>
+        <span>{t('TOKENOMICS')}</span>
         <InfoTooltip topic="tokenomics" />
       </h1>
       {tokenimicsInfo.map((item) => (

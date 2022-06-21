@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Web3Adapter } from '@q-dev/q-js-sdk';
 
 import ModalWindow from 'components/Base/ModalWindow';
+
+import useInterval from 'hooks/useInterval';
 
 import pkg from '../../../../../../package.json';
 import VersionsTable from '../VersionsTable';
@@ -10,11 +13,13 @@ import VersionsTable from '../VersionsTable';
 import { getNowTimeWithGMT } from 'func/convertDate';
 
 function Version () {
+  const { t } = useTranslation();
   const web3Adapter = new Web3Adapter(window.web3);
+
   const versionInfoGroups = {
-    main: 'Main',
-    modules: 'Modules',
-    client: 'Q client'
+    main: t('MAIN'),
+    modules: t('MODULES'),
+    client: t('Q_CLIENT'),
   };
 
   const [modalShow, setModalShow] = useState(false);
@@ -23,12 +28,9 @@ function Version () {
   const [clientVersionInfo, setClientVersionInfo] = useState([]);
   const [time, setTime] = useState(getNowTimeWithGMT('DD.MM.YYYY HH:mm'));
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(getNowTimeWithGMT('DD.MM.YYYY HH:mm'));
-    }, 50000);
-    return () => clearInterval(timer);
-  }, [time]);
+  useInterval(() => {
+    setTime(getNowTimeWithGMT('DD.MM.YYYY HH:mm'));
+  }, 50000);
 
   async function getVersionInfo () {
     const connectionInfo = await web3Adapter?.getConnectionInfo();
@@ -37,49 +39,49 @@ function Version () {
         {
           group: versionInfoGroups?.main,
           name: 'dApp',
-          value: pkg.version
+          value: pkg.version,
         },
         {
           group: versionInfoGroups?.main,
-          name: 'Your Current Time',
-          value: time
-        }
-      ]
+          name: t('YOUR_CURRENT_TIME'),
+          value: time,
+        },
+      ],
     ]);
     setModulesVersionInfo([
       [
         {
           group: versionInfoGroups?.modules,
           name: 'Web3.js',
-          value: web3Adapter?.web3.version
+          value: web3Adapter?.web3.version,
         },
         {
           group: versionInfoGroups?.modules,
           name: 'Q.js SDK',
-          value: web3Adapter?.SDK_VERSION
-        }
-      ]
+          value: web3Adapter?.SDK_VERSION,
+        },
+      ],
     ]);
     setClientVersionInfo([
       [
         {
           group: versionInfoGroups?.client,
           name: 'RPC URL',
-          value: connectionInfo.rpcUrl
+          value: connectionInfo.rpcUrl,
         },
         {
           group: versionInfoGroups?.client,
-          name: 'Network ID',
-          value: connectionInfo.networkId
-        }
+          name: t('NETWORK') + ' ID',
+          value: connectionInfo.networkId,
+        },
       ],
       [
         {
           group: versionInfoGroups?.client,
-          name: 'Node Info',
-          value: connectionInfo?.nodeInfo
-        }
-      ]
+          name: t('NODE_INFO'),
+          value: connectionInfo?.nodeInfo,
+        },
+      ],
     ]);
   }
 
@@ -108,7 +110,7 @@ function Version () {
       <p onClick={() => setModalShow(true)}>{pkg.version}</p>
       <ModalWindow
         show={modalShow}
-        modalTitle="Version Information"
+        modalTitle={t('VERSION_INFORMATION')}
         content={content}
         onHide={() => setModalShow(false)}
       />

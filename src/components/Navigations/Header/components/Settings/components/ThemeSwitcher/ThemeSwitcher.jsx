@@ -1,13 +1,15 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Switch from '../Form/Switch';
+import Toggle from 'components/Base/Form/Toggle';
 
 import { setTheme } from 'store/theme/action-creators';
 import { theme } from 'store/theme/selectors';
 
 import { THEMES } from 'constants/colors';
 
-function Themes () {
+function ThemeSwitcher () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const currentTheme = useSelector(theme);
 
@@ -16,14 +18,11 @@ function Themes () {
     dispatch(setTheme(newTheme));
   }
 
-  return (
-    <Switch
-      id="theme-switcher"
-      checked={currentTheme === THEMES.dark}
-      label="Dark theme"
-      onChange={changeTheme}
-    />
-  );
+  return <Toggle
+    toggleSwitch={changeTheme}
+    label={t('DARK_THEME')}
+    checked={currentTheme === THEMES.light}
+  />;
 }
 
-export default Themes;
+export default ThemeSwitcher;

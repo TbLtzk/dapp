@@ -1,10 +1,11 @@
 import { useSelector } from 'react-redux';
 
-import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import TabsPanel from 'components/Base/TabsPanel';
 
 import { mode } from 'store/dashboard-mode/selectors';
 import { activeProposalsByTypeSelector } from 'store/voting/proposals/selectors';
+
+import { MODE } from 'constants/config';
 
 function ProposalsNav () {
   const appMode = useSelector(mode);

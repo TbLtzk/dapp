@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { NetworkWrapper } from '../../styles';
@@ -8,13 +9,12 @@ import { networks } from 'constants/config';
 import { getParametersDependsOnUrl } from 'func/useful';
 
 function Network () {
+  const { t } = useTranslation();
   const network = useSelector(networkSelector);
   const parameters = getParametersDependsOnUrl();
 
   return (
-    <NetworkWrapper network={network}>
-      Network: Q {networks[network || parameters.chainId]}
-    </NetworkWrapper>
+    <NetworkWrapper network={network}>{`${t('NETWORK')}: Q ${networks[network || parameters.chainId]}`}</NetworkWrapper>
   );
 }
 

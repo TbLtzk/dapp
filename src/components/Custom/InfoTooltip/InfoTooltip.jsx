@@ -1,4 +1,3 @@
-
 import tooltips from 'json/tooltips.json';
 
 import PopperTooltip from 'components/Base/PopperTooltip';

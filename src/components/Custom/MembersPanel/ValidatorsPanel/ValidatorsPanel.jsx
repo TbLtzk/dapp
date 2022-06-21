@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
-import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import MemberTables from 'components/Custom/MemberTables';
+
+import { getColumnsValidatorsMonitoring, getColumnsValidatorsWidened } from './columnTypes';
+import { tableValidatorsMonitoring, tableValidatorsShort, tableValidatorsWidened } from './tablesTypes';
 
 import { getValidatorMembers } from 'store/validators/action-creators';
 import {
@@ -16,43 +18,37 @@ import {
   validatorsWidenedSelector,
 } from 'store/validators/selectors';
 
-import { columnsValidatorsMonitoring, columnsValidatorsWidened } from 'constants/columns';
-import { tableValidatorsMonitoring, tableValidatorsShort, tableValidatorsWidened } from 'constants/tables';
 import TABLE_TYPES from 'constants/tableTypes';
 
-const buttonsType = { qVault: 'q-vault', details: 'details', none: 'none' };
-
 function ValidatorsPanel ({ buttons, tableType }) {
-  const { tableSelector, tableLoadingSelector, columns, tableWrapper } = getValidatorsTableData();
   const dispatch = useDispatch();
-  const table = tableWrapper(useSelector(tableSelector));
-  const tableLoading = useSelector(tableLoadingSelector);
+  const { t } = useTranslation();
 
-  function getValidatorsTableData () {
-    switch (tableType) {
-      case TABLE_TYPES.validatorsWidened:
-        return {
-          tableSelector: validatorsWidenedSelector,
-          tableLoadingSelector: loadingValidatorsWidenedSelector,
-          columns: columnsValidatorsWidened,
-          tableWrapper: tableValidatorsWidened,
-        };
-      case TABLE_TYPES.validatorsShort:
-        return {
-          tableSelector: validatorsShortSelector,
-          tableLoadingSelector: loadingValidatorsShortSelector,
-          columns: columnsValidatorsWidened.slice(0, 3),
-          tableWrapper: tableValidatorsShort,
-        };
-      case TABLE_TYPES.validatorsMonitoring:
-        return {
-          tableSelector: validatorsMonitoringSelector,
-          tableLoadingSelector: loadingValidatorsMonitoringSelector,
-          columns: columnsValidatorsMonitoring,
-          tableWrapper: tableValidatorsMonitoring,
-        };
-    }
-  }
+  const validatorTableTypes = {
+    [TABLE_TYPES.validatorsShort]: {
+      tableSelector: validatorsShortSelector,
+      tableLoadingSelector: loadingValidatorsShortSelector,
+      columns: getColumnsValidatorsWidened(t).slice(0, 3),
+      tableWrap: tableValidatorsShort,
+    },
+    [TABLE_TYPES.validatorsWidened]: {
+      tableSelector: validatorsWidenedSelector,
+      tableLoadingSelector: loadingValidatorsWidenedSelector,
+      columns: getColumnsValidatorsWidened(t),
+      tableWrap: tableValidatorsWidened,
+    },
+    [TABLE_TYPES.validatorsMonitoring]: {
+      tableSelector: validatorsMonitoringSelector,
+      tableLoadingSelector: loadingValidatorsMonitoringSelector,
+      columns: getColumnsValidatorsMonitoring(t),
+      tableWrap: tableValidatorsMonitoring,
+    },
+  };
+
+  const { tableSelector, tableLoadingSelector, columns, tableWrap } = validatorTableTypes[tableType];
+
+  const table = tableWrap(useSelector(tableSelector));
+  const tableLoading = useSelector(tableLoadingSelector);
 
   const fetchTableData = () => {
     dispatch(getValidatorMembers(tableType));
@@ -71,57 +67,19 @@ function ValidatorsPanel ({ buttons, tableType }) {
     return () => clearInterval(monitoringInterval);
   }, [dispatch, tableType]);
 
-  const renderButtons = () => {
-    switch (buttons) {
-      case buttonsType.details:
-        return (
-          <div className="card__actions__between">
-            <Link to="/validator-staking">
-              <Button alwaysEnabled look="white">
-                <i className="mdi mdi-arrow-right" />
-                <span>See more details</span>
-              </Button>
-            </Link>
-            <Link to="/monitoring">
-              <Button alwaysEnabled look="white">
-                <i className="mdi mdi-arrow-right" />
-                <span>Monitoring</span>
-              </Button>
-            </Link>
-          </div>
-        );
-      case buttonsType.qVault:
-        return (
-          <div className="card__actions">
-            <Button
-              alwaysEnabled
-              look="white"
-              onClick={() => history.push({ pathname: '/q-vault' })}
-            >
-              <i className="mdi mdi-arrow-right" />
-              <span>Go to Q Vault</span>
-            </Button>
-          </div>
-        );
-      case buttonsType.none:
-      default:
-        return null;
-    }
-  };
-
   return (
     <CustomBlock>
       <MemberTables
         sorting
-        title="Validator Ranking"
-        emptyTableMessage="No validators"
+        title={t('VALIDATOR_RANKING')}
+        emptyTableMessage={t('NO_VALIDATORS')}
         table={table}
         columns={columns}
         tableType={tableType}
         loading={tableLoading}
         perPageLength={10}
       />
-      {renderButtons()}
+      {buttons}
     </CustomBlock>
   );
 }

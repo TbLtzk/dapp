@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Alert from 'components/Custom/Alerts';
 
@@ -9,27 +10,29 @@ import { PageTitleActions, PageTitleName, PageTitleWrp, ToTopContainer, WrapCont
 import { toTitleCase } from 'func/useful';
 
 interface Props {
-  headerTitle: string,
-  titleExtra?: ReactNode,
-  headerExtra?: ReactNode,
+  pageHeader: string,
+  pageTooltip?: ReactNode,
+  pageButton?: ReactNode,
   wrapContentClasses?: string,
   children: ReactNode,
 }
 
 function PageWrap ({
-  headerTitle,
-  titleExtra = null,
-  headerExtra = null,
+  pageHeader,
+  pageTooltip = null,
+  pageButton = null,
   wrapContentClasses = '',
   children,
 }: Props) {
+  const { t } = useTranslation();
+
   const titleRef = useRef<HTMLDivElement>(null);
   const isVisible = useOnScreen(titleRef);
 
   useEffect(() => {
-    const title = headerTitle === 'Dashboard'
+    const title = pageHeader === 'Dashboard'
       ? 'Your HQ'
-      : 'Your HQ - ' + toTitleCase(headerTitle);
+      : 'Your HQ - ' + toTitleCase(pageHeader);
     document.title = title;
   }, [toTitleCase]);
 
@@ -37,11 +40,11 @@ function PageWrap ({
     <WrapContainer fluid>
       <PageTitleWrp>
         <PageTitleName ref={titleRef}>
-          <span>{headerTitle}</span>
-          {titleExtra}
+          <span>{t(pageHeader)}</span>
+          {pageTooltip}
         </PageTitleName>
 
-        <PageTitleActions>{headerExtra}</PageTitleActions>
+        <PageTitleActions>{pageButton}</PageTitleActions>
         <Alert />
       </PageTitleWrp>
 

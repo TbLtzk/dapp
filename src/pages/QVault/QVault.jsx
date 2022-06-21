@@ -1,7 +1,6 @@
 import { useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
-import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import PageWrap from 'components/Base/PageWrap';
 import DelegatedValidatorsPanel from 'components/Custom/MembersPanel/DelegatedValidatorsPanel';
 
@@ -14,11 +13,13 @@ import VaultOverview from './components/VaultOverview';
 
 import { mode } from 'store/dashboard-mode/selectors';
 
+import { MODE } from 'constants/config';
+
 function QVault () {
   const appMode = useSelector(mode);
 
   return (
-    <PageWrap wrapContentClasses="wrap-content__column-2-1" headerTitle="Q Vault">
+    <PageWrap wrapContentClasses="wrap-content__column-2-1" pageHeader="Q Vault">
       <div>
         <ManageBalance />
         <LockCoin />

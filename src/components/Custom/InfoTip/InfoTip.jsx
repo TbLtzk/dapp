@@ -1,4 +1,3 @@
-
 import { TipWrapper } from './styles';
 
 function InfoTip ({ children, ...rest }) {

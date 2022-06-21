@@ -1,11 +1,10 @@
 import { createSelector } from 'reselect';
 import { ProposalEvent } from 'typings/contracts';
 
-import { MODE } from 'components/Base/DashboardMode/DashboardMode';
-
 import { RootState } from 'store';
 import { mode } from 'store/dashboard-mode/selectors';
 
+import { MODE } from 'constants/config';
 import { ProposalType } from 'constants/statuses';
 
 export const proposalValuesSelector = (state: RootState) =>

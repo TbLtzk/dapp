@@ -1,4 +1,3 @@
-
 import { StyledSwitch } from './styles';
 
 const Switch = ({

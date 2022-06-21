@@ -42,7 +42,7 @@ function Proposal ({ match }: RouteComponentProps<{
   };
 
   return (
-    <PageWrap headerTitle={titleMap[type]}>
+    <PageWrap pageHeader={titleMap[type]}>
       {proposal
         ? <ProposalCard type={type} proposal={proposal} />
         : <SkeletonProposalsLoading />

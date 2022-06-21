@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
@@ -16,6 +17,7 @@ import { systemBalanceSB } from 'store/system-balance/selectors';
 import { getStableCoinInstance } from 'contracts/contract-instance';
 
 function SavingBorrowingBlock () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const interestRate = useSelector(interestRateSelector);
@@ -45,27 +47,27 @@ function SavingBorrowingBlock () {
   const savingAndBorrowingInfo = [
     {
       id: 'qusd-contract',
-      title: 'QUSD Contract',
+      title: t('QUSD_CONTRACT'),
       content: <ExplorerAddress address={stableCoinAddress} />,
     },
     {
       id: 'saving-reward',
-      title: 'QUSD Saving Reward (p.a.)',
+      title: t('QUSD_SAVING_REWARD'),
       content: <p ref={savingRateRef}>0 %</p>,
     },
     {
       id: 'borrowing-fee',
-      title: 'QUSD - QBTC Borrowing Fee (p.a.)',
+      title: t('QUSD_QBTC_BORROWING_FEE'),
       content: <p ref={interestRateRef}>0 %</p>,
     },
     {
       id: 'system-balance',
-      title: 'QUSD System Balance',
+      title: t('QUSD_SYSTEM_BALANCE'),
       content: <p ref={systemBalanceRef}>0 QUSD</p>,
     },
     {
       id: 'total-supply',
-      title: 'QUSD Total Supply',
+      title: t('QUSD_TOTAL_SUPPLY'),
       content: <p ref={totalSupplyRef}>0 QUSD</p>,
     },
     {

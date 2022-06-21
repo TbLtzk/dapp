@@ -1,4 +1,3 @@
-
 import { ProgressBarWrapper } from './styles';
 
 const ProgressBar = ({ value }) => {

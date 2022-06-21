@@ -1,4 +1,3 @@
-
 import CustomBlock from 'components/Base/CustomBlock';
 
 import SendForm from './components/SendForm';

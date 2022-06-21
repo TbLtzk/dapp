@@ -1,4 +1,3 @@
-
 import ListDetails from './ListDetails';
 
 function ObjectionDetails ({ objection }: { objection: Record<string, string> }) {

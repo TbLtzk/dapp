@@ -1,4 +1,3 @@
-
 import ErrorInputMessage from 'components/Base/ErrorInputMessage';
 
 import { RadioGroupWrapper, StyledCheck } from './styles';

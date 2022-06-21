@@ -15,8 +15,8 @@ function ManageParameters () {
 
   return (
     <PageWrap
-      headerTitle="Q Parameters"
-      headerExtra={
+      pageHeader="Q Parameters"
+      pageButton={
         <>
           <ParametersSwitch
             id="parameters-switch"

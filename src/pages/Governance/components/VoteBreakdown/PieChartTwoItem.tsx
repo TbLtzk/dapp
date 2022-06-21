@@ -1,4 +1,3 @@
-
 import { Cell, Pie, PieChart } from 'recharts';
 
 import colors from 'constants/colors';

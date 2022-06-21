@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'components/Base/Button';
@@ -12,6 +13,8 @@ import { qHolderTimeUpdateLoadingSelector, qHolderTimeUpdateSelector } from 'sto
 import { remainDateTimeSince } from 'func/convertDate';
 
 function QTokenRewardUpdate () {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   const qHolderTimeUpdate = useSelector(qHolderTimeUpdateSelector);
@@ -43,7 +46,7 @@ function QTokenRewardUpdate () {
     <>
       <div className="card_block">
         <div>
-          <h5>Time since Q Token holder reward update</h5>
+          <h5>{t('TIME_SINCE_Q_TOKEN_HOLDER_REWARD_UPDATE')}</h5>
           <p>{qHolderTimeUpdateTime || '0 day(s) 0 hours 0 minutes'}</p>
         </div>
         <div>
@@ -53,7 +56,7 @@ function QTokenRewardUpdate () {
             onClick={handleQHolderTimeUpdate}
           >
             {qHolderTimeUpdateLoading ? spinner : <i className="mdi mdi-cube-outline" />}
-            <span>Allocate</span>
+            <span>{t('ALLOCATE')}</span>
           </Button>
         </div>
       </div>

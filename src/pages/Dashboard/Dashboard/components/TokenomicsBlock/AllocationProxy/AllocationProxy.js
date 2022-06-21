@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'components/Base/Button';
@@ -22,6 +23,8 @@ import {
 } from 'store/tokenomics/selectors';
 
 function AllocationProxy () {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   const defaultAllocationProxy = useSelector(defaultAllocationProxySelector);
@@ -63,21 +66,21 @@ function AllocationProxy () {
   const allocationArray = [
     {
       id: 'default-allocation',
-      title: 'Default Allocation Proxy',
+      title: t('DEFAULT_ALLOCATION_PROXY'),
       ref: defaultAllocationProxyRef,
       loading: defaultAllocationProxyLoading,
       func: handleAllocateDefault,
     },
     {
       id: 'validation-reward-allocation',
-      title: 'Validation Reward Proxy',
+      title: t('VALIDATION_REWARD_PROXY'),
       ref: validationRewardProxyRef,
       loading: loadingValidationRewardProxy,
       func: handleAllocateValidator,
     },
     {
       id: 'root-node-allocation',
-      title: 'Root Node Reward Proxy',
+      title: t('ROOT_NODE_REWARD_PROXY'),
       ref: rootNodeRewardProxyRef,
       loading: loadingRootNodeRewardProxy,
       func: handleAllocateRootNode,
@@ -99,7 +102,7 @@ function AllocationProxy () {
               onClick={item.func}
             >
               {item.loading ? <LoadingSpinner size="sm" type="light" /> : <i className="mdi mdi-cube-outline" />}
-              <span>Allocate</span>
+              <span>{t('ALLOCATE')}</span>
             </Button>
           </div>
         </div>

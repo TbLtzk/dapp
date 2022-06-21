@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import Button from 'components/Base/Button';
@@ -17,14 +18,14 @@ async function requestConnect (params) {
     await ethereum.request({ method: 'eth_requestAccounts' });
     await ethereum.request({
       method: 'wallet_switchEthereumChain',
-      params: [{ chainId: params.chainId }]
+      params: [{ chainId: params.chainId }],
     });
   } catch (error) {
     if (error.code === 4902) {
       try {
         await ethereum.request({
           method: 'wallet_addEthereumChain',
-          params: [params]
+          params: [params],
         });
       } catch (error) {
         ErrorHandler.processWithoutFeedback(error);
@@ -43,6 +44,7 @@ async function requestLogin () {
 }
 
 function ConnectButtons () {
+  const { t } = useTranslation();
   const loadType = useSelector(loadTypeSelector);
   const network = useSelector(networkSelector);
 
@@ -68,14 +70,14 @@ function ConnectButtons () {
             style={{ margin: '0 0 0 20px' }}
             onClick={() => handleRequest(chainIds.mainnet, networkParameters.mainnet)}
           >
-            Connect to Q Mainnet
+            {t('CONNECT_TO_Q_MAINNET')}
           </Button>
           <Button
             alwaysEnabled
             style={{ margin: '0 0 0 20px' }}
             onClick={() => handleRequest(chainIds.testnet, networkParameters.testnet)}
           >
-            Connect to Q Testnet
+            {t('CONNECT_TO_Q_TESTNET')}
           </Button>
         </>
       );
@@ -87,7 +89,7 @@ function ConnectButtons () {
             style={{ margin: '0 0 0 20px' }}
             onClick={handleModalShow}
           >
-            Install Metamask
+            {t('INSTALL_METAMASK')}
           </Button>
           <InstallMetamask modalShow={modalShow} setModalShow={handleModalShow} />
         </>

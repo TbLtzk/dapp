@@ -1,4 +1,3 @@
-
 import PageWrap from 'components/Base/PageWrap';
 import RootNodePanel from 'components/Custom/MembersPanel/RootNodePanel/RootNodePanel';
 import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
@@ -9,10 +8,10 @@ import TABLE_TYPES from 'constants/tableTypes';
 
 function Monitoring () {
   return (
-    <PageWrap headerTitle="Monitoring">
+    <PageWrap pageHeader="Monitoring">
       <CurrentInfo />
       <div>
-        <ValidatorsPanel buttons="none" tableType={TABLE_TYPES.validatorsMonitoring} />
+        <ValidatorsPanel tableType={TABLE_TYPES.validatorsMonitoring} />
         <RootNodePanel tableType={TABLE_TYPES.rootNodesMonitoring} />
       </div>
     </PageWrap>

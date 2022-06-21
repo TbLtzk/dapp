@@ -1,4 +1,3 @@
-
 import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import { LoadingWrap } from 'components/Custom/MemberTables/styles';

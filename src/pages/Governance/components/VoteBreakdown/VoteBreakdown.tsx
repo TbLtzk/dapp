@@ -1,4 +1,3 @@
-
 import PieChartTwoItem from './PieChartTwoItem';
 import { ColorTitle, VoteBreakdownContainer } from './styles';
 

@@ -87,7 +87,6 @@ function* setPurgeTimeLocksAmount({ payload }) {
 function* setDepositLockedAmount({ payload }) {
   try {
     yield put(setTransactionLoading());
-
     const contract = yield call(getContractInstance, payload.contract);
     yield contract.depositOnBehalfOf(
       payload.address,
@@ -95,7 +94,6 @@ function* setDepositLockedAmount({ payload }) {
       dateToTimestamp(payload.endDate),
       { value: toWei(payload.amount) }
     );
-
     yield call(getAmountOnContract, payload.contract, payload.address);
     yield put(setTransactionLoadingSuccess({ type: formTypes.timeLocksAmount }));
   } catch (error) {

@@ -1,4 +1,3 @@
-
 import ListDetails from './ListDetails';
 
 function DecisionDetails ({ decision }: { decision: Record<string, string> }) {

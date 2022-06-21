@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useDispatch } from 'react-redux';
 
 import Button from 'components/Base/Button';
@@ -95,4 +96,4 @@ function ManageForm ({ contract, address }) {
   );
 }
 
-export default ManageForm;
+export default memo(ManageForm);

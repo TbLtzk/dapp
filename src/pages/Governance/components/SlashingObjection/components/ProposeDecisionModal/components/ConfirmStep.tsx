@@ -1,4 +1,3 @@
-
 import ModalStep from 'components/Base/ModalStep';
 
 import { useProposeDecision } from '../ProposeDecisionModal';

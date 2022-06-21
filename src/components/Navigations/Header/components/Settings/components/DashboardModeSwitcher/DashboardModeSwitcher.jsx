@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Switch from 'components/Base/Form/Switch';
+import Toggle from 'components/Base/Form/Toggle';
 
 import { getAuctions } from 'store/auctions/action-creators';
 import { setDashboardMode } from 'store/dashboard-mode/action-creators';
@@ -12,13 +13,14 @@ import { AUCTIONS_TYPES } from 'constants/statuses';
 
 export const MODE = {
   basic: 'basic',
-  advanced: 'advanced'
+  advanced: 'advanced',
 };
 
-function DashboardMode () {
+function DashboardModeSwitcher () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const appMode = useSelector(mode);
-  const [isSwitchOn, setIsSwitchOn] = useState(appMode === MODE.advanced);
+  const [isSwitchOn, setIsSwitchOn] = useState(appMode === MODE.basic);
 
   function changeMode () {
     setIsSwitchOn(!isSwitchOn);
@@ -35,12 +37,11 @@ function DashboardMode () {
     }
   }
 
-  return <Switch
-    id="mode-switcher"
+  return <Toggle
+    toggleSwitch={changeMode}
+    label={t('ADVANCED_MODE')}
     checked={isSwitchOn}
-    label="Advanced mode"
-    onChange={changeMode}
   />;
 }
 
-export default DashboardMode;
+export default DashboardModeSwitcher;

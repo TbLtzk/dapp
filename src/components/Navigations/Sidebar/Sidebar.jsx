@@ -1,33 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
-import DashboardMode from 'components/Base/DashboardMode';
-import { MODE } from 'components/Base/DashboardMode/DashboardMode';
-import Themes from 'components/Base/Themes';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useWindowSize from 'hooks/useWindowSize';
 
-import AccordionElements from './components/AccordionElements';
 import AccordionLinks from './components/AccordionLinks';
 import CommonLinks from './components/CommonLinks';
 import Policy from './components/Policy';
 import References from './components/References';
-import ToggleSidebar from './components/ToggleSidebar';
 import Version from './components/Version';
 import { FooterContainer, FooterDataContaier, SidebarContainer } from './styles';
 
 import {
   liquidationAuctionsSelector,
   systemDebtAuctionsSelector,
-  systemSurplusAuctionsSelector
+  systemSurplusAuctionsSelector,
 } from 'store/auctions/selectors';
 import { mode } from 'store/dashboard-mode/selectors';
 import { activeProposalsCountSelector } from 'store/voting/proposals/selectors';
 
+import { MODE } from 'constants/config';
+
 function Sidebar () {
+  const { t } = useTranslation();
   const appMode = useSelector(mode);
-  const windowSize = useWindowSize();
   const isAliasesEnabled = useFeatureFlag('aliases');
 
   const activeProposalsCount = useSelector(activeProposalsCountSelector);
@@ -41,29 +36,20 @@ function Sidebar () {
   const systemSurplusAuction = useSelector(systemSurplusAuctionsSelector);
   const systemSurplusActiveAuctionsCount = systemSurplusAuction?.activeAuctions?.length;
 
-  const [openSidebar, setOpenSidebar] = useState(localStorage.getItem('sidebar-toggle') ? '' : '0');
-
-  useEffect(() => {
-    if (windowSize.width < 700) {
-      setOpenSidebar('');
-    }
-  }, [windowSize.width]);
-
   const dashboard = <CommonLinks
-    openSidebar={openSidebar}
     linkTo="/"
-    linkTitle="Dashboard"
+    linkTitle={t('DASHBOARD')}
   />;
 
   return (
-    <SidebarContainer openSidebar={openSidebar}>
+    <SidebarContainer>
       <div className="sidebar_container">
-        <i className="mdi mdi-chevron-right" />
+
         <div className="sidebar_links">
           {appMode === MODE.advanced
             ? (
               <AccordionLinks type="dashboard-toggle" headerLink={dashboard}>
-                <CommonLinks linkTo="/monitoring" linkTitle="– Monitoring" />
+                <CommonLinks linkTo="/monitoring" linkTitle={`- ${t('MONITORING')}`} />
               </AccordionLinks>
             )
             : (
@@ -73,7 +59,7 @@ function Sidebar () {
           <CommonLinks
             exact={false}
             linkTo="/governance"
-            linkTitle="Governance"
+            linkTitle={t('GOVERNANCE')}
             count={activeProposalsCount}
           />
           <CommonLinks linkTo="/q-vault" linkTitle="Q Vault" />
@@ -86,21 +72,19 @@ function Sidebar () {
                   <CommonLinks
                     type="accordion"
                     linkTo="/root-node-staking"
-                    linkTitle="Consensus Services"
+                    linkTitle={t('CONSENSUS_SERVICES')}
                   />
                 }
               >
                 <>
-                  <CommonLinks linkTo="/root-node-staking" linkTitle="– Root Node Staking" />
-                  <CommonLinks linkTo="/validator-staking" linkTitle="– Validator Staking" />
-                  {isAliasesEnabled && (
-                    <CommonLinks linkTo="/account-aliasing" linkTitle="– Account Aliasing" />
-                  )}
+                  <CommonLinks linkTo="/root-node-staking" linkTitle={`- ${t('ROOT_NODE_STAKING')}`} />
+                  <CommonLinks linkTo="/validator-staking" linkTitle={`- ${t('VALIDATOR_STAKING')}`} />
+                  {isAliasesEnabled && <CommonLinks linkTo="/account-aliasing" linkTitle={`- ${t('ACCOUNT_ALIASING')}`} />}
                 </>
               </AccordionLinks>
             )
             : null}
-          <CommonLinks linkTo="/saving-and-borrowing" linkTitle="Saving & Borrowing" />
+          <CommonLinks linkTo="/saving-and-borrowing" linkTitle={t('SAVING_BORROWING')} />
           {appMode === MODE.advanced
             ? (
               <>
@@ -110,7 +94,7 @@ function Sidebar () {
                     <CommonLinks
                       type="accordion"
                       linkTo="/liquidation"
-                      linkTitle="Decentralized Auctions"
+                      linkTitle={t('DECENTRALIZED_AUCTIONS')}
                     />
                   }
                 >
@@ -118,26 +102,25 @@ function Sidebar () {
                     <CommonLinks
                       linkTo="/liquidation"
                       count={liquidationActiveAuctionsCount}
-                      linkTitle="– Liquidation"
+                      linkTitle={`- ${t('LIQUIDATION')}`}
                     />
 
                     <CommonLinks
                       linkTo="/system-debt"
                       count={systemDebtActiveAuctionsCount}
-                      linkTitle="– System Debt"
+                      linkTitle={`- ${t('SYSTEM_DEBT')}`}
                     />
 
                     <CommonLinks
                       linkTo="/system-surplus"
                       count={systemSurplusActiveAuctionsCount}
-                      linkTitle="– System Surplus"
+                      linkTitle={`- ${t('SYSTEM_SURPLUS')}`}
                     />
                   </>
                 </AccordionLinks>
                 <CommonLinks
-                  openSidebar={openSidebar}
                   linkTo="/time-locks"
-                  linkTitle="Time Locks"
+                  linkTitle={t('TIME_LOCKS')}
                 />
               </>
             )
@@ -146,15 +129,8 @@ function Sidebar () {
         <FooterContainer>
           <References />
 
-          <AccordionElements title="Settings" margin="24px 0 24px 0">
-            <div style={{ display: 'grid', gap: '8px', marginTop: '8px' }}>
-              <DashboardMode />
-              <Themes />
-              <ToggleSidebar openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
-            </div>
-          </AccordionElements>
-
           <FooterDataContaier>
+
             <Version />
             <Policy />
           </FooterDataContaier>

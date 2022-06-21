@@ -36,8 +36,8 @@ function Proposals ({ type }: { type: ProposalType }) {
 
   return (
     <PageWrap
-      headerTitle="Governance"
-      headerExtra={createProposal}
+      pageHeader="Governance"
+      pageButton={createProposal}
     >
       <VotingStats type={type} />
 

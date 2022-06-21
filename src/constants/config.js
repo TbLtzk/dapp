@@ -3,6 +3,11 @@ export const mainnetDocsUrl = 'https://docs.q.org';
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
+export const MODE = {
+  basic: 'basic',
+  advanced: 'advanced',
+};
+
 export const chainIds = {
   mainnet: '35441',
   testnet: '35443',

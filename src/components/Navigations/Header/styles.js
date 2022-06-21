@@ -84,6 +84,7 @@ export const InstallMetamaskContainer = styled.div`
     font-weight: bold;
   }
   .install-metamask__download {
+    margin-top: 20px;
     display: block;
     margin-left: auto;
     margin-right: auto;

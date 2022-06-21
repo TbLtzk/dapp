@@ -1,4 +1,3 @@
-
 import { ReactElement, ReactNode } from 'react';
 
 import { TooltipContainer } from './styles';

@@ -1,12 +1,14 @@
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { PagesItemWrapper, TableWrapper } from './styles';
 
 import { theme } from 'store/theme/selectors';
 
-const pageButtonRenderer = ({ page, active, onPageChange }) => {
+const TableButtons = ({ page, active, onPageChange }) => {
+  const { t } = useTranslation();
   const handleClick = (e) => {
     e.preventDefault();
     onPageChange(page);
@@ -17,7 +19,7 @@ const pageButtonRenderer = ({ page, active, onPageChange }) => {
       isDisplayNone={typeof page === 'string'}
       active={active}
     >
-      {page === 1 ? <span className="page-item__title">Page</span> : null}
+      {page === 1 ? <span className="page-item__title">{t('PAGE')}</span> : null}
       <a
         href="#"
         className="page-item__link"
@@ -36,10 +38,10 @@ const Table = ({ tableBody, columns, perPage, keyField, sorting, lineForEach }) 
     sizePerPageList: [
       {
         text: '5',
-        value: perPage
-      }
+        value: perPage,
+      },
     ],
-    pageButtonRenderer
+    pageButtonRenderer: TableButtons,
   };
 
   return (

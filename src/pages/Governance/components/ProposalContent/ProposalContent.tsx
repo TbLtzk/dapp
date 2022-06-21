@@ -1,4 +1,3 @@
-
 import PopperTooltip from 'components/Base/PopperTooltip';
 
 import { ProposalContainer } from './styles';
