@@ -1,8 +1,7 @@
 import { BaseVotingWeightInfo } from '@q-dev/q-js-sdk';
 import { ProposalEvent } from 'typings/contracts';
 import { CreateProposalForm } from 'typings/forms';
-
-import { ProposalType } from 'constants/statuses';
+import { ProposalType } from 'typings/proposals';
 
 export interface GetProposals {
   type: 'GET_PROPOSALS'

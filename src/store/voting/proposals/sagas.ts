@@ -1,5 +1,6 @@
 import { call, delay, put, select, takeEvery } from 'typed-redux-saga';
 import { CreateProposalForm } from 'typings/forms';
+import { FormProposalType } from 'typings/proposals';
 
 import {
   getBaseVotingWeightInfo,
@@ -29,7 +30,7 @@ import VotingService from 'contracts/helpers/voting-helpers/voting-service-helpe
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
-import { FormProposalType, TRANSACTION_TYPES } from 'constants/statuses';
+import { TRANSACTION_TYPES } from 'constants/statuses';
 import { VOTING_TYPES } from 'constants/votingTypes';
 import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';

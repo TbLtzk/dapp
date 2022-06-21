@@ -1,11 +1,12 @@
 import { useCallback, useMemo } from 'react';
 
+import { ProposalType } from 'typings/proposals';
+
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import { PollDetailContainer } from './styles';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-import { ProposalType } from 'constants/statuses';
 import { getTypeName } from 'func/contractHelpers';
 
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';

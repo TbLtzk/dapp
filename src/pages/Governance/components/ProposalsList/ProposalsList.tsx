@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { ProposalEvent } from 'typings/contracts';
-import { ProposalFilterStatus } from 'typings/filters';
+import { ProposalFilterStatus, ProposalType } from 'typings/proposals';
 
 import Button from 'components/Base/Button';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
@@ -13,7 +13,6 @@ import { ListEmptyMessage, ListWrapper } from './styles';
 
 import { activeProposalsByTypeSelector, endedProposalsByTypeSelector, proposalsByTypeSelector } from 'store/voting/proposals/selectors';
 
-import { ProposalType } from 'constants/statuses';
 import { LoadingWrap } from 'constants/style';
 import { fillArray } from 'func/useful';
 

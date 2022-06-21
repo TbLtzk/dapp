@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router';
 
-import { ProposalFilter, ProposalFilterStatus } from 'typings/filters';
+import { ProposalFilter, ProposalFilterStatus, ProposalType } from 'typings/proposals';
 
 import PageWrap from 'components/Base/PageWrap';
 
@@ -13,8 +13,6 @@ import ProposalsNav from './components/ProposalsNav';
 import VotingStats from './components/VotingStats';
 
 import { getProposals } from 'store/voting/proposals/actions';
-
-import { ProposalType } from 'constants/statuses';
 
 function Proposals ({ type }: { type: ProposalType }) {
   const dispatch = useDispatch();

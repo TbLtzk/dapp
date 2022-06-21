@@ -1,9 +1,9 @@
 import { BaseVotingWeightInfo } from '@q-dev/q-js-sdk';
 import { ProposalEvent } from 'typings/contracts';
+import { ProposalType } from 'typings/proposals';
 
 import { ProposalsAction } from './types';
 
-import { ProposalType } from 'constants/statuses';
 import { groupArrayByBlockNumber } from 'func/useful';
 
 interface ProposalItem {

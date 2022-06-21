@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { ProposalType } from 'typings/proposals';
+
 import Button from 'components/Base/Button';
 import ModalWindow from 'components/Base/ModalWindow';
 import PopperTooltip from 'components/Base/PopperTooltip';
@@ -21,7 +23,6 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 import { getBaseVotingWeightInfo } from 'store/voting/proposals/actions';
 import { baseVotingWeightInfoSelector } from 'store/voting/proposals/selectors';
 
-import { ProposalType } from 'constants/statuses';
 import { fromWei } from 'func/balance';
 import { fromSolDateFormattingT1 } from 'func/date';
 import { fN } from 'func/useful';

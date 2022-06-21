@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { RouteComponentProps, useHistory } from 'react-router';
 
+import { ProposalType } from 'typings/proposals';
+
 import Button from 'components/Base/Button';
 import PageWrap from 'components/Base/PageWrap';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
@@ -10,12 +12,9 @@ import VotingStats from './components/VotingStats';
 
 import { getProposal, getProposalTypeByContract } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
-import { ContractName } from 'constants/contracts';
-import { ProposalType } from 'constants/statuses';
-
 function Proposal ({ match }: RouteComponentProps<{
   id: string,
-  contract: ContractName
+  contract: string
 }>) {
   const history = useHistory();
 

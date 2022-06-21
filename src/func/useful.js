@@ -124,29 +124,6 @@ export const uintPercentToNumber = (num) => {
   return num / 10 ** 27;
 };
 
-/**
- *
- * @returns {[{ active: number, ended: number }, any[], any[]]}
- */
-export const sortAndCountProposalsByType = (proposals) => {
-  const active = [];
-  const ended = [];
-
-  const proposalsCount = {
-    active: 0,
-    ended: 0,
-  };
-
-  proposals.forEach(([activeArr, endedArr]) => {
-    proposalsCount.active += activeArr.length;
-    active.push(...activeArr);
-    proposalsCount.ended += endedArr.length;
-    ended.push(...endedArr);
-  });
-
-  return [proposalsCount, active, ended];
-};
-
 export const groupArrayByBlockNumber = (array) => {
   return orderBy(array, ['blockNumber'], ['desc', 'asc']);
 };

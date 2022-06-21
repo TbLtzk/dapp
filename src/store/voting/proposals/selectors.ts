@@ -1,9 +1,8 @@
 import { createSelector } from 'reselect';
 import { ProposalEvent } from 'typings/contracts';
+import { ProposalType } from 'typings/proposals';
 
 import { RootState } from 'store';
-
-import { ProposalType } from 'constants/statuses';
 
 export const proposalValuesSelector = (state: RootState) =>
   Object.values(state.proposals.proposalsMap);

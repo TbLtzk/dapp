@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router';
 
-import { ProposalFilter, ProposalFilterStatus } from 'typings/filters';
+import { ProposalFilter, ProposalFilterStatus } from 'typings/proposals';
 
 import Select from 'components/Base/Form/Select';
 

@@ -1,3 +1,5 @@
+import { ProposalType } from 'typings/proposals';
+
 import CustomCardButtons from 'components/Custom/CustomCardButtons';
 
 import ProposalStatus from '../ProposalStatus';
@@ -13,7 +15,7 @@ import {
   ListCardWrp
 } from './styles';
 
-import { ProposalType, STATUSES } from 'constants/statuses';
+import { STATUSES } from 'constants/statuses';
 import { createShareText } from 'func/useful';
 
 function ProposalLayout ({ proposal, type }: { proposal: any, type: ProposalType }) {

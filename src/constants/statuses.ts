@@ -13,9 +13,6 @@ export const TRANSACTION_TYPES = {
   rejected: 'Rejected',
 };
 
-export type FormProposalType = 'q' | 'rootNode' | 'expert' | 'slashing';
-export type ProposalType = FormProposalType | 'contractUpdate';
-
 export const AUCTIONS_TYPES = {
   liquidation: 'liquidation',
   systemDebt: 'system-debt',

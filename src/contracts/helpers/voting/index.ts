@@ -2,14 +2,13 @@ import { ProposalStatus } from '@q-dev/q-js-sdk';
 import { uniqBy } from 'lodash';
 import { ProposalEvent, ProposalsContract } from 'typings/contracts';
 import { CreateProposalForm } from 'typings/forms';
+import { ProposalType } from 'typings/proposals';
 
 import { createConstitutionProposal, createEmergencyProposal, createGeneralProposal, getQProposals } from './constitution';
 import { getContractUpdateProposals } from './contract-update';
 import { createAddExpertProposal, createParameterVoteProposal, createRemoveExpertProposal, getExpertProposals } from './expert';
 import { createRootNodeProposal, getRootNodeProposals } from './root-node';
 import { createRootNodeSlashingProposal, createValidatorSlashingProposal, getSlashingProposals } from './slashing';
-
-import { ProposalType } from 'constants/statuses';
 
 export async function getContractProposals ({
   proposals,
