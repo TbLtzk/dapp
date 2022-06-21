@@ -50,10 +50,15 @@ function ParameterVoteStep () {
     },
   ];
 
+  const handleSubmit = () => {
+    if (!formArray.validate()) return;
+    form.submit();
+  };
+
   return (
     <ModalStep
-      disabled={!form.isValid}
-      onNext={form.submit}
+      disabled={!form.isValid || !formArray.isValid}
+      onNext={handleSubmit}
       onBack={goBack}
     >
       <h2>Create a Proposal to Change a Q System Parameter.</h2>
