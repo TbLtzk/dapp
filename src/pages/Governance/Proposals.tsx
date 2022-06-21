@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router';
 
+import { ProposalFilter, ProposalFilterStatus } from 'typings/filters';
+
 import PageWrap from 'components/Base/PageWrap';
 
 import CreateProposal from './components/CreateProposal';
@@ -9,7 +11,6 @@ import ProposalFilters from './components/ProposalFilters/ProposalFilters';
 import ProposalsList from './components/ProposalsList/ProposalsList';
 import ProposalsNav from './components/ProposalsNav';
 import VotingStats from './components/VotingStats';
-import { ProposalFilter, ProposalFilterStatus } from './types';
 
 import { getProposals } from 'store/voting/proposals/actions';
 

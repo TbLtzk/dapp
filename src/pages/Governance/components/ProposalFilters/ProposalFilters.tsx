@@ -1,7 +1,8 @@
 import { useHistory } from 'react-router';
 
+import { ProposalFilter, ProposalFilterStatus } from 'typings/filters';
+
 import Select from 'components/Base/Form/Select';
-import { ProposalFilter, ProposalFilterStatus } from 'pages/Governance/types';
 
 import { FiltersWrapper } from './styles';
 

@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { ProposalEvent } from 'typings/contracts';
+import { ProposalFilterStatus } from 'typings/filters';
 
 import Button from 'components/Base/Button';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
-import { ProposalFilterStatus } from '../../types';
 import ProposalCard from '../ProposalCard';
 
 import { ListEmptyMessage, ListWrapper } from './styles';
