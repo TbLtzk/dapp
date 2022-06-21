@@ -43,7 +43,7 @@ function WithdrawForm ({ vaultNum }) {
           disabled={!form.isValid}
           style={{ width: '100px' }}
         >
-          Borrow
+          Withdraw
         </Button>
       </div>
     </form>
