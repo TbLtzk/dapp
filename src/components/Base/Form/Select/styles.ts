@@ -30,6 +30,7 @@ export const SelectWrapper = styled(Form.Group)`
     transform: translateY(-50%);
     font-size: 20px;
     color: inherit;
+    pointer-events: none;
   }
 
   select {
