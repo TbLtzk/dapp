@@ -1,18 +1,22 @@
-import React from 'react';
-
 import { AccordionLbl, LinkGroup, LinkStyle } from '../../styles';
 
-function CommonLinks ({ linkTo, count = 0, linkTitle, type }) {
+function CommonLinks ({
+  linkTo,
+  count = 0,
+  linkTitle,
+  type,
+  exact = true
+}) {
   return (
     <LinkGroup>
       <LinkStyle
-        exact
+        exact={exact}
         activeClassName={type === 'accordion' ? null : 'highlight'}
         to={linkTo}
       >
         {linkTitle}
+        {count > 0 && <AccordionLbl activeClassName="highlight">{count}</AccordionLbl>}
       </LinkStyle>
-      {count <= 0 ? null : <AccordionLbl activeClassName="highlight">{count}</AccordionLbl>}
     </LinkGroup>
   );
 }

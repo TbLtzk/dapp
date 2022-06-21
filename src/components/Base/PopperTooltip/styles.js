@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const TooltipWrapper = styled.div`
   vertical-align: middle;
@@ -15,9 +15,15 @@ export const TooltipWrapper = styled.div`
     opacity: 0;
     z-index: 9999;
     pointer-events: none;
-    padding: 15px;
-    background-color: ${(p) => p.theme.colors.oxfordBlueTint6};
-    color: ${(p) => p.theme.colors.oxfordBlueTint1};
+    padding: 12px;
+    background-color: ${(p) => p.$invertedColors
+      ? p.theme.colors.oxfordBlue
+      : p.theme.colors.oxfordBlueTint6
+    };
+    color: ${(p) => p.$invertedColors
+      ? p.theme.colors.oxfordBlueTint6
+      : p.theme.colors.oxfordBlueTint1
+    };
     max-width: 280px;
     width: max-content;
     font-family: "OpenSans", sans-serif;
@@ -104,16 +110,18 @@ export const TooltipWrapper = styled.div`
     }
   }
 
-  &:hover .tooltip-content {
-    opacity: 1;
-    pointer-events: all;
-    overflow: visible;
-    transition: opacity 200ms ease-out;
+  ${({ $disabled }) => !$disabled && css`
+    &:hover .tooltip-content {
+      opacity: 1;
+      pointer-events: all;
+      overflow: visible;
+      transition: opacity 200ms ease-out;
 
-    &[data-popper-escaped],
-    &[data-popper-reference-hidden] {
-      opacity: 0;
-      pointer-events: none;
+      &[data-popper-escaped],
+      &[data-popper-reference-hidden] {
+        opacity: 0;
+        pointer-events: none;
+      }
     }
-  }
+  `}
 `;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -6,7 +6,7 @@ import Button from 'components/Base/Button';
 import CopyToClipboard from 'components/Base/CopyToClipboard';
 import CustomBlock from 'components/Base/CustomBlock';
 
-import { getConstitutionHash } from 'store/voting/proposals/action-creators';
+import { getConstitutionHash } from 'store/voting/proposals/actions';
 import { constitutionHash } from 'store/voting/proposals/selectors';
 
 import { archiveConstitution, latestConstitution } from 'constants/constitution';

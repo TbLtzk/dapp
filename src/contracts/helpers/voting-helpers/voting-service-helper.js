@@ -1,13 +1,11 @@
-import { ParameterType } from '@q-dev/q-js-sdk';
-import { includes, uniqBy } from 'lodash';
+import { ParameterType, ProposalStatus } from '@q-dev/q-js-sdk';
 
 import { address } from 'components/Custom/LoadingMetaMask/LoadingMetaMask';
-
-import { transformToPercentage } from './base-voting-helper';
 
 import { getInstance, getRootNodesInstance } from 'contracts/contract-instance';
 
 import { ZERO_ADDRESS } from 'constants/config';
+import { transformToPercentage } from 'func/formatters';
 
 export default class VotingService {
   constructor (contractName) {
@@ -17,12 +15,6 @@ export default class VotingService {
   async getContractInstance () {
     const initInstance = getInstance(this.contractName);
     return initInstance();
-  }
-
-  async getProposalStatus (id) {
-    const contract = await this.getContractInstance();
-    const result = await contract.getStatus(id);
-    return result;
   }
 
   async hasUserVotedVetoed (id) {
@@ -96,27 +88,21 @@ export default class VotingService {
   }
 
   async execute (id, userAddress) {
-    if (address === ZERO_ADDRESS) {
-      return true;
-    } else {
-      const contract = await this.getContractInstance();
-      const promiseStatus = await this.getProposalStatus(id);
-      let result = null;
-      if (promiseStatus === '4') {
-        result = await contract.execute(id, { from: userAddress });
-      }
-      return result;
+    if (address === ZERO_ADDRESS) return;
+
+    const contract = await this.getContractInstance();
+    const promiseStatus = await contract.getStatus(id);
+
+    if (promiseStatus === ProposalStatus.PASSED) {
+      return contract.execute(id, { from: userAddress });
     }
   }
 
   async approve (id, userAddress) {
-    if (address === ZERO_ADDRESS) {
-      return null;
-    } else {
-      const contract = await this.getContractInstance();
-      const result = await contract.aprove(id, { from: userAddress });
-      return result;
-    }
+    if (address === ZERO_ADDRESS) return;
+
+    const contract = await this.getContractInstance();
+    return contract.aprove(id, { from: userAddress });
   }
 
   async getProposal (id, oneProposal) {
@@ -135,16 +121,12 @@ export default class VotingService {
     return { ...headerInfo, ...additionalInfo, ...userVotedVetoed };
   }
 
-  async getRootNodesNumber () {
-    const contract = await getRootNodesInstance();
-    return await contract.getSize();
-  }
-
   async getProposalStatsData (id) {
     const objRes = {};
+    const contract = await getRootNodesInstance();
     const proposalStats = await this.getProposalStats(id);
     const getVetoesNumber = await this.getVetoesNumber(id);
-    const rootNodesNumber = await this.getRootNodesNumber();
+    const rootNodesNumber = await contract.getSize();
     objRes.vetoesNumber = getVetoesNumber;
     objRes.noVote = rootNodesNumber - getVetoesNumber;
     objRes.vetoesPercentage = ((getVetoesNumber * 100) / rootNodesNumber).toFixed(2);
@@ -171,55 +153,10 @@ export default class VotingService {
     }));
   }
 
-  async checkProposalsByStatus (proposals) {
-    const contract = await this.getContractInstance();
-    const activeIds = [];
-    const endedIds = [];
-    for (const proposal of proposals) {
-      const status = await contract.getStatus(proposal.id);
-      if (status === '0') {
-        continue;
-      } else if (status === '1' || status === '3' || status === '4') {
-        activeIds.push({ ...proposal, status });
-      } else {
-        endedIds.push({ ...proposal, status });
-      }
-    }
-    return [activeIds, endedIds];
-  }
-
-  async getNewProposalsAndCheckActive (activeProposals, lastActiveBlock) {
-    const activeProposalsByContract = activeProposals.filter((proposal) => proposal.contract === this.contractName);
-    const newProposals = await this.getPastEvents(lastActiveBlock);
-    const proposals = uniqBy([...newProposals, ...activeProposalsByContract], 'id');
-    const proposalsWithStatus = await this.checkProposalsByStatus(proposals);
-    return proposalsWithStatus;
-  }
-
-  async getProposalsCount (minimalActiveBlockHeight) {
-    const allProposals = await this.getPastEvents();
-    const [activeIds] = await this.checkProposalsByStatus(
-      allProposals.filter((proposals) => proposals.blockNumber >= minimalActiveBlockHeight)
-    );
-
-    const transformToId = activeIds.map((item) => item.id);
-    const endedIds = allProposals.filter(({ id }) => !includes(transformToId, id));
-    return [activeIds, endedIds];
-  }
-
-  transformParameterType (id) {
-    const type = ['None', 'Address', 'Uint', 'String', 'Byte', 'Boolean'];
-    return type[Number(id)];
-  }
-
-  async getParametersArr (id) {
-    const contract = await this.getContractInstance();
-    const result = await contract.getParametersArr(id);
-    return result;
-  }
-
   async getProposalParametersData (id) {
-    const parameters = await this.getParametersArr(id);
+    const contract = await this.getContractInstance();
+    const parameters = await contract.getParametersArr(id);
+
     return parameters.map((item) => {
       let value = null;
       switch (item.paramType) {

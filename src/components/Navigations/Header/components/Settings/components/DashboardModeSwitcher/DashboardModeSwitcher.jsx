@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,11 +7,7 @@ import Toggle from 'components/Base/Form/Toggle';
 import { getAuctions } from 'store/auctions/action-creators';
 import { setDashboardMode } from 'store/dashboard-mode/action-creators';
 import { mode } from 'store/dashboard-mode/selectors';
-import { getContractUpdatesProposals } from 'store/voting/contract-updates/action-creators';
-import { getExpertProposals } from 'store/voting/expert-proposals/action-creators';
-import { getQProposals } from 'store/voting/q-proposals/action-creators';
-import { getRootProposals } from 'store/voting/root-node-proposals/action-creators';
-import { getSlashingProposals } from 'store/voting/slashing-proposals/action-creators';
+import { getProposals } from 'store/voting/proposals/actions';
 
 import { AUCTIONS_TYPES } from 'constants/statuses';
 
@@ -30,11 +26,11 @@ function DashboardModeSwitcher () {
     setIsSwitchOn(!isSwitchOn);
     if (appMode === MODE.basic) {
       dispatch(getAuctions(AUCTIONS_TYPES.all));
-      dispatch(getQProposals());
-      dispatch(getRootProposals());
-      dispatch(getExpertProposals());
-      dispatch(getSlashingProposals());
-      dispatch(getContractUpdatesProposals());
+      dispatch(getProposals('q'));
+      dispatch(getProposals('rootNode'));
+      dispatch(getProposals('expert'));
+      dispatch(getProposals('slashing'));
+      dispatch(getProposals('contractUpdate'));
       dispatch(setDashboardMode(MODE.advanced));
     } else {
       dispatch(setDashboardMode(MODE.basic));

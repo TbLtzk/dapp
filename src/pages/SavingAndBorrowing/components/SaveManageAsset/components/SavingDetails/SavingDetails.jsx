@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { savingAviableToDepositSelector, savingBalanceDetailsSelector } from 'store/saving-assets/selectors';

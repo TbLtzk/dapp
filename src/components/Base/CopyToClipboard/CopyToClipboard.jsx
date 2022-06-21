@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CopyToClipboard as Copy } from 'react-copy-to-clipboard';
 
 import PopperTooltip from '../PopperTooltip';

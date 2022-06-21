@@ -23,7 +23,7 @@ import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
 
-function * getSurplusGenerator () {
+function* getSurplusGenerator () {
   try {
     const contract = yield call(getSystemBalanceInstance);
     const data = yield contract.getSurplus();
@@ -34,7 +34,7 @@ function * getSurplusGenerator () {
   }
 }
 
-function * getDebtGenerator () {
+function* getDebtGenerator () {
   try {
     const contract = yield call(getSystemBalanceInstance);
     const data = yield contract.getDebt();
@@ -45,7 +45,7 @@ function * getDebtGenerator () {
   }
 }
 
-function * getSystemBalanceGenerator () {
+function* getSystemBalanceGenerator () {
   try {
     const contract = yield call(getSystemBalanceInstance);
     const data = yield contract.getBalance();
@@ -56,7 +56,7 @@ function * getSystemBalanceGenerator () {
   }
 }
 
-function * onPerformNettingGenerator () {
+function* onPerformNettingGenerator () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getSystemBalanceInstance);

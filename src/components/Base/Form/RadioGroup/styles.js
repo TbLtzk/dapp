@@ -2,13 +2,15 @@ import { Form } from 'react-bootstrap';
 
 import styled from 'styled-components';
 
-export const GroupWrapper = styled(Form.Group)`
-  &:last-of-type {
-    margin-bottom: 10px;
+export const RadioGroupWrapper = styled.div`
+  .radio-options {
+    display: flex;
+    flex-direction: ${({ $row }) => $row ? 'row' : 'column'};
+    gap: 16px;
   }
 `;
 
-export const RadioInput = styled(Form.Check)`
+export const StyledCheck = styled(Form.Check)`
   input,
   label {
     cursor: pointer;

@@ -1,42 +1,37 @@
-import React from 'react';
-
 import ErrorInputMessage from 'components/Base/ErrorInputMessage';
 
-import { GroupWrapper, RadioInput } from './styles';
+import { RadioGroupWrapper, StyledCheck } from './styles';
 
 function RadioGroup ({
   name,
   value,
   options = [],
-  label,
+  label = '',
   error,
-  onChange = () => {},
+  row = false,
+  onChange = (val) => {},
 }) {
   return (
-    <div>
+    <RadioGroupWrapper $row={row}>
       {label && <h4>{label}</h4>}
-      {options.map((option) => {
-        return (
-          <GroupWrapper
+      <div className="radio-options">
+        {options.map((option) => (
+          <StyledCheck
             key={option.value}
-            controlId={value}
-          >
-            <RadioInput
-              id={`${name}__${option.value}`}
-              type="radio"
-              label={option.label}
-              name={name}
-              value={value}
-              checked={option.value === value}
-              $checked={option.value === value}
-              onChange={() => onChange(option.value)}
-              onClick={() => onChange(option.value)}
-            />
-          </GroupWrapper>
-        );
-      })}
+            id={`${name}__${option.value}`}
+            type="radio"
+            label={option.label}
+            name={name}
+            value={value}
+            checked={option.value === value}
+            $checked={option.value === value}
+            onChange={() => onChange(option.value)}
+            onClick={() => onChange(option.value)}
+          />
+        ))}
+      </div>
       {error && <ErrorInputMessage message={error} />}
-    </div>
+    </RadioGroupWrapper>
   );
 }
 

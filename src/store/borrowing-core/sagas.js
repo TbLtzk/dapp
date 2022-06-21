@@ -37,7 +37,7 @@ import { fromWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
 import { fillArray, uintPerSecondToPerYearNumber } from 'func/useful';
 
-function * setCreateQBTCVaultGenerator () {
+function* setCreateQBTCVaultGenerator () {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);
@@ -53,7 +53,7 @@ function * setCreateQBTCVaultGenerator () {
   }
 }
 
-function * getTotalCollateralLockedAndOutstandingDebtGenerator () {
+function* getTotalCollateralLockedAndOutstandingDebtGenerator () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
 
@@ -73,7 +73,7 @@ function * getTotalCollateralLockedAndOutstandingDebtGenerator () {
   }
 }
 
-function * getTotalSavingBalanceGenerator () {
+function* getTotalSavingBalanceGenerator () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getSavingInstance);
@@ -86,7 +86,7 @@ function * getTotalSavingBalanceGenerator () {
   }
 }
 
-function * getSavingAssetsGenerator () {
+function* getSavingAssetsGenerator () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
 
@@ -100,7 +100,7 @@ function * getSavingAssetsGenerator () {
   }
 }
 
-function * getBorrowingVaultsGenerator () {
+function* getBorrowingVaultsGenerator () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getBorrowingCoreInstance);
@@ -115,7 +115,7 @@ function * getBorrowingVaultsGenerator () {
   }
 }
 
-function * getTotalSupplyGenerator () {
+function* getTotalSupplyGenerator () {
   try {
     const contract = yield call(getStableCoinInstance);
     const amount = yield contract.totalSupply();
@@ -125,7 +125,7 @@ function * getTotalSupplyGenerator () {
   }
 }
 
-function * getSavingAndInterestRateGenerator () {
+function* getSavingAndInterestRateGenerator () {
   try {
     const contract = yield call(getEpdrParametersInstance);
 

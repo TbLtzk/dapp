@@ -38,7 +38,7 @@ import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
 import { addIndex } from 'func/useful';
 
-function * getAccountBalanceGenerator ({ address }) {
+function* getAccountBalanceGenerator ({ address }) {
   try {
     const data = yield window.web3.eth.getBalance(address);
     yield put(setAccountBalance(fromWei(data)));
@@ -47,7 +47,7 @@ function * getAccountBalanceGenerator ({ address }) {
   }
 }
 
-function * getUserBalanceGenerator ({ address }) {
+function* getUserBalanceGenerator ({ address }) {
   try {
     const contract = yield call(getQVaultInstance);
     const data = yield contract.getUserBalance(address);
@@ -57,7 +57,7 @@ function * getUserBalanceGenerator ({ address }) {
   }
 }
 
-function * getLockedAssetsGenerator ({ address }) {
+function* getLockedAssetsGenerator ({ address }) {
   try {
     const contract = yield call(getQVaultInstance);
     const data = yield contract.getLockInfo(address);
@@ -67,7 +67,7 @@ function * getLockedAssetsGenerator ({ address }) {
   }
 }
 
-function * setDepositGenerator ({ address, amountQ }) {
+function* setDepositGenerator ({ address, amountQ }) {
   try {
     yield put(setTransactionLoading(1));
 
@@ -87,7 +87,7 @@ function * setDepositGenerator ({ address, amountQ }) {
   }
 }
 
-function * setSendGenerator ({ address, amount }) {
+function* setSendGenerator ({ address, amount }) {
   try {
     yield put(setTransactionLoading());
 
@@ -104,7 +104,7 @@ function * setSendGenerator ({ address, amount }) {
   }
 }
 
-function * setWithdrawGenerator ({ address, amountQ }) {
+function* setWithdrawGenerator ({ address, amountQ }) {
   try {
     yield put(setTransactionLoading(1));
 
@@ -121,7 +121,7 @@ function * setWithdrawGenerator ({ address, amountQ }) {
   }
 }
 
-function * setDelegateStakeGenerator ({ address, delegateAddresses, stakes }) {
+function* setDelegateStakeGenerator ({ address, delegateAddresses, stakes }) {
   try {
     yield put(setTransactionLoading());
 
@@ -142,7 +142,7 @@ function * setDelegateStakeGenerator ({ address, delegateAddresses, stakes }) {
   }
 }
 
-function * setLockAmountGenerator ({ address, amountQ }) {
+function* setLockAmountGenerator ({ address, amountQ }) {
   try {
     yield put(setTransactionLoading(1));
 
@@ -163,7 +163,7 @@ function * setLockAmountGenerator ({ address, amountQ }) {
   }
 }
 
-function * setUnlockAmountGenerator ({ address, amountQ }) {
+function* setUnlockAmountGenerator ({ address, amountQ }) {
   try {
     yield put(setTransactionLoading());
 
@@ -183,7 +183,7 @@ function * setUnlockAmountGenerator ({ address, amountQ }) {
   }
 }
 
-function * getDelegationListGenerator () {
+function* getDelegationListGenerator () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getQVaultInstance);
@@ -195,7 +195,7 @@ function * getDelegationListGenerator () {
   }
 }
 
-function * getOutstandingDelegationRewardsValueGenerator () {
+function* getOutstandingDelegationRewardsValueGenerator () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
 
@@ -209,7 +209,7 @@ function * getOutstandingDelegationRewardsValueGenerator () {
   }
 }
 
-function * getMinimumQVaultTimeLockGenerator ({ address }) {
+function* getMinimumQVaultTimeLockGenerator ({ address }) {
   try {
     const contract = yield call(getQVaultInstance);
     const data = yield contract.getMinimumBalance(address, getNowTimestamp());
@@ -219,7 +219,7 @@ function * getMinimumQVaultTimeLockGenerator ({ address }) {
   }
 }
 
-function * getQVaultTimeLocksGenerator ({ address }) {
+function* getQVaultTimeLocksGenerator ({ address }) {
   try {
     const contract = yield call(getQVaultInstance);
     const data = yield contract.getTimeLocks(address);
@@ -230,7 +230,7 @@ function * getQVaultTimeLocksGenerator ({ address }) {
   }
 }
 
-function * setOnClaimStakeDelegatorRewardGenerator () {
+function* setOnClaimStakeDelegatorRewardGenerator () {
   try {
     yield put(setTransactionLoading());
 
@@ -249,7 +249,7 @@ function * setOnClaimStakeDelegatorRewardGenerator () {
   }
 }
 
-function * getBalanceDetailsGenerator () {
+function* getBalanceDetailsGenerator () {
   try {
     const contract = yield call(getQVaultInstance);
     const balanceDetailsData = yield contract.getBalanceDetails();
@@ -262,7 +262,7 @@ function * getBalanceDetailsGenerator () {
   }
 }
 
-function * getDelegationInfoGenerator ({ address }) {
+function* getDelegationInfoGenerator ({ address }) {
   try {
     const contract = yield call(getVotingWeightProxyInstance);
     const data = yield contract.getDelegationInfo(address);
@@ -273,7 +273,7 @@ function * getDelegationInfoGenerator ({ address }) {
   }
 }
 
-function * setAnnounceNewVotingAgentGenerator ({ address }) {
+function* setAnnounceNewVotingAgentGenerator ({ address }) {
   try {
     yield put(setTransactionLoading());
 
@@ -292,7 +292,7 @@ function * setAnnounceNewVotingAgentGenerator ({ address }) {
   }
 }
 
-function * setNewVotingAgentGenerator () {
+function* setNewVotingAgentGenerator () {
   try {
     yield put(setTransactionLoading());
 

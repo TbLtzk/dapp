@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext } from 'react';
+import { createContext, useCallback, useContext } from 'react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 
 import i18n from 'i18next';

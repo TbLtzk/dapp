@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAccordionToggle } from 'react-bootstrap';
 import CopyToClipboard from 'react-copy-to-clipboard';
 
 import Button from 'components/Base/Button';
 import Tooltip from 'components/Base/Tooltip';
 
-function CustomCardButtons ({ eventKey, shareText, open, setOpen = () => {}, onePage }) {
+function CustomCardButtons ({
+  shareText,
+  eventKey = '',
+  open = false,
+  setOpen = () => {},
+  onePage = false
+}) {
   const decoratedOnClick = useAccordionToggle(eventKey, () => {});
   const [copy, setCopy] = useState(false);
 

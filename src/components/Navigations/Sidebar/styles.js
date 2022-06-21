@@ -88,11 +88,16 @@ export const LinkGroup = styled.div`
 `;
 
 export const LinkStyle = styled(NavLink)`
-  padding: 6px 12px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 5px 6px 12px;
   font-size: 15px;
   color: ${(p) => p.theme.colors.white};
 
   &.${(props) => props.activeClassName} {
+    font-weight: 600;
     color: ${(p) => p.theme.colors.activeLinks};
   }
 
@@ -138,14 +143,17 @@ export const AccordionIcon = styled.div`
 `;
 
 export const AccordionLbl = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 13px;
-  line-height: 18px;
-  padding: 0 12px;
-  color: ${(props) => (props.highlight === 1 ? props.theme.colors.activeLinks : props.theme.colors.white)};
-  border: 1px solid ${(props) => (props.highlight === 1 ? props.theme.colors.activeLinks : props.theme.colors.white)};
-  border-radius: 13px;
+  display: grid;
+  place-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 50%;
+  /* TODO: Colors */
+  background-color: #2374DB;
+  color: #fff;
 `;
 
 export const FooterDataContaier = styled.div`

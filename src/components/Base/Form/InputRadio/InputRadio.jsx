@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { Form } from 'react-bootstrap';
 
 import { RadioBtn } from './styles';

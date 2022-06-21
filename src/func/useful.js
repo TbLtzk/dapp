@@ -118,6 +118,10 @@ export const uintPercentToNumber = (num) => {
   return num / 10 ** 27;
 };
 
+/**
+ *
+ * @returns {[{ active: number, ended: number }, any[], any[]]}
+ */
 export const sortAndCountProposalsByType = (proposals) => {
   const active = [];
   const ended = [];
@@ -127,11 +131,11 @@ export const sortAndCountProposalsByType = (proposals) => {
     ended: 0,
   };
 
-  proposals.forEach((array) => {
-    proposalsCount.active += array[0].length;
-    active.push(...array[0]);
-    proposalsCount.ended += array[1].length;
-    ended.push(...array[1]);
+  proposals.forEach(([activeArr, endedArr]) => {
+    proposalsCount.active += activeArr.length;
+    active.push(...activeArr);
+    proposalsCount.ended += endedArr.length;
+    ended.push(...endedArr);
   });
 
   return [proposalsCount, active, ended];
@@ -181,7 +185,7 @@ export const createShareText = (type, contract, id, user) => {
   const link = `${window.location.origin}`;
   switch (type) {
     case 'proposal': {
-      return link + `/q-governance/proposal/${contract}/${id}`;
+      return link + `/governance/proposal/${contract}/${id}`;
     }
     case 'auction': {
       const auctionPart = `/auction/${transformAuctionNameToAuctionType(contract)}/${id}`;

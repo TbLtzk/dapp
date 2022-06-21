@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import * as Sentry from '@sentry/react';
@@ -6,7 +6,7 @@ import * as Sentry from '@sentry/react';
 import Button from 'components/Base/Button';
 import { WrapContainer } from 'components/Custom/LoadingMetaMask/styles';
 
-class ErrorBoundary extends React.Component {
+class ErrorBoundary extends Component {
   constructor (props) {
     super(props);
     this.state = { hasError: false };

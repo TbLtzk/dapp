@@ -46,7 +46,7 @@ import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
 import { addIndex, getIndexerUrlDependsOnChainId } from 'func/useful';
 
-function * getValidatorsWithdrawalInfoGenerator ({ address }) {
+function* getValidatorsWithdrawalInfoGenerator ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance);
     const data = yield contract.getWithdrawalInfo(address);
@@ -57,7 +57,7 @@ function * getValidatorsWithdrawalInfoGenerator ({ address }) {
   }
 }
 
-function * getValidatorsTotalStakeGenerator ({ address }) {
+function* getValidatorsTotalStakeGenerator ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance);
     const data = yield contract.getValidatorTotalStake(address);
@@ -67,7 +67,7 @@ function * getValidatorsTotalStakeGenerator ({ address }) {
   }
 }
 
-function * getValidatorsOwnStakeGenerator ({ address }) {
+function* getValidatorsOwnStakeGenerator ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance);
     const data = yield contract.getAccountableSelfStake(address);
@@ -77,7 +77,7 @@ function * getValidatorsOwnStakeGenerator ({ address }) {
   }
 }
 
-function * getValidatorsDelegatedStakeGenerator ({ address }) {
+function* getValidatorsDelegatedStakeGenerator ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance);
     const data = yield contract.instance.methods.getValidatorDelegatedStake(address).call();
@@ -87,7 +87,7 @@ function * getValidatorsDelegatedStakeGenerator ({ address }) {
   }
 }
 
-function * getValidatorsAccountableTotalStakeGenerator ({ address }) {
+function* getValidatorsAccountableTotalStakeGenerator ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance);
     const data = yield contract.getAccountableTotalStake(address);
@@ -97,7 +97,7 @@ function * getValidatorsAccountableTotalStakeGenerator ({ address }) {
   }
 }
 
-function * getValidatorsAccountableSelfStake ({ address }) {
+function* getValidatorsAccountableSelfStake ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance);
     const data = yield contract.getAccountableSelfStake(address);
@@ -107,7 +107,7 @@ function * getValidatorsAccountableSelfStake ({ address }) {
   }
 }
 
-function * getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWidened }) {
+function* getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWidened }) {
   const network = yield select(networkSelector);
   try {
     const validatorsInstance = yield call(getValidatorsInstance);
@@ -169,7 +169,7 @@ function * getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWi
   }
 }
 
-function * getIsUserValidatorGenerator ({ address }) {
+function* getIsUserValidatorGenerator ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance);
     const data = yield contract.isInShortList(address);
@@ -180,7 +180,7 @@ function * getIsUserValidatorGenerator ({ address }) {
   }
 }
 
-function * getValidatorsMinimumTimeLockGenerator ({ address }) {
+function* getValidatorsMinimumTimeLockGenerator ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance);
     const data = yield contract.getMinimumBalance(address, getNowTimestamp());
@@ -190,7 +190,7 @@ function * getValidatorsMinimumTimeLockGenerator ({ address }) {
   }
 }
 
-function * getValidatorsTimeLocksGenerator ({ address }) {
+function* getValidatorsTimeLocksGenerator ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance);
     const data = yield contract.getTimeLocks(address);
@@ -199,7 +199,7 @@ function * getValidatorsTimeLocksGenerator ({ address }) {
     ErrorHandler.processWithoutFeedback(error);
   }
 }
-function * getCompoundRateKeeperExistsGenerator () {
+function* getCompoundRateKeeperExistsGenerator () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getValidationRewardPoolsInstance);
@@ -210,7 +210,7 @@ function * getCompoundRateKeeperExistsGenerator () {
   }
 }
 
-function * setValidatorsInterestRateGenerator ({ address, uintPercent }) {
+function* setValidatorsInterestRateGenerator ({ address, uintPercent }) {
   try {
     yield put(setTransactionLoading());
 
@@ -226,7 +226,7 @@ function * setValidatorsInterestRateGenerator ({ address, uintPercent }) {
     yield put(setTransactionLoadingError(errorMsg));
   }
 }
-function * setValidatorsCommitStakeGenerator ({ address, amountQ }) {
+function* setValidatorsCommitStakeGenerator ({ address, amountQ }) {
   try {
     yield put(setTransactionLoading());
 
@@ -249,7 +249,7 @@ function * setValidatorsCommitStakeGenerator ({ address, amountQ }) {
   }
 }
 
-function * setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
+function* setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
   try {
     yield put(setTransactionLoading());
 
@@ -270,7 +270,7 @@ function * setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
   }
 }
 
-function * setValidatorsWithdrawGenerator ({ address, amountQ }) {
+function* setValidatorsWithdrawGenerator ({ address, amountQ }) {
   try {
     yield put(setTransactionLoading());
 
@@ -291,7 +291,7 @@ function * setValidatorsWithdrawGenerator ({ address, amountQ }) {
   }
 }
 
-function * setValidatorsEnterShortListGenerator ({ address }) {
+function* setValidatorsEnterShortListGenerator ({ address }) {
   try {
     yield put(setTransactionLoading());
 

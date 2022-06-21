@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'components/Base/Button';
@@ -15,8 +15,9 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper';
 
 import formTypes from 'constants/form-types';
-import { WARNING_MAX_NUMBER } from 'constants/statuses';
 import { amount, required } from 'func/validators';
+
+const WARNING_MAX_NUMBER = 'WARNING: No Q left on sender wallet for future transactions (gas)';
 
 function TransferForm () {
   const dispatch = useDispatch();
