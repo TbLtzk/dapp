@@ -21,7 +21,8 @@ export async function getContractProposals ({
     contractName
   });
 
-  const proposalsWithStatus = await Promise.all(newProposals.map(async (proposal) => {
+  const proposalsToCheck = [...activeProposalsByContract, ...newProposals];
+  const proposals = await Promise.all(proposalsToCheck.map(async (proposal) => {
     const status = await contract.getStatus(proposal.id);
     if (status === ProposalStatus.NONE) return { ...proposal, status };
 
@@ -37,7 +38,7 @@ export async function getContractProposals ({
     };
   }));
 
-  return uniqBy([...proposalsWithStatus, ...activeProposalsByContract], 'id');
+  return uniqBy(proposals, 'id');
 }
 
 export async function getProposalEvents (

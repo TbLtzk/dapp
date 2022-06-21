@@ -1,6 +1,6 @@
 import { Form } from 'react-bootstrap';
 
-import styled, { css } from 'styled-components';
+import styled, { css, StyledProps } from 'styled-components';
 
 const inputMinHeight = '10px';
 
@@ -92,19 +92,19 @@ export const InputWrapper = styled(Form.Group)`
     `}
 `;
 
-function getBackgroundColor (props) {
+function getBackgroundColor (props: StyledProps<any>) {
   return props.theme.palette === 'dark' ? 'transparent' : props.theme.colors.blue;
 }
 
-function getMainColor (props) {
+function getMainColor (props: StyledProps<any>) {
   return props.theme.palette === 'dark' ? props.theme.colors.oxfordBlueTint2 : props.theme.colors.oxfordBlueTint4;
 }
 
-function getInputColor (props) {
+function getInputColor (props: StyledProps<any>) {
   return props.$error ? props.theme.colors.validationError : getMainColor(props);
 }
 
-function getMaxButtonStyle (props) {
+function getMaxButtonStyle (props: StyledProps<any>) {
   if (props.$disabled) {
     return css`
       cursor: default;

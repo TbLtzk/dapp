@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { successMessageSelector } from 'store/transaction-handler/selectors';
 
-function useMetamaskReset (formType, onReset) {
+function useMetamaskReset (formType: string, onReset: () => void) {
   const metamaskSuccess = useSelector(successMessageSelector);
 
   useEffect(() => {
