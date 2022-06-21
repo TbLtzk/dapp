@@ -1,15 +1,17 @@
 import CustomCardButtons from 'components/Custom/CustomCardButtons';
 
+import ProposalContent from '../ProposalContent';
+import ProposalStatus from '../ProposalStatus';
+
+import PollDetail from './components/PollDetail';
+import SlashingObjection from './components/SlashingObjection';
+import VoteBreakdown from './components/VoteBreakdown';
+import VotingItems from './components/VotingItems';
 import {
   ListCardBody,
   ListCardHeader,
   ListCardWrp
-} from './ListCard/styles';
-import PollDetail from './PollDetail';
-import ProposalContent from './ProposalContent';
-import SlashingObjection from './SlashingObjection';
-import VoteBreakdown from './VoteBreakdown';
-import VotingItems from './VotingItems';
+} from './styles';
 
 import { ProposalType, STATUSES } from 'constants/statuses';
 import { createShareText } from 'func/useful';
@@ -18,25 +20,17 @@ function ProposalLayout ({ proposal, type }: { proposal: any, type: ProposalType
   return (
     <ListCardWrp>
       <ListCardHeader>
-        <p>Proposal ID: {proposal.id}</p>
-
-        {proposal?.status && (
-          <p className={`list-card__status ${proposal?.status?.toLowerCase()}`}>
-            {proposal?.status}
-          </p>
-        )}
+        <div className="card__title">
+          <h1> {proposal.title}</h1>
+          <ProposalStatus status={proposal.status} />
+        </div>
+        <div className="card__buttons">
+          <CustomCardButtons
+            onePage={true}
+            shareText={createShareText('proposal', proposal.contract, proposal.id)}
+          />
+        </div>
       </ListCardHeader>
-
-      <h1 className="card__title" title={proposal.title}>
-        {proposal.title}
-      </h1>
-
-      <div className="card__buttons">
-        <CustomCardButtons
-          onePage
-          shareText={createShareText('proposal', proposal.contract, proposal.id)}
-        />
-      </div>
 
       <ListCardBody>
         <ProposalContent proposal={proposal} />

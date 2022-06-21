@@ -6,8 +6,9 @@ import { ProposalEvent } from 'typings/contracts';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
 import ProposalContent from '../ProposalContent';
+import ProposalStatus from '../ProposalStatus';
 
-import { ListCardBody, ListCardHeader, ListCardWrp, ProposalLink } from './styles';
+import { ProposalCardLink } from './styles';
 
 import { transactionLoadingSelector } from 'store/transaction-handler/selectors';
 import { voteDetailsSelector } from 'store/voting/proposals/selectors';
@@ -16,9 +17,14 @@ import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper
 
 function ListCard ({ proposal }: { proposal: ProposalEvent }) {
   const transactionLoading = useSelector(transactionLoadingSelector);
+  const voteDetails = useSelector(voteDetailsSelector);
+
   const [proposalInfo, setProposalInfo] = useState<any>(null);
 
-  const voteDetails = useSelector(voteDetailsSelector);
+  useEffect(() => {
+    loadProposal();
+  }, []);
+
   useEffect(() => {
     const isCurrentProposal = proposal.contract === voteDetails.contract &&
       proposal.id === voteDetails.proposalId;
@@ -28,44 +34,34 @@ function ListCard ({ proposal }: { proposal: ProposalEvent }) {
     }
   }, [transactionLoading]);
 
-  useEffect(() => {
-    loadProposal();
-    return () => setProposalInfo(null);
-  }, []);
-
   async function loadProposal () {
     const result = await getProposal(proposal.contract, proposal.id);
     setProposalInfo(result);
   }
 
-  return !proposalInfo
-    ? <SkeletonProposalsLoading />
-    : (
-      <ProposalLink
+  return proposalInfo
+    ? (
+      <ProposalCardLink
         to={{
           pathname: `/governance/proposal/${proposal.contract}/${proposal.id}`,
           state: { from: 'list' },
         }}
       >
-        <ListCardWrp>
-          <ListCardHeader>
-            <p>Proposal ID: {proposal.id}</p>
+        <div className="proposal-card__head">
+          <p>Proposal ID: {proposal.id}</p>
+          {proposalInfo.status && <ProposalStatus status={proposalInfo.status} />}
+        </div>
 
-            {proposalInfo?.status && (
-              <p className={`list-card__status ${proposalInfo?.status?.toLowerCase()}`}>{proposalInfo?.status}</p>
-            )}
-          </ListCardHeader>
+        <h3 className="proposal-card__title" title={proposalInfo.title}>
+          {proposalInfo.title}
+        </h3>
 
-          <h1 className="card__title" title={proposalInfo.title}>
-            {proposalInfo.title}
-          </h1>
-
-          <ListCardBody>
-            <ProposalContent proposal={proposalInfo} />
-          </ListCardBody>
-        </ListCardWrp>
-      </ProposalLink>
-    );
+        <div className="proposal-card__body">
+          <ProposalContent proposal={proposalInfo} />
+        </div>
+      </ProposalCardLink>
+    )
+    : <SkeletonProposalsLoading />;
 }
 
 export default ListCard;

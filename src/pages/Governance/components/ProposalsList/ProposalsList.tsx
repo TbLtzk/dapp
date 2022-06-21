@@ -8,7 +8,7 @@ import Button from 'components/Base/Button';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
 import { ProposalFilterStatus } from '../../types';
-import ListCard from '../ListCard';
+import ProposalCard from '../ProposalCard';
 
 import { ListEmptyMessage, ListWrapper } from './styles';
 
@@ -74,7 +74,7 @@ function ProposalsList ({ type, status }: { type: ProposalType, status: Proposal
     <>
       <ListWrapper>
         {list.map((proposal: any) => (
-          <ListCard
+          <ProposalCard
             key={proposal.id + proposal?.contract}
             proposal={proposal}
           />

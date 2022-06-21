@@ -7,13 +7,12 @@ import { STATUSES } from 'constants/statuses';
 import { convertToMonthDayYear, remainDate } from 'func/convertDate';
 
 function ProposalContent ({ proposal }: { proposal: any }) {
-  const approvalContracts =
-    proposal.contract === CONTRACTS_NAMES.addressVoting ||
-    proposal.contract === CONTRACTS_NAMES.upgradeVoting;
-
-  const contractsWithoutVeto =
-    proposal.contract === CONTRACTS_NAMES.validatorsSlashingVoting ||
-    proposal.contract === CONTRACTS_NAMES.emergencyUpdateVoting;
+  const isVetoHidden = [
+    CONTRACTS_NAMES.addressVoting,
+    CONTRACTS_NAMES.upgradeVoting,
+    CONTRACTS_NAMES.validatorsSlashingVoting,
+    CONTRACTS_NAMES.emergencyUpdateVoting,
+  ].includes(proposal.contract);
 
   return (
     <ProposalContainer>
@@ -35,7 +34,7 @@ function ProposalContent ({ proposal }: { proposal: any }) {
         </PopperTooltip>
       </div>
 
-      {!(approvalContracts || contractsWithoutVeto) && (
+      {!isVetoHidden && (
         <div className="content__item">
           <h5>Veto Ends</h5>
           <PopperTooltip

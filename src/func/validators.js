@@ -97,7 +97,7 @@ export const parameterType = type => (val, form) => {
   switch (typeValue) {
     case ParameterType.ADDRESS:
       return {
-        isValid: isAddress(address),
+        isValid: isAddress(val),
         message: 'Invalid address'
       };
 
