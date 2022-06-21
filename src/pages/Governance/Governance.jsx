@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import PageWrap from 'components/Base/PageWrap';
 import VotingStats from 'components/Custom/VotingStats';
-import { MODE } from 'constants/config';
 
 import InfoBlock from './components/InfoBlock';
 
@@ -38,6 +37,8 @@ import {
   slashingEndedProposalsCountSelector,
   slashingLoadingProposalsCountSelector
 } from 'store/voting/slashing-proposals/selectors';
+
+import { MODE } from 'constants/config';
 
 function Governance () {
   const dispatch = useDispatch();

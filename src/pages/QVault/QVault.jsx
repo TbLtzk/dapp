@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import CustomBlock from 'components/Base/CustomBlock';
 import PageWrap from 'components/Base/PageWrap';
 import DelegatedValidatorsPanel from 'components/Custom/MembersPanel/DelegatedValidatorsPanel';
-import { MODE } from 'constants/config';
 
 import DelegateVoting from './components/DelegateVoting';
 import DelegationRewards from './components/DelegationRewards';
@@ -14,6 +13,8 @@ import UpdateDelegation from './components/UpdateDelegation';
 import VaultOverview from './components/VaultOverview';
 
 import { mode } from 'store/dashboard-mode/selectors';
+
+import { MODE } from 'constants/config';
 
 function QVault () {
   const appMode = useSelector(mode);

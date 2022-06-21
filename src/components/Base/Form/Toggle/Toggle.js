@@ -2,7 +2,7 @@ import React from 'react';
 
 import { motion } from 'framer-motion';
 
-import { ToggleContainer} from './styles';
+import { ToggleContainer } from './styles';
 
 const Toggle = ({ checked, toggleSwitch, label }) => {
   return (

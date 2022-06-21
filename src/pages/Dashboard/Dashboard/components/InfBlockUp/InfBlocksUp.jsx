@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
-import { MODE } from 'constants/config';
 
 import Blockchain from './Blockchain';
 import Constitution from './Constitution';
@@ -37,6 +36,8 @@ import {
   slashingEndedProposalsCountSelector,
   slashingLoadingProposalsCountSelector,
 } from 'store/voting/slashing-proposals/selectors';
+
+import { MODE } from 'constants/config';
 
 function InfBlocksUp () {
   const { t } = useTranslation();

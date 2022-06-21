@@ -1,7 +1,5 @@
 import { call, delay, put, select, takeEvery } from 'redux-saga/effects';
 
-import { MODE } from 'constants/config';
-
 import { getContractUpdatesProposals } from '../contract-updates/action-creators';
 
 import { getDelegationInfo, getLockedAssets } from 'store/q-vault/action-creators';
@@ -35,6 +33,7 @@ import GeneralUpdateVotingService from 'contracts/helpers/voting-helpers/general
 import RootsVotingService from 'contracts/helpers/voting-helpers/roots-voting-helper';
 import VotingService from 'contracts/helpers/voting-helpers/voting-service-helper';
 
+import { MODE } from 'constants/config';
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';

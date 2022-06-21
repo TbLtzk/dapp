@@ -1,6 +1,6 @@
-import { MODE } from 'constants/config';
-
 import * as actionTypes from './action-types';
+
+import { MODE } from 'constants/config';
 
 const initialState = {
   appMode: localStorage.getItem(['appMode']) || MODE.basic

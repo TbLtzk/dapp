@@ -10,7 +10,6 @@ import EprsMembersPanel from 'components/Custom/MembersPanel/EprsMembersPanel';
 import QFeesMembersPanel from 'components/Custom/MembersPanel/QFeesMembersPanel';
 import RootNodePanel from 'components/Custom/MembersPanel/RootNodePanel';
 import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
-import { MODE } from 'constants/config';
 
 import InfBlock from './components/InfBlockUp';
 import SavingBorrowingBlock from './components/SavingBorrowingBlock';
@@ -18,6 +17,7 @@ import TokenomicsBlock from './components/TokenomicsBlock';
 
 import { mode } from 'store/dashboard-mode/selectors';
 
+import { MODE } from 'constants/config';
 import TABLE_TYPES from 'constants/tableTypes';
 
 function Dashboard () {
