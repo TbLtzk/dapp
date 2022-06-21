@@ -65,9 +65,9 @@ function Auctions ({ auctionsType }) {
 
   return (
     <PageWrap
-      headerTitle={title}
-      titleExtra={<InfoTooltip placement="bottom" topic={tooltipTopic} />}
-      headerExtra={<CreateAuction type={auctionsType} />}
+      pageHeader={title}
+      pageTooltip={<InfoTooltip placement="bottom" topic={tooltipTopic} />}
+      pageButton={<CreateAuction type={auctionsType} />}
     >
       <Tabs tabs={tabs} additionalBlock={<SidebarCards />} />
     </PageWrap>

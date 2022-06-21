@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
+import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import PageWrap from 'components/Base/PageWrap';
 import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
@@ -21,6 +24,8 @@ import {
 import TABLE_TYPES from 'constants/tableTypes';
 
 function ValidatorStaking () {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
 
@@ -33,7 +38,7 @@ function ValidatorStaking () {
   }, [dispatch]);
 
   return (
-    <PageWrap headerTitle="Validator Staking" headerExtra={<StakerRewardPool />}>
+    <PageWrap pageHeader="Validator Staking" pageButton={<StakerRewardPool />}>
       <CustomBlock>
         <h1>Manage Balance</h1>
         <ValidatorBalanceInfo />
@@ -42,9 +47,21 @@ function ValidatorStaking () {
 
       <ValidatorsPanel
         bottom
-        buttons="q-vault"
         type="with-total"
         tableType={TABLE_TYPES.validatorsWidened}
+        buttons={
+          <div className="card__actions">
+            <Link to="/q-vault">
+              <Button
+                alwaysEnabled
+                look="white"
+              >
+                <i className="mdi mdi-arrow-right" />
+                <span>{t('GO_TO_Q_VAULT')}</span>
+              </Button>
+            </Link>
+          </div>
+        }
       />
     </PageWrap>
   );

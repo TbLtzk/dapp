@@ -1,10 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
-import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 
 import Blockchain from './Blockchain';
@@ -37,7 +37,11 @@ import {
   slashingLoadingProposalsCountSelector,
 } from 'store/voting/slashing-proposals/selectors';
 
+import { MODE } from 'constants/config';
+
 function InfBlocksUp () {
+  const { t } = useTranslation();
+
   const appMode = useSelector(mode);
 
   const qActiveProposalsCount = useSelector(qActiveProposalsCountSelector);
@@ -85,23 +89,23 @@ function InfBlocksUp () {
     <>
       <Blockchain />
       <Constitution />
-      <CustomBlock title="Governance">
-        <h1>Governance</h1>
+      <CustomBlock>
+        <h1>{t('GOVERNANCE')}</h1>
 
         <div className="card__two-columns">
           <div>
-            <h5>Active Proposals</h5>
+            <h5>{t('ACTIVE_PROPOSALS')}</h5>
             {loadingProposals ? <LoadingSpinner className="card__spinner" /> : <p>{activeProposals}</p>}
           </div>
           <div>
-            <h5>Past Proposals</h5>
+            <h5>{t('PAST_PROPOSALS')}</h5>
             {loadingProposals ? <LoadingSpinner className="card__spinner" /> : <p>{endedProposals}</p>}
           </div>
         </div>
         <Link to="/q-governance">
           <Button alwaysEnabled look="white">
             <i className="mdi mdi-arrow-right" />
-            <span>Go to Governance</span>
+            <span>{t('GO_TO_GOVERNANCE')}</span>
           </Button>
         </Link>
       </CustomBlock>

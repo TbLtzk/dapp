@@ -1,9 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Button from 'components/Base/Button';
-import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import PageWrap from 'components/Base/PageWrap';
 import DefiMembersPanel from 'components/Custom/MembersPanel/DefiMembersPanel';
 import EprsMembersPanel from 'components/Custom/MembersPanel/EprsMembersPanel';
@@ -17,10 +17,12 @@ import TokenomicsBlock from './components/TokenomicsBlock';
 
 import { mode } from 'store/dashboard-mode/selectors';
 
+import { MODE } from 'constants/config';
 import TABLE_TYPES from 'constants/tableTypes';
 
 function Dashboard () {
   const appMode = useSelector(mode);
+  const { t } = useTranslation();
 
   const advancedMode = appMode === MODE.advanced;
 
@@ -28,7 +30,7 @@ function Dashboard () {
     ? (
       <Link to="/q-parameters">
         <Button alwaysEnabled look="white">
-          Q Parameters
+          {t('Q_PARAMETERS')}
         </Button>
       </Link>
     )
@@ -41,7 +43,25 @@ function Dashboard () {
   const rootAndValidatorsPanels = (
     <>
       <RootNodePanel tableType={TABLE_TYPES.rootNodesShort} />
-      <ValidatorsPanel buttons="details" tableType={TABLE_TYPES.validatorsShort} />
+      <ValidatorsPanel
+        buttons={
+          <div className="card__actions__between">
+            <Link to="/validator-staking">
+              <Button alwaysEnabled look="white">
+                <i className="mdi mdi-arrow-right" />
+                <span>{t('SEE_MORE_DETAILS')}</span>
+              </Button>
+            </Link>
+            <Link to="/monitoring">
+              <Button alwaysEnabled look="white">
+                <i className="mdi mdi-arrow-right" />
+                <span>{t('MONITORING')}</span>
+              </Button>
+            </Link>
+          </div>
+        }
+        tableType={TABLE_TYPES.validatorsShort}
+      />
     </>
   );
 
@@ -56,7 +76,7 @@ function Dashboard () {
     : null;
 
   return (
-    <PageWrap headerTitle="Dashboard" headerExtra={parametersButton}>
+    <PageWrap pageHeader={t('DASHBOARD')} pageButton={parametersButton}>
       <div className="content__colm-1">
         {infoBlock}
         {rootAndValidatorsPanels}

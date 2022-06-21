@@ -7,6 +7,7 @@ import LogoImg from 'components/Base/LogoImg';
 import Address from './components/Address';
 import ConnectButtons from './components/ConnectButtons';
 import Network from './components/Network';
+import Settings from './components/Settings';
 import { ElementsWrapper, HeaderWrapper, WrapLogo } from './styles';
 
 import { loadTypeSelector } from 'store/user-inf/selectors';
@@ -23,10 +24,12 @@ function Header () {
           <LogoImg />
         </Link>
       </WrapLogo>
+
       <ElementsWrapper>
         <Network />
         <ConnectButtons />
         {loadType === LOAD_TYPES.loaded ? <Address /> : null}
+        <Settings />
       </ElementsWrapper>
     </HeaderWrapper>
   );

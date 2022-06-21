@@ -99,7 +99,7 @@ function TimeLocks () {
   ];
 
   return (
-    <PageWrap headerTitle="Time Locks">
+    <PageWrap pageHeader="Time Locks">
       <AddressForm userAddress={currentAddress} onChange={setCurrentAddress} />
       <div className="content__colm-2 content__time-locks">
         {cardsData.map((card) => (

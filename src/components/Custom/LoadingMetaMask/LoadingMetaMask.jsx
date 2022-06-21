@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Web3 from 'web3';
 
-import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import Routes from 'navigation/Routes';
 
@@ -17,7 +16,7 @@ import { getNumberAllProposals } from 'store/voting/proposals/action-creators';
 
 import { getContractRegistryInstance } from 'contracts/contract-instance';
 
-import { networks } from 'constants/config';
+import { MODE, networks } from 'constants/config';
 import { AUCTIONS_TYPES, LOAD_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
 import { getParametersDependsOnUrl } from 'func/useful';

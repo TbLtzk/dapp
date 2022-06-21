@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'components/Base/Button';
@@ -17,9 +18,10 @@ import { addQBTCToken, addQUSDToken } from 'contracts/helpers/borrowing-core-hel
 import { LOAD_TYPES } from 'constants/statuses';
 import { qbtcToken, qusdToken } from 'constants/tokenTypes';
 
-const METAMASK_MESSAGE = { header: 'Metamask is waiting', details: 'Please, refresh page after submit' };
-
 function SavingAndBorrowing () {
+  const { t } = useTranslation();
+  const METAMASK_MESSAGE = { header: t('METAMASK_IS_WAITING'), details: t('PLEASE_REFRESH_PAGE_AFTER_SUBMIT') };
+
   const dispatch = useDispatch();
   const loadType = useSelector(loadTypeSelector);
 
@@ -49,18 +51,12 @@ function SavingAndBorrowing () {
       {loadType === LOAD_TYPES.loaded && (
         <>
           {!qusdTokenAdded && (
-            <Button
-              style={{ margin: '0 20px 0 0' }}
-              onClick={() => handleAddToken(qusdToken)}
-            >
+            <Button style={{ margin: '0 20px 0 0' }} onClick={() => handleAddToken(qusdToken)}>
               Add QUSD token
             </Button>
           )}
           {!qbtcTokenAdded && (
-            <Button
-              style={{ margin: '0 20px 0 0' }}
-              onClick={() => handleAddToken(qbtcToken)}
-            >
+            <Button style={{ margin: '0 20px 0 0' }} onClick={() => handleAddToken(qbtcToken)}>
               Add QBTC token
             </Button>
           )}
@@ -76,8 +72,8 @@ function SavingAndBorrowing () {
   return (
     <PageWrap
       wrapContentClasses="wrap-content__column-2-1"
-      headerTitle="Saving & Borrowing"
-      headerExtra={buttons}
+      pageHeader="Saving & Borrowing"
+      pageButton={buttons}
     >
       <div>
         <SavingCryptoAssets />

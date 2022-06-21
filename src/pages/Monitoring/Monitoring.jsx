@@ -10,10 +10,10 @@ import TABLE_TYPES from 'constants/tableTypes';
 
 function Monitoring () {
   return (
-    <PageWrap headerTitle="Monitoring">
+    <PageWrap pageHeader="Monitoring">
       <CurrentInfo />
       <div>
-        <ValidatorsPanel buttons="none" tableType={TABLE_TYPES.validatorsMonitoring} />
+        <ValidatorsPanel tableType={TABLE_TYPES.validatorsMonitoring} />
         <RootNodePanel tableType={TABLE_TYPES.rootNodesMonitoring} />
       </div>
     </PageWrap>

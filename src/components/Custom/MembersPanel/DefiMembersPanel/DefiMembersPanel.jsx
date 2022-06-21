@@ -1,23 +1,20 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
-import MemberTables from 'components/Custom/MemberTables/MemberTables';
+import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import MemberTables from 'components/Custom/MemberTables';
 
 import { getEPDRMembers } from 'store/membership/action-creators';
-import {
-  EPDRMembersErrorSelector,
-  EPDRMembersLoadingSelector,
-  EPDRMembersSelector
-} from 'store/membership/selectors';
-
-import { columnsDeFiRisk } from 'constants/columns';
-import { tableDefiRisks } from 'constants/tables';
+import { EPDRMembersErrorSelector, EPDRMembersLoadingSelector, EPDRMembersSelector } from 'store/membership/selectors';
 
 function DefiMembersPanel () {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
-  const defiMembersTable = tableDefiRisks(useSelector(EPDRMembersSelector));
+  const defiMembersTable = useSelector(EPDRMembersSelector);
   const defiMembersTableLoading = useSelector(EPDRMembersLoadingSelector);
   const defiMembersTableError = useSelector(EPDRMembersErrorSelector);
 
@@ -28,13 +25,21 @@ function DefiMembersPanel () {
   return (
     <CustomBlock>
       <MemberTables
-        title="List of DeFi Experts"
-        emptyTableMessage="No DeFi members"
-        table={defiMembersTable}
+        title={t('LIST_OF_DEFI_EXPERTS')}
+        emptyTableMessage={t('NO_DEFI_MEMBERS')}
         loading={defiMembersTableLoading}
         error={defiMembersTableError}
-        columns={columnsDeFiRisk}
         perPageLength={defiMembersTable.length}
+        columns={[
+          {
+            dataField: 'member',
+            text: t('MEMBER_ADDRESS'),
+          },
+        ]}
+        table={defiMembersTable.map((member, idx) => ({
+          id: idx,
+          member: <ExplorerAddress address={member} />,
+        }))}
       />
     </CustomBlock>
   );
