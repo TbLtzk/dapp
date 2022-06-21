@@ -6,10 +6,10 @@ import useForm from './useForm';
 
 type Form = ReturnType<typeof useForm>
 
-function useFormArray<T extends Form> ({
+function useFormArray<T extends never[]> ({
   minCount = 0,
   maxCount = Infinity,
-  onSubmit = (_?: Record<string, unknown>[]) => {},
+  onSubmit = (_: T) => {},
 }) {
   const [forms, setForms] = useState(getInitialForms());
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,13 +20,13 @@ function useFormArray<T extends Form> ({
 
   function createForm () {
     const id = uniqueId();
-    const onChange = (form: T) => {
+    const onChange = (form: Form) => {
       setForms((prev) => prev.map(e => {
         return e.id === id ? { ...e, ...form } : e;
       }));
     };
 
-    return { id, onChange } as { id: string, onChange: (form: T) => void } & T;
+    return { id, onChange } as { id: string, onChange: (form: Form) => void } & Form;
   };
 
   const validate = () => {
@@ -40,7 +40,7 @@ function useFormArray<T extends Form> ({
     if (!validate()) return;
 
     setIsSubmitting(true);
-    await onSubmit(forms.map(e => e.values));
+    await onSubmit(forms.map(e => e.values) as T);
     setIsSubmitting(false);
   };
 

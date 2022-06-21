@@ -1,3 +1,5 @@
+import { ExpertProposalForm, Options } from 'typings/forms';
+
 import RadioGroup from 'components/Base/Form/RadioGroup';
 import ModalStep from 'components/Base/ModalStep';
 
@@ -11,18 +13,18 @@ function TypeStep () {
   const { goNext } = useCreateProposal();
 
   const form = useForm({
-    initialValues: { type: '' },
+    initialValues: { type: 'add-expert' as ExpertProposalForm['type'] },
     validators: { type: [required] },
     onSubmit: goNext,
   });
 
-  const typeOptions = [
+  const typeOptions: Options<ExpertProposalForm['type']> = [
     {
-      value: 'add-a-new-expert',
+      value: 'add-expert',
       label: 'Add a new Expert',
     },
     {
-      value: 'remove-a-current-expert',
+      value: 'remove-expert',
       label: 'Remove a current Expert',
     },
     {

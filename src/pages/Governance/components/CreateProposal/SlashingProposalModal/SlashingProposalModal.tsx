@@ -1,6 +1,8 @@
 import { createContext, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { SlashingProposalForm } from 'typings/forms';
+
 import MultiStepModal from 'components/Base/MultiStepModal';
 
 import useMetamaskReset from 'hooks/useMetamaskReset';
@@ -14,8 +16,8 @@ import { createProposal } from 'store/voting/proposals/actions';
 
 import formTypes from 'constants/form-types';
 
-const DEFAULT_VALUES = {
-  type: '',
+const DEFAULT_VALUES: SlashingProposalForm = {
+  type: 'root-slashing',
   externalLink: '',
   address: '',
   percent: '',

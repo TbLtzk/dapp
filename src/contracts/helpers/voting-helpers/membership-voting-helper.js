@@ -1,7 +1,7 @@
 import { getStatusTransformation } from './base-voting-helper';
 import VotingService from './voting-service-helper';
 
-import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
+import { CONTRACTS_NAMES } from 'constants/contracts';
 import { fromWei } from 'func/balance';
 
 const proposalTitle = {
@@ -44,16 +44,5 @@ export default class MembershipVoting extends VotingService {
       };
     }
     return { ...info, ...statsInfo };
-  }
-
-  async createProposal (data, userAddress) {
-    const contract = await this.getContractInstance();
-    const link = data.externalLink;
-    const candidate = data.address;
-    if (data?.type === CONTRACT_TYPES.addNewExpert) {
-      return await contract.createAddExpertProposal(link, candidate, { from: userAddress });
-    } else if (data?.type === CONTRACT_TYPES.removeCurrentExpert) {
-      return await contract.createRemoveExpertProposal(link, candidate, { from: userAddress });
-    }
   }
 }

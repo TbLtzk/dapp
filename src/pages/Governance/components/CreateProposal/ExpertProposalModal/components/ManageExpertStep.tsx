@@ -1,3 +1,5 @@
+import { ExpertProposalForm, ExpertType, Options } from 'typings/forms';
+
 import Input from 'components/Base/Form/Input';
 import RadioGroup from 'components/Base/Form/RadioGroup';
 import ModalStep from 'components/Base/ModalStep';
@@ -6,7 +8,6 @@ import useForm from 'hooks/useForm';
 
 import { useCreateProposal } from '../ExpertProposalModal';
 
-import { CONTRACT_TYPES } from 'constants/contracts';
 import { address, required, url } from 'func/validators';
 
 function ManageExpertStep () {
@@ -14,7 +15,7 @@ function ManageExpertStep () {
 
   const form = useForm({
     initialValues: {
-      panelType: '',
+      panelType: 'fees-incentives',
       address: '',
       externalLink: ''
     },
@@ -23,7 +24,9 @@ function ManageExpertStep () {
       address: [required, address],
       externalLink: [required, url],
     },
-    onSubmit: goNext,
+    onSubmit: (form) => {
+      goNext(form as ExpertProposalForm);
+    },
   });
 
   const addExpert = (
@@ -40,17 +43,17 @@ function ManageExpertStep () {
     </>
   );
 
-  const panelTypeOptions = [
+  const panelTypeOptions: Options<ExpertType> = [
     {
-      value: 'q-fees-&-incentives-membership-panel',
+      value: 'fees-incentives',
       label: 'Q Fees & Incentives Membership Panel',
     },
     {
-      value: 'q-defi-(decentralized-finance)-membership-panel',
+      value: 'defi',
       label: 'Q DeFi (Decentralized Finance) Membership Panel',
     },
     {
-      value: 'q-root-node-selection-expert-panel',
+      value: 'root-node',
       label: 'Q Root Node Selection Expert Panel',
     },
   ];
@@ -61,7 +64,7 @@ function ManageExpertStep () {
       onNext={form.submit}
       onBack={goBack}
     >
-      {values.type === CONTRACT_TYPES.addNewExpert ? addExpert : removeExpert}
+      {values.type === 'add-expert' ? addExpert : removeExpert}
 
       <div style={{ display: 'grid', gap: '15px' }}>
         <RadioGroup

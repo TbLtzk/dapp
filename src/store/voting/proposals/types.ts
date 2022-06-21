@@ -1,5 +1,6 @@
 import { BaseVotingWeightInfo } from '@q-dev/q-js-sdk';
 import { ProposalEvent } from 'typings/contracts';
+import { CreateProposalForm } from 'typings/forms';
 
 import { ProposalType } from 'constants/statuses';
 
@@ -22,7 +23,7 @@ export interface SetMinimalActiveBlock {
 
 export interface CreateProposal {
   type: 'CREATE_PROPOSAL'
-  proposal: any
+  form: CreateProposalForm
 }
 
 export interface SetVoteDetails {
@@ -73,17 +74,9 @@ export interface SetNewParameter {
 }
 
 export type ProposalsAction =
-  GetProposals |
   SetProposals |
   SetMinimalActiveBlock |
-  CreateProposal |
   SetVoteDetails |
-  VoteForProposal |
-  ExecuteProposal |
-  GetNumberAllProposals |
-  GetConstitutionHash |
   GetConstitutionHashSuccess |
-  GetBaseVotingWeightInfo |
   SetBaseVotingWeightInfo |
-  GetProposalsByType |
   SetNewParameter

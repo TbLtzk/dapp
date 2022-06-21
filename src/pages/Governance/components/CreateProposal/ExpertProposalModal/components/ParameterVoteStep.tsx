@@ -1,3 +1,5 @@
+import { ExpertProposalForm, ExpertType, FormParameter, Options } from 'typings/forms';
+
 import Button from 'components/Base/Button';
 import Input from 'components/Base/Form/Input';
 import ParameterForm from 'components/Base/Form/ParameterForm';
@@ -15,16 +17,19 @@ function ParameterVoteStep () {
   const { goNext, goBack } = useCreateProposal();
 
   const form = useForm({
-    initialValues: { panelType: '', externalLink: '' },
+    initialValues: {
+      panelType: 'fees-incentives' as ExpertType,
+      externalLink: ''
+    },
     validators: {
       panelType: [required],
       externalLink: [required, url],
     },
     onSubmit: (form) => {
       goNext({
-        ...form,
+        ...form as ExpertProposalForm,
         params: formArray.forms
-          .map(e => e.values as { key: string, type: string, value: string })
+          .map(e => e.values as unknown as FormParameter)
       });
     },
   });
@@ -35,17 +40,17 @@ function ParameterVoteStep () {
     onSubmit: () => form.submit(),
   });
 
-  const panelTypeOptions = [
+  const panelTypeOptions: Options<ExpertType> = [
     {
-      value: 'q-fees-&-incentives-membership-panel',
+      value: 'fees-incentives',
       label: 'Q Fees & Incentives Membership Panel',
     },
     {
-      value: 'q-defi-(decentralized-finance)-membership-panel',
+      value: 'defi',
       label: 'Q DeFi (Decentralized Finance) Membership Panel',
     },
     {
-      value: 'q-root-node-selection-expert-panel',
+      value: 'root-node',
       label: 'Q Root Node Selection Expert Panel',
     },
   ];

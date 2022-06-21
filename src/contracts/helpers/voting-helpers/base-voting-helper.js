@@ -7,7 +7,7 @@ import ParametersVoting from './parameters-voting-helper';
 import RootsVotingService from './roots-voting-helper';
 import SlashingVotingService from './slashing-voting-helper';
 
-import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
+import { CONTRACTS_NAMES } from 'constants/contracts';
 import ErrorHandler from 'func/ErrorHandler';
 
 export const getStatusTransformation = (statusId) => {
@@ -119,29 +119,3 @@ export function getProposalTypeByContract (contract) {
       return '';
   }
 }
-
-export const chooseSlashingContractDependsOnType = (type) => {
-  const contractName = type === CONTRACT_TYPES.rootNodeSlashing
-    ? CONTRACTS_NAMES.rootNodesSlashingVoting
-    : CONTRACTS_NAMES.validatorsSlashingVoting;
-  return new SlashingVotingService(contractName);
-};
-
-export const chooseExpertContractDependsOnType = (typeContract, type) => {
-  switch (type) {
-    case CONTRACT_TYPES.qFee:
-      return typeContract === CONTRACT_TYPES.member
-        ? new MembershipVoting(CONTRACTS_NAMES.ePQFIMembershipVoting)
-        : new ParametersVoting(CONTRACTS_NAMES.ePQFIParametersVoting);
-
-    case CONTRACT_TYPES.qDefi:
-      return typeContract === CONTRACT_TYPES.member
-        ? new MembershipVoting(CONTRACTS_NAMES.ePDRMembershipVoting)
-        : new ParametersVoting(CONTRACTS_NAMES.ePDRParametersVoting);
-
-    case CONTRACT_TYPES.qEprs:
-      return typeContract === CONTRACT_TYPES.member
-        ? new MembershipVoting(CONTRACTS_NAMES.ePRSMembershipVoting)
-        : new ParametersVoting(CONTRACTS_NAMES.ePRSParametersVoting);
-  }
-};

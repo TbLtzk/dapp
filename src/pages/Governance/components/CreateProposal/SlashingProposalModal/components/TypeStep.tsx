@@ -1,3 +1,5 @@
+import { Options, SlashingProposalForm } from 'typings/forms';
+
 import RadioGroup from 'components/Base/Form/RadioGroup';
 import ModalStep from 'components/Base/ModalStep';
 
@@ -11,18 +13,18 @@ function TypeStep () {
   const { goNext } = useCreateProposal();
 
   const form = useForm({
-    initialValues: { type: '' },
+    initialValues: { type: 'root-slashing' as SlashingProposalForm['type'] },
     validators: { type: [required] },
     onSubmit: goNext,
   });
 
-  const typeOptions = [
+  const typeOptions: Options<SlashingProposalForm['type']> = [
     {
-      value: 'root-node-slashing',
+      value: 'root-slashing',
       label: 'Root Node Slashing',
     },
     {
-      value: 'validator-node-slashing',
+      value: 'validator-slashing',
       label: 'Validator Node Slashing',
     },
   ];

@@ -1,5 +1,6 @@
 import { flatten } from 'lodash';
 import { ProposalEvent } from 'typings/contracts';
+import { QProposalForm } from 'typings/forms';
 
 import { getContractProposals } from './common';
 
@@ -33,4 +34,40 @@ export async function getQProposals (
   ]);
 
   return flatten(newProposals);
+}
+
+export async function createConstitutionProposal (
+  form: QProposalForm,
+  address: string
+) {
+  const contract = await getConstitutionVotingInstance();
+  await contract.createProposal(
+    form.externalLink,
+    form.classification,
+    form.hash,
+    form.isParamsChanged
+      ? form.params.map((item) => ({
+        paramType: item.type,
+        paramKey: item.key,
+        paramValue: item.value
+      }))
+      : [],
+    { from: address }
+  );
+}
+
+export async function createGeneralProposal (
+  form: QProposalForm,
+  address: string
+) {
+  const contract = await getGeneralUpdateVotingInstance();
+  return contract.createProposal(form.externalLink, { from: address });
+}
+
+export async function createEmergencyProposal (
+  form: QProposalForm,
+  address: string
+) {
+  const contract = await getEmergencyUpdateVotingInstance();
+  return contract.createProposal(form.externalLink, { from: address });
 }

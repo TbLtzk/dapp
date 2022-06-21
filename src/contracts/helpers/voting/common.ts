@@ -1,6 +1,12 @@
 import { ProposalStatus } from '@q-dev/q-js-sdk';
 import { uniqBy } from 'lodash';
 import { ProposalEvent, ProposalsContract } from 'typings/contracts';
+import { CreateProposalForm } from 'typings/forms';
+
+import { createConstitutionProposal, createEmergencyProposal, createGeneralProposal } from './constitution';
+import { createAddExpertProposal, createParameterVoteProposal, createRemoveExpertProposal } from './expert';
+import { createRootNodeProposal } from './root-node';
+import { createRootNodeSlashingProposal, createValidatorSlashingProposal } from './slashing';
 
 export async function getContractProposals ({
   proposals,
@@ -55,4 +61,29 @@ export async function getProposalEvents (
     id: evt.returnValues._id || evt.returnValues._proposalId,
     contract: contractName
   }));
+}
+
+export async function createProposal (form: CreateProposalForm, address: string) {
+  switch (form.type) {
+    case 'constitution':
+      return createConstitutionProposal(form, address);
+    case 'emergency':
+      return createEmergencyProposal(form, address);
+    case 'general':
+      return createGeneralProposal(form, address);
+    case 'add-root-node':
+      return createRootNodeProposal(form, address);
+    case 'remove-root-node':
+      return createRootNodeProposal(form, address, true);
+    case 'root-slashing':
+      return createRootNodeSlashingProposal(form, address);
+    case 'validator-slashing':
+      return createValidatorSlashingProposal(form, address);
+    case 'add-expert':
+      return createAddExpertProposal(form, address);
+    case 'remove-expert':
+      return createRemoveExpertProposal(form, address);
+    case 'parameter-vote':
+      return createParameterVoteProposal(form, address);
+  };
 }

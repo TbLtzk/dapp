@@ -1,7 +1,6 @@
 import { getStatusTransformation } from './base-voting-helper';
 import VotingService from './voting-service-helper';
 
-import { CONTRACT_TYPES } from 'constants/contracts';
 import { fromWei } from 'func/balance';
 
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
@@ -66,23 +65,5 @@ export default class RootsVoting extends VotingService {
   async isUserVote (id, address) {
     const contract = await this.getContractInstance();
     return contract.votes(id, address);
-  }
-
-  async createProposal (data, userAddress) {
-    const contract = await this.getContractInstance();
-
-    const hash = data.hash || '0x00';
-    const link = data.externalLink;
-    const addressToRemove = data.address;
-
-    switch (data.type) {
-      case CONTRACT_TYPES.addAnewRootNode:
-        return data.isRemovingNode
-          ? contract.createProposal(link, userAddress, addressToRemove, hash, { from: userAddress })
-          : contract.createProposal(link, userAddress, EMPTY_ADDR, hash, { from: userAddress });
-
-      case CONTRACT_TYPES.removeACurrentRootNode:
-        return contract.createProposal(link, EMPTY_ADDR, addressToRemove, hash, { from: userAddress });
-    }
   }
 }

@@ -1,3 +1,6 @@
+import { Classification } from '@q-dev/q-js-sdk';
+import { Options } from 'typings/forms';
+
 import Input from 'components/Base/Form/Input';
 import RadioGroup from 'components/Base/Form/RadioGroup';
 import ModalStep from 'components/Base/ModalStep';
@@ -13,7 +16,7 @@ function ConstitutionStep () {
 
   const form = useForm({
     initialValues: {
-      classification: '',
+      classification: Classification.BASIC,
       hash: '',
       isParamsChanged: false,
       externalLink: ''
@@ -32,17 +35,17 @@ function ConstitutionStep () {
     },
   });
 
-  const partOptions = [
+  const partOptions: Options<Classification> = [
     {
-      value: 'fundamental-part',
+      value: Classification.FUNDAMENTAL,
       label: 'Fundamental Part \t| Preamble'
     },
     {
-      value: 'basic-part',
+      value: Classification.BASIC,
       label: 'Basic Part \t\t\t| Main Body and Definitions'
     },
     {
-      value: 'detailed-part',
+      value: Classification.DETAILED,
       label: 'Detailed Part \t\t| Selected Appendices'
     },
   ];

@@ -1,4 +1,5 @@
 import { call, delay, put, select, takeEvery } from 'typed-redux-saga';
+import { CreateProposalForm } from 'typings/forms';
 
 import {
   getBaseVotingWeightInfo,
@@ -20,30 +21,46 @@ import {
   setTransactionLoadingError,
   setTransactionLoadingSuccess,
 } from 'store/transaction-handler/action-creators';
+import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import { getConstitutionVotingInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance';
+import { createProposal } from 'contracts/helpers/voting/common';
 import { getQProposals } from 'contracts/helpers/voting/constitution';
 import { getContractUpdateProposals } from 'contracts/helpers/voting/contract-update';
 import { getExpertProposals } from 'contracts/helpers/voting/expert';
 import { getRootNodeProposals } from 'contracts/helpers/voting/root-node';
 import { getSlashingProposals } from 'contracts/helpers/voting/slashing';
-import {
-  chooseExpertContractDependsOnType,
-  chooseSlashingContractDependsOnType,
-} from 'contracts/helpers/voting-helpers/base-voting-helper';
-import ConstitutionVotingService from 'contracts/helpers/voting-helpers/constitution-voting-helper';
-import EmergencyUpdateVotingService from 'contracts/helpers/voting-helpers/emergency-update-voting-helper';
-import GeneralUpdateVotingService from 'contracts/helpers/voting-helpers/general-update-voting-helper';
-import RootsVotingService from 'contracts/helpers/voting-helpers/roots-voting-helper';
 import VotingService from 'contracts/helpers/voting-helpers/voting-service-helper';
 
-import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
+import { CONTRACTS_NAMES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
-import { TRANSACTION_TYPES } from 'constants/statuses';
+import { FormProposalType, TRANSACTION_TYPES } from 'constants/statuses';
 import { VOTING_TYPES } from 'constants/votingTypes';
 import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
 import { getMinimalActiveBlockHeight } from 'func/useful';
+
+function getProposalTypeFromFormType (type: CreateProposalForm['type']): FormProposalType {
+  switch (type) {
+    case 'constitution':
+    case 'general':
+    case 'emergency':
+      return 'q';
+
+    case 'add-root-node':
+    case 'remove-root-node':
+      return 'rootNode';
+
+    case 'root-slashing':
+    case 'validator-slashing':
+      return 'slashing';
+
+    case 'add-expert':
+    case 'remove-expert':
+    case 'parameter-vote':
+      return 'expert';
+  }
+}
 
 function* getProposalsGenerator ({ proposalType }: types.GetProposals) {
   try {
@@ -69,80 +86,27 @@ function* getProposalsGenerator ({ proposalType }: types.GetProposals) {
   }
 }
 
-export const onEscrowCastObjection = (
-  data: any,
-  contractName: string,
-  proposalId: string
-) => ({
-  data,
-  contractName,
-  proposalId
-});
-
-function* createProposalGenerator ({ proposal }: types.CreateProposal) {
+function* createProposalGenerator ({ form }: types.CreateProposal) {
   try {
     yield* put(setTransactionLoading());
-    const { userAddress } = yield* select((state) => state.userInf);
-    let contractName = null;
-    let formType = '';
-    const type = proposal.type;
-    switch (type) {
-      case CONTRACT_TYPES.constitutionUpdate:
-        const constitutionVoting = new ConstitutionVotingService(CONTRACTS_NAMES.constitutionVoting);
-        yield constitutionVoting.createProposal(proposal, userAddress);
-        contractName = CONTRACTS_NAMES.constitutionVoting;
-        formType = formTypes.qProposal;
-        break;
-      case CONTRACT_TYPES.generalQUpdate:
-        const generalUpdateVoting = new GeneralUpdateVotingService(CONTRACTS_NAMES.generalUpdateVoting);
-        yield generalUpdateVoting.createProposal(proposal, userAddress);
-        contractName = CONTRACTS_NAMES.generalUpdateVoting;
-        formType = formTypes.qProposal;
-        break;
-      case CONTRACT_TYPES.emergencyUpdate:
-        const emergencyUpdateVoting = new EmergencyUpdateVotingService(CONTRACTS_NAMES.emergencyUpdateVoting);
-        yield emergencyUpdateVoting.createProposal(proposal, userAddress);
-        contractName = CONTRACTS_NAMES.emergencyUpdateVoting;
-        formType = formTypes.qProposal;
-        break;
-      case CONTRACT_TYPES.addAnewRootNode:
-      case CONTRACT_TYPES.removeACurrentRootNode:
-        const rootsVoting = new RootsVotingService(CONTRACTS_NAMES.rootsVoting);
-        yield rootsVoting.createProposal(proposal, userAddress);
-        contractName = CONTRACTS_NAMES.rootsVoting;
-        formType = formTypes.rootNodeProposal;
-        break;
-      case CONTRACT_TYPES.rootNodeSlashing:
-      case CONTRACT_TYPES.validatorNodeSlashing:
-        const chosenContract = chooseSlashingContractDependsOnType(type);
-        yield chosenContract.createProposal(proposal, userAddress);
-        formType = formTypes.slashingProposal;
-        if (type === CONTRACT_TYPES.rootNodeSlashing) {
-          contractName = CONTRACTS_NAMES.rootNodesSlashingVoting;
-        } else if (type === CONTRACT_TYPES.validatorNodeSlashing) {
-          contractName = CONTRACTS_NAMES.validatorsSlashingVoting;
-        }
-        break;
-      case CONTRACT_TYPES.addNewExpert:
-      case CONTRACT_TYPES.removeCurrentExpert:
-      case CONTRACT_TYPES.parameterVote:
-        const typeContract = proposal.type !== CONTRACT_TYPES.parameterVote
-          ? CONTRACT_TYPES.member
-          : CONTRACT_TYPES.parameters;
-        const contract = chooseExpertContractDependsOnType(typeContract, proposal.panelType);
-        contractName = contract?.contractName;
-        formType = formTypes.expertProposal;
-        yield contract?.createProposal(proposal, userAddress);
-        break;
-      default:
-        return null;
-    }
+
+    const userAddress = yield* select(userAddressMetamask);
+    yield createProposal(form, userAddress);
 
     yield* put(getBaseVotingWeightInfo());
     yield* put(getDelegationInfo(userAddress));
-    yield* put(getProposalsByType(contractName));
 
-    yield* put(setTransactionLoadingSuccess({ type: formType }));
+    const proposalType = getProposalTypeFromFormType(form.type);
+    yield* put(getProposals(proposalType));
+
+    const formTypesMap: Record<FormProposalType, string> = {
+      q: formTypes.qProposal,
+      rootNode: formTypes.rootNodeProposal,
+      expert: formTypes.expertProposal,
+      slashing: formTypes.slashingProposal,
+    };
+
+    yield* put(setTransactionLoadingSuccess({ type: formTypesMap[proposalType] }));
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield* put(setTransactionLoadingError(errorMsg));

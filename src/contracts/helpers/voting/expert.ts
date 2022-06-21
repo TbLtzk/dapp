@@ -1,5 +1,6 @@
 import { flatten } from 'lodash';
 import { ProposalEvent } from 'typings/contracts';
+import { ExpertProposalForm, ExpertType } from 'typings/forms';
 
 import { getContractProposals } from './common';
 
@@ -58,4 +59,66 @@ export async function getExpertProposals (
   ]);
 
   return flatten(newProposals);
+}
+
+export async function createAddExpertProposal (
+  form: ExpertProposalForm,
+  address: string
+) {
+  const contract = await getMembershipContractByType(form.panelType);
+  return contract.createAddExpertProposal(
+    form.externalLink,
+    form.address,
+    { from: address }
+  );
+}
+
+export async function createRemoveExpertProposal (
+  form: ExpertProposalForm,
+  address: string
+) {
+  const contract = await getMembershipContractByType(form.panelType);
+  return contract.createRemoveExpertProposal(
+    form.externalLink,
+    form.address,
+    { from: address }
+  );
+}
+
+export async function createParameterVoteProposal (
+  form: ExpertProposalForm,
+  address: string
+) {
+  const contract = await getParametersContractByType(form.panelType);
+  return contract.createProposal(
+    form.externalLink,
+    form.params.map((item) => ({
+      paramType: item.type,
+      paramKey: item.key,
+      paramValue: item.value
+    })),
+    { from: address }
+  );
+}
+
+async function getMembershipContractByType (type: ExpertType) {
+  switch (type) {
+    case 'fees-incentives':
+      return getEpqfiMembershipVotingInstance();
+    case 'defi':
+      return getEpdrMembershipVotingInstance();
+    case 'root-node':
+      return getEprsMembershipVotingInstance();
+  }
+}
+
+async function getParametersContractByType (type: ExpertType) {
+  switch (type) {
+    case 'fees-incentives':
+      return getEpqfiParametersVotingInstance();
+    case 'defi':
+      return getEpdrParametersVotingInstance();
+    case 'root-node':
+      return getEprsParametersVotingInstance();
+  }
 }

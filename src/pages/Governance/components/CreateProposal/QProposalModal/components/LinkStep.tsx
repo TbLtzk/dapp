@@ -5,7 +5,6 @@ import useForm from 'hooks/useForm';
 
 import { useCreateProposal } from '../QProposalModal';
 
-import { CONTRACT_TYPES } from 'constants/contracts';
 import { required, url } from 'func/validators';
 
 function LinkStep () {
@@ -17,7 +16,7 @@ function LinkStep () {
     onSubmit: goNext,
   });
 
-  const title = values.type === CONTRACT_TYPES.generalQUpdate
+  const title = values.type === 'general'
     ? 'General Q Updates gather the Community voice on ideas how to shape Q in the future.'
     : 'Emergency Updates enable Root Nodes to agree on an immediate update for the Q system.';
 

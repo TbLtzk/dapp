@@ -13,7 +13,6 @@ import { STATUSES } from 'constants/statuses';
 import { fromWei } from 'func/balance';
 import { fromSolDateFormattingT1 } from 'func/date';
 import { transformToPercentage } from 'func/formatters';
-import { getPercentageFormat } from 'func/useful';
 
 export default class SlashingVoting extends VotingService {
   async getProposalAdditionalData (response, id) {
@@ -112,16 +111,5 @@ export default class SlashingVoting extends VotingService {
         ? 'Validator slashing proposal'
         : 'Root Node slashing proposal'
     };
-  }
-
-  async createProposal (data, userAddress) {
-    const contract = await this.getContractInstance();
-
-    const link = data.externalLink;
-    const percentageStake = getPercentageFormat(data.percent);
-    const candidate = data.address;
-
-    const result = await contract.createProposal(link, candidate, percentageStake, { from: userAddress });
-    return result;
   }
 }
