@@ -49,6 +49,9 @@ export function creationUpdatesContractObj (contractName) {
 }
 
 export async function getProposal (contractName, id, oneProposal) {
+  const type = getProposalTypeByContract(contractName);
+  if (!type) return { error: true };
+
   try {
     switch (contractName) {
       case CONTRACTS_NAMES.constitutionVoting:
@@ -88,6 +91,32 @@ export async function getProposal (contractName, id, oneProposal) {
     }
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
+  }
+}
+
+export function getProposalTypeByContract (contract) {
+  switch (contract) {
+    case CONTRACTS_NAMES.constitutionVoting:
+    case CONTRACTS_NAMES.emergencyUpdateVoting:
+    case CONTRACTS_NAMES.generalUpdateVoting:
+      return 'q';
+    case CONTRACTS_NAMES.rootsVoting:
+      return 'rootNode';
+    case CONTRACTS_NAMES.ePQFIMembershipVoting:
+    case CONTRACTS_NAMES.ePDRMembershipVoting:
+    case CONTRACTS_NAMES.ePQFIParametersVoting:
+    case CONTRACTS_NAMES.ePDRParametersVoting:
+    case CONTRACTS_NAMES.ePRSMembershipVoting:
+    case CONTRACTS_NAMES.ePRSParametersVoting:
+      return 'expert';
+    case CONTRACTS_NAMES.rootNodesSlashingVoting:
+    case CONTRACTS_NAMES.validatorsSlashingVoting:
+      return 'slashing';
+    case CONTRACTS_NAMES.upgradeVoting:
+    case CONTRACTS_NAMES.addressVoting:
+      return 'contractUpdate';
+    default:
+      return '';
   }
 }
 
