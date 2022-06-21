@@ -27,9 +27,15 @@ export const indexersUrls = {
 };
 
 export const explorerUrls = {
-  devnet: 'http://52.35.57.176:8080',
+  devnet: 'http://54.73.188.73:8080/',
   mainnet: 'https://explorer.q.org',
   testnet: 'https://explorer.qtestnet.org',
+};
+
+export const qBridgeUrls = {
+  devnet: 'http://63.34.190.209:8080',
+  mainnet: 'https://bridge.q.org',
+  testnet: 'https://bridge.qtestnet.org',
 };
 
 export const gnosisSafeUrls = {
@@ -49,7 +55,7 @@ export const networkParameters = {
       symbol: 'Q ',
       decimals: 18,
     },
-    featureFlags: { aliases: true }
+    featureFlags: { aliases: true },
   },
   testnet: {
     chainId: '0x8a73',
@@ -61,7 +67,7 @@ export const networkParameters = {
       symbol: 'Q ',
       decimals: 18,
     },
-    featureFlags: {}
+    featureFlags: {},
   },
   mainnet: {
     chainId: '0x8a71',
@@ -73,7 +79,7 @@ export const networkParameters = {
       symbol: 'Q ',
       decimals: 18,
     },
-    featureFlags: {}
+    featureFlags: {},
   },
 };
 
@@ -99,6 +105,7 @@ export const PARAMS = {
     indexer: indexersUrls.testnet,
     explorer: explorerUrls.testnet,
     gnosisSafe: gnosisSafeUrls.testnet,
+    qBridge: qBridgeUrls.testnet,
   },
   'https://hq.qtestnet.org': {
     id: 'testnet',
@@ -109,6 +116,7 @@ export const PARAMS = {
     indexer: indexersUrls.testnet,
     explorer: explorerUrls.testnet,
     gnosisSafe: gnosisSafeUrls.testnet,
+    qBridge: qBridgeUrls.testnet,
   },
   'https://hq.q.org': {
     id: 'mainnet',
@@ -119,5 +127,6 @@ export const PARAMS = {
     indexer: indexersUrls.mainnet,
     explorer: explorerUrls.mainnet,
     gnosisSafe: gnosisSafeUrls.mainnet,
+    qBridge: qBridgeUrls.mainnet,
   },
 };

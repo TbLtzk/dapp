@@ -1,57 +1,42 @@
 import { NavLink } from 'react-router-dom';
 
-import styled from 'styled-components';
-
-import { indents } from 'constants/style';
-
-export const FooterContainer = styled.div`
-  margin-top: 20px;
-  margin-left: 12px;
-`;
+import styled, { css } from 'styled-components';
 
 export const SidebarContainer = styled.div`
   height: calc(100vh - 70px);
   position: relative;
-
-  .sidebar_container {
-    display: grid;
-    width: 310px;
-    position: relative;
-    height: 100%;
-    align-content: space-between;
-
-    padding: ${indents['30']};
-    background-color: ${(props) => props.theme.colors.oxfordBlue};
-    z-index: 10;
-
-    border-right: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
+  display: grid;
+  width: 310px;
+  justify-content: center;
+  align-content: space-between;
+  padding: 16px 32px;
+  background-color: ${(props) => props.theme.colors.oxfordBlue};
+  border-right: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
+  .divider {
+    margin-top: 24px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
   }
   .sidebar_links {
-    display: inline;
+    max-height: 50vh;
     overflow-y: auto;
     overflow-x: hidden;
   }
-
 
   &:hover .sidebar_toggle {
     color: ${(props) => props.theme.colors.oxfordBlueTint3};
   }
 
   @media screen and (max-width: 1550px) {
-    .sidebar_container {
-      padding: ${indents['15']};
-      width: 270px;
-    }
+    width: 270px;
   }
 
   @media screen and (max-height: 650px) {
-    .sidebar_container {
-      overflow-x: hidden;
+    overflow-x: hidden;
 
-      .sidebar_links {
-        display: block;
-        overflow: visible;
-      }
+    .sidebar_links {
+      display: block;
+      overflow: visible;
     }
   }
 `;
@@ -107,14 +92,68 @@ export const LinkStyle = styled(NavLink)`
   }
 `;
 
-export const ALinkStyle = styled.a`
-  padding-left: 0;
-  font-size: 15px;
-  color: ${(props) => props.theme.colors.white};
+const filterImage = (theme) => {
+  if (theme === 'dark') {
+    return css`
+      filter: brightness(0) saturate(100%) invert(77%) sepia(18%) saturate(135%) hue-rotate(171deg) brightness(99%)
+        contrast(82%);
+      &:hover {
+        filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%)
+          contrast(103%);
+      }
+    `;
+  }
+  return css`
+    filter: brightness(0) saturate(100%) invert(28%) sepia(50%) saturate(351%) hue-rotate(173deg) brightness(94%)
+      contrast(91%);
+    &:hover {
+      filter: brightness(0) saturate(100%) invert(8%) sepia(14%) saturate(4764%) hue-rotate(185deg) brightness(95%)
+        contrast(100%);
+    }
+  `;
+};
 
-  :hover {
-    color: ${(props) => props.theme.colors.white};
-    text-decoration: underline;
+export const EcosystemAppsStyle = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+
+  .app_contaier {
+    justify-content: center;
+    text-align: center;
+    width: 40px;
+    height: 30px;
+    transition: all 0.5s ease-out;
+
+    img {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      ${(p) => filterImage(p.theme)}
+    }
+  }
+`;
+
+export const ExternalLinksStyle = styled.div`
+  display: grid;
+  margin: 12px;
+
+  .external_link {
+    padding-bottom: 8px;
+
+    a {
+      display: inline-block;
+      font-size: 14px;
+      color: ${(props) => props.theme.colors.oxfordBlueTint5};
+
+      &:hover {
+        color: ${(props) => props.theme.colors.white};
+      }
+    }
+
+    .mdi {
+      padding-top: 2px;
+      margin-left: 9px;
+    }
   }
 `;
 
@@ -148,8 +187,9 @@ export const AccordionLbl = styled.div`
   border-radius: 13px;
 `;
 
-export const FooterDataContaier = styled.div`
+export const FooterContaier = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
 
   span {
