@@ -6,7 +6,7 @@ import ErrorHandler from './ErrorHandler';
 
 import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper';
 
-import { explorerUrls, gnosisSafeUrls, indexersUrls, networkParameters, networks, PARAMS } from 'constants/config';
+import { explorerUrls, gnosisSafeUrls, indexersUrls, networkParameters, networks, PARAMS, qBridgeUrls } from 'constants/config';
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import { keyRegex } from 'constants/regex';
 
@@ -36,6 +36,12 @@ export const getGnosisSafeUrlByChainId = (chainId) => {
     : getParametersDependsOnUrl().gnosisSafe;
 };
 
+export const getQBridgeUrlByChainId = (chainId) => {
+  const network = networks[chainId];
+  return network
+    ? qBridgeUrls[network]
+    : getParametersDependsOnUrl().qBridge;
+};
 export const isFeatureEnabled = (feature, chainId) => {
   const networkParams = networkParameters[networks[chainId]];
   return networkParams?.featureFlags?.[feature] ?? false;

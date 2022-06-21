@@ -5,10 +5,11 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import AccordionLinks from './components/AccordionLinks';
 import CommonLinks from './components/CommonLinks';
+import EcosystemApps from './components/EcosystemApps';
 import Policy from './components/Policy';
 import References from './components/References';
 import Version from './components/Version';
-import { FooterContainer, FooterDataContaier, SidebarContainer } from './styles';
+import { FooterContaier, SidebarContainer } from './styles';
 
 import {
   liquidationAuctionsSelector,
@@ -36,15 +37,11 @@ function Sidebar () {
   const systemSurplusAuction = useSelector(systemSurplusAuctionsSelector);
   const systemSurplusActiveAuctionsCount = systemSurplusAuction?.activeAuctions?.length;
 
-  const dashboard = <CommonLinks
-    linkTo="/"
-    linkTitle={t('DASHBOARD')}
-  />;
+  const dashboard = <CommonLinks linkTo="/" linkTitle={t('DASHBOARD')} />;
 
   return (
     <SidebarContainer>
-      <div className="sidebar_container">
-
+      <div className="sidebar_group">
         <div className="sidebar_links">
           {appMode === MODE.advanced
             ? (
@@ -79,7 +76,9 @@ function Sidebar () {
                 <>
                   <CommonLinks linkTo="/root-node-staking" linkTitle={`- ${t('ROOT_NODE_STAKING')}`} />
                   <CommonLinks linkTo="/validator-staking" linkTitle={`- ${t('VALIDATOR_STAKING')}`} />
-                  {isAliasesEnabled && <CommonLinks linkTo="/account-aliasing" linkTitle={`- ${t('ACCOUNT_ALIASING')}`} />}
+                  {isAliasesEnabled && (
+                    <CommonLinks linkTo="/account-aliasing" linkTitle={`- ${t('ACCOUNT_ALIASING')}`} />
+                  )}
                 </>
               </AccordionLinks>
             )
@@ -118,25 +117,23 @@ function Sidebar () {
                     />
                   </>
                 </AccordionLinks>
-                <CommonLinks
-                  linkTo="/time-locks"
-                  linkTitle={t('TIME_LOCKS')}
-                />
+                <CommonLinks linkTo="/time-locks" linkTitle={t('TIME_LOCKS')} />
               </>
             )
             : null}
         </div>
-        <FooterContainer>
-          <References />
 
-          <FooterDataContaier>
+        <div className="divider" />
+        <References />
+        <div className="divider" />
 
-            <Version />
-            <Policy />
-          </FooterDataContaier>
-
-        </FooterContainer>
+        <EcosystemApps />
       </div>
+
+      <FooterContaier>
+        <Version />
+        <Policy />
+      </FooterContaier>
     </SidebarContainer>
   );
 }
