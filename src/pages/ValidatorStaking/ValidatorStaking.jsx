@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 
+import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import PageWrap from 'components/Base/PageWrap';
 import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
@@ -21,6 +24,9 @@ import {
 import TABLE_TYPES from 'constants/tableTypes';
 
 function ValidatorStaking () {
+  const { t } = useTranslation();
+  const history = useHistory();
+
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
 
@@ -42,9 +48,20 @@ function ValidatorStaking () {
 
       <ValidatorsPanel
         bottom
-        buttons="q-vault"
         type="with-total"
         tableType={TABLE_TYPES.validatorsWidened}
+        buttons={
+          <div className="card__actions">
+            <Button
+              alwaysEnabled
+              look="white"
+              onClick={() => history.push({ pathname: '/q-vault' })}
+            >
+              <i className="mdi mdi-arrow-right" />
+              <span>{t('GO_TO_Q_VAULT')}</span>
+            </Button>
+          </div>
+        }
       />
     </PageWrap>
   );

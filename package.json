@@ -6,7 +6,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "i18n:compile": "node src/func/compileLangs.js",
+    "i18n:compile": "REACT_APP_GOOGLE_SPREADS_SHEET_KEY=production node src/func/compileLangs.js",
     "eject": "react-scripts eject",
     "patch-version": "npm version patch -m \"Upgrade to %s\"",
     "postversion": "git push && git push --tags",

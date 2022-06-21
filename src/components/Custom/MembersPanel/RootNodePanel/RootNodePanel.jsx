@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
+import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import MemberTables from 'components/Custom/MemberTables';
 
 import { getColumnsRootNode, getColumnsRootNodeMonitoring } from './columnTypes';
@@ -17,43 +18,74 @@ import {
   rootMemebersTotalStakeSelector,
 } from 'store/root-node/selectors';
 
-import { tableRootNode, tableRootNodeMonitoring } from 'constants/tables';
 import TABLE_TYPES from 'constants/tableTypes';
+import { fN } from 'func/useful';
 
 function RootNodePanel ({ tableType }) {
   const { t } = useTranslation();
-
-  const { tableSelector, tableLoadingSelector, columns, tableWrapper } = getRootNodesData();
-  const table = tableWrapper(useSelector(tableSelector));
-  const tableLoading = useSelector(tableLoadingSelector);
   const dispatch = useDispatch();
-  const rootMemebersTotalStake = useSelector(rootMemebersTotalStakeSelector);
 
-  function getRootNodesData () {
-    switch (tableType) {
-      case TABLE_TYPES.rootNodesShort:
-      case TABLE_TYPES.rootNodesWidened:
-        return {
-          tableSelector: rootMembersSelector,
-          tableLoadingSelector: loadingRootMembersSelector,
-          columns: getColumnsRootNode(t),
-          tableWrapper: (arr) => tableRootNode(arr, tableType === TABLE_TYPES.rootNodesShort),
-        };
-      case TABLE_TYPES.rootNodesMonitoring:
-        return {
-          tableSelector: rootMembersMonitoringSelector,
-          tableLoadingSelector: loadingRootMembersMonitoringSelector,
-          columns: getColumnsRootNodeMonitoring(t),
-          tableWrapper: tableRootNodeMonitoring,
-        };
-    }
-  }
+  const rootNodeTableTypes = {
+    [TABLE_TYPES.rootNodesShort]: {
+      tableSelector: rootMembersSelector,
+      tableLoadingSelector: loadingRootMembersSelector,
+      columns: getColumnsRootNode(t),
+    },
+    [TABLE_TYPES.rootNodesWidened]: {
+      tableSelector: rootMembersSelector,
+      tableLoadingSelector: loadingRootMembersSelector,
+      columns: getColumnsRootNode(t),
+    },
+    [TABLE_TYPES.rootNodesMonitoring]: {
+      tableSelector: rootMembersMonitoringSelector,
+      tableLoadingSelector: loadingRootMembersMonitoringSelector,
+      columns: getColumnsRootNodeMonitoring(t),
+    },
+  };
+
+  const { tableSelector, tableLoadingSelector, columns } = rootNodeTableTypes[tableType];
+
+  const table = useSelector(tableSelector);
+  const tableLoading = useSelector(tableLoadingSelector);
+  const rootMemebersTotalStake = useSelector(rootMemebersTotalStakeSelector);
 
   useEffect(() => {
     dispatch(getRootMembers(tableType));
-  }, [dispatch]);
+  }, [dispatch, tableType]);
 
   const isTotalStakeShown = tableType === TABLE_TYPES.rootNodesWidened && !tableLoading;
+
+  const tableData = useMemo(() => {
+    switch (tableType) {
+      case TABLE_TYPES.rootNodesMonitoring:
+        return table.map((rootNode, idx) => ({
+          id: idx,
+          address: <ExplorerAddress
+            short
+            iconed
+            semibold
+            address={rootNode.address}
+          />,
+          amount: fN(rootNode.stakeAmount) + ' Q',
+          offChain: 'n/a',
+          onChain: 'n/a',
+        }));
+      default:
+        return table.map((rootNode, idx) => ({
+          id: idx,
+          address: (
+            <ExplorerAddress
+              iconed
+              semibold
+              short={TABLE_TYPES.rootNodesShort === tableType}
+              address={rootNode.address}
+            />
+          ),
+          amount: fN(rootNode.stakeAmount) + ' Q',
+          share: rootNode.share + ' %',
+        }));
+    }
+  }, [tableType, table]);
 
   return (
     <CustomBlock>
@@ -69,7 +101,7 @@ function RootNodePanel ({ tableType }) {
       <MemberTables
         sorting
         perPageLength={9}
-        table={table}
+        table={tableData}
         title={null}
         columns={columns}
         loading={tableLoading}

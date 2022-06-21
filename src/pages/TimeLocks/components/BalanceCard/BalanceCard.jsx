@@ -8,8 +8,8 @@ import MemberTables from 'components/Custom/MemberTables';
 import ManageForm from '../ManageForm';
 import VestingWithdrawForm from '../VestingWithdrawForm';
 
-import { columnnsLockAmount } from 'constants/columns';
-import { tableLockAmount } from 'constants/tables';
+import { fromWei } from 'func/balance';
+import { convertToMonthDayYear } from 'func/convertDate';
 
 function BalanceCard ({ title, contract, balanceRef, lockAmountData, timeLockBalanceRef, address }) {
   const [isModalShown, setIsModalShown] = useState(false);
@@ -25,8 +25,30 @@ function BalanceCard ({ title, contract, balanceRef, lockAmountData, timeLockBal
       <MemberTables
         perPageLength={4}
         emptyTableMessage="No Time Locks"
-        table={tableLockAmount(lockAmountData)}
-        columns={columnnsLockAmount}
+        table={lockAmountData.map((lock) => ({
+          id: lock.id,
+          amount: fromWei(lock.amount) + ' Q',
+          releaseStart: convertToMonthDayYear(lock.releaseStart),
+          releaseEnd: convertToMonthDayYear(lock.releaseEnd),
+        }))}
+        columns={[
+          {
+            dataField: 'id',
+            text: '#',
+          },
+          {
+            dataField: 'amount',
+            text: 'Amount',
+          },
+          {
+            dataField: 'releaseStart',
+            text: 'Start Date',
+          },
+          {
+            dataField: 'releaseEnd',
+            text: 'End Date',
+          },
+        ]}
       />
 
       <ModalWindow

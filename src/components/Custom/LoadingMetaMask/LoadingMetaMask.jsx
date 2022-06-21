@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Web3 from 'web3';
 
-import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
+import { MODE } from 'components/Navigations/Header/components/Settings/components/DashboardModeSwitcher/DashboardModeSwitcher';
 import Routes from 'navigation/Routes';
 
 import { WrapContainer } from './styles';

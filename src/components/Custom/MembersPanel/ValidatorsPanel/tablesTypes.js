@@ -4,47 +4,9 @@ import ProgressBar from 'components/Base/ProgressBar';
 import Tooltip from 'components/Base/Tooltip';
 import AliasTooltip from 'components/Custom/AliasTooltip';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import BorrowManageAsset from 'pages/SavingAndBorrowing/components/BorrowManageAsset';
-import SaveManageAsset from 'pages/SavingAndBorrowing/components/SaveManageAsset';
 
 import { fromWei } from 'func/balance';
-import { convertToMonthDayYear } from 'func/convertDate';
 import { fN } from 'func/useful';
-
-export const tableLockAmount = (tableArray) =>
-  tableArray.map((lock) => ({
-    id: lock.id,
-    amount: fromWei(lock.amount) + ' Q',
-    releaseStart: convertToMonthDayYear(lock.releaseStart),
-    releaseEnd: convertToMonthDayYear(lock.releaseEnd)
-  }));
-
-export const tableRootNode = (tableArray, short = false) =>
-  tableArray.map((rootNode, idx) => ({
-    id: idx,
-    address: <ExplorerAddress
-      iconed
-      semibold
-      short={short}
-      address={rootNode.address}
-    />,
-    amount: fN(rootNode.stakeAmount) + ' Q',
-    share: rootNode.share + ' %'
-  }));
-
-export const tableRootNodeMonitoring = (tableArray) =>
-  tableArray.map((rootNode, idx) => ({
-    id: idx,
-    address: <ExplorerAddress
-      short
-      iconed
-      semibold
-      address={rootNode.address}
-    />,
-    amount: fN(rootNode.stakeAmount) + ' Q',
-    offChain: 'n/a',
-    onChain: 'n/a'
-  }));
 
 export const tableValidatorsShort = (tableArray) =>
   tableArray.map((validator, idx) => ({
@@ -61,7 +23,7 @@ export const tableValidatorsShort = (tableArray) =>
         <AliasTooltip alias={validator.alias} />
       </div>
     ),
-    amount: fN(validator.amount) + ' Q'
+    amount: fN(validator.amount) + ' Q',
   }));
 
 export const tableValidatorsMonitoring = (tableArray) =>
@@ -82,7 +44,7 @@ export const tableValidatorsMonitoring = (tableArray) =>
     amount: fN(validator.amount) + ' Q',
     lastBlock: validator.lastBlock,
     timestamp: <Tooltip additionalInfo={validator.timestamp}>{validator.monthDayYear}</Tooltip>,
-    average: validator.average
+    average: validator.average,
   }));
 
 export const tableValidatorsWidened = (tableArray) =>
@@ -106,28 +68,5 @@ export const tableValidatorsWidened = (tableArray) =>
     validatorShare: fN(validator.validatorShare) + ' %',
     delegatorShare: fN(validator.delegatorShare) + ' %',
     delegationEfficiency: fN(validator.delegationEfficiency) + ' %',
-    delegationSaturation: <ProgressBar value={fN(validator.delegationSaturation)} />
-  }));
-
-export const savingCryptoAssets = (tableArray) =>
-  tableArray.map((value, idx) => ({
-    id: idx,
-    depositAsset: value.depositAsset,
-    interestAsset: value.interestAsset,
-    rate: fN(value.rate) + ' %',
-    button: (
-      <SaveManageAsset
-        depositAsset={value.depositAsset}
-        interestAsset={value.interestAsset}
-      />
-    )
-  }));
-
-export const borrowCryptoAssets = (tableArray) =>
-  tableArray.map((vault, idx) => ({
-    id: idx,
-    depositAsset: vault.colKey,
-    asset: 'QUSD',
-    interestAsset: fN(vault.borrowingFee) + '%',
-    button: vault.isLiquidated ? 'Vault is Liquidated' : <BorrowManageAsset vault={vault} />
+    delegationSaturation: <ProgressBar value={fN(validator.delegationSaturation)} />,
   }));

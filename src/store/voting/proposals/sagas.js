@@ -1,6 +1,6 @@
 import { call, delay, put, select, takeEvery } from 'redux-saga/effects';
 
-import { MODE } from 'components/Base/DashboardMode/DashboardMode';
+import { MODE } from 'components/Navigations/Header/components/Settings/components/DashboardModeSwitcher/DashboardModeSwitcher';
 
 import { getContractUpdatesProposals } from '../contract-updates/action-creators';
 

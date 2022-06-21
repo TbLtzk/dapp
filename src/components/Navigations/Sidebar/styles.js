@@ -1,51 +1,8 @@
 import { NavLink } from 'react-router-dom';
 
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { indents } from 'constants/style';
-
-function handleSidebarOpen (p, width, padding, left) {
-  if (!p.openSidebar) {
-    return css`
-      margin-right: ${indents['30']};
-      .sidebar_container {
-        position: absolute;
-        padding: 0;
-        left: ${left};
-        .sidebar_links {
-          transition: all 0.3s ease-in-out;
-          visibility: hidden;
-        }
-        .mdi-chevron-right {
-          font-size: 40px;
-          position: absolute;
-          transition: all 0.3s ease-in-out;
-          top: 40%;
-          display: block;
-          right: -5px;
-          visibility: visible;
-          color: ${(props) => props.theme.colors.oxfordBlueTint3};
-        }
-      }
-      .sidebar_container:hover {
-        transition-delay: 0.3s;
-        padding: ${padding};
-        width: ${width};
-        left: 0;
-        background-color: ${(props) => props.theme.colors.oxfordBlue};
-        .sidebar_links {
-          transition-delay: 0.3s;
-          visibility: visible;
-        }
-        .mdi-chevron-right {
-          visibility: hidden;
-          transition-delay: 0.2s;
-        }
-      }
-    `;
-  }
-  return null;
-}
 
 export const FooterContainer = styled.div`
   margin-top: 20px;
@@ -61,7 +18,6 @@ export const SidebarContainer = styled.div`
     width: 310px;
     position: relative;
     height: 100%;
-    transition: all 0.3s ease-in-out;
     align-content: space-between;
 
     padding: ${indents['30']};
@@ -69,9 +25,6 @@ export const SidebarContainer = styled.div`
     z-index: 10;
 
     border-right: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
-    .mdi-chevron-right {
-      display: none;
-    }
   }
   .sidebar_links {
     display: inline;
@@ -79,7 +32,6 @@ export const SidebarContainer = styled.div`
     overflow-x: hidden;
   }
 
-  ${(p) => handleSidebarOpen(p, '310px', indents['30'], '-280px')}
 
   &:hover .sidebar_toggle {
     color: ${(props) => props.theme.colors.oxfordBlueTint3};
@@ -88,9 +40,8 @@ export const SidebarContainer = styled.div`
   @media screen and (max-width: 1550px) {
     .sidebar_container {
       padding: ${indents['15']};
-      width: 280px;
+      width: 270px;
     }
-    ${(p) => handleSidebarOpen(p, '280px', indents['15'], '-250px')}
   }
 
   @media screen and (max-height: 650px) {
@@ -100,10 +51,6 @@ export const SidebarContainer = styled.div`
       .sidebar_links {
         display: block;
         overflow: visible;
-      }
-
-      .mdi-chevron-right {
-        right: -10px;
       }
     }
   }
@@ -219,6 +166,7 @@ export const FooterDataContaier = styled.div`
 
   .policy_container {
     display: flex;
+    text-align: center;
     align-items: center;
   }
 `;

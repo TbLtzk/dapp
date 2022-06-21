@@ -2,20 +2,16 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
 const fs = require('fs');
 const secret = require('../../translation-key.json');
 
-const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADS_SHEET_KEY);
+const doc = new GoogleSpreadsheet(process.env.REACT_APP_GOOGLE_SPREADS_SHEET_KEY || '');
 
 const read = async () => {
-  await doc.loadInfo(); // loads document properties and worksheets
-  const sheet = doc.sheetsByTitle.Sheet1; // get the sheet by title, I left the default title name.
-  // If you changed it, then you should use the name of your sheet
-  await sheet.loadHeaderRow(); // Loads the header row (first row) of the sheet
-  const colTitles = sheet.headerValues; // array of strings from cell values in the first row
-  const rows = await sheet.getRows({ limit: sheet.rowCount }); // fetch rows from the sheet (limited to row count)
+  await doc.loadInfo();
+  const sheet = doc.sheetsByTitle.Sheet1;
+  await sheet.loadHeaderRow();
+  const colTitles = sheet.headerValues;
+  const rows = await sheet.getRows({ limit: sheet.rowCount });
 
   let result = {};
-  // map rows values and create an object with keys as columns titles starting from the second column (languages names)
-  // and values as an object with key value pairs, where the key is a key of translation, and
-  // value is a translation in a respective language
   rows.forEach((row) => {
     colTitles.slice(1).forEach((title) => {
       result[title] = result[title] || [];
@@ -34,7 +30,7 @@ const read = async () => {
 
 const write = (data) => {
   Object.keys(data).forEach((key) => {
-    fs.writeFile(`src/translations/${key}.json`, JSON.stringify(data[key], null, 2), (err) => {
+    fs.writeFile(`src/locales/${key}.json`, JSON.stringify(data[key], null, 2), (err) => {
       if (err) {
         console.error(err);
       }
@@ -44,8 +40,7 @@ const write = (data) => {
 
 const init = async () => {
   await doc.useServiceAccountAuth({
-    client_email: secret.client_email, // don't forget to share the Google sheet with your service
-    // account using your client_email value
+    client_email: secret.client_email,
     private_key: secret.private_key,
   });
 };
