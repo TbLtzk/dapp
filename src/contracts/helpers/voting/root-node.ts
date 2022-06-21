@@ -7,13 +7,13 @@ import { getRootNodesMembershipVotingInstance } from 'contracts/contract-instanc
 import { CONTRACTS_NAMES } from 'constants/contracts';
 
 export async function getRootNodeProposals (
-  activeProposals: ProposalEvent[],
-  lastActiveBlock: number
+  proposals: ProposalEvent[],
+  lastBlock: number
 ) {
   return getContractProposals({
-    activeProposals,
+    proposals,
     contract: await getRootNodesMembershipVotingInstance(),
-    lastBlock: lastActiveBlock,
+    lastBlock,
     contractName: CONTRACTS_NAMES.rootsVoting
   });
 }

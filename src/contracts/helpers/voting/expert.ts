@@ -15,47 +15,47 @@ import {
 import { CONTRACTS_NAMES } from 'constants/contracts';
 
 export async function getExpertProposals (
-  activeProposals: ProposalEvent[],
-  lastActiveBlock: number
+  proposals: ProposalEvent[],
+  lastBlock: number
 ) {
-  const proposals = await Promise.all([
+  const newProposals = await Promise.all([
     getContractProposals({
-      activeProposals,
+      proposals,
       contract: await getEpqfiMembershipVotingInstance(),
-      lastBlock: lastActiveBlock,
+      lastBlock,
       contractName: CONTRACTS_NAMES.ePQFIMembershipVoting
     }),
     getContractProposals({
-      activeProposals,
+      proposals,
       contract: await getEpdrMembershipVotingInstance(),
-      lastBlock: lastActiveBlock,
+      lastBlock,
       contractName: CONTRACTS_NAMES.ePDRMembershipVoting
     }),
     getContractProposals({
-      activeProposals,
+      proposals,
       contract: await getEpqfiParametersVotingInstance(),
-      lastBlock: lastActiveBlock,
+      lastBlock,
       contractName: CONTRACTS_NAMES.ePQFIParametersVoting
     }),
     getContractProposals({
-      activeProposals,
+      proposals,
       contract: await getEpdrParametersVotingInstance(),
-      lastBlock: lastActiveBlock,
+      lastBlock,
       contractName: CONTRACTS_NAMES.ePDRParametersVoting
     }),
     getContractProposals({
-      activeProposals,
+      proposals,
       contract: await getEprsParametersVotingInstance(),
-      lastBlock: lastActiveBlock,
+      lastBlock,
       contractName: CONTRACTS_NAMES.ePRSParametersVoting
     }),
     getContractProposals({
-      activeProposals,
+      proposals,
       contract: await getEprsMembershipVotingInstance(),
-      lastBlock: lastActiveBlock,
+      lastBlock,
       contractName: CONTRACTS_NAMES.ePRSMembershipVoting
     })
   ]);
 
-  return flatten(proposals);
+  return flatten(newProposals);
 }

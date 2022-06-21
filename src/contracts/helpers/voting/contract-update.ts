@@ -8,23 +8,23 @@ import { getAddressVotingInstance, getUpgradeVotingInstance } from 'contracts/co
 import { CONTRACTS_NAMES } from 'constants/contracts';
 
 export async function getContractUpdateProposals (
-  activeProposals: ProposalEvent[],
-  lastActiveBlock: number
+  proposals: ProposalEvent[],
+  lastBlock: number
 ) {
-  const proposals = await Promise.all([
+  const newProposals = await Promise.all([
     getContractProposals({
-      activeProposals,
+      proposals,
       contract: await getAddressVotingInstance(),
-      lastBlock: lastActiveBlock,
+      lastBlock,
       contractName: CONTRACTS_NAMES.addressVoting
     }),
     getContractProposals({
-      activeProposals,
+      proposals,
       contract: await getUpgradeVotingInstance(),
-      lastBlock: lastActiveBlock,
+      lastBlock,
       contractName: CONTRACTS_NAMES.upgradeVoting
     }),
   ]);
 
-  return flatten(proposals);
+  return flatten(newProposals);
 }

@@ -13,6 +13,7 @@ import {
   setProposals,
   setVoteDetails,
 } from './actions';
+import { proposalsByTypeSelector } from './selectors';
 import * as types from './types';
 
 import { getDelegationInfo, getLockedAssets } from 'store/q-vault/action-creators';
@@ -50,7 +51,7 @@ function* getProposalsGenerator ({ proposalType }: types.GetProposals) {
   try {
     const { minimalActiveBlockHeight, lastBlockHeight } = yield* call(getMinimalActiveBlockHeight);
 
-    const { proposals, lastBlock } = yield* select(state => state.proposals.proposalsMap[proposalType]);
+    const { proposals, lastBlock } = yield* select(proposalsByTypeSelector(proposalType));
     const proposalFn = {
       q: getQProposals,
       rootNode: getRootNodeProposals,

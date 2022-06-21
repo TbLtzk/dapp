@@ -1,4 +1,6 @@
 
+import { Form } from 'react-bootstrap';
+
 import styled from 'styled-components';
 
 export const RadioGroupWrapper = styled.div`
@@ -7,7 +9,9 @@ export const RadioGroupWrapper = styled.div`
     flex-direction: ${({ $row }) => $row ? 'row' : 'column'};
     gap: 16px;
   }
+`;
 
+export const StyledCheck = styled(Form.Check)`
   input,
   label {
     cursor: pointer;

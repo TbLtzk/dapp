@@ -1,3 +1,4 @@
+import { flatten } from 'lodash';
 import { ProposalEvent } from 'typings/contracts';
 
 import { getContractProposals } from './common';
@@ -7,33 +8,29 @@ import { getConstitutionVotingInstance, getEmergencyUpdateVotingInstance, getGen
 import { CONTRACTS_NAMES } from 'constants/contracts';
 
 export async function getQProposals (
-  activeProposals: ProposalEvent[],
-  lastActiveBlock: number
+  proposals: ProposalEvent[],
+  lastBlock: number
 ) {
-  const [
-    constitutionProposals,
-    emergencyProposals,
-    generalProposals
-  ] = await Promise.all([
+  const newProposals = await Promise.all([
     getContractProposals({
-      activeProposals,
+      proposals,
       contract: await getConstitutionVotingInstance(),
-      lastBlock: lastActiveBlock,
+      lastBlock,
       contractName: CONTRACTS_NAMES.constitutionVoting
     }),
     getContractProposals({
-      activeProposals,
+      proposals,
       contract: await getEmergencyUpdateVotingInstance(),
-      lastBlock: lastActiveBlock,
+      lastBlock,
       contractName: CONTRACTS_NAMES.emergencyUpdateVoting
     }),
     getContractProposals({
-      activeProposals,
+      proposals,
       contract: await getGeneralUpdateVotingInstance(),
-      lastBlock: lastActiveBlock,
+      lastBlock,
       contractName: CONTRACTS_NAMES.generalUpdateVoting
     })
   ]);
 
-  return [...constitutionProposals, ...emergencyProposals, ...generalProposals];
+  return flatten(newProposals);
 }

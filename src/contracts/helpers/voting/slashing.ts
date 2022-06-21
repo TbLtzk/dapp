@@ -8,23 +8,23 @@ import { getRootNodesSlashingVotingInstance, getValidatorsSlashingVotingInstance
 import { CONTRACTS_NAMES } from 'constants/contracts';
 
 export async function getSlashingProposals (
-  activeProposals: ProposalEvent[],
-  lastActiveBlock: number
+  proposals: ProposalEvent[],
+  lastBlock: number
 ) {
-  const proposals = await Promise.all([
+  const newProposals = await Promise.all([
     getContractProposals({
-      activeProposals,
+      proposals,
       contract: await getValidatorsSlashingVotingInstance(),
-      lastBlock: lastActiveBlock,
+      lastBlock,
       contractName: CONTRACTS_NAMES.validatorsSlashingVoting
     }),
     getContractProposals({
-      activeProposals,
+      proposals,
       contract: await getRootNodesSlashingVotingInstance(),
-      lastBlock: lastActiveBlock,
+      lastBlock,
       contractName: CONTRACTS_NAMES.rootNodesSlashingVoting
     }),
   ]);
 
-  return flatten(proposals);
+  return flatten(newProposals);
 }

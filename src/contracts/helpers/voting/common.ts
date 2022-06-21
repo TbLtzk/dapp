@@ -3,26 +3,26 @@ import { uniqBy } from 'lodash';
 import { ProposalEvent, ProposalsContract } from 'typings/contracts';
 
 export async function getContractProposals ({
-  activeProposals,
+  proposals,
   contract,
   lastBlock,
   contractName
 }: {
-  activeProposals: any[],
+  proposals: ProposalEvent[],
   contract: ProposalsContract,
   lastBlock: number,
   contractName: string
 }): Promise<ProposalEvent[]> {
-  const activeProposalsByContract = activeProposals
-    .filter((proposal) => proposal.contract === contractName);
+  const contractProposals = proposals.filter(({ contract }) => contract === contractName);
+  const activeProposals = contractProposals.filter(({ status }) => status === 'active');
 
   const newProposals = await getProposalEvents(contract, {
     fromBlock: lastBlock,
     contractName
   });
 
-  const proposalsToCheck = [...activeProposalsByContract, ...newProposals];
-  const proposals = await Promise.all(proposalsToCheck.map(async (proposal) => {
+  const proposalsToCheck = [...activeProposals, ...newProposals];
+  const result = await Promise.all(proposalsToCheck.map(async (proposal) => {
     const status = await contract.getStatus(proposal.id);
     if (status === ProposalStatus.NONE) return { ...proposal, status };
 
@@ -38,7 +38,7 @@ export async function getContractProposals ({
     };
   }));
 
-  return uniqBy(proposals, 'id');
+  return uniqBy([...result, ...contractProposals], 'id');
 }
 
 export async function getProposalEvents (

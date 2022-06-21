@@ -1,9 +1,7 @@
 
-import { Form } from 'react-bootstrap';
-
 import ErrorInputMessage from 'components/Base/ErrorInputMessage';
 
-import { RadioGroupWrapper } from './styles';
+import { RadioGroupWrapper, StyledCheck } from './styles';
 
 function RadioGroup ({
   name,
@@ -19,7 +17,7 @@ function RadioGroup ({
       {label && <h4>{label}</h4>}
       <div className="radio-options">
         {options.map((option) => (
-          <Form.Check
+          <StyledCheck
             key={option.value}
             id={`${name}__${option.value}`}
             type="radio"
