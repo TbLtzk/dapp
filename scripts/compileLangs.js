@@ -2,7 +2,9 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
 const fs = require('fs');
 const secret = require('../translation-key.json');
 
-const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADS_SHEET_KEY || '14X3rNWtJxfVQqcaWra9cKL-F7BDe3LBNYhZnlfhtP6M');
+require('dotenv').config();
+
+const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADS_SHEET_KEY);
 
 const read = async () => {
   await doc.loadInfo();
