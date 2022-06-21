@@ -2,9 +2,7 @@ import { createSelector } from 'reselect';
 import { ProposalEvent } from 'typings/contracts';
 
 import { RootState } from 'store';
-import { mode } from 'store/dashboard-mode/selectors';
 
-import { MODE } from 'constants/config';
 import { ProposalType } from 'constants/statuses';
 
 export const proposalValuesSelector = (state: RootState) =>
@@ -43,18 +41,13 @@ export const isProposalsLoadingSelector = createSelector(
     proposalValues.some(({ isLoading }) => isLoading)
 );
 
-export const modeProposalsSelector = createSelector(
-  [mode, allProposalsSelector, basicProposalsSelector], (appMode, proposals, basicProposals) =>
-    appMode === MODE.basic ? basicProposals : proposals
-);
-
 export const activeProposalsCountSelector = createSelector(
-  [modeProposalsSelector, minimalActiveBlockSelector], (proposals, minBlock) =>
+  [allProposalsSelector, minimalActiveBlockSelector], (proposals, minBlock) =>
     proposals.filter(item => isProposalActive(item, minBlock)).length
 );
 
 export const endedProposalsCountSelector = createSelector(
-  [modeProposalsSelector, minimalActiveBlockSelector], (proposals, minBlock) =>
+  [allProposalsSelector, minimalActiveBlockSelector], (proposals, minBlock) =>
     proposals.filter(item => !isProposalActive(item, minBlock)).length
 );
 

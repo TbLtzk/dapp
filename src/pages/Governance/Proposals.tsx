@@ -39,8 +39,8 @@ function Proposals ({ type }: { type: ProposalType }) {
       pageHeader="Governance"
       pageButton={createProposal}
     >
-      <VotingStats type={type} />
       <ProposalsNav />
+      <VotingStats type={type} />
       <ProposalFilters
         filters={filters}
         onChange={setFilters}

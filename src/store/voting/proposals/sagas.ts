@@ -37,7 +37,6 @@ import GeneralUpdateVotingService from 'contracts/helpers/voting-helpers/general
 import RootsVotingService from 'contracts/helpers/voting-helpers/roots-voting-helper';
 import VotingService from 'contracts/helpers/voting-helpers/voting-service-helper';
 
-import { MODE } from 'constants/config';
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
@@ -244,15 +243,12 @@ function* getProposalsByTypeGenerator ({ contractName }: types.GetProposalsByTyp
 }
 
 function* getNumberAllProposalsGenerator () {
-  const { appMode } = yield* select((state) => state.dashboardMode);
   yield* put(getProposals('q'));
   yield* put(getProposals('rootNode'));
+  yield* put(getProposals('expert'));
+  yield* put(getProposals('slashing'));
+  yield* put(getProposals('contractUpdate'));
 
-  if (appMode === MODE.advanced) {
-    yield* put(getProposals('expert'));
-    yield* put(getProposals('slashing'));
-    yield* put(getProposals('contractUpdate'));
-  }
   yield* delay(240000);
   yield* put(getNumberAllProposals());
 }
