@@ -31,6 +31,11 @@ function Proposals ({ type }: { type: ProposalType }) {
     return { status: query.get('status') as ProposalFilterStatus || 'all' };
   }
 
+  const handleFiltersChange = (value: ProposalFilter) => {
+    setFilters(value);
+    dispatch(getProposals(type));
+  };
+
   const createProposal = type !== 'contractUpdate' &&
     <CreateProposal type={type} />;
 
@@ -43,7 +48,7 @@ function Proposals ({ type }: { type: ProposalType }) {
       <ProposalsNav />
       <ProposalFilters
         filters={filters}
-        onChange={setFilters}
+        onChange={handleFiltersChange}
       />
       <ProposalsList type={type} status={filters.status} />
     </PageWrap>

@@ -50,6 +50,7 @@ export const PageTitleActions = styled.div`
 export const WrapContent = styled.div`
   min-height: 490px;
   max-width: 100%;
+  margin-bottom: 15px;
   ${scrollbarStyle}
 
   &.wrap-content__tow-colm {

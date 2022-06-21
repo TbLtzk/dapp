@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { concat } from 'lodash';
 import { ProposalEvent } from 'typings/contracts';
 
 import Button from 'components/Base/Button';
@@ -36,8 +35,8 @@ function ProposalsList ({ type, status }: { type: ProposalType, status: Proposal
 
   const handleNextProposals = () => {
     const newOffset = offset + PAGE_LIMIT;
-    const newList = concat(list, filteredProposals.slice(newOffset, PAGE_LIMIT));
-    setOffset(offset);
+    const newList = list.concat(filteredProposals.slice(offset, newOffset));
+    setOffset(offset => offset + PAGE_LIMIT);
     setList(newList);
   };
 

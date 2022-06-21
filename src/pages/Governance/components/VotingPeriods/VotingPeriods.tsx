@@ -1,12 +1,12 @@
 import PopperTooltip from 'components/Base/PopperTooltip';
 
-import { ProposalContainer } from './styles';
+import { VotingContainer } from './styles';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import { STATUSES } from 'constants/statuses';
 import { convertToMonthDayYear, remainDate } from 'func/convertDate';
 
-function ProposalContent ({ proposal }: { proposal: any }) {
+function VotingPeriods ({ proposal }: { proposal: any }) {
   const isVetoHidden = [
     CONTRACTS_NAMES.addressVoting,
     CONTRACTS_NAMES.upgradeVoting,
@@ -15,8 +15,8 @@ function ProposalContent ({ proposal }: { proposal: any }) {
   ].includes(proposal.contract);
 
   return (
-    <ProposalContainer>
-      <div className="content__item">
+    <VotingContainer>
+      <div>
         <h5>Voting Ends</h5>
         <PopperTooltip
           placement="bottom"
@@ -35,7 +35,7 @@ function ProposalContent ({ proposal }: { proposal: any }) {
       </div>
 
       {!isVetoHidden && (
-        <div className="content__item">
+        <div>
           <h5>Veto Ends</h5>
           <PopperTooltip
             placement="bottom"
@@ -45,7 +45,9 @@ function ProposalContent ({ proposal }: { proposal: any }) {
             {proposal.status === STATUSES.accepted
               ? (
                 <p>
-                  Remaining Time for Veto <br /> {remainDate(proposal.vetoEndTime)}
+                  Remaining Time for Veto
+                  <br />
+                  {remainDate(proposal.vetoEndTime)}
                 </p>
               )
               : 'Proposal ' + proposal.status
@@ -54,8 +56,8 @@ function ProposalContent ({ proposal }: { proposal: any }) {
           </PopperTooltip>
         </div>
       )}
-    </ProposalContainer>
+    </VotingContainer>
   );
 }
 
-export default ProposalContent;
+export default VotingPeriods;

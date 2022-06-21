@@ -1,9 +1,9 @@
 import CustomCardButtons from 'components/Custom/CustomCardButtons';
 
-import ProposalContent from '../ProposalContent';
 import ProposalStatus from '../ProposalStatus';
 
 import PollDetail from './components/PollDetail';
+import ProposalContent from './components/ProposalContent';
 import SlashingObjection from './components/SlashingObjection';
 import VoteBreakdown from './components/VoteBreakdown';
 import VotingItems from './components/VotingItems';

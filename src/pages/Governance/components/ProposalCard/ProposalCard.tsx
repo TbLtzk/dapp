@@ -5,8 +5,8 @@ import { ProposalEvent } from 'typings/contracts';
 
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
-import ProposalContent from '../ProposalContent';
 import ProposalStatus from '../ProposalStatus';
+import VotingPeriods from '../VotingPeriods';
 
 import { ProposalCardLink } from './styles';
 
@@ -57,7 +57,7 @@ function ListCard ({ proposal }: { proposal: ProposalEvent }) {
         </h3>
 
         <div className="proposal-card__body">
-          <ProposalContent proposal={proposalInfo} />
+          <VotingPeriods proposal={proposalInfo} />
         </div>
       </ProposalCardLink>
     )
