@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import CustomBlock from 'components/Base/CustomBlock';
 
 export const StatsWrapper = styled(CustomBlock)`
+  margin-top: 24px;
+
   .stats-head {
     display: flex;
     justify-content: space-between;

@@ -14,14 +14,16 @@ import VotingItems from './VotingItems';
 import { ProposalType, STATUSES } from 'constants/statuses';
 import { createShareText } from 'func/useful';
 
-function ProposalCard ({ proposal, type }: { proposal: any, type: ProposalType }) {
+function ProposalLayout ({ proposal, type }: { proposal: any, type: ProposalType }) {
   return (
     <ListCardWrp>
       <ListCardHeader>
         <p>Proposal ID: {proposal.id}</p>
 
-        {proposal.status && (
-          <p className="list-card__status">{proposal.status}</p>
+        {proposal?.status && (
+          <p className={`list-card__status ${proposal?.status?.toLowerCase()}`}>
+            {proposal?.status}
+          </p>
         )}
       </ListCardHeader>
 
@@ -64,4 +66,4 @@ function ProposalCard ({ proposal, type }: { proposal: any, type: ProposalType }
   );
 }
 
-export default ProposalCard;
+export default ProposalLayout;

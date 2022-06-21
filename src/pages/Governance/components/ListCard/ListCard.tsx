@@ -41,7 +41,12 @@ function ListCard ({ proposal }: { proposal: ProposalEvent }) {
   return !proposalInfo
     ? <SkeletonProposalsLoading />
     : (
-      <ProposalLink to={`/governance/proposal/${proposal.contract}/${proposal.id}`}>
+      <ProposalLink
+        to={{
+          pathname: `/governance/proposal/${proposal.contract}/${proposal.id}`,
+          state: { from: 'list' },
+        }}
+      >
         <ListCardWrp>
           <ListCardHeader>
             <p>Proposal ID: {proposal.id}</p>

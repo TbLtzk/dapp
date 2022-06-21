@@ -40,7 +40,6 @@ function Proposals ({ type }: { type: ProposalType }) {
       pageButton={createProposal}
     >
       <VotingStats type={type} />
-
       <ProposalsNav />
       <ProposalFilters
         filters={filters}

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { RouteComponentProps, useHistory } from 'react-router';
 
+import Button from 'components/Base/Button';
 import PageWrap from 'components/Base/PageWrap';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
-import ProposalCard from './components/ProposalCard';
+import ProposalLayout from './components/ProposalLayout';
 
 import { getProposal, getProposalTypeByContract } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
@@ -16,7 +17,8 @@ function Proposal ({ match }: RouteComponentProps<{
   contract: ContractName
 }>) {
   const history = useHistory();
-  const [proposal, setProposal] = useState(null);
+
+  const [proposal, setProposal] = useState<any>(null);
   const type = getProposalTypeByContract(match.params.contract) as ProposalType;
 
   useEffect(() => {
@@ -33,6 +35,16 @@ function Proposal ({ match }: RouteComponentProps<{
     setProposal(data);
   }
 
+  const handleBackClick = () => {
+    const location = history.location as { state?: { from: string } };
+    if (location.state?.from === 'list') {
+      history.goBack();
+      return;
+    }
+
+    history.replace('/governance');
+  };
+
   const titleMap: Record<ProposalType, string> = {
     q: 'Q Proposal',
     rootNode: 'Root Node Proposal',
@@ -43,8 +55,17 @@ function Proposal ({ match }: RouteComponentProps<{
 
   return (
     <PageWrap pageHeader={titleMap[type]}>
+      <Button
+        look="white"
+        style={{ marginBottom: '16px' }}
+        onClick={handleBackClick}
+      >
+        <i className="mdi mdi-arrow-left" />
+        <span>Back to proposals</span>
+      </Button>
+
       {proposal
-        ? <ProposalCard type={type} proposal={proposal} />
+        ? <ProposalLayout type={type} proposal={proposal} />
         : <SkeletonProposalsLoading />
       }
     </PageWrap>
