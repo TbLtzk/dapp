@@ -48,8 +48,8 @@ function AccountAliasing () {
 
   return (
     <PageWrap
-      headerTitle="Account Aliasing"
-      headerExtra={(
+      pageHeader="Account Aliasing"
+      pageButton={(
         <Button onClick={() => setIsReserveModalShown(true)}>
           <i className="mdi mdi-archive-lock" />
           <span>Reserve alias</span>

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import PageWrap from 'components/Base/PageWrap';
 import VotingStats from 'components/Custom/VotingStats';
 
@@ -38,6 +37,8 @@ import {
   slashingEndedProposalsCountSelector,
   slashingLoadingProposalsCountSelector
 } from 'store/voting/slashing-proposals/selectors';
+
+import { MODE } from 'constants/config';
 
 function Governance () {
   const dispatch = useDispatch();
@@ -77,7 +78,7 @@ function Governance () {
   }, [dispatch, appMode]);
 
   return (
-    <PageWrap wrapContentClasses="wrap-content__colm-2" headerTitle="Governance">
+    <PageWrap wrapContentClasses="wrap-content__colm-2" pageHeader="Governance">
       <div className="content__colm-2">
         <InfoBlock
           header="Q Proposals"

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'components/Base/Button/Button';
@@ -18,6 +19,8 @@ import {
 import { remainDateTimeSince } from 'func/convertDate';
 
 function SavingBorrowingUpdate () {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const userAddress = useSelector(userAddressMetamask);
 
@@ -65,7 +68,7 @@ function SavingBorrowingUpdate () {
     <div>
       <div className="card_block">
         <div>
-          <h5>QUSD Saving time since refresh of balance</h5>
+          <h5>{t('QUSD_SAVING_TIME_SINCE_REFRESH_OF_BALANCE')}</h5>
           <div className="card_text">{timeSinceRefreshBalance || '0 day(s) 0 hours 0 minutes'}</div>
         </div>
 
@@ -82,7 +85,7 @@ function SavingBorrowingUpdate () {
 
       <div className="card_block">
         <div>
-          <h5>QUSD - QBTC time since refresh of outstanding debt</h5>
+          <h5>{t('QUSD_QBTC_TIME_SINCE_REFRESH_OF_OUTSTANDING_DEBT')}</h5>
           <div className="card_text">{timeSinceOutstandingDebt || '0 day(s) 0 hours 0 minutes'}</div>
         </div>
 

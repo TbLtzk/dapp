@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { MODE } from 'components/Base/DashboardMode/DashboardMode';
 import RadioGroup from 'components/Base/Form/RadioGroup';
 import ModalStep from 'components/Base/ModalStep';
 
@@ -11,6 +10,7 @@ import { useCreateProposal } from '../../QProposalModal';
 
 import { mode } from 'store/dashboard-mode/selectors';
 
+import { MODE } from 'constants/config';
 import { required } from 'func/validators';
 
 function TypeStep () {
