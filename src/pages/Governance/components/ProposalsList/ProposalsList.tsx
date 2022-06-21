@@ -7,9 +7,10 @@ import { ProposalEvent } from 'typings/contracts';
 import Button from 'components/Base/Button';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
-import { ProposalFilterStatus } from '../types';
+import { ProposalFilterStatus } from '../../types';
+import ListCard from '../ListCard';
 
-import ListCard from './ListCard';
+import { ListEmptyMessage, ListWrapper } from './styles';
 
 import { activeProposalsByTypeSelector, endedProposalsByTypeSelector, proposalsByTypeSelector } from 'store/voting/proposals/selectors';
 
@@ -53,34 +54,38 @@ function ProposalsList ({ type, status }: { type: ProposalType, status: Proposal
 
   if (isLoading) {
     return (
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+      <ListWrapper>
         {fillArray(10).map((id) => (
           <SkeletonProposalsLoading key={id} />
         ))}
-      </div>
+      </ListWrapper>
     );
   }
 
   if (list.length === 0) {
-    return <p>No proposals</p>;
+    return (
+      <ListEmptyMessage>
+        No proposals found
+      </ListEmptyMessage>
+    );
   }
 
   return (
     <>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+      <ListWrapper>
         {list.map((proposal: any) => (
           <ListCard
             key={proposal.id + proposal?.contract}
             proposal={proposal}
           />
         ))}
-      </div>
+      </ListWrapper>
 
       {filteredProposals.length > list.length && (
         <LoadingWrap>
           <Button
             style={{
-              margin: '15px auto',
+              margin: '0 auto',
               width: '140px'
             }}
             onClick={handleNextProposals}

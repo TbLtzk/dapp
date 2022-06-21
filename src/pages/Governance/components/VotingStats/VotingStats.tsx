@@ -80,7 +80,7 @@ function VotingStats ({ type }: { type: ProposalType }) {
                 </Button>
               }
             >
-              <span>User is not a root node</span>
+              <span>Available only for root nodes</span>
             </PopperTooltip>
           )}
 

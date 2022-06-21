@@ -47,7 +47,7 @@ function ListCard ({ proposal }: { proposal: ProposalEvent }) {
             <p>Proposal ID: {proposal.id}</p>
 
             {proposalInfo?.status && (
-              <p className="list-card__status">{proposalInfo?.status}</p>
+              <p className={`list-card__status ${proposalInfo?.status?.toLowerCase()}`}>{proposalInfo?.status}</p>
             )}
           </ListCardHeader>
 

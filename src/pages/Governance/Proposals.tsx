@@ -6,7 +6,7 @@ import PageWrap from 'components/Base/PageWrap';
 
 import CreateProposal from './components/CreateProposal';
 import ProposalFilters from './components/ProposalFilters/ProposalFilters';
-import ProposalsList from './components/ProposalsList';
+import ProposalsList from './components/ProposalsList/ProposalsList';
 import ProposalsNav from './components/ProposalsNav';
 import VotingStats from './components/VotingStats';
 import { ProposalFilter, ProposalFilterStatus } from './types';

@@ -83,6 +83,24 @@ export const ListCardWrp = styled.div`
     border-radius: 13px;
     padding: 1px 9px;
     margin-left: 10px;
+
+    &.executed,
+    &.passed,
+    &.accepted {
+      border-color: ${(props) => props.theme.colors.neonGreen};
+      color: ${(props) => props.theme.colors.neonGreen};
+    }
+
+    &.rejected,
+    &.expired {
+      border-color: ${(props) => props.theme.colors.validationError};
+      color: ${(props) => props.theme.colors.validationError};
+    }
+
+    &.pending {
+      border-color: ${(props) => props.theme.colors.yellow};
+      color: ${(props) => props.theme.colors.yellow};
+    }
   }
 
   .list-card__tow-colm {
@@ -147,15 +165,6 @@ export const ListCardHeader = styled.div`
   }
 
   @media screen and (max-width: 1150px) {
-    flex-direction: column;
-    align-items: flex-start;
-    position: relative;
-
-    .card__title {
-      align-self: flex-start;
-      max-width: 85%;
-    }
-
     .card__buttons {
       flex-direction: column-reverse;
       justify-content: space-between;
