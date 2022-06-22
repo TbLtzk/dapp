@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { StyledSwitch } from './styles';
 
 const Switch = ({

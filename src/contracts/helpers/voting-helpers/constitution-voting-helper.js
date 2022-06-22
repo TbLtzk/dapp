@@ -1,8 +1,6 @@
 import { getStatusTransformation } from './base-voting-helper';
 import VotingService from './voting-service-helper';
 
-import { getConstitutionVotingInstance } from 'contracts/contract-instance';
-
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import { fromWei } from 'func/balance';
 
@@ -65,44 +63,5 @@ export default class ConstitutionVoting extends VotingService {
     objRes.votingEndTime = promiseRes.base.params.votingEndTime;
     objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
     return objRes;
-  }
-
-  getProposalNumberType (type) {
-    switch (type) {
-      case 'basic-part':
-        return 0;
-      case 'fundamental-part':
-        return 1;
-      case 'detailed-part':
-        return 2;
-      default:
-        return 0;
-    }
-  }
-
-  async createProposal (proposal, userAddress) {
-    const contract = await this.getContractInstance();
-    const classification = this.getProposalNumberType(proposal.classification);
-    const hash = proposal.hash;
-    const link = proposal.externalLink;
-    const params = [];
-    if (proposal.isParamsChanged) {
-      const paramsArray = proposal.params.map((item) => ({
-        paramType: item.type,
-        paramKey: item.key,
-        paramValue: item.value
-      }));
-      params.push(...paramsArray);
-    }
-
-    return contract.createProposal(link, classification, hash, params, {
-      from: userAddress
-    });
-  }
-
-  async getConstitutionHash () {
-    const contract = await getConstitutionVotingInstance();
-    const result = await contract.constitutionHash();
-    return result;
   }
 }

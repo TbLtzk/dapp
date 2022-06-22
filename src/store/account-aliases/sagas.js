@@ -11,7 +11,7 @@ import { getAliasEvents } from 'contracts/helpers/account-aliases-helper';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
 
-function * getAliasesGenerator ({ address }) {
+function* getAliasesGenerator ({ address }) {
   try {
     yield put(setAliasesLoading(true));
     const contract = yield call(getAccountAliasesInstance);
@@ -25,7 +25,7 @@ function * getAliasesGenerator ({ address }) {
   }
 }
 
-function * getAliasEventsGenerator () {
+function* getAliasEventsGenerator () {
   try {
     yield put(setEventsLoading(true));
     const events = yield call(getAliasEvents);
@@ -38,7 +38,7 @@ function * getAliasEventsGenerator () {
   }
 }
 
-function * setAliasGenerator ({ address, purpose }) {
+function* setAliasGenerator ({ address, purpose }) {
   try {
     yield put(setTransactionLoading());
 
@@ -52,7 +52,7 @@ function * setAliasGenerator ({ address, purpose }) {
   }
 }
 
-function * reserveAliasGenerator ({ address }) {
+function* reserveAliasGenerator ({ address }) {
   try {
     yield put(setTransactionLoading());
 

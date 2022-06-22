@@ -15,7 +15,8 @@ export const darkColors = {
   neonGreen: '#87FF65',
   validationError: '#FF8550',
   red: '#FC4136',
-  lightBlue: '#2374DB'
+  lightBlue: '#2374DB',
+  yellow: '#F8D889'
 };
 
 export const lightColors = {
@@ -30,7 +31,8 @@ export const lightColors = {
   neonGreen: '#67c54d',
   validationError: '#FF8550',
   red: '#FC4136',
-  lightBlue: '#74A8E9'
+  lightBlue: '#74A8E9',
+  yellow: '#D7A118'
 };
 
 const colors = {

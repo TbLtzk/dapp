@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { createPopper } from '@popperjs/core';
 
@@ -7,7 +7,9 @@ import { TooltipWrapper } from './styles';
 function PopperTooltip ({
   placement = 'top',
   trigger,
-  style,
+  disabled = false,
+  invertedColors = false,
+  style = {},
   children,
 }) {
   const triggerEl = useRef(null);
@@ -17,12 +19,14 @@ function PopperTooltip ({
   const instance = useRef(null);
 
   useEffect(() => {
-    if (!instance.current) return;
+    if (!instance.current || disabled) return;
 
     instance.current.update();
   }, [children]);
 
   const showTooltip = () => {
+    if (disabled) return;
+
     instance.current = createPopper(triggerEl.current, popperEl.current, {
       placement,
       modifiers: [
@@ -41,8 +45,10 @@ function PopperTooltip ({
   return (
     <TooltipWrapper
       style={style}
+      $disabled={disabled}
+      $invertedColors={invertedColors}
       onMouseOver={showTooltip}
-      onMouseOut={hideTooltip}
+      onMouseLeave={hideTooltip}
     >
       <div
         ref={triggerEl}

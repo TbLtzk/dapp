@@ -1,16 +1,16 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 
+import useVoteDelegation from 'hooks/useVoteDelegation';
+
 import AnnounceForm from './components/AnnounceForm';
 
 import { getDelegationInfo, setNewVotingAgent } from 'store/q-vault/action-creators';
-import { isPendingDelegation, receivedWeight, votingAgent, votingAgentPassOverTime } from 'store/q-vault/selectors';
+import { isPendingDelegation, receivedWeight, votingAgentPassOverTime } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
-
-import { getVoteDelegation } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
 import { fromWei } from 'func/balance';
 import { getNowTimestamp, remainDate } from 'func/convertDate';
@@ -20,9 +20,10 @@ function DelegateVoting () {
 
   const address = useSelector(userAddressMetamask);
   const weight = useSelector(receivedWeight);
-  const agent = useSelector(votingAgent);
   const isPending = useSelector(isPendingDelegation);
   const time = useSelector(votingAgentPassOverTime);
+
+  const { delegateInfo } = useVoteDelegation(weight);
 
   useEffect(() => {
     dispatch(getDelegationInfo(address));
@@ -31,8 +32,6 @@ function DelegateVoting () {
   async function handleDelegate () {
     dispatch(setNewVotingAgent());
   }
-
-  const { delegateInfo } = getVoteDelegation(agent, weight, address);
 
   return (
     <CustomBlock>

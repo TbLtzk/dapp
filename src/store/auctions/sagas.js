@@ -28,7 +28,7 @@ import formTypes from 'constants/form-types';
 import { AUCTIONS_TYPES, TRANSACTION_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
 
-function * updateValuesGenerator () {
+function* updateValuesGenerator () {
   yield put(getSurplus());
   yield put(getDebt());
   yield put(getSystemBalance());
@@ -36,7 +36,7 @@ function * updateValuesGenerator () {
   yield put(getSavingAviableToDeposit());
 }
 
-function * getAuctionsGenerator ({ auctionTypes = '' }) {
+function* getAuctionsGenerator ({ auctionTypes = '' }) {
   try {
     const liquidationAuctionInstance = creationLiquidationContractObj();
     const systemSurplusAuctionInstance = creationSystemDebtContractObj();
@@ -77,7 +77,7 @@ function * getAuctionsGenerator ({ auctionTypes = '' }) {
   }
 }
 
-function * createAuction ({ data }) {
+function* createAuction ({ data }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);
@@ -118,7 +118,7 @@ function * createAuction ({ data }) {
   }
 }
 
-function * getOneAuctionGenerator ({ auctionType, auctionId, address }) {
+function* getOneAuctionGenerator ({ auctionType, auctionId, address }) {
   try {
     let contract;
     switch (auctionType) {
@@ -140,7 +140,7 @@ function * getOneAuctionGenerator ({ auctionType, auctionId, address }) {
   }
 }
 
-function * bidForAuctionGenerator ({ data }) {
+function* bidForAuctionGenerator ({ data }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);
@@ -174,7 +174,7 @@ function * bidForAuctionGenerator ({ data }) {
   }
 }
 
-function * executeAuctionHandler ({ data }) {
+function* executeAuctionHandler ({ data }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);

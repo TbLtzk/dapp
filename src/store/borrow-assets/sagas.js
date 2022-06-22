@@ -50,7 +50,7 @@ const getContractWithTypeAndKey = async (type) => {
   }
 };
 
-function * getBorrowAllowanceGenerator ({ borrowType }) {
+function* getBorrowAllowanceGenerator ({ borrowType }) {
   try {
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getContractWithTypeAndKey, borrowType);
@@ -67,7 +67,7 @@ function * getBorrowAllowanceGenerator ({ borrowType }) {
   }
 }
 
-function * getBorrowVaultInfoGenerator ({ vaultId }) {
+function* getBorrowVaultInfoGenerator ({ vaultId }) {
   try {
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getBorrowingCoreInstance);
@@ -86,7 +86,7 @@ function * getBorrowVaultInfoGenerator ({ vaultId }) {
   }
 }
 
-function * setBorrowAproveGenerator ({ borrowType }) {
+function* setBorrowAproveGenerator ({ borrowType }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);
@@ -110,7 +110,7 @@ function * setBorrowAproveGenerator ({ borrowType }) {
   }
 }
 
-function * setBorrowDepositGenerator ({ amount, vaultId }) {
+function* setBorrowDepositGenerator ({ amount, vaultId }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);
@@ -128,7 +128,7 @@ function * setBorrowDepositGenerator ({ amount, vaultId }) {
   }
 }
 
-function * setBorrowAsBorrowGenerator ({ amount, vaultId }) {
+function* setBorrowAsBorrowGenerator ({ amount, vaultId }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);
@@ -146,7 +146,7 @@ function * setBorrowAsBorrowGenerator ({ amount, vaultId }) {
   }
 }
 
-function * setBorrowRepayGenerator ({ amount, vaultId }) {
+function* setBorrowRepayGenerator ({ amount, vaultId }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);
@@ -164,7 +164,7 @@ function * setBorrowRepayGenerator ({ amount, vaultId }) {
   }
 }
 
-function * setBorrowWithdrawGenerator ({ amount, vaultId }) {
+function* setBorrowWithdrawGenerator ({ amount, vaultId }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);

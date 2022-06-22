@@ -1,5 +1,3 @@
-import React from 'react';
-
 import PageWrap from 'components/Base/PageWrap';
 import RootNodePanel from 'components/Custom/MembersPanel/RootNodePanel/RootNodePanel';
 import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';

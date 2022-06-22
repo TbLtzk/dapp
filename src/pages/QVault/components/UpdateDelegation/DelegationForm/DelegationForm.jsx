@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import Button from 'components/Base/Button';
 import Input from 'components/Base/Form/Input';

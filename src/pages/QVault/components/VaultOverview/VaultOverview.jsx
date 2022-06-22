@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
@@ -6,6 +6,7 @@ import VoterStatus from 'components/Custom/PageLists/VoterStatus';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
+import useVoteDelegation from 'hooks/useVoteDelegation';
 
 import {
   getAccountBalance,
@@ -21,13 +22,10 @@ import {
   qvBalance,
   receivedWeight,
   userBalance,
-  votingAgent,
   votingLockingEnd,
   votingWeight,
 } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
-
-import { getVoteDelegation } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
 import { fromSolDateFormattingT1 } from 'func/date';
 
@@ -54,10 +52,9 @@ function VaultOverview () {
 
   const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd));
   const updateOnClaim = useSelector(lastClaim);
-  const agent = useSelector(votingAgent);
   const weight = useSelector(receivedWeight);
 
-  const { votingInfo } = getVoteDelegation(agent, weight, userAddress);
+  const { votingInfo } = useVoteDelegation(weight);
 
   useEffect(() => {
     dispatch(getAccountBalance(userAddress));

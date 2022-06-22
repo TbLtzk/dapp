@@ -20,7 +20,7 @@ import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
 import { addIndex } from 'func/useful';
 
-function * getVestingBalanceGenerator ({ address }) {
+function* getVestingBalanceGenerator ({ address }) {
   try {
     const contract = yield call(getVestingInstance);
     const data = yield contract.balanceOf(address);
@@ -30,7 +30,7 @@ function * getVestingBalanceGenerator ({ address }) {
   }
 }
 
-function * getMinimumVestingTimeLockGenerator ({ address }) {
+function* getMinimumVestingTimeLockGenerator ({ address }) {
   try {
     const contract = yield call(getVestingInstance);
     const data = yield contract.getMinimumBalance(address, getNowTimestamp());
@@ -40,7 +40,7 @@ function * getMinimumVestingTimeLockGenerator ({ address }) {
   }
 }
 
-function * getVestingTimeLocksGenerator ({ address }) {
+function* getVestingTimeLocksGenerator ({ address }) {
   try {
     const contract = yield call(getVestingInstance);
     const data = yield contract.getTimeLocks(address);
@@ -50,7 +50,7 @@ function * getVestingTimeLocksGenerator ({ address }) {
   }
 }
 
-function * setVestingDepositGenerator ({ address, amountQ }) {
+function* setVestingDepositGenerator () {
   try {
     yield put(setTransactionLoading());
     yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
@@ -60,7 +60,7 @@ function * setVestingDepositGenerator ({ address, amountQ }) {
   }
 }
 
-function * setVestingWithdrawGenerator ({ amountQ }) {
+function* setVestingWithdrawGenerator ({ amountQ }) {
   try {
     yield put(setTransactionLoading());
 

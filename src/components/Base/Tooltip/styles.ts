@@ -1,0 +1,102 @@
+import styled, { css } from 'styled-components';
+
+interface Props {
+  position: string;
+}
+
+export const TooltipContainer = styled.span<Props>`
+  position: relative;
+  display: block;
+  max-width: 100%;
+  width: min-content;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+
+  .tooltip {
+    visibility: hidden;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    background-color: ${(p) => p.theme.colors.neonGreen};
+    color: #000000;
+    font-size: 14px;
+    max-width: 200px;
+    min-width: 60px;
+    pointer-events: none;
+
+    min-height: 40px;
+    border-radius: 4px;
+
+    opacity: 0;
+    transition: opacity 0.3s;
+    line-height: 20px;
+
+    z-index: 1;
+    padding: 5px;
+
+    ${(p) => getTooltipPosition(p.position)}
+    &:after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-width: 10px;
+      border-style: solid;
+      border-color: ${(p) => p.theme.colors.neonGreen} transparent transparent transparent;
+      bottom: -15px;
+      left: calc(50% - 10px);
+    }
+  }
+
+  &:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+`;
+
+function getTooltipPosition (position: string) {
+  switch (position) {
+    case 'right': {
+      return css`
+        top: -5px;
+        left: 105%;
+      `;
+    }
+    case 'left': {
+      return css`
+        top: -2px;
+        right: 101%;
+        white-space: nowrap;
+        &:after {
+          display: none;
+        }
+      `;
+    }
+
+    case 'bottom': {
+      return css`
+        width: max-content;
+        top: 10%;
+        left: 50%;
+        transform: translate(-50%, 0);
+        &:after {
+          display: none;
+        }
+      `;
+    }
+    case 'top':
+    default: {
+      return css`
+        width: max-content;
+        bottom: 110%;
+        left: 50%;
+        transform: translate(-50%, 0);
+      `;
+    }
+  }
+}

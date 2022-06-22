@@ -124,25 +124,6 @@ export const uintPercentToNumber = (num) => {
   return num / 10 ** 27;
 };
 
-export const sortAndCountProposalsByType = (proposals) => {
-  const active = [];
-  const ended = [];
-
-  const proposalsCount = {
-    active: 0,
-    ended: 0,
-  };
-
-  proposals.forEach((array) => {
-    proposalsCount.active += array[0].length;
-    active.push(...array[0]);
-    proposalsCount.ended += array[1].length;
-    ended.push(...array[1]);
-  });
-
-  return [proposalsCount, active, ended];
-};
-
 export const groupArrayByBlockNumber = (array) => {
   return orderBy(array, ['blockNumber'], ['desc', 'asc']);
 };
@@ -187,7 +168,7 @@ export const createShareText = (type, contract, id, user) => {
   const link = `${window.location.origin}`;
   switch (type) {
     case 'proposal': {
-      return link + `/q-governance/proposal/${contract}/${id}`;
+      return link + `/governance/proposal/${contract}/${id}`;
     }
     case 'auction': {
       const auctionPart = `/auction/${transformAuctionNameToAuctionType(contract)}/${id}`;

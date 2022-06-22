@@ -22,7 +22,7 @@ import {
 
 import ErrorHandler from 'func/ErrorHandler';
 
-function * isUserEPDRMember () {
+function* isUserEPDRMember () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getEpdrMembershipInstance);
@@ -33,7 +33,7 @@ function * isUserEPDRMember () {
   }
 }
 
-function * isUserEPQFIMember () {
+function* isUserEPQFIMember () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getEpqfiMembershipInstance);
@@ -44,7 +44,7 @@ function * isUserEPQFIMember () {
   }
 }
 
-function * isUserEPRSMember () {
+function* isUserEPRSMember () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getEprsMembershipInstance);
@@ -55,7 +55,7 @@ function * isUserEPRSMember () {
   }
 }
 
-function * getEPRSMembers () {
+function* getEPRSMembers () {
   try {
     const contract = yield call(getEprsMembershipInstance);
     const data = yield contract.getMembers();
@@ -66,7 +66,7 @@ function * getEPRSMembers () {
   }
 }
 
-function * getEPDRMembers () {
+function* getEPDRMembers () {
   try {
     const contract = yield call(getEpdrMembershipInstance);
     const data = yield contract.getMembers();
@@ -77,7 +77,7 @@ function * getEPDRMembers () {
   }
 }
 
-function * getEPQFIMembers () {
+function* getEPQFIMembers () {
   try {
     const contract = yield call(getEpqfiMembershipInstance);
     const data = yield contract.getMembers();

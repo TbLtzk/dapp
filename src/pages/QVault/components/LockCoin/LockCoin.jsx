@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Button from 'components/Base/Button';
@@ -23,7 +22,7 @@ function LockCoin () {
         <UnlockForm />
       </div>
       <div className="card__actions">
-        <Link to="/q-governance">
+        <Link to="/governance">
           <Button alwaysEnabled look="transparent">
             <span>Go to Governance</span>
             <i className="mdi mdi-arrow-right" />

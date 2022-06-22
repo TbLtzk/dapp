@@ -7,7 +7,7 @@ import { getStableCoinInstance } from 'contracts/contract-instance';
 
 import ErrorHandler from 'func/ErrorHandler';
 
-function * getAllowance ({ userAddress, contractAddress }) {
+function* getAllowance ({ userAddress, contractAddress }) {
   try {
     const contract = yield call(getStableCoinInstance);
     const data = yield contract.allowance(userAddress, contractAddress);
@@ -18,7 +18,7 @@ function * getAllowance ({ userAddress, contractAddress }) {
   }
 }
 
-function * getSymbol () {
+function* getSymbol () {
   try {
     const contract = yield call(getStableCoinInstance);
     const data = yield contract.symbol();
