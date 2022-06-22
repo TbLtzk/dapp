@@ -27,55 +27,56 @@ function ConnectWallet ({ modalShow, setModalShow }) {
   const content = (
     <StyledConnectWallet>
       <div className="connect_header">
-        <div>Wallet</div>
-        <div>Close</div>
+        <div className="header">
+          <i className="mdi mdi-wallet-outline select-icon" />
+          <h5>Connect Wallet</h5>
+        </div>
+        <div onClick={handleClose}>
+          <i className="mdi mdi-close select-icon" />
+        </div>
       </div>
       <AnimatePresence>
         {isChecked && (
           <motion.div
+            className="connect_wallets-buttons"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <Button>Metamask</Button>
-            <Button>Coinbase</Button>
+            <Button style={{ width: '100%', margin: '0 0 10px 0' }}>Metamask</Button>
+            <Button style={{ width: '100%', margin: '0 0 10px 0' }}>Coinbase</Button>
           </motion.div>
         )}
       </AnimatePresence>
       <div className="connect_terms-of-service">
         <Checkbox check={isChecked} onCheck={() => setIsChecked(!isChecked)} />
         <div>
-          <p>I have read, understood, and agreed to the Terms of Service and Protocol Disclaimer.</p>
+          <p>
+            I have read, understood, and agreed to the <strong>Terms of Service</strong> and Protocol Disclaimer.
+          </p>
         </div>
       </div>
       <div className="connect_new-to-q">
         <h5>New to Q?</h5>
         <a
+          whileHover={{ scale: 1.5 }}
+          whileTap={{ scale: 0.8 }}
           target="_blank"
           href={docsUrl}
           rel="noreferrer"
         >
-          <p>Learn more about Q</p>
+          <motion.p whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+            Learn more about Q
+          </motion.p>
         </a>
       </div>
     </StyledConnectWallet>
   );
 
   return (
-    <div>
-      <Modal open={modalShow} onLeave={handleClose}>
-        {content}
-      </Modal>
-      {/* <ModalWindow
-        iconRight="check-bold"
-        modalTitle={t('INSTALL_METAMASK')}
-        continueBtnTitle={t('DONE')}
-        show={modalShow}
-        content={content}
-        continueBtnHandler={continueBtnHandler}
-        onHide={onHide}
-      /> */}
-    </div>
+    <Modal open={modalShow} onLeave={handleClose}>
+      {content}
+    </Modal>
   );
 }
 

@@ -2,7 +2,7 @@ FROM node:16.10.0 AS builder
 
 WORKDIR /app
 
-COPY .npmrc tsconfig.json package.json package-lock.json ./
+COPY .npmrc tsconfig.json package.json package-lock.json .eslintrc ./
 ARG NPM_TOKEN
 RUN npm config set '//gitlab.com/api/v4/packages/npm/:_authToken' $NPM_TOKEN
 RUN npm ci --legacy-peer-deps

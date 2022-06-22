@@ -26,12 +26,13 @@ function Modal ({ children, onLeave, open }: Props) {
   return (
     <AnimatePresence>
       {open && (
-        <StyledBackground onClick={() => {}}>
+        <StyledBackground onClick={onLeave}>
           <StyledModal
             variants={dropIn}
             initial="hidden"
             animate="visible"
             exit="exit"
+            onClick={(e) => e.stopPropagation()}
           >
             {children}
           </StyledModal>

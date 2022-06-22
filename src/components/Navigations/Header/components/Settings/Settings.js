@@ -60,12 +60,17 @@ function Settings () {
           initial="initial"
           animate="animate"
           exit="exit"
-          className="popup_container"
         >
           {openKey === POPUP.settings && (
-            <SettingsMenu onClose={handleClose} onLanguageOpen={handleLanguageOpen} />
+            <div className="popup_container">
+              <SettingsMenu onClose={handleClose} onLanguageOpen={handleLanguageOpen} />
+            </div>
           )}
-          {openKey === POPUP.language && <Languages onClose={handleClose} onBack={handleBack} />}
+          {openKey === POPUP.language && (
+            <div className="popup_container">
+              <Languages onClose={handleClose} onBack={handleBack} />
+            </div>
+          )}
         </motion.div>
       </AnimatePresence>
     </SettingsContainer>
