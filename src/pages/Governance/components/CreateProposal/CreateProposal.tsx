@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
+import { ProposalType } from 'typings/proposals';
+
 import Button from 'components/Base/Button';
 
 import ExpertProposalModal from './ExpertProposalModal';
 import QProposalModal from './QProposalModal';
 import RootProposalModal from './RootProposalModal';
 import SlashingProposalModal from './SlashingProposalModal';
-
-import { ProposalType } from 'constants/statuses';
 
 type CreateProposalType = Exclude<ProposalType, 'contractUpdate'>
 

@@ -1,3 +1,5 @@
+import { Options, RootNodeProposalForm } from 'typings/forms';
+
 import RadioGroup from 'components/Base/Form/RadioGroup';
 import ModalStep from 'components/Base/ModalStep';
 
@@ -11,18 +13,18 @@ function TypeStep () {
   const { goNext } = useCreateProposal();
 
   const form = useForm({
-    initialValues: { type: '' },
+    initialValues: { type: 'add-root-node' as RootNodeProposalForm['type'] },
     validators: { type: [required] },
     onSubmit: goNext,
   });
 
-  const typeOptions = [
+  const typeOptions: Options<RootNodeProposalForm['type']> = [
     {
-      value: 'add-a-new-root-node',
+      value: 'add-root-node',
       label: 'Add a new Root Node',
     },
     {
-      value: 'remove-a-current-root-node',
+      value: 'remove-root-node',
       label: 'Remove a current Root Node',
     },
   ];

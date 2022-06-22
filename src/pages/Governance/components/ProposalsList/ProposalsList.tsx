@@ -1,20 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { concat } from 'lodash';
 import { ProposalEvent } from 'typings/contracts';
+import { ProposalFilterStatus, ProposalType } from 'typings/proposals';
 
 import Button from 'components/Base/Button';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
-import { ProposalFilterStatus } from '../../types';
-import ListCard from '../ListCard';
+import ProposalCard from '../ProposalCard';
 
 import { ListEmptyMessage, ListWrapper } from './styles';
 
 import { activeProposalsByTypeSelector, endedProposalsByTypeSelector, proposalsByTypeSelector } from 'store/voting/proposals/selectors';
 
-import { ProposalType } from 'constants/statuses';
 import { LoadingWrap } from 'constants/style';
 import { fillArray } from 'func/useful';
 
@@ -36,8 +34,8 @@ function ProposalsList ({ type, status }: { type: ProposalType, status: Proposal
 
   const handleNextProposals = () => {
     const newOffset = offset + PAGE_LIMIT;
-    const newList = concat(list, filteredProposals.slice(newOffset, PAGE_LIMIT));
-    setOffset(offset);
+    const newList = list.concat(filteredProposals.slice(offset, newOffset));
+    setOffset(offset => offset + PAGE_LIMIT);
     setList(newList);
   };
 
@@ -74,7 +72,7 @@ function ProposalsList ({ type, status }: { type: ProposalType, status: Proposal
     <>
       <ListWrapper>
         {list.map((proposal: any) => (
-          <ListCard
+          <ProposalCard
             key={proposal.id + proposal?.contract}
             proposal={proposal}
           />

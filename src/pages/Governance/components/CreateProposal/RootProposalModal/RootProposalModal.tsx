@@ -1,6 +1,8 @@
 import { createContext, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { RootNodeProposalForm } from 'typings/forms';
+
 import MultiStepModal from 'components/Base/MultiStepModal';
 
 import useMetamaskReset from 'hooks/useMetamaskReset';
@@ -13,11 +15,10 @@ import TypeStep from './components/TypeStep';
 
 import { createProposal } from 'store/voting/proposals/actions';
 
-import { CONTRACT_TYPES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
 
-const DEFAULT_VALUES = {
-  type: '',
+const DEFAULT_VALUES: RootNodeProposalForm = {
+  type: 'add-root-node',
   externalLink: '',
   address: '',
   hash: '',
@@ -62,7 +63,7 @@ function RootProposalModal ({ modalOpen, onHide }: Props) {
         onHide={handleHide}
       >
         <TypeStep />
-        {values.type === CONTRACT_TYPES.addAnewRootNode
+        {values.type === 'add-root-node'
           ? <AddNodeStep />
           : <RemoveNodeStep />
         }

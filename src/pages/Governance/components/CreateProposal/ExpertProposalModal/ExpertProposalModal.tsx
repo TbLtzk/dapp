@@ -1,6 +1,8 @@
 import { createContext, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { ExpertProposalForm } from 'typings/forms';
+
 import MultiStepModal from 'components/Base/MultiStepModal';
 
 import useMetamaskReset from 'hooks/useMetamaskReset';
@@ -13,15 +15,14 @@ import TypeStep from './components/TypeStep';
 
 import { createProposal } from 'store/voting/proposals/actions';
 
-import { CONTRACT_TYPES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
 
-const DEFAULT_VALUES = {
-  type: '',
-  panelType: '',
+const DEFAULT_VALUES: ExpertProposalForm = {
+  type: 'add-expert',
+  panelType: 'fees-incentives',
   address: '',
   externalLink: '',
-  params: [] as { key: string, type: string, value: string }[]
+  params: []
 };
 
 const LocalStateContext = createContext({
@@ -62,7 +63,7 @@ function ExpertProposalModal ({ modalOpen, onHide }: Props) {
         onHide={handleHide}
       >
         <TypeStep />
-        {values.type === CONTRACT_TYPES.parameterVote
+        {values.type === 'parameter-vote'
           ? <ParameterVoteStep />
           : <ManageExpertStep />
         }

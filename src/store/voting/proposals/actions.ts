@@ -1,9 +1,9 @@
 import { BaseVotingWeightInfo } from '@q-dev/q-js-sdk';
 import { ProposalEvent } from 'typings/contracts';
+import { CreateProposalForm } from 'typings/forms';
+import { ProposalType } from 'typings/proposals';
 
 import * as types from './types';
-
-import { ProposalType } from 'constants/statuses';
 
 export const getProposals = (proposalType: ProposalType): types.GetProposals => ({
   type: 'GET_PROPOSALS',
@@ -26,9 +26,9 @@ export const setMinimalActiveBlock = (block: number): types.SetMinimalActiveBloc
   block
 });
 
-export const createProposal = (proposal: any): types.CreateProposal => ({
+export const createProposal = (form: CreateProposalForm): types.CreateProposal => ({
   type: 'CREATE_PROPOSAL',
-  proposal
+  form
 });
 
 export const setVoteDetails = (result: any): types.SetVoteDetails => ({

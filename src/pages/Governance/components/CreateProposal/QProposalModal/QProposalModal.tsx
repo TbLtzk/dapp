@@ -1,6 +1,9 @@
 import { createContext, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { Classification } from '@q-dev/q-js-sdk';
+import { QProposalForm } from 'typings/forms';
+
 import MultiStepModal from 'components/Base/MultiStepModal';
 
 import useMetamaskReset from 'hooks/useMetamaskReset';
@@ -14,16 +17,15 @@ import TypeStep from './components/TypeStep';
 
 import { createProposal } from 'store/voting/proposals/actions';
 
-import { CONTRACT_TYPES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
 
-const DEFAULT_VALUES = {
-  type: '',
-  classification: '',
+const DEFAULT_VALUES: QProposalForm = {
+  type: 'constitution',
+  classification: Classification.BASIC,
   hash: '',
   externalLink: '',
   isParamsChanged: false,
-  params: [] as { key: string, type: string, value: string }[]
+  params: []
 };
 
 const LocalStateContext = createContext({
@@ -55,7 +57,7 @@ function QProposalModal ({ modalOpen, onHide }: Props) {
 
   useMetamaskReset(formTypes.qProposal, handleHide);
 
-  const isConstitutionType = values.type === CONTRACT_TYPES.constitutionUpdate;
+  const isConstitutionType = values.type === 'constitution';
   const shouldChangeParams = isConstitutionType && values.isParamsChanged;
 
   return (

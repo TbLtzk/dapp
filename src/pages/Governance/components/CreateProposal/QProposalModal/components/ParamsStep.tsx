@@ -1,3 +1,5 @@
+import { FormParameter } from 'typings/forms';
+
 import Button from 'components/Base/Button';
 import ParameterForm from 'components/Base/Form/ParameterForm';
 import ModalStep from 'components/Base/ModalStep';
@@ -12,8 +14,8 @@ function ParamsStep () {
   const formArray = useFormArray({
     minCount: 1,
     maxCount: 30,
-    onSubmit: (forms) => {
-      goNext({ params: forms as { key: string, type: string, value: string }[] });
+    onSubmit: (forms: FormParameter[]) => {
+      goNext({ params: forms });
     },
   });
 

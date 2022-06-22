@@ -64,34 +64,4 @@ export default class ConstitutionVoting extends VotingService {
     objRes.vetoEndTime = promiseRes.base.params.vetoEndTime;
     return objRes;
   }
-
-  getProposalNumberType (type) {
-    switch (type) {
-      case 'basic-part':
-        return 0;
-      case 'fundamental-part':
-        return 1;
-      case 'detailed-part':
-        return 2;
-      default:
-        return 0;
-    }
-  }
-
-  async createProposal (proposal, userAddress) {
-    const contract = await this.getContractInstance();
-    return contract.createProposal(
-      proposal.externalLink,
-      this.getProposalNumberType(proposal.classification),
-      proposal.hash,
-      proposal.isParamsChanged
-        ? proposal.params.map((item) => ({
-          paramType: item.type,
-          paramKey: item.key,
-          paramValue: item.value
-        }))
-        : [],
-      { from: userAddress }
-    );
-  }
 }

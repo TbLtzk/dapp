@@ -7,13 +7,12 @@ import { useCreateProposal } from '../ExpertProposalModal';
 
 import { newParameterSelector } from 'store/voting/proposals/selectors';
 
-import { CONTRACT_TYPES } from 'constants/contracts';
 import { getTypeName } from 'func/contractHelpers';
 
 function ConfirmStep () {
   const { values, goBack, confirm } = useCreateProposal();
   const isNewParameter = useSelector(newParameterSelector);
-  const isParameterVote = values.type === CONTRACT_TYPES.parameterVote;
+  const isParameterVote = values.type === 'parameter-vote';
 
   return (
     <ModalStep

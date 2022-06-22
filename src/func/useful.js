@@ -6,7 +6,7 @@ import ErrorHandler from './ErrorHandler';
 
 import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper';
 
-import { explorerUrls, gnosisSafeUrls, indexersUrls, networkParameters, networks, PARAMS } from 'constants/config';
+import { explorerUrls, gnosisSafeUrls, indexersUrls, networkParameters, networks, PARAMS, qBridgeUrls } from 'constants/config';
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import { keyRegex } from 'constants/regex';
 
@@ -36,6 +36,12 @@ export const getGnosisSafeUrlByChainId = (chainId) => {
     : getParametersDependsOnUrl().gnosisSafe;
 };
 
+export const getQBridgeUrlByChainId = (chainId) => {
+  const network = networks[chainId];
+  return network
+    ? qBridgeUrls[network]
+    : getParametersDependsOnUrl().qBridge;
+};
 export const isFeatureEnabled = (feature, chainId) => {
   const networkParams = networkParameters[networks[chainId]];
   return networkParams?.featureFlags?.[feature] ?? false;
@@ -116,29 +122,6 @@ export const uintPercentToNumber = (num) => {
   if (num >= 10 ** 27) return 100;
 
   return num / 10 ** 27;
-};
-
-/**
- *
- * @returns {[{ active: number, ended: number }, any[], any[]]}
- */
-export const sortAndCountProposalsByType = (proposals) => {
-  const active = [];
-  const ended = [];
-
-  const proposalsCount = {
-    active: 0,
-    ended: 0,
-  };
-
-  proposals.forEach(([activeArr, endedArr]) => {
-    proposalsCount.active += activeArr.length;
-    active.push(...activeArr);
-    proposalsCount.ended += endedArr.length;
-    ended.push(...endedArr);
-  });
-
-  return [proposalsCount, active, ended];
 };
 
 export const groupArrayByBlockNumber = (array) => {

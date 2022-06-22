@@ -2,8 +2,6 @@ import ModalStep from 'components/Base/ModalStep';
 
 import { useCreateProposal } from '../RootProposalModal';
 
-import { CONTRACT_TYPES } from 'constants/contracts';
-
 function ConfirmStep () {
   const { values, confirm, goBack } = useCreateProposal();
 
@@ -17,7 +15,7 @@ function ConfirmStep () {
       <h5>Type:</h5>
       <p className="text-capitalize">{values.type.replace(/-/g, ' ')}</p>
 
-      {values.type === CONTRACT_TYPES.addAnewRootNode && (
+      {values.type === 'add-root-node' && (
         <>
           <h5>Hash:</h5>
           <p>{values.hash}</p>
@@ -27,7 +25,7 @@ function ConfirmStep () {
         </>
       )}
 
-      {(values.isRemovingNode || values.type === CONTRACT_TYPES.removeACurrentRootNode) && (
+      {(values.isRemovingNode || values.type === 'remove-root-node') && (
         <>
           <h5>Root Node to Remove:</h5>
           <p>{values.address}</p>

@@ -1,19 +1,20 @@
 import { Fragment } from 'react';
 import { useSelector } from 'react-redux';
 
+import { Classification } from '@q-dev/q-js-sdk';
+
 import ModalStep from 'components/Base/ModalStep';
 
 import { useCreateProposal } from '../QProposalModal';
 
 import { newParameterSelector } from 'store/voting/proposals/selectors';
 
-import { CONTRACT_TYPES } from 'constants/contracts';
 import { getTypeName } from 'func/contractHelpers';
 
 function ConfirmStep () {
   const { values, goBack, confirm } = useCreateProposal();
   const isNewParameter = useSelector(newParameterSelector);
-  const isConstitutionType = values.type === CONTRACT_TYPES.constitutionUpdate;
+  const isConstitutionType = values.type === 'constitution';
 
   const newParams = isConstitutionType && isNewParameter && (
     <p style={{ color: '#FF8550' }}>
@@ -21,6 +22,12 @@ function ConfirmStep () {
       panel, type and key if you want to change an existing parameter instead.
     </p>
   );
+
+  const classificationMap: Record<Classification, string> = {
+    [Classification.BASIC]: 'Basic part',
+    [Classification.DETAILED]: 'Detailed part',
+    [Classification.FUNDAMENTAL]: 'Fundamental part',
+  };
 
   return (
     <ModalStep
@@ -35,7 +42,9 @@ function ConfirmStep () {
       {isConstitutionType && (
         <>
           <h5>Classification</h5>
-          <p className="text-capitalize">{values.classification.replace(/-/g, ' ')}</p>
+          <p>
+            {classificationMap[values.classification]}
+          </p>
 
           <h5>Hash:</h5>
           <p>{values.hash}</p>

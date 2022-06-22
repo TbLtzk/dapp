@@ -1,11 +1,11 @@
 import { useCallback, useState } from 'react';
 
-interface MultiStepFormProps<T extends Record<string, unknown>> {
+interface MultiStepFormProps<T> {
   initialValues?: T,
   onConfirm?: (_: T) => void,
 }
 
-export default function useMultiStepForm<T extends Record<string, unknown>> ({
+export default function useMultiStepForm<T> ({
   initialValues = {} as T,
   onConfirm = (_: T) => {},
 }: MultiStepFormProps<T>) {

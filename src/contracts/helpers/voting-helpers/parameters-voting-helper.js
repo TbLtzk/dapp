@@ -1,16 +1,8 @@
-import { ParameterType } from '@q-dev/q-js-sdk';
 
 import { getStatusTransformation } from './base-voting-helper';
 import VotingService from './voting-service-helper';
 
-import {
-  getEpdrParametersVotingInstance,
-  getEpqfiParametersVotingInstance,
-  getEprsParametersVotingInstance
-} from 'contracts/contract-instance';
-
 import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
-import { BN } from 'func/useful';
 
 const proposalTitle = {
   [CONTRACTS_NAMES.ePRSParametersVoting]: 'Q Root Node Selection Expert Panel Parameters',
@@ -61,41 +53,5 @@ export default class ParametersVoting extends VotingService {
     info.title = proposalTitle[this.contractName];
     info.contract = this.contractName;
     return info;
-  }
-
-  async createProposal (data, userAddress) {
-    const link = data.externalLink;
-    const paramInputs = data.params.map(item => {
-      let inputValue = String(item.value);
-      switch (Number(item.type)) {
-        case ParameterType.BOOL:
-          inputValue = item.value.toLowerCase() === 'true';
-          break;
-        case ParameterType.UINT:
-          inputValue = BN(item.value).toFixed();
-          break;
-      }
-
-      return {
-        paramType: item.type,
-        paramKey: item.key,
-        paramValue: inputValue
-      };
-    });
-
-    switch (data.panelType) {
-      case CONTRACT_TYPES.qFee: {
-        const contract = await getEpqfiParametersVotingInstance();
-        return await contract.createProposal(link, paramInputs, { from: userAddress });
-      }
-      case CONTRACT_TYPES.qDefi: {
-        const contract = await getEpdrParametersVotingInstance();
-        return await contract.createProposal(link, paramInputs, { from: userAddress });
-      }
-      case CONTRACT_TYPES.qEprs: {
-        const contract = await getEprsParametersVotingInstance();
-        return await contract.createProposal(link, paramInputs, { from: userAddress });
-      }
-    }
   }
 }

@@ -51,30 +51,3 @@ export const CONTRACTS_NAMES = {
   liquidationAuction: 'liquidationAuction',
   systemDebtAuction: 'systemDebtAuction'
 };
-
-export type ContractName = keyof typeof CONTRACTS_NAMES;
-export type ContractType =
-  | 'q-fees-&-incentives-membership-panel'
-  | 'q-defi-(decentralized-finance)-membership-panel'
-  | 'q-root-node-selection-expert-panel'
-  | 'constitution'
-  | 'qVault'
-  | 'root'
-  | 'validators'
-  | 'rootNodes'
-  | 'vesting'
-  | 'root-node-slashing'
-  | 'validator-node-slashing'
-  | 'constitution-update'
-  | 'general-q-update'
-  | 'emergency-update'
-  | 'add-a-new-root-node'
-  | 'remove-a-current-root-node'
-  | 'add-a-new-expert'
-  | 'remove-a-current-expert'
-  | 'parameter-vote'
-  | 'member'
-  | 'parameters'
-  | 'systemSurplusAuction'
-  | 'systemDebtAuction'
-  | 'liquidationAuction'

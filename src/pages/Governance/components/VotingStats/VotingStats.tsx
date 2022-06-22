@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { ProposalType } from 'typings/proposals';
+
 import Button from 'components/Base/Button';
 import ModalWindow from 'components/Base/ModalWindow';
 import PopperTooltip from 'components/Base/PopperTooltip';
@@ -21,12 +23,11 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 import { getBaseVotingWeightInfo } from 'store/voting/proposals/actions';
 import { baseVotingWeightInfoSelector } from 'store/voting/proposals/selectors';
 
-import { ProposalType } from 'constants/statuses';
 import { fromWei } from 'func/balance';
 import { fromSolDateFormattingT1 } from 'func/date';
 import { fN } from 'func/useful';
 
-function VotingStats ({ type }: { type: ProposalType }) {
+function VotingStats ({ type, row = false }: { type: ProposalType, row?: boolean }) {
   const dispatch = useDispatch();
 
   const address = useSelector(userAddressMetamask);
@@ -63,11 +64,11 @@ function VotingStats ({ type }: { type: ProposalType }) {
   ];
 
   return (
-    <StatsWrapper>
+    <StatsWrapper $row={row}>
       <div className="stats-head">
-        <h1>Voting Stats</h1>
+        <h1 className="stats-title">Voting Stats</h1>
         <div className="stats-actions">
-          {type === 'slashing' && (
+          {!row && type === 'slashing' && (
             <PopperTooltip
               disabled={isRootNode}
               trigger={
