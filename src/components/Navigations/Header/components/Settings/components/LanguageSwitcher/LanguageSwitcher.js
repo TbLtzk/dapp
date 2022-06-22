@@ -5,7 +5,7 @@ import { useLanguage } from 'i18n';
 function LanguageSwitcher ({ onLanguageOpen }) {
   const { i18n } = useTranslation();
   const { languages } = useLanguage();
-  const language = languages?.find(({ lang }) => lang === i18n.language);
+  const language = languages?.find(({ lang }) => lang === i18n.language) || languages[0];
 
   return (
     <div className="language_container" onClick={onLanguageOpen}>

@@ -127,5 +127,6 @@
   "MAIN": "Main",
   "MODULES": "Module",
   "Q_CLIENT": "Q Client",
-  "CONNECT_WALLET": "Brieftasche anschließen"
+  "CONNECT_WALLET": "Brieftasche anschließen",
+  "DARK_THEME": "Dunkles Thema"
 }
