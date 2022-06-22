@@ -127,5 +127,6 @@
   "MAIN": "Main",
   "MODULES": "Modules",
   "Q_CLIENT": "Q client",
-  "CONNECT_WALLET": "Connect wallet"
+  "CONNECT_WALLET": "Connect wallet",
+  "DARK_THEME": "Dark theme"
 }

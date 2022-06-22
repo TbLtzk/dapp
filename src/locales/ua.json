@@ -127,5 +127,6 @@
   "MAIN": "Головний",
   "MODULES": "Модулі",
   "Q_CLIENT": "Q Клієнт",
-  "CONNECT_WALLET": "Підключіть гаманець"
+  "CONNECT_WALLET": "Підключіть гаманець",
+  "DARK_THEME": "Темна тема"
 }
