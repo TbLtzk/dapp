@@ -8,7 +8,7 @@ import { getSystemReserveInstance } from 'contracts/contract-instance';
 import { fromWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
 
-function * getSystemReserveBalanceGenerator () {
+function* getSystemReserveBalanceGenerator () {
   try {
     const contract = yield call(getSystemReserveInstance);
     const balance = yield window.web3.eth.getBalance(contract.address);
@@ -18,7 +18,7 @@ function * getSystemReserveBalanceGenerator () {
   }
 }
 
-function * getAvailableAmountGenerator () {
+function* getAvailableAmountGenerator () {
   try {
     const contract = yield call(getSystemReserveInstance);
     const data = yield contract.availableAmount();

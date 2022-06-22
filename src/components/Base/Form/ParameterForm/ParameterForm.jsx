@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { ParameterType } from '@q-dev/q-js-sdk';
 
@@ -35,6 +35,7 @@ function ParameterForm ({ onChange, typeContract }) {
       <div className="type-fields">
         <Select
           {...form.fields.type}
+          invertedColors
           defaultValue={ParameterType.ADDRESS}
           options={[
             { value: ParameterType.ADDRESS, label: 'Address' },

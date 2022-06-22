@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { ProgressBarWrapper } from './styles';
 
 const ProgressBar = ({ value }) => {

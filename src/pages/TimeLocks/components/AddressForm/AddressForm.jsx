@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
 import Input from 'components/Base/Form/Input';

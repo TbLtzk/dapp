@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 import { AnimatePresence as Transition, motion } from 'framer-motion';
 

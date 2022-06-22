@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Web3 from 'web3';
@@ -12,7 +12,7 @@ import { getAuctions } from 'store/auctions/action-creators';
 import { mode } from 'store/dashboard-mode/selectors';
 import { getCheckIsUserRootNode } from 'store/root-node/action-creators';
 import { setLoadType, setNetwork, setUserAddress } from 'store/user-inf/action-creators';
-import { getNumberAllProposals } from 'store/voting/proposals/action-creators';
+import { getNumberAllProposals } from 'store/voting/proposals/actions';
 
 import { getContractRegistryInstance } from 'contracts/contract-instance';
 

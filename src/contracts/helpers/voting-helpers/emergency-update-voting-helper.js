@@ -35,12 +35,4 @@ export default class EmergencyUpdateVoting extends VotingService {
     objRes.vetoEndTime = promiseRes.params.vetoEndTime;
     return objRes;
   }
-
-  async createProposal (data, userAddress) {
-    const contract = await this.getContractInstance();
-
-    const link = data.externalLink;
-    const result = await contract.createProposal(link, { from: userAddress });
-    return result;
-  }
 }

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import parametersDictionary from 'json/parameters.json';
 
 import CopyToClipboard from 'components/Base/CopyToClipboard';

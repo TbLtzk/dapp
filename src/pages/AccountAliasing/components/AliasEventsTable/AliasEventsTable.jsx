@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';

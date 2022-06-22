@@ -30,7 +30,7 @@ import { getPercentageFormat, uintPercentToNumber } from 'func/useful';
 
 const message = { header: 'Notice', details: 'Stake amount below minimum to apply new rate, old rate applied.' };
 
-function * setUpdateValidatorsCompoundRateGenerator ({ address }) {
+function* setUpdateValidatorsCompoundRateGenerator ({ address }) {
   try {
     const { lastUpdateOfCompoundRate } = yield select((state) => state.validationRewardPools);
 
@@ -56,7 +56,7 @@ function * setUpdateValidatorsCompoundRateGenerator ({ address }) {
   }
 }
 
-function * setDelegatorsShareGenerator ({ amount }) {
+function* setDelegatorsShareGenerator ({ amount }) {
   try {
     yield put(setTransactionLoading());
 
@@ -73,7 +73,7 @@ function * setDelegatorsShareGenerator ({ amount }) {
   }
 }
 
-function * getDelegatorsShareGenerator ({ address }) {
+function* getDelegatorsShareGenerator ({ address }) {
   try {
     const contract = yield call(getValidationRewardPoolsInstance);
     const data = yield contract.getDelegatorsShare(address);
@@ -84,7 +84,7 @@ function * getDelegatorsShareGenerator ({ address }) {
   }
 }
 
-function * getBalanceGenerator ({ address }) {
+function* getBalanceGenerator ({ address }) {
   try {
     const contract = yield call(getValidationRewardPoolsInstance);
     const data = yield contract.getPoolInfo(address);
@@ -94,7 +94,7 @@ function * getBalanceGenerator ({ address }) {
   }
 }
 
-function * getPoolInfoGenerator ({ address }) {
+function* getPoolInfoGenerator ({ address }) {
   try {
     const contract = yield call(getValidationRewardPoolsInstance);
     const data = yield contract.getPoolInfo(address);
@@ -104,7 +104,7 @@ function * getPoolInfoGenerator ({ address }) {
   }
 }
 
-function * getLastUpdateOfCompoundRateGenerator () {
+function* getLastUpdateOfCompoundRateGenerator () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getValidationRewardPoolsInstance);
@@ -115,7 +115,7 @@ function * getLastUpdateOfCompoundRateGenerator () {
   }
 }
 
-function * getRewardPoolsBalanceGenerator () {
+function* getRewardPoolsBalanceGenerator () {
   try {
     const contract = yield call(getValidationRewardPoolsInstance);
     const amount = yield contract.getBalance();

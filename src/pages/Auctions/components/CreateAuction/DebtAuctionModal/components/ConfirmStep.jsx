@@ -1,5 +1,3 @@
-import React from 'react';
-
 import ModalStep from 'components/Base/ModalStep';
 
 import { useDebtAuction } from '../DebtAuctionModal';

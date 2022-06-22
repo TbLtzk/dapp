@@ -1,4 +1,3 @@
-import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';
@@ -37,6 +36,7 @@ function AliasForm ({ alias }) {
     >
       <Select
         {...form.fields.purpose}
+        invertedColors
         options={Object.entries(AliasPurpose).map(([label, value]) => ({ value, label }))}
         defaultValue={AliasPurpose.BLOCK_SEALING}
         label="Role"

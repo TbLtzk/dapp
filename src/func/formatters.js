@@ -1,7 +1,10 @@
 import { fromWei } from './balance';
 import { BN } from './useful';
 
-import { transformToPercentage } from 'contracts/helpers/voting-helpers/base-voting-helper';
+export function transformToPercentage (number) {
+  const convertedNumber = BN(number).dividedBy('10000000000000000000000000').toFixed(2);
+  return convertedNumber;
+};
 
 export function formatNumber (value, precision = 0) {
   return BN(value).decimalPlaces(precision).toFormat();

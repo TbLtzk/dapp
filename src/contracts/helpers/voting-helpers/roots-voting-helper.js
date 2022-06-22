@@ -1,7 +1,6 @@
 import { getStatusTransformation } from './base-voting-helper';
 import VotingService from './voting-service-helper';
 
-import { CONTRACT_TYPES } from 'constants/contracts';
 import { fromWei } from 'func/balance';
 
 const EMPTY_ADDR = '0x0000000000000000000000000000000000000000';
@@ -10,9 +9,13 @@ export default class RootsVoting extends VotingService {
   checkProposalTitle (candidateAddress, replaceDestAddress) {
     if (candidateAddress !== EMPTY_ADDR && replaceDestAddress !== EMPTY_ADDR) {
       return 'Rode Node Swapping Proposal';
-    } else if (candidateAddress && replaceDestAddress === EMPTY_ADDR) {
+    }
+
+    if (candidateAddress && replaceDestAddress === EMPTY_ADDR) {
       return 'Root Node Adding Proposal';
-    } else if (candidateAddress === EMPTY_ADDR && replaceDestAddress) {
+    }
+
+    if (candidateAddress === EMPTY_ADDR && replaceDestAddress) {
       return 'Root Node Removing proposal';
     }
   }
@@ -61,26 +64,6 @@ export default class RootsVoting extends VotingService {
 
   async isUserVote (id, address) {
     const contract = await this.getContractInstance();
-
-    const result = await contract.votes(id, address);
-    return result;
-  }
-
-  async createProposal (data, userAddress) {
-    const contract = await this.getContractInstance();
-
-    const hash = data.hash || '0x00';
-    const link = data.externalLink;
-    const addressToRemove = data.address;
-
-    switch (data.type) {
-      case CONTRACT_TYPES.addAnewRootNode:
-        return data.isRemovingNode
-          ? contract.createProposal(link, userAddress, addressToRemove, hash, { from: userAddress })
-          : contract.createProposal(link, userAddress, EMPTY_ADDR, hash, { from: userAddress });
-
-      case CONTRACT_TYPES.removeACurrentRootNode:
-        return contract.createProposal(link, EMPTY_ADDR, addressToRemove, hash, { from: userAddress });
-    }
+    return contract.votes(id, address);
   }
 }

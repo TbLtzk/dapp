@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
@@ -18,11 +17,7 @@ import {
   systemSurplusAuctionsSelector,
 } from 'store/auctions/selectors';
 import { mode } from 'store/dashboard-mode/selectors';
-import { contractUpdatesActiveProposalsCountSelector } from 'store/voting/contract-updates/selectors';
-import { expertActiveProposalsCountSelector } from 'store/voting/expert-proposals/selectors';
-import { qActiveProposalsCountSelector } from 'store/voting/q-proposals/selectors';
-import { rootActiveProposalsCountSelector } from 'store/voting/root-node-proposals/selectors';
-import { slashingActiveProposalsCountSelector } from 'store/voting/slashing-proposals/selectors';
+import { activeProposalsCountSelector } from 'store/voting/proposals/selectors';
 
 import { MODE } from 'constants/config';
 
@@ -31,11 +26,7 @@ function Sidebar () {
   const appMode = useSelector(mode);
   const isAliasesEnabled = useFeatureFlag('aliases');
 
-  const qActiveProposalsCount = useSelector(qActiveProposalsCountSelector);
-  const rootActiveProposalsCount = useSelector(rootActiveProposalsCountSelector);
-  const expertActiveProposalsCount = useSelector(expertActiveProposalsCountSelector);
-  const slashingActiveProposalsCount = useSelector(slashingActiveProposalsCountSelector);
-  const contractUpdatesActiveProposalsCount = useSelector(contractUpdatesActiveProposalsCountSelector);
+  const activeProposalsCount = useSelector(activeProposalsCountSelector);
 
   const liquidationAuctions = useSelector(liquidationAuctionsSelector);
   const liquidationActiveAuctionsCount = liquidationAuctions?.activeAuctions?.length;
@@ -62,48 +53,13 @@ function Sidebar () {
               dashboard
             )}
 
-          <AccordionLinks
-            type="governance-toggle"
-            headerLink={<CommonLinks linkTo="/q-governance" linkTitle={t('GOVERNANCE')} />}
-          >
-            <>
-              <CommonLinks
-                linkTo="/q-proposals"
-                count={qActiveProposalsCount}
-                linkTitle={`- ${t('Q_PROPOSALS')}`}
-              />
-
-              <CommonLinks
-                linkTo="/q-root-node-panel"
-                count={rootActiveProposalsCount}
-                linkTitle={`- ${t('ROOT_NODE_PANEL')}`}
-              />
-
-              {appMode === MODE.advanced
-                ? (
-                  <>
-                    <CommonLinks
-                      linkTo="/q-expert-proposals"
-                      count={expertActiveProposalsCount}
-                      linkTitle={`- ${t('EXPERT_PROPOSALS')}`}
-                    />
-                    <CommonLinks
-                      linkTo="/slashing-proposals"
-                      count={slashingActiveProposalsCount}
-                      linkTitle={`- ${t('SLASHING_PROPOSALS')}`}
-                    />
-                    <CommonLinks
-                      linkTo="/contract-updates"
-                      count={contractUpdatesActiveProposalsCount}
-                      linkTitle={`- ${t('CONTRACT_UPDATES')}`}
-                    />
-                  </>
-                )
-                : null}
-            </>
-          </AccordionLinks>
-
-          <CommonLinks linkTo="/q-vault" linkTitle={t('Q_VAULT')} />
+          <CommonLinks
+            exact={false}
+            linkTo="/governance"
+            linkTitle={t('GOVERNANCE')}
+            count={activeProposalsCount}
+          />
+          <CommonLinks linkTo="/q-vault" linkTitle="Q Vault" />
 
           {appMode === MODE.advanced
             ? (
