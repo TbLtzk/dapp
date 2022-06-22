@@ -13,7 +13,7 @@ function LanguageSwitcher ({ onLanguageOpen }) {
 
       <div className="language">
         <div>
-          <img src={language.img} alt="flag" />
+          <img src={language.src} alt="flag" />
         </div>
         <h6>{language.title}</h6>
       </div>
