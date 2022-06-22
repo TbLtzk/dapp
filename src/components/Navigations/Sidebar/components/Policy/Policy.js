@@ -9,7 +9,7 @@ import { PolicyContainer } from './styles';
 function Policy () {
   const { t } = useTranslation();
   const [easterEgg, setEasterEgg] = useState(0);
-  const [privacyModalOpen, setPrivacyModalOpen] = useState(!localStorage.getItem('privacy-policy'));
+  const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
   const [imprintModalOpen, setImprintModalOpen] = useState(false);
 
   const handlePrivacyModal = () => {

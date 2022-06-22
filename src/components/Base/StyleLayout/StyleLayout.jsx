@@ -64,6 +64,7 @@ function StyleLayout ({ children }) {
       theme={{
         ...themeStyles,
         palette: currentTheme,
+        currentTheme: currentTheme,
         colors: getColors(currentTheme)
       }}
     >

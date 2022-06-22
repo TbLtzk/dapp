@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import Button from 'components/Base/Button';
 import { ethereum } from 'components/Custom/LoadingMetaMask/LoadingMetaMask';
 
-import InstallMetamask from './InstallMetamask';
+import ConnectWallet from './ConnectWallet';
 
 import { loadTypeSelector, networkSelector } from 'store/user-inf/selectors';
 
@@ -89,9 +89,9 @@ function ConnectButtons () {
             style={{ margin: '0 0 0 20px' }}
             onClick={handleModalShow}
           >
-            {t('INSTALL_METAMASK')}
+            {t('CONNECT_WALLET')}
           </Button>
-          <InstallMetamask modalShow={modalShow} setModalShow={handleModalShow} />
+          <ConnectWallet modalShow={modalShow} setModalShow={handleModalShow} />
         </>
       );
   }

@@ -73,32 +73,23 @@ export const NetworkWrapper = styled.div`
   ${(props) => handleColorTheme(props)}
 `;
 
-export const InstallMetamaskContainer = styled.div`
-  .list-card__line {
-    width: 100%;
-    height: 1px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
+export const StyledConnectWallet = styled.div`
+  .connect_header {
+    display: flex;
+    justify-content: space-between;
   }
-  .install-metamask__info {
-    font-weight: bold;
-  }
-  .install-metamask__download {
-    margin-top: 20px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: fit-content;
-    text-align: center;
-    margin-bottom: 10px;
-    a {
-      color: ${(p) => p.theme.colors.oxfordBlueTint2};
-      text-decoration: underline;
 
-      &:hover {
-        color: ${(p) => p.theme.colors.validationError};
-        text-decoration: none;
-      }
+  .connect_terms-of-service {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    background-color: ${(props) => props.theme.colors.oxfordBlueTint3};
+    color: ${(props) => props.theme.colors.white};
+    p {
+      margin-bottom: 0;
     }
+  }
+  .connect_new-to-q {
+    text-align: center;
   }
 `;

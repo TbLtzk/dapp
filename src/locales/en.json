@@ -30,7 +30,7 @@
   "LIST_OF_ROOT_NODE_SELECTION_EXPERTS": "List of Root Node Selection Experts",
   "Q_PARAMETERS": "Q Parameters",
   "BLOCKCHAIN": "Blockchain",
-  "DOWNLOAD_LATEST": "Download Latest",
+  "DOWNLOAD_LATEST_VERSION": "Download latest Version",
   "CHECK_ARCHIVE": "Check Archive",
   "GO_TO_GOVERNANCE": "Go to Governance",
   "GOVERNANCE": "Governance",
@@ -120,11 +120,12 @@
   "DATA_PRIVACY": "Data Privacy",
   "IMPRINT": "Imprint",
   "ADVANCED_MODE": "Advanced mode",
-  "DARK_THEME": "Dark theme",
+  "DARK_MODE": "Dark mode",
   "VERSION_INFORMATION": "Version Information",
   "YOUR_CURRENT_TIME": "Your Current Time",
   "NODE_INFO": "Node Info",
   "MAIN": "Main",
   "MODULES": "Modules",
-  "Q_CLIENT": "Q client"
+  "Q_CLIENT": "Q client",
+  "CONNECT_WALLET": "Connect wallet"
 }

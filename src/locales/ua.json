@@ -30,7 +30,7 @@
   "LIST_OF_ROOT_NODE_SELECTION_EXPERTS": "Список експертів з вибору вузлів кореневих вузлів",
   "Q_PARAMETERS": "Q Параметри",
   "BLOCKCHAIN": "Блокчейн",
-  "DOWNLOAD_LATEST": "Завантажте останнє",
+  "DOWNLOAD_LATEST_VERSION": "Завантажте останнє",
   "CHECK_ARCHIVE": "Перевірте архів",
   "GO_TO_GOVERNANCE": "До управління",
   "GOVERNANCE": "Управління",
@@ -120,11 +120,12 @@
   "DATA_PRIVACY": "Конфіденційність даних",
   "IMPRINT": "Відбиток",
   "ADVANCED_MODE": "Вдосконалений режим",
-  "DARK_THEME": "Темна тема",
+  "DARK_MODE": "Темна тема",
   "VERSION_INFORMATION": "Інформація про версію",
   "YOUR_CURRENT_TIME": "Ваш поточний час",
   "NODE_INFO": "Інформація про вузли",
   "MAIN": "Головний",
   "MODULES": "Модулі",
-  "Q_CLIENT": "Q Клієнт"
+  "Q_CLIENT": "Q Клієнт",
+  "CONNECT_WALLET": "Підключіть гаманець"
 }
