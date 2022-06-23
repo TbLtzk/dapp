@@ -11,14 +11,14 @@ export const getColumnsRootNode = (t) => [
     dataField: 'amount',
     text: t('STAKED_AMOUNT'),
     sort: true,
-    sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
+    sortFunc: (a, b, order) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
   },
   {
     headerStyle: () => ({ minWidth: '90px' }),
     dataField: 'share',
     text: t('SHARE'),
     sort: true,
-    sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
+    sortFunc: (a, b, order) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
   },
 ];
 
@@ -33,7 +33,7 @@ export const getColumnsRootNodeMonitoring = (t) => [
     dataField: 'amount',
     text: t('STAKED_AMOUNT'),
     sort: true,
-    sortFunc: (a, b, order) => (order === 'asc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
+    sortFunc: (a, b, order) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
   },
   {
     headerStyle: () => ({ minWidth: '140px' }),
