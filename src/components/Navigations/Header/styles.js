@@ -72,33 +72,3 @@ export const NetworkWrapper = styled.div`
   text-transform: capitalize;
   ${(props) => handleColorTheme(props)}
 `;
-
-export const InstallMetamaskContainer = styled.div`
-  .list-card__line {
-    width: 100%;
-    height: 1px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
-  }
-  .install-metamask__info {
-    font-weight: bold;
-  }
-  .install-metamask__download {
-    margin-top: 20px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: fit-content;
-    text-align: center;
-    margin-bottom: 10px;
-    a {
-      color: ${(p) => p.theme.colors.oxfordBlueTint2};
-      text-decoration: underline;
-
-      &:hover {
-        color: ${(p) => p.theme.colors.validationError};
-        text-decoration: none;
-      }
-    }
-  }
-`;

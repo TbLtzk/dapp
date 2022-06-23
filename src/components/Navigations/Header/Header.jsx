@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import LogoImg from 'components/Base/LogoImg';
 
 import Address from './components/Address';
-import ConnectButtons from './components/ConnectButtons';
+import ConnectWallet from './components/ConnectWallet';
 import Network from './components/Network';
 import Settings from './components/Settings';
 import { ElementsWrapper, HeaderWrapper, WrapLogo } from './styles';
@@ -27,8 +27,7 @@ function Header () {
 
       <ElementsWrapper>
         <Network />
-        <ConnectButtons />
-        {loadType === LOAD_TYPES.loaded ? <Address /> : null}
+        {loadType !== LOAD_TYPES.loaded ? <ConnectWallet /> : <Address />}
         <Settings />
       </ElementsWrapper>
     </HeaderWrapper>

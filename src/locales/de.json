@@ -128,5 +128,6 @@
   "MODULES": "Module",
   "Q_CLIENT": "Q Client",
   "CONNECT_WALLET": "Brieftasche anschließen",
-  "DARK_THEME": "Dunkles Thema"
+  "DARK_THEME": "Dunkles Thema",
+  "DOWNLOAD_LATEST": "Laden Sie die neueste herunter"
 }

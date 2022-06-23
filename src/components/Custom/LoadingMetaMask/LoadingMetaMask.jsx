@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import Web3 from 'web3';
 
@@ -9,14 +9,13 @@ import Routes from 'navigation/Routes';
 import { WrapContainer } from './styles';
 
 import { getAuctions } from 'store/auctions/action-creators';
-import { mode } from 'store/dashboard-mode/selectors';
 import { getCheckIsUserRootNode } from 'store/root-node/action-creators';
 import { setLoadType, setNetwork, setUserAddress } from 'store/user-inf/action-creators';
 import { getNumberAllProposals } from 'store/voting/proposals/actions';
 
 import { getContractRegistryInstance } from 'contracts/contract-instance';
 
-import { MODE, networks } from 'constants/config';
+import { networks } from 'constants/config';
 import { AUCTIONS_TYPES, LOAD_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
 import { getParametersDependsOnUrl } from 'func/useful';
@@ -28,14 +27,12 @@ export let address = '0x0000000000000000000000000000000000000000';
 
 function LoadingMetaMask () {
   const dispatch = useDispatch();
-  const appMode = useSelector(mode);
+
   const networkParams = getParametersDependsOnUrl();
   const [isMetaMask, setIsMetaMask] = useState(LOAD_TYPES.loading);
 
   async function loadAdditionalInfo () {
-    if (appMode === MODE.advanced) {
-      dispatch(getAuctions(AUCTIONS_TYPES.all));
-    }
+    dispatch(getAuctions(AUCTIONS_TYPES.all));
     dispatch(getNumberAllProposals());
     dispatch(getCheckIsUserRootNode(address));
   }

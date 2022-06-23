@@ -5,7 +5,7 @@ import { ExternalLinksStyle } from '../../styles';
 
 import { networkSelector } from 'store/user-inf/selectors';
 
-import { mainnetDocsUrl, testnetDocsUrl } from 'constants/config';
+import { chainIds, mainnetDocsUrl, testnetDocsUrl } from 'constants/config';
 import { latestConstitution } from 'constants/constitution';
 
 function References () {
@@ -26,7 +26,7 @@ function References () {
     {
       id: 'tutorials',
       label: t('TUTORIALS'),
-      location: network === '35441' ? mainnetDocsUrl : testnetDocsUrl,
+      location: network === chainIds.mainnet ? mainnetDocsUrl : testnetDocsUrl,
     },
   ];
 

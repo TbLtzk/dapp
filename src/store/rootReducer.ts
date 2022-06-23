@@ -4,7 +4,6 @@ import accountAliases from './account-aliases/reducer';
 import auctions from './auctions/reducer';
 import borrowAssets from './borrow-assets/reducer';
 import borrowingCore from './borrowing-core/reducer';
-import dashboardMode from './dashboard-mode/reducer';
 import membership from './membership/reducer';
 import parametersAddresses from './parameters-addresses/reducer';
 import qVault from './q-vault/reducer';
@@ -50,7 +49,6 @@ const RootReducer = combineReducers({
 
   theme,
 
-  dashboardMode
 });
 
 export default RootReducer;

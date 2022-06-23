@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Button from 'components/Base/Button';
@@ -14,29 +13,13 @@ import InfBlock from './components/InfBlockUp';
 import SavingBorrowingBlock from './components/SavingBorrowingBlock';
 import TokenomicsBlock from './components/TokenomicsBlock';
 
-import { mode } from 'store/dashboard-mode/selectors';
-
-import { MODE } from 'constants/config';
 import TABLE_TYPES from 'constants/tableTypes';
 
 function Dashboard () {
-  const appMode = useSelector(mode);
   const { t } = useTranslation();
 
-  const advancedMode = appMode === MODE.advanced;
-
-  const parametersButton = advancedMode
-    ? (
-      <Link to="/q-parameters">
-        <Button alwaysEnabled look="white">
-          {t('Q_PARAMETERS')}
-        </Button>
-      </Link>
-    )
-    : null;
-
   const infoBlock = <InfBlock />;
-  const tokenomiks = advancedMode ? <TokenomicsBlock /> : null;
+  const tokenomiks = <TokenomicsBlock />;
   const savingAndBorrowing = <SavingBorrowingBlock />;
 
   const rootAndValidatorsPanels = (
@@ -64,18 +47,25 @@ function Dashboard () {
     </>
   );
 
-  const defiAndQFeesPanels = advancedMode
-    ? (
-      <>
-        <DefiMembersPanel />
-        <QFeesMembersPanel />
-        <EprsMembersPanel />
-      </>
-    )
-    : null;
+  const defiAndQFeesPanels = (
+    <>
+      <DefiMembersPanel />
+      <QFeesMembersPanel />
+      <EprsMembersPanel />
+    </>
+  );
 
   return (
-    <PageWrap pageHeader={t('DASHBOARD')} pageButton={parametersButton}>
+    <PageWrap
+      pageHeader={t('DASHBOARD')}
+      pageButton={
+        <Link to="/q-parameters">
+          <Button alwaysEnabled look="white">
+            {t('Q_PARAMETERS')}
+          </Button>
+        </Link>
+      }
+    >
       <div className="content__colm-1">
         {infoBlock}
         {rootAndValidatorsPanels}

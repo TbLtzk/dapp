@@ -15,28 +15,8 @@ function EcosystemApps () {
   const explorerUrl = getExplorerUrlByChainId(chainId);
   const gnosisUrl = getGnosisSafeUrlByChainId(chainId);
   const qBridgeUrl = getQBridgeUrlByChainId(chainId);
-  const apps = [
-    {
-      id: 'medium',
-      link: 'https://medium.com/q-blockchain',
-      src: '/icons/medium.svg',
-    },
-    {
-      id: 'gitlab',
-      link: 'https://gitlab.com/q-dev',
-      src: '/icons/gitlab.svg',
-    },
-    {
-      id: 'reddit',
-      link: 'https://www.reddit.com/r/QBlockchain/',
-      src: '/icons/reddit.svg',
-    },
 
-    {
-      id: 'bridge',
-      link: qBridgeUrl,
-      src: '/icons/bridge.svg',
-    },
+  const apps = [
     {
       id: 'gnosis',
       link: gnosisUrl,
@@ -46,6 +26,11 @@ function EcosystemApps () {
       id: 'blockexplorer',
       link: explorerUrl,
       src: '/icons/blockexplorer.svg',
+    },
+    {
+      id: 'bridge',
+      link: qBridgeUrl,
+      src: '/icons/bridge.svg',
     },
   ];
 

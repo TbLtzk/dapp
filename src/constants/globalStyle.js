@@ -63,7 +63,13 @@ export const GlobalStyle = createGlobalStyle`
   input[type=number] {
     -moz-appearance:textfield; 
   }
+  .card__line {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-top: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
 
+  }
   .modal-backdrop {
     background: ${(props) => props.theme.colors.oxfordBlueTint2};
     backdrop-filter: blur(3px);
