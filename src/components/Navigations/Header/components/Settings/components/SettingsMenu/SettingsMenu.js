@@ -2,7 +2,6 @@ import { useRef } from 'react';
 
 import useOnClickOutside from 'hooks/useOnClickOutside';
 
-import DashboardModeSwitcher from '../DashboardModeSwitcher/DashboardModeSwitcher';
 import LanguageSwitcher from '../LanguageSwitcher';
 import ThemeSwitcher from '../ThemeSwitcher';
 
@@ -20,7 +19,6 @@ function SettingsMenu ({ onClose, onLanguageOpen }) {
       <div className="popup_menu">
         <LanguageSwitcher onLanguageOpen={onLanguageOpen} />
         <ThemeSwitcher />
-        <DashboardModeSwitcher />
       </div>
     </div>
   );

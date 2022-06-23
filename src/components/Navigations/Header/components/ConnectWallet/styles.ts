@@ -47,7 +47,10 @@ export const StyledConnectWalletModal = styled.div`
   .connect_new-to-q {
     margin-top: 20px;
     text-align: center;
+
+    
     a {
+      display: inline-block;
       cursor: pointer;
       color: ${(p) => p.theme.colors.oxfordBlueTint1};
       p {

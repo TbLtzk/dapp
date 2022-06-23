@@ -62,8 +62,6 @@ function useLocalStorage<T> (key: string, initialValue: T): [T, SetValue<T>] {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
-
   return [storedValue, setValue];
 }
 
@@ -74,7 +72,7 @@ function parseJSON<T> (value: string | null): T | undefined {
   try {
     return value === 'undefined' ? undefined : JSON.parse(value ?? '');
   } catch {
-    console.log('parsing error on', { value });
+    console.error('parsing error on', { value });
     return undefined;
   }
 }
