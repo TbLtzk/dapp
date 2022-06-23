@@ -111,3 +111,25 @@ export const PagesItemWrapper = styled.li`
     margin-right: 10px;
   }
 `;
+
+export const SortCaretIcon = styled.svg`
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+
+  path {
+    &:first-child {
+      fill: ${({ theme, $order }) => $order === 'desc'
+        ? theme.colors.white
+        : theme.colors.oxfordBlueTint3
+      };
+    }
+
+    &:last-child {
+      fill: ${({ theme, $order }) => $order === 'asc'
+        ? theme.colors.white
+        : theme.colors.oxfordBlueTint3
+      };
+    }
+  }
+`;

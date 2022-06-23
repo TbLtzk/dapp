@@ -3,7 +3,7 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
-import { PagesItemWrapper, TableWrapper } from './styles';
+import { PagesItemWrapper, SortCaretIcon, TableWrapper } from './styles';
 
 import { theme } from 'store/theme/selectors';
 
@@ -56,7 +56,15 @@ const Table = ({ tableBody, columns, perPage, keyField, sorting, lineForEach }) 
           keyField={keyField}
           data={tableBody}
           pagination={tableBody.length > perPage ? paginationFactory(options) : null}
-          columns={columns}
+          columns={columns.map((column) => ({
+            ...column,
+            sortCaret: (order) => (
+              <SortCaretIcon $order={order}>
+                <path d="M8.35351 12.1773C8.15825 12.3726 7.84167 12.3726 7.64641 12.1773L5.52018 10.0511C5.2052 9.73608 5.42828 9.19751 5.87373 9.19751H10.1262C10.5716 9.19751 10.7947 9.73608 10.4797 10.0511L8.35351 12.1773Z" />
+                <path d="M5.87373 6.79744C5.42828 6.79744 5.2052 6.25887 5.52018 5.94389L7.64641 3.81766C7.84167 3.6224 8.15825 3.6224 8.35351 3.81766L10.4797 5.94389C10.7947 6.25887 10.5716 6.79744 10.1262 6.79744H5.87373Z" />
+              </SortCaretIcon>
+            )
+          }))}
           bordered={false}
         />
       </TableWrapper>

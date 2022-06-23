@@ -104,7 +104,7 @@ function RootNodePanel ({ tableType }) {
       </TitleBlock>
       <MemberTables
         sorting
-        perPageLength={9}
+        perPageLength={10}
         table={tableData}
         title={null}
         columns={columns}
