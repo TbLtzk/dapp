@@ -25,11 +25,6 @@ export interface CreateProposal {
   form: CreateProposalForm
 }
 
-export interface SetVoteDetails {
-  type: 'SET_VOTE_DETAILS'
-  result: { contract: string, proposalId: string }
-}
-
 export interface VoteForProposal {
   type: 'VOTE_FOR_PROPOSAL'
   data: any
@@ -75,7 +70,6 @@ export interface SetNewParameter {
 export type ProposalsAction =
   SetProposals |
   SetMinimalActiveBlock |
-  SetVoteDetails |
   GetConstitutionHashSuccess |
   SetBaseVotingWeightInfo |
   SetNewParameter

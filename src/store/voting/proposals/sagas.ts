@@ -11,7 +11,6 @@ import {
   setBaseVotingWeightInfo,
   setMinimalActiveBlock,
   setProposals,
-  setVoteDetails,
 } from './actions';
 import { proposalsByTypeSelector } from './selectors';
 import * as types from './types';
@@ -104,10 +103,6 @@ function* createProposalGenerator ({ form }: types.CreateProposal) {
 function* voteForProposalGenerator ({ data }: types.VoteForProposal) {
   try {
     yield* put(setTransactionLoading());
-    yield* put(setVoteDetails({
-      contract: data.contract,
-      proposalId: data.proposalId,
-    }));
 
     const { userAddress } = yield* select((state) => state.userInf);
     const contract = new VotingService(data.contract);

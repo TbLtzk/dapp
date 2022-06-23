@@ -31,7 +31,6 @@ function ParametersTable ({ parameters }) {
         <ExplorerAddress
           short={simplified}
           address={item.value}
-          gnosisSafeAddress={item.gnosisSafeAddress}
         />
       );
     }
