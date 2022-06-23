@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import { ProposalEvent } from 'typings/contracts';
 
@@ -10,29 +9,14 @@ import VotingPeriods from '../VotingPeriods';
 
 import { ProposalCardLink } from './styles';
 
-import { transactionLoadingSelector } from 'store/transaction-handler/selectors';
-import { voteDetailsSelector } from 'store/voting/proposals/selectors';
-
 import { getProposal } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
-function ListCard ({ proposal }: { proposal: ProposalEvent }) {
-  const transactionLoading = useSelector(transactionLoadingSelector);
-  const voteDetails = useSelector(voteDetailsSelector);
-
+function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
   const [proposalInfo, setProposalInfo] = useState<any>(null);
 
   useEffect(() => {
     loadProposal();
   }, []);
-
-  useEffect(() => {
-    const isCurrentProposal = proposal.contract === voteDetails.contract &&
-      proposal.id === voteDetails.proposalId;
-
-    if (!transactionLoading && isCurrentProposal) {
-      loadProposal();
-    }
-  }, [transactionLoading]);
 
   async function loadProposal () {
     const result = await getProposal(proposal.contract, proposal.id);
@@ -64,4 +48,4 @@ function ListCard ({ proposal }: { proposal: ProposalEvent }) {
     : <SkeletonProposalsLoading />;
 }
 
-export default ListCard;
+export default ProposalCard;

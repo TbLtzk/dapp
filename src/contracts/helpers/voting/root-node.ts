@@ -28,9 +28,9 @@ export async function createRootNodeProposal (
   const contract = await getRootNodesMembershipVotingInstance();
   return contract.createProposal(
     form.externalLink,
-    address,
+    form.type === 'add-root-node' ? address : ZERO_ADDRESS,
     isRemovingNode ? form.address : ZERO_ADDRESS,
-    form.hash,
+    form.hash || '0x00',
     { from: address }
   );
 }

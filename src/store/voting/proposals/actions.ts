@@ -31,11 +31,6 @@ export const createProposal = (form: CreateProposalForm): types.CreateProposal =
   form
 });
 
-export const setVoteDetails = (result: any): types.SetVoteDetails => ({
-  type: 'SET_VOTE_DETAILS',
-  result
-});
-
 export const voteForProposal = (data: any): types.VoteForProposal => ({
   type: 'VOTE_FOR_PROPOSAL',
   data

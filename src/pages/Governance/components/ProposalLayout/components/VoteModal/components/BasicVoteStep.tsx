@@ -16,8 +16,8 @@ function BasicVoteStep () {
   });
 
   const voteOptions = [
-    { value: false, label: 'No' },
     { value: true, label: 'Yes' },
+    { value: false, label: 'No' },
   ];
 
   return (

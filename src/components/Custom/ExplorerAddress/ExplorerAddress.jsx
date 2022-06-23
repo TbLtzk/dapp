@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import jazzicon from '@metamask/jazzicon';
 
 import CopyToClipboard from 'components/Base/CopyToClipboard';
-import GnosisSafeTooltip from 'components/Custom/GnosisSafeTooltip';
 
 import { AddressWrapper } from './styles';
 
@@ -14,7 +13,6 @@ import { getExplorerUrlByChainId, trimAddress } from 'func/useful';
 
 function ExplorerAddress ({
   address,
-  gnosisSafeAddress = '',
   short = false,
   hideTooltip = false,
   iconed = false,
@@ -52,8 +50,6 @@ function ExplorerAddress ({
         value={address}
         hideTooltip={hideTooltip}
       />
-
-      {gnosisSafeAddress && !hideTooltip && <GnosisSafeTooltip address={gnosisSafeAddress}/>}
     </AddressWrapper>
   );
 }

@@ -77,15 +77,6 @@ function VoteModal ({ modalOpen, proposal, onHide }: Props) {
   );
 }
 
-/**
- *
- * @returns {{
- *  values: typeof DEFAULT_VALUES,
- *  goNext: (form: typeof DEFAULT_VALUES) => void,
- *  goBack: () => void,
- *  confirm: (form: typeof DEFAULT_VALUES) => void,
- * }}
- */
 export const useVote = () => useContext(LocalStateContext);
 
 export default VoteModal;

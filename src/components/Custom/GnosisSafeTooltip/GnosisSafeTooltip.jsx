@@ -23,13 +23,12 @@ function GnosisSafeTooltip ({ address }) {
   return (
     <PopperTooltip trigger={gnosisIcon}>
       <TooltipContent>
-        <span>This address has a gnosis safe</span>
+        <span>Gnosis Safe address:</span>
         <div className="tooltip-address">
           <ExplorerAddress
             short
             hideTooltip
             address={address}
-            gnosisSafeAddress=""
           />
         </div>
         <a

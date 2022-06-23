@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router';
 
 import { ProposalType } from 'typings/proposals';
@@ -10,6 +11,8 @@ import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 import ProposalLayout from './components/ProposalLayout/ProposalLayout';
 import VotingStats from './components/VotingStats';
 
+import { transactionLoadingSelector } from 'store/transaction-handler/selectors';
+
 import { getProposal, getProposalTypeByContract } from 'contracts/helpers/voting-helpers/base-voting-helper';
 
 function Proposal ({ match }: RouteComponentProps<{
@@ -17,13 +20,16 @@ function Proposal ({ match }: RouteComponentProps<{
   contract: string
 }>) {
   const history = useHistory();
+  const transactionLoading = useSelector(transactionLoadingSelector);
 
   const [proposal, setProposal] = useState<any>(null);
   const type = getProposalTypeByContract(match.params.contract) as ProposalType;
 
   useEffect(() => {
-    loadProposal();
-  }, []);
+    if (!transactionLoading) {
+      loadProposal();
+    }
+  }, [transactionLoading]);
 
   async function loadProposal () {
     const data = await getProposal(match.params.contract, match.params.id, true);
