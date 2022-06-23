@@ -24,9 +24,9 @@ const LanguageContextProvider = LanguageContext.Provider;
 
 function LanguageProvider ({ children }) {
   const languages = [
-    { lang: 'en', title: 'English', img: 'flags/en.svg' },
-    { lang: 'de', title: 'Deutsch', img: 'flags/de.svg' },
-    { lang: 'ua', title: 'Українська', img: 'flags/ua.svg' },
+    { lang: 'en', title: 'English', src: '/flags/en.svg' },
+    { lang: 'de', title: 'Deutsch', src: '/flags/de.svg' },
+    { lang: 'ua', title: 'Українська', src: '/flags/ua.svg' },
   ];
 
   i18n

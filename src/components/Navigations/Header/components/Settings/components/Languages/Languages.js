@@ -25,7 +25,7 @@ function Languages ({ onClose, onBack }) {
       <div style={{ borderBottom: '1px solid' }} />
 
       <div className="popup_menu">
-        {languages.map(({ lang, title, img }) => (
+        {languages.map(({ lang, title, src }) => (
           <div
             key={lang}
             className="language_container"
@@ -33,7 +33,7 @@ function Languages ({ onClose, onBack }) {
           >
             <div className="language">
               <div>
-                <img src={img} alt="lang" />
+                <img src={src} alt="lang" />
               </div>
 
               <h6>{title}</h6>
