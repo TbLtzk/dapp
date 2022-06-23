@@ -1,7 +1,5 @@
 import { call, put, select, takeEvery } from 'typed-redux-saga';
 
-import { setVoteDetails } from '../proposals/actions';
-
 import * as types from './types';
 
 import { setTransactionLoading, setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/action-creators';
@@ -28,10 +26,6 @@ function* onEscrowCastObjectionGenerator ({
 }: types.OnEscrowCastObjection) {
   try {
     yield* put(setTransactionLoading());
-    yield* put(setVoteDetails({
-      contract: contractName,
-      proposalId,
-    }));
 
     const { userAddress } = yield* select((state) => state.userInf);
     const contract = yield* call(() => getContractInstance(contractName));
@@ -58,7 +52,6 @@ function* onEscrowProposeDecisionGenerator ({
 }: types.OnEscrowProposeDecision) {
   try {
     yield* put(setTransactionLoading());
-    yield* put(setVoteDetails({ contract: contractName, proposalId }));
 
     const { userAddress } = yield* select((state) => state.userInf);
     const contract = yield* call(() => getContractInstance(contractName));
@@ -87,7 +80,6 @@ function* onEscrowProposerRemarkGenerator ({
 }: types.OnEscrowProposerRemark) {
   try {
     yield* put(setTransactionLoading());
-    yield* put(setVoteDetails({ contract: contractName, proposalId }));
 
     const { userAddress } = yield* select((state) => state.userInf);
     const contract = yield* call(() => getContractInstance(contractName));
@@ -115,7 +107,6 @@ function* setEscrowActionGenerator ({
 }: types.SetEscrowAction) {
   try {
     yield* put(setTransactionLoading());
-    yield* put(setVoteDetails({ contract: contractName, proposalId }));
 
     const { userAddress } = yield* select((state) => state.userInf);
     const contract = yield* call(() => getContractInstance(contractName));

@@ -36,6 +36,7 @@ import {
   getEpqfiParametersInstance,
   getEprsParametersInstance
 } from 'contracts/contract-instance';
+import { getContractOwner } from 'contracts/helpers/parameters-helper';
 
 function QParameters () {
   const [contractRegistryAddress, setContractRegistryAddress] = useState('0x00');
@@ -43,6 +44,11 @@ function QParameters () {
   const [ePDRParametersAddress, setEPDRParametersAddress] = useState('0x00');
   const [ePQFIParametersAddress, setEPQFIParametersAddress] = useState('0x00');
   const [ePRSParametersAddress, setEPRSParametersAddress] = useState('0x00');
+
+  const [safesMap, setSafesMap] = useState({
+    upgradeVoting: '',
+    tokenBridgeAdminProxy: ''
+  });
 
   const loadingCR = useSelector(contractRegistryKVLoading);
   const errorMessageCR = useSelector(contractRegistryKVError);
@@ -72,6 +78,7 @@ function QParameters () {
     dispatch(getFeesIncentivesExpertPanelParametersKV());
     dispatch(getEPDRParametersKV());
     dispatch(getEPRSParametersKV());
+    loadGnosisSafes();
 
     setContractRegistryAddress(contractRegistryInstance.address);
     getConstitutionInstance().then((contract) => setConstitutionParametersAddress(contract.address));
@@ -88,6 +95,18 @@ function QParameters () {
     };
   }, [dispatch]);
 
+  const loadGnosisSafes = async () => {
+    const [upgradeSafe, tokenBridgeSafe] = await Promise.all([
+      getContractOwner('upgradeVoting'),
+      getContractOwner('tokenBridgeAdminProxy')
+    ]);
+
+    setSafesMap({
+      upgradeVoting: upgradeSafe,
+      tokenBridgeAdminProxy: tokenBridgeSafe
+    });
+  };
+
   return (
     <ParametersWrapper>
       <div>
@@ -95,6 +114,7 @@ function QParameters () {
           title="Q Contract Registry"
           subtitle={`(${contractRegistryAddress})`}
           parameters={kvCR}
+          gnosisSafeAddress={safesMap.upgradeVoting}
           loading={loadingCR}
           errorMsg={errorMessageCR}
           emptyMsg="No addresses"
@@ -102,6 +122,7 @@ function QParameters () {
         <ParametersBlock
           title="Q Fees & Incentives Expert Panel Parameters"
           subtitle={`(${ePQFIParametersAddress})`}
+          docsId="#q-fees-and-incentives-expert-panel-epqfi-parameters"
           parameters={kvFI}
           loading={loadingFI}
           errorMsg={errorMessageFI}
@@ -109,7 +130,9 @@ function QParameters () {
         <ParametersBlock
           title="Q DeFi Risk Expert Panel Parameters"
           subtitle={`(${ePDRParametersAddress})`}
+          docsId="#q-defi-risk-expert-panel-epdr-parameters"
           parameters={kvEPDRP}
+          gnosisSafeAddress={safesMap.tokenBridgeAdminProxy}
           loading={loadingEPDRP}
           errorMsg={errorMessageEPDRP}
         />
@@ -118,6 +141,7 @@ function QParameters () {
         <ParametersBlock
           title="Q Constitution Parameters"
           subtitle={`(${constitutionParametersAddress})`}
+          docsId="#q-constitution-parameters"
           parameters={kvCP}
           loading={loadingCP}
           errorMsg={errorMessageCP}

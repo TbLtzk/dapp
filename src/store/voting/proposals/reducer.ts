@@ -17,7 +17,6 @@ function getDefaultProposalItem () {
 }
 
 const initialState = {
-  voteDetails: { contract: '', proposalId: '' },
   constitutionHash: '...',
   baseVotingWeightInfo: {} as BaseVotingWeightInfo,
   newParameter: false,
@@ -53,11 +52,6 @@ export default function proposals (
       return {
         ...state,
         minimalActiveBlock: action.block
-      };
-    case 'SET_VOTE_DETAILS':
-      return {
-        ...state,
-        voteDetails: action.result
       };
     case 'GET_CONSTITUTION_HASH_SUCCESS':
       return {
