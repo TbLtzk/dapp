@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import InfoTooltip from 'components/Custom/InfoTooltip';
 import MemberTables from 'components/Custom/MemberTables';
 
 import { getEPQFIMembers } from 'store/membership/action-creators';
@@ -28,8 +29,12 @@ function QFeesMembersPanel () {
 
   return (
     <CustomBlock>
+      <h1>
+        <span>{t('LIST_OF_Q_FEES_INCENTIVES_EXPERTS')}</span>
+        <InfoTooltip topic="fees-incentives-experts" />
+      </h1>
+
       <MemberTables
-        title={t('LIST_OF_Q_FEES_INCENTIVES_EXPERTS')}
         emptyTableMessage={t('NO_Q_FEES_INCENTIVES_MEMBERS')}
         loading={qFeesMembersTableLoading}
         error={qFeesMembersTableError}

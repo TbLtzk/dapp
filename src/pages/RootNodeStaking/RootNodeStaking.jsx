@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import PageWrap from 'components/Base/PageWrap';
+import InfoTooltip from 'components/Custom/InfoTooltip';
 import RootNodePanel from 'components/Custom/MembersPanel/RootNodePanel';
 
 import RootBalanceForm from './components/RootBalanceForm';
@@ -30,7 +31,10 @@ function RootNodeStaking () {
   }, []);
 
   return (
-    <PageWrap pageHeader="Root Node Staking">
+    <PageWrap
+      pageHeader="Root Node Staking"
+      pageTooltip={<InfoTooltip topic="root-node-staking" placement="bottom" />}
+    >
       <CustomBlock>
         <h1>Manage Balance</h1>
         <RootBalanceInfo />

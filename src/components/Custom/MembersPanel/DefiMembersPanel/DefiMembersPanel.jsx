@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import InfoTooltip from 'components/Custom/InfoTooltip';
 import MemberTables from 'components/Custom/MemberTables';
 
 import { getEPDRMembers } from 'store/membership/action-creators';
@@ -24,8 +25,12 @@ function DefiMembersPanel () {
 
   return (
     <CustomBlock>
+      <h1>
+        <span>{t('LIST_OF_DEFI_EXPERTS')}</span>
+        <InfoTooltip topic="defi-experts" />
+      </h1>
+
       <MemberTables
-        title={t('LIST_OF_DEFI_EXPERTS')}
         emptyTableMessage={t('NO_DEFI_MEMBERS')}
         loading={defiMembersTableLoading}
         error={defiMembersTableError}

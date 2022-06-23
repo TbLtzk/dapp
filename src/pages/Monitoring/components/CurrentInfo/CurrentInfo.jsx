@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
+import InfoTooltip from 'components/Custom/InfoTooltip';
 
 import { rootMembersMonitoringSelector } from 'store/root-node/selectors';
 import { inactiveValidatorsSelector, validatorsMonitoringSelector } from 'store/validators/selectors';
@@ -37,21 +38,39 @@ function CurrentInfo () {
   return (
     <div className="content__colm-3">
       <CustomBlock>
-        <h1>Validators</h1>
+        <h1>
+          <span>Validators</span>
+          <InfoTooltip
+            topic="monitoring-validators"
+            placement="bottom"
+          />
+        </h1>
         <h5>Inactive Validators</h5>
         <p>{inactiveValidators}</p>
         <h5>Validators in Ranking</h5>
         <p>{validators.length}</p>
       </CustomBlock>
       <CustomBlock>
-        <h1>Root Nodes</h1>
+        <h1>
+          <span>Root Nodes</span>
+          <InfoTooltip
+            topic="monitoring-root-nodes"
+            placement="bottom"
+          />
+        </h1>
         <h5>Inactive Root Nodes</h5>
         <p>0</p>
         <h5>Root Nodes in Panel</h5>
         <p>{rootNodes.length}</p>
       </CustomBlock>
       <CustomBlock>
-        <h1>Status</h1>
+        <h1>
+          <span>Status</span>
+          <InfoTooltip
+            topic="monitoring-status"
+            placement="bottom"
+          />
+        </h1>
         <h5>Current Block Height</h5>
         <p>{blockHeight}</p>
         <h5>Current Time</h5>

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import InfoTooltip from 'components/Custom/InfoTooltip';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 
@@ -78,7 +79,10 @@ function SavingBorrowingBlock () {
 
   return (
     <CustomBlock>
-      <h1>Saving & Borrowing</h1>
+      <h1>
+        <span>{t('SAVING_BORROWING')}</span>
+        <InfoTooltip topic="saving-borrowing" />
+      </h1>
       {savingAndBorrowingInfo.map((item) => (
         <Fragment key={item.id}>
           {item.component

@@ -24,3 +24,4 @@ yarn-error.log*
 .prettierrc
 translation-key.json
 .env
+.vscode

@@ -35,6 +35,7 @@ function LanguageProvider ({ children }) {
     .init({
       resources,
       fallbackLng: 'en',
+      supportedLngs: ['de', 'en', 'ua'],
       interpolation: {
         escapeValue: false,
       },

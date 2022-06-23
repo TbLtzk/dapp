@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
+import InfoTooltip from 'components/Custom/InfoTooltip';
 import MemberTables from 'components/Custom/MemberTables';
 
 import { getColumnsValidatorsMonitoring, getColumnsValidatorsWidened } from './columnTypes';
@@ -69,9 +70,12 @@ function ValidatorsPanel ({ buttons, tableType }) {
 
   return (
     <CustomBlock>
+      <h1>
+        <span>{t('VALIDATOR_RANKING')}</span>
+        <InfoTooltip topic="validator-ranking" />
+      </h1>
       <MemberTables
         sorting
-        title={t('VALIDATOR_RANKING')}
         emptyTableMessage={t('NO_VALIDATORS')}
         table={table}
         columns={columns}
