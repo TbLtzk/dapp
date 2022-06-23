@@ -5,14 +5,15 @@ import { StyledCheckbox } from './styles';
 type Props = {
   onCheck: () => void;
   check: boolean;
+  invertedColors: boolean;
 };
 
-function Checkbox ({ check, onCheck }: Props) {
+function Checkbox ({ check, onCheck, invertedColors = false }: Props) {
   const pathLength = useMotionValue<number>(0);
   const opacity = useTransform(pathLength, [0.05, 0.15], [0, 1]);
 
   return (
-    <StyledCheckbox check={check}>
+    <StyledCheckbox check={check} invertedColors={invertedColors}>
       <motion.div className="checkbox" onTap={onCheck}>
         <svg
           className="checkmark"

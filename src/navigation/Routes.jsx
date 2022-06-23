@@ -8,6 +8,8 @@ import StyleLayout from 'components/Base/StyleLayout';
 import AlertTemplate from 'components/Custom/Alerts/AlertTemplate';
 import ErrorBoundary from 'components/Custom/ErrorBoundary';
 import AccountAliasing from 'pages/AccountAliasing';
+import DataPrivacy from 'pages/DataPrivacy';
+import Imprint from 'pages/Imprint';
 import Monitoring from 'pages/Monitoring';
 import NotFound from 'pages/NotFound';
 import OneAuctionPage from 'pages/OneAuctionPage';
@@ -148,6 +150,13 @@ function Routes () {
 
             <Route exact path="/time-locks">
               <TimeLocks />
+            </Route>
+
+            <Route exact path="/imprint">
+              <Imprint />
+            </Route>
+            <Route exact path="/data-privacy">
+              <DataPrivacy />
             </Route>
 
             <Route component={NotFound} />
