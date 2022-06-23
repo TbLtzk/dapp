@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import InfoTooltip from 'components/Custom/InfoTooltip';
 import MemberTables from 'components/Custom/MemberTables';
 
 import { getColumnsRootNode, getColumnsRootNodeMonitoring } from './columnTypes';
@@ -90,7 +91,10 @@ function RootNodePanel ({ tableType }) {
   return (
     <CustomBlock>
       <TitleBlock>
-        <h1>{t('ROOT_NODE_PANEL')}</h1>
+        <h1>
+          <span>{t('ROOT_NODE_PANEL')}</span>
+          <InfoTooltip topic="root-node-panel" />
+        </h1>
         {isTotalStakeShown && (
           <p>
             <strong>{t('TOTAL_STAKE')}</strong>

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
+import InfoTooltip from 'components/Custom/InfoTooltip';
 
 import useVoteDelegation from 'hooks/useVoteDelegation';
 
@@ -35,7 +36,10 @@ function DelegateVoting () {
 
   return (
     <CustomBlock>
-      <h1>Delegate Voting Power</h1>
+      <h1>
+        <span>Delegate Voting Power</span>
+        <InfoTooltip topic="delegate-voting-power" />
+      </h1>
       <h5>Total Voting Weight</h5>
       <h4>{fromWei(weight)}</h4>
       <h5>Current agent</h5>

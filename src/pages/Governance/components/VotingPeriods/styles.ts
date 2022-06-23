@@ -5,7 +5,7 @@ export const VotingContainer = styled.div`
   justify-content: space-between;
   grid-template-columns: repeat(2, 1fr);
 
-  div:last-child {
+  div:nth-child(2) {
     text-align: right;
   }
 `;

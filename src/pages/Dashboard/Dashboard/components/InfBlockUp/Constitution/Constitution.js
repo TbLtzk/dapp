@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from 'components/Base/Button';
 import CopyToClipboard from 'components/Base/CopyToClipboard';
 import CustomBlock from 'components/Base/CustomBlock';
+import InfoTooltip from 'components/Custom/InfoTooltip';
 
 import { getConstitutionHash } from 'store/voting/proposals/actions';
 import { constitutionHash } from 'store/voting/proposals/selectors';
@@ -23,7 +24,10 @@ function Constitution () {
 
   return (
     <CustomBlock title="Constitution">
-      <h1>{t('CONSTITUTION')}</h1>
+      <h1>
+        <span>{t('CONSTITUTION')}</span>
+        <InfoTooltip topic="constitution" />
+      </h1>
 
       <h5>{t('HASH')}</h5>
       <div>
@@ -39,7 +43,7 @@ function Constitution () {
         >
           <Button alwaysEnabled>
             <i className="mdi mdi-download" />
-            <span>{t('DOWNLOAD_LATEST')}</span>
+            <span>{t('DOWNLOAD_LATEST_VERSION')}</span>
           </Button>
         </a>
         <a

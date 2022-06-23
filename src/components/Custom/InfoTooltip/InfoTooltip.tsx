@@ -4,7 +4,13 @@ import PopperTooltip from 'components/Base/PopperTooltip';
 
 import { InfoIcon } from './styles';
 
-function InfoTooltip ({ topic, invertedColors = false, ...rest }) {
+type PopperTooltipProps = Parameters<typeof PopperTooltip>[0];
+interface Props extends Omit<PopperTooltipProps, 'trigger' | 'invertedColors' | 'children'> {
+  topic: keyof typeof tooltips
+  invertedColors?: boolean
+}
+
+function InfoTooltip ({ topic, invertedColors = false, ...rest }: Props) {
   return (
     <PopperTooltip
       trigger={(

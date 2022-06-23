@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import PageWrap from 'components/Base/PageWrap';
+import InfoTooltip from 'components/Custom/InfoTooltip';
 import DelegatedValidatorsPanel from 'components/Custom/MembersPanel/DelegatedValidatorsPanel';
 
 import DelegateVoting from './components/DelegateVoting';
@@ -19,7 +20,11 @@ function QVault () {
   const appMode = useSelector(mode);
 
   return (
-    <PageWrap wrapContentClasses="wrap-content__column-2-1" pageHeader="Q Vault">
+    <PageWrap
+      wrapContentClasses="wrap-content__column-2-1"
+      pageHeader="Q Vault"
+      pageTooltip={<InfoTooltip placement="bottom" topic="q-vault" />}
+    >
       <div>
         <ManageBalance />
         <LockCoin />
@@ -27,7 +32,10 @@ function QVault () {
         {appMode === MODE.advanced && (
           <>
             <CustomBlock>
-              <h1>Delegate Staking Power</h1>
+              <h1>
+                <span>Delegate Staking Power</span>
+                <InfoTooltip topic="delegate-staking-power" />
+              </h1>
               <DelegationRewards />
               <div className="card__line" />
               <UpdateDelegation />

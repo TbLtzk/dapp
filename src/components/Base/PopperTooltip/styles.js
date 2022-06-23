@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 
 export const TooltipWrapper = styled.div`
-  vertical-align: middle;
   display: inline-flex;
   align-self: center;
 

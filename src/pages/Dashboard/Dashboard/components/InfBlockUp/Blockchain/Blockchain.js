@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import InfoTooltip from 'components/Custom/InfoTooltip';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
@@ -33,7 +34,10 @@ function Blockchain () {
 
   return (
     <CustomBlock>
-      <h1>{t('BLOCKCHAIN')}</h1>
+      <h1>
+        <span>{t('BLOCKCHAIN')}</span>
+        <InfoTooltip topic="blockchain" />
+      </h1>
       <h5>{t('BLOCK_HEIGHT')}</h5>
       <p ref={blockNumberRef}> 0</p>
       <h5>{t('SYSTEM_CONTRACT_REGISTRY')}</h5>
