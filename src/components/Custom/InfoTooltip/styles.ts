@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const InfoIcon = styled.i`
+export const InfoIcon = styled.i<{ $invertedColors: boolean }>`
   font-size: 16px;
   line-height: 1;
   padding: 0 8px;

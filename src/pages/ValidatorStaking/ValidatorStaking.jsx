@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import PageWrap from 'components/Base/PageWrap';
+import InfoTooltip from 'components/Custom/InfoTooltip';
 import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
 
 import StakerRewardPool from './components/StakerRewardPool';
@@ -38,7 +39,11 @@ function ValidatorStaking () {
   }, [dispatch]);
 
   return (
-    <PageWrap pageHeader="Validator Staking" pageButton={<StakerRewardPool />}>
+    <PageWrap
+      pageHeader="Validator Staking"
+      pageTooltip={<InfoTooltip topic="validator-staking" placement="bottom" />}
+      pageButton={<StakerRewardPool />}
+    >
       <CustomBlock>
         <h1>Manage Balance</h1>
         <ValidatorBalanceInfo />

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
+import InfoTooltip from 'components/Custom/InfoTooltip';
 
 import Blockchain from './Blockchain';
 import Constitution from './Constitution';
@@ -23,7 +24,10 @@ function InfBlocksUp () {
       <Blockchain />
       <Constitution />
       <CustomBlock>
-        <h1>{t('GOVERNANCE')}</h1>
+        <h1>
+          <span>{t('GOVERNANCE')}</span>
+          <InfoTooltip topic="governance" />
+        </h1>
 
         <div className="card__two-columns">
           <div>

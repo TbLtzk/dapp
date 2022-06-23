@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import PageWrap from 'components/Base/PageWrap';
+import InfoTooltip from 'components/Custom/InfoTooltip';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
@@ -99,7 +100,10 @@ function TimeLocks () {
   ];
 
   return (
-    <PageWrap pageHeader="Time Locks">
+    <PageWrap
+      pageHeader="Time Locks"
+      pageTooltip={<InfoTooltip topic="time-locks" placement="bottom" />}
+    >
       <AddressForm userAddress={currentAddress} onChange={setCurrentAddress} />
       <div className="content__colm-2 content__time-locks">
         {cardsData.map((card) => (
