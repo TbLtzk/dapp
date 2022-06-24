@@ -53,14 +53,14 @@ class ErrorHandler {
         details: capitalize(errorObj.stack.split(':')[2].trim())
       };
     }
-    if (process.env.NODE_ENV !== 'development') {
+    if (import.meta.env.NODE_ENV !== 'development') {
       Sentry.captureMessage(error.message);
     }
     return message;
   }
 
   static processWithoutFeedback (error) {
-    if (process.env.NODE_ENV !== 'development') {
+    if (import.meta.env.NODE_ENV !== 'development') {
       Sentry.captureMessage(error.message);
     }
     console.error(error.message);
