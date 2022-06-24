@@ -12,4 +12,4 @@ export const keyRegex = /^[a-zA-Z0-9+.\-_]+$/gm;
 export const booleanValuesRegex = ['true', 'false', 'True', 'False', 'TRUE', 'FALSE', '1', '0'];
 export const numberRegex = /^\d+(\.\d+)*$/gm;
 export const from1to100Regex = /^[1-9][0-9]?$|^100$/gm;
-export const vaultID = /^[0-9]+$/gm;
+export const vaultID = /^[0-9]{1,18}$/gm;

@@ -9,7 +9,8 @@ import { useSurplusAuction } from '../SurplusAuctionModal';
 
 import { symbol } from 'store/stable-coin/selectors';
 
-import { required } from 'func/validators';
+import { MAX_BID_AMOUNT } from 'constants/numbers';
+import { max, required } from 'func/validators';
 
 function AuctionStep ({ surplusLot }) {
   const symbolType = useSelector(symbol);
@@ -17,7 +18,7 @@ function AuctionStep ({ surplusLot }) {
 
   const form = useForm({
     initialValues: { bid: '' },
-    validators: { bid: [required] },
+    validators: { bid: [required, max(MAX_BID_AMOUNT)] },
     onSubmit: goNext,
   });
 

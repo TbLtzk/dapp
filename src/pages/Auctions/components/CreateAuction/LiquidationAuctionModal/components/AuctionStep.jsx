@@ -9,7 +9,8 @@ import { useLiquidationAuction } from '../LiquidationAuctionModal';
 
 import { symbol } from 'store/stable-coin/selectors';
 
-import { address, required, vaultID } from 'func/validators';
+import { MAX_BID_AMOUNT } from 'constants/numbers';
+import { address, max, required, vaultID } from 'func/validators';
 
 function AuctionStep () {
   const symbolType = useSelector(symbol);
@@ -24,7 +25,7 @@ function AuctionStep () {
     validators: {
       address: [required, address],
       vaultId: [required, vaultID],
-      bid: [required]
+      bid: [required, max(MAX_BID_AMOUNT)]
     },
     onSubmit: goNext,
   });

@@ -7,6 +7,7 @@ import { getContractProposals } from '.';
 import { getRootNodesSlashingVotingInstance, getValidatorsSlashingVotingInstance } from 'contracts/contract-instance';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
+import { getPercentageFormat } from 'func/useful';
 
 export async function getSlashingProposals (
   proposals: ProposalEvent[],
@@ -38,7 +39,7 @@ export async function createRootNodeSlashingProposal (
   return contract.createProposal(
     form.externalLink,
     form.address,
-    form.percent,
+    getPercentageFormat(form.percent),
     { from: address }
   );
 }
@@ -51,7 +52,7 @@ export async function createValidatorSlashingProposal (
   return contract.createProposal(
     form.externalLink,
     form.address,
-    form.percent,
+    getPercentageFormat(form.percent),
     { from: address }
   );
 }
