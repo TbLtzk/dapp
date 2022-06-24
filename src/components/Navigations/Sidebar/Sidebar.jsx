@@ -107,7 +107,7 @@ function Sidebar () {
       </div>
 
       <FooterContaier>
-        <Version />
+        {/* <Version /> */}
         <Policy />
       </FooterContaier>
     </SidebarContainer>

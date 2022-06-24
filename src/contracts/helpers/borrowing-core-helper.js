@@ -1,4 +1,4 @@
-import { ethereum } from 'components/Custom/LoadingMetaMask/LoadingMetaMask';
+// import { ethereum } from 'components/Custom/LoadingMetaMask/LoadingMetaMask';
 
 import { setTransactionLoadingError } from 'store/transaction-handler/action-creators';
 
@@ -23,7 +23,7 @@ async function addToken (contract, address) {
       contract.methods.symbol().call()
     ]);
 
-    const response = await ethereum.request({
+    const response = await window.ethereum.request({
       method: 'wallet_watchAsset',
       params: {
         type: 'ERC20',

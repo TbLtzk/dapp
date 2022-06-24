@@ -30,9 +30,8 @@ export const setRootMembers = (tableType, table, totalStake) => ({
   totalStake
 });
 
-export const getCheckIsUserRootNode = (address) => ({
+export const getCheckIsUserRootNode = () => ({
   type: actionTypes.GET_CHECK_IS_USER_ROOT_NODE,
-  address
 });
 
 export const setCheckIsUserRootNode = (result) => ({

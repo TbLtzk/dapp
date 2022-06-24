@@ -4,7 +4,9 @@ import { BrowserRouter } from 'react-router-dom';
 
 import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
+import { Web3ReactProvider } from '@web3-react/core';
 import LanguageProvider from 'i18n';
+import Web3 from 'web3';
 
 import LoadingMetaMask from 'components/Custom/LoadingMetaMask';
 
@@ -20,14 +22,19 @@ Sentry.init({
   enabled: process.env.NODE_ENV !== 'development',
 });
 
-ReactDOM.render(
-  <Provider store={store}>
-    <LanguageProvider>
-      <BrowserRouter>
-        <LoadingMetaMask />
-      </BrowserRouter>
-    </LanguageProvider>
-  </Provider>,
+function getLibrary (provider: any) {
+  return new Web3(provider);
+}
 
+ReactDOM.render(
+  <Web3ReactProvider getLibrary={getLibrary}>
+    <Provider store={store}>
+      <LanguageProvider>
+        <BrowserRouter>
+          <LoadingMetaMask />
+        </BrowserRouter>
+      </LanguageProvider>
+    </Provider>
+  </Web3ReactProvider>,
   document.getElementById('root')
 );

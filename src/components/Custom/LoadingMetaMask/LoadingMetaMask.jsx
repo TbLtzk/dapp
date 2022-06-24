@@ -1,117 +1,95 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Web3 from 'web3';
+import { Web3 } from '@q-dev/q-js-sdk';
+import { useWeb3React } from '@web3-react/core';
 
-import LoadingSpinner from 'components/Base/LoadingSpinner';
 import Routes from 'navigation/Routes';
 
-import { WrapContainer } from './styles';
+import useLocalStorage from 'hooks/useLocalStorage';
+
+import { connectors } from './connectors';
 
 import { getAuctions } from 'store/auctions/action-creators';
 import { getCheckIsUserRootNode } from 'store/root-node/action-creators';
-import { setLoadType, setNetwork, setUserAddress } from 'store/user-inf/action-creators';
+import { setUserAddress } from 'store/user-inf/action-creators';
 import { getNumberAllProposals } from 'store/voting/proposals/actions';
 
 import { getContractRegistryInstance } from 'contracts/contract-instance';
 
-import { networks } from 'constants/config';
-import { AUCTIONS_TYPES, LOAD_TYPES } from 'constants/statuses';
-import ErrorHandler from 'func/ErrorHandler';
+import { AUCTIONS_TYPES } from 'constants/statuses';
 import { getParametersDependsOnUrl } from 'func/useful';
 
 const web3 = new Web3(Web3.givenProvider);
 
 export const { ethereum } = window;
 export let address = '0x0000000000000000000000000000000000000000';
+function sleep (ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const Test = () => {
+  const dispatch = useDispatch();
+  const [ac, setAc] = useState('');
+
+  const { library, chainId, account, activate, deactivate, active } = useWeb3React();
+  useEffect(() => {
+    loadAdditionalInfo();
+  }, []);
+
+  const loadAdditionalInfo = async () => {
+    dispatch(setUserAddress(account));
+
+    window.web3 = web3;
+    address = account;
+    setAc(account);
+    await sleep(2000);
+    getContractRegistryInstance();
+    dispatch(getAuctions(AUCTIONS_TYPES.all));
+    dispatch(getNumberAllProposals());
+    dispatch(getCheckIsUserRootNode());
+  };
+
+  return <Routes />;
+};
 
 function LoadingMetaMask () {
   const dispatch = useDispatch();
-
   const networkParams = getParametersDependsOnUrl();
-  const [isMetaMask, setIsMetaMask] = useState(LOAD_TYPES.loading);
 
-  async function loadAdditionalInfo () {
-    dispatch(getAuctions(AUCTIONS_TYPES.all));
-    dispatch(getNumberAllProposals());
-    dispatch(getCheckIsUserRootNode(address));
-  }
+  const { library, chainId, account, activate, deactivate, active } = useWeb3React();
 
-  async function initMetamask () {
-    try {
-      if (!ethereum) {
-        // user without metamask
-        window.web3 = new Web3(new Web3.providers.HttpProvider(networkParams.rpc));
-        dispatch(setLoadType(LOAD_TYPES.notInstalled));
-      } else {
-        // user with metamask
-        ethereum?.on('accountsChanged', () => {
-          window.location.reload();
-        });
-
-        ethereum?.on('chainChanged', () => {
-          window.location.reload();
-        });
-
-        const networkId = await new Promise((resolve) => {
-          // check network id
-          /* Fix issue with first Metamask launch. */
-          const timeout = setTimeout(() => {
-            window.location.reload();
-          }, 5000);
-          ethereum.request({ method: 'net_version' }).then((netId) => {
-            clearTimeout(timeout);
-            resolve(netId);
-          });
-        });
-        if (!networks[networkId]) {
-          // wrong network
-          window.web3 = new Web3(new Web3.providers.HttpProvider(networkParams.rpc));
-          dispatch(setLoadType(LOAD_TYPES.wrongNetwork));
-        } else {
-          // right network
-          const accounts = await web3.eth.getAccounts();
-
-          if (accounts.length) {
-            // logged in
-            address = accounts[0];
-            window.web3 = new Web3(ethereum);
-            dispatch(setUserAddress(accounts[0]));
-            dispatch(setLoadType(LOAD_TYPES.loaded));
-          } else {
-            // not logged
-            window.web3 = new Web3(ethereum);
-            dispatch(setLoadType(LOAD_TYPES.notLogged));
-          }
-          dispatch(setNetwork(networkId));
-        }
-      }
-      await getContractRegistryInstance();
-      await loadAdditionalInfo();
-      setIsMetaMask(LOAD_TYPES.loaded);
-    } catch (error) {
-      ErrorHandler.processWithoutFeedback(error);
-      setIsMetaMask(LOAD_TYPES.initError);
-    }
-  }
+  const [provider] = useLocalStorage('provider');
+  const [state, setState] = useState(false);
+  // const [web3, setWeb3] = useState();
 
   useEffect(() => {
-    initMetamask();
-  }, [dispatch, web3, ethereum]);
+    initConnection();
+  }, []);
 
-  switch (isMetaMask) {
-    case LOAD_TYPES.initError:
-      return <WrapContainer height="100vh">Can\'t load account data. Please reload app</WrapContainer>;
-    case LOAD_TYPES.loaded:
-      return <Routes />;
-    case LOAD_TYPES.loading:
-    default:
-      return (
-        <WrapContainer height="100vh">
-          <LoadingSpinner type="light" />
-        </WrapContainer>
-      );
+  const initConnection = async () => {
+    await activate(connectors.coinbase);
+  };
+
+  if (active) {
+    return <Test />;
   }
+
+  return null;
+
+  // switch (isMetaMask) {
+  //   case LOAD_TYPES.initError:
+  //     return <WrapContainer height="100vh">Can\'t load account data. Please reload app</WrapContainer>;
+  //   case LOAD_TYPES.loaded:
+  //     return <Routes />;
+  //   case LOAD_TYPES.loading:
+  //   default:
+  //     return (
+  //       <WrapContainer height="100vh">
+  //         <LoadingSpinner type="light" />
+  //       </WrapContainer>
+  //     );
+  // }
 }
 
 export default LoadingMetaMask;
