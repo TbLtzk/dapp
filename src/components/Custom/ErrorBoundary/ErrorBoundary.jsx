@@ -13,14 +13,14 @@ class ErrorBoundary extends Component {
   }
 
   static getDerivedStateFromError (error) {
-    if (process.env.NODE_ENV !== 'development') {
+    if (import.meta.env.NODE_ENV !== 'development') {
       Sentry.captureMessage(error);
     }
     return { hasError: true };
   }
 
   componentDidCatch () {
-    if (process.env.NODE_ENV !== 'development') {
+    if (import.meta.env.NODE_ENV !== 'development') {
       const timeout = setTimeout(() => {
         this.props.history.push({
           pathname: '/'
