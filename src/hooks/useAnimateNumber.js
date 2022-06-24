@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { animate } from 'framer-motion/dist/es/index';
+import { animate } from 'framer-motion';
 
 import { fN } from 'func/useful';
 
