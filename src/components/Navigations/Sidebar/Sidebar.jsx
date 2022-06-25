@@ -8,7 +8,6 @@ import CommonLinks from './components/CommonLinks';
 import EcosystemApps from './components/EcosystemApps';
 import Policy from './components/Policy';
 import References from './components/References';
-import Version from './components/Version';
 import { FooterContaier, SidebarContainer } from './styles';
 
 import {

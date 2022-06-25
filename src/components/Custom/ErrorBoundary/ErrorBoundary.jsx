@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import * as Sentry from '@sentry/react';
 
 import Button from 'components/Base/Button';
-import { WrapContainer } from 'components/Custom/LoadingMetaMask/styles';
+import { Wrap } from 'components/Custom/Web3ContextProvider/styles';
 
 class ErrorBoundary extends Component {
   constructor (props) {
@@ -33,13 +33,13 @@ class ErrorBoundary extends Component {
   render () {
     if (this.state.hasError) {
       return (
-        <WrapContainer direction="column">
+        <Wrap direction="column">
           <p>Something went wrong</p>
           <Button onClick={() => history.push('/')}>
             <i className="mdi mdi-home" />
             <span>Home</span>
           </Button>
-        </WrapContainer>
+        </Wrap>
       );
     } else {
       return this.props.children;

@@ -1,4 +1,3 @@
-// import { ethereum } from 'components/Custom/LoadingMetaMask/LoadingMetaMask';
 
 import { setTransactionLoadingError } from 'store/transaction-handler/action-creators';
 

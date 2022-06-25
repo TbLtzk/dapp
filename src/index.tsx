@@ -8,7 +8,8 @@ import { Web3ReactProvider } from '@web3-react/core';
 import LanguageProvider from 'i18n';
 import Web3 from 'web3';
 
-import LoadingMetaMask from 'components/Custom/LoadingMetaMask';
+import Web3ContextProvider from 'components/Custom/Web3ContextProvider';
+import Routes from 'navigation/Routes';
 
 import { store } from './store';
 
@@ -19,22 +20,25 @@ Sentry.init({
   dsn: 'https://55eac6f20f434cc2b23b93499ac31111@o1170264.ingest.sentry.io/6263659',
   integrations: [new BrowserTracing()],
   tracesSampleRate: 1.0,
-  enabled: import.meta.env.NODE_ENV !== 'development'
+  enabled: import.meta.env.NODE_ENV !== 'development',
 });
 
-function getLibrary (provider: any) {
-  return new Web3(provider);
+function getWeb3Library(provider: any): Web3 {
+  const library = new Web3(provider);
+  return library;
 }
 
 ReactDOM.render(
-  <Web3ReactProvider getLibrary={getLibrary}>
-    <Provider store={store}>
-      <LanguageProvider>
-        <BrowserRouter>
-          <LoadingMetaMask />
-        </BrowserRouter>
-      </LanguageProvider>
-    </Provider>
-  </Web3ReactProvider>,
+  <Provider store={store}>
+    <Web3ReactProvider getLibrary={getWeb3Library}>
+      <Web3ContextProvider>
+        <LanguageProvider>
+          <BrowserRouter>
+            <Routes />
+          </BrowserRouter>
+        </LanguageProvider>
+      </Web3ContextProvider>
+    </Web3ReactProvider>
+  </Provider>,
   document.getElementById('root')
 );

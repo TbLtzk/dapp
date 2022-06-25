@@ -14,7 +14,7 @@ import { loadTypeSelector } from 'store/user-inf/selectors';
 
 import { LOAD_TYPES } from 'constants/statuses';
 
-function Header () {
+function Header() {
   const loadType = useSelector(loadTypeSelector);
 
   return (
@@ -27,8 +27,10 @@ function Header () {
 
       <ElementsWrapper>
         <Network />
-        {loadType !== LOAD_TYPES.loaded ? <ConnectWallet /> : <Address />}
-        <Settings />
+        <div>
+          {loadType === LOAD_TYPES.loaded ? <Address /> : <ConnectWallet />}
+          <Settings />
+        </div>
       </ElementsWrapper>
     </HeaderWrapper>
   );

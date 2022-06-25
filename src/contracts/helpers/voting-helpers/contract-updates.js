@@ -1,7 +1,8 @@
-import { address } from 'components/Custom/LoadingMetaMask/LoadingMetaMask';
 
 import { getStatusTransformation } from './base-voting-helper';
 import VotingService from './voting-service-helper';
+
+import { store } from 'store';
 
 import { getRootNodesInstance } from 'contracts/contract-instance';
 
@@ -34,10 +35,11 @@ export default class ContractUpdates extends VotingService {
     info.votingEndTime = proposal.votingExpiredTime;
     info.currentMajority = transformToPercentage(stats.currentMajority);
     info.requiredMajority = transformToPercentage(stats.requiredMajority);
-    info.userVoted = await contract.instance.methods.voted(id, address).call();
+    const { userInf } = store.getState();
+    info.userVoted = await contract.instance.methods.voted(id, userInf.userAddress).call();
     info.numberProposalVotes = {
       votesFor: Number(voteCount),
-      votesAgainst: Number(rootNodesNumber) - Number(voteCount)
+      votesAgainst: Number(rootNodesNumber) - Number(voteCount),
     };
     info.title = `${this.contractName === CONTRACTS_NAMES.upgradeVoting ? 'Upgrade' : 'Address'} voting proposal`;
     info.proxy = proposal.proxy;

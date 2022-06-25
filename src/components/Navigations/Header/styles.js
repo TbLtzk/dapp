@@ -36,11 +36,6 @@ const handleColorTheme = (props) => {
   }
 };
 
-export const ElementsWrapper = styled.div`
-  display: flex;
-  justify-content: space-around;
-`;
-
 export const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -55,7 +50,22 @@ export const HeaderWrapper = styled.div`
   }
 `;
 
+export const ElementsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+
+  > * {
+    &:last-child {
+      display: flex;
+      align-items: center;
+    }
+  }
+`;
+
 export const WrapLogo = styled.div`
+  width: 300px;
   img {
     width: 53px;
   }
