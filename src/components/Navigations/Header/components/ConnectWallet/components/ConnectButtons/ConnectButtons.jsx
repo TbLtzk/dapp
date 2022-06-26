@@ -1,13 +1,12 @@
+import { coinbaseWallet, metaMask, walletConnect } from 'connectors';
+
 import Button from 'components/Base/Button';
-import { WalletType } from 'components/Custom/Web3ContextProvider/walletOptions';
 
 import { useWeb3Context } from 'hooks/useWeb3Context';
 
-import { getParametersDependsOnUrl } from 'func/useful';
-
 function ConnectButtons () {
   const { connectWallet, loading, error } = useWeb3Context();
-  const { chainId } = getParametersDependsOnUrl();
+
   if (loading) {
     return <div>Loading</div>;
   }
@@ -19,14 +18,14 @@ function ConnectButtons () {
       <Button
         alwaysEnabled
         style={{ width: '100%' }}
-        onClick={() => connectWallet(WalletType.INJECTED, chainId)}
+        onClick={() => connectWallet(metaMask)}
       >
         Connect with Metamask
       </Button>
       <Button
         alwaysEnabled
         style={{ width: '100%' }}
-        onClick={() => connectWallet(WalletType.WALLET_LINK, chainId)}
+        onClick={() => connectWallet(coinbaseWallet)}
       >
         Connect with Coinbase
       </Button>
@@ -34,7 +33,7 @@ function ConnectButtons () {
       <Button
         alwaysEnabled
         style={{ width: '100%' }}
-        onClick={() => connectWallet(WalletType.WALLET_CONNECT, chainId)}
+        onClick={() => connectWallet(walletConnect)}
       >
         Connect with Wallet Connect
       </Button>

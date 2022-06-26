@@ -42,7 +42,7 @@ const connectors: [MetaMask | WalletConnect | CoinbaseWallet | Network, Web3Reac
   [coinbaseWallet, coinbaseWalletHooks],
   [network, networkHooks],
 ];
-
+console.log(connectors)
 ReactDOM.render(
   <Provider store={store}>
     <Web3ReactProvider connectors={connectors}>

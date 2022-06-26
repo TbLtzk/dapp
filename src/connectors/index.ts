@@ -11,7 +11,8 @@ export const [coinbaseWallet, coinbaseWalletHooks] = initializeConnector<Coinbas
     new CoinbaseWallet({
       actions,
       options: {
-        url: '',
+        url: 'https://rpc.qtestnet.org',
+        appName: 'Your HQ',
       },
     })
 );

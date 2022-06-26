@@ -20,10 +20,11 @@ import { networkParameters, networks, ZERO_ADDRESS } from 'constants/config';
 import { AUCTIONS_TYPES, LOAD_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
 import { getParametersDependsOnUrl } from 'func/useful';
+import { coinbaseWallet } from 'connectors';
 
 const { ethereum } = window;
 
-async function requestConnect (params = {}) {
+async function requestConnect(params = {}) {
   try {
     await ethereum.request({ method: 'eth_requestAccounts' });
     await ethereum.request({
@@ -47,7 +48,7 @@ async function requestConnect (params = {}) {
   }
 }
 
-async function requestLogin () {
+async function requestLogin() {
   try {
     await ethereum.request({ method: 'eth_requestAccounts' });
   } catch (error) {
@@ -95,10 +96,13 @@ const getNetworkId = async () => {
 const web3 = new Web3(Web3.givenProvider);
 
 const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
+  const dispatch = useDispatch();
+
   const { connector, chainId, accounts, account, isActivating, isActive, provider, hooks } = useWeb3React();
 
   const [selectedWallet, setSelectedWallet] = useLocalStorage('selectedWallet', undefined);
   const [selectedChainId, setSelectedChainId] = useLocalStorage('selectedChainId', undefined);
+
   const [switchNetworkPending, setSwitchNetworkPending] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -107,9 +111,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
 
   const [init, setInit] = useState(LOAD_TYPES.loading);
-  const { rpc } = getParametersDependsOnUrl();
-
-  const dispatch = useDispatch();
+  const params = getParametersDependsOnUrl();
 
   const loadAdditionalInfo = async () => {
     dispatch(getAuctions(AUCTIONS_TYPES.all));
@@ -118,15 +120,15 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
   };
 
   const cleanConnectorStorage = useCallback((): void => {
-    console.log('clean')
+    console.log('clean');
   }, [connector]);
 
   const disconnectWallet = useCallback(async () => {
     cleanConnectorStorage();
     setSelectedWallet(undefined);
-    // @ts-expect-error no type
-    connector.deactivate();
+    // connector.deactivate();
     dispatch(setUserAddress(ZERO_ADDRESS));
+
     // @ts-expect-error close can be returned by wallet
     if (connector && connector.close) {
       // @ts-expect-error close can be returned by wallet
@@ -135,18 +137,16 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
 
     setLoading(false);
     setDeactivated(true);
-    window.location.reload();
+    // window.location.reload();
   }, []);
 
   const connectWallet = useCallback(
     async (wallet: any, selectedChainId: number | undefined) => {
       try {
         setLoading(true);
-        await connector.activate();
-        setSelectedWallet(wallet);
-        // @ts-expect-error no type
-        setSelectedChainId(selectedChainId);
-        setDeactivated(false);
+        await wallet.activate();
+        // setSelectedWallet(wallet);
+        // setSelectedChainId(selectedChainId);
       } catch (error) {
         console.error('error on activation', error);
       } finally {
@@ -157,11 +157,12 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
   );
 
   const initConnection = async () => {
-    const httpProvider = new Web3(new Web3.providers.HttpProvider(rpc));
+    const httpProvider = new Web3(new Web3.providers.HttpProvider(params.rpc));
     try {
       if (!ethereum) {
         // user without wallet
         window.web3 = httpProvider;
+        dispatch(setNetwork(params.chainId));
       } else {
         const networkId = await getNetworkId();
 

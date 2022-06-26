@@ -15,6 +15,9 @@ export default defineConfig({
     alias: {
       web3: 'web3/dist/web3.min.js',
       stream: 'stream-browserify',
+      process: 'process/browser',
+      zlib: 'browserify-zlib',
+      util: 'util',
       assets: path.resolve(__dirname, './src/assets'),
       components: path.resolve(__dirname, './src/components'),
       constants: path.resolve(__dirname, './src/constants'),
