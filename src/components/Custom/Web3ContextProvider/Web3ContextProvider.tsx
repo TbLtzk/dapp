@@ -20,11 +20,10 @@ import { networkParameters, networks, ZERO_ADDRESS } from 'constants/config';
 import { AUCTIONS_TYPES, LOAD_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
 import { getParametersDependsOnUrl } from 'func/useful';
-import { coinbaseWallet } from 'connectors';
 
 const { ethereum } = window;
 
-async function requestConnect(params = {}) {
+async function requestConnect (params = {}) {
   try {
     await ethereum.request({ method: 'eth_requestAccounts' });
     await ethereum.request({
@@ -48,7 +47,7 @@ async function requestConnect(params = {}) {
   }
 }
 
-async function requestLogin() {
+async function requestLogin () {
   try {
     await ethereum.request({ method: 'eth_requestAccounts' });
   } catch (error) {

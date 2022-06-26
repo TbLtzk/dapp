@@ -9,7 +9,6 @@ import {
   getSurplusSuccess,
   getSystemBalance,
   getSystemBalanceError,
-  getSystemBalanceSuccess,
   onPerformNettingError,
   onPerformNettingSuccess
 } from './action-creators';

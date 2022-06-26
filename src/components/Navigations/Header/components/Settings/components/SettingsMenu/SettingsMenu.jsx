@@ -24,7 +24,11 @@ function SettingsMenu ({ onClose, onLanguageOpen }) {
       <div className="popup_menu">
         <LanguageSwitcher onLanguageOpen={onLanguageOpen} />
         <ThemeSwitcher />
-        <Button alwaysEnabled style={{ width: '300px', margin: '10px' }} onClick={disconnectWallet}>
+        <Button
+          alwaysEnabled
+          style={{ width: '300px', margin: '10px' }}
+          onClick={disconnectWallet}
+        >
           Disconnect Wallet
         </Button>
       </div>
