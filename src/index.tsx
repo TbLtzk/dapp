@@ -23,7 +23,7 @@ Sentry.init({
   enabled: import.meta.env.NODE_ENV !== 'development',
 });
 
-function getWeb3Library(provider: any): Web3 {
+function getWeb3Library (provider: any): Web3 {
   const library = new Web3(provider);
   return library;
 }

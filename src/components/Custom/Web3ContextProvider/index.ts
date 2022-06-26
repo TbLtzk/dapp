@@ -38,12 +38,8 @@ export { default } from './Web3ContextProvider';
 
 //   const connectors = useConnectors(selectedWallet, selectedChainId);
 
-
-
 //   useEffect(() => {
 //     initConnection();
 //   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-
 
 // export default Web3Provider;

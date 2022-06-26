@@ -14,7 +14,7 @@ import { loadTypeSelector } from 'store/user-inf/selectors';
 
 import { LOAD_TYPES } from 'constants/statuses';
 
-function Header() {
+function Header () {
   const loadType = useSelector(loadTypeSelector);
 
   return (

@@ -11,7 +11,7 @@ import { networkSelector } from 'store/user-inf/selectors';
 
 import { getParametersDependsOnUrl } from 'func/useful';
 
-function Network() {
+function Network () {
   const network = Number(useSelector(networkSelector));
   const parameters = getParametersDependsOnUrl();
   const { switchNetwork, switchPending } = useWeb3Context();
@@ -31,7 +31,11 @@ function Network() {
     <AnimateSharedLayout>
       <StyledNetwork networksLength={networks.length}>
         {networks.map(({ chainId, title }) => (
-          <motion.div key={chainId} className="network-switch" onClick={() => handleChangeNetwork(chainId)}>
+          <motion.div
+            key={chainId}
+            className="network-switch"
+            onClick={() => handleChangeNetwork(chainId)}
+          >
             <span className={`network-label ${currentNetwork === chainId ? 'active-network' : ''}`}>{title}</span>
             {currentNetwork === chainId && <motion.div layoutId="underline" className="network-background" />}
           </motion.div>

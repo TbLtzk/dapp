@@ -28,7 +28,7 @@ import { getParametersDependsOnUrl } from 'func/useful';
 
 const { ethereum } = window;
 
-async function requestConnect(params = {}) {
+async function requestConnect (params = {}) {
   try {
     await ethereum.request({ method: 'eth_requestAccounts' });
     await ethereum.request({
@@ -52,7 +52,7 @@ async function requestConnect(params = {}) {
   }
 }
 
-async function requestLogin() {
+async function requestLogin () {
   try {
     await ethereum.request({ method: 'eth_requestAccounts' });
   } catch (error) {

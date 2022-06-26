@@ -8,7 +8,7 @@ import { useWeb3Context } from 'hooks/useWeb3Context';
 import LanguageSwitcher from '../LanguageSwitcher';
 import ThemeSwitcher from '../ThemeSwitcher';
 
-function SettingsMenu({ onClose, onLanguageOpen }) {
+function SettingsMenu ({ onClose, onLanguageOpen }) {
   const { disconnectWallet } = useWeb3Context();
 
   const ref = useRef();
