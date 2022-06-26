@@ -4,9 +4,22 @@ import { BrowserRouter } from 'react-router-dom';
 
 import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
-import { Web3ReactProvider } from '@web3-react/core';
+import { CoinbaseWallet } from '@web3-react/coinbase-wallet';
+import { Web3ReactHooks, Web3ReactProvider } from '@web3-react/core';
+import { MetaMask } from '@web3-react/metamask';
+import { Network } from '@web3-react/network';
+import { WalletConnect } from '@web3-react/walletconnect';
+import {
+  coinbaseWallet,
+  coinbaseWalletHooks,
+  metaMask,
+  metaMaskHooks,
+  network,
+  networkHooks,
+  walletConnect,
+  walletConnectHooks,
+} from 'connectors';
 import LanguageProvider from 'i18n';
-import Web3 from 'web3';
 
 import Web3ContextProvider from 'components/Custom/Web3ContextProvider';
 import Routes from 'navigation/Routes';
@@ -23,14 +36,16 @@ Sentry.init({
   enabled: import.meta.env.NODE_ENV !== 'development',
 });
 
-function getWeb3Library (provider: any): Web3 {
-  const library = new Web3(provider);
-  return library;
-}
+const connectors: [MetaMask | WalletConnect | CoinbaseWallet | Network, Web3ReactHooks][] = [
+  [metaMask, metaMaskHooks],
+  [walletConnect, walletConnectHooks],
+  [coinbaseWallet, coinbaseWalletHooks],
+  [network, networkHooks],
+];
 
 ReactDOM.render(
   <Provider store={store}>
-    <Web3ReactProvider getLibrary={getWeb3Library}>
+    <Web3ReactProvider connectors={connectors}>
       <Web3ContextProvider>
         <LanguageProvider>
           <BrowserRouter>

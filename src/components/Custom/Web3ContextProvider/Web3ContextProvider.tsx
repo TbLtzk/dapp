@@ -3,16 +3,11 @@ import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { JsonRpcProvider } from '@ethersproject/providers';
-import { AbstractConnector } from '@web3-react/abstract-connector';
 import { useWeb3React } from '@web3-react/core';
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
-import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import Web3 from 'web3';
 
 import useLocalStorage from 'hooks/useLocalStorage';
 import { Web3Context } from 'hooks/useWeb3Context';
-
-import { getWallet, WalletType } from './walletOptions';
 
 import { getAuctions } from 'store/auctions/action-creators';
 import { getCheckIsUserRootNode } from 'store/root-node/action-creators';
@@ -69,16 +64,15 @@ export type ERC20TokenType = {
 };
 
 export type Web3Data = {
-  connectWallet: (wallet: WalletType, chainId: number) => Promise<void>;
+  connectWallet: (wallet: any, chainId: number) => Promise<void>;
   disconnectWallet: () => void;
   currentAccount: string;
-  connected: boolean;
+  isActive: boolean;
   loading: boolean;
   provider: JsonRpcProvider | undefined;
   chainId: number | undefined;
   switchNetwork: (chainId: number) => Promise<void>;
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
-  error: Error | undefined;
   switchNetworkError: Error | undefined;
   switchNetworkPending: boolean;
   setSwitchNetworkError: (err: Error | undefined) => void;
@@ -101,12 +95,12 @@ const getNetworkId = async () => {
 const web3 = new Web3(Web3.givenProvider);
 
 const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
-  const { account, chainId, library: provider, activate, active, error, deactivate, setError } = useWeb3React();
+  const { connector, chainId, accounts, account, isActivating, isActive, provider, hooks } = useWeb3React();
 
   const [selectedWallet, setSelectedWallet] = useLocalStorage('selectedWallet', undefined);
   const [selectedChainId, setSelectedChainId] = useLocalStorage('selectedChainId', undefined);
   const [switchNetworkPending, setSwitchNetworkPending] = useState(false);
-  const [connector, setConnector] = useState<AbstractConnector>();
+
   const [loading, setLoading] = useState(false);
   const [deactivated, setDeactivated] = useState(false);
   const [triedCoinbase, setTriedCoinbase] = useState(false);
@@ -124,23 +118,14 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
   };
 
   const cleanConnectorStorage = useCallback((): void => {
-    if (connector instanceof WalletConnectConnector) {
-      localStorage.removeItem('walletconnect');
-    } else if (connector instanceof WalletLinkConnector) {
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:version');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:session:id');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:session:secret');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:session:linked');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:AppVersion');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:Addresses');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:walletUsername');
-    }
+    console.log('clean')
   }, [connector]);
 
   const disconnectWallet = useCallback(async () => {
     cleanConnectorStorage();
     setSelectedWallet(undefined);
-    deactivate();
+    // @ts-expect-error no type
+    connector.deactivate();
     dispatch(setUserAddress(ZERO_ADDRESS));
     // @ts-expect-error close can be returned by wallet
     if (connector && connector.close) {
@@ -154,20 +139,16 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
   }, []);
 
   const connectWallet = useCallback(
-    async (wallet: WalletType, selectedChainId: number | undefined) => {
+    async (wallet: any, selectedChainId: number | undefined) => {
       try {
         setLoading(true);
-        const connector: AbstractConnector = getWallet(wallet, selectedChainId);
-        await activate(connector, undefined, true);
-        // @ts-expect-error no type
+        await connector.activate();
         setSelectedWallet(wallet);
         // @ts-expect-error no type
         setSelectedChainId(selectedChainId);
         setDeactivated(false);
       } catch (error) {
         console.error('error on activation', error);
-        // @ts-expect-error no type
-        setError(error);
       } finally {
         setLoading(false);
       }
@@ -194,7 +175,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
 
           if (selectedWallet && accounts.length) {
             // @ts-ignore
-            await connectWallet(selectedWallet as WalletType, networkId);
+            await connectWallet(selectedWallet as any, networkId);
             // @ts-ignore
             setSelectedChainId(networkId);
             dispatch(setUserAddress(accounts[0]));
@@ -259,13 +240,12 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
               connectWallet,
               disconnectWallet,
               provider,
-              connected: active,
+              isActive,
               loading,
               chainId,
               switchNetwork,
               currentAccount: account?.toLowerCase() || '',
               addERC20Token,
-              error,
               switchNetworkError,
               switchNetworkPending,
               setSwitchNetworkError,
