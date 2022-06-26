@@ -5,7 +5,7 @@ import { networkSelector } from 'store/user-inf/selectors';
 import { networkParameters } from 'constants/config';
 import { isFeatureEnabled } from 'func/useful';
 
-type FeatureFlag = keyof typeof networkParameters['devnet']['featureFlags']
+type FeatureFlag = keyof typeof networkParameters['devnet']
 
 function useFeatureFlag (feature: FeatureFlag) {
   const network = useSelector(networkSelector);

@@ -15,6 +15,12 @@ export const networks = {
   35441: 'mainnet',
 };
 
+export const rpcUrls = {
+  [chainIds.devnet]: 'http://63.34.190.209:8545',
+  [chainIds.mainnet]: 'https://rpc.q.org',
+  [chainIds.testnet]: 'https://rpc.qtestnet.org',
+};
+
 export const indexersUrls = {
   devnet: 'http://63.34.190.209:4000',
   mainnet: 'https://indexer.q.org',
@@ -50,7 +56,6 @@ export const networkParameters = {
       symbol: 'Q ',
       decimals: 18,
     },
-    featureFlags: { aliases: true },
   },
   testnet: {
     chainId: '0x8a73',
@@ -62,7 +67,6 @@ export const networkParameters = {
       symbol: 'Q ',
       decimals: 18,
     },
-    featureFlags: {},
   },
   mainnet: {
     chainId: '0x8a71',
@@ -74,7 +78,6 @@ export const networkParameters = {
       symbol: 'Q ',
       decimals: 18,
     },
-    featureFlags: {},
   },
 };
 

@@ -1,8 +1,6 @@
-/* tslint:disable */
-import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { JsonRpcProvider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import Web3 from 'web3';
 
@@ -16,14 +14,14 @@ import { getNumberAllProposals } from 'store/voting/proposals/actions';
 
 import { getContractRegistryInstance } from 'contracts/contract-instance';
 
-import { networkParameters, networks, ZERO_ADDRESS } from 'constants/config';
+import { networkParameters, networks, rpcUrls } from 'constants/config';
 import { AUCTIONS_TYPES, LOAD_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
 import { getParametersDependsOnUrl } from 'func/useful';
 
 const { ethereum } = window;
 
-async function requestConnect (params = {}) {
+async function requestConnect(params = {}) {
   try {
     await ethereum.request({ method: 'eth_requestAccounts' });
     await ethereum.request({
@@ -32,8 +30,10 @@ async function requestConnect (params = {}) {
       params: [{ chainId: params.chainId }],
     });
   } catch (error) {
+    console.log(error)
     // @ts-expect-error no type
     if (error.code === 4902) {
+      console.log(params)
       try {
         await ethereum.request({
           method: 'wallet_addEthereumChain',
@@ -47,7 +47,7 @@ async function requestConnect (params = {}) {
   }
 }
 
-async function requestLogin () {
+async function requestLogin() {
   try {
     await ethereum.request({ method: 'eth_requestAccounts' });
   } catch (error) {
@@ -55,28 +55,28 @@ async function requestLogin () {
   }
 }
 
-export type ERC20TokenType = {
-  address: string;
-  symbol: string;
-  decimals: number;
-  image?: string;
-  aToken?: boolean;
-};
+// export type ERC20TokenType = {
+//   address: string;
+//   symbol: string;
+//   decimals: number;
+//   image?: string;
+//   aToken?: boolean;
+// };
 
-export type Web3Data = {
-  connectWallet: (wallet: any, chainId: number) => Promise<void>;
-  disconnectWallet: () => void;
-  currentAccount: string;
-  isActive: boolean;
-  loading: boolean;
-  provider: JsonRpcProvider | undefined;
-  chainId: number | undefined;
-  switchNetwork: (chainId: number) => Promise<void>;
-  addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
-  switchNetworkError: Error | undefined;
-  switchNetworkPending: boolean;
-  setSwitchNetworkError: (err: Error | undefined) => void;
-};
+// export type Web3Data = {
+//   connectWallet: (wallet: any, chainId: number) => Promise<void>;
+//   disconnectWallet: () => void;
+//   currentAccount: string;
+//   isActive: boolean;
+//   loading: boolean;
+//   provider: JsonRpcProvider | undefined;
+//   chainId: number | undefined;
+//   switchNetwork: (chainId: number) => Promise<void>;
+//   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
+//   switchNetworkError: Error | undefined;
+//   switchNetworkPending: boolean;
+//   setSwitchNetworkError: (err: Error | undefined) => void;
+// };
 
 const getNetworkId = async () => {
   const networkId = await new Promise((resolve) => {
@@ -84,7 +84,7 @@ const getNetworkId = async () => {
     const timeout = setTimeout(() => {
       window.location.reload();
     }, 5000);
-    ethereum.request({ method: 'net_version' }).then((netId: number) => {
+    ethereum.request({ method: 'net_version' }).then((netId) => {
       clearTimeout(timeout);
       resolve(netId);
     });
@@ -94,23 +94,32 @@ const getNetworkId = async () => {
 
 const web3 = new Web3(Web3.givenProvider);
 
-const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
+const CONNECTION_TYPES = {
+  notInstalled: 'notInstalled',
+  wrongNetwork: 'wrongNetwork',
+  notLogged: 'notLogged',
+  loaded: 'loaded',
+};
+
+const Web3ContextProvider = ({ children }) => {
   const dispatch = useDispatch();
+  const params = getParametersDependsOnUrl();
+
 
   const { connector, chainId, accounts, account, isActivating, isActive, provider, hooks } = useWeb3React();
 
   const [selectedWallet, setSelectedWallet] = useLocalStorage('selectedWallet', undefined);
-  const [selectedChainId, setSelectedChainId] = useLocalStorage('selectedChainId', undefined);
+  const [selectedChainId, setSelectedChainId] = useLocalStorage('selectedChainId', params.chainId);
+  const [selectedRpc, setSelectedRpc] = useLocalStorage('setSelectedRpc', params.rpc);
 
   const [switchNetworkPending, setSwitchNetworkPending] = useState(false);
 
   const [loading, setLoading] = useState(false);
-  const [deactivated, setDeactivated] = useState(false);
-  const [triedCoinbase, setTriedCoinbase] = useState(false);
-  const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
+
+  const [error, setError] = useState(null);
+  const [switchNetworkError, setSwitchNetworkError] = useState(null);
 
   const [init, setInit] = useState(LOAD_TYPES.loading);
-  const params = getParametersDependsOnUrl();
 
   const loadAdditionalInfo = async () => {
     dispatch(getAuctions(AUCTIONS_TYPES.all));
@@ -118,50 +127,52 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
     dispatch(getCheckIsUserRootNode());
   };
 
-  const cleanConnectorStorage = useCallback((): void => {
+  const cleanConnectorStorage = useCallback(() => {
     console.log('clean');
   }, [connector]);
 
   const disconnectWallet = useCallback(async () => {
-    cleanConnectorStorage();
-    setSelectedWallet(undefined);
-    // connector.deactivate();
-    dispatch(setUserAddress(ZERO_ADDRESS));
+    try {
+      setLoading(true);
+      cleanConnectorStorage();
+      setSelectedWallet(undefined);
 
-    // @ts-expect-error close can be returned by wallet
-    if (connector && connector.close) {
-      // @ts-expect-error close can be returned by wallet
-      await connector.close();
+      await connector.deactivate();
+      if (connector && connector.close) {
+        await connector.close();
+      }
+    } catch (error) {
+      setError(error.message);
+      console.error('error while disconnect', error.message);
+    } finally {
+      setLoading(false);
+      // setTimeout(() => window.location.reload(), 1000);
     }
-
-    setLoading(false);
-    setDeactivated(true);
-    // window.location.reload();
   }, []);
 
   const connectWallet = useCallback(
-    async (wallet: any, selectedChainId: number | undefined) => {
+    async (wallet) => {
       try {
         setLoading(true);
         await wallet.activate();
-        // setSelectedWallet(wallet);
-        // setSelectedChainId(selectedChainId);
       } catch (error) {
+        setError(error.message);
         console.error('error on activation', error);
       } finally {
         setLoading(false);
+        // setTimeout(() => window.location.reload(), 1000);
       }
     },
     [disconnectWallet]
   );
 
   const initConnection = async () => {
-    const httpProvider = new Web3(new Web3.providers.HttpProvider(params.rpc));
     try {
+      const httpProvider = new Web3(new Web3.providers.HttpProvider(selectedRpc));
       if (!ethereum) {
         // user without wallet
         window.web3 = httpProvider;
-        dispatch(setNetwork(params.chainId));
+        dispatch(setNetwork(selectedChainId));
       } else {
         const networkId = await getNetworkId();
 
@@ -175,7 +186,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
 
           if (selectedWallet && accounts.length) {
             // @ts-ignore
-            await connectWallet(selectedWallet as any, networkId);
+            await connectWallet(selectedWallet, networkId);
             // @ts-ignore
             setSelectedChainId(networkId);
             dispatch(setUserAddress(accounts[0]));
@@ -193,23 +204,31 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    initConnection();
-  }, []);
-
-  const switchNetwork = async (newChainId: number) => {
-    // @ts-ignore
-    const networkParam = networkParameters[networks[newChainId]];
-    if (chainId === newChainId) {
-      await requestLogin();
+  const switchNetwork = async (newChainId) => {
+    if (!ethereum) {
+      setSelectedChainId(newChainId);
+      setSelectedRpc(rpcUrls[newChainId]);
+      setTimeout(() => window.location.reload(), 1000);
     } else {
-      await requestConnect(networkParam);
+      const networkParam = networkParameters[networks[newChainId]];
+      console.log(chainId === newChainId)
+      if (chainId === newChainId) {
+        await requestLogin();
+      } else {
+        await requestConnect(networkParam);
+      }
+      setSelectedChainId(newChainId);
     }
-    window.location.reload();
   };
 
-  const addERC20Token = async ({ address, symbol, decimals, image }: ERC20TokenType): Promise<boolean> => {
-    const injectedProvider = (window as any).ethereum;
+  useEffect(() => {
+    initConnection();
+    ethereum?.on('accountsChanged', () => window.location.reload());
+    ethereum?.on('chainChanged', () => window.location.reload());
+  }, []);
+
+  const addERC20Token = async ({ address, symbol, decimals, image }) => {
+    const injectedProvider = window.ethereum;
     if (provider && account && window && injectedProvider) {
       await injectedProvider.request({
         method: 'wallet_watchAsset',
@@ -243,6 +262,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
               isActive,
               loading,
               chainId,
+              error,
               switchNetwork,
               currentAccount: account?.toLowerCase() || '',
               addERC20Token,

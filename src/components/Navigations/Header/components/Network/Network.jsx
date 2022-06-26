@@ -25,7 +25,7 @@ function Network () {
 
   const handleChangeNetwork = (chainId) => {
     setCurrentNetwork(chainId);
-    switchNetwork(chainId);
+      switchNetwork(chainId);
   };
   return (
     <AnimateSharedLayout>
