@@ -15,6 +15,12 @@ export const networks = {
   35441: 'mainnet',
 };
 
+export const dAppUrls = {
+  [chainIds.devnet]: 'http://63.34.190.209:8000',
+  [chainIds.mainnet]: 'https://hq.q.org',
+  [chainIds.testnet]: 'https://hq.qtestnet.org',
+};
+
 export const rpcUrls = {
   [chainIds.devnet]: 'http://63.34.190.209:8545',
   [chainIds.mainnet]: 'https://rpc.q.org',
@@ -47,7 +53,7 @@ export const gnosisSafeUrls = {
 
 export const networkParameters = {
   devnet: {
-    chainId: '0x8a72',
+    chainId: '8a72',
     chainName: 'Q Devnet',
     rpcUrls: ['http://63.34.190.209:8545'],
     blockExplorerUrls: ['http://52.35.57.176:8080/'],
@@ -58,7 +64,7 @@ export const networkParameters = {
     },
   },
   testnet: {
-    chainId: '0x8a73',
+    chainId: '8a73',
     chainName: 'Q Testnet',
     rpcUrls: ['https://rpc.qtestnet.org'],
     blockExplorerUrls: ['https://explorer.qtestnet.org/'],
@@ -69,7 +75,7 @@ export const networkParameters = {
     },
   },
   mainnet: {
-    chainId: '0x8a71',
+    chainId: '8a71',
     chainName: 'Q Mainnet',
     rpcUrls: ['https://rpc.q.org'],
     blockExplorerUrls: ['https://explorer.q.org'],

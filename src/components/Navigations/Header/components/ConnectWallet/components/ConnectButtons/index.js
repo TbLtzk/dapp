@@ -1,1 +1,1 @@
-export { default } from './ConnectButtons.jsx';
+export { default } from './ConnectButtons.tsx';

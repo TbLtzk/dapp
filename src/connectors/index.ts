@@ -6,6 +6,12 @@ import { Network } from '@web3-react/network';
 import { Url } from '@web3-react/url';
 import { WalletConnect } from '@web3-react/walletconnect';
 
+export enum WalletType {
+  INJECTED = 'injected', // metamask and all browser wallets
+  COINBASE = 'coinbase',
+  WALLET_CONNECT = 'wallet_connect',
+}
+
 export const [coinbaseWallet, coinbaseWalletHooks] = initializeConnector<CoinbaseWallet>(
   (actions) =>
     new CoinbaseWallet({
@@ -34,3 +40,17 @@ export const [walletConnect, walletConnectHooks] = initializeConnector<WalletCon
       },
     })
 );
+
+export const getWallet = (walletType: WalletType) => {
+  switch (walletType) {
+    case WalletType.INJECTED:
+      return metaMask;
+    case WalletType.COINBASE:
+      return coinbaseWallet;
+    case WalletType.WALLET_CONNECT:
+      return walletConnect;
+    default: {
+      throw new Error('unsupported wallet');
+    }
+  }
+};

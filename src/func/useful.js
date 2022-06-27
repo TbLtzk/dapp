@@ -1,12 +1,23 @@
 import { ParameterType } from '@q-dev/q-js-sdk';
 import { BigNumber } from 'bignumber.js';
+import { WalletType } from 'connectors';
 import { isNumber, orderBy } from 'lodash';
 
 import ErrorHandler from './ErrorHandler';
 
 import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper';
 
-import { explorerUrls, gnosisSafeUrls, indexersUrls, networkParameters, networks, PARAMS, qBridgeUrls } from 'constants/config';
+import {
+  chainIds,
+  dAppUrls,
+  explorerUrls,
+  gnosisSafeUrls,
+  indexersUrls,
+  networkParameters,
+  networks,
+  PARAMS,
+  qBridgeUrls,
+} from 'constants/config';
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import { keyRegex } from 'constants/regex';
 
@@ -15,32 +26,32 @@ export const getParametersDependsOnUrl = () => {
   return parameters || PARAMS['https://hq.qtestnet.org'];
 };
 
+export const isDevnetdApp = () => {
+  const url = window.location.origin;
+  if (dAppUrls[chainIds.mainnet] !== url && dAppUrls[chainIds.testnet] !== url) {
+    return true;
+  }
+  return false;
+};
+
 export const getIndexerUrlDependsOnChainId = (chainId) => {
   const network = networks[chainId];
-  return network
-    ? indexersUrls[network]
-    : getParametersDependsOnUrl().indexer;
+  return network ? indexersUrls[network] : getParametersDependsOnUrl().indexer;
 };
 
 export const getExplorerUrlByChainId = (chainId) => {
   const network = networks[chainId];
-  return network
-    ? explorerUrls[network]
-    : getParametersDependsOnUrl().explorer;
+  return network ? explorerUrls[network] : getParametersDependsOnUrl().explorer;
 };
 
 export const getGnosisSafeUrlByChainId = (chainId) => {
   const network = networks[chainId];
-  return network
-    ? gnosisSafeUrls[network]
-    : getParametersDependsOnUrl().gnosisSafe;
+  return network ? gnosisSafeUrls[network] : getParametersDependsOnUrl().gnosisSafe;
 };
 
 export const getQBridgeUrlByChainId = (chainId) => {
   const network = networks[chainId];
-  return network
-    ? qBridgeUrls[network]
-    : getParametersDependsOnUrl().qBridge;
+  return network ? qBridgeUrls[network] : getParametersDependsOnUrl().qBridge;
 };
 export const isFeatureEnabled = (feature, chainId) => {
   const networkParams = networkParameters[networks[chainId]];
@@ -219,3 +230,42 @@ export async function fetchBlockNumber (block = 'latest') {
 export function trimAddress (address) {
   return `${address.slice(0, 5)}...${address.slice(-4)}`;
 }
+
+export const getChainId = async (provider) => {
+  const chainId = await new Promise((resolve) => {
+    /* Fix issue with first Metamask launch. */
+    const timeout = setTimeout(() => {
+      window.location.reload();
+    }, 5000);
+    provider.request({ method: 'net_version' }).then((netId) => {
+      clearTimeout(timeout);
+      resolve(netId);
+    });
+  });
+  return chainId;
+};
+
+export const getProvider = (ethereum, selectedWallet) => {
+  if (!ethereum.providers?.length) {
+    return ethereum;
+  }
+
+  let provider;
+  switch (selectedWallet) {
+    case WalletType.COINBASE:
+      provider = ethereum.providers.find(({ isCoinbaseWallet }) => isCoinbaseWallet);
+      break;
+    case WalletType.INJECTED:
+      provider = ethereum.providers.find(({ isMetaMask }) => isMetaMask);
+      break;
+  }
+
+  if (provider) {
+    ethereum.setSelectedProvider(provider);
+  }
+  return provider;
+};
+
+export const reloadPage = (timeout = 1000) => {
+  setTimeout(() => window.location.reload(), timeout);
+};

@@ -10,7 +10,22 @@ export const Wrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #0b2545;
+  color: white;
+  text-align: center;
+
+
+  .breathing-q {
+    width: 100px;
+    height: 100px;
+    img {
+      filter: brightness(0) invert(1);
+      width: 100%;
+      height: auto;
+    }
+  }
 `;
+
 export const Shadow = styled.div`
   width: 100%;
   height: 100%;
@@ -30,6 +45,6 @@ export const WrapText = styled.div`
   align-items: center;
 
   p {
-    color: #FFFFFF;
+    color: #ffffff;
   }
 `;

@@ -1,12 +1,23 @@
 import styled from 'styled-components';
 
-export const StyledNetwork = styled.div<{ networksLength: number }>`
-  width: ${(p) => p.networksLength * 90}px; // 90px for one
+export const StyledNetwork = styled.div<{ networksLength: number; isQNetwork: boolean }>`
+  width: ${(p) => (p.isQNetwork ? p.networksLength * 90 : 200)}px; // 90px for one
   height: 40px;
   background-color: ${(p) => p.theme.colors.oxfordBlueTint1};
   border-radius: 24px;
   display: flex;
   justify-content: space-around;
+  cursor: pointer;
+
+  .network-wrong {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    p {
+      font-size: 15px;
+      margin-bottom: 0;
+    }
+  }
 
   .network-switch {
     width: 100%;

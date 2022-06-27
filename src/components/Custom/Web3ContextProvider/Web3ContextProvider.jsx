@@ -2,10 +2,14 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { useWeb3React } from '@web3-react/core';
+import { getWallet } from 'connectors';
+import { motion } from 'framer-motion';
 import Web3 from 'web3';
 
 import useLocalStorage from 'hooks/useLocalStorage';
 import { Web3Context } from 'hooks/useWeb3Context';
+
+import { Wrap } from './styles';
 
 import { getAuctions } from 'store/auctions/action-creators';
 import { getCheckIsUserRootNode } from 'store/root-node/action-creators';
@@ -17,44 +21,9 @@ import { getContractRegistryInstance } from 'contracts/contract-instance';
 import { networkParameters, networks, rpcUrls } from 'constants/config';
 import { AUCTIONS_TYPES, LOAD_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
-import { getParametersDependsOnUrl } from 'func/useful';
+import { getChainId, getParametersDependsOnUrl, getProvider, reloadPage } from 'func/useful';
 
 const { ethereum } = window;
-
-async function requestConnect(params = {}) {
-  try {
-    await ethereum.request({ method: 'eth_requestAccounts' });
-    await ethereum.request({
-      method: 'wallet_switchEthereumChain',
-      // @ts-expect-error no type
-      params: [{ chainId: params.chainId }],
-    });
-  } catch (error) {
-    console.log(error)
-    // @ts-expect-error no type
-    if (error.code === 4902) {
-      console.log(params)
-      try {
-        await ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [params],
-        });
-      } catch (error) {
-        ErrorHandler.processWithoutFeedback(error);
-      }
-    }
-    ErrorHandler.processWithoutFeedback(error);
-  }
-}
-
-async function requestLogin() {
-  try {
-    await ethereum.request({ method: 'eth_requestAccounts' });
-  } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
-  }
-}
-
 // export type ERC20TokenType = {
 //   address: string;
 //   symbol: string;
@@ -78,48 +47,21 @@ async function requestLogin() {
 //   setSwitchNetworkError: (err: Error | undefined) => void;
 // };
 
-const getNetworkId = async () => {
-  const networkId = await new Promise((resolve) => {
-    /* Fix issue with first Metamask launch. */
-    const timeout = setTimeout(() => {
-      window.location.reload();
-    }, 5000);
-    ethereum.request({ method: 'net_version' }).then((netId) => {
-      clearTimeout(timeout);
-      resolve(netId);
-    });
-  });
-  return networkId;
-};
-
-const web3 = new Web3(Web3.givenProvider);
-
-const CONNECTION_TYPES = {
-  notInstalled: 'notInstalled',
-  wrongNetwork: 'wrongNetwork',
-  notLogged: 'notLogged',
-  loaded: 'loaded',
-};
-
 const Web3ContextProvider = ({ children }) => {
   const dispatch = useDispatch();
   const params = getParametersDependsOnUrl();
 
+  const [loadAppType, setLoadAppType] = useState(LOAD_TYPES.loading);
 
-  const { connector, chainId, accounts, account, isActivating, isActive, provider, hooks } = useWeb3React();
+  const { connector, chainId, isActive, provider } = useWeb3React();
 
   const [selectedWallet, setSelectedWallet] = useLocalStorage('selectedWallet', undefined);
   const [selectedChainId, setSelectedChainId] = useLocalStorage('selectedChainId', params.chainId);
   const [selectedRpc, setSelectedRpc] = useLocalStorage('setSelectedRpc', params.rpc);
 
-  const [switchNetworkPending, setSwitchNetworkPending] = useState(false);
-
   const [loading, setLoading] = useState(false);
-
   const [error, setError] = useState(null);
   const [switchNetworkError, setSwitchNetworkError] = useState(null);
-
-  const [init, setInit] = useState(LOAD_TYPES.loading);
 
   const loadAdditionalInfo = async () => {
     dispatch(getAuctions(AUCTIONS_TYPES.all));
@@ -128,16 +70,22 @@ const Web3ContextProvider = ({ children }) => {
   };
 
   const cleanConnectorStorage = useCallback(() => {
-    console.log('clean');
+    localStorage.removeItem('-walletlink:https://www.walletlink.org:version');
+    localStorage.removeItem('-walletlink:https://www.walletlink.org:session:id');
+    localStorage.removeItem('-walletlink:https://www.walletlink.org:session:secret');
+    localStorage.removeItem('-walletlink:https://www.walletlink.org:session:linked');
+    localStorage.removeItem('-walletlink:https://www.walletlink.org:AppVersion');
+    localStorage.removeItem('-walletlink:https://www.walletlink.org:Addresses');
+    localStorage.removeItem('-walletlink:https://www.walletlink.org:walletUsername');
+    localStorage.removeItem('walletconnect');
   }, [connector]);
 
   const disconnectWallet = useCallback(async () => {
     try {
       setLoading(true);
-      cleanConnectorStorage();
       setSelectedWallet(undefined);
-
-      await connector.deactivate();
+      cleanConnectorStorage();
+      connector.deactivate ? await connector.deactivate() : await connector.resetState();
       if (connector && connector.close) {
         await connector.close();
       }
@@ -146,27 +94,31 @@ const Web3ContextProvider = ({ children }) => {
       console.error('error while disconnect', error.message);
     } finally {
       setLoading(false);
-      // setTimeout(() => window.location.reload(), 1000);
+      reloadPage();
     }
-  }, []);
+  }, [connector]);
 
   const connectWallet = useCallback(
-    async (wallet) => {
+    async (walletType, reload = false) => {
       try {
         setLoading(true);
-        await wallet.activate();
+        const wallet = getWallet(walletType);
+        await wallet.activate(undefined);
+        setSelectedWallet(walletType);
+        if (reload) {
+          reloadPage();
+        }
       } catch (error) {
         setError(error.message);
         console.error('error on activation', error);
       } finally {
         setLoading(false);
-        // setTimeout(() => window.location.reload(), 1000);
       }
     },
-    [disconnectWallet]
+    [disconnectWallet, connector]
   );
 
-  const initConnection = async () => {
+  const initConnection = useCallback(async () => {
     try {
       const httpProvider = new Web3(new Web3.providers.HttpProvider(selectedRpc));
       if (!ethereum) {
@@ -174,52 +126,52 @@ const Web3ContextProvider = ({ children }) => {
         window.web3 = httpProvider;
         dispatch(setNetwork(selectedChainId));
       } else {
-        const networkId = await getNetworkId();
+        const provider = getProvider(ethereum, selectedWallet);
+        const chainId = await getChainId(provider);
 
-        // @ts-ignore
-        if (!networks[networkId]) {
+        if (!networks[chainId]) {
           // wrong network
+
           window.web3 = httpProvider;
         } else {
-          window.web3 = new Web3(ethereum);
-          const accounts = await web3.eth.getAccounts();
+          window.web3 = new Web3(provider);
+
+          const accounts = await window.web3.eth.getAccounts();
 
           if (selectedWallet && accounts.length) {
-            // @ts-ignore
-            await connectWallet(selectedWallet, networkId);
-            // @ts-ignore
-            setSelectedChainId(networkId);
+            await connectWallet(selectedWallet, false);
+            setSelectedChainId(chainId);
             dispatch(setUserAddress(accounts[0]));
             dispatch(setLoadType(LOAD_TYPES.loaded));
           }
         }
-        dispatch(setNetwork(networkId));
+        dispatch(setNetwork(chainId));
       }
       await getContractRegistryInstance();
       await loadAdditionalInfo();
-      setInit(LOAD_TYPES.loaded);
+      setLoadAppType(LOAD_TYPES.loaded);
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
-      setInit(LOAD_TYPES.initError);
+      setLoadAppType(LOAD_TYPES.initError);
     }
-  };
+  }, []);
 
-  const switchNetwork = async (newChainId) => {
-    if (!ethereum) {
-      setSelectedChainId(newChainId);
-      setSelectedRpc(rpcUrls[newChainId]);
-      setTimeout(() => window.location.reload(), 1000);
-    } else {
-      const networkParam = networkParameters[networks[newChainId]];
-      console.log(chainId === newChainId)
-      if (chainId === newChainId) {
-        await requestLogin();
+  const switchNetwork = useCallback(async (newChainId = params.chainId) => {
+    try {
+      if (!ethereum) {
+        setSelectedChainId(newChainId);
+        setSelectedRpc(rpcUrls[newChainId]);
+        reloadPage();
       } else {
-        await requestConnect(networkParam);
+        const networkParam = networkParameters[networks[newChainId]];
+        const isSameNetwork = chainId === newChainId;
+        await connector.activate(isSameNetwork ? undefined : networkParam).catch(() => setSwitchNetworkError(true));
+        setSelectedChainId(newChainId);
       }
-      setSelectedChainId(newChainId);
+    } catch (error) {
+      setError(error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     initConnection();
@@ -227,30 +179,16 @@ const Web3ContextProvider = ({ children }) => {
     ethereum?.on('chainChanged', () => window.location.reload());
   }, []);
 
-  const addERC20Token = async ({ address, symbol, decimals, image }) => {
-    const injectedProvider = window.ethereum;
-    if (provider && account && window && injectedProvider) {
-      await injectedProvider.request({
-        method: 'wallet_watchAsset',
-        params: {
-          type: 'ERC20',
-          options: {
-            address,
-            symbol,
-            decimals,
-            image,
-          },
-        },
-      });
-
-      return true;
-    }
-    return false;
-  };
-
-  switch (init) {
+  switch (loadAppType) {
     case LOAD_TYPES.initError:
-      return <div>Init Errors</div>;
+      return (
+        <Wrap>
+          <div>
+            <h5>Init error</h5>
+            <p>Please, refresh the page</p>
+          </div>
+        </Wrap>
+      );
     case LOAD_TYPES.loaded:
       return (
         <Web3Context.Provider
@@ -264,11 +202,9 @@ const Web3ContextProvider = ({ children }) => {
               chainId,
               error,
               switchNetwork,
-              currentAccount: account?.toLowerCase() || '',
-              addERC20Token,
               switchNetworkError,
-              switchNetworkPending,
               setSwitchNetworkError,
+              setError,
             },
           }}
         >
@@ -277,7 +213,17 @@ const Web3ContextProvider = ({ children }) => {
       );
     case LOAD_TYPES.loading:
     default:
-      return <div>Loading</div>;
+      return (
+        <Wrap>
+          <motion.div
+            className="breathing-q"
+            animate={{ scale: 1.2 }}
+            transition={{ repeatType: Infinity, duration: 0.8 }}
+          >
+            <img src="/logo.png" alt="q" />
+          </motion.div>
+        </Wrap>
+      );
   }
 };
 

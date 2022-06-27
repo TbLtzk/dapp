@@ -24,11 +24,7 @@ function ConnectWallet () {
         style={{ margin: '0 0 0 20px' }}
         onClick={handleOpen}
       >
-        <img
-          style={{ width: '20px', marginRight: '5px' }}
-          src="/icons/metamask.svg"
-          alt="metamask"
-        />
+        <i style={{ fontSize: '15px', margin: '0 5px 0 0' }} className="mdi mdi-wallet-outline select-icon" />
         {t('CONNECT_WALLET')}
       </Button>
 
