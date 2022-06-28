@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "vite",
-    "build": "vite build",
+    "build": "cross-env NODE_OPTIONS=--max_old_space_size=4096 vite build",
     "preview": "vite preview",
     "test": "react-scripts test",
     "i18n:compile": "node scripts/compileLangs.js",
@@ -38,6 +38,7 @@
     "bignumber.js": "^9.0.1",
     "bootstrap": "^4.6.0",
     "buffer": "^6.0.3",
+    "cross-env": "^7.0.3",
     "framer-motion": "^4.1.17",
     "i18next": "^21.8.10",
     "i18next-browser-languagedetector": "^6.1.4",
