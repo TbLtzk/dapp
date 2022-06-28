@@ -2,16 +2,16 @@ FROM node:16.10.0 AS builder
 
 WORKDIR /app
 
-COPY .npmrc tsconfig.json vite.config.js package.json package-lock.json .eslintrc ./
+COPY .npmrc tsconfig.json vite.config.js package.json yarn.lock .eslintrc ./
 ARG NPM_TOKEN
-RUN npm config set '//gitlab.com/api/v4/packages/npm/:_authToken' $NPM_TOKEN
-RUN npm ci --legacy-peer-deps
+RUN yarn config set '//gitlab.com/api/v4/packages/npm/:_authToken' $NPM_TOKEN
+RUN yarn --frozen-lockfile
 
 COPY public/ public/
 COPY src/ src/
 COPY index.html ./
 
-RUN npm run build
+RUN yarn build
 
 FROM nginx:stable-alpine
 

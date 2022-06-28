@@ -4,8 +4,14 @@ import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 import eslint from 'vite-plugin-eslint';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 export default defineConfig({
-  plugins: [react(), eslint(), checker({ typescript: true })],
+  plugins: [
+    react(),
+    !isProduction && checker({ typescript: true }),
+    !isProduction && eslint()
+  ],
   optimizeDeps: {
     esbuildOptions: {
       define: { global: 'globalThis' },

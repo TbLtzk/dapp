@@ -10,18 +10,18 @@ App uses React, Redux/Redux-Saga, Styled Components
 
 Log in to GitLab NPM package registry. Token could be retrieved at GitLab User Settings / Access Tokens with read_api option enabled.
 ```
-npm config set '//gitlab.com/api/v4/packages/npm/:_authToken' <token>
+yarn config set '//gitlab.com/api/v4/packages/npm/:_authToken' <token>
 ```
 
 Install package dependencies
 ```
-  npm install
+  yarn install
 ```
 
 ## Run locally
 
 ```
-  npm start
+  yarn start
 ```
 
 Runs the app in the development mode.
