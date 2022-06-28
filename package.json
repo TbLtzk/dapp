@@ -1,6 +1,6 @@
 {
   "name": "q-hq-dapp",
-  "version": "0.5.56",
+  "version": "v1.22.19",
   "private": true,
   "scripts": {
     "start": "vite",
