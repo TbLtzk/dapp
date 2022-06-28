@@ -34,6 +34,7 @@ export type Web3Data = {
   chainId: number | undefined;
   switchNetwork: (chainId: number, reload: boolean) => Promise<void>;
   switchNetworkError: boolean | null;
+  success: boolean;
   setSwitchNetworkError: (err: boolean | null) => void;
 };
 
@@ -47,12 +48,12 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
 
   const { connector, chainId } = useWeb3React();
 
+  const [selectedRpc, setSelectedRpc] = useLocalStorage('setSelectedRpc', params.rpc);
   const [selectedWallet, setSelectedWallet] = useLocalStorage<undefined | WalletType>('selectedWallet', undefined);
   const [selectedChainId, setSelectedChainId] = useLocalStorage('selectedChainId', params.chainId);
-  const [selectedRpc, setSelectedRpc] = useLocalStorage('setSelectedRpc', params.rpc);
-
-  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<boolean | null>(null);
 
   const loadAdditionalInfo = async () => {
@@ -70,7 +71,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
     localStorage.removeItem('-walletlink:https://www.walletlink.org:Addresses');
     localStorage.removeItem('-walletlink:https://www.walletlink.org:walletUsername');
     localStorage.removeItem('walletconnect');
-  }, [connector]);
+  }, []);
 
   const disconnectWallet = useCallback(async () => {
     try {
@@ -98,6 +99,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
         setLoading(true);
         const wallet = getWallet(walletType);
         await wallet.activate(undefined);
+        setSuccess(true);
         setSelectedWallet(walletType);
         if (reload) {
           reloadPage();
@@ -196,13 +198,13 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
             disconnectWallet,
             loading,
             chainId,
+            success,
             error,
             setError,
             switchNetwork,
             switchNetworkError,
             setSwitchNetworkError,
           }}
-
         >
           {children}
         </Web3Context.Provider>

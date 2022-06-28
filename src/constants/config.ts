@@ -51,16 +51,12 @@ export const gnosisSafeUrls = {
   testnet: 'https://multisig-ui.qtestnet.org',
 };
 
-export const features = {
+export const featureFlags = {
   devnet: {
-    featureFlags: { aliases: true },
+    aliases: true,
   },
-  testnet: {
-    featureFlags: {},
-  },
-  mainnet: {
-    featureFlags: {},
-  },
+  testnet: {},
+  mainnet: {},
 };
 
 export const networkParameters: { [key: string]: any } = {

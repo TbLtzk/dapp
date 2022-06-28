@@ -90,7 +90,7 @@ export const StyledConnectWalletModal = styled.div`
     }
   }
 
-  .connect-error {
+  .connect {
     width: 80%;
     margin: 0 auto 0 auto;
     text-align: center;

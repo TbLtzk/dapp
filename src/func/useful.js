@@ -182,6 +182,6 @@ export function trimAddress (address) {
   return `${address.slice(0, 5)}...${address.slice(-4)}`;
 }
 
-export const reloadPage = (timeout = 1000) => {
+export const reloadPage = (timeout = 500) => {
   setTimeout(() => window.location.reload(), timeout);
 };

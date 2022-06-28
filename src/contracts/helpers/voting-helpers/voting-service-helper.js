@@ -12,7 +12,7 @@ export default class VotingService {
     this.contractName = contractName;
   }
 
-  async getAddress () {
+  getAddress () {
     const { userInf } = store.getState();
     return userInf.userAddress;
   }
@@ -23,7 +23,7 @@ export default class VotingService {
   }
 
   async hasUserVotedVetoed (id) {
-    const address = await this.getAddress();
+    const address = this.getAddress();
     if (address === ZERO_ADDRESS) {
       return { userVetoed: false, userVoted: false };
     } else {
@@ -64,7 +64,7 @@ export default class VotingService {
   }
 
   async voteAgainst (id, userAddress) {
-    const address = await this.getAddress();
+    const address = this.getAddress();
 
     if (address === ZERO_ADDRESS) {
       return true;
@@ -76,7 +76,7 @@ export default class VotingService {
   }
 
   async voteFor (id, userAddress) {
-    const address = await this.getAddress();
+    const address = this.getAddress();
 
     if (address === ZERO_ADDRESS) {
       return true;
@@ -88,7 +88,7 @@ export default class VotingService {
   }
 
   async veto (id, userAddress) {
-    const address = await this.getAddress();
+    const address = this.getAddress();
 
     if (address === ZERO_ADDRESS) {
       return true;
@@ -100,7 +100,7 @@ export default class VotingService {
   }
 
   async execute (id, userAddress) {
-    const address = await this.getAddress();
+    const address = this.getAddress();
 
     if (address === ZERO_ADDRESS) return;
 
@@ -113,7 +113,7 @@ export default class VotingService {
   }
 
   async approve (id, userAddress) {
-    const address = await this.getAddress();
+    const address = this.getAddress();
 
     if (address === ZERO_ADDRESS) return;
 

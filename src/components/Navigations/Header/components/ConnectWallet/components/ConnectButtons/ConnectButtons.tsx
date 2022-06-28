@@ -6,7 +6,7 @@ import { useWeb3Context } from 'context/Web3ContextProvider';
 import Button from 'components/Base/Button';
 
 function ConnectButtons () {
-  const { connectWallet, loading, error, setError } = useWeb3Context();
+  const { connectWallet, success, loading, error, setError } = useWeb3Context();
 
   useEffect(() => {
     return () => {
@@ -14,12 +14,20 @@ function ConnectButtons () {
     };
   }, []);
 
+  if (success) {
+    return (
+      <div className="connect">
+        <h5>Success!</h5>
+        <p>Refreshing the page...</p>
+      </div>
+    );
+  }
   if (loading) {
     return <div className="connect-loading">Loading...</div>;
   }
   if (error) {
     return (
-      <div className="connect-error">
+      <div className="connect">
         <p>Error while connecting to wallet, please refresh the page and try again</p>
       </div>
     );

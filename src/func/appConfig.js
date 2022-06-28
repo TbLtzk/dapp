@@ -4,7 +4,7 @@ import {
   chainIds,
   dAppUrls,
   explorerUrls,
-  features,
+  featureFlags,
   gnosisSafeUrls,
   indexersUrls,
   networks,
@@ -84,6 +84,6 @@ export const getQBridgeUrlByChainId = (chainId) => {
   return network ? qBridgeUrls[network] : getParametersDependsOnUrl().qBridge;
 };
 export const isFeatureEnabled = (feature, chainId) => {
-  const networkParams = features[networks[chainId]];
-  return networkParams?.featureFlags?.[feature] ?? false;
+  const networkParams = featureFlags[networks[chainId]];
+  return networkParams?.[feature] ?? false;
 };
