@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "vite",
-    "build": "cross-env NODE_OPTIONS=--max_old_space_size=4096 vite build",
+    "build": "cross-env NODE_OPTIONS=--max_old_space_size=8192 vite build",
     "preview": "vite preview",
     "test": "react-scripts test",
     "i18n:compile": "node scripts/compileLangs.js",

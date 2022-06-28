@@ -89,12 +89,12 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       ErrorHandler.processWithoutFeedback(error);
     } finally {
       setLoading(false);
-      reloadPage();
+      reloadPage(0);
     }
   }, [connector]);
 
   const connectWallet = useCallback(
-    async (walletType: WalletType, reload = false) => {
+    async (walletType: WalletType, reload = false as boolean) => {
       try {
         setLoading(true);
         const wallet = getWallet(walletType);
