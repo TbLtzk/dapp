@@ -31,27 +31,17 @@ stages:
     - scp production.yml $DEPLOY_USER@$DEPLOY_HOST:~/dapp/docker-compose.yml
     - ssh $DEPLOY_USER@$DEPLOY_HOST "cd ~/dapp && IMAGE=$IMAGE docker-compose pull && IMAGE=$IMAGE docker-compose up -d"
 
-compile:
-  image: node:lts
-  stage: build
-  only:
-    - master
-    - merge_request
-  script:
-    - npm config set '//gitlab.com/api/v4/packages/npm/:_authToken' $NPM_TOKEN
-    - npm ci --legacy-peer-deps
-    - npm run build
-
-lint:
+test:
   image: node:lts
   stage: test
   only:
     - master
     - merge_request
   script:
-    - npm config set '//gitlab.com/api/v4/packages/npm/:_authToken' $NPM_TOKEN
-    - npm ci --legacy-peer-deps
-    - npm run lint
+    - yarn config set '//gitlab.com/api/v4/packages/npm/:_authToken' $NPM_TOKEN
+    - yarn --frozen-lockfile
+    - yarn lint
+    - yarn build
 
 build:
   <<: [*docker-login]
