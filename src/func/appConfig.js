@@ -7,7 +7,6 @@ import {
   features,
   gnosisSafeUrls,
   indexersUrls,
-  networkParameters,
   networks,
   PARAMS,
   qBridgeUrls,
