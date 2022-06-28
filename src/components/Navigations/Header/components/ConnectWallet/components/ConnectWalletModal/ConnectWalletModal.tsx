@@ -42,7 +42,7 @@ function ConnectWalletModal ({ modalOpen, onModalClose }: Props) {
           </motion.div>
         </div>
         <div className="card__line" />
-        {isChecked && <ConnectButtons docsUrl={docsUrl} />}
+        {isChecked && <ConnectButtons />}
 
         <div className="connect_terms-of-service">
           <Checkbox

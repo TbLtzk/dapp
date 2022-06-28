@@ -3,7 +3,8 @@ import { orderBy } from 'lodash';
 
 import { getAccountAliasesInstance } from 'contracts/contract-instance';
 
-import { fetchBlockNumber, isFeatureEnabled, transformToHex } from 'func/useful';
+import { isFeatureEnabled } from 'func/appConfig';
+import { fetchBlockNumber, transformToHex } from 'func/useful';
 
 export async function getAliasEvents () {
   const contract = await getAccountAliasesInstance();

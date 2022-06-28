@@ -48,7 +48,6 @@ export const StyledConnectWalletModal = styled.div`
     margin-top: 20px;
     text-align: center;
 
-    
     a {
       display: inline-block;
       cursor: pointer;
@@ -63,7 +62,22 @@ export const StyledConnectWalletModal = styled.div`
     button {
       margin-bottom: 10px;
     }
+    .connect-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .icon {
+        width: 23px;
+        height: auto;
+      }
+
+      p {
+        margin-left: 5px;
+        margin-bottom: 0;
+      }
+    }
   }
+
   .install_metamask {
     text-align: center;
     margin-bottom: 10px;
@@ -74,5 +88,15 @@ export const StyledConnectWalletModal = styled.div`
     a {
       color: ${(props) => props.theme.colors.oxfordBlue};
     }
+  }
+
+  .connect {
+    width: 80%;
+    margin: 0 auto 0 auto;
+    text-align: center;
+  }
+  .connect-loading {
+    text-align: center;
+    height: 30px;
   }
 `;

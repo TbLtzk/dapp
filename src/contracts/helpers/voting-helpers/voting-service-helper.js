@@ -1,6 +1,6 @@
 import { ParameterType, ProposalStatus } from '@q-dev/q-js-sdk';
 
-import { address } from 'components/Custom/LoadingMetaMask/LoadingMetaMask';
+import { store } from 'store';
 
 import { getInstance, getRootNodesInstance } from 'contracts/contract-instance';
 
@@ -12,12 +12,18 @@ export default class VotingService {
     this.contractName = contractName;
   }
 
+  getAddress () {
+    const { userInf } = store.getState();
+    return userInf.userAddress;
+  }
+
   async getContractInstance () {
     const initInstance = getInstance(this.contractName);
     return initInstance();
   }
 
   async hasUserVotedVetoed (id) {
+    const address = this.getAddress();
     if (address === ZERO_ADDRESS) {
       return { userVetoed: false, userVoted: false };
     } else {
@@ -58,6 +64,8 @@ export default class VotingService {
   }
 
   async voteAgainst (id, userAddress) {
+    const address = this.getAddress();
+
     if (address === ZERO_ADDRESS) {
       return true;
     } else {
@@ -68,6 +76,8 @@ export default class VotingService {
   }
 
   async voteFor (id, userAddress) {
+    const address = this.getAddress();
+
     if (address === ZERO_ADDRESS) {
       return true;
     } else {
@@ -78,6 +88,8 @@ export default class VotingService {
   }
 
   async veto (id, userAddress) {
+    const address = this.getAddress();
+
     if (address === ZERO_ADDRESS) {
       return true;
     } else {
@@ -88,6 +100,8 @@ export default class VotingService {
   }
 
   async execute (id, userAddress) {
+    const address = this.getAddress();
+
     if (address === ZERO_ADDRESS) return;
 
     const contract = await this.getContractInstance();
@@ -99,6 +113,8 @@ export default class VotingService {
   }
 
   async approve (id, userAddress) {
+    const address = this.getAddress();
+
     if (address === ZERO_ADDRESS) return;
 
     const contract = await this.getContractInstance();
@@ -143,13 +159,13 @@ export default class VotingService {
 
     const pastEvents = await contract.instance.getPastEvents('ProposalCreated', {
       fromBlock,
-      toBlock
+      toBlock,
     });
 
     return pastEvents.map((evt) => ({
       blockNumber: evt.blockNumber,
       id: evt.returnValues._id || evt.returnValues._proposalId,
-      contract: this.contractName
+      contract: this.contractName,
     }));
   }
 
@@ -179,7 +195,7 @@ export default class VotingService {
       return {
         parameterType: item.paramType,
         parameterValue: value,
-        parameterKey: item.paramKey
+        parameterKey: item.paramKey,
       };
     });
   }

@@ -27,8 +27,10 @@ function Header () {
 
       <ElementsWrapper>
         <Network />
-        {loadType !== LOAD_TYPES.loaded ? <ConnectWallet /> : <Address />}
-        <Settings />
+        <div>
+          {loadType === LOAD_TYPES.loaded ? <Address /> : <ConnectWallet />}
+          <Settings />
+        </div>
       </ElementsWrapper>
     </HeaderWrapper>
   );

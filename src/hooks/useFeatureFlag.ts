@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import { networkSelector } from 'store/user-inf/selectors';
 
 import { networkParameters } from 'constants/config';
-import { isFeatureEnabled } from 'func/useful';
+import { isFeatureEnabled } from 'func/appConfig';
 
-type FeatureFlag = keyof typeof networkParameters['devnet']['featureFlags']
+type FeatureFlag = keyof typeof networkParameters['devnet']
 
 function useFeatureFlag (feature: FeatureFlag) {
   const network = useSelector(networkSelector);

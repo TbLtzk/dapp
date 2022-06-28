@@ -7,7 +7,7 @@ import { EcosystemAppsStyle } from '../../styles';
 import { theme } from 'store/theme/selectors';
 import { networkSelector } from 'store/user-inf/selectors';
 
-import { getExplorerUrlByChainId, getGnosisSafeUrlByChainId, getQBridgeUrlByChainId } from 'func/useful';
+import { getExplorerUrlByChainId, getGnosisSafeUrlByChainId, getQBridgeUrlByChainId } from 'func/appConfig';
 
 function EcosystemApps () {
   const themeColor = useSelector(theme);

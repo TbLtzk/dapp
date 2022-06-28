@@ -1,11 +1,15 @@
 import { ProposalStatus } from '@q-dev/q-js-sdk';
 
-import { address } from 'components/Custom/LoadingMetaMask/LoadingMetaMask';
-
 import { getStatusTransformation } from './base-voting-helper';
 import VotingService from './voting-service-helper';
 
-import { getRootNodesInstance, getRootNodeSlashingEscrowInstance, getValidatorSlashingEscrowInstance } from 'contracts/contract-instance';
+import { store } from 'store';
+
+import {
+  getRootNodesInstance,
+  getRootNodeSlashingEscrowInstance,
+  getValidatorSlashingEscrowInstance,
+} from 'contracts/contract-instance';
 
 import { ZERO_ADDRESS } from 'constants/config';
 import { CONTRACTS_NAMES } from 'constants/contracts';
@@ -16,6 +20,9 @@ import { transformToPercentage } from 'func/formatters';
 
 export default class SlashingVoting extends VotingService {
   async getProposalAdditionalData (response, id) {
+    const { userInf } = store.getState();
+    const address = userInf.userAddress;
+
     const isValidatorSlashingMode = this.contractName === CONTRACTS_NAMES.validatorsSlashingVoting;
 
     const weightFor = response.base.counters.weightFor;
@@ -34,13 +41,13 @@ export default class SlashingVoting extends VotingService {
     const objEscrow = {
       objection: {},
       decision: {},
-      types: {}
+      types: {},
     };
 
     if (weightFor > 0 || weightAgainst > 0) {
       objRes.numberProposalVotes = {
         votesFor: Number(objRes.votesFor),
-        votesAgainst: Number(objRes.votesAgainst)
+        votesAgainst: Number(objRes.votesAgainst),
       };
     }
 
@@ -56,7 +63,7 @@ export default class SlashingVoting extends VotingService {
         STATUSES.accepted,
         STATUSES.pending,
         STATUSES.decided,
-        STATUSES.executed
+        STATUSES.executed,
       ][Number(status)];
 
       const escrowArbitrationInfo = await contract.arbitrationInfos(id);
@@ -70,9 +77,7 @@ export default class SlashingVoting extends VotingService {
         appealEndTime: fromSolDateFormattingT1(escrowArbitrationInfo.params.appealEndTime),
         proposerRemark: escrowArbitrationInfo.proposerRemark,
         appealConfirmed: escrowArbitrationInfo.appealConfirmed,
-        objectionEndTime: fromSolDateFormattingT1(
-          escrowArbitrationInfo.params.objectionEndTime
-        )
+        objectionEndTime: fromSolDateFormattingT1(escrowArbitrationInfo.params.objectionEndTime),
       };
 
       objEscrow.decision = {
@@ -83,16 +88,13 @@ export default class SlashingVoting extends VotingService {
         proposer: escrowArbitrationInfo.decision.proposer,
         confirmationCount: escrowDecisionStats.confirmationCount,
         requiredConfirmations: escrowDecisionStats.requiredConfirmations,
-        currentConfirmationPercentage: transformToPercentage(
-          escrowDecisionStats.currentConfirmationPercentage
-        ),
+        currentConfirmationPercentage: transformToPercentage(escrowDecisionStats.currentConfirmationPercentage),
       };
 
       objEscrow.types = {
         objection: response.candidate === address,
         isRootNode: await rootNodesInstance.isMember(address),
-        recallDecision: address !== ZERO_ADDRESS &&
-          escrowArbitrationInfo.decision.proposer === address
+        recallDecision: address !== ZERO_ADDRESS && escrowArbitrationInfo.decision.proposer === address,
       };
     }
 
@@ -107,9 +109,10 @@ export default class SlashingVoting extends VotingService {
       vetoEndTime: response.base.params.vetoEndTime,
       votingEndTime: response.base.params.votingEndTime,
       status: getStatusTransformation(promiseStatus),
-      title: this.contractName === CONTRACTS_NAMES.validatorsSlashingVoting
-        ? 'Validator slashing proposal'
-        : 'Root Node slashing proposal'
+      title:
+        this.contractName === CONTRACTS_NAMES.validatorsSlashingVoting
+          ? 'Validator slashing proposal'
+          : 'Root Node slashing proposal',
     };
   }
 }

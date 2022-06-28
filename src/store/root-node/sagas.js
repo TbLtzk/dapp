@@ -122,10 +122,11 @@ function* getRootMembersGenerator ({ tableType = TABLE_TYPES.rootNodesWidened })
   }
 }
 
-function* getCheckIsUserRootNodeGenerator ({ address }) {
+function* getCheckIsUserRootNodeGenerator () {
   try {
     const contract = yield call(getRootNodesInstance);
-    const data = yield contract.instance.methods.isMember(address).call();
+    const { userAddress } = yield select((state) => state.userInf);
+    const data = yield contract.instance.methods.isMember(userAddress).call();
     yield put(setCheckIsUserRootNode(data));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);

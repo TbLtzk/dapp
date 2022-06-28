@@ -1,11 +1,17 @@
 import { useRef } from 'react';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
+
+import Button from 'components/Base/Button';
+
 import useOnClickOutside from 'hooks/useOnClickOutside';
 
 import LanguageSwitcher from '../LanguageSwitcher';
 import ThemeSwitcher from '../ThemeSwitcher';
 
 function SettingsMenu ({ onClose, onLanguageOpen }) {
+  const { disconnectWallet } = useWeb3Context();
+
   const ref = useRef();
 
   useOnClickOutside(ref, () => onClose());
@@ -19,6 +25,13 @@ function SettingsMenu ({ onClose, onLanguageOpen }) {
       <div className="popup_menu">
         <LanguageSwitcher onLanguageOpen={onLanguageOpen} />
         <ThemeSwitcher />
+        <Button
+          alwaysEnabled
+          style={{ width: '300px', margin: '10px' }}
+          onClick={disconnectWallet}
+        >
+          Disconnect Wallet
+        </Button>
       </div>
     </div>
   );

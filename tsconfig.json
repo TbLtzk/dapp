@@ -23,7 +23,7 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src",
-    "scripts"
+    "scripts",
+    "src"
   ]
 }
