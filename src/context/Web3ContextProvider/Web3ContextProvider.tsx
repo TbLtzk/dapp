@@ -44,7 +44,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
   const params = getParametersDependsOnUrl();
 
   const [loadAppType, setLoadAppType] = useState(LOAD_TYPES.loading);
-  
+
   const { connector, chainId } = useWeb3React();
 
   const [selectedWallet, setSelectedWallet] = useLocalStorage<undefined | WalletType>('selectedWallet', undefined);
