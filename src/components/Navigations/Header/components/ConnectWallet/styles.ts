@@ -62,6 +62,20 @@ export const StyledConnectWalletModal = styled.div`
     button {
       margin-bottom: 10px;
     }
+    .connect-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .icon {
+        width: 23px;
+        height: auto;
+      }
+
+      p {
+        margin-left: 5px;
+        margin-bottom: 0;
+      }
+    }
   }
 
   .install_metamask {

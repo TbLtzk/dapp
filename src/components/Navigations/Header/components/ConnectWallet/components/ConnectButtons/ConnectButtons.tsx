@@ -31,14 +31,28 @@ function ConnectButtons () {
         style={{ width: '100%' }}
         onClick={() => connectWallet(WalletType.INJECTED, true)}
       >
-        Connect with Metamask
+        <div className="connect-btn">
+          <img
+            src="/icons/metamask.svg"
+            alt="metamask"
+            className="icon"
+          />
+          <p> Connect with Metamask</p>
+        </div>
       </Button>
       <Button
         alwaysEnabled
         style={{ width: '100%' }}
         onClick={() => connectWallet(WalletType.COINBASE, true)}
       >
-        Connect with Coinbase
+        <div className="connect-btn">
+          <img
+            src="/icons/coinbase.png"
+            alt="metamask"
+            className="icon"
+          />
+          <p> Connect with Coinbase</p>
+        </div>
       </Button>
 
       {/* TODO: add bridge between dApp and connect to wallet

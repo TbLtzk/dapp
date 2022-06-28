@@ -1,7 +1,6 @@
 import { createContext, FC, ReactElement, useCallback, useContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { getWallet, WalletType } from 'connectors';
 import { motion } from 'framer-motion';
@@ -45,8 +44,8 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
   const params = getParametersDependsOnUrl();
 
   const [loadAppType, setLoadAppType] = useState(LOAD_TYPES.loading);
-
-  const { connector, chainId } = useWeb3React<Web3Provider>();
+  
+  const { connector, chainId } = useWeb3React();
 
   const [selectedWallet, setSelectedWallet] = useLocalStorage<undefined | WalletType>('selectedWallet', undefined);
   const [selectedChainId, setSelectedChainId] = useLocalStorage('selectedChainId', params.chainId);

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import { useWeb3React } from '@web3-react/core';
 import { useWeb3Context } from 'context/Web3ContextProvider';
 import { AnimateSharedLayout, motion } from 'framer-motion';
 
@@ -15,8 +16,9 @@ function Network () {
   const network = Number(useSelector(networkSelector));
   const isDevnet = isDevnetdApp();
   const isQNetwork = Boolean(networks[network]);
-
   const { switchNetwork, switchNetworkError, setSwitchNetworkError } = useWeb3Context();
+
+  
   const [currentNetwork, setCurrentNetwork] = useState(network);
 
   const networkList = [
