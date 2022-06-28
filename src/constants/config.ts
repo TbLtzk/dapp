@@ -51,6 +51,18 @@ export const gnosisSafeUrls = {
   testnet: 'https://multisig-ui.qtestnet.org',
 };
 
+export const features = {
+  devnet: {
+    featureFlags: { aliases: true },
+  },
+  testnet: {
+    featureFlags: {},
+  },
+  mainnet: {
+    featureFlags: {},
+  },
+};
+
 export const networkParameters: { [key: string]: any } = {
   devnet: {
     chainId: '8a72',
