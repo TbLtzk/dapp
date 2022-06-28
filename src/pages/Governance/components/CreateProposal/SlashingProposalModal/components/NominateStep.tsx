@@ -1,3 +1,5 @@
+import { SlashingProposalForm } from 'typings/forms';
+
 import Input from 'components/Base/Form/Input';
 import ModalStep from 'components/Base/ModalStep';
 
@@ -5,7 +7,6 @@ import useForm from 'hooks/useForm';
 
 import { useCreateProposal } from '../SlashingProposalModal';
 
-import { CONTRACT_TYPES } from 'constants/contracts';
 import { address, percent, required, url } from 'func/validators';
 
 function NominateStep () {
@@ -25,13 +26,12 @@ function NominateStep () {
     onSubmit: goNext,
   });
 
-  const additionalInfo = {
-    [CONTRACT_TYPES.rootNodeSlashing]: {
+  const additionalInfo: Record<SlashingProposalForm['type'], { title: string, percentLabel: string }> = {
+    'root-slashing': {
       title: 'Nominate a Root Node to be slashed',
       percentLabel: 'Root Node Stake Amount to slash (%)',
     },
-
-    [CONTRACT_TYPES.validatorNodeSlashing]: {
+    'validator-slashing': {
       title: 'Nominate a Validator Node to be slashed',
       percentLabel: 'Validator Node Stake and Pool Amount to slash (%)',
     },
@@ -45,7 +45,7 @@ function NominateStep () {
       onNext={form.submit}
       onBack={goBack}
     >
-      <h2>{info?.title}</h2>
+      <h2>{info.title}</h2>
 
       <div style={{ display: 'grid', gap: '15px' }}>
         <Input
@@ -57,7 +57,7 @@ function NominateStep () {
         <Input
           {...form.fields.percent}
           invertedColors
-          label={info?.percentLabel}
+          label={info.percentLabel}
           placeholder="%-Value"
         />
         <Input
