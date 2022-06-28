@@ -2,9 +2,9 @@ import { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import * as Sentry from '@sentry/react';
+import { Wrap } from 'context/Web3ContextProvider/styles';
 
 import Button from 'components/Base/Button';
-import { Wrap } from 'components/Custom/Web3ContextProvider/styles';
 
 class ErrorBoundary extends Component {
   constructor (props) {

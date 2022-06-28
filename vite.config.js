@@ -30,6 +30,7 @@ export default defineConfig({
       store: path.resolve(__dirname, './src/store'),
       i18n: path.resolve(__dirname, './src/i18n'),
       connectors: path.resolve(__dirname, './src/connectors'),
+      context: path.resolve(__dirname, './src/context'),
     },
   }
 });

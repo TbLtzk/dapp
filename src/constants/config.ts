@@ -9,7 +9,7 @@ export const chainIds = {
   devnet: '35442',
 };
 
-export const networks = {
+export const networks: { [key: string]: string } = {
   35443: 'testnet',
   35442: 'devnet',
   35441: 'mainnet',
@@ -51,7 +51,7 @@ export const gnosisSafeUrls = {
   testnet: 'https://multisig-ui.qtestnet.org',
 };
 
-export const networkParameters = {
+export const networkParameters: { [key: string]: any } = {
   devnet: {
     chainId: '8a72',
     chainName: 'Q Devnet',

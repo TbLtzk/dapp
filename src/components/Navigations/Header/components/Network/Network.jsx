@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { AnimateSharedLayout, motion } from 'framer-motion';
-
-import { useWeb3Context } from 'hooks/useWeb3Context';
 
 import { StyledNetwork } from './styles';
 
 import { networkSelector } from 'store/user-inf/selectors';
 
 import { networks } from 'constants/config';
-import { isDevnetdApp } from 'func/useful';
+import { isDevnetdApp } from 'func/appConfig';
 
 function Network () {
   const network = Number(useSelector(networkSelector));

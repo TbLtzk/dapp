@@ -9,6 +9,7 @@ import {
   getSurplusSuccess,
   getSystemBalance,
   getSystemBalanceError,
+  getSystemBalanceSuccess,
   onPerformNettingError,
   onPerformNettingSuccess
 } from './action-creators';
@@ -47,8 +48,8 @@ function* getDebtGenerator () {
 function* getSystemBalanceGenerator () {
   try {
     const contract = yield call(getSystemBalanceInstance);
-    // const data = yield contract.getBalance();
-    // yield put(getSystemBalanceSuccess(fromWei(data)));
+    const data = yield contract.getBalance();
+    yield put(getSystemBalanceSuccess(fromWei(data)));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
     yield put(getSystemBalanceError(0));

@@ -21,7 +21,6 @@ export let contractRegistryInstance: ContractRegistryInstance | null = null;
 export const getContractRegistryInstance = () => {
   if (!contractRegistryInstance) {
     // TODO: Fix types in SDK
-    console.log(window.web3);
     contractRegistryInstance = new ContractRegistryInstance(window.web3 as any, CONTRACT_REGISTRY_ADDRESS);
   }
   return contractRegistryInstance;

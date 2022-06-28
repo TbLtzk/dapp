@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useState } from 'react';
+import { createContext, FC, ReactElement, useCallback, useContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { getWallet } from 'connectors';
+import { getWallet, WalletType } from 'connectors';
 import { motion } from 'framer-motion';
 import Web3 from 'web3';
 
 import useLocalStorage from 'hooks/useLocalStorage';
-import { Web3Context } from 'hooks/useWeb3Context';
 
 import { Wrap } from './styles';
 
@@ -20,48 +20,41 @@ import { getContractRegistryInstance } from 'contracts/contract-instance';
 
 import { networkParameters, networks, rpcUrls } from 'constants/config';
 import { AUCTIONS_TYPES, LOAD_TYPES } from 'constants/statuses';
+import { getChainId, getParametersDependsOnUrl, getProvider } from 'func/appConfig';
 import ErrorHandler from 'func/ErrorHandler';
-import { getChainId, getParametersDependsOnUrl, getProvider, reloadPage } from 'func/useful';
+import { reloadPage } from 'func/useful';
 
 const { ethereum } = window;
-// export type ERC20TokenType = {
-//   address: string;
-//   symbol: string;
-//   decimals: number;
-//   image?: string;
-//   aToken?: boolean;
-// };
 
-// export type Web3Data = {
-//   connectWallet: (wallet: any, chainId: number) => Promise<void>;
-//   disconnectWallet: () => void;
-//   currentAccount: string;
-//   isActive: boolean;
-//   loading: boolean;
-//   provider: JsonRpcProvider | undefined;
-//   chainId: number | undefined;
-//   switchNetwork: (chainId: number) => Promise<void>;
-//   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
-//   switchNetworkError: Error | undefined;
-//   switchNetworkPending: boolean;
-//   setSwitchNetworkError: (err: Error | undefined) => void;
-// };
+export type Web3Data = {
+  connectWallet: (wallet: WalletType, reload: boolean) => Promise<void>;
+  disconnectWallet: () => void;
+  error: Error | null;
+  loading: boolean;
+  setError: (error: Error | null) => void;
+  chainId: number | undefined;
+  switchNetwork: (chainId: number, reload: boolean) => Promise<void>;
+  switchNetworkError: boolean | null;
+  setSwitchNetworkError: (err: boolean | null) => void;
+};
 
-const Web3ContextProvider = ({ children }) => {
+export const Web3Context = createContext({} as Web3Data);
+
+const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
   const dispatch = useDispatch();
   const params = getParametersDependsOnUrl();
 
   const [loadAppType, setLoadAppType] = useState(LOAD_TYPES.loading);
 
-  const { connector, chainId, isActive, provider } = useWeb3React();
+  const { connector, chainId } = useWeb3React<Web3Provider>();
 
-  const [selectedWallet, setSelectedWallet] = useLocalStorage('selectedWallet', undefined);
+  const [selectedWallet, setSelectedWallet] = useLocalStorage<undefined | WalletType>('selectedWallet', undefined);
   const [selectedChainId, setSelectedChainId] = useLocalStorage('selectedChainId', params.chainId);
   const [selectedRpc, setSelectedRpc] = useLocalStorage('setSelectedRpc', params.rpc);
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [switchNetworkError, setSwitchNetworkError] = useState(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
+  const [switchNetworkError, setSwitchNetworkError] = useState<boolean | null>(null);
 
   const loadAdditionalInfo = async () => {
     dispatch(getAuctions(AUCTIONS_TYPES.all));
@@ -86,12 +79,14 @@ const Web3ContextProvider = ({ children }) => {
       setSelectedWallet(undefined);
       cleanConnectorStorage();
       connector.deactivate ? await connector.deactivate() : await connector.resetState();
+      // @ts-expect-error close can be returned by wallet
       if (connector && connector.close) {
+        // @ts-expect-error close can be returned by wallet
         await connector.close();
       }
-    } catch (error) {
-      setError(error.message);
-      console.error('error while disconnect', error.message);
+    } catch (error: any) {
+      setError(error);
+      ErrorHandler.processWithoutFeedback(error);
     } finally {
       setLoading(false);
       reloadPage();
@@ -99,7 +94,7 @@ const Web3ContextProvider = ({ children }) => {
   }, [connector]);
 
   const connectWallet = useCallback(
-    async (walletType, reload = false) => {
+    async (walletType: WalletType, reload = false) => {
       try {
         setLoading(true);
         const wallet = getWallet(walletType);
@@ -108,9 +103,9 @@ const Web3ContextProvider = ({ children }) => {
         if (reload) {
           reloadPage();
         }
-      } catch (error) {
-        setError(error.message);
-        console.error('error on activation', error);
+      } catch (error: any) {
+        setError(error);
+        ErrorHandler.processWithoutFeedback(error);
       } finally {
         setLoading(false);
       }
@@ -128,10 +123,8 @@ const Web3ContextProvider = ({ children }) => {
       } else {
         const provider = getProvider(ethereum, selectedWallet);
         const chainId = await getChainId(provider);
-
         if (!networks[chainId]) {
           // wrong network
-
           window.web3 = httpProvider;
         } else {
           window.web3 = new Web3(provider);
@@ -154,24 +147,31 @@ const Web3ContextProvider = ({ children }) => {
       ErrorHandler.processWithoutFeedback(error);
       setLoadAppType(LOAD_TYPES.initError);
     }
-  }, []);
+  }, [ethereum]);
 
-  const switchNetwork = useCallback(async (newChainId = params.chainId) => {
-    try {
-      if (!ethereum) {
-        setSelectedChainId(newChainId);
-        setSelectedRpc(rpcUrls[newChainId]);
-        reloadPage();
-      } else {
-        const networkParam = networkParameters[networks[newChainId]];
-        const isSameNetwork = chainId === newChainId;
-        await connector.activate(isSameNetwork ? undefined : networkParam).catch(() => setSwitchNetworkError(true));
-        setSelectedChainId(newChainId);
+  const switchNetwork = useCallback(
+    async (newChainId = params.chainId) => {
+      try {
+        if (!ethereum) {
+          setSelectedChainId(newChainId);
+          setSelectedRpc(rpcUrls[newChainId]);
+          reloadPage();
+        } else {
+          const networkParam = networkParameters[networks[newChainId]];
+          const isSameNetwork = chainId === newChainId;
+          try {
+            await connector.activate(isSameNetwork ? undefined : networkParam);
+          } catch (error) {
+            setSwitchNetworkError(true);
+          }
+          setSelectedChainId(newChainId);
+        }
+      } catch (error: any) {
+        setError(error);
       }
-    } catch (error) {
-      setError(error);
-    }
-  }, []);
+    },
+    [connector, chainId]
+  );
 
   useEffect(() => {
     initConnection();
@@ -193,20 +193,17 @@ const Web3ContextProvider = ({ children }) => {
       return (
         <Web3Context.Provider
           value={{
-            web3ProviderData: {
-              connectWallet,
-              disconnectWallet,
-              provider,
-              isActive,
-              loading,
-              chainId,
-              error,
-              switchNetwork,
-              switchNetworkError,
-              setSwitchNetworkError,
-              setError,
-            },
+            connectWallet,
+            disconnectWallet,
+            loading,
+            chainId,
+            error,
+            setError,
+            switchNetwork,
+            switchNetworkError,
+            setSwitchNetworkError,
           }}
+
         >
           {children}
         </Web3Context.Provider>
@@ -218,7 +215,7 @@ const Web3ContextProvider = ({ children }) => {
           <motion.div
             className="breathing-q"
             animate={{ scale: 1.2 }}
-            transition={{ repeatType: Infinity, duration: 0.8 }}
+            transition={{ repeatType: 'loop', duration: 0.8 }}
           >
             <img src="/logo.png" alt="q" />
           </motion.div>
@@ -226,5 +223,7 @@ const Web3ContextProvider = ({ children }) => {
       );
   }
 };
+
+export const useWeb3Context = () => useContext(Web3Context);
 
 export default Web3ContextProvider;

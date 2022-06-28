@@ -19,9 +19,9 @@ import {
   walletConnect,
   walletConnectHooks,
 } from 'connectors';
+import Web3ContextProvider from 'context/Web3ContextProvider';
 import LanguageProvider from 'i18n';
 
-import Web3ContextProvider from 'components/Custom/Web3ContextProvider';
 import Routes from 'navigation/Routes';
 
 import { store } from './store';

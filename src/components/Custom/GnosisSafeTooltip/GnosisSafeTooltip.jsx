@@ -8,7 +8,7 @@ import { TooltipContent } from './styles';
 
 import { networkSelector } from 'store/user-inf/selectors';
 
-import { getGnosisSafeUrlByChainId } from 'func/useful';
+import { getGnosisSafeUrlByChainId } from 'func/appConfig';
 
 function GnosisSafeTooltip ({ address }) {
   const network = useSelector(networkSelector);

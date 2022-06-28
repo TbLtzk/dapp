@@ -1,17 +1,16 @@
 import { useEffect } from 'react';
 
 import { WalletType } from 'connectors';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 
 import Button from 'components/Base/Button';
-
-import { useWeb3Context } from 'hooks/useWeb3Context';
 
 function ConnectButtons () {
   const { connectWallet, loading, error, setError } = useWeb3Context();
 
   useEffect(() => {
     return () => {
-      setError(false);
+      setError(null);
     };
   }, []);
 
@@ -42,13 +41,14 @@ function ConnectButtons () {
         Connect with Coinbase
       </Button>
 
-      <Button
+      {/* TODO: add bridge between dApp and connect to wallet
+       <Button
         alwaysEnabled
         style={{ width: '100%' }}
         onClick={() => connectWallet(WalletType.WALLET_CONNECT, true)}
       >
         Connect with Wallet Connect
-      </Button>
+      </Button> */}
     </div>
   );
 }

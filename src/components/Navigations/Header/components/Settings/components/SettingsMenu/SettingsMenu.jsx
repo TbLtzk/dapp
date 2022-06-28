@@ -1,9 +1,10 @@
 import { useRef } from 'react';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
+
 import Button from 'components/Base/Button';
 
 import useOnClickOutside from 'hooks/useOnClickOutside';
-import { useWeb3Context } from 'hooks/useWeb3Context';
 
 import LanguageSwitcher from '../LanguageSwitcher';
 import ThemeSwitcher from '../ThemeSwitcher';
