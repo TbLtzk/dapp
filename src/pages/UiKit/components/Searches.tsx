@@ -10,7 +10,7 @@ function Searches () {
       className="block"
       style={{ backgroundColor: 'transparent' }}
     >
-      <h2 className="typo-h2">Search</h2>
+      <h2 className="text-h2">Search</h2>
       <div className="block-content">
         <div className="input-list">
           <Search

@@ -4,7 +4,7 @@ import Tooltip from 'ui/Tooltip';
 function Colors () {
   return (
     <div className="block">
-      <h2 className="typo-h2">Colors</h2>
+      <h2 className="text-h2">Colors</h2>
       <div className="block-content">
         <div className="color-list">
           {Object.entries(COLORS).map(([name, color]) => (

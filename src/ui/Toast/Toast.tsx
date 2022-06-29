@@ -38,8 +38,8 @@ function Toast ({
         </div>
 
         <div className="toast-content">
-          <h3 className="typo-p-lg font-bold">{titleMap[type]}</h3>
-          <p className="toast-text typo-p-sm">{text}</p>
+          <h3 className="text-lg font-bold">{titleMap[type]}</h3>
+          <p className="toast-text text-sm">{text}</p>
         </div>
 
         <button className="toast-close" onClick={onClose}>

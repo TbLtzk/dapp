@@ -60,7 +60,7 @@ function Check ({
 
       <label
         htmlFor={inputId}
-        className="check-label typo-p-md"
+        className="check-label text-md"
       >
         {label}
       </label>

@@ -48,7 +48,7 @@ function Radio<T extends ValueType> ({
 
       <label
         htmlFor={inputId}
-        className="radio-label typo-p-md"
+        className="radio-label text-md"
       >
         {label}
       </label>

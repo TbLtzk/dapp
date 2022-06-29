@@ -41,7 +41,7 @@ function Button ({
 
   return (
     <StyledButton
-      className={`typo-p-md font-bold ${rest.className || ''}`}
+      className={`text-md font-bold ${rest.className || ''}`}
       type={type}
       disabled={!alwaysEnabled && isDisabled}
       $look={look}

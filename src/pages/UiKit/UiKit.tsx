@@ -17,7 +17,7 @@ import { UiKitContainer } from './styles';
 function UiKit () {
   return (
     <UiKitContainer>
-      <h1 className="typo-h1">UI Kit</h1>
+      <h1 className="text-h1">UI Kit</h1>
 
       <Colors />
       <Icons />

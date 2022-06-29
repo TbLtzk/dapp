@@ -30,7 +30,7 @@ function SegmentedButton<T extends ValueType> ({
         {options.map((option) => (
           <button
             key={String(option.value)}
-            className={`segmented-button-item typo-p-md ${value === option.value ? 'active' : ''}`}
+            className={`segmented-button-item text-md ${value === option.value ? 'active' : ''}`}
             type="button"
             onClick={() => handleChange(option.value)}
           >

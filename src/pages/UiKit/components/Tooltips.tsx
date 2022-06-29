@@ -4,7 +4,7 @@ import Tooltip from 'ui/Tooltip';
 function Tooltips () {
   return (
     <div className="block">
-      <h2 className="typo-h2">Tooltips</h2>
+      <h2 className="text-h2">Tooltips</h2>
       <div className="block-content">
         <div
           style={{
