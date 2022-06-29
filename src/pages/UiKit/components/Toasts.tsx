@@ -3,7 +3,7 @@ import Toast from 'ui/Toast';
 function Toasts () {
   return (
     <div className="block">
-      <h2 className="typo-h2">Toasts</h2>
+      <h2 className="text-h2">Toasts</h2>
       <div className="block-content">
         <div className="row-list">
           <Toast

@@ -5,7 +5,7 @@ import Tooltip from 'ui/Tooltip';
 function Icons () {
   return (
     <div className="block">
-      <h2 className="typo-h2">Icons</h2>
+      <h2 className="text-h2">Icons</h2>
       <div className="block-content">
         <div className="icon-list">
           {Object.keys(icons).map((icon) => (

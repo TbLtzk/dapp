@@ -34,7 +34,7 @@ function RadioGroup<T extends ValueType> ({
       $disabled={disabled}
       {...rest}
     >
-      {label && <p className="radio-group-lbl typo-p-md">{label}</p>}
+      {label && <p className="radio-group-lbl text-md">{label}</p>}
 
       <div className="radio-group-options">
         {options.map((option) => (
@@ -51,7 +51,7 @@ function RadioGroup<T extends ValueType> ({
       </div>
 
       {error && (
-        <span className="radio-group-error typo-p-md font-light">
+        <span className="radio-group-error text-md font-light">
           {error}
         </span>
       )}

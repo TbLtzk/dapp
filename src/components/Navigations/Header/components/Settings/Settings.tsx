@@ -35,7 +35,7 @@ function Settings () {
       onToggle={handleSettingsToggle}
     >
       <div className="settings-content">
-        <h3 className="settings-title typo-p-xl font-bold">
+        <h3 className="settings-title text-xl font-bold">
           {languageOpen ? 'Language' : 'Settings'}
         </h3>
 

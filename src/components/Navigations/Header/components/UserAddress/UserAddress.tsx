@@ -56,7 +56,7 @@ function UserAddress () {
       onToggle={setAddressOpen}
     >
       <div className="address-content">
-        <h3 className="address-title typo-p-xl font-bold">
+        <h3 className="address-title text-xl font-bold">
           <AddressIcon address={userAddress} size={32} />
           {trimAddress(userAddress)}
         </h3>
@@ -64,7 +64,7 @@ function UserAddress () {
         <div className="address-main">
           <button
             type="button"
-            className="address-action typo-p-lg"
+            className="address-action text-lg"
             onClick={copyAddress}
           >
             <Icon name="copy" />
@@ -73,7 +73,7 @@ function UserAddress () {
 
           <button
             type="button"
-            className="address-action typo-p-lg"
+            className="address-action text-lg"
             onClick={disconnectWallet}
           >
             <Icon name="sign-out" />

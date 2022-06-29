@@ -56,7 +56,7 @@ function Input ({
       {label && (
         <label
           htmlFor={inputId}
-          className="typo-p-md"
+          className="text-md"
         >
           {label}
         </label>
@@ -65,7 +65,7 @@ function Input ({
       <div className="input-container">
         <input
           id={inputId}
-          className="typo-p-md"
+          className="text-md"
           value={String(value)}
           type={type}
           inputMode={type === 'number' ? 'decimal' : 'text'}
@@ -80,7 +80,7 @@ function Input ({
           <Button
             look="ghost"
             disabled={isDisabled}
-            className="input-max typo-p-sm font-bold"
+            className="input-max text-sm font-bold"
             onClick={() => onChange(max)}
           >
             Max
@@ -89,11 +89,11 @@ function Input ({
       </div>
 
       {error && (
-        <span className="input-error typo-p-md font-light">{error}</span>
+        <span className="input-error text-md font-light">{error}</span>
       )}
 
       {hint && !error && (
-        <span className="input-hint typo-p-md font-light">{hint}</span>
+        <span className="input-hint text-md font-light">{hint}</span>
       )}
     </InputWrapper>
   );

@@ -28,7 +28,7 @@ function LanguageSwitcher ({ onLanguageOpen }: { onLanguageOpen: () => void }) {
   return (
     <SettingsMenuContainer>
       <div className="language-block" onClick={onLanguageOpen}>
-        <p className="typo-p-lg">Language</p>
+        <p className="text-lg">Language</p>
 
         <div className="language-pick">
           <img
@@ -37,7 +37,7 @@ function LanguageSwitcher ({ onLanguageOpen }: { onLanguageOpen: () => void }) {
             alt="flag"
           />
 
-          <p className="typo-p-md font-bold">
+          <p className="text-md font-bold">
             {language.title}
           </p>
         </div>

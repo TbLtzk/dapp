@@ -106,7 +106,7 @@ function Select<T extends ValueType> ({
             <button
               key={String(option.value)}
               type="button"
-              className={`select-option typo-p-md ${value === option.value ? 'active' : ''}`}
+              className={`select-option text-md ${value === option.value ? 'active' : ''}`}
               onClick={() => selectOption(option.value)}
             >
               <Icon
@@ -118,7 +118,7 @@ function Select<T extends ValueType> ({
           ))}
 
           {filteredOptions.length === 0 && (
-            <p className="select-stub typo-p-md">
+            <p className="select-stub text-md">
               No options found
             </p>
           )}

@@ -29,7 +29,7 @@ function Switch ({
     >
       <label
         htmlFor={inputId}
-        className="switch-label typo-p-lg"
+        className="switch-label text-lg"
       >
         {label}
       </label>

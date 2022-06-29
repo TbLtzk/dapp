@@ -36,7 +36,7 @@ function Languages ({ onBack }: { onBack: () => void }) {
             />
 
             <p
-              className="typo-p-md"
+              className="text-md"
               style={{ fontWeight: lang === i18n.language ? 600 : 400 }}
             >
               {title}

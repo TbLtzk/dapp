@@ -29,7 +29,7 @@ function Search ({
     <SearchContainer $disabled={isDisabled}>
       <Icon className="search-icon" name="search" />
       <input
-        className="typo-p-md"
+        className="text-md"
         value={value}
         type="search"
         autoComplete="off"
