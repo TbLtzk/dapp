@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAccordionToggle } from 'react-bootstrap';
-import CopyToClipboard from 'react-copy-to-clipboard';
+
+import copy from 'copy-to-clipboard';
 
 import Button from 'components/Base/Button';
 import Tooltip from 'components/Base/Tooltip';
@@ -13,7 +14,7 @@ function CustomCardButtons ({
   onePage = false
 }) {
   const decoratedOnClick = useAccordionToggle(eventKey, () => {});
-  const [copy, setCopy] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   function handleOpen () {
     decoratedOnClick();
@@ -21,9 +22,10 @@ function CustomCardButtons ({
   }
 
   const handleCopy = () => {
-    setCopy(true);
+    copy(shareText);
+    setCopied(true);
     const timer = setTimeout(() => {
-      setCopy(false);
+      setCopied(false);
       clearTimeout(timer);
     }, 3000);
   };
@@ -33,16 +35,12 @@ function CustomCardButtons ({
       <Tooltip
         copy={true}
         disabled={false}
-        additionalInfo={`${copy ? 'Copied!' : 'Copy'}`}
+        additionalInfo={`${copied ? 'Copied!' : 'Copy'}`}
       >
-        <CopyToClipboard text={shareText} onCopy={handleCopy}>
-          <div>
-            <Button alwaysEnabled>
-              <i className="mdi mdi-share" />
-              <span>Share</span>
-            </Button>
-          </div>
-        </CopyToClipboard>
+        <Button alwaysEnabled onClick={handleCopy}>
+          <i className="mdi mdi-share" />
+          <span>Share</span>
+        </Button>
       </Tooltip>
       {onePage
         ? null

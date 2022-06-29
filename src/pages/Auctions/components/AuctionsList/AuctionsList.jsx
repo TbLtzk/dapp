@@ -7,7 +7,6 @@ import { SkeletonAuctionLoading } from 'components/Base/SkeletonLoading';
 
 import AuctionCard from './components/AuctionCard';
 
-import { LoadingWrap } from 'constants/style';
 import { fillArray } from 'func/useful';
 
 const LOAD_TYPES = { load: 'load', empty: 'empty', error: 'error', loaded: 'loaded' };
@@ -54,29 +53,24 @@ function AuctionsList ({ auctions, loadingAuctions }) {
     case LOAD_TYPES.loaded: {
       return (
         <div>
-          {list.map((auction, i) => (
+          {list.map((auction) => (
             <AuctionCard
               key={auction.id + auction.contract + auction.user}
               auction={auction}
               id={auction.id + auction.contract}
             />
           ))}
-          {showMore
-            ? (
-              <LoadingWrap>
-                <Button
-                  alwaysEnabled
-                  style={{
-                    margin: '0 0 5% 0',
-                    width: '140px'
-                  }}
-                  onClick={handleNextAuctions}
-                >
-                  Show more
-                </Button>
-              </LoadingWrap>
-            )
-            : null}
+          {showMore && (
+            <div style={{ display: 'flex', justifyContent: 'center', margin: '0 0 15px 0' }}>
+              <Button
+                alwaysEnabled
+                style={{ width: '140px' }}
+                onClick={handleNextAuctions}
+              >
+                Show more
+              </Button>
+            </div>
+          )}
         </div>
       );
     }

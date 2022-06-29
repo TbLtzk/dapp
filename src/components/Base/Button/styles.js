@@ -57,7 +57,7 @@ export const ButtonCustom = styled.button`
               ? p.theme.colors.oxfordBlueTint2
               : p.$look === 'transparent'
               ? 'transparent'
-              : p.theme.colors.circleDark};
+              : p.theme.colors.oxfordBlueTint2};
             border-color: ${p.$look === 'transparent' ? 'transparent' : p.theme.colors.oxfordBlueTint2};
           }
         `
@@ -71,8 +71,8 @@ export const ButtonCustom = styled.button`
 
           &:disabled {
             color: ${p.theme.colors.oxfordBlue};
-            background-color: ${p.theme.colors.circleDark};
-            border-color: ${p.$look === 'transparent' ? 'transparent' : p.theme.colors.circleDark};
+            background-color: ${p.theme.colors.oxfordBlueTint2};
+            border-color: ${p.$look === 'transparent' ? 'transparent' : p.theme.colors.oxfordBlueTint2};
           }
         `}
 `;

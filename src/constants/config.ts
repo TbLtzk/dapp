@@ -142,3 +142,8 @@ export const PARAMS = {
     qBridge: qBridgeUrls.mainnet,
   },
 };
+
+export const isDevnetLocation = [
+  'https://hq.q.org',
+  'https://hq.qtestnet.org',
+].indexOf(window.location.origin) === -1;

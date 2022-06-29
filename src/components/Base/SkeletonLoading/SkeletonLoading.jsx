@@ -1,8 +1,8 @@
 import ContentLoader from 'react-content-loader';
 
-import { SkeletonLoadingWrapper } from './styles';
+import { darkColors } from 'styles/colors';
 
-import { darkColors } from 'constants/colors';
+import { SkeletonLoadingWrapper } from './styles';
 
 export function SkeletonTableLoading () {
   return (

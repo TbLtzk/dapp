@@ -185,3 +185,13 @@ export function trimAddress (address) {
 export const reloadPage = (timeout = 500) => {
   setTimeout(() => window.location.reload(), timeout);
 };
+
+/**
+ * @template T
+ * @param {T} [str]
+ *
+ * @returns {Capitalize<T>}
+ */
+export function capitalize (str = '') {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

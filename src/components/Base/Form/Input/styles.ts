@@ -40,7 +40,7 @@ export const InputWrapper = styled(Form.Group)`
 
     &:disabled {
       cursor: not-allowed;
-      background: ${(props) => (props.theme.palette === 'dark' ? 'transparent' : props.theme.colors.blue)};
+      background: ${(props) => (props.theme.palette === 'dark' ? 'transparent' : props.theme.colors.oxfordBlue)};
       border: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
       color: ${(props) => {
         return props.theme.palette === 'dark' ? props.theme.colors.oxfordBlueTint5 : props.theme.colors.oxfordBlueTint2;
@@ -93,7 +93,7 @@ export const InputWrapper = styled(Form.Group)`
 `;
 
 function getBackgroundColor (props: StyledProps<any>) {
-  return props.theme.palette === 'dark' ? 'transparent' : props.theme.colors.blue;
+  return props.theme.palette === 'dark' ? 'transparent' : props.theme.colors.oxfordBlue;
 }
 
 function getMainColor (props: StyledProps<any>) {

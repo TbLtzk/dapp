@@ -2,12 +2,10 @@ import styled from 'styled-components';
 
 import Switch from 'components/Base/Form/Switch';
 
-import { indents } from 'constants/style';
-
 export const ParametersWrapper = styled.div`
   display: grid;
   grid-template-columns: 50% 50%;
-  grid-column-gap: ${indents['15']};
+  grid-column-gap: 15px;
   padding-right: 12px;
 
   @media screen and (max-width: 1420px) {

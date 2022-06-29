@@ -12,7 +12,7 @@ export const TableWrapper = styled.div`
   }
 
   td {
-    color: ${(props) => props.theme.colors.td};
+    color: ${(props) => props.theme.colors.white};
     font-size: 13px;
     line-height: 18px;
     padding: 7px 5px;

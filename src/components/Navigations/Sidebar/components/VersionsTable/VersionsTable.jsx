@@ -1,5 +1,6 @@
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+
+import CopyToClipboard from 'components/Base/CopyToClipboard';
 
 function VersionsTable (props) {
   const {
@@ -27,9 +28,10 @@ function VersionsTable (props) {
                         </Tooltip>
                       }
                     >
-                      <CopyToClipboard text={text}>
-                        <p>{item.value}</p>
-                      </CopyToClipboard>
+                      <p>
+                        <span>{item.value}</span>
+                        <CopyToClipboard value={text} />
+                      </p>
                     </OverlayTrigger>
                   </div>
                 );

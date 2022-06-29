@@ -1,6 +1,6 @@
-import * as actionTypes from './action-types';
+import { THEMES } from 'styles/colors';
 
-import { THEMES } from 'constants/colors';
+import * as actionTypes from './action-types';
 
 const initialState = {
   currentTheme: THEMES.dark

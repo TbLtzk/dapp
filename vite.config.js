@@ -37,6 +37,8 @@ export default defineConfig({
       i18n: path.resolve(__dirname, './src/i18n'),
       connectors: path.resolve(__dirname, './src/connectors'),
       context: path.resolve(__dirname, './src/context'),
+      ui: path.resolve(__dirname, './src/ui'),
+      styles: path.resolve(__dirname, './src/styles'),
     },
   }
 });

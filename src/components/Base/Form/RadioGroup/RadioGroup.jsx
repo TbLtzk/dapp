@@ -9,7 +9,7 @@ function RadioGroup ({
   label = '',
   error,
   row = false,
-  onChange = (val) => {},
+  onChange = (_) => {},
 }) {
   return (
     <RadioGroupWrapper $row={row}>
