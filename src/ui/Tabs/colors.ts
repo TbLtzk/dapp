@@ -13,8 +13,8 @@ export const lightColors = {
   dividerActive: COLORS.blue700,
 };
 
-export type SwitchColorType = keyof typeof darkColors | keyof typeof lightColors;
+export type TabColorType = keyof typeof darkColors | keyof typeof lightColors;
 
-export function getTabColors (theme: DefaultTheme, key: SwitchColorType): string {
+export function getTabColors (theme: DefaultTheme, key: TabColorType): string {
   return getColorFn(theme, { lightColors, darkColors })(key);
 }

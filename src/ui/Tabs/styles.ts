@@ -20,7 +20,7 @@ export const TabsContainer = styled.nav`
     line-height: 24px;
     font-weight: 400;
     white-space: nowrap;
-    cursor: pointer !important;
+    cursor: pointer;
 
     h3 {
       color: ${({ theme }) => getTabColors(theme, 'inactive')};
@@ -59,8 +59,7 @@ export const TabsContainer = styled.nav`
     border-radius: 50%;
     font-size: 10px;
     font-weight: 600;
-    /* TODO: Colors */
-    background-color: #2374db;
+    background-color: ${({ theme }) => theme.colors.lightBlue};
     color: #fff;
   }
 `;
