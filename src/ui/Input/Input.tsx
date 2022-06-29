@@ -80,7 +80,7 @@ function Input ({
           <Button
             look="ghost"
             disabled={isDisabled}
-            className="input-max text-sm font-bold"
+            className="input-max text-sm font-semibold"
             onClick={() => onChange(max)}
           >
             Max

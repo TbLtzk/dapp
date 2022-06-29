@@ -9,6 +9,7 @@ import Radios from './components/Radios';
 import Searches from './components/Searches';
 import Selects from './components/Selects';
 import Switches from './components/Switches';
+import Tabs from './components/Tabs';
 import Toasts from './components/Toasts';
 import Tooltips from './components/Tooltips';
 import Typography from './components/Typography';
@@ -33,6 +34,7 @@ function UiKit () {
       <Typography />
       <Tooltips />
       <ProgressBars />
+      <Tabs />
     </UiKitContainer>
   );
 }

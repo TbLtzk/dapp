@@ -77,7 +77,11 @@ export const TypographyStyle = createGlobalStyle`
     font-weight: 300;
   }
 
-  .font-bold {
+  .font-semibold {
+    font-weight: 600;
+  }
+
+  .font-semibold {
     font-weight: 700;
   }
 `;

@@ -14,6 +14,7 @@ import Monitoring from 'pages/Monitoring';
 import NotFound from 'pages/NotFound';
 import OneAuctionPage from 'pages/OneAuctionPage';
 import RootNodeStaking from 'pages/RootNodeStaking';
+import Staking from 'pages/Staking';
 import ValidatorStaking from 'pages/ValidatorStaking';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -141,6 +142,10 @@ function Routes () {
               </Route>
             )}
 
+            <Route exact path="/staking/:slug?">
+              <Staking />
+            </Route>
+
             <Route exact path="/saving-and-borrowing">
               <SavingAndBorrowing />
             </Route>
@@ -176,7 +181,7 @@ function Routes () {
 
             <Route
               exact
-              path="/ui-kit"
+              path="/ui-kit/:slug?"
               render={() => (
                 <Suspense fallback={null}>
                   <UiKit />
