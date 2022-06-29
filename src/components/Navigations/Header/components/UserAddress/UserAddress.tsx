@@ -56,7 +56,7 @@ function UserAddress () {
       onToggle={setAddressOpen}
     >
       <div className="address-content">
-        <h3 className="address-title text-xl font-bold">
+        <h3 className="address-title text-xl font-semibold">
           <AddressIcon address={userAddress} size={32} />
           {trimAddress(userAddress)}
         </h3>

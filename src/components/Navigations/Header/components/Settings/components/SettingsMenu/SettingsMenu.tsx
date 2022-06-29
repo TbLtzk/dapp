@@ -37,7 +37,7 @@ function LanguageSwitcher ({ onLanguageOpen }: { onLanguageOpen: () => void }) {
             alt="flag"
           />
 
-          <p className="text-md font-bold">
+          <p className="text-md font-semibold">
             {language.title}
           </p>
         </div>

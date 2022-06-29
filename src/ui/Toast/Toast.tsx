@@ -38,7 +38,7 @@ function Toast ({
         </div>
 
         <div className="toast-content">
-          <h3 className="text-lg font-bold">{titleMap[type]}</h3>
+          <h3 className="text-lg font-semibold">{titleMap[type]}</h3>
           <p className="toast-text text-sm">{text}</p>
         </div>
 
