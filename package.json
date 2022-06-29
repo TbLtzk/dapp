@@ -1,13 +1,13 @@
 {
   "name": "q-hq-dapp",
-  "version": "v1.22.19",
+  "version": "0.5.57",
   "private": true,
   "scripts": {
     "start": "vite",
     "build": "cross-env NODE_OPTIONS=--max_old_space_size=8192 vite build",
     "preview": "vite preview",
     "i18n:compile": "node scripts/compileLangs.js",
-    "patch-version": "yarn version patch -m \"Upgrade to %s\"",
+    "patch-version": "npm version patch -m \"Upgrade to %s\"",
     "postversion": "git push && git push --tags",
     "lint": "eslint \"**/*.{js,ts,jsx,tsx}\"",
     "lint:fix": "yarn lint -- --fix"
