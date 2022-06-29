@@ -1,10 +1,10 @@
 import { useSelector } from 'react-redux';
 
+import { THEMES } from 'styles/colors';
+
 import logo from 'assets/img/logo.png';
 
 import { theme } from 'store/theme/selectors';
-
-import { THEMES } from 'constants/colors';
 
 function LogoImg () {
   const currentTheme = useSelector(theme);

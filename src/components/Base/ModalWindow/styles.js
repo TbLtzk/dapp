@@ -2,8 +2,6 @@ import { Modal } from 'react-bootstrap';
 
 import styled, { css } from 'styled-components';
 
-import { indents } from 'constants/style';
-
 export const Header = styled(Modal.Header)`
   background: ${(props) => props.theme.colors.oxfordBlueTint6};
   border-bottom: 0;
@@ -13,7 +11,7 @@ export const Header = styled(Modal.Header)`
 `;
 
 export const Body = styled(Modal.Body)`
-  padding: 0 ${indents['20']} ${indents['20']};
+  padding: 0 20px 20px;
   overflow-wrap: break-word;
   min-height: 200px;
   word-wrap: break-word;
@@ -38,7 +36,7 @@ export const ModalContainer = styled(Modal)`
   `}
 
   .modal-header {
-    padding: ${indents['20']};
+    padding: 20px;
   }
 
   .modal-title {
@@ -149,13 +147,13 @@ export const ModalContainer = styled(Modal)`
   .modal__three-colm {
     display: grid;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
-    grid-column-gap: ${indents['15']};
+    grid-column-gap: 15px;
   }
 
   .modal__column-1-2-2 {
     display: grid;
     grid-template-columns: minmax(80px, 80px) minmax(100px, 1fr) minmax(100px, 1fr);
-    grid-column-gap: ${indents['15']};
+    grid-column-gap: 15px;
   }
 
   .modal__one-line-form {

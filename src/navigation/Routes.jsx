@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { positions, Provider as AlertProvider, transitions } from 'react-alert';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import * as Sentry from '@sentry/react';
+import Toast from 'ui/Toast';
 
 import StyleLayout from 'components/Base/StyleLayout';
-import AlertTemplate from 'components/Custom/Alerts/AlertTemplate';
 import ErrorBoundary from 'components/Custom/ErrorBoundary';
 import AccountAliasing from 'pages/AccountAliasing';
 import DataPrivacy from 'pages/DataPrivacy';
@@ -35,10 +35,14 @@ import ErrorHandler from 'func/ErrorHandler';
 const options = {
   position: positions.TOP_RIGHT,
   timeout: 5000,
-  offset: '10px',
   transition: transitions.SCALE,
   containerStyle: {
-    zIndex: 9999
+    zIndex: 9999,
+    pointerEvents: 'all',
+    top: '80px',
+    left: 'unset',
+    right: '24px',
+    gap: '16px'
   }
 };
 
@@ -54,6 +58,8 @@ function addSentryContext () {
   }
 }
 
+const UiKit = lazy(() => import('pages/UiKit'));
+
 function Routes () {
   const isAliasesEnabled = useFeatureFlag('aliases');
 
@@ -64,7 +70,16 @@ function Routes () {
   return (
     <StyleLayout>
       <ErrorBoundary>
-        <AlertProvider template={AlertTemplate} {...options}>
+        <AlertProvider
+          template={({ message, options, close }) => (
+            <Toast
+              type={options.type}
+              text={message.details}
+              onClose={close}
+            />
+          )}
+          {...options}
+        >
           <Switch>
             <Route exact path="/">
               <Dashboard />
@@ -158,6 +173,16 @@ function Routes () {
             <Route exact path="/data-privacy">
               <DataPrivacy />
             </Route>
+
+            <Route
+              exact
+              path="/ui-kit"
+              render={() => (
+                <Suspense fallback={null}>
+                  <UiKit />
+                </Suspense>
+              )}
+            />
 
             <Route component={NotFound} />
           </Switch>

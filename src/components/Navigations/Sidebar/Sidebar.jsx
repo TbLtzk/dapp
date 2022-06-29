@@ -1,5 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import LogoImg from 'components/Base/LogoImg';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -9,7 +12,7 @@ import EcosystemApps from './components/EcosystemApps';
 import Policy from './components/Policy';
 import References from './components/References';
 import Version from './components/Version';
-import { FooterContaier, SidebarContainer } from './styles';
+import { FooterContaier, SidebarContainer, WrapLogo } from './styles';
 
 import {
   liquidationAuctionsSelector,
@@ -35,6 +38,12 @@ function Sidebar () {
 
   return (
     <SidebarContainer>
+      <WrapLogo>
+        <Link to="/">
+          <LogoImg />
+        </Link>
+      </WrapLogo>
+
       <div className="sidebar_group">
         <div className="sidebar_links">
           <AccordionLinks type="dashboard-toggle" headerLink={<CommonLinks linkTo="/" linkTitle={t('DASHBOARD')} />}>

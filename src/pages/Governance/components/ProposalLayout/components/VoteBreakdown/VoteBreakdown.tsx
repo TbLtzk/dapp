@@ -1,8 +1,7 @@
 import PieChartTwoItem from './PieChartTwoItem';
-import { ColorTitle, VoteBreakdownContainer } from './styles';
+import { Circle, ColorTitle, VoteBreakdownContainer } from './styles';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-import { Circle } from 'constants/style';
 
 function VoteBreakdown ({ voteBreakdown }: { voteBreakdown: any }) {
   const contractsWithoutVeto =

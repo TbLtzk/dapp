@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 export const SidebarContainer = styled.div`
-  height: calc(100vh - 70px);
+  height: 100vh;
   position: relative;
   display: grid;
   width: 310px;
@@ -83,7 +83,7 @@ export const LinkStyle = styled(NavLink)`
 
   &.${(props) => props.activeClassName} {
     font-weight: 600;
-    color: ${(p) => p.theme.colors.activeLinks};
+    color: ${(p) => p.theme.colors.neonGreen};
   }
 
   :hover {
@@ -91,7 +91,7 @@ export const LinkStyle = styled(NavLink)`
     text-decoration: none;
     color: ${(p) => p.theme.colors.white};
     &.${(props) => props.activeClassName} {
-      color: ${(p) => p.theme.colors.activeLinks};
+      color: ${(p) => p.theme.colors.neonGreen};
     }
     background: ${(props) => props.theme.colors.oxfordBlueTint1};
   }
@@ -177,7 +177,7 @@ export const AccordionIcon = styled.div`
   transition-duration: 0.1s;
   transition-property: transform;
   &.${(props) => props.activeClassName} {
-    color: ${(p) => p.theme.colors.activeLinks};
+    color: ${(p) => p.theme.colors.neonGreen};
   }
 `;
 
@@ -216,5 +216,11 @@ export const FooterContaier = styled.div`
     display: flex;
     text-align: center;
     align-items: center;
+  }
+`;
+
+export const WrapLogo = styled.div`
+  img {
+    width: 53px;
   }
 `;

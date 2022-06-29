@@ -19,7 +19,7 @@ export const TableWrapper = styled.div`
     font-size: 13px;
     border-style: none;
     line-height: 17px;
-    color: ${(props) => props.theme.colors.th};
+    color: ${(props) => props.theme.colors.oxfordBlueTint3};
     ${(props) =>
     props.sorting
       ? css`
@@ -33,8 +33,8 @@ export const TableWrapper = styled.div`
 
   tbody {
     border: transparent;
-    border-top: 1px solid ${(props) => props.theme.colors.th};
-    ${(props) => (props.bottomLine ? css`border-bottom: 1px solid ${(props) => props.theme.colors.th}};` : null)}
+    border-top: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
+    ${(props) => (props.bottomLine ? css`border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3}};` : null)}
   }
 
   .table td {
@@ -44,7 +44,7 @@ export const TableWrapper = styled.div`
             vertical-align: middle;
             padding-top: 10px;
             padding-bottom: 10px;
-            border-bottom: 1px solid ${(props) => props.theme.colors.th};
+            border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
           `
       : null}
     border-top: transparent;
@@ -64,7 +64,7 @@ export const TableWrapper = styled.div`
       return 'top';
     }
   }};
-    color: ${(props) => props.theme.colors.td};
+    color: ${(props) => props.theme.colors.white};
     font-size: 13px;
     line-height: 17px;
     padding: ${(props) => {
@@ -77,7 +77,7 @@ export const TableWrapper = styled.div`
 
     border-bottom: ${(props) => {
     if (props.type === 'with-action') {
-      return '1px solid ' + props.theme.colors.th;
+      return '1px solid ' + props.theme.colors.oxfordBlueTint3;
     } else {
       return null;
     }

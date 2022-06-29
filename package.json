@@ -9,7 +9,7 @@
     "i18n:compile": "node scripts/compileLangs.js",
     "patch-version": "npm version patch -m \"Upgrade to %s\"",
     "postversion": "git push && git push --tags",
-    "lint": "eslint \"**/*.{js,ts,jsx,tsx}\"",
+    "lint": "eslint \"src/**/*.{js,ts,jsx,tsx}\"",
     "lint:fix": "yarn lint -- --fix"
   },
   "dependencies": {
@@ -35,6 +35,7 @@
     "bignumber.js": "^9.0.1",
     "bootstrap": "^4.6.0",
     "buffer": "^6.0.3",
+    "copy-to-clipboard": "^3.3.1",
     "framer-motion": "^4.1.17",
     "i18next": "^21.8.10",
     "i18next-browser-languagedetector": "^6.1.4",
@@ -48,7 +49,6 @@
     "react-bootstrap-table-next": "^4.0.3",
     "react-bootstrap-table2-paginator": "^2.1.2",
     "react-content-loader": "^6.0.3",
-    "react-copy-to-clipboard": "^5.0.3",
     "react-datepicker": "^3.8.0",
     "react-dom": "^17.0.1",
     "react-i18next": "^11.17.2",

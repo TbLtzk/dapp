@@ -2,8 +2,6 @@ import { Card } from 'react-bootstrap';
 
 import styled from 'styled-components';
 
-import { indents } from 'constants/style';
-
 export const ListCardWrp = styled(Card)`
   border: 0;
   background: ${(props) => props.theme.colors.oxfordBlueTint1};
@@ -287,7 +285,7 @@ export const ListCardWrp = styled(Card)`
   .list-card__column-1-2-2 {
     display: grid;
     grid-template-columns: minmax(100px, 120px) minmax(100px, 2fr) minmax(100px, 2fr);
-    grid-column-gap: ${indents['15']};
+    grid-column-gap: 15px;
 
     & > * {
       text-overflow: ellipsis;

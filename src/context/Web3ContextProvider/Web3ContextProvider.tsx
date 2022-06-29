@@ -32,7 +32,7 @@ export type Web3Data = {
   loading: boolean;
   setError: (error: Error | null) => void;
   chainId: number | undefined;
-  switchNetwork: (chainId: number, reload: boolean) => Promise<void>;
+  switchNetwork: (chainId?: number, reload?: boolean) => Promise<void>;
   switchNetworkError: boolean | null;
   success: boolean;
   setSwitchNetworkError: (err: boolean | null) => void;

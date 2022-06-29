@@ -38,7 +38,7 @@ export const StyledCheckbox = styled(motion.div)<{ check: boolean; invertedColor
             }
             .checkmark-path {
               stroke: ${(p) =>
-                p.theme.currentTheme === 'dark' ? p.theme.colors.white : p.theme.colors.oxfordBlueTint6};
+                p.theme.palette === 'dark' ? p.theme.colors.white : p.theme.colors.oxfordBlueTint6};
             }
           `}
   }
