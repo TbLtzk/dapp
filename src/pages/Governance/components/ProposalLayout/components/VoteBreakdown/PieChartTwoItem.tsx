@@ -1,8 +1,6 @@
 import { Cell, Pie, PieChart } from 'recharts';
 
-import colors from 'constants/colors';
-
-export const circles = [colors.white, colors.oxfordBlueTint2];
+const circles = ['#FFFFFF', '#3C516A'];
 
 const PieChartTwoItem = ({ data }: { data: any[] | null }) => (
   <div>
@@ -41,7 +39,7 @@ const PieChartTwoItem = ({ data }: { data: any[] | null }) => (
             innerRadius={23}
             outerRadius={29}
             stroke={0}
-            fill={colors.oxfordBlueTint3}
+            fill="#6D7C8F"
             dataKey="value"
           ></Pie>
         </PieChart>

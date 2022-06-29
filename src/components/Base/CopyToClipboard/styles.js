@@ -12,6 +12,7 @@ export const TooltipWrapper = styled.span`
     width: 40px;
     display: flex;
     justify-content: center;
+    white-space: nowrap;
   }
 `;
 

@@ -13,7 +13,6 @@ import { ListEmptyMessage, ListWrapper } from './styles';
 
 import { activeProposalsByTypeSelector, endedProposalsByTypeSelector, proposalsByTypeSelector } from 'store/voting/proposals/selectors';
 
-import { LoadingWrap } from 'constants/style';
 import { fillArray } from 'func/useful';
 
 const PAGE_LIMIT = 10;
@@ -80,17 +79,14 @@ function ProposalsList ({ type, status }: { type: ProposalType, status: Proposal
       </ListWrapper>
 
       {filteredProposals.length > list.length && (
-        <LoadingWrap>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Button
-            style={{
-              margin: '0 auto',
-              width: '140px'
-            }}
+            style={{ width: '140px' }}
             onClick={handleNextProposals}
           >
             Show more
           </Button>
-        </LoadingWrap>
+        </div>
       )}
     </>
   );

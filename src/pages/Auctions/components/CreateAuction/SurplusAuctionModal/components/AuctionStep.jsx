@@ -33,6 +33,7 @@ function AuctionStep ({ surplusLot }) {
       <Input
         {...form.fields.bid}
         invertedColors
+        type="number"
         label="Provide your initial Bid in Q"
         placeholder="Bid"
       />

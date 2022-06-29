@@ -9,7 +9,7 @@ export const CalendarWrapper = styled.div`
     text-align: left;
     min-height: 10px;
     border-radius: 3px;
-    background-color: ${(p) => p.theme.palette === 'dark' ? 'transparent' : p.theme.colors.blue};
+    background-color: ${(p) => p.theme.palette === 'dark' ? 'transparent' : p.theme.colors.oxfordBlue};
     border: 1px solid ${getInputColor};
     color: ${getInputColor};
 
@@ -28,7 +28,7 @@ export const CalendarWrapper = styled.div`
       cursor: not-allowed;
 
       ${(p) => !p.$error && css`
-        background: ${p.theme.palette === 'dark' ? 'transparent' : p.theme.colors.blue};
+        background: ${p.theme.palette === 'dark' ? 'transparent' : p.theme.colors.oxfordBlue};
         border: 1px solid ${p.theme.colors.oxfordBlueTint2};
         color: ${p.theme.palette === 'dark'
           ? p.theme.colors.oxfordBlueTint5

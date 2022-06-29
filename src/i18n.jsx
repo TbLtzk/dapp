@@ -18,17 +18,16 @@ const resources = {
   },
 };
 
-const LanguageContext = createContext();
-const LanguageContextProvider = LanguageContext.Provider;
+const languages = [
+  { lang: 'en', title: 'English', src: '/flags/en.svg' },
+  { lang: 'de', title: 'Deutsch', src: '/flags/de.svg' },
+  { lang: 'ua', title: 'Українська', src: '/flags/ua.svg' },
+];
+
+const LanguageContext = createContext({ languages, changeLang: (_) => {} });
 // https://flagicons.lipis.dev
 
 function LanguageProvider ({ children }) {
-  const languages = [
-    { lang: 'en', title: 'English', src: '/flags/en.svg' },
-    { lang: 'de', title: 'Deutsch', src: '/flags/de.svg' },
-    { lang: 'ua', title: 'Українська', src: '/flags/ua.svg' },
-  ];
-
   i18n
     .use(detector)
     .use(initReactI18next)
@@ -47,11 +46,11 @@ function LanguageProvider ({ children }) {
   }, []);
 
   return (
-    <LanguageContextProvider value={{ languages, changeLang }}>
+    <LanguageContext.Provider value={{ languages, changeLang }}>
       <I18nextProvider i18n={i18n}>
         {children}
       </I18nextProvider>
-    </LanguageContextProvider>
+    </LanguageContext.Provider>
   );
 }
 

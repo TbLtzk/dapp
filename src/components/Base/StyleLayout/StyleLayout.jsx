@@ -2,6 +2,9 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import styled, { ThemeProvider } from 'styled-components';
+import { darkColors, lightColors, THEMES } from 'styles/colors';
+import { GlobalStyle } from 'styles/globalStyle';
+import { TypographyStyle } from 'styles/typography';
 
 import LoadingTransaction from 'components/Custom/LoadingTransaction';
 import Header from 'components/Navigations/Header';
@@ -10,12 +13,9 @@ import Sidebar from 'components/Navigations/Sidebar';
 import { setTheme } from 'store/theme/action-creators';
 import { theme } from 'store/theme/selectors';
 
-import { darkColors, lightColors, THEMES } from 'constants/colors';
-import { GlobalStyle } from 'constants/globalStyle';
-import themeStyles from 'constants/style';
-
 const PageContainer = styled.div`
-    display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
 `;
 
 function StyleLayout ({ children }) {
@@ -33,46 +33,23 @@ function StyleLayout ({ children }) {
     }
   }, [dispatch]);
 
-  function getColors (theme) {
-    let generalColors = {};
-    switch (theme) {
-      case THEMES.light:
-        generalColors = lightColors;
-        break;
-      case THEMES.dark:
-        generalColors = darkColors;
-        break;
-    }
-    return {
-      ...generalColors,
-      links: generalColors.white,
-      activeLinks: generalColors.neonGreen,
-      main: generalColors.oxfordBlue,
-      circleDark: generalColors.oxfordBlueTint2,
-      circleWhite: generalColors.white,
-      blue: generalColors.oxfordBlue,
-      grey: generalColors.oxfordBlueTint3,
-      error: generalColors.validationError,
-      th: generalColors.oxfordBlueTint3,
-      td: generalColors.white,
-      darkText: generalColors.oxfordBlue
-    };
-  }
-
   return (
     <ThemeProvider
       theme={{
-        ...themeStyles,
         palette: currentTheme,
-        currentTheme: currentTheme,
-        colors: getColors(currentTheme)
+        colors: currentTheme === THEMES.light
+          ? lightColors
+          : darkColors
       }}
     >
       <GlobalStyle />
-      <Header />
+      <TypographyStyle />
       <PageContainer>
         <Sidebar />
-        {children}
+        <div className="app-content">
+          <Header />
+          {children}
+        </div>
       </PageContainer>
       <LoadingTransaction />
     </ThemeProvider>

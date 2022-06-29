@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { CopyToClipboard as Copy } from 'react-copy-to-clipboard';
+
+import copy from 'copy-to-clipboard';
 
 import PopperTooltip from '../PopperTooltip';
 
@@ -21,12 +22,15 @@ function CopyToClipboard ({
     return () => clearTimeout(timeout);
   }, [isCopied]);
 
+  const handleCopy = () => {
+    copy(value);
+    setIsCopied(true);
+  };
+
   const copyTrigger = (
-    <Copy text={value}>
-      <CopyTrigger onClick={() => setIsCopied(true)}>
-        <i className={`mdi mdi-${isCopied ? 'check-circle-outline' : 'content-copy'}`} />
-      </CopyTrigger>
-    </Copy>
+    <CopyTrigger onClick={handleCopy}>
+      <i className={`mdi mdi-${isCopied ? 'check-circle-outline' : 'content-copy'}`} />
+    </CopyTrigger>
   );
 
   return hideTooltip

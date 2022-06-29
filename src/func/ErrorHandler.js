@@ -1,14 +1,12 @@
 import * as Sentry from '@sentry/react';
 import { isEmpty } from 'lodash';
 
+import { capitalize } from './useful';
+
 const DEFAULT_ERROR = {
   header: 'Unknown type of error',
   details: 'No additional info'
 };
-
-function capitalize (string = '') {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
 
 function createErrorObject (error) {
   if (error?.message?.includes('Internal JSON-RPC error.')) {

@@ -1,135 +1,45 @@
-/* Montserrat */
-@font-face {
-    font-family: Montserrat;
-    src: url(./Montserrat/Montserrat-Medium.ttf) format('ttf');
-    font-weight: 500;
-    font-style: normal;
-}
-
 /* Open Sans */
 @font-face {
-    font-family: OpenSans;
-    src: url(./OpenSans/OpenSans-Light.ttf);
-    font-style: normal;
-    font-weight: 300;
+  font-family: OpenSans;
+  src: url(./OpenSans/OpenSans-Light.ttf);
+  font-style: normal;
+  font-weight: 300;
 }
 
 @font-face {
-    font-family: OpenSans;
-    src: url(./OpenSans/OpenSans-Regular.ttf);
-    font-style: normal;
-    font-weight: 400;
+  font-family: OpenSans;
+  src: url(./OpenSans/OpenSans-Regular.ttf);
+  font-style: normal;
+  font-weight: 400;
 }
 
 @font-face {
-    font-family: OpenSans;
-    src: url(./OpenSans/OpenSans-SemiBold.ttf);
-    font-style: normal;
-    font-weight: 600;
-}
-
-@font-face {
-    font-family: OpenSans;
-    src: url(./OpenSans/OpenSans-Bold.ttf);
-    font-style: normal;
-    font-weight: 700;
-}
-
-@font-face {
-    font-family: OpenSans;
-    src: url(./OpenSans/OpenSans-ExtraBold.ttf);
-    font-style: normal;
-    font-weight: 800;
-}
-
-@font-face {
-    font-family: OpenSans;
-    src: url(./OpenSans/OpenSans-LightItalic.ttf);
-    font-style: italic;
-    font-weight: 300;
-}
-
-@font-face {
-    font-family: OpenSans;
-    src: url(./OpenSans/OpenSans-Italic.ttf);
-    font-style: italic;
-    font-weight: 400;
-}
-
-@font-face {
-    font-family: OpenSans;
-    src: url(./OpenSans/OpenSans-SemiBoldItalic.ttf);
-    font-style: italic;
-    font-weight: 600;
-}
-
-@font-face {
-    font-family: OpenSans;
-    src: url(./OpenSans/OpenSans-BoldItalic.ttf);
-    font-style: italic;
-    font-weight: 700;
-}
-
-@font-face {
-    font-family: OpenSans;
-    src: url(./OpenSans/OpenSans-ExtraBoldItalic.ttf);
-    font-style: italic;
-    font-weight: 800;
+  font-family: OpenSans;
+  src: url(./OpenSans/OpenSans-SemiBold.ttf);
+  font-style: normal;
+  font-weight: 600;
 }
 
 /* Lora */
 @font-face {
-    font-family: Lora;
-    src: url(./Lora/Lora-Regular.ttf);
-    font-style: normal;
-    font-weight: 400;
+  font-family: Lora;
+  src: url(./Lora/Lora-Regular.ttf);
+  font-style: normal;
+  font-weight: 400;
 }
 
 @font-face {
-    font-family: Lora;
-    src: url(./Lora/Lora-Medium.ttf);
-    font-style: normal;
-    font-weight: 500;
+  font-family: Lora;
+  src: url(./Lora/Lora-SemiBold.ttf);
+  font-style: normal;
+  font-weight: 600;
 }
 
+/* Q Icons */
 @font-face {
-    font-family: Lora;
-    src: url(./Lora/Lora-SemiBold.ttf);
-    font-style: normal;
-    font-weight: 600;
-}
-
-@font-face {
-    font-family: Lora;
-    src: url(./Lora/Lora-Bold.ttf);
-    font-style: normal;
-    font-weight: 700;
-}
-
-@font-face {
-    font-family: Lora;
-    src: url(./Lora/Lora-Italic.ttf);
-    font-style: italic;
-    font-weight: 400;
-}
-
-@font-face {
-    font-family: Lora;
-    src: url(./Lora/Lora-MediumItalic.ttf);
-    font-style: italic;
-    font-weight: 500;
-}
-
-@font-face {
-    font-family: Lora;
-    src: url(./Lora/Lora-SemiBoldItalic.ttf);
-    font-style: italic;
-    font-weight: 600;
-}
-
-@font-face {
-    font-family: Lora;
-    src: url(./Lora/Lora-BoldItalic.ttf);
-    font-style: italic;
-    font-weight: 700;
+  font-family: Q-Icons;
+  src: url(./Q-Icons/Q-Icons.ttf);
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
 }

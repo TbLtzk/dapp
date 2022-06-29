@@ -6,11 +6,11 @@ export const ColorTitle = styled.div`
   color: ${(props) => {
     switch (props.color) {
       case 'white':
-        return props.theme.colors.circleWhite;
+        return props.theme.colors.white;
       case 'dark':
-        return props.theme.colors.circleDark;
+        return props.theme.colors.oxfordBlueTint2;
       default:
-        return props.theme.colors.circleWhite;
+        return props.theme.colors.white;
     }
   }};
 `;
@@ -55,4 +55,22 @@ export const VoteBreakdownContainer = styled.div`
       display: none;
     }
   }
+`;
+
+export const Circle = styled.div`
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: ${(props) => {
+    switch (props.color) {
+      case 'circle-white':
+        return props.theme.colors.white;
+      case 'circle-dark':
+        return props.theme.colors.oxfordBlueTint2;
+      default:
+        return props.theme.colors.white;
+    }
+  }};
+  border-radius: 50%;
+  margin-right: 7px;
 `;

@@ -3,7 +3,6 @@ import { Container } from 'react-bootstrap';
 import styled, { css } from 'styled-components';
 
 import { scrollbarStyle } from 'constants/globalStyle';
-import { indents } from 'constants/style';
 
 export const WrapContainer = styled(Container)`
   position: relative;
@@ -11,21 +10,15 @@ export const WrapContainer = styled(Container)`
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-
   background: ${(props) => props.theme.colors.oxfordBlue};
-  padding: 0 ${indents['45']} 0 ${indents['40']};
-
-  @media screen and (max-width: 1550px) {
-    padding: 0 ${indents['15']} 0 ${indents['15']};
-  }
+  padding: 24px;
 `;
 
 export const PageTitleWrp = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding-bottom: ${indents['15']};
-  padding-top: ${indents['15']};
+  padding-bottom: 15px;
 
   a {
     text-decoration: none;
@@ -50,31 +43,30 @@ export const PageTitleActions = styled.div`
 export const WrapContent = styled.div`
   min-height: 490px;
   max-width: 100%;
-  margin-bottom: 15px;
   ${scrollbarStyle}
 
   &.wrap-content__tow-colm {
     display: grid;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
-    grid-column-gap: ${indents['15']};
+    grid-column-gap: 15px;
   }
 
   &.wrap-content__column-2-1 {
     display: grid;
     grid-template-columns: minmax(100px, 2fr) minmax(100px, 1fr);
-    grid-column-gap: ${indents['15']};
+    grid-column-gap: 15px;
   }
 
   &.wrap-content__three-colm {
     display: grid;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
-    grid-column-gap: ${indents['15']};
+    grid-column-gap: 15px;
   }
 
   &.wrap-content__colm-2 {
     display: grid;
     grid-template-columns: minmax(100px, 2fr) minmax(100px, 1fr);
-    grid-column-gap: ${indents['15']};
+    grid-column-gap: 15px;
   }
 
   .content__colm-1 {
@@ -84,7 +76,7 @@ export const WrapContent = styled.div`
   .content__colm-2 {
     display: grid;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
-    grid-column-gap: ${indents['15']};
+    grid-column-gap: 15px;
   }
 
   .content__time-locks {
@@ -96,7 +88,7 @@ export const WrapContent = styled.div`
   .content__colm-3 {
     display: flex;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
-    grid-column-gap: ${indents['15']};
+    grid-column-gap: 15px;
 
     @media screen and (max-width: 1100px) {
       flex-direction: column;
