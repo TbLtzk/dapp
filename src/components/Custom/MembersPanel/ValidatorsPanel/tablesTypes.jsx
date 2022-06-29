@@ -60,11 +60,9 @@ export const tableValidatorsWidened = (tableArray) =>
         <AliasTooltip alias={validator.alias} />
       </div>
     ),
+    validator2: validator.validator,
     amount: fN(fromWei(validator.amount)) + ' Q',
     selfStake: fN(validator.selfStake) + ' Q',
     delegatedStake: fN(validator.delegatedStake) + ' Q',
-    validatorShare: fN(validator.validatorShare) + ' %',
-    delegatorShare: fN(validator.delegatorShare) + ' %',
-    delegationEfficiency: fN(validator.delegationEfficiency) + ' %',
     delegationSaturation: <ProgressBar value={fN(validator.delegationSaturation)} />,
   }));

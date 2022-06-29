@@ -2,18 +2,19 @@ import { toNumber } from 'func/useful';
 
 export const getColumnsValidatorsWidened = (t) => [
   {
-    headerStyle: () => ({ minWidth: '70px', width: '70px' }),
+    headerStyle: () => ({ minWidth: '95px' }),
     dataField: 'rank',
     text: t('RANK'),
     sort: true,
   },
   {
-    headerStyle: () => ({ minWidth: '170px' }),
+    headerStyle: () => ({ minWidth: '173px' }),
     dataField: 'validator',
-    text: t('VALIDATOR_ADDRESS'),
+    text: 'Address',
+    filterValue: (cell) => cell.props.children[0].props.addres,
   },
   {
-    headerStyle: () => ({ minWidth: '190px' }),
+    headerStyle: () => ({ minWidth: '220px' }),
     dataField: 'amount',
     text: t('TOTAL_ACCOUNTABLE_STAKE'),
     sort: true,
@@ -27,35 +28,14 @@ export const getColumnsValidatorsWidened = (t) => [
     sortFunc: (a, b, order) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
   },
   {
-    headerStyle: () => ({ minWidth: '140px' }),
+    headerStyle: () => ({ minWidth: '170px' }),
     dataField: 'delegatedStake',
     text: t('DELEGATED_STAKE'),
     sort: true,
     sortFunc: (a, b, order) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
   },
   {
-    headerStyle: () => ({ minWidth: '130px' }),
-    dataField: 'validatorShare',
-    text: t('VALIDATOR_SHARE'),
-    sort: true,
-    sortFunc: (a, b, order) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
-  },
-  {
-    headerStyle: () => ({ minWidth: '140px' }),
-    dataField: 'delegatorShare',
-    text: t('DELEGATOR_SHARE'),
-    sort: true,
-    sortFunc: (a, b, order) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
-  },
-  {
-    headerStyle: () => ({ minWidth: '170px' }),
-    dataField: 'delegationEfficiency',
-    text: t('DELEGATION_EFFICIENCY'),
-    sort: true,
-    sortFunc: (a, b, order) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
-  },
-  {
-    headerStyle: () => ({ minWidth: '170px' }),
+    headerStyle: () => ({ minWidth: '220px' }),
     dataField: 'delegationSaturation',
     text: t('DELEGATION_SATURATION'),
     sort: true,

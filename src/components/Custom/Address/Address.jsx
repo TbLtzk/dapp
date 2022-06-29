@@ -24,7 +24,7 @@ function Address ({
       {iconed && (
         <AddressIcon
           address={address}
-          size={16}
+          size={20}
           style={{ margin: '2px 8px 2px 2px' }}
         />
       )}

@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { scrollbarStyle } from 'constants/globalStyle';
 
@@ -8,83 +8,71 @@ export const TableWrapper = styled.div`
   overflow-x: auto;
   ${scrollbarStyle}
 
+  .table-bordered, .table-bordered td, .table-bordered th {
+    border: none;
+  }
+
   .react-bootstrap-table-pagination {
     > div:first-of-type {
       display: none;
     }
   }
+  table {
+    border-collapse: separate;
+    border-spacing: 0 4px;
+  }
 
   thead th {
-    padding: 5px 5px 10px 5px;
-    font-size: 13px;
+    &:first-child {
+      padding-left: 32px;
+    }
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-left: 26px;
+
+    font-size: 14px;
+    line-height: 20px;
     border-style: none;
     line-height: 17px;
-    color: ${(props) => props.theme.colors.oxfordBlueTint3};
-    ${(props) =>
-    props.sorting
-      ? css`
-            cursor: pointer;
-            :hover {
-              color: ${props.theme.colors.neonGreen};
-            }
-          `
-      : null}
+    color: ${({ theme }) => theme.colors.white}; //fix colors
+    cursor: pointer;
   }
 
   tbody {
-    border: transparent;
-    border-top: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
-    ${(props) => (props.bottomLine ? css`border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3}};` : null)}
-  }
+    tr {
+      td {
+        &:first-child {
+          padding-left: 32px;
+        }
 
-  .table td {
-    ${(props) =>
-    props.lineForEach
-      ? css`
-            vertical-align: middle;
-            padding-top: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
-          `
-      : null}
-    border-top: transparent;
-  }
+        white-space: nowrap;
+      }
 
-  tr:first-child {
-    td {
-      padding-top: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+
+      color: white;
+      margin-bottom: 10px;
+      gap: 20px;
+      height: 72px;
+      background: #0b2545;
+      box-shadow: 0px 4px 16px rgba(23, 77, 145, 0.04);
     }
   }
 
   td {
-    vertical-align: ${(props) => {
-    if (props.type === 'with-action') {
-      return 'baseline';
-    } else {
-      return 'top';
-    }
-  }};
-    color: ${(props) => props.theme.colors.white};
-    font-size: 13px;
-    line-height: 17px;
-    padding: ${(props) => {
-    if (props.type === 'with-action') {
-      return '15px 5px';
-    } else {
-      return '5px';
-    }
-  }};
-
-    border-bottom: ${(props) => {
-    if (props.type === 'with-action') {
-      return '1px solid ' + props.theme.colors.oxfordBlueTint3;
-    } else {
-      return null;
-    }
-  }};
+    border: solid 1px #000;
+    padding: 26px;
   }
-  .row {
-    margin-right: 0px;
+
+  td:first-child {
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+  }
+  td:last-child {
+    border-bottom-right-radius: 16px;
+    border-top-right-radius: 16px;
   }
 `;
 
@@ -97,12 +85,12 @@ export const PagesItemWrapper = styled.li`
     margin-right: 10px;
     font-size: 14px;
     color: ${(props) => {
-    if (props.palette === 'dark') {
-      return props.active ? props.theme.colors.white : props.theme.colors.oxfordBlueTint3;
-    } else {
-      return props.active ? props.theme.colors.white : props.theme.colors.oxfordBlueTint4;
-    }
-  }};
+      if (props.palette === 'dark') {
+        return props.active ? props.theme.colors.white : props.theme.colors.oxfordBlueTint3;
+      } else {
+        return props.active ? props.theme.colors.white : props.theme.colors.oxfordBlueTint4;
+      }
+    }};
   }
 
   .page-item__title {
@@ -119,17 +107,11 @@ export const SortCaretIcon = styled.svg`
 
   path {
     &:first-child {
-      fill: ${({ theme, $order }) => $order === 'desc'
-        ? theme.colors.white
-        : theme.colors.oxfordBlueTint3
-      };
+      fill: ${({ theme, $order }) => ($order === 'desc' ? theme.colors.white : theme.colors.oxfordBlueTint3)};
     }
 
     &:last-child {
-      fill: ${({ theme, $order }) => $order === 'asc'
-        ? theme.colors.white
-        : theme.colors.oxfordBlueTint3
-      };
+      fill: ${({ theme, $order }) => ($order === 'asc' ? theme.colors.white : theme.colors.oxfordBlueTint3)};
     }
   }
 `;
