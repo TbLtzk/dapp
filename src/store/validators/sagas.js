@@ -149,6 +149,7 @@ function* getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWid
         const validatorAdresses = shortList.map((user) => user.address);
 
         const inactiveValidators = yield indexer.getInactiveValidators(validatorAdresses);
+        console.log(inactiveValidators);
         const aliasesMap = yield getBlockSealingAliasMap(validatorAdresses, network);
 
         const preparedShortList = yield all(
