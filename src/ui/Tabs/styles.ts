@@ -59,7 +59,7 @@ export const TabsContainer = styled.nav`
     border-radius: 50%;
     font-size: 10px;
     font-weight: 600;
-    background-color: ${({ theme }) => theme.colors.lightBlue};
-    color: #fff;
+    background-color:  ${({ theme }) => getTabColors(theme, 'countBackground')};
+    color: ${({ theme }) => getTabColors(theme, 'countNumber')};
   }
 `;
