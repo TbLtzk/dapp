@@ -8,6 +8,7 @@ export const WrapContainer = styled(Container)`
   position: relative;
   height: calc(100vh - 70px);
   width: 100%;
+  min-width: 900px;
   overflow-x: hidden;
   overflow-y: auto;
   background: ${(props) => props.theme.colors.oxfordBlue};

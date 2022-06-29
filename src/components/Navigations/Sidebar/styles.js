@@ -12,6 +12,12 @@ export const SidebarContainer = styled.div`
   padding: 16px 32px;
   background-color: ${(props) => props.theme.colors.oxfordBlue};
   border-right: 1px solid ${(props) => props.theme.colors.oxfordBlueTint2};
+
+  .sidebar-main {
+    display: grid;
+    gap: 16px;
+  }
+
   .divider {
     margin-top: 24px;
     margin-bottom: 24px;
