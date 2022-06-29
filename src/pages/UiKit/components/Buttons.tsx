@@ -7,7 +7,7 @@ function Buttons () {
 
   return (
     <div className="block">
-      <h2 className="typo-h2">Buttons</h2>
+      <h2 className="text-h2">Buttons</h2>
       <div className="block-content">
         <div className="button-list">
           {buttonLooks.map((look) => (

@@ -9,7 +9,7 @@ function Switches () {
 
   return (
     <div className="block">
-      <h2 className="typo-h2">Switches</h2>
+      <h2 className="text-h2">Switches</h2>
       <div className="block-content">
         <div className="switch-list">
           <Switch

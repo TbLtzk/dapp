@@ -64,7 +64,7 @@ function PopperTooltip ({
 
       <div
         ref={popperEl}
-        className="tooltip-content typo-p-sm"
+        className="tooltip-content text-sm"
       >
         {children}
 

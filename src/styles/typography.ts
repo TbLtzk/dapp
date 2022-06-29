@@ -6,69 +6,69 @@ export const TypographyStyle = createGlobalStyle`
     --font-family-sans-serif: 'OpenSans', sans-serif;
   }
 
-  .typo-h1,
-  .typo-h2,
-  .typo-h3,
-  .typo-p-xl,
-  .typo-p-lg,
-  .typo-p-md,
-  .typo-p-sm,
-  .typo-p-xs {
+  .text-h1,
+  .text-h2,
+  .text-h3,
+  .text-xl,
+  .text-lg,
+  .text-md,
+  .text-sm,
+  .text-xs {
     font-weight: 400;
     margin-bottom: 0;
     color: ${({ theme }) => theme.colors.textPrimary};
   }
 
-  .typo-h1,
-  .typo-h2,
-  .typo-h3 {
+  .text-h1,
+  .text-h2,
+  .text-h3 {
     font-family: var(--font-family-serif);
   }
 
-  .typo-p-xl,
-  .typo-p-lg,
-  .typo-p-md,
-  .typo-p-sm,
-  .typo-p-xs {
+  .text-xl,
+  .text-lg,
+  .text-md,
+  .text-sm,
+  .text-xs {
     font-family: var(--font-family-sans-serif);
   }
 
-  .typo-h1 {
+  .text-h1 {
     font-size: 32px;
     line-height: 48px;
   }
 
-  .typo-h2 {
+  .text-h2 {
     font-size: 24px;
     line-height: 32px;
   }
 
-  .typo-h3 {
+  .text-h3 {
     font-size: 20px;
     line-height: 32px;
   }
 
-  .typo-p-xl {
+  .text-xl {
     font-size: 20px;
     line-height: 28px;
   }
 
-  .typo-p-lg {
+  .text-lg {
     font-size: 16px;
     line-height: 24px;
   }
 
-  .typo-p-md {
+  .text-md {
     font-size: 14px;
     line-height: 20px;
   }
 
-  .typo-p-sm {
+  .text-sm {
     font-size: 12px;
     line-height: 16px;
   }
 
-  .typo-p-xs {
+  .text-xs {
     font-size: 10px;
     line-height: 16px;
   }

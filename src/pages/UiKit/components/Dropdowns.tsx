@@ -10,7 +10,7 @@ function Dropdowns () {
 
   return (
     <div className="block">
-      <h2 className="typo-h2">Dropdowns</h2>
+      <h2 className="text-h2">Dropdowns</h2>
       <div className="block-content">
         <div className="row-list">
           <Dropdown
