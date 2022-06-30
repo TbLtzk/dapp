@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const ProposalCardLink = styled(Link)`
-  background-color: ${(props) => props.theme.colors.oxfordBlueTint1};
+  background-color: ${(props) => props.theme.colors.block};
   padding: 20px;
-  border-radius: 3px;
+  border-radius: 16px;
   border: 1px solid transparent;
   transition: all 150ms ease-out;
   text-decoration: none;
@@ -14,7 +14,7 @@ export const ProposalCardLink = styled(Link)`
   &:hover {
     text-decoration: none;
     color: inherit;
-    border-color: ${(props) => props.theme.colors.oxfordBlueTint4};
+    border-color: ${(props) => props.theme.colors.blockBorder};
   }
 
   .proposal-card__head {

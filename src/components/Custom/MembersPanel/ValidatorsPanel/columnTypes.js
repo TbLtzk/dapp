@@ -100,7 +100,7 @@ export const getColumnsValidatorsMonitoring = (t) => [
   },
 
   {
-    headerStyle: () => ({ minWidth: '150px' }),
+    headerStyle: () => ({ minWidth: '180px' }),
     dataField: 'average',
     text: t('AVERAGE_AVAILABILITY_LAST_1000_BLOCKS_CYCLES'),
     sort: true,

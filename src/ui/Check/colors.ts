@@ -23,8 +23,9 @@ export const lightColors = {
   iconDisabled: COLORS.white,
 };
 
-export type CheckColorType = keyof typeof darkColors | keyof typeof lightColors;
-
-export function getCheckColor (theme: DefaultTheme, key: CheckColorType): string {
+export function getCheckColor (
+  theme: DefaultTheme,
+  key: keyof typeof darkColors | keyof typeof lightColors
+) {
   return getColorFn(theme, { lightColors, darkColors })(key);
 }

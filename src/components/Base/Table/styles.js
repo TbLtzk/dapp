@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
-
-import { scrollbarStyle } from 'constants/globalStyle';
+import { scrollbarStyle } from 'styles/globalStyle';
 
 export const TableWrapper = styled.div`
   width: 100%;
@@ -85,6 +84,10 @@ export const TableWrapper = styled.div`
   }
   .row {
     margin-right: 0px;
+  }
+
+  .pagination {
+    margin-bottom: 0;
   }
 `;
 

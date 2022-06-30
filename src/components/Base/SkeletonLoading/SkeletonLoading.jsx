@@ -1,6 +1,6 @@
 import ContentLoader from 'react-content-loader';
 
-import { darkColors } from 'styles/colors';
+import { COLORS, darkColors } from 'styles/colors';
 
 import { SkeletonLoadingWrapper } from './styles';
 
@@ -11,7 +11,7 @@ export function SkeletonTableLoading () {
         width="100%"
         height={260}
         speed={2}
-        backgroundColor={darkColors.oxfordBlue}
+        backgroundColor={COLORS.blue900}
         foregroundColor={darkColors.oxfordBlueTint3}
       >
         <rect
@@ -212,7 +212,7 @@ export function SkeletonAuctionLoading () {
         speed={2}
         width="100%"
         height={164}
-        backgroundColor={darkColors.oxfordBlue}
+        backgroundColor={COLORS.blue900}
         foregroundColor={darkColors.oxfordBlueTint3}
       >
         <rect
@@ -293,7 +293,7 @@ function SkeletonProposalsLoading () {
         speed={2}
         width="100%"
         height={165}
-        backgroundColor={darkColors.oxfordBlue}
+        backgroundColor={COLORS.blue900}
         foregroundColor={darkColors.oxfordBlueTint3}
       >
         <rect

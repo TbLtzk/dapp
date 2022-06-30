@@ -3,10 +3,10 @@ import styled from 'styled-components';
 export const Block = styled.div`
   width: 100%;
   max-width: 100%;
-  background-color: ${(props) => props.theme.colors.oxfordBlueTint1};
-  border-radius: 3px;
-  padding: 20px;
-  margin-bottom: 10px;
+  background-color: ${(props) => props.theme.colors.block};
+  border-radius: 16px;
+  padding: 24px 32px;
+  margin-bottom: 16px;
   height: fit-content;
   position: relative;
 
@@ -64,10 +64,10 @@ export const Block = styled.div`
   }
 
   .card__hash {
-    display: inline-flex;
     text-overflow: ellipsis;
     overflow: hidden;
-    margin-bottom: 5px;
+    white-space: nowrap;
+    margin-bottom: 0;
   }
 
   .card__actions {

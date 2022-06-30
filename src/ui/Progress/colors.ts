@@ -11,8 +11,9 @@ export const lightColors = {
   bgProgress: COLORS.blue800,
 };
 
-export type ProgressColorType = keyof typeof darkColors | keyof typeof lightColors;
-
-export function getProgressColor (theme: DefaultTheme, key: ProgressColorType): string {
+export function getProgressColor (
+  theme: DefaultTheme,
+  key: keyof typeof darkColors | keyof typeof lightColors
+) {
   return getColorFn(theme, { lightColors, darkColors })(key);
 }

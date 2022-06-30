@@ -2,8 +2,8 @@ import { HTMLAttributes } from 'react';
 
 import icons from './icons.json';
 import { StyledIcon } from './styles';
+import { IconName } from '.';
 
-export type IconName = keyof typeof icons
 interface Props extends HTMLAttributes<HTMLSpanElement> {
   name: IconName
 }

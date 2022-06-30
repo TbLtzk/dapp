@@ -4,8 +4,9 @@ import styled from 'styled-components';
 
 export const ListCardWrp = styled(Card)`
   border: 0;
-  background: ${(props) => props.theme.colors.oxfordBlueTint1};
+  background: ${(props) => props.theme.colors.block};
   margin-bottom: 16px;
+  border-radius: 16px;
 
   h1 {
     color: ${(props) => props.theme.colors.white};
@@ -325,9 +326,7 @@ export const ListCardWrp = styled(Card)`
 `;
 
 export const ListCardHeader = styled(Card.Header)`
-  padding: 20px 20px 0 20px;
-  background: ${(props) => props.theme.colors.oxfordBlueTint1};
-  border-radius: 3px 3px 0 0;
+  padding: 24px 32px 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -359,11 +358,10 @@ export const ListCardHeader = styled(Card.Header)`
 `;
 
 export const ListCardBody = styled(Card.Body)`
-  background-color: ${(props) => props.theme.colors.oxfordBlueTint1};
-  border-radius: 0 0 3px 3px;
-  padding: 20px;
+  padding: 24px 32px;
   margin-bottom: 16px;
   border: none;
+
   .list-card__three-colm {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

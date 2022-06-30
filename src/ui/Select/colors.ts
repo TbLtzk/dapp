@@ -19,8 +19,9 @@ export const lightColors = {
   optionFocusBorder: COLORS.blue100,
 };
 
-export type SelectColorType = keyof typeof darkColors | keyof typeof lightColors;
-
-export function getSelectColor (theme: DefaultTheme, key: SelectColorType): string {
+export function getSelectColor (
+  theme: DefaultTheme,
+  key: keyof typeof darkColors | keyof typeof lightColors
+) {
   return getColorFn(theme, { lightColors, darkColors })(key);
 }
