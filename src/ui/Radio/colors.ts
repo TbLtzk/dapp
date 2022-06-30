@@ -19,8 +19,9 @@ export const lightColors = {
   focusOutline: COLORS.blue100,
 };
 
-export type RadioColorType = keyof typeof darkColors | keyof typeof lightColors;
-
-export function getRadioColor (theme: DefaultTheme, key: RadioColorType): string {
+export function getRadioColor (
+  theme: DefaultTheme,
+  key: keyof typeof darkColors | keyof typeof lightColors
+) {
   return getColorFn(theme, { lightColors, darkColors })(key);
 }

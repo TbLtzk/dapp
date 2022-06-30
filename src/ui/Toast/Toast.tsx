@@ -1,7 +1,6 @@
 import { HTMLAttributes } from 'react';
 
-import Icon from 'ui/Icon';
-import { IconName } from 'ui/Icon/Icon';
+import Icon, { IconName } from 'ui/Icon';
 
 import { ToastContainer } from './styles';
 

@@ -35,8 +35,9 @@ export const lightColors = {
   circleDisabled: COLORS.grey100,
 };
 
-export type SwitchColorType = keyof typeof darkColors | keyof typeof lightColors;
-
-export function getSwitchColor (theme: DefaultTheme, key: SwitchColorType): string {
+export function getSwitchColor (
+  theme: DefaultTheme,
+  key: keyof typeof darkColors | keyof typeof lightColors
+) {
   return getColorFn(theme, { lightColors, darkColors })(key);
 }

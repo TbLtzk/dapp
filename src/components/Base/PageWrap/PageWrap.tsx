@@ -39,7 +39,10 @@ function PageWrap ({
   return (
     <WrapContainer fluid>
       <PageTitleWrp>
-        <PageTitleName ref={titleRef}>
+        <PageTitleName
+          ref={titleRef}
+          className="text-h1"
+        >
           <span>{t(pageHeader)}</span>
           {pageTooltip}
         </PageTitleName>

@@ -19,8 +19,9 @@ export const lightColors = {
   focusActive: COLORS.blue100,
 };
 
-export type SegmentedButtonColorType = keyof typeof darkColors | keyof typeof lightColors;
-
-export function getSegmentedButtonColor (theme: DefaultTheme, key: SegmentedButtonColorType): string {
+export function getSegmentedButtonColor (
+  theme: DefaultTheme,
+  key: keyof typeof darkColors | keyof typeof lightColors
+): string {
   return getColorFn(theme, { lightColors, darkColors })(key);
 }

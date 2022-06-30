@@ -95,9 +95,10 @@ export const lightColors = {
   dangerFocusOutline: COLORS.red900,
 };
 
-export type ButtonColorType = keyof typeof darkColors | keyof typeof lightColors;
-
-export function getButtonColor (theme: DefaultTheme, key: ButtonColorType): string {
+export function getButtonColor (
+  theme: DefaultTheme,
+  key: keyof typeof darkColors | keyof typeof lightColors
+): string {
   return getColorFn(theme, { lightColors, darkColors })(key);
 }
 
