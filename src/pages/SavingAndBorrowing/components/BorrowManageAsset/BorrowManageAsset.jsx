@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { isEmpty } from 'lodash';
+import Button from 'ui/Button';
 
-import Button from 'components/Base/Button';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import ModalWindow from 'components/Base/ModalWindow';
 import { WrapSpinner } from 'pages/styles';
@@ -56,8 +56,9 @@ function BorrowManageAsset ({ vault }) {
   return (
     <>
       <Button
+        compact
+        look="ghost"
         disabled={vault.isLiquidated}
-        look="transparent"
         onClick={handleOpenModal}
       >
         <span>Manage</span>

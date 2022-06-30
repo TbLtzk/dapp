@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import Button from 'components/Base/Button';
+import Button from 'ui/Button';
+
 import CustomBlock from 'components/Base/CustomBlock';
 import ModalWindow from 'components/Base/ModalWindow';
 import MemberTables from 'components/Custom/MemberTables';
@@ -68,7 +69,7 @@ function BalanceCard ({ title, contract, balanceRef, lockAmountData, timeLockBal
       />
 
       <div className="button__bottom">
-        <Button style={{ width: '80px' }} onClick={() => setIsModalShown(true)}>
+        <Button onClick={() => setIsModalShown(true)}>
           Manage
         </Button>
       </div>

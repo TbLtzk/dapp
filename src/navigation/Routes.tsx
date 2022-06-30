@@ -9,6 +9,8 @@ import StyleLayout from 'components/Base/StyleLayout';
 import ErrorBoundary from 'components/Custom/ErrorBoundary';
 import AccountAliasing from 'pages/AccountAliasing';
 import DataPrivacy from 'pages/DataPrivacy';
+import Governance from 'pages/Governance';
+import Proposal from 'pages/Governance/Proposal';
 import Imprint from 'pages/Imprint';
 import Monitoring from 'pages/Monitoring';
 import NotFound from 'pages/NotFound';
@@ -22,8 +24,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import Auctions from '../pages/Auctions';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import Manage from '../pages/Dashboard/Manage';
-import Proposal from '../pages/Governance/Proposal';
-import Proposals from '../pages/Governance/Proposals';
 import QVault from '../pages/QVault';
 import SavingAndBorrowing from '../pages/SavingAndBorrowing';
 import TimeLocks from '../pages/TimeLocks';
@@ -94,24 +94,8 @@ function Routes () {
               <Redirect to="/governance/q-proposals" />
             </Route>
 
-            <Route exact path="/governance/q-proposals">
-              <Proposals type="q" />
-            </Route>
-
-            <Route exact path="/governance/q-root-node-panel">
-              <Proposals type="rootNode" />
-            </Route>
-
-            <Route exact path="/governance/q-expert-proposals">
-              <Proposals type="expert" />
-            </Route>
-
-            <Route exact path="/governance/slashing-proposals">
-              <Proposals type="slashing" />
-            </Route>
-
-            <Route exact path="/governance/contract-updates">
-              <Proposals type="contractUpdate" />
+            <Route exact path="/governance/:slug?">
+              <Governance />
             </Route>
 
             <Route
