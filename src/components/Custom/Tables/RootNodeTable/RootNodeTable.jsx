@@ -93,8 +93,6 @@ function RootNodeTable ({ tableType }) {
     <Table
       sorting
       search={search}
-      perPageLength={10}
-      table={tableData}
       header={
         <>
           <h2 className="text-h2">
@@ -109,6 +107,8 @@ function RootNodeTable ({ tableType }) {
           )}
         </>
       }
+      perPageLength={10}
+      table={tableData}
       columns={columns}
       loading={tableLoading}
       emptyTableMessage={t('ROOT_NODES_LIST_EMPTY')}

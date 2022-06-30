@@ -44,7 +44,7 @@ function DelegatedValidatorsTable () {
       ]}
       table={delegations.map((member, idx) => ({
         id: idx,
-        address: <ExplorerAddress address={member.validator} />,
+        address: <ExplorerAddress iconed address={member.validator} />,
         amount: fN(fromWei(member.actualStake)) + ' Q',
         reward: fN(fromWei(member.claimableReward)) + ' Q',
       }))}

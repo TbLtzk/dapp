@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
 import Table from 'components/Base/Table';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import InfoTooltip from 'components/Custom/InfoTooltip';
@@ -28,29 +27,28 @@ function QFeesMembersTable () {
   }, [dispatch]);
 
   return (
-    <CustomBlock>
-      <h1>
-        <span>{t('LIST_OF_Q_FEES_INCENTIVES_EXPERTS')}</span>
-        <InfoTooltip topic="fees-incentives-experts" />
-      </h1>
-
-      <Table
-        emptyTableMessage={t('NO_Q_FEES_INCENTIVES_MEMBERS')}
-        loading={qFeesMembersTableLoading}
-        error={qFeesMembersTableError}
-        perPageLength={qFeesMembersTable.length}
-        columns={[
-          {
-            dataField: 'member',
-            text: t('MEMBER_ADDRESS'),
-          },
-        ]}
-        table={qFeesMembersTable.map((member, idx) => ({
-          id: idx,
-          member: <ExplorerAddress address={member} />,
-        }))}
-      />
-    </CustomBlock>
+    <Table
+      header={
+        <h2 className="text-h2">
+          <span>{t('LIST_OF_Q_FEES_INCENTIVES_EXPERTS')}</span>
+          <InfoTooltip topic="fees-incentives-experts" />
+        </h2>
+      }
+      emptyTableMessage={t('NO_Q_FEES_INCENTIVES_MEMBERS')}
+      loading={qFeesMembersTableLoading}
+      error={qFeesMembersTableError}
+      perPageLength={10}
+      columns={[
+        {
+          dataField: 'member',
+          text: t('MEMBER_ADDRESS'),
+        },
+      ]}
+      table={qFeesMembersTable.map((member, idx) => ({
+        id: idx,
+        member: <ExplorerAddress iconed address={member} />,
+      }))}
+    />
   );
 }
 

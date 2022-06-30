@@ -8,9 +8,6 @@ export const TableContainer = styled.div`
   max-width: 100%;
   overflow-x: auto;
   ${scrollbarStyle}
-  .text-h2 {
-    margin-bottom: 24px;
-  }
   .table-bordered, .table-bordered td, .table-bordered th {
     border: none;
   }
