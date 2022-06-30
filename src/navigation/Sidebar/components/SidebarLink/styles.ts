@@ -43,7 +43,7 @@ export const StyledLink = styled(NavLink)`
     height: 20px;
     border-radius: 50%;
     background-color: ${({ theme }) => getSidebarColor(theme, 'linkIconBg')};
-    background-color: ${({ theme }) => getSidebarColor(theme, 'linkIconText')};
+    color: ${({ theme }) => getSidebarColor(theme, 'linkIconText')};
   }
 `;
 

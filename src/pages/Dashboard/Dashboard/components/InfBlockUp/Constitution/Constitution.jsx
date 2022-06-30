@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Button';
+import Button from 'ui/Button';
+
 import CopyToClipboard from 'components/Base/CopyToClipboard';
 import CustomBlock from 'components/Base/CustomBlock';
 import InfoTooltip from 'components/Custom/InfoTooltip';
@@ -35,7 +36,7 @@ function Constitution () {
         <CopyToClipboard value={constitutionHashValue} />
       </div>
 
-      <div className="card__actions">
+      <div className="card__actions" style={{ marginTop: '16px' }}>
         <a
           href={latestConstitution}
           target="_blank"

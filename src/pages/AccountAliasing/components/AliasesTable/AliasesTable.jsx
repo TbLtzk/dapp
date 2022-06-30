@@ -2,10 +2,10 @@ import { useSelector } from 'react-redux';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';
 import { invert } from 'lodash';
+import Button from 'ui/Button';
+import Tooltip from 'ui/Tooltip';
 
-import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
-import Tooltip from 'components/Base/Tooltip';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import MemberTables from 'components/Custom/MemberTables';
 
@@ -32,17 +32,20 @@ function AliasesTable ({ address, onSelect }) {
     action: (
       <Tooltip
         position="top"
-        additionalInfo="Only available for alias owner"
         disabled={userAddress === address}
+        trigger={
+          <Button
+            compact
+            look="ghost"
+            disabled={userAddress !== address}
+            onClick={() => onSelect(item)}
+          >
+            <span>Manage</span>
+            <i className="mdi mdi-arrow-top-right" />
+          </Button>
+        }
       >
-        <Button
-          look="transparent"
-          disabled={userAddress !== address}
-          onClick={() => onSelect(item)}
-        >
-          <span>Manage</span>
-          <i className="mdi mdi-arrow-top-right" />
-        </Button>
+        Only available for alias owner
       </Tooltip>
     )
   }));

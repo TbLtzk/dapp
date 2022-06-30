@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Button';
+import Button from 'ui/Button';
+
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
@@ -97,6 +98,7 @@ function AllocationProxy () {
           </div>
           <div>
             <Button
+              compact
               disabled={item.loading}
               style={{ width: '100%' }}
               onClick={item.func}

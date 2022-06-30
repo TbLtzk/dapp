@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Button';
+import Button from 'ui/Button';
+
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import ModalWindow from 'components/Base/ModalWindow';
 import { WrapSpinner } from 'pages/styles';
@@ -56,7 +57,8 @@ function SaveManageAsset ({ depositAsset, interestAsset }) {
   return (
     <>
       <Button
-        look="transparent"
+        compact
+        look="ghost"
         onClick={handleModalOpen}
       >
         <span>Manage</span>

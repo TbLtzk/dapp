@@ -42,7 +42,6 @@ export const SidebarContainer = styled.div`
     gap: 4px;
     place-content: start;
     overflow-y: auto;
-    overflow-y: overlay;
     overflow-x: hidden;
     // HACK: Display scrollbar inside the container
     margin: 0 -16px;

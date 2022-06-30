@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Button/Button';
-import LoadingSpinner from 'components/Base/LoadingSpinner';
+import Button from 'ui/Button';
 
 import useInterval from 'hooks/useInterval';
 
@@ -62,8 +61,6 @@ function SavingBorrowingUpdate () {
     );
   };
 
-  const spinner = <LoadingSpinner size="sm" type="light" />;
-
   return (
     <div>
       <div className="card_block">
@@ -74,11 +71,13 @@ function SavingBorrowingUpdate () {
 
         <div>
           <Button
-            disabled={loadingTimeSinceRefreshBalance}
-            style={{ width: '100%' }}
+            icon
+            loading={loadingTimeSinceRefreshBalance}
             onClick={handleRefreshBalance}
           >
-            {loadingTimeSinceRefreshBalance ? spinner : <i className="mdi mdi-cached" style={{ fontSize: '20px' }} />}
+            {!loadingTimeSinceRefreshBalance && (
+              <i className="mdi mdi-cached" style={{ fontSize: '20px' }} />
+            )}
           </Button>
         </div>
       </div>
@@ -91,11 +90,13 @@ function SavingBorrowingUpdate () {
 
         <div>
           <Button
-            disabled={loadingTimeSinceOutstandingDeb}
-            style={{ width: '100%' }}
+            icon
+            loading={loadingTimeSinceOutstandingDeb}
             onClick={handleRefreshDebt}
           >
-            {loadingTimeSinceOutstandingDeb ? spinner : <i className="mdi mdi-cached" style={{ fontSize: '20px' }} />}
+            {!loadingTimeSinceOutstandingDeb && (
+              <i className="mdi mdi-cached" style={{ fontSize: '20px' }} />
+            )}
           </Button>
         </div>
       </div>

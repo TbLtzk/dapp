@@ -2,7 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import Button from 'components/Base/Button';
+import Button from 'ui/Button';
+
 import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import InfoTooltip from 'components/Custom/InfoTooltip';
@@ -40,7 +41,7 @@ function InfBlocksUp () {
           </div>
         </div>
         <Link to="/governance">
-          <Button alwaysEnabled look="white">
+          <Button alwaysEnabled look="secondary">
             <i className="mdi mdi-arrow-right" />
             <span>{t('GO_TO_GOVERNANCE')}</span>
           </Button>

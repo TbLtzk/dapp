@@ -59,12 +59,6 @@ function Sidebar () {
             />
 
             <SidebarLink
-              to="/monitoring"
-              title={t('MONITORING')}
-              icon="search"
-            />
-
-            <SidebarLink
               to="/q-vault"
               title="Q Vault"
               icon="wallet"

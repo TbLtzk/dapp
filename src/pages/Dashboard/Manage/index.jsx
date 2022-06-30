@@ -1,7 +1,8 @@
 import { createContext, lazy, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import Button from 'components/Base/Button';
+import Button from 'ui/Button';
+
 import LazyLoading from 'components/Base/LazyLoading';
 import PageWrap from 'components/Base/PageWrap';
 
@@ -25,10 +26,7 @@ function ManageParameters () {
             onChange={() => setIsSimplifiedMode(!isSimplifiedMode)}
           />
           <Link to="/">
-            <Button
-              alwaysEnabled
-              look="white"
-            >
+            <Button alwaysEnabled look="secondary">
               Dashboard
             </Button>
           </Link>

@@ -1,15 +1,18 @@
 import styled from 'styled-components';
 
 export const WrapContainer = styled.div`
-  display: flex;
-  margin-top: 5px;
-  max-width: 70%;
+  margin-top: 10px;
+  display: grid;
+  align-items: flex-start;
+  width: 100%;
+  grid-template-columns: 480px max-content;
+  gap: 15px;
 
-  & input {
-    margin-right: 30px;
-  }
+  @media screen and (max-width: 1000px) {
+    grid-template-columns: 1fr;
 
-  @media screen and (max-width: 1600px) {
-    max-width: 100%;
+    button {
+      width: max-content;
+    }
   }
 `;

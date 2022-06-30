@@ -72,4 +72,10 @@ export const GlobalStyle = createGlobalStyle`
     backdrop-filter: blur(3px);
     -webkit-backdrop-filter: blur(3px);
   }
+
+  a,
+  a:hover,
+  a:focus {
+    text-decoration: none;
+  }
 `;
