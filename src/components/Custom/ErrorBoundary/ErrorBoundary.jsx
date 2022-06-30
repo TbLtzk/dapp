@@ -21,12 +21,12 @@ class ErrorBoundary extends Component {
 
   componentDidCatch () {
     if (import.meta.env.NODE_ENV !== 'development') {
-      const timeout = setTimeout(() => {
-        this.props.history.push({
-          pathname: '/'
-        });
-        clearTimeout(timeout);
-      }, 5000);
+      // const timeout = setTimeout(() => {
+      //   this.props.history.push({
+      //     pathname: '/'
+      //   });
+      //   clearTimeout(timeout);
+      // }, 5000);
     }
   }
 

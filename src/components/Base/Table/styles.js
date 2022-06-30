@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 
+import { getTableColor } from './colors';
+
 import { scrollbarStyle } from 'constants/globalStyle';
 
-export const TableWrapper = styled.div`
+export const TableContainer = styled.div`
   width: 100%;
   max-width: 100%;
   overflow-x: auto;
@@ -34,35 +36,40 @@ export const TableWrapper = styled.div`
     line-height: 20px;
     border-style: none;
     line-height: 17px;
-    color: ${({ theme }) => theme.colors.white}; //fix colors
+    color: ${({ theme }) => getTableColor(theme, 'tableHeader')};
+    background: ${({ theme }) => getTableColor(theme, 'tableHeaderBg')};
     cursor: pointer;
   }
 
   tbody {
     tr {
-      td {
-        &:first-child {
-          padding-left: 32px;
-        }
+      transition: all 0.2s ease-in-out;
+      box-sizing: border-box;
 
-        white-space: nowrap;
-      }
+      border-radius: 16px;
 
       font-weight: 600;
       font-size: 14px;
       line-height: 20px;
-
-      color: white;
+      color: ${({ theme }) => getTableColor(theme, 'tableText')};
+      background: ${({ theme }) => getTableColor(theme, 'tableBg')};
       margin-bottom: 10px;
       gap: 20px;
       height: 72px;
-      background: #0b2545;
-      box-shadow: 0px 4px 16px rgba(23, 77, 145, 0.04);
+
+      &:hover {
+        box-shadow: inset 0px 0px 0px 1px ${({ theme }) => getTableColor(theme, 'tableHover')};
+      }
+      td {
+        &:first-child {
+          padding-left: 32px;
+        }
+        white-space: nowrap;
+      }
     }
   }
 
   td {
-    border: solid 1px #000;
     padding: 26px;
   }
 
@@ -74,29 +81,47 @@ export const TableWrapper = styled.div`
     border-bottom-right-radius: 16px;
     border-top-right-radius: 16px;
   }
-`;
 
-export const PagesItemWrapper = styled.li`
-  background-color: transparent;
-  font-size: 16px;
 
-  .page-item__link {
-    display: ${(props) => (props.isDisplayNone ? 'none' : '')};
-    margin-right: 10px;
-    font-size: 14px;
-    color: ${(props) => {
-      if (props.palette === 'dark') {
-        return props.active ? props.theme.colors.white : props.theme.colors.oxfordBlueTint3;
-      } else {
-        return props.active ? props.theme.colors.white : props.theme.colors.oxfordBlueTint4;
+  .react-bootstrap-table-page-btns-ul {
+    display: ${({ withPaganation }) => (withPaganation ? 'flex' : 'none')};
+    justify-content: center;
+
+    .page-item {
+      margin-left: 4px;
+      .page-link {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 44px;
+        height: 40px;
+        padding: 0;
+        border: none;
+        border-radius: 4px;
+        color: ${({ theme }) => getTableColor(theme, 'link')};
+        background: transparent;
+
+        &:hover {
+          color: ${({ theme }) => getTableColor(theme, 'linkHover')};
+          background: ${({ theme }) => getTableColor(theme, 'linkBgHover')};
+        }
       }
-    }};
-  }
+    }
 
-  .page-item__title {
-    font-size: 14px;
-    color: ${(props) => props.theme.colors.white};
-    margin-right: 10px;
+    .active {
+      border-radius: 4px;
+      .page-link {
+        color: ${({ theme }) => getTableColor(theme, 'linkActive')};
+        background: ${({ theme }) => getTableColor(theme, 'linkBgActive')};
+        &:focus {
+          box-shadow: none;
+          color: ${({ theme }) => getTableColor(theme, 'linkFocus')};
+          background: ${({ theme }) => getTableColor(theme, 'linkBgFocus')};
+          border: 2px solid ${({ theme }) => getTableColor(theme, 'linkBorderFocus')};
+          border-radius: 4px;
+        }
+      }
+    }
   }
 `;
 
@@ -107,11 +132,11 @@ export const SortCaretIcon = styled.svg`
 
   path {
     &:first-child {
-      fill: ${({ theme, $order }) => ($order === 'desc' ? theme.colors.white : theme.colors.oxfordBlueTint3)};
+      fill: ${({ theme, $order }) => ($order === 'desc' ? getTableColor(theme, 'caretActive') : getTableColor(theme, 'caret'))};
     }
 
     &:last-child {
-      fill: ${({ theme, $order }) => ($order === 'asc' ? theme.colors.white : theme.colors.oxfordBlueTint3)};
+      fill: ${({ theme, $order }) => ($order === 'asc' ? getTableColor(theme, 'caretActive') : getTableColor(theme, 'caret'))};
     }
   }
 `;
