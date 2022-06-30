@@ -1,6 +1,7 @@
-import Button from 'components/Base/Button';
+import Button from 'ui/Button';
+import Input from 'ui/Input';
+
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
-import Input from 'components/Base/Form/Input';
 
 import useForm from 'hooks/useForm';
 
@@ -20,14 +21,21 @@ function AddressForm ({ selectedAddress, onSubmit }) {
   return (
     <form noValidate onSubmit={form.submit}>
       <CustomBlock>
-        <h5>Display aliases for address:</h5>
         <WrapContainer>
-          <Input {...form.fields.address} />
+          <Input
+            {...form.fields.address}
+            label="Display aliases for address:"
+            hint={`Selected address: ${selectedAddress}`}
+          />
           <Button
             type="submit"
             disabled={!form.isValid}
+            style={{ marginTop: '34px' }}
           >
-            <i className="mdi mdi-refresh" />
+            <i
+              className="mdi mdi-cached"
+              style={{ fontSize: '20px' }}
+            />
             <span>Refresh</span>
           </Button>
         </WrapContainer>

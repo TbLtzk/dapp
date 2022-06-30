@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Button';
+import Button from 'ui/Button';
+
 import ModalWindow from 'components/Base/ModalWindow';
 import PageWrap from 'components/Base/PageWrap';
 

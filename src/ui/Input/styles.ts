@@ -9,6 +9,8 @@ export const InputWrapper = styled.div<{
   $disabled: boolean,
   $type: HTMLInputTypeAttribute
 }>`
+  width: 100%;
+
   label {
     margin-bottom: 8px;
     color: ${({ theme, $disabled }) => $disabled

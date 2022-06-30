@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import Button from 'components/Base/Button';
+import Button from 'ui/Button';
+
 import PageWrap from 'components/Base/PageWrap';
 import DefiMembersPanel from 'components/Custom/Tables/DeFiMembersTable';
 import EprsMembersPanel from 'components/Custom/Tables/EprsMembersTable';
@@ -29,13 +30,13 @@ function Dashboard () {
         buttons={
           <div className="card__actions__between">
             <Link to="/validator-staking">
-              <Button alwaysEnabled look="white">
+              <Button alwaysEnabled look="secondary">
                 <i className="mdi mdi-arrow-right" />
                 <span>{t('SEE_MORE_DETAILS')}</span>
               </Button>
             </Link>
             <Link to="/monitoring">
-              <Button alwaysEnabled look="white">
+              <Button alwaysEnabled look="secondary">
                 <i className="mdi mdi-arrow-right" />
                 <span>{t('MONITORING')}</span>
               </Button>
@@ -59,11 +60,19 @@ function Dashboard () {
     <PageWrap
       pageHeader={t('DASHBOARD')}
       pageButton={
-        <Link to="/q-parameters">
-          <Button alwaysEnabled look="white">
-            {t('Q_PARAMETERS')}
-          </Button>
-        </Link>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <Link to="/monitoring">
+            <Button alwaysEnabled look="secondary">
+              {t('MONITORING')}
+            </Button>
+          </Link>
+
+          <Link to="/q-parameters">
+            <Button alwaysEnabled look="secondary">
+              {t('Q_PARAMETERS')}
+            </Button>
+          </Link>
+        </div>
       }
     >
       <div className="content__colm-1">

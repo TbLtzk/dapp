@@ -1,7 +1,7 @@
-import Button from 'components/Base/Button';
+import Button from 'ui/Button';
+import Input from 'ui/Input';
+
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
-import Input from 'components/Base/Form/Input';
-import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import useForm from 'hooks/useForm';
 
@@ -21,21 +21,22 @@ function AddressForm ({ userAddress, onChange }) {
   return (
     <form noValidate onSubmit={form.submit}>
       <CustomBlock>
-        <h5>Current Address:</h5>
-        <h4><ExplorerAddress address={userAddress} /></h4>
-
-        <h5>Update address:</h5>
         <WrapContainer>
-          <Input {...form.fields.address} />
+          <Input
+            {...form.fields.address}
+            label="Display time locks for address:"
+            hint={`Selected address: ${userAddress}`}
+          />
           <Button
             type="submit"
             disabled={!form.isValid}
-            style={{ width: '50px', height: 'max-content' }}
+            style={{ marginTop: '34px' }}
           >
             <i
               className="mdi mdi-cached"
               style={{ fontSize: '20px' }}
             />
+            <span>Refresh</span>
           </Button>
         </WrapContainer>
       </CustomBlock>

@@ -73,7 +73,7 @@ export const StyledButton = styled.button<{
   }
 
   & > i:first-child:not(:only-child),
-  & > svg:first-child {
+  & > svg:first-child:not(:only-child) {
     margin-left: -4px;
   }
 
