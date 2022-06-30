@@ -23,8 +23,9 @@ export const lightColors = {
   shadowDark: 'rgba(0, 0, 0, 0.12)',
 };
 
-export type ToastColorType = keyof typeof darkColors | keyof typeof lightColors;
-
-export function getToastColor (theme: DefaultTheme, key: ToastColorType): string {
+export function getToastColor (
+  theme: DefaultTheme,
+  key: keyof typeof darkColors | keyof typeof lightColors
+) {
   return getColorFn(theme, { lightColors, darkColors })(key);
 }

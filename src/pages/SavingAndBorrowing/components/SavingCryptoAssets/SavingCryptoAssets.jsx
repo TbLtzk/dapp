@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
-import MemberTables from 'components/Custom/MemberTables';
+import Table from 'components/Base/Table';
 
 import SaveManageAsset from '../SaveManageAsset';
 
@@ -23,7 +23,7 @@ function SavingCryptoAssets () {
 
   return (
     <CustomBlock>
-      <MemberTables
+      <Table
         lineForEach={true}
         title={t('SAVING_CRYPTO_ASSETS')}
         emptyTableMessage={t('NO_SAVING_ASSETS')}

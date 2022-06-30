@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import ModalWindow from 'components/Base/ModalWindow';
-import MemberTables from 'components/Custom/MemberTables';
+import Table from 'components/Base/Table';
 
 import ManageForm from '../ManageForm';
 import VestingWithdrawForm from '../VestingWithdrawForm';
@@ -22,7 +22,7 @@ function BalanceCard ({ title, contract, balanceRef, lockAmountData, timeLockBal
       <h5>Time Locked Balance</h5>
       <p ref={timeLockBalanceRef}>0 Q</p>
 
-      <MemberTables
+      <Table
         perPageLength={4}
         emptyTableMessage="No Time Locks"
         table={lockAmountData.map((lock) => ({

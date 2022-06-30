@@ -37,8 +37,9 @@ export const lightColors = {
   hintDisabled: COLORS.grey200,
 };
 
-export type InputColorType = keyof typeof darkColors | keyof typeof lightColors;
-
-export function getInputColor (theme: DefaultTheme, key: InputColorType): string {
+export function getInputColor (
+  theme: DefaultTheme,
+  key: keyof typeof darkColors | keyof typeof lightColors
+) {
   return getColorFn(theme, { lightColors, darkColors })(key);
 }

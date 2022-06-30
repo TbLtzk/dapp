@@ -7,8 +7,8 @@ import { GlobalStyle } from 'styles/globalStyle';
 import { TypographyStyle } from 'styles/typography';
 
 import LoadingTransaction from 'components/Custom/LoadingTransaction';
-import Header from 'components/Navigations/Header';
-import Sidebar from 'components/Navigations/Sidebar';
+import Header from 'navigation/Header';
+import Sidebar from 'navigation/Sidebar';
 
 import { setTheme } from 'store/theme/action-creators';
 import { theme } from 'store/theme/selectors';

@@ -1,25 +1,23 @@
 import { Container } from 'react-bootstrap';
 
 import styled, { css } from 'styled-components';
-
-import { scrollbarStyle } from 'constants/globalStyle';
+import { scrollbarStyle } from 'styles/globalStyle';
 
 export const WrapContainer = styled(Container)`
   position: relative;
   height: calc(100vh - 70px);
   width: 100%;
-  min-width: 900px;
   overflow-x: hidden;
   overflow-y: auto;
-  background: ${(props) => props.theme.colors.oxfordBlue};
-  padding: 24px;
+  overflow-y: overlay;
+  background: ${(props) => props.theme.colors.background};
+  padding: 32px;
 `;
 
 export const PageTitleWrp = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding-bottom: 15px;
 
   a {
     text-decoration: none;
@@ -29,10 +27,7 @@ export const PageTitleWrp = styled.div`
 export const PageTitleName = styled.div`
   max-width: 50%;
   display: flex;
-  font-size: 30px;
-  line-height: 38px;
   align-items: flex-start;
-  font-family: "Lora", sans-serif;
   text-transform: capitalize;
 `;
 
@@ -43,6 +38,7 @@ export const PageTitleActions = styled.div`
 
 export const WrapContent = styled.div`
   min-height: 490px;
+  margin-top: 32px;
   max-width: 100%;
   ${scrollbarStyle}
 
@@ -77,7 +73,8 @@ export const WrapContent = styled.div`
   .content__colm-2 {
     display: grid;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
-    grid-column-gap: 15px;
+    grid-column-gap: 16px;
+    grid-row-gap: 6px;
   }
 
   .content__time-locks {

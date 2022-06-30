@@ -15,11 +15,11 @@ export const lightColors = {
   dividerActive: COLORS.blue700,
   countBackground: COLORS.blue400,
   countNumber: COLORS.white,
-
 };
 
-export type TabColorType = keyof typeof darkColors | keyof typeof lightColors;
-
-export function getTabColors (theme: DefaultTheme, key: TabColorType): string {
+export function getTabColors (
+  theme: DefaultTheme,
+  key: keyof typeof darkColors | keyof typeof lightColors
+) {
   return getColorFn(theme, { lightColors, darkColors })(key);
 }

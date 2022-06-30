@@ -13,8 +13,9 @@ export const lightColors = {
   error: COLORS.red500,
 };
 
-export type RadioGroupColorType = keyof typeof darkColors | keyof typeof lightColors;
-
-export function getRadioGroupColor (theme: DefaultTheme, key: RadioGroupColorType): string {
+export function getRadioGroupColor (
+  theme: DefaultTheme,
+  key: keyof typeof darkColors | keyof typeof lightColors
+) {
   return getColorFn(theme, { lightColors, darkColors })(key);
 }

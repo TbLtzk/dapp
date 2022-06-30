@@ -9,8 +9,8 @@ export const ToastContainer = styled.div<{
 }>`
   background-color: ${({ theme }) => theme.colors.block};
   box-shadow:
-    0 8px 12px 6px ${({ theme }) => theme.colors.blockShadowDark},
-    0 4px 4px ${({ theme }) => theme.colors.blockShadowLight};
+    0 8px 12px 6px ${({ theme }) => getToastColor(theme, 'shadowDark')},
+    0 4px 4px ${({ theme }) => getToastColor(theme, 'shadowLight')};
   border-radius: 16px;
   display: grid;
   grid-template-columns: auto 1fr;

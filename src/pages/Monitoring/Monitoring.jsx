@@ -1,6 +1,6 @@
 import PageWrap from 'components/Base/PageWrap';
-import RootNodePanel from 'components/Custom/MembersPanel/RootNodePanel/RootNodePanel';
-import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
+import RootNodePanel from 'components/Custom/Tables/RootNodeTable/RootNodeTable';
+import ValidatorsPanel from 'components/Custom/Tables/ValidatorsTable';
 
 import CurrentInfo from './components/CurrentInfo';
 

@@ -6,8 +6,8 @@ import { invert } from 'lodash';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import Check from 'components/Base/Form/Check';
+import Table from 'components/Base/Table';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import MemberTables from 'components/Custom/MemberTables';
 
 import { aliasEventsLoadingSelector, aliasEventsSelector } from 'store/account-aliases/selectors';
 
@@ -61,7 +61,7 @@ function AliasEventsTable ({ address }) {
 
   return (
     <CustomBlock>
-      <MemberTables
+      <Table
         title={tableTitle}
         columns={columns}
         table={table}

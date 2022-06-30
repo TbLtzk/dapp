@@ -2,7 +2,7 @@
 import CustomBlock from 'components/Base/CustomBlock';
 import PageWrap from 'components/Base/PageWrap';
 import InfoTooltip from 'components/Custom/InfoTooltip';
-import DelegatedValidatorsPanel from 'components/Custom/MembersPanel/DelegatedValidatorsPanel';
+import DelegatedValidatorsPanel from 'components/Custom/Tables/DelegatedValidatorsTable';
 
 import DelegateVoting from './components/DelegateVoting';
 import DelegationRewards from './components/DelegationRewards';

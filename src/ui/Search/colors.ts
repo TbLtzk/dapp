@@ -33,8 +33,9 @@ export const lightColors = {
   placeholderDisabled: COLORS.grey200,
 };
 
-export type SearchColorType = keyof typeof darkColors | keyof typeof lightColors;
-
-export function getSearchColor (theme: DefaultTheme, key: SearchColorType): string {
+export function getSearchColor (
+  theme: DefaultTheme,
+  key: keyof typeof darkColors | keyof typeof lightColors
+) {
   return getColorFn(theme, { lightColors, darkColors })(key);
 }

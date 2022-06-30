@@ -30,7 +30,7 @@ function Constitution () {
       </h1>
 
       <h5>{t('HASH')}</h5>
-      <div>
+      <div style={{ display: 'flex' }}>
         <p className="card__hash">{constitutionHashValue}</p>
         <CopyToClipboard value={constitutionHashValue} />
       </div>

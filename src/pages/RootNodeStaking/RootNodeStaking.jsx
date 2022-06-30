@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import CustomBlock from 'components/Base/CustomBlock';
 import PageWrap from 'components/Base/PageWrap';
 import InfoTooltip from 'components/Custom/InfoTooltip';
-import RootNodePanel from 'components/Custom/MembersPanel/RootNodePanel';
+import RootNodePanel from 'components/Custom/Tables/RootNodeTable';
 
 import RootBalanceForm from './components/RootBalanceForm';
 import RootBalanceInfo from './components/RootBalanceInfo';

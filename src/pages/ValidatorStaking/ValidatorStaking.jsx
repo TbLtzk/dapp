@@ -7,7 +7,7 @@ import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
 import PageWrap from 'components/Base/PageWrap';
 import InfoTooltip from 'components/Custom/InfoTooltip';
-import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
+import ValidatorsPanel from 'components/Custom/Tables/ValidatorsTable';
 
 import StakerRewardPool from './components/StakerRewardPool';
 import ValidatorBalanceForm from './components/ValidatorBalanceForm';

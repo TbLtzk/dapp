@@ -1,15 +1,16 @@
 import styled from 'styled-components';
+import { scrollbarStyle } from 'styles/globalStyle';
 
 import { getTableColor } from './colors';
-
-import { scrollbarStyle } from 'constants/globalStyle';
 
 export const TableContainer = styled.div`
   width: 100%;
   max-width: 100%;
   overflow-x: auto;
   ${scrollbarStyle}
-
+  .text-h2 {
+    margin-bottom: 24px;
+  }
   .table-bordered, .table-bordered td, .table-bordered th {
     border: none;
   }
@@ -37,7 +38,7 @@ export const TableContainer = styled.div`
     border-style: none;
     line-height: 17px;
     color: ${({ theme }) => getTableColor(theme, 'tableHeader')};
-    background: ${({ theme }) => getTableColor(theme, 'tableHeaderBg')};
+    background: transparent;
     cursor: pointer;
   }
 
@@ -81,7 +82,6 @@ export const TableContainer = styled.div`
     border-bottom-right-radius: 16px;
     border-top-right-radius: 16px;
   }
-
 
   .react-bootstrap-table-page-btns-ul {
     display: ${({ withPaganation }) => (withPaganation ? 'flex' : 'none')};
@@ -132,11 +132,13 @@ export const SortCaretIcon = styled.svg`
 
   path {
     &:first-child {
-      fill: ${({ theme, $order }) => ($order === 'desc' ? getTableColor(theme, 'caretActive') : getTableColor(theme, 'caret'))};
+      fill: ${({ theme, $order }) =>
+        $order === 'desc' ? getTableColor(theme, 'caretActive') : getTableColor(theme, 'caret')};
     }
 
     &:last-child {
-      fill: ${({ theme, $order }) => ($order === 'asc' ? getTableColor(theme, 'caretActive') : getTableColor(theme, 'caret'))};
+      fill: ${({ theme, $order }) =>
+        $order === 'asc' ? getTableColor(theme, 'caretActive') : getTableColor(theme, 'caret')};
     }
   }
 `;

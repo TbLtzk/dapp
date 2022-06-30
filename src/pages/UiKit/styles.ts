@@ -8,6 +8,7 @@ export const UiKitContainer = styled.div`
   color: ${({ theme }) => theme.colors.textPrimary};
   height: calc(100vh - 72px);
   overflow-y: auto;
+  overflow-y: overlay;
 
   .block {
     padding: 24px 32px;

@@ -5,9 +5,9 @@ import { invert } from 'lodash';
 
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
+import Table from 'components/Base/Table';
 import Tooltip from 'components/Base/Tooltip';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import MemberTables from 'components/Custom/MemberTables';
 
 import { aliasesLoadingSelector, aliasesSelector } from 'store/account-aliases/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
@@ -49,7 +49,7 @@ function AliasesTable ({ address, onSelect }) {
 
   return (
     <CustomBlock>
-      <MemberTables
+      <Table
         lineForEach
         title={`Account aliases (${trimAddress(address)})`}
         emptyTableMessage="No aliases"

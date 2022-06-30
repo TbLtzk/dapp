@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 
 import Button from 'components/Base/Button';
 import PageWrap from 'components/Base/PageWrap';
-import DefiMembersPanel from 'components/Custom/MembersPanel/DefiMembersPanel';
-import EprsMembersPanel from 'components/Custom/MembersPanel/EprsMembersPanel';
-import QFeesMembersPanel from 'components/Custom/MembersPanel/QFeesMembersPanel';
-import RootNodePanel from 'components/Custom/MembersPanel/RootNodePanel';
-import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
+import DefiMembersPanel from 'components/Custom/Tables/DeFiMembersTable';
+import EprsMembersPanel from 'components/Custom/Tables/EprsMembersTable';
+import QFeesMembersPanel from 'components/Custom/Tables/QFeesMembersTable';
+import RootNodePanel from 'components/Custom/Tables/RootNodeTable';
+import ValidatorsPanel from 'components/Custom/Tables/ValidatorsTable';
 
 import InfBlock from './components/InfBlockUp';
 import SavingBorrowingBlock from './components/SavingBorrowingBlock';

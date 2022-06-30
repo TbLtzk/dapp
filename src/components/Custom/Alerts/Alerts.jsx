@@ -14,7 +14,7 @@ function Alert () {
 
   useEffect(() => {
     if (errorMessage) {
-      alert.error(errorMessage);
+      alert.error(errorMessage?.details);
       dispatch(setTransactionLoadingError(null));
     }
     if (successMessage) {

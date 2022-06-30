@@ -11,8 +11,9 @@ export const lightColors = {
   text: COLORS.white,
 };
 
-export type TooltipColorType = keyof typeof darkColors | keyof typeof lightColors;
-
-export function getTooltipColor (theme: DefaultTheme, key: TooltipColorType): string {
+export function getTooltipColor (
+  theme: DefaultTheme,
+  key: keyof typeof darkColors | keyof typeof lightColors
+) {
   return getColorFn(theme, { lightColors, darkColors })(key);
 }

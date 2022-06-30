@@ -4,7 +4,6 @@ import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
 import PopperTooltip from 'components/Base/PopperTooltip';
 import GnosisSafeTooltip from 'components/Custom/GnosisSafeTooltip';
-import { LoadingWrap } from 'components/Custom/MemberTables/styles';
 
 import ParametersTable from '../ParametersTable';
 
@@ -32,9 +31,9 @@ function ParametersBlock ({
   const renderTable = () => {
     if (loading && !parameters.length) {
       return (
-        <LoadingWrap>
+        <>
           <LoadingSpinner />
-        </LoadingWrap>
+        </>
       );
     }
 
