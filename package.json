@@ -61,6 +61,7 @@
     "reselect": "^4.1.6",
     "stream-browserify": "^3.0.0",
     "styled-components": "^5.2.1",
+    "timeago.js": "^4.0.2",
     "typed-redux-saga": "^1.5.0",
     "web3": "^1.7.0",
     "web3-eth-contract": "^1.7.4",

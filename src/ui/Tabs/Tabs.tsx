@@ -23,13 +23,23 @@ function Tabs ({ tabs, ...rest }: Props) {
         {tabs.map(({ id, label, link, count }) => (
           <NavLink
             key={id}
-            className="tab"
-            activeClassName="active"
+            className="tab text-lg"
+            activeClassName="active font-semibold"
             to={link}
           >
-            <h3 className="text-lg tab-label">{label}</h3>
-            {link === pathname && <motion.div className="tab-active" layoutId="underline" />}
-            {Number(count) > 0 && <span className="tab-count">{count}</span>}
+            <span className="tab-label">{label}</span>
+
+            {link === pathname && (
+              <motion.div
+                className="tab-active"
+                layoutId="underline"
+                transition={{ duration: 0.2 }}
+              />
+            )}
+
+            {Number(count) > 0 && (
+              <span className="tab-count">{count}</span>
+            )}
           </NavLink>
         ))}
       </AnimateSharedLayout>

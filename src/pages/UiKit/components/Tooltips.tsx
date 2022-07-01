@@ -6,12 +6,7 @@ function Tooltips () {
     <div className="block">
       <h2 className="text-h2">Tooltips</h2>
       <div className="block-content">
-        <div
-          style={{
-            display: 'flex',
-            gap: '16px'
-          }}
-        >
+        <div style={{ display: 'flex', gap: '16px' }}>
           <Tooltip trigger={<Icon name="expand-less" />}>
             Some tooltip content
           </Tooltip>

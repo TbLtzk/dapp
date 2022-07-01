@@ -1,4 +1,4 @@
-import { HTMLAttributes, ReactNode } from 'react';
+import { HTMLAttributes } from 'react';
 import { useSelector } from 'react-redux';
 
 import Spinner from 'ui/Spinner';
@@ -19,7 +19,6 @@ interface Props extends HTMLAttributes<HTMLButtonElement> {
   compact?: boolean
   loading?: boolean
   active?: boolean
-  children: ReactNode
   onClick?: () => void
 }
 
@@ -33,6 +32,7 @@ function Button ({
   loading = false,
   active = false,
   children,
+  className,
   onClick = () => {},
   ...rest
 }: Props) {
@@ -41,7 +41,7 @@ function Button ({
 
   return (
     <StyledButton
-      className={`text-md font-semibold ${rest.className || ''}`}
+      className={`text-md font-semibold ${className || ''}`}
       type={type}
       disabled={!alwaysEnabled && isDisabled}
       $look={look}

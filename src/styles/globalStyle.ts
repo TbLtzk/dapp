@@ -3,7 +3,7 @@ import { createGlobalStyle, css } from 'styled-components';
 import '../../node_modules/@mdi/font/css/materialdesignicons.min.css';
 
 export const scrollbarStyle = css`
-  scrollbar-color: ${(props) => props.theme.colors.oxfordBlueTint5};
+  scrollbar-color: ${({ theme }) => theme.colors.oxfordBlueTint5};
   scrollbar-width: thin;
 
   ::-webkit-scrollbar {
@@ -13,14 +13,14 @@ export const scrollbarStyle = css`
 
   ::-webkit-scrollbar-thumb {
     border-radius: 4px;
-    background-color: ${(props) => props.theme.colors.oxfordBlueTint5};
+    background-color: ${({ theme }) => theme.colors.oxfordBlueTint5};
   }
 `;
 
 export const GlobalStyle = createGlobalStyle`
   body {
-    color: ${(props) => props.theme.colors.white};
-    background: ${(props) => props.theme.colors.oxfordBlue};
+    color: ${({ theme }) => theme.colors.white};
+    background: ${({ theme }) => theme.colors.oxfordBlue};
     margin: 0 !important;
     overflow: hidden;
     font-family: 'OpenSans', sans-serif !important;
@@ -34,41 +34,43 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-appearance: none;
     margin: 0; 
   }
+
   .popover-body {
-    font-size: "12px";
-    text-align: "center";
-    background-color: ${(props) => props.theme.colors.neonGreen};
+    font-size: 12px;
+    text-align: center;
+    background-color: ${({ theme }) => theme.colors.neonGreen};
     border-radius: 4px;
   }
   
   .bs-popover-left .arrow::after {
-    border-left-color: ${(props) => props.theme.colors.neonGreen} !important;
+    border-left-color: ${({ theme }) => theme.colors.neonGreen} !important;
   }
 
   .bs-popover-right .arrow::after {
-    border-right-color: ${(props) => props.theme.colors.neonGreen} !important;
+    border-right-color: ${({ theme }) => theme.colors.neonGreen} !important;
   }
 
   .bs-popover-top .arrow::after {
-    border-top-color: ${(props) => props.theme.colors.neonGreen} !important;
+    border-top-color: ${({ theme }) => theme.colors.neonGreen} !important;
   }
 
   .bs-popover-bottom .arrow::after {
-    border-bottom-color: ${(props) => props.theme.colors.neonGreen} !important;
+    border-bottom-color: ${({ theme }) => theme.colors.neonGreen} !important;
   }
 
   input[type=number] {
-    -moz-appearance:textfield; 
+    -moz-appearance: textfield; 
   }
+
   .card__line {
     width: 100%;
     margin-top: 10px;
     margin-bottom: 10px;
-    border-top: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
-
+    border-top: 1px solid ${({ theme }) => theme.colors.oxfordBlueTint3};
   }
+
   .modal-backdrop {
-    background: ${(props) => props.theme.colors.oxfordBlueTint2};
+    background: ${({ theme }) => theme.colors.oxfordBlueTint2};
     backdrop-filter: blur(3px);
     -webkit-backdrop-filter: blur(3px);
   }
@@ -77,5 +79,15 @@ export const GlobalStyle = createGlobalStyle`
   a:hover,
   a:focus {
     text-decoration: none;
+    color: inherit;
+  }
+
+  .block {
+    width: 100%;
+    background-color: ${({ theme }) => theme.colors.block};
+    border: 1px solid ${({ theme }) => theme.colors.blockBorder};
+    border-radius: 16px;
+    padding: 24px 32px;
+    box-shadow: 0 4px 16px ${({ theme }) => theme.colors.blockShadow};
   }
 `;

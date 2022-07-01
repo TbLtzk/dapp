@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 import { ProposalType } from 'typings/proposals';
-
-import Button from 'components/Base/Button';
+import Button from 'ui/Button';
+import Icon from 'ui/Icon';
 
 import ExpertProposalModal from './ExpertProposalModal';
 import QProposalModal from './QProposalModal';
@@ -22,13 +22,6 @@ function CreateProposal ({ type }: { type: CreateProposalType }) {
     setModalOpen(false);
   };
 
-  const proposalTitleMap: Record<CreateProposalType, string> = {
-    q: 'Create Q Proposal',
-    rootNode: 'Create Q Root Node Panel Proposal',
-    slashing: 'Create Q Slashing Proposal',
-    expert: 'Create Q Expert Proposal',
-  };
-
   const modalProps = { modalOpen, onHide: handleHideModal };
   const modalMap = {
     q: <QProposalModal {...modalProps} />,
@@ -40,8 +33,8 @@ function CreateProposal ({ type }: { type: CreateProposalType }) {
   return (
     <>
       <Button onClick={handleCreateProposal}>
-        <i className="mdi mdi-plus-circle-outline" />
-        <span>{proposalTitleMap[type]}</span>
+        <Icon name="add" />
+        <span>Create proposal</span>
       </Button>
 
       {modalMap[type]}

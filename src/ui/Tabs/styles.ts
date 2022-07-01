@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
-import { getTabColors } from './colors';
+import { getTabColor } from './colors';
 
 export const TabsContainer = styled.nav`
   position: relative;
   display: flex;
   min-width: max-content;
   width: 100%;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.blockDivider};
+  border-bottom: 1px solid ${({ theme }) => getTabColor(theme, 'border')};
 
   &::-webkit-scrollbar {
     display: none;
@@ -16,42 +16,59 @@ export const TabsContainer = styled.nav`
   .tab {
     position: relative;
     padding: 8px 16px;
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 400;
     white-space: nowrap;
     cursor: pointer;
 
-    h3 {
-      color: ${({ theme }) => getTabColors(theme, 'inactive')};
+    .tab-label {
+      color: ${({ theme }) => getTabColor(theme, 'inactive')};
     }
 
-    &.active {
-      h3 {
-        color: ${({ theme }) => getTabColors(theme, 'active')};
-        font-weight: 600;
+    &.active,
+    &:hover {
+      .tab-label {
+        color: ${({ theme }) => getTabColor(theme, 'active')};
       }
     }
 
-    &:hover {
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .tab-active {
+    .tab-active,
+    .tab-label::after {
+      content: '';
       bottom: -1px;
       right: 0;
       position: absolute;
       width: 100%;
-      height: 0.5px;
-      background: ${({ theme }) => getTabColors(theme, 'dividerActive')};
+      height: 1px;
+    }
+
+    .tab-active {
+      background-color: ${({ theme }) => getTabColor(theme, 'borderActive')};
+    }
+
+    &:hover .tab-label::after {
+      background-color: ${({ theme }) => getTabColor(theme, 'borderHover')};
+    }
+
+    &:focus-visible {
+      outline: none;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 1px;
+        z-index: 1;
+        box-shadow: 0 0 0 2px ${({ theme }) => getTabColor(theme, 'borderFocus')};
+      }
     }
   }
 
   .tab-count {
     position: absolute;
-    top: -2px;
-    right: -2px;
+    top: -8px;
+    right: -8px;
+    z-index: 2;
     display: grid;
     place-content: center;
     width: 16px;
@@ -59,7 +76,7 @@ export const TabsContainer = styled.nav`
     border-radius: 50%;
     font-size: 10px;
     font-weight: 600;
-    background-color:  ${({ theme }) => getTabColors(theme, 'countBackground')};
-    color: ${({ theme }) => getTabColors(theme, 'countNumber')};
+    background-color:  ${({ theme }) => getTabColor(theme, 'countBackground')};
+    color: ${({ theme }) => getTabColor(theme, 'countNumber')};
   }
 `;

@@ -12,7 +12,9 @@ function Progress ({
   max,
   ...rest
 }: Props) {
-  const percent = Math.round((value / max) * 100);
+  const percent = max === 0
+    ? 100
+    : Math.round((value / max) * 100);
 
   return (
     <ProgressContainer $percent={percent} {...rest} />

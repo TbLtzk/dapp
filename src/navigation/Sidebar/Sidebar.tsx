@@ -136,12 +136,12 @@ function Sidebar () {
       </div>
 
       <div className="sidebar-footer">
-        <a
+        <button
           className="sidebar-footer-link text-md"
           onClick={() => setVersionModalOpen(true)}
         >
           {packageJson.version}
-        </a>
+        </button>
 
         <Link
           to="/data-privacy"
