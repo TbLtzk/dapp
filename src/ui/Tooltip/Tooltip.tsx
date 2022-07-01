@@ -8,7 +8,6 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   placement?: Placement
   trigger: ReactNode
   disabled?: boolean
-  children: ReactNode
 }
 
 function PopperTooltip ({

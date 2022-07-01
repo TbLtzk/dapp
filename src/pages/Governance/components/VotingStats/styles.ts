@@ -1,9 +1,7 @@
 import styled from 'styled-components';
 
-import CustomBlock from 'components/Base/CustomBlock';
-
-export const StatsWrapper = styled(CustomBlock)<{ $row: boolean }>`
-  margin-top: ${({ $row }) => $row ? 0 : '24px'};
+export const StatsContainer = styled.div`
+  margin: 24px 0 40px;
 
   .stats-head {
     display: flex;
@@ -11,21 +9,28 @@ export const StatsWrapper = styled(CustomBlock)<{ $row: boolean }>`
     align-items: center;
   }
 
-  .stats-title {
-    margin-bottom: 0;
-  }
-
   .stats-list {
     margin-top: 24px;
     display: grid;
-    grid-template-columns: ${({ $row }) => $row ? '1fr' : 'repeat(4, 1fr)'};
-    gap: ${({ $row }) => $row ? '5px' : '48px'};
-    gap: 5px;
+    grid-template-columns: repeat(4, 1fr);
   }
 
-  .stats-actions {
+  .stats-item {
     display: grid;
-    grid-auto-flow: column;
-    gap: 16px;
+    gap: 4px;
+    align-content: start;
+    padding: 24px;
+
+    &:not(:first-child) {
+      border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
+    }
+  }
+
+  .stats-item-lbl {
+    color: ${({ theme }) => theme.colors.textSecondary};
+  }
+
+  .stats-item-val {
+    display: grid;
   }
 `;

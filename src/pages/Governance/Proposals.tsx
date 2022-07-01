@@ -4,18 +4,14 @@ import { useLocation } from 'react-router';
 
 import { ProposalFilter, ProposalFilterStatus, ProposalType } from 'typings/proposals';
 
-import PageWrap from 'components/Base/PageWrap';
-
-import CreateProposal from './components/CreateProposal';
 import ProposalFilters from './components/ProposalFilters/ProposalFilters';
 import ProposalsList from './components/ProposalsList/ProposalsList';
-import ProposalsNav from './components/ProposalsNav';
-import VotingStats from './components/VotingStats';
 
 import { getProposals } from 'store/voting/proposals/actions';
 
 function Proposals ({ type }: { type: ProposalType }) {
   const dispatch = useDispatch();
+
   const { search } = useLocation();
   const query = new URLSearchParams(search);
 
@@ -27,7 +23,7 @@ function Proposals ({ type }: { type: ProposalType }) {
   }, [dispatch, type]);
 
   function getDefaultFilters () {
-    return { status: query.get('status') as ProposalFilterStatus || 'all' };
+    return { status: (query.get('status') || '') as ProposalFilterStatus };
   }
 
   const handleFiltersChange = (value: ProposalFilter) => {
@@ -35,22 +31,16 @@ function Proposals ({ type }: { type: ProposalType }) {
     dispatch(getProposals(type));
   };
 
-  const createProposal = type !== 'contractUpdate' &&
-    <CreateProposal type={type} />;
-
   return (
-    <PageWrap
-      pageHeader="Governance"
-      pageButton={createProposal}
-    >
-      <VotingStats type={type} />
-      <ProposalsNav />
+    <div className="proposals">
       <ProposalFilters
+        type={type}
         filters={filters}
         onChange={handleFiltersChange}
       />
+
       <ProposalsList type={type} status={filters.status} />
-    </PageWrap>
+    </div>
   );
 }
 

@@ -8,7 +8,7 @@ import { useParametersContext } from '../..';
 import { TableWrapper } from './styles';
 
 import { fromWei } from 'func/balance';
-import { formatAsset, formatDuration, formatFactor, formatNumber, formatPercent } from 'func/formatters';
+import { formatAsset, formatDuration, formatFactor, formatFraction, formatNumber } from 'func/formatters';
 
 function ParametersTable ({ parameters }) {
   const { simplified } = useParametersContext();
@@ -52,7 +52,7 @@ function ParametersTable ({ parameters }) {
       case 'period':
         return formatDuration(item.value);
       case 'fraction':
-        return formatPercent(item.value);
+        return formatFraction(item.value);
       case 'rate':
         return `${formatNumber(fromWei(item.value), 2)}%`;
       case 'gas':

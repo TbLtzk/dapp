@@ -3,19 +3,21 @@ import { I18nextProvider, initReactI18next } from 'react-i18next';
 
 import i18n from 'i18next';
 import detector from 'i18next-browser-languagedetector';
+import { register } from 'timeago.js';
+import timeAgoDeLang from 'timeago.js/lib/lang/de';
+import timeAgoEnLang from 'timeago.js/lib/lang/en_US';
+import timeAgoUkLang from 'timeago.js/lib/lang/uk';
 
 import { de, en, ua } from './locales';
 
+register('en', timeAgoEnLang);
+register('de', timeAgoDeLang);
+register('uk', timeAgoUkLang);
+
 const resources = {
-  en: {
-    translation: en,
-  },
-  ua: {
-    translation: ua,
-  },
-  de: {
-    translation: de,
-  },
+  en: { translation: en },
+  ua: { translation: ua },
+  de: { translation: de },
 };
 
 const languages = [

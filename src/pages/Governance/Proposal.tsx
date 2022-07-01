@@ -8,8 +8,8 @@ import Button from 'components/Base/Button';
 import PageWrap from 'components/Base/PageWrap';
 import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
 
+import VotingStats from './components/ProposalLayout/components/VotingStats';
 import ProposalLayout from './components/ProposalLayout/ProposalLayout';
-import VotingStats from './components/VotingStats';
 
 import { transactionLoadingSelector } from 'store/transaction-handler/selectors';
 
@@ -81,7 +81,7 @@ function Proposal ({ match }: RouteComponentProps<{
           ? <ProposalLayout type={type} proposal={proposal} />
           : <SkeletonProposalsLoading />
         }
-        <VotingStats row type={type} />
+        <VotingStats />
       </div>
     </PageWrap>
   );

@@ -2,10 +2,9 @@ import { ProposalType } from 'typings/proposals';
 
 import CustomCardButtons from 'components/Custom/CustomCardButtons';
 
-import ProposalStatus from '../ProposalStatus';
-
 import PollDetail from './components/PollDetail';
 import ProposalContent from './components/ProposalContent';
+import ProposalStatus from './components/ProposalStatus';
 import SlashingObjection from './components/SlashingObjection';
 import VoteBreakdown from './components/VoteBreakdown';
 import VotingItems from './components/VotingItems';
@@ -23,7 +22,7 @@ function ProposalLayout ({ proposal, type }: { proposal: any, type: ProposalType
     <ListCardWrp>
       <ListCardHeader>
         <div className="card__title">
-          <h1> {proposal.title}</h1>
+          <h1>{proposal.title}</h1>
           <ProposalStatus status={proposal.status} />
         </div>
         <div className="card__buttons">

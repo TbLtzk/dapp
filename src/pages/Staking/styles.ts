@@ -14,4 +14,5 @@ export const StakingContainer = styled.div`
       align-items: center;
     }
   }
+
 `;

@@ -12,7 +12,7 @@ export const DropdownContainer = styled.div<{
     top: calc(100% + 8px);
     left: ${({ $right }) => $right ? 'unset' : '0'};
     right: ${({ $right }) => $right ? '0' : 'unset'};
-    min-width: 200px;
+    min-width: 120px;
     width: ${({ $fullWidth }) => $fullWidth ? '100%' : 'auto'};
     z-index: 10000;
     transform-origin: top right;

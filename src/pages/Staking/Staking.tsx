@@ -13,14 +13,14 @@ import { StakingContainer } from './styles';
 function Staking () {
   const tabs = [
     {
-      id: 'root-node-staking',
-      label: 'Root Node Staking',
-      link: '/staking/root-node-staking',
-    },
-    {
       id: 'validator-staking',
       label: 'Validator Staking',
       link: '/staking/validator-staking',
+    },
+    {
+      id: 'root-node-staking',
+      label: 'Root Node Staking',
+      link: '/staking/root-node-staking',
     },
     {
       id: 'delegator-staking',
@@ -34,7 +34,7 @@ function Staking () {
       <StakingContainer>
         <Tabs tabs={tabs} />
         <TabSwitch>
-          <div className="staking-switch">
+          <>
             <Route exact path="/staking">
               <Redirect to="/staking/root-node-staking" />
             </Route>
@@ -47,7 +47,7 @@ function Staking () {
             <TabRoute exact path="/staking/delegator-staking">
               <DelegationStaking />
             </TabRoute>
-          </div>
+          </>
         </TabSwitch>
       </StakingContainer>
     </PageWrap>

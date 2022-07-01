@@ -76,8 +76,10 @@ export const darkColors = {
   textSecondary: COLORS.grey300,
   block: COLORS.blue800,
   blockBorder: COLORS.blue700,
-  blockDivider: COLORS.blue800,
+  blockDivider: COLORS.grey700,
   blockHover: COLORS.blue600,
+  blockBorderHover: COLORS.grey100,
+  blockShadow: 'rgba(23, 77, 145, 0.04)',
   blockShadowLight: 'rgba(7, 23, 43, 0.24)',
   blockShadowDark: 'rgba(7, 23, 43, 0.32)',
 };
@@ -105,6 +107,8 @@ export const lightColors = {
   blockBorder: COLORS.grey100,
   blockDivider: COLORS.grey100,
   blockHover: COLORS.grey100,
+  blockBorderHover: COLORS.grey800,
+  blockShadow: 'rgba(23, 77, 145, 0.04)',
   blockShadowLight: 'rgba(11, 37, 69, 0.1)',
   blockShadowDark: 'rgba(11, 37, 69, 0.12)',
 };

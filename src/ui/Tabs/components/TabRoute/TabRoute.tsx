@@ -27,11 +27,8 @@ const TabRoute = ({ children, exact, path }: Props) => (
       initial="initial"
       animate="animate"
       exit="exit"
-      transition={{
-        duration: 0.1,
-        easings: 'easeInOut'
-      }}
       variants={tabsVariants}
+      transition={{ duration: 0.1, easings: 'easeOut' }}
     >
       {children}
     </motion.div>

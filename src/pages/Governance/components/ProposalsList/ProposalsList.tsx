@@ -3,21 +3,24 @@ import { useSelector } from 'react-redux';
 
 import { ProposalEvent } from 'typings/contracts';
 import { ProposalFilterStatus, ProposalType } from 'typings/proposals';
-
-import Button from 'components/Base/Button';
-import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
+import Button from 'ui/Button';
 
 import ProposalCard from '../ProposalCard';
+import ProposalCardSkeleton from '../ProposalCardSkeleton';
 
-import { ListEmptyMessage, ListWrapper } from './styles';
+import { ListEmptyMessage, ListNextContainer, ListWrapper } from './styles';
 
-import { activeProposalsByTypeSelector, endedProposalsByTypeSelector, proposalsByTypeSelector } from 'store/voting/proposals/selectors';
+import {
+  activeProposalsByTypeSelector,
+  endedProposalsByTypeSelector,
+  proposalsByTypeSelector,
+} from 'store/voting/proposals/selectors';
 
 import { fillArray } from 'func/useful';
 
 const PAGE_LIMIT = 10;
 
-function ProposalsList ({ type, status }: { type: ProposalType, status: ProposalFilterStatus }) {
+function ProposalsList({ type, status }: { type: ProposalType; status: ProposalFilterStatus }) {
   const { proposals, isLoading } = useSelector(proposalsByTypeSelector(type));
   const activeProposals = useSelector(activeProposalsByTypeSelector(type));
   const endedProposals = useSelector(endedProposalsByTypeSelector(type));
@@ -34,11 +37,11 @@ function ProposalsList ({ type, status }: { type: ProposalType, status: Proposal
   const handleNextProposals = () => {
     const newOffset = offset + PAGE_LIMIT;
     const newList = list.concat(filteredProposals.slice(offset, newOffset));
-    setOffset(offset => offset + PAGE_LIMIT);
+    setOffset((offset) => offset + PAGE_LIMIT);
     setList(newList);
   };
 
-  function getFilteredProposals () {
+  function getFilteredProposals() {
     switch (status) {
       case 'active':
         return activeProposals;
@@ -47,46 +50,34 @@ function ProposalsList ({ type, status }: { type: ProposalType, status: Proposal
       default:
         return proposals;
     }
-  };
+  }
 
   if (isLoading) {
     return (
       <ListWrapper>
         {fillArray(10).map((id) => (
-          <SkeletonProposalsLoading key={id} />
+          <ProposalCardSkeleton key={id} />
         ))}
       </ListWrapper>
     );
   }
 
   if (list.length === 0) {
-    return (
-      <ListEmptyMessage>
-        No proposals found
-      </ListEmptyMessage>
-    );
+    return <ListEmptyMessage className="text-xl font-semibold">No proposals found</ListEmptyMessage>;
   }
 
   return (
     <>
       <ListWrapper>
         {list.map((proposal: any) => (
-          <ProposalCard
-            key={proposal.id + proposal?.contract}
-            proposal={proposal}
-          />
+          <ProposalCard key={proposal.id + proposal?.contract} proposal={proposal} />
         ))}
       </ListWrapper>
 
       {filteredProposals.length > list.length && (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button
-            style={{ width: '140px' }}
-            onClick={handleNextProposals}
-          >
-            Show more
-          </Button>
-        </div>
+        <ListNextContainer>
+          <Button onClick={handleNextProposals}>Show more</Button>
+        </ListNextContainer>
       )}
     </>
   );

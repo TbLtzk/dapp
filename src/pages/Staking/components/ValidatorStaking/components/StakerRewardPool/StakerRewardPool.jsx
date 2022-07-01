@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Button';
-import ModalWindow from 'components/Base/ModalWindow';
+import Modal from 'ui/Modal';
+
 import Tooltip from 'components/Base/Tooltip';
 
 import DelegatorShareForm from '../DelegatorShareForm';
@@ -24,6 +24,7 @@ import {
   getTotalStake,
 } from 'store/validators/action-creators';
 import { compoundRateKeeperExistsSelector } from 'store/validators/selectors';
+import Button from 'ui/Button';
 
 function StakerRewardPool () {
   const dispatch = useDispatch();
@@ -38,11 +39,9 @@ function StakerRewardPool () {
 
   const handleModalOpen = () => {
     setModalOpen(true);
-
     dispatch(getVRPDelegatorsShare(address));
     dispatch(getVRPBalance(address));
     dispatch(getVRPPoolInfo(address));
-
     dispatch(getTotalStake(address));
     dispatch(getOwnStake(address));
     dispatch(getDelegatedStake(address));
@@ -57,29 +56,22 @@ function StakerRewardPool () {
         additionalInfo="Only available for Validators"
         disabled={compoundRateKeeperExists}
       >
-        <Button
-          disabled={!compoundRateKeeperExists}
-          look="white"
-          onClick={handleModalOpen}
-        >
+        <Button onClick={handleModalOpen}>
           Manage Staker Reward Pool
         </Button>
       </Tooltip>
 
-      <ModalWindow
-        show={modalOpen}
-        modalTitle="Manage Staker Reward Pool"
-        content={(
-          <>
-            <div className="modal-line" />
-            <ValidatorPool />
-            <div className="modal-line" />
-            <RewardStats />
-            <DelegatorShareForm />
-          </>
-        )}
-        onHide={() => setModalOpen(false)}
-      />
+      <Modal
+        title="Manage Staker Reward Pool"
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+      >
+        <>
+          <ValidatorPool />
+          <RewardStats />
+          <DelegatorShareForm />
+        </>
+      </Modal>
     </>
   );
 }

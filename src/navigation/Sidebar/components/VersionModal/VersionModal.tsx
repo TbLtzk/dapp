@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { ConnectionInfo, Web3Adapter } from '@q-dev/q-js-sdk';
+import Modal from 'ui/Modal';
 
 import CopyToClipboard from 'components/Base/CopyToClipboard';
-import ModalWindow from 'components/Base/ModalWindow';
 
 import useInterval from 'hooks/useInterval';
 
@@ -88,34 +88,34 @@ function VersionModal ({ open, onClose }: Props) {
   ];
 
   return (
-    <ModalWindow
-      show={open}
-      modalTitle={t('VERSION_INFORMATION')}
-      content={(
-        <VersionsContainer>
-          {versionGroups.map((group, i) => (
-            <div
-              key={String(i)}
-              className="version-group"
-            >
-              <h3 className="text-h3">{group.title}</h3>
-              <div className="version-group-items">
-                {group.items.map((item) => (
-                  <div key={item.name}>
-                    <h5>{item.name}</h5>
-                    <p>
-                      <span>{item.value}</span>
-                      <CopyToClipboard value={item.name + '-' + item.value} />
-                    </p>
-                  </div>
-                ))}
-              </div>
+    <Modal
+      open={open}
+      title={t('VERSION_INFORMATION')}
+      width={600}
+      onClose={onClose}
+    >
+      <VersionsContainer>
+        {versionGroups.map((group, i) => (
+          <div
+            key={String(i)}
+            className="version-group"
+          >
+            <h3 className="text-h3">{group.title}</h3>
+            <div className="version-group-items">
+              {group.items.map((item) => (
+                <div key={item.name}>
+                  <p className="text-md font-light">{item.name}</p>
+                  <p className="text-md">
+                    <span>{item.value}</span>
+                    <CopyToClipboard value={item.name + '-' + item.value} />
+                  </p>
+                </div>
+              ))}
             </div>
-          ))}
-        </VersionsContainer>
-      )}
-      onHide={onClose}
-    />
+          </div>
+        ))}
+      </VersionsContainer>
+    </Modal>
   );
 }
 

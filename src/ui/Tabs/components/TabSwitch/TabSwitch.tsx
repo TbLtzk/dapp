@@ -8,7 +8,7 @@ const TabSwitch: FC<{ children: ReactElement }> = ({ children }) => {
 
   return (
     <AnimatePresence exitBeforeEnter>
-      <Switch key={location.key} location={location}>
+      <Switch key={location.pathname} location={location}>
         {children}
       </Switch>
     </AnimatePresence>

@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { positions, Provider as AlertProvider, transitions } from 'react-alert';
-import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import * as Sentry from '@sentry/react';
 import Toast from 'ui/Toast';
@@ -88,10 +88,6 @@ function Routes () {
 
             <Route exact path="/monitoring">
               <Monitoring />
-            </Route>
-
-            <Route exact path="/governance">
-              <Redirect to="/governance/q-proposals" />
             </Route>
 
             <Route exact path="/governance/:slug?">

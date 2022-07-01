@@ -20,7 +20,7 @@ import {
 
 import TABLE_TYPES from 'constants/tableTypes';
 
-function ValidatorsTable({ buttons, tableType }) {
+function ValidatorsTable ({ buttons, tableType }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -89,7 +89,7 @@ function ValidatorsTable({ buttons, tableType }) {
         columns={columns}
         tableType={tableType}
         loading={tableLoading}
-        perPage={3}
+        perPage={9}
         bottomButtons={buttons}
       />
     </>

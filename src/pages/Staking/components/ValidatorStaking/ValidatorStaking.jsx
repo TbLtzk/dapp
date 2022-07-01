@@ -1,16 +1,19 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import Button from 'components/Base/Button';
+import Button from 'ui/Button';
+import MenuDropdown from 'ui/MenuDropdown';
+import Modal from 'ui/Modal';
+
 import CustomBlock from 'components/Base/CustomBlock';
 import InfoTooltip from 'components/Custom/InfoTooltip';
 import ValidatorsTable from 'components/Custom/Tables/ValidatorsTable';
 
 import StakerRewardPool from './components/StakerRewardPool';
-import ValidatorBalanceForm from './components/ValidatorBalanceForm';
 import ValidatorBalanceInfo from './components/ValidatorBalanceInfo';
+import ValidatorForms from './components/ValidatorForms';
 
 import { getAccountBalance } from 'store/q-vault/action-creators';
 import { userAddressMetamask } from 'store/user-inf/selectors';
@@ -23,7 +26,17 @@ import {
 
 import TABLE_TYPES from 'constants/tableTypes';
 
+export const FORM_TYPES = {
+  stakeToRanking: 'stake-to-ranking',
+  announceWithdrawal: 'announce-withdrawal',
+  withdrawFromRanking: 'withdraw-from-ranking',
+};
+
 function ValidatorStaking () {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const [modalForm, setModalForm] = useState('');
+
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -37,6 +50,35 @@ function ValidatorStaking () {
     dispatch(getValidatorWithdrawalInfo(address));
   }, [dispatch]);
 
+  const handleFormModalOpen = (id) => {
+    setModalForm(id);
+    setMenuOpen(false);
+  };
+
+  const handleFormModalClose = () => {
+    setModalForm(null);
+  };
+
+  const menuItems = [
+    {
+      id: FORM_TYPES.stakeToRanking,
+      title: 'Stake to Ranking',
+      func: () => handleFormModalOpen(FORM_TYPES.stakeToRanking),
+    },
+    {
+      id: FORM_TYPES.announceWithdrawal,
+      title: 'Announce Withdrawal',
+      func: () => handleFormModalOpen(FORM_TYPES.announceWithdrawal),
+    },
+    {
+      id: FORM_TYPES.withdrawFromRanking,
+      title: 'Withdraw from Ranking',
+      func: () => handleFormModalOpen(FORM_TYPES.withdrawFromRanking),
+    },
+  ];
+
+  const formType = menuItems.find((item) => item.id === modalForm) || menuItems[0];
+
   return (
     <>
       <CustomBlock>
@@ -45,12 +87,24 @@ function ValidatorStaking () {
             <h2 className="text-h2">Manage Balance</h2>
             <InfoTooltip topic="validator-staking" placement="top" />
           </div>
+          <MenuDropdown
+            right
+            open={menuOpen}
+            menuItems={menuItems}
+            onToggle={setMenuOpen}
+          />
+          <Modal
+            title={formType.title}
+            open={Boolean(modalForm)}
+            onClose={handleFormModalClose}
+          >
+            <ValidatorForms formType={modalForm} />
+          </Modal>
 
           <StakerRewardPool />
         </div>
 
         <ValidatorBalanceInfo />
-        <ValidatorBalanceForm />
       </CustomBlock>
       <ValidatorsTable
         bottom
