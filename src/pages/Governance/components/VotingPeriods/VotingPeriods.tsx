@@ -1,61 +1,61 @@
-import PopperTooltip from 'components/Base/PopperTooltip';
+import { HTMLAttributes } from 'react';
+
+import Tooltip from 'ui/Tooltip';
 
 import { VotingContainer } from './styles';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-import { STATUSES } from 'constants/statuses';
-import { convertToMonthDayYear, remainDate } from 'func/convertDate';
+import { formatDate, formatDateRelative } from 'func/formatters';
 
-function VotingPeriods ({ proposal }: { proposal: any }) {
-  const isVetoHidden = [
+interface Props extends HTMLAttributes<HTMLDivElement> {
+  proposal: any
+}
+
+function VotingPeriods ({ proposal, ...rest }: Props) {
+  const hasNoVeto = [
     CONTRACTS_NAMES.addressVoting,
     CONTRACTS_NAMES.upgradeVoting,
     CONTRACTS_NAMES.validatorsSlashingVoting,
     CONTRACTS_NAMES.emergencyUpdateVoting,
   ].includes(proposal.contract);
 
+  const votingEndTime = new Date(proposal.votingEndTime * 1000).getTime();
+  const vetoEndTime = new Date(proposal.vetoEndTime * 1000).getTime();
+
+  const votingText = votingEndTime > Date.now()
+    ? 'Voting ends'
+    : 'Voting ended';
+  const vetoText = vetoEndTime > Date.now()
+    ? 'Veto ends'
+    : 'Veto ended';
+
   return (
-    <VotingContainer>
-      <div>
-        <h5>Voting Ends</h5>
-        <PopperTooltip
-          placement="bottom"
-          trigger={<p>{convertToMonthDayYear(proposal.votingEndTime)}</p>}
-        >
-          {proposal.status === STATUSES.pending
-            ? (
-              <div>
-                Remaining Time for Voting <br />
-                {remainDate(proposal.votingEndTime)}
-              </div>
-            )
-            : 'Proposal ' + proposal.status
-          }
-        </PopperTooltip>
-      </div>
+    <VotingContainer {...rest}>
+      <Tooltip
+        placement="bottom"
+        trigger={(
+          <p className="text-md font-light">
+            {`${votingText} ${formatDateRelative(votingEndTime)}`}
+          </p>
+        )}
+      >
+        {formatDate(votingEndTime)}
+      </Tooltip>
 
-      {!isVetoHidden && (
-        <div>
-          <h5>Veto Ends</h5>
-          <PopperTooltip
-            placement="bottom"
-            disabled={proposal.status === STATUSES.pending}
-            trigger={<p>{convertToMonthDayYear(proposal.vetoEndTime)}</p>}
-          >
-            {proposal.status === STATUSES.accepted
-              ? (
-                <p>
-                  Remaining Time for Veto
-                  <br />
-                  {remainDate(proposal.vetoEndTime)}
-                </p>
-              )
-              : 'Proposal ' + proposal.status
+      <Tooltip
+        placement="bottom"
+        disabled={hasNoVeto || !vetoEndTime}
+        trigger={(
+          <p className="text-md font-light">
+            {hasNoVeto || !vetoEndTime
+              ? 'No Veto'
+              : `${vetoText} ${formatDateRelative(vetoEndTime)}`
             }
-
-          </PopperTooltip>
-        </div>
-      )}
+          </p>
+        )}
+      >
+        {formatDate(vetoEndTime)}
+      </Tooltip>
     </VotingContainer>
   );
 }

@@ -1,3 +1,6 @@
+import moment from 'moment';
+import { format } from 'timeago.js';
+
 import { fromWei } from './balance';
 import { BN } from './useful';
 
@@ -15,7 +18,11 @@ export function formatAsset (value, asset = '') {
 }
 
 export function formatPercent (value) {
-  return `${formatNumber(transformToPercentage(value), 6)}%`;
+  return `${formatNumber(value, 2)}%`;
+}
+
+export function formatFraction (value) {
+  return formatPercent(transformToPercentage(value), 6);
 }
 
 export function formatFactor (value) {
@@ -35,4 +42,21 @@ export function formatDuration (value) {
     .filter(([_, val]) => val !== 0)
     .map(([key, val]) => `${val} ${key}${val > 1 ? 's' : ''}`)
     .join(', ');
+}
+
+export const formatDate = (
+  value,
+  format = 'MM/DD/YYYY, hh:mm A'
+) => {
+  const date = new Date(value);
+  if (!date) return '–';
+
+  return moment(date).format(format);
+};
+
+export function formatDateRelative (value, lang = 'en') {
+  const date = new Date(value);
+  if (!date) return '–';
+
+  return format(date, lang);
 }

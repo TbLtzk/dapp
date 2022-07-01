@@ -12,7 +12,6 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   right?: boolean
   disabled?: boolean
   trigger: ReactNode
-  children: ReactNode
   onToggle: (open: boolean) => void
 }
 

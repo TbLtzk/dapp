@@ -38,7 +38,7 @@ function SegmentedButton<T extends ValueType> ({
               {option.label}
             </span>
             {value === option.value && (
-              <motion.div layoutId="underline" className="segmented-button-item-active" />
+              <motion.div layoutId="segmented-bg" className="segmented-button-item-active" />
             )}
           </button>
         ))}

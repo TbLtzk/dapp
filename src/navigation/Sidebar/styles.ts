@@ -23,6 +23,7 @@ export const SidebarContainer = styled.div`
 
   .sidebar-logo-link {
     display: flex;
+    width: max-content;
   }
 
   .sidebar-logo {
@@ -56,8 +57,10 @@ export const SidebarContainer = styled.div`
 
   .sidebar-footer-link {
     color: ${({ theme }) => getSidebarColor(theme, 'linkText')};
+    background-color: transparent;
+    border: none;
     outline: none;
-    cursor: pointer;
+    padding: 0;
 
     &:hover,
     &:focus-visible {

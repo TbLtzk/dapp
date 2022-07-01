@@ -1,11 +1,13 @@
 import { useDispatch } from 'react-redux';
 
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Form/Input';
-import RadioGroup from 'components/Base/Form/RadioGroup';
+import Button from 'ui/Button';
+import Input from 'ui/Input';
+import RadioGroup from 'ui/RadioGroup';
 
 import useForm from 'hooks/useForm';
 import useMetamaskReset from 'hooks/useMetamaskReset';
+
+import { StyledPurgeSlashingForm } from './styles';
 
 import { setPurgeSlashing } from 'store/voting/slashing/actions';
 
@@ -13,7 +15,7 @@ import { CONTRACT_TYPES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
 import { address, required } from 'func/validators';
 
-function PurgeSlashing () {
+function PurgeSlashingForm ({ onClose }: { onClose: () => void }) {
   const dispatch = useDispatch();
 
   const form = useForm({
@@ -30,17 +32,15 @@ function PurgeSlashing () {
     }
   });
 
-  useMetamaskReset(formTypes.purgeSlashing, form.reset);
+  useMetamaskReset(formTypes.purgeSlashing, onClose);
 
   return (
-    <form
+    <StyledPurgeSlashingForm
       noValidate
-      style={{ display: 'grid', gap: '15px' }}
       onSubmit={form.submit}
     >
       <RadioGroup
         {...form.fields.contractType}
-        row
         label="Candidate type"
         name="contractType"
         options={[
@@ -51,19 +51,19 @@ function PurgeSlashing () {
 
       <Input
         {...form.fields.address}
-        invertedColors
         label="Candidate address"
         placeholder="0x..."
       />
 
       <Button
         type="submit"
-        style={{ width: '120px', marginTop: '10px' }}
+        className="purge-slashing-submit"
+        disabled={!form.isValid}
       >
         Purge
       </Button>
-    </form>
+    </StyledPurgeSlashingForm>
   );
 }
 
-export default PurgeSlashing;
+export default PurgeSlashingForm;

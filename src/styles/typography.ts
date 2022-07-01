@@ -84,4 +84,10 @@ export const TypographyStyle = createGlobalStyle`
   .font-bold {
     font-weight: 700;
   }
+
+  .text-ellipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 `;

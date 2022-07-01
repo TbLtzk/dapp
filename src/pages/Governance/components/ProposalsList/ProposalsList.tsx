@@ -3,13 +3,12 @@ import { useSelector } from 'react-redux';
 
 import { ProposalEvent } from 'typings/contracts';
 import { ProposalFilterStatus, ProposalType } from 'typings/proposals';
-
-import Button from 'components/Base/Button';
-import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
+import Button from 'ui/Button';
 
 import ProposalCard from '../ProposalCard';
+import ProposalCardSkeleton from '../ProposalCardSkeleton';
 
-import { ListEmptyMessage, ListWrapper } from './styles';
+import { ListEmptyMessage, ListNextContainer, ListWrapper } from './styles';
 
 import { activeProposalsByTypeSelector, endedProposalsByTypeSelector, proposalsByTypeSelector } from 'store/voting/proposals/selectors';
 
@@ -52,16 +51,14 @@ function ProposalsList ({ type, status }: { type: ProposalType, status: Proposal
   if (isLoading) {
     return (
       <ListWrapper>
-        {fillArray(10).map((id) => (
-          <SkeletonProposalsLoading key={id} />
-        ))}
+        {fillArray(10).map((id) => <ProposalCardSkeleton key={id} />)}
       </ListWrapper>
     );
   }
 
   if (list.length === 0) {
     return (
-      <ListEmptyMessage>
+      <ListEmptyMessage className="text-xl font-semibold">
         No proposals found
       </ListEmptyMessage>
     );
@@ -79,14 +76,11 @@ function ProposalsList ({ type, status }: { type: ProposalType, status: Proposal
       </ListWrapper>
 
       {filteredProposals.length > list.length && (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button
-            style={{ width: '140px' }}
-            onClick={handleNextProposals}
-          >
+        <ListNextContainer>
+          <Button onClick={handleNextProposals}>
             Show more
           </Button>
-        </div>
+        </ListNextContainer>
       )}
     </>
   );

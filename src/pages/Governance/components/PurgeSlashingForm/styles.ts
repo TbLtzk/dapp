@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
-export const PurgeSlashingContainer = styled.div`
-  margin-top: 10px;
+export const StyledPurgeSlashingForm = styled.form`
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 15px;
+  gap: 16px;
+  width: 370px;
 
-  @media screen and (min-width: 1370px) {
-    grid-template-columns: repeat(2, 1fr);
+  .purge-slashing-submit {
+    width: 100%;
+    margin-top: 8px;
   }
 `;
