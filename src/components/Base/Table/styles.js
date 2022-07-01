@@ -12,6 +12,14 @@ export const TableContainer = styled.div`
     border: none;
   }
 
+  .table-header {
+    margin-bottom: ${({ tiny }) => (tiny ? 0 : 24)}px;
+  }
+
+  .search-container {
+    max-width: 343px;
+  }
+    
   .react-bootstrap-table-pagination {
     > div:first-of-type {
       display: none;
@@ -53,7 +61,7 @@ export const TableContainer = styled.div`
       background: ${({ theme }) => getTableColor(theme, 'tableBg')};
       margin-bottom: 10px;
       gap: 20px;
-      height: 72px;
+      height: ${({ tiny }) => (tiny ? 'auto' : 72)}px;
 
       &:hover {
         box-shadow: inset 0px 0px 0px 1px ${({ theme }) => getTableColor(theme, 'tableHover')};
@@ -68,7 +76,7 @@ export const TableContainer = styled.div`
   }
 
   td {
-    padding: 26px;
+    padding: ${({ tiny }) => (tiny ? '' : 26)}px;
   }
 
   td:first-child {

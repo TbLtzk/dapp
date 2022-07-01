@@ -5,9 +5,8 @@ import { Link } from 'react-router-dom';
 
 import Button from 'components/Base/Button';
 import CustomBlock from 'components/Base/CustomBlock';
-import PageWrap from 'components/Base/PageWrap';
 import InfoTooltip from 'components/Custom/InfoTooltip';
-import ValidatorsPanel from 'components/Custom/Tables/ValidatorsTable';
+import ValidatorsTable from 'components/Custom/Tables/ValidatorsTable';
 
 import StakerRewardPool from './components/StakerRewardPool';
 import ValidatorBalanceForm from './components/ValidatorBalanceForm';
@@ -39,28 +38,28 @@ function ValidatorStaking () {
   }, [dispatch]);
 
   return (
-    <PageWrap
-      pageHeader="Validator Staking"
-      pageTooltip={<InfoTooltip topic="validator-staking" placement="bottom" />}
-      pageButton={<StakerRewardPool />}
-    >
+    <>
       <CustomBlock>
-        <h1>Manage Balance</h1>
+        <div className="card_header">
+          <div className="card-title">
+            <h2 className="text-h2">Manage Balance</h2>
+            <InfoTooltip topic="validator-staking" placement="top" />
+          </div>
+
+          <StakerRewardPool />
+        </div>
+
         <ValidatorBalanceInfo />
         <ValidatorBalanceForm />
       </CustomBlock>
-
-      <ValidatorsPanel
+      <ValidatorsTable
         bottom
         type="with-total"
         tableType={TABLE_TYPES.validatorsWidened}
         buttons={
-          <div className="card__actions">
+          <div>
             <Link to="/q-vault">
-              <Button
-                alwaysEnabled
-                look="white"
-              >
+              <Button alwaysEnabled look="white">
                 <i className="mdi mdi-arrow-right" />
                 <span>{t('GO_TO_Q_VAULT')}</span>
               </Button>
@@ -68,7 +67,7 @@ function ValidatorStaking () {
           </div>
         }
       />
-    </PageWrap>
+    </>
   );
 }
 

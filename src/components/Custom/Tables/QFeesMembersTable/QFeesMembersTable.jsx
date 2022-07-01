@@ -28,6 +28,7 @@ function QFeesMembersTable () {
 
   return (
     <Table
+      tiny
       header={
         <h2 className="text-h2">
           <span>{t('LIST_OF_Q_FEES_INCENTIVES_EXPERTS')}</span>

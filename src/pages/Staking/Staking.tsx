@@ -5,9 +5,10 @@ import { TabRoute, TabSwitch } from 'ui/Tabs/components';
 
 import PageWrap from 'components/Base/PageWrap';
 
-const RootNode = () => <div>RootNode Staking</div>;
-const Validator = () => <div>Validator Staking</div>;
-const Delegator = () => <div>Delegator Staking</div>;
+import DelegationStaking from './components/DelegationStaking';
+import RootNodeStaking from './components/RootNodeStaking';
+import ValidatorStaking from './components/ValidatorStaking';
+import { StakingContainer } from './styles';
 
 function Staking () {
   const tabs = [
@@ -30,23 +31,25 @@ function Staking () {
 
   return (
     <PageWrap pageHeader="Staking">
-      <Tabs tabs={tabs} />
-      <TabSwitch>
-        <>
-          <Route exact path="/staking">
-            <Redirect to="/staking/root-node-staking" />
-          </Route>
-          <TabRoute exact path="/staking/root-node-staking">
-            <RootNode />
-          </TabRoute>
-          <TabRoute exact path="/staking/validator-staking">
-            <Validator />
-          </TabRoute>
-          <TabRoute exact path="/staking/delegator-staking">
-            <Delegator />
-          </TabRoute>
-        </>
-      </TabSwitch>
+      <StakingContainer>
+        <Tabs tabs={tabs} />
+        <TabSwitch>
+          <div className="staking-switch">
+            <Route exact path="/staking">
+              <Redirect to="/staking/root-node-staking" />
+            </Route>
+            <TabRoute exact path="/staking/root-node-staking">
+              <RootNodeStaking />
+            </TabRoute>
+            <TabRoute exact path="/staking/validator-staking">
+              <ValidatorStaking />
+            </TabRoute>
+            <TabRoute exact path="/staking/delegator-staking">
+              <DelegationStaking />
+            </TabRoute>
+          </div>
+        </TabSwitch>
+      </StakingContainer>
     </PageWrap>
   );
 }

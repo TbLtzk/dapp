@@ -20,12 +20,13 @@ import {
 
 import TABLE_TYPES from 'constants/tableTypes';
 
-function ValidatorsTable ({ buttons, tableType }) {
+function ValidatorsTable({ buttons, tableType }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   const validatorTableTypes = {
     [TABLE_TYPES.validatorsShort]: {
+      tiny: true,
       search: false,
       tableSelector: validatorsShortSelector,
       tableLoadingSelector: loadingValidatorsShortSelector,
@@ -33,6 +34,7 @@ function ValidatorsTable ({ buttons, tableType }) {
       tableWrap: tableValidatorsShort,
     },
     [TABLE_TYPES.validatorsWidened]: {
+      tiny: false,
       search: true,
       tableSelector: validatorsWidenedSelector,
       tableLoadingSelector: loadingValidatorsWidenedSelector,
@@ -40,6 +42,7 @@ function ValidatorsTable ({ buttons, tableType }) {
       tableWrap: tableValidatorsWidened,
     },
     [TABLE_TYPES.validatorsMonitoring]: {
+      tiny: false,
       search: true,
       tableSelector: validatorsMonitoringSelector,
       tableLoadingSelector: loadingValidatorsMonitoringSelector,
@@ -48,7 +51,7 @@ function ValidatorsTable ({ buttons, tableType }) {
     },
   };
 
-  const { tableSelector, tableLoadingSelector, columns, tableWrap, search } = validatorTableTypes[tableType];
+  const { tableSelector, tableLoadingSelector, columns, tableWrap, search, tiny } = validatorTableTypes[tableType];
 
   const table = tableWrap(useSelector(tableSelector));
   const tableLoading = useSelector(tableLoadingSelector);
@@ -74,6 +77,7 @@ function ValidatorsTable ({ buttons, tableType }) {
     <>
       <Table
         search={search}
+        tiny={tiny}
         header={
           <h2 className="text-h2">
             <span>{t('VALIDATOR_RANKING')}</span>
@@ -86,8 +90,8 @@ function ValidatorsTable ({ buttons, tableType }) {
         tableType={tableType}
         loading={tableLoading}
         perPage={3}
+        bottomButtons={buttons}
       />
-      {buttons}
     </>
   );
 }

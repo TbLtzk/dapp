@@ -11,7 +11,7 @@ import { delegationList, loadingDelegationList } from 'store/q-vault/selectors';
 import { fromWei } from 'func/balance';
 import { fN } from 'func/useful';
 
-function DelegatedValidatorsTable () {
+function DelegatedValidatorsTable() {
   const { t } = useTranslation();
 
   const delegations = useSelector(delegationList);
@@ -24,6 +24,7 @@ function DelegatedValidatorsTable () {
 
   return (
     <Table
+      tiny
       title={t('YOUR_CURRENT_DELEGATIONS')}
       emptyTableMessage={t('NO_DELEGATIONS')}
       perPageLength={delegations.length}

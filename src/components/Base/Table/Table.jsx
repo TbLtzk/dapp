@@ -8,7 +8,18 @@ import { SkeletonTableLoading } from '../SkeletonLoading/SkeletonLoading';
 
 import { SortCaretIcon, TableContainer } from './styles';
 
-const Table = ({ loading, table, error, columns, perPage, emptyTableMessage, search = false, header }) => {
+const Table = ({
+  loading,
+  table,
+  error,
+  columns,
+  perPage,
+  emptyTableMessage,
+  search = false,
+  header,
+  tiny = false,
+  bottomButtons = null,
+}) => {
   if (loading) {
     return <SkeletonTableLoading />;
   }
@@ -20,8 +31,12 @@ const Table = ({ loading, table, error, columns, perPage, emptyTableMessage, sea
   }
 
   return (
-    <TableContainer withPaganation={perPage < table.length} search={search}>
-      {header}
+    <TableContainer
+      withPaganation={perPage < table.length}
+      search={search}
+      tiny={tiny}
+    >
+      <div className="table-header">{header}</div>
       <PaginationProvider
         pagination={paginationFactory({
           custom: true,
@@ -56,7 +71,10 @@ const Table = ({ loading, table, error, columns, perPage, emptyTableMessage, sea
                 </>
               )}
             </ToolkitProvider>
-            <PaginationListStandalone {...paginationProps} />
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <PaginationListStandalone {...paginationProps} />
+              {bottomButtons}
+            </div>
           </>
         )}
       </PaginationProvider>

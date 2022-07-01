@@ -73,24 +73,16 @@ function Sidebar () {
             />
 
             <SidebarLink
-              accordion
-              to="/root-node-staking"
-              title={t('CONSENSUS_SERVICES')}
-              icon="bank"
-            >
-              <SidebarLink
-                to="/root-node-staking"
-                title={t('ROOT_NODE_STAKING')}
-              />
-              <SidebarLink
-                to="/validator-staking"
-                title={t('VALIDATOR_STAKING')}
-              />
-              {isAliasesEnabled && <SidebarLink
-                to="/account-aliasing"
-                title={t('ACCOUNT_ALIASING')}
-              />}
-            </SidebarLink>
+              to="/staking"
+              title="Staking"
+              icon="coins"
+            />
+
+            {isAliasesEnabled && <SidebarLink
+              icon="handshake"
+              to="/account-aliasing"
+              title={t('ACCOUNT_ALIASING')}
+            />}
 
             <SidebarLink
               to="/saving-and-borrowing"
@@ -136,32 +128,20 @@ function Sidebar () {
       </div>
 
       <div className="sidebar-footer">
-        <a
-          className="sidebar-footer-link text-md"
-          onClick={() => setVersionModalOpen(true)}
-        >
+        <a className="sidebar-footer-link text-md" onClick={() => setVersionModalOpen(true)}>
           {packageJson.version}
         </a>
 
-        <Link
-          to="/data-privacy"
-          className="sidebar-footer-link text-md"
-        >
+        <Link to="/data-privacy" className="sidebar-footer-link text-md">
           {t('DATA_PRIVACY')}
         </Link>
 
-        <Link
-          to="/imprint"
-          className="sidebar-footer-link text-md"
-        >
+        <Link to="/imprint" className="sidebar-footer-link text-md">
           {t('IMPRINT')}
         </Link>
       </div>
 
-      <VersionModal
-        open={versionModalOpen}
-        onClose={() => setVersionModalOpen(false)}
-      />
+      <VersionModal open={versionModalOpen} onClose={() => setVersionModalOpen(false)} />
     </SidebarContainer>
   );
 }

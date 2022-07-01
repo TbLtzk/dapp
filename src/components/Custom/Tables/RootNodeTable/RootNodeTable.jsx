@@ -27,25 +27,28 @@ function RootNodeTable ({ tableType }) {
   const rootNodeTableTypes = {
     [TABLE_TYPES.rootNodesShort]: {
       search: false,
+      tiny: true,
       tableSelector: rootMembersSelector,
       tableLoadingSelector: loadingRootMembersSelector,
       columns: getColumnsRootNode(t),
     },
     [TABLE_TYPES.rootNodesWidened]: {
       search: true,
+      tiny: false,
       tableSelector: rootMembersSelector,
       tableLoadingSelector: loadingRootMembersSelector,
       columns: getColumnsRootNode(t),
     },
     [TABLE_TYPES.rootNodesMonitoring]: {
       search: true,
+      tiny: false,
       tableSelector: rootMembersMonitoringSelector,
       tableLoadingSelector: loadingRootMembersMonitoringSelector,
       columns: getColumnsRootNodeMonitoring(t),
     },
   };
 
-  const { tableSelector, tableLoadingSelector, columns, search } = rootNodeTableTypes[tableType];
+  const { tableSelector, tableLoadingSelector, columns, search, tiny } = rootNodeTableTypes[tableType];
 
   const table = useSelector(tableSelector);
   const tableLoading = useSelector(tableLoadingSelector);
@@ -91,7 +94,7 @@ function RootNodeTable ({ tableType }) {
 
   return (
     <Table
-      sorting
+      tiny={tiny}
       search={search}
       header={
         <>

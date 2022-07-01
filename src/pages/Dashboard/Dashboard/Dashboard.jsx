@@ -28,7 +28,7 @@ function Dashboard () {
       <RootNodePanel tableType={TABLE_TYPES.rootNodesShort} />
       <ValidatorsPanel
         buttons={
-          <div className="card__actions__between">
+          <div style={{ display: 'flex', gap: '8px' }}>
             <Link to="/validator-staking">
               <Button alwaysEnabled look="secondary">
                 <i className="mdi mdi-arrow-right" />

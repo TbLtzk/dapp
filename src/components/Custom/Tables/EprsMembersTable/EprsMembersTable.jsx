@@ -23,6 +23,7 @@ function EprsMembersTable () {
   return (
 
     <Table
+    tiny
       emptyTableMessage={t('NO_ROOT_NODE_SELECTION_MEMBERS')}
       perPageLength={10}
       loading={eprsMembersTableLoading}
