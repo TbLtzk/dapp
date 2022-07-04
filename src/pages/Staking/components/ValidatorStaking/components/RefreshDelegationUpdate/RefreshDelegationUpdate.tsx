@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Button';
-import LoadingSpinner from 'components/Base/LoadingSpinner';
+import Button from 'ui/Button';
 
 import useInterval from 'hooks/useInterval';
 
@@ -19,7 +18,7 @@ function RefreshDelegationUpdate () {
   const lastUpdateCompoundRate = useSelector(lastUpdateOfCompoundRate);
   const loadingUpdateCompoundRate = useSelector(loadingUpdateOfCompoundRate);
 
-  const [timeDelegationUpdate, setTimeDelegationUpdate] = useState(0);
+  const [timeDelegationUpdate, setTimeDelegationUpdate] = useState<string | number>(0);
 
   useEffect(() => {
     setTimeDelegationUpdate(remainDateTimeSince(lastUpdateCompoundRate));
@@ -29,35 +28,24 @@ function RefreshDelegationUpdate () {
     setTimeDelegationUpdate(remainDateTimeSince(lastUpdateCompoundRate));
   }, 30000);
 
+  const handleUpdateCompoundRate = () => {
+    dispatch(setVRPUpdateValidatorsCompoundRate(userAddress));
+  };
+
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+    <div className="refresh-delegation_container">
       <div>
-        <h5>Time Since Last Refresh of User Delegations</h5>
-        <p>{timeDelegationUpdate || '0 day(s) 0 hours 0 minutes'}</p>
+        <p className="text-md">Time Since Last Refresh of User Delegations</p>
+        <h4 className="text-xl">{timeDelegationUpdate || '0 day(s) 0 hours 0 minutes'}</h4>
       </div>
 
-      <div>
-        <Button
-          disabled={loadingUpdateCompoundRate}
-          onClick={() => dispatch(setVRPUpdateValidatorsCompoundRate(userAddress))}
-        >
-          {loadingUpdateCompoundRate
-            ? (
-              <LoadingSpinner
-                size="sm"
-                className="m-1"
-                type="light"
-              />
-            )
-            : (
-              <i
-                className="mdi mdi-cached"
-                style={{ fontSize: '20px' }}
-              />
-            )
-          }
-        </Button>
-      </div>
+      <Button
+        loading={loadingUpdateCompoundRate}
+        disabled={loadingUpdateCompoundRate}
+        onClick={handleUpdateCompoundRate}
+      >
+        Refresh
+      </Button>
     </div>
   );
 }

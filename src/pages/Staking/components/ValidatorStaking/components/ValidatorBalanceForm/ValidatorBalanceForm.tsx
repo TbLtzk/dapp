@@ -12,10 +12,8 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 import {
   setValidatorsAnnounceWithdrawal,
   setValidatorsCommitStake,
-  setValidatorsEnterShortList,
   setValidatorsWithdraw,
 } from 'store/validators/action-creators';
-import { isUserValidator } from 'store/validators/selectors';
 
 import formTypes from 'constants/form-types';
 import { required } from 'func/validators';
@@ -23,7 +21,6 @@ import { required } from 'func/validators';
 function ValidatorBalanceForm () {
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
-  const isValidator = useSelector(isUserValidator);
 
   const form = useForm({
     initialValues: { amount: '' },
@@ -60,37 +57,17 @@ function ValidatorBalanceForm () {
         </div>
 
         <div className="account-status__form-actions">
-          <Button
-            disabled={!form.isValid}
-            onClick={handleStake}
-          >
+          <Button disabled={!form.isValid} onClick={handleStake}>
             Stake to Ranking
           </Button>
-          <Button
-            disabled={!form.isValid}
-            onClick={handleAnnounce}
-          >
+          <Button disabled={!form.isValid} onClick={handleAnnounce}>
             Announce Withdrawal
           </Button>
-          <Button
-            disabled={!form.isValid}
-            onClick={handleWithdraw}
-          >
+          <Button disabled={!form.isValid} onClick={handleWithdraw}>
             Withdraw from Ranking
           </Button>
         </div>
       </FormWrapper>
-
-      {!isValidator && (
-        <div className="card__actions">
-          <Button
-            style={{ marginTop: '10px' }}
-            onClick={() => dispatch(setValidatorsEnterShortList(address))}
-          >
-            Join Validator Ranking
-          </Button>
-        </div>
-      )}
     </form>
   );
 }

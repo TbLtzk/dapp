@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Button';
+import { FormDelegation } from 'typings/forms';
+import Button from 'ui/Button';
 
 import useFormArray from 'hooks/useFormArray';
 import useMetamaskReset from 'hooks/useMetamaskReset';
@@ -20,27 +21,21 @@ function UpdateDelegation () {
   const formArray = useFormArray({
     minCount: 1,
     maxCount: 30,
-    onSubmit: (forms) => {
+    onSubmit: (forms: FormDelegation[]) => {
       const delegatedTo = forms.map((f) => f.address);
       const stakes = forms.map((f) => toWei(f.amount));
       dispatch(setDelegateStake(address, delegatedTo, stakes));
-    }
+    },
   });
   useMetamaskReset(formTypes.qVaultDelegation, formArray.reset);
 
+  const handleUpdateDelegation = (e: Event) => {
+    formArray.submit(e);
+  };
+
   return (
     <>
-      <h3>Update Delegation</h3>
-      <div className="card__one-line-form-2-2-1">
-        <p>Address</p>
-        <div style={{ position: 'relative' }}>
-          <p>New Stake</p>
-          <p style={{ fontSize: '10px', position: 'absolute', top: '18px' }}>
-            0 will remove delegation
-          </p>
-        </div>
-      </div>
-
+      <h4 className="text-xl">Update Delegation</h4>
       <div style={{ display: 'grid', gap: '15px' }}>
         {formArray.forms.map((form) => (
           <DelegationForm
@@ -52,12 +47,10 @@ function UpdateDelegation () {
         ))}
       </div>
 
-      <div className="card__actions" style={{ marginBottom: '10px' }}>
-        <Button onClick={formArray.submit}>
-          <i className="mdi mdi-cached" />
-          <span>Update Delegation</span>
-        </Button>
-      </div>
+      <Button onClick={handleUpdateDelegation}>
+        <i className="mdi mdi-cached" />
+        <span>Update Delegation</span>
+      </Button>
     </>
   );
 }

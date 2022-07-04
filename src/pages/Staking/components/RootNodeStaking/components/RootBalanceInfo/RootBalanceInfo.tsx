@@ -1,8 +1,5 @@
 import { useSelector } from 'react-redux';
 
-import { BalanceWrapper } from './styles';
-
-import { accountBalance } from 'store/q-vault/selectors';
 import { isUserRootNode, rootMinimumTimeLock, rootNodeStake, withdrawals } from 'store/root-node/selectors';
 
 import { fromWei } from 'func/balance';
@@ -10,56 +7,50 @@ import { fromSolDateFormattingT1 } from 'func/date';
 import { fN } from 'func/useful';
 
 function RootBalanceInfo () {
-  const userAccountBalance = useSelector(accountBalance);
   const isUserRoot = useSelector(isUserRootNode);
   const amountNodeStake = useSelector(rootNodeStake);
   const withdrawalsData = useSelector(withdrawals);
   const rootTimeLockMinimumBalance = useSelector(rootMinimumTimeLock);
 
   return (
-    <BalanceWrapper>
+    <div className="block-body">
       <div>
-        <h5>Status</h5>
-        <p>{isUserRoot ? 'Member of root node panel' : 'Not a member of root node panel'}</p>
+        <p className="text-md">Status</p>
+        <h4 className="text-xl">{isUserRoot ? 'Member of root node panel' : 'Not a member of root node panel'}</h4>
       </div>
 
       <div>
-        <h5>Stake in Root Node Ranking</h5>
-        <p>{fN(amountNodeStake)} Q</p>
-      </div>
-
-      <div>
-        <h5>Q Balance</h5>
-        <p>{fN(userAccountBalance)} Q</p>
+        <p className="text-md">Stake in Root Node Ranking</p>
+        <h4 className="text-xl">{fN(amountNodeStake)} Q</h4>
       </div>
 
       {Number(rootTimeLockMinimumBalance) > 0 && (
         <div>
-          <h5>Time Locked Amount</h5>
-          <p>{fN(rootTimeLockMinimumBalance)} Q</p>
+          <p className="text-md">Time Locked Amount</p>
+          <h4 className="text-xl">{fN(rootTimeLockMinimumBalance)} Q</h4>
         </div>
       )}
 
       <div>
-        <h5>Announced for Withdrawal</h5>
-        <p>{fN(fromWei(withdrawalsData?.amount))} Q</p>
+        <p className="text-md">Announced for Withdrawal</p>
+        <h4 className="text-xl">{fN(fromWei(withdrawalsData?.amount))} Q</h4>
       </div>
 
       <div>
-        <h5>Announcement Status</h5>
-        <p>{Number(withdrawalsData?.amount) > 0 ? 'Pending' : '-'}</p>
+        <p className="text-md">Announcement Status</p>
+        <h4 className="text-xl">{Number(withdrawalsData?.amount) > 0 ? 'Pending' : '-'}</h4>
       </div>
 
       <div>
-        <h5>Announcement End</h5>
-        <p>
+        <p className="text-md">Announcement End</p>
+        <h4 className="text-xl">
           {Number(withdrawalsData?.amount) > 0 && withdrawalsData
             ? fromSolDateFormattingT1(withdrawalsData?.endTime)
             : '-'
           }
-        </p>
+        </h4>
       </div>
-    </BalanceWrapper>
+    </div>
   );
 }
 

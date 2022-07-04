@@ -19,7 +19,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   right?: boolean;
   disabled?: boolean;
   menuItems: MenuItems[];
-  trigger: ReactNode | undefined;
+  trigger?: ReactNode | undefined;
   onToggle: (open: boolean) => void;
 }
 
@@ -57,7 +57,10 @@ function MenuDropdown ({
           <div
             key={item.id}
             className="menu-option"
-            onClick={item?.func}
+            onClick={() => {
+              item.func?.();
+              onToggle(false);
+            }}
           >
             <span className="text-md"> {item.title}</span>
           </div>

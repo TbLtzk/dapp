@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { motion } from 'framer-motion';
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 
@@ -22,28 +23,32 @@ function Settings () {
     <SettingsDropdown
       right
       open={settingsOpen}
-      trigger={(
-        <Button
-          alwaysEnabled
-          icon
-          look="secondary"
-          active={settingsOpen}
-        >
-          <Icon name="settings" />
-        </Button>
-      )}
+      trigger={
+        <motion.div style={{ width: '100%' }} animate={{ rotate: settingsOpen ? 0 : 90 }}>
+          <Button
+            alwaysEnabled
+            icon
+            look="secondary"
+            active={settingsOpen}
+          >
+            <Icon name="settings" />
+          </Button>
+        </motion.div>
+
+      }
       onToggle={handleSettingsToggle}
     >
       <div className="settings-content">
-        <h3 className="settings-title text-xl font-semibold">
-          {languageOpen ? 'Language' : 'Settings'}
-        </h3>
+        <h3 className="settings-title text-xl font-semibold">{languageOpen ? 'Language' : 'Settings'}</h3>
 
         <div className="settings-main">
           {languageOpen
-            ? <Languages onBack={() => setLanguageOpen(false)} />
-            : <SettingsMenu onLanguageOpen={() => setLanguageOpen(true)} />
-          }
+            ? (
+              <Languages onBack={() => setLanguageOpen(false)} />
+            )
+            : (
+              <SettingsMenu onLanguageOpen={() => setLanguageOpen(true)} />
+            )}
         </div>
       </div>
     </SettingsDropdown>

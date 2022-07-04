@@ -1,4 +1,3 @@
-
 import { createPortal } from 'react-dom';
 
 import { AnimatePresence, HTMLMotionProps } from 'framer-motion';
@@ -8,68 +7,51 @@ import Icon from 'ui/Icon';
 import { ModalContainer } from './styles';
 
 interface Props extends HTMLMotionProps<'div'> {
-  open: boolean
-  title: string
-  tip?: string
-  width?: number
-  onClose: () => void
+  open: boolean;
+  title: string;
+  tip?: string;
+  width?: number;
+  onClose: () => void;
 }
 
-function Modal ({
-  open,
-  title,
-  tip,
-  width = 420,
-  children,
-  onClose,
-  ...rest
-}: Props) {
-  return (
-    createPortal((
-      <AnimatePresence>
-        {open && (
-          <ModalContainer
-            $width={width}
-            transition={{ duration: 0.2 }}
-            variants={{
-              open: { opacity: 1 },
-              closed: { opacity: 0 },
-            }}
-            initial="closed"
-            animate={open ? 'open' : 'closed'}
-            exit="closed"
-            {...rest}
-          >
-            <div className="modal-overlay" onClick={onClose} />
-            <div className="modal-dialog block">
-              <Button
-                icon
-                className="modal-close"
-                look="ghost"
-                onClick={onClose}
-              >
-                <Icon name="cross" />
-              </Button>
+function Modal ({ open, title, tip, width = 420, children, onClose, ...rest }: Props) {
+  return createPortal(
+    <AnimatePresence>
+      {open && (
+        <ModalContainer
+          $width={width}
+          transition={{ duration: 0.2 }}
+          variants={{
+            open: { opacity: 1 },
+            closed: { opacity: 0 },
+          }}
+          initial="closed"
+          animate={open ? 'open' : 'closed'}
+          exit="closed"
+          {...rest}
+        >
+          <div className="q-modal-overlay" onClick={onClose} />
+          <div className="q-modal-dialog block">
+            <Button
+              icon
+              className="q-modal-close"
+              look="ghost"
+              onClick={onClose}
+            >
+              <Icon name="cross" />
+            </Button>
 
-              <h3 className="modal-title text-h2">
-                {title}
-              </h3>
+            <h3 className="q-modal-title text-h2">{title}</h3>
 
-              {tip && (
-                <p className="modal-tip text-md">
-                  {tip}
-                </p>
-              )}
+            {tip && <p className="q-modal-tip text-md">{tip}</p>}
 
-              <div className="modal-content">
-                {children}
-              </div>
-            </div>
-          </ModalContainer>
-        )}
-      </AnimatePresence>
-    ), document.body)
+            <div className="q-modal-content">{children}</div>
+          </div>
+        </ModalContainer>
+      )}
+    </AnimatePresence>,
+    document.body
   );
-};
+}
 
 export default Modal;

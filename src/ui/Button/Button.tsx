@@ -1,4 +1,4 @@
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, MouseEventHandler } from 'react';
 import { useSelector } from 'react-redux';
 
 import Spinner from 'ui/Spinner';
@@ -9,17 +9,17 @@ import { loadTypeSelector } from 'store/user-inf/selectors';
 
 import { LOAD_TYPES } from 'constants/statuses';
 
-export type ButtonLook = 'primary' | 'secondary' | 'ghost' | 'danger'
+export type ButtonLook = 'primary' | 'secondary' | 'ghost' | 'danger';
 interface Props extends HTMLAttributes<HTMLButtonElement> {
-  type?: 'button' | 'submit' | 'reset',
-  look?: ButtonLook
-  disabled?: boolean
-  alwaysEnabled?: boolean
-  icon?: boolean
-  compact?: boolean
-  loading?: boolean
-  active?: boolean
-  onClick?: () => void
+  type?: 'button' | 'submit' | 'reset';
+  look?: ButtonLook;
+  disabled?: boolean;
+  alwaysEnabled?: boolean;
+  icon?: boolean;
+  compact?: boolean;
+  loading?: boolean;
+  active?: boolean;
+  onClick?: (e: MouseEventHandler<HTMLButtonElement> | any) => void;
 }
 
 function Button ({

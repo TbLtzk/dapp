@@ -4,44 +4,49 @@ import Button from 'ui/Button';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
+import useMetamaskReset from 'hooks/useMetamaskReset';
 
-import { FORM_TYPES } from '../ValidatorMenu/ValidatorMenu';
+import { FORM_TYPES } from '../RootNodeMenu/RootNodeMenu';
 
+import { setRootAnnounceWithdrawal, setRootStakeToPanel, setRootWithdraw } from 'store/root-node/action-creators';
 import { userAddressMetamask } from 'store/user-inf/selectors';
-import {
-  setValidatorsAnnounceWithdrawal,
-  setValidatorsCommitStake,
-  setValidatorsWithdraw,
-} from 'store/validators/action-creators';
 
+import formTypes from 'constants/form-types.js';
+import { toWei } from 'func/balance';
 import { required } from 'func/validators';
 
 interface Props {
   formType: string | null;
 }
 
-function ValidatorForms ({ formType }: Props) {
+function RootBalanceForm ({ formType }: Props) {
   const dispatch = useDispatch();
-  const address = useSelector(userAddressMetamask);
+  const userAddress = useSelector(userAddressMetamask);
 
   const form = useForm({
     initialValues: { amount: '' },
     validators: { amount: [required] },
   });
+  useMetamaskReset(formTypes.rootNodeStaking, form.reset);
 
   const handleStake = () => {
     if (!form.validate()) return;
-    dispatch(setValidatorsCommitStake(address, form.values.amount));
-  };
-
-  const handleAnnounce = () => {
-    if (!form.validate()) return;
-    dispatch(setValidatorsAnnounceWithdrawal(address, form.values.amount));
+    dispatch(
+      setRootStakeToPanel({
+        from: userAddress,
+        value: toWei(form.values.amount),
+      })
+    );
   };
 
   const handleWithdraw = () => {
     if (!form.validate()) return;
-    dispatch(setValidatorsWithdraw(address, form.values.amount));
+    dispatch(setRootWithdraw(toWei(form.values.amount), userAddress, { from: userAddress }));
+  };
+
+  const handleAnnounce = () => {
+    if (!form.validate()) return;
+    dispatch(setRootAnnounceWithdrawal(toWei(form.values.amount), { from: userAddress }));
   };
 
   const formTypesHandle = {
@@ -70,4 +75,4 @@ function ValidatorForms ({ formType }: Props) {
   );
 }
 
-export default ValidatorForms;
+export default RootBalanceForm;

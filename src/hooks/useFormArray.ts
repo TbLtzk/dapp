@@ -35,12 +35,12 @@ function useFormArray<T extends never[]> ({
       .every(val => val);
   };
 
-  const submit = async (e: Event) => {
+  const submit = (e: Event) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
-    await onSubmit(forms.map(e => e.values) as T);
+    onSubmit(forms.map(e => e.values) as T);
     setIsSubmitting(false);
   };
 

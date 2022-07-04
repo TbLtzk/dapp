@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Form/Input';
+import Button from 'ui/Button';
+import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 import useMetamaskReset from 'hooks/useMetamaskReset';
@@ -25,19 +25,18 @@ function DelegatorShareForm () {
 
   return (
     <form noValidate onSubmit={form.submit}>
-      <h4>Set Delegator Share</h4>
-      <div className="modal-one-line-form">
+      <h3 className="text-h3">Set Delegator Share</h3>
+      <div className="delegator-share-form">
         <Input
           {...form.fields.amount}
-          invertedColors
           type="number"
-          prefix="%"
-          placeholder="0"
+          placeholder="0 %"
+          max="100"
         />
         <Button
           type="submit"
           disabled={!form.isValid}
-          style={{ width: '94px' }}
+          style={{ width: '94px', margin: '3px 0 0 0' }}
         >
           Set
         </Button>

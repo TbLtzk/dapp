@@ -25,7 +25,11 @@ function DelegatedValidatorsTable() {
   return (
     <Table
       tiny
-      title={t('YOUR_CURRENT_DELEGATIONS')}
+      header={
+        <h2 className="text-h2">
+          <span>{t('YOUR_CURRENT_DELEGATIONS')}</span>
+        </h2>
+      }
       emptyTableMessage={t('NO_DELEGATIONS')}
       perPageLength={delegations.length}
       loading={loading}

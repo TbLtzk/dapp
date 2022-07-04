@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import Button from 'ui/Button';
 import Modal from 'ui/Modal';
-
-import Tooltip from 'components/Base/Tooltip';
+import Tooltip from 'ui/Tooltip';
 
 import DelegatorShareForm from '../DelegatorShareForm';
 import RewardStats from '../RewardStats';
 import ValidatorPool from '../ValidatorPool';
+
+import { StyledStakerRewardPool } from './styles';
 
 import { userAddressMetamask } from 'store/user-inf/selectors';
 import {
@@ -24,14 +26,13 @@ import {
   getTotalStake,
 } from 'store/validators/action-creators';
 import { compoundRateKeeperExistsSelector } from 'store/validators/selectors';
-import Button from 'ui/Button';
 
 function StakerRewardPool () {
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
   const compoundRateKeeperExists = useSelector(compoundRateKeeperExistsSelector);
 
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     dispatch(getCompoundRateKeeperExists());
@@ -52,25 +53,30 @@ function StakerRewardPool () {
   return (
     <>
       <Tooltip
-        position="left"
-        additionalInfo="Only available for Validators"
-        disabled={compoundRateKeeperExists}
+        trigger={
+          <Button
+            disabled={compoundRateKeeperExists}
+            onClick={handleModalOpen}
+          >
+            Manage Staker Reward Pool
+          </Button>
+        }
+        disabled={!compoundRateKeeperExists}
       >
-        <Button onClick={handleModalOpen}>
-          Manage Staker Reward Pool
-        </Button>
+        Only available for Validators
       </Tooltip>
 
       <Modal
+        width={600}
         title="Manage Staker Reward Pool"
         open={modalOpen}
         onClose={() => setModalOpen(false)}
       >
-        <>
+        <StyledStakerRewardPool>
           <ValidatorPool />
           <RewardStats />
           <DelegatorShareForm />
-        </>
+        </StyledStakerRewardPool>
       </Modal>
     </>
   );

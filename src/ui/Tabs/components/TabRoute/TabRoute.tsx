@@ -6,12 +6,18 @@ import { motion } from 'framer-motion';
 const tabsVariants = {
   initial: {
     opacity: 0,
+    height: '200vh',
+    y: 20
   },
   animate: {
     opacity: 1,
+    y: 0,
+    height: '100%'
   },
   exit: {
     opacity: 0,
+    height: '200vh',
+    x: 20,
   },
 };
 
@@ -28,7 +34,7 @@ const TabRoute = ({ children, exact, path }: Props) => (
       animate="animate"
       exit="exit"
       variants={tabsVariants}
-      transition={{ duration: 0.1, easings: 'easeOut' }}
+      transition={{ type: 'linear', duration: 0.2 }}
     >
       {children}
     </motion.div>
