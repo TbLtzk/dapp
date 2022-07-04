@@ -46,7 +46,6 @@ const RootReducer = combineReducers({
 
   parametersAddresses,
 
-
 });
 
 export default RootReducer;

@@ -1,1 +1,1 @@
-export {default} from './RootNodeMenu'
+export { default } from './RootNodeMenu';

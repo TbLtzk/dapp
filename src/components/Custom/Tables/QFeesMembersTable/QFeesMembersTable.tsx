@@ -13,10 +13,6 @@ import {
   EPQFIMembersSelector,
 } from 'store/membership/selectors';
 
-interface TableType {
-  member: string;
-}
-
 function QFeesMembersTable () {
   const { t } = useTranslation();
 

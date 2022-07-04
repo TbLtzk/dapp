@@ -20,7 +20,7 @@ import { fillArray } from 'func/useful';
 
 const PAGE_LIMIT = 10;
 
-function ProposalsList({ type, status }: { type: ProposalType; status: ProposalFilterStatus }) {
+function ProposalsList ({ type, status }: { type: ProposalType; status: ProposalFilterStatus }) {
   const { proposals, isLoading } = useSelector(proposalsByTypeSelector(type));
   const activeProposals = useSelector(activeProposalsByTypeSelector(type));
   const endedProposals = useSelector(endedProposalsByTypeSelector(type));
@@ -41,7 +41,7 @@ function ProposalsList({ type, status }: { type: ProposalType; status: ProposalF
     setList(newList);
   };
 
-  function getFilteredProposals() {
+  function getFilteredProposals () {
     switch (status) {
       case 'active':
         return activeProposals;

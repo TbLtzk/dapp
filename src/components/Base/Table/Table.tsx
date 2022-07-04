@@ -14,7 +14,7 @@ interface Props {
   table: any;
   error?: string;
   columns: any;
-  perPage?: number;
+  perPage?: number | undefined;
   emptyTableMessage: string;
   search?: boolean;
   header: ReactNode;
@@ -27,7 +27,7 @@ const Table = ({
   table,
   error,
   columns,
-  perPage,
+  perPage = 1000,
   emptyTableMessage,
   search = false,
   header,

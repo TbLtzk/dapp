@@ -15,8 +15,8 @@ import Imprint from 'pages/Imprint';
 import Monitoring from 'pages/Monitoring';
 import NotFound from 'pages/NotFound';
 import OneAuctionPage from 'pages/OneAuctionPage';
-import RootNodeStaking from 'pages/Staking/components/RootNodeStaking';
 import Staking from 'pages/Staking';
+import RootNodeStaking from 'pages/Staking/components/RootNodeStaking';
 import ValidatorStaking from 'pages/Staking/components/ValidatorStaking';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
