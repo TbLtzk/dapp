@@ -55,7 +55,7 @@ function StakerRewardPool () {
       <Tooltip
         trigger={
           <Button
-            disabled={compoundRateKeeperExists}
+            disabled={!compoundRateKeeperExists}
             onClick={handleModalOpen}
           >
             Manage Staker Reward Pool

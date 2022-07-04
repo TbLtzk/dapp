@@ -13,6 +13,10 @@ import {
   EPQFIMembersSelector,
 } from 'store/membership/selectors';
 
+interface TableType {
+  member: string;
+}
+
 function QFeesMembersTable () {
   const { t } = useTranslation();
 
@@ -38,14 +42,14 @@ function QFeesMembersTable () {
       emptyTableMessage={t('NO_Q_FEES_INCENTIVES_MEMBERS')}
       loading={qFeesMembersTableLoading}
       error={qFeesMembersTableError}
-      perPageLength={10}
+      perPage={10}
       columns={[
         {
           dataField: 'member',
           text: t('MEMBER_ADDRESS'),
         },
       ]}
-      table={qFeesMembersTable.map((member, idx) => ({
+      table={qFeesMembersTable.map((member: string, idx: number) => ({
         id: idx,
         member: <ExplorerAddress iconed address={member} />,
       }))}

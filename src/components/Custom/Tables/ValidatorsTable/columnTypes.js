@@ -11,7 +11,7 @@ export const getColumnsValidatorsWidened = (t) => [
     headerStyle: () => ({ minWidth: '173px' }),
     dataField: 'validator',
     text: 'Address',
-    filterValue: (cell) => cell.props.children[0].props.addres,
+    filterValue: (cell) => cell.props.children[0].props.address,
   },
   {
     headerStyle: () => ({ minWidth: '220px' }),
@@ -48,25 +48,26 @@ export const getColumnsValidatorsWidened = (t) => [
 
 export const getColumnsValidatorsMonitoring = (t) => [
   {
-    headerStyle: () => ({ minWidth: '70px', width: '70px' }),
+    headerStyle: () => ({ minWidth: '95px' }),
     dataField: 'rank',
     text: t('RANK'),
     sort: true,
   },
   {
-    headerStyle: () => ({ minWidth: '200px' }),
+    headerStyle: () => ({ minWidth: '173px' }),
     dataField: 'validator',
     text: t('VALIDATOR_ADDRESS'),
+    filterValue: (cell) => cell.props.children[0].props.address,
   },
   {
-    headerStyle: () => ({ minWidth: '200px' }),
+    headerStyle: () => ({ minWidth: '220px' }),
     dataField: 'amount',
     text: t('TOTAL_ACCOUNTABLE_STAKE'),
     sort: true,
     sortFunc: (a, b, order) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
   },
   {
-    headerStyle: () => ({ minWidth: '180px' }),
+    headerStyle: () => ({ minWidth: '190px' }),
     dataField: 'lastBlock',
     text: t('LAST_BLOCK_VALIDATED'),
     sort: true,
@@ -74,7 +75,7 @@ export const getColumnsValidatorsMonitoring = (t) => [
   },
 
   {
-    headerStyle: () => ({ minWidth: '200px' }),
+    headerStyle: () => ({ minWidth: '220px' }),
     dataField: 'timestamp',
     text: t('TIMESTAMP_OF_LAST_BLOCK_VALIDATED'),
   },

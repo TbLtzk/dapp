@@ -40,12 +40,15 @@ function RefreshDelegationUpdate () {
       </div>
 
       <Button
+        icon
         loading={loadingUpdateCompoundRate}
-        disabled={loadingUpdateCompoundRate}
         onClick={handleUpdateCompoundRate}
       >
-        Refresh
+        {!loadingUpdateCompoundRate && (
+          <i className="mdi mdi-cached" style={{ fontSize: '20px' }} />
+        )}
       </Button>
+
     </div>
   );
 }

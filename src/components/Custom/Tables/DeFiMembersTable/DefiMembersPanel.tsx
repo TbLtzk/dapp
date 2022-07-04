@@ -34,14 +34,14 @@ function DeFiMembersTable () {
       emptyTableMessage={t('NO_DEFI_MEMBERS')}
       loading={defiMembersTableLoading}
       error={defiMembersTableError}
-      perPageLength={10}
+      perPage={10}
       columns={[
         {
           dataField: 'member',
           text: t('MEMBER_ADDRESS'),
         },
       ]}
-      table={defiMembersTable.map((member, idx) => ({
+      table={defiMembersTable.map((member: string, idx: number) => ({
         id: idx,
         member: <ExplorerAddress iconed address={member} />,
       }))}

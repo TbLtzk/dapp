@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -20,7 +20,12 @@ import {
 
 import TABLE_TYPES from 'constants/tableTypes';
 
-function ValidatorsTable ({ buttons, tableType }) {
+interface Props {
+  buttons: ReactNode | undefined;
+  tableType: keyof typeof TABLE_TYPES;
+}
+
+function ValidatorsTable ({ buttons, tableType }: Props) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -61,7 +66,7 @@ function ValidatorsTable ({ buttons, tableType }) {
   };
 
   useEffect(() => {
-    let monitoringInterval;
+    let monitoringInterval: ReturnType<typeof setInterval> | undefined;
 
     fetchTableData();
 
@@ -87,9 +92,9 @@ function ValidatorsTable ({ buttons, tableType }) {
         emptyTableMessage={t('NO_VALIDATORS')}
         table={table}
         columns={columns}
-        tableType={tableType}
         loading={tableLoading}
         perPage={9}
+        error=""
         bottomButtons={buttons}
       />
     </>

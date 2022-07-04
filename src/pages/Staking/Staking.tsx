@@ -10,18 +10,25 @@ import RootNodeStaking from './components/RootNodeStaking';
 import ValidatorStaking from './components/ValidatorStaking';
 import { StakingContainer } from './styles';
 
+type TabsType = {
+  id: string;
+  label: string;
+  link: string;
+};
+
 function Staking () {
-  const tabs = [
-    {
-      id: 'validator-staking',
-      label: 'Validator Staking',
-      link: '/staking/validator-staking',
-    },
+  const tabs: TabsType[] = [
     {
       id: 'root-node-staking',
       label: 'Root Node Staking',
       link: '/staking/root-node-staking',
     },
+    {
+      id: 'validator-staking',
+      label: 'Validator Staking',
+      link: '/staking/validator-staking',
+    },
+
     {
       id: 'delegator-staking',
       label: 'Delegator Staking',

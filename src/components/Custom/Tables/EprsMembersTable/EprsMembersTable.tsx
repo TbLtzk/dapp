@@ -21,11 +21,10 @@ function EprsMembersTable () {
   }, [dispatch]);
 
   return (
-
     <Table
-    tiny
+      tiny
       emptyTableMessage={t('NO_ROOT_NODE_SELECTION_MEMBERS')}
-      perPageLength={10}
+      perPage={10}
       loading={eprsMembersTableLoading}
       error={eprsMembersTableError}
       header={
@@ -39,12 +38,11 @@ function EprsMembersTable () {
           text: t('MEMBER_ADDRESS'),
         },
       ]}
-      table={eprsMembersTable.map((member, idx) => ({
+      table={eprsMembersTable.map((member: string, idx: number) => ({
         id: idx,
         member: <ExplorerAddress iconed address={member} />,
       }))}
     />
-
   );
 }
 

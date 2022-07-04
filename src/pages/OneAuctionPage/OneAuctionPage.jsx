@@ -17,7 +17,6 @@ import SidebarCards from '../Auctions/components/SidebarCards';
 
 import { getOneAuction } from 'store/auctions/action-creators';
 import { oneAuctionSelector } from 'store/auctions/selectors';
-import { theme } from 'store/theme/selectors';
 import { transactionLoadingSelector } from 'store/transaction-handler/selectors';
 
 import { ERROR_TYPES } from 'contracts/helpers/auctions-helpers/auction-service-helper';
@@ -29,7 +28,6 @@ import { createShareText } from 'func/useful';
 
 function OneAuctionPage ({ match }) {
   const dispatch = useDispatch();
-  const currentTheme = useSelector(theme);
   const transactionLoading = useSelector(transactionLoadingSelector);
   const pageName = getPageName(match.params.contract);
 
@@ -65,7 +63,7 @@ function OneAuctionPage ({ match }) {
   }, [transactionLoading]);
 
   const card = (
-    <ListCardWrp palette={currentTheme}>
+    <ListCardWrp>
       <ListCardHeader>
         <div>
           <h1>{auction.title}</h1>

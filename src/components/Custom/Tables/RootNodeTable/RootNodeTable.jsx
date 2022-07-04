@@ -97,15 +97,14 @@ function RootNodeTable ({ tableType }) {
       tiny={tiny}
       search={search}
       header={
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
           <h2 className="text-h2">
             <span>{t('ROOT_NODE_PANEL')}</span>
             <InfoTooltip topic="root-node-panel" />
           </h2>
           {isTotalStakeShown && (
             <p style={{ margin: 0 }}>
-              <strong>{t('TOTAL_STAKE')}</strong>{' '}
-              {rootMemebersTotalStake} Q
+              <strong>{t('TOTAL_STAKE')}</strong> {rootMemebersTotalStake} Q
             </p>
           )}
         </div>

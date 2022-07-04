@@ -8,7 +8,7 @@ import DefiMembersPanel from 'components/Custom/Tables/DeFiMembersTable';
 import EprsMembersPanel from 'components/Custom/Tables/EprsMembersTable';
 import QFeesMembersPanel from 'components/Custom/Tables/QFeesMembersTable';
 import RootNodePanel from 'components/Custom/Tables/RootNodeTable';
-import ValidatorsPanel from 'components/Custom/Tables/ValidatorsTable';
+import ValidatorsTable from 'components/Custom/Tables/ValidatorsTable';
 
 import InfBlock from './components/InfBlockUp';
 import SavingBorrowingBlock from './components/SavingBorrowingBlock';
@@ -26,17 +26,25 @@ function Dashboard () {
   const rootAndValidatorsPanels = (
     <>
       <RootNodePanel tableType={TABLE_TYPES.rootNodesShort} />
-      <ValidatorsPanel
+      <ValidatorsTable
         buttons={
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
             <Link to="/validator-staking">
-              <Button alwaysEnabled look="secondary">
+              <Button
+                compact
+                alwaysEnabled
+                look="secondary"
+              >
                 <i className="mdi mdi-arrow-right" />
                 <span>{t('SEE_MORE_DETAILS')}</span>
               </Button>
             </Link>
             <Link to="/monitoring">
-              <Button alwaysEnabled look="secondary">
+              <Button
+                compact
+                alwaysEnabled
+                look="secondary"
+              >
                 <i className="mdi mdi-arrow-right" />
                 <span>{t('MONITORING')}</span>
               </Button>

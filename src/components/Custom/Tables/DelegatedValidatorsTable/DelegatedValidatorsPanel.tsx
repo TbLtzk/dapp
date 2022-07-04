@@ -11,7 +11,14 @@ import { delegationList, loadingDelegationList } from 'store/q-vault/selectors';
 import { fromWei } from 'func/balance';
 import { fN } from 'func/useful';
 
-function DelegatedValidatorsTable() {
+interface TableType {
+  id: number;
+  validator: string;
+  actualStake: string;
+  claimableReward: string;
+}
+
+function DelegatedValidatorsTable () {
   const { t } = useTranslation();
 
   const delegations = useSelector(delegationList);
@@ -31,7 +38,7 @@ function DelegatedValidatorsTable() {
         </h2>
       }
       emptyTableMessage={t('NO_DELEGATIONS')}
-      perPageLength={delegations.length}
+      perPage={delegations.length}
       loading={loading}
       columns={[
         {
@@ -47,7 +54,7 @@ function DelegatedValidatorsTable() {
           text: t('CLAIMABLE_REWARD'),
         },
       ]}
-      table={delegations.map((member, idx) => ({
+      table={delegations.map((member: TableType, idx: number) => ({
         id: idx,
         address: <ExplorerAddress iconed address={member.validator} />,
         amount: fN(fromWei(member.actualStake)) + ' Q',

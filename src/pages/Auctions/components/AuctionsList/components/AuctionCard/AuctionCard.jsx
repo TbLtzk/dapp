@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Accordion } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
 
 import CustomCardButtons from 'components/Custom/CustomCardButtons';
 
@@ -8,18 +7,15 @@ import CardBody from '../CardBody';
 
 import { ListCardBody, ListCardHeader, ListCardWrp } from './styles';
 
-import { theme } from 'store/theme/selectors';
-
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import { convertToMonthDayYear, remainDate } from 'func/convertDate';
 import { createShareText } from 'func/useful';
 
 function AuctionCard ({ auction, id }) {
-  const currentTheme = useSelector(theme);
   const [open, setOpen] = useState(false);
 
   return (
-    <ListCardWrp palette={currentTheme}>
+    <ListCardWrp>
       <Accordion defaultActiveKey="0">
         <ListCardHeader>
           <div>

@@ -11,6 +11,7 @@ import Radios from './components/Radios';
 import Searches from './components/Searches';
 import Selects from './components/Selects';
 import Switches from './components/Switches';
+import Tables from './components/Tables';
 import Tabs from './components/Tabs';
 import Tags from './components/Tags';
 import Toasts from './components/Toasts';
@@ -40,6 +41,7 @@ function UiKit () {
       <Menus />
       <Tags />
       <Modals />
+      <Tables/>
     </UiKitContainer>
   );
 }
