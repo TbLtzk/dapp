@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';
 import { invert } from 'lodash';
+import Table from 'ui/Table';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import Check from 'components/Base/Form/Check';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import MemberTables from 'components/Custom/MemberTables';
 
 import { aliasEventsLoadingSelector, aliasEventsSelector } from 'store/account-aliases/selectors';
 
@@ -61,7 +61,7 @@ function AliasEventsTable ({ address }) {
 
   return (
     <CustomBlock>
-      <MemberTables
+      <Table
         title={tableTitle}
         columns={columns}
         table={table}

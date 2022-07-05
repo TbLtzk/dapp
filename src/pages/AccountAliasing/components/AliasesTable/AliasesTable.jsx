@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux';
 import { AliasPurpose } from '@q-dev/q-js-sdk';
 import { invert } from 'lodash';
 import Button from 'ui/Button';
+import Table from 'ui/Table';
 import Tooltip from 'ui/Tooltip';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import MemberTables from 'components/Custom/MemberTables';
 
 import { aliasesLoadingSelector, aliasesSelector } from 'store/account-aliases/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
@@ -52,7 +52,7 @@ function AliasesTable ({ address, onSelect }) {
 
   return (
     <CustomBlock>
-      <MemberTables
+      <Table
         lineForEach
         title={`Account aliases (${trimAddress(address)})`}
         emptyTableMessage="No aliases"

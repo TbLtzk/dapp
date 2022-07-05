@@ -5,13 +5,15 @@ import { AnimateSharedLayout, motion } from 'framer-motion';
 
 import { TabsContainer } from './styles';
 
+export type TabsType = {
+  id: string;
+  label: string;
+  link: string;
+  count?: number
+};
+
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  tabs: {
-    id: string;
-    label: string;
-    link: string;
-    count?: number;
-  }[];
+  tabs: TabsType[]
 }
 
 function Tabs ({ tabs, ...rest }: Props) {
@@ -37,9 +39,7 @@ function Tabs ({ tabs, ...rest }: Props) {
               />
             )}
 
-            {Number(count) > 0 && (
-              <span className="tab-count">{count}</span>
-            )}
+            {Number(count) > 0 && <span className="tab-count">{count}</span>}
           </NavLink>
         ))}
       </AnimateSharedLayout>

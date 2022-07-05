@@ -63,6 +63,8 @@ export const Block = styled.div`
     margin-bottom: 15px;
   }
 
+
+
   .card__hash {
     text-overflow: ellipsis;
     overflow: hidden;

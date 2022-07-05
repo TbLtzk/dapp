@@ -8,7 +8,7 @@ export const ModalContainer = styled(motion.div)<{ $width: number }>`
   position: fixed;
   z-index: 10000;
 
-  .modal-overlay {
+  .q-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -18,7 +18,7 @@ export const ModalContainer = styled(motion.div)<{ $width: number }>`
     pointer-events: all;
   }
 
-  .modal-dialog {
+  .q-modal-dialog {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -29,18 +29,18 @@ export const ModalContainer = styled(motion.div)<{ $width: number }>`
     width: ${({ $width }) => `${$width}px`};
   }
 
-  .modal-close {
+  .q-modal-close {
     position: absolute;
     top: 12px;
     right: 12px;
   }
 
-  .modal-tip {
+  .q-modal-tip {
     margin-top: 4px;
     color: ${({ theme }) => theme.colors.textSecondary};
   }
 
-  .modal-content {
+  .q-modal-content {
     border: none;
     margin-top: 24px;
     background-color: transparent;

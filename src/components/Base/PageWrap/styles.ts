@@ -6,6 +6,7 @@ import { scrollbarStyle } from 'styles/globalStyle';
 export const WrapContainer = styled(Container)`
   position: relative;
   height: calc(100vh - 70px);
+  max-height: calc(100vh - 70px);
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;

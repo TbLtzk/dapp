@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
 import Button from 'ui/Button';
+import Table from 'ui/Table';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import ModalWindow from 'components/Base/ModalWindow';
-import MemberTables from 'components/Custom/MemberTables';
 
 import ManageForm from '../ManageForm';
 import VestingWithdrawForm from '../VestingWithdrawForm';
@@ -23,8 +23,9 @@ function BalanceCard ({ title, contract, balanceRef, lockAmountData, timeLockBal
       <h5>Time Locked Balance</h5>
       <p ref={timeLockBalanceRef}>0 Q</p>
 
-      <MemberTables
-        perPageLength={4}
+      <Table
+        tiny
+        perPage={4}
         emptyTableMessage="No Time Locks"
         table={lockAmountData.map((lock) => ({
           id: lock.id,
@@ -69,9 +70,7 @@ function BalanceCard ({ title, contract, balanceRef, lockAmountData, timeLockBal
       />
 
       <div className="button__bottom">
-        <Button onClick={() => setIsModalShown(true)}>
-          Manage
-        </Button>
+        <Button onClick={() => setIsModalShown(true)}>Manage</Button>
       </div>
       <div style={{ height: '30px' }} />
     </CustomBlock>

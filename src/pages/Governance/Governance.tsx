@@ -30,8 +30,7 @@ function Governance () {
   };
 
   const type = pathToTypeMap[pathname];
-  const createProposal = type !== 'contractUpdate' &&
-    <CreateProposal type={type} />;
+  const createProposal = type !== 'contractUpdate' && <CreateProposal type={type} />;
 
   const tabs = [
     {
@@ -66,13 +65,10 @@ function Governance () {
     },
   ];
 
-  const redirectTab = tabs.find(tab => tab.count > 0) || tabs[0];
+  const redirectTab = tabs.find((tab) => tab.count > 0) || tabs[0];
 
   return (
-    <PageWrap
-      pageHeader="Governance"
-      pageButton={createProposal}
-    >
+    <PageWrap pageHeader="Governance" pageButton={createProposal}>
       <VotingStats />
       <Tabs tabs={tabs} />
       <TabSwitch>

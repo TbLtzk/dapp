@@ -4,17 +4,15 @@ import { Link } from 'react-router-dom';
 import Button from 'ui/Button';
 
 import PageWrap from 'components/Base/PageWrap';
-import DefiMembersPanel from 'components/Custom/MembersPanel/DefiMembersPanel';
-import EprsMembersPanel from 'components/Custom/MembersPanel/EprsMembersPanel';
-import QFeesMembersPanel from 'components/Custom/MembersPanel/QFeesMembersPanel';
-import RootNodePanel from 'components/Custom/MembersPanel/RootNodePanel';
-import ValidatorsPanel from 'components/Custom/MembersPanel/ValidatorsPanel';
+import DefiMembersPanel from 'components/Custom/Tables/DeFiMembersTable';
+import EprsMembersPanel from 'components/Custom/Tables/EprsMembersTable';
+import QFeesMembersPanel from 'components/Custom/Tables/QFeesMembersTable';
+import RootNodeTable from 'components/Custom/Tables/RootNodeTable';
+import ValidatorsTable from 'components/Custom/Tables/ValidatorsTable';
 
 import InfBlock from './components/InfBlockUp';
 import SavingBorrowingBlock from './components/SavingBorrowingBlock';
 import TokenomicsBlock from './components/TokenomicsBlock';
-
-import TABLE_TYPES from 'constants/tableTypes';
 
 function Dashboard () {
   const { t } = useTranslation();
@@ -25,25 +23,33 @@ function Dashboard () {
 
   const rootAndValidatorsPanels = (
     <>
-      <RootNodePanel tableType={TABLE_TYPES.rootNodesShort} />
-      <ValidatorsPanel
+      <RootNodeTable tableType="rootNodesShort" />
+      <ValidatorsTable
+        tableType="validators-short"
         buttons={
-          <div className="card__actions__between">
+          <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
             <Link to="/validator-staking">
-              <Button alwaysEnabled look="secondary">
+              <Button
+                compact
+                alwaysEnabled
+                look="secondary"
+              >
                 <i className="mdi mdi-arrow-right" />
                 <span>{t('SEE_MORE_DETAILS')}</span>
               </Button>
             </Link>
             <Link to="/monitoring">
-              <Button alwaysEnabled look="secondary">
+              <Button
+                compact
+                alwaysEnabled
+                look="secondary"
+              >
                 <i className="mdi mdi-arrow-right" />
                 <span>{t('MONITORING')}</span>
               </Button>
             </Link>
           </div>
         }
-        tableType={TABLE_TYPES.validatorsShort}
       />
     </>
   );

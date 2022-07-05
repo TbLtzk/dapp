@@ -1,0 +1,58 @@
+import { useDispatch, useSelector } from 'react-redux';
+
+import { FormDelegation } from 'typings/forms';
+import Button from 'ui/Button';
+
+import useFormArray from 'hooks/useFormArray';
+import useMetamaskReset from 'hooks/useMetamaskReset';
+
+import DelegationForm from './DelegationForm';
+
+import { setDelegateStake } from 'store/q-vault/action-creators';
+import { userAddressMetamask } from 'store/user-inf/selectors';
+
+import formTypes from 'constants/form-types';
+import { toWei } from 'func/balance';
+
+function UpdateDelegation () {
+  const dispatch = useDispatch();
+  const address = useSelector(userAddressMetamask);
+
+  const formArray = useFormArray({
+    minCount: 1,
+    maxCount: 30,
+    onSubmit: (forms: FormDelegation[]) => {
+      const delegatedTo = forms.map((f) => f.address);
+      const stakes = forms.map((f) => toWei(f.amount));
+      dispatch(setDelegateStake(address, delegatedTo, stakes));
+    },
+  });
+  useMetamaskReset(formTypes.qVaultDelegation, formArray.reset);
+
+  const handleUpdateDelegation = (e: Event) => {
+    formArray.submit(e);
+  };
+
+  return (
+    <>
+      <h4 className="text-xl">Update Delegation</h4>
+      <div style={{ display: 'grid', gap: '15px', marginBottom: '10px' }}>
+        {formArray.forms.map((form) => (
+          <DelegationForm
+            key={form.id}
+            onAdd={formArray.appendForm}
+            onRemove={() => formArray.removeForm(form.id)}
+            onChange={form.onChange}
+          />
+        ))}
+      </div>
+
+      <Button onClick={handleUpdateDelegation}>
+        <i className="mdi mdi-cached" />
+        <span>Update Delegation</span>
+      </Button>
+    </>
+  );
+}
+
+export default UpdateDelegation;

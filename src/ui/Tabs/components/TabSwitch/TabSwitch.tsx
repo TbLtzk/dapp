@@ -7,8 +7,8 @@ const TabSwitch: FC<{ children: ReactElement }> = ({ children }) => {
   const location = useLocation();
 
   return (
-    <AnimatePresence exitBeforeEnter>
-      <Switch key={location.key} location={location}>
+    <AnimatePresence exitBeforeEnter onExitComplete={() => window.scrollTo(0, 0)}>
+      <Switch key={location.pathname} location={location}>
         {children}
       </Switch>
     </AnimatePresence>

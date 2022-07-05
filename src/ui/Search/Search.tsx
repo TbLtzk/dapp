@@ -26,7 +26,7 @@ function Search ({
   const isDisabled = disabled || loadType !== LOAD_TYPES.loaded;
 
   return (
-    <SearchContainer $disabled={isDisabled}>
+    <SearchContainer className="search-container" $disabled={isDisabled}>
       <Icon className="search-icon" name="search" />
       <input
         className="text-md"

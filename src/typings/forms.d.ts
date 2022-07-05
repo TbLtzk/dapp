@@ -11,6 +11,11 @@ interface FormParameter {
   value: string
 }
 
+interface FormDelegation {
+  address: string
+  amount: string
+}
+
 type ExpertType = 'fees-incentives' | 'defi' | 'root-node'
 
 interface QProposalForm {

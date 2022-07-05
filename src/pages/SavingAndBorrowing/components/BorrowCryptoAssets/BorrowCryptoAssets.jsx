@@ -2,8 +2,9 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import Table from 'ui/Table';
+
 import CustomBlock from 'components/Base/CustomBlock';
-import MemberTables from 'components/Custom/MemberTables';
 
 import BorrowManageAsset from '../BorrowManageAsset';
 
@@ -24,8 +25,8 @@ function BorrowCryptoAssets () {
 
   return (
     <CustomBlock>
-      <MemberTables
-        lineForEach={true}
+      <Table
+        tiny
         title={t('BORROW_CRYPTO_ASSETS')}
         emptyTableMessage={t('NO_VAULTS_CREATED')}
         loading={loadingVaults}
