@@ -5,11 +5,34 @@ import { getRadioColor } from './colors';
 export const RadioContainer = styled.div<{
   $checked: boolean
   $disabled: boolean
+  $extended: boolean
 }>`
   position: relative;
-  display: flex;
+  display: grid;
+  grid-template: 'frame label';
+  grid-template-columns: auto 1fr;
   gap: 4px;
   align-items: center;
+
+  ${({ theme, $extended, $checked, $disabled }) => $extended && css`
+    padding: 16px 24px;
+    grid-template: 'frame label' 'frame tip';
+    align-items: start;
+    justify-content: start;
+    align-content: start;
+    column-gap: 12px;
+    row-gap: 8px;
+    border: 1px solid ${$checked
+      ? getRadioColor(theme, 'borderActive')
+      : getRadioColor(theme, 'border')
+    };
+    border-radius: 8px;
+    transition: all 150ms ease-out;
+
+    ${$disabled && css`
+      border-color: ${getRadioColor(theme, 'frameDisabled')};
+    `};
+  `};
 
   .radio-input {
     cursor: pointer;
@@ -27,10 +50,12 @@ export const RadioContainer = styled.div<{
   }
 
   .radio-frame {
+    grid-area: frame;
     position: relative;
     width: 16px;
     height: 16px;
     border-radius: 50%;
+    margin: ${({ $extended }) => $extended ? '4px 2px' : '2px'};
     padding: 2px;
     transition: all 150ms ease-out;
     border: 2px solid ${({ theme }) => getRadioColor(theme, 'frame')
@@ -41,7 +66,7 @@ export const RadioContainer = styled.div<{
     `}
   }
 
-  ${({ theme, $disabled }) => !$disabled && css`
+  ${({ theme, $disabled, $extended }) => !$disabled && css`
     &:hover .radio-frame,
     .radio-input:focus-visible ~ .radio-frame {
       border-color: ${getRadioColor(theme, 'frameHover')};
@@ -50,6 +75,12 @@ export const RadioContainer = styled.div<{
         background-color: ${getRadioColor(theme, 'frameHover')};
       }
     }
+
+    ${$extended && css`
+      &:hover {
+        border-color: ${getRadioColor(theme, 'frameHover')};
+      }
+    `}
   `}
 
   .radio-input:focus-visible ~ .radio-frame::after {
@@ -77,9 +108,20 @@ export const RadioContainer = styled.div<{
   }
 
   .radio-label {
+    grid-area: label;
+    display: flex;
+    gap: 4px;
     color: ${({ theme, $disabled }) => $disabled
       ? getRadioColor(theme, 'labelDisabled')
       : getRadioColor(theme, 'label')
+    };
+  }
+
+  .radio-tip {
+    grid-area: tip;
+    color: ${({ theme, $disabled }) => $disabled
+      ? getRadioColor(theme, 'labelDisabled')
+      : getRadioColor(theme, 'tip')
     };
   }
 `;

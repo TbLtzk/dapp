@@ -50,7 +50,6 @@ export const ToastContainer = styled.div<{
 
   .toast-text {
     color: ${({ theme }) => theme.colors.textSecondary};
-    word-break: break-all;
   }
 
   .toast-close {

@@ -10,6 +10,7 @@ import ErrorBoundary from 'components/Custom/ErrorBoundary';
 import AccountAliasing from 'pages/AccountAliasing';
 import DataPrivacy from 'pages/DataPrivacy';
 import Governance from 'pages/Governance';
+import NewProposal from 'pages/Governance/NewProposal';
 import Proposal from 'pages/Governance/Proposal';
 import Imprint from 'pages/Imprint';
 import Monitoring from 'pages/Monitoring';
@@ -90,7 +91,11 @@ function Routes () {
               <Monitoring />
             </Route>
 
-            <Route exact path="/governance/:slug?">
+            <Route exact path="/governance/:type/new">
+              <NewProposal />
+            </Route>
+
+            <Route exact path="/governance/:type?">
               <Governance />
             </Route>
 

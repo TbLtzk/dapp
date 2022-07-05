@@ -1,14 +1,17 @@
 import { Classification, ParameterType } from '@q-dev/q-js-sdk';
 
-type Options<T> = {
+export type Option<T> = {
   value: T
   label: string
-}[]
+}
+export type Options<T> = Option<T>[];
+export type RadioOptions<T> = (Option<T> & { tip?: string })[]
 
 interface FormParameter {
   type: ParameterType
   key: string
   value: string
+  isNew: boolean
 }
 
 interface FormDelegation {
@@ -32,7 +35,6 @@ interface RootNodeProposalForm {
   hash: string
   address: string
   externalLink: string
-  isRemovingNode: boolean
 }
 
 interface SlashingProposalForm {
@@ -40,6 +42,7 @@ interface SlashingProposalForm {
   externalLink: string
   address: string
   percent: string
+  amount: string
 }
 
 interface ExpertProposalForm {

@@ -4,9 +4,19 @@ import { uniqueId } from 'lodash';
 
 import useForm from './useForm';
 
-type Form = ReturnType<typeof useForm>;
+export type Form<T> = ReturnType<
+  typeof useForm<Extract<keyof T, string>, T[keyof T]>
+>
 
-function useFormArray<T extends never[]> ({ minCount = 0, maxCount = Infinity, onSubmit = (_: T) => {} }) {
+function useFormArray<T> ({
+  minCount = 0,
+  maxCount = Infinity,
+  onSubmit = () => {}
+}: {
+  minCount?: number
+  maxCount?: number
+  onSubmit?: (values: T[]) => void
+}) {
   const [forms, setForms] = useState(getInitialForms());
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -16,27 +26,25 @@ function useFormArray<T extends never[]> ({ minCount = 0, maxCount = Infinity, o
 
   function createForm () {
     const id = uniqueId();
-    const onChange = (form: Form) => {
-      setForms((prev) =>
-        prev.map((e) => {
-          return e.id === id ? { ...e, ...form } : e;
-        })
-      );
+    const onChange = (form: Form<T>) => {
+      setForms((prev) => prev.map(e => {
+        return e.id === id ? { ...e, ...form } : e;
+      }));
     };
 
-    return { id, onChange } as { id: string; onChange: (form: Form) => void } & Form;
-  }
+    return { id, onChange } as { id: string, onChange: (form: Form<T>) => void } & Form<T>;
+  };
 
   const validate = () => {
     return forms.map((form) => form.validate()).every((val) => val);
   };
 
-  const submit = async (e: Event) => {
-    e.preventDefault();
+  const submit = async (e?: Event) => {
+    e?.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
-    await onSubmit(forms.map((e) => e.values) as T);
+    await onSubmit(forms.map(e => e.values) as T[]);
     setIsSubmitting(false);
   };
 
@@ -66,7 +74,7 @@ function useFormArray<T extends never[]> ({ minCount = 0, maxCount = Infinity, o
     reset: useCallback(reset, [forms]),
 
     appendForm: useCallback(appendForm, [forms]),
-    removeForm: useCallback(removeForm, [forms]),
+    removeForm: useCallback(removeForm, [forms])
   };
 }
 

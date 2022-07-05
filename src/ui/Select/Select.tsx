@@ -16,6 +16,7 @@ interface Props<T extends ValueType> extends Omit<HTMLAttributes<HTMLDivElement>
   error?: string
   disabled?: boolean
   chips?: boolean
+  combobox?: boolean
   placeholder?: string
   hint?: string
   onChange: (val: T) => void
@@ -28,6 +29,7 @@ function Select<T extends ValueType> ({
   error,
   chips = false,
   disabled = false,
+  combobox = false,
   placeholder,
   hint,
   onChange,
@@ -40,16 +42,24 @@ function Select<T extends ValueType> ({
   const filteredOptions = options.filter(option => option.label.toLowerCase().includes(filter.toLowerCase()));
 
   useEffect(() => {
-    setFilter('');
+    setFilter(combobox ? String(value) : '');
   }, [value, open]);
 
   const selectOption = (val: T) => {
     onChange(val);
     setOpen(false);
-    setFilter('');
+    setFilter(combobox ? String(val) : '');
   };
 
-  const selectTrigger = chips
+  const handleFilterChange = (val: string) => {
+    setFilter(val);
+    if (combobox) {
+      onChange(val as T);
+    }
+  };
+
+  const isOptionsShown = filteredOptions.length > 0 || !combobox;
+  const selectTrigger = chips && !combobox
     ? (
       <Button
         compact
@@ -64,7 +74,7 @@ function Select<T extends ValueType> ({
     )
     : (
       <Input
-        value={open ? filter : selectedOption?.label || ''}
+        value={open || combobox ? filter : selectedOption?.label || ''}
         label={label}
         error={error}
         hint={hint}
@@ -72,19 +82,21 @@ function Select<T extends ValueType> ({
         disabled={disabled}
         onClick={() => setOpen(true)}
         onFocus={() => setOpen(true)}
-        onChange={setFilter}
+        onChange={handleFilterChange}
       >
-        <button
-          className="select-arrow"
-          type="button"
-          disabled={disabled}
-          onClick={() => setOpen(!open)}
-        >
-          <Icon
-            className="select-icon"
-            name="expand-more"
-          />
-        </button>
+        {isOptionsShown && (
+          <button
+            className="select-arrow"
+            type="button"
+            disabled={disabled}
+            onClick={() => setOpen(!open)}
+          >
+            <Icon
+              className="select-icon"
+              name="expand-more"
+            />
+          </button>
+        )}
       </Input>
     );
 
@@ -101,28 +113,30 @@ function Select<T extends ValueType> ({
         trigger={selectTrigger}
         onToggle={setOpen}
       >
-        <div className="select-options">
-          {filteredOptions.map((option) => (
-            <button
-              key={String(option.value)}
-              type="button"
-              className={`select-option text-md ${value === option.value ? 'active' : ''}`}
-              onClick={() => selectOption(option.value)}
-            >
-              <Icon
-                name="check"
-                className={`select-option-icon ${value === option.value ? 'active' : ''}`}
-              />
-              <span>{option.label}</span>
-            </button>
-          ))}
+        {isOptionsShown && (
+          <div className="select-options">
+            {filteredOptions.map((option) => (
+              <button
+                key={String(option.value)}
+                type="button"
+                className={`select-option text-md ${value === option.value ? 'active' : ''}`}
+                onClick={() => selectOption(option.value)}
+              >
+                <Icon
+                  name="check"
+                  className={`select-option-icon ${value === option.value ? 'active' : ''}`}
+                />
+                <span>{option.label}</span>
+              </button>
+            ))}
 
-          {filteredOptions.length === 0 && (
-            <p className="select-stub text-md">
-              No options found
-            </p>
-          )}
-        </div>
+            {filteredOptions.length === 0 && (
+              <p className="select-stub text-md">
+                No options found
+              </p>
+            )}
+          </div>
+        )}
       </Dropdown>
     </SelectContainer>
   );

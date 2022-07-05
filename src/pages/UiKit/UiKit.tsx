@@ -8,12 +8,15 @@ import Menus from './components/Menus';
 import Modals from './components/Modals';
 import ProgressBars from './components/ProgressBars';
 import Radios from './components/Radios';
+import Ranges from './components/Ranges';
 import Searches from './components/Searches';
 import Selects from './components/Selects';
+import Steppers from './components/Steppers';
 import Switches from './components/Switches';
 import Tables from './components/Tables';
 import Tabs from './components/Tabs';
 import Tags from './components/Tags';
+import Tips from './components/Tips';
 import Toasts from './components/Toasts';
 import Tooltips from './components/Tooltips';
 import Typography from './components/Typography';
@@ -42,6 +45,9 @@ function UiKit () {
       <Tags />
       <Modals />
       <Tables/>
+      <Steppers />
+      <Tips />
+      <Ranges />
     </UiKitContainer>
   );
 }

@@ -10,6 +10,8 @@ interface Props<T extends ValueType> extends Omit<HTMLAttributes<HTMLDivElement>
   value: T
   name: string
   label?: string
+  tip?: string
+  extended?: boolean
   disabled?: boolean
   onChange: (value: T) => void
 };
@@ -19,6 +21,8 @@ function Radio<T extends ValueType> ({
   value,
   name,
   label,
+  tip,
+  extended = false,
   disabled = false,
   onChange,
   ...rest
@@ -29,6 +33,7 @@ function Radio<T extends ValueType> ({
     <RadioContainer
       $checked={checked}
       $disabled={disabled}
+      $extended={extended}
       {...rest}
     >
       <input
@@ -48,10 +53,19 @@ function Radio<T extends ValueType> ({
 
       <label
         htmlFor={inputId}
-        className="radio-label text-md"
+        className={`radio-label ${extended ? 'text-lg font-semibold' : 'text-md'}`}
       >
-        {label}
+        <span>{label}</span>
+        {tip && !extended && (
+          <span className="radio-tip text-md font-light">{tip}</span>
+        )}
       </label>
+
+      {extended && tip && (
+        <span className="radio-tip text-md">
+          {tip}
+        </span>
+      )}
     </RadioContainer>
   );
 };

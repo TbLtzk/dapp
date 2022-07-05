@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'react';
 
-import { Options } from 'typings/forms';
+import { RadioOptions } from 'typings/forms';
 import Radio from 'ui/Radio';
 
 import { RadioGroupContainer } from './styles';
@@ -9,7 +9,8 @@ type ValueType = number | string | boolean
 interface Props<T extends ValueType> extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   value: T
   name: string
-  options?: Options<T>
+  options?: RadioOptions<T>
+  extended?: boolean
   disabled?: boolean
   label?: string
   error?: string
@@ -24,6 +25,7 @@ function RadioGroup<T extends ValueType> ({
   label = '',
   error,
   row = false,
+  extended = false,
   disabled = false,
   onChange,
   ...rest
@@ -31,6 +33,7 @@ function RadioGroup<T extends ValueType> ({
   return (
     <RadioGroupContainer
       $row={row}
+      $extended={extended}
       $disabled={disabled}
       {...rest}
     >
@@ -44,6 +47,8 @@ function RadioGroup<T extends ValueType> ({
             name={name}
             value={value}
             checked={option.value === value}
+            tip={option.tip}
+            extended={extended}
             disabled={disabled}
             onChange={() => onChange(option.value)}
           />

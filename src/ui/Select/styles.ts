@@ -42,7 +42,8 @@ export const SelectContainer = styled.div<{
     border-radius: 8px;
     padding: 4px 0;
     display: grid;
-    overflow: hidden;
+    overflow-y: auto;
+    max-height: 264px;
   }
 
   .select-option {

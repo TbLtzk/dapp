@@ -8,6 +8,9 @@ export const darkColors = {
   frameHover: COLORS.grey300,
   frameDisabled: COLORS.grey700,
   focusOutline: COLORS.blue000,
+  border: COLORS.grey600,
+  borderActive: COLORS.grey000,
+  tip: COLORS.grey300,
 };
 
 export const lightColors = {
@@ -17,6 +20,9 @@ export const lightColors = {
   frameHover: COLORS.blue600,
   frameDisabled: COLORS.grey200,
   focusOutline: COLORS.blue100,
+  border: COLORS.grey300,
+  borderActive: COLORS.blue800,
+  tip: COLORS.grey600,
 };
 
 export function getRadioColor (

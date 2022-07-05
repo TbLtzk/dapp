@@ -23,13 +23,12 @@ export async function getRootNodeProposals (
 export async function createRootNodeProposal (
   form: RootNodeProposalForm,
   address: string,
-  isRemovingNode = form.isRemovingNode
 ) {
   const contract = await getRootNodesMembershipVotingInstance();
   return contract.createProposal(
     form.externalLink,
     form.type === 'add-root-node' ? address : ZERO_ADDRESS,
-    isRemovingNode ? form.address : ZERO_ADDRESS,
+    form.address || ZERO_ADDRESS,
     form.hash || '0x00',
     { from: address }
   );

@@ -45,14 +45,14 @@ function VotingStats () {
     },
     {
       title: 'Voting Locking End',
-      value: lockedUntil === '0'
-        ? '–'
-        : (
+      value: lockedDate
+        ? (
           <>
             <span>{lockedDate}</span>
             <span className="text-md">{lockedRest.join(' ')}</span>
           </>
         )
+        : '–'
     },
     {
       title: 'Voting Status',

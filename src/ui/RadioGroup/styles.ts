@@ -1,11 +1,12 @@
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { getRadioGroupColor } from './colors';
 
 export const RadioGroupContainer = styled.div<{
   $row: boolean
   $disabled: boolean
+  $extended: boolean
 }>`
   .radio-group-lbl {
     margin-bottom: 8px;
@@ -19,6 +20,12 @@ export const RadioGroupContainer = styled.div<{
     display: flex;
     flex-direction: ${({ $row }) => $row ? 'row' : 'column'};
     gap: 12px;
+
+    ${({ $extended }) => $extended && css`
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    `};
   }
 
   .radio-group-error {

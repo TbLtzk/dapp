@@ -1,0 +1,77 @@
+import { FormParameter } from 'typings/forms';
+import Button from 'ui/Button';
+import Check from 'ui/Check';
+import Icon from 'ui/Icon';
+
+import FormBlock from 'components/FormBlock';
+import { FormStep } from 'components/MultiStepForm';
+import ParameterForm from 'components/ParameterForm';
+
+import useFormArray from 'hooks/useFormArray';
+
+import { useNewQProposalForm } from '../NewQProposal';
+
+import { CONTRACT_TYPES } from 'constants/contracts';
+
+function ParamsStep () {
+  const { values, goNext, goBack, onChange } = useNewQProposalForm();
+
+  const formArray = useFormArray<FormParameter>({
+    minCount: 1,
+    maxCount: 30,
+    onSubmit: (forms) => {
+      goNext({ params: forms });
+    },
+  });
+
+  const handleCheckChange = (val: boolean) => {
+    onChange({ isParamsChanged: val });
+    formArray.reset();
+  };
+
+  return (
+    <FormStep
+      disabled={!formArray.isValid}
+      onNext={values.isParamsChanged
+        ? formArray.submit
+        : () => goNext({ params: [] })
+      }
+      onBack={goBack}
+    >
+      <Check
+        value={values.isParamsChanged}
+        label="Make changes to constitution parameters"
+        style={{ marginBottom: '8px' }}
+        onChange={handleCheckChange}
+      />
+
+      {formArray.forms.map((form, i) => (
+        <FormBlock
+          key={form.id}
+          title={`Parameter ${i + 1}`}
+          icon={formArray.forms.length > 1 ? 'delete' : undefined}
+          disabled={!values.isParamsChanged}
+          onAction={() => formArray.removeForm(form.id)}
+        >
+          <ParameterForm
+            key={form.id}
+            contract={CONTRACT_TYPES.constitution}
+            disabled={!values.isParamsChanged}
+            onChange={form.onChange}
+          />
+        </FormBlock>
+      ))}
+
+      <Button
+        look="ghost"
+        disabled={!values.isParamsChanged}
+        onClick={formArray.appendForm}
+      >
+        <Icon name="add" />
+        <span>Add parameter</span>
+      </Button>
+    </FormStep>
+  );
+}
+
+export default ParamsStep;

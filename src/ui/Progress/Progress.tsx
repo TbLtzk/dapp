@@ -12,7 +12,7 @@ function Progress ({
   max,
   ...rest
 }: Props) {
-  const percent = max === 0
+  const percent = max === 0 && value > 0
     ? 100
     : Math.round((value / max) * 100);
 
