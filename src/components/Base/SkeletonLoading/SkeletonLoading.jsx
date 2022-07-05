@@ -4,204 +4,28 @@ import { COLORS, darkColors } from 'styles/colors';
 
 import { SkeletonLoadingWrapper } from './styles';
 
-export function SkeletonTableLoading () {
+export function SkeletonTableLoading ({ tiny = false }) {
+  const generateSize = (nRow) =>
+    tiny
+      ? { y: `${nRow * 30}`, x: '0', height: '20', ry: '8', rx: '10' }
+      : { y: `${nRow * 70}`, x: '0', height: '60', ry: '16', rx: '20' };
+
   return (
-    <SkeletonLoadingWrapper>
-      <ContentLoader
-        width="100%"
-        height={260}
-        speed={2}
-        backgroundColor={COLORS.blue900}
-        foregroundColor={darkColors.oxfordBlueTint3}
-      >
-        <rect
-          x="0"
-          y="0"
-          rx="2"
-          ry="2"
-          width="10"
-          height="10"
-        />
-        <rect
-          x="30"
-          y="0"
-          rx="4"
-          ry="10"
-          width="97%"
-          height="10"
-        />
-
-        <rect
-          x="0"
-          y="30"
-          rx="2"
-          ry="2"
-          width="10"
-          height="10"
-        />
-        <rect
-          x="30"
-          y="30"
-          rx="4"
-          ry="10"
-          width="97%"
-          height="10"
-        />
-
-        <rect
-          x="0"
-          y="60"
-          rx="2"
-          ry="2"
-          width="10"
-          height="10"
-        />
-        <rect
-          x="30"
-          y="60"
-          rx="4"
-          ry="10"
-          width="97%"
-          height="10"
-        />
-
-        <rect
-          x="0"
-          y="90"
-          rx="2"
-          ry="2"
-          width="10"
-          height="10"
-        />
-        <rect
-          x="30"
-          y="90"
-          rx="4"
-          ry="10"
-          width="97%"
-          height="10"
-        />
-
-        <rect
-          x="0"
-          y="120"
-          rx="2"
-          ry="2"
-          width="10"
-          height="10"
-        />
-        <rect
-          x="30"
-          y="120"
-          rx="4"
-          ry="10"
-          width="97%"
-          height="10"
-        />
-
-        <rect
-          x="0"
-          y="150"
-          rx="2"
-          ry="2"
-          width="10"
-          height="10"
-        />
-        <rect
-          x="30"
-          y="150"
-          rx="4"
-          ry="10"
-          width="97%"
-          height="10"
-        />
-
-        <rect
-          x="0"
-          y="180"
-          rx="2"
-          ry="2"
-          width="10"
-          height="10"
-        />
-        <rect
-          x="30"
-          y="180"
-          rx="4"
-          ry="10"
-          width="97%"
-          height="10"
-        />
-
-        <rect
-          x="0"
-          y="210"
-          rx="2"
-          ry="2"
-          width="10"
-          height="10"
-        />
-        <rect
-          x="30"
-          y="210"
-          rx="4"
-          ry="10"
-          width="97%"
-          height="10"
-        />
-
-        <rect
-          x="0"
-          y="240"
-          rx="2"
-          ry="2"
-          width="10"
-          height="10"
-        />
-        <rect
-          x="30"
-          y="240"
-          rx="4"
-          ry="10"
-          width="97%"
-          height="10"
-        />
-
-        <rect
-          x="0"
-          y="270"
-          rx="2"
-          ry="2"
-          width="10"
-          height="10"
-        />
-        <rect
-          x="30"
-          y="270"
-          rx="4"
-          ry="10"
-          width="97%"
-          height="10"
-        />
-
-        <rect
-          x="0"
-          y="300"
-          rx="2"
-          ry="2"
-          width="10"
-          height="10"
-        />
-        <rect
-          x="30"
-          y="300"
-          rx="4"
-          ry="10"
-          width="97%"
-          height="10"
-        />
-      </ContentLoader>
-    </SkeletonLoadingWrapper>
+    <ContentLoader
+      width="100%"
+      height={tiny ? 210 : 410}
+      speed={2}
+      backgroundColor={COLORS.blue900}
+      foregroundColor={darkColors.oxfordBlueTint3}
+    >
+      <rect width="100%" {...generateSize(0)} />
+      <rect width="100%" {...generateSize(1)} />
+      <rect width="100%" {...generateSize(2)} />
+      <rect width="100%" {...generateSize(3)} />
+      <rect width="100%" {...generateSize(4)} />
+      <rect width="100%" {...generateSize(5)} />
+      <rect width="100%" {...generateSize(6)} />
+    </ContentLoader>
   );
 }
 

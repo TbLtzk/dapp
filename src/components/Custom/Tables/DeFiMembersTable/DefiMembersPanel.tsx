@@ -34,7 +34,7 @@ function DeFiMembersTable () {
       emptyTableMessage={t('NO_DEFI_MEMBERS')}
       loading={defiMembersTableLoading}
       error={defiMembersTableError}
-      perPage={10}
+      perPage={5}
       columns={[
         {
           dataField: 'member',

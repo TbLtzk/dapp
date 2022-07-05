@@ -91,7 +91,7 @@ function ValidatorsTable ({ buttons, tableType }: Props) {
         table={table}
         columns={columns}
         loading={tableLoading}
-        perPage={9}
+        perPage={5}
         error=""
         bottomButtons={buttons}
       />

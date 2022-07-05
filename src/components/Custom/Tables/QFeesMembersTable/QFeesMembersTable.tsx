@@ -38,7 +38,7 @@ function QFeesMembersTable () {
       emptyTableMessage={t('NO_Q_FEES_INCENTIVES_MEMBERS')}
       loading={qFeesMembersTableLoading}
       error={qFeesMembersTableError}
-      perPage={10}
+      perPage={5}
       columns={[
         {
           dataField: 'member',

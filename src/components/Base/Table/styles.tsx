@@ -139,6 +139,22 @@ export const TableContainer = styled.div<{ tiny: boolean; withPaganation: boolea
       }
     }
   }
+  .text-center {
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .q-table-paganation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .q-bottom-buttons {
+    margin-top: 10px;
+  }
 `;
 
 export const SortCaretIcon = styled.svg<{ $order: string }>`

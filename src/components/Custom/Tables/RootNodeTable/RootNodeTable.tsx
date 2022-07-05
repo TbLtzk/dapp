@@ -111,7 +111,7 @@ function RootNodeTable ({ tableType }: Props) {
           )}
         </div>
       }
-      perPage={10}
+      perPage={5}
       table={tableData}
       columns={columns}
       loading={tableLoading}

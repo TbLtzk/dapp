@@ -24,7 +24,7 @@ function EprsMembersTable () {
     <Table
       tiny
       emptyTableMessage={t('NO_ROOT_NODE_SELECTION_MEMBERS')}
-      perPage={10}
+      perPage={5}
       loading={eprsMembersTableLoading}
       error={eprsMembersTableError}
       header={
