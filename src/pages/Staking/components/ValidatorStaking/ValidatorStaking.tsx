@@ -23,8 +23,6 @@ import {
 } from 'store/validators/action-creators';
 import { isUserValidator } from 'store/validators/selectors';
 
-import TABLE_TYPES from 'constants/tableTypes';
-
 export const FORM_TYPES = {
   stakeToRanking: 'stake-to-ranking',
   announceWithdrawal: 'announce-withdrawal',
@@ -72,7 +70,7 @@ function ValidatorStaking () {
         <ValidatorBalanceInfo />
       </div>
       <ValidatorsTable
-        tableType={TABLE_TYPES.validatorsWidened}
+        tableType="validators-widened"
         buttons={
           <Link to="/q-vault">
             <Button alwaysEnabled look="ghost">

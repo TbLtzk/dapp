@@ -1,4 +1,5 @@
 import { HTMLAttributes, ReactNode, useRef } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 import { motion } from 'framer-motion';
 import Button from 'ui/Button';
@@ -42,6 +43,7 @@ function MenuDropdown ({
   );
   const menuDropdownRef = useRef<HTMLDivElement>(null);
   useOnClickOutside(menuDropdownRef, () => onToggle(false));
+  useHotkeys('esc', () => onToggle(false));
 
   return (
     <MenuContainer

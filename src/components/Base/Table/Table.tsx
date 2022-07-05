@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import BootstrapTable from 'react-bootstrap-table-next';
+import BootstrapTable, { ColumnDescription } from 'react-bootstrap-table-next';
 import paginationFactory, { PaginationListStandalone, PaginationProvider } from 'react-bootstrap-table2-paginator';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 
@@ -16,8 +16,8 @@ interface Props {
   columns: any;
   perPage?: number | undefined;
   emptyTableMessage: string;
-  search?: boolean;
   header: ReactNode;
+  search?: boolean;
   tiny?: boolean;
   bottomButtons?: ReactNode | undefined;
 }
@@ -29,10 +29,10 @@ const Table = ({
   columns,
   perPage = 1000,
   emptyTableMessage,
-  search = false,
   header,
   tiny = false,
   bottomButtons,
+  search,
 }: Props) => {
   if (loading) {
     return <SkeletonTableLoading />;
@@ -45,11 +45,7 @@ const Table = ({
   }
 
   return (
-    <TableContainer
-      withPaganation={perPage < table.length}
-      search={search}
-      tiny={tiny}
-    >
+    <TableContainer withPaganation={perPage < table.length} tiny={tiny}>
       <div className="q-table">
         <div className="table-header">{header}</div>
         <PaginationProvider
@@ -69,7 +65,7 @@ const Table = ({
                 search={{ searchFormatted: true }}
                 keyField="id"
                 data={table}
-                columns={columns.map((column) => ({
+                columns={columns.map((column: Array<ColumnDescription>) => ({
                   ...column,
                   sortCaret: (order: string) => (
                     <SortCaretIcon $order={order}>
@@ -81,7 +77,9 @@ const Table = ({
               >
                 {(props) => (
                   <>
-                    {search && <Search value={props.searchProps.searchText} onChange={props.searchProps.onSearch} />}
+                    {!tiny && search && (
+                      <Search value={props.searchProps.searchText} onChange={props.searchProps.onSearch} />
+                    )}
                     <BootstrapTable {...props.baseProps} {...paginationTableProps} />
                   </>
                 )}

@@ -2,6 +2,8 @@ import { ReactNode, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { TableType } from 'typings/tables';
+
 import Table from 'components/Base/Table';
 import InfoTooltip from 'components/Custom/InfoTooltip';
 
@@ -21,8 +23,8 @@ import {
 import TABLE_TYPES from 'constants/tableTypes';
 
 interface Props {
-  buttons: ReactNode | undefined;
-  tableType: keyof typeof TABLE_TYPES;
+  buttons?: ReactNode;
+  tableType: TableType
 }
 
 function ValidatorsTable ({ buttons, tableType }: Props) {
@@ -32,7 +34,6 @@ function ValidatorsTable ({ buttons, tableType }: Props) {
   const validatorTableTypes = {
     [TABLE_TYPES.validatorsShort]: {
       tiny: true,
-      search: false,
       tableSelector: validatorsShortSelector,
       tableLoadingSelector: loadingValidatorsShortSelector,
       columns: getColumnsValidatorsWidened(t).slice(0, 3),
@@ -40,7 +41,6 @@ function ValidatorsTable ({ buttons, tableType }: Props) {
     },
     [TABLE_TYPES.validatorsWidened]: {
       tiny: false,
-      search: true,
       tableSelector: validatorsWidenedSelector,
       tableLoadingSelector: loadingValidatorsWidenedSelector,
       columns: getColumnsValidatorsWidened(t),
@@ -48,7 +48,6 @@ function ValidatorsTable ({ buttons, tableType }: Props) {
     },
     [TABLE_TYPES.validatorsMonitoring]: {
       tiny: false,
-      search: true,
       tableSelector: validatorsMonitoringSelector,
       tableLoadingSelector: loadingValidatorsMonitoringSelector,
       columns: getColumnsValidatorsMonitoring(t),
@@ -56,7 +55,7 @@ function ValidatorsTable ({ buttons, tableType }: Props) {
     },
   };
 
-  const { tableSelector, tableLoadingSelector, columns, tableWrap, search, tiny } = validatorTableTypes[tableType];
+  const { tableSelector, tableLoadingSelector, columns, tableWrap, tiny } = validatorTableTypes[tableType];
 
   const table = tableWrap(useSelector(tableSelector));
   const tableLoading = useSelector(tableLoadingSelector);
@@ -81,7 +80,6 @@ function ValidatorsTable ({ buttons, tableType }: Props) {
   return (
     <>
       <Table
-        search={search}
         tiny={tiny}
         header={
           <h2 className="text-h2">

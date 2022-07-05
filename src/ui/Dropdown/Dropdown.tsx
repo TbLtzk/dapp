@@ -1,4 +1,5 @@
 import { HTMLAttributes, ReactNode, useRef } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -27,6 +28,7 @@ function Dropdown ({
 }: Props) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   useOnClickOutside(dropdownRef, () => onToggle(false));
+  useHotkeys('esc', () => onToggle(false));
 
   return (
     <DropdownContainer

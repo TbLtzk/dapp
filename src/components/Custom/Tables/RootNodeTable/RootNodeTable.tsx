@@ -2,6 +2,8 @@ import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { TableType } from 'typings/tables';
+
 import Table from 'components/Base/Table';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import InfoTooltip from 'components/Custom/InfoTooltip';
@@ -20,27 +22,28 @@ import {
 import TABLE_TYPES from 'constants/tableTypes';
 import { fN } from 'func/useful';
 
-function RootNodeTable ({ tableType }) {
+interface Props {
+  tableType: TableType
+}
+
+function RootNodeTable ({ tableType }: Props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const rootNodeTableTypes = {
     [TABLE_TYPES.rootNodesShort]: {
-      search: false,
       tiny: true,
       tableSelector: rootMembersSelector,
       tableLoadingSelector: loadingRootMembersSelector,
       columns: getColumnsRootNode(t),
     },
     [TABLE_TYPES.rootNodesWidened]: {
-      search: true,
       tiny: false,
       tableSelector: rootMembersSelector,
       tableLoadingSelector: loadingRootMembersSelector,
       columns: getColumnsRootNode(t),
     },
     [TABLE_TYPES.rootNodesMonitoring]: {
-      search: true,
       tiny: false,
       tableSelector: rootMembersMonitoringSelector,
       tableLoadingSelector: loadingRootMembersMonitoringSelector,
@@ -48,7 +51,7 @@ function RootNodeTable ({ tableType }) {
     },
   };
 
-  const { tableSelector, tableLoadingSelector, columns, search, tiny } = rootNodeTableTypes[tableType];
+  const { tableSelector, tableLoadingSelector, columns, tiny } = rootNodeTableTypes[tableType];
 
   const table = useSelector(tableSelector);
   const tableLoading = useSelector(tableLoadingSelector);
@@ -63,7 +66,7 @@ function RootNodeTable ({ tableType }) {
   const tableData = useMemo(() => {
     switch (tableType) {
       case TABLE_TYPES.rootNodesMonitoring:
-        return table.map((rootNode, idx) => ({
+        return table.map((rootNode:any, idx:number) => ({
           id: idx,
           address: <ExplorerAddress
             short
@@ -76,13 +79,13 @@ function RootNodeTable ({ tableType }) {
           onChain: 'n/a',
         }));
       default:
-        return table.map((rootNode, idx) => ({
+        return table.map((rootNode:any, idx:number) => ({
           id: idx,
           address: (
             <ExplorerAddress
               iconed
               semibold
-              short={TABLE_TYPES.rootNodesShort === tableType}
+              short={tableType === 'rootNodesShort'}
               address={rootNode.address}
             />
           ),
@@ -95,7 +98,6 @@ function RootNodeTable ({ tableType }) {
   return (
     <Table
       tiny={tiny}
-      search={search}
       header={
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
           <h2 className="text-h2">
@@ -109,7 +111,7 @@ function RootNodeTable ({ tableType }) {
           )}
         </div>
       }
-      perPageLength={10}
+      perPage={10}
       table={tableData}
       columns={columns}
       loading={tableLoading}

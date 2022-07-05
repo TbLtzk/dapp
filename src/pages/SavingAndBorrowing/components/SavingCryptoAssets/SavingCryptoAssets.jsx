@@ -24,7 +24,7 @@ function SavingCryptoAssets () {
   return (
     <CustomBlock>
       <Table
-        lineForEach={true}
+        tiny
         title={t('SAVING_CRYPTO_ASSETS')}
         emptyTableMessage={t('NO_SAVING_ASSETS')}
         loading={!savingAssets}

@@ -3,7 +3,7 @@ import { scrollbarStyle } from 'styles/globalStyle';
 
 import { getTableColor } from './colors';
 
-export const TableContainer = styled.div<{ tiny: boolean; withPaganation: boolean; search: boolean }>`
+export const TableContainer = styled.div<{ tiny: boolean; withPaganation: boolean }>`
   ${scrollbarStyle}
 
   .q-table {
@@ -41,7 +41,7 @@ export const TableContainer = styled.div<{ tiny: boolean; withPaganation: boolea
       }
       padding-top: 16px;
       padding-bottom: 16px;
-      padding-left: 26px;
+      padding-left: ${({ tiny }) => (tiny ? '' : 26)}px;
 
       font-size: 14px;
       line-height: 20px;
@@ -68,13 +68,14 @@ export const TableContainer = styled.div<{ tiny: boolean; withPaganation: boolea
         gap: 20px;
         height: ${({ tiny }) => (tiny ? 'auto' : 72)}px;
 
-        &:hover {
+        /* &:hover {
           box-shadow: inset 0px 0px 0px 1px ${({ theme }) => getTableColor(theme, 'tableHover')};
-        }
+        } */
         td {
           &:first-child {
             padding-left: 32px;
           }
+          vertical-align: middle;
           white-space: nowrap;
         }
       }
@@ -129,6 +130,10 @@ export const TableContainer = styled.div<{ tiny: boolean; withPaganation: boolea
             background: ${({ theme }) => getTableColor(theme, 'linkBgFocus')};
             border: 2px solid ${({ theme }) => getTableColor(theme, 'linkBorderFocus')};
             border-radius: 4px;
+          }
+          &:hover {
+            color: ${({ theme }) => getTableColor(theme, 'linkActive')};
+            background: ${({ theme }) => getTableColor(theme, 'linkBgActive')};
           }
         }
       }

@@ -36,9 +36,7 @@ export const StakingContainer = styled.div`
         &:nth-child(odd) {
           border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
         }
-        &:nth-child(-n + 3) {
-          border-top: none;
-        }
+
         &:first-child,
         &:nth-child(3n + 1) {
           border-left: none;
@@ -75,6 +73,49 @@ export const StakingContainer = styled.div`
       width: 100px;
       padding-top: 32px;
       padding-left: 5px;
+    }
+  }
+
+  @media (min-width: 1281px) {
+    /* CSS */
+  }
+
+  @media (max-width: 1280px) {
+    .block {
+      overflow-x: auto;
+      .block-body {
+        grid-template-columns: 1fr 1fr;
+        & > div {
+          padding: 24px;
+          &:nth-child(even) {
+            border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
+          }
+          &:nth-child(odd) {
+            border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
+          }
+          &:first-child,
+          &:nth-child(2n + 1) {
+            border-left: none;
+          }
+        }
+      }
+    }
+    .delegation-form_container {
+      display: flex;
+      width: 100%;
+      justify-content: flex-start;
+      margin-bottom: 10px;
+      margin-top: 10px;
+
+      .delegation-form_inputs {
+        display: flex;
+        flex-direction: column;
+      }
+      .delegation-form_buttons {
+        display: flex;
+        align-items: center;
+        margin-left: 15px;
+      }
     }
   }
 `;

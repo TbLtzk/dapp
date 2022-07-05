@@ -25,7 +25,7 @@ function BorrowCryptoAssets () {
   return (
     <CustomBlock>
       <Table
-        lineForEach={true}
+        tiny
         title={t('BORROW_CRYPTO_ASSETS')}
         emptyTableMessage={t('NO_VAULTS_CREATED')}
         loading={loadingVaults}

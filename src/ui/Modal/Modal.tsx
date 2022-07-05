@@ -1,4 +1,5 @@
 import { createPortal } from 'react-dom';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 import { AnimatePresence, HTMLMotionProps } from 'framer-motion';
 import Button from 'ui/Button';
@@ -15,6 +16,8 @@ interface Props extends HTMLMotionProps<'div'> {
 }
 
 function Modal ({ open, title, tip, width = 420, children, onClose, ...rest }: Props) {
+  useHotkeys('esc', () => onClose());
+
   return createPortal(
     <AnimatePresence>
       {open && (

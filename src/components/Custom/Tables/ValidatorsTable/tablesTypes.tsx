@@ -6,8 +6,8 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import { fromWei } from 'func/balance';
 import { fN } from 'func/useful';
 
-export const tableValidatorsShort = (tableArray) =>
-  tableArray.map((validator, idx) => ({
+export const tableValidatorsShort = (tableArray: any) =>
+  tableArray.map((validator: any, idx: number) => ({
     id: idx,
     rank: idx + 1,
     validator: (
@@ -24,8 +24,8 @@ export const tableValidatorsShort = (tableArray) =>
     amount: fN(validator.amount) + ' Q',
   }));
 
-export const tableValidatorsMonitoring = (tableArray) =>
-  tableArray.map((validator, idx) => ({
+export const tableValidatorsMonitoring = (tableArray: any) =>
+  tableArray.map((validator: any, idx: number) => ({
     id: idx,
     rank: idx + 1,
     validator: (
@@ -45,8 +45,8 @@ export const tableValidatorsMonitoring = (tableArray) =>
     average: validator.average,
   }));
 
-export const tableValidatorsWidened = (tableArray) =>
-  tableArray.map((validator, idx) => ({
+export const tableValidatorsWidened = (tableArray: any) =>
+  tableArray.map((validator: any, idx: number) => ({
     id: idx,
     rank: validator.rank,
     validator: (

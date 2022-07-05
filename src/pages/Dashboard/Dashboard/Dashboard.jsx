@@ -7,7 +7,7 @@ import PageWrap from 'components/Base/PageWrap';
 import DefiMembersPanel from 'components/Custom/Tables/DeFiMembersTable';
 import EprsMembersPanel from 'components/Custom/Tables/EprsMembersTable';
 import QFeesMembersPanel from 'components/Custom/Tables/QFeesMembersTable';
-import RootNodePanel from 'components/Custom/Tables/RootNodeTable';
+import RootNodeTable from 'components/Custom/Tables/RootNodeTable';
 import ValidatorsTable from 'components/Custom/Tables/ValidatorsTable';
 
 import InfBlock from './components/InfBlockUp';
@@ -25,7 +25,7 @@ function Dashboard () {
 
   const rootAndValidatorsPanels = (
     <>
-      <RootNodePanel tableType={TABLE_TYPES.rootNodesShort} />
+      <RootNodeTable tableType={TABLE_TYPES.rootNodesShort} />
       <ValidatorsTable
         buttons={
           <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
@@ -51,7 +51,7 @@ function Dashboard () {
             </Link>
           </div>
         }
-        tableType={TABLE_TYPES.validatorsShort}
+        tableType="validators-short"
       />
     </>
   );

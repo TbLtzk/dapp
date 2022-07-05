@@ -11,8 +11,6 @@ import { getAccountBalance } from 'store/q-vault/action-creators';
 import { getMinimumRootTimeLock, getRootNodeStakes, getRootWithdrawals } from 'store/root-node/action-creators';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
-import TABLE_TYPES from 'constants/tableTypes';
-
 function RootNodeStaking () {
   const dispatch = useDispatch();
   const userAddress = useSelector(userAddressMetamask);
@@ -37,7 +35,7 @@ function RootNodeStaking () {
 
         <RootBalanceInfo />
       </div>
-      <RootNodeTable tableType={TABLE_TYPES.rootNodesWidened} />
+      <RootNodeTable tableType="rootNodesWidened" />
     </>
   );
 }

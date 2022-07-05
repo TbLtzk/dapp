@@ -36,7 +36,7 @@ function UpdateDelegation () {
   return (
     <>
       <h4 className="text-xl">Update Delegation</h4>
-      <div style={{ display: 'grid', gap: '15px' }}>
+      <div style={{ display: 'grid', gap: '15px', marginBottom: '10px' }}>
         {formArray.forms.map((form) => (
           <DelegationForm
             key={form.id}

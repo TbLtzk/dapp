@@ -31,7 +31,7 @@ function DelegatedValidatorsTable () {
 
   return (
     <Table
-      tiny
+      search={false}
       header={
         <h2 className="text-h2">
           <span>{t('YOUR_CURRENT_DELEGATIONS')}</span>
