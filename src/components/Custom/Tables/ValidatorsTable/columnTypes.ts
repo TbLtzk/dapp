@@ -4,7 +4,7 @@ import { toNumber } from 'func/useful';
 
 export const getColumnsValidatorsWidened = (t: typeof useTranslation) => [
   {
-    headerStyle: () => ({ minWidth: '95px' }),
+    headerStyle: () => ({ minWidth: '95px', cursor: 'pointer' }),
     dataField: 'rank',
     text: t('RANK'),
     sort: true,
@@ -16,28 +16,28 @@ export const getColumnsValidatorsWidened = (t: typeof useTranslation) => [
     filterValue: (cell: any) => cell.props.children[0].props.address,
   },
   {
-    headerStyle: () => ({ minWidth: '220px' }),
+    headerStyle: () => ({ minWidth: '220px', cursor: 'pointer' }),
     dataField: 'amount',
     text: t('TOTAL_ACCOUNTABLE_STAKE'),
     sort: true,
     sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
   },
   {
-    headerStyle: () => ({ minWidth: '120px' }),
+    headerStyle: () => ({ minWidth: '120px', cursor: 'pointer' }),
     dataField: 'selfStake',
     text: t('SELF_STAKE'),
     sort: true,
     sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
   },
   {
-    headerStyle: () => ({ minWidth: '170px' }),
+    headerStyle: () => ({ minWidth: '170px', cursor: 'pointer' }),
     dataField: 'delegatedStake',
     text: t('DELEGATED_STAKE'),
     sort: true,
     sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
   },
   {
-    headerStyle: () => ({ minWidth: '220px' }),
+    headerStyle: () => ({ minWidth: '220px', cursor: 'pointer' }),
     dataField: 'delegationSaturation',
     text: t('DELEGATION_SATURATION'),
     sort: true,
@@ -50,7 +50,7 @@ export const getColumnsValidatorsWidened = (t: typeof useTranslation) => [
 
 export const getColumnsValidatorsMonitoring = (t: typeof useTranslation) => [
   {
-    headerStyle: () => ({ minWidth: '95px' }),
+    headerStyle: () => ({ minWidth: '95px', cursor: 'pointer' }),
     dataField: 'rank',
     text: t('RANK'),
     sort: true,
@@ -62,14 +62,14 @@ export const getColumnsValidatorsMonitoring = (t: typeof useTranslation) => [
     filterValue: (cell: any) => cell.props.children[0].props.address,
   },
   {
-    headerStyle: () => ({ minWidth: '220px' }),
+    headerStyle: () => ({ minWidth: '220px', cursor: 'pointer' }),
     dataField: 'amount',
     text: t('TOTAL_ACCOUNTABLE_STAKE'),
     sort: true,
     sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
   },
   {
-    headerStyle: () => ({ minWidth: '190px' }),
+    headerStyle: () => ({ minWidth: '190px', cursor: 'pointer' }),
     dataField: 'lastBlock',
     text: t('LAST_BLOCK_VALIDATED'),
     sort: true,
@@ -83,7 +83,7 @@ export const getColumnsValidatorsMonitoring = (t: typeof useTranslation) => [
   },
 
   {
-    headerStyle: () => ({ minWidth: '180px' }),
+    headerStyle: () => ({ minWidth: '180px', cursor: 'pointer' }),
     dataField: 'average',
     text: t('AVERAGE_AVAILABILITY_LAST_1000_BLOCKS_CYCLES'),
     sort: true,

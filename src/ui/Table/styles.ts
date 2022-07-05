@@ -3,7 +3,7 @@ import { scrollbarStyle } from 'styles/globalStyle';
 
 import { getTableColor } from './colors';
 
-export const TableContainer = styled.div<{ tiny: boolean; withPaganation: boolean }>`
+export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolean }>`
   ${scrollbarStyle}
 
   .q-table {
@@ -49,7 +49,6 @@ export const TableContainer = styled.div<{ tiny: boolean; withPaganation: boolea
       line-height: 17px;
       color: ${({ theme }) => getTableColor(theme, 'tableHeader')};
       background: transparent;
-      cursor: pointer;
     }
 
     tbody {
@@ -66,11 +65,10 @@ export const TableContainer = styled.div<{ tiny: boolean; withPaganation: boolea
         background: ${({ theme }) => getTableColor(theme, 'tableBg')};
         margin-bottom: 10px;
         gap: 20px;
-        height: ${({ tiny }) => (tiny ? 'auto' : 72)}px;
 
-        /* &:hover {
-          box-shadow: inset 0px 0px 0px 1px ${({ theme }) => getTableColor(theme, 'tableHover')};
-        } */
+        height: ${({ tiny }) => (tiny ? 'auto' : 72)}px;
+        box-shadow: inset 0px 0px 1px 1px ${({ theme }) => theme.colors.blockHover};
+        // TODO: add hover after creating unique validator page
         td {
           &:first-child {
             padding-left: 32px;
@@ -95,7 +93,7 @@ export const TableContainer = styled.div<{ tiny: boolean; withPaganation: boolea
     }
 
     .react-bootstrap-table-page-btns-ul {
-      display: ${({ withPaganation }) => (withPaganation ? 'flex' : 'none')};
+      display: ${({ withPagination }) => (withPagination ? 'flex' : 'none')};
       justify-content: center;
 
       .page-item {

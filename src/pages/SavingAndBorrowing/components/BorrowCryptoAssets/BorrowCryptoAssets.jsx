@@ -2,8 +2,9 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import Table from 'ui/Table';
+
 import CustomBlock from 'components/Base/CustomBlock';
-import Table from 'components/Base/Table';
 
 import BorrowManageAsset from '../BorrowManageAsset';
 

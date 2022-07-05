@@ -23,7 +23,7 @@ export const MenuContainer = styled(Dropdown)`
       cursor: pointer;
 
       &:hover {
-        transition: all 0.3s ease-in-out;
+        transition: all 0.15s ease-in-out;
         background-color: ${({ theme }) => theme.colors.blockBorder};
       }
     }

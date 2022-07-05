@@ -12,6 +12,6 @@ export const StyledIcon = styled.i<{ $content: string }>`
   -moz-osx-font-smoothing: grayscale;
 
   &::before {
-    content: "${({ $content }) => $content}";
+    content: '${({ $content }) => $content}';
   }
 `;

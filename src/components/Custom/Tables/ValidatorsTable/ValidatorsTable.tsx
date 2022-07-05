@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { TableType } from 'typings/tables';
+import Table from 'ui/Table';
 
-import Table from 'components/Base/Table';
 import InfoTooltip from 'components/Custom/InfoTooltip';
 
 import { getColumnsValidatorsMonitoring, getColumnsValidatorsWidened } from './columnTypes';

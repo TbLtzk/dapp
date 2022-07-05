@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import { AliasPurpose } from '@q-dev/q-js-sdk';
 import { invert } from 'lodash';
 import Button from 'ui/Button';
+import Table from 'ui/Table';
 import Tooltip from 'ui/Tooltip';
 
 import CustomBlock from 'components/Base/CustomBlock';
-import Table from 'components/Base/Table';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import { aliasesLoadingSelector, aliasesSelector } from 'store/account-aliases/selectors';

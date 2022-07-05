@@ -12,7 +12,7 @@ import { MenuContainer } from './styles';
 interface MenuItems {
   id: string;
   title: string | ReactNode;
-  func?: () => void;
+  action?: () => void;
 }
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -35,11 +35,11 @@ function MenuDropdown ({
   ...rest
 }: Props) {
   const defaultTrigger = (
-    <motion.div animate={{ rotate: open ? 270 : 90 }}>
-      <Button icon look="secondary">
-        <Icon name="chevron-right" />
-      </Button>
-    </motion.div>
+    <Button icon look="secondary">
+      <motion.span style={{ fontSize: '25px' }} animate={{ rotate: open ? 180 : 0 }}>
+        <Icon name="expand-more" />
+      </motion.span>
+    </Button>
   );
   const menuDropdownRef = useRef<HTMLDivElement>(null);
   useOnClickOutside(menuDropdownRef, () => onToggle(false));
@@ -60,7 +60,7 @@ function MenuDropdown ({
             key={item.id}
             className="menu-option"
             onClick={() => {
-              item.func?.();
+              item.action && item.action();
               onToggle(false);
             }}
           >

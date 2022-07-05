@@ -31,9 +31,9 @@ function ParametersBlock ({
   const renderTable = () => {
     if (loading && !parameters.length) {
       return (
-        <>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
           <LoadingSpinner />
-        </>
+        </div>
       );
     }
 

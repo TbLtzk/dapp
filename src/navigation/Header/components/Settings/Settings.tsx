@@ -24,17 +24,16 @@ function Settings () {
       right
       open={settingsOpen}
       trigger={
-        <motion.div style={{ width: '100%' }} animate={{ rotate: settingsOpen ? 0 : 90 }}>
-          <Button
-            alwaysEnabled
-            icon
-            look="secondary"
-            active={settingsOpen}
-          >
+        <Button
+          alwaysEnabled
+          icon
+          look="secondary"
+          active={settingsOpen}
+        >
+          <motion.span style={{ fontSize: '25px' }} animate={{ rotate: settingsOpen ? 0 : 90 }}>
             <Icon name="settings" />
-          </Button>
-        </motion.div>
-
+          </motion.span>
+        </Button>
       }
       onToggle={handleSettingsToggle}
     >

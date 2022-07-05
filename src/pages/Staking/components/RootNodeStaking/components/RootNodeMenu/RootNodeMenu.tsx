@@ -27,17 +27,17 @@ function RootNodeMenu () {
     {
       id: FORM_TYPES.stakeToRanking,
       title: 'Stake to Panel',
-      func: () => handleFormModalOpen(FORM_TYPES.stakeToRanking),
+      action: () => handleFormModalOpen(FORM_TYPES.stakeToRanking),
     },
     {
       id: FORM_TYPES.announceWithdrawal,
       title: 'Announce Withdrawal',
-      func: () => handleFormModalOpen(FORM_TYPES.announceWithdrawal),
+      action: () => handleFormModalOpen(FORM_TYPES.announceWithdrawal),
     },
     {
       id: FORM_TYPES.withdrawFromRanking,
       title: 'Withdraw from Panel',
-      func: () => handleFormModalOpen(FORM_TYPES.withdrawFromRanking),
+      action: () => handleFormModalOpen(FORM_TYPES.withdrawFromRanking),
     },
   ];
 

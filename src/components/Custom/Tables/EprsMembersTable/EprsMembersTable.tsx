@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Table from 'components/Base/Table';
+import Table from 'ui/Table';
+
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import { getEPRSMembers } from 'store/membership/action-creators';
@@ -27,11 +28,7 @@ function EprsMembersTable () {
       perPage={5}
       loading={eprsMembersTableLoading}
       error={eprsMembersTableError}
-      header={
-        <h2 className="text-h2">
-          <span>{t('LIST_OF_ROOT_NODE_SELECTION_EXPERTS')}</span>
-        </h2>
-      }
+      header={<h2 className="text-h2">{t('LIST_OF_ROOT_NODE_SELECTION_EXPERTS')}</h2>}
       columns={[
         {
           dataField: 'member',

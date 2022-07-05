@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 import styled, { ThemeProvider } from 'styled-components';
-import { darkColors, lightColors, THEMES, ThemeType } from 'styles/colors';
+import { darkColors, lightColors, THEMES } from 'styles/colors';
 import { GlobalStyle } from 'styles/globalStyle';
 import { TypographyStyle } from 'styles/typography';
 
@@ -32,8 +32,7 @@ function StyleLayout ({ children }: Props) {
   return (
     <ThemeProvider
       theme={{
-        palette: theme as ThemeType,
-        theme: theme as ThemeType,
+        palette: theme,
         isDarkTheme,
         colors: isDarkTheme ? darkColors : lightColors,
         onChangeTheme: handleChangeTheme,

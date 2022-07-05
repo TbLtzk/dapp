@@ -5,7 +5,7 @@ import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 
 import Search from 'ui/Search';
 
-import { SkeletonTableLoading } from '../SkeletonLoading/SkeletonLoading';
+import { SkeletonTableLoading } from '../../components/Base/SkeletonLoading/SkeletonLoading';
 
 import { SortCaretIcon, TableContainer } from './styles';
 
@@ -14,11 +14,11 @@ interface Props {
   table: any;
   error?: string;
   columns: any;
-  perPage?: number | undefined;
+  perPage?: number;
   emptyTableMessage: string;
-  header: ReactNode;
   tiny?: boolean;
-  bottomButtons?: ReactNode | undefined;
+  header: ReactNode;
+  bottomButtons?: ReactNode;
 }
 
 const Table = ({
@@ -32,19 +32,15 @@ const Table = ({
   tiny = false,
   bottomButtons,
 }: Props) => {
-  const [isEmpty, setIsEmpty] = useState<boolean>(false);
+  const [isEmpty, setIsEmpty] = useState(false);
 
   const afterSearch = useCallback((newTable: BootstrapTable[]) => {
-    if (!newTable.length) {
-      setIsEmpty(true);
-    } else {
-      setIsEmpty(false);
-    }
+    setIsEmpty(newTable.length === 0);
   }, []);
 
   const tableContent = () => {
     if (loading) {
-      return <SkeletonTableLoading tiny={tiny}/>;
+      return <SkeletonTableLoading tiny={tiny} />;
     }
     if (!table.length) {
       return (
@@ -112,7 +108,7 @@ const Table = ({
   };
 
   return (
-    <TableContainer withPaganation={perPage < table.length} tiny={tiny}>
+    <TableContainer withPagination={perPage < table.length} tiny={tiny}>
       <div className="q-table">
         <div className="table-header">{header}</div>
         {tableContent()}

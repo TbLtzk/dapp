@@ -76,10 +76,6 @@ export const StakingContainer = styled.div`
     }
   }
 
-  @media (min-width: 1281px) {
-    /* CSS */
-  }
-
   @media (max-width: 1280px) {
     .block {
       overflow-x: auto;

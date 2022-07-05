@@ -7,7 +7,6 @@ import Switch from 'ui/Switch';
 import { SettingsMenuContainer } from './styles';
 
 function LanguageSwitcher ({ onLanguageOpen }: { onLanguageOpen: () => void }) {
-  // @ts-ignore
   const { isDarkTheme, onChangeTheme } = useTheme();
 
   const { i18n, t } = useTranslation();

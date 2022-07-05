@@ -25,7 +25,7 @@ function Address ({
         <AddressIcon
           address={address}
           size={20}
-          style={{ margin: '2px 8px 2px 2px' }}
+          style={{ margin: '0 8px' }}
         />
       )}
       {children || addressContent}

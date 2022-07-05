@@ -2,21 +2,21 @@ import { toNumber } from 'func/useful';
 
 export const getColumnsRootNode = (t) => [
   {
-    headerStyle: () => ({ minWidth: '170px' }),
+    headerStyle: () => ({ minWidth: '170px', }),
     dataField: 'address',
     text: t('ROOT_NODE_ADDRESS'),
     filterValue: (cell) => cell.props.address,
 
   },
   {
-    headerStyle: () => ({ minWidth: '160px' }),
+    headerStyle: () => ({ minWidth: '160px', cursor: 'pointer' }),
     dataField: 'amount',
     text: t('STAKED_AMOUNT'),
     sort: true,
     sortFunc: (a, b, order) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
   },
   {
-    headerStyle: () => ({ minWidth: '90px' }),
+    headerStyle: () => ({ minWidth: '90px', cursor: 'pointer' }),
     dataField: 'share',
     text: t('SHARE'),
     sort: true,
@@ -32,7 +32,7 @@ export const getColumnsRootNodeMonitoring = (t) => [
     filterValue: (cell) => cell.props.address,
   },
   {
-    headerStyle: () => ({ minWidth: '160px' }),
+    headerStyle: () => ({ minWidth: '160px', cursor: 'pointer' }),
     dataField: 'amount',
     text: t('STAKED_AMOUNT'),
     sort: true,

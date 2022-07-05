@@ -2,6 +2,7 @@ import { Redirect, Route } from 'react-router';
 
 import Tabs from 'ui/Tabs';
 import { TabRoute, TabSwitch } from 'ui/Tabs/components';
+import { TabsType } from 'ui/Tabs/Tabs';
 
 import PageWrap from 'components/Base/PageWrap';
 
@@ -9,12 +10,6 @@ import DelegationStaking from './components/DelegationStaking';
 import RootNodeStaking from './components/RootNodeStaking';
 import ValidatorStaking from './components/ValidatorStaking';
 import { StakingContainer } from './styles';
-
-type TabsType = {
-  id: string;
-  label: string;
-  link: string;
-};
 
 function Staking () {
   const tabs: TabsType[] = [

@@ -20,7 +20,7 @@ function Menus () {
     {
       id: 'withdraw-from-ranking',
       title: 'Withdraw from Ranking',
-      func: () => {},
+      action: () => {},
     },
   ];
 

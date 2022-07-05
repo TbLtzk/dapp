@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
 import Button from 'ui/Button';
+import Table from 'ui/Table';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import ModalWindow from 'components/Base/ModalWindow';
-import Table from 'components/Base/Table';
 
 import ManageForm from '../ManageForm';
 import VestingWithdrawForm from '../VestingWithdrawForm';

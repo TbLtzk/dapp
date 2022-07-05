@@ -14,8 +14,6 @@ import InfBlock from './components/InfBlockUp';
 import SavingBorrowingBlock from './components/SavingBorrowingBlock';
 import TokenomicsBlock from './components/TokenomicsBlock';
 
-import TABLE_TYPES from 'constants/tableTypes';
-
 function Dashboard () {
   const { t } = useTranslation();
 
@@ -25,8 +23,9 @@ function Dashboard () {
 
   const rootAndValidatorsPanels = (
     <>
-      <RootNodeTable tableType={TABLE_TYPES.rootNodesShort} />
+      <RootNodeTable tableType="rootNodesShort" />
       <ValidatorsTable
+        tableType="validators-short"
         buttons={
           <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
             <Link to="/validator-staking">
@@ -51,7 +50,6 @@ function Dashboard () {
             </Link>
           </div>
         }
-        tableType="validators-short"
       />
     </>
   );
