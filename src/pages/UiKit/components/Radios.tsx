@@ -7,6 +7,17 @@ function Radios () {
   const [network, setNetwork] = useState('mainnet');
   const [isOn, setIsOn] = useState(false);
 
+  const options = [
+    { value: 'devnet', label: 'DevNet' },
+    { value: 'testnet', label: 'TestNet' },
+    { value: 'mainnet', label: 'MainNet' },
+  ];
+
+  const extendedOptions = options.map(option => ({
+    ...option,
+    tip: `${option.label} is the greatest network in the world`,
+  }));
+
   return (
     <div className="block">
       <h2 className="text-h2">Radio buttons</h2>
@@ -43,11 +54,7 @@ function Radios () {
             name="radio-group-1"
             label="Radio group"
             value={network}
-            options={[
-              { value: 'devnet', label: 'DevNet' },
-              { value: 'testnet', label: 'TestNet' },
-              { value: 'mainnet', label: 'MainNet' },
-            ]}
+            options={options}
             onChange={setNetwork}
           />
 
@@ -56,11 +63,7 @@ function Radios () {
             name="radio-group-2"
             label="Radio group in row"
             value={network}
-            options={[
-              { value: 'devnet', label: 'DevNet' },
-              { value: 'testnet', label: 'TestNet' },
-              { value: 'mainnet', label: 'MainNet' },
-            ]}
+            options={options}
             onChange={setNetwork}
           />
 
@@ -74,6 +77,30 @@ function Radios () {
               { value: 'testnet', label: 'TestNet' },
               { value: 'mainnet', label: 'MainNet' },
             ]}
+            onChange={setNetwork}
+          />
+        </div>
+
+        <div
+          className="radio-group-list"
+          style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}
+        >
+          <RadioGroup
+            extended
+            name="radio-group-4"
+            label="Radio group extended"
+            value={network}
+            options={extendedOptions}
+            onChange={setNetwork}
+          />
+
+          <RadioGroup
+            extended
+            disabled
+            name="radio-group-5"
+            label="Radio group extended disabled"
+            value={network}
+            options={extendedOptions}
             onChange={setNetwork}
           />
         </div>

@@ -1,0 +1,39 @@
+import { HTMLAttributes, ReactNode } from 'react';
+
+import Icon, { IconName } from 'ui/Icon';
+
+import { TipWrapper } from './styles';
+import { TipType } from '.';
+
+interface Props extends HTMLAttributes<HTMLDivElement> {
+  type?: TipType
+  compact?: boolean
+  action?: ReactNode
+}
+
+function Tip ({
+  type = 'info',
+  compact = false,
+  action,
+  children,
+  ...rest
+}: Props) {
+  const typeToIcon: Record<TipType, IconName> = {
+    info: 'info',
+    warning: 'warning',
+  };
+
+  return (
+    <TipWrapper
+      $type={type}
+      $compact={compact}
+      {...rest}
+    >
+      <Icon name={typeToIcon[type]} className="tip-icon" />
+      <p className="tip-text text-md">{children}</p>
+      {action}
+    </TipWrapper>
+  );
+}
+
+export default Tip;

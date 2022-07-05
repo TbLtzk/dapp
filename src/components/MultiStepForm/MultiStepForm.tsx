@@ -1,0 +1,48 @@
+import { ReactNode } from 'react';
+
+import Stepper from 'ui/Stepper';
+
+import { MultiStepFormContainer } from './styles';
+
+interface Props {
+  stepIndex: number
+  steps: {
+    id: string
+    name: string
+    title: string
+    tip?: string
+    children: ReactNode
+  }[]
+}
+
+function MultiStepForm ({ stepIndex, steps }: Props) {
+  return (
+    <MultiStepFormContainer $step={stepIndex + 1}>
+      {steps.map((step, i) => (
+        <div
+          key={step.id}
+          className="multi-step-form__step block"
+          style={{ display: stepIndex === i ? 'block' : 'none' }}
+        >
+          <h3 className="text-h3">{step.title}</h3>
+          {step.tip && (
+            <p className="multi-step-form__step-tip text-md">
+              {step.tip}
+            </p>
+          )}
+
+          <div className="multi-step-form__step-content">
+            {step.children}
+          </div>
+        </div>
+      ))}
+
+      <Stepper
+        current={stepIndex}
+        steps={steps}
+      />
+    </MultiStepFormContainer>
+  );
+}
+
+export default MultiStepForm;

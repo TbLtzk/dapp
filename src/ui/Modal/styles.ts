@@ -8,6 +8,7 @@ export const ModalContainer = styled(motion.div)<{ $width: number }>`
   position: fixed;
   z-index: 10000;
 
+  // TODO: remove prefix when bootstrap is removed
   .q-modal-overlay {
     position: fixed;
     top: 0;

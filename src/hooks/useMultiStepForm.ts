@@ -12,9 +12,13 @@ export default function useMultiStepForm<T> ({
   const [stepIndex, setStepIndex] = useState(0);
   const [values, setValues] = useState({ ...initialValues });
 
-  const goNext = (proposal = {}) => {
-    setValues((prev) => ({ ...prev, ...proposal }));
+  const goNext = (values?: Partial<T>) => {
+    onChange(values || {} as T);
     setStepIndex(stepIndex + 1);
+  };
+
+  const onChange = (values?: Partial<T>) => {
+    setValues((prev) => ({ ...prev, ...values }));
   };
 
   const goBack = () => {
@@ -33,6 +37,8 @@ export default function useMultiStepForm<T> ({
   return {
     stepIndex,
     values,
+    updateStep: setStepIndex,
+    onChange: useCallback(onChange, [values, stepIndex]),
     goNext: useCallback(goNext, [values, stepIndex]),
     goBack: useCallback(goBack, [values, stepIndex]),
     confirm: useCallback(confirm, [values, stepIndex]),

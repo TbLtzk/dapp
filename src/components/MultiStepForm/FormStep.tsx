@@ -1,0 +1,58 @@
+import { FormEvent, ReactNode } from 'react';
+
+import Button from 'ui/Button';
+import Icon from 'ui/Icon';
+
+import { FormStepContainer } from './styles';
+
+interface Props<T> {
+  disabled?: boolean
+  children: ReactNode
+  onNext?: (values?: T) => void
+  onBack?: () => void
+  onConfirm?: (values?: T) => void
+}
+
+function FormStep<T> ({
+  disabled = false,
+  children,
+  onNext,
+  onBack,
+  onConfirm
+}: Props<T>) {
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    if (onConfirm) return onConfirm();
+    if (onNext) return onNext();
+  };
+
+  return (
+    <FormStepContainer
+      noValidate
+      onSubmit={handleSubmit}
+    >
+      <div className="form-step-content">{children}</div>
+      <div className="form-step-actions">
+        <Button
+          look="secondary"
+          disabled={!onBack}
+          onClick={onBack || (() => {})}
+        >
+          <Icon name="chevron-left" />
+          <span>Back</span>
+        </Button>
+
+        <Button
+          type="submit"
+          disabled={disabled}
+        >
+          <span>{onConfirm ? 'Submit' : 'Next'}</span>
+          {!onConfirm && <Icon name="chevron-right" />}
+        </Button>
+      </div>
+    </FormStepContainer>
+  );
+}
+
+export default FormStep;

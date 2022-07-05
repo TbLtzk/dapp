@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { darkColors, lightColors, THEMES } from 'styles/colors';
 import { GlobalStyle } from 'styles/globalStyle';
-import { TypographyStyle } from 'styles/typography';
+import { TextStyle } from 'styles/text';
 
 import LoadingTransaction from 'components/Custom/LoadingTransaction';
 import Header from 'navigation/Header';
@@ -39,7 +39,7 @@ function StyleLayout ({ children }: Props) {
       }}
     >
       <GlobalStyle />
-      <TypographyStyle />
+      <TextStyle />
       <PageContainer>
         <Sidebar />
         <div className="app-content">

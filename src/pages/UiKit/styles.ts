@@ -87,6 +87,7 @@ export const UiKitContainer = styled.div`
     display: flex;
     gap: 24px;
     justify-content: space-between;
+    align-items: center;
   }
 
   .radio-group-list {

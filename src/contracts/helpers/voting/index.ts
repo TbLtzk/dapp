@@ -93,9 +93,8 @@ export function createProposal (form: CreateProposalForm, address: string) {
     case 'general':
       return createGeneralProposal(form, address);
     case 'add-root-node':
-      return createRootNodeProposal(form, address);
     case 'remove-root-node':
-      return createRootNodeProposal(form, address, true);
+      return createRootNodeProposal(form, address);
     case 'root-slashing':
       return createRootNodeSlashingProposal(form, address);
     case 'validator-slashing':

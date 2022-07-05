@@ -66,7 +66,7 @@ function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
         </div>
 
         <h2
-          className="proposal-card__title text-h2 text-ellipsis"
+          className="proposal-card__title text-h2 ellipsis"
           title={proposalInfo.title}
         >
           {proposalInfo.title}
@@ -78,7 +78,7 @@ function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
               {`Quorum ${formatPercent(proposalInfo.requiredQuorum)}`}
             </p>
             <p className="text-md">
-              {leftQuorum
+              {leftQuorum || Number(proposalInfo.currentQuorum) === 0
                 ? `${formatPercent(leftQuorum)} left`
                 : <Icon name="double-check" />
               }

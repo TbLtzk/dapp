@@ -5,8 +5,8 @@ import { scrollbarStyle } from 'styles/globalStyle';
 
 export const WrapContainer = styled(Container)`
   position: relative;
-  height: calc(100vh - 70px);
-  max-height: calc(100vh - 70px);
+  height: calc(100vh - 72px);
+  max-height: calc(100vh - 72px);
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
@@ -38,7 +38,6 @@ export const PageTitleActions = styled.div`
 `;
 
 export const WrapContent = styled.div`
-  min-height: 490px;
   margin-top: 32px;
   max-width: 100%;
   ${scrollbarStyle}
