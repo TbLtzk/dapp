@@ -17,8 +17,6 @@ import Monitoring from 'pages/Monitoring';
 import NotFound from 'pages/NotFound';
 import OneAuctionPage from 'pages/OneAuctionPage';
 import Staking from 'pages/Staking';
-import RootNodeStaking from 'pages/Staking/components/RootNodeStaking';
-import ValidatorStaking from 'pages/Staking/components/ValidatorStaking';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -107,14 +105,6 @@ function Routes () {
 
             <Route exact path="/q-vault">
               <QVault />
-            </Route>
-
-            <Route exact path="/root-node-staking">
-              <RootNodeStaking />
-            </Route>
-
-            <Route exact path="/validator-staking">
-              <ValidatorStaking />
             </Route>
 
             {isAliasesEnabled && (
