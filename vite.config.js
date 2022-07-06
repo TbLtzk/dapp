@@ -24,6 +24,8 @@ export default defineConfig({
       process: 'process/browser',
       zlib: 'browserify-zlib',
       util: 'util',
+      // HACK: https://github.com/webpack/webpack/issues/12197
+      'react-bootstrap-table2-toolkit': 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit',
       assets: path.resolve(__dirname, './src/assets'),
       components: path.resolve(__dirname, './src/components'),
       constants: path.resolve(__dirname, './src/constants'),
