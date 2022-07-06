@@ -30,7 +30,7 @@ function BorrowCryptoAssets () {
         title={t('BORROW_CRYPTO_ASSETS')}
         emptyTableMessage={t('NO_VAULTS_CREATED')}
         loading={loadingVaults}
-        perPageLength={vaults?.length}
+        perPage={vaults?.length}
         columns={[
           {
             dataField: 'id',
@@ -53,13 +53,13 @@ function BorrowCryptoAssets () {
             text: '',
           },
         ]}
-        table={vaults.map((vault, idx) => ({
+        table={vaults?.map((vault, idx) => ({
           id: idx,
           depositAsset: vault.colKey,
           asset: 'QUSD',
           interestAsset: fN(vault.borrowingFee) + '%',
           button: vault.isLiquidated ? t('VAULT_IS_LIQUIDATED') : <BorrowManageAsset vault={vault} />,
-        }))}
+        })) || []}
       />
     </CustomBlock>
   );

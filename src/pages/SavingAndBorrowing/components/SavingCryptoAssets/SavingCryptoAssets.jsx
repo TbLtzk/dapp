@@ -29,7 +29,7 @@ function SavingCryptoAssets () {
         title={t('SAVING_CRYPTO_ASSETS')}
         emptyTableMessage={t('NO_SAVING_ASSETS')}
         loading={!savingAssets}
-        perPageLength={savingAssets?.length}
+        perPage={savingAssets?.length}
         columns={[
           {
             dataField: 'depositAsset',
@@ -54,7 +54,7 @@ function SavingCryptoAssets () {
           interestAsset: value.interestAsset,
           rate: fN(value.rate) + ' %',
           button: <SaveManageAsset depositAsset={value.depositAsset} interestAsset={value.interestAsset} />,
-        }))}
+        })) || []}
       />
     </CustomBlock>
   );
