@@ -6,7 +6,6 @@ import Button from 'ui/Button';
 import Input from 'ui/Input';
 import Range from 'ui/Range';
 import Tip from 'ui/Tip';
-import { isAddress } from 'web3-utils';
 
 import { FormStep } from 'components/MultiStepForm';
 
@@ -22,7 +21,7 @@ import { validatorsWidenedSelector } from 'store/validators/selectors';
 
 import TABLE_TYPES from 'constants/tableTypes';
 import { formatNumber } from 'func/formatters';
-import { trimAddress } from 'func/useful';
+import { isAddress, trimAddress } from 'func/useful';
 import { address, percent, required, url } from 'func/validators';
 
 function DetailsStep () {
