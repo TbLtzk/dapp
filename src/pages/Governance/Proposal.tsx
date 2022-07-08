@@ -63,7 +63,7 @@ function Proposal ({ match }: RouteComponentProps<{
     <PageWrap pageHeader={titleMap[type]}>
       <Button
         look="white"
-        style={{ marginBottom: '16px' }}
+        style={{ marginBottom: '16px', width: 'max-content' }}
         onClick={handleBackClick}
       >
         <i className="mdi mdi-arrow-left" />
