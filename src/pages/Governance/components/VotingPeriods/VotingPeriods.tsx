@@ -20,7 +20,9 @@ function VotingPeriods ({ proposal, ...rest }: Props) {
   ].includes(proposal.contract);
 
   const votingEndTime = new Date(proposal.votingEndTime * 1000).getTime();
-  const vetoEndTime = new Date(proposal.vetoEndTime * 1000).getTime();
+  const vetoEndTime = proposal.status === 'Rejected'
+    ? 0
+    : new Date(proposal.vetoEndTime * 1000).getTime();
 
   const votingText = votingEndTime > Date.now()
     ? 'Voting ends'

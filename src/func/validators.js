@@ -85,6 +85,11 @@ export const hash = val => ({
   message: 'Invalid hash'
 });
 
+export const currentHash = hash => val => ({
+  isValid: !val || val === hash,
+  message: 'Invalid current hash'
+});
+
 export const percent = val => ({
   isValid: !val || (val >= 0 && val <= 100),
   message: 'Invalid percentage value'

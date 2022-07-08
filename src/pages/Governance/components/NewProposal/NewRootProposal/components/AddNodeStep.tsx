@@ -1,3 +1,5 @@
+import { useSelector } from 'react-redux';
+
 import Input from 'ui/Input';
 
 import { FormStep } from 'components/MultiStepForm';
@@ -6,10 +8,13 @@ import useForm from 'hooks/useForm';
 
 import { useNewRootProposal } from '../NewRootProposal';
 
-import { address, hash, required, url } from 'func/validators';
+import { constitutionHash } from 'store/voting/proposals/selectors';
+
+import { address, currentHash, required, url } from 'func/validators';
 
 function AddNodeStep () {
   const { goNext, goBack } = useNewRootProposal();
+  const currentHashValue = useSelector(constitutionHash);
 
   const form = useForm({
     initialValues: {
@@ -18,7 +23,7 @@ function AddNodeStep () {
       address: ''
     },
     validators: {
-      hash: [required, hash],
+      hash: [required, currentHash(currentHashValue)],
       externalLink: [required, url],
       address: [address],
     },
