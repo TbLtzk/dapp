@@ -22,7 +22,8 @@ export const GlobalStyle = createGlobalStyle`
     color: ${({ theme }) => theme.colors.white};
     background: ${({ theme }) => theme.colors.oxfordBlue};
     margin: 0 !important;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     font-family: 'OpenSans', sans-serif !important;
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale !important;  

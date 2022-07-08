@@ -10,7 +10,7 @@ export const TooltipWrapper = styled.div`
   }
 
   .tooltip-content {
-    position: absolute;
+    position: fixed;
     opacity: 0;
     z-index: 9999;
     pointer-events: none;
@@ -30,6 +30,10 @@ export const TooltipWrapper = styled.div`
     line-height: 18px;
     border-radius: 5px;
     transition: none;
+
+    &[data-popper-placement] {
+      position: absolute;
+    }
 
     .tooltip-arrow,
     .tooltip-arrow::before,
