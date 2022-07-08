@@ -29,7 +29,9 @@ function ExplorerAddress ({
         rel="noreferrer"
         title="View on explorer"
       >
-        <p>{short ? trimAddress(address) : address}</p>
+        <p style={{ marginBottom: 0 }}>
+          {short ? trimAddress(address) : address}
+        </p>
       </ExplorerLink>
     </Address>
   );

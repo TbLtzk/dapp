@@ -40,30 +40,33 @@ export const PageTitleActions = styled.div`
 export const WrapContent = styled.div`
   margin-top: 32px;
   max-width: 100%;
+  display: grid;
+  gap: 16px;
+
   ${scrollbarStyle}
 
   &.wrap-content__tow-colm {
     display: grid;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
-    grid-column-gap: 15px;
+    gap: 16px;
   }
 
   &.wrap-content__column-2-1 {
     display: grid;
     grid-template-columns: minmax(100px, 2fr) minmax(100px, 1fr);
-    grid-column-gap: 15px;
+    gap: 16px;
   }
 
   &.wrap-content__three-colm {
     display: grid;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
-    grid-column-gap: 15px;
+    gap: 16px;
   }
 
   &.wrap-content__colm-2 {
     display: grid;
     grid-template-columns: minmax(100px, 2fr) minmax(100px, 1fr);
-    grid-column-gap: 15px;
+    gap: 16px;
   }
 
   .content__colm-1 {
@@ -73,8 +76,7 @@ export const WrapContent = styled.div`
   .content__colm-2 {
     display: grid;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
-    grid-column-gap: 16px;
-    grid-row-gap: 6px;
+    gap: 16px;
   }
 
   .content__time-locks {
@@ -86,7 +88,7 @@ export const WrapContent = styled.div`
   .content__colm-3 {
     display: flex;
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
-    grid-column-gap: 15px;
+    gap: 16px;
 
     @media screen and (max-width: 1100px) {
       flex-direction: column;

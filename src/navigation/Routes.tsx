@@ -5,7 +5,7 @@ import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import * as Sentry from '@sentry/react';
 import Toast from 'ui/Toast';
 
-import StyleLayout from 'components/Base/StyleLayout';
+import Layout from 'components/Base/Layout';
 import ErrorBoundary from 'components/Custom/ErrorBoundary';
 import AccountAliasing from 'pages/AccountAliasing';
 import DataPrivacy from 'pages/DataPrivacy';
@@ -54,7 +54,7 @@ function Routes () {
   }, []);
 
   return (
-    <StyleLayout>
+    <Layout>
       <ErrorBoundary>
         <AlertProvider
           template={({ message, options, close }) => (
@@ -164,7 +164,7 @@ function Routes () {
           </Switch>
         </AlertProvider>
       </ErrorBoundary>
-    </StyleLayout>
+    </Layout>
   );
 }
 

@@ -34,16 +34,19 @@ function FormStep<T> ({
     >
       <div className="form-step-content">{children}</div>
       <div className="form-step-actions">
-        <Button
-          look="secondary"
-          disabled={!onBack}
-          onClick={onBack || (() => {})}
-        >
-          <Icon name="chevron-left" />
-          <span>Back</span>
-        </Button>
+        {onBack && (
+          <Button
+            className="form-step-action"
+            look="secondary"
+            onClick={onBack}
+          >
+            <Icon name="chevron-left" />
+            <span>Back</span>
+          </Button>
+        )}
 
         <Button
+          className="form-step-action"
           type="submit"
           disabled={disabled}
         >

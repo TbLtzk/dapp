@@ -4,6 +4,6 @@ export const FiltersWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 24px 0;
+  margin-bottom: 16px;
   height: 40px;
 `;

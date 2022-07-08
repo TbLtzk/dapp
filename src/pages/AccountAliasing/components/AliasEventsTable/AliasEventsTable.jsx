@@ -3,10 +3,9 @@ import { useSelector } from 'react-redux';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';
 import { invert } from 'lodash';
+import Check from 'ui/Check';
 import Table from 'ui/Table';
 
-import CustomBlock from 'components/Base/CustomBlock';
-import Check from 'components/Base/Form/Check';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import { aliasEventsLoadingSelector, aliasEventsSelector } from 'store/account-aliases/selectors';
@@ -44,32 +43,39 @@ function AliasEventsTable ({ address }) {
         alignItems: 'center',
       }}
     >
-      <span>
-        {isFiltered
-          ? `Aliases events (${trimAddress(address)})`
-          : 'Aliases events'
-        }
-      </span>
-      <Check
-        id="filter-alias-events"
-        checked={isFiltered}
-        label="Only current address"
-        onChange={() => setIsFiltered(!isFiltered)}
-      />
+
     </div>
   );
 
   return (
-    <CustomBlock>
-      <Table
-        title={tableTitle}
-        columns={columns}
-        table={table}
-        loading={isEventsLoading}
-        emptyTableMessage="No events"
-        perPageLength={10}
-      />
-    </CustomBlock>
+    <div className="block">
+      <div className="block__header">
+        <h3 className="text-h3">
+          {isFiltered
+            ? `Aliases events (${trimAddress(address)})`
+            : 'Aliases events'
+          }
+        </h3>
+        <Check
+          id="filter-alias-events"
+          value={isFiltered}
+          label="Only current address"
+          onChange={() => setIsFiltered(!isFiltered)}
+        />
+      </div>
+
+      <div className="block__content">
+        <Table
+          tiny
+          header={tableTitle}
+          columns={columns}
+          table={table}
+          loading={isEventsLoading}
+          emptyTableMessage="No events"
+          perPage={10}
+        />
+      </div>
+    </div>
   );
 }
 

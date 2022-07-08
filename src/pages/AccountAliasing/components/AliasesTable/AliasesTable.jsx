@@ -6,7 +6,6 @@ import Button from 'ui/Button';
 import Table from 'ui/Table';
 import Tooltip from 'ui/Tooltip';
 
-import CustomBlock from 'components/Base/CustomBlock';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import { aliasesLoadingSelector, aliasesSelector } from 'store/account-aliases/selectors';
@@ -51,17 +50,25 @@ function AliasesTable ({ address, onSelect }) {
   }));
 
   return (
-    <CustomBlock>
-      <Table
-        lineForEach
-        title={`Account aliases (${trimAddress(address)})`}
-        emptyTableMessage="No aliases"
-        loading={isAliasesLoading}
-        columns={columns}
-        table={table}
-        perPageLength={10}
-      />
-    </CustomBlock>
+    <div className="block">
+      <div className="block__header">
+        <h3 className="text-h3">
+          {`Account aliases (${trimAddress(address)})`}
+        </h3>
+      </div>
+
+      <div className="block__content">
+        <Table
+          lineForEach
+          tiny
+          emptyTableMessage="No aliases"
+          loading={isAliasesLoading}
+          columns={columns}
+          table={table}
+          perPage={10}
+        />
+      </div>
+    </div>
   );
 }
 

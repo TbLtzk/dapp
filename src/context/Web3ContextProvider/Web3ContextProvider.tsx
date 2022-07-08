@@ -216,7 +216,12 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
           <motion.div
             className="breathing-q"
             animate={{ scale: 1.2 }}
-            transition={{ repeatType: 'loop', duration: 0.8 }}
+            transition={{
+              repeat: Infinity,
+              repeatType: 'reverse',
+              ease: 'easeOut',
+              duration: 0.5
+            }}
           >
             <img src="/logo.png" alt="q" />
           </motion.div>

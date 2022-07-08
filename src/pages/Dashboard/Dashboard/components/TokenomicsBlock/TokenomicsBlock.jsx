@@ -68,7 +68,7 @@ function TokenomicsBlock () {
   ];
 
   return (
-    <CustomBlock>
+    <CustomBlock style={{ marginBottom: 0 }}>
       <h1>
         <span>{t('TOKENOMICS')}</span>
         <InfoTooltip topic="tokenomics" />

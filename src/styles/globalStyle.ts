@@ -90,4 +90,14 @@ export const GlobalStyle = createGlobalStyle`
     padding: 24px 32px;
     box-shadow: 0 4px 16px ${({ theme }) => theme.colors.blockShadow};
   }
+
+  .block__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .block__content {
+    margin-top: 16px;
+  }
 `;

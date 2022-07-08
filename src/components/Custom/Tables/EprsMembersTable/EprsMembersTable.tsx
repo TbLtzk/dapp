@@ -22,24 +22,37 @@ function EprsMembersTable () {
   }, [dispatch]);
 
   return (
-    <Table
-      tiny
-      emptyTableMessage={t('NO_ROOT_NODE_SELECTION_MEMBERS')}
-      perPage={5}
-      loading={eprsMembersTableLoading}
-      error={eprsMembersTableError}
-      header={<h2 className="text-h2">{t('LIST_OF_ROOT_NODE_SELECTION_EXPERTS')}</h2>}
-      columns={[
-        {
-          dataField: 'member',
-          text: t('MEMBER_ADDRESS'),
-        },
-      ]}
-      table={eprsMembersTable.map((member: string, idx: number) => ({
-        id: idx,
-        member: <ExplorerAddress iconed address={member} />,
-      }))}
-    />
+    <div className="block">
+      <div className="block__header">
+        <h3 className="text-h3">{t('LIST_OF_ROOT_NODE_SELECTION_EXPERTS')}</h3>
+      </div>
+
+      <div className="block__content">
+        <Table
+          tiny
+          emptyTableMessage={t('NO_ROOT_NODE_SELECTION_MEMBERS')}
+          perPage={5}
+          loading={eprsMembersTableLoading}
+          error={eprsMembersTableError}
+          columns={[
+            {
+              dataField: 'member',
+              text: t('MEMBER_ADDRESS'),
+            },
+          ]}
+          table={eprsMembersTable.map((member: string, idx: number) => ({
+            id: idx,
+            member: (
+              <ExplorerAddress
+                iconed
+                semibold
+                address={member}
+              />
+            ),
+          }))}
+        />
+      </div>
+    </div>
   );
 }
 

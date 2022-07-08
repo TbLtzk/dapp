@@ -4,9 +4,14 @@ import { StyledSpinner } from './styles';
 
 interface Props extends HTMLAttributes<SVGSVGElement> {
   size?: number
+  thickness?: number
 }
 
-function Spinner ({ size = 20, ...rest }: Props) {
+function Spinner ({
+  size = 20,
+  thickness = 2,
+  ...rest
+}: Props) {
   return (
     <StyledSpinner
       $size={size}
@@ -17,7 +22,7 @@ function Spinner ({ size = 20, ...rest }: Props) {
         cy={size / 2}
         r={size / 2.5}
         fill="none"
-        strokeWidth="2"
+        strokeWidth={thickness}
       />
     </StyledSpinner>
   );

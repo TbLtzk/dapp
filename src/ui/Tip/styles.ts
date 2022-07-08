@@ -8,7 +8,7 @@ export const TipWrapper = styled.div<{
   $compact?: boolean
 }>`
   display: grid;
-  grid-auto-flow: column;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: ${({ $compact }) => $compact ? '8px' : '16px'};
   padding: ${({ $compact }) => $compact ? '12px 16px' : '16px'};
@@ -21,7 +21,10 @@ export const TipWrapper = styled.div<{
   }
 
   .tip-text {
-    color: ${({ theme }) => getTipColor(theme, 'text')};
+    color: ${({ theme, $type }) => $type === 'warning'
+      ? getTipColor(theme, 'textWarning')
+      : getTipColor(theme, 'text')
+    };
     align-self: start;
   }
 `;

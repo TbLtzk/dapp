@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const StatsContainer = styled.div`
-  margin: 24px 0 40px;
+  margin-bottom: 16px;
 
   .stats-head {
     display: flex;

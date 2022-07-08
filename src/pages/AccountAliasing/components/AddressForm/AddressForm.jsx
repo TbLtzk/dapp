@@ -1,8 +1,6 @@
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 
-import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
-
 import useForm from 'hooks/useForm';
 
 import { WrapContainer } from './styles';
@@ -20,7 +18,7 @@ function AddressForm ({ selectedAddress, onSubmit }) {
 
   return (
     <form noValidate onSubmit={form.submit}>
-      <CustomBlock>
+      <div className="block">
         <WrapContainer>
           <Input
             {...form.fields.address}
@@ -39,7 +37,7 @@ function AddressForm ({ selectedAddress, onSubmit }) {
             <span>Refresh</span>
           </Button>
         </WrapContainer>
-      </CustomBlock>
+      </div>
     </form>
   );
 }

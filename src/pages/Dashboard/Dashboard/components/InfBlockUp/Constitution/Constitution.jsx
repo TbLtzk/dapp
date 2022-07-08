@@ -24,7 +24,7 @@ function Constitution () {
   }, [dispatch]);
 
   return (
-    <CustomBlock title="Constitution">
+    <CustomBlock title="Constitution" style={{ marginBottom: 0 }}>
       <h1>
         <span>{t('CONSTITUTION')}</span>
         <InfoTooltip topic="constitution" />

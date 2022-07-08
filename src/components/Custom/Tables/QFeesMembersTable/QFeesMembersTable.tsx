@@ -28,29 +28,40 @@ function QFeesMembersTable () {
   }, [dispatch]);
 
   return (
-    <Table
-      tiny
-      header={
-        <h2 className="text-h2">
+    <div className="block">
+      <div className="block__header">
+        <h3 className="text-h3">
           <span>{t('LIST_OF_Q_FEES_INCENTIVES_EXPERTS')}</span>
           <InfoTooltip topic="fees-incentives-experts" />
-        </h2>
-      }
-      emptyTableMessage={t('NO_Q_FEES_INCENTIVES_MEMBERS')}
-      loading={qFeesMembersTableLoading}
-      error={qFeesMembersTableError}
-      perPage={5}
-      columns={[
-        {
-          dataField: 'member',
-          text: t('MEMBER_ADDRESS'),
-        },
-      ]}
-      table={qFeesMembersTable.map((member: string, idx: number) => ({
-        id: idx,
-        member: <ExplorerAddress iconed address={member} />,
-      }))}
-    />
+        </h3>
+      </div>
+
+      <div className="block__content">
+        <Table
+          tiny
+          emptyTableMessage={t('NO_Q_FEES_INCENTIVES_MEMBERS')}
+          loading={qFeesMembersTableLoading}
+          error={qFeesMembersTableError}
+          perPage={5}
+          columns={[
+            {
+              dataField: 'member',
+              text: t('MEMBER_ADDRESS'),
+            },
+          ]}
+          table={qFeesMembersTable.map((member: string, idx: number) => ({
+            id: idx,
+            member: (
+              <ExplorerAddress
+                iconed
+                semibold
+                address={member}
+              />
+            ),
+          }))}
+        />
+      </div>
+    </div>
   );
 }
 

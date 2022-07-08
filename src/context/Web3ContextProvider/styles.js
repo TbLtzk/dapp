@@ -10,18 +10,19 @@ export const Wrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #0b2545;
-  color: white;
+  background: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.textPrimary};
   text-align: center;
 
 
   .breathing-q {
     width: 100px;
     height: 100px;
+
     img {
-      filter: brightness(0) invert(1);
       width: 100%;
       height: auto;
+      filter: ${({ theme }) => theme.palette === 'dark' ? 'brightness(100)' : 'none'};
     }
   }
 `;
