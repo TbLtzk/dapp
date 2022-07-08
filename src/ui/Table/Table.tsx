@@ -17,7 +17,7 @@ interface Props {
   perPage?: number;
   emptyTableMessage: string;
   tiny?: boolean;
-  header: ReactNode;
+  header?: ReactNode;
   bottomButtons?: ReactNode;
 }
 
@@ -113,7 +113,9 @@ const Table = ({
         <div className="table-header">{header}</div>
         {tableContent()}
       </div>
-      <div className="q-bottom-buttons">{bottomButtons}</div>
+      {bottomButtons && (
+        <div className="q-bottom-buttons">{bottomButtons}</div>
+      )}
     </TableContainer>
   );
 };

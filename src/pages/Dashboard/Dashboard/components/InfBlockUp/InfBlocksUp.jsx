@@ -24,7 +24,7 @@ function InfBlocksUp () {
     <>
       <Blockchain />
       <Constitution />
-      <CustomBlock>
+      <CustomBlock style={{ marginBottom: 0 }}>
         <h1>
           <span>{t('GOVERNANCE')}</span>
           <InfoTooltip topic="governance" />

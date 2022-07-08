@@ -7,60 +7,16 @@ import PageWrap from 'components/Base/PageWrap';
 import DefiMembersPanel from 'components/Custom/Tables/DeFiMembersTable';
 import EprsMembersPanel from 'components/Custom/Tables/EprsMembersTable';
 import QFeesMembersPanel from 'components/Custom/Tables/QFeesMembersTable';
-import RootNodeTable from 'components/Custom/Tables/RootNodeTable';
-import ValidatorsTable from 'components/Custom/Tables/ValidatorsTable';
 
 import InfBlock from './components/InfBlockUp';
+import RootNodesBlock from './components/RootNodesBlock';
 import SavingBorrowingBlock from './components/SavingBorrowingBlock';
 import TokenomicsBlock from './components/TokenomicsBlock';
+import ValidatorsBlock from './components/ValidatorsBlock';
+import { DashboardContent } from './styles';
 
 function Dashboard () {
   const { t } = useTranslation();
-
-  const infoBlock = <InfBlock />;
-  const tokenomiks = <TokenomicsBlock />;
-  const savingAndBorrowing = <SavingBorrowingBlock />;
-
-  const rootAndValidatorsPanels = (
-    <>
-      <RootNodeTable tableType="rootNodesShort" />
-      <ValidatorsTable
-        tableType="validators-short"
-        buttons={
-          <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
-            <Link to="/validator-staking">
-              <Button
-                compact
-                alwaysEnabled
-                look="secondary"
-              >
-                <i className="mdi mdi-arrow-right" />
-                <span>{t('SEE_MORE_DETAILS')}</span>
-              </Button>
-            </Link>
-            <Link to="/monitoring">
-              <Button
-                compact
-                alwaysEnabled
-                look="secondary"
-              >
-                <i className="mdi mdi-arrow-right" />
-                <span>{t('MONITORING')}</span>
-              </Button>
-            </Link>
-          </div>
-        }
-      />
-    </>
-  );
-
-  const defiAndQFeesPanels = (
-    <>
-      <DefiMembersPanel />
-      <QFeesMembersPanel />
-      <EprsMembersPanel />
-    </>
-  );
 
   return (
     <PageWrap
@@ -81,24 +37,21 @@ function Dashboard () {
         </div>
       }
     >
-      <div className="content__colm-1">
-        {infoBlock}
-        {rootAndValidatorsPanels}
-        {tokenomiks}
-        {rootAndValidatorsPanels}
-        {defiAndQFeesPanels}
-      </div>
-      <div className="content__colm-2">
-        <div>
-          {infoBlock}
-          {tokenomiks}
-          {savingAndBorrowing}
+      <DashboardContent>
+        <div className="dashboard-block">
+          <InfBlock />
+          <TokenomicsBlock />
+          <SavingBorrowingBlock />
         </div>
-        <div>
-          {rootAndValidatorsPanels}
-          {defiAndQFeesPanels}
+
+        <div className="dashboard-block">
+          <RootNodesBlock />
+          <ValidatorsBlock />
+          <DefiMembersPanel />
+          <QFeesMembersPanel />
+          <EprsMembersPanel />
         </div>
-      </div>
+      </DashboardContent>
     </PageWrap>
   );
 }

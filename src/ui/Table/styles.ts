@@ -1,10 +1,14 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { scrollbarStyle } from 'styles/globalStyle';
 
 import { getTableColor } from './colors';
 
 export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolean }>`
   ${scrollbarStyle}
+
+  .table {
+    margin-bottom: 0;
+  }
 
   .q-table {
     width: 100%;
@@ -30,18 +34,20 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
         display: none;
       }
     }
+
     table {
       border-collapse: separate;
-      border-spacing: 0 4px;
+      border-spacing: 0 ${({ tiny }) => (tiny ? 0 : 4)}px;
     }
 
     thead th {
       &:first-child {
-        padding-left: 32px;
+        padding-left: ${({ tiny }) => (tiny ? 0 : '32px')};
       }
-      padding-top: 16px;
-      padding-bottom: 16px;
-      padding-left: ${({ tiny }) => (tiny ? '' : 26)}px;
+
+      padding-top: ${({ tiny }) => (tiny ? '8px' : '16px')};
+      padding-bottom: ${({ tiny }) => (tiny ? '8px' : '16px')};
+      padding-left: ${({ tiny }) => (tiny ? 0 : '26px')};
 
       font-size: 14px;
       line-height: 20px;
@@ -62,16 +68,22 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
         font-size: 14px;
         line-height: 20px;
         color: ${({ theme }) => getTableColor(theme, 'tableText')};
-        background: ${({ theme }) => getTableColor(theme, 'tableBg')};
-        margin-bottom: 10px;
+        background: ${({ theme, tiny }) => tiny
+          ? 'transparent'
+          : getTableColor(theme, 'tableBg')
+        };
+        margin-bottom: ${({ tiny }) => (tiny ? 0 : 10)}px;
         gap: 20px;
-
         height: ${({ tiny }) => (tiny ? 'auto' : 72)}px;
-        box-shadow: inset 0px 0px 1px 1px ${({ theme }) => theme.colors.blockHover};
+
+        ${({ tiny }) => !tiny && css`
+          box-shadow: inset 0 0 1px 1px ${({ theme }) => theme.colors.blockHover};
+        `}
+
         // TODO: add hover after creating unique validator page
         td {
           &:first-child {
-            padding-left: 32px;
+            padding-left: ${({ tiny }) => (tiny ? 0 : '32px')};
           }
           vertical-align: middle;
           white-space: nowrap;
@@ -80,7 +92,12 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
     }
 
     td {
-      padding: ${({ tiny }) => (tiny ? '' : 26)}px;
+      padding: ${({ tiny }) => (tiny ? 10 : 26)}px;
+
+      ${({ tiny }) => tiny && css`
+        border-top: 1px solid ${({ theme }) => theme.colors.blockHover} !important;
+        border-radius: 0 !important;
+      `}
     }
 
     td:first-child {
@@ -102,8 +119,8 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 44px;
-          height: 40px;
+          width: ${({ tiny }) => tiny ? '32px' : '44px'};
+          height: ${({ tiny }) => tiny ? '24px' : '40px'};
           padding: 0;
           border: none;
           border-radius: 4px;
@@ -148,6 +165,11 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    .pagination {
+      margin-top: ${({ tiny }) => (tiny ? '8px' : '16px')};
+      margin-bottom: 0;
+    }
   }
 
   .q-bottom-buttons {

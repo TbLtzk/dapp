@@ -14,11 +14,10 @@ function QVault () {
       pageHeader="Q Vault"
       pageTooltip={<InfoTooltip placement="bottom" topic="q-vault" />}
     >
-      <div>
+      <div style={{ display: 'grid', gap: '16px' }}>
         <ManageBalance />
         <LockCoin />
         <DelegateVoting />
-
       </div>
       <VaultOverview />
     </PageWrap>

@@ -22,6 +22,7 @@ import {
 import Web3ContextProvider from 'context/Web3ContextProvider';
 import LanguageProvider from 'i18n';
 
+import StyleProvider from 'components/Base/StyleProvider';
 import Routes from 'navigation/Routes';
 
 import { store } from './store';
@@ -45,15 +46,17 @@ const connectors: [MetaMask | WalletConnect | CoinbaseWallet | Network, Web3Reac
 
 ReactDOM.render(
   <Provider store={store}>
-    <Web3ReactProvider connectors={connectors}>
-      <Web3ContextProvider>
-        <LanguageProvider>
-          <BrowserRouter>
-            <Routes />
-          </BrowserRouter>
-        </LanguageProvider>
-      </Web3ContextProvider>
-    </Web3ReactProvider>
+    <StyleProvider>
+      <Web3ReactProvider connectors={connectors}>
+        <Web3ContextProvider>
+          <LanguageProvider>
+            <BrowserRouter>
+              <Routes />
+            </BrowserRouter>
+          </LanguageProvider>
+        </Web3ContextProvider>
+      </Web3ReactProvider>
+    </StyleProvider>
   </Provider>,
   document.getElementById('root')
 );

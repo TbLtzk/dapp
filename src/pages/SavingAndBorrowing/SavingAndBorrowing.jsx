@@ -77,7 +77,7 @@ function SavingAndBorrowing () {
       pageHeader="Saving & Borrowing"
       pageButton={buttons}
     >
-      <div>
+      <div style={{ display: 'grid', gap: '16px' }}>
         <SavingCryptoAssets />
         <BorrowCryptoAssets />
       </div>

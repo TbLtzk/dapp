@@ -6,6 +6,10 @@ export const ExplorerLink = styled.a`
     color: inherit;
   }
 
+  &:hover {
+    text-decoration: underline;
+  }
+
   & > p {
     margin-bottom: 0;
   }

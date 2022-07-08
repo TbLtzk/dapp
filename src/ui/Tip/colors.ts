@@ -6,7 +6,8 @@ export const darkColors = {
   warningBg: COLORS.red100,
   infoIcon: COLORS.blue300,
   warningIcon: COLORS.red500,
-  text: COLORS.grey800
+  text: COLORS.grey100,
+  textWarning: COLORS.grey800
 };
 
 export const lightColors = {
@@ -14,7 +15,8 @@ export const lightColors = {
   warningBg: COLORS.red000,
   infoIcon: COLORS.blue300,
   warningIcon: COLORS.red500,
-  text: COLORS.grey800
+  text: COLORS.grey800,
+  textWarning: COLORS.grey800
 };
 
 export function getTipColor (

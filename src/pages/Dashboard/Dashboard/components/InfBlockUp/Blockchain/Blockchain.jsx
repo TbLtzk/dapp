@@ -33,7 +33,7 @@ function Blockchain () {
   }, []);
 
   return (
-    <CustomBlock>
+    <CustomBlock style={{ marginBottom: 0 }}>
       <h1>
         <span>{t('BLOCKCHAIN')}</span>
         <InfoTooltip topic="blockchain" />

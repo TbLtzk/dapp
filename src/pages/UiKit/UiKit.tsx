@@ -1,6 +1,7 @@
 import Buttons from './components/Buttons';
 import Checks from './components/Checks';
 import Colors from './components/Colors';
+import DonutCharts from './components/DonutCharts';
 import Dropdowns from './components/Dropdowns';
 import Icons from './components/Icons';
 import Inputs from './components/Inputs';
@@ -48,6 +49,7 @@ function UiKit () {
       <Steppers />
       <Tips />
       <Ranges />
+      <DonutCharts />
     </UiKitContainer>
   );
 }

@@ -1,0 +1,77 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import Button from 'ui/Button';
+import DonutChart from 'ui/DonutChart';
+import Spinner from 'ui/Spinner';
+
+import AddressIcon from 'components/Custom/AddressIcon';
+import InfoTooltip from 'components/Custom/InfoTooltip';
+
+import { getValidatorMembers } from 'store/validators/action-creators';
+import { loadingValidatorsShortSelector, validatorsShortSelector } from 'store/validators/selectors';
+
+import TABLE_TYPES from 'constants/tableTypes';
+import { formatNumber } from 'func/formatters';
+import { trimAddress } from 'func/useful';
+
+function ValidatorsBlock () {
+  const dispatch = useDispatch();
+
+  const validators = useSelector(validatorsShortSelector);
+  const isLoading = useSelector(loadingValidatorsShortSelector);
+
+  useEffect(() => {
+    dispatch(getValidatorMembers(TABLE_TYPES.validatorsShort));
+  }, [dispatch]);
+
+  return (
+    <div className="block">
+      <div className="block__header">
+        <h2 className="text-h3">
+          <span>Validator Staking</span>
+          <InfoTooltip topic="validator-ranking" />
+        </h2>
+
+        <Link to="/staking/validator-staking">
+          <Button
+            compact
+            alwaysEnabled
+            look="ghost"
+          >
+            Show more
+          </Button>
+        </Link>
+      </div>
+
+      <div className="block__content">
+        {isLoading
+          ? (
+            <div
+              style={{
+                display: 'flex',
+                placeContent: 'center',
+                padding: '40px'
+              }}
+            >
+              <Spinner size={96} thickness={4} />
+            </div>
+          )
+          : (
+            <DonutChart
+              totalLabel="Total Stake"
+              formatValue={(val) => `${formatNumber(val, 2)} Q`}
+              options={validators.map((item: any) => ({
+                label: trimAddress(item.validator),
+                value: Number(item.amount),
+                icon: <AddressIcon address={item.validator} />,
+              }))}
+            />
+          )}
+      </div>
+    </div>
+  );
+}
+
+export default ValidatorsBlock;

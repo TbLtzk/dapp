@@ -3,10 +3,11 @@ import styled from 'styled-components';
 export const Block = styled.div`
   width: 100%;
   max-width: 100%;
-  background-color: ${(props) => props.theme.colors.block};
+  background-color: ${({ theme }) => theme.colors.block};
+  border: 1px solid ${({ theme }) => theme.colors.blockBorder};
   border-radius: 16px;
   padding: 24px 32px;
-  margin-bottom: 16px;
+  box-shadow: 0 4px 16px ${({ theme }) => theme.colors.blockShadow};
   height: fit-content;
   position: relative;
 
@@ -139,8 +140,7 @@ export const Block = styled.div`
   }
 
   .button__bottom {
-    position: absolute;
-    bottom: 15px;
+    margin-top: 16px;
   }
 
   .card_block {

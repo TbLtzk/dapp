@@ -72,7 +72,6 @@ function BalanceCard ({ title, contract, balanceRef, lockAmountData, timeLockBal
       <div className="button__bottom">
         <Button onClick={() => setIsModalShown(true)}>Manage</Button>
       </div>
-      <div style={{ height: '30px' }} />
     </CustomBlock>
   );
 }
