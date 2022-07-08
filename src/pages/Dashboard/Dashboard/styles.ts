@@ -10,6 +10,10 @@ export const DashboardContent = styled.div`
     grid-template-columns: 1fr;
   }
 
+  ${media.greaterThan('huge')} {
+    grid-template-columns: 1fr 560px;
+  }
+
   .dashboard-block {
     display: grid;
     gap: 16px;

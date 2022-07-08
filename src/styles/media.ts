@@ -1,22 +1,22 @@
 
 export enum Breakpoints {
-  huge = '1440px',
-  large = '1200px',
-  medium = '768px',
-  small = '480px',
+  huge = 1600,
+  large = 1200,
+  medium = 768,
+  small = 480,
 };
 type BreakpointType = keyof typeof Breakpoints
 
 function lessThan (bp: BreakpointType) {
-  return `@media (max-width: ${Breakpoints[bp]})`;
+  return `@media (max-width: ${Breakpoints[bp]}px)`;
 }
 
 function greaterThan (bp: BreakpointType) {
-  return `@media (min-width: ${Breakpoints[bp]})`;
+  return `@media (min-width: ${Breakpoints[bp] + 1}px)`;
 }
 
 function between (minBp: BreakpointType, maxBp: BreakpointType) {
-  return `@media (min-width: ${Breakpoints[minBp]}) and (max-width: ${Breakpoints[maxBp]})`;
+  return `@media (min-width: ${Breakpoints[minBp]}px) and (max-width: ${Breakpoints[maxBp]}px)`;
 }
 
 export const media = {

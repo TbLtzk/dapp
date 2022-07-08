@@ -5,7 +5,7 @@ import Alert from 'components/Custom/Alerts';
 
 import useOnScreen from 'hooks/useOnScreen';
 
-import { PageTitleActions, PageTitleName, PageTitleWrp, ToTopContainer, WrapContainer, WrapContent } from './styles';
+import { PageWrapContainer, ToTopContainer } from './styles';
 
 import { toTitleCase } from 'func/useful';
 
@@ -37,28 +37,31 @@ function PageWrap ({
   }, [toTitleCase]);
 
   return (
-    <WrapContainer fluid>
-      <PageTitleWrp>
-        <PageTitleName
+    <PageWrapContainer>
+      <div className="page-title-wrp">
+        <h1
           ref={titleRef}
-          className="text-h1"
+          className="page-title text-h1"
         >
           <span>{t(pageHeader)}</span>
           {pageTooltip}
-        </PageTitleName>
+        </h1>
 
-        <PageTitleActions>{pageButton}</PageTitleActions>
+        <div className="page-title-actions">{pageButton}</div>
         <Alert />
-      </PageTitleWrp>
+      </div>
 
-      <WrapContent className={wrapContentClasses}>{children}</WrapContent>
+      <div className={`page-content ${wrapContentClasses}`}>
+        {children}
+      </div>
+
       <ToTopContainer isVisible={isVisible}>
         <i
           className="mdi mdi-arrow-up-bold-box"
           onClick={() => titleRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
         />
       </ToTopContainer>
-    </WrapContainer>
+    </PageWrapContainer>
   );
 }
 

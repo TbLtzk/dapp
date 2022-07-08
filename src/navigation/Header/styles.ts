@@ -8,6 +8,7 @@ export const StyledHeader = styled.header`
   padding: 16px 32px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.blockBorder};
   height: 72px;
+  min-width: 832px;
 
   .header-actions {
     display: flex;
