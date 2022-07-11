@@ -8,6 +8,7 @@ export const darkColors = {
   optionBgHover: COLORS.blue700,
   optionBgSelected: COLORS.blue600,
   optionFocusBorder: COLORS.blue000,
+  error: COLORS.red300,
 };
 
 export const lightColors = {
@@ -17,6 +18,7 @@ export const lightColors = {
   optionBgHover: COLORS.grey000,
   optionBgSelected: COLORS.grey100,
   optionFocusBorder: COLORS.blue100,
+  error: COLORS.red500,
 };
 
 export function getSelectColor (

@@ -82,4 +82,9 @@ export const SelectContainer = styled.div<{
     padding: 16px;
     color: ${({ theme }) => theme.colors.textSecondary};
   }
+
+  .select-error {
+    margin-top: 4px;
+    color: ${({ theme }) => getSelectColor(theme, 'error')};
+  }
 `;

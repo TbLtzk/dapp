@@ -76,7 +76,6 @@ function Select<T extends ValueType> ({
       <Input
         value={open || combobox ? filter : selectedOption?.label || ''}
         label={label}
-        error={error}
         hint={hint}
         placeholder={open ? selectedOption?.label || placeholder : placeholder}
         disabled={disabled}
@@ -138,6 +137,10 @@ function Select<T extends ValueType> ({
           </div>
         )}
       </Dropdown>
+
+      {error && (
+        <span className="select-error text-md font-light">{error}</span>
+      )}
     </SelectContainer>
   );
 };

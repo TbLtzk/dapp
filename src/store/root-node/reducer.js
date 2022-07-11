@@ -13,7 +13,7 @@ const initialState = {
 
   isUserRootNode: false,
   rootNodeStake: 0,
-  withdrawals: 0,
+  withdrawals: {},
 
   rootMinimumTimeLock: 0,
   rootTimeLocks: null

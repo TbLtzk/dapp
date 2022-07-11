@@ -8,66 +8,76 @@ import useMetamaskReset from 'hooks/useMetamaskReset';
 
 import { FORM_TYPES } from '../RootNodeMenu/RootNodeMenu';
 
+import { userBalance } from 'store/q-vault/selectors';
 import { setRootAnnounceWithdrawal, setRootStakeToPanel, setRootWithdraw } from 'store/root-node/action-creators';
+import { rootNodeStake, withdrawals } from 'store/root-node/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import formTypes from 'constants/form-types.js';
-import { toWei } from 'func/balance';
-import { required } from 'func/validators';
+import { fromWei, toWei } from 'func/balance';
+import { BN } from 'func/useful';
+import { max, required } from 'func/validators';
 
 interface Props {
   formType: string | null;
+  onReset: () => void;
 }
 
-function RootBalanceForm ({ formType }: Props) {
+function RootNodeForms ({ formType, onReset }: Props) {
   const dispatch = useDispatch();
   const userAddress = useSelector(userAddressMetamask);
+  const amountNodeStake = useSelector(rootNodeStake);
+  const withdrawalInfo = useSelector(withdrawals);
+  const userQVBalance = useSelector(userBalance);
+
+  const getMaxAmount = () => {
+    const withdrawalAmount = fromWei(withdrawalInfo.amount);
+    switch (formType) {
+      case FORM_TYPES.stakeToRanking:
+        return userQVBalance;
+      case FORM_TYPES.announceWithdrawal:
+        return BN(amountNodeStake).plus(BN(withdrawalAmount)).toString();
+      case FORM_TYPES.withdrawFromRanking:
+        return withdrawalAmount;
+      default:
+        return '0';
+    }
+  };
 
   const form = useForm({
     initialValues: { amount: '' },
-    validators: { amount: [required] },
+    validators: { amount: [required, max(getMaxAmount())] },
+    onSubmit: ({ amount }) => {
+      switch (formType) {
+        case FORM_TYPES.stakeToRanking:
+          dispatch(setRootStakeToPanel({ from: userAddress, value: toWei(amount) }));
+          break;
+        case FORM_TYPES.announceWithdrawal:
+          dispatch(setRootAnnounceWithdrawal(toWei(amount), { from: userAddress }));
+          break;
+        case FORM_TYPES.withdrawFromRanking:
+          dispatch(setRootWithdraw(toWei(amount), userAddress, { from: userAddress }));
+          break;
+      }
+    }
   });
-  useMetamaskReset(formTypes.rootNodeStaking, form.reset);
 
-  const handleStake = () => {
-    if (!form.validate()) return;
-    dispatch(
-      setRootStakeToPanel({
-        from: userAddress,
-        value: toWei(form.values.amount),
-      })
-    );
-  };
-
-  const handleWithdraw = () => {
-    if (!form.validate()) return;
-    dispatch(setRootWithdraw(toWei(form.values.amount), userAddress, { from: userAddress }));
-  };
-
-  const handleAnnounce = () => {
-    if (!form.validate()) return;
-    dispatch(setRootAnnounceWithdrawal(toWei(form.values.amount), { from: userAddress }));
-  };
-
-  const formTypesHandle = {
-    [FORM_TYPES.stakeToRanking]: handleStake,
-    [FORM_TYPES.announceWithdrawal]: handleAnnounce,
-    [FORM_TYPES.withdrawFromRanking]: handleWithdraw,
-  };
+  useMetamaskReset(formTypes.rootNodeStaking, onReset);
 
   return (
     <form noValidate onSubmit={form.submit}>
       <Input
-        label="Amount"
         {...form.fields.amount}
         type="number"
+        label="Amount"
         placeholder="0.00"
+        max={getMaxAmount()}
       />
 
       <Button
-        style={{ width: '100%', marginTop: '25px' }}
+        type="submit"
+        style={{ width: '100%', marginTop: '24px' }}
         disabled={!form.isValid}
-        onClick={formTypesHandle[formType ?? FORM_TYPES.stakeToRanking]}
       >
         Confirm
       </Button>
@@ -75,4 +85,4 @@ function RootBalanceForm ({ formType }: Props) {
   );
 }
 
-export default RootBalanceForm;
+export default RootNodeForms;

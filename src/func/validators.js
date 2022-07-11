@@ -6,7 +6,9 @@ import isNumber from 'lodash/isNumber';
 
 import { BN, isAddress } from './useful';
 
-import { hashRegex, linkRegex, vaultID as vaultIDRegex } from 'constants/regex';
+const HASH_REGEX = /^0x[a-fA-F0-9]{64}$/;
+const VAULT_ID_REGEX = /^[0-9]{1,18}$/;
+const URL_REGEX = /https?:\/\/(www\.)?[-äöüa-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-äöüa-zA-Z0-9()@:%_+.~#?&//=]*)/;
 
 export const required = (val) => ({
   isValid: !isEmpty(val) || isNumber(val) || isDate(val) || isBoolean(val) || val instanceof File,
@@ -66,7 +68,7 @@ export const max = max => (val, form) => {
 };
 
 export const url = val => ({
-  isValid: !val || String(val).search(linkRegex) !== -1,
+  isValid: !val || URL_REGEX.test(String(val)),
   message: 'Invalid URL'
 });
 
@@ -76,12 +78,12 @@ export const address = val => ({
 });
 
 export const vaultID = val => ({
-  isValid: !val || String(val).search(vaultIDRegex) !== -1,
+  isValid: !val || VAULT_ID_REGEX.test(String(val)),
   message: 'Invalid vault ID'
 });
 
 export const hash = val => ({
-  isValid: !val || String(val).search(hashRegex) !== -1,
+  isValid: !val || HASH_REGEX.test(String(val)),
   message: 'Invalid hash'
 });
 

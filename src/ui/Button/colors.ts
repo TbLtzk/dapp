@@ -19,7 +19,7 @@ export const darkColors = {
   primaryDisabledBorder: COLORS.transparent,
   primaryFocusOutline: COLORS.blue000,
 
-  secondaryBg: COLORS.blue800,
+  secondaryBg: COLORS.transparent,
   secondaryText: COLORS.grey000,
   secondaryBorder: COLORS.grey000,
   secondaryHoverBg: COLORS.blue600,

@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext } from 'react';
+import { createContext, ReactNode, useCallback, useContext } from 'react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 
 import i18n from 'i18next';
@@ -20,16 +20,19 @@ const resources = {
   de: { translation: de },
 };
 
+// Icons: https://flagicons.lipis.dev
 const languages = [
   { lang: 'en', title: 'English', src: '/flags/en.svg' },
   { lang: 'de', title: 'Deutsch', src: '/flags/de.svg' },
   { lang: 'ua', title: 'Українська', src: '/flags/ua.svg' },
 ];
 
-const LanguageContext = createContext({ languages, changeLang: (_) => {} });
-// https://flagicons.lipis.dev
+const LanguageContext = createContext({
+  languages,
+  changeLang: (_: string) => {}
+});
 
-function LanguageProvider ({ children }) {
+function LanguageProvider ({ children }: { children: ReactNode }) {
   i18n
     .use(detector)
     .use(initReactI18next)
@@ -42,7 +45,7 @@ function LanguageProvider ({ children }) {
       },
     });
 
-  const changeLang = useCallback((lang) => {
+  const changeLang = useCallback((lang: string) => {
     i18n.changeLanguage(lang);
     document.documentElement.setAttribute('lang', lang);
   }, []);

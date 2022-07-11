@@ -4,65 +4,85 @@ import Button from 'ui/Button';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
+import useMetamaskReset from 'hooks/useMetamaskReset';
 
 import { FORM_TYPES } from '../ValidatorMenu/ValidatorMenu';
 
+import { userBalance } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 import {
   setValidatorsAnnounceWithdrawal,
   setValidatorsCommitStake,
   setValidatorsWithdraw,
 } from 'store/validators/action-creators';
+import { accountableTotalStake, validatorWithdrawalInfo } from 'store/validators/selectors';
 
-import { required } from 'func/validators';
+import formTypes from 'constants/form-types';
+import { fromWei } from 'func/balance';
+import { BN } from 'func/useful';
+import { amount, required } from 'func/validators';
 
 interface Props {
   formType: string | null;
+  onReset: () => void;
 }
 
-function ValidatorForms ({ formType }: Props) {
+function ValidatorForms ({ formType, onReset }: Props) {
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
+  const userAccountableTotalStake = useSelector(accountableTotalStake);
+  const withdrawalInfo = useSelector(validatorWithdrawalInfo);
+  const userQVBalance = useSelector(userBalance);
+
+  const getMaxAmount = () => {
+    const withdrawalAmount = fromWei(withdrawalInfo.amount);
+
+    switch (formType) {
+      case FORM_TYPES.stakeToRanking:
+        return userQVBalance;
+      case FORM_TYPES.announceWithdrawal:
+        return BN(userAccountableTotalStake).plus(BN(withdrawalAmount)).toString();
+      case FORM_TYPES.withdrawFromRanking:
+        return fromWei(withdrawalInfo.amount);
+      default:
+        return '0';
+    }
+  };
 
   const form = useForm({
     initialValues: { amount: '' },
-    validators: { amount: [required] },
+    validators: { amount: [required, amount(getMaxAmount())] },
+    onSubmit: ({ amount }) => {
+      switch (formType) {
+        case FORM_TYPES.stakeToRanking:
+          dispatch(setValidatorsCommitStake(address, amount));
+          break;
+        case FORM_TYPES.announceWithdrawal:
+          dispatch(setValidatorsAnnounceWithdrawal(address, amount));
+          break;
+        case FORM_TYPES.withdrawFromRanking:
+          dispatch(setValidatorsWithdraw(address, amount));
+          break;
+      }
+    }
   });
 
-  const handleStake = () => {
-    if (!form.validate()) return;
-    dispatch(setValidatorsCommitStake(address, form.values.amount));
-  };
-
-  const handleAnnounce = () => {
-    if (!form.validate()) return;
-    dispatch(setValidatorsAnnounceWithdrawal(address, form.values.amount));
-  };
-
-  const handleWithdraw = () => {
-    if (!form.validate()) return;
-    dispatch(setValidatorsWithdraw(address, form.values.amount));
-  };
-
-  const formTypesHandle = {
-    [FORM_TYPES.stakeToRanking]: handleStake,
-    [FORM_TYPES.announceWithdrawal]: handleAnnounce,
-    [FORM_TYPES.withdrawFromRanking]: handleWithdraw,
-  };
+  useMetamaskReset(formTypes.validatorsStaking, onReset);
 
   return (
     <form noValidate onSubmit={form.submit}>
       <Input
-        label="Amount"
         {...form.fields.amount}
         type="number"
+        label="Amount"
         placeholder="0.00"
+        max={getMaxAmount()}
       />
 
       <Button
-        style={{ width: '100%', marginTop: '25px' }}
+        type="submit"
+        style={{ width: '100%', marginTop: '24px' }}
         disabled={!form.isValid}
-        onClick={formTypesHandle[formType ?? FORM_TYPES.stakeToRanking]}
       >
         Confirm
       </Button>

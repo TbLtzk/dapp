@@ -7,7 +7,7 @@ import RootNodeTable from 'components/Custom/Tables/RootNodeTable';
 import RootBalanceInfo from './components/RootBalanceInfo';
 import RootNodeMenu from './components/RootNodeMenu';
 
-import { getAccountBalance } from 'store/q-vault/action-creators';
+import { getAccountBalance, getUserBalance } from 'store/q-vault/action-creators';
 import { getMinimumRootTimeLock, getRootNodeStakes, getRootWithdrawals } from 'store/root-node/action-creators';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
@@ -17,6 +17,7 @@ function RootNodeStaking () {
 
   useEffect(() => {
     dispatch(getAccountBalance(userAddress));
+    dispatch(getUserBalance(userAddress));
     dispatch(getRootNodeStakes(userAddress));
     dispatch(getRootWithdrawals(userAddress));
     dispatch(getMinimumRootTimeLock(userAddress));

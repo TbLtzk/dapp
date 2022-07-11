@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { media } from 'styles/media';
 
 import { getSidebarColor } from './colors';
 
@@ -70,6 +71,15 @@ export const SidebarContainer = styled.div`
     &:not(:first-child) {
       padding-left: 8px;
       border-left: 1px solid ${({ theme }) => theme.colors.blockBorder};
+    }
+  }
+
+  // TODO: Remove when aliasing link is removed from sidebar
+  ${media.lessThan('huge')} {
+    gap: 16px;
+
+    .sidebar-main {
+      gap: 8px;
     }
   }
 `;

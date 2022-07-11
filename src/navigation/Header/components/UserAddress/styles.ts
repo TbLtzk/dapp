@@ -32,6 +32,7 @@ export const AddressDropdown = styled(Dropdown)`
     width: 100%;
     display: flex;
     gap: 12px;
+    white-space: nowrap;
 
     &:hover {
       background-color: ${({ theme }) => theme.colors.blockHover};
