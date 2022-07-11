@@ -57,7 +57,7 @@ function RootNodeMenu () {
         open={Boolean(modalForm)}
         onClose={handleFormModalClose}
       >
-        <RootNodeForms formType={modalForm} />
+        <RootNodeForms formType={modalForm} onReset={handleFormModalClose} />
       </Modal>
     </div>
   );

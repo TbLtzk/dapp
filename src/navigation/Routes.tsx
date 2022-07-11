@@ -68,7 +68,7 @@ function Routes () {
           timeout={5000}
           transition={transitions.SCALE}
           containerStyle={{
-            zIndex: '9999',
+            zIndex: '10001',
             pointerEvents: 'all',
             top: '80px',
             left: 'unset',

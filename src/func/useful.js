@@ -1,4 +1,3 @@
-import { ParameterType } from '@q-dev/q-js-sdk';
 import { BigNumber } from 'bignumber.js';
 import { isNumber, orderBy } from 'lodash';
 
@@ -7,7 +6,6 @@ import ErrorHandler from './ErrorHandler';
 import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-import { keyRegex } from 'constants/regex';
 
 export const transformToHex = (value) => {
   return window.web3.utils.toHex(value);
@@ -19,21 +17,6 @@ export const toTitleCase = (phrase = '') =>
     .split(' ')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
-
-export const errorHandler = (error, field, min = 0, max = 100) => {
-  if (undefined === error[field]) return '';
-
-  switch (error[field].type) {
-    case 'required':
-      return 'Please, fill the field';
-    case 'min':
-      return `Value must be more than ${min}`;
-    case 'max':
-      return `Value must be less than ${max}`;
-    default:
-      return 'Validation error!';
-  }
-};
 
 export const getMinimalActiveBlockHeight = async () => {
   try {
@@ -142,31 +125,6 @@ export const createShareText = (type, contract, id, user) => {
     }
   }
 };
-
-const stringRegex = /^[äöüa-zA-Z0-9]+$/gm;
-const booleanValues = ['true', 'false', 'True', 'False', 'TRUE', 'FALSE', '1', '0'];
-export const unitRegex = /^[1-9]+[0-9]*$/;
-
-export function validatePattern (value, type) {
-  switch (type) {
-    case ParameterType.ADDRESS: {
-      return isAddress(value) ? true : 'Invalid address';
-    }
-    case ParameterType.BOOL: {
-      return booleanValues.includes(value) ? true : 'Invalid boolean value';
-    }
-    case ParameterType.STRING: {
-      return value.match(stringRegex) && value.length <= 70 ? true : 'Invalid string value';
-    }
-    case ParameterType.UINT: {
-      return value.match(unitRegex) && value.length <= 70 ? true : 'Invalid uint value';
-    }
-  }
-}
-
-export function parameterKeyValidation (key) {
-  return key.length <= 70 && key.match(keyRegex) ? true : 'Parameter key not valid';
-}
 
 export async function fetchBlockNumber (block = 'latest') {
   try {

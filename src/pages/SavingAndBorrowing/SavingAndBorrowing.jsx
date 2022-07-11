@@ -18,7 +18,6 @@ import { loadTypeSelector } from 'store/user-inf/selectors';
 import { addQBTCToken, addQUSDToken } from 'contracts/helpers/borrowing-core-helper';
 
 import { LOAD_TYPES } from 'constants/statuses';
-import { qbtcToken, qusdToken } from 'constants/tokenTypes';
 
 function SavingAndBorrowing () {
   const { t } = useTranslation();
@@ -36,11 +35,11 @@ function SavingAndBorrowing () {
 
   function handleAddToken (type) {
     switch (type) {
-      case qbtcToken: {
+      case 'qbtcToken': {
         addQBTCToken(setQbtcTokenAdded);
         break;
       }
-      case qusdToken:
+      case 'qusdToken':
       default: {
         addQUSDToken(setQusdTokenAdded);
       }
@@ -53,12 +52,12 @@ function SavingAndBorrowing () {
       {loadType === LOAD_TYPES.loaded && (
         <>
           {!qusdTokenAdded && (
-            <Button style={{ margin: '0 16px 0 0' }} onClick={() => handleAddToken(qusdToken)}>
+            <Button style={{ margin: '0 16px 0 0' }} onClick={() => handleAddToken('qusdToken')}>
               Add QUSD token
             </Button>
           )}
           {!qbtcTokenAdded && (
-            <Button style={{ margin: '0 16px 0 0' }} onClick={() => handleAddToken(qbtcToken)}>
+            <Button style={{ margin: '0 16px 0 0' }} onClick={() => handleAddToken('qbtcToken')}>
               Add QBTC token
             </Button>
           )}
