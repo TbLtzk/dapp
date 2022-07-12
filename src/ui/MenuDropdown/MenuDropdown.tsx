@@ -36,7 +36,7 @@ function MenuDropdown ({
 }: Props) {
   const defaultTrigger = (
     <Button icon look="secondary">
-      <motion.span style={{ fontSize: '25px' }} animate={{ rotate: open ? 180 : 0 }}>
+      <motion.span style={{ height: '100%' }} animate={{ rotate: open ? 180 : 0 }}>
         <Icon name="expand-more" />
       </motion.span>
     </Button>

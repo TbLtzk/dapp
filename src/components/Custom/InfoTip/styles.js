@@ -7,7 +7,7 @@ export const TipWrapper = styled.div`
   align-items: center;
   border-radius: 3px;
   padding: 10px;
-  background-color: ${(p) => p.theme.palette === 'dark' ? '#D3DAE3' : p.theme.colors.oxfordBlueTint5};
+  background-color: ${({ theme }) => theme.colors.block};
 
   p {
     margin-bottom: 0;

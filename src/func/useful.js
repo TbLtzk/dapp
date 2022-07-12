@@ -3,8 +3,6 @@ import { isNumber, orderBy } from 'lodash';
 
 import ErrorHandler from './ErrorHandler';
 
-import { transformAuctionNameToAuctionType } from 'contracts/helpers/auctions-helpers/auction-service-helper';
-
 import { CONTRACTS_NAMES } from 'constants/contracts';
 
 export const transformToHex = (value) => {
@@ -116,7 +114,7 @@ export const createShareText = (type, contract, id, user) => {
       return link + `/governance/proposal/${contract}/${id}`;
     }
     case 'auction': {
-      const auctionPart = `/auction/${transformAuctionNameToAuctionType(contract)}/${id}`;
+      const auctionPart = `/auction/${contract}/${id}`;
       if (contract === CONTRACTS_NAMES.liquidationAuction) {
         return link + auctionPart + '+' + user;
       } else {

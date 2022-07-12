@@ -4,16 +4,14 @@ import ValidatorsTable from 'components/Custom/Tables/ValidatorsTable';
 
 import CurrentInfo from './components/CurrentInfo';
 
-function Monitoring () {
-  return (
-    <PageWrap pageHeader="Monitoring">
-      <CurrentInfo />
-      <div>
-        <ValidatorsTable tableType="validators-monitoring" />
-        <RootNodeTable tableType="rootNodesMonitoring" />
-      </div>
-    </PageWrap>
-  );
-}
+const Monitoring = () => (
+  <PageWrap pageHeader="Monitoring">
+    <CurrentInfo />
+    <div>
+      <ValidatorsTable tableType="validators-monitoring" />
+      <RootNodeTable tableType="rootNodesMonitoring" />
+    </div>
+  </PageWrap>
+);
 
 export default Monitoring;

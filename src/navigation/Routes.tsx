@@ -8,6 +8,8 @@ import Toast from 'ui/Toast';
 import Layout from 'components/Base/Layout';
 import ErrorBoundary from 'components/Custom/ErrorBoundary';
 import AccountAliasing from 'pages/AccountAliasing';
+import Auction from 'pages/Auctions/components/Auction';
+import NewAuction from 'pages/Auctions/components/NewAuction';
 import DataPrivacy from 'pages/DataPrivacy';
 import Governance from 'pages/Governance';
 import NewProposal from 'pages/Governance/NewProposal';
@@ -15,7 +17,6 @@ import Proposal from 'pages/Governance/Proposal';
 import Imprint from 'pages/Imprint';
 import Monitoring from 'pages/Monitoring';
 import NotFound from 'pages/NotFound';
-import OneAuctionPage from 'pages/OneAuctionPage';
 import Staking from 'pages/Staking';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -29,7 +30,6 @@ import TimeLocks from '../pages/TimeLocks';
 
 import { store } from 'store/index';
 
-import { AUCTIONS_TYPES } from 'constants/statuses';
 import ErrorHandler from 'func/ErrorHandler';
 
 function addSentryContext () {
@@ -37,7 +37,7 @@ function addSentryContext () {
     const { network, loadType } = store.getState().userInf;
     Sentry.setContext('additional', {
       network,
-      loadType
+      loadType,
     });
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
@@ -73,7 +73,7 @@ function Routes () {
             top: '80px',
             left: 'unset',
             right: '24px',
-            gap: '16px'
+            gap: '16px',
           }}
         >
           <Switch>
@@ -121,22 +121,18 @@ function Routes () {
               <SavingAndBorrowing />
             </Route>
 
-            <Route exact path="/liquidation">
-              <Auctions auctionsType={AUCTIONS_TYPES.liquidation} />
+            <Route exact path="/auctions/:type?">
+              <Auctions />
             </Route>
 
-            <Route exact path="/system-debt">
-              <Auctions auctionsType={AUCTIONS_TYPES.systemDebt} />
-            </Route>
-
-            <Route exact path="/system-surplus">
-              <Auctions auctionsType={AUCTIONS_TYPES.systemSurplus} />
+            <Route exact path="/auctions/:type/new">
+              <NewAuction />
             </Route>
 
             <Route
               exact
-              path="/auction/:contract?/:id?"
-              component={(props: RouteComponentProps<any>) => <OneAuctionPage {...props} />}
+              path="/auction/:type?/:slug?"
+              component={Auction}
             />
 
             <Route exact path="/time-locks">

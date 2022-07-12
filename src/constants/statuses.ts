@@ -13,13 +13,6 @@ export const TRANSACTION_TYPES = {
   rejected: 'Rejected',
 };
 
-export const AUCTIONS_TYPES = {
-  liquidation: 'liquidation',
-  systemDebt: 'system-debt',
-  systemSurplus: 'system-surplus',
-  all: 'all',
-};
-
 export const LOAD_TYPES = {
   error: 'error',
   loaded: 'loaded',

@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import Button from 'ui/Button';
 
@@ -33,8 +31,6 @@ function ValidatorStaking () {
   const dispatch = useDispatch();
   const isValidator = useSelector(isUserValidator);
   const address = useSelector(userAddressMetamask);
-
-  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(getAccountBalance(address));
@@ -70,17 +66,7 @@ function ValidatorStaking () {
 
         <ValidatorBalanceInfo />
       </div>
-      <ValidatorsTable
-        tableType="validators-widened"
-        buttons={
-          <Link to="/q-vault">
-            <Button alwaysEnabled look="ghost">
-              <i className="mdi mdi-arrow-right" />
-              <span>{t('GO_TO_Q_VAULT')}</span>
-            </Button>
-          </Link>
-        }
-      />
+      <ValidatorsTable tableType="validators-widened" />
     </>
   );
 }

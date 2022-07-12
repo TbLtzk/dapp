@@ -10,18 +10,20 @@ import { PageWrapContainer, ToTopContainer } from './styles';
 import { toTitleCase } from 'func/useful';
 
 interface Props {
-  pageHeader: string,
+  pageHeader?: string,
   pageTooltip?: ReactNode,
   pageButton?: ReactNode,
   wrapContentClasses?: string,
   children: ReactNode,
+  topButton?: ReactNode,
 }
 
 function PageWrap ({
-  pageHeader,
+  pageHeader = '',
   pageTooltip = null,
   pageButton = null,
   wrapContentClasses = '',
+  topButton = null,
   children,
 }: Props) {
   const { t } = useTranslation();
@@ -38,6 +40,7 @@ function PageWrap ({
 
   return (
     <PageWrapContainer>
+      {topButton}
       <div className="page-title-wrp">
         <h1
           ref={titleRef}
