@@ -1,13 +1,16 @@
 import { useState } from 'react';
 
 import Button from 'ui/Button';
+import Modal from 'ui/Modal';
 import Table from 'ui/Table';
 
 import CustomBlock from 'components/Base/CustomBlock';
-import ModalWindow from 'components/Base/ModalWindow';
+import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import ManageForm from '../ManageForm';
 import VestingWithdrawForm from '../VestingWithdrawForm';
+
+import { BalanceCardContent } from './styles';
 
 import { fromWei } from 'func/balance';
 import { convertToMonthDayYear } from 'func/convertDate';
@@ -53,21 +56,23 @@ function BalanceCard ({ title, contract, balanceRef, lockAmountData, timeLockBal
         ]}
       />
 
-      <ModalWindow
-        scrollable={false}
-        show={isModalShown}
-        modalTitle={contract === 'vesting' ? 'Deposit, withdraw & purge' : 'Deposit & purge'}
-        content={
-          <>
-            <div className="modal-line" />
-            <h5>Recipient Address</h5>
-            <h4>{address}</h4>
-            {contract === 'vesting' && <VestingWithdrawForm />}
-            <ManageForm contract={contract} address={address} />
-          </>
-        }
-        onHide={() => setIsModalShown(false)}
-      />
+      <Modal
+        open={isModalShown}
+        title={contract === 'vesting' ? 'Deposit, withdraw & purge' : 'Deposit & purge'}
+        width={480}
+        onClose={() => setIsModalShown(false)}
+      >
+        <BalanceCardContent>
+          <div>
+            <p className="text-md font-light">Recipient Address</p>
+            <div className="text-md">
+              <ExplorerAddress address={address} />
+            </div>
+          </div>
+          {contract === 'vesting' && <VestingWithdrawForm />}
+          <ManageForm contract={contract} address={address} />
+        </BalanceCardContent>
+      </Modal>
 
       <div className="button__bottom">
         <Button onClick={() => setIsModalShown(true)}>Manage</Button>

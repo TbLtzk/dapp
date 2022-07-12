@@ -12,5 +12,9 @@ export const TooltipContent = styled.div`
     margin-top: 4px;
     font-weight: 600;
     color: ${(p) => p.theme.colors.lightBlue};
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 `;

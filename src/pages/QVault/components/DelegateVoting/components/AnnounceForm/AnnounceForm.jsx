@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Form/Input';
+import Button from 'ui/Button';
+import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 import useMetamaskReset from 'hooks/useMetamaskReset';
@@ -26,21 +26,22 @@ function AnnounceForm () {
   return (
     <form noValidate onSubmit={form.submit}>
       <h3>Announce new voting agent</h3>
-      <h4>Address</h4>
       <div className="card__one-line-simple-form">
         <Input
           {...form.fields.address}
+          label="Address"
           placeholder="0x000"
+          hint="This will immediately reduce the voting weight of your voting agent for new voting"
         />
         <Button
           type="submit"
+          className="form-action"
           style={{ width: '90px' }}
           disabled={!form.isValid}
         >
           Announce
         </Button>
       </div>
-      <h4>This will immediately reduce the voting weight of your voting agent for new voting</h4>
     </form>
   );
 }

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
-import Button from 'components/Base/Button';
+import Button from 'ui/Button';
+
 import CustomBlock from 'components/Base/CustomBlock';
 import InfoTooltip from 'components/Custom/InfoTooltip';
 
@@ -14,16 +15,16 @@ function LockCoin () {
         <span>Lock Your Q Tokens for Voting</span>
         <InfoTooltip topic="lock-tokens-for-voting" />
       </h1>
-      <h5 style={{ marginBottom: '15px' }}>
+      <h3 style={{ marginBottom: '16px' }}>
         Participate in Q Governance with your Locked Amount
-      </h5>
-      <div style={{ display: 'grid', gap: '15px' }}>
+      </h3>
+      <div style={{ display: 'grid', gap: '16px' }}>
         <LockForm />
         <UnlockForm />
       </div>
-      <div className="card__actions">
+      <div className="card__actions" style={{ marginTop: '24px' }}>
         <Link to="/governance">
-          <Button alwaysEnabled look="transparent">
+          <Button alwaysEnabled look="secondary">
             <span>Go to Governance</span>
             <i className="mdi mdi-arrow-right" />
           </Button>

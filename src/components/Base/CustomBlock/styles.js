@@ -107,7 +107,10 @@ export const Block = styled.div`
     grid-column-gap: 14px;
     align-items: flex-start;
     width: 100%;
-    margin-bottom: 15px;
+
+    .form-action {
+      margin-top: 33px;
+    }
   }
 
   .card__one-line-form-2-2-1 {
@@ -134,8 +137,7 @@ export const Block = styled.div`
   .card__line {
     width: 100%;
     height: 1px;
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin: 24px 0;
     border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
   }
 

@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Form/Input';
+import Button from 'ui/Button';
+import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 import useMetamaskReset from 'hooks/useMetamaskReset';
@@ -24,26 +24,26 @@ function VestingWithdrawForm () {
   useMetamaskReset(formTypes.vestingWithdraw, form.reset);
 
   return (
-    <form noValidate onSubmit={form.submit}>
-      <h4>Amount</h4>
+    <form
+      noValidate
+      className="balance-card-block"
+      style={{ display: 'flex', gap: '8px' }}
+      onSubmit={form.submit}
+    >
       <Input
         {...form.fields.amount}
-        invertedColors
         type="number"
+        label="Amount"
         prefix="Q"
         placeholder="0.0"
       />
       <Button
         type="submit"
         disabled={!form.isValid}
-        style={{
-          display: 'block',
-          margin: '10px 0 10px auto'
-        }}
+        style={{ marginTop: '33px' }}
       >
         Withdraw
       </Button>
-      <div className="modal-line" />
     </form>
   );
 }

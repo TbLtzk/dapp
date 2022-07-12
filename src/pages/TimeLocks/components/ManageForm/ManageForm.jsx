@@ -1,14 +1,12 @@
 import { memo } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Button from 'components/Base/Button';
-import Calendar from 'components/Base/Calendar';
-import Input from 'components/Base/Form/Input';
+import Button from 'ui/Button';
+import Calendar from 'ui/Calendar';
+import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 import useMetamaskReset from 'hooks/useMetamaskReset';
-
-import { CalendarWraper } from './styles';
 
 import { setDepositLockedAmount, setPurgeTimeLocksAmount } from 'store/locked-amount/action-creators';
 
@@ -36,8 +34,12 @@ function ManageForm ({ contract, address }) {
   useMetamaskReset(formTypes.timeLocksAmount, form.reset);
 
   return (
-    <form noValidate onSubmit={form.submit}>
-      <CalendarWraper>
+    <form
+      noValidate
+      className="balance-card-block"
+      onSubmit={form.submit}
+    >
+      <div style={{ display: 'flex', gap: '8px' }}>
         <Calendar
           {...form.fields.startDate}
           invertedColors
@@ -59,11 +61,10 @@ function ManageForm ({ contract, address }) {
           endDate={form.values.endDate}
           minDate={form.values.startDate}
         />
-      </CalendarWraper>
+      </div>
 
       <Input
         {...form.fields.amount}
-        invertedColors
         type="number"
         label="Amount"
         prefix="Q"
@@ -73,25 +74,20 @@ function ManageForm ({ contract, address }) {
       <Button
         type="submit"
         disabled={!form.isValid}
-        style={{
-          display: 'block',
-          margin: '10px 0 10px auto'
-        }}
+        style={{ width: '100%', marginTop: '8px' }}
       >
         Deposit
       </Button>
 
-      <div className="modal-line" />
-
-      <Button
-        style={{
-          display: 'block',
-          margin: '10px 0 0 auto'
-        }}
-        onClick={() => dispatch(setPurgeTimeLocksAmount({ contract, address }))}
-      >
-        Purge Expired Time Locks
-      </Button>
+      <div className="balance-card-block">
+        <Button
+          look="secondary"
+          style={{ width: '100%' }}
+          onClick={() => dispatch(setPurgeTimeLocksAmount({ contract, address }))}
+        >
+          Purge Expired Time Locks
+        </Button>
+      </div>
     </form>
   );
 }

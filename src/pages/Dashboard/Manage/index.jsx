@@ -2,11 +2,11 @@ import { createContext, lazy, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Button from 'ui/Button';
+import Icon from 'ui/Icon';
+import Switch from 'ui/Switch';
 
 import LazyLoading from 'components/Base/LazyLoading';
 import PageWrap from 'components/Base/PageWrap';
-
-import { ParametersSwitch } from './styles';
 
 const QParameters = lazy(() => import('./QParameters'));
 const ParametersContext = createContext();
@@ -18,19 +18,20 @@ function ManageParameters () {
     <PageWrap
       pageHeader="Q Parameters"
       pageButton={
-        <>
-          <ParametersSwitch
+        <div style={{ display: 'flex', gap: '16px' }}>
+          <Switch
             id="parameters-switch"
-            checked={isSimplifiedMode}
+            value={isSimplifiedMode}
             label="Simplified view"
             onChange={() => setIsSimplifiedMode(!isSimplifiedMode)}
           />
           <Link to="/">
             <Button alwaysEnabled look="secondary">
-              Dashboard
+              <Icon name="dashboard" />
+              <span>Dashboard</span>
             </Button>
           </Link>
-        </>
+        </div>
       }
     >
       <LazyLoading>

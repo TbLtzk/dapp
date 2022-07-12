@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
 
 import { motion } from 'framer-motion';
+import Check from 'ui/Check';
 
-import Checkbox from 'components/Base/Form/Checkbox';
 import Modal from 'components/Base/Modal';
 
 import useLocalStorage from 'hooks/useLocalStorage';
@@ -45,28 +45,26 @@ function ConnectWalletModal ({ modalOpen, onModalClose }: Props) {
         {isChecked && <ConnectButtons />}
 
         <div className="connect_terms-of-service">
-          <Checkbox
-            invertedColors={true}
-            check={isChecked}
-            onCheck={() => setIsChecked(!isChecked)}
+          <Check
+            value={isChecked}
+            onChange={() => setIsChecked(!isChecked)}
           />
           <div>
             <p>
-              I have read, understood, and agreed to the{' '}
+              <span>I have read, understood, and agreed to the </span>
               <a
                 target="_blank"
                 href="/data-privacy"
                 rel="noreferrer"
               >
                 Data privacy
-              </a>{' '}
-              and
+              </a>
+              <span> and </span>
               <a
                 target="_blank"
                 href="/imprint"
                 rel="noreferrer"
               >
-                {' '}
                 Imprint
               </a>
               .

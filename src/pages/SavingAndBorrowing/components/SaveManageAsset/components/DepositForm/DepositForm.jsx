@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Form/Input';
+import Button from 'ui/Button';
+import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 import useMetamaskReset from 'hooks/useMetamaskReset';
@@ -34,36 +34,39 @@ function DepositForm ({ asset }) {
   }, [savingAllowance, form.values.amount]);
 
   return (
-    <form noValidate onSubmit={form.submit}>
-      <h4>Deposit Saving Asset</h4>
-      <div className="modal__one-line-form">
-        <Input
-          {...form.fields.amount}
-          invertedColors
-          type="number"
-          prefix={asset}
-          max={availableAmount}
-          placeholder="0.00"
-        />
-        {isApproveMode
-          ? (
-            <Button
-              style={{ width: '100px' }}
-              onClick={() => dispatch(setSavingAprove())}
-            >
-              Approve
-            </Button>
-          )
-          : (
-            <Button
-              type="submit"
-              disabled={!form.isValid}
-              style={{ width: '100px' }}
-            >
-              Deposit
-            </Button>
-          )}
-      </div>
+    <form
+      noValidate
+      className="saving-form"
+      onSubmit={form.submit}
+    >
+      <Input
+        {...form.fields.amount}
+        type="number"
+        label="Deposit Saving Asset"
+        prefix={asset}
+        max={availableAmount}
+        placeholder="0.00"
+      />
+      {isApproveMode
+        ? (
+          <Button
+            className="form-action"
+            style={{ width: '100px' }}
+            onClick={() => dispatch(setSavingAprove())}
+          >
+            Approve
+          </Button>
+        )
+        : (
+          <Button
+            type="submit"
+            className="form-action"
+            disabled={!form.isValid}
+            style={{ width: '100px' }}
+          >
+            Deposit
+          </Button>
+        )}
     </form>
   );
 }

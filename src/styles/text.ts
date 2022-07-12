@@ -65,7 +65,7 @@ export const TextStyle = createGlobalStyle`
 
   .text-sm {
     font-size: 12px;
-    line-height: 16px;
+    line-height: 18px;
   }
 
   .text-xs {

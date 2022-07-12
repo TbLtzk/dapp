@@ -64,7 +64,7 @@ function Sidebar () {
               exact={false}
               to="/staking"
               title="Staking"
-              icon="coins"
+              icon="stake"
             />
 
             {isAliasesEnabled && <SidebarLink

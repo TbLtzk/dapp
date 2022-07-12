@@ -32,7 +32,9 @@ export const StyledConnectWalletModal = styled.div`
   .connect_terms-of-service {
     display: flex;
     align-items: center;
+    gap: 8px;
     border-radius: 8px;
+    padding: 8px 16px;
     background-color: ${(props) => props.theme.colors.oxfordBlueTint3};
     color: ${(props) => props.theme.colors.white};
     p {

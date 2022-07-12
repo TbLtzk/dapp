@@ -1,29 +1,23 @@
 import tooltips from 'json/tooltips.json';
-
-import PopperTooltip from 'components/Base/PopperTooltip';
+import Tooltip from 'ui/Tooltip';
 
 import { InfoIcon } from './styles';
 
-type PopperTooltipProps = Parameters<typeof PopperTooltip>[0];
-interface Props extends Omit<PopperTooltipProps, 'trigger' | 'invertedColors' | 'children'> {
+type TooltipProps = Parameters<typeof Tooltip>[0];
+interface Props extends Omit<TooltipProps, 'trigger' | 'children'> {
   topic: keyof typeof tooltips
-  invertedColors?: boolean
 }
 
-function InfoTooltip ({ topic, invertedColors = false, ...rest }: Props) {
+function InfoTooltip ({ topic, ...rest }: Props) {
   return (
-    <PopperTooltip
+    <Tooltip
       trigger={(
-        <InfoIcon
-          $invertedColors={invertedColors}
-          className="mdi mdi-information"
-        />
+        <InfoIcon className="mdi mdi-information" />
       )}
-      invertedColors={invertedColors}
       {...rest}
     >
       <span>{tooltips[topic]}</span>
-    </PopperTooltip>
+    </Tooltip>
   );
 }
 

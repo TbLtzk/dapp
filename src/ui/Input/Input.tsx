@@ -19,6 +19,7 @@ interface Props extends Omit<InputProps, 'onChange' | 'prefix' | 'value'> {
   disabled?: boolean
   type?: HTMLInputTypeAttribute
   max?: string
+  prefix?: ReactNode
   children?: ReactNode
   onChange: (val: string) => void
 }
@@ -31,6 +32,7 @@ function Input ({
   disabled,
   hint,
   max,
+  prefix,
   children,
   onChange = () => {},
   ...rest
@@ -63,6 +65,11 @@ function Input ({
       )}
 
       <div className="input-container">
+        {prefix && (
+          <div className="input-prefix text-md font-semibold">
+            {prefix}
+          </div>
+        )}
         <input
           id={inputId}
           className="text-md"

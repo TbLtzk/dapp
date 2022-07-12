@@ -1,8 +1,9 @@
 import { useSelector } from 'react-redux';
 
+import Tooltip from 'ui/Tooltip';
+
 import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
-import PopperTooltip from 'components/Base/PopperTooltip';
 import GnosisSafeTooltip from 'components/Custom/GnosisSafeTooltip';
 
 import ParametersTable from '../ParametersTable';
@@ -47,7 +48,7 @@ function ParametersBlock ({
       <ParametersBlockTitle>
         {title}
         {docsId && (
-          <PopperTooltip
+          <Tooltip
             trigger={(
               <DocsLink
                 href={`${baseDocsUrl}/system-parameters${docsId}`}
@@ -58,7 +59,7 @@ function ParametersBlock ({
             )}
           >
             View documentation
-          </PopperTooltip>
+          </Tooltip>
         )}
 
         {gnosisSafeAddress && (

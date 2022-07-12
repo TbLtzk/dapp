@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Button';
+import Button from 'ui/Button';
+
 import CustomBlock from 'components/Base/CustomBlock';
 import InfoTooltip from 'components/Custom/InfoTooltip';
 
@@ -41,9 +42,9 @@ function DelegateVoting () {
         <InfoTooltip topic="delegate-voting-power" />
       </h1>
       <h5>Total Voting Weight</h5>
-      <h4>{fromWei(weight)}</h4>
+      <p>{fromWei(weight)}</p>
       <h5>Current agent</h5>
-      <h4>{delegateInfo}</h4>
+      <p>{delegateInfo}</p>
 
       {!isPending
         ? null
@@ -58,14 +59,11 @@ function DelegateVoting () {
             <div className="card_block">
               <div>
                 <h5>Confirm announced voting agent</h5>
-                <p>This delegation info is currently pending. Need to confirm.</p>
+                <p style={{ marginBottom: 0 }}>This delegation info is currently pending. Need to confirm.</p>
               </div>
               <div>
-                <Button onClick={handleDelegate}>
-                  <i
-                    className="mdi mdi-chart-pie"
-                    style={{ fontSize: '20px' }}
-                  />
+                <Button compact onClick={handleDelegate}>
+                  <i className="mdi mdi-chart-pie" />
                   <span>Confirm</span>
                 </Button>
               </div>

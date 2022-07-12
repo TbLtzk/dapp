@@ -11,10 +11,12 @@ import { dateToTimestamp, getNowTimestamp } from 'func/convertDate';
 
 export function prepareAuctionData (
   info: SystemSurplusAuctionInfo,
-  event: SystemDebtAndSurplusEvent,
+  event: SystemDebtAndSurplusEvent | undefined,
   raisingBid: string | null
 ): SystemSurplusCompletedInfo {
   const completedInfo = {} as SystemSurplusCompletedInfo;
+  if (!event) return completedInfo;
+
   const status = getStatusTransformation(info.status);
 
   completedInfo.auctionType = AUCTIONS_TYPES.systemSurplus;
@@ -67,9 +69,8 @@ export async function getOneSystemSurplusAuction (id: string | number) {
     if (!Number(info.endTime)) {
       return { error: ERROR_TYPES.notExist };
     } else {
-      const pastEvents = await getAuctionsEvents(instance, 'systemDebt');
-      // @ts-ignore
-      const event = pastEvents.find((event) => event.id === id);
+      const pastEvents = await getAuctionsEvents(instance, 'systemDebt') as SystemDebtAndSurplusEvent[];
+      const event = pastEvents.find((event) => event.auctionId === id);
       let raisingBid = null;
       if (info.status === '1') {
         raisingBid = await instance.getRaisingBid(id);

@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import copy from 'copy-to-clipboard';
-
-import PopperTooltip from '../PopperTooltip';
+import Tooltip from 'ui/Tooltip';
 
 import { CopyTrigger, TooltipWrapper } from './styles';
 
@@ -37,11 +36,11 @@ function CopyToClipboard ({
     ? copyTrigger
     : (
       <TooltipWrapper>
-        <PopperTooltip trigger={copyTrigger}>
+        <Tooltip trigger={copyTrigger}>
           <span className="copy-msg">
             {isCopied ? 'Copied!' : 'Copy'}
           </span>
-        </PopperTooltip>
+        </Tooltip>
       </TooltipWrapper>
     );
 }
