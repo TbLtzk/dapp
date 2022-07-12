@@ -9,7 +9,7 @@ interface Props {
   icon?: IconName
   title: string
   disabled?: boolean
-  onAction: () => void
+  onAction?: () => void
   children: ReactNode | ReactNode[]
 }
 

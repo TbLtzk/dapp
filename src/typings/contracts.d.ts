@@ -1,3 +1,6 @@
+import { LiquidationAuctionInstance } from '@q-dev/q-js-sdk/lib/contracts/defi/LiquidationAuctionInstance';
+import { SystemDebtAuctionInstance } from '@q-dev/q-js-sdk/lib/contracts/defi/SystemDebtAuctionInstance';
+import { SystemSurplusAuctionInstance } from '@q-dev/q-js-sdk/lib/contracts/defi/SystemSurplusAuctionInstance';
 import { ConstitutionVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/constitution/ConstitutionVotingInstance';
 import { ContractRegistryAddressVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/ContractRegistryAddressVoting';
 import { ContractRegistryUpgradeVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/ContractRegistryUpgradeVoting';
@@ -27,11 +30,13 @@ export type ProposalsContract =
   | EPQFIParametersVotingInstance
   | EPDRParametersVotingInstance
   | EPRSParametersVotingInstance
-  | EPRSMembershipVotingInstance
+  | EPRSMembershipVotingInstance;
 
 export interface ProposalEvent {
-  blockNumber: number
-  id: string
-  contract: string
-  status?: string
+  blockNumber: number;
+  id: string;
+  contract: string;
+  status?: string;
 }
+
+export type AuctionInstance = LiquidationAuctionInstance | SystemDebtAuctionInstance | SystemSurplusAuctionInstance;

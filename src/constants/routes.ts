@@ -10,4 +10,15 @@ export enum RoutePaths {
   newRootNodeProposal = '/governance/root-node-panel/new',
   newExpertProposal = '/governance/expert-proposals/new',
   newSlashingProposal = '/governance/slashing-proposals/new',
+
+  auctions = '/auctions',
+
+  liquidation = '/auctions/liquidation',
+  systemDebt = '/auctions/system-debt',
+  systemSurplus = '/auctions/system-surplus',
+
+  newLiquidation = '/auctions/liquidation/new',
+  newSystemDebt = '/auctions/system-debt/new',
+  newSystemSurplus = '/auctions/system-surplus/new',
+
 }

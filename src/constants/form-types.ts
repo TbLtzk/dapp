@@ -37,7 +37,8 @@ const formTypes = {
   liquidationAuction: 'liquidation-auction',
   debtAuction: 'debt-auction',
   surplusAuction: 'surplus-auction',
-  bid: 'bid',
+  executeAuction: 'execute-auction',
+  bidForAuction: 'bid-for-auction'
 };
 
 export default formTypes;

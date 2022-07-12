@@ -1,10 +1,13 @@
 import ContentLoader from 'react-content-loader';
 
+import { useTheme } from 'styled-components';
 import { COLORS, darkColors } from 'styles/colors';
 
 import { SkeletonLoadingWrapper } from './styles';
 
 export function SkeletonTableLoading ({ tiny = false }) {
+  const { palette } = useTheme();
+
   const generateSize = (nRow) =>
     tiny
       ? { y: `${nRow * 30}`, x: '0', height: '20', ry: '8', rx: '10' }
@@ -15,8 +18,8 @@ export function SkeletonTableLoading ({ tiny = false }) {
       width="100%"
       height={tiny ? 210 : 410}
       speed={2}
-      backgroundColor={COLORS.blue900}
-      foregroundColor={darkColors.oxfordBlueTint3}
+      backgroundColor={palette === 'dark' ? COLORS.blue700 : COLORS.grey000}
+      foregroundColor={palette === 'dark' ? COLORS.blue600 : COLORS.grey100}
     >
       <rect width="100%" {...generateSize(0)} />
       <rect width="100%" {...generateSize(1)} />
@@ -30,80 +33,69 @@ export function SkeletonTableLoading ({ tiny = false }) {
 }
 
 export function SkeletonAuctionLoading () {
+  const { palette } = useTheme();
+
   return (
     <SkeletonLoadingWrapper>
       <ContentLoader
         speed={2}
         width="100%"
-        height={164}
-        backgroundColor={COLORS.blue900}
-        foregroundColor={darkColors.oxfordBlueTint3}
+        height="1000"
+        backgroundColor={palette === 'dark' ? COLORS.blue700 : COLORS.grey000}
+        foregroundColor={palette === 'dark' ? COLORS.blue600 : COLORS.grey100}
       >
         <rect
-          x="20"
-          y="25"
-          rx="3"
-          ry="3"
-          width="51%"
-          height="20"
-        />
-        <rect
-          x="78%"
-          y="25"
-          rx="3"
-          ry="3"
-          width="20%"
-          height="20"
+          x="5"
+          y="10"
+          rx="16"
+          ry="16"
+          width="150"
+          height="35"
         />
 
         <rect
-          x="20"
+          x="5"
           y="80"
-          rx="3"
-          ry="3"
-          width="10%"
-          height="10"
-        />
-        <rect
-          x="35%"
-          y="80"
-          rx="3"
-          ry="3"
-          width="18%"
-          height="10"
-        />
-        <rect
-          x="65%"
-          y="80"
-          rx="3"
-          ry="3"
-          width="18%"
-          height="10"
+          rx="16"
+          ry="16"
+          width="25%"
+          height="50"
         />
 
         <rect
-          x="20"
-          y="100"
-          rx="3"
-          ry="3"
-          width="15%"
-          height="8"
+          x="26%"
+          y="80"
+          rx="20"
+          ry="20"
+          width="80"
+          height="30"
         />
+
         <rect
-          x="35%"
-          y="100"
-          rx="3"
-          ry="3"
+          x="79%"
+          y="90"
+          rx="20"
+          ry="20"
           width="10%"
-          height="8"
+          height="40"
         />
+
         <rect
-          x="65%"
-          y="100"
-          rx="3"
-          ry="3"
+          x="90%"
+          y="90"
+          rx="16"
+          ry="16"
           width="10%"
-          height="8"
+          height="40"
+        />
+
+        <rect
+          x="5"
+          y="160"
+          rx="16"
+          ry="16"
+          width="100%"
+          height="366"
         />
       </ContentLoader>
     </SkeletonLoadingWrapper>

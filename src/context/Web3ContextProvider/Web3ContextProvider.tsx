@@ -10,7 +10,7 @@ import useLocalStorage from 'hooks/useLocalStorage';
 
 import { Wrap } from './styles';
 
-import { getAuctions } from 'store/auctions/action-creators';
+import { getAllAuctions } from 'store/auctions/actions';
 import { getCheckIsUserRootNode } from 'store/root-node/action-creators';
 import { setLoadType, setNetwork, setUserAddress } from 'store/user-inf/action-creators';
 import { getNumberAllProposals } from 'store/voting/proposals/actions';
@@ -18,7 +18,7 @@ import { getNumberAllProposals } from 'store/voting/proposals/actions';
 import { getContractRegistryInstance } from 'contracts/contract-instance';
 
 import { networkParameters, networks, rpcUrls } from 'constants/config';
-import { AUCTIONS_TYPES, LOAD_TYPES } from 'constants/statuses';
+import { LOAD_TYPES } from 'constants/statuses';
 import { getChainId, getParametersDependsOnUrl, getProvider } from 'func/appConfig';
 import ErrorHandler from 'func/ErrorHandler';
 import { reloadPage } from 'func/useful';
@@ -48,7 +48,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
 
   const { connector, chainId } = useWeb3React();
 
-  const [selectedRpc, setSelectedRpc] = useLocalStorage('setSelectedRpc', params.rpc);
+  const [selectedRpc, setSelectedRpc] = useLocalStorage('selectedRpc', params.rpc);
   const [selectedWallet, setSelectedWallet] = useLocalStorage<undefined | WalletType>('selectedWallet', undefined);
   const [selectedChainId, setSelectedChainId] = useLocalStorage('selectedChainId', params.chainId);
   const [success, setSuccess] = useState(false);
@@ -57,7 +57,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
   const [switchNetworkError, setSwitchNetworkError] = useState<boolean | null>(null);
 
   const loadAdditionalInfo = async () => {
-    dispatch(getAuctions(AUCTIONS_TYPES.all));
+    dispatch(getAllAuctions());
     dispatch(getNumberAllProposals());
     dispatch(getCheckIsUserRootNode());
   };
@@ -71,6 +71,9 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
     localStorage.removeItem('-walletlink:https://www.walletlink.org:Addresses');
     localStorage.removeItem('-walletlink:https://www.walletlink.org:walletUsername');
     localStorage.removeItem('walletconnect');
+    localStorage.removeItem('selectedRpc');
+    localStorage.removeItem('selectedChainId');
+    localStorage.removeItem('selectedWallet');
   }, []);
 
   const disconnectWallet = useCallback(async () => {
@@ -98,6 +101,10 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       try {
         setLoading(true);
         const wallet = getWallet(walletType);
+        // @ts-ignore
+        if (!networks[chainId]) {
+          await switchNetwork(selectedChainId);
+        }
         await wallet.activate(undefined);
         setSuccess(true);
         setSelectedWallet(walletType);
@@ -111,7 +118,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
         setLoading(false);
       }
     },
-    [disconnectWallet, connector]
+    [disconnectWallet, connector, chainId]
   );
 
   const initConnection = useCallback(async () => {

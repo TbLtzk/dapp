@@ -15,11 +15,7 @@ import SidebarLink from './components/SidebarLink/SidebarLink';
 import VersionModal from './components/VersionModal';
 import { SidebarContainer } from './styles';
 
-import {
-  liquidationAuctionsSelector,
-  systemDebtAuctionsSelector,
-  systemSurplusAuctionsSelector,
-} from 'store/auctions/selectors';
+import { activeAuctionsCountSelector } from 'store/auctions/selectors';
 import { activeProposalsCountSelector } from 'store/voting/proposals/selectors';
 
 function Sidebar () {
@@ -27,15 +23,7 @@ function Sidebar () {
   const isAliasesEnabled = useFeatureFlag('aliases');
 
   const activeProposalsCount = useSelector(activeProposalsCountSelector);
-
-  const liquidationAuctions = useSelector(liquidationAuctionsSelector);
-  const liquidationActiveAuctionsCount = liquidationAuctions?.activeAuctions?.length;
-
-  const systemDebtAuctions = useSelector(systemDebtAuctionsSelector);
-  const systemDebtActiveAuctionsCount = systemDebtAuctions?.activeAuctions?.length;
-
-  const systemSurplusAuction = useSelector(systemSurplusAuctionsSelector);
-  const systemSurplusActiveAuctionsCount = systemSurplusAuction?.activeAuctions?.length;
+  const activeAuctionsCount = useSelector(activeAuctionsCountSelector);
 
   const [versionModalOpen, setVersionModalOpen] = useState(false);
 
@@ -59,17 +47,17 @@ function Sidebar () {
             />
 
             <SidebarLink
-              to="/q-vault"
-              title="Q Vault"
-              icon="wallet"
-            />
-
-            <SidebarLink
               exact={false}
               to="/governance"
               title={t('GOVERNANCE')}
               icon="vote"
               count={activeProposalsCount}
+            />
+            <SidebarLink
+              exact={false}
+              to="/q-vault"
+              title="Q Vault"
+              icon="wallet"
             />
 
             <SidebarLink
@@ -92,29 +80,12 @@ function Sidebar () {
             />
 
             <SidebarLink
-              accordion
-              to="/liquidation"
+              exact={false}
+              to="/auctions"
               title={t('DECENTRALIZED_AUCTIONS')}
               icon="hammer"
-            >
-              <SidebarLink
-                to="/liquidation"
-                count={liquidationActiveAuctionsCount}
-                title={t('LIQUIDATION')}
-              />
-
-              <SidebarLink
-                to="/system-debt"
-                count={systemDebtActiveAuctionsCount}
-                title={t('SYSTEM_DEBT')}
-              />
-
-              <SidebarLink
-                to="/system-surplus"
-                count={systemSurplusActiveAuctionsCount}
-                title={t('SYSTEM_SURPLUS')}
-              />
-            </SidebarLink>
+              count={activeAuctionsCount}
+            />
 
             <SidebarLink
               to="/time-locks"
@@ -129,10 +100,7 @@ function Sidebar () {
       </div>
 
       <div className="sidebar-footer">
-        <button
-          className="sidebar-footer-link text-md"
-          onClick={() => setVersionModalOpen(true)}
-        >
+        <button className="sidebar-footer-link text-md" onClick={() => setVersionModalOpen(true)}>
           {packageJson.version}
         </button>
 

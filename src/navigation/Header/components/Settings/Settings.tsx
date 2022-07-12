@@ -30,7 +30,7 @@ function Settings () {
           look="secondary"
           active={settingsOpen}
         >
-          <motion.span style={{ fontSize: '25px' }} animate={{ rotate: settingsOpen ? 0 : 90 }}>
+          <motion.span style={{ height: '100%' }} animate={{ rotate: settingsOpen ? 90 : 0 }}>
             <Icon name="settings" />
           </motion.span>
         </Button>
