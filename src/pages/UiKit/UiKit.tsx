@@ -1,4 +1,5 @@
 import Buttons from './components/Buttons';
+import Calendars from './components/Calendars';
 import Checks from './components/Checks';
 import Colors from './components/Colors';
 import DonutCharts from './components/DonutCharts';
@@ -31,6 +32,7 @@ function UiKit () {
       <Icons />
       <Buttons />
       <Inputs />
+      <Calendars />
       <Searches />
       <Selects />
       <Dropdowns />

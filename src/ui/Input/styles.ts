@@ -56,6 +56,10 @@ export const InputWrapper = styled.div<{
     `}
   }
 
+  .input-prefix {
+    white-space: nowrap;
+  }
+
   input {
     padding: 0;
     border: none;
@@ -81,6 +85,7 @@ export const InputWrapper = styled.div<{
     margin: -4px -8px -4px 0;
     padding: 0 8px;
     height: 28px;
+    white-space: nowrap;
   }
 
   .input-extra {

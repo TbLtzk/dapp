@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 
-import Input from 'components/Base/Form/Input';
+import Icon from 'ui/Icon';
+import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 import useMetamaskReset from 'hooks/useMetamaskReset';
@@ -36,13 +37,14 @@ function SendForm () {
 
   return (
     <form noValidate onSubmit={form.submit}>
-      <h4>Send to foreign QVault account</h4>
+      <h3 style={{ margin: '8px 0 8px' }}>Send to foreign QVault account</h3>
+
       <div className="card__send-form">
         <Input
           {...form.fields.address}
           label="Address"
-          prefix={<i className="mdi mdi-wallet-outline btn-icon" />}
-          placeholder="0x000"
+          prefix={<Icon name="wallet" />}
+          placeholder="0x..."
         />
 
         <Input

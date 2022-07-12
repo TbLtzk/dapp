@@ -19,14 +19,15 @@ import { dateToTimestamp, getNowTimestamp } from 'func/convertDate';
 
 async function prepareLiquidationAuctionInfo (
   info: SdkLiquidationAuctionInfo,
-  auctionEvent: LiquidationAuctionEvent,
+  auctionEvent: LiquidationAuctionEvent | undefined,
   raisingBid: string | null
 ) {
+  const completedInfo = {} as LiquidationCompletedInfo;
+  if (!auctionEvent) return completedInfo;
+
   const borrowingCoreInstance = await getBorrowingCoreInstance();
   const vault = await borrowingCoreInstance.userVaults(auctionEvent.vaultOwner, auctionEvent.vaultId);
   const status = getStatusTransformation(info.status);
-
-  const completedInfo = {} as LiquidationCompletedInfo;
 
   completedInfo.auctionType = AUCTIONS_TYPES.liquidation;
   completedInfo.bidder = info.bidder;
@@ -54,12 +55,8 @@ export async function getOneLiquidationAuction (vaultId: string | number, vaultO
     if (!Number(info.endTime)) {
       return { error: ERROR_TYPES.notExist };
     } else {
-      const pastEvents = await getAuctionsEvents(instance, 'liquidation');
-      const auction =
-        // @ts-ignore
-        pastEvents.find(
-          (event: LiquidationAuctionEvent) => event.vaultId === vaultId && event.vaultOwner === vaultOwner
-        ) || [];
+      const pastEvents = await getAuctionsEvents(instance, 'liquidation') as LiquidationAuctionEvent[];
+      const auction = pastEvents.find((event) => event.vaultId === vaultId && event.vaultOwner === vaultOwner);
       let raisingBid = null;
       if (info.status === '1') {
         raisingBid = await instance.getRaisingBid(vaultOwner, vaultId);

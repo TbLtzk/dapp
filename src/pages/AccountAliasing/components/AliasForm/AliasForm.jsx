@@ -1,10 +1,9 @@
 import { useDispatch } from 'react-redux';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';
-
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Form/Input';
-import Select from 'components/Base/Form/Select';
+import Button from 'ui/Button';
+import Input from 'ui/Input';
+import Select from 'ui/Select';
 
 import useForm from 'hooks/useForm';
 
@@ -31,7 +30,7 @@ function AliasForm ({ alias }) {
   return (
     <form
       noValidate
-      style={{ display: 'grid', gap: '15px' }}
+      style={{ display: 'grid', gap: '16px' }}
       onSubmit={form.submit}
     >
       <Select
@@ -52,7 +51,7 @@ function AliasForm ({ alias }) {
       <Button
         type="submit"
         disabled={!form.isValid}
-        style={{ marginTop: '20px', width: '120px' }}
+        style={{ marginTop: '8px', width: '100%' }}
       >
         Update
       </Button>

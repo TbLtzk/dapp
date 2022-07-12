@@ -10,7 +10,7 @@ import StakerRewardPool from './components/StakerRewardPool';
 import ValidatorBalanceInfo from './components/ValidatorBalanceInfo';
 import ValidatorMenu from './components/ValidatorMenu';
 
-import { getAccountBalance, getUserBalance } from 'store/q-vault/action-creators';
+import { getAccountBalance } from 'store/q-vault/action-creators';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 import {
   getAccountableTotalStake,
@@ -34,7 +34,6 @@ function ValidatorStaking () {
 
   useEffect(() => {
     dispatch(getAccountBalance(address));
-    dispatch(getUserBalance(address));
     dispatch(getIsUserValidator(address));
     dispatch(getMinimumValidatorsTimeLock(address));
     dispatch(getAccountableTotalStake(address));

@@ -156,17 +156,6 @@ export const ModalContainer = styled(Modal)`
     grid-column-gap: 15px;
   }
 
-  .modal__one-line-form {
-    display: flex;
-    align-items: flex-start;
-    width: 100%;
-    margin-bottom: 15px;
-
-    & > *:not(:first-child) {
-      margin-left: 14px;
-    }
-  }
-
   .modal__text-wrp {
     display: flex;
     justify-content: space-between;

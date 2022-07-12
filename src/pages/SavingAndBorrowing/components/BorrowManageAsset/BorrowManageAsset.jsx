@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { isEmpty } from 'lodash';
 import Button from 'ui/Button';
+import Modal from 'ui/Modal';
 
 import LoadingSpinner from 'components/Base/LoadingSpinner';
-import ModalWindow from 'components/Base/ModalWindow';
 import { WrapSpinner } from 'pages/styles';
 
 import BorrowForm from './components/BorrowForm';
@@ -13,6 +13,7 @@ import BorrowInfo from './components/BorrowInfo';
 import DepositForm from './components/DepositForm';
 import RepayForm from './components/RepayForm';
 import WithdrawForm from './components/WithdrawForm';
+import { BorrowManageWrapper } from './styles';
 
 import { getBorrowAllowance, getBorrowVaultInfo, setBorrowVaultInfo } from 'store/borrow-assets/action-creators';
 import { borrowVaultInfoSelector } from 'store/borrow-assets/selectors';
@@ -37,22 +38,6 @@ function BorrowManageAsset ({ vault }) {
     dispatch(getBorrowVaultInfo(vault?.vaultNum));
   };
 
-  const modalContent = isEmpty(borrowVaultInfo)
-    ? (
-      <WrapSpinner>
-        <LoadingSpinner />
-      </WrapSpinner>
-    )
-    : (
-      <>
-        <BorrowInfo />
-        <BorrowForm vaultNum={vault?.vaultNum} />
-        <RepayForm vaultNum={vault?.vaultNum} />
-        <DepositForm vaultNum={vault?.vaultNum} />
-        <WithdrawForm vaultNum={vault?.vaultNum} />
-      </>
-    );
-
   return (
     <>
       <Button
@@ -65,12 +50,30 @@ function BorrowManageAsset ({ vault }) {
         <i className="mdi mdi-arrow-top-right" />
       </Button>
 
-      <ModalWindow
-        show={isModalOpen}
-        modalTitle="Borrowing QUSD"
-        content={modalContent}
-        onHide={handleCloseModal}
-      />
+      <Modal
+        open={isModalOpen}
+        title="Borrowing QUSD"
+        width={560}
+        onClose={handleCloseModal}
+      >
+        {isEmpty(borrowVaultInfo)
+          ? (
+            <WrapSpinner>
+              <LoadingSpinner />
+            </WrapSpinner>
+          )
+          : (
+            <BorrowManageWrapper>
+              <BorrowInfo />
+              <div className="borrow-forms">
+                <BorrowForm vaultNum={vault?.vaultNum} />
+                <RepayForm vaultNum={vault?.vaultNum} />
+                <DepositForm vaultNum={vault?.vaultNum} />
+                <WithdrawForm vaultNum={vault?.vaultNum} />
+              </div>
+            </BorrowManageWrapper>
+          )}
+      </Modal>
     </>
   );
 }

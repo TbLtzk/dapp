@@ -26,7 +26,13 @@ function AliasesTable ({ address, onSelect }) {
 
   const table = aliases.map((item, i) => ({
     id: i,
-    address: <ExplorerAddress address={item.address} />,
+    address: (
+      <ExplorerAddress
+        iconed
+        semibold
+        address={item.address}
+      />
+    ),
     role: invert(AliasPurpose)[item.purpose] || 'Unknown',
     action: (
       <Tooltip

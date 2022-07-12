@@ -47,7 +47,7 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
 
       padding-top: ${({ tiny }) => (tiny ? '8px' : '16px')};
       padding-bottom: ${({ tiny }) => (tiny ? '8px' : '16px')};
-      padding-left: ${({ tiny }) => (tiny ? 0 : '26px')};
+      padding-left: ${({ tiny }) => (tiny ? '8px' : '26px')};
 
       font-size: 14px;
       line-height: 20px;

@@ -8,7 +8,7 @@ import useMetamaskReset from 'hooks/useMetamaskReset';
 
 import { FORM_TYPES } from '../ValidatorMenu/ValidatorMenu';
 
-import { userBalance } from 'store/q-vault/selectors';
+import { accountBalance } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 import {
   setValidatorsAnnounceWithdrawal,
@@ -32,14 +32,14 @@ function ValidatorForms ({ formType, onReset }: Props) {
   const address = useSelector(userAddressMetamask);
   const userAccountableTotalStake = useSelector(accountableTotalStake);
   const withdrawalInfo = useSelector(validatorWithdrawalInfo);
-  const userQVBalance = useSelector(userBalance);
+  const userBalance = useSelector(accountBalance);
 
   const getMaxAmount = () => {
     const withdrawalAmount = fromWei(withdrawalInfo.amount);
 
     switch (formType) {
       case FORM_TYPES.stakeToRanking:
-        return userQVBalance;
+        return userBalance;
       case FORM_TYPES.announceWithdrawal:
         return BN(userAccountableTotalStake).plus(BN(withdrawalAmount)).toString();
       case FORM_TYPES.withdrawFromRanking:
@@ -77,6 +77,10 @@ function ValidatorForms ({ formType, onReset }: Props) {
         label="Amount"
         placeholder="0.00"
         max={getMaxAmount()}
+        hint={formType === FORM_TYPES.stakeToRanking && form.values.amount === getMaxAmount()
+          ? 'WARNING: No Q left for future transactions (gas)'
+          : ''
+        }
       />
 
       <Button

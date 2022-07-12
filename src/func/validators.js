@@ -43,7 +43,7 @@ export const amount = max => (val, form) => {
 
   return {
     isValid: value.comparedTo(validatorValue) <= 0,
-    message: `Maximum amount is ${max}`
+    message: `Max amount: ${max}`
   };
 };
 

@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Button';
+import Button from 'ui/Button';
+import Input from 'ui/Input';
+
 import ErrorInputMessage from 'components/Base/ErrorInputMessage';
-import Input from 'components/Base/Form/Input';
 
 import useForm from 'hooks/useForm';
 import useMetamaskReset from 'hooks/useMetamaskReset';
@@ -47,17 +48,18 @@ function TransferForm () {
 
   return (
     <form noValidate onSubmit={form.submit}>
-      <h4>Transfer Into Q Vault</h4>
       <div className="card__one-line-simple-form">
         <Input
           {...form.fields.amount}
           type="number"
+          label="Transfer Into Q Vault"
           prefix="Q"
           max={maxAmount}
           placeholder="0.0"
         />
         <Button
           type="submit"
+          className="form-action"
           disabled={!form.isValid}
           style={{ width: '90px' }}
         >

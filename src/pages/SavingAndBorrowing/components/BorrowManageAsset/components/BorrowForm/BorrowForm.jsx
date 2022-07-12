@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Form/Input';
+import Button from 'ui/Button';
+import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 import useMetamaskReset from 'hooks/useMetamaskReset';
@@ -26,25 +26,27 @@ function BorrowForm ({ vaultNum }) {
   useMetamaskReset(formTypes.borrowAssetBorrow, form.reset);
 
   return (
-    <form noValidate onSubmit={form.submit}>
-      <h4>Borrow Asset</h4>
-      <div className="modal__one-line-form">
-        <Input
-          {...form.fields.amount}
-          invertedColors
-          type="number"
-          prefix={borrowingDetails?.assets}
-          max={borrowingDetails?.availableBorrow}
-          placeholder="0.00"
-        />
-        <Button
-          type="submit"
-          disabled={!form.isValid}
-          style={{ width: '100px' }}
-        >
-          Borrow
-        </Button>
-      </div>
+    <form
+      noValidate
+      className="borrow-manage-form"
+      onSubmit={form.submit}
+    >
+      <Input
+        {...form.fields.amount}
+        type="number"
+        label="Borrow Asset"
+        prefix={borrowingDetails?.assets}
+        max={borrowingDetails?.availableBorrow}
+        placeholder="0.00"
+      />
+      <Button
+        type="submit"
+        className="form-action"
+        disabled={!form.isValid}
+        style={{ width: '100px' }}
+      >
+        Borrow
+      </Button>
     </form>
   );
 }

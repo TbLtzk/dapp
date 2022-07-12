@@ -46,6 +46,7 @@ function Modal ({
             <div className="q-modal-dialog block">
               <Button
                 icon
+                alwaysEnabled
                 className="q-modal-close"
                 look="ghost"
                 onClick={onClose}

@@ -25,11 +25,12 @@ import {
   getOwnStake,
   getTotalStake,
 } from 'store/validators/action-creators';
-import { compoundRateKeeperExistsSelector } from 'store/validators/selectors';
+import { compoundRateKeeperExistsSelector, isUserValidator } from 'store/validators/selectors';
 
 function StakerRewardPool () {
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
+  const isValidator = useSelector(isUserValidator);
   const compoundRateKeeperExists = useSelector(compoundRateKeeperExistsSelector);
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -53,15 +54,15 @@ function StakerRewardPool () {
   return (
     <>
       <Tooltip
+        disabled={isValidator}
         trigger={
           <Button
-            disabled={compoundRateKeeperExists}
+            disabled={!isValidator || !compoundRateKeeperExists}
             onClick={handleModalOpen}
           >
             Manage Staker Reward Pool
           </Button>
         }
-        disabled={!compoundRateKeeperExists}
       >
         Only available for Validators
       </Tooltip>

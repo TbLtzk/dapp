@@ -73,7 +73,7 @@ function Routes () {
             top: '80px',
             left: 'unset',
             right: '24px',
-            gap: '16px',
+            gap: '12px',
           }}
         >
           <Switch>

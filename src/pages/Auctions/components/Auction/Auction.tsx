@@ -41,12 +41,9 @@ function Auction ({ match, }: RouteComponentProps<{
   const loadOneAuction = async () => {
     try {
       const result = await getAuction(auctionType, match.params);
-      // @ts-ignore
-      if (result?.error) {
-        // @ts-ignore
+      if ('error' in result && result?.error) {
         setAuctionError(result?.error);
       }
-      // @ts-ignore
       setAuction(result);
     } catch (error) {
       setAuctionError(error);

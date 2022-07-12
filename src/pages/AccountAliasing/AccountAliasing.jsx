@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
+import Modal from 'ui/Modal';
 
-import ModalWindow from 'components/Base/ModalWindow';
 import PageWrap from 'components/Base/PageWrap';
 
 import AddressForm from './components/AddressForm';
@@ -15,6 +15,8 @@ import ReserveForm from './components/ReserveForm';
 import { getAliases, getAliasEvents } from 'store/account-aliases/action-creators';
 import { successMessageSelector } from 'store/transaction-handler/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
+
+import { trimAddress } from 'func/useful';
 
 function AccountAliasing () {
   const dispatch = useDispatch();
@@ -62,21 +64,24 @@ function AccountAliasing () {
         onSubmit={refreshAddress}
       />
 
-      <ModalWindow
-        show={selectedAlias !== null}
-        modalTitle="Update alias"
-        width="420px"
-        content={<AliasForm alias={selectedAlias || {}} />}
-        onHide={() => setSelectedAlias(null)}
-      />
+      <Modal
+        open={selectedAlias !== null}
+        title="Update alias"
+        width={440}
+        onClose={() => setSelectedAlias(null)}
+      >
+        <AliasForm alias={selectedAlias || {}} />
+      </Modal>
 
-      <ModalWindow
-        show={isReserveModalShown}
-        modalTitle="Reserve alias"
-        width="420px"
-        content={<ReserveForm address={currentAddress} />}
-        onHide={() => setIsReserveModalShown(false)}
-      />
+      <Modal
+        open={isReserveModalShown}
+        title="Reserve alias"
+        tip={`You can reserve your current address (${trimAddress(userAddress)}) as an alias for some main account`}
+        width={440}
+        onClose={() => setIsReserveModalShown(false)}
+      >
+        <ReserveForm address={currentAddress} />
+      </Modal>
 
       <AliasesTable
         address={currentAddress}

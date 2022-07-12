@@ -42,8 +42,13 @@ export const ModalContainer = styled(motion.div)<{ $width: number }>`
   }
 
   .q-modal-content {
+    margin: 0 -24px;
+    padding: 0 24px;
     border: none;
     margin-top: 24px;
     background-color: transparent;
+    max-height: 75vh;
+    overflow-y: auto;
+    overflow-x: overlay;
   }
 `;

@@ -10,7 +10,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   disabled?: boolean
 }
 
-function PopperTooltip ({
+function Tooltip ({
   placement = 'top',
   trigger,
   disabled = false,
@@ -76,4 +76,4 @@ function PopperTooltip ({
   );
 }
 
-export default PopperTooltip;
+export default Tooltip;

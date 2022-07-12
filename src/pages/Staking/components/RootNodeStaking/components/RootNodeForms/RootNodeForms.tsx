@@ -8,7 +8,7 @@ import useMetamaskReset from 'hooks/useMetamaskReset';
 
 import { FORM_TYPES } from '../RootNodeMenu/RootNodeMenu';
 
-import { userBalance } from 'store/q-vault/selectors';
+import { accountBalance } from 'store/q-vault/selectors';
 import { setRootAnnounceWithdrawal, setRootStakeToPanel, setRootWithdraw } from 'store/root-node/action-creators';
 import { rootNodeStake, withdrawals } from 'store/root-node/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
@@ -28,13 +28,13 @@ function RootNodeForms ({ formType, onReset }: Props) {
   const userAddress = useSelector(userAddressMetamask);
   const amountNodeStake = useSelector(rootNodeStake);
   const withdrawalInfo = useSelector(withdrawals);
-  const userQVBalance = useSelector(userBalance);
+  const userBalance = useSelector(accountBalance);
 
   const getMaxAmount = () => {
     const withdrawalAmount = fromWei(withdrawalInfo.amount);
     switch (formType) {
       case FORM_TYPES.stakeToRanking:
-        return userQVBalance;
+        return userBalance;
       case FORM_TYPES.announceWithdrawal:
         return BN(amountNodeStake).plus(BN(withdrawalAmount)).toString();
       case FORM_TYPES.withdrawFromRanking:
@@ -71,6 +71,10 @@ function RootNodeForms ({ formType, onReset }: Props) {
         type="number"
         label="Amount"
         placeholder="0.00"
+        hint={formType === FORM_TYPES.stakeToRanking && form.values.amount === getMaxAmount()
+          ? 'WARNING: No Q left for future transactions (gas)'
+          : ''
+        }
         max={getMaxAmount()}
       />
 

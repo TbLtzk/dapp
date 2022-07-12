@@ -1,4 +1,5 @@
-import PopperTooltip from 'components/Base/PopperTooltip';
+
+import Tooltip from 'ui/Tooltip';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -10,7 +11,7 @@ function AliasTooltip ({ alias = '' }) {
   const isAliasesEnabled = useFeatureFlag('aliases');
 
   return isAliasesEnabled && alias && (
-    <PopperTooltip trigger={<AliasIcon>A</AliasIcon>}>
+    <Tooltip trigger={<AliasIcon>A</AliasIcon>}>
       <TooltipContent>
         <span>This validator uses alias</span>
         <br />
@@ -23,7 +24,7 @@ function AliasTooltip ({ alias = '' }) {
         </div>
         <span> for block sealing </span>
       </TooltipContent>
-    </PopperTooltip>
+    </Tooltip>
   );
 }
 

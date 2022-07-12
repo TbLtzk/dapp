@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 
-import PopperTooltip from 'components/Base/PopperTooltip';
+import Tooltip from 'ui/Tooltip';
 
 import ExplorerAddress from '../ExplorerAddress';
 
@@ -21,7 +21,7 @@ function GnosisSafeTooltip ({ address }) {
   );
 
   return (
-    <PopperTooltip trigger={gnosisIcon}>
+    <Tooltip trigger={gnosisIcon}>
       <TooltipContent>
         <span>Gnosis Safe address:</span>
         <div className="tooltip-address">
@@ -40,7 +40,7 @@ function GnosisSafeTooltip ({ address }) {
           View on Gnosis Safe UI
         </a>
       </TooltipContent>
-    </PopperTooltip>
+    </Tooltip>
   );
 }
 

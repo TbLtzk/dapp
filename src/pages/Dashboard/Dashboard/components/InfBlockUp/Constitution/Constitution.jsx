@@ -52,7 +52,7 @@ function Constitution () {
           target="_blank"
           rel="noreferrer"
         >
-          <Button alwaysEnabled>
+          <Button alwaysEnabled look="secondary">
             <i className="mdi mdi-archive-outline" />
             <span>{t('CHECK_ARCHIVE')}</span>
           </Button>

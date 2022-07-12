@@ -1,4 +1,4 @@
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
 
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { uniqueId } from 'lodash';
@@ -7,7 +7,7 @@ import { CheckContainer } from './styles';
 
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   value: boolean
-  label?: string
+  label?: ReactNode
   disabled?: boolean
   onChange: (value: boolean) => void
 };
