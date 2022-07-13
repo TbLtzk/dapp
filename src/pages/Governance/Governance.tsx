@@ -72,7 +72,7 @@ function Governance () {
       pageHeader="Governance"
       pageButton={pathname !== RoutePaths.contractUpdates && (
         <Link to={pathToNewProposalPath[pathname] || RoutePaths.newQProposal}>
-          <Button>
+          <Button block>
             <Icon name="add" />
             <span>Create proposal</span>
           </Button>

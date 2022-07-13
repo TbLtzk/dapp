@@ -137,8 +137,12 @@ function AuctionStats () {
           ))}
         </div>
         <div className="buttons">
-          <Link to="/q-vault" tabIndex={-1}>
-            <Button alwaysEnabled look="secondary">
+          <Link to="/q-vault">
+            <Button
+              block
+              alwaysEnabled
+              look="secondary"
+            >
               Manage vault
             </Button>
           </Link>

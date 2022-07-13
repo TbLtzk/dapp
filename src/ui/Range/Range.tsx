@@ -6,6 +6,7 @@ import Input from 'ui/Input';
 import { RangeContainer } from './styles';
 
 import { formatNumber, formatPercent } from 'func/formatters';
+import { BN } from 'func/useful';
 
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   value: string
@@ -13,6 +14,7 @@ interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   label?: string
   error?: string
   disabled?: boolean
+  hideInput?: boolean
   formatter?: (value: string) => string
   onChange: (value: string, relativeValue: string) => void
 };
@@ -23,6 +25,7 @@ function Range ({
   label,
   error,
   disabled = false,
+  hideInput = false,
   formatter = formatNumber,
   onChange,
   ...rest
@@ -30,20 +33,22 @@ function Range ({
   const inputId = `range-${uniqueId()}`;
 
   const getAbsoluteValue = (val: string) => {
-    return String(Number(max) * (Number(val) || 0) / 100);
+    return BN(max)
+      .multipliedBy(BN(val || 0))
+      .dividedBy(100)
+      .toString();
   };
 
   const handleInputChange = (val: string) => {
-    onChange(
-      Number(val) > 100 ? '100' : formatNumber(val, 1) || '0',
-      getAbsoluteValue(val)
-    );
+    const percent = Number(val) > 100 ? '100' : formatNumber(val, 1) || '0';
+    onChange(percent, getAbsoluteValue(val));
   };
 
   return (
     <RangeContainer
       $disabled={disabled}
-      $percent={Number(value)}
+      $percent={Number(value) || 0}
+      $hideInput={hideInput}
       {...rest}
     >
       <label
@@ -78,15 +83,17 @@ function Range ({
           />
         </div>
 
-        <Input
-          value={value || '0'}
-          type="number"
-          step={0.1}
-          disabled={disabled}
-          onChange={handleInputChange}
-        >
-          %
-        </Input>
+        {!hideInput && (
+          <Input
+            value={value || '0'}
+            type="number"
+            step={0.1}
+            disabled={disabled}
+            onChange={handleInputChange}
+          >
+            %
+          </Input>
+        )}
       </div>
 
       {error && (

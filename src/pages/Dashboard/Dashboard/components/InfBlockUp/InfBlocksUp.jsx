@@ -41,7 +41,11 @@ function InfBlocksUp () {
           </div>
         </div>
         <Link to="/governance">
-          <Button alwaysEnabled look="secondary">
+          <Button
+            block
+            alwaysEnabled
+            look="secondary"
+          >
             <i className="mdi mdi-arrow-right" />
             <span>{t('GO_TO_GOVERNANCE')}</span>
           </Button>

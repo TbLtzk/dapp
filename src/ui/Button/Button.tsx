@@ -19,6 +19,7 @@ interface Props extends HTMLAttributes<HTMLButtonElement> {
   compact?: boolean;
   loading?: boolean;
   active?: boolean;
+  block?: boolean;
   onClick?: (e: MouseEventHandler<HTMLButtonElement> | any) => void;
 }
 
@@ -31,6 +32,7 @@ function Button ({
   compact = false,
   loading = false,
   active = false,
+  block = false,
   children,
   className,
   onClick = () => {},
@@ -42,6 +44,7 @@ function Button ({
   return (
     <StyledButton
       className={`text-md font-semibold ${className || ''}`}
+      as={block ? 'div' : 'button'}
       type={type}
       disabled={!alwaysEnabled && isDisabled}
       $look={look}
@@ -49,7 +52,7 @@ function Button ({
       $compact={compact}
       loading={String(loading)}
       data-active={String(active)}
-      tabIndex={loading ? -1 : 0}
+      tabIndex={loading || block ? -1 : 0}
       onClick={onClick}
       {...rest}
     >

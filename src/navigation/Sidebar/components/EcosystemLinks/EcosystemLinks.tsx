@@ -31,13 +31,16 @@ function EcosystemLinks () {
       {links.map(({ href, icon }) => (
         <a
           key={href}
-          tabIndex={-1}
           className="ecosystem-link"
           target="_blank"
           href={href}
           rel="noreferrer"
         >
-          <Button icon look="ghost">
+          <Button
+            block
+            icon
+            look="ghost"
+          >
             <Icon name={icon} className="ecosystem-link-icon" />
           </Button>
         </a>

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Button from 'components/Base/Button';
-import VoterStatus from 'components/Custom/PageLists/VoterStatus';
+import VoterStatus from 'components/Custom/VoterStatus';
 
 import useVoteDelegation from 'hooks/useVoteDelegation';
 
@@ -58,7 +58,11 @@ function VotingStats () {
         <h1 className="stats-title">Voting Stats</h1>
         <div className="stats-actions">
           <Link to="/q-vault">
-            <Button alwaysEnabled look="white">
+            <Button
+              block
+              alwaysEnabled
+              look="white"
+            >
               Manage vault
             </Button>
           </Link>

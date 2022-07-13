@@ -74,7 +74,7 @@ function Input ({
           id={inputId}
           className="text-md"
           value={String(value)}
-          type={type}
+          type={type === 'number' ? 'text' : type}
           inputMode={type === 'number' ? 'decimal' : 'text'}
           autoComplete="off"
           disabled={isDisabled}

@@ -36,6 +36,7 @@ function RootNodesBlock () {
 
         <Link to="/staking/root-node-staking">
           <Button
+            block
             compact
             alwaysEnabled
             look="ghost"
