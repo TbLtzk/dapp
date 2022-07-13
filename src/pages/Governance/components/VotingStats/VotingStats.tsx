@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import Button from 'ui/Button';
 
-import VoterStatus from 'components/Custom/PageLists/VoterStatus';
+import VoterStatus from 'components/Custom/VoterStatus';
 
 import useVoteDelegation from 'hooks/useVoteDelegation';
 
@@ -68,8 +68,12 @@ function VotingStats () {
     <StatsContainer className="block">
       <div className="stats-head">
         <h2 className="text-h2">Voting Stats</h2>
-        <Link to="/q-vault" tabIndex={-1}>
-          <Button alwaysEnabled look="secondary">
+        <Link to="/q-vault">
+          <Button
+            block
+            alwaysEnabled
+            look="secondary"
+          >
             Manage vault
           </Button>
         </Link>

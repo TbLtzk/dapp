@@ -24,14 +24,22 @@ function Dashboard () {
       pageButton={
         <div style={{ display: 'flex', gap: '8px' }}>
           <Link to="/monitoring">
-            <Button alwaysEnabled look="secondary">
+            <Button
+              block
+              alwaysEnabled
+              look="secondary"
+            >
               <i className="mdi mdi-monitor-dashboard" />
               <span>{t('MONITORING')}</span>
             </Button>
           </Link>
 
           <Link to="/q-parameters">
-            <Button alwaysEnabled look="secondary">
+            <Button
+              block
+              alwaysEnabled
+              look="secondary"
+            >
               <i className="mdi mdi-text-box-search" />
               <span>{t('Q_PARAMETERS')}</span>
             </Button>

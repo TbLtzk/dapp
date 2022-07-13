@@ -5,6 +5,7 @@ import { getRangeColor } from './colors';
 export const RangeContainer = styled.div<{
   $disabled: boolean
   $percent: number
+  $hideInput: boolean
 }>`
   position: relative;
   display: grid;
@@ -20,7 +21,7 @@ export const RangeContainer = styled.div<{
 
   .range-wrapper {
     display: grid;
-    grid-template-columns: 1fr minmax(80px, 10%);
+    grid-template-columns: ${({ $hideInput }) => $hideInput ? '1fr' : '1fr minmax(80px, 10%)'};
     gap: 12px;
   }
 

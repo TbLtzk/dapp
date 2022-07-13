@@ -36,6 +36,7 @@ function ValidatorsBlock () {
 
         <Link to="/staking/validator-staking">
           <Button
+            block
             compact
             alwaysEnabled
             look="ghost"

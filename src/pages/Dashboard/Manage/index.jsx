@@ -26,7 +26,11 @@ function ManageParameters () {
             onChange={() => setIsSimplifiedMode(!isSimplifiedMode)}
           />
           <Link to="/">
-            <Button alwaysEnabled look="secondary">
+            <Button
+              block
+              alwaysEnabled
+              look="secondary"
+            >
               <Icon name="dashboard" />
               <span>Dashboard</span>
             </Button>

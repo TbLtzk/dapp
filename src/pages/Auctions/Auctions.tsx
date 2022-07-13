@@ -68,7 +68,7 @@ function Auctions () {
       pageHeader="Auctions"
       pageButton={
         <Link to={pathToNewAuctionPath[pathname] || RoutePaths.newLiquidation}>
-          <Button>
+          <Button block>
             <Icon name="add" />
             <span>Create auction</span>
           </Button>
