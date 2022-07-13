@@ -25,13 +25,15 @@ function Dashboard () {
         <div style={{ display: 'flex', gap: '8px' }}>
           <Link to="/monitoring">
             <Button alwaysEnabled look="secondary">
-              {t('MONITORING')}
+              <i className="mdi mdi-monitor-dashboard" />
+              <span>{t('MONITORING')}</span>
             </Button>
           </Link>
 
           <Link to="/q-parameters">
             <Button alwaysEnabled look="secondary">
-              {t('Q_PARAMETERS')}
+              <i className="mdi mdi-text-box-search" />
+              <span>{t('Q_PARAMETERS')}</span>
             </Button>
           </Link>
         </div>

@@ -35,7 +35,7 @@ function ProvideInfoStep ({ reserveLot }: Props) {
       <Input
         {...form.fields.bid}
         type="number"
-        label={'Provide your initial Bid in Q'}
+        label={'Provide your initial Bid in QUSD'}
         placeholder="Bid"
       />
     </FormStep>
