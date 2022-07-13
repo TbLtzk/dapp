@@ -37,7 +37,7 @@ function ConfirmStep () {
         onAction={() => updateStep(0)}
       >
         <p className="text-lg">
-          {values.vaultId}
+          # {values.vaultId}
         </p>
       </FormBlock>
 

@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 
 import Input from 'ui/Input';
 
@@ -8,13 +7,10 @@ import useForm from 'hooks/useForm';
 
 import { useLiquidationAuctionForm } from '../NewLiquidationAuction';
 
-import { symbol } from 'store/stable-coin/selectors';
-
 import { MAX_BID_AMOUNT } from 'constants/numbers';
 import { address, max, required, vaultID } from 'func/validators';
 
 function ProvideInfoStep () {
-  const symbolType = useSelector(symbol);
   const { goNext } = useLiquidationAuctionForm();
 
   const form = useForm({
@@ -41,7 +37,7 @@ function ProvideInfoStep () {
       />
       <Input
         {...form.fields.bid}
-        label={`Provide your initial Bid in ${symbolType}`}
+        label={'Provide your initial Bid in QUSD'}
         placeholder="Bid"
       />
     </FormStep>

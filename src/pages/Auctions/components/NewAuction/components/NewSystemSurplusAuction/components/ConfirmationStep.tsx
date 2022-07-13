@@ -24,7 +24,7 @@ function ConfirmStep ({ surplusLot }: Props) {
         title="Auction lot"
       >
         <p className="text-lg">
-          {surplusLot} Q
+          {surplusLot} QUSD
         </p>
       </FormBlock>
 
@@ -34,7 +34,7 @@ function ConfirmStep ({ surplusLot }: Props) {
         onAction={() => updateStep(0)}
       >
         <p className="text-lg">
-          {values.bid} QUSD
+          {values.bid} Q
         </p>
       </FormBlock>
 

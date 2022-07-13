@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 
 import Input from 'ui/Input';
 
@@ -9,8 +8,6 @@ import useForm from 'hooks/useForm';
 
 import { useSystemSurplusAuctionForm } from '../NewSystemSurplusAuction';
 
-import { symbol } from 'store/stable-coin/selectors';
-
 import { MAX_BID_AMOUNT } from 'constants/numbers';
 import { max, required } from 'func/validators';
 
@@ -19,8 +16,6 @@ interface Props {
 }
 
 function ProvideInfoStep ({ surplusLot }: Props) {
-  const symbolType = useSelector(symbol);
-
   const { goNext } = useSystemSurplusAuctionForm();
 
   const form = useForm({
@@ -33,7 +28,7 @@ function ProvideInfoStep ({ surplusLot }: Props) {
     <FormStep disabled={!form.isValid} onNext={form.submit}>
       <FormBlock title="Auction Lot">
         <p className="text-lg">
-          {surplusLot} {symbolType}
+          {surplusLot} QUSD
         </p>
       </FormBlock>
 
