@@ -15,6 +15,10 @@ import {
 } from './action-creators';
 import * as actionTypes from './action-types';
 
+import { getAccountBalance, getUserBalance } from 'store/q-vault/action-creators';
+import { getSavingAviableToDeposit } from 'store/saving-assets/action-creators';
+import { getSymbol } from 'store/stable-coin/action-creators';
+import { getAvailableAmount, getSystemReserveBalance } from 'store/system-reserve/action-creators';
 import { setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/action-creators';
 
 import { getSystemBalanceInstance } from 'contracts/contract-instance';
@@ -65,6 +69,13 @@ function* onPerformNettingGenerator () {
     yield put(getSystemBalance());
     yield put(getDebt());
     yield put(getSurplus());
+
+    yield put(getAccountBalance(userAddress));
+    yield put(getAvailableAmount());
+    yield put(getSavingAviableToDeposit());
+    yield put(getUserBalance(userAddress));
+    yield put(getSymbol());
+    yield put(getSystemReserveBalance());
 
     yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {

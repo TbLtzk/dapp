@@ -6,16 +6,17 @@ type AuctionType = keyof typeof AUCTIONS_TYPES;
 
 interface AuctionCompletedInfo {
   lot: number | string;
+  lotAsset: string;
   highestBid: string | number;
   raisingBid: string | number;
   bid: string | number;
+  bidAsset: string;
   bidder: string;
   status: string;
   state: TagState;
   endTime: string;
   isBidTime: boolean;
   isAuctionEnded: boolean;
-  asset: string;
 }
 
 interface LiquidationCompletedInfo extends AuctionCompletedInfo {
@@ -28,12 +29,10 @@ interface LiquidationCompletedInfo extends AuctionCompletedInfo {
 
 interface SystemDebtCompletedInfo extends AuctionCompletedInfo {
   auctionId: string | number;
-  lotAsset: string;
   auctionType: 'systemDebt';
 }
 
 interface SystemSurplusCompletedInfo extends AuctionCompletedInfo {
-  lotAsset: string;
   auctionId: string | number;
   auctionType: 'systemSurplus';
 }

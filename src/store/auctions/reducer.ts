@@ -1,9 +1,12 @@
 
+import { isEqual, uniqWith } from 'lodash';
 import { AuctionInfos, AuctionType } from 'typings/auctions';
 
 import * as types from './types';
 
 import { countActiveAuctions } from 'contracts/helpers/auction';
+
+import { groupArrayByBlockNumber } from 'func/useful';
 
 interface AuctionItem {
   auctions: AuctionInfos[]
@@ -29,7 +32,7 @@ export default function auctions (state = initialState, action: types.AuctionAct
       return {
         ...state,
         [auctionType]: {
-          auctions: newAuctions,
+          auctions: uniqWith(groupArrayByBlockNumber(newAuctions), isEqual),
           activeCount: countActiveAuctions(newAuctions),
           lastBlock: lastActiveBlock,
           isLoading: false,

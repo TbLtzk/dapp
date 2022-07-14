@@ -16,7 +16,6 @@ export function prepareAuctionData (
 ): SystemSurplusCompletedInfo {
   const completedInfo = {} as SystemSurplusCompletedInfo;
   if (!event) return completedInfo;
-
   const status = getStatusTransformation(info.status);
 
   completedInfo.auctionType = AUCTIONS_TYPES.systemSurplus;
@@ -26,9 +25,15 @@ export function prepareAuctionData (
   completedInfo.bid = fromWei(event.bid);
 
   completedInfo.lot = fromWei(info.lot);
+
+  completedInfo.bidAsset = 'Q';
+  completedInfo.lotAsset = 'QUSD';
+
   completedInfo.endTime = dateToTimestamp(info.endTime);
   completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0;
-  completedInfo.status = getAuctionStatusState(status as keyof typeof AuctionStatus);
+  completedInfo.status = capitalize(status);
+  completedInfo.state = getAuctionStatusState(status as keyof typeof AuctionStatus);
+
   completedInfo.highestBid = fromWei(info.highestBid);
 
   completedInfo.isBidTime = Number(dateToTimestamp(info.endTime)) >= Number(getNowTimestamp());

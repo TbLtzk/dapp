@@ -22,6 +22,9 @@ function prepareSystemDebtAuctionInfo (
   const completedInfo = {} as SystemDebtCompletedInfo;
   const status = getStatusTransformation(info.status);
 
+  completedInfo.bidAsset = 'QUSD';
+  completedInfo.lotAsset = 'Q';
+
   completedInfo.auctionType = AUCTIONS_TYPES.systemDebt;
   completedInfo.auctionId = auctionId;
   completedInfo.bid = info.highestBid;
@@ -29,11 +32,9 @@ function prepareSystemDebtAuctionInfo (
   completedInfo.endTime = dateToTimestamp(info.endTime);
   completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0;
   completedInfo.status = capitalize(status);
-  completedInfo.asset = 'QUSD';
   completedInfo.state = getAuctionStatusState(status as keyof typeof AuctionStatus);
   completedInfo.highestBid = fromWei(info.highestBid);
   completedInfo.lot = fromWei(info.lot);
-  completedInfo.lotAsset = 'Q';
   completedInfo.isBidTime = Number(dateToTimestamp(info.endTime)) >= Number(getNowTimestamp());
   completedInfo.isAuctionEnded = (info.status as AuctionStatus) === '2';
 
