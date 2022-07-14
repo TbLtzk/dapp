@@ -29,13 +29,15 @@ async function prepareLiquidationAuctionInfo (
   const vault = await borrowingCoreInstance.userVaults(auctionEvent.vaultOwner, auctionEvent.vaultId);
   const status = getStatusTransformation(info.status);
 
+  completedInfo.lotAsset = 'QUSD';
+  completedInfo.bidAsset = 'QUSD';
+
   completedInfo.auctionType = AUCTIONS_TYPES.liquidation;
   completedInfo.bidder = info.bidder;
   completedInfo.vaultOwner = auctionEvent.vaultOwner;
   completedInfo.vaultId = auctionEvent.vaultId;
   completedInfo.colKey = vault.colKey;
   completedInfo.endTime = info.endTime.toString();
-  completedInfo.asset = 'QUSD';
   completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0;
   completedInfo.highestBid = fromWei(info.highestBid);
   completedInfo.colAsset = fromBtcBlockchain(vault.colAsset);

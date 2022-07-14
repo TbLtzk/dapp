@@ -74,7 +74,7 @@ function* getAllAuctionsGenerator () {
   yield* put(getAuctions('liquidation'));
   yield* put(getAuctions('systemDebt'));
   yield* put(getAuctions('systemSurplus'));
-  yield* delay(2400000);
+  yield* delay(240000);
   yield* put(getAllAuctions());
 }
 

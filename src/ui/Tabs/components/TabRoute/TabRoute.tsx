@@ -7,17 +7,18 @@ const tabsVariants = {
   initial: {
     opacity: 0,
     height: '200vh',
-    y: 20
+    y: 30
   },
   animate: {
     opacity: 1,
     y: 0,
-    height: '100%'
+    minHeight: '35vh',
+    height: 'auto'
   },
   exit: {
     opacity: 0,
     height: '200vh',
-    x: 20,
+    y: 30
   },
 };
 
@@ -34,7 +35,7 @@ const TabRoute = ({ children, exact, path }: Props) => (
       animate="animate"
       exit="exit"
       variants={tabsVariants}
-      transition={{ type: 'easeOut', duration: 0.15 }}
+      transition={{ type: 'easeInOut', duration: 0.15 }}
     >
       {children}
     </motion.div>

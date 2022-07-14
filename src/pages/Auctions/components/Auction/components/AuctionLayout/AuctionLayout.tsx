@@ -33,7 +33,7 @@ function AuctionLayout ({ auction }: Props) {
         <div className="auction-card__row">
           <p className="color-secondary text-md">Highest Bid</p>
           <h4 className="color-primary text-lg">
-            {auction.highestBid} {auction.asset}
+            {auction.highestBid} {auction.bidAsset}
           </h4>
         </div>
 
@@ -42,7 +42,7 @@ function AuctionLayout ({ auction }: Props) {
             <div className="auction-card__row">
               <p className="color-secondary text-md ">Minimum Bid</p>
               <h4 className="color-primary text-lg">
-                {auction.raisingBid} {auction.asset}
+                {auction.raisingBid} {auction.bidAsset}
               </h4>
             </div>
           )
@@ -79,7 +79,7 @@ function AuctionLayout ({ auction }: Props) {
             <div className="auction-card__row">
               <p className="color-secondary text-md">Lot</p>
               <h4 className="color-primary text-lg">
-                {auction.lot} {auction.asset}
+                {auction.lot} {auction.lotAsset}
               </h4>
             </div>
           </>

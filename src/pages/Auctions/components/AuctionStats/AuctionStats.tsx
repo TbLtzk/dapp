@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import Button from 'ui/Button';
 
@@ -13,7 +12,7 @@ import { accountBalance, userBalance } from 'store/q-vault/selectors';
 import { getSavingAviableToDeposit } from 'store/saving-assets/action-creators';
 import { savingAviableToDepositSelector } from 'store/saving-assets/selectors';
 import { getSymbol } from 'store/stable-coin/action-creators';
-import { getDebt, getSurplus, getSystemBalance } from 'store/system-balance/action-creators';
+import { getDebt, getSurplus, getSystemBalance, onPerformNetting } from 'store/system-balance/action-creators';
 import { debtSB, loadingPerformNetting, surplusSB, systemBalanceSB } from 'store/system-balance/selectors';
 import { getAvailableAmount, getSystemReserveBalance } from 'store/system-reserve/action-creators';
 import { availableAmountSR, reserveBalanceSelector } from 'store/system-reserve/selectors';
@@ -42,6 +41,17 @@ function AuctionStats () {
   const [reserveLot, setReserveLot] = useState<string | number>('0');
 
   useEffect(() => {
+    if (!loadingPerfNetting) {
+      getEPDRUint('governed.EPDR.reserveLot')
+        .then((value) => setReserveLot(value))
+        .catch((err) => setReserveLot(err.message));
+      getEPDRUint('governed.EPDR.QUSD_surplusLot')
+        .then((value) => setSurplusLot(value))
+        .catch((err) => setSurplusLot(err.message));
+    }
+  }, [loadingPerfNetting, dispatch]);
+
+  useEffect(() => {
     dispatch(getSurplus());
     dispatch(getDebt());
     dispatch(getAccountBalance(userAddress));
@@ -52,18 +62,11 @@ function AuctionStats () {
     dispatch(getSymbol());
     dispatch(getSystemReserveBalance());
 
-    getEPDRUint('governed.EPDR.reserveLot')
-      .then((value) => setReserveLot(value))
-      .catch((err) => setReserveLot(err.message));
-    getEPDRUint('governed.EPDR.QUSD_surplusLot')
-      .then((value) => setSurplusLot(value))
-      .catch((err) => setSurplusLot(err.message));
-
     return () => {
       setSurplusLot('0');
       setReserveLot('0');
     };
-  }, [dispatch, loadingPerfNetting]);
+  }, [dispatch]);
 
   const statsData = useMemo(() => {
     return [
@@ -137,15 +140,13 @@ function AuctionStats () {
           ))}
         </div>
         <div className="buttons">
-          <Link to="/q-vault">
-            <Button
-              block
-              alwaysEnabled
-              look="secondary"
-            >
-              Manage vault
-            </Button>
-          </Link>
+          <Button
+            loading={loadingPerfNetting}
+            look="secondary"
+            onClick={() => dispatch(onPerformNetting())}
+          >
+            Perform Netting
+          </Button>
         </div>
       </StatsContainer>
 

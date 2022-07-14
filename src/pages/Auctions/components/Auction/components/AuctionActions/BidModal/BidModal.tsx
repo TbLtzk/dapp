@@ -116,7 +116,7 @@ function BidModal ({ modalOpen, auction, onHide, }:Props) {
         <Input
           {...form.fields.bid}
           type="number"
-          label={`${bidTitle} (minimum: ${auction.raisingBid} ${auction.asset})`}
+          label={`${bidTitle} (minimum: ${auction.raisingBid} ${auction.bidAsset})`}
           placeholder="Bid"
           onChange={handleBidChange}
         />
