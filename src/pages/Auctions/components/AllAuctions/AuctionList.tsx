@@ -22,7 +22,7 @@ function AllAuctions ({ auctionType }: { auctionType: AuctionType }) {
 
   const { auctions, isLoading } = useSelector(auctionsByTypeSelector(auctionType));
 
-  const [list, setList] = useState<any>([]);
+  const [list, setList] = useState<AuctionInfos[]>([]);
   const [offset, setOffset] = useState(PAGE_LIMIT);
 
   useEffect(() => {
@@ -52,21 +52,14 @@ function AllAuctions ({ auctionType }: { auctionType: AuctionType }) {
   }
 
   if (!auctions.length) {
-    return (
-      <EmptyList className="text-xl font-semibold">
-        No auctions found
-      </EmptyList>
-    );
+    return <EmptyList className="text-xl font-semibold">No auctions found</EmptyList>;
   }
 
   return (
     <>
       <ListWrapper>
-        {list.map((auction: AuctionInfos, idx: any) => (
-          <AuctionCard
-            key={idx}
-            auction={auction}
-          />
+        {list.map((auction: AuctionInfos) => (
+          <AuctionCard key={auction.slug} auction={auction} />
         ))}
       </ListWrapper>
       {list.length < auctions.length && (
