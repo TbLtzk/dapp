@@ -12,8 +12,7 @@ const tabsVariants = {
   animate: {
     opacity: 1,
     y: 0,
-    minHeight: '35vh',
-    height: 'auto'
+    height: 'auto',
   },
   exit: {
     opacity: 0,
