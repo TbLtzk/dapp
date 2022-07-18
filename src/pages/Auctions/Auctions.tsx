@@ -11,11 +11,7 @@ import PageWrap from 'components/Base/PageWrap';
 import AllAuctions from './components/AllAuctions';
 import AuctionStats from './components/AuctionStats';
 
-import {
-  liquidationSelector,
-  systemDebtSelector,
-  systemSurplusSelector,
-} from 'store/auctions/selectors';
+import { liquidationSelector, systemDebtSelector, systemSurplusSelector } from 'store/auctions/selectors';
 
 import { AUCTIONS_TYPES } from 'contracts/helpers/auction';
 
@@ -62,7 +58,6 @@ function Auctions () {
   };
 
   const redirectTab = tabs.find((tab) => tab.count > 0) || tabs[0];
-
   return (
     <PageWrap
       pageHeader="Auctions"
