@@ -15,7 +15,7 @@ import { AUCTIONS_TYPES, ERROR_TYPES, getAllowance, getAuctionsEvents, getStatus
 import { getBorrowingCoreInstance, getLiquidationAuctionInstance } from 'contracts/contract-instance';
 
 import { fromBtcBlockchain, fromWei, toWei } from 'func/balance';
-import { dateToTimestamp, getNowTimestamp } from 'func/convertDate';
+import { getNowTimestamp } from 'func/convertDate';
 
 async function prepareLiquidationAuctionInfo (
   info: SdkLiquidationAuctionInfo,
@@ -44,7 +44,7 @@ async function prepareLiquidationAuctionInfo (
   completedInfo.state = getAuctionStatusState(status as keyof typeof AuctionStatus);
   completedInfo.status = capitalize(status);
 
-  completedInfo.isBidTime = Number(dateToTimestamp(info.endTime)) >= Number(getNowTimestamp());
+  completedInfo.isBidTime = Number(info.endTime) >= Number(getNowTimestamp());
   completedInfo.isAuctionEnded = (info.status as AuctionStatus) === '2';
 
   return completedInfo;
