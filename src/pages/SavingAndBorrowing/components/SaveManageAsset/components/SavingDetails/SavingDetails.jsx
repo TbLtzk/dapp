@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { SavingDetailsContainer } from './styles';
@@ -7,41 +8,43 @@ import { savingAviableToDepositSelector, savingBalanceDetailsSelector } from 'st
 import { fN } from 'func/useful';
 
 function SavingDetails ({ depositAsset, interestAsset }) {
+  const { t } = useTranslation();
+
   const availableToDeposit = useSelector(savingAviableToDepositSelector);
   const { interestRate, currentBalance, estimatedInterest } =
     useSelector(savingBalanceDetailsSelector);
 
   const detailsGroups = [
     {
-      title: 'Deposit',
+      title: t('DEPOSIT'),
       items: [
         {
-          name: 'Asset',
+          name: t('ASSET'),
           value: depositAsset
         },
         {
-          name: 'Saving Balance',
+          name: t('SAVING_BALANCE'),
           value: fN(currentBalance)
         },
         {
-          name: 'Available to Deposit',
+          name: t('AVAILABLE_TO_DEPOSIT'),
           value: fN(availableToDeposit)
         }
       ]
     },
     {
-      title: 'Interest',
+      title: t('INTEREST'),
       items: [
         {
-          name: 'Receive Asset',
+          name: t('RECEIVE_ASSET'),
           value: interestAsset
         },
         {
-          name: 'Yearly Expected Reward',
+          name: t('YEARLY_EXPECTED_REWARD'),
           value: fN(estimatedInterest)
         },
         {
-          name: 'Saving Reward (p.a)',
+          name: t('SAVING_REWARD'),
           value: `${fN(interestRate)}%`
         }
       ]

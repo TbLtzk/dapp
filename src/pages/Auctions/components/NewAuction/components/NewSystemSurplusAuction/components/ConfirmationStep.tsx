@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import FormBlock from 'components/FormBlock';
 import { FormStep } from 'components/MultiStepForm';
 
@@ -7,21 +9,18 @@ interface Props {
   surplusLot: number | string;
 }
 function ConfirmStep ({ surplusLot }: Props) {
+  const { t } = useTranslation();
   const { values, goBack, confirm, updateStep } = useSystemSurplusAuctionForm();
 
   return (
     <FormStep onConfirm={confirm} onBack={goBack}>
 
-      <FormBlock
-        title="Auction type"
-      >
-        <p className="text-lg">
-          System Surplus Auction
-        </p>
+      <FormBlock title={t('AUCTION_TYPE')}>
+        <p className="text-lg"> {t('SYSTEM_SURPLUS_AUCTION')}</p>
       </FormBlock>
 
       <FormBlock
-        title="Auction lot"
+        title={t('AUCTION_LOT')}
       >
         <p className="text-lg">
           {surplusLot} QUSD
@@ -30,7 +29,7 @@ function ConfirmStep ({ surplusLot }: Props) {
 
       <FormBlock
         icon="edit"
-        title="Bid"
+        title={t('BID')}
         onAction={() => updateStep(0)}
       >
         <p className="text-lg">

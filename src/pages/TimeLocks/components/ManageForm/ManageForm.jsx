@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -15,6 +16,7 @@ import { required } from 'func/validators';
 
 function ManageForm ({ contract, address }) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const form = useForm({
     initialValues: {
@@ -45,7 +47,9 @@ function ManageForm ({ contract, address }) {
           invertedColors
           selectsStart
           selectsEnd={false}
-          label="Start date"
+          label={t(
+            'START_DATE'
+          )}
           startDate={form.values.startDate}
           endDate={form.values.endDate}
           minDate={new Date()}
@@ -54,7 +58,7 @@ function ManageForm ({ contract, address }) {
           {...form.fields.endDate}
           invertedColors
           selectsEnd
-          label="End Date"
+          label={t('END_DATE')}
           selectsStart={false}
           disabled={!form.values.startDate}
           startDate={form.values.startDate}
@@ -66,7 +70,7 @@ function ManageForm ({ contract, address }) {
       <Input
         {...form.fields.amount}
         type="number"
-        label="Amount"
+        label={t('AMOUNT')}
         prefix="Q"
         placeholder="0.0"
       />
@@ -76,7 +80,7 @@ function ManageForm ({ contract, address }) {
         disabled={!form.isValid}
         style={{ width: '100%', marginTop: '8px' }}
       >
-        Deposit
+        {t('DEPOSIT')}
       </Button>
 
       <div className="balance-card-block">
@@ -85,7 +89,7 @@ function ManageForm ({ contract, address }) {
           style={{ width: '100%' }}
           onClick={() => dispatch(setPurgeTimeLocksAmount({ contract, address }))}
         >
-          Purge Expired Time Locks
+          {t('PURGE_EXPIRED_TIME_LOCKS')}
         </Button>
       </div>
     </form>

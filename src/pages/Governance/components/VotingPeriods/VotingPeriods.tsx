@@ -1,4 +1,5 @@
 import { HTMLAttributes } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Tooltip from 'ui/Tooltip';
 
@@ -12,6 +13,8 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 function VotingPeriods ({ proposal, ...rest }: Props) {
+  const { t, i18n } = useTranslation();
+
   const hasNoVeto = [
     CONTRACTS_NAMES.addressVoting,
     CONTRACTS_NAMES.upgradeVoting,
@@ -37,11 +40,11 @@ function VotingPeriods ({ proposal, ...rest }: Props) {
         placement="bottom"
         trigger={(
           <p className="text-md font-light">
-            {`${votingText} ${formatDateRelative(votingEndTime)}`}
+            {`${votingText} ${formatDateRelative(votingEndTime, i18n.language)}`}
           </p>
         )}
       >
-        {formatDate(votingEndTime)}
+        {formatDate(votingEndTime, i18n.language)}
       </Tooltip>
 
       <Tooltip
@@ -51,12 +54,12 @@ function VotingPeriods ({ proposal, ...rest }: Props) {
           <p className="text-md font-light">
             {hasNoVeto || !vetoEndTime
               ? 'No Veto'
-              : `${vetoText} ${formatDateRelative(vetoEndTime)}`
+              : `${vetoText} ${formatDateRelative(vetoEndTime, i18n.language)}`
             }
           </p>
         )}
       >
-        {formatDate(vetoEndTime)}
+        {formatDate(vetoEndTime, i18n.language)}
       </Tooltip>
     </VotingContainer>
   );

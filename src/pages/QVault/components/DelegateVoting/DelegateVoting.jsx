@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -18,6 +19,8 @@ import { fromWei } from 'func/balance';
 import { getNowTimestamp, remainDate } from 'func/convertDate';
 
 function DelegateVoting () {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   const address = useSelector(userAddressMetamask);
@@ -38,12 +41,12 @@ function DelegateVoting () {
   return (
     <CustomBlock>
       <h1>
-        <span>Delegate Voting Power</span>
+        <span>{t('DELEGATE_VOTING_POWER')}</span>
         <InfoTooltip topic="delegate-voting-power" />
       </h1>
-      <h5>Total Voting Weight</h5>
+      <h5>{t('TOTAL_VOTING_WEIGHT')}</h5>
       <p>{fromWei(weight)}</p>
-      <h5>Current agent</h5>
+      <h5>{t('CURRENT_AGENT')}</h5>
       <p>{delegateInfo}</p>
 
       {!isPending
@@ -51,20 +54,20 @@ function DelegateVoting () {
         : time - getNowTimestamp() > 0
           ? (
             <>
-              <h5>Delegation info</h5>
-              <h4>{`This delegation info is currently pending. It can be finalized after ${remainDate(time)}`}</h4>
+              <h5>{t('DELEGATION_INFO')}</h5>
+              <h4>{`${t('IT_CAN_BE_FINALIZED_AFTER')} ${remainDate(time)}`}</h4>
             </>
           )
           : (
             <div className="card_block">
               <div>
-                <h5>Confirm announced voting agent</h5>
-                <p style={{ marginBottom: 0 }}>This delegation info is currently pending. Need to confirm.</p>
+                <h5>{t('CONFIRM_ANNOUNCED_VOTING_AGENT')}</h5>
+                <p style={{ marginBottom: 0 }}>{t('THIS_DELEGATION_INFO_IS_CURRENTLY_PENDING')}</p>
               </div>
               <div>
                 <Button compact onClick={handleDelegate}>
                   <i className="mdi mdi-chart-pie" />
-                  <span>Confirm</span>
+                  <span>{t('CONFIRM')}</span>
                 </Button>
               </div>
             </div>

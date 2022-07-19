@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -12,6 +13,8 @@ import formTypes from 'constants/form-types';
 import { address, required } from 'func/validators';
 
 function AnnounceForm () {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   const form = useForm({
@@ -25,13 +28,13 @@ function AnnounceForm () {
 
   return (
     <form noValidate onSubmit={form.submit}>
-      <h3>Announce new voting agent</h3>
+      <h3>{t('ANNOUNCE_NEW_VOTING_AGENT')}</h3>
       <div className="card__one-line-simple-form">
         <Input
           {...form.fields.address}
-          label="Address"
+          label={t('ADDRESS')}
           placeholder="0x000"
-          hint="This will immediately reduce the voting weight of your voting agent for new voting"
+          hint={t('THIS_WILL_IMMEDIATELY_REDUCE_VOTING_WEIGHT')}
         />
         <Button
           type="submit"
@@ -39,7 +42,7 @@ function AnnounceForm () {
           style={{ width: '90px' }}
           disabled={!form.isValid}
         >
-          Announce
+          {t('ANNOUNCE')}
         </Button>
       </div>
     </form>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -12,6 +13,7 @@ import formTypes from 'constants/form-types';
 import { required } from 'func/validators';
 
 function VestingWithdrawForm () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const form = useForm({
@@ -33,7 +35,7 @@ function VestingWithdrawForm () {
       <Input
         {...form.fields.amount}
         type="number"
-        label="Amount"
+        label={t('AMOUNT')}
         prefix="Q"
         placeholder="0.0"
       />
@@ -42,7 +44,7 @@ function VestingWithdrawForm () {
         disabled={!form.isValid}
         style={{ marginTop: '33px' }}
       >
-        Withdraw
+        {t('WITHDRAW')}
       </Button>
     </form>
   );

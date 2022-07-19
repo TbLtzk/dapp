@@ -1,10 +1,13 @@
 
+import { useTranslation } from 'react-i18next';
+
 import FormBlock from 'components/FormBlock';
 import { FormStep } from 'components/MultiStepForm';
 
 import { useLiquidationAuctionForm } from '../NewLiquidationAuction';
 
 function ConfirmStep () {
+  const { t } = useTranslation();
   const { values, goBack, confirm, updateStep } = useLiquidationAuctionForm();
 
   return (
@@ -14,16 +17,16 @@ function ConfirmStep () {
     >
 
       <FormBlock
-        title="Auction type"
+        title={t('AUCTION_TYPE')}
       >
         <p className="text-lg">
-          Liquidation Auction
+          {t('LIQUDATION_AUCTION')}
         </p>
       </FormBlock>
 
       <FormBlock
         icon="edit"
-        title="Address of Vault Holder, which shall be Liquidated"
+        title={t('ADDRESS_OF_VAULT_HOLDER_WHICH_SHALL_BE_LIQUIDATED')}
         onAction={() => updateStep(0)}
       >
         <p className="text-lg">
@@ -33,7 +36,7 @@ function ConfirmStep () {
 
       <FormBlock
         icon="edit"
-        title="The Vault ID to be Liquidated"
+        title={t('THE_VAULT_ID_TO_BE_LIQUIDATED')}
         onAction={() => updateStep(0)}
       >
         <p className="text-lg">
@@ -43,7 +46,7 @@ function ConfirmStep () {
 
       <FormBlock
         icon="edit"
-        title="Bid"
+        title={t('BID')}
         onAction={() => updateStep(0)}
       >
         <p className="text-lg">

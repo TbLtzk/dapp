@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { WalletType } from 'connectors';
 import { useWeb3Context } from 'context/Web3ContextProvider';
@@ -6,6 +7,8 @@ import { useWeb3Context } from 'context/Web3ContextProvider';
 import Button from 'components/Base/Button';
 
 function ConnectButtons () {
+  const { t } = useTranslation();
+
   const { connectWallet, success, loading, error, setError } = useWeb3Context();
 
   useEffect(() => {
@@ -17,21 +20,22 @@ function ConnectButtons () {
   if (success) {
     return (
       <div className="connect">
-        <h5>Success!</h5>
-        <p>Refreshing the page...</p>
+        <h5>{t('SUCCESS')}</h5>
+        <p>{t('REFRESHING_THE_PAGE')}</p>
       </div>
     );
   }
   if (loading) {
-    return <div className="connect-loading">Loading...</div>;
+    return <div className="connect-loading">{t('LOADING')}</div>;
   }
   if (error) {
     return (
       <div className="connect">
-        <p>Error while connecting to wallet, please refresh the page and try again</p>
+        <p>{'ERROR_WHILE_CONNECTING_TO_WALLET'}</p>
       </div>
     );
   }
+
   return (
     <div className="connect_buttons">
       <Button
@@ -45,7 +49,7 @@ function ConnectButtons () {
             alt="metamask"
             className="icon"
           />
-          <p> Connect with Metamask</p>
+          <p>{t('CONNECT_WITH_METAMASK')}</p>
         </div>
       </Button>
       <Button
@@ -59,7 +63,7 @@ function ConnectButtons () {
             alt="metamask"
             className="icon"
           />
-          <p> Connect with Coinbase</p>
+          <p>{t('CONNECT_WITH_COINBASE')}</p>
         </div>
       </Button>
 

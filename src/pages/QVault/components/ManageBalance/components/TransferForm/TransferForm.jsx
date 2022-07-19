@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -18,9 +19,8 @@ import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper';
 import formTypes from 'constants/form-types';
 import { amount, required } from 'func/validators';
 
-const WARNING_MAX_NUMBER = 'WARNING: No Q left on sender wallet for future transactions (gas)';
-
 function TransferForm () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
   const balance = useSelector(accountBalance);
@@ -46,13 +46,15 @@ function TransferForm () {
     updateMaxAmount();
   }, [balance]);
 
+  const WARNING_MAX_NUMBER = t('WARNING_NO_Q_LEFT');
+
   return (
     <form noValidate onSubmit={form.submit}>
       <div className="card__one-line-simple-form">
         <Input
           {...form.fields.amount}
           type="number"
-          label="Transfer Into Q Vault"
+          label={t('TRANSFER_INTO_Q_VAULT')}
           prefix="Q"
           max={maxAmount}
           placeholder="0.0"
@@ -63,7 +65,7 @@ function TransferForm () {
           disabled={!form.isValid}
           style={{ width: '90px' }}
         >
-          Transfer
+          {t('TRANSFER')}
         </Button>
         {Number(maxAmount) && form.values.amount === maxAmount
           ? <ErrorInputMessage message={WARNING_MAX_NUMBER} />

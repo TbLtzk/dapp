@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { camelCase, startCase } from 'lodash';
+import { snakeCase } from 'lodash';
 import { AuctionBid, AuctionCompletedInfos, LiquidationAuctionBid } from 'typings/auctions';
 import Button from 'ui/Button';
 import Input from 'ui/Input';
@@ -44,6 +45,8 @@ const LocalStateContext = createContext(
 
 function BidModal ({ modalOpen, auction, onHide, }:Props) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   const userAddress = useSelector(userAddressMetamask);
 
   const form = useForm({
@@ -66,7 +69,7 @@ function BidModal ({ modalOpen, auction, onHide, }:Props) {
 
   useMetamaskReset(formTypes.bidForAuction, handleHide);
 
-  const modalTitle = `Bid for ${startCase(camelCase(auction.auctionType))}`;
+  const modalTitle = `${t('BID_FOR')} ${t(snakeCase(auction.auctionType).toUpperCase())}`;
 
   const [allowance, setAllowance] = useState<string | number>(0);
   const [isApproved, setIsApproved] = useState(true);
@@ -103,7 +106,7 @@ function BidModal ({ modalOpen, auction, onHide, }:Props) {
     }
   }
 
-  const bidTitle = auction.auctionType === 'systemDebt' ? 'Provide your Bid' : 'Provide a Bid for this auction';
+  const bidTitle = auction.auctionType === 'systemDebt' ? t('PROVIDE_YOUR_BID') : t('PROVIDE_A_BID_FOR_THIS_AUCTION');
 
   return (
     <Modal
@@ -116,8 +119,8 @@ function BidModal ({ modalOpen, auction, onHide, }:Props) {
         <Input
           {...form.fields.bid}
           type="number"
-          label={`${bidTitle} (minimum: ${auction.raisingBid} ${auction.bidAsset})`}
-          placeholder="Bid"
+          label={`${bidTitle} (${t('MINIMUM')}: ${auction.raisingBid} ${auction.bidAsset})`}
+          placeholder={t('BID')}
           onChange={handleBidChange}
         />
 
@@ -125,9 +128,9 @@ function BidModal ({ modalOpen, auction, onHide, }:Props) {
           <InfoTip style={{ marginTop: '10px' }}>
             <ApproveTipWrapper>
               <p>
-                You have to approve the contract interaction <br /> before making a bid
+                {t('APPROVE_BID_CONTRACT')}
               </p>
-              <Button onClick={approveContract}>Approve</Button>
+              <Button onClick={approveContract}>{t('APPROVE')}</Button>
             </ApproveTipWrapper>
           </InfoTip>
         )}
@@ -137,7 +140,7 @@ function BidModal ({ modalOpen, auction, onHide, }:Props) {
           style={{ width: '100%', marginTop: '24px' }}
           disabled={!form.isValid || !isApproved}
         >
-          Confirm
+          {t('CONFIRM')}
         </Button>
 
       </form>

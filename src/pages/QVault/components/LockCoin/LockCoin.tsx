@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import Button from 'ui/Button';
@@ -7,11 +8,13 @@ import InfoTooltip from 'components/Custom/InfoTooltip';
 import LockForm from './components/LockForm';
 
 function LockCoin () {
+  const { t } = useTranslation();
+
   return (
     <div className="block">
       <div className="block__header">
         <h1 className="text-h3">
-          <span>Lock Your Q Tokens for Voting</span>
+          <span>{t('LOCK_YOUR_Q_TOKENS_FOR_VOTING')}</span>
           <InfoTooltip topic="lock-tokens-for-voting" />
         </h1>
 
@@ -22,7 +25,7 @@ function LockCoin () {
             alwaysEnabled
             look="ghost"
           >
-            <span>Go to Governance</span>
+            <span>{t('GO_TO_GOVERNANCE')}</span>
             <i className="mdi mdi-arrow-right" />
           </Button>
         </Link>
@@ -32,7 +35,7 @@ function LockCoin () {
         className="text-md color-secondary"
         style={{ marginBottom: '16px' }}
       >
-        Participate in Q Governance with your Locked Amount
+        {t('PARTICIPATE_IN_Q_GOVERNANCE_WITH_YOUR_LOCKED_AMOUNT')}
       </p>
 
       <LockForm />

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Icon from 'ui/Icon';
@@ -17,6 +18,7 @@ import { address, amount, required } from 'func/validators';
 
 function SendForm () {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const userQVaultBalance = useSelector(userBalance);
   const qVaultLockedAmount = useSelector(qVaultMinimumTimeLock);
@@ -37,12 +39,12 @@ function SendForm () {
 
   return (
     <form noValidate onSubmit={form.submit}>
-      <h3 style={{ margin: '8px 0 8px' }}>Send to foreign QVault account</h3>
+      <h3 style={{ margin: '8px 0 8px' }}>{t('SEND_TO_FOREIGN_QVAULT_ACCOUNT')}</h3>
 
       <div className="card__send-form">
         <Input
           {...form.fields.address}
-          label="Address"
+          label={t('ADDRESS')}
           prefix={<Icon name="wallet" />}
           placeholder="0x..."
         />
@@ -50,7 +52,7 @@ function SendForm () {
         <Input
           {...form.fields.amount}
           type="number"
-          label="Amount"
+          label={t('AMOUNT')}
           prefix="Q"
           max={maxAmount}
           placeholder="0.0"
@@ -60,7 +62,7 @@ function SendForm () {
           type="submit"
           disabled={!form.isValid}
         >
-          Send
+          {t('SEND')}
         </SendButton>
       </div>
     </form>

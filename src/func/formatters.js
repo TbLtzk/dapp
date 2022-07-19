@@ -1,5 +1,6 @@
-import moment from 'moment';
-import { format } from 'timeago.js';
+import { getCurrentLangInfo } from 'context/LanguageProvider/helpers';
+import { format } from 'date-fns';
+import { format as formatAgo } from 'timeago.js';
 
 import { fromWei } from './balance';
 import { BN } from './useful';
@@ -7,7 +8,7 @@ import { BN } from './useful';
 export function transformToPercentage (number) {
   const convertedNumber = BN(number).dividedBy('10000000000000000000000000').toFixed(2);
   return convertedNumber;
-};
+}
 
 export function formatNumber (value, precision = 0) {
   return BN(value).decimalPlaces(precision).toFormat();
@@ -44,19 +45,19 @@ export function formatDuration (value) {
     .join(', ');
 }
 
-export const formatDate = (
-  value,
-  format = 'MM/DD/YYYY, hh:mm A'
-) => {
-  const date = new Date(value);
-  if (!date) return '–';
-
-  return moment(date).format(format);
+export const formatDate = (value, locale = 'en-GB', pattern = 'PPpp') => {
+  try {
+    const date = new Date(value);
+    if (!date) return '–';
+    const { localization } = getCurrentLangInfo(locale);
+    return format(date, pattern, { locale: localization });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-export function formatDateRelative (value, lang = 'en') {
+export function formatDateRelative (value, locale = 'en-GB') {
   const date = new Date(value);
   if (!date) return '–';
-
-  return format(date, lang);
+  return formatAgo(date, locale);
 }

@@ -1,6 +1,12 @@
 import { AuctionStatus, SystemSurplusAuctionInfo } from '@q-dev/q-js-sdk';
-import { capitalize } from 'lodash';
-import { AuctionBid, AuctionExecute, CreateAuction, SystemDebtAndSurplusEvent, SystemDebtAndSurplusInfo, SystemSurplusCompletedInfo } from 'typings/auctions';
+import {
+  AuctionBid,
+  AuctionExecute,
+  CreateAuction,
+  SystemDebtAndSurplusEvent,
+  SystemDebtAndSurplusInfo,
+  SystemSurplusCompletedInfo,
+} from 'typings/auctions';
 
 import { AUCTIONS_TYPES, ERROR_TYPES, getAuctionsEvents, getAuctionStatusState, getStatusTransformation } from '.';
 
@@ -9,7 +15,7 @@ import { getSystemSurplusAuctionInstance } from 'contracts/contract-instance';
 import { fromWei } from 'func/balance';
 import { dateToTimestamp, getNowTimestamp } from 'func/convertDate';
 
-export function prepareAuctionData (
+export function prepareAuctionData(
   info: SystemSurplusAuctionInfo,
   event: SystemDebtAndSurplusEvent | undefined,
   raisingBid: string | null
@@ -31,7 +37,7 @@ export function prepareAuctionData (
 
   completedInfo.endTime = dateToTimestamp(info.endTime);
   completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0;
-  completedInfo.status = capitalize(status);
+  completedInfo.status = status;
   completedInfo.state = getAuctionStatusState(status as keyof typeof AuctionStatus);
 
   completedInfo.highestBid = fromWei(info.highestBid);
@@ -50,7 +56,7 @@ const getSystemSurplusAuctionData = async (auction: SystemDebtAndSurplusInfo) =>
   return {
     ...auction,
     auctionType: AUCTIONS_TYPES.systemSurplus,
-    status: capitalize(status),
+    status: status,
     state: getAuctionStatusState(status as keyof typeof AuctionStatus),
     statusNumber: auctionInfo.status,
     endTime: dateToTimestamp(auctionInfo.endTime),
@@ -58,7 +64,7 @@ const getSystemSurplusAuctionData = async (auction: SystemDebtAndSurplusInfo) =>
   };
 };
 
-export async function getSystemSurplus (auctions: SystemDebtAndSurplusInfo[], lastBlock: string | number) {
+export async function getSystemSurplus(auctions: SystemDebtAndSurplusInfo[], lastBlock: string | number) {
   const instance = await getSystemSurplusAuctionInstance();
   const auctionsEvents = await getAuctionsEvents(instance, 'systemSurplus', lastBlock);
   const allAcutions = await Promise.all(
@@ -67,14 +73,14 @@ export async function getSystemSurplus (auctions: SystemDebtAndSurplusInfo[], la
   return allAcutions;
 }
 
-export async function getOneSystemSurplusAuction (id: string | number) {
+export async function getOneSystemSurplusAuction(id: string | number) {
   try {
     const instance = await getSystemSurplusAuctionInstance();
     const info = await instance.getAuctionInfo(id);
     if (!Number(info.endTime)) {
       return { error: ERROR_TYPES.notExist };
     } else {
-      const pastEvents = await getAuctionsEvents(instance, 'systemDebt') as SystemDebtAndSurplusEvent[];
+      const pastEvents = (await getAuctionsEvents(instance, 'systemDebt')) as SystemDebtAndSurplusEvent[];
       const event = pastEvents.find((event) => event.auctionId === id);
       let raisingBid = null;
       if (info.status === '1') {
@@ -87,12 +93,12 @@ export async function getOneSystemSurplusAuction (id: string | number) {
   }
 }
 
-export async function createSystemSurplusAuction (form: CreateAuction) {
+export async function createSystemSurplusAuction(form: CreateAuction) {
   const instance = await getSystemSurplusAuctionInstance();
   return await instance.startAuction({ qAmount: form.bid });
 }
 
-export async function bidForSystemSurplusAction (form: AuctionBid, userAddress: string) {
+export async function bidForSystemSurplusAction(form: AuctionBid, userAddress: string) {
   const instance = await getSystemSurplusAuctionInstance();
   const result = await instance.bid(form.auctionId, {
     from: userAddress,
@@ -101,7 +107,7 @@ export async function bidForSystemSurplusAction (form: AuctionBid, userAddress: 
   return result;
 }
 
-export async function executeSystemSurplusAuction (form: AuctionExecute, userAddress: string) {
+export async function executeSystemSurplusAuction(form: AuctionExecute, userAddress: string) {
   const instance = await getSystemSurplusAuctionInstance();
   const result = await instance.execute(form.auctionId, { from: userAddress });
   return result;

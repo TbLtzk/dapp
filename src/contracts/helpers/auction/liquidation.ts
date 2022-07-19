@@ -1,5 +1,5 @@
 import { AuctionStatus, LiquidationAuctionInfo as SdkLiquidationAuctionInfo } from '@q-dev/q-js-sdk';
-import { capitalize } from 'lodash';
+import { capitalize, upperCase } from 'lodash';
 import {
   CreateLiquidationAuction,
   LiquidationAuctionBid,
@@ -42,7 +42,7 @@ async function prepareLiquidationAuctionInfo (
   completedInfo.highestBid = fromWei(info.highestBid);
   completedInfo.colAsset = fromBtcBlockchain(vault.colAsset);
   completedInfo.state = getAuctionStatusState(status as keyof typeof AuctionStatus);
-  completedInfo.status = capitalize(status);
+  completedInfo.status = (status);
 
   completedInfo.isBidTime = Number(info.endTime) >= Number(getNowTimestamp());
   completedInfo.isAuctionEnded = (info.status as AuctionStatus) === '2';
@@ -77,7 +77,7 @@ const getLiquidationAuctionData = async (auction: LiquidationAuctionInfo) => {
   return {
     ...auction,
     auctionType: AUCTIONS_TYPES.liquidation,
-    status: capitalize(status),
+    status: (status),
     statusNumber: autionInfo.status,
     state: getAuctionStatusState(status as keyof typeof AuctionStatus),
     endTime: autionInfo.endTime.toString(),

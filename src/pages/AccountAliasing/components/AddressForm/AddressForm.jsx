@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 
@@ -8,6 +10,8 @@ import { WrapContainer } from './styles';
 import { address, required } from 'func/validators';
 
 function AddressForm ({ selectedAddress, onSubmit }) {
+  const { t } = useTranslation();
+
   const form = useForm({
     initialValues: { address: selectedAddress },
     validators: { address: [required, address] },
@@ -22,8 +26,8 @@ function AddressForm ({ selectedAddress, onSubmit }) {
         <WrapContainer>
           <Input
             {...form.fields.address}
-            label="Display aliases for address:"
-            hint={`Selected address: ${selectedAddress}`}
+            label={t('DISPLAY_ALIASES_FOR_ADDRESS')}
+            hint={`${t('SELECTED_ADDRESS')} ${selectedAddress}`}
           />
           <Button
             type="submit"
@@ -34,7 +38,7 @@ function AddressForm ({ selectedAddress, onSubmit }) {
               className="mdi mdi-cached"
               style={{ fontSize: '20px' }}
             />
-            <span>Refresh</span>
+            <span>{t('REFRESH')}</span>
           </Button>
         </WrapContainer>
       </div>

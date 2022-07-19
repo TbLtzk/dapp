@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import tooltips from 'json/tooltips.json';
 import Tooltip from 'ui/Tooltip';
 
@@ -9,6 +11,8 @@ interface Props extends Omit<TooltipProps, 'trigger' | 'children'> {
 }
 
 function InfoTooltip ({ topic, ...rest }: Props) {
+  const { t } = useTranslation();
+
   return (
     <Tooltip
       trigger={(
@@ -16,7 +20,7 @@ function InfoTooltip ({ topic, ...rest }: Props) {
       )}
       {...rest}
     >
-      <span>{tooltips[topic]}</span>
+      <span>{t(tooltips[topic])}</span>
     </Tooltip>
   );
 }

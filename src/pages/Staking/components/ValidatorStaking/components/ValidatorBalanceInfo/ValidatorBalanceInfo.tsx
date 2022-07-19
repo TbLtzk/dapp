@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { userAddressMetamask } from 'store/user-inf/selectors';
@@ -14,6 +15,8 @@ import { fromSolDateFormattingT1 } from 'func/date';
 import { fN } from 'func/useful';
 
 function ValidatorBalanceInfo () {
+  const { t } = useTranslation();
+
   const address = useSelector(userAddressMetamask);
   const isThisUserValidator = useSelector(isUserValidator);
 
@@ -27,38 +30,38 @@ function ValidatorBalanceInfo () {
   return (
     <div className="block-body">
       <div>
-        <p className="text-md">Status</p>
-        <h4 className="text-xl">{isThisUserValidator ? 'Active validator' : 'Not a validator'}</h4>
+        <p className="text-md">{t('STATUS')}</p>
+        <h4 className="text-xl">{isThisUserValidator ? t('ACTIVE_VALIDATOR') : t('NOT_A_VALIDATOR')}</h4>
       </div>
       <div>
-        <p className="text-md">Current Rank</p>
+        <p className="text-md">{t('CURRENT_RANK')}</p>
         <h4 className="text-xl">{userRank ? `${userRank} #` : '-'}</h4>
       </div>
 
       <div>
-        <p className="text-md">Stake in Validator Ranking</p>
+        <p className="text-md">{t('STAKE_IN_VALIDATOR_RANKING')}</p>
         <h4 className="text-xl">{fN(userAccountableTotalStake)} Q</h4>
       </div>
 
       {Number(validatorLockedAmount) > 0 && (
         <div>
-          <p className="text-md">Time Locked Amount</p>
+          <p className="text-md">{t('TIME_LOCKED_AMOUNT')}</p>
           <h4 className="text-xl">{fN(validatorLockedAmount)} Q </h4>
         </div>
       )}
 
       <div>
-        <p className="text-md">Announced for Withdrawal</p>
+        <p className="text-md">{t('ANNOUNCE_WITHDRAWAL')}</p>
         <h4 className="text-xl">{fromWei(withdrawalInfo.amount)} Q</h4>
       </div>
 
       <div>
-        <p className="text-md">Announcement Status</p>
+        <p className="text-md">{t('ANNOUNCEMENT_STATUS')}</p>
         <h4 className="text-xl">{Number(withdrawalInfo?.amount) > 0 ? 'Pending' : '-'}</h4>
       </div>
 
       <div>
-        <p className="text-md">Announcement End</p>
+        <p className="text-md">{t('ANNOUNCEMENT_END')}</p>
         <h4 className="text-xl">
           {withdrawalInfo && Number(withdrawalInfo?.amount) > 0 ? fromSolDateFormattingT1(withdrawalInfo.endTime) : '-'}
         </h4>

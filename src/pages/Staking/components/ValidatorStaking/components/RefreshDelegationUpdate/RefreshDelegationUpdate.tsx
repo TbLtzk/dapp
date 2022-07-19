@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -12,6 +13,8 @@ import { lastUpdateOfCompoundRate, loadingUpdateOfCompoundRate } from 'store/val
 import { remainDateTimeSince } from 'func/convertDate';
 
 function RefreshDelegationUpdate () {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   const userAddress = useSelector(userAddressMetamask);
@@ -35,8 +38,8 @@ function RefreshDelegationUpdate () {
   return (
     <div className="refresh-delegation_container">
       <div>
-        <p className="text-md">Time Since Last Refresh of User Delegations</p>
-        <h4 className="text-xl">{timeDelegationUpdate || '0 day(s) 0 hours 0 minutes'}</h4>
+        <p className="text-md">{t('TIME_SINCE_LAST_REFRESH_OF_USER_DELEGATIONS')}</p>
+        <h4 className="text-xl">{timeDelegationUpdate || t('0_DAY_0_HOURS_0_MINUTES')}</h4>
       </div>
 
       <Button

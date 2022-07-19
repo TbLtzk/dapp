@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { isEmpty } from 'lodash';
@@ -21,6 +22,8 @@ import { borrowVaultInfoSelector } from 'store/borrow-assets/selectors';
 import { borrowTypes } from 'constants/borrowTypes';
 
 function BorrowManageAsset ({ vault }) {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const borrowVaultInfo = useSelector(borrowVaultInfoSelector);
 
@@ -46,13 +49,13 @@ function BorrowManageAsset ({ vault }) {
         disabled={vault.isLiquidated}
         onClick={handleOpenModal}
       >
-        <span>Manage</span>
+        <span>{t('MANAGE')}</span>
         <i className="mdi mdi-arrow-top-right" />
       </Button>
 
       <Modal
         open={isModalOpen}
-        title="Borrowing QUSD"
+        title={t('BORROWING_QUSD')}
         width={560}
         onClose={handleCloseModal}
       >

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { useWeb3Context } from 'context/Web3ContextProvider';
@@ -13,12 +14,13 @@ import { isDevnetdApp } from 'func/appConfig';
 function Network () {
   const network = Number(useSelector(networkSelector));
   const { switchNetwork, switchNetworkError, setSwitchNetworkError } = useWeb3Context();
+  const { t } = useTranslation();
   const [currentNetwork, setCurrentNetwork] = useState(network);
 
   const networkOptions = [
-    { value: 35441, label: 'MainNet' },
-    { value: 35443, label: 'TestNet' },
-    ...(isDevnetdApp() ? [{ value: 35442, label: 'DevNet' }] : []),
+    { value: 35441, label: t('MAINNET') },
+    { value: 35443, label: t('TESTNET') },
+    ...(isDevnetdApp() ? [{ value: 35442, label: t('DEVNET') }] : []),
   ];
 
   useEffect(() => {
@@ -47,7 +49,7 @@ function Network () {
         className="network-wrong"
         onClick={() => switchNetwork()}
       >
-        Wrong network
+        {t('WRONG_NETWORK')}
       </Button>
     );
 }

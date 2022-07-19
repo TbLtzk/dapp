@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';
@@ -12,6 +13,8 @@ import { setAlias } from 'store/account-aliases/action-creators';
 import { address, required } from 'func/validators';
 
 function AliasForm ({ alias }) {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const form = useForm({
     initialValues: {
@@ -38,13 +41,13 @@ function AliasForm ({ alias }) {
         invertedColors
         options={Object.entries(AliasPurpose).map(([label, value]) => ({ value, label }))}
         defaultValue={AliasPurpose.BLOCK_SEALING}
-        label="Role"
+        label={t('ROLE')}
       />
 
       <Input
         {...form.fields.address}
         invertedColors
-        label="Address"
+        label={t('ADDRESS')}
         placeholder="0x..."
       />
 
@@ -53,7 +56,7 @@ function AliasForm ({ alias }) {
         disabled={!form.isValid}
         style={{ marginTop: '8px', width: '100%' }}
       >
-        Update
+        {t('UPDATE')}
       </Button>
     </form>
   );

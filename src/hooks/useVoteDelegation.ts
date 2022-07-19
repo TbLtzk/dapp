@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { votingAgent } from 'store/q-vault/selectors';
@@ -9,34 +10,35 @@ function useVoteDelegation (ownWeight: string, address = '') {
   const agent = useSelector(votingAgent);
   const userAddress = useSelector(userAddressMetamask);
   const voteAddress = address || userAddress;
+  const { t } = useTranslation();
 
   switch (true) {
     case !agent:
       return {
         delegateInfo: '...',
-        votingInfo: '...'
+        votingInfo: '...',
       };
 
     case agent !== voteAddress && agent !== ZERO_ADDRESS:
       return {
-        delegateInfo: `You delegated your voting rights to ${agent}`,
-        votingInfo: `Your voting agent is ${agent}`
+        delegateInfo: `${t('YOU_DELEGATED_YOUR_VOTING_RIGHTS_TO')} ${agent}`,
+        votingInfo: `${t('YOUR_VOTING_AGENT_IS')} ${agent}`,
       };
 
     case Number(ownWeight) && agent === voteAddress:
       return {
-        delegateInfo: 'You exercise your voting right yourself',
-        votingInfo: 'You vote for yourself'
+        delegateInfo: t('YOU_EXERCISE_YOUR_VOTING_RIGHT_YOURSELF'),
+        votingInfo: t('YOU_VOTE_FOR_YOURSELF'),
       };
 
     case agent === voteAddress:
       return {
-        delegateInfo: 'You delegated your voting rights to yourself',
-        votingInfo: 'You vote for yourself'
+        delegateInfo: t('YOU_DELEGATED_YOUR_VOTING_RIGHTS_TO_YOURSELF'),
+        votingInfo: t('YOU_VOTE_FOR_YOURSELF'),
       };
 
     default:
-      const title = 'You currently have no voting weight & rights';
+      const title = t('YOU_CURRENTLY_HAVE_NO_VOTING_WEIGHT_RIGHTS');
       return {
         delegateInfo: title,
         votingInfo: title,

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
@@ -11,6 +12,8 @@ import { getNowTimeWithGMT } from 'func/convertDate';
 import { fetchBlockNumber } from 'func/useful';
 
 function CurrentInfo () {
+  const { t } = useTranslation();
+
   const [blockHeight, setBlockHeight] = useState('...');
   const [time, setTime] = useState(getNowTimeWithGMT('DD.MM.YYYY HH:mm:ss'));
 
@@ -39,41 +42,32 @@ function CurrentInfo () {
     <div className="content__colm-3">
       <CustomBlock>
         <h1>
-          <span>Validators</span>
-          <InfoTooltip
-            topic="monitoring-validators"
-            placement="bottom"
-          />
+          <span>{t('VALIDATORS')}</span>
+          <InfoTooltip topic="monitoring-validators" placement="bottom" />
         </h1>
-        <h5>Inactive Validators</h5>
+        <h5>{t('INACTIVE_VALIDATORS')}</h5>
         <p>{inactiveValidators}</p>
-        <h5>Validators in Ranking</h5>
+        <h5>{t('VALIDATORS_IN_RANKING')}</h5>
         <p>{validators.length}</p>
       </CustomBlock>
       <CustomBlock>
         <h1>
-          <span>Root Nodes</span>
-          <InfoTooltip
-            topic="monitoring-root-nodes"
-            placement="bottom"
-          />
+          <span>{t('ROOT_NODES')}</span>
+          <InfoTooltip topic="monitoring-root-nodes" placement="bottom" />
         </h1>
-        <h5>Inactive Root Nodes</h5>
+        <h5>{t('INACTIVE_ROOT_NODES')}</h5>
         <p>0</p>
-        <h5>Root Nodes in Panel</h5>
+        <h5>{t('ROOT_NODES_IN_PANEL')}</h5>
         <p>{rootNodes.length}</p>
       </CustomBlock>
       <CustomBlock>
         <h1>
-          <span>Status</span>
-          <InfoTooltip
-            topic="monitoring-status"
-            placement="bottom"
-          />
+          <span>{t('STATUS')}</span>
+          <InfoTooltip topic="monitoring-status" placement="bottom" />
         </h1>
-        <h5>Current Block Height</h5>
+        <h5>{t('CURRENT_BLOCK_HEIGHT')}</h5>
         <p>{blockHeight}</p>
-        <h5>Current Time</h5>
+        <h5>{t('CURRENT_TIME')}</h5>
         <p>{time}</p>
       </CustomBlock>
     </div>

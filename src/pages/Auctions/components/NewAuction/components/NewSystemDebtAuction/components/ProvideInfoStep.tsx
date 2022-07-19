@@ -1,4 +1,6 @@
 
+import { useTranslation } from 'react-i18next';
+
 import Input from 'ui/Input';
 
 import FormBlock from 'components/FormBlock';
@@ -16,6 +18,7 @@ interface Props {
 }
 
 function ProvideInfoStep ({ reserveLot }: Props) {
+  const { t } = useTranslation();
   const { goNext } = useSystemDebtAuctionForm();
 
   const form = useForm({
@@ -26,7 +29,7 @@ function ProvideInfoStep ({ reserveLot }: Props) {
 
   return (
     <FormStep disabled={!form.isValid} onNext={form.submit}>
-      <FormBlock title="Debt Auction Lot">
+      <FormBlock title={t('DEBT_AUCTION_LOT')}>
         <p className="text-lg">
           {reserveLot} Q
         </p>
@@ -35,8 +38,8 @@ function ProvideInfoStep ({ reserveLot }: Props) {
       <Input
         {...form.fields.bid}
         type="number"
-        label={'Provide your initial Bid in QUSD'}
-        placeholder="Bid"
+        label={t('PROVIDE_YOUR_INITIAL_BID_IN_QUSD')}
+        placeholder={t('BID')}
       />
     </FormStep>
   );

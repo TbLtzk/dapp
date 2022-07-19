@@ -11,18 +11,18 @@ import { getExplorerUrlByChainId, getGnosisSafeUrlByChainId, getQBridgeUrlByChai
 
 function EcosystemLinks () {
   const chainId = useSelector(networkSelector);
-  const links = [
+  const links: { icon: IconName; href: string }[] = [
     {
       href: getGnosisSafeUrlByChainId(chainId),
-      icon: 'gnosis-safe' as IconName,
+      icon: 'gnosis-safe',
     },
     {
       href: getExplorerUrlByChainId(chainId),
-      icon: 'explorer' as IconName,
+      icon: 'explorer',
     },
     {
       href: getQBridgeUrlByChainId(chainId),
-      icon: 'bridge' as IconName,
+      icon: 'bridge',
     },
   ];
 

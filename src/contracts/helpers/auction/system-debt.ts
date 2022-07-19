@@ -1,5 +1,5 @@
 import { AuctionStatus, SystemDebtAuctionInfo } from '@q-dev/q-js-sdk';
-import { capitalize } from 'lodash';
+import { upperCase } from 'lodash';
 import {
   AuctionBid,
   CreateAuction,
@@ -31,7 +31,7 @@ function prepareSystemDebtAuctionInfo (
   completedInfo.bidder = info.bidder;
   completedInfo.endTime = dateToTimestamp(info.endTime);
   completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0;
-  completedInfo.status = capitalize(status);
+  completedInfo.status = (status);
   completedInfo.state = getAuctionStatusState(status as keyof typeof AuctionStatus);
   completedInfo.highestBid = fromWei(info.highestBid);
   completedInfo.lot = fromWei(info.lot);
@@ -49,7 +49,7 @@ const getSystemDebtAuctionData = async (auction: SystemDebtAndSurplusInfo) => {
   return {
     ...auction,
     auctionType: AUCTIONS_TYPES.systemDebt,
-    status: capitalize(status),
+    status: (status),
     state: getAuctionStatusState(status as keyof typeof AuctionStatus),
     statusNumber: auctionInfo.status,
     endTime: dateToTimestamp(auctionInfo.endTime),

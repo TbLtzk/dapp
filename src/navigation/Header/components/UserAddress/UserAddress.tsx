@@ -68,7 +68,7 @@ function UserAddress () {
             onClick={copyAddress}
           >
             <Icon name="copy" />
-            <span>{isCopied ? t('COPIED') : 'Copy address'}</span>
+            <span>{isCopied ? t('COPIED') : t('COPY_ADDRESS')}</span>
           </button>
 
           <button
@@ -77,7 +77,7 @@ function UserAddress () {
             onClick={disconnectWallet}
           >
             <Icon name="sign-out" />
-            <span>Disconnect wallet</span>
+            <span>{t('DISCONNECT_WALLET')}</span>
           </button>
         </div>
       </div>

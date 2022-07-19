@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ParametersBlock from './components/ParametersBlock';
@@ -39,6 +40,8 @@ import {
 import { getContractOwner } from 'contracts/helpers/parameters-helper';
 
 function QParameters () {
+  const { t } = useTranslation();
+
   const [contractRegistryAddress, setContractRegistryAddress] = useState('0x00');
   const [constitutionParametersAddress, setConstitutionParametersAddress] = useState('0x00');
   const [ePDRParametersAddress, setEPDRParametersAddress] = useState('0x00');
@@ -111,7 +114,7 @@ function QParameters () {
     <ParametersWrapper>
       <div>
         <ParametersBlock
-          title="Q Contract Registry"
+          title={t('Q_CONTRACT_REGISTRY')}
           subtitle={`(${contractRegistryAddress})`}
           parameters={kvCR}
           gnosisSafeAddress={safesMap.upgradeVoting}
@@ -120,7 +123,7 @@ function QParameters () {
           emptyMsg="No addresses"
         />
         <ParametersBlock
-          title="Q Fees & Incentives Expert Panel Parameters"
+          title={t('Q_FEES_INCENTIVES_EXPERT_PANEL_PARAMETERS')}
           subtitle={`(${ePQFIParametersAddress})`}
           docsId="#q-fees-and-incentives-expert-panel-epqfi-parameters"
           parameters={kvFI}
@@ -128,7 +131,7 @@ function QParameters () {
           errorMsg={errorMessageFI}
         />
         <ParametersBlock
-          title="Q DeFi Risk Expert Panel Parameters"
+          title={t('Q_DEFI_RISK_EXPERT_PANEL_PARAMETERS')}
           subtitle={`(${ePDRParametersAddress})`}
           docsId="#q-defi-risk-expert-panel-epdr-parameters"
           parameters={kvEPDRP}
@@ -139,7 +142,7 @@ function QParameters () {
       </div>
       <div>
         <ParametersBlock
-          title="Q Constitution Parameters"
+          title={t('Q_CONSTITUTION_PARAMETERS')}
           subtitle={`(${constitutionParametersAddress})`}
           docsId="#q-constitution-parameters"
           parameters={kvCP}
@@ -147,7 +150,7 @@ function QParameters () {
           errorMsg={errorMessageCP}
         />
         <ParametersBlock
-          title="Q Root Node Selection Expert Panel Parameters"
+          title={t('Q_ROOT_NODE_SELECTION_EXPERT_PANEL_PARAMETERS')}
           subtitle={`(${ePRSParametersAddress})`}
           parameters={kvEPRS}
           loading={loadingEPRS}

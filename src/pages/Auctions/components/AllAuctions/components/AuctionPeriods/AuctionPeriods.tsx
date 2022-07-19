@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { Placement } from '@popperjs/core';
 import Tooltip from 'ui/Tooltip';
 
@@ -11,17 +13,18 @@ interface Props {
 }
 
 function AuctionPeriods ({ endTime, placement = 'top', ...rest }: Props) {
-  const auctionEndTime = new Date(Number(endTime) * 1000).getTime();
+  const { t, i18n } = useTranslation();
 
-  const auctionText = auctionEndTime > Date.now() ? 'Auction ends' : 'Auction ended';
+  const auctionEndTime = new Date(Number(endTime) * 1000).getTime();
+  const auctionText = auctionEndTime > Date.now() ? t('AUCTION_ENDS') : t('AUCTION_ENDED');
 
   return (
     <AuctionPeriodsContainer {...rest}>
       <Tooltip
         placement={placement}
-        trigger={<p className="text-md font-light">{`${auctionText} ${formatDateRelative(auctionEndTime)}`}</p>}
+        trigger={<p className="text-md font-light">{`${auctionText} ${formatDateRelative(auctionEndTime, i18n.language)}`}</p>}
       >
-        {formatDate(auctionEndTime)}
+        {formatDate(auctionEndTime, i18n.language)}
       </Tooltip>
     </AuctionPeriodsContainer>
   );

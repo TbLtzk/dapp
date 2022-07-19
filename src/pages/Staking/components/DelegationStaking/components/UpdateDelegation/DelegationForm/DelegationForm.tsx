@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Button from 'ui/Button';
 import Input from 'ui/Input';
@@ -14,6 +15,7 @@ interface Props {
 }
 
 function DelegationForm ({ onAdd, onRemove, onChange }: Props) {
+  const { t } = useTranslation();
   const form = useForm({
     initialValues: { address: '', amount: '' },
     validators: {
@@ -34,13 +36,13 @@ function DelegationForm ({ onAdd, onRemove, onChange }: Props) {
     >
       <div className="delegation-form_inputs">
         <Input
-          label="Validator Address"
+          label={t('VALIDATOR_ADDRESS')}
           {...form.fields.address}
           placeholder="0x000"
         />
 
         <Input
-          label="Amount (New stake)"
+          label={t('AMOUNT_NEW_STAKE')}
           {...form.fields.amount}
           type="number"
           placeholder="0.00"

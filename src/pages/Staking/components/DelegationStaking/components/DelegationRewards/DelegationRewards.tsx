@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -10,6 +11,7 @@ import { outstandingDelegationRewards } from 'store/q-vault/selectors';
 import { fN } from 'func/useful';
 
 function DelegationRewards () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const outstandingDelegationRewardsValue = useSelector(outstandingDelegationRewards);
 
@@ -24,12 +26,12 @@ function DelegationRewards () {
   return (
     <div className="delegation-reward_container">
       <div>
-        <p className="text-md">Outstanding Delegation Rewards</p>
+        <p className="text-md">{t('OUTSTANDING_DELEGATION_REWARDS')}</p>
         <h4 className="text-xl">{`${fN(outstandingDelegationRewardsValue)} Q`}</h4>
       </div>
       <Button onClick={handleClaim}>
         <Icon name="coins" />
-        <span>Claim Delegation Reward</span>
+        <span>{t('CLAIM_DELEGATION_REWARD')}</span>
       </Button>
     </div>
   );

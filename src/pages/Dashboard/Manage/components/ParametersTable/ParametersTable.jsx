@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import parametersDictionary from 'json/parameters.json';
 
 import CopyToClipboard from 'components/Base/CopyToClipboard';
@@ -11,6 +13,8 @@ import { fromWei } from 'func/balance';
 import { formatAsset, formatDuration, formatFactor, formatFraction, formatNumber } from 'func/formatters';
 
 function ParametersTable ({ parameters }) {
+  const { t } = useTranslation();
+
   const { simplified } = useParametersContext();
 
   const renderKey = (item) => {
@@ -56,7 +60,7 @@ function ParametersTable ({ parameters }) {
       case 'rate':
         return `${formatNumber(fromWei(item.value), 2)}%`;
       case 'gas':
-        return `${formatNumber(item.value, 2)} gas`;
+        return `${formatNumber(item.value, 2)} ${t('GAS')}`;
       case 'Q':
       case 'QUSD':
         return formatAsset(item.value, type);

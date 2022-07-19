@@ -1,4 +1,5 @@
 import { FormEvent, ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
@@ -20,6 +21,8 @@ function FormStep<T> ({
   onBack,
   onConfirm
 }: Props<T>) {
+  const { t } = useTranslation();
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
@@ -41,7 +44,7 @@ function FormStep<T> ({
             onClick={onBack}
           >
             <Icon name="chevron-left" />
-            <span>Back</span>
+            <span>{t('BACK')}</span>
           </Button>
         )}
 

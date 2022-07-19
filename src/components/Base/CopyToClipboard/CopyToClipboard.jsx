@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import copy from 'copy-to-clipboard';
 import Tooltip from 'ui/Tooltip';
@@ -9,6 +10,8 @@ function CopyToClipboard ({
   value,
   hideTooltip = false,
 }) {
+  const { t } = useTranslation();
+
   const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
@@ -38,7 +41,7 @@ function CopyToClipboard ({
       <TooltipWrapper>
         <Tooltip trigger={copyTrigger}>
           <span className="copy-msg">
-            {isCopied ? 'Copied!' : 'Copy'}
+            {isCopied ? t('COPIED') : t('COPY')}
           </span>
         </Tooltip>
       </TooltipWrapper>

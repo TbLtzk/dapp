@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -14,6 +15,8 @@ import formTypes from 'constants/form-types';
 import { amount, required } from 'func/validators';
 
 function DepositForm ({ asset }) {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   const availableAmount = useSelector(savingAviableToDepositSelector);
@@ -42,7 +45,7 @@ function DepositForm ({ asset }) {
       <Input
         {...form.fields.amount}
         type="number"
-        label="Deposit Saving Asset"
+        label={t('DEPOSIT_SAVING_ASSET')}
         prefix={asset}
         max={availableAmount}
         placeholder="0.00"
@@ -54,7 +57,7 @@ function DepositForm ({ asset }) {
             style={{ width: '100px' }}
             onClick={() => dispatch(setSavingAprove())}
           >
-            Approve
+            {t('APPROVE')}
           </Button>
         )
         : (
@@ -64,7 +67,7 @@ function DepositForm ({ asset }) {
             disabled={!form.isValid}
             style={{ width: '100px' }}
           >
-            Deposit
+            {t('DEPOSIT')}
           </Button>
         )}
     </form>

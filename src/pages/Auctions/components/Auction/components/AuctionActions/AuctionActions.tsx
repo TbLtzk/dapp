@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import { AuctionCompletedInfos, AuctionExecute, AuctionType, LiquidationAuctionExecute } from 'typings/auctions';
@@ -20,6 +21,8 @@ interface Props {
 
 function AuctionActions ({ auction, auctionType }: Props) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   const [copied, copy] = useCopyToClipboard();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -61,7 +64,7 @@ function AuctionActions ({ auction, auctionType }: Props) {
             </Button>
           }
         >
-          {copied ? 'Copied!' : 'Copy link'}
+          {copied ? t('COPIED') : t('COPY')}
         </Tooltip>
 
         {!isAuctionEnded
@@ -70,13 +73,13 @@ function AuctionActions ({ auction, auctionType }: Props) {
               ? (
                 <Button className="auction-button" onClick={handleModalOpen}>
                   <Icon name="hammer"/>
-                  <span>Bid</span>
+                  <span>{t('BID')}</span>
                 </Button>
               )
               : (
                 <Button className="auction-button" onClick={handleExecuteAuction}>
                   <Icon name="cross"/>
-                  <span>Execute</span>
+                  <span>{t('EXECUTE')}</span>
                 </Button>
               )
           )

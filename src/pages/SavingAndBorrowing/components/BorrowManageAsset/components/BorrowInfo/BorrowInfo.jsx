@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { BorrowInfoContainer } from './styles';
@@ -7,71 +8,73 @@ import { borrowVaultInfoSelector } from 'store/borrow-assets/selectors';
 import { fN } from 'func/useful';
 
 function BorrowInfo () {
+  const { t } = useTranslation();
+
   const { collateralDetails, borrowingDetails } = useSelector(borrowVaultInfoSelector);
 
   const infoGroups = [
     {
-      title: 'Collateral',
+      title: t('COLLATERAL'),
       items: [
         {
-          name: 'Asset',
+          name: t('ASSET'),
           value: collateralDetails?.assets || '–',
         },
         {
-          name: 'Asset Price',
+          name: t('ASSET_PRICE'),
           value: fN(collateralDetails?.assetPrice) || 0,
         },
         {
-          name: 'Available to Withdraw',
+          name: t('AVAILABLE_TO_WITHDRAW'),
           value: fN(collateralDetails?.availableWithdraw) || 0,
         },
         {
-          name: 'Locked Collateral',
+          name: t('LOCKED_COLLATERAL'),
           value: fN(collateralDetails?.lockedCol) || 0,
         },
         {
-          name: 'Available to Deposit',
+          name: t('AVAILABLE_TO_DEPOSIT'),
           value: fN(collateralDetails?.availableDeposit) || 0,
         },
         {
-          name: 'Liquidation Price',
+          name: t('LIQUIDATION_PRICE'),
           value: fN(collateralDetails?.liquidationPrice) || 0,
         },
       ]
     },
     {
-      title: 'Borrowing',
+      title: t('BORROWING'),
       items: [
         {
-          name: 'Asset',
+          name: t('ASSET'),
           value: borrowingDetails?.assets || '–',
         },
         {
-          name: 'Borrowing Limit',
+          name: t('BORROWING_LIMIT'),
           value: fN(borrowingDetails?.borrowingLimit) || 0,
         },
         {
-          name: 'Available to Repay',
+          name: t('AVAILABLE_TO_REPAY'),
           value: fN(borrowingDetails?.availableRepay) || 0,
         },
         {
-          name: 'Collateral Value',
+          name: t('COLLATERAL_VALUE'),
           value: fN(borrowingDetails?.collateralValue) || 0,
         },
         {
-          name: 'Available to Borrow',
+          name: t('AVAILABLE_TO_BORROW'),
           value: fN(borrowingDetails?.availableBorrow) || 0,
         },
         {
-          name: 'Outstanding Debt',
+          name: t('OUTSTANDING_DEBT'),
           value: fN(borrowingDetails?.outstandingDebt) || 0,
         },
         {
-          name: 'Liquidation Limit',
+          name: t('LIQUIDATION_LIMIT'),
           value: fN(borrowingDetails?.liquidationLimit) || 0,
         },
         {
-          name: 'Borrowing Fee (p.a.)',
+          name: t('BORROWING_FEE'),
           value: `${fN(borrowingDetails?.borrowingFee) || 0}%`,
         },
       ]

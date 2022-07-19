@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';
@@ -14,26 +15,26 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 import { trimAddress } from 'func/useful';
 
 function AliasesTable ({ address, onSelect }) {
+  const { t } = useTranslation();
+
   const aliases = useSelector(aliasesSelector);
   const userAddress = useSelector(userAddressMetamask);
   const isAliasesLoading = useSelector(aliasesLoadingSelector);
 
   const columns = [
-    { dataField: 'address', text: 'Address' },
-    { dataField: 'role', text: 'Role' },
-    { dataField: 'action', text: '', },
+    { dataField: 'address', text: t('ADDRESS') },
+    { dataField: 'role', text: t('ROLE') },
+    { dataField: 'action', text: '' },
   ];
 
   const table = aliases.map((item, i) => ({
     id: i,
-    address: (
-      <ExplorerAddress
-        iconed
-        semibold
-        address={item.address}
-      />
-    ),
-    role: invert(AliasPurpose)[item.purpose] || 'Unknown',
+    address: <ExplorerAddress
+      iconed
+      semibold
+      address={item.address}
+    />,
+    role: invert(AliasPurpose)[item.purpose] || t('UNKNOWN'),
     action: (
       <Tooltip
         position="top"
@@ -45,29 +46,27 @@ function AliasesTable ({ address, onSelect }) {
             disabled={userAddress !== address}
             onClick={() => onSelect(item)}
           >
-            <span>Manage</span>
+            <span>{t('MANAGE')}</span>
             <i className="mdi mdi-arrow-top-right" />
           </Button>
         }
       >
-        Only available for alias owner
+        {t('ONLY_AVAILABLE_FOR_ALIAS_OWNER')}
       </Tooltip>
-    )
+    ),
   }));
 
   return (
     <div className="block">
       <div className="block__header">
-        <h3 className="text-h3">
-          {`Account aliases (${trimAddress(address)})`}
-        </h3>
+        <h3 className="text-h3">{`${t('ACCOUNT_ALIASES')} (${trimAddress(address)})`}</h3>
       </div>
 
       <div className="block__content">
         <Table
           lineForEach
           tiny
-          emptyTableMessage="No aliases"
+          emptyTableMessage={t('NO_ALIASES')}
           loading={isAliasesLoading}
           columns={columns}
           table={table}

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -24,6 +25,7 @@ import { fN } from 'func/useful';
 
 function AuctionStats () {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const userAddress = useSelector(userAddressMetamask);
   const userBalanceQ = useSelector(accountBalance);
@@ -71,15 +73,15 @@ function AuctionStats () {
   const statsData = useMemo(() => {
     return [
       {
-        title: 'Available Q Balance',
+        title: t('AVAILABLE_Q_BALANCE'),
         value: fN(userBalanceQ) + ' Q',
       },
       {
-        title: 'Q Balance in Q Vault',
+        title: t('Q_BALANCE_IN_Q_VAULT'),
         value: fN(userQVBalance) + ' Q',
       },
       {
-        title: 'QUSD Balance',
+        title: t('QUSD_BALANCE'),
         value: fN(QUSDUserBalanceAmount) + ' QUSD',
       },
     ];
@@ -88,19 +90,19 @@ function AuctionStats () {
   const systemBalance = useMemo(() => {
     return [
       {
-        title: 'Collected Surplus',
+        title: t('COLLECTED_SURPLUS'),
         value: fN(surplus) + ' QUSD',
       },
       {
-        title: 'Open Debt',
+        title: t('OPEN_DEBT'),
         value: fN(debt) + ' QUSD',
       },
       {
-        title: 'Balance',
+        title: t('BALANCE'),
         value: fN(systemBalanceResult) + ' QUSD',
       },
       {
-        title: 'Surplus Auction Lot',
+        title: t('SURPLUS_AUCTION_LOT'),
         value: fN(surplusLot) + ' QUSD',
       },
     ];
@@ -109,15 +111,15 @@ function AuctionStats () {
   const systemReserve = useMemo(() => {
     return [
       {
-        title: 'Reserve Balance',
+        title: t('RESERVE_BALANCE'),
         value: fN(reserveBalance) + ' Q',
       },
       {
-        title: 'Immediately Available',
+        title: t('IMMEDIATELY_AVAILABLE'),
         value: fN(availableAmount) + ' Q',
       },
       {
-        title: 'Debt Auction Lot',
+        title: t('DEBT_AUCTION_LOT'),
         value: fN(reserveLot) + ' Q',
       },
     ];
@@ -127,7 +129,7 @@ function AuctionStats () {
     <AuctionStatsContainer>
       <StatsContainer className="block">
         <div className="stats-head">
-          <h2 className="text-h2">Auction Stats</h2>
+          <h2 className="text-h2">{t('AUCTION_STATS')}</h2>
         </div>
         <div>
           {statsData.map(({ title, value }) => (
@@ -145,14 +147,14 @@ function AuctionStats () {
             look="secondary"
             onClick={() => dispatch(onPerformNetting())}
           >
-            Perform Netting
+            {t('PERFORM_NETTING')}
           </Button>
         </div>
       </StatsContainer>
 
       <StatsContainer className="block">
         <div className="stats-head">
-          <h2 className="text-h2">QUSD System Balance</h2>
+          <h2 className="text-h2">{t('QUSD_SYSTEM_BALANCE')}</h2>
         </div>
         <div>
           {systemBalance.map(({ title, value }) => (
@@ -168,7 +170,7 @@ function AuctionStats () {
 
       <StatsContainer className="block auction-stats">
         <div className="stats-head">
-          <h2 className="text-h2">Q System Reserve</h2>
+          <h2 className="text-h2">{t('Q_SYSTEM_RESERVE')}</h2>
         </div>
         <div>
           {systemReserve.map(({ title, value }) => (

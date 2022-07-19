@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { FormDelegation } from 'typings/forms';
@@ -15,6 +16,7 @@ import formTypes from 'constants/form-types';
 import { toWei } from 'func/balance';
 
 function UpdateDelegation () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
 
@@ -35,7 +37,7 @@ function UpdateDelegation () {
 
   return (
     <>
-      <h4 className="text-xl">Update Delegation</h4>
+      <h4 className="text-xl">{t('UPDATE_DELEGATION')}</h4>
       <div style={{ display: 'grid', gap: '15px', marginBottom: '10px' }}>
         {formArray.forms.map((form) => (
           <DelegationForm
@@ -49,7 +51,7 @@ function UpdateDelegation () {
 
       <Button onClick={handleUpdateDelegation}>
         <i className="mdi mdi-cached" />
-        <span>Update Delegation</span>
+        <span>{t('UPDATE_DELEGATION')}</span>
       </Button>
     </>
   );

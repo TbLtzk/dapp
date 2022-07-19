@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Link, Redirect, Route, useLocation } from 'react-router-dom';
 
@@ -18,12 +19,14 @@ import { AUCTIONS_TYPES } from 'contracts/helpers/auction';
 import { RoutePaths } from 'constants/routes';
 
 export const AUCTION_HEADERS = {
-  [AUCTIONS_TYPES.liquidation]: 'Liquidation Auction',
-  [AUCTIONS_TYPES.systemDebt]: 'System Debt Auction',
-  [AUCTIONS_TYPES.systemSurplus]: 'System Surplus Auction',
+  [AUCTIONS_TYPES.liquidation]: 'LIQUIDATION_AUCTION',
+  [AUCTIONS_TYPES.systemDebt]: 'SYSTEM_DEBT_AUCTION',
+  [AUCTIONS_TYPES.systemSurplus]: 'SYSTEM_SURPLUS_AUCTION',
 };
 
-function Auctions () {
+function Auctions() {
+  const { t } = useTranslation();
+
   const { pathname } = useLocation();
 
   const { activeCount: activeLiquidation } = useSelector(liquidationSelector);
@@ -33,19 +36,19 @@ function Auctions () {
   const tabs = [
     {
       id: AUCTIONS_TYPES.liquidation,
-      label: 'Liquidation',
+      label: t('LIQUIDATION'),
       count: activeLiquidation,
       link: RoutePaths.liquidation,
     },
     {
       id: AUCTIONS_TYPES.systemDebt,
-      label: 'System Debt',
+      label: t('SYSTEM_DEBT'),
       count: activeSystemDebt,
       link: RoutePaths.systemDebt,
     },
     {
       id: AUCTIONS_TYPES.systemSurplus,
-      label: 'System Surplus',
+      label: t('SYSTEM_SURPLUS'),
       count: activeSystemSurplus,
       link: RoutePaths.systemSurplus,
     },
@@ -60,12 +63,12 @@ function Auctions () {
   const redirectTab = tabs.find((tab) => tab.count > 0) || tabs[0];
   return (
     <PageWrap
-      pageHeader="Auctions"
+      pageHeader={t('AUCTIONS')}
       pageButton={
         <Link to={pathToNewAuctionPath[pathname] || RoutePaths.newLiquidation}>
           <Button block>
             <Icon name="add" />
-            <span>Create auction</span>
+            <span>{t('CREATE_AUCTION')}</span>
           </Button>
         </Link>
       }

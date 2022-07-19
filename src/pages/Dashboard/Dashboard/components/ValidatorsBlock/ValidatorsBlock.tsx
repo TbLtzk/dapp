@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -17,6 +18,8 @@ import { formatNumber } from 'func/formatters';
 import { trimAddress } from 'func/useful';
 
 function ValidatorsBlock () {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   const validators = useSelector(validatorsShortSelector);
@@ -30,7 +33,7 @@ function ValidatorsBlock () {
     <div className="block">
       <div className="block__header">
         <h2 className="text-h3">
-          <span>Validator Staking</span>
+          <span>{t('VALIDATOR_STAKING')}</span>
           <InfoTooltip topic="validator-ranking" />
         </h2>
 
@@ -41,7 +44,7 @@ function ValidatorsBlock () {
             alwaysEnabled
             look="ghost"
           >
-            Show more
+            {t('SHOW_MORE')}
           </Button>
         </Link>
       </div>
@@ -61,7 +64,7 @@ function ValidatorsBlock () {
           )
           : (
             <DonutChart
-              totalLabel="Total Stake"
+              totalLabel={t('TOTAL_STAKE')}
               formatValue={(val) => `${formatNumber(val, 2)} Q`}
               options={validators.map((item: any) => ({
                 label: trimAddress(item.validator),

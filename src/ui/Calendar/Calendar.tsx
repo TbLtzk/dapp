@@ -1,47 +1,41 @@
 import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
+import { useTranslation } from 'react-i18next';
 
 import { CalendarWrapper } from './styles';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
 interface Props extends Omit<ReactDatePickerProps, 'value'> {
-  value: Date | null
-  label?: string
-  placeholder?: string
-  error?: string
-  disabled?: boolean
-  onChange: (val: Date) => void
+  value: Date | null;
+  label?: string;
+  placeholder?: string;
+  error?: string;
+  disabled?: boolean;
+  onChange: (val: Date) => void;
 }
 
-function Calendar ({
-  value,
-  label,
-  error,
-  placeholder,
-  disabled = false,
-  onChange,
-  ...rest
-}: Props) {
+function Calendar ({ value, label, error, placeholder, disabled = false, onChange, ...rest }: Props) {
+  const { t, i18n } = useTranslation();
+
   return (
     <CalendarWrapper $error={error} $disabled={disabled}>
       {label && <p className="calendar-lbl text-md">{label}</p>}
 
       <DatePicker
         showTimeSelect
+        locale={i18n.language}
         selected={value}
-        dateFormat="MMMM d, yyyy, h:mm aa"
-        filterTime={d => new Date(d).getTime() > Date.now()}
+        dateFormat="MMMM d, yyyy, h:mm a"
+        filterTime={(d) => new Date(d).getTime() > Date.now()}
         timeFormat="HH:mm"
         timeIntervals={1}
         disabled={disabled}
-        placeholderText={placeholder || 'MM d, YY, h:mm aa'}
+        placeholderText={placeholder || t('CHOOSE_DATE_AND_TIME')}
         {...rest}
         onChange={onChange}
       />
 
-      {error && (
-        <span className="calendar-error text-md font-light">{error}</span>
-      )}
+      {error && <span className="calendar-error text-md font-light">{error}</span>}
     </CalendarWrapper>
   );
 }

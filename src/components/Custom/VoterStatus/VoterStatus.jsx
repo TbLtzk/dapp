@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getIsUserEPDRMember, getIsUserEPQFIMember, getIsUserEPRSMember } from 'store/membership/action-creators';
@@ -16,6 +17,7 @@ import { getIsUserValidator } from 'store/validators/action-creators';
 import { isUserValidator } from 'store/validators/selectors';
 
 function VoterStatus () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const userAddress = useSelector(userAddressMetamask);
   const isRootNode = useSelector(isUserRootNode);
@@ -36,16 +38,16 @@ function VoterStatus () {
 
   const status = useMemo(() => {
     const status = [
-      { title: 'Root Node', isTrue: isRootNode },
-      { title: 'Validator', isTrue: isValidator },
-      { title: 'Q Token Holder', isTrue: Boolean(Number(isQTokenHolder)) },
-      { title: 'DeFi Risk Expert', isTrue: isEPDRMembership },
-      { title: 'Fees & Incentive Expert', isTrue: isEPQFIMembership },
-      { title: 'Q Root Node Selection Expert', isTrue: isEPRSMembership }
+      { title: t('ROOT_NODE'), isTrue: isRootNode },
+      { title: t('VALIDATOR'), isTrue: isValidator },
+      { title: t('Q_TOKEN_HOLDER'), isTrue: Boolean(Number(isQTokenHolder)) },
+      { title: t('DEFI_RISK_EXPERT'), isTrue: isEPDRMembership },
+      { title: t('FEES_INCENTIVE_EXPERT'), isTrue: isEPQFIMembership },
+      { title: t('Q_ROOT_NODE_SELECTION_EXPERT'), isTrue: isEPRSMembership }
     ];
     const statuses = status.filter((value) => value.isTrue);
     if (!statuses.length) {
-      return 'None';
+      return t('NONE');
     } else {
       return statuses.map((value) => value.title).join(', ');
     }

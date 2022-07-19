@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import MenuDropdown from 'ui/MenuDropdown';
 import Modal from 'ui/Modal';
@@ -12,6 +13,8 @@ export const FORM_TYPES = {
 };
 
 function RootNodeMenu () {
+  const { t } = useTranslation();
+
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [modalForm, setModalForm] = useState<null | string>(null);
 
@@ -26,17 +29,17 @@ function RootNodeMenu () {
   const menuItems = [
     {
       id: FORM_TYPES.stakeToRanking,
-      title: 'Stake to Panel',
+      title: t('STAKE_TO_PANEL'),
       action: () => handleFormModalOpen(FORM_TYPES.stakeToRanking),
     },
     {
       id: FORM_TYPES.announceWithdrawal,
-      title: 'Announce Withdrawal',
+      title: t('ANNOUNCE_WITHDRAWAL'),
       action: () => handleFormModalOpen(FORM_TYPES.announceWithdrawal),
     },
     {
       id: FORM_TYPES.withdrawFromRanking,
-      title: 'Withdraw from Panel',
+      title: t('WITHDRAW_FROM_PANEL'),
       action: () => handleFormModalOpen(FORM_TYPES.withdrawFromRanking),
     },
   ];

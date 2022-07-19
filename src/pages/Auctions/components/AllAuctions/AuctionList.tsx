@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AuctionInfos, AuctionType } from 'typings/auctions';
@@ -18,6 +19,8 @@ import { fillArray } from 'func/useful';
 const PAGE_LIMIT = 10;
 
 function AllAuctions ({ auctionType }: { auctionType: AuctionType }) {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   const { auctions, isLoading } = useSelector(auctionsByTypeSelector(auctionType));
@@ -52,7 +55,7 @@ function AllAuctions ({ auctionType }: { auctionType: AuctionType }) {
   }
 
   if (!auctions.length) {
-    return <EmptyList className="text-xl font-semibold">No auctions found</EmptyList>;
+    return <EmptyList className="text-xl font-semibold">{t('NO_AUCTIONS_FOUND')}</EmptyList>;
   }
 
   return (
@@ -64,7 +67,7 @@ function AllAuctions ({ auctionType }: { auctionType: AuctionType }) {
       </ListWrapper>
       {list.length < auctions.length && (
         <ListNextContainer>
-          <Button onClick={handleNextAuctions}>Show more</Button>
+          <Button onClick={handleNextAuctions}>{t('SHOW_MORE')}</Button>
         </ListNextContainer>
       )}
     </>
