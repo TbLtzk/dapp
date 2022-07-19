@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 
+import { t } from 'i18next';
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 
@@ -29,7 +30,7 @@ function ReserveForm () {
       <Input
         {...form.fields.address}
         invertedColors
-        label="Main account address"
+        label={t('MAIN_ACCOUNT_ADDRESS')}
         placeholder="0x..."
       />
 
@@ -38,7 +39,7 @@ function ReserveForm () {
         disabled={!form.isValid}
         style={{ width: '100%' }}
       >
-        Reserve alias
+        {t('RESERVE_ALIAS')}
       </Button>
     </form>
   );

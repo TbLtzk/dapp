@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import Tabs from 'ui/Tabs';
 import { TabRoute, TabSwitch } from 'ui/Tabs/components';
 
@@ -10,26 +12,28 @@ import NewSystemSurplusAuction from './components/NewSystemSurplusAuction';
 import { RoutePaths } from 'constants/routes';
 
 function NewAuction () {
+  const { t } = useTranslation();
+
   const tabs = [
     {
       id: 'liquidation',
-      label: 'Liquidation',
+      label: t('LIQUIDATION'),
       link: RoutePaths.newLiquidation
     },
     {
       id: 'system-debt',
-      label: 'System Debt',
+      label: t('SYSTEM_DEBT'),
       link: RoutePaths.newSystemDebt
     },
     {
       id: 'system-surplus',
-      label: 'System Surplus',
+      label: t('SYSTEM_SURPLUS'),
       link: RoutePaths.newSystemSurplus
     },
   ];
 
   return (
-    <PageWrap pageHeader="New Auction">
+    <PageWrap pageHeader={t('NEW_AUCTION')}>
       <Tabs tabs={tabs} />
       <TabSwitch>
         <>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Button from 'ui/Button';
 import Modal from 'ui/Modal';
@@ -16,6 +17,7 @@ import { fromWei } from 'func/balance';
 import { convertToMonthDayYear } from 'func/convertDate';
 
 function BalanceCard ({ title, contract, balanceRef, lockAmountData, timeLockBalanceRef, address }) {
+  const { t } = useTranslation();
   const [isModalShown, setIsModalShown] = useState(false);
 
   return (
@@ -23,13 +25,13 @@ function BalanceCard ({ title, contract, balanceRef, lockAmountData, timeLockBal
       <h5>{title}</h5>
       <p ref={balanceRef}>0 Q</p>
 
-      <h5>Time Locked Balance</h5>
+      <h5>{t('TIME_LOCKED_BALANCE')}</h5>
       <p ref={timeLockBalanceRef}>0 Q</p>
 
       <Table
         tiny
         perPage={4}
-        emptyTableMessage="No Time Locks"
+        emptyTableMessage={t('NO_TIME_LOCKS')}
         table={lockAmountData.map((lock) => ({
           id: lock.id,
           amount: fromWei(lock.amount) + ' Q',
@@ -43,28 +45,28 @@ function BalanceCard ({ title, contract, balanceRef, lockAmountData, timeLockBal
           },
           {
             dataField: 'amount',
-            text: 'Amount',
+            text: t('AMOUNT'),
           },
           {
             dataField: 'releaseStart',
-            text: 'Start Date',
+            text: t('START_DATE'),
           },
           {
             dataField: 'releaseEnd',
-            text: 'End Date',
+            text: t('END_DATE'),
           },
         ]}
       />
 
       <Modal
         open={isModalShown}
-        title={contract === 'vesting' ? 'Deposit, withdraw & purge' : 'Deposit & purge'}
+        title={contract === 'vesting' ? t('DEPOSIT_WITHDRAW_PURGE') : t('DEPOSIT_PURGE')}
         width={480}
         onClose={() => setIsModalShown(false)}
       >
         <BalanceCardContent>
           <div>
-            <p className="text-md font-light">Recipient Address</p>
+            <p className="text-md font-light"> {t('RECIPIENT_ADDRESS')}</p>
             <div className="text-md">
               <ExplorerAddress address={address} />
             </div>
@@ -75,7 +77,7 @@ function BalanceCard ({ title, contract, balanceRef, lockAmountData, timeLockBal
       </Modal>
 
       <div className="button__bottom">
-        <Button onClick={() => setIsModalShown(true)}>Manage</Button>
+        <Button onClick={() => setIsModalShown(true)}>{t('MANAGE')}</Button>
       </div>
     </CustomBlock>
   );

@@ -1,17 +1,22 @@
+import { useTranslation } from 'react-i18next';
+
 import PageWrap from 'components/Base/PageWrap';
 import RootNodeTable from 'components/Custom/Tables/RootNodeTable/RootNodeTable';
 import ValidatorsTable from 'components/Custom/Tables/ValidatorsTable';
 
 import CurrentInfo from './components/CurrentInfo';
 
-const Monitoring = () => (
-  <PageWrap pageHeader="Monitoring">
-    <CurrentInfo />
-    <div>
-      <ValidatorsTable tableType="validators-monitoring" />
-      <RootNodeTable tableType="rootNodesMonitoring" />
-    </div>
-  </PageWrap>
-);
+const Monitoring = () => {
+  const { t } = useTranslation();
+  return (
+    <PageWrap pageHeader={t('MONITORING')}>
+      <CurrentInfo />
+      <div>
+        <ValidatorsTable tableType="validators-monitoring" />
+        <RootNodeTable tableType="rootNodesMonitoring" />
+      </div>
+    </PageWrap>
+  );
+};
 
 export default Monitoring;

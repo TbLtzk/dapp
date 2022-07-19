@@ -1,4 +1,6 @@
 
+import { useTranslation } from 'react-i18next';
+
 import Input from 'ui/Input';
 
 import { FormStep } from 'components/MultiStepForm';
@@ -11,6 +13,7 @@ import { MAX_BID_AMOUNT } from 'constants/numbers';
 import { address, max, required, vaultID } from 'func/validators';
 
 function ProvideInfoStep () {
+  const { t } = useTranslation();
   const { goNext } = useLiquidationAuctionForm();
 
   const form = useForm({
@@ -27,18 +30,18 @@ function ProvideInfoStep () {
     <FormStep disabled={!form.isValid} onNext={form.submit}>
       <Input
         {...form.fields.vaultOwner}
-        label="Provide user address of vault holder, which shall be liquidated"
+        label={t('PROVIDE_USER_ADDRESS_OF_VAULT_HOLDER')}
         placeholder="0x0000"
       />
       <Input
         {...form.fields.vaultId}
-        label="Provide the Vault ID to be liquidated"
+        label={t('PROVIDE_THE_VAULT_ID_TO_BE_LIQUIDATED')}
         placeholder="Vault ID"
       />
       <Input
         {...form.fields.bid}
-        label={'Provide your initial Bid in QUSD'}
-        placeholder="Bid"
+        label={t('PROVIDE_YOUR_INITIAL_BID_IN_QUSD')}
+        placeholder={t('BID')}
       />
     </FormStep>
   );

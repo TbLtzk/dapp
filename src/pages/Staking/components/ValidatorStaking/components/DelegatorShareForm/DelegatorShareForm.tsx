@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -12,6 +13,8 @@ import formTypes from 'constants/form-types';
 import { max, required } from 'func/validators';
 
 function DelegatorShareForm () {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   const form = useForm({
@@ -25,7 +28,7 @@ function DelegatorShareForm () {
 
   return (
     <form noValidate onSubmit={form.submit}>
-      <h3 className="text-h3">Set Delegator Share</h3>
+      <h3 className="text-h3">{t('SET_DELEGATOR_SHARE')}</h3>
       <div className="delegator-share-form">
         <Input
           {...form.fields.amount}
@@ -38,7 +41,7 @@ function DelegatorShareForm () {
           disabled={!form.isValid}
           style={{ width: '94px', margin: '3px 0 0 0' }}
         >
-          Set
+          {t('SET')}
         </Button>
       </div>
     </form>

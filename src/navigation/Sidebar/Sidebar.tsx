@@ -56,14 +56,14 @@ function Sidebar () {
             <SidebarLink
               exact={false}
               to="/q-vault"
-              title="Q Vault"
+              title={t('Q_VAULT')}
               icon="wallet"
             />
 
             <SidebarLink
               exact={false}
               to="/staking"
-              title="Staking"
+              title={t('STAKING')}
               icon="stake"
             />
 

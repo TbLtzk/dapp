@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { motion } from 'framer-motion';
 import Button from 'ui/Button';
@@ -9,6 +10,8 @@ import SettingsMenu from './components/SettingsMenu';
 import { SettingsDropdown } from './styles';
 
 function Settings () {
+  const { t } = useTranslation();
+
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
 
@@ -38,7 +41,7 @@ function Settings () {
       onToggle={handleSettingsToggle}
     >
       <div className="settings-content">
-        <h3 className="settings-title text-xl font-semibold">{languageOpen ? 'Language' : 'Settings'}</h3>
+        <h3 className="settings-title text-xl font-semibold">{languageOpen ? t('LANGUAGE') : t('SETTINGS')}</h3>
 
         <div className="settings-main">
           {languageOpen

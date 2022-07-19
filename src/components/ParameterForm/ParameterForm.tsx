@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { ParameterType } from '@q-dev/q-js-sdk';
 import { FormParameter } from 'typings/forms';
@@ -27,6 +28,8 @@ function ParameterForm ({
   disabled = false,
   onChange
 }: Props) {
+  const { t } = useTranslation();
+
   const form = useForm({
     initialValues: {
       key: '',
@@ -79,35 +82,35 @@ function ParameterForm ({
       <Select
         {...form.fields.key}
         combobox
-        label="Parameter key"
-        placeholder="Key"
+        label={t('PARAMETER_KEY')}
+        placeholder={t('KEY')}
         options={keys.map((key) => ({ label: key, value: key }))}
         disabled={disabled}
       />
 
       <RadioGroup
         {...form.fields.type}
-        label="Parameter type"
+        label={t('PARAMETER_TYPE')}
         name="parameter-type"
         disabled={disabled}
         options={[
-          { value: ParameterType.ADDRESS, label: 'Address' },
-          { value: ParameterType.BOOL, label: 'Boolean' },
-          { value: ParameterType.STRING, label: 'String' },
-          { value: ParameterType.UINT, label: 'Uint' },
+          { value: ParameterType.ADDRESS, label: t('ADDRESS') },
+          { value: ParameterType.BOOL, label: t('BOOLEAN') },
+          { value: ParameterType.STRING, label: t('STRING') },
+          { value: ParameterType.UINT, label: t('UINT') },
         ]}
       />
 
       {currentValue && (
         <Tip compact>
-          {`Current value: ${currentValue}`}
+          {`${t('CURRENT_VALUE')}: ${currentValue}`}
         </Tip>
       )}
 
       <Input
         {...form.fields.value}
-        label="Parameter value"
-        placeholder="Value"
+        label={t('PARAMETER_VALUE')}
+        placeholder={t('VALUE')}
         disabled={disabled}
       />
     </ParameterFormContainer>

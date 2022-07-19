@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -18,6 +19,8 @@ import { BN } from 'func/useful';
 import { max, required } from 'func/validators';
 
 function LockForm () {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   const userAddress = useSelector(userAddressMetamask);
@@ -65,7 +68,7 @@ function LockForm () {
       <Range
         hideInput
         value={userQVaultBalance ? percentValue : '0'}
-        label="Locked amount"
+        label={t('LOCKED_AMOUNT')}
         max={String(userQVaultBalance)}
         formatter={(value) => `${formatNumber(value, 4)} Q`}
         onChange={handleRangeChange}
@@ -77,7 +80,7 @@ function LockForm () {
         prefix="Q"
         placeholder="0.0"
         max={String(userQVaultBalance)}
-        hint={`Current locked amount: ${formatNumber(userVotingWeight, 4)} Q`}
+        hint={`${t('CURRENT_LOCKED_AMOUNT')} ${formatNumber(userVotingWeight, 4)} Q`}
       />
 
       <Button
@@ -86,7 +89,7 @@ function LockForm () {
         disabled={!form.isValid || form.values.amount === String(userVotingWeight)}
         style={{ width: '200px', marginTop: '8px' }}
       >
-        Update lock amount
+        {t('UPDATE_LOCK_AMOUNT')}
       </Button>
     </form>
   );

@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 
@@ -10,6 +12,8 @@ import { WrapContainer } from './styles';
 import { address, required } from 'func/validators';
 
 function AddressForm ({ userAddress, onChange }) {
+  const { t } = useTranslation();
+
   const form = useForm({
     initialValues: { address: userAddress },
     validators: { address: [required, address] },
@@ -24,8 +28,8 @@ function AddressForm ({ userAddress, onChange }) {
         <WrapContainer>
           <Input
             {...form.fields.address}
-            label="Display time locks for address:"
-            hint={`Selected address: ${userAddress}`}
+            label={t('DISPLAY_TIME_LOCKS_FOR_ADDRESS')}
+            hint={`${t('SELECTED_ADDRESS')}: ${userAddress}`}
           />
           <Button
             type="submit"
@@ -36,7 +40,7 @@ function AddressForm ({ userAddress, onChange }) {
               className="mdi mdi-cached"
               style={{ fontSize: '20px' }}
             />
-            <span>Refresh</span>
+            <span>{t('REFRESH')}</span>
           </Button>
         </WrapContainer>
       </CustomBlock>

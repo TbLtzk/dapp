@@ -1,6 +1,10 @@
 import { createContext, ReactNode, useCallback, useContext } from 'react';
+import { registerLocale } from 'react-datepicker';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 
+import datePickerDe from 'date-fns/locale/de';
+import datePickerEn from 'date-fns/locale/en-GB';
+import datePickerUk from 'date-fns/locale/uk';
 import i18n from 'i18next';
 import detector from 'i18next-browser-languagedetector';
 import { register } from 'timeago.js';
@@ -8,28 +12,19 @@ import timeAgoDeLang from 'timeago.js/lib/lang/de';
 import timeAgoEnLang from 'timeago.js/lib/lang/en_US';
 import timeAgoUkLang from 'timeago.js/lib/lang/uk';
 
-import { de, en, ua } from './locales';
+import { languageCodeList, languageList, languages } from './languages';
 
-register('en', timeAgoEnLang);
-register('de', timeAgoDeLang);
-register('uk', timeAgoUkLang);
+registerLocale('en-GB', datePickerEn);
+registerLocale('de-DE', datePickerDe);
+registerLocale('uk-UA', datePickerUk);
 
-const resources = {
-  en: { translation: en },
-  ua: { translation: ua },
-  de: { translation: de },
-};
-
-// Icons: https://flagicons.lipis.dev
-const languages = [
-  { lang: 'en', title: 'English', src: '/flags/en.svg' },
-  { lang: 'de', title: 'Deutsch', src: '/flags/de.svg' },
-  { lang: 'ua', title: 'Українська', src: '/flags/ua.svg' },
-];
+register('en-GB', timeAgoEnLang);
+register('de-DE', timeAgoDeLang);
+register('uk-UA', timeAgoUkLang);
 
 const LanguageContext = createContext({
-  languages,
-  changeLang: (_: string) => {}
+  languageList,
+  changeLang: (_: string) => {},
 });
 
 function LanguageProvider ({ children }: { children: ReactNode }) {
@@ -37,9 +32,9 @@ function LanguageProvider ({ children }: { children: ReactNode }) {
     .use(detector)
     .use(initReactI18next)
     .init({
-      resources,
-      fallbackLng: 'en',
-      supportedLngs: ['de', 'en', 'ua'],
+      resources: languages,
+      fallbackLng: 'en-GB',
+      supportedLngs: languageCodeList,
       interpolation: {
         escapeValue: false,
       },
@@ -51,13 +46,12 @@ function LanguageProvider ({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <LanguageContext.Provider value={{ languages, changeLang }}>
-      <I18nextProvider i18n={i18n}>
-        {children}
-      </I18nextProvider>
+    <LanguageContext.Provider value={{ languageList, changeLang }}>
+      <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
     </LanguageContext.Provider>
   );
 }
 
 export const useLanguage = () => useContext(LanguageContext);
+
 export default LanguageProvider;

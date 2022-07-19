@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next';
 
-import { useLanguage } from 'i18n';
+import { useLanguage } from 'context/LanguageProvider';
 import Icon from 'ui/Icon';
 
 import { LanguagesContainer } from './styles';
 
 function Languages ({ onBack }: { onBack: () => void }) {
-  const { languages, changeLang } = useLanguage();
+  const { languageList, changeLang } = useLanguage();
   const { i18n } = useTranslation();
 
   const changeLanguage = (val: string) => {
@@ -16,30 +16,30 @@ function Languages ({ onBack }: { onBack: () => void }) {
 
   return (
     <LanguagesContainer>
-      {languages.map(({ lang, title, src }) => (
+      {languageList.map(({ locale, language, flagSrc }) => (
         <div
-          key={lang}
+          key={locale}
           className="language-option"
-          onClick={() => changeLanguage(lang)}
+          onClick={() => changeLanguage(locale)}
         >
           <Icon
             name="check"
             className="language-option__check"
-            style={{ opacity: lang === i18n.language ? 1 : 0 }}
+            style={{ opacity: locale === i18n.language ? 1 : 0 }}
           />
 
           <div className="language-option__main">
             <img
               className="language-option__flag"
-              src={src}
+              src={flagSrc}
               alt="lang"
             />
 
             <p
               className="text-md"
-              style={{ fontWeight: lang === i18n.language ? 600 : 400 }}
+              style={{ fontWeight: locale === i18n.language ? 600 : 400 }}
             >
-              {title}
+              {language}
             </p>
           </div>
         </div>

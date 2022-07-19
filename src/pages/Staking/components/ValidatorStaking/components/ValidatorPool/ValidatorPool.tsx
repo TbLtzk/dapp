@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import RefreshDelegationUpdate from '../RefreshDelegationUpdate';
@@ -12,6 +13,8 @@ import {
 import { fN } from 'func/useful';
 
 function ValidatorPool () {
+  const { t } = useTranslation();
+
   const totalStake = useSelector(totalStakeSelector);
   const ownStake = useSelector(ownStakeSelector);
   const delegatedStake = useSelector(delegatedStakeSelector);
@@ -20,31 +23,29 @@ function ValidatorPool () {
   const validatorPoolInfo = [
     {
       id: 'total-stake',
-      label: 'Total Stake:',
+      label: t('TOTAL_STAKE'),
       value: `${fN(totalStake)} Q`,
     },
     {
       id: 'own-stake',
-
-      label: 'Validator Own Stake:',
+      label: t('VALIDATOR_OWN_STAKE'),
       value: `${fN(ownStake)} Q`,
     },
     {
       id: 'delegated-stake',
-
-      label: 'Delegated Stake:',
+      label: t('DELEGATED_STAKE'),
       value: `${fN(delegatedStake)} Q`,
     },
     {
       id: 'accountable-stake',
-      label: 'Accountable Stake:',
+      label: t('ACCOUNTABLE_STAKE'),
       value: `${fN(accTotalStake)} Q`,
     },
   ];
 
   return (
     <div className="validator-pool_container">
-      <h3 className="text-h3">Validator Pool</h3>
+      <h3 className="text-h3">{t('VALIDATOR_POOL')}</h3>
       <div className="validator-pool_cards">
         {validatorPoolInfo.map(({ id, label, value }) => (
           <div key={id} className="validator-pool_info">

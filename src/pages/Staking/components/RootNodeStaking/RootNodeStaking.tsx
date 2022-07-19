@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import InfoTooltip from 'components/Custom/InfoTooltip';
@@ -12,6 +13,8 @@ import { getMinimumRootTimeLock, getRootNodeStakes, getRootWithdrawals } from 's
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 function RootNodeStaking () {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const userAddress = useSelector(userAddressMetamask);
 
@@ -27,7 +30,7 @@ function RootNodeStaking () {
       <div className="block">
         <div className="block_header">
           <div className="block_header-title">
-            <h2 className="text-h2">Manage Balance</h2>
+            <h2 className="text-h2">{t('MANAGE_BALANCE')}</h2>
             <InfoTooltip topic="root-node-staking" placement="top" />
           </div>
           <RootNodeMenu />

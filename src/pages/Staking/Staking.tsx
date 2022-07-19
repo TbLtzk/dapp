@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Redirect, Route } from 'react-router';
 
 import Tabs from 'ui/Tabs';
@@ -12,27 +13,29 @@ import ValidatorStaking from './components/ValidatorStaking';
 import { StakingContainer } from './styles';
 
 function Staking () {
+  const { t } = useTranslation();
+
   const tabs: TabsType[] = [
     {
       id: 'root-node-staking',
-      label: 'Root Node Staking',
+      label: t('ROOT_NODE_STAKING'),
       link: '/staking/root-node-staking',
     },
     {
       id: 'validator-staking',
-      label: 'Validator Staking',
+      label: t('VALIDATOR_STAKING'),
       link: '/staking/validator-staking',
     },
 
     {
       id: 'delegator-staking',
-      label: 'Delegator Staking',
+      label: t('DELEGATOR_STAKING'),
       link: '/staking/delegator-staking',
     },
   ];
 
   return (
-    <PageWrap pageHeader="Staking">
+    <PageWrap pageHeader={t('STAKING')}>
       <StakingContainer>
         <Tabs tabs={tabs} />
         <TabSwitch>

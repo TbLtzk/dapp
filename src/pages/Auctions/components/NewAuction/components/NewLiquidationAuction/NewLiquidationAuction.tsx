@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
@@ -29,6 +30,8 @@ const NewLiquidationAuctionContext = createContext(
 );
 
 function NewLiquidationAuction () {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -46,15 +49,15 @@ function NewLiquidationAuction () {
   const steps = [
     {
       id: 'type',
-      name: 'Auction type',
-      title: 'Create Liquidation Auction',
+      name: t('AUCTION_TYPE'),
+      title: t('CREATE_LIQUIDATION_AUCTION'),
       children: <ProvideInfoStep />
     },
     {
       id: 'confirm',
-      name: 'Confirmation',
-      title: 'Confirmation',
-      tip: 'Check the data and submit your auction',
+      name: t('CONFIRMATION'),
+      title: t('CONFIRMATION'),
+      tip: t('CHECK_THE_DATA_AND_SUBMIT_YOUR_AUCTION'),
       children: <ConfirmationStep />
     }
   ];

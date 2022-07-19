@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -13,7 +14,9 @@ import formTypes from 'constants/form-types';
 import { amount, required } from 'func/validators';
 
 function WithdrawForm ({ asset }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
+
   const { currentBalance } = useSelector(savingBalanceDetailsSelector);
 
   const form = useForm({
@@ -34,7 +37,7 @@ function WithdrawForm ({ asset }) {
       <Input
         {...form.fields.amount}
         type="number"
-        label="Withdraw Saving Asset"
+        label={t('WITHDRAW_SAVING_ASSET')}
         prefix={asset}
         max={currentBalance}
         placeholder="0.00"
@@ -45,7 +48,7 @@ function WithdrawForm ({ asset }) {
         disabled={!form.isValid}
         style={{ width: '100px' }}
       >
-        Withdraw
+        {t('WITHDRAW')}
       </Button>
     </form>
   );

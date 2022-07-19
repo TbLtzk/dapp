@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -15,6 +16,7 @@ import formTypes from 'constants/form-types';
 import { amount, required } from 'func/validators';
 
 function DepositForm ({ vaultNum }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const allowanceDeposit = useSelector(allowanceDepositSelector);
   const { collateralDetails } = useSelector(borrowVaultInfoSelector);
@@ -42,7 +44,7 @@ function DepositForm ({ vaultNum }) {
       <Input
         {...form.fields.amount}
         type="number"
-        label="Deposit Collateral"
+        label={t('DEPOSIT_COLLATERAL')}
         prefix={collateralDetails?.assets}
         max={collateralDetails?.availableDeposit}
         placeholder="0.00"
@@ -54,7 +56,7 @@ function DepositForm ({ vaultNum }) {
             className="form-action"
             onClick={() => dispatch(setBorrowAprove(borrowTypes.deposit))}
           >
-            Approve
+            {t('APPROVE')}
           </Button>
         )
         : (
@@ -64,7 +66,7 @@ function DepositForm ({ vaultNum }) {
             style={{ width: '100px' }}
             disabled={!form.isValid}
           >
-            Deposit
+            {t('DEPOSIT')}
           </Button>
         )}
     </form>

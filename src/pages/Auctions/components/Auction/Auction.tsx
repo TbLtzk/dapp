@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { RouteComponentProps, useHistory } from 'react-router';
 
 import { camelCase } from 'lodash';
@@ -26,6 +27,7 @@ function Auction ({ match, }: RouteComponentProps<{
   type: string;
   slug: string;
 }>) {
+  const { t } = useTranslation();
   const linkToAuctions = match.params.type;
   const auctionType = camelCase(linkToAuctions) as AuctionType;
   const history = useHistory();
@@ -63,7 +65,6 @@ function Auction ({ match, }: RouteComponentProps<{
       setAuctionError(null);
     };
   }, []);
-
   if (auctionLoading || auctionError) {
     return (
       <AuctionContainer>
@@ -76,17 +77,17 @@ function Auction ({ match, }: RouteComponentProps<{
               <h1 className="text-h1">{auctionError}</h1>
               <Button look="ghost" onClick={() => history.push('/auctions')}>
                 <i className="mdi mdi-arrow-left" />
-                <span>Auctions</span>
+                <span>{t('AUCTIONS')}</span>
               </Button>
             </AuctionNotFoundContainer>
           )}
       </AuctionContainer>
     );
   }
-
+  
   return (
     <PageWrap
-      pageHeader={AUCTION_HEADERS[auctionType]}
+      pageHeader={t(AUCTION_HEADERS[auctionType])}
       pageButton={<AuctionActions auctionType={auctionType} auction={auction} />}
       topButton={
         <Button
@@ -96,13 +97,13 @@ function Auction ({ match, }: RouteComponentProps<{
           onClick={handleBackClick}
         >
           <i className="mdi mdi-arrow-left" />
-          <span>{AUCTION_HEADERS[auctionType]}</span>
+          <span>{t(AUCTION_HEADERS[auctionType])}</span>
         </Button>
       }
       pageTooltip={
         auction?.status && (
           <Tag style={{ margin: '10px 0 0 15px' }} state={auction.state}>
-            {auction.status}
+            {t(auction.status)}
           </Tag>
         )
       }

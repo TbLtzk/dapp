@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -24,6 +25,8 @@ interface Props {
 }
 
 function RootNodeForms ({ formType, onReset }: Props) {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const userAddress = useSelector(userAddressMetamask);
   const amountNodeStake = useSelector(rootNodeStake);
@@ -69,10 +72,10 @@ function RootNodeForms ({ formType, onReset }: Props) {
       <Input
         {...form.fields.amount}
         type="number"
-        label="Amount"
+        label={t('AMOUNT')}
         placeholder="0.00"
         hint={formType === FORM_TYPES.stakeToRanking && form.values.amount === getMaxAmount()
-          ? 'WARNING: No Q left for future transactions (gas)'
+          ? t('WARNING_NO_Q_LEFT')
           : ''
         }
         max={getMaxAmount()}
@@ -83,7 +86,7 @@ function RootNodeForms ({ formType, onReset }: Props) {
         style={{ width: '100%', marginTop: '24px' }}
         disabled={!form.isValid}
       >
-        Confirm
+        {t('CONFIRM')}
       </Button>
     </form>
   );

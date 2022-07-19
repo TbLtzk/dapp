@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -15,6 +16,8 @@ import formTypes from 'constants/form-types';
 import { amount, required } from 'func/validators';
 
 function RepayForm ({ vaultNum }) {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const allowanceRepay = useSelector(allowanceRepaySelector);
   const { borrowingDetails } = useSelector(borrowVaultInfoSelector);
@@ -43,7 +46,7 @@ function RepayForm ({ vaultNum }) {
         {...form.fields.amount}
         invertedColors
         type="number"
-        label="Repay Borrowed Asset"
+        label={t('REPAY_BORROWED_ASSET')}
         prefix={borrowingDetails?.assets}
         max={borrowingDetails?.availableRepay}
         placeholder="0.00"
@@ -54,7 +57,7 @@ function RepayForm ({ vaultNum }) {
             style={{ width: '100px' }}
             onClick={() => dispatch(setBorrowAprove(borrowTypes.repay))}
           >
-            Approve
+            {t('APPROVE')}
           </Button>
         )
         : (
@@ -64,7 +67,7 @@ function RepayForm ({ vaultNum }) {
             disabled={!form.isValid}
             style={{ width: '100px' }}
           >
-            Repay
+            {t('REPAY')}
           </Button>
         )}
     </form>

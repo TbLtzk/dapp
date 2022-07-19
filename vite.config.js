@@ -41,6 +41,7 @@ export default defineConfig({
       context: path.resolve(__dirname, './src/context'),
       ui: path.resolve(__dirname, './src/ui'),
       styles: path.resolve(__dirname, './src/styles'),
+      locales: path.resolve(__dirname, './src/locales'),
     },
   }
 });

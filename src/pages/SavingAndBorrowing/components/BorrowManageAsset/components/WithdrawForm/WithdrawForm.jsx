@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -14,6 +15,8 @@ import { amount, required } from 'func/validators';
 
 function WithdrawForm ({ vaultNum }) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   const { collateralDetails } = useSelector(borrowVaultInfoSelector);
 
   const form = useForm({
@@ -34,7 +37,7 @@ function WithdrawForm ({ vaultNum }) {
       <Input
         {...form.fields.amount}
         type="number"
-        label="Withdraw Collateral"
+        label={t('WITHDRAW_COLLATERAL')}
         prefix={collateralDetails?.assets}
         max={collateralDetails?.availableWithdraw}
         placeholder="0.00"
@@ -45,7 +48,7 @@ function WithdrawForm ({ vaultNum }) {
         disabled={!form.isValid}
         style={{ width: '100px' }}
       >
-        Withdraw
+        {t('WITHDRAW')}
       </Button>
     </form>
   );

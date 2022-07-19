@@ -1,4 +1,6 @@
 
+import { useTranslation } from 'react-i18next';
+
 import Input from 'ui/Input';
 
 import FormBlock from 'components/FormBlock';
@@ -16,6 +18,8 @@ interface Props {
 }
 
 function ProvideInfoStep ({ surplusLot }: Props) {
+  const { t } = useTranslation();
+
   const { goNext } = useSystemSurplusAuctionForm();
 
   const form = useForm({
@@ -26,7 +30,7 @@ function ProvideInfoStep ({ surplusLot }: Props) {
 
   return (
     <FormStep disabled={!form.isValid} onNext={form.submit}>
-      <FormBlock title="Auction Lot">
+      <FormBlock title={t('SYSTEM_SURPLUS_LOT')}>
         <p className="text-lg">
           {surplusLot} QUSD
         </p>
@@ -35,8 +39,8 @@ function ProvideInfoStep ({ surplusLot }: Props) {
       <Input
         {...form.fields.bid}
         type="number"
-        label="Provide your initial Bid in Q"
-        placeholder="Bid"
+        label={t('PROVIDE_YOUR_INITIAL_BID_IN_Q')}
+        placeholder={t('BID')}
       />
     </FormStep>
   );

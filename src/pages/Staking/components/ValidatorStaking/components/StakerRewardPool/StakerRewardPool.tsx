@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -28,6 +29,8 @@ import {
 import { compoundRateKeeperExistsSelector, isUserValidator } from 'store/validators/selectors';
 
 function StakerRewardPool () {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const address = useSelector(userAddressMetamask);
   const isValidator = useSelector(isUserValidator);
@@ -60,16 +63,16 @@ function StakerRewardPool () {
             disabled={!isValidator || !compoundRateKeeperExists}
             onClick={handleModalOpen}
           >
-            Manage Staker Reward Pool
+            {t('MANAGE_STAKER_REWARD_POOL')}
           </Button>
         }
       >
-        Only available for Validators
+        {t('ONLY_AVAILABLE_FOR_VALIDATORS')}
       </Tooltip>
 
       <Modal
         width={600}
-        title="Manage Staker Reward Pool"
+        title={t('MANAGE_STAKER_REWARD_POOL')}
         open={modalOpen}
         onClose={() => setModalOpen(false)}
       >

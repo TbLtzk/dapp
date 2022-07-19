@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import Tooltip from 'ui/Tooltip';
@@ -22,8 +23,10 @@ function ParametersBlock ({
   parameters = [],
   loading = false,
   errorMsg = '',
-  emptyMsg = 'No parameters',
+  emptyMsg = 'NO_PARAMETERS',
 }) {
+  const { t } = useTranslation();
+
   const network = useSelector(networkSelector);
   const baseDocsUrl = network === chainIds.mainnet
     ? mainnetDocsUrl
@@ -39,7 +42,7 @@ function ParametersBlock ({
     }
 
     return errorMsg || !parameters.length
-      ? <BlockParagraph>{errorMsg || emptyMsg}</BlockParagraph>
+      ? <BlockParagraph>{errorMsg || t(emptyMsg)}</BlockParagraph>
       : <ParametersTable parameters={parameters} />;
   };
 
@@ -58,7 +61,7 @@ function ParametersBlock ({
               </DocsLink>
             )}
           >
-            View documentation
+            {t('VIEW_DOCUMENTATION')}
           </Tooltip>
         )}
 

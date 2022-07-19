@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -14,6 +15,8 @@ import { amount, required } from 'func/validators';
 
 function BorrowForm ({ vaultNum }) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   const { borrowingDetails } = useSelector(borrowVaultInfoSelector);
 
   const form = useForm({
@@ -34,7 +37,7 @@ function BorrowForm ({ vaultNum }) {
       <Input
         {...form.fields.amount}
         type="number"
-        label="Borrow Asset"
+        label={t('BORROW_ASSET')}
         prefix={borrowingDetails?.assets}
         max={borrowingDetails?.availableBorrow}
         placeholder="0.00"
@@ -45,7 +48,7 @@ function BorrowForm ({ vaultNum }) {
         disabled={!form.isValid}
         style={{ width: '100px' }}
       >
-        Borrow
+        {t('BORROW')}
       </Button>
     </form>
   );

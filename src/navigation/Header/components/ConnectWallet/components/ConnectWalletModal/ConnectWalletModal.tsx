@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { motion } from 'framer-motion';
@@ -20,6 +21,7 @@ type Props = {
 };
 
 function ConnectWalletModal ({ modalOpen, onModalClose }: Props) {
+  const { t } = useTranslation();
   const network = useSelector(networkSelector);
   const docsUrl = network === chainIds.mainnet ? mainnetDocsUrl : testnetDocsUrl;
 
@@ -31,7 +33,7 @@ function ConnectWalletModal ({ modalOpen, onModalClose }: Props) {
         <div className="connect_header">
           <div className="header">
             <i className="mdi mdi-wallet-outline select-icon" />
-            <h5>Connect wallet</h5>
+            <h5>{t('CONNECT_WALLET')}</h5>
           </div>
           <motion.div
             whileHover={{ scale: 1.1 }}
@@ -51,21 +53,21 @@ function ConnectWalletModal ({ modalOpen, onModalClose }: Props) {
           />
           <div>
             <p>
-              <span>I have read, understood, and agreed to the </span>
+              <span>{t('I_HAVE_READ')}</span>
               <a
                 target="_blank"
                 href="/data-privacy"
                 rel="noreferrer"
               >
-                Data privacy
+                {t('DATA_PRIVACY')}
               </a>
-              <span> and </span>
+              <span> {t('AND')} </span>
               <a
                 target="_blank"
                 href="/imprint"
                 rel="noreferrer"
               >
-                Imprint
+                {t('IMPRINT')}
               </a>
               .
             </p>
@@ -73,14 +75,14 @@ function ConnectWalletModal ({ modalOpen, onModalClose }: Props) {
         </div>
 
         <div className="connect_new-to-q">
-          <h5>New to Q?</h5>
+          <h5>{t('NEW_TO_Q')}</h5>
           <a
             target="_blank"
             href={`${docsUrl}/five-minutes/`}
             rel="noreferrer"
           >
             <motion.p whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              Learn more about Q
+              {t('LEARN_MORE_ABOUT_Q')}
             </motion.p>
           </a>
         </div>

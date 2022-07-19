@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAccordionToggle } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import copy from 'copy-to-clipboard';
 
@@ -13,6 +14,8 @@ function CustomCardButtons ({
   setOpen = () => {},
   onePage = false
 }) {
+  const { t } = useTranslation();
+
   const decoratedOnClick = useAccordionToggle(eventKey, () => {});
   const [copied, setCopied] = useState(false);
 
@@ -35,7 +38,7 @@ function CustomCardButtons ({
       <Tooltip
         copy={true}
         disabled={false}
-        additionalInfo={`${copied ? 'Copied!' : 'Copy'}`}
+        additionalInfo={`${copied ? t('COPIED') : t('COPY')}`}
       >
         <Button alwaysEnabled onClick={handleCopy}>
           <i className="mdi mdi-share" />

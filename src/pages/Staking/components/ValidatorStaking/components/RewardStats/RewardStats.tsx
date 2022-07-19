@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { balance, delegatorShare, poolInfoSelector } from 'store/validation-reward-pools/selectors';
@@ -6,6 +7,7 @@ import { delegatedStakeSelector } from 'store/validators/selectors';
 import { fN } from 'func/useful';
 
 function RewardStats () {
+  const { t } = useTranslation();
   const delegatedStake = useSelector(delegatedStakeSelector);
   const delShare = useSelector(delegatorShare);
   const amountRP = useSelector(balance);
@@ -16,45 +18,40 @@ function RewardStats () {
   const rewardStatsArray = [
     {
       id: 'collected-pool',
-      label: 'Collected Pool Rewards:',
+      label: t('COLLECTED_POOL_REWARDS'),
       value: `${fN(amountRP)} Q`,
     },
     {
       id: 'outstanding-claims',
-
-      label: 'Outstanding Delegator Claims:',
+      label: t('OUTSTANDING_DELEGATOR_CLAIMS'),
       value: `${fN(delClaim)} Q`,
     },
     {
       id: 'delegator-reward',
-
-      label: 'Distributable Delegator Rewards:',
+      label: t('DISTRIBUTABLE_DELEGATOR_REWARDS'),
       value: `${fN(disDelClaims)} Q`,
     },
     {
       id: 'delegator-percentage',
-
-      label: 'Distributable Delegator Percentage:',
+      label: t('DISTRIBUTABLE_DELEGATOR_PERCENTAGE'),
       value: `${fN(disDelClaims / Number(delegatedStake))}%`,
     },
 
     {
       id: 'validator-share',
-
-      label: 'Validator Share:',
+      label: t('VALIDATOR_SHARE'),
       value: delShare ? `${fN(100 - delShare)}%` : '100%',
     },
     {
       id: 'delegator-share',
-
-      label: 'Delegator Share:',
+      label: t('DELEGATOR_SHARE'),
       value: `${fN(delShare)}%`,
     },
   ];
 
   return (
     <div className="reward-stats_container">
-      <h3 className="text-h3">Reward Stats</h3>
+      <h3 className="text-h3">{t('REWARD_STATS')}</h3>
       <div className="reward-stats_cards">
         {rewardStatsArray.map(({ id, label, value }) => (
           <div key={id} className="reward-stats_info">

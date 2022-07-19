@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { getSidebarColor } from 'navigation/Sidebar/colors';
 
 export const StyledLink = styled(NavLink)`
-  width: 100%;
+  width: 238px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -13,10 +13,9 @@ export const StyledLink = styled(NavLink)`
   padding: 12px 16px;
   border-radius: 16px;
   cursor: pointer;
-  white-space: nowrap;
   outline: none;
   color: ${({ theme }) => getSidebarColor(theme, 'linkText')};
-  
+
   &:hover,
   &:focus-visible {
     text-decoration: none;
@@ -31,14 +30,16 @@ export const StyledLink = styled(NavLink)`
     color: ${({ theme }) => getSidebarColor(theme, 'linkTextActive')};
   }
 
-  .sidebar-link-group {
+  .q-sidebar-link-group {
     display: flex;
+    align-items: center;
     gap: 8px;
   }
 
-  .sidebar-link-count {
+  .q-sidebar-link-count {
     display: grid;
     place-content: center;
+    align-items: flex-end;
     width: 20px;
     height: 20px;
     border-radius: 50%;

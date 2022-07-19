@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import PageWrap from 'components/Base/PageWrap';
@@ -21,6 +22,7 @@ import { getMinimumVestingTimeLock, getVestingBalance, getVestingTimeLocks } fro
 import { vestingBalance, vestingMinimumTimeLock, vestingTimeLocks } from 'store/vesting/selectors';
 
 function TimeLocks () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const userAddress = useSelector(userAddressMetamask);
@@ -70,28 +72,28 @@ function TimeLocks () {
 
   const cardsData = [
     {
-      title: 'Q Vault Account Balance',
+      title: t('Q_VAULT_ACCOUNT_BALANCE'),
       contract: 'qVault',
       balanceRef: qVaultStakeBalanceRef,
       timeLockBalanceRef: qVaultTimeLockMinimumBalanceRef,
       lockAmountData: qVaultTimeLocksArray || [],
     },
     {
-      title: 'Root Stake Balance',
+      title: t('ROOT_STAKE_BALANCE'),
       contract: 'root',
       balanceRef: rootStakeBalanceRef,
       timeLockBalanceRef: rootTimeLockMinimumBalanceRef,
       lockAmountData: rootTimeLocksArray || [],
     },
     {
-      title: 'Validator Stake Balance',
+      title: t('VALIDATOR_STAKE_BALANCE'),
       contract: 'validators',
       balanceRef: validatorSelfStakeRef,
       timeLockBalanceRef: validatorsTimeLockMinimumBalanceRef,
       lockAmountData: validatorsTimeLocksArray || [],
     },
     {
-      title: 'Vesting Account Balance',
+      title: t('VESTING_ACCOUNT_BALANCE'),
       contract: 'vesting',
       balanceRef: vestingStakeBalanceRef,
       timeLockBalanceRef: vestingTimeLockMinimumBalanceRef,
@@ -100,10 +102,7 @@ function TimeLocks () {
   ];
 
   return (
-    <PageWrap
-      pageHeader="Time Locks"
-      pageTooltip={<InfoTooltip topic="time-locks" placement="bottom" />}
-    >
+    <PageWrap pageHeader={t('TIME_LOCKS')} pageTooltip={<InfoTooltip topic="time-locks" placement="bottom" />}>
       <AddressForm userAddress={currentAddress} onChange={setCurrentAddress} />
       <div className="content__colm-2 content__time-locks">
         {cardsData.map((card) => (

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -23,6 +24,8 @@ import {
 } from 'store/saving-assets/selectors';
 
 function SaveManageAsset ({ depositAsset, interestAsset }) {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   const savingAviableToDeposit = useSelector(savingAviableToDepositSelector);
@@ -44,12 +47,12 @@ function SaveManageAsset ({ depositAsset, interestAsset }) {
         look="ghost"
         onClick={handleModalOpen}
       >
-        <span>Manage</span>
+        <span>{t('MANAGE')}</span>
         <i className="mdi mdi-arrow-top-right" />
       </Button>
       <Modal
         open={modalOpen}
-        title={`Saving ${depositAsset}`}
+        title={`${t('SAVING')} ${depositAsset}`}
         width={560}
         onClose={() => setModalOpen(false)}
       >

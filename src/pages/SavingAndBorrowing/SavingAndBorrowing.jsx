@@ -53,19 +53,19 @@ function SavingAndBorrowing () {
         <>
           {!qusdTokenAdded && (
             <Button style={{ margin: '0 16px 0 0' }} onClick={() => handleAddToken('qusdToken')}>
-              Add QUSD token
+              {t('ADD_QUSD_TOKEN')}
             </Button>
           )}
           {!qbtcTokenAdded && (
             <Button style={{ margin: '0 16px 0 0' }} onClick={() => handleAddToken('qbtcToken')}>
-              Add QBTC token
+              {t('ADD_QBTC_TOKEN')}
             </Button>
           )}
         </>
       )}
       <Button onClick={createVault}>
         <Icon name="add" />
-        <span>Create QBTC Vault</span>
+        <span>{t('CREATE_QBTC_VAULT')}</span>
       </Button>
     </>
   );
@@ -73,7 +73,7 @@ function SavingAndBorrowing () {
   return (
     <PageWrap
       wrapContentClasses="wrap-content__column-2-1"
-      pageHeader="Saving & Borrowing"
+      pageHeader={t('SAVING_BORROWING')}
       pageButton={buttons}
     >
       <div style={{ display: 'grid', gap: '16px' }}>

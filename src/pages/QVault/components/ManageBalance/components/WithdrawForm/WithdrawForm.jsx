@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -16,6 +17,7 @@ import { amount, required } from 'func/validators';
 
 function WithdrawForm () {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const address = useSelector(userAddressMetamask);
   const userQVaultBalance = useSelector(userBalance);
@@ -38,7 +40,7 @@ function WithdrawForm () {
         <Input
           {...form.fields.amount}
           type="number"
-          label="Withdraw from Q Vault"
+          label={t('WITHDRAW_FROM_Q_VAULT')}
           prefix="Q"
           max={maxAmount}
           placeholder="0.0"
@@ -49,7 +51,7 @@ function WithdrawForm () {
           disabled={!form.isValid}
           style={{ width: '90px' }}
         >
-          Withdraw
+          {t('WITHDRAW')}
         </Button>
       </div>
     </form>

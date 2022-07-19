@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { useLanguage } from 'i18n';
+import { useLanguage } from 'context/LanguageProvider';
 import { useTheme } from 'styled-components';
 import Switch from 'ui/Switch';
 
@@ -10,23 +10,23 @@ function LanguageSwitcher ({ onLanguageOpen }: { onLanguageOpen: () => void }) {
   const { isDarkTheme, onChangeTheme } = useTheme();
 
   const { i18n, t } = useTranslation();
-  const { languages } = useLanguage();
-  const language = languages.find(({ lang }) => lang === i18n.language) || languages[0];
+  const { languageList } = useLanguage();
+  const language = languageList.find(({ locale }) => locale === i18n.language) || languageList[0];
 
   return (
     <SettingsMenuContainer>
       <div className="language-block" onClick={onLanguageOpen}>
-        <p className="text-lg">Language</p>
+        <p className="text-lg">{t('LANGUAGE')}</p>
 
         <div className="language-pick">
           <img
             className="language-pick__flag"
-            src={language.src}
+            src={language.flagSrc}
             alt="flag"
           />
 
           <p className="text-md font-semibold">
-            {language.title}
+            {language.language}
           </p>
         </div>
       </div>

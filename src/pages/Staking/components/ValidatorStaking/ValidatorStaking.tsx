@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -28,6 +29,8 @@ export const FORM_TYPES = {
 };
 
 function ValidatorStaking () {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const isValidator = useSelector(isUserValidator);
   const address = useSelector(userAddressMetamask);
@@ -48,7 +51,7 @@ function ValidatorStaking () {
       <div className="block">
         <div className="block_header">
           <div className="block_header-title">
-            <h2 className="text-h2">Manage Balance</h2>
+            <h2 className="text-h2">{t('MANAGE_BALANCE')}</h2>
             <InfoTooltip topic="validator-staking" placement="top" />
           </div>
 
@@ -57,7 +60,7 @@ function ValidatorStaking () {
             <StakerRewardPool />
             {!isValidator && (
               <Button style={{ margin: '0 0 0 10px' }} onClick={handleEnterShortList}>
-                Join Validator Ranking
+                {t('JOIN_VALIDATOR_RANKING')}
               </Button>
             )}
           </div>

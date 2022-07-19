@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -19,6 +20,8 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 import { trimAddress } from 'func/useful';
 
 function AccountAliasing () {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const userAddress = useSelector(userAddressMetamask);
   const successMessage = useSelector(successMessageSelector);
@@ -26,7 +29,7 @@ function AccountAliasing () {
   const [currentAddress, setCurrentAddress] = useState(userAddress);
   const [selectedAlias, setSelectedAlias] = useState(null);
   const [isReserveModalShown, setIsReserveModalShown] = useState(false);
-
+  const address = trimAddress(userAddress);
   const loadAliases = (address) => {
     dispatch(getAliases(address));
     dispatch(getAliasEvents(address));
@@ -51,22 +54,19 @@ function AccountAliasing () {
 
   return (
     <PageWrap
-      pageHeader="Account Aliasing"
-      pageButton={(
+      pageHeader={t('ACCOUNT_ALIASING')}
+      pageButton={
         <Button onClick={() => setIsReserveModalShown(true)}>
           <i className="mdi mdi-archive-lock" />
-          <span>Reserve alias</span>
+          <span>{t('RESERVE_ALIAS')}</span>
         </Button>
-      )}
+      }
     >
-      <AddressForm
-        selectedAddress={currentAddress}
-        onSubmit={refreshAddress}
-      />
+      <AddressForm selectedAddress={currentAddress} onSubmit={refreshAddress} />
 
       <Modal
         open={selectedAlias !== null}
-        title="Update alias"
+        title={t('UPDATE_ALIAS')}
         width={440}
         onClose={() => setSelectedAlias(null)}
       >
@@ -75,18 +75,19 @@ function AccountAliasing () {
 
       <Modal
         open={isReserveModalShown}
-        title="Reserve alias"
-        tip={`You can reserve your current address (${trimAddress(userAddress)}) as an alias for some main account`}
+        title={t('RESERVE_ALIAS')}
+        tip={
+          <Trans address={address} i18nKey="RESERVE_YOUR_CURRENT_ADDRESS">
+            You can reserve your current address ({{ address }}) as an alias for some main account
+          </Trans>
+        }
         width={440}
         onClose={() => setIsReserveModalShown(false)}
       >
         <ReserveForm address={currentAddress} />
       </Modal>
 
-      <AliasesTable
-        address={currentAddress}
-        onSelect={alias => setSelectedAlias(alias)}
-      />
+      <AliasesTable address={currentAddress} onSelect={(alias) => setSelectedAlias(alias)} />
       <AliasEventsTable address={currentAddress} />
     </PageWrap>
   );

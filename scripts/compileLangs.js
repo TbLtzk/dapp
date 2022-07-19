@@ -12,7 +12,6 @@ const read = async () => {
   await sheet.loadHeaderRow();
   const colTitles = sheet.headerValues;
   const rows = await sheet.getRows({ limit: sheet.rowCount });
-
   let result = {};
   rows.forEach((row) => {
     colTitles.slice(1).forEach((title) => {

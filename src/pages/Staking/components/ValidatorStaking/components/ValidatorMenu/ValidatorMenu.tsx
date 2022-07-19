@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import MenuDropdown from 'ui/MenuDropdown';
 import Modal from 'ui/Modal';
@@ -12,23 +13,24 @@ export const FORM_TYPES = {
 };
 
 function ValidatorMenu () {
+  const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [modalForm, setModalForm] = useState<null | string>(null);
 
   const menuItems = [
     {
       id: FORM_TYPES.stakeToRanking,
-      title: 'Stake to Ranking',
+      title: t('STAKE_TO_RANKING'),
       action: () => handleFormModalOpen(FORM_TYPES.stakeToRanking),
     },
     {
       id: FORM_TYPES.announceWithdrawal,
-      title: 'Announce Withdrawal',
+      title: t('ANNOUNCE_WITHDRAWAL'),
       action: () => handleFormModalOpen(FORM_TYPES.announceWithdrawal),
     },
     {
       id: FORM_TYPES.withdrawFromRanking,
-      title: 'Withdraw from Ranking',
+      title: t('WITHDRAW_FROM_RANKING'),
       action: () => handleFormModalOpen(FORM_TYPES.withdrawFromRanking),
     },
   ];
@@ -44,7 +46,7 @@ function ValidatorMenu () {
   const formType = menuItems.find((item) => item.id === modalForm) || menuItems[0];
 
   return (
-    <div>
+    <>
       <MenuDropdown
         right
         style={{ margin: '0 10px 0 10px' }}
@@ -59,7 +61,7 @@ function ValidatorMenu () {
       >
         <ValidatorForms formType={modalForm} onReset={handleFormModalClose} />
       </Modal>
-    </div>
+    </>
   );
 }
 
