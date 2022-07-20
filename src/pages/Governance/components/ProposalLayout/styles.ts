@@ -1,381 +1,57 @@
-import { Card } from 'react-bootstrap';
-
 import styled from 'styled-components';
 
-export const ListCardWrp = styled(Card)`
-  border: 0;
-  background: ${(props) => props.theme.colors.block};
-  margin-bottom: 16px;
-  height: ${(p) => (p.onePage ? 'auto' : 'auto')};
-  border-radius: 16px;
+export const ProposalLayoutContainer = styled.div`
+  display: grid;
+  gap: 32px;
 
-  h1 {
-    color: ${(props) => props.theme.colors.white};
-    font-size: 20px;
-    line-height: 35px;
-    margin-bottom: 0;
-    font-family: "Lora", sans-serif;
+  .proposal-layout__voting {
+    display: flex;
+    gap: 24px;
   }
 
-  h3 {
-    color: ${(props) => props.theme.colors.oxfordBlueTint3};
-    font-size: 16px;
-    line-height: 17px;
-    font-family: "OpenSans", sans-serif;
-    margin-bottom: 15px;
-  }
-
-  h4 {
-    color: ${(props) => props.theme.colors.white};
-    font-size: 12px;
-    line-height: 17px;
-    font-family: "OpenSans", sans-serif;
-    margin-bottom: 10px;
-  }
-
-  h5 {
-    color: ${(props) => props.theme.colors.oxfordBlueTint3};
-    font-size: 13px;
-    line-height: 17px;
-    font-weight: 600;
-    font-family: "OpenSans", sans-serif;
-    margin-bottom: 2px;
-  }
-
-  p {
-    font-size: 13px;
-    margin-bottom: 15px;
-    text-overflow: ellipsis;
-  }
-
-  a {
-    padding-left: 0;
-    font-size: 13px;
-    line-height: 17px;
-    color: ${(props) => props.theme.colors.white};
-
-    :hover {
-      color: ${(props) => props.theme.colors.white};
-      text-decoration: underline;
-    }
-  }
-
-  .show > .btn-primary.dropdown-toggle {
-    border-color: ${(props) => props.theme.colors.oxfordBlue};
-    background-color: ${(props) => props.theme.colors.oxfordBlue};
-    color: ${(props) => props.theme.colors.white};
-  }
-
-  .dropdown-toggle {
-    align-items: center;
-    width: ${(props) => (!props.width ? 'auto' : props.width)};
-    max-width: ${(props) => (!props.width ? 'auto' : props.width)};
-    min-width: ${(props) => (!props.width ? 'auto' : props.width)};
-    padding: 7px 11px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    font-size: 13px;
-    line-height: 18px;
-    border-color: ${(props) => props.theme.colors.oxfordBlueTint2};
-    background-color: ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.oxfordBlueTint2;
-    } else {
-      return props.theme.colors.oxfordBlueTint5;
-    }
-  }};
-    color: ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.white;
-    } else {
-      return props.theme.colors.oxfordBlue;
-    }
-  }};
-    border-radius: 3px;
-
-    &:disabled {
-      color: ${(props) => props.theme.colors.oxfordBlue};
-      background-color: ${(props) => props.theme.colors.oxfordBlueTint2};
-      border-color: ${(props) => props.theme.colors.oxfordBlueTint2};
-      opacity: 1;
-      box-shadow: none;
-    }
-
-    &:hover {
-      color: ${(props) => props.theme.colors.oxfordBlue};
-      background-color: ${(props) => props.theme.colors.neonGreen};
-      border-color: ${(props) => props.theme.colors.neonGreen};
-
-      :after {
-        border-left: 1px solid ${(props) => props.theme.colors.oxfordBlue};
-        border-top: 1px solid ${(props) => props.theme.colors.oxfordBlue};
-      }
-    }
-
-    &:active {
-      color: ${(props) => props.theme.colors.white} !important;
-      background-color: ${(props) => props.theme.colors.oxfordBlueTint2} !important;
-      border-color: ${(props) => props.theme.colors.oxfordBlueTint2} !important;
-
-      :after {
-        border-left: 1px solid ${(props) => props.theme.colors.white};
-        border-top: 1px solid ${(props) => props.theme.colors.white};
-      }
-    }
-
-    &:focus {
-      box-shadow: ${(props) => (props.palette === 'light' ? 'none !important' : 'auto')};
-      color: ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.white;
-    } else {
-      return props.theme.colors.oxfordBlue;
-    }
-  }}!important;
-      background-color: ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.oxfordBlueTint2;
-    } else {
-      return props.theme.colors.oxfordBlueTint5;
-    }
-  }}!important;
-      border-color: ${(props) => props.theme.colors.oxfordBlueTint2};
-
-      :after {
-        border-left: 1px solid
-          ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.white;
-    } else {
-      return props.theme.colors.oxfordBlue;
-    }
-  }};
-        border-top: 1px solid
-          ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.white;
-    } else {
-      return props.theme.colors.oxfordBlue;
-    }
-  }};
-      }
-    }
-
-    :after {
-      border-radius: 0;
-      margin-left: 10px;
-      border-left: 1px solid
-        ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.white;
-    } else {
-      return props.theme.colors.oxfordBlue;
-    }
-  }};
-      border-top: 1px solid
-        ${(props) => {
-    if (props.palette === 'dark') {
-      return props.theme.colors.white;
-    } else {
-      return props.theme.colors.oxfordBlue;
-    }
-  }};
-      border-right: none;
-      width: 6px;
-      height: 6px;
-      transform: rotate(-135deg);
-    }
-  }
-
-  .dropdown-menu {
-    padding: 0;
-    background-color: ${(props) => props.theme.colors.oxfordBlueTint2};
-    min-width: 100px;
-  }
-
-  .dropdown-item {
-    align-items: center;
-    width: ${(props) => (!props.width ? 'auto' : props.width)};
-    max-width: ${(props) => (!props.width ? 'auto' : props.width)};
-    min-width: ${(props) => (!props.width ? 'auto' : props.width)};
-    padding: 7px 11px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    font-size: 13px;
-    line-height: 18px;
-    border-color: ${(props) => props.theme.colors.oxfordBlueTint2};
-    background-color: ${(props) => props.theme.colors.oxfordBlueTint2};
-    color: ${(props) => props.theme.colors.white};
-    border-radius: 3px;
-    margin-bottom: 0;
-    text-decoration: none !important;
-    cursor: pointer;
-
-    &:disabled {
-      color: ${(props) => props.theme.colors.oxfordBlue};
-      background-color: ${(props) => props.theme.colors.oxfordBlueTint2};
-      border-color: ${(props) => props.theme.colors.oxfordBlueTint2};
-      opacity: 1;
-      box-shadow: none;
-    }
-
-    &:hover {
-      color: ${(props) => props.theme.colors.oxfordBlue};
-      background-color: ${(props) => props.theme.colors.neonGreen};
-      border-color: ${(props) => props.theme.colors.neonGreen};
-
-      :after {
-        border-left: 1px solid ${(props) => props.theme.colors.oxfordBlue};
-        border-top: 1px solid ${(props) => props.theme.colors.oxfordBlue};
-      }
-    }
-
-    &:active {
-      color: ${(props) => props.theme.colors.white} !important;
-      background-color: ${(props) => props.theme.colors.oxfordBlueTint2} !important;
-      border-color: ${(props) => props.theme.colors.oxfordBlueTint2};
-
-      :after {
-        border-left: 1px solid ${(props) => props.theme.colors.white};
-        border-top: 1px solid ${(props) => props.theme.colors.white};
-      }
-    }
-
-    &:focus {
-      color: ${(props) => props.theme.colors.white} !important;
-      background-color: ${(props) => props.theme.colors.oxfordBlueTint2} !important;
-      border-color: ${(props) => props.theme.colors.oxfordBlueTint2} !important;
-
-      :after {
-        border-left: 1px solid ${(props) => props.theme.colors.white};
-        border-top: 1px solid ${(props) => props.theme.colors.white};
-      }
-    }
-
-    i {
-      margin-right: 5px;
-    }
-  }
-
-  .list-card__tow-colm {
-    width: 100%;
+  .details-list {
     display: grid;
-    grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
-    grid-column-gap: 15px;
+    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+
+    &.single-column {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 
-  .list-card__three-colm {
+  .details-list-item {
     display: grid;
-    grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
-    grid-column-gap: 15px;
-
-    & > * {
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-    }
+    gap: 16px;
   }
 
-  .list-card__column-1-2-2 {
+  .details-item {
     display: grid;
-    grid-template-columns: minmax(100px, 120px) minmax(100px, 2fr) minmax(100px, 2fr);
-    grid-column-gap: 15px;
-
-    & > * {
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-    }
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 16px;
   }
 
-  .list-card__chart-block {
-    display: flex;
-    align-items: center;
-    margin-top: 16px;
-    margin-bottom: 15px;
-
-    & > :first-child {
-      margin-right: 30px;
-    }
+  .parameters-block {
+    display: grid;
+    gap: 8px;
   }
 
-  .list-card__line {
-    width: 100%;
-    height: 1px;
-    margin-top: 15px;
-    margin-bottom: 30px;
-    border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
+  .parameters-block-item {
+    display: grid;
+    grid-template-columns: 20px 3fr 3fr 1fr;
+    gap: 16px;
   }
 
-  .list-card__actions {
-    display: flex;
-    align-items: flex-start;
-    margin-top: 30px;
-
-    & > *:not(:first-child) {
-      margin-left: 10px;
-    }
-  }
-`;
-
-export const ListCardHeader = styled.div`
-  padding: 24px 32px 0 24px;
-  border: none;
-  display: flex;
-  justify-content: space-between;
-
-  .card__title {
-    display: flex;
-    align-items: center;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    max-width: 85%;
-
-    h1 {
-      align-items: center;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      margin-bottom: 0;
-    }
-  }
-  .card__buttons {
-    width: 150px;
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  @media screen and (max-width: 1150px) {
-    flex-direction: column;
-    align-items: flex-start;
-    position: relative;
-
-    .card__title {
-      align-self: flex-start;
-      max-width: 85%;
-    }
-
-    .card__buttons {
-      flex-direction: column-reverse;
-      justify-content: space-between;
-      align-items: flex-end;
-      position: absolute;
-      top: 20px;
-      right: 10px;
-      height: 90px;
-    }
-  }
-`;
-
-export const ListCardBody = styled(Card.Body)`
-  padding: 24px 32px;
-  margin-bottom: 16px;
-  border: none;
-
-  @media screen and (max-width: 1150px) {
+  .details-stub {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    text-align: center;
+
+    .details-stub-content {
+      display: grid;
+      gap: 4px;
+    }
   }
 `;

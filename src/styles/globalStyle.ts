@@ -1,8 +1,8 @@
-import { createGlobalStyle, css } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 
-import '../../node_modules/@mdi/font/css/materialdesignicons.min.css';
+import '@mdi/font/css/materialdesignicons.min.css';
 
-export const scrollbarStyle = css`
+export const GlobalStyle = createGlobalStyle`
   scrollbar-color: ${({ theme }) => theme.colors.oxfordBlueTint5};
   scrollbar-width: thin;
 
@@ -15,12 +15,10 @@ export const scrollbarStyle = css`
     border-radius: 4px;
     background-color: ${({ theme }) => theme.colors.oxfordBlueTint5};
   }
-`;
 
-export const GlobalStyle = createGlobalStyle`
   body {
-    color: ${({ theme }) => theme.colors.white};
-    background: ${({ theme }) => theme.colors.oxfordBlue};
+    background-color: ${(props) => props.theme.colors.background};
+    color: ${({ theme }) => theme.colors.textPrimary};
     margin: 0 !important;
     overflow-x: auto;
     overflow-y: hidden;
@@ -29,7 +27,6 @@ export const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale !important;  
   }
 
-  ${scrollbarStyle}
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -79,8 +76,8 @@ export const GlobalStyle = createGlobalStyle`
   a,
   a:hover,
   a:focus {
-    text-decoration: none;
     color: inherit;
+    text-decoration: none;
   }
 
   .block {
@@ -90,15 +87,49 @@ export const GlobalStyle = createGlobalStyle`
     border-radius: 16px;
     padding: 24px 32px;
     box-shadow: 0 4px 16px ${({ theme }) => theme.colors.blockShadow};
+
+    .block__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .block__content {
+      margin-top: 24px;
+    }
   }
 
-  .block__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  .link {
+    color: ${({ theme }) => theme.colors.link};
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    max-width: max-content;
+    transition: all 200ms ease-out;
 
-  .block__content {
-    margin-top: 16px;
+    & > i {
+      font-size: 12px;
+      line-height: inherit !important;
+    }
+
+    &:hover,
+    &:active {
+      & > *:not(i) {
+        text-decoration: underline;
+      }
+    }
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.linkHover};
+    }
+
+    &:active {
+      color: ${({ theme }) => theme.colors.linkActive};
+    }
+
+    &:disabled {
+      color: ${({ theme }) => theme.colors.linkDisabled};
+    }
   }
 `;

@@ -1,11 +1,12 @@
+import { ContractRegistryAddressVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/ContractRegistryAddressVoting';
+import { ContractRegistryUpgradeVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/ContractRegistryUpgradeVoting';
 import { flatten } from 'lodash';
 import { ProposalEvent } from 'typings/contracts';
+import { Proposal } from 'typings/proposals';
 
 import { getContractProposals } from '.';
 
 import { getAddressVotingInstance, getUpgradeVotingInstance } from 'contracts/contract-instance';
-
-import { CONTRACTS_NAMES } from 'constants/contracts';
 
 export async function getContractUpdateProposals (
   proposals: ProposalEvent[],
@@ -16,15 +17,32 @@ export async function getContractUpdateProposals (
       proposals,
       contract: await getAddressVotingInstance(),
       lastBlock,
-      contractName: CONTRACTS_NAMES.addressVoting
+      contractName: 'addressVoting'
     }),
     getContractProposals({
       proposals,
       contract: await getUpgradeVotingInstance(),
       lastBlock,
-      contractName: CONTRACTS_NAMES.upgradeVoting
+      contractName: 'upgradeVoting'
     }),
   ]);
 
   return flatten(newProposals);
+}
+
+export async function getContractUpdateProposal (
+  contract: ContractRegistryAddressVotingInstance | ContractRegistryUpgradeVotingInstance,
+  id: string
+): Promise<Partial<Proposal>> {
+  const proposal = await contract.getProposal(id);
+  const voteCount = await contract.instance.methods.voteCount(id).call();
+
+  return {
+    votingEndTime: Number(proposal.votingExpiredTime),
+    proxy: proposal.proxy,
+    implementation: 'implementation' in proposal ? proposal.implementation : '',
+    key: 'key' in proposal ? proposal.key : '',
+    votesFor: Number(voteCount),
+    votesAgainst: 0,
+  };
 }

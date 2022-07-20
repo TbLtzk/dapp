@@ -1,10 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
-import { motion } from 'framer-motion';
 import Check from 'ui/Check';
-
-import Modal from 'components/Base/Modal';
+import Modal from 'ui/Modal';
 
 import useLocalStorage from 'hooks/useLocalStorage';
 
@@ -28,22 +26,12 @@ function ConnectWalletModal ({ modalOpen, onModalClose }: Props) {
   const [isChecked, setIsChecked] = useLocalStorage('i-have-read-the-privacy-policy', false);
 
   return (
-    <Modal open={modalOpen} onLeave={onModalClose}>
+    <Modal
+      open={modalOpen}
+      title={t('CONNECT_WALLET')}
+      onClose={onModalClose}
+    >
       <StyledConnectWalletModal>
-        <div className="connect_header">
-          <div className="header">
-            <i className="mdi mdi-wallet-outline select-icon" />
-            <h5>{t('CONNECT_WALLET')}</h5>
-          </div>
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={onModalClose}
-          >
-            <i className="mdi mdi-close select-icon" />
-          </motion.div>
-        </div>
-        <div className="card__line" />
         {isChecked && <ConnectButtons />}
 
         <div className="connect_terms-of-service">
@@ -51,39 +39,36 @@ function ConnectWalletModal ({ modalOpen, onModalClose }: Props) {
             value={isChecked}
             onChange={() => setIsChecked(!isChecked)}
           />
-          <div>
-            <p>
-              <span>{t('I_HAVE_READ')}</span>
-              <a
-                target="_blank"
-                href="/data-privacy"
-                rel="noreferrer"
-              >
-                {t('DATA_PRIVACY')}
-              </a>
-              <span> {t('AND')} </span>
-              <a
-                target="_blank"
-                href="/imprint"
-                rel="noreferrer"
-              >
-                {t('IMPRINT')}
-              </a>
-              .
-            </p>
-          </div>
+          <p className="text-md">
+            <span> {t('I_HAVE_READ')} </span>
+            <a
+              target="_blank"
+              href="/data-privacy"
+              rel="noreferrer"
+            >
+              {t('DATA_PRIVACY')}
+            </a>
+            <span> {t('AND')} </span>
+            <a
+              target="_blank"
+              href="/imprint"
+              rel="noreferrer"
+            >
+              {t('IMPRINT')}
+            </a>
+            .
+          </p>
         </div>
 
         <div className="connect_new-to-q">
-          <h5>{t('NEW_TO_Q')}</h5>
+          <p className="text-md color-secondary">{t('NEW_TO_Q')}</p>
           <a
+            className="text-lg font-semibold"
             target="_blank"
             href={`${docsUrl}/five-minutes/`}
             rel="noreferrer"
           >
-            <motion.p whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              {t('LEARN_MORE_ABOUT_Q')}
-            </motion.p>
+            {t('LEARN_MORE_ABOUT_Q')}
           </a>
         </div>
       </StyledConnectWalletModal>

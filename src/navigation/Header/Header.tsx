@@ -16,10 +16,12 @@ function Header () {
 
   return (
     <StyledHeader>
-      <Network />
-      <div className="header-actions">
-        {loadType !== LOAD_TYPES.loaded ? <ConnectWallet /> : <UserAddress />}
-        <Settings />
+      <div className="header__content">
+        <Network />
+        <div className="header__actions">
+          {loadType !== LOAD_TYPES.loaded ? <ConnectWallet /> : <UserAddress />}
+          <Settings />
+        </div>
       </div>
     </StyledHeader>
   );

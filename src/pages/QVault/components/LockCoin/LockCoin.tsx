@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Button from 'ui/Button';
 
-import InfoTooltip from 'components/Custom/InfoTooltip';
+import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import LockForm from './components/LockForm';
 

@@ -6,8 +6,8 @@ import { AuctionInfos, AuctionType } from 'typings/auctions';
 import Button from 'ui/Button';
 
 import { EmptyList, ListWrapper } from 'pages/Auctions/styles';
-import ProposalCardSkeleton from 'pages/Governance/components/ProposalCardSkeleton';
-import { ListNextContainer } from 'pages/Governance/components/ProposalsList/styles';
+import ProposalCardSkeleton from 'pages/Governance/components/Proposals/components/ProposalCardSkeleton';
+import { ListNextContainer } from 'pages/Governance/components/Proposals/components/ProposalsList/styles';
 
 import AuctionCard from './components/AuctionCard';
 

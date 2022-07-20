@@ -7,10 +7,10 @@ import Icon from 'ui/Icon';
 import Tabs from 'ui/Tabs';
 import { TabRoute, TabSwitch } from 'ui/Tabs/components';
 
-import PageWrap from 'components/Base/PageWrap';
+import PageLayout from 'components/PageLayout';
 
+import Proposals from './components/Proposals';
 import VotingStats from './components/VotingStats';
-import Proposals from './Proposals';
 
 import { activeProposalsByTypeSelector } from 'store/voting/proposals/selectors';
 
@@ -68,9 +68,9 @@ function Governance () {
   const redirectTab = tabs.find(tab => tab.count > 0) || tabs[0];
 
   return (
-    <PageWrap
-      pageHeader="Governance"
-      pageButton={pathname !== RoutePaths.contractUpdates && (
+    <PageLayout
+      title="Governance"
+      action={pathname !== RoutePaths.contractUpdates && (
         <Link to={pathToNewProposalPath[pathname] || RoutePaths.newQProposal}>
           <Button block>
             <Icon name="add" />
@@ -108,7 +108,7 @@ function Governance () {
           </TabRoute>
         </>
       </TabSwitch>
-    </PageWrap>
+    </PageLayout>
   );
 }
 

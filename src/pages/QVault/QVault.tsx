@@ -1,8 +1,7 @@
-
 import { useTranslation } from 'react-i18next';
 
-import PageWrap from 'components/Base/PageWrap';
-import InfoTooltip from 'components/Custom/InfoTooltip';
+import PageLayout from 'components/PageLayout';
+import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import DelegateVoting from './components/DelegateVoting';
 import LockCoin from './components/LockCoin';
@@ -13,18 +12,25 @@ function QVault () {
   const { t } = useTranslation();
 
   return (
-    <PageWrap
-      wrapContentClasses="wrap-content__column-2-1"
-      pageHeader={t('Q_VAULT')}
-      pageTooltip={<InfoTooltip placement="bottom" topic="q-vault" />}
+    <PageLayout
+      title={t('Q_VAULT')}
+      titleExtra={<InfoTooltip placement="bottom" topic="q-vault" />}
     >
-      <div style={{ display: 'grid', gap: '16px' }}>
-        <ManageBalance />
-        <LockCoin />
-        <DelegateVoting />
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '2fr 1fr',
+          gap: '16px'
+        }}
+      >
+        <div style={{ display: 'grid', gap: '16px' }}>
+          <ManageBalance />
+          <LockCoin />
+          <DelegateVoting />
+        </div>
+        <VaultOverview />
       </div>
-      <VaultOverview />
-    </PageWrap>
+    </PageLayout>
   );
 }
 

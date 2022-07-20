@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
 export const NotFoundContainer = styled.div`
-  height: calc(100vh - 72px);
-  width: 100%;
-  display: grid;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  align-content: center;
+  gap: 8px;
 `;

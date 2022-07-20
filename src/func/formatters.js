@@ -48,11 +48,13 @@ export function formatDuration (value) {
 export const formatDate = (value, locale = 'en-GB', pattern = 'PPpp') => {
   try {
     const date = new Date(value);
-    if (!date) return '–';
+    if (!date || date.getTime() === 0) return '–';
+
     const { localization } = getCurrentLangInfo(locale);
     return format(date, pattern, { locale: localization });
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    return '–';
   }
 };
 

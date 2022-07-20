@@ -27,4 +27,8 @@ export const TipWrapper = styled.div<{
     };
     align-self: start;
   }
+
+  .tip-action {
+    margin: -6px 0;
+  }
 `;

@@ -22,7 +22,7 @@ function AuctionPeriods ({ endTime, placement = 'top', ...rest }: Props) {
     <AuctionPeriodsContainer {...rest}>
       <Tooltip
         placement={placement}
-        trigger={<p className="text-md font-light">{`${auctionText} ${formatDateRelative(auctionEndTime, i18n.language)}`}</p>}
+        trigger={<p className="text-md">{`${auctionText} ${formatDateRelative(auctionEndTime, i18n.language)}`}</p>}
       >
         {formatDate(auctionEndTime, i18n.language)}
       </Tooltip>

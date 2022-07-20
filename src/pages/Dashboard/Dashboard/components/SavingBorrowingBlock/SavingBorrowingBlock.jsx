@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import InfoTooltip from 'components/Custom/InfoTooltip';
+import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 

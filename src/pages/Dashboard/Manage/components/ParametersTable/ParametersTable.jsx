@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import parametersDictionary from 'json/parameters.json';
 
-import CopyToClipboard from 'components/Base/CopyToClipboard';
+import CopyToClipboard from 'components/CopyToClipboard';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import { useParametersContext } from '../..';

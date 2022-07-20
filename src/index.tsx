@@ -22,7 +22,7 @@ import {
 import LanguageProvider from 'context/LanguageProvider';
 import Web3ContextProvider from 'context/Web3ContextProvider';
 
-import StyleProvider from 'components/Base/StyleProvider';
+import StyleProvider from 'components/StyleProvider';
 import Routes from 'navigation/Routes';
 
 import { store } from './store';

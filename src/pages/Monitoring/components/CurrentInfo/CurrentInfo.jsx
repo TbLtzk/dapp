@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
-import InfoTooltip from 'components/Custom/InfoTooltip';
+import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import { rootMembersMonitoringSelector } from 'store/root-node/selectors';
 import { inactiveValidatorsSelector, validatorsMonitoringSelector } from 'store/validators/selectors';

@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
-import VoterStatus from 'components/Custom/VoterStatus';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
 import useVoteDelegation from 'hooks/useVoteDelegation';
+import useVoterStatus from 'hooks/useVoterStatus';
 
 import {
   getAccountBalance,
@@ -30,11 +30,12 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import { fromSolDateFormattingT1 } from 'func/date';
 
-function VaultOverview() {
+function VaultOverview () {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   const userAddress = useSelector(userAddressMetamask);
+  const voterStatus = useVoterStatus();
 
   const userQVBalance = useSelector(userBalance);
   const userQVBalanceRef = useAnimateNumber(userQVBalance);
@@ -97,10 +98,8 @@ function VaultOverview() {
         <h5>{t('VOTING_LOCKING_END')}</h5>
         <p>{userLockingEnd}</p>
 
-        <h5>{t('VOTING_STATUS')}</h5>
-        <p>
-          <VoterStatus />
-        </p>
+        <h5>Voting Status</h5>
+        <p>{voterStatus}</p>
 
         <h5>{t('VOTE_DELEGATION')}</h5>
         <p className="card_text">{votingInfo}</p>

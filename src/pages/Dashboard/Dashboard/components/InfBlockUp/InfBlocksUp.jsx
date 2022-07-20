@@ -6,7 +6,7 @@ import Button from 'ui/Button';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
-import InfoTooltip from 'components/Custom/InfoTooltip';
+import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import Blockchain from './Blockchain';
 import Constitution from './Constitution';

@@ -15,7 +15,7 @@ import { getSystemSurplusAuctionInstance } from 'contracts/contract-instance';
 import { fromWei } from 'func/balance';
 import { dateToTimestamp, getNowTimestamp } from 'func/convertDate';
 
-export function prepareAuctionData(
+export function prepareAuctionData (
   info: SystemSurplusAuctionInfo,
   event: SystemDebtAndSurplusEvent | undefined,
   raisingBid: string | null
@@ -64,7 +64,7 @@ const getSystemSurplusAuctionData = async (auction: SystemDebtAndSurplusInfo) =>
   };
 };
 
-export async function getSystemSurplus(auctions: SystemDebtAndSurplusInfo[], lastBlock: string | number) {
+export async function getSystemSurplus (auctions: SystemDebtAndSurplusInfo[], lastBlock: string | number) {
   const instance = await getSystemSurplusAuctionInstance();
   const auctionsEvents = await getAuctionsEvents(instance, 'systemSurplus', lastBlock);
   const allAcutions = await Promise.all(
@@ -73,7 +73,7 @@ export async function getSystemSurplus(auctions: SystemDebtAndSurplusInfo[], las
   return allAcutions;
 }
 
-export async function getOneSystemSurplusAuction(id: string | number) {
+export async function getOneSystemSurplusAuction (id: string | number) {
   try {
     const instance = await getSystemSurplusAuctionInstance();
     const info = await instance.getAuctionInfo(id);
@@ -93,12 +93,12 @@ export async function getOneSystemSurplusAuction(id: string | number) {
   }
 }
 
-export async function createSystemSurplusAuction(form: CreateAuction) {
+export async function createSystemSurplusAuction (form: CreateAuction) {
   const instance = await getSystemSurplusAuctionInstance();
   return await instance.startAuction({ qAmount: form.bid });
 }
 
-export async function bidForSystemSurplusAction(form: AuctionBid, userAddress: string) {
+export async function bidForSystemSurplusAction (form: AuctionBid, userAddress: string) {
   const instance = await getSystemSurplusAuctionInstance();
   const result = await instance.bid(form.auctionId, {
     from: userAddress,
@@ -107,7 +107,7 @@ export async function bidForSystemSurplusAction(form: AuctionBid, userAddress: s
   return result;
 }
 
-export async function executeSystemSurplusAuction(form: AuctionExecute, userAddress: string) {
+export async function executeSystemSurplusAuction (form: AuctionExecute, userAddress: string) {
   const instance = await getSystemSurplusAuctionInstance();
   const result = await instance.execute(form.auctionId, { from: userAddress });
   return result;

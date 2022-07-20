@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { WalletType } from 'connectors';
 import { useWeb3Context } from 'context/Web3ContextProvider';
-
-import Button from 'components/Base/Button';
+import Button from 'ui/Button';
 
 function ConnectButtons () {
   const { t } = useTranslation();
@@ -43,28 +42,25 @@ function ConnectButtons () {
         style={{ width: '100%' }}
         onClick={() => connectWallet(WalletType.INJECTED, true)}
       >
-        <div className="connect-btn">
-          <img
-            src="/icons/metamask.svg"
-            alt="metamask"
-            className="icon"
-          />
-          <p>{t('CONNECT_WITH_METAMASK')}</p>
-        </div>
+        <img
+          src="/icons/metamask.svg"
+          alt="metamask"
+          className="icon"
+        />
+        <span>{t('CONNECT_WITH_METAMASK')}</span>
       </Button>
+
       <Button
         alwaysEnabled
         style={{ width: '100%' }}
         onClick={() => connectWallet(WalletType.COINBASE, true)}
       >
-        <div className="connect-btn">
-          <img
-            src="/icons/coinbase.png"
-            alt="metamask"
-            className="icon"
-          />
-          <p>{t('CONNECT_WITH_COINBASE')}</p>
-        </div>
+        <img
+          src="/icons/coinbase.png"
+          alt="metamask"
+          className="icon"
+        />
+        <span>{t('CONNECT_WITH_COINBASE')}</span>
       </Button>
 
       {/* TODO: add bridge between dApp and connect to wallet

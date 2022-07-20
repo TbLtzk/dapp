@@ -8,7 +8,7 @@ import DonutChart from 'ui/DonutChart';
 import Spinner from 'ui/Spinner';
 
 import AddressIcon from 'components/Custom/AddressIcon';
-import InfoTooltip from 'components/Custom/InfoTooltip';
+import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import { getRootMembers } from 'store/root-node/action-creators';
 import { loadingRootMembersSelector, rootMembersSelector } from 'store/root-node/selectors';

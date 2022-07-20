@@ -1,7 +1,7 @@
 import Tabs from 'ui/Tabs';
 import { TabRoute, TabSwitch } from 'ui/Tabs/components';
 
-import PageWrap from 'components/Base/PageWrap';
+import PageLayout from 'components/PageLayout';
 
 import { NewExpertProposal, NewQProposal, NewRootProposal, NewSlashingProposal } from './components/NewProposal';
 
@@ -32,7 +32,7 @@ function NewProposal () {
   ];
 
   return (
-    <PageWrap pageHeader="New proposal">
+    <PageLayout title="New proposal">
       <Tabs tabs={tabs} />
       <TabSwitch>
         <>
@@ -53,7 +53,7 @@ function NewProposal () {
           </TabRoute>
         </>
       </TabSwitch>
-    </PageWrap>
+    </PageLayout>
   );
 }
 

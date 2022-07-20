@@ -1,82 +1,38 @@
 import styled from 'styled-components';
 
 export const StyledConnectWalletModal = styled.div`
-  .connect_header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    font-size: 20px;
-
-    .header {
-      display: flex;
-      align-items: center;
-
-      .mdi-wallet-outline {
-        padding-right: 5px;
-      }
-
-      h5 {
-        margin-bottom: 2px;
-      }
-    }
-    .mdi-close {
-      cursor: pointer;
-      &:hover {
-        color: ${(props) => props.theme.colors.oxfordBlueTint3};
-      }
-    }
-  }
-
   .connect_terms-of-service {
+    margin-top: 16px;
     display: flex;
     align-items: center;
     gap: 8px;
-    border-radius: 8px;
-    padding: 8px 16px;
-    background-color: ${(props) => props.theme.colors.oxfordBlueTint3};
-    color: ${(props) => props.theme.colors.white};
-    p {
-      margin-bottom: 0;
-      font-size: 13px;
-      a {
-        color: ${(props) => props.theme.colors.neonGreen};
-      }
+    
+    a {
+      color: ${(props) => props.theme.colors.neonGreen};
     }
   }
 
   .connect_new-to-q {
-    margin-top: 20px;
+    margin-top: 24px;
     text-align: center;
 
     a {
       display: inline-block;
       cursor: pointer;
-      color: ${(p) => p.theme.colors.oxfordBlueTint1};
-      p {
-        margin-bottom: 0;
+
+      &:hover {
+        text-decoration: underline;
       }
     }
   }
 
   .connect_buttons {
-    button {
-      margin-bottom: 10px;
-    }
-    .connect-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      .icon {
-        width: 23px;
-        height: auto;
-      }
-
-      p {
-        margin-left: 5px;
-        margin-bottom: 0;
-      }
+    display: grid;
+    gap: 8px;
+   
+    img {
+      width: 23px;
+      height: auto;
     }
   }
 

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { AuctionCompletedInfos } from 'typings/auctions';
 
-import Address from 'components/Custom/Address';
+import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import AuctionPeriods from 'pages/Auctions/components/AllAuctions/components/AuctionPeriods';
 
 import { AuctionLayoutContainer } from '../../styles';
@@ -24,9 +24,9 @@ function AuctionLayout ({ auction }: Props) {
           <p className="color-secondary text-md">
             {auction.auctionType === 'liquidation' ? t('VAULT_ID') : t('AUCTION_ID')}
           </p>
-          <h4 className="color-primary text-lg">
-            # {auction.auctionType === 'liquidation' ? auction.vaultId : auction.auctionId}
-          </h4>
+          <p className="color-primary text-md">
+            #{auction.auctionType === 'liquidation' ? auction.vaultId : auction.auctionId}
+          </p>
         </div>
 
         <div className="auction-card__row">
@@ -36,18 +36,18 @@ function AuctionLayout ({ auction }: Props) {
 
         <div className="auction-card__row">
           <p className="color-secondary text-md">{t('HIGHEST_BID')}</p>
-          <h4 className="color-primary text-lg">
+          <p className="color-primary text-md">
             {auction.highestBid} {auction.bidAsset}
-          </h4>
+          </p>
         </div>
 
         {auction?.raisingBid
           ? (
             <div className="auction-card__row">
               <p className="color-secondary text-md ">{t('MINIMUM_BID')}</p>
-              <h4 className="color-primary text-lg">
+              <p className="color-primary text-md">
                 {auction.raisingBid} {auction.bidAsset}
-              </h4>
+              </p>
             </div>
           )
           : null}
@@ -55,20 +55,25 @@ function AuctionLayout ({ auction }: Props) {
         {auction.auctionType === 'systemDebt' && (
           <div className="auction-card__row">
             <p className="color-secondary text-md">{t('RESERVE_LOT')}</p>
-            <h4 className="color-primary text-lg">
+            <p className="color-primary text-md">
               {auction.lot} {auction.lotAsset}
-            </h4>
+            </p>
           </div>
         )}
         {auction.auctionType === 'liquidation' && (
           <>
             <div className="auction-card__row">
               <p className="color-secondary text-md">{t('AUCTIONED_COLLATERAL')}</p>
-              <h4 className="color-primary text-lg">{`${auction.colAsset} ${auction.colKey}`}</h4>
+              <p className="color-primary text-md">{`${auction.colAsset} ${auction.colKey}`}</p>
             </div>
             <div className="auction-card__row">
               <p className="color-secondary text-md">{t('VAULT_OWNER')}</p>
-              <h4 className="color-primary text-lg">{<Address iconed address={auction.vaultOwner} />}</h4>
+              <ExplorerAddress
+                iconed
+                short
+                className="text-md"
+                address={auction.vaultOwner}
+              />
             </div>
           </>
         )}
@@ -77,21 +82,26 @@ function AuctionLayout ({ auction }: Props) {
           <>
             <div className="auction-card__row">
               <p className="color-secondary text-md">{t('AUCTION_INITIATED_BY')}</p>
-              <h4 className="color-primary text-lg">{auction.bidder}</h4>
+              <p className="color-primary text-md">{auction.bidder}</p>
             </div>
 
             <div className="auction-card__row">
               <p className="color-secondary text-md">{t('LOT')}</p>
-              <h4 className="color-primary text-lg">
+              <p className="color-primary text-md">
                 {auction.lot} {auction.lotAsset}
-              </h4>
+              </p>
             </div>
           </>
         )}
 
         <div className="auction-card__row">
           <p className="color-secondary text-md">{t('BIDDER')}</p>
-          <h4 className="color-primary text-lg">{<Address iconed address={auction.bidder} />}</h4>
+          <ExplorerAddress
+            iconed
+            short
+            className="text-md"
+            address={auction.bidder}
+          />
         </div>
       </>
     </AuctionLayoutContainer>

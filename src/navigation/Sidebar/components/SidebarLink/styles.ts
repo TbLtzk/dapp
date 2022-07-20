@@ -47,14 +47,3 @@ export const StyledLink = styled(NavLink)`
     color: ${({ theme }) => getSidebarColor(theme, 'linkIconText')};
   }
 `;
-
-export const AccordionContent = styled.div`
-  display: grid;
-  gap: 4px;
-  margin-top: 4px;
-  margin-left: 16px;
-
-  a {
-    padding: 8px 16px;
-  }
-`;

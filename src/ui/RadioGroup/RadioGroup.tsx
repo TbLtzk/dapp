@@ -43,6 +43,7 @@ function RadioGroup<T extends ValueType> ({
         {options.map((option) => (
           <Radio
             key={String(option.value)}
+            className="radio-group-option"
             label={option.label}
             name={name}
             value={value}

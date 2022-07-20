@@ -42,7 +42,6 @@ export const SidebarContainer = styled.div`
   .sidebar-links {
     display: grid;
     gap: 4px;
-    place-content: start;
     overflow-y: auto;
     overflow-x: hidden;
     // HACK: Display scrollbar inside the container

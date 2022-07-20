@@ -7,14 +7,11 @@ import { AuctionBid, AuctionCompletedInfos, LiquidationAuctionBid } from 'typing
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 import Modal from 'ui/Modal';
-
-import InfoTip from 'components/Custom/InfoTip';
+import Tip from 'ui/Tip';
 
 import useForm from 'hooks/useForm';
 import useMetamaskReset from 'hooks/useMetamaskReset';
 import useMultiStepForm from 'hooks/useMultiStepForm';
-
-import { ApproveTipWrapper } from './styles';
 
 import { bidForAuction } from 'store/auctions/actions';
 import { setTransactionLoading, setTransactionLoadingSuccess } from 'store/transaction-handler/action-creators';
@@ -112,9 +109,18 @@ function BidModal ({ modalOpen, auction, onHide, }:Props) {
     <Modal
       open={modalOpen}
       title={modalTitle}
+      width={460}
       onClose={handleHide}
     >
       <form noValidate onSubmit={form.submit}>
+        {!isApproved && (
+          <Tip
+            style={{ marginBottom: '16px' }}
+            action={<Button compact onClick={approveContract}>{t('APPROVE')}</Button>}
+          >
+            {t('APPROVE_BID_CONTRACT')}
+          </Tip>
+        )}
 
         <Input
           {...form.fields.bid}
@@ -123,17 +129,6 @@ function BidModal ({ modalOpen, auction, onHide, }:Props) {
           placeholder={t('BID')}
           onChange={handleBidChange}
         />
-
-        {!isApproved && (
-          <InfoTip style={{ marginTop: '10px' }}>
-            <ApproveTipWrapper>
-              <p>
-                {t('APPROVE_BID_CONTRACT')}
-              </p>
-              <Button onClick={approveContract}>{t('APPROVE')}</Button>
-            </ApproveTipWrapper>
-          </InfoTip>
-        )}
 
         <Button
           type="submit"

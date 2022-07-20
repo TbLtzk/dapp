@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 
-import PageWrap from 'components/Base/PageWrap';
+import PageLayout from 'components/PageLayout';
 
 import AddressForm from './components/AddressForm';
 import AliasesTable from './components/AliasesTable';
@@ -53,9 +53,9 @@ function AccountAliasing () {
   }, [successMessage]);
 
   return (
-    <PageWrap
-      pageHeader={t('ACCOUNT_ALIASING')}
-      pageButton={
+    <PageLayout
+      title={t('ACCOUNT_ALIASING')}
+      action={
         <Button onClick={() => setIsReserveModalShown(true)}>
           <i className="mdi mdi-archive-lock" />
           <span>{t('RESERVE_ALIAS')}</span>
@@ -89,7 +89,7 @@ function AccountAliasing () {
 
       <AliasesTable address={currentAddress} onSelect={(alias) => setSelectedAlias(alias)} />
       <AliasEventsTable address={currentAddress} />
-    </PageWrap>
+    </PageLayout>
   );
 }
 

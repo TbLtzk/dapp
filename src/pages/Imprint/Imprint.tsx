@@ -1,14 +1,14 @@
 import { useTranslation } from 'react-i18next';
 
 import CustomBlock from 'components/Base/CustomBlock';
-import PageWrap from 'components/Base/PageWrap';
+import PageLayout from 'components/PageLayout';
 import { PolicyContainer } from 'pages/DataPrivacy/styles';
 
 function Imprint () {
   const { t } = useTranslation();
 
   return (
-    <PageWrap pageHeader={t('IMPRINT')}>
+    <PageLayout title={t('IMPRINT')}>
       <PolicyContainer>
         <CustomBlock>
 
@@ -39,7 +39,7 @@ function Imprint () {
           </p>
         </CustomBlock>
       </PolicyContainer>
-    </PageWrap>
+    </PageLayout>
   );
 }
 

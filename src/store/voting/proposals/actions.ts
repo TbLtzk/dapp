@@ -1,7 +1,7 @@
 import { BaseVotingWeightInfo } from '@q-dev/q-js-sdk';
 import { ProposalEvent } from 'typings/contracts';
 import { CreateProposalForm } from 'typings/forms';
-import { ProposalType } from 'typings/proposals';
+import { Proposal, ProposalType, VotingType } from 'typings/proposals';
 
 import * as types from './types';
 
@@ -31,14 +31,18 @@ export const createProposal = (form: CreateProposalForm): types.CreateProposal =
   form
 });
 
-export const voteForProposal = (data: any): types.VoteForProposal => ({
+export const voteForProposal = (payload: {
+  type: VotingType
+  proposal: Proposal
+  isVotedFor?: boolean
+}): types.VoteForProposal => ({
   type: 'VOTE_FOR_PROPOSAL',
-  data
+  payload
 });
 
-export const executeProposal = (data: any): types.ExecuteProposal => ({
+export const executeProposal = (proposal: Proposal): types.ExecuteProposal => ({
   type: 'EXECUTE_PROPOSAL',
-  data
+  proposal
 });
 
 export const getNumberAllProposals = (): types.GetNumberAllProposals => ({

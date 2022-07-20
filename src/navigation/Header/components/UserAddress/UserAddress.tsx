@@ -64,7 +64,7 @@ function UserAddress () {
         <div className="address-main">
           <button
             type="button"
-            className="address-action text-lg"
+            className="address-action text-lg color-primary"
             onClick={copyAddress}
           >
             <Icon name="copy" />
@@ -73,7 +73,7 @@ function UserAddress () {
 
           <button
             type="button"
-            className="address-action text-lg"
+            className="address-action text-lg color-primary"
             onClick={disconnectWallet}
           >
             <Icon name="sign-out" />

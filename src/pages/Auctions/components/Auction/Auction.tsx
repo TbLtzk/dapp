@@ -5,10 +5,11 @@ import { RouteComponentProps, useHistory } from 'react-router';
 import { camelCase } from 'lodash';
 import { AuctionCompletedInfos, AuctionType } from 'typings/auctions';
 import Button from 'ui/Button';
+import Icon from 'ui/Icon';
 import Tag from 'ui/Tag';
 
-import PageWrap from 'components/Base/PageWrap';
 import { SkeletonAuctionLoading } from 'components/Base/SkeletonLoading';
+import PageLayout from 'components/PageLayout';
 import { AUCTION_HEADERS } from 'pages/Auctions/Auctions';
 import { AuctionContainer } from 'pages/Auctions/styles';
 
@@ -84,32 +85,37 @@ function Auction ({ match, }: RouteComponentProps<{
       </AuctionContainer>
     );
   }
-  
+
+  const auctionId = auction?.auctionType === 'liquidation'
+    ? auction?.vaultId
+    : auction?.auctionId;
+
   return (
-    <PageWrap
-      pageHeader={t(AUCTION_HEADERS[auctionType])}
-      pageButton={<AuctionActions auctionType={auctionType} auction={auction} />}
-      topButton={
-        <Button
-          alwaysEnabled
-          look="ghost"
-          style={{ marginBottom: '25px' }}
-          onClick={handleBackClick}
-        >
-          <i className="mdi mdi-arrow-left" />
-          <span>{t(AUCTION_HEADERS[auctionType])}</span>
-        </Button>
-      }
-      pageTooltip={
-        auction?.status && (
-          <Tag style={{ margin: '10px 0 0 15px' }} state={auction.state}>
-            {t(auction.status)}
-          </Tag>
-        )
-      }
-    >
-      <AuctionLayout auction={auction} />
-    </PageWrap>
+    <div className="auction">
+      <Button
+        alwaysEnabled
+        look="ghost"
+        style={{ marginBottom: '24px' }}
+        onClick={handleBackClick}
+      >
+        <Icon name="arrow-left" />
+        <span>{t(AUCTION_HEADERS[auctionType])}</span>
+      </Button>
+
+      <PageLayout
+        title={`#${auctionId} ${t(AUCTION_HEADERS[auctionType])}`}
+        action={<AuctionActions auctionType={auctionType} auction={auction} />}
+        titleExtra={
+          auction?.status && (
+            <Tag style={{ marginLeft: '16px' }} state={auction.state}>
+              {t(auction.status)}
+            </Tag>
+          )
+        }
+      >
+        <AuctionLayout auction={auction} />
+      </PageLayout>
+    </div>
   );
 }
 

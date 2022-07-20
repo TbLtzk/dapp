@@ -1,0 +1,70 @@
+import { HTMLAttributes } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { ProposalStatus } from '@q-dev/q-js-sdk';
+import { Proposal } from 'typings/proposals';
+import Tooltip from 'ui/Tooltip';
+
+import { VotingContainer } from './styles';
+
+import { CONTRACTS_NAMES } from 'constants/contracts';
+import { formatDate, formatDateRelative } from 'func/formatters';
+
+interface Props extends HTMLAttributes<HTMLDivElement> {
+  proposal: Proposal
+}
+
+function VotingPeriods ({ proposal, ...rest }: Props) {
+  const { i18n } = useTranslation();
+
+  const hasNoVeto = [
+    CONTRACTS_NAMES.addressVoting,
+    CONTRACTS_NAMES.upgradeVoting,
+    CONTRACTS_NAMES.validatorsSlashingVoting,
+    CONTRACTS_NAMES.emergencyUpdateVoting,
+  ].includes(proposal.contract);
+
+  const votingEndTime = new Date(proposal.votingEndTime * 1000).getTime();
+  const vetoEndTime = proposal.status === ProposalStatus.REJECTED
+    ? 0
+    : new Date(proposal.vetoEndTime * 1000).getTime();
+
+  const votingText = votingEndTime > Date.now()
+    ? 'Voting ends'
+    : 'Voting ended';
+  const vetoText = vetoEndTime > Date.now()
+    ? 'Veto ends'
+    : 'Veto ended';
+
+  return (
+    <VotingContainer {...rest}>
+      <Tooltip
+        placement="bottom"
+        trigger={(
+          <p className="text-md font-light">
+            {`${votingText} ${formatDateRelative(votingEndTime, i18n.language)}`}
+          </p>
+        )}
+      >
+        {formatDate(votingEndTime, i18n.language)}
+      </Tooltip>
+
+      <Tooltip
+        placement="bottom"
+        disabled={hasNoVeto || !vetoEndTime}
+        trigger={(
+          <p className="text-md font-light">
+            {hasNoVeto || !vetoEndTime
+              ? 'No Veto'
+              : `${vetoText} ${formatDateRelative(vetoEndTime, i18n.language)}`
+            }
+          </p>
+        )}
+      >
+        {formatDate(vetoEndTime, i18n.language)}
+      </Tooltip>
+    </VotingContainer>
+  );
+}
+
+export default VotingPeriods;

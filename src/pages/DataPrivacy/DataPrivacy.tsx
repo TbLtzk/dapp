@@ -1,14 +1,14 @@
 import { useTranslation } from 'react-i18next';
 
 import CustomBlock from 'components/Base/CustomBlock';
-import PageWrap from 'components/Base/PageWrap';
+import PageLayout from 'components/PageLayout';
 
 import { PolicyContainer } from './styles';
 
 function DataPrivacy () {
   const { t } = useTranslation();
   return (
-    <PageWrap pageHeader={t('DATA_PRIVACY')}>
+    <PageLayout title={t('DATA_PRIVACY')}>
       <PolicyContainer>
         <CustomBlock>
           <h1>I. Privacy Policy</h1>
@@ -137,7 +137,7 @@ function DataPrivacy () {
           </p>
         </CustomBlock>
       </PolicyContainer>
-    </PageWrap>
+    </PageLayout>
   );
 }
 
