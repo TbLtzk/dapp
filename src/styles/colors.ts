@@ -27,6 +27,11 @@ export const COLORS = {
   green200: '#32E500',
   green300: '#2BC500',
   green400: '#25A900',
+  green500: '#1E8900',
+  green600: '#197100',
+  green700: '#145B00',
+  green800: '#0F4500',
+  green900: '#0A2D00',
 
   grey000: '#F1F3F7',
   grey100: '#E0E6EE',
@@ -44,11 +49,11 @@ export const COLORS = {
   red200: '#FB9A90',
   red300: '#F97062',
   red400: '#F73825',
+  red500: '#E51D08',
+  red600: '#BC1707',
   red700: '#A51407',
   red800: '#8E1106',
   red900: '#680C04',
-  red500: '#E51D08',
-  red600: '#BC1707',
 
   yellow000: '#F8D889',
   yellow100: '#F5C95C',
@@ -85,6 +90,12 @@ export const darkColors = {
   blockShadow: 'rgba(23, 77, 145, 0.04)',
   blockShadowLight: 'rgba(7, 23, 43, 0.24)',
   blockShadowDark: 'rgba(7, 23, 43, 0.32)',
+
+  link: COLORS.blue300,
+  linkHover: COLORS.blue200,
+  linkActive: COLORS.blue000,
+  linkFocus: COLORS.blue000,
+  linkDisabled: COLORS.grey700,
 };
 
 export const lightColors = {
@@ -117,6 +128,12 @@ export const lightColors = {
   blockShadow: 'rgba(23, 77, 145, 0.04)',
   blockShadowLight: 'rgba(11, 37, 69, 0.1)',
   blockShadowDark: 'rgba(11, 37, 69, 0.12)',
+
+  link: COLORS.blue500,
+  linkHover: COLORS.blue600,
+  linkActive: COLORS.blue800,
+  linkFocus: COLORS.blue100,
+  linkDisabled: COLORS.grey200,
 };
 
 export function getColorFn<T extends string> (

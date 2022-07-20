@@ -39,14 +39,15 @@ function Button ({
   ...rest
 }: Props) {
   const loadType = useSelector(loadTypeSelector);
-  const isDisabled = disabled || loadType !== LOAD_TYPES.loaded;
+  const isDisabled = disabled ||
+    (!alwaysEnabled && loadType !== LOAD_TYPES.loaded);
 
   return (
     <StyledButton
       className={`text-md font-semibold ${className || ''}`}
       as={block ? 'div' : 'button'}
       type={type}
-      disabled={!alwaysEnabled && isDisabled}
+      disabled={isDisabled}
       $look={look}
       $icon={icon}
       $compact={compact}

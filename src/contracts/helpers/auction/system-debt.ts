@@ -1,5 +1,4 @@
 import { AuctionStatus, SystemDebtAuctionInfo } from '@q-dev/q-js-sdk';
-import { upperCase } from 'lodash';
 import {
   AuctionBid,
   CreateAuction,

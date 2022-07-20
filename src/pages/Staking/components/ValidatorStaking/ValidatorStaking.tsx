@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
 
-import InfoTooltip from 'components/Custom/InfoTooltip';
-import ValidatorsTable from 'components/Custom/Tables/ValidatorsTable';
+import ValidatorsTable from 'components/Tables/ValidatorsTable';
+import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import StakerRewardPool from './components/StakerRewardPool';
 import ValidatorBalanceInfo from './components/ValidatorBalanceInfo';

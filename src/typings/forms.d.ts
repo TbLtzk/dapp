@@ -11,7 +11,7 @@ interface FormParameter {
   type: ParameterType
   key: string
   value: string
-  isNew: boolean
+  isNew?: boolean
 }
 
 interface FormDelegation {

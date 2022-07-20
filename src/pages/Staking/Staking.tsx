@@ -5,7 +5,7 @@ import Tabs from 'ui/Tabs';
 import { TabRoute, TabSwitch } from 'ui/Tabs/components';
 import { TabsType } from 'ui/Tabs/Tabs';
 
-import PageWrap from 'components/Base/PageWrap';
+import PageLayout from 'components/PageLayout';
 
 import DelegationStaking from './components/DelegationStaking';
 import RootNodeStaking from './components/RootNodeStaking';
@@ -35,7 +35,7 @@ function Staking () {
   ];
 
   return (
-    <PageWrap pageHeader={t('STAKING')}>
+    <PageLayout title={t('STAKING')}>
       <StakingContainer>
         <Tabs tabs={tabs} />
         <TabSwitch>
@@ -55,7 +55,7 @@ function Staking () {
           </>
         </TabSwitch>
       </StakingContainer>
-    </PageWrap>
+    </PageLayout>
   );
 }
 

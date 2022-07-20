@@ -4,9 +4,8 @@ import { Link } from 'react-router-dom';
 
 import Button from 'ui/Button';
 
-import VoterStatus from 'components/Custom/VoterStatus';
-
 import useVoteDelegation from 'hooks/useVoteDelegation';
+import useVoterStatus from 'hooks/useVoterStatus';
 
 import { StatsContainer } from './styles';
 
@@ -25,6 +24,7 @@ function VotingStats () {
 
   const address = useSelector(userAddressMetamask);
   const agent = useSelector(votingAgent);
+  const voterStatus = useVoterStatus();
 
   const { ownWeight, lockedUntil } = useSelector(baseVotingWeightInfoSelector);
   const { votingInfo } = useVoteDelegation(ownWeight, agent);
@@ -45,7 +45,7 @@ function VotingStats () {
     },
     {
       title: 'Voting Locking End',
-      value: lockedDate
+      value: lockedDate && lockedDate !== '0'
         ? (
           <>
             <span>{lockedDate}</span>
@@ -56,7 +56,7 @@ function VotingStats () {
     },
     {
       title: 'Voting Status',
-      value: <span className="text-lg"><VoterStatus /></span>
+      value: <span className="text-lg">{voterStatus}</span>
     },
     {
       title: 'Vote Delegation',

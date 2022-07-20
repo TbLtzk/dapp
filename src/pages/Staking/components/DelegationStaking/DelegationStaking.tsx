@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
-import InfoTooltip from 'components/Custom/InfoTooltip';
-import DelegatedValidatorsTable from 'components/Custom/Tables/DelegatedValidatorsTable';
+import DelegatedValidatorsTable from 'components/Tables/DelegatedValidatorsTable';
+import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import DelegationRewards from './components/DelegationRewards';
 import UpdateDelegation from './components/UpdateDelegation';

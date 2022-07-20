@@ -19,7 +19,4 @@ export const LinksContainer = styled.div`
       text-decoration: none;
     }
   }
-
-  .ecosystem-link-icon {
-  }
 `;

@@ -1,12 +1,17 @@
+import { BaseProposal } from '@q-dev/q-js-sdk';
+import { ConstitutionProposal, ConstitutionVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/constitution/ConstitutionVotingInstance';
+import { EmergencyUpdateVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/EmergencyUpdateVotingInstance';
+import { GeneralUpdateVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/GeneralUpdateVotingInstance';
 import { flatten } from 'lodash';
 import { ProposalEvent } from 'typings/contracts';
 import { QProposalForm } from 'typings/forms';
+import { Proposal } from 'typings/proposals';
 
 import { getContractProposals } from '.';
 
 import { getConstitutionVotingInstance, getEmergencyUpdateVotingInstance, getGeneralUpdateVotingInstance } from 'contracts/contract-instance';
 
-import { CONTRACTS_NAMES } from 'constants/contracts';
+import { fromWei } from 'func/balance';
 
 export async function getQProposals (
   proposals: ProposalEvent[],
@@ -17,19 +22,19 @@ export async function getQProposals (
       proposals,
       contract: await getConstitutionVotingInstance(),
       lastBlock,
-      contractName: CONTRACTS_NAMES.constitutionVoting
+      contractName: 'constitutionVoting'
     }),
     getContractProposals({
       proposals,
       contract: await getEmergencyUpdateVotingInstance(),
       lastBlock,
-      contractName: CONTRACTS_NAMES.emergencyUpdateVoting
+      contractName: 'emergencyUpdateVoting'
     }),
     getContractProposals({
       proposals,
       contract: await getGeneralUpdateVotingInstance(),
       lastBlock,
-      contractName: CONTRACTS_NAMES.generalUpdateVoting
+      contractName: 'generalUpdateVoting'
     })
   ]);
 
@@ -70,4 +75,37 @@ export async function createEmergencyProposal (
 ) {
   const contract = await getEmergencyUpdateVotingInstance();
   return contract.createProposal(form.externalLink, { from: address });
+}
+
+export async function getConstitutionProposal (
+  contract: ConstitutionVotingInstance | EmergencyUpdateVotingInstance | GeneralUpdateVotingInstance,
+  id: string
+): Promise<Partial<Proposal>> {
+  const proposal = await contract.getProposal(id);
+
+  const isConstitution = contract instanceof ConstitutionVotingInstance;
+  const base = isConstitution
+    ? proposal.base
+    // TODO: Fix SDK
+    : proposal as unknown as BaseProposal;
+
+  return {
+    remark: base.remark,
+    votingEndTime: Number(base.params.votingEndTime),
+    vetoEndTime: Number(base.params.vetoEndTime),
+
+    votesFor: Number(fromWei(base.counters.weightFor)),
+    votesAgainst: Number(fromWei(base.counters.weightAgainst)),
+    vetoesNumber: Number(fromWei(base.counters.vetosCount)),
+
+    currentConstitutionHash: isConstitution
+      ? (proposal as ConstitutionProposal).currentConstitutionHash
+      : '',
+    newConstitutionHash: isConstitution
+      ? (proposal as ConstitutionProposal).newConstitutionHash
+      : '',
+    classification: isConstitution
+      ? (proposal as ConstitutionProposal).classification
+      : undefined,
+  };
 }

@@ -6,7 +6,7 @@ import Icon from 'ui/Icon';
 import Switch from 'ui/Switch';
 
 import LazyLoading from 'components/Base/LazyLoading';
-import PageWrap from 'components/Base/PageWrap';
+import PageLayout from 'components/PageLayout';
 
 const QParameters = lazy(() => import('./QParameters'));
 const ParametersContext = createContext();
@@ -15,9 +15,9 @@ function ManageParameters () {
   const [isSimplifiedMode, setIsSimplifiedMode] = useState(false);
 
   return (
-    <PageWrap
-      pageHeader="Q Parameters"
-      pageButton={
+    <PageLayout
+      title="Q Parameters"
+      action={
         <div style={{ display: 'flex', gap: '16px' }}>
           <Switch
             id="parameters-switch"
@@ -43,7 +43,7 @@ function ManageParameters () {
           <QParameters />
         </ParametersContext.Provider>
       </LazyLoading>
-    </PageWrap>
+    </PageLayout>
   );
 }
 

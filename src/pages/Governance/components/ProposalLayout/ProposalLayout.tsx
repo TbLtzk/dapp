@@ -1,63 +1,66 @@
-import { ProposalType } from 'typings/proposals';
+import { useSelector } from 'react-redux';
 
-import CustomCardButtons from 'components/Custom/CustomCardButtons';
+import { ProposalStatus } from '@q-dev/q-js-sdk';
+import { Proposal, ProposalType, SlashingProposal } from 'typings/proposals';
+import Tag from 'ui/Tag';
 
-import PollDetail from './components/PollDetail';
-import ProposalContent from './components/ProposalContent';
-import ProposalStatus from './components/ProposalStatus';
-import SlashingObjection from './components/SlashingObjection';
-import VoteBreakdown from './components/VoteBreakdown';
-import VotingItems from './components/VotingItems';
-import {
-  ListCardBody,
-  ListCardHeader,
-  ListCardWrp
-} from './styles';
+import PageLayout from 'components/PageLayout';
+import useProposalDetails from 'pages/Governance/hooks/useProposalDetails';
 
-import { STATUSES } from 'constants/statuses';
-import { createShareText } from 'func/useful';
+import CastObjection from './components/CastObjection';
+import ProposalActions from './components/ProposalActions';
+import ProposalDecision from './components/ProposalDecision';
+import ProposalDetails from './components/ProposalDetails';
+import ProposalObjection from './components/ProposalObjection';
+import ProposalParameters from './components/ProposalParameters';
+import ProposalTurnout from './components/ProposalTurnout';
+import ProposalVeto from './components/ProposalVeto';
+import ProposalVoting from './components/ProposalVoting';
+import { ProposalLayoutContainer } from './styles';
 
-function ProposalLayout ({ proposal, type }: { proposal: any, type: ProposalType }) {
+import { userAddressMetamask } from 'store/user-inf/selectors';
+
+function ProposalLayout ({ proposal, type }: { proposal: Proposal, type: ProposalType }) {
+  const userAddress = useSelector(userAddressMetamask);
+  const { title, status, state } = useProposalDetails(proposal);
+
+  const isSlashingProposal = type === 'slashing' &&
+    proposal.status === ProposalStatus.EXECUTED;
+
   return (
-    <ListCardWrp>
-      <ListCardHeader>
-        <div className="card__title">
-          <h1>{proposal.title}</h1>
-          <ProposalStatus status={proposal.status} />
-        </div>
-        <div className="card__buttons">
-          <CustomCardButtons
-            onePage={true}
-            shareText={createShareText('proposal', proposal.contract, proposal.id)}
-          />
-        </div>
-      </ListCardHeader>
+    <PageLayout
+      title={`#${proposal.id} ${title}`}
+      titleExtra={(
+        <Tag state={state} style={{ marginLeft: '16px' }}>
+          {status}
+        </Tag>
+      )}
+      action={<ProposalActions proposal={proposal} title={title} />}
+    >
+      <ProposalLayoutContainer>
+        {isSlashingProposal && proposal.candidate === userAddress && (
+          <CastObjection proposal={proposal} />
+        )}
 
-      <ListCardBody>
-        <ProposalContent proposal={proposal} />
-        <div className="list-card__line" />
-        <PollDetail
-          pollDetail={proposal}
-          type={type}
-          contract={proposal.contract}
-        />
-        <div className="list-card__line" />
-        <VoteBreakdown voteBreakdown={proposal} />
-        <VotingItems proposal={proposal} />
-        {type === 'slashing' && proposal.status === STATUSES.executed
-          ? (
-            <>
-              <div className="list-card__line" />
-              <SlashingObjection
-                contract={proposal.contract}
-                proposalId={proposal.id}
-                objData={proposal.objEscrow}
-              />
-            </>
-          )
-          : null}
-      </ListCardBody>
-    </ListCardWrp>
+        <ProposalDetails proposal={proposal} type={type} />
+        {proposal.parameters?.length > 0 && (
+          <ProposalParameters proposal={proposal} />
+        )}
+
+        {isSlashingProposal && (
+          <>
+            <ProposalObjection proposal={proposal as SlashingProposal} />
+            <ProposalDecision proposal={proposal as SlashingProposal} />
+          </>
+        )}
+
+        <div className="proposal-layout__voting">
+          <ProposalTurnout proposal={proposal} />
+          <ProposalVoting proposal={proposal} />
+          <ProposalVeto proposal={proposal} />
+        </div>
+      </ProposalLayoutContainer>
+    </PageLayout>
   );
 }
 

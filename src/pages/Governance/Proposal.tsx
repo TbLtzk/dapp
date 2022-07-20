@@ -2,29 +2,31 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router';
 
-import { ProposalType } from 'typings/proposals';
+import { ProposalContractType } from 'typings/contracts';
+import { Proposal as ProposalInterface, ProposalType } from 'typings/proposals';
+import Button from 'ui/Button';
+import Icon from 'ui/Icon';
 
-import Button from 'components/Base/Button';
-import PageWrap from 'components/Base/PageWrap';
-import SkeletonProposalsLoading from 'components/Base/SkeletonLoading';
+import useInterval from 'hooks/useInterval';
 
-import VotingStats from './components/ProposalLayout/components/VotingStats';
-import ProposalLayout from './components/ProposalLayout/ProposalLayout';
+import ProposalLayout from './components/ProposalLayout';
+import ProposalSkeleton from './components/Proposals/components/ProposalSkeleton';
 
 import { transactionLoadingSelector } from 'store/transaction-handler/selectors';
 
-import { getProposal, getProposalTypeByContract } from 'contracts/helpers/voting-helpers/base-voting-helper';
+import { getProposal, getProposalTypeByContract } from 'contracts/helpers/voting';
 
 function Proposal ({ match }: RouteComponentProps<{
   id: string,
-  contract: string
+  contract: ProposalContractType
 }>) {
   const history = useHistory();
   const transactionLoading = useSelector(transactionLoadingSelector);
 
-  const [proposal, setProposal] = useState<any>(null);
-  const type = getProposalTypeByContract(match.params.contract) as ProposalType;
+  const [proposal, setProposal] = useState<ProposalInterface |null>(null);
+  const type = getProposalTypeByContract(match.params.contract);
 
+  useInterval(loadProposal, 60_000);
   useEffect(() => {
     if (!transactionLoading) {
       loadProposal();
@@ -32,13 +34,13 @@ function Proposal ({ match }: RouteComponentProps<{
   }, [transactionLoading]);
 
   async function loadProposal () {
-    const data = await getProposal(match.params.contract, match.params.id, true);
-    if (data?.error) {
+    const proposal = await getProposal(match.params.contract, match.params.id);
+    if (!proposal) {
       history.replace('/not-found');
       return;
     }
 
-    setProposal(data);
+    setProposal(proposal);
   }
 
   const handleBackClick = () => {
@@ -51,39 +53,31 @@ function Proposal ({ match }: RouteComponentProps<{
     history.replace('/governance');
   };
 
-  const titleMap: Record<ProposalType, string> = {
-    q: 'Q Proposal',
-    rootNode: 'Root Node Proposal',
-    expert: 'Expert Proposal',
-    slashing: 'Slashing Proposal',
-    contractUpdate: 'Contract Update Proposal',
+  const backTextMap: Record<ProposalType, string> = {
+    q: 'Q Proposals',
+    rootNode: 'Root Node Panel',
+    expert: 'Expert Proposals',
+    slashing: 'Slashing Proposals',
+    contractUpdate: 'Contract Updates',
   };
 
   return (
-    <PageWrap pageHeader={titleMap[type]}>
+    <div className="proposal">
       <Button
-        look="white"
-        style={{ marginBottom: '16px', width: 'max-content' }}
+        alwaysEnabled
+        look="ghost"
+        style={{ marginBottom: '24px' }}
         onClick={handleBackClick}
       >
-        <i className="mdi mdi-arrow-left" />
-        <span>Back to proposals</span>
+        <Icon name="arrow-left" />
+        <span>{backTextMap[type]}</span>
       </Button>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '2fr 1fr',
-          gap: '15px',
-        }}
-      >
-        {proposal
-          ? <ProposalLayout type={type} proposal={proposal} />
-          : <SkeletonProposalsLoading />
-        }
-        <VotingStats />
-      </div>
-    </PageWrap>
+      {proposal
+        ? <ProposalLayout type={type} proposal={proposal} />
+        : <ProposalSkeleton />
+      }
+    </div>
   );
 }
 

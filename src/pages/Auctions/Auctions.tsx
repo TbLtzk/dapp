@@ -7,7 +7,7 @@ import Icon from 'ui/Icon';
 import Tabs from 'ui/Tabs';
 import { TabRoute, TabSwitch } from 'ui/Tabs/components';
 
-import PageWrap from 'components/Base/PageWrap';
+import PageLayout from 'components/PageLayout';
 
 import AllAuctions from './components/AllAuctions';
 import AuctionStats from './components/AuctionStats';
@@ -24,7 +24,7 @@ export const AUCTION_HEADERS = {
   [AUCTIONS_TYPES.systemSurplus]: 'SYSTEM_SURPLUS_AUCTION',
 };
 
-function Auctions() {
+function Auctions () {
   const { t } = useTranslation();
 
   const { pathname } = useLocation();
@@ -62,9 +62,9 @@ function Auctions() {
 
   const redirectTab = tabs.find((tab) => tab.count > 0) || tabs[0];
   return (
-    <PageWrap
-      pageHeader={t('AUCTIONS')}
-      pageButton={
+    <PageLayout
+      title={t('AUCTIONS')}
+      action={
         <Link to={pathToNewAuctionPath[pathname] || RoutePaths.newLiquidation}>
           <Button block>
             <Icon name="add" />
@@ -94,7 +94,7 @@ function Auctions() {
           </TabRoute>
         </>
       </TabSwitch>
-    </PageWrap>
+    </PageLayout>
   );
 }
 

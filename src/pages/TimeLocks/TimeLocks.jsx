@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import PageWrap from 'components/Base/PageWrap';
-import InfoTooltip from 'components/Custom/InfoTooltip';
+import PageLayout from 'components/PageLayout';
+import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
@@ -102,7 +102,10 @@ function TimeLocks () {
   ];
 
   return (
-    <PageWrap pageHeader={t('TIME_LOCKS')} pageTooltip={<InfoTooltip topic="time-locks" placement="bottom" />}>
+    <PageLayout
+      title={t('TIME_LOCKS')}
+      titleExtra={<InfoTooltip topic="time-locks" placement="bottom" />}
+    >
       <AddressForm userAddress={currentAddress} onChange={setCurrentAddress} />
       <div className="content__colm-2 content__time-locks">
         {cardsData.map((card) => (
@@ -113,7 +116,7 @@ function TimeLocks () {
           />
         ))}
       </div>
-    </PageWrap>
+    </PageLayout>
   );
 }
 

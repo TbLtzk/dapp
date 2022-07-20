@@ -1,3 +1,4 @@
+import { HTMLAttributes } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { FormParameter } from 'typings/forms';
@@ -7,18 +8,24 @@ import { ParameterViewerContainer } from './styles';
 
 import { getTypeName } from 'func/contractHelpers';
 
-interface Props {
-  parameter: FormParameter;
-  index: number;
+interface Props extends HTMLAttributes<HTMLDivElement> {
+  parameter: FormParameter
+  index: number
+  block?: boolean
 }
 
-function ParameterViewer ({ parameter, index }: Props) {
+function ParameterViewer ({
+  parameter,
+  index,
+  block = false,
+  ...rest
+}: Props) {
   const { t } = useTranslation();
 
   return (
-    <ParameterViewerContainer>
-      <p className="text-md">
-        {t('PARAMETER')} {index + 1}
+    <ParameterViewerContainer $block={block} {...rest}>
+      <p className={block ? 'text-lg font-semibold' : 'text-md'}>
+        Parameter {index + 1}
       </p>
 
       {parameter.isNew && (
@@ -37,7 +44,7 @@ function ParameterViewer ({ parameter, index }: Props) {
       <div>
         <p className="text-md color-secondary">{t('VALUE')}</p>
         <p className="text-lg" title={parameter.value}>
-          <span>{parameter.value}</span>
+          <span>{String(parameter.value)}</span>
           <span className="font-light color-secondary" style={{ marginLeft: '4px' }}>
             {getTypeName(parameter.type)?.toUpperCase()}
           </span>

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 
-import PageWrap from 'components/Base/PageWrap';
+import PageLayout from 'components/PageLayout';
 
 import BorrowCryptoAssets from './components/BorrowCryptoAssets';
 import Overview from './components/Overview';
@@ -71,17 +71,24 @@ function SavingAndBorrowing () {
   );
 
   return (
-    <PageWrap
-      wrapContentClasses="wrap-content__column-2-1"
-      pageHeader={t('SAVING_BORROWING')}
-      pageButton={buttons}
+    <PageLayout
+      title={t('SAVING_BORROWING')}
+      action={buttons}
     >
-      <div style={{ display: 'grid', gap: '16px' }}>
-        <SavingCryptoAssets />
-        <BorrowCryptoAssets />
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '2fr 1fr',
+          gap: '16px'
+        }}
+      >
+        <div style={{ display: 'grid', gap: '16px' }}>
+          <SavingCryptoAssets />
+          <BorrowCryptoAssets />
+        </div>
+        <Overview />
       </div>
-      <Overview />
-    </PageWrap>
+    </PageLayout>
   );
 }
 

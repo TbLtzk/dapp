@@ -1,5 +1,4 @@
 import { AuctionStatus, LiquidationAuctionInfo as SdkLiquidationAuctionInfo } from '@q-dev/q-js-sdk';
-import { capitalize, upperCase } from 'lodash';
 import {
   CreateLiquidationAuction,
   LiquidationAuctionBid,

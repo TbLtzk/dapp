@@ -1,4 +1,4 @@
-import ValidatorsTable from 'components/Custom/Tables/ValidatorsTable';
+import ValidatorsTable from 'components/Tables/ValidatorsTable';
 
 function Tables () {
   return (

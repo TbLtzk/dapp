@@ -1,21 +1,21 @@
 import { useTranslation } from 'react-i18next';
 
-import PageWrap from 'components/Base/PageWrap';
-import RootNodeTable from 'components/Custom/Tables/RootNodeTable/RootNodeTable';
-import ValidatorsTable from 'components/Custom/Tables/ValidatorsTable';
+import PageLayout from 'components/PageLayout';
+import RootNodeTable from 'components/Tables/RootNodeTable/RootNodeTable';
+import ValidatorsTable from 'components/Tables/ValidatorsTable';
 
 import CurrentInfo from './components/CurrentInfo';
 
 const Monitoring = () => {
   const { t } = useTranslation();
   return (
-    <PageWrap pageHeader={t('MONITORING')}>
+    <PageLayout title={t('MONITORING')}>
       <CurrentInfo />
       <div>
         <ValidatorsTable tableType="validators-monitoring" />
         <RootNodeTable tableType="rootNodesMonitoring" />
       </div>
-    </PageWrap>
+    </PageLayout>
   );
 };
 

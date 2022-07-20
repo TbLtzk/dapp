@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Tabs from 'ui/Tabs';
 import { TabRoute, TabSwitch } from 'ui/Tabs/components';
 
-import PageWrap from 'components/Base/PageWrap';
+import PageLayout from 'components/PageLayout';
 
 import NewLiquidationAuction from './components/NewLiquidationAuction';
 import NewSystemDebtAuction from './components/NewSystemDebtAuction';
@@ -33,7 +33,7 @@ function NewAuction () {
   ];
 
   return (
-    <PageWrap pageHeader={t('NEW_AUCTION')}>
+    <PageLayout title={t('NEW_AUCTION')}>
       <Tabs tabs={tabs} />
       <TabSwitch>
         <>
@@ -50,7 +50,7 @@ function NewAuction () {
           </TabRoute>
         </>
       </TabSwitch>
-    </PageWrap>
+    </PageLayout>
   );
 }
 

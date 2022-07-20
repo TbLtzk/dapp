@@ -5,8 +5,8 @@ import Tooltip from 'ui/Tooltip';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import LoadingSpinner from 'components/Base/LoadingSpinner';
-import GnosisSafeTooltip from 'components/Custom/GnosisSafeTooltip';
 
+import GnosisSafeTooltip from '../GnosisSafeTooltip';
 import ParametersTable from '../ParametersTable';
 
 import { BlockParagraph, DocsLink, ParametersBlockTitle } from './styles';

@@ -26,6 +26,7 @@
   "settings": {
     "react": { "version": "detect" }
   },
+  "globals": { "JSX": true },
   "rules": {
     "max-len": ["warn", {
       "code": 120,

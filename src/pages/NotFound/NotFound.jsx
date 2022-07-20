@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import Button from 'components/Base/Button';
+import Button from 'ui/Button';
 
 import { NotFoundContainer } from './styles';
 
@@ -9,9 +9,15 @@ function NotFound () {
   const { t } = useTranslation();
   return (
     <NotFoundContainer>
-      <h5>{t('PAGE_DOES_NOT_EXIST')}</h5>
+      <p className="text-xl font-semibold">
+        {t('PAGE_DOES_NOT_EXIST')}
+      </p>
+
       <Link to="/">
-        <Button alwaysEnabled style={{ width: '100%' }}>
+        <Button
+          block
+          alwaysEnabled
+        >
           <i className="mdi mdi-home" />
           <span>{t('HOME')}</span>
         </Button>

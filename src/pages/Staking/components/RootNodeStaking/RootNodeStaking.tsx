@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import InfoTooltip from 'components/Custom/InfoTooltip';
-import RootNodeTable from 'components/Custom/Tables/RootNodeTable';
+import RootNodeTable from 'components/Tables/RootNodeTable';
+import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import RootBalanceInfo from './components/RootBalanceInfo';
 import RootNodeMenu from './components/RootNodeMenu';

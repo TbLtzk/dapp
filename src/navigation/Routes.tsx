@@ -5,8 +5,9 @@ import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import * as Sentry from '@sentry/react';
 import Toast from 'ui/Toast';
 
-import Layout from 'components/Base/Layout';
+import Alerts from 'components/Custom/Alerts';
 import ErrorBoundary from 'components/Custom/ErrorBoundary';
+import Layout from 'components/Layout';
 import AccountAliasing from 'pages/AccountAliasing';
 import Auction from 'pages/Auctions/components/Auction';
 import NewAuction from 'pages/Auctions/components/NewAuction';
@@ -76,6 +77,7 @@ function Routes () {
             gap: '12px',
           }}
         >
+          <Alerts />
           <Switch>
             <Route exact path="/">
               <Dashboard />

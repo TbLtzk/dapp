@@ -16,7 +16,6 @@ export const TextStyle = createGlobalStyle`
   .text-xs {
     font-weight: 400;
     margin-bottom: 0;
-    color: ${({ theme }) => theme.colors.textPrimary};
   }
 
   .text-h1,
@@ -97,5 +96,9 @@ export const TextStyle = createGlobalStyle`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+  }
+
+  .break-word {
+    word-break: break-word;
   }
 `;

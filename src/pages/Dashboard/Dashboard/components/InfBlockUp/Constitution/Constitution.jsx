@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
 
-import CopyToClipboard from 'components/Base/CopyToClipboard';
 import CustomBlock from 'components/Base/CustomBlock';
-import InfoTooltip from 'components/Custom/InfoTooltip';
+import CopyToClipboard from 'components/CopyToClipboard';
+import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import { getConstitutionHash } from 'store/voting/proposals/actions';
 import { constitutionHash } from 'store/voting/proposals/selectors';

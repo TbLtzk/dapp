@@ -1,22 +1,15 @@
-import { ContractRegistryInstance, SystemContractWithQBalance } from '@q-dev/q-js-sdk';
-import { BaseContractInstance } from '@q-dev/q-js-sdk/lib/contracts/BaseContractInstance';
+import { ContractRegistryInstance } from '@q-dev/q-js-sdk';
 import { CompoundRateKeeperInstance } from '@q-dev/q-js-sdk/lib/contracts/common/CompoundRateKeeperInstance';
 import { Indexer } from '@q-dev/q-js-sdk/lib/indexer/indexer';
 import { ValidatorMetrics } from '@q-dev/q-js-sdk/lib/utils/validator-metrics';
-import Web3 from 'web3';
+import { ContractKey, ContractValue } from 'typings/contracts';
 import { Contract } from 'web3-eth-contract';
 
 import { indexersUrls } from 'constants/config';
 
-declare global {
-  interface Window {
-    web3: Web3
-  }
-}
-
 export const CONTRACT_REGISTRY_ADDRESS = '0xc3E589056Ece16BCB88c6f9318e9a7343b663522';
-
 export let contractRegistryInstance: ContractRegistryInstance | null = null;
+const cache: Record<string, ContractValue<any>> = {};
 
 export const getContractRegistryInstance = () => {
   if (!contractRegistryInstance) {
@@ -25,16 +18,6 @@ export const getContractRegistryInstance = () => {
   }
   return contractRegistryInstance;
 };
-
-type KeyOfType<T, U> = {
-  [P in keyof T]: T[P] extends U ? P: never
-}[keyof T]
-
-type ContractPromise = Promise<BaseContractInstance<any> | SystemContractWithQBalance[]>
-type ContractKey = KeyOfType<ContractRegistryInstance, (val: string) => ContractPromise>;
-type ContractValue<T extends ContractKey> = ReturnType<ContractRegistryInstance[T]>;
-
-const cache: Record<string, ContractValue<any>> = {};
 
 export function getInstance<T extends ContractKey> (
   instance: T,

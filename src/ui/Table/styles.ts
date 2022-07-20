@@ -1,11 +1,8 @@
 import styled, { css } from 'styled-components';
-import { scrollbarStyle } from 'styles/globalStyle';
 
 import { getTableColor } from './colors';
 
 export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolean }>`
-  ${scrollbarStyle}
-
   .table {
     margin-bottom: 0;
   }

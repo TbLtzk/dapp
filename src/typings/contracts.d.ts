@@ -1,3 +1,5 @@
+import { ContractRegistryInstance, SystemContractWithQBalance } from '@q-dev/q-js-sdk';
+import { BaseContractInstance } from '@q-dev/q-js-sdk/lib/contracts/BaseContractInstance';
 import { LiquidationAuctionInstance } from '@q-dev/q-js-sdk/lib/contracts/defi/LiquidationAuctionInstance';
 import { SystemDebtAuctionInstance } from '@q-dev/q-js-sdk/lib/contracts/defi/SystemDebtAuctionInstance';
 import { SystemSurplusAuctionInstance } from '@q-dev/q-js-sdk/lib/contracts/defi/SystemSurplusAuctionInstance';
@@ -15,6 +17,13 @@ import { GeneralUpdateVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/gover
 import { RootNodesMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesMembershipVotingInstance';
 import { RootNodesSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesSlashingVotingInstance';
 import { ValidatorsSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsSlashingVotingInstance';
+import Web3 from 'web3';
+
+declare global {
+  interface Window {
+    web3: Web3;
+  }
+}
 
 export type ProposalsContract =
   | ConstitutionVotingInstance
@@ -32,11 +41,35 @@ export type ProposalsContract =
   | EPRSParametersVotingInstance
   | EPRSMembershipVotingInstance;
 
+export type AuctionInstance = LiquidationAuctionInstance | SystemDebtAuctionInstance | SystemSurplusAuctionInstance;
+
+type KeyOfType<T, U> = {
+  [P in keyof T]: T[P] extends U ? P: never
+}[keyof T]
+
+type ContractPromise = Promise<BaseContractInstance<any> | SystemContractWithQBalance[]>
+export type ContractKey = KeyOfType<ContractRegistryInstance, (val: string) => ContractPromise>;
+type ContractValue<T extends ContractKey> = ReturnType<ContractRegistryInstance[T]>;
+
+export type ProposalContractType =
+  | 'addressVoting'
+  | 'upgradeVoting'
+  | 'constitutionVoting'
+  | 'emergencyUpdateVoting'
+  | 'generalUpdateVoting'
+  | 'rootNodesMembershipVoting'
+  | 'rootNodesSlashingVoting'
+  | 'validatorsSlashingVoting'
+  | 'epqfiMembershipVoting'
+  | 'epdrMembershipVoting'
+  | 'epqfiParametersVoting'
+  | 'epdrParametersVoting'
+  | 'eprsMembershipVoting'
+  | 'eprsParametersVoting'
+
 export interface ProposalEvent {
   blockNumber: number;
   id: string;
-  contract: string;
+  contract: ProposalContractType;
   status?: string;
 }
-
-export type AuctionInstance = LiquidationAuctionInstance | SystemDebtAuctionInstance | SystemSurplusAuctionInstance;

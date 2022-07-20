@@ -5,9 +5,9 @@ import { useDispatch } from 'react-redux';
 import { AuctionCompletedInfos, AuctionExecute, AuctionType, LiquidationAuctionExecute } from 'typings/auctions';
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
-import Tooltip from 'ui/Tooltip';
 
-import useCopyToClipboard from 'hooks/useCopyToClipboard';
+import { ShareButton } from 'components/ShareButton';
+import { AUCTION_HEADERS } from 'pages/Auctions/Auctions';
 
 import BidModal from './BidModal';
 import { AuctionActionsContainer } from './styles';
@@ -22,8 +22,6 @@ interface Props {
 function AuctionActions ({ auction, auctionType }: Props) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-
-  const [copied, copy] = useCopyToClipboard();
 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -47,25 +45,16 @@ function AuctionActions ({ auction, auctionType }: Props) {
 
   const isBidTime = auction.isBidTime;
   const isAuctionEnded = auction.isAuctionEnded;
+  const auctionId = auction.auctionType === 'liquidation' ? auction.vaultId : auction.auctionId;
 
   return (
     <>
       <AuctionActionsContainer>
-        <Tooltip
-          trigger={
-            <Button
-              alwaysEnabled
-              className="auction-button"
-              look="secondary"
-              onClick={() => copy(window.location.href)}
-            >
-              <i className="mdi mdi-share-variant-outline" />
-              Share
-            </Button>
-          }
-        >
-          {copied ? t('COPIED') : t('COPY')}
-        </Tooltip>
+        <ShareButton
+          className="auction-button"
+          title={`#${auctionId} ${AUCTION_HEADERS[auctionType]}`}
+          url={window.location.href}
+        />
 
         {!isAuctionEnded
           ? (

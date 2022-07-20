@@ -1,6 +1,13 @@
+import { EPDRMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/experts/EPDRMembershipVotingInstance';
+import { EPDRParametersVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/experts/EPDRParametersVotingInstance';
+import { EPQFIMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/experts/EPQFIMembershipVotingInstance';
+import { EPQFIParametersVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/experts/EPQFIParametersVotingInstance';
+import { EPRSMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/experts/EPRSMembershipVotingInstance';
+import { EPRSParametersVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/experts/EPRSParametersVotingInstance';
 import { flatten } from 'lodash';
 import { ProposalEvent } from 'typings/contracts';
 import { ExpertProposalForm, ExpertType } from 'typings/forms';
+import { Proposal } from 'typings/proposals';
 
 import { getContractProposals } from '.';
 
@@ -13,7 +20,7 @@ import {
   getEprsParametersVotingInstance
 } from 'contracts/contract-instance';
 
-import { CONTRACTS_NAMES } from 'constants/contracts';
+import { fromWei } from 'func/balance';
 
 export async function getExpertProposals (
   proposals: ProposalEvent[],
@@ -24,37 +31,37 @@ export async function getExpertProposals (
       proposals,
       contract: await getEpqfiMembershipVotingInstance(),
       lastBlock,
-      contractName: CONTRACTS_NAMES.ePQFIMembershipVoting
+      contractName: 'epqfiMembershipVoting'
     }),
     getContractProposals({
       proposals,
       contract: await getEpdrMembershipVotingInstance(),
       lastBlock,
-      contractName: CONTRACTS_NAMES.ePDRMembershipVoting
+      contractName: 'epdrMembershipVoting'
     }),
     getContractProposals({
       proposals,
       contract: await getEpqfiParametersVotingInstance(),
       lastBlock,
-      contractName: CONTRACTS_NAMES.ePQFIParametersVoting
+      contractName: 'epqfiParametersVoting'
     }),
     getContractProposals({
       proposals,
       contract: await getEpdrParametersVotingInstance(),
       lastBlock,
-      contractName: CONTRACTS_NAMES.ePDRParametersVoting
+      contractName: 'epdrParametersVoting'
     }),
     getContractProposals({
       proposals,
       contract: await getEprsParametersVotingInstance(),
       lastBlock,
-      contractName: CONTRACTS_NAMES.ePRSParametersVoting
+      contractName: 'eprsParametersVoting'
     }),
     getContractProposals({
       proposals,
       contract: await getEprsMembershipVotingInstance(),
       lastBlock,
-      contractName: CONTRACTS_NAMES.ePRSMembershipVoting
+      contractName: 'eprsMembershipVoting'
     })
   ]);
 
@@ -121,4 +128,28 @@ async function getParametersContractByType (type: ExpertType) {
     case 'root-node':
       return getEprsParametersVotingInstance();
   }
+}
+
+export async function getExpertProposal (
+  contract: EPRSMembershipVotingInstance | EPQFIMembershipVotingInstance | EPDRMembershipVotingInstance
+  | EPRSParametersVotingInstance | EPQFIParametersVotingInstance | EPDRParametersVotingInstance,
+  id: string
+): Promise<Partial<Proposal>> {
+  const proposal = await contract.getProposal(id);
+
+  return {
+    vetoEndTime: Number(proposal.base.params.vetoEndTime),
+    votingEndTime: Number(proposal.base.params.votingEndTime),
+    vetoesNumber: Number(proposal.base.counters.vetosCount),
+    votesFor: Number(fromWei(proposal.base.counters.weightFor)),
+    votesAgainst: Number(fromWei(proposal.base.counters.weightAgainst)),
+
+    remark: proposal.base.remark,
+    addressToAdd: 'proposalDetails' in proposal
+      ? proposal.proposalDetails.addressToAdd
+      : '',
+    addressToRemove: 'proposalDetails' in proposal
+      ? proposal.proposalDetails.addressToRemove
+      : '',
+  };
 }

@@ -8,7 +8,7 @@ import DonutChart from 'ui/DonutChart';
 import Spinner from 'ui/Spinner';
 
 import AddressIcon from 'components/Custom/AddressIcon';
-import InfoTooltip from 'components/Custom/InfoTooltip';
+import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import { getValidatorMembers } from 'store/validators/action-creators';
 import { loadingValidatorsShortSelector, validatorsShortSelector } from 'store/validators/selectors';

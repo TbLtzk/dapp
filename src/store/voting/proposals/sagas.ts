@@ -1,3 +1,4 @@
+import { ProposalStatus } from '@q-dev/q-js-sdk';
 import { call, delay, put, select, takeEvery } from 'typed-redux-saga';
 import { CreateProposalForm } from 'typings/forms';
 import { FormProposalType } from 'typings/proposals';
@@ -23,14 +24,12 @@ import {
 } from 'store/transaction-handler/action-creators';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
-import { getConstitutionVotingInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance';
+import { getConstitutionVotingInstance, getInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance';
 import { createProposal, getProposalEvents } from 'contracts/helpers/voting';
-import VotingService from 'contracts/helpers/voting-helpers/voting-service-helper';
 
-import { CONTRACTS_NAMES } from 'constants/contracts';
+import { ZERO_ADDRESS } from 'constants/config';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { VOTING_TYPES } from 'constants/votingTypes';
 import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
 import { getMinimalActiveBlockHeight } from 'func/useful';
@@ -100,26 +99,34 @@ function* createProposalGenerator ({ form }: types.CreateProposal) {
   }
 }
 
-function* voteForProposalGenerator ({ data }: types.VoteForProposal) {
+function* voteForProposalGenerator ({ payload }: types.VoteForProposal) {
+  const { proposal, type, isVotedFor } = payload;
+
   try {
     yield* put(setTransactionLoading());
 
     const { userAddress } = yield* select((state) => state.userInf);
-    const contract = new VotingService(data.contract);
+    if (userAddress === ZERO_ADDRESS) return;
 
-    switch (data.type) {
-      case VOTING_TYPES.approve:
-        yield contract.approve(data.proposalId, userAddress);
+    const contract = yield* call(() => getInstance(proposal.contract)());
+    switch (type) {
+      case 'approve':
+        if ('aprove' in contract) {
+          yield contract.aprove(proposal.id, { from: userAddress });
+        }
+        break;
+      case 'constitution':
+        if ('veto' in contract) {
+          yield contract.veto(proposal.id, { from: userAddress });
+        }
         break;
 
-      case VOTING_TYPES.constitution:
-        yield contract.veto(data.proposalId, userAddress);
-        break;
-
-      case VOTING_TYPES.basic:
-        yield data.isVotedFor
-          ? contract.voteFor(data.proposalId, userAddress)
-          : contract.voteAgainst(data.proposalId, userAddress);
+      case 'basic':
+        if ('voteFor' in contract && 'voteAgainst' in contract) {
+          yield isVotedFor
+            ? contract.voteFor(proposal.id, { from: userAddress })
+            : contract.voteAgainst(proposal.id, { from: userAddress });
+        }
         break;
     }
 
@@ -137,14 +144,20 @@ function* voteForProposalGenerator ({ data }: types.VoteForProposal) {
   }
 }
 
-function* executeProposalGenerator ({ data }: types.ExecuteProposal) {
+function* executeProposalGenerator ({ proposal }: types.ExecuteProposal) {
   try {
     yield* put(setTransactionLoading());
 
     const { userAddress } = yield* select((state) => state.userInf);
-    const contract = new VotingService(data?.contract);
-    yield contract.execute(data?.idProposal, userAddress);
-    yield* put(getProposalsByType(data.contract));
+    if (userAddress === ZERO_ADDRESS) return;
+
+    const contract = yield* call(() => getInstance(proposal.contract)());
+    const promiseStatus = yield* call(() => contract.getStatus(proposal.id));
+    if (promiseStatus === ProposalStatus.PASSED && 'execute' in contract) {
+      yield contract.execute(proposal.id, { from: userAddress });
+    }
+
+    yield* put(getProposalsByType(proposal.contract));
     yield* put(getBaseVotingWeightInfo());
     yield* put(getDelegationInfo(userAddress));
 
@@ -157,32 +170,32 @@ function* executeProposalGenerator ({ data }: types.ExecuteProposal) {
 
 function* getProposalsByTypeGenerator ({ contractName }: types.GetProposalsByType) {
   switch (contractName) {
-    case CONTRACTS_NAMES.constitutionVoting:
-    case CONTRACTS_NAMES.emergencyUpdateVoting:
-    case CONTRACTS_NAMES.generalUpdateVoting: {
+    case 'constitutionVoting':
+    case 'emergencyUpdateVoting':
+    case 'generalUpdateVoting': {
       yield* put(getProposals('q'));
       break;
     }
-    case CONTRACTS_NAMES.rootsVoting: {
+    case 'rootNodesMembershipVoting': {
       yield* put(getProposals('rootNode'));
       break;
     }
-    case CONTRACTS_NAMES.rootNodesSlashingVoting:
-    case CONTRACTS_NAMES.validatorsSlashingVoting: {
+    case 'rootNodesSlashingVoting':
+    case 'validatorsSlashingVoting': {
       yield* put(getProposals('slashing'));
       break;
     }
-    case CONTRACTS_NAMES.ePQFIMembershipVoting:
-    case CONTRACTS_NAMES.ePDRMembershipVoting:
-    case CONTRACTS_NAMES.ePQFIParametersVoting:
-    case CONTRACTS_NAMES.ePDRParametersVoting:
-    case CONTRACTS_NAMES.ePRSMembershipVoting:
-    case CONTRACTS_NAMES.ePRSParametersVoting: {
+    case 'epqfiMembershipVoting':
+    case 'epdrMembershipVoting':
+    case 'epqfiParametersVoting':
+    case 'epdrParametersVoting':
+    case 'eprsMembershipVoting':
+    case 'eprsParametersVoting': {
       yield* put(getProposals('expert'));
       break;
     }
-    case CONTRACTS_NAMES.addressVoting:
-    case CONTRACTS_NAMES.upgradeVoting: {
+    case 'addressVoting':
+    case 'upgradeVoting': {
       yield* put(getProposals('contractUpdate'));
       break;
     }
@@ -190,13 +203,15 @@ function* getProposalsByTypeGenerator ({ contractName }: types.GetProposalsByTyp
 }
 
 function* getNumberAllProposalsGenerator () {
+  yield* delay(5_000);
+
   yield* put(getProposals('q'));
   yield* put(getProposals('rootNode'));
   yield* put(getProposals('expert'));
   yield* put(getProposals('slashing'));
   yield* put(getProposals('contractUpdate'));
 
-  yield* delay(240000);
+  yield* delay(235_000);
   yield* put(getNumberAllProposals());
 }
 

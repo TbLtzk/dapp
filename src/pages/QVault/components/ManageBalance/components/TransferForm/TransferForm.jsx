@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 
-import ErrorInputMessage from 'components/Base/ErrorInputMessage';
-
 import useForm from 'hooks/useForm';
 import useMetamaskReset from 'hooks/useMetamaskReset';
 
@@ -46,8 +44,6 @@ function TransferForm () {
     updateMaxAmount();
   }, [balance]);
 
-  const WARNING_MAX_NUMBER = t('WARNING_NO_Q_LEFT');
-
   return (
     <form noValidate onSubmit={form.submit}>
       <div className="card__one-line-simple-form">
@@ -56,6 +52,7 @@ function TransferForm () {
           type="number"
           label={t('TRANSFER_INTO_Q_VAULT')}
           prefix="Q"
+          hint={Number(maxAmount) > 0 && form.values.amount === maxAmount && t('WARNING_NO_Q_LEFT')}
           max={maxAmount}
           placeholder="0.0"
         />
@@ -67,10 +64,6 @@ function TransferForm () {
         >
           {t('TRANSFER')}
         </Button>
-        {Number(maxAmount) && form.values.amount === maxAmount
-          ? <ErrorInputMessage message={WARNING_MAX_NUMBER} />
-          : null
-        }
       </div>
     </form>
   );
