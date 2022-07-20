@@ -26,7 +26,8 @@ import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
-import { getPercentageFormat, uintPercentToNumber } from 'func/useful';
+import { transformToPercentage } from 'func/formatters';
+import { getPercentageFormat } from 'func/useful';
 
 const message = { header: 'Notice', details: 'Stake amount below minimum to apply new rate, old rate applied.' };
 
@@ -77,8 +78,7 @@ function* getDelegatorsShareGenerator ({ address }) {
   try {
     const contract = yield call(getValidationRewardPoolsInstance);
     const data = yield contract.getDelegatorsShare(address);
-    const result = uintPercentToNumber(data) * 100;
-    yield put(setVRPDelegatorsShareData(result));
+    yield put(setVRPDelegatorsShareData(transformToPercentage(data)));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }
