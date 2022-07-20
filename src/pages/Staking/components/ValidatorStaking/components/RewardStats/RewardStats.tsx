@@ -13,6 +13,7 @@ function RewardStats () {
   const amountRP = useSelector(balance);
   const delClaim = useSelector(poolInfoSelector);
 
+  const validatorShare = fN(100 - Number(delShare));
   const disDelClaims = amountRP - delClaim;
 
   const rewardStatsArray = [
@@ -40,7 +41,7 @@ function RewardStats () {
     {
       id: 'validator-share',
       label: t('VALIDATOR_SHARE'),
-      value: delShare ? `${fN(100 - delShare)}%` : '100%',
+      value: delShare ? `${validatorShare} %` : '100%',
     },
     {
       id: 'delegator-share',

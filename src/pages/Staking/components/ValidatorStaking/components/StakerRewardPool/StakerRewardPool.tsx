@@ -60,7 +60,7 @@ function StakerRewardPool () {
         disabled={isValidator}
         trigger={
           <Button
-            disabled={!isValidator || !compoundRateKeeperExists}
+            disabled={!isValidator && !compoundRateKeeperExists}
             onClick={handleModalOpen}
           >
             {t('MANAGE_STAKER_REWARD_POOL')}
