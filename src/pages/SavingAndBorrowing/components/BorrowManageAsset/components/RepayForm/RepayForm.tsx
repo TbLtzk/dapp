@@ -54,6 +54,7 @@ function RepayForm ({ vault }: {vault: VaultWithFee}) {
         ? (
           <Button
             style={{ width: '100px' }}
+            className="form-action"
             onClick={() => dispatch(setBorrowAprove('repay', vault.colKey as Asset))}
           >
             {t('APPROVE')}

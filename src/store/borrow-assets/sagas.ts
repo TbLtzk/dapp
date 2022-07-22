@@ -57,7 +57,7 @@ function* getBorrowAllowanceGenerator ({ borrowType, asset }: { borrowType: Appr
     if (borrowType === 'deposit') {
       const allowAmount = yield* call(() => allowance.call());
       yield* put(getBorrowAllowanceDepositSuccess(fromWei(allowAmount)));
-    } else if (borrowType === 'repay') {
+    } else {
       yield* put(getBorrowAllowanceRepaySuccess(fromWei(allowance)));
     }
   } catch (error) {
@@ -74,9 +74,9 @@ function* setBorrowAproveGenerator ({ borrowType, asset }: { borrowType: Approve
     const borrowingContract = yield* call(getBorrowingCoreInstance);
     const contract = yield* call(getDeFiContractByType, borrowType, asset);
     if (borrowType === 'deposit') {
-      yield* contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT).send({ from: userAddress });
+      yield* call(() => contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT).send({ from: userAddress }));
     } else {
-      yield* contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT, { from: userAddress });
+      yield* call(() => contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT, { from: userAddress }));
     }
     yield* put(getBorrowAllowance(borrowType, asset));
     yield* put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
