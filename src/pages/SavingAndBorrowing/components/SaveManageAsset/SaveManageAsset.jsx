@@ -1,12 +1,12 @@
 import { useState } from 'react';
+import { Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 
-import LoadingSpinner from 'components/Base/LoadingSpinner';
-import { WrapSpinner } from 'pages/styles';
+import { SpinnerWrapper } from 'pages/SavingAndBorrowing/styles';
 
 import DepositForm from './components/DepositForm';
 import SavingDetails from './components/SavingDetails';
@@ -58,9 +58,9 @@ function SaveManageAsset ({ depositAsset, interestAsset }) {
       >
         {!savingAviableToDeposit && !savingAllowance
           ? (
-            <WrapSpinner>
-              <LoadingSpinner />
-            </WrapSpinner>
+            <SpinnerWrapper>
+              <Spinner size={96} thickness={4} />
+            </SpinnerWrapper>
           )
           : (
             <SaveManageWrapper>

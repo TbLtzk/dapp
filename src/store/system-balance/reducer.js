@@ -1,59 +1,85 @@
 import * as actionTypes from './action-types';
 
 const initialState = {
-  surplus: 0,
-  debt: 0,
-  systemBalance: 0,
+  stableCoinTotalSupply: 0,
 
-  loadingPerformNetting: false
+  systemBalanceSurplus: 0,
+  systemBalance: 0,
+  systemBalanceDebt: 0,
+
+  systemReserveAvailableAmount: 0,
+  systemReserveBalance: 0,
+
+  error: null,
 };
 
 export default function systemBalance (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.GET_SURPLUS_SUCCESS:
+    case actionTypes.GET_SC_TOTAL_SUPPLY_SUCCESS:
       return {
         ...state,
-        surplus: action.result
+        stableCoinTotalSupply: action.stableCoinTotalSupply,
       };
-    case actionTypes.GET_SURPLUS_ERROR:
+    case actionTypes.GET_SC_TOTAL_SUPPLY_ERROR:
       return {
         ...state,
-        surplus: action.result
+        error: action.error,
       };
-    case actionTypes.GET_DEBT_SUCCESS:
+
+    case actionTypes.GET_SB_SURPLUS_SUCCESS:
       return {
         ...state,
-        debt: action.result
+        systemBalanceSurplus: action.systemBalanceSurplus,
       };
-    case actionTypes.GET_DEBT_ERROR:
+
+    case actionTypes.GET_SB_SURPLUS_ERROR:
       return {
         ...state,
-        debt: action.result
+        error: action.error,
       };
-    case actionTypes.GET_SYSTEM_BALANCE_SUCCESS:
+
+    case actionTypes.GET_SB_BALANCE_SUCCESS:
       return {
         ...state,
-        systemBalance: action.result
+        systemBalance: action.systemBalance,
       };
-    case actionTypes.GET_SYSTEM_BALANCE_ERROR:
+    case actionTypes.GET_SB_BALANCE_ERROR:
       return {
         ...state,
-        systemBalance: action.result
+        error: action.error,
       };
-    case actionTypes.ON_PERFORM_NETTING:
+
+    case actionTypes.GET_SB_DEBT_SUCCESS:
       return {
         ...state,
-        loadingPerformNetting: true
+        systemBalanceDebt: action.systemBalanceDebt,
       };
-    case actionTypes.ON_PERFORM_NETTING_SUCCESS:
+    case actionTypes.GET_SB_DEBT_ERROR:
       return {
         ...state,
-        loadingPerformNetting: false
+        error: action.error,
       };
-    case actionTypes.ON_PERFORM_NETTING_ERROR:
+
+    case actionTypes.GET_SR_AVAILABLE_AMOUNT_SUCCESS:
       return {
         ...state,
-        loadingPerformNetting: false
+        systemReserveAvailableAmount: action.systemReserveAvailableAmount,
+      };
+    case actionTypes.GET_SR_AVAILABLE_AMOUNT_ERROR:
+      return {
+        ...state,
+        error: action.error,
+      };
+
+    case actionTypes.GET_SR_BALANCE_SUCCESS:
+      return {
+        ...state,
+        systemReserveBalance: action.systemReserveBalance,
+      };
+    case actionTypes.GET_SR_BALANCE_ERROR:
+      return {
+        ...state,
+        error: action.error,
       };
     default:
       return state;

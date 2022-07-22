@@ -11,7 +11,7 @@ interface Window {
       callback: (error: any, response: any) => void
     ) => void;
     send?: (request: { method: string; params?: Array<any> }, callback: (error: any, response: any) => void) => void;
-    request?: (request: { method: string; params?: Array<any> }) => Promise<any>;
+    request: (request: { method: string; params?: {} }) => Promise<any>;
     on: (request: string, callback: (...args: unknown[]) => void) => void;
   };
 }

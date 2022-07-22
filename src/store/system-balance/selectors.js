@@ -1,4 +1,8 @@
-export const surplusSB = (state) => state.systemBalance.surplus;
-export const debtSB = (state) => state.systemBalance.debt;
-export const systemBalanceSB = (state) => state.systemBalance.systemBalance;
-export const loadingPerformNetting = (state) => state.systemBalance.loadingPerformNetting;
+export const stableCoinTotalSupplySelector = (state) => state.systemBalance.stableCoinTotalSupply;
+
+export const systemBalanceSelector = (state) => state.systemBalance.systemBalance;
+export const systemBalanceDebtSelector = (state) => state.systemBalance.systemBalanceDebt;
+export const systemBalanceSurplusSelector = (state) => state.systemBalance.systemBalanceSurplus;
+
+export const systemReserveAvailableAmountSelector = (state) => state.systemBalance.systemReserveAvailableAmount;
+export const systemReserveBalanceSelector = (state) => state.systemBalance.systemReserveBalance;

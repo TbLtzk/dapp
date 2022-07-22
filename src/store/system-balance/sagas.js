@@ -1,51 +1,51 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 
 import {
-  getDebt,
-  getDebtError,
-  getDebtSuccess,
-  getSurplus,
-  getSurplusError,
-  getSurplusSuccess,
-  getSystemBalance,
+  getStableCoinTotalSupplyError,
+  getStableCoinTotalSupplySuccess,
+  getSystemBalanceDebtError,
+  getSystemBalanceDebtSuccess,
   getSystemBalanceError,
   getSystemBalanceSuccess,
-  onPerformNettingError,
-  onPerformNettingSuccess
+  getSystemBalanceSurplusError,
+  getSystemBalanceSurplusSuccess,
+  getSystemReserveAvailableAmountError,
+  getSystemReserveAvailableAmountSuccess,
+  getSystemReserveBalanceError,
+  getSystemReserveBalanceSuccess
 } from './action-creators';
 import * as actionTypes from './action-types';
 
-import { getAccountBalance, getUserBalance } from 'store/q-vault/action-creators';
-import { getSavingAviableToDeposit } from 'store/saving-assets/action-creators';
-import { getSymbol } from 'store/stable-coin/action-creators';
-import { getAvailableAmount, getSystemReserveBalance } from 'store/system-reserve/action-creators';
 import { setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/action-creators';
 
-import { getSystemBalanceInstance } from 'contracts/contract-instance';
+import { getStableCoinInstance, getSystemBalanceInstance, getSystemReserveInstance } from 'contracts/contract-instance';
 
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
 
-function* getSurplusGenerator () {
+function* setPerformNettingGenerator () {
   try {
+    const { userAddress } = yield select((state) => state.userInf);
+
     const contract = yield call(getSystemBalanceInstance);
-    const data = yield contract.getSurplus();
-    yield put(getSurplusSuccess(fromWei(data)));
+    yield contract.performNetting({ from: userAddress });
+
+    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
-    yield put(getSurplusError(0));
+    const errorMsg = ErrorHandler.process(error);
+    yield put(setTransactionLoadingError(errorMsg));
   }
 }
 
-function* getDebtGenerator () {
+function* getStableCoinTotalSupplyGenerator () {
   try {
-    const contract = yield call(getSystemBalanceInstance);
-    const data = yield contract.getDebt();
-    yield put(getDebtSuccess(fromWei(data)));
+    const contract = yield call(getStableCoinInstance);
+    const amount = yield contract.totalSupply();
+    yield put(getStableCoinTotalSupplySuccess(fromWei(amount)));
   } catch (error) {
+    yield put(getStableCoinTotalSupplyError(error));
     ErrorHandler.processWithoutFeedback(error);
-    yield put(getDebtError(0));
   }
 }
 
@@ -55,39 +55,64 @@ function* getSystemBalanceGenerator () {
     const data = yield contract.getBalance();
     yield put(getSystemBalanceSuccess(fromWei(data)));
   } catch (error) {
+    yield put(getSystemBalanceError(error));
     ErrorHandler.processWithoutFeedback(error);
-    yield put(getSystemBalanceError(0));
   }
 }
 
-function* onPerformNettingGenerator () {
+function* getSystemBalanceDebtGenerator () {
   try {
-    const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getSystemBalanceInstance);
-    const data = yield contract.performNetting({ from: userAddress });
-    yield put(onPerformNettingSuccess(data));
-    yield put(getSystemBalance());
-    yield put(getDebt());
-    yield put(getSurplus());
-
-    yield put(getAccountBalance(userAddress));
-    yield put(getAvailableAmount());
-    yield put(getSavingAviableToDeposit());
-    yield put(getUserBalance(userAddress));
-    yield put(getSymbol());
-    yield put(getSystemReserveBalance());
-
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+    const data = yield contract.getDebt();
+    yield put(getSystemBalanceDebtSuccess(fromWei(data)));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
-    yield put(onPerformNettingError(error));
+    yield put(getSystemBalanceDebtError(error));
+    ErrorHandler.processWithoutFeedback(error);
+  }
+}
+
+function* getSystemBalanceSurplusGenerator () {
+  try {
+    const contract = yield call(getSystemBalanceInstance);
+    const data = yield contract.getSurplus();
+    yield put(getSystemBalanceSurplusSuccess(fromWei(data)));
+  } catch (error) {
+    yield put(getSystemBalanceSurplusError(0));
+    ErrorHandler.processWithoutFeedback(error);
+  }
+}
+
+function* getSystemReserveAvailableAmountGenerator () {
+  try {
+    const contract = yield call(getSystemReserveInstance);
+    const availableAmount = yield contract.availableAmount();
+    yield put(getSystemReserveAvailableAmountSuccess(fromWei(availableAmount)));
+  } catch (error) {
+    yield put(getSystemReserveAvailableAmountError(0));
+    ErrorHandler.processWithoutFeedback(error);
+  }
+}
+
+function* getSystemReserveBalanceGenerator () {
+  try {
+    const contract = yield call(getSystemReserveInstance);
+    const balance = yield window.web3.eth.getBalance(contract.address);
+    yield put(getSystemReserveBalanceSuccess(fromWei(balance)));
+  } catch (error) {
+    ErrorHandler.processWithoutFeedback(error);
+    yield put(getSystemReserveBalanceError(error));
   }
 }
 
 export default [
-  takeEvery(actionTypes.GET_SURPLUS, getSurplusGenerator),
-  takeEvery(actionTypes.GET_DEBT, getDebtGenerator),
-  takeEvery(actionTypes.GET_SYSTEM_BALANCE, getSystemBalanceGenerator),
-  takeEvery(actionTypes.ON_PERFORM_NETTING, onPerformNettingGenerator)
+  takeEvery(actionTypes.SET_PERFORM_NETTING, setPerformNettingGenerator),
+
+  takeEvery(actionTypes.GET_SC_TOTAL_SUPPLY, getStableCoinTotalSupplyGenerator),
+
+  takeEvery(actionTypes.GET_SB_DEBT, getSystemBalanceDebtGenerator),
+  takeEvery(actionTypes.GET_SB_BALANCE, getSystemBalanceGenerator),
+  takeEvery(actionTypes.GET_SB_SURPLUS, getSystemBalanceSurplusGenerator),
+
+  takeEvery(actionTypes.GET_SR_BALANCE, getSystemReserveBalanceGenerator),
+  takeEvery(actionTypes.GET_SR_AVAILABLE_AMOUNT, getSystemReserveAvailableAmountGenerator),
 ];

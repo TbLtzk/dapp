@@ -3,7 +3,7 @@ import { CompoundRateKeeperInstance } from '@q-dev/q-js-sdk/lib/contracts/common
 import { Indexer } from '@q-dev/q-js-sdk/lib/indexer/indexer';
 import { ValidatorMetrics } from '@q-dev/q-js-sdk/lib/utils/validator-metrics';
 import { ContractKey, ContractValue } from 'typings/contracts';
-import { Contract } from 'web3-eth-contract';
+import { Asset } from 'typings/defi';
 
 import { indexersUrls } from 'constants/config';
 
@@ -21,12 +21,12 @@ export const getContractRegistryInstance = () => {
 
 export function getInstance<T extends ContractKey> (
   instance: T,
-  QUSD?: boolean
+  asset?: string
 ): () => ContractValue<T> {
   return () => {
     if (!cache[instance]) {
       const contractRegistryInstance = getContractRegistryInstance();
-      cache[instance] = contractRegistryInstance[instance](QUSD ? 'QUSD' : '');
+      cache[instance] = contractRegistryInstance[instance](asset || '');
     }
 
     return cache[instance];
@@ -42,18 +42,20 @@ export const getEmergencyUpdateVotingInstance = getInstance('emergencyUpdateVoti
 export const getPiggyBankInstance = getInstance('piggyBank');
 export const getVotingWeightProxyInstance = getInstance('votingWeightProxy');
 export const getValidationRewardProxyInstance = getInstance('validationRewardProxy');
-export const getSystemSurplusAuctionInstance = getInstance('systemSurplusAuction', true);
-export const getSystemDebtAuctionInstance = getInstance('systemDebtAuction', true);
-export const getSystemBalanceInstance = getInstance('systemBalance', true);
-export const getStableCoinInstance = getInstance('stableCoin', true);
-export const getSavingInstance = getInstance('saving', true);
 export const getRootNodesMembershipVotingInstance = getInstance('rootNodesMembershipVoting');
-export const getLiquidationAuctionInstance = getInstance('liquidationAuction', true);
 export const getRootNodeRewardProxyInstance = getInstance('rootNodeRewardProxy');
 
 export const getConstitutionVotingInstance = getInstance('constitutionVoting');
 export const getConstitutionInstance = getInstance('constitution');
-export const getBorrowingCoreInstance = getInstance('borrowingCore', true);
+
+export const getSavingInstance = getInstance('saving', 'QUSD');
+export const getStableCoinInstance = getInstance('stableCoin', 'QUSD');
+export const getBorrowingCoreInstance = getInstance('borrowingCore', 'QUSD');
+export const getSystemBalanceInstance = getInstance('systemBalance', 'QUSD');
+export const getSystemDebtAuctionInstance = getInstance('systemDebtAuction', 'QUSD');
+export const getLiquidationAuctionInstance = getInstance('liquidationAuction', 'QUSD');
+export const getSystemSurplusAuctionInstance = getInstance('systemSurplusAuction', 'QUSD');
+
 export const getQVaultInstance = getInstance('qVault');
 export const getRootNodesInstance = getInstance('rootNodes');
 export const getValidatorsInstance = getInstance('validators');
@@ -84,19 +86,9 @@ export const getEprsMembershipVotingInstance = getInstance('eprsMembershipVoting
 export const getEprsParametersVotingInstance = getInstance('eprsParametersVoting');
 
 let validatorMetricsInstance: ValidatorMetrics | null = null;
-let compoundRateKeeperBorrowingInstance: CompoundRateKeeperInstance | null = null;
 let compoundRateKeeperSavingInstance: CompoundRateKeeperInstance | null = null;
 let compoundRateKeeperQVaultInstance: CompoundRateKeeperInstance | null = null;
-let governedEpdrQbtcAddressInstance: Contract | null = null;
 let indexerInstance: Indexer | null = null;
-
-export async function getCompoundRateKeeperBorrowingInstance () {
-  if (!compoundRateKeeperBorrowingInstance) {
-    const contract = await getBorrowingCoreInstance();
-    compoundRateKeeperBorrowingInstance = await contract.getCompoundRateKeeper('QBTC');
-  }
-  return compoundRateKeeperBorrowingInstance;
-}
 
 export async function getCompoundRateKeeperSavingInstance () {
   if (!compoundRateKeeperSavingInstance) {
@@ -127,15 +119,29 @@ export const getIndexerInstance = async (indexerUrl = indexersUrls.testnet) => {
   return indexerInstance;
 };
 
-export async function getGovernedEpdrQbtcAddressInstance () {
-  if (!governedEpdrQbtcAddressInstance) {
-    const contract = await getEpdrParametersInstance();
+const сompoundRateBorrowingInstances: Record<string, ContractValue<any>> = {};
+
+export async function getCompoundRateBorrowingInstance (asset: Asset) {
+  if (!сompoundRateBorrowingInstances[asset]) {
+    const borrowingCoreInstance = await getBorrowingCoreInstance();
+    сompoundRateBorrowingInstances[asset] = await borrowingCoreInstance.getCompoundRateKeeper(asset);
+  }
+  return сompoundRateBorrowingInstances[asset];
+}
+
+const borrowingInstances: Record<string, ContractValue<any>> = {};
+
+export async function getBorrowingInstance (asset: Asset) {
+  if (!borrowingInstances[asset]) {
     const stableCoinInstance = await getStableCoinInstance();
-    const address = await contract.getAddr('governed.EPDR.QBTC_address');
-    governedEpdrQbtcAddressInstance = new window.web3.eth.Contract(
+    const epdrParametersInstance = await getEpdrParametersInstance();
+
+    const contractAddress = await epdrParametersInstance.getAddr(`governed.EPDR.${asset}_address`);
+
+    borrowingInstances[asset] = new window.web3.eth.Contract(
       stableCoinInstance.instance.options.jsonInterface,
-      address
+      contractAddress
     );
   }
-  return governedEpdrQbtcAddressInstance;
+  return borrowingInstances[asset];
 }

@@ -101,7 +101,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       try {
         setLoading(true);
         const wallet = getWallet(walletType);
-        if (!chainId || !networks[chainId]) {
+        if (reload && (!chainId || !networks[chainId])) {
           await switchNetwork(selectedChainId);
         }
         await wallet.activate(undefined);

@@ -10,9 +10,7 @@ import parametersAddresses from './parameters-addresses/sagas';
 import qVault from './q-vault/sagas';
 import rootContract from './root-node/sagas';
 import savingAssets from './saving-assets/sagas';
-import stableCoin from './stable-coin/sagas';
 import systemBalance from './system-balance/sagas';
-import systemReserve from './system-reserve/sagas';
 import tokenomics from './tokenomics/sagas';
 import validationRewardPools from './validation-reward-pools/sagas';
 import validators from './validators/sagas';
@@ -30,10 +28,8 @@ export default function* rootSaga () {
     ...validators,
     ...validationRewardPools,
     ...auctions,
-    ...stableCoin,
     ...membership,
     ...systemBalance,
-    ...systemReserve,
     ...parametersAddresses,
     ...lockedAmount,
     ...vesting,

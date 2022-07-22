@@ -44,7 +44,6 @@ function ManageForm ({ contract, address }) {
       <div style={{ display: 'flex', gap: '8px' }}>
         <Calendar
           {...form.fields.startDate}
-          invertedColors
           selectsStart
           selectsEnd={false}
           label={t(
@@ -56,7 +55,6 @@ function ManageForm ({ contract, address }) {
         />
         <Calendar
           {...form.fields.endDate}
-          invertedColors
           selectsEnd
           label={t('END_DATE')}
           selectsStart={false}

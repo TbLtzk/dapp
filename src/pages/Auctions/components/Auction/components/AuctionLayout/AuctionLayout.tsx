@@ -1,4 +1,3 @@
-
 import { useTranslation } from 'react-i18next';
 
 import { AuctionCompletedInfos } from 'typings/auctions';
@@ -81,16 +80,23 @@ function AuctionLayout ({ auction }: Props) {
         {auction.auctionType === 'systemSurplus' && (
           <>
             <div className="auction-card__row">
-              <p className="color-secondary text-md">{t('AUCTION_INITIATED_BY')}</p>
-              <p className="color-primary text-md">{auction.bidder}</p>
-            </div>
-
-            <div className="auction-card__row">
               <p className="color-secondary text-md">{t('LOT')}</p>
               <p className="color-primary text-md">
                 {auction.lot} {auction.lotAsset}
               </p>
             </div>
+            <div className="auction-card__row">
+              <p className="color-secondary text-md">{t('AUCTION_INITIATED_BY')}</p>
+              <p className="color-primary text-md">
+                {<ExplorerAddress
+                  iconed
+                  short
+                  className="text-md"
+                  address={auction.bidder}
+                />}
+              </p>
+            </div>
+
           </>
         )}
 

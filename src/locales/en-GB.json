@@ -75,7 +75,7 @@
   "INTEREST_RATE": "Interest rate (p.a.)",
   "VAULT_ID": "Vault ID",
   "COLLATERAL_ASSET": "Collateral Asset",
-  "BORROWING_FEE": "Borrowing Fee (p.a.)",
+  "BORROWING_FEE": "Borrowing fee",
   "BORROWING_ASSET": "Borrowing Asset",
   "PAGE": "Page",
   "HOME": "Home",
@@ -407,5 +407,7 @@
   "PROPOSALS_HANDLING_THE_SLASHING_OF_VALIDATORS_AND_ROOT_NODES": "Proposals handling the slashing of validators and root nodes",
   "PROPOSALS_HANDLING_CHANGES_TO_THE_SYSTEM_CONTRACT_REGISTRY": "Proposals handling changes to the system contract registry",
   "ADD_OR_REMOVE_ROOT_NODE_STAKE_HERE": "Add or remove root node stake here",
-  "ADD_OR_REMOVE_VALIDATOR_STAKE": "Add or remove validator stake, manage the staker reward pool for delegation rewards and see how other validators handle their stake and delegations."
+  "ADD_OR_REMOVE_VALIDATOR_STAKE": "Add or remove validator stake, manage the staker reward pool for delegation rewards and see how other validators handle their stake and delegations.",
+  "TIME_SINCE_LAST_REFRESH_OF_OUTSTANDING_DEBT": "Time Since Last Refresh of Outstanding debt",
+  "SYSTEM_BALANCE": "System Balance"
 }

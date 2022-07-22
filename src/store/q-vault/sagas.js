@@ -38,19 +38,23 @@ import { getNowTimestamp } from 'func/convertDate';
 import ErrorHandler from 'func/ErrorHandler';
 import { addIndex } from 'func/useful';
 
-function* getAccountBalanceGenerator ({ address }) {
+// rename: getBalanceInWalletGenerator
+function* getAccountBalanceGenerator () {
   try {
-    const data = yield window.web3.eth.getBalance(address);
+    const { userAddress } = yield select((state) => state.userInf);
+    const data = yield window.web3.eth.getBalance(userAddress);
     yield put(setAccountBalance(fromWei(data)));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }
 }
 
-function* getUserBalanceGenerator ({ address }) {
+// rename: getBalanceInQVaultGenerator
+function* getUserBalanceGenerator () {
   try {
     const contract = yield call(getQVaultInstance);
-    const data = yield contract.getUserBalance(address);
+    const { userAddress } = yield select((state) => state.userInf);
+    const data = yield contract.getUserBalance(userAddress);
     yield put(setUserBalance(fromWei(data)));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);

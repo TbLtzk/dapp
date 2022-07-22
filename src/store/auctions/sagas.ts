@@ -4,9 +4,6 @@ import { AuctionBid, AuctionExecute, AuctionInfos, AuctionType, BidForAuctionFor
 import { getAllAuctions, getAuctions, setAuctions } from './actions';
 import * as types from './types';
 
-import { getSavingAviableToDeposit } from 'store/saving-assets/action-creators';
-import { getDebt, getSurplus, getSystemBalance } from 'store/system-balance/action-creators';
-import { getAvailableAmount } from 'store/system-reserve/action-creators';
 import {
   setTransactionLoading,
   setTransactionLoadingError,
@@ -35,14 +32,6 @@ import {
 import formTypes from 'constants/form-types';
 import ErrorHandler from 'func/ErrorHandler';
 import { getMinimalActiveBlockHeight } from 'func/useful';
-
-function* updateValuesGenerator () {
-  yield* put(getSurplus());
-  yield* put(getDebt());
-  yield* put(getSystemBalance());
-  yield* put(getAvailableAmount());
-  yield* put(getSavingAviableToDeposit());
-}
 
 function* getAuctionsGenerator ({ auctionType }: types.GetAuctions) {
   try {
@@ -98,8 +87,6 @@ function* createAuction ({ form, auctionType }: { form: CreateAuction, auctionTy
     }
     yield* put(getAuctions(auctionType));
     yield* put(setTransactionLoadingSuccess({ type: auctionType }));
-
-    yield* call(updateValuesGenerator);
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield* put(setTransactionLoadingError(errorMsg));
@@ -127,8 +114,6 @@ function* bidForAuctionGenerator ({ form, auctionType }: { form: BidForAuctionFo
     }
     yield* put(getAuctions(auctionType));
     yield* put(setTransactionLoadingSuccess({ type: formTypes.bidForAuction }));
-
-    yield* call(updateValuesGenerator);
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield* put(setTransactionLoadingError(errorMsg));
@@ -157,8 +142,6 @@ function* executeAuctionGenerator ({ form, auctionType }: { form: ExecuteAuction
     }
     yield* put(getAuctions(auctionType));
     yield* put(setTransactionLoadingSuccess({ type: formTypes.executeAuction }));
-
-    yield* call(updateValuesGenerator);
   } catch (error) {
     const errorMsg = ErrorHandler.process(error);
     yield* put(setTransactionLoadingError(errorMsg));
