@@ -29,7 +29,6 @@ function ReserveForm () {
     >
       <Input
         {...form.fields.address}
-        invertedColors
         label={t('MAIN_ACCOUNT_ADDRESS')}
         placeholder="0x..."
       />

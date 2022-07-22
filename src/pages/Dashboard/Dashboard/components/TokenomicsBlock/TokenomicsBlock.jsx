@@ -13,8 +13,8 @@ import QTokenRewardUpdate from './QTokenRewardUpdate';
 
 import { getQVBalance } from 'store/q-vault/action-creators';
 import { qvBalance } from 'store/q-vault/selectors';
-import { getSystemReserveBalance } from 'store/system-reserve/action-creators';
-import { reserveBalanceSelector } from 'store/system-reserve/selectors';
+import { getSystemBalance, getSystemReserveBalance } from 'store/system-balance/action-creators';
+import { systemReserveBalanceSelector } from 'store/system-balance/selectors';
 import { getRewardPoolsBalance } from 'store/validation-reward-pools/action-creators';
 import { rewardPoolsBalanceSelector } from 'store/validation-reward-pools/selectors';
 
@@ -27,7 +27,7 @@ function TokenomicsBlock () {
 
   const balanceInterestRateRef = useAnimateNumber(balanceDetails?.interestRatePercentage, ' %');
 
-  const reserveBalance = useSelector(reserveBalanceSelector);
+  const reserveBalance = useSelector(systemReserveBalanceSelector);
   const reserveBalanceRef = useInfinityNumber(reserveBalance, ' Q');
 
   const rewardPoolsBalance = useSelector(rewardPoolsBalanceSelector);
@@ -35,8 +35,9 @@ function TokenomicsBlock () {
 
   useEffect(() => {
     dispatch(getQVBalance());
-    dispatch(getSystemReserveBalance());
+    dispatch(getSystemBalance());
     dispatch(getRewardPoolsBalance());
+    dispatch(getSystemReserveBalance());
   }, []);
 
   const tokenimicsInfo = [

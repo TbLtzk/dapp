@@ -6,7 +6,7 @@ const initialState = {
   savingAllowance: null
 };
 
-export default function index (state = initialState, action) {
+export default function reducer (state = initialState, action) {
   switch (action.type) {
     case actionTypes.SET_SAVING_BALANCE_DETAILS:
       return {

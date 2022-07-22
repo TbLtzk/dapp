@@ -1,10 +1,6 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 
-import {
-  getSavingAssets,
-  getTotalCollateralLockedAndOutstandingDebt,
-  getTotalSavingBalance
-} from '../borrowing-core/action-creators';
+import { getOutstandingDebt, getSavingAssets, getTotalSavingBalance } from '../borrowing-core/actions';
 
 import {
   getSavingAllowance,
@@ -12,14 +8,14 @@ import {
   getSavingBalanceDetails,
   setSavingAllowance,
   setSavingAviableToDeposit,
-  setSavingBalanceDetails
+  setSavingBalanceDetails,
 } from './action-creators';
 import * as actionTypes from './action-types';
 
 import {
   setTransactionLoading,
   setTransactionLoadingError,
-  setTransactionLoadingSuccess
+  setTransactionLoadingSuccess,
 } from 'store/transaction-handler/action-creators';
 
 import { getSavingInstance, getStableCoinInstance } from 'contracts/contract-instance';
@@ -35,10 +31,10 @@ function* getSavingAllowanceGenerator () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
 
-    const contract = yield call(getStableCoinInstance);
-    const contractSaving = yield call(getSavingInstance);
+    const stableCoinInstance = yield call(getStableCoinInstance);
+    const savingInstance = yield call(getSavingInstance);
+    const allowance = yield stableCoinInstance.allowance(userAddress, savingInstance.address);
 
-    const allowance = yield contract.allowance(userAddress, contractSaving.address);
     yield put(setSavingAllowance(allowance));
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
@@ -77,10 +73,12 @@ function* setSavingDepositGenerator ({ amount }) {
     yield contract.deposit(toWei(amount), { from: userAddress });
 
     yield put(getSavingBalanceDetails());
-    yield put(getSavingAviableToDeposit());
+
+    yield put(getOutstandingDebt());
     yield put(getSavingAllowance());
     yield put(getTotalSavingBalance());
-    yield put(getTotalCollateralLockedAndOutstandingDebt());
+    yield put(getSavingAviableToDeposit());
+
     yield put(getSavingAssets());
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.savingAssetDeposit }));
@@ -99,10 +97,12 @@ function* setSavingWithdrawGenerator ({ amount }) {
     yield contract.withdraw(toWei(amount), { from: userAddress });
 
     yield put(getSavingBalanceDetails());
-    yield put(getSavingAviableToDeposit());
+
+    yield put(getOutstandingDebt());
     yield put(getSavingAllowance());
     yield put(getTotalSavingBalance());
-    yield put(getTotalCollateralLockedAndOutstandingDebt());
+    yield put(getSavingAviableToDeposit());
+
     yield put(getSavingAssets());
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.savingAssetWithdraw }));
@@ -121,10 +121,12 @@ function* setSavingAproveGenerator () {
     yield contract.approve(contractSaving.address, MAX_APPROVE_AMOUNT, { from: userAddress });
 
     yield put(getSavingBalanceDetails());
-    yield put(getSavingAviableToDeposit());
+
+    yield put(getOutstandingDebt());
     yield put(getSavingAllowance());
     yield put(getTotalSavingBalance());
-    yield put(getTotalCollateralLockedAndOutstandingDebt());
+    yield put(getSavingAviableToDeposit());
+
     yield put(getSavingAssets());
 
     yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
@@ -135,11 +137,12 @@ function* setSavingAproveGenerator () {
 }
 
 export default [
+  takeEvery(actionTypes.SET_SAVING_DEPOSIT, setSavingDepositGenerator),
+  takeEvery(actionTypes.SET_SAVING_WITHDRAW, setSavingWithdrawGenerator),
+  takeEvery(actionTypes.SET_SAVING_APROVE, setSavingAproveGenerator),
+
   takeEvery(actionTypes.GET_SAVING_BALANCE_DETAILS, getSavingBalanceDetailsGenerator),
   takeEvery(actionTypes.GET_SAVING_AVIABLE_TO_DEPOSIT, getSavingAviableToDepositGenerator),
   takeEvery(actionTypes.GET_SAVING_ALLOWANCE, getSavingAllowanceGenerator),
 
-  takeEvery(actionTypes.SET_SAVING_DEPOSIT, setSavingDepositGenerator),
-  takeEvery(actionTypes.SET_SAVING_WITHDRAW, setSavingWithdrawGenerator),
-  takeEvery(actionTypes.SET_SAVING_APROVE, setSavingAproveGenerator)
 ];

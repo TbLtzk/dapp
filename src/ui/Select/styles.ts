@@ -15,8 +15,8 @@ export const SelectContainer = styled.div<{
     border: none;
     background-color: transparent;
     color: ${({ theme, $disabled }) => $disabled
-      ? getSelectColor(theme, 'iconDisabled')
-      : getSelectColor(theme, 'icon')
+      ? getSelectColor(theme, 'disabled')
+      : getSelectColor(theme, 'enabled')
     };
 
     &:focus-visible {
@@ -56,7 +56,10 @@ export const SelectContainer = styled.div<{
     align-items: center;
     outline: none;
     gap: 8px;
-
+    color: ${({ theme, $disabled }) => $disabled
+      ? getSelectColor(theme, 'disabled')
+      : getSelectColor(theme, 'enabled')
+    };
     &:hover {
       background-color: ${({ theme }) => getSelectColor(theme, 'optionBgHover')};
     }

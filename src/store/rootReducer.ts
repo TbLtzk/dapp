@@ -9,9 +9,7 @@ import parametersAddresses from './parameters-addresses/reducer';
 import qVault from './q-vault/reducer';
 import rootContract from './root-node/reducer';
 import savingAssets from './saving-assets/reducer';
-import stableCoin from './stable-coin/reducer';
 import systemBalance from './system-balance/reducer';
-import systemReserve from './system-reserve/reducer';
 import tokenomics from './tokenomics/reducer';
 import transactionHandler from './transaction-handler/reducer';
 import userInf from './user-inf/reducer';
@@ -30,20 +28,13 @@ const RootReducer = combineReducers({
   savingAssets,
   accountAliases,
   tokenomics,
-
   proposals,
-
   auctions,
-
   transactionHandler,
-
   membership,
   validators,
   validationRewardPools,
-  stableCoin,
   systemBalance,
-  systemReserve,
-
   parametersAddresses,
 
 });

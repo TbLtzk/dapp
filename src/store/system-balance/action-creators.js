@@ -1,55 +1,89 @@
 import * as actionTypes from './action-types';
 
-export const getSurplus = () => ({
-  type: actionTypes.GET_SURPLUS
+export const setPerformNetting = () => ({
+  type: actionTypes.SET_PERFORM_NETTING,
 });
 
-export const getSurplusSuccess = (result) => ({
-  type: actionTypes.GET_SURPLUS_SUCCESS,
-  result
+export const getStableCoinTotalSupply = () => ({
+  type: actionTypes.GET_SC_TOTAL_SUPPLY,
 });
 
-export const getSurplusError = (result) => ({
-  type: actionTypes.GET_SURPLUS_ERROR,
-  result
+export const getStableCoinTotalSupplySuccess = (stableCoinTotalSupply) => ({
+  type: actionTypes.GET_SC_TOTAL_SUPPLY_SUCCESS,
+  stableCoinTotalSupply
 });
 
-export const getDebt = () => ({
-  type: actionTypes.GET_DEBT
-});
-
-export const getDebtSuccess = (result) => ({
-  type: actionTypes.GET_DEBT_SUCCESS,
-  result
-});
-
-export const getDebtError = (result) => ({
-  type: actionTypes.GET_DEBT_ERROR,
-  result
+export const getStableCoinTotalSupplyError = (error) => ({
+  type: actionTypes.GET_SC_TOTAL_SUPPLY_ERROR,
+  error
 });
 
 export const getSystemBalance = () => ({
-  type: actionTypes.GET_SYSTEM_BALANCE
+  type: actionTypes.GET_SB_BALANCE,
 });
 
-export const getSystemBalanceSuccess = (result) => ({
-  type: actionTypes.GET_SYSTEM_BALANCE_SUCCESS,
-  result
+export const getSystemBalanceSuccess = (systemBalance) => ({
+  type: actionTypes.GET_SB_BALANCE_SUCCESS,
+  systemBalance
 });
 
-export const getSystemBalanceError = (result) => ({
-  type: actionTypes.GET_SYSTEM_BALANCE_ERROR,
-  result
+export const getSystemBalanceError = (error) => ({
+  type: actionTypes.GET_SB_BALANCE_ERROR,
+  error
 });
 
-export const onPerformNetting = () => ({
-  type: actionTypes.ON_PERFORM_NETTING
+export const getSystemBalanceDebt = () => ({
+  type: actionTypes.GET_SB_DEBT,
 });
-export const onPerformNettingSuccess = (result) => ({
-  type: actionTypes.ON_PERFORM_NETTING_SUCCESS,
-  result
+
+export const getSystemBalanceDebtSuccess = (systemBalanceDebt) => ({
+  type: actionTypes.GET_SB_DEBT_SUCCESS,
+  systemBalanceDebt
 });
-export const onPerformNettingError = (result) => ({
-  type: actionTypes.ON_PERFORM_NETTING_ERROR,
-  result
+
+export const getSystemBalanceDebtError = (error) => ({
+  type: actionTypes.GET_SB_DEBT_ERROR,
+  error
+});
+
+export const getSystemBalanceSurplus = () => ({
+  type: actionTypes.GET_SB_SURPLUS,
+});
+
+export const getSystemBalanceSurplusSuccess = (systemBalanceSurplus) => ({
+  type: actionTypes.GET_SB_SURPLUS_SUCCESS,
+  systemBalanceSurplus
+});
+
+export const getSystemBalanceSurplusError = (error) => ({
+  type: actionTypes.GET_SB_SURPLUS_ERROR,
+  error
+});
+
+export const getSystemReserveAvailableAmount = () => ({
+  type: actionTypes.GET_SR_AVAILABLE_AMOUNT,
+});
+
+export const getSystemReserveAvailableAmountSuccess = (systemReserveAvailableAmount) => ({
+  type: actionTypes.GET_SR_AVAILABLE_AMOUNT_SUCCESS,
+  systemReserveAvailableAmount
+});
+
+export const getSystemReserveAvailableAmountError = (error) => ({
+  type: actionTypes.GET_SR_AVAILABLE_AMOUNT_ERROR,
+  error
+});
+
+export const getSystemReserveBalance = () => ({
+  type: actionTypes.GET_SR_BALANCE,
+});
+
+export const getSystemReserveBalanceSuccess = (systemReserveBalance) => ({
+  type: actionTypes.GET_SR_BALANCE_SUCCESS,
+  systemReserveBalance
+});
+
+export const getSystemReserveBalanceError = (error) => ({
+  type: actionTypes.GET_SR_BALANCE_ERROR,
+  error
 });

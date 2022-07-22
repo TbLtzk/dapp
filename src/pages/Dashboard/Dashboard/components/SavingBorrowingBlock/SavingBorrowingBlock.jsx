@@ -8,29 +8,32 @@ import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 
-import SavingBorrowingUpdate from './SavingBorrowingUpdate';
+import InterestRates from './InterestRates';
+import UpdateBorrowDebt from './UpdateBorrowDebt';
+import SavingBorrowingUpdate from './UpdateSavingBalance';
 
-import { getSavingAndInterestRate, getTotalSupply } from 'store/borrowing-core/action-creators';
-import { interestRateSelector, savingRateSelector, totalSupplySelector } from 'store/borrowing-core/selectors';
-import { getSystemBalance } from 'store/system-balance/action-creators';
-import { systemBalanceSB } from 'store/system-balance/selectors';
+import { getInterestRates, getSavingRate } from 'store/borrowing-core/actions';
+import { interestRatesSelector, savingRateSelector } from 'store/borrowing-core/selectors';
+import { getStableCoinTotalSupply, getSystemBalance } from 'store/system-balance/action-creators';
+import { stableCoinTotalSupplySelector, systemBalanceSelector } from 'store/system-balance/selectors';
 
 import { getStableCoinInstance } from 'contracts/contract-instance';
+
+import { BorrowAssets } from 'constants/defiTypes';
 
 function SavingBorrowingBlock () {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const interestRate = useSelector(interestRateSelector);
-  const interestRateRef = useAnimateNumber(interestRate, ' %');
+  const interestRates = useSelector(interestRatesSelector);
 
   const savingRate = useSelector(savingRateSelector);
   const savingRateRef = useAnimateNumber(savingRate, ' %');
 
-  const systemBalance = useSelector(systemBalanceSB);
+  const systemBalance = useSelector(systemBalanceSelector);
   const systemBalanceRef = useAnimateNumber(systemBalance, ' QUSD');
 
-  const totalSupply = useSelector(totalSupplySelector);
+  const totalSupply = useSelector(stableCoinTotalSupplySelector);
   const totalSupplyRef = useAnimateNumber(totalSupply, ' QUSD');
 
   const [stableCoinAddress, setStableCoinAddress] = useState('0x0000');
@@ -38,10 +41,10 @@ function SavingBorrowingBlock () {
   useEffect(() => {
     getStableCoinInstance().then((contract) => setStableCoinAddress(contract.address));
 
-    dispatch(getSavingAndInterestRate());
+    dispatch(getSavingRate());
     dispatch(getSystemBalance());
-    dispatch(getTotalSupply());
-
+    dispatch(getStableCoinTotalSupply());
+    dispatch(getInterestRates());
     return () => setStableCoinAddress('...');
   }, []);
 
@@ -55,11 +58,6 @@ function SavingBorrowingBlock () {
       id: 'saving-reward',
       title: t('QUSD_SAVING_REWARD'),
       content: <p ref={savingRateRef}>0 %</p>,
-    },
-    {
-      id: 'borrowing-fee',
-      title: t('QUSD_QBTC_BORROWING_FEE'),
-      content: <p ref={interestRateRef}>0 %</p>,
     },
     {
       id: 'system-balance',
@@ -99,6 +97,10 @@ function SavingBorrowingBlock () {
               </div>
             )}
         </Fragment>
+      ))}
+      {interestRates.map(interestRate => <InterestRates key={interestRate.asset} interestRate={interestRate}/>)}
+      {Object.values(BorrowAssets).map(asset => (
+        <UpdateBorrowDebt key={asset} asset={asset}/>
       ))}
     </CustomBlock>
   );

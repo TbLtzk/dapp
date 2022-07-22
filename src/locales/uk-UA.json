@@ -75,7 +75,7 @@
   "INTEREST_RATE": "Процентна ставка (P.A.)",
   "VAULT_ID": "Ідентифікатор склепіння",
   "COLLATERAL_ASSET": "Застава",
-  "BORROWING_FEE": "Плата за запозичення (P.A.)",
+  "BORROWING_FEE": "Плата за запозичення",
   "BORROWING_ASSET": "Позиковий актив",
   "PAGE": "Сторінка",
   "HOME": "Домашній",
@@ -255,7 +255,7 @@
   "BIDDER": "Учасник торгів",
   "AUCTION_ENDS": "Аукціон закінчується",
   "AUCTION_ENDED": "Аукціон закінчився",
-  "NO_AUCTIONS_FOUND": "Аукціонів не знайдено жодних аукціонів",
+  "NO_AUCTIONS_FOUND": "Аукціонів не знайдено",
   "SHOW_MORE": "Показати більше",
   "DETAILS": "Деталі",
   "SUBMITTED_TIME": "Поданий час",
@@ -309,7 +309,7 @@
   "SET": "Встановити",
   "TIME_SINCE_LAST_REFRESH_OF_USER_DELEGATIONS": "Час після останнього оновлення делегацій користувача",
   "0_DAY_0_HOURS_0_MINUTES": "0 днів (и) 0 годин 0 хвилин",
-  "COLLECTED_POOL_REWARDS": "Зібрані нагороди біля басейну",
+  "COLLECTED_POOL_REWARDS": "Зібрані нагороди в басейні",
   "OUTSTANDING_DELEGATOR_CLAIMS": "Потоки непогашених делегаторів",
   "DISTRIBUTABLE_DELEGATOR_REWARDS": "Нагороди, що розподіляються делегатором",
   "DISTRIBUTABLE_DELEGATOR_PERCENTAGE": "Розподілений відсоток делегатора",
@@ -407,5 +407,7 @@
   "PROPOSALS_HANDLING_THE_SLASHING_OF_VALIDATORS_AND_ROOT_NODES": "Пропозиції, що обробляють розрізання валідаторів та кореневих вузлів",
   "PROPOSALS_HANDLING_CHANGES_TO_THE_SYSTEM_CONTRACT_REGISTRY": "Пропозиції, що обробляють зміни до реєстру системного контракту",
   "ADD_OR_REMOVE_ROOT_NODE_STAKE_HERE": "Додайте або видаліть сюди кореневий вузол",
-  "ADD_OR_REMOVE_VALIDATOR_STAKE": "Додайте або видаліть ставку валідатора, керуйте пулом винагород Staker для винагороди за делегацію та подивіться, як інші валідатори обробляють свою частку та делегації."
+  "ADD_OR_REMOVE_VALIDATOR_STAKE": "Додайте або видаліть ставку валідатора, керуйте пулом винагород Staker для винагороди за делегацію та подивіться, як інші валідатори обробляють свою частку та делегації.",
+  "TIME_SINCE_LAST_REFRESH_OF_OUTSTANDING_DEBT": "Час після останнього оновлення непогашеної заборгованості",
+  "SYSTEM_BALANCE": "Системний баланс"
 }
