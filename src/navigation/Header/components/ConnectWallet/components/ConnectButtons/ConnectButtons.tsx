@@ -24,31 +24,43 @@ function ConnectButtons () {
       </div>
     );
   }
+
   if (loading) {
     return <div className="connect-loading">{t('LOADING')}</div>;
   }
+
   if (error) {
     return (
       <div className="connect">
-        <p>{'ERROR_WHILE_CONNECTING_TO_WALLET'}</p>
+        <p>{t('ERROR_WHILE_CONNECTING_TO_WALLET')}</p>
+      </div>
+    );
+  }
+
+  if (!window.ethereum) {
+    return (
+      <div className="connect">
+        <p>{t('NO_WALLETS_CONNECTED')}</p>
       </div>
     );
   }
 
   return (
     <div className="connect_buttons">
-      <Button
-        alwaysEnabled
-        style={{ width: '100%' }}
-        onClick={() => connectWallet(WalletType.INJECTED, true)}
-      >
-        <img
-          src="/icons/metamask.svg"
-          alt="metamask"
-          className="icon"
-        />
-        <span>{t('CONNECT_WITH_METAMASK')}</span>
-      </Button>
+      {window.ethereum.isMetaMask && (
+        <Button
+          alwaysEnabled
+          style={{ width: '100%' }}
+          onClick={() => connectWallet(WalletType.INJECTED, true)}
+        >
+          <img
+            src="/icons/metamask.svg"
+            alt="metamask"
+            className="icon"
+          />
+          <span>{t('CONNECT_WITH_METAMASK')}</span>
+        </Button>
+      )}
 
       <Button
         alwaysEnabled

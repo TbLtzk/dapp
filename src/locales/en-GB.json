@@ -97,6 +97,7 @@
   "CONNECT_TO_Q_TESTNET": "Connect to Q Testnet",
   "INSTALL_METAMASK": "Install Metamask",
   "INSTALL_METAMASK_TEXT": "<1>MetaMask is a browser plugin that allows users to make EVM compatible transactions through regular websites.</1><2> Get started: </2> <3>1. Install MetaMask for your browser (Supported Browsers: Chrome, Firefox, Brave, Edge)</3> <4>2. Follow instructions.</4> <5>3. Refresh the page.</5> <6>4. Click \"Connect wallet\"</6>",
+  "NO_WALLETS_CONNECTED": "No wallets connected",
   "DONE": "Done",
   "Q_PROPOSALS": "Q Proposals",
   "ROOT_NODE_STAKING": "Root Node Staking",

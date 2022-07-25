@@ -6,7 +6,7 @@ import { fromWei } from './balance';
 import { BN } from './useful';
 
 export function transformToPercentage (number) {
-  const convertedNumber = BN(number).dividedBy('10000000000000000000000000').toFixed(2);
+  const convertedNumber = BN(number).dividedBy('10000000000000000000000000').toFixed(6);
   return convertedNumber;
 }
 
@@ -19,7 +19,7 @@ export function formatAsset (value, asset = '') {
 }
 
 export function formatPercent (value) {
-  return `${formatNumber(value, 2)}%`;
+  return `${formatNumber(value, 4)}%`;
 }
 
 export function formatFraction (value) {
