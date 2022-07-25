@@ -136,13 +136,20 @@ export async function getExpertProposal (
   id: string
 ): Promise<Partial<Proposal>> {
   const proposal = await contract.getProposal(id);
+  const isParametersContract = contract instanceof EPRSParametersVotingInstance ||
+    contract instanceof EPQFIParametersVotingInstance ||
+    contract instanceof EPDRParametersVotingInstance;
 
   return {
     vetoEndTime: Number(proposal.base.params.vetoEndTime),
     votingEndTime: Number(proposal.base.params.votingEndTime),
     vetoesNumber: Number(proposal.base.counters.vetosCount),
-    votesFor: Number(fromWei(proposal.base.counters.weightFor)),
-    votesAgainst: Number(fromWei(proposal.base.counters.weightAgainst)),
+    votesFor: isParametersContract
+      ? Number(proposal.base.counters.weightFor)
+      : Number(fromWei(proposal.base.counters.weightFor)),
+    votesAgainst: isParametersContract
+      ? Number(proposal.base.counters.weightAgainst)
+      : Number(fromWei(proposal.base.counters.weightAgainst)),
 
     remark: proposal.base.remark,
     addressToAdd: 'proposalDetails' in proposal

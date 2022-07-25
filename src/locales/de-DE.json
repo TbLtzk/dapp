@@ -97,6 +97,7 @@
   "CONNECT_TO_Q_TESTNET": "Verbindung zum Q Testnet herstellen",
   "INSTALL_METAMASK": "Metamask installieren",
   "INSTALL_METAMASK_TEXT": "<1> Metamask ist ein Browser- Plugin, mit dem Benutzer EVM- kompatible Transaktionen über reguläre Websites durchführen können. </1> <2> Start: </2> <3> 1. Installieren Sie Metamask für Ihren Browser (unterstützte Browser: Chrome, Firefox, Brave, Edge) </3> <4> 2. Befolgen Sie die Anweisungen. </4> <5> 3. Aktualisieren Sie die Seite. </5> <6> 4. Klicken Sie auf \"Wallet verbinden\" </6>",
+  "NO_WALLETS_CONNECTED": "Keine Brieftaschen verbunden",
   "DONE": "Fertig",
   "Q_PROPOSALS": "Q Proposals",
   "ROOT_NODE_STAKING": "Wurzelknoten -Saine",
