@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import Tabs from 'ui/Tabs';
 import { TabRoute, TabSwitch } from 'ui/Tabs/components';
 
@@ -8,31 +10,33 @@ import { NewExpertProposal, NewQProposal, NewRootProposal, NewSlashingProposal }
 import { RoutePaths } from 'constants/routes';
 
 function NewProposal () {
+  const { t } = useTranslation();
+
   const tabs = [
     {
       id: 'q-proposal',
-      label: 'Q Proposal',
+      label: t('Q_PROPOSAL'),
       link: RoutePaths.newQProposal
     },
     {
       id: 'root-node-proposal',
-      label: 'Root Node Proposal',
+      label: t('ROOT_NODE_PROPOSAL'),
       link: RoutePaths.newRootNodeProposal
     },
     {
       id: 'expert-roposal',
-      label: 'Expert Proposal',
+      label: t('EXPERT_PROPOSAL'),
       link: RoutePaths.newExpertProposal
     },
     {
       id: 'slashing-proposal',
-      label: 'Slashing Proposal',
+      label: t('SLASHING_PROPOSAL'),
       link: RoutePaths.newSlashingProposal
     },
   ];
 
   return (
-    <PageLayout title="New proposal">
+    <PageLayout title={t('NEW_PROPOSAL')}>
       <Tabs tabs={tabs} />
       <TabSwitch>
         <>

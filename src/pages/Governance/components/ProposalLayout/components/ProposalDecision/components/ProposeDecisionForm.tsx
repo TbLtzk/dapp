@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import { SlashingProposal } from 'typings/proposals';
@@ -16,7 +17,9 @@ interface Props {
 }
 
 function ProposeDecisionForm ({ proposal }: Props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
+
   const form = useForm({
     initialValues: {
       externalLink: '',
@@ -48,14 +51,14 @@ function ProposeDecisionForm ({ proposal }: Props) {
     >
       <Input
         {...form.fields.externalLink}
-        label="Link to external source with decision details"
-        placeholder="External Link"
+        label={t('DECISION_EXTERNAL_LINK')}
+        placeholder={t('LINK')}
       />
 
       <Input
         {...form.fields.percentage}
         value={form.values.percentage as string}
-        label="Adjusted percentage for slashing"
+        label={t('ADJUSTED_PERCENTAGE_FOR_SLASHING')}
         placeholder="0-100%"
         max="100"
         disabled={Boolean(form.values.isAppealNeglected)}
@@ -64,7 +67,7 @@ function ProposeDecisionForm ({ proposal }: Props) {
       <Check
         {...form.fields.isAppealNeglected}
         value={Boolean(form.values.isAppealNeglected)}
-        label="The slashing target neglected a formal appeal"
+        label={t('SLASHING_TARGET_NEGLECTED_APPEAL')}
         onChange={handleAppealNeglectedChange}
       />
 
@@ -72,7 +75,7 @@ function ProposeDecisionForm ({ proposal }: Props) {
         type="submit"
         style={{ width: '100%', marginTop: '8px' }}
       >
-        Propose decision
+        {t('PROPOSE_DECISION_BTN')}
       </Button>
     </form>
   );

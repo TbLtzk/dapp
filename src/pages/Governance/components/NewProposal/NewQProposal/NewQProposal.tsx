@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
@@ -35,6 +36,7 @@ const NewQProposalContext = createContext(
 );
 
 function NewQProposal () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -53,38 +55,38 @@ function NewQProposal () {
   const steps = [
     {
       id: 'type',
-      name: 'Proposal type',
-      title: 'Type of Q Proposal',
+      name: t('PROPOSAL_TYPE'),
+      title: t('TYPE_OF_Q_PROPOSAL'),
       children: <TypeStep />
     },
     ...(isConstitutionType
       ? [{
         id: 'constitution',
-        name: 'Basic details',
-        title: 'Basic details',
+        name: t('BASIC_DETAILS'),
+        title: t('BASIC_DETAILS'),
         children: <ConstitutionStep />
       }]
       : [{
         id: 'link',
-        name: 'Details',
-        title: 'Details',
+        name: t('DETAILS'),
+        title: t('DETAILS'),
         children: <LinkStep />
       }]
     ),
     ...(isConstitutionType
       ? [{
         id: 'params',
-        name: 'Parameters',
-        title: 'Change of constitution parameters',
+        name: t('PARAMETERS'),
+        title: t('CHANGE_OF_CONSTITUTION_PARAMETERS'),
         children: <ParamsStep />
       }]
       : []
     ),
     {
       id: 'confirm',
-      name: 'Confirmation',
-      title: 'Confirmation',
-      tip: 'Check the data and submit your proposal',
+      name: t('CONFIRMATION'),
+      title: t('CONFIRMATION'),
+      tip: t('CONFIRMATION_TIP'),
       children: <ConfirmationStep />
     }
   ];

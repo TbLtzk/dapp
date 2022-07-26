@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { SlashingProposal } from 'typings/proposals';
 import Illustration from 'ui/Illustration';
 
@@ -7,10 +9,12 @@ import DecisionDetails from './components/DecisionDetails';
 import { ZERO_ADDRESS } from 'constants/config';
 
 function ProposalDecision ({ proposal }: { proposal: SlashingProposal }) {
+  const { t } = useTranslation();
+
   return (
     <div className="block">
       <div className="block__header">
-        <h2 className="text-h2">Decision</h2>
+        <h2 className="text-h2">{t('DECISION')}</h2>
         <DecisionActions proposal={proposal} />
       </div>
 
@@ -21,10 +25,10 @@ function ProposalDecision ({ proposal }: { proposal: SlashingProposal }) {
               <Illustration type="bulb" />
               <div className="details-stub-content">
                 <p className="text-md font-semibold">
-                  No suggested decision
+                  {t('NO_SUGGESTED_DECISION')}
                 </p>
                 <p className="text-sm">
-                  Click the “Propose decision” button to propose a decision
+                  {t('PROPOSE_DECISION_DESC')}
                 </p>
               </div>
             </div>

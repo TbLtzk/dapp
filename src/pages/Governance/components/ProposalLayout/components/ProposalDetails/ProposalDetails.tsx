@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Proposal, ProposalType } from 'typings/proposals';
 
@@ -14,6 +15,8 @@ interface Props {
 }
 
 function ProposalDetails ({ proposal, type }: Props) {
+  const { t } = useTranslation();
+
   const detailsByTypeMap: Record<ProposalType, ReactNode> = {
     q: <QDetails proposal={proposal} />,
     rootNode: <RootNodeDetails proposal={proposal} />,
@@ -24,7 +27,7 @@ function ProposalDetails ({ proposal, type }: Props) {
 
   return (
     <div className="block">
-      <h2 className="text-h2">Details</h2>
+      <h2 className="text-h2">{t('DETAILS')}</h2>
 
       <div className="block__content">
         <div className="details-list single-column">

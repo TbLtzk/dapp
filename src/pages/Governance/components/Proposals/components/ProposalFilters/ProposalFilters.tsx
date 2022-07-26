@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 
@@ -21,6 +22,8 @@ interface Props {
 }
 
 function ProposalFilters ({ type, filters, onChange }: Props) {
+  const { t } = useTranslation();
+
   const history = useHistory();
   const isRootNode = useSelector(isUserRootNode);
 
@@ -38,11 +41,11 @@ function ProposalFilters ({ type, filters, onChange }: Props) {
       <Select
         chips
         value={filters.status}
-        placeholder="Status"
+        placeholder={t('STATUS')}
         options={[
-          { label: 'All', value: '' },
-          { label: 'Active', value: 'active' },
-          { label: 'Ended', value: 'ended' },
+          { label: t('PROPOSAL_STATUS_ALL'), value: '' },
+          { label: t('PROPOSAL_STATUS_ACTIVE'), value: 'active' },
+          { label: t('PROPOSAL_STATUS_ENDED'), value: 'ended' },
         ]}
         onChange={updateStatus}
       />
@@ -56,18 +59,18 @@ function ProposalFilters ({ type, filters, onChange }: Props) {
               disabled={!isRootNode}
               onClick={() => setPurgeModalOpen(true)}
             >
-              Purge Slashing
+              {t('PURGE_SLASHING')}
             </Button>
           }
         >
-          <span>Available only for root nodes</span>
+          <span>{t('ROOT_NODES_TIP')}</span>
         </Tooltip>
       )}
 
       <Modal
         open={purgeModalOpen}
-        title="Purge Slashing"
-        tip="In order to slash the same validator again, root node needs to purge all his slashing transactions"
+        title={t('PURGE_SLASHING')}
+        tip={t('PURGE_SLASHING_TIP')}
         width={440}
         onClose={() => setPurgeModalOpen(false)}
       >

@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
@@ -31,6 +32,7 @@ const NewRootProposalContext = createContext(
 );
 
 function NewRootProposal () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -48,29 +50,29 @@ function NewRootProposal () {
   const steps = [
     {
       id: 'type',
-      name: 'Proposal type',
-      title: 'Type of Root Node Proposal',
+      name: t('PROPOSAL_TYPE'),
+      title: t('TYPE_OF_ROOT_NODE_PROPOSAL'),
       children: <TypeStep />
     },
     ...(form.values.type === 'add-root-node'
       ? [{
         id: 'add-root-node',
-        name: 'Add Root Node',
-        title: 'Add Root Node',
+        name: t('ADD_ROOT_NODE'),
+        title: t('ADD_ROOT_NODE'),
         children: <AddNodeStep />
       }]
       : [{
         id: 'remove-root-node',
-        name: 'Remove Root Node',
-        title: 'Remove Root Node',
+        name: t('REMOVE_ROOT_NODE'),
+        title: t('REMOVE_ROOT_NODE'),
         children: <RemoveNodeStep />
       }]
     ),
     {
       id: 'confirm',
-      name: 'Confirmation',
-      title: 'Confirmation',
-      tip: 'Check the data and submit your proposal',
+      name: t('CONFIRMATION'),
+      title: t('CONFIRMATION'),
+      tip: t('CONFIRMATION_TIP'),
       children: <ConfirmationStep />
     }
   ];

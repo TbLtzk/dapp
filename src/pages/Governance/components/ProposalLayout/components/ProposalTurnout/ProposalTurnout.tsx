@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { Proposal } from 'typings/proposals';
 import Icon from 'ui/Icon';
 import Progress from 'ui/Progress';
@@ -8,6 +10,8 @@ import { CONTRACTS_NAMES } from 'constants/contracts';
 import { formatNumber, formatPercent } from 'func/formatters';
 
 function ProposalTurnout ({ proposal }: { proposal: Proposal }) {
+  const { t } = useTranslation();
+
   const isRootNodeContract = [
     CONTRACTS_NAMES.validatorsSlashingVoting,
     CONTRACTS_NAMES.emergencyUpdateVoting,
@@ -23,12 +27,12 @@ function ProposalTurnout ({ proposal }: { proposal: Proposal }) {
 
   return (
     <StyledProposalTurnout className="block">
-      <h2 className="text-h2">Turnout</h2>
+      <h2 className="text-h2">{t('TURNOUT')}</h2>
 
       <div className="block__content">
         <div className="proposal-turnout__quorum">
           <p className="text-md">
-            {`Quorum ${formatPercent(proposal.requiredQuorum)}`}
+            {t('QUORUM', { quorum: formatPercent(proposal.requiredQuorum) })}
           </p>
           <p className="text-md">
             {leftQuorum || proposal.currentQuorum === 0
@@ -46,14 +50,14 @@ function ProposalTurnout ({ proposal }: { proposal: Proposal }) {
 
         <div className="proposal-turnout__votes">
           <div className="proposal-turnout__vote">
-            <p className="text-md color-secondary">Voted</p>
+            <p className="text-md color-secondary">{t('VOTED')}</p>
             <p className="text-md proposal-turnout__votes-val">
               {formatNumber(totalVotes, 4)}
             </p>
           </div>
 
           <div className="proposal-turnout__vote">
-            <p className="text-md color-secondary">Did not vote</p>
+            <p className="text-md color-secondary">{t('DID_NOT_VOTE')}</p>
             <p className="text-md proposal-turnout__votes-val">
               {isRootNodeContract
                 ? formatNumber(proposal.rootNodesNumber - totalVotes, 4)

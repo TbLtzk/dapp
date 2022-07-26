@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { ExpertProposalForm, ExpertType, Options } from 'typings/forms';
 import Input from 'ui/Input';
 import RadioGroup from 'ui/RadioGroup';
@@ -11,6 +13,7 @@ import { useNewExpertProposal } from '../NewExpertProposal';
 import { address, required, url } from 'func/validators';
 
 function ManageExpertStep () {
+  const { t } = useTranslation();
   const { goNext, goBack } = useNewExpertProposal();
 
   const form = useForm({
@@ -32,15 +35,15 @@ function ManageExpertStep () {
   const panelTypeOptions: Options<ExpertType> = [
     {
       value: 'fees-incentives',
-      label: 'Q Fees & Incentives Membership Panel',
+      label: t('Q_FEES_INCENTIVES_MEMBERSHIP_PANEL')
     },
     {
       value: 'defi',
-      label: 'Q DeFi (Decentralized Finance) Membership Panel',
+      label: t('Q_DEFI_MEMBERSHIP_PANEL')
     },
     {
       value: 'root-node',
-      label: 'Q Root Node Selection Expert Panel',
+      label: t('Q_ROOT_NODE_SELECTION_EXPERT_PANEL')
     },
   ];
 
@@ -52,21 +55,21 @@ function ManageExpertStep () {
     >
       <RadioGroup
         {...form.fields.panelType}
-        label="Expert panel type"
+        label={t('EXPERT_PANEL_TYPE')}
         name="expert-panel-type"
         options={panelTypeOptions}
       />
 
       <Input
         {...form.fields.address}
-        label="Candidate Q Address"
-        placeholder="Address (0x...)"
+        label={t('CANDIDATE_Q_ADDRESS')}
+        placeholder={t('ADDRESS_PLACEHOLDER')}
       />
 
       <Input
         {...form.fields.externalLink}
-        label="Reference link to external source"
-        placeholder="Link"
+        label={t('REFERENCE_LINK_TO_EXTERNAL_SOURCE')}
+        placeholder={t('LINK')}
       />
     </FormStep>
   );

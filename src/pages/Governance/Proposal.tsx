@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router';
 
@@ -20,6 +21,7 @@ function Proposal ({ match }: RouteComponentProps<{
   id: string,
   contract: ProposalContractType
 }>) {
+  const { t } = useTranslation();
   const history = useHistory();
   const transactionLoading = useSelector(transactionLoadingSelector);
 
@@ -54,11 +56,11 @@ function Proposal ({ match }: RouteComponentProps<{
   };
 
   const backTextMap: Record<ProposalType, string> = {
-    q: 'Q Proposals',
-    rootNode: 'Root Node Panel',
-    expert: 'Expert Proposals',
-    slashing: 'Slashing Proposals',
-    contractUpdate: 'Contract Updates',
+    q: t('Q_PROPOSALS'),
+    rootNode: t('ROOT_NODE_PANEL'),
+    expert: t('EXPERT_PROPOSALS'),
+    slashing: t('SLASHING_PROPOSALS'),
+    contractUpdate: t('CONTRACT_UPDATES'),
   };
 
   return (

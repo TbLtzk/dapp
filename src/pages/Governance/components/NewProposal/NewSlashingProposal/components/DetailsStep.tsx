@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { isNil } from 'lodash';
@@ -25,6 +26,7 @@ import { isAddress, trimAddress } from 'func/useful';
 import { address, percent, required, url } from 'func/validators';
 
 function DetailsStep () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const validators = useSelector(validatorsWidenedSelector);
   const rootNodes = useSelector(rootMembersSelector);
@@ -105,7 +107,7 @@ function DetailsStep () {
       <Input
         {...form.fields.address}
         label="Candidate to slash"
-        placeholder="Address (0x...)"
+        placeholder={t('ADDRESS_PLACEHOLDER')}
         error={form.errors.address || (shouldPurge ? ' ' : '')}
       />
 
@@ -120,8 +122,8 @@ function DetailsStep () {
 
       <Input
         {...form.fields.externalLink}
-        label="Reference link to external source"
-        placeholder="Link"
+        label={t('REFERENCE_LINK_TO_EXTERNAL_SOURCE')}
+        placeholder={t('LINK')}
       />
     </FormStep>
   );

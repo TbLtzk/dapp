@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { ExpertProposalForm, RadioOptions } from 'typings/forms';
 import RadioGroup from 'ui/RadioGroup';
 
@@ -10,6 +12,7 @@ import { useNewExpertProposal } from '../NewExpertProposal';
 import { required } from 'func/validators';
 
 function TypeStep () {
+  const { t } = useTranslation();
   const { goNext, onChange } = useNewExpertProposal();
 
   const form = useForm({
@@ -22,18 +25,18 @@ function TypeStep () {
   const typeOptions: RadioOptions<ExpertProposalForm['type']> = [
     {
       value: 'add-expert',
-      label: 'Add a new Expert',
-      tip: 'Propose a Q account address to become a member of the selected Expert Panel'
+      label: t('ADD_A_NEW_EXPERT'),
+      tip: t('ADD_EXPERT_TIP'),
     },
     {
       value: 'remove-expert',
-      label: 'Remove a current Expert',
-      tip: 'Initiate voting to remove particular member from one of the Expert Panels'
+      label: t('REMOVE_A_CURRENT_EXPERT'),
+      tip: t('REMOVE_CURRENT_EXPERT_TIP')
     },
     {
       value: 'parameter-vote',
-      label: 'Parameter Vote',
-      tip: 'Propose a change of specific parameter managed by the Expert Panel you are belonging to'
+      label: t('PARAMETER_VOTE'),
+      tip: t('PARAMETER_VOTE_TIP')
     },
   ];
 

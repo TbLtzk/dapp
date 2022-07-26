@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import Input from 'ui/Input';
@@ -13,6 +14,7 @@ import { constitutionHash } from 'store/voting/proposals/selectors';
 import { address, currentHash, required, url } from 'func/validators';
 
 function AddNodeStep () {
+  const { t } = useTranslation();
   const { goNext, goBack } = useNewRootProposal();
   const currentHashValue = useSelector(constitutionHash);
 
@@ -37,20 +39,20 @@ function AddNodeStep () {
     >
       <Input
         {...form.fields.hash}
-        label="Current constitution Hash"
-        placeholder="Hash (0x...)"
+        label={t('CURRENT_CONSTITUTION_HASH')}
+        placeholder={t('HASH_PLACEHOLDER')}
       />
 
       <Input
         {...form.fields.externalLink}
-        label="Reference link to external source"
-        placeholder="Link"
+        label={t('REFERENCE_LINK_TO_EXTERNAL_SOURCE')}
+        placeholder={t('LINK')}
       />
 
       <Input
         {...form.fields.address}
-        label="Root Node to remove (optional)"
-        placeholder="Address (0x...)"
+        label={t('ROOT_NODE_TO_REMOVE_OPTIONAL')}
+        placeholder={t('ADDRESS_PLACEHOLDER')}
       />
     </FormStep>
   );

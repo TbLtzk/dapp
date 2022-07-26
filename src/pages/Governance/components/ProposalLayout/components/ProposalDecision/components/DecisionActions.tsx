@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SlashingProposal } from 'typings/proposals';
@@ -23,7 +24,9 @@ interface Props {
 }
 
 function DecisionActions ({ proposal }: Props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
+
   const isRootNode = useSelector(isUserRootNode);
   const userAddress = useSelector(userAddressMetamask);
 
@@ -55,11 +58,11 @@ function DecisionActions ({ proposal }: Props) {
               look="ghost"
               onClick={() => handleEscrowAction(escrowTypes.recall)}
             >
-              Recall Decision
+              {t('RECALL_DECISION')}
             </Button>
           )}
         >
-          The proposer of the current proposed decision may take back the decision from voting
+          {t('RECALL_DECISION_TIP')}
         </Tooltip>
       )}
 
@@ -73,11 +76,11 @@ function DecisionActions ({ proposal }: Props) {
               disabled={!isRootNode}
               onClick={() => handleEscrowAction(escrowTypes.confirm)}
             >
-              Vote to confirm Decision
+              {t('VOTE_TO_CONFIRM_DECISION')}
             </Button>
           )}
         >
-          Only root nodes can vote
+          {t('ROOT_NODES_VOTE_TIP')}
         </Tooltip>
       )}
 
@@ -90,12 +93,11 @@ function DecisionActions ({ proposal }: Props) {
               disabled={!isRootNode}
               onClick={() => handleEscrowAction(escrowTypes.execute)}
             >
-              Execute Decision
+              {t('EXECUTE_DECISION')}
             </Button>
           )}
         >
-          Any Root Node can execute a Decision, clearing the escrow and distributing slashed amounts
-          according final confirmed decision
+          {t('EXECUTE_DECISION_TIP')}
         </Tooltip>
       )}
 
@@ -109,18 +111,18 @@ function DecisionActions ({ proposal }: Props) {
               disabled={!isRootNode}
               onClick={() => setModalOpen(true)}
             >
-              Propose Decision
+              {t('PROPOSE_DECISION')}
             </Button>
           )}
         >
-          Only root nodes can propose decision
+          {t('PROPOSE_DECISION_TIP')}
         </Tooltip>
       )}
 
       <Modal
         open={modalOpen}
-        title="Propose Decision"
-        tip="As a Root Node you can propose a decision that is based on an arbitral award or the explicit lack of such"
+        title={t('PROPOSE_DECISION')}
+        tip={t('PROPOSE_DECISION_MODAL_TIP')}
         onClose={handleClose}
       >
         <ProposeDecisionForm proposal={proposal} />

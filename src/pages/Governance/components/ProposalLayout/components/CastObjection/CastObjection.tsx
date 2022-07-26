@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Proposal } from 'typings/proposals';
 import Button from 'ui/Button';
@@ -12,6 +13,7 @@ import CastObjectionForm from './components/CastObjectionForm';
 import formTypes from 'constants/form-types';
 
 function CastObjection ({ proposal }: { proposal: Proposal }) {
+  const { t } = useTranslation();
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleClose = () => {
@@ -30,17 +32,17 @@ function CastObjection ({ proposal }: { proposal: Proposal }) {
             look="danger"
             onClick={() => setModalOpen(true)}
           >
-            Cast Objection
+            {t('CAST_OBJECTION')}
           </Button>
         )}
       >
-        You are the slashed party. You may object to this executed slashing proposal and seek for an arbitral award.
+        {t('SLASHED_PARTY_TIP')}
       </Tip>
 
       <Modal
-        title="Cast Objection"
+        title={t('CAST_OBJECTION')}
         open={modalOpen}
-        tip="As the target of a slashing proposal you have the right to object the slashing"
+        tip={t('CAST_OBJECTION_TIP')}
         onClose={handleClose}
       >
         <CastObjectionForm proposal={proposal} />

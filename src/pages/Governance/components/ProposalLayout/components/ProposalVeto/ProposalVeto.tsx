@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { Proposal } from 'typings/proposals';
 import Progress from 'ui/Progress';
 import Tooltip from 'ui/Tooltip';
@@ -10,6 +12,8 @@ import { CONTRACTS_NAMES } from 'constants/contracts';
 import { formatNumber, formatPercent } from 'func/formatters';
 
 function ProposalVeto ({ proposal }: { proposal: Proposal }) {
+  const { t } = useTranslation();
+
   const hasNoVeto = [
     CONTRACTS_NAMES.addressVoting,
     CONTRACTS_NAMES.upgradeVoting,
@@ -25,7 +29,7 @@ function ProposalVeto ({ proposal }: { proposal: Proposal }) {
     : (
       <StyledProposalVeto className="block">
         <div className="block__header">
-          <h2 className="text-h2">Veto</h2>
+          <h2 className="text-h2">{t('VETO')}</h2>
           <Tooltip
             placement="bottom"
             trigger={(
@@ -38,7 +42,9 @@ function ProposalVeto ({ proposal }: { proposal: Proposal }) {
 
         <div className="block__content">
           <p className="text-md">
-            {`Threshold: >${formatPercent(proposal.vetoThreshold)}`}
+            {t('THRESHOLD', {
+              threshold: formatPercent(proposal.vetoThreshold),
+            })}
           </p>
 
           <Progress
@@ -49,7 +55,7 @@ function ProposalVeto ({ proposal }: { proposal: Proposal }) {
 
           <div className="proposal-veto__votes">
             <div className="proposal-veto__vote">
-              <p className="text-md">Objection</p>
+              <p className="text-md">{t('OBJECTION')}</p>
               <p className="text-md proposal-veto__vote-val">
                 {formatPercent(proposal.vetoesNumber / proposal.rootNodesNumber * 100)}
               </p>
@@ -59,7 +65,7 @@ function ProposalVeto ({ proposal }: { proposal: Proposal }) {
             </div>
 
             <div className="proposal-veto__vote">
-              <p className="text-md">Did not vote</p>
+              <p className="text-md">{t('DID_NOT_VOTE')}</p>
               <p className="text-md proposal-veto__vote-val">
                 {formatPercent(noVote / proposal.rootNodesNumber * 100)}
               </p>

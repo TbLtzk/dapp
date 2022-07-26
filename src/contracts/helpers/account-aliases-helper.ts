@@ -28,7 +28,7 @@ export async function getAliasEvents () {
     }));
 }
 
-export async function getBlockSealingAliasMap (addresses = [], network) {
+export async function getBlockSealingAliasMap (addresses = [], network: number) {
   if (!isFeatureEnabled('aliases', network)) return {};
 
   const contract = await getAccountAliasesInstance();
@@ -40,5 +40,5 @@ export async function getBlockSealingAliasMap (addresses = [], network) {
   return aliases.reduce((acc, alias, i) => {
     acc[addresses[i]] = alias === addresses[i] ? '' : alias;
     return acc;
-  }, {});
+  }, {} as { [address: string]: string });
 }

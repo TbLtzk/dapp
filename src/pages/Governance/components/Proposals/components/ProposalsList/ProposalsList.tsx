@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { ProposalEvent } from 'typings/contracts';
 import { ProposalFilterStatus, ProposalType } from 'typings/proposals';
 import Button from 'ui/Button';
+import Illustration from 'ui/Illustration';
 
 import ProposalCard from '../ProposalCard';
 import ProposalCardSkeleton from '../ProposalCardSkeleton';
 
-import { ListEmptyMessage, ListNextContainer, ListWrapper } from './styles';
+import { ListEmptyStub, ListNextContainer, ListWrapper } from './styles';
 
 import {
   activeProposalsByTypeSelector,
@@ -21,6 +23,8 @@ import { fillArray } from 'func/useful';
 const PAGE_LIMIT = 10;
 
 function ProposalsList ({ type, status }: { type: ProposalType; status: ProposalFilterStatus }) {
+  const { t } = useTranslation();
+
   const { proposals, isLoading } = useSelector(proposalsByTypeSelector(type));
   const activeProposals = useSelector(activeProposalsByTypeSelector(type));
   const endedProposals = useSelector(endedProposalsByTypeSelector(type));
@@ -63,7 +67,12 @@ function ProposalsList ({ type, status }: { type: ProposalType; status: Proposal
   }
 
   if (list.length === 0) {
-    return <ListEmptyMessage className="text-xl font-semibold">No proposals found</ListEmptyMessage>;
+    return (
+      <ListEmptyStub>
+        <Illustration type="empty-list" />
+        <p className="text-lg font-semibold">{t('NO_PROPOSALS_FOUND')}</p>
+      </ListEmptyStub>
+    );
   }
 
   return (
@@ -76,7 +85,7 @@ function ProposalsList ({ type, status }: { type: ProposalType; status: Proposal
 
       {filteredProposals.length > list.length && (
         <ListNextContainer>
-          <Button onClick={handleNextProposals}>Show more</Button>
+          <Button onClick={handleNextProposals}>{t('SHOW_MORE')}</Button>
         </ListNextContainer>
       )}
     </>

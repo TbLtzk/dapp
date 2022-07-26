@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { Classification } from '@q-dev/q-js-sdk';
 import { QProposalForm, RadioOptions } from 'typings/forms';
 import Input from 'ui/Input';
@@ -12,6 +14,7 @@ import { useNewQProposalForm } from '../NewQProposal';
 import { hash, required, url } from 'func/validators';
 
 function ConstitutionStep () {
+  const { t } = useTranslation();
   const { goNext, goBack } = useNewQProposalForm();
 
   const form = useForm({
@@ -33,18 +36,18 @@ function ConstitutionStep () {
   const partOptions: RadioOptions<Classification> = [
     {
       value: Classification.FUNDAMENTAL,
-      label: 'Fundamental Part',
-      tip: '(Preamble)'
+      label: t('FUNDAMENTAL_PART'),
+      tip: t('PREAMBLE')
     },
     {
       value: Classification.BASIC,
-      label: 'Basic Part',
-      tip: '(Main Body and Definitions)'
+      label: t('BASIC_PART'),
+      tip: t('MAIN_BODY_AND_DEFINITIONS')
     },
     {
       value: Classification.DETAILED,
-      label: 'Detailed Part',
-      tip: '(Selected Appendices)'
+      label: t('DETAILED_PART'),
+      tip: t('SELECTED_APPENDICES')
     },
   ];
 
@@ -56,21 +59,21 @@ function ConstitutionStep () {
     >
       <RadioGroup
         {...form.fields.classification}
-        label="Part of the constitution that is affected"
+        label={t('CONSTITUTION_PART_AFFECTED')}
         name="constition-part"
         options={partOptions}
       />
 
       <Input
         {...form.fields.hash}
-        label="New constitution hash"
-        placeholder="Hash"
+        label={t('NEW_CONSTITUTION_HASH')}
+        placeholder={t('HASH')}
       />
 
       <Input
         {...form.fields.externalLink}
-        label="Reference link to external source"
-        placeholder="Link"
+        label={t('REFERENCE_LINK_TO_EXTERNAL_SOURCE')}
+        placeholder={t('LINK')}
       />
     </FormStep>
   );

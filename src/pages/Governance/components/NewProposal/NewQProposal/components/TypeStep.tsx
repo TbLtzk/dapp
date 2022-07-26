@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { QProposalForm, RadioOptions } from 'typings/forms';
 import RadioGroup from 'ui/RadioGroup';
 
@@ -10,6 +12,7 @@ import { useNewQProposalForm } from '../NewQProposal';
 import { required } from 'func/validators';
 
 function TypeStep () {
+  const { t } = useTranslation();
   const { goNext, onChange } = useNewQProposalForm();
 
   const form = useForm({
@@ -22,18 +25,18 @@ function TypeStep () {
   const typeOptions: RadioOptions<QProposalForm['type']> = [
     {
       value: 'constitution',
-      label: 'Constitution Update',
-      tip: 'Constitution Updates change the underlying agreement upon which the Q system operates.',
+      label: t('CONSTITUTION_UPDATE'),
+      tip: t('CONSTITUTION_UPDATE_TIP')
     },
     {
       value: 'general',
-      label: 'General Q Update',
-      tip: 'General Q Updates gather the Community voice on ideas how to shape Q in the future.'
+      label: t('GENERAL_Q_UPDATE'),
+      tip: t('GENERAL_Q_UPDATE_TIP')
     },
     {
       value: 'emergency',
-      label: 'Emergency Update',
-      tip: 'Emergency Updates enable Root Nodes to agree on an immediate update for the Q system.'
+      label: t('EMERGENCY_UPDATE'),
+      tip: t('EMERGENCY_UPDATE_TIP')
     }
   ];
 

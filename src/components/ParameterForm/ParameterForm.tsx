@@ -18,7 +18,7 @@ import { getParameterKeysByType, getParameterValueByKey } from 'contracts/helper
 import { parameterType, required } from 'func/validators';
 
 interface Props {
-  contract: string
+  contract: string;
   disabled?: boolean
   onChange: (form: Form<FormParameter>) => void
 }
@@ -53,8 +53,8 @@ function ParameterForm ({
   }, [form.values, onChange]);
 
   useEffect(() => {
-    getParameterKeysByType(contract, form.values.type)
-      .then((data) => setKeys(data || []));
+    getParameterKeysByType(contract, form.values.type as ParameterType)
+      .then(setKeys);
 
     return () => {
       setKeys([]);
@@ -68,8 +68,11 @@ function ParameterForm ({
       return;
     }
 
-    getParameterValueByKey(contract, form.values.type, form.values.key)
-      .then(setCurrentValue);
+    getParameterValueByKey(
+      contract,
+      form.values.type as ParameterType,
+      form.values.key as string
+    ).then(setCurrentValue);
     form.fields.isNew.onChange(false);
 
     return () => {

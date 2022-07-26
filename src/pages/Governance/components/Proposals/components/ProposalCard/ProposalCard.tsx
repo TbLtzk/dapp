@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { ProposalEvent } from 'typings/contracts';
 import { Proposal } from 'typings/proposals';
@@ -18,6 +19,8 @@ import { getProposal } from 'contracts/helpers/voting';
 import { formatPercent } from 'func/formatters';
 
 function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
+  const { t } = useTranslation();
+
   const [proposalInfo, setProposalInfo] = useState<Proposal | null>(null);
   const { title, status, state } = useProposalDetails(proposalInfo);
 
@@ -50,7 +53,7 @@ function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
       >
         <div className="proposal-card__head">
           <p className="proposal-card__id text-md">
-            <span className="font-light">Proposal ID</span>
+            <span className="font-light">{t('PROPOSAL_ID')}</span>
             <span>{proposal.id}</span>
           </p>
 
@@ -67,7 +70,7 @@ function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
         <div className="proposal-card__voting">
           <div className="proposal-card__quorum">
             <p className="text-md">
-              {`Quorum ${formatPercent(proposalInfo.requiredQuorum)}`}
+              {t('QUORUM', { quorum: formatPercent(proposalInfo.requiredQuorum) })}
             </p>
             <p className="text-md">
               {leftQuorum

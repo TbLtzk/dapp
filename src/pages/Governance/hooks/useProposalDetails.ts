@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Classification, ProposalStatus } from '@q-dev/q-js-sdk';
 import { Proposal } from 'typings/proposals';
@@ -7,15 +8,17 @@ import { TagState } from 'ui/Tag';
 import { ZERO_ADDRESS } from 'constants/config';
 
 function useProposalDetails (proposal: Proposal | null) {
+  const { t } = useTranslation();
+
   const statusMap: Record<ProposalStatus, string> = {
-    [ProposalStatus.ACCEPTED]: 'Accepted',
-    [ProposalStatus.EXECUTED]: 'Executed',
-    [ProposalStatus.EXPIRED]: 'Expired',
-    [ProposalStatus.NONE]: 'None',
-    [ProposalStatus.PASSED]: 'Passed',
-    [ProposalStatus.PENDING]: 'Pending',
-    [ProposalStatus.REJECTED]: 'Rejected',
-    [ProposalStatus.OBSOLETE]: 'Obsolete',
+    [ProposalStatus.ACCEPTED]: t('STATUS_ACCEPTED'),
+    [ProposalStatus.EXECUTED]: t('STATUS_EXECUTED'),
+    [ProposalStatus.EXPIRED]: t('STATUS_EXPIRED'),
+    [ProposalStatus.NONE]: t('STATUS_NONE'),
+    [ProposalStatus.PASSED]: t('STATUS_PASSED'),
+    [ProposalStatus.PENDING]: t('STATUS_PENDING'),
+    [ProposalStatus.REJECTED]: t('STATUS_REJECTED'),
+    [ProposalStatus.OBSOLETE]: t('STATUS_OBSOLETE'),
   };
 
   const getStatusState = (): TagState => {
@@ -32,48 +35,50 @@ function useProposalDetails (proposal: Proposal | null) {
 
   const getTitle = () => {
     const classificationMap: Record<Classification, string> = {
-      [Classification.BASIC]: 'Basic',
-      [Classification.DETAILED]: 'Detailed',
-      [Classification.FUNDAMENTAL]: 'Fundamental',
+      [Classification.BASIC]: t('CLASSIFICATION_BASIC'),
+      [Classification.DETAILED]: t('CLASSIFICATION_DETAILED'),
+      [Classification.FUNDAMENTAL]: t('CLASSIFICATION_FUNDAMENTAL'),
     };
 
     switch (proposal?.contract) {
       case 'constitutionVoting':
-        return `${classificationMap[proposal.classification || Classification.BASIC]} constitution proposal`;
+        return t('CONSTITUTION_PROPOSAL', {
+          classification: classificationMap[proposal.classification || Classification.BASIC]
+        });
       case 'generalUpdateVoting':
-        return 'General update proposal';
+        return t('GENERAL_UPDATE_PROPOSAL');
       case 'emergencyUpdateVoting':
-        return 'Emergency update proposal';
+        return t('EMERGENCY_UPDATE_PROPOSAL');
       case 'rootNodesMembershipVoting':
         if (proposal.candidate !== ZERO_ADDRESS && proposal.replaceDest !== ZERO_ADDRESS) {
-          return 'Rode Node Swapping Proposal';
+          return t('ROOT_NODE_SWAPPING_PROPOSAL');
         }
-        if (proposal.candidate && proposal.replaceDest === ZERO_ADDRESS) {
-          return 'Root Node Adding Proposal';
-        }
-        return 'Root Node Removing proposal';
+
+        return proposal.candidate && proposal.replaceDest === ZERO_ADDRESS
+          ? t('ROOT_NODE_ADDING_PROPOSAL')
+          : t('ROOT_NODE_REMOVING_PROPOSAL');
       case 'eprsMembershipVoting':
-        return 'Q Root Node Selection Expert Panel';
+        return t('Q_ROOT_NODE_SELECTION_EXPERT_MEMBERSHIP_PROPOSAL');
       case 'epdrMembershipVoting':
-        return 'DeFi Risk Expert membership';
+        return t('DEFI_RISK_EXPERT_MEMBERSHIP_PROPOSAL');
       case 'epqfiMembershipVoting':
-        return 'Fees & Incentives Experts membership';
+        return t('FEES_&_INCENTIVES_EXPERTS_MEMBERSHIP_PROPOSAL');
       case 'eprsParametersVoting':
-        return 'Q Root Node Selection Expert Panel Parameters';
+        return t('Q_ROOT_NODE_SELECTION_PARAMETERS_PROPOSAL');
       case 'epdrParametersVoting':
-        return 'DeFi Risk Expert Parameters Proposal';
+        return t('DEFI_RISK_PARAMETERS_PROPOSAL');
       case 'epqfiParametersVoting':
-        return 'Fees & Incentives Experts Parameters Proposal';
+        return t('FEES_INCENTIVES_PARAMETERS_PROPOSAL');
       case 'rootNodesSlashingVoting':
-        return 'Root Node Slashing Proposal';
+        return t('ROOT_NODE_SLASHING_PROPOSAL');
       case 'validatorsSlashingVoting':
-        return 'Validator Slashing Proposal';
+        return t('VALIDATOR_SLASHING_PROPOSAL');
       case 'addressVoting':
-        return 'Address voting proposal';
+        return t('ADDRESS_VOTING_PROPOSAL');
       case 'upgradeVoting':
-        return 'Upgrade voting proposal';
+        return t('UPGRADE_VOTING_PROPOSAL');
       default:
-        return 'Unknown proposal';
+        return t('UNKNOWN_PROPOSAL');
     }
   };
 

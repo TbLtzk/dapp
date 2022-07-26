@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { ProposalStatus } from '@q-dev/q-js-sdk';
@@ -33,6 +34,7 @@ interface Props {
 }
 
 function ProposalActions ({ proposal, title }: Props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const isRootNode = useSelector(isUserRootNode);
@@ -60,13 +62,13 @@ function ProposalActions ({ proposal, title }: Props) {
   const getVotingState = (): { tooltip: string, enabled: boolean } => {
     switch (true) {
       case isApprovalContract || isContractWithoutVeto:
-        return { enabled: isRootNode, tooltip: 'Only root nodes can vote' };
+        return { enabled: isRootNode, tooltip: t('ROOT_NODES_VOTE_TIP') };
       case proposal.contract === CONTRACTS_NAMES.ePRSParametersVoting:
-        return { enabled: isEPRSMember, tooltip: 'Only Q Root Node selection experts can vote' };
+        return { enabled: isEPRSMember, tooltip: t('ROOT_NODE_SELECTION_EXPERTS_VOTE_TIP') };
       case proposal.contract === CONTRACTS_NAMES.ePDRParametersVoting:
-        return { enabled: isEPDRMember, tooltip: 'Only DeFi risk experts can vote' };
+        return { enabled: isEPDRMember, tooltip: t('DEFI_RISK_EXPERTS_VOTE_TIP') };
       case proposal.contract === CONTRACTS_NAMES.ePQFIParametersVoting:
-        return { enabled: isEPQFIMember, tooltip: 'Only Q Fees & Incentives experts can vote' };
+        return { enabled: isEPQFIMember, tooltip: t('FEES_INCENTIVES_EXPERTS_VOTE_TIP') };
       default:
         return { enabled: true, tooltip: '' };
     }
@@ -76,7 +78,7 @@ function ProposalActions ({ proposal, title }: Props) {
   const isVetoShown = proposal.status === ProposalStatus.ACCEPTED &&
     !isContractWithoutVeto && !isApprovalContract;
 
-  const voteText = isApprovalContract ? 'Approve' : 'Vote';
+  const voteText = isApprovalContract ? t('APPROVE') : t('VOTE');
 
   const handleVote = () => {
     if (isApprovalContract) {
@@ -111,7 +113,7 @@ function ProposalActions ({ proposal, title }: Props) {
               disabled={proposal.userVoted || !votingState.enabled}
               onClick={handleVote}
             >
-              {proposal.userVoted ? 'You voted' : voteText}
+              {proposal.userVoted ? t('YOU_VOTED') : voteText}
             </Button>
           )}
         >
@@ -129,22 +131,22 @@ function ProposalActions ({ proposal, title }: Props) {
               disabled={proposal.userVetoed || !isRootNode}
               onClick={handleVeto}
             >
-              {proposal.userVetoed ? 'You vetoed' : 'Veto'}
+              {proposal.userVetoed ? t('YOU_VETOED') : t('VETO')}
             </Button>
           )}
         >
-          Only root nodes can veto
+          {t('ROOT_NODES_VETO_TIP')}
         </Tooltip>
       )}
 
       {proposal.status === ProposalStatus.PASSED && (
-        <Button onClick={handleExecute}>Execute</Button>
+        <Button onClick={handleExecute}>{t('EXECUTE')}</Button>
       )}
 
       <Modal
         open={modalOpen}
-        title="Vote"
-        tip="Your currently locked amount of Q inside the Q Vault will be extended until the end of this proposal"
+        title={t('VOTE')}
+        tip={t('VOTE_MODAL_TIP')}
         onClose={handleClose}
       >
         <VoteForm proposal={proposal} />
