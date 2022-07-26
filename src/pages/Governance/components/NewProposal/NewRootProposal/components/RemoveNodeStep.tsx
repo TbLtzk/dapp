@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import Input from 'ui/Input';
 
 import { FormStep } from 'components/MultiStepForm';
@@ -9,6 +11,7 @@ import { useNewRootProposal } from '../NewRootProposal';
 import { address, required, url } from 'func/validators';
 
 function RemoveNodeStep () {
+  const { t } = useTranslation();
   const { goNext, goBack } = useNewRootProposal();
 
   const form = useForm({
@@ -31,14 +34,14 @@ function RemoveNodeStep () {
     >
       <Input
         {...form.fields.address}
-        label="Root Node address"
-        placeholder="Address (0x...)"
+        label={t('ROOT_NODE_ADDRESS')}
+        placeholder={t('ADDRESS_PLACEHOLDER')}
       />
 
       <Input
         {...form.fields.externalLink}
-        label="Reference link to external source"
-        placeholder="Link"
+        label={t('REFERENCE_LINK_TO_EXTERNAL_SOURCE')}
+        placeholder={t('LINK')}
       />
     </FormStep>
   );

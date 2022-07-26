@@ -15,7 +15,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 function VotingPeriods ({ proposal, ...rest }: Props) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const hasNoVeto = [
     CONTRACTS_NAMES.addressVoting,
@@ -30,11 +30,11 @@ function VotingPeriods ({ proposal, ...rest }: Props) {
     : new Date(proposal.vetoEndTime * 1000).getTime();
 
   const votingText = votingEndTime > Date.now()
-    ? 'Voting ends'
-    : 'Voting ended';
+    ? t('VOTING_ENDS')
+    : t('VOTING_ENDED');
   const vetoText = vetoEndTime > Date.now()
-    ? 'Veto ends'
-    : 'Veto ended';
+    ? t('VETO_ENDS')
+    : t('VETO_ENDED');
 
   return (
     <VotingContainer {...rest}>
@@ -55,7 +55,7 @@ function VotingPeriods ({ proposal, ...rest }: Props) {
         trigger={(
           <p className="text-md font-light">
             {hasNoVeto || !vetoEndTime
-              ? 'No Veto'
+              ? t('NO_VETO')
               : `${vetoText} ${formatDateRelative(vetoEndTime, i18n.language)}`
             }
           </p>

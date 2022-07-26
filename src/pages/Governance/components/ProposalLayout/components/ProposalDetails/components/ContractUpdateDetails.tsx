@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { Proposal } from 'typings/proposals';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
@@ -9,13 +11,14 @@ interface Props {
 }
 
 function ContractUpdateDetails ({ proposal }: Props) {
+  const { t } = useTranslation();
   const isAddressVotingContract = proposal.contract === CONTRACTS_NAMES.addressVoting;
 
   return (
     <div className="details-list-item">
       <div className="details-item">
         <p className="text-md color-secondary">
-          {isAddressVotingContract ? 'Key' : 'Implementation'}
+          {isAddressVotingContract ? t('KEY') : t('IMPLEMENTATION')}
         </p>
         <p className="text-md">
           {isAddressVotingContract ? proposal.key : proposal.implementation}
@@ -23,7 +26,7 @@ function ContractUpdateDetails ({ proposal }: Props) {
       </div>
 
       <div className="details-item">
-        <p className="text-md color-secondary">Proxy</p>
+        <p className="text-md color-secondary">{t('PROXY')}</p>
         <ExplorerAddress className="text-md" address={proposal.proxy} />
       </div>
     </div>

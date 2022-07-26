@@ -1,5 +1,5 @@
 import { BaseVotingWeightInfo } from '@q-dev/q-js-sdk';
-import { ContractKey, ProposalEvent } from 'typings/contracts';
+import { ContractType, ProposalEvent } from 'typings/contracts';
 import { CreateProposalForm } from 'typings/forms';
 import { Proposal, ProposalType, VotingType } from 'typings/proposals';
 
@@ -63,7 +63,7 @@ export interface SetBaseVotingWeightInfo {
 
 export interface GetProposalsByType {
   type: 'GET_PROPOSALS_BY_TYPE'
-  contractName: ContractKey
+  contractName: ContractType
 }
 
 export interface SetNewParameter {

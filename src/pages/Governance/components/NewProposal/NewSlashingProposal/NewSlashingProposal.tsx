@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
@@ -31,6 +32,7 @@ const NewSlashingProposalContext = createContext(
 );
 
 function NewSlashingProposal () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -48,23 +50,23 @@ function NewSlashingProposal () {
   const steps = [
     {
       id: 'type',
-      name: 'Proposal type',
-      title: 'Type of Slashing Proposal',
+      name: t('PROPOSAL_TYPE'),
+      title: t('TYPE_OF_SLASHING_PROPOSAL'),
       children: <TypeStep />
     },
     {
       id: 'details',
-      name: 'Slashing details',
+      name: t('SLASHING_DETAILS'),
       title: form.values.type === 'root-slashing'
-        ? 'Root Node Slashing Details'
-        : 'Validator Slashing Details',
+        ? t('ROOT_NODE_SLASHING_DETAILS')
+        : t('VALIDATOR_SLASHING_DETAILS'),
       children: <DetailsStep />
     },
     {
       id: 'confirm',
-      name: 'Confirmation',
-      title: 'Confirmation',
-      tip: 'Check the data and submit your proposal',
+      name: t('CONFIRMATION'),
+      title: t('CONFIRMATION'),
+      tip: t('CONFIRMATION_TIP'),
       children: <ConfirmationStep />
     }
   ];

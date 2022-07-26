@@ -75,10 +75,11 @@ export const AuctionPeriodsContainer = styled.div`
   }
 `;
 
-export const EmptyList = styled.div` 
-  margin-top: 25px;
+export const ListEmptyStub = styled.div` 
+  margin-top: 32px;
   text-align: center;
 `;
+
 export const AuctionContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.background};
   padding: 32px;

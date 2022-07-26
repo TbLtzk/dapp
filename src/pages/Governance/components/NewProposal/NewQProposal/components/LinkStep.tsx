@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import Input from 'ui/Input';
 
 import { FormStep } from 'components/MultiStepForm';
@@ -9,6 +11,7 @@ import { useNewQProposalForm } from '../NewQProposal';
 import { required, url } from 'func/validators';
 
 function LinkStep () {
+  const { t } = useTranslation();
   const { goNext, goBack } = useNewQProposalForm();
 
   const form = useForm({
@@ -25,8 +28,8 @@ function LinkStep () {
     >
       <Input
         {...form.fields.externalLink}
-        label="Reference link to external source"
-        placeholder="Link"
+        label={t('REFERENCE_LINK_TO_EXTERNAL_SOURCE')}
+        placeholder={t('LINK')}
       />
     </FormStep>
   );

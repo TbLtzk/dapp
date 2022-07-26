@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { AuctionInfos, AuctionType } from 'typings/auctions';
 import Button from 'ui/Button';
+import Illustration from 'ui/Illustration';
 
-import { EmptyList, ListWrapper } from 'pages/Auctions/styles';
+import { ListEmptyStub, ListWrapper } from 'pages/Auctions/styles';
 import ProposalCardSkeleton from 'pages/Governance/components/Proposals/components/ProposalCardSkeleton';
 import { ListNextContainer } from 'pages/Governance/components/Proposals/components/ProposalsList/styles';
 
@@ -55,7 +56,12 @@ function AllAuctions ({ auctionType }: { auctionType: AuctionType }) {
   }
 
   if (!auctions.length) {
-    return <EmptyList className="text-xl font-semibold">{t('NO_AUCTIONS_FOUND')}</EmptyList>;
+    return (
+      <ListEmptyStub>
+        <Illustration type="empty-list" />
+        <p className="text-lg font-semibold">{t('NO_AUCTIONS_FOUND')}</p>
+      </ListEmptyStub>
+    );
   }
 
   return (

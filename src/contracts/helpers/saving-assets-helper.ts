@@ -1,18 +1,23 @@
+import { SavingBalanceDetails } from '@q-dev/q-js-sdk';
+
 import { getStableCoinInstance } from 'contracts/contract-instance';
 
 import { fromWei } from 'func/balance';
 import ErrorHandler from 'func/ErrorHandler';
 import { uintPerSecondToPerYearNumber } from 'func/useful';
 
-export function getSavingBalanceDetailsHelper (balanceDetails) {
-  const interestRate = balanceDetails?.interestRate ? uintPerSecondToPerYearNumber(balanceDetails.interestRate) : 0;
-  const currentBalance = balanceDetails?.currentBalance ? fromWei(balanceDetails.currentBalance) : 0;
-  const estimatedInterest = currentBalance * ((interestRate) / 100);
+export function getSavingBalanceDetailsHelper (balanceDetails: SavingBalanceDetails) {
+  const interestRate = balanceDetails?.interestRate
+    ? uintPerSecondToPerYearNumber(balanceDetails.interestRate)
+    : 0;
+  const currentBalance = balanceDetails?.currentBalance
+    ? fromWei(balanceDetails.currentBalance)
+    : 0;
 
   return {
     interestRate,
     currentBalance,
-    estimatedInterest
+    estimatedInterest: Number(currentBalance) * Number(interestRate) / 100
   };
 }
 
@@ -23,12 +28,12 @@ export async function addQUSDTokenToWallet () {
       contract.instance.methods.decimals().call(),
       contract.instance.methods.symbol().call(),
     ]);
-    const type = 'ERC20';
+
     if ('ethereum' in window && window?.ethereum) {
-      const response = await window.ethereum.request({
+      return window.ethereum.request({
         method: 'wallet_watchAsset',
         params: {
-          type,
+          type: 'ERC20',
           options: {
             address: contract.address,
             symbol,
@@ -36,7 +41,6 @@ export async function addQUSDTokenToWallet () {
           },
         },
       });
-      return response;
     }
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);

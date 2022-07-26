@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { FormParameter } from 'typings/forms';
 import Button from 'ui/Button';
 import Check from 'ui/Check';
@@ -14,6 +16,7 @@ import { useNewQProposalForm } from '../NewQProposal';
 import { CONTRACT_TYPES } from 'constants/contracts';
 
 function ParamsStep () {
+  const { t } = useTranslation();
   const { values, goNext, goBack, onChange } = useNewQProposalForm();
 
   const formArray = useFormArray<FormParameter>({
@@ -40,7 +43,7 @@ function ParamsStep () {
     >
       <Check
         value={values.isParamsChanged}
-        label="Make changes to constitution parameters"
+        label={t('MAKE_CHANGES_TO_CONSTITUTION_PARAMETERS')}
         style={{ marginBottom: '8px' }}
         onChange={handleCheckChange}
       />
@@ -48,7 +51,7 @@ function ParamsStep () {
       {formArray.forms.map((form, i) => (
         <FormBlock
           key={form.id}
-          title={`Parameter ${i + 1}`}
+          title={t('PARAMETER_INDEX', { index: i + 1 })}
           icon={formArray.forms.length > 1 ? 'delete' : undefined}
           disabled={!values.isParamsChanged}
           onAction={() => formArray.removeForm(form.id)}
@@ -68,7 +71,7 @@ function ParamsStep () {
         onClick={formArray.appendForm}
       >
         <Icon name="add" />
-        <span>Add parameter</span>
+        <span>{t('ADD_PARAMETER')}</span>
       </Button>
     </FormStep>
   );

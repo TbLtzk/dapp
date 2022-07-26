@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
@@ -32,6 +33,7 @@ const NewExpertProposalContext = createContext(
 );
 
 function NewExpertProposal () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -49,33 +51,33 @@ function NewExpertProposal () {
   const steps = [
     {
       id: 'type',
-      name: 'Proposal type',
-      title: 'Type of Expert Proposal',
+      name: t('PROPOSAL_TYPE'),
+      title: t('TYPE_OF_EXPERT_PROPOSAL'),
       children: <TypeStep />
     },
     ...(form.values.type === 'parameter-vote'
       ? [{
         id: 'parameter-vote',
-        name: 'Parameter Vote',
-        title: 'Parameter Vote',
+        name: t('PARAMETER_VOTE'),
+        title: t('PARAMETER_VOTE'),
         children: <ParameterVoteStep />
       }]
       : [{
         id: 'manage-expert',
         name: form.values.type === 'add-expert'
-          ? 'Add Expert'
-          : 'Remove Expert',
+          ? t('ADD_EXPERT')
+          : t('REMOVE_EXPERT'),
         title: form.values.type === 'add-expert'
-          ? 'Add Expert'
-          : 'Remove Expert',
+          ? t('ADD_EXPERT')
+          : t('REMOVE_EXPERT'),
         children: <ManageExpertStep />
       }]
     ),
     {
       id: 'confirm',
-      name: 'Confirmation',
-      title: 'Confirmation',
-      tip: 'Check the data and submit your proposal',
+      name: t('CONFIRMATION'),
+      title: t('CONFIRMATION'),
+      tip: t('CONFIRMATION_TIP'),
       children: <ConfirmationStep />
     }
   ];

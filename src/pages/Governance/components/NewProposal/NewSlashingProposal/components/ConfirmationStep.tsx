@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { SlashingProposalForm } from 'typings/forms';
 
 import FormBlock from 'components/FormBlock';
@@ -8,11 +10,12 @@ import { useNewSlashingProposal } from '../NewSlashingProposal';
 import { formatNumber, formatPercent } from 'func/formatters';
 
 function ConfirmationStep () {
+  const { t } = useTranslation();
   const { values, confirm, goBack, updateStep } = useNewSlashingProposal();
 
   const proposalTypeMap: Record<SlashingProposalForm['type'], string> = {
-    'root-slashing': 'Root Node Slashing',
-    'validator-slashing': 'Validator Node Slashing',
+    'root-slashing': t('ROOT_NODE_SLASHING'),
+    'validator-slashing': t('VALIDATOR_NODE_SLASHING')
   };
 
   return (
@@ -22,7 +25,7 @@ function ConfirmationStep () {
     >
       <FormBlock
         icon="edit"
-        title="Proposal type"
+        title={t('PROPOSAL_TYPE')}
         onAction={() => updateStep(0)}
       >
         <p className="text-lg">
@@ -32,16 +35,16 @@ function ConfirmationStep () {
 
       <FormBlock
         icon="edit"
-        title="Slashing details"
+        title={t('SLASHING_DETAILS')}
         onAction={() => updateStep(1)}
       >
         <div>
-          <p className="text-md color-secondary">Candidate to slash</p>
+          <p className="text-md color-secondary">{t('CANDIDATE_TO_SLASH')}</p>
           <p className="text-lg">{values.address}</p>
         </div>
 
         <div>
-          <p className="text-md color-secondary">Amount to slash</p>
+          <p className="text-md color-secondary">{t('AMOUNT_TO_SLASH')}</p>
           <p className="text-lg">
             <span>{`${formatNumber(values.amount, 4)} Q`}</span>
             <span className="font-light" style={{ marginLeft: '4px' }}>
@@ -51,7 +54,7 @@ function ConfirmationStep () {
         </div>
 
         <div>
-          <p className="text-md color-secondary">External source</p>
+          <p className="text-md color-secondary">{t('EXTERNAL_SOURCE')}</p>
           <p className="text-lg">{values.externalLink}</p>
         </div>
       </FormBlock>

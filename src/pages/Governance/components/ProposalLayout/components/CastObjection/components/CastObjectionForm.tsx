@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import { Proposal } from 'typings/proposals';
@@ -15,6 +16,7 @@ interface Props {
 }
 
 function CastObjectionForm ({ proposal }: Props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const form = useForm({
@@ -33,12 +35,12 @@ function CastObjectionForm ({ proposal }: Props) {
     >
       <Input
         {...form.fields.externalLink}
-        label="Link to external source with objection details"
-        placeholder="External Link"
+        label={t('LINK_TO_EXTERNAL_SOURCE_WITH_OBJECTION_DETAILS')}
+        placeholder={t('LINK')}
       />
 
       <Button type="submit" style={{ width: '100%' }}>
-        Submit objection
+        {t('SUBMIT_OBJECTION')}
       </Button>
     </form>
   );

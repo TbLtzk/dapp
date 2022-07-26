@@ -48,8 +48,8 @@ type KeyOfType<T, U> = {
 }[keyof T]
 
 type ContractPromise = Promise<BaseContractInstance<any> | SystemContractWithQBalance[]>
-export type ContractKey = KeyOfType<ContractRegistryInstance, (val: string) => ContractPromise>;
-type ContractValue<T extends ContractKey> = ReturnType<ContractRegistryInstance[T]>;
+export type ContractType = KeyOfType<ContractRegistryInstance, (val: string) => ContractPromise>;
+type ContractValue<T extends ContractType> = ReturnType<ContractRegistryInstance[T]>;
 
 export type ProposalContractType =
   | 'addressVoting'

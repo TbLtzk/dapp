@@ -1,4 +1,5 @@
 
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import { Proposal } from 'typings/proposals';
@@ -18,6 +19,7 @@ interface Props {
 }
 
 function VoteForm ({ proposal }: Props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const form = useForm({
@@ -45,8 +47,8 @@ function VoteForm ({ proposal }: Props) {
         extended
         name="vote"
         options={[
-          { label: 'Yes', value: 'yes' },
-          { label: 'No', value: 'no' },
+          { label: t('YES'), value: 'yes' },
+          { label: t('NO'), value: 'no' },
         ]}
       />
 
@@ -55,7 +57,7 @@ function VoteForm ({ proposal }: Props) {
         style={{ width: '100%' }}
         disabled={!form.isValid}
       >
-        Submit
+        {t('SUBMIT')}
       </Button>
     </StyledVoteForm>
   );

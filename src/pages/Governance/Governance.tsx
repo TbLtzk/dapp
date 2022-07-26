@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Redirect, Route, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -18,6 +19,7 @@ import { RoutePaths } from 'constants/routes';
 
 function Governance () {
   const { pathname } = useLocation();
+  const { t } = useTranslation();
 
   const qActiveProposals = useSelector(activeProposalsByTypeSelector('q'));
   const rootActiveProposals = useSelector(activeProposalsByTypeSelector('rootNode'));
@@ -28,31 +30,31 @@ function Governance () {
   const tabs = [
     {
       id: 'q-proposals',
-      label: 'Q Proposals',
+      label: t('Q_PROPOSALS'),
       count: qActiveProposals.length,
       link: RoutePaths.qProposals,
     },
     {
       id: 'root-node-panel',
-      label: 'Root Node Panel',
+      label: t('ROOT_NODE_PANEL'),
       count: rootActiveProposals.length,
       link: RoutePaths.rootNodePanel,
     },
     {
       id: 'expert-roposals',
-      label: 'Expert Proposals',
+      label: t('EXPERT_PROPOSALS'),
       count: expertActiveProposals.length,
       link: RoutePaths.expertProposals,
     },
     {
       id: 'slashing-proposals',
-      label: 'Slashing Proposals',
+      label: t('SLASHING_PROPOSALS'),
       count: slashingActiveProposals.length,
       link: RoutePaths.slashingProposals,
     },
     {
       id: 'contract-updates',
-      label: 'Contract Updates',
+      label: t('CONTRACT_UPDATES'),
       count: contractActiveProposals.length,
       link: RoutePaths.contractUpdates,
     },
@@ -69,12 +71,12 @@ function Governance () {
 
   return (
     <PageLayout
-      title="Governance"
+      title={t('GOVERNANCE')}
       action={pathname !== RoutePaths.contractUpdates && (
         <Link to={pathToNewProposalPath[pathname] || RoutePaths.newQProposal}>
           <Button block>
             <Icon name="add" />
-            <span>Create proposal</span>
+            <span>{t('CREATE_PROPOSAL')}</span>
           </Button>
         </Link>
       )}

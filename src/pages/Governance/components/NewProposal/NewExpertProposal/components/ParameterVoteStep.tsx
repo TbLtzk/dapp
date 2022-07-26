@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { ExpertProposalForm, ExpertType, FormParameter, Options } from 'typings/forms';
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
@@ -17,6 +19,7 @@ import { CONTRACT_TYPES } from 'constants/contracts';
 import { required, url } from 'func/validators';
 
 function ParameterVoteStep () {
+  const { t } = useTranslation();
   const { goNext, goBack, onChange } = useNewExpertProposal();
 
   const form = useForm({
@@ -45,15 +48,15 @@ function ParameterVoteStep () {
   const panelTypeOptions: Options<ExpertType> = [
     {
       value: 'fees-incentives',
-      label: 'Q Fees & Incentives Membership Panel',
+      label: t('Q_FEES_INCENTIVES_MEMBERSHIP_PANEL')
     },
     {
       value: 'defi',
-      label: 'Q DeFi (Decentralized Finance) Membership Panel',
+      label: t('Q_DEFI_MEMBERSHIP_PANEL')
     },
     {
       value: 'root-node',
-      label: 'Q Root Node Selection Expert Panel',
+      label: t('Q_ROOT_NODE_SELECTION_EXPERT_PANEL')
     },
   ];
 
@@ -77,21 +80,21 @@ function ParameterVoteStep () {
     >
       <RadioGroup
         {...form.fields.panelType}
-        label="Panel which governs the parameter"
+        label={t('PANEL_WHICH_GOVERNS_THE_PARAMETER')}
         name="param-panel-type"
         options={panelTypeOptions}
       />
 
       <Input
         {...form.fields.externalLink}
-        label="Reference link to external source"
-        placeholder="Link"
+        label={t('REFERENCE_LINK_TO_EXTERNAL_SOURCE')}
+        placeholder={t('LINK')}
       />
 
       {formArray.forms.map((formItem, i) => (
         <FormBlock
           key={formItem.id}
-          title={`Parameter ${i + 1}`}
+          title={t('PARAMETER_INDEX', { index: i + 1 })}
           icon={formArray.forms.length > 1 ? 'delete' : undefined}
           onAction={() => formArray.removeForm(formItem.id)}
         >
@@ -108,7 +111,7 @@ function ParameterVoteStep () {
         onClick={formArray.appendForm}
       >
         <Icon name="add" />
-        <span>Add parameter</span>
+        <span>{t('ADD_PARAMETER')}</span>
       </Button>
     </FormStep>
   );

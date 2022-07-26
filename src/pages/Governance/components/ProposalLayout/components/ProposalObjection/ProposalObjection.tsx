@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { SlashingProposal } from 'typings/proposals';
@@ -15,6 +16,8 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 import formTypes from 'constants/form-types';
 
 function ProposalObjection ({ proposal }: { proposal: SlashingProposal }) {
+  const { t } = useTranslation();
+
   const userAddress = useSelector(userAddressMetamask);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -27,7 +30,7 @@ function ProposalObjection ({ proposal }: { proposal: SlashingProposal }) {
   return (
     <div className="block">
       <div className="block__header">
-        <h2 className="text-h2">Objection</h2>
+        <h2 className="text-h2">{t('OBJECTION')}</h2>
 
         {proposal.proposer === userAddress && (
           <Button
@@ -35,7 +38,7 @@ function ProposalObjection ({ proposal }: { proposal: SlashingProposal }) {
             look="secondary"
             onClick={() => setModalOpen(true)}
           >
-            Confirm appeal
+            {t('CONFIRM_APPEAL')}
           </Button>
         )}
       </div>
@@ -46,8 +49,8 @@ function ProposalObjection ({ proposal }: { proposal: SlashingProposal }) {
 
       <Modal
         open={modalOpen}
-        title="Confirm Appeal"
-        tip="As the slashing proposer you confirm that the slashed node has initiated a court appeal to receive an arbitral award"
+        title={t('CONFIRM_APPEAL')}
+        tip={t('CONFIRM_APPEAL_TIP')}
         onClose={handleClose}
       >
         <ProposerRemarkForm proposal={proposal} />

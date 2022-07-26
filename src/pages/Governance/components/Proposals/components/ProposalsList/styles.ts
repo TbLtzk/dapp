@@ -10,7 +10,7 @@ export const ListWrapper = styled.div`
   }
 `;
 
-export const ListEmptyMessage = styled.div`
+export const ListEmptyStub = styled.div`
   margin: 32px auto;
   text-align: center;
 `;

@@ -5,7 +5,7 @@ import { EPQFIMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/gov
 import { RootNodesMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesMembershipVotingInstance';
 import { RootNodesSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesSlashingVotingInstance';
 import { uniqBy } from 'lodash';
-import { ContractKey, ProposalContractType, ProposalEvent, ProposalsContract } from 'typings/contracts';
+import { ContractType, ProposalContractType, ProposalEvent, ProposalsContract } from 'typings/contracts';
 import { CreateProposalForm, FormParameter } from 'typings/forms';
 import { Proposal, ProposalType, SlashingProposal } from 'typings/proposals';
 
@@ -31,7 +31,7 @@ export async function getContractProposals ({
   proposals: ProposalEvent[],
   contract: ProposalsContract,
   lastBlock: number,
-  contractName: ContractKey
+  contractName: ContractType
 }): Promise<ProposalEvent[]> {
   const contractProposals = proposals.filter(({ contract }) => contract === contractName);
   const activeProposals = contractProposals.filter(({ status }) => status === 'active');

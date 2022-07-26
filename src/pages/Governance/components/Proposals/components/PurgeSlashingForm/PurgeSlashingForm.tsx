@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import Button from 'ui/Button';
@@ -16,6 +17,7 @@ import formTypes from 'constants/form-types';
 import { address, required } from 'func/validators';
 
 function PurgeSlashingForm ({ onClose }: { onClose: () => void }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const form = useForm({
@@ -41,17 +43,17 @@ function PurgeSlashingForm ({ onClose }: { onClose: () => void }) {
     >
       <RadioGroup
         {...form.fields.contractType}
-        label="Candidate type"
+        label={t('CANDIDATE_TYPE')}
         name="contractType"
         options={[
-          { value: CONTRACT_TYPES.rootNodes, label: 'Root Node' },
-          { value: CONTRACT_TYPES.validators, label: 'Validator' },
+          { value: CONTRACT_TYPES.rootNodes, label: t('ROOT_NODE') },
+          { value: CONTRACT_TYPES.validators, label: t('VALIDATOR') },
         ]}
       />
 
       <Input
         {...form.fields.address}
-        label="Candidate address"
+        label={t('CANDIDATE_ADDRESS')}
         placeholder="0x..."
       />
 
@@ -60,7 +62,7 @@ function PurgeSlashingForm ({ onClose }: { onClose: () => void }) {
         className="purge-slashing-submit"
         disabled={!form.isValid}
       >
-        Purge
+        {t('PURGE')}
       </Button>
     </StyledPurgeSlashingForm>
   );

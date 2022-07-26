@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { RootNodeProposalForm } from 'typings/forms';
 
 import FormBlock from 'components/FormBlock';
@@ -6,11 +8,12 @@ import { FormStep } from 'components/MultiStepForm';
 import { useNewRootProposal } from '../NewRootProposal';
 
 function ConfirmationStep () {
+  const { t } = useTranslation();
   const { values, confirm, goBack, updateStep } = useNewRootProposal();
 
   const proposalTypeMap: Record<RootNodeProposalForm['type'], string> = {
-    'add-root-node': 'Add Root Node',
-    'remove-root-node': 'Remove Root Node',
+    'add-root-node': t('ADD_ROOT_NODE'),
+    'remove-root-node': t('REMOVE_ROOT_NODE')
   };
 
   return (
@@ -20,7 +23,7 @@ function ConfirmationStep () {
     >
       <FormBlock
         icon="edit"
-        title="Proposal type"
+        title={t('PROPOSAL_TYPE')}
         onAction={() => updateStep(0)}
       >
         <p className="text-lg">
@@ -30,24 +33,24 @@ function ConfirmationStep () {
 
       <FormBlock
         icon="edit"
-        title="Details"
+        title={t('DETAILS')}
         onAction={() => updateStep(1)}
       >
         {values.type === 'add-root-node' && (
           <div>
-            <p className="text-md color-secondary">Hash</p>
+            <p className="text-md color-secondary">{t('HASH')}</p>
             <p className="text-lg">{values.hash}</p>
           </div>
         )}
 
         <div>
-          <p className="text-md color-secondary">External source</p>
+          <p className="text-md color-secondary">{t('EXTERNAL_SOURCE')}</p>
           <p className="text-lg">{values.externalLink}</p>
         </div>
 
         {values.address !== '' && (
           <div>
-            <p className="text-md color-secondary">Root Node to Remove</p>
+            <p className="text-md color-secondary">{t('ROOT_NODE_TO_REMOVE')}</p>
             <p className="text-lg">{values.address}</p>
           </div>
         )}

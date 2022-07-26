@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import { SlashingProposal } from 'typings/proposals';
@@ -15,6 +16,7 @@ interface Props {
 }
 
 function ProposerRemarkForm ({ proposal }: Props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const form = useForm({
@@ -38,12 +40,12 @@ function ProposerRemarkForm ({ proposal }: Props) {
     >
       <Input
         {...form.fields.proposerRemark}
-        label="Remark about the objection"
-        placeholder="Proposer remark"
+        label={t('REMARK_ABOUT_THE_OBJECTION')}
+        placeholder={t('PROPOSER_REMARK_LBL')}
       />
 
       <Button type="submit" style={{ width: '100%' }}>
-        Confirm appeal
+        {t('CONFIRM_APPEAL')}
       </Button>
     </form>
   );

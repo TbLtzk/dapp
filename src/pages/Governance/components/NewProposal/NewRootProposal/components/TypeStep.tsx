@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { RadioOptions, RootNodeProposalForm } from 'typings/forms';
 import RadioGroup from 'ui/RadioGroup';
 
@@ -10,6 +12,7 @@ import { useNewRootProposal } from '../NewRootProposal';
 import { required } from 'func/validators';
 
 function TypeStep () {
+  const { t } = useTranslation();
   const { goNext, onChange } = useNewRootProposal();
 
   const form = useForm({
@@ -22,13 +25,13 @@ function TypeStep () {
   const typeOptions: RadioOptions<RootNodeProposalForm['type']> = [
     {
       value: 'add-root-node',
-      label: 'Add a new Root Node',
-      tip: 'Add your account as a candidate for the Root Node Panel. Optionally provide a Root Node to remove.',
+      label: t('ADD_A_NEW_ROOT_NODE'),
+      tip: t('ADD_ROOT_NODE_TIP')
     },
     {
       value: 'remove-root-node',
-      label: 'Remove a current Root Node',
-      tip: 'Initiate a vote about the removal of a specific Root Node from the Root Node Panel',
+      label: t('REMOVE_A_CURRENT_ROOT_NODE'),
+      tip: t('REMOVE_ROOT_NODE_TIP')
     },
   ];
 

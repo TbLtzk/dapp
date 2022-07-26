@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -20,6 +21,7 @@ import { fromSolDateFormattingT1 } from 'func/date';
 import { fN } from 'func/useful';
 
 function VotingStats () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const address = useSelector(userAddressMetamask);
@@ -40,11 +42,11 @@ function VotingStats () {
 
   const statsList = [
     {
-      title: 'Total Voting Weight',
+      title: t('TOTAL_VOTING_WEIGHT'),
       value: ownWeight ? `${fN(fromWei(ownWeight))} Q` : '0 Q'
     },
     {
-      title: 'Voting Locking End',
+      title: t('VOTING_LOCKING_END'),
       value: lockedDate && lockedDate !== '0'
         ? (
           <>
@@ -55,11 +57,11 @@ function VotingStats () {
         : '–'
     },
     {
-      title: 'Voting Status',
+      title: t('VOTING_STATUS'),
       value: <span className="text-lg">{voterStatus}</span>
     },
     {
-      title: 'Vote Delegation',
+      title: t('VOTE_DELEGATION'),
       value: <span className="text-lg">{votingInfo}</span>
     }
   ];
@@ -67,14 +69,14 @@ function VotingStats () {
   return (
     <StatsContainer className="block">
       <div className="stats-head">
-        <h2 className="text-h2">Voting Stats</h2>
+        <h2 className="text-h2">{t('VOTING_STATS')}</h2>
         <Link to="/q-vault">
           <Button
             block
             alwaysEnabled
             look="secondary"
           >
-            Manage vault
+            {t('MANAGE_VAULT')}
           </Button>
         </Link>
       </div>

@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { Proposal } from 'typings/proposals';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
@@ -11,10 +13,12 @@ interface Props {
 }
 
 function SlashingDetails ({ proposal }: Props) {
+  const { t } = useTranslation();
+
   return (
     <div className="details-list-item">
       <div className="details-item">
-        <p className="text-md color-secondary">Candidate</p>
+        <p className="text-md color-secondary">{t('CANDIDATE')}</p>
         <ExplorerAddress
           short
           iconed
@@ -24,12 +28,12 @@ function SlashingDetails ({ proposal }: Props) {
       </div>
 
       <div className="details-item">
-        <p className="text-md color-secondary">Amount to Slash</p>
+        <p className="text-md color-secondary">{t('DETAILS_AMOUNT_TO_SLASH')}</p>
         <p className="text-md">{formatNumber(proposal.amountToSlash, 4)} Q</p>
       </div>
 
       <div className="details-item">
-        <p className="text-md color-secondary">External source</p>
+        <p className="text-md color-secondary">{t('EXTERNAL_SOURCE')}</p>
         <LinkViewer link={proposal.remark} />
       </div>
     </div>

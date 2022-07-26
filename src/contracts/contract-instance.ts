@@ -2,7 +2,7 @@ import { ContractRegistryInstance } from '@q-dev/q-js-sdk';
 import { CompoundRateKeeperInstance } from '@q-dev/q-js-sdk/lib/contracts/common/CompoundRateKeeperInstance';
 import { Indexer } from '@q-dev/q-js-sdk/lib/indexer/indexer';
 import { ValidatorMetrics } from '@q-dev/q-js-sdk/lib/utils/validator-metrics';
-import { ContractKey, ContractValue } from 'typings/contracts';
+import { ContractType, ContractValue } from 'typings/contracts';
 import { Asset } from 'typings/defi';
 
 import { indexersUrls } from 'constants/config';
@@ -19,7 +19,7 @@ export const getContractRegistryInstance = () => {
   return contractRegistryInstance;
 };
 
-export function getInstance<T extends ContractKey> (
+export function getInstance<T extends ContractType> (
   instance: T,
   asset?: string
 ): () => ContractValue<T> {

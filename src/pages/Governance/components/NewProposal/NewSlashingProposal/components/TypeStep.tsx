@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { RadioOptions, SlashingProposalForm } from 'typings/forms';
 import RadioGroup from 'ui/RadioGroup';
 
@@ -10,6 +12,7 @@ import { useNewSlashingProposal } from '../NewSlashingProposal';
 import { required } from 'func/validators';
 
 function TypeStep () {
+  const { t } = useTranslation();
   const { goNext, onChange } = useNewSlashingProposal();
 
   const form = useForm({
@@ -22,13 +25,13 @@ function TypeStep () {
   const typeOptions: RadioOptions<SlashingProposalForm['type']> = [
     {
       value: 'root-slashing',
-      label: 'Root Node Slashing',
-      tip: 'Initiates the voting on the slashing of a root node. Can be created by any Q token holder.'
+      label: t('ROOT_NODE_SLASHING'),
+      tip: t('ROOT_NODE_SLASHING_TIP')
     },
     {
       value: 'validator-slashing',
-      label: 'Validator Node Slashing',
-      tip: 'Initiates the voting on the slashing of a validator node. Can be created only by root nodes.'
+      label: t('VALIDATOR_NODE_SLASHING'),
+      tip: t('VALIDATOR_NODE_SLASHING_TIP')
     },
   ];
 
