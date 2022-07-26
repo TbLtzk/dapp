@@ -62,7 +62,7 @@ function useProposalDetails (proposal: Proposal | null) {
       case 'epdrMembershipVoting':
         return t('DEFI_RISK_EXPERT_MEMBERSHIP_PROPOSAL');
       case 'epqfiMembershipVoting':
-        return t('FEES_&_INCENTIVES_EXPERTS_MEMBERSHIP_PROPOSAL');
+        return t('FEES_INCENTIVES_EXPERTS_MEMBERSHIP_PROPOSAL');
       case 'eprsParametersVoting':
         return t('Q_ROOT_NODE_SELECTION_PARAMETERS_PROPOSAL');
       case 'epdrParametersVoting':

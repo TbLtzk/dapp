@@ -70,7 +70,7 @@ function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
         <div className="proposal-card__voting">
           <div className="proposal-card__quorum">
             <p className="text-md">
-              {t('QUORUM', { quorum: formatPercent(proposalInfo.requiredQuorum) })}
+              {t('QUORUM', { quorum: formatPercent(proposalInfo.currentQuorum) })}
             </p>
             <p className="text-md">
               {leftQuorum
