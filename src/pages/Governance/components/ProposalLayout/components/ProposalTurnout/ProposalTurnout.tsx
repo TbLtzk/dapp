@@ -32,7 +32,7 @@ function ProposalTurnout ({ proposal }: { proposal: Proposal }) {
       <div className="block__content">
         <div className="proposal-turnout__quorum">
           <p className="text-md">
-            {t('QUORUM', { quorum: formatPercent(proposal.requiredQuorum) })}
+            {t('QUORUM', { quorum: formatPercent(proposal.currentQuorum) })}
           </p>
           <p className="text-md">
             {leftQuorum || proposal.currentQuorum === 0
