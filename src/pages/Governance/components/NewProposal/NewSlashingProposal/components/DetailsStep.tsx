@@ -95,25 +95,26 @@ function DetailsStep () {
               look="danger"
               onClick={purgeSlashing}
             >
-              Purge Slashing
+              {t('PURGE_SLASHING')}
             </Button>
           )}
         >
-          In order to slash the {isRootType ? 'root node' : 'validator'} {trimAddress(form.values.address)} again,
-          you need to purge all his slashing transactions
+          {t('PURGE_SLASHING_DETAILS_TIP', {
+            address: trimAddress(form.values.address)
+          })}
         </Tip>
       )}
 
       <Input
         {...form.fields.address}
-        label="Candidate to slash"
+        label={t('CANDIDATE_TO_SLASH')}
         placeholder={t('ADDRESS_PLACEHOLDER')}
         error={form.errors.address || (shouldPurge ? ' ' : '')}
       />
 
       <Range
         {...form.fields.percent}
-        label="Amount to slash"
+        label={t('AMOUNT_TO_SLASH')}
         max={String(stake || '0')}
         formatter={(value) => `${formatNumber(value, 4)} Q`}
         disabled={isNil(stake)}

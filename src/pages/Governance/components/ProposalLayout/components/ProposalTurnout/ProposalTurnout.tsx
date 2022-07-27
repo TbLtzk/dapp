@@ -36,7 +36,7 @@ function ProposalTurnout ({ proposal }: { proposal: Proposal }) {
           </p>
           <p className="text-md">
             {leftQuorum || proposal.currentQuorum === 0
-              ? `${formatPercent(leftQuorum)} left`
+              ? t('LEFT_QUORUM', { quorum: formatPercent(leftQuorum) })
               : <Icon name="double-check" />
             }
           </p>
