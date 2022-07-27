@@ -24,7 +24,7 @@ import {
   getValidationRewardProxyInstance,
 } from 'contracts/contract-instance';
 
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError, getErrorMessage } from 'func/errors';
 import { fixNumber } from 'func/useful';
 
 async function allocateValue (contract, adddress) {
@@ -48,8 +48,8 @@ function* getDefaultAllocationProxyGenerator ({ isAllocate }) {
 
     yield put(getDefaultAllocationProxySuccess(fixNumber(value)));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
     yield put(getDefaultAllocationProxyError(error));
   }
 }
@@ -66,8 +66,8 @@ function* getRootNodeRewardProxyGenerator ({ isAllocate }) {
     const value = yield contract.getBalance();
     yield put(getRootNodeRewardProxySuccess(fixNumber(value)));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
     yield put(getRootNodeRewardProxyError(error));
   }
 }
@@ -85,8 +85,8 @@ function* getValidationRewardProxyGenerator ({ isAllocate }) {
 
     yield put(getValidationRewardProxyProxySuccess(fixNumber(value)));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
     yield put(getValidationRewardProxyProxyError(error));
   }
 }
@@ -105,8 +105,8 @@ function* getQHolderTimeUpdateGenerator ({ isUpdateTime }) {
     const result = yield contract.getLastUpdate();
     yield put(getQHolderTimeUpdateSuccess(result));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
     yield put(getQHolderTimeUpdateError(error));
   }
 }

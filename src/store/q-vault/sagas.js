@@ -35,7 +35,7 @@ import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei, prepareBalanceDetails, toWei } from 'func/balance';
 import { getNowTimestamp } from 'func/convertDate';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError, getErrorMessage } from 'func/errors';
 import { addIndex } from 'func/useful';
 
 // rename: getBalanceInWalletGenerator
@@ -45,7 +45,7 @@ function* getAccountBalanceGenerator () {
     const data = yield window.web3.eth.getBalance(userAddress);
     yield put(setAccountBalance(fromWei(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -57,7 +57,7 @@ function* getUserBalanceGenerator () {
     const data = yield contract.getUserBalance(userAddress);
     yield put(setUserBalance(fromWei(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -67,7 +67,7 @@ function* getLockedAssetsGenerator ({ address }) {
     const data = yield contract.getLockInfo(address);
     yield put(setLockedAssets(fromWei(data.lockedAmount), data.lockedUntil));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -86,8 +86,8 @@ function* setDepositGenerator ({ address, amountQ }) {
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultDeposit }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -103,8 +103,8 @@ function* setSendGenerator ({ address, amount }) {
     yield put(getAccountBalance(userAddress));
     yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultSend }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -120,8 +120,8 @@ function* setWithdrawGenerator ({ address, amountQ }) {
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultWithdraw }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -141,8 +141,8 @@ function* setDelegateStakeGenerator ({ address, delegateAddresses, stakes }) {
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultDelegation }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -162,8 +162,8 @@ function* setLockAmountGenerator ({ address, amountQ }) {
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultLock }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -182,8 +182,8 @@ function* setUnlockAmountGenerator ({ address, amountQ }) {
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultUnlock }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -194,7 +194,7 @@ function* getDelegationListGenerator () {
     const data = yield contract.getDelegationsList(userAddress);
     yield put(getDelegationsListSuccess(data));
   } catch (error) {
-    ErrorHandler.process(error);
+    getErrorMessage(error);
     yield put(getDelegationsListError(error.message));
   }
 }
@@ -209,7 +209,7 @@ function* getOutstandingDelegationRewardsValueGenerator () {
     yield put(getOutstandingDelegationRewardsSuccess(result));
   } catch (error) {
     yield put(getOutstandingDelegationRewardsError(error));
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -219,7 +219,7 @@ function* getMinimumQVaultTimeLockGenerator ({ address }) {
     const data = yield contract.getMinimumBalance(address, getNowTimestamp());
     yield put(setMinimumQVaultTimeLock(fromWei(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -230,7 +230,7 @@ function* getQVaultTimeLocksGenerator ({ address }) {
 
     yield put(setQVaultTimeLocks(addIndex(data)));
   } catch (error) {
-    ErrorHandler.process(error);
+    getErrorMessage(error);
   }
 }
 
@@ -248,8 +248,8 @@ function* setOnClaimStakeDelegatorRewardGenerator () {
 
     yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -262,7 +262,7 @@ function* getBalanceDetailsGenerator () {
     const balanceDetails = prepareBalanceDetails(balanceDetailsData, userQVBalance);
     yield put(getQVBalanceSuccess({ ...balanceDetails, qHolderRewardPool }));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -272,8 +272,8 @@ function* getDelegationInfoGenerator ({ address }) {
     const data = yield contract.getDelegationInfo(address);
     yield put(setDelegationInfo(data));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -291,8 +291,8 @@ function* setAnnounceNewVotingAgentGenerator ({ address }) {
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultAnnounce }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -310,8 +310,8 @@ function* setNewVotingAgentGenerator () {
 
     yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 

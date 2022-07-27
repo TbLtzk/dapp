@@ -20,7 +20,7 @@ import { getContractRegistryInstance } from 'contracts/contract-instance';
 import { networkParameters, networks, rpcUrls } from 'constants/config';
 import { LOAD_TYPES } from 'constants/statuses';
 import { getChainId, getParametersDependsOnUrl, getProvider } from 'func/appConfig';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError } from 'func/errors';
 import { reloadPage } from 'func/useful';
 
 const { ethereum } = window;
@@ -89,7 +89,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       }
     } catch (error: any) {
       setError(error);
-      ErrorHandler.processWithoutFeedback(error);
+      captureError(error);
     } finally {
       setLoading(false);
       reloadPage(0);
@@ -112,7 +112,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
         }
       } catch (error: any) {
         setError(error);
-        ErrorHandler.processWithoutFeedback(error);
+        captureError(error);
       } finally {
         setLoading(false);
       }
@@ -151,7 +151,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       await loadAdditionalInfo();
       setLoadAppType(LOAD_TYPES.loaded);
     } catch (error) {
-      ErrorHandler.processWithoutFeedback(error);
+      captureError(error);
       setLoadAppType(LOAD_TYPES.initError);
     }
   }, [ethereum]);

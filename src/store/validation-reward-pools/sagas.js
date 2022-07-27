@@ -25,7 +25,7 @@ import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei } from 'func/balance';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError, getErrorMessage } from 'func/errors';
 import { transformToPercentage } from 'func/formatters';
 import { getPercentageFormat } from 'func/useful';
 
@@ -50,8 +50,8 @@ function* setUpdateValidatorsCompoundRateGenerator ({ address }) {
     yield put(getVRPPoolInfo(address));
     yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   } finally {
     yield put(setVRPLoadingValidatorsCompoundRate(false));
   }
@@ -69,8 +69,8 @@ function* setDelegatorsShareGenerator ({ amount }) {
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.validatorsPool }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -80,7 +80,7 @@ function* getDelegatorsShareGenerator ({ address }) {
     const data = yield contract.getDelegatorsShare(address);
     yield put(setVRPDelegatorsShareData(transformToPercentage(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -90,7 +90,7 @@ function* getBalanceGenerator ({ address }) {
     const data = yield contract.getPoolInfo(address);
     yield put(setVRPBalance(fromWei(data.poolBalance)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -100,7 +100,7 @@ function* getPoolInfoGenerator ({ address }) {
     const data = yield contract.getPoolInfo(address);
     yield put(setVRPPoolInfo(fromWei(data.reservedForClaims)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -111,7 +111,7 @@ function* getLastUpdateOfCompoundRateGenerator () {
     const data = yield contract.getLastUpdateOfCompoundRate(userAddress);
     yield put(setVRPLastUpdateOfCompoundRateData(data));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -121,7 +121,7 @@ function* getRewardPoolsBalanceGenerator () {
     const amount = yield contract.getBalance();
     yield put(setRewardPoolsBalance(amount));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 

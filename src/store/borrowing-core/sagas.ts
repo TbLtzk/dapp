@@ -32,7 +32,7 @@ import { getBorrowAssetRateAndFee, getVaultWithFee } from 'contracts/helpers/bor
 import { BorrowAssets } from 'constants/defiTypes';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei } from 'func/balance';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError, getErrorMessage } from 'func/errors';
 import { fillArray, uintPerSecondToPerYearNumber } from 'func/useful';
 
 function* setCreateVaultGenerator ({ asset }: { asset: Asset }) {
@@ -45,8 +45,8 @@ function* setCreateVaultGenerator ({ asset }: { asset: Asset }) {
     yield put(getBorrowingVaults());
     yield put(setTransactionLoadingSuccess({ type: TRANSACTION_TYPES.success }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -60,7 +60,7 @@ function* getBorrowingVaultsGenerator () {
     yield* put(getBorrowingVaultsSuccess(vaults as VaultWithFee[]));
   } catch (error) {
     yield* put(getBorrowingVaultsError(error));
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -80,7 +80,7 @@ function* getOutstandingDebtGenerator () {
     yield* put(getOutstandingDebtSuccess(outstandingDebt));
   } catch (error) {
     yield* put(getOutstandingDebtError(error));
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -94,7 +94,7 @@ function* getTotalSavingBalanceGenerator () {
     yield* put(getTotalSavingBalanceSuccess(fromWei(savingAmount)));
   } catch (error) {
     yield* put(getTotalSavingBalanceError(error));
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -117,7 +117,7 @@ function* getSavingAssetsGenerator () {
     );
   } catch (error) {
     yield* put(getSavingAssetsError(error));
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -129,7 +129,7 @@ function* getSavingRateGenerator () {
     yield* put(getSavingRateSuccess(rate));
   } catch (error) {
     yield* put(getSavingRateError(error));
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -139,7 +139,7 @@ function* getInterestRatesGenerator () {
     yield* put(getInterestRatesSuccess(interestRates as BorrowAssetsRateAndFee[]));
   } catch (error) {
     yield* put(getInterestRatesError(error));
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 

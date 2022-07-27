@@ -1,4 +1,5 @@
 import { HTMLAttributes } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Icon, { IconName } from 'ui/Icon';
 
@@ -17,6 +18,8 @@ function Toast ({
   onClose = () => {},
   ...rest
 }: Props) {
+  const { t } = useTranslation();
+
   const iconsMap: Record<ToastType, IconName> = {
     info: 'info',
     success: 'check-circle',
@@ -24,9 +27,9 @@ function Toast ({
   };
 
   const titleMap: Record<ToastType, string> = {
-    info: 'Info',
-    success: 'Success',
-    error: 'Error',
+    info: t('TOAST_INFO'),
+    success: t('TOAST_SUCCESS'),
+    error: t('TOAST_ERROR'),
   };
 
   return (

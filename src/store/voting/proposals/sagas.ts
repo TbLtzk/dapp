@@ -31,7 +31,7 @@ import { ZERO_ADDRESS } from 'constants/config';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { getNowTimestamp } from 'func/convertDate';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError, getErrorMessage } from 'func/errors';
 import { getMinimalActiveBlockHeight } from 'func/useful';
 
 function getProposalTypeFromFormType (type: CreateProposalForm['type']): FormProposalType {
@@ -68,7 +68,7 @@ function* getProposalsGenerator ({ proposalType }: types.GetProposals) {
     yield* put(setProposals(proposalType, newProposals, Number(lastBlockHeight)));
     yield* put(setMinimalActiveBlock(minimalActiveBlockHeight));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -94,8 +94,8 @@ function* createProposalGenerator ({ form }: types.CreateProposal) {
 
     yield* put(setTransactionLoadingSuccess({ type: formTypesMap[proposalType] }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield* put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -139,8 +139,8 @@ function* voteForProposalGenerator ({ payload }: types.VoteForProposal) {
       transactionType: TRANSACTION_TYPES.success,
     }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield* put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -163,8 +163,8 @@ function* executeProposalGenerator ({ proposal }: types.ExecuteProposal) {
 
     yield* put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield* put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -221,7 +221,7 @@ function* getConstitutionHashGenerator () {
     const hash = yield* call(() => contract.constitutionHash());
     yield* put(getConstitutionHashSuccess(hash));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -233,7 +233,7 @@ function* getBaseVotingWeightInfoGenerator () {
     const result = yield* call(() => contract.getBaseVotingWeightInfo(userAddress, timeStamp));
     yield* put(setBaseVotingWeightInfo(result));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 

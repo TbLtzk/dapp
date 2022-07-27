@@ -17,7 +17,7 @@ import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei, toWei } from 'func/balance';
 import { getNowTimestamp } from 'func/convertDate';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError, getErrorMessage } from 'func/errors';
 import { addIndex } from 'func/useful';
 
 function* getVestingBalanceGenerator ({ address }) {
@@ -26,7 +26,7 @@ function* getVestingBalanceGenerator ({ address }) {
     const data = yield contract.balanceOf(address);
     yield put(setVestingBalance(fromWei(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -36,7 +36,7 @@ function* getMinimumVestingTimeLockGenerator ({ address }) {
     const data = yield contract.getMinimumBalance(address, getNowTimestamp());
     yield put(setMinimumVestingTimeLock(Number(fromWei(data))));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -46,7 +46,7 @@ function* getVestingTimeLocksGenerator ({ address }) {
     const data = yield contract.getTimeLocks(address);
     yield put(setVestingTimeLocks(addIndex(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -55,8 +55,8 @@ function* setVestingDepositGenerator () {
     yield put(setTransactionLoading());
     yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -72,8 +72,8 @@ function* setVestingWithdrawGenerator ({ amountQ }) {
     yield call(getAmountOnContract, CONTRACT_TYPES.vesting, userAddress);
     yield put(setTransactionLoadingSuccess({ type: formTypes.vestingWithdraw }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 

@@ -13,7 +13,7 @@ import {
 } from 'contracts/contract-instance';
 
 import { remainDateTimeSince } from 'func/convertDate';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError, getErrorMessage } from 'func/errors';
 import { uintPerSecondToPerYearNumber } from 'func/useful';
 
 export async function getVaultWithFee (vault: Vault, vaultNum: number | string): Promise<VaultWithFee> {
@@ -55,7 +55,7 @@ export async function addBorrowTokenToWallet (asset: Asset) {
       return response;
     }
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     return null;
   }
 }
@@ -71,7 +71,7 @@ export async function getTimeSinceRefreshBalance (
     const transformTime = remainDateTimeSince(res);
     setTimeSinceRefreshBalance(transformTime);
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -88,8 +88,8 @@ export async function refreshTimeSinceRefreshBalance (
     await contract.updateCompoundRate({ from: userAddress, gasBuffer: 1.2 });
     getTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance);
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    dispatch(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    dispatch(setTransactionLoadingError(getErrorMessage(error)));
   } finally {
     setLoading(false);
   }
@@ -108,7 +108,7 @@ export async function getTimeSinceOutstandingDebt (
     const transformTime = remainDateTimeSince(res);
     setTimeSinceOutstandingDeb(transformTime);
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -126,8 +126,8 @@ export async function refreshTimeSinceOutstandingDebt (
     await contract.updateCompoundRate(asset, { from: userAddress, gasBuffer: 1.2 });
     getTimeSinceOutstandingDebt(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance, asset);
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    dispatch(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    dispatch(setTransactionLoadingError(getErrorMessage(error)));
   } finally {
     setLoading(false);
   }

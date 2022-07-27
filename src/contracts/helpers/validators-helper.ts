@@ -6,7 +6,7 @@ import { getContractRegistryInstance, getValidatorMetricsInstance } from 'contra
 
 import { fromWei } from 'func/balance';
 import { convertToMonthDayYear, dateToTimestamp } from 'func/convertDate';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError } from 'func/errors';
 import { transformToPercentage } from 'func/formatters';
 import { uintPerSecondToPerYearNumber } from 'func/useful';
 
@@ -85,7 +85,7 @@ export async function prepareValidatorsMonitoringData (
       amount: member.balance
     };
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     return { ...monitoringData, validator: member.address, amount: member.balance };
   }
 }

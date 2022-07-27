@@ -20,7 +20,7 @@ import {
   getEprsMembershipInstance
 } from 'contracts/contract-instance';
 
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError } from 'func/errors';
 
 function* isUserEPDRMember () {
   try {
@@ -29,7 +29,7 @@ function* isUserEPDRMember () {
     const data = yield contract.isMember(userAddress);
     yield put(getIsUserEPDRMemberSuccess(data));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -40,7 +40,7 @@ function* isUserEPQFIMember () {
     const data = yield contract.isMember(userAddress);
     yield put(getIsUserEPQFIMemberSuccess(data));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -51,7 +51,7 @@ function* isUserEPRSMember () {
     const data = yield contract.isMember(userAddress);
     yield put(getIsUserEPRSMemberSuccess(data));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -61,7 +61,7 @@ function* getEPRSMembers () {
     const data = yield contract.getMembers();
     yield put(getEPRSMembersSuccess(data));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     yield put(getEPRSMembersError(error.message));
   }
 }
@@ -72,7 +72,7 @@ function* getEPDRMembers () {
     const data = yield contract.getMembers();
     yield put(getEPDRMembersSuccess(data));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     yield put(getEPDRMembersError(error.message));
   }
 }
@@ -83,7 +83,7 @@ function* getEPQFIMembers () {
     const data = yield contract.getMembers();
     yield put(getEPQFIMembersSuccess(data));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     yield put(getEPQFIMembersError(error.message));
   }
 }
