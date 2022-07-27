@@ -1,11 +1,10 @@
-export const STATUSES = {
-  none: 'None',
-  open: 'Open',
-  accepted: 'Accepted',
-  pending: 'Pending',
-  decided: 'Decided',
-  executed: 'Executed',
-  passed: 'Passed',
+export enum ObjectionStatus {
+  NONE = '0',
+  OPEN = '1',
+  ACCEPTED = '2',
+  PENDING = '3',
+  DECIDED = '4',
+  EXECUTED = '5',
 };
 
 export const TRANSACTION_TYPES = {

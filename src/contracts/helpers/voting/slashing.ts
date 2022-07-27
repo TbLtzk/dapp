@@ -9,6 +9,7 @@ import { getContractProposals } from '.';
 
 import { getRootNodeSlashingEscrowInstance, getRootNodesSlashingVotingInstance, getValidatorSlashingEscrowInstance, getValidatorsSlashingVotingInstance } from 'contracts/contract-instance';
 
+import { ObjectionStatus } from 'constants/statuses';
 import { fromWei } from 'func/balance';
 import { unixToDate } from 'func/date';
 import { transformToPercentage } from 'func/formatters';
@@ -105,7 +106,7 @@ export async function getSlashingEscrow (
       appealConfirmed: escrowArbitrationInfo.appealConfirmed,
       appealEndTime: unixToDate(escrowArbitrationInfo.params.appealEndTime),
       objectionEndTime: unixToDate(escrowArbitrationInfo.params.objectionEndTime),
-      statusObjection: status,
+      status: status as ObjectionStatus,
       slashedAmount: fromWei(escrowArbitrationInfo.params.slashedAmount),
       executed: escrowArbitrationInfo.executed,
       remark: escrowArbitrationInfo.remark,

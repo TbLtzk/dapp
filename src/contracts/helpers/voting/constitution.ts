@@ -96,7 +96,7 @@ export async function getConstitutionProposal (
 
     votesFor: Number(fromWei(base.counters.weightFor)),
     votesAgainst: Number(fromWei(base.counters.weightAgainst)),
-    vetoesNumber: Number(fromWei(base.counters.vetosCount)),
+    vetoesNumber: Number(base.counters.vetosCount),
 
     currentConstitutionHash: isConstitution
       ? (proposal as ConstitutionProposal).currentConstitutionHash

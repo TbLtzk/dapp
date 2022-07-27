@@ -7,6 +7,7 @@ import Tooltip from 'ui/Tooltip';
 import useEndTime from '../../../hooks/useEndTime';
 import LinkViewer from '../../LinkViewer';
 
+import { ObjectionStatus } from 'constants/statuses';
 import { formatNumber } from 'func/formatters';
 
 function ObjectionDetails ({ proposal }: { proposal: SlashingProposal }) {
@@ -15,6 +16,15 @@ function ObjectionDetails ({ proposal }: { proposal: SlashingProposal }) {
   const objection = proposal.objEscrow.objection;
   const objectionEndTime = useEndTime(objection.objectionEndTime);
   const appealEndTime = useEndTime(objection.appealEndTime);
+
+  const statusTranslationsMap: Record<ObjectionStatus, string> = {
+    [ObjectionStatus.NONE]: t('STATUS_NONE'),
+    [ObjectionStatus.OPEN]: t('STATUS_OPEN'),
+    [ObjectionStatus.ACCEPTED]: t('STATUS_ACCEPTED'),
+    [ObjectionStatus.PENDING]: t('STATUS_PENDING'),
+    [ObjectionStatus.DECIDED]: t('STATUS_DECIDED'),
+    [ObjectionStatus.EXECUTED]: t('STATUS_EXECUTED'),
+  };
 
   return (
     <div className="details-list">
@@ -33,7 +43,7 @@ function ObjectionDetails ({ proposal }: { proposal: SlashingProposal }) {
 
         <div className="details-item">
           <p className="text-md color-secondary">{t('STATUS')}</p>
-          <p className="text-md">{objection.statusObjection || '–'}</p>
+          <p className="text-md">{statusTranslationsMap[objection.status] || '–'}</p>
         </div>
 
         <div className="details-item">
