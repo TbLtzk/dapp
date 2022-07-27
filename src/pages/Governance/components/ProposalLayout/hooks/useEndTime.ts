@@ -7,7 +7,9 @@ function useEndTime (date: Date) {
   const endTimeText = date.getTime() > Date.now() ? t('ENDS') : t('ENDED');
   return {
     formatted: formatDate(date),
-    relative: `${endTimeText} ${formatDateRelative(date, i18n.language)}`
+    relative: date.getTime()
+      ? `${endTimeText} ${formatDateRelative(date, i18n.language)}`
+      : '–',
   };
 }
 

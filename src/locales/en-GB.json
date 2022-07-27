@@ -425,6 +425,8 @@
   "STATUS_PENDING": "Pending",
   "STATUS_REJECTED": "Rejected",
   "STATUS_OBSOLETE": "Obsolete",
+  "STATUS_OPEN": "Open",
+  "STATUS_DECIDED": "Decided",
   "CLASSIFICATION_BASIC": "Basic",
   "CLASSIFICATION_DETAILED": "Detailed",
   "CLASSIFICATION_FUNDAMENTAL": "Fundamental",

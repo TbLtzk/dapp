@@ -3,6 +3,8 @@ import { Classification, ProposalStatus } from '@q-dev/q-js-sdk';
 import { ProposalContractType } from './contracts';
 import { FormParameter } from './forms';
 
+import { ObjectionStatus } from 'constants/statuses';
+
 export type ProposalFilterStatus = '' | 'active' | 'ended';
 
 export interface ProposalFilter {
@@ -52,7 +54,7 @@ export interface SlashingProposal extends Proposal {
       appealConfirmed: boolean
       appealEndTime: Date
       objectionEndTime: Date
-      statusObjection: string
+      status: ObjectionStatus
       slashedAmount: string | number
       executed: boolean
       remark: string

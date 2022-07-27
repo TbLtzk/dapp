@@ -52,7 +52,7 @@ export async function getRootNodeProposal (
 
     votesFor: Number(fromWei(proposal.base.counters.weightFor)),
     votesAgainst: Number(fromWei(proposal.base.counters.weightAgainst)),
-    vetoesNumber: Number(fromWei(proposal.base.counters.vetosCount)),
+    vetoesNumber: Number(proposal.base.counters.vetosCount),
 
     requiredMajority: Number(transformToPercentage(proposal.base.params.requiredMajority)),
     requiredQuorum: Number(transformToPercentage(proposal.base.params.requiredQuorum)),
