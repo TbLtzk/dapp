@@ -22,7 +22,7 @@ import {
   getEprsParametersInstance
 } from 'contracts/contract-instance';
 
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError } from 'func/errors';
 
 const TYPES = ['Uint', 'String', 'Bool', 'Addr', 'Bytes32'];
 
@@ -46,7 +46,7 @@ function* getContractRegistryKV () {
       )
     );
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     yield put(getContractRegistryKVError('There was an error while loading Contract Registry data'));
   }
 }
@@ -57,7 +57,7 @@ function* getConstitutionParametersKV () {
     const data = yield all(TYPES.map((type) => getParameters(type, contract)));
     yield put(getConstitutionParametersKVSuccess(data.flat()));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     yield put(getConstitutionParametersKVError('There was an error while loading Constitution Parameters data'));
   }
 }
@@ -68,7 +68,7 @@ function* getFeesIncentivesExpertPanelParametersKV () {
     const data = yield all(TYPES.map((type) => getParameters(type, contract)));
     yield put(getFeesIncentivesExpertPanelParametersKVSuccess(data.flat()));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     yield put(getFeesIncentivesExpertPanelParametersKVError('There was an error while loading EPQFI Parameters data'));
   }
 }
@@ -79,7 +79,7 @@ function* getEPDRParametersKV () {
     const data = yield all(TYPES.map((type) => getParameters(type, contract)));
     yield put(getEPDRParametersKVSuccess(data.flat()));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     yield put(getEPDRParametersKVError('There was an error while loading EPDR Parameters data'));
   }
 }
@@ -90,7 +90,7 @@ function* getEPRSParametersKV () {
     const data = yield all(TYPES.map((type) => getParameters(type, contract)));
     yield put(getEPRSParametersKVSuccess(data.flat()));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     yield put(getEPRSParametersKVError('There was an error while loading EPRS Parameters data'));
   }
 }

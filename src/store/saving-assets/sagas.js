@@ -25,7 +25,7 @@ import formTypes from 'constants/form-types';
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei, toWei } from 'func/balance';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError, getErrorMessage } from 'func/errors';
 
 function* getSavingAllowanceGenerator () {
   try {
@@ -37,7 +37,7 @@ function* getSavingAllowanceGenerator () {
 
     yield put(setSavingAllowance(allowance));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -49,7 +49,7 @@ function* getSavingBalanceDetailsGenerator () {
     const result = yield call(getSavingBalanceDetailsHelper, balanceDetails);
     yield put(setSavingBalanceDetails(result));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -61,7 +61,7 @@ function* getSavingAviableToDepositGenerator () {
     const result = yield contract.balanceOf(userAddress);
     yield put(setSavingAviableToDeposit(fromWei(result)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -83,8 +83,8 @@ function* setSavingDepositGenerator ({ amount }) {
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.savingAssetDeposit }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -107,8 +107,8 @@ function* setSavingWithdrawGenerator ({ amount }) {
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.savingAssetWithdraw }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -131,8 +131,8 @@ function* setSavingAproveGenerator () {
 
     yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 

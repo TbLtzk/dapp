@@ -30,7 +30,7 @@ import {
 } from 'contracts/helpers/auction/system-surplus';
 
 import formTypes from 'constants/form-types';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError, getErrorMessage } from 'func/errors';
 import { getMinimalActiveBlockHeight } from 'func/useful';
 
 function* getAuctionsGenerator ({ auctionType }: types.GetAuctions) {
@@ -55,7 +55,7 @@ function* getAuctionsGenerator ({ auctionType }: types.GetAuctions) {
       }
     }
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -88,8 +88,8 @@ function* createAuction ({ form, auctionType }: { form: CreateAuction, auctionTy
     yield* put(getAuctions(auctionType));
     yield* put(setTransactionLoadingSuccess({ type: auctionType }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield* put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -115,8 +115,8 @@ function* bidForAuctionGenerator ({ form, auctionType }: { form: BidForAuctionFo
     yield* put(getAuctions(auctionType));
     yield* put(setTransactionLoadingSuccess({ type: formTypes.bidForAuction }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield* put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -143,8 +143,8 @@ function* executeAuctionGenerator ({ form, auctionType }: { form: ExecuteAuction
     yield* put(getAuctions(auctionType));
     yield* put(setTransactionLoadingSuccess({ type: formTypes.executeAuction }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield* put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 

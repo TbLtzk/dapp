@@ -9,7 +9,7 @@ import { getAccountAliasesInstance } from 'contracts/contract-instance';
 import { getAliasEvents } from 'contracts/helpers/account-aliases-helper';
 
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError, getErrorMessage } from 'func/errors';
 
 function* getAliasesGenerator ({ address }) {
   try {
@@ -18,7 +18,7 @@ function* getAliasesGenerator ({ address }) {
     const aliases = yield contract.getAliases(address);
     yield put(setAliases(aliases));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     yield put(setAliases([]));
   } finally {
     yield put(setAliasesLoading(false));
@@ -31,7 +31,7 @@ function* getAliasEventsGenerator () {
     const events = yield call(getAliasEvents);
     yield put(setAliasEvents(events));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     yield put(setAliasEvents([]));
   } finally {
     yield put(setEventsLoading(false));
@@ -47,8 +47,8 @@ function* setAliasGenerator ({ address, purpose }) {
 
     yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -61,8 +61,8 @@ function* reserveAliasGenerator ({ address }) {
 
     yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 

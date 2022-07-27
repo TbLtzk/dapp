@@ -28,7 +28,7 @@ import formTypes from 'constants/form-types';
 import TABLE_TYPES from 'constants/tableTypes';
 import { fromWei } from 'func/balance';
 import { getNowTimestamp } from 'func/convertDate';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError, getErrorMessage } from 'func/errors';
 import { addIndex } from 'func/useful';
 
 function* setRootStakeToPanelGenerator ({ data }) {
@@ -48,8 +48,8 @@ function* setRootStakeToPanelGenerator ({ data }) {
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.rootNodeStaking }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -69,8 +69,8 @@ function* setRootAnnounceWithdrawalGenerator ({ amount, paymentInf }) {
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.rootNodeStaking }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -92,8 +92,8 @@ function* setRootWithdrawGenerator ({ amount, payTo, paymentInf }) {
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.rootNodeStaking }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -118,7 +118,7 @@ function* getRootMembersGenerator ({ tableType = TABLE_TYPES.rootNodesWidened })
       }
     }
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -129,7 +129,7 @@ function* getCheckIsUserRootNodeGenerator () {
     const data = yield contract.instance.methods.isMember(userAddress).call();
     yield put(setCheckIsUserRootNode(data));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -139,7 +139,7 @@ function* getRootNodeStakesGenerator ({ address }) {
     const data = yield contract.getRootNodeStake(address);
     yield put(setRootNodeStakes(fromWei(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -149,7 +149,7 @@ function* getRootWithdrawalsGenerator ({ address }) {
     const data = yield contract.getWithdrawalInfo(address);
     yield put(setRootWithdrawals(data));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -159,7 +159,7 @@ function* getMinimumRootTimeLockGenerator ({ address }) {
     const data = yield contract.getMinimumBalance(address, getNowTimestamp());
     yield put(setMinimumRootTimeLock(fromWei(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -169,7 +169,7 @@ function* getRootTimeLocksGenerator ({ address }) {
     const data = yield contract.getTimeLocks(address);
     yield put(setRootTimeLocks(addIndex(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 

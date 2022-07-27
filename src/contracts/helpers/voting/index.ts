@@ -19,7 +19,7 @@ import { store } from 'store';
 
 import { getInstance, getRootNodesInstance } from 'contracts/contract-instance';
 
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError } from 'func/errors';
 import { transformToPercentage } from 'func/formatters';
 
 export async function getContractProposals ({
@@ -187,7 +187,7 @@ export async function getProposal<T extends ProposalContractType> (
       ...proposal,
     } as Proposal;
   } catch (e) {
-    ErrorHandler.processWithoutFeedback(e);
+    captureError(e);
     return null;
   }
 }

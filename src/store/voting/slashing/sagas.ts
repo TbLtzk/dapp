@@ -10,7 +10,7 @@ import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
 import { escrowTypes } from 'constants/escrowTypes';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError, getErrorMessage } from 'func/errors';
 import { getPercentageFormat } from 'func/useful';
 
 function getContractInstance (contractName: string) {
@@ -40,8 +40,8 @@ function* onEscrowCastObjectionGenerator ({
       transactionType: TRANSACTION_TYPES.success,
     }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield* put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -68,8 +68,8 @@ function* onEscrowProposeDecisionGenerator ({
       transactionType: TRANSACTION_TYPES.success,
     }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield* put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -95,8 +95,8 @@ function* onEscrowProposerRemarkGenerator ({
       transactionType: TRANSACTION_TYPES.success,
     }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield* put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -131,8 +131,8 @@ function* setEscrowActionGenerator ({
       transactionType: TRANSACTION_TYPES.success,
     }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield* put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -151,8 +151,8 @@ function* setPurgeSlashingGenerator ({
 
     yield* put(setTransactionLoadingSuccess({ type: formTypes.purgeSlashing }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield* put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 

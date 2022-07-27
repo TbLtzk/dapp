@@ -64,6 +64,7 @@
       "ObjectPattern": { "multiline": true },
       "ImportDeclaration": { "multiline": true }
    }],
+   "node/handle-callback-err": "off",
 
     "react/no-unescaped-entities": "off",
     "react/prop-types": "off",

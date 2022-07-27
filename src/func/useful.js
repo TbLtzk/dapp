@@ -1,7 +1,7 @@
 import { BigNumber } from 'bignumber.js';
 import { isNumber, orderBy } from 'lodash';
 
-import ErrorHandler from './ErrorHandler';
+import { captureError } from './errors';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
 
@@ -27,7 +27,7 @@ export const getMinimalActiveBlockHeight = async () => {
       lastBlockHeight: latestBlock,
     };
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     return {
       minimalActiveBlockHeight: 0,
       lastBlockHeight: 'latest',
@@ -129,7 +129,7 @@ export async function fetchBlockNumber (block = 'latest') {
     const blockNumber = await window?.web3?.eth.getBlock(block);
     return blockNumber.number;
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     return 0;
   }
 }

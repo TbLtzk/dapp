@@ -24,10 +24,9 @@ import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { toWei } from 'func/balance';
 import { dateToTimestamp } from 'func/convertDate';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError, getErrorMessage } from 'func/errors';
 
-/* eslint-disable */
-async function getContractInstance(instanceType) {
+async function getContractInstance (instanceType) {
   switch (instanceType) {
     case CONTRACT_TYPES.qVault:
       return await getQVaultInstance();
@@ -42,34 +41,32 @@ async function getContractInstance(instanceType) {
   }
 }
 
-export function* getAmountOnContract(instanceType, address) {
+export function* getAmountOnContract (instanceType, address) {
   switch (instanceType) {
-    case CONTRACT_TYPES.qVault: {
+    case CONTRACT_TYPES.qVault:
       yield put(getUserBalance(address));
       yield put(getMinimumQVaultTimeLock(address));
       yield put(getQVaultTimeLocks(address));
-    }
-    case CONTRACT_TYPES.root: {
+      break;
+    case CONTRACT_TYPES.root:
       yield put(getRootNodeStakes(address));
       yield put(getMinimumRootTimeLock(address));
       yield put(getRootTimeLocks(address));
-    }
-    case CONTRACT_TYPES.validators: {
+      break;
+    case CONTRACT_TYPES.validators:
       yield put(getSelfStake(address));
       yield put(getMinimumValidatorsTimeLock(address));
       yield put(getValidatorsTimeLocks(address));
-    }
-    case CONTRACT_TYPES.vesting: {
+      break;
+    case CONTRACT_TYPES.vesting:
       yield put(getMinimumVestingTimeLock(address));
       yield put(getVestingTimeLocks(address));
       yield put(getVestingBalance(address));
-    }
-    default:
-      return {};
+      break;
   }
 }
 
-function* setPurgeTimeLocksAmount({ payload }) {
+function* setPurgeTimeLocksAmount ({ payload }) {
   try {
     yield put(setTransactionLoading());
 
@@ -79,12 +76,12 @@ function* setPurgeTimeLocksAmount({ payload }) {
     yield call(getAmountOnContract, payload.contract, payload.address);
     yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setDepositLockedAmount({ payload }) {
+function* setDepositLockedAmount ({ payload }) {
   try {
     yield put(setTransactionLoading());
     const contract = yield call(getContractInstance, payload.contract);
@@ -97,8 +94,8 @@ function* setDepositLockedAmount({ payload }) {
     yield call(getAmountOnContract, payload.contract, payload.address);
     yield put(setTransactionLoadingSuccess({ type: formTypes.timeLocksAmount }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 

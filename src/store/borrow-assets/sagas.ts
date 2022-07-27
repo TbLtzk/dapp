@@ -28,7 +28,7 @@ import formTypes from 'constants/form-types';
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei, toWei } from 'func/balance';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError, getErrorMessage } from 'func/errors';
 
 function* getBorrowVaultGenerator ({ vaultId }: { vaultId: number | string }) {
   try {
@@ -42,7 +42,7 @@ function* getBorrowVaultGenerator ({ vaultId }: { vaultId: number | string }) {
     yield* put(getBorrowVaultSuccess(borrowVault));
   } catch (error) {
     yield* put(getBorrowVaultError(error));
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -62,7 +62,7 @@ function* getBorrowAllowanceGenerator ({ borrowType, asset }: { borrowType: Appr
     }
   } catch (error) {
     yield* put(getBorrowAllowanceError(error));
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -81,8 +81,8 @@ function* setBorrowAproveGenerator ({ borrowType, asset }: { borrowType: Approve
     yield* put(getBorrowAllowance(borrowType, asset));
     yield* put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield* put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -101,8 +101,8 @@ function* setBorrowAsBorrowGenerator ({ amount, vaultId }: BorrowAction) {
 
     yield* put(setTransactionLoadingSuccess({ type: formTypes.borrowAssetBorrow }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield* put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -120,8 +120,8 @@ function* setBorrowRepayGenerator ({ amount, vaultId }: BorrowAction) {
 
     yield* put(setTransactionLoadingSuccess({ type: formTypes.borrowAssetRepay }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield* put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -140,8 +140,8 @@ function* setBorrowDepositGenerator ({ amount, vaultId, decimals }: BorrowAction
 
     yield* put(setTransactionLoadingSuccess({ type: formTypes.borrowAssetDeposit }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield* put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -161,8 +161,8 @@ function* setBorrowWithdrawGenerator ({ amount, vaultId, decimals }: BorrowActio
 
     yield* put(setTransactionLoadingSuccess({ type: formTypes.borrowAssetWithdraw }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield* put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 

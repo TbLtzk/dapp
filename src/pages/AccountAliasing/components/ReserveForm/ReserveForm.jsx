@@ -1,6 +1,6 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
-import { t } from 'i18next';
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 
@@ -11,6 +11,7 @@ import { reserveAlias } from 'store/account-aliases/action-creators';
 import { address, required } from 'func/validators';
 
 function ReserveForm () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const form = useForm({

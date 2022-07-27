@@ -44,7 +44,7 @@ import TABLE_TYPES from 'constants/tableTypes';
 import { getIndexerUrlDependsOnChainId } from 'func/appConfig';
 import { fromWei, toWei } from 'func/balance';
 import { getNowTimestamp } from 'func/convertDate';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError, getErrorMessage } from 'func/errors';
 import { addIndex } from 'func/useful';
 
 function* getValidatorsWithdrawalInfoGenerator ({ address }) {
@@ -53,7 +53,7 @@ function* getValidatorsWithdrawalInfoGenerator ({ address }) {
     const data = yield contract.getWithdrawalInfo(address);
     yield put(setValidatorWithdrawalInfo(data));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     yield put(setValidatorWithdrawalInfo({}));
   }
 }
@@ -64,7 +64,7 @@ function* getValidatorsTotalStakeGenerator ({ address }) {
     const data = yield contract.getValidatorTotalStake(address);
     yield put(setTotalStake(fromWei(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -74,7 +74,7 @@ function* getValidatorsOwnStakeGenerator ({ address }) {
     const data = yield contract.getAccountableSelfStake(address);
     yield put(setOwnStake(fromWei(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -84,7 +84,7 @@ function* getValidatorsDelegatedStakeGenerator ({ address }) {
     const data = yield contract.instance.methods.getValidatorDelegatedStake(address).call();
     yield put(setDelegatedStake(fromWei(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -94,7 +94,7 @@ function* getValidatorsAccountableTotalStakeGenerator ({ address }) {
     const data = yield contract.getAccountableTotalStake(address);
     yield put(setAccountableTotalStake(fromWei(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -104,7 +104,7 @@ function* getValidatorsAccountableSelfStake ({ address }) {
     const data = yield contract.getAccountableSelfStake(address);
     yield put(setSelfStake(Number(fromWei(data))));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -166,7 +166,7 @@ function* getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWid
       }
     }
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -176,7 +176,7 @@ function* getIsUserValidatorGenerator ({ address }) {
     const data = yield contract.isInShortList(address);
     yield put(setIsUserValidator(data));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     yield put(setIsUserValidator(false));
   }
 }
@@ -187,7 +187,7 @@ function* getValidatorsMinimumTimeLockGenerator ({ address }) {
     const data = yield contract.getMinimumBalance(address, getNowTimestamp());
     yield put(setMinimumValidatorsTimeLock(fromWei(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -197,7 +197,7 @@ function* getValidatorsTimeLocksGenerator ({ address }) {
     const data = yield contract.getTimeLocks(address);
     yield put(setValidatorsTimeLocks(addIndex(data)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 function* getCompoundRateKeeperExistsGenerator () {
@@ -207,7 +207,7 @@ function* getCompoundRateKeeperExistsGenerator () {
     const compoundRateKeeperExists = yield contract.compoundRateKeeperExists(userAddress);
     yield put(setCompoundRateKeeperExists(compoundRateKeeperExists));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -223,8 +223,8 @@ function* setValidatorsInterestRateGenerator ({ address, uintPercent }) {
 
     yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 function* setValidatorsCommitStakeGenerator ({ address, amountQ }) {
@@ -245,8 +245,8 @@ function* setValidatorsCommitStakeGenerator ({ address, amountQ }) {
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.validatorsStaking }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -266,8 +266,8 @@ function* setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.validatorsStaking }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -287,8 +287,8 @@ function* setValidatorsWithdrawGenerator ({ address, amountQ }) {
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.validatorsStaking }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -304,8 +304,8 @@ function* setValidatorsEnterShortListGenerator ({ address }) {
 
     yield put(setTransactionLoadingSuccess({ message: 'Success!' }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 

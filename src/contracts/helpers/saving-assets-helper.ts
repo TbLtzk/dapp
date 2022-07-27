@@ -3,7 +3,7 @@ import { SavingBalanceDetails } from '@q-dev/q-js-sdk';
 import { getStableCoinInstance } from 'contracts/contract-instance';
 
 import { fromWei } from 'func/balance';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError } from 'func/errors';
 import { uintPerSecondToPerYearNumber } from 'func/useful';
 
 export function getSavingBalanceDetailsHelper (balanceDetails: SavingBalanceDetails) {
@@ -43,7 +43,7 @@ export async function addQUSDTokenToWallet () {
       });
     }
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     return null;
   }
 }

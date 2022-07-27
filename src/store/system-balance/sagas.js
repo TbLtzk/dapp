@@ -22,7 +22,7 @@ import { getStableCoinInstance, getSystemBalanceInstance, getSystemReserveInstan
 
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei } from 'func/balance';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError, getErrorMessage } from 'func/errors';
 
 function* setPerformNettingGenerator () {
   try {
@@ -33,8 +33,8 @@ function* setPerformNettingGenerator () {
 
     yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
   } catch (error) {
-    const errorMsg = ErrorHandler.process(error);
-    yield put(setTransactionLoadingError(errorMsg));
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
@@ -45,7 +45,7 @@ function* getStableCoinTotalSupplyGenerator () {
     yield put(getStableCoinTotalSupplySuccess(fromWei(amount)));
   } catch (error) {
     yield put(getStableCoinTotalSupplyError(error));
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -56,7 +56,7 @@ function* getSystemBalanceGenerator () {
     yield put(getSystemBalanceSuccess(fromWei(data)));
   } catch (error) {
     yield put(getSystemBalanceError(error));
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -67,7 +67,7 @@ function* getSystemBalanceDebtGenerator () {
     yield put(getSystemBalanceDebtSuccess(fromWei(data)));
   } catch (error) {
     yield put(getSystemBalanceDebtError(error));
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -78,7 +78,7 @@ function* getSystemBalanceSurplusGenerator () {
     yield put(getSystemBalanceSurplusSuccess(fromWei(data)));
   } catch (error) {
     yield put(getSystemBalanceSurplusError(0));
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -89,7 +89,7 @@ function* getSystemReserveAvailableAmountGenerator () {
     yield put(getSystemReserveAvailableAmountSuccess(fromWei(availableAmount)));
   } catch (error) {
     yield put(getSystemReserveAvailableAmountError(0));
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -99,7 +99,7 @@ function* getSystemReserveBalanceGenerator () {
     const balance = yield window.web3.eth.getBalance(contract.address);
     yield put(getSystemReserveBalanceSuccess(fromWei(balance)));
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     yield put(getSystemReserveBalanceError(error));
   }
 }

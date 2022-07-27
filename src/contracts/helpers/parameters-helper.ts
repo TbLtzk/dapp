@@ -12,7 +12,7 @@ import {
 } from 'contracts/contract-instance';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError } from 'func/errors';
 
 export async function getParameterKeysByType (
   contractType: string,
@@ -35,7 +35,7 @@ export async function getParameterKeysByType (
         return [];
     }
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     return [];
   }
 }
@@ -58,7 +58,7 @@ export async function getParameterValueByKey (
     const contract = await getContract(contractType);
     return contract.getParameter(parameterTypeMap[parameterType], key);
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
     return '';
   }
 }

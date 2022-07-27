@@ -31,7 +31,7 @@ import TimeLocks from '../pages/TimeLocks';
 
 import { store } from 'store/index';
 
-import ErrorHandler from 'func/ErrorHandler';
+import { captureError } from 'func/errors';
 
 function addSentryContext () {
   try {
@@ -41,7 +41,7 @@ function addSentryContext () {
       loadType,
     });
   } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
+    captureError(error);
   }
 }
 
@@ -69,6 +69,7 @@ function Routes () {
           timeout={5000}
           transition={transitions.SCALE}
           containerStyle={{
+            width: 'auto',
             zIndex: '10001',
             pointerEvents: 'all',
             top: '80px',
