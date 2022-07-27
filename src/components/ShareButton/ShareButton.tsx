@@ -1,4 +1,5 @@
 import { HTMLAttributes, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
@@ -15,6 +16,8 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 function ShareButton ({ title = '', text = '', url, ...rest }: Props) {
+  const { t } = useTranslation();
+
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [copied, copy] = useCopyToClipboard();
 
@@ -72,12 +75,12 @@ function ShareButton ({ title = '', text = '', url, ...rest }: Props) {
         onClick={handleShare}
       >
         <Icon name="share" />
-        <span>Share</span>
+        <span>{t('SHARE')}</span>
       </Button>
 
       <Modal
         open={shareModalOpen}
-        title="Share Link"
+        title={t('SHARE_LINK')}
         onClose={() => setShareModalOpen(false)}
       >
         <StyledShareContent>
@@ -88,7 +91,7 @@ function ShareButton ({ title = '', text = '', url, ...rest }: Props) {
             onClick={() => copy(url)}
           >
             <Icon name={copied ? 'check-circle' : 'copy'} />
-            <span>{copied ? 'Copied' : 'Copy link'}</span>
+            <span>{copied ? t('COPIED') : t('COPY_LINK')}</span>
           </Button>
 
           <a
@@ -103,12 +106,12 @@ function ShareButton ({ title = '', text = '', url, ...rest }: Props) {
               style={{ width: '100%' }}
             >
               <Icon name="message" />
-              <span>Send by email</span>
+              <span>{t('SEND_BY_EMAIL')}</span>
             </Button>
           </a>
 
           <p className="share-socials-title text-lg font-semibold">
-            Social media
+            {t('SOCIAL_MEDIA')}
           </p>
 
           <div className="share-socials">

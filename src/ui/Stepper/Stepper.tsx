@@ -1,4 +1,5 @@
 import { HTMLAttributes } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Icon from 'ui/Icon';
 
@@ -10,6 +11,8 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 function Stepper ({ current, steps, ...rest }: Props) {
+  const { t } = useTranslation();
+
   return (
     <StepperContainer {...rest}>
       {steps.map((step, index) => (
@@ -29,7 +32,7 @@ function Stepper ({ current, steps, ...rest }: Props) {
 
           <div className="stepper__step-content">
             <p className="stepper__step-index text-md">
-              {`Step ${index + 1}`}
+              {t('STEP', { index: index + 1 })}
             </p>
             <p className="stepper__step-name text-xl">
               {step.name}

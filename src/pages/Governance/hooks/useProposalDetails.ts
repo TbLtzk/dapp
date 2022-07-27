@@ -8,7 +8,7 @@ import { TagState } from 'ui/Tag';
 import { ZERO_ADDRESS } from 'constants/config';
 
 function useProposalDetails (proposal: Proposal | null) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const statusMap: Record<ProposalStatus, string> = {
     [ProposalStatus.ACCEPTED]: t('STATUS_ACCEPTED'),
@@ -83,9 +83,9 @@ function useProposalDetails (proposal: Proposal | null) {
   };
 
   return {
-    title: useMemo(getTitle, [proposal]),
+    title: useMemo(getTitle, [proposal, i18n.language]),
     status: statusMap[proposal?.status || ProposalStatus.NONE],
-    state: useMemo(getStatusState, [proposal]),
+    state: useMemo(getStatusState, [proposal, i18n.language]),
   };
 }
 

@@ -53,7 +53,7 @@ function FormStep<T> ({
           type="submit"
           disabled={disabled}
         >
-          <span>{onConfirm ? 'Submit' : 'Next'}</span>
+          <span>{onConfirm ? t('SUBMIT') : t('NEXT')}</span>
           {!onConfirm && <Icon name="chevron-right" />}
         </Button>
       </div>
