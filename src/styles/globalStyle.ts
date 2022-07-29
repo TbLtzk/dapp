@@ -1,9 +1,11 @@
 import { createGlobalStyle } from 'styled-components';
 
+import { media } from './media';
+
 import '@mdi/font/css/materialdesignicons.min.css';
 
 export const GlobalStyle = createGlobalStyle`
-  scrollbar-color: ${({ theme }) => theme.colors.oxfordBlueTint5};
+  scrollbar-color: ${({ theme }) => theme.colors.textPrimary};
   scrollbar-width: thin;
 
   ::-webkit-scrollbar {
@@ -13,64 +15,19 @@ export const GlobalStyle = createGlobalStyle`
 
   ::-webkit-scrollbar-thumb {
     border-radius: 4px;
-    background-color: ${({ theme }) => theme.colors.oxfordBlueTint5};
+    background-color: ${({ theme }) => theme.colors.textPrimary};
   }
 
   body {
     background-color: ${(props) => props.theme.colors.background};
     color: ${({ theme }) => theme.colors.textPrimary};
-    margin: 0 !important;
     overflow-x: auto;
     overflow-y: hidden;
-    font-family: 'OpenSans', sans-serif !important;
-    -webkit-font-smoothing: antialiased !important;
-    -moz-osx-font-smoothing: grayscale !important;  
-  }
-
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0; 
-  }
-
-  .popover-body {
-    font-size: 12px;
-    text-align: center;
-    background-color: ${({ theme }) => theme.colors.neonGreen};
-    border-radius: 4px;
-  }
-  
-  .bs-popover-left .arrow::after {
-    border-left-color: ${({ theme }) => theme.colors.neonGreen} !important;
-  }
-
-  .bs-popover-right .arrow::after {
-    border-right-color: ${({ theme }) => theme.colors.neonGreen} !important;
-  }
-
-  .bs-popover-top .arrow::after {
-    border-top-color: ${({ theme }) => theme.colors.neonGreen} !important;
-  }
-
-  .bs-popover-bottom .arrow::after {
-    border-bottom-color: ${({ theme }) => theme.colors.neonGreen} !important;
-  }
-
-  input[type=number] {
-    -moz-appearance: textfield; 
-  }
-
-  .card__line {
-    width: 100%;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border-top: 1px solid ${({ theme }) => theme.colors.oxfordBlueTint3};
-  }
-
-  .modal-backdrop {
-    background: ${({ theme }) => theme.colors.oxfordBlueTint2};
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
+    font-family: 'OpenSans', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   a,
@@ -87,16 +44,44 @@ export const GlobalStyle = createGlobalStyle`
     border-radius: 16px;
     padding: 24px 32px;
     box-shadow: 0 4px 16px ${({ theme }) => theme.colors.blockShadow};
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+
+    ${media.lessThan('medium')} {
+      padding: 24px;
+    }
 
     .block__header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 16px;
+      flex-wrap: wrap;
     }
 
     .block__content {
       margin-top: 24px;
+    }
+
+    .block__tight-content {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+    }
+
+    .block__actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .block__line {
+      margin: 8px 0;
+      width: 100%;
+      height: 1px;
+      background-color: ${({ theme }) => theme.colors.blockDivider};
     }
   }
 
@@ -130,6 +115,26 @@ export const GlobalStyle = createGlobalStyle`
 
     &:disabled {
       color: ${({ theme }) => theme.colors.linkDisabled};
+    }
+  }
+
+  .grid-2-1 {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+
+    ${media.lessThan('medium')} {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+
+    ${media.lessThan('medium')} {
+      grid-template-columns: 1fr;
     }
   }
 `;

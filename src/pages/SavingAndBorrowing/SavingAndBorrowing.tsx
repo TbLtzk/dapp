@@ -15,14 +15,8 @@ function SavingAndBorrowing () {
       title={t('SAVING_BORROWING')}
       action={<CreateVault/>}
     >
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '2fr 1fr',
-          gap: '16px'
-        }}
-      >
-        <div style={{ display: 'grid', gap: '16px' }}>
+      <div className="grid-2-1">
+        <div style={{ display: 'grid', gap: '16px', gridTemplateColumns: 'minmax(0, 1fr)' }}>
           <SavingCryptoAssets />
           <BorrowCryptoAssets />
         </div>

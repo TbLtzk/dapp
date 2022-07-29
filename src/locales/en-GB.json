@@ -159,7 +159,7 @@
   "NO_ALIASES": "No aliases",
   "ACCOUNT_ALIASES": "Account aliases",
   "ADDRESS": "Address",
-  "EVENT": "EVENT",
+  "EVENT": "Event",
   "MAIN_ACCOUNT": "Main Account",
   "ALIAS": "Alias",
   "ALIASES_EVENTS": "Aliases events",
@@ -892,5 +892,6 @@
   "ERROR_040001": "Length of adresses and role arrays must be equal.",
   "TOAST_INFO": "Info",
   "TOAST_SUCCESS": "Success",
-  "TOAST_ERROR": "Error"
+  "TOAST_ERROR": "Error",
+  "AMOUNT_NEW_STAKE": "Amount (New stake)"
 }

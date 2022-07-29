@@ -18,7 +18,7 @@ const calculateRemainDate = (currentDate, dataDate) => {
   const numminutes = Math.floor((m3 % 1440) % 60);
 
   if (!numdays && !numhours && !numminutes) {
-    return 0;
+    return '';
   } else {
     return numdays + ' day(s) ' + numhours + ' hours ' + numminutes + ' minutes';
   }
@@ -29,7 +29,7 @@ export const remainDate = (unixTimestamp) => {
   const currentDate = new Date();
   const vetoDate = new Date(timestampInMs);
   if (currentDate > vetoDate) {
-    return 0;
+    return '';
   } else {
     return calculateRemainDate(currentDate, vetoDate);
   }
@@ -38,10 +38,10 @@ export const remainDateTimeSince = (unixTimestamp) => {
   unixTimestamp = Number(unixTimestamp);
   const currentDateUnixTimestamp = Math.floor(Date.now() / 1000);
   if (unixTimestamp > currentDateUnixTimestamp) {
-    return 0;
+    return '';
   } else {
     if (!unixTimestamp) {
-      return 0;
+      return '';
     } else {
       const dataDate = new Date(unixTimestamp * 1000);
       return calculateRemainDate(dataDate, new Date());

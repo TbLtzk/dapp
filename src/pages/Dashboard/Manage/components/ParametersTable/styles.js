@@ -8,11 +8,11 @@ export const TableWrapper = styled.div`
   }
 
   tr {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.oxfordBlueTint2};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.blockDivider};
   }
 
   td {
-    color: ${(props) => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.textPrimary};
     font-size: 13px;
     line-height: 18px;
     padding: 7px 5px;

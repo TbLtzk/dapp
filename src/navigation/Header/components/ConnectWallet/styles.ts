@@ -6,10 +6,6 @@ export const StyledConnectWalletModal = styled.div`
     display: flex;
     align-items: center;
     gap: 8px;
-    
-    a {
-      color: ${(props) => props.theme.colors.neonGreen};
-    }
   }
 
   .connect_new-to-q {
@@ -36,23 +32,12 @@ export const StyledConnectWalletModal = styled.div`
     }
   }
 
-  .install_metamask {
-    text-align: center;
-    margin-bottom: 10px;
-
-    p {
-      margin-bottom: 0;
-    }
-    a {
-      color: ${(props) => props.theme.colors.oxfordBlue};
-    }
-  }
-
   .connect {
     width: 80%;
     margin: 0 auto 0 auto;
     text-align: center;
   }
+
   .connect-loading {
     text-align: center;
     height: 30px;

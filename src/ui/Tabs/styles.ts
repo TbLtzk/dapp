@@ -5,9 +5,22 @@ import { getTabColor } from './colors';
 export const TabsContainer = styled.nav`
   position: relative;
   display: flex;
-  min-width: max-content;
+  min-width: 100%;
   width: 100%;
-  border-bottom: 1px solid ${({ theme }) => getTabColor(theme, 'border')};
+  overflow-x: auto;
+  padding: 8px;
+  margin: -8px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    display: block;
+    left: 0;
+    bottom: 7px;
+    width: 100%;
+    height: 1px;
+    background-color: ${({ theme }) => getTabColor(theme, 'border')};
+  }
 
   &::-webkit-scrollbar {
     display: none;
@@ -18,6 +31,7 @@ export const TabsContainer = styled.nav`
     padding: 8px 16px;
     white-space: nowrap;
     cursor: pointer;
+    z-index: 1;
 
     .tab-label {
       color: ${({ theme }) => getTabColor(theme, 'inactive')};

@@ -1,6 +1,6 @@
 import { ReactNode, Suspense } from 'react';
 
-import LoadingSpinner from '../LoadingSpinner';
+import Spinner from 'ui/Spinner';
 
 import { LazyLoadingWrapper } from './styles';
 
@@ -9,7 +9,7 @@ function LazyLoading ({ children }: { children: ReactNode }) {
     <Suspense
       fallback={
         <LazyLoadingWrapper>
-          <LoadingSpinner />
+          <Spinner size={48} />
         </LazyLoadingWrapper>
       }
     >

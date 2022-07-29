@@ -18,7 +18,7 @@ import { SidebarContainer } from './styles';
 import { activeAuctionsCountSelector } from 'store/auctions/selectors';
 import { activeProposalsCountSelector } from 'store/voting/proposals/selectors';
 
-function Sidebar () {
+function Sidebar ({ open, onClose }: { open: boolean, onClose: () => void }) {
   const { t } = useTranslation();
   const isAliasesEnabled = useFeatureFlag('aliases');
 
@@ -28,92 +28,96 @@ function Sidebar () {
   const [versionModalOpen, setVersionModalOpen] = useState(false);
 
   return (
-    <SidebarContainer>
-      <div className="sidebar-content">
-        <Link to="/" className="sidebar-logo-link">
-          <img
-            className="sidebar-logo"
-            alt="Q Logo"
-            src={logo}
-          />
-        </Link>
+    <SidebarContainer $open={open}>
+      <div className="sidebar-overlay" onClick={onClose} />
 
-        <div className="sidebar-main">
-          <div className="sidebar-links">
-            <SidebarLink
-              to="/"
-              title={t('DASHBOARD')}
-              icon="dashboard"
+      <div className="sidebar" onClick={onClose}>
+        <div className="sidebar-content">
+          <Link to="/" className="sidebar-logo-link">
+            <img
+              className="sidebar-logo"
+              alt="Q Logo"
+              src={logo}
             />
+          </Link>
 
-            <SidebarLink
-              exact={false}
-              to="/governance"
-              title={t('GOVERNANCE')}
-              icon="vote"
-              count={activeProposalsCount}
-            />
-            <SidebarLink
-              exact={false}
-              to="/q-vault"
-              title={t('Q_VAULT')}
-              icon="wallet"
-            />
+          <div className="sidebar-main">
+            <div className="sidebar-links">
+              <SidebarLink
+                to="/"
+                title={t('DASHBOARD')}
+                icon="dashboard"
+              />
 
-            <SidebarLink
-              exact={false}
-              to="/staking"
-              title={t('STAKING')}
-              icon="stake"
-            />
+              <SidebarLink
+                exact={false}
+                to="/governance"
+                title={t('GOVERNANCE')}
+                icon="vote"
+                count={activeProposalsCount}
+              />
+              <SidebarLink
+                exact={false}
+                to="/q-vault"
+                title={t('Q_VAULT')}
+                icon="wallet"
+              />
 
-            {isAliasesEnabled && <SidebarLink
-              icon="handshake"
-              to="/account-aliasing"
-              title={t('ACCOUNT_ALIASING')}
-            />}
+              <SidebarLink
+                exact={false}
+                to="/staking"
+                title={t('STAKING')}
+                icon="stake"
+              />
 
-            <SidebarLink
-              to="/saving-and-borrowing"
-              title={t('SAVING_BORROWING')}
-              icon="coins"
-            />
+              {isAliasesEnabled && <SidebarLink
+                icon="handshake"
+                to="/account-aliasing"
+                title={t('ACCOUNT_ALIASING')}
+              />}
 
-            <SidebarLink
-              exact={false}
-              to="/auctions"
-              title={t('DECENTRALIZED_AUCTIONS')}
-              icon="hammer"
-              count={activeAuctionsCount}
-            />
+              <SidebarLink
+                to="/saving-and-borrowing"
+                title={t('SAVING_BORROWING')}
+                icon="coins"
+              />
 
-            <SidebarLink
-              to="/time-locks"
-              title={t('TIME_LOCKS')}
-              icon="clock"
-            />
+              <SidebarLink
+                exact={false}
+                to="/auctions"
+                title={t('DECENTRALIZED_AUCTIONS')}
+                icon="hammer"
+                count={activeAuctionsCount}
+              />
+
+              <SidebarLink
+                to="/time-locks"
+                title={t('TIME_LOCKS')}
+                icon="clock"
+              />
+            </div>
+
+            <References />
+            <EcosystemLinks />
           </div>
-
-          <References />
-          <EcosystemLinks />
         </div>
+
+        <div className="sidebar-footer">
+          <button className="sidebar-footer-link text-md" onClick={() => setVersionModalOpen(true)}>
+            {packageJson.version}
+          </button>
+
+          <Link to="/data-privacy" className="sidebar-footer-link text-md">
+            {t('DATA_PRIVACY')}
+          </Link>
+
+          <Link to="/imprint" className="sidebar-footer-link text-md">
+            {t('IMPRINT')}
+          </Link>
+        </div>
+
+        <VersionModal open={versionModalOpen} onClose={() => setVersionModalOpen(false)} />
       </div>
-
-      <div className="sidebar-footer">
-        <button className="sidebar-footer-link text-md" onClick={() => setVersionModalOpen(true)}>
-          {packageJson.version}
-        </button>
-
-        <Link to="/data-privacy" className="sidebar-footer-link text-md">
-          {t('DATA_PRIVACY')}
-        </Link>
-
-        <Link to="/imprint" className="sidebar-footer-link text-md">
-          {t('IMPRINT')}
-        </Link>
-      </div>
-
-      <VersionModal open={versionModalOpen} onClose={() => setVersionModalOpen(false)} />
     </SidebarContainer>
   );
 }

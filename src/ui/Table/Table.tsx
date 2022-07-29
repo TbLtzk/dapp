@@ -10,7 +10,7 @@ import { SkeletonTableLoading } from '../../components/Base/SkeletonLoading/Skel
 import { SortCaretIcon, TableContainer } from './styles';
 
 interface Props {
-  loading: boolean;
+  loading?: boolean;
   table: any;
   error?: string;
   columns: any;
@@ -97,7 +97,7 @@ const Table = ({
               )}
             </ToolkitProvider>
             {!isEmpty && (
-              <div className="q-table-paganation">
+              <div className="table-pagination">
                 <PaginationListStandalone {...paginationProps} />
               </div>
             )}
@@ -109,12 +109,12 @@ const Table = ({
 
   return (
     <TableContainer withPagination={perPage < table.length} tiny={tiny}>
-      <div className="q-table">
+      <div className="table">
         <div className="table-header">{header}</div>
         {tableContent()}
       </div>
       {bottomButtons && (
-        <div className="q-bottom-buttons">{bottomButtons}</div>
+        <div className="bottom-buttons">{bottomButtons}</div>
       )}
     </TableContainer>
   );

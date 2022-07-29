@@ -1,11 +1,12 @@
 import styled from 'styled-components';
+import { media } from 'styles/media';
 
 export const ListWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
 
-  @media screen and (max-width: 1150px) {
+  ${media.lessThan('medium')} {
     grid-template-columns: minmax(0, 1fr);
   }
 `;

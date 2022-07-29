@@ -4,40 +4,40 @@ import { toNumber } from 'func/useful';
 
 export const getColumnsValidatorsWidened = (t: typeof useTranslation) => [
   {
-    headerStyle: () => ({ minWidth: '95px', cursor: 'pointer' }),
+    headerStyle: () => ({ minWidth: '110px', cursor: 'pointer' }),
     dataField: 'rank',
     text: t('RANK'),
     sort: true,
   },
   {
-    headerStyle: () => ({ minWidth: '173px' }),
+    headerStyle: () => ({ minWidth: '200px' }),
     dataField: 'validator',
     text: 'Address',
     filterValue: (cell: any) => cell.props.children[0].props.address,
   },
   {
-    headerStyle: () => ({ minWidth: '220px', cursor: 'pointer' }),
+    headerStyle: () => ({ minWidth: '230px', cursor: 'pointer' }),
     dataField: 'amount',
     text: t('TOTAL_ACCOUNTABLE_STAKE'),
     sort: true,
     sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
   },
   {
-    headerStyle: () => ({ minWidth: '120px', cursor: 'pointer' }),
+    headerStyle: () => ({ minWidth: '110px', cursor: 'pointer' }),
     dataField: 'selfStake',
     text: t('SELF_STAKE'),
     sort: true,
     sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
   },
   {
-    headerStyle: () => ({ minWidth: '170px', cursor: 'pointer' }),
+    headerStyle: () => ({ minWidth: '175px', cursor: 'pointer' }),
     dataField: 'delegatedStake',
     text: t('DELEGATED_STAKE'),
     sort: true,
     sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
   },
   {
-    headerStyle: () => ({ minWidth: '220px', cursor: 'pointer' }),
+    headerStyle: () => ({ minWidth: '215px', cursor: 'pointer' }),
     dataField: 'delegationSaturation',
     text: t('DELEGATION_SATURATION'),
     sort: true,

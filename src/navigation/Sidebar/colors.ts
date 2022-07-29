@@ -8,6 +8,7 @@ export const darkColors = {
   linkTextActive: COLORS.grey100,
   linkIconBg: COLORS.blue400,
   linkIconText: COLORS.white,
+  overlay: 'rgba(7, 23, 43, 0.8)',
 };
 
 export const lightColors = {
@@ -17,6 +18,7 @@ export const lightColors = {
   linkTextActive: COLORS.grey800,
   linkIconBg: COLORS.blue400,
   linkIconText: COLORS.white,
+  overlay: 'rgba(63, 86, 112, 0.24)',
 };
 
 export function getSidebarColor (

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { media } from 'styles/media';
 
 export const ParametersWrapper = styled.div`
   display: grid;
@@ -6,7 +7,7 @@ export const ParametersWrapper = styled.div`
   gap: 16px;
   align-items: start;
 
-  @media screen and (max-width: 1420px) {
+  ${media.lessThan('large')} {
     grid-template-columns: minmax(100px, 1fr);
   }
 

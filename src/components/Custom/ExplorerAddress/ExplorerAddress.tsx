@@ -29,7 +29,7 @@ function ExplorerAddress ({
         rel="noreferrer"
         title="View on explorer"
       >
-        <p style={{ marginBottom: 0 }}>
+        <p className="ellipsis" style={{ marginBottom: 0 }}>
           {short ? trimAddress(address) : address}
         </p>
       </ExplorerLink>

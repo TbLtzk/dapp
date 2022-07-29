@@ -159,7 +159,7 @@
   "NO_ALIASES": "Keine Aliase",
   "ACCOUNT_ALIASES": "Konto -Aliase",
   "ADDRESS": "Adresse",
-  "EVENT": "VERANSTALTUNG",
+  "EVENT": "Veranstaltung",
   "MAIN_ACCOUNT": "Hauptaccount",
   "ALIAS": "Alias",
   "ALIASES_EVENTS": "Aliase -Ereignisse",
@@ -355,7 +355,7 @@
   "COLLATERAL_VALUE": "Kollateralwert",
   "AVAILABLE_TO_BORROW": "Verfügbar zum Ausleihen",
   "LIQUIDATION_LIMIT": "Liquidationsgrenze",
-  "DEPOSIT_COLLATERAL": "Einzahlungsrückzahlung",
+  "DEPOSIT_COLLATERAL": "Einzahlungsrenten",
   "REPAY_BORROWED_ASSET": "Rückzahlung des geliehenen Vermögenswerts",
   "REPAY": "Zurückzahlen",
   "WITHDRAW_COLLATERAL": "Sicherheiten zurückziehen",
@@ -703,7 +703,7 @@
   "ERROR_009001": "Ungültiger Indexwert konnte den UINT -Parameter aus der Liste nicht entfernen.",
   "ERROR_009002": "Ungültiger Indexwert konnte die Adresse nicht aus der Liste entfernen.",
   "ERROR_009003": "Ungültiger Indexwert konnte den String -Parameter aus der Liste nicht entfernen.",
-  "ERROR_009004": "Ungültiger Indexwert hat den Parameter Byte32 aus der Liste nicht entfernen.",
+  "ERROR_009004": "Ungültiger Indexwert konnte den Parameter Byte32 aus der Liste nicht entfernen.",
   "ERROR_009005": "Ungültiger Indexwert konnte den booleschen Parameter aus der Liste nicht entfernen.",
   "ERROR_009006": "Ungültige Adresse, die Adresse nicht festgelegt.",
   "ERROR_009007": "Der Parameter <Key> existiert nicht.",
@@ -892,5 +892,6 @@
   "ERROR_040001": "Länge der Adressen und Rollenarrays müssen gleich sein.",
   "TOAST_INFO": "Die Info",
   "TOAST_SUCCESS": "Erfolg",
-  "TOAST_ERROR": "Fehler"
+  "TOAST_ERROR": "Fehler",
+  "AMOUNT_NEW_STAKE": "Betrag (neuer Anteil)"
 }

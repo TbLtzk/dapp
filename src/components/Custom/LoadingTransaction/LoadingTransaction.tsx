@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 
-import LoadingSpinner from 'components/Base/LoadingSpinner';
+import Spinner from 'ui/Spinner';
 
 import { Shadow, Wrap, WrapLoading, WrapText } from './styles';
 
@@ -15,7 +15,7 @@ function LoadingTransaction () {
         <WrapLoading>
           <WrapText>
             <p>Loading</p>
-            <LoadingSpinner type="light" />
+            <Spinner size={32} />
           </WrapText>
         </WrapLoading>
         <Shadow />

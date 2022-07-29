@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { media } from 'styles/media';
 
 export const Block = styled.div`
   width: 100%;
@@ -12,7 +13,7 @@ export const Block = styled.div`
   position: relative;
 
   h1 {
-    color: ${(props) => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.textPrimary};
     font-size: 20px;
     line-height: 35px;
     margin-bottom: 15px;
@@ -20,7 +21,7 @@ export const Block = styled.div`
   }
 
   h2 {
-    color: ${(props) => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.textPrimary};
     font-size: 40px;
     line-height: 45px;
     font-weight: 300;
@@ -29,7 +30,7 @@ export const Block = styled.div`
   }
 
   h3 {
-    color: ${(props) => props.theme.colors.oxfordBlueTint3};
+    color: ${(props) => props.theme.colors.textSecondary};
     font-size: 16px;
     line-height: 17px;
     font-family: 'OpenSans', sans-serif;
@@ -37,7 +38,7 @@ export const Block = styled.div`
   }
 
   h4 {
-    color: ${(props) => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.textPrimary};
     font-size: 12px;
     line-height: 17px;
     font-family: 'OpenSans', sans-serif;
@@ -45,10 +46,9 @@ export const Block = styled.div`
   }
 
   h5 {
-    color: ${(props) => props.theme.colors.oxfordBlueTint3};
+    color: ${(props) => props.theme.colors.textSecondary};
     font-size: 13px;
     line-height: 17px;
-    font-weight: 600;
     font-family: 'OpenSans', sans-serif;
     margin-bottom: 2px;
   }
@@ -62,15 +62,6 @@ export const Block = styled.div`
     word-wrap: break-word;
     font-size: 13px;
     margin-bottom: 15px;
-  }
-
-
-
-  .card__hash {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    margin-bottom: 0;
   }
 
   .card__actions {
@@ -138,7 +129,7 @@ export const Block = styled.div`
     width: 100%;
     height: 1px;
     margin: 24px 0;
-    border-bottom: 1px solid ${(props) => props.theme.colors.oxfordBlueTint3};
+    border-bottom: 1px solid ${(props) => props.theme.colors.blockDivider};
   }
 
   .button__bottom {
@@ -152,16 +143,13 @@ export const Block = styled.div`
     align-items: flex-start;
   }
 
-  @media screen and (max-width: 1000px) {
+  ${media.lessThan('medium')} {
     .card__send-form {
       grid-template-columns: minmax(80px, 1fr);
       grid-column-gap: 14px;
       .card__one-line-form-2-2-1-action {
         display: grid;
         justify-content: flex-end;
-      }
-      div {
-        padding-bottom: 4px;
       }
     }
   }

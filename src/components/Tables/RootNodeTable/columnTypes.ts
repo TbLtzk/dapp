@@ -15,13 +15,13 @@ type GetColumnFn = (t: TFunction) => {
 
 export const getColumnsRootNode: GetColumnFn = (t) => [
   {
-    headerStyle: () => ({ minWidth: '170px', }),
+    headerStyle: () => ({ minWidth: '300px', }),
     dataField: 'address',
     text: t('ROOT_NODE_ADDRESS'),
     filterValue: (cell) => cell.props.address,
   },
   {
-    headerStyle: () => ({ minWidth: '160px', cursor: 'pointer' }),
+    headerStyle: () => ({ minWidth: '180px', cursor: 'pointer' }),
     dataField: 'amount',
     text: t('STAKED_AMOUNT'),
     sort: true,

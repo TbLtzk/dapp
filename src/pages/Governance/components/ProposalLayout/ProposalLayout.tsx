@@ -30,11 +30,7 @@ function ProposalLayout ({ proposal, type }: { proposal: Proposal, type: Proposa
   return (
     <PageLayout
       title={`#${proposal.id} ${title}`}
-      titleExtra={(
-        <Tag state={state} style={{ marginLeft: '16px' }}>
-          {status}
-        </Tag>
-      )}
+      titleExtra={<Tag state={state}>{status}</Tag>}
       action={<ProposalActions proposal={proposal} title={title} />}
     >
       <ProposalLayoutContainer>

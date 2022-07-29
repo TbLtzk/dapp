@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef } from 'react';
+import { HTMLAttributes, ReactNode, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Button from 'ui/Button';
@@ -10,11 +10,10 @@ import { PageLayoutContainer } from './styles';
 
 import { toTitleCase } from 'func/useful';
 
-interface Props {
+interface Props extends HTMLAttributes<HTMLDivElement> {
   title: string,
   titleExtra?: ReactNode,
   action?: ReactNode,
-  children: ReactNode,
 }
 
 function PageLayout ({
@@ -22,6 +21,7 @@ function PageLayout ({
   titleExtra,
   action,
   children,
+  ...rest
 }: Props) {
   const { t } = useTranslation();
 
@@ -36,7 +36,7 @@ function PageLayout ({
   }, [toTitleCase]);
 
   return (
-    <PageLayoutContainer>
+    <PageLayoutContainer {...rest}>
       <div className="page-title-wrp">
         <h1
           ref={titleRef}

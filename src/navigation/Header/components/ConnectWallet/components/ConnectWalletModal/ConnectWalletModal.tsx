@@ -42,14 +42,18 @@ function ConnectWalletModal ({ modalOpen, onModalClose }: Props) {
           <p className="text-md">
             <span> {t('I_HAVE_READ')} </span>
             <a
+              className="link"
               target="_blank"
               href="/data-privacy"
               rel="noreferrer"
             >
               {t('DATA_PRIVACY')}
             </a>
-            <span> {t('AND')} </span>
+            {' '}
+            <span>{t('AND')}</span>
+            {' '}
             <a
+              className="link"
               target="_blank"
               href="/imprint"
               rel="noreferrer"

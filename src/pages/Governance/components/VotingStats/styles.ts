@@ -1,18 +1,17 @@
 import styled from 'styled-components';
+import { media } from 'styles/media';
 
 export const StatsContainer = styled.div`
   margin-bottom: 16px;
-
-  .stats-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
 
   .stats-list {
     margin-top: 24px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+
+    ${media.lessThan('medium')} {
+      grid-template-columns: 1fr;
+    }
   }
 
   .stats-item {
@@ -21,8 +20,14 @@ export const StatsContainer = styled.div`
     align-content: start;
     padding: 24px;
 
+    ${media.lessThan('medium')} {
+      padding: 8px 0;
+    }
+
     &:not(:first-child) {
-      border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
+      ${media.greaterThan('medium')} {
+        border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
+      }
     }
   }
 

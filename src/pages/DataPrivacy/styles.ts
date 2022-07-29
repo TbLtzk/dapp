@@ -1,29 +1,22 @@
 import styled from 'styled-components';
 
-export const PolicyContainer = styled.div`
-  width: 50%;
+import PageLayout from 'components/PageLayout';
 
-  h3 {
-    padding-left: 10px;
-    margin-bottom: 5px;
-    font-size: 14px;
-    font-weight: 600;
-    text-align: center;
+export const PolicyContainer = styled(PageLayout)`
+  max-width: 768px;
+  margin: 0 auto;
+
+  .privacy-content {
+    display: grid;
+    gap: 24px;
   }
 
-  h5 {
-    margin-top: 10px;
-    margin-bottom: 10px;
+  .privacy-block {
+    display: grid;
+    gap: 8px;
   }
 
-  a {
-    color: ${(p) => p.theme.colors.neonGreen};
-  }
-
-  ul {
-    font-size: 13px;
-  }
-  @media screen and (max-width: 1250px) {
-    width: 100%;
+  .privacy-list {
+    margin-left: 32px;
   }
 `;

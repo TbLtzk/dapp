@@ -1,7 +1,12 @@
 import styled, { css } from 'styled-components';
+import { media } from 'styles/media';
 import Dropdown from 'ui/Dropdown';
 
 export const BalanceDropdown = styled(Dropdown)`
+  ${media.lessThan('medium')} {
+    display: none;
+  }
+
   .balance-content {
     min-width: 227px;
     padding-bottom: 12px;
@@ -48,6 +53,8 @@ export const BalanceDropdown = styled(Dropdown)`
 export const QLogo = styled.div<{ width?: number, margin?: string }>`
   width: ${({ width }) => width || 20}px;
   margin: ${({ margin }) => margin || '0px'};
+  display: flex;
+
   img {
     max-width: 100%;
     height: auto;
