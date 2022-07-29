@@ -22,6 +22,7 @@ import {
 import LanguageProvider from 'context/LanguageProvider';
 import Web3ContextProvider from 'context/Web3ContextProvider';
 
+import Layout from 'components/Layout';
 import StyleProvider from 'components/StyleProvider';
 import Routes from 'navigation/Routes';
 
@@ -51,7 +52,9 @@ ReactDOM.render(
         <Web3ContextProvider>
           <LanguageProvider>
             <BrowserRouter>
-              <Routes />
+              <Layout>
+                <Routes />
+              </Layout>
             </BrowserRouter>
           </LanguageProvider>
         </Web3ContextProvider>

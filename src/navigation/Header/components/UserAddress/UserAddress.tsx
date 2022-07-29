@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { useWeb3Context } from 'context/Web3ContextProvider';
 import copy from 'copy-to-clipboard';
+import { motion } from 'framer-motion';
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 
@@ -36,7 +37,7 @@ function UserAddress () {
     <AddressDropdown
       right
       open={addressOpen}
-      trigger={(
+      trigger={
         <Button
           alwaysEnabled
           look="secondary"
@@ -44,15 +45,16 @@ function UserAddress () {
         >
           <AddressIcon address={userAddress} size={20} />
           <span>{trimAddress(userAddress)}</span>
-          <Icon
-            name="expand-more"
-            style={{
-              transform: addressOpen ? 'rotate(180deg)' : 'none',
-              transition: 'transform 150ms ease-out',
+          <motion.span
+            style={{ height: '100%' }}
+            animate={{
+              rotate: addressOpen ? 180 : 0,
             }}
-          />
+          >
+            <Icon name="expand-more" />
+          </motion.span>
         </Button>
-      )}
+      }
       onToggle={setAddressOpen}
     >
       <div className="address-content">

@@ -12,15 +12,12 @@ function QVault () {
   const { t } = useTranslation();
 
   return (
-    <PageLayout
-      title={t('Q_VAULT')}
-      titleExtra={<InfoTooltip placement="bottom" topic="q-vault" />}
-    >
+    <PageLayout title={t('Q_VAULT')} titleExtra={<InfoTooltip placement="bottom" topic="q-vault" />}>
       <div
         style={{
           display: 'grid',
           gridTemplateColumns: '2fr 1fr',
-          gap: '16px'
+          gap: '16px',
         }}
       >
         <div style={{ display: 'grid', gap: '16px' }}>

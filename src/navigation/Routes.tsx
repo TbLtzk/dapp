@@ -1,13 +1,9 @@
 import { lazy, Suspense, useEffect } from 'react';
-import { positions, Provider as AlertProvider, transitions } from 'react-alert';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import * as Sentry from '@sentry/react';
-import Toast from 'ui/Toast';
 
-import Alerts from 'components/Custom/Alerts';
 import ErrorBoundary from 'components/Custom/ErrorBoundary';
-import Layout from 'components/Layout';
 import AccountAliasing from 'pages/AccountAliasing';
 import Auction from 'pages/Auctions/components/Auction';
 import NewAuction from 'pages/Auctions/components/NewAuction';
@@ -20,6 +16,7 @@ import Monitoring from 'pages/Monitoring';
 import NotFound from 'pages/NotFound';
 import Staking from 'pages/Staking';
 
+import useCommonAlert from 'hooks/useCommonAlert';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Auctions from '../pages/Auctions';
@@ -50,120 +47,97 @@ const UiKit = lazy(() => import('pages/UiKit'));
 function Routes () {
   const isAliasesEnabled = useFeatureFlag('aliases');
 
+  useCommonAlert();
+
   useEffect(() => {
     addSentryContext();
   }, []);
 
   return (
-    <Layout>
-      <ErrorBoundary>
-        <AlertProvider
-          template={({ message, options, close }) => (
-            <Toast
-              type={options.type}
-              text={String(message)}
-              onClose={close}
-            />
+    <ErrorBoundary>
+      <Switch>
+        <Route exact path="/">
+          <Dashboard />
+        </Route>
+
+        <Route exact path="/q-parameters">
+          <Manage />
+        </Route>
+
+        <Route exact path="/monitoring">
+          <Monitoring />
+        </Route>
+
+        <Route exact path="/governance/:type/new">
+          <NewProposal />
+        </Route>
+
+        <Route exact path="/governance/:type?">
+          <Governance />
+        </Route>
+
+        <Route
+          exact
+          path="/governance/proposal/:contract?/:id?"
+          component={(props: RouteComponentProps<any>) => <Proposal {...props} />}
+        />
+
+        <Route exact path="/q-vault">
+          <QVault />
+        </Route>
+
+        {isAliasesEnabled && (
+          <Route exact path="/account-aliasing">
+            <AccountAliasing />
+          </Route>
+        )}
+
+        <Route exact path="/staking/:slug?">
+          <Staking />
+        </Route>
+
+        <Route exact path="/saving-and-borrowing">
+          <SavingAndBorrowing />
+        </Route>
+
+        <Route exact path="/auctions/:type?">
+          <Auctions />
+        </Route>
+
+        <Route exact path="/auctions/:type/new">
+          <NewAuction />
+        </Route>
+
+        <Route
+          exact
+          path="/auction/:type?/:slug?"
+          component={Auction}
+        />
+
+        <Route exact path="/time-locks">
+          <TimeLocks />
+        </Route>
+
+        <Route exact path="/imprint">
+          <Imprint />
+        </Route>
+        <Route exact path="/data-privacy">
+          <DataPrivacy />
+        </Route>
+
+        <Route
+          exact
+          path="/ui-kit/:slug?"
+          render={() => (
+            <Suspense fallback={null}>
+              <UiKit />
+            </Suspense>
           )}
-          position={positions.TOP_RIGHT}
-          timeout={5000}
-          transition={transitions.SCALE}
-          containerStyle={{
-            width: 'auto',
-            zIndex: '10001',
-            pointerEvents: 'all',
-            top: '80px',
-            left: 'unset',
-            right: '24px',
-            gap: '12px',
-          }}
-        >
-          <Alerts />
-          <Switch>
-            <Route exact path="/">
-              <Dashboard />
-            </Route>
+        />
 
-            <Route exact path="/q-parameters">
-              <Manage />
-            </Route>
-
-            <Route exact path="/monitoring">
-              <Monitoring />
-            </Route>
-
-            <Route exact path="/governance/:type/new">
-              <NewProposal />
-            </Route>
-
-            <Route exact path="/governance/:type?">
-              <Governance />
-            </Route>
-
-            <Route
-              exact
-              path="/governance/proposal/:contract?/:id?"
-              component={(props: RouteComponentProps<any>) => <Proposal {...props} />}
-            />
-
-            <Route exact path="/q-vault">
-              <QVault />
-            </Route>
-
-            {isAliasesEnabled && (
-              <Route exact path="/account-aliasing">
-                <AccountAliasing />
-              </Route>
-            )}
-
-            <Route exact path="/staking/:slug?">
-              <Staking />
-            </Route>
-
-            <Route exact path="/saving-and-borrowing">
-              <SavingAndBorrowing />
-            </Route>
-
-            <Route exact path="/auctions/:type?">
-              <Auctions />
-            </Route>
-
-            <Route exact path="/auctions/:type/new">
-              <NewAuction />
-            </Route>
-
-            <Route
-              exact
-              path="/auction/:type?/:slug?"
-              component={Auction}
-            />
-
-            <Route exact path="/time-locks">
-              <TimeLocks />
-            </Route>
-
-            <Route exact path="/imprint">
-              <Imprint />
-            </Route>
-            <Route exact path="/data-privacy">
-              <DataPrivacy />
-            </Route>
-
-            <Route
-              exact
-              path="/ui-kit/:slug?"
-              render={() => (
-                <Suspense fallback={null}>
-                  <UiKit />
-                </Suspense>
-              )}
-            />
-
-            <Route component={NotFound} />
-          </Switch>
-        </AlertProvider>
-      </ErrorBoundary>
-    </Layout>
+        <Route component={NotFound} />
+      </Switch>
+    </ErrorBoundary>
   );
 }
 

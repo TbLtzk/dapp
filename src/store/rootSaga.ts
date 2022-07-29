@@ -12,6 +12,7 @@ import rootContract from './root-node/sagas';
 import savingAssets from './saving-assets/sagas';
 import systemBalance from './system-balance/sagas';
 import tokenomics from './tokenomics/sagas';
+import transaction from './transaction-handler/sagas';
 import validationRewardPools from './validation-reward-pools/sagas';
 import validators from './validators/sagas';
 import vesting from './vesting/sagas';
@@ -20,6 +21,7 @@ import slashing from './voting/slashing/sagas';
 
 export default function* rootSaga () {
   yield all([
+    ...transaction,
     ...qVault,
     ...rootContract,
     ...borrowingCore,

@@ -25,6 +25,13 @@ export default function transactionHandler (state = initialState, action) {
         transactionLoading: false,
         errorMessage: action.errorMessage
       };
+    case actionTypes.SET_CLEAR_MESSAGES:
+      return {
+        ...state,
+        transactionLoading: false,
+        successMessage: null,
+        errorMessage: null
+      };
     default:
       return state;
   }

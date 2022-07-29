@@ -55,6 +55,11 @@ export const fN = (number) => {
   return new Intl.NumberFormat('en-GB', { maximumFractionDigits }).format(truncated);
 };
 
+export const fNCompact = (value) => Intl.NumberFormat('en-US', {
+  notation: 'compact',
+  maximumFractionDigits: 2
+}).format(toNumber(value || 0));
+
 export const fixNumber = (number) => {
   return Number(BN(number).toFixed(4));
 };
