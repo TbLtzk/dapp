@@ -1,4 +1,7 @@
 import { ReactNode } from 'react';
+import { positions, Provider as AlertProvider, transitions } from 'react-alert';
+
+import Toast from 'ui/Toast';
 
 import LoadingTransaction from 'components/Custom/LoadingTransaction';
 import Header from 'navigation/Header';
@@ -12,20 +15,36 @@ interface Props {
 
 function Layout ({ children }: Props) {
   return (
-    <>
+    <AlertProvider
+      template={({ message, options, close }) => <Toast
+        type={options.type}
+        text={String(message)}
+        onClose={close}
+      />}
+      position={positions.TOP_RIGHT}
+      timeout={5000}
+      transition={transitions.SCALE}
+      containerStyle={{
+        width: 'auto',
+        zIndex: '10001',
+        pointerEvents: 'all',
+        top: '80px',
+        left: 'unset',
+        right: '24px',
+        gap: '12px',
+      }}
+    >
       <AppContainer>
         <Sidebar />
         <div className="app__content">
           <Header />
           <main className="app__main">
-            <div className="app__main-content">
-              {children}
-            </div>
+            <div className="app__main-content">{children}</div>
           </main>
         </div>
       </AppContainer>
       <LoadingTransaction />
-    </>
+    </AlertProvider>
   );
 }
 

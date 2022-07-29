@@ -12,6 +12,7 @@ import { Wrap } from './styles';
 
 import { getAllAuctions } from 'store/auctions/actions';
 import { getCheckIsUserRootNode } from 'store/root-node/action-creators';
+import { getBalances } from 'store/transaction-handler/action-creators';
 import { setLoadType, setNetwork, setUserAddress } from 'store/user-inf/action-creators';
 import { getNumberAllProposals } from 'store/voting/proposals/actions';
 
@@ -60,6 +61,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
     dispatch(getAllAuctions());
     dispatch(getNumberAllProposals());
     dispatch(getCheckIsUserRootNode());
+    dispatch(getBalances());
   };
 
   const cleanConnectorStorage = useCallback(() => {
