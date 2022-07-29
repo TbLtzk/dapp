@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { media } from 'styles/media';
 
 export const AuctionNotFoundContainer = styled.div`
   display: flex;
@@ -25,9 +26,20 @@ export const AuctionLayoutContainer = styled.div`
     display: flex;
     width: 100%;
     margin-bottom: 20px;
+
+    ${media.lessThan('medium')} {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    
     > * {
       &:first-child {
         width: 160px;
+
+        ${media.lessThan('medium')} {
+          width: auto;
+        }
       }
     }
   }

@@ -14,8 +14,10 @@ function InterestRates ({ interestRate }: Props) {
 
   return (
     <div>
-      <h5>{`QUSD - ${interestRate.asset} ${t('BORROWING_FEE')}`}</h5>
-      <p ref={interestRateRef}>0 %</p>
+      <p className="text-sm color-secondary">
+        {`QUSD - ${interestRate.asset} ${t('BORROWING_FEE')}`}
+      </p>
+      <p ref={interestRateRef} className="text-lg font-semibold">0 %</p>
     </div>
   );
 }

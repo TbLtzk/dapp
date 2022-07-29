@@ -18,13 +18,13 @@ function SidebarLink ({ to, title, icon, count = 0, exact = true }: Props) {
       exact={exact}
       to={to}
     >
-      <div className="q-sidebar-link-group">
+      <div className="sidebar-link-group">
         {icon && <Icon name={icon} />}
         <span>{title}</span>
       </div>
       {count > 0 && (
-        <div className="q-sidebar-link-group">
-          <span className="q-sidebar-link-count text-sm font-semibold">{count}</span>
+        <div className="sidebar-link-group">
+          <span className="sidebar-link-count text-sm font-semibold">{count}</span>
         </div>
       )}
     </StyledLink>

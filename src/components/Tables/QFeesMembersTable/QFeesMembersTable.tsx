@@ -31,7 +31,7 @@ function QFeesMembersTable () {
     <div className="block">
       <div className="block__header">
         <h3 className="text-h3">
-          <span>{t('LIST_OF_Q_FEES_INCENTIVES_EXPERTS')}</span>
+          {t('LIST_OF_Q_FEES_INCENTIVES_EXPERTS')}
           <InfoTooltip topic="fees-incentives-experts" />
         </h3>
       </div>

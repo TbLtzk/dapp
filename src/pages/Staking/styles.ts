@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { media } from 'styles/media';
 
 export const StakingContainer = styled.div`
   .staking-switch {
@@ -11,30 +12,57 @@ export const StakingContainer = styled.div`
   .block {
     margin-top: 30px;
     margin-bottom: 40px;
+    
     .block_header {
-      height: 40px;
       display: flex;
       justify-content: space-between;
-      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 8px;
+      
       .block_header-title {
         display: flex;
         align-items: center;
       }
+
       .block_header-buttons {
         display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+
+        ${media.lessThan('medium')} {
+          display: contents;
+        }
       }
     }
+
     .block-body {
       display: grid;
       grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
 
+      ${media.lessThan('medium')} {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
       & > div {
         padding: 24px;
+
+        ${media.lessThan('medium')} {
+          padding: 8px 0;
+        
         &:nth-child(even) {
           border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
+
+          ${media.lessThan('medium')} {
+            border-left: none;
+          }
         }
+        
         &:nth-child(odd) {
           border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
+
+          ${media.lessThan('medium')} {
+            border-left: none;
+          }
         }
 
         &:first-child,
@@ -42,9 +70,11 @@ export const StakingContainer = styled.div`
           border-left: none;
         }
       }
+
       p {
         margin-top: 4px;
       }
+    }
     }
   }
 
@@ -53,6 +83,16 @@ export const StakingContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+
+    ${media.lessThan('medium')} {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      border-bottom: 1px solid ${({ theme }) => theme.colors.blockDivider};
+      margin-top: 16px;
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+    }
   }
 
   .delegation-form_container {
@@ -76,26 +116,7 @@ export const StakingContainer = styled.div`
     }
   }
 
-  @media (max-width: 1280px) {
-    .block {
-      overflow-x: auto;
-      .block-body {
-        grid-template-columns: 1fr 1fr;
-        & > div {
-          padding: 24px;
-          &:nth-child(even) {
-            border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
-          }
-          &:nth-child(odd) {
-            border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
-          }
-          &:first-child,
-          &:nth-child(2n + 1) {
-            border-left: none;
-          }
-        }
-      }
-    }
+  ${media.lessThan('medium')} {
     .delegation-form_container {
       display: flex;
       width: 100%;
@@ -107,6 +128,7 @@ export const StakingContainer = styled.div`
         display: flex;
         flex-direction: column;
       }
+
       .delegation-form_buttons {
         display: flex;
         align-items: center;

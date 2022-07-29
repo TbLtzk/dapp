@@ -32,7 +32,7 @@ function GnosisSafeTooltip ({ address }) {
           />
         </div>
         <a
-          className="tooltip-link"
+          className="link tooltip-link"
           href={`${gnosisSafeUrl}/#/safes/${address}`}
           target="_blank"
           rel="noreferrer"

@@ -49,7 +49,6 @@ function ValidatorMenu () {
     <>
       <MenuDropdown
         right
-        style={{ margin: '0 10px 0 10px' }}
         open={menuOpen}
         menuItems={menuItems}
         onToggle={setMenuOpen}

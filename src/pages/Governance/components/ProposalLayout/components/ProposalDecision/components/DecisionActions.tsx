@@ -49,7 +49,7 @@ function DecisionActions ({ proposal }: Props) {
     (isDecisionEnded || decision.proposer === ZERO_ADDRESS);
 
   return (
-    <div style={{ display: 'flex', gap: '8px' }}>
+    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
       {!isDecisionEnded && decision.proposer === userAddress && (
         <Tooltip
           trigger={(

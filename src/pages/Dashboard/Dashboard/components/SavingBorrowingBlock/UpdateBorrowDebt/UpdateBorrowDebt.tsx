@@ -47,21 +47,19 @@ function UpdateBorrowDebt ({ asset }: Props) {
   };
 
   return (
-    <div className="card_block">
+    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
       <div>
-        <h5>{`QUSD - ${asset} ${t('TIME_SINCE_LAST_REFRESH_OF_OUTSTANDING_DEBT')}`}</h5>
-        <div className="card_text">{timeSinceOutstandingDebt || '0 day(s) 0 hours 0 minutes'}</div>
+        <p className="text-sm color-secondary">{`QUSD - ${asset} ${t('TIME_SINCE_LAST_REFRESH_OF_OUTSTANDING_DEBT')}`}</p>
+        <p className="text-lg font-semibold">{timeSinceOutstandingDebt || '0 day(s) 0 hours 0 minutes'}</p>
       </div>
 
-      <div>
-        <Button
-          icon
-          loading={loadingTimeSinceOutstandingDeb}
-          onClick={handleRefreshDebt}
-        >
-          {!loadingTimeSinceOutstandingDeb && <i className="mdi mdi-cached" style={{ fontSize: '20px' }} />}
-        </Button>
-      </div>
+      <Button
+        icon
+        loading={loadingTimeSinceOutstandingDeb}
+        onClick={handleRefreshDebt}
+      >
+        {!loadingTimeSinceOutstandingDeb && <i className="mdi mdi-cached" style={{ fontSize: '20px' }} />}
+      </Button>
     </div>
   );
 }

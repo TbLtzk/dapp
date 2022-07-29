@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
+import Spinner from 'ui/Spinner';
 import Tooltip from 'ui/Tooltip';
 
 import CustomBlock from 'components/Base/CustomBlock';
-import LoadingSpinner from 'components/Base/LoadingSpinner';
 
 import GnosisSafeTooltip from '../GnosisSafeTooltip';
 import ParametersTable from '../ParametersTable';
@@ -35,8 +35,8 @@ function ParametersBlock ({
   const renderTable = () => {
     if (loading && !parameters.length) {
       return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <LoadingSpinner />
+        <div style={{ display: 'flex', justifyContent: 'center', margin: '24px auto' }}>
+          <Spinner size={32} />
         </div>
       );
     }

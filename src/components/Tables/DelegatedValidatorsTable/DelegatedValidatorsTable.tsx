@@ -44,6 +44,7 @@ function DelegatedValidatorsTable () {
         {
           dataField: 'address',
           text: t('MEMBER_ADDRESS'),
+          headerStyle: () => ({ minWidth: '300px', }),
         },
         {
           dataField: 'amount',

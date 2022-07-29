@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { positions, Provider as AlertProvider, transitions } from 'react-alert';
 
 import Toast from 'ui/Toast';
@@ -14,6 +14,8 @@ interface Props {
 }
 
 function Layout ({ children }: Props) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <AlertProvider
       template={({ message, options, close }) => <Toast
@@ -35,9 +37,12 @@ function Layout ({ children }: Props) {
       }}
     >
       <AppContainer>
-        <Sidebar />
+        <Sidebar
+          open={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
         <div className="app__content">
-          <Header />
+          <Header onMenuClick={() => setSidebarOpen(true)} />
           <main className="app__main">
             <div className="app__main-content">{children}</div>
           </main>

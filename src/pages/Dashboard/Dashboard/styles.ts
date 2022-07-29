@@ -3,15 +3,15 @@ import { media } from 'styles/media';
 
 export const DashboardContent = styled.div`
   display: grid;
-  grid-template-columns: 1fr 480px;
+  grid-template-columns: minmax(0, 1fr) 480px;
   gap: 16px;
 
   ${media.lessThan('large')} {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   ${media.greaterThan('huge')} {
-    grid-template-columns: 1fr 560px;
+    grid-template-columns: minmax(0, 1fr) 560px;
   }
 
   .dashboard-block {

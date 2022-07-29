@@ -3,14 +3,15 @@ import styled, { css } from 'styled-components';
 import { getTableColor } from './colors';
 
 export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolean }>`
-  .table {
-    margin-bottom: 0;
-  }
-
-  .q-table {
+  .react-bootstrap-table {
     width: 100%;
     max-width: 100%;
     overflow-x: auto;
+  }
+
+  .table {
+    width: 100%;
+    margin-bottom: 0;
 
     .table-bordered,
     .table-bordered td,
@@ -42,14 +43,10 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
         padding-left: ${({ tiny }) => (tiny ? 0 : '32px')};
       }
 
-      padding-top: ${({ tiny }) => (tiny ? '8px' : '16px')};
-      padding-bottom: ${({ tiny }) => (tiny ? '8px' : '16px')};
-      padding-left: ${({ tiny }) => (tiny ? '8px' : '26px')};
-
       font-size: 14px;
-      line-height: 20px;
-      border-style: none;
       line-height: 17px;
+      border-style: none;
+      padding: ${({ tiny }) => (tiny ? '8px' : '16px 24px')};
       color: ${({ theme }) => getTableColor(theme, 'tableHeader')};
       background: transparent;
     }
@@ -158,7 +155,7 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
     align-items: center;
   }
 
-  .q-table-paganation {
+  .table-pagination {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -166,10 +163,11 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
     .pagination {
       margin-top: ${({ tiny }) => (tiny ? '8px' : '16px')};
       margin-bottom: 0;
+      list-style: none;
     }
   }
 
-  .q-bottom-buttons {
+  .bottom-buttons {
     margin-top: 10px;
   }
 `;

@@ -42,29 +42,29 @@ function Modal ({
             exit="closed"
             {...rest}
           >
-            <div className="q-modal-overlay" onClick={onClose} />
-            <div className="q-modal-dialog block">
+            <div className="modal-overlay" onClick={onClose} />
+            <div className="modal-dialog block">
               <Button
                 icon
                 alwaysEnabled
-                className="q-modal-close"
+                className="modal-close"
                 look="ghost"
                 onClick={onClose}
               >
                 <Icon name="cross" />
               </Button>
 
-              <h3 className="q-modal-title text-h2">
+              <h3 className="modal-title text-h2">
                 {title}
               </h3>
 
               {tip && (
-                <p className="q-modal-tip text-md">
+                <p className="modal-tip text-md">
                   {tip}
                 </p>
               )}
 
-              <div className="q-modal-content">
+              <div className="modal-content">
                 {children}
               </div>
             </div>

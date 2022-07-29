@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { media } from 'styles/media';
 
 export const MultiStepFormContainer = styled.div<{ $step: number;}>`
   display: grid;
@@ -6,6 +7,13 @@ export const MultiStepFormContainer = styled.div<{ $step: number;}>`
   grid-template-columns: 1fr 320px;
   gap: 24px;
   margin-top: 16px;
+
+  ${media.lessThan('medium')} {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 8px;
+    margin-top: 0;
+  }
 
   .multi-step-form__step-content {
     margin-top: 24px;

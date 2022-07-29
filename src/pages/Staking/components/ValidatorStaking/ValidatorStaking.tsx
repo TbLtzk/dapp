@@ -59,7 +59,7 @@ function ValidatorStaking () {
             <ValidatorMenu />
             <StakerRewardPool />
             {!isValidator && (
-              <Button style={{ margin: '0 0 0 10px' }} onClick={handleEnterShortList}>
+              <Button onClick={handleEnterShortList}>
                 {t('JOIN_VALIDATOR_RANKING')}
               </Button>
             )}

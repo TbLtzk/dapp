@@ -60,26 +60,12 @@ export const COLORS = {
 };
 
 export const darkColors = {
-  // TODO: remove old colors
-  oxfordBlue: '#0B2545',
-  oxfordBlueTint1: '#07172B',
-  oxfordBlueTint2: '#3C516A',
-  oxfordBlueTint3: '#6D7C8F',
-  oxfordBlueTint4: '#8592A2',
-  oxfordBlueTint5: '#B6BEC7',
-  oxfordBlueTint6: '#E4EAF2',
-  white: '#FFFFFF',
-  neonGreen: '#87FF65',
-  validationError: '#FF8550',
-  red: '#FC4136',
-  lightBlue: '#2374DB',
-  yellow: '#F8D889',
-
-  // new colors
   background: COLORS.blue900,
   textPrimary: COLORS.grey000,
   textSecondary: COLORS.grey300,
+  textInverted: COLORS.blue800,
   textDisabled: COLORS.grey600,
+
   block: COLORS.blue800,
   blockBorder: COLORS.blue700,
   blockBorderAccent: COLORS.blue600,
@@ -96,27 +82,17 @@ export const darkColors = {
   linkActive: COLORS.blue000,
   linkFocus: COLORS.blue000,
   linkDisabled: COLORS.grey700,
+
+  success: COLORS.green200,
+  warning: COLORS.yellow100,
+  error: COLORS.red400,
 };
 
 export const lightColors = {
-  oxfordBlueTint1: '#E4EAF2',
-  oxfordBlue: '#FFFFFF',
-  oxfordBlueTint2: '#B6BEC7',
-  oxfordBlueTint3: '#8592A2',
-  oxfordBlueTint4: '#6D7C8F',
-  oxfordBlueTint5: '#3C516A',
-  oxfordBlueTint6: '#0B2545',
-  white: '#07172B',
-  neonGreen: '#67c54d',
-  validationError: '#FF8550',
-  red: '#FC4136',
-  lightBlue: '#74A8E9',
-  yellow: '#D7A118',
-
-  // new colors
   background: COLORS.grey000,
   textPrimary: COLORS.blue800,
   textSecondary: COLORS.grey500,
+  textInverted: COLORS.grey100,
   textDisabled: COLORS.grey200,
   block: COLORS.white,
   blockBorder: COLORS.grey100,
@@ -134,6 +110,10 @@ export const lightColors = {
   linkActive: COLORS.blue800,
   linkFocus: COLORS.blue100,
   linkDisabled: COLORS.grey200,
+
+  success: COLORS.green300,
+  warning: COLORS.yellow100,
+  error: COLORS.red400,
 };
 
 export function getColorFn<T extends string> (

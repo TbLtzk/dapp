@@ -12,7 +12,7 @@ export const RadioContainer = styled.div<{
   grid-template: 'frame label';
   grid-template-columns: auto 1fr;
   gap: 4px;
-  align-items: center;
+  align-items: start;
 
   ${({ theme, $extended, $checked, $disabled }) => $extended && css`
     padding: 16px 24px;

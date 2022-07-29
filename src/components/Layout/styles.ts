@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { media } from 'styles/media';
 
 export const AppContainer = styled.div`
   display: grid;
@@ -11,7 +12,6 @@ export const AppContainer = styled.div`
     overflow-y: auto;
     overflow-y: overlay;
     overflow-x: hidden;
-    min-width: 832px;
 
     &::-webkit-scrollbar {
       display: none;
@@ -22,5 +22,9 @@ export const AppContainer = styled.div`
     padding: 32px;
     max-width: 1200px;
     margin: 0 auto;
+
+    ${media.lessThan('medium')} {
+      padding: 16px;
+    }
   }
 `;

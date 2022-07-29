@@ -29,7 +29,6 @@ import Routes from 'navigation/Routes';
 import { store } from './store';
 
 import 'assets/fonts/fonts.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 Sentry.init({
   dsn: 'https://55eac6f20f434cc2b23b93499ac31111@o1170264.ingest.sentry.io/6263659',

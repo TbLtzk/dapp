@@ -30,13 +30,13 @@ export const StyledLink = styled(NavLink)`
     color: ${({ theme }) => getSidebarColor(theme, 'linkTextActive')};
   }
 
-  .q-sidebar-link-group {
+  .sidebar-link-group {
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
-  .q-sidebar-link-count {
+  .sidebar-link-count {
     display: grid;
     place-content: center;
     align-items: flex-end;

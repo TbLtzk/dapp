@@ -68,7 +68,7 @@ function VotingStats () {
 
   return (
     <StatsContainer className="block">
-      <div className="stats-head">
+      <div className="block__header">
         <h2 className="text-h2">{t('VOTING_STATS')}</h2>
         <Link to="/q-vault">
           <Button

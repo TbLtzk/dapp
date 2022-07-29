@@ -99,7 +99,16 @@ function RootNodeTable ({ tableType }: Props) {
     <Table
       tiny={tiny}
       header={
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '8px',
+            marginTop: '20px'
+          }}
+        >
           <h2 className="text-h2">
             <span>{t('ROOT_NODE_PANEL')}</span>
             <InfoTooltip topic="root-node-panel" />

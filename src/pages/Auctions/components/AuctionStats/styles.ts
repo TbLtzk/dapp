@@ -1,13 +1,26 @@
 import styled from 'styled-components';
+import { media } from 'styles/media';
 
 export const AuctionStatsContainer = styled.div`
   display: flex;
+
+  ${media.lessThan('medium')} {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+  
   .block {
     margin-right: 10px;
     display: flex;
     height: auto;
-    flex-direction:column;
+    flex-direction: column;
+
+    ${media.lessThan('medium')} {
+      min-width: 90%;
+      scroll-snap-align: start;
+    }
   }
+
   .auction-item {
     padding: 10px;
     &:first-child {

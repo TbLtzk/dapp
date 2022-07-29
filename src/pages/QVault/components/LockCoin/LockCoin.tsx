@@ -12,9 +12,9 @@ function LockCoin () {
 
   return (
     <div className="block">
-      <div className="block__header">
+      <div className="block__header" style={{ gap: 0 }}>
         <h1 className="text-h3">
-          <span>{t('LOCK_YOUR_Q_TOKENS_FOR_VOTING')}</span>
+          {t('LOCK_YOUR_Q_TOKENS_FOR_VOTING')}
           <InfoTooltip topic="lock-tokens-for-voting" />
         </h1>
 

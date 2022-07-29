@@ -1,12 +1,21 @@
 import styled from 'styled-components';
+import { media } from 'styles/media';
 
 export const ProposalLayoutContainer = styled.div`
   display: grid;
   gap: 32px;
 
+  ${media.lessThan('medium')} {
+    gap: 24px;
+  }
+
   .proposal-layout__voting {
     display: flex;
     gap: 24px;
+    
+    ${media.lessThan('medium')} {
+      flex-wrap: wrap;
+    }
   }
 
   .details-list {
@@ -14,6 +23,10 @@ export const ProposalLayoutContainer = styled.div`
     gap: 16px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: start;
+
+    ${media.lessThan('medium')} {
+      grid-template-columns: minmax(0, 1fr);
+    }
 
     &.single-column {
       grid-template-columns: minmax(0, 1fr);
@@ -29,17 +42,11 @@ export const ProposalLayoutContainer = styled.div`
     display: grid;
     grid-template-columns: 180px minmax(0, 1fr);
     gap: 16px;
-  }
 
-  .parameters-block {
-    display: grid;
-    gap: 8px;
-  }
-
-  .parameters-block-item {
-    display: grid;
-    grid-template-columns: 20px 3fr 3fr 1fr;
-    gap: 16px;
+    ${media.lessThan('medium')} {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 4px;
+    }
   }
 
   .details-stub {

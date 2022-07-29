@@ -59,7 +59,8 @@ function DecisionDetails ({ proposal }: { proposal: SlashingProposal }) {
         <div className="details-item">
           <p className="text-md color-secondary">{t('REQUIRED_CONFIRMATIONS')}</p>
           <p className="text-md">
-            <span> {decision.requiredConfirmations} </span>
+            <span>{decision.requiredConfirmations}</span>
+            {' '}
             <span className="font-light">({formatPercent(requiredPercentage)})</span>
           </p>
         </div>
@@ -67,7 +68,8 @@ function DecisionDetails ({ proposal }: { proposal: SlashingProposal }) {
         <div className="details-item">
           <p className="text-md color-secondary">{t('CURRENT_CONFIRMATIONS')}</p>
           <p className="text-md">
-            <span>{decision.confirmationCount} </span>
+            <span>{decision.confirmationCount}</span>
+            {' '}
             <span className="font-light">({formatPercent(decision.currentConfirmationPercentage)})</span>
           </p>
         </div>

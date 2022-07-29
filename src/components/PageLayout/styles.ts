@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { media } from 'styles/media';
 
 export const PageLayoutContainer = styled.div`
   .page-title-wrp {
@@ -6,12 +7,22 @@ export const PageLayoutContainer = styled.div`
     display: flex;
     justify-content: space-between;
     gap: 16px;
+
+    ${media.lessThan('medium')} {
+      flex-direction: column;
+      gap: 16px;
+    }
   }
 
   .page-title {
     display: flex;
     align-items: center;
-    text-transform: capitalize;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    ${media.lessThan('medium')} {
+      gap: 8px;
+    }
   }
 
   .page-title-actions {
@@ -25,6 +36,10 @@ export const PageLayoutContainer = styled.div`
     display: grid;
     grid-template-columns: minmax(100px, 1fr);
     gap: 16px;
+
+    ${media.lessThan('medium')} {
+      margin-top: 24px;
+    }
 
     .content__colm-2 {
       display: grid;
@@ -43,12 +58,12 @@ export const PageLayoutContainer = styled.div`
       grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
       gap: 16px;
 
-      @media screen and (max-width: 1100px) {
+      ${media.lessThan('medium')} {
         flex-direction: column;
       }
     }
 
-    @media screen and (max-width: 1250px) {
+    ${media.lessThan('large')} {
       .content__colm-2 {
         grid-template-columns: minmax(100px, 1fr);
       }

@@ -1,6 +1,8 @@
 import { memo } from 'react';
 import { useSelector } from 'react-redux';
 
+import Button from 'ui/Button';
+
 import Balance from './components/Balance';
 import ConnectWallet from './components/ConnectWallet';
 import Network from './components/Network';
@@ -12,13 +14,26 @@ import { loadTypeSelector } from 'store/user-inf/selectors';
 
 import { LOAD_TYPES } from 'constants/statuses';
 
-function Header () {
+function Header ({ onMenuClick }: { onMenuClick: () => void }) {
   const loadType = useSelector(loadTypeSelector);
 
   return (
     <StyledHeader>
       <div className="header__content">
-        <Network />
+        <div className="header__left">
+          <div className="header__network">
+            <Network />
+          </div>
+          <Button
+            alwaysEnabled
+            icon
+            className="header__menu"
+            look="secondary"
+            onClick={onMenuClick}
+          >
+            <i className="mdi mdi-menu" style={{ fontSize: '20px' }} />
+          </Button>
+        </div>
         <div className="header__actions">
           {loadType !== LOAD_TYPES.loaded
             ? (

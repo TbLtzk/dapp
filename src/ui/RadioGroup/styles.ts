@@ -1,5 +1,6 @@
 
 import styled, { css } from 'styled-components';
+import { media } from 'styles/media';
 
 import { getRadioGroupColor } from './colors';
 
@@ -25,6 +26,10 @@ export const RadioGroupContainer = styled.div<{
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 16px;
+
+      ${media.lessThan('medium')} {
+        grid-template-columns: 1fr;
+      }
     `};
   }
 

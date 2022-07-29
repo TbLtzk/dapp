@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
+import { media } from 'styles/media';
 
 export const AuctionsTabWrp = styled.div`
   display: grid;
@@ -19,7 +20,7 @@ export const AuctionCardBodyContainer = styled.div`
       text-overflow: ellipsis;
     }
   }
-  @media screen and (max-width: 1150px) {
+  ${media.lessThan('medium')} {
     .auction-card_elements {
       display: grid;
       grid-template-columns: 1fr;
@@ -93,7 +94,7 @@ export const ListWrapper = styled.div`
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
 
-  @media screen and (max-width: 1150px) {
+  ${media.lessThan('medium')} {
     grid-template-columns: minmax(0, 1fr);
   }
 `;

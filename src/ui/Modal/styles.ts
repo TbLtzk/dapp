@@ -1,6 +1,7 @@
 
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
+import { media } from 'styles/media';
 
 import { getModalColor } from './colors';
 
@@ -8,8 +9,7 @@ export const ModalContainer = styled(motion.div)<{ $width: number }>`
   position: fixed;
   z-index: 10000;
 
-  // TODO: remove prefix when bootstrap is removed
-  .q-modal-overlay {
+  .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -19,7 +19,7 @@ export const ModalContainer = styled(motion.div)<{ $width: number }>`
     pointer-events: all;
   }
 
-  .q-modal-dialog {
+  .modal-dialog {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -28,20 +28,24 @@ export const ModalContainer = styled(motion.div)<{ $width: number }>`
     padding: 32px;
     pointer-events: all;
     width: ${({ $width }) => `${$width}px`};
+
+    ${media.lessThan('medium')} {
+      width: 100%;
+    }
   }
 
-  .q-modal-close {
+  .modal-close {
     position: absolute;
     top: 12px;
     right: 12px;
   }
 
-  .q-modal-tip {
+  .modal-tip {
     margin-top: 4px;
     color: ${({ theme }) => theme.colors.textSecondary};
   }
 
-  .q-modal-content {
+  .modal-content {
     margin: 0 -24px;
     padding: 0 24px;
     border: none;
