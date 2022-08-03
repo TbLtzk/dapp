@@ -23,6 +23,7 @@ export interface SetMinimalActiveBlock {
 export interface CreateProposal {
   type: 'CREATE_PROPOSAL'
   form: CreateProposalForm
+  label: string;
 }
 
 export interface VoteForProposal {
@@ -32,11 +33,13 @@ export interface VoteForProposal {
     type: VotingType
     isVotedFor?: boolean
   }
+  label: string;
 }
 
 export interface ExecuteProposal {
   type: 'EXECUTE_PROPOSAL'
   proposal: Proposal
+  label: string;
 }
 
 export interface GetNumberAllProposals {

@@ -22,13 +22,13 @@ function WithdrawForm () {
   const address = useSelector(userAddressMetamask);
   const userQVaultBalance = useSelector(userBalance);
   const qVaultLockedAmount = useSelector(qVaultMinimumTimeLock);
-
   const maxAmount = subtractAmount(userQVaultBalance, qVaultLockedAmount);
+
   const form = useForm({
     initialValues: { amount: '' },
     validators: { amount: [required, amount(maxAmount)] },
     onSubmit: (form) => {
-      dispatch(setWithdrawCall(address, form.amount));
+      dispatch(setWithdrawCall(address, form.amount, t('WITHDRAW_FROM_Q_VAULT_SUCCESS')));
     }
   });
 

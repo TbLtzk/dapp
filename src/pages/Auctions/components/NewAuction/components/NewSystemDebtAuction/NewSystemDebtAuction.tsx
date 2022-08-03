@@ -36,7 +36,7 @@ function NewSystemDebtAuction () {
   const form = useMultiStepForm({
     initialValues: DEFAULT_VALUES,
     onConfirm: (values) => {
-      dispatch(createAuction('systemDebt', values));
+      dispatch(createAuction('systemDebt', values, t('CREATE_SYSTEM_DEBT_AUCTION_SUCCESS')));
     },
   });
 

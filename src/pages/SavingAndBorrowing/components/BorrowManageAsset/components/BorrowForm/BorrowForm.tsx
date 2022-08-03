@@ -24,7 +24,7 @@ function BorrowForm ({ vault }: { vault: VaultWithFee}) {
     initialValues: { amount: '' },
     validators: { amount: [required, amount(borrowingDetails?.availableBorrow)] },
     onSubmit: (form) => {
-      dispatch(setBorrowAsBorrow(form.amount, vault.vaultNum));
+      dispatch(setBorrowAsBorrow(form.amount, vault.vaultNum, t('BORROW_ASSET_SUCCESS')));
     }
   });
 

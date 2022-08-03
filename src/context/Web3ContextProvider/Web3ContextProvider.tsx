@@ -12,7 +12,7 @@ import { Wrap } from './styles';
 
 import { getAllAuctions } from 'store/auctions/actions';
 import { getCheckIsUserRootNode } from 'store/root-node/action-creators';
-import { getBalances } from 'store/transaction-handler/action-creators';
+import { getUserBalances } from 'store/transaction-handler/actions';
 import { setLoadType, setNetwork, setUserAddress } from 'store/user-inf/action-creators';
 import { getNumberAllProposals } from 'store/voting/proposals/actions';
 
@@ -61,7 +61,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
     dispatch(getAllAuctions());
     dispatch(getNumberAllProposals());
     dispatch(getCheckIsUserRootNode());
-    dispatch(getBalances());
+    dispatch(getUserBalances());
   };
 
   const cleanConnectorStorage = useCallback(() => {
@@ -137,7 +137,6 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
           window.web3 = httpProvider;
         } else {
           window.web3 = new Web3(provider);
-
           const accounts = await window.web3.eth.getAccounts();
 
           if (selectedWallet && accounts.length) {

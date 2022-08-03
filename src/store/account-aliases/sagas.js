@@ -3,13 +3,17 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { setAliases, setAliasesLoading, setAliasEvents, setEventsLoading } from './action-creators';
 import * as actionTypes from './action-types';
 
-import { setTransactionLoading, setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/action-creators';
+import {
+  setTransactionLoading,
+  setTransactionLoadingError,
+  setTransactionLoadingSuccess,
+} from 'store/transaction-handler/actions';
 
 import { getAccountAliasesInstance } from 'contracts/contract-instance';
 import { getAliasEvents } from 'contracts/helpers/account-aliases-helper';
 
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { captureError, getErrorMessage } from 'func/errors';
+import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
 
 function* getAliasesGenerator ({ address }) {
   try {
@@ -38,28 +42,30 @@ function* getAliasEventsGenerator () {
   }
 }
 
-function* setAliasGenerator ({ address, purpose }) {
+function* setAliasGenerator ({ address, purpose, label }) {
   try {
     yield put(setTransactionLoading());
 
     const contract = yield call(getAccountAliasesInstance);
-    yield contract.setAlias(address, purpose);
+    const transaction = yield contract.setAlias(address, purpose);
 
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+    yield put(
+      setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label))
+    );
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* reserveAliasGenerator ({ address }) {
+function* reserveAliasGenerator ({ address, label }) {
   try {
     yield put(setTransactionLoading());
 
     const contract = yield call(getAccountAliasesInstance);
-    yield contract.reserve(address);
+    const transaction = yield contract.reserve(address);
 
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));

@@ -36,7 +36,7 @@ function NewSystemSurplusAuction () {
   const form = useMultiStepForm({
     initialValues: DEFAULT_VALUES,
     onConfirm: (values) => {
-      dispatch(createAuction('systemSurplus', values));
+      dispatch(createAuction('systemSurplus', values, t('CREATE_SYSTEM_SURPLUS_AUCTION_SUCCESS')));
     },
   });
 

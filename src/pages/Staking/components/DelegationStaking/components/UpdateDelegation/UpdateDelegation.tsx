@@ -26,7 +26,7 @@ function UpdateDelegation () {
     onSubmit: (forms: FormDelegation[]) => {
       const delegatedTo = forms.map((f) => f.address);
       const stakes = forms.map((f) => toWei(f.amount));
-      dispatch(setDelegateStake(address, delegatedTo, stakes));
+      dispatch(setDelegateStake(address, delegatedTo, stakes, t('UPDATE_DELEGATION_SUCCESS')));
     },
   });
   useMetamaskReset(formTypes.qVaultDelegation, formArray.reset);

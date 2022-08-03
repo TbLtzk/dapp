@@ -26,7 +26,7 @@ function RepayForm ({ vault }: {vault: VaultWithFee}) {
     initialValues: { amount: '' },
     validators: { amount: [required, amount(borrowingDetails?.availableRepay)] },
     onSubmit: (form) => {
-      dispatch(setBorrowRepay(form.amount, vault.vaultNum,));
+      dispatch(setBorrowRepay(form.amount, vault.vaultNum, t('REPAY_BORROWED_ASSET_SUCCESS')));
     },
   });
 
@@ -55,7 +55,7 @@ function RepayForm ({ vault }: {vault: VaultWithFee}) {
           <Button
             style={{ width: '100px' }}
             className="form-action"
-            onClick={() => dispatch(setBorrowAprove('repay', vault.colKey as Asset))}
+            onClick={() => dispatch(setBorrowAprove('repay', vault.colKey as Asset, t('APPROVE')))}
           >
             {t('APPROVE')}
           </Button>

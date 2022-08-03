@@ -29,7 +29,7 @@ function TransferForm () {
     initialValues: { amount: '' },
     validators: { amount: [required, amount(maxAmount)] },
     onSubmit: (form) => {
-      dispatch(setDepositCall(address, form.amount));
+      dispatch(setDepositCall(address, form.amount, t('TRANSFER_INTO_Q_VAULT_SUCCESS')));
     }
   });
 

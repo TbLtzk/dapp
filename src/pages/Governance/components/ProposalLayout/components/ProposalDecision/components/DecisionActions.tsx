@@ -37,8 +37,8 @@ function DecisionActions ({ proposal }: Props) {
 
   useMetamaskReset(formTypes.proposeDecision, handleClose);
 
-  const handleEscrowAction = (type: string) => {
-    dispatch(setEscrowAction(proposal.contract, proposal.id, type));
+  const handleEscrowAction = (type: string, label: string) => {
+    dispatch(setEscrowAction(proposal.contract, proposal.id, type, label));
   };
 
   const decision = proposal.objEscrow.decision;
@@ -56,7 +56,7 @@ function DecisionActions ({ proposal }: Props) {
             <Button
               compact
               look="ghost"
-              onClick={() => handleEscrowAction(escrowTypes.recall)}
+              onClick={() => handleEscrowAction(escrowTypes.recall, t('RECALL_DECISION_SUCCESS'))}
             >
               {t('RECALL_DECISION')}
             </Button>
@@ -74,7 +74,7 @@ function DecisionActions ({ proposal }: Props) {
               compact
               look="secondary"
               disabled={!isRootNode}
-              onClick={() => handleEscrowAction(escrowTypes.confirm)}
+              onClick={() => handleEscrowAction(escrowTypes.confirm, t('VOTE_TO_CONFIRM_DECISION_SUCCESS'))}
             >
               {t('VOTE_TO_CONFIRM_DECISION')}
             </Button>
@@ -91,7 +91,7 @@ function DecisionActions ({ proposal }: Props) {
               compact
               look="secondary"
               disabled={!isRootNode}
-              onClick={() => handleEscrowAction(escrowTypes.execute)}
+              onClick={() => handleEscrowAction(escrowTypes.execute, t('EXECUTE_DECISION_SUCCESS'))}
             >
               {t('EXECUTE_DECISION')}
             </Button>

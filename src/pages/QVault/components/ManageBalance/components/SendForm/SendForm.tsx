@@ -24,6 +24,7 @@ function SendForm () {
   const qVaultLockedAmount = useSelector(qVaultMinimumTimeLock);
 
   const maxAmount = subtractAmount(userQVaultBalance, qVaultLockedAmount);
+
   const form = useForm({
     initialValues: { address: '', amount: '' },
     validators: {
@@ -31,7 +32,7 @@ function SendForm () {
       amount: [required, amount(maxAmount)],
     },
     onSubmit: (form) => {
-      dispatch(setSendCall(form.address, form.amount));
+      dispatch(setSendCall(form.address, form.amount, t('SEND_TO_FOREIGN_QVAULT_ACCOUNT_SUCCESS')));
     },
   });
 

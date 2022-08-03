@@ -8,12 +8,7 @@ import useInterval from 'hooks/useInterval';
 
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
-import {
-  getTimeSinceRefreshBalance,
-  refreshTimeSinceRefreshBalance,
-} from 'contracts/helpers/borrowing-core';
-
-import { remainDateTimeSince } from 'func/convertDate';
+import { getTimeSinceRefreshBalance, refreshTimeSinceRefreshBalance } from 'contracts/helpers/borrowing-core';
 
 function UpdateSavingBalance () {
   const { t } = useTranslation();
@@ -22,26 +17,23 @@ function UpdateSavingBalance () {
   const userAddress = useSelector(userAddressMetamask);
 
   const [timeSinceRefreshBalance, setTimeSinceRefreshBalance] = useState('0');
-  const [timeSinceUnixTimestampRefreshBalance, setTimeSinceUnixTimestampRefreshBalance] = useState('0');
   const [loadingTimeSinceRefreshBalance, setLoadingTimeSinceRefreshBalance] = useState(false);
 
   useEffect(() => {
-    getTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance);
+    getTimeSinceRefreshBalance(setTimeSinceRefreshBalance);
   }, []);
 
   useInterval(() => {
-    setTimeSinceRefreshBalance(
-      String(remainDateTimeSince(timeSinceUnixTimestampRefreshBalance))
-    );
-  }, 30000);
+    getTimeSinceRefreshBalance(setTimeSinceRefreshBalance);
+  }, 50000);
 
   const handleRefreshBalance = () => {
     refreshTimeSinceRefreshBalance(
       setTimeSinceRefreshBalance,
       setLoadingTimeSinceRefreshBalance,
-      setTimeSinceUnixTimestampRefreshBalance,
       userAddress,
-      dispatch
+      dispatch,
+      t('SAVING_TIME_SINSE_REFRESH_SUCCESS')
     );
   };
 
@@ -57,9 +49,7 @@ function UpdateSavingBalance () {
         loading={loadingTimeSinceRefreshBalance}
         onClick={handleRefreshBalance}
       >
-        {!loadingTimeSinceRefreshBalance && (
-          <i className="mdi mdi-cached" style={{ fontSize: '20px' }} />
-        )}
+        {!loadingTimeSinceRefreshBalance && <i className="mdi mdi-cached" style={{ fontSize: '20px' }} />}
       </Button>
     </div>
   );

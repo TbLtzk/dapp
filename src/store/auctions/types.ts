@@ -26,18 +26,21 @@ export interface CreateAuction {
   type: 'CREATE_AUCTION';
   auctionType: AuctionType;
   form: CreateAuctionForm;
+  label: string
 }
 
 export interface ExecuteAuction {
   type: 'EXECUTE_AUCTION';
   auctionType: AuctionType;
   form: ExecuteAuctionForm;
+  label: string
 }
 
 export interface BidForAuction {
   type: 'BID_FOR_AUCTION';
   auctionType: AuctionType;
   form: BidForAuctionForm;
+  label: string
 }
 
 export type AuctionActions = SetAuctions | CreateAuction | ExecuteAuction | BidForAuction;

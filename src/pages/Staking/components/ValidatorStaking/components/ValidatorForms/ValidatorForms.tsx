@@ -58,13 +58,13 @@ function ValidatorForms ({ formType, onReset }: Props) {
     onSubmit: ({ amount }) => {
       switch (formType) {
         case FORM_TYPES.stakeToRanking:
-          dispatch(setValidatorsCommitStake(address, amount));
+          dispatch(setValidatorsCommitStake(address, amount, t('STAKE_TO_RANKING_SUCCESS')));
           break;
         case FORM_TYPES.announceWithdrawal:
-          dispatch(setValidatorsAnnounceWithdrawal(address, amount));
+          dispatch(setValidatorsAnnounceWithdrawal(address, amount, t('ANNOUNCE_WITHDRAWAL_SUCCESS')));
           break;
         case FORM_TYPES.withdrawFromRanking:
-          dispatch(setValidatorsWithdraw(address, amount));
+          dispatch(setValidatorsWithdraw(address, amount, t('WITHDRAW_FROM_RANKING_SUCCESS')));
           break;
       }
     }

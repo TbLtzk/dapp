@@ -1,4 +1,3 @@
-
 import { Vault } from '@q-dev/q-js-sdk';
 import { all, call, put, select, takeEvery } from 'typed-redux-saga';
 import { Asset, BorrowAssetsRateAndFee, VaultWithFee } from 'typings/defi';
@@ -24,7 +23,7 @@ import {
   setTransactionLoading,
   setTransactionLoadingError,
   setTransactionLoadingSuccess,
-} from 'store/transaction-handler/action-creators';
+} from 'store/transaction-handler/actions';
 
 import { getBorrowingCoreInstance, getEpdrParametersInstance, getSavingInstance } from 'contracts/contract-instance';
 import { getBorrowAssetRateAndFee, getVaultWithFee } from 'contracts/helpers/borrowing-core';
@@ -32,18 +31,19 @@ import { getBorrowAssetRateAndFee, getVaultWithFee } from 'contracts/helpers/bor
 import { BorrowAssets } from 'constants/defiTypes';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei } from 'func/balance';
-import { captureError, getErrorMessage } from 'func/errors';
+import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
 import { fillArray, uintPerSecondToPerYearNumber } from 'func/useful';
 
-function* setCreateVaultGenerator ({ asset }: { asset: Asset }) {
+function* setCreateVaultGenerator ({ asset, label }: { asset: Asset, label:string }) {
   try {
     yield* put(setTransactionLoading());
     const { userAddress } = yield* select((state) => state.userInf);
     const contract = yield* call(getBorrowingCoreInstance);
 
-    yield contract.createVault(asset, { from: userAddress });
+    const transaction = yield* call(() => contract.createVault(asset, { from: userAddress }));
     yield put(getBorrowingVaults());
-    yield put(setTransactionLoadingSuccess({ type: TRANSACTION_TYPES.success }));
+
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
@@ -75,7 +75,7 @@ function* getOutstandingDebtGenerator () {
       fillArray(userVaultsCount).map((vaultNum) => contract.getFullDebt(userAddress, vaultNum))
     );
 
-    const outstandingDebt = fullDebts.reduce((sum, curr) => sum as number + Number(fromWei(curr)), 0) as number;
+    const outstandingDebt = fullDebts.reduce((sum, curr) => (sum as number) + Number(fromWei(curr)), 0) as number;
 
     yield* put(getOutstandingDebtSuccess(outstandingDebt));
   } catch (error) {
@@ -88,9 +88,11 @@ function* getTotalSavingBalanceGenerator () {
   try {
     const { userAddress } = yield* select((state) => state.userInf);
     const contract = yield* call(getSavingInstance);
-    const savingAmount = yield* call(() => contract.instance.methods.getBalance().call({
-      from: userAddress,
-    }));
+    const savingAmount = yield* call(() =>
+      contract.instance.methods.getBalance().call({
+        from: userAddress,
+      })
+    );
     yield* put(getTotalSavingBalanceSuccess(fromWei(savingAmount)));
   } catch (error) {
     yield* put(getTotalSavingBalanceError(error));

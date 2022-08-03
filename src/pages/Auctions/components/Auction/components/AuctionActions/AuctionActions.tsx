@@ -39,7 +39,7 @@ function AuctionActions ({ auction, auctionType }: Props) {
         auctionId: (auction as AuctionExecute).auctionId,
         vaultId: (auction as LiquidationAuctionExecute).vaultId,
         vaultOwner: (auction as LiquidationAuctionExecute).vaultOwner,
-      })
+      }, t('AUCTION_EXECUTION_SUCCESS'))
     );
   }
 
@@ -61,13 +61,13 @@ function AuctionActions ({ auction, auctionType }: Props) {
             isBidTime
               ? (
                 <Button className="auction-button" onClick={handleModalOpen}>
-                  <Icon name="hammer"/>
+                  <Icon name="hammer" />
                   <span>{t('BID')}</span>
                 </Button>
               )
               : (
                 <Button className="auction-button" onClick={handleExecuteAuction}>
-                  <Icon name="cross"/>
+                  <Icon name="cross" />
                   <span>{t('EXECUTE')}</span>
                 </Button>
               )

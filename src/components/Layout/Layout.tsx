@@ -3,7 +3,7 @@ import { positions, Provider as AlertProvider, transitions } from 'react-alert';
 
 import Toast from 'ui/Toast';
 
-import LoadingTransaction from 'components/Custom/LoadingTransaction';
+import TransactionModal from 'components/TransactionModal';
 import Header from 'navigation/Header';
 import Sidebar from 'navigation/Sidebar';
 
@@ -24,7 +24,7 @@ function Layout ({ children }: Props) {
         onClose={close}
       />}
       position={positions.TOP_RIGHT}
-      timeout={5000}
+      timeout={8000}
       transition={transitions.SCALE}
       containerStyle={{
         width: 'auto',
@@ -48,7 +48,7 @@ function Layout ({ children }: Props) {
           </main>
         </div>
       </AppContainer>
-      <LoadingTransaction />
+      <TransactionModal/>
     </AlertProvider>
   );
 }

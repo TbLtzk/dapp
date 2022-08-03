@@ -5,7 +5,10 @@ import Icon, { IconName } from 'ui/Icon';
 
 import { ToastContainer } from './styles';
 
-export type ToastType = 'success' | 'error' | 'info';
+export const toastTypes = ['success', 'error', 'info'] as const;
+
+export type ToastType = typeof toastTypes[number];
+
 interface Props extends HTMLAttributes<HTMLDivElement> {
   type?: ToastType
   text: string

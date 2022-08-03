@@ -23,7 +23,7 @@ function WithdrawForm ({ asset }: { asset: string }) {
     initialValues: { amount: '' },
     validators: { amount: [required, amount(currentBalance)] },
     onSubmit: (form) => {
-      dispatch(setSavingWithdraw(form.amount));
+      dispatch(setSavingWithdraw(form.amount, t('WITHDRAW_SAVING_ASSET_SUCCESS')));
     }
   });
   useMetamaskReset(formTypes.savingAssetWithdraw, form.reset);

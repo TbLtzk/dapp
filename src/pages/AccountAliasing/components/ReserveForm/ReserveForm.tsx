@@ -18,8 +18,8 @@ function ReserveForm () {
     initialValues: { address: '' },
     validators: { address: [required, address] },
     onSubmit: (form) => {
-      dispatch(reserveAlias(form.address));
-    }
+      dispatch(reserveAlias(form.address, t('RESERVE_ALIAS_SUCCESS')));
+    },
   });
 
   return (

@@ -1,11 +1,12 @@
 import { call, put, select, takeEvery } from 'typed-redux-saga';
 import { ApproveType, Asset, BorrowAction, BorrowActionDepositWithdraw } from 'typings/defi';
+import { TransactionReceipt } from 'web3-eth';
 
 import {
   setTransactionLoading,
   setTransactionLoadingError,
   setTransactionLoadingSuccess,
-} from '../transaction-handler/action-creators';
+} from '../transaction-handler/actions';
 
 import { getOutstandingDebt, getTotalSavingBalance } from './../borrowing-core/actions';
 import {
@@ -28,7 +29,7 @@ import formTypes from 'constants/form-types';
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei, toWei } from 'func/balance';
-import { captureError, getErrorMessage } from 'func/errors';
+import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
 
 function* getBorrowVaultGenerator ({ vaultId }: { vaultId: number | string }) {
   try {
@@ -66,32 +67,48 @@ function* getBorrowAllowanceGenerator ({ borrowType, asset }: { borrowType: Appr
   }
 }
 
-function* setBorrowAproveGenerator ({ borrowType, asset }: { borrowType: ApproveType; asset: Asset }) {
+function* setBorrowAproveGenerator ({
+  borrowType,
+  asset,
+  label,
+}: {
+  borrowType: ApproveType;
+  asset: Asset;
+  label: string;
+}) {
   try {
     yield* put(setTransactionLoading());
 
     const { userAddress } = yield* select((state) => state.userInf);
     const borrowingContract = yield* call(getBorrowingCoreInstance);
     const contract = yield* call(getDeFiContractByType, borrowType, asset);
+    let transaction = {} as TransactionReceipt;
     if (borrowType === 'deposit') {
-      yield* call(() => contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT).send({ from: userAddress }));
+      transaction = yield* call(
+        (): Promise<TransactionReceipt> =>
+          contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT).send({ from: userAddress })
+      );
     } else {
-      yield* call(() => contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT, { from: userAddress }));
+      transaction = yield* call(
+        (): Promise<TransactionReceipt> =>
+          contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT, { from: userAddress })
+      );
     }
     yield* put(getBorrowAllowance(borrowType, asset));
-    yield* put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setBorrowAsBorrowGenerator ({ amount, vaultId }: BorrowAction) {
+function* setBorrowAsBorrowGenerator ({ amount, vaultId, label }: BorrowAction) {
   try {
     yield* put(setTransactionLoading());
     const { userAddress } = yield* select((state) => state.userInf);
     const contract = yield* call(getBorrowingCoreInstance);
-    yield* call(() => contract.generateStc(vaultId, toWei(amount), { from: userAddress }));
+    const transaction = yield* call(() => contract.generateStc(vaultId, toWei(amount), { from: userAddress }));
 
     yield* put(getBorrowVault(vaultId));
 
@@ -99,67 +116,67 @@ function* setBorrowAsBorrowGenerator ({ amount, vaultId }: BorrowAction) {
     yield* put(getTotalSavingBalance());
     yield* put(getSavingAviableToDeposit());
 
-    yield* put(setTransactionLoadingSuccess({ type: formTypes.borrowAssetBorrow }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setBorrowRepayGenerator ({ amount, vaultId }: BorrowAction) {
+function* setBorrowRepayGenerator ({ amount, vaultId, label }: BorrowAction) {
   try {
     yield* put(setTransactionLoading());
     const { userAddress } = yield* select((state) => state.userInf);
     const contract = yield* call(getBorrowingCoreInstance);
-    yield* call(() => contract.payBackStc(vaultId, toWei(amount), { from: userAddress }));
+    const transaction = yield* call(() => contract.payBackStc(vaultId, toWei(amount), { from: userAddress }));
 
     yield* put(getBorrowVault(vaultId));
     yield* put(getOutstandingDebt());
     yield* put(getTotalSavingBalance());
     yield* put(getSavingAviableToDeposit());
 
-    yield* put(setTransactionLoadingSuccess({ type: formTypes.borrowAssetRepay }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.borrowAssetRepay, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setBorrowDepositGenerator ({ amount, vaultId, decimals }: BorrowActionDepositWithdraw) {
-  try {
-    yield* put(setTransactionLoading());
-    const { userAddress } = yield* select((state) => state.userInf);
-    const contract = yield* call(getBorrowingCoreInstance);
-    const convertAmount = convertToBigAmount(decimals);
-    yield* call(() => contract.depositCol(vaultId, convertAmount(amount), { from: userAddress }));
-
-    yield* put(getBorrowVault(vaultId));
-    yield* put(getOutstandingDebt());
-    yield* put(getTotalSavingBalance());
-    yield* put(getSavingAviableToDeposit());
-
-    yield* put(setTransactionLoadingSuccess({ type: formTypes.borrowAssetDeposit }));
-  } catch (error) {
-    captureError(error);
-    yield put(setTransactionLoadingError(getErrorMessage(error)));
-  }
-}
-
-function* setBorrowWithdrawGenerator ({ amount, vaultId, decimals }: BorrowActionDepositWithdraw) {
+function* setBorrowDepositGenerator ({ amount, vaultId, decimals, label }: BorrowActionDepositWithdraw) {
   try {
     yield* put(setTransactionLoading());
     const { userAddress } = yield* select((state) => state.userInf);
     const contract = yield* call(getBorrowingCoreInstance);
     const convertAmount = convertToBigAmount(decimals);
-
-    yield* call(() => contract.withdrawCol(vaultId, convertAmount(amount), { from: userAddress }));
+    const transaction = yield* call(() => contract.depositCol(vaultId, convertAmount(amount), { from: userAddress }));
 
     yield* put(getBorrowVault(vaultId));
     yield* put(getOutstandingDebt());
     yield* put(getTotalSavingBalance());
     yield* put(getSavingAviableToDeposit());
 
-    yield* put(setTransactionLoadingSuccess({ type: formTypes.borrowAssetWithdraw }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.borrowAssetDeposit, transaction, label)));
+  } catch (error) {
+    captureError(error);
+    yield put(setTransactionLoadingError(getErrorMessage(error)));
+  }
+}
+
+function* setBorrowWithdrawGenerator ({ amount, vaultId, decimals, label }: BorrowActionDepositWithdraw) {
+  try {
+    yield* put(setTransactionLoading());
+    const { userAddress } = yield* select((state) => state.userInf);
+    const contract = yield* call(getBorrowingCoreInstance);
+    const convertAmount = convertToBigAmount(decimals);
+
+    const transaction = yield* call(() => contract.withdrawCol(vaultId, convertAmount(amount), { from: userAddress }));
+
+    yield* put(getBorrowVault(vaultId));
+    yield* put(getOutstandingDebt());
+    yield* put(getTotalSavingBalance());
+    yield* put(getSavingAviableToDeposit());
+
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.borrowAssetWithdraw, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));

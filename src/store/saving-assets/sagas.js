@@ -16,7 +16,7 @@ import {
   setTransactionLoading,
   setTransactionLoadingError,
   setTransactionLoadingSuccess,
-} from 'store/transaction-handler/action-creators';
+} from 'store/transaction-handler/actions';
 
 import { getSavingInstance, getStableCoinInstance } from 'contracts/contract-instance';
 import { getSavingBalanceDetailsHelper } from 'contracts/helpers/saving-assets-helper';
@@ -25,7 +25,7 @@ import formTypes from 'constants/form-types';
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei, toWei } from 'func/balance';
-import { captureError, getErrorMessage } from 'func/errors';
+import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
 
 function* getSavingAllowanceGenerator () {
   try {
@@ -65,12 +65,12 @@ function* getSavingAviableToDepositGenerator () {
   }
 }
 
-function* setSavingDepositGenerator ({ amount }) {
+function* setSavingDepositGenerator ({ amount, label }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getSavingInstance);
-    yield contract.deposit(toWei(amount), { from: userAddress });
+    const transaction = yield contract.deposit(toWei(amount), { from: userAddress });
 
     yield put(getSavingBalanceDetails());
 
@@ -81,20 +81,20 @@ function* setSavingDepositGenerator ({ amount }) {
 
     yield put(getSavingAssets());
 
-    yield put(setTransactionLoadingSuccess({ type: formTypes.savingAssetDeposit }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.savingAssetDeposit, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setSavingWithdrawGenerator ({ amount }) {
+function* setSavingWithdrawGenerator ({ amount, label }) {
   try {
     yield put(setTransactionLoading());
 
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getSavingInstance);
-    yield contract.withdraw(toWei(amount), { from: userAddress });
+    const transaction = yield contract.withdraw(toWei(amount), { from: userAddress });
 
     yield put(getSavingBalanceDetails());
 
@@ -105,20 +105,20 @@ function* setSavingWithdrawGenerator ({ amount }) {
 
     yield put(getSavingAssets());
 
-    yield put(setTransactionLoadingSuccess({ type: formTypes.savingAssetWithdraw }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.savingAssetWithdraw, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setSavingAproveGenerator () {
+function* setSavingAproveGenerator ({ label }) {
   try {
     yield put(setTransactionLoading());
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getStableCoinInstance);
     const contractSaving = yield call(getSavingInstance);
-    yield contract.approve(contractSaving.address, MAX_APPROVE_AMOUNT, { from: userAddress });
+    const transaction = yield contract.approve(contractSaving.address, MAX_APPROVE_AMOUNT, { from: userAddress });
 
     yield put(getSavingBalanceDetails());
 
@@ -129,7 +129,7 @@ function* setSavingAproveGenerator () {
 
     yield put(getSavingAssets());
 
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
@@ -144,5 +144,4 @@ export default [
   takeEvery(actionTypes.GET_SAVING_BALANCE_DETAILS, getSavingBalanceDetailsGenerator),
   takeEvery(actionTypes.GET_SAVING_AVIABLE_TO_DEPOSIT, getSavingAviableToDepositGenerator),
   takeEvery(actionTypes.GET_SAVING_ALLOWANCE, getSavingAllowanceGenerator),
-
 ];

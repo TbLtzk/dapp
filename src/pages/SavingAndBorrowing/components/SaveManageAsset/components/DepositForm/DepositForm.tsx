@@ -26,7 +26,7 @@ function DepositForm ({ asset }: { asset: string }) {
     initialValues: { amount: '' },
     validators: { amount: [required, amount(availableAmount)] },
     onSubmit: (form) => {
-      dispatch(setSavingDeposit(form.amount));
+      dispatch(setSavingDeposit(form.amount, t('DEPOSIT_SAVING_ASSET_SUCCESS')));
     },
   });
 

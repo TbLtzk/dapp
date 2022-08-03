@@ -20,7 +20,7 @@ function AnnounceForm () {
     initialValues: { address: '' },
     validators: { address: [required, address] },
     onSubmit: (form) => {
-      dispatch(setAnnounceNewVotingAgent(form.address));
+      dispatch(setAnnounceNewVotingAgent(form.address, t('ANNOUNCE_NEW_VOTING_AGENT_SUCCESS')));
     }
   });
   useMetamaskReset(formTypes.qVaultAnnounce, form.reset);

@@ -30,9 +30,8 @@ function QTokenRewardUpdate () {
       setQHolderTimeUpdateTime(remainDateTimeSince(qHolderTimeUpdate));
     }
   }, [qHolderTimeUpdate]);
-
   useEffect(() => {
-    dispatch(getQHolderTimeUpdate(false));
+    dispatch(getQHolderTimeUpdate(false, t('TIME_SINCE_Q_TOKEN_HOLDER_REWARD_UPDATE_SUCCESS')));
   }, []);
 
   const handleQHolderTimeUpdate = () => {
@@ -43,12 +42,8 @@ function QTokenRewardUpdate () {
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div>
-          <p className="text-sm color-secondary">
-            {t('TIME_SINCE_Q_TOKEN_HOLDER_REWARD_UPDATE')}
-          </p>
-          <p className="text-lg font-semibold">
-            {qHolderTimeUpdateTime || '0 day(s) 0 hours 0 minutes'}
-          </p>
+          <p className="text-sm color-secondary">{t('TIME_SINCE_Q_TOKEN_HOLDER_REWARD_UPDATE')}</p>
+          <p className="text-lg font-semibold">{qHolderTimeUpdateTime || '0 day(s) 0 hours 0 minutes'}</p>
         </div>
 
         <div>

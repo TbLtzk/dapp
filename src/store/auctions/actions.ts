@@ -1,23 +1,38 @@
-import { AuctionInfos, AuctionType, BidForAuctionForm, CreateAuctionForm, ExecuteAuctionForm, } from 'typings/auctions';
+import { AuctionInfos, AuctionType, BidForAuctionForm, CreateAuctionForm, ExecuteAuctionForm } from 'typings/auctions';
 
 import * as types from './types';
 
-export const bidForAuction = (auctionType: AuctionType, form: BidForAuctionForm): types.BidForAuction => ({
+export const bidForAuction = (
+  auctionType: AuctionType,
+  form: BidForAuctionForm,
+  label: string
+): types.BidForAuction => ({
   type: 'BID_FOR_AUCTION',
   auctionType,
   form,
+  label,
 });
 
-export const executeAuction = (auctionType: AuctionType, form: ExecuteAuctionForm): types.ExecuteAuction => ({
+export const executeAuction = (
+  auctionType: AuctionType,
+  form: ExecuteAuctionForm,
+  label: string
+): types.ExecuteAuction => ({
   type: 'EXECUTE_AUCTION',
   auctionType,
   form,
+  label,
 });
 
-export const createAuction = (auctionType: AuctionType, form: CreateAuctionForm): types.CreateAuction => ({
+export const createAuction = (
+  auctionType: AuctionType,
+  form: CreateAuctionForm,
+  label: string
+): types.CreateAuction => ({
   type: 'CREATE_AUCTION',
   form,
   auctionType,
+  label,
 });
 
 export const getAuctions = (auctionType: AuctionType): types.GetAuctions => ({

@@ -34,9 +34,9 @@ const formTypes = {
   proposerRemark: 'proposer-remark',
   proposeDecision: 'propose-decision',
 
-  liquidationAuction: 'liquidation-auction',
-  debtAuction: 'debt-auction',
-  surplusAuction: 'surplus-auction',
+  systemSurplus: 'systemSurplus',
+  liquidation: 'liquidation',
+  systemDebt: 'systemDebt',
   executeAuction: 'execute-auction',
   bidForAuction: 'bid-for-auction'
 };

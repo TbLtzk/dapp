@@ -2,9 +2,10 @@ import { Asset, BorrowAssetsRateAndFee, SavingAssets, VaultWithFee } from 'typin
 
 import * as types from './types';
 
-export const setCreateVault = (asset: Asset): types.SetCreateVault => ({
+export const setCreateVault = (asset: Asset, label: string): types.SetCreateVault => ({
   type: 'SET_CREATE_VAULT',
   asset,
+  label,
 });
 
 export const getBorrowingVaults = (): types.GetBorrowingVaults => ({

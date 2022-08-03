@@ -30,12 +30,14 @@ export const setVestingTimeLocks = (data) => ({
   payload: data
 });
 
-export const setVestingWithdraw = (data) => ({
+export const setVestingWithdraw = (data, label) => ({
   type: actionTypes.SET_VESTING_WITHDRAW,
-  amountQ: data
+  amountQ: data,
+  label
 });
 
-export const setVestingDeposit = (data) => ({
+export const setVestingDeposit = (data, label) => ({
   type: actionTypes.SET_VESTING_DEPOSIT,
-  payload: data
+  payload: data,
+  label
 });

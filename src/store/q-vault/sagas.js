@@ -26,7 +26,7 @@ import {
   setTransactionLoading,
   setTransactionLoadingError,
   setTransactionLoadingSuccess,
-} from 'store/transaction-handler/action-creators';
+} from 'store/transaction-handler/actions';
 
 import { getQVaultInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance';
 import { getOutstandingDelegationRewardsList, getQHolderRewardPool } from 'contracts/helpers/q-vault-helper';
@@ -35,7 +35,7 @@ import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei, prepareBalanceDetails, toWei } from 'func/balance';
 import { getNowTimestamp } from 'func/convertDate';
-import { captureError, getErrorMessage } from 'func/errors';
+import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
 import { addIndex } from 'func/useful';
 
 // rename: getBalanceInWalletGenerator
@@ -70,13 +70,13 @@ function* getLockedAssetsGenerator ({ address }) {
     captureError(error);
   }
 }
-
-function* setDepositGenerator ({ address, amountQ }) {
+function* setDepositGenerator ({ address, amountQ, label }) {
   try {
     yield put(setTransactionLoading(1));
 
     const contract = yield call(getQVaultInstance);
-    yield contract.deposit({
+
+    const transaction = yield contract.deposit({
       value: toWei(amountQ),
       from: address,
     });
@@ -84,76 +84,77 @@ function* setDepositGenerator ({ address, amountQ }) {
     yield put(getUserBalance(address));
     yield put(getAccountBalance(address));
 
-    yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultDeposit }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.qVaultDeposit, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setSendGenerator ({ address, amount }) {
+function* setSendGenerator ({ address, amount, label }) {
   try {
     yield put(setTransactionLoading());
 
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getQVaultInstance);
-    yield contract.transfer(address, toWei(amount));
+    const transaction = yield contract.transfer(address, toWei(amount));
 
     yield put(getUserBalance(userAddress));
     yield put(getAccountBalance(userAddress));
-    yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultSend }));
+
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.qVaultSend, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setWithdrawGenerator ({ address, amountQ }) {
+function* setWithdrawGenerator ({ address, amountQ, label }) {
   try {
     yield put(setTransactionLoading(1));
 
     const contract = yield call(getQVaultInstance);
-    yield contract.withdraw(toWei(amountQ), { from: address });
+    const transaction = yield contract.withdraw(toWei(amountQ), { from: address });
 
     yield put(getUserBalance(address));
     yield put(getAccountBalance(address));
 
-    yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultWithdraw }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.qVaultWithdraw, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setDelegateStakeGenerator ({ address, delegateAddresses, stakes }) {
+function* setDelegateStakeGenerator ({ address, delegateAddresses, stakes, label }) {
   try {
     yield put(setTransactionLoading());
 
     const { userAddress } = yield select((state) => state.userInf);
 
     const contract = yield call(getQVaultInstance);
-    yield contract.delegateStake(delegateAddresses, stakes, { from: address });
+    const transaction = yield contract.delegateStake(delegateAddresses, stakes, { from: address });
 
     yield put(getOutstandingDelegationRewards());
     yield put(getDelegationsList());
     yield put(getAccountBalance(userAddress));
     yield put(getDelegationInfo(userAddress));
 
-    yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultDelegation }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.qVaultDelegation, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setLockAmountGenerator ({ address, amountQ }) {
+function* setLockAmountGenerator ({ address, amountQ, label }) {
   try {
     yield put(setTransactionLoading(1));
 
     const { userAddress } = yield select((state) => state.userInf);
 
     const contract = yield call(getQVaultInstance);
-    yield contract.lock(toWei(amountQ), { from: address });
+    const transaction = yield contract.lock(toWei(amountQ), { from: address });
 
     yield put(getUserBalance(address));
     yield put(getAccountBalance(address));
@@ -161,26 +162,32 @@ function* setLockAmountGenerator ({ address, amountQ }) {
     yield put(getDelegationInfo(userAddress));
 
     yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultLock }));
+
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.qVaultLock, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setUnlockAmountGenerator ({ address, amountQ }) {
+function* setUnlockAmountGenerator ({ address, amountQ, label }) {
   try {
     yield put(setTransactionLoading());
 
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getQVaultInstance);
-    yield contract.unlock(toWei(amountQ), { from: address });
+    const transaction = yield contract.unlock(toWei(amountQ), { from: address });
 
     yield put(getUserBalance(address));
     yield put(getAccountBalance(address));
     yield put(getLockedAssets(address));
     yield put(getDelegationInfo(userAddress));
 
-    yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultUnlock }));
+    yield put(
+      setTransactionLoadingSuccess(
+        getSuccessMessage(formTypes.qVaultUnlock, transaction, label)
+      )
+    );
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
@@ -234,19 +241,19 @@ function* getQVaultTimeLocksGenerator ({ address }) {
   }
 }
 
-function* setOnClaimStakeDelegatorRewardGenerator () {
+function* setOnClaimStakeDelegatorRewardGenerator ({ label }) {
   try {
     yield put(setTransactionLoading());
 
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getQVaultInstance);
-    yield contract.claimStakeDelegatorReward({ from: userAddress });
+    const transaction = yield contract.claimStakeDelegatorReward({ from: userAddress });
 
     yield put(getOutstandingDelegationRewards());
     yield put(getDelegationsList());
     yield put(getAccountBalance(userAddress));
 
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
@@ -277,38 +284,38 @@ function* getDelegationInfoGenerator ({ address }) {
   }
 }
 
-function* setAnnounceNewVotingAgentGenerator ({ address }) {
+function* setAnnounceNewVotingAgentGenerator ({ address, label }) {
   try {
     yield put(setTransactionLoading());
 
     const { userAddress } = yield select((state) => state.userInf);
 
     const contract = yield call(getVotingWeightProxyInstance);
-    yield contract.announceNewVotingAgent(address);
+    const transaction = yield contract.announceNewVotingAgent(address);
 
     yield put(getDelegationInfo(userAddress));
     yield put(getAccountBalance(userAddress));
 
-    yield put(setTransactionLoadingSuccess({ type: formTypes.qVaultAnnounce }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.qVaultAnnounce, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setNewVotingAgentGenerator () {
+function* setNewVotingAgentGenerator ({ label }) {
   try {
     yield put(setTransactionLoading());
 
     const { userAddress } = yield select((state) => state.userInf);
 
     const contract = yield call(getVotingWeightProxyInstance);
-    yield contract.setNewVotingAgent();
+    const transaction = yield contract.setNewVotingAgent();
 
     yield put(getDelegationInfo(userAddress));
     yield put(getAccountBalance(userAddress));
 
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));

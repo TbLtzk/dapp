@@ -20,7 +20,7 @@ function DelegationRewards () {
   }, [dispatch]);
 
   function handleClaim () {
-    dispatch(onClaimStakeDelegatorReward());
+    dispatch(onClaimStakeDelegatorReward(t('ON_OUTSTANDING_DELEGATION_REWARDS_SUCCESS')));
   }
 
   return (

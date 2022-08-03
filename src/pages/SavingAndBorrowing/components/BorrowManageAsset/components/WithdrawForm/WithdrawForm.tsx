@@ -14,7 +14,7 @@ import { borrowVaultSelector } from 'store/borrow-assets/selectors';
 import formTypes from 'constants/form-types';
 import { amount, required } from 'func/validators';
 
-function WithdrawForm ({ vault }: {vault: VaultWithFee}) {
+function WithdrawForm ({ vault }: { vault: VaultWithFee }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -24,7 +24,9 @@ function WithdrawForm ({ vault }: {vault: VaultWithFee}) {
     initialValues: { amount: '' },
     validators: { amount: [required, amount(collateralDetails.availableWithdraw)] },
     onSubmit: (form) => {
-      dispatch(setBorrowWithdraw(form.amount, vault.vaultNum, collateralDetails.decimals));
+      dispatch(
+        setBorrowWithdraw(form.amount, vault.vaultNum, collateralDetails.decimals, t('WITHDRAW_COLLATERAL_SUCCESS'))
+      );
     },
   });
   useMetamaskReset(formTypes.borrowAssetWithdraw, form.reset);

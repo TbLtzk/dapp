@@ -8,7 +8,7 @@ import {
   setTransactionLoading,
   setTransactionLoadingError,
   setTransactionLoadingSuccess,
-} from 'store/transaction-handler/action-creators';
+} from 'store/transaction-handler/actions';
 
 import { getVestingInstance } from 'contracts/contract-instance';
 
@@ -17,7 +17,7 @@ import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei, toWei } from 'func/balance';
 import { getNowTimestamp } from 'func/convertDate';
-import { captureError, getErrorMessage } from 'func/errors';
+import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
 import { addIndex } from 'func/useful';
 
 function* getVestingBalanceGenerator ({ address }) {
@@ -60,17 +60,18 @@ function* setVestingDepositGenerator () {
   }
 }
 
-function* setVestingWithdrawGenerator ({ amountQ }) {
+function* setVestingWithdrawGenerator ({ amountQ, label }) {
   try {
     yield put(setTransactionLoading());
 
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getVestingInstance);
 
-    yield contract.withdraw(toWei(amountQ), { from: userAddress });
+    const transaction = yield contract.withdraw(toWei(amountQ), { from: userAddress });
 
     yield call(getAmountOnContract, CONTRACT_TYPES.vesting, userAddress);
-    yield put(setTransactionLoadingSuccess({ type: formTypes.vestingWithdraw }));
+
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.vestingWithdraw, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));

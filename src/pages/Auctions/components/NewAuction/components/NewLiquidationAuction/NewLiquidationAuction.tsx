@@ -38,7 +38,7 @@ function NewLiquidationAuction () {
   const form = useMultiStepForm({
     initialValues: DEFAULT_VALUES,
     onConfirm: (values) => {
-      dispatch(createAuction('liquidation', values,));
+      dispatch(createAuction('liquidation', values, t('CREATE_LIQUDATION_AUCTION_SUCCESS')));
     },
   });
 

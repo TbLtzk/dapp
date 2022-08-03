@@ -32,7 +32,7 @@ function ProposeDecisionForm ({ proposal }: Props) {
       isAppealNeglected: [],
     },
     onSubmit: (form) => {
-      dispatch(onEscrowProposeDecision(form, proposal.contract, proposal.id));
+      dispatch(onEscrowProposeDecision(form, proposal.contract, proposal.id, t('PROPOSE_DECISION_SUCCESS')));
     },
   });
 
