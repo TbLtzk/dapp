@@ -38,11 +38,7 @@ function AllocationProxy () {
   const loadingRootNodeRewardProxy = useSelector(rootNodeRewardProxyLoadingSelector);
   const rootNodeRewardProxyRef = useAnimateNumber(rootNodeRewardProxy);
 
-  useInterval(() => {
-    if (!defaultAllocationProxyLoading) {
-      dispatch(getDefaultAllocationProxy(false));
-    }
-  }, 5000);
+  useInterval(() => dispatch(getDefaultAllocationProxy(false)), 5000, defaultAllocationProxyLoading);
 
   useEffect(() => {
     dispatch(getDefaultAllocationProxy(false));
@@ -51,15 +47,15 @@ function AllocationProxy () {
   }, []);
 
   const handleAllocateDefault = () => {
-    dispatch(getDefaultAllocationProxy(true));
+    dispatch(getDefaultAllocationProxy(true, t('DEFAULT_ALLOCATION_PROXY_SUCCESS')));
   };
 
   const handleAllocateValidator = () => {
-    dispatch(getValidationRewardProxy(true));
+    dispatch(getValidationRewardProxy(true, t('VALIDATON_REWARD_PROXY_SUCCESS')));
   };
 
   const handleAllocateRootNode = () => {
-    dispatch(getRootNodeRewardProxy(true));
+    dispatch(getRootNodeRewardProxy(true, t('ROOT_NODE_REWARD_PROXY_SUCCESS')));
   };
 
   const allocationArray = [
@@ -89,13 +85,12 @@ function AllocationProxy () {
   return (
     <>
       {allocationArray.map((item) => (
-        <div
-          key={item.id}
-          style={{ display: 'flex', justifyContent: 'space-between' }}
-        >
+        <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
             <p className="text-sm color-secondary">{item.title}</p>
-            <p ref={item.ref} className="text-lg font-semibold">0 Q</p>
+            <p ref={item.ref} className="text-lg font-semibold">
+              0 Q
+            </p>
           </div>
 
           <Button
@@ -108,7 +103,6 @@ function AllocationProxy () {
           </Button>
         </div>
       ))}
-      <div className="block__line" />
     </>
   );
 }

@@ -2,6 +2,7 @@ import { ProposalStatus } from '@q-dev/q-js-sdk';
 import { call, delay, put, select, takeEvery } from 'typed-redux-saga';
 import { CreateProposalForm } from 'typings/forms';
 import { FormProposalType } from 'typings/proposals';
+import { TransactionReceipt } from 'web3-eth';
 
 import {
   getBaseVotingWeightInfo,
@@ -21,7 +22,7 @@ import {
   setTransactionLoading,
   setTransactionLoadingError,
   setTransactionLoadingSuccess,
-} from 'store/transaction-handler/action-creators';
+} from 'store/transaction-handler/actions';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import { getConstitutionVotingInstance, getInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance';
@@ -31,7 +32,7 @@ import { ZERO_ADDRESS } from 'constants/config';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { getNowTimestamp } from 'func/convertDate';
-import { captureError, getErrorMessage } from 'func/errors';
+import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
 import { getMinimalActiveBlockHeight } from 'func/useful';
 
 function getProposalTypeFromFormType (type: CreateProposalForm['type']): FormProposalType {
@@ -61,9 +62,7 @@ function* getProposalsGenerator ({ proposalType }: types.GetProposals) {
     const { minimalActiveBlockHeight, lastBlockHeight } = yield* call(getMinimalActiveBlockHeight);
 
     const { proposals, lastBlock } = yield* select(proposalsByTypeSelector(proposalType));
-    const newProposals = yield* call(
-      () => getProposalEvents(proposalType, proposals, lastBlock)
-    );
+    const newProposals = yield* call(() => getProposalEvents(proposalType, proposals, lastBlock));
 
     yield* put(setProposals(proposalType, newProposals, Number(lastBlockHeight)));
     yield* put(setMinimalActiveBlock(minimalActiveBlockHeight));
@@ -72,12 +71,12 @@ function* getProposalsGenerator ({ proposalType }: types.GetProposals) {
   }
 }
 
-function* createProposalGenerator ({ form }: types.CreateProposal) {
+function* createProposalGenerator ({ form, label }: types.CreateProposal) {
   try {
     yield* put(setTransactionLoading());
 
     const userAddress = yield* select(userAddressMetamask);
-    yield createProposal(form, userAddress);
+    const transaction = yield* call(() => createProposal(form, userAddress));
 
     yield* put(getBaseVotingWeightInfo());
     yield* put(getDelegationInfo(userAddress));
@@ -92,14 +91,14 @@ function* createProposalGenerator ({ form }: types.CreateProposal) {
       slashing: formTypes.slashingProposal,
     };
 
-    yield* put(setTransactionLoadingSuccess({ type: formTypesMap[proposalType] }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypesMap[proposalType], transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* voteForProposalGenerator ({ payload }: types.VoteForProposal) {
+function* voteForProposalGenerator ({ payload, label }: types.VoteForProposal) {
   const { proposal, type, isVotedFor } = payload;
 
   try {
@@ -109,23 +108,25 @@ function* voteForProposalGenerator ({ payload }: types.VoteForProposal) {
     if (userAddress === ZERO_ADDRESS) return;
 
     const contract = yield* call(() => getInstance(proposal.contract)());
+    let transaction = {} as TransactionReceipt;
     switch (type) {
       case 'approve':
         if ('aprove' in contract) {
-          yield contract.aprove(proposal.id, { from: userAddress });
+          transaction = yield* call(() => contract.aprove(proposal.id, { from: userAddress }));
         }
         break;
       case 'constitution':
         if ('veto' in contract) {
-          yield contract.veto(proposal.id, { from: userAddress });
+          transaction = yield* call(() => contract.veto(proposal.id, { from: userAddress }));
         }
         break;
-
       case 'basic':
         if ('voteFor' in contract && 'voteAgainst' in contract) {
-          yield isVotedFor
-            ? contract.voteFor(proposal.id, { from: userAddress })
-            : contract.voteAgainst(proposal.id, { from: userAddress });
+          transaction = yield* call(() =>
+            isVotedFor
+              ? contract.voteFor(proposal.id, { from: userAddress })
+              : contract.voteAgainst(proposal.id, { from: userAddress })
+          );
         }
         break;
     }
@@ -134,34 +135,31 @@ function* voteForProposalGenerator ({ payload }: types.VoteForProposal) {
     yield* put(getDelegationInfo(userAddress));
     yield* put(getLockedAssets(userAddress));
 
-    yield* put(setTransactionLoadingSuccess({
-      type: formTypes.vote,
-      transactionType: TRANSACTION_TYPES.success,
-    }));
+    yield* put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.vote, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* executeProposalGenerator ({ proposal }: types.ExecuteProposal) {
+function* executeProposalGenerator ({ proposal, label }: types.ExecuteProposal) {
   try {
     yield* put(setTransactionLoading());
 
     const { userAddress } = yield* select((state) => state.userInf);
     if (userAddress === ZERO_ADDRESS) return;
-
+    let transaction = {} as TransactionReceipt;
     const contract = yield* call(() => getInstance(proposal.contract)());
     const promiseStatus = yield* call(() => contract.getStatus(proposal.id));
     if (promiseStatus === ProposalStatus.PASSED && 'execute' in contract) {
-      yield contract.execute(proposal.id, { from: userAddress });
+      transaction = yield* call(() => contract.execute(proposal.id, { from: userAddress }));
     }
 
     yield* put(getProposalsByType(proposal.contract));
     yield* put(getBaseVotingWeightInfo());
     yield* put(getDelegationInfo(userAddress));
 
-    yield* put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));

@@ -7,7 +7,7 @@ import * as types from './types';
 
 export const getProposals = (proposalType: ProposalType): types.GetProposals => ({
   type: 'GET_PROPOSALS',
-  proposalType
+  proposalType,
 });
 
 export const setProposals = (
@@ -18,61 +18,67 @@ export const setProposals = (
   type: 'SET_PROPOSALS',
   proposalType,
   proposals,
-  lastBlock
+  lastBlock,
 });
 
 export const setMinimalActiveBlock = (block: number): types.SetMinimalActiveBlock => ({
   type: 'SET_MINIMAL_ACTIVE_BLOCK',
-  block
+  block,
 });
 
-export const createProposal = (form: CreateProposalForm): types.CreateProposal => ({
+export const createProposal = (form: CreateProposalForm, label: string): types.CreateProposal => ({
   type: 'CREATE_PROPOSAL',
-  form
+  form,
+  label,
 });
 
-export const voteForProposal = (payload: {
-  type: VotingType
-  proposal: Proposal
-  isVotedFor?: boolean
-}): types.VoteForProposal => ({
+export const voteForProposal = (
+  payload: {
+    type: VotingType;
+    proposal: Proposal;
+    isVotedFor?: boolean;
+  },
+  label: string
+): types.VoteForProposal => ({
   type: 'VOTE_FOR_PROPOSAL',
-  payload
+  payload,
+  label,
 });
 
-export const executeProposal = (proposal: Proposal): types.ExecuteProposal => ({
+export const executeProposal = (proposal: Proposal, label: string): types.ExecuteProposal => ({
   type: 'EXECUTE_PROPOSAL',
-  proposal
+  proposal,
+  label,
 });
 
 export const getNumberAllProposals = (): types.GetNumberAllProposals => ({
-  type: 'GET_NUMBER_ALL_ENDED_PROPOSALS'
+  type: 'GET_NUMBER_ALL_ENDED_PROPOSALS',
 });
 
 export const getConstitutionHash = (): types.GetConstitutionHash => ({
-  type: 'GET_CONSTITUTION_HASH'
+  type: 'GET_CONSTITUTION_HASH',
 });
 
 export const getConstitutionHashSuccess = (result: any): types.GetConstitutionHashSuccess => ({
   type: 'GET_CONSTITUTION_HASH_SUCCESS',
-  result
+  result,
 });
 
 export const getBaseVotingWeightInfo = (): types.GetBaseVotingWeightInfo => ({
-  type: 'GET_BASE_VOTING_WEIGHT_INFO'
+  type: 'GET_BASE_VOTING_WEIGHT_INFO',
 });
 
 export const setBaseVotingWeightInfo = (data: BaseVotingWeightInfo): types.SetBaseVotingWeightInfo => ({
   type: 'SET_BASE_VOTING_WEIGHT_INFO',
-  payload: data
+  payload: data,
 });
 
 export const getProposalsByType = (contractName: any): types.GetProposalsByType => ({
   type: 'GET_PROPOSALS_BY_TYPE',
-  contractName
+  contractName,
 });
 
 export const setNewParameter = (result: any): types.SetNewParameter => ({
   type: 'SET_NEW_PARAMETER',
-  result
+  result,
 });

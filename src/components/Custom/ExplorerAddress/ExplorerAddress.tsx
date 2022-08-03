@@ -27,7 +27,7 @@ function ExplorerAddress ({
         href={`${explorerUrl}/address/${address}`}
         target="_blank"
         rel="noreferrer"
-        title="View on explorer"
+        title="View on Explorer"
       >
         <p className="ellipsis" style={{ marginBottom: 0 }}>
           {short ? trimAddress(address) : address}

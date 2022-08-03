@@ -35,7 +35,7 @@ function DelegateVoting () {
   }, []);
 
   async function handleDelegate () {
-    dispatch(setNewVotingAgent());
+    dispatch(setNewVotingAgent(t('DELEGATE_VOTING_POWER_SUCCESS')));
   }
 
   return (

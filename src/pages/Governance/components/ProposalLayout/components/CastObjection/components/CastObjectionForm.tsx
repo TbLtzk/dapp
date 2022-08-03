@@ -23,7 +23,7 @@ function CastObjectionForm ({ proposal }: Props) {
     initialValues: { externalLink: '' },
     validators: { externalLink: [url] },
     onSubmit: (form) => {
-      dispatch(onEscrowCastObjection(form, proposal.contract, proposal.id));
+      dispatch(onEscrowCastObjection(form, proposal.contract, proposal.id, t('CAST_OBJECTION_SUCCESS')));
     }
   });
 

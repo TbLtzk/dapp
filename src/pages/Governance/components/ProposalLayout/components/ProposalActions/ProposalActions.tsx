@@ -17,20 +17,17 @@ import VoteForm from './components/VoteForm';
 import {
   isUserEPDRMembershipSelector,
   isUserEPQFIMembershipSelector,
-  isUserEPRSMembershipSelector
+  isUserEPRSMembershipSelector,
 } from 'store/membership/selectors';
 import { isUserRootNode } from 'store/root-node/selectors';
-import {
-  executeProposal,
-  voteForProposal
-} from 'store/voting/proposals/actions';
+import { executeProposal, voteForProposal } from 'store/voting/proposals/actions';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
 
 interface Props {
-  proposal: Proposal
-  title: string
+  proposal: Proposal;
+  title: string;
 }
 
 function ProposalActions ({ proposal, title }: Props) {
@@ -51,15 +48,12 @@ function ProposalActions ({ proposal, title }: Props) {
 
   const isContractWithoutVeto = [
     CONTRACTS_NAMES.validatorsSlashingVoting,
-    CONTRACTS_NAMES.emergencyUpdateVoting
+    CONTRACTS_NAMES.emergencyUpdateVoting,
   ].includes(proposal.contract);
 
-  const isApprovalContract = [
-    CONTRACTS_NAMES.addressVoting,
-    CONTRACTS_NAMES.upgradeVoting
-  ].includes(proposal.contract);
+  const isApprovalContract = [CONTRACTS_NAMES.addressVoting, CONTRACTS_NAMES.upgradeVoting].includes(proposal.contract);
 
-  const getVotingState = (): { tooltip: string, enabled: boolean } => {
+  const getVotingState = (): { tooltip: string; enabled: boolean } => {
     switch (true) {
       case isApprovalContract || isContractWithoutVeto:
         return { enabled: isRootNode, tooltip: t('ROOT_NODES_VOTE_TIP') };
@@ -75,14 +69,14 @@ function ProposalActions ({ proposal, title }: Props) {
   };
 
   const votingState = getVotingState();
-  const isVetoShown = proposal.status === ProposalStatus.ACCEPTED &&
-    !isContractWithoutVeto && !isApprovalContract;
+  const isVetoShown = proposal.status === ProposalStatus.ACCEPTED && !isContractWithoutVeto && !isApprovalContract;
 
   const voteText = isApprovalContract ? t('APPROVE') : t('VOTE');
+  const voteTextForTransaction = isApprovalContract ? t('APPROVE_SUCCESS') : t('VOTE_SUCCESS');
 
   const handleVote = () => {
     if (isApprovalContract) {
-      dispatch(voteForProposal({ type: 'approve', proposal }));
+      dispatch(voteForProposal({ type: 'approve', proposal }, voteTextForTransaction));
       return;
     }
 
@@ -90,24 +84,21 @@ function ProposalActions ({ proposal, title }: Props) {
   };
 
   const handleVeto = () => {
-    dispatch(voteForProposal({ type: 'constitution', proposal }));
+    dispatch(voteForProposal({ type: 'constitution', proposal }, t('VETO_SUCCESS')));
   };
 
   const handleExecute = () => {
-    dispatch(executeProposal(proposal));
+    dispatch(executeProposal(proposal, t('EXECUTE_SUCCESS')));
   };
 
   return (
     <div style={{ display: 'flex', gap: '8px' }}>
-      <ShareButton
-        title={`#${proposal.id} ${title}`}
-        url={window.location.href}
-      />
+      <ShareButton title={`#${proposal.id} ${title}`} url={window.location.href} />
 
       {proposal.status === ProposalStatus.PENDING && (
         <Tooltip
           disabled={votingState.enabled}
-          trigger={(
+          trigger={
             <Button
               style={{ width: '160px' }}
               disabled={proposal.userVoted || !votingState.enabled}
@@ -115,7 +106,7 @@ function ProposalActions ({ proposal, title }: Props) {
             >
               {proposal.userVoted ? t('YOU_VOTED') : voteText}
             </Button>
-          )}
+          }
         >
           {votingState.tooltip}
         </Tooltip>
@@ -124,7 +115,7 @@ function ProposalActions ({ proposal, title }: Props) {
       {isVetoShown && (
         <Tooltip
           disabled={isRootNode}
-          trigger={(
+          trigger={
             <Button
               look="danger"
               style={{ width: '160px' }}
@@ -133,15 +124,13 @@ function ProposalActions ({ proposal, title }: Props) {
             >
               {proposal.userVetoed ? t('YOU_VETOED') : t('VETO')}
             </Button>
-          )}
+          }
         >
           {t('ROOT_NODES_VETO_TIP')}
         </Tooltip>
       )}
 
-      {proposal.status === ProposalStatus.PASSED && (
-        <Button onClick={handleExecute}>{t('EXECUTE')}</Button>
-      )}
+      {proposal.status === ProposalStatus.PASSED && <Button onClick={handleExecute}>{t('EXECUTE')}</Button>}
 
       <Modal
         open={modalOpen}

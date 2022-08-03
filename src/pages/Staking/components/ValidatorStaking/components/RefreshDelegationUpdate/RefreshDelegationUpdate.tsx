@@ -32,7 +32,7 @@ function RefreshDelegationUpdate () {
   }, 30000);
 
   const handleUpdateCompoundRate = () => {
-    dispatch(setVRPUpdateValidatorsCompoundRate(userAddress));
+    dispatch(setVRPUpdateValidatorsCompoundRate(userAddress, 'REFRESH_OF_USER_DELEGATIONS_SUCCESS'));
   };
 
   return (

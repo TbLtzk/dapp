@@ -40,42 +40,57 @@ export const getBorrowAllowanceError = (error: any): types.GetBorrowAllowanceErr
   error,
 });
 
-export const setBorrowAprove = (borrowType: ApproveType, asset: Asset): types.SetBorrowApprove => ({
+export const setBorrowAprove = (borrowType: ApproveType, asset: Asset, label: string): types.SetBorrowApprove => ({
   type: 'SET_BORROW_APPROVE',
   borrowType,
   asset,
+  label,
 });
 
 export const setBorrowDeposit = (
   amount: string | number,
   vaultId: string | number,
-  decimals: number
+  decimals: number,
+  label: string
 ): types.SetBorrowDeposit => ({
   type: 'SET_BORROW_DEPOSIT',
   amount,
   vaultId,
   decimals,
+  label,
 });
 
 export const setBorrowWithdraw = (
   amount: string | number,
   vaultId: string | number,
-  decimals: number
+  decimals: number,
+  label: string
 ): types.SetBorrowWithdraw => ({
   type: 'SET_BORROW_WITHDRAW',
   amount,
   vaultId,
   decimals,
+  label,
 });
 
-export const setBorrowAsBorrow = (amount: string | number, vaultId: string | number): types.SetBorrowAsBorrow => ({
+export const setBorrowAsBorrow = (
+  amount: string | number,
+  vaultId: string | number,
+  label: string
+): types.SetBorrowAsBorrow => ({
   type: 'SET_BORROW_AS_BORROW',
   amount,
   vaultId,
+  label,
 });
 
-export const setBorrowRepay = (amount: string | number, vaultId: string | number): types.SetBorrowRepay => ({
+export const setBorrowRepay = (
+  amount: string | number,
+  vaultId: string | number,
+  label: string
+): types.SetBorrowRepay => ({
   type: 'SET_BORROW_REPAY',
   amount,
   vaultId,
+  label,
 });

@@ -53,13 +53,13 @@ function RootNodeForms ({ formType, onReset }: Props) {
     onSubmit: ({ amount }) => {
       switch (formType) {
         case FORM_TYPES.stakeToRanking:
-          dispatch(setRootStakeToPanel({ from: userAddress, value: toWei(amount) }));
+          dispatch(setRootStakeToPanel({ from: userAddress, value: toWei(amount) }, t('STAKE_TO_PANEL_SUCCESS')));
           break;
         case FORM_TYPES.announceWithdrawal:
-          dispatch(setRootAnnounceWithdrawal(toWei(amount), { from: userAddress }));
+          dispatch(setRootAnnounceWithdrawal(toWei(amount), { from: userAddress }, t('ANNOUNCE_WITHDRAWAL_SUCCESS')));
           break;
         case FORM_TYPES.withdrawFromRanking:
-          dispatch(setRootWithdraw(toWei(amount), userAddress, { from: userAddress }));
+          dispatch(setRootWithdraw(toWei(amount), userAddress, { from: userAddress }, t('WITHDRAW_FROM_PANEL_SUCCESS')));
           break;
       }
     }

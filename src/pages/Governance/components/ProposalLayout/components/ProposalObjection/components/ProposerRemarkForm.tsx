@@ -12,7 +12,7 @@ import { onEscrowProposerRemark } from 'store/voting/slashing/actions';
 import { required } from 'func/validators';
 
 interface Props {
-  proposal: SlashingProposal
+  proposal: SlashingProposal;
 }
 
 function ProposerRemarkForm ({ proposal }: Props) {
@@ -24,9 +24,11 @@ function ProposerRemarkForm ({ proposal }: Props) {
     validators: { proposerRemark: [required] },
     onSubmit: (form) => {
       dispatch(
-        onEscrowProposerRemark({ ...form, isAppealConfirmed: proposal.objEscrow.objection.appealConfirmed },
+        onEscrowProposerRemark(
+          { ...form, isAppealConfirmed: proposal.objEscrow.objection.appealConfirmed },
           proposal.contract,
-          proposal.id
+          proposal.id,
+          t('CONFIRM_APPEAL_SUCCESS')
         )
       );
     },

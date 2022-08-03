@@ -7,6 +7,7 @@ export type DeFiError = {
 export interface SetCreateVault {
   type: 'SET_CREATE_VAULT';
   asset: Asset;
+  label: string;
 }
 
 export interface GetBorrowingVaults {

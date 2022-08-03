@@ -40,6 +40,7 @@ export interface SetBorrowApprove {
   type: 'SET_BORROW_APPROVE';
   borrowType: ApproveType;
   asset: Asset;
+  label: string;
 }
 
 export interface SetBorrowDeposit {
@@ -47,6 +48,7 @@ export interface SetBorrowDeposit {
   amount: string | number;
   vaultId: string | number;
   decimals: number;
+  label: string;
 }
 
 export interface SetBorrowWithdraw {
@@ -54,18 +56,21 @@ export interface SetBorrowWithdraw {
   amount: string | number;
   vaultId: string | number;
   decimals: number;
+  label: string;
 }
 
 export interface SetBorrowAsBorrow {
   type: 'SET_BORROW_AS_BORROW';
   amount: string | number;
   vaultId: string | number;
+  label: string;
 }
 
 export interface SetBorrowRepay {
   type: 'SET_BORROW_REPAY';
   amount: string | number;
   vaultId: string | number;
+  label: string;
 }
 
 export type BorrowActions =

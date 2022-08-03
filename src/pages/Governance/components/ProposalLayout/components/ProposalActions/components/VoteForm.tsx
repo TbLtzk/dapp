@@ -31,7 +31,7 @@ function VoteForm ({ proposal }: Props) {
           type: 'basic',
           isVotedFor: form.vote === 'yes',
           proposal
-        })
+        }, t('VOTE_SUCCESS'))
       );
     }
   });

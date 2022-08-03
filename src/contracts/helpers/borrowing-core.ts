@@ -1,7 +1,7 @@
 import { Vault } from '@q-dev/q-js-sdk';
 import { Asset, BorrowAssetsRateAndFee, VaultWithFee } from 'typings/defi';
 
-import { setTransactionLoadingError } from 'store/transaction-handler/action-creators';
+import { setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/actions';
 
 import {
   getBorrowingCoreInstance,
@@ -12,8 +12,9 @@ import {
   getSavingInstance,
 } from 'contracts/contract-instance';
 
+import { TRANSACTION_TYPES } from 'constants/statuses';
 import { remainDateTimeSince } from 'func/convertDate';
-import { captureError, getErrorMessage } from 'func/errors';
+import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
 import { uintPerSecondToPerYearNumber } from 'func/useful';
 
 export async function getVaultWithFee (vault: Vault, vaultNum: number | string): Promise<VaultWithFee> {
@@ -60,16 +61,11 @@ export async function addBorrowTokenToWallet (asset: Asset) {
   }
 }
 
-export async function getTimeSinceRefreshBalance (
-  setTimeSinceRefreshBalance: any,
-  setTimeSinceUnixTimestampRefreshBalance: any
-) {
+export async function getTimeSinceRefreshBalance (setTimeSinceRefreshBalance: any) {
   try {
     const contract = await getCompoundRateKeeperSavingInstance();
-    const res = await contract.getLastUpdate();
-    setTimeSinceUnixTimestampRefreshBalance(res);
-    const transformTime = remainDateTimeSince(res);
-    setTimeSinceRefreshBalance(transformTime);
+    const lastUpdate = await contract.getLastUpdate();
+    setTimeSinceRefreshBalance(remainDateTimeSince(lastUpdate));
   } catch (error) {
     captureError(error);
   }
@@ -78,15 +74,16 @@ export async function getTimeSinceRefreshBalance (
 export async function refreshTimeSinceRefreshBalance (
   setTimeSinceRefreshBalance: any,
   setLoading: any,
-  setTimeSinceUnixTimestampRefreshBalance: any,
   userAddress: any,
-  dispatch: any
+  dispatch: any,
+  label: string
 ) {
   try {
     setLoading(true);
     const contract = await getSavingInstance();
-    await contract.updateCompoundRate({ from: userAddress, gasBuffer: 1.2 });
-    getTimeSinceRefreshBalance(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance);
+    const transaction = await contract.updateCompoundRate({ from: userAddress, gasBuffer: 1.2 });
+    getTimeSinceRefreshBalance(setTimeSinceRefreshBalance);
+    dispatch(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
   } catch (error) {
     captureError(error);
     dispatch(setTransactionLoadingError(getErrorMessage(error)));
@@ -96,17 +93,11 @@ export async function refreshTimeSinceRefreshBalance (
 }
 
 // eslint-disable-next-line max-len
-export async function getTimeSinceOutstandingDebt (
-  setTimeSinceOutstandingDeb: any,
-  setTimeSinceUnixTimestampOutstandingDeb: any,
-  asset: any
-) {
+export async function getTimeSinceOutstandingDebt (setTimeSinceOutstandingDeb: any, asset: Asset) {
   try {
     const contract = await getCompoundRateBorrowingInstance(asset);
-    const res = await contract.getLastUpdate();
-    setTimeSinceUnixTimestampOutstandingDeb(res);
-    const transformTime = remainDateTimeSince(res);
-    setTimeSinceOutstandingDeb(transformTime);
+    const lastUpdate = await contract.getLastUpdate();
+    setTimeSinceOutstandingDeb(remainDateTimeSince(lastUpdate));
   } catch (error) {
     captureError(error);
   }
@@ -115,16 +106,18 @@ export async function getTimeSinceOutstandingDebt (
 export async function refreshTimeSinceOutstandingDebt (
   setTimeSinceRefreshBalance: any,
   setLoading: any,
-  setTimeSinceUnixTimestampRefreshBalance: any,
+
   userAddress: any,
   dispatch: any,
-  asset: any
+  asset: Asset,
+  label: string
 ) {
   try {
     setLoading(true);
     const contract = await getBorrowingCoreInstance();
-    await contract.updateCompoundRate(asset, { from: userAddress, gasBuffer: 1.2 });
-    getTimeSinceOutstandingDebt(setTimeSinceRefreshBalance, setTimeSinceUnixTimestampRefreshBalance, asset);
+    const transaction = await contract.updateCompoundRate(asset, { from: userAddress, gasBuffer: 1.2 });
+    getTimeSinceOutstandingDebt(setTimeSinceRefreshBalance, asset);
+    dispatch(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
   } catch (error) {
     captureError(error);
     dispatch(setTransactionLoadingError(getErrorMessage(error)));

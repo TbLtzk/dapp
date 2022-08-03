@@ -35,7 +35,7 @@ function ManageForm ({ contract, address }: Props) {
       endDate: [required]
     },
     onSubmit: (form) => {
-      dispatch(setDepositLockedAmount({ ...form, contract, address }));
+      dispatch(setDepositLockedAmount({ ...form, contract, address }, t('TIME_LOCKS_DEPOSIT_SUCCESS')));
     }
   });
   useMetamaskReset(formTypes.timeLocksAmount, form.reset);
@@ -91,7 +91,7 @@ function ManageForm ({ contract, address }: Props) {
         <Button
           look="secondary"
           style={{ width: '100%' }}
-          onClick={() => dispatch(setPurgeTimeLocksAmount({ contract, address }))}
+          onClick={() => dispatch(setPurgeTimeLocksAmount({ contract, address }, t('PURGE_EXPIRED_TIME_LOCKS_SUCCESS')))}
         >
           {t('PURGE_EXPIRED_TIME_LOCKS')}
         </Button>

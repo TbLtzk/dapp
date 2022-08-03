@@ -30,13 +30,15 @@ export const setEventsLoading = (val) => ({
   payload: val,
 });
 
-export const setAlias = ({ address, purpose }) => ({
+export const setAlias = ({ address, purpose }, label) => ({
   type: actionTypes.SET_ALIAS,
   address,
-  purpose
+  purpose,
+  label
 });
 
-export const reserveAlias = (address) => ({
+export const reserveAlias = (address, label) => ({
   type: actionTypes.RESERVE_ALIAS,
   address,
+  label
 });

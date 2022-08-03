@@ -20,7 +20,7 @@ function VestingWithdrawForm () {
     initialValues: { amount: '' },
     validators: { amount: [required] },
     onSubmit: (form) => {
-      dispatch(setVestingWithdraw(form.amount));
+      dispatch(setVestingWithdraw(form.amount, t('WITHDRAW_FROM_VESTING_SUCCESS')));
     }
   });
   useMetamaskReset(formTypes.vestingWithdraw, form.reset);

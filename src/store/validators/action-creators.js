@@ -1,21 +1,24 @@
 import * as actionTypes from './action-types';
 
-export const setValidatorsWithdraw = (address, amountQ) => ({
+export const setValidatorsWithdraw = (address, amountQ, label) => ({
   type: actionTypes.SET_VALIDATORS_WITHDRAW,
   address,
   amountQ,
+  label
 });
 
-export const setValidatorsCommitStake = (address, amountQ) => ({
+export const setValidatorsCommitStake = (address, amountQ, label) => ({
   type: actionTypes.SET_VALIDATORS_COMMIT_STAKE,
   address,
   amountQ,
+  label
 });
 
-export const setValidatorsAnnounceWithdrawal = (address, amountQ) => ({
+export const setValidatorsAnnounceWithdrawal = (address, amountQ, label) => ({
   type: actionTypes.SET_VALIDATORS_ANNOUNCE_WITHDRAWAL,
   address,
   amountQ,
+  label
 });
 
 export const getDelegatorsShare = (address) => ({
@@ -98,16 +101,18 @@ export const setValidatorMembers = (tableType, data) => ({
 });
 
 // Action without write to Store
-export const setDelegatorsShareSend = (address, uintPercent) => ({
+export const setDelegatorsShareSend = (address, uintPercent, label) => ({
   type: actionTypes.SET_VALIDATORS_DELEGATORS_SHARE_SEND,
   address,
   uintPercent,
+  label
 });
 
-export const setInterestRateSend = (address, uintPercent) => ({
+export const setInterestRateSend = (address, uintPercent, label) => ({
   type: actionTypes.SET_VALIDATORS_INTEREST_RATE_SEND,
   address,
   uintPercent,
+  label
 });
 
 export const getIsUserValidator = (address) => ({

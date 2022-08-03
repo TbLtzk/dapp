@@ -19,7 +19,7 @@ import {
   setTransactionLoading,
   setTransactionLoadingError,
   setTransactionLoadingSuccess,
-} from 'store/transaction-handler/action-creators';
+} from 'store/transaction-handler/actions';
 
 import { getRootNodesInstance } from 'contracts/contract-instance';
 import { prepareRootMembersTable } from 'contracts/helpers/root-node-helper';
@@ -28,17 +28,17 @@ import formTypes from 'constants/form-types';
 import TABLE_TYPES from 'constants/tableTypes';
 import { fromWei } from 'func/balance';
 import { getNowTimestamp } from 'func/convertDate';
-import { captureError, getErrorMessage } from 'func/errors';
+import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
 import { addIndex } from 'func/useful';
 
-function* setRootStakeToPanelGenerator ({ data }) {
+function* setRootStakeToPanelGenerator ({ data, label }) {
   try {
     yield put(setTransactionLoading());
 
     const { userAddress } = yield select((state) => state.userInf);
 
     const contract = yield call(getRootNodesInstance);
-    yield contract.commitStake(data);
+    const transaction = yield contract.commitStake(data);
 
     yield put(getAccountBalance(userAddress));
     yield put(getRootNodeStakes(userAddress));
@@ -46,35 +46,35 @@ function* setRootStakeToPanelGenerator ({ data }) {
     yield put(getMinimumRootTimeLock(userAddress));
     yield put(getRootMembers());
 
-    yield put(setTransactionLoadingSuccess({ type: formTypes.rootNodeStaking }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.rootNodeStaking, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setRootAnnounceWithdrawalGenerator ({ amount, paymentInf }) {
+function* setRootAnnounceWithdrawalGenerator ({ amount, paymentInf, label }) {
   try {
     yield put(setTransactionLoading());
 
     const contract = yield call(getRootNodesInstance);
     const { userAddress } = yield select((state) => state.userInf);
 
-    yield contract.announceWithdrawal(amount, paymentInf);
+    const transaction = yield contract.announceWithdrawal(amount, paymentInf);
     yield put(getAccountBalance(userAddress));
     yield put(getRootNodeStakes(userAddress));
     yield put(getRootWithdrawals(userAddress));
     yield put(getMinimumRootTimeLock(userAddress));
     yield put(getRootMembers());
 
-    yield put(setTransactionLoadingSuccess({ type: formTypes.rootNodeStaking }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.rootNodeStaking, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setRootWithdrawGenerator ({ amount, payTo, paymentInf }) {
+function* setRootWithdrawGenerator ({ amount, payTo, paymentInf, label }) {
   try {
     yield put(setTransactionLoading());
 
@@ -82,7 +82,7 @@ function* setRootWithdrawGenerator ({ amount, payTo, paymentInf }) {
 
     const contract = yield call(getRootNodesInstance);
 
-    yield contract.withdraw(amount, payTo, paymentInf);
+    const transaction = yield contract.withdraw(amount, payTo, paymentInf);
 
     yield put(getAccountBalance(userAddress));
     yield put(getRootNodeStakes(userAddress));
@@ -90,7 +90,7 @@ function* setRootWithdrawGenerator ({ amount, payTo, paymentInf }) {
     yield put(getMinimumRootTimeLock(userAddress));
     yield put(getRootMembers());
 
-    yield put(setTransactionLoadingSuccess({ type: formTypes.rootNodeStaking }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.rootNodeStaking, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));

@@ -26,7 +26,7 @@ function AliasForm ({ alias }: { alias: Alias | null }) {
       purpose: [required]
     },
     onSubmit: (form) => {
-      dispatch(setAlias(form));
+      dispatch(setAlias(form, t('UPDATE_ALIAS_SUCCESS')));
     }
   });
 

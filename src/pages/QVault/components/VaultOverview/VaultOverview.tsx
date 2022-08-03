@@ -98,7 +98,7 @@ function VaultOverview () {
         <h5>{t('VOTING_LOCKING_END')}</h5>
         <p>{userLockingEnd}</p>
 
-        <h5>Voting Status</h5>
+        <h5>{t('VOTING_STATUS')}</h5>
         <p>{voterStatus}</p>
 
         <h5>{t('VOTE_DELEGATION')}</h5>

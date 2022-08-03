@@ -26,7 +26,7 @@ function DepositForm ({ vault }: {vault: VaultWithFee}) {
     initialValues: { amount: '' },
     validators: { amount: [required, amount(collateralDetails?.availableDeposit)] },
     onSubmit: (form) => {
-      dispatch(setBorrowDeposit(form.amount, vault.vaultNum, collateralDetails.decimals));
+      dispatch(setBorrowDeposit(form.amount, vault.vaultNum, collateralDetails.decimals, t('DEPOSIT_COLLATERAL_SUCCESS')));
     },
   });
 
@@ -55,7 +55,7 @@ function DepositForm ({ vault }: {vault: VaultWithFee}) {
           <Button
             style={{ width: '100px' }}
             className="form-action"
-            onClick={() => dispatch(setBorrowAprove('deposit', vault.colKey as Asset))}
+            onClick={() => dispatch(setBorrowAprove('deposit', vault.colKey as Asset, t('APPROVE')))}
           >
             {t('APPROVE')}
           </Button>

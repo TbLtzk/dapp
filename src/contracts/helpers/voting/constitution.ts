@@ -46,7 +46,7 @@ export async function createConstitutionProposal (
   address: string
 ) {
   const contract = await getConstitutionVotingInstance();
-  await contract.createProposal(
+  return await contract.createProposal(
     form.externalLink,
     form.classification,
     form.hash,

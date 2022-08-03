@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootNodesInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesInstance';
@@ -19,6 +20,7 @@ function usePurgeSlashing (address: string, isRootSlashing: boolean) {
   const dispatch = useDispatch();
   const userAddress = useSelector(userAddressMetamask);
   const successMessage = useSelector(successMessageSelector);
+  const { t } = useTranslation();
 
   const [shouldPurge, setShouldPurge] = useState(false);
 
@@ -71,7 +73,7 @@ function usePurgeSlashing (address: string, isRootSlashing: boolean) {
     const contractType = isRootSlashing
       ? CONTRACT_TYPES.rootNodes
       : CONTRACT_TYPES.validators;
-    dispatch(setPurgeSlashing(address, contractType));
+    dispatch(setPurgeSlashing(address, contractType, t('PURGE')));
   };
 
   return { shouldPurge, purgeSlashing };

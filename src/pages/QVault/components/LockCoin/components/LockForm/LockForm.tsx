@@ -34,10 +34,10 @@ function LockForm () {
       const delta = BN(form.amount).minus(BN(userVotingWeight));
       dispatch(
         delta.gt(0)
-          ? setLockAmount(userAddress, delta.toString())
-          : setUnlockAmount(userAddress, delta.abs().toString())
+          ? setLockAmount(userAddress, delta.toString(), t('UPDATE_LOCK_AMOUNT_SUCCESS'))
+          : setUnlockAmount(userAddress, delta.abs().toString(), t('UPDATE_LOCK_AMOUNT_SUCCESS'))
       );
-    }
+    },
   });
 
   useMetamaskReset(formTypes.qVaultLock, form.reset);

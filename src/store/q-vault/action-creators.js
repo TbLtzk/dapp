@@ -2,143 +2,151 @@ import * as actionTypes from './action-types';
 
 export const getAccountBalance = (address) => ({
   type: actionTypes.GET_ACCOUNT_BALANCE,
-  address
+  address,
 });
 
 export const setAccountBalance = (data) => ({
   type: actionTypes.SET_ACCOUNT_BALANCE,
-  payload: data
+  payload: data,
 });
 
 export const getUserBalance = (address) => ({
   type: actionTypes.GET_QV_USER_BALANCE,
-  address
+  address,
 });
 
 export const setUserBalance = (data) => ({
   type: actionTypes.SET_QV_USER_BALANCE,
-  payload: data
+  payload: data,
 });
 
 export const getLockedAssets = (address) => ({
   type: actionTypes.GET_QV_LOCKED_ASSETS,
-  address
+  address,
 });
 export const setLockedAssets = (votingWeight, votingLockingEnd) => ({
   type: actionTypes.SET_QV_LOCKED_ASSETS,
   votingWeight,
-  votingLockingEnd
+  votingLockingEnd,
 });
 
-// Action without write to Store
-export const setDepositCall = (address, amountQ) => ({
+export const setDepositCall = (address, amountQ, label) => ({
   type: actionTypes.SET_QV_DEPOSIT_CALL,
   address,
-  amountQ
+  amountQ,
+  label,
 });
 
-export const setSendCall = (address, amount) => ({
+export const setSendCall = (address, amount, label) => ({
   type: actionTypes.SET_SEND_CALL,
   address,
-  amount
+  amount,
+  label,
 });
 
-export const setWithdrawCall = (address, amountQ) => ({
+export const setWithdrawCall = (address, amountQ, label) => ({
   type: actionTypes.SET_QV_WITHDRAW_CALL,
   address,
-  amountQ
+  amountQ,
+  label,
 });
-export const setLockAmount = (address, amountQ) => ({
+export const setLockAmount = (address, amountQ, label) => ({
   type: actionTypes.SET_QV_LOCK_AMOUNT,
   address,
-  amountQ
+  amountQ,
+  label,
 });
-export const setUnlockAmount = (address, amountQ) => ({
+export const setUnlockAmount = (address, amountQ, label) => ({
   type: actionTypes.SET_QV_UNLOCK_AMOUNT,
   address,
-  amountQ
+  amountQ,
+  label
 });
 
-export const setDelegateStake = (address, delegateAddresses, stakes) => ({
+export const setDelegateStake = (address, delegateAddresses, stakes, label) => ({
   type: actionTypes.SET_DELEGATE_STAKE,
   address,
   delegateAddresses,
-  stakes
+  stakes,
+  label
 });
 
 export const getDelegationsList = () => ({
-  type: actionTypes.GET_DELEGATIONS_LIST
+  type: actionTypes.GET_DELEGATIONS_LIST,
 });
 
 export const getDelegationInfo = (address) => ({
   type: actionTypes.GET_DELEGATION_INFO,
-  address
+  address,
 });
 
 export const setDelegationInfo = (result) => ({
   type: actionTypes.SET_DELEGATION_INFO,
-  result
+  result,
 });
 
 export const getDelegationsListSuccess = (result) => ({
   type: actionTypes.GET_DELEGATIONS_LIST_SUCCESS,
-  result
+  result,
 });
 export const getDelegationsListError = (result) => ({
   type: actionTypes.GET_DELEGATIONS_LIST_ERROR,
-  result
+  result,
 });
 
 export const getQVBalance = () => ({
-  type: actionTypes.GET_QV_BALANCE
+  type: actionTypes.GET_QV_BALANCE,
 });
 export const getQVBalanceSuccess = (result) => ({
   type: actionTypes.GET_QV_BALANCE_SUCCESS,
-  result
+  result,
 });
 
-export const onClaimStakeDelegatorReward = () => ({
-  type: actionTypes.ON_CLAIM_STAKE_DELEGATOR_REWARD
+export const onClaimStakeDelegatorReward = (label) => ({
+  type: actionTypes.ON_CLAIM_STAKE_DELEGATOR_REWARD,
+  label
 });
 
-export const setAnnounceNewVotingAgent = (address) => ({
+export const setAnnounceNewVotingAgent = (address, label) => ({
   type: actionTypes.SET_ANNOUNCE_VOTING_AGENT,
-  address
+  address,
+  label
 });
 
-export const setNewVotingAgent = () => ({
-  type: actionTypes.SET_NEW_VOTING_AGENT
+export const setNewVotingAgent = (label) => ({
+  type: actionTypes.SET_NEW_VOTING_AGENT,
+  label
 });
 
 export const getOutstandingDelegationRewards = () => ({
-  type: actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS
+  type: actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS,
 });
 
 export const getOutstandingDelegationRewardsSuccess = (result) => ({
   type: actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS_SUCCESS,
-  result
+  result,
 });
 export const getOutstandingDelegationRewardsError = (result) => ({
   type: actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS_ERROR,
-  result
+  result,
 });
 
 export const getMinimumQVaultTimeLock = (address) => ({
   type: actionTypes.GET_QVAULT_MINIMUM_TIME_LOCK,
-  address
+  address,
 });
 
 export const setMinimumQVaultTimeLock = (data) => ({
   type: actionTypes.SET_QVAULT_MINIMUM_TIME_LOCK,
-  payload: data
+  payload: data,
 });
 
 export const getQVaultTimeLocks = (address) => ({
   type: actionTypes.GET_QVAULT_TIME_LOCKS,
-  address
+  address,
 });
 
 export const setQVaultTimeLocks = (data) => ({
   type: actionTypes.SET_QVAULT_TIME_LOCKS,
-  payload: data
+  payload: data,
 });

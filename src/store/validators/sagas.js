@@ -27,7 +27,7 @@ import {
   setTransactionLoading,
   setTransactionLoadingError,
   setTransactionLoadingSuccess,
-} from 'store/transaction-handler/action-creators';
+} from 'store/transaction-handler/actions';
 import { networkSelector } from 'store/user-inf/selectors';
 
 import {
@@ -44,7 +44,7 @@ import TABLE_TYPES from 'constants/tableTypes';
 import { getIndexerUrlDependsOnChainId } from 'func/appConfig';
 import { fromWei, toWei } from 'func/balance';
 import { getNowTimestamp } from 'func/convertDate';
-import { captureError, getErrorMessage } from 'func/errors';
+import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
 import { addIndex } from 'func/useful';
 
 function* getValidatorsWithdrawalInfoGenerator ({ address }) {
@@ -116,7 +116,10 @@ function* getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWid
       case TABLE_TYPES.validatorsWidened: {
         const validationRewardPoolsInstance = yield call(getValidationRewardPoolsInstance);
         const validators = yield getValidators(validatorsInstance);
-        const aliasesMap = yield getBlockSealingAliasMap(validators.map(item => item.validator), network);
+        const aliasesMap = yield getBlockSealingAliasMap(
+          validators.map((item) => item.validator),
+          network
+        );
         const preparedData = yield all(
           validators.map((validator, idx) =>
             getValidator(validator, idx, validatorsInstance, validationRewardPoolsInstance)
@@ -131,11 +134,14 @@ function* getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWid
       }
       case TABLE_TYPES.validatorsShort: {
         const shortList = yield validatorsInstance.getShortList();
-        const aliasesMap = yield getBlockSealingAliasMap(shortList.map(item => item.address), network);
+        const aliasesMap = yield getBlockSealingAliasMap(
+          shortList.map((item) => item.address),
+          network
+        );
         const preparedShortList = shortList.map((user) => ({
           validator: user.address,
           alias: aliasesMap[user.address],
-          amount: user.balance
+          amount: user.balance,
         }));
         yield put(setValidatorMembers(tableType, preparedShortList));
         break;
@@ -211,28 +217,28 @@ function* getCompoundRateKeeperExistsGenerator () {
   }
 }
 
-function* setValidatorsInterestRateGenerator ({ address, uintPercent }) {
+function* setValidatorsInterestRateGenerator ({ address, uintPercent, label }) {
   try {
     yield put(setTransactionLoading());
 
     const contract = yield call(getValidatorsInstance);
-    yield contract.setInterestRate(address, uintPercent);
+    const transaction = yield contract.setInterestRate(address, uintPercent);
 
     yield put(getInterestRate(address));
     yield put(getCompoundRateKeeperExists());
 
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
-function* setValidatorsCommitStakeGenerator ({ address, amountQ }) {
+function* setValidatorsCommitStakeGenerator ({ address, amountQ, label }) {
   try {
     yield put(setTransactionLoading());
 
     const contract = yield call(getValidatorsInstance);
-    yield contract.commitStake({
+    const transaction = yield contract.commitStake({
       from: address,
       value: toWei(amountQ),
     });
@@ -243,20 +249,20 @@ function* setValidatorsCommitStakeGenerator ({ address, amountQ }) {
     yield put(getAccountBalance(address));
     yield put(getCompoundRateKeeperExists());
 
-    yield put(setTransactionLoadingSuccess({ type: formTypes.validatorsStaking }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.validatorsStaking, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
+function* setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ, label }) {
   try {
     yield put(setTransactionLoading());
 
     const contract = yield call(getValidatorsInstance);
 
-    yield contract.announceWithdrawal(toWei(amountQ), { from: address });
+    const transaction = yield contract.announceWithdrawal(toWei(amountQ), { from: address });
 
     yield put(getValidatorWithdrawalInfo(address));
     yield put(getAccountableTotalStake(address));
@@ -264,19 +270,19 @@ function* setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ }) {
     yield put(getValidatorMembers());
     yield put(getCompoundRateKeeperExists());
 
-    yield put(setTransactionLoadingSuccess({ type: formTypes.validatorsStaking }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.validatorsStaking, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setValidatorsWithdrawGenerator ({ address, amountQ }) {
+function* setValidatorsWithdrawGenerator ({ address, amountQ, label }) {
   try {
     yield put(setTransactionLoading());
 
     const contract = yield call(getValidatorsInstance);
-    yield contract.withdraw(toWei(amountQ), address);
+    const transaction = yield contract.withdraw(toWei(amountQ), address);
 
     yield put(getIsUserValidator(address));
     yield put(getAccountableTotalStake(address));
@@ -285,24 +291,25 @@ function* setValidatorsWithdrawGenerator ({ address, amountQ }) {
     yield put(getValidatorWithdrawalInfo(address));
     yield put(getCompoundRateKeeperExists());
 
-    yield put(setTransactionLoadingSuccess({ type: formTypes.validatorsStaking }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.validatorsStaking, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setValidatorsEnterShortListGenerator ({ address }) {
+function* setValidatorsEnterShortListGenerator ({ address, label }) {
   try {
     yield put(setTransactionLoading());
 
     const contract = yield call(getValidatorsInstance);
-    yield contract.enterShortList({ from: address });
+    const transaction = yield contract.enterShortList({ from: address });
+
     yield put(getIsUserValidator(address));
     yield put(getValidatorMembers());
     yield put(getCompoundRateKeeperExists());
 
-    yield put(setTransactionLoadingSuccess({ message: 'Success!' }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));

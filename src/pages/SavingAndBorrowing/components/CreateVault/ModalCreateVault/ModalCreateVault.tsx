@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import { Asset } from 'typings/defi';
@@ -15,6 +16,7 @@ import { required } from 'func/validators';
 
 function ModalCreateVault () {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const form = useForm({
     initialValues: {
       asset: '',
@@ -23,12 +25,12 @@ function ModalCreateVault () {
       asset: [required],
     },
     onSubmit: ({ asset }) => {
-      dispatch(setCreateVault(asset as Asset));
+      dispatch(setCreateVault(asset as Asset, t('CREATE_ASSET_VAULT_SUCCESS')));
     },
   });
 
   const borrowAssetsOptions = Object.values(BorrowAssets).map((asset) => ({
-    label: `Create ${asset} Vault`,
+    label: t('CREATE_ASSET_VAULT', { asset }),
     value: asset,
   }));
 
@@ -37,7 +39,7 @@ function ModalCreateVault () {
       <form noValidate onSubmit={form.submit}>
         <RadioGroup
           {...form.fields.asset}
-          label="Please select Vault for creation"
+          label={t('PLEASE_SELECT_VAULT_FOR_CREATION')}
           name="borrow-assets"
           options={borrowAssetsOptions}
         />
@@ -47,7 +49,7 @@ function ModalCreateVault () {
           type="submit"
           disabled={!form.isValid}
         >
-          Create Vault
+          {t('CREATE_VAULT')}
         </Button>
       </form>
     </ModalCreateVaultContainer>

@@ -1,5 +1,16 @@
 import { call, delay, put, select, takeEvery } from 'typed-redux-saga';
-import { AuctionBid, AuctionExecute, AuctionInfos, AuctionType, BidForAuctionForm, CreateAuction, CreateLiquidationAuction, ExecuteAuctionForm, LiquidationAuctionBid, LiquidationAuctionExecute } from 'typings/auctions';
+import {
+  AuctionBid,
+  AuctionExecute,
+  AuctionInfos,
+  AuctionType,
+  BidForAuctionForm,
+  CreateAuction,
+  CreateLiquidationAuction,
+  ExecuteAuctionForm,
+  LiquidationAuctionBid,
+  LiquidationAuctionExecute,
+} from 'typings/auctions';
 
 import { getAllAuctions, getAuctions, setAuctions } from './actions';
 import * as types from './types';
@@ -8,7 +19,7 @@ import {
   setTransactionLoading,
   setTransactionLoadingError,
   setTransactionLoadingSuccess,
-} from 'store/transaction-handler/action-creators';
+} from 'store/transaction-handler/actions';
 
 import {
   bidForLiquidationAuction,
@@ -30,7 +41,7 @@ import {
 } from 'contracts/helpers/auction/system-surplus';
 
 import formTypes from 'constants/form-types';
-import { captureError, getErrorMessage } from 'func/errors';
+import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
 import { getMinimalActiveBlockHeight } from 'func/useful';
 
 function* getAuctionsGenerator ({ auctionType }: types.GetAuctions) {
@@ -67,81 +78,107 @@ function* getAllAuctionsGenerator () {
   yield* put(getAllAuctions());
 }
 
-function* createAuction ({ form, auctionType }: { form: CreateAuction, auctionType: AuctionType }) {
+function* createAuction ({
+  form,
+  auctionType,
+  label,
+}: {
+  form: CreateAuction;
+  auctionType: AuctionType;
+  label: string;
+}) {
   try {
     yield* put(setTransactionLoading());
     const { userAddress } = yield* select((state) => state.userInf);
+    let transaction;
     switch (auctionType) {
       case 'liquidation': {
-        yield* call(createLiquidationAuction, form as CreateLiquidationAuction, userAddress);
+        transaction = yield* call(createLiquidationAuction, form as CreateLiquidationAuction, userAddress);
         break;
       }
       case 'systemDebt': {
-        yield* call(createSystemDebtAuction, form as CreateAuction, userAddress);
+        transaction = yield* call(createSystemDebtAuction, form as CreateAuction, userAddress);
         break;
       }
       case 'systemSurplus': {
-        yield* call(createSystemSurplusAuction, form as CreateAuction, userAddress);
+        transaction = yield* call(createSystemSurplusAuction, form as CreateAuction, userAddress);
         break;
       }
     }
     yield* put(getAuctions(auctionType));
-    yield* put(setTransactionLoadingSuccess({ type: auctionType }));
+    yield* put(setTransactionLoadingSuccess(getSuccessMessage(auctionType, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* bidForAuctionGenerator ({ form, auctionType }: { form: BidForAuctionForm; auctionType: AuctionType }) {
+function* bidForAuctionGenerator ({
+  form,
+  auctionType,
+  label
+}: {
+  form: BidForAuctionForm;
+  auctionType: AuctionType;
+  label: string;
+}) {
   try {
     yield* put(setTransactionLoading());
     const { userAddress } = yield* select((state) => state.userInf);
+    let transaction;
 
     switch (auctionType) {
       case 'liquidation': {
-        yield* call(bidForLiquidationAuction, form as LiquidationAuctionBid, userAddress);
+        transaction = yield* call(bidForLiquidationAuction, form as LiquidationAuctionBid, userAddress);
         break;
       }
       case 'systemDebt': {
-        yield* call(bidForSystemDebtAuction, form as AuctionBid, userAddress);
+        transaction = yield* call(bidForSystemDebtAuction, form as AuctionBid, userAddress);
         break;
       }
       case 'systemSurplus': {
-        yield* call(bidForSystemSurplusAction, form as AuctionBid, userAddress);
+        transaction = yield* call(bidForSystemSurplusAction, form as AuctionBid, userAddress);
         break;
       }
     }
     yield* put(getAuctions(auctionType));
-    yield* put(setTransactionLoadingSuccess({ type: formTypes.bidForAuction }));
+    yield* put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.bidForAuction, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* executeAuctionGenerator ({ form, auctionType }: { form: ExecuteAuctionForm; auctionType: AuctionType }) {
+function* executeAuctionGenerator ({
+  form,
+  auctionType,
+  label
+}: {
+  form: ExecuteAuctionForm;
+  auctionType: AuctionType;
+  label: string;
+}) {
   try {
     yield* put(setTransactionLoading());
 
     const { userAddress } = yield* select((state) => state.userInf);
-
+    let transaction;
     switch (auctionType) {
       case 'liquidation': {
-        yield* call(executeLiquidationAuction, form as LiquidationAuctionExecute, userAddress);
+        transaction = yield* call(executeLiquidationAuction, form as LiquidationAuctionExecute, userAddress);
         break;
       }
       case 'systemDebt': {
-        yield* call(executeSystemDebtAuction, userAddress);
+        transaction = yield* call(executeSystemDebtAuction, userAddress);
         break;
       }
       case 'systemSurplus': {
-        yield* call(executeSystemSurplusAuction, form as AuctionExecute, userAddress);
+        transaction = yield* call(executeSystemSurplusAuction, form as AuctionExecute, userAddress);
         break;
       }
     }
     yield* put(getAuctions(auctionType));
-    yield* put(setTransactionLoadingSuccess({ type: formTypes.executeAuction }));
+    yield* put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.executeAuction, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));

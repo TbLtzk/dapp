@@ -18,28 +18,29 @@ import {
   setTransactionLoading,
   setTransactionLoadingError,
   setTransactionLoadingSuccess,
-} from 'store/transaction-handler/action-creators';
+} from 'store/transaction-handler/actions';
 
 import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
 
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei } from 'func/balance';
-import { captureError, getErrorMessage } from 'func/errors';
+import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
 import { transformToPercentage } from 'func/formatters';
 import { getPercentageFormat } from 'func/useful';
 
 const message = { header: 'Notice', details: 'Stake amount below minimum to apply new rate, old rate applied.' };
 
-function* setUpdateValidatorsCompoundRateGenerator ({ address }) {
+function* setUpdateValidatorsCompoundRateGenerator ({ address, label }) {
   try {
     const { lastUpdateOfCompoundRate } = yield select((state) => state.validationRewardPools);
 
     yield put(setVRPLoadingValidatorsCompoundRate(true));
     const contract = yield call(getValidationRewardPoolsInstance);
-    yield contract.updateValidatorsCompoundRate(address, { from: address });
+    const transaction = yield contract.updateValidatorsCompoundRate(address, { from: address });
     const nextUpdateCompoundRate = yield contract.getLastUpdateOfCompoundRate(address);
 
+    // Here can be a problem with error
     if (lastUpdateOfCompoundRate === nextUpdateCompoundRate) {
       yield put(setTransactionLoadingError(message));
     }
@@ -49,6 +50,8 @@ function* setUpdateValidatorsCompoundRateGenerator ({ address }) {
     yield put(getVRPBalance(address));
     yield put(getVRPPoolInfo(address));
     yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
@@ -57,17 +60,17 @@ function* setUpdateValidatorsCompoundRateGenerator ({ address }) {
   }
 }
 
-function* setDelegatorsShareGenerator ({ amount }) {
+function* setDelegatorsShareGenerator ({ amount, label }) {
   try {
     yield put(setTransactionLoading());
 
     const { userAddress } = yield select((state) => state.userInf);
 
     const contract = yield call(getValidationRewardPoolsInstance);
-    yield contract.setDelegatorsShare(getPercentageFormat(amount));
+    const transaction = yield contract.setDelegatorsShare(getPercentageFormat(amount));
     yield put(getVRPDelegatorsShare(userAddress));
 
-    yield put(setTransactionLoadingSuccess({ type: formTypes.validatorsPool }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.validatorsPool, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));

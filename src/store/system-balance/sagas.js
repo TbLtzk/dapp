@@ -16,22 +16,22 @@ import {
 } from './action-creators';
 import * as actionTypes from './action-types';
 
-import { setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/action-creators';
+import { setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/actions';
 
 import { getStableCoinInstance, getSystemBalanceInstance, getSystemReserveInstance } from 'contracts/contract-instance';
 
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei } from 'func/balance';
-import { captureError, getErrorMessage } from 'func/errors';
+import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
 
-function* setPerformNettingGenerator () {
+function* setPerformNettingGenerator ({ label }) {
   try {
     const { userAddress } = yield select((state) => state.userInf);
 
     const contract = yield call(getSystemBalanceInstance);
-    yield contract.performNetting({ from: userAddress });
+    const transaction = yield contract.performNetting({ from: userAddress });
 
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));

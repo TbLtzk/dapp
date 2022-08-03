@@ -21,7 +21,7 @@ export const getValidators = async (validatorsInstance: ValidatorsInstance) => {
   return efficiency.map((item, idx) => ({
     ...item,
     delegationSaturation: saturation[idx],
-    ...validatorShortList[idx]
+    ...validatorShortList[idx],
   }));
 };
 
@@ -48,20 +48,20 @@ export const getValidator = async (
     delegatorShare,
     validatorShare,
     validatorPoolBalance,
-    poolinterestRate
+    poolinterestRate,
   };
 };
 
 export async function prepareValidatorsMonitoringData (
   indexer: Indexer,
-  member: { address: string, balance: string | number },
+  member: { address: string; balance: string | number }
 ) {
   const monitoringData = {
     lastBlock: 'n/a' as string | number,
     timestamp: '0',
     average: 'n/a',
     monthDayYear: 'n/a',
-    lastBlockValidated: 'n/a'
+    lastBlockValidated: 'n/a',
   };
 
   try {
@@ -82,7 +82,7 @@ export async function prepareValidatorsMonitoringData (
     return {
       ...monitoringData,
       validator: member.address,
-      amount: member.balance
+      amount: member.balance,
     };
   } catch (error) {
     captureError(error);

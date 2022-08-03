@@ -1,8 +1,9 @@
 import * as actionTypes from './action-types';
 
-export const getDefaultAllocationProxy = (isAllocate) => ({
+export const getDefaultAllocationProxy = (isAllocate, label) => ({
   type: actionTypes.GET_DEFAULT_ALLOCATION_PROXY,
   isAllocate,
+  label
 });
 
 export const getDefaultAllocationProxyError = (error) => ({
@@ -15,9 +16,10 @@ export const getDefaultAllocationProxySuccess = (result) => ({
   result,
 });
 
-export const getValidationRewardProxy = (isAllocate) => ({
+export const getValidationRewardProxy = (isAllocate, label) => ({
   type: actionTypes.GET_VALIDATION_REWARD_PROXY,
   isAllocate,
+  label
 });
 
 export const getValidationRewardProxyProxyError = (error) => ({
@@ -30,9 +32,10 @@ export const getValidationRewardProxyProxySuccess = (result) => ({
   result,
 });
 
-export const getRootNodeRewardProxy = (isAllocate) => ({
+export const getRootNodeRewardProxy = (isAllocate, label) => ({
   type: actionTypes.GET_ROOT_NODE_REWARD_PROXY,
   isAllocate,
+  label
 });
 
 export const getRootNodeRewardProxyError = (error) => ({
@@ -45,9 +48,10 @@ export const getRootNodeRewardProxySuccess = (result) => ({
   result,
 });
 
-export const getQHolderTimeUpdate = (isUpdateTime) => ({
+export const getQHolderTimeUpdate = (isUpdateTime, label) => ({
   type: actionTypes.GET_Q_HOLDER_TIME_UPDATE,
   isUpdateTime,
+  label
 });
 
 export const getQHolderTimeUpdateError = (error) => ({

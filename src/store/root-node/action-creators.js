@@ -1,21 +1,24 @@
 import * as actionTypes from './action-types';
 
-export const setRootStakeToPanel = (data) => ({
+export const setRootStakeToPanel = (data, label) => ({
   type: actionTypes.SET_ROOT_STAKE_TO_PANEL,
-  data
+  data,
+  label
 });
 
-export const setRootAnnounceWithdrawal = (amount, paymentInf) => ({
+export const setRootAnnounceWithdrawal = (amount, paymentInf, label) => ({
   type: actionTypes.SET_ROOT_ANNOUNCE_WITHDRAWAL,
   amount,
-  paymentInf
+  paymentInf,
+  label
 });
 
-export const setRootWithdraw = (amount, payTo, paymentInf) => ({
+export const setRootWithdraw = (amount, payTo, paymentInf, label) => ({
   type: actionTypes.SET_ROOT_WITHDRAW,
   amount,
   payTo,
-  paymentInf
+  paymentInf,
+  label
 });
 
 export const getRootMembers = (tableType) => ({

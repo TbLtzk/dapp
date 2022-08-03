@@ -7,7 +7,7 @@ export const getVRPPoolInfo = (address) => ({ type: actionTypes.GET_VRP_POOL_INF
 export const setVRPPoolInfo = (data) => ({ type: actionTypes.SET_VRP_POOL_INFO, payload: data });
 
 export const getVRPDelegatorsShare = (address) => ({ type: actionTypes.GET_VRP_DELEGATOR_SHARE, address });
-export const setVRPDelegatorsShare = (amount) => ({ type: actionTypes.SET_VRP_DELEGATOR_SHARE, amount });
+export const setVRPDelegatorsShare = (amount, label) => ({ type: actionTypes.SET_VRP_DELEGATOR_SHARE, amount, label });
 export const setVRPDelegatorsShareData = (data) => ({ type: actionTypes.SET_VRP_DELEGATOR_SHARE_DATA, payload: data });
 
 export const getVRPLastUpdateOfCompoundRate = (address) => ({
@@ -20,9 +20,10 @@ export const setVRPLastUpdateOfCompoundRateData = (data) => ({
   payload: data
 });
 
-export const setVRPUpdateValidatorsCompoundRate = (address) => ({
+export const setVRPUpdateValidatorsCompoundRate = (address, label) => ({
   type: actionTypes.SET_VRP_UPDATE_VALIDATORS_COMPOUND_RATE,
-  address
+  address,
+  label
 });
 
 export const setVRPLoadingValidatorsCompoundRate = (data) => ({

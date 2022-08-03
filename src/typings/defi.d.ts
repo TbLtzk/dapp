@@ -25,7 +25,9 @@ interface BorrowAssetsRateAndFee {
 interface BorrowAction {
   amount: string | number;
   vaultId: string | number;
+  label: string
 }
+
 interface BorrowActionDepositWithdraw extends BorrowAction {
   decimals: number;
 }

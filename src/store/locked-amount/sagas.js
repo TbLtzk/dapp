@@ -8,7 +8,7 @@ import {
   setTransactionLoading,
   setTransactionLoadingError,
   setTransactionLoadingSuccess,
-} from 'store/transaction-handler/action-creators';
+} from 'store/transaction-handler/actions';
 import { getMinimumValidatorsTimeLock, getSelfStake, getValidatorsTimeLocks } from 'store/validators/action-creators';
 import { getMinimumVestingTimeLock, getVestingBalance, getVestingTimeLocks } from 'store/vesting/action-creators';
 
@@ -24,7 +24,7 @@ import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { toWei } from 'func/balance';
 import { dateToTimestamp } from 'func/convertDate';
-import { captureError, getErrorMessage } from 'func/errors';
+import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
 
 async function getContractInstance (instanceType) {
   switch (instanceType) {
@@ -66,33 +66,35 @@ export function* getAmountOnContract (instanceType, address) {
   }
 }
 
-function* setPurgeTimeLocksAmount ({ payload }) {
+function* setPurgeTimeLocksAmount ({ payload, label }) {
   try {
     yield put(setTransactionLoading());
 
     const contract = yield call(getContractInstance, payload.contract);
-    yield contract.purgeTimeLocks(payload.address);
+    const transaction = yield contract.purgeTimeLocks(payload.address);
 
     yield call(getAmountOnContract, payload.contract, payload.address);
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
   }
 }
 
-function* setDepositLockedAmount ({ payload }) {
+function* setDepositLockedAmount ({ payload, label }) {
   try {
     yield put(setTransactionLoading());
     const contract = yield call(getContractInstance, payload.contract);
-    yield contract.depositOnBehalfOf(
+    const transaction = yield contract.depositOnBehalfOf(
       payload.address,
       dateToTimestamp(payload.startDate),
       dateToTimestamp(payload.endDate),
       { value: toWei(payload.amount) }
     );
     yield call(getAmountOnContract, payload.contract, payload.address);
-    yield put(setTransactionLoadingSuccess({ type: formTypes.timeLocksAmount }));
+
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.timeLocksAmount, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));

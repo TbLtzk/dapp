@@ -16,7 +16,6 @@ import Monitoring from 'pages/Monitoring';
 import NotFound from 'pages/NotFound';
 import Staking from 'pages/Staking';
 
-import useCommonAlert from 'hooks/useCommonAlert';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Auctions from '../pages/Auctions';
@@ -46,8 +45,6 @@ const UiKit = lazy(() => import('pages/UiKit'));
 
 function Routes () {
   const isAliasesEnabled = useFeatureFlag('aliases');
-
-  useCommonAlert();
 
   useEffect(() => {
     addSentryContext();

@@ -39,7 +39,7 @@ function NewSlashingProposal () {
   const form = useMultiStepForm({
     initialValues: DEFAULT_VALUES,
     onConfirm: (values) => {
-      dispatch(createProposal(values));
+      dispatch(createProposal(values, t('CREATE_PROPOSAL_SUCCESS')));
     },
   });
 

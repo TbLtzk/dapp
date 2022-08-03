@@ -14,7 +14,7 @@ import useMetamaskReset from 'hooks/useMetamaskReset';
 import useMultiStepForm from 'hooks/useMultiStepForm';
 
 import { bidForAuction } from 'store/auctions/actions';
-import { setTransactionLoading, setTransactionLoadingSuccess } from 'store/transaction-handler/action-creators';
+import { setTransactionLoading, setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/actions';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import { getStableCoinInstance } from 'contracts/contract-instance';
@@ -23,6 +23,7 @@ import { getAuctionInstance } from 'contracts/helpers/auction';
 import formTypes from 'constants/form-types';
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 import { TRANSACTION_TYPES } from 'constants/statuses';
+import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
 import { BN } from 'func/useful';
 import { max, min, required } from 'func/validators';
 
@@ -55,7 +56,7 @@ function BidModal ({ modalOpen, auction, onHide, }:Props) {
         vaultOwner: (auction as LiquidationAuctionBid).vaultOwner,
         auctionId: (auction as AuctionBid).auctionId,
         vaultId: (auction as LiquidationAuctionBid).vaultId
-      }));
+      }, t('BID_FOR_AUCTION_SUCCESS')));
     },
   });
 
@@ -65,8 +66,6 @@ function BidModal ({ modalOpen, auction, onHide, }:Props) {
   };
 
   useMetamaskReset(formTypes.bidForAuction, handleHide);
-
-  const modalTitle = `${t('BID_FOR')} ${t(snakeCase(auction.auctionType).toUpperCase())}`;
 
   const [allowance, setAllowance] = useState<string | number>(0);
   const [isApproved, setIsApproved] = useState(true);
@@ -94,15 +93,17 @@ function BidModal ({ modalOpen, auction, onHide, }:Props) {
 
     try {
       dispatch(setTransactionLoading());
-      await contract.approve(address, MAX_APPROVE_AMOUNT, { from: userAddress });
+      const transaction = await contract.approve(address, MAX_APPROVE_AMOUNT, { from: userAddress });
       setIsApproved(true);
-    } catch {
+      dispatch(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, t('APPROVE_SUCCESS'))));
+    } catch (error) {
       setIsApproved(false);
-    } finally {
-      dispatch(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
+      captureError(error);
+      dispatch(setTransactionLoadingError(getErrorMessage(error)));
     }
   }
 
+  const modalTitle = `${t('BID_FOR')} ${t(snakeCase(auction.auctionType).toUpperCase())}`;
   const bidTitle = auction.auctionType === 'systemDebt' ? t('PROVIDE_YOUR_BID') : t('PROVIDE_A_BID_FOR_THIS_AUCTION');
 
   return (

@@ -11,10 +11,8 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import { getTimeSinceOutstandingDebt, refreshTimeSinceOutstandingDebt } from 'contracts/helpers/borrowing-core';
 
-import { remainDateTimeSince } from 'func/convertDate';
-
 interface Props {
-  asset: Asset
+  asset: Asset;
 }
 
 function UpdateBorrowDebt ({ asset }: Props) {
@@ -24,25 +22,24 @@ function UpdateBorrowDebt ({ asset }: Props) {
   const userAddress = useSelector(userAddressMetamask);
 
   const [timeSinceOutstandingDebt, setTimeSinceOutstandingDebt] = useState<string | number>('0');
-  const [timeSinceUnixTimestampOutstandingDeb, setTimeSinceUnixTimestampOutstandingDeb] = useState<string>('0');
   const [loadingTimeSinceOutstandingDeb, setLoadingTimeSinceOutstandingDeb] = useState(false);
 
   useEffect(() => {
-    getTimeSinceOutstandingDebt(setTimeSinceOutstandingDebt, setTimeSinceUnixTimestampOutstandingDeb, asset);
+    getTimeSinceOutstandingDebt(setTimeSinceOutstandingDebt, asset);
   }, []);
 
   useInterval(() => {
-    setTimeSinceOutstandingDebt(remainDateTimeSince(timeSinceUnixTimestampOutstandingDeb));
-  }, 30000);
+    getTimeSinceOutstandingDebt(setTimeSinceOutstandingDebt, asset);
+  }, 50000);
 
   const handleRefreshDebt = () => {
     refreshTimeSinceOutstandingDebt(
       setTimeSinceOutstandingDebt,
       setLoadingTimeSinceOutstandingDeb,
-      setTimeSinceUnixTimestampOutstandingDeb,
       userAddress,
       dispatch,
-      asset
+      asset,
+      t('TIME_SINCE_LAST_REFRESH_SUCCESS')
     );
   };
 

@@ -21,7 +21,7 @@ function DelegatorShareForm () {
     initialValues: { amount: '' },
     validators: { amount: [required, max(100)] },
     onSubmit: (form) => {
-      dispatch(setVRPDelegatorsShare(form.amount));
+      dispatch(setVRPDelegatorsShare(form.amount, t('SET_DELEGATOR_SHARE_SUCCESS')));
     }
   });
   useMetamaskReset(formTypes.validatorsPool, form.reset);

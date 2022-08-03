@@ -30,7 +30,7 @@ function PurgeSlashingForm ({ onClose }: { onClose: () => void }) {
       contractType: [required]
     },
     onSubmit: ({ address, contractType }) => {
-      dispatch(setPurgeSlashing(address, contractType));
+      dispatch(setPurgeSlashing(address, contractType, t('PURGE_SUCCESS')));
     }
   });
 
