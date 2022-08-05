@@ -3,6 +3,7 @@ export enum Breakpoints {
   huge = 1600,
   large = 1200,
   medium = 1024,
+  tablet = 600,
   small = 480,
 };
 type BreakpointType = keyof typeof Breakpoints

@@ -21,4 +21,10 @@ export enum RoutePaths {
   newSystemDebt = '/auctions/system-debt/new',
   newSystemSurplus = '/auctions/system-surplus/new',
 
+  qParameters = '/q-parameters',
+  qDefiRiskExpertPanelParameters = '/q-parameters/defi-risk-experts',
+  qRootNodeSelectionExpertPanelParameters = '/q-parameters/root-node-selection-experts',
+  qFeesAndIncentivesExpertPanel = '/q-parameters/fees-and-incentives-experts',
+  qContractRegistry = '/q-parameters/contract-registry',
+  qConstitution = '/q-parameters/constitution'
 }

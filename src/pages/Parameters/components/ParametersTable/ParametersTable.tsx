@@ -5,21 +5,22 @@ import parametersDictionary from 'json/parameters.json';
 import CopyToClipboard from 'components/CopyToClipboard';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
-import { useParametersContext } from '../..';
-
 import { TableWrapper } from './styles';
 
 import { fromWei } from 'func/balance';
 import { formatAsset, formatDuration, formatFactor, formatFraction, formatNumber } from 'func/formatters';
 
-function ParametersTable ({ parameters }) {
+interface Props {
+  parameters: any[];
+  simplified: boolean;
+}
+
+function ParametersTable ({ parameters, simplified }: Props) {
   const { t } = useTranslation();
 
-  const { simplified } = useParametersContext();
-
-  const renderKey = (item) => {
+  const renderKey = (item: any) => {
     return simplified
-      ? parametersDictionary[item.key]?.name || item.key
+      ? (parametersDictionary as any)[item.key]?.name || item.key
       : (
         <div>
           <span>{item.key}</span>
@@ -28,8 +29,8 @@ function ParametersTable ({ parameters }) {
       );
   };
 
-  const renderValue = (item) => {
-    const type = parametersDictionary[item.key]?.type;
+  const renderValue = (item: any) => {
+    const type = (parametersDictionary as any)[item.key]?.type;
     if (type === 'address' || item.type === 'ADDR') {
       return (
         <ExplorerAddress

@@ -15,6 +15,7 @@ export const TabsContainer = styled.nav`
     content: '';
     position: absolute;
     display: block;
+    z-index: -1;
     left: 0;
     bottom: 7px;
     width: 100%;
@@ -31,7 +32,6 @@ export const TabsContainer = styled.nav`
     padding: 8px 16px;
     white-space: nowrap;
     cursor: pointer;
-    z-index: 1;
 
     .tab-label {
       color: ${({ theme }) => getTabColor(theme, 'inactive')};
