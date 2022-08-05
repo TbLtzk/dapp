@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-export const TableWrapper = styled.div`
+export const TableWrapper = styled.div<{ $simplified: boolean }>`
   overflow-x: auto;
   
   table {

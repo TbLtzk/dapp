@@ -279,7 +279,7 @@
   "ROOT_NODE": "Wurzelknoten",
   "VALIDATOR": "Validator",
   "Q_TOKEN_HOLDER": "Q Tokenhalter",
-  "DEFI_RISK_EXPERT": "Defi -Risiko -Experte",
+  "DEFI_RISK_EXPERT": "Defi -Risiko -Experten",
   "FEES_INCENTIVE_EXPERT": "Gebühren und Incentive -Experte",
   "Q_ROOT_NODE_SELECTION_EXPERT": "Q Root Node Selection Expert",
   "INACTIVE_ROOT_NODES": "Inaktive Wurzelknoten",
@@ -957,5 +957,12 @@
   "WITHDRAW_FROM_RANKING_SUCCESS": "Sich vom Ranking -Erfolg zurückziehen",
   "TIME_LOCKS_DEPOSIT_SUCCESS": "Zeitschließe Einzahlungserfolg",
   "PURGE_EXPIRED_TIME_LOCKS_SUCCESS": "Erfolgszeitsperrungen",
-  "WITHDRAW_FROM_VESTING_SUCCESS": "Vom Erfolg des Vesting -Kontos zurückziehen"
+  "WITHDRAW_FROM_VESTING_SUCCESS": "Vom Erfolg des Vesting -Kontos zurückziehen",
+  "ROOT_NODE_SELECTION_EXPERT": "Q Root Knode Selection Expert ",
+  "FEES_INCENTIVES_EXPERT": "Gebühren und Incentives -Experten",
+  "CONTRACT_REGISTRY": "Vertragsregister",
+  "SIMPLIFIED_VIEW": "Vereinfachte Ansicht",
+  "Q_CONTRACT_REGISTRY_EMPTY_MSG": "Keine Adressen",
+  "VIEW_ON_GNOSIS_SAFE_UI": "Ansicht auf der Gnosis Safe-Benutzeroberfläche",
+  "GNOSIS_SAFE_ADDRESS": "Gnosis-Safe-Adresse:"
 }

@@ -19,8 +19,8 @@ import Staking from 'pages/Staking';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Auctions from '../pages/Auctions';
-import Dashboard from '../pages/Dashboard/Dashboard';
-import Manage from '../pages/Dashboard/Manage';
+import Dashboard from '../pages/Dashboard';
+import Manage from '../pages/Parameters';
 import QVault from '../pages/QVault';
 import SavingAndBorrowing from '../pages/SavingAndBorrowing';
 import TimeLocks from '../pages/TimeLocks';
@@ -57,7 +57,7 @@ function Routes () {
           <Dashboard />
         </Route>
 
-        <Route exact path="/q-parameters">
+        <Route exact path="/q-parameters/:type?">
           <Manage />
         </Route>
 

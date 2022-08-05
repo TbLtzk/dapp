@@ -279,7 +279,7 @@
   "ROOT_NODE": "Root Node",
   "VALIDATOR": "Validator",
   "Q_TOKEN_HOLDER": "Q Token Holder",
-  "DEFI_RISK_EXPERT": "DeFi Risk Expert",
+  "DEFI_RISK_EXPERT": "DeFi Risk Experts",
   "FEES_INCENTIVE_EXPERT": "Fees & Incentive Expert",
   "Q_ROOT_NODE_SELECTION_EXPERT": "Q Root Node Selection Expert",
   "INACTIVE_ROOT_NODES": "Inactive Root Nodes",
@@ -957,5 +957,12 @@
   "WITHDRAW_FROM_RANKING_SUCCESS": "Withdraw from ranking success",
   "TIME_LOCKS_DEPOSIT_SUCCESS": "Time locks deposit success",
   "PURGE_EXPIRED_TIME_LOCKS_SUCCESS": "Success time locks purging",
-  "WITHDRAW_FROM_VESTING_SUCCESS": "Withdraw from Vesting Account success"
+  "WITHDRAW_FROM_VESTING_SUCCESS": "Withdraw from Vesting Account success",
+  "ROOT_NODE_SELECTION_EXPERT": "Root Node Selection Experts",
+  "FEES_INCENTIVES_EXPERT": "Fees & Incentives Experts",
+  "CONTRACT_REGISTRY": "Contract Registry",
+  "SIMPLIFIED_VIEW": "Simplified view",
+  "Q_CONTRACT_REGISTRY_EMPTY_MSG": "No addresses",
+  "VIEW_ON_GNOSIS_SAFE_UI": "View on Gnosis Safe UI",
+  "GNOSIS_SAFE_ADDRESS": "Gnosis Safe address:"
 }

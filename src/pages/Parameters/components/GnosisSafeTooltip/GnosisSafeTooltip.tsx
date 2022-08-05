@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import Tooltip from 'ui/Tooltip';
@@ -10,7 +11,13 @@ import { networkSelector } from 'store/user-inf/selectors';
 
 import { getGnosisSafeUrlByChainId } from 'func/appConfig';
 
-function GnosisSafeTooltip ({ address }) {
+interface Props {
+  address: string;
+}
+
+function GnosisSafeTooltip ({ address }: Props) {
+  const { t } = useTranslation();
+
   const network = useSelector(networkSelector);
   const gnosisSafeUrl = getGnosisSafeUrlByChainId(network);
 
@@ -23,7 +30,7 @@ function GnosisSafeTooltip ({ address }) {
   return (
     <Tooltip trigger={gnosisIcon}>
       <TooltipContent>
-        <span>Gnosis Safe address:</span>
+        <span>{t('GNOSIS_SAFE_ADDRESS')}</span>
         <div className="tooltip-address">
           <ExplorerAddress
             short
@@ -37,7 +44,7 @@ function GnosisSafeTooltip ({ address }) {
           target="_blank"
           rel="noreferrer"
         >
-          View on Gnosis Safe UI
+          {t('VIEW_ON_GNOSIS_SAFE_UI')}
         </a>
       </TooltipContent>
     </Tooltip>
