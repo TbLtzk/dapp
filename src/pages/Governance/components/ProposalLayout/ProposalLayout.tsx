@@ -35,7 +35,7 @@ function ProposalLayout ({ proposal, type }: { proposal: Proposal, type: Proposa
     >
       <ProposalLayoutContainer>
         {isSlashingProposal && proposal.candidate === userAddress && (
-          <CastObjection proposal={proposal} />
+          <CastObjection proposal={proposal as SlashingProposal} />
         )}
 
         <ProposalDetails proposal={proposal} type={type} />

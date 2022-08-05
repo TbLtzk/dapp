@@ -18,6 +18,7 @@ export default defineConfig({
     },
   },
   resolve: {
+    preserveSymlinks: true,
     alias: {
       web3: 'web3/dist/web3.min.js',
       stream: 'stream-browserify',
