@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Proposal } from 'typings/proposals';
+import { SlashingProposal } from 'typings/proposals';
 import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 import Tip from 'ui/Tip';
@@ -11,8 +11,9 @@ import useMetamaskReset from 'hooks/useMetamaskReset';
 import CastObjectionForm from './components/CastObjectionForm';
 
 import formTypes from 'constants/form-types';
+import { ObjectionStatus } from 'constants/statuses';
 
-function CastObjection ({ proposal }: { proposal: Proposal }) {
+function CastObjection ({ proposal }: { proposal: SlashingProposal }) {
   const { t } = useTranslation();
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -26,7 +27,7 @@ function CastObjection ({ proposal }: { proposal: Proposal }) {
     <div className="cast-objection">
       <Tip
         type="warning"
-        action={(
+        action={proposal.objEscrow.objection.status === ObjectionStatus.OPEN && (
           <Button
             compact
             look="danger"
