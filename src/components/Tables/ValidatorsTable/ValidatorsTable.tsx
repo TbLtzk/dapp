@@ -7,6 +7,8 @@ import { TableType } from 'typings/tables';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 import Table from 'ui/Table';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { getColumnsValidatorsMonitoring, getColumnsValidatorsWidened } from './columnTypes';
 import { tableValidatorsMonitoring, tableValidatorsShort, tableValidatorsWidened } from './tablesTypes';
 
@@ -20,7 +22,7 @@ import {
   validatorsWidenedSelector,
 } from 'store/validators/selectors';
 
-import TABLE_TYPES from 'constants/tableTypes';
+import { TABLE_TYPES } from 'constants/tableTypes';
 
 interface Props {
   buttons?: ReactNode;
@@ -30,6 +32,7 @@ interface Props {
 function ValidatorsTable ({ buttons, tableType }: Props) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { indexerUrl } = useNetworkConfig();
 
   const validatorTableTypes = {
     [TABLE_TYPES.validatorsShort]: {
@@ -61,7 +64,7 @@ function ValidatorsTable ({ buttons, tableType }: Props) {
   const tableLoading = useSelector(tableLoadingSelector);
 
   const fetchTableData = () => {
-    dispatch(getValidatorMembers(tableType));
+    dispatch(getValidatorMembers(tableType, indexerUrl));
   };
 
   useEffect(() => {

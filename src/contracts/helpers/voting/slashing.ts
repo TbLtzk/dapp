@@ -9,7 +9,7 @@ import { getContractProposals } from '.';
 
 import { getRootNodeSlashingEscrowInstance, getRootNodesSlashingVotingInstance, getValidatorSlashingEscrowInstance, getValidatorsSlashingVotingInstance } from 'contracts/contract-instance';
 
-import { ObjectionStatus } from 'constants/statuses';
+import { ObjectionStatus } from 'constants/slashing';
 import { fromWei } from 'utils/balance';
 import { unixToDate } from 'utils/date';
 import { transformToPercentage } from 'utils/formatters';

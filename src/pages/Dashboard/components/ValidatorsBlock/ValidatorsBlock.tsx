@@ -12,7 +12,7 @@ import Spinner from 'ui/Spinner';
 import { getValidatorMembers } from 'store/validators/action-creators';
 import { loadingValidatorsShortSelector, validatorsShortSelector } from 'store/validators/selectors';
 
-import TABLE_TYPES from 'constants/tableTypes';
+import { TABLE_TYPES } from 'constants/tableTypes';
 import { formatNumber } from 'utils/formatters';
 import { trimAddress } from 'utils/useful';
 

@@ -4,7 +4,12 @@ export enum BorrowAssets {
   QUSDC = 'QUSDC'
 };
 
-export const defiApproveType = {
+export const defiApproveTypes = {
   deposit: 'deposit',
   repay: 'repay'
-} as const;
+};
+
+export const borrowTypes = {
+  deposit: 'deposit',
+  repay: 'repay'
+};

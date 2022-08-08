@@ -20,7 +20,7 @@ import { rootMembersSelector } from 'store/root-node/selectors';
 import { getValidatorMembers } from 'store/validators/action-creators';
 import { validatorsWidenedSelector } from 'store/validators/selectors';
 
-import TABLE_TYPES from 'constants/tableTypes';
+import { TABLE_TYPES } from 'constants/tableTypes';
 import { formatNumber } from 'utils/formatters';
 import { trimAddress } from 'utils/useful';
 import { address, percent, required, url } from 'utils/validators';

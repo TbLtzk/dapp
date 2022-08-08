@@ -21,8 +21,8 @@ import {
 import { getSavingInstance, getStableCoinInstance } from 'contracts/contract-instance';
 import { getSavingBalanceDetailsHelper } from 'contracts/helpers/saving-assets-helper';
 
+import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
 import formTypes from 'constants/form-types';
-import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei, toWei } from 'utils/balance';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';

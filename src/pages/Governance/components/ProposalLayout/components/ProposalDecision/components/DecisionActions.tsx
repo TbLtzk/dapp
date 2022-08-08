@@ -16,9 +16,9 @@ import { isUserRootNode } from 'store/root-node/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 import { setEscrowAction } from 'store/voting/slashing/actions';
 
-import { ZERO_ADDRESS } from 'constants/config';
-import { escrowTypes } from 'constants/escrowTypes';
+import { ZERO_ADDRESS } from 'constants/boundaries';
 import formTypes from 'constants/form-types';
+import { escrowTypes } from 'constants/slashing';
 
 interface Props {
   proposal: SlashingProposal

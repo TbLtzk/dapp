@@ -1,17 +1,13 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import Check from 'ui/Check';
 import Modal from 'ui/Modal';
 
 import useLocalStorage from 'hooks/useLocalStorage';
+import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import { StyledConnectWalletModal } from '../../styles';
 import ConnectButtons from '../ConnectButtons';
-
-import { networkSelector } from 'store/user-inf/selectors';
-
-import { chainIds, mainnetDocsUrl, testnetDocsUrl } from 'constants/config';
 
 type Props = {
   onModalClose: () => void;
@@ -20,8 +16,7 @@ type Props = {
 
 function ConnectWalletModal ({ modalOpen, onModalClose }: Props) {
   const { t } = useTranslation();
-  const network = useSelector(networkSelector);
-  const docsUrl = network === chainIds.mainnet ? mainnetDocsUrl : testnetDocsUrl;
+  const { docsUrl } = useNetworkConfig();
 
   const [isChecked, setIsChecked] = useLocalStorage('i-have-read-the-privacy-policy', false);
 

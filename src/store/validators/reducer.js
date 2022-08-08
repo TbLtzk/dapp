@@ -1,6 +1,6 @@
 import * as actionTypes from './action-types';
 
-import TABLE_TYPES from 'constants/tableTypes';
+import { TABLE_TYPES } from 'constants/tableTypes';
 
 const initialState = {
   delegatorsShare: 0,

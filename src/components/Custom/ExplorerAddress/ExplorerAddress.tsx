@@ -1,12 +1,10 @@
-import { useSelector } from 'react-redux';
+
+import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import Address from '../Address';
 
 import { ExplorerLink } from './styles';
 
-import { networkSelector } from 'store/user-inf/selectors';
-
-import { getExplorerUrlByChainId } from 'utils/appConfig';
 import { trimAddress } from 'utils/useful';
 
 function ExplorerAddress ({
@@ -14,8 +12,7 @@ function ExplorerAddress ({
   short = false,
   ...rest
 }: Parameters<typeof Address>[0]) {
-  const network = useSelector(networkSelector);
-  const explorerUrl = getExplorerUrlByChainId(network);
+  const { explorerUrl } = useNetworkConfig();
 
   return (
     <Address

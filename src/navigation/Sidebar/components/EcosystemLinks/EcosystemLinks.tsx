@@ -1,29 +1,18 @@
-import { useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
 import Icon, { IconName } from 'ui/Icon';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { LinksContainer } from './styles';
 
-import { networkSelector } from 'store/user-inf/selectors';
-
-import { getExplorerUrlByChainId, getGnosisSafeUrlByChainId, getQBridgeUrlByChainId } from 'utils/appConfig';
-
 function EcosystemLinks () {
-  const chainId = useSelector(networkSelector);
+  const { qBridgeUrl, explorerUrl, gnosisSafeUrl } = useNetworkConfig();
+
   const links: { icon: IconName; href: string }[] = [
-    {
-      href: getGnosisSafeUrlByChainId(chainId),
-      icon: 'gnosis-safe',
-    },
-    {
-      href: getExplorerUrlByChainId(chainId),
-      icon: 'explorer',
-    },
-    {
-      href: getQBridgeUrlByChainId(chainId),
-      icon: 'bridge',
-    },
+    { href: gnosisSafeUrl, icon: 'gnosis-safe' },
+    { href: explorerUrl, icon: 'explorer' },
+    { href: qBridgeUrl, icon: 'bridge' },
   ];
 
   return (

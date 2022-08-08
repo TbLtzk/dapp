@@ -5,7 +5,7 @@ import { ValidatorMetrics } from '@q-dev/q-js-sdk/lib/utils/validator-metrics';
 import { ContractType, ContractValue } from 'typings/contracts';
 import { Asset } from 'typings/defi';
 
-import { indexersUrls } from 'constants/config';
+import { networkConfigsMap } from 'constants/config';
 
 export const CONTRACT_REGISTRY_ADDRESS = '0xc3E589056Ece16BCB88c6f9318e9a7343b663522';
 export let contractRegistryInstance: ContractRegistryInstance | null = null;
@@ -112,7 +112,7 @@ export const getValidatorMetricsInstance = async () => {
   return validatorMetricsInstance;
 };
 
-export const getIndexerInstance = async (indexerUrl = indexersUrls.testnet) => {
+export const getIndexerInstance = async (indexerUrl = networkConfigsMap.testnet.indexerUrl) => {
   if (!indexerInstance) {
     indexerInstance = new Indexer(indexerUrl + '/blocks');
   }

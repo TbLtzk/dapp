@@ -9,7 +9,7 @@ import useForm from 'hooks/useForm';
 
 import { useSystemSurplusAuctionForm } from '../NewSystemSurplusAuction';
 
-import { MAX_BID_AMOUNT } from 'constants/numbers';
+import { MAX_BID_AMOUNT } from 'constants/boundaries';
 import { max, required } from 'utils/validators';
 
 interface Props {

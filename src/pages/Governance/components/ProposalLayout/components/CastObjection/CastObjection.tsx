@@ -12,7 +12,7 @@ import useMetamaskReset from 'hooks/useMetamaskReset';
 import CastObjectionForm from './components/CastObjectionForm';
 
 import formTypes from 'constants/form-types';
-import { ObjectionStatus } from 'constants/statuses';
+import { ObjectionStatus } from 'constants/slashing';
 
 function CastObjection ({ proposal }: { proposal: SlashingProposal }) {
   const { t } = useTranslation();

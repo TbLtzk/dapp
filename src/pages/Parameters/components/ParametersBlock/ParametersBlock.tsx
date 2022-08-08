@@ -1,20 +1,17 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import Spinner from 'ui/Spinner';
 import Switch from 'ui/Switch';
 import Tooltip from 'ui/Tooltip';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import GnosisSafeTooltip from '../GnosisSafeTooltip';
 import ParametersTable from '../ParametersTable';
 
 import { BlockParagraph, DocsLink, ParametersBlockSubtitle, ParametersBlockTitle } from './styles';
-
-import { networkSelector } from 'store/user-inf/selectors';
-
-import { chainIds, mainnetDocsUrl, testnetDocsUrl } from 'constants/config';
 
 interface Props {
   title: string;
@@ -38,12 +35,9 @@ function ParametersBlock ({
   emptyMsg = 'NO_PARAMETERS',
 }: Props) {
   const { t } = useTranslation();
-  const [isSimplifiedMode, setIsSimplifiedMode] = useState(false);
+  const { docsUrl } = useNetworkConfig();
 
-  const network = useSelector(networkSelector);
-  const baseDocsUrl = network === chainIds.mainnet
-    ? mainnetDocsUrl
-    : testnetDocsUrl;
+  const [isSimplifiedMode, setIsSimplifiedMode] = useState(false);
 
   const renderTable = () => {
     if (loading && !parameters.length) {
@@ -68,7 +62,7 @@ function ParametersBlock ({
             <Tooltip
               trigger={(
                 <DocsLink
-                  href={`${baseDocsUrl}/system-parameters${docsId}`}
+                  href={`${docsUrl}/system-parameters${docsId}`}
                   target="_blank"
                 >
                   <i className="mdi mdi-open-in-new" style={{ cursor: 'pointer' }} />

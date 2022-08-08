@@ -13,7 +13,7 @@ import {
   getSystemSurplusAuctionInstance,
 } from 'contracts/contract-instance';
 
-import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
+import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
 
 export enum AUCTIONS_TYPES {
   liquidation = 'liquidation',

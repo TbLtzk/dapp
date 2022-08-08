@@ -1,4 +1,4 @@
-const TABLE_TYPES = {
+export const TABLE_TYPES = {
   qFees: 'qfees',
   qDefi: 'defi',
   timeLocks: 'timeLocks',
@@ -16,5 +16,3 @@ const TABLE_TYPES = {
   savingCryptoAssets: 'saving-crypto-assets',
   borrowCryptoAssets: 'borrow-crypto-assets'
 };
-
-export default TABLE_TYPES;

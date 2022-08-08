@@ -28,7 +28,7 @@ import {
 import { getBorrowingCoreInstance, getEpdrParametersInstance, getSavingInstance } from 'contracts/contract-instance';
 import { getBorrowAssetRateAndFee, getVaultWithFee } from 'contracts/helpers/borrowing-core';
 
-import { BorrowAssets } from 'constants/defiTypes';
+import { BorrowAssets } from 'constants/defi';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { fromWei } from 'utils/balance';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';

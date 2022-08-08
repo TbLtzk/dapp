@@ -89,9 +89,10 @@ export const setAccountableTotalStake = (data) => ({
   payload: data,
 });
 
-export const getValidatorMembers = (tableType) => ({
+export const getValidatorMembers = (tableType, indexerUrl) => ({
   type: actionTypes.GET_VALIDATORS_MEMBERS,
   tableType,
+  indexerUrl
 });
 
 export const setValidatorMembers = (tableType, data) => ({

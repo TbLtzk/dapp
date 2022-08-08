@@ -1,14 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Tooltip from 'ui/Tooltip';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { TooltipContent } from './styles';
-
-import { networkSelector } from 'store/user-inf/selectors';
-
-import { getGnosisSafeUrlByChainId } from 'utils/appConfig';
 
 interface Props {
   address: string;
@@ -16,9 +13,7 @@ interface Props {
 
 function GnosisSafeTooltip ({ address }: Props) {
   const { t } = useTranslation();
-
-  const network = useSelector(networkSelector);
-  const gnosisSafeUrl = getGnosisSafeUrlByChainId(network);
+  const { gnosisSafeUrl } = useNetworkConfig();
 
   const gnosisIcon = (
     <svg width="12" height="12">

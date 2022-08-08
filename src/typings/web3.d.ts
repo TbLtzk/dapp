@@ -1,3 +1,9 @@
+interface Provider {
+  isCoinbaseWallet?: boolean;
+  isCoinbaseBrowser?: boolean;
+  isMetaMask?: boolean;
+}
+
 interface Window {
   ethereum: {
     isCoinbaseWallet?: boolean;
@@ -6,6 +12,7 @@ interface Window {
     isStatus?: boolean;
     host?: string;
     path?: string;
+    providers?: Provider[]
     sendAsync?: (
       request: { method: string; params?: Array<any> },
       callback: (error: any, response: any) => void
@@ -13,5 +20,6 @@ interface Window {
     send?: (request: { method: string; params?: Array<any> }, callback: (error: any, response: any) => void) => void;
     request: (request: { method: string; params?: {} }) => Promise<any>;
     on: (request: string, callback: (...args: unknown[]) => void) => void;
+    setSelectedProvider: (provider: Provider) => void;
   };
 }

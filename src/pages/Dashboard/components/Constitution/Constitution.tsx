@@ -6,13 +6,14 @@ import CopyToClipboard from 'components/CopyToClipboard';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 import Button from 'ui/Button';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { getConstitutionHash } from 'store/voting/proposals/actions';
 import { constitutionHash } from 'store/voting/proposals/selectors';
 
-import { archiveConstitution, latestConstitution } from 'constants/constitution';
-
 function Constitution () {
   const { t } = useTranslation();
+  const { constitutionUrl } = useNetworkConfig();
 
   const dispatch = useDispatch();
   const constitutionHashValue = useSelector(constitutionHash);
@@ -39,7 +40,7 @@ function Constitution () {
 
         <div className="block__actions">
           <a
-            href={latestConstitution}
+            href={`${constitutionUrl}/constitution/latest`}
             target="_blank"
             rel="noreferrer"
           >
@@ -49,7 +50,7 @@ function Constitution () {
             </Button>
           </a>
           <a
-            href={archiveConstitution}
+            href={constitutionUrl}
             target="_blank"
             rel="noreferrer"
           >

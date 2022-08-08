@@ -16,7 +16,7 @@ import Monitoring from 'pages/Monitoring';
 import NotFound from 'pages/NotFound';
 import Staking from 'pages/Staking';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import Auctions from '../pages/Auctions';
 import Dashboard from '../pages/Dashboard';
@@ -44,7 +44,7 @@ function addSentryContext () {
 const UiKit = lazy(() => import('pages/UiKit'));
 
 function Routes () {
-  const isAliasesEnabled = useFeatureFlag('aliases');
+  const { featureFlags } = useNetworkConfig();
 
   useEffect(() => {
     addSentryContext();
@@ -83,7 +83,7 @@ function Routes () {
           <QVault />
         </Route>
 
-        {isAliasesEnabled && (
+        {featureFlags.aliases && (
           <Route exact path="/account-aliasing">
             <AccountAliasing />
           </Route>

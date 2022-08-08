@@ -18,7 +18,7 @@ import { stableCoinTotalSupplySelector, systemBalanceSelector } from 'store/syst
 
 import { getStableCoinInstance } from 'contracts/contract-instance';
 
-import { BorrowAssets } from 'constants/defiTypes';
+import { BorrowAssets } from 'constants/defi';
 
 function SavingBorrowingBlock () {
   const { t } = useTranslation();

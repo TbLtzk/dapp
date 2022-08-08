@@ -12,7 +12,7 @@ import Spinner from 'ui/Spinner';
 import { getRootMembers } from 'store/root-node/action-creators';
 import { loadingRootMembersSelector, rootMembersSelector } from 'store/root-node/selectors';
 
-import TABLE_TYPES from 'constants/tableTypes';
+import { TABLE_TYPES } from 'constants/tableTypes';
 import { formatNumber } from 'utils/formatters';
 import { trimAddress } from 'utils/useful';
 
