@@ -1,149 +1,106 @@
-export const testnetDocsUrl = 'https://docs.qtestnet.org';
-export const mainnetDocsUrl = 'https://docs.q.org';
+import Web3 from 'web3';
 
-export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+type NetworkName = 'mainnet' | 'testnet' | 'devnet';
 
-export const chainIds = {
-  mainnet: '35441',
-  testnet: '35443',
-  devnet: '35442',
-};
+interface NetworkConfig {
+  chainId: number;
+  name: string;
+  dAppUrl: string;
+  rpcUrl: string;
+  indexerUrl: string;
+  explorerUrl: string;
+  gnosisSafeUrl: string;
+  qBridgeUrl: string;
+  docsUrl: string;
+  constitutionUrl: string;
+  featureFlags: {
+    aliases: boolean;
+  };
+}
 
-export const networks: { [key: string]: string } = {
-  35443: 'testnet',
-  35442: 'devnet',
-  35441: 'mainnet',
-};
-
-export const dAppUrls = {
-  [chainIds.devnet]: 'http://63.34.190.209:8000',
-  [chainIds.mainnet]: 'https://hq.q.org',
-  [chainIds.testnet]: 'https://hq.qtestnet.org',
-};
-
-export const rpcUrls = {
-  [chainIds.devnet]: 'http://63.34.190.209:8545',
-  [chainIds.mainnet]: 'https://rpc.q.org',
-  [chainIds.testnet]: 'https://rpc.qtestnet.org',
-};
-
-export const indexersUrls = {
-  devnet: 'http://63.34.190.209:4000',
-  mainnet: 'https://indexer.q.org',
-  testnet: 'https://indexer.qtestnet.org',
-};
-
-export const explorerUrls = {
-  devnet: 'http://54.73.188.73:8080/',
-  mainnet: 'https://explorer.q.org',
-  testnet: 'https://explorer.qtestnet.org',
-};
-
-export const qBridgeUrls = {
-  devnet: 'http://63.34.190.209:8080',
-  mainnet: 'https://bridge.q.org',
-  testnet: 'https://bridge.qtestnet.org',
-};
-
-export const gnosisSafeUrls = {
-  devnet: 'http://63.34.190.209:8020',
-  mainnet: 'https://multisig-ui.q.org',
-  testnet: 'https://multisig-ui.qtestnet.org',
-};
-
-export const featureFlags = {
-  devnet: {
-    aliases: true,
+interface ConnectorParams {
+  chainId: string;
+  chainName: string;
+  rpcUrls: string[];
+  blockExplorerUrls: string[];
+  nativeCurrency: {
+    name: string;
+    symbol: string;
+    decimals: number;
   },
-  testnet: {},
-  mainnet: {},
-};
+}
 
-export const networkParameters: { [key: string]: any } = {
-  devnet: {
-    chainId: '8a72',
-    chainName: 'Q Devnet',
-    rpcUrls: ['http://63.34.190.209:8545'],
-    blockExplorerUrls: ['http://52.35.57.176:8080/'],
-    nativeCurrency: {
-      name: 'Q ',
-      symbol: 'Q ',
-      decimals: 18,
-    },
+export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
+  mainnet: {
+    chainId: 35441,
+    name: 'Q Mainnet',
+    dAppUrl: 'https://hq.q.org',
+    rpcUrl: 'https://rpc.q.org',
+    indexerUrl: 'https://indexer.q.org',
+    explorerUrl: 'https://explorer.q.org',
+    gnosisSafeUrl: 'https://multisig-ui.q.org',
+    qBridgeUrl: 'https://bridge.q.org',
+    docsUrl: 'https://docs.q.org',
+    constitutionUrl: 'https://constitution.q.org',
+    featureFlags: { aliases: false },
   },
   testnet: {
-    chainId: '8a73',
-    chainName: 'Q Testnet',
-    rpcUrls: ['https://rpc.qtestnet.org'],
-    blockExplorerUrls: ['https://explorer.qtestnet.org/'],
-    nativeCurrency: {
-      name: 'Q ',
-      symbol: 'Q ',
-      decimals: 18,
-    },
+    chainId: 35443,
+    name: 'Q Testnet',
+    dAppUrl: 'https://hq.qtestnet.org',
+    rpcUrl: 'https://rpc.qtestnet.org',
+    indexerUrl: 'https://indexer.qtestnet.org',
+    explorerUrl: 'https://explorer.qtestnet.org',
+    gnosisSafeUrl: 'https://multisig-ui.qtestnet.org',
+    qBridgeUrl: 'https://bridge.qtestnet.org',
+    docsUrl: 'https://docs.qtestnet.org',
+    constitutionUrl: 'https://constitution.qtestnet.org',
+    featureFlags: { aliases: false },
   },
-  mainnet: {
-    chainId: '8a71',
-    chainName: 'Q Mainnet',
-    rpcUrls: ['https://rpc.q.org'],
-    blockExplorerUrls: ['https://explorer.q.org'],
-    nativeCurrency: {
-      name: 'Q ',
-      symbol: 'Q ',
-      decimals: 18,
-    },
-  },
-};
-
-/* devnet: {
-    id: 'devnet',
-    name: 'Devnet',
+  devnet: {
     chainId: 35442,
-    webSocket: 'ws://35.161.73.158:8546',
-    rpc: 'http://63.34.190.209:8545',
-    indexer: indexersUrls.devnet,
-    explorer: explorerUrls.devnet,
-  }
-*/
-
-export const PARAMS = {
-  // devnet url
-  'http://63.34.190.209:8000': {
-    id: 'testnet',
-    name: 'Testnet',
-    chainId: 35443,
-    webSocket: 'ws://18.158.7.68:8546',
-    rpc: 'https://rpc.qtestnet.org',
-    indexer: indexersUrls.testnet,
-    explorer: explorerUrls.testnet,
-    gnosisSafe: gnosisSafeUrls.testnet,
-    qBridge: qBridgeUrls.testnet,
-  },
-  'https://hq.qtestnet.org': {
-    id: 'testnet',
-    name: 'Testnet',
-    chainId: 35443,
-    webSocket: 'ws://18.158.7.68:8546',
-    rpc: 'https://rpc.qtestnet.org',
-    indexer: indexersUrls.testnet,
-    explorer: explorerUrls.testnet,
-    gnosisSafe: gnosisSafeUrls.testnet,
-    qBridge: qBridgeUrls.testnet,
-  },
-  'https://hq.q.org': {
-    id: 'mainnet',
-    name: 'Mainnet',
-    chainId: 35441,
-    webSocket: 'wss://rpc-ws.q.org',
-    rpc: 'https://rpc.q.org',
-    indexer: indexersUrls.mainnet,
-    explorer: explorerUrls.mainnet,
-    gnosisSafe: gnosisSafeUrls.mainnet,
-    qBridge: qBridgeUrls.mainnet,
+    name: 'Q Devnet',
+    dAppUrl: 'http://63.34.190.209:8000',
+    rpcUrl: 'http://63.34.190.209:8545',
+    indexerUrl: 'http://63.34.190.209:4000',
+    explorerUrl: 'http://54.73.188.73:8080',
+    gnosisSafeUrl: 'http://63.34.190.209:8020',
+    qBridgeUrl: 'http://63.34.190.209:8080',
+    docsUrl: 'https://docs.qtestnet.org',
+    constitutionUrl: 'http://34.248.83.162:8999',
+    featureFlags: { aliases: true },
   },
 };
 
-export const isDevnetLocation = [
-  'https://hq.q.org',
-  'https://hq.qtestnet.org',
-].indexOf(window.location.origin) === -1;
+export const chainIdToNetworkMap: { [key: string]: NetworkName } = {
+  35441: 'mainnet',
+  35442: 'devnet',
+  35443: 'testnet',
+};
+
+export const connectorParametersMap = Object.values(networkConfigsMap)
+  .reduce((acc, config) => {
+    acc[config.chainId] = {
+      chainId: Web3.utils.toHex(config.chainId).replace('0x', ''),
+      chainName: config.name,
+      rpcUrls: [config.rpcUrl],
+      blockExplorerUrls: [config.explorerUrl],
+      nativeCurrency: {
+        name: 'Q',
+        // HACK: MetaMask requires the symbol to have at least 2 characters
+        symbol: 'Q ',
+        decimals: 18,
+      },
+    };
+    return acc;
+  }, {} as { [key: string]: ConnectorParams });
+
+const originToNetworkMap: { [key: string]: NetworkName } = {
+  'https://hq.q.org': 'mainnet',
+  'https://hq.qtestnet.org': 'testnet',
+  // TODO: Replace with devnet when it's migrated to the HTTPS protocol
+  'http://63.34.190.209:8000': 'testnet',
+  'http://localhost:3000': 'testnet',
+};
+
+export const ORIGIN_NETWORK_NAME: NetworkName = originToNetworkMap[window.location.origin] || 'testnet';

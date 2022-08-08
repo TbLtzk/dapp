@@ -38,10 +38,10 @@ import {
 import { getBlockSealingAliasMap } from 'contracts/helpers/account-aliases-helper';
 import { getValidator, getValidators, prepareValidatorsMonitoringData } from 'contracts/helpers/validators-helper';
 
+import { networkConfigsMap } from 'constants/config';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import TABLE_TYPES from 'constants/tableTypes';
-import { getIndexerUrlDependsOnChainId } from 'utils/appConfig';
+import { TABLE_TYPES } from 'constants/tableTypes';
 import { fromWei, toWei } from 'utils/balance';
 import { getNowTimestamp } from 'utils/convertDate';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
@@ -108,7 +108,10 @@ function* getValidatorsAccountableSelfStake ({ address }) {
   }
 }
 
-function* getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWidened }) {
+function* getValidatorsMembersGenerator ({
+  tableType = TABLE_TYPES.validatorsWidened,
+  indexerUrl = networkConfigsMap.testnet.indexerUrl,
+}) {
   const network = yield select(networkSelector);
   try {
     const validatorsInstance = yield call(getValidatorsInstance);
@@ -147,8 +150,6 @@ function* getValidatorsMembersGenerator ({ tableType = TABLE_TYPES.validatorsWid
         break;
       }
       case TABLE_TYPES.validatorsMonitoring: {
-        const indexerUrl = getIndexerUrlDependsOnChainId(network);
-
         const indexer = yield getIndexerInstance(indexerUrl);
 
         const shortList = yield validatorsInstance.getShortList();

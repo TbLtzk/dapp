@@ -3,7 +3,7 @@ import { orderBy } from 'lodash';
 
 import { getAccountAliasesInstance } from 'contracts/contract-instance';
 
-import { isFeatureEnabled } from 'utils/appConfig';
+import { chainIdToNetworkMap, networkConfigsMap, ORIGIN_NETWORK_NAME } from 'constants/config';
 import { fetchBlockNumber } from 'utils/useful';
 
 export async function getAliasEvents () {
@@ -28,8 +28,9 @@ export async function getAliasEvents () {
     }));
 }
 
-export async function getBlockSealingAliasMap (addresses = [], network: number) {
-  if (!isFeatureEnabled('aliases', network)) return {};
+export async function getBlockSealingAliasMap (addresses = [], chainId: number) {
+  const network = chainIdToNetworkMap[chainId] || ORIGIN_NETWORK_NAME;
+  if (!networkConfigsMap[network].featureFlags.aliases) return {};
 
   const contract = await getAccountAliasesInstance();
   const aliases = await contract.resolveBatch(

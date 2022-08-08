@@ -8,7 +8,7 @@ import { getContractProposals } from '.';
 
 import { getRootNodesMembershipVotingInstance } from 'contracts/contract-instance';
 
-import { ZERO_ADDRESS } from 'constants/config';
+import { ZERO_ADDRESS } from 'constants/boundaries';
 import { transformToPercentage } from 'utils/formatters';
 
 export async function getRootNodeProposals (

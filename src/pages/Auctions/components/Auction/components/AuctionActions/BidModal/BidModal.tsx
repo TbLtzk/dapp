@@ -21,8 +21,8 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 import { getStableCoinInstance } from 'contracts/contract-instance';
 import { getAuctionInstance } from 'contracts/helpers/auction';
 
+import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
 import formTypes from 'constants/form-types';
-import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 import { BN } from 'utils/useful';

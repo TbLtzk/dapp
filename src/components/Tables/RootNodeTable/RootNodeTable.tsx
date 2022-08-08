@@ -19,7 +19,7 @@ import {
   rootMemebersTotalStakeSelector,
 } from 'store/root-node/selectors';
 
-import TABLE_TYPES from 'constants/tableTypes';
+import { TABLE_TYPES } from 'constants/tableTypes';
 import { fN } from 'utils/useful';
 
 interface Props {

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { votingAgent } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
-import { ZERO_ADDRESS } from 'constants/config';
+import { ZERO_ADDRESS } from 'constants/boundaries';
 
 function useVoteDelegation (ownWeight: string, address = '') {
   const agent = useSelector(votingAgent);

@@ -8,7 +8,7 @@ import Tooltip from 'ui/Tooltip';
 import useEndTime from '../../../hooks/useEndTime';
 import LinkViewer from '../../LinkViewer';
 
-import { ObjectionStatus } from 'constants/statuses';
+import { ObjectionStatus } from 'constants/slashing';
 import { formatNumber } from 'utils/formatters';
 
 function ObjectionDetails ({ proposal }: { proposal: SlashingProposal }) {

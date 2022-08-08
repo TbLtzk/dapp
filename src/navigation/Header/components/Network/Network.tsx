@@ -9,8 +9,7 @@ import SegmentedButton from 'ui/SegmentedButton';
 
 import { networkSelector } from 'store/user-inf/selectors';
 
-import { networks } from 'constants/config';
-import { isDevnetdApp } from 'utils/appConfig';
+import { chainIdToNetworkMap, networkConfigsMap } from 'constants/config';
 
 function Network () {
   const network = Number(useSelector(networkSelector));
@@ -18,10 +17,15 @@ function Network () {
   const { t } = useTranslation();
   const [currentNetwork, setCurrentNetwork] = useState(network);
 
+  const isDevnet = ![
+    networkConfigsMap.mainnet.dAppUrl,
+    networkConfigsMap.testnet.dAppUrl,
+  ].includes(window.location.origin);
+
   const networkOptions = [
     { value: 35441, label: t('MAINNET') },
     { value: 35443, label: t('TESTNET') },
-    ...(isDevnetdApp() ? [{ value: 35442, label: t('DEVNET') }] : []),
+    ...(isDevnet ? [{ value: 35442, label: t('DEVNET') }] : []),
   ];
 
   useEffect(() => {
@@ -36,7 +40,7 @@ function Network () {
     switchNetwork(chainId);
   };
 
-  return networks[network]
+  return chainIdToNetworkMap[network]
     ? (
       <SegmentedButton
         value={currentNetwork}

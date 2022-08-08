@@ -3,7 +3,7 @@ import { Classification, ProposalStatus } from '@q-dev/q-js-sdk';
 import { ProposalContractType } from './contracts';
 import { FormParameter } from './forms';
 
-import { ObjectionStatus } from 'constants/statuses';
+import { ObjectionStatus } from 'constants/slashing';
 
 export type ProposalFilterStatus = '' | 'active' | 'ended';
 

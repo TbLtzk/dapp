@@ -6,7 +6,7 @@ import { Proposal } from 'typings/proposals';
 
 import { TagState } from 'ui/Tag';
 
-import { ZERO_ADDRESS } from 'constants/config';
+import { ZERO_ADDRESS } from 'constants/boundaries';
 
 function useProposalDetails (proposal: Proposal | null) {
   const { t, i18n } = useTranslation();

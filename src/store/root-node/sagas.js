@@ -25,7 +25,7 @@ import { getRootNodesInstance } from 'contracts/contract-instance';
 import { prepareRootMembersTable } from 'contracts/helpers/root-node-helper';
 
 import formTypes from 'constants/form-types';
-import TABLE_TYPES from 'constants/tableTypes';
+import { TABLE_TYPES } from 'constants/tableTypes';
 import { fromWei } from 'utils/balance';
 import { getNowTimestamp } from 'utils/convertDate';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';

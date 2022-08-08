@@ -6,7 +6,7 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import LinkViewer from '../../LinkViewer';
 
-import { ZERO_ADDRESS } from 'constants/config';
+import { ZERO_ADDRESS } from 'constants/boundaries';
 
 interface Props {
   proposal: Proposal

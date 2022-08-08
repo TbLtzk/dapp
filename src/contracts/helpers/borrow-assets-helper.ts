@@ -3,8 +3,8 @@ import { ApproveType, Asset, VaultData } from 'typings/defi';
 
 import { getBorrowingInstance, getStableCoinInstance } from 'contracts/contract-instance';
 
-import { defiApproveType } from 'constants/defiTypes';
-import { UINT_PSEUDO_UNDEFINED } from 'constants/numbers';
+import { UINT_PSEUDO_UNDEFINED } from 'constants/boundaries';
+import { defiApproveTypes } from 'constants/defi';
 import { BN, uintPerSecondToPerYearNumber } from 'utils/useful';
 
 export function convertToBigAmount (decimals: number) {
@@ -22,7 +22,7 @@ export function convertFromBigAmount (decimals: number) {
 }
 
 export async function getDeFiContractByType (approveType: ApproveType, asset: Asset) {
-  if (approveType === defiApproveType.deposit) {
+  if (approveType === defiApproveTypes.deposit) {
     const contract = await getBorrowingInstance(asset);
     return contract.methods;
   } else {

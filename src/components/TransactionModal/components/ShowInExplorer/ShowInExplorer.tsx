@@ -1,11 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import { ExplorerLink } from 'components/Custom/ExplorerAddress/styles';
 
-import { networkSelector } from 'store/user-inf/selectors';
-
-import { getExplorerUrlByChainId } from 'utils/appConfig';
+import useNetworkConfig from 'hooks/useNetworkConfig';
 
 interface Props {
   hash: string;
@@ -13,9 +10,7 @@ interface Props {
 
 function ShowInExplorer ({ hash }:Props) {
   const { t } = useTranslation();
-
-  const network = useSelector(networkSelector);
-  const explorerUrl = getExplorerUrlByChainId(network);
+  const { explorerUrl } = useNetworkConfig();
 
   return (
     <ExplorerLink

@@ -11,7 +11,7 @@ import useForm from 'hooks/useForm';
 
 import { setCreateVault } from 'store/borrowing-core/actions';
 
-import { BorrowAssets } from 'constants/defiTypes';
+import { BorrowAssets } from 'constants/defi';
 import { required } from 'utils/validators';
 
 function ModalCreateVault () {

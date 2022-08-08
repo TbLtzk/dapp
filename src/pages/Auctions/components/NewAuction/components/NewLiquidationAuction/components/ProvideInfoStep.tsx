@@ -8,7 +8,7 @@ import useForm from 'hooks/useForm';
 
 import { useLiquidationAuctionForm } from '../NewLiquidationAuction';
 
-import { MAX_BID_AMOUNT } from 'constants/numbers';
+import { MAX_BID_AMOUNT } from 'constants/boundaries';
 import { address, max, required, vaultID } from 'utils/validators';
 
 function ProvideInfoStep () {

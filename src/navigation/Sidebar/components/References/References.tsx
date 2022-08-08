@@ -1,23 +1,19 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import Icon from 'ui/Icon';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { ReferencesContainer } from './styles';
-
-import { networkSelector } from 'store/user-inf/selectors';
-
-import { chainIds, mainnetDocsUrl, testnetDocsUrl } from 'constants/config';
-import { latestConstitution } from 'constants/constitution';
 
 function References () {
   const { t } = useTranslation();
-  const network = useSelector(networkSelector);
+  const { docsUrl, constitutionUrl } = useNetworkConfig();
 
   const referenceLinks = [
     {
       title: t('CONSTITUTION'),
-      href: latestConstitution,
+      href: `${constitutionUrl}/constitution/latest`,
     },
     {
       title: t('REPOSITORIES'),
@@ -25,7 +21,7 @@ function References () {
     },
     {
       title: t('TUTORIALS'),
-      href: network === chainIds.mainnet ? mainnetDocsUrl : testnetDocsUrl,
+      href: docsUrl,
     },
   ];
 

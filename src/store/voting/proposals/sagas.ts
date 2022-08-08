@@ -28,7 +28,7 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 import { getConstitutionVotingInstance, getInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance';
 import { createProposal, getProposalEvents } from 'contracts/helpers/voting';
 
-import { ZERO_ADDRESS } from 'constants/config';
+import { ZERO_ADDRESS } from 'constants/boundaries';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { getNowTimestamp } from 'utils/convertDate';

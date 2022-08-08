@@ -7,7 +7,7 @@ import Illustration from 'ui/Illustration';
 import DecisionActions from './components/DecisionActions';
 import DecisionDetails from './components/DecisionDetails';
 
-import { ZERO_ADDRESS } from 'constants/config';
+import { ZERO_ADDRESS } from 'constants/boundaries';
 
 function ProposalDecision ({ proposal }: { proposal: SlashingProposal }) {
   const { t } = useTranslation();

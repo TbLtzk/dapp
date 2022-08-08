@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import logo from 'assets/img/logo.png';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import packageJson from '../../../package.json';
 
@@ -20,7 +20,7 @@ import { activeProposalsCountSelector } from 'store/voting/proposals/selectors';
 
 function Sidebar ({ open, onClose }: { open: boolean, onClose: () => void }) {
   const { t } = useTranslation();
-  const isAliasesEnabled = useFeatureFlag('aliases');
+  const { featureFlags } = useNetworkConfig();
 
   const activeProposalsCount = useSelector(activeProposalsCountSelector);
   const activeAuctionsCount = useSelector(activeAuctionsCountSelector);
@@ -70,7 +70,7 @@ function Sidebar ({ open, onClose }: { open: boolean, onClose: () => void }) {
                 icon="stake"
               />
 
-              {isAliasesEnabled && <SidebarLink
+              {featureFlags.aliases && <SidebarLink
                 icon="handshake"
                 to="/account-aliasing"
                 title={t('ACCOUNT_ALIASING')}

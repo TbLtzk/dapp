@@ -6,7 +6,7 @@ import { Network } from '@web3-react/network';
 import { Url } from '@web3-react/url';
 import { WalletConnect } from '@web3-react/walletconnect';
 
-import { getParametersDependsOnUrl } from 'utils/appConfig';
+import { networkConfigsMap, ORIGIN_NETWORK_NAME } from 'constants/config';
 
 export enum WalletType {
   INJECTED = 'injected', // metamask and all browser wallets
@@ -14,12 +14,14 @@ export enum WalletType {
   WALLET_CONNECT = 'wallet_connect',
 }
 
+const networkConfig = networkConfigsMap[ORIGIN_NETWORK_NAME];
+
 export const [coinbaseWallet, coinbaseWalletHooks] = initializeConnector<CoinbaseWallet>(
   (actions) =>
     new CoinbaseWallet({
       actions,
       options: {
-        url: getParametersDependsOnUrl().rpc,
+        url: networkConfig.rpcUrl,
         appName: 'Your HQ',
       },
     })
@@ -30,20 +32,18 @@ export const [empty, emptyHooks] = initializeConnector<Empty>(() => EMPTY);
 export const [metaMask, metaMaskHooks] = initializeConnector<MetaMask>((actions) => new MetaMask({ actions }));
 
 export const [network, networkHooks] = initializeConnector<Network>(
-  (actions) => new Network({ actions, urlMap: getParametersDependsOnUrl().rpc })
+  (actions) => new Network({ actions, urlMap: networkConfig.rpcUrl })
 );
 
 export const [url, urlHooks] = initializeConnector<Url>(
-  (actions) => new Url({ actions, url: getParametersDependsOnUrl().rpc })
+  (actions) => new Url({ actions, url: networkConfig.rpcUrl })
 );
 
 export const [walletConnect, walletConnectHooks] = initializeConnector<WalletConnect>(
   (actions) =>
     new WalletConnect({
       actions,
-      options: {
-        rpc: getParametersDependsOnUrl().rpc,
-      },
+      options: { rpc: networkConfig.rpcUrl },
     })
 );
 
