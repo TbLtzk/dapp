@@ -1,4 +1,4 @@
-import { orderBy } from 'lodash';
+import { orderBy, round, sumBy } from 'lodash';
 
 import { fromWei } from 'utils/balance';
 
@@ -6,29 +6,21 @@ export const prepareRootMembersTable = (
   members: string[],
   membersWithStakes: { root: string, value: string }[]
 ) => {
-  let totalStake = 0;
-
-  const membersWithAmount: { address: string, stakeAmount: number }[] = [];
-  members.forEach((member) => {
-    const memberWithStake = membersWithStakes.find(({ root }) => root === member);
-    if (memberWithStake) {
-      const stakeAmount = Number(fromWei(memberWithStake.value));
-      totalStake += stakeAmount;
-      membersWithAmount.push({
-        address: member,
-        stakeAmount,
-      });
-    }
+  const membersWithAmount = members.map((address) => {
+    const memberWithStake = membersWithStakes.find(({ root }) => root === address);
+    const stakeAmount = Number(fromWei(memberWithStake?.value) || 0);
+    return { address, stakeAmount };
   });
 
+  const totalStake = sumBy(membersWithAmount, item => item.stakeAmount);
   const membersWithShare = membersWithAmount.map(({ address, stakeAmount }) => ({
     address,
     stakeAmount,
-    share: totalStake ? Math.round(((stakeAmount * 100) / totalStake + Number.EPSILON) * 100) / 100 : 0,
+    share: totalStake ? round(stakeAmount / totalStake * 100, 2) : 0,
   }));
 
   return {
-    table: orderBy(membersWithShare, ['stakeAmount'], ['desc', 'asc']),
+    table: orderBy(membersWithShare, 'stakeAmount', 'desc'),
     totalStake
   };
 };
