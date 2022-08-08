@@ -25,8 +25,8 @@ import {
 } from 'contracts/contract-instance';
 
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
-import { fixNumber } from 'func/useful';
+import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
+import { fixNumber } from 'utils/useful';
 
 async function allocateValue (contract, adddress) {
   return await contract.allocate({ from: adddress });

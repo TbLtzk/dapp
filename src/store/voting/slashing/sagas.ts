@@ -20,8 +20,8 @@ import { CONTRACT_TYPES, CONTRACTS_NAMES } from 'constants/contracts';
 import { escrowTypes } from 'constants/escrowTypes';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
-import { getPercentageFormat } from 'func/useful';
+import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
+import { getPercentageFormat } from 'utils/useful';
 
 function getContractInstance (contractName: string) {
   return contractName === CONTRACTS_NAMES.validatorsSlashingVoting

@@ -12,7 +12,7 @@ import useMetamaskReset from 'hooks/useMetamaskReset';
 import { setDepositLockedAmount, setPurgeTimeLocksAmount } from 'store/locked-amount/action-creators';
 
 import formTypes from 'constants/form-types';
-import { required } from 'func/validators';
+import { required } from 'utils/validators';
 
 interface Props {
   contract: string;

@@ -2,10 +2,10 @@ import { useTranslation } from 'react-i18next';
 
 import { kebabCase } from 'lodash';
 import { AuctionInfos, LiquidationAuctionInfo, SystemDebtAndSurplusInfo } from 'typings/auctions';
-import Tag from 'ui/Tag';
 
 import { AUCTION_HEADERS } from 'pages/Auctions/Auctions';
 import { AuctionCardLink } from 'pages/Auctions/styles';
+import Tag from 'ui/Tag';
 
 import AuctionPeriods from '../AuctionPeriods';
 

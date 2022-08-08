@@ -1,4 +1,5 @@
 import { COLORS } from 'styles/colors';
+
 import Tooltip from 'ui/Tooltip';
 
 function Colors () {

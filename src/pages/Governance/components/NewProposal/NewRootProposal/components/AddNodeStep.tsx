@@ -1,9 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
-import Input from 'ui/Input';
-
 import { FormStep } from 'components/MultiStepForm';
+import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 
@@ -11,7 +10,7 @@ import { useNewRootProposal } from '../NewRootProposal';
 
 import { constitutionHash } from 'store/voting/proposals/selectors';
 
-import { address, currentHash, required, url } from 'func/validators';
+import { address, currentHash, required, url } from 'utils/validators';
 
 function AddNodeStep () {
   const { t } = useTranslation();

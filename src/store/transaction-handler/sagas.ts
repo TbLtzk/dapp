@@ -6,7 +6,7 @@ import * as types from './types';
 import { getAccountBalance, getUserBalance } from 'store/q-vault/action-creators';
 import { getBaseVotingWeightInfo } from 'store/voting/proposals/actions';
 
-import { captureError } from 'func/errors';
+import { captureError } from 'utils/errors';
 
 function* getBalancesGenerator () {
   try {

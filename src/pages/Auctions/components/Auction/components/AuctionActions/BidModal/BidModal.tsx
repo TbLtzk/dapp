@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { snakeCase } from 'lodash';
 import { AuctionBid, AuctionCompletedInfos, LiquidationAuctionBid } from 'typings/auctions';
+
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 import Modal from 'ui/Modal';
@@ -23,9 +24,9 @@ import { getAuctionInstance } from 'contracts/helpers/auction';
 import formTypes from 'constants/form-types';
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
-import { BN } from 'func/useful';
-import { max, min, required } from 'func/validators';
+import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
+import { BN } from 'utils/useful';
+import { max, min, required } from 'utils/validators';
 
 const DEFAULT_VALUES = {
   bid: '',

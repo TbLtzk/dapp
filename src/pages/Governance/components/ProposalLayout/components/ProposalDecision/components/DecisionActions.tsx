@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SlashingProposal } from 'typings/proposals';
+
 import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 import Tooltip from 'ui/Tooltip';

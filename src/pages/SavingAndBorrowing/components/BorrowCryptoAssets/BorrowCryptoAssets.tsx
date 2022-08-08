@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Asset } from 'typings/defi';
-import Table from 'ui/Table';
-import Tooltip from 'ui/Tooltip';
 
 import CustomBlock from 'components/Base/CustomBlock';
+import Table from 'ui/Table';
+import Tooltip from 'ui/Tooltip';
 
 import BorrowManageAsset from '../BorrowManageAsset';
 
@@ -19,7 +19,7 @@ import {
 
 import { addBorrowTokenToWallet } from 'contracts/helpers/borrowing-core';
 
-import { fN } from 'func/useful';
+import { fN } from 'utils/useful';
 
 function BorrowCryptoAssets () {
   const { t } = useTranslation();

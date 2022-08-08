@@ -13,8 +13,8 @@ import { AUCTIONS_TYPES, ERROR_TYPES, getAllowance, getAuctionsEvents, getStatus
 
 import { getBorrowingCoreInstance, getLiquidationAuctionInstance } from 'contracts/contract-instance';
 
-import { fromBtcBlockchain, fromWei, toWei } from 'func/balance';
-import { getNowTimestamp } from 'func/convertDate';
+import { fromBtcBlockchain, fromWei, toWei } from 'utils/balance';
+import { getNowTimestamp } from 'utils/convertDate';
 
 async function prepareLiquidationAuctionInfo (
   info: SdkLiquidationAuctionInfo,

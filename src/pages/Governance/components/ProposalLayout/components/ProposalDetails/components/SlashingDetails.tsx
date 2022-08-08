@@ -6,7 +6,7 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import LinkViewer from '../../LinkViewer';
 
-import { formatNumber } from 'func/formatters';
+import { formatNumber } from 'utils/formatters';
 
 interface Props {
   proposal: Proposal

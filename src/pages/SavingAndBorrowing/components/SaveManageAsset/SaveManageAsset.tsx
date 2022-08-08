@@ -2,11 +2,10 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { SpinnerWrapper } from 'pages/SavingAndBorrowing/styles';
 import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 import Spinner from 'ui/Spinner';
-
-import { SpinnerWrapper } from 'pages/SavingAndBorrowing/styles';
 
 import DepositForm from './components/DepositForm';
 import SavingDetails from './components/SavingDetails';

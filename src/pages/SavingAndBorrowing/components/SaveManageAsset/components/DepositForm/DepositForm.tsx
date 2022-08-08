@@ -12,7 +12,7 @@ import { setSavingAprove, setSavingDeposit } from 'store/saving-assets/action-cr
 import { savingAllowanceSelector, savingAviableToDepositSelector } from 'store/saving-assets/selectors';
 
 import formTypes from 'constants/form-types';
-import { amount, required } from 'func/validators';
+import { amount, required } from 'utils/validators';
 
 function DepositForm ({ asset }: { asset: string }) {
   const { t } = useTranslation();

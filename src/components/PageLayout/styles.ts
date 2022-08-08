@@ -23,6 +23,15 @@ export const PageLayoutContainer = styled.div`
     ${media.lessThan('medium')} {
       gap: 8px;
     }
+
+    // TODO: Remove when page header is passed via props
+    span + .tooltip-wrapper {
+      margin-left: -16px;
+
+      ${media.lessThan('medium')} {
+        margin-left: -8px;
+      }
+    }
   }
 
   .page-title-actions {

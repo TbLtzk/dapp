@@ -10,7 +10,7 @@ import useInterval from 'hooks/useInterval';
 import { getQHolderTimeUpdate } from 'store/tokenomics/action-creators';
 import { qHolderTimeUpdateLoadingSelector, qHolderTimeUpdateSelector } from 'store/tokenomics/selectors';
 
-import { remainDateTimeSince } from 'func/convertDate';
+import { remainDateTimeSince } from 'utils/convertDate';
 
 function QTokenRewardUpdate () {
   const { t } = useTranslation();

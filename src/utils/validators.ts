@@ -4,25 +4,33 @@ import isDate from 'lodash/isDate';
 import isEmpty from 'lodash/isEmpty';
 import isNumber from 'lodash/isNumber';
 
-import { BN, isAddress } from './useful';
+import { BN } from './useful';
 
 const HASH_REGEX = /^0x[a-fA-F0-9]{64}$/;
 const VAULT_ID_REGEX = /^[0-9]{1,18}$/;
 const URL_REGEX = /https?:\/\/(www\.)?[-äöüa-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-äöüa-zA-Z0-9()@:%_+.~#?&//=]*)/;
 
-export const required = (val) => ({
+interface ValidationResult {
+  isValid: boolean;
+  message: string;
+}
+type ValidatorValue = string | number | boolean | Date | ParameterType | File | null;
+type Validator<T extends ValidatorValue = ValidatorValue, U = unknown> = (val: T, form?: U) => ValidationResult
+type ValidatorFn<U, T extends ValidatorValue = ValidatorValue> = (val: U | ((form: unknown) => T)) => Validator<T>
+
+export const required: Validator = (val) => ({
   isValid: !isEmpty(val) || isNumber(val) || isDate(val) || isBoolean(val) || val instanceof File,
   message: 'The field is required'
 });
 
-export const requiredIf = predicate => (val, form) => {
+export const requiredIf: ValidatorFn<(val: ValidatorValue, form: unknown) => boolean> = predicate => (val, form) => {
   return {
     isValid: !predicate(val, form) || required(val).isValid,
     message: 'The field is required'
   };
 };
 
-export const amount = max => (val, form) => {
+export const amount: ValidatorFn<string | number> = max => (val, form) => {
   const value = BN(val);
   const zero = BN(0);
   const validatorValue = BN(getValidatorValue(max, form));
@@ -47,7 +55,7 @@ export const amount = max => (val, form) => {
   };
 };
 
-export const min = min => (val, form) => {
+export const min: ValidatorFn<number | string> = min => (val, form) => {
   const value = BN(val);
   const validatorValue = BN(getValidatorValue(min, form));
 
@@ -57,7 +65,7 @@ export const min = min => (val, form) => {
   };
 };
 
-export const max = max => (val, form) => {
+export const max: ValidatorFn<number | string> = max => (val, form) => {
   const value = BN(val);
   const validatorValue = BN(getValidatorValue(max, form));
 
@@ -67,44 +75,44 @@ export const max = max => (val, form) => {
   };
 };
 
-export const url = val => ({
+export const url: Validator = val => ({
   isValid: !val || URL_REGEX.test(String(val)),
   message: 'Invalid URL'
 });
 
-export const address = val => ({
-  isValid: !val || isAddress(val),
+export const address: Validator<string> = val => ({
+  isValid: !val || window.web3.utils.isAddress(val),
   message: 'Invalid address'
 });
 
-export const vaultID = val => ({
+export const vaultID: Validator = val => ({
   isValid: !val || VAULT_ID_REGEX.test(String(val)),
   message: 'Invalid vault ID'
 });
 
-export const hash = val => ({
+export const hash: Validator = val => ({
   isValid: !val || HASH_REGEX.test(String(val)),
   message: 'Invalid hash'
 });
 
-export const currentHash = hash => val => ({
+export const currentHash: ValidatorFn<string> = hash => val => ({
   isValid: !val || val === hash,
   message: 'Invalid current hash'
 });
 
-export const percent = val => ({
-  isValid: !val || (val >= 0 && val <= 100),
+export const percent: Validator = val => ({
+  isValid: !val || (Number(val) >= 0 && Number(val) <= 100),
   message: 'Invalid percentage value'
 });
 
-export const parameterType = type => (val, form) => {
+export const parameterType: ValidatorFn<ParameterType> = type => (val, form) => {
   const typeValue = getValidatorValue(type, form);
   if (!val) return { isValid: true, message: '' };
 
   switch (typeValue) {
     case ParameterType.ADDRESS:
       return {
-        isValid: isAddress(val),
+        isValid: window.web3.utils.isAddress(String(val)),
         message: 'Invalid address'
       };
 
@@ -131,6 +139,6 @@ export const parameterType = type => (val, form) => {
   }
 };
 
-function getValidatorValue (raw, form) {
+function getValidatorValue<T extends ValidatorValue> (raw: T | ((form: unknown) => T), form: unknown): T {
   return typeof raw === 'function' ? raw(form) : raw;
 }

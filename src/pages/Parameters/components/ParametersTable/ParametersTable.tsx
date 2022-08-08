@@ -7,8 +7,8 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import { TableWrapper } from './styles';
 
-import { fromWei } from 'func/balance';
-import { formatAsset, formatDuration, formatFactor, formatFraction, formatNumber } from 'func/formatters';
+import { fromWei } from 'utils/balance';
+import { formatAsset, formatDuration, formatFactor, formatFraction, formatNumber } from 'utils/formatters';
 
 interface Props {
   parameters: any[];

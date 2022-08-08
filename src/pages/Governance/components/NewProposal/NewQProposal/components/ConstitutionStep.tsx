@@ -2,16 +2,16 @@ import { useTranslation } from 'react-i18next';
 
 import { Classification } from '@q-dev/q-js-sdk';
 import { QProposalForm, RadioOptions } from 'typings/forms';
-import Input from 'ui/Input';
-import RadioGroup from 'ui/RadioGroup';
 
 import { FormStep } from 'components/MultiStepForm';
+import Input from 'ui/Input';
+import RadioGroup from 'ui/RadioGroup';
 
 import useForm from 'hooks/useForm';
 
 import { useNewQProposalForm } from '../NewQProposal';
 
-import { hash, required, url } from 'func/validators';
+import { hash, required, url } from 'utils/validators';
 
 function ConstitutionStep () {
   const { t } = useTranslation();

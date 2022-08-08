@@ -16,9 +16,9 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 import { getBaseVotingWeightInfo } from 'store/voting/proposals/actions';
 import { baseVotingWeightInfoSelector } from 'store/voting/proposals/selectors';
 
-import { fromWei } from 'func/balance';
-import { fromSolDateFormattingT1 } from 'func/date';
-import { fN } from 'func/useful';
+import { fromWei } from 'utils/balance';
+import { fromSolDateFormattingT1 } from 'utils/date';
+import { fN } from 'utils/useful';
 
 function VotingStats () {
   const { t } = useTranslation();

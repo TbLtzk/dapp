@@ -3,19 +3,18 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import AddressIcon from 'components/Custom/AddressIcon';
+import InfoTooltip from 'components/Tooltips/InfoTooltip';
 import Button from 'ui/Button';
 import DonutChart from 'ui/DonutChart';
 import Spinner from 'ui/Spinner';
-
-import AddressIcon from 'components/Custom/AddressIcon';
-import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import { getRootMembers } from 'store/root-node/action-creators';
 import { loadingRootMembersSelector, rootMembersSelector } from 'store/root-node/selectors';
 
 import TABLE_TYPES from 'constants/tableTypes';
-import { formatNumber } from 'func/formatters';
-import { trimAddress } from 'func/useful';
+import { formatNumber } from 'utils/formatters';
+import { trimAddress } from 'utils/useful';
 
 function RootNodesBlock () {
   const { t } = useTranslation();

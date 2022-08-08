@@ -11,7 +11,7 @@ import { setSavingWithdraw } from 'store/saving-assets/action-creators';
 import { savingBalanceDetailsSelector } from 'store/saving-assets/selectors';
 
 import formTypes from 'constants/form-types';
-import { amount, required } from 'func/validators';
+import { amount, required } from 'utils/validators';
 
 function WithdrawForm ({ asset }: { asset: string }) {
   const { t } = useTranslation();

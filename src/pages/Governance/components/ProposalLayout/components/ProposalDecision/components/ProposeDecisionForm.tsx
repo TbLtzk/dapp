@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import { SlashingProposal } from 'typings/proposals';
+
 import Button from 'ui/Button';
 import Check from 'ui/Check';
 import Input from 'ui/Input';
@@ -10,7 +11,7 @@ import useForm from 'hooks/useForm';
 
 import { onEscrowProposeDecision } from 'store/voting/slashing/actions';
 
-import { percent, required, url } from 'func/validators';
+import { percent, required, url } from 'utils/validators';
 
 interface Props {
   proposal: SlashingProposal

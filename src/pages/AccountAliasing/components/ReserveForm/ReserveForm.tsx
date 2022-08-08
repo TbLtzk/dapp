@@ -8,7 +8,7 @@ import useForm from 'hooks/useForm';
 
 import { reserveAlias } from 'store/account-aliases/action-creators';
 
-import { address, required } from 'func/validators';
+import { address, required } from 'utils/validators';
 
 function ReserveForm () {
   const { t } = useTranslation();

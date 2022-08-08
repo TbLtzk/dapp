@@ -13,7 +13,7 @@ import { getAccountAliasesInstance } from 'contracts/contract-instance';
 import { getAliasEvents } from 'contracts/helpers/account-aliases-helper';
 
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
+import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 
 function* getAliasesGenerator ({ address }) {
   try {

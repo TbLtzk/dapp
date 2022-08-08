@@ -6,7 +6,7 @@ import { Network } from '@web3-react/network';
 import { Url } from '@web3-react/url';
 import { WalletConnect } from '@web3-react/walletconnect';
 
-import { getParametersDependsOnUrl } from 'func/appConfig';
+import { getParametersDependsOnUrl } from 'utils/appConfig';
 
 export enum WalletType {
   INJECTED = 'injected', // metamask and all browser wallets

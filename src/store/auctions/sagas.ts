@@ -41,8 +41,8 @@ import {
 } from 'contracts/helpers/auction/system-surplus';
 
 import formTypes from 'constants/form-types';
-import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
-import { getMinimalActiveBlockHeight } from 'func/useful';
+import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
+import { getMinimalActiveBlockHeight } from 'utils/useful';
 
 function* getAuctionsGenerator ({ auctionType }: types.GetAuctions) {
   try {

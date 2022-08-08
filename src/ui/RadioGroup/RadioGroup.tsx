@@ -1,6 +1,7 @@
 import { HTMLAttributes } from 'react';
 
 import { RadioOptions } from 'typings/forms';
+
 import Radio from 'ui/Radio';
 
 import { RadioGroupContainer } from './styles';

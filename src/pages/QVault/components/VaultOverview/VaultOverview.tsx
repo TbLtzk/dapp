@@ -28,7 +28,7 @@ import {
 } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
-import { fromSolDateFormattingT1 } from 'func/date';
+import { fromSolDateFormattingT1 } from 'utils/date';
 
 function VaultOverview () {
   const dispatch = useDispatch();

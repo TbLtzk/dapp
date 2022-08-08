@@ -1,16 +1,15 @@
 
 import { useTranslation } from 'react-i18next';
 
-import Input from 'ui/Input';
-
 import { FormStep } from 'components/MultiStepForm';
+import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 
 import { useLiquidationAuctionForm } from '../NewLiquidationAuction';
 
 import { MAX_BID_AMOUNT } from 'constants/numbers';
-import { address, max, required, vaultID } from 'func/validators';
+import { address, max, required, vaultID } from 'utils/validators';
 
 function ProvideInfoStep () {
   const { t } = useTranslation();

@@ -12,8 +12,8 @@ import { qVaultMinimumTimeLock, userBalance } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import formTypes from 'constants/form-types';
-import { subtractAmount } from 'func/balance';
-import { amount, required } from 'func/validators';
+import { subtractAmount } from 'utils/balance';
+import { amount, required } from 'utils/validators';
 
 function WithdrawForm () {
   const dispatch = useDispatch();

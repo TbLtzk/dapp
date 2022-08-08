@@ -2,15 +2,14 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Table from 'ui/Table';
-
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import Table from 'ui/Table';
 
 import { getDelegationsList } from 'store/q-vault/action-creators';
 import { delegationList, loadingDelegationList } from 'store/q-vault/selectors';
 
-import { fromWei } from 'func/balance';
-import { fN } from 'func/useful';
+import { fromWei } from 'utils/balance';
+import { fN } from 'utils/useful';
 
 interface TableType {
   id: number;

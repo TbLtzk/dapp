@@ -13,8 +13,8 @@ import { setSendCall } from 'store/q-vault/action-creators';
 import { qVaultMinimumTimeLock, userBalance } from 'store/q-vault/selectors';
 
 import formTypes from 'constants/form-types';
-import { subtractAmount } from 'func/balance';
-import { address, amount, required } from 'func/validators';
+import { subtractAmount } from 'utils/balance';
+import { address, amount, required } from 'utils/validators';
 
 function SendForm () {
   const dispatch = useDispatch();

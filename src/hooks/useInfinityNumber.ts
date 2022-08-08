@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { formatInfinityNumber } from 'func/useful';
+import { formatInfinityNumber } from 'utils/useful';
 
 function useInfinityNumber (
   initialNumber: number,

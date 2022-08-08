@@ -4,7 +4,7 @@ import { ProposalType } from 'typings/proposals';
 
 import { ProposalsAction } from './types';
 
-import { groupArrayByBlockNumber } from 'func/useful';
+import { groupArrayByBlockNumber } from 'utils/useful';
 
 interface ProposalItem {
   proposals: ProposalEvent[]

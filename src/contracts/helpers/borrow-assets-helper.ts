@@ -5,7 +5,7 @@ import { getBorrowingInstance, getStableCoinInstance } from 'contracts/contract-
 
 import { defiApproveType } from 'constants/defiTypes';
 import { UINT_PSEUDO_UNDEFINED } from 'constants/numbers';
-import { BN, uintPerSecondToPerYearNumber } from 'func/useful';
+import { BN, uintPerSecondToPerYearNumber } from 'utils/useful';
 
 export function convertToBigAmount (decimals: number) {
   return (value: number | string) =>

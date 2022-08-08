@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AnimatePresence, motion } from 'framer-motion';
+
 import Button from 'ui/Button';
 import Icon, { IconName } from 'ui/Icon';
 import Modal from 'ui/Modal';

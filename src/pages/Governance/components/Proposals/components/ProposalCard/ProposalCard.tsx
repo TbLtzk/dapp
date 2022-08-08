@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next';
 
 import { ProposalEvent } from 'typings/contracts';
 import { Proposal } from 'typings/proposals';
+
+import useProposalDetails from 'pages/Governance/hooks/useProposalDetails';
 import Icon from 'ui/Icon';
 import Progress from 'ui/Progress';
 import Tag from 'ui/Tag';
-
-import useProposalDetails from 'pages/Governance/hooks/useProposalDetails';
 
 import ProposalCardSkeleton from '../ProposalCardSkeleton';
 import VotingPeriods from '../VotingPeriods';
@@ -16,7 +16,7 @@ import { ProposalCardLink } from './styles';
 
 import { getProposal } from 'contracts/helpers/voting';
 
-import { formatPercent } from 'func/formatters';
+import { formatPercent } from 'utils/formatters';
 
 function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
   const { t } = useTranslation();

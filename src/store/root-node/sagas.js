@@ -26,10 +26,10 @@ import { prepareRootMembersTable } from 'contracts/helpers/root-node-helper';
 
 import formTypes from 'constants/form-types';
 import TABLE_TYPES from 'constants/tableTypes';
-import { fromWei } from 'func/balance';
-import { getNowTimestamp } from 'func/convertDate';
-import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
-import { addIndex } from 'func/useful';
+import { fromWei } from 'utils/balance';
+import { getNowTimestamp } from 'utils/convertDate';
+import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
+import { addIndex } from 'utils/useful';
 
 function* setRootStakeToPanelGenerator ({ data, label }) {
   try {

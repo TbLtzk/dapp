@@ -2,10 +2,9 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'ui/Button';
-
 import CustomBlock from 'components/Base/CustomBlock';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
+import Button from 'ui/Button';
 
 import useVoteDelegation from 'hooks/useVoteDelegation';
 
@@ -15,8 +14,8 @@ import { getDelegationInfo, setNewVotingAgent } from 'store/q-vault/action-creat
 import { isPendingDelegation, receivedWeight, votingAgentPassOverTime } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
-import { fromWei } from 'func/balance';
-import { getNowTimestamp, remainDate } from 'func/convertDate';
+import { fromWei } from 'utils/balance';
+import { getNowTimestamp, remainDate } from 'utils/convertDate';
 
 function DelegateVoting () {
   const { t } = useTranslation();

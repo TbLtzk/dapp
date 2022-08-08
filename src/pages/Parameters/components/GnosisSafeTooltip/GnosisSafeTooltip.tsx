@@ -1,15 +1,14 @@
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
-import Tooltip from 'ui/Tooltip';
-
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import Tooltip from 'ui/Tooltip';
 
 import { TooltipContent } from './styles';
 
 import { networkSelector } from 'store/user-inf/selectors';
 
-import { getGnosisSafeUrlByChainId } from 'func/appConfig';
+import { getGnosisSafeUrlByChainId } from 'utils/appConfig';
 
 interface Props {
   address: string;

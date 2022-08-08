@@ -2,17 +2,17 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import { Asset } from 'typings/defi';
-import Button from 'ui/Button';
-import RadioGroup from 'ui/RadioGroup';
 
 import { ModalCreateVaultContainer } from 'pages/SavingAndBorrowing/styles';
+import Button from 'ui/Button';
+import RadioGroup from 'ui/RadioGroup';
 
 import useForm from 'hooks/useForm';
 
 import { setCreateVault } from 'store/borrowing-core/actions';
 
 import { BorrowAssets } from 'constants/defiTypes';
-import { required } from 'func/validators';
+import { required } from 'utils/validators';
 
 function ModalCreateVault () {
   const dispatch = useDispatch();

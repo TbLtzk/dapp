@@ -7,7 +7,7 @@ import { FormStep } from 'components/MultiStepForm';
 
 import { useNewSlashingProposal } from '../NewSlashingProposal';
 
-import { formatNumber, formatPercent } from 'func/formatters';
+import { formatNumber, formatPercent } from 'utils/formatters';
 
 function ConfirmationStep () {
   const { t } = useTranslation();

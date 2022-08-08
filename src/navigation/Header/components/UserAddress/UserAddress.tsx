@@ -5,16 +5,16 @@ import { useSelector } from 'react-redux';
 import { useWeb3Context } from 'context/Web3ContextProvider';
 import copy from 'copy-to-clipboard';
 import { motion } from 'framer-motion';
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
 
 import AddressIcon from 'components/Custom/AddressIcon';
+import Button from 'ui/Button';
+import Icon from 'ui/Icon';
 
 import { AddressDropdown } from './styles';
 
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
-import { trimAddress } from 'func/useful';
+import { trimAddress } from 'utils/useful';
 
 function UserAddress () {
   const { t } = useTranslation();

@@ -10,7 +10,7 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 import { setVRPUpdateValidatorsCompoundRate } from 'store/validation-reward-pools/action-creators';
 import { lastUpdateOfCompoundRate, loadingUpdateOfCompoundRate } from 'store/validation-reward-pools/selectors';
 
-import { remainDateTimeSince } from 'func/convertDate';
+import { remainDateTimeSince } from 'utils/convertDate';
 
 function RefreshDelegationUpdate () {
   const { t } = useTranslation();

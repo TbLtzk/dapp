@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Classification, ProposalStatus } from '@q-dev/q-js-sdk';
 import { Proposal } from 'typings/proposals';
+
 import { TagState } from 'ui/Tag';
 
 import { ZERO_ADDRESS } from 'constants/config';

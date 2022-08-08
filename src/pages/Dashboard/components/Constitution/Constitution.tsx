@@ -2,10 +2,9 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'ui/Button';
-
 import CopyToClipboard from 'components/CopyToClipboard';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
+import Button from 'ui/Button';
 
 import { getConstitutionHash } from 'store/voting/proposals/actions';
 import { constitutionHash } from 'store/voting/proposals/selectors';

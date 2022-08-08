@@ -1,12 +1,12 @@
 import { HTMLAttributes } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { ParameterType } from '@q-dev/q-js-sdk';
 import { FormParameter } from 'typings/forms';
+
 import Tip from 'ui/Tip';
 
 import { ParameterViewerContainer } from './styles';
-
-import { getTypeName } from 'func/contractHelpers';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   parameter: FormParameter
@@ -21,6 +21,15 @@ function ParameterViewer ({
   ...rest
 }: Props) {
   const { t } = useTranslation();
+
+  const parameterTypesMap: Record<ParameterType, string> = {
+    [ParameterType.NONE]: '–',
+    [ParameterType.ADDRESS]: 'ADDRESS',
+    [ParameterType.BOOL]: 'BOOLEAN',
+    [ParameterType.STRING]: 'STRING',
+    [ParameterType.UINT]: 'UINT',
+    [ParameterType.BYTE]: 'BYTE',
+  };
 
   return (
     <ParameterViewerContainer $block={block} {...rest}>
@@ -46,7 +55,7 @@ function ParameterViewer ({
         <p className="text-lg" title={parameter.value}>
           <span>{String(parameter.value)}</span>
           <span className="font-light color-secondary" style={{ marginLeft: '4px' }}>
-            {getTypeName(parameter.type)?.toUpperCase()}
+            {parameterTypesMap[parameter.type]}
           </span>
         </p>
       </div>

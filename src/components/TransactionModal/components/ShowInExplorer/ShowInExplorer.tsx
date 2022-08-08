@@ -5,7 +5,7 @@ import { ExplorerLink } from 'components/Custom/ExplorerAddress/styles';
 
 import { networkSelector } from 'store/user-inf/selectors';
 
-import { getExplorerUrlByChainId } from 'func/appConfig';
+import { getExplorerUrlByChainId } from 'utils/appConfig';
 
 interface Props {
   hash: string;

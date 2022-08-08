@@ -1,9 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import Button from 'ui/Button';
-
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
+import Button from 'ui/Button';
 
 import LockForm from './components/LockForm';
 

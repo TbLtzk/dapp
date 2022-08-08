@@ -2,9 +2,9 @@ import { SavingBalanceDetails } from '@q-dev/q-js-sdk';
 
 import { getStableCoinInstance } from 'contracts/contract-instance';
 
-import { fromWei } from 'func/balance';
-import { captureError } from 'func/errors';
-import { uintPerSecondToPerYearNumber } from 'func/useful';
+import { fromWei } from 'utils/balance';
+import { captureError } from 'utils/errors';
+import { uintPerSecondToPerYearNumber } from 'utils/useful';
 
 export function getSavingBalanceDetailsHelper (balanceDetails: SavingBalanceDetails) {
   const interestRate = balanceDetails?.interestRate

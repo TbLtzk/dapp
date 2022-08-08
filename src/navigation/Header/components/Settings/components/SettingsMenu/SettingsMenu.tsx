@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useLanguage } from 'context/LanguageProvider';
 import { useTheme } from 'styled-components';
+
 import Switch from 'ui/Switch';
 
 import { SettingsMenuContainer } from './styles';

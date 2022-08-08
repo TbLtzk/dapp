@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { useWeb3Context } from 'context/Web3ContextProvider';
+
 import Button from 'ui/Button';
 import SegmentedButton from 'ui/SegmentedButton';
 
 import { networkSelector } from 'store/user-inf/selectors';
 
 import { networks } from 'constants/config';
-import { isDevnetdApp } from 'func/appConfig';
+import { isDevnetdApp } from 'utils/appConfig';
 
 function Network () {
   const network = Number(useSelector(networkSelector));

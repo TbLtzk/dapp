@@ -2,10 +2,9 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'ui/Button';
-
 import ValidatorsTable from 'components/Tables/ValidatorsTable';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
+import Button from 'ui/Button';
 
 import StakerRewardPool from './components/StakerRewardPool';
 import ValidatorBalanceInfo from './components/ValidatorBalanceInfo';

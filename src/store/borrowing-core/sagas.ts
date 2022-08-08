@@ -30,9 +30,9 @@ import { getBorrowAssetRateAndFee, getVaultWithFee } from 'contracts/helpers/bor
 
 import { BorrowAssets } from 'constants/defiTypes';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { fromWei } from 'func/balance';
-import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
-import { fillArray, uintPerSecondToPerYearNumber } from 'func/useful';
+import { fromWei } from 'utils/balance';
+import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
+import { fillArray, uintPerSecondToPerYearNumber } from 'utils/useful';
 
 function* setCreateVaultGenerator ({ asset, label }: { asset: Asset, label:string }) {
   try {

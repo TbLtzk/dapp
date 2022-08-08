@@ -22,7 +22,7 @@ import {
   getEprsParametersInstance
 } from 'contracts/contract-instance';
 
-import { captureError } from 'func/errors';
+import { captureError } from 'utils/errors';
 
 const TYPES = ['Uint', 'String', 'Bool', 'Addr', 'Bytes32'];
 

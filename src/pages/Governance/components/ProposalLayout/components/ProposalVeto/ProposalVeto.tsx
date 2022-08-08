@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { Proposal } from 'typings/proposals';
+
 import Progress from 'ui/Progress';
 import Tooltip from 'ui/Tooltip';
 
@@ -9,7 +10,7 @@ import useEndTime from '../../hooks/useEndTime';
 import { StyledProposalVeto } from './styles';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-import { formatNumber, formatPercent } from 'func/formatters';
+import { formatNumber, formatPercent } from 'utils/formatters';
 
 function ProposalVeto ({ proposal }: { proposal: Proposal }) {
   const { t } = useTranslation();

@@ -13,9 +13,9 @@ import {
 } from 'contracts/contract-instance';
 
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { remainDateTimeSince } from 'func/convertDate';
-import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
-import { uintPerSecondToPerYearNumber } from 'func/useful';
+import { remainDateTimeSince } from 'utils/convertDate';
+import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
+import { uintPerSecondToPerYearNumber } from 'utils/useful';
 
 export async function getVaultWithFee (vault: Vault, vaultNum: number | string): Promise<VaultWithFee> {
   const { borrowingFee } = await getBorrowAssetRateAndFee(vault.colKey as Asset);

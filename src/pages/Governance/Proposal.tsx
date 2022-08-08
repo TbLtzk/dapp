@@ -5,6 +5,7 @@ import { RouteComponentProps, useHistory } from 'react-router';
 
 import { ProposalContractType } from 'typings/contracts';
 import { Proposal as ProposalInterface, ProposalType } from 'typings/proposals';
+
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 

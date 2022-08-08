@@ -1,7 +1,6 @@
 
-import Tooltip from 'ui/Tooltip';
-
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import Tooltip from 'ui/Tooltip';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 

@@ -7,7 +7,7 @@ import { LinksContainer } from './styles';
 
 import { networkSelector } from 'store/user-inf/selectors';
 
-import { getExplorerUrlByChainId, getGnosisSafeUrlByChainId, getQBridgeUrlByChainId } from 'func/appConfig';
+import { getExplorerUrlByChainId, getGnosisSafeUrlByChainId, getQBridgeUrlByChainId } from 'utils/appConfig';
 
 function EcosystemLinks () {
   const chainId = useSelector(networkSelector);

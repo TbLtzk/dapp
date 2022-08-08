@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from 'ui/Button';
-
 import { StatsContainer } from 'pages/Governance/components/VotingStats/styles';
+import Button from 'ui/Button';
 
 import useMetamaskReset from 'hooks/useMetamaskReset';
 
@@ -33,7 +32,7 @@ import {
 import { getEPDRUint } from 'contracts/helpers/epdr-param-helper';
 
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { fN } from 'func/useful';
+import { fN } from 'utils/useful';
 
 function AuctionStats () {
   const dispatch = useDispatch();

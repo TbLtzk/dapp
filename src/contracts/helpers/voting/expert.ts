@@ -20,7 +20,7 @@ import {
   getEprsParametersVotingInstance
 } from 'contracts/contract-instance';
 
-import { fromWei } from 'func/balance';
+import { fromWei } from 'utils/balance';
 
 export async function getExpertProposals (
   proposals: ProposalEvent[],

@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Alias } from '@q-dev/q-js-sdk';
-import Button from 'ui/Button';
-import Modal from 'ui/Modal';
 
 import PageLayout from 'components/PageLayout';
+import Button from 'ui/Button';
+import Modal from 'ui/Modal';
 
 import AddressForm from './components/AddressForm';
 import AliasesTable from './components/AliasesTable';
@@ -18,7 +18,7 @@ import { getAliases, getAliasEvents } from 'store/account-aliases/action-creator
 import { successMessageSelector } from 'store/transaction-handler/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
-import { trimAddress } from 'func/useful';
+import { trimAddress } from 'utils/useful';
 
 function AccountAliasing () {
   const { t } = useTranslation();

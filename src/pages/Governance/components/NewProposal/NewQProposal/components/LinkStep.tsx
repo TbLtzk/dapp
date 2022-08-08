@@ -1,14 +1,13 @@
 import { useTranslation } from 'react-i18next';
 
-import Input from 'ui/Input';
-
 import { FormStep } from 'components/MultiStepForm';
+import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 
 import { useNewQProposalForm } from '../NewQProposal';
 
-import { required, url } from 'func/validators';
+import { required, url } from 'utils/validators';
 
 function LinkStep () {
   const { t } = useTranslation();

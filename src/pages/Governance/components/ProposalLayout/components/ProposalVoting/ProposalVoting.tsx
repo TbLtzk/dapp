@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useTheme } from 'styled-components';
 import { Proposal } from 'typings/proposals';
+
 import Progress from 'ui/Progress';
 import Tooltip from 'ui/Tooltip';
 
@@ -10,7 +11,7 @@ import useEndTime from '../../hooks/useEndTime';
 import { getVotingColor } from './colors';
 import { StyledProposalVoting } from './styles';
 
-import { formatNumber, formatPercent } from 'func/formatters';
+import { formatNumber, formatPercent } from 'utils/formatters';
 
 function ProposalVoting ({ proposal }: { proposal: Proposal }) {
   const { t } = useTranslation();

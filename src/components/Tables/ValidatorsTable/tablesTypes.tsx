@@ -1,11 +1,10 @@
-import Tooltip from 'ui/Tooltip';
-
 import ProgressBar from 'components/Base/ProgressBar';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
+import Tooltip from 'ui/Tooltip';
 
-import { fromWei } from 'func/balance';
-import { fN } from 'func/useful';
+import { fromWei } from 'utils/balance';
+import { fN } from 'utils/useful';
 
 export const tableValidatorsShort = (tableArray: any) =>
   tableArray.map((validator: any, idx: number) => ({

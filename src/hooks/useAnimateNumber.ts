@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import { animate } from 'framer-motion';
 
-import { fN } from 'func/useful';
+import { fN } from 'utils/useful';
 
 const useAnimateNumber = (to: any, text = ' Q', formatter = fN) => {
   const animateRef = useRef<HTMLDivElement>(null);

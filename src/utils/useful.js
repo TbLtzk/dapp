@@ -3,12 +3,6 @@ import { isNumber, orderBy } from 'lodash';
 
 import { captureError } from './errors';
 
-import { CONTRACTS_NAMES } from 'constants/contracts';
-
-export const transformToHex = (value) => {
-  return window.web3.utils.toHex(value);
-};
-
 export const toTitleCase = (phrase = '') =>
   phrase
     .toLowerCase()
@@ -84,10 +78,6 @@ export const fillArray = (length) => {
   return array;
 };
 
-export const isAddress = (address) => {
-  return window.web3.utils.isAddress(address);
-};
-
 export const uintPerSecondToPerYearNumber = (num) => {
   if (isNumber(Number(num))) {
     const perSec = uintPercentToNumber(num);
@@ -110,23 +100,6 @@ export const getPercentageFormat = (number) => {
 
 export const addIndex = (array) => {
   return array.map((item, idx) => ({ id: idx + 1, ...item }));
-};
-
-export const createShareText = (type, contract, id, user) => {
-  const link = `${window.location.origin}`;
-  switch (type) {
-    case 'proposal': {
-      return link + `/governance/proposal/${contract}/${id}`;
-    }
-    case 'auction': {
-      const auctionPart = `/auction/${contract}/${id}`;
-      if (contract === CONTRACTS_NAMES.liquidationAuction) {
-        return link + auctionPart + '+' + user;
-      } else {
-        return link + auctionPart;
-      }
-    }
-  }
 };
 
 export async function fetchBlockNumber (block = 'latest') {

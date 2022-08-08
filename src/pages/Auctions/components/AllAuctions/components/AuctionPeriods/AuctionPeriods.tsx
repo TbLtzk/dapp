@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
 import { Placement } from '@popperjs/core';
-import Tooltip from 'ui/Tooltip';
 
 import { AuctionPeriodsContainer } from 'pages/Auctions/styles';
+import Tooltip from 'ui/Tooltip';
 
-import { formatDate, formatDateRelative } from 'func/formatters';
+import { formatDate, formatDateRelative } from 'utils/formatters';
 
 interface Props {
   endTime: string;

@@ -6,7 +6,7 @@ import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 
-import { address, required } from 'func/validators';
+import { address, required } from 'utils/validators';
 
 interface Props {
   onAdd: () => void;

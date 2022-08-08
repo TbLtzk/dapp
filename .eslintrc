@@ -99,7 +99,7 @@
       "groups": [
         ["^react"],
         ["^@?\\w"],
-        ["^(pages|components|navigation|assets)(/.*|$)"],
+        ["^(pages|components|navigation|ui|assets)(/.*|$)"],
         ["^hooks(/.*|$)"],
         // Parent imports (`../*`)
         ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
@@ -107,7 +107,7 @@
         ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
         ["^store(/.*|$)"],
         ["^contracts(/.*|$)"],
-        ["^(constants|func)(/.*|$)"]
+        ["^(constants|utils)(/.*|$)"]
       ]
     }]
   }

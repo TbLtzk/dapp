@@ -10,7 +10,7 @@ import useMetamaskReset from 'hooks/useMetamaskReset';
 import { setAnnounceNewVotingAgent } from 'store/q-vault/action-creators';
 
 import formTypes from 'constants/form-types';
-import { address, required } from 'func/validators';
+import { address, required } from 'utils/validators';
 
 function AnnounceForm () {
   const { t } = useTranslation();

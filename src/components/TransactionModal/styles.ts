@@ -1,5 +1,6 @@
 import { includes } from 'lodash';
 import styled from 'styled-components';
+
 import { getToastColor } from 'ui/Toast/colors';
 import { ToastType, toastTypes } from 'ui/Toast/Toast';
 

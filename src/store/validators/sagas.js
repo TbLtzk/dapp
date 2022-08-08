@@ -41,11 +41,11 @@ import { getValidator, getValidators, prepareValidatorsMonitoringData } from 'co
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import TABLE_TYPES from 'constants/tableTypes';
-import { getIndexerUrlDependsOnChainId } from 'func/appConfig';
-import { fromWei, toWei } from 'func/balance';
-import { getNowTimestamp } from 'func/convertDate';
-import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
-import { addIndex } from 'func/useful';
+import { getIndexerUrlDependsOnChainId } from 'utils/appConfig';
+import { fromWei, toWei } from 'utils/balance';
+import { getNowTimestamp } from 'utils/convertDate';
+import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
+import { addIndex } from 'utils/useful';
 
 function* getValidatorsWithdrawalInfoGenerator ({ address }) {
   try {

@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { ProposalEvent } from 'typings/contracts';
 import { ProposalFilterStatus, ProposalType } from 'typings/proposals';
+
 import Button from 'ui/Button';
 import Illustration from 'ui/Illustration';
 
@@ -18,7 +19,7 @@ import {
   proposalsByTypeSelector,
 } from 'store/voting/proposals/selectors';
 
-import { fillArray } from 'func/useful';
+import { fillArray } from 'utils/useful';
 
 const PAGE_LIMIT = 10;
 

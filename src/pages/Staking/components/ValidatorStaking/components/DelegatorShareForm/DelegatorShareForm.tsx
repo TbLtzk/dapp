@@ -10,7 +10,7 @@ import useMetamaskReset from 'hooks/useMetamaskReset';
 import { setVRPDelegatorsShare } from 'store/validation-reward-pools/action-creators';
 
 import formTypes from 'constants/form-types';
-import { max, required } from 'func/validators';
+import { max, required } from 'utils/validators';
 
 function DelegatorShareForm () {
   const { t } = useTranslation();

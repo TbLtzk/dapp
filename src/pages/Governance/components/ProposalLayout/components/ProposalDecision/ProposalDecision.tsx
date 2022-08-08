@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { SlashingProposal } from 'typings/proposals';
+
 import Illustration from 'ui/Illustration';
 
 import DecisionActions from './components/DecisionActions';

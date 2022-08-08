@@ -33,10 +33,10 @@ import { getOutstandingDelegationRewardsList, getQHolderRewardPool } from 'contr
 
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { fromWei, prepareBalanceDetails, toWei } from 'func/balance';
-import { getNowTimestamp } from 'func/convertDate';
-import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
-import { addIndex } from 'func/useful';
+import { fromWei, toWei } from 'utils/balance';
+import { getNowTimestamp } from 'utils/convertDate';
+import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
+import { addIndex, uintPerSecondToPerYearNumber } from 'utils/useful';
 
 // rename: getBalanceInWalletGenerator
 function* getAccountBalanceGenerator () {
@@ -266,7 +266,13 @@ function* getBalanceDetailsGenerator () {
     const balanceDetailsData = yield contract.getBalanceDetails();
     const qHolderRewardPool = yield getQHolderRewardPool();
     const userQVBalance = yield select(userBalance);
-    const balanceDetails = prepareBalanceDetails(balanceDetailsData, userQVBalance);
+    const balanceDetails = {
+      ...balanceDetailsData,
+      interestRatePercentage: uintPerSecondToPerYearNumber(balanceDetailsData.interestRate),
+      yearlyExpectedEarnings: userBalance
+        ? userQVBalance * (uintPerSecondToPerYearNumber(balanceDetailsData.interestRate) / 100)
+        : 0
+    };
     yield put(getQVBalanceSuccess({ ...balanceDetails, qHolderRewardPool }));
   } catch (error) {
     captureError(error);
