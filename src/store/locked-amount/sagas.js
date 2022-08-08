@@ -22,9 +22,9 @@ import {
 import { CONTRACT_TYPES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { toWei } from 'func/balance';
-import { dateToTimestamp } from 'func/convertDate';
-import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
+import { toWei } from 'utils/balance';
+import { dateToTimestamp } from 'utils/convertDate';
+import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 
 async function getContractInstance (instanceType) {
   switch (instanceType) {

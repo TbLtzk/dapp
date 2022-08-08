@@ -11,7 +11,7 @@ import { getContractProposals } from '.';
 
 import { getConstitutionVotingInstance, getEmergencyUpdateVotingInstance, getGeneralUpdateVotingInstance } from 'contracts/contract-instance';
 
-import { fromWei } from 'func/balance';
+import { fromWei } from 'utils/balance';
 
 export async function getQProposals (
   proposals: ProposalEvent[],

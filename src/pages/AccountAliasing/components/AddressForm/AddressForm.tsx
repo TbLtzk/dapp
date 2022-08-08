@@ -7,8 +7,8 @@ import useForm from 'hooks/useForm';
 
 import { WrapContainer } from './styles';
 
-import { trimAddress } from 'func/useful';
-import { address, required } from 'func/validators';
+import { trimAddress } from 'utils/useful';
+import { address, required } from 'utils/validators';
 
 interface Props {
   selectedAddress: string;

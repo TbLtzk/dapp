@@ -2,6 +2,7 @@ import { HTMLAttributes, ReactNode, useRef } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { motion } from 'framer-motion';
+
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 

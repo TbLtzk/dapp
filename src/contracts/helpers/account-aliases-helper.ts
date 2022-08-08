@@ -3,8 +3,8 @@ import { orderBy } from 'lodash';
 
 import { getAccountAliasesInstance } from 'contracts/contract-instance';
 
-import { isFeatureEnabled } from 'func/appConfig';
-import { fetchBlockNumber, transformToHex } from 'func/useful';
+import { isFeatureEnabled } from 'utils/appConfig';
+import { fetchBlockNumber } from 'utils/useful';
 
 export async function getAliasEvents () {
   const contract = await getAccountAliasesInstance();
@@ -24,7 +24,7 @@ export async function getAliasEvents () {
       ...item,
       address: item.returnValues[0],
       alias: item.returnValues[1],
-      role: transformToHex(item.returnValues[2])
+      role: window.web3.utils.toHex(item.returnValues[2])
     }));
 }
 

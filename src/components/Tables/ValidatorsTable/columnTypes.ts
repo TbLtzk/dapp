@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { toNumber } from 'func/useful';
+import { toNumber } from 'utils/useful';
 
 export const getColumnsValidatorsWidened = (t: typeof useTranslation) => [
   {

@@ -9,8 +9,8 @@ import useInterval from 'hooks/useInterval';
 
 import { contractRegistryInstance } from 'contracts/contract-instance';
 
-import { formatNumber } from 'func/formatters';
-import { fetchBlockNumber } from 'func/useful';
+import { formatNumber } from 'utils/formatters';
+import { fetchBlockNumber } from 'utils/useful';
 
 function Blockchain () {
   const { t } = useTranslation();

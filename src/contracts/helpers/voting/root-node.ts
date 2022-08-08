@@ -9,7 +9,7 @@ import { getContractProposals } from '.';
 import { getRootNodesMembershipVotingInstance } from 'contracts/contract-instance';
 
 import { ZERO_ADDRESS } from 'constants/config';
-import { transformToPercentage } from 'func/formatters';
+import { transformToPercentage } from 'utils/formatters';
 
 export async function getRootNodeProposals (
   proposals: ProposalEvent[],

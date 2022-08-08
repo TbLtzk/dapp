@@ -6,7 +6,7 @@ import * as types from './types';
 
 import { countActiveAuctions } from 'contracts/helpers/auction';
 
-import { groupArrayByBlockNumber } from 'func/useful';
+import { groupArrayByBlockNumber } from 'utils/useful';
 
 interface AuctionItem {
   auctions: AuctionInfos[]

@@ -2,11 +2,10 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
+import CustomBlock from 'components/Base/CustomBlock';
 import Spinner from 'ui/Spinner';
 import Switch from 'ui/Switch';
 import Tooltip from 'ui/Tooltip';
-
-import CustomBlock from 'components/Base/CustomBlock';
 
 import GnosisSafeTooltip from '../GnosisSafeTooltip';
 import ParametersTable from '../ParametersTable';

@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 
 import { isUserRootNode, rootMinimumTimeLock, rootNodeStake, withdrawals } from 'store/root-node/selectors';
 
-import { fromWei } from 'func/balance';
-import { fromSolDateFormattingT1 } from 'func/date';
-import { fN } from 'func/useful';
+import { fromWei } from 'utils/balance';
+import { fromSolDateFormattingT1 } from 'utils/date';
+import { fN } from 'utils/useful';
 
 function RootBalanceInfo () {
   const { t } = useTranslation();

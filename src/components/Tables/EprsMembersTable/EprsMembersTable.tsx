@@ -2,9 +2,8 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Table from 'ui/Table';
-
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import Table from 'ui/Table';
 
 import { getEPRSMembers } from 'store/membership/action-creators';
 import { EPRSMembersErrorSelector, EPRSMembersLoadingSelector, EPRSMembersSelector } from 'store/membership/selectors';

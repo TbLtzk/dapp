@@ -2,7 +2,7 @@ import { TFunction } from 'react-i18next';
 
 import { CSSProperties } from 'styled-components';
 
-import { toNumber } from 'func/useful';
+import { toNumber } from 'utils/useful';
 
 type GetColumnFn = (t: TFunction) => {
   headerStyle: () => CSSProperties,

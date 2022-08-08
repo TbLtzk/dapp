@@ -5,7 +5,7 @@ import { BorrowInfoContainer } from './styles';
 
 import { borrowVaultSelector } from 'store/borrow-assets/selectors';
 
-import { fN } from 'func/useful';
+import { fN } from 'utils/useful';
 
 function BorrowInfo () {
   const { t } = useTranslation();

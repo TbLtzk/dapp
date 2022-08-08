@@ -2,13 +2,14 @@
 import { useTranslation } from 'react-i18next';
 
 import { SlashingProposal } from 'typings/proposals';
+
 import Tooltip from 'ui/Tooltip';
 
 import useEndTime from '../../../hooks/useEndTime';
 import LinkViewer from '../../LinkViewer';
 
 import { ObjectionStatus } from 'constants/statuses';
-import { formatNumber } from 'func/formatters';
+import { formatNumber } from 'utils/formatters';
 
 function ObjectionDetails ({ proposal }: { proposal: SlashingProposal }) {
   const { t } = useTranslation();

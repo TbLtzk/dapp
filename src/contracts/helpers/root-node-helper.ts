@@ -1,6 +1,6 @@
 import { orderBy } from 'lodash';
 
-import { fromWei } from 'func/balance';
+import { fromWei } from 'utils/balance';
 
 export const prepareRootMembersTable = (
   members: string[],

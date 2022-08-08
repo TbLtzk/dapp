@@ -4,11 +4,11 @@ import { ValidationRewardPoolsInstance } from '@q-dev/q-js-sdk/lib/contracts/tok
 
 import { getContractRegistryInstance, getValidatorMetricsInstance } from 'contracts/contract-instance';
 
-import { fromWei } from 'func/balance';
-import { convertToMonthDayYear, dateToTimestamp } from 'func/convertDate';
-import { captureError } from 'func/errors';
-import { transformToPercentage } from 'func/formatters';
-import { uintPerSecondToPerYearNumber } from 'func/useful';
+import { fromWei } from 'utils/balance';
+import { convertToMonthDayYear, dateToTimestamp } from 'utils/convertDate';
+import { captureError } from 'utils/errors';
+import { transformToPercentage } from 'utils/formatters';
+import { uintPerSecondToPerYearNumber } from 'utils/useful';
 
 export const getValidators = async (validatorsInstance: ValidatorsInstance) => {
   const util = await getValidatorMetricsInstance();

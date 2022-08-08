@@ -1,11 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { Redirect, Route } from 'react-router';
 
+import PageLayout from 'components/PageLayout';
 import Tabs from 'ui/Tabs';
 import { TabRoute, TabSwitch } from 'ui/Tabs/components';
 import { TabsType } from 'ui/Tabs/Tabs';
-
-import PageLayout from 'components/PageLayout';
 
 import DelegationStaking from './components/DelegationStaking';
 import RootNodeStaking from './components/RootNodeStaking';

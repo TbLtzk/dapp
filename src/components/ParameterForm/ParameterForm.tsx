@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ParameterType } from '@q-dev/q-js-sdk';
 import { FormParameter } from 'typings/forms';
+
 import Input from 'ui/Input';
 import RadioGroup from 'ui/RadioGroup';
 import Select from 'ui/Select';
@@ -15,7 +16,7 @@ import { ParameterFormContainer } from './styles';
 
 import { getParameterKeysByType, getParameterValueByKey } from 'contracts/helpers/parameters-helper';
 
-import { parameterType, required } from 'func/validators';
+import { parameterType, required } from 'utils/validators';
 
 interface Props {
   contract: string;
@@ -40,7 +41,7 @@ function ParameterForm ({
     validators: {
       type: [required],
       key: [required],
-      value: [required, parameterType((form: FormParameter) => form.type)],
+      value: [required, parameterType(form => (form as FormParameter).type)],
       isNew: []
     },
   });

@@ -31,7 +31,7 @@ export default defineConfig({
       components: path.resolve(__dirname, './src/components'),
       constants: path.resolve(__dirname, './src/constants'),
       contracts: path.resolve(__dirname, './src/contracts'),
-      func: path.resolve(__dirname, './src/func'),
+      utils: path.resolve(__dirname, './src/utils'),
       hooks: path.resolve(__dirname, './src/hooks'),
       json: path.resolve(__dirname, './src/json'),
       navigation: path.resolve(__dirname, './src/navigation'),

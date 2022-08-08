@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import copy from 'copy-to-clipboard';
+
 import Icon from 'ui/Icon';
 import Tooltip from 'ui/Tooltip';
 

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import { getDonutChartColor } from 'ui/DonutChart/colors';
 
 export const StyledDonutTooltip = styled.div`

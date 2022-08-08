@@ -10,7 +10,7 @@ import useMetamaskReset from 'hooks/useMetamaskReset';
 import { setVestingWithdraw } from 'store/vesting/action-creators';
 
 import formTypes from 'constants/form-types';
-import { required } from 'func/validators';
+import { required } from 'utils/validators';
 
 function VestingWithdrawForm () {
   const { t } = useTranslation();

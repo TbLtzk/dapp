@@ -20,9 +20,9 @@ import { getContractRegistryInstance } from 'contracts/contract-instance';
 
 import { networkParameters, networks, rpcUrls } from 'constants/config';
 import { LOAD_TYPES } from 'constants/statuses';
-import { getChainId, getParametersDependsOnUrl, getProvider } from 'func/appConfig';
-import { captureError } from 'func/errors';
-import { reloadPage } from 'func/useful';
+import { getChainId, getParametersDependsOnUrl, getProvider } from 'utils/appConfig';
+import { captureError } from 'utils/errors';
+import { reloadPage } from 'utils/useful';
 
 const { ethereum } = window;
 

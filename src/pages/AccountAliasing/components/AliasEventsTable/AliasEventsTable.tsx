@@ -4,14 +4,14 @@ import { useSelector } from 'react-redux';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';
 import { invert } from 'lodash';
+
+import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Check from 'ui/Check';
 import Table from 'ui/Table';
 
-import ExplorerAddress from 'components/Custom/ExplorerAddress';
-
 import { aliasEventsLoadingSelector, aliasEventsSelector } from 'store/account-aliases/selectors';
 
-import { trimAddress } from 'func/useful';
+import { trimAddress } from 'utils/useful';
 
 function AliasEventsTable ({ address }: { address: string }) {
   const aliasEvents = useSelector(aliasEventsSelector);

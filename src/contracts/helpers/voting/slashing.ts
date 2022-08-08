@@ -10,10 +10,10 @@ import { getContractProposals } from '.';
 import { getRootNodeSlashingEscrowInstance, getRootNodesSlashingVotingInstance, getValidatorSlashingEscrowInstance, getValidatorsSlashingVotingInstance } from 'contracts/contract-instance';
 
 import { ObjectionStatus } from 'constants/statuses';
-import { fromWei } from 'func/balance';
-import { unixToDate } from 'func/date';
-import { transformToPercentage } from 'func/formatters';
-import { getPercentageFormat } from 'func/useful';
+import { fromWei } from 'utils/balance';
+import { unixToDate } from 'utils/date';
+import { transformToPercentage } from 'utils/formatters';
+import { getPercentageFormat } from 'utils/useful';
 
 export async function getSlashingProposals (
   proposals: ProposalEvent[],
@@ -115,7 +115,7 @@ export async function getSlashingEscrow (
     decision: {
       endDate: unixToDate(escrowArbitrationInfo.decision.endDate),
       externalReference: escrowArbitrationInfo.decision.externalReference,
-      percentage: transformToPercentage(escrowArbitrationInfo.decision.percentage),
+      percentage: transformToPercentage(escrowArbitrationInfo.decision.percentage.toString()),
       proposer: escrowArbitrationInfo.decision.proposer,
       confirmationCount: confirmations,
       requiredConfirmations: requiredConfirmations,

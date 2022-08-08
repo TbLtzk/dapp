@@ -3,12 +3,13 @@ import { useTranslation } from 'react-i18next';
 
 import { ProposalStatus } from '@q-dev/q-js-sdk';
 import { Proposal } from 'typings/proposals';
+
 import Tooltip from 'ui/Tooltip';
 
 import { VotingContainer } from './styles';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-import { formatDate, formatDateRelative } from 'func/formatters';
+import { formatDate, formatDateRelative } from 'utils/formatters';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   proposal: Proposal

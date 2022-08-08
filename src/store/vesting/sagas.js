@@ -15,10 +15,10 @@ import { getVestingInstance } from 'contracts/contract-instance';
 import { CONTRACT_TYPES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { fromWei, toWei } from 'func/balance';
-import { getNowTimestamp } from 'func/convertDate';
-import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
-import { addIndex } from 'func/useful';
+import { fromWei, toWei } from 'utils/balance';
+import { getNowTimestamp } from 'utils/convertDate';
+import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
+import { addIndex } from 'utils/useful';
 
 function* getVestingBalanceGenerator ({ address }) {
   try {

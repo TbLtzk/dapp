@@ -14,9 +14,9 @@ import { userBalance, votingWeight } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import formTypes from 'constants/form-types';
-import { formatNumber } from 'func/formatters';
-import { BN } from 'func/useful';
-import { max, required } from 'func/validators';
+import { formatNumber } from 'utils/formatters';
+import { BN } from 'utils/useful';
+import { max, required } from 'utils/validators';
 
 function LockForm () {
   const { t } = useTranslation();
@@ -28,7 +28,7 @@ function LockForm () {
   const userQVaultBalance = useSelector(userBalance);
 
   const form = useForm({
-    initialValues: { amount: userVotingWeight },
+    initialValues: { amount: userVotingWeight as string },
     validators: { amount: [required, max(userQVaultBalance)] },
     onSubmit: (form) => {
       const delta = BN(form.amount).minus(BN(userVotingWeight));

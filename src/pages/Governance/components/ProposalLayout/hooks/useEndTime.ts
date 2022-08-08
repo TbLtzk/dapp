@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { formatDate, formatDateRelative } from 'func/formatters';
+import { formatDate, formatDateRelative } from 'utils/formatters';
 
 function useEndTime (date: Date) {
   const { t, i18n } = useTranslation();

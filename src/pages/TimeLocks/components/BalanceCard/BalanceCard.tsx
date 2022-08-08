@@ -1,20 +1,19 @@
 import { RefObject, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import CustomBlock from 'components/Base/CustomBlock';
+import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 import Table from 'ui/Table';
-
-import CustomBlock from 'components/Base/CustomBlock';
-import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import ManageForm from '../ManageForm';
 import VestingWithdrawForm from '../VestingWithdrawForm';
 
 import { BalanceCardContent } from './styles';
 
-import { fromWei } from 'func/balance';
-import { convertToMonthDayYear } from 'func/convertDate';
+import { fromWei } from 'utils/balance';
+import { convertToMonthDayYear } from 'utils/convertDate';
 
 interface Props {
   title: string;

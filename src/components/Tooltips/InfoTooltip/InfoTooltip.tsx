@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import tooltips from 'json/tooltips.json';
+
 import Tooltip from 'ui/Tooltip';
 
 import { InfoIcon } from './styles';

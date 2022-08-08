@@ -4,14 +4,14 @@ import { RouteComponentProps, useHistory } from 'react-router';
 
 import { camelCase } from 'lodash';
 import { AuctionCompletedInfos, AuctionType } from 'typings/auctions';
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
-import Tag from 'ui/Tag';
 
 import { SkeletonAuctionLoading } from 'components/Base/SkeletonLoading';
 import PageLayout from 'components/PageLayout';
 import { AUCTION_HEADERS } from 'pages/Auctions/Auctions';
 import { AuctionContainer } from 'pages/Auctions/styles';
+import Button from 'ui/Button';
+import Icon from 'ui/Icon';
+import Tag from 'ui/Tag';
 
 import useMetamaskReset from 'hooks/useMetamaskReset';
 
@@ -107,7 +107,7 @@ function Auction ({ match, }: RouteComponentProps<{
         action={<AuctionActions auctionType={auctionType} auction={auction} />}
         titleExtra={
           auction?.status && (
-            <Tag style={{ marginLeft: '16px' }} state={auction.state}>
+            <Tag state={auction.state}>
               {t(auction.status)}
             </Tag>
           )

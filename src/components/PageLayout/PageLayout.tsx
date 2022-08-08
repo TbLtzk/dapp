@@ -8,7 +8,7 @@ import useOnScreen from 'hooks/useOnScreen';
 
 import { PageLayoutContainer } from './styles';
 
-import { toTitleCase } from 'func/useful';
+import { toTitleCase } from 'utils/useful';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   title: string,

@@ -3,16 +3,17 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { motion } from 'framer-motion';
+import { fromWei } from 'web3-utils';
+
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
-import { fromWei } from 'web3-utils';
 
 import { BalanceDropdown, QLogo } from './styles';
 
 import { accountBalance, userBalance } from 'store/q-vault/selectors';
 import { baseVotingWeightInfoSelector } from 'store/voting/proposals/selectors';
 
-import { fNCompact } from 'func/useful';
+import { fNCompact } from 'utils/useful';
 
 function Balance () {
   const [balanceOpen, setBalanceOpen] = useState(false);

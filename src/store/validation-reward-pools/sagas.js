@@ -24,10 +24,10 @@ import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
 
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { fromWei } from 'func/balance';
-import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
-import { transformToPercentage } from 'func/formatters';
-import { getPercentageFormat } from 'func/useful';
+import { fromWei } from 'utils/balance';
+import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
+import { transformToPercentage } from 'utils/formatters';
+import { getPercentageFormat } from 'utils/useful';
 
 const message = { header: 'Notice', details: 'Stake amount below minimum to apply new rate, old rate applied.' };
 

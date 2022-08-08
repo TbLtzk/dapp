@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { useLanguage } from 'context/LanguageProvider';
+
 import Icon from 'ui/Icon';
 
 import { LanguagesContainer } from './styles';

@@ -14,7 +14,7 @@ import { setPurgeSlashing } from 'store/voting/slashing/actions';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
-import { address, required } from 'func/validators';
+import { address, required } from 'utils/validators';
 
 function PurgeSlashingForm ({ onClose }: { onClose: () => void }) {
   const { t } = useTranslation();

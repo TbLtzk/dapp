@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import { Proposal } from 'typings/proposals';
+
 import Button from 'ui/Button';
 import RadioGroup from 'ui/RadioGroup';
 
@@ -12,7 +13,7 @@ import { StyledVoteForm } from './styles';
 
 import { voteForProposal } from 'store/voting/proposals/actions';
 
-import { required } from 'func/validators';
+import { required } from 'utils/validators';
 
 interface Props {
   proposal: Proposal

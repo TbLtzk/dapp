@@ -2,14 +2,14 @@
 import { useTranslation } from 'react-i18next';
 
 import { SlashingProposal } from 'typings/proposals';
-import Tooltip from 'ui/Tooltip';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import Tooltip from 'ui/Tooltip';
 
 import useEndTime from '../../../hooks/useEndTime';
 import LinkViewer from '../../LinkViewer';
 
-import { formatPercent } from 'func/formatters';
+import { formatPercent } from 'utils/formatters';
 
 function DecisionDetails ({ proposal }: { proposal: SlashingProposal }) {
   const { t } = useTranslation();

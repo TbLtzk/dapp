@@ -3,19 +3,19 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AuctionInfos, AuctionType } from 'typings/auctions';
-import Button from 'ui/Button';
-import Illustration from 'ui/Illustration';
 
 import { ListEmptyStub, ListWrapper } from 'pages/Auctions/styles';
 import ProposalCardSkeleton from 'pages/Governance/components/Proposals/components/ProposalCardSkeleton';
 import { ListNextContainer } from 'pages/Governance/components/Proposals/components/ProposalsList/styles';
+import Button from 'ui/Button';
+import Illustration from 'ui/Illustration';
 
 import AuctionCard from './components/AuctionCard';
 
 import { getAuctions } from 'store/auctions/actions';
 import { auctionsByTypeSelector } from 'store/auctions/selectors';
 
-import { fillArray } from 'func/useful';
+import { fillArray } from 'utils/useful';
 
 const PAGE_LIMIT = 10;
 

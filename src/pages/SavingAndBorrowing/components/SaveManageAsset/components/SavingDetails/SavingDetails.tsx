@@ -5,7 +5,7 @@ import { SavingDetailsContainer } from './styles';
 
 import { savingAviableToDepositSelector, savingBalanceDetailsSelector } from 'store/saving-assets/selectors';
 
-import { fN } from 'func/useful';
+import { fN } from 'utils/useful';
 
 interface Props {
   depositAsset: string;

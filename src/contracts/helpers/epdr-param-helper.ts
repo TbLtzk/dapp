@@ -1,6 +1,6 @@
 import { getEpdrParametersInstance } from 'contracts/contract-instance';
 
-import { fromWei } from 'func/balance';
+import { fromWei } from 'utils/balance';
 
 export async function getEPDRUint (key: string) {
   try {

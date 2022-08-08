@@ -2,10 +2,9 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import CustomBlock from 'components/Base/CustomBlock';
 import Table from 'ui/Table';
 import Tooltip from 'ui/Tooltip';
-
-import CustomBlock from 'components/Base/CustomBlock';
 
 import SaveManageAsset from '../SaveManageAsset';
 
@@ -18,7 +17,7 @@ import {
 
 import { addQUSDTokenToWallet } from 'contracts/helpers/saving-assets-helper';
 
-import { fN } from 'func/useful';
+import { fN } from 'utils/useful';
 
 function SavingCryptoAssets () {
   const { t } = useTranslation();

@@ -1,12 +1,13 @@
 import { HTMLAttributes } from 'react';
 
 import { uniqueId } from 'lodash';
+
 import Input from 'ui/Input';
 
 import { RangeContainer } from './styles';
 
-import { formatNumber, formatPercent } from 'func/formatters';
-import { BN } from 'func/useful';
+import { formatNumber, formatPercent } from 'utils/formatters';
+import { BN } from 'utils/useful';
 
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   value: string

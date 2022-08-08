@@ -19,8 +19,8 @@ import { store } from 'store';
 
 import { getInstance, getRootNodesInstance } from 'contracts/contract-instance';
 
-import { captureError } from 'func/errors';
-import { transformToPercentage } from 'func/formatters';
+import { captureError } from 'utils/errors';
+import { transformToPercentage } from 'utils/formatters';
 
 export async function getContractProposals ({
   proposals,

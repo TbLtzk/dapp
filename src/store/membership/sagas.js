@@ -20,7 +20,7 @@ import {
   getEprsMembershipInstance
 } from 'contracts/contract-instance';
 
-import { captureError } from 'func/errors';
+import { captureError } from 'utils/errors';
 
 function* isUserEPDRMember () {
   try {

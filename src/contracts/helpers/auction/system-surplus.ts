@@ -12,8 +12,8 @@ import { AUCTIONS_TYPES, ERROR_TYPES, getAuctionsEvents, getAuctionStatusState, 
 
 import { getSystemSurplusAuctionInstance } from 'contracts/contract-instance';
 
-import { fromWei } from 'func/balance';
-import { dateToTimestamp, getNowTimestamp } from 'func/convertDate';
+import { fromWei } from 'utils/balance';
+import { dateToTimestamp, getNowTimestamp } from 'utils/convertDate';
 
 export function prepareAuctionData (
   info: SystemSurplusAuctionInfo,

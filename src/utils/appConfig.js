@@ -83,6 +83,7 @@ export const getQBridgeUrlByChainId = (chainId) => {
   const network = networks[chainId];
   return network ? qBridgeUrls[network] : getParametersDependsOnUrl().qBridge;
 };
+
 export const isFeatureEnabled = (feature, chainId) => {
   const networkParams = featureFlags[networks[chainId]];
   return networkParams?.[feature] ?? false;

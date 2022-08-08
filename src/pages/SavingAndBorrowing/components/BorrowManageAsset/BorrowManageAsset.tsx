@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { isEmpty } from 'lodash';
 import { Asset, VaultData, VaultWithFee } from 'typings/defi';
+
+import { SpinnerWrapper } from 'pages/SavingAndBorrowing/styles';
 import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 import Spinner from 'ui/Spinner';
-
-import { SpinnerWrapper } from 'pages/SavingAndBorrowing/styles';
 
 import BorrowForm from './components/BorrowForm';
 import BorrowInfo from './components/BorrowInfo';

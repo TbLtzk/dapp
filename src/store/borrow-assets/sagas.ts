@@ -28,8 +28,8 @@ import { convertToBigAmount, getDeFiContractByType, prepareVaultdata } from 'con
 import formTypes from 'constants/form-types';
 import { MAX_APPROVE_AMOUNT } from 'constants/numbers';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { fromWei, toWei } from 'func/balance';
-import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
+import { fromWei, toWei } from 'utils/balance';
+import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 
 function* getBorrowVaultGenerator ({ vaultId }: { vaultId: number | string }) {
   try {

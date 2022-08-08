@@ -11,7 +11,7 @@ import { getDonutChartColor } from './colors';
 import { DonutChartContainer } from './styles';
 import { DonutOption } from './types';
 
-import { formatNumber, formatPercent } from 'func/formatters';
+import { formatNumber, formatPercent } from 'utils/formatters';
 
 Chart.register(ArcElement, Tooltip, Legend);
 

@@ -3,19 +3,18 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import AddressIcon from 'components/Custom/AddressIcon';
+import InfoTooltip from 'components/Tooltips/InfoTooltip';
 import Button from 'ui/Button';
 import DonutChart from 'ui/DonutChart';
 import Spinner from 'ui/Spinner';
-
-import AddressIcon from 'components/Custom/AddressIcon';
-import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import { getValidatorMembers } from 'store/validators/action-creators';
 import { loadingValidatorsShortSelector, validatorsShortSelector } from 'store/validators/selectors';
 
 import TABLE_TYPES from 'constants/tableTypes';
-import { formatNumber } from 'func/formatters';
-import { trimAddress } from 'func/useful';
+import { formatNumber } from 'utils/formatters';
+import { trimAddress } from 'utils/useful';
 
 function ValidatorsBlock () {
   const { t } = useTranslation();

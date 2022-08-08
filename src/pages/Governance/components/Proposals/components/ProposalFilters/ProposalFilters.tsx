@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { ProposalFilter, ProposalFilterStatus, ProposalType } from 'typings/proposals';
+
 import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 import Select from 'ui/Select';

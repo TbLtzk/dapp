@@ -15,7 +15,7 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper';
 
 import formTypes from 'constants/form-types';
-import { amount, required } from 'func/validators';
+import { amount, required } from 'utils/validators';
 
 function TransferForm () {
   const { t } = useTranslation();

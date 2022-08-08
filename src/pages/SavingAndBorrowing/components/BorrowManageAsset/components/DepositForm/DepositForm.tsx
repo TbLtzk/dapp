@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Asset, VaultWithFee } from 'typings/defi';
+
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 
@@ -13,7 +14,7 @@ import { setBorrowAprove, setBorrowDeposit } from 'store/borrow-assets/actions';
 import { allowanceDepositSelector, borrowVaultSelector } from 'store/borrow-assets/selectors';
 
 import formTypes from 'constants/form-types';
-import { amount, required } from 'func/validators';
+import { amount, required } from 'utils/validators';
 
 function DepositForm ({ vault }: {vault: VaultWithFee}) {
   const { t } = useTranslation();

@@ -27,7 +27,7 @@ import TimeLocks from '../pages/TimeLocks';
 
 import { store } from 'store/index';
 
-import { captureError } from 'func/errors';
+import { captureError } from 'utils/errors';
 
 function addSentryContext () {
   try {

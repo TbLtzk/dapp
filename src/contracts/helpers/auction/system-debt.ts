@@ -10,8 +10,8 @@ import { AUCTIONS_TYPES, ERROR_TYPES, getAllowance, getAuctionsEvents, getAuctio
 
 import { getSystemDebtAuctionInstance } from 'contracts/contract-instance';
 
-import { fromWei, toWei } from 'func/balance';
-import { dateToTimestamp, getNowTimestamp } from 'func/convertDate';
+import { fromWei, toWei } from 'utils/balance';
+import { dateToTimestamp, getNowTimestamp } from 'utils/convertDate';
 
 function prepareSystemDebtAuctionInfo (
   info: SystemDebtAuctionInfo,

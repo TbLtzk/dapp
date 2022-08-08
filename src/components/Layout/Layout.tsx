@@ -1,11 +1,10 @@
 import { ReactNode, useState } from 'react';
 import { positions, Provider as AlertProvider, transitions } from 'react-alert';
 
-import Toast from 'ui/Toast';
-
 import TransactionModal from 'components/TransactionModal';
 import Header from 'navigation/Header';
 import Sidebar from 'navigation/Sidebar';
+import Toast from 'ui/Toast';
 
 import { AppContainer } from './styles';
 

@@ -15,9 +15,9 @@ import { rootNodeStake, withdrawals } from 'store/root-node/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import formTypes from 'constants/form-types.js';
-import { fromWei, toWei } from 'func/balance';
-import { BN } from 'func/useful';
-import { max, required } from 'func/validators';
+import { fromWei, toWei } from 'utils/balance';
+import { BN } from 'utils/useful';
+import { max, required } from 'utils/validators';
 
 interface Props {
   formType: string | null;

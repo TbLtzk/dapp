@@ -6,8 +6,8 @@ import { ExplorerLink } from './styles';
 
 import { networkSelector } from 'store/user-inf/selectors';
 
-import { getExplorerUrlByChainId } from 'func/appConfig';
-import { trimAddress } from 'func/useful';
+import { getExplorerUrlByChainId } from 'utils/appConfig';
+import { trimAddress } from 'utils/useful';
 
 function ExplorerAddress ({
   address,

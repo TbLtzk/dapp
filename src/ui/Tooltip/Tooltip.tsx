@@ -49,6 +49,7 @@ function Tooltip ({
 
   return (
     <TooltipWrapper
+      className="tooltip-wrapper"
       $disabled={disabled}
       onMouseOver={showTooltip}
       onMouseLeave={hideTooltip}

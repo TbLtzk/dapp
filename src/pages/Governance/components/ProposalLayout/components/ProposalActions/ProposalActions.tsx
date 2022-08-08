@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { ProposalStatus } from '@q-dev/q-js-sdk';
 import { Proposal } from 'typings/proposals';
+
+import { ShareButton } from 'components/ShareButton';
 import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 import Tooltip from 'ui/Tooltip';
-
-import { ShareButton } from 'components/ShareButton';
 
 import useMetamaskReset from 'hooks/useMetamaskReset';
 

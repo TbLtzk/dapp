@@ -1,16 +1,15 @@
 import { useTranslation } from 'react-i18next';
 
+import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
 import Button from 'ui/Button';
 import Input from 'ui/Input';
-
-import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
 
 import useForm from 'hooks/useForm';
 
 import { WrapContainer } from './styles';
 
-import { trimAddress } from 'func/useful';
-import { address, required } from 'func/validators';
+import { trimAddress } from 'utils/useful';
+import { address, required } from 'utils/validators';
 
 interface Props {
   userAddress: string;

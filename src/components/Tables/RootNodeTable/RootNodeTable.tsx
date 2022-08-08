@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { TableType } from 'typings/tables';
-import Table from 'ui/Table';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
+import Table from 'ui/Table';
 
 import { getColumnsRootNode, getColumnsRootNodeMonitoring } from './columnTypes';
 
@@ -20,7 +20,7 @@ import {
 } from 'store/root-node/selectors';
 
 import TABLE_TYPES from 'constants/tableTypes';
-import { fN } from 'func/useful';
+import { fN } from 'utils/useful';
 
 interface Props {
   tableType: TableType

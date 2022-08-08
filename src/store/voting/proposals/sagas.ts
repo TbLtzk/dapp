@@ -31,9 +31,9 @@ import { createProposal, getProposalEvents } from 'contracts/helpers/voting';
 import { ZERO_ADDRESS } from 'constants/config';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { getNowTimestamp } from 'func/convertDate';
-import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
-import { getMinimalActiveBlockHeight } from 'func/useful';
+import { getNowTimestamp } from 'utils/convertDate';
+import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
+import { getMinimalActiveBlockHeight } from 'utils/useful';
 
 function getProposalTypeFromFormType (type: CreateProposalForm['type']): FormProposalType {
   switch (type) {

@@ -2,10 +2,10 @@ import { useSelector } from 'react-redux';
 
 import { ProposalStatus } from '@q-dev/q-js-sdk';
 import { Proposal, ProposalType, SlashingProposal } from 'typings/proposals';
-import Tag from 'ui/Tag';
 
 import PageLayout from 'components/PageLayout';
 import useProposalDetails from 'pages/Governance/hooks/useProposalDetails';
+import Tag from 'ui/Tag';
 
 import CastObjection from './components/CastObjection';
 import ProposalActions from './components/ProposalActions';

@@ -1,14 +1,14 @@
 import { useState } from 'react';
 
 import { uniqueId } from 'lodash';
+
+import AddressIcon from 'components/Custom/AddressIcon';
 import Button from 'ui/Button';
 import DonutChart from 'ui/DonutChart';
 import { DonutOption } from 'ui/DonutChart/types';
 
-import AddressIcon from 'components/Custom/AddressIcon';
-
-import { formatNumber } from 'func/formatters';
-import { trimAddress } from 'func/useful';
+import { formatNumber } from 'utils/formatters';
+import { trimAddress } from 'utils/useful';
 
 function DonutCharts () {
   const [options, setOptions] = useState<DonutOption[]>([

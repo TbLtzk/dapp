@@ -1,17 +1,16 @@
 
 import { useTranslation } from 'react-i18next';
 
-import Input from 'ui/Input';
-
 import FormBlock from 'components/FormBlock';
 import { FormStep } from 'components/MultiStepForm';
+import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 
 import { useSystemDebtAuctionForm } from '../NewSystemDebtAuction';
 
 import { MAX_BID_AMOUNT } from 'constants/numbers';
-import { max, required } from 'func/validators';
+import { max, required } from 'utils/validators';
 
 interface Props {
   reserveLot: string | number;

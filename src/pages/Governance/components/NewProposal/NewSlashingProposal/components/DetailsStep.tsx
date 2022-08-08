@@ -3,12 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { isNil } from 'lodash';
+
+import { FormStep } from 'components/MultiStepForm';
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 import Range from 'ui/Range';
 import Tip from 'ui/Tip';
-
-import { FormStep } from 'components/MultiStepForm';
 
 import useForm from 'hooks/useForm';
 
@@ -21,9 +21,9 @@ import { getValidatorMembers } from 'store/validators/action-creators';
 import { validatorsWidenedSelector } from 'store/validators/selectors';
 
 import TABLE_TYPES from 'constants/tableTypes';
-import { formatNumber } from 'func/formatters';
-import { isAddress, trimAddress } from 'func/useful';
-import { address, percent, required, url } from 'func/validators';
+import { formatNumber } from 'utils/formatters';
+import { trimAddress } from 'utils/useful';
+import { address, percent, required, url } from 'utils/validators';
 
 function DetailsStep () {
   const { t } = useTranslation();
@@ -66,7 +66,7 @@ function DetailsStep () {
   };
 
   const stake = useMemo(() => {
-    if (isAddress(form.values.address)) {
+    if (window.web3.utils.isAddress(form.values.address)) {
       const stake = getCurrentStake();
       form.fields.percent.onChange('0');
       form.setError('address', isNil(stake) ? memberError : '');

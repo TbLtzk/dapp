@@ -14,7 +14,6 @@ import { setPurgeSlashing } from 'store/voting/slashing/actions';
 import { getRootNodesInstance, getRootNodesSlashingVotingInstance, getValidatorsInstance, getValidatorsSlashingVotingInstance } from 'contracts/contract-instance';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
-import { isAddress } from 'func/useful';
 
 function usePurgeSlashing (address: string, isRootSlashing: boolean) {
   const dispatch = useDispatch();
@@ -25,7 +24,7 @@ function usePurgeSlashing (address: string, isRootSlashing: boolean) {
   const [shouldPurge, setShouldPurge] = useState(false);
 
   useEffect(() => {
-    if (!isAddress(address)) {
+    if (!window.web3.utils.isAddress(address)) {
       setShouldPurge(false);
       return;
     }

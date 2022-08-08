@@ -21,8 +21,8 @@ import { setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/
 import { getStableCoinInstance, getSystemBalanceInstance, getSystemReserveInstance } from 'contracts/contract-instance';
 
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { fromWei } from 'func/balance';
-import { captureError, getErrorMessage, getSuccessMessage } from 'func/errors';
+import { fromWei } from 'utils/balance';
+import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 
 function* setPerformNettingGenerator ({ label }) {
   try {

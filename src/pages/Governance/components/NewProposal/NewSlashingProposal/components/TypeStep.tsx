@@ -1,15 +1,15 @@
 import { useTranslation } from 'react-i18next';
 
 import { RadioOptions, SlashingProposalForm } from 'typings/forms';
-import RadioGroup from 'ui/RadioGroup';
 
 import { FormStep } from 'components/MultiStepForm';
+import RadioGroup from 'ui/RadioGroup';
 
 import useForm from 'hooks/useForm';
 
 import { useNewSlashingProposal } from '../NewSlashingProposal';
 
-import { required } from 'func/validators';
+import { required } from 'utils/validators';
 
 function TypeStep () {
   const { t } = useTranslation();

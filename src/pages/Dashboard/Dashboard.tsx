@@ -1,13 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
-
 import PageLayout from 'components/PageLayout';
 import DefiMembersPanel from 'components/Tables/DeFiMembersTable';
 import EprsMembersPanel from 'components/Tables/EprsMembersTable';
 import QFeesMembersPanel from 'components/Tables/QFeesMembersTable';
+import Button from 'ui/Button';
+import Icon from 'ui/Icon';
 
 import Blockchain from './components/Blockchain';
 import Constitution from './components/Constitution';

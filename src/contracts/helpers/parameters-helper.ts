@@ -12,7 +12,7 @@ import {
 } from 'contracts/contract-instance';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
-import { captureError } from 'func/errors';
+import { captureError } from 'utils/errors';
 
 export async function getParameterKeysByType (
   contractType: string,

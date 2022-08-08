@@ -19,9 +19,9 @@ import {
 import { accountableTotalStake, validatorWithdrawalInfo } from 'store/validators/selectors';
 
 import formTypes from 'constants/form-types';
-import { fromWei } from 'func/balance';
-import { BN } from 'func/useful';
-import { amount, required } from 'func/validators';
+import { fromWei } from 'utils/balance';
+import { BN } from 'utils/useful';
+import { amount, required } from 'utils/validators';
 
 interface Props {
   formType: string | null;

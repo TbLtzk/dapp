@@ -1,14 +1,13 @@
 import { useTranslation } from 'react-i18next';
 
-import Input from 'ui/Input';
-
 import { FormStep } from 'components/MultiStepForm';
+import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 
 import { useNewRootProposal } from '../NewRootProposal';
 
-import { address, required, url } from 'func/validators';
+import { address, required, url } from 'utils/validators';
 
 function RemoveNodeStep () {
   const { t } = useTranslation();

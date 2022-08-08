@@ -3,16 +3,16 @@ import { useSelector } from 'react-redux';
 
 import { Alias, AliasPurpose } from '@q-dev/q-js-sdk';
 import { invert } from 'lodash';
+
+import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Button from 'ui/Button';
 import Table from 'ui/Table';
 import Tooltip from 'ui/Tooltip';
 
-import ExplorerAddress from 'components/Custom/ExplorerAddress';
-
 import { aliasesLoadingSelector, aliasesSelector } from 'store/account-aliases/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
-import { trimAddress } from 'func/useful';
+import { trimAddress } from 'utils/useful';
 
 interface Props {
   address: string;
