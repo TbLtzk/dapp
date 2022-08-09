@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { fromWei, toWei } from 'web3-utils';
+
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 
@@ -15,8 +17,7 @@ import { rootNodeStake, withdrawals } from 'store/root-node/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import formTypes from 'constants/form-types.js';
-import { fromWei, toWei } from 'utils/balance';
-import { BN } from 'utils/useful';
+import { BN } from 'utils/numbers';
 import { max, required } from 'utils/validators';
 
 interface Props {

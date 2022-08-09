@@ -20,7 +20,7 @@ import { store } from 'store';
 import { getInstance, getRootNodesInstance } from 'contracts/contract-instance';
 
 import { captureError } from 'utils/errors';
-import { transformToPercentage } from 'utils/formatters';
+import { transformToPercentage } from 'utils/numbers';
 
 export async function getContractProposals ({
   proposals,

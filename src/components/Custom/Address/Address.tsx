@@ -7,7 +7,7 @@ import AddressIcon from '../AddressIcon';
 
 import { AddressWrapper } from './styles';
 
-import { trimAddress } from 'utils/useful';
+import { trimAddress } from 'utils/strings';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   address: string;

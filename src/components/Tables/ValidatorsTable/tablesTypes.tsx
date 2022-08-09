@@ -1,10 +1,11 @@
+import { fromWei } from 'web3-utils';
+
 import ProgressBar from 'components/Base/ProgressBar';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
 import Tooltip from 'ui/Tooltip';
 
-import { fromWei } from 'utils/balance';
-import { fN } from 'utils/useful';
+import { formatAsset } from 'utils/formatters';
 
 export const tableValidatorsShort = (tableArray: any) =>
   tableArray.map((validator: any, idx: number) => ({
@@ -21,7 +22,7 @@ export const tableValidatorsShort = (tableArray: any) =>
         <AliasTooltip alias={validator.alias} />
       </div>
     ),
-    amount: fN(validator.amount) + ' Q',
+    amount: formatAsset(validator.amount, 'Q'),
   }));
 
 export const tableValidatorsMonitoring = (tableArray: any) =>
@@ -39,7 +40,7 @@ export const tableValidatorsMonitoring = (tableArray: any) =>
         <AliasTooltip alias={validator.alias} />
       </div>
     ),
-    amount: fN(validator.amount) + ' Q',
+    amount: formatAsset(validator.amount, 'Q'),
     lastBlock: validator.lastBlock,
     timestamp: <Tooltip trigger={validator.monthDayYear}>{validator.timestamp}</Tooltip>,
     average: validator.average,
@@ -60,9 +61,8 @@ export const tableValidatorsWidened = (tableArray: any) =>
         <AliasTooltip alias={validator.alias} />
       </div>
     ),
-    validator2: validator.validator,
-    amount: fN(fromWei(validator.amount)) + ' Q',
-    selfStake: fN(validator.selfStake) + ' Q',
-    delegatedStake: fN(validator.delegatedStake) + ' Q',
-    delegationSaturation: <ProgressBar value={fN(validator.delegationSaturation)} />,
+    amount: formatAsset(fromWei(validator.amount), 'Q'),
+    selfStake: formatAsset(validator.selfStake, 'Q'),
+    delegatedStake: formatAsset(validator.delegatedStake, 'Q'),
+    delegationSaturation: <ProgressBar value={validator.delegationSaturation} />,
   }));

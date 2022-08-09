@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { FormDelegation } from 'typings/forms';
+import { toWei } from 'web3-utils';
 
 import Button from 'ui/Button';
 
@@ -14,7 +15,6 @@ import { setDelegateStake } from 'store/q-vault/action-creators';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import formTypes from 'constants/form-types';
-import { toWei } from 'utils/balance';
 
 function UpdateDelegation () {
   const { t } = useTranslation();

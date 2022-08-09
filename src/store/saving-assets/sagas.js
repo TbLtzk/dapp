@@ -1,4 +1,5 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { fromWei, toWei } from 'web3-utils';
 
 import { getOutstandingDebt, getSavingAssets, getTotalSavingBalance } from '../borrowing-core/actions';
 
@@ -24,7 +25,6 @@ import { getSavingBalanceDetailsHelper } from 'contracts/helpers/saving-assets-h
 import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { fromWei, toWei } from 'utils/balance';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 
 function* getSavingAllowanceGenerator () {

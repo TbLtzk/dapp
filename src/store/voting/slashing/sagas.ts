@@ -21,7 +21,7 @@ import formTypes from 'constants/form-types';
 import { escrowTypes } from 'constants/slashing';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
-import { getPercentageFormat } from 'utils/useful';
+import { getFixedPercentage } from 'utils/numbers';
 
 function getContractInstance (contractName: string) {
   return contractName === CONTRACTS_NAMES.validatorsSlashingVoting
@@ -53,7 +53,7 @@ function* onEscrowProposeDecisionGenerator ({ data, contractName, proposalId, la
     const transaction = yield* call(() =>
       contract.proposeDecision(
         proposalId,
-        getPercentageFormat(data.percentage),
+        getFixedPercentage(data.percentage),
         data.isAppealNeglected,
         data.externalLink,
         { from: userAddress }

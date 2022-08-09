@@ -25,7 +25,7 @@ import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
-import { BN } from 'utils/useful';
+import { BN } from 'utils/numbers';
 import { max, min, required } from 'utils/validators';
 
 const DEFAULT_VALUES = {

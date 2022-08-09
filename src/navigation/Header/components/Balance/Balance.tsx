@@ -13,16 +13,16 @@ import { BalanceDropdown, QLogo } from './styles';
 import { accountBalance, userBalance } from 'store/q-vault/selectors';
 import { baseVotingWeightInfoSelector } from 'store/voting/proposals/selectors';
 
-import { fNCompact } from 'utils/useful';
+import { formatNumberCompact } from 'utils/formatters';
 
 function Balance () {
   const [balanceOpen, setBalanceOpen] = useState(false);
 
-  const userWalletBalance = fNCompact(useSelector(accountBalance));
-  const userQVaultBalance = fNCompact(useSelector(userBalance));
+  const userWalletBalance = useSelector(accountBalance);
+  const userQVaultBalance = useSelector(userBalance);
 
   const { ownWeight } = useSelector(baseVotingWeightInfoSelector);
-  const totalVotingWeight = fNCompact(fromWei(ownWeight || '0'));
+  const totalVotingWeight = fromWei(ownWeight || '0');
 
   return (
     <BalanceDropdown
@@ -31,7 +31,7 @@ function Balance () {
       trigger={
         <Button alwaysEnabled look="secondary">
           <div className="balance">
-            <h5 className="text-lg color-primary font-semibold">{userWalletBalance}</h5>
+            <h5 className="text-lg color-primary font-semibold">{formatNumberCompact(userWalletBalance)}</h5>
             <QLogo width={22} margin="0 0 0 2px">
               <img src="/logo.png" alt="q" />
             </QLogo>
@@ -56,20 +56,20 @@ function Balance () {
             </QLogo>
             <h5 className="text-lg color-secondary">Balance</h5>
           </div>
-          <h5 className="text-xl color-primary font-semibold">{userWalletBalance}</h5>
+          <h5 className="text-xl color-primary font-semibold">{formatNumberCompact(userWalletBalance)}</h5>
         </div>
 
         <Link to="/q-vault">
           <div className="balance balance-action">
             <p className="text-md color-secondary">Q Vault Balance </p>
-            <h6 className="text-lg color-primary font-semibold">{userQVaultBalance}</h6>
+            <h6 className="text-lg color-primary font-semibold">{formatNumberCompact(userQVaultBalance)}</h6>
           </div>
         </Link>
 
         <Link to="/governance">
           <div className="balance balance-action">
             <p className="text-md color-secondary">Voting Weight</p>
-            <h6 className="text-lg color-primary font-semibold">{totalVotingWeight}</h6>
+            <h6 className="text-lg color-primary font-semibold">{formatNumberCompact(totalVotingWeight)}</h6>
           </div>
         </Link>
       </div>

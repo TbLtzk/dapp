@@ -5,7 +5,7 @@ import { getBorrowingInstance, getStableCoinInstance } from 'contracts/contract-
 
 import { UINT_PSEUDO_UNDEFINED } from 'constants/boundaries';
 import { defiApproveTypes } from 'constants/defi';
-import { BN, uintPerSecondToPerYearNumber } from 'utils/useful';
+import { BN, calculateInterestRate } from 'utils/numbers';
 
 export function convertToBigAmount (decimals: number) {
   return (value: number | string) =>
@@ -60,7 +60,7 @@ export async function prepareVaultdata (vaultStats: VaultStats, userAddress: str
   const outstandingDebt = borrowingFromBigAmount(vaultStats.stcStats.outstandingDebt);
   const borrowingLimit = borrowingFromBigAmount(vaultStats.stcStats.borrowingLimit);
   const liquidationLimit = borrowingFromBigAmount(vaultStats.stcStats.liquidationLimit);
-  const borrowingFee = uintPerSecondToPerYearNumber(vaultStats.stcStats.borrowingFee) || 0;
+  const borrowingFee = calculateInterestRate(Number(vaultStats.stcStats.borrowingFee));
 
   return {
     collateralDetails: {

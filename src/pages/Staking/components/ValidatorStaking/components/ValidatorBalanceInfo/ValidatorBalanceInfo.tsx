@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
+import { fromWei } from 'web3-utils';
+
 import { userAddressMetamask } from 'store/user-inf/selectors';
 import {
   accountableTotalStake,
@@ -10,9 +12,8 @@ import {
   validatorWithdrawalInfo,
 } from 'store/validators/selectors';
 
-import { fromWei } from 'utils/balance';
 import { fromSolDateFormattingT1 } from 'utils/date';
-import { fN } from 'utils/useful';
+import { formatAsset } from 'utils/formatters';
 
 function ValidatorBalanceInfo () {
   const { t } = useTranslation();
@@ -40,19 +41,19 @@ function ValidatorBalanceInfo () {
 
       <div>
         <p className="text-md">{t('STAKE_IN_VALIDATOR_RANKING')}</p>
-        <h4 className="text-xl">{fN(userAccountableTotalStake)} Q</h4>
+        <h4 className="text-xl">{formatAsset(userAccountableTotalStake, 'Q')}</h4>
       </div>
 
       {Number(validatorLockedAmount) > 0 && (
         <div>
           <p className="text-md">{t('TIME_LOCKED_AMOUNT')}</p>
-          <h4 className="text-xl">{fN(validatorLockedAmount)} Q </h4>
+          <h4 className="text-xl">{formatAsset(validatorLockedAmount, 'Q')}</h4>
         </div>
       )}
 
       <div>
         <p className="text-md">{t('ANNOUNCE_WITHDRAWAL')}</p>
-        <h4 className="text-xl">{fromWei(withdrawalInfo.amount)} Q</h4>
+        <h4 className="text-xl">{formatAsset(fromWei(withdrawalInfo.amount || '0'), 'Q')}</h4>
       </div>
 
       <div>

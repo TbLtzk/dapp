@@ -1,4 +1,5 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { fromWei, toWei } from 'web3-utils';
 
 import { setMinimumVestingTimeLock, setVestingBalance, setVestingTimeLocks } from './action-creators';
 import * as actionTypes from './action-types';
@@ -15,10 +16,8 @@ import { getVestingInstance } from 'contracts/contract-instance';
 import { CONTRACT_TYPES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { fromWei, toWei } from 'utils/balance';
 import { getNowTimestamp } from 'utils/convertDate';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
-import { addIndex } from 'utils/useful';
 
 function* getVestingBalanceGenerator ({ address }) {
   try {
@@ -44,7 +43,7 @@ function* getVestingTimeLocksGenerator ({ address }) {
   try {
     const contract = yield call(getVestingInstance);
     const data = yield contract.getTimeLocks(address);
-    yield put(setVestingTimeLocks(addIndex(data)));
+    yield put(setVestingTimeLocks(data));
   } catch (error) {
     captureError(error);
   }

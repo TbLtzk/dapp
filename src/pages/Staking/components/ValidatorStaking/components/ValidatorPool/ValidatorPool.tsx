@@ -10,7 +10,7 @@ import {
   totalStakeSelector,
 } from 'store/validators/selectors';
 
-import { fN } from 'utils/useful';
+import { formatAsset } from 'utils/formatters';
 
 function ValidatorPool () {
   const { t } = useTranslation();
@@ -24,22 +24,22 @@ function ValidatorPool () {
     {
       id: 'total-stake',
       label: t('TOTAL_STAKE'),
-      value: `${fN(totalStake)} Q`,
+      value: formatAsset(totalStake, 'Q'),
     },
     {
       id: 'own-stake',
       label: t('VALIDATOR_OWN_STAKE'),
-      value: `${fN(ownStake)} Q`,
+      value: formatAsset(ownStake, 'Q'),
     },
     {
       id: 'delegated-stake',
       label: t('DELEGATED_STAKE'),
-      value: `${fN(delegatedStake)} Q`,
+      value: formatAsset(delegatedStake, 'Q'),
     },
     {
       id: 'accountable-stake',
       label: t('ACCOUNTABLE_STAKE'),
-      value: `${fN(accTotalStake)} Q`,
+      value: formatAsset(accTotalStake, 'Q'),
     },
   ];
 

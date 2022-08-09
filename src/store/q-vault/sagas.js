@@ -1,4 +1,5 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { fromWei, toWei } from 'web3-utils';
 
 import {
   getAccountBalance,
@@ -33,10 +34,9 @@ import { getOutstandingDelegationRewardsList, getQHolderRewardPool } from 'contr
 
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { fromWei, toWei } from 'utils/balance';
 import { getNowTimestamp } from 'utils/convertDate';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
-import { addIndex, uintPerSecondToPerYearNumber } from 'utils/useful';
+import { calculateInterestRate } from 'utils/numbers';
 
 // rename: getBalanceInWalletGenerator
 function* getAccountBalanceGenerator () {
@@ -235,7 +235,7 @@ function* getQVaultTimeLocksGenerator ({ address }) {
     const contract = yield call(getQVaultInstance);
     const data = yield contract.getTimeLocks(address);
 
-    yield put(setQVaultTimeLocks(addIndex(data)));
+    yield put(setQVaultTimeLocks(data));
   } catch (error) {
     getErrorMessage(error);
   }
@@ -268,9 +268,9 @@ function* getBalanceDetailsGenerator () {
     const userQVBalance = yield select(userBalance);
     const balanceDetails = {
       ...balanceDetailsData,
-      interestRatePercentage: uintPerSecondToPerYearNumber(balanceDetailsData.interestRate),
+      interestRatePercentage: calculateInterestRate(Number(balanceDetailsData.interestRate)),
       yearlyExpectedEarnings: userBalance
-        ? userQVBalance * (uintPerSecondToPerYearNumber(balanceDetailsData.interestRate) / 100)
+        ? userQVBalance * (calculateInterestRate(Number(balanceDetailsData.interestRate)) / 100)
         : 0
     };
     yield put(getQVBalanceSuccess({ ...balanceDetails, qHolderRewardPool }));

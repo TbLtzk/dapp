@@ -1,4 +1,5 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { fromWei } from 'web3-utils';
 
 import {
   getStableCoinTotalSupplyError,
@@ -21,7 +22,6 @@ import { setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/
 import { getStableCoinInstance, getSystemBalanceInstance, getSystemReserveInstance } from 'contracts/contract-instance';
 
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { fromWei } from 'utils/balance';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 
 function* setPerformNettingGenerator ({ label }) {

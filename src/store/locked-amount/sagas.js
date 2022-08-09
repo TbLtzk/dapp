@@ -1,4 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
+import { toWei } from 'web3-utils';
 
 import * as actionTypes from './action-types';
 
@@ -22,7 +23,6 @@ import {
 import { CONTRACT_TYPES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { toWei } from 'utils/balance';
 import { dateToTimestamp } from 'utils/convertDate';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 

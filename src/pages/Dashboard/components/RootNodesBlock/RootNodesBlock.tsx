@@ -14,7 +14,7 @@ import { loadingRootMembersSelector, rootMembersSelector } from 'store/root-node
 
 import { TABLE_TYPES } from 'constants/tableTypes';
 import { formatNumber } from 'utils/formatters';
-import { trimAddress } from 'utils/useful';
+import { trimAddress } from 'utils/strings';
 
 function RootNodesBlock () {
   const { t } = useTranslation();

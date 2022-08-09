@@ -45,7 +45,7 @@ interface LiquidationAuctionEvent {
 
 interface SystemDebtAndSurplusEvent {
   bidder: string;
-  bid: string | number;
+  bid: string;
   auctionId: string | number;
   blockNumber: string | number;
 }

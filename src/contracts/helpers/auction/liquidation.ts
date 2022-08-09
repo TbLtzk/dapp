@@ -7,14 +7,15 @@ import {
   LiquidationAuctionInfo,
   LiquidationCompletedInfo,
 } from 'typings/auctions';
+import { fromWei, toWei } from 'web3-utils';
 
 import { getAuctionStatusState } from './index';
 import { AUCTIONS_TYPES, ERROR_TYPES, getAllowance, getAuctionsEvents, getStatusTransformation } from '.';
 
 import { getBorrowingCoreInstance, getLiquidationAuctionInstance } from 'contracts/contract-instance';
 
-import { fromBtcBlockchain, fromWei, toWei } from 'utils/balance';
 import { getNowTimestamp } from 'utils/convertDate';
+import { BN } from 'utils/numbers';
 
 async function prepareLiquidationAuctionInfo (
   info: SdkLiquidationAuctionInfo,
@@ -39,7 +40,7 @@ async function prepareLiquidationAuctionInfo (
   completedInfo.endTime = info.endTime.toString();
   completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0;
   completedInfo.highestBid = fromWei(info.highestBid);
-  completedInfo.colAsset = fromBtcBlockchain(vault.colAsset);
+  completedInfo.colAsset = BN(vault.colAsset).dividedBy(1e8).toFixed();
   completedInfo.state = getAuctionStatusState(status as keyof typeof AuctionStatus);
   completedInfo.status = (status);
 
@@ -102,7 +103,7 @@ export async function createLiquidationAuction (form: CreateLiquidationAuction, 
 export async function bidForLiquidationAuction (form: LiquidationAuctionBid, userAddress: string) {
   const instance = await getLiquidationAuctionInstance();
   await getAllowance(userAddress, instance.address, form.bid);
-  const result = await instance.bid(form.vaultOwner, form.vaultId, toWei(form.bid), { from: userAddress });
+  const result = await instance.bid(form.vaultOwner, form.vaultId, toWei(String(form.bid)), { from: userAddress });
   return result;
 }
 

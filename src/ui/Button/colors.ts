@@ -3,7 +3,7 @@ import { COLORS, getColorFn } from 'styles/colors';
 
 import { ButtonLook } from './Button';
 
-import { capitalize } from 'utils/useful';
+import { capitalize } from 'utils/strings';
 
 export const darkColors = {
   shadowLight: 'rgba(7, 23, 43, 0.64)',

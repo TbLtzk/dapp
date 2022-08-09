@@ -15,9 +15,9 @@ import {
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { remainDateTimeSince } from 'utils/convertDate';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
-import { uintPerSecondToPerYearNumber } from 'utils/useful';
+import { calculateInterestRate } from 'utils/numbers';
 
-export async function getVaultWithFee (vault: Vault, vaultNum: number | string): Promise<VaultWithFee> {
+export async function getVaultWithFee (vault: Vault, vaultNum: number): Promise<VaultWithFee> {
   const { borrowingFee } = await getBorrowAssetRateAndFee(vault.colKey as Asset);
   return {
     ...vault,
@@ -29,7 +29,7 @@ export async function getBorrowAssetRateAndFee (asset: Asset): Promise<BorrowAss
   const contract = await getEpdrParametersInstance();
 
   const interestRate = await contract.getUint(`governed.EPDR.${asset}_QUSD_interestRate`);
-  const borrowingFee = uintPerSecondToPerYearNumber(interestRate) || 0;
+  const borrowingFee = calculateInterestRate(Number(interestRate));
   return { asset, borrowingFee, interestRate };
 }
 

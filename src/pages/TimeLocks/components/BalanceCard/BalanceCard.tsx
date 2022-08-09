@@ -1,6 +1,8 @@
 import { RefObject, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { fromWei } from 'web3-utils';
+
 import CustomBlock from 'components/Base/CustomBlock';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Button from 'ui/Button';
@@ -12,7 +14,6 @@ import VestingWithdrawForm from '../VestingWithdrawForm';
 
 import { BalanceCardContent } from './styles';
 
-import { fromWei } from 'utils/balance';
 import { convertToMonthDayYear } from 'utils/convertDate';
 
 interface Props {
@@ -47,8 +48,8 @@ function BalanceCard ({
         tiny
         perPage={4}
         emptyTableMessage={t('NO_TIME_LOCKS')}
-        table={lockAmountData.map((lock) => ({
-          id: lock.id,
+        table={lockAmountData.map((lock, i) => ({
+          id: i + 1,
           amount: fromWei(lock.amount) + ' Q',
           releaseStart: convertToMonthDayYear(lock.releaseStart),
           releaseEnd: convertToMonthDayYear(lock.releaseEnd),

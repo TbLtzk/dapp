@@ -5,11 +5,6 @@ export const setUserAddress = (address) => ({
   address
 });
 
-export const setUserBalance = (balance) => ({
-  type: actionTypes.SET_USER_BALANCE,
-  balance
-});
-
 export const setNetwork = (network) => ({
   type: actionTypes.SET_NETWORK,
   network

@@ -6,12 +6,11 @@ import { flatten } from 'lodash';
 import { ProposalEvent } from 'typings/contracts';
 import { QProposalForm } from 'typings/forms';
 import { Proposal } from 'typings/proposals';
+import { fromWei } from 'web3-utils';
 
 import { getContractProposals } from '.';
 
 import { getConstitutionVotingInstance, getEmergencyUpdateVotingInstance, getGeneralUpdateVotingInstance } from 'contracts/contract-instance';
-
-import { fromWei } from 'utils/balance';
 
 export async function getQProposals (
   proposals: ProposalEvent[],

@@ -1,14 +1,13 @@
 import { Indexer } from '@q-dev/q-js-sdk';
 import { ValidatorsInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsInstance';
 import { ValidationRewardPoolsInstance } from '@q-dev/q-js-sdk/lib/contracts/tokeneconomics/ValidationRewardPoolsInstance';
+import { fromWei } from 'web3-utils';
 
 import { getContractRegistryInstance, getValidatorMetricsInstance } from 'contracts/contract-instance';
 
-import { fromWei } from 'utils/balance';
 import { convertToMonthDayYear, dateToTimestamp } from 'utils/convertDate';
 import { captureError } from 'utils/errors';
-import { transformToPercentage } from 'utils/formatters';
-import { uintPerSecondToPerYearNumber } from 'utils/useful';
+import { calculateInterestRate, transformToPercentage } from 'utils/numbers';
 
 export const getValidators = async (validatorsInstance: ValidatorsInstance) => {
   const util = await getValidatorMetricsInstance();
@@ -38,7 +37,7 @@ export const getValidator = async (
   const delegatorShare = transformToPercentage(poolInfo.delegatorsShare);
   const validatorShare = delegatorShare ? 100 - Number(delegatorShare) : 100;
   const validatorPoolBalance = fromWei(poolInfo.poolBalance);
-  const poolinterestRate = uintPerSecondToPerYearNumber(poolInfo.interestRate);
+  const poolinterestRate = calculateInterestRate(Number(poolInfo.interestRate));
 
   return {
     ...validator,

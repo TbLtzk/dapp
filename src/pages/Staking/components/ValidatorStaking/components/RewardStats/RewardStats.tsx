@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { balance, delegatorShare, poolInfoSelector } from 'store/validation-reward-pools/selectors';
 import { delegatedStakeSelector } from 'store/validators/selectors';
 
-import { fN } from 'utils/useful';
+import { formatAsset, formatPercent } from 'utils/formatters';
 
 function RewardStats () {
   const { t } = useTranslation();
@@ -13,40 +13,39 @@ function RewardStats () {
   const amountRP = useSelector(balance);
   const delClaim = useSelector(poolInfoSelector);
 
-  const validatorShare = fN(100 - Number(delShare));
   const disDelClaims = amountRP - delClaim;
 
   const rewardStatsArray = [
     {
       id: 'collected-pool',
       label: t('COLLECTED_POOL_REWARDS'),
-      value: `${fN(amountRP)} Q`,
+      value: formatAsset(amountRP, 'Q'),
     },
     {
       id: 'outstanding-claims',
       label: t('OUTSTANDING_DELEGATOR_CLAIMS'),
-      value: `${fN(delClaim)} Q`,
+      value: formatAsset(delClaim, 'Q'),
     },
     {
       id: 'delegator-reward',
       label: t('DISTRIBUTABLE_DELEGATOR_REWARDS'),
-      value: `${fN(disDelClaims)} Q`,
+      value: formatAsset(disDelClaims, 'Q'),
     },
     {
       id: 'delegator-percentage',
       label: t('DISTRIBUTABLE_DELEGATOR_PERCENTAGE'),
-      value: `${fN(disDelClaims / Number(delegatedStake))}%`,
+      value: formatPercent(disDelClaims / Number(delegatedStake)),
     },
 
     {
       id: 'validator-share',
       label: t('VALIDATOR_SHARE'),
-      value: delShare ? `${validatorShare} %` : '100%',
+      value: formatPercent(100 - Number(delShare || 0)),
     },
     {
       id: 'delegator-share',
       label: t('DELEGATOR_SHARE'),
-      value: `${fN(delShare)}%`,
+      value: formatPercent(delShare)
     },
   ];
 

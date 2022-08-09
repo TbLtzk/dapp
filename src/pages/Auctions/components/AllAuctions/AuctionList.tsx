@@ -15,7 +15,7 @@ import AuctionCard from './components/AuctionCard';
 import { getAuctions } from 'store/auctions/actions';
 import { auctionsByTypeSelector } from 'store/auctions/selectors';
 
-import { fillArray } from 'utils/useful';
+import { fillArray } from 'utils/arrays';
 
 const PAGE_LIMIT = 10;
 

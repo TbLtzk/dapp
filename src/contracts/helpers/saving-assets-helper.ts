@@ -1,15 +1,13 @@
 import { SavingBalanceDetails } from '@q-dev/q-js-sdk';
+import { fromWei } from 'web3-utils';
 
 import { getStableCoinInstance } from 'contracts/contract-instance';
 
-import { fromWei } from 'utils/balance';
 import { captureError } from 'utils/errors';
-import { uintPerSecondToPerYearNumber } from 'utils/useful';
+import { calculateInterestRate } from 'utils/numbers';
 
 export function getSavingBalanceDetailsHelper (balanceDetails: SavingBalanceDetails) {
-  const interestRate = balanceDetails?.interestRate
-    ? uintPerSecondToPerYearNumber(balanceDetails.interestRate)
-    : 0;
+  const interestRate = calculateInterestRate(Number(balanceDetails.interestRate));
   const currentBalance = balanceDetails?.currentBalance
     ? fromWei(balanceDetails.currentBalance)
     : 0;

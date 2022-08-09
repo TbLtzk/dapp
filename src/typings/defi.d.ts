@@ -12,7 +12,7 @@ interface SavingAssets {
 }
 
 interface VaultWithFee extends Vault {
-  vaultNum: number | string;
+  vaultNum: number;
   borrowingFee: number;
 }
 
@@ -23,8 +23,8 @@ interface BorrowAssetsRateAndFee {
 }
 
 interface BorrowAction {
-  amount: string | number;
-  vaultId: string | number;
+  amount: string;
+  vaultId: number;
   label: string
 }
 

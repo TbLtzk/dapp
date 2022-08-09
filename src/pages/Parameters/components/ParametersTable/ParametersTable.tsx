@@ -1,13 +1,13 @@
 import { useTranslation } from 'react-i18next';
 
 import parametersDictionary from 'json/parameters.json';
+import { fromWei } from 'web3-utils';
 
 import CopyToClipboard from 'components/CopyToClipboard';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import { TableWrapper } from './styles';
 
-import { fromWei } from 'utils/balance';
 import { formatAsset, formatDuration, formatFactor, formatFraction, formatNumber } from 'utils/formatters';
 
 interface Props {
@@ -64,7 +64,7 @@ function ParametersTable ({ parameters, simplified }: Props) {
         return `${formatNumber(item.value, 2)} ${t('GAS')}`;
       case 'Q':
       case 'QUSD':
-        return formatAsset(item.value, type);
+        return formatAsset(fromWei(item.value), type);
       default:
         return item.value;
     }

@@ -4,7 +4,7 @@ import isDate from 'lodash/isDate';
 import isEmpty from 'lodash/isEmpty';
 import isNumber from 'lodash/isNumber';
 
-import { BN } from './useful';
+import { BN } from './numbers';
 
 const HASH_REGEX = /^0x[a-fA-F0-9]{64}$/;
 const VAULT_ID_REGEX = /^[0-9]{1,18}$/;
@@ -30,7 +30,7 @@ export const requiredIf: ValidatorFn<(val: ValidatorValue, form: unknown) => boo
   };
 };
 
-export const amount: ValidatorFn<string | number> = max => (val, form) => {
+export const amount: ValidatorFn<string | number, string | number> = max => (val, form) => {
   const value = BN(val);
   const zero = BN(0);
   const validatorValue = BN(getValidatorValue(max, form));
@@ -55,7 +55,7 @@ export const amount: ValidatorFn<string | number> = max => (val, form) => {
   };
 };
 
-export const min: ValidatorFn<number | string> = min => (val, form) => {
+export const min: ValidatorFn<string | number, string | number> = min => (val, form) => {
   const value = BN(val);
   const validatorValue = BN(getValidatorValue(min, form));
 
@@ -65,7 +65,7 @@ export const min: ValidatorFn<number | string> = min => (val, form) => {
   };
 };
 
-export const max: ValidatorFn<number | string> = max => (val, form) => {
+export const max: ValidatorFn<string | number, string | number> = max => (val, form) => {
   const value = BN(val);
   const validatorValue = BN(getValidatorValue(max, form));
 

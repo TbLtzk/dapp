@@ -22,7 +22,7 @@ import { validatorsWidenedSelector } from 'store/validators/selectors';
 
 import { TABLE_TYPES } from 'constants/tableTypes';
 import { formatNumber } from 'utils/formatters';
-import { trimAddress } from 'utils/useful';
+import { trimAddress } from 'utils/strings';
 import { address, percent, required, url } from 'utils/validators';
 
 function DetailsStep () {

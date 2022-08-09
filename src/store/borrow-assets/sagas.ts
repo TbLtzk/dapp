@@ -1,6 +1,7 @@
 import { call, put, select, takeEvery } from 'typed-redux-saga';
 import { ApproveType, Asset, BorrowAction, BorrowActionDepositWithdraw } from 'typings/defi';
 import { TransactionReceipt } from 'web3-eth';
+import { fromWei, toWei } from 'web3-utils';
 
 import {
   setTransactionLoading,
@@ -28,7 +29,6 @@ import { convertToBigAmount, getDeFiContractByType, prepareVaultdata } from 'con
 import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { fromWei, toWei } from 'utils/balance';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 
 function* getBorrowVaultGenerator ({ vaultId }: { vaultId: number | string }) {
@@ -57,7 +57,7 @@ function* getBorrowAllowanceGenerator ({ borrowType, asset }: { borrowType: Appr
 
     if (borrowType === 'deposit') {
       const allowAmount = yield* call(() => allowance.call());
-      yield* put(getBorrowAllowanceDepositSuccess(fromWei(allowAmount)));
+      yield* put(getBorrowAllowanceDepositSuccess(fromWei(allowAmount as string)));
     } else {
       yield* put(getBorrowAllowanceRepaySuccess(fromWei(allowance)));
     }

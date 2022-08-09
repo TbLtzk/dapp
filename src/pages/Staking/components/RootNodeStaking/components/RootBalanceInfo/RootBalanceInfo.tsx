@@ -1,11 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
+import { fromWei } from 'web3-utils';
+
 import { isUserRootNode, rootMinimumTimeLock, rootNodeStake, withdrawals } from 'store/root-node/selectors';
 
-import { fromWei } from 'utils/balance';
 import { fromSolDateFormattingT1 } from 'utils/date';
-import { fN } from 'utils/useful';
+import { formatAsset } from 'utils/formatters';
 
 function RootBalanceInfo () {
   const { t } = useTranslation();
@@ -24,19 +25,19 @@ function RootBalanceInfo () {
 
       <div>
         <p className="text-md">{t('STAKE_IN_ROOT_NODE_RANKING')}</p>
-        <h4 className="text-xl">{fN(amountNodeStake)} Q</h4>
+        <h4 className="text-xl">{formatAsset(amountNodeStake, 'Q')}</h4>
       </div>
 
       {Number(rootTimeLockMinimumBalance) > 0 && (
         <div>
           <p className="text-md">{t('TIME_LOCKED_AMOUNT')}</p>
-          <h4 className="text-xl">{fN(rootTimeLockMinimumBalance)} Q</h4>
+          <h4 className="text-xl">{formatAsset(rootTimeLockMinimumBalance, 'Q')}</h4>
         </div>
       )}
 
       <div>
         <p className="text-md">{t('ANNOUNCED_FOR_WITHDRAWAL')}</p>
-        <h4 className="text-xl">{fN(fromWei(withdrawalsData?.amount))} Q</h4>
+        <h4 className="text-xl">{formatAsset(fromWei(withdrawalsData?.amount || '0'), 'Q')}</h4>
       </div>
 
       <div>

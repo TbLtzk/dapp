@@ -8,7 +8,7 @@ import Icon from 'ui/Icon';
 import { getOutstandingDelegationRewards, onClaimStakeDelegatorReward } from 'store/q-vault/action-creators';
 import { outstandingDelegationRewards } from 'store/q-vault/selectors';
 
-import { fN } from 'utils/useful';
+import { formatAsset } from 'utils/formatters';
 
 function DelegationRewards () {
   const { t } = useTranslation();
@@ -27,7 +27,7 @@ function DelegationRewards () {
     <div className="delegation-reward_container">
       <div>
         <p className="text-md">{t('OUTSTANDING_DELEGATION_REWARDS')}</p>
-        <h4 className="text-xl">{`${fN(outstandingDelegationRewardsValue)} Q`}</h4>
+        <h4 className="text-xl">{formatAsset(outstandingDelegationRewardsValue, 'Q')}</h4>
       </div>
       <Button onClick={handleClaim}>
         <Icon name="coins" />

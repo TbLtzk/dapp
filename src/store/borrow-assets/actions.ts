@@ -2,7 +2,7 @@ import { ApproveType, Asset, VaultData } from 'typings/defi';
 
 import * as types from './types';
 
-export const getBorrowVault = (vaultId: number | string): types.GetBorrowVault => ({
+export const getBorrowVault = (vaultId: number): types.GetBorrowVault => ({
   type: 'GET_BORROW_VAULT',
   vaultId,
 });
@@ -23,13 +23,13 @@ export const getBorrowAllowance = (borrowType: ApproveType, asset: Asset): types
   asset,
 });
 
-export const getBorrowAllowanceRepaySuccess = (allowance: string | number): types.GetBorrowAllowanceRepaySuccess => ({
+export const getBorrowAllowanceRepaySuccess = (allowance: string): types.GetBorrowAllowanceRepaySuccess => ({
   type: 'GET_BORROW_ALLOWANCE_REPAY_SUCCESS',
   allowance,
 });
 
 export const getBorrowAllowanceDepositSuccess = (
-  allowance: string | number
+  allowance: string
 ): types.GetBorrowAllowanceDepositSuccess => ({
   type: 'GET_BORROW_ALLOWANCE_DEPOSIT_SUCCESS',
   allowance,
@@ -48,8 +48,8 @@ export const setBorrowAprove = (borrowType: ApproveType, asset: Asset, label: st
 });
 
 export const setBorrowDeposit = (
-  amount: string | number,
-  vaultId: string | number,
+  amount: string,
+  vaultId: number,
   decimals: number,
   label: string
 ): types.SetBorrowDeposit => ({
@@ -61,8 +61,8 @@ export const setBorrowDeposit = (
 });
 
 export const setBorrowWithdraw = (
-  amount: string | number,
-  vaultId: string | number,
+  amount: string,
+  vaultId: number,
   decimals: number,
   label: string
 ): types.SetBorrowWithdraw => ({
@@ -74,8 +74,8 @@ export const setBorrowWithdraw = (
 });
 
 export const setBorrowAsBorrow = (
-  amount: string | number,
-  vaultId: string | number,
+  amount: string,
+  vaultId: number,
   label: string
 ): types.SetBorrowAsBorrow => ({
   type: 'SET_BORROW_AS_BORROW',
@@ -85,8 +85,8 @@ export const setBorrowAsBorrow = (
 });
 
 export const setBorrowRepay = (
-  amount: string | number,
-  vaultId: string | number,
+  amount: string,
+  vaultId: number,
   label: string
 ): types.SetBorrowRepay => ({
   type: 'SET_BORROW_REPAY',

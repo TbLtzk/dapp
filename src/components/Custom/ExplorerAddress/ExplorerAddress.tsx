@@ -5,7 +5,7 @@ import Address from '../Address';
 
 import { ExplorerLink } from './styles';
 
-import { trimAddress } from 'utils/useful';
+import { trimAddress } from 'utils/strings';
 
 function ExplorerAddress ({
   address,

@@ -1,10 +1,9 @@
 import { BaseVotingWeightInfo } from '@q-dev/q-js-sdk';
+import { orderBy } from 'lodash';
 import { ProposalEvent } from 'typings/contracts';
 import { ProposalType } from 'typings/proposals';
 
 import { ProposalsAction } from './types';
-
-import { groupArrayByBlockNumber } from 'utils/useful';
 
 interface ProposalItem {
   proposals: ProposalEvent[]
@@ -42,7 +41,7 @@ export default function proposals (
         proposalsMap: {
           ...state.proposalsMap,
           [action.proposalType]: {
-            proposals: groupArrayByBlockNumber(action.proposals) as ProposalEvent[],
+            proposals: orderBy(action.proposals, 'blockNumber', 'desc') as ProposalEvent[],
             isLoading: false,
             lastBlock: action.lastBlock
           }

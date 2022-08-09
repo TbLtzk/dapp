@@ -13,7 +13,7 @@ import { setSendCall } from 'store/q-vault/action-creators';
 import { qVaultMinimumTimeLock, userBalance } from 'store/q-vault/selectors';
 
 import formTypes from 'constants/form-types';
-import { subtractAmount } from 'utils/balance';
+import { BN } from 'utils/numbers';
 import { address, amount, required } from 'utils/validators';
 
 function SendForm () {
@@ -22,8 +22,7 @@ function SendForm () {
 
   const userQVaultBalance = useSelector(userBalance);
   const qVaultLockedAmount = useSelector(qVaultMinimumTimeLock);
-
-  const maxAmount = subtractAmount(userQVaultBalance, qVaultLockedAmount);
+  const maxAmount = BN(userQVaultBalance).minus(qVaultLockedAmount).toString();
 
   const form = useForm({
     initialValues: { address: '', amount: '' },

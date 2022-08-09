@@ -14,7 +14,7 @@ import { loadingValidatorsShortSelector, validatorsShortSelector } from 'store/v
 
 import { TABLE_TYPES } from 'constants/tableTypes';
 import { formatNumber } from 'utils/formatters';
-import { trimAddress } from 'utils/useful';
+import { trimAddress } from 'utils/strings';
 
 function ValidatorsBlock () {
   const { t } = useTranslation();

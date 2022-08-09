@@ -8,7 +8,7 @@ import useOnScreen from 'hooks/useOnScreen';
 
 import { PageLayoutContainer } from './styles';
 
-import { toTitleCase } from 'utils/useful';
+import { titleCase } from 'utils/strings';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   title: string,
@@ -31,9 +31,9 @@ function PageLayout ({
   useEffect(() => {
     const documentTitle = title === 'Dashboard'
       ? 'Your HQ'
-      : `${toTitleCase(title)} | Your HQ`;
+      : `${titleCase(title)} | Your HQ`;
     document.title = documentTitle;
-  }, [toTitleCase]);
+  }, [titleCase]);
 
   return (
     <PageLayoutContainer {...rest}>

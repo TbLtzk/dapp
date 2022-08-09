@@ -11,7 +11,7 @@ import Table from 'ui/Table';
 
 import { aliasEventsLoadingSelector, aliasEventsSelector } from 'store/account-aliases/selectors';
 
-import { trimAddress } from 'utils/useful';
+import { trimAddress } from 'utils/strings';
 
 function AliasEventsTable ({ address }: { address: string }) {
   const aliasEvents = useSelector(aliasEventsSelector);

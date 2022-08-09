@@ -14,7 +14,7 @@ import { AddressDropdown } from './styles';
 
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
-import { trimAddress } from 'utils/useful';
+import { trimAddress } from 'utils/strings';
 
 function UserAddress () {
   const { t } = useTranslation();

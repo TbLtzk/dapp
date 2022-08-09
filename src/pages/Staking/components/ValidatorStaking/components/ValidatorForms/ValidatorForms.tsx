@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { fromWei } from 'web3-utils';
+
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 
@@ -19,8 +21,7 @@ import {
 import { accountableTotalStake, validatorWithdrawalInfo } from 'store/validators/selectors';
 
 import formTypes from 'constants/form-types';
-import { fromWei } from 'utils/balance';
-import { BN } from 'utils/useful';
+import { BN } from 'utils/numbers';
 import { amount, required } from 'utils/validators';
 
 interface Props {

@@ -3,7 +3,7 @@ import { t } from 'i18next';
 import { SuccessMessage } from 'typings/transaction';
 import { TransactionReceipt } from 'web3-eth';
 
-export function captureError (error: unknown) {
+export function captureError (error: unknown): void {
   console.error(error);
 
   if (import.meta.env.NODE_ENV !== 'development') {
@@ -19,7 +19,7 @@ export function getSuccessMessage (type: string, transaction: TransactionReceipt
   };
 }
 
-export function getErrorMessage (err: unknown) {
+export function getErrorMessage (err: unknown): { message: string } {
   const error = err as {
     message: string;
     code?: number;

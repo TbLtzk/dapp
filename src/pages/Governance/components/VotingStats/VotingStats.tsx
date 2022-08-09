@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { fromWei } from 'web3-utils';
+
 import Button from 'ui/Button';
 
 import useVoteDelegation from 'hooks/useVoteDelegation';
@@ -16,9 +18,8 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 import { getBaseVotingWeightInfo } from 'store/voting/proposals/actions';
 import { baseVotingWeightInfoSelector } from 'store/voting/proposals/selectors';
 
-import { fromWei } from 'utils/balance';
 import { fromSolDateFormattingT1 } from 'utils/date';
-import { fN } from 'utils/useful';
+import { formatAsset } from 'utils/formatters';
 
 function VotingStats () {
   const { t } = useTranslation();
@@ -43,7 +44,7 @@ function VotingStats () {
   const statsList = [
     {
       title: t('TOTAL_VOTING_WEIGHT'),
-      value: ownWeight ? `${fN(fromWei(ownWeight))} Q` : '0 Q'
+      value: formatAsset(fromWei(ownWeight || '0'), 'Q'),
     },
     {
       title: t('VOTING_LOCKING_END'),

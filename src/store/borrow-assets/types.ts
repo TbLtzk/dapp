@@ -2,7 +2,7 @@ import { ApproveType, Asset, VaultData } from 'typings/defi';
 
 export interface GetBorrowVault {
   type: 'GET_BORROW_VAULT';
-  vaultId: number | string;
+  vaultId: number;
 }
 
 export interface GetBorrowVaultSuccess {
@@ -23,12 +23,12 @@ export interface GetBorrowAllowance {
 
 export interface GetBorrowAllowanceRepaySuccess {
   type: 'GET_BORROW_ALLOWANCE_REPAY_SUCCESS';
-  allowance: string | number;
+  allowance: string;
 }
 
 export interface GetBorrowAllowanceDepositSuccess {
   type: 'GET_BORROW_ALLOWANCE_DEPOSIT_SUCCESS';
-  allowance: string | number;
+  allowance: string;
 }
 
 export interface GetBorrowAllowanceError {
@@ -45,31 +45,31 @@ export interface SetBorrowApprove {
 
 export interface SetBorrowDeposit {
   type: 'SET_BORROW_DEPOSIT';
-  amount: string | number;
-  vaultId: string | number;
+  amount: string;
+  vaultId: number;
   decimals: number;
   label: string;
 }
 
 export interface SetBorrowWithdraw {
   type: 'SET_BORROW_WITHDRAW';
-  amount: string | number;
-  vaultId: string | number;
+  amount: string;
+  vaultId: number;
   decimals: number;
   label: string;
 }
 
 export interface SetBorrowAsBorrow {
   type: 'SET_BORROW_AS_BORROW';
-  amount: string | number;
-  vaultId: string | number;
+  amount: string;
+  vaultId: number;
   label: string;
 }
 
 export interface SetBorrowRepay {
   type: 'SET_BORROW_REPAY';
-  amount: string | number;
-  vaultId: string | number;
+  amount: string;
+  vaultId: number;
   label: string;
 }
 

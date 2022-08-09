@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { fromWei } from 'web3-utils';
+
 import CustomBlock from 'components/Base/CustomBlock';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 import Button from 'ui/Button';
@@ -14,8 +16,8 @@ import { getDelegationInfo, setNewVotingAgent } from 'store/q-vault/action-creat
 import { isPendingDelegation, receivedWeight, votingAgentPassOverTime } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
-import { fromWei } from 'utils/balance';
 import { getNowTimestamp, remainDate } from 'utils/convertDate';
+import { formatAsset } from 'utils/formatters';
 
 function DelegateVoting () {
   const { t } = useTranslation();
@@ -44,7 +46,7 @@ function DelegateVoting () {
         <InfoTooltip topic="delegate-voting-power" />
       </h1>
       <h5>{t('TOTAL_VOTING_WEIGHT')}</h5>
-      <p>{fromWei(weight)}</p>
+      <p>{formatAsset(fromWei(weight), 'Q')}</p>
       <h5>{t('CURRENT_AGENT')}</h5>
       <p>{delegateInfo}</p>
 
