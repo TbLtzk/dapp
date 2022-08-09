@@ -26,7 +26,6 @@ import {
 
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
-import { fixNumber } from 'utils/useful';
 
 async function allocateValue (contract, adddress) {
   return await contract.allocate({ from: adddress });
@@ -46,7 +45,7 @@ function* getDefaultAllocationProxyGenerator ({ isAllocate, label }) {
     }
     const value = yield contract.getBalance();
 
-    yield put(getDefaultAllocationProxySuccess(fixNumber(value)));
+    yield put(getDefaultAllocationProxySuccess(value));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
@@ -65,7 +64,7 @@ function* getRootNodeRewardProxyGenerator ({ isAllocate, label }) {
       yield put(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
     }
     const value = yield contract.getBalance();
-    yield put(getRootNodeRewardProxySuccess(fixNumber(value)));
+    yield put(getRootNodeRewardProxySuccess(value));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
@@ -86,7 +85,7 @@ function* getValidationRewardProxyGenerator ({ isAllocate, label }) {
 
     const value = yield contract.getBalance();
 
-    yield put(getValidationRewardProxyProxySuccess(fixNumber(value)));
+    yield put(getValidationRewardProxyProxySuccess(value));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));

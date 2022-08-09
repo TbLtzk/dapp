@@ -8,9 +8,9 @@ import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
 
 import { contractRegistryInstance } from 'contracts/contract-instance';
+import { fetchBlockNumber } from 'contracts/helpers/block-number';
 
 import { formatNumber } from 'utils/formatters';
-import { fetchBlockNumber } from 'utils/useful';
 
 function Blockchain () {
   const { t } = useTranslation();

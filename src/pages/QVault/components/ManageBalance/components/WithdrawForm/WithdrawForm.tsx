@@ -12,7 +12,7 @@ import { qVaultMinimumTimeLock, userBalance } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import formTypes from 'constants/form-types';
-import { subtractAmount } from 'utils/balance';
+import { BN } from 'utils/numbers';
 import { amount, required } from 'utils/validators';
 
 function WithdrawForm () {
@@ -22,7 +22,7 @@ function WithdrawForm () {
   const address = useSelector(userAddressMetamask);
   const userQVaultBalance = useSelector(userBalance);
   const qVaultLockedAmount = useSelector(qVaultMinimumTimeLock);
-  const maxAmount = subtractAmount(userQVaultBalance, qVaultLockedAmount);
+  const maxAmount = BN(userQVaultBalance).minus(qVaultLockedAmount).toString();
 
   const form = useForm({
     initialValues: { amount: '' },

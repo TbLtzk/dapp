@@ -2,7 +2,7 @@ import { TFunction } from 'react-i18next';
 
 import { CSSProperties } from 'styled-components';
 
-import { toNumber } from 'utils/useful';
+import { parseNumber } from 'utils/numbers';
 
 type GetColumnFn = (t: TFunction) => {
   headerStyle: () => CSSProperties,
@@ -25,14 +25,14 @@ export const getColumnsRootNode: GetColumnFn = (t) => [
     dataField: 'amount',
     text: t('STAKED_AMOUNT'),
     sort: true,
-    sortFunc: (a, b, order) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
+    sortFunc: (a, b, order) => (order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b)),
   },
   {
     headerStyle: () => ({ minWidth: '90px', cursor: 'pointer' }),
     dataField: 'share',
     text: t('SHARE'),
     sort: true,
-    sortFunc: (a, b, order) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
+    sortFunc: (a, b, order) => (order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b)),
   },
 ];
 
@@ -48,7 +48,7 @@ export const getColumnsRootNodeMonitoring: GetColumnFn = (t) => [
     dataField: 'amount',
     text: t('STAKED_AMOUNT'),
     sort: true,
-    sortFunc: (a, b, order) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
+    sortFunc: (a, b, order) => (order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b)),
   },
   {
     headerStyle: () => ({ minWidth: '190px' }),

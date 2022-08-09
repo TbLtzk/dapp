@@ -1,4 +1,5 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { fromWei } from 'web3-utils';
 
 import {
   getVRPBalance,
@@ -24,10 +25,8 @@ import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
 
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { fromWei } from 'utils/balance';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
-import { transformToPercentage } from 'utils/formatters';
-import { getPercentageFormat } from 'utils/useful';
+import { getFixedPercentage, transformToPercentage } from 'utils/numbers';
 
 const message = { header: 'Notice', details: 'Stake amount below minimum to apply new rate, old rate applied.' };
 
@@ -67,7 +66,7 @@ function* setDelegatorsShareGenerator ({ amount, label }) {
     const { userAddress } = yield select((state) => state.userInf);
 
     const contract = yield call(getValidationRewardPoolsInstance);
-    const transaction = yield contract.setDelegatorsShare(getPercentageFormat(amount));
+    const transaction = yield contract.setDelegatorsShare(getFixedPercentage(amount));
     yield put(getVRPDelegatorsShare(userAddress));
 
     yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.validatorsPool, transaction, label)));

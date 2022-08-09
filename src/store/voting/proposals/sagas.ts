@@ -26,6 +26,7 @@ import {
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import { getConstitutionVotingInstance, getInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance';
+import { getMinimalActiveBlockHeight } from 'contracts/helpers/block-number';
 import { createProposal, getProposalEvents } from 'contracts/helpers/voting';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
@@ -33,7 +34,6 @@ import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { getNowTimestamp } from 'utils/convertDate';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
-import { getMinimalActiveBlockHeight } from 'utils/useful';
 
 function getProposalTypeFromFormType (type: CreateProposalForm['type']): FormProposalType {
   switch (type) {

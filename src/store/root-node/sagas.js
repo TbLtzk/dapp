@@ -1,4 +1,5 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { fromWei } from 'web3-utils';
 
 import {
   getMinimumRootTimeLock,
@@ -26,10 +27,8 @@ import { prepareRootMembersTable } from 'contracts/helpers/root-node-helper';
 
 import formTypes from 'constants/form-types';
 import { TABLE_TYPES } from 'constants/tableTypes';
-import { fromWei } from 'utils/balance';
 import { getNowTimestamp } from 'utils/convertDate';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
-import { addIndex } from 'utils/useful';
 
 function* setRootStakeToPanelGenerator ({ data, label }) {
   try {
@@ -167,7 +166,7 @@ function* getRootTimeLocksGenerator ({ address }) {
   try {
     const contract = yield call(getRootNodesInstance);
     const data = yield contract.getTimeLocks(address);
-    yield put(setRootTimeLocks(addIndex(data)));
+    yield put(setRootTimeLocks(data));
   } catch (error) {
     captureError(error);
   }

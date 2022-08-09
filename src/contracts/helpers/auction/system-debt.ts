@@ -5,12 +5,12 @@ import {
   SystemDebtAndSurplusInfo,
   SystemDebtCompletedInfo,
 } from 'typings/auctions';
+import { fromWei, toWei } from 'web3-utils';
 
 import { AUCTIONS_TYPES, ERROR_TYPES, getAllowance, getAuctionsEvents, getAuctionStatusState, getStatusTransformation } from '.';
 
 import { getSystemDebtAuctionInstance } from 'contracts/contract-instance';
 
-import { fromWei, toWei } from 'utils/balance';
 import { dateToTimestamp, getNowTimestamp } from 'utils/convertDate';
 
 function prepareSystemDebtAuctionInfo (
@@ -29,7 +29,7 @@ function prepareSystemDebtAuctionInfo (
   completedInfo.bid = info.highestBid;
   completedInfo.bidder = info.bidder;
   completedInfo.endTime = dateToTimestamp(info.endTime);
-  completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0;
+  completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : '0';
   completedInfo.status = (status);
   completedInfo.state = getAuctionStatusState(status as keyof typeof AuctionStatus);
   completedInfo.highestBid = fromWei(info.highestBid);
@@ -92,7 +92,7 @@ export async function createSystemDebtAuction (form: CreateAuction, userAddress:
 export async function bidForSystemDebtAuction (form: AuctionBid, userAddress: string) {
   const instance = await getSystemDebtAuctionInstance();
   await getAllowance(userAddress, instance.address, form.bid);
-  const result = await instance.bid(toWei(form.bid), { from: userAddress });
+  const result = await instance.bid(toWei(String(form.bid)), { from: userAddress });
   return result;
 }
 

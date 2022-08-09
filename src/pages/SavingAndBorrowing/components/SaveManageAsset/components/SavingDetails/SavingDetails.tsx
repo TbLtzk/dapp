@@ -5,7 +5,7 @@ import { SavingDetailsContainer } from './styles';
 
 import { savingAviableToDepositSelector, savingBalanceDetailsSelector } from 'store/saving-assets/selectors';
 
-import { fN } from 'utils/useful';
+import { formatNumber, formatPercent } from 'utils/formatters';
 
 interface Props {
   depositAsset: string;
@@ -29,11 +29,11 @@ function SavingDetails ({ depositAsset, interestAsset }: Props) {
         },
         {
           name: t('SAVING_BALANCE'),
-          value: fN(currentBalance)
+          value: formatNumber(currentBalance)
         },
         {
           name: t('AVAILABLE_TO_DEPOSIT'),
-          value: fN(availableToDeposit)
+          value: formatNumber(availableToDeposit)
         }
       ]
     },
@@ -46,11 +46,11 @@ function SavingDetails ({ depositAsset, interestAsset }: Props) {
         },
         {
           name: t('YEARLY_EXPECTED_REWARD'),
-          value: fN(estimatedInterest)
+          value: formatNumber(estimatedInterest)
         },
         {
           name: t('SAVING_REWARD'),
-          value: `${fN(interestRate)}%`
+          value: formatPercent(interestRate)
         }
       ]
     },

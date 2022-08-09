@@ -4,16 +4,15 @@ import { flatten } from 'lodash';
 import { ProposalContractType, ProposalEvent } from 'typings/contracts';
 import { SlashingProposalForm } from 'typings/forms';
 import { Proposal, SlashingProposal } from 'typings/proposals';
+import { fromWei } from 'web3-utils';
 
 import { getContractProposals } from '.';
 
 import { getRootNodeSlashingEscrowInstance, getRootNodesSlashingVotingInstance, getValidatorSlashingEscrowInstance, getValidatorsSlashingVotingInstance } from 'contracts/contract-instance';
 
 import { ObjectionStatus } from 'constants/slashing';
-import { fromWei } from 'utils/balance';
 import { unixToDate } from 'utils/date';
-import { transformToPercentage } from 'utils/formatters';
-import { getPercentageFormat } from 'utils/useful';
+import { getFixedPercentage, transformToPercentage } from 'utils/numbers';
 
 export async function getSlashingProposals (
   proposals: ProposalEvent[],
@@ -45,7 +44,7 @@ export async function createRootNodeSlashingProposal (
   return contract.createProposal(
     form.externalLink,
     form.address,
-    getPercentageFormat(form.percent),
+    getFixedPercentage(form.percent),
     { from: address }
   );
 }
@@ -58,7 +57,7 @@ export async function createValidatorSlashingProposal (
   return contract.createProposal(
     form.externalLink,
     form.address,
-    getPercentageFormat(form.percent),
+    getFixedPercentage(form.percent),
     { from: address }
   );
 }
@@ -107,7 +106,7 @@ export async function getSlashingEscrow (
       appealEndTime: unixToDate(escrowArbitrationInfo.params.appealEndTime),
       objectionEndTime: unixToDate(escrowArbitrationInfo.params.objectionEndTime),
       status: status as ObjectionStatus,
-      slashedAmount: fromWei(escrowArbitrationInfo.params.slashedAmount),
+      slashedAmount: fromWei(escrowArbitrationInfo.params.slashedAmount.toString()),
       executed: escrowArbitrationInfo.executed,
       remark: escrowArbitrationInfo.remark,
       proposerRemark: escrowArbitrationInfo.proposerRemark,

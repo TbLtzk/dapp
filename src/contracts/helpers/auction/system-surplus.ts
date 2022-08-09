@@ -7,12 +7,12 @@ import {
   SystemDebtAndSurplusInfo,
   SystemSurplusCompletedInfo,
 } from 'typings/auctions';
+import { fromWei } from 'web3-utils';
 
 import { AUCTIONS_TYPES, ERROR_TYPES, getAuctionsEvents, getAuctionStatusState, getStatusTransformation } from '.';
 
 import { getSystemSurplusAuctionInstance } from 'contracts/contract-instance';
 
-import { fromWei } from 'utils/balance';
 import { dateToTimestamp, getNowTimestamp } from 'utils/convertDate';
 
 export function prepareAuctionData (

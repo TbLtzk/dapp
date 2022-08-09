@@ -4,9 +4,9 @@ const initialState = {
   lastUpdate: 0,
   isLoading: false,
   error: '',
-  userBalance: 0,
-  accountBalance: 0,
-  votingWeight: 0,
+  userBalance: '0',
+  accountBalance: '0',
+  votingWeight: '0',
   votingLockingEnd: 0,
   deposit: 0,
   lastClaim: 0,
@@ -14,7 +14,7 @@ const initialState = {
   delegationList: [],
   loadingDelegationList: false,
   errorDelegationList: null,
-  receivedWeight: 0,
+  receivedWeight: '0',
   votingAgent: null,
   isPendingDelegation: false,
   votingAgentPassOverTime: 0,
@@ -22,7 +22,7 @@ const initialState = {
   qvBalance: {},
   outstandingDelegationRewards: 0,
 
-  qVaultMinimumTimeLock: 0,
+  qVaultMinimumTimeLock: '0',
   qVaultTimeLocks: []
 };
 

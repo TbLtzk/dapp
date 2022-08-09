@@ -1,4 +1,5 @@
 import { all, call, put, select, takeEvery } from 'redux-saga/effects';
+import { fromWei, toWei } from 'web3-utils';
 
 import {
   getAccountableTotalStake,
@@ -42,10 +43,8 @@ import { networkConfigsMap } from 'constants/config';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { TABLE_TYPES } from 'constants/tableTypes';
-import { fromWei, toWei } from 'utils/balance';
 import { getNowTimestamp } from 'utils/convertDate';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
-import { addIndex } from 'utils/useful';
 
 function* getValidatorsWithdrawalInfoGenerator ({ address }) {
   try {
@@ -202,7 +201,7 @@ function* getValidatorsTimeLocksGenerator ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance);
     const data = yield contract.getTimeLocks(address);
-    yield put(setValidatorsTimeLocks(addIndex(data)));
+    yield put(setValidatorsTimeLocks(data));
   } catch (error) {
     captureError(error);
   }

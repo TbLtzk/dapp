@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { toNumber } from 'utils/useful';
+import { parseNumber } from 'utils/numbers';
 
 export const getColumnsValidatorsWidened = (t: typeof useTranslation) => [
   {
@@ -20,21 +20,21 @@ export const getColumnsValidatorsWidened = (t: typeof useTranslation) => [
     dataField: 'amount',
     text: t('TOTAL_ACCOUNTABLE_STAKE'),
     sort: true,
-    sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
+    sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b)),
   },
   {
     headerStyle: () => ({ minWidth: '110px', cursor: 'pointer' }),
     dataField: 'selfStake',
     text: t('SELF_STAKE'),
     sort: true,
-    sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
+    sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b)),
   },
   {
     headerStyle: () => ({ minWidth: '175px', cursor: 'pointer' }),
     dataField: 'delegatedStake',
     text: t('DELEGATED_STAKE'),
     sort: true,
-    sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
+    sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b)),
   },
   {
     headerStyle: () => ({ minWidth: '215px', cursor: 'pointer' }),
@@ -43,8 +43,8 @@ export const getColumnsValidatorsWidened = (t: typeof useTranslation) => [
     sort: true,
     sortFunc: (a:any, b:any, order:string) =>
       order === 'desc'
-        ? toNumber(b.props.value) - toNumber(a.props.value)
-        : toNumber(a.props.value) - toNumber(b.props.value),
+        ? parseNumber(b.props.value) - parseNumber(a.props.value)
+        : parseNumber(a.props.value) - parseNumber(b.props.value),
   },
 ];
 
@@ -66,14 +66,14 @@ export const getColumnsValidatorsMonitoring = (t: typeof useTranslation) => [
     dataField: 'amount',
     text: t('TOTAL_ACCOUNTABLE_STAKE'),
     sort: true,
-    sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
+    sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b)),
   },
   {
     headerStyle: () => ({ minWidth: '200px', cursor: 'pointer' }),
     dataField: 'lastBlock',
     text: t('LAST_BLOCK_VALIDATED'),
     sort: true,
-    sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
+    sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b)),
   },
 
   {
@@ -87,6 +87,6 @@ export const getColumnsValidatorsMonitoring = (t: typeof useTranslation) => [
     dataField: 'average',
     text: t('AVERAGE_AVAILABILITY_LAST_1000_BLOCKS_CYCLES'),
     sort: true,
-    sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? toNumber(b) - toNumber(a) : toNumber(a) - toNumber(b)),
+    sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b)),
   },
 ];

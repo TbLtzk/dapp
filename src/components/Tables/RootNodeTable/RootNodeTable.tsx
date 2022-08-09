@@ -20,7 +20,7 @@ import {
 } from 'store/root-node/selectors';
 
 import { TABLE_TYPES } from 'constants/tableTypes';
-import { fN } from 'utils/useful';
+import { formatAsset, formatPercent } from 'utils/formatters';
 
 interface Props {
   tableType: TableType
@@ -74,7 +74,7 @@ function RootNodeTable ({ tableType }: Props) {
             semibold
             address={rootNode.address}
           />,
-          amount: fN(rootNode.stakeAmount) + ' Q',
+          amount: formatAsset(rootNode.stakeAmount, 'Q'),
           offChain: 'n/a',
           onChain: 'n/a',
         }));
@@ -89,8 +89,8 @@ function RootNodeTable ({ tableType }: Props) {
               address={rootNode.address}
             />
           ),
-          amount: fN(rootNode.stakeAmount) + ' Q',
-          share: rootNode.share + ' %',
+          amount: formatAsset(rootNode.stakeAmount, 'Q'),
+          share: formatPercent(rootNode.share),
         }));
     }
   }, [tableType, table]);
@@ -115,7 +115,7 @@ function RootNodeTable ({ tableType }: Props) {
           </h2>
           {isTotalStakeShown && (
             <p style={{ margin: 0 }}>
-              <strong>{t('TOTAL_STAKE')}</strong> {rootMemebersTotalStake} Q
+              <strong>{t('TOTAL_STAKE')}</strong> {formatAsset(rootMemebersTotalStake, 'Q')}
             </p>
           )}
         </div>

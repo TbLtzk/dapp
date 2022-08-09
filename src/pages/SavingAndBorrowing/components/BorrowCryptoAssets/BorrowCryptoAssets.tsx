@@ -19,7 +19,7 @@ import {
 
 import { addBorrowTokenToWallet } from 'contracts/helpers/borrowing-core';
 
-import { fN } from 'utils/useful';
+import { formatPercent } from 'utils/formatters';
 
 function BorrowCryptoAssets () {
   const { t } = useTranslation();
@@ -88,7 +88,7 @@ function BorrowCryptoAssets () {
             </div>
           ),
           asset: 'QUSD',
-          interestAsset: fN(vault.borrowingFee) + '%',
+          interestAsset: formatPercent(vault.borrowingFee),
           button: vault.isLiquidated ? t('VAULT_IS_LIQUIDATED') : <BorrowManageAsset vault={vault} />,
         }))}
       />

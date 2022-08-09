@@ -2,14 +2,15 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { fromWei } from 'web3-utils';
+
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Table from 'ui/Table';
 
 import { getDelegationsList } from 'store/q-vault/action-creators';
 import { delegationList, loadingDelegationList } from 'store/q-vault/selectors';
 
-import { fromWei } from 'utils/balance';
-import { fN } from 'utils/useful';
+import { formatAsset } from 'utils/formatters';
 
 interface TableType {
   id: number;
@@ -57,8 +58,8 @@ function DelegatedValidatorsTable () {
       table={delegations.map((member: TableType, idx: number) => ({
         id: idx,
         address: <ExplorerAddress iconed address={member.validator} />,
-        amount: fN(fromWei(member.actualStake)) + ' Q',
-        reward: fN(fromWei(member.claimableReward)) + ' Q',
+        amount: formatAsset(fromWei(member.actualStake), 'Q'),
+        reward: formatAsset(fromWei(member.claimableReward), 'Q'),
       }))}
     />
   );

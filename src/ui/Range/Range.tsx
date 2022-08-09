@@ -7,7 +7,7 @@ import Input from 'ui/Input';
 import { RangeContainer } from './styles';
 
 import { formatNumber, formatPercent } from 'utils/formatters';
-import { BN } from 'utils/useful';
+import { BN } from 'utils/numbers';
 
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   value: string

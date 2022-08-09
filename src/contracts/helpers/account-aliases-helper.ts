@@ -1,10 +1,11 @@
 import { AliasPurpose } from '@q-dev/q-js-sdk';
 import { orderBy } from 'lodash';
 
+import { fetchBlockNumber } from './block-number';
+
 import { getAccountAliasesInstance } from 'contracts/contract-instance';
 
 import { chainIdToNetworkMap, networkConfigsMap, ORIGIN_NETWORK_NAME } from 'constants/config';
-import { fetchBlockNumber } from 'utils/useful';
 
 export async function getAliasEvents () {
   const contract = await getAccountAliasesInstance();

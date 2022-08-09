@@ -1,9 +1,9 @@
 import { StakeDelegationInfo } from '@q-dev/q-js-sdk';
+import { fromWei, toWei } from 'web3-utils';
 
 import { contractRegistryInstance, getQVaultInstance } from 'contracts/contract-instance';
 
-import { fromWei, toWei } from 'utils/balance';
-import { BN } from 'utils/useful';
+import { BN } from 'utils/numbers';
 
 export async function getQHolderRewardPool () {
   const address = await contractRegistryInstance?.instance.methods.getAddress('tokeneconomics.qHolderRewardPool').call();
@@ -27,6 +27,6 @@ export async function getQVaultDepositAmount (address: string) {
   const fee = await contract.instance.methods.deposit().estimateGas({ value: amount, from: address });
   const gas = window.web3.utils.fromWei(String(fee * 50), 'gwei');
 
-  const result = BN(amount).minus(toWei(gas)).toString();
+  const result = BN(amount).minus(toWei(gas)).toString(10);
   return fromWei(result);
 }

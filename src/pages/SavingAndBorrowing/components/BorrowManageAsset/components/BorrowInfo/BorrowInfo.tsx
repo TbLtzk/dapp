@@ -5,11 +5,10 @@ import { BorrowInfoContainer } from './styles';
 
 import { borrowVaultSelector } from 'store/borrow-assets/selectors';
 
-import { fN } from 'utils/useful';
+import { formatNumber, formatPercent } from 'utils/formatters';
 
 function BorrowInfo () {
   const { t } = useTranslation();
-
   const { collateralDetails, borrowingDetails } = useSelector(borrowVaultSelector);
 
   const infoGroups = [
@@ -22,23 +21,23 @@ function BorrowInfo () {
         },
         {
           name: t('ASSET_PRICE'),
-          value: fN(collateralDetails?.assetPrice) || 0,
+          value: formatNumber(collateralDetails?.assetPrice || 0),
         },
         {
           name: t('AVAILABLE_TO_WITHDRAW'),
-          value: fN(collateralDetails?.availableWithdraw) || 0,
+          value: formatNumber(collateralDetails?.availableWithdraw || 0),
         },
         {
           name: t('LOCKED_COLLATERAL'),
-          value: fN(collateralDetails?.lockedCollateral) || 0,
+          value: formatNumber(collateralDetails?.lockedCollateral || 0),
         },
         {
           name: t('AVAILABLE_TO_DEPOSIT'),
-          value: fN(collateralDetails?.availableDeposit) || 0,
+          value: formatNumber(collateralDetails?.availableDeposit || 0),
         },
         {
           name: t('LIQUIDATION_PRICE'),
-          value: fN(collateralDetails?.liquidationPrice) || 0,
+          value: formatNumber(collateralDetails?.liquidationPrice || 0),
         },
       ]
     },
@@ -51,31 +50,31 @@ function BorrowInfo () {
         },
         {
           name: t('BORROWING_LIMIT'),
-          value: fN(borrowingDetails?.borrowingLimit) || 0,
+          value: formatNumber(borrowingDetails?.borrowingLimit || 0),
         },
         {
           name: t('AVAILABLE_TO_REPAY'),
-          value: fN(borrowingDetails?.availableRepay) || 0,
+          value: formatNumber(borrowingDetails?.availableRepay || 0),
         },
         {
           name: t('COLLATERAL_VALUE'),
-          value: fN(borrowingDetails?.collateralValue) || 0,
+          value: formatNumber(borrowingDetails?.collateralValue || 0),
         },
         {
           name: t('AVAILABLE_TO_BORROW'),
-          value: fN(borrowingDetails?.availableBorrow) || 0,
+          value: formatNumber(borrowingDetails?.availableBorrow || 0),
         },
         {
           name: t('OUTSTANDING_DEBT'),
-          value: fN(borrowingDetails?.outstandingDebt) || 0,
+          value: formatNumber(borrowingDetails?.outstandingDebt || 0),
         },
         {
           name: t('LIQUIDATION_LIMIT'),
-          value: fN(borrowingDetails?.liquidationLimit) || 0,
+          value: formatNumber(borrowingDetails?.liquidationLimit || 0),
         },
         {
           name: t('BORROWING_FEE'),
-          value: `${fN(borrowingDetails?.borrowingFee) || 0}%`,
+          value: formatPercent(borrowingDetails?.borrowingFee || 0),
         },
       ]
     }

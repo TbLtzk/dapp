@@ -32,7 +32,7 @@ import {
 import { getEPDRUint } from 'contracts/helpers/epdr-param-helper';
 
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { fN } from 'utils/useful';
+import { formatAsset } from 'utils/formatters';
 
 function AuctionStats () {
   const dispatch = useDispatch();
@@ -85,49 +85,49 @@ function AuctionStats () {
   const auctionStats1 = [
     {
       title: t('AVAILABLE_Q_BALANCE'),
-      value: fN(userWalletBalance) + ' Q',
+      value: formatAsset(userWalletBalance, 'Q'),
     },
     {
       title: t('Q_BALANCE_IN_Q_VAULT'),
-      value: fN(userQVaultBalance) + ' Q',
+      value: formatAsset(userQVaultBalance, 'Q'),
     },
     {
       title: t('QUSD_BALANCE'),
-      value: fN(savingAviableToDeposit) + ' QUSD',
+      value: formatAsset(savingAviableToDeposit, 'QUSD'),
     },
   ];
 
   const auctionStats2 = [
     {
       title: t('COLLECTED_SURPLUS'),
-      value: fN(systemBalanceSurplus) + ' QUSD',
+      value: formatAsset(systemBalanceSurplus, 'QUSD'),
     },
     {
       title: t('OPEN_DEBT'),
-      value: fN(systemBalanceDebt) + ' QUSD',
+      value: formatAsset(systemBalanceDebt, 'QUSD'),
     },
     {
       title: t('SYSTEM_BALANCE'),
-      value: fN(systemBalance) + ' QUSD',
+      value: formatAsset(systemBalance, 'QUSD'),
     },
     {
       title: t('SURPLUS_AUCTION_LOT'),
-      value: fN(surplusLot) + ' QUSD',
+      value: formatAsset(surplusLot, 'QUSD'),
     },
   ];
 
   const auctionStats3 = [
     {
       title: t('RESERVE_BALANCE'),
-      value: fN(systemReserveBalance) + ' Q',
+      value: formatAsset(systemReserveBalance, 'Q'),
     },
     {
       title: t('IMMEDIATELY_AVAILABLE'),
-      value: fN(systemReserveAvailableAmount) + ' Q',
+      value: formatAsset(systemReserveAvailableAmount, 'Q'),
     },
     {
       title: t('DEBT_AUCTION_LOT'),
-      value: fN(reserveLot) + ' Q',
+      value: formatAsset(reserveLot, 'Q'),
     },
   ];
 

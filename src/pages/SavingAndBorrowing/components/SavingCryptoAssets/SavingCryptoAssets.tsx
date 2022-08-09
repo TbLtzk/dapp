@@ -17,7 +17,7 @@ import {
 
 import { addQUSDTokenToWallet } from 'contracts/helpers/saving-assets-helper';
 
-import { fN } from 'utils/useful';
+import { formatPercent } from 'utils/formatters';
 
 function SavingCryptoAssets () {
   const { t } = useTranslation();
@@ -81,7 +81,7 @@ function SavingCryptoAssets () {
             </Tooltip>
           </div>,
           interestAsset: value.interestAsset,
-          rate: fN(value.rate) + ' %',
+          rate: formatPercent(value.rate),
           button: <SaveManageAsset depositAsset={value.depositAsset} interestAsset={value.interestAsset} />,
         }))}
       />

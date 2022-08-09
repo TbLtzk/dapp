@@ -15,7 +15,7 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import formTypes from 'constants/form-types';
 import { formatNumber } from 'utils/formatters';
-import { BN } from 'utils/useful';
+import { BN } from 'utils/numbers';
 import { max, required } from 'utils/validators';
 
 function LockForm () {

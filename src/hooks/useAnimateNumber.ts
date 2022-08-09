@@ -2,11 +2,11 @@ import { useEffect, useRef } from 'react';
 
 import { animate } from 'framer-motion';
 
-import { fN } from 'utils/useful';
+import { formatNumber } from 'utils/formatters';
 
-const useAnimateNumber = (to: any, text = ' Q', formatter = fN) => {
+const useAnimateNumber = (to: any, text = ' Q', formatter = formatNumber) => {
   const animateRef = useRef<HTMLDivElement>(null);
-  const lastNumber = useRef<HTMLDivElement>();
+  const lastNumber = useRef<number>(0);
 
   useEffect(() => {
     if (animateRef.current && !isNaN(to)) {
@@ -14,11 +14,11 @@ const useAnimateNumber = (to: any, text = ' Q', formatter = fN) => {
       const controls = animate(lastNumber.current || 0, Number(to), {
         duration: 2,
         onUpdate (value) {
-          node.textContent = formatter(value) + text;
+          node.textContent = formatter(value as number) + text;
         },
       });
 
-      lastNumber.current = to;
+      lastNumber.current = Number(to);
       return () => controls.stop();
     }
   }, [animateRef, lastNumber, to]);

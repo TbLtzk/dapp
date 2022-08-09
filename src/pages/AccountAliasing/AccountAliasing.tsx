@@ -18,7 +18,7 @@ import { getAliases, getAliasEvents } from 'store/account-aliases/action-creator
 import { successMessageSelector } from 'store/transaction-handler/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
-import { trimAddress } from 'utils/useful';
+import { trimAddress } from 'utils/strings';
 
 function AccountAliasing () {
   const { t } = useTranslation();

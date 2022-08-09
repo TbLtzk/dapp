@@ -8,7 +8,7 @@ import DonutChart from 'ui/DonutChart';
 import { DonutOption } from 'ui/DonutChart/types';
 
 import { formatNumber } from 'utils/formatters';
-import { trimAddress } from 'utils/useful';
+import { trimAddress } from 'utils/strings';
 
 function DonutCharts () {
   const [options, setOptions] = useState<DonutOption[]>([

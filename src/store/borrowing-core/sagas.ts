@@ -1,6 +1,8 @@
 import { Vault } from '@q-dev/q-js-sdk';
+import { sumBy } from 'lodash';
 import { all, call, put, select, takeEvery } from 'typed-redux-saga';
 import { Asset, BorrowAssetsRateAndFee, VaultWithFee } from 'typings/defi';
+import { fromWei } from 'web3-utils';
 
 import {
   getBorrowingVaults,
@@ -30,9 +32,9 @@ import { getBorrowAssetRateAndFee, getVaultWithFee } from 'contracts/helpers/bor
 
 import { BorrowAssets } from 'constants/defi';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { fromWei } from 'utils/balance';
+import { fillArray } from 'utils/arrays';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
-import { fillArray, uintPerSecondToPerYearNumber } from 'utils/useful';
+import { calculateInterestRate } from 'utils/numbers';
 
 function* setCreateVaultGenerator ({ asset, label }: { asset: Asset, label:string }) {
   try {
@@ -72,10 +74,10 @@ function* getOutstandingDebtGenerator () {
     const userVaultsCount = yield* call(() => contract.userVaultsCount(userAddress));
 
     const fullDebts = yield* all(
-      fillArray(userVaultsCount).map((vaultNum) => contract.getFullDebt(userAddress, vaultNum))
+      fillArray(Number(userVaultsCount)).map((vaultNum) => contract.getFullDebt(userAddress, vaultNum))
     );
 
-    const outstandingDebt = fullDebts.reduce((sum, curr) => (sum as number) + Number(fromWei(curr)), 0) as number;
+    const outstandingDebt = sumBy(fullDebts, item => Number(fromWei(item as string)));
 
     yield* put(getOutstandingDebtSuccess(outstandingDebt));
   } catch (error) {
@@ -107,7 +109,7 @@ function* getSavingAssetsGenerator () {
     const contract = yield* call(getSavingInstance);
     const balanceDetails = yield* call(() => contract.getBalanceDetails(userAddress));
 
-    const interestRate = uintPerSecondToPerYearNumber(balanceDetails.interestRate) || 0;
+    const interestRate = calculateInterestRate(Number(balanceDetails.interestRate));
     yield* put(
       getSavingAssetsSuccess([
         {
@@ -127,7 +129,7 @@ function* getSavingRateGenerator () {
   try {
     const contract = yield* call(getEpdrParametersInstance);
     const savingRate = yield* call(() => contract.getUint('governed.EPDR.QUSD_savingRate'));
-    const rate = uintPerSecondToPerYearNumber(savingRate) || 0;
+    const rate = calculateInterestRate(Number(savingRate));
     yield* put(getSavingRateSuccess(rate));
   } catch (error) {
     yield* put(getSavingRateError(error));

@@ -39,10 +39,10 @@ import {
   executeSystemSurplusAuction,
   getSystemSurplus,
 } from 'contracts/helpers/auction/system-surplus';
+import { getMinimalActiveBlockHeight } from 'contracts/helpers/block-number';
 
 import formTypes from 'constants/form-types';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
-import { getMinimalActiveBlockHeight } from 'utils/useful';
 
 function* getAuctionsGenerator ({ auctionType }: types.GetAuctions) {
   try {

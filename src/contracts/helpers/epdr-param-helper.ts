@@ -1,6 +1,6 @@
-import { getEpdrParametersInstance } from 'contracts/contract-instance';
+import { fromWei } from 'web3-utils';
 
-import { fromWei } from 'utils/balance';
+import { getEpdrParametersInstance } from 'contracts/contract-instance';
 
 export async function getEPDRUint (key: string) {
   try {

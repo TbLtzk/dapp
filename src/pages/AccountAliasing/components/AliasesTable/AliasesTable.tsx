@@ -12,7 +12,7 @@ import Tooltip from 'ui/Tooltip';
 import { aliasesLoadingSelector, aliasesSelector } from 'store/account-aliases/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
-import { trimAddress } from 'utils/useful';
+import { trimAddress } from 'utils/strings';
 
 interface Props {
   address: string;

@@ -8,8 +8,9 @@ import InfoTooltip from 'components/Tooltips/InfoTooltip';
 import { rootMembersMonitoringSelector } from 'store/root-node/selectors';
 import { inactiveValidatorsSelector, validatorsMonitoringSelector } from 'store/validators/selectors';
 
+import { fetchBlockNumber } from 'contracts/helpers/block-number';
+
 import { getNowTimeWithGMT } from 'utils/convertDate';
-import { fetchBlockNumber } from 'utils/useful';
 
 function CurrentInfo () {
   const { t } = useTranslation();

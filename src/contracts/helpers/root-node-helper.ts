@@ -1,6 +1,5 @@
 import { orderBy, round, sumBy } from 'lodash';
-
-import { fromWei } from 'utils/balance';
+import { fromWei } from 'web3-utils';
 
 export const prepareRootMembersTable = (
   members: string[],
@@ -8,7 +7,7 @@ export const prepareRootMembersTable = (
 ) => {
   const membersWithAmount = members.map((address) => {
     const memberWithStake = membersWithStakes.find(({ root }) => root === address);
-    const stakeAmount = Number(fromWei(memberWithStake?.value) || 0);
+    const stakeAmount = Number(fromWei(memberWithStake?.value || '0'));
     return { address, stakeAmount };
   });
 

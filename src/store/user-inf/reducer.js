@@ -24,11 +24,6 @@ export default function userAuth (state = initialState, action) {
         ...state,
         network: action.network
       };
-    case actionTypes.SET_USER_BALANCE:
-      return {
-        ...state,
-        balance: action.balance
-      };
     default:
       return state;
   }

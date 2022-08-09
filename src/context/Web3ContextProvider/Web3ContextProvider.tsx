@@ -26,7 +26,6 @@ import {
 } from 'constants/config';
 import { LOAD_TYPES } from 'constants/statuses';
 import { captureError } from 'utils/errors';
-import { reloadPage } from 'utils/useful';
 
 const { ethereum } = window;
 
@@ -97,7 +96,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       captureError(error);
     } finally {
       setLoading(false);
-      reloadPage(0);
+      window.location.reload();
     }
   }, [connector]);
 
@@ -113,7 +112,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
         setSuccess(true);
         setSelectedWallet(walletType);
         if (reload) {
-          reloadPage();
+          setTimeout(window.location.reload, 500);
         }
       } catch (error: any) {
         setError(error);
@@ -199,7 +198,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
         if (!ethereum) {
           setSelectedChainId(newChainId);
           setSelectedRpc(connectorParametersMap[newChainId].rpcUrls[0]);
-          reloadPage();
+          setTimeout(window.location.reload, 500);
         } else {
           const isSameNetwork = chainId === newChainId;
           try {
