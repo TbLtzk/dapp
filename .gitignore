@@ -28,3 +28,6 @@ translation-key.json
 .env
 .vscode
 .prettierrc
+
+# Bundle analyzer files
+stats.html

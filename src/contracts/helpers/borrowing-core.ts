@@ -13,7 +13,7 @@ import {
 } from 'contracts/contract-instance';
 
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { remainDateTimeSince } from 'utils/convertDate';
+import { unixToDate } from 'utils/date';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 import { calculateInterestRate } from 'utils/numbers';
 
@@ -65,7 +65,7 @@ export async function getTimeSinceRefreshBalance (setTimeSinceRefreshBalance: an
   try {
     const contract = await getCompoundRateKeeperSavingInstance();
     const lastUpdate = await contract.getLastUpdate();
-    setTimeSinceRefreshBalance(remainDateTimeSince(lastUpdate));
+    setTimeSinceRefreshBalance(unixToDate(lastUpdate));
   } catch (error) {
     captureError(error);
   }
@@ -97,7 +97,7 @@ export async function getTimeSinceOutstandingDebt (setTimeSinceOutstandingDeb: a
   try {
     const contract = await getCompoundRateBorrowingInstance(asset);
     const lastUpdate = await contract.getLastUpdate();
-    setTimeSinceOutstandingDeb(remainDateTimeSince(lastUpdate));
+    setTimeSinceOutstandingDeb(unixToDate(lastUpdate));
   } catch (error) {
     captureError(error);
   }

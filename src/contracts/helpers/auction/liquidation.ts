@@ -14,8 +14,8 @@ import { AUCTIONS_TYPES, ERROR_TYPES, getAllowance, getAuctionsEvents, getStatus
 
 import { getBorrowingCoreInstance, getLiquidationAuctionInstance } from 'contracts/contract-instance';
 
-import { getNowTimestamp } from 'utils/convertDate';
-import { BN } from 'utils/numbers';
+import { dateToUnix } from 'utils/date';
+import { toBigNumber } from 'utils/numbers';
 
 async function prepareLiquidationAuctionInfo (
   info: SdkLiquidationAuctionInfo,
@@ -40,11 +40,11 @@ async function prepareLiquidationAuctionInfo (
   completedInfo.endTime = info.endTime.toString();
   completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0;
   completedInfo.highestBid = fromWei(info.highestBid);
-  completedInfo.colAsset = BN(vault.colAsset).dividedBy(1e8).toFixed();
+  completedInfo.colAsset = toBigNumber(vault.colAsset).dividedBy(1e8).toFixed();
   completedInfo.state = getAuctionStatusState(status as keyof typeof AuctionStatus);
   completedInfo.status = (status);
 
-  completedInfo.isBidTime = Number(info.endTime) >= Number(getNowTimestamp());
+  completedInfo.isBidTime = Number(info.endTime) >= dateToUnix();
   completedInfo.isAuctionEnded = (info.status as AuctionStatus) === '2';
 
   return completedInfo;

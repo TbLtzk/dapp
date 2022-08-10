@@ -43,7 +43,7 @@ import { networkConfigsMap } from 'constants/config';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { TABLE_TYPES } from 'constants/tableTypes';
-import { getNowTimestamp } from 'utils/convertDate';
+import { dateToUnix } from 'utils/date';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 
 function* getValidatorsWithdrawalInfoGenerator ({ address }) {
@@ -190,7 +190,7 @@ function* getIsUserValidatorGenerator ({ address }) {
 function* getValidatorsMinimumTimeLockGenerator ({ address }) {
   try {
     const contract = yield call(getValidatorsInstance);
-    const data = yield contract.getMinimumBalance(address, getNowTimestamp());
+    const data = yield contract.getMinimumBalance(address, dateToUnix());
     yield put(setMinimumValidatorsTimeLock(fromWei(data)));
   } catch (error) {
     captureError(error);

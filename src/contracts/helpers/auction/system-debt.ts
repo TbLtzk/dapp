@@ -11,7 +11,7 @@ import { AUCTIONS_TYPES, ERROR_TYPES, getAllowance, getAuctionsEvents, getAuctio
 
 import { getSystemDebtAuctionInstance } from 'contracts/contract-instance';
 
-import { dateToTimestamp, getNowTimestamp } from 'utils/convertDate';
+import { dateToUnix } from 'utils/date';
 
 function prepareSystemDebtAuctionInfo (
   info: SystemDebtAuctionInfo,
@@ -28,13 +28,13 @@ function prepareSystemDebtAuctionInfo (
   completedInfo.auctionId = auctionId;
   completedInfo.bid = info.highestBid;
   completedInfo.bidder = info.bidder;
-  completedInfo.endTime = dateToTimestamp(info.endTime);
+  completedInfo.endTime = String(dateToUnix(info.endTime));
   completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : '0';
   completedInfo.status = (status);
   completedInfo.state = getAuctionStatusState(status as keyof typeof AuctionStatus);
   completedInfo.highestBid = fromWei(info.highestBid);
   completedInfo.lot = fromWei(info.lot);
-  completedInfo.isBidTime = Number(dateToTimestamp(info.endTime)) >= Number(getNowTimestamp());
+  completedInfo.isBidTime = dateToUnix(info.endTime) >= dateToUnix();
   completedInfo.isAuctionEnded = (info.status as AuctionStatus) === '2';
 
   return completedInfo;
@@ -51,7 +51,7 @@ const getSystemDebtAuctionData = async (auction: SystemDebtAndSurplusInfo) => {
     status: (status),
     state: getAuctionStatusState(status as keyof typeof AuctionStatus),
     statusNumber: auctionInfo.status,
-    endTime: dateToTimestamp(auctionInfo.endTime),
+    endTime: String(dateToUnix(auctionInfo.endTime)),
     slug: `auctionId=${auction.auctionId}`,
   };
 };

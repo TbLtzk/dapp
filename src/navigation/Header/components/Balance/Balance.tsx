@@ -13,7 +13,7 @@ import { BalanceDropdown, QLogo } from './styles';
 import { accountBalance, userBalance } from 'store/q-vault/selectors';
 import { baseVotingWeightInfoSelector } from 'store/voting/proposals/selectors';
 
-import { formatNumberCompact } from 'utils/formatters';
+import { formatNumberCompact } from 'utils/numbers';
 
 function Balance () {
   const [balanceOpen, setBalanceOpen] = useState(false);

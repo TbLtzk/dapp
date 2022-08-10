@@ -18,8 +18,8 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 import { getBaseVotingWeightInfo } from 'store/voting/proposals/actions';
 import { baseVotingWeightInfoSelector } from 'store/voting/proposals/selectors';
 
-import { fromSolDateFormattingT1 } from 'utils/date';
-import { formatAsset } from 'utils/formatters';
+import { formatDateDMY, formatTimeGMT, unixToDate } from 'utils/date';
+import { formatAsset } from 'utils/numbers';
 
 function VotingStats () {
   const { t } = useTranslation();
@@ -37,10 +37,6 @@ function VotingStats () {
     dispatch(getDelegationInfo(address));
   }, [dispatch]);
 
-  const [lockedDate, ...lockedRest] = lockedUntil
-    ? fromSolDateFormattingT1(lockedUntil).split(' ')
-    : [];
-
   const statsList = [
     {
       title: t('TOTAL_VOTING_WEIGHT'),
@@ -48,11 +44,11 @@ function VotingStats () {
     },
     {
       title: t('VOTING_LOCKING_END'),
-      value: lockedDate && lockedDate !== '0'
+      value: lockedUntil && lockedUntil !== '0'
         ? (
           <>
-            <span>{lockedDate}</span>
-            <span className="text-md">{lockedRest.join(' ')}</span>
+            <span>{formatDateDMY(unixToDate(lockedUntil))}</span>
+            <span className="text-md">{formatTimeGMT(unixToDate(lockedUntil))}</span>
           </>
         )
         : '–'

@@ -45,7 +45,7 @@ function DecisionActions ({ proposal }: Props) {
   const decision = proposal.objEscrow.decision;
 
   const isDecisionEnded = decision.endDate.getTime() < Date.now();
-  const isDecisionPassed = decision.confirmationCount >= decision.requiredConfirmations;
+  const isDecisionPassed = Number(decision.confirmationCount) >= Number(decision.requiredConfirmations);
   const canProposeDecision = decision.proposer !== userAddress &&
     (isDecisionEnded || decision.proposer === ZERO_ADDRESS);
 

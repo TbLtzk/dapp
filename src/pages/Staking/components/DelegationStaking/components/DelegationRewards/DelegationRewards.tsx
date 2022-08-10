@@ -8,7 +8,7 @@ import Icon from 'ui/Icon';
 import { getOutstandingDelegationRewards, onClaimStakeDelegatorReward } from 'store/q-vault/action-creators';
 import { outstandingDelegationRewards } from 'store/q-vault/selectors';
 
-import { formatAsset } from 'utils/formatters';
+import { formatAsset } from 'utils/numbers';
 
 function DelegationRewards () {
   const { t } = useTranslation();

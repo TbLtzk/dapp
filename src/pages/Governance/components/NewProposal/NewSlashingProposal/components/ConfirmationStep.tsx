@@ -7,7 +7,7 @@ import { FormStep } from 'components/MultiStepForm';
 
 import { useNewSlashingProposal } from '../NewSlashingProposal';
 
-import { formatNumber, formatPercent } from 'utils/formatters';
+import { formatAsset, formatPercent } from 'utils/numbers';
 
 function ConfirmationStep () {
   const { t } = useTranslation();
@@ -46,7 +46,7 @@ function ConfirmationStep () {
         <div>
           <p className="text-md color-secondary">{t('AMOUNT_TO_SLASH')}</p>
           <p className="text-lg">
-            <span>{`${formatNumber(values.amount, 4)} Q`}</span>
+            <span>{formatAsset(values.amount, 'Q')}</span>
             <span className="font-light" style={{ marginLeft: '4px' }}>
               ({formatPercent(values.percent)})
             </span>

@@ -8,7 +8,8 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import { TableWrapper } from './styles';
 
-import { formatAsset, formatDuration, formatFactor, formatFraction, formatNumber } from 'utils/formatters';
+import { formatDuration } from 'utils/date';
+import { formatAsset, formatFactor, formatFraction, formatNumber } from 'utils/numbers';
 
 interface Props {
   parameters: any[];
@@ -51,7 +52,7 @@ function ParametersTable ({ parameters, simplified }: Props) {
 
     switch (type) {
       case 'number':
-        return formatNumber(item.value, 4);
+        return formatNumber(item.value);
       case 'factor':
         return formatFactor(item.value);
       case 'period':

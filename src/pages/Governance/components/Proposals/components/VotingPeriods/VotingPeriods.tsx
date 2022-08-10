@@ -9,7 +9,7 @@ import Tooltip from 'ui/Tooltip';
 import { VotingContainer } from './styles';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-import { formatDate, formatDateRelative } from 'utils/formatters';
+import { formatDate, formatDateRelative } from 'utils/date';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   proposal: Proposal

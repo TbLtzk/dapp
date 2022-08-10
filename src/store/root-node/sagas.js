@@ -27,7 +27,7 @@ import { prepareRootMembersTable } from 'contracts/helpers/root-node-helper';
 
 import formTypes from 'constants/form-types';
 import { TABLE_TYPES } from 'constants/tableTypes';
-import { getNowTimestamp } from 'utils/convertDate';
+import { dateToUnix } from 'utils/date';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 
 function* setRootStakeToPanelGenerator ({ data, label }) {
@@ -155,7 +155,7 @@ function* getRootWithdrawalsGenerator ({ address }) {
 function* getMinimumRootTimeLockGenerator ({ address }) {
   try {
     const contract = yield call(getRootNodesInstance);
-    const data = yield contract.getMinimumBalance(address, getNowTimestamp());
+    const data = yield contract.getMinimumBalance(address, dateToUnix());
     yield put(setMinimumRootTimeLock(fromWei(data)));
   } catch (error) {
     captureError(error);

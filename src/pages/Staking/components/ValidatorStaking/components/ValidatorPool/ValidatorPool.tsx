@@ -10,7 +10,7 @@ import {
   totalStakeSelector,
 } from 'store/validators/selectors';
 
-import { formatAsset } from 'utils/formatters';
+import { formatAsset } from 'utils/numbers';
 
 function ValidatorPool () {
   const { t } = useTranslation();

@@ -32,7 +32,7 @@ import {
 import { getEPDRUint } from 'contracts/helpers/epdr-param-helper';
 
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { formatAsset } from 'utils/formatters';
+import { formatAsset } from 'utils/numbers';
 
 function AuctionStats () {
   const dispatch = useDispatch();

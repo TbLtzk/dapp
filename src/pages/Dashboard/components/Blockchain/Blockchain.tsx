@@ -10,13 +10,13 @@ import useInterval from 'hooks/useInterval';
 import { contractRegistryInstance } from 'contracts/contract-instance';
 import { fetchBlockNumber } from 'contracts/helpers/block-number';
 
-import { formatNumber } from 'utils/formatters';
+import { formatNumber } from 'utils/numbers';
 
 function Blockchain () {
   const { t } = useTranslation();
 
   const [blockNumber, setBlockNumber] = useState(0);
-  const blockNumberRef = useAnimateNumber(blockNumber, ' ', formatNumber);
+  const blockNumberRef = useAnimateNumber(blockNumber, ' ', val => formatNumber(val, 0));
 
   const getLatestBlock = () => {
     fetchBlockNumber('latest').then((blockNumber) => setBlockNumber(blockNumber));

@@ -9,7 +9,7 @@ import useEndTime from '../../../hooks/useEndTime';
 import LinkViewer from '../../LinkViewer';
 
 import { ObjectionStatus } from 'constants/slashing';
-import { formatNumber } from 'utils/formatters';
+import { formatAsset } from 'utils/numbers';
 
 function ObjectionDetails ({ proposal }: { proposal: SlashingProposal }) {
   const { t } = useTranslation();
@@ -49,7 +49,7 @@ function ObjectionDetails ({ proposal }: { proposal: SlashingProposal }) {
 
         <div className="details-item">
           <p className="text-md color-secondary">{t('SLASHED_AMOUNT')}</p>
-          <p className="text-md">{formatNumber(objection.slashedAmount, 4) + ' Q'}</p>
+          <p className="text-md">{formatAsset(objection.slashedAmount, 'Q')}</p>
         </div>
 
         <div className="details-item">

@@ -8,7 +8,7 @@ import Progress from 'ui/Progress';
 import { StyledProposalTurnout } from './styles';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-import { formatNumber, formatPercent } from 'utils/formatters';
+import { formatNumber, formatPercent } from 'utils/numbers';
 
 function ProposalTurnout ({ proposal }: { proposal: Proposal }) {
   const { t } = useTranslation();
@@ -53,7 +53,7 @@ function ProposalTurnout ({ proposal }: { proposal: Proposal }) {
           <div className="proposal-turnout__vote">
             <p className="text-md color-secondary">{t('VOTED')}</p>
             <p className="text-md proposal-turnout__votes-val">
-              {formatNumber(totalVotes, 4)}
+              {formatNumber(totalVotes)}
             </p>
           </div>
 
@@ -61,7 +61,7 @@ function ProposalTurnout ({ proposal }: { proposal: Proposal }) {
             <p className="text-md color-secondary">{t('DID_NOT_VOTE')}</p>
             <p className="text-md proposal-turnout__votes-val">
               {isRootNodeContract
-                ? formatNumber(proposal.rootNodesNumber - totalVotes, 4)
+                ? formatNumber(proposal.rootNodesNumber - totalVotes)
                 : '–'
               }
             </p>

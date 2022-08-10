@@ -28,7 +28,7 @@ import {
 } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
-import { fromSolDateFormattingT1 } from 'utils/date';
+import { formatDateGMT, unixToDate } from 'utils/date';
 
 function VaultOverview () {
   const dispatch = useDispatch();
@@ -53,7 +53,7 @@ function VaultOverview () {
   const userVotingWeight = useSelector(votingWeight);
   const userVotingWeightRef = useAnimateNumber(userVotingWeight);
 
-  const userLockingEnd = fromSolDateFormattingT1(useSelector(votingLockingEnd));
+  const userLockingEnd = formatDateGMT(unixToDate(useSelector(votingLockingEnd)));
   const updateOnClaim = useSelector(lastClaim);
   const weight = useSelector(receivedWeight);
 

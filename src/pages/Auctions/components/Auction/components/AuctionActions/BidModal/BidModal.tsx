@@ -25,7 +25,7 @@ import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
-import { BN } from 'utils/numbers';
+import { toBigNumber } from 'utils/numbers';
 import { max, min, required } from 'utils/validators';
 
 const DEFAULT_VALUES = {
@@ -85,7 +85,7 @@ function BidModal ({ modalOpen, auction, onHide, }:Props) {
 
   const handleBidChange = async (value: string) => {
     form.fields.bid.onChange(value);
-    setIsApproved(BN(value).comparedTo(allowance) !== 1);
+    setIsApproved(toBigNumber(value).comparedTo(allowance) !== 1);
   };
 
   async function approveContract () {

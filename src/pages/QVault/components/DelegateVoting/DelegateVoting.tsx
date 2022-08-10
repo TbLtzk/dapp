@@ -16,8 +16,8 @@ import { getDelegationInfo, setNewVotingAgent } from 'store/q-vault/action-creat
 import { isPendingDelegation, receivedWeight, votingAgentPassOverTime } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
-import { getNowTimestamp, remainDate } from 'utils/convertDate';
-import { formatAsset } from 'utils/formatters';
+import { dateToUnix, formatDateRelative, unixToDate } from 'utils/date';
+import { formatAsset } from 'utils/numbers';
 
 function DelegateVoting () {
   const { t } = useTranslation();
@@ -52,11 +52,11 @@ function DelegateVoting () {
 
       {!isPending
         ? null
-        : time - Number(getNowTimestamp()) > 0
+        : time - dateToUnix() > 0
           ? (
             <>
               <h5>{t('DELEGATION_INFO')}</h5>
-              <h4>{`${t('IT_CAN_BE_FINALIZED_AFTER')} ${remainDate(time)}`}</h4>
+              <h4>{`${t('IT_CAN_BE_FINALIZED')} ${formatDateRelative(unixToDate(time))}`}</h4>
             </>
           )
           : (

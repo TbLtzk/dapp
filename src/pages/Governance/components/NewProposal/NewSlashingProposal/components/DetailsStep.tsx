@@ -21,7 +21,7 @@ import { getValidatorMembers } from 'store/validators/action-creators';
 import { validatorsWidenedSelector } from 'store/validators/selectors';
 
 import { TABLE_TYPES } from 'constants/tableTypes';
-import { formatNumber } from 'utils/formatters';
+import { formatAsset } from 'utils/numbers';
 import { trimAddress } from 'utils/strings';
 import { address, percent, required, url } from 'utils/validators';
 
@@ -116,7 +116,7 @@ function DetailsStep () {
         {...form.fields.percent}
         label={t('AMOUNT_TO_SLASH')}
         max={String(stake || '0')}
-        formatter={(value) => `${formatNumber(value, 4)} Q`}
+        formatter={(value) => formatAsset(value, 'Q')}
         disabled={isNil(stake)}
         onChange={handleAmountChange}
       />

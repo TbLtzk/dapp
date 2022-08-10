@@ -16,7 +16,7 @@ import { getVestingInstance } from 'contracts/contract-instance';
 import { CONTRACT_TYPES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { getNowTimestamp } from 'utils/convertDate';
+import { dateToUnix } from 'utils/date';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 
 function* getVestingBalanceGenerator ({ address }) {
@@ -32,7 +32,7 @@ function* getVestingBalanceGenerator ({ address }) {
 function* getMinimumVestingTimeLockGenerator ({ address }) {
   try {
     const contract = yield call(getVestingInstance);
-    const data = yield contract.getMinimumBalance(address, getNowTimestamp());
+    const data = yield contract.getMinimumBalance(address, dateToUnix());
     yield put(setMinimumVestingTimeLock(Number(fromWei(data))));
   } catch (error) {
     captureError(error);

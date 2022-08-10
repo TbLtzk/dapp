@@ -16,7 +16,7 @@ import { ProposalCardLink } from './styles';
 
 import { getProposal } from 'contracts/helpers/voting';
 
-import { formatPercent } from 'utils/formatters';
+import { formatPercent } from 'utils/numbers';
 
 function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
   const { t } = useTranslation();

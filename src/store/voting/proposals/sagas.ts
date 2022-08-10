@@ -32,7 +32,7 @@ import { createProposal, getProposalEvents } from 'contracts/helpers/voting';
 import { ZERO_ADDRESS } from 'constants/boundaries';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { getNowTimestamp } from 'utils/convertDate';
+import { dateToUnix } from 'utils/date';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 
 function getProposalTypeFromFormType (type: CreateProposalForm['type']): FormProposalType {
@@ -227,8 +227,7 @@ function* getBaseVotingWeightInfoGenerator () {
   try {
     const { userAddress } = yield* select((state) => state.userInf);
     const contract = yield* call(getVotingWeightProxyInstance);
-    const timeStamp = getNowTimestamp();
-    const result = yield* call(() => contract.getBaseVotingWeightInfo(userAddress, timeStamp));
+    const result = yield* call(() => contract.getBaseVotingWeightInfo(userAddress, String(dateToUnix())));
     yield* put(setBaseVotingWeightInfo(result));
   } catch (error) {
     captureError(error);

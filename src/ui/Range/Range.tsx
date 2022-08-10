@@ -6,8 +6,7 @@ import Input from 'ui/Input';
 
 import { RangeContainer } from './styles';
 
-import { formatNumber, formatPercent } from 'utils/formatters';
-import { BN } from 'utils/numbers';
+import { toBigNumber, formatNumber, formatPercent } from 'utils/numbers';
 
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   value: string
@@ -34,8 +33,8 @@ function Range ({
   const inputId = `range-${uniqueId()}`;
 
   const getAbsoluteValue = (val: string) => {
-    return BN(max)
-      .multipliedBy(BN(val || 0))
+    return toBigNumber(max)
+      .multipliedBy(toBigNumber(val || 0))
       .dividedBy(100)
       .toString();
   };

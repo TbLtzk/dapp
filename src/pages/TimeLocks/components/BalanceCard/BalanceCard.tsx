@@ -14,7 +14,7 @@ import VestingWithdrawForm from '../VestingWithdrawForm';
 
 import { BalanceCardContent } from './styles';
 
-import { convertToMonthDayYear } from 'utils/convertDate';
+import { formatDate, unixToDate } from 'utils/date';
 
 interface Props {
   title: string;
@@ -51,8 +51,8 @@ function BalanceCard ({
         table={lockAmountData.map((lock, i) => ({
           id: i + 1,
           amount: fromWei(lock.amount) + ' Q',
-          releaseStart: convertToMonthDayYear(lock.releaseStart),
-          releaseEnd: convertToMonthDayYear(lock.releaseEnd),
+          releaseStart: formatDate(unixToDate(lock.releaseStart)),
+          releaseEnd: formatDate(unixToDate(lock.releaseEnd)),
         }))}
         columns={[
           {

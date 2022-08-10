@@ -5,30 +5,29 @@ import { useSelector } from 'react-redux';
 import CustomBlock from 'components/Base/CustomBlock/CustomBlock';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
+import useInterval from 'hooks/useInterval';
+
 import { rootMembersMonitoringSelector } from 'store/root-node/selectors';
 import { inactiveValidatorsSelector, validatorsMonitoringSelector } from 'store/validators/selectors';
 
 import { fetchBlockNumber } from 'contracts/helpers/block-number';
 
-import { getNowTimeWithGMT } from 'utils/convertDate';
+import { formatDateGMT } from 'utils/date';
 
 function CurrentInfo () {
   const { t } = useTranslation();
 
   const [blockHeight, setBlockHeight] = useState<string | number>('...');
-  const [time, setTime] = useState(getNowTimeWithGMT('DD.MM.YYYY HH:mm:ss'));
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   const rootNodes = useSelector(rootMembersMonitoringSelector);
   const validators = useSelector(validatorsMonitoringSelector);
 
   const inactiveValidators = useSelector(inactiveValidatorsSelector);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(getNowTimeWithGMT('DD.MM.YYYY HH:mm:ss'));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [time]);
+  useInterval(() => {
+    setCurrentDate(new Date());
+  }, 60_000);
 
   useEffect(() => {
     fetchBlockNumber('latest').then((blockNumber) => setBlockHeight(blockNumber));
@@ -69,7 +68,7 @@ function CurrentInfo () {
         <h5>{t('CURRENT_BLOCK_HEIGHT')}</h5>
         <p>{blockHeight}</p>
         <h5>{t('CURRENT_TIME')}</h5>
-        <p>{time}</p>
+        <p>{formatDateGMT(currentDate)}</p>
       </CustomBlock>
     </div>
   );

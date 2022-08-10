@@ -5,7 +5,7 @@ import { BorrowInfoContainer } from './styles';
 
 import { borrowVaultSelector } from 'store/borrow-assets/selectors';
 
-import { formatNumber, formatPercent } from 'utils/formatters';
+import { formatNumber, formatPercent } from 'utils/numbers';
 
 function BorrowInfo () {
   const { t } = useTranslation();

@@ -103,8 +103,8 @@ export async function getSlashingEscrow (
   return {
     objection: {
       appealConfirmed: escrowArbitrationInfo.appealConfirmed,
-      appealEndTime: unixToDate(escrowArbitrationInfo.params.appealEndTime),
-      objectionEndTime: unixToDate(escrowArbitrationInfo.params.objectionEndTime),
+      appealEndTime: unixToDate(escrowArbitrationInfo.params.appealEndTime as string),
+      objectionEndTime: unixToDate(escrowArbitrationInfo.params.objectionEndTime as string),
       status: status as ObjectionStatus,
       slashedAmount: fromWei(escrowArbitrationInfo.params.slashedAmount.toString()),
       executed: escrowArbitrationInfo.executed,
@@ -112,7 +112,7 @@ export async function getSlashingEscrow (
       proposerRemark: escrowArbitrationInfo.proposerRemark,
     },
     decision: {
-      endDate: unixToDate(escrowArbitrationInfo.decision.endDate),
+      endDate: unixToDate(escrowArbitrationInfo.decision.endDate as string),
       externalReference: escrowArbitrationInfo.decision.externalReference,
       percentage: transformToPercentage(escrowArbitrationInfo.decision.percentage.toString()),
       proposer: escrowArbitrationInfo.decision.proposer,
