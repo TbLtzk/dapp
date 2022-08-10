@@ -12,8 +12,8 @@ import {
   validatorWithdrawalInfo,
 } from 'store/validators/selectors';
 
-import { fromSolDateFormattingT1 } from 'utils/date';
-import { formatAsset } from 'utils/formatters';
+import { formatDateGMT, unixToDate } from 'utils/date';
+import { formatAsset } from 'utils/numbers';
 
 function ValidatorBalanceInfo () {
   const { t } = useTranslation();
@@ -64,7 +64,7 @@ function ValidatorBalanceInfo () {
       <div>
         <p className="text-md">{t('ANNOUNCEMENT_END')}</p>
         <h4 className="text-xl">
-          {withdrawalInfo && Number(withdrawalInfo?.amount) > 0 ? fromSolDateFormattingT1(withdrawalInfo.endTime) : '-'}
+          {withdrawalInfo && Number(withdrawalInfo?.amount) > 0 ? formatDateGMT(unixToDate(withdrawalInfo.endTime)) : '-'}
         </h4>
       </div>
     </div>

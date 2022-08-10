@@ -21,7 +21,7 @@ import {
 import { accountableTotalStake, validatorWithdrawalInfo } from 'store/validators/selectors';
 
 import formTypes from 'constants/form-types';
-import { BN } from 'utils/numbers';
+import { toBigNumber } from 'utils/numbers';
 import { amount, required } from 'utils/validators';
 
 interface Props {
@@ -45,7 +45,7 @@ function ValidatorForms ({ formType, onReset }: Props) {
       case FORM_TYPES.stakeToRanking:
         return userBalance;
       case FORM_TYPES.announceWithdrawal:
-        return BN(userAccountableTotalStake).plus(BN(withdrawalAmount)).toString();
+        return toBigNumber(userAccountableTotalStake).plus(toBigNumber(withdrawalAmount)).toString();
       case FORM_TYPES.withdrawFromRanking:
         return fromWei(withdrawalInfo.amount);
       default:

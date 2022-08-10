@@ -5,7 +5,7 @@ import { Placement } from '@popperjs/core';
 import { AuctionPeriodsContainer } from 'pages/Auctions/styles';
 import Tooltip from 'ui/Tooltip';
 
-import { formatDate, formatDateRelative } from 'utils/formatters';
+import { formatDate, formatDateRelative } from 'utils/date';
 
 interface Props {
   endTime: string;

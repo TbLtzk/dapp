@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { balance, delegatorShare, poolInfoSelector } from 'store/validation-reward-pools/selectors';
 import { delegatedStakeSelector } from 'store/validators/selectors';
 
-import { formatAsset, formatPercent } from 'utils/formatters';
+import { formatAsset, formatPercent } from 'utils/numbers';
 
 function RewardStats () {
   const { t } = useTranslation();

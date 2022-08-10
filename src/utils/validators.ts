@@ -4,7 +4,7 @@ import isDate from 'lodash/isDate';
 import isEmpty from 'lodash/isEmpty';
 import isNumber from 'lodash/isNumber';
 
-import { BN } from './numbers';
+import { toBigNumber } from './numbers';
 
 const HASH_REGEX = /^0x[a-fA-F0-9]{64}$/;
 const VAULT_ID_REGEX = /^[0-9]{1,18}$/;
@@ -31,9 +31,9 @@ export const requiredIf: ValidatorFn<(val: ValidatorValue, form: unknown) => boo
 };
 
 export const amount: ValidatorFn<string | number, string | number> = max => (val, form) => {
-  const value = BN(val);
-  const zero = BN(0);
-  const validatorValue = BN(getValidatorValue(max, form));
+  const value = toBigNumber(val);
+  const zero = toBigNumber(0);
+  const validatorValue = toBigNumber(getValidatorValue(max, form));
 
   if (value.comparedTo(zero) === 0) {
     return {
@@ -42,7 +42,7 @@ export const amount: ValidatorFn<string | number, string | number> = max => (val
     };
   }
 
-  if (validatorValue.comparedTo(BN(0)) === 0) {
+  if (validatorValue.comparedTo(toBigNumber(0)) === 0) {
     return {
       isValid: false,
       message: 'Available amount is 0'
@@ -56,8 +56,8 @@ export const amount: ValidatorFn<string | number, string | number> = max => (val
 };
 
 export const min: ValidatorFn<string | number, string | number> = min => (val, form) => {
-  const value = BN(val);
-  const validatorValue = BN(getValidatorValue(min, form));
+  const value = toBigNumber(val);
+  const validatorValue = toBigNumber(getValidatorValue(min, form));
 
   return {
     isValid: value.comparedTo(validatorValue) >= 0,
@@ -66,8 +66,8 @@ export const min: ValidatorFn<string | number, string | number> = min => (val, f
 };
 
 export const max: ValidatorFn<string | number, string | number> = max => (val, form) => {
-  const value = BN(val);
-  const validatorValue = BN(getValidatorValue(max, form));
+  const value = toBigNumber(val);
+  const validatorValue = toBigNumber(getValidatorValue(max, form));
 
   return {
     isValid: value.comparedTo(validatorValue) <= 0,
@@ -130,7 +130,7 @@ export const parameterType: ValidatorFn<ParameterType> = type => (val, form) => 
 
     case ParameterType.UINT:
       return {
-        isValid: !BN(String(val)).isNaN(),
+        isValid: !toBigNumber(String(val)).isNaN(),
         message: 'Invalid uint value'
       };
 

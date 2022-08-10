@@ -9,7 +9,7 @@ import Tooltip from 'ui/Tooltip';
 import useEndTime from '../../../hooks/useEndTime';
 import LinkViewer from '../../LinkViewer';
 
-import { formatPercent } from 'utils/formatters';
+import { formatPercent } from 'utils/numbers';
 
 function DecisionDetails ({ proposal }: { proposal: SlashingProposal }) {
   const { t } = useTranslation();

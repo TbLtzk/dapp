@@ -5,7 +5,7 @@ import { fromWei } from 'web3-utils';
 
 import { getContractRegistryInstance, getValidatorMetricsInstance } from 'contracts/contract-instance';
 
-import { convertToMonthDayYear, dateToTimestamp } from 'utils/convertDate';
+import { dateToUnix, formatDate, unixToDate } from 'utils/date';
 import { captureError } from 'utils/errors';
 import { calculateInterestRate, transformToPercentage } from 'utils/numbers';
 
@@ -74,8 +74,8 @@ export async function prepareValidatorsMonitoringData (
       // @ts-ignore FIXME: Fix SDK types
       monitoringData.lastBlock = validatorStats.lastBlockValidated;
       // @ts-ignore FIXME: Fix SDK types
-      monitoringData.timestamp = dateToTimestamp(validatorStats.lastBlockValidatedTime);
-      monitoringData.monthDayYear = convertToMonthDayYear(monitoringData.timestamp);
+      monitoringData.timestamp = dateToUnix(validatorStats.lastBlockValidatedTime);
+      monitoringData.monthDayYear = formatDate(unixToDate(monitoringData.timestamp));
     }
 
     return {

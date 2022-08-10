@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
 import Spinner from 'ui/Spinner';
+import Tooltip from 'ui/Tooltip';
 
 import useInterval from 'hooks/useInterval';
 
 import { getQHolderTimeUpdate } from 'store/tokenomics/action-creators';
 import { qHolderTimeUpdateLoadingSelector, qHolderTimeUpdateSelector } from 'store/tokenomics/selectors';
 
-import { remainDateTimeSince } from 'utils/convertDate';
+import { formatDate, formatDateRelative, unixToDate } from 'utils/date';
 
 function QTokenRewardUpdate () {
   const { t } = useTranslation();
@@ -19,17 +20,18 @@ function QTokenRewardUpdate () {
   const qHolderTimeUpdate = useSelector(qHolderTimeUpdateSelector);
   const qHolderTimeUpdateLoading = useSelector(qHolderTimeUpdateLoadingSelector);
 
-  const [qHolderTimeUpdateTime, setQHolderTimeUpdateTime] = useState('');
+  const [qHolderTimeUpdateTime, setQHolderTimeUpdateTime] = useState<Date | null>(null);
 
   useInterval(() => {
-    setQHolderTimeUpdateTime(remainDateTimeSince(qHolderTimeUpdate));
+    setQHolderTimeUpdateTime(unixToDate(qHolderTimeUpdate));
   }, 30000);
 
   useEffect(() => {
     if (Number(qHolderTimeUpdate)) {
-      setQHolderTimeUpdateTime(remainDateTimeSince(qHolderTimeUpdate));
+      setQHolderTimeUpdateTime(unixToDate(qHolderTimeUpdate));
     }
   }, [qHolderTimeUpdate]);
+
   useEffect(() => {
     dispatch(getQHolderTimeUpdate(false, t('TIME_SINCE_Q_TOKEN_HOLDER_REWARD_UPDATE_SUCCESS')));
   }, []);
@@ -42,8 +44,10 @@ function QTokenRewardUpdate () {
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div>
-          <p className="text-sm color-secondary">{t('TIME_SINCE_Q_TOKEN_HOLDER_REWARD_UPDATE')}</p>
-          <p className="text-lg font-semibold">{qHolderTimeUpdateTime || '0 day(s) 0 hours 0 minutes'}</p>
+          <p className="text-sm color-secondary">{t('Q_TOKEN_HOLDER_REWARD_UPDATED')}</p>
+          <Tooltip trigger={<p className="text-lg font-semibold">{formatDateRelative(qHolderTimeUpdateTime)}</p>}>
+            {formatDate(qHolderTimeUpdateTime)}
+          </Tooltip>
         </div>
 
         <div>

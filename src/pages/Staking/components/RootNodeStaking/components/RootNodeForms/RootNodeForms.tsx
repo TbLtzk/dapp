@@ -17,7 +17,7 @@ import { rootNodeStake, withdrawals } from 'store/root-node/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import formTypes from 'constants/form-types.js';
-import { BN } from 'utils/numbers';
+import { toBigNumber } from 'utils/numbers';
 import { max, required } from 'utils/validators';
 
 interface Props {
@@ -40,7 +40,7 @@ function RootNodeForms ({ formType, onReset }: Props) {
       case FORM_TYPES.stakeToRanking:
         return userBalance;
       case FORM_TYPES.announceWithdrawal:
-        return BN(amountNodeStake).plus(BN(withdrawalAmount)).toString();
+        return toBigNumber(amountNodeStake).plus(toBigNumber(withdrawalAmount)).toString();
       case FORM_TYPES.withdrawFromRanking:
         return withdrawalAmount;
       default:

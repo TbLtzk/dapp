@@ -23,7 +23,7 @@ import {
 import { CONTRACT_TYPES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { dateToTimestamp } from 'utils/convertDate';
+import { dateToUnix } from 'utils/date';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 
 async function getContractInstance (instanceType) {
@@ -88,8 +88,8 @@ function* setDepositLockedAmount ({ payload, label }) {
     const contract = yield call(getContractInstance, payload.contract);
     const transaction = yield contract.depositOnBehalfOf(
       payload.address,
-      dateToTimestamp(payload.startDate),
-      dateToTimestamp(payload.endDate),
+      dateToUnix(payload.startDate),
+      dateToUnix(payload.endDate),
       { value: toWei(payload.amount) }
     );
     yield call(getAmountOnContract, payload.contract, payload.address);

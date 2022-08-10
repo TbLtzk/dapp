@@ -5,7 +5,7 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
 import Tooltip from 'ui/Tooltip';
 
-import { formatAsset } from 'utils/formatters';
+import { formatAsset } from 'utils/numbers';
 
 export const tableValidatorsShort = (tableArray: any) =>
   tableArray.map((validator: any, idx: number) => ({

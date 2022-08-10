@@ -13,7 +13,7 @@ import { getRootMembers } from 'store/root-node/action-creators';
 import { loadingRootMembersSelector, rootMembersSelector } from 'store/root-node/selectors';
 
 import { TABLE_TYPES } from 'constants/tableTypes';
-import { formatNumber } from 'utils/formatters';
+import { formatNumber } from 'utils/numbers';
 import { trimAddress } from 'utils/strings';
 
 function RootNodesBlock () {

@@ -20,7 +20,7 @@ import {
 } from 'store/root-node/selectors';
 
 import { TABLE_TYPES } from 'constants/tableTypes';
-import { formatAsset, formatPercent } from 'utils/formatters';
+import { formatAsset, formatPercent } from 'utils/numbers';
 
 interface Props {
   tableType: TableType

@@ -13,7 +13,7 @@ import { AUCTIONS_TYPES, ERROR_TYPES, getAuctionsEvents, getAuctionStatusState, 
 
 import { getSystemSurplusAuctionInstance } from 'contracts/contract-instance';
 
-import { dateToTimestamp, getNowTimestamp } from 'utils/convertDate';
+import { dateToUnix } from 'utils/date';
 
 export function prepareAuctionData (
   info: SystemSurplusAuctionInfo,
@@ -35,14 +35,14 @@ export function prepareAuctionData (
   completedInfo.bidAsset = 'Q';
   completedInfo.lotAsset = 'QUSD';
 
-  completedInfo.endTime = dateToTimestamp(info.endTime);
+  completedInfo.endTime = String(dateToUnix(info.endTime));
   completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0;
   completedInfo.status = status;
   completedInfo.state = getAuctionStatusState(status as keyof typeof AuctionStatus);
 
   completedInfo.highestBid = fromWei(info.highestBid);
 
-  completedInfo.isBidTime = Number(dateToTimestamp(info.endTime)) >= Number(getNowTimestamp());
+  completedInfo.isBidTime = dateToUnix(info.endTime) >= dateToUnix();
   completedInfo.isAuctionEnded = (info.status as AuctionStatus) === '2';
 
   return completedInfo;
@@ -59,7 +59,7 @@ const getSystemSurplusAuctionData = async (auction: SystemDebtAndSurplusInfo) =>
     status: status,
     state: getAuctionStatusState(status as keyof typeof AuctionStatus),
     statusNumber: auctionInfo.status,
-    endTime: dateToTimestamp(auctionInfo.endTime),
+    endTime: String(dateToUnix(auctionInfo.endTime)),
     slug: `auctionId=${auction.auctionId}`,
   };
 };

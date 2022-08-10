@@ -5,18 +5,18 @@ import { getBorrowingInstance, getStableCoinInstance } from 'contracts/contract-
 
 import { UINT_PSEUDO_UNDEFINED } from 'constants/boundaries';
 import { defiApproveTypes } from 'constants/defi';
-import { BN, calculateInterestRate } from 'utils/numbers';
+import { toBigNumber, calculateInterestRate } from 'utils/numbers';
 
 export function convertToBigAmount (decimals: number) {
   return (value: number | string) =>
-    BN(value)
+    toBigNumber(value)
       .multipliedBy(10 ** decimals)
       .toFixed();
 }
 
 export function convertFromBigAmount (decimals: number) {
   return (value: number | string) =>
-    BN(value)
+    toBigNumber(value)
       .dividedBy(10 ** decimals)
       .toFixed();
 }

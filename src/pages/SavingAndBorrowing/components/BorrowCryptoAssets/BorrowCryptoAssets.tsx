@@ -19,7 +19,7 @@ import {
 
 import { addBorrowTokenToWallet } from 'contracts/helpers/borrowing-core';
 
-import { formatPercent } from 'utils/formatters';
+import { formatPercent } from 'utils/numbers';
 
 function BorrowCryptoAssets () {
   const { t } = useTranslation();

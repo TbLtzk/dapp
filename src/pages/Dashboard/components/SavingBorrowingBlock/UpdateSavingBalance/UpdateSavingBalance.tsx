@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
+import Tooltip from 'ui/Tooltip';
 
 import useInterval from 'hooks/useInterval';
 
@@ -10,13 +11,15 @@ import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import { getTimeSinceRefreshBalance, refreshTimeSinceRefreshBalance } from 'contracts/helpers/borrowing-core';
 
+import { formatDate, formatDateRelative } from 'utils/date';
+
 function UpdateSavingBalance () {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
   const userAddress = useSelector(userAddressMetamask);
 
-  const [timeSinceRefreshBalance, setTimeSinceRefreshBalance] = useState('0');
+  const [timeSinceRefreshBalance, setTimeSinceRefreshBalance] = useState<Date | null>(null);
   const [loadingTimeSinceRefreshBalance, setLoadingTimeSinceRefreshBalance] = useState(false);
 
   useEffect(() => {
@@ -40,8 +43,10 @@ function UpdateSavingBalance () {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
       <div>
-        <p className="text-sm color-secondary">{t('QUSD_SAVING_TIME_SINCE_REFRESH_OF_BALANCE')}</p>
-        <p className="text-lg font-semibold">{timeSinceRefreshBalance || '0 day(s) 0 hours 0 minutes'}</p>
+        <p className="text-sm color-secondary">{t('QUSD_SAVING_BALANCE_REFRESHED')}</p>
+        <Tooltip trigger={<p className="text-lg font-semibold">{formatDateRelative(timeSinceRefreshBalance)}</p>}>
+          {formatDate(timeSinceRefreshBalance)}
+        </Tooltip>
       </div>
 
       <Button

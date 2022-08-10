@@ -95,7 +95,7 @@ export default function qVault (state = initialState, action) {
         receivedWeight: action.result.receivedWeight,
         votingAgent: action.result.votingAgent,
         isPendingDelegation: action.result.isPending,
-        votingAgentPassOverTime: action.result.votingAgentPassOverTime
+        votingAgentPassOverTime: Number(action.result.votingAgentPassOverTime)
       };
     default:
       return state;

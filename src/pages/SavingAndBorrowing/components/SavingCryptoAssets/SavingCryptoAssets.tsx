@@ -17,7 +17,7 @@ import {
 
 import { addQUSDTokenToWallet } from 'contracts/helpers/saving-assets-helper';
 
-import { formatPercent } from 'utils/formatters';
+import { formatPercent } from 'utils/numbers';
 
 function SavingCryptoAssets () {
   const { t } = useTranslation();

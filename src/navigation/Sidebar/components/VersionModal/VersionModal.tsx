@@ -12,7 +12,7 @@ import packageJson from '../../../../../package.json';
 
 import { VersionsContainer } from './styles';
 
-import { getNowTimeWithGMT } from 'utils/convertDate';
+import { formatDateGMT } from 'utils/date';
 
 interface Props {
   open: boolean
@@ -23,11 +23,11 @@ function VersionModal ({ open, onClose }: Props) {
   const { t } = useTranslation();
   const web3Adapter = new Web3Adapter(window.web3);
 
-  const [time, setTime] = useState(getNowTimeWithGMT('DD.MM.YYYY HH:mm'));
+  const [currentDate, setCurrentDate] = useState(new Date());
   const [connectionInfo, setConnectionInfo] = useState<ConnectionInfo | null>(null);
 
   useInterval(() => {
-    setTime(getNowTimeWithGMT('DD.MM.YYYY HH:mm'));
+    setCurrentDate(new Date());
   }, 50000);
 
   async function loadConnectionInfo () {
@@ -51,7 +51,7 @@ function VersionModal ({ open, onClose }: Props) {
         },
         {
           name: t('YOUR_CURRENT_TIME'),
-          value: time,
+          value: formatDateGMT(currentDate),
         },
       ]
     },

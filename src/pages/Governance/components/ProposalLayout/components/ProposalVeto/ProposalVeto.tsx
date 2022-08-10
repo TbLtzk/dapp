@@ -10,7 +10,7 @@ import useEndTime from '../../hooks/useEndTime';
 import { StyledProposalVeto } from './styles';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-import { formatNumber, formatPercent } from 'utils/formatters';
+import { formatNumber, formatPercent } from 'utils/numbers';
 
 function ProposalVeto ({ proposal }: { proposal: Proposal }) {
   const { t } = useTranslation();
@@ -61,7 +61,7 @@ function ProposalVeto ({ proposal }: { proposal: Proposal }) {
                 {formatPercent(proposal.vetoesNumber / proposal.rootNodesNumber * 100)}
               </p>
               <p className="text-md proposal-veto__vote-val">
-                {formatNumber(proposal.vetoesNumber, 4)}
+                {formatNumber(proposal.vetoesNumber)}
               </p>
             </div>
 
@@ -71,7 +71,7 @@ function ProposalVeto ({ proposal }: { proposal: Proposal }) {
                 {formatPercent(noVote / proposal.rootNodesNumber * 100)}
               </p>
               <p className="text-md proposal-veto__vote-val">
-                {formatNumber(noVote, 4)}
+                {formatNumber(noVote)}
               </p>
             </div>
           </div>

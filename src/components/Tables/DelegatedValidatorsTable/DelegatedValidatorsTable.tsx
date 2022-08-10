@@ -10,7 +10,7 @@ import Table from 'ui/Table';
 import { getDelegationsList } from 'store/q-vault/action-creators';
 import { delegationList, loadingDelegationList } from 'store/q-vault/selectors';
 
-import { formatAsset } from 'utils/formatters';
+import { formatAsset } from 'utils/numbers';
 
 interface TableType {
   id: number;

@@ -34,7 +34,7 @@ import { getOutstandingDelegationRewardsList, getQHolderRewardPool } from 'contr
 
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
-import { getNowTimestamp } from 'utils/convertDate';
+import { dateToUnix } from 'utils/date';
 import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 import { calculateInterestRate } from 'utils/numbers';
 
@@ -223,7 +223,7 @@ function* getOutstandingDelegationRewardsValueGenerator () {
 function* getMinimumQVaultTimeLockGenerator ({ address }) {
   try {
     const contract = yield call(getQVaultInstance);
-    const data = yield contract.getMinimumBalance(address, getNowTimestamp());
+    const data = yield contract.getMinimumBalance(address, dateToUnix());
     yield put(setMinimumQVaultTimeLock(fromWei(data)));
   } catch (error) {
     captureError(error);

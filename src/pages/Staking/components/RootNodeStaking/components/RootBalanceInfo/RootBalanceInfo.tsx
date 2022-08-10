@@ -5,8 +5,8 @@ import { fromWei } from 'web3-utils';
 
 import { isUserRootNode, rootMinimumTimeLock, rootNodeStake, withdrawals } from 'store/root-node/selectors';
 
-import { fromSolDateFormattingT1 } from 'utils/date';
-import { formatAsset } from 'utils/formatters';
+import { formatDateGMT, unixToDate } from 'utils/date';
+import { formatAsset } from 'utils/numbers';
 
 function RootBalanceInfo () {
   const { t } = useTranslation();
@@ -49,7 +49,7 @@ function RootBalanceInfo () {
         <p className="text-md">{t('ANNOUNCEMENT_END')}</p>
         <h4 className="text-xl">
           {Number(withdrawalsData?.amount) > 0 && withdrawalsData
-            ? fromSolDateFormattingT1(withdrawalsData?.endTime)
+            ? formatDateGMT(unixToDate(withdrawalsData?.endTime))
             : '-'
           }
         </h4>

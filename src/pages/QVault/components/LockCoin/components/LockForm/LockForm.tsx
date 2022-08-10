@@ -14,8 +14,7 @@ import { userBalance, votingWeight } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import formTypes from 'constants/form-types';
-import { formatNumber } from 'utils/formatters';
-import { BN } from 'utils/numbers';
+import { toBigNumber, formatNumber } from 'utils/numbers';
 import { max, required } from 'utils/validators';
 
 function LockForm () {
@@ -31,7 +30,7 @@ function LockForm () {
     initialValues: { amount: userVotingWeight as string },
     validators: { amount: [required, max(userQVaultBalance)] },
     onSubmit: (form) => {
-      const delta = BN(form.amount).minus(BN(userVotingWeight));
+      const delta = toBigNumber(form.amount).minus(toBigNumber(userVotingWeight));
       dispatch(
         delta.gt(0)
           ? setLockAmount(userAddress, delta.toString(), t('UPDATE_LOCK_AMOUNT_SUCCESS'))
@@ -46,15 +45,15 @@ function LockForm () {
   }, [userVotingWeight]);
 
   const handleRangeChange = (_: string, val: string) => {
-    const weightToSet = BN(val).decimalPlaces(0).gte(BN(userQVaultBalance).decimalPlaces(0))
+    const weightToSet = toBigNumber(val).decimalPlaces(0).gte(toBigNumber(userQVaultBalance).decimalPlaces(0))
       ? String(userQVaultBalance)
-      : BN(val).decimalPlaces(0).toString();
+      : toBigNumber(val).decimalPlaces(0).toString();
 
     if (form.values.amount === weightToSet) return;
     form.fields.amount.onChange(weightToSet);
   };
 
-  const percentValue = BN(form.values.amount || 0)
+  const percentValue = toBigNumber(form.values.amount || 0)
     .dividedBy(userQVaultBalance)
     .multipliedBy(100)
     .toString();

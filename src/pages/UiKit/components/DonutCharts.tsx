@@ -7,7 +7,7 @@ import Button from 'ui/Button';
 import DonutChart from 'ui/DonutChart';
 import { DonutOption } from 'ui/DonutChart/types';
 
-import { formatNumber } from 'utils/formatters';
+import { formatNumber } from 'utils/numbers';
 import { trimAddress } from 'utils/strings';
 
 function DonutCharts () {

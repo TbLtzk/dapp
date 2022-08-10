@@ -5,7 +5,7 @@ import { SavingDetailsContainer } from './styles';
 
 import { savingAviableToDepositSelector, savingBalanceDetailsSelector } from 'store/saving-assets/selectors';
 
-import { formatNumber, formatPercent } from 'utils/formatters';
+import { formatNumber, formatPercent } from 'utils/numbers';
 
 interface Props {
   depositAsset: string;

@@ -11,7 +11,7 @@ import useEndTime from '../../hooks/useEndTime';
 import { getVotingColor } from './colors';
 import { StyledProposalVoting } from './styles';
 
-import { formatNumber, formatPercent } from 'utils/formatters';
+import { formatNumber, formatPercent } from 'utils/numbers';
 
 function ProposalVoting ({ proposal }: { proposal: Proposal }) {
   const { t } = useTranslation();
@@ -60,7 +60,7 @@ function ProposalVoting ({ proposal }: { proposal: Proposal }) {
               {formatPercent(proposal.votesFor / totalVotes * 100 || 0)}
             </p>
             <p className="text-md proposal-voting__vote-val">
-              {formatNumber(proposal.votesFor, 4)}
+              {formatNumber(proposal.votesFor)}
             </p>
           </div>
 
@@ -74,7 +74,7 @@ function ProposalVoting ({ proposal }: { proposal: Proposal }) {
               {formatPercent(proposal.votesAgainst / totalVotes * 100 || 0)}
             </p>
             <p className="text-md proposal-voting__vote-val">
-              {formatNumber(proposal.votesAgainst, 4)}
+              {formatNumber(proposal.votesAgainst)}
             </p>
           </div>
         </div>

@@ -6,7 +6,7 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import LinkViewer from '../../LinkViewer';
 
-import { formatNumber } from 'utils/formatters';
+import { formatAsset } from 'utils/numbers';
 
 interface Props {
   proposal: Proposal
@@ -29,7 +29,7 @@ function SlashingDetails ({ proposal }: Props) {
 
       <div className="details-item">
         <p className="text-md color-secondary">{t('DETAILS_AMOUNT_TO_SLASH')}</p>
-        <p className="text-md">{formatNumber(proposal.amountToSlash, 4)} Q</p>
+        <p className="text-md">{formatAsset(proposal.amountToSlash, 'Q')}</p>
       </div>
 
       <div className="details-item">
