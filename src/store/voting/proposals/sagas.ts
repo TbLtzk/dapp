@@ -62,6 +62,7 @@ function* getProposalsGenerator ({ proposalType }: types.GetProposals) {
     const { minimalActiveBlockHeight, lastBlockHeight } = yield* call(getMinimalActiveBlockHeight);
 
     const { proposals, lastBlock } = yield* select(proposalsByTypeSelector(proposalType));
+
     const newProposals = yield* call(() => getProposalEvents(proposalType, proposals, lastBlock));
 
     yield* put(setProposals(proposalType, newProposals, Number(lastBlockHeight)));
@@ -201,15 +202,19 @@ function* getProposalsByTypeGenerator ({ contractName }: types.GetProposalsByTyp
 }
 
 function* getNumberAllProposalsGenerator () {
-  yield* delay(5_000);
-
   yield* put(getProposals('q'));
+
+  // Delay for localstorage sync with lastblock
+  yield* delay(100);
   yield* put(getProposals('rootNode'));
+  yield* delay(100);
   yield* put(getProposals('expert'));
+  yield* delay(100);
   yield* put(getProposals('slashing'));
+  yield* delay(100);
   yield* put(getProposals('contractUpdate'));
 
-  yield* delay(235_000);
+  yield* delay(240_000);
   yield* put(getNumberAllProposals());
 }
 
