@@ -61,7 +61,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
   const [switchNetworkError, setSwitchNetworkError] = useState<boolean | null>(null);
 
   const loadAdditionalInfo = async () => {
-    // dispatch(getAllAuctions());
+    dispatch(getAllAuctions());
     dispatch(getNumberAllProposals());
     dispatch(getCheckIsUserRootNode());
     dispatch(getUserBalances());
