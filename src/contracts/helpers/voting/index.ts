@@ -4,16 +4,37 @@ import { ContractRegistryAddressVotingInstance } from '@q-dev/q-js-sdk/lib/contr
 import { EPQFIMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/experts/EPQFIMembershipVotingInstance';
 import { RootNodesMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesMembershipVotingInstance';
 import { RootNodesSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesSlashingVotingInstance';
-import { uniqBy } from 'lodash';
+import merge from 'lodash/merge';
+import uniqBy from 'lodash/uniqBy';
 import { ContractType, ProposalContractType, ProposalEvent, ProposalsContract } from 'typings/contracts';
 import { CreateProposalForm, FormParameter } from 'typings/forms';
 import { Proposal, ProposalType, SlashingProposal } from 'typings/proposals';
 
-import { createConstitutionProposal, createEmergencyProposal, createGeneralProposal, getConstitutionProposal, getQProposals } from './constitution';
+import { getMinimalActiveBlockHeight } from '../block-number';
+
+import {
+  createConstitutionProposal,
+  createEmergencyProposal,
+  createGeneralProposal,
+  getConstitutionProposal,
+  getQProposals,
+} from './constitution';
 import { getContractUpdateProposal, getContractUpdateProposals } from './contract-update';
-import { createAddExpertProposal, createParameterVoteProposal, createRemoveExpertProposal, getExpertProposal, getExpertProposals } from './expert';
+import {
+  createAddExpertProposal,
+  createParameterVoteProposal,
+  createRemoveExpertProposal,
+  getExpertProposal,
+  getExpertProposals,
+} from './expert';
 import { createRootNodeProposal, getRootNodeProposal, getRootNodeProposals } from './root-node';
-import { createRootNodeSlashingProposal, createValidatorSlashingProposal, getSlashingEscrow, getSlashingProposal, getSlashingProposals } from './slashing';
+import {
+  createRootNodeSlashingProposal,
+  createValidatorSlashingProposal,
+  getSlashingEscrow,
+  getSlashingProposal,
+  getSlashingProposals,
+} from './slashing';
 
 import { store } from 'store';
 
@@ -22,53 +43,95 @@ import { getInstance, getRootNodesInstance } from 'contracts/contract-instance';
 import { captureError } from 'utils/errors';
 import { transformToPercentage } from 'utils/numbers';
 
+async function checkProposal (contract: ProposalsContract, proposal: ProposalEvent) {
+  const status = await contract.getStatus(proposal.id);
+  if (status === ProposalStatus.NONE) return { ...proposal, status };
+  const isActive = [ProposalStatus.PENDING, ProposalStatus.ACCEPTED, ProposalStatus.PASSED].includes(status);
+  return {
+    ...proposal,
+    status: isActive ? 'active' : 'ended',
+  };
+}
+
+function getOldestActiveBlockFromStorage () {
+  const { userInf } = store.getState();
+  const { network } = userInf;
+  return JSON.parse(localStorage.getItem('oldestActiveBlock ' + network) || '{}');
+}
+
+async function getOldestBlock (contractName: ContractType) {
+  const { minimalActiveBlockHeight } = await getMinimalActiveBlockHeight();
+  const oldestActiveBlocks = getOldestActiveBlockFromStorage();
+  return oldestActiveBlocks[contractName] ?? minimalActiveBlockHeight;
+}
+
+async function changeOldestBlock (contractName: ContractType, proposals: ProposalEvent[]) {
+  const { userInf } = store.getState();
+  const { network } = userInf;
+  const { lastBlockHeight } = await getMinimalActiveBlockHeight();
+
+  const oldestActiveBlocks = getOldestActiveBlockFromStorage();
+
+  const oldestActiveProposal = Math.min(
+    ...proposals.filter(({ status }) => status === 'active').map(({ blockNumber }) => blockNumber)
+  );
+
+  localStorage.setItem(
+    'oldestActiveBlock ' + network,
+    JSON.stringify(
+      merge(oldestActiveBlocks, {
+        [contractName]: isFinite(oldestActiveProposal) ? oldestActiveProposal : lastBlockHeight,
+      })
+    )
+  );
+}
+
 export async function getContractProposals ({
   proposals,
   contract,
   lastBlock,
-  contractName
+  contractName,
 }: {
-  proposals: ProposalEvent[],
-  contract: ProposalsContract,
-  lastBlock: number,
-  contractName: ContractType
+  proposals: ProposalEvent[];
+  contract: ProposalsContract;
+  lastBlock: number;
+  contractName: ContractType;
 }): Promise<ProposalEvent[]> {
-  const contractProposals = proposals.filter(({ contract }) => contract === contractName);
-  const activeProposals = contractProposals.filter(({ status }) => status === 'active');
+  try {
+    const contractProposals = proposals.filter(({ contract }) => contract === contractName);
+    const activeProposals = contractProposals.filter(({ status }) => status === 'active');
 
-  const newProposals = await getProposalPastEvents(contract, {
-    fromBlock: lastBlock,
-    contractName
-  });
+    const newProposals = await getProposalPastEvents(contract, {
+      fromBlock: lastBlock,
+      contractName,
+    });
 
-  const proposalsToCheck = [...activeProposals, ...newProposals];
-  const result = await Promise.all(proposalsToCheck.map(async (proposal) => {
-    const status = await contract.getStatus(proposal.id);
-    if (status === ProposalStatus.NONE) return { ...proposal, status };
+    const oldestBlock = await getOldestBlock(contractName);
 
-    const isActive = [
-      ProposalStatus.PENDING,
-      ProposalStatus.ACCEPTED,
-      ProposalStatus.PASSED
-    ].includes(status);
+    const proposalsBeforeActiveBlock = newProposals
+      .filter((proposal) => proposal.blockNumber < oldestBlock)
+      .map((item) => ({ ...item, status: 'ended' }));
 
-    return {
-      ...proposal,
-      status: isActive ? 'active' : 'ended'
-    };
-  }));
+    const proposalsAfterActiveBlock = newProposals.filter((proposal) => proposal.blockNumber >= oldestBlock);
 
-  return uniqBy([...result, ...contractProposals], 'id');
+    const proposalsWithStatus = await Promise.all(
+      [...activeProposals, ...proposalsAfterActiveBlock].map((proposal) => checkProposal(contract, proposal))
+    );
+
+    await changeOldestBlock(contractName, proposalsWithStatus);
+
+    return uniqBy([...proposalsWithStatus, ...proposalsBeforeActiveBlock, ...contractProposals], 'id');
+  } catch (error) {
+    captureError(error);
+    return [];
+  }
 }
 
 export async function getProposalPastEvents (
   contract: ProposalsContract,
   { fromBlock = 0, toBlock = 'latest', contractName = '' }
 ): Promise<ProposalEvent[]> {
-  const pastEvents = await contract.instance.getPastEvents(
-    'ProposalCreated',
-    { fromBlock, toBlock }
-  );
+  const pastEvents = await contract.instance.getPastEvents('ProposalCreated', { fromBlock, toBlock });
 
   return pastEvents.map((evt) => ({
     blockNumber: evt.blockNumber,
@@ -77,11 +140,7 @@ export async function getProposalPastEvents (
   }));
 }
 
-export function getProposalEvents (
-  proposalType: ProposalType,
-  proposals: ProposalEvent[],
-  lastBlock: number,
-) {
+export function getProposalEvents (proposalType: ProposalType, proposals: ProposalEvent[], lastBlock: number) {
   switch (proposalType) {
     case 'q':
       return getQProposals(proposals, lastBlock);
@@ -117,7 +176,7 @@ export function createProposal (form: CreateProposalForm, address: string) {
       return createRemoveExpertProposal(form, address);
     case 'parameter-vote':
       return createParameterVoteProposal(form, address);
-  };
+  }
 }
 
 export function getProposalTypeByContract (contract: ProposalContractType): ProposalType {
@@ -157,17 +216,11 @@ export async function getProposal<T extends ProposalContractType> (
     if (status === ProposalStatus.NONE) return null;
 
     const proposal = await getContractProposal({ contract, contractType, status, id });
-    const stats = await contract.getProposalStats(id) as VotingStats;
-    const parameters = 'getParametersArr' in contract
-      ? await contract.getParametersArr(id)
-      : [];
+    const stats = (await contract.getProposalStats(id)) as VotingStats;
+    const parameters = 'getParametersArr' in contract ? await contract.getParametersArr(id) : [];
 
-    const userVoted = 'hasUserVoted' in contract
-      ? await contract.hasUserVoted(id, userAddress)
-      : false;
-    const userVetoed = 'hasRootVetoed' in contract
-      ? await contract.hasRootVetoed(id, userAddress)
-      : false;
+    const userVoted = 'hasUserVoted' in contract ? await contract.hasUserVoted(id, userAddress) : false;
+    const userVetoed = 'hasRootVetoed' in contract ? await contract.hasRootVetoed(id, userAddress) : false;
 
     const rootNodesInstance = await getRootNodesInstance();
     const rootNodesNumber = await rootNodesInstance.getSize();
@@ -192,11 +245,16 @@ export async function getProposal<T extends ProposalContractType> (
   }
 }
 
-async function getContractProposal ({ contract, id, status, contractType }: {
-  contract: ProposalsContract,
-  id: string,
-  status: ProposalStatus,
-  contractType: ProposalContractType
+async function getContractProposal ({
+  contract,
+  id,
+  status,
+  contractType,
+}: {
+  contract: ProposalsContract;
+  id: string;
+  status: ProposalStatus;
+  contractType: ProposalContractType;
 }) {
   let proposal: Partial<Proposal> = {};
   switch (contractType) {

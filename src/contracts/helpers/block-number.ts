@@ -1,14 +1,13 @@
+
 import { captureError } from 'utils/errors';
 
 export async function getMinimalActiveBlockHeight () {
   try {
-    const latestBlock = await fetchBlockNumber('latest');
-    const blocks = 1_000_000;
-    const minimalActiveBlockHeight = Math.max(0, Number(latestBlock) - Number(blocks));
-
+    const lastBlockHeight = await fetchBlockNumber('latest');
+    const minimalActiveBlockHeight = Math.max(0, Number(lastBlockHeight) - 1_000_000);
     return {
       minimalActiveBlockHeight,
-      lastBlockHeight: latestBlock,
+      lastBlockHeight,
     };
   } catch (error) {
     captureError(error);
@@ -17,7 +16,7 @@ export async function getMinimalActiveBlockHeight () {
       lastBlockHeight: 'latest',
     };
   }
-};
+}
 
 export async function fetchBlockNumber (block = 'latest') {
   try {

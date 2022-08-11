@@ -1,5 +1,8 @@
 import { BaseProposal } from '@q-dev/q-js-sdk';
-import { ConstitutionProposal, ConstitutionVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/constitution/ConstitutionVotingInstance';
+import {
+  ConstitutionProposal,
+  ConstitutionVotingInstance,
+} from '@q-dev/q-js-sdk/lib/contracts/governance/constitution/ConstitutionVotingInstance';
 import { EmergencyUpdateVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/EmergencyUpdateVotingInstance';
 import { GeneralUpdateVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/GeneralUpdateVotingInstance';
 import { flatten } from 'lodash';
@@ -10,40 +13,38 @@ import { fromWei } from 'web3-utils';
 
 import { getContractProposals } from '.';
 
-import { getConstitutionVotingInstance, getEmergencyUpdateVotingInstance, getGeneralUpdateVotingInstance } from 'contracts/contract-instance';
+import {
+  getConstitutionVotingInstance,
+  getEmergencyUpdateVotingInstance,
+  getGeneralUpdateVotingInstance,
+} from 'contracts/contract-instance';
 
-export async function getQProposals (
-  proposals: ProposalEvent[],
-  lastBlock: number
-) {
+export async function getQProposals (proposals: ProposalEvent[], lastBlock: number) {
   const newProposals = await Promise.all([
     getContractProposals({
       proposals,
       contract: await getConstitutionVotingInstance(),
       lastBlock,
-      contractName: 'constitutionVoting'
+      contractName: 'constitutionVoting',
     }),
     getContractProposals({
       proposals,
       contract: await getEmergencyUpdateVotingInstance(),
       lastBlock,
-      contractName: 'emergencyUpdateVoting'
+      contractName: 'emergencyUpdateVoting',
     }),
     getContractProposals({
       proposals,
       contract: await getGeneralUpdateVotingInstance(),
       lastBlock,
-      contractName: 'generalUpdateVoting'
-    })
+      contractName: 'generalUpdateVoting',
+    }),
   ]);
 
   return flatten(newProposals);
 }
 
-export async function createConstitutionProposal (
-  form: QProposalForm,
-  address: string
-) {
+export async function createConstitutionProposal (form: QProposalForm, address: string) {
   const contract = await getConstitutionVotingInstance();
   return await contract.createProposal(
     form.externalLink,
@@ -53,25 +54,19 @@ export async function createConstitutionProposal (
       ? form.params.map((item) => ({
         paramType: item.type,
         paramKey: item.key,
-        paramValue: item.value
+        paramValue: item.value,
       }))
       : [],
     { from: address }
   );
 }
 
-export async function createGeneralProposal (
-  form: QProposalForm,
-  address: string
-) {
+export async function createGeneralProposal (form: QProposalForm, address: string) {
   const contract = await getGeneralUpdateVotingInstance();
   return contract.createProposal(form.externalLink, { from: address });
 }
 
-export async function createEmergencyProposal (
-  form: QProposalForm,
-  address: string
-) {
+export async function createEmergencyProposal (form: QProposalForm, address: string) {
   const contract = await getEmergencyUpdateVotingInstance();
   return contract.createProposal(form.externalLink, { from: address });
 }
@@ -84,9 +79,8 @@ export async function getConstitutionProposal (
 
   const isConstitution = contract instanceof ConstitutionVotingInstance;
   const base = isConstitution
-    ? proposal.base
-    // TODO: Fix SDK
-    : proposal as unknown as BaseProposal;
+    ? proposal.base // TODO: Fix SDK
+    : (proposal as unknown as BaseProposal);
 
   return {
     remark: base.remark,
@@ -97,14 +91,8 @@ export async function getConstitutionProposal (
     votesAgainst: Number(fromWei(base.counters.weightAgainst)),
     vetoesNumber: Number(base.counters.vetosCount),
 
-    currentConstitutionHash: isConstitution
-      ? (proposal as ConstitutionProposal).currentConstitutionHash
-      : '',
-    newConstitutionHash: isConstitution
-      ? (proposal as ConstitutionProposal).newConstitutionHash
-      : '',
-    classification: isConstitution
-      ? (proposal as ConstitutionProposal).classification
-      : undefined,
+    currentConstitutionHash: isConstitution ? (proposal as ConstitutionProposal).currentConstitutionHash : '',
+    newConstitutionHash: isConstitution ? (proposal as ConstitutionProposal).newConstitutionHash : '',
+    classification: isConstitution ? (proposal as ConstitutionProposal).classification : undefined,
   };
 }
