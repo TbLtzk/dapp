@@ -703,7 +703,7 @@
   "ERROR_009001": "Ungültiger Indexwert konnte den UINT -Parameter aus der Liste nicht entfernen.",
   "ERROR_009002": "Ungültiger Indexwert konnte die Adresse nicht aus der Liste entfernen.",
   "ERROR_009003": "Ungültiger Indexwert konnte den String -Parameter aus der Liste nicht entfernen.",
-  "ERROR_009004": "Ungültiger Indexwert hat den Parameter Byte32 aus der Liste nicht entfernen.",
+  "ERROR_009004": "Ungültiger Indexwert konnte den Parameter Byte32 aus der Liste nicht entfernen.",
   "ERROR_009005": "Ungültiger Indexwert konnte den booleschen Parameter aus der Liste nicht entfernen.",
   "ERROR_009006": "Ungültige Adresse, die Adresse nicht festgelegt.",
   "ERROR_009007": "Der Parameter <Key> existiert nicht.",

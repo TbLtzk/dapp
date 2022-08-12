@@ -106,6 +106,7 @@ export function createProposal (form: CreateProposalForm, address: string) {
       return createGeneralProposal(form, address);
     case 'add-root-node':
     case 'remove-root-node':
+    case 'exit-root-node':
       return createRootNodeProposal(form, address);
     case 'root-slashing':
       return createRootNodeSlashingProposal(form, address);

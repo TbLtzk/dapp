@@ -964,5 +964,11 @@
   "SIMPLIFIED_VIEW": "Simplified view",
   "Q_CONTRACT_REGISTRY_EMPTY_MSG": "No addresses",
   "VIEW_ON_GNOSIS_SAFE_UI": "View on Gnosis Safe UI",
-  "GNOSIS_SAFE_ADDRESS": "Gnosis Safe address:"
+  "GNOSIS_SAFE_ADDRESS": "Gnosis Safe address:",
+  "VOLUNTARY_EXIT_FROM_ROOT_NODE_PANEL": "Voluntary exit from Root Node Panel",
+  "EXIT_ROOT_NODE_PANEL_WITHOUT_PROPOSAL": "Exit Root Node Panel without proposal",
+  "ARE_YOU_SURE": "Are you sure?",
+  "YOU_GOING_TO_LEAVE_ROOT_NODE_PANEL": "You going to leave Root Node Panel voluntarily (without proposal)",
+  "YOU_SUCCESSFULLY_LEFT_ROOT_NODE_PANEL": "You successfully left Root Node Panel",
+  "VOLUNTARY_EXIT": "Voluntary exit"
 }

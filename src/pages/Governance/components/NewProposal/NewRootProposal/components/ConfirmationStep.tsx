@@ -11,9 +11,9 @@ function ConfirmationStep () {
   const { t } = useTranslation();
   const { values, confirm, goBack, updateStep } = useNewRootProposal();
 
-  const proposalTypeMap: Record<RootNodeProposalForm['type'], string> = {
+  const proposalTypeMap: Partial<Record<RootNodeProposalForm['type'], string>> = {
     'add-root-node': t('ADD_ROOT_NODE'),
-    'remove-root-node': t('REMOVE_ROOT_NODE')
+    'remove-root-node': t('REMOVE_ROOT_NODE'),
   };
 
   return (
