@@ -6,7 +6,7 @@ import Input from 'ui/Input';
 
 import { RangeContainer } from './styles';
 
-import { toBigNumber, formatNumber, formatPercent } from 'utils/numbers';
+import { formatNumber, formatPercent, toBigNumber } from 'utils/numbers';
 
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   value: string

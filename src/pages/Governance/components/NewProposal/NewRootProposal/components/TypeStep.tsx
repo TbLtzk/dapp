@@ -33,6 +33,11 @@ function TypeStep () {
       label: t('REMOVE_A_CURRENT_ROOT_NODE'),
       tip: t('REMOVE_ROOT_NODE_TIP')
     },
+    {
+      value: 'exit-root-node',
+      label: t('VOLUNTARY_EXIT_FROM_ROOT_NODE_PANEL'),
+      tip: t('EXIT_ROOT_NODE_PANEL_WITHOUT_PROPOSAL')
+    },
   ];
 
   return (

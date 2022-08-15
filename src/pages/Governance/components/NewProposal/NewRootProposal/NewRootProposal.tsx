@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { RootNodeProposalForm } from 'typings/forms';
@@ -12,9 +12,11 @@ import useMultiStepForm from 'hooks/useMultiStepForm';
 
 import AddNodeStep from './components/AddNodeStep';
 import ConfirmationStep from './components/ConfirmationStep';
+import ExitRootNodeStep from './components/ExitRootNodeStep';
 import RemoveNodeStep from './components/RemoveNodeStep';
 import TypeStep from './components/TypeStep';
 
+import { userAddressMetamask } from 'store/user-inf/selectors';
 import { createProposal } from 'store/voting/proposals/actions';
 
 import formTypes from 'constants/form-types';
@@ -35,17 +37,49 @@ function NewRootProposal () {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
+  const userAddresss = useSelector(userAddressMetamask);
 
   const form = useMultiStepForm({
     initialValues: DEFAULT_VALUES,
     onConfirm: (values) => {
-      dispatch(createProposal(values, t('CREATE_PROPOSAL_SUCCESS')));
+      const createProposalValues = values.type === 'exit-root-node' ? ({ ...values, address: userAddresss }) : values;
+      const successMessage = values.type === 'exit-root-node' ? t('CREATE_PROPOSAL_SUCCESS') : t('YOU_SUCCESSFULLY_LEFT_ROOT_NODE_PANEL');
+      dispatch(createProposal(createProposalValues, successMessage));
     },
   });
 
   useMetamaskReset(formTypes.rootNodeProposal, () => {
     history.push(RoutePaths.rootNodePanel);
   });
+
+  const addOrRemoveStep = form.values.type === 'add-root-node'
+    ? {
+      id: 'add-root-node',
+      name: t('ADD_ROOT_NODE'),
+      title: t('ADD_ROOT_NODE'),
+      children: <AddNodeStep />
+    }
+    : {
+      id: 'remove-root-node',
+      name: t('REMOVE_ROOT_NODE'),
+      title: t('REMOVE_ROOT_NODE'),
+      children: <RemoveNodeStep />
+    };
+
+  const isExitFromPanel = form.values.type === 'exit-root-node'
+    ? [{
+      id: 'exit-root-node',
+      name: t('VOLUNTARY_EXIT'),
+      title: t('VOLUNTARY_EXIT'),
+      children: <ExitRootNodeStep />
+    }]
+    : [addOrRemoveStep, {
+      id: 'confirm',
+      name: t('CONFIRMATION'),
+      title: t('CONFIRMATION'),
+      tip: t('CONFIRMATION_TIP'),
+      children: <ConfirmationStep />
+    }];
 
   const steps = [
     {
@@ -54,27 +88,7 @@ function NewRootProposal () {
       title: t('TYPE_OF_ROOT_NODE_PROPOSAL'),
       children: <TypeStep />
     },
-    ...(form.values.type === 'add-root-node'
-      ? [{
-        id: 'add-root-node',
-        name: t('ADD_ROOT_NODE'),
-        title: t('ADD_ROOT_NODE'),
-        children: <AddNodeStep />
-      }]
-      : [{
-        id: 'remove-root-node',
-        name: t('REMOVE_ROOT_NODE'),
-        title: t('REMOVE_ROOT_NODE'),
-        children: <RemoveNodeStep />
-      }]
-    ),
-    {
-      id: 'confirm',
-      name: t('CONFIRMATION'),
-      title: t('CONFIRMATION'),
-      tip: t('CONFIRMATION_TIP'),
-      children: <ConfirmationStep />
-    }
+    ...isExitFromPanel
   ];
 
   return (

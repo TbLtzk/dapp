@@ -44,6 +44,7 @@ function getProposalTypeFromFormType (type: CreateProposalForm['type']): FormPro
 
     case 'add-root-node':
     case 'remove-root-node':
+    case 'exit-root-node':
       return 'rootNode';
 
     case 'root-slashing':

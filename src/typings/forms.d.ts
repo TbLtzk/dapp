@@ -31,7 +31,7 @@ interface QProposalForm {
 }
 
 interface RootNodeProposalForm {
-  type: 'add-root-node' | 'remove-root-node'
+  type: 'add-root-node' | 'remove-root-node' | 'exit-root-node'
   hash: string
   address: string
   externalLink: string
