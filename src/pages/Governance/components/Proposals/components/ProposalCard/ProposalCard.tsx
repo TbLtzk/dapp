@@ -16,6 +16,7 @@ import { ProposalCardLink } from './styles';
 
 import { getProposal } from 'contracts/helpers/voting';
 
+import { CONTRACTS_NAMES } from 'constants/contracts';
 import { formatPercent } from 'utils/numbers';
 
 function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
@@ -41,6 +42,11 @@ function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
     Number(proposalInfo?.requiredQuorum) - Number(proposalInfo?.currentQuorum),
     0
   );
+
+  const isUpdateContract = [
+    CONTRACTS_NAMES.addressVoting,
+    CONTRACTS_NAMES.upgradeVoting
+  ].includes(proposal.contract);
 
   return proposalInfo
     ? (
@@ -70,7 +76,10 @@ function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
         <div className="proposal-card__voting">
           <div className="proposal-card__quorum">
             <p className="text-md">
-              {t('QUORUM', { quorum: formatPercent(proposalInfo.currentQuorum) })}
+              {isUpdateContract
+                ? `${t('VOTED')} ${formatPercent(proposalInfo.currentQuorum)}`
+                : t('QUORUM', { quorum: formatPercent(proposalInfo.currentQuorum) })
+              }
             </p>
             <p className="text-md">
               {leftQuorum

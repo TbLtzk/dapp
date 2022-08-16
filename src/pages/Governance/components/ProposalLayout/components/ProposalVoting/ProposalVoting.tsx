@@ -11,11 +11,17 @@ import useEndTime from '../../hooks/useEndTime';
 import { getVotingColor } from './colors';
 import { StyledProposalVoting } from './styles';
 
+import { CONTRACTS_NAMES } from 'constants/contracts';
 import { formatNumber, formatPercent } from 'utils/numbers';
 
 function ProposalVoting ({ proposal }: { proposal: Proposal }) {
   const { t } = useTranslation();
   const theme = useTheme();
+
+  const isUpdateContract = [
+    CONTRACTS_NAMES.addressVoting,
+    CONTRACTS_NAMES.upgradeVoting
+  ].includes(proposal.contract);
 
   const votingEndTime = useEndTime(new Date(proposal.votingEndTime * 1000));
   const totalVotes = Number(proposal.votesFor) + Number(proposal.votesAgainst);
@@ -37,7 +43,7 @@ function ProposalVoting ({ proposal }: { proposal: Proposal }) {
       <div className="block__content">
         <p className="proposal-voting__majority text-md">
           {t('MAJORITY_REQUIREMENT', {
-            majority: formatPercent(proposal.requiredMajority)
+            majority: `>${formatPercent(proposal.requiredMajority)}`
           })}
         </p>
 
@@ -55,7 +61,9 @@ function ProposalVoting ({ proposal }: { proposal: Proposal }) {
               className="proposal-voting__vote-bg"
               style={{ backgroundColor: getVotingColor(theme, 'voteFor') }}
             />
-            <p className="text-md">{t('YES')}</p>
+            <p className="text-md">
+              {isUpdateContract ? t('VOTED') : t('YES')}
+            </p>
             <p className="text-md proposal-voting__vote-val">
               {formatPercent(proposal.votesFor / totalVotes * 100 || 0)}
             </p>
@@ -69,7 +77,9 @@ function ProposalVoting ({ proposal }: { proposal: Proposal }) {
               className="proposal-voting__vote-bg"
               style={{ backgroundColor: getVotingColor(theme, 'voteAgainst') }}
             />
-            <p className="text-md">{t('NO')}</p>
+            <p className="text-md">
+              {isUpdateContract ? t('DID_NOT_VOTE') : t('NO')}
+            </p>
             <p className="text-md proposal-voting__vote-val">
               {formatPercent(proposal.votesAgainst / totalVotes * 100 || 0)}
             </p>
