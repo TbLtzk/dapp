@@ -19,12 +19,14 @@ interface Props {
   tiny?: boolean;
   header?: ReactNode;
   bottomButtons?: ReactNode;
+  buttons?: ReactNode;
 }
 
 const Table = ({
   loading,
   table,
   error,
+  buttons,
   columns,
   perPage = 1000,
   emptyTableMessage,
@@ -86,7 +88,15 @@ const Table = ({
             >
               {(props) => (
                 <>
-                  {!tiny && <Search value={props.searchProps.searchText} onChange={props.searchProps.onSearch} />}
+                  {tiny
+                    ? null
+                    : (
+                      <div className="head-elements">
+                        <Search value={props.searchProps.searchText} onChange={props.searchProps.onSearch} />
+                        {buttons}
+                      </div>
+                    )}
+
                   <BootstrapTable {...props.baseProps} {...paginationTableProps} />
                   {isEmpty && (
                     <div className="text-center">
@@ -113,9 +123,7 @@ const Table = ({
         <div className="table-header">{header}</div>
         {tableContent()}
       </div>
-      {bottomButtons && (
-        <div className="bottom-buttons">{bottomButtons}</div>
-      )}
+      {bottomButtons && <div className="bottom-buttons">{bottomButtons}</div>}
     </TableContainer>
   );
 };

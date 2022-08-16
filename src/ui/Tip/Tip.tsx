@@ -30,7 +30,7 @@ function Tip ({
       {...rest}
     >
       <Icon name={typeToIcon[type]} className="tip-icon" />
-      <p className="tip-text text-md">{children}</p>
+      <div className="tip-text text-md">{children}</div>
       <div className="tip-action">{action}</div>
     </TipWrapper>
   );

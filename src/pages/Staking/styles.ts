@@ -12,24 +12,27 @@ export const StakingContainer = styled.div`
   .block {
     margin-top: 30px;
     margin-bottom: 40px;
-    
+
     .block_header {
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 8px;
-      
+
       .block_header-title {
         display: flex;
         align-items: center;
+        justify-content: space-between;
       }
 
       .block_header-buttons {
         display: flex;
         flex-wrap: wrap;
+        justify-content: flex-end;
+        align-items: center;
         gap: 16px;
 
-        ${media.lessThan('medium')} {
+        ${media.lessThan('small')} {
           display: contents;
         }
       }
@@ -48,92 +51,69 @@ export const StakingContainer = styled.div`
 
         ${media.lessThan('medium')} {
           padding: 8px 0;
-        
-        &:nth-child(even) {
-          border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
 
-          ${media.lessThan('medium')} {
+          &:nth-child(even) {
+            border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
+
+            ${media.lessThan('medium')} {
+              border-left: none;
+            }
+          }
+
+          &:nth-child(odd) {
+            border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
+
+            ${media.lessThan('medium')} {
+              border-left: none;
+            }
+          }
+
+          &:first-child,
+          &:nth-child(3n + 1) {
             border-left: none;
           }
         }
-        
-        &:nth-child(odd) {
-          border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
 
-          ${media.lessThan('medium')} {
-            border-left: none;
-          }
-        }
-
-        &:first-child,
-        &:nth-child(3n + 1) {
-          border-left: none;
+        p {
+          margin-top: 4px;
         }
       }
-
-      p {
-        margin-top: 4px;
-      }
-    }
     }
   }
 
-  .delegation-reward_container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
+  .delegation-info_container {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
 
     ${media.lessThan('medium')} {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 16px;
-      border-bottom: 1px solid ${({ theme }) => theme.colors.blockDivider};
-      margin-top: 16px;
-      padding-bottom: 16px;
-      margin-bottom: 16px;
+      grid-template-columns: 1fr;
+    }
+
+    .delegation-item {
+      display: grid;
+      gap: 4px;
+      align-content: start;
+      padding: 24px;
+
+      ${media.lessThan('medium')} {
+        padding: 8px 0;
+      }
+
+      &:not(:first-child) {
+        ${media.greaterThan('medium')} {
+          border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
+        }
+      }
     }
   }
 
-  .delegation-form_container {
-    display: flex;
-    width: 100%;
-    justify-content: flex-start;
-    margin-bottom: 10px;
-    margin-top: 10px;
+`;
 
-    .delegation-form_inputs {
-      display: flex;
-      width: 100%;
-      div:first-child {
-        margin-right: 10px;
-      }
-    }
-    .delegation-form_buttons {
-      width: 100px;
-      padding-top: 32px;
-      padding-left: 5px;
-    }
-  }
-
-  ${media.lessThan('medium')} {
-    .delegation-form_container {
-      display: flex;
-      width: 100%;
-      justify-content: flex-start;
-      margin-bottom: 10px;
-      margin-top: 10px;
-
-      .delegation-form_inputs {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .delegation-form_buttons {
-        display: flex;
-        align-items: center;
-        margin-left: 15px;
-      }
-    }
+export const StakeFormContainer = styled.form`
+  .validator-info {
+    margin-bottom: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 `;

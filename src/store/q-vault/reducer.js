@@ -11,7 +11,6 @@ const initialState = {
   deposit: 0,
   lastClaim: 0,
 
-  delegationList: [],
   loadingDelegationList: false,
   errorDelegationList: null,
   receivedWeight: '0',
@@ -20,7 +19,9 @@ const initialState = {
   votingAgentPassOverTime: 0,
 
   qvBalance: {},
-  outstandingDelegationRewards: 0,
+
+  delegationList: [],
+  delegationStakeInfo: {},
 
   qVaultMinimumTimeLock: '0',
   qVaultTimeLocks: []
@@ -68,16 +69,15 @@ export default function qVault (state = initialState, action) {
         ...state,
         qvBalance: action.result
       };
-    case actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS_SUCCESS:
+    case actionTypes.GET_DELEGATION_STAKE_INFO_SUCCESS:
       return {
         ...state,
-        outstandingDelegationRewards: action.result,
-        lastClaim: +new Date()
+        delegationStakeInfo: action.delegationStakeInfo,
       };
-    case actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS_ERROR:
+    case actionTypes.GET_DELEGATION_STAKE_INFO_ERROR:
       return {
         ...state,
-        outstandingDelegationRewards: 0
+        delegationStakeInfo: {}
       };
     case actionTypes.SET_QVAULT_MINIMUM_TIME_LOCK:
       return {

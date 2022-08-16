@@ -15,6 +15,7 @@ import Imprint from 'pages/Imprint';
 import Monitoring from 'pages/Monitoring';
 import NotFound from 'pages/NotFound';
 import Staking from 'pages/Staking';
+import ManageDelegations from 'pages/Staking/components/DelegationStaking/components/ManageDelegations';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
@@ -91,6 +92,10 @@ function Routes () {
 
         <Route exact path="/staking/:slug?">
           <Staking />
+        </Route>
+
+        <Route exact path="/staking/delegations/:slug?">
+          <ManageDelegations />
         </Route>
 
         <Route exact path="/saving-and-borrowing">

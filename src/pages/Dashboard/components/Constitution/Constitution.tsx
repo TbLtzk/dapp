@@ -46,7 +46,7 @@ function Constitution () {
           >
             <Button alwaysEnabled>
               <i className="mdi mdi-download" />
-              <span>{t('DOWNLOAD_LATEST_VERSION')}</span>
+              <span>{t('DOWNLOAD_LATEST')}</span>
             </Button>
           </a>
           <a
