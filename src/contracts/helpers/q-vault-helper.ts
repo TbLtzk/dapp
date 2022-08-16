@@ -1,9 +1,9 @@
 import { StakeDelegationInfo } from '@q-dev/q-js-sdk';
 import { fromWei, toWei } from 'web3-utils';
 
-import { contractRegistryInstance, getQVaultInstance } from 'contracts/contract-instance';
+import { contractRegistryInstance, getQVaultInstance, getValidationRewardPoolsInstance } from 'contracts/contract-instance';
 
-import { toBigNumber } from 'utils/numbers';
+import { toBigNumber, transformToPercentage } from 'utils/numbers';
 
 export async function getQHolderRewardPool () {
   const address = await contractRegistryInstance?.instance.methods.getAddress('tokeneconomics.qHolderRewardPool').call();
@@ -11,7 +11,7 @@ export async function getQHolderRewardPool () {
   return fromWei(balance);
 }
 
-export function getOutstandingDelegationRewardsList (delegationsList: StakeDelegationInfo[]) {
+export function countTotalStakeReward (delegationsList: StakeDelegationInfo[]) {
   return delegationsList
     .map((member) => Number(fromWei(member.claimableReward)))
     .reduce((acc, curr) => acc + curr, 0);
@@ -29,4 +29,17 @@ export async function getQVaultDepositAmount (address: string) {
 
   const result = toBigNumber(amount).minus(toWei(gas)).toString(10);
   return fromWei(result);
+}
+
+export async function getDelegatorsShare (delegation: StakeDelegationInfo) {
+  const validatorInstance = await getValidationRewardPoolsInstance();
+  const delegatorShare = await validatorInstance.getDelegatorsShare(delegation.validator);
+  return {
+    ...delegation,
+    claimableReward: fromWei(delegation.claimableReward),
+    actualStake: fromWei(delegation.actualStake),
+    idealStake: fromWei(delegation.idealStake),
+    normalizedStake: fromWei(delegation.normalizedStake),
+    delegatorShare: transformToPercentage(delegatorShare)
+  };
 }

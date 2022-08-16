@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { media } from 'styles/media';
 
 import { getTableColor } from './colors';
 
@@ -7,6 +8,18 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
     width: 100%;
     max-width: 100%;
     overflow-x: auto;
+  }
+
+  .head-elements {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    ${media.lessThan('tablet')} {
+      flex-direction: column-reverse;
+      align-items: flex-end;
+      gap: 12px;
+    }
   }
 
   .table {
@@ -24,6 +37,7 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
     }
 
     .search-container {
+      width: 100%;
       max-width: 343px;
     }
 
@@ -46,7 +60,7 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
       font-size: 14px;
       line-height: 17px;
       border-style: none;
-      padding: ${({ tiny }) => (tiny ? '8px' : '16px 24px')};
+      padding: ${({ tiny }) => (tiny ? '8px' : '16px')};
       color: ${({ theme }) => getTableColor(theme, 'tableHeader')};
       background: transparent;
     }
@@ -68,7 +82,7 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
         };
         margin-bottom: ${({ tiny }) => (tiny ? 0 : 10)}px;
         gap: 20px;
-        height: ${({ tiny }) => (tiny ? 'auto' : 72)}px;
+        height: ${({ tiny }) => (tiny ? 'auto' : 60)}px;
 
         ${({ tiny }) => !tiny && css`
           box-shadow: inset 0 0 1px 1px ${({ theme }) => theme.colors.blockHover};
@@ -86,7 +100,7 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
     }
 
     td {
-      padding: ${({ tiny }) => (tiny ? 10 : 26)}px;
+      padding: ${({ tiny }) => (tiny ? 10 : 15)}px;
 
       ${({ tiny }) => tiny && css`
         border-top: 1px solid ${({ theme }) => theme.colors.blockHover} !important;

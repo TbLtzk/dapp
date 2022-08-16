@@ -31,39 +31,39 @@ function ValidatorBalanceInfo () {
   return (
     <div className="block-body">
       <div>
-        <p className="text-md">{t('STATUS')}</p>
-        <h4 className="text-xl">{isThisUserValidator ? t('ACTIVE_VALIDATOR') : t('NOT_A_VALIDATOR')}</h4>
+        <p className="color-secondary text-md">{t('STATUS')}</p>
+        <h4 className="text-lg">{isThisUserValidator ? t('ACTIVE_VALIDATOR') : t('NOT_A_VALIDATOR')}</h4>
       </div>
       <div>
-        <p className="text-md">{t('CURRENT_RANK')}</p>
-        <h4 className="text-xl">{userRank ? `${userRank} #` : '-'}</h4>
+        <p className="color-secondary text-md">{t('CURRENT_RANK')}</p>
+        <h4 className="text-lg">{userRank ? `${userRank} #` : '-'}</h4>
       </div>
 
       <div>
-        <p className="text-md">{t('STAKE_IN_VALIDATOR_RANKING')}</p>
-        <h4 className="text-xl">{formatAsset(userAccountableTotalStake, 'Q')}</h4>
+        <p className="color-secondary text-md">{t('STAKE_IN_VALIDATOR_RANKING')}</p>
+        <h4 className="text-lg">{formatAsset(userAccountableTotalStake, 'Q')}</h4>
       </div>
 
       {Number(validatorLockedAmount) > 0 && (
         <div>
-          <p className="text-md">{t('TIME_LOCKED_AMOUNT')}</p>
-          <h4 className="text-xl">{formatAsset(validatorLockedAmount, 'Q')}</h4>
+          <p className="color-secondary text-md">{t('TIME_LOCKED_AMOUNT')}</p>
+          <h4 className="text-lg">{formatAsset(validatorLockedAmount, 'Q')}</h4>
         </div>
       )}
 
       <div>
-        <p className="text-md">{t('ANNOUNCE_WITHDRAWAL')}</p>
-        <h4 className="text-xl">{formatAsset(fromWei(withdrawalInfo.amount || '0'), 'Q')}</h4>
+        <p className="color-secondary text-md">{t('ANNOUNCE_WITHDRAWAL')}</p>
+        <h4 className="text-lg">{formatAsset(fromWei(withdrawalInfo.amount || '0'), 'Q')}</h4>
       </div>
 
       <div>
-        <p className="text-md">{t('ANNOUNCEMENT_STATUS')}</p>
-        <h4 className="text-xl">{Number(withdrawalInfo?.amount) > 0 ? 'Pending' : '-'}</h4>
+        <p className="color-secondary text-md">{t('ANNOUNCEMENT_STATUS')}</p>
+        <h4 className="text-lg">{Number(withdrawalInfo?.amount) > 0 ? 'Pending' : '-'}</h4>
       </div>
 
       <div>
-        <p className="text-md">{t('ANNOUNCEMENT_END')}</p>
-        <h4 className="text-xl">
+        <p className="color-secondary text-md">{t('ANNOUNCEMENT_END')}</p>
+        <h4 className="text-lg">
           {withdrawalInfo && Number(withdrawalInfo?.amount) > 0 ? formatDateGMT(unixToDate(withdrawalInfo.endTime)) : '-'}
         </h4>
       </div>

@@ -1,4 +1,4 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { all, call, put, select, takeEvery } from 'redux-saga/effects';
 import { fromWei, toWei } from 'web3-utils';
 
 import {
@@ -7,10 +7,10 @@ import {
   getDelegationsList,
   getDelegationsListError,
   getDelegationsListSuccess,
+  getDelegationStakeInfo,
+  getDelegationStakeInfoError,
+  getDelegationStakeInfoSuccess,
   getLockedAssets,
-  getOutstandingDelegationRewards,
-  getOutstandingDelegationRewardsError,
-  getOutstandingDelegationRewardsSuccess,
   getQVBalanceSuccess,
   getUserBalance,
   setAccountBalance,
@@ -30,7 +30,7 @@ import {
 } from 'store/transaction-handler/actions';
 
 import { getQVaultInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance';
-import { getOutstandingDelegationRewardsList, getQHolderRewardPool } from 'contracts/helpers/q-vault-helper';
+import { countTotalStakeReward, getDelegatorsShare, getQHolderRewardPool } from 'contracts/helpers/q-vault-helper';
 
 import formTypes from 'constants/form-types';
 import { TRANSACTION_TYPES } from 'constants/statuses';
@@ -126,16 +126,16 @@ function* setWithdrawGenerator ({ address, amountQ, label }) {
   }
 }
 
-function* setDelegateStakeGenerator ({ address, delegateAddresses, stakes, label }) {
+function* setDelegateStakeGenerator ({ delegateAddresses, stakes, label }) {
   try {
     yield put(setTransactionLoading());
 
     const { userAddress } = yield select((state) => state.userInf);
 
     const contract = yield call(getQVaultInstance);
-    const transaction = yield contract.delegateStake(delegateAddresses, stakes, { from: address });
+    const transaction = yield contract.delegateStake(delegateAddresses, stakes, { from: userAddress });
 
-    yield put(getOutstandingDelegationRewards());
+    yield put(getDelegationStakeInfo());
     yield put(getDelegationsList());
     yield put(getAccountBalance(userAddress));
     yield put(getDelegationInfo(userAddress));
@@ -183,11 +183,7 @@ function* setUnlockAmountGenerator ({ address, amountQ, label }) {
     yield put(getLockedAssets(address));
     yield put(getDelegationInfo(userAddress));
 
-    yield put(
-      setTransactionLoadingSuccess(
-        getSuccessMessage(formTypes.qVaultUnlock, transaction, label)
-      )
-    );
+    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.qVaultUnlock, transaction, label)));
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));
@@ -198,24 +194,31 @@ function* getDelegationListGenerator () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
     const contract = yield call(getQVaultInstance);
-    const data = yield contract.getDelegationsList(userAddress);
-    yield put(getDelegationsListSuccess(data));
+    const delegationsList = yield contract.getDelegationsList(userAddress);
+    const delegationsListWithShare = yield all(delegationsList.map(getDelegatorsShare));
+    yield put(getDelegationsListSuccess(delegationsListWithShare));
   } catch (error) {
     getErrorMessage(error);
     yield put(getDelegationsListError(error.message));
   }
 }
 
-function* getOutstandingDelegationRewardsValueGenerator () {
+function* getDelegationStakeInfoGenerator () {
   try {
     const { userAddress } = yield select((state) => state.userInf);
 
     const contract = yield call(getQVaultInstance);
-    const data = yield contract.getDelegationsList(userAddress);
-    const result = getOutstandingDelegationRewardsList(data);
-    yield put(getOutstandingDelegationRewardsSuccess(result));
+    const delegationsList = yield contract.getDelegationsList(userAddress);
+    const totalDelegatedStake = yield contract.getTotalDelegatedStake(userAddress);
+    const delegatableAmount = yield contract.getDelegatableAmount(userAddress);
+
+    yield put(getDelegationStakeInfoSuccess({
+      totalDelegatedStake: fromWei(totalDelegatedStake),
+      delegatableAmount: fromWei(delegatableAmount),
+      totalStakeReward: countTotalStakeReward(delegationsList),
+    }));
   } catch (error) {
-    yield put(getOutstandingDelegationRewardsError(error));
+    yield put(getDelegationStakeInfoError({}));
     captureError(error);
   }
 }
@@ -249,7 +252,7 @@ function* setOnClaimStakeDelegatorRewardGenerator ({ label }) {
     const contract = yield call(getQVaultInstance);
     const transaction = yield contract.claimStakeDelegatorReward({ from: userAddress });
 
-    yield put(getOutstandingDelegationRewards());
+    yield put(getDelegationStakeInfo());
     yield put(getDelegationsList());
     yield put(getAccountBalance(userAddress));
 
@@ -271,7 +274,7 @@ function* getBalanceDetailsGenerator () {
       interestRatePercentage: calculateInterestRate(Number(balanceDetailsData.interestRate)),
       yearlyExpectedEarnings: userBalance
         ? userQVBalance * (calculateInterestRate(Number(balanceDetailsData.interestRate)) / 100)
-        : 0
+        : 0,
     };
     yield put(getQVBalanceSuccess({ ...balanceDetails, qHolderRewardPool }));
   } catch (error) {
@@ -335,7 +338,7 @@ export default [
 
   takeEvery(actionTypes.GET_DELEGATIONS_LIST, getDelegationListGenerator),
   takeEvery(actionTypes.GET_QV_BALANCE, getBalanceDetailsGenerator),
-  takeEvery(actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS, getOutstandingDelegationRewardsValueGenerator),
+  takeEvery(actionTypes.GET_DELEGATION_STAKE_INFO, getDelegationStakeInfoGenerator),
   takeEvery(actionTypes.SET_ANNOUNCE_VOTING_AGENT, setAnnounceNewVotingAgentGenerator),
   takeEvery(actionTypes.SET_NEW_VOTING_AGENT, setNewVotingAgentGenerator),
 

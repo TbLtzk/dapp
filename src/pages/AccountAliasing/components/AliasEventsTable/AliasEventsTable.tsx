@@ -58,7 +58,7 @@ function AliasEventsTable ({ address }: { address: string }) {
           table={table}
           loading={isEventsLoading}
           emptyTableMessage={t('NO_EVENTS')}
-          perPage={10}
+          perPage={20}
         />
       </div>
     </div>

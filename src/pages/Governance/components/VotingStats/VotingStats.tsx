@@ -73,7 +73,7 @@ function VotingStats () {
             alwaysEnabled
             look="secondary"
           >
-            {t('MANAGE_VAULT')}
+            {t('GO_TO_Q_VAULT')}
           </Button>
         </Link>
       </div>

@@ -120,7 +120,7 @@ function RootNodeTable ({ tableType }: Props) {
           )}
         </div>
       }
-      perPage={5}
+      perPage={20}
       table={tableData}
       columns={columns}
       loading={tableLoading}

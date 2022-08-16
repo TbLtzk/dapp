@@ -11,6 +11,8 @@ import RootNodeStaking from './components/RootNodeStaking';
 import ValidatorStaking from './components/ValidatorStaking';
 import { StakingContainer } from './styles';
 
+import { RoutePaths } from 'constants/routes';
+
 function Staking () {
   const { t } = useTranslation();
 
@@ -18,18 +20,18 @@ function Staking () {
     {
       id: 'root-node-staking',
       label: t('ROOT_NODE_STAKING'),
-      link: '/staking/root-node-staking',
+      link: RoutePaths.stakingRootNode,
     },
     {
       id: 'validator-staking',
       label: t('VALIDATOR_STAKING'),
-      link: '/staking/validator-staking',
+      link: RoutePaths.stakingValidators,
     },
 
     {
-      id: 'delegator-staking',
+      id: 'delegations',
       label: t('DELEGATOR_STAKING'),
-      link: '/staking/delegator-staking',
+      link: RoutePaths.stakingDelegations,
     },
   ];
 
@@ -39,16 +41,16 @@ function Staking () {
         <Tabs tabs={tabs} />
         <TabSwitch>
           <>
-            <Route exact path="/staking">
-              <Redirect to="/staking/root-node-staking" />
+            <Route exact path={RoutePaths.staking}>
+              <Redirect to={RoutePaths.stakingRootNode} />
             </Route>
-            <TabRoute exact path="/staking/root-node-staking">
+            <TabRoute exact path={RoutePaths.stakingRootNode}>
               <RootNodeStaking />
             </TabRoute>
-            <TabRoute exact path="/staking/validator-staking">
+            <TabRoute exact path={RoutePaths.stakingValidators}>
               <ValidatorStaking />
             </TabRoute>
-            <TabRoute exact path="/staking/delegator-staking">
+            <TabRoute exact path={RoutePaths.stakingDelegations}>
               <DelegationStaking />
             </TabRoute>
           </>

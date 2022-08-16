@@ -26,5 +26,12 @@ export enum RoutePaths {
   qRootNodeSelectionExpertPanelParameters = '/q-parameters/root-node-selection-experts',
   qFeesAndIncentivesExpertPanel = '/q-parameters/fees-and-incentives-experts',
   qContractRegistry = '/q-parameters/contract-registry',
-  qConstitution = '/q-parameters/constitution'
+  qConstitution = '/q-parameters/constitution',
+
+  staking = '/staking',
+  stakingRootNode = '/staking/root-node-staking',
+  stakingValidators = '/staking/validator-staking',
+  stakingDelegations = '/staking/delegations',
+  stakingDelegationsValidators = '/staking/delegations/validators',
+  stakingDelegationsManual = '/staking/delegations/manual'
 }

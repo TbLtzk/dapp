@@ -63,9 +63,8 @@ export const setUnlockAmount = (address, amountQ, label) => ({
   label
 });
 
-export const setDelegateStake = (address, delegateAddresses, stakes, label) => ({
+export const setDelegateStake = (delegateAddresses, stakes, label) => ({
   type: actionTypes.SET_DELEGATE_STAKE,
-  address,
   delegateAddresses,
   stakes,
   label
@@ -118,17 +117,16 @@ export const setNewVotingAgent = (label) => ({
   label
 });
 
-export const getOutstandingDelegationRewards = () => ({
-  type: actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS,
+export const getDelegationStakeInfo = () => ({
+  type: actionTypes.GET_DELEGATION_STAKE_INFO,
 });
 
-export const getOutstandingDelegationRewardsSuccess = (result) => ({
-  type: actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS_SUCCESS,
-  result,
+export const getDelegationStakeInfoSuccess = (delegationStakeInfo) => ({
+  type: actionTypes.GET_DELEGATION_STAKE_INFO_SUCCESS,
+  delegationStakeInfo,
 });
-export const getOutstandingDelegationRewardsError = (result) => ({
-  type: actionTypes.GET_OUTSTANDING_DELEGATION_REWARDS_ERROR,
-  result,
+export const getDelegationStakeInfoError = () => ({
+  type: actionTypes.GET_DELEGATION_STAKE_INFO_ERROR,
 });
 
 export const getMinimumQVaultTimeLock = (address) => ({

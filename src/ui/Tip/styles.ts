@@ -17,7 +17,7 @@ export const TipWrapper = styled.div<{
   
   .tip-icon {
     color: ${({ theme, $type }) => getTipColor(theme, `${$type}Icon`)};
-    align-self: start;
+    align-self: center;
   }
 
   .tip-text {
