@@ -1,0 +1,149 @@
+
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+
+import styled from 'styled-components';
+import { media } from 'styles/media';
+
+import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import Button from 'ui/Button';
+import Tooltip from 'ui/Tooltip';
+
+import useAnimateNumber from 'hooks/useAnimateNumber';
+import useInterval from 'hooks/useInterval';
+
+import { getSavingRate } from 'store/borrowing-core/actions';
+import { savingRateSelector } from 'store/borrowing-core/selectors';
+import { getStableCoinTotalSupply, getSystemBalance } from 'store/system-balance/action-creators';
+import { stableCoinTotalSupplySelector, systemBalanceSelector } from 'store/system-balance/selectors';
+import { userAddressMetamask } from 'store/user-inf/selectors';
+
+import { getStableCoinInstance } from 'contracts/contract-instance';
+import { getTimeSinceRefreshBalance, refreshTimeSinceRefreshBalance } from 'contracts/helpers/borrowing-core';
+
+import { formatDate, formatDateRelative } from 'utils/date';
+
+const StyledWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+
+  ${media.lessThan('medium')} {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .balance-overview-refresh {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+
+    ${media.lessThan('medium')} {
+      justify-content: space-between;
+    }
+  }
+
+  .balance-overview-refresh-icon {
+    font-size: 20px;
+  }
+`;
+
+function BalanceOverview () {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const userAddress = useSelector(userAddressMetamask);
+  const systemBalance = useSelector(systemBalanceSelector);
+  const totalSupply = useSelector(stableCoinTotalSupplySelector);
+  const savingRate = useSelector(savingRateSelector);
+
+  const [stableCoinAddress, setStableCoinAddress] = useState('…');
+  const [timeSinceRefreshBalance, setTimeSinceRefreshBalance] = useState<Date | null>(null);
+  const [loadingTimeSinceRefreshBalance, setLoadingTimeSinceRefreshBalance] = useState(false);
+
+  const systemBalanceRef = useAnimateNumber(systemBalance, ' QUSD');
+  const totalSupplyRef = useAnimateNumber(totalSupply, ' QUSD');
+  const savingRateRef = useAnimateNumber(savingRate, ' %');
+
+  useEffect(() => {
+    getStableCoinInstance().then((contract) => setStableCoinAddress(contract.address));
+
+    dispatch(getSavingRate());
+    dispatch(getSystemBalance());
+    dispatch(getStableCoinTotalSupply());
+    getTimeSinceRefreshBalance().then(setTimeSinceRefreshBalance);
+
+    return () => setStableCoinAddress('');
+  }, []);
+
+  useInterval(() => {
+    getTimeSinceRefreshBalance().then(setTimeSinceRefreshBalance);
+  }, 50000, loadingTimeSinceRefreshBalance);
+
+  const handleRefreshBalance = async () => {
+    setLoadingTimeSinceRefreshBalance(true);
+    await refreshTimeSinceRefreshBalance({
+      userAddress,
+      dispatch,
+      label: t('SAVING_TIME_SINSE_REFRESH_SUCCESS')
+    });
+
+    getTimeSinceRefreshBalance().then(setTimeSinceRefreshBalance);
+    setLoadingTimeSinceRefreshBalance(false);
+    dispatch(getSystemBalance());
+  };
+
+  return (
+    <StyledWrapper className="block">
+      <div>
+        <ExplorerAddress
+          short
+          semibold
+          className="text-xl"
+          address={stableCoinAddress}
+        />
+        <p className="text-md color-secondary">{t('QUSD_CONTRACT')}</p>
+      </div>
+
+      <div>
+        <p ref={totalSupplyRef} className="text-xl font-semibold">0 QUSD</p>
+        <p className="text-md color-secondary">{t('QUSD_TOTAL_SUPPLY')}</p>
+      </div>
+
+      <div>
+        <p ref={savingRateRef} className="text-xl font-semibold">0 %</p>
+        <p className="text-md color-secondary">{t('QUSD_SAVING_REWARD')}</p>
+      </div>
+
+      <div>
+        <p ref={systemBalanceRef} className="text-xl font-semibold">0 QUSD</p>
+        <p className="text-md color-secondary">{t('QUSD_SYSTEM_BALANCE')}</p>
+      </div>
+
+      <div className="balance-overview-refresh">
+        <div>
+          <Tooltip
+            trigger={(
+              <p className="text-xl font-semibold">
+                {formatDateRelative(timeSinceRefreshBalance)}
+              </p>
+            )}
+          >
+            {formatDate(timeSinceRefreshBalance)}
+          </Tooltip>
+          <p className="text-md color-secondary">{t('QUSD_SAVING_BALANCE_REFRESHED')}</p>
+        </div>
+        <Button
+          icon
+          loading={loadingTimeSinceRefreshBalance}
+          onClick={handleRefreshBalance}
+        >
+          {!loadingTimeSinceRefreshBalance && <i className="mdi mdi-cached balance-overview-refresh-icon" />}
+        </Button>
+      </div>
+    </StyledWrapper>
+  );
+}
+
+export default BalanceOverview;

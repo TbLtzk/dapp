@@ -1,10 +1,11 @@
 import Web3 from 'web3';
 
-type NetworkName = 'mainnet' | 'testnet' | 'devnet';
+export type NetworkName = 'mainnet' | 'testnet' | 'devnet';
 
 interface NetworkConfig {
   chainId: number;
   name: string;
+  networkName: NetworkName;
   dAppUrl: string;
   rpcUrl: string;
   indexerUrl: string;
@@ -13,6 +14,7 @@ interface NetworkConfig {
   qBridgeUrl: string;
   docsUrl: string;
   constitutionUrl: string;
+  constitutionUpdatedAt: number;
   featureFlags: {
     aliases: boolean;
   };
@@ -34,6 +36,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
   mainnet: {
     chainId: 35441,
     name: 'Q Mainnet',
+    networkName: 'mainnet',
     dAppUrl: 'https://hq.q.org',
     rpcUrl: 'https://rpc.q.org',
     indexerUrl: 'https://indexer.q.org',
@@ -42,11 +45,13 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     qBridgeUrl: 'https://bridge.q.org',
     docsUrl: 'https://docs.q.org',
     constitutionUrl: 'https://constitution.q.org',
+    constitutionUpdatedAt: 1657120401000,
     featureFlags: { aliases: false },
   },
   testnet: {
     chainId: 35443,
     name: 'Q Testnet',
+    networkName: 'testnet',
     dAppUrl: 'https://hq.qtestnet.org',
     rpcUrl: 'https://rpc.qtestnet.org',
     indexerUrl: 'https://indexer.qtestnet.org',
@@ -55,11 +60,13 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     qBridgeUrl: 'https://bridge.qtestnet.org',
     docsUrl: 'https://docs.qtestnet.org',
     constitutionUrl: 'https://constitution.qtestnet.org',
+    constitutionUpdatedAt: 1657120425000,
     featureFlags: { aliases: false },
   },
   devnet: {
     chainId: 35442,
     name: 'Q Devnet',
+    networkName: 'devnet',
     dAppUrl: 'http://63.34.190.209:8000',
     rpcUrl: 'http://63.34.190.209:8545',
     indexerUrl: 'http://63.34.190.209:4000',
@@ -68,6 +75,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     qBridgeUrl: 'http://63.34.190.209:8080',
     docsUrl: 'https://docs.qtestnet.org',
     constitutionUrl: 'http://34.248.83.162:8999',
+    constitutionUpdatedAt: 1652719113000,
     featureFlags: { aliases: true },
   },
 };

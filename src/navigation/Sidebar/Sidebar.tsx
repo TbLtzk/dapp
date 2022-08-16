@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import logo from 'assets/img/logo.png';
 
@@ -21,6 +21,8 @@ import { activeProposalsCountSelector } from 'store/voting/proposals/selectors';
 function Sidebar ({ open, onClose }: { open: boolean, onClose: () => void }) {
   const { t } = useTranslation();
   const { featureFlags } = useNetworkConfig();
+
+  const { pathname } = useLocation();
 
   const activeProposalsCount = useSelector(activeProposalsCountSelector);
   const activeAuctionsCount = useSelector(activeAuctionsCountSelector);
@@ -44,6 +46,7 @@ function Sidebar ({ open, onClose }: { open: boolean, onClose: () => void }) {
           <div className="sidebar-main">
             <div className="sidebar-links">
               <SidebarLink
+                exact={!pathname.includes('dashboard')}
                 to="/"
                 title={t('DASHBOARD')}
                 icon="dashboard"

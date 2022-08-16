@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ValidatorsTable from 'components/Tables/ValidatorsTable';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 import Button from 'ui/Button';
 
 import StakerRewardPool from './components/StakerRewardPool';
 import ValidatorBalanceInfo from './components/ValidatorBalanceInfo';
 import ValidatorMenu from './components/ValidatorMenu';
+import ValidatorsTable from './components/ValidatorsTable';
 
 import { getAccountBalance } from 'store/q-vault/action-creators';
 import { userAddressMetamask } from 'store/user-inf/selectors';
@@ -67,7 +67,7 @@ function ValidatorStaking () {
 
         <ValidatorBalanceInfo />
       </div>
-      <ValidatorsTable tableType="validators-widened" />
+      <ValidatorsTable />
     </>
   );
 }

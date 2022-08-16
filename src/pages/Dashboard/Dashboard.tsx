@@ -1,70 +1,38 @@
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Switch } from 'react-router';
 
-import PageLayout from 'components/PageLayout';
-import DefiMembersPanel from 'components/Tables/DeFiMembersTable';
-import EprsMembersPanel from 'components/Tables/EprsMembersTable';
-import QFeesMembersPanel from 'components/Tables/QFeesMembersTable';
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
+import { TabRoute } from 'ui/Tabs/components';
 
-import Blockchain from './components/Blockchain';
-import Constitution from './components/Constitution';
-import RootNodesBlock from './components/RootNodesBlock';
-import SavingBorrowingBlock from './components/SavingBorrowingBlock';
-import TokenomicsBlock from './components/TokenomicsBlock';
-import ValidatorsBlock from './components/ValidatorsBlock';
-import { DashboardContent } from './styles';
+import DashboardLayout from './DashboardLayout';
+import RootNodesMonitoring from './RootNodesMonitoring';
+import SavingBorrowing from './SavingBorrowing';
+import Tokenomics from './Tokenomics';
+import ValidatorsMonitoring from './ValidatorsMonitoring';
+
+import { RoutePaths } from 'constants/routes';
 
 function Dashboard () {
-  const { t } = useTranslation();
-
   return (
-    <PageLayout
-      title={t('DASHBOARD')}
-      action={
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <Link to="/monitoring">
-            <Button
-              block
-              alwaysEnabled
-              look="secondary"
-            >
-              <Icon name="monitor" />
-              <span>{t('MONITORING')}</span>
-            </Button>
-          </Link>
+    <Switch>
+      <TabRoute exact path={RoutePaths.dashboard}>
+        <DashboardLayout />
+      </TabRoute>
 
-          <Link to="/q-parameters">
-            <Button
-              block
-              alwaysEnabled
-              look="secondary"
-            >
-              <Icon name="list" />
-              <span>{t('Q_PARAMETERS')}</span>
-            </Button>
-          </Link>
-        </div>
-      }
-    >
-      <DashboardContent>
-        <div className="dashboard-block">
-          <Blockchain />
-          <Constitution />
-          <TokenomicsBlock />
-          <SavingBorrowingBlock />
-        </div>
+      <TabRoute exact path={RoutePaths.dashboardTokenomics}>
+        <Tokenomics />
+      </TabRoute>
 
-        <div className="dashboard-block">
-          <RootNodesBlock />
-          <ValidatorsBlock />
-          <DefiMembersPanel />
-          <QFeesMembersPanel />
-          <EprsMembersPanel />
-        </div>
-      </DashboardContent>
-    </PageLayout>
+      <TabRoute exact path={RoutePaths.dashboardSavingBorrowing}>
+        <SavingBorrowing />
+      </TabRoute>
+
+      <TabRoute exact path={RoutePaths.dahboardRootNodesMonitoring}>
+        <RootNodesMonitoring />
+      </TabRoute>
+
+      <TabRoute exact path={RoutePaths.dashboardValidatorsMonitoring}>
+        <ValidatorsMonitoring />
+      </TabRoute>
+    </Switch>
   );
 }
 

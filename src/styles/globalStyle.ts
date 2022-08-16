@@ -46,6 +46,7 @@ export const GlobalStyle = createGlobalStyle`
     box-shadow: 0 4px 16px ${({ theme }) => theme.colors.blockShadow};
     display: grid;
     grid-template-columns: minmax(0, 1fr);
+    align-content: start;
 
     ${media.lessThan('medium')} {
       padding: 24px;
@@ -57,6 +58,15 @@ export const GlobalStyle = createGlobalStyle`
       align-items: center;
       gap: 16px;
       flex-wrap: wrap;
+
+      ${media.lessThan('medium')} {
+        gap: 8px;
+      }
+
+      &--tight {
+        margin-right: -16px;
+        margin-top: -8px;
+      }
     }
 
     .block__content {

@@ -12,7 +12,7 @@ const useAnimateNumber = (to: any, text = ' Q', formatter = formatNumber) => {
     if (animateRef.current && !isNaN(to)) {
       const node = animateRef.current;
       const controls = animate(lastNumber.current || 0, Number(to), {
-        duration: 2,
+        duration: 1,
         onUpdate (value) {
           node.textContent = formatter(value as number) + text;
         },

@@ -7,7 +7,7 @@ import { invert } from 'lodash';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Check from 'ui/Check';
-import Table from 'ui/Table';
+import Table, { TableColumn } from 'ui/Table';
 
 import { aliasEventsLoadingSelector, aliasEventsSelector } from 'store/account-aliases/selectors';
 
@@ -30,7 +30,7 @@ function AliasEventsTable ({ address }: { address: string }) {
       role: invert(AliasPurpose)[item.role] || '–',
     }));
 
-  const columns = [
+  const columns: TableColumn[] = [
     { dataField: 'event', text: t('EVENT') },
     { dataField: 'address', text: t('MAIN_ACCOUNT'), headerStyle: { minWidth: '300px' }, },
     { dataField: 'alias', text: t('ALIAS'), headerStyle: { minWidth: '300px' }, },

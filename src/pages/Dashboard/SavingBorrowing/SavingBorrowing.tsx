@@ -1,0 +1,65 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import styled from 'styled-components';
+import { media } from 'styles/media';
+
+import PageLayout from 'components/PageLayout';
+
+import DashboardLink from '../components/DashboardLink';
+
+import BalanceOverview from './components/BalanceOverview';
+import InterestRateBlock from './components/InterestRateBlock';
+
+import { getInterestRates } from 'store/borrowing-core/actions';
+import { interestRatesSelector } from 'store/borrowing-core/selectors';
+
+const StyledWrapper = styled.div`
+  .saving-borrowing__main {
+    display: grid;
+    gap: 24px;
+
+    ${media.lessThan('medium')} {
+      gap: 16px;
+    }
+  }
+
+  .saving-borrowing-rates {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+
+    ${media.lessThan('medium')} {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+`;
+
+function SavingBorrowing () {
+  const dispatch = useDispatch();
+
+  const interestRates = useSelector(interestRatesSelector);
+
+  useEffect(() => {
+    dispatch(getInterestRates());
+  }, []);
+
+  return (
+    <StyledWrapper>
+      <DashboardLink />
+      <PageLayout title="Saving & Borrowing">
+        <div className="saving-borrowing__main">
+          <BalanceOverview />
+          <div className="saving-borrowing-rates">
+            {interestRates.map(rate => (
+              <InterestRateBlock key={rate.asset} rate={rate}/>
+            ))}
+          </div>
+        </div>
+      </PageLayout>
+    </StyledWrapper>
+  );
+}
+
+export default SavingBorrowing;

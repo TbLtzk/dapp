@@ -1,4 +1,10 @@
 export enum RoutePaths {
+  dashboard = '/',
+  dashboardTokenomics = '/dashboard/tokenomics',
+  dashboardSavingBorrowing = '/dashboard/saving-borrowing',
+  dahboardRootNodesMonitoring = '/dashboard/root-nodes-monitoring',
+  dashboardValidatorsMonitoring = '/dashboard/validators-monitoring',
+
   governance = '/governance',
   qProposals = '/governance/q-proposals',
   rootNodePanel = '/governance/root-node-panel',
