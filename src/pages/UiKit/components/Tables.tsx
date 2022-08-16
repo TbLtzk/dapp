@@ -1,11 +1,11 @@
-import ValidatorsTable from 'components/Tables/ValidatorsTable';
+import ValidatorsTable from 'pages/Staking/components/ValidatorStaking/components/ValidatorsTable';
 
 function Tables () {
   return (
     <div>
       <h2 className="text-h2 block">Table: </h2>
       <div className="block-content">
-        <ValidatorsTable tableType="validators-widened" />
+        <ValidatorsTable />
       </div>
     </div>
   );

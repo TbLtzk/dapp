@@ -1,7 +1,7 @@
 
 export enum Breakpoints {
   huge = 1600,
-  large = 1200,
+  large = 1440,
   medium = 1024,
   tablet = 600,
   small = 480,
@@ -9,7 +9,7 @@ export enum Breakpoints {
 type BreakpointType = keyof typeof Breakpoints
 
 function lessThan (bp: BreakpointType) {
-  return `@media (max-width: ${Breakpoints[bp]}px)`;
+  return `@media (max-width: ${Breakpoints[bp] - 1}px)`;
 }
 
 function greaterThan (bp: BreakpointType) {

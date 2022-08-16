@@ -186,7 +186,7 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
   }
 `;
 
-export const SortCaretIcon = styled.svg<{ $order: string }>`
+export const SortCaretIcon = styled.svg<{ $order?: string }>`
   width: 16px;
   height: 16px;
   display: inline-flex;

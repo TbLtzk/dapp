@@ -14,6 +14,7 @@ import {
 } from './action-creators';
 import * as actionTypes from './action-types';
 
+import { getQVBalance } from 'store/q-vault/action-creators';
 import { setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/actions';
 
 import {
@@ -107,6 +108,7 @@ function* getQHolderTimeUpdateGenerator ({ isUpdateTime, label }) {
     const contract = yield call(getCompoundRateKeeperQVaultInstance);
     const result = yield contract.getLastUpdate();
     yield put(getQHolderTimeUpdateSuccess(result));
+    yield put(getQVBalance());
   } catch (error) {
     captureError(error);
     yield put(setTransactionLoadingError(getErrorMessage(error)));

@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import RootNodeTable from 'components/Tables/RootNodeTable';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import RootBalanceInfo from './components/RootBalanceInfo';
 import RootNodeMenu from './components/RootNodeMenu';
+import RootNodesTable from './components/RootNodesTable';
 
 import { getAccountBalance } from 'store/q-vault/action-creators';
 import { getMinimumRootTimeLock, getRootNodeStakes, getRootWithdrawals } from 'store/root-node/action-creators';
@@ -38,7 +38,7 @@ function RootNodeStaking () {
 
         <RootBalanceInfo />
       </div>
-      <RootNodeTable tableType="rootNodesWidened" />
+      <RootNodesTable />
     </>
   );
 }

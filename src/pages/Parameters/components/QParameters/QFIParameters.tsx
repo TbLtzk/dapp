@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import styled from 'styled-components';
+
+import QFeesMembersTable from 'components/Tables/QFeesMembersTable';
+
 import ParametersBlock from '../ParametersBlock';
 
 import { getFeesIncentivesExpertPanelParametersKV } from 'store/parameters-addresses/action-creators';
@@ -12,6 +16,11 @@ import {
 } from 'store/parameters-addresses/selectors';
 
 import { getEpqfiParametersInstance } from 'contracts/contract-instance';
+
+const StyledWrapper = styled.div`
+  display: grid;
+  gap: 24px;
+`;
 
 function QFIParameters () {
   const { t } = useTranslation();
@@ -35,14 +44,18 @@ function QFIParameters () {
   }, [dispatch]);
 
   return (
-    <ParametersBlock
-      title={t('Q_FEES_INCENTIVES_EXPERT_PANEL_PARAMETERS')}
-      subtitle={`(${ePQFIParametersAddress})`}
-      docsId="#q-fees-and-incentives-expert-panel-epqfi-parameters"
-      parameters={kvFI}
-      loading={loadingFI}
-      errorMsg={errorMessageFI}
-    />
+    <StyledWrapper>
+      <ParametersBlock
+        title={t('Q_FEES_INCENTIVES_EXPERT_PANEL_PARAMETERS')}
+        subtitle={`(${ePQFIParametersAddress})`}
+        docsId="#q-fees-and-incentives-expert-panel-epqfi-parameters"
+        parameters={kvFI}
+        loading={loadingFI}
+        errorMsg={errorMessageFI}
+      />
+
+      <QFeesMembersTable />
+    </StyledWrapper>
   );
 }
 

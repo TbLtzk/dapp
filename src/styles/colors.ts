@@ -99,7 +99,7 @@ export const lightColors = {
   blockBorderAccent: COLORS.grey300,
   blockBorderDisabled: COLORS.grey200,
   blockDivider: COLORS.grey100,
-  blockHover: COLORS.grey100,
+  blockHover: COLORS.grey000,
   blockBorderHover: COLORS.grey800,
   blockShadow: 'rgba(23, 77, 145, 0.04)',
   blockShadowLight: 'rgba(11, 37, 69, 0.1)',

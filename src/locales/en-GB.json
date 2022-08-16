@@ -1000,5 +1000,11 @@
   "CLAIM_REWARDS": "Claim rewards",
   "REWARDS_NOT_DISTRIBUTED_YET": "Rewards not distributed yet",
   "STAKE_MY_TOKENS": "Stake My Tokens",
-  "UNSTAKE_ALL": "Unstake All"
+  "UNSTAKE_ALL": "Unstake All",
+  "LAST_UPDATE": "Last update: {{date}}",
+  "TOTAL_ROOT_NODES": "Total Root Nodes",
+  "TOTAL_VALIDATORS": "Total Validators",
+  "INACTIVE_COUNT": "{{count}} inactive",
+  "ROOT_NODES_MONITORING": "Root Nodes Monitoring",
+  "VALIDATORS_MONITORING": "Validators Monitoring"
 }

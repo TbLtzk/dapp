@@ -1000,5 +1000,11 @@
   "CLAIM_REWARDS": "Belohnung einfordern",
   "REWARDS_NOT_DISTRIBUTED_YET": "Belohnungen noch nicht verteilt",
   "STAKE_MY_TOKENS": "Tokens staken",
-  "UNSTAKE_ALL": "Alle unstaken"
+  "UNSTAKE_ALL": "Alle unstaken",
+  "LAST_UPDATE": "Letztes Update: {{date}}",
+  "TOTAL_ROOT_NODES": "Gesamtwurzelknoten",
+  "TOTAL_VALIDATORS": "Gesamtvalidatoren",
+  "INACTIVE_COUNT": "{{count}} inaktiv",
+  "ROOT_NODES_MONITORING": "Wurzelknoten Überwachung",
+  "VALIDATORS_MONITORING": "Validatoren Überwachung"
 }

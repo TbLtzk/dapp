@@ -16,7 +16,7 @@ function getDefaultProposalItem () {
 }
 
 const initialState = {
-  constitutionHash: '...',
+  constitutionHash: '',
   baseVotingWeightInfo: {} as BaseVotingWeightInfo,
   newParameter: false,
 

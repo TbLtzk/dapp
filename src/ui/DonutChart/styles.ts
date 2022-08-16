@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { media } from 'styles/media';
 
 export const DonutChartContainer = styled.div<{}>`
   display: grid;
@@ -8,6 +9,10 @@ export const DonutChartContainer = styled.div<{}>`
     width: 60%;
     position: relative;
     margin: 0 auto;
+
+    ${media.lessThan('tablet')} {
+      width: 80%;
+    }
   }
 
   .donut-chart {

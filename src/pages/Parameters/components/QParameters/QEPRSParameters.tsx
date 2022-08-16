@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import styled from 'styled-components';
+
+import EprsMembersTable from 'components/Tables/EprsMembersTable';
+
 import ParametersBlock from '../ParametersBlock';
 
 import { getEPRSParametersKV } from 'store/parameters-addresses/action-creators';
@@ -12,6 +16,11 @@ import {
 } from 'store/parameters-addresses/selectors';
 
 import { getEprsParametersInstance } from 'contracts/contract-instance';
+
+const StyledWrapper = styled.div`
+  display: grid;
+  gap: 24px;
+`;
 
 function QEPRSParameters () {
   const { t } = useTranslation();
@@ -35,13 +44,17 @@ function QEPRSParameters () {
   }, [dispatch]);
 
   return (
-    <ParametersBlock
-      title={t('Q_ROOT_NODE_SELECTION_EXPERT_PANEL_PARAMETERS')}
-      subtitle={`(${ePRSParametersAddress})`}
-      parameters={kvEPRS}
-      loading={loadingEPRS}
-      errorMsg={errorMessageEPRS}
-    />
+    <StyledWrapper>
+      <ParametersBlock
+        title={t('Q_ROOT_NODE_SELECTION_EXPERT_PANEL_PARAMETERS')}
+        subtitle={`(${ePRSParametersAddress})`}
+        parameters={kvEPRS}
+        loading={loadingEPRS}
+        errorMsg={errorMessageEPRS}
+      />
+
+      <EprsMembersTable />
+    </StyledWrapper>
   );
 }
 

@@ -14,7 +14,7 @@ import { userBalance, votingWeight } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import formTypes from 'constants/form-types';
-import { toBigNumber, formatNumber } from 'utils/numbers';
+import { formatNumber, toBigNumber } from 'utils/numbers';
 import { max, required } from 'utils/validators';
 
 function LockForm () {

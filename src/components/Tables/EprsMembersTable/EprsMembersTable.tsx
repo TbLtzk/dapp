@@ -30,7 +30,7 @@ function EprsMembersTable () {
         <Table
           tiny
           emptyTableMessage={t('NO_ROOT_NODE_SELECTION_MEMBERS')}
-          perPage={5}
+          perPage={10}
           loading={eprsMembersTableLoading}
           error={eprsMembersTableError}
           columns={[

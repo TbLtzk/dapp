@@ -47,6 +47,7 @@ export default function index (state = initialState, action) {
       return {
         ...state,
         validationRewardProxyError: action.error,
+        validationRewardProxyLoading: false,
       };
     case actionTypes.GET_VALIDATION_REWARD_PROXY_SUCCESS:
       return {

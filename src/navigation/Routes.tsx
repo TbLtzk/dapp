@@ -12,7 +12,6 @@ import Governance from 'pages/Governance';
 import NewProposal from 'pages/Governance/NewProposal';
 import Proposal from 'pages/Governance/Proposal';
 import Imprint from 'pages/Imprint';
-import Monitoring from 'pages/Monitoring';
 import NotFound from 'pages/NotFound';
 import Staking from 'pages/Staking';
 import ManageDelegations from 'pages/Staking/components/DelegationStaking/components/ManageDelegations';
@@ -54,16 +53,12 @@ function Routes () {
   return (
     <ErrorBoundary>
       <Switch>
-        <Route exact path="/">
+        <Route exact path={['/', '/dashboard/:slug']}>
           <Dashboard />
         </Route>
 
         <Route exact path="/q-parameters/:type?">
           <Manage />
-        </Route>
-
-        <Route exact path="/monitoring">
-          <Monitoring />
         </Route>
 
         <Route exact path="/governance/:type/new">

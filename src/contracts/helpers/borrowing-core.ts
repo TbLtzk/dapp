@@ -25,6 +25,7 @@ export async function getVaultWithFee (vault: Vault, vaultNum: number): Promise<
     borrowingFee,
   };
 }
+
 export async function getBorrowAssetRateAndFee (asset: Asset): Promise<BorrowAssetsRateAndFee> {
   const contract = await getEpdrParametersInstance();
 
@@ -61,67 +62,59 @@ export async function addBorrowTokenToWallet (asset: Asset) {
   }
 }
 
-export async function getTimeSinceRefreshBalance (setTimeSinceRefreshBalance: any) {
+// TODO: move to store hooks
+export async function getTimeSinceRefreshBalance () {
   try {
     const contract = await getCompoundRateKeeperSavingInstance();
     const lastUpdate = await contract.getLastUpdate();
-    setTimeSinceRefreshBalance(unixToDate(lastUpdate));
+    return unixToDate(lastUpdate);
   } catch (error) {
     captureError(error);
+    return null;
   }
 }
 
-export async function refreshTimeSinceRefreshBalance (
-  setTimeSinceRefreshBalance: any,
-  setLoading: any,
+// TODO: move to store hooks
+export async function refreshTimeSinceRefreshBalance ({ userAddress, dispatch, label }: {
   userAddress: any,
   dispatch: any,
-  label: string
-) {
+  label: string,
+}) {
   try {
-    setLoading(true);
     const contract = await getSavingInstance();
     const transaction = await contract.updateCompoundRate({ from: userAddress, gasBuffer: 1.2 });
-    getTimeSinceRefreshBalance(setTimeSinceRefreshBalance);
     dispatch(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
   } catch (error) {
     captureError(error);
     dispatch(setTransactionLoadingError(getErrorMessage(error)));
-  } finally {
-    setLoading(false);
   }
 }
 
-// eslint-disable-next-line max-len
-export async function getTimeSinceOutstandingDebt (setTimeSinceOutstandingDeb: any, asset: Asset) {
+// TODO: move to store hooks
+export async function getTimeSinceOutstandingDebt (asset: Asset) {
   try {
     const contract = await getCompoundRateBorrowingInstance(asset);
     const lastUpdate = await contract.getLastUpdate();
-    setTimeSinceOutstandingDeb(unixToDate(lastUpdate));
+    return unixToDate(lastUpdate);
   } catch (error) {
     captureError(error);
+    return null;
   }
 }
 
-export async function refreshTimeSinceOutstandingDebt (
-  setTimeSinceRefreshBalance: any,
-  setLoading: any,
-
+// TODO: move to store hooks
+export async function refreshTimeSinceOutstandingDebt ({ userAddress, dispatch, asset, label }: {
   userAddress: any,
   dispatch: any,
   asset: Asset,
   label: string
-) {
+}) {
   try {
-    setLoading(true);
     const contract = await getBorrowingCoreInstance();
     const transaction = await contract.updateCompoundRate(asset, { from: userAddress, gasBuffer: 1.2 });
-    getTimeSinceOutstandingDebt(setTimeSinceRefreshBalance, asset);
     dispatch(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
   } catch (error) {
     captureError(error);
     dispatch(setTransactionLoadingError(getErrorMessage(error)));
-  } finally {
-    setLoading(false);
   }
 }
