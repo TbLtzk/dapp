@@ -6,7 +6,7 @@ import { Proposal } from 'typings/proposals';
 
 import { getContractProposals } from '.';
 
-import { getAddressVotingInstance, getUpgradeVotingInstance } from 'contracts/contract-instance';
+import { getAddressVotingInstance, getRootNodesInstance, getUpgradeVotingInstance } from 'contracts/contract-instance';
 
 export async function getContractUpdateProposals (
   proposals: ProposalEvent[],
@@ -37,12 +37,17 @@ export async function getContractUpdateProposal (
   const proposal = await contract.getProposal(id);
   const voteCount = await contract.instance.methods.voteCount(id).call();
 
+  const rootNodesInstance = await getRootNodesInstance();
+  const rootNodesNumber = await rootNodesInstance.getSize();
+
   return {
     votingEndTime: Number(proposal.votingExpiredTime),
     proxy: proposal.proxy,
     implementation: 'implementation' in proposal ? proposal.implementation : '',
     key: 'key' in proposal ? proposal.key : '',
     votesFor: Number(voteCount),
-    votesAgainst: 0,
+    votesAgainst: Number(rootNodesNumber) - Number(voteCount),
+    currentQuorum: Number(voteCount) / Number(rootNodesNumber) * 100,
+    requiredQuorum: 50
   };
 }

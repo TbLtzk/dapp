@@ -1,6 +1,13 @@
 import styled from 'styled-components';
+import { media } from 'styles/media';
 
 export const StyledProposalVoting = styled.div`
+  max-width: 50%;
+
+  ${media.lessThan('medium')} {
+    max-width: 100%;
+  }
+
   .proposal-voting__majority {
     margin-top: 16px;
   }
