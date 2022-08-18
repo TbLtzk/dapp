@@ -45,14 +45,14 @@ function ParameterViewer ({
 
       <div>
         <p className="text-md color-secondary">{t('KEY')}</p>
-        <p className="text-lg" title={parameter.key}>
+        <p className="text-lg break-word" title={parameter.key}>
           {parameter.key}
         </p>
       </div>
 
       <div>
         <p className="text-md color-secondary">{t('VALUE')}</p>
-        <p className="text-lg" title={parameter.value}>
+        <p className="text-lg break-word" title={parameter.value}>
           <span>{String(parameter.value)}</span>
           <span className="font-light color-secondary" style={{ marginLeft: '4px' }}>
             {parameterTypesMap[parameter.type]}

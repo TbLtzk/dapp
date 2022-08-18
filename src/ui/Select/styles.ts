@@ -60,6 +60,7 @@ export const SelectContainer = styled.div<{
       ? getSelectColor(theme, 'disabled')
       : getSelectColor(theme, 'enabled')
     };
+
     &:hover {
       background-color: ${({ theme }) => getSelectColor(theme, 'optionBgHover')};
     }

@@ -86,6 +86,10 @@ export const PageLayoutContainer = styled.div`
     opacity: 0.5;
     transition: all 300ms ease-out;
 
+    ${media.lessThan('medium')} {
+      display: none;
+    }
+
     &:hover {
       opacity: 1;
     }

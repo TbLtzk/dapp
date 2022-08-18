@@ -28,6 +28,7 @@ export const FormStepContainer = styled.form`
   .form-step-content {
     display: grid;
     gap: 16px;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .form-step-actions {

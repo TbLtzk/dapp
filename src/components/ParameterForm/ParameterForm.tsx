@@ -107,7 +107,9 @@ function ParameterForm ({
 
       {currentValue && (
         <Tip compact>
-          {`${t('CURRENT_VALUE')}: ${currentValue}`}
+          <p className="break-word">
+            {`${t('CURRENT_VALUE')}: ${currentValue}`}
+          </p>
         </Tip>
       )}
 

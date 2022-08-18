@@ -54,7 +54,7 @@ function ConfirmationStep () {
 
             <div>
               <p className="text-md color-secondary">{t('EXTERNAL_SOURCE')}</p>
-              <p className="text-lg">{values.externalLink}</p>
+              <p className="text-lg ellipsis">{values.externalLink}</p>
             </div>
 
             {values.params.map((param, index) => (
@@ -79,12 +79,12 @@ function ConfirmationStep () {
 
             <div>
               <p className="text-md color-secondary">{t('CANDIDATE_Q_ADDRESS')}</p>
-              <p className="text-lg">{values.address}</p>
+              <p className="text-lg ellipsis">{values.address}</p>
             </div>
 
             <div>
               <p className="text-md color-secondary">{t('EXTERNAL_SOURCE')}</p>
-              <p className="text-lg">{values.externalLink}</p>
+              <p className="text-lg ellipsis">{values.externalLink}</p>
             </div>
           </FormBlock>
         )}
