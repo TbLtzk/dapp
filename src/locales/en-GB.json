@@ -1006,5 +1006,6 @@
   "TOTAL_VALIDATORS": "Total Validators",
   "INACTIVE_COUNT": "{{count}} inactive",
   "ROOT_NODES_MONITORING": "Root Nodes Monitoring",
-  "VALIDATORS_MONITORING": "Validators Monitoring"
+  "VALIDATORS_MONITORING": "Validators Monitoring",
+  "SWITCH_NETWORK_ERROR": "Unable to switch network. Check your pending requests"
 }

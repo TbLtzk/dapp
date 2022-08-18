@@ -1006,5 +1006,6 @@
   "TOTAL_VALIDATORS": "Усього валідаторів",
   "INACTIVE_COUNT": "{{count}} неактивно",
   "ROOT_NODES_MONITORING": "Моніторинг рут нод",
-  "VALIDATORS_MONITORING": "Моніторинг валідаторів"
+  "VALIDATORS_MONITORING": "Моніторинг валідаторів",
+  "SWITCH_NETWORK_ERROR": "Не вдається переключити мережу. Перевірте запити, що очікують на розгляд"
 }

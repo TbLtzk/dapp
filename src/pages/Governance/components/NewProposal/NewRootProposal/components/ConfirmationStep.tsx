@@ -45,13 +45,13 @@ function ConfirmationStep () {
 
         <div>
           <p className="text-md color-secondary">{t('EXTERNAL_SOURCE')}</p>
-          <p className="text-lg">{values.externalLink}</p>
+          <p className="text-lg ellipsis">{values.externalLink}</p>
         </div>
 
         {values.address !== '' && (
           <div>
             <p className="text-md color-secondary">{t('ROOT_NODE_TO_REMOVE')}</p>
-            <p className="text-lg">{values.address}</p>
+            <p className="text-lg ellipsis">{values.address}</p>
           </div>
         )}
       </FormBlock>

@@ -119,7 +119,7 @@ function Select<T extends ValueType> ({
               <button
                 key={String(option.value)}
                 type="button"
-                className={`select-option text-md ${value === option.value ? 'active' : ''}`}
+                className={`select-option break-word text-md ${value === option.value ? 'active' : ''}`}
                 onClick={() => selectOption(option.value)}
               >
                 <Icon

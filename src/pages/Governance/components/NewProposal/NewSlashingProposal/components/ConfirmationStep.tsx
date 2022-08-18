@@ -40,7 +40,7 @@ function ConfirmationStep () {
       >
         <div>
           <p className="text-md color-secondary">{t('CANDIDATE_TO_SLASH')}</p>
-          <p className="text-lg">{values.address}</p>
+          <p className="text-lg ellipsis">{values.address}</p>
         </div>
 
         <div>
@@ -55,7 +55,7 @@ function ConfirmationStep () {
 
         <div>
           <p className="text-md color-secondary">{t('EXTERNAL_SOURCE')}</p>
-          <p className="text-lg">{values.externalLink}</p>
+          <p className="text-lg ellipsis">{values.externalLink}</p>
         </div>
       </FormBlock>
     </FormStep>

@@ -16,14 +16,14 @@ function QDetails ({ proposal }: Props) {
       {Boolean(proposal.currentConstitutionHash) && (
         <div className="details-item">
           <p className="text-md color-secondary">{t('DETAILS_CURRENT_CONSTITUTION_HASH')}</p>
-          <p className="text-md">{proposal.currentConstitutionHash}</p>
+          <p className="text-md ellipsis">{proposal.currentConstitutionHash}</p>
         </div>
       )}
 
       {Boolean(proposal.newConstitutionHash) && (
         <div className="details-item">
           <p className="text-md color-secondary">{t('DETAILS_NEW_CONSTITUTION_HASH')}</p>
-          <p className="text-md">{proposal.newConstitutionHash}</p>
+          <p className="text-md ellipsis">{proposal.newConstitutionHash}</p>
         </div>
       )}
 

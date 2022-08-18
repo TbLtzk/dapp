@@ -26,6 +26,10 @@ export const StyledProposalVoting = styled.div`
     display: grid;
     grid-template-columns: auto 1fr 1fr 3fr;
     gap: 8px;
+
+    ${media.lessThan('medium')} {
+      grid-template-columns: auto 2fr 1fr 2fr;
+    }
   }
 
   .proposal-voting__vote-bg {

@@ -9,7 +9,7 @@
     "i18n:compile": "node scripts/compileLangs.js",
     "patch-version": "npm version patch -m \"Upgrade to %s\"",
     "postversion": "git push && git push --tags",
-    "lint": "eslint \"src/**/*.{js,ts,jsx,tsx}\"",
+    "lint": "eslint \"src/**/*.{js,ts,jsx,tsx}\" --max-warnings 0",
     "lint:fix": "yarn lint --fix",
     "analyze": "cross-env VITE_MODE=analyze vite build"
   },

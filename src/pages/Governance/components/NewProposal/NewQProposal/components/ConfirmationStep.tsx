@@ -58,12 +58,12 @@ function ConfirmationStep () {
 
             <div>
               <p className="text-md color-secondary">{t('HASH')}</p>
-              <p className="text-lg">{values.hash}</p>
+              <p className="text-lg ellipsis">{values.hash}</p>
             </div>
 
             <div>
               <p className="text-md color-secondary">{t('EXTERNAL_SOURCE')}</p>
-              <p className="text-lg">{values.externalLink}</p>
+              <p className="text-lg ellipsis">{values.externalLink}</p>
             </div>
           </FormBlock>
         )
@@ -75,7 +75,7 @@ function ConfirmationStep () {
           >
             <div>
               <p className="text-md color-secondary">{t('EXTERNAL_SOURCE')}</p>
-              <p className="text-lg">{values.externalLink}</p>
+              <p className="text-lg ellipsis">{values.externalLink}</p>
             </div>
           </FormBlock>
         )

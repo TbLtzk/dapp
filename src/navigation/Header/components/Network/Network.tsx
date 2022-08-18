@@ -1,20 +1,23 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useWeb3Context } from 'context/Web3ContextProvider';
 
 import Button from 'ui/Button';
 import SegmentedButton from 'ui/SegmentedButton';
 
+import { setTransactionLoadingError } from 'store/transaction-handler/actions';
 import { networkSelector } from 'store/user-inf/selectors';
 
 import { chainIdToNetworkMap, networkConfigsMap } from 'constants/config';
 
 function Network () {
-  const network = Number(useSelector(networkSelector));
   const { switchNetwork, switchNetworkError, setSwitchNetworkError } = useWeb3Context();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const network = Number(useSelector(networkSelector));
   const [currentNetwork, setCurrentNetwork] = useState(network);
 
   const isDevnet = ![
@@ -30,6 +33,10 @@ function Network () {
 
   useEffect(() => {
     if (switchNetworkError) {
+      dispatch((setTransactionLoadingError({
+        message: t('SWITCH_NETWORK_ERROR')
+      })));
+
       setCurrentNetwork(network);
       setSwitchNetworkError(false);
     }

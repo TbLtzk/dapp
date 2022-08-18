@@ -19,6 +19,7 @@ export const StyledFormBlock = styled.div<{ $disabled: boolean }>`
     margin-top: 16px;
     display: grid;
     gap: 12px;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   ${({ theme, $disabled }) => $disabled && css`

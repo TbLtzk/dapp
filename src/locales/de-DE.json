@@ -1006,5 +1006,6 @@
   "TOTAL_VALIDATORS": "Gesamtvalidatoren",
   "INACTIVE_COUNT": "{{count}} inaktiv",
   "ROOT_NODES_MONITORING": "Wurzelknoten Überwachung",
-  "VALIDATORS_MONITORING": "Validatoren Überwachung"
+  "VALIDATORS_MONITORING": "Validatoren Überwachung",
+  "SWITCH_NETWORK_ERROR": "Netzwerkwechsel nicht möglich. Überprüfen Sie Ihre ausstehenden Anfragen"
 }
