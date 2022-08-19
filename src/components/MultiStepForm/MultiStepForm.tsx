@@ -21,7 +21,8 @@ function MultiStepForm ({ stepIndex, steps }: Props) {
       {steps.map((step, i) => (
         <div
           key={step.id}
-          className="multi-step-form__step block"
+          className={stepIndex === i ? 'multi-step-form__step block' : ''}
+          data-active={stepIndex === i}
           style={{ display: stepIndex === i ? 'block' : 'none' }}
         >
           <h3 className="text-h3">{step.title}</h3>
