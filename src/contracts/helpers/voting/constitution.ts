@@ -87,8 +87,12 @@ export async function getConstitutionProposal (
     votingEndTime: Number(base.params.votingEndTime),
     vetoEndTime: Number(base.params.vetoEndTime),
 
-    votesFor: Number(fromWei(base.counters.weightFor)),
-    votesAgainst: Number(fromWei(base.counters.weightAgainst)),
+    votesFor: contract instanceof EmergencyUpdateVotingInstance
+      ? Number(base.counters.weightFor)
+      : Number(fromWei(base.counters.weightFor)),
+    votesAgainst: contract instanceof EmergencyUpdateVotingInstance
+      ? Number(base.counters.weightAgainst)
+      : Number(fromWei(base.counters.weightAgainst)),
     vetoesNumber: Number(base.counters.vetosCount),
 
     currentConstitutionHash: isConstitution ? (proposal as ConstitutionProposal).currentConstitutionHash : '',
