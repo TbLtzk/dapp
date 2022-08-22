@@ -43,7 +43,8 @@ export function transformToPercentage (value: BigNumber.Value): string {
 }
 
 export function formatPercent (value: BigNumber.Value): string {
-  return `${formatNumber(value)}%`;
+  const percent = Number(formatNumber(value));
+  return isNaN(Number(percent)) ? '0 %' : `${formatNumber(value)} %`;
 }
 
 export function formatFraction (value: BigNumber.Value): string {

@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
+import { Validator } from 'typings/validator';
+
 import ProgressBar from 'components/Base/ProgressBar';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
@@ -11,25 +13,6 @@ import DelegateModal from '../../../DelegateModal';
 import { loadingValidatorsWidenedSelector, validatorsWidenedSelector } from 'store/validators/selectors';
 
 import { formatAsset, parseNumber } from 'utils/numbers';
-
-export interface Validator {
-  address: string;
-  alias: string;
-  amount: string;
-  delegatedStake: string;
-  delegationEfficiency: string;
-  delegationSaturation: string;
-  delegatorShare: string;
-  globalStakeShare: string;
-  payoutPerDelegatedQ: string;
-  payoutToDelegators: string;
-  poolinterestRate: number;
-  rank: number;
-  selfStake: string;
-  validator: string;
-  validatorPoolBalance: string;
-  validatorShare: number;
-}
 
 function ValidatorsList () {
   const { t } = useTranslation();
@@ -80,7 +63,7 @@ function ValidatorsList () {
               short
               iconed
               semibold
-              address={validator.validator}
+              address={validator.address}
             />
             <AliasTooltip alias={validator.alias} />
           </div>

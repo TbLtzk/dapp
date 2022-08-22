@@ -10,7 +10,7 @@ import {
   setTransactionLoadingError,
   setTransactionLoadingSuccess,
 } from 'store/transaction-handler/actions';
-import { getMinimumValidatorsTimeLock, getSelfStake, getValidatorsTimeLocks } from 'store/validators/action-creators';
+import { getMinimumValidatorsTimeLock, getValidatorAccountableSelfStake, getValidatorsTimeLocks } from 'store/validators/action-creators';
 import { getMinimumVestingTimeLock, getVestingBalance, getVestingTimeLocks } from 'store/vesting/action-creators';
 
 import {
@@ -54,7 +54,7 @@ export function* getAmountOnContract (instanceType, address) {
       yield put(getRootTimeLocks(address));
       break;
     case CONTRACT_TYPES.validators:
-      yield put(getSelfStake(address));
+      yield put(getValidatorAccountableSelfStake(address));
       yield put(getMinimumValidatorsTimeLock(address));
       yield put(getValidatorsTimeLocks(address));
       break;

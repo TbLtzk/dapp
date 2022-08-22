@@ -3,13 +3,14 @@ import * as actionTypes from './action-types';
 import { TABLE_TYPES } from 'constants/tableTypes';
 
 const initialState = {
-  delegatorsShare: 0,
-  totalStake: 0,
-  ownStake: 0,
-  delegatedStake: 0,
-  accountableTotalStake: 0,
-  interestRate: 0,
-  selfStake: 0,
+  isUserValidator: false,
+  compoundRateKeeperExists: false,
+
+  validatorTotalStake: 0,
+  validatorDelegatedStake: 0,
+  validatorAcountableTotalStake: 0,
+  validatorAccountableSelfStake: 0,
+
   inactiveValidators: 0,
 
   validatorsShort: [],
@@ -21,15 +22,12 @@ const initialState = {
   validatorsMonitoring: [],
   loadingValidatorsMonitoring: true,
 
-  validatorWithdrawalInfo: [],
-
   errorMembers: null,
-  isUserValidator: false,
+
+  validatorWithdrawalInfo: [],
 
   validatorsTimeLocks: null,
   validatorsMinimumTimeLock: null,
-
-  compoundRateKeeperExists: false,
 };
 
 export default function index (state = initialState, action) {
@@ -56,47 +54,37 @@ export default function index (state = initialState, action) {
           };
       }
       break;
-    case actionTypes.SET_VALIDATORS_DELEGATORS_SHARE:
+
+    case actionTypes.GET_VALIDATOR_TOTAL_STAKE_SUCCESS:
       return {
         ...state,
-        delegatorsShare: action.payload,
+        validatorTotalStake: action.validatorTotalStake,
       };
-    case actionTypes.SET_VALIDATORS_TOTAL_STAKE:
+
+    case actionTypes.GET_VALIDATOR_DELEGATED_STAKE_SUCCESS:
       return {
         ...state,
-        totalStake: action.payload,
+        validatorDelegatedStake: action.validatorDelegatedStake,
       };
-    case actionTypes.SET_VALIDATORS_OWN_STAKE:
+
+    case actionTypes.GET_VALIDATOR_ACCOUNTABLE_TOTAL_STAKE_SUCCESS:
       return {
         ...state,
-        ownStake: action.payload,
+        validatorAcountableTotalStake: action.validatorAcountableTotalStake,
       };
+
+    case actionTypes.GET_VALIDATOR_ACCOUNTABLE_SELF_STAKE_SUCCESS:
+      return {
+        ...state,
+        validatorAccountableSelfStake: action.validatorAccountableSelfStake,
+      };
+
     case actionTypes.SET_INACTIVE_VALIDATORS: {
       return {
         ...state,
         inactiveValidators: action.payload,
       };
     }
-    case actionTypes.SET_VALIDATORS_SELF_STAKE:
-      return {
-        ...state,
-        selfStake: action.payload,
-      };
-    case actionTypes.SET_VALIDATORS_DELEGATED_STAKE:
-      return {
-        ...state,
-        delegatedStake: action.payload,
-      };
-    case actionTypes.SET_VALIDATORS_ACCOUNTABLE_TOTAL_STAKE:
-      return {
-        ...state,
-        accountableTotalStake: action.payload,
-      };
-    case actionTypes.SET_VALIDATORS_INTEREST_RATE:
-      return {
-        ...state,
-        interestRate: action.payload,
-      };
     case actionTypes.SET_IS_USER_VALIDATOR:
       return {
         ...state,
@@ -118,10 +106,10 @@ export default function index (state = initialState, action) {
         compoundRateKeeperExists: action.payload,
       };
     }
-    case actionTypes.SET_VALIDATORS_WITHDRAWAL_INFO: {
+    case actionTypes.GET_VALIDATORS_WITHDRAWAL_INFO_SUCCESS: {
       return {
         ...state,
-        validatorWithdrawalInfo: action.payload,
+        validatorWithdrawalInfo: action.withdrawalInfo,
       };
     }
     default:

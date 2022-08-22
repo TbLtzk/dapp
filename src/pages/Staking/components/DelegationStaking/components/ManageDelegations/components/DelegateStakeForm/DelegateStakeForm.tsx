@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { Validator } from 'typings/validator';
 import { toWei } from 'web3-utils';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
@@ -11,7 +12,6 @@ import Input from 'ui/Input';
 import useForm from 'hooks/useForm';
 
 import ClaimTip from '../../../ClaimTip';
-import { Validator } from '../ValidatorsList/ValidatorsList';
 
 import { setDelegateStake } from 'store/q-vault/action-creators';
 import { delegationStakeInfoSelector } from 'store/q-vault/selectors';
@@ -29,7 +29,7 @@ function DelegateStakeForm ({ delegation }: { delegation: Validator }) {
     initialValues: { amount: '' },
     validators: { amount: [required, max(delegationStakeInfo.delegatableAmount)] },
     onSubmit: ({ amount }) => {
-      dispatch(setDelegateStake([delegation.validator], [toWei(amount)], t('SUCCESSFUL_STAKE_UPDATE')));
+      dispatch(setDelegateStake([delegation.address], [toWei(amount)], t('SUCCESSFUL_STAKE_UPDATE')));
     },
   });
 
@@ -41,7 +41,7 @@ function DelegateStakeForm ({ delegation }: { delegation: Validator }) {
           <ExplorerAddress
             iconed
             short
-            address={delegation.validator}
+            address={delegation.address}
           />
         </div>
 

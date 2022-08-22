@@ -15,6 +15,8 @@ import Imprint from 'pages/Imprint';
 import NotFound from 'pages/NotFound';
 import Staking from 'pages/Staking';
 import ManageDelegations from 'pages/Staking/components/DelegationStaking/components/ManageDelegations';
+import ValidatorManage from 'pages/Staking/components/ValidatorStaking/components/ManageValidator';
+import Validator from 'pages/Staking/components/ValidatorStaking/components/Validator';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
@@ -27,6 +29,7 @@ import TimeLocks from '../pages/TimeLocks';
 
 import { store } from 'store/index';
 
+import { RoutePaths } from 'constants/routes';
 import { captureError } from 'utils/errors';
 
 function addSentryContext () {
@@ -85,11 +88,25 @@ function Routes () {
           </Route>
         )}
 
-        <Route exact path="/staking/:slug?">
-          <Staking />
-        </Route>
+        <Route
+          exact
+          path={RoutePaths.stakingSlug}
+          component={Staking}
+        />
 
-        <Route exact path="/staking/delegations/:slug?">
+        <Route
+          exact
+          path={[RoutePaths.stakingValidatorManage, RoutePaths.stakingValidatorStakeRewarPoolManage]}
+          component={ValidatorManage}
+        />
+
+        <Route
+          exact
+          path={RoutePaths.stakingValidatorSlug}
+          component={Validator}
+        />
+
+        <Route exact path={RoutePaths.stakingDelegationsSlug}>
           <ManageDelegations />
         </Route>
 
