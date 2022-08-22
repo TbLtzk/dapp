@@ -39,6 +39,7 @@ export const StakingContainer = styled.div`
     }
 
     .block-body {
+      margin-top: 16px;
       display: grid;
       grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr);
 
@@ -47,7 +48,7 @@ export const StakingContainer = styled.div`
       }
 
       & > div {
-        padding: 24px;
+        padding: 12px 16px;
 
         ${media.lessThan('medium')} {
           padding: 8px 0;
@@ -73,10 +74,6 @@ export const StakingContainer = styled.div`
             border-left: none;
           }
         }
-
-        p {
-          margin-top: 4px;
-        }
       }
     }
   }
@@ -92,7 +89,6 @@ export const StakingContainer = styled.div`
 
     .delegation-item {
       display: grid;
-      gap: 4px;
       align-content: start;
       padding: 24px;
 
