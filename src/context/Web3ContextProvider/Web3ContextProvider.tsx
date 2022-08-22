@@ -101,18 +101,20 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
   }, [connector]);
 
   const connectWallet = useCallback(
-    async (walletType: WalletType, reload = false as boolean) => {
+    async (walletType: WalletType, reload = false) => {
       try {
         setLoading(true);
         const wallet = getWallet(walletType);
+        await wallet.activate();
+        setSelectedWallet(walletType);
+
         if (reload && (!chainId || !chainIdToNetworkMap[chainId])) {
           await switchNetwork(selectedChainId);
         }
-        await wallet.activate(undefined);
+
         setSuccess(true);
-        setSelectedWallet(walletType);
         if (reload) {
-          setTimeout(window.location.reload, 500);
+          setTimeout(() => window.location.reload(), 500);
         }
       } catch (error: any) {
         setError(error);
@@ -153,6 +155,11 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       await getContractRegistryInstance();
       await loadAdditionalInfo();
       setLoadAppType(LOAD_TYPES.loaded);
+
+      if (selectedWallet) {
+        ethereum?.on('accountsChanged', () => window.location.reload());
+        ethereum?.on('chainChanged', () => window.location.reload());
+      }
     } catch (error) {
       captureError(error);
       setLoadAppType(LOAD_TYPES.initError);
@@ -186,7 +193,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
 
   const getChainId = async (provider: any) => {
     /* Fix issue with first Metamask launch. */
-    const timeout = setTimeout(window.location.reload, 5000);
+    const timeout = setTimeout(() => window.location.reload(), 5000);
     const chainId = await provider.request({ method: 'net_version' });
     clearTimeout(timeout);
     return chainId;
@@ -198,7 +205,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
         if (!ethereum) {
           setSelectedChainId(newChainId);
           setSelectedRpc(connectorParametersMap[newChainId].rpcUrls[0]);
-          setTimeout(window.location.reload, 500);
+          setTimeout(() => window.location.reload(), 500);
         } else {
           const isSameNetwork = chainId === newChainId;
           try {
@@ -217,8 +224,6 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
 
   useEffect(() => {
     initConnection();
-    ethereum?.on('accountsChanged', () => window.location.reload());
-    ethereum?.on('chainChanged', () => window.location.reload());
   }, []);
 
   switch (loadAppType) {
