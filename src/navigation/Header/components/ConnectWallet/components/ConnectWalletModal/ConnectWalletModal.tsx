@@ -35,7 +35,8 @@ function ConnectWalletModal ({ modalOpen, onModalClose }: Props) {
             onChange={() => setIsChecked(!isChecked)}
           />
           <p className="text-md">
-            <span> {t('I_HAVE_READ')} </span>
+            <span>{t('I_HAVE_READ')}</span>
+            {' '}
             <a
               className="link"
               target="_blank"
