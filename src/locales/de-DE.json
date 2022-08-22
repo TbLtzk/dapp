@@ -404,10 +404,10 @@
   "Q_TOKENS_CAN_BE_TIME_LOCKED": "Q Token können für einen bestimmten Zeitraum zeitlich gesperrt werden (\\\"Vesting\\\"), was eine vorzeitige Auszahlung aus dem Q Vault verhindert. Es gibt vier unterschiedliche Arten des Vestings, die sich in der jeweiligen Verwendungsmöglichkeit unterscheiden, jedoch erhöhen alle gesperrten Q Token das Stimmgewicht für Q Token Holder entsprechend.",
   "PROPOSALS_HANDLING_VOTES_ON_CONSTITUTION": "Vorschläge (\\\"Proposals\\\") zur Abstimmung von Verfassungsänderungen und wichtigen Anpassungen des Q Systems.",
   "PROPOSALS_HANDLING_THE_ADDING_AND_REMOVAL_OF_ROOT_NODES": "Vorschläge (\\\"Proposals\\\") zur Abstimmung über das Hinzufügen und/oder Entfernen von Root Nodes. ",
-  "PROPOSALS_HANDLING_THE_ADDING_AND_REMOVAL_OF_EXPERTS_AND_VOTINGS_ON_CORRESPONDINGLY_GOVERNED_EXPERT_PARAMETERS.": "Vorschläge (\\\"Proposals\\\") zur Abstimmung über das Hinzufügen und/oder Entfernen von Experten sowie über das Ändern von Systemparametern, die von Experten verwaltet werden.",
-  "PROPOSALS_HANDLING_THE_SLASHING_OF_VALIDATORS_AND_ROOT_NODES.": "Vorschläge (\\\"Proposals\\\") zur Abstimmung von Slashing-Maßnahmen zur Maßregelung von Validatoren und Root Nodes, die gegen die Verfassung verstoßen haben.",
-  "PROPOSALS_HANDLING_CHANGES_TO_THE_SYSTEM_CONTRACT_REGISTRY.": "Vorschläge (\\\"Proposals\\\") zur Abstimmung von Änderungen der Contract Registry.",
-  "ADD_OR_REMOVE_ROOT_NODE_STAKE_HERE.": "Hinzufügen oder Entfernen des Root Node Stake.",
+  "PROPOSALS_HANDLING_THE_ADDING_AND_REMOVAL_OF_EXPERTS_AND_VOTINGS_ON_CORRESPONDINGLY_GOVERNED_EXPERT_PARAMETERS": "Vorschläge (\\\"Proposals\\\") zur Abstimmung über das Hinzufügen und/oder Entfernen von Experten sowie über das Ändern von Systemparametern, die von Experten verwaltet werden.",
+  "PROPOSALS_HANDLING_THE_SLASHING_OF_VALIDATORS_AND_ROOT_NODES": "Vorschläge (\\\"Proposals\\\") zur Abstimmung von Slashing-Maßnahmen zur Maßregelung von Validatoren und Root Nodes, die gegen die Verfassung verstoßen haben.",
+  "PROPOSALS_HANDLING_CHANGES_TO_THE_SYSTEM_CONTRACT_REGISTRY": "Vorschläge (\\\"Proposals\\\") zur Abstimmung von Änderungen der Contract Registry.",
+  "ADD_OR_REMOVE_ROOT_NODE_STAKE_HERE": "Hinzufügen oder Entfernen des Root Node Stake.",
   "ADD_OR_REMOVE_VALIDATOR_STAKE": "Hinzufügen oder Entfernen des Validator Stake, Verwaltung des Staker Reward Pool, um Rewards der Delegierenden zu ändern sowie Übersicht der Delegationen anderer Validatoren.",
   "OUTSTANDING_DEBT_REFRESHED": "Ausstehende Verbindlichkeiten aktualisiert",
   "SYSTEM_BALANCE": "Systemguthaben",
@@ -1007,5 +1007,12 @@
   "INACTIVE_COUNT": "{{count}} inaktiv",
   "ROOT_NODES_MONITORING": "Wurzelknoten Überwachung",
   "VALIDATORS_MONITORING": "Validatoren Überwachung",
-  "SWITCH_NETWORK_ERROR": "Netzwerkwechsel nicht möglich. Überprüfen Sie Ihre ausstehenden Anfragen"
+  "SWITCH_NETWORK_ERROR": "Netzwerkwechsel nicht möglich. Überprüfen Sie Ihre ausstehenden Anfragen",
+  "NO_SUCH_RESULT": "Kein solches Ergebnis",
+  "TOP_UP": "Nachfüllen",
+  "TOP_UP_Q_VAULT": "Q-Gewölbe auffüllen",
+  "TOP_UP_MODAL_HINT": "Sie können Ihr Q-Gewölbe auffüllen, indem Sie etwas Q aus Ihrer Q-Brieftasche übertragen",
+  "MAX_TRANSFER_AMOUNT_WARNING": "Kein Q Bleuern auf Sender Wallet für zukünftige Transaktionen (Gas)",
+  "AMOUNT_TO_TRANSFER": "zu überweisender Betrag",
+  "AVAILABLE_AMOUNT": "Verfügbarer Betrag: {{amount}}"
 }
