@@ -1,35 +1,21 @@
 import * as actionTypes from './action-types';
 
-export const getVRPBalance = (address) => ({ type: actionTypes.GET_VRP_BALANCE, address });
-export const setVRPBalance = (data) => ({ type: actionTypes.SET_VRP_BALANCE, payload: data });
+export const getVRPBalance = () => ({ type: actionTypes.GET_VRP_BALANCE });
+export const getVRPBalanceSuccess = (poolBalance) => ({ type: actionTypes.GET_VRP_BALANCE_SUCCESS, poolBalance });
 
-export const getVRPPoolInfo = (address) => ({ type: actionTypes.GET_VRP_POOL_INFO, address });
-export const setVRPPoolInfo = (data) => ({ type: actionTypes.SET_VRP_POOL_INFO, payload: data });
+export const getVRPPoolInfo = () => ({ type: actionTypes.GET_VRP_POOL_INFO });
+export const getVRPPoolInfoSuccess = (poolInfo) => ({ type: actionTypes.GET_VRP_POOL_INFO_SUCCESS, poolInfo });
 
-export const getVRPDelegatorsShare = (address) => ({ type: actionTypes.GET_VRP_DELEGATOR_SHARE, address });
-export const setVRPDelegatorsShare = (amount, label) => ({ type: actionTypes.SET_VRP_DELEGATOR_SHARE, amount, label });
-export const setVRPDelegatorsShareData = (data) => ({ type: actionTypes.SET_VRP_DELEGATOR_SHARE_DATA, payload: data });
+export const getVRPDelegatorsShare = () => ({ type: actionTypes.GET_VRP_DELEGATORS_SHARE });
+export const getVRPDelegatorsShareSucccess = (delegatorsShare) => ({
+  type: actionTypes.GET_VRP_DELEGATORS_SHARE_SUCCESS,
+  delegatorsShare,
+});
 
-export const getVRPLastUpdateOfCompoundRate = (address) => ({
+export const getVRPLastUpdateOfCompoundRate = () => ({
   type: actionTypes.GET_VRP_LAST_UPDATE_OF_COMPOUND_RATE,
-  address
 });
-
-export const setVRPLastUpdateOfCompoundRateData = (data) => ({
-  type: actionTypes.SET_VRP_LAST_UPDATE_OF_COMPOUND_RATE_DATA,
-  payload: data
+export const getVRPLastUpdateOfCompoundRateSuccess = (lastUpdateOfCompoundRate) => ({
+  type: actionTypes.GET_VRP_LAST_UPDATE_OF_COMPOUND_RATE_SUCCESS,
+  lastUpdateOfCompoundRate,
 });
-
-export const setVRPUpdateValidatorsCompoundRate = (address, label) => ({
-  type: actionTypes.SET_VRP_UPDATE_VALIDATORS_COMPOUND_RATE,
-  address,
-  label
-});
-
-export const setVRPLoadingValidatorsCompoundRate = (data) => ({
-  type: actionTypes.SET_VRP_LOADING_COMPOUND_RATE,
-  payload: data
-});
-
-export const getRewardPoolsBalance = () => ({ type: actionTypes.GET_REWARD_POOLS_BALANCE });
-export const setRewardPoolsBalance = (data) => ({ type: actionTypes.SET_REWARD_POOLS_BALANCE, payload: data });

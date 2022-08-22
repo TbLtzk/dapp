@@ -2,118 +2,121 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fromWei } from 'web3-utils';
+import { Validator } from 'typings/validator';
 
-import ProgressBar from 'components/Base/ProgressBar';
-import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import RedirectAddress from 'components/Custom/RedirectAddress';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
-import Table, { TableColumn } from 'ui/Table';
+import Button from 'ui/Button';
+import Table from 'ui/Table';
 
-import useNetworkConfig from 'hooks/useNetworkConfig';
+import { useEnterShortList } from '../ManageValidator/components/ManageBalance/hooks';
 
-import { getValidatorMembers } from 'store/validators/action-creators';
+import { getIsUserValidator, getValidatorMembers } from 'store/validators/action-creators';
 import {
+  isUserValidatorSelector,
   loadingValidatorsWidenedSelector,
   validatorsWidenedSelector,
 } from 'store/validators/selectors';
 
-import { TABLE_TYPES } from 'constants/tableTypes';
+import { RoutePaths } from 'constants/routes';
 import { formatAsset, parseNumber } from 'utils/numbers';
 
 function ValidatorsTable () {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { indexerUrl } = useNetworkConfig();
 
-  const validators = useSelector(validatorsWidenedSelector);
+  const enterShortList = useEnterShortList();
+
+  const validatorsTable = useSelector(validatorsWidenedSelector);
   const tableLoading = useSelector(loadingValidatorsWidenedSelector);
+  const isValidator = useSelector(isUserValidatorSelector);
 
   useEffect(() => {
-    dispatch(getValidatorMembers(TABLE_TYPES.validatorsWidened, indexerUrl));
+    dispatch(getIsUserValidator());
+    dispatch(getValidatorMembers('validators-widened'));
   }, [dispatch]);
-
-  const columns: TableColumn[] = [
-    {
-      headerStyle: () => ({ minWidth: '110px', cursor: 'pointer' }),
-      dataField: 'rank',
-      text: t('RANK'),
-      sort: true,
-    },
-    {
-      headerStyle: () => ({ minWidth: '200px' }),
-      dataField: 'validator',
-      text: 'Address',
-      filterValue: cell => cell.props.children[0].props.address,
-    },
-    {
-      headerStyle: () => ({ minWidth: '230px', cursor: 'pointer' }),
-      dataField: 'amount',
-      text: t('TOTAL_ACCOUNTABLE_STAKE'),
-      sort: true,
-      sortFunc: (a, b, order) => order === 'desc'
-        ? parseNumber(b) - parseNumber(a)
-        : parseNumber(a) - parseNumber(b),
-    },
-    {
-      headerStyle: () => ({ minWidth: '110px', cursor: 'pointer' }),
-      dataField: 'selfStake',
-      text: t('SELF_STAKE'),
-      sort: true,
-      sortFunc: (a, b, order) => order === 'desc'
-        ? parseNumber(b) - parseNumber(a)
-        : parseNumber(a) - parseNumber(b),
-    },
-    {
-      headerStyle: () => ({ minWidth: '175px', cursor: 'pointer' }),
-      dataField: 'delegatedStake',
-      text: t('DELEGATED_STAKE'),
-      sort: true,
-      sortFunc: (a, b, order) => order === 'desc'
-        ? parseNumber(b) - parseNumber(a)
-        : parseNumber(a) - parseNumber(b),
-    },
-    {
-      headerStyle: () => ({ minWidth: '215px', cursor: 'pointer' }),
-      dataField: 'delegationSaturation',
-      text: t('DELEGATION_SATURATION'),
-      sort: true,
-      sortFunc: (a, b, order) => order === 'desc'
-        ? parseNumber(b) - parseNumber(a)
-        : parseNumber(a) - parseNumber(b),
-    },
-  ];
 
   return (
     <Table
-      header={(
+      buttons={!isValidator && <Button onClick={enterShortList}>{t('JOIN_VALIDATOR_RANKING')}</Button>}
+      header={
         <h2 className="text-h2">
           <span>{t('VALIDATOR_RANKING')}</span>
           <InfoTooltip topic="validator-ranking" />
         </h2>
-      )}
-      perPage={20}
-      columns={columns}
-      emptyTableMessage={t('NO_VALIDATORS')}
+      }
       loading={tableLoading}
-      table={validators.map((validator: any, idx: number) => ({
-        id: idx,
+      perPage={20}
+      error=""
+      emptyTableMessage={t('NO_VALIDATORS')}
+      columns={[
+        {
+          headerStyle: () => ({ minWidth: '95px', cursor: 'pointer' }),
+          dataField: 'rank',
+          text: t('RANK'),
+          sort: true,
+        },
+        {
+          headerStyle: () => ({ minWidth: '200px' }),
+          dataField: 'validator',
+          text: t('ADDRESS'),
+          filterValue: (cell: any) => cell.props.children[0].props.address,
+        },
+        {
+          headerStyle: () => ({ minWidth: '145px', cursor: 'pointer' }),
+          dataField: 'totalStake',
+          text: t('TOTAL_STAKE'),
+          sort: true,
+          sortFunc: (a: string, b: string, order: string) =>
+            order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b),
+        },
+        {
+          headerStyle: () => ({ minWidth: '145px', cursor: 'pointer' }),
+          dataField: 'selfStake',
+          text: t('SELF_STAKE'),
+          sort: true,
+          sortFunc: (a: string, b: string, order: string) =>
+            order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b),
+        },
+        {
+          headerStyle: () => ({ minWidth: '165px', cursor: 'pointer' }),
+          dataField: 'delegatedStake',
+          text: t('DELEGATED_STAKE'),
+          sort: true,
+          sortFunc: (a: string, b: string, order: string) =>
+            order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b),
+        },
+        {
+          headerStyle: () => ({ minWidth: '100px' }),
+          dataField: 'validatorShare',
+          text: t('VALIDATOR_SHARE'),
+        },
+        {
+          headerStyle: () => ({ minWidth: '100px' }),
+          dataField: 'delegatorShare',
+          text: t('DELEGATOR_SHARE'),
+        },
+      ]}
+      table={validatorsTable.map((validator: Validator) => ({
+        id: validator.address,
         rank: validator.rank,
         validator: (
           <div style={{ display: 'flex' }}>
-            <ExplorerAddress
-              short
+            <RedirectAddress
               iconed
-              semibold
-              address={validator.validator}
+              short
+              address={validator.address}
+              to={`${RoutePaths.stakingValidators}/${validator.address}`}
             />
             <AliasTooltip alias={validator.alias} />
           </div>
         ),
-        amount: formatAsset(fromWei(validator.amount), 'Q'),
+        totalStake: formatAsset(validator.totalStake, 'Q'),
         selfStake: formatAsset(validator.selfStake, 'Q'),
         delegatedStake: formatAsset(validator.delegatedStake, 'Q'),
-        delegationSaturation: <ProgressBar value={validator.delegationSaturation} />,
+        validatorShare: formatAsset(validator.validatorShare, '%'),
+        delegatorShare: formatAsset(validator.delegatorShare, '%'),
       }))}
     />
   );

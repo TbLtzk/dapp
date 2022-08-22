@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
+import { Validator } from 'typings/validator';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import PageLayout from 'components/PageLayout';
@@ -108,16 +109,16 @@ function ValidatorsMonitoring () {
           perPage={20}
           loading={loading}
           columns={columns}
-          table={validators.map((validator: any, i: number) => ({
-            id: i,
-            rank: i + 1,
+          table={validators.map((validator: Validator) => ({
+            id: validator.address,
+            rank: validator.rank,
             validator: (
               <div className="validator-address">
                 <ExplorerAddress
                   short
                   iconed
                   semibold
-                  address={validator.validator}
+                  address={validator.address}
                 />
                 <AliasTooltip alias={validator.alias} />
               </div>

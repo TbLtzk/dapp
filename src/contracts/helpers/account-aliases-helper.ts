@@ -6,6 +6,7 @@ import { fetchBlockNumber } from './block-number';
 import { getAccountAliasesInstance } from 'contracts/contract-instance';
 
 import { chainIdToNetworkMap, networkConfigsMap, ORIGIN_NETWORK_NAME } from 'constants/config';
+import { captureError } from 'utils/errors';
 
 export async function getAliasEvents () {
   const contract = await getAccountAliasesInstance();
@@ -30,17 +31,22 @@ export async function getAliasEvents () {
 }
 
 export async function getBlockSealingAliasMap (addresses = [], chainId: number) {
-  const network = chainIdToNetworkMap[chainId] || ORIGIN_NETWORK_NAME;
-  if (!networkConfigsMap[network].featureFlags.aliases) return {};
+  try {
+    const network = chainIdToNetworkMap[chainId] || ORIGIN_NETWORK_NAME;
+    if (!networkConfigsMap[network].featureFlags.aliases) return {};
 
-  const contract = await getAccountAliasesInstance();
-  const aliases = await contract.resolveBatch(
-    addresses,
-    addresses.map(() => AliasPurpose.BLOCK_SEALING)
-  );
+    const contract = await getAccountAliasesInstance();
+    const aliases = await contract.resolveBatch(
+      addresses,
+      addresses.map(() => AliasPurpose.BLOCK_SEALING)
+    );
 
-  return aliases.reduce((acc, alias, i) => {
-    acc[addresses[i]] = alias === addresses[i] ? '' : alias;
-    return acc;
-  }, {} as { [address: string]: string });
+    return aliases.reduce((acc, alias, i) => {
+      acc[addresses[i]] = alias === addresses[i] ? '' : alias;
+      return acc;
+    }, {} as { [address: string]: string });
+  } catch (error) {
+    captureError(error);
+    return addresses.map(address => ({ [address]: '' }));
+  }
 }

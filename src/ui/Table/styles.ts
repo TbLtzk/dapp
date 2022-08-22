@@ -181,9 +181,6 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
     }
   }
 
-  .bottom-buttons {
-    margin-top: 10px;
-  }
 `;
 
 export const SortCaretIcon = styled.svg<{ $order?: string }>`

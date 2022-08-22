@@ -1,46 +1,48 @@
+import { fromWei } from 'web3-utils';
+
 import * as actionTypes from './action-types';
 
+const DEFAULT_POOL_INFO = {
+  aggregatedNormalizedStake: '0',
+  compoundRate: '0',
+  delegatedStake: '0',
+  delegatorsShare: '0',
+  lastUpdateOfCompoundRate: '0',
+  poolBalance: '0',
+  reservedForClaims: '0',
+};
+
 const initialState = {
-  poolInfo: 0,
-  delegatorShare: 0,
-  balance: 0,
+  poolInfo: DEFAULT_POOL_INFO,
+  poolBalance: 0,
+  delegatorsShare: 0,
+  validatorShare: 0,
   lastUpdateOfCompoundRate: 0,
-  loadingUpdateOfCompoundRate: false,
-  rewardPoolsBalance: 0
 };
 
 export default function index (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.SET_VRP_BALANCE:
+    case actionTypes.GET_VRP_POOL_INFO_SUCCESS:
       return {
         ...state,
-        balance: action.payload
+        poolInfo: { ...action.poolInfo, poolBalance: fromWei(action.poolInfo.poolBalance) },
       };
-    case actionTypes.SET_VRP_POOL_INFO:
+    case actionTypes.GET_VRP_DELEGATORS_SHARE_SUCCESS:
       return {
         ...state,
-        poolInfo: action.payload
+        delegatorsShare: action.delegatorsShare,
+        validatorShare: action.delegatorsShare ? 100 - action.delegatorsShare : 100,
       };
-    case actionTypes.SET_REWARD_POOLS_BALANCE: {
+
+    case actionTypes.GET_VRP_BALANCE_SUCCESS:
       return {
         ...state,
-        rewardPoolsBalance: action.payload
+        poolBalance: action.poolBalance,
       };
-    }
-    case actionTypes.SET_VRP_DELEGATOR_SHARE_DATA:
+    case actionTypes.GET_VRP_LAST_UPDATE_OF_COMPOUND_RATE_SUCCESS:
       return {
         ...state,
-        delegatorShare: action.payload
-      };
-    case actionTypes.SET_VRP_LAST_UPDATE_OF_COMPOUND_RATE_DATA:
-      return {
-        ...state,
-        lastUpdateOfCompoundRate: action.payload
-      };
-    case actionTypes.SET_VRP_LOADING_COMPOUND_RATE:
-      return {
-        ...state,
-        loadingUpdateOfCompoundRate: action.payload
+        lastUpdateOfCompoundRate: action.lastUpdateOfCompoundRate,
       };
     default:
       return state;

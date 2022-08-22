@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { isNil } from 'lodash';
+import { Validator } from 'typings/validator';
 
 import { FormStep } from 'components/MultiStepForm';
 import Button from 'ui/Button';
@@ -60,7 +61,7 @@ function DetailsStep () {
   }, [dispatch, isRootType]);
 
   const getCurrentStake = () => {
-    const validator = validators.find((v: any) => v.validator === form.values.address);
+    const validator = validators.find((v: Validator) => v.address === form.values.address);
     const rootNode = rootNodes.find((r: any) => r.address === form.values.address);
     return isRootType ? rootNode?.stakeAmount : validator?.selfStake;
   };

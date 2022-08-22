@@ -8,8 +8,8 @@ import useInfinityNumber from 'hooks/useInfinityNumber';
 
 import { getSystemReserveBalance } from 'store/system-balance/action-creators';
 import { systemReserveBalanceSelector } from 'store/system-balance/selectors';
-import { getRewardPoolsBalance } from 'store/validation-reward-pools/action-creators';
-import { rewardPoolsBalanceSelector } from 'store/validation-reward-pools/selectors';
+import { getVRPBalance } from 'store/validation-reward-pools/action-creators';
+import { poolBalanceSelector } from 'store/validation-reward-pools/selectors';
 
 const StyledWrapper = styled.div`
   grid-area: balance;
@@ -24,11 +24,11 @@ function PoolBalances () {
   const reserveBalance = useSelector(systemReserveBalanceSelector);
   const reserveBalanceRef = useInfinityNumber(reserveBalance, ' Q');
 
-  const rewardPoolsBalance = useSelector(rewardPoolsBalanceSelector);
+  const rewardPoolsBalance = useSelector(poolBalanceSelector);
   const rewardPoolsBalanceRef = useInfinityNumber(rewardPoolsBalance, ' Q');
 
   useEffect(() => {
-    dispatch(getRewardPoolsBalance());
+    dispatch(getVRPBalance());
     dispatch(getSystemReserveBalance());
   }, []);
 

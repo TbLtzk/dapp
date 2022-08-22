@@ -16,8 +16,8 @@ import { qVaultMinimumTimeLock, qVaultTimeLocks, userBalance } from 'store/q-vau
 import { getMinimumRootTimeLock, getRootNodeStakes, getRootTimeLocks } from 'store/root-node/action-creators';
 import { rootMinimumTimeLock, rootNodeStake, rootTimeLocks } from 'store/root-node/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
-import { getMinimumValidatorsTimeLock, getSelfStake, getValidatorsTimeLocks } from 'store/validators/action-creators';
-import { selfStake, validatorsMinimumTimeLock, validatorsTimeLocks } from 'store/validators/selectors';
+import { getMinimumValidatorsTimeLock, getValidatorAccountableSelfStake, getValidatorsTimeLocks } from 'store/validators/action-creators';
+import { validatorAccountableSelfStakeSelector, validatorsMinimumTimeLock, validatorsTimeLocks } from 'store/validators/selectors';
 import { getMinimumVestingTimeLock, getVestingBalance, getVestingTimeLocks } from 'store/vesting/action-creators';
 import { vestingBalance, vestingMinimumTimeLock, vestingTimeLocks } from 'store/vesting/selectors';
 
@@ -37,7 +37,7 @@ function TimeLocks () {
   const rootTimeLockMinimumBalanceRef = useAnimateNumber(useSelector(rootMinimumTimeLock));
   const rootTimeLocksArray = useSelector(rootTimeLocks);
 
-  const validatorSelfStakeRef = useAnimateNumber(useSelector(selfStake));
+  const validatorSelfStakeRef = useAnimateNumber(useSelector(validatorAccountableSelfStakeSelector));
   const validatorsTimeLockMinimumBalanceRef = useAnimateNumber(useSelector(validatorsMinimumTimeLock));
   const validatorsTimeLocksArray = useSelector(validatorsTimeLocks);
 
@@ -61,7 +61,7 @@ function TimeLocks () {
     dispatch(getMinimumRootTimeLock(currentAddress));
     dispatch(getRootTimeLocks(currentAddress));
 
-    dispatch(getSelfStake(currentAddress));
+    dispatch(getValidatorAccountableSelfStake(currentAddress));
     dispatch(getMinimumValidatorsTimeLock(currentAddress));
     dispatch(getValidatorsTimeLocks(currentAddress));
 

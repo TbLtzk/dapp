@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import PageLayout from 'components/PageLayout';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
@@ -29,7 +30,7 @@ function ManageDelegations () {
   const dispatch = useDispatch();
 
   const handleBackClick = () => {
-    history.replace(RoutePaths.stakingDelegations);
+    history.push(RoutePaths.stakingDelegations);
   };
 
   const getDelegationsManagingInfo = () => {
@@ -58,22 +59,25 @@ function ManageDelegations () {
 
   return (
     <>
-      <Button
-        alwaysEnabled
-        look="ghost"
-        style={{ marginBottom: '24px' }}
-        onClick={handleBackClick}
-      >
-        <Icon name="arrow-left" />
-        <span>{t('GO_TO_DELEGATIONS')}</span>
-      </Button>
+      <Link to={RoutePaths.stakingDelegations}>
+        <Button
+          alwaysEnabled
+          compact
+          look="ghost"
+          style={{ marginBottom: '24px' }}
+          onClick={handleBackClick}
+        >
+          <Icon name="arrow-left" />
+          <span>{t('GO_TO_DELEGATIONS')}</span>
+        </Button>
+      </Link>
+
       <PageLayout
         title={t('MANAGE')}
         titleExtra={<InfoTooltip placement="bottom" topic="delegate-staking-power" />}
       >
         <ManageDelegationsContainer>
           <Tabs tabs={tabs} />
-
           <TabSwitch>
             <>
               <TabRoute exact path={RoutePaths.stakingDelegationsValidators}>

@@ -1,7 +1,8 @@
-import { ReactNode, useCallback, useState } from 'react';
+import { memo, ReactNode, useCallback, useState } from 'react';
 import BootstrapTable, { ColumnSortCaret } from 'react-bootstrap-table-next';
 import paginationFactory, { PaginationListStandalone, PaginationProvider } from 'react-bootstrap-table2-paginator';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
+import { useTranslation } from 'react-i18next';
 
 import Search from 'ui/Search';
 
@@ -19,7 +20,6 @@ interface Props {
   emptyTableMessage: string;
   tiny?: boolean;
   header?: ReactNode;
-  bottomButtons?: ReactNode;
   buttons?: ReactNode;
 }
 
@@ -33,8 +33,8 @@ const Table = ({
   emptyTableMessage,
   header,
   tiny = false,
-  bottomButtons,
 }: Props) => {
+  const { t } = useTranslation();
   const [isEmpty, setIsEmpty] = useState(false);
 
   const afterSearch = useCallback((newTable: BootstrapTable[]) => {
@@ -72,47 +72,53 @@ const Table = ({
         })}
       >
         {({ paginationProps, paginationTableProps }) => (
-          <>
-            <ToolkitProvider
-              search={{ afterSearch, searchFormatted: true }}
-              keyField="id"
-              data={table}
-              columns={columns.map(column => ({
-                ...column,
-                sortCaret: (order => (
-                  <SortCaretIcon $order={order}>
-                    <path d="M8.35351 12.1773C8.15825 12.3726 7.84167 12.3726 7.64641 12.1773L5.52018 10.0511C5.2052 9.73608 5.42828 9.19751 5.87373 9.19751H10.1262C10.5716 9.19751 10.7947 9.73608 10.4797 10.0511L8.35351 12.1773Z" />
-                    <path d="M5.87373 6.79744C5.42828 6.79744 5.2052 6.25887 5.52018 5.94389L7.64641 3.81766C7.84167 3.6224 8.15825 3.6224 8.35351 3.81766L10.4797 5.94389C10.7947 6.25887 10.5716 6.79744 10.1262 6.79744H5.87373Z" />
-                  </SortCaretIcon>
-                )) as ColumnSortCaret,
-              }))}
-            >
-              {(props) => (
+          <ToolkitProvider
+            search={{ afterSearch, searchFormatted: true }}
+            keyField="id"
+            data={table}
+            columns={columns.map((column) => ({
+              ...column,
+              sortCaret: ((order) => (
+                <SortCaretIcon $order={order}>
+                  <path d="M8.35351 12.1773C8.15825 12.3726 7.84167 12.3726 7.64641 12.1773L5.52018 10.0511C5.2052 9.73608 5.42828 9.19751 5.87373 9.19751H10.1262C10.5716 9.19751 10.7947 9.73608 10.4797 10.0511L8.35351 12.1773Z" />
+                  <path d="M5.87373 6.79744C5.42828 6.79744 5.2052 6.25887 5.52018 5.94389L7.64641 3.81766C7.84167 3.6224 8.15825 3.6224 8.35351 3.81766L10.4797 5.94389C10.7947 6.25887 10.5716 6.79744 10.1262 6.79744H5.87373Z" />
+                </SortCaretIcon>
+              )) as ColumnSortCaret,
+            }))}
+          >
+            {(props) => {
+              // HACK:  https://github.com/react-bootstrap-table/react-bootstrap-table2/issues/1715
+              if (props.searchProps.searchText.length >= 1) {
+                paginationProps.page = 1;
+                paginationProps.sizePerPage = 999;
+              }
+              return (
                 <>
-                  {tiny
-                    ? null
-                    : (
-                      <div className="head-elements">
-                        <Search value={props.searchProps.searchText} onChange={props.searchProps.onSearch} />
-                        {buttons}
-                      </div>
-                    )}
-
-                  <BootstrapTable {...props.baseProps} {...paginationTableProps} />
-                  {isEmpty && (
-                    <div className="text-center">
-                      <h4 className="text-xl">No such result</h4>
+                  {!tiny && (
+                    <div className="head-elements">
+                      <Search value={props.searchProps.searchText} onChange={props.searchProps.onSearch} />
+                      {buttons}
                     </div>
                   )}
+
+                  <BootstrapTable {...props.baseProps} {...paginationTableProps} />
+                  {isEmpty
+                    ? (
+                      <div className="text-center">
+                        <h4 className="text-xl">{t('NO_SUCH_RESULT')}</h4>
+                      </div>
+                    )
+                    : (
+                      paginationProps.sizePerPage !== 999 && (
+                        <div className="table-pagination">
+                          <PaginationListStandalone {...paginationProps} />
+                        </div>
+                      )
+                    )}
                 </>
-              )}
-            </ToolkitProvider>
-            {!isEmpty && (
-              <div className="table-pagination">
-                <PaginationListStandalone {...paginationProps} />
-              </div>
-            )}
-          </>
+              );
+            }}
+          </ToolkitProvider>
         )}
       </PaginationProvider>
     );
@@ -124,9 +130,8 @@ const Table = ({
         <div className="table-header">{header}</div>
         {tableContent()}
       </div>
-      {bottomButtons && <div className="bottom-buttons">{bottomButtons}</div>}
     </TableContainer>
   );
 };
 
-export default Table;
+export default memo(Table);

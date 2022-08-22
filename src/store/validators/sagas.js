@@ -1,35 +1,23 @@
+
 import { all, call, put, select, takeEvery } from 'redux-saga/effects';
-import { fromWei, toWei } from 'web3-utils';
+import { fromWei } from 'web3-utils';
 
 import {
-  getAccountableTotalStake,
-  getCompoundRateKeeperExists,
-  getInterestRate,
-  getIsUserValidator,
-  getValidatorMembers,
-  getValidatorWithdrawalInfo,
-  setAccountableTotalStake,
+  getValidatorAccountableSelfStakeSuccess,
+  getValidatorAccountableTotalStakeSuccess,
+  getValidatorDelegatedStakeSuccess,
+  getValidatorTotalStakeSuccess,
   setCompoundRateKeeperExists,
-  setDelegatedStake,
   setInactiveValidators,
   setIsUserValidator,
   setMinimumValidatorsTimeLock,
-  setOwnStake,
-  setSelfStake,
-  setTotalStake,
   setValidatorMembers,
   setValidatorsTimeLocks,
   setValidatorWithdrawalInfo,
 } from './action-creators';
 import * as actionTypes from './action-types';
 
-import { getAccountBalance } from 'store/q-vault/action-creators';
-import {
-  setTransactionLoading,
-  setTransactionLoadingError,
-  setTransactionLoadingSuccess,
-} from 'store/transaction-handler/actions';
-import { networkSelector } from 'store/user-inf/selectors';
+import { networkSelector, userAddressMetamask } from 'store/user-inf/selectors';
 
 import {
   getIndexerInstance,
@@ -40,70 +28,64 @@ import { getBlockSealingAliasMap } from 'contracts/helpers/account-aliases-helpe
 import { getValidator, getValidators, prepareValidatorsMonitoringData } from 'contracts/helpers/validators-helper';
 
 import { networkConfigsMap } from 'constants/config';
-import formTypes from 'constants/form-types';
-import { TRANSACTION_TYPES } from 'constants/statuses';
 import { TABLE_TYPES } from 'constants/tableTypes';
 import { dateToUnix } from 'utils/date';
-import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
+import { captureError } from 'utils/errors';
 
-function* getValidatorsWithdrawalInfoGenerator ({ address }) {
+function* getValidatorTotalStakeGenerator () {
   try {
+    const userAddress = yield select(userAddressMetamask);
     const contract = yield call(getValidatorsInstance);
-    const data = yield contract.getWithdrawalInfo(address);
-    yield put(setValidatorWithdrawalInfo(data));
-  } catch (error) {
-    captureError(error);
-    yield put(setValidatorWithdrawalInfo({}));
-  }
-}
-
-function* getValidatorsTotalStakeGenerator ({ address }) {
-  try {
-    const contract = yield call(getValidatorsInstance);
-    const data = yield contract.getValidatorTotalStake(address);
-    yield put(setTotalStake(fromWei(data)));
+    const validatorTotalStake = yield contract.getValidatorTotalStake(userAddress);
+    yield put(getValidatorTotalStakeSuccess(fromWei(validatorTotalStake)));
   } catch (error) {
     captureError(error);
   }
 }
 
-function* getValidatorsOwnStakeGenerator ({ address }) {
+function* getValidatorDelegatedStakeGenerator () {
   try {
+    const userAddress = yield select(userAddressMetamask);
+
     const contract = yield call(getValidatorsInstance);
-    const data = yield contract.getAccountableSelfStake(address);
-    yield put(setOwnStake(fromWei(data)));
+    const validatorDelegatedStake = yield contract.instance.methods.getValidatorDelegatedStake(userAddress).call();
+    yield put(getValidatorDelegatedStakeSuccess(fromWei(validatorDelegatedStake)));
   } catch (error) {
     captureError(error);
   }
 }
 
-function* getValidatorsDelegatedStakeGenerator ({ address }) {
+function* getValidatorAccountableTotalStakeGenerator () {
   try {
+    const userAddress = yield select(userAddressMetamask);
     const contract = yield call(getValidatorsInstance);
-    const data = yield contract.instance.methods.getValidatorDelegatedStake(address).call();
-    yield put(setDelegatedStake(fromWei(data)));
+    const accountableTotalStake = yield contract.getAccountableTotalStake(userAddress);
+    yield put(getValidatorAccountableTotalStakeSuccess(fromWei(accountableTotalStake)));
   } catch (error) {
     captureError(error);
   }
 }
 
-function* getValidatorsAccountableTotalStakeGenerator ({ address }) {
+function* getValidatorAccountableSelfStakeGenerator ({ address }) {
   try {
+    const userAddress = yield select(userAddressMetamask);
     const contract = yield call(getValidatorsInstance);
-    const data = yield contract.getAccountableTotalStake(address);
-    yield put(setAccountableTotalStake(fromWei(data)));
+    const accountableSelfStake = yield contract.getAccountableSelfStake(address ?? userAddress);
+    yield put(getValidatorAccountableSelfStakeSuccess(fromWei(accountableSelfStake)));
   } catch (error) {
     captureError(error);
   }
 }
 
-function* getValidatorsAccountableSelfStake ({ address }) {
+function* getValidatorsWithdrawalInfoGenerator () {
   try {
+    const userAddress = yield select(userAddressMetamask);
     const contract = yield call(getValidatorsInstance);
-    const data = yield contract.getAccountableSelfStake(address);
-    yield put(setSelfStake(Number(fromWei(data))));
+    const withdrawalInfo = yield contract.getWithdrawalInfo(userAddress);
+    yield put(setValidatorWithdrawalInfo(withdrawalInfo));
   } catch (error) {
     captureError(error);
+    yield put(setValidatorWithdrawalInfo(error));
   }
 }
 
@@ -114,28 +96,31 @@ function* getValidatorsMembersGenerator ({
   const network = yield select(networkSelector);
   try {
     const validatorsInstance = yield call(getValidatorsInstance);
+    const shortList = yield validatorsInstance.getShortList();
+
     switch (tableType) {
       case TABLE_TYPES.validatorsWidened: {
         const validationRewardPoolsInstance = yield call(getValidationRewardPoolsInstance);
-        const validators = yield getValidators(validatorsInstance);
+        const validators = yield getValidators(shortList);
         const aliasesMap = yield getBlockSealingAliasMap(
-          validators.map((item) => item.validator),
+          validators.map((item) => item.address),
           network
         );
+        const validatorsWithAlias = validators.map((member) => ({
+          ...member,
+          alias: aliasesMap[member.address],
+        }));
+
         const preparedData = yield all(
-          validators.map((validator, idx) =>
+          validatorsWithAlias.map((validator, idx) =>
             getValidator(validator, idx, validatorsInstance, validationRewardPoolsInstance)
           )
         );
-        const members = preparedData.map((member) => ({
-          ...member,
-          alias: aliasesMap[member.validator],
-        }));
-        yield put(setValidatorMembers(tableType, members));
+
+        yield put(setValidatorMembers(tableType, preparedData));
         break;
       }
       case TABLE_TYPES.validatorsShort: {
-        const shortList = yield validatorsInstance.getShortList();
         const aliasesMap = yield getBlockSealingAliasMap(
           shortList.map((item) => item.address),
           network
@@ -150,10 +135,7 @@ function* getValidatorsMembersGenerator ({
       }
       case TABLE_TYPES.validatorsMonitoring: {
         const indexer = yield getIndexerInstance(indexerUrl);
-
-        const shortList = yield validatorsInstance.getShortList();
         const validatorAdresses = shortList.map((user) => user.address);
-
         const inactiveValidators = yield indexer.getInactiveValidators(validatorAdresses);
         const aliasesMap = yield getBlockSealingAliasMap(validatorAdresses, network);
 
@@ -176,14 +158,29 @@ function* getValidatorsMembersGenerator ({
   }
 }
 
-function* getIsUserValidatorGenerator ({ address }) {
+function* getIsUserValidatorGenerator () {
   try {
+    const userAddress = yield select(userAddressMetamask);
+
     const contract = yield call(getValidatorsInstance);
-    const data = yield contract.isInShortList(address);
-    yield put(setIsUserValidator(data));
+    const isInShortList = yield contract.isInShortList(userAddress);
+    const isInLongList = yield contract.isInLongList(userAddress);
+    const isValidator = [isInShortList, isInLongList].every(val => val);
+    yield put(setIsUserValidator(isValidator));
   } catch (error) {
     captureError(error);
     yield put(setIsUserValidator(false));
+  }
+}
+
+function* getCompoundRateKeeperExistsGenerator () {
+  try {
+    const { userAddress } = yield select((state) => state.userInf);
+    const contract = yield call(getValidationRewardPoolsInstance);
+    const compoundRateKeeperExists = yield contract.compoundRateKeeperExists(userAddress);
+    yield put(setCompoundRateKeeperExists(compoundRateKeeperExists));
+  } catch (error) {
+    captureError(error);
   }
 }
 
@@ -206,130 +203,14 @@ function* getValidatorsTimeLocksGenerator ({ address }) {
     captureError(error);
   }
 }
-function* getCompoundRateKeeperExistsGenerator () {
-  try {
-    const { userAddress } = yield select((state) => state.userInf);
-    const contract = yield call(getValidationRewardPoolsInstance);
-    const compoundRateKeeperExists = yield contract.compoundRateKeeperExists(userAddress);
-    yield put(setCompoundRateKeeperExists(compoundRateKeeperExists));
-  } catch (error) {
-    captureError(error);
-  }
-}
-
-function* setValidatorsInterestRateGenerator ({ address, uintPercent, label }) {
-  try {
-    yield put(setTransactionLoading());
-
-    const contract = yield call(getValidatorsInstance);
-    const transaction = yield contract.setInterestRate(address, uintPercent);
-
-    yield put(getInterestRate(address));
-    yield put(getCompoundRateKeeperExists());
-
-    yield put(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
-  } catch (error) {
-    captureError(error);
-    yield put(setTransactionLoadingError(getErrorMessage(error)));
-  }
-}
-function* setValidatorsCommitStakeGenerator ({ address, amountQ, label }) {
-  try {
-    yield put(setTransactionLoading());
-
-    const contract = yield call(getValidatorsInstance);
-    const transaction = yield contract.commitStake({
-      from: address,
-      value: toWei(amountQ),
-    });
-
-    yield put(getValidatorMembers());
-    yield put(getIsUserValidator(address));
-    yield put(getAccountableTotalStake(address));
-    yield put(getAccountBalance(address));
-    yield put(getCompoundRateKeeperExists());
-
-    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.validatorsStaking, transaction, label)));
-  } catch (error) {
-    captureError(error);
-    yield put(setTransactionLoadingError(getErrorMessage(error)));
-  }
-}
-
-function* setValidatorsAnnounceWithdrawalGenerator ({ address, amountQ, label }) {
-  try {
-    yield put(setTransactionLoading());
-
-    const contract = yield call(getValidatorsInstance);
-
-    const transaction = yield contract.announceWithdrawal(toWei(amountQ), { from: address });
-
-    yield put(getValidatorWithdrawalInfo(address));
-    yield put(getAccountableTotalStake(address));
-    yield put(getAccountBalance(address));
-    yield put(getValidatorMembers());
-    yield put(getCompoundRateKeeperExists());
-
-    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.validatorsStaking, transaction, label)));
-  } catch (error) {
-    captureError(error);
-    yield put(setTransactionLoadingError(getErrorMessage(error)));
-  }
-}
-
-function* setValidatorsWithdrawGenerator ({ address, amountQ, label }) {
-  try {
-    yield put(setTransactionLoading());
-
-    const contract = yield call(getValidatorsInstance);
-    const transaction = yield contract.withdraw(toWei(amountQ), address);
-
-    yield put(getIsUserValidator(address));
-    yield put(getAccountableTotalStake(address));
-    yield put(getAccountBalance(address));
-    yield put(getValidatorMembers());
-    yield put(getValidatorWithdrawalInfo(address));
-    yield put(getCompoundRateKeeperExists());
-
-    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.validatorsStaking, transaction, label)));
-  } catch (error) {
-    captureError(error);
-    yield put(setTransactionLoadingError(getErrorMessage(error)));
-  }
-}
-
-function* setValidatorsEnterShortListGenerator ({ address, label }) {
-  try {
-    yield put(setTransactionLoading());
-
-    const contract = yield call(getValidatorsInstance);
-    const transaction = yield contract.enterShortList({ from: address });
-
-    yield put(getIsUserValidator(address));
-    yield put(getValidatorMembers());
-    yield put(getCompoundRateKeeperExists());
-
-    yield put(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
-  } catch (error) {
-    captureError(error);
-    yield put(setTransactionLoadingError(getErrorMessage(error)));
-  }
-}
 
 export default [
   takeEvery(actionTypes.GET_VALIDATORS_WITHDRAWAL_INFO, getValidatorsWithdrawalInfoGenerator),
 
-  takeEvery(actionTypes.SET_VALIDATORS_COMMIT_STAKE, setValidatorsCommitStakeGenerator),
-  takeEvery(actionTypes.SET_VALIDATORS_ANNOUNCE_WITHDRAWAL, setValidatorsAnnounceWithdrawalGenerator),
-  takeEvery(actionTypes.SET_VALIDATORS_WITHDRAW, setValidatorsWithdrawGenerator),
-  takeEvery(actionTypes.SET_VALIDATORS_ENTER_SHORT_LIST, setValidatorsEnterShortListGenerator),
-  takeEvery(actionTypes.SET_VALIDATORS_INTEREST_RATE_SEND, setValidatorsInterestRateGenerator),
-
-  takeEvery(actionTypes.GET_VALIDATORS_TOTAL_STAKE, getValidatorsTotalStakeGenerator),
-  takeEvery(actionTypes.GET_VALIDATORS_OWN_STAKE, getValidatorsOwnStakeGenerator),
-  takeEvery(actionTypes.GET_VALIDATORS_DELEGATED_STAKE, getValidatorsDelegatedStakeGenerator),
-  takeEvery(actionTypes.GET_VALIDATORS_ACCOUNTABLE_TOTAL_STAKE, getValidatorsAccountableTotalStakeGenerator),
-  takeEvery(actionTypes.GET_VALIDATORS_SELF_STAKE, getValidatorsAccountableSelfStake),
+  takeEvery(actionTypes.GET_VALIDATOR_ACCOUNTABLE_SELF_STAKE, getValidatorAccountableSelfStakeGenerator),
+  takeEvery(actionTypes.GET_VALIDATOR_ACCOUNTABLE_TOTAL_STAKE, getValidatorAccountableTotalStakeGenerator),
+  takeEvery(actionTypes.GET_VALIDATOR_DELEGATED_STAKE, getValidatorDelegatedStakeGenerator),
+  takeEvery(actionTypes.GET_VALIDATOR_TOTAL_STAKE, getValidatorTotalStakeGenerator),
 
   takeEvery(actionTypes.GET_VALIDATORS_MEMBERS, getValidatorsMembersGenerator),
   takeEvery(actionTypes.GET_IS_USER_VALIDATOR, getIsUserValidatorGenerator),

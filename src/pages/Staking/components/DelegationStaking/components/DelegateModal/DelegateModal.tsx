@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Validator } from 'typings/validator';
+
 import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 
@@ -9,16 +11,16 @@ import useMetamaskReset from 'hooks/useMetamaskReset';
 import UpdateStakeForm from '../DelegationsTable/components/UpdateStakeForm';
 import { Delegation } from '../DelegationsTable/DelegationsTable';
 import DelegateStakeForm from '../ManageDelegations/components/DelegateStakeForm';
-import { Validator } from '../ManageDelegations/components/ValidatorsList/ValidatorsList';
 
 import formTypes from 'constants/form-types';
 
 export interface DelegateModalProps {
   delegation: Delegation | Validator;
+  btnTitle?: string,
   type: 'validator-select' | 'delegator-select';
 }
 
-function DelegateModal ({ delegation, type }: DelegateModalProps) {
+function DelegateModal ({ delegation, type, btnTitle }: DelegateModalProps) {
   const { t } = useTranslation();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -45,7 +47,7 @@ function DelegateModal ({ delegation, type }: DelegateModalProps) {
   return (
     <>
       <Button compact onClick={() => setModalOpen(true)}>
-        {modalType.btnTitle}
+        {btnTitle ?? modalType.btnTitle}
       </Button>
       <Modal
         open={modalOpen}

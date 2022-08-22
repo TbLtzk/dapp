@@ -1,139 +1,66 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
-import { fromWei } from 'web3-utils';
 
 import {
-  getVRPBalance,
-  getVRPDelegatorsShare,
-  getVRPLastUpdateOfCompoundRate,
-  getVRPPoolInfo,
-  setRewardPoolsBalance,
-  setVRPBalance,
-  setVRPDelegatorsShareData,
-  setVRPLastUpdateOfCompoundRateData,
-  setVRPLoadingValidatorsCompoundRate,
-  setVRPPoolInfo,
+  getVRPBalanceSuccess,
+  getVRPDelegatorsShareSucccess,
+  getVRPLastUpdateOfCompoundRateSuccess,
+  getVRPPoolInfoSuccess,
 } from './action-creators';
 import * as actionTypes from './action-types';
 
-import {
-  setTransactionLoading,
-  setTransactionLoadingError,
-  setTransactionLoadingSuccess,
-} from 'store/transaction-handler/actions';
+import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
 
-import formTypes from 'constants/form-types';
-import { TRANSACTION_TYPES } from 'constants/statuses';
-import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
-import { getFixedPercentage, transformToPercentage } from 'utils/numbers';
+import { captureError } from 'utils/errors';
+import { transformToPercentage } from 'utils/numbers';
 
-const message = { header: 'Notice', details: 'Stake amount below minimum to apply new rate, old rate applied.' };
-
-function* setUpdateValidatorsCompoundRateGenerator ({ address, label }) {
+function* getVRPDelegatorsShareGenerator () {
   try {
-    const { lastUpdateOfCompoundRate } = yield select((state) => state.validationRewardPools);
-
-    yield put(setVRPLoadingValidatorsCompoundRate(true));
+    const userAddress = yield select(userAddressMetamask);
     const contract = yield call(getValidationRewardPoolsInstance);
-    const transaction = yield contract.updateValidatorsCompoundRate(address, { from: address });
-    const nextUpdateCompoundRate = yield contract.getLastUpdateOfCompoundRate(address);
-
-    // Here can be a problem with error
-    if (lastUpdateOfCompoundRate === nextUpdateCompoundRate) {
-      yield put(setTransactionLoadingError(message));
-    }
-
-    yield put(getVRPLastUpdateOfCompoundRate(address));
-    yield put(getVRPDelegatorsShare(address));
-    yield put(getVRPBalance(address));
-    yield put(getVRPPoolInfo(address));
-    yield put(setTransactionLoadingSuccess({ transactionType: TRANSACTION_TYPES.success }));
-
-    yield put(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
-  } catch (error) {
-    captureError(error);
-    yield put(setTransactionLoadingError(getErrorMessage(error)));
-  } finally {
-    yield put(setVRPLoadingValidatorsCompoundRate(false));
-  }
-}
-
-function* setDelegatorsShareGenerator ({ amount, label }) {
-  try {
-    yield put(setTransactionLoading());
-
-    const { userAddress } = yield select((state) => state.userInf);
-
-    const contract = yield call(getValidationRewardPoolsInstance);
-    const transaction = yield contract.setDelegatorsShare(getFixedPercentage(amount));
-    yield put(getVRPDelegatorsShare(userAddress));
-
-    yield put(setTransactionLoadingSuccess(getSuccessMessage(formTypes.validatorsPool, transaction, label)));
-  } catch (error) {
-    captureError(error);
-    yield put(setTransactionLoadingError(getErrorMessage(error)));
-  }
-}
-
-function* getDelegatorsShareGenerator ({ address }) {
-  try {
-    const contract = yield call(getValidationRewardPoolsInstance);
-    const data = yield contract.getDelegatorsShare(address);
-    yield put(setVRPDelegatorsShareData(transformToPercentage(data)));
+    const delegatorsShare = yield contract.getDelegatorsShare(userAddress);
+    yield put(getVRPDelegatorsShareSucccess(Number(transformToPercentage(delegatorsShare))));
   } catch (error) {
     captureError(error);
   }
 }
 
-function* getBalanceGenerator ({ address }) {
+function* getVRPPoolInfoGenerator () {
   try {
+    const userAddress = yield select(userAddressMetamask);
     const contract = yield call(getValidationRewardPoolsInstance);
-    const data = yield contract.getPoolInfo(address);
-    yield put(setVRPBalance(fromWei(data.poolBalance)));
+    const poolInfo = yield contract.getPoolInfo(userAddress);
+    yield put(getVRPPoolInfoSuccess(poolInfo));
   } catch (error) {
     captureError(error);
   }
 }
 
-function* getPoolInfoGenerator ({ address }) {
+function* getVRPLastUpdateOfCompoundRateGenerator () {
   try {
+    const userAddress = yield select(userAddressMetamask);
     const contract = yield call(getValidationRewardPoolsInstance);
-    const data = yield contract.getPoolInfo(address);
-    yield put(setVRPPoolInfo(fromWei(data.reservedForClaims)));
+    const lastUpdateOfCompoundRate = yield contract.getLastUpdateOfCompoundRate(userAddress);
+    yield put(getVRPLastUpdateOfCompoundRateSuccess(lastUpdateOfCompoundRate));
   } catch (error) {
     captureError(error);
   }
 }
 
-function* getLastUpdateOfCompoundRateGenerator () {
-  try {
-    const { userAddress } = yield select((state) => state.userInf);
-    const contract = yield call(getValidationRewardPoolsInstance);
-    const data = yield contract.getLastUpdateOfCompoundRate(userAddress);
-    yield put(setVRPLastUpdateOfCompoundRateData(data));
-  } catch (error) {
-    captureError(error);
-  }
-}
-
-function* getRewardPoolsBalanceGenerator () {
+function* getVRPBalanceGenerator () {
   try {
     const contract = yield call(getValidationRewardPoolsInstance);
     const amount = yield contract.getBalance();
-    yield put(setRewardPoolsBalance(amount));
+    yield put(getVRPBalanceSuccess(amount));
   } catch (error) {
     captureError(error);
   }
 }
 
 export default [
-  takeEvery(actionTypes.SET_VRP_DELEGATOR_SHARE, setDelegatorsShareGenerator),
-  takeEvery(actionTypes.SET_VRP_UPDATE_VALIDATORS_COMPOUND_RATE, setUpdateValidatorsCompoundRateGenerator),
-
-  takeEvery(actionTypes.GET_VRP_LAST_UPDATE_OF_COMPOUND_RATE, getLastUpdateOfCompoundRateGenerator),
-  takeEvery(actionTypes.GET_VRP_DELEGATOR_SHARE, getDelegatorsShareGenerator),
-  takeEvery(actionTypes.GET_VRP_POOL_INFO, getPoolInfoGenerator),
-  takeEvery(actionTypes.GET_VRP_BALANCE, getBalanceGenerator),
-  takeEvery(actionTypes.GET_REWARD_POOLS_BALANCE, getRewardPoolsBalanceGenerator),
+  takeEvery(actionTypes.GET_VRP_DELEGATORS_SHARE, getVRPDelegatorsShareGenerator),
+  takeEvery(actionTypes.GET_VRP_POOL_INFO, getVRPPoolInfoGenerator),
+  takeEvery(actionTypes.GET_VRP_LAST_UPDATE_OF_COMPOUND_RATE, getVRPLastUpdateOfCompoundRateGenerator),
+  takeEvery(actionTypes.GET_VRP_BALANCE, getVRPBalanceGenerator),
 ];

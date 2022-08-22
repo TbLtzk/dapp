@@ -14,14 +14,14 @@ import { getCheckIsUserRootNode } from 'store/root-node/action-creators';
 import { isUserRootNode } from 'store/root-node/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 import { getIsUserValidator } from 'store/validators/action-creators';
-import { isUserValidator } from 'store/validators/selectors';
+import { isUserValidatorSelector } from 'store/validators/selectors';
 
 function useVoterStatus () {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const userAddress = useSelector(userAddressMetamask);
   const isRootNode = useSelector(isUserRootNode);
-  const isValidator = useSelector(isUserValidator);
+  const isValidator = useSelector(isUserValidatorSelector);
   const isQTokenHolder = useSelector(userBalance);
   const isEPDRMembership = useSelector(isUserEPDRMembershipSelector);
   const isEPQFIMembership = useSelector(isUserEPQFIMembershipSelector);

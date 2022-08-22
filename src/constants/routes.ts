@@ -35,9 +35,17 @@ export enum RoutePaths {
   qConstitution = '/q-parameters/constitution',
 
   staking = '/staking',
+  stakingSlug = '/staking/:slug?',
+
   stakingRootNode = '/staking/root-node-staking',
-  stakingValidators = '/staking/validator-staking',
+
+  stakingValidators = '/staking/validators',
+  stakingValidatorSlug = '/staking/validators/:address?',
+  stakingValidatorManage = '/staking/validators/manage-balance',
+  stakingValidatorStakeRewarPoolManage = '/staking/validators/manage-stake-reward-pool',
+
   stakingDelegations = '/staking/delegations',
+  stakingDelegationsSlug = '/staking/delegations/:slug?',
+  stakingDelegationsManual = '/staking/delegations/manual',
   stakingDelegationsValidators = '/staking/delegations/validators',
-  stakingDelegationsManual = '/staking/delegations/manual'
 }
