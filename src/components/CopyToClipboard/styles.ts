@@ -11,7 +11,8 @@ export const TooltipWrapper = styled.span`
   }
 
   .copy-msg {
-    width: 40px;
+    min-width: 40px;
+    max-width: 70px;
     display: flex;
     justify-content: center;
     white-space: nowrap;

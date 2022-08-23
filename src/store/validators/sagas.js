@@ -143,8 +143,9 @@ function* getValidatorsMembersGenerator ({
           shortList.map((member) => prepareValidatorsMonitoringData(indexer, member))
         );
 
-        const members = preparedShortList.map((member) => ({
+        const members = preparedShortList.map((member, rank) => ({
           ...member,
+          rank: rank + 1,
           alias: aliasesMap[member.validator],
         }));
 
