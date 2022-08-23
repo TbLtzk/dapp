@@ -1037,5 +1037,8 @@
   "STAKE_AMOUNT_BELOW_MINIMUM_TO_APPLY_NEW_RATE": "Сума акцій нижче мінімуму для застосування нової ставки, застосована стара ставка.",
   "SUCCESS_ENTERING_VALIDATOR_RANK": "Успіх, що входять в рейтинг валідатора",
   "TIME_SINCE_LAST_REFRESH_OF_USER_DELEGATIONS": "Час після останнього оновлення делегацій користувача",
-  "VALIDATOR_MANAGE": "Управління валідатором"
+  "VALIDATOR_MANAGE": "Управління валідатором",
+  "ALIAS_IS_RESERVED_FOR_ACCOUNT": "Аліас зарезервовано для акаунта",
+  "UNRESERVE_ALIAS_SUCCESS": "Резервацію аліасу успішно очищено",
+  "UNRESERVE": "Видалити"
 }
