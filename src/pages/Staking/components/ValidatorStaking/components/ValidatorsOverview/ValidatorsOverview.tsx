@@ -30,7 +30,7 @@ function ValidatorsOverview () {
   return (
     <ValidatorsOverviewContainer>
       <div className="field_item">
-        <p className="color-secondary text-md">{t('Current validators')}</p>
+        <p className="color-secondary text-md">{t('CURRENT_VALIDATORS')}</p>
         <p className="text-xl font-semibold">{tableLoading ? '...' : validators.length}</p>
       </div>
 
