@@ -107,7 +107,7 @@ export async function getAndCombineValidatorInfo (
   network: number,
   indexerUrl: string
 ): Promise<Partial<Validator>> {
-  if (!isAddress(address)) return {};
+  if (!isAddress(String(address).toLowerCase())) return {};
   const indexer = await getIndexerInstance(indexerUrl);
   const validatorsInstance = await getValidatorsInstance();
   const validationRewardPoolsInstance = await getValidationRewardPoolsInstance();
