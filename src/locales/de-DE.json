@@ -1037,5 +1037,8 @@
   "STAKE_AMOUNT_BELOW_MINIMUM_TO_APPLY_NEW_RATE": "Einsatzbetrag unter dem Minimum, um einen neuen Zinssatz anzuwenden, alter Zinssatz angewendet.",
   "SUCCESS_ENTERING_VALIDATOR_RANK": "Erfolg beim Validator -Ranking",
   "TIME_SINCE_LAST_REFRESH_OF_USER_DELEGATIONS": "Zeit seit der letzten Aktualisierung von Benutzerdelegationen",
-  "VALIDATOR_MANAGE": "Validator verwalten"
+  "VALIDATOR_MANAGE": "Validator verwalten",
+  "ALIAS_IS_RESERVED_FOR_ACCOUNT": "Alias ist für das Konto reserviert",
+  "UNRESERVE_ALIAS_SUCCESS": "Unreserve Alias erfolgreich",
+  "UNRESERVE": "Unreserve"
 }

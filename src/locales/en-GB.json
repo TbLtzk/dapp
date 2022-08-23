@@ -1037,5 +1037,8 @@
   "STAKE_AMOUNT_BELOW_MINIMUM_TO_APPLY_NEW_RATE": "Stake amount below minimum to apply new rate, old rate applied.",
   "SUCCESS_ENTERING_VALIDATOR_RANK": "Success entering in Validator Ranking",
   "TIME_SINCE_LAST_REFRESH_OF_USER_DELEGATIONS": "Time Since Last Refresh of User Delegations",
-  "VALIDATOR_MANAGE": "Validator Manage"
+  "VALIDATOR_MANAGE": "Validator Manage",
+  "ALIAS_IS_RESERVED_FOR_ACCOUNT": "Alias is reserved for account",
+  "UNRESERVE_ALIAS_SUCCESS": "Unreserve Alias Success",
+  "UNRESERVE": "Unreserve"
 }
