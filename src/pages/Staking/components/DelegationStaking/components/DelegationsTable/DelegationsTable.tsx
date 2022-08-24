@@ -14,7 +14,7 @@ import { getDelegationsList, setDelegateStake } from 'store/q-vault/action-creat
 import { delegationList, loadingDelegationList } from 'store/q-vault/selectors';
 
 import { fillArray } from 'utils/arrays';
-import { formatAsset, parseNumber } from 'utils/numbers';
+import { formatAsset } from 'utils/numbers';
 
 export interface Delegation {
   id: number;
@@ -83,24 +83,18 @@ function DelegationsTable () {
           dataField: 'amount',
           text: t('CURRENT_STAKE'),
           sort: true,
-          sortFunc: (a: string, b: string, order: string) =>
-            order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b),
         },
         {
           headerStyle: () => ({ cursor: 'pointer', minWidth: '150px' }),
           dataField: 'reward',
           text: t('Your Reward'),
           sort: true,
-          sortFunc: (a: string, b: string, order: string) =>
-            order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b),
         },
         {
           headerStyle: () => ({ cursor: 'pointer', minWidth: '160px' }),
           dataField: 'delegatorShare',
           text: t('Delegator Share'),
           sort: true,
-          sortFunc: (a: string, b: string, order: string) =>
-            order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b),
         },
         {
           dataField: 'manage',

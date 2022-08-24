@@ -17,7 +17,7 @@ import { loadingValidatorsWidenedSelector, validatorsWidenedSelector } from 'sto
 
 import formTypes from 'constants/form-types';
 import { TABLE_TYPES } from 'constants/tableTypes';
-import { formatAsset, parseNumber } from 'utils/numbers';
+import { formatAsset } from 'utils/numbers';
 
 function ValidatorsList () {
   const dispatch = useDispatch();
@@ -44,14 +44,12 @@ function ValidatorsList () {
           dataField: 'totalDelegatedStake',
           text: t('TOTAL_DELEGATED_STAKE'),
           sort: true,
-          sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b)),
         },
         {
           headerStyle: () => ({ cursor: 'pointer', minWidth: '170px' }),
           dataField: 'delegatorShare',
           text: t('DELEGATOR_SHARE'),
           sort: true,
-          sortFunc: (a:string, b:string, order:string) => (order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b)),
         },
         {
           dataField: 'delegationSaturation',

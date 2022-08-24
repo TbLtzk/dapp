@@ -11,6 +11,8 @@ import { SkeletonTableLoading } from '../../components/Base/SkeletonLoading/Skel
 import { SortCaretIcon, TableContainer } from './styles';
 import { TableColumn } from '.';
 
+import { parseNumber } from 'utils/numbers';
+
 interface Props {
   loading?: boolean;
   table: any[];
@@ -77,6 +79,8 @@ const Table = ({
             keyField="id"
             data={table}
             columns={columns.map((column) => ({
+              sortFunc: (a: string, b: string, order: string) =>
+                order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b),
               ...column,
               sortCaret: ((order) => (
                 <SortCaretIcon $order={order}>
