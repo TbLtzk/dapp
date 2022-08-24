@@ -23,7 +23,7 @@ import {
 } from 'store/validators/selectors';
 
 import { TABLE_TYPES } from 'constants/tableTypes';
-import { formatAsset, parseNumber } from 'utils/numbers';
+import { formatAsset } from 'utils/numbers';
 
 const StyledWrapper = styled.div`
   .table-header {
@@ -71,18 +71,12 @@ function ValidatorsMonitoring () {
       dataField: 'amount',
       text: t('TOTAL_ACCOUNTABLE_STAKE'),
       sort: true,
-      sortFunc: (a, b, order) => order === 'desc'
-        ? parseNumber(b) - parseNumber(a)
-        : parseNumber(a) - parseNumber(b),
     },
     {
       headerStyle: () => ({ minWidth: '200px', cursor: 'pointer' }),
       dataField: 'lastBlock',
       text: t('LAST_BLOCK_VALIDATED'),
       sort: true,
-      sortFunc: (a, b, order) => order === 'desc'
-        ? parseNumber(b) - parseNumber(a)
-        : parseNumber(a) - parseNumber(b),
     },
     {
       headerStyle: () => ({ minWidth: '200px' }),
@@ -94,9 +88,6 @@ function ValidatorsMonitoring () {
       dataField: 'average',
       text: t('AVERAGE_AVAILABILITY_LAST_1000_BLOCKS_CYCLES'),
       sort: true,
-      sortFunc: (a, b, order) => order === 'desc'
-        ? parseNumber(b) - parseNumber(a)
-        : parseNumber(a) - parseNumber(b),
     },
   ];
 

@@ -18,7 +18,7 @@ import {
 } from 'store/root-node/selectors';
 
 import { TABLE_TYPES } from 'constants/tableTypes';
-import { formatAsset, parseNumber } from 'utils/numbers';
+import { formatAsset } from 'utils/numbers';
 
 const StyledWrapper = styled.div`
   .table-header {
@@ -49,9 +49,6 @@ function RootNodesMonitoring () {
       dataField: 'amount',
       text: t('STAKED_AMOUNT'),
       sort: true,
-      sortFunc: (a, b, order) => order === 'desc'
-        ? parseNumber(b) - parseNumber(a)
-        : parseNumber(a) - parseNumber(b),
     },
     {
       headerStyle: () => ({ minWidth: '190px' }),

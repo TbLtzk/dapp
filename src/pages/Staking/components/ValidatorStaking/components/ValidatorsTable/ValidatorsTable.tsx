@@ -20,7 +20,7 @@ import {
 } from 'store/validators/selectors';
 
 import { RoutePaths } from 'constants/routes';
-import { formatAsset, parseNumber } from 'utils/numbers';
+import { formatAsset } from 'utils/numbers';
 
 function ValidatorsTable () {
   const dispatch = useDispatch();
@@ -68,34 +68,30 @@ function ValidatorsTable () {
           dataField: 'totalStake',
           text: t('TOTAL_STAKE'),
           sort: true,
-          sortFunc: (a: string, b: string, order: string) =>
-            order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b),
         },
         {
           headerStyle: () => ({ minWidth: '145px', cursor: 'pointer' }),
           dataField: 'selfStake',
           text: t('SELF_STAKE'),
           sort: true,
-          sortFunc: (a: string, b: string, order: string) =>
-            order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b),
         },
         {
           headerStyle: () => ({ minWidth: '165px', cursor: 'pointer' }),
           dataField: 'delegatedStake',
           text: t('DELEGATED_STAKE'),
           sort: true,
-          sortFunc: (a: string, b: string, order: string) =>
-            order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b),
         },
         {
-          headerStyle: () => ({ minWidth: '100px' }),
+          headerStyle: () => ({ minWidth: '100px', cursor: 'pointer' }),
           dataField: 'validatorShare',
           text: t('VALIDATOR_SHARE'),
+          sort: true,
         },
         {
-          headerStyle: () => ({ minWidth: '100px' }),
+          headerStyle: () => ({ minWidth: '100px', cursor: 'pointer' }),
           dataField: 'delegatorShare',
           text: t('DELEGATOR_SHARE'),
+          sort: true,
         },
       ]}
       table={validatorsTable.map((validator: Validator) => ({

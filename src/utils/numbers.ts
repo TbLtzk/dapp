@@ -7,12 +7,10 @@ export function toBigNumber (value: BigNumber.Value): BigNumber {
 
 export function parseNumber (value: string): number {
   return Number(value.toString().replace(/[Q,%]/g, ''));
-};
+}
 
 export function formatNumber (value: BigNumber.Value, precision = 4): string {
-  return new BigNumber(value)
-    .decimalPlaces(precision, BigNumber.ROUND_DOWN)
-    .toFormat();
+  return new BigNumber(value).decimalPlaces(precision, BigNumber.ROUND_DOWN).toFormat();
 }
 
 export function formatNumberFixed (value: BigNumber.Value, precision = 4): string {
@@ -24,7 +22,7 @@ export function formatNumberCompact (value: BigNumber.Value, precision = 4): str
 
   return Intl.NumberFormat('en-US', {
     notation: 'compact',
-    maximumFractionDigits: precision
+    maximumFractionDigits: precision,
   }).format(Number(rounded));
 }
 
@@ -34,12 +32,10 @@ export function formatAsset (value: BigNumber.Value, asset = ''): string {
 
 export function getFixedPercentage (value: BigNumber.Value) {
   return toBigNumber('1e+25').multipliedBy(value).toFixed();
-};
+}
 
 export function transformToPercentage (value: BigNumber.Value): string {
-  return new BigNumber(value)
-    .dividedBy('10000000000000000000000000')
-    .toFixed(6);
+  return new BigNumber(value).dividedBy('10000000000000000000000000').toFixed(6);
 }
 
 export function formatPercent (value: BigNumber.Value): string {
@@ -62,9 +58,7 @@ export function calculateInterestRate (value: number): number {
   const SECONDS_IN_YEAR = 365 * 24 * 60 * 60;
   const MAX_INTEREST = 10 ** 27;
 
-  const ratePerSecond = value >= MAX_INTEREST
-    ? 100
-    : Math.max(value / MAX_INTEREST, 0);
+  const ratePerSecond = value >= MAX_INTEREST ? 100 : Math.max(value / MAX_INTEREST, 0);
 
   return ((1 + ratePerSecond) ** SECONDS_IN_YEAR - 1) * 100;
-};
+}

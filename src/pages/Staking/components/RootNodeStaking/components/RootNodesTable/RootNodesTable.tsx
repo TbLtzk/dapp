@@ -14,7 +14,7 @@ import {
 } from 'store/root-node/selectors';
 
 import { TABLE_TYPES } from 'constants/tableTypes';
-import { formatAsset, formatPercent, parseNumber } from 'utils/numbers';
+import { formatAsset, formatPercent } from 'utils/numbers';
 
 function RootNodeTable () {
   const { t } = useTranslation();
@@ -40,18 +40,12 @@ function RootNodeTable () {
       dataField: 'amount',
       text: t('STAKED_AMOUNT'),
       sort: true,
-      sortFunc: (a, b, order) => order === 'desc'
-        ? parseNumber(b) - parseNumber(a)
-        : parseNumber(a) - parseNumber(b),
     },
     {
       headerStyle: () => ({ minWidth: '90px', cursor: 'pointer' }),
       dataField: 'share',
       text: t('SHARE'),
       sort: true,
-      sortFunc: (a, b, order) => order === 'desc'
-        ? parseNumber(b) - parseNumber(a)
-        : parseNumber(a) - parseNumber(b),
     },
   ];
 
