@@ -3,12 +3,14 @@ import { useSelector } from 'react-redux';
 
 import { isEmpty } from 'lodash';
 
+import useMetamaskReset from 'hooks/useMetamaskReset';
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import { networkSelector } from 'store/user-inf/selectors';
 
 import { getAndCombineValidatorInfo } from 'contracts/helpers/validators-helper';
 
+import formTypes from 'constants/form-types';
 import { captureError } from 'utils/errors';
 
 const useFetchValidatorData = (address: string) => {
@@ -36,6 +38,8 @@ const useFetchValidatorData = (address: string) => {
       setLoading(false);
     }
   };
+
+  useMetamaskReset(formTypes.qVaultDelegation, fetchValidatorData);
 
   useEffect(() => {
     fetchValidatorData();

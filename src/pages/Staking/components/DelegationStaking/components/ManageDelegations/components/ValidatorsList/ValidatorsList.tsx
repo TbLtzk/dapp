@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Validator } from 'typings/validator';
 
@@ -8,16 +8,24 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
 import Table from 'ui/Table';
 
+import useMetamaskReset from 'hooks/useMetamaskReset';
+
 import DelegateModal from '../../../DelegateModal';
 
+import { getValidatorMembers } from 'store/validators/action-creators';
 import { loadingValidatorsWidenedSelector, validatorsWidenedSelector } from 'store/validators/selectors';
 
+import formTypes from 'constants/form-types';
+import { TABLE_TYPES } from 'constants/tableTypes';
 import { formatAsset, parseNumber } from 'utils/numbers';
 
 function ValidatorsList () {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const validators = useSelector(validatorsWidenedSelector);
   const validatorsLoading = useSelector(loadingValidatorsWidenedSelector);
+
+  useMetamaskReset(formTypes.qVaultDelegation, () => dispatch(getValidatorMembers(TABLE_TYPES.validatorsWidened)));
 
   return (
     <Table

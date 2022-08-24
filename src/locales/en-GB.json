@@ -1040,5 +1040,8 @@
   "VALIDATOR_MANAGE": "Validator Manage",
   "ALIAS_IS_RESERVED_FOR_ACCOUNT": "Alias is reserved for account",
   "UNRESERVE_ALIAS_SUCCESS": "Unreserve Alias Success",
-  "UNRESERVE": "Unreserve"
+  "UNRESERVE": "Unreserve",
+  "THIS_VALIDATOR_USES_ALIAS": "This validator uses alias",
+  "FOR_BLOCK_SEALING": "for block sealing",
+  "MANAGE_DELEGATIONS": "Manage Delegations"
 }
