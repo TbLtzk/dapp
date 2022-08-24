@@ -1040,5 +1040,8 @@
   "VALIDATOR_MANAGE": "Управління валідатором",
   "ALIAS_IS_RESERVED_FOR_ACCOUNT": "Аліас зарезервовано для акаунта",
   "UNRESERVE_ALIAS_SUCCESS": "Резервацію аліасу успішно очищено",
-  "UNRESERVE": "Видалити"
+  "UNRESERVE": "Видалити",
+  "THIS_VALIDATOR_USES_ALIAS": "Цей валідатор використовує аліас",
+  "FOR_BLOCK_SEALING": "для закриття блоків",
+  "MANAGE_DELEGATIONS": "Управління делегаціями"
 }

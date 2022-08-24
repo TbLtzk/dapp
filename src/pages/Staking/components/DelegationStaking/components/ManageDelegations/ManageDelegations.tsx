@@ -73,7 +73,7 @@ function ManageDelegations () {
       </Link>
 
       <PageLayout
-        title={t('MANAGE')}
+        title={t('MANAGE_DELEGATIONS')}
         titleExtra={<InfoTooltip placement="bottom" topic="delegate-staking-power" />}
       >
         <ManageDelegationsContainer>

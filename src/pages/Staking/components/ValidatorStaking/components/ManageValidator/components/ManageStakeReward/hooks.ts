@@ -10,6 +10,7 @@ import {
 import { userAddressMetamask } from 'store/user-inf/selectors';
 import { getVRPBalance, getVRPDelegatorsShare, getVRPLastUpdateOfCompoundRate, getVRPPoolInfo } from 'store/validation-reward-pools/action-creators';
 import { lastUpdateOfCompoundRateSelector } from 'store/validation-reward-pools/selectors';
+import { getValidatorDelegatedStake } from 'store/validators/action-creators';
 
 import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
 
@@ -61,6 +62,7 @@ function useUpdateValidatorCompoundRate () {
       } else {
         dispatch(getVRPPoolInfo());
         dispatch(getVRPBalance());
+        dispatch(getValidatorDelegatedStake());
         dispatch(getVRPDelegatorsShare());
         dispatch(getVRPLastUpdateOfCompoundRate());
         dispatch(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
