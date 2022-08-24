@@ -1,5 +1,7 @@
 import { HTMLAttributes } from 'react';
 
+import ExplorerAddress from 'components/Custom/ExplorerAddress';
+
 import { DonutLegendItem } from '../../types';
 
 import { LegendContainer } from './styles';
@@ -25,7 +27,14 @@ function DonutLegend ({ items }: Props) {
             {hasIcon && (
               <div className="donut-legend-icon">{item.icon}</div>
             )}
-            <p className="text-md font-semibold ellipsis">{item.label}</p>
+            {window.web3.utils.isAddress(item.label)
+              ? (<ExplorerAddress
+                short
+                semibold
+                address={item.label}
+              />)
+              : <p className="text-md font-semibold ellipsis">{item.label}</p>
+            }
           </div>
 
           <p className="donut-legend-val text-md">{item.percent}</p>

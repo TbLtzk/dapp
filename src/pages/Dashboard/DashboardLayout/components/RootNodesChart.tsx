@@ -16,7 +16,6 @@ import { loadingRootMembersSelector, rootMembersSelector } from 'store/root-node
 
 import { TABLE_TYPES } from 'constants/tableTypes';
 import { formatNumber } from 'utils/numbers';
-import { trimAddress } from 'utils/strings';
 
 const StyledWrapper = styled.div`
   grid-area: root;
@@ -75,9 +74,10 @@ function RootNodesChart () {
               totalLabel={t('TOTAL_STAKE')}
               formatValue={(val) => `${formatNumber(val, 2)} Q`}
               options={rootMembers.map((item: any) => ({
-                label: trimAddress(item.address),
+                label: item.address,
                 value: item.stakeAmount,
                 icon: <AddressIcon address={item.address} />,
+                isAddress: true
               }))}
             />
           )}
