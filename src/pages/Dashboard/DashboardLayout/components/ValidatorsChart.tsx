@@ -16,7 +16,6 @@ import { loadingValidatorsShortSelector, validatorsShortSelector } from 'store/v
 
 import { TABLE_TYPES } from 'constants/tableTypes';
 import { formatNumber } from 'utils/numbers';
-import { trimAddress } from 'utils/strings';
 
 const StyledWrapper = styled.div`
   grid-area: validators;
@@ -76,7 +75,7 @@ function ValidatorsChart () {
               totalLabel={t('TOTAL_STAKE')}
               formatValue={(val) => `${formatNumber(val, 2)} Q`}
               options={validators.map((item: any) => ({
-                label: trimAddress(item.validator),
+                label: item.validator,
                 value: Number(item.amount),
                 icon: <AddressIcon address={item.validator} />,
               }))}
