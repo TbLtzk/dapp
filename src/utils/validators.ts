@@ -3,6 +3,7 @@ import { isBoolean } from 'lodash';
 import isDate from 'lodash/isDate';
 import isEmpty from 'lodash/isEmpty';
 import isNumber from 'lodash/isNumber';
+import { isAddress } from 'web3-utils';
 
 import { toBigNumber } from './numbers';
 
@@ -81,7 +82,7 @@ export const url: Validator = val => ({
 });
 
 export const address: Validator<string> = val => ({
-  isValid: !val || window.web3.utils.isAddress(val),
+  isValid: !val || isAddress(val),
   message: 'Invalid address'
 });
 
@@ -112,7 +113,7 @@ export const parameterType: ValidatorFn<ParameterType> = type => (val, form) => 
   switch (typeValue) {
     case ParameterType.ADDRESS:
       return {
-        isValid: window.web3.utils.isAddress(String(val)),
+        isValid: isAddress(String(val)),
         message: 'Invalid address'
       };
 

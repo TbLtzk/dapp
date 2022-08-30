@@ -5,45 +5,25 @@ import { votingAgent } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
+import { trimAddress } from 'utils/strings';
 
-function useVoteDelegation (ownWeight: string, address = '') {
-  const agent = useSelector(votingAgent);
-  const userAddress = useSelector(userAddressMetamask);
-  const voteAddress = address || userAddress;
+function useVoteDelegation () {
   const { t } = useTranslation();
 
-  switch (true) {
-    case !agent:
-      return {
-        delegateInfo: '...',
-        votingInfo: '...',
-      };
+  const agent = useSelector(votingAgent);
+  const userAddress = useSelector(userAddressMetamask);
 
-    case agent !== voteAddress && agent !== ZERO_ADDRESS:
-      return {
-        delegateInfo: `${t('YOU_DELEGATED_YOUR_VOTING_RIGHTS_TO')} ${agent}`,
-        votingInfo: `${t('YOUR_VOTING_AGENT_IS')} ${agent}`,
-      };
+  if (!agent) return '...';
 
-    case Number(ownWeight) && agent === voteAddress:
-      return {
-        delegateInfo: t('YOU_EXERCISE_YOUR_VOTING_RIGHT_YOURSELF'),
-        votingInfo: t('YOU_VOTE_FOR_YOURSELF'),
-      };
-
-    case agent === voteAddress:
-      return {
-        delegateInfo: t('YOU_DELEGATED_YOUR_VOTING_RIGHTS_TO_YOURSELF'),
-        votingInfo: t('YOU_VOTE_FOR_YOURSELF'),
-      };
-
-    default:
-      const title = t('YOU_CURRENTLY_HAVE_NO_VOTING_WEIGHT_RIGHTS');
-      return {
-        delegateInfo: title,
-        votingInfo: title,
-      };
+  if (agent !== userAddress && agent !== ZERO_ADDRESS) {
+    return `${t('YOUR_VOTING_AGENT_IS')} ${trimAddress(agent)}`;
   }
+
+  if (agent === userAddress) {
+    return t('YOU_VOTE_FOR_YOURSELF');
+  }
+
+  return t('YOU_CURRENTLY_HAVE_NO_VOTING_WEIGHT_RIGHTS');
 }
 
 export default useVoteDelegation;

@@ -48,7 +48,7 @@ function UpdateStakeForm ({ delegation }: { delegation: Delegation }) {
 
         <div>
           <p className="text-md color-secondary">{t('DELEGATOR_SHARE')}</p>
-          <p className="text-lg">{formatAsset(delegation.delegatorShare, '%')}</p>
+          <p className="text-lg">{formatAsset(delegation.delegatorShare, ' %')}</p>
         </div>
       </div>
 

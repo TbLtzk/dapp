@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { isNil } from 'lodash';
 import { Validator } from 'typings/validator';
+import { isAddress } from 'web3-utils';
 
 import { FormStep } from 'components/MultiStepForm';
 import Button from 'ui/Button';
@@ -67,7 +68,7 @@ function DetailsStep () {
   };
 
   const stake = useMemo(() => {
-    if (window.web3.utils.isAddress(form.values.address)) {
+    if (isAddress(form.values.address)) {
       const stake = getCurrentStake();
       form.fields.percent.onChange('0');
       form.setError('address', isNil(stake) ? memberError : '');

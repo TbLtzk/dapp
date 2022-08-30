@@ -9,6 +9,7 @@ import Auction from 'pages/Auctions/components/Auction';
 import NewAuction from 'pages/Auctions/components/NewAuction';
 import DataPrivacy from 'pages/DataPrivacy';
 import Governance from 'pages/Governance';
+import VotingPower from 'pages/Governance/components/VotingPower';
 import NewProposal from 'pages/Governance/NewProposal';
 import Proposal from 'pages/Governance/Proposal';
 import Imprint from 'pages/Imprint';
@@ -68,17 +69,21 @@ function Routes () {
           <NewProposal />
         </Route>
 
-        <Route exact path="/governance/:type?">
+        <Route exact path={RoutePaths.votingPower}>
+          <VotingPower />
+        </Route>
+
+        <Route exact path={RoutePaths.governanceTab}>
           <Governance />
         </Route>
 
         <Route
           exact
-          path="/governance/proposal/:contract?/:id?"
+          path={RoutePaths.proposal}
           component={(props: RouteComponentProps<any>) => <Proposal {...props} />}
         />
 
-        <Route exact path="/q-vault">
+        <Route exact path={RoutePaths.qVault}>
           <QVault />
         </Route>
 

@@ -13,11 +13,11 @@ import useVoterStatus from 'hooks/useVoterStatus';
 import { StatsContainer } from './styles';
 
 import { getDelegationInfo } from 'store/q-vault/action-creators';
-import { votingAgent } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 import { getBaseVotingWeightInfo } from 'store/voting/proposals/actions';
 import { baseVotingWeightInfoSelector } from 'store/voting/proposals/selectors';
 
+import { RoutePaths } from 'constants/routes';
 import { formatDateDMY, formatTimeGMT, unixToDate } from 'utils/date';
 import { formatAsset } from 'utils/numbers';
 
@@ -26,11 +26,10 @@ function VotingStats () {
   const dispatch = useDispatch();
 
   const address = useSelector(userAddressMetamask);
-  const agent = useSelector(votingAgent);
   const voterStatus = useVoterStatus();
 
   const { ownWeight, lockedUntil } = useSelector(baseVotingWeightInfoSelector);
-  const { votingInfo } = useVoteDelegation(ownWeight, agent);
+  const delegationStatus = useVoteDelegation();
 
   useEffect(() => {
     dispatch(getBaseVotingWeightInfo());
@@ -55,11 +54,11 @@ function VotingStats () {
     },
     {
       title: t('VOTING_STATUS'),
-      value: <span className="text-lg">{voterStatus}</span>
+      value: <span className="text-lg font-semibold">{voterStatus}</span>
     },
     {
       title: t('VOTE_DELEGATION'),
-      value: <span className="text-lg">{votingInfo}</span>
+      value: <span className="text-lg font-semibold">{delegationStatus}</span>
     }
   ];
 
@@ -67,13 +66,13 @@ function VotingStats () {
     <StatsContainer className="block">
       <div className="block__header">
         <h2 className="text-h2">{t('VOTING_STATS')}</h2>
-        <Link to="/q-vault">
+        <Link to={RoutePaths.votingPower}>
           <Button
             block
             alwaysEnabled
             look="secondary"
           >
-            {t('GO_TO_Q_VAULT')}
+            {t('VOTING_POWER')}
           </Button>
         </Link>
       </div>
@@ -83,7 +82,7 @@ function VotingStats () {
           <div key={title} className="stats-item">
             <p className="stats-item-lbl text-md">{title}</p>
             <p
-              className="stats-item-val text-xl"
+              className="stats-item-val text-xl font-semibold"
               title={String(value)}
             >
               {value}

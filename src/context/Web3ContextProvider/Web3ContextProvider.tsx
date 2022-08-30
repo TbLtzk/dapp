@@ -231,7 +231,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       return (
         <Wrap>
           <div>
-            <h5>Init error</h5>
+            <p>Init error</p>
             <p>Please, refresh the page</p>
           </div>
         </Wrap>

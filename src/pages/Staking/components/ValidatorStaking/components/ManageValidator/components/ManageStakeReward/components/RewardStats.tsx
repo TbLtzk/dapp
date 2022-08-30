@@ -80,7 +80,7 @@ function RewardStats () {
         {rewardStatsArray.map(({ id, label, value }) => (
           <div key={id}>
             <p className="color-secondary text-md">{label}</p>
-            <h4 className="color-primary text-md">{value}</h4>
+            <p className="color-primary text-md">{value}</p>
           </div>
         ))}
       </div>

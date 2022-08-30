@@ -92,7 +92,7 @@ function BalanceCard ({
         </BalanceCardContent>
       </Modal>
 
-      <div className="button__bottom">
+      <div style={{ marginTop: '16px' }}>
         <Button onClick={() => setIsModalShown(true)}>{t('MANAGE')}</Button>
       </div>
     </CustomBlock>

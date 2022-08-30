@@ -50,14 +50,14 @@ const Table = ({
     if (!table.length) {
       return (
         <div className="text-center">
-          <h4 className="text-xl">{emptyTableMessage}</h4>
+          <p className="text-xl">{emptyTableMessage}</p>
         </div>
       );
     }
     if (error) {
       return (
         <div className="text-center">
-          <h4 className="text-xl ">Error, while loading table</h4>
+          <p className="text-xl ">Error, while loading table</p>
         </div>
       );
     }
@@ -109,7 +109,7 @@ const Table = ({
                   {isEmpty
                     ? (
                       <div className="text-center">
-                        <h4 className="text-xl">{t('NO_SUCH_RESULT')}</h4>
+                        <p className="text-xl">{t('NO_SUCH_RESULT')}</p>
                       </div>
                     )
                     : (

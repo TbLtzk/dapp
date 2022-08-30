@@ -9,8 +9,7 @@ export const BalanceDropdown = styled(Dropdown)`
   }
 
   .balance-content {
-    min-width: 227px;
-    padding-bottom: 12px;
+    min-width: 240px;
     background-color: ${({ theme }) => theme.colors.block};
     box-shadow: 0 4px 4px ${({ theme }) => theme.colors.blockShadowDark},
       0 -1px 2px ${({ theme }) => theme.colors.blockShadowLight};
@@ -27,7 +26,7 @@ export const BalanceDropdown = styled(Dropdown)`
   .balance-q {
     cursor: default;
     width: 100%;
-    padding: 10px;
+    padding: 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -38,7 +37,7 @@ export const BalanceDropdown = styled(Dropdown)`
   }
 
   .balance-action {
-    padding: 10px;
+    padding: 12px 16px;
     background-color: transparent;
     border: none;
     width: 100%;

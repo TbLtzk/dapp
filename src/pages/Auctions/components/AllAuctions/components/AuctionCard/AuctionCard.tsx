@@ -43,14 +43,14 @@ function AuctionCard ({ auction }: Props) {
         {auction.auctionType === 'liquidation'
           ? (
             <div>
-              <h5 className="font-light text-md">{t('VAULT_OWNER')}</h5>
-              <h4 className="text-lg ellipsis">{(auction as LiquidationAuctionInfo).vaultOwner}</h4>
+              <p className="font-light text-md">{t('VAULT_OWNER')}</p>
+              <p className="text-lg ellipsis">{(auction as LiquidationAuctionInfo).vaultOwner}</p>
             </div>
           )
           : (
             <div>
-              <h5 className="font-light text-md">{t('BIDDER')}</h5>
-              <h4 className="text-lg ellipsis">{(auction as SystemDebtAndSurplusInfo).bidder}</h4>
+              <p className="font-light text-md">{t('BIDDER')}</p>
+              <p className="text-lg ellipsis">{(auction as SystemDebtAndSurplusInfo).bidder}</p>
             </div>
           )}
       </div>

@@ -25,7 +25,7 @@ import { compoundRateKeeperExistsSelector } from 'store/validators/selectors';
 import { formatDate, formatDateRelative, unixToDate } from 'utils/date';
 
 function ValidatorAllocation () {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
 
@@ -80,8 +80,8 @@ function ValidatorAllocation () {
         title={t('TIME_SINCE_LAST_REFRESH_OF_USER_DELEGATIONS')}
         onClick={() => updateCompoundRate(t('REFRESH_OF_USER_DELEGATIONS_SUCCESS'))}
       >
-        <Tooltip trigger={<p className="color-primary text-md">{formatDateRelative(unixToDate(lastUpdateCompoundRate))}</p>}>
-          {formatDate(unixToDate(lastUpdateCompoundRate))}
+        <Tooltip trigger={<p className="color-primary text-md">{formatDateRelative(unixToDate(lastUpdateCompoundRate), i18n.language)}</p>}>
+          {formatDate(unixToDate(lastUpdateCompoundRate), i18n.language)}
         </Tooltip>
       </RefreshBlock>
     </div>

@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const StyledProposalTurnout = styled.div`
   .proposal-turnout__quorum {
-    margin-top: 16px;
     display: flex;
     justify-content: space-between;
   }

@@ -64,6 +64,7 @@ function Select<T extends ValueType> ({
     ? (
       <Button
         compact
+        alwaysEnabled
         className={`select-chips ${value ? 'active' : ''}`}
         disabled={disabled}
         look={value ? 'primary' : 'secondary'}

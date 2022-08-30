@@ -75,7 +75,7 @@ function ValidatorsList () {
           </div>
         ),
         totalDelegatedStake: formatAsset(validator.delegatedStake, 'Q'),
-        delegatorShare: formatAsset(validator.delegatorShare, '%'),
+        delegatorShare: formatAsset(validator.delegatorShare, ' %'),
         delegationSaturation: <ProgressBar value={validator.delegationSaturation} />,
         chooseValidator: <DelegateModal type="validator-select" delegation={validator}/>,
       }))}

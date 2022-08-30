@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { media } from 'styles/media';
 
 export const Block = styled.div`
   width: 100%;
@@ -20,31 +19,6 @@ export const Block = styled.div`
     font-family: 'Lora', sans-serif;
   }
 
-  h2 {
-    color: ${(props) => props.theme.colors.textPrimary};
-    font-size: 40px;
-    line-height: 45px;
-    font-weight: 300;
-    margin-bottom: 15px;
-    font-family: 'OpenSans', sans-serif;
-  }
-
-  h3 {
-    color: ${(props) => props.theme.colors.textSecondary};
-    font-size: 16px;
-    line-height: 17px;
-    font-family: 'OpenSans', sans-serif;
-    margin-bottom: 15px;
-  }
-
-  h4 {
-    color: ${(props) => props.theme.colors.textPrimary};
-    font-size: 12px;
-    line-height: 17px;
-    font-family: 'OpenSans', sans-serif;
-    margin-bottom: 10px;
-  }
-
   h5 {
     color: ${(props) => props.theme.colors.textSecondary};
     font-size: 13px;
@@ -56,101 +30,5 @@ export const Block = styled.div`
   p {
     font-size: 13px;
     margin-bottom: 15px;
-  }
-
-  .card_text {
-    word-wrap: break-word;
-    font-size: 13px;
-    margin-bottom: 15px;
-  }
-
-  .card__actions {
-    display: flex;
-    align-items: flex-start;
-    margin-top: 10px;
-
-    & > *:not(:first-child) {
-      margin-left: 10px;
-    }
-  }
-
-  .card__actions__between {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-  }
-
-  .card__two-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin-bottom: 15px;
-  }
-
-  .card__spinner {
-    display: flex;
-    align-items: flex-start;
-    margin: 15px 0;
-  }
-
-  .card__one-line-simple-form {
-    display: grid;
-    grid-template-columns: minmax(80px, 1fr) minmax(76px, 90px);
-    grid-column-gap: 14px;
-    align-items: flex-start;
-    width: 100%;
-
-    .form-action {
-      margin-top: 33px;
-    }
-  }
-
-  .card__one-line-form-2-2-1 {
-    width: 100%;
-    display: grid;
-    grid-template-columns: minmax(80px, 2fr) minmax(80px, 2fr) minmax(70px, 90px);
-    grid-column-gap: 14px;
-  }
-
-  .card__send-form {
-    width: 100%;
-    display: grid;
-    grid-template-columns: minmax(80px, 2fr) minmax(80px, 2fr) minmax(70px, 90px);
-    grid-column-gap: 14px;
-    align-items: start;
-  }
-
-  .card__one-line-form-2-2-1-action {
-    justify-content: space-between;
-    display: flex;
-    align-items: flex-start;
-  }
-
-  .card__line {
-    width: 100%;
-    height: 1px;
-    margin: 24px 0;
-    border-bottom: 1px solid ${(props) => props.theme.colors.blockDivider};
-  }
-
-  .button__bottom {
-    margin-top: 16px;
-  }
-
-  .card_block {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-
-  ${media.lessThan('medium')} {
-    .card__send-form {
-      grid-template-columns: minmax(80px, 1fr);
-      grid-column-gap: 14px;
-      .card__one-line-form-2-2-1-action {
-        display: grid;
-        justify-content: flex-end;
-      }
-    }
   }
 `;

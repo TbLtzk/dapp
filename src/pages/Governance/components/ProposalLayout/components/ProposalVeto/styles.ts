@@ -1,12 +1,6 @@
 import styled from 'styled-components';
 
 export const StyledProposalVeto = styled.div`
-  .proposal-veto__quorum {
-    margin-top: 16px;
-    display: flex;
-    justify-content: space-between;
-  }
-
   .proposal-veto__progress {
     margin-top: 8px;
   }

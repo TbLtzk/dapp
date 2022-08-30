@@ -68,7 +68,7 @@ function DelegatorShare () {
           label={t('SET_DELEGATOR_SHARE')}
           {...form.fields.amount}
           type="number"
-          placeholder="0 %"
+          placeholder="0%"
           max="100"
         />
         <Button

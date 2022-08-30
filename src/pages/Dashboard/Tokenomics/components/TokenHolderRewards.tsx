@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { media } from 'styles/media';
 
 import Button from 'ui/Button';
-import Tooltip from 'ui/Tooltip';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
@@ -44,12 +43,12 @@ const StyledWrapper = styled.div`
 `;
 
 function TokenHolderRewards () {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
 
   const balanceDetails = useSelector(qvBalance);
   const balanceRewardPoolRef = useAnimateNumber(balanceDetails?.qHolderRewardPool);
-  const balanceInterestRateRef = useAnimateNumber(balanceDetails?.interestRatePercentage, '%');
+  const balanceInterestRateRef = useAnimateNumber(balanceDetails?.interestRatePercentage, ' %');
 
   const qHolderTimeUpdate = unixToDate(useSelector(qHolderTimeUpdateSelector));
   const qHolderTimeUpdateLoading = useSelector(qHolderTimeUpdateLoadingSelector);
@@ -70,20 +69,17 @@ function TokenHolderRewards () {
         <p className="text-md color-secondary">{t('Q_TOKEN_HOLDER_REWARD_POOL')}</p>
       </div>
       <div>
-        <p ref={balanceInterestRateRef} className="text-xl font-semibold">0%</p>
+        <p ref={balanceInterestRateRef} className="text-xl font-semibold">0 %</p>
         <p className="text-md color-secondary">{t('Q_TOKEN_HOLDER_REWARD_RATE')}</p>
       </div>
       <div className="token-holder-time">
         <div>
-          <Tooltip
-            trigger={(
-              <p className="text-xl font-semibold">
-                {formatDateRelative(qHolderTimeUpdate)}
-              </p>
-            )}
+          <p
+            className="text-xl font-semibold"
+            title={formatDate(qHolderTimeUpdate, i18n.language)}
           >
-            {formatDate(qHolderTimeUpdate)}
-          </Tooltip>
+            {formatDateRelative(qHolderTimeUpdate, i18n.language)}
+          </p>
           <p className="text-md color-secondary">{t('Q_TOKEN_HOLDER_REWARD_UPDATED')}</p>
         </div>
         <Button

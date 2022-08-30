@@ -8,7 +8,6 @@ import { media } from 'styles/media';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Button from 'ui/Button';
-import Tooltip from 'ui/Tooltip';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
@@ -50,7 +49,7 @@ const StyledWrapper = styled.div`
 `;
 
 function BalanceOverview () {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
 
   const userAddress = useSelector(userAddressMetamask);
@@ -123,15 +122,12 @@ function BalanceOverview () {
 
       <div className="balance-overview-refresh">
         <div>
-          <Tooltip
-            trigger={(
-              <p className="text-xl font-semibold">
-                {formatDateRelative(timeSinceRefreshBalance)}
-              </p>
-            )}
+          <p
+            className="text-xl font-semibold"
+            title={formatDate(timeSinceRefreshBalance, i18n.language)}
           >
-            {formatDate(timeSinceRefreshBalance)}
-          </Tooltip>
+            {formatDateRelative(timeSinceRefreshBalance, i18n.language)}
+          </p>
           <p className="text-md color-secondary">{t('QUSD_SAVING_BALANCE_REFRESHED')}</p>
         </div>
         <Button

@@ -13,6 +13,7 @@ import { BalanceDropdown, QLogo } from './styles';
 import { accountBalance, userBalance } from 'store/q-vault/selectors';
 import { baseVotingWeightInfoSelector } from 'store/voting/proposals/selectors';
 
+import { RoutePaths } from 'constants/routes';
 import { formatNumberCompact } from 'utils/numbers';
 
 function Balance () {
@@ -31,7 +32,7 @@ function Balance () {
       trigger={
         <Button alwaysEnabled look="secondary">
           <div className="balance">
-            <h5 className="text-lg color-primary font-semibold">{formatNumberCompact(userWalletBalance)}</h5>
+            <p className="text-lg color-primary font-semibold">{formatNumberCompact(userWalletBalance)}</p>
             <QLogo width={22} margin="0 0 0 2px">
               <img src="/logo.png" alt="q" />
             </QLogo>
@@ -54,22 +55,22 @@ function Balance () {
             <QLogo width={30} margin="0 5px 0 0">
               <img src="/logo.png" alt="q" />
             </QLogo>
-            <h5 className="text-lg color-secondary">Balance</h5>
+            <p className="text-lg color-secondary">Balance</p>
           </div>
-          <h5 className="text-xl color-primary font-semibold">{formatNumberCompact(userWalletBalance)}</h5>
+          <p className="text-xl color-primary font-semibold">{formatNumberCompact(userWalletBalance)}</p>
         </div>
 
-        <Link to="/q-vault">
+        <Link to={RoutePaths.qVault}>
           <div className="balance balance-action">
             <p className="text-md color-secondary">Q Vault Balance </p>
-            <h6 className="text-lg color-primary font-semibold">{formatNumberCompact(userQVaultBalance)}</h6>
+            <p className="text-lg color-primary font-semibold">{formatNumberCompact(userQVaultBalance)}</p>
           </div>
         </Link>
 
-        <Link to="/governance">
+        <Link to={RoutePaths.governance}>
           <div className="balance balance-action">
             <p className="text-md color-secondary">Voting Weight</p>
-            <h6 className="text-lg color-primary font-semibold">{formatNumberCompact(totalVotingWeight)}</h6>
+            <p className="text-lg color-primary font-semibold">{formatNumberCompact(totalVotingWeight)}</p>
           </div>
         </Link>
       </div>

@@ -50,9 +50,9 @@ function DelegationForm ({ onChange, validators }: Props) {
         />
         {chosenAddress !== undefined && (
           <Tip compact style={{ marginBottom: '10px' }}>
-            <p className="text-md">{`${t('DELEGATOR_SHARE')} : ${formatAsset(chosenAddress.delegatorShare, '%')}`}</p>
+            <p className="text-md">{`${t('DELEGATOR_SHARE')} : ${formatAsset(chosenAddress.delegatorShare, ' %')}`}</p>
             <p className="text-md">
-              {`${t('DELEGATION_EFFICIENCY')} : ${formatAsset(chosenAddress.delegationEfficiency, '%')}`}
+              {`${t('DELEGATION_EFFICIENCY')} : ${formatAsset(chosenAddress.delegationEfficiency, ' %')}`}
             </p>
           </Tip>
         )}

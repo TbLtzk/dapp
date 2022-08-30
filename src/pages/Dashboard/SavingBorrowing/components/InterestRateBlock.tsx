@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { BorrowAssetsRateAndFee } from 'typings/defi';
 
 import Button from 'ui/Button';
-import Tooltip from 'ui/Tooltip';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
@@ -34,11 +33,11 @@ const StyledWrapper = styled.div`
 `;
 
 function InterestRateBlock ({ rate }: { rate: BorrowAssetsRateAndFee }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const userAddress = useSelector(userAddressMetamask);
 
-  const interestRateRef = useAnimateNumber(rate.borrowingFee, '%');
+  const interestRateRef = useAnimateNumber(rate.borrowingFee, ' %');
 
   const [timeSinceOutstandingDebt, setTimeSinceOutstandingDebt] = useState<Date | null>(null);
   const [debtRefreshLoading, setDebtRefreshLoading] = useState(false);
@@ -76,15 +75,12 @@ function InterestRateBlock ({ rate }: { rate: BorrowAssetsRateAndFee }) {
 
       <div className="interest-rate-refresh">
         <div>
-          <Tooltip
-            trigger={(
-              <p className="text-xl font-semibold">
-                {formatDateRelative(timeSinceOutstandingDebt)}
-              </p>
-            )}
+          <p
+            className="text-xl font-semibold"
+            title={formatDate(timeSinceOutstandingDebt, i18n.language)}
           >
-            {formatDate(timeSinceOutstandingDebt)}
-          </Tooltip>
+            {formatDateRelative(timeSinceOutstandingDebt, i18n.language)}
+          </p>
           <p className="text-md color-secondary">{t('OUTSTANDING_DEBT_REFRESHED')}</p>
         </div>
         <Button

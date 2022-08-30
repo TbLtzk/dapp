@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
-export const ParametersBlockTitle = styled.h1`
+export const ParametersBlockTitle = styled.div`
   position: sticky;
   top: 0;
   display: grid;
   grid-gap: 10px;
   grid-template-columns: 1fr max-content;
-  margin-bottom: 0 !important;
-  padding: 24px 0 15px;
+  padding: 24px 0 16px;
   background-color: ${({ theme }) => theme.colors.block};
 
   ${media.lessThan('tablet')} {
@@ -29,12 +28,6 @@ export const ParametersBlockTitle = styled.h1`
       justify-content: start;
     }
   }
-`;
-
-export const ParametersBlockSubtitle = styled.h5`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
 `;
 
 export const BlockParagraph = styled.p`
