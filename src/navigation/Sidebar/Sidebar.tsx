@@ -18,6 +18,8 @@ import { SidebarContainer } from './styles';
 import { activeAuctionsCountSelector } from 'store/auctions/selectors';
 import { activeProposalsCountSelector } from 'store/voting/proposals/selectors';
 
+import { RoutePaths } from 'constants/routes';
+
 function Sidebar ({ open, onClose }: { open: boolean, onClose: () => void }) {
   const { t } = useTranslation();
   const { featureFlags } = useNetworkConfig();
@@ -47,28 +49,28 @@ function Sidebar ({ open, onClose }: { open: boolean, onClose: () => void }) {
             <div className="sidebar-links">
               <SidebarLink
                 exact={!pathname.includes('dashboard')}
-                to="/"
+                to={RoutePaths.dashboard}
                 title={t('DASHBOARD')}
                 icon="dashboard"
               />
 
               <SidebarLink
                 exact={false}
-                to="/governance"
+                to={RoutePaths.governance}
                 title={t('GOVERNANCE')}
                 icon="vote"
                 count={activeProposalsCount}
               />
               <SidebarLink
                 exact={false}
-                to="/q-vault"
+                to={RoutePaths.qVault}
                 title={t('Q_VAULT')}
                 icon="wallet"
               />
 
               <SidebarLink
                 exact={false}
-                to="/staking"
+                to={RoutePaths.staking}
                 title={t('STAKING')}
                 icon="stake"
               />
@@ -87,7 +89,7 @@ function Sidebar ({ open, onClose }: { open: boolean, onClose: () => void }) {
 
               <SidebarLink
                 exact={false}
-                to="/auctions"
+                to={RoutePaths.auctions}
                 title={t('DECENTRALIZED_AUCTIONS')}
                 icon="hammer"
                 count={activeAuctionsCount}

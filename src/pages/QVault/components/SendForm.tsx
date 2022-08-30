@@ -1,13 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import styled from 'styled-components';
+import { media } from 'styles/media';
+
+import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 import useMetamaskReset from 'hooks/useMetamaskReset';
-
-import { SendButton } from './styles';
 
 import { setSendCall } from 'store/q-vault/action-creators';
 import { qVaultMinimumTimeLock, userBalance } from 'store/q-vault/selectors';
@@ -15,6 +17,28 @@ import { qVaultMinimumTimeLock, userBalance } from 'store/q-vault/selectors';
 import formTypes from 'constants/form-types';
 import { toBigNumber } from 'utils/numbers';
 import { address, amount, required } from 'utils/validators';
+
+const StyledForm = styled.form`
+  .send-form-main {
+    margin-top: 16px;
+    display: grid;
+    gap: 24px;
+  }
+
+  .send-form-fields {
+    display: grid;
+    gap: 16px;
+  }
+
+  .send-form-action {
+    min-width: 90px;
+    margin-top: 8px;
+
+    ${media.lessThan('medium')} {
+      width: 100%;
+    }
+  }
+`;
 
 function SendForm () {
   const dispatch = useDispatch();
@@ -38,34 +62,42 @@ function SendForm () {
   useMetamaskReset(formTypes.qVaultSend, form.reset);
 
   return (
-    <form noValidate onSubmit={form.submit}>
-      <h3 style={{ margin: '8px 0 8px' }}>{t('SEND_TO_FOREIGN_QVAULT_ACCOUNT')}</h3>
+    <StyledForm
+      noValidate
+      className="block"
+      onSubmit={form.submit}
+    >
+      <h2 className="text-h2">{t('SEND')}</h2>
+      <p className="text-md color-secondary">{t('FROM_YOUR_Q_VAULT_TO_OTHER_Q_VAULT')}</p>
 
-      <div className="card__send-form">
-        <Input
-          {...form.fields.address}
-          label={t('ADDRESS')}
-          prefix={<Icon name="wallet" />}
-          placeholder="0x..."
-        />
+      <div className="send-form-main">
+        <div className="send-form-fields">
+          <Input
+            {...form.fields.address}
+            label={t('RECIPIENT_ADDRESS')}
+            prefix={<Icon name="wallet" className="text-lg" />}
+            placeholder="0x..."
+          />
 
-        <Input
-          {...form.fields.amount}
-          type="number"
-          label={t('AMOUNT')}
-          prefix="Q"
-          max={String(maxAmount)}
-          placeholder="0.0"
-        />
+          <Input
+            {...form.fields.amount}
+            type="number"
+            label={t('AMOUNT')}
+            prefix="Q"
+            max={String(maxAmount)}
+            placeholder="0.0"
+          />
+        </div>
 
-        <SendButton
+        <Button
           type="submit"
+          className="send-form-action"
           disabled={!form.isValid}
         >
           {t('SEND')}
-        </SendButton>
+        </Button>
       </div>
-    </form>
+    </StyledForm>
   );
 }
 

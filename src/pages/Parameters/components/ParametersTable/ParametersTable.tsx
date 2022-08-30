@@ -60,7 +60,7 @@ function ParametersTable ({ parameters, simplified }: Props) {
       case 'fraction':
         return formatFraction(item.value);
       case 'rate':
-        return `${formatNumber(fromWei(item.value), 2)}%`;
+        return `${formatNumber(fromWei(item.value), 2)} %`;
       case 'gas':
         return `${formatNumber(item.value, 2)} ${t('GAS')}`;
       case 'Q':

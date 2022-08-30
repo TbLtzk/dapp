@@ -25,7 +25,7 @@ export async function getQVaultDepositAmount (address: string) {
 
   const contract = await getQVaultInstance();
   const fee = await contract.instance.methods.deposit().estimateGas({ value: amount, from: address });
-  const gas = window.web3.utils.fromWei(String(fee * 50), 'gwei');
+  const gas = fromWei(String(fee * 50), 'gwei');
 
   const result = toBigNumber(amount).minus(toWei(gas)).toString(10);
   return fromWei(result);

@@ -1,5 +1,6 @@
 import { AliasPurpose } from '@q-dev/q-js-sdk';
 import { orderBy } from 'lodash';
+import { toHex } from 'web3-utils';
 
 import { fetchBlockNumber } from './block-number';
 
@@ -26,7 +27,7 @@ export async function getAliasEvents () {
       ...item,
       address: item.returnValues[0],
       alias: item.returnValues[1],
-      role: window.web3.utils.toHex(item.returnValues[2])
+      role: toHex(item.returnValues[2])
     }));
 }
 

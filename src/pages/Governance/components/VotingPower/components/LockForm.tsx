@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import styled from 'styled-components';
+
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 import Range from 'ui/Range';
@@ -14,12 +16,21 @@ import { userBalance, votingWeight } from 'store/q-vault/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
 
 import formTypes from 'constants/form-types';
-import { formatNumber, toBigNumber } from 'utils/numbers';
+import { formatAsset, formatNumber, toBigNumber } from 'utils/numbers';
 import { max, required } from 'utils/validators';
+
+const StyledForm = styled.form`
+  display: grid;
+  gap: 16px;
+
+  .lock-form-submit {
+    margin-top: 16px;
+    width: 100%;
+  }
+`;
 
 function LockForm () {
   const { t } = useTranslation();
-
   const dispatch = useDispatch();
 
   const userAddress = useSelector(userAddressMetamask);
@@ -59,38 +70,33 @@ function LockForm () {
     .toString();
 
   return (
-    <form
-      noValidate
-      style={{ display: 'grid', gap: '16px' }}
-      onSubmit={form.submit}
-    >
-      <Range
-        hideInput
-        value={userQVaultBalance ? percentValue : '0'}
-        label={t('LOCKED_AMOUNT')}
-        max={String(userQVaultBalance)}
-        formatter={(value) => `${formatNumber(value, 4)} Q`}
-        onChange={handleRangeChange}
-      />
-
+    <StyledForm noValidate onSubmit={form.submit}>
       <Input
         {...form.fields.amount}
         type="number"
         prefix="Q"
+        label={t('LOCKED_AMOUNT')}
         placeholder="0.0"
         max={String(userQVaultBalance)}
         hint={`${t('CURRENT_LOCKED_AMOUNT')} ${formatNumber(userVotingWeight, 4)} Q`}
       />
 
+      <Range
+        hideInput
+        value={Number(userQVaultBalance) ? percentValue : '0'}
+        max={String(userQVaultBalance)}
+        formatter={(value) => formatAsset(value, 'Q')}
+        onChange={handleRangeChange}
+      />
+
       <Button
         type="submit"
-        className="form-action"
+        className="lock-form-submit"
         disabled={!form.isValid || form.values.amount === String(userVotingWeight)}
-        style={{ width: '200px', marginTop: '8px' }}
       >
         {t('UPDATE_LOCK_AMOUNT')}
       </Button>
-    </form>
+    </StyledForm>
   );
 }
 

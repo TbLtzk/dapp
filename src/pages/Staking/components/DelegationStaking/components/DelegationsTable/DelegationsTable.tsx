@@ -108,7 +108,7 @@ function DelegationsTable () {
           short
           address={delegation.validator}
         />,
-        delegatorShare: formatAsset(delegation.delegatorShare, '%'),
+        delegatorShare: formatAsset(delegation.delegatorShare, ' %'),
         amount: formatAsset(delegation.actualStake, 'Q'),
         reward: formatAsset(delegation.claimableReward, 'Q'),
         manage: (

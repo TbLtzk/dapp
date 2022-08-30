@@ -8,10 +8,6 @@ export const StyledProposalVoting = styled.div`
     max-width: 100%;
   }
 
-  .proposal-voting__majority {
-    margin-top: 16px;
-  }
-
   .proposal-voting__progress {
     margin-top: 8px;
   }

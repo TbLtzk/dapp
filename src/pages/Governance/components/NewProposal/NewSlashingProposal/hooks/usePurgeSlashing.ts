@@ -6,6 +6,7 @@ import { RootNodesInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/root
 import { RootNodesSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesSlashingVotingInstance';
 import { ValidatorsInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsInstance';
 import { ValidatorsSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsSlashingVotingInstance';
+import { isAddress } from 'web3-utils';
 
 import { successMessageSelector } from 'store/transaction-handler/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
@@ -24,7 +25,7 @@ function usePurgeSlashing (address: string, isRootSlashing: boolean) {
   const [shouldPurge, setShouldPurge] = useState(false);
 
   useEffect(() => {
-    if (!window.web3.utils.isAddress(address)) {
+    if (!isAddress(address)) {
       setShouldPurge(false);
       return;
     }

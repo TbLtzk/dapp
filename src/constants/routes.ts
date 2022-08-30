@@ -6,11 +6,15 @@ export enum RoutePaths {
   dashboardValidatorsMonitoring = '/dashboard/validators-monitoring',
 
   governance = '/governance',
+  governanceTab = '/governance/:tab?',
+  votingPower = '/governance/voting-power',
   qProposals = '/governance/q-proposals',
   rootNodePanel = '/governance/root-node-panel',
   expertProposals = '/governance/expert-proposals',
   slashingProposals = '/governance/slashing-proposals',
   contractUpdates = '/governance/contract-updates',
+
+  proposal = '/governance/proposal/:contract?/:id?',
 
   newQProposal = '/governance/q-proposals/new',
   newRootNodeProposal = '/governance/root-node-panel/new',
@@ -48,4 +52,6 @@ export enum RoutePaths {
   stakingDelegationsSlug = '/staking/delegations/:slug?',
   stakingDelegationsManual = '/staking/delegations/manual',
   stakingDelegationsValidators = '/staking/delegations/validators',
+
+  qVault = '/q-vault',
 }

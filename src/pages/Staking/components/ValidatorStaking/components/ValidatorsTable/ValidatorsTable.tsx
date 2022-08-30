@@ -111,8 +111,8 @@ function ValidatorsTable () {
         totalStake: formatAsset(validator.totalStake, 'Q'),
         selfStake: formatAsset(validator.selfStake, 'Q'),
         delegatedStake: formatAsset(validator.delegatedStake, 'Q'),
-        validatorShare: formatAsset(validator.validatorShare, '%'),
-        delegatorShare: formatAsset(validator.delegatorShare, '%'),
+        validatorShare: formatAsset(validator.validatorShare, ' %'),
+        delegatorShare: formatAsset(validator.delegatorShare, ' %'),
       }))}
     />
   );

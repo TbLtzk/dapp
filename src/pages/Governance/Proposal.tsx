@@ -18,6 +18,8 @@ import { transactionLoadingSelector } from 'store/transaction-handler/selectors'
 
 import { getProposal, getProposalTypeByContract } from 'contracts/helpers/voting';
 
+import { RoutePaths } from 'constants/routes';
+
 function Proposal ({ match }: RouteComponentProps<{
   id: string,
   contract: ProposalContractType
@@ -53,7 +55,7 @@ function Proposal ({ match }: RouteComponentProps<{
       return;
     }
 
-    history.replace('/governance');
+    history.replace(RoutePaths.governance);
   };
 
   const backTextMap: Record<ProposalType, string> = {

@@ -1,0 +1,100 @@
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+
+import styled from 'styled-components';
+import { media } from 'styles/media';
+
+import InfoTooltip from 'components/Tooltips/InfoTooltip';
+import Button from 'ui/Button';
+import Modal from 'ui/Modal';
+
+import useAnimateNumber from 'hooks/useAnimateNumber';
+
+import LockForm from './LockForm';
+
+import { votingLockingEnd, votingWeight } from 'store/q-vault/selectors';
+
+import { formatDate, formatDateRelative, unixToDate } from 'utils/date';
+
+const StyledWrapper = styled.div`
+  display: grid;
+  gap: 24px;
+
+  .lock-values {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+
+    ${media.lessThan('medium')} {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .lock-action {
+    margin-top: 8px;
+    
+    ${media.lessThan('medium')} {
+      width: 100%;
+    }
+  }
+`;
+
+function LockVoting () {
+  const { t, i18n } = useTranslation();
+
+  const userVotingWeight = useSelector(votingWeight);
+  const userVotingWeightRef = useAnimateNumber(userVotingWeight);
+  const userLockingEnd = unixToDate(useSelector(votingLockingEnd));
+
+  const [lockModalOpen, setLockModalOpen] = useState(false);
+
+  return (
+    <StyledWrapper className="block">
+      <div>
+        <h2 className="text-h2">
+          {t('LOCK_YOUR_Q_TOKENS_FOR_VOTING')}
+          <InfoTooltip topic="lock-tokens-for-voting" />
+        </h2>
+
+        <p className="text-md color-secondary">
+          {t('PARTICIPATE_IN_Q_GOVERNANCE_WITH_YOUR_LOCKED_AMOUNT')}
+        </p>
+      </div>
+
+      <div className="lock-values">
+        <div>
+          <p className="text-md color-secondary">{t('LOCKED_VOTING_WEIGHT')}</p>
+          <p ref={userVotingWeightRef} className="text-xl font-semibold">0 Q</p>
+        </div>
+
+        <div>
+          <p className="text-md color-secondary">{t('LOCKING_END_TIME')}</p>
+          <p
+            className="text-xl font-semibold"
+            title={formatDate(userLockingEnd, i18n.language)}
+          >
+            {formatDateRelative(userLockingEnd, i18n.language)}
+          </p>
+        </div>
+      </div>
+
+      <Button
+        className="lock-action"
+        onClick={() => setLockModalOpen(true)}
+      >
+        {t('MANAGE_LOCKED_AMOUNT')}
+      </Button>
+
+      <Modal
+        open={lockModalOpen}
+        title={t('LOCK_YOUR_Q_TOKENS_FOR_VOTING')}
+        onClose={() => setLockModalOpen(false)}
+      >
+        <LockForm />
+      </Modal>
+    </StyledWrapper>
+  );
+}
+
+export default LockVoting;

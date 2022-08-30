@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import CustomBlock from 'components/Base/CustomBlock';
 import Spinner from 'ui/Spinner';
 import Switch from 'ui/Switch';
 import Tooltip from 'ui/Tooltip';
@@ -11,7 +10,7 @@ import useNetworkConfig from 'hooks/useNetworkConfig';
 import GnosisSafeTooltip from '../GnosisSafeTooltip';
 import ParametersTable from '../ParametersTable';
 
-import { BlockParagraph, DocsLink, ParametersBlockSubtitle, ParametersBlockTitle } from './styles';
+import { BlockParagraph, DocsLink, ParametersBlockTitle } from './styles';
 
 interface Props {
   title: string;
@@ -54,10 +53,10 @@ function ParametersBlock ({
   };
 
   return (
-    <CustomBlock style={{ paddingTop: '0' }}>
+    <div className="block" style={{ paddingTop: 0 }}>
       <ParametersBlockTitle>
         <div className="parameters-block-title__content">
-          {title}
+          <h2 className="text-h3">{title}</h2>
           {docsId && (
             <Tooltip
               trigger={(
@@ -84,11 +83,11 @@ function ParametersBlock ({
           onChange={() => setIsSimplifiedMode(!isSimplifiedMode)}
         />
       </ParametersBlockTitle>
-      <ParametersBlockSubtitle title={subtitle}>
+      <p className="text-md color-secondary ellipsis" title={subtitle}>
         {subtitle}
-      </ParametersBlockSubtitle>
+      </p>
       {renderTable()}
-    </CustomBlock>
+    </div>
   );
 }
 
