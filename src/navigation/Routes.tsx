@@ -133,7 +133,7 @@ function Routes () {
           component={Auction}
         />
 
-        <Route exact path="/time-locks">
+        <Route exact path={RoutePaths.timeLocksTab}>
           <TimeLocks />
         </Route>
 

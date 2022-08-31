@@ -54,4 +54,11 @@ export enum RoutePaths {
   stakingDelegationsValidators = '/staking/delegations/validators',
 
   qVault = '/q-vault',
+
+  timeLocks = '/time-locks',
+  timeLocksTab = '/time-locks/:type?',
+  timeLocksQVault = '/time-locks/q-vault',
+  timeLocksRootStake = '/time-locks/root-stake',
+  timeLocksValidatorStake = '/time-locks/validator-stake',
+  timeLocksVestingAccount = '/time-locks/vesting-account',
 }
