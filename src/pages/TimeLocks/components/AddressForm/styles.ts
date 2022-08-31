@@ -6,14 +6,19 @@ export const WrapContainer = styled.div`
   display: grid;
   align-items: flex-start;
   width: 100%;
-  grid-template-columns: 480px max-content;
-  gap: 15px;
+  grid-template-columns: minmax(380px, 480px) max-content;
+  gap: 16px;
+  
+  .address-form-button {
+    margin-top: 33px;
+  }
 
-  ${media.lessThan('medium')} {
+  ${media.lessThan('tablet')} {
     grid-template-columns: 1fr;
-
-    button {
+    
+    .address-form-button {
       width: max-content;
+      margin-top: 0;
     }
   }
 `;

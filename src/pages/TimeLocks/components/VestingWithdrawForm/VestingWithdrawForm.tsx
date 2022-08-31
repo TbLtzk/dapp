@@ -28,8 +28,8 @@ function VestingWithdrawForm () {
   return (
     <form
       noValidate
-      className="balance-card-block"
-      style={{ display: 'flex', gap: '8px' }}
+      className="time-locks-block"
+      style={{ display: 'grid', gap: '16px' }}
       onSubmit={form.submit}
     >
       <Input
@@ -42,7 +42,7 @@ function VestingWithdrawForm () {
       <Button
         type="submit"
         disabled={!form.isValid}
-        style={{ marginTop: '33px' }}
+        style={{ width: '100%' }}
       >
         {t('WITHDRAW')}
       </Button>

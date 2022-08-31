@@ -9,7 +9,7 @@ import Input from 'ui/Input';
 import useForm from 'hooks/useForm';
 import useMetamaskReset from 'hooks/useMetamaskReset';
 
-import { setDepositLockedAmount, setPurgeTimeLocksAmount } from 'store/locked-amount/action-creators';
+import { setDepositLockedAmount } from 'store/locked-amount/action-creators';
 
 import formTypes from 'constants/form-types';
 import { required } from 'utils/validators';
@@ -43,32 +43,30 @@ function ManageForm ({ contract, address }: Props) {
   return (
     <form
       noValidate
-      className="balance-card-block"
+      style={{ display: 'grid', gap: '16px' }}
       onSubmit={form.submit}
     >
-      <div style={{ display: 'flex', gap: '8px' }}>
-        <Calendar
-          {...form.fields.startDate}
-          selectsStart
-          value={form.values.startDate as Date}
-          selectsEnd={false}
-          label={t('START_DATE')}
-          startDate={form.values.startDate ? new Date(form.values.startDate) : null}
-          endDate={form.values.endDate ? new Date(form.values.endDate) : null}
-          minDate={new Date()}
-        />
-        <Calendar
-          {...form.fields.endDate}
-          selectsEnd
-          value={form.values.endDate as Date}
-          label={t('END_DATE')}
-          selectsStart={false}
-          disabled={!form.values.startDate}
-          startDate={form.values.startDate as Date}
-          endDate={form.values.endDate as Date}
-          minDate={form.values.startDate as Date}
-        />
-      </div>
+      <Calendar
+        {...form.fields.startDate}
+        selectsStart
+        value={form.values.startDate as Date}
+        selectsEnd={false}
+        label={t('START_DATE')}
+        startDate={form.values.startDate ? new Date(form.values.startDate) : null}
+        endDate={form.values.endDate ? new Date(form.values.endDate) : null}
+        minDate={new Date()}
+      />
+      <Calendar
+        {...form.fields.endDate}
+        selectsEnd
+        value={form.values.endDate as Date}
+        label={t('END_DATE')}
+        selectsStart={false}
+        disabled={!form.values.startDate}
+        startDate={form.values.startDate as Date}
+        endDate={form.values.endDate as Date}
+        minDate={form.values.startDate as Date}
+      />
 
       <Input
         {...form.fields.amount}
@@ -82,20 +80,10 @@ function ManageForm ({ contract, address }: Props) {
       <Button
         type="submit"
         disabled={!form.isValid}
-        style={{ width: '100%', marginTop: '8px' }}
+        style={{ width: '100%' }}
       >
         {t('DEPOSIT')}
       </Button>
-
-      <div className="balance-card-block">
-        <Button
-          look="secondary"
-          style={{ width: '100%' }}
-          onClick={() => dispatch(setPurgeTimeLocksAmount({ contract, address }, t('PURGE_EXPIRED_TIME_LOCKS_SUCCESS')))}
-        >
-          {t('PURGE_EXPIRED_TIME_LOCKS')}
-        </Button>
-      </div>
     </form>
   );
 }

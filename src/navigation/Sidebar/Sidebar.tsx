@@ -96,7 +96,8 @@ function Sidebar ({ open, onClose }: { open: boolean, onClose: () => void }) {
               />
 
               <SidebarLink
-                to="/time-locks"
+                exact={false}
+                to={RoutePaths.timeLocks}
                 title={t('TIME_LOCKS')}
                 icon="clock"
               />
