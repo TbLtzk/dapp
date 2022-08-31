@@ -50,11 +50,15 @@ function* getAccountBalanceGenerator () {
 }
 
 // rename: getBalanceInQVaultGenerator
-function* getUserBalanceGenerator () {
+function* getUserBalanceGenerator ({ address }) {
   try {
+    let selectAddress = address;
     const contract = yield call(getQVaultInstance);
-    const { userAddress } = yield select((state) => state.userInf);
-    const data = yield contract.getUserBalance(userAddress);
+    if (!selectAddress) {
+      const { userAddress } = yield select((state) => state.userInf);
+      selectAddress = userAddress;
+    }
+    const data = yield contract.getUserBalance(selectAddress);
     yield put(setUserBalance(fromWei(data)));
   } catch (error) {
     captureError(error);
