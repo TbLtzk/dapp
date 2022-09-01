@@ -2,7 +2,7 @@ import { AddressWithBalance, Indexer } from '@q-dev/q-js-sdk';
 import { ValidatorsInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsInstance';
 import { ValidationRewardPoolsInstance } from '@q-dev/q-js-sdk/lib/contracts/tokeneconomics/ValidationRewardPoolsInstance';
 import { Validator } from 'typings/validator';
-import { fromWei, isAddress } from 'web3-utils';
+import { fromWei } from 'web3-utils';
 
 import {
   getContractRegistryInstance,
@@ -16,6 +16,7 @@ import { getBlockSealingAliasMap } from 'contracts/helpers/account-aliases-helpe
 import { dateToUnix, formatDate, unixToDate } from 'utils/date';
 import { captureError } from 'utils/errors';
 import { calculateInterestRate, toBigNumber, transformToPercentage } from 'utils/numbers';
+import { isAddress } from 'utils/strings';
 
 export async function getValidators (shortList: AddressWithBalance[]) {
   const util = await getValidatorMetricsInstance();
@@ -107,7 +108,7 @@ export async function getAndCombineValidatorInfo (
   network: number,
   indexerUrl: string
 ): Promise<Partial<Validator>> {
-  if (!isAddress(String(address).toLowerCase())) return {};
+  if (!isAddress(address)) return {};
   const indexer = await getIndexerInstance(indexerUrl);
   const validatorsInstance = await getValidatorsInstance();
   const validationRewardPoolsInstance = await getValidationRewardPoolsInstance();

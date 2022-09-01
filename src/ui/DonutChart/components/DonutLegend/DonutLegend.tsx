@@ -1,12 +1,12 @@
 import { HTMLAttributes } from 'react';
 
-import { isAddress } from 'web3-utils';
-
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import { DonutLegendItem } from '../../types';
 
 import { LegendContainer } from './styles';
+
+import { isAddress } from 'utils/strings';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   items: DonutLegendItem[];

@@ -6,7 +6,6 @@ import { RootNodesInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/root
 import { RootNodesSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesSlashingVotingInstance';
 import { ValidatorsInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsInstance';
 import { ValidatorsSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsSlashingVotingInstance';
-import { isAddress } from 'web3-utils';
 
 import { successMessageSelector } from 'store/transaction-handler/selectors';
 import { userAddressMetamask } from 'store/user-inf/selectors';
@@ -15,6 +14,7 @@ import { setPurgeSlashing } from 'store/voting/slashing/actions';
 import { getRootNodesInstance, getRootNodesSlashingVotingInstance, getValidatorsInstance, getValidatorsSlashingVotingInstance } from 'contracts/contract-instance';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
+import { isAddress } from 'utils/strings';
 
 function usePurgeSlashing (address: string, isRootSlashing: boolean) {
   const dispatch = useDispatch();

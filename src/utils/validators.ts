@@ -3,9 +3,9 @@ import { isBoolean } from 'lodash';
 import isDate from 'lodash/isDate';
 import isEmpty from 'lodash/isEmpty';
 import isNumber from 'lodash/isNumber';
-import { isAddress } from 'web3-utils';
 
 import { toBigNumber } from './numbers';
+import { isAddress } from './strings';
 
 const HASH_REGEX = /^0x[a-fA-F0-9]{64}$/;
 const VAULT_ID_REGEX = /^[0-9]{1,18}$/;
