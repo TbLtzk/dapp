@@ -1,3 +1,5 @@
+import { isAddress as isWeb3Address } from 'web3-utils';
+
 export function trimAddress (address: string): string {
   return `${address.slice(0, 5)}...${address.slice(-4)}`;
 }
@@ -12,4 +14,8 @@ export function titleCase (value = ''): string {
     .split(' ')
     .map(capitalize)
     .join(' ');
+}
+
+export function isAddress (value: string) {
+  return isWeb3Address(value.toLowerCase());
 }
