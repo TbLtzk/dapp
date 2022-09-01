@@ -12,6 +12,8 @@ import Tooltip from 'ui/Tooltip';
 
 import useMetamaskReset from 'hooks/useMetamaskReset';
 
+import useEndTime from '../../hooks/useEndTime';
+
 import VoteForm from './components/VoteForm';
 
 import {
@@ -24,6 +26,7 @@ import { executeProposal, voteForProposal } from 'store/voting/proposals/actions
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
 import formTypes from 'constants/form-types';
+import { unixToDate } from 'utils/date';
 
 interface Props {
   proposal: Proposal;
@@ -39,6 +42,8 @@ function ProposalActions ({ proposal, title }: Props) {
   const isEPQFIMember = useSelector(isUserEPQFIMembershipSelector);
   const isEPRSMember = useSelector(isUserEPRSMembershipSelector);
 
+  const votingEndTime = useEndTime(unixToDate(proposal.votingEndTime));
+
   const [modalOpen, setModalOpen] = useState(false);
   const handleClose = () => {
     setModalOpen(false);
@@ -49,6 +54,16 @@ function ProposalActions ({ proposal, title }: Props) {
   const isContractWithoutVeto = [
     CONTRACTS_NAMES.validatorsSlashingVoting,
     CONTRACTS_NAMES.emergencyUpdateVoting,
+  ].includes(proposal.contract);
+
+  const isMemberVoting = [
+    CONTRACTS_NAMES.emergencyUpdateVoting,
+    CONTRACTS_NAMES.validatorsSlashingVoting,
+    CONTRACTS_NAMES.ePQFIParametersVoting,
+    CONTRACTS_NAMES.ePRSParametersVoting,
+    CONTRACTS_NAMES.ePDRParametersVoting,
+    CONTRACTS_NAMES.addressVoting,
+    CONTRACTS_NAMES.upgradeVoting,
   ].includes(proposal.contract);
 
   const isApprovalContract = [CONTRACTS_NAMES.addressVoting, CONTRACTS_NAMES.upgradeVoting].includes(proposal.contract);
@@ -135,10 +150,14 @@ function ProposalActions ({ proposal, title }: Props) {
       <Modal
         open={modalOpen}
         title={t('VOTE')}
-        tip={t('VOTE_MODAL_TIP')}
+        tip={
+          isMemberVoting
+            ? ''
+            : t('VOTE_MODAL_TIP', { time: votingEndTime.formatted })
+        }
         onClose={handleClose}
       >
-        <VoteForm proposal={proposal} />
+        <VoteForm proposal={proposal} isMemberVoting={isMemberVoting}/>
       </Modal>
     </div>
   );
