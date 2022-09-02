@@ -1,20 +1,31 @@
-image: docker:stable
+include:
+  - project: "q-dev/infrastructure/common-ci"
+    ref: "main"
+    file: "semantic-release-basic.yml"
 
 variables:
   IMAGE: qdevelopment/dapp:$CI_COMMIT_TAG
   IMAGE_LATEST: qdevelopment/dapp:latest
 
-services:
-  - docker:stable-dind
+workflow:
+  rules:
+    - if: "$CI_COMMIT_TAG"
+      when: "never"
+    - when: "always"
+
+
+.before_script_template:
+  before_script:
+    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/".insteadOf https://gitlab.com/
+    - go env -w GOPRIVATE=gitlab.com/${CI_PROJECT_NAMESPACE}
 
 stages:
-  - test
-  - build
-  - deploy
+  - ".pre"
+  - "test"
+  - "build"
+  - "deploy"
+  - ".post"
 
-.docker-login: &docker-login
-  before_script:
-    - docker login -u $REGISTRY_USER -p $REGISTRY_PASS
 
 .host-login: &host-login
   before_script:
@@ -44,34 +55,31 @@ test:
     - yarn build
 
 build:
-  <<: [*docker-login]
+  image:
+    name: "gcr.io/kaniko-project/executor:v1.8.1-debug"
+    entrypoint: [""]
   stage: build
-  only:
-    - /^v.*$/
+  tags:
+    - "gitlab-org-docker"
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
   except:
     - branches
   script:
-    - docker build --build-arg NPM_TOKEN -t $IMAGE -t $IMAGE_LATEST .
-    - docker push $IMAGE
-    - docker push $IMAGE_LATEST
+    - >-
+      /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
+      --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}"
+      --build-arg BUILD_TOKEN="$NPM_TOKEN"
+      --build-arg COMMIT="${CI_COMMIT_SHORT_SHA}"
+      --build-arg VERSION="${RELEASE_VERSION}"
+      --build-arg BUILDNUM="${CI_JOB_ID}"
+      --build-arg BUILD_TOKEN="${CI_JOB_TOKEN}"
+      --build-arg USERNAME="gitlab-ci-token"
 
-build-testnet:
-  <<: [*docker-login]
-  stage: build
-  rules:
-    - if: '$CI_COMMIT_TAG == "testnet"'
-  script:
-    - docker build --build-arg NPM_TOKEN -t $IMAGE .
-    - docker push $IMAGE
-
-build-mainnet:
-  <<: [*docker-login]
-  stage: build
-  rules:
-    - if: '$CI_COMMIT_TAG == "mainnet"'
-  script:
-    - docker build --build-arg NPM_TOKEN -t $IMAGE .
-    - docker push $IMAGE
 
 deploy:
   <<: [*host-login]
