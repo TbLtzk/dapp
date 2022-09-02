@@ -1,15 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
-import {
-  validatorAccountableSelfStakeSelector,
-  validatorAcountableTotalStakeSelector,
-  validatorDelegatedStakeSelector,
-  validatorTotalStakeSelector,
-} from 'store/validators/selectors';
+import { useValidators } from 'store/validators/hooks';
 
 import { formatAsset } from 'utils/numbers';
 
@@ -42,11 +36,12 @@ const StyledWrapper = styled.div`
 
 function ValidatorPool () {
   const { t } = useTranslation();
-
-  const validatorTotalStake = useSelector(validatorTotalStakeSelector);
-  const validatorDelegatedStake = useSelector(validatorDelegatedStakeSelector);
-  const validatorAcountableTotalStake = useSelector(validatorAcountableTotalStakeSelector);
-  const validatorAccountableSelfStake = useSelector(validatorAccountableSelfStakeSelector);
+  const {
+    validatorTotalStake,
+    validatorDelegatedStake,
+    validatorAccountableTotalStake,
+    validatorAccountableSelfStake
+  } = useValidators();
 
   const validatorPoolInfo = [
     {
@@ -67,7 +62,7 @@ function ValidatorPool () {
     {
       id: 'accountable-stake',
       label: t('ACCOUNTABLE_STAKE'),
-      value: formatAsset(validatorAcountableTotalStake, 'Q'),
+      value: formatAsset(validatorAccountableTotalStake, 'Q'),
     },
   ];
 

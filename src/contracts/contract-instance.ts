@@ -4,17 +4,17 @@ import { Indexer } from '@q-dev/q-js-sdk/lib/indexer/indexer';
 import { ValidatorMetrics } from '@q-dev/q-js-sdk/lib/utils/validator-metrics';
 import { ContractType, ContractValue } from 'typings/contracts';
 import { Asset } from 'typings/defi';
+import { Contract } from 'web3-eth-contract';
 
 import { networkConfigsMap } from 'constants/config';
 
 export const CONTRACT_REGISTRY_ADDRESS = '0xc3E589056Ece16BCB88c6f9318e9a7343b663522';
 export let contractRegistryInstance: ContractRegistryInstance | null = null;
-const cache: Record<string, ContractValue<any>> = {};
+const cache: Record<string, ContractValue> = {};
 
 export const getContractRegistryInstance = () => {
   if (!contractRegistryInstance) {
-    // TODO: Fix types in SDK
-    contractRegistryInstance = new ContractRegistryInstance(window.web3 as any, CONTRACT_REGISTRY_ADDRESS);
+    contractRegistryInstance = new ContractRegistryInstance(window.web3, CONTRACT_REGISTRY_ADDRESS);
   }
   return contractRegistryInstance;
 };
@@ -119,7 +119,7 @@ export const getIndexerInstance = async (indexerUrl = networkConfigsMap.testnet.
   return indexerInstance;
 };
 
-const сompoundRateBorrowingInstances: Record<string, ContractValue<any>> = {};
+const сompoundRateBorrowingInstances: Record<string, ContractValue> = {};
 
 export async function getCompoundRateBorrowingInstance (asset: Asset) {
   if (!сompoundRateBorrowingInstances[asset]) {
@@ -129,7 +129,7 @@ export async function getCompoundRateBorrowingInstance (asset: Asset) {
   return сompoundRateBorrowingInstances[asset];
 }
 
-const borrowingInstances: Record<string, ContractValue<any>> = {};
+const borrowingInstances: Record<string, Contract> = {};
 
 export async function getBorrowingInstance (asset: Asset) {
   if (!borrowingInstances[asset]) {

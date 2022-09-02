@@ -1,7 +1,7 @@
 import { AddressWithBalance, Indexer } from '@q-dev/q-js-sdk';
 import { ValidatorsInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsInstance';
 import { ValidationRewardPoolsInstance } from '@q-dev/q-js-sdk/lib/contracts/tokeneconomics/ValidationRewardPoolsInstance';
-import { Validator } from 'typings/validator';
+import { Validator, ValidatorMonitoring } from 'typings/validator';
 import { fromWei } from 'web3-utils';
 
 import {
@@ -11,7 +11,7 @@ import {
   getValidatorMetricsInstance,
   getValidatorsInstance,
 } from 'contracts/contract-instance';
-import { getBlockSealingAliasMap } from 'contracts/helpers/account-aliases-helper';
+import { getBlockSealingAliasMap } from 'contracts/helpers/aliases-helper';
 
 import { dateToUnix, formatDate, unixToDate } from 'utils/date';
 import { captureError } from 'utils/errors';
@@ -29,7 +29,7 @@ export async function getValidators (shortList: AddressWithBalance[]) {
     ...validator,
     ...shortList[idx],
     delegationSaturation: saturation[idx],
-  } as Partial<Validator>));
+  } as Validator));
 }
 
 export async function getValidator (
@@ -37,39 +37,30 @@ export async function getValidator (
   index: number,
   validatorsInstance: ValidatorsInstance,
   validationRewardPoolsInstance: ValidationRewardPoolsInstance
-): Promise<Partial<Validator>> {
+): Promise<Validator> {
   const validatorInfo = await validatorsInstance.getValidatorInfo(validator.address);
   const poolInfo = await validationRewardPoolsInstance.getPoolInfo(validator.address);
-  const selfStake = validatorInfo.selfStake;
-  const delegatedStake = validatorInfo.delegatedStake;
-
-  const delegatorShare = Number(transformToPercentage(poolInfo.delegatorsShare));
-  const validatorShare = delegatorShare ? 100 - delegatorShare : 100;
-  const validatorPoolBalance = fromWei(poolInfo.poolBalance);
-  const poolinterestRate = calculateInterestRate(Number(poolInfo.interestRate));
-  const totalStake = validator.balance;
-  const payoutToDelegators = fromWei(toBigNumber(validator.payoutToDelegators).toFixed());
-  const payoutPerDelegatedQ = fromWei(toBigNumber(validator.payoutPerDelegatedQ).toFixed());
+  const delegatorsShare = Number(transformToPercentage(poolInfo.delegatorsShare)) || 0;
 
   return {
     ...validator,
-    payoutToDelegators,
-    payoutPerDelegatedQ,
     rank: index + 1,
-    totalStake,
-    selfStake,
-    delegatedStake,
-    delegatorShare,
-    validatorShare,
-    validatorPoolBalance,
-    poolinterestRate,
+    totalStake: validator.balance,
+    selfStake: validatorInfo.selfStake,
+    delegatedStake: validatorInfo.delegatedStake,
+    delegatorsShare,
+    validatorShare: 100 - delegatorsShare,
+    validatorPoolBalance: fromWei(poolInfo.poolBalance),
+    poolinterestRate: calculateInterestRate(Number(poolInfo.interestRate)),
+    payoutToDelegators: fromWei(toBigNumber(validator.payoutToDelegators).toFixed()),
+    payoutPerDelegatedQ: fromWei(toBigNumber(validator.payoutPerDelegatedQ).toFixed()),
   };
 }
 
 export async function prepareValidatorsMonitoringData (
   indexer: Indexer,
   member: { address: string; balance: string | number }
-) {
+): Promise<ValidatorMonitoring> {
   const monitoringData = {
     lastBlock: 'n/a' as string | number,
     timestamp: '0',
@@ -121,14 +112,12 @@ export async function getAndCombineValidatorInfo (
   const inactiveValidators = await indexer.getInactiveValidators([address]);
   const isActiveValidator = inactiveValidators === 0;
 
-  const validators = (await getValidators(shortList)) as Validator[];
-
-  const aliasesMap = await getBlockSealingAliasMap([address] as never[], network) as { [address: string]: string };
-
-  const ourValidator = validators.find((validator) => validator.address === address) as any;
+  const validators = await getValidators(shortList);
+  const aliasesMap = await getBlockSealingAliasMap([address], network);
+  const ourValidator = validators.find((validator) => validator.address === address);
 
   const validatorData = await getValidator(
-    ourValidator,
+    ourValidator as Validator,
     validatorRank,
     validatorsInstance,
     validationRewardPoolsInstance
@@ -141,5 +130,5 @@ export async function getAndCombineValidatorInfo (
     alias: aliasesMap[member.address],
   }))[0];
 
-  return { isActiveValidator, ...validatorData, ...monotoringDataForValidator };
+  return { ...validatorData, ...monotoringDataForValidator, isActiveValidator };
 }

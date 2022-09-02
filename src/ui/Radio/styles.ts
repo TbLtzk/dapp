@@ -3,9 +3,9 @@ import styled, { css } from 'styled-components';
 import { getRadioColor } from './colors';
 
 export const RadioContainer = styled.div<{
-  $checked: boolean
-  $disabled: boolean
-  $extended: boolean
+  $checked: boolean;
+  $disabled: boolean;
+  $extended: boolean;
 }>`
   position: relative;
   display: grid;

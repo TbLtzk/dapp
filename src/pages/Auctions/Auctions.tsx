@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { Link, Redirect, Route, useLocation } from 'react-router-dom';
 
 import PageLayout from 'components/PageLayout';
@@ -11,7 +10,7 @@ import { TabRoute, TabSwitch } from 'ui/Tabs/components';
 import AllAuctions from './components/AllAuctions';
 import AuctionStats from './components/AuctionStats';
 
-import { liquidationSelector, systemDebtSelector, systemSurplusSelector } from 'store/auctions/selectors';
+import { useAuctions } from 'store/auctions/hooks';
 
 import { AUCTIONS_TYPES } from 'contracts/helpers/auction';
 
@@ -26,29 +25,26 @@ export const AUCTION_HEADERS = {
 function Auctions () {
   const { t } = useTranslation();
 
+  const { auctions } = useAuctions();
   const { pathname } = useLocation();
-
-  const { activeCount: activeLiquidation } = useSelector(liquidationSelector);
-  const { activeCount: activeSystemDebt } = useSelector(systemDebtSelector);
-  const { activeCount: activeSystemSurplus } = useSelector(systemSurplusSelector);
 
   const tabs = [
     {
       id: AUCTIONS_TYPES.liquidation,
       label: t('LIQUIDATION'),
-      count: activeLiquidation,
+      count: auctions.liquidation.activeCount,
       link: RoutePaths.liquidation,
     },
     {
       id: AUCTIONS_TYPES.systemDebt,
       label: t('SYSTEM_DEBT'),
-      count: activeSystemDebt,
+      count: auctions.systemDebt.activeCount,
       link: RoutePaths.systemDebt,
     },
     {
       id: AUCTIONS_TYPES.systemSurplus,
       label: t('SYSTEM_SURPLUS'),
-      count: activeSystemSurplus,
+      count: auctions.systemSurplus.activeCount,
       link: RoutePaths.systemSurplus,
     },
   ];

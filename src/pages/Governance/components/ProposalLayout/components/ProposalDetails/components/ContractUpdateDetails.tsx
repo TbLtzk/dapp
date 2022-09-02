@@ -7,7 +7,7 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import { CONTRACTS_NAMES } from 'constants/contracts';
 
 interface Props {
-  proposal: Proposal
+  proposal: Proposal;
 }
 
 function ContractUpdateDetails ({ proposal }: Props) {

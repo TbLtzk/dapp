@@ -8,7 +8,7 @@ import { InfoIcon } from './styles';
 
 type TooltipProps = Parameters<typeof Tooltip>[0];
 interface Props extends Omit<TooltipProps, 'trigger' | 'children'> {
-  topic: keyof typeof tooltips
+  topic: keyof typeof tooltips;
 }
 
 function InfoTooltip ({ topic, ...rest }: Props) {

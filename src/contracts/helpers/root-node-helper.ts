@@ -3,7 +3,7 @@ import { fromWei } from 'web3-utils';
 
 export const prepareRootMembersTable = (
   members: string[],
-  membersWithStakes: { root: string, value: string }[]
+  membersWithStakes: { root: string; value: string }[]
 ) => {
   const membersWithAmount = members.map((address) => {
     const memberWithStake = membersWithStakes.find(({ root }) => root === address);

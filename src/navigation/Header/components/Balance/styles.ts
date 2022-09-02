@@ -50,7 +50,7 @@ export const BalanceDropdown = styled(Dropdown)`
   }
 `;
 
-export const QLogo = styled.div<{ width?: number, margin?: string }>`
+export const QLogo = styled.div<{ width?: number; margin?: string }>`
   width: ${({ width }) => width || 20}px;
   margin: ${({ margin }) => margin || '0px'};
   display: flex;

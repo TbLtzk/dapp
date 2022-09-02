@@ -1,8 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { isNil } from 'lodash';
-
-const useChangesListener = (value: null | string, handler: () => void) => {
+const useChangesListener = (value: string, handler: () => void) => {
   const savedHandler = useRef(handler);
 
   useEffect(() => {
@@ -10,7 +8,7 @@ const useChangesListener = (value: null | string, handler: () => void) => {
   }, [handler]);
 
   useEffect(() => {
-    if (!isNil(value)) {
+    if (value !== '') {
       savedHandler.current();
     }
   }, [value]);

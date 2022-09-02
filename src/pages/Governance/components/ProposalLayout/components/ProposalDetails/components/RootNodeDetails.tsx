@@ -9,7 +9,7 @@ import LinkViewer from '../../LinkViewer';
 import { ZERO_ADDRESS } from 'constants/boundaries';
 
 interface Props {
-  proposal: Proposal
+  proposal: Proposal;
 }
 
 function RootNodeDetails ({ proposal }: Props) {

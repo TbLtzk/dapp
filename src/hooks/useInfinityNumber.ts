@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { formatNumberFixed } from 'utils/numbers';
 
 function useInfinityNumber (
-  initialNumber: number,
+  initialNumber: number | string,
   text = '',
   formatter = formatNumberFixed,
   increase = 0.0001,
@@ -13,7 +13,7 @@ function useInfinityNumber (
   const animateRef = useRef<HTMLParagraphElement | HTMLDivElement>(null);
 
   useEffect(() => {
-    if (animateRef.current && !isNaN(initialNumber)) {
+    if (animateRef.current && !isNaN(Number(initialNumber))) {
       const node = animateRef.current;
 
       node.textContent = formatter(initialNumber) + text;

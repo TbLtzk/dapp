@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { motion } from 'framer-motion';
@@ -10,20 +9,18 @@ import Icon from 'ui/Icon';
 
 import { BalanceDropdown, QLogo } from './styles';
 
-import { accountBalance, userBalance } from 'store/q-vault/selectors';
-import { baseVotingWeightInfoSelector } from 'store/voting/proposals/selectors';
+import { useBaseVotingWeightInfo } from 'store/proposals/hooks';
+import { useQVault } from 'store/q-vault/hooks';
 
 import { RoutePaths } from 'constants/routes';
 import { formatNumberCompact } from 'utils/numbers';
 
 function Balance () {
+  const { baseVotingWeightInfo } = useBaseVotingWeightInfo();
+  const totalVotingWeight = fromWei(baseVotingWeightInfo.ownWeight);
+  const { vaultBalance, walletBalance } = useQVault();
+
   const [balanceOpen, setBalanceOpen] = useState(false);
-
-  const userWalletBalance = useSelector(accountBalance);
-  const userQVaultBalance = useSelector(userBalance);
-
-  const { ownWeight } = useSelector(baseVotingWeightInfoSelector);
-  const totalVotingWeight = fromWei(ownWeight || '0');
 
   return (
     <BalanceDropdown
@@ -32,7 +29,7 @@ function Balance () {
       trigger={
         <Button alwaysEnabled look="secondary">
           <div className="balance">
-            <p className="text-lg color-primary font-semibold">{formatNumberCompact(userWalletBalance)}</p>
+            <p className="text-lg color-primary font-semibold">{formatNumberCompact(walletBalance)}</p>
             <QLogo width={22} margin="0 0 0 2px">
               <img src="/logo.png" alt="q" />
             </QLogo>
@@ -57,13 +54,13 @@ function Balance () {
             </QLogo>
             <p className="text-lg color-secondary">Balance</p>
           </div>
-          <p className="text-xl color-primary font-semibold">{formatNumberCompact(userWalletBalance)}</p>
+          <p className="text-xl color-primary font-semibold">{formatNumberCompact(walletBalance)}</p>
         </div>
 
         <Link to={RoutePaths.qVault}>
           <div className="balance balance-action">
             <p className="text-md color-secondary">Q Vault Balance </p>
-            <p className="text-lg color-primary font-semibold">{formatNumberCompact(userQVaultBalance)}</p>
+            <p className="text-lg color-primary font-semibold">{formatNumberCompact(vaultBalance)}</p>
           </div>
         </Link>
 

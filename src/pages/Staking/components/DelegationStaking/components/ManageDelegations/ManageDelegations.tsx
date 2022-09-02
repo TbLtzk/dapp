@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 
@@ -12,37 +11,30 @@ import Tabs from 'ui/Tabs';
 import { TabRoute, TabSwitch } from 'ui/Tabs/components';
 import { TabsType } from 'ui/Tabs/Tabs';
 
-import useMetamaskReset from 'hooks/useMetamaskReset';
-
 import ManualDelegation from './components/ManualDelegation';
 import { ManageDelegationsContainer } from './components/ManualDelegation/styles';
 import ValidatorsList from './components/ValidatorsList';
 
-import { getDelegationStakeInfo } from 'store/q-vault/action-creators';
-import { getValidatorMembers } from 'store/validators/action-creators';
+import { useQVault } from 'store/q-vault/hooks';
+import { useValidators } from 'store/validators/hooks';
 
-import formTypes from 'constants/form-types';
 import { RoutePaths } from 'constants/routes';
 
 function ManageDelegations () {
   const { t } = useTranslation();
   const history = useHistory();
-  const dispatch = useDispatch();
+
+  const { loadDelegationStakeInfo } = useQVault();
+  const { loadValidatorStats } = useValidators();
 
   const handleBackClick = () => {
     history.push(RoutePaths.stakingDelegations);
   };
 
-  const getDelegationsManagingInfo = () => {
-    dispatch(getValidatorMembers('validators-widened'));
-    dispatch(getDelegationStakeInfo());
-  };
-
   useEffect(() => {
-    getDelegationsManagingInfo();
-  }, [dispatch]);
-
-  useMetamaskReset(formTypes.qVaultDelegation, getDelegationsManagingInfo);
+    loadValidatorStats();
+    loadDelegationStakeInfo();
+  }, []);
 
   const tabs: TabsType[] = [
     {

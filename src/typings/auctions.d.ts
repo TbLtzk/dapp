@@ -24,7 +24,7 @@ interface LiquidationCompletedInfo extends AuctionCompletedInfo {
   colAsset: string;
   vaultOwner: string;
   vaultId: string | number;
-  auctionType: 'liquidation'
+  auctionType: 'liquidation';
 }
 
 interface SystemDebtCompletedInfo extends AuctionCompletedInfo {
@@ -55,13 +55,13 @@ interface AuctionInfo {
   endTime: string;
   slug: string;
   state: TagState;
-  statusNumber: string | number
-  blockNumber: string | number
-  auctionType: AuctionType
+  statusNumber: string | number;
+  blockNumber: string | number;
+  auctionType: AuctionType;
 };
 
 interface CreateAuction {
-  bid: string
+  bid: string;
 }
 interface AuctionExecute {
   auctionId: string;
@@ -85,12 +85,12 @@ interface LiquidationAuctionBid {
   bid: string | number;
 }
 
-type LiquidationAuctionInfo = AuctionInfo & LiquidationAuctionEvent
-type SystemDebtAndSurplusInfo = AuctionInfo & SystemDebtAndSurplusEvent
-type AuctionInfos = LiquidationAuctionInfo | SystemDebtAndSurplusInfo
+type LiquidationAuctionInfo = AuctionInfo & LiquidationAuctionEvent;
+type SystemDebtAndSurplusInfo = AuctionInfo & SystemDebtAndSurplusEvent;
+type AuctionInfos = LiquidationAuctionInfo | SystemDebtAndSurplusInfo;
 
-type ExecuteAuctionForm = LiquidationAuctionExecute | AuctionExecute
-type BidForAuctionForm = LiquidationAuctionBid | AuctionBid
-type CreateAuctionForm = CreateLiquidationAuction | CreateAuctionForm
+type ExecuteAuctionForm = LiquidationAuctionExecute | AuctionExecute;
+type BidForAuctionForm = LiquidationAuctionBid | AuctionBid;
+type CreateAuctionForm = CreateLiquidationAuction | CreateAuctionForm;
 
 type AuctionCompletedInfos = SystemDebtCompletedInfo | SystemSurplusCompletedInfo | LiquidationCompletedInfo;

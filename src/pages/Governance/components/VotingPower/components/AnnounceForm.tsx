@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 
 import styled from 'styled-components';
 
@@ -8,11 +7,10 @@ import Icon from 'ui/Icon';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
-import useMetamaskReset from 'hooks/useMetamaskReset';
 
-import { setAnnounceNewVotingAgent } from 'store/q-vault/action-creators';
+import { useQVault } from 'store/q-vault/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
-import formTypes from 'constants/form-types';
 import { address, required } from 'utils/validators';
 
 const StyledForm = styled.form`
@@ -26,17 +24,20 @@ const StyledForm = styled.form`
 
 function AnnounceForm () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { submitTransaction } = useTransaction();
+  const { announceNewVotingAgent } = useQVault();
 
   const form = useForm({
     initialValues: { address: '' },
     validators: { address: [required, address] },
-    onSubmit: (form) => {
-      dispatch(setAnnounceNewVotingAgent(form.address, t('ANNOUNCE_NEW_VOTING_AGENT_SUCCESS')));
+    onSubmit: ({ address }) => {
+      submitTransaction({
+        successMessage: t('ANNOUNCE_NEW_VOTING_AGENT_SUCCESS'),
+        submitFn: () => announceNewVotingAgent(address),
+        onSuccess: () => form.reset(),
+      });
     }
   });
-
-  useMetamaskReset(formTypes.qVaultAnnounce, form.reset);
 
   return (
     <StyledForm noValidate onSubmit={form.submit}>

@@ -12,11 +12,13 @@ import ParametersTable from '../ParametersTable';
 
 import { BlockParagraph, DocsLink, ParametersBlockTitle } from './styles';
 
+import { ParameterValue } from 'store/parameters/reducer';
+
 interface Props {
   title: string;
   subtitle: string;
   docsId?: string;
-  parameters: any[];
+  parameters: ParameterValue[];
   gnosisSafeAddress?: string;
   loading: boolean;
   errorMsg: string;

@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import Tooltip from 'ui/Tooltip';
 
@@ -11,43 +10,42 @@ import { useUpdateValidatorCompoundRate } from '../../hooks';
 
 import RefreshBlock from './components/RefreshBlock';
 
-import { getDefaultAllocationProxy, getRootNodeRewardProxy, getValidationRewardProxy } from 'store/tokenomics/action-creators';
-import {
-  defaultAllocationProxyLoadingSelector,
-  defaultAllocationProxySelector,
-  validationRewardProxyLoadingSelector,
-  validationRewardProxySelector,
-} from 'store/tokenomics/selectors';
-import { lastUpdateOfCompoundRateSelector } from 'store/validation-reward-pools/selectors';
-import { getCompoundRateKeeperExists } from 'store/validators/action-creators';
-import { compoundRateKeeperExistsSelector } from 'store/validators/selectors';
+import { useTokenomics } from 'store/tokenomics/hooks';
+import { useTransaction } from 'store/transaction/hooks';
+import { useValidationRewards } from 'store/validation-rewards/hooks';
+import { useValidators } from 'store/validators/hooks';
 
 import { formatDate, formatDateRelative, unixToDate } from 'utils/date';
 
 function ValidatorAllocation () {
   const { t, i18n } = useTranslation();
+  const { submitTransaction } = useTransaction();
 
-  const dispatch = useDispatch();
+  const {
+    defaultAllocationProxy,
+    defaultAllocationProxyLoading,
+    validationRewardProxy,
+    validationRewardProxyLoading,
+    getDefaultAllocationProxy,
+    getValidationRewardProxy,
+    allocateDefaultProxyRewards,
+    allocateValidationProxyRewards,
+  } = useTokenomics();
 
-  const lastUpdateCompoundRate = useSelector(lastUpdateOfCompoundRateSelector);
-  const compoundRateKeeperExist = useSelector(compoundRateKeeperExistsSelector);
+  const { lastUpdateOfCompoundRate } = useValidationRewards();
+  const { compoundRateKeeperExists, loadCompoundRateKeeperExists } = useValidators();
+  const { compoundRateLoading, updateCompoundRate } = useUpdateValidatorCompoundRate();
 
-  const { compountRateLoading, updateCompoundRate } = useUpdateValidatorCompoundRate();
-
-  const defaultAllocationProxyRef = useAnimateNumber(useSelector(defaultAllocationProxySelector));
-  const defaultAllocationProxyLoading = useSelector(defaultAllocationProxyLoadingSelector);
-
-  const validationRewardProxyRef = useAnimateNumber(useSelector(validationRewardProxySelector));
-  const validationRewardProxyLoading = useSelector(validationRewardProxyLoadingSelector);
+  const defaultAllocationProxyRef = useAnimateNumber(defaultAllocationProxy);
+  const validationRewardProxyRef = useAnimateNumber(validationRewardProxy);
 
   useEffect(() => {
-    dispatch(getCompoundRateKeeperExists());
-    dispatch(getDefaultAllocationProxy(false));
-    dispatch(getRootNodeRewardProxy(false));
-    dispatch(getValidationRewardProxy(false));
+    loadCompoundRateKeeperExists();
+    getDefaultAllocationProxy();
+    getValidationRewardProxy();
   }, []);
 
-  useInterval(() => dispatch(getDefaultAllocationProxy(false)), 5000, defaultAllocationProxyLoading);
+  useInterval(() => getDefaultAllocationProxy(), 5000, defaultAllocationProxyLoading);
 
   return (
     <div className="block">
@@ -59,7 +57,11 @@ function ValidatorAllocation () {
         icon="mdi mdi-cube-outline"
         loading={defaultAllocationProxyLoading}
         title={t('DEFAULT_ALLOCATION_PROXY')}
-        onClick={() => dispatch(getDefaultAllocationProxy(true, t('DEFAULT_ALLOCATION_PROXY_SUCCESS')))}
+        onClick={() => submitTransaction({
+          successMessage: t('DEFAULT_ALLOCATION_PROXY_SUCCESS'),
+          hideLoading: true,
+          submitFn: allocateDefaultProxyRewards
+        })}
       >
         <p ref={defaultAllocationProxyRef} className="color-primary text-md">0 Q</p>
       </RefreshBlock>
@@ -68,20 +70,28 @@ function ValidatorAllocation () {
         icon="mdi mdi-cube-outline"
         loading={validationRewardProxyLoading}
         title={t('Validation Reward Proxy')}
-        onClick={() => dispatch(getValidationRewardProxy(true, t('VALIDATON_REWARD_PROXY_SUCCESS')))}
+        onClick={() => submitTransaction({
+          successMessage: t('VALIDATON_REWARD_PROXY_SUCCESS'),
+          hideLoading: true,
+          submitFn: allocateValidationProxyRewards
+        })}
       >
         <p ref={validationRewardProxyRef} className="color-primary text-md">0 Q</p>
       </RefreshBlock>
 
       <RefreshBlock
-        disabled={!compoundRateKeeperExist}
+        disabled={!compoundRateKeeperExists}
         icon="mdi mdi-cached"
-        loading={compountRateLoading}
+        loading={compoundRateLoading}
         title={t('TIME_SINCE_LAST_REFRESH_OF_USER_DELEGATIONS')}
-        onClick={() => updateCompoundRate(t('REFRESH_OF_USER_DELEGATIONS_SUCCESS'))}
+        onClick={() => submitTransaction({
+          successMessage: t('REFRESH_OF_USER_DELEGATIONS_SUCCESS'),
+          hideLoading: true,
+          submitFn: updateCompoundRate
+        })}
       >
-        <Tooltip trigger={<p className="color-primary text-md">{formatDateRelative(unixToDate(lastUpdateCompoundRate), i18n.language)}</p>}>
-          {formatDate(unixToDate(lastUpdateCompoundRate), i18n.language)}
+        <Tooltip trigger={<p className="color-primary text-md">{formatDateRelative(unixToDate(lastUpdateOfCompoundRate), i18n.language)}</p>}>
+          {formatDate(unixToDate(lastUpdateOfCompoundRate), i18n.language)}
         </Tooltip>
       </RefreshBlock>
     </div>

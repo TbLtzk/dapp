@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -11,10 +10,8 @@ import Button from 'ui/Button';
 import DonutChart from 'ui/DonutChart';
 import Spinner from 'ui/Spinner';
 
-import { getValidatorMembers } from 'store/validators/action-creators';
-import { loadingValidatorsShortSelector, validatorsShortSelector } from 'store/validators/selectors';
+import { useValidators } from 'store/validators/hooks';
 
-import { TABLE_TYPES } from 'constants/tableTypes';
 import { formatNumber } from 'utils/numbers';
 
 const StyledWrapper = styled.div`
@@ -33,15 +30,11 @@ const StyledWrapper = styled.div`
 
 function ValidatorsChart () {
   const { t } = useTranslation();
-
-  const dispatch = useDispatch();
-
-  const validators = useSelector(validatorsShortSelector);
-  const isLoading = useSelector(loadingValidatorsShortSelector);
+  const { validators, validatorsLoading, loadValidatorsShortList } = useValidators();
 
   useEffect(() => {
-    dispatch(getValidatorMembers(TABLE_TYPES.validatorsShort));
-  }, [dispatch]);
+    loadValidatorsShortList();
+  }, []);
 
   return (
     <StyledWrapper className="block">
@@ -64,7 +57,7 @@ function ValidatorsChart () {
       </div>
 
       <div className="block__content">
-        {isLoading
+        {validatorsLoading
           ? (
             <div className="validators__loading-wrp">
               <Spinner size={96} thickness={4} />
@@ -74,10 +67,10 @@ function ValidatorsChart () {
             <DonutChart
               totalLabel={t('TOTAL_STAKE')}
               formatValue={(val) => `${formatNumber(val, 2)} Q`}
-              options={validators.map((item: any) => ({
-                label: item.validator,
-                value: Number(item.amount),
-                icon: <AddressIcon address={item.validator} />,
+              options={validators.map((item) => ({
+                label: item.address,
+                value: Number(item.balance),
+                icon: <AddressIcon address={item.address} />,
               }))}
             />
           )}

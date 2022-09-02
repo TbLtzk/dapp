@@ -1,30 +1,39 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 
 import { Proposal } from 'typings/proposals';
 
+import { useSlashingActions } from 'pages/Governance/hooks/useSlashingActions';
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 
-import { onEscrowCastObjection } from 'store/voting/slashing/actions';
+import { useTransaction } from 'store/transaction/hooks';
 
 import { url } from 'utils/validators';
 
 interface Props {
-  proposal: Proposal
+  proposal: Proposal;
+  onSubmit: () => void;
 }
 
-function CastObjectionForm ({ proposal }: Props) {
+function CastObjectionForm ({ proposal, onSubmit }: Props) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { submitTransaction } = useTransaction();
+  const { castObjection } = useSlashingActions(proposal.contract === 'rootNodesSlashingVoting');
 
   const form = useForm({
     initialValues: { externalLink: '' },
     validators: { externalLink: [url] },
     onSubmit: (form) => {
-      dispatch(onEscrowCastObjection(form, proposal.contract, proposal.id, t('CAST_OBJECTION_SUCCESS')));
+      submitTransaction({
+        successMessage: t('CAST_OBJECTION_SUCCESS'),
+        onSuccess: () => onSubmit(),
+        submitFn: () => castObjection({
+          remark: form.externalLink,
+          proposalId: proposal.id,
+        }),
+      });
     }
   });
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RouteComponentProps, useHistory } from 'react-router';
 
@@ -13,15 +13,11 @@ import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 import Tag from 'ui/Tag';
 
-import useMetamaskReset from 'hooks/useMetamaskReset';
-
 import AuctionActions from './components/AuctionActions';
 import AuctionLayout from './components/AuctionLayout';
 import { AuctionNotFoundContainer } from './styles';
 
 import { getAuction } from 'contracts/helpers/auction';
-
-import formTypes from 'constants/form-types';
 
 function Auction ({ match, }: RouteComponentProps<{
   id: string;
@@ -29,13 +25,14 @@ function Auction ({ match, }: RouteComponentProps<{
   slug: string;
 }>) {
   const { t } = useTranslation();
-  const linkToAuctions = match.params.type;
-  const auctionType = camelCase(linkToAuctions) as AuctionType;
   const history = useHistory();
 
-  const [auction, setAuction] = useState<AuctionCompletedInfos | any>(null);
+  const linkToAuctions = match.params.type;
+  const auctionType = camelCase(linkToAuctions) as AuctionType;
+
+  const [auction, setAuction] = useState<AuctionCompletedInfos | null>(null);
   const [auctionLoading, setAuctionLoading] = useState<boolean>(true);
-  const [auctionError, setAuctionError] = useState<null | any>(null);
+  const [auctionError, setAuctionError] = useState<ReactNode>(null);
 
   const handleBackClick = () => {
     history.push(`/auctions/${linkToAuctions}`);
@@ -46,17 +43,15 @@ function Auction ({ match, }: RouteComponentProps<{
       const result = await getAuction(auctionType, match.params);
       if ('error' in result && result?.error) {
         setAuctionError(result?.error);
+      } else {
+        setAuction(result as AuctionCompletedInfos);
       }
-      setAuction(result);
     } catch (error) {
-      setAuctionError(error);
+      setAuctionError(error as ReactNode);
     } finally {
       setAuctionLoading(false);
     }
   };
-
-  useMetamaskReset(formTypes.bidForAuction, loadOneAuction);
-  useMetamaskReset(formTypes.executeAuction, loadOneAuction);
 
   useEffect(() => {
     loadOneAuction();
@@ -66,7 +61,7 @@ function Auction ({ match, }: RouteComponentProps<{
       setAuctionError(null);
     };
   }, []);
-  if (auctionLoading || auctionError) {
+  if (auctionLoading || auctionError || !auction) {
     return (
       <AuctionContainer>
         {auctionLoading
@@ -104,7 +99,13 @@ function Auction ({ match, }: RouteComponentProps<{
 
       <PageLayout
         title={`#${auctionId} ${t(AUCTION_HEADERS[auctionType])}`}
-        action={<AuctionActions auctionType={auctionType} auction={auction} />}
+        action={(
+          <AuctionActions
+            auctionType={auctionType}
+            auction={auction}
+            onSubmit={loadOneAuction}
+          />
+        )}
         titleExtra={
           auction?.status && (
             <Tag state={auction.state}>

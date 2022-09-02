@@ -13,10 +13,10 @@ import { TableColumn } from '.';
 
 import { parseNumber } from 'utils/numbers';
 
-interface Props {
+interface Props<T> {
   loading?: boolean;
-  table: any[];
-  error?: string;
+  table: T[];
+  error?: string | unknown;
   columns: TableColumn[];
   perPage?: number;
   emptyTableMessage: string;
@@ -25,7 +25,7 @@ interface Props {
   buttons?: ReactNode;
 }
 
-const Table = ({
+function Table<T> ({
   loading,
   table,
   error,
@@ -35,7 +35,7 @@ const Table = ({
   emptyTableMessage,
   header,
   tiny = false,
-}: Props) => {
+}: Props<T>) {
   const { t } = useTranslation();
   const [isEmpty, setIsEmpty] = useState(false);
 
@@ -79,8 +79,9 @@ const Table = ({
             keyField="id"
             data={table}
             columns={columns.map((column) => ({
-              sortFunc: (a: string, b: string, order: string) =>
-                order === 'desc' ? parseNumber(b) - parseNumber(a) : parseNumber(a) - parseNumber(b),
+              sortFunc: (a, b, order) => order === 'desc'
+                ? parseNumber(b) - parseNumber(a)
+                : parseNumber(a) - parseNumber(b),
               ...column,
               sortCaret: ((order) => (
                 <SortCaretIcon $order={order}>

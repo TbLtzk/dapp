@@ -1,63 +1,61 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { SlashingProposal } from 'typings/proposals';
 
+import { useSlashingActions } from 'pages/Governance/hooks/useSlashingActions';
 import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 import Tooltip from 'ui/Tooltip';
 
-import useMetamaskReset from 'hooks/useMetamaskReset';
-
 import ProposeDecisionForm from './ProposeDecisionForm';
 
-import { isUserRootNode } from 'store/root-node/selectors';
-import { userAddressMetamask } from 'store/user-inf/selectors';
-import { setEscrowAction } from 'store/voting/slashing/actions';
+import { useRootNodes } from 'store/root-nodes/hooks';
+import { useTransaction } from 'store/transaction/hooks';
+import { useUser } from 'store/user/hooks';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
-import formTypes from 'constants/form-types';
-import { escrowTypes } from 'constants/slashing';
 
 interface Props {
-  proposal: SlashingProposal
+  proposal: SlashingProposal;
 }
 
 function DecisionActions ({ proposal }: Props) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { submitTransaction } = useTransaction();
+  const {
+    confirmDecision,
+    recallDecision,
+    executeDecision
+  } = useSlashingActions(proposal.contract === 'rootNodesSlashingVoting');
 
-  const isRootNode = useSelector(isUserRootNode);
-  const userAddress = useSelector(userAddressMetamask);
+  const { isRootNode } = useRootNodes();
+  const user = useUser();
 
   const [modalOpen, setModalOpen] = useState(false);
   const handleClose = () => {
     setModalOpen(false);
   };
 
-  useMetamaskReset(formTypes.proposeDecision, handleClose);
-
-  const handleEscrowAction = (type: string, label: string) => {
-    dispatch(setEscrowAction(proposal.contract, proposal.id, type, label));
-  };
-
   const decision = proposal.objEscrow.decision;
 
   const isDecisionEnded = decision.endDate.getTime() < Date.now();
   const isDecisionPassed = Number(decision.confirmationCount) >= Number(decision.requiredConfirmations);
-  const canProposeDecision = decision.proposer !== userAddress &&
+  const canProposeDecision = decision.proposer !== user.address &&
     (isDecisionEnded || decision.proposer === ZERO_ADDRESS);
 
   return (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-      {!isDecisionEnded && decision.proposer === userAddress && (
+      {!isDecisionEnded && decision.proposer === user.address && (
         <Tooltip
           trigger={(
             <Button
               compact
               look="ghost"
-              onClick={() => handleEscrowAction(escrowTypes.recall, t('RECALL_DECISION_SUCCESS'))}
+              onClick={() => submitTransaction({
+                successMessage: t('RECALL_DECISION_SUCCESS'),
+                submitFn: () => recallDecision(proposal.id)
+              })}
             >
               {t('RECALL_DECISION')}
             </Button>
@@ -75,7 +73,10 @@ function DecisionActions ({ proposal }: Props) {
               compact
               look="secondary"
               disabled={!isRootNode}
-              onClick={() => handleEscrowAction(escrowTypes.confirm, t('VOTE_TO_CONFIRM_DECISION_SUCCESS'))}
+              onClick={() => submitTransaction({
+                successMessage: t('VOTE_TO_CONFIRM_DECISION_SUCCESS'),
+                submitFn: () => confirmDecision(proposal.id),
+              })}
             >
               {t('VOTE_TO_CONFIRM_DECISION')}
             </Button>
@@ -92,7 +93,10 @@ function DecisionActions ({ proposal }: Props) {
               compact
               look="secondary"
               disabled={!isRootNode}
-              onClick={() => handleEscrowAction(escrowTypes.execute, t('EXECUTE_DECISION_SUCCESS'))}
+              onClick={() => submitTransaction({
+                successMessage: t('EXECUTE_DECISION_SUCCESS'),
+                submitFn: () => executeDecision(proposal.id),
+              })}
             >
               {t('EXECUTE_DECISION')}
             </Button>
@@ -126,7 +130,7 @@ function DecisionActions ({ proposal }: Props) {
         tip={t('PROPOSE_DECISION_MODAL_TIP')}
         onClose={handleClose}
       >
-        <ProposeDecisionForm proposal={proposal} />
+        <ProposeDecisionForm proposal={proposal} onSubmit={handleClose} />
       </Modal>
     </div>
   );

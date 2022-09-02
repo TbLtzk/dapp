@@ -12,7 +12,7 @@ import { CONTRACTS_NAMES } from 'constants/contracts';
 import { formatDate, formatDateRelative } from 'utils/date';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  proposal: Proposal
+  proposal: Proposal;
 }
 
 function VotingPeriods ({ proposal, ...rest }: Props) {

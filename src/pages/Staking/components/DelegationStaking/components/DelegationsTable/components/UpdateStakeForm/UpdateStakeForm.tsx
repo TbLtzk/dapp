@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
+import { Delegation } from 'typings/validator';
 import { toWei } from 'web3-utils';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
@@ -11,26 +11,37 @@ import Input from 'ui/Input';
 import useForm from 'hooks/useForm';
 
 import ClaimTip from '../../../ClaimTip';
-import { Delegation } from '../../DelegationsTable';
 
-import { setDelegateStake } from 'store/q-vault/action-creators';
-import { delegationStakeInfoSelector } from 'store/q-vault/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
 import { formatAsset } from 'utils/numbers';
 import { max, min, required } from 'utils/validators';
 
-function UpdateStakeForm ({ delegation }: { delegation: Delegation }) {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
+interface Props {
+  delegation: Delegation;
+  onSubmit: () => void;
+}
 
-  const delegationStakeInfo = useSelector(delegationStakeInfoSelector);
+function UpdateStakeForm ({ delegation, onSubmit }: Props) {
+  const { t } = useTranslation();
+  const { submitTransaction } = useTransaction();
+  const { delegationStakeInfo, delegateStake } = useQVault();
+
   const maxAmountToDelegate = Number(delegation.actualStake) + Number(delegationStakeInfo.delegatableAmount);
 
   const form = useForm({
     initialValues: { amount: '' },
     validators: { amount: [required, min(0), max(maxAmountToDelegate)] },
     onSubmit: ({ amount }) => {
-      dispatch(setDelegateStake([delegation.validator], [toWei(amount)], t('SUCCESS_STAKE_UPDATE')));
+      submitTransaction({
+        successMessage: t('SUCCESS_STAKE_UPDATE'),
+        onSuccess: () => onSubmit(),
+        submitFn: () => delegateStake({
+          addresses: [delegation.validator],
+          stakes: [toWei(amount)],
+        })
+      });
     },
   });
 
@@ -48,7 +59,7 @@ function UpdateStakeForm ({ delegation }: { delegation: Delegation }) {
 
         <div>
           <p className="text-md color-secondary">{t('DELEGATOR_SHARE')}</p>
-          <p className="text-lg">{formatAsset(delegation.delegatorShare, ' %')}</p>
+          <p className="text-lg">{formatAsset(delegation.delegatorsShare, ' %')}</p>
         </div>
       </div>
 

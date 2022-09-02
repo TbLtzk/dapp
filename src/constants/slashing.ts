@@ -6,15 +6,3 @@ export enum ObjectionStatus {
   DECIDED = '4',
   EXECUTED = '5',
 };
-
-export const slashingTypes = {
-  castObjection: 'cast-objection',
-  proposerRemark: 'proposer-remark',
-  proposeDecision: 'propose-decision'
-};
-
-export const escrowTypes = {
-  confirm: 'confirm',
-  recall: 'recall',
-  execute: 'execute'
-};

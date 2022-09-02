@@ -66,9 +66,7 @@ const StyledContainer = styled.div`
   }
 `;
 
-function Validator ({ match, }: RouteComponentProps<{
-  address: string;
-}>) {
+function Validator ({ match }: RouteComponentProps<{ address: string }>) {
   const { address } = match.params;
   const { t } = useTranslation();
   const { isValidator, validator, loading: validatorLoading, error: validatorError } = useFetchValidatorData(address);

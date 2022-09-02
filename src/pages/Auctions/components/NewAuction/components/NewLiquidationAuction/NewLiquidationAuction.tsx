@@ -1,21 +1,18 @@
 import { createContext, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { CreateLiquidationAuction } from 'typings/auctions';
 
 import MultiStepForm from 'components/MultiStepForm';
 
-import useMetamaskReset from 'hooks/useMetamaskReset';
 import useMultiStepForm from 'hooks/useMultiStepForm';
 
 import ConfirmationStep from './components/ConfirmationStep';
 import ProvideInfoStep from './components/ProvideInfoStep';
 
-import { createAuction } from 'store/auctions/actions';
-
-import { AUCTIONS_TYPES } from 'contracts/helpers/auction';
+import { useAuctions } from 'store/auctions/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
 import { RoutePaths } from 'constants/routes';
 
@@ -31,19 +28,19 @@ const NewLiquidationAuctionContext = createContext(
 
 function NewLiquidationAuction () {
   const { t } = useTranslation();
-
-  const dispatch = useDispatch();
+  const { submitTransaction } = useTransaction();
+  const { createAuction } = useAuctions();
   const history = useHistory();
 
   const form = useMultiStepForm({
     initialValues: DEFAULT_VALUES,
-    onConfirm: (values) => {
-      dispatch(createAuction('liquidation', values, t('CREATE_LIQUDATION_AUCTION_SUCCESS')));
+    onConfirm: (form) => {
+      submitTransaction({
+        successMessage: t('CREATE_LIQUIDATION_AUCTION_SUCCESS'),
+        submitFn: () => createAuction({ auctionType: 'liquidation', form }),
+        onSuccess: () => history.push(RoutePaths.liquidation)
+      });
     },
-  });
-
-  useMetamaskReset(AUCTIONS_TYPES.liquidation, () => {
-    history.push(RoutePaths.liquidation);
   });
 
   const steps = [

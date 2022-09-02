@@ -5,7 +5,7 @@ import { Proposal } from 'typings/proposals';
 import LinkViewer from '../../LinkViewer';
 
 interface Props {
-  proposal: Proposal
+  proposal: Proposal;
 }
 
 function QDetails ({ proposal }: Props) {

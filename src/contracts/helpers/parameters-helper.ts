@@ -1,6 +1,6 @@
 import { ParameterType } from '@q-dev/q-js-sdk';
-import { BaseContractInstance } from '@q-dev/q-js-sdk/lib/contracts/BaseContractInstance';
 import { ParameterType as StringParameterType } from '@q-dev/q-js-sdk/lib/contracts/BaseParametersInstance';
+import { ContractRegistryUpgradeVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/ContractRegistryUpgradeVoting';
 import { ContractType } from 'typings/contracts';
 
 import {
@@ -64,7 +64,7 @@ export async function getParameterValueByKey (
 }
 
 export async function getContractOwner (type: ContractType) {
-  const contract = await getInstance(type)() as BaseContractInstance<any>;
+  const contract = await getInstance(type)() as ContractRegistryUpgradeVotingInstance;
   return 'owner' in contract.instance.methods
     ? contract.instance.methods.owner().call()
     : '';

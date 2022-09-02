@@ -1,7 +1,8 @@
 import { RefObject } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 
+import { TimeLockEntry } from '@q-dev/q-js-sdk';
+import { TimeLockContractType } from 'typings/contracts';
 import { fromWei } from 'web3-utils';
 
 import Button from 'ui/Button';
@@ -12,21 +13,17 @@ import VestingWithdrawForm from '../VestingWithdrawForm';
 
 import { BalanceValueWrap, ContentWrap, TimeLocksTableContent } from './styles';
 
-import { setPurgeTimeLocksAmount } from 'store/locked-amount/action-creators';
+import { useLockedAmount } from 'store/locked-amount/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
 import { formatDate, unixToDate } from 'utils/date';
 
-type ContractType = CONTRACT_TYPES.qVault |
-CONTRACT_TYPES.root |
-CONTRACT_TYPES.validators |
-CONTRACT_TYPES.vesting
-
 interface Props {
   title: string;
-  contract: ContractType;
+  contract: TimeLockContractType;
   balanceRef: RefObject<HTMLDivElement>;
-  lockAmountData: any[];
+  lockAmountData: TimeLockEntry[];
   timeLockBalanceRef: RefObject<HTMLDivElement>;
   address: string;
 }
@@ -39,15 +36,15 @@ function TimeLocksTable ({
   timeLockBalanceRef,
   address
 }: Props) {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { submitTransaction } = useTransaction();
+  const { purgeTimeLocks } = useLockedAmount();
 
   function onSetPurgeTimeLocksAmount () {
-    dispatch(
-      setPurgeTimeLocksAmount(
-        { contract, address }, t('PURGE_EXPIRED_TIME_LOCKS_SUCCESS')
-      )
-    );
+    submitTransaction({
+      successMessage: t('PURGE_EXPIRED_TIME_LOCKS_SUCCESS'),
+      submitFn: () => purgeTimeLocks({ address, contractType: contract })
+    });
   }
 
   return (
@@ -80,8 +77,8 @@ function TimeLocksTable ({
           table={lockAmountData.map((lock, i) => ({
             id: i + 1,
             amount: fromWei(lock.amount) + ' Q',
-            releaseStart: formatDate(unixToDate(lock.releaseStart)),
-            releaseEnd: formatDate(unixToDate(lock.releaseEnd)),
+            releaseStart: formatDate(unixToDate(lock.releaseStart.toString())),
+            releaseEnd: formatDate(unixToDate(lock.releaseEnd.toString())),
           }))}
           columns={[
             {

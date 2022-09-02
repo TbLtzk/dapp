@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -10,8 +9,7 @@ import Icon from 'ui/Icon';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 
-import { getRootMembers } from 'store/root-node/action-creators';
-import { rootMembersSelector } from 'store/root-node/selectors';
+import { useRootNodes } from 'store/root-nodes/hooks';
 
 import { RoutePaths } from 'constants/routes';
 import { formatNumber } from 'utils/numbers';
@@ -34,13 +32,11 @@ const StyledWrapper = styled.div`
 
 function TotalRootNodes () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-
-  const rootNodes = useSelector(rootMembersSelector);
-  const rootNodesRef = useAnimateNumber(rootNodes.length, ' ', val => formatNumber(val, 0));
+  const { rootMembers, getRootMembers } = useRootNodes();
+  const rootNodesRef = useAnimateNumber(rootMembers.length, ' ', val => formatNumber(val, 0));
 
   useEffect(() => {
-    dispatch(getRootMembers());
+    getRootMembers();
   }, []);
 
   return (
@@ -49,7 +45,7 @@ function TotalRootNodes () {
         <h2 className="text-lg">{t('TOTAL_ROOT_NODES')}</h2>
         <p ref={rootNodesRef} className="total-root__val text-xl font-semibold">0</p>
         <p className="total-root__inactive text-sm font-light">
-          {t('INACTIVE_COUNT', { count: 0 })}
+          {t('INACTIVE_COUNT', { value: 0 })}
         </p>
       </div>
 

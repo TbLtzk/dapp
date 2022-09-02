@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { BorrowAssetsRateAndFee } from 'typings/defi';
@@ -10,9 +9,10 @@ import Button from 'ui/Button';
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
 
-import { userAddressMetamask } from 'store/user-inf/selectors';
+import { useBorrowingCore } from 'store/borrowing-core/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
-import { getTimeSinceOutstandingDebt, refreshTimeSinceOutstandingDebt } from 'contracts/helpers/borrowing-core';
+import { getBorrowingCompoundRateLastUpdate } from 'contracts/helpers/borrowing-core';
 
 import { formatDate, formatDateRelative } from 'utils/date';
 
@@ -34,8 +34,8 @@ const StyledWrapper = styled.div`
 
 function InterestRateBlock ({ rate }: { rate: BorrowAssetsRateAndFee }) {
   const { t, i18n } = useTranslation();
-  const dispatch = useDispatch();
-  const userAddress = useSelector(userAddressMetamask);
+  const { submitTransaction } = useTransaction();
+  const { updateBorrowingCompoundRate } = useBorrowingCore();
 
   const interestRateRef = useAnimateNumber(rate.borrowingFee, ' %');
 
@@ -43,23 +43,22 @@ function InterestRateBlock ({ rate }: { rate: BorrowAssetsRateAndFee }) {
   const [debtRefreshLoading, setDebtRefreshLoading] = useState(false);
 
   useEffect(() => {
-    getTimeSinceOutstandingDebt(rate.asset).then(setTimeSinceOutstandingDebt);
+    getBorrowingCompoundRateLastUpdate(rate.asset).then(setTimeSinceOutstandingDebt);
   }, []);
 
   useInterval(() => {
-    getTimeSinceOutstandingDebt(rate.asset).then(setTimeSinceOutstandingDebt);
+    getBorrowingCompoundRateLastUpdate(rate.asset).then(setTimeSinceOutstandingDebt);
   }, 50000, debtRefreshLoading);
 
   const handleRefreshDebt = async () => {
     setDebtRefreshLoading(true);
-    await refreshTimeSinceOutstandingDebt({
-      userAddress,
-      dispatch,
-      asset: rate.asset,
-      label: t('TIME_SINCE_LAST_REFRESH_SUCCESS')
+    await submitTransaction({
+      successMessage: t('TIME_SINCE_LAST_REFRESH_SUCCESS'),
+      hideLoading: true,
+      submitFn: () => updateBorrowingCompoundRate(rate.asset)
     });
 
-    const updatedTime = await getTimeSinceOutstandingDebt(rate.asset);
+    const updatedTime = await getBorrowingCompoundRateLastUpdate(rate.asset);
     setTimeSinceOutstandingDebt(updatedTime);
     setDebtRefreshLoading(false);
   };

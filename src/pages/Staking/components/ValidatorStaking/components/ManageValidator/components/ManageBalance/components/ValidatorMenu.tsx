@@ -14,8 +14,8 @@ export const FORM_TYPES = {
 
 function ValidatorMenu () {
   const { t } = useTranslation();
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const [modalForm, setModalForm] = useState<null | string>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [modalForm, setModalForm] = useState('');
 
   const menuItems = [
     {
@@ -40,7 +40,7 @@ function ValidatorMenu () {
   };
 
   const handleFormModalClose = () => {
-    setModalForm(null);
+    setModalForm('');
   };
 
   const formType = menuItems.find((item) => item.id === modalForm) || menuItems[0];

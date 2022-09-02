@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import { FormStep } from 'components/MultiStepForm';
 import Input from 'ui/Input';
@@ -8,14 +7,14 @@ import useForm from 'hooks/useForm';
 
 import { useNewRootProposal } from '../NewRootProposal';
 
-import { constitutionHash } from 'store/voting/proposals/selectors';
+import { useBaseVotingWeightInfo } from 'store/proposals/hooks';
 
 import { address, currentHash, required, url } from 'utils/validators';
 
 function AddNodeStep () {
   const { t } = useTranslation();
   const { goNext, goBack } = useNewRootProposal();
-  const currentHashValue = useSelector(constitutionHash);
+  const { constitutionHash } = useBaseVotingWeightInfo();
 
   const form = useForm({
     initialValues: {
@@ -24,7 +23,7 @@ function AddNodeStep () {
       address: ''
     },
     validators: {
-      hash: [required, currentHash(currentHashValue)],
+      hash: [required, currentHash(constitutionHash)],
       externalLink: [required, url],
       address: [address],
     },

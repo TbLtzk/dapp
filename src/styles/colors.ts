@@ -118,8 +118,8 @@ export const lightColors = {
 
 export function getColorFn<T extends string> (
   theme: DefaultTheme,
-  { lightColors, darkColors }: { lightColors: Record<T, string>,
-    darkColors: Record<T, string> }
+  { lightColors, darkColors }: { lightColors: Record<T, string>;
+    darkColors: Record<T, string>; }
 ) {
   return (key: T) => {
     return theme.palette === 'light'

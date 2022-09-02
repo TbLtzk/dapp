@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { Redirect, Route } from 'react-router';
 
 import PageLayout from 'components/PageLayout';
@@ -16,16 +15,15 @@ import {
   VestingAccountTab
 } from './components/Tabs';
 
-import { userAddressMetamask } from 'store/user-inf/selectors';
+import { useUser } from 'store/user/hooks';
 
 import { RoutePaths } from 'constants/routes';
 
 function TimeLocks () {
   const { t } = useTranslation();
+  const user = useUser();
 
-  const userAddress = useSelector(userAddressMetamask);
-
-  const [currentAddress, setCurrentAddress] = useState(userAddress);
+  const [currentAddress, setCurrentAddress] = useState(user.address);
 
   const tabs = [
     {

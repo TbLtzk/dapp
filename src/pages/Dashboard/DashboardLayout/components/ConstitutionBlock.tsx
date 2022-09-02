@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 
@@ -12,8 +11,7 @@ import Icon from 'ui/Icon';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
-import { getConstitutionHash } from 'store/voting/proposals/actions';
-import { constitutionHash } from 'store/voting/proposals/selectors';
+import { useBaseVotingWeightInfo } from 'store/proposals/hooks';
 
 import { formatDateDMY } from 'utils/date';
 import { trimAddress } from 'utils/strings';
@@ -63,15 +61,14 @@ const StyledWrapper = styled.div`
 
 function ConstitutionBlock () {
   const { t } = useTranslation();
+  const { constitutionHash, getConstitutionHash } = useBaseVotingWeightInfo();
   const { constitutionUrl, constitutionUpdatedAt } = useNetworkConfig();
+
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const dispatch = useDispatch();
-  const constitutionHashValue = useSelector(constitutionHash);
-
   useEffect(() => {
-    dispatch(getConstitutionHash());
-  }, [dispatch]);
+    getConstitutionHash();
+  }, []);
 
   return (
     <StyledWrapper className="block">
@@ -121,8 +118,8 @@ function ConstitutionBlock () {
       </div>
 
       <div className="constutition__hash text-xl font-semibold">
-        <span>{trimAddress(constitutionHashValue)}</span>
-        <CopyToClipboard value={constitutionHashValue} />
+        <span>{trimAddress(constitutionHash)}</span>
+        <CopyToClipboard value={constitutionHash} />
       </div>
 
       <p className="constutition__date text-sm font-light">

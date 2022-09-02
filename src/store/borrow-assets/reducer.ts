@@ -1,18 +1,17 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { VaultData } from 'typings/defi';
 
-import * as types from './types';
-
-interface BorrowItems {
-  borrowVault: VaultData | any;
+interface BorrowAssetsState {
+  borrowVault: VaultData;
   borrowVaultLoading: boolean;
-  borrowVaultError: any | null;
+  borrowVaultError: unknown;
 
   allowanceRepay: number | string;
   allowanceDeposit: number | string;
-  allowanceError: any | null;
+  allowanceError: unknown;
 }
 
-const initialState = {
+const initialState: BorrowAssetsState = {
   borrowVault: {} as VaultData,
   borrowVaultLoading: true,
   borrowVaultError: null,
@@ -20,44 +19,43 @@ const initialState = {
   allowanceRepay: 0,
   allowanceDeposit: 0,
   allowanceError: null,
-} as BorrowItems;
+};
 
-export default function reducer (state = initialState, action: types.BorrowActions) {
-  switch (action.type) {
-    case 'GET_BORROW_VAULT_SUCCESS':
-      return {
-        ...state,
-        borrowVault: action.borrowVault,
-        borrowVaultError: null,
-        borrowVaultLoading: false,
-      };
-    case 'GET_BORROW_VAULT_ERROR':
-      return {
-        ...state,
-        borrowVault: null,
-        borrowVaultError: action.error,
-        borrowVaultLoading: false,
-      };
+const borrowAssetsSlice = createSlice({
+  name: 'borrow-assets',
+  initialState,
+  reducers: {
+    setBorrowVault (state, { payload }: PayloadAction<VaultData>) {
+      state.borrowVault = payload;
+      state.borrowVaultError = null;
+      state.borrowVaultLoading = false;
+    },
 
-    case 'GET_BORROW_ALLOWANCE_REPAY_SUCCESS': {
-      return {
-        ...state,
-        allowanceRepay: action.allowance,
-      };
+    setBorrowVaultError (state, { payload }: PayloadAction<unknown>) {
+      state.borrowVault = {} as VaultData;
+      state.borrowVaultError = payload;
+      state.borrowVaultLoading = false;
+    },
+
+    setBorrowAllowanceRepay (state, { payload }: PayloadAction<number | string>) {
+      state.allowanceRepay = payload;
+    },
+
+    setBorrowAllowanceDeposit (state, { payload }: PayloadAction<number | string>) {
+      state.allowanceDeposit = payload;
+    },
+
+    setBorrowAllowanceError (state, { payload }: PayloadAction<unknown>) {
+      state.allowanceError = payload;
     }
-    case 'GET_BORROW_ALLOWANCE_DEPOSIT_SUCCESS': {
-      return {
-        ...state,
-        allowanceDeposit: action.allowance,
-      };
-    }
-    case 'GET_BORROW_ALLOWANCE_ERROR':
-      return {
-        ...state,
-        allowanceError: action.error,
-      };
-
-    default:
-      return state;
   }
-}
+});
+
+export const {
+  setBorrowVault,
+  setBorrowVaultError,
+  setBorrowAllowanceRepay,
+  setBorrowAllowanceDeposit,
+  setBorrowAllowanceError,
+} = borrowAssetsSlice.actions;
+export default borrowAssetsSlice.reducer;

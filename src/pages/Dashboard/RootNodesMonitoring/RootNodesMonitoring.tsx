@@ -1,7 +1,6 @@
 
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 
@@ -11,13 +10,8 @@ import Table, { TableColumn } from 'ui/Table';
 
 import DashboardLink from '../components/DashboardLink';
 
-import { getRootMembers } from 'store/root-node/action-creators';
-import {
-  loadingRootMembersMonitoringSelector,
-  rootMembersMonitoringSelector,
-} from 'store/root-node/selectors';
+import { useRootNodes } from 'store/root-nodes/hooks';
 
-import { TABLE_TYPES } from 'constants/tableTypes';
 import { formatAsset } from 'utils/numbers';
 
 const StyledWrapper = styled.div`
@@ -28,14 +22,11 @@ const StyledWrapper = styled.div`
 
 function RootNodesMonitoring () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-
-  const table = useSelector(rootMembersMonitoringSelector);
-  const tableLoading = useSelector(loadingRootMembersMonitoringSelector);
+  const { rootMembers, rootMembersLoading, getRootMembers } = useRootNodes();
 
   useEffect(() => {
-    dispatch(getRootMembers(TABLE_TYPES.rootNodesMonitoring));
-  }, [dispatch]);
+    getRootMembers();
+  }, []);
 
   const columns: TableColumn[] = [
     {
@@ -69,9 +60,9 @@ function RootNodesMonitoring () {
         <Table
           perPage={20}
           columns={columns}
-          loading={tableLoading}
+          loading={rootMembersLoading}
           emptyTableMessage={t('ROOT_NODES_LIST_EMPTY')}
-          table={table.map((rootNode: any, i: number) => ({
+          table={rootMembers.map((rootNode, i) => ({
             id: i,
             address: <ExplorerAddress
               short

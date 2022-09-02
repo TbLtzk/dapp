@@ -3,10 +3,10 @@ import { HTMLAttributes } from 'react';
 import { ProgressContainer } from './styles';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  value: number
-  max: number
-  trackColor?: string
-  valueColor?: string
+  value: number;
+  max: number;
+  trackColor?: string;
+  valueColor?: string;
 }
 
 function Progress ({

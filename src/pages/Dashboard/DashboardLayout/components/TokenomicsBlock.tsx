@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -13,10 +12,8 @@ import Icon from 'ui/Icon';
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInfinityNumber from 'hooks/useInfinityNumber';
 
-import { getSystemReserveBalance } from 'store/system-balance/action-creators';
-import { systemReserveBalanceSelector } from 'store/system-balance/selectors';
-import { getDefaultAllocationProxy } from 'store/tokenomics/action-creators';
-import { defaultAllocationProxySelector } from 'store/tokenomics/selectors';
+import { useSystemBalance } from 'store/system-balance/hooks';
+import { useTokenomics } from 'store/tokenomics/hooks';
 
 import { RoutePaths } from 'constants/routes';
 
@@ -39,7 +36,7 @@ const StyledWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
 
-    ${media.lessThan('tablet')} {
+    ${media.lessThan('large')} {
       grid-template-columns: 1fr;
       gap: 16px;
     }
@@ -50,7 +47,7 @@ const StyledWrapper = styled.div`
     display: grid;
     gap: 4px;
 
-    ${media.lessThan('tablet')} {
+    ${media.lessThan('large')} {
       padding: 0;
       gap: 0;
     }
@@ -58,7 +55,7 @@ const StyledWrapper = styled.div`
     &:not(:first-child) {
       border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
 
-      ${media.lessThan('tablet')} {
+      ${media.lessThan('large')} {
         border-left: none;
       }
     }
@@ -67,17 +64,15 @@ const StyledWrapper = styled.div`
 
 function TokenomicsBlock () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { defaultAllocationProxy, getDefaultAllocationProxy } = useTokenomics();
+  const { systemReserveBalance, getSystemReserveBalance } = useSystemBalance();
 
-  const reserveBalance = useSelector(systemReserveBalanceSelector);
-  const reserveBalanceRef = useInfinityNumber(reserveBalance, ' Q');
-
-  const allocationProxy = useSelector(defaultAllocationProxySelector);
-  const allocationProxyRef = useAnimateNumber(allocationProxy, ' Q');
+  const reserveBalanceRef = useInfinityNumber(systemReserveBalance, ' Q');
+  const allocationProxyRef = useAnimateNumber(defaultAllocationProxy, ' Q');
 
   useEffect(() => {
-    dispatch(getDefaultAllocationProxy(false));
-    dispatch(getSystemReserveBalance());
+    getDefaultAllocationProxy();
+    getSystemReserveBalance();
   }, []);
 
   return (

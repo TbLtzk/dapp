@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { Redirect, Route, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 
@@ -12,49 +11,44 @@ import { TabRoute, TabSwitch } from 'ui/Tabs/components';
 import Proposals from './components/Proposals';
 import VotingStats from './components/VotingStats';
 
-import { activeProposalsByTypeSelector } from 'store/voting/proposals/selectors';
+import { useProposals } from 'store/proposals/hooks';
 
 import { RoutePaths } from 'constants/routes';
 
 function Governance () {
   const { pathname } = useLocation();
   const { t } = useTranslation();
-
-  const qActiveProposals = useSelector(activeProposalsByTypeSelector('q'));
-  const rootActiveProposals = useSelector(activeProposalsByTypeSelector('rootNode'));
-  const expertActiveProposals = useSelector(activeProposalsByTypeSelector('expert'));
-  const slashingActiveProposals = useSelector(activeProposalsByTypeSelector('slashing'));
-  const contractActiveProposals = useSelector(activeProposalsByTypeSelector('contractUpdate'));
+  const { getActiveProposalsByType } = useProposals();
 
   const tabs = [
     {
       id: 'q-proposals',
       label: t('Q_PROPOSALS'),
-      count: qActiveProposals.length,
+      count: getActiveProposalsByType('q').length,
       link: RoutePaths.qProposals,
     },
     {
       id: 'root-node-panel',
       label: t('ROOT_NODE_PANEL'),
-      count: rootActiveProposals.length,
+      count: getActiveProposalsByType('rootNode').length,
       link: RoutePaths.rootNodePanel,
     },
     {
       id: 'expert-roposals',
       label: t('EXPERT_PROPOSALS'),
-      count: expertActiveProposals.length,
+      count: getActiveProposalsByType('expert').length,
       link: RoutePaths.expertProposals,
     },
     {
       id: 'slashing-proposals',
       label: t('SLASHING_PROPOSALS'),
-      count: slashingActiveProposals.length,
+      count: getActiveProposalsByType('slashing').length,
       link: RoutePaths.slashingProposals,
     },
     {
       id: 'contract-updates',
       label: t('CONTRACT_UPDATES'),
-      count: contractActiveProposals.length,
+      count: getActiveProposalsByType('contractUpdate').length,
       link: RoutePaths.contractUpdates,
     },
   ];

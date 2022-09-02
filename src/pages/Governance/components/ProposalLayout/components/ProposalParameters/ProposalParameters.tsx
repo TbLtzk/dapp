@@ -5,7 +5,7 @@ import { Proposal } from 'typings/proposals';
 import ParameterViewer from 'components/ParameterViewer';
 
 interface Props {
-  proposal: Proposal
+  proposal: Proposal;
 }
 
 function ProposalParameters ({ proposal }: Props) {
@@ -17,7 +17,7 @@ function ProposalParameters ({ proposal }: Props) {
 
       <div className="block__content">
         <div className="details-list">
-          {(proposal.parameters as any[]).map((parameter, i) => (
+          {proposal.parameters.map((parameter, i) => (
             <ParameterViewer
               key={i}
               block

@@ -1,5 +1,4 @@
 import { ChangeEvent, HTMLInputTypeAttribute, InputHTMLAttributes, ReactNode } from 'react';
-import { useSelector } from 'react-redux';
 
 import { isNil, uniqueId } from 'lodash';
 
@@ -7,22 +6,22 @@ import Button from 'ui/Button';
 
 import { InputWrapper } from './styles';
 
-import { loadTypeSelector } from 'store/user-inf/selectors';
+import { useUser } from 'store/user/hooks';
 
 import { LOAD_TYPES } from 'constants/statuses';
 
-type InputProps = InputHTMLAttributes<HTMLInputElement>
+type InputProps = InputHTMLAttributes<HTMLInputElement>;
 interface Props extends Omit<InputProps, 'onChange' | 'prefix' | 'value'> {
-  value: string | number | boolean
-  label?: string
-  error?: string
-  hint?: string
-  disabled?: boolean
-  type?: HTMLInputTypeAttribute
-  max?: string
-  prefix?: ReactNode
-  children?: ReactNode
-  onChange: (val: string) => void
+  value: string | number | boolean;
+  label?: string;
+  error?: string;
+  hint?: string;
+  disabled?: boolean;
+  type?: HTMLInputTypeAttribute;
+  max?: string;
+  prefix?: ReactNode;
+  children?: ReactNode;
+  onChange: (val: string) => void;
 }
 
 function Input ({
@@ -38,7 +37,7 @@ function Input ({
   onChange = () => {},
   ...rest
 }: Props) {
-  const loadType = useSelector(loadTypeSelector);
+  const { loadType } = useUser();
   const isDisabled = disabled || loadType !== LOAD_TYPES.loaded;
   const inputId = `input-${uniqueId()}`;
 

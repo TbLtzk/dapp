@@ -5,7 +5,7 @@ import { getToastColor } from './colors';
 import { ToastType } from './Toast';
 
 export const ToastContainer = styled.div<{
-  $type: ToastType
+  $type: ToastType;
 }>`
   background-color: ${({ theme }) => theme.colors.block};
   box-shadow:

@@ -1,6 +1,5 @@
 import { createContext, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { Classification } from '@q-dev/q-js-sdk';
@@ -8,7 +7,6 @@ import { QProposalForm } from 'typings/forms';
 
 import MultiStepForm from 'components/MultiStepForm';
 
-import useMetamaskReset from 'hooks/useMetamaskReset';
 import useMultiStepForm from 'hooks/useMultiStepForm';
 
 import ConfirmationStep from './components/ConfirmationStep';
@@ -17,9 +15,9 @@ import LinkStep from './components/LinkStep';
 import ParamsStep from './components/ParamsStep';
 import TypeStep from './components/TypeStep';
 
-import { createProposal } from 'store/voting/proposals/actions';
+import { useProposals } from 'store/proposals/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
-import formTypes from 'constants/form-types';
 import { RoutePaths } from 'constants/routes';
 
 const DEFAULT_VALUES: QProposalForm = {
@@ -37,18 +35,19 @@ const NewQProposalContext = createContext(
 
 function NewQProposal () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { submitTransaction } = useTransaction();
+  const { createNewProposal } = useProposals();
   const history = useHistory();
 
   const form = useMultiStepForm({
     initialValues: DEFAULT_VALUES,
-    onConfirm: (values) => {
-      dispatch(createProposal(values, t('CREATE_PROPOSAL_SUCCESS')));
+    onConfirm: (form) => {
+      submitTransaction({
+        successMessage: t('CREATE_PROPOSAL_SUCCESS'),
+        submitFn: () => createNewProposal(form),
+        onSuccess: () => history.push(RoutePaths.qProposals)
+      });
     },
-  });
-
-  useMetamaskReset(formTypes.qProposal, () => {
-    history.push(RoutePaths.qProposals);
   });
 
   const isConstitutionType = form.values.type === 'constitution';

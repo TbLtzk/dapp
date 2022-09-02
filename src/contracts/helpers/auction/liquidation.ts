@@ -1,5 +1,6 @@
 import { AuctionStatus, LiquidationAuctionInfo as SdkLiquidationAuctionInfo } from '@q-dev/q-js-sdk';
 import {
+  AuctionInfos,
   CreateLiquidationAuction,
   LiquidationAuctionBid,
   LiquidationAuctionEvent,
@@ -85,13 +86,13 @@ const getLiquidationAuctionData = async (auction: LiquidationAuctionInfo) => {
   };
 };
 
-export async function getLiquidation (auctions: LiquidationAuctionInfo[], lastBlock: number | string) {
+export async function getLiquidation (auctions: AuctionInfos[], lastBlock: number | string) {
   const instance = await getLiquidationAuctionInstance();
   const auctionsEvents = await getAuctionsEvents(instance, 'liquidation', lastBlock);
-  const allAcutions = await Promise.all(
+  const allAuctions = await Promise.all(
     [...auctions, ...auctionsEvents].map((auction) => getLiquidationAuctionData(auction as LiquidationAuctionInfo))
   );
-  return allAcutions;
+  return allAuctions;
 }
 
 export async function createLiquidationAuction (form: CreateLiquidationAuction, userAddress: string) {

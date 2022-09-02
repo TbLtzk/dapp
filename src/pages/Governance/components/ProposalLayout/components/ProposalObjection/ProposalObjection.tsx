@@ -1,39 +1,32 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import { SlashingProposal } from 'typings/proposals';
 
 import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 
-import useMetamaskReset from 'hooks/useMetamaskReset';
-
 import ObjectionDetails from './components/ObjectionDetails';
 import ProposerRemarkForm from './components/ProposerRemarkForm';
 
-import { userAddressMetamask } from 'store/user-inf/selectors';
-
-import formTypes from 'constants/form-types';
+import { useUser } from 'store/user/hooks';
 
 function ProposalObjection ({ proposal }: { proposal: SlashingProposal }) {
   const { t } = useTranslation();
 
-  const userAddress = useSelector(userAddressMetamask);
+  const user = useUser();
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleClose = () => {
     setModalOpen(false);
   };
 
-  useMetamaskReset(formTypes.proposerRemark, handleClose);
-
   return (
     <div className="block">
       <div className="block__header">
         <h2 className="text-h2">{t('OBJECTION')}</h2>
 
-        {proposal.proposer === userAddress && (
+        {proposal.proposer === user.address && (
           <Button
             compact
             look="secondary"
@@ -54,7 +47,7 @@ function ProposalObjection ({ proposal }: { proposal: SlashingProposal }) {
         tip={t('CONFIRM_APPEAL_TIP')}
         onClose={handleClose}
       >
-        <ProposerRemarkForm proposal={proposal} />
+        <ProposerRemarkForm proposal={proposal} onSubmit={handleClose} />
       </Modal>
     </div>
   );

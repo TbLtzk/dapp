@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { snakeCase } from 'lodash';
 import { AuctionBid, AuctionCompletedInfos, LiquidationAuctionBid } from 'typings/auctions';
@@ -11,20 +10,16 @@ import Modal from 'ui/Modal';
 import Tip from 'ui/Tip';
 
 import useForm from 'hooks/useForm';
-import useMetamaskReset from 'hooks/useMetamaskReset';
 import useMultiStepForm from 'hooks/useMultiStepForm';
 
-import { bidForAuction } from 'store/auctions/actions';
-import { setTransactionLoading, setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/actions';
-import { userAddressMetamask } from 'store/user-inf/selectors';
+import { useAuctions } from 'store/auctions/hooks';
+import { useTransaction } from 'store/transaction/hooks';
+import { useUser } from 'store/user/hooks';
 
 import { getStableCoinInstance } from 'contracts/contract-instance';
 import { getAuctionInstance } from 'contracts/helpers/auction';
 
 import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
-import formTypes from 'constants/form-types';
-import { TRANSACTION_TYPES } from 'constants/statuses';
-import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 import { toBigNumber } from 'utils/numbers';
 import { max, min, required } from 'utils/validators';
 
@@ -35,29 +30,36 @@ const DEFAULT_VALUES = {
 interface Props {
   auction: AuctionCompletedInfos;
   modalOpen: boolean;
-  onHide: () => void
+  onSubmit: () => void;
+  onHide: () => void;
 }
 
 const LocalStateContext = createContext(
   {} as ReturnType<typeof useMultiStepForm<typeof DEFAULT_VALUES>>
 );
 
-function BidModal ({ modalOpen, auction, onHide, }:Props) {
-  const dispatch = useDispatch();
+function BidModal ({ modalOpen, auction, onHide, onSubmit }:Props) {
   const { t } = useTranslation();
-
-  const userAddress = useSelector(userAddressMetamask);
+  const { submitTransaction } = useTransaction();
+  const { bidForAuction } = useAuctions();
+  const user = useUser();
 
   const form = useForm({
     initialValues: DEFAULT_VALUES,
     validators: { bid: [required, min(auction.raisingBid), max('1000000000000000')] },
     onSubmit: (values) => {
-      dispatch(bidForAuction(auction.auctionType, {
-        ...values,
-        vaultOwner: (auction as LiquidationAuctionBid).vaultOwner,
-        auctionId: (auction as AuctionBid).auctionId,
-        vaultId: (auction as LiquidationAuctionBid).vaultId
-      }, t('BID_FOR_AUCTION_SUCCESS')));
+      submitTransaction({
+        successMessage: t('BID_FOR_AUCTION_SUCCESS'),
+        submitFn: () => bidForAuction({
+          auctionType: auction.auctionType,
+          form: {
+            ...values,
+            vaultOwner: (auction as LiquidationAuctionBid).vaultOwner,
+            auctionId: (auction as AuctionBid).auctionId,
+            vaultId: (auction as LiquidationAuctionBid).vaultId
+          }
+        })
+      });
     },
   });
 
@@ -65,8 +67,6 @@ function BidModal ({ modalOpen, auction, onHide, }:Props) {
     form.reset();
     onHide();
   };
-
-  useMetamaskReset(formTypes.bidForAuction, handleHide);
 
   const [allowance, setAllowance] = useState<string | number>(0);
   const [isApproved, setIsApproved] = useState(true);
@@ -76,7 +76,7 @@ function BidModal ({ modalOpen, auction, onHide, }:Props) {
       const stableCoin = await getStableCoinInstance();
       const { address } = await getAuctionInstance(auction.auctionType);
 
-      const allowance = await stableCoin.allowance(userAddress, address);
+      const allowance = await stableCoin.allowance(user.address, address);
       setAllowance(allowance);
     }
 
@@ -92,16 +92,16 @@ function BidModal ({ modalOpen, auction, onHide, }:Props) {
     const contract = await getStableCoinInstance();
     const { address } = await getAuctionInstance(auction.auctionType);
 
-    try {
-      dispatch(setTransactionLoading());
-      const transaction = await contract.approve(address, MAX_APPROVE_AMOUNT, { from: userAddress });
-      setIsApproved(true);
-      dispatch(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, t('APPROVE_SUCCESS'))));
-    } catch (error) {
-      setIsApproved(false);
-      captureError(error);
-      dispatch(setTransactionLoadingError(getErrorMessage(error)));
-    }
+    await submitTransaction({
+      successMessage: t('APPROVE_SUCCESS'),
+      submitFn: () => contract.approve(address, MAX_APPROVE_AMOUNT, { from: user.address }),
+      onSuccess: () => {
+        setIsApproved(true);
+        handleHide();
+        onSubmit();
+      },
+      onError: () => setIsApproved(false)
+    });
   }
 
   const modalTitle = `${t('BID_FOR')} ${t(snakeCase(auction.auctionType).toUpperCase())}`;
@@ -139,7 +139,6 @@ function BidModal ({ modalOpen, auction, onHide, }:Props) {
         >
           {t('CONFIRM')}
         </Button>
-
       </form>
     </Modal>
   );

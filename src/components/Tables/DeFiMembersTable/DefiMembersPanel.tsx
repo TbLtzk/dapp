@@ -1,26 +1,24 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 import Table from 'ui/Table';
 
-import { getEPDRMembers } from 'store/membership/action-creators';
-import { EPDRMembersErrorSelector, EPDRMembersLoadingSelector, EPDRMembersSelector } from 'store/membership/selectors';
+import { useExperts } from 'store/experts/hooks';
 
 function DeFiMembersTable () {
   const { t } = useTranslation();
-
-  const dispatch = useDispatch();
-
-  const defiMembersTable = useSelector(EPDRMembersSelector);
-  const defiMembersTableLoading = useSelector(EPDRMembersLoadingSelector);
-  const defiMembersTableError = useSelector(EPDRMembersErrorSelector);
+  const {
+    epdrMembers,
+    epdrMembersLoading,
+    epdrMembersError,
+    getEpdrMembers
+  } = useExperts();
 
   useEffect(() => {
-    dispatch(getEPDRMembers());
-  }, [dispatch]);
+    getEpdrMembers();
+  }, []);
 
   return (
     <div className="block">
@@ -35,8 +33,8 @@ function DeFiMembersTable () {
         <Table
           tiny
           emptyTableMessage={t('NO_DEFI_MEMBERS')}
-          loading={defiMembersTableLoading}
-          error={defiMembersTableError}
+          loading={epdrMembersLoading}
+          error={epdrMembersError}
           perPage={10}
           columns={[
             {
@@ -44,7 +42,7 @@ function DeFiMembersTable () {
               text: t('MEMBER_ADDRESS'),
             },
           ]}
-          table={defiMembersTable.map((member: string, idx: number) => ({
+          table={epdrMembers.map((member, idx) => ({
             id: idx,
             member: (
               <ExplorerAddress

@@ -9,11 +9,11 @@ export type TabsType = {
   id: string;
   label: string;
   link: string;
-  count?: number
+  count?: number;
 };
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  tabs: TabsType[]
+  tabs: TabsType[];
 }
 
 function Tabs ({ tabs, ...rest }: Props) {

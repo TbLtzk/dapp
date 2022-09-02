@@ -1,9 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { isEmpty } from 'lodash';
-import { Asset, VaultData, VaultWithFee } from 'typings/defi';
+import { Asset, VaultWithFee } from 'typings/defi';
 
 import { SpinnerWrapper } from 'pages/SavingAndBorrowing/styles';
 import Button from 'ui/Button';
@@ -17,8 +16,7 @@ import RepayForm from './components/RepayForm';
 import WithdrawForm from './components/WithdrawForm';
 import { BorrowManageWrapper } from './styles';
 
-import { getBorrowAllowance, getBorrowVault, getBorrowVaultSuccess } from 'store/borrow-assets/actions';
-import { borrowVaultErrorSelector, borrowVaultSelector } from 'store/borrow-assets/selectors';
+import { useBorrowAssets } from 'store/borrow-assets/hooks';
 
 interface Props {
   vault: VaultWithFee;
@@ -26,10 +24,13 @@ interface Props {
 
 function BorrowManageAsset ({ vault }: Props) {
   const { t } = useTranslation();
+  const {
+    borrowVault,
+    borrowVaultError,
+    getBorrowingVault,
+    getBorrowingAllowance,
 
-  const dispatch = useDispatch();
-  const borrowVault = useSelector(borrowVaultSelector);
-  const borrowVaultError = useSelector(borrowVaultErrorSelector);
+  } = useBorrowAssets();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -39,10 +40,15 @@ function BorrowManageAsset ({ vault }: Props) {
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
-    dispatch(getBorrowVaultSuccess({} as VaultData));
-    dispatch(getBorrowAllowance('repay', vault.colKey as Asset));
-    dispatch(getBorrowAllowance('deposit', vault.colKey as Asset));
-    dispatch(getBorrowVault(vault.vaultNum));
+    getBorrowingAllowance({
+      borrowType: 'repay',
+      asset: vault.colKey as Asset
+    });
+    getBorrowingAllowance({
+      borrowType: 'deposit',
+      asset: vault.colKey as Asset,
+    });
+    getBorrowingVault(vault.vaultNum);
   };
 
   const vaultModal = useMemo(() => {

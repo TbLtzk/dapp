@@ -1,6 +1,5 @@
 
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { Proposal } from 'typings/proposals';
 import { fromWei } from 'web3-utils';
@@ -12,36 +11,39 @@ import useForm from 'hooks/useForm';
 
 import { StyledVoteForm } from './styles';
 
-import { voteForProposal } from 'store/voting/proposals/actions';
-import { baseVotingWeightInfoSelector } from 'store/voting/proposals/selectors';
+import { useBaseVotingWeightInfo, useProposals } from 'store/proposals/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
 import { formatAsset } from 'utils/numbers';
 import { required } from 'utils/validators';
 
 interface Props {
-  proposal: Proposal
+  proposal: Proposal;
   isMemberVoting?: boolean;
+  onSubmit: () => void;
 }
 
-function VoteForm ({ proposal, isMemberVoting }: Props) {
+function VoteForm ({ proposal, isMemberVoting, onSubmit }: Props) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { submitTransaction } = useTransaction();
+  const { voteForProposal } = useProposals();
+  const { baseVotingWeightInfo } = useBaseVotingWeightInfo();
 
-  const { ownWeight } = useSelector(baseVotingWeightInfoSelector);
-
-  const weight = formatAsset(fromWei(ownWeight || '0'), 'Q');
+  const weight = formatAsset(fromWei(baseVotingWeightInfo.ownWeight), 'Q');
 
   const form = useForm({
     initialValues: { vote: '' },
     validators: { vote: [required] },
     onSubmit: (form) => {
-      dispatch(
-        voteForProposal({
+      submitTransaction({
+        successMessage: t('VOTE_SUCCESS'),
+        onSuccess: () => onSubmit(),
+        submitFn: () => voteForProposal({
           type: 'basic',
           isVotedFor: form.vote === 'yes',
-          proposal
-        }, t('VOTE_SUCCESS'))
-      );
+          proposal,
+        })
+      });
     }
   });
 

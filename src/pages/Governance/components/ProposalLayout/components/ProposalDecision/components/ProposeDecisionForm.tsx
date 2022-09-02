@@ -1,25 +1,27 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 
 import { SlashingProposal } from 'typings/proposals';
 
+import { useSlashingActions } from 'pages/Governance/hooks/useSlashingActions';
 import Button from 'ui/Button';
 import Check from 'ui/Check';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 
-import { onEscrowProposeDecision } from 'store/voting/slashing/actions';
+import { useTransaction } from 'store/transaction/hooks';
 
 import { percent, required, url } from 'utils/validators';
 
 interface Props {
-  proposal: SlashingProposal
+  proposal: SlashingProposal;
+  onSubmit: () => void;
 }
 
-function ProposeDecisionForm ({ proposal }: Props) {
+function ProposeDecisionForm ({ proposal, onSubmit }: Props) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { submitTransaction } = useTransaction();
+  const { proposeDecision } = useSlashingActions(proposal.contract === 'rootNodesSlashingVoting');
 
   const form = useForm({
     initialValues: {
@@ -33,7 +35,16 @@ function ProposeDecisionForm ({ proposal }: Props) {
       isAppealNeglected: [],
     },
     onSubmit: (form) => {
-      dispatch(onEscrowProposeDecision(form, proposal.contract, proposal.id, t('PROPOSE_DECISION_SUCCESS')));
+      submitTransaction({
+        successMessage: t('PROPOSE_DECISION_SUCCESS'),
+        onSuccess: () => onSubmit(),
+        submitFn: () => proposeDecision({
+          externalLink: form.externalLink as string,
+          percentage: form.percentage as string,
+          isAppealNeglected: form.isAppealNeglected as boolean,
+          proposalId: proposal.id,
+        })
+      });
     },
   });
 

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const DropdownContainer = styled.div<{
-  $fullWidth: boolean
-  $right: boolean
+  $fullWidth: boolean;
+  $right: boolean;
 }>`
   position: relative;
   width: ${({ $fullWidth }) => $fullWidth ? '100%' : 'max-content'};

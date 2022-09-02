@@ -9,7 +9,7 @@ import LinkViewer from '../../LinkViewer';
 import { formatAsset } from 'utils/numbers';
 
 interface Props {
-  proposal: Proposal
+  proposal: Proposal;
 }
 
 function SlashingDetails ({ proposal }: Props) {

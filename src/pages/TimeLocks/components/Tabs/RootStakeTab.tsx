@@ -1,16 +1,12 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
 
-import BalanceCard from '../TimeLocksTable';
+import TimeLocksTable from '../TimeLocksTable';
 
-import { getMinimumRootTimeLock, getRootNodeStakes, getRootTimeLocks } from 'store/root-node/action-creators';
-import { rootMinimumTimeLock, rootNodeStake, rootTimeLocks } from 'store/root-node/selectors';
-
-import { CONTRACT_TYPES } from 'constants/contracts';
+import { useRootNodes } from 'store/root-nodes/hooks';
 
 interface Props {
   currentAddress: string;
@@ -18,30 +14,36 @@ interface Props {
 
 function RootStakeTab ({ currentAddress }: Props) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const {
+    rootNodeStake,
+    rootMinimumTimeLock,
+    rootTimeLocks,
+    getMinimumRootTimeLock,
+    getRootNodeStakes,
+    getRootTimeLocks
+  } = useRootNodes();
 
-  const rootStakeBalanceRef = useAnimateNumber(useSelector(rootNodeStake));
-  const rootTimeLockMinimumBalanceRef = useAnimateNumber(useSelector(rootMinimumTimeLock));
-  const rootTimeLocksArray = useSelector(rootTimeLocks);
+  const rootStakeBalanceRef = useAnimateNumber(rootNodeStake);
+  const rootTimeLockMinimumBalanceRef = useAnimateNumber(rootMinimumTimeLock);
 
   useInterval(() => {
-    dispatch(getMinimumRootTimeLock(currentAddress));
+    getMinimumRootTimeLock(currentAddress);
   }, 5000);
 
   useEffect(() => {
-    dispatch(getRootNodeStakes(currentAddress));
-    dispatch(getMinimumRootTimeLock(currentAddress));
-    dispatch(getRootTimeLocks(currentAddress));
-  }, [dispatch, currentAddress]);
+    getRootNodeStakes(currentAddress);
+    getMinimumRootTimeLock(currentAddress);
+    getRootTimeLocks(currentAddress);
+  }, [currentAddress]);
 
   return (
-    <BalanceCard
+    <TimeLocksTable
       address={currentAddress}
       title={t('ROOT_STAKE_BALANCE')}
-      contract={CONTRACT_TYPES.root}
+      contract="rootNodes"
       balanceRef={rootStakeBalanceRef}
       timeLockBalanceRef={rootTimeLockMinimumBalanceRef}
-      lockAmountData={rootTimeLocksArray || []}
+      lockAmountData={rootTimeLocks}
     />
   );
 }

@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
@@ -8,17 +7,8 @@ import { media } from 'styles/media';
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
 
-import {
-  getAccountBalance,
-  getMinimumQVaultTimeLock,
-  getUserBalance,
-} from 'store/q-vault/action-creators';
-import {
-  accountBalance,
-  qVaultMinimumTimeLock,
-  userBalance,
-} from 'store/q-vault/selectors';
-import { userAddressMetamask } from 'store/user-inf/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useUser } from 'store/user/hooks';
 
 const StyledWrapper = styled.div`
   display: grid;
@@ -41,27 +31,29 @@ const StyledWrapper = styled.div`
 `;
 
 function BalanceOverview () {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
+  const {
+    vaultBalance,
+    walletBalance,
+    qVaultMinimumTimeLock,
+    loadWalletBalance,
+    loadVaultBalance,
+    loadMinimumQVaultTimeLock
+  } = useQVault();
+  const user = useUser();
 
-  const userAddress = useSelector(userAddressMetamask);
-  const userQVBalance = useSelector(userBalance);
-  const userQVBalanceRef = useAnimateNumber(userQVBalance);
-
-  const qVaultLockedAmount = Number(useSelector(qVaultMinimumTimeLock));
-  const qVaultLockedAmountRef = useAnimateNumber(qVaultLockedAmount);
-
-  const userAccountBalance = useSelector(accountBalance);
-  const userAccountBalanceRef = useAnimateNumber(userAccountBalance);
+  const userQVBalanceRef = useAnimateNumber(vaultBalance);
+  const userAccountBalanceRef = useAnimateNumber(walletBalance);
+  const qVaultLockedAmountRef = useAnimateNumber(qVaultMinimumTimeLock);
 
   useEffect(() => {
-    dispatch(getAccountBalance(userAddress));
-    dispatch(getUserBalance(userAddress));
-    dispatch(getMinimumQVaultTimeLock(userAddress));
-  }, [dispatch]);
+    loadWalletBalance();
+    loadVaultBalance();
+    loadMinimumQVaultTimeLock(user.address);
+  }, []);
 
   useInterval(() => {
-    dispatch(getMinimumQVaultTimeLock(userAddress));
+    loadMinimumQVaultTimeLock(user.address);
   }, 5000);
 
   return (

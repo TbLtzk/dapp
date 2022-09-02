@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
@@ -9,17 +8,9 @@ import ValidatorCharts from '../../../ValidatorCharts';
 import StakingInfo from './components/StakingInfo';
 import ValidatorInfo from './components/ValidatorInfo';
 
-import { loadTypeSelector } from 'store/user-inf/selectors';
-import { getVRPDelegatorsShare } from 'store/validation-reward-pools/action-creators';
-import { delegatorsShareSelector, validatorShareSelector } from 'store/validation-reward-pools/selectors';
-import {
-  getValidatorAccountableSelfStake,
-  getValidatorAccountableTotalStake,
-  getValidatorDelegatedStake,
-  getValidatorTotalStake,
-  getValidatorWithdrawalInfo,
-} from 'store/validators/action-creators';
-import { validatorAccountableSelfStakeSelector, validatorDelegatedStakeSelector } from 'store/validators/selectors';
+import { useUser } from 'store/user/hooks';
+import { useValidationRewards } from 'store/validation-rewards/hooks';
+import { useValidators } from 'store/validators/hooks';
 
 import { LOAD_TYPES } from 'constants/statuses';
 
@@ -53,27 +44,32 @@ const StyledWrapper = styled.div`
 `;
 
 function ManageBalance () {
-  const dispatch = useDispatch();
-  const loadType = useSelector(loadTypeSelector);
+  const { loadType } = useUser();
+  const { delegatorsShare, getVRPDelegatorsShare } = useValidationRewards();
 
-  const delegatorShare = useSelector(delegatorsShareSelector);
-  const validatorShare = useSelector(validatorShareSelector);
-  const selfStake = useSelector(validatorAccountableSelfStakeSelector);
-  const delegatedStake = useSelector(validatorDelegatedStakeSelector);
+  const {
+    validatorAccountableSelfStake: selfStake,
+    validatorDelegatedStake: delegatedStake,
+    loadValidatorWithdrawalInfo,
+    loadValidatorTotalStake,
+    loadValidatorDelegatedStake,
+    loadValidatorAccountableTotalStake,
+    loadValidatorAccountableSelfStake,
+  } = useValidators();
 
   const chartsData =
   loadType !== LOAD_TYPES.loaded
-    ? { validatorShare: '0', delegatorShare: '0', selfStake: '0', delegatedStake: '0' }
-    : { validatorShare, delegatorShare, selfStake, delegatedStake };
+    ? { validatorShare: '0', delegatorsShare: '0', selfStake: '0', delegatedStake: '0' }
+    : { validatorShare: 100 - delegatorsShare, delegatorsShare, selfStake, delegatedStake };
 
   useEffect(() => {
-    dispatch(getVRPDelegatorsShare());
-    dispatch(getValidatorWithdrawalInfo());
-    dispatch(getValidatorTotalStake());
-    dispatch(getValidatorDelegatedStake());
-    dispatch(getValidatorAccountableTotalStake());
-    dispatch(getValidatorAccountableSelfStake());
-  }, [dispatch]);
+    getVRPDelegatorsShare();
+    loadValidatorWithdrawalInfo();
+    loadValidatorTotalStake();
+    loadValidatorDelegatedStake();
+    loadValidatorAccountableTotalStake();
+    loadValidatorAccountableSelfStake();
+  }, []);
 
   return (
     <StyledWrapper>

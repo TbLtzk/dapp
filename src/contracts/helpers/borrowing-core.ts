@@ -1,20 +1,15 @@
 import { Vault } from '@q-dev/q-js-sdk';
 import { Asset, BorrowAssetsRateAndFee, VaultWithFee } from 'typings/defi';
 
-import { setTransactionLoadingError, setTransactionLoadingSuccess } from 'store/transaction-handler/actions';
-
 import {
-  getBorrowingCoreInstance,
   getBorrowingInstance,
   getCompoundRateBorrowingInstance,
   getCompoundRateKeeperSavingInstance,
   getEpdrParametersInstance,
-  getSavingInstance,
 } from 'contracts/contract-instance';
 
-import { TRANSACTION_TYPES } from 'constants/statuses';
 import { unixToDate } from 'utils/date';
-import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
+import { captureError } from 'utils/errors';
 import { calculateInterestRate } from 'utils/numbers';
 
 export async function getVaultWithFee (vault: Vault, vaultNum: number): Promise<VaultWithFee> {
@@ -48,7 +43,7 @@ export async function addBorrowTokenToWallet (asset: Asset) {
         params: {
           type,
           options: {
-            address: instance._address,
+            address: instance.options.address,
             symbol,
             decimals,
           },
@@ -62,8 +57,7 @@ export async function addBorrowTokenToWallet (asset: Asset) {
   }
 }
 
-// TODO: move to store hooks
-export async function getTimeSinceRefreshBalance () {
+export async function getSavingCompoundRateLastUpdate () {
   try {
     const contract = await getCompoundRateKeeperSavingInstance();
     const lastUpdate = await contract.getLastUpdate();
@@ -74,24 +68,7 @@ export async function getTimeSinceRefreshBalance () {
   }
 }
 
-// TODO: move to store hooks
-export async function refreshTimeSinceRefreshBalance ({ userAddress, dispatch, label }: {
-  userAddress: any,
-  dispatch: any,
-  label: string,
-}) {
-  try {
-    const contract = await getSavingInstance();
-    const transaction = await contract.updateCompoundRate({ from: userAddress, gasBuffer: 1.2 });
-    dispatch(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
-  } catch (error) {
-    captureError(error);
-    dispatch(setTransactionLoadingError(getErrorMessage(error)));
-  }
-}
-
-// TODO: move to store hooks
-export async function getTimeSinceOutstandingDebt (asset: Asset) {
+export async function getBorrowingCompoundRateLastUpdate (asset: Asset) {
   try {
     const contract = await getCompoundRateBorrowingInstance(asset);
     const lastUpdate = await contract.getLastUpdate();
@@ -99,22 +76,5 @@ export async function getTimeSinceOutstandingDebt (asset: Asset) {
   } catch (error) {
     captureError(error);
     return null;
-  }
-}
-
-// TODO: move to store hooks
-export async function refreshTimeSinceOutstandingDebt ({ userAddress, dispatch, asset, label }: {
-  userAddress: any,
-  dispatch: any,
-  asset: Asset,
-  label: string
-}) {
-  try {
-    const contract = await getBorrowingCoreInstance();
-    const transaction = await contract.updateCompoundRate(asset, { from: userAddress, gasBuffer: 1.2 });
-    dispatch(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
-  } catch (error) {
-    captureError(error);
-    dispatch(setTransactionLoadingError(getErrorMessage(error)));
   }
 }

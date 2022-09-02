@@ -5,9 +5,9 @@ import styled, { css } from 'styled-components';
 import { getInputColor } from './colors';
 
 export const InputWrapper = styled.div<{
-  $error?: string,
-  $disabled: boolean,
-  $type: HTMLInputTypeAttribute
+  $error?: string;
+  $disabled: boolean;
+  $type: HTMLInputTypeAttribute;
 }>`
   width: 100%;
 

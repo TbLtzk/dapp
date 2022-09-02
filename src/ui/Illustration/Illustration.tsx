@@ -5,7 +5,7 @@ import EmptyList from './components/EmptyList';
 
 type IllustrationType = 'bulb' | 'empty-list';
 interface Props extends HTMLAttributes<SVGAElement> {
-  type: IllustrationType
+  type: IllustrationType;
 }
 
 function Illustration ({ type, ...rest }: Props) {

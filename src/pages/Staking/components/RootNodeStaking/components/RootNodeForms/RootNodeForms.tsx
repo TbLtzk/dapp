@@ -1,22 +1,19 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
-import { fromWei, toWei } from 'web3-utils';
+import { TransactionReceipt } from 'web3-eth';
+import { fromWei } from 'web3-utils';
 
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
-import useMetamaskReset from 'hooks/useMetamaskReset';
 
 import { FORM_TYPES } from '../RootNodeMenu/RootNodeMenu';
 
-import { accountBalance } from 'store/q-vault/selectors';
-import { setRootAnnounceWithdrawal, setRootStakeToPanel, setRootWithdraw } from 'store/root-node/action-creators';
-import { rootNodeStake, withdrawals } from 'store/root-node/selectors';
-import { userAddressMetamask } from 'store/user-inf/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useRootNodes } from 'store/root-nodes/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
-import formTypes from 'constants/form-types.js';
 import { toBigNumber } from 'utils/numbers';
 import { max, required } from 'utils/validators';
 
@@ -27,20 +24,23 @@ interface Props {
 
 function RootNodeForms ({ formType, onReset }: Props) {
   const { t } = useTranslation();
-
-  const dispatch = useDispatch();
-  const userAddress = useSelector(userAddressMetamask);
-  const amountNodeStake = useSelector(rootNodeStake);
-  const withdrawalInfo = useSelector(withdrawals);
-  const userBalance = useSelector(accountBalance);
+  const { submitTransaction } = useTransaction();
+  const {
+    rootNodeStake,
+    withdrawalInfo,
+    commitRootNodeStake,
+    announceRootStakeWithdrawal,
+    withdrawRootStake
+  } = useRootNodes();
+  const { walletBalance } = useQVault();
 
   const getMaxAmount = () => {
     const withdrawalAmount = fromWei(withdrawalInfo.amount);
     switch (formType) {
       case FORM_TYPES.stakeToRanking:
-        return userBalance;
+        return walletBalance;
       case FORM_TYPES.announceWithdrawal:
-        return toBigNumber(amountNodeStake).plus(toBigNumber(withdrawalAmount)).toString();
+        return toBigNumber(rootNodeStake).plus(toBigNumber(withdrawalAmount)).toString();
       case FORM_TYPES.withdrawFromRanking:
         return withdrawalAmount;
       default:
@@ -52,21 +52,31 @@ function RootNodeForms ({ formType, onReset }: Props) {
     initialValues: { amount: '' },
     validators: { amount: [required, max(getMaxAmount())] },
     onSubmit: ({ amount }) => {
+      let successMessage: string;
+      let submitFn: () => Promise<TransactionReceipt>;
       switch (formType) {
         case FORM_TYPES.stakeToRanking:
-          dispatch(setRootStakeToPanel({ from: userAddress, value: toWei(amount) }, t('STAKE_TO_PANEL_SUCCESS')));
+          successMessage = t('STAKE_TO_PANEL_SUCCESS');
+          submitFn = () => commitRootNodeStake(amount);
           break;
         case FORM_TYPES.announceWithdrawal:
-          dispatch(setRootAnnounceWithdrawal(toWei(amount), { from: userAddress }, t('ANNOUNCE_WITHDRAWAL_SUCCESS')));
+          successMessage = t('ANNOUNCE_WITHDRAWAL_SUCCESS');
+          submitFn = () => announceRootStakeWithdrawal(amount);
           break;
         case FORM_TYPES.withdrawFromRanking:
-          dispatch(setRootWithdraw(toWei(amount), userAddress, { from: userAddress }, t('WITHDRAW_FROM_PANEL_SUCCESS')));
+        default:
+          successMessage = t('WITHDRAW_FROM_PANEL_SUCCESS');
+          submitFn = () => withdrawRootStake(amount);
           break;
       }
+
+      submitTransaction({
+        successMessage,
+        submitFn: () => submitFn(),
+        onSuccess: () => onReset(),
+      });
     }
   });
-
-  useMetamaskReset(formTypes.rootNodeStaking, onReset);
 
   return (
     <form noValidate onSubmit={form.submit}>

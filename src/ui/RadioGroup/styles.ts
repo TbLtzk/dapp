@@ -5,9 +5,9 @@ import { media } from 'styles/media';
 import { getRadioGroupColor } from './colors';
 
 export const RadioGroupContainer = styled.div<{
-  $row: boolean
-  $disabled: boolean
-  $extended: boolean
+  $row: boolean;
+  $disabled: boolean;
+  $extended: boolean;
 }>`
   .radio-group-lbl {
     margin-bottom: 8px;

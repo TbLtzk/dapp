@@ -3,8 +3,8 @@ import { CSSProperties, ReactNode } from 'react';
 import { Block } from './styles';
 
 interface Props {
-  children: ReactNode
-  style?: CSSProperties
+  children: ReactNode;
+  style?: CSSProperties;
 }
 
 const CustomBlock = ({ children, style, ...rest }: Props) => (

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
-export const MultiStepFormContainer = styled.div<{ $step: number;}>`
+export const MultiStepFormContainer = styled.div<{ $step: number}>`
   display: grid;
   align-items: start;
   grid-template-columns: 1fr 320px;

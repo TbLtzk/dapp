@@ -7,11 +7,8 @@ import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 import Tip from 'ui/Tip';
 
-import useMetamaskReset from 'hooks/useMetamaskReset';
-
 import CastObjectionForm from './components/CastObjectionForm';
 
-import formTypes from 'constants/form-types';
 import { ObjectionStatus } from 'constants/slashing';
 
 function CastObjection ({ proposal }: { proposal: SlashingProposal }) {
@@ -21,8 +18,6 @@ function CastObjection ({ proposal }: { proposal: SlashingProposal }) {
   const handleClose = () => {
     setModalOpen(false);
   };
-
-  useMetamaskReset(formTypes.castObjection, handleClose);
 
   return (
     <div className="cast-objection">
@@ -47,7 +42,7 @@ function CastObjection ({ proposal }: { proposal: SlashingProposal }) {
         tip={t('CAST_OBJECTION_TIP')}
         onClose={handleClose}
       >
-        <CastObjectionForm proposal={proposal} />
+        <CastObjectionForm proposal={proposal} onSubmit={handleClose} />
       </Modal>
     </div>
   );

@@ -7,11 +7,11 @@ import Icon from 'ui/Icon';
 import { FormStepContainer } from './styles';
 
 interface Props<T> {
-  disabled?: boolean
-  children: ReactNode
-  onNext?: (values?: T) => void
-  onBack?: () => void
-  onConfirm?: (values?: T) => void
+  disabled?: boolean;
+  children: ReactNode;
+  onNext?: (values?: T) => void;
+  onBack?: () => void;
+  onConfirm?: (values?: T) => void;
 }
 
 function FormStep<T> ({

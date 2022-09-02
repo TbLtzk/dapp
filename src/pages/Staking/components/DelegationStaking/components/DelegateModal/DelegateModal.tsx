@@ -1,44 +1,45 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Validator } from 'typings/validator';
+import { Delegation, Validator } from 'typings/validator';
 
 import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 
-import useMetamaskReset from 'hooks/useMetamaskReset';
-
 import UpdateStakeForm from '../DelegationsTable/components/UpdateStakeForm';
-import { Delegation } from '../DelegationsTable/DelegationsTable';
 import DelegateStakeForm from '../ManageDelegations/components/DelegateStakeForm';
-
-import formTypes from 'constants/form-types';
 
 export interface DelegateModalProps {
   delegation: Delegation | Validator;
-  btnTitle?: string,
+  btnTitle?: string;
   type: 'validator-select' | 'delegator-select';
 }
 
 function DelegateModal ({ delegation, type, btnTitle }: DelegateModalProps) {
   const { t } = useTranslation();
-
   const [modalOpen, setModalOpen] = useState(false);
-
-  useMetamaskReset(formTypes.qVaultDelegation, () => setModalOpen(false));
 
   const modalTypes = {
     'delegator-select': {
       btnTitle: t('EDIT'),
       title: t('UPDATE_DELEGATION_STAKE'),
       tip: t('INCREASE_REDUCE_REMOVE_YOUR_STAKE'),
-      form: <UpdateStakeForm delegation={delegation as Delegation} />,
+      form: (
+        <UpdateStakeForm
+          delegation={delegation as Delegation}
+          onSubmit={() => setModalOpen(false)}
+        />
+      ),
     },
     'validator-select': {
       btnTitle: t('SELECT'),
       title: t('STAKE_TOKENS'),
       tip: t('STAKE_YOUR_TOKENS_FOR_CURRENT_VALIDATOR'),
-      form: <DelegateStakeForm delegation={delegation as Validator} />,
+      form: (
+        <DelegateStakeForm
+          delegation={delegation as Validator}
+          onSubmit={() => setModalOpen(false)}
+        />),
     },
   };
 

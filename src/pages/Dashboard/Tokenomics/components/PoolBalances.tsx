@@ -1,15 +1,12 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 
 import useInfinityNumber from 'hooks/useInfinityNumber';
 
-import { getSystemReserveBalance } from 'store/system-balance/action-creators';
-import { systemReserveBalanceSelector } from 'store/system-balance/selectors';
-import { getVRPBalance } from 'store/validation-reward-pools/action-creators';
-import { poolBalanceSelector } from 'store/validation-reward-pools/selectors';
+import { useSystemBalance } from 'store/system-balance/hooks';
+import { useValidationRewards } from 'store/validation-rewards/hooks';
 
 const StyledWrapper = styled.div`
   grid-area: balance;
@@ -19,17 +16,15 @@ const StyledWrapper = styled.div`
 
 function PoolBalances () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { poolBalance, getVRPBalance } = useValidationRewards();
+  const { systemReserveBalance, getSystemReserveBalance } = useSystemBalance();
 
-  const reserveBalance = useSelector(systemReserveBalanceSelector);
-  const reserveBalanceRef = useInfinityNumber(reserveBalance, ' Q');
-
-  const rewardPoolsBalance = useSelector(poolBalanceSelector);
-  const rewardPoolsBalanceRef = useInfinityNumber(rewardPoolsBalance, ' Q');
+  const reserveBalanceRef = useInfinityNumber(systemReserveBalance, ' Q');
+  const rewardPoolsBalanceRef = useInfinityNumber(poolBalance, ' Q');
 
   useEffect(() => {
-    dispatch(getVRPBalance());
-    dispatch(getSystemReserveBalance());
+    getVRPBalance();
+    getSystemReserveBalance();
   }, []);
 
   return (

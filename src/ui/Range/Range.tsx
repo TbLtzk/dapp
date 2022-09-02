@@ -9,14 +9,14 @@ import { RangeContainer } from './styles';
 import { formatNumber, formatPercent, toBigNumber } from 'utils/numbers';
 
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
-  value: string
-  max?: string
-  label?: string
-  error?: string
-  disabled?: boolean
-  hideInput?: boolean
-  formatter?: (value: string) => string
-  onChange: (value: string, relativeValue: string) => void
+  value: string;
+  max?: string;
+  label?: string;
+  error?: string;
+  disabled?: boolean;
+  hideInput?: boolean;
+  formatter?: (value: string) => string;
+  onChange: (value: string, relativeValue: string) => void;
 };
 
 function Range ({

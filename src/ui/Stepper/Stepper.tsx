@@ -6,8 +6,8 @@ import Icon from 'ui/Icon';
 import { StepperContainer } from './styles';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  current: number
-  steps: { id: string, name: string }[]
+  current: number;
+  steps: { id: string; name: string }[];
 }
 
 function Stepper ({ current, steps, ...rest }: Props) {

@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -11,10 +10,8 @@ import Button from 'ui/Button';
 import DonutChart from 'ui/DonutChart';
 import Spinner from 'ui/Spinner';
 
-import { getRootMembers } from 'store/root-node/action-creators';
-import { loadingRootMembersSelector, rootMembersSelector } from 'store/root-node/selectors';
+import { useRootNodes } from 'store/root-nodes/hooks';
 
-import { TABLE_TYPES } from 'constants/tableTypes';
 import { formatNumber } from 'utils/numbers';
 
 const StyledWrapper = styled.div`
@@ -33,14 +30,11 @@ const StyledWrapper = styled.div`
 
 function RootNodesChart () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-
-  const rootMembers = useSelector(rootMembersSelector);
-  const isLoading = useSelector(loadingRootMembersSelector);
+  const { rootMembers, rootMembersLoading, getRootMembers } = useRootNodes();
 
   useEffect(() => {
-    dispatch(getRootMembers(TABLE_TYPES.rootNodesShort));
-  }, [dispatch]);
+    getRootMembers();
+  }, []);
 
   return (
     <StyledWrapper className="block">
@@ -63,7 +57,7 @@ function RootNodesChart () {
       </div>
 
       <div className="block__content">
-        {isLoading
+        {rootMembersLoading
           ? (
             <div className="root-nodes__loading-wrp">
               <Spinner size={96} thickness={4} />
@@ -73,9 +67,9 @@ function RootNodesChart () {
             <DonutChart
               totalLabel={t('TOTAL_STAKE')}
               formatValue={(val) => `${formatNumber(val, 2)} Q`}
-              options={rootMembers.map((item: any) => ({
+              options={rootMembers.map((item) => ({
                 label: item.address,
-                value: item.stakeAmount,
+                value: Number(item.stakeAmount),
                 icon: <AddressIcon address={item.address} />,
                 isAddress: true
               }))}

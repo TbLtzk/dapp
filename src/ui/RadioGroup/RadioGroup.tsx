@@ -6,17 +6,17 @@ import Radio from 'ui/Radio';
 
 import { RadioGroupContainer } from './styles';
 
-type ValueType = number | string | boolean
+type ValueType = number | string | boolean;
 interface Props<T extends ValueType> extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
-  value: T
-  name: string
-  options?: RadioOptions<T>
-  extended?: boolean
-  disabled?: boolean
-  label?: string
-  error?: string
-  row?: boolean
-  onChange: (value: T) => void
+  value: T;
+  name: string;
+  options?: RadioOptions<T>;
+  extended?: boolean;
+  disabled?: boolean;
+  label?: string;
+  error?: string;
+  row?: boolean;
+  onChange: (value: T) => void;
 };
 
 function RadioGroup<T extends ValueType> ({

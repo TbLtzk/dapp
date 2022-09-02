@@ -1,6 +1,6 @@
 import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 
-type Validator<K extends string, V> = (val: V, values: Record<K, V>) => { isValid: boolean, message: string }
+type Validator<K extends string, V> = (val: V, values: Record<K, V>) => { isValid: boolean; message: string };
 
 function useForm<K extends string, V> ({
   initialValues,
@@ -8,10 +8,10 @@ function useForm<K extends string, V> ({
   onChange = () => {},
   onSubmit = () => {}
 }: {
-  initialValues: Record<K, V>,
-  validators: Record<K, Validator<K, V>[]>,
-  onChange?: (_: Record<K, V>) => void,
-  onSubmit?: (_: Record<K, V>) => void
+  initialValues: Record<K, V>;
+  validators: Record<K, Validator<K, V>[]>;
+  onChange?: (_: Record<K, V>) => void;
+  onSubmit?: (_: Record<K, V>) => void;
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -73,7 +73,7 @@ function useForm<K extends string, V> ({
               validateField(key as K, value);
             }
           }
-        }), {} as Record<K, { value: V, error: string, onChange: (value?: V) => void }>);
+        }), {} as Record<K, { value: V; error: string; onChange: (value?: V) => void }>);
     }, [values, errors, validators]),
 
     values,

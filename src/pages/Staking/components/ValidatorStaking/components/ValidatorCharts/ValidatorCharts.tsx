@@ -8,11 +8,11 @@ import { formatNumber } from 'utils/numbers';
 
 interface Props {
   validatorShare: string | number;
-  delegatorShare: string | number;
+  delegatorsShare: string | number;
   selfStake: string | number;
   delegatedStake: string | number;
 }
-function ValidatorCharts ({ validatorShare = 0, delegatorShare = 0, selfStake = 0, delegatedStake = 0 }: Props) {
+function ValidatorCharts ({ validatorShare = 0, delegatorsShare = 0, selfStake = 0, delegatedStake = 0 }: Props) {
   const { t } = useTranslation();
 
   const stakeOptions = [
@@ -21,7 +21,7 @@ function ValidatorCharts ({ validatorShare = 0, delegatorShare = 0, selfStake = 
   ];
 
   const shareOptions = [
-    { label: t('DELEGATOR_SHARE'), value: Number(delegatorShare) },
+    { label: t('DELEGATOR_SHARE'), value: Number(delegatorsShare) },
     { label: t('VALIDATOR_SHARE'), value: Number(validatorShare) },
   ];
 

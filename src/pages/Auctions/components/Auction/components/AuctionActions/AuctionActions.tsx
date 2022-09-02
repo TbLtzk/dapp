@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 
 import { AuctionCompletedInfos, AuctionExecute, AuctionType, LiquidationAuctionExecute } from 'typings/auctions';
 
@@ -12,16 +11,19 @@ import Icon from 'ui/Icon';
 import BidModal from './BidModal';
 import { AuctionActionsContainer } from './styles';
 
-import { executeAuction } from 'store/auctions/actions';
+import { useAuctions } from 'store/auctions/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
 interface Props {
   auction: AuctionCompletedInfos;
   auctionType: AuctionType;
+  onSubmit: () => void;
 }
 
-function AuctionActions ({ auction, auctionType }: Props) {
-  const dispatch = useDispatch();
+function AuctionActions ({ auction, auctionType, onSubmit }: Props) {
   const { t } = useTranslation();
+  const { submitTransaction } = useTransaction();
+  const { executeAuction } = useAuctions();
 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -34,13 +36,18 @@ function AuctionActions ({ auction, auctionType }: Props) {
   }
 
   function handleExecuteAuction () {
-    dispatch(
-      executeAuction(auctionType, {
-        auctionId: (auction as AuctionExecute).auctionId,
-        vaultId: (auction as LiquidationAuctionExecute).vaultId,
-        vaultOwner: (auction as LiquidationAuctionExecute).vaultOwner,
-      }, t('AUCTION_EXECUTION_SUCCESS'))
-    );
+    submitTransaction({
+      successMessage: t('AUCTION_EXECUTION_SUCCESS'),
+      onSuccess: () => onSubmit(),
+      submitFn: () => executeAuction({
+        auctionType,
+        form: {
+          auctionId: (auction as AuctionExecute).auctionId,
+          vaultId: (auction as LiquidationAuctionExecute).vaultId,
+          vaultOwner: (auction as LiquidationAuctionExecute).vaultOwner,
+        }
+      })
+    });
   }
 
   const isBidTime = auction.isBidTime;
@@ -78,6 +85,7 @@ function AuctionActions ({ auction, auctionType }: Props) {
         modalOpen={modalOpen}
         auction={auction}
         onHide={handleModalClose}
+        onSubmit={onSubmit}
       />
     </>
   );

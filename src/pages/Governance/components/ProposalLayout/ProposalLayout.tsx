@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 
 import { ProposalStatus } from '@q-dev/q-js-sdk';
 import { Proposal, ProposalType, SlashingProposal } from 'typings/proposals';
@@ -18,10 +17,10 @@ import ProposalVeto from './components/ProposalVeto';
 import ProposalVoting from './components/ProposalVoting';
 import { ProposalLayoutContainer } from './styles';
 
-import { userAddressMetamask } from 'store/user-inf/selectors';
+import { useUser } from 'store/user/hooks';
 
-function ProposalLayout ({ proposal, type }: { proposal: Proposal, type: ProposalType }) {
-  const userAddress = useSelector(userAddressMetamask);
+function ProposalLayout ({ proposal, type }: { proposal: Proposal; type: ProposalType }) {
+  const user = useUser();
   const { title, status, state } = useProposalDetails(proposal);
 
   const isSlashingProposal = type === 'slashing' &&
@@ -34,7 +33,7 @@ function ProposalLayout ({ proposal, type }: { proposal: Proposal, type: Proposa
       action={<ProposalActions proposal={proposal} title={title} />}
     >
       <ProposalLayoutContainer>
-        {isSlashingProposal && proposal.candidate === userAddress && (
+        {isSlashingProposal && proposal.candidate === user.address && (
           <CastObjection proposal={proposal as SlashingProposal} />
         )}
 

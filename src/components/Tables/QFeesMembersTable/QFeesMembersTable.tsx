@@ -1,30 +1,24 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 import Table from 'ui/Table';
 
-import { getEPQFIMembers } from 'store/membership/action-creators';
-import {
-  EPQFIMembersErrorSelector,
-  EPQFIMembersLoadingSelector,
-  EPQFIMembersSelector,
-} from 'store/membership/selectors';
+import { useExperts } from 'store/experts/hooks';
 
 function QFeesMembersTable () {
   const { t } = useTranslation();
-
-  const dispatch = useDispatch();
-
-  const qFeesMembersTable = useSelector(EPQFIMembersSelector);
-  const qFeesMembersTableLoading = useSelector(EPQFIMembersLoadingSelector);
-  const qFeesMembersTableError = useSelector(EPQFIMembersErrorSelector);
+  const {
+    epqfiMembers,
+    epqfiMembersLoading,
+    epqfiMembersError,
+    getEpqfiMembers
+  } = useExperts();
 
   useEffect(() => {
-    dispatch(getEPQFIMembers());
-  }, [dispatch]);
+    getEpqfiMembers();
+  }, []);
 
   return (
     <div className="block">
@@ -39,8 +33,8 @@ function QFeesMembersTable () {
         <Table
           tiny
           emptyTableMessage={t('NO_Q_FEES_INCENTIVES_MEMBERS')}
-          loading={qFeesMembersTableLoading}
-          error={qFeesMembersTableError}
+          loading={epqfiMembersLoading}
+          error={epqfiMembersError}
           perPage={10}
           columns={[
             {
@@ -48,7 +42,7 @@ function QFeesMembersTable () {
               text: t('MEMBER_ADDRESS'),
             },
           ]}
-          table={qFeesMembersTable.map((member: string, idx: number) => ({
+          table={epqfiMembers.map((member, idx) => ({
             id: idx,
             member: (
               <ExplorerAddress

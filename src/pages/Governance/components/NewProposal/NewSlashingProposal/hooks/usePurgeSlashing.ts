@@ -1,26 +1,26 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { RootNodesInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesInstance';
 import { RootNodesSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesSlashingVotingInstance';
 import { ValidatorsInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsInstance';
 import { ValidatorsSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsSlashingVotingInstance';
 
-import { successMessageSelector } from 'store/transaction-handler/selectors';
-import { userAddressMetamask } from 'store/user-inf/selectors';
-import { setPurgeSlashing } from 'store/voting/slashing/actions';
+import { useSlashingActions } from 'pages/Governance/hooks/useSlashingActions';
+
+import { useTransaction } from 'store/transaction/hooks';
+import { useUser } from 'store/user/hooks';
 
 import { getRootNodesInstance, getRootNodesSlashingVotingInstance, getValidatorsInstance, getValidatorsSlashingVotingInstance } from 'contracts/contract-instance';
 
-import { CONTRACT_TYPES } from 'constants/contracts';
 import { isAddress } from 'utils/strings';
 
 function usePurgeSlashing (address: string, isRootSlashing: boolean) {
-  const dispatch = useDispatch();
-  const userAddress = useSelector(userAddressMetamask);
-  const successMessage = useSelector(successMessageSelector);
   const { t } = useTranslation();
+  const { purgeSlashing: purgeSlashingAction } = useSlashingActions(isRootSlashing);
+
+  const user = useUser();
+  const { successMessage, submitTransaction } = useTransaction();
 
   const [shouldPurge, setShouldPurge] = useState(false);
 
@@ -63,17 +63,17 @@ function usePurgeSlashing (address: string, isRootSlashing: boolean) {
     );
 
     const pendingProposalIds = proposalIds
-      .filter((_, i) => proposalOwners[i] === userAddress);
+      .filter((_, i) => proposalOwners[i] === user.address);
     return pendingProposalIds.length > 0;
   };
 
   const purgeSlashing = () => {
     if (!shouldPurge) return;
 
-    const contractType = isRootSlashing
-      ? CONTRACT_TYPES.rootNodes
-      : CONTRACT_TYPES.validators;
-    dispatch(setPurgeSlashing(address, contractType, t('PURGE')));
+    submitTransaction({
+      successMessage: t('PURGE_SUCCESS'),
+      submitFn: async () => purgeSlashingAction(address)
+    });
   };
 
   return { shouldPurge, purgeSlashing };

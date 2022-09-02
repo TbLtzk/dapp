@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import { useWeb3Context } from 'context/Web3ContextProvider';
 import copy from 'copy-to-clipboard';
@@ -12,20 +11,20 @@ import Icon from 'ui/Icon';
 
 import { AddressDropdown } from './styles';
 
-import { userAddressMetamask } from 'store/user-inf/selectors';
+import { useUser } from 'store/user/hooks';
 
 import { trimAddress } from 'utils/strings';
 
 function UserAddress () {
   const { t } = useTranslation();
-  const userAddress = useSelector(userAddressMetamask);
+  const user = useUser();
   const { disconnectWallet } = useWeb3Context();
 
   const [isCopied, setIsCopied] = useState(false);
   const [addressOpen, setAddressOpen] = useState(false);
 
   function copyAddress () {
-    copy(userAddress);
+    copy(user.address);
     setIsCopied(true);
 
     setTimeout(() => {
@@ -43,8 +42,8 @@ function UserAddress () {
           look="secondary"
           active={addressOpen}
         >
-          <AddressIcon address={userAddress} size={20} />
-          <span>{trimAddress(userAddress)}</span>
+          <AddressIcon address={user.address} size={20} />
+          <span>{trimAddress(user.address)}</span>
           <motion.span
             style={{ height: '100%' }}
             animate={{
@@ -59,8 +58,8 @@ function UserAddress () {
     >
       <div className="address-content">
         <h3 className="address-title text-xl font-semibold">
-          <AddressIcon address={userAddress} size={32} />
-          {trimAddress(userAddress)}
+          <AddressIcon address={user.address} size={32} />
+          {trimAddress(user.address)}
         </h3>
 
         <div className="address-main">

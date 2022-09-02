@@ -3,8 +3,8 @@ import styled, { css } from 'styled-components';
 import { getCalendarColor } from './colors';
 
 export const CalendarWrapper = styled.div<{
-  $error?: string,
-  $disabled: boolean,
+  $error?: string;
+  $disabled: boolean;
 }>`
   width: 100%;
 

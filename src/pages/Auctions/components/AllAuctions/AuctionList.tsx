@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { AuctionInfos, AuctionType } from 'typings/auctions';
 
@@ -12,8 +11,7 @@ import Illustration from 'ui/Illustration';
 
 import AuctionCard from './components/AuctionCard';
 
-import { getAuctions } from 'store/auctions/actions';
-import { auctionsByTypeSelector } from 'store/auctions/selectors';
+import { useAuctions } from 'store/auctions/hooks';
 
 import { fillArray } from 'utils/arrays';
 
@@ -22,25 +20,24 @@ const PAGE_LIMIT = 10;
 function AllAuctions ({ auctionType }: { auctionType: AuctionType }) {
   const { t } = useTranslation();
 
-  const dispatch = useDispatch();
-
-  const { auctions, isLoading } = useSelector(auctionsByTypeSelector(auctionType));
+  const { auctions, getAuctions } = useAuctions();
+  const { list: auctionsList, isLoading } = auctions[auctionType];
 
   const [list, setList] = useState<AuctionInfos[]>([]);
   const [offset, setOffset] = useState(PAGE_LIMIT);
 
   useEffect(() => {
-    dispatch(getAuctions(auctionType));
-  }, [dispatch]);
+    getAuctions(auctionType);
+  }, []);
 
   useEffect(() => {
     setOffset(PAGE_LIMIT);
-    setList(auctions.slice(0, PAGE_LIMIT));
+    setList(auctionsList.slice(0, PAGE_LIMIT));
   }, [auctions]);
 
   const handleNextAuctions = () => {
     const newOffset = offset + PAGE_LIMIT;
-    const newList = list.concat(auctions.slice(offset, newOffset));
+    const newList = list.concat(auctionsList.slice(offset, newOffset));
     setOffset((offset) => offset + PAGE_LIMIT);
     setList(newList);
   };
@@ -55,7 +52,7 @@ function AllAuctions ({ auctionType }: { auctionType: AuctionType }) {
     );
   }
 
-  if (!auctions.length) {
+  if (!auctionsList.length) {
     return (
       <ListEmptyStub>
         <Illustration type="empty-list" />
@@ -71,7 +68,7 @@ function AllAuctions ({ auctionType }: { auctionType: AuctionType }) {
           <AuctionCard key={auction.slug} auction={auction} />
         ))}
       </ListWrapper>
-      {list.length < auctions.length && (
+      {list.length < auctionsList.length && (
         <ListNextContainer>
           <Button onClick={handleNextAuctions}>{t('SHOW_MORE')}</Button>
         </ListNextContainer>

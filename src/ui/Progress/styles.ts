@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { getProgressColor } from './colors';
 
 export const ProgressContainer = styled.div<{
-  $percent: number
-  $trackColor?: string
-  $valueColor?: string
+  $percent: number;
+  $trackColor?: string;
+  $valueColor?: string;
 }>`
   position: relative;
   display: flex;

@@ -1,8 +1,8 @@
 import { Vault } from '@q-dev/q-js-sdk';
 
-import { BorrowAssets, defiApproveType } from 'constants/defiTypes';
+import { BorrowAssets, defiApproveType } from 'constants/defi';
 
-type Asset = typeof BorrowAssets[keyof typeof BorrowAssets];
+type Asset = keyof typeof BorrowAssets;
 type ApproveType = typeof defiApproveType[keyof typeof defiApproveType];
 
 interface SavingAssets {
@@ -20,16 +20,6 @@ interface BorrowAssetsRateAndFee {
   asset: Asset;
   borrowingFee: number;
   interestRate: string;
-}
-
-interface BorrowAction {
-  amount: string;
-  vaultId: number;
-  label: string
-}
-
-interface BorrowActionDepositWithdraw extends BorrowAction {
-  decimals: number;
 }
 
 interface VaultData {

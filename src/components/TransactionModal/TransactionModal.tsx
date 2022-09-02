@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -16,13 +15,8 @@ import useChangesListener from 'hooks/useChangesListener';
 import ShowInExplorer from './components/ShowInExplorer';
 import { TransactionModalContainer } from './styles';
 
-import { getUserBalances, setClearTransaction, setTransactionLoadingComplete } from 'store/transaction-handler/actions';
-import {
-  errorMessageSelector,
-  successMessageSelector,
-  transactionHashSelector,
-  transactionLoadingSelector,
-} from 'store/transaction-handler/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
 export type TransactionType = ToastType | 'confirm' | 'loading';
 
@@ -41,14 +35,17 @@ const iconsNames = {
 };
 
 function TransactionModal () {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
   const alert = useAlert();
-
-  const transactionError = useSelector(errorMessageSelector);
-  const transactionSuccess = useSelector(successMessageSelector);
-  const transactionHash = useSelector(transactionHashSelector);
-  const transactionLoading = useSelector(transactionLoadingSelector);
+  const { loadAllBalances } = useQVault();
+  const {
+    transactionLoading,
+    transactionHash,
+    successMessage,
+    errorMessage,
+    setTransactionLoading,
+    resetTransaction
+  } = useTransaction();
 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -57,26 +54,28 @@ function TransactionModal () {
   const [isUserCloseModal, setIsUserCloseModal] = useState(true);
   const [transactionType, setTransactionType] = useState<TransactionType>('loading');
 
-  const handleTransaction = (type: ToastType, transaction: any) => {
-    setTransactionMessage(transaction.message);
-    setHash(transaction?.transactionHash);
+  const handleTransaction = async (type: ToastType, message: string) => {
+    setTransactionMessage(message);
+    setHash(transactionHash);
     setTransactionType(type);
+
     if (isUserCloseModal) {
-      alert[type](transaction.message);
+      alert[type](message);
     }
-    dispatch(getUserBalances());
-    dispatch(setClearTransaction());
+
+    await loadAllBalances();
+    resetTransaction();
   };
 
   const handleUserCloseModal = () => {
     setModalOpen(false);
     setIsUserCloseModal(true);
-    dispatch(setTransactionLoadingComplete());
+    setTransactionLoading(false);
   };
 
-  useChangesListener(transactionError, () => handleTransaction('error', transactionError));
+  useChangesListener(errorMessage, () => handleTransaction('error', errorMessage));
   useChangesListener(transactionHash, () => setTransactionType('confirm'));
-  useChangesListener(transactionSuccess, () => handleTransaction('success', transactionSuccess));
+  useChangesListener(successMessage, () => handleTransaction('success', successMessage));
 
   useEffect(() => {
     if (transactionLoading) {

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { Alias } from '@q-dev/q-js-sdk';
 
@@ -14,35 +13,35 @@ import AliasEventsTable from './components/AliasEventsTable';
 import AliasForm from './components/AliasForm';
 import ReserveForm from './components/ReserveForm';
 
-import { getAliases, getAliasEvents } from 'store/account-aliases/action-creators';
-import { successMessageSelector } from 'store/transaction-handler/selectors';
-import { userAddressMetamask } from 'store/user-inf/selectors';
+import { useAliases, useAliasEvents } from 'store/aliases/hooks';
+import { useTransaction } from 'store/transaction/hooks';
+import { useUser } from 'store/user/hooks';
 
 import { trimAddress } from 'utils/strings';
 
 function AccountAliasing () {
   const { t } = useTranslation();
+  const { loadAliases } = useAliases();
+  const { loadAliasEvents } = useAliasEvents();
+  const user = useUser();
+  const { successMessage } = useTransaction();
 
-  const dispatch = useDispatch();
-  const userAddress = useSelector(userAddressMetamask);
-  const successMessage = useSelector(successMessageSelector);
-
-  const [currentAddress, setCurrentAddress] = useState(userAddress);
+  const [currentAddress, setCurrentAddress] = useState(user.address);
   const [selectedAlias, setSelectedAlias] = useState<Alias | null>(null);
   const [isReserveModalShown, setIsReserveModalShown] = useState(false);
 
-  const loadAliases = (address: string) => {
-    dispatch(getAliases(address));
-    dispatch(getAliasEvents(address));
+  const init = (address: string) => {
+    loadAliases(address);
+    loadAliasEvents();
   };
 
   const refreshAddress = (address: string) => {
     setCurrentAddress(address);
-    loadAliases(address);
+    init(address);
   };
 
   useEffect(() => {
-    loadAliases(currentAddress);
+    init(currentAddress);
   }, []);
 
   useEffect(() => {
@@ -50,7 +49,7 @@ function AccountAliasing () {
 
     setSelectedAlias(null);
     setIsReserveModalShown(false);
-    loadAliases(currentAddress);
+    init(currentAddress);
   }, [successMessage]);
 
   return (
@@ -77,7 +76,7 @@ function AccountAliasing () {
       <Modal
         open={isReserveModalShown}
         title={t('RESERVE_ALIAS')}
-        tip={t('RESERVE_YOUR_CURRENT_ADDRESS', { address: trimAddress(userAddress) })}
+        tip={t('RESERVE_YOUR_CURRENT_ADDRESS', { address: trimAddress(user.address) })}
         width={440}
         onClose={() => setIsReserveModalShown(false)}
       >

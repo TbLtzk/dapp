@@ -10,8 +10,8 @@ import RootNodeDetails from './components/RootNodeDetails';
 import SlashingDetails from './components/SlashingDetails';
 
 interface Props {
-  proposal: Proposal
-  type: ProposalType
+  proposal: Proposal;
+  type: ProposalType;
 }
 
 function ProposalDetails ({ proposal, type }: Props) {

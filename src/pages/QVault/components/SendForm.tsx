@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
@@ -9,12 +8,10 @@ import Icon from 'ui/Icon';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
-import useMetamaskReset from 'hooks/useMetamaskReset';
 
-import { setSendCall } from 'store/q-vault/action-creators';
-import { qVaultMinimumTimeLock, userBalance } from 'store/q-vault/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
-import formTypes from 'constants/form-types';
 import { toBigNumber } from 'utils/numbers';
 import { address, amount, required } from 'utils/validators';
 
@@ -41,12 +38,11 @@ const StyledForm = styled.form`
 `;
 
 function SendForm () {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { submitTransaction } = useTransaction();
+  const { vaultBalance, qVaultMinimumTimeLock, sendToVault } = useQVault();
 
-  const userQVaultBalance = useSelector(userBalance);
-  const qVaultLockedAmount = useSelector(qVaultMinimumTimeLock);
-  const maxAmount = toBigNumber(userQVaultBalance).minus(qVaultLockedAmount).toString();
+  const maxAmount = toBigNumber(vaultBalance).minus(qVaultMinimumTimeLock).toString();
 
   const form = useForm({
     initialValues: { address: '', amount: '' },
@@ -54,12 +50,14 @@ function SendForm () {
       address: [required, address],
       amount: [required, amount(maxAmount)],
     },
-    onSubmit: (form) => {
-      dispatch(setSendCall(form.address, form.amount, t('SEND_TO_FOREIGN_QVAULT_ACCOUNT_SUCCESS')));
-    },
+    onSubmit: (values) => {
+      submitTransaction({
+        successMessage: t('SEND_TO_FOREIGN_QVAULT_ACCOUNT_SUCCESS'),
+        submitFn: () => sendToVault(values),
+        onSuccess: () => form.reset(),
+      });
+    }
   });
-
-  useMetamaskReset(formTypes.qVaultSend, form.reset);
 
   return (
     <StyledForm

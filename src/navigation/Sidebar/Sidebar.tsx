@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
 import logo from 'assets/img/logo.png';
@@ -15,19 +14,18 @@ import SidebarLink from './components/SidebarLink/SidebarLink';
 import VersionModal from './components/VersionModal';
 import { SidebarContainer } from './styles';
 
-import { activeAuctionsCountSelector } from 'store/auctions/selectors';
-import { activeProposalsCountSelector } from 'store/voting/proposals/selectors';
+import { useAuctions } from 'store/auctions/hooks';
+import { useProposals } from 'store/proposals/hooks';
 
 import { RoutePaths } from 'constants/routes';
 
-function Sidebar ({ open, onClose }: { open: boolean, onClose: () => void }) {
+function Sidebar ({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { t } = useTranslation();
   const { featureFlags } = useNetworkConfig();
-
   const { pathname } = useLocation();
 
-  const activeProposalsCount = useSelector(activeProposalsCountSelector);
-  const activeAuctionsCount = useSelector(activeAuctionsCountSelector);
+  const { activeAuctionsCount } = useAuctions();
+  const { activeProposalsCount } = useProposals();
 
   const [versionModalOpen, setVersionModalOpen] = useState(false);
 

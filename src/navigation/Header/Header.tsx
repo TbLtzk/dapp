@@ -1,5 +1,4 @@
 import { memo } from 'react';
-import { useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
 
@@ -10,12 +9,12 @@ import Settings from './components/Settings';
 import UserAddress from './components/UserAddress';
 import { StyledHeader } from './styles';
 
-import { loadTypeSelector } from 'store/user-inf/selectors';
+import { useUser } from 'store/user/hooks';
 
 import { LOAD_TYPES } from 'constants/statuses';
 
 function Header ({ onMenuClick }: { onMenuClick: () => void }) {
-  const loadType = useSelector(loadTypeSelector);
+  const { loadType } = useUser();
 
   return (
     <StyledHeader>

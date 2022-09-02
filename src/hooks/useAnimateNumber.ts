@@ -4,12 +4,16 @@ import { animate } from 'framer-motion';
 
 import { formatNumber } from 'utils/numbers';
 
-const useAnimateNumber = (to: any, text = ' Q', formatter = formatNumber) => {
+const useAnimateNumber = (
+  to: string | number,
+  text = ' Q',
+  formatter = formatNumber
+) => {
   const animateRef = useRef<HTMLDivElement>(null);
   const lastNumber = useRef<number>(0);
 
   useEffect(() => {
-    if (animateRef.current && !isNaN(to)) {
+    if (animateRef.current && !isNaN(Number(to))) {
       const node = animateRef.current;
       const controls = animate(lastNumber.current || 0, Number(to), {
         duration: 1,
