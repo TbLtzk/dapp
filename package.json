@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "vite",
-    "build": "cross-env NODE_OPTIONS=--max_old_space_size=8192 vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "i18n:compile": "node scripts/compileLangs.js",
     "patch-version": "npm version patch -m \"Upgrade to %s\"",
