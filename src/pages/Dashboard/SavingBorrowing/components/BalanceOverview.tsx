@@ -1,7 +1,5 @@
-
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
@@ -12,14 +10,13 @@ import Button from 'ui/Button';
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
 
-import { getSavingRate } from 'store/borrowing-core/actions';
-import { savingRateSelector } from 'store/borrowing-core/selectors';
-import { getStableCoinTotalSupply, getSystemBalance } from 'store/system-balance/action-creators';
-import { stableCoinTotalSupplySelector, systemBalanceSelector } from 'store/system-balance/selectors';
-import { userAddressMetamask } from 'store/user-inf/selectors';
+import { useBorrowingCore } from 'store/borrowing-core/hooks';
+import { useSavingAssets } from 'store/saving-assets/hooks';
+import { useSystemBalance } from 'store/system-balance/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
 import { getStableCoinInstance } from 'contracts/contract-instance';
-import { getTimeSinceRefreshBalance, refreshTimeSinceRefreshBalance } from 'contracts/helpers/borrowing-core';
+import { getSavingCompoundRateLastUpdate } from 'contracts/helpers/borrowing-core';
 
 import { formatDate, formatDateRelative } from 'utils/date';
 
@@ -50,47 +47,52 @@ const StyledWrapper = styled.div`
 
 function BalanceOverview () {
   const { t, i18n } = useTranslation();
-  const dispatch = useDispatch();
+  const { submitTransaction } = useTransaction();
 
-  const userAddress = useSelector(userAddressMetamask);
-  const systemBalance = useSelector(systemBalanceSelector);
-  const totalSupply = useSelector(stableCoinTotalSupplySelector);
-  const savingRate = useSelector(savingRateSelector);
+  const { updateSavingCompoundRate } = useSavingAssets();
+  const { savingRate, getSavingRate } = useBorrowingCore();
+  const {
+    systemBalance,
+    stableCoinTotalSupply,
+    getSystemBalance,
+    getStableCoinTotalSupply,
+  } = useSystemBalance();
 
   const [stableCoinAddress, setStableCoinAddress] = useState('…');
   const [timeSinceRefreshBalance, setTimeSinceRefreshBalance] = useState<Date | null>(null);
   const [loadingTimeSinceRefreshBalance, setLoadingTimeSinceRefreshBalance] = useState(false);
 
   const systemBalanceRef = useAnimateNumber(systemBalance, ' QUSD');
-  const totalSupplyRef = useAnimateNumber(totalSupply, ' QUSD');
+  const totalSupplyRef = useAnimateNumber(stableCoinTotalSupply, ' QUSD');
   const savingRateRef = useAnimateNumber(savingRate, ' %');
 
   useEffect(() => {
     getStableCoinInstance().then((contract) => setStableCoinAddress(contract.address));
 
-    dispatch(getSavingRate());
-    dispatch(getSystemBalance());
-    dispatch(getStableCoinTotalSupply());
-    getTimeSinceRefreshBalance().then(setTimeSinceRefreshBalance);
+    getSavingRate();
+    getSystemBalance();
+    getStableCoinTotalSupply();
+    getSavingCompoundRateLastUpdate().then(setTimeSinceRefreshBalance);
 
     return () => setStableCoinAddress('');
   }, []);
 
   useInterval(() => {
-    getTimeSinceRefreshBalance().then(setTimeSinceRefreshBalance);
+    getSavingCompoundRateLastUpdate().then(setTimeSinceRefreshBalance);
   }, 50000, loadingTimeSinceRefreshBalance);
 
   const handleRefreshBalance = async () => {
     setLoadingTimeSinceRefreshBalance(true);
-    await refreshTimeSinceRefreshBalance({
-      userAddress,
-      dispatch,
-      label: t('SAVING_TIME_SINSE_REFRESH_SUCCESS')
+
+    await submitTransaction({
+      hideLoading: true,
+      successMessage: t('SAVING_TIME_SINSE_REFRESH_SUCCESS'),
+      submitFn: updateSavingCompoundRate,
     });
 
-    getTimeSinceRefreshBalance().then(setTimeSinceRefreshBalance);
+    getSavingCompoundRateLastUpdate().then(setTimeSinceRefreshBalance);
     setLoadingTimeSinceRefreshBalance(false);
-    dispatch(getSystemBalance());
+    getSystemBalance();
   };
 
   return (

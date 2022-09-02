@@ -9,18 +9,18 @@ import Input from 'ui/Input';
 
 import { SelectContainer } from './styles';
 
-type ValueType = number | string | boolean
+type ValueType = number | string | boolean;
 interface Props<T extends ValueType> extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
-  value: string | number | boolean
-  options: Options<T>
-  label?: string
-  error?: string
-  disabled?: boolean
-  chips?: boolean
-  combobox?: boolean
-  placeholder?: string
-  hint?: string
-  onChange: (val: T) => void
+  value: string | number | boolean;
+  options: Options<T>;
+  label?: string;
+  error?: string;
+  disabled?: boolean;
+  chips?: boolean;
+  combobox?: boolean;
+  placeholder?: string;
+  hint?: string;
+  onChange: (val: T) => void;
 }
 
 function Select<T extends ValueType> ({

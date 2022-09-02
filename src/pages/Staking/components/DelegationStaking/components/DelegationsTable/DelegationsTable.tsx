@@ -1,8 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { StakeDelegationInfo } from '@q-dev/q-js-sdk';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Button from 'ui/Button';
@@ -10,39 +7,48 @@ import Table from 'ui/Table';
 
 import DelegateModal from '../DelegateModal';
 
-import { getDelegationsList, setDelegateStake } from 'store/q-vault/action-creators';
-import { delegationList, loadingDelegationList } from 'store/q-vault/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
 import { fillArray } from 'utils/arrays';
 import { formatAsset } from 'utils/numbers';
 
-export interface Delegation {
-  id: number;
-  validator: string;
-  actualStake: string;
-  claimableReward: string;
-  delegatorShare: string;
-}
-
 function DelegationsTable () {
   const { t } = useTranslation();
+  const { submitTransaction } = useTransaction();
 
-  const delegations = useSelector(delegationList);
-  const loading = useSelector(loadingDelegationList);
-  const dispatch = useDispatch();
+  const {
+    delegationList,
+    loadingDelegationList,
+    loadDelegationList,
+    delegateStake
+  } = useQVault();
 
   useEffect(() => {
-    dispatch(getDelegationsList());
-  }, [dispatch]);
+    loadDelegationList();
+  }, []);
 
   const removeOneDelegation = (address: string) => {
-    dispatch(setDelegateStake([address], ['0'], t('REMOVE_STAKE_SUCCESSFUL')));
+    submitTransaction({
+      successMessage: t('REMOVE_STAKE_SUCCESSFUL'),
+      submitFn: () => delegateStake({
+        addresses: [address],
+        stakes: ['0'],
+      })
+    });
   };
 
   const removeAllDelegations = () => {
-    const addressesToRemove = delegations.map((delegation: StakeDelegationInfo) => delegation.validator);
+    const addressesToRemove = delegationList.map(delegation => delegation.validator);
     const zerosAmount = fillArray(addressesToRemove.length).map((_) => '0');
-    dispatch(setDelegateStake(addressesToRemove, zerosAmount, t('REMOVE_ALL_STAKES_SUCCESS')));
+
+    submitTransaction({
+      successMessage: t('REMOVE_ALL_STAKES_SUCCESS'),
+      submitFn: () => delegateStake({
+        addresses: addressesToRemove,
+        stakes: zerosAmount,
+      })
+    });
   };
 
   return (
@@ -64,19 +70,19 @@ function DelegationsTable () {
       emptyTableMessage={t('NO_DELEGATIONS')}
       perPage={20}
       buttons={
-        delegations.length > 0 && (
+        delegationList.length > 0 && (
           <Button look="danger" onClick={removeAllDelegations}>
             {t('UNSTAKE_ALL')}
           </Button>
         )
       }
-      loading={loading}
+      loading={loadingDelegationList}
       columns={[
         {
           dataField: 'address',
           text: t('VALIDATOR_ADDRESS'),
           headerStyle: () => ({ minWidth: '200px' }),
-          filterValue: (cell: any) => cell.props.address,
+          filterValue: (cell) => cell.props.address,
         },
         {
           headerStyle: () => ({ cursor: 'pointer', minWidth: '150px' }),
@@ -92,7 +98,7 @@ function DelegationsTable () {
         },
         {
           headerStyle: () => ({ cursor: 'pointer', minWidth: '160px' }),
-          dataField: 'delegatorShare',
+          dataField: 'delegatorsShare',
           text: t('Delegator Share'),
           sort: true,
         },
@@ -101,14 +107,14 @@ function DelegationsTable () {
           text: '',
         },
       ]}
-      table={delegations.map((delegation: Delegation, idx: number) => ({
+      table={delegationList.map((delegation, idx) => ({
         id: idx,
         address: <ExplorerAddress
           iconed
           short
           address={delegation.validator}
         />,
-        delegatorShare: formatAsset(delegation.delegatorShare, ' %'),
+        delegatorShare: formatAsset(delegation.delegatorsShare, ' %'),
         amount: formatAsset(delegation.actualStake, 'Q'),
         reward: formatAsset(delegation.claimableReward, 'Q'),
         manage: (

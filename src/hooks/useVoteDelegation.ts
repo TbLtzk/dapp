@@ -1,25 +1,25 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
-import { votingAgent } from 'store/q-vault/selectors';
-import { userAddressMetamask } from 'store/user-inf/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useUser } from 'store/user/hooks';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
 import { trimAddress } from 'utils/strings';
 
 function useVoteDelegation () {
   const { t } = useTranslation();
+  const { delegationInfo } = useQVault();
+  const { address } = useUser();
 
-  const agent = useSelector(votingAgent);
-  const userAddress = useSelector(userAddressMetamask);
+  const agent = delegationInfo.votingAgent;
 
   if (!agent) return '...';
 
-  if (agent !== userAddress && agent !== ZERO_ADDRESS) {
+  if (agent !== address && agent !== ZERO_ADDRESS) {
     return `${t('YOUR_VOTING_AGENT_IS')} ${trimAddress(agent)}`;
   }
 
-  if (agent === userAddress) {
+  if (agent === address) {
     return t('YOU_VOTE_FOR_YOURSELF');
   }
 

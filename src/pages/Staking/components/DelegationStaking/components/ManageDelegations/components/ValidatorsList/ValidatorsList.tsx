@@ -1,43 +1,31 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { Validator } from 'typings/validator';
 
 import ProgressBar from 'components/Base/ProgressBar';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
 import Table from 'ui/Table';
 
-import useMetamaskReset from 'hooks/useMetamaskReset';
-
 import DelegateModal from '../../../DelegateModal';
 
-import { getValidatorMembers } from 'store/validators/action-creators';
-import { loadingValidatorsWidenedSelector, validatorsWidenedSelector } from 'store/validators/selectors';
+import { useValidators } from 'store/validators/hooks';
 
-import formTypes from 'constants/form-types';
-import { TABLE_TYPES } from 'constants/tableTypes';
 import { formatAsset } from 'utils/numbers';
 
 function ValidatorsList () {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const validators = useSelector(validatorsWidenedSelector);
-  const validatorsLoading = useSelector(loadingValidatorsWidenedSelector);
-
-  useMetamaskReset(formTypes.qVaultDelegation, () => dispatch(getValidatorMembers(TABLE_TYPES.validatorsWidened)));
+  const { validatorStats, validatorStatsLoading } = useValidators();
 
   return (
     <Table
       emptyTableMessage={t('NO_VALIDATORS')}
       perPage={1000}
-      loading={validatorsLoading}
+      loading={validatorStatsLoading}
       columns={[
         {
           headerStyle: () => ({ minWidth: '190px' }),
           dataField: 'validator',
           text: t('ADDRESS'),
-          filterValue: (cell: any) => cell.props.children[0].props.address,
+          filterValue: (cell) => cell.props.children[0].props.address,
         },
         {
           headerStyle: () => ({ cursor: 'pointer', minWidth: '200px' }),
@@ -47,7 +35,7 @@ function ValidatorsList () {
         },
         {
           headerStyle: () => ({ cursor: 'pointer', minWidth: '170px' }),
-          dataField: 'delegatorShare',
+          dataField: 'delegatorsShare',
           text: t('DELEGATOR_SHARE'),
           sort: true,
         },
@@ -60,7 +48,7 @@ function ValidatorsList () {
           text: '',
         },
       ]}
-      table={validators.map((validator: Validator) => ({
+      table={validatorStats.map((validator) => ({
         id: validator.address,
         rank: validator.rank,
         validator: (
@@ -75,7 +63,7 @@ function ValidatorsList () {
           </div>
         ),
         totalDelegatedStake: formatAsset(validator.delegatedStake, 'Q'),
-        delegatorShare: formatAsset(validator.delegatorShare, ' %'),
+        delegatorShare: formatAsset(validator.delegatorsShare, ' %'),
         delegationSaturation: <ProgressBar value={validator.delegationSaturation} />,
         chooseValidator: <DelegateModal type="validator-select" delegation={validator}/>,
       }))}

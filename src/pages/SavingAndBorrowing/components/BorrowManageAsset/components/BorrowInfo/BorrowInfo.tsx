@@ -1,15 +1,15 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import { BorrowInfoContainer } from './styles';
 
-import { borrowVaultSelector } from 'store/borrow-assets/selectors';
+import { useBorrowAssets } from 'store/borrow-assets/hooks';
 
 import { formatNumber, formatPercent } from 'utils/numbers';
 
 function BorrowInfo () {
   const { t } = useTranslation();
-  const { collateralDetails, borrowingDetails } = useSelector(borrowVaultSelector);
+  const { borrowVault } = useBorrowAssets();
+  const { collateralDetails, borrowingDetails } = borrowVault;
 
   const infoGroups = [
     {

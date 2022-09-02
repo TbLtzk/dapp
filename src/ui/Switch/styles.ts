@@ -3,8 +3,8 @@ import styled, { css } from 'styled-components';
 import { getSwitchColor } from './colors';
 
 export const SwitchContainer = styled.div<{
-  $checked: boolean
-  $disabled: boolean
+  $checked: boolean;
+  $disabled: boolean;
 }>`
   position: relative;
   display: flex;

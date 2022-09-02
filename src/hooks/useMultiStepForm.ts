@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
 
 interface MultiStepFormProps<T> {
-  initialValues?: T,
-  onConfirm?: (_: T) => void,
+  initialValues?: T;
+  onConfirm?: (_: T) => void;
 }
 
 export default function useMultiStepForm<T> ({

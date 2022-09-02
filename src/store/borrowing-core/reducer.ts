@@ -1,149 +1,98 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BorrowAssetsRateAndFee, SavingAssets, VaultWithFee } from 'typings/defi';
 
-import * as types from './types';
-
-interface BorrowingCoreItems {
+interface BorrowingCoreState {
   mintedAmount: number | string;
   normalizedDebt: number | string;
   liquidationFullDebt: number | string;
+  outstandingDebt: number;
 
   borrowingVaults: VaultWithFee[];
   borrowingVaultsError: Error | null | unknown;
   borrowingVaultsLoading: boolean;
-
-  outstandingDebt: number;
-  outstandingDebtLoading: boolean;
-  outstandingDebtError: Error | null | unknown;
 
   savingAssets: SavingAssets[];
   savingAssetsLoading: boolean;
   savingAssetsError: Error | null | unknown;
 
   totalSavingBalance: number | string;
-  totalSavingBalanceLoading: boolean;
-  totalSavingBalanceError: Error | null | unknown;
-
   savingRate: number | string;
-  savingRateLoading: boolean;
-  savingRateError: Error | null | unknown;
-
   interestRates: BorrowAssetsRateAndFee[];
-  interestRatesLoading: boolean;
-  interestRatesError: Error | null | unknown;
 }
 
-const initialState: BorrowingCoreItems = {
+const initialState: BorrowingCoreState = {
   mintedAmount: 0,
   normalizedDebt: 0,
   liquidationFullDebt: 0,
+  outstandingDebt: 0,
 
   borrowingVaults: [],
-  borrowingVaultsError: null,
   borrowingVaultsLoading: true,
-
-  outstandingDebt: 0,
-  outstandingDebtLoading: true,
-  outstandingDebtError: null,
+  borrowingVaultsError: null,
 
   savingAssets: [],
   savingAssetsLoading: true,
   savingAssetsError: null,
 
   totalSavingBalance: 0,
-  totalSavingBalanceLoading: true,
-  totalSavingBalanceError: null,
-
   savingRate: 0,
-  savingRateLoading: true,
-  savingRateError: null,
-
   interestRates: [],
-  interestRatesLoading: true,
-  interestRatesError: null,
 };
 
-export default function reducer (state = initialState, action: types.BorrowingCoreActions) {
-  switch (action.type) {
-    case 'GET_BORROWING_VAULTS_SUCCESS':
-      return {
-        ...state,
-        mintedAmount: 0,
-        normalizedDebt: 0,
-        liquidationFullDebt: 0,
-        borrowingVaults: action.vaults,
-        borrowingVaultsLoading: false,
-      };
-    case 'GET_BORROWING_VAULTS_ERROR':
-      return {
-        ...state,
-        borrowingVaults: [],
-        borrowingVaultsError: action.error,
-        borrowingVaultsLoading: false,
-      };
-    case 'GET_SAVING_ASSETS_SUCCESS':
-      return {
-        ...state,
-        savingAssets: action.savingAssets,
-        savingAssetsLoading: false,
-      };
-    case 'GET_SAVING_ASSETS_ERROR':
-      return {
-        ...state,
-        savingAssetsError: action.error,
-        savingAssetsLoading: false,
-      };
-    case 'GET_TOTAL_SAVING_BALANCE_SUCCESS':
-      return {
-        ...state,
-        totalSavingBalance: action.totalSavingBalance,
-        totalSavingBalanceLoading: false,
-      };
-    case 'GET_TOTAL_SAVING_BALANCE_ERROR':
-      return {
-        ...state,
-        totalSavingBalanceError: action.error,
-        totalSavingBalanceLoading: false,
-      };
-    case 'GET_OUTSTANDING_DEBT_SUCCESS':
-      return {
-        ...state,
-        outstandingDebt: action.outstandingDebt,
-        outstandingDebtLoading: false,
-      };
-    case 'GET_OUTSTANDING_DEBT_ERROR':
-      return {
-        ...state,
-        outstandingDebtError: action.error,
-        outstandingDebtLoading: false,
-      };
+const borrowingCoreSlice = createSlice({
+  name: 'borrowing-core',
+  initialState,
+  reducers: {
+    setBorrowingVaults (state, { payload }: PayloadAction<VaultWithFee[]>) {
+      state.mintedAmount = 0;
+      state.normalizedDebt = 0;
+      state.liquidationFullDebt = 0;
+      state.borrowingVaults = payload;
+      state.borrowingVaultsLoading = false;
+    },
 
-    case 'GET_SAVING_RATE_SUCCESS':
-      return {
-        ...state,
-        savingRate: action.savingRate,
-        savingRateLoading: false,
-      };
+    setBorrowingVaultsError (state, { payload }: PayloadAction<unknown>) {
+      state.borrowingVaultsError = payload;
+      state.borrowingVaultsLoading = false;
+      state.borrowingVaults = [];
+    },
 
-    case 'GET_SAVING_RATE_ERROR':
-      return {
-        ...state,
-        savingRateERROR: action.error,
-        savingRateLoading: false,
-      };
+    setSavingAssets (state, { payload }: PayloadAction<SavingAssets[]>) {
+      state.savingAssets = payload;
+      state.savingAssetsLoading = false;
+    },
 
-    case 'GET_INTEREST_RATES_SUCCESS':
-      return {
-        ...state,
-        interestRates: action.interestRates,
-        interestRatesLoading: false,
-      };
-    case 'GET_INTEREST_RATES_ERROR':
-      return {
-        ...state,
-        interestRatesError: action.error,
-        interestRatesLoading: false,
-      };
-    default:
-      return state;
+    setSavingAssetsError (state, { payload }: PayloadAction<unknown>) {
+      state.savingAssetsError = payload;
+      state.savingAssetsLoading = false;
+    },
+
+    setTotalSavingBalance (state, { payload }: PayloadAction<number | string>) {
+      state.totalSavingBalance = payload;
+    },
+
+    setOutstandingDebt (state, { payload }: PayloadAction<number>) {
+      state.outstandingDebt = payload;
+    },
+
+    setSavingRate (state, { payload }: PayloadAction<number | string>) {
+      state.savingRate = payload;
+    },
+
+    setInterestRates (state, { payload }: PayloadAction<BorrowAssetsRateAndFee[]>) {
+      state.interestRates = payload;
+    },
   }
-}
+});
+
+export const {
+  setBorrowingVaults,
+  setBorrowingVaultsError,
+  setSavingAssets,
+  setSavingAssetsError,
+  setTotalSavingBalance,
+  setOutstandingDebt,
+  setSavingRate,
+  setInterestRates,
+} = borrowingCoreSlice.actions;
+export default borrowingCoreSlice.reducer;

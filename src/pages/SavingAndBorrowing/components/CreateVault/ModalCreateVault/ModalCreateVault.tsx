@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 
 import { Asset } from 'typings/defi';
 
@@ -9,23 +8,26 @@ import RadioGroup from 'ui/RadioGroup';
 
 import useForm from 'hooks/useForm';
 
-import { setCreateVault } from 'store/borrowing-core/actions';
+import { useBorrowingCore } from 'store/borrowing-core/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
 import { BorrowAssets } from 'constants/defi';
 import { required } from 'utils/validators';
 
-function ModalCreateVault () {
-  const dispatch = useDispatch();
+function ModalCreateVault ({ onSubmit }: { onSubmit: () => void }) {
   const { t } = useTranslation();
+  const { submitTransaction } = useTransaction();
+  const { createVault } = useBorrowingCore();
+
   const form = useForm({
-    initialValues: {
-      asset: '',
-    },
-    validators: {
-      asset: [required],
-    },
+    initialValues: { asset: '' as Asset },
+    validators: { asset: [required] },
     onSubmit: ({ asset }) => {
-      dispatch(setCreateVault(asset as Asset, t('CREATE_ASSET_VAULT_SUCCESS')));
+      submitTransaction({
+        successMessage: t('CREATE_ASSET_VAULT_SUCCESS'),
+        submitFn: async () => createVault(asset),
+        onSuccess: () => onSubmit(),
+      });
     },
   });
 

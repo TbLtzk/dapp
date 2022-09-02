@@ -1,8 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { Validator } from 'typings/validator';
 
 import RedirectAddress from 'components/Custom/RedirectAddress';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
@@ -12,30 +9,26 @@ import Table from 'ui/Table';
 
 import { useEnterShortList } from '../ManageValidator/components/ManageBalance/hooks';
 
-import { getIsUserValidator, getValidatorMembers } from 'store/validators/action-creators';
-import {
-  isUserValidatorSelector,
-  loadingValidatorsWidenedSelector,
-  validatorsWidenedSelector,
-} from 'store/validators/selectors';
+import { useValidators } from 'store/validators/hooks';
 
 import { RoutePaths } from 'constants/routes';
 import { formatAsset } from 'utils/numbers';
 
 function ValidatorsTable () {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
-
+  const {
+    isValidator,
+    validatorStats,
+    validatorStatsLoading,
+    checkIsValidator,
+    loadValidatorStats
+  } = useValidators();
   const enterShortList = useEnterShortList();
 
-  const validatorsTable = useSelector(validatorsWidenedSelector);
-  const tableLoading = useSelector(loadingValidatorsWidenedSelector);
-  const isValidator = useSelector(isUserValidatorSelector);
-
   useEffect(() => {
-    dispatch(getIsUserValidator());
-    dispatch(getValidatorMembers('validators-widened'));
-  }, [dispatch]);
+    checkIsValidator();
+    loadValidatorStats();
+  }, []);
 
   return (
     <Table
@@ -46,7 +39,7 @@ function ValidatorsTable () {
           <InfoTooltip topic="validator-ranking" />
         </h2>
       }
-      loading={tableLoading}
+      loading={validatorStatsLoading}
       perPage={20}
       error=""
       emptyTableMessage={t('NO_VALIDATORS')}
@@ -61,7 +54,7 @@ function ValidatorsTable () {
           headerStyle: () => ({ minWidth: '200px' }),
           dataField: 'validator',
           text: t('ADDRESS'),
-          filterValue: (cell: any) => cell.props.children[0].props.address,
+          filterValue: (cell) => cell.props.children[0].props.address,
         },
         {
           headerStyle: () => ({ minWidth: '145px', cursor: 'pointer' }),
@@ -89,12 +82,12 @@ function ValidatorsTable () {
         },
         {
           headerStyle: () => ({ minWidth: '100px', cursor: 'pointer' }),
-          dataField: 'delegatorShare',
+          dataField: 'delegatorsShare',
           text: t('DELEGATOR_SHARE'),
           sort: true,
         },
       ]}
-      table={validatorsTable.map((validator: Validator) => ({
+      table={validatorStats.map((validator) => ({
         id: validator.address,
         rank: validator.rank,
         validator: (
@@ -112,7 +105,7 @@ function ValidatorsTable () {
         selfStake: formatAsset(validator.selfStake, 'Q'),
         delegatedStake: formatAsset(validator.delegatedStake, 'Q'),
         validatorShare: formatAsset(validator.validatorShare, ' %'),
-        delegatorShare: formatAsset(validator.delegatorShare, ' %'),
+        delegatorShare: formatAsset(validator.delegatorsShare, ' %'),
       }))}
     />
   );

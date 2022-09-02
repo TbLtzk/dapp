@@ -1,7 +1,7 @@
 import Icon from 'ui/Icon';
 
 interface Props {
-  link: string
+  link: string;
 }
 
 function LinkViewer ({ link }: Props) {

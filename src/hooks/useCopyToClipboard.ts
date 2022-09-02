@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 import copy from 'copy-to-clipboard';
 
-type CopiedValue = boolean
-type CopyFn = (text: string) => void
+type CopiedValue = boolean;
+type CopyFn = (text: string) => void;
 
 function useCopyToClipboard (): [CopiedValue, CopyFn] {
   const [copied, setCopied] = useState<CopiedValue>(false);

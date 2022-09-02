@@ -6,7 +6,7 @@ export enum Breakpoints {
   tablet = 600,
   small = 480,
 };
-type BreakpointType = keyof typeof Breakpoints
+type BreakpointType = keyof typeof Breakpoints;
 
 function lessThan (bp: BreakpointType) {
   return `@media (max-width: ${Breakpoints[bp] - 1}px)`;

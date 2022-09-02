@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router';
 
 import { ProposalContractType } from 'typings/contracts';
@@ -14,19 +13,19 @@ import useInterval from 'hooks/useInterval';
 import ProposalLayout from './components/ProposalLayout';
 import ProposalSkeleton from './components/Proposals/components/ProposalSkeleton';
 
-import { transactionLoadingSelector } from 'store/transaction-handler/selectors';
+import { useTransaction } from 'store/transaction/hooks';
 
 import { getProposal, getProposalTypeByContract } from 'contracts/helpers/voting';
 
 import { RoutePaths } from 'constants/routes';
 
 function Proposal ({ match }: RouteComponentProps<{
-  id: string,
-  contract: ProposalContractType
+  id: string;
+  contract: ProposalContractType;
 }>) {
   const { t } = useTranslation();
   const history = useHistory();
-  const transactionLoading = useSelector(transactionLoadingSelector);
+  const { transactionLoading } = useTransaction();
 
   const [proposal, setProposal] = useState<ProposalInterface |null>(null);
   const type = getProposalTypeByContract(match.params.contract);

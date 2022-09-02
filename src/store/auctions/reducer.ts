@@ -1,43 +1,50 @@
 
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { isEqual, orderBy, uniqWith } from 'lodash';
 import { AuctionInfos, AuctionType } from 'typings/auctions';
-
-import * as types from './types';
 
 import { countActiveAuctions } from 'contracts/helpers/auction';
 
 interface AuctionItem {
-  auctions: AuctionInfos[]
-  isLoading: boolean
-  lastBlock: number | string
-  activeCount: number
+  list: AuctionInfos[];
+  isLoading: boolean;
+  lastBlock: number | string;
+  activeCount: number;
 }
 
-function getDefaultAuctionState () {
-  return { auctions: [], activeCount: 0, isLoading: true, lastBlock: 0 } as AuctionItem;
+function getDefaultAuctionState (): AuctionItem {
+  return {
+    list: [],
+    activeCount: 0,
+    isLoading: true,
+    lastBlock: 0
+  };
 }
 
-const initialState = {
+const initialState: Record<AuctionType, AuctionItem> = {
   liquidation: getDefaultAuctionState(),
   systemDebt: getDefaultAuctionState(),
   systemSurplus: getDefaultAuctionState(),
-} as Record<AuctionType, AuctionItem>;
+};
 
-export default function auctions (state = initialState, action: types.AuctionActions) {
-  switch (action.type) {
-    case 'SET_AUCTIONS': {
-      const { auctionType, newAuctions, lastActiveBlock } = action;
-      return {
-        ...state,
-        [auctionType]: {
-          auctions: uniqWith(orderBy(newAuctions, 'blockNumber', 'desc'), isEqual),
-          activeCount: countActiveAuctions(newAuctions),
-          lastBlock: lastActiveBlock,
-          isLoading: false,
-        },
+const auctionsSlice = createSlice({
+  name: 'auctions',
+  initialState,
+  reducers: {
+    setAuctions (state, { payload }: PayloadAction<{
+      type: AuctionType;
+      list: AuctionInfos[];
+      lastActiveBlock: number | string;
+    }>) {
+      state[payload.type] = {
+        list: uniqWith(orderBy(payload.list, 'blockNumber', 'desc'), isEqual),
+        activeCount: countActiveAuctions(payload.list),
+        lastBlock: payload.lastActiveBlock,
+        isLoading: false,
       };
     }
-    default:
-      return state;
   }
-}
+});
+
+export const { setAuctions } = auctionsSlice.actions;
+export default auctionsSlice.reducer;

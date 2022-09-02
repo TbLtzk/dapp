@@ -5,8 +5,8 @@ import { getTipColor } from './colors';
 import { TipType } from '.';
 
 export const TipWrapper = styled.div<{
-  $type: TipType
-  $compact?: boolean
+  $type: TipType;
+  $compact?: boolean;
 }>`
   display: grid;
   grid-template: "icon text action" / auto 1fr auto;

@@ -1,84 +1,70 @@
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  setTransactionLoading,
-  setTransactionLoadingError,
-  setTransactionLoadingSuccess,
-} from 'store/transaction-handler/actions';
-import { userAddressMetamask } from 'store/user-inf/selectors';
-import { getVRPBalance, getVRPDelegatorsShare, getVRPLastUpdateOfCompoundRate, getVRPPoolInfo } from 'store/validation-reward-pools/action-creators';
-import { lastUpdateOfCompoundRateSelector } from 'store/validation-reward-pools/selectors';
-import { getValidatorDelegatedStake } from 'store/validators/action-creators';
+import { useUser } from 'store/user/hooks';
+import { useValidationRewards } from 'store/validation-rewards/hooks';
+import { useValidators } from 'store/validators/hooks';
 
 import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
 
-import formTypes from 'constants/form-types';
-import { TRANSACTION_TYPES } from 'constants/statuses';
-import { captureError, getErrorMessage, getSuccessMessage } from 'utils/errors';
 import { getFixedPercentage } from 'utils/numbers';
 
-function useSetDelegatorShare () {
-  const dispatch = useDispatch();
+function useSetDelegatorsShare () {
+  const { getVRPDelegatorsShare } = useValidationRewards();
 
-  const setDelegatorShare = async (amount: string, label: string, form: any) => {
-    try {
-      dispatch(setTransactionLoading());
-      const contract = await getValidationRewardPoolsInstance();
-      const transaction = await contract.setDelegatorsShare(getFixedPercentage(amount));
-      form.reset();
-      dispatch(getVRPDelegatorsShare());
-      dispatch(setTransactionLoadingSuccess(getSuccessMessage(formTypes.validatorsPool, transaction, label)));
-    } catch (error) {
-      captureError(error);
-      dispatch(setTransactionLoadingError(getErrorMessage(error)));
-    }
+  const setDelegatorsShare = async (amount: string) => {
+    const contract = await getValidationRewardPoolsInstance();
+    const receipt = await contract.setDelegatorsShare(getFixedPercentage(amount));
+
+    getVRPDelegatorsShare();
+    return receipt;
   };
 
   return {
-    setDelegatorShare: useCallback(setDelegatorShare, [])
+    setDelegatorsShare: useCallback(setDelegatorsShare, [])
   };
 }
 
 function useUpdateValidatorCompoundRate () {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const userAddress = useSelector(userAddressMetamask);
-  const [loading, setLoading] = useState(false);
-  const lastUpdateOfCompoundRate = useSelector(lastUpdateOfCompoundRateSelector);
+  const {
+    lastUpdateOfCompoundRate,
+    getVRPBalance,
+    getVRPPoolInfo,
+    getVRPDelegatorsShare,
+    getVRPLastUpdateOfCompoundRate
+  } = useValidationRewards();
+  const { loadValidatorDelegatedStake } = useValidators();
 
-  const updateCompoundRate = async (label: string) => {
+  const user = useUser();
+  const [loading, setLoading] = useState(false);
+
+  const updateCompoundRate = async () => {
     try {
       setLoading(true);
-
       const contract = await getValidationRewardPoolsInstance();
-      const transaction = await contract.updateValidatorsCompoundRate(userAddress);
-      const nextUpdateCompoundRate = await contract.getLastUpdateOfCompoundRate(userAddress);
-      if (String(lastUpdateOfCompoundRate) === String(nextUpdateCompoundRate)) {
-        dispatch(
-          setTransactionLoadingError({ message: t('STAKE_AMOUNT_BELOW_MINIMUM_TO_APPLY_NEW_RATE') })
-        );
-      } else {
-        dispatch(getVRPPoolInfo());
-        dispatch(getVRPBalance());
-        dispatch(getValidatorDelegatedStake());
-        dispatch(getVRPDelegatorsShare());
-        dispatch(getVRPLastUpdateOfCompoundRate());
-        dispatch(setTransactionLoadingSuccess(getSuccessMessage(TRANSACTION_TYPES.success, transaction, label)));
+      const receipt = await contract.updateValidatorsCompoundRate(user.address);
+      const nextUpdateCompoundRate = await contract.getLastUpdateOfCompoundRate(user.address);
+      if (lastUpdateOfCompoundRate === nextUpdateCompoundRate) {
+        throw new Error(t('STAKE_AMOUNT_BELOW_MINIMUM_TO_APPLY_NEW_RATE'));
       }
-    } catch (error) {
-      captureError(error);
-      dispatch(setTransactionLoadingError(getErrorMessage(error)));
+
+      getVRPPoolInfo();
+      getVRPBalance();
+      loadValidatorDelegatedStake();
+      getVRPDelegatorsShare();
+      getVRPLastUpdateOfCompoundRate();
+
+      return receipt;
     } finally {
       setLoading(false);
     }
   };
 
   return {
-    compountRateLoading: loading,
+    compoundRateLoading: loading,
     updateCompoundRate,
   };
 }
 
-export { useSetDelegatorShare, useUpdateValidatorCompoundRate };
+export { useSetDelegatorsShare, useUpdateValidatorCompoundRate };

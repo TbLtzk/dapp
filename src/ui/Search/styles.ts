@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { getSearchColor } from './colors';
 
 export const SearchContainer = styled.div<{
-  $disabled: boolean,
+  $disabled: boolean;
 }>`
   display: flex;
   align-items: center;

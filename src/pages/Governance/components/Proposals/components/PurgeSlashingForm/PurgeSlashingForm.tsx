@@ -1,24 +1,22 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 
+import { useSlashingActions } from 'pages/Governance/hooks/useSlashingActions';
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 import RadioGroup from 'ui/RadioGroup';
 
 import useForm from 'hooks/useForm';
-import useMetamaskReset from 'hooks/useMetamaskReset';
 
 import { StyledPurgeSlashingForm } from './styles';
 
-import { setPurgeSlashing } from 'store/voting/slashing/actions';
+import { useTransaction } from 'store/transaction/hooks';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
-import formTypes from 'constants/form-types';
 import { address, required } from 'utils/validators';
 
 function PurgeSlashingForm ({ onClose }: { onClose: () => void }) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { submitTransaction } = useTransaction();
 
   const form = useForm({
     initialValues: {
@@ -29,12 +27,16 @@ function PurgeSlashingForm ({ onClose }: { onClose: () => void }) {
       address: [required, address],
       contractType: [required]
     },
-    onSubmit: ({ address, contractType }) => {
-      dispatch(setPurgeSlashing(address, contractType, t('PURGE_SUCCESS')));
+    onSubmit: ({ address }) => {
+      submitTransaction({
+        successMessage: t('PURGE_SUCCESS'),
+        submitFn: () => purgeSlashing(address),
+        onSuccess: () => onClose(),
+      });
     }
   });
 
-  useMetamaskReset(formTypes.purgeSlashing, onClose);
+  const { purgeSlashing } = useSlashingActions(form.values.contractType === CONTRACT_TYPES.rootNodes);
 
   return (
     <StyledPurgeSlashingForm

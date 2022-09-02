@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
@@ -13,7 +12,7 @@ import useAnimateNumber from 'hooks/useAnimateNumber';
 
 import LockForm from './LockForm';
 
-import { votingLockingEnd, votingWeight } from 'store/q-vault/selectors';
+import { useQVault } from 'store/q-vault/hooks';
 
 import { formatDate, formatDateRelative, unixToDate } from 'utils/date';
 
@@ -42,10 +41,8 @@ const StyledWrapper = styled.div`
 
 function LockVoting () {
   const { t, i18n } = useTranslation();
-
-  const userVotingWeight = useSelector(votingWeight);
-  const userVotingWeightRef = useAnimateNumber(userVotingWeight);
-  const userLockingEnd = unixToDate(useSelector(votingLockingEnd));
+  const { votingWeight, votingLockingEnd } = useQVault();
+  const userVotingWeightRef = useAnimateNumber(votingWeight);
 
   const [lockModalOpen, setLockModalOpen] = useState(false);
 
@@ -72,9 +69,9 @@ function LockVoting () {
           <p className="text-md color-secondary">{t('LOCKING_END_TIME')}</p>
           <p
             className="text-xl font-semibold"
-            title={formatDate(userLockingEnd, i18n.language)}
+            title={formatDate(unixToDate(votingLockingEnd), i18n.language)}
           >
-            {formatDateRelative(userLockingEnd, i18n.language)}
+            {formatDateRelative(unixToDate(votingLockingEnd), i18n.language)}
           </p>
         </div>
       </div>
@@ -91,7 +88,7 @@ function LockVoting () {
         title={t('LOCK_YOUR_Q_TOKENS_FOR_VOTING')}
         onClose={() => setLockModalOpen(false)}
       >
-        <LockForm />
+        <LockForm onSubmit={() => setLockModalOpen(false)} />
       </Modal>
     </StyledWrapper>
   );

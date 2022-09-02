@@ -1,12 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
 import { fromWei } from 'web3-utils';
 
-import { poolInfoSelector } from 'store/validation-reward-pools/selectors';
-import { validatorDelegatedStakeSelector } from 'store/validators/selectors';
+import { useValidationRewards } from 'store/validation-rewards/hooks';
+import { useValidators } from 'store/validators/hooks';
 
 import { formatAsset, formatPercent } from 'utils/numbers';
 
@@ -39,18 +38,18 @@ const StyledWrapper = styled.div`
 
 function RewardStats () {
   const { t } = useTranslation();
-  const delegatedStake = useSelector(validatorDelegatedStakeSelector);
-  const poolInfo = useSelector(poolInfoSelector);
+  const { validatorDelegatedStake } = useValidators();
+  const { poolInfo } = useValidationRewards();
   const reserverdForClaims = Number(fromWei(poolInfo?.reservedForClaims ?? '0'));
 
-  const distributableDelegatorsRewards = poolInfo?.poolBalance - reserverdForClaims ?? 0;
-  const delegatorPercentage = distributableDelegatorsRewards / Number(delegatedStake);
+  const distributableDelegatorsRewards = Number(poolInfo.poolBalance) - reserverdForClaims ?? 0;
+  const delegatorPercentage = distributableDelegatorsRewards / Number(validatorDelegatedStake);
 
   const rewardStatsArray = [
     {
       id: 'collected-pool',
       label: t('COLLECTED_POOL_REWARDS'),
-      value: formatAsset(poolInfo.poolBalance, 'Q'),
+      value: formatAsset(fromWei(poolInfo.poolBalance), 'Q'),
     },
     {
       id: 'delegator-reward',

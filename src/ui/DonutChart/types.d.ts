@@ -6,7 +6,7 @@ export type DonutOption = {
   label: string;
   value: number;
   icon?: ReactNode;
-}
+};
 
 export type DonutLegendItem = {
   color: string;
@@ -14,7 +14,7 @@ export type DonutLegendItem = {
   value: string;
   percent: string;
   icon?: ReactNode;
-}
+};
 
 export type DonutTooltipPosition = 'top' | 'bottom' | 'left' | 'right';
 
@@ -22,4 +22,4 @@ export type DonutTooltipOptions = {
   index: number;
   position: DonutTooltipPosition;
   style: CSSProperties;
-}
+};

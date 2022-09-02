@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -14,9 +13,9 @@ import DelegateVoting from './components/DelegateVoting';
 import LockVoting from './components/LockVoting';
 import VotingOverview from './components/VotingOverview';
 
-import { getDelegationInfo, getLockedAssets, getQVBalance } from 'store/q-vault/action-creators';
-import { userAddressMetamask } from 'store/user-inf/selectors';
-import { getBaseVotingWeightInfo } from 'store/voting/proposals/actions';
+import { useBaseVotingWeightInfo } from 'store/proposals/hooks';
+import { useQVault } from 'store/q-vault/hooks';
+import { useUser } from 'store/user/hooks';
 
 import { RoutePaths } from 'constants/routes';
 
@@ -51,15 +50,16 @@ const StyledWrapper = styled.div`
 
 function VotingPower () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const userAddress = useSelector(userAddressMetamask);
+  const user = useUser();
+  const { getBaseVotingWeightInfo } = useBaseVotingWeightInfo();
+  const { loadLockInfo, loadDelegationStakeInfo, loadQVBalanceDetails } = useQVault();
 
   useEffect(() => {
-    dispatch(getBaseVotingWeightInfo());
-    dispatch(getLockedAssets(userAddress));
-    dispatch(getDelegationInfo(userAddress));
-    dispatch(getQVBalance());
-  }, [dispatch]);
+    getBaseVotingWeightInfo();
+    loadLockInfo(user.address);
+    loadDelegationStakeInfo();
+    loadQVBalanceDetails();
+  }, []);
 
   return (
     <StyledWrapper>

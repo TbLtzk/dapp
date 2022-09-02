@@ -10,9 +10,9 @@ export const toastTypes = ['success', 'error', 'info'] as const;
 export type ToastType = typeof toastTypes[number];
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  type?: ToastType
-  text: string
-  onClose: () => void
+  type?: ToastType;
+  text: string;
+  onClose: () => void;
 }
 
 function Toast ({

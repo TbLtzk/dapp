@@ -6,16 +6,16 @@ import useForm from './useForm';
 
 export type Form<T> = ReturnType<
   typeof useForm<Extract<keyof T, string>, T[keyof T]>
->
+>;
 
 function useFormArray<T> ({
   minCount = 0,
   maxCount = Infinity,
   onSubmit = () => {}
 }: {
-  minCount?: number
-  maxCount?: number
-  onSubmit?: (values: T[]) => void
+  minCount?: number;
+  maxCount?: number;
+  onSubmit?: (values: T[]) => void;
 }) {
   const [forms, setForms] = useState(getInitialForms());
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,7 +32,7 @@ function useFormArray<T> ({
       }));
     };
 
-    return { id, onChange } as { id: string, onChange: (form: Form<T>) => void } & Form<T>;
+    return { id, onChange } as { id: string; onChange: (form: Form<T>) => void } & Form<T>;
   };
 
   const validate = () => {

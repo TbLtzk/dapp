@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
@@ -11,9 +10,9 @@ import Button from 'ui/Button';
 
 import { useEnterShortList, useGetValidatorRank, useIsUserActiveValidator } from '../hooks';
 
-import { accountBalance } from 'store/q-vault/selectors';
-import { userAddressMetamask } from 'store/user-inf/selectors';
-import { isUserValidatorSelector } from 'store/validators/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useUser } from 'store/user/hooks';
+import { useValidators } from 'store/validators/hooks';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
 import { formatAsset } from 'utils/numbers';
@@ -35,9 +34,9 @@ const StyledWrapper = styled.div`
 
 function ValidatorInfo () {
   const { t } = useTranslation();
-  const userAddress = useSelector(userAddressMetamask);
-  const walletBalance = useSelector(accountBalance);
-  const isValidator = useSelector(isUserValidatorSelector);
+  const user = useUser();
+  const { walletBalance } = useQVault();
+  const { isValidator } = useValidators();
 
   const validatorRank = useGetValidatorRank();
   const isUserActiveValidator = useIsUserActiveValidator();
@@ -81,12 +80,12 @@ function ValidatorInfo () {
         <div>
           <p className="color-secondary text-md">{t('ADDRESS')}</p>
           <div className="text-lg">
-            {userAddress === ZERO_ADDRESS
+            {user.address === ZERO_ADDRESS
               ? '-'
               : <ExplorerAddress
                 short
                 iconed
-                address={userAddress}
+                address={user.address}
               />}
           </div>
         </div>

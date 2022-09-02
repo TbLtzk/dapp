@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import Table from 'ui/Table';
@@ -8,12 +7,7 @@ import Tooltip from 'ui/Tooltip';
 
 import SaveManageAsset from '../SaveManageAsset';
 
-import { getSavingAssets } from 'store/borrowing-core/actions';
-import {
-  savingAssetsErrorSelector,
-  savingAssetsLoadingSelector,
-  savingAssetsSelector,
-} from 'store/borrowing-core/selectors';
+import { useBorrowingCore } from 'store/borrowing-core/hooks';
 
 import { addQUSDTokenToWallet } from 'contracts/helpers/saving-assets-helper';
 
@@ -21,14 +15,15 @@ import { formatPercent } from 'utils/numbers';
 
 function SavingCryptoAssets () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-
-  const savingAssets = useSelector(savingAssetsSelector);
-  const savingAssetsLoading = useSelector(savingAssetsLoadingSelector);
-  const savingAssetsError = useSelector(savingAssetsErrorSelector);
+  const {
+    savingAssets,
+    savingAssetsLoading,
+    savingAssetsError,
+    getSavingAssets
+  } = useBorrowingCore();
 
   useEffect(() => {
-    dispatch(getSavingAssets());
+    getSavingAssets();
   }, []);
 
   return (
@@ -43,7 +38,7 @@ function SavingCryptoAssets () {
         emptyTableMessage={t('NO_SAVING_ASSETS')}
         loading={savingAssetsLoading}
         perPage={savingAssets.length}
-        error={savingAssetsError as any}
+        error={savingAssetsError}
         columns={[
           {
             dataField: 'depositAsset',

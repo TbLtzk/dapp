@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
@@ -8,21 +7,25 @@ import RootBalanceInfo from './components/RootBalanceInfo';
 import RootNodeMenu from './components/RootNodeMenu';
 import RootNodesTable from './components/RootNodesTable';
 
-import { getAccountBalance } from 'store/q-vault/action-creators';
-import { getMinimumRootTimeLock, getRootNodeStakes, getRootWithdrawals } from 'store/root-node/action-creators';
-import { userAddressMetamask } from 'store/user-inf/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useRootNodes } from 'store/root-nodes/hooks';
+import { useUser } from 'store/user/hooks';
 
 function RootNodeStaking () {
   const { t } = useTranslation();
-
-  const dispatch = useDispatch();
-  const userAddress = useSelector(userAddressMetamask);
+  const { loadWalletBalance } = useQVault();
+  const {
+    getRootNodeStakes,
+    getRootWithdrawalInfo,
+    getMinimumRootTimeLock
+  } = useRootNodes();
+  const user = useUser();
 
   useEffect(() => {
-    dispatch(getAccountBalance(userAddress));
-    dispatch(getRootNodeStakes(userAddress));
-    dispatch(getRootWithdrawals(userAddress));
-    dispatch(getMinimumRootTimeLock(userAddress));
+    loadWalletBalance();
+    getRootNodeStakes(user.address);
+    getRootWithdrawalInfo(user.address);
+    getMinimumRootTimeLock(user.address);
   }, []);
 
   return (

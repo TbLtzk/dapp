@@ -4,7 +4,7 @@ import { TagContainer } from './styles';
 import { TagState } from '.';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  state: TagState
+  state: TagState;
 }
 
 function Tag ({

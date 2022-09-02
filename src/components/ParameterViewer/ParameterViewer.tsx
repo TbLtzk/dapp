@@ -9,9 +9,9 @@ import Tip from 'ui/Tip';
 import { ParameterViewerContainer } from './styles';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  parameter: FormParameter
-  index: number
-  block?: boolean
+  parameter: FormParameter;
+  index: number;
+  block?: boolean;
 }
 
 function ParameterViewer ({

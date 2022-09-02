@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
@@ -11,8 +10,7 @@ import DashboardLink from '../components/DashboardLink';
 import BalanceOverview from './components/BalanceOverview';
 import InterestRateBlock from './components/InterestRateBlock';
 
-import { getInterestRates } from 'store/borrowing-core/actions';
-import { interestRatesSelector } from 'store/borrowing-core/selectors';
+import { useBorrowingCore } from 'store/borrowing-core/hooks';
 
 const StyledWrapper = styled.div`
   .saving-borrowing__main {
@@ -37,12 +35,10 @@ const StyledWrapper = styled.div`
 `;
 
 function SavingBorrowing () {
-  const dispatch = useDispatch();
-
-  const interestRates = useSelector(interestRatesSelector);
+  const { interestRates, getInterestRates } = useBorrowingCore();
 
   useEffect(() => {
-    dispatch(getInterestRates());
+    getInterestRates();
   }, []);
 
   return (

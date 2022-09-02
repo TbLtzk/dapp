@@ -3,8 +3,8 @@ import { HTMLAttributes } from 'react';
 import { StyledSpinner } from './styles';
 
 interface Props extends HTMLAttributes<SVGSVGElement> {
-  size?: number
-  thickness?: number
+  size?: number;
+  thickness?: number;
 }
 
 function Spinner ({

@@ -4,16 +4,16 @@ import { uniqueId } from 'lodash';
 
 import { RadioContainer } from './styles';
 
-type ValueType = number | string | boolean
+type ValueType = number | string | boolean;
 interface Props<T extends ValueType> extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
-  checked: boolean
-  value: T
-  name: string
-  label?: string
-  tip?: string
-  extended?: boolean
-  disabled?: boolean
-  onChange: (value: T) => void
+  checked: boolean;
+  value: T;
+  name: string;
+  label?: string;
+  tip?: string;
+  extended?: boolean;
+  disabled?: boolean;
+  onChange: (value: T) => void;
 };
 
 function Radio<T extends ValueType> ({

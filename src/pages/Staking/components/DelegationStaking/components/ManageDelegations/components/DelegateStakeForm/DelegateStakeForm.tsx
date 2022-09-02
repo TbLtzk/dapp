@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { Validator } from 'typings/validator';
 import { toWei } from 'web3-utils';
@@ -13,23 +12,34 @@ import useForm from 'hooks/useForm';
 
 import ClaimTip from '../../../ClaimTip';
 
-import { setDelegateStake } from 'store/q-vault/action-creators';
-import { delegationStakeInfoSelector } from 'store/q-vault/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
 import { formatAsset } from 'utils/numbers';
 import { max, required } from 'utils/validators';
 
-function DelegateStakeForm ({ delegation }: { delegation: Validator }) {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
+interface Props {
+  delegation: Validator;
+  onSubmit: () => void;
+}
 
-  const delegationStakeInfo = useSelector(delegationStakeInfoSelector);
+function DelegateStakeForm ({ delegation, onSubmit }: Props) {
+  const { t } = useTranslation();
+  const { submitTransaction } = useTransaction();
+  const { delegationStakeInfo, delegateStake } = useQVault();
 
   const form = useForm({
     initialValues: { amount: '' },
     validators: { amount: [required, max(delegationStakeInfo.delegatableAmount)] },
     onSubmit: ({ amount }) => {
-      dispatch(setDelegateStake([delegation.address], [toWei(amount)], t('SUCCESSFUL_STAKE_UPDATE')));
+      submitTransaction({
+        successMessage: t('SUCCESSFUL_STAKE_UPDATE'),
+        onSuccess: () => onSubmit(),
+        submitFn: () => delegateStake({
+          addresses: [delegation.address],
+          stakes: [toWei(amount)],
+        })
+      });
     },
   });
 
@@ -47,7 +57,7 @@ function DelegateStakeForm ({ delegation }: { delegation: Validator }) {
 
         <div>
           <p className="text-md color-secondary">{t('DELEGATOR_SHARE')}</p>
-          <p className="text-lg">{formatAsset(delegation.delegatorShare, ' %')}</p>
+          <p className="text-lg">{formatAsset(delegation.delegatorsShare, ' %')}</p>
         </div>
       </div>
 

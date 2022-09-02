@@ -1,59 +1,52 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { StatsContainer } from 'pages/Governance/components/VotingStats/styles';
 import Button from 'ui/Button';
 
-import useMetamaskReset from 'hooks/useMetamaskReset';
-
 import { AuctionStatsContainer } from './styles';
 
-import { getAccountBalance, getUserBalance } from 'store/q-vault/action-creators';
-import { accountBalance, userBalance } from 'store/q-vault/selectors';
-import { getSavingAviableToDeposit } from 'store/saving-assets/action-creators';
-import { savingAviableToDepositSelector } from 'store/saving-assets/selectors';
-import {
-  getSystemBalance,
-  getSystemBalanceDebt,
-  getSystemBalanceSurplus,
-  getSystemReserveAvailableAmount,
-  getSystemReserveBalance,
-  setPerformNetting,
-} from 'store/system-balance/action-creators';
-import {
-  systemBalanceDebtSelector,
-  systemBalanceSelector,
-  systemBalanceSurplusSelector,
-  systemReserveAvailableAmountSelector,
-  systemReserveBalanceSelector,
-} from 'store/system-balance/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useSavingAssets } from 'store/saving-assets/hooks';
+import { useSystemBalance } from 'store/system-balance/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
 import { getEPDRUint } from 'contracts/helpers/epdr-param-helper';
 
-import { TRANSACTION_TYPES } from 'constants/statuses';
 import { formatAsset } from 'utils/numbers';
 
 function AuctionStats () {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { transactionLoading, submitTransaction } = useTransaction();
 
-  const userWalletBalance = useSelector(accountBalance);
-  const userQVaultBalance = useSelector(userBalance);
+  const {
+    walletBalance,
+    vaultBalance,
+    loadWalletBalance,
+    loadVaultBalance,
+  } = useQVault();
 
-  const systemBalanceSurplus = useSelector(systemBalanceSurplusSelector);
-  const savingAviableToDeposit = useSelector(savingAviableToDepositSelector);
-  const systemBalance = useSelector(systemBalanceSelector);
-  const systemBalanceDebt = useSelector(systemBalanceDebtSelector);
-  const systemReserveAvailableAmount = useSelector(systemReserveAvailableAmountSelector);
-  const systemReserveBalance = useSelector(systemReserveBalanceSelector);
+  const { savingAvailableToDeposit, getSavingAvailableToDeposit } = useSavingAssets();
+  const {
+    systemBalance,
+    systemBalanceDebt,
+    systemBalanceSurplus,
+    systemReserveAvailableAmount,
+    systemReserveBalance,
+    getSystemBalance,
+    getSystemBalanceDebt,
+    getSystemBalanceSurplus,
+    getSystemReserveBalance,
+    getSystemReserveAvailableAmount,
+    performNetting
+  } = useSystemBalance();
 
   const [surplusLot, setSurplusLot] = useState<string | number>('0');
   const [reserveLot, setReserveLot] = useState<string | number>('0');
 
   useEffect(() => {
     getParams();
-  }, [dispatch]);
+  }, [transactionLoading]);
 
   const getParams = () => {
     getEPDRUint('governed.EPDR.reserveLot')
@@ -64,36 +57,34 @@ function AuctionStats () {
       .catch((err) => setSurplusLot(err.message));
   };
 
-  useMetamaskReset(TRANSACTION_TYPES.success, () => getParams());
-
   useEffect(() => {
-    dispatch(getAccountBalance());
-    dispatch(getUserBalance());
-    dispatch(getSystemBalance());
-    dispatch(getSystemBalanceDebt());
-    dispatch(getSystemBalanceSurplus());
-    dispatch(getSavingAviableToDeposit());
-    dispatch(getSystemReserveBalance());
-    dispatch(getSystemReserveAvailableAmount());
+    loadWalletBalance();
+    loadVaultBalance();
+    getSavingAvailableToDeposit();
+    getSystemBalance();
+    getSystemBalanceDebt();
+    getSystemBalanceSurplus();
+    getSystemReserveBalance();
+    getSystemReserveAvailableAmount();
 
     return () => {
       setSurplusLot('0');
       setReserveLot('0');
     };
-  }, [dispatch]);
+  }, []);
 
   const auctionStats1 = [
     {
       title: t('AVAILABLE_Q_BALANCE'),
-      value: formatAsset(userWalletBalance, 'Q'),
+      value: formatAsset(walletBalance, 'Q'),
     },
     {
       title: t('Q_BALANCE_IN_Q_VAULT'),
-      value: formatAsset(userQVaultBalance, 'Q'),
+      value: formatAsset(vaultBalance, 'Q'),
     },
     {
       title: t('QUSD_BALANCE'),
-      value: formatAsset(savingAviableToDeposit, 'QUSD'),
+      value: formatAsset(savingAvailableToDeposit, 'QUSD'),
     },
   ];
 
@@ -148,7 +139,13 @@ function AuctionStats () {
           ))}
         </div>
         <div className="buttons">
-          <Button look="secondary" onClick={() => dispatch(setPerformNetting())}>
+          <Button
+            look="secondary"
+            onClick={() => submitTransaction({
+              hideLoading: true,
+              submitFn: performNetting
+            })}
+          >
             {t('PERFORM_NETTING')}
           </Button>
         </div>

@@ -1,19 +1,18 @@
 import { HTMLAttributes } from 'react';
-import { useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 
 import { SearchContainer } from './styles';
 
-import { loadTypeSelector } from 'store/user-inf/selectors';
+import { useUser } from 'store/user/hooks';
 
 import { LOAD_TYPES } from 'constants/statuses';
 
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
-  value: string
-  disabled?: boolean
-  onChange: (val: string) => void
+  value: string;
+  disabled?: boolean;
+  onChange: (val: string) => void;
 }
 
 function Search ({
@@ -22,7 +21,7 @@ function Search ({
   onChange,
   ...rest
 }: Props) {
-  const loadType = useSelector(loadTypeSelector);
+  const { loadType } = useUser();
   const isDisabled = disabled || loadType !== LOAD_TYPES.loaded;
 
   return (

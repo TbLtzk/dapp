@@ -1,9 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { isNil } from 'lodash';
-import { Validator } from 'typings/validator';
 import { isAddress } from 'web3-utils';
 
 import { FormStep } from 'components/MultiStepForm';
@@ -17,21 +15,17 @@ import useForm from 'hooks/useForm';
 import usePurgeSlashing from '../hooks/usePurgeSlashing';
 import { useNewSlashingProposal } from '../NewSlashingProposal';
 
-import { getRootMembers } from 'store/root-node/action-creators';
-import { rootMembersSelector } from 'store/root-node/selectors';
-import { getValidatorMembers } from 'store/validators/action-creators';
-import { validatorsWidenedSelector } from 'store/validators/selectors';
+import { useRootNodes } from 'store/root-nodes/hooks';
+import { useValidators } from 'store/validators/hooks';
 
-import { TABLE_TYPES } from 'constants/tableTypes';
 import { formatAsset } from 'utils/numbers';
 import { trimAddress } from 'utils/strings';
 import { address, percent, required, url } from 'utils/validators';
 
 function DetailsStep () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const validators = useSelector(validatorsWidenedSelector);
-  const rootNodes = useSelector(rootMembersSelector);
+  const { validatorStats, loadValidatorStats } = useValidators();
+  const { rootMembers, getRootMembers } = useRootNodes();
 
   const { values, goNext, goBack, onChange } = useNewSlashingProposal();
   const form = useForm({
@@ -54,16 +48,16 @@ function DetailsStep () {
   const { shouldPurge, purgeSlashing } = usePurgeSlashing(form.values.address, isRootType);
 
   useEffect(() => {
-    dispatch(
-      isRootType
-        ? getRootMembers(TABLE_TYPES.rootNodesShort)
-        : getValidatorMembers(TABLE_TYPES.validatorsWidened)
-    );
-  }, [dispatch, isRootType]);
+    if (isRootType) {
+      getRootMembers();
+    } else {
+      loadValidatorStats();
+    }
+  }, [isRootType]);
 
   const getCurrentStake = () => {
-    const validator = validators.find((v: Validator) => v.address === form.values.address);
-    const rootNode = rootNodes.find((r: any) => r.address === form.values.address);
+    const validator = validatorStats.find(v => v.address === form.values.address);
+    const rootNode = rootMembers.find(r => r.address === form.values.address);
     return isRootType ? rootNode?.stakeAmount : validator?.selfStake;
   };
 

@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
@@ -8,13 +7,11 @@ import Button from 'ui/Button';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
-import useMetamaskReset from 'hooks/useMetamaskReset';
 
-import { setWithdrawCall } from 'store/q-vault/action-creators';
-import { qVaultMinimumTimeLock, userBalance } from 'store/q-vault/selectors';
-import { userAddressMetamask } from 'store/user-inf/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useTransaction } from 'store/transaction/hooks';
+import { useUser } from 'store/user/hooks';
 
-import formTypes from 'constants/form-types';
 import { formatAsset, toBigNumber } from 'utils/numbers';
 import { amount, required } from 'utils/validators';
 
@@ -35,23 +32,24 @@ const StyledForm = styled.form`
 `;
 
 function WithdrawForm () {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { submitTransaction } = useTransaction();
 
-  const address = useSelector(userAddressMetamask);
-  const userQVaultBalance = useSelector(userBalance);
-  const qVaultLockedAmount = useSelector(qVaultMinimumTimeLock);
-  const maxAmount = toBigNumber(userQVaultBalance).minus(qVaultLockedAmount).toString();
+  const { vaultBalance, qVaultMinimumTimeLock, withdrawFromVault } = useQVault();
+  const user = useUser();
+  const maxAmount = toBigNumber(vaultBalance).minus(qVaultMinimumTimeLock).toString();
 
   const form = useForm({
     initialValues: { amount: '' },
     validators: { amount: [required, amount(maxAmount)] },
-    onSubmit: (form) => {
-      dispatch(setWithdrawCall(address, form.amount, t('WITHDRAW_FROM_Q_VAULT_SUCCESS')));
+    onSubmit: ({ amount }) => {
+      submitTransaction({
+        successMessage: t('WITHDRAW_FROM_Q_VAULT_SUCCESS'),
+        submitFn: async () => withdrawFromVault({ amount, address: user.address }),
+        onSuccess: () => form.reset(),
+      });
     }
   });
-
-  useMetamaskReset(formTypes.qVaultWithdraw, form.reset);
 
   return (
     <StyledForm

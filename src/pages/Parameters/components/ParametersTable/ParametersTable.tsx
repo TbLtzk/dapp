@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import parametersDictionary from 'json/parameters.json';
+import parametersJson from 'json/parameters.json';
 import { fromWei } from 'web3-utils';
 
 import CopyToClipboard from 'components/CopyToClipboard';
@@ -8,20 +8,29 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import { TableWrapper } from './styles';
 
+import { ParameterValue } from 'store/parameters/reducer';
+
 import { formatDuration } from 'utils/date';
 import { formatAsset, formatFactor, formatFraction, formatNumber } from 'utils/numbers';
 
+const parametersDictionary = parametersJson as {
+  [key: string]: {
+    type: string;
+    name: string;
+  };
+};
+
 interface Props {
-  parameters: any[];
+  parameters: ParameterValue[];
   simplified: boolean;
 }
 
 function ParametersTable ({ parameters, simplified }: Props) {
   const { t } = useTranslation();
 
-  const renderKey = (item: any) => {
+  const renderKey = (item: ParameterValue) => {
     return simplified
-      ? (parametersDictionary as any)[item.key]?.name || item.key
+      ? parametersDictionary[item.key]?.name || item.key
       : (
         <div>
           <span>{item.key}</span>
@@ -30,9 +39,9 @@ function ParametersTable ({ parameters, simplified }: Props) {
       );
   };
 
-  const renderValue = (item: any) => {
-    const type = (parametersDictionary as any)[item.key]?.type;
-    if (type === 'address' || item.type === 'ADDR') {
+  const renderValue = (item: ParameterValue) => {
+    const type = parametersDictionary[item.key]?.type;
+    if (type === 'address' || item.type === 'Addr') {
       return (
         <ExplorerAddress
           short={simplified}
@@ -79,7 +88,7 @@ function ParametersTable ({ parameters, simplified }: Props) {
             <tr key={item.key + index}>
               <td>{renderKey(item)}</td>
               <td>{renderValue(item)}</td>
-              {!simplified && <td>{item.type}</td>}
+              {!simplified && <td>{item.type.toUpperCase()}</td>}
             </tr>
           ))}
         </tbody>

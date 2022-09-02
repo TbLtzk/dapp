@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
@@ -11,8 +10,8 @@ import useAnimateNumber from 'hooks/useAnimateNumber';
 import useVoteDelegation from 'hooks/useVoteDelegation';
 import useVoterStatus from 'hooks/useVoterStatus';
 
-import { userBalance, } from 'store/q-vault/selectors';
-import { baseVotingWeightInfoSelector } from 'store/voting/proposals/selectors';
+import { useBaseVotingWeightInfo } from 'store/proposals/hooks';
+import { useQVault } from 'store/q-vault/hooks';
 
 const StyledWrapper = styled.div`
   display: grid;
@@ -36,12 +35,11 @@ const StyledWrapper = styled.div`
 
 function VotingOverview () {
   const { t } = useTranslation();
+  const { baseVotingWeightInfo } = useBaseVotingWeightInfo();
+  const { vaultBalance } = useQVault();
 
-  const { ownWeight } = useSelector(baseVotingWeightInfoSelector);
-  const weightRef = useAnimateNumber(fromWei(ownWeight || '0'));
-
-  const userQVBalance = useSelector(userBalance);
-  const userQVBalanceRef = useAnimateNumber(userQVBalance);
+  const userQVBalanceRef = useAnimateNumber(vaultBalance);
+  const weightRef = useAnimateNumber(fromWei(baseVotingWeightInfo.ownWeight));
 
   const voterStatus = useVoterStatus();
   const delegationStatus = useVoteDelegation();

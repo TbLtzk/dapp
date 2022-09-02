@@ -1,13 +1,11 @@
 import { createContext, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { ExpertProposalForm } from 'typings/forms';
 
 import MultiStepForm from 'components/MultiStepForm';
 
-import useMetamaskReset from 'hooks/useMetamaskReset';
 import useMultiStepForm from 'hooks/useMultiStepForm';
 
 import ConfirmationStep from './components/ConfirmationStep';
@@ -15,9 +13,9 @@ import ManageExpertStep from './components/ManageExpertStep';
 import ParameterVoteStep from './components/ParameterVoteStep';
 import TypeStep from './components/TypeStep';
 
-import { createProposal } from 'store/voting/proposals/actions';
+import { useProposals } from 'store/proposals/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
-import formTypes from 'constants/form-types';
 import { RoutePaths } from 'constants/routes';
 
 const DEFAULT_VALUES: ExpertProposalForm = {
@@ -34,18 +32,19 @@ const NewExpertProposalContext = createContext(
 
 function NewExpertProposal () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { submitTransaction } = useTransaction();
+  const { createNewProposal } = useProposals();
   const history = useHistory();
 
   const form = useMultiStepForm({
     initialValues: DEFAULT_VALUES,
-    onConfirm: (values) => {
-      dispatch(createProposal(values, t('CREATE_PROPOSAL_SUCCESS')));
+    onConfirm: (form) => {
+      submitTransaction({
+        successMessage: t('CREATE_PROPOSAL_SUCCESS'),
+        submitFn: () => createNewProposal(form),
+        onSuccess: () => history.push(RoutePaths.expertProposals)
+      });
     },
-  });
-
-  useMetamaskReset(formTypes.expertProposal, () => {
-    history.push(RoutePaths.expertProposals);
   });
 
   const steps = [

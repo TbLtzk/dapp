@@ -1,14 +1,12 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
 
 import BalanceCard from '../TimeLocksTable';
 
-import { getMinimumValidatorsTimeLock, getValidatorAccountableSelfStake, getValidatorsTimeLocks } from 'store/validators/action-creators';
-import { validatorAccountableSelfStakeSelector, validatorsMinimumTimeLock, validatorsTimeLocks } from 'store/validators/selectors';
+import { useValidators } from 'store/validators/hooks';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
 
@@ -18,21 +16,27 @@ interface Props {
 
 function ValidatorStakeTab ({ currentAddress }: Props) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const {
+    validatorAccountableSelfStake,
+    validatorsMinimumTimeLock,
+    validatorsTimeLocks,
+    loadValidatorAccountableSelfStake,
+    loadValidatorMinimumTimeLock,
+    loadValidatorTimeLocks
+  } = useValidators();
 
-  const validatorSelfStakeRef = useAnimateNumber(useSelector(validatorAccountableSelfStakeSelector));
-  const validatorsTimeLockMinimumBalanceRef = useAnimateNumber(useSelector(validatorsMinimumTimeLock));
-  const validatorsTimeLocksArray = useSelector(validatorsTimeLocks);
+  const validatorSelfStakeRef = useAnimateNumber(validatorAccountableSelfStake);
+  const validatorsTimeLockMinimumBalanceRef = useAnimateNumber(validatorsMinimumTimeLock);
 
   useInterval(() => {
-    dispatch(getMinimumValidatorsTimeLock(currentAddress));
+    loadValidatorMinimumTimeLock(currentAddress);
   }, 5000);
 
   useEffect(() => {
-    dispatch(getValidatorAccountableSelfStake(currentAddress));
-    dispatch(getMinimumValidatorsTimeLock(currentAddress));
-    dispatch(getValidatorsTimeLocks(currentAddress));
-  }, [dispatch, currentAddress]);
+    loadValidatorAccountableSelfStake(currentAddress);
+    loadValidatorMinimumTimeLock(currentAddress);
+    loadValidatorTimeLocks(currentAddress);
+  }, [currentAddress]);
 
   return (
     <BalanceCard
@@ -41,7 +45,7 @@ function ValidatorStakeTab ({ currentAddress }: Props) {
       contract={CONTRACT_TYPES.validators}
       balanceRef={validatorSelfStakeRef}
       timeLockBalanceRef={validatorsTimeLockMinimumBalanceRef}
-      lockAmountData={validatorsTimeLocksArray || []}
+      lockAmountData={validatorsTimeLocks}
     />
   );
 }

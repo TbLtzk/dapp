@@ -1,16 +1,14 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import Tip from 'ui/Tip';
 
-import { delegationStakeInfoSelector } from 'store/q-vault/selectors';
+import { useQVault } from 'store/q-vault/hooks';
 
 function ClaimTip () {
   const { t } = useTranslation();
+  const { delegationStakeInfo } = useQVault();
 
-  const delegationStakeInfo = useSelector(delegationStakeInfoSelector);
-
-  if (Number(delegationStakeInfo?.totalStakeReward ?? 0) > 0) {
+  if (Number(delegationStakeInfo.totalStakeReward) > 0) {
     return (
       <Tip
         compact

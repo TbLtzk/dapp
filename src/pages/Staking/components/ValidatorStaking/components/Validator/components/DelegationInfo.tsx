@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import { Validator } from 'typings/validator';
 
@@ -8,20 +7,20 @@ import DelegateModal from 'pages/Staking/components/DelegationStaking/components
 
 import { StyledWrapper } from '../styles';
 
-import { userAddressMetamask } from 'store/user-inf/selectors';
+import { useUser } from 'store/user/hooks';
 
 import { formatAsset, formatPercent } from 'utils/numbers';
 
 function DelegationInfo ({ validator }: { validator: Validator }) {
   const { t } = useTranslation();
-  const userAddress = useSelector(userAddressMetamask);
+  const user = useUser();
   const { delegationSaturation, delegationEfficiency, payoutPerDelegatedQ, address } = validator;
 
   return (
     <StyledWrapper gridArea="delegation-info" className="block">
       <div className="block__header">
         <h3 className="text-h3">{t('DELEGATION_INFO')}</h3>
-        {userAddress !== address && (
+        {user.address !== address && (
           <DelegateModal
             btnTitle={t('DELEGATE')}
             type="validator-select"

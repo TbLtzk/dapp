@@ -1,32 +1,26 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 import Table, { TableColumn } from 'ui/Table';
 
-import { getRootMembers } from 'store/root-node/action-creators';
-import {
-  loadingRootMembersSelector,
-  rootMembersSelector,
-  rootMemebersTotalStakeSelector,
-} from 'store/root-node/selectors';
+import { useRootNodes } from 'store/root-nodes/hooks';
 
-import { TABLE_TYPES } from 'constants/tableTypes';
 import { formatAsset, formatPercent } from 'utils/numbers';
 
 function RootNodeTable () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-
-  const table = useSelector(rootMembersSelector);
-  const tableLoading = useSelector(loadingRootMembersSelector);
-  const rootMemebersTotalStake = useSelector(rootMemebersTotalStakeSelector);
+  const {
+    rootMembers,
+    rootMembersLoading,
+    rootTotalStake,
+    getRootMembers
+  } = useRootNodes();
 
   useEffect(() => {
-    dispatch(getRootMembers(TABLE_TYPES.rootNodesWidened));
-  }, [dispatch]);
+    getRootMembers();
+  }, []);
 
   const columns: TableColumn[] = [
     {
@@ -66,18 +60,18 @@ function RootNodeTable () {
             <span>{t('ROOT_NODE_PANEL')}</span>
             <InfoTooltip topic="root-node-panel" />
           </h2>
-          {!tableLoading && (
+          {!rootMembersLoading && (
             <p style={{ margin: 0 }}>
-              <strong>{t('TOTAL_STAKE')}</strong> {formatAsset(rootMemebersTotalStake, 'Q')}
+              <strong>{t('TOTAL_STAKE')}</strong> {formatAsset(rootTotalStake, 'Q')}
             </p>
           )}
         </div>
       )}
       perPage={20}
       columns={columns}
-      loading={tableLoading}
+      loading={rootMembersLoading}
       emptyTableMessage={t('ROOT_NODES_LIST_EMPTY')}
-      table={table.map((rootNode:any, idx:number) => ({
+      table={rootMembers.map((rootNode, idx) => ({
         id: idx,
         address: (
           <ExplorerAddress

@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 
@@ -9,13 +8,11 @@ import Input from 'ui/Input';
 import Range from 'ui/Range';
 
 import useForm from 'hooks/useForm';
-import useMetamaskReset from 'hooks/useMetamaskReset';
 
-import { setLockAmount, setUnlockAmount } from 'store/q-vault/action-creators';
-import { userBalance, votingWeight } from 'store/q-vault/selectors';
-import { userAddressMetamask } from 'store/user-inf/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useTransaction } from 'store/transaction/hooks';
+import { useUser } from 'store/user/hooks';
 
-import formTypes from 'constants/form-types';
 import { formatAsset, formatNumber, toBigNumber } from 'utils/numbers';
 import { max, required } from 'utils/validators';
 
@@ -29,35 +26,39 @@ const StyledForm = styled.form`
   }
 `;
 
-function LockForm () {
+function LockForm ({ onSubmit }: { onSubmit: () => void }) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-
-  const userAddress = useSelector(userAddressMetamask);
-  const userVotingWeight = useSelector(votingWeight);
-  const userQVaultBalance = useSelector(userBalance);
+  const { submitTransaction } = useTransaction();
+  const { vaultBalance, votingWeight, lockAmount, unlockAmount } = useQVault();
+  const user = useUser();
 
   const form = useForm({
-    initialValues: { amount: userVotingWeight as string },
-    validators: { amount: [required, max(userQVaultBalance)] },
+    initialValues: { amount: votingWeight },
+    validators: { amount: [required, max(vaultBalance)] },
     onSubmit: (form) => {
-      const delta = toBigNumber(form.amount).minus(toBigNumber(userVotingWeight));
-      dispatch(
-        delta.gt(0)
-          ? setLockAmount(userAddress, delta.toString(), t('UPDATE_LOCK_AMOUNT_SUCCESS'))
-          : setUnlockAmount(userAddress, delta.abs().toString(), t('UPDATE_LOCK_AMOUNT_SUCCESS'))
-      );
-    },
+      submitTransaction({
+        successMessage: t('UPDATE_LOCK_AMOUNT_SUCCESS'),
+        onSuccess: () => onSubmit(),
+        submitFn: () => {
+          const delta = toBigNumber(form.amount).minus(toBigNumber(votingWeight));
+          const opts = {
+            address: user.address,
+            amount: delta.abs().toString(),
+          };
+
+          return delta.gt(0) ? lockAmount(opts) : unlockAmount(opts);
+        }
+      });
+    }
   });
 
-  useMetamaskReset(formTypes.qVaultLock, form.reset);
   useEffect(() => {
-    form.fields.amount.onChange(String(userVotingWeight));
-  }, [userVotingWeight]);
+    form.fields.amount.onChange(votingWeight);
+  }, [votingWeight]);
 
   const handleRangeChange = (_: string, val: string) => {
-    const weightToSet = toBigNumber(val).decimalPlaces(0).gte(toBigNumber(userQVaultBalance).decimalPlaces(0))
-      ? String(userQVaultBalance)
+    const weightToSet = toBigNumber(val).decimalPlaces(0).gte(toBigNumber(vaultBalance).decimalPlaces(0))
+      ? vaultBalance
       : toBigNumber(val).decimalPlaces(0).toString();
 
     if (form.values.amount === weightToSet) return;
@@ -65,7 +66,7 @@ function LockForm () {
   };
 
   const percentValue = toBigNumber(form.values.amount || 0)
-    .dividedBy(userQVaultBalance)
+    .dividedBy(vaultBalance)
     .multipliedBy(100)
     .toString();
 
@@ -77,14 +78,14 @@ function LockForm () {
         prefix="Q"
         label={t('LOCKED_AMOUNT')}
         placeholder="0.0"
-        max={String(userQVaultBalance)}
-        hint={`${t('CURRENT_LOCKED_AMOUNT')} ${formatNumber(userVotingWeight, 4)} Q`}
+        max={vaultBalance}
+        hint={`${t('CURRENT_LOCKED_AMOUNT')} ${formatNumber(votingWeight, 4)} Q`}
       />
 
       <Range
         hideInput
-        value={Number(userQVaultBalance) ? percentValue : '0'}
-        max={String(userQVaultBalance)}
+        value={Number(votingWeight) ? percentValue : '0'}
+        max={votingWeight}
         formatter={(value) => formatAsset(value, 'Q')}
         onChange={handleRangeChange}
       />
@@ -92,7 +93,7 @@ function LockForm () {
       <Button
         type="submit"
         className="lock-form-submit"
-        disabled={!form.isValid || form.values.amount === String(userVotingWeight)}
+        disabled={!form.isValid || form.values.amount === votingWeight}
       >
         {t('UPDATE_LOCK_AMOUNT')}
       </Button>

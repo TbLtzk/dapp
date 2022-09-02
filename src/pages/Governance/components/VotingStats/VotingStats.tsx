@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { fromWei } from 'web3-utils';
@@ -12,10 +11,9 @@ import useVoterStatus from 'hooks/useVoterStatus';
 
 import { StatsContainer } from './styles';
 
-import { getDelegationInfo } from 'store/q-vault/action-creators';
-import { userAddressMetamask } from 'store/user-inf/selectors';
-import { getBaseVotingWeightInfo } from 'store/voting/proposals/actions';
-import { baseVotingWeightInfoSelector } from 'store/voting/proposals/selectors';
+import { useBaseVotingWeightInfo } from 'store/proposals/hooks';
+import { useQVault } from 'store/q-vault/hooks';
+import { useUser } from 'store/user/hooks';
 
 import { RoutePaths } from 'constants/routes';
 import { formatDateDMY, formatTimeGMT, unixToDate } from 'utils/date';
@@ -23,18 +21,19 @@ import { formatAsset } from 'utils/numbers';
 
 function VotingStats () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { loadDelegationInfo } = useQVault();
+  const { baseVotingWeightInfo, getBaseVotingWeightInfo } = useBaseVotingWeightInfo();
 
-  const address = useSelector(userAddressMetamask);
+  const user = useUser();
   const voterStatus = useVoterStatus();
 
-  const { ownWeight, lockedUntil } = useSelector(baseVotingWeightInfoSelector);
+  const { ownWeight, lockedUntil } = baseVotingWeightInfo;
   const delegationStatus = useVoteDelegation();
 
   useEffect(() => {
-    dispatch(getBaseVotingWeightInfo());
-    dispatch(getDelegationInfo(address));
-  }, [dispatch]);
+    getBaseVotingWeightInfo();
+    loadDelegationInfo(user.address);
+  }, []);
 
   const statsList = [
     {

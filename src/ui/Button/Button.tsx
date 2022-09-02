@@ -1,11 +1,10 @@
-import { HTMLAttributes, MouseEventHandler } from 'react';
-import { useSelector } from 'react-redux';
+import { HTMLAttributes } from 'react';
 
 import Spinner from 'ui/Spinner';
 
 import { StyledButton } from './styles';
 
-import { loadTypeSelector } from 'store/user-inf/selectors';
+import { useUser } from 'store/user/hooks';
 
 import { LOAD_TYPES } from 'constants/statuses';
 
@@ -20,7 +19,6 @@ interface Props extends HTMLAttributes<HTMLButtonElement> {
   loading?: boolean;
   active?: boolean;
   block?: boolean;
-  onClick?: (e: MouseEventHandler<HTMLButtonElement> | any) => void;
 }
 
 function Button ({
@@ -38,7 +36,7 @@ function Button ({
   onClick = () => {},
   ...rest
 }: Props) {
-  const loadType = useSelector(loadTypeSelector);
+  const { loadType } = useUser();
   const isDisabled = disabled ||
     (!alwaysEnabled && loadType !== LOAD_TYPES.loaded);
 

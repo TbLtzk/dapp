@@ -4,11 +4,11 @@ import { ButtonLook } from './Button';
 import { getButtonColor, getLookColor } from './colors';
 
 export const StyledButton = styled.button<{
-  $look: ButtonLook,
-  $icon: boolean,
-  loading: string,
-  'data-active': string,
-  $compact: boolean,
+  $look: ButtonLook;
+  $icon: boolean;
+  loading: string;
+  'data-active': string;
+  $compact: boolean;
 }>`
   display: inline-flex;
   justify-content: center;

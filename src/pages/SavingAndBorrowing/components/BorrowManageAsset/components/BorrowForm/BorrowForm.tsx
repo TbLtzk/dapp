@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { VaultWithFee } from 'typings/defi';
 
@@ -7,29 +6,28 @@ import Button from 'ui/Button';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
-import useMetamaskReset from 'hooks/useMetamaskReset';
 
-import { setBorrowAsBorrow } from 'store/borrow-assets/actions';
-import { borrowVaultSelector } from 'store/borrow-assets/selectors';
+import { useBorrowAssets } from 'store/borrow-assets/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
-import formTypes from 'constants/form-types';
 import { amount, required } from 'utils/validators';
 
 function BorrowForm ({ vault }: { vault: VaultWithFee}) {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
-
-  const { borrowingDetails } = useSelector(borrowVaultSelector);
+  const { submitTransaction } = useTransaction();
+  const { borrowVault, borrowAsset } = useBorrowAssets();
 
   const form = useForm({
     initialValues: { amount: '' },
-    validators: { amount: [required, amount(borrowingDetails?.availableBorrow)] },
-    onSubmit: (form) => {
-      dispatch(setBorrowAsBorrow(form.amount, vault.vaultNum, t('BORROW_ASSET_SUCCESS')));
+    validators: { amount: [required, amount(borrowVault.borrowingDetails?.availableBorrow)] },
+    onSubmit: ({ amount }) => {
+      submitTransaction({
+        successMessage: t('BORROW_ASSET_SUCCESS'),
+        submitFn: () => borrowAsset({ amount, vaultId: vault.vaultNum }),
+        onSuccess: () => form.reset(),
+      });
     }
   });
-
-  useMetamaskReset(formTypes.borrowAssetBorrow, form.reset);
 
   return (
     <form
@@ -41,8 +39,8 @@ function BorrowForm ({ vault }: { vault: VaultWithFee}) {
         {...form.fields.amount}
         type="number"
         label={t('BORROW_ASSET')}
-        prefix={borrowingDetails?.borrowingAsset}
-        max={borrowingDetails?.availableBorrow}
+        prefix={borrowVault.borrowingDetails?.borrowingAsset}
+        max={borrowVault.borrowingDetails?.availableBorrow}
         placeholder="0.00"
       />
       <Button

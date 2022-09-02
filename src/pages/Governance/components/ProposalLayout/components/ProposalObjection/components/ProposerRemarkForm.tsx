@@ -1,37 +1,40 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 
 import { SlashingProposal } from 'typings/proposals';
 
+import { useSlashingActions } from 'pages/Governance/hooks/useSlashingActions';
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 
-import { onEscrowProposerRemark } from 'store/voting/slashing/actions';
+import { useTransaction } from 'store/transaction/hooks';
 
 import { required } from 'utils/validators';
 
 interface Props {
   proposal: SlashingProposal;
+  onSubmit: () => void;
 }
 
-function ProposerRemarkForm ({ proposal }: Props) {
+function ProposerRemarkForm ({ proposal, onSubmit }: Props) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { submitTransaction } = useTransaction();
+  const { proposeRemark } = useSlashingActions(proposal.contract === 'rootNodesSlashingVoting');
 
   const form = useForm({
     initialValues: { proposerRemark: '' },
     validators: { proposerRemark: [required] },
     onSubmit: (form) => {
-      dispatch(
-        onEscrowProposerRemark(
-          { ...form, isAppealConfirmed: proposal.objEscrow.objection.appealConfirmed },
-          proposal.contract,
-          proposal.id,
-          t('CONFIRM_APPEAL_SUCCESS')
-        )
-      );
+      submitTransaction({
+        successMessage: t('CONFIRM_APPEAL_SUCCESS'),
+        onSuccess: () => onSubmit(),
+        submitFn: () => proposeRemark({
+          remark: form.proposerRemark,
+          isAppealConfirmed: proposal.objEscrow.objection.appealConfirmed,
+          proposalId: proposal.id,
+        })
+      });
     },
   });
 

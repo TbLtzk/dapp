@@ -33,13 +33,13 @@ export async function getQVaultDepositAmount (address: string) {
 
 export async function getDelegatorsShare (delegation: StakeDelegationInfo) {
   const validatorInstance = await getValidationRewardPoolsInstance();
-  const delegatorShare = await validatorInstance.getDelegatorsShare(delegation.validator);
+  const delegatorsShare = await validatorInstance.getDelegatorsShare(delegation.validator);
   return {
     ...delegation,
     claimableReward: fromWei(delegation.claimableReward),
     actualStake: fromWei(delegation.actualStake),
     idealStake: fromWei(delegation.idealStake),
     normalizedStake: fromWei(delegation.normalizedStake),
-    delegatorShare: transformToPercentage(delegatorShare)
+    delegatorsShare: transformToPercentage(delegatorsShare)
   };
 }

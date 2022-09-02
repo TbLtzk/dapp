@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { ProposalStatus } from '@q-dev/q-js-sdk';
 import { Proposal } from 'typings/proposals';
@@ -10,22 +9,16 @@ import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 import Tooltip from 'ui/Tooltip';
 
-import useMetamaskReset from 'hooks/useMetamaskReset';
-
 import useEndTime from '../../hooks/useEndTime';
 
 import VoteForm from './components/VoteForm';
 
-import {
-  isUserEPDRMembershipSelector,
-  isUserEPQFIMembershipSelector,
-  isUserEPRSMembershipSelector,
-} from 'store/membership/selectors';
-import { isUserRootNode } from 'store/root-node/selectors';
-import { executeProposal, voteForProposal } from 'store/voting/proposals/actions';
+import { useExperts } from 'store/experts/hooks';
+import { useProposals } from 'store/proposals/hooks';
+import { useRootNodes } from 'store/root-nodes/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-import formTypes from 'constants/form-types';
 import { unixToDate } from 'utils/date';
 
 interface Props {
@@ -35,21 +28,15 @@ interface Props {
 
 function ProposalActions ({ proposal, title }: Props) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
-  const isRootNode = useSelector(isUserRootNode);
-  const isEPDRMember = useSelector(isUserEPDRMembershipSelector);
-  const isEPQFIMember = useSelector(isUserEPQFIMembershipSelector);
-  const isEPRSMember = useSelector(isUserEPRSMembershipSelector);
+  const { submitTransaction } = useTransaction();
+  const { voteForProposal, executeProposal } = useProposals();
 
+  const { isEpdrMember, isEpqfiMember, isEprsMember } = useExperts();
+  const { isRootNode } = useRootNodes();
   const votingEndTime = useEndTime(unixToDate(proposal.votingEndTime));
 
   const [modalOpen, setModalOpen] = useState(false);
-  const handleClose = () => {
-    setModalOpen(false);
-  };
-
-  useMetamaskReset(formTypes.vote, handleClose);
 
   const isContractWithoutVeto = [
     CONTRACTS_NAMES.validatorsSlashingVoting,
@@ -73,11 +60,11 @@ function ProposalActions ({ proposal, title }: Props) {
       case isApprovalContract || isContractWithoutVeto:
         return { enabled: isRootNode, tooltip: t('ROOT_NODES_VOTE_TIP') };
       case proposal.contract === CONTRACTS_NAMES.ePRSParametersVoting:
-        return { enabled: isEPRSMember, tooltip: t('ROOT_NODE_SELECTION_EXPERTS_VOTE_TIP') };
+        return { enabled: isEprsMember, tooltip: t('ROOT_NODE_SELECTION_EXPERTS_VOTE_TIP') };
       case proposal.contract === CONTRACTS_NAMES.ePDRParametersVoting:
-        return { enabled: isEPDRMember, tooltip: t('DEFI_RISK_EXPERTS_VOTE_TIP') };
+        return { enabled: isEpdrMember, tooltip: t('DEFI_RISK_EXPERTS_VOTE_TIP') };
       case proposal.contract === CONTRACTS_NAMES.ePQFIParametersVoting:
-        return { enabled: isEPQFIMember, tooltip: t('FEES_INCENTIVES_EXPERTS_VOTE_TIP') };
+        return { enabled: isEpqfiMember, tooltip: t('FEES_INCENTIVES_EXPERTS_VOTE_TIP') };
       default:
         return { enabled: true, tooltip: '' };
     }
@@ -91,19 +78,14 @@ function ProposalActions ({ proposal, title }: Props) {
 
   const handleVote = () => {
     if (isApprovalContract) {
-      dispatch(voteForProposal({ type: 'approve', proposal }, voteTextForTransaction));
+      submitTransaction({
+        successMessage: voteTextForTransaction,
+        submitFn: () => voteForProposal({ type: 'approve', proposal })
+      });
       return;
     }
 
     setModalOpen(true);
-  };
-
-  const handleVeto = () => {
-    dispatch(voteForProposal({ type: 'constitution', proposal }, t('VETO_SUCCESS')));
-  };
-
-  const handleExecute = () => {
-    dispatch(executeProposal(proposal, t('EXECUTE_SUCCESS')));
   };
 
   return (
@@ -135,7 +117,10 @@ function ProposalActions ({ proposal, title }: Props) {
               look="danger"
               style={{ width: '160px' }}
               disabled={proposal.userVetoed || !isRootNode}
-              onClick={handleVeto}
+              onClick={() => submitTransaction({
+                successMessage: t('VETO_SUCCESS'),
+                submitFn: () => voteForProposal({ type: 'constitution', proposal })
+              })}
             >
               {proposal.userVetoed ? t('YOU_VETOED') : t('VETO')}
             </Button>
@@ -145,7 +130,16 @@ function ProposalActions ({ proposal, title }: Props) {
         </Tooltip>
       )}
 
-      {proposal.status === ProposalStatus.PASSED && <Button onClick={handleExecute}>{t('EXECUTE')}</Button>}
+      {proposal.status === ProposalStatus.PASSED && (
+        <Button
+          onClick={() => submitTransaction({
+            successMessage: t('EXECUTE_SUCCESS'),
+            submitFn: () => executeProposal(proposal)
+          })}
+        >
+          {t('EXECUTE')}
+        </Button>
+      )}
 
       <Modal
         open={modalOpen}
@@ -155,9 +149,13 @@ function ProposalActions ({ proposal, title }: Props) {
             ? ''
             : t('VOTE_MODAL_TIP', { time: votingEndTime.formatted })
         }
-        onClose={handleClose}
+        onClose={() => setModalOpen(false)}
       >
-        <VoteForm proposal={proposal} isMemberVoting={isMemberVoting}/>
+        <VoteForm
+          proposal={proposal}
+          isMemberVoting={isMemberVoting}
+          onSubmit={() => setModalOpen(false)}
+        />
       </Modal>
     </div>
   );

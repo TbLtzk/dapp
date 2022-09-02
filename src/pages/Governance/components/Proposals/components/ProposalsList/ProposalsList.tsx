@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import { ProposalEvent } from 'typings/contracts';
 import { ProposalFilterStatus, ProposalType } from 'typings/proposals';
@@ -13,11 +12,7 @@ import ProposalCardSkeleton from '../ProposalCardSkeleton';
 
 import { ListEmptyStub, ListNextContainer, ListWrapper } from './styles';
 
-import {
-  activeProposalsByTypeSelector,
-  endedProposalsByTypeSelector,
-  proposalsByTypeSelector,
-} from 'store/voting/proposals/selectors';
+import { useProposals } from 'store/proposals/hooks';
 
 import { fillArray } from 'utils/arrays';
 
@@ -25,10 +20,15 @@ const PAGE_LIMIT = 10;
 
 function ProposalsList ({ type, status }: { type: ProposalType; status: ProposalFilterStatus }) {
   const { t } = useTranslation();
+  const {
+    proposalsMap,
+    getActiveProposalsByType,
+    getEndedProposalsByType
+  } = useProposals();
 
-  const { proposals, isLoading } = useSelector(proposalsByTypeSelector(type));
-  const activeProposals = useSelector(activeProposalsByTypeSelector(type));
-  const endedProposals = useSelector(endedProposalsByTypeSelector(type));
+  const { proposals, isLoading } = proposalsMap[type];
+  const activeProposals = getActiveProposalsByType(type);
+  const endedProposals = getEndedProposalsByType(type);
   const filteredProposals = getFilteredProposals();
 
   const [list, setList] = useState<ProposalEvent[]>([]);

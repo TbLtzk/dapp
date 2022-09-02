@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect } from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import * as Sentry from '@sentry/react';
+import { ProposalContractType } from 'typings/contracts';
 
 import ErrorBoundary from 'components/Custom/ErrorBoundary';
 import AccountAliasing from 'pages/AccountAliasing';
@@ -28,16 +29,16 @@ import QVault from '../pages/QVault';
 import SavingAndBorrowing from '../pages/SavingAndBorrowing';
 import TimeLocks from '../pages/TimeLocks';
 
-import { store } from 'store/index';
+import { getState } from 'store';
 
 import { RoutePaths } from 'constants/routes';
 import { captureError } from 'utils/errors';
 
 function addSentryContext () {
   try {
-    const { network, loadType } = store.getState().userInf;
+    const { chainId, loadType } = getState().user;
     Sentry.setContext('additional', {
-      network,
+      network: chainId,
       loadType,
     });
   } catch (error) {
@@ -80,7 +81,9 @@ function Routes () {
         <Route
           exact
           path={RoutePaths.proposal}
-          component={(props: RouteComponentProps<any>) => <Proposal {...props} />}
+          component={(props: RouteComponentProps<{ id: string; contract: ProposalContractType }>) => (
+            <Proposal {...props} />
+          )}
         />
 
         <Route exact path={RoutePaths.qVault}>

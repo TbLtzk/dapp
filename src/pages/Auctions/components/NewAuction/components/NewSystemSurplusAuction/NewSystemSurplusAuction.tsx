@@ -1,21 +1,19 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { CreateAuction } from 'typings/auctions';
 
 import MultiStepForm from 'components/MultiStepForm';
 
-import useMetamaskReset from 'hooks/useMetamaskReset';
 import useMultiStepForm from 'hooks/useMultiStepForm';
 
 import ConfirmationStep from './components/ConfirmationStep';
 import ProvideInfoStep from './components/ProvideInfoStep';
 
-import { createAuction } from 'store/auctions/actions';
+import { useAuctions } from 'store/auctions/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
-import { AUCTIONS_TYPES } from 'contracts/helpers/auction';
 import { getEPDRUint } from 'contracts/helpers/epdr-param-helper';
 
 import { RoutePaths } from 'constants/routes';
@@ -30,18 +28,19 @@ const NewSystemSurplusAuctionContext = createContext(
 
 function NewSystemSurplusAuction () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { submitTransaction } = useTransaction();
+  const { createAuction } = useAuctions();
   const history = useHistory();
 
   const form = useMultiStepForm({
     initialValues: DEFAULT_VALUES,
-    onConfirm: (values) => {
-      dispatch(createAuction('systemSurplus', values, t('CREATE_SYSTEM_SURPLUS_AUCTION_SUCCESS')));
+    onConfirm: (form) => {
+      submitTransaction({
+        successMessage: t('CREATE_SYSTEM_SURPLUS_AUCTION_SUCCESS'),
+        submitFn: () => createAuction({ auctionType: 'systemSurplus', form }),
+        onSuccess: () => history.push(RoutePaths.systemSurplus),
+      });
     },
-  });
-
-  useMetamaskReset(AUCTIONS_TYPES.systemSurplus, () => {
-    history.push(RoutePaths.systemSurplus);
   });
 
   const [surplusLot, setSurplusLot] = useState<string | number>(0);

@@ -10,7 +10,7 @@ export function getSavingBalanceDetailsHelper (balanceDetails: SavingBalanceDeta
   const interestRate = calculateInterestRate(Number(balanceDetails.interestRate));
   const currentBalance = balanceDetails?.currentBalance
     ? fromWei(balanceDetails.currentBalance)
-    : 0;
+    : '0';
 
   return {
     interestRate,

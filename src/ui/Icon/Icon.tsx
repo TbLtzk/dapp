@@ -5,7 +5,7 @@ import { StyledIcon } from './styles';
 import { IconName } from '.';
 
 interface Props extends HTMLAttributes<HTMLSpanElement> {
-  name: IconName
+  name: IconName;
 }
 
 function Icon ({ name, ...rest }: Props) {

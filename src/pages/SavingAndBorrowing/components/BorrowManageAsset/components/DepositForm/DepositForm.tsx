@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { Asset, VaultWithFee } from 'typings/defi';
 
@@ -8,30 +7,38 @@ import Button from 'ui/Button';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
-import useMetamaskReset from 'hooks/useMetamaskReset';
 
-import { setBorrowAprove, setBorrowDeposit } from 'store/borrow-assets/actions';
-import { allowanceDepositSelector, borrowVaultSelector } from 'store/borrow-assets/selectors';
+import { useBorrowAssets } from 'store/borrow-assets/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
-import formTypes from 'constants/form-types';
 import { amount, required } from 'utils/validators';
 
 function DepositForm ({ vault }: {vault: VaultWithFee}) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-
-  const allowanceDeposit = useSelector(allowanceDepositSelector);
-  const { collateralDetails } = useSelector(borrowVaultSelector);
+  const { submitTransaction } = useTransaction();
+  const {
+    allowanceDeposit,
+    borrowVault,
+    approveBorrowing,
+    depositCollateral
+  } = useBorrowAssets();
+  const { collateralDetails } = borrowVault;
 
   const form = useForm({
     initialValues: { amount: '' },
     validators: { amount: [required, amount(collateralDetails?.availableDeposit)] },
-    onSubmit: (form) => {
-      dispatch(setBorrowDeposit(form.amount, vault.vaultNum, collateralDetails.decimals, t('DEPOSIT_COLLATERAL_SUCCESS')));
-    },
+    onSubmit: ({ amount }) => {
+      submitTransaction({
+        successMessage: t('DEPOSIT_COLLATERAL_SUCCESS'),
+        onSuccess: () => form.reset(),
+        submitFn: () => depositCollateral({
+          amount,
+          vaultId: vault.vaultNum,
+          decimals: collateralDetails.decimals,
+        })
+      });
+    }
   });
-
-  useMetamaskReset(formTypes.borrowAssetDeposit, form.reset);
 
   const isApproveMode = useMemo(() => {
     return Number(allowanceDeposit) < Number(form.values.amount);
@@ -56,7 +63,13 @@ function DepositForm ({ vault }: {vault: VaultWithFee}) {
           <Button
             style={{ width: '100px' }}
             className="form-action"
-            onClick={() => dispatch(setBorrowAprove('deposit', vault.colKey as Asset, t('APPROVE')))}
+            onClick={() => submitTransaction({
+              successMessage: t('APPROVE'),
+              submitFn: async () => approveBorrowing({
+                borrowType: 'deposit',
+                asset: vault.colKey as Asset,
+              })
+            })}
           >
             {t('APPROVE')}
           </Button>

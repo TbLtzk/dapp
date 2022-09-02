@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
@@ -9,9 +8,9 @@ import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 import Tag from 'ui/Tag';
 
-import { setAnnounceNewVotingAgent, setNewVotingAgent } from 'store/q-vault/action-creators';
-import { isPendingDelegation, votingAgent, votingAgentPassOverTime } from 'store/q-vault/selectors';
-import { userAddressMetamask } from 'store/user-inf/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useTransaction } from 'store/transaction/hooks';
+import { useUser } from 'store/user/hooks';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
 import { formatDateRelative, unixToDate } from 'utils/date';
@@ -37,23 +36,21 @@ const StyledWrapper = styled.div`
 
 function VotingAgent () {
   const { t, i18n } = useTranslation();
-  const dispatch = useDispatch();
+  const { submitTransaction } = useTransaction();
 
-  const agent = useSelector(votingAgent);
-  const userAddress = useSelector(userAddressMetamask);
+  const { delegationInfo, setNewVotingAgent, announceNewVotingAgent } = useQVault();
+  const { votingAgent, isPending, votingAgentPassOverTime } = delegationInfo;
+  const user = useUser();
 
-  const isPending = useSelector(isPendingDelegation);
-  const isUserAgent = agent === userAddress || agent === ZERO_ADDRESS;
-
-  const confirmDate = unixToDate(useSelector(votingAgentPassOverTime));
-  const canConfirmAgent = Date.now() > confirmDate.getTime();
+  const isUserAgent = votingAgent === user.address || votingAgent === ZERO_ADDRESS;
+  const canConfirmAgent = Date.now() > unixToDate(votingAgentPassOverTime).getTime();
 
   return (
     <StyledWrapper>
       <p className="text-md color-secondary">{t('CURRENT_AGENT')}</p>
       <div className="text-xl font-semibold voting-agent-value">
         <div className="voting-agent-status">
-          {agent
+          {votingAgent
             ? isUserAgent
               ? t('NO_AGENT')
               : (
@@ -61,7 +58,7 @@ function VotingAgent () {
                   short
                   semibold
                   iconed
-                  address={agent}
+                  address={votingAgent}
                 />
               )
             : '...'
@@ -74,12 +71,15 @@ function VotingAgent () {
           <Button
             compact
             disabled={!canConfirmAgent}
-            onClick={() => dispatch(setNewVotingAgent(t('DELEGATE_VOTING_POWER_SUCCESS')))}
+            onClick={() => submitTransaction({
+              successMessage: t('DELEGATE_VOTING_POWER_SUCCESS'),
+              submitFn: setNewVotingAgent
+            })}
           >
             <Icon name="check-circle" />
             <span>{t('CONFIRM')}</span>
             {!canConfirmAgent && (
-              <span>{formatDateRelative(confirmDate, i18n.language)}</span>
+              <span>{formatDateRelative(unixToDate(votingAgentPassOverTime), i18n.language)}</span>
             )}
           </Button>
         )}
@@ -88,7 +88,10 @@ function VotingAgent () {
           <Button
             compact
             look="danger"
-            onClick={() => dispatch(setAnnounceNewVotingAgent(userAddress, t('ANNOUNCE_NEW_VOTING_AGENT_SUCCESS')))}
+            onClick={() => submitTransaction({
+              successMessage: t('ANNOUNCE_NEW_VOTING_AGENT_SUCCESS'),
+              submitFn: () => announceNewVotingAgent(user.address)
+            })}
           >
             {t('REMOVE')}
           </Button>

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
@@ -9,15 +8,13 @@ import Button from 'ui/Button';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
-import useMetamaskReset from 'hooks/useMetamaskReset';
 
-import { setDepositCall } from 'store/q-vault/action-creators';
-import { accountBalance } from 'store/q-vault/selectors';
-import { userAddressMetamask } from 'store/user-inf/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useTransaction } from 'store/transaction/hooks';
+import { useUser } from 'store/user/hooks';
 
 import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper';
 
-import formTypes from 'constants/form-types';
 import { formatAsset } from 'utils/numbers';
 import { amount, required } from 'utils/validators';
 
@@ -39,31 +36,32 @@ const StyledForm = styled.form`
 
 function TransferForm () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-
-  const address = useSelector(userAddressMetamask);
-  const balance = useSelector(accountBalance);
+  const { walletBalance, depositToVault } = useQVault();
+  const { submitTransaction } = useTransaction();
+  const user = useUser();
 
   const [maxAmount, setMaxAmount] = useState('0');
 
   const form = useForm({
     initialValues: { amount: '' },
     validators: { amount: [required, amount(maxAmount)] },
-    onSubmit: (form) => {
-      dispatch(setDepositCall(address, form.amount, t('TRANSFER_INTO_Q_VAULT_SUCCESS')));
+    onSubmit: ({ amount }) => {
+      submitTransaction({
+        successMessage: t('TRANSFER_INTO_Q_VAULT_SUCCESS'),
+        submitFn: () => depositToVault({ address: user.address, amount }),
+        onSuccess: () => form.reset(),
+      });
     }
   });
 
-  useMetamaskReset(formTypes.qVaultDeposit, form.reset);
-
   const updateMaxAmount = async () => {
-    const depositAmount = await getQVaultDepositAmount(address);
+    const depositAmount = await getQVaultDepositAmount(user.address);
     setMaxAmount(Number(depositAmount) < 0 ? '0' : String(depositAmount));
   };
 
   useEffect(() => {
     updateMaxAmount();
-  }, [balance]);
+  }, [walletBalance]);
 
   return (
     <StyledForm

@@ -1,32 +1,31 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
-import useMetamaskReset from 'hooks/useMetamaskReset';
 
-import { setSavingWithdraw } from 'store/saving-assets/action-creators';
-import { savingBalanceDetailsSelector } from 'store/saving-assets/selectors';
+import { useSavingAssets } from 'store/saving-assets/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
-import formTypes from 'constants/form-types';
 import { amount, required } from 'utils/validators';
 
 function WithdrawForm ({ asset }: { asset: string }) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-
-  const { currentBalance } = useSelector(savingBalanceDetailsSelector);
+  const { submitTransaction } = useTransaction();
+  const { savingBalanceDetails, withdrawSaving } = useSavingAssets();
 
   const form = useForm({
     initialValues: { amount: '' },
-    validators: { amount: [required, amount(currentBalance)] },
-    onSubmit: (form) => {
-      dispatch(setSavingWithdraw(form.amount, t('WITHDRAW_SAVING_ASSET_SUCCESS')));
+    validators: { amount: [required, amount(savingBalanceDetails.currentBalance)] },
+    onSubmit: ({ amount }) => {
+      submitTransaction({
+        successMessage: t('WITHDRAW_SAVING_ASSET_SUCCESS'),
+        submitFn: () => withdrawSaving(amount),
+        onSuccess: () => form.reset(),
+      });
     }
   });
-  useMetamaskReset(formTypes.savingAssetWithdraw, form.reset);
 
   return (
     <form
@@ -39,7 +38,7 @@ function WithdrawForm ({ asset }: { asset: string }) {
         type="number"
         label={t('WITHDRAW_SAVING_ASSET')}
         prefix={asset}
-        max={currentBalance}
+        max={savingBalanceDetails.currentBalance}
         placeholder="0.00"
       />
       <Button

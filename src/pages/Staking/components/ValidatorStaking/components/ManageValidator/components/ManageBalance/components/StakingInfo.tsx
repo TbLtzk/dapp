@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
@@ -7,7 +6,7 @@ import { fromWei } from 'web3-utils';
 
 import ValidatorMenu from './ValidatorMenu';
 
-import { validatorAcountableTotalStakeSelector, validatorWithdrawalInfo } from 'store/validators/selectors';
+import { useValidators } from 'store/validators/hooks';
 
 import { formatDateGMT, unixToDate } from 'utils/date';
 import { formatAsset } from 'utils/numbers';
@@ -29,9 +28,7 @@ const StyledWrapper = styled.div`
 
 function StakingInfo () {
   const { t } = useTranslation();
-
-  const userAccountableTotalStake = useSelector(validatorAcountableTotalStakeSelector);
-  const withdrawalInfo = useSelector(validatorWithdrawalInfo);
+  const { validatorAccountableTotalStake, validatorWithdrawalInfo } = useValidators();
 
   return (
     <StyledWrapper className="block">
@@ -43,21 +40,21 @@ function StakingInfo () {
       <div className="block__content">
         <div>
           <p className="color-secondary text-md">{t('STAKE_IN_VALIDATOR_RANKING')}</p>
-          <p className="text-lg">{formatAsset(userAccountableTotalStake, 'Q')}</p>
+          <p className="text-lg">{formatAsset(validatorAccountableTotalStake, 'Q')}</p>
         </div>
         <div>
           <p className="color-secondary text-md">{t('ANNOUNCE_WITHDRAWAL')}</p>
-          <p className="text-lg">{formatAsset(fromWei(withdrawalInfo.amount || '0'), 'Q')}</p>
+          <p className="text-lg">{formatAsset(fromWei(validatorWithdrawalInfo.amount || '0'), 'Q')}</p>
         </div>
         <div>
           <p className="color-secondary text-md">{t('ANNOUNCEMENT_STATUS')}</p>
-          <p className="text-lg">{Number(withdrawalInfo?.amount) > 0 ? t('PENDING') : '-'}</p>
+          <p className="text-lg">{Number(validatorWithdrawalInfo.amount) > 0 ? t('PENDING') : '-'}</p>
         </div>
         <div>
           <p className="color-secondary text-md">{t('ANNOUNCEMENT_END')}</p>
           <p className="text-lg">
-            {withdrawalInfo && Number(withdrawalInfo?.amount) > 0
-              ? formatDateGMT(unixToDate(withdrawalInfo.endTime))
+            {Number(validatorWithdrawalInfo.amount) > 0
+              ? formatDateGMT(unixToDate(validatorWithdrawalInfo.endTime))
               : '-'}
           </p>
         </div>

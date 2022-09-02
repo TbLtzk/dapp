@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
@@ -10,10 +9,9 @@ import Button from 'ui/Button';
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
 
-import { getQVBalance, } from 'store/q-vault/action-creators';
-import { qvBalance, } from 'store/q-vault/selectors';
-import { getQHolderTimeUpdate } from 'store/tokenomics/action-creators';
-import { qHolderTimeUpdateLoadingSelector, qHolderTimeUpdateSelector } from 'store/tokenomics/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useTokenomics } from 'store/tokenomics/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
 import { formatDate, formatDateRelative, unixToDate } from 'utils/date';
 
@@ -34,24 +32,28 @@ const StyledWrapper = styled.div`
 `;
 
 function EarnBlock () {
-  const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
+  const { submitTransaction } = useTransaction();
 
-  const qHolderTimeUpdate = unixToDate(useSelector(qHolderTimeUpdateSelector));
-  const qHolderTimeUpdateLoading = useSelector(qHolderTimeUpdateLoadingSelector);
+  const { qvBalance, loadQVBalanceDetails } = useQVault();
+  const {
+    qHolderUpdateTime,
+    qHolderUpdateTimeLoading,
+    getQHolderUpdateTime,
+    allocateQHolderRewards
+  } = useTokenomics();
 
-  const balanceDetails = useSelector(qvBalance);
-  const interestRatePercentageRef = useAnimateNumber(balanceDetails?.interestRatePercentage, ' %');
-  const yearlyExpectedEarningsRef = useAnimateNumber(balanceDetails?.yearlyExpectedEarnings);
+  const interestRatePercentageRef = useAnimateNumber(qvBalance.interestRatePercentage, ' %');
+  const yearlyExpectedEarningsRef = useAnimateNumber(qvBalance.yearlyExpectedEarnings);
 
   useEffect(() => {
-    dispatch(getQVBalance());
-    dispatch(getQHolderTimeUpdate(false));
+    loadQVBalanceDetails();
+    getQHolderUpdateTime();
   }, []);
 
   useInterval(() => {
-    dispatch(getQHolderTimeUpdate(false));
-  }, 30_000, qHolderTimeUpdateLoading);
+    getQHolderUpdateTime();
+  }, 30_000, qHolderUpdateTimeLoading);
 
   return (
     <StyledWrapper className="block">
@@ -75,17 +77,20 @@ function EarnBlock () {
           <p className="text-md color-secondary">{t('Q_TOKEN_HOLDER_REWARD_UPDATED')}</p>
           <p
             className="text-xl font-semibold"
-            title={formatDate(qHolderTimeUpdate, i18n.language)}
+            title={formatDate(unixToDate(qHolderUpdateTime), i18n.language)}
           >
-            {formatDateRelative(qHolderTimeUpdate, i18n.language)}
+            {formatDateRelative(unixToDate(qHolderUpdateTime), i18n.language)}
           </p>
         </div>
       </div>
 
       <Button
         className="update-reward-action"
-        loading={qHolderTimeUpdateLoading}
-        onClick={() => dispatch(getQHolderTimeUpdate(true, t('TIME_SINCE_Q_TOKEN_HOLDER_REWARD_UPDATE_SUCCESS')))}
+        loading={qHolderUpdateTimeLoading}
+        onClick={() => submitTransaction({
+          successMessage: t('TIME_SINCE_Q_TOKEN_HOLDER_REWARD_UPDATE_SUCCESS'),
+          submitFn: allocateQHolderRewards
+        })}
       >
         {t('ALLOCATE_REWARDS')}
       </Button>

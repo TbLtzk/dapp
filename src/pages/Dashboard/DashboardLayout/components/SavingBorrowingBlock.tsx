@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -12,8 +11,7 @@ import Icon from 'ui/Icon';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 
-import { getStableCoinTotalSupply, getSystemBalance } from 'store/system-balance/action-creators';
-import { stableCoinTotalSupplySelector, systemBalanceSelector } from 'store/system-balance/selectors';
+import { useSystemBalance } from 'store/system-balance/hooks';
 
 import { RoutePaths } from 'constants/routes';
 
@@ -36,7 +34,7 @@ const StyledWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
 
-    ${media.lessThan('tablet')} {
+    ${media.lessThan('large')} {
       grid-template-columns: 1fr;
       gap: 16px;
     }
@@ -47,7 +45,7 @@ const StyledWrapper = styled.div`
     display: grid;
     gap: 4px;
 
-    ${media.lessThan('tablet')} {
+    ${media.lessThan('large')} {
       padding: 0;
       gap: 0;
     }
@@ -55,7 +53,7 @@ const StyledWrapper = styled.div`
     &:not(:first-child) {
       border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
 
-      ${media.lessThan('tablet')} {
+      ${media.lessThan('large')} {
         border-left: none;
       }
     }
@@ -64,17 +62,19 @@ const StyledWrapper = styled.div`
 
 function SavingBorrowingBlock () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const {
+    systemBalance,
+    stableCoinTotalSupply,
+    getSystemBalance,
+    getStableCoinTotalSupply,
+  } = useSystemBalance();
 
-  const systemBalance = useSelector(systemBalanceSelector);
   const systemBalanceRef = useAnimateNumber(systemBalance, '');
-
-  const totalSupply = useSelector(stableCoinTotalSupplySelector);
-  const totalSupplyRef = useAnimateNumber(totalSupply, '');
+  const totalSupplyRef = useAnimateNumber(stableCoinTotalSupply, '');
 
   useEffect(() => {
-    dispatch(getSystemBalance());
-    dispatch(getStableCoinTotalSupply());
+    getSystemBalance();
+    getStableCoinTotalSupply();
   }, []);
 
   return (

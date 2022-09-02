@@ -5,11 +5,11 @@ import { Options } from 'typings/forms';
 
 import { SegmentedButtonContainer } from './styles';
 
-type ValueType = number | string | boolean
+type ValueType = number | string | boolean;
 interface Props<T extends ValueType> extends Omit<HTMLAttributes<HTMLDivElement>, 'value' | 'onChange'> {
-  value: T
-  options?: Options<T>
-  onChange?: (value: T) => void
+  value: T;
+  options?: Options<T>;
+  onChange?: (value: T) => void;
 }
 
 function SegmentedButton<T extends ValueType> ({

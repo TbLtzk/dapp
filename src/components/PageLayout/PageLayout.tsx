@@ -11,9 +11,9 @@ import { PageLayoutContainer } from './styles';
 import { titleCase } from 'utils/strings';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  title: string,
-  titleExtra?: ReactNode,
-  action?: ReactNode,
+  title: string;
+  titleExtra?: ReactNode;
+  action?: ReactNode;
 }
 
 function PageLayout ({

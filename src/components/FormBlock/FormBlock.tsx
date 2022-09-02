@@ -6,11 +6,11 @@ import Icon, { IconName } from 'ui/Icon';
 import { StyledFormBlock } from './styles';
 
 interface Props {
-  icon?: IconName
-  title: string
-  disabled?: boolean
-  onAction?: () => void
-  children: ReactNode | ReactNode[]
+  icon?: IconName;
+  title: string;
+  disabled?: boolean;
+  onAction?: () => void;
+  children: ReactNode | ReactNode[];
 }
 
 function FormBlock ({

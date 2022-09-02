@@ -6,10 +6,10 @@ import { uniqueId } from 'lodash';
 import { CheckContainer } from './styles';
 
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
-  value: boolean
-  label?: ReactNode
-  disabled?: boolean
-  onChange: (value: boolean) => void
+  value: boolean;
+  label?: ReactNode;
+  disabled?: boolean;
+  onChange: (value: boolean) => void;
 };
 
 function Check ({

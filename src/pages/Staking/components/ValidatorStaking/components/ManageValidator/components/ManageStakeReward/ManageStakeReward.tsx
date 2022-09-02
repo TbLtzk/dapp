@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
@@ -12,22 +11,9 @@ import RewardStats from './components/RewardStats';
 import RefreshDelegationUpdate from './components/ValidatorAllocation';
 import ValidatorPool from './components/ValidatorPool';
 
-import { loadTypeSelector } from 'store/user-inf/selectors';
-import {
-  getVRPBalance,
-  getVRPDelegatorsShare,
-  getVRPLastUpdateOfCompoundRate,
-  getVRPPoolInfo,
-} from 'store/validation-reward-pools/action-creators';
-import {
-  getCompoundRateKeeperExists,
-  getIsUserValidator,
-  getValidatorAccountableSelfStake,
-  getValidatorAccountableTotalStake,
-  getValidatorDelegatedStake,
-  getValidatorTotalStake,
-} from 'store/validators/action-creators';
-import { compoundRateKeeperExistsSelector, isUserValidatorSelector } from 'store/validators/selectors';
+import { useUser } from 'store/user/hooks';
+import { useValidationRewards } from 'store/validation-rewards/hooks';
+import { useValidators } from 'store/validators/hooks';
 
 import { LOAD_TYPES } from 'constants/statuses';
 
@@ -43,33 +29,47 @@ const StyledWrapper = styled.div`
 `;
 
 function ManageStakeReward () {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { loadType } = useUser();
 
-  const isCompoundRateExist = useSelector(compoundRateKeeperExistsSelector);
-  const isUserValidator = useSelector(isUserValidatorSelector);
-  const loadType = useSelector(loadTypeSelector);
+  const {
+    getVRPPoolInfo,
+    getVRPBalance,
+    getVRPLastUpdateOfCompoundRate,
+    getVRPDelegatorsShare
+  } = useValidationRewards();
+
+  const {
+    compoundRateKeeperExists,
+    isValidator,
+    loadCompoundRateKeeperExists,
+    checkIsValidator,
+    loadValidatorTotalStake,
+    loadValidatorDelegatedStake,
+    loadValidatorAccountableTotalStake,
+    loadValidatorAccountableSelfStake,
+  } = useValidators();
 
   useEffect(() => {
-    if (isUserValidator && isCompoundRateExist) {
-      dispatch(getVRPPoolInfo());
-      dispatch(getVRPBalance());
-      dispatch(getVRPLastUpdateOfCompoundRate());
+    if (isValidator && compoundRateKeeperExists) {
+      getVRPPoolInfo();
+      getVRPBalance();
+      getVRPLastUpdateOfCompoundRate();
     }
-  }, [isUserValidator, isCompoundRateExist]);
+  }, [isValidator, compoundRateKeeperExists]);
 
   useEffect(() => {
-    dispatch(getCompoundRateKeeperExists());
-    dispatch(getIsUserValidator());
-    dispatch(getVRPDelegatorsShare());
-    dispatch(getValidatorTotalStake());
-    dispatch(getValidatorDelegatedStake());
-    dispatch(getValidatorAccountableTotalStake());
-    dispatch(getValidatorAccountableSelfStake());
-  }, [dispatch]);
+    loadCompoundRateKeeperExists();
+    checkIsValidator();
+    getVRPDelegatorsShare();
+    loadValidatorTotalStake();
+    loadValidatorDelegatedStake();
+    loadValidatorAccountableTotalStake();
+    loadValidatorAccountableSelfStake();
+  }, []);
 
   const tip =
-    loadType === LOAD_TYPES.loaded && !isUserValidator
+    loadType === LOAD_TYPES.loaded && !isValidator
       ? (
         <Tip type="warning">{t('NOTICE_YOU_ARE_NOT_A_VALIDATOR')}</Tip>
       )

@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { getSelectColor } from './colors';
 
 export const SelectContainer = styled.div<{
-  $open: boolean
-  $disabled?: boolean
+  $open: boolean;
+  $disabled?: boolean;
 }>`
   .select-arrow {
     display: flex;

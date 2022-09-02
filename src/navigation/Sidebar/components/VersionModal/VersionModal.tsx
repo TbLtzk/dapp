@@ -15,8 +15,8 @@ import { VersionsContainer } from './styles';
 import { formatDateGMT } from 'utils/date';
 
 interface Props {
-  open: boolean
-  onClose: () => void
+  open: boolean;
+  onClose: () => void;
 }
 
 function VersionModal ({ open, onClose }: Props) {

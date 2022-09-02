@@ -1,10 +1,7 @@
-interface Provider {
-  isCoinbaseWallet?: boolean;
-  isCoinbaseBrowser?: boolean;
-  isMetaMask?: boolean;
-}
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 interface Window {
+  web3: import('web3').default;
   ethereum: {
     isCoinbaseWallet?: boolean;
     isCoinbaseBrowser?: boolean;
@@ -12,14 +9,14 @@ interface Window {
     isStatus?: boolean;
     host?: string;
     path?: string;
-    providers?: Provider[]
-    sendAsync?: (
-      request: { method: string; params?: Array<any> },
+    providers?: typeof window.ethereum[];
+    sendAsync: (
+      request: { method: string; params?: any[] },
       callback: (error: any, response: any) => void
     ) => void;
-    send?: (request: { method: string; params?: Array<any> }, callback: (error: any, response: any) => void) => void;
+    send: (request: { method: string; params?: any[] }, callback: (error: any, response: any) => void) => void;
     request: (request: { method: string; params?: {} }) => Promise<any>;
-    on: (request: string, callback: (...args: unknown[]) => void) => void;
-    setSelectedProvider: (provider: Provider) => void;
+    on: (request: string, callback: (...args: any[]) => void) => void;
+    setSelectedProvider: (provider: typeof window.ethereum) => void;
   };
 }

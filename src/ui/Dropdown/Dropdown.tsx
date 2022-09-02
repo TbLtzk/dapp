@@ -8,12 +8,12 @@ import useOnClickOutside from 'hooks/useOnClickOutside';
 import { DropdownContainer } from './styles';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  open?: boolean
-  fullWidth?: boolean
-  right?: boolean
-  disabled?: boolean
-  trigger: ReactNode
-  onToggle: (open: boolean) => void
+  open?: boolean;
+  fullWidth?: boolean;
+  right?: boolean;
+  disabled?: boolean;
+  trigger: ReactNode;
+  onToggle: (open: boolean) => void;
 }
 
 function Dropdown ({

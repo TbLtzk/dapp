@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import { fromWei } from 'web3-utils';
 
@@ -12,33 +11,34 @@ import { useSendValidatorForms } from '../hooks';
 
 import { FORM_TYPES } from './ValidatorMenu';
 
-import { accountBalance } from 'store/q-vault/selectors';
-import { validatorAcountableTotalStakeSelector, validatorWithdrawalInfo } from 'store/validators/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useTransaction } from 'store/transaction/hooks';
+import { useValidators } from 'store/validators/hooks';
 
 import { toBigNumber } from 'utils/numbers';
 import { amount, required } from 'utils/validators';
 
 interface Props {
-  formType: string | null;
+  formType: string;
 }
 
 function ValidatorForms ({ formType }: Props) {
   const { t } = useTranslation();
+  const { validatorAccountableTotalStake, validatorWithdrawalInfo } = useValidators();
+  const { walletBalance } = useQVault();
 
-  const accountableTotalStake = useSelector(validatorAcountableTotalStakeSelector);
-  const withdrawalInfo = useSelector(validatorWithdrawalInfo);
-  const userBalance = useSelector(accountBalance);
+  const { submitTransaction } = useTransaction();
   const sendForm = useSendValidatorForms();
 
   const getMaxAmount = () => {
-    const withdrawalAmount = fromWei(withdrawalInfo.amount);
+    const withdrawalAmount = fromWei(validatorWithdrawalInfo.amount);
     switch (formType) {
       case FORM_TYPES.stakeToRanking:
-        return userBalance;
+        return walletBalance;
       case FORM_TYPES.announceWithdrawal:
-        return toBigNumber(accountableTotalStake).plus(toBigNumber(withdrawalAmount)).toString();
+        return toBigNumber(validatorAccountableTotalStake).plus(toBigNumber(withdrawalAmount)).toString();
       case FORM_TYPES.withdrawFromRanking:
-        return fromWei(withdrawalInfo.amount);
+        return fromWei(validatorWithdrawalInfo.amount);
       default:
         return '0';
     }
@@ -48,17 +48,24 @@ function ValidatorForms ({ formType }: Props) {
     initialValues: { amount: '' },
     validators: { amount: [required, amount(getMaxAmount())] },
     onSubmit: ({ amount }) => {
+      let successMessage: string;
       switch (formType) {
         case FORM_TYPES.stakeToRanking:
-          sendForm(FORM_TYPES.stakeToRanking, amount, t('STAKE_TO_RANKING_SUCCESS'), form);
+          successMessage = t('STAKE_TO_RANKING_SUCCESS');
           break;
         case FORM_TYPES.announceWithdrawal:
-          sendForm(FORM_TYPES.announceWithdrawal, amount, t('ANNOUNCE_WITHDRAWAL_SUCCESS'), form);
+          successMessage = t('ANNOUNCE_WITHDRAWAL_SUCCESS');
           break;
         case FORM_TYPES.withdrawFromRanking:
-          sendForm(FORM_TYPES.withdrawFromRanking, amount, t('WITHDRAW_FROM_RANKING_SUCCESS'), form);
+        default:
+          successMessage = t('WITHDRAW_FROM_RANKING_SUCCESS');
           break;
       }
+
+      submitTransaction({
+        successMessage,
+        submitFn: () => sendForm(formType, amount),
+      });
     },
   });
 

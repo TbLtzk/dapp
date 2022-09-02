@@ -1,24 +1,23 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Table from 'ui/Table';
 
-import { getEPRSMembers } from 'store/membership/action-creators';
-import { EPRSMembersErrorSelector, EPRSMembersLoadingSelector, EPRSMembersSelector } from 'store/membership/selectors';
+import { useExperts } from 'store/experts/hooks';
 
 function EprsMembersTable () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-
-  const eprsMembersTable = useSelector(EPRSMembersSelector);
-  const eprsMembersTableLoading = useSelector(EPRSMembersLoadingSelector);
-  const eprsMembersTableError = useSelector(EPRSMembersErrorSelector);
+  const {
+    eprsMembers,
+    eprsMembersLoading,
+    eprsMembersError,
+    getEprsMembers
+  } = useExperts();
 
   useEffect(() => {
-    dispatch(getEPRSMembers());
-  }, [dispatch]);
+    getEprsMembers();
+  }, []);
 
   return (
     <div className="block">
@@ -31,15 +30,15 @@ function EprsMembersTable () {
           tiny
           emptyTableMessage={t('NO_ROOT_NODE_SELECTION_MEMBERS')}
           perPage={10}
-          loading={eprsMembersTableLoading}
-          error={eprsMembersTableError}
+          loading={eprsMembersLoading}
+          error={eprsMembersError}
           columns={[
             {
               dataField: 'member',
               text: t('MEMBER_ADDRESS'),
             },
           ]}
-          table={eprsMembersTable.map((member: string, idx: number) => ({
+          table={eprsMembers.map((member, idx) => ({
             id: idx,
             member: (
               <ExplorerAddress

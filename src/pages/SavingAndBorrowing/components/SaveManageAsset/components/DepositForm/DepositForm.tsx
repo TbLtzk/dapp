@@ -1,36 +1,37 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
-import useMetamaskReset from 'hooks/useMetamaskReset';
 
-import { setSavingAprove, setSavingDeposit } from 'store/saving-assets/action-creators';
-import { savingAllowanceSelector, savingAviableToDepositSelector } from 'store/saving-assets/selectors';
+import { useSavingAssets } from 'store/saving-assets/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
-import formTypes from 'constants/form-types';
 import { amount, required } from 'utils/validators';
 
 function DepositForm ({ asset }: { asset: string }) {
   const { t } = useTranslation();
-
-  const dispatch = useDispatch();
-
-  const availableAmount = useSelector(savingAviableToDepositSelector);
-  const savingAllowance = useSelector(savingAllowanceSelector);
+  const { submitTransaction } = useTransaction();
+  const {
+    savingAvailableToDeposit,
+    savingAllowance,
+    depositSaving,
+    approveSaving
+  } = useSavingAssets();
 
   const form = useForm({
     initialValues: { amount: '' },
-    validators: { amount: [required, amount(availableAmount)] },
-    onSubmit: (form) => {
-      dispatch(setSavingDeposit(form.amount, t('DEPOSIT_SAVING_ASSET_SUCCESS')));
-    },
+    validators: { amount: [required, amount(savingAvailableToDeposit)] },
+    onSubmit: ({ amount }) => {
+      submitTransaction({
+        successMessage: t('DEPOSIT_SAVING_ASSET_SUCCESS'),
+        submitFn: () => depositSaving(amount),
+        onSuccess: () => form.reset(),
+      });
+    }
   });
-
-  useMetamaskReset(formTypes.savingAssetDeposit, form.reset);
 
   const isApproveMode = useMemo(() => {
     return Number(savingAllowance) < Number(form.values.amount);
@@ -47,7 +48,7 @@ function DepositForm ({ asset }: { asset: string }) {
         type="number"
         label={t('DEPOSIT_SAVING_ASSET')}
         prefix={asset}
-        max={availableAmount}
+        max={savingAvailableToDeposit}
         placeholder="0.00"
       />
       {isApproveMode
@@ -55,7 +56,10 @@ function DepositForm ({ asset }: { asset: string }) {
           <Button
             className="form-action"
             style={{ width: '100px' }}
-            onClick={() => dispatch(setSavingAprove())}
+            onClick={() => submitTransaction({
+              successMessage: t('APPROVE'),
+              submitFn: approveSaving
+            })}
           >
             {t('APPROVE')}
           </Button>

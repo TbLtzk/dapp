@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { getRangeColor } from './colors';
 
 export const RangeContainer = styled.div<{
-  $disabled: boolean
-  $percent: number
-  $hideInput: boolean
+  $disabled: boolean;
+  $percent: number;
+  $hideInput: boolean;
 }>`
   position: relative;
   display: grid;

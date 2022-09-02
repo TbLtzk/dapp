@@ -1,14 +1,12 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
 
 import BalanceCard from '../TimeLocksTable';
 
-import { getMinimumQVaultTimeLock, getQVaultTimeLocks, getUserBalance } from 'store/q-vault/action-creators';
-import { qVaultMinimumTimeLock, qVaultTimeLocks, userBalance } from 'store/q-vault/selectors';
+import { useQVault } from 'store/q-vault/hooks';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
 
@@ -18,21 +16,27 @@ interface Props {
 
 function QVaultTab ({ currentAddress }: Props) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const {
+    vaultBalance,
+    qVaultMinimumTimeLock,
+    qVaultTimeLocks,
+    loadVaultBalance,
+    loadQVaultTimeLocks,
+    loadMinimumQVaultTimeLock
+  } = useQVault();
 
-  const qVaultStakeBalanceRef = useAnimateNumber(useSelector(userBalance));
-  const qVaultTimeLockMinimumBalanceRef = useAnimateNumber(useSelector(qVaultMinimumTimeLock));
-  const qVaultTimeLocksArray = useSelector(qVaultTimeLocks);
+  const qVaultStakeBalanceRef = useAnimateNumber(vaultBalance);
+  const qVaultTimeLockMinimumBalanceRef = useAnimateNumber(qVaultMinimumTimeLock);
 
   useInterval(() => {
-    dispatch(getMinimumQVaultTimeLock(currentAddress));
+    loadMinimumQVaultTimeLock(currentAddress);
   }, 5000);
 
   useEffect(() => {
-    dispatch(getUserBalance(currentAddress));
-    dispatch(getMinimumQVaultTimeLock(currentAddress));
-    dispatch(getQVaultTimeLocks(currentAddress));
-  }, [dispatch, currentAddress]);
+    loadVaultBalance(currentAddress);
+    loadMinimumQVaultTimeLock(currentAddress);
+    loadQVaultTimeLocks(currentAddress);
+  }, [currentAddress]);
 
   return (
     <BalanceCard
@@ -41,7 +45,7 @@ function QVaultTab ({ currentAddress }: Props) {
       contract={CONTRACT_TYPES.qVault}
       balanceRef={qVaultStakeBalanceRef}
       timeLockBalanceRef={qVaultTimeLockMinimumBalanceRef}
-      lockAmountData={qVaultTimeLocksArray || []}
+      lockAmountData={qVaultTimeLocks}
     />
   );
 }

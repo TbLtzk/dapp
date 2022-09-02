@@ -6,10 +6,10 @@ import { uniqueId } from 'lodash';
 import { SwitchContainer } from './styles';
 
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
-  value: boolean
-  label: string
-  disabled?: boolean
-  onChange: (val: boolean) => void
+  value: boolean;
+  label: string;
+  disabled?: boolean;
+  onChange: (val: boolean) => void;
 }
 
 function Switch ({

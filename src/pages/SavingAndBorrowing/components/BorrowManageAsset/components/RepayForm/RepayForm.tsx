@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { Asset, VaultWithFee } from 'typings/defi';
 
@@ -8,30 +7,29 @@ import Button from 'ui/Button';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
-import useMetamaskReset from 'hooks/useMetamaskReset';
 
-import { setBorrowAprove, setBorrowRepay } from 'store/borrow-assets/actions';
-import { allowanceRepaySelector, borrowVaultSelector } from 'store/borrow-assets/selectors';
+import { useBorrowAssets } from 'store/borrow-assets/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
-import formTypes from 'constants/form-types';
 import { amount, required } from 'utils/validators';
 
 function RepayForm ({ vault }: {vault: VaultWithFee}) {
   const { t } = useTranslation();
-
-  const dispatch = useDispatch();
-  const { borrowingDetails } = useSelector(borrowVaultSelector);
-  const allowanceRepay = useSelector(allowanceRepaySelector);
+  const { submitTransaction } = useTransaction();
+  const { borrowVault, allowanceRepay, repayBorrowing, approveBorrowing } = useBorrowAssets();
+  const { borrowingDetails } = borrowVault;
 
   const form = useForm({
     initialValues: { amount: '' },
     validators: { amount: [required, amount(borrowingDetails?.availableRepay)] },
-    onSubmit: (form) => {
-      dispatch(setBorrowRepay(form.amount, vault.vaultNum, t('REPAY_BORROWED_ASSET_SUCCESS')));
-    },
+    onSubmit: ({ amount }) => {
+      submitTransaction({
+        successMessage: t('REPAY_BORROWED_ASSET_SUCCESS'),
+        submitFn: () => repayBorrowing({ amount, vaultId: vault.vaultNum }),
+        onSuccess: () => form.reset(),
+      });
+    }
   });
-
-  useMetamaskReset(formTypes.borrowAssetRepay, form.reset);
 
   const isApproveMode = useMemo(() => {
     return Number(allowanceRepay) < Number(form.values.amount);
@@ -56,7 +54,13 @@ function RepayForm ({ vault }: {vault: VaultWithFee}) {
           <Button
             style={{ width: '100px' }}
             className="form-action"
-            onClick={() => dispatch(setBorrowAprove('repay', vault.colKey as Asset, t('APPROVE')))}
+            onClick={() => submitTransaction({
+              successMessage: t('APPROVE'),
+              submitFn: () => approveBorrowing({
+                borrowType: 'repay',
+                asset: vault.colKey as Asset,
+              })
+            })}
           >
             {t('APPROVE')}
           </Button>

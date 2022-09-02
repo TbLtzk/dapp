@@ -1,27 +1,29 @@
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+
+import { TimeLockContractType } from 'typings/contracts';
+import { TimeLockForm } from 'typings/time-locks';
 
 import Button from 'ui/Button';
 import Calendar from 'ui/Calendar';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
-import useMetamaskReset from 'hooks/useMetamaskReset';
 
-import { setDepositLockedAmount } from 'store/locked-amount/action-creators';
+import { useLockedAmount } from 'store/locked-amount/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
-import formTypes from 'constants/form-types';
 import { required } from 'utils/validators';
 
 interface Props {
-  contract: string;
+  contract: TimeLockContractType;
   address: string;
 }
 
 function ManageForm ({ contract, address }: Props) {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { submitTransaction } = useTransaction();
+  const { depositTimeLock } = useLockedAmount();
 
   const form = useForm({
     initialValues: {
@@ -34,11 +36,14 @@ function ManageForm ({ contract, address }: Props) {
       startDate: [required],
       endDate: [required]
     },
-    onSubmit: (form) => {
-      dispatch(setDepositLockedAmount({ ...form, contract, address }, t('TIME_LOCKS_DEPOSIT_SUCCESS')));
+    onSubmit: (values) => {
+      submitTransaction({
+        successMessage: t('TIME_LOCKS_DEPOSIT_SUCCESS'),
+        submitFn: () => depositTimeLock({ ...values, contract, address } as TimeLockForm),
+        onSuccess: () => form.reset()
+      });
     }
   });
-  useMetamaskReset(formTypes.timeLocksAmount, form.reset);
 
   return (
     <form

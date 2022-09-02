@@ -1,10 +1,8 @@
 
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
-import { Validator } from 'typings/validator';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import PageLayout from 'components/PageLayout';
@@ -16,13 +14,8 @@ import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import DashboardLink from '../components/DashboardLink';
 
-import { getValidatorMembers } from 'store/validators/action-creators';
-import {
-  loadingValidatorsMonitoringSelector,
-  validatorsMonitoringSelector,
-} from 'store/validators/selectors';
+import { useValidators } from 'store/validators/hooks';
 
-import { TABLE_TYPES } from 'constants/tableTypes';
 import { formatAsset } from 'utils/numbers';
 
 const StyledWrapper = styled.div`
@@ -36,22 +29,22 @@ const StyledWrapper = styled.div`
 `;
 
 function ValidatorsMonitoring () {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
   const { indexerUrl } = useNetworkConfig();
-
-  const validators = useSelector(validatorsMonitoringSelector);
-  const loading = useSelector(loadingValidatorsMonitoringSelector);
+  const {
+    validatorsMonitoring,
+    validatorsMonitoringLoading,
+    loadMonitoringValidators
+  } = useValidators();
 
   useEffect(() => {
-    dispatch(getValidatorMembers(TABLE_TYPES.validatorsMonitoring, indexerUrl));
-
+    loadMonitoringValidators(indexerUrl);
     const monitoringInterval = setInterval(() => {
-      dispatch(getValidatorMembers(TABLE_TYPES.validatorsMonitoring, indexerUrl));
-    }, 60000);
+      loadMonitoringValidators(indexerUrl);
+    }, 60_000);
 
     return () => clearInterval(monitoringInterval);
-  }, [dispatch]);
+  }, []);
 
   const columns: TableColumn[] = [
     {
@@ -98,9 +91,9 @@ function ValidatorsMonitoring () {
         <Table
           emptyTableMessage={t('NO_VALIDATORS')}
           perPage={20}
-          loading={loading}
+          loading={validatorsMonitoringLoading}
           columns={columns}
-          table={validators.map((validator: Validator) => ({
+          table={validatorsMonitoring.map((validator) => ({
             id: validator.address,
             rank: validator.rank,
             validator: (

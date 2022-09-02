@@ -1,29 +1,31 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
-import useMetamaskReset from 'hooks/useMetamaskReset';
 
-import { setVestingWithdraw } from 'store/vesting/action-creators';
+import { useTransaction } from 'store/transaction/hooks';
+import { useVesting } from 'store/vesting/hooks';
 
-import formTypes from 'constants/form-types';
 import { required } from 'utils/validators';
 
 function VestingWithdrawForm () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { submitTransaction } = useTransaction();
+  const { withdrawVesting } = useVesting();
 
   const form = useForm({
     initialValues: { amount: '' },
     validators: { amount: [required] },
-    onSubmit: (form) => {
-      dispatch(setVestingWithdraw(form.amount, t('WITHDRAW_FROM_VESTING_SUCCESS')));
+    onSubmit: ({ amount }) => {
+      submitTransaction({
+        successMessage: t('WITHDRAW_FROM_VESTING_SUCCESS'),
+        submitFn: () => withdrawVesting(amount),
+        onSuccess: () => form.reset()
+      });
     }
   });
-  useMetamaskReset(formTypes.vestingWithdraw, form.reset);
 
   return (
     <form

@@ -1,18 +1,21 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Validator } from 'typings/validator';
+
 import Input from 'ui/Input';
 import Select from 'ui/Select';
 import Tip from 'ui/Tip';
 
 import useForm from 'hooks/useForm';
+import { Form } from 'hooks/useFormArray';
 
 import { formatAsset } from 'utils/numbers';
 import { address, required } from 'utils/validators';
 
 interface Props {
-  onChange: (form: any) => void;
-  validators: [];
+  onChange: (form: Form<{ address: string; amount: string }>) => void;
+  validators: Validator[];
 }
 
 function DelegationForm ({ onChange, validators }: Props) {
@@ -30,8 +33,8 @@ function DelegationForm ({ onChange, validators }: Props) {
     onChange(form);
   }, [form.values, onChange]);
 
-  const options = validators.map(({ address }: { address: string }) => ({ label: address, value: address }));
-  const chosenAddress = validators.find(({ address }: { address: string }) => address === form.values.address) as any;
+  const options = validators.map(({ address }) => ({ label: address, value: address }));
+  const chosenAddress = validators.find(({ address }) => address === form.values.address);
 
   return (
     <form
@@ -50,7 +53,7 @@ function DelegationForm ({ onChange, validators }: Props) {
         />
         {chosenAddress !== undefined && (
           <Tip compact style={{ marginBottom: '10px' }}>
-            <p className="text-md">{`${t('DELEGATOR_SHARE')} : ${formatAsset(chosenAddress.delegatorShare, ' %')}`}</p>
+            <p className="text-md">{`${t('DELEGATOR_SHARE')} : ${formatAsset(chosenAddress.delegatorsShare, ' %')}`}</p>
             <p className="text-md">
               {`${t('DELEGATION_EFFICIENCY')} : ${formatAsset(chosenAddress.delegationEfficiency, ' %')}`}
             </p>

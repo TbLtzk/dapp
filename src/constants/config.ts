@@ -29,7 +29,7 @@ interface ConnectorParams {
     name: string;
     symbol: string;
     decimals: number;
-  },
+  };
 }
 
 export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {

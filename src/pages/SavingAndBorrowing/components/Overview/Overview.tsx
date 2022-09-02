@@ -1,36 +1,32 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import CustomBlock from 'components/Base/CustomBlock';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 
-import { getOutstandingDebt, getTotalSavingBalance } from 'store/borrowing-core/actions';
-import {
-  outstandingDebtSelector,
-  totalSavingBalanceSelector,
-} from 'store/borrowing-core/selectors';
-import { getSavingAviableToDeposit } from 'store/saving-assets/action-creators';
-import { savingAviableToDepositSelector } from 'store/saving-assets/selectors';
+import { useBorrowingCore } from 'store/borrowing-core/hooks';
+import { useSavingAssets } from 'store/saving-assets/hooks';
 
 function Overview () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { savingAvailableToDeposit, getSavingAvailableToDeposit } = useSavingAssets();
+  const {
+    outstandingDebt,
+    totalSavingBalance,
+    getOutstandingDebt,
+    getTotalSavingBalance,
+  } = useBorrowingCore();
 
-  const outstandingDebt = useSelector(outstandingDebtSelector);
   const outstandingDebtRef = useAnimateNumber(outstandingDebt, ' QUSD');
-
-  const totalSavingBalance = useSelector(totalSavingBalanceSelector);
   const totalSavingBalanceRef = useAnimateNumber(totalSavingBalance, ' QUSD');
 
-  const qusdBalanceInQVault = useSelector(savingAviableToDepositSelector);
-  const qusdBalanceInQVaultRef = useAnimateNumber(qusdBalanceInQVault || 0, ' QUSD');
+  const qusdBalanceInQVaultRef = useAnimateNumber(savingAvailableToDeposit || 0, ' QUSD');
 
   useEffect(() => {
-    dispatch(getOutstandingDebt());
-    dispatch(getTotalSavingBalance());
-    dispatch(getSavingAviableToDeposit());
+    getOutstandingDebt();
+    getTotalSavingBalance();
+    getSavingAvailableToDeposit();
   }, []);
 
   return (

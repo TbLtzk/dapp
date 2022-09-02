@@ -1,9 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import { SavingDetailsContainer } from './styles';
 
-import { savingAviableToDepositSelector, savingBalanceDetailsSelector } from 'store/saving-assets/selectors';
+import { useSavingAssets } from 'store/saving-assets/hooks';
 
 import { formatNumber, formatPercent } from 'utils/numbers';
 
@@ -14,10 +13,8 @@ interface Props {
 
 function SavingDetails ({ depositAsset, interestAsset }: Props) {
   const { t } = useTranslation();
-
-  const availableToDeposit = useSelector(savingAviableToDepositSelector);
-  const { interestRate, currentBalance, estimatedInterest } =
-    useSelector(savingBalanceDetailsSelector);
+  const { savingAvailableToDeposit, savingBalanceDetails } = useSavingAssets();
+  const { interestRate, currentBalance, estimatedInterest } = savingBalanceDetails;
 
   const detailsGroups = [
     {
@@ -33,7 +30,7 @@ function SavingDetails ({ depositAsset, interestAsset }: Props) {
         },
         {
           name: t('AVAILABLE_TO_DEPOSIT'),
-          value: formatNumber(availableToDeposit)
+          value: formatNumber(savingAvailableToDeposit)
         }
       ]
     },

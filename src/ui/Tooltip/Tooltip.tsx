@@ -5,9 +5,9 @@ import { createPopper, Instance, Placement } from '@popperjs/core';
 import { TooltipWrapper } from './styles';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  placement?: Placement
-  trigger: ReactNode
-  disabled?: boolean
+  placement?: Placement;
+  trigger: ReactNode;
+  disabled?: boolean;
 }
 
 function Tooltip ({

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 
@@ -8,12 +7,7 @@ import EprsMembersTable from 'components/Tables/EprsMembersTable';
 
 import ParametersBlock from '../ParametersBlock';
 
-import { getEPRSParametersKV } from 'store/parameters-addresses/action-creators';
-import {
-  ePRSParametersKV,
-  ePRSParametersKVError,
-  ePRSParametersKVLoading
-} from 'store/parameters-addresses/selectors';
+import { useParameters } from 'store/parameters/hooks';
 
 import { getEprsParametersInstance } from 'contracts/contract-instance';
 
@@ -24,33 +18,30 @@ const StyledWrapper = styled.div`
 
 function QEPRSParameters () {
   const { t } = useTranslation();
+  const {
+    eprsParameters,
+    eprsParametersLoading,
+    eprsParametersError,
+    getEprsParameters
+  } = useParameters();
 
   const [ePRSParametersAddress, setEPRSParametersAddress] = useState('0x00');
 
-  const loadingEPRS = useSelector(ePRSParametersKVLoading);
-  const errorMessageEPRS = useSelector(ePRSParametersKVError);
-  const kvEPRS = useSelector(ePRSParametersKV);
-
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    dispatch(getEPRSParametersKV());
-
+    getEprsParameters();
     getEprsParametersInstance().then((contract) => setEPRSParametersAddress(contract.address));
 
-    return () => {
-      setEPRSParametersAddress('0x00');
-    };
-  }, [dispatch]);
+    return () => setEPRSParametersAddress('0x00');
+  }, []);
 
   return (
     <StyledWrapper>
       <ParametersBlock
         title={t('Q_ROOT_NODE_SELECTION_EXPERT_PANEL_PARAMETERS')}
         subtitle={`(${ePRSParametersAddress})`}
-        parameters={kvEPRS}
-        loading={loadingEPRS}
-        errorMsg={errorMessageEPRS}
+        parameters={eprsParameters}
+        loading={eprsParametersLoading}
+        errorMsg={eprsParametersError}
       />
 
       <EprsMembersTable />

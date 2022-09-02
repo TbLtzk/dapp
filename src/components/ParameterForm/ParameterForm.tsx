@@ -20,8 +20,8 @@ import { parameterType, required } from 'utils/validators';
 
 interface Props {
   contract: string;
-  disabled?: boolean
-  onChange: (form: Form<FormParameter>) => void
+  disabled?: boolean;
+  onChange: (form: Form<FormParameter>) => void;
 }
 
 function ParameterForm ({

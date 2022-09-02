@@ -1,6 +1,7 @@
 import { AuctionStatus, SystemDebtAuctionInfo } from '@q-dev/q-js-sdk';
 import {
   AuctionBid,
+  AuctionInfos,
   CreateAuction,
   SystemDebtAndSurplusInfo,
   SystemDebtCompletedInfo,
@@ -56,7 +57,7 @@ const getSystemDebtAuctionData = async (auction: SystemDebtAndSurplusInfo) => {
   };
 };
 
-export async function getSystemDebt (auctions: SystemDebtAndSurplusInfo[], lastBlock: string | number) {
+export async function getSystemDebt (auctions: AuctionInfos[], lastBlock: string | number) {
   const instance = await getSystemDebtAuctionInstance();
   const auctionsEvents = await getAuctionsEvents(instance, 'systemDebt', lastBlock);
   const allAcutions = await Promise.all(

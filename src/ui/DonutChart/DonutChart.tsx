@@ -16,7 +16,7 @@ import { formatNumber, formatPercent } from 'utils/numbers';
 Chart.register(ArcElement, Tooltip, Legend);
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  options: DonutOption[]
+  options: DonutOption[];
   totalLabel?: string;
   maxSections?: number;
   formatValue?: (val: string | number) => string;

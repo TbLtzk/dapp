@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router';
 
 import { ProposalFilter, ProposalFilterStatus, ProposalType } from 'typings/proposals';
@@ -7,10 +6,10 @@ import { ProposalFilter, ProposalFilterStatus, ProposalType } from 'typings/prop
 import ProposalFilters from './components/ProposalFilters';
 import ProposalsList from './components/ProposalsList';
 
-import { getProposals } from 'store/voting/proposals/actions';
+import { useProposals } from 'store/proposals/hooks';
 
 function Proposals ({ type }: { type: ProposalType }) {
-  const dispatch = useDispatch();
+  const { getProposals } = useProposals();
 
   const { search } = useLocation();
   const query = new URLSearchParams(search);
@@ -19,8 +18,8 @@ function Proposals ({ type }: { type: ProposalType }) {
 
   useEffect(() => {
     setFilters(getDefaultFilters());
-    dispatch(getProposals(type));
-  }, [dispatch, type]);
+    getProposals(type);
+  }, [type]);
 
   function getDefaultFilters () {
     return { status: (query.get('status') || '') as ProposalFilterStatus };
@@ -28,7 +27,7 @@ function Proposals ({ type }: { type: ProposalType }) {
 
   const handleFiltersChange = (value: ProposalFilter) => {
     setFilters(value);
-    dispatch(getProposals(type));
+    getProposals(type);
   };
 
   return (

@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
@@ -11,23 +10,23 @@ import Tooltip from 'ui/Tooltip';
 import DelegationsTable from './components/DelegationsTable';
 import DelegationStakeInfo from './components/DelegationStakeInfo';
 
-import { getDelegationStakeInfo, onClaimStakeDelegatorReward } from 'store/q-vault/action-creators';
-import { delegationStakeInfoSelector } from 'store/q-vault/selectors';
+import { useQVault } from 'store/q-vault/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
 import { RoutePaths } from 'constants/routes';
 
 function DelegationStaking () {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const delegationStakeInfo = useSelector(delegationStakeInfoSelector);
-
-  function handleClaim () {
-    dispatch(onClaimStakeDelegatorReward(t('ON_OUTSTANDING_DELEGATION_REWARDS_SUCCESS')));
-  }
+  const { submitTransaction } = useTransaction();
+  const {
+    delegationStakeInfo,
+    loadDelegationStakeInfo,
+    claimStakeDelegatorReward
+  } = useQVault();
 
   useEffect(() => {
-    dispatch(getDelegationStakeInfo());
-  }, [dispatch]);
+    loadDelegationStakeInfo();
+  }, []);
 
   const isMoreThanZero = Number(delegationStakeInfo?.totalStakeReward ?? 0) > 0;
 
@@ -47,7 +46,10 @@ function DelegationStaking () {
                 <Button
                   disabled={!isMoreThanZero}
                   className="claim-btn"
-                  onClick={handleClaim}
+                  onClick={() => submitTransaction({
+                    successMessage: t('ON_OUTSTANDING_DELEGATION_REWARDS_SUCCESS'),
+                    submitFn: claimStakeDelegatorReward
+                  })}
                 >
                   <Icon name="coins" />
                   <span>{t('CLAIM_REWARDS')}</span>

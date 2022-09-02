@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { VaultWithFee } from 'typings/defi';
 
@@ -7,30 +6,33 @@ import Button from 'ui/Button';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
-import useMetamaskReset from 'hooks/useMetamaskReset';
 
-import { setBorrowWithdraw } from 'store/borrow-assets/actions';
-import { borrowVaultSelector } from 'store/borrow-assets/selectors';
+import { useBorrowAssets } from 'store/borrow-assets/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
-import formTypes from 'constants/form-types';
 import { amount, required } from 'utils/validators';
 
 function WithdrawForm ({ vault }: { vault: VaultWithFee }) {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
-
-  const { collateralDetails } = useSelector(borrowVaultSelector);
+  const { submitTransaction } = useTransaction();
+  const { borrowVault, withdrawCollateral } = useBorrowAssets();
+  const { collateralDetails } = borrowVault;
 
   const form = useForm({
     initialValues: { amount: '' },
     validators: { amount: [required, amount(collateralDetails.availableWithdraw)] },
-    onSubmit: (form) => {
-      dispatch(
-        setBorrowWithdraw(form.amount, vault.vaultNum, collateralDetails.decimals, t('WITHDRAW_COLLATERAL_SUCCESS'))
-      );
-    },
+    onSubmit: ({ amount }) => {
+      submitTransaction({
+        successMessage: t('WITHDRAW_COLLATERAL_SUCCESS'),
+        onSuccess: () => form.reset(),
+        submitFn: () => withdrawCollateral({
+          amount,
+          vaultId: vault.vaultNum,
+          decimals: collateralDetails.decimals,
+        })
+      });
+    }
   });
-  useMetamaskReset(formTypes.borrowAssetWithdraw, form.reset);
 
   return (
     <form

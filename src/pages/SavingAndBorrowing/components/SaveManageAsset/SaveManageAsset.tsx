@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { SpinnerWrapper } from 'pages/SavingAndBorrowing/styles';
 import Button from 'ui/Button';
@@ -12,15 +11,7 @@ import SavingDetails from './components/SavingDetails';
 import WithdrawForm from './components/WithdrawForm';
 import { SaveManageWrapper } from './styles';
 
-import {
-  getSavingAllowance,
-  getSavingAviableToDeposit,
-  getSavingBalanceDetails,
-} from 'store/saving-assets/action-creators';
-import {
-  savingAllowanceSelector,
-  savingAviableToDepositSelector,
-} from 'store/saving-assets/selectors';
+import { useSavingAssets } from 'store/saving-assets/hooks';
 
 interface Props {
   depositAsset: string;
@@ -29,19 +20,21 @@ interface Props {
 
 function SaveManageAsset ({ depositAsset, interestAsset }: Props) {
   const { t } = useTranslation();
-
-  const dispatch = useDispatch();
-
-  const savingAviableToDeposit = useSelector(savingAviableToDepositSelector);
-  const savingAllowance = useSelector(savingAllowanceSelector);
+  const {
+    savingAvailableToDeposit,
+    savingAllowance,
+    getSavingAllowance,
+    getSavingBalanceDetails,
+    getSavingAvailableToDeposit
+  } = useSavingAssets();
 
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleModalOpen = () => {
     setModalOpen(true);
-    dispatch(getSavingAllowance());
-    dispatch(getSavingBalanceDetails());
-    dispatch(getSavingAviableToDeposit());
+    getSavingAllowance();
+    getSavingBalanceDetails();
+    getSavingAvailableToDeposit();
   };
 
   return (
@@ -60,7 +53,7 @@ function SaveManageAsset ({ depositAsset, interestAsset }: Props) {
         width={560}
         onClose={() => setModalOpen(false)}
       >
-        {!savingAviableToDeposit && !savingAllowance
+        {!savingAvailableToDeposit && !savingAllowance
           ? (
             <SpinnerWrapper>
               <Spinner size={96} />

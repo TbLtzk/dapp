@@ -36,7 +36,7 @@ import {
   getSlashingProposals,
 } from './slashing';
 
-import { store } from 'store';
+import { getState, getUserAddress } from 'store';
 
 import { getInstance, getRootNodesInstance } from 'contracts/contract-instance';
 
@@ -54,9 +54,8 @@ async function checkProposal (contract: ProposalsContract, proposal: ProposalEve
 }
 
 function getOldestActiveBlockFromStorage () {
-  const { userInf } = store.getState();
-  const { network } = userInf;
-  return JSON.parse(localStorage.getItem('oldestActiveBlock ' + network) || '{}');
+  const { user } = getState();
+  return JSON.parse(localStorage.getItem('oldestActiveBlock ' + user.chainId) || '{}');
 }
 
 async function getOldestBlock (contractName: ContractType) {
@@ -66,8 +65,6 @@ async function getOldestBlock (contractName: ContractType) {
 }
 
 async function changeOldestBlock (contractName: ContractType, proposals: ProposalEvent[]) {
-  const { userInf } = store.getState();
-  const { network } = userInf;
   const { lastBlockHeight } = await getMinimalActiveBlockHeight();
 
   const oldestActiveBlocks = getOldestActiveBlockFromStorage();
@@ -77,7 +74,7 @@ async function changeOldestBlock (contractName: ContractType, proposals: Proposa
   );
 
   localStorage.setItem(
-    'oldestActiveBlock ' + network,
+    'oldestActiveBlock ' + getState().user.chainId,
     JSON.stringify(
       merge(oldestActiveBlocks, {
         [contractName]: isFinite(oldestActiveProposal) ? oldestActiveProposal : lastBlockHeight,
@@ -209,9 +206,7 @@ export async function getProposal<T extends ProposalContractType> (
   id: string
 ): Promise<Proposal | null> {
   try {
-    const { userInf } = store.getState();
-    const userAddress = userInf.userAddress;
-
+    const userAddress = getUserAddress();
     const contract = await getInstance<T>(contractType)();
     const status = await contract.getStatus(id);
     if (status === ProposalStatus.NONE) return null;

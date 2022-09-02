@@ -1,13 +1,11 @@
 import { createContext, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { RootNodeProposalForm } from 'typings/forms';
 
 import MultiStepForm from 'components/MultiStepForm';
 
-import useMetamaskReset from 'hooks/useMetamaskReset';
 import useMultiStepForm from 'hooks/useMultiStepForm';
 
 import AddNodeStep from './components/AddNodeStep';
@@ -16,10 +14,10 @@ import ExitRootNodeStep from './components/ExitRootNodeStep';
 import RemoveNodeStep from './components/RemoveNodeStep';
 import TypeStep from './components/TypeStep';
 
-import { userAddressMetamask } from 'store/user-inf/selectors';
-import { createProposal } from 'store/voting/proposals/actions';
+import { useProposals } from 'store/proposals/hooks';
+import { useTransaction } from 'store/transaction/hooks';
+import { useUser } from 'store/user/hooks';
 
-import formTypes from 'constants/form-types';
 import { RoutePaths } from 'constants/routes';
 
 const DEFAULT_VALUES: RootNodeProposalForm = {
@@ -35,21 +33,22 @@ const NewRootProposalContext = createContext(
 
 function NewRootProposal () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { submitTransaction } = useTransaction();
+  const { createNewProposal } = useProposals();
   const history = useHistory();
-  const userAddresss = useSelector(userAddressMetamask);
+  const user = useUser();
 
   const form = useMultiStepForm({
     initialValues: DEFAULT_VALUES,
-    onConfirm: (values) => {
-      const createProposalValues = values.type === 'exit-root-node' ? ({ ...values, address: userAddresss }) : values;
-      const successMessage = values.type === 'exit-root-node' ? t('CREATE_PROPOSAL_SUCCESS') : t('YOU_SUCCESSFULLY_LEFT_ROOT_NODE_PANEL');
-      dispatch(createProposal(createProposalValues, successMessage));
+    onConfirm: (form) => {
+      submitTransaction({
+        successMessage: form.type === 'exit-root-node'
+          ? t('CREATE_PROPOSAL_SUCCESS')
+          : t('YOU_SUCCESSFULLY_LEFT_ROOT_NODE_PANEL'),
+        submitFn: () => createNewProposal(form.type === 'exit-root-node' ? ({ ...form, address: user.address }) : form),
+        onSuccess: () => history.push(RoutePaths.rootNodePanel),
+      });
     },
-  });
-
-  useMetamaskReset(formTypes.rootNodeProposal, () => {
-    history.push(RoutePaths.rootNodePanel);
   });
 
   const addOrRemoveStep = form.values.type === 'add-root-node'

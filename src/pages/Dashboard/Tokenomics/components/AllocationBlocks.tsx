@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
@@ -9,19 +8,8 @@ import useInterval from 'hooks/useInterval';
 
 import AllocationBlock from './AllocationBlock';
 
-import {
-  getDefaultAllocationProxy,
-  getRootNodeRewardProxy,
-  getValidationRewardProxy
-} from 'store/tokenomics/action-creators';
-import {
-  defaultAllocationProxyLoadingSelector,
-  defaultAllocationProxySelector,
-  rootNodeRewardProxyLoadingSelector,
-  rootNodeRewardProxySelector,
-  validationRewardProxyLoadingSelector,
-  validationRewardProxySelector
-} from 'store/tokenomics/selectors';
+import { useTokenomics } from 'store/tokenomics/hooks';
+import { useTransaction } from 'store/transaction/hooks';
 
 const StyledWrapper = styled.div`
   display: grid;
@@ -36,24 +24,30 @@ const StyledWrapper = styled.div`
 
 function AllocationBlocks () {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { submitTransaction } = useTransaction();
 
-  const defaultAllocationProxy = useSelector(defaultAllocationProxySelector);
-  const defaultAllocationProxyLoading = useSelector(defaultAllocationProxyLoadingSelector);
-
-  const validationRewardProxy = useSelector(validationRewardProxySelector);
-  const validationRewardProxyLoading = useSelector(validationRewardProxyLoadingSelector);
-
-  const rootNodeRewardProxy = useSelector(rootNodeRewardProxySelector);
-  const rootNodeRewardProxyLoading = useSelector(rootNodeRewardProxyLoadingSelector);
+  const {
+    defaultAllocationProxy,
+    defaultAllocationProxyLoading,
+    validationRewardProxy,
+    validationRewardProxyLoading,
+    rootNodeRewardProxy,
+    rootNodeRewardProxyLoading,
+    getDefaultAllocationProxy,
+    getValidationRewardProxy,
+    getRootNodeRewardProxy,
+    allocateDefaultProxyRewards,
+    allocateValidationProxyRewards,
+    allocateRootNodeProxyRewards
+  } = useTokenomics();
 
   useEffect(() => {
-    dispatch(getDefaultAllocationProxy(false));
-    dispatch(getRootNodeRewardProxy(false));
-    dispatch(getValidationRewardProxy(false));
+    getDefaultAllocationProxy();
+    getRootNodeRewardProxy();
+    getValidationRewardProxy();
   }, []);
 
-  useInterval(() => dispatch(getDefaultAllocationProxy(false)), 5000, defaultAllocationProxyLoading);
+  useInterval(() => getDefaultAllocationProxy(), 5000, defaultAllocationProxyLoading);
 
   return (
     <StyledWrapper>
@@ -61,19 +55,31 @@ function AllocationBlocks () {
         value={defaultAllocationProxy}
         loading={defaultAllocationProxyLoading}
         title={t('DEFAULT_ALLOCATION_PROXY')}
-        onAllocate={() => dispatch(getDefaultAllocationProxy(true, t('DEFAULT_ALLOCATION_PROXY_SUCCESS')))}
+        onAllocate={() => submitTransaction({
+          successMessage: t('DEFAULT_ALLOCATION_PROXY_SUCCESS'),
+          hideLoading: true,
+          submitFn: allocateDefaultProxyRewards
+        })}
       />
       <AllocationBlock
         value={validationRewardProxy}
         loading={validationRewardProxyLoading}
         title={t('VALIDATION_REWARD_PROXY')}
-        onAllocate={() => dispatch(getValidationRewardProxy(true, t('VALIDATON_REWARD_PROXY_SUCCESS')))}
+        onAllocate={() => submitTransaction({
+          successMessage: t('VALIDATON_REWARD_PROXY_SUCCESS'),
+          hideLoading: true,
+          submitFn: allocateValidationProxyRewards
+        })}
       />
       <AllocationBlock
         value={rootNodeRewardProxy}
         loading={rootNodeRewardProxyLoading}
         title={t('ROOT_NODE_REWARD_PROXY')}
-        onAllocate={() => dispatch(getRootNodeRewardProxy(true, t('ROOT_NODE_REWARD_PROXY_SUCCESS')))}
+        onAllocate={() => submitTransaction({
+          successMessage: t('ROOT_NODE_REWARD_PROXY_SUCCESS'),
+          hideLoading: true,
+          submitFn: allocateRootNodeProxyRewards
+        })}
       />
     </StyledWrapper>
   );

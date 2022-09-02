@@ -12,7 +12,7 @@ function useDonutTooltip () {
     style: {}
   });
 
-  const updateTooltip = ({ chart, tooltip }: { chart: Chart, tooltip: TooltipModel<'doughnut'>}) => {
+  const updateTooltip = ({ chart, tooltip }: { chart: Chart; tooltip: TooltipModel<'doughnut'>}) => {
     const [left, top] = _getArcCenter(tooltip);
     const position = _getPosition({ chart, tooltip });
     const { offsetX, offsetY, transform } = _getPositionModifiers(position);
@@ -44,8 +44,8 @@ function useDonutTooltip () {
   };
 
   const _getPosition = ({ chart, tooltip }: {
-    chart: Chart,
-    tooltip: TooltipModel<'doughnut'>
+    chart: Chart;
+    tooltip: TooltipModel<'doughnut'>;
   }): DonutTooltipPosition => {
     const { offsetWidth, offsetHeight } = chart.canvas;
 

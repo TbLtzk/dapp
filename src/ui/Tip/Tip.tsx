@@ -6,9 +6,9 @@ import { TipWrapper } from './styles';
 import { TipType } from '.';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  type?: TipType
-  compact?: boolean
-  action?: ReactNode
+  type?: TipType;
+  compact?: boolean;
+  action?: ReactNode;
 }
 
 function Tip ({
