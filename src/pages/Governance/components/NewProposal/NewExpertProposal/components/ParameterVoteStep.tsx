@@ -61,8 +61,9 @@ function ParameterVoteStep () {
   ];
 
   const handleSubmit = () => {
+    if (!formArray.validate()) return;
+
     formArray.submit();
-    if (!formArray.isValid) return;
     form.submit();
   };
 

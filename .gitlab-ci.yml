@@ -59,6 +59,8 @@ build:
     name: "gcr.io/kaniko-project/executor:v1.8.1-debug"
     entrypoint: [""]
   stage: build
+  only:
+    - master
   tags:
     - "gitlab-org-docker"
   before_script:
