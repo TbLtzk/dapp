@@ -118,35 +118,6 @@
     "name": "System reserve cool down period"
   },
 
-
-  "governed.EPDR.QBTC_address": {
-    "type": "address",
-    "name": "QBTC collateral address"
-  },
-  "governed.EPDR.QBTC_QUSD_oracle": {
-    "type": "string",
-    "name": "Oracle for QBTC collateral"
-  },
-  "governed.EPDR.QBTC_QUSD_ceiling": {
-    "type": "QUSD",
-    "name": "QBTC collateral ceiling"
-  },
-  "governed.EPDR.QBTC_QUSD_collateralizationRatio": {
-    "type": "fraction",
-    "name": "QBTC collateralization ratio"
-  },
-  "governed.EPDR.QBTC_QUSD_liquidationRatio": {
-    "type": "fraction",
-    "name": "QBTC liquidation ratio"
-  },
-  "governed.EPDR.QBTC_QUSD_liquidationFee": {
-    "type": "fraction",
-    "name": "QBTC liquidation fee"
-  },
-  "governed.EPDR.QBTC_QUSD_interestRate": {
-    "type": "rate",
-    "name": "QBTC borrowing interest rate"
-  },
   "governed.EPDR.QUSD_savingRate": {
     "type": "rate",
     "name": "QUSD savings rate"
@@ -186,6 +157,93 @@
   "governed.EPDR.QUSD_step": {
     "type": "QUSD",
     "name": "QUSD step"
+  },
+
+  "governed.EPDR.QBTC_address": {
+    "type": "address",
+    "name": "QBTC collateral address"
+  },
+  "governed.EPDR.QBTC_QUSD_oracle": {
+    "type": "string",
+    "name": "Oracle for QBTC collateral"
+  },
+  "governed.EPDR.QBTC_QUSD_ceiling": {
+    "type": "QUSD",
+    "name": "QBTC collateral ceiling"
+  },
+  "governed.EPDR.QBTC_QUSD_collateralizationRatio": {
+    "type": "fraction",
+    "name": "QBTC collateralization ratio"
+  },
+  "governed.EPDR.QBTC_QUSD_liquidationRatio": {
+    "type": "fraction",
+    "name": "QBTC liquidation ratio"
+  },
+  "governed.EPDR.QBTC_QUSD_liquidationFee": {
+    "type": "fraction",
+    "name": "QBTC liquidation fee"
+  },
+  "governed.EPDR.QBTC_QUSD_interestRate": {
+    "type": "rate",
+    "name": "QBTC borrowing interest rate"
+  },
+
+  "governed.EPDR.QDAI_address": {
+    "type": "address",
+    "name": "QDAI collateral address"
+  },
+  "governed.EPDR.QDAI_QUSD_oracle": {
+    "type": "string",
+    "name": "Oracle for QDAI collateral"
+  },
+  "governed.EPDR.QDAI_QUSD_ceiling": {
+    "type": "QUSD",
+    "name": "QDAI collateral ceiling"
+  },
+  "governed.EPDR.QDAI_QUSD_collateralizationRatio": {
+    "type": "fraction",
+    "name": "QDAI collateralization ratio"
+  },
+  "governed.EPDR.QDAI_QUSD_liquidationRatio": {
+    "type": "fraction",
+    "name": "QDAI liquidation ratio"
+  },
+  "governed.EPDR.QDAI_QUSD_liquidationFee": {
+    "type": "fraction",
+    "name": "QDAI liquidation fee"
+  },
+  "governed.EPDR.QDAI_QUSD_interestRate": {
+    "type": "rate",
+    "name": "QDAI borrowing interest rate"
+  },
+
+  "governed.EPDR.QUSDC_address": {
+    "type": "address",
+    "name": "QUSDC collateral address"
+  },
+  "governed.EPDR.QUSDC_QUSD_oracle": {
+    "type": "string",
+    "name": "Oracle for QUSDC collateral"
+  },
+  "governed.EPDR.QUSDC_QUSD_ceiling": {
+    "type": "QUSD",
+    "name": "QUSDC collateral ceiling"
+  },
+  "governed.EPDR.QUSDC_QUSD_collateralizationRatio": {
+    "type": "fraction",
+    "name": "QUSDC collateralization ratio"
+  },
+  "governed.EPDR.QUSDC_QUSD_liquidationRatio": {
+    "type": "fraction",
+    "name": "QUSDC liquidation ratio"
+  },
+  "governed.EPDR.QUSDC_QUSD_liquidationFee": {
+    "type": "fraction",
+    "name": "QUSDC liquidation fee"
+  },
+  "governed.EPDR.QUSDC_QUSD_interestRate": {
+    "type": "rate",
+    "name": "QUSDC borrowing interest rate"
   },
 
 
