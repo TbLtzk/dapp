@@ -55,7 +55,7 @@ function DelegateVoting () {
         tip={t('THIS_WILL_IMMEDIATELY_REDUCE_VOTING_WEIGHT')}
         onClose={() => setAnnounceModalOpen(false)}
       >
-        <AnnounceForm />
+        <AnnounceForm onSubmit={() => setAnnounceModalOpen(false)} />
       </Modal>
     </StyledWrapper>
   );

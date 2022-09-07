@@ -31,10 +31,10 @@ export const requiredIf: ValidatorFn<(val: ValidatorValue, form: unknown) => boo
   };
 };
 
-export const amount: ValidatorFn<string | number, string | number> = max => (val, form) => {
-  const value = toBigNumber(val);
+export const amount: ValidatorFn<string | number> = max => (val, form) => {
+  const value = toBigNumber(String(val));
   const zero = toBigNumber(0);
-  const validatorValue = toBigNumber(getValidatorValue(max, form));
+  const validatorValue = toBigNumber(String(getValidatorValue(max, form)));
 
   if (value.comparedTo(zero) === 0) {
     return {
@@ -139,6 +139,11 @@ export const parameterType: ValidatorFn<ParameterType> = type => (val, form) => 
       return { isValid: true, message: '' };
   }
 };
+
+export const futureDate: Validator = val => ({
+  isValid: !val || new Date(val.toString()) > new Date(),
+  message: 'Invalid future date'
+});
 
 function getValidatorValue<T extends ValidatorValue> (raw: T | ((form: unknown) => T), form: unknown): T {
   return typeof raw === 'function' ? raw(form) : raw;

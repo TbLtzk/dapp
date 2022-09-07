@@ -12,3 +12,9 @@ export const LOAD_TYPES = {
   notInstalled: 'not-installed',
   wrongNetwork: 'wrong-network',
 };
+
+export enum TimeLockStatus {
+  active = 'active',
+  pending = 'pending',
+  expired = 'expired',
+}

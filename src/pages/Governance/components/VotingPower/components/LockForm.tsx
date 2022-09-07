@@ -85,6 +85,7 @@ function LockForm ({ onSubmit }: { onSubmit: () => void }) {
       <Range
         hideInput
         value={Number(votingWeight) ? percentValue : '0'}
+        absoluteValue={form.values.amount}
         max={votingWeight}
         formatter={(value) => formatAsset(value, 'Q')}
         onChange={handleRangeChange}

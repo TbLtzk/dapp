@@ -1063,5 +1063,11 @@
   "NO_AGENT": "Kein Agent",
   "REMOVE": "Entfernen",
   "ANNOUNCE_NEW_AGENT": "Neuen Agenten ankündigen",
-  "LOCKING_END_TIME": "Endzeit sperren"
+  "LOCKING_END_TIME": "Endzeit sperren",
+  "TIME_LOCKS_ADDRESS": "Time Locks Address",
+  "UPDATE_ADDRESS": "Update Address",
+  "EXPIRED": "Expired",
+  "PURGE_EXPIRED": "Spülung abgelaufen",
+  "CURRENT_TIME_LOCKS": "Current Time Locks",
+  "VESTING": "Vesting"
 }

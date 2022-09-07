@@ -22,7 +22,7 @@ const StyledForm = styled.form`
   }
 `;
 
-function AnnounceForm () {
+function AnnounceForm ({ onSubmit }: { onSubmit: () => void }) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
   const { announceNewVotingAgent } = useQVault();
@@ -34,7 +34,7 @@ function AnnounceForm () {
       submitTransaction({
         successMessage: t('ANNOUNCE_NEW_VOTING_AGENT_SUCCESS'),
         submitFn: () => announceNewVotingAgent(address),
-        onSuccess: () => form.reset(),
+        onSuccess: () => onSubmit()
       });
     }
   });

@@ -1063,5 +1063,11 @@
   "NO_AGENT": "Немає агента",
   "REMOVE": "Видалити",
   "ANNOUNCE_NEW_AGENT": "Оголосити нового агента",
-  "LOCKING_END_TIME": "Кінець блокування"
+  "LOCKING_END_TIME": "Кінець блокування",
+  "TIME_LOCKS_ADDRESS": "Адреса таймлоків",
+  "UPDATE_ADDRESS": "Зміна адреси",
+  "EXPIRED": "Просрочений",
+  "PURGE_EXPIRED": "Очистити просрочені",
+  "CURRENT_TIME_LOCKS": "Поточні таймлоки",
+  "VESTING": "Вестинг"
 }

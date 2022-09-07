@@ -25,10 +25,10 @@ function Calendar ({ value, label, error, placeholder, disabled = false, onChang
         showTimeSelect
         locale={i18n.language}
         selected={value}
-        dateFormat="MMMM d, yyyy, h:mm a"
-        filterTime={(d) => new Date(d).getTime() > Date.now()}
+        dateFormat="dd.MM.yyyy, HH:mm"
         timeFormat="HH:mm"
-        timeIntervals={1}
+        filterTime={(d) => new Date(d).getTime() > Date.now()}
+        timeIntervals={30}
         disabled={disabled}
         placeholderText={placeholder || t('CHOOSE_DATE_AND_TIME')}
         {...rest}
