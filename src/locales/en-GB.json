@@ -1069,5 +1069,6 @@
   "EXPIRED": "Expired",
   "PURGE_EXPIRED": "Purge Expired",
   "CURRENT_TIME_LOCKS": "Current Time Locks",
-  "VESTING": "Vesting"
+  "VESTING": "Vesting",
+  "AVAILABLE_TO_WITHDRAW_ASSET": "Available to withdraw "
 }

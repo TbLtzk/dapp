@@ -24,7 +24,7 @@ function BorrowInfo () {
           value: formatNumber(collateralDetails?.assetPrice || 0),
         },
         {
-          name: t('AVAILABLE_TO_WITHDRAW'),
+          name: t('AVAILABLE_TO_WITHDRAW_ASSET'),
           value: formatNumber(collateralDetails?.availableWithdraw || 0),
         },
         {

@@ -1,7 +1,8 @@
 export enum BorrowAssets {
   QBTC = 'QBTC',
   QDAI = 'QDAI',
-  QUSDC = 'QUSDC'
+  QUSDC = 'QUSDC',
+  QVNXAU = 'QVNXAU'
 };
 
 export const defiApproveTypes = {
