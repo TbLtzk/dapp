@@ -60,7 +60,7 @@ build:
     entrypoint: [""]
   stage: build
   only:
-    - master
+    - tags
   tags:
     - "gitlab-org-docker"
   before_script:

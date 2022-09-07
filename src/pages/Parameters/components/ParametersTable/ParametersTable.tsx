@@ -11,7 +11,7 @@ import { TableWrapper } from './styles';
 import { ParameterValue } from 'store/parameters/reducer';
 
 import { formatDuration } from 'utils/date';
-import { formatAsset, formatFactor, formatFraction, formatNumber } from 'utils/numbers';
+import { calculateInterestRate, formatAsset, formatFactor, formatFraction, formatNumber } from 'utils/numbers';
 
 const parametersDictionary = parametersJson as {
   [key: string]: {
@@ -69,7 +69,7 @@ function ParametersTable ({ parameters, simplified }: Props) {
       case 'fraction':
         return formatFraction(item.value);
       case 'rate':
-        return `${formatNumber(fromWei(item.value), 2)} %`;
+        return `${formatNumber(calculateInterestRate(Number(item.value)), 2)} %`;
       case 'gas':
         return `${formatNumber(item.value, 2)} ${t('GAS')}`;
       case 'Q':
