@@ -1,5 +1,5 @@
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import Icon, { IconName } from 'ui/Icon';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';

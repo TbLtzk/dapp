@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { fromWei } from 'web3-utils';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 
 import useVoteDelegation from 'hooks/useVoteDelegation';
 import useVoterStatus from 'hooks/useVoterStatus';

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 
 import Balance from './components/Balance';
 import ConnectWallet from './components/ConnectWallet';

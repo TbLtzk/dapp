@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { snakeCase } from 'lodash';
 import { AuctionBid, AuctionCompletedInfos, LiquidationAuctionBid } from 'typings/auctions';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import Input from 'ui/Input';
 import Modal from 'ui/Modal';
 import Tip from 'ui/Tip';

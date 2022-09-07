@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { isEmpty } from 'lodash';
 import { Asset, VaultWithFee } from 'typings/defi';
 
+import Button from 'components/Button';
 import { SpinnerWrapper } from 'pages/SavingAndBorrowing/styles';
-import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 import Spinner from 'ui/Spinner';
 

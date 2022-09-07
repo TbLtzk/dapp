@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';

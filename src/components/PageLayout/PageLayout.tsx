@@ -1,7 +1,7 @@
 import { HTMLAttributes, ReactNode, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import Icon from 'ui/Icon';
 
 import useOnScreen from 'hooks/useOnScreen';

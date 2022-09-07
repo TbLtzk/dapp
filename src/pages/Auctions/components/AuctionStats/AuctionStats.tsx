@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import Button from 'components/Button';
 import { StatsContainer } from 'pages/Governance/components/VotingStats/styles';
-import Button from 'ui/Button';
 
 import { AuctionStatsContainer } from './styles';
 

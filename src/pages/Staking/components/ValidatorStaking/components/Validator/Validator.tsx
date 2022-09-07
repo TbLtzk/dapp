@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
+import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
 import NotFound from 'pages/NotFound';
-import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 import Spinner from 'ui/Spinner';
 

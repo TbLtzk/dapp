@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Proposal } from 'typings/proposals';
 import { fromWei } from 'web3-utils';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import RadioGroup from 'ui/RadioGroup';
 
 import useForm from 'hooks/useForm';

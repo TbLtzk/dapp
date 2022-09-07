@@ -1,7 +1,7 @@
 import { HTMLAttributes, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import Icon from 'ui/Icon';
 import Modal from 'ui/Modal';
 

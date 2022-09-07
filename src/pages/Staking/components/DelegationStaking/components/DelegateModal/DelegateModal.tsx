@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Delegation, Validator } from 'typings/validator';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import Modal from 'ui/Modal';
 
 import UpdateStakeForm from '../DelegationsTable/components/UpdateStakeForm';

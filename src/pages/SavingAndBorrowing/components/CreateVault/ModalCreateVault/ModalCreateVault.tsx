@@ -2,8 +2,8 @@ import { useTranslation } from 'react-i18next';
 
 import { Asset } from 'typings/defi';
 
+import Button from 'components/Button';
 import { ModalCreateVaultContainer } from 'pages/SavingAndBorrowing/styles';
-import Button from 'ui/Button';
 import RadioGroup from 'ui/RadioGroup';
 
 import useForm from 'hooks/useForm';

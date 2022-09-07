@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'react';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import Icon from 'ui/Icon';
 
 import { SearchContainer } from './styles';

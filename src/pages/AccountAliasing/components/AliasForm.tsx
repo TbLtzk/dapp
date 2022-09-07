@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Alias, AliasPurpose } from '@q-dev/q-js-sdk';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import Input from 'ui/Input';
 import Select from 'ui/Select';
 

@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 
 import { AuctionCompletedInfos, AuctionExecute, AuctionType, LiquidationAuctionExecute } from 'typings/auctions';
 
+import Button from 'components/Button';
 import { ShareButton } from 'components/ShareButton';
 import { AUCTION_HEADERS } from 'pages/Auctions/Auctions';
-import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 
 import BidModal from './BidModal';

@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import Button from 'ui/Button';
 import Table from 'ui/Table';
 
 import DelegateModal from '../DelegateModal';

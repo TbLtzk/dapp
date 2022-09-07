@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 import { uniqueId } from 'lodash';
 
+import Button from 'components/Button';
 import AddressIcon from 'components/Custom/AddressIcon';
-import Button from 'ui/Button';
 import DonutChart from 'ui/DonutChart';
 import { DonutOption } from 'ui/DonutChart/types';
 

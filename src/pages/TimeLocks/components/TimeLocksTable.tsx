@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { TimeLockContractType } from 'typings/contracts';
 import { fromWei } from 'web3-utils';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import Table from 'ui/Table';
 
 import { useLockedAmount } from 'store/locked-amount/hooks';

@@ -1,5 +1,6 @@
-import Button from 'ui/Button';
-import { ButtonLook } from 'ui/Button/Button';
+import { ButtonLook } from '@q-dev/q-ui-kit/dist/components/Button/Button';
+
+import Button from 'components/Button';
 import Icon from 'ui/Icon';
 
 function Buttons () {

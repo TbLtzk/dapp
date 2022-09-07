@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { fromWei } from 'web3-utils';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import Icon from 'ui/Icon';
 
 import { BalanceDropdown, QLogo } from './styles';

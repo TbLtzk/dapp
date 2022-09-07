@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 
 import { Alias } from '@q-dev/q-js-sdk';
 
+import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
-import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 
 import AddressForm from './components/AddressForm';

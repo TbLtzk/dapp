@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { AnimatePresence, motion } from 'framer-motion';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import Icon, { IconName } from 'ui/Icon';
 import Modal from 'ui/Modal';
 import Spinner from 'ui/Spinner';

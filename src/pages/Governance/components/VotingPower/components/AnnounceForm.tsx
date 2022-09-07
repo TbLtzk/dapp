@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import styled from 'styled-components';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import Icon from 'ui/Icon';
 import Input from 'ui/Input';
 

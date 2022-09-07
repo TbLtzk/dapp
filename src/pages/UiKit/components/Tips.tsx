@@ -1,4 +1,4 @@
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import Tip from 'ui/Tip';
 
 function Tips () {

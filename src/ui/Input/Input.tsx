@@ -2,7 +2,7 @@ import { ChangeEvent, HTMLInputTypeAttribute, InputHTMLAttributes, ReactNode } f
 
 import { isNil, uniqueId } from 'lodash';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 
 import { InputWrapper } from './styles';
 

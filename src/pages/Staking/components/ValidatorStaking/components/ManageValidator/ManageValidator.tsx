@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
-import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 import { TabRoute, TabSwitch } from 'ui/Tabs/components';
 import Tabs, { TabsType } from 'ui/Tabs/Tabs';

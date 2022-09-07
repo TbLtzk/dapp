@@ -3,7 +3,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import * as Sentry from '@sentry/react';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 
 interface Props extends RouteComponentProps {
   children?: ReactNode;

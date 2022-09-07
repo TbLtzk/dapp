@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { isNil } from 'lodash';
 import { isAddress } from 'web3-utils';
 
+import Button from 'components/Button';
 import { FormStep } from 'components/MultiStepForm';
-import Button from 'ui/Button';
 import Input from 'ui/Input';
 import Range from 'ui/Range';
 import Tip from 'ui/Tip';

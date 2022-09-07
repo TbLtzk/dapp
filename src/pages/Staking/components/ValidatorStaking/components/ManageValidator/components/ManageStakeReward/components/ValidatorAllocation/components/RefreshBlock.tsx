@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 import styled from 'styled-components';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 
 const StyledBlock = styled.div`
     display: flex;

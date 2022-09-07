@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import Icon, { IconName } from 'ui/Icon';
 
 import { StyledFormBlock } from './styles';

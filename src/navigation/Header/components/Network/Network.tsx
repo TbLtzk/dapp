@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useWeb3Context } from 'context/Web3ContextProvider';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import SegmentedButton from 'ui/SegmentedButton';
 
 import { useTransaction } from 'store/transaction/hooks';

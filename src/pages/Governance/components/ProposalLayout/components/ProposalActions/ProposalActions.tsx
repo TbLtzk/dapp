@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { ProposalStatus } from '@q-dev/q-js-sdk';
 import { Proposal } from 'typings/proposals';
 
+import Button from 'components/Button';
 import { ShareButton } from 'components/ShareButton';
-import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 import Tooltip from 'ui/Tooltip';
 

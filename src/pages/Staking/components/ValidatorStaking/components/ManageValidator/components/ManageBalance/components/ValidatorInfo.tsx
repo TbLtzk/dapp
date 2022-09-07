@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { media } from 'styles/media';
 
 import { ProgressBarWrapper } from 'components/Base/ProgressBar/styles';
+import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import Button from 'ui/Button';
 
 import { useEnterShortList, useGetValidatorRank, useIsUserActiveValidator } from '../hooks';
 

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';

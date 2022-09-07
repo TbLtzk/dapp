@@ -2,8 +2,8 @@ import { useTranslation } from 'react-i18next';
 
 import styled from 'styled-components';
 
+import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import Button from 'ui/Button';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';

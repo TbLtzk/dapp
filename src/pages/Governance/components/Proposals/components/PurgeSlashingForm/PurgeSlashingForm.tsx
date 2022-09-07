@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
+import Button from 'components/Button';
 import { useSlashingActions } from 'pages/Governance/hooks/useSlashingActions';
-import Button from 'ui/Button';
 import Input from 'ui/Input';
 import RadioGroup from 'ui/RadioGroup';
 

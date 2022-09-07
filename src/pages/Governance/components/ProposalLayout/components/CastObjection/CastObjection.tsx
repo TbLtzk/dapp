@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { SlashingProposal } from 'typings/proposals';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import Modal from 'ui/Modal';
 import Tip from 'ui/Tip';
 

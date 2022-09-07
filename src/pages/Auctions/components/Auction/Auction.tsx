@@ -6,10 +6,10 @@ import { camelCase } from 'lodash';
 import { AuctionCompletedInfos, AuctionType } from 'typings/auctions';
 
 import { SkeletonAuctionLoading } from 'components/Base/SkeletonLoading';
+import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
 import { AUCTION_HEADERS } from 'pages/Auctions/Auctions';
 import { AuctionContainer } from 'pages/Auctions/styles';
-import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 import Tag from 'ui/Tag';
 

@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import Button from 'components/Button';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
-import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 import Tooltip from 'ui/Tooltip';
 

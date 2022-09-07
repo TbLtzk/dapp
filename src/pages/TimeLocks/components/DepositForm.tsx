@@ -6,8 +6,8 @@ import { media } from 'styles/media';
 import { TimeLockContractType } from 'typings/contracts';
 import { TimeLockForm } from 'typings/time-locks';
 
+import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import Button from 'ui/Button';
 import Calendar from 'ui/Calendar';
 import Input from 'ui/Input';
 

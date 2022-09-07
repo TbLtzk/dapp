@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { TimeLockContractType } from 'typings/contracts';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import Modal from 'ui/Modal';
 
 import DepositForm from './DepositForm';

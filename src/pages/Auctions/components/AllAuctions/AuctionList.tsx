@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 
 import { AuctionInfos, AuctionType } from 'typings/auctions';
 
+import Button from 'components/Button';
 import { ListEmptyStub, ListWrapper } from 'pages/Auctions/styles';
 import ProposalCardSkeleton from 'pages/Governance/components/Proposals/components/ProposalCardSkeleton';
 import { ListNextContainer } from 'pages/Governance/components/Proposals/components/ProposalsList/styles';
-import Button from 'ui/Button';
 import Illustration from 'ui/Illustration';
 
 import AuctionCard from './components/AuctionCard';

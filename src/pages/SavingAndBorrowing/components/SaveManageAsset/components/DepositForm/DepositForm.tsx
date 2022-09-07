@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';

@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 
 import styled from 'styled-components';
 
+import Button from 'components/Button';
 import CopyToClipboard from 'components/CopyToClipboard';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
-import Button from 'ui/Button';
 import Dropdown from 'ui/Dropdown';
 import Icon from 'ui/Icon';
 

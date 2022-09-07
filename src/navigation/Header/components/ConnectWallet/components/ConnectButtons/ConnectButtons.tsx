@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { WalletType } from 'connectors';
 import { useWeb3Context } from 'context/Web3ContextProvider';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 
 function ConnectButtons () {
   const { t } = useTranslation();

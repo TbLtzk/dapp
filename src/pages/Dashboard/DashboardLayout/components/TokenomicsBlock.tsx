@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
+import Button from 'components/Button';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
-import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';

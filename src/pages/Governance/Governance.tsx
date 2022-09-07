@@ -2,8 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { Redirect, Route, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 
+import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
-import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 import Tabs from 'ui/Tabs';
 import { TabRoute, TabSwitch } from 'ui/Tabs/components';

@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { FormDelegation } from 'typings/forms';
 import { toWei } from 'web3-utils';
 
+import Button from 'components/Button';
 import FormBlock from 'components/FormBlock';
-import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 
 import useFormArray from 'hooks/useFormArray';

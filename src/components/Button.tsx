@@ -1,14 +1,12 @@
 import { HTMLAttributes } from 'react';
 
-import Spinner from 'ui/Spinner';
-
-import { StyledButton } from './styles';
+import { Button as UiButton } from '@q-dev/q-ui-kit';
+import { ButtonLook } from '@q-dev/q-ui-kit/dist/components/Button/Button';
 
 import { useUser } from 'store/user/hooks';
 
 import { LOAD_TYPES } from 'constants/statuses';
 
-export type ButtonLook = 'primary' | 'secondary' | 'ghost' | 'danger';
 interface Props extends HTMLAttributes<HTMLButtonElement> {
   type?: 'button' | 'submit' | 'reset';
   look?: ButtonLook;
@@ -22,18 +20,18 @@ interface Props extends HTMLAttributes<HTMLButtonElement> {
 }
 
 function Button ({
-  type = 'button',
-  look = 'primary',
-  disabled = false,
-  alwaysEnabled = false,
-  icon = false,
-  compact = false,
-  loading = false,
-  active = false,
-  block = false,
+  type,
+  look,
+  disabled,
+  alwaysEnabled,
+  icon,
+  compact,
+  loading,
+  active,
+  block,
   children,
   className,
-  onClick = () => {},
+  onClick,
   ...rest
 }: Props) {
   const { loadType } = useUser();
@@ -41,23 +39,21 @@ function Button ({
     (!alwaysEnabled && loadType !== LOAD_TYPES.loaded);
 
   return (
-    <StyledButton
-      className={`text-md font-semibold ${className || ''}`}
-      as={block ? 'div' : 'button'}
+    <UiButton
+      className={className}
       type={type}
+      block={block}
       disabled={isDisabled}
-      $look={look}
-      $icon={icon}
-      $compact={compact}
-      loading={String(loading)}
-      data-active={String(active)}
-      tabIndex={loading || block ? -1 : 0}
+      look={look}
+      icon={icon}
+      compact={compact}
+      loading={loading}
+      active={active}
       onClick={onClick}
       {...rest}
     >
-      {loading && <Spinner />}
       {children}
-    </StyledButton>
+    </UiButton>
   );
 }
 

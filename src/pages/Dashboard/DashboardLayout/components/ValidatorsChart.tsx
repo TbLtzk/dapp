@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 
+import Button from 'components/Button';
 import AddressIcon from 'components/Custom/AddressIcon';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
-import Button from 'ui/Button';
 import DonutChart from 'ui/DonutChart';
 import Spinner from 'ui/Spinner';
 
