@@ -1069,5 +1069,6 @@
   "EXPIRED": "Просрочений",
   "PURGE_EXPIRED": "Очистити просрочені",
   "CURRENT_TIME_LOCKS": "Поточні таймлоки",
-  "VESTING": "Вестинг"
+  "VESTING": "Вестинг",
+  "AVAILABLE_TO_WITHDRAW_ASSET": "Доступний для зняття актив"
 }

@@ -1069,5 +1069,6 @@
   "EXPIRED": "Expired",
   "PURGE_EXPIRED": "Spülung abgelaufen",
   "CURRENT_TIME_LOCKS": "Current Time Locks",
-  "VESTING": "Vesting"
+  "VESTING": "Vesting",
+  "AVAILABLE_TO_WITHDRAW_ASSET": "Verfügbar, um sich zurückzuziehen"
 }
