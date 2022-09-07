@@ -76,6 +76,10 @@ export const TextStyle = createGlobalStyle`
     font-weight: 300;
   }
 
+  .font-regular {
+    font-weight: 400;
+  }
+
   .font-semibold {
     font-weight: 600;
   }

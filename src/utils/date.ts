@@ -69,3 +69,11 @@ export function formatDuration (value: Timestamp): string {
     .map(([key, val]) => `${val} ${key}${val > 1 ? 's' : ''}`)
     .join(', ');
 }
+
+export function compareDates (a: DateLike, b: DateLike): number {
+  if (!a && !b) return 0;
+  if (!a) return 1;
+  if (!b) return -1;
+
+  return new Date(a).getTime() - new Date(b).getTime();
+}

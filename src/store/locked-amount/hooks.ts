@@ -7,6 +7,7 @@ import { toWei } from 'web3-utils';
 import { useQVault } from 'store/q-vault/hooks';
 import { useRootNodes } from 'store/root-nodes/hooks';
 import { useValidators } from 'store/validators/hooks';
+import { useVesting } from 'store/vesting/hooks';
 
 import { getInstance, } from 'contracts/contract-instance';
 
@@ -28,6 +29,11 @@ export function useLockedAmount () {
     loadValidatorMinimumTimeLock,
     loadValidatorTimeLocks,
   } = useValidators();
+  const {
+    getMinimumVestingTimeLock,
+    getVestingBalance,
+    getVestingTimeLocks
+  } = useVesting();
 
   async function purgeTimeLocks ({ contractType, address }: {
     contractType: TimeLockContractType;
@@ -69,6 +75,11 @@ export function useLockedAmount () {
         loadValidatorAccountableSelfStake(address);
         loadValidatorMinimumTimeLock(address);
         loadValidatorTimeLocks(address);
+        break;
+      case 'vesting':
+        getVestingBalance(address);
+        getMinimumVestingTimeLock(address);
+        getVestingTimeLocks(address);
         break;
     }
   }

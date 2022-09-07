@@ -1063,5 +1063,11 @@
   "NO_AGENT": "No agent",
   "REMOVE": "Remove",
   "ANNOUNCE_NEW_AGENT": "Announce new agent",
-  "LOCKING_END_TIME": "Locking end time"
+  "LOCKING_END_TIME": "Locking end time",
+  "TIME_LOCKS_ADDRESS": "Time Locks Address",
+  "UPDATE_ADDRESS": "Update Address",
+  "EXPIRED": "Expired",
+  "PURGE_EXPIRED": "Purge Expired",
+  "CURRENT_TIME_LOCKS": "Current Time Locks",
+  "VESTING": "Vesting"
 }

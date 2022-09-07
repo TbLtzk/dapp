@@ -1,21 +1,19 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import useAnimateNumber from 'hooks/useAnimateNumber';
+import { useTimeLocksAddress } from 'pages/TimeLocks/TimeLocks';
+
 import useInterval from 'hooks/useInterval';
 
-import BalanceCard from '../TimeLocksTable';
+import LocksOverview from '../LocksOverview';
+import TimeLocksTable from '../TimeLocksTable';
 
 import { useValidators } from 'store/validators/hooks';
 
-import { CONTRACT_TYPES } from 'constants/contracts';
-
-interface Props {
-  currentAddress: string;
-}
-
-function ValidatorStakeTab ({ currentAddress }: Props) {
+function ValidatorStakeTab () {
   const { t } = useTranslation();
+  const { address } = useTimeLocksAddress();
+
   const {
     validatorAccountableSelfStake,
     validatorsMinimumTimeLock,
@@ -25,28 +23,31 @@ function ValidatorStakeTab ({ currentAddress }: Props) {
     loadValidatorTimeLocks
   } = useValidators();
 
-  const validatorSelfStakeRef = useAnimateNumber(validatorAccountableSelfStake);
-  const validatorsTimeLockMinimumBalanceRef = useAnimateNumber(validatorsMinimumTimeLock);
-
   useInterval(() => {
-    loadValidatorMinimumTimeLock(currentAddress);
+    loadValidatorMinimumTimeLock(address);
   }, 5000);
 
   useEffect(() => {
-    loadValidatorAccountableSelfStake(currentAddress);
-    loadValidatorMinimumTimeLock(currentAddress);
-    loadValidatorTimeLocks(currentAddress);
-  }, [currentAddress]);
+    loadValidatorAccountableSelfStake(address);
+    loadValidatorMinimumTimeLock(address);
+    loadValidatorTimeLocks(address);
+  }, [address]);
 
   return (
-    <BalanceCard
-      address={currentAddress}
-      title={t('VALIDATOR_STAKE_BALANCE')}
-      contract={CONTRACT_TYPES.validators}
-      balanceRef={validatorSelfStakeRef}
-      timeLockBalanceRef={validatorsTimeLockMinimumBalanceRef}
-      lockAmountData={validatorsTimeLocks}
-    />
+    <div>
+      <LocksOverview
+        title={t('VALIDATOR_STAKE_BALANCE')}
+        balance={validatorAccountableSelfStake}
+        contract="validators"
+        timeLockBalance={validatorsMinimumTimeLock}
+      />
+
+      <TimeLocksTable
+        address={address}
+        contract="validators"
+        lockAmountData={validatorsTimeLocks}
+      />
+    </div>
   );
 }
 

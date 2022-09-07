@@ -1,21 +1,19 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import useAnimateNumber from 'hooks/useAnimateNumber';
+import { useTimeLocksAddress } from 'pages/TimeLocks/TimeLocks';
+
 import useInterval from 'hooks/useInterval';
 
-import BalanceCard from '../TimeLocksTable';
+import LocksOverview from '../LocksOverview';
+import TimeLocksTable from '../TimeLocksTable';
 
 import { useQVault } from 'store/q-vault/hooks';
 
-import { CONTRACT_TYPES } from 'constants/contracts';
-
-interface Props {
-  currentAddress: string;
-}
-
-function QVaultTab ({ currentAddress }: Props) {
+function QVaultTab () {
   const { t } = useTranslation();
+  const { address } = useTimeLocksAddress();
+
   const {
     vaultBalance,
     qVaultMinimumTimeLock,
@@ -25,28 +23,31 @@ function QVaultTab ({ currentAddress }: Props) {
     loadMinimumQVaultTimeLock
   } = useQVault();
 
-  const qVaultStakeBalanceRef = useAnimateNumber(vaultBalance);
-  const qVaultTimeLockMinimumBalanceRef = useAnimateNumber(qVaultMinimumTimeLock);
-
   useInterval(() => {
-    loadMinimumQVaultTimeLock(currentAddress);
+    loadMinimumQVaultTimeLock(address);
   }, 5000);
 
   useEffect(() => {
-    loadVaultBalance(currentAddress);
-    loadMinimumQVaultTimeLock(currentAddress);
-    loadQVaultTimeLocks(currentAddress);
-  }, [currentAddress]);
+    loadVaultBalance(address);
+    loadMinimumQVaultTimeLock(address);
+    loadQVaultTimeLocks(address);
+  }, [address]);
 
   return (
-    <BalanceCard
-      address={currentAddress}
-      title={t('Q_VAULT_ACCOUNT_BALANCE')}
-      contract={CONTRACT_TYPES.qVault}
-      balanceRef={qVaultStakeBalanceRef}
-      timeLockBalanceRef={qVaultTimeLockMinimumBalanceRef}
-      lockAmountData={qVaultTimeLocks}
-    />
+    <div>
+      <LocksOverview
+        title={t('Q_VAULT_ACCOUNT_BALANCE')}
+        balance={vaultBalance}
+        contract="qVault"
+        timeLockBalance={qVaultMinimumTimeLock}
+      />
+
+      <TimeLocksTable
+        address={address}
+        contract="qVault"
+        lockAmountData={qVaultTimeLocks}
+      />
+    </div>
   );
 }
 

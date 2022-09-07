@@ -10,6 +10,7 @@ import { formatNumber, formatPercent, toBigNumber } from 'utils/numbers';
 
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   value: string;
+  absoluteValue?: string;
   max?: string;
   label?: string;
   error?: string;
@@ -21,6 +22,7 @@ interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
 
 function Range ({
   value,
+  absoluteValue,
   max = '100',
   label,
   error,
@@ -62,7 +64,7 @@ function Range ({
         <div className="range-main">
           <div className="range-values">
             <p className="range-value text-sm">
-              <span>{formatter(getAbsoluteValue(value))}</span>
+              <span>{formatter(absoluteValue || getAbsoluteValue(value))}</span>
               <span className="font-light">({formatPercent(value || 0)})</span>
             </p>
             <p className="range-value text-sm">
