@@ -1,9 +1,10 @@
 import { useTranslation } from 'react-i18next';
 
+import { RadioGroup } from '@q-dev/q-ui-kit';
+
 import Button from 'components/Button';
 import Input from 'components/Input';
 import { useSlashingActions } from 'pages/Governance/hooks/useSlashingActions';
-import RadioGroup from 'ui/RadioGroup';
 
 import useForm from 'hooks/useForm';
 

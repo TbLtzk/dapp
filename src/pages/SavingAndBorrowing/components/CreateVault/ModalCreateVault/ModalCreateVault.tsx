@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
 
+import { RadioGroup } from '@q-dev/q-ui-kit';
 import { Asset } from 'typings/defi';
 
 import Button from 'components/Button';
 import { ModalCreateVaultContainer } from 'pages/SavingAndBorrowing/styles';
-import RadioGroup from 'ui/RadioGroup';
 
 import useForm from 'hooks/useForm';
 

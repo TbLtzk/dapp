@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
-import { Radio } from '@q-dev/q-ui-kit';
-import RadioGroup from 'ui/RadioGroup';
+import { Radio, RadioGroup } from '@q-dev/q-ui-kit';
 
 function Radios () {
   const [network, setNetwork] = useState('mainnet');

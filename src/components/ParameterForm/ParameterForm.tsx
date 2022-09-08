@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { ParameterType } from '@q-dev/q-js-sdk';
+import { RadioGroup } from '@q-dev/q-ui-kit';
 import { FormParameter } from 'typings/forms';
 
 import Input from 'components/Input';
-import RadioGroup from 'ui/RadioGroup';
 import Select from 'ui/Select';
 import Tip from 'ui/Tip';
 

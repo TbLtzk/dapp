@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
 import { Classification } from '@q-dev/q-js-sdk';
+import { RadioGroup } from '@q-dev/q-ui-kit';
 import { QProposalForm, RadioOptions } from 'typings/forms';
 
 import Input from 'components/Input';
 import { FormStep } from 'components/MultiStepForm';
-import RadioGroup from 'ui/RadioGroup';
 
 import useForm from 'hooks/useForm';
 
