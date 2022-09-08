@@ -4,7 +4,7 @@ import paginationFactory, { PaginationListStandalone, PaginationProvider } from 
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 import { useTranslation } from 'react-i18next';
 
-import Search from 'ui/Search';
+import Search from 'components/Search';
 
 import { SkeletonTableLoading } from '../../components/Base/SkeletonLoading/SkeletonLoading';
 

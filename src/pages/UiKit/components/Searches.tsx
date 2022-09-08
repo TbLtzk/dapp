@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import Search from 'ui/Search';
+import Search from 'components/Search';
 
 function Searches () {
   const [text, setText] = useState('');
