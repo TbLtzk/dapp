@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import DonutChart from 'ui/DonutChart';
+import DonutChart from 'components/DonutChart';
 
 import { StyledWrapper } from '../Validator/styles';
 

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { getDonutChartColor } from 'ui/DonutChart/colors';
+import { getDonutChartColor } from 'components/DonutChart/colors';
 
 export const StyledDonutTooltip = styled.div`
   pointer-events: none;

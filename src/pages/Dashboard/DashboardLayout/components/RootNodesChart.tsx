@@ -7,8 +7,8 @@ import styled from 'styled-components';
 
 import Button from 'components/Button';
 import AddressIcon from 'components/Custom/AddressIcon';
+import DonutChart from 'components/DonutChart';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
-import DonutChart from 'ui/DonutChart';
 
 import { useRootNodes } from 'store/root-nodes/hooks';
 
