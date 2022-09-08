@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import SegmentedButton from 'ui/SegmentedButton';
+import { SegmentedButton } from '@q-dev/q-ui-kit';
+
 import Switch from 'ui/Switch';
 
 function Switches () {

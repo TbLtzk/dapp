@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { SegmentedButton } from '@q-dev/q-ui-kit';
 import { useWeb3Context } from 'context/Web3ContextProvider';
 
 import Button from 'components/Button';
-import SegmentedButton from 'ui/SegmentedButton';
 
 import { useTransaction } from 'store/transaction/hooks';
 import { useUser } from 'store/user/hooks';
