@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Icon } from '@q-dev/q-ui-kit';
 import { ProposalEvent } from 'typings/contracts';
 import { Proposal } from 'typings/proposals';
 
 import useProposalDetails from 'pages/Governance/hooks/useProposalDetails';
-import Icon from 'ui/Icon';
 import Progress from 'ui/Progress';
 import Tag from 'ui/Tag';
 

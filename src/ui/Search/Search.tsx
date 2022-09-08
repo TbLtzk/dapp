@@ -1,7 +1,8 @@
 import { HTMLAttributes } from 'react';
 
+import { Icon } from '@q-dev/q-ui-kit';
+
 import Button from 'components/Button';
-import Icon from 'ui/Icon';
 
 import { SearchContainer } from './styles';
 

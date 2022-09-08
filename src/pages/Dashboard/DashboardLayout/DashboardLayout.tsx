@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import { Icon } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
 import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
-import Icon from 'ui/Icon';
 
 import BlockHeight from './components/BlockHeight';
 import ConstitutionBlock from './components/ConstitutionBlock';

@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import { Icon } from '@q-dev/q-ui-kit';
 import { Validator } from 'typings/validator';
 
 import Button from 'components/Button';
-import Icon from 'ui/Icon';
 import Tooltip from 'ui/Tooltip';
 
 import { StyledWrapper } from '../styles';

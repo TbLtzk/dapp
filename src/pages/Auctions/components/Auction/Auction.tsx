@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RouteComponentProps, useHistory } from 'react-router';
 
+import { Icon } from '@q-dev/q-ui-kit';
 import { camelCase } from 'lodash';
 import { AuctionCompletedInfos, AuctionType } from 'typings/auctions';
 
@@ -10,7 +11,6 @@ import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
 import { AUCTION_HEADERS } from 'pages/Auctions/Auctions';
 import { AuctionContainer } from 'pages/Auctions/styles';
-import Icon from 'ui/Icon';
 import Tag from 'ui/Tag';
 
 import AuctionActions from './components/AuctionActions';

@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next';
 
+import { Icon } from '@q-dev/q-ui-kit';
 import { ExpertProposalForm, ExpertType, FormParameter, Options } from 'typings/forms';
 
 import Button from 'components/Button';
 import FormBlock from 'components/FormBlock';
 import { FormStep } from 'components/MultiStepForm';
 import ParameterForm from 'components/ParameterForm';
-import Icon from 'ui/Icon';
 import Input from 'ui/Input';
 import RadioGroup from 'ui/RadioGroup';
 

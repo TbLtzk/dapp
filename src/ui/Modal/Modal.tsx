@@ -1,10 +1,10 @@
 import { createPortal } from 'react-dom';
 import { useHotkeys } from 'react-hotkeys-hook';
 
+import { Icon } from '@q-dev/q-ui-kit';
 import { AnimatePresence, HTMLMotionProps } from 'framer-motion';
 
 import Button from 'components/Button';
-import Icon from 'ui/Icon';
 
 import { ModalContainer } from './styles';
 

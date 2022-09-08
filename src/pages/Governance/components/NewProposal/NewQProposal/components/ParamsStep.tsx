@@ -1,13 +1,12 @@
 import { useTranslation } from 'react-i18next';
 
-import { Check } from '@q-dev/q-ui-kit';
+import { Check, Icon } from '@q-dev/q-ui-kit';
 import { FormParameter } from 'typings/forms';
 
 import Button from 'components/Button';
 import FormBlock from 'components/FormBlock';
 import { FormStep } from 'components/MultiStepForm';
 import ParameterForm from 'components/ParameterForm';
-import Icon from 'ui/Icon';
 
 import useFormArray from 'hooks/useFormArray';
 

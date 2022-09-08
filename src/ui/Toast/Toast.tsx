@@ -1,7 +1,8 @@
 import { HTMLAttributes } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Icon, { IconName } from 'ui/Icon';
+import { Icon } from '@q-dev/q-ui-kit';
+import { IconName } from '@q-dev/q-ui-kit/dist/components/Icon';
 
 import { ToastContainer } from './styles';
 

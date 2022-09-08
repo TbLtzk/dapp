@@ -1,8 +1,9 @@
 import { HTMLAttributes, ReactNode, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Icon } from '@q-dev/q-ui-kit';
+
 import Button from 'components/Button';
-import Icon from 'ui/Icon';
 
 import useOnScreen from 'hooks/useOnScreen';
 

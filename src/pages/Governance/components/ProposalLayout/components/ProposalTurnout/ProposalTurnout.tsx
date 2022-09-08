@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 
+import { Icon } from '@q-dev/q-ui-kit';
 import { Proposal } from 'typings/proposals';
 
-import Icon from 'ui/Icon';
 import Progress from 'ui/Progress';
 
 import { StyledProposalTurnout } from './styles';

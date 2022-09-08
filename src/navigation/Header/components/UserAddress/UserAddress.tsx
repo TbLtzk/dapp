@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Icon } from '@q-dev/q-ui-kit';
 import { useWeb3Context } from 'context/Web3ContextProvider';
 import copy from 'copy-to-clipboard';
 import { motion } from 'framer-motion';
 
 import Button from 'components/Button';
 import AddressIcon from 'components/Custom/AddressIcon';
-import Icon from 'ui/Icon';
 
 import { AddressDropdown } from './styles';
 

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Icon } from '@q-dev/q-ui-kit';
 import { AuctionCompletedInfos, AuctionExecute, AuctionType, LiquidationAuctionExecute } from 'typings/auctions';
 
 import Button from 'components/Button';
 import { ShareButton } from 'components/ShareButton';
 import { AUCTION_HEADERS } from 'pages/Auctions/Auctions';
-import Icon from 'ui/Icon';
 
 import BidModal from './BidModal';
 import { AuctionActionsContainer } from './styles';

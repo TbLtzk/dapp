@@ -1,7 +1,7 @@
+import { Icon } from '@q-dev/q-ui-kit';
 import { ButtonLook } from '@q-dev/q-ui-kit/dist/components/Button/Button';
 
 import Button from 'components/Button';
-import Icon from 'ui/Icon';
 
 function Buttons () {
   const buttonLooks: ButtonLook[] = ['primary', 'secondary', 'ghost', 'danger'];

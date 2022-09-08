@@ -1,7 +1,7 @@
 import { HTMLAttributes } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Icon from 'ui/Icon';
+import { Icon } from '@q-dev/q-ui-kit';
 
 import { StepperContainer } from './styles';
 

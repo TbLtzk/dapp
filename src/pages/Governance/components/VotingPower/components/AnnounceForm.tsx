@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 
+import { Icon } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
-import Icon from 'ui/Icon';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';

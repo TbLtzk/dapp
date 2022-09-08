@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import Icon from 'ui/Icon';
+import { Icon } from '@q-dev/q-ui-kit';
+
 import Input from 'ui/Input';
 
 function Inputs () {

@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Dropdown } from '@q-dev/q-ui-kit';
+import { Dropdown, Icon } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
 import CopyToClipboard from 'components/CopyToClipboard';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
-import Icon from 'ui/Icon';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 

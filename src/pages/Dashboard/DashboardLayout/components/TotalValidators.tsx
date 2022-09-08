@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import { Icon } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
-import Icon from 'ui/Icon';
 
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useNetworkConfig from 'hooks/useNetworkConfig';

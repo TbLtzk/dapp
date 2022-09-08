@@ -1,6 +1,8 @@
 
+import { Icon } from '@q-dev/q-ui-kit';
+import { IconName } from '@q-dev/q-ui-kit/dist/components/Icon';
+
 import Button from 'components/Button';
-import Icon, { IconName } from 'ui/Icon';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 

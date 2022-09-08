@@ -1,8 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
+import { Icon } from '@q-dev/q-ui-kit';
 import { useLanguage } from 'context/LanguageProvider';
-
-import Icon from 'ui/Icon';
 
 import { LanguagesContainer } from './styles';
 
