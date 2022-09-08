@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
-import Check from 'ui/Check';
+import { Check } from '@q-dev/q-ui-kit';
+
 import Modal from 'ui/Modal';
 
 import useLocalStorage from 'hooks/useLocalStorage';

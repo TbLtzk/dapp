@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import Check from 'ui/Check';
+import { Check } from '@q-dev/q-ui-kit';
 
 function Checks () {
   const [isOn, setIsOn] = useState(false);

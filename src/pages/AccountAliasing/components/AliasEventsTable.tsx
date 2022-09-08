@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';
+import { Check } from '@q-dev/q-ui-kit';
 import { invert } from 'lodash';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import Check from 'ui/Check';
 import Table, { TableColumn } from 'ui/Table';
 
 import { useAliasEvents } from 'store/aliases/hooks';

@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
 
+import { Check } from '@q-dev/q-ui-kit';
 import { SlashingProposal } from 'typings/proposals';
 
 import Button from 'components/Button';
 import { useSlashingActions } from 'pages/Governance/hooks/useSlashingActions';
-import Check from 'ui/Check';
 import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
