@@ -1,8 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
+import { Illustration } from '@q-dev/q-ui-kit';
 import { SlashingProposal } from 'typings/proposals';
-
-import Illustration from 'ui/Illustration';
 
 import DecisionActions from './components/DecisionActions';
 import DecisionDetails from './components/DecisionDetails';

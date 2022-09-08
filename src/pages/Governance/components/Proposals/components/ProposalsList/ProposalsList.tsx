@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Illustration } from '@q-dev/q-ui-kit';
 import { ProposalEvent } from 'typings/contracts';
 import { ProposalFilterStatus, ProposalType } from 'typings/proposals';
 
 import Button from 'components/Button';
-import Illustration from 'ui/Illustration';
 
 import ProposalCard from '../ProposalCard';
 import ProposalCardSkeleton from '../ProposalCardSkeleton';
