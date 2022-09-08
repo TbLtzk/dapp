@@ -5,7 +5,7 @@ import { Tooltip } from '@q-dev/q-ui-kit';
 import { Asset } from 'typings/defi';
 
 import CustomBlock from 'components/Base/CustomBlock';
-import Table from 'ui/Table';
+import Table from 'components/Table';
 
 import BorrowManageAsset from '../BorrowManageAsset';
 

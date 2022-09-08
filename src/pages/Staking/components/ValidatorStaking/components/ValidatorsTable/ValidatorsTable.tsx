@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 
 import Button from 'components/Button';
 import RedirectAddress from 'components/Custom/RedirectAddress';
+import Table from 'components/Table';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
-import Table from 'ui/Table';
 
 import { useEnterShortList } from '../ManageValidator/components/ManageBalance/hooks';
 

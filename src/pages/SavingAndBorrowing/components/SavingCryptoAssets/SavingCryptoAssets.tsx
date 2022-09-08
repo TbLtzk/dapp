@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Tooltip } from '@q-dev/q-ui-kit';
 
 import CustomBlock from 'components/Base/CustomBlock';
-import Table from 'ui/Table';
+import Table from 'components/Table';
 
 import SaveManageAsset from '../SaveManageAsset';
 

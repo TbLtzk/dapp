@@ -7,8 +7,8 @@ import styled from 'styled-components';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import PageLayout from 'components/PageLayout';
+import Table, { TableColumn } from 'components/Table';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
-import Table, { TableColumn } from 'ui/Table';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 

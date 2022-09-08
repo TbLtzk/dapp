@@ -6,7 +6,7 @@ import { Check } from '@q-dev/q-ui-kit';
 import { invert } from 'lodash';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import Table, { TableColumn } from 'ui/Table';
+import Table, { TableColumn } from 'components/Table';
 
 import { useAliasEvents } from 'store/aliases/hooks';
 

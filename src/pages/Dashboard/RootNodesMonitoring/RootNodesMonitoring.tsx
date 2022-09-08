@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import PageLayout from 'components/PageLayout';
-import Table, { TableColumn } from 'ui/Table';
+import Table, { TableColumn } from 'components/Table';
 
 import DashboardLink from '../components/DashboardLink';
 

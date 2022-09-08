@@ -2,8 +2,8 @@ import { useTranslation } from 'react-i18next';
 
 import ProgressBar from 'components/Base/ProgressBar';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import Table from 'components/Table';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
-import Table from 'ui/Table';
 
 import DelegateModal from '../../../DelegateModal';
 

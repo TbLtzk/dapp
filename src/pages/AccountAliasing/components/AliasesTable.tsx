@@ -6,7 +6,7 @@ import { invert } from 'lodash';
 
 import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import Table from 'ui/Table';
+import Table from 'components/Table';
 
 import { useAliases } from 'store/aliases/hooks';
 import { useUser } from 'store/user/hooks';

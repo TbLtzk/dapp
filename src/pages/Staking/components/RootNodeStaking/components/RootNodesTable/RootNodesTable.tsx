@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import Table, { TableColumn } from 'components/Table';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
-import Table, { TableColumn } from 'ui/Table';
 
 import { useRootNodes } from 'store/root-nodes/hooks';
 
