@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Range } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
-import Range from 'ui/Range';
 
 import useForm from 'hooks/useForm';
 
