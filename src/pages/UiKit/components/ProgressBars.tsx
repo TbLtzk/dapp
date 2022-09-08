@@ -1,4 +1,4 @@
-import Progress from 'ui/Progress';
+import { Progress } from '@q-dev/q-ui-kit';
 
 function ProgressBars () {
   return (

@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 
+import { Progress } from '@q-dev/q-ui-kit';
 import { useTheme } from 'styled-components';
 import { Proposal } from 'typings/proposals';
 
-import Progress from 'ui/Progress';
 import Tooltip from 'ui/Tooltip';
 
 import useEndTime from '../../hooks/useEndTime';
