@@ -1,10 +1,9 @@
 import { useState } from 'react';
 
-import { Icon } from '@q-dev/q-ui-kit';
+import { Icon, MenuDropdown } from '@q-dev/q-ui-kit';
 import { motion } from 'framer-motion';
 
 import Button from 'components/Button';
-import MenuDropdown from 'ui/MenuDropdown';
 
 function Menus () {
   const [open, setOpen] = useState(false);
