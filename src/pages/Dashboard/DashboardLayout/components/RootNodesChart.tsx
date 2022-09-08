@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import { Spinner } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
 import AddressIcon from 'components/Custom/AddressIcon';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 import DonutChart from 'ui/DonutChart';
-import Spinner from 'ui/Spinner';
 
 import { useRootNodes } from 'store/root-nodes/hooks';
 

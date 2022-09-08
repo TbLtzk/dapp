@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
 
-import { Icon, Modal } from '@q-dev/q-ui-kit';
+import { Icon, Modal, Spinner } from '@q-dev/q-ui-kit';
 import { IconName } from '@q-dev/q-ui-kit/dist/components/Icon';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import Button from 'components/Button';
-import Spinner from 'ui/Spinner';
 import { ToastType } from 'ui/Toast/Toast';
 
 import useChangesListener from 'hooks/useChangesListener';

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Spinner from 'ui/Spinner';
+import { Spinner } from '@q-dev/q-ui-kit';
+
 import Switch from 'ui/Switch';
 import Tooltip from 'ui/Tooltip';
 

@@ -1,13 +1,12 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Modal } from '@q-dev/q-ui-kit';
+import { Modal, Spinner } from '@q-dev/q-ui-kit';
 import { isEmpty } from 'lodash';
 import { Asset, VaultWithFee } from 'typings/defi';
 
 import Button from 'components/Button';
 import { SpinnerWrapper } from 'pages/SavingAndBorrowing/styles';
-import Spinner from 'ui/Spinner';
 
 import BorrowForm from './components/BorrowForm';
 import BorrowInfo from './components/BorrowInfo';

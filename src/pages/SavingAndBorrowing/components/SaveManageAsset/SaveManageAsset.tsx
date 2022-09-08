@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Modal } from '@q-dev/q-ui-kit';
+import { Modal, Spinner } from '@q-dev/q-ui-kit';
 
 import Button from 'components/Button';
 import { SpinnerWrapper } from 'pages/SavingAndBorrowing/styles';
-import Spinner from 'ui/Spinner';
 
 import DepositForm from './components/DepositForm';
 import SavingDetails from './components/SavingDetails';
