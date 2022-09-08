@@ -1,10 +1,10 @@
 
 import { useTranslation } from 'react-i18next';
 
+import { Tooltip } from '@q-dev/q-ui-kit';
 import { SlashingProposal } from 'typings/proposals';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import Tooltip from 'ui/Tooltip';
 
 import useEndTime from '../../../hooks/useEndTime';
 import LinkViewer from '../../LinkViewer';

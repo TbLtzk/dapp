@@ -1,8 +1,9 @@
 
 import { useTranslation } from 'react-i18next';
 
+import { Tooltip } from '@q-dev/q-ui-kit';
+
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import Tooltip from 'ui/Tooltip';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 

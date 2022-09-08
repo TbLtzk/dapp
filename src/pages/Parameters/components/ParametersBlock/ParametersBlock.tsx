@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Spinner, Switch } from '@q-dev/q-ui-kit';
-
-import Tooltip from 'ui/Tooltip';
+import { Spinner, Switch, Tooltip } from '@q-dev/q-ui-kit';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 

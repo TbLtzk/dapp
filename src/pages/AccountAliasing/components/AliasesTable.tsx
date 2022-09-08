@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next';
 
 import { Alias, AliasPurpose } from '@q-dev/q-js-sdk';
+import { Tooltip } from '@q-dev/q-ui-kit';
 import { invert } from 'lodash';
 
 import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Table from 'ui/Table';
-import Tooltip from 'ui/Tooltip';
 
 import { useAliases } from 'store/aliases/hooks';
 import { useUser } from 'store/user/hooks';

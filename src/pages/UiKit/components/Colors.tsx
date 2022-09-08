@@ -1,6 +1,5 @@
+import { Tooltip } from '@q-dev/q-ui-kit';
 import { COLORS } from 'styles/colors';
-
-import Tooltip from 'ui/Tooltip';
 
 function Colors () {
   return (

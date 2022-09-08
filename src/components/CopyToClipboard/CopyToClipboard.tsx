@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Icon } from '@q-dev/q-ui-kit';
+import { Icon, Tooltip } from '@q-dev/q-ui-kit';
 import copy from 'copy-to-clipboard';
-
-import Tooltip from 'ui/Tooltip';
 
 import { CopyTrigger, TooltipWrapper } from './styles';
 

@@ -2,13 +2,13 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Tooltip } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import PageLayout from 'components/PageLayout';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
 import Table, { TableColumn } from 'ui/Table';
-import Tooltip from 'ui/Tooltip';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 

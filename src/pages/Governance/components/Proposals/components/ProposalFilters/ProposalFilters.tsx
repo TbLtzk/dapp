@@ -2,11 +2,10 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
-import { Modal, Select } from '@q-dev/q-ui-kit';
+import { Modal, Select, Tooltip } from '@q-dev/q-ui-kit';
 import { ProposalFilter, ProposalFilterStatus, ProposalType } from 'typings/proposals';
 
 import Button from 'components/Button';
-import Tooltip from 'ui/Tooltip';
 
 import PurgeSlashingForm from '../PurgeSlashingForm';
 

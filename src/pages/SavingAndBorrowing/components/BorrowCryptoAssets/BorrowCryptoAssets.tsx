@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Tooltip } from '@q-dev/q-ui-kit';
 import { Asset } from 'typings/defi';
 
 import CustomBlock from 'components/Base/CustomBlock';
 import Table from 'ui/Table';
-import Tooltip from 'ui/Tooltip';
 
 import BorrowManageAsset from '../BorrowManageAsset';
 

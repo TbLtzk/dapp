@@ -1,6 +1,4 @@
-import { Icon } from '@q-dev/q-ui-kit';
-
-import Tooltip from 'ui/Tooltip';
+import { Icon, Tooltip } from '@q-dev/q-ui-kit';
 
 function Tooltips () {
   return (
