@@ -7,7 +7,7 @@ import { IconName } from '@q-dev/q-ui-kit/dist/components/Icon';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import Button from 'components/Button';
-import { ToastType } from 'ui/Toast/Toast';
+import { ToastType } from 'components/Toast/Toast';
 
 import useChangesListener from 'hooks/useChangesListener';
 
