@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import Radio from 'ui/Radio';
+import { Radio } from '@q-dev/q-ui-kit';
 import RadioGroup from 'ui/RadioGroup';
 
 function Radios () {
