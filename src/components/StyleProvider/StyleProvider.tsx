@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
+import { darkColors, lightColors, THEMES } from '@q-dev/q-ui-kit';
 import { ThemeProvider } from 'styled-components';
-import { darkColors, lightColors, THEMES } from 'styles/colors';
 import { GlobalStyle } from 'styles/globalStyle';
 import { ResetStyle } from 'styles/reset';
 import { TextStyle } from 'styles/text';

@@ -1,4 +1,4 @@
-import { darkColors, lightColors } from 'styles/colors';
+import { darkColors, lightColors } from '@q-dev/q-ui-kit';
 
 import 'styled-components';
 

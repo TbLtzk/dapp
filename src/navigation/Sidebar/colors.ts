@@ -1,5 +1,5 @@
+import { COLORS, getColorFn } from '@q-dev/q-ui-kit';
 import { DefaultTheme } from 'styled-components';
-import { COLORS, getColorFn } from 'styles/colors';
 
 export const darkColors = {
   linkBgActive: COLORS.blue600,
