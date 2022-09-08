@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Tip } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 import { media } from 'styles/media';
-
-import Tip from 'ui/Tip';
 
 import DelegatorShareForm from './components/DelegatorShare';
 import RewardStats from './components/RewardStats';

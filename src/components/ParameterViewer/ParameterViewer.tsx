@@ -2,9 +2,8 @@ import { HTMLAttributes } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { ParameterType } from '@q-dev/q-js-sdk';
+import { Tip } from '@q-dev/q-ui-kit';
 import { FormParameter } from 'typings/forms';
-
-import Tip from 'ui/Tip';
 
 import { ParameterViewerContainer } from './styles';
 

@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Tip } from '@q-dev/q-ui-kit';
 import { isNil } from 'lodash';
 import { isAddress } from 'web3-utils';
 
@@ -8,7 +9,6 @@ import Button from 'components/Button';
 import Input from 'components/Input';
 import { FormStep } from 'components/MultiStepForm';
 import Range from 'ui/Range';
-import Tip from 'ui/Tip';
 
 import useForm from 'hooks/useForm';
 

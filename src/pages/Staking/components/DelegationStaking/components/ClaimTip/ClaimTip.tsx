@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import Tip from 'ui/Tip';
+import { Tip } from '@q-dev/q-ui-kit';
 
 import { useQVault } from 'store/q-vault/hooks';
 

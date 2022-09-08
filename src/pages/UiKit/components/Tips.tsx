@@ -1,5 +1,6 @@
+import { Tip } from '@q-dev/q-ui-kit';
+
 import Button from 'components/Button';
-import Tip from 'ui/Tip';
 
 function Tips () {
   return (
