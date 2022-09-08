@@ -1,8 +1,6 @@
 import { useState } from 'react';
 
-import { SegmentedButton } from '@q-dev/q-ui-kit';
-
-import Switch from 'ui/Switch';
+import { SegmentedButton, Switch } from '@q-dev/q-ui-kit';
 
 function Switches () {
   const [network, setNetwork] = useState('mainnet');
