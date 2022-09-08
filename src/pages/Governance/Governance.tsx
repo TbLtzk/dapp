@@ -6,8 +6,8 @@ import { Icon } from '@q-dev/q-ui-kit';
 
 import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
-import Tabs from 'ui/Tabs';
-import { TabRoute, TabSwitch } from 'ui/Tabs/components';
+import Tabs from 'components/Tabs';
+import { TabRoute, TabSwitch } from 'components/Tabs/components';
 
 import Proposals from './components/Proposals';
 import VotingStats from './components/VotingStats';

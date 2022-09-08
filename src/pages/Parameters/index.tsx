@@ -8,8 +8,8 @@ import { Icon } from '@q-dev/q-ui-kit';
 import LazyLoading from 'components/Base/LazyLoading';
 import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
-import Tabs from 'ui/Tabs';
-import { TabRoute, TabSwitch } from 'ui/Tabs/components';
+import Tabs from 'components/Tabs';
+import { TabRoute, TabSwitch } from 'components/Tabs/components';
 
 import { RoutePaths } from 'constants/routes';
 

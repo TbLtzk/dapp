@@ -1,6 +1,6 @@
 import { Switch } from 'react-router';
 
-import { TabRoute } from 'ui/Tabs/components';
+import { TabRoute } from 'components/Tabs/components';
 
 import DashboardLayout from './DashboardLayout';
 import RootNodesMonitoring from './RootNodesMonitoring';
