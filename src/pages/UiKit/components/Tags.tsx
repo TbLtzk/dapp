@@ -1,4 +1,4 @@
-import Tag from 'ui/Tag';
+import { Tag } from '@q-dev/q-ui-kit';
 
 function Tags () {
   return (

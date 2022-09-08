@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
+import { Tag } from '@q-dev/q-ui-kit';
 import { kebabCase } from 'lodash';
 import { AuctionInfos, LiquidationAuctionInfo, SystemDebtAndSurplusInfo } from 'typings/auctions';
 
 import { AUCTION_HEADERS } from 'pages/Auctions/Auctions';
 import { AuctionCardLink } from 'pages/Auctions/styles';
-import Tag from 'ui/Tag';
 
 import AuctionPeriods from '../AuctionPeriods';
 

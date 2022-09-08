@@ -1,10 +1,10 @@
 
 import { ProposalStatus } from '@q-dev/q-js-sdk';
+import { Tag } from '@q-dev/q-ui-kit';
 import { Proposal, ProposalType, SlashingProposal } from 'typings/proposals';
 
 import PageLayout from 'components/PageLayout';
 import useProposalDetails from 'pages/Governance/hooks/useProposalDetails';
-import Tag from 'ui/Tag';
 
 import CastObjection from './components/CastObjection';
 import ProposalActions from './components/ProposalActions';

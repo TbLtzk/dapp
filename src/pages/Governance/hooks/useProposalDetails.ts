@@ -2,9 +2,8 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Classification, ProposalStatus } from '@q-dev/q-js-sdk';
+import { TagState } from '@q-dev/q-ui-kit/dist/components/Tag';
 import { Proposal } from 'typings/proposals';
-
-import { TagState } from 'ui/Tag';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
 
