@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import * as Sentry from '@sentry/react';
@@ -45,8 +45,6 @@ function addSentryContext () {
     captureError(error);
   }
 }
-
-const UiKit = lazy(() => import('pages/UiKit'));
 
 function Routes () {
   const { featureFlags } = useNetworkConfig();
@@ -146,16 +144,6 @@ function Routes () {
         <Route exact path="/data-privacy">
           <DataPrivacy />
         </Route>
-
-        <Route
-          exact
-          path="/ui-kit/:slug?"
-          render={() => (
-            <Suspense fallback={null}>
-              <UiKit />
-            </Suspense>
-          )}
-        />
 
         <Route component={NotFound} />
       </Switch>
