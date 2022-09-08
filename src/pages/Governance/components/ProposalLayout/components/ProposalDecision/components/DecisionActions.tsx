@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Modal } from '@q-dev/q-ui-kit';
 import { SlashingProposal } from 'typings/proposals';
 
 import Button from 'components/Button';
 import { useSlashingActions } from 'pages/Governance/hooks/useSlashingActions';
-import Modal from 'ui/Modal';
 import Tooltip from 'ui/Tooltip';
 
 import ProposeDecisionForm from './ProposeDecisionForm';

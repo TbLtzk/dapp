@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { MenuDropdown } from '@q-dev/q-ui-kit';
-
-import Modal from 'ui/Modal';
+import { MenuDropdown, Modal } from '@q-dev/q-ui-kit';
 
 import RootNodeForms from '../RootNodeForms';
 

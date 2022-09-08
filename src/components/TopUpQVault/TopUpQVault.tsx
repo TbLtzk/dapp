@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Modal } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
-import Modal from 'ui/Modal';
 
 import TopUpForm from './TopUpForm';
 

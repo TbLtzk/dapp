@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
+import { Modal } from '@q-dev/q-ui-kit';
+
 import Button from 'components/Button';
-import Modal from 'ui/Modal';
 
 function Modals () {
   const [regularOpen, setRegularOpen] = useState(false);

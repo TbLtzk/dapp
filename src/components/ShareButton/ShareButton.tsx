@@ -1,10 +1,9 @@
 import { HTMLAttributes, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Icon } from '@q-dev/q-ui-kit';
+import { Icon, Modal } from '@q-dev/q-ui-kit';
 
 import Button from 'components/Button';
-import Modal from 'ui/Modal';
 
 import useCopyToClipboard from 'hooks/useCopyToClipboard';
 

@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
+import { Modal } from '@q-dev/q-ui-kit';
 import { ProposalFilter, ProposalFilterStatus, ProposalType } from 'typings/proposals';
 
 import Button from 'components/Button';
-import Modal from 'ui/Modal';
 import Select from 'ui/Select';
 import Tooltip from 'ui/Tooltip';
 

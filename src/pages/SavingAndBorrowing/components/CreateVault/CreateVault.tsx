@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Modal } from '@q-dev/q-ui-kit';
+
 import Button from 'components/Button';
-import Modal from 'ui/Modal';
 
 import ModalCreateVault from './ModalCreateVault';
 

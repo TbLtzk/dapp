@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Modal } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
 import Button from 'components/Button';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
-import Modal from 'ui/Modal';
 
 import AnnounceForm from './AnnounceForm';
 import VotingAgent from './VotingAgent';

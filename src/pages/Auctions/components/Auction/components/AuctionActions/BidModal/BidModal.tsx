@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Modal } from '@q-dev/q-ui-kit';
 import { snakeCase } from 'lodash';
 import { AuctionBid, AuctionCompletedInfos, LiquidationAuctionBid } from 'typings/auctions';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
-import Modal from 'ui/Modal';
 import Tip from 'ui/Tip';
 
 import useForm from 'hooks/useForm';

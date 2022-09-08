@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Alias } from '@q-dev/q-js-sdk';
+import { Modal } from '@q-dev/q-ui-kit';
 
 import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
-import Modal from 'ui/Modal';
 
 import AddressForm from './components/AddressForm';
 import AliasesTable from './components/AliasesTable';
