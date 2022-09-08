@@ -1,9 +1,8 @@
 import { ReactNode } from 'react';
 
-import { darkColors, lightColors, TextStyle, THEMES } from '@q-dev/q-ui-kit';
+import { darkColors, lightColors, ResetStyle, TextStyle, THEMES } from '@q-dev/q-ui-kit';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle } from 'styles/globalStyle';
-import { ResetStyle } from 'styles/reset';
 
 import useLocalStorage from 'hooks/useLocalStorage';
 
