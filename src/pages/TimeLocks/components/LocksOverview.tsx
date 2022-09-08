@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Modal } from '@q-dev/q-ui-kit';
+import { media, Modal } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
-import { media } from 'styles/media';
 import { TimeLockContractType } from 'typings/contracts';
 
 import Button from 'components/Button';

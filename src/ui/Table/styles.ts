@@ -1,5 +1,5 @@
+import { media } from '@q-dev/q-ui-kit';
 import styled, { css } from 'styled-components';
-import { media } from 'styles/media';
 
 import { getTableColor } from './colors';
 

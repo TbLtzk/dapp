@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
+import { media } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
-import { media } from 'styles/media';
 
 import PageLayout from 'components/PageLayout';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';

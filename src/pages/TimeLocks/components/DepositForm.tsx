@@ -1,8 +1,8 @@
 import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { media } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
-import { media } from 'styles/media';
 import { TimeLockContractType } from 'typings/contracts';
 import { TimeLockForm } from 'typings/time-locks';
 

@@ -1,8 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
-import { Icon, Tag } from '@q-dev/q-ui-kit';
+import { Icon, media, Tag } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
-import { media } from 'styles/media';
 
 import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
