@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
 
 import { Alias, AliasPurpose } from '@q-dev/q-js-sdk';
+import { Select } from '@q-dev/q-ui-kit';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
-import Select from 'ui/Select';
 
 import useForm from 'hooks/useForm';
 

@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Select } from '@q-dev/q-ui-kit';
 import { Validator } from 'typings/validator';
 
 import Input from 'components/Input';
-import Select from 'ui/Select';
 import Tip from 'ui/Tip';
 
 import useForm from 'hooks/useForm';

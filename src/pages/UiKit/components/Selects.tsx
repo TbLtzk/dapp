@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import Select from 'ui/Select';
+import { Select } from '@q-dev/q-ui-kit';
 
 function Selects () {
   const [text, setText] = useState('');
