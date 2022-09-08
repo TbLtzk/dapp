@@ -1,8 +1,8 @@
 
 import { useTranslation } from 'react-i18next';
 
+import Input from 'components/Input';
 import { FormStep } from 'components/MultiStepForm';
-import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 

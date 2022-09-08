@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { SlashingProposal } from 'typings/proposals';
 
 import Button from 'components/Button';
+import Input from 'components/Input';
 import { useSlashingActions } from 'pages/Governance/hooks/useSlashingActions';
-import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 

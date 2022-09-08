@@ -5,8 +5,8 @@ import { toWei } from 'web3-utils';
 
 import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import Input from 'components/Input';
 import { StakeFormContainer } from 'pages/Staking/styles';
-import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 

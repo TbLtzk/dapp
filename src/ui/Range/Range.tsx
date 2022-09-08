@@ -2,7 +2,7 @@ import { HTMLAttributes } from 'react';
 
 import { uniqueId } from 'lodash';
 
-import Input from 'ui/Input';
+import Input from 'components/Input';
 
 import { RangeContainer } from './styles';
 

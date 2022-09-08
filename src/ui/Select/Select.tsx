@@ -4,7 +4,7 @@ import { Dropdown, Icon } from '@q-dev/q-ui-kit';
 import { Options } from 'typings/forms';
 
 import Button from 'components/Button';
-import Input from 'ui/Input';
+import Input from 'components/Input';
 
 import { SelectContainer } from './styles';
 

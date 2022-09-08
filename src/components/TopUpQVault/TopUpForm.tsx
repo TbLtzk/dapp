@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
-import Input from 'ui/Input';
+import Input from 'components/Input';
 import Tip from 'ui/Tip';
 
 import useForm from 'hooks/useForm';

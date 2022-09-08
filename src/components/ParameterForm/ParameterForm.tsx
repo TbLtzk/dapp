@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ParameterType } from '@q-dev/q-js-sdk';
 import { FormParameter } from 'typings/forms';
 
-import Input from 'ui/Input';
+import Input from 'components/Input';
 import RadioGroup from 'ui/RadioGroup';
 import Select from 'ui/Select';
 import Tip from 'ui/Tip';

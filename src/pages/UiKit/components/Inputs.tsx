@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Icon } from '@q-dev/q-ui-kit';
 
-import Input from 'ui/Input';
+import Input from 'components/Input';
 
 function Inputs () {
   const [text, setText] = useState('');

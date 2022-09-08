@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 
 import Button from 'components/Button';
+import Input from 'components/Input';
 import { useSlashingActions } from 'pages/Governance/hooks/useSlashingActions';
-import Input from 'ui/Input';
 import RadioGroup from 'ui/RadioGroup';
 
 import useForm from 'hooks/useForm';

@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import Input from 'ui/Input';
+import Input from 'components/Input';
 import Tip from 'ui/Tip';
 
 import useForm from 'hooks/useForm';

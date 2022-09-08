@@ -8,8 +8,8 @@ import { TimeLockForm } from 'typings/time-locks';
 
 import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import Input from 'components/Input';
 import Calendar from 'ui/Calendar';
-import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 

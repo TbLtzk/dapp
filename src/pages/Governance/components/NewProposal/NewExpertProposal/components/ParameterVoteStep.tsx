@@ -5,9 +5,9 @@ import { ExpertProposalForm, ExpertType, FormParameter, Options } from 'typings/
 
 import Button from 'components/Button';
 import FormBlock from 'components/FormBlock';
+import Input from 'components/Input';
 import { FormStep } from 'components/MultiStepForm';
 import ParameterForm from 'components/ParameterForm';
-import Input from 'ui/Input';
 import RadioGroup from 'ui/RadioGroup';
 
 import useForm from 'hooks/useForm';

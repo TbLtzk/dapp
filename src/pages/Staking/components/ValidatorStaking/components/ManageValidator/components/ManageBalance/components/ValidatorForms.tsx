@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { fromWei } from 'web3-utils';
 
 import Button from 'components/Button';
-import Input from 'ui/Input';
+import Input from 'components/Input';
 
 import useForm from 'hooks/useForm';
 

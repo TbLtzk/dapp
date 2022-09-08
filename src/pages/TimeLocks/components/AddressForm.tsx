@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
+import Input from 'components/Input';
 import { useTimeLocksAddress } from 'pages/TimeLocks/TimeLocks';
-import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Validator } from 'typings/validator';
 
-import Input from 'ui/Input';
+import Input from 'components/Input';
 import Select from 'ui/Select';
 import Tip from 'ui/Tip';
 
