@@ -1,9 +1,9 @@
 import { HTMLAttributes, useEffect, useState } from 'react';
 
+import { Dropdown } from '@q-dev/q-ui-kit';
 import { Options } from 'typings/forms';
 
 import Button from 'components/Button';
-import Dropdown from 'ui/Dropdown';
 import Icon from 'ui/Icon';
 import Input from 'ui/Input';
 

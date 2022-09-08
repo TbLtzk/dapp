@@ -1,7 +1,6 @@
+import { Dropdown } from '@q-dev/q-ui-kit';
 import styled, { css } from 'styled-components';
 import { media } from 'styles/media';
-
-import Dropdown from 'ui/Dropdown';
 
 export const BalanceDropdown = styled(Dropdown)`
   ${media.lessThan('medium')} {

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
+import { Dropdown } from '@q-dev/q-ui-kit';
+
 import Button from 'components/Button';
-import Dropdown from 'ui/Dropdown';
 
 function Dropdowns () {
   const [leftOpen, setLeftOpen] = useState(false);

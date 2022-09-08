@@ -1428,10 +1428,10 @@
     bignumber.js "^9.0.0"
     web3 "^1.5.3"
 
-"@q-dev/q-ui-kit@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@q-dev/q-ui-kit/-/q-ui-kit-0.2.0.tgz#a972479a9068b1af5828e2b563e8cca126b43f0c"
-  integrity sha512-3hCqPaYR5mHnz94UQTQvMJZr2dCnlI/WWGKbUs/6jBZlDHaDiCpI9PDx0KbTfNmaKUj3DFPL5We5CKXfqUZ+wQ==
+"@q-dev/q-ui-kit@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@q-dev/q-ui-kit/-/q-ui-kit-0.2.1.tgz#31eaf180ac45f6fccdfa04b30a457f951aeb4c0c"
+  integrity sha512-cEkqc5TvQDZLOW69p3VEUmwdzxcRuehpFqhccRcgfJtA2MvK2fSTH5VcAlQ0lpgRLIVjq6L57bmmUwqhgF2XwA==
   dependencies:
     "@mdi/font" "^7.0.96"
     lodash "^4.17.21"
