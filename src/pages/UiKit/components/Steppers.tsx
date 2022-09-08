@@ -1,4 +1,4 @@
-import Stepper from 'ui/Stepper';
+import { Stepper } from '@q-dev/q-ui-kit';
 
 function Steppers () {
   const steps = [
