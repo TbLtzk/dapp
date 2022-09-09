@@ -19,6 +19,7 @@ interface Props extends Omit<InputProps, 'onChange' | 'prefix' | 'value'> {
   disabled?: boolean;
   type?: HTMLInputTypeAttribute;
   max?: string;
+  decimals?: number;
   prefix?: ReactNode;
   children?: ReactNode;
   onChange: (val: string) => void;
@@ -32,6 +33,7 @@ function Input ({
   disabled,
   hint,
   max,
+  decimals = 18,
   prefix,
   children,
   onChange = () => {},
@@ -43,7 +45,9 @@ function Input ({
 
   const handleChange = (e: ChangeEvent) => {
     const value = (e.target as HTMLInputElement).value;
-    const isNumberValid = value === '' || /^[0-9]{1,50}[.]?[0-9]{0,18}$/.test(value);
+    const numbersRegexp = new RegExp(`^[0-9]{1,50}[.]?[0-9]{0,${decimals}}$`);
+
+    const isNumberValid = value === '' || numbersRegexp.test(value);
     if (type === 'number' && !isNumberValid) return;
 
     onChange(value);

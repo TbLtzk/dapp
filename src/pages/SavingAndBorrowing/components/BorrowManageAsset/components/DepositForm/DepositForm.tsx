@@ -56,6 +56,7 @@ function DepositForm ({ vault }: {vault: VaultWithFee}) {
         label={t('DEPOSIT_COLLATERAL')}
         prefix={collateralDetails.collateralAsset}
         max={collateralDetails.availableDeposit}
+        decimals={Number(collateralDetails.decimals)}
         placeholder="0.00"
       />
       {isApproveMode

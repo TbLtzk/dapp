@@ -25,8 +25,8 @@ const StatusMark = styled.span<{ status: TimeLockStatus }>`
   margin-right: 8px;
   border-radius: 50%;
   background-color: ${({ status, theme }) => {
-    if (status === TimeLockStatus.active) return theme.colors.success;
-    if (status === TimeLockStatus.pending) return theme.colors.warning;
+    if (status === TimeLockStatus.unlocked) return theme.colors.success;
+    if (status === TimeLockStatus.unlocking) return theme.colors.warning;
     return theme.colors.error;
   }};
 `;
@@ -46,37 +46,36 @@ function TimeLocksTable ({
   const { submitTransaction } = useTransaction();
   const { purgeTimeLocks } = useLockedAmount();
 
-  function onSetPurgeTimeLocksAmount () {
-    submitTransaction({
-      successMessage: t('PURGE_EXPIRED_TIME_LOCKS_SUCCESS'),
-      submitFn: () => purgeTimeLocks({ address, contractType: contract })
-    });
-  }
-
-  function getLockStatus (lock: TimeLockEntry): TimeLockStatus {
+  const getLockStatus = (lock: TimeLockEntry) => {
     const startDate = unixToDate(lock.releaseStart.toString());
     const endDate = unixToDate(lock.releaseEnd.toString());
 
-    if (startDate > new Date()) return TimeLockStatus.pending;
-    if (endDate < new Date()) return TimeLockStatus.expired;
-    return TimeLockStatus.active;
-  }
-
-  const statusToText: Record<TimeLockStatus, string> = {
-    active: t('ACTIVE'),
-    pending: t('PENDING'),
-    expired: t('EXPIRED')
+    if (startDate > new Date()) return TimeLockStatus.locked;
+    if (endDate < new Date()) return TimeLockStatus.unlocked;
+    return TimeLockStatus.unlocking;
   };
 
-  const hasExpiredLocks = lockAmountData.some(lock => getLockStatus(lock) === 'expired');
+  const statusToText: Record<TimeLockStatus, string> = {
+    locked: t('LOCKED'),
+    unlocking: t('UNLOCKING'),
+    unlocked: t('UNLOCKED')
+  };
+
+  const hasUnlockedLocks = lockAmountData.some(lock => getLockStatus(lock) === TimeLockStatus.unlocked);
 
   return (
     <StyledWrapper className="block">
       <div className="block__header">
         <h2 className="text-h2">{t('CURRENT_TIME_LOCKS')}</h2>
-        {hasExpiredLocks && (
-          <Button look="secondary" onClick={onSetPurgeTimeLocksAmount}>
-            {t('PURGE_EXPIRED')}
+        {hasUnlockedLocks && (
+          <Button
+            look="secondary"
+            onClick={() => submitTransaction({
+              successMessage: t('PURGE_EXPIRED_TIME_LOCKS_SUCCESS'),
+              submitFn: () => purgeTimeLocks({ address, contractType: contract })
+            })}
+          >
+            {t('PURGE_UNLOCKED')}
           </Button>
         )}
       </div>
