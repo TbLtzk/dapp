@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
+import { StyleProvider } from '@q-dev/q-ui-kit';
 import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet';
@@ -23,7 +24,6 @@ import LanguageProvider from 'context/LanguageProvider';
 import Web3ContextProvider from 'context/Web3ContextProvider';
 
 import Layout from 'components/Layout';
-import StyleProvider from 'components/StyleProvider';
 import Routes from 'navigation/Routes';
 
 import { store } from './store';

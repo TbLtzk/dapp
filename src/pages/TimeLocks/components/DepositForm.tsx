@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { media } from '@q-dev/q-ui-kit';
+import { Calendar, media } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 import { TimeLockContractType } from 'typings/contracts';
 import { TimeLockForm } from 'typings/time-locks';
@@ -9,7 +9,6 @@ import { TimeLockForm } from 'typings/time-locks';
 import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Input from 'components/Input';
-import Calendar from 'ui/Calendar';
 
 import useForm from 'hooks/useForm';
 
@@ -50,7 +49,7 @@ interface Props {
 }
 
 function DepositForm ({ contract, onSubmit }: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { address } = useTimeLocksAddress();
 
   const { submitTransaction } = useTransaction();
@@ -107,8 +106,10 @@ function DepositForm ({ contract, onSubmit }: Props) {
         <Calendar
           {...form.fields.startDate}
           selectsStart
+          locale={i18n.language}
           value={form.values.startDate as Date}
           label={t('START_DATE')}
+          placeholder={t('CHOOSE_DATE_AND_TIME')}
           startDate={form.values.startDate ? new Date(form.values.startDate) : null}
           endDate={form.values.endDate ? new Date(form.values.endDate) : null}
           minDate={new Date()}
@@ -117,8 +118,10 @@ function DepositForm ({ contract, onSubmit }: Props) {
         <Calendar
           {...form.fields.endDate}
           selectsEnd
+          locale={i18n.language}
           value={form.values.endDate as Date}
           label={t('END_DATE')}
+          placeholder={t('CHOOSE_DATE_AND_TIME')}
           disabled={!form.values.startDate}
           startDate={form.values.startDate as Date}
           endDate={form.values.endDate as Date}
