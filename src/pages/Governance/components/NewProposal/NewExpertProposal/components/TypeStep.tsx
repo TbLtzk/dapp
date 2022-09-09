@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
-import { RadioGroup } from '@q-dev/q-ui-kit';
-import { ExpertProposalForm, RadioOptions } from 'typings/forms';
+import { RadioGroup, RadioOptions } from '@q-dev/q-ui-kit';
+import { ExpertProposalForm } from 'typings/forms';
 
 import { FormStep } from 'components/MultiStepForm';
 

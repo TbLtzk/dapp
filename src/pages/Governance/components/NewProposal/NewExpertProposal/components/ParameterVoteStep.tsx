@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
-import { Icon, RadioGroup } from '@q-dev/q-ui-kit';
-import { ExpertProposalForm, ExpertType, FormParameter, Options } from 'typings/forms';
+import { FieldOptions, Icon, RadioGroup } from '@q-dev/q-ui-kit';
+import { ExpertProposalForm, ExpertType, FormParameter } from 'typings/forms';
 
 import Button from 'components/Button';
 import FormBlock from 'components/FormBlock';
@@ -44,7 +44,7 @@ function ParameterVoteStep () {
     },
   });
 
-  const panelTypeOptions: Options<ExpertType> = [
+  const panelTypeOptions: FieldOptions<ExpertType> = [
     {
       value: 'fees-incentives',
       label: t('Q_FEES_INCENTIVES_MEMBERSHIP_PANEL')
