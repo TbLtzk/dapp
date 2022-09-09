@@ -1066,8 +1066,10 @@
   "LOCKING_END_TIME": "Endzeit sperren",
   "TIME_LOCKS_ADDRESS": "Time Locks Address",
   "UPDATE_ADDRESS": "Update Address",
-  "EXPIRED": "Expired",
-  "PURGE_EXPIRED": "Spülung abgelaufen",
+  "LOCKED": "Locked",
+  "UNLOCKING": "Unlocking",
+  "UNLOCKED": "Unlocked",
+  "PURGE_UNLOCKED": "Spülung abgelaufen",
   "CURRENT_TIME_LOCKS": "Current Time Locks",
   "VESTING": "Vesting",
   "AVAILABLE_TO_WITHDRAW_ASSET": "Verfügbar, um sich zurückzuziehen"

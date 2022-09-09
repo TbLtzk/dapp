@@ -14,7 +14,7 @@ export const LOAD_TYPES = {
 };
 
 export enum TimeLockStatus {
-  active = 'active',
-  pending = 'pending',
-  expired = 'expired',
+  locked = 'locked',
+  unlocking = 'unlocking',
+  unlocked = 'unlocked',
 }

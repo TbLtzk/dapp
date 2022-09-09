@@ -29,7 +29,6 @@ function BorrowManageAsset ({ vault }: Props) {
     borrowVaultError,
     getBorrowingVault,
     getBorrowingAllowance,
-
   } = useBorrowAssets();
 
   const [isModalOpen, setIsModalOpen] = useState(false);

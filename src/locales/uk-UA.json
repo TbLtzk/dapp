@@ -309,7 +309,7 @@
   "SET_DELEGATOR_SHARE": "Встановіть делегаторку",
   "SET": "Встановити",
   "USER_DELEGATIONS_REFRESHED": "Делегації користувачів оновлено",
-  "0_DAY_0_HOURS_0_MINUTES": "0 днів (и) 0 годин 0 хвилин",
+  "0_DAY_0_HOURS_0_MINUTES": "0 дні(в) 0 годин 0 хвилин",
   "COLLECTED_POOL_REWARDS": "Зібрані нагороди біля басейну",
   "OUTSTANDING_DELEGATOR_CLAIMS": "Потоки непогашених делегаторів",
   "DISTRIBUTABLE_DELEGATOR_REWARDS": "Нагороди, що розподіляються делегатором",
@@ -1066,9 +1066,11 @@
   "LOCKING_END_TIME": "Кінець блокування",
   "TIME_LOCKS_ADDRESS": "Адреса таймлоків",
   "UPDATE_ADDRESS": "Зміна адреси",
-  "EXPIRED": "Просрочений",
-  "PURGE_EXPIRED": "Очистити просрочені",
+  "LOCKED": "Заблокований",
+  "UNLOCKING": "Розблоковується",
+  "UNLOCKED": "Розблокований",
+  "PURGE_UNLOCKED": "Очистити просрочені",
   "CURRENT_TIME_LOCKS": "Поточні таймлоки",
   "VESTING": "Вестинг",
-  "AVAILABLE_TO_WITHDRAW_ASSET": "Доступний для зняття актив"
+  "AVAILABLE_TO_WITHDRAW_ASSET": "Доступний для зняття"
 }

@@ -44,8 +44,9 @@ function WithdrawForm ({ vault }: { vault: VaultWithFee }) {
         {...form.fields.amount}
         type="number"
         label={t('WITHDRAW_COLLATERAL')}
-        prefix={collateralDetails?.collateralAsset}
-        max={collateralDetails?.availableWithdraw}
+        prefix={collateralDetails.collateralAsset}
+        max={collateralDetails.availableWithdraw}
+        decimals={Number(collateralDetails.decimals)}
         placeholder="0.00"
       />
       <Button
