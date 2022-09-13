@@ -245,7 +245,7 @@ export function useQVault () {
     try {
       const contract = await getVotingWeightProxyInstance();
       const info = await contract.getDelegationInfo(address);
-      dispatch(setDelegationInfo(info));
+      dispatch(setDelegationInfo({ ...info }));
     } catch (error) {
       captureError(error);
     }
