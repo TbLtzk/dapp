@@ -1072,5 +1072,14 @@
   "PURGE_UNLOCKED": "Spülung abgelaufen",
   "CURRENT_TIME_LOCKS": "Current Time Locks",
   "VESTING": "Vesting",
-  "AVAILABLE_TO_WITHDRAW_ASSET": "Verfügbar, um sich zurückzuziehen"
+  "AVAILABLE_TO_WITHDRAW_ASSET": "Verfügbar, um sich zurückzuziehen",
+  "GOVERNANCE_KPI": "Governance KPI",
+  "AVG_AVAILABILITY_CYCLES": "Avg. availability\n{{cycles}} cycles",
+  "DUE_BLOCKS": "Due Blocks",
+  "IN_TURN_BLOCKS": "In Turn Blocks",
+  "OUT_OF_TURN_BLOCKS": "Out Of Turn Blocks",
+  "IN_TURN_AVAILABILITY": "In Turn Availability",
+  "TOTAL_AVAILABILITY": "Total Availability",
+  "SLASHING_PROPOSAL_ALREADY_EXISTS": "Active slashing proposal for address {{address}} already exists. Please, try again later",
+  "PROPOSAL_LINK_DISCLAIMER": "Note: Anybody can add a proposal link. Inspect it with care"
 }

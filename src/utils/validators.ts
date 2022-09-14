@@ -7,9 +7,11 @@ import isNumber from 'lodash/isNumber';
 import { toBigNumber } from './numbers';
 import { isAddress } from './strings';
 
+import { ZERO_ADDRESS } from 'constants/boundaries';
+
 const HASH_REGEX = /^0x[a-fA-F0-9]{64}$/;
 const VAULT_ID_REGEX = /^[0-9]{1,18}$/;
-const URL_REGEX = /https?:\/\/(www\.)?[-äöüa-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-äöüa-zA-Z0-9()@:%_+.~#?&//=]*)/;
+export const URL_REGEX = /^https?:\/\/(www\.)?[-äöüa-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-äöüa-zA-Z0-9()@:%_+.~#?&//=]*)/;
 
 interface ValidationResult {
   isValid: boolean;
@@ -83,6 +85,11 @@ export const url: Validator = val => ({
 
 export const address: Validator<string> = val => ({
   isValid: !val || isAddress(val),
+  message: 'Invalid address'
+});
+
+export const nonZeroAddress: Validator<string> = val => ({
+  isValid: !val || (isAddress(val) && val !== ZERO_ADDRESS),
   message: 'Invalid address'
 });
 
