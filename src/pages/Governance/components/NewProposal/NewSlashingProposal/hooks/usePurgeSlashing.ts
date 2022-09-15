@@ -5,13 +5,21 @@ import { RootNodesInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/root
 import { RootNodesSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesSlashingVotingInstance';
 import { ValidatorsInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsInstance';
 import { ValidatorsSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsSlashingVotingInstance';
+import { ContractType } from 'typings/contracts';
 
 import { useSlashingActions } from 'pages/Governance/hooks/useSlashingActions';
 
+import { useProposals } from 'store/proposals/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 import { useUser } from 'store/user/hooks';
 
-import { getRootNodesInstance, getRootNodesSlashingVotingInstance, getValidatorsInstance, getValidatorsSlashingVotingInstance } from 'contracts/contract-instance';
+import {
+  getInstance,
+  getRootNodesInstance,
+  getRootNodesSlashingVotingInstance,
+  getValidatorsInstance,
+  getValidatorsSlashingVotingInstance
+} from 'contracts/contract-instance';
 
 import { isAddress } from 'utils/strings';
 
@@ -20,9 +28,23 @@ function usePurgeSlashing (address: string, isRootSlashing: boolean) {
   const { purgeSlashing: purgeSlashingAction } = useSlashingActions(isRootSlashing);
 
   const user = useUser();
+  const { getActiveProposalsByType } = useProposals();
   const { successMessage, submitTransaction } = useTransaction();
 
   const [shouldPurge, setShouldPurge] = useState(false);
+  const [hasActiveProposal, setHasActiveProposal] = useState(false);
+
+  const slashingContractType: ContractType = isRootSlashing
+    ? 'rootNodesSlashingVoting'
+    : 'validatorsSlashingVoting';
+  const proposalEvents = getActiveProposalsByType('slashing')
+    .filter((proposal) => proposal.contract === slashingContractType);
+
+  const checkActiveProposals = async () => {
+    const slashingContract = await getInstance(slashingContractType)();
+    const proposals = await Promise.all(proposalEvents.map(p => slashingContract.getProposal(p.id)));
+    setHasActiveProposal(proposals.some(p => p.candidate === address));
+  };
 
   useEffect(() => {
     if (!isAddress(address)) {
@@ -30,14 +52,19 @@ function usePurgeSlashing (address: string, isRootSlashing: boolean) {
       return;
     }
 
-    if (isRootSlashing) {
-      checkRootNodesSlashing();
-    } else {
-      checkValidatorsSlashing();
-    }
+    checkActiveProposals().then(() => {
+      if (isRootSlashing) {
+        checkRootNodesSlashing();
+      } else {
+        checkValidatorsSlashing();
+      }
+    });
 
-    return () => setShouldPurge(false);
-  }, [address, successMessage, isRootSlashing]);
+    return () => {
+      setShouldPurge(false);
+      setHasActiveProposal(false);
+    };
+  }, [address, successMessage, isRootSlashing, proposalEvents.length]);
 
   const checkRootNodesSlashing = async () => {
     const instance = await getRootNodesInstance();
@@ -76,7 +103,7 @@ function usePurgeSlashing (address: string, isRootSlashing: boolean) {
     });
   };
 
-  return { shouldPurge, purgeSlashing };
+  return { shouldPurge, hasActiveProposal, purgeSlashing };
 }
 
 export default usePurgeSlashing;

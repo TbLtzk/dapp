@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { FormStep } from 'components/MultiStepForm';
@@ -14,7 +15,7 @@ import { address, currentHash, required, url } from 'utils/validators';
 function AddNodeStep () {
   const { t } = useTranslation();
   const { goNext, goBack } = useNewRootProposal();
-  const { constitutionHash } = useBaseVotingWeightInfo();
+  const { constitutionHash, getConstitutionHash } = useBaseVotingWeightInfo();
 
   const form = useForm({
     initialValues: {
@@ -29,6 +30,10 @@ function AddNodeStep () {
     },
     onSubmit: goNext as () => void,
   });
+
+  useEffect(() => {
+    getConstitutionHash();
+  }, []);
 
   return (
     <FormStep
