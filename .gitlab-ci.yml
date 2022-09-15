@@ -51,7 +51,7 @@ test:
 
 build:
   image:
-    name: "gcr.io/kaniko-project/executor:v1.8.1-debug"
+    name: "gcr.io/kaniko-project/executor:v1.3.0-debug"
     entrypoint: [""]
   stage: build
   only:
@@ -61,8 +61,6 @@ build:
   before_script:
     - mkdir -p /kaniko/.docker
     - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
-  except:
-    - branches
   script:
     - >-
       /kaniko/executor
