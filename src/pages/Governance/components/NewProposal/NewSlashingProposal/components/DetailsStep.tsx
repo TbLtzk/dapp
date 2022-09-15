@@ -45,7 +45,7 @@ function DetailsStep () {
   const isRootType = values.type === 'root-slashing';
   const memberError = isRootType ? 'Not a root node' : 'Not a validator';
 
-  const { shouldPurge, purgeSlashing } = usePurgeSlashing(form.values.address, isRootType);
+  const { shouldPurge, hasActiveProposal, purgeSlashing } = usePurgeSlashing(form.values.address, isRootType);
 
   useEffect(() => {
     if (isRootType) {
@@ -84,7 +84,7 @@ function DetailsStep () {
       {shouldPurge && (
         <Tip
           type="warning"
-          action={(
+          action={!hasActiveProposal && (
             <Button
               compact
               type="button"
@@ -95,9 +95,10 @@ function DetailsStep () {
             </Button>
           )}
         >
-          {t('PURGE_SLASHING_DETAILS_TIP', {
-            address: trimAddress(form.values.address)
-          })}
+          {hasActiveProposal
+            ? t('SLASHING_PROPOSAL_ALREADY_EXISTS', { address: trimAddress(form.values.address) })
+            : t('PURGE_SLASHING_DETAILS_TIP', { address: trimAddress(form.values.address) })
+          }
         </Tip>
       )}
 
