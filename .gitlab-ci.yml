@@ -19,6 +19,7 @@ stages:
   - "test"
   - "build"
   - "deploy"
+  - "release"
   - ".post"
 
 
