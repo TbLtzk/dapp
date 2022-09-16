@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { isEmpty } from 'lodash';
 import { Validator } from 'typings/validator';
@@ -8,14 +9,16 @@ import useNetworkConfig from 'hooks/useNetworkConfig';
 import { useTransaction } from 'store/transaction/hooks';
 import { useUser } from 'store/user/hooks';
 
+import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
 import { getAndCombineValidatorInfo } from 'contracts/helpers/validators-helper';
 
 import { captureError } from 'utils/errors';
 
 const useFetchValidatorData = (address: string) => {
+  const { t } = useTranslation();
   const { chainId } = useUser();
   const { indexerUrl } = useNetworkConfig();
-  const { transactionLoading } = useTransaction();
+  const { successMessage } = useTransaction();
 
   const [validator, setValidator] = useState<Validator>({} as Validator);
   const [isValidator, setIsValidator] = useState(true);
@@ -39,6 +42,16 @@ const useFetchValidatorData = (address: string) => {
     }
   };
 
+  const updateCompoundRate = async () => {
+    const contract = await getValidationRewardPoolsInstance();
+    const receipt = await contract.updateValidatorsCompoundRate(address);
+    const nextUpdateCompoundRate = await contract.getLastUpdateOfCompoundRate(address);
+    if (validator.lastUpdateOfCompoundRate === nextUpdateCompoundRate) {
+      throw new Error(t('STAKE_AMOUNT_BELOW_MINIMUM_TO_APPLY_NEW_RATE'));
+    }
+    return receipt;
+  };
+
   useEffect(() => {
     fetchValidatorData();
 
@@ -48,9 +61,9 @@ const useFetchValidatorData = (address: string) => {
       setError(null);
       setLoading(true);
     };
-  }, [transactionLoading]);
+  }, [successMessage]);
 
-  return { isValidator, validator, loading, error };
+  return { isValidator, validator, loading, error, updateCompoundRate };
 };
 
 export { useFetchValidatorData };

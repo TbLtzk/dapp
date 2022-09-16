@@ -42,7 +42,7 @@ function RewardStats () {
   const { poolInfo } = useValidationRewards();
   const reserverdForClaims = Number(fromWei(poolInfo?.reservedForClaims ?? '0'));
 
-  const distributableDelegatorsRewards = Number(poolInfo.poolBalance) - reserverdForClaims ?? 0;
+  const distributableDelegatorsRewards = Number(fromWei(poolInfo.poolBalance)) - reserverdForClaims ?? 0;
   const delegatorPercentage = distributableDelegatorsRewards / Number(validatorDelegatedStake);
 
   const rewardStatsArray = [
