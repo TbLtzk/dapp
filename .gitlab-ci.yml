@@ -18,8 +18,8 @@ stages:
   - ".pre"
   - "test"
   - "build"
-  - "deploy"
   - "release"
+  - "deploy"
   - ".post"
 
 
