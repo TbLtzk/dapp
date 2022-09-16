@@ -1081,5 +1081,6 @@
   "IN_TURN_AVAILABILITY": "In Turn Availability",
   "TOTAL_AVAILABILITY": "Total Availability",
   "SLASHING_PROPOSAL_ALREADY_EXISTS": "Active slashing proposal for address {{address}} already exists. Please, try again later",
-  "PROPOSAL_LINK_DISCLAIMER": "Note: Anybody can add a proposal link. Inspect it with care"
+  "PROPOSAL_LINK_DISCLAIMER": "Note: Anybody can add a proposal link. Inspect it with care",
+  "REWARDS_ALLOCATED": "Rewards allocated"
 }

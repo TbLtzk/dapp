@@ -38,9 +38,17 @@ export async function getValidator (
   validatorsInstance: ValidatorsInstance,
   validationRewardPoolsInstance: ValidationRewardPoolsInstance
 ): Promise<Validator> {
-  const validatorInfo = await validatorsInstance.getValidatorInfo(validator.address);
-  const poolInfo = await validationRewardPoolsInstance.getPoolInfo(validator.address);
+  const [
+    validatorInfo,
+    lastUpdateOfCompoundRate,
+    poolInfo,
+  ] = await Promise.all([
+    validatorsInstance.getValidatorInfo(validator.address),
+    validationRewardPoolsInstance.getLastUpdateOfCompoundRate(validator.address),
+    validationRewardPoolsInstance.getPoolInfo(validator.address),
+  ]);
   const delegatorsShare = Number(transformToPercentage(poolInfo.delegatorsShare)) || 0;
+  const reservedForClaims = Number(fromWei(poolInfo?.reservedForClaims ?? '0'));
 
   return {
     ...validator,
@@ -48,12 +56,15 @@ export async function getValidator (
     totalStake: validator.balance,
     selfStake: validatorInfo.selfStake,
     delegatedStake: validatorInfo.delegatedStake,
-    delegatorsShare,
     validatorShare: 100 - delegatorsShare,
     validatorPoolBalance: fromWei(poolInfo.poolBalance),
+    distributableDelegatorsRewards: Number(fromWei(poolInfo.poolBalance)) - reservedForClaims ?? 0,
     poolinterestRate: calculateInterestRate(Number(poolInfo.interestRate)),
     payoutToDelegators: fromWei(toBigNumber(validator.payoutToDelegators).toFixed()),
     payoutPerDelegatedQ: fromWei(toBigNumber(validator.payoutPerDelegatedQ).toFixed()),
+    delegatorsShare,
+    lastUpdateOfCompoundRate,
+    reservedForClaims,
   };
 }
 
@@ -100,27 +111,39 @@ export async function getAndCombineValidatorInfo (
   indexerUrl: string
 ): Promise<Partial<Validator>> {
   if (!isAddress(address)) return {};
-  const indexer = await getIndexerInstance(indexerUrl);
-  const validatorsInstance = await getValidatorsInstance();
-  const validationRewardPoolsInstance = await getValidationRewardPoolsInstance();
+  const [
+    indexer,
+    validatorsInstance,
+    validationRewardPoolsInstance
+  ] = await Promise.all([
+    getIndexerInstance(indexerUrl),
+    getValidatorsInstance(),
+    getValidationRewardPoolsInstance(),
+  ]);
 
   const shortList = await validatorsInstance.getShortList();
   const validatorRank = shortList.findIndex((val) => val.address === address);
   if (validatorRank === -1) return {};
 
-  // @ts-ignore FIXME: Fix SDK types
-  const inactiveValidators = await indexer.getInactiveValidators([address]);
-  const isActiveValidator = inactiveValidators === 0;
+  const [
+    inactiveValidators,
+    validators,
+    aliasesMap
+  ] = await Promise.all([
+    // @ts-ignore FIXME: Fix SDK types
+    indexer.getInactiveValidators([address]),
+    getValidators(shortList),
+    getBlockSealingAliasMap([address], network),
+  ]);
 
-  const validators = await getValidators(shortList);
-  const aliasesMap = await getBlockSealingAliasMap([address], network);
+  const isActiveValidator = inactiveValidators === 0;
   const ourValidator = validators.find((validator) => validator.address === address);
 
   const validatorData = await getValidator(
     ourValidator as Validator,
     validatorRank,
     validatorsInstance,
-    validationRewardPoolsInstance
+    validationRewardPoolsInstance,
   );
 
   const preparedValidatorsMonitoringData = await prepareValidatorsMonitoringData(indexer, { address, balance: '0' });

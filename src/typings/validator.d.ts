@@ -22,6 +22,9 @@ export interface Validator extends DelegationEfficiency, AddressWithBalance {
   poolinterestRate: number;
   payoutToDelegators: string;
   payoutPerDelegatedQ: string;
+  distributableDelegatorsRewards: number;
+  reservedForClaims: number;
+  lastUpdateOfCompoundRate: string;
 }
 
 export interface Delegation extends StakeDelegationInfo {

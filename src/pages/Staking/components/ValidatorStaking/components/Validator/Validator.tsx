@@ -16,7 +16,10 @@ import ValidatorCharts from '../ValidatorCharts';
 import DelegationInfo from './components/DelegationInfo';
 import MainInfo from './components/MainInfo';
 import MonitoringInfo from './components/MonitoringInfo';
+import RewardStats from './components/RewardStats';
 import { useFetchValidatorData } from './hooks';
+
+import { useTransaction } from 'store/transaction/hooks';
 
 import { RoutePaths } from 'constants/routes';
 import { trimAddress } from 'utils/strings';
@@ -31,8 +34,10 @@ const CenteredContainer = styled.div`
 const StyledContainer = styled.div`
   .info {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-areas: 'main-info validator-status delegation-info';
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+      'main-info validator-status'
+      'reward-stats delegation-info';
     gap: 24px;
   }
 
@@ -51,6 +56,7 @@ const StyledContainer = styled.div`
       grid-template-areas:
         'main-info'
         'validator-status'
+        'reward-stats'
         'delegation-info';
     }
   }
@@ -69,9 +75,16 @@ const StyledContainer = styled.div`
 function Validator ({ match }: RouteComponentProps<{ address: string }>) {
   const { address } = match.params;
   const { t } = useTranslation();
-  const { isValidator, validator, loading: validatorLoading, error: validatorError } = useFetchValidatorData(address);
+  const { submitTransaction } = useTransaction();
+  const {
+    isValidator,
+    validator,
+    loading: validatorLoading,
+    error: validatorError,
+    updateCompoundRate
+  } = useFetchValidatorData(address);
 
-  if (validatorLoading) {
+  if (validatorLoading && !validator.address) {
     return (
       <CenteredContainer>
         <Spinner size={100} />
@@ -108,6 +121,13 @@ function Validator ({ match }: RouteComponentProps<{ address: string }>) {
             <MainInfo validator={validator} />
             <MonitoringInfo validator={validator} />
             <DelegationInfo validator={validator} />
+            <RewardStats
+              validator={validator}
+              onButtonClick={() => submitTransaction({
+                successMessage: t('REFRESH_OF_USER_DELEGATIONS_SUCCESS'),
+                submitFn: updateCompoundRate
+              })}
+            />
           </div>
 
           <div className="charts">
