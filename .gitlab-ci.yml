@@ -75,6 +75,27 @@ build:
       --build-arg BUILD_TOKEN="${CI_JOB_TOKEN}"
       --build-arg USERNAME="gitlab-ci-token"
 
+publish:
+  image:
+    name: "gcr.io/go-containerregistry/crane/debug:v0.11.0"
+    entrypoint: [""]
+  stage: "release"
+  tags:
+    - "gitlab-org-docker"
+  only:
+    - "tags"
+  before_script:
+    - "crane auth login index.docker.io -u ${REGISTRY_USER} -p ${REGISTRY_PASS}"
+    - "crane auth login ${CI_REGISTRY} -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
+  script:
+    - >-
+      crane copy "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}" "${RELEASE_IMAGE_NAME}:${RELEASE_VERSION}"
+- >-
+      crane copy "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}" "${CI_REGISTRY_IMAGE}:${RELEASE_VERSION}"
+- >-
+      crane copy "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}" "${CI_REGISTRY_IMAGE}:latest"
+
+
 
 deploy:
   <<: [*host-login]
