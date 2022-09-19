@@ -1,19 +1,19 @@
 import { useTranslation } from 'react-i18next';
 
-import { Validator } from 'typings/validator';
-
 import ProgressBar from 'components/Base/ProgressBar';
 import DelegateModal from 'pages/Staking/components/DelegationStaking/components/DelegateModal';
 
 import { StyledWrapper } from '../styles';
+import { useValidator } from '../Validator';
 
 import { useUser } from 'store/user/hooks';
 
 import { formatAsset, formatPercent } from 'utils/numbers';
 
-function DelegationInfo ({ validator }: { validator: Validator }) {
+function DelegationInfo () {
   const { t } = useTranslation();
   const user = useUser();
+  const { validator, refetchValidator } = useValidator();
   const { delegationSaturation, delegationEfficiency, payoutPerDelegatedQ, address } = validator;
 
   return (
@@ -25,6 +25,7 @@ function DelegationInfo ({ validator }: { validator: Validator }) {
             btnTitle={t('DELEGATE')}
             type="validator-select"
             delegation={validator}
+            onClose={refetchValidator}
           />
         )}
       </div>

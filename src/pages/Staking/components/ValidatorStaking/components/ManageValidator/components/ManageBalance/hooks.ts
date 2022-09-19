@@ -107,7 +107,7 @@ function useEnterShortList () {
 
   const enterShortList = async () => {
     await submitTransaction({
-      successMessage: t('SUCCES_ENTERING_VALIDATOR_RANK'),
+      successMessage: t('SUCCESS_ENTERING_VALIDATOR_RANK'),
       submitFn: async () => {
         const contract = await getValidatorsInstance();
         return contract.enterShortList({ from: user.address });
@@ -115,7 +115,7 @@ function useEnterShortList () {
       onSuccess: () => {
         checkIsValidator();
         loadValidatorsShortList();
-      }
+      },
     });
   };
 

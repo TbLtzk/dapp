@@ -1,18 +1,18 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import { Validator } from 'typings/validator';
-
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 import Tooltip from 'ui/Tooltip';
 
 import { StyledWrapper } from '../styles';
+import { useValidator } from '../Validator';
 
 import { RoutePaths } from 'constants/routes';
 
-function MonitoringInfo ({ validator }: { validator: Validator }) {
+function MonitoringInfo () {
   const { t } = useTranslation();
+  const { validator } = useValidator();
   const { lastBlock, monthDayYear, average, timestamp } = validator;
 
   return (

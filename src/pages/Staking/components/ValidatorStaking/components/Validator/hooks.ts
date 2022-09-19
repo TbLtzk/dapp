@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { isEmpty } from 'lodash';
@@ -25,15 +25,19 @@ const useFetchValidatorData = (address: string) => {
   const [error, setError] = useState<null | unknown>(null);
   const [loading, setLoading] = useState(true);
 
+  const getValidator = async () => {
+    const validatorInfo = await getAndCombineValidatorInfo(address, chainId, indexerUrl);
+    if (isEmpty(validatorInfo)) {
+      setIsValidator(false);
+    } else {
+      setValidator(validatorInfo as Validator);
+    }
+  };
+
   const fetchValidatorData = async () => {
     try {
       setLoading(true);
-      const validatorInfo = await getAndCombineValidatorInfo(address, chainId, indexerUrl);
-      if (isEmpty(validatorInfo)) {
-        setIsValidator(false);
-      } else {
-        setValidator(validatorInfo as Validator);
-      }
+      await getValidator();
     } catch (error) {
       setError(error);
       captureError(error);
@@ -63,7 +67,14 @@ const useFetchValidatorData = (address: string) => {
     };
   }, [successMessage]);
 
-  return { isValidator, validator, loading, error, updateCompoundRate };
+  return {
+    isValidator,
+    validator,
+    loading,
+    error,
+    updateCompoundRate,
+    refetchValidator: useCallback(getValidator, [])
+  };
 };
 
 export { useFetchValidatorData };
