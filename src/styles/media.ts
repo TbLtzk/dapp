@@ -2,6 +2,7 @@
 export enum Breakpoints {
   huge = 1600,
   large = 1440,
+  xMedium = 1200,
   medium = 1024,
   tablet = 600,
   small = 480,
