@@ -20,9 +20,10 @@ function ContractUpdateDetails ({ proposal }: Props) {
         <p className="text-md color-secondary">
           {isAddressVotingContract ? t('KEY') : t('IMPLEMENTATION')}
         </p>
-        <p className="text-md break-word">
-          {isAddressVotingContract ? proposal.key : proposal.implementation}
-        </p>
+        { isAddressVotingContract
+          ? <p className="text-md break-word">{proposal.key}</p>
+          : <ExplorerAddress className="text-md word-break" address={proposal.implementation} />
+        }
       </div>
 
       <div className="details-item">
