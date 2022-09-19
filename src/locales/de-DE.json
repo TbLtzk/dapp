@@ -1082,5 +1082,8 @@
   "TOTAL_AVAILABILITY": "Total Availability",
   "SLASHING_PROPOSAL_ALREADY_EXISTS": "Active slashing proposal for address {{address}} already exists. Please, try again later",
   "PROPOSAL_LINK_DISCLAIMER": "Note: Anybody can add a proposal link. Inspect it with care",
-  "REWARDS_ALLOCATED": "Prämien zugeteilt"
+  "REWARDS_ALLOCATED": "Prämien zugeteilt",
+  "AVAILABLE_TO_DELEGATE": "Zur Delegation verfügbar",
+  "OLD_DELEGATED_STAKE": "Alter delegierter Anteil",
+  "NEW_DELEGATED_STAKE": "Neuer delegierter Anteil"
 }
