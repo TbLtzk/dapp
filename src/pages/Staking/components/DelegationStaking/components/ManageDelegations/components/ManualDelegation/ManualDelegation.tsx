@@ -1,13 +1,15 @@
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { FormDelegation } from 'typings/forms';
 import { toWei } from 'web3-utils';
 
 import FormBlock from 'components/FormBlock';
+import { StakingContainer } from 'pages/Staking/styles';
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 
-import useFormArray from 'hooks/useFormArray';
+import useFormArray, { Form } from 'hooks/useFormArray';
 
 import ClaimTip from '../../../ClaimTip';
 import DelegationForm from '../DelegationForm';
@@ -16,11 +18,13 @@ import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 import { useValidators } from 'store/validators/hooks';
 
+import { formatAsset, toBigNumber } from 'utils/numbers';
+
 function ManageDelegations () {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
 
-  const { delegateStake } = useQVault();
+  const { delegateStake, delegationStakeInfo, delegationList, loadDelegationList } = useQVault();
   const { validatorStats } = useValidators();
 
   const formArray = useFormArray({
@@ -38,32 +42,108 @@ function ManageDelegations () {
     },
   });
 
+  useEffect(() => {
+    loadDelegationList();
+  }, []);
+
+  const [
+    availableAmountToDelegate,
+    newDelegatedStake,
+  ] = useMemo(() => {
+    const delegationDelta = formArray.forms.reduce((acc, form) => {
+      const delegatedStake = getDelegatedStake(form?.values?.address);
+      const amount = form?.values?.amount || 0;
+      const amountBn = toBigNumber(amount).minus(toBigNumber(delegatedStake));
+      return amountBn.plus(acc);
+    }, toBigNumber('0'));
+    const accessibleAmount = toBigNumber(delegationStakeInfo?.delegatableAmount || '0')
+      .minus(delegationDelta);
+    const potentialDelegatedStake = toBigNumber(delegationStakeInfo?.totalDelegatedStake || '0')
+      .plus(delegationDelta);
+
+    return [
+      accessibleAmount.toString(),
+      potentialDelegatedStake.toString()
+    ];
+  }, [formArray.forms, delegationStakeInfo, delegationList]);
+
+  const availableValidators = useMemo(() => {
+    return validatorStats.filter(({ address }) =>
+      !formArray.forms.find(i => i?.values?.address === address)
+    );
+  }, [formArray.forms, validatorStats]);
+
+  function getDelegatedStake (address: string) {
+    const delegate = delegationList.find(i => i.validator === address);
+    return delegate?.actualStake ?? '0';
+  }
+
+  function getMaxAmountFromForm (form: Form<{ address: string; amount: string }>) {
+    return toBigNumber(availableAmountToDelegate)
+      .plus(form.values?.amount || '0')
+      .toString();
+  }
+
   return (
-    <div className="block" style={{ display: 'grid', gap: '15px', margin: '30px 0 40px 0' }}>
-      {formArray.forms.map((form, i) => (
-        <FormBlock
-          key={form.id}
-          title={`${t('DELEGATION')} ${i + 1}`}
-          icon={formArray.forms.length > 1 ? 'delete' : undefined}
-          onAction={() => formArray.removeForm(form.id)}
-        >
-          <DelegationForm validators={validatorStats} onChange={form.onChange} />
-        </FormBlock>
-      ))}
-      <ClaimTip/>
+    <StakingContainer>
+      <div className="block" style={{ display: 'grid', gap: '15px', margin: '30px 0 40px 0' }}>
+        <div className="delegation-info_container">
+          <div className="delegation-item">
+            <p className="color-secondary text-md">{t('OLD_DELEGATED_STAKE')}</p>
+            <p className="text-xl font-semibold">{formatAsset(delegationStakeInfo?.totalDelegatedStake, 'Q')}</p>
+          </div>
+          <div className="delegation-item">
+            <p className="color-secondary text-md">{t('AVAILABLE_TO_DELEGATE')}</p>
+            <p className="text-xl font-semibold">
+              {
+                toBigNumber(availableAmountToDelegate).isNegative()
+                  ? '0 Q'
+                  : formatAsset(availableAmountToDelegate, 'Q')
+              }
+            </p>
+          </div>
+          <div className="delegation-item">
+            <p className="color-secondary text-md">{t('NEW_DELEGATED_STAKE')}</p>
+            <p className="text-xl font-semibold">{formatAsset(newDelegatedStake, 'Q')}</p>
+          </div>
+        </div>
 
-      <div className="delegation-buttons">
-        <Button look="ghost" onClick={formArray.appendForm}>
-          <Icon name="add" />
-          <span>{t('ADD_DELEGATION')}</span>
-        </Button>
+        {formArray.forms.map((form, i) => (
+          <FormBlock
+            key={form.id}
+            title={`${t('DELEGATION')} ${i + 1}`}
+            icon={formArray.forms.length > 1 ? 'delete' : undefined}
+            onAction={() => formArray.removeForm(form.id)}
+          >
+            <DelegationForm
+              validators={validatorStats}
+              availableValidators={availableValidators}
+              delegatedStake={getDelegatedStake(form?.values?.address)}
+              maxAmount={getMaxAmountFromForm(form)}
+              addresses={
+                formArray.forms
+                  .filter((_, j) => j !== i)
+                  .map(f => f.values?.address || '')
+              }
+              onChange={form.onChange}
+            />
+          </FormBlock>
+        ))}
+        <ClaimTip/>
 
-        <Button onClick={() => formArray.submit()}>
-          <i className="mdi mdi-cached" />
-          <span>{t('UPDATE_DELEGATION')}</span>
-        </Button>
+        <div className="delegation-buttons">
+          <Button look="ghost" onClick={formArray.appendForm}>
+            <Icon name="add" />
+            <span>{t('ADD_DELEGATION')}</span>
+          </Button>
+
+          <Button onClick={() => formArray.submit()}>
+            <i className="mdi mdi-cached" />
+            <span>{t('UPDATE_DELEGATION')}</span>
+          </Button>
+        </div>
       </div>
-    </div>
+    </StakingContainer>
   );
 }
 

@@ -1082,5 +1082,8 @@
   "TOTAL_AVAILABILITY": "Загальна доступність",
   "SLASHING_PROPOSAL_ALREADY_EXISTS": "Активна пропозиція слешингу для адреси {{address}} уже існує. Будь-ласка спробуйте пізніше",
   "PROPOSAL_LINK_DISCLAIMER": "Увага: будь-хто може додати посилання пропозиції. Огляньте його уважно",
-  "REWARDS_ALLOCATED": "Нагороди розподілені"
+  "REWARDS_ALLOCATED": "Нагороди розподілені",
+  "AVAILABLE_TO_DELEGATE": "Доступно для делегування",
+  "OLD_DELEGATED_STAKE": "Стара делегована частка",
+  "NEW_DELEGATED_STAKE": "Нова делегована частка"
 }
