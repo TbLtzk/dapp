@@ -15,7 +15,6 @@ import ManualDelegation from './components/ManualDelegation';
 import { ManageDelegationsContainer } from './components/ManualDelegation/styles';
 import ValidatorsList from './components/ValidatorsList';
 
-import { useQVault } from 'store/q-vault/hooks';
 import { useValidators } from 'store/validators/hooks';
 
 import { RoutePaths } from 'constants/routes';
@@ -24,7 +23,6 @@ function ManageDelegations () {
   const { t } = useTranslation();
   const history = useHistory();
 
-  const { loadDelegationStakeInfo } = useQVault();
   const { loadValidatorStats } = useValidators();
 
   const handleBackClick = () => {
@@ -33,7 +31,6 @@ function ManageDelegations () {
 
   useEffect(() => {
     loadValidatorStats();
-    loadDelegationStakeInfo();
   }, []);
 
   const tabs: TabsType[] = [

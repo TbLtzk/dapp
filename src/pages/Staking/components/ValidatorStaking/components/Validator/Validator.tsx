@@ -1,9 +1,11 @@
+import { createContext, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
+import { Validator } from 'typings/validator';
 
 import PageLayout from 'components/PageLayout';
 import NotFound from 'pages/NotFound';
@@ -72,7 +74,12 @@ const StyledContainer = styled.div`
   }
 `;
 
-function Validator ({ match }: RouteComponentProps<{ address: string }>) {
+const ValidatorContext = createContext({
+  validator: {} as Validator,
+  refetchValidator: () => {}
+});
+
+function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
   const { address } = match.params;
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
@@ -81,6 +88,7 @@ function Validator ({ match }: RouteComponentProps<{ address: string }>) {
     validator,
     loading: validatorLoading,
     error: validatorError,
+    refetchValidator,
     updateCompoundRate
   } = useFetchValidatorData(address);
 
@@ -103,7 +111,7 @@ function Validator ({ match }: RouteComponentProps<{ address: string }>) {
   }
 
   return (
-    <>
+    <ValidatorContext.Provider value={{ validator, refetchValidator }}>
       <Link to={RoutePaths.stakingValidators}>
         <Button
           alwaysEnabled
@@ -118,9 +126,9 @@ function Validator ({ match }: RouteComponentProps<{ address: string }>) {
       <PageLayout title={`${t('VALIDATOR')} ${trimAddress(address)}`}>
         <StyledContainer>
           <div className="info">
-            <MainInfo validator={validator} />
-            <MonitoringInfo validator={validator} />
-            <DelegationInfo validator={validator} />
+            <MainInfo />
+            <MonitoringInfo />
+            <DelegationInfo />
             <RewardStats
               validator={validator}
               onButtonClick={() => submitTransaction({
@@ -135,8 +143,10 @@ function Validator ({ match }: RouteComponentProps<{ address: string }>) {
           </div>
         </StyledContainer>
       </PageLayout>
-    </>
+    </ValidatorContext.Provider>
   );
 }
 
-export default Validator;
+export const useValidator = () => useContext(ValidatorContext);
+
+export default ValidatorPage;

@@ -1,14 +1,14 @@
 import { useTranslation } from 'react-i18next';
 
-import { Validator } from 'typings/validator';
-
 import { ProgressBarWrapper } from 'components/Base/ProgressBar/styles';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import { StyledWrapper } from '../styles';
+import { useValidator } from '../Validator';
 
-function MainInfo ({ validator }: { validator: Validator }) {
+function MainInfo () {
   const { t } = useTranslation();
+  const { validator } = useValidator();
   const { rank, address, isActiveValidator } = validator;
 
   return (

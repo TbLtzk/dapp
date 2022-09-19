@@ -58,7 +58,7 @@ function ValidatorMenu () {
         open={Boolean(modalForm)}
         onClose={handleFormModalClose}
       >
-        <ValidatorForms formType={modalForm} />
+        <ValidatorForms formType={modalForm} onClose={handleFormModalClose} />
       </Modal>
     </>
   );
