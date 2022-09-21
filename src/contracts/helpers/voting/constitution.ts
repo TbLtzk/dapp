@@ -1,4 +1,3 @@
-import { BaseProposal } from '@q-dev/q-js-sdk';
 import {
   ConstitutionProposal,
   ConstitutionVotingInstance,
@@ -78,9 +77,7 @@ export async function getConstitutionProposal (
   const proposal = await contract.getProposal(id);
 
   const isConstitution = contract instanceof ConstitutionVotingInstance;
-  const base = isConstitution
-    ? proposal.base // TODO: Fix SDK
-    : (proposal as unknown as BaseProposal);
+  const base = proposal.base;
 
   return {
     remark: base.remark,
