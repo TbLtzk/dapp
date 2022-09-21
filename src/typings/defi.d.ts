@@ -1,25 +1,37 @@
 import { Vault } from '@q-dev/q-js-sdk';
 
-import { BorrowAssets, defiApproveType } from 'constants/defi';
+import { defiApproveType } from 'constants/defi';
 
-type Asset = keyof typeof BorrowAssets;
+type Asset = 'QBTC' | 'QDAI' | 'QUSDC' | 'QVNXAU';
 type ApproveType = typeof defiApproveType[keyof typeof defiApproveType];
 
-interface SavingAssets {
+interface SavingAsset {
   rate: number;
   depositAsset: string;
   interestAsset: string;
+  balance: string;
+  compoundRateUpdated: number;
 }
 
-interface VaultWithFee extends Vault {
-  vaultNum: number;
-  borrowingFee: number;
+interface VaultWithId extends Vault {
+  id: number;
+}
+
+interface BorrowingVault extends VaultWithId {
+  assetPrice: string;
+  outstandingDebt: string;
+  borrowingLimit: string;
+  lockedCollateral: string;
 }
 
 interface BorrowAssetsRateAndFee {
   asset: Asset;
   borrowingFee: number;
   interestRate: string;
+}
+
+interface InterestRate extends BorrowAssetsRateAndFee {
+  outstandingDebt: string;
 }
 
 interface VaultData {
@@ -41,6 +53,5 @@ interface VaultData {
     availableRepay: string;
     outstandingDebt: string;
     liquidationLimit: string;
-
   };
 }

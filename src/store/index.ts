@@ -5,13 +5,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import aliases from './aliases/reducer';
 import auctions from './auctions/reducer';
 import borrowAssets from './borrow-assets/reducer';
-import borrowingCore from './borrowing-core/reducer';
+import borrowing from './borrowing/reducer';
 import experts from './experts/reducer';
 import parameters from './parameters/reducer';
 import proposals from './proposals/reducer';
 import qVault from './q-vault/reducer';
 import rootNodes from './root-nodes/reducer';
-import savingAssets from './saving-assets/reducer';
+import saving from './saving/reducer';
 import systemBalance from './system-balance/reducer';
 import tokenomics from './tokenomics/reducer';
 import transaction from './transaction/reducer';
@@ -26,9 +26,9 @@ export const store = configureStore({
     rootNodes,
     qVault,
     vesting,
-    borrowingCore,
+    borrowing,
     borrowAssets,
-    savingAssets,
+    saving,
     aliases,
     tokenomics,
     proposals,

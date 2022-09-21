@@ -3,6 +3,7 @@ import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import * as Sentry from '@sentry/react';
 import { ProposalContractType } from 'typings/contracts';
+import { Asset } from 'typings/defi';
 
 import ErrorBoundary from 'components/Custom/ErrorBoundary';
 import AccountAliasing from 'pages/AccountAliasing';
@@ -15,6 +16,8 @@ import NewProposal from 'pages/Governance/NewProposal';
 import Proposal from 'pages/Governance/Proposal';
 import Imprint from 'pages/Imprint';
 import NotFound from 'pages/NotFound';
+import SavingBorrowing from 'pages/SavingBorrowing';
+import BorrowingPair from 'pages/SavingBorrowing/BorrowingPair';
 import Staking from 'pages/Staking';
 import ManageDelegations from 'pages/Staking/components/DelegationStaking/components/ManageDelegations';
 import ValidatorManage from 'pages/Staking/components/ValidatorStaking/components/ManageValidator';
@@ -26,7 +29,6 @@ import Auctions from '../pages/Auctions';
 import Dashboard from '../pages/Dashboard';
 import Manage from '../pages/Parameters';
 import QVault from '../pages/QVault';
-import SavingAndBorrowing from '../pages/SavingAndBorrowing';
 import TimeLocks from '../pages/TimeLocks';
 
 import { getState } from 'store';
@@ -118,9 +120,20 @@ function Routes () {
           <ManageDelegations />
         </Route>
 
-        <Route exact path="/saving-and-borrowing">
-          <SavingAndBorrowing />
+        <Route exact path={RoutePaths.savingBorrowingTab}>
+          <SavingBorrowing />
         </Route>
+
+        <Route
+          exact
+          path={RoutePaths.borrowingPair}
+          component={(props: RouteComponentProps<{
+            collateral: Asset;
+            borrow: 'QUSD';
+          }>) => (
+            <BorrowingPair {...props} />
+          )}
+        />
 
         <Route exact path="/auctions/:type?">
           <Auctions />

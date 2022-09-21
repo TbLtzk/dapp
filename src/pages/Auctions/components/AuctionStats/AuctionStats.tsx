@@ -7,7 +7,7 @@ import Button from 'ui/Button';
 import { AuctionStatsContainer } from './styles';
 
 import { useQVault } from 'store/q-vault/hooks';
-import { useSavingAssets } from 'store/saving-assets/hooks';
+import { useSaving } from 'store/saving/hooks';
 import { useSystemBalance } from 'store/system-balance/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
@@ -26,7 +26,7 @@ function AuctionStats () {
     loadVaultBalance,
   } = useQVault();
 
-  const { savingAvailableToDeposit, getSavingAvailableToDeposit } = useSavingAssets();
+  const { savingAvailableToDeposit, getSavingAvailableToDeposit } = useSaving();
   const {
     systemBalance,
     systemBalanceDebt,

@@ -22,6 +22,7 @@ interface Props extends Omit<InputProps, 'onChange' | 'prefix' | 'value'> {
   decimals?: number;
   prefix?: ReactNode;
   children?: ReactNode;
+  labelTip?: string;
   onChange: (val: string) => void;
 }
 
@@ -35,6 +36,7 @@ function Input ({
   max,
   decimals = 18,
   prefix,
+  labelTip,
   children,
   onChange = () => {},
   ...rest
@@ -60,12 +62,19 @@ function Input ({
       $type={type}
     >
       {label && (
-        <label
-          htmlFor={inputId}
-          className="text-md"
-        >
-          {label}
-        </label>
+        <div className="input-label-wrp">
+          <label
+            htmlFor={inputId}
+            className="text-md"
+          >
+            {label}
+          </label>
+          {labelTip && (
+            <span className="text-sm font-light">
+              {labelTip}
+            </span>
+          )}
+        </div>
       )}
 
       <div className="input-container">

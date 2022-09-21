@@ -3,10 +3,13 @@ import styled from 'styled-components';
 
 import { getSegmentedButtonColor } from './colors';
 
-export const SegmentedButtonContainer = styled.div`
+export const SegmentedButtonContainer = styled.div<{ $light?: boolean }>`
   display: flex;
   border-radius: 32px;
-  background-color: ${({ theme }) => getSegmentedButtonColor(theme, 'bg')};
+  background-color: ${({ theme, $light }) => $light
+    ? getSegmentedButtonColor(theme, 'bgLight')
+    : getSegmentedButtonColor(theme, 'bg')
+  };
   padding: 2px;
   
   .segmented-button-item {

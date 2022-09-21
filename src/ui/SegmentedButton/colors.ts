@@ -3,6 +3,7 @@ import { COLORS, getColorFn } from 'styles/colors';
 
 export const darkColors = {
   bg: COLORS.blue700,
+  bgLight: COLORS.blue800,
   bgActive: COLORS.grey100,
   text: COLORS.grey300,
   textActive: COLORS.blue800,
@@ -12,6 +13,7 @@ export const darkColors = {
 
 export const lightColors = {
   bg: COLORS.grey000,
+  bgLight: COLORS.white,
   bgActive: COLORS.blue800,
   text: COLORS.grey500,
   textActive: COLORS.white,

@@ -8,12 +8,14 @@ import { SegmentedButtonContainer } from './styles';
 type ValueType = number | string | boolean;
 interface Props<T extends ValueType> extends Omit<HTMLAttributes<HTMLDivElement>, 'value' | 'onChange'> {
   value: T;
+  light?: boolean;
   options?: Options<T>;
   onChange?: (value: T) => void;
 }
 
 function SegmentedButton<T extends ValueType> ({
   value,
+  light = false,
   options = [],
   onChange = () => {},
   ...rest
@@ -25,7 +27,7 @@ function SegmentedButton<T extends ValueType> ({
   };
 
   return (
-    <SegmentedButtonContainer {...rest}>
+    <SegmentedButtonContainer $light={light} {...rest}>
       <AnimateSharedLayout>
         {options.map((option) => (
           <button

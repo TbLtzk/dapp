@@ -23,6 +23,7 @@ interface Props<T> {
   tiny?: boolean;
   header?: ReactNode;
   buttons?: ReactNode;
+  hideSearch?: boolean;
   keyField?: string;
   searchFormatted?: boolean;
 }
@@ -36,8 +37,9 @@ function Table<T> ({
   perPage = 1000,
   emptyTableMessage,
   header,
-  keyField = 'id',
   tiny = false,
+  keyField = 'id',
+  hideSearch = false,
   searchFormatted = true
 }: Props<T>) {
   const { t } = useTranslation();
@@ -103,7 +105,7 @@ function Table<T> ({
               }
               return (
                 <>
-                  {!tiny && (
+                  {!tiny && !hideSearch && (
                     <div className="head-elements">
                       <Search value={props.searchProps.searchText} onChange={props.searchProps.onSearch} />
                       {buttons}
@@ -136,7 +138,7 @@ function Table<T> ({
   return (
     <TableContainer withPagination={perPage < table.length} tiny={tiny}>
       <div className="table">
-        <div className="table-header">{header}</div>
+        {header && <div className="table-header">{header}</div>}
         {tableContent()}
       </div>
     </TableContainer>

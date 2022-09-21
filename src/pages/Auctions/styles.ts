@@ -89,7 +89,6 @@ export const AuctionContainer = styled.div`
 `;
 
 export const ListWrapper = styled.div`  
-  margin-top: 25px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;

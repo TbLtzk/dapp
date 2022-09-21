@@ -10,6 +10,7 @@ export const TabsContainer = styled.nav`
   overflow-x: auto;
   padding: 8px;
   margin: -8px;
+  margin-bottom: 8px;
 
   &::after {
     content: '';
@@ -85,9 +86,10 @@ export const TabsContainer = styled.nav`
     z-index: 2;
     display: grid;
     place-content: center;
-    width: 16px;
+    min-width: 16px;
     height: 16px;
-    border-radius: 50%;
+    padding: 0 4px;
+    border-radius: 8px;
     font-size: 10px;
     font-weight: 600;
     background-color:  ${({ theme }) => getTabColor(theme, 'countBackground')};

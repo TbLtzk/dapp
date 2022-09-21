@@ -76,6 +76,7 @@ export const darkColors = {
   blockShadow: 'rgba(23, 77, 145, 0.04)',
   blockShadowLight: 'rgba(7, 23, 43, 0.24)',
   blockShadowDark: 'rgba(7, 23, 43, 0.32)',
+  blockInside: COLORS.blue700,
 
   link: COLORS.blue300,
   linkHover: COLORS.blue200,
@@ -94,6 +95,7 @@ export const lightColors = {
   textSecondary: COLORS.grey500,
   textInverted: COLORS.grey100,
   textDisabled: COLORS.grey200,
+
   block: COLORS.white,
   blockBorder: COLORS.grey100,
   blockBorderAccent: COLORS.grey300,
@@ -104,6 +106,7 @@ export const lightColors = {
   blockShadow: 'rgba(23, 77, 145, 0.04)',
   blockShadowLight: 'rgba(11, 37, 69, 0.1)',
   blockShadowDark: 'rgba(11, 37, 69, 0.12)',
+  blockInside: COLORS.grey000,
 
   link: COLORS.blue500,
   linkHover: COLORS.blue600,

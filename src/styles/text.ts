@@ -96,6 +96,14 @@ export const TextStyle = createGlobalStyle`
     color: ${({ theme }) => theme.colors.textSecondary};
   }
 
+  .color-success {
+    color: ${({ theme }) => theme.colors.success};
+  }
+
+  .color-error {
+    color: ${({ theme }) => theme.colors.error};
+  }
+
   .ellipsis {
     text-overflow: ellipsis;
     overflow: hidden;

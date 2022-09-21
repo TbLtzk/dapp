@@ -9,7 +9,7 @@ import Button from 'ui/Button';
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
 
-import { useBorrowingCore } from 'store/borrowing-core/hooks';
+import { useBorrowing } from 'store/borrowing/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
 import { getBorrowingCompoundRateLastUpdate } from 'contracts/helpers/borrowing-core';
@@ -35,7 +35,7 @@ const StyledWrapper = styled.div`
 function InterestRateBlock ({ rate }: { rate: BorrowAssetsRateAndFee }) {
   const { t, i18n } = useTranslation();
   const { submitTransaction } = useTransaction();
-  const { updateBorrowingCompoundRate } = useBorrowingCore();
+  const { updateBorrowingCompoundRate } = useBorrowing();
 
   const interestRateRef = useAnimateNumber(rate.borrowingFee, ' %');
 

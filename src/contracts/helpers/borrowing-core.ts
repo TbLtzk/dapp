@@ -1,5 +1,4 @@
-import { Vault } from '@q-dev/q-js-sdk';
-import { Asset, BorrowAssetsRateAndFee, VaultWithFee } from 'typings/defi';
+import { Asset, BorrowAssetsRateAndFee } from 'typings/defi';
 
 import {
   getBorrowingInstance,
@@ -12,21 +11,20 @@ import { unixToDate } from 'utils/date';
 import { captureError } from 'utils/errors';
 import { calculateInterestRate } from 'utils/numbers';
 
-export async function getVaultWithFee (vault: Vault, vaultNum: number): Promise<VaultWithFee> {
-  const { borrowingFee } = await getBorrowAssetRateAndFee(vault.colKey as Asset);
-  return {
-    ...vault,
-    vaultNum,
-    borrowingFee,
-  };
-}
-
 export async function getBorrowAssetRateAndFee (asset: Asset): Promise<BorrowAssetsRateAndFee> {
   const contract = await getEpdrParametersInstance();
+  let interestRate = '0';
+  try {
+    interestRate = await contract.getUint(`governed.EPDR.${asset}_QUSD_interestRate`);
+  } catch (error) {
+    captureError(error);
+  }
 
-  const interestRate = await contract.getUint(`governed.EPDR.${asset}_QUSD_interestRate`);
-  const borrowingFee = calculateInterestRate(Number(interestRate));
-  return { asset, borrowingFee, interestRate };
+  return {
+    asset,
+    interestRate,
+    borrowingFee: calculateInterestRate(Number(interestRate)),
+  };
 }
 
 export async function addBorrowTokenToWallet (asset: Asset) {
@@ -36,24 +34,20 @@ export async function addBorrowTokenToWallet (asset: Asset) {
       instance.methods.decimals().call(),
       instance.methods.symbol().call(),
     ]);
-    const type = 'ERC20';
-    if ('ethereum' in window && window?.ethereum) {
-      const response = await window.ethereum.request({
-        method: 'wallet_watchAsset',
-        params: {
-          type,
-          options: {
-            address: instance.options.address,
-            symbol,
-            decimals,
-          },
+
+    await window.ethereum.request({
+      method: 'wallet_watchAsset',
+      params: {
+        type: 'ERC20',
+        options: {
+          address: instance.options.address,
+          symbol,
+          decimals,
         },
-      });
-      return response;
-    }
+      }
+    });
   } catch (error) {
     captureError(error);
-    return null;
   }
 }
 

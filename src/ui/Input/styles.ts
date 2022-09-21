@@ -11,8 +11,14 @@ export const InputWrapper = styled.div<{
 }>`
   width: 100%;
 
-  label {
+  .input-label-wrp {
     margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  label {
     color: ${({ theme, $disabled }) => $disabled
       ? getInputColor(theme, 'labelDisabled')
       : getInputColor(theme, 'label')

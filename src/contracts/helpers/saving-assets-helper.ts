@@ -8,9 +8,7 @@ import { calculateInterestRate } from 'utils/numbers';
 
 export function getSavingBalanceDetailsHelper (balanceDetails: SavingBalanceDetails) {
   const interestRate = calculateInterestRate(Number(balanceDetails.interestRate));
-  const currentBalance = balanceDetails?.currentBalance
-    ? fromWei(balanceDetails.currentBalance)
-    : '0';
+  const currentBalance = fromWei(balanceDetails.currentBalance);
 
   return {
     interestRate,

@@ -82,7 +82,7 @@ function ValidatorsTable () {
         },
         {
           headerStyle: () => ({ minWidth: '100px', cursor: 'pointer' }),
-          dataField: 'delegatorsShare',
+          dataField: 'delegatorShare',
           text: t('DELEGATOR_SHARE'),
           sort: true,
         },
@@ -95,6 +95,7 @@ function ValidatorsTable () {
             <RedirectAddress
               iconed
               short
+              semibold
               address={validator.address}
               to={`${RoutePaths.stakingValidators}/${validator.address}`}
             />

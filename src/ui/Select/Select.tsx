@@ -71,7 +71,7 @@ function Select<T extends ValueType> ({
       >
         {Boolean(value) && <Icon name="check" />}
         <span>{selectedOption?.label || placeholder}</span>
-        <Icon className="select-icon" name="arrow-down" />
+        <Icon className="select-icon" name="arrow-down-small" />
       </Button>
     )
     : (
