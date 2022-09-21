@@ -24,14 +24,14 @@ function RewardStats ({ validator, onButtonClick }: Props) {
       value: formatAsset(validator.validatorPoolBalance, 'Q'),
     },
     {
-      id: 'delegator-reward',
-      label: t('DISTRIBUTABLE_DELEGATOR_REWARDS'),
-      value: formatAsset(validator.distributableDelegatorsRewards, 'Q'),
-    },
-    {
       id: 'outstanding-claims',
       label: t('OUTSTANDING_DELEGATOR_CLAIMS'),
       value: formatAsset(validator.reservedForClaims, 'Q'),
+    },
+    {
+      id: 'delegator-reward',
+      label: t('DISTRIBUTABLE_DELEGATOR_REWARDS'),
+      value: formatAsset(validator.distributableDelegatorsRewards, 'Q'),
     },
     {
       id: 'rewards-allocated',

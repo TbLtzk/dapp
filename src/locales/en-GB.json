@@ -22,7 +22,6 @@
   "QUSD_SYSTEM_BALANCE": "QUSD System Balance",
   "QUSD_TOTAL_SUPPLY": "QUSD Total Supply",
   "QUSD_SAVING_BALANCE_REFRESHED": "QUSD Saving balance refreshed",
-  "QUSD_QBTC_TIME_SINCE_REFRESH_OF_OUTSTANDING_DEBT": "QUSD - QBTC time since refresh of outstanding debt",
   "ROOT_NODE_PANEL": "Root Node Panel",
   "VALIDATOR_RANKING": "Validator Ranking",
   "LIST_OF_DEFI_EXPERTS": "List of DeFi Experts",
@@ -39,7 +38,6 @@
   "NO_Q_FEES_INCENTIVES_MEMBERS": "No Q Fees & Incentives members",
   "YOUR_CURRENT_DELEGATIONS": "Your Current Delegations",
   "NO_DELEGATIONS": "No delegations",
-  "NO_Q_FEES_&_INCENTIVES_MEMBERS": "No Q Fees & Incentives members",
   "NO_ROOT_NODE_SELECTION_MEMBERS": "No Root Node Selection members",
   "NO_VALIDATORS": "No validators",
   "GO_TO_Q_VAULT": "Go to Q Vault",
@@ -1084,7 +1082,7 @@
   "PROPOSAL_LINK_DISCLAIMER": "Note: Anybody can add a proposal link. Inspect it with care",
   "REWARDS_ALLOCATED": "Rewards allocated",
   "AVAILABLE_TO_DELEGATE": "Available to delegate",
-  "OLD_DELEGATED_STAKE": "Old delegated stake",
+  "CURRENT_DELEGATED_STAKE": "Current delegated stake",
   "NEW_DELEGATED_STAKE": "New delegated stake",
   "BRIDGE": "Bridge",
   "ADD_TO_WALLET": "Add to wallet",
@@ -1114,5 +1112,6 @@
   "ONLY_ACTIVE": "Only active",
   "NO_VAULTS_YET": "No vaults yet",
   "CLOSE_LIQUIDATION_TIP": "The vault is close to liquidation",
-  "LIQUIDATED": "Liquidated"
+  "LIQUIDATED": "Liquidated",
+  "SHARE_ACTION": "Share"
 }

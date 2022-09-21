@@ -2,7 +2,6 @@ import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { isNil } from 'lodash';
-import { isAddress } from 'web3-utils';
 
 import { FormStep } from 'components/MultiStepForm';
 import Button from 'ui/Button';
@@ -19,7 +18,7 @@ import { useRootNodes } from 'store/root-nodes/hooks';
 import { useValidators } from 'store/validators/hooks';
 
 import { formatAsset } from 'utils/numbers';
-import { trimAddress } from 'utils/strings';
+import { isAddress, trimAddress } from 'utils/strings';
 import { address, percent, required, url } from 'utils/validators';
 
 function DetailsStep () {

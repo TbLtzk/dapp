@@ -52,16 +52,15 @@ function RewardStats () {
       value: formatAsset(fromWei(poolInfo.poolBalance), 'Q'),
     },
     {
-      id: 'delegator-reward',
-      label: t('DISTRIBUTABLE_DELEGATOR_REWARDS'),
-      value: formatAsset(distributableDelegatorsRewards, 'Q'),
-    },
-    {
       id: 'outstanding-claims',
       label: t('OUTSTANDING_DELEGATOR_CLAIMS'),
       value: formatAsset(reserverdForClaims, 'Q'),
     },
-
+    {
+      id: 'delegator-reward',
+      label: t('DISTRIBUTABLE_DELEGATOR_REWARDS'),
+      value: formatAsset(distributableDelegatorsRewards, 'Q'),
+    },
     {
       id: 'delegator-percentage',
       label: t('DISTRIBUTABLE_DELEGATOR_PERCENTAGE'),
