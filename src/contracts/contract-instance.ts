@@ -114,7 +114,7 @@ export const getValidatorMetricsInstance = async () => {
 
 export const getIndexerInstance = async (indexerUrl = networkConfigsMap.testnet.indexerUrl) => {
   if (!indexerInstance) {
-    indexerInstance = new Indexer(indexerUrl + '/blocks');
+    indexerInstance = new Indexer(indexerUrl);
   }
   return indexerInstance;
 };

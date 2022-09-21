@@ -63,6 +63,8 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
       padding: ${({ tiny }) => (tiny ? '8px' : '16px')};
       color: ${({ theme }) => getTableColor(theme, 'tableHeader')};
       background: transparent;
+      white-space: pre-line;
+      vertical-align: bottom;
 
       &.sortable {
         cursor: pointer;

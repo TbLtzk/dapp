@@ -23,6 +23,8 @@ interface Props<T> {
   tiny?: boolean;
   header?: ReactNode;
   buttons?: ReactNode;
+  keyField?: string;
+  searchFormatted?: boolean;
 }
 
 function Table<T> ({
@@ -34,7 +36,9 @@ function Table<T> ({
   perPage = 1000,
   emptyTableMessage,
   header,
+  keyField = 'id',
   tiny = false,
+  searchFormatted = true
 }: Props<T>) {
   const { t } = useTranslation();
   const [isEmpty, setIsEmpty] = useState(false);
@@ -75,8 +79,8 @@ function Table<T> ({
       >
         {({ paginationProps, paginationTableProps }) => (
           <ToolkitProvider
-            search={{ afterSearch, searchFormatted: true }}
-            keyField="id"
+            search={{ afterSearch, searchFormatted }}
+            keyField={keyField}
             data={table}
             columns={columns.map((column) => ({
               sortFunc: (a, b, order) => order === 'desc'

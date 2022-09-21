@@ -47,7 +47,6 @@ const useIsUserActiveValidator = () => {
   const getValidatoRank = async () => {
     try {
       const indexer = await getIndexerInstance(indexerUrl);
-      // @ts-ignore FIXME: Fix SDK types
       const inactiveValidators = await indexer.getInactiveValidators([user.address]);
       setIsActiveValidator(inactiveValidators === 0);
     } catch (error) {
