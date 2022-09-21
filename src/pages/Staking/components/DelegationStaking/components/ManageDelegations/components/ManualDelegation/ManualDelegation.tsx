@@ -24,7 +24,13 @@ function ManageDelegations () {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
 
-  const { delegateStake, delegationStakeInfo, delegationList, loadDelegationList } = useQVault();
+  const {
+    delegateStake,
+    delegationStakeInfo,
+    delegationList,
+    loadDelegationList,
+    loadDelegationStakeInfo
+  } = useQVault();
   const { validatorStats } = useValidators();
 
   const formArray = useFormArray({
@@ -44,6 +50,7 @@ function ManageDelegations () {
 
   useEffect(() => {
     loadDelegationList();
+    loadDelegationStakeInfo();
   }, []);
 
   const [
