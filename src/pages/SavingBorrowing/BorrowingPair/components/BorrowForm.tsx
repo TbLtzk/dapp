@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import styled from 'styled-components';
 import { VaultWithId } from 'typings/defi';
+import { fromWei } from 'web3-utils';
 
 import Button from 'ui/Button';
 import Input from 'ui/Input';
@@ -13,8 +15,11 @@ import { useBorrowingVaults } from 'store/borrowing/hooks';
 import { useSaving } from 'store/saving/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
+import { getEpdrParametersInstance } from 'contracts/contract-instance';
+
+import { captureError } from 'utils/errors';
 import { formatAsset, formatNumber, formatPercent } from 'utils/numbers';
-import { amount, required } from 'utils/validators';
+import { amount, min, required } from 'utils/validators';
 
 const StyledForm = styled.form`
   display: grid;
@@ -47,9 +52,11 @@ function BorrowForm ({ vault }: { vault: VaultWithId }) {
   const { getBorrowingVaults } = useBorrowingVaults();
   const { borrowVault, borrowAsset } = useBorrowAssets();
 
+  const [minAmount, setMinAmount] = useState('0');
+
   const form = useForm({
     initialValues: { amount: '' },
-    validators: { amount: [required, amount(borrowVault.borrowingDetails?.availableBorrow)] },
+    validators: { amount: [required, min(minAmount), amount(borrowVault.borrowingDetails?.availableBorrow)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
         successMessage: t('BORROW_ASSET_SUCCESS'),
@@ -62,6 +69,20 @@ function BorrowForm ({ vault }: { vault: VaultWithId }) {
       });
     }
   });
+
+  useEffect(() => {
+    loadMinAmount();
+  }, []);
+
+  const loadMinAmount = async () => {
+    try {
+      const contract = await getEpdrParametersInstance();
+      const rawStep = await contract.getUint('governed.EPDR.QUSD_step');
+      setMinAmount(fromWei(rawStep.toString()));
+    } catch (error) {
+      captureError(error);
+    }
+  };
 
   return (
     <StyledForm noValidate onSubmit={form.submit}>
