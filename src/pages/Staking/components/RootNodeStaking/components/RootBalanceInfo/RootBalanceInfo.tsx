@@ -8,7 +8,7 @@ import { formatDateGMT, unixToDate } from 'utils/date';
 import { formatAsset } from 'utils/numbers';
 
 function RootBalanceInfo () {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isRootNode, rootNodeStake, withdrawalInfo, rootMinimumTimeLock } = useRootNodes();
 
   return (
@@ -44,7 +44,7 @@ function RootBalanceInfo () {
         <p className="color-secondary text-md">{t('ANNOUNCEMENT_END')}</p>
         <p className="text-xl font-semibold">
           {Number(withdrawalInfo.amount) > 0
-            ? formatDateGMT(unixToDate(withdrawalInfo.endTime))
+            ? formatDateGMT(unixToDate(withdrawalInfo.endTime), i18n.language)
             : '–'
           }
         </p>

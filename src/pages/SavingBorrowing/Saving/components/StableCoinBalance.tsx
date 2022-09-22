@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import styled from 'styled-components';
 
@@ -17,6 +18,7 @@ const StyledWrapper = styled.div`
 `;
 
 function StableCoinBalance () {
+  const { t } = useTranslation();
   const { savingAvailableToDeposit, getSavingAvailableToDeposit } = useSaving();
 
   const [contractAddress, setContractAddress] = useState('…');
@@ -30,7 +32,7 @@ function StableCoinBalance () {
   return (
     <StyledWrapper className="block">
       <div className="block__header">
-        <h2 className="text-lg">QUSD Balance</h2>
+        <h2 className="text-lg">{t('QUSD_BALANCE')}</h2>
         <AssetMenu asset="QUSD" contractAddress={contractAddress} />
       </div>
       <p ref={qusdBalanceInQVaultRef} className="text-xl font-semibold">0</p>

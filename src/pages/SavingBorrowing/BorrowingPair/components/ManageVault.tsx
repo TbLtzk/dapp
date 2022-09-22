@@ -40,7 +40,7 @@ function ManageVault ({ vault }: Props) {
       asset: vault.colKey as Asset,
     });
     getBorrowingVault(vault.id);
-  });
+  }, []);
 
   const tabs = [
     {

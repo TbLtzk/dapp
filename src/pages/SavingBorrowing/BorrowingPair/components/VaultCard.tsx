@@ -53,7 +53,7 @@ function VaultCard ({ vault, onManageClick }: Props) {
     <StyledWrapper className="block">
       <div className="block__header">
         <div className="vault-card-title-wrp">
-          <h3 className="text-h3">{t('VAULT_ID', { id: vault.id })}</h3>
+          <h3 className="text-h3">{t('VAULT_NUMBER', { id: vault.id })}</h3>
           {isCloseToLiquidation && (
             <Tooltip trigger={<Icon name="warning" className="color-error" />}>
               {t('CLOSE_LIQUIDATION_TIP')}

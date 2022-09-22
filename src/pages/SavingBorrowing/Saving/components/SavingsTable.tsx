@@ -44,7 +44,7 @@ const StyledWrapper = styled.div`
 `;
 
 function SavingsTable () {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const history = useHistory();
 
   const {
@@ -121,7 +121,7 @@ function SavingsTable () {
             text: t('SAVING_BALANCE_REFRESHED'),
             formatter: (cell) => (
               <div className="refresh-block">
-                <span title={formatDate(cell)}>{formatDateRelative(cell)}</span>
+                <span title={formatDate(cell, i18n.language)}>{formatDateRelative(cell, i18n.language)}</span>
                 <RefreshBalanceButton />
               </div>
             )

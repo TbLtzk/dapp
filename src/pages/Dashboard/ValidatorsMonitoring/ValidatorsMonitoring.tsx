@@ -37,7 +37,7 @@ const StyledWrapper = styled.div`
 `;
 
 function ValidatorsMonitoring () {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { indexerUrl } = useNetworkConfig();
   const {
     validatorsMonitoring,
@@ -104,8 +104,8 @@ function ValidatorsMonitoring () {
                 <>
                   <p className="font-semibold">{cell ? formatNumber(cell) : 'n/a'}</p>
                   {' '}
-                  <p className="color-secondary text-sm" title={formatDate(row.timestamp)}>
-                    ({formatDateRelative(row.timestamp)})
+                  <p className="color-secondary text-sm" title={formatDate(row.timestamp, i18n.language)}>
+                    ({formatDateRelative(row.timestamp, i18n.language)})
                   </p>
                 </>
               )

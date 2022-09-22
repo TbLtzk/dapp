@@ -93,13 +93,13 @@ function DelegationsTable () {
         {
           headerStyle: () => ({ cursor: 'pointer', minWidth: '150px' }),
           dataField: 'reward',
-          text: t('Your Reward'),
+          text: t('CLAIMABLE_REWARD'),
           sort: true,
         },
         {
           headerStyle: () => ({ cursor: 'pointer', minWidth: '160px' }),
           dataField: 'delegatorsShare',
-          text: t('Delegator Share'),
+          text: t('DELEGATOR_SHARE'),
           sort: true,
         },
         {
@@ -112,9 +112,10 @@ function DelegationsTable () {
         address: <ExplorerAddress
           iconed
           short
+          semibold
           address={delegation.validator}
         />,
-        delegatorShare: formatAsset(delegation.delegatorsShare, ' %'),
+        delegatorsShare: formatAsset(delegation.delegatorsShare, ' %'),
         amount: formatAsset(delegation.actualStake, 'Q'),
         reward: formatAsset(delegation.claimableReward, 'Q'),
         manage: (

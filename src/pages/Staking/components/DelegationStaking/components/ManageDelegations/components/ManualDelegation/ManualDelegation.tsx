@@ -96,7 +96,7 @@ function ManageDelegations () {
       <div className="block" style={{ display: 'grid', gap: '15px', margin: '30px 0 40px 0' }}>
         <div className="delegation-info_container">
           <div className="delegation-item">
-            <p className="color-secondary text-md">{t('OLD_DELEGATED_STAKE')}</p>
+            <p className="color-secondary text-md">{t('CURRENT_DELEGATED_STAKE')}</p>
             <p className="text-xl font-semibold">{formatAsset(delegationStakeInfo?.totalDelegatedStake, 'Q')}</p>
           </div>
           <div className="delegation-item">

@@ -42,7 +42,7 @@ function TimeLocksTable ({
   lockAmountData,
   address
 }: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { submitTransaction } = useTransaction();
   const { purgeTimeLocks } = useLockedAmount();
 
@@ -94,8 +94,8 @@ function TimeLocksTable ({
                 <span>{statusToText[getLockStatus(lock)]}</span>
               </>
             ),
-            releaseStart: formatDate(unixToDate(lock.releaseStart.toString())),
-            releaseEnd: formatDate(unixToDate(lock.releaseEnd.toString())),
+            releaseStart: formatDate(unixToDate(lock.releaseStart.toString()), i18n.language),
+            releaseEnd: formatDate(unixToDate(lock.releaseEnd.toString()), i18n.language),
           }))}
           columns={[
             {

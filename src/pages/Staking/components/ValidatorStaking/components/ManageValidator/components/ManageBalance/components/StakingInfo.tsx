@@ -27,7 +27,7 @@ const StyledWrapper = styled.div`
 `;
 
 function StakingInfo () {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { validatorAccountableTotalStake, validatorWithdrawalInfo } = useValidators();
 
   return (
@@ -43,7 +43,7 @@ function StakingInfo () {
           <p className="text-lg">{formatAsset(validatorAccountableTotalStake, 'Q')}</p>
         </div>
         <div>
-          <p className="color-secondary text-md">{t('ANNOUNCE_WITHDRAWAL')}</p>
+          <p className="color-secondary text-md">{t('ANNOUNCED_FOR_WITHDRAWAL')}</p>
           <p className="text-lg">{formatAsset(fromWei(validatorWithdrawalInfo.amount || '0'), 'Q')}</p>
         </div>
         <div>
@@ -54,7 +54,7 @@ function StakingInfo () {
           <p className="color-secondary text-md">{t('ANNOUNCEMENT_END')}</p>
           <p className="text-lg">
             {Number(validatorWithdrawalInfo.amount) > 0
-              ? formatDateGMT(unixToDate(validatorWithdrawalInfo.endTime))
+              ? formatDateGMT(unixToDate(validatorWithdrawalInfo.endTime), i18n.language)
               : '-'}
           </p>
         </div>

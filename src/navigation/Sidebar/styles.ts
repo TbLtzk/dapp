@@ -82,6 +82,7 @@ export const SidebarContainer = styled.div<{ $open: boolean }>`
     display: flex;
     gap: 8px;
     justify-content: center;
+    flex-wrap: wrap;
   }
 
   .sidebar-footer-link {
@@ -96,9 +97,9 @@ export const SidebarContainer = styled.div<{ $open: boolean }>`
       color: ${({ theme }) => getSidebarColor(theme, 'linkTextActive')};
     }
 
-    &:not(:first-child) {
-      padding-left: 8px;
-      border-left: 1px solid ${({ theme }) => theme.colors.blockBorder};
+    &:not(:last-child) {
+      padding-right: 8px;
+      border-right: 1px solid ${({ theme }) => theme.colors.blockBorder};
     }
   }
 

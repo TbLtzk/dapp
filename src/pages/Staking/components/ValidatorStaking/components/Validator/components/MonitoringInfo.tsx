@@ -13,7 +13,7 @@ import { formatDate } from 'utils/date';
 import { formatNumber, formatPercent } from 'utils/numbers';
 
 function MonitoringInfo () {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { validator } = useValidator();
   const { lastBlock, timestamp, availability1000Cycles } = validator;
 
@@ -41,7 +41,7 @@ function MonitoringInfo () {
 
       <div className="row">
         <p className="color-secondary text-md">{t('TIME_OF_LAST_VALIDATED_BLOCK')}</p>
-        <div className="color-primary text-md"><Tooltip trigger={formatDate(timestamp)}>{timestamp}</Tooltip></div>
+        <div className="color-primary text-md"><Tooltip trigger={formatDate(timestamp, i18n.language)}>{timestamp}</Tooltip></div>
       </div>
 
       <div className="row">

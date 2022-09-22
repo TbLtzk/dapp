@@ -113,7 +113,7 @@ function VaultsList ({ asset }: { asset: Asset }) {
 
       <Modal
         open={modalOpen}
-        title={t('VAULT_ID', { id: selectedVault?.id })}
+        title={t('VAULT_NUMBER', { id: selectedVault?.id })}
         onClose={handleCloseModal}
       >
         {selectedVault && <ManageVault vault={selectedVault} />}

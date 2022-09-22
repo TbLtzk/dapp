@@ -20,7 +20,7 @@ interface Props {
 }
 
 function VersionModal ({ open, onClose }: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const web3Adapter = new Web3Adapter(window.web3);
 
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -51,7 +51,7 @@ function VersionModal ({ open, onClose }: Props) {
         },
         {
           name: t('YOUR_CURRENT_TIME'),
-          value: formatDateGMT(currentDate),
+          value: formatDateGMT(currentDate, i18n.language),
         },
       ]
     },

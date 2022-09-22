@@ -20,7 +20,7 @@ import { formatDateDMY, formatTimeGMT, unixToDate } from 'utils/date';
 import { formatAsset } from 'utils/numbers';
 
 function VotingStats () {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { loadDelegationInfo } = useQVault();
   const { baseVotingWeightInfo, getBaseVotingWeightInfo } = useBaseVotingWeightInfo();
 
@@ -45,8 +45,8 @@ function VotingStats () {
       value: lockedUntil && lockedUntil !== '0'
         ? (
           <>
-            <span>{formatDateDMY(unixToDate(lockedUntil))}</span>
-            <span className="text-md">{formatTimeGMT(unixToDate(lockedUntil))}</span>
+            <span>{formatDateDMY(unixToDate(lockedUntil), i18n.language)}</span>
+            <span className="text-md">{formatTimeGMT(unixToDate(lockedUntil), i18n.language)}</span>
           </>
         )
         : '–'
