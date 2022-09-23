@@ -1112,5 +1112,6 @@
   "CLOSE_LIQUIDATION_TIP": "The vault is close to liquidation",
   "LIQUIDATED": "Liquidated",
   "SHARE_ACTION": "Anteil",
-  "VOTING_WEIGHT": "Gesamtstimmgewicht"
+  "VOTING_WEIGHT": "Gesamtstimmgewicht",
+  "ERROR_TRANSACTION_REVERTED": "Transaction reverted"
 }

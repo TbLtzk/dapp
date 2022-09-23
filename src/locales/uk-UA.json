@@ -1112,5 +1112,6 @@
   "CLOSE_LIQUIDATION_TIP": "Сейф близький до ліквідації",
   "LIQUIDATED": "Ліквідовано",
   "SHARE_ACTION": "Поділитися",
-  "VOTING_WEIGHT": "Вага голосування"
+  "VOTING_WEIGHT": "Вага голосування",
+  "ERROR_TRANSACTION_REVERTED": "Транзакцію скасовано"
 }
